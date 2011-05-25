@@ -1,23 +1,23 @@
 ﻿using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm
+namespace NetTopologySuite.Algorithm
 {
     /// <summary>
     /// Computes an approximate intersection of two line segments
-     /// by taking the most central of the endpoints of the segments.
-     /// This is effective in cases where the segments are nearly parallel
-     /// and should intersect at an endpoint.
-     /// It is also a reasonable strategy for cases where the 
-     /// endpoint of one segment lies on or almost on the interior of another one.
-     /// Taking the most central endpoint ensures that the computed intersection
-     /// point lies in the envelope of the segments.
-     /// Also, by always returning one of the input points, this should result 
-     /// in reducing segment fragmentation.
-     /// Intended to be used as a last resort for 
-     /// computing ill-conditioned intersection situations which 
-     /// cause other methods to fail.
+    /// by taking the most central of the endpoints of the segments.
+    /// This is effective in cases where the segments are nearly parallel
+    /// and should intersect at an endpoint.
+    /// It is also a reasonable strategy for cases where the 
+    /// endpoint of one segment lies on or almost on the interior of another one.
+    /// Taking the most central endpoint ensures that the computed intersection
+    /// point lies in the envelope of the segments.
+    /// Also, by always returning one of the input points, this should result 
+    /// in reducing segment fragmentation.
+    /// Intended to be used as a last resort for 
+    /// computing ill-conditioned intersection situations which 
+    /// cause other methods to fail.
     /// </summary>
     public class CentralEndpointIntersector
     {

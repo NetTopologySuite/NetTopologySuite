@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap;
+using NetTopologySuite.Operation.Overlay.Snap;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Overlay.Validate
+namespace NetTopologySuite.Operation.Overlay.Validate
 {
     ///<summary>
     /// Validates that the result of an overlay operation is geometrically correct within a given tolerance.

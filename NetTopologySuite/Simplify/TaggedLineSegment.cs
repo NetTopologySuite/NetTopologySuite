@@ -1,7 +1,7 @@
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Simplify
+namespace NetTopologySuite.Simplify
 {
     /// <summary>
     /// A LineSegment which is tagged with its location in a <c>Geometry</c>.

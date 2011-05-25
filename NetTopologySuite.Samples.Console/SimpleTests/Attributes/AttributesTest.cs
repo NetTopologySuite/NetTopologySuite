@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using System.IO;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Features;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
+using NetTopologySuite.Features;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Attributes
+namespace NetTopologySuite.Samples.SimpleTests.Attributes
 {
     public class AttributesTest : BaseSamples
     {

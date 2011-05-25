@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Geometries.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     ///<summary>
     /// Utility methods for processing <see cref="ISegmentString"/>s

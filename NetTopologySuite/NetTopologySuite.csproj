@@ -8,7 +8,7 @@
     <ProjectGuid>{5770DAA9-84E5-4770-AF43-F6B815894368}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GisSharpBlog.NetTopologySuite</RootNamespace>
+    <RootNamespace>NetTopologySuite</RootNamespace>
     <AssemblyName>NetTopologySuite</AssemblyName>
     <SignAssembly>false</SignAssembly>
     <SccProjectName>
@@ -164,10 +164,10 @@
     <Compile Include="Geometries\Prepared\PreparedLineString.cs" />
     <Compile Include="Geometries\Prepared\PreparedLineStringIntersects.cs" />
     <Compile Include="Geometries\Prepared\PreparedPoint.cs" />
-    <Compile Include="Geometries\Prepared\PreparedPolygonCovers.cs" />
     <Compile Include="Geometries\Prepared\PreparedPolygon.cs" />
     <Compile Include="Geometries\Prepared\PreparedPolygonContains.cs" />
     <Compile Include="Geometries\Prepared\PreparedPolygonContainsProperly.cs" />
+    <Compile Include="Geometries\Prepared\PreparedPolygonCovers.cs" />
     <Compile Include="Geometries\Prepared\PreparedPolygonIntersects.cs" />
     <Compile Include="Geometries\Prepared\PreparedPolygonLineIntersection.cs" />
     <Compile Include="Geometries\Prepared\PreparedPolygonPredicate.cs" />
@@ -218,6 +218,7 @@
     <Compile Include="GeometriesGraph\Position.cs" />
     <Compile Include="GeometriesGraph\QuadrantOp.cs" />
     <Compile Include="GeometriesGraph\TopologyLocation.cs" />
+    <Compile Include="IO\GeoTools\Handlers\ProbeLinearRing.cs" />
     <Compile Include="IO\WKTFileReader.cs" />
     <Compile Include="Noding\FastSegmentSetIntersectionFinder.cs" />
     <Compile Include="Noding\MCIndexSegmentSetMutualIntersector.cs" />

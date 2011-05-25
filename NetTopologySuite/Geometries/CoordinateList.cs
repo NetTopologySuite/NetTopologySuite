@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {       
     /// <summary>
     /// A list of Coordinates, which may

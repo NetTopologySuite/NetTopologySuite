@@ -1,7 +1,7 @@
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
+using NetTopologySuite.Algorithm;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Relate
+namespace NetTopologySuite.Operation.Relate
 {
     /// <summary>
     /// Implements the SFS <c>relate()</c> operation on two <see cref="IGeometry"/>s.

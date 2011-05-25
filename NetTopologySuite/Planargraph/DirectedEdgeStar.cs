@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Planargraph
+namespace NetTopologySuite.Planargraph
 {
     /// <summary>
     /// A sorted collection of <c>DirectedEdge</c>s which leave a <c>Node</c>

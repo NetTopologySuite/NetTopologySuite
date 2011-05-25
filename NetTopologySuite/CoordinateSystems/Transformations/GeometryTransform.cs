@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.CoordinateSystems.Transformations;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
+namespace NetTopologySuite.CoordinateSystems.Transformations
 {
 	/// <summary>
 	/// Helper class for transforming <see cref="Geometry" /> objects.

@@ -1,6 +1,6 @@
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries.Utility

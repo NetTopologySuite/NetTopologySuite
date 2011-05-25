@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.Utilities;
 using Wintellect.PowerCollections;
-namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
+namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
     /// A connected subset of the graph of

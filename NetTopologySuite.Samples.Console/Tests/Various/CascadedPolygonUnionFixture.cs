@@ -2,14 +2,14 @@ using System;
 using System.IO;
 using System.Linq;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
-using GisSharpBlog.NetTopologySuite.Operation.Overlay;
-using GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap;
-using GisSharpBlog.NetTopologySuite.Operation.Union;
-using GisSharpBlog.NetTopologySuite.Samples.SimpleTests;
+using NetTopologySuite.IO;
+using NetTopologySuite.Operation.Overlay;
+using NetTopologySuite.Operation.Overlay.Snap;
+using NetTopologySuite.Operation.Union;
+using NetTopologySuite.Samples.SimpleTests;
 using NUnit.Framework;
 
-namespace  GisSharpBlog.NetTopologySuite.Samples.Tests.Various
+namespace  NetTopologySuite.Samples.Tests.Various
 {
     [TestFixture]
     public class CascadedPolygonUnionFixture : BaseSamples

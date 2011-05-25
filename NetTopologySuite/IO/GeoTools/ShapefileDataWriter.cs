@@ -2,13 +2,13 @@ using System;
 using System.Collections;
 using System.IO;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Features;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Features;
+using NetTopologySuite.Geometries;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
     /// <summary>
     /// A simple test class for write a complete (shp, shx and dbf) shapefile structure.

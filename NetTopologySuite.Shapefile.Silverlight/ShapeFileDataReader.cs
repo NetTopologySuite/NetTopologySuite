@@ -20,13 +20,13 @@ using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.CoordinateSystems.Transformations;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Data;
+using NetTopologySuite.Data;
 
-namespace GisSharpBlog.NetTopologySuite.Shapefile
+namespace NetTopologySuite.Shapefile
 {
     /// <summary>
     /// Provides a fast-forward, read-only data stream to feature data
-    /// from a <see cref="GisSharpBlog.NetTopologySuite.Shapefile"/>.
+    /// from a <see cref="NetTopologySuite.Shapefile"/>.
     /// </summary>
     public class ShapeFileDataReader : IEnumerable<IRecord> //IFeatureDataReader
     {

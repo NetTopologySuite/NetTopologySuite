@@ -1,9 +1,9 @@
 using System;
 using System.IO;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {    
     /// <summary>
     /// Read features stored as ESRI GeoDatabase binary format in a SqlServer database,

@@ -1,8 +1,8 @@
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     /// <summary>
     /// Implements a robust method of comparing the relative position of two points along the same segment.

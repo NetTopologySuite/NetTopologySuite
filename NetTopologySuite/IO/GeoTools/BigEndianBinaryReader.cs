@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
 	/// <summary>
     /// Extends the <see cref="System.IO.BinaryReader" /> class to allow reading of integers and doubles 

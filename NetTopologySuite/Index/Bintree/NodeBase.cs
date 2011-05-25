@@ -1,14 +1,14 @@
-using System.Collections;
+using System.Collections.Generic;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Index.Bintree
+namespace NetTopologySuite.Index.Bintree
 {
     /// <summary> 
     /// The base class for nodes in a <c>Bintree</c>.
     /// </summary>
-    public abstract class NodeBase
+    public abstract class NodeBase<T>
     {
         /// <summary> 
         /// Returns the index of the subnode that wholely contains the given interval.
@@ -29,24 +29,24 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <summary>
         /// 
         /// </summary>
-        private IList _items = new ArrayList();
+        private IList<T> _items = new List<T>();
 
         /// <summary>
         /// Subnodes are numbered as follows:
         /// 0 | 1        
         /// .
         /// </summary>
-        protected Node[] Subnode = new Node[2];
-        
+        protected Node<T>[] Subnode = new Node<T>[2];
+        /*
         /// <summary>
         /// 
         /// </summary>
         protected NodeBase() { }
-
+        */
         /// <summary>
         /// 
         /// </summary>
-        public  IList Items
+        public  IList<T> Items
         {
             get
             {                
@@ -59,7 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// 
         /// </summary>
         /// <param name="item"></param>
-        public  void Add(object item)
+        public  void Add(T item)
         {
             _items.Add(item);
         }
@@ -69,10 +69,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        public  IList AddAllItems(IList items)
+        public  IList<T> AddAllItems(IList<T> items)
         {
             // items.addAll(this.items);
-            foreach (object o in _items)
+            foreach (T o in _items)
                 items.Add(o);
             for (int i = 0; i < 2; i++)
                 if (Subnode[i] != null)
@@ -93,12 +93,12 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <param name="interval"></param>
         /// <param name="resultItems"></param>
         /// <returns></returns>
-        public  IList AddAllItemsFromOverlapping(Interval interval, IList resultItems)
+        public  IList<T> AddAllItemsFromOverlapping(Interval interval, IList<T> resultItems)
         {
             if (!IsSearchMatch(interval))
                 return _items;
             // resultItems.addAll(items);
-            foreach (object o in _items)
+            foreach (T o in _items)
                 resultItems.Add(o);
             for (int i = 0; i < 2; i++)
                 if (Subnode[i] != null)

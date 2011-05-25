@@ -1,10 +1,10 @@
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Index;
-using GisSharpBlog.NetTopologySuite.Index.Chain;
-using GisSharpBlog.NetTopologySuite.Index.Strtree;
+using NetTopologySuite.Index;
+using NetTopologySuite.Index.Chain;
+using NetTopologySuite.Index.Strtree;
 
-namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
+namespace NetTopologySuite.Noding.Snapround
 {
     /// <summary>
     /// "Snaps" all <see cref="ISegmentString" />s in a <see cref="ISpatialIndex" /> containing
@@ -16,9 +16,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// 
         /// </summary>
         // Public in java code... temporary modified for "safe assembly" in Sql2005
-		internal static readonly int numberSnaps = 0;        
+		internal static readonly int numberSnaps;        
 
-        private IList _monoChains;
+        private IList<MonotoneChain> _monoChains;
         private readonly STRtree _index;
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// </summary>
         /// <param name="monoChains"></param>
         /// <param name="index"></param>
-        public MCIndexPointSnapper(IList monoChains, ISpatialIndex index)
+        public MCIndexPointSnapper(IList<MonotoneChain> monoChains, ISpatialIndex index)
         {
             _monoChains = monoChains;
             _index = (STRtree) index;
@@ -35,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <summary>
         /// 
         /// </summary>
-        private class QueryVisitor : IItemVisitor
+        private class QueryVisitor : IItemVisitor<object>
         {
             readonly IEnvelope _env;
             readonly HotPixelSnapAction _action;

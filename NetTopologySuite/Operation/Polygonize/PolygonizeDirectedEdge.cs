@@ -1,7 +1,7 @@
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Planargraph;
+using NetTopologySuite.Planargraph;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
+namespace NetTopologySuite.Operation.Polygonize
 {
     /// <summary>
     /// A <c>DirectedEdge</c> of a <c>PolygonizeGraph</c>, which represents

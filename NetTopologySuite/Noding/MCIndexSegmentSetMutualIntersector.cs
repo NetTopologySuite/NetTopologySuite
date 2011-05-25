@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using GisSharpBlog.NetTopologySuite.Index;
-using GisSharpBlog.NetTopologySuite.Index.Chain;
-using GisSharpBlog.NetTopologySuite.Index.Strtree;
-using MonotoneChain = GisSharpBlog.NetTopologySuite.Index.Chain.MonotoneChain;
+using NetTopologySuite.Index;
+using NetTopologySuite.Index.Chain;
+using NetTopologySuite.Index.Strtree;
+using MonotoneChain = NetTopologySuite.Index.Chain.MonotoneChain;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     ///<summary>
     /// Intersects two sets of <see cref="ISegmentString"/>s using a index based

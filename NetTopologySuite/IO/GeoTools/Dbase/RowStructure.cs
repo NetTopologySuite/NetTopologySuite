@@ -5,7 +5,7 @@ using System.ComponentModel;
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
 	/// <summary>
 	/// Implements ICustomTypeDescriptor so we can simulate a row object having a property for every field.

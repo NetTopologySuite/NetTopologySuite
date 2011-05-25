@@ -1,10 +1,10 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
-using GisSharpBlog.NetTopologySuite.LinearReferencing;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
+using NetTopologySuite.LinearReferencing;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.LinearReferencing
+namespace NetTopologySuite.Samples.LinearReferencing
 {
     /// <summary>
     /// Examples of Linear Referencing

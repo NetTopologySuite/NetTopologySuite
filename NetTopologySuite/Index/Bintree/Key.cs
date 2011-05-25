@@ -1,7 +1,7 @@
 using System;
-using GisSharpBlog.NetTopologySuite.Index.Quadtree;
+using NetTopologySuite.Index.Quadtree;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Bintree
+namespace NetTopologySuite.Index.Bintree
 {
     /// <summary>
     /// A Key is a unique identifier for a node in a tree.
@@ -23,11 +23,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         }
 
         // the fields which make up the key
-        private double pt = 0.0;
-        private int level = 0;
+        private double _pt;
+        private int _level;
 
         // auxiliary data which is derived from the key for use in computation
-        private Interval interval;
+        private Interval _interval;
 
         /// <summary>
         /// 
@@ -45,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         {
             get
             {
-                return pt;
+                return _pt;
             }
         }
 
@@ -56,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         {
             get
             {
-                return level;
+                return _level;
             }
         }
 
@@ -67,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         {
             get
             {
-                return interval;
+                return _interval;
             }
         }
 
@@ -78,14 +78,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <param name="itemInterval"></param>
         public  void ComputeKey(Interval itemInterval)
         {
-            level = ComputeLevel(itemInterval);
-            interval = new Interval();
-            ComputeInterval(level, itemInterval);
+            _level = ComputeLevel(itemInterval);
+            _interval = new Interval();
+            ComputeInterval(_level, itemInterval);
             // MD - would be nice to have a non-iterative form of this algorithm
-            while (!interval.Contains(itemInterval))
+            while (!_interval.Contains(itemInterval))
             {
-                level += 1;
-                ComputeInterval(level, itemInterval);
+                _level += 1;
+                ComputeInterval(_level, itemInterval);
             }
         }
 
@@ -97,8 +97,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         private void ComputeInterval(int level, Interval itemInterval)
         {
             double size = DoubleBits.PowerOf2(level);            
-            pt = Math.Floor(itemInterval.Min / size) * size;
-            interval.Init(pt, pt + size);
+            _pt = Math.Floor(itemInterval.Min / size) * size;
+            _interval.Init(_pt, _pt + size);
         }
     }
 }

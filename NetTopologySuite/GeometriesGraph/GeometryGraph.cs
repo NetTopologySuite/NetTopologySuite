@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.GeometriesGraph.Index;
+using NetTopologySuite.Utilities;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 using Hashtable = System.Collections.Generic.Dictionary<object, object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>
     /// A GeometryGraph is a graph that models a given Geometry.
@@ -180,7 +180,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="edgelist"></param>
         public void ComputeSplitEdges(IList<Edge> edgelist)
         {
-            foreach (Edge e in edges)
+            foreach (Edge e in Edges)
             {
                 e.EdgeIntersectionList.AddSplitEdges(edgelist);
             }
@@ -357,8 +357,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             // optimized test for Polygons and Rings
             if (!computeRingSelfNodes &&
                (_parentGeom is ILinearRing || _parentGeom is IPolygon || _parentGeom is IMultiPolygon))
-                 esi.ComputeIntersections(edges, si, false);            
-            else esi.ComputeIntersections(edges, si, true);      
+                 esi.ComputeIntersections(Edges, si, false);            
+            else esi.ComputeIntersections(Edges, si, true);      
             AddSelfIntersectionNodes(_argIndex);
             return si;
         }
@@ -376,7 +376,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             SegmentIntersector si = new SegmentIntersector(li, includeProper, true);
             si.SetBoundaryNodes(BoundaryNodes, g.BoundaryNodes);
             EdgeSetIntersector esi = CreateEdgeSetIntersector();
-            esi.ComputeIntersections(edges, g.edges, si);        
+            esi.ComputeIntersections(Edges, g.Edges, si);        
             return si;
         }
 
@@ -426,7 +426,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="argIndex"></param>
         private void AddSelfIntersectionNodes(int argIndex)
         {
-            foreach (Edge e in edges)
+            foreach (Edge e in Edges)
             {
                 Locations eLoc = e.Label.GetLocation(argIndex);
                 foreach (EdgeIntersection ei in e.EdgeIntersectionList)

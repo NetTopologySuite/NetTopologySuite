@@ -1,8 +1,8 @@
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
+namespace NetTopologySuite.Index.Quadtree
 {
     /// <summary>
     /// QuadRoot is the root of a single Quadtree.  

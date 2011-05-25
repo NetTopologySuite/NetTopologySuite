@@ -1,4 +1,4 @@
-namespace GisSharpBlog.NetTopologySuite.Utilities
+namespace NetTopologySuite.Utilities
 {
     /// <summary>
     /// A supoort class: the purpose is to integrate System.BitConverter methods not presents in .NET Compact Framework.

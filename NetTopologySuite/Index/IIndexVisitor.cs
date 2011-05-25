@@ -1,4 +1,4 @@
-namespace GisSharpBlog.NetTopologySuite.Index
+namespace NetTopologySuite.Index
 {
     /// <summary> 
     /// A visitor for nodes and items in an index.

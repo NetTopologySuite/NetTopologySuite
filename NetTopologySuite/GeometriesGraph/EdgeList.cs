@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.IO;
-using GisSharpBlog.NetTopologySuite.Index;
-using GisSharpBlog.NetTopologySuite.Index.Quadtree;
+using NetTopologySuite.Index;
+using NetTopologySuite.Index.Quadtree;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>
     /// A EdgeList is a list of Edges.  It supports locating edges

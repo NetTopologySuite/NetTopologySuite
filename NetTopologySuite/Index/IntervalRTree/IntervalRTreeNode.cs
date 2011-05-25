@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 
-namespace GisSharpBlog.NetTopologySuite.Index.IntervalRTree
+namespace NetTopologySuite.Index.IntervalRTree
 {
-    public abstract class IntervalRTreeNode
+    public abstract class IntervalRTreeNode<T>
     {
         public double Min { get; protected set; }
         public double Max { get; protected set; }
@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.IntervalRTree
             Max = max;
         }
 
-        public abstract void Query(double queryMin, double queryMax, IItemVisitor visitor);
+        public abstract void Query(double queryMin, double queryMax, IItemVisitor<T> visitor);
 
         protected bool Intersects(double queryMin, double queryMax)
         {
@@ -37,11 +37,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.IntervalRTree
             return WKTWriter.ToLineString(new Coordinate(Min, 0), new Coordinate(Max, 0));
         }
 
-        public class NodeComparator : IComparer<IntervalRTreeNode>
+        public class NodeComparator : IComparer<IntervalRTreeNode<T>>
         {
             public static NodeComparator Instance = new NodeComparator();
 
-            public int Compare(IntervalRTreeNode n1, IntervalRTreeNode n2)
+            public int Compare(IntervalRTreeNode<T> n1, IntervalRTreeNode<T> n2)
             {
                 double mid1 = (n1.Min + n1.Max) / 2;
                 double mid2 = (n2.Min + n2.Max) / 2;

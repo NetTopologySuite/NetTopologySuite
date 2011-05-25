@@ -29,18 +29,18 @@ using System.Threading;
 using GeoAPI.CoordinateSystems;
 using GeoAPI.CoordinateSystems.Transformations;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Data;
-using GisSharpBlog.NetTopologySuite.Extension;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Data;
+using NetTopologySuite.Extension;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Encodings;
 using Trace = System.Diagnostics.Debug;
 using ByteEncoder = GeoAPI.DataStructures.ByteEncoder;
 //using Pair<T> = System.Tuple<T,T>;
-using GisSharpBlog.NetTopologySuite.Shapefile;
+using NetTopologySuite.Shapefile;
 using System.Linq;
-using GisSharpBlog.NetTopologySuite.Utilities;
-namespace GisSharpBlog.NetTopologySuite.Shapefile
+using NetTopologySuite.Utilities;
+namespace NetTopologySuite.Shapefile
 {
     public struct FilePermissions
     {
@@ -444,7 +444,7 @@ namespace GisSharpBlog.NetTopologySuite.Shapefile
         //}
 
         /// <summary>
-        /// Creates a new <see cref="GisSharpBlog.NetTopologySuite.Shapefile"/> instance and .shp, .shx and, optionally, 
+        /// Creates a new <see cref="NetTopologySuite.Shapefile"/> instance and .shp, .shx and, optionally, 
         /// .dbf file on disk.
         /// </summary>
         /// <remarks>If <paramref name="model"/> is null, no .dbf file is created.</remarks>

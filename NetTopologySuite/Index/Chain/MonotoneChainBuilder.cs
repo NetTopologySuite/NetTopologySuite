@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.GeometriesGraph;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Index.Chain
+namespace NetTopologySuite.Index.Chain
 {
     /// <summary> 
     /// Constructs <see cref="MonotoneChain"/>s

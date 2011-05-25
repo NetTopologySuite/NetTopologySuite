@@ -1,6 +1,6 @@
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-namespace GisSharpBlog.NetTopologySuite.Algorithm
+using NetTopologySuite.Geometries;
+namespace NetTopologySuite.Algorithm
 {
     /// <summary> 
     /// A robust version of <c>LineIntersector</c>.

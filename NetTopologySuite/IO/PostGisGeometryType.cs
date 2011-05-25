@@ -1,4 +1,4 @@
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
 	/// <summary>
     /// PostGIS Geometry types as defined in the OGC WKB Spec

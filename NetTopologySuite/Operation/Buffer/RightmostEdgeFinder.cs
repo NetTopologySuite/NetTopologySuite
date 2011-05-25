@@ -1,10 +1,10 @@
 using System.Collections;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
+namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
     /// A RightmostEdgeFinder find the DirectedEdge in a list which has the highest coordinate,

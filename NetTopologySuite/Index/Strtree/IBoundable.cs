@@ -1,4 +1,4 @@
-namespace GisSharpBlog.NetTopologySuite.Index.Strtree
+namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
     /// A spatial object in an AbstractSTRtree.

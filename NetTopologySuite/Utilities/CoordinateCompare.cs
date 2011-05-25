@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Utilities
+namespace NetTopologySuite.Utilities
 {
 	/// <summary>
 	/// CoordinateCompare is used in the sorting of arrays of Coordinate objects.

@@ -1,4 +1,4 @@
-﻿namespace GisSharpBlog.NetTopologySuite.Data.InternalImpl
+﻿namespace NetTopologySuite.Data.InternalImpl
 {
     internal class DecimalPropertyInfo : PropertyInfo<decimal>, IDecimalPropertyInfo
     {

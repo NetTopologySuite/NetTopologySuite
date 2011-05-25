@@ -35,7 +35,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Windows.Forms
+namespace NetTopologySuite.Windows.Forms
 {
     ///<summary>
     /// An interface for classes which create <see cref="GraphicsPath"/>s to represent

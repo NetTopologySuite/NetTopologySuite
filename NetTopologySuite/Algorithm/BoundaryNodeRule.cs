@@ -1,10 +1,8 @@
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation;
-using GisSharpBlog.NetTopologySuite.Operation.Relate;
+using NetTopologySuite.Operation;
+using NetTopologySuite.Operation.Relate;
 
-//using GisSharpBlog.NetTopologySuite.Operation.Relate;
-
-namespace GisSharpBlog.NetTopologySuite.Algorithm
+namespace NetTopologySuite.Algorithm
 {
     ///<summary>
     /// An interface for rules which determine whether node points
@@ -25,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     public interface IBoundaryNodeRule
     {
         ///<summary>
-        /// Tests whether a point that lies in <tt>boundaryCount</tt>
+        /// Tests whether a point that lies in <c>boundaryCount</c>
         /// geometry component boundaries is considered to form part of the boundary
         /// of the parent geometry.
         ///</summary>

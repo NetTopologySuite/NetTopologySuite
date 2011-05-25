@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
+namespace NetTopologySuite.Geometries.Utilities
 {
     public static class GeometryExtracter
     {

@@ -2,7 +2,7 @@
 using System.IO;
 using System.IO.IsolatedStorage;
 
-namespace GisSharpBlog.NetTopologySuite.Shapefile
+namespace NetTopologySuite.Shapefile
 {
     public class IsolatedStorageManager : IStorageManager
     {

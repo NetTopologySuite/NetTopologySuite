@@ -1,8 +1,8 @@
 ﻿using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Data;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Data;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.IO.GeoTools
+namespace NetTopologySuite.IO.GeoTools
 {
     public class StringToGeometryConverter : CustomConverterBase<string, IGeometry>
     {

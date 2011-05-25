@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.LinearReferencing
+namespace NetTopologySuite.LinearReferencing
 {
     /// <summary>
     /// Builds a linear geometry (<see cref="LineString" /> or <see cref="MultiLineString" />)

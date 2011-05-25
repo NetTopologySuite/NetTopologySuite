@@ -18,10 +18,10 @@
 
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Shapefile
+namespace NetTopologySuite.Shapefile
 {
     /// <summary>
-    /// <see cref="GisSharpBlog.NetTopologySuite.Shapefile"/> geometry types.
+    /// <see cref="NetTopologySuite.Shapefile"/> geometry types.
     /// </summary>
     public enum ShapeType
     {

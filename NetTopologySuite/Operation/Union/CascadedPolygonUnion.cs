@@ -2,14 +2,14 @@ using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
 using System.Threading;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
-using GisSharpBlog.NetTopologySuite.Index.Strtree;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Index.Strtree;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Union
+namespace NetTopologySuite.Operation.Union
 {
     /// <summary>
     /// <see href="http://code.google.com/p/nettopologysuite/issues/detail?id=44"/>

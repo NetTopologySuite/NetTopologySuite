@@ -1,12 +1,10 @@
-using System;
-using System.Collections;
+//using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
+namespace NetTopologySuite.Noding.Snapround
 {
 
     /// <summary>
@@ -43,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         }
 
         /// <summary>
-        /// Returns a <see cref="IList"/> of fully noded <see cref="ISegmentString"/>s.
+        /// Returns a <see cref="IList{ISegmentString}"/> of fully noded <see cref="ISegmentString"/>s.
         /// The <see cref="ISegmentString"/>s have the same context as their parent.
         /// </summary>
         /// <returns></returns>
@@ -89,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <param name="li"></param>
         private void SnapRound(IList<ISegmentString> segStrings, LineIntersector li)
         {
-            IList intersections = FindInteriorIntersections(segStrings, li);
+            IList<ICoordinate> intersections = FindInteriorIntersections(segStrings, li);
             ComputeIntersectionSnaps(intersections);
             ComputeVertexSnaps(segStrings);        
         }
@@ -103,7 +101,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <param name="segStrings"></param>
         /// <param name="li"></param>
         /// <returns>A list of Coordinates for the intersections.</returns>
-        private IList FindInteriorIntersections(IList<ISegmentString> segStrings, LineIntersector li)
+        private IList<ICoordinate> FindInteriorIntersections(IList<ISegmentString> segStrings, LineIntersector li)
         {
             IntersectionFinderAdder intFinderAdder = new IntersectionFinderAdder(li);
             _noder.SegmentIntersector = intFinderAdder;
@@ -115,7 +113,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// Computes nodes introduced as a result of snapping segments to snap points (hot pixels).
         /// </summary>
         /// <param name="snapPts"></param>
-        private void ComputeIntersectionSnaps(IList snapPts)
+        private void ComputeIntersectionSnaps(IEnumerable<ICoordinate> snapPts)
         {
             foreach (ICoordinate snapPt in snapPts)
             {

@@ -1,11 +1,11 @@
 using System;
 using GeoAPI.Geometries;
 using GeoAPI.Geometries.Prepared;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Prepared;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
-using GisSharpBlog.NetTopologySuite.IO;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Prepared;
+using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.IO;
+using NetTopologySuite.Utilities;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared

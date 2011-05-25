@@ -1,6 +1,6 @@
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Utility functions for manipulating <see cref="ICoordinateSequence" />s.

@@ -1,7 +1,7 @@
 using System;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Features
+namespace NetTopologySuite.Features
 {
     /// <summary>
     /// 

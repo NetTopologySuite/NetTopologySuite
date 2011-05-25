@@ -1,11 +1,11 @@
-using System.Collections;
+//using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
+namespace NetTopologySuite.Operation.Polygonize
 {
     /// <summary>
     /// Polygonizes a set of Geometrys which contain linework that
@@ -73,22 +73,22 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// 
         /// </summary>
-        protected IList invalidRingLines = new ArrayList();
+        protected IList<IGeometry> invalidRingLines = new List<IGeometry>();
 
         /// <summary>
         /// 
         /// </summary>
-        protected IList holeList;
+        protected IList<EdgeRing> holeList;
         
         /// <summary>
         /// 
         /// </summary>        
-        protected IList shellList;
+        protected IList<EdgeRing> shellList;
 
         /// <summary>
         /// 
         /// </summary>
-        protected IList polyList;
+        protected IList<IGeometry> polyList;
 
         /// <summary>
         /// Create a polygonizer with the same {GeometryFactory}
@@ -106,13 +106,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// the constituent linework will be extracted and used.
         /// </summary>
         /// <param name="geomList">A list of <c>Geometry</c>s with linework to be polygonized.</param>
-        public void Add(IList geomList)
+        public void Add(IList<IGeometry> geomList)
         {
-            for (var i = geomList.GetEnumerator(); i.MoveNext(); ) 
-            {
-				var geometry = (IGeometry)i.Current;
+            foreach (IGeometry geometry in geomList)
                 Add(geometry);
-            }
         }
 
         /// <summary>
@@ -142,7 +139,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Compute and returns the list of polygons formed by the polygonization.
         /// </summary>        
-        public IList GetPolygons()
+        public IList<IGeometry> GetPolygons()
         {
             Polygonize();
             return polyList;
@@ -169,7 +166,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Compute and returns the list of lines forming invalid rings found during polygonization.
         /// </summary>
-        public IList GetInvalidRingLines()
+        public IList<IGeometry> GetInvalidRingLines()
         {
             Polygonize();
             return invalidRingLines;
@@ -184,7 +181,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             if (polyList != null) 
                 return;
 
-            polyList = new ArrayList();
+            polyList = new List<IGeometry>();
 
             // if no geometries were supplied it's possible graph could be null
             if (graph == null) 
@@ -194,22 +191,19 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             cutEdges = graph.DeleteCutEdges();
             var edgeRingList = graph.GetEdgeRings();
 
-            IList validEdgeRingList = new ArrayList();
-            invalidRingLines = new ArrayList();
+            IList<EdgeRing> validEdgeRingList = new List<EdgeRing>();
+            invalidRingLines = new List<IGeometry>();
             FindValidRings(edgeRingList, validEdgeRingList, invalidRingLines);
 
             FindShellsAndHoles(validEdgeRingList);
             AssignHolesToShells(holeList, shellList);
 
-            polyList = new ArrayList();
-            for (var i = shellList.GetEnumerator(); i.MoveNext(); ) 
-            {
-                var er = (EdgeRing) i.Current;
+            polyList = new List<IGeometry>();
+            foreach (EdgeRing er in shellList)
                 polyList.Add(er.Polygon);
-            }
         }
 
-        private static void FindValidRings(IList<EdgeRing> edgeRingList, IList validEdgeRingList, IList invalidRingList)
+        private static void FindValidRings(IEnumerable<EdgeRing> edgeRingList, IList<EdgeRing> validEdgeRingList, IList<IGeometry> invalidRingList)
         {
             for (var i = edgeRingList.GetEnumerator(); i.MoveNext(); ) 
             {
@@ -220,13 +214,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             }
         }
 
-        private void FindShellsAndHoles(IList edgeRingList)
+        private void FindShellsAndHoles(IEnumerable<EdgeRing> edgeRingList)
         {
-            holeList = new ArrayList();
-            shellList = new ArrayList();
-            for (var i = edgeRingList.GetEnumerator(); i.MoveNext(); ) 
+            holeList = new List<EdgeRing>();
+            shellList = new List<EdgeRing>();
+            foreach (EdgeRing er in edgeRingList)
             {
-                var er = (EdgeRing) i.Current;
                 if (er.IsHole)
                      holeList.Add(er);
                 else shellList.Add(er);
@@ -234,16 +227,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             }
         }
 
-        private static void AssignHolesToShells(IList holeList, IList shellList)
+        private static void AssignHolesToShells(IEnumerable<EdgeRing> holeList, IList<EdgeRing> shellList)
         {
-            for (var i = holeList.GetEnumerator(); i.MoveNext(); ) 
-            {
-                var holeER = (EdgeRing) i.Current;
+            foreach (EdgeRing holeER in holeList)
                 AssignHoleToShell(holeER, shellList);
-            }
         }
 
-        private static void AssignHoleToShell(EdgeRing holeER, IList shellList)
+        private static void AssignHoleToShell(EdgeRing holeER, IList<EdgeRing> shellList)
         {
             var shell = EdgeRing.FindEdgeRingContaining(holeER, shellList);
             if (shell != null)

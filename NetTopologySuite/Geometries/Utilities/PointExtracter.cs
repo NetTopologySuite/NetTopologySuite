@@ -1,8 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
+namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary> 
     /// Extracts all the 0-dimensional (<c>Point</c>) components from a <c>Geometry</c>.    

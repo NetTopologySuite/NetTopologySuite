@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.GeometriesGraph;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
+namespace NetTopologySuite.Operation.Overlay
 {
     /// <summary>
     /// Constructs <c>Point</c>s from the nodes of an overlay graph.

@@ -1,9 +1,9 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO.Handlers;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO.Handlers;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
     /// <summary>
     /// This class is used to read and write ESRI Shapefiles.

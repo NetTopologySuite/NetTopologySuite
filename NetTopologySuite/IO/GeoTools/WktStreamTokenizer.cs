@@ -1,8 +1,8 @@
 using System;
 using System.IO;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
 	/// <summary>
 	/// Reads a stream of Well Known Text (wkt) string and returns a stream of tokens.

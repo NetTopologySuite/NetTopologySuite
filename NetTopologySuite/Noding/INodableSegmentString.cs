@@ -1,7 +1,7 @@
 ﻿using System;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     ///<summary>
     /// An interface for classes which support adding nodes to a segment string.

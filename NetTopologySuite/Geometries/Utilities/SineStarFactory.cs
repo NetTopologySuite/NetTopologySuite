@@ -1,8 +1,8 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
+namespace NetTopologySuite.Geometries.Utilities
 {
     ///<summary>
     /// Creates geometries which are shaped like multi-armed stars with each arm shaped like a sine wave.

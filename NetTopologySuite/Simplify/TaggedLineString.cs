@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Simplify
+namespace NetTopologySuite.Simplify
 {
     /// <summary>
     /// Represents a <see cref="ILineString"/> which can be modified to a simplified shape.

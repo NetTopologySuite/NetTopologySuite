@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.IO.IsolatedStorage;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
     public partial class DbaseFileReader
     {

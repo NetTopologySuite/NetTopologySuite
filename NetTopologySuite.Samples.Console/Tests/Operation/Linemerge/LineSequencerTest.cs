@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
-using GisSharpBlog.NetTopologySuite.Operation.Linemerge;
-using GisSharpBlog.NetTopologySuite.Samples.SimpleTests;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
+using NetTopologySuite.Operation.Linemerge;
+using NetTopologySuite.Samples.SimpleTests;
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
+namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
 {   
     [TestFixture]
     public class LineSequencerTest : BaseSamples    

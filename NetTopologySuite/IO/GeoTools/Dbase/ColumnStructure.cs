@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
 	/// <summary>
 	/// This class is used in conjunction with RowStructure. 

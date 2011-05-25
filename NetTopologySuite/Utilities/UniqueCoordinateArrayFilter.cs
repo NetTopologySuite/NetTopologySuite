@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Utilities
+namespace NetTopologySuite.Utilities
 {
     /// <summary>
     /// A <c>CoordinateFilter</c> that builds a set of <c>Coordinate</c>s.

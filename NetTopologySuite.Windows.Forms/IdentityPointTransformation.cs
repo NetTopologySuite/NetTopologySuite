@@ -41,7 +41,7 @@
 using System.Drawing;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Windows.Forms
+namespace NetTopologySuite.Windows.Forms
 {
     public class IdentityPointTransformation : IPointTransformation
     {

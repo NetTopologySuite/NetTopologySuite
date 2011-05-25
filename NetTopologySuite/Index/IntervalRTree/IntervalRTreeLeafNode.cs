@@ -1,18 +1,16 @@
-using System;
-
-namespace GisSharpBlog.NetTopologySuite.Index.IntervalRTree
+namespace NetTopologySuite.Index.IntervalRTree
 {
-    public class IntervalRTreeLeafNode : IntervalRTreeNode
+    public class IntervalRTreeLeafNode<T> : IntervalRTreeNode<T>
     {
-        private readonly Object _item;
+        private readonly T _item;
 
-        public IntervalRTreeLeafNode(double min, double max, Object item)
+        public IntervalRTreeLeafNode(double min, double max, T item)
             : base(min, max)
         {
             _item = item;
         }
 
-        public override void Query(double queryMin, double queryMax, IItemVisitor visitor)
+        public override void Query(double queryMin, double queryMax, IItemVisitor<T> visitor)
         {
             if (!Intersects(queryMin, queryMax))
                 return;

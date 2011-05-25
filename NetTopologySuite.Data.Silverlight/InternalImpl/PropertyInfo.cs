@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GisSharpBlog.NetTopologySuite.Data.InternalImpl
+namespace NetTopologySuite.Data.InternalImpl
 {
     internal class PropertyInfo<T> : IPropertyInfo<T>, IEquatable<PropertyInfo<T>>
     {

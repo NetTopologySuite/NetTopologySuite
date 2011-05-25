@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
+namespace NetTopologySuite.Index.Quadtree
 {
     //public abstract class NodeBase : NodeBase<object>
     //{}

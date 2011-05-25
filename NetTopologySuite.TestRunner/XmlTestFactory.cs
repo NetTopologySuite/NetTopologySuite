@@ -1,8 +1,8 @@
 using System;
 using System.Globalization;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 
 namespace Open.Topology.TestRunner
 {

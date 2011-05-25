@@ -1,9 +1,9 @@
 using System;
 using System.Text;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
+namespace NetTopologySuite.Samples.Geometries
 {	
 	/// <summary> 
     /// Demonstrates how to implement a CoordinateSequence for a new kind of

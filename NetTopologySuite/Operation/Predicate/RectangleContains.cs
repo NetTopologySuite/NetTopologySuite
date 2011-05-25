@@ -1,7 +1,7 @@
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
+namespace NetTopologySuite.Operation.Predicate
 {
     /// <summary>
     /// Optimized implementation of spatial predicate "contains"

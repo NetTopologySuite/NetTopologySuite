@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace GisSharpBlog.NetTopologySuite.Utilities
+namespace NetTopologySuite.Utilities
 {
 	/// <summary>
 	/// 

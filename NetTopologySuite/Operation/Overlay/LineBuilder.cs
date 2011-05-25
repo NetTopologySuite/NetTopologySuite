@@ -1,13 +1,10 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.Utilities;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
+namespace NetTopologySuite.Operation.Overlay
 {
     /// <summary>
     /// Forms NTS LineStrings out of a the graph of <c>DirectedEdge</c>s

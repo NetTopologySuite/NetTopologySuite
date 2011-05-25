@@ -1,21 +1,21 @@
-using System.Collections;
+//using System.Collections;
 using System.Collections.Generic;
-using GisSharpBlog.NetTopologySuite.Index;
-using GisSharpBlog.NetTopologySuite.Index.Chain;
-using GisSharpBlog.NetTopologySuite.Index.Quadtree;
-using GisSharpBlog.NetTopologySuite.Index.Strtree;
+using NetTopologySuite.Index;
+using NetTopologySuite.Index.Chain;
+using NetTopologySuite.Index.Quadtree;
+using NetTopologySuite.Index.Strtree;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
 
     /// <summary>
     /// Nodes a set of <see cref="ISegmentString" />s using a index based
     /// on <see cref="MonotoneChain" />s and a <see cref="ISpatialIndex" />.
     /// The <see cref="ISpatialIndex" /> used should be something that supports
-    /// envelope (range) queries efficiently (such as a <see cref="Quadtree" />
+    /// envelope (range) queries efficiently (such as a <see cref="Quadtree{T}" />
     /// or <see cref="STRtree" />.
     /// </summary>
     public class MCIndexNoder : SinglePassNoder
@@ -41,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <summary>
         /// 
         /// </summary>
-        public IList MonotoneChains
+        public IList<MonotoneChain> MonotoneChains
         {
             get { return _monoChains; }
         }

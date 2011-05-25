@@ -18,7 +18,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace GisSharpBlog.NetTopologySuite.Shapefile
+namespace NetTopologySuite.Shapefile
 {    
     /// <summary>
     /// Exception thrown when a <see cref="FeatureDataTable"/> schema doesn't match the

@@ -1,9 +1,9 @@
 using System;
 using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Strtree
+namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
     /// Base class for STRtree and SIRtree. STR-packed R-trees are described in:

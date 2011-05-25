@@ -18,7 +18,7 @@
 using System;
 using System.Globalization;
 
-namespace GisSharpBlog.NetTopologySuite.Shapefile
+namespace NetTopologySuite.Shapefile
 {
 	/// <summary>
 	/// Constants used to parse dBase files.

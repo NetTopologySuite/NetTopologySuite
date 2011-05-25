@@ -3,13 +3,13 @@ using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
 using System.Linq;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Utilities;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Index.Strtree
+namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>  
     /// A query-only R-tree created using the Sort-Tile-Recursive (STR) algorithm.

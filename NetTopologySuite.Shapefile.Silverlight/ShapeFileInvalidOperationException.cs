@@ -18,10 +18,10 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace GisSharpBlog.NetTopologySuite.Shapefile
+namespace NetTopologySuite.Shapefile
 {    
     /// <summary>
-    /// Exception thrown when an operation is attempted which is not defined for the state of the <see cref="GisSharpBlog.NetTopologySuite.Shapefile"/>
+    /// Exception thrown when an operation is attempted which is not defined for the state of the <see cref="NetTopologySuite.Shapefile"/>
     /// </summary>
     public class ShapeFileInvalidOperationException : ShapeFileException
     {

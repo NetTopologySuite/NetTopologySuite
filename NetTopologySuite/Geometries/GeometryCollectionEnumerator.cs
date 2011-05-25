@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Iterates over all <c>Geometry</c>'s in a <c>GeometryCollection</c>. 

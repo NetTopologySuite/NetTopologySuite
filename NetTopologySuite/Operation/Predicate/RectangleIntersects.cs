@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
+namespace NetTopologySuite.Operation.Predicate
 {
     /// <summary>
     /// Optimized implementation of spatial predicate "intersects"

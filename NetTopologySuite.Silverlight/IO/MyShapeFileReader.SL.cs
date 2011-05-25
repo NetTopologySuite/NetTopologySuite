@@ -3,7 +3,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
     public partial class MyShapeFileReader : IDisposable
     {

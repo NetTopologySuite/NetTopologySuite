@@ -1,7 +1,7 @@
 using System;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {    
     /// <summary>
     /// Octants in the Cartesian plane.

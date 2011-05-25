@@ -1,12 +1,12 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.GeometriesGraph.Index;
 using Wintellect.PowerCollections;
 
-namespace GisSharpBlog.NetTopologySuite.Operation
+namespace NetTopologySuite.Operation
 {
     ///<summary>
     /// Tests whether a <see cref="IGeometry"/> is simple.
@@ -178,13 +178,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// <param name="graph"></param>
         private bool HasNonEndpointIntersection(GeometryGraph graph)
         {
-            for (IEnumerator i = graph.GetEdgeEnumerator(); i.MoveNext(); )
+            foreach (Edge e in graph.Edges)
             {
-                Edge e = (Edge) i.Current;
                 int maxSegmentIndex = e.MaximumSegmentIndex;
-                for (IEnumerator eiIt = e.EdgeIntersectionList.GetEnumerator(); eiIt.MoveNext(); )
+                foreach (EdgeIntersection ei in e.EdgeIntersectionList)
                 {
-                    EdgeIntersection ei = (EdgeIntersection) eiIt.Current;
                     if (!ei.IsEndPoint(maxSegmentIndex))
                     {
                         _nonSimpleLocation = ei.Coordinate;
@@ -232,10 +230,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// </summary>
         private bool HasClosedEndpointIntersection(GeometryGraph graph)
         {
-            IDictionary endPoints = new OrderedDictionary<ICoordinate, object>();
-            for (IEnumerator i = graph.GetEdgeEnumerator(); i.MoveNext(); )
+            IDictionary<ICoordinate, EndpointInfo> endPoints = new OrderedDictionary<ICoordinate, EndpointInfo>();
+            foreach (Edge e in graph.Edges)
             {
-                Edge e = (Edge) i.Current;
                 //int maxSegmentIndex = e.MaximumSegmentIndex;
                 bool isClosed = e.IsClosed;
                 ICoordinate p0 = e.GetCoordinate(0);
@@ -243,9 +240,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation
                 ICoordinate p1 = e.GetCoordinate(e.NumPoints - 1);
                 AddEndpoint(endPoints, p1, isClosed);
             }
-            for (IEnumerator i = endPoints.Values.GetEnumerator(); i.MoveNext(); )
+
+            foreach (EndpointInfo eiInfo in endPoints.Values)
             {
-                EndpointInfo eiInfo = (EndpointInfo) i.Current;
                 if (eiInfo.IsClosed && eiInfo.Degree != 2)
                 {
                     _nonSimpleLocation = eiInfo.Point;
@@ -261,10 +258,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// <param name="endPoints"></param>
         /// <param name="p"></param>
         /// <param name="isClosed"></param>
-        private static void AddEndpoint(IDictionary endPoints, ICoordinate p, bool isClosed)
+        private static void AddEndpoint(IDictionary<ICoordinate, EndpointInfo> endPoints, ICoordinate p, bool isClosed)
         {
-            EndpointInfo eiInfo = (EndpointInfo) endPoints[p];
-            if (eiInfo == null)
+            EndpointInfo eiInfo;
+            if (!endPoints.TryGetValue(p, out eiInfo))
             {
                 eiInfo = new EndpointInfo(p);
                 endPoints.Add(p, eiInfo);

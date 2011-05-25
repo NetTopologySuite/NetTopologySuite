@@ -1,13 +1,12 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
-using GisSharpBlog.NetTopologySuite.Index;
-using GisSharpBlog.NetTopologySuite.Index.IntervalRTree;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Index;
+using NetTopologySuite.Index.IntervalRTree;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
+namespace NetTopologySuite.Algorithm.Locate
 {
     ///<summary>
     /// Determines the location of <see cref="ICoordinate"/>s relative to
@@ -74,7 +73,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
         }
         */
 
-        private class SegmentVisitor : IItemVisitor
+        private class SegmentVisitor : IItemVisitor<LineSegment>
         {
             private readonly RayCrossingCounter _counter;
 
@@ -83,16 +82,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
                 _counter = counter;
             }
 
-            public void VisitItem(Object item)
+            public void VisitItem(LineSegment seg)
             {
-                LineSegment seg = (LineSegment)item;
                 _counter.CountSegment(seg.GetCoordinate(0), seg.GetCoordinate(1));
             }
         }
 
         private class IntervalIndexedGeometry
         {
-            private readonly SortedPackedIntervalRTree index = new SortedPackedIntervalRTree();
+            private readonly SortedPackedIntervalRTree<LineSegment> _index = new SortedPackedIntervalRTree<LineSegment>();
 
             public IntervalIndexedGeometry(IGeometry geom)
             {
@@ -116,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
                     LineSegment seg = new LineSegment(pts[i - 1], pts[i]);
                     double min = Math.Min(seg.P0.Y, seg.P1.Y);
                     double max = Math.Max(seg.P0.Y, seg.P1.Y);
-                    index.Insert(min, max, seg);
+                    _index.Insert(min, max, seg);
                 }
             }
 
@@ -129,9 +127,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
             }
              */
 
-            public void Query(double min, double max, IItemVisitor visitor)
+            public void Query(double min, double max, IItemVisitor<LineSegment> visitor)
             {
-                index.Query(min, max, visitor);
+                _index.Query(min, max, visitor);
             }
         }
 

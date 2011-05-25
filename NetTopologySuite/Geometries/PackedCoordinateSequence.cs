@@ -1,7 +1,7 @@
 using System;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// A <c>CoordinateSequence</c> implementation based on a packed arrays.

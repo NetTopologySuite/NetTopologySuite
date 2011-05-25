@@ -1,9 +1,6 @@
-using System.Collections;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
+using System.Collections.Generic;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
+namespace NetTopologySuite.Index.Sweepline
 {
     /// <summary>
     /// A sweepline implements a sorted index on a set of intervals.
@@ -11,17 +8,18 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
     /// </summary>
     public class SweepLineIndex
     {
-        private ArrayList events = new ArrayList();
-        private bool indexBuilt;
+        private readonly List<SweepLineEvent> _events = new List<SweepLineEvent>();
+        private bool _indexBuilt;
 
         // statistics information
-        private int nOverlaps;
+        private int _nOverlaps;
 
+        /*
         /// <summary>
         /// 
         /// </summary>
         public SweepLineIndex() { }
-
+        */
         /// <summary>
         /// 
         /// </summary>
@@ -29,8 +27,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
         public void Add(SweepLineInterval sweepInt)
         {
             SweepLineEvent insertEvent = new SweepLineEvent(sweepInt.Min, null, sweepInt);
-            events.Add(insertEvent);
-            events.Add(new SweepLineEvent(sweepInt.Max, insertEvent, sweepInt));
+            _events.Add(insertEvent);
+            _events.Add(new SweepLineEvent(sweepInt.Max, insertEvent, sweepInt));
         }
 
         /// <summary>
@@ -40,16 +38,16 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
         /// </summary>
         private void BuildIndex()
         {
-            if (indexBuilt) 
+            if (_indexBuilt) 
                 return;
-            events.Sort();
-            for (int i = 0; i < events.Count; i++)
+            _events.Sort();
+            for (int i = 0; i < _events.Count; i++)
             {
-                SweepLineEvent ev = (SweepLineEvent)events[i];
+                SweepLineEvent ev = _events[i];
                 if (ev.IsDelete)                
                     ev.InsertEvent.DeleteEventIndex = i;                
             }
-            indexBuilt = true;
+            _indexBuilt = true;
         }
 
         /// <summary>
@@ -58,12 +56,12 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
         /// <param name="action"></param>
         public void ComputeOverlaps(ISweepLineOverlapAction action)
         {
-            nOverlaps = 0;
+            _nOverlaps = 0;
             BuildIndex();
 
-            for (int i = 0; i < events.Count; i++)
+            for (int i = 0; i < _events.Count; i++)
             {
-                SweepLineEvent ev = (SweepLineEvent)events[i];
+                SweepLineEvent ev = _events[i];
                 if (ev.IsInsert)               
                     ProcessOverlaps(i, ev.DeleteEventIndex, ev.Interval, action);                
             }
@@ -85,12 +83,12 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
              */
             for (int i = start; i < end; i++)
             {
-                SweepLineEvent ev = (SweepLineEvent)events[i];
+                SweepLineEvent ev = _events[i];
                 if (ev.IsInsert)
                 {
                     SweepLineInterval s1 = ev.Interval;
                     action.Overlap(s0, s1);
-                    nOverlaps++;
+                    _nOverlaps++;
                 }
             }
         }

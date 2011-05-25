@@ -5,10 +5,10 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
     /// <summary> 
     /// Outputs the textual representation of a <see cref="Geometry" />.

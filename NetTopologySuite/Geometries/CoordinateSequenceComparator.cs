@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
     ///<summary>
     /// Compares two <see cref="ICoordinateSequence"/>s.

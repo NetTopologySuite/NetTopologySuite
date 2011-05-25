@@ -1,4 +1,4 @@
-﻿namespace GisSharpBlog.NetTopologySuite.Geometries
+﻿namespace NetTopologySuite.Geometries
 {
     using System;
     using GeoAPI.Geometries;

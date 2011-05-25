@@ -19,10 +19,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Globalization;
-using GisSharpBlog.NetTopologySuite.Shapefile;
 using NetTopologySuite.Encodings;
 
-namespace GisSharpBlog.NetTopologySuite.Shapefile
+namespace NetTopologySuite.Shapefile
 {
     /// <summary>
     /// A registry used to map CLR cultures and encodings to 

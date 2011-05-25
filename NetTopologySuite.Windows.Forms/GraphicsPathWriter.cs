@@ -36,205 +36,197 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Windows.Forms
+namespace NetTopologySuite.Windows.Forms
 {
 
-/**
- * Writes {@link Geometry}s into Java2D {@link Shape} objects
- */
-public class GraphicsPathWriter 
-{
-	/**
-	 * The point transformation used by default.
-	 */
-	public static readonly IPointTransformation DefaultPointTransformation = new IdentityPointTransformation();
-	
-	/**
-	 * The point shape factory used by default.
-	 */
-	public static readonly IPointShapeFactory DefaultPointFactory = new Square(3.0);
-	
-	private readonly IPointTransformation _pointTransformer = DefaultPointTransformation;
-	private readonly IPointShapeFactory _pointFactory = DefaultPointFactory;
-
-	/**
-	 * Cache a PointF object to use to transfer coordinates into shape
-	 */
-	private PointF _transPoint = new PointF();
-
-	/**
-	 * Creates a new ShapeWriter with a specified point transformation
-	 * and point shape factory.
-	 * 
-	 * @param pointTransformer a transformation from model to view space to use 
-	 * @param pointFactory the PointShapeFactory to use
-	 */
-	public GraphicsPathWriter(IPointTransformation pointTransformer, IPointShapeFactory pointFactory) 
-	{
-		if (pointTransformer != null)
-			_pointTransformer = pointTransformer;
-		if (pointFactory != null)
-			_pointFactory = pointFactory;
-	}
-
-	/**
-	 * Creates a new ShapeWriter with a specified point transformation
-	 * and the default point shape factory.
-	 * 
-	 * @param pointTransformer a transformation from model to view space to use 
-	 */
-	public GraphicsPathWriter(IPointTransformation pointTransformer) 
-        :		this(pointTransformer, null)
-	{
-	}
-
-	/**
-	 * Creates a new ShapeWriter with the default (identity) point transformation.
-	 *
-	 */
-    public GraphicsPathWriter()
+    ///<summary>
+    /// Writes <see cref="IGeometry"/>s int DotNet <see cref="GraphicsPath"/>s.
+    ///</summary>
+    public class GraphicsPathWriter
     {
-	}
+        /**
+         * The point transformation used by default.
+         */
+        public static readonly IPointTransformation DefaultPointTransformation = new IdentityPointTransformation();
 
-	/**
-	 * Creates a {@link Shape} representing a {@link Geometry}, 
-	 * according to the specified PointTransformation
-	 * and PointShapeFactory (if relevant).
-	 * <p>
-	 * Note that Shapes do not
-	 * preserve information about which elements in heterogeneous collections
-	 * are 1D and which are 2D.
-	 * For example, a GeometryCollection containing a ring and a
-	 * disk will render as two disks if Graphics.fill is used, 
-	 * or as two rings if Graphics.draw is used.
-	 * To avoid this issue use separate shapes for the components.
-	 * 
-	 * @param geometry the geometry to convert
-	 * @return a Shape representing the geometry
-	 */
-	public GraphicsPath ToShape(IGeometry geometry)
-	{
-		if (geometry.IsEmpty) 
-            return new GraphicsPath();
-		if (geometry is IPolygon) 
-            return ToShape((IPolygon) geometry);
-		if (geometry is ILineString) 			
-            return ToShape((ILineString) geometry);
-		if (geometry is IMultiLineString) 	
-            return ToShape((IMultiLineString) geometry);
-		if (geometry is IPoint) 			
-            return ToShape((IPoint) geometry);
-		if (geometry is IGeometryCollection) 
-            return ToShape((IGeometryCollection) geometry);
+        /**
+         * The point shape factory used by default.
+         */
+        public static readonly IPointShapeFactory DefaultPointFactory = new Square(3.0);
 
-		throw new ArgumentException(
-			"Unrecognized Geometry class: " + geometry.GetType());
-	}
+        private readonly IPointTransformation _pointTransformer = DefaultPointTransformation;
+        private readonly IPointShapeFactory _pointFactory = DefaultPointFactory;
 
-	private GraphicsPath ToShape(IPolygon p) 
-	{
-		var poly = new PolygonGraphicsPath();
-		
-		Append(poly, p.ExteriorRing.Coordinates);
-		for (int j = 0; j < p.NumInteriorRings; j++) {
-			Append(poly, p.GetInteriorRingN(j).Coordinates);
-		}
+        /**
+         * Cache a PointF object to use to transfer coordinates into shape
+         */
+        private PointF _transPoint;
 
-		return poly.Path;
-	}
-
-	private void Append(PolygonGraphicsPath poly, ICoordinate[] coords)
-	{
-	    GraphicsPath ring = null;
-	        for (var i = 0; i < coords.Length; i++)
-	        {
-                _transPoint = TransformPoint(coords[i], _transPoint);
-	            poly.AddToRing(_transPoint, ref ring);
-	        }
-            poly.EndRing(ring);
-	}
-	
-	/*
-	 // Obsolete (slower code)
-	private Shape OLDtoShape(Polygon p) 
-	{
-		ArrayList holeVertexCollection = new ArrayList();
-
-		for (int j = 0; j < p.getNumInteriorRing(); j++) {
-			holeVertexCollection.add(
-				toViewCoordinates(p.getInteriorRingN(j).getCoordinates()));
-		}
-
-		return new PolygonShape(
-			toViewCoordinates(p.getExteriorRing().getCoordinates()),
-			holeVertexCollection);
-	}
-
-	
-	private Coordinate[] toViewCoordinates(Coordinate[] modelCoordinates)
-	{
-		Coordinate[] viewCoordinates = new Coordinate[modelCoordinates.length];
-
-		for (int i = 0; i < modelCoordinates.length; i++) {
-			Point2D point2D = toPoint(modelCoordinates[i]);
-			viewCoordinates[i] = new Coordinate(point2D.getX(), point2D.getY());
-		}
-
-		return viewCoordinates;
-	}
-*/
-	
-	private GraphicsPath ToShape(IGeometryCollection gc)
-	{
-		var shape = new GeometryCollectionGraphicsPath();
-		// add components to GC shape
-		for (int i = 0; i < gc.NumGeometries; i++)
+        ///<summary>
+        /// Creates a new GraphicsPathWriter with a specified point transformation and point shape factory.
+        ///</summary>
+        /// <param name="pointTransformer">A transformation from model to view space to use </param>
+        /// <param name="pointFactory">The PointShapeFactory to use</param>
+        public GraphicsPathWriter(IPointTransformation pointTransformer, IPointShapeFactory pointFactory)
         {
-			var g = gc.GetGeometryN(i);
-			shape.Add(ToShape(g));
-		}
-		return shape.Path;
-	}
+            if (pointTransformer != null)
+                _pointTransformer = pointTransformer;
+            if (pointFactory != null)
+                _pointFactory = pointFactory;
+        }
 
-	private GraphicsPath ToShape(IMultiLineString mls)
-	{
-        var path = new GraphicsPath();
+        ///<summary>
+        /// Creates a new GraphicsPathWriter with a specified point transformation and the default point shape factory.
+        ///</summary>
+        /// <param name="pointTransformer">A transformation from model to view space to use </param>
+        public GraphicsPathWriter(IPointTransformation pointTransformer)
+            : this(pointTransformer, null)
+        {
+        }
 
-	    foreach (ILineString ml in mls)
-	        path.AddPath(ToShape(ml), false);
+        /**
+         * 
+         *
+         */
+        ///<summary>
+        /// Creates a new GraphicsPathWriter with the default (identity) point transformation.
+        ///</summary>
+        public GraphicsPathWriter()
+        {
+        }
 
-		return path;
-	}
+        ///<summary>
+        /// Creates a <see cref="GraphicsPath"/> representing a <see cref="IGeometry"/>, according to the specified PointTransformation and PointShapeFactory (if relevant).
+        ///</summary>
+        ///<remarks>
+        /// Note that GraphicsPaths do not preserve information about which elements in heterogeneous collections are 1D and which are 2D.
+        /// For example, a GeometryCollection containing a ring and a disk will render as two disks if Graphics.FillPath is used, 
+        /// or as two rings if Graphics.DrawPath is used. To avoid this issue use separate shapes for the components.
+        ///</remarks>
+        public GraphicsPath ToShape(IGeometry geometry)
+        {
+            if (geometry.IsEmpty)
+                return new GraphicsPath();
+            if (geometry is IPolygon)
+                return ToShape((IPolygon)geometry);
+            if (geometry is ILineString)
+                return ToShape((ILineString)geometry);
+            if (geometry is IMultiLineString)
+                return ToShape((IMultiLineString)geometry);
+            if (geometry is IPoint)
+                return ToShape((IPoint)geometry);
+            if (geometry is IGeometryCollection)
+                return ToShape((IGeometryCollection)geometry);
 
-    private GraphicsPath ToShape(ILineString lineString)
-	{
-        var shape = new GraphicsPath();
+            throw new ArgumentException(
+                "Unrecognized Geometry class: " + geometry.GetType());
+        }
 
-        var points = _pointTransformer.Transform(lineString.Coordinates);
-        shape.AddLines(points);
-		return shape;
-	}
+        private GraphicsPath ToShape(IPolygon p)
+        {
+            var poly = new PolygonGraphicsPath();
 
-	private GraphicsPath ToShape(IPoint point)
-  {
-		var viewPoint = TransformPoint(point.Coordinate);
-		return _pointFactory.CreatePoint(viewPoint);
-	}
+            Append(poly, p.ExteriorRing.Coordinates);
+            for (int j = 0; j < p.NumInteriorRings; j++)
+            {
+                Append(poly, p.GetInteriorRingN(j).Coordinates);
+            }
 
-  private PointF TransformPoint(ICoordinate model)
-  {
-      return TransformPoint(model, new PointF());
-	}
-  
-  private PointF TransformPoint(ICoordinate model, PointF view)
-  {
-		_pointTransformer.Transform(model, ref view);
-		/**
-		 * Do the rounding now instead of relying on Java 2D rounding. Java2D seems
-		 * to do rounding differently for drawing and filling, resulting in the draw
-		 * being a pixel off from the fill sometimes.
-		 */
-        return new PointF((float) Math.Round(view.X), (float) Math.Round(view.Y));
-	}
-}
+            return poly.Path;
+        }
+
+        private void Append(PolygonGraphicsPath poly, ICoordinate[] coords)
+        {
+            GraphicsPath ring = null;
+            for (var i = 0; i < coords.Length; i++)
+            {
+                _transPoint = TransformPoint(coords[i], _transPoint);
+                poly.AddToRing(_transPoint, ref ring);
+            }
+            poly.EndRing(ring);
+        }
+
+        /*
+         // Obsolete (slower code)
+        private Shape OLDtoShape(Polygon p) 
+        {
+            ArrayList holeVertexCollection = new ArrayList();
+
+            for (int j = 0; j < p.getNumInteriorRing(); j++) {
+                holeVertexCollection.add(
+                    toViewCoordinates(p.getInteriorRingN(j).getCoordinates()));
+            }
+
+            return new PolygonShape(
+                toViewCoordinates(p.getExteriorRing().getCoordinates()),
+                holeVertexCollection);
+        }
+
+	
+        private Coordinate[] toViewCoordinates(Coordinate[] modelCoordinates)
+        {
+            Coordinate[] viewCoordinates = new Coordinate[modelCoordinates.length];
+
+            for (int i = 0; i < modelCoordinates.length; i++) {
+                Point2D point2D = toPoint(modelCoordinates[i]);
+                viewCoordinates[i] = new Coordinate(point2D.getX(), point2D.getY());
+            }
+
+            return viewCoordinates;
+        }
+    */
+
+        private GraphicsPath ToShape(IGeometryCollection gc)
+        {
+            var shape = new GeometryCollectionGraphicsPath();
+            // add components to GC shape
+            for (int i = 0; i < gc.NumGeometries; i++)
+            {
+                var g = gc.GetGeometryN(i);
+                shape.Add(ToShape(g));
+            }
+            return shape.Path;
+        }
+
+        private GraphicsPath ToShape(IMultiLineString mls)
+        {
+            var path = new GraphicsPath();
+
+            foreach (ILineString ml in mls)
+                path.AddPath(ToShape(ml), false);
+
+            return path;
+        }
+
+        private GraphicsPath ToShape(ILineString lineString)
+        {
+            var shape = new GraphicsPath();
+
+            var points = _pointTransformer.Transform(lineString.Coordinates);
+            shape.AddLines(points);
+            return shape;
+        }
+
+        private GraphicsPath ToShape(IPoint point)
+        {
+            var viewPoint = TransformPoint(point.Coordinate);
+            return _pointFactory.CreatePoint(viewPoint);
+        }
+
+        private PointF TransformPoint(ICoordinate model)
+        {
+            return TransformPoint(model, new PointF());
+        }
+
+        private PointF TransformPoint(ICoordinate model, PointF view)
+        {
+            _pointTransformer.Transform(model, ref view);
+            /**
+             * Do the rounding now instead of relying on Java 2D rounding. Java2D seems
+             * to do rounding differently for drawing and filling, resulting in the draw
+             * being a pixel off from the fill sometimes.
+             */
+            return new PointF((float)Math.Round(view.X), (float)Math.Round(view.Y));
+        }
+    }
 }

@@ -1,9 +1,9 @@
 using System;
-using System.Collections;
+//using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     ///	Useful utility functions for handling Coordinate arrays.
@@ -119,16 +119,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Converts the given <see cref="IList" /> of 
+        /// Converts the given <see cref="System.Collections.ICollection" /> of 
         /// <see cref="Coordinate" />s into a <see cref="Coordinate" /> array.
         /// </summary>
-        /// <param name="coordList"><see cref="IList" /> of coordinates.</param>
+        /// <param name="coordList"><see cref="System.Collections.ICollection" /> of coordinates.</param>
         /// <returns></returns>
         /// <exception cref="InvalidCastException">
         /// If <paramref name="coordList"/> contains not only <see cref="Coordinate" />s.
         /// </exception>
         [Obsolete("Use generic method instead")]
-        public static ICoordinate[] ToCoordinateArray(ICollection coordList)
+        public static ICoordinate[] ToCoordinateArray(System.Collections.ICollection coordList)
         {
             var tempList = new List<ICoordinate>(coordList.Count);
             foreach (ICoordinate coord in coordList)
@@ -137,10 +137,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Converts the given <see cref="IList" /> of 
+        /// Converts the given <see cref="ICollection{T}" /> of 
         /// <see cref="Coordinate" />s into a <see cref="Coordinate" /> array.
         /// </summary>
-        /// <param name="coordList"><see cref="IList" /> of coordinates.</param>
+        /// <param name="coordList"><see cref="ICollection{T}"/> of coordinates.</param>
         /// <returns></returns>
         public static ICoordinate[] ToCoordinateArray(ICollection<ICoordinate> coordList)
         {

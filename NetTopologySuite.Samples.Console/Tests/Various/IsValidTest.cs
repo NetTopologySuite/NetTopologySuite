@@ -1,13 +1,13 @@
 using System;
 using System.Collections;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
-using GisSharpBlog.NetTopologySuite.Operation.Polygonize;
-using GisSharpBlog.NetTopologySuite.Samples.SimpleTests;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
+using NetTopologySuite.Operation.Polygonize;
+using NetTopologySuite.Samples.SimpleTests;
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
+namespace NetTopologySuite.Samples.Tests.Various
 {
     [TestFixture]
     public class IsValidTest : BaseSamples
@@ -323,7 +323,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 polygonizer.Add(geom);
             }
 
-            ICollection polys = polygonizer.GetPolygons();
+            var polys = polygonizer.GetPolygons();
             Console.WriteLine("Polygons formed (" + polys.Count + "):");
             foreach (var obj in polys)
             {

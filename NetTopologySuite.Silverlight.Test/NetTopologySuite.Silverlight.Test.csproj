@@ -73,9 +73,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GeoAPI.Silverlight">
-      <HintPath>..\ExternalReferences\GeoAPI.Silverlight.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Silverlight.Testing">
       <HintPath>$(MSBuildExtensionsPath)\..\Microsoft SDKs\Silverlight\v4.0\Toolkit\Apr10\Testing\Microsoft.Silverlight.Testing.dll</HintPath>
     </Reference>
@@ -110,6 +107,10 @@
     <Content Include="world.shx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GeoAPI\GeoAPI.Silverlight\GeoAPI.Silverlight.csproj">
+      <Project>{9B913337-1114-4D05-8F24-D05A5FD588AD}</Project>
+      <Name>GeoAPI.Silverlight</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.Data.Silverlight\NetTopologySuite.Data.Silverlight.csproj">
       <Project>{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}</Project>
       <Name>NetTopologySuite.Data.Silverlight</Name>

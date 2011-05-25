@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GisSharpBlog.NetTopologySuite.Data
+namespace NetTopologySuite.Data
 {
 
     internal static class Guard

@@ -1,8 +1,8 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap
+namespace NetTopologySuite.Operation.Overlay.Snap
 {
     /// <summary>
     /// Snaps the vertices and segments of a LineString to a set of target snap vertices.

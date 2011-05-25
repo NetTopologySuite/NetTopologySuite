@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using GisSharpBlog.NetTopologySuite.Data.InternalImpl;
+using NetTopologySuite.Data.InternalImpl;
 
-namespace GisSharpBlog.NetTopologySuite.Data
+namespace NetTopologySuite.Data
 {
     public class SchemaFactory : ISchemaFactory
     {

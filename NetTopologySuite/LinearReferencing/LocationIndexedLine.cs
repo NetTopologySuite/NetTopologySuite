@@ -1,8 +1,8 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.LinearReferencing
+namespace NetTopologySuite.LinearReferencing
 {
     /// <summary>
     /// Supports linear referencing along a linear <see cref="Geometry" />

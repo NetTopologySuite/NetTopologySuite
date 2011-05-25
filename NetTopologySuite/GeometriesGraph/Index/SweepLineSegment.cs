@@ -1,6 +1,6 @@
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
+namespace NetTopologySuite.GeometriesGraph.Index
 {
     /// <summary>
     /// 

@@ -1,27 +1,31 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
-    /**
-     * Validates that a collection of {@link ISegmentString}s is correctly noded.
-     * Indexing is used to improve performance.
-     * This class assumes that at least one round of noding has already been performed
-     * (which may still leave intersections, due to rounding issues).
-     * Does NOT check a-b-a collapse situations. 
-     * Also does not check for endpt-interior vertex intersections.
-     * This should not be a problem, since the noders should be
-     * able to compute intersections between vertices correctly.
-     * User may either test the valid condition, or request that a 
-     * {@link TopologyException} 
-     * be thrown.
-     *
-     * @version 1.7
-     */
+    ///<summary>
+    /// Validates that a collection of <see cref="ISegmentString"/>s is correctly noded.
+    /// Indexing is used to improve performance.
+    ///</summary>
+    /// <remarks>
+    /// <para>
+    /// This class assumes that at least one round of noding has already been performed
+    /// (which may still leave intersections, due to rounding issues).</para>
+    /// <para>Does NOT check a-b-a collapse situations.</para>
+    /// <para>
+    /// Also does not check for endpt-interior vertex intersections.
+    /// This should not be a problem, since the noders should be
+    /// able to compute intersections between vertices correctly.
+    /// </para>
+    /// <para>
+    /// User may either test the valid condition, or request that a <see cref="TopologyException"/>
+    /// be thrown.
+    /// </para>
+    /// </remarks>
     public class FastNodingValidator
     {
         private readonly LineIntersector _li = new RobustLineIntersector();

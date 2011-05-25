@@ -1,6 +1,6 @@
 using System;
 
-namespace GisSharpBlog.NetTopologySuite.Utilities
+namespace NetTopologySuite.Utilities
 {
 	/// <summary>
 	/// Represents the type of token created by the StreamTokenizer class.

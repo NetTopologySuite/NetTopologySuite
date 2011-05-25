@@ -20,7 +20,7 @@ using System.IO;
 using System.Text;
 using NetTopologySuite.Encodings;
 
-namespace GisSharpBlog.NetTopologySuite.Shapefile
+namespace NetTopologySuite.Shapefile
 {
     internal partial class DbaseFile
     {

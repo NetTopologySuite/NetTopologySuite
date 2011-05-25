@@ -2,9 +2,9 @@ using System;
 using System.IO;
 using System.Text;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
     /// <summary>
     /// Writes a Well-Known Binary byte data representation of a <c>Geometry</c>.

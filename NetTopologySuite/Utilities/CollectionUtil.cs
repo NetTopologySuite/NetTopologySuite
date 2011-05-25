@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Utilities
+namespace NetTopologySuite.Utilities
 {
     /// <summary>
     /// Executes a transformation function on each element of a collection
@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <typeparam name="TResult"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public delegate TResult FunctionDelegate<in T, out TResult>(T obj);
+        public delegate TResult FunctionDelegate< T,  TResult>(T obj);
 
         /// <summary>
         /// Executes a function on each item in a <see cref="ICollection" />

@@ -4,11 +4,11 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Windows.Forms.Test
+namespace NetTopologySuite.Windows.Forms.Test
 {
     public class BasicTest
     {

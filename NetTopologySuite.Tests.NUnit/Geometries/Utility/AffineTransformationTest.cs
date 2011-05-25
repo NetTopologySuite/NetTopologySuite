@@ -1,8 +1,8 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
-using GisSharpBlog.NetTopologySuite.IO;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
@@ -201,14 +201,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             // if the transformation is invertible, test the inverse
             try
             {
-                AffineTransformation invTrans = trans.getInverse();
+                AffineTransformation invTrans = trans.GetInverse();
                 ICoordinate pInv = new Coordinate();
                 invTrans.Transform(p2, pInv);
                 Assert.AreEqual(x, pInv.X, .00005);
                 Assert.AreEqual(y, pInv.Y, .00005);
 
-                double det = trans.getDeterminant();
-                double detInv = invTrans.getDeterminant();
+                double det = trans.Determinant;
+                double detInv = invTrans.Determinant;
                 Assert.AreEqual(det, 1.0 / detInv, .00005);
 
             }
@@ -224,7 +224,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             Geometry geom = (Geometry)WktReader.Read(geomStr);
             AffineTransformation trans = AffineTransformation
                 .RotationInstance(Math.PI / 2);
-            AffineTransformation inv = trans.getInverse();
+            AffineTransformation inv = trans.GetInverse();
             Geometry transGeom = (Geometry)geom.Clone();
             transGeom.Apply(trans);
             // System.out.println(transGeom);
@@ -236,8 +236,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
 
         static void CheckTransformation(AffineTransformation trans0, AffineTransformation trans1)
         {
-            double[] m0 = trans0.getMatrixEntries();
-            double[] m1 = trans1.getMatrixEntries();
+            double[] m0 = trans0.MatrixEntries;
+            double[] m1 = trans1.MatrixEntries;
             for (int i = 0; i < m0.Length; i++)
             {
                 Assert.AreEqual(m0[i], m1[i], 0.000005);

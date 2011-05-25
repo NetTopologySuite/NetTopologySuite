@@ -1,10 +1,10 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
-using GisSharpBlog.NetTopologySuite.Operation.Distance;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
+using NetTopologySuite.Operation.Distance;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Distance
+namespace NetTopologySuite.Samples.Operation.Distance
 {
 	/// <summary> 
     /// Example of computing distance and closest points between geometries

@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Operation;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Operation;
+using NetTopologySuite.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>  
     /// Basic implementation of <c>LineString</c>.

@@ -3,7 +3,7 @@ using System.IO;
 using GeoAPI.Geometries;
 using Wintellect.PowerCollections;
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary> 
     /// A map of nodes, indexed by the coordinate of the node.

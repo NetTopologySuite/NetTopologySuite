@@ -1,22 +1,23 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Utilities;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.IO.Handlers
+namespace NetTopologySuite.IO.Handlers
 {
     /// <summary>
     /// Converts a Shapefile point to a OGIS Polygon.
     /// </summary>
     public class PolygonHandler : ShapeHandler
     {
+        //Thanks to Bruno.Labrecque
+        private static readonly ProbeLinearRing ProbeLinearRing = new ProbeLinearRing();
         /// <summary>
         /// The ShapeType this handler handles.
         /// </summary>
@@ -50,25 +51,24 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
                 double d = file.ReadDouble();
                 bbox[bbindex] = d;
             }
-            
-            int[] partOffsets;        
+
             int numParts = file.ReadInt32();
             int numPoints = file.ReadInt32();
-            partOffsets = new int[numParts];
+            int[] partOffsets = new int[numParts];
             for (int i = 0; i < numParts; i++)
                 partOffsets[i] = file.ReadInt32();
 
-            ArrayList shells = new ArrayList();
-            ArrayList holes = new ArrayList();
+            var shells = new List<ILinearRing>();
+            var holes = new List<ILinearRing>();
 
-            int start, finish, length;
             for (int part = 0; part < numParts; part++)
             {
-                start = partOffsets[part];
+                int start = partOffsets[part];
+                int finish;
                 if (part == numParts - 1)
                     finish = numPoints;
                 else finish = partOffsets[part + 1];
-                length = finish - start;
+                int length = finish - start;
                 CoordinateList points = new CoordinateList();
                 points.Capacity = length;
                 for (int i = 0; i < length; i++)
@@ -105,25 +105,25 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
             }
 
             // Now we have a list of all shells and all holes
-            ArrayList holesForShells = new ArrayList(shells.Count);
+            var holesForShells = new List<List<ILinearRing>>(shells.Count);
             for (int i = 0; i < shells.Count; i++)
-                holesForShells.Add(new ArrayList());
+                holesForShells.Add(new List<ILinearRing>());
+
+            //Thanks to Bruno.Labrecque
+            //Sort shells by area, rings should only be added to the smallest shell, that contains the ring
+            shells.Sort(ProbeLinearRing);
 
             // Find holes
             for (int i = 0; i < holes.Count; i++)
             {
-                ILinearRing testRing = (ILinearRing) holes[i];
-                ILinearRing minShell = null;
-                IEnvelope minEnv = null;
+                ILinearRing testRing = holes[i];
                 IEnvelope testEnv = testRing.EnvelopeInternal;
                 ICoordinate testPt = testRing.GetCoordinateN(0);
                 ILinearRing tryRing;
                 for (int j = 0; j < shells.Count; j++)
                 {
-                    tryRing = (ILinearRing) shells[j];
+                    tryRing = shells[j];
                     IEnvelope tryEnv = tryRing.EnvelopeInternal;
-                    if (minShell != null)
-                        minEnv = minShell.EnvelopeInternal;
                     bool isContained = false;
                     CoordinateList coordList = new CoordinateList(tryRing.Coordinates);
                     if (tryEnv.Contains(testEnv) && 
@@ -133,22 +133,23 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
                     // Check if this new containing ring is smaller than the current minimum ring
                     if (isContained)
                     {
-                        if (minShell == null || minEnv.Contains(tryEnv))
-                            minShell = tryRing;             
-
                         // Suggested by Brian Macomber and added 3/28/2006:
                         // holes were being found but never added to the holesForShells array
                         // so when converted to geometry by the factory, the inner rings were never created.
-                        ArrayList holesForThisShell = (ArrayList) holesForShells[j];
+                        var holesForThisShell = holesForShells[j];
                         holesForThisShell.Add(testRing);
+                        
+                        //Suggested by Bruno.Labrecque
+                        //A LinearRing should only be added to one outer shell
+                        break;
                     }
                 }
             }
 
             IPolygon[] polygons = new IPolygon[shells.Count];
             for (int i = 0; i < shells.Count; i++)
-                polygons[i] = (geometryFactory.CreatePolygon((ILinearRing) shells[i], 
-                    (ILinearRing[]) ((ArrayList) holesForShells[i]).Cast<ILinearRing>().ToArray()));
+                polygons[i] = (geometryFactory.CreatePolygon(shells[i], 
+                    holesForShells[i].ToArray()));
 
             if (polygons.Length == 1)
                  geom = polygons[0];
@@ -175,7 +176,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
             else 
             {
                 GeometryFactory gf = new GeometryFactory(geometry.PrecisionModel);				
-                multi = gf.CreateMultiPolygon(new IPolygon[] { (IPolygon) geometry, } );
+                multi = gf.CreateMultiPolygon(new[] { (IPolygon) geometry, } );
             }
 
             file.Write(int.Parse(EnumUtility.Format(typeof(ShapeGeometryType), ShapeType, "d")));
@@ -214,11 +215,11 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
             {
                 IPolygon poly = (IPolygon) multi.Geometries[part];
                 ICoordinate[] points = poly.ExteriorRing.Coordinates;
-                WriteCoords(new CoordinateList(points), file, geometryFactory);
+                WriteCoords(points, file, geometryFactory);
                 foreach(ILinearRing ring in poly.InteriorRings)
                 {
                     ICoordinate[] points2 = ring.Coordinates;					
-                    WriteCoords(new CoordinateList(points2), file, geometryFactory);
+                    WriteCoords(points2, file, geometryFactory);
                 }
             }
         }
@@ -229,7 +230,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
         /// <param name="points"></param>
         /// <param name="file"></param>
         /// <param name="geometryFactory"></param>
-        private void WriteCoords(CoordinateList points, BinaryWriter file, IGeometryFactory geometryFactory)
+        private static void WriteCoords(IEnumerable<ICoordinate> points, BinaryWriter file, IGeometryFactory geometryFactory)
         {
             ICoordinate external;
             foreach (ICoordinate point in points)

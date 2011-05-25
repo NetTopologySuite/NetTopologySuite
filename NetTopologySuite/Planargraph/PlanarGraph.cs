@@ -1,10 +1,7 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
-namespace GisSharpBlog.NetTopologySuite.Planargraph
+namespace NetTopologySuite.Planargraph
 {
     /// <summary>
     /// Represents a directed graph which is embeddable in a planar surface.

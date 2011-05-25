@@ -1,7 +1,7 @@
 using GeoAPI.Geometries;
 using GeoAPI.Geometries.Prepared;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
+namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
     /// A factory for creating <see cref="IPreparedGeometry"/>s. It chooses an appropriate implementation of PreparedGeometry

@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
-using GisSharpBlog.NetTopologySuite.IO;
+using NetTopologySuite.IO;
 
 // http://java.sun.com/j2se/1.4/docs/api/java/io/StreamTokenizer.html
 // a better implementation could be written. Here is a good Java implementation of StreamTokenizer.
@@ -12,7 +12,7 @@ using GisSharpBlog.NetTopologySuite.IO;
 // Diego Guidi says:    for my port i have used the RTools.Util.StreamTokenized, and seems very powerful!
 //                      this code is present only for compatibility with GeoTools.NET code.                        
 
-namespace GisSharpBlog.NetTopologySuite.Utilities
+namespace NetTopologySuite.Utilities
 {
 	/// <summary>
 	/// The StreamTokenizer class takes an input stream and parses it into "tokens", 

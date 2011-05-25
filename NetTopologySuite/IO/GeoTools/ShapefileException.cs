@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
 	/// <summary>
 	/// The exception that is thrown when a non-fatal application error occurs related to Topology functionality.

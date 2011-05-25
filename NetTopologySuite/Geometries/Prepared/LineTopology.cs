@@ -1,7 +1,7 @@
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Noding;
+using NetTopologySuite.Noding;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
+namespace NetTopologySuite.Geometries.Prepared
 {
     public class LineTopology
     {

@@ -1,4 +1,4 @@
-namespace GisSharpBlog.NetTopologySuite.Utilities
+namespace NetTopologySuite.Utilities
 {
 	/// <summary>
 	/// Converts radians to degress.

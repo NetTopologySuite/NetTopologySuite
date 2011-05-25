@@ -21,10 +21,10 @@ using System.Text;
 using System.IO;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Data;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Data;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Shapefile
+namespace NetTopologySuite.Shapefile
 {
     internal sealed class ShapeFileIndex : IDictionary<UInt32, ShapeFileIndex.IndexEntry>
     {

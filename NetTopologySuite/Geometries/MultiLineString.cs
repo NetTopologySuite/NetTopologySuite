@@ -1,8 +1,8 @@
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.Operation;
+using NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.Operation;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
     using System;
 

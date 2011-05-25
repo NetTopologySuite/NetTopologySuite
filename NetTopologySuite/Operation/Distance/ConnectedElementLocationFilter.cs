@@ -1,10 +1,10 @@
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Distance
+namespace NetTopologySuite.Operation.Distance
 {
     /// <summary>
     /// A ConnectedElementPointFilter extracts a single point
@@ -21,22 +21,22 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// not a GeometryCollection, an empty list will be returned. The elements of the list 
         /// are <c>com.vividsolutions.jts.operation.distance.GeometryLocation</c>s.
         /// </summary>
-        public static IList GetLocations(IGeometry geom)
+        public static IList<GeometryLocation> GetLocations(IGeometry geom)
         {
-            IList locations = new ArrayList();
+            IList<GeometryLocation> locations = new List<GeometryLocation>();
             geom.Apply(new ConnectedElementLocationFilter(locations));
             return locations;
         }
 
-        private IList locations = null;
+        private readonly IList<GeometryLocation> _locations;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="locations"></param>
-        ConnectedElementLocationFilter(IList locations)
+        ConnectedElementLocationFilter(IList<GeometryLocation> locations)
         {
-            this.locations = locations;
+            _locations = locations;
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         public void Filter(IGeometry geom)
         {
             if (geom is IPoint || geom is ILineString || geom is IPolygon)
-                locations.Add(new GeometryLocation(geom, 0, geom.Coordinate));
+                _locations.Add(new GeometryLocation(geom, 0, geom.Coordinate));
         }
     }
 }

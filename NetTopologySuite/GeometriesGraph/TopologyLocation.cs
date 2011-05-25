@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary> 
     /// A TopologyLocation is the labelling of a

@@ -2,13 +2,13 @@
 using System.Diagnostics;
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
-using GisSharpBlog.NetTopologySuite.Noding;
-using GisSharpBlog.NetTopologySuite.Operation.Buffer;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
+using NetTopologySuite.Noding;
+using NetTopologySuite.Operation.Buffer;
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Tests.Various
+namespace NetTopologySuite.Tests.Various
 {
     [TestFixture]
     public class Issue36Tests

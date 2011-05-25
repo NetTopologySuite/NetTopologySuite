@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Basic implementation of <c>Point</c>.

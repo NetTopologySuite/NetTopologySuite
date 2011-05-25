@@ -1,6 +1,6 @@
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
+namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
     /// A visitor to Geometry elements which can

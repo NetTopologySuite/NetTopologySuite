@@ -1,19 +1,19 @@
-namespace GisSharpBlog.NetTopologySuite.Index.Bintree
+namespace NetTopologySuite.Index.Bintree
 {
     /// <summary> 
     /// Represents an (1-dimensional) closed interval on the Real number line.
     /// </summary>
     public class Interval
     {
-        private double min, max;
+        private double _min, _max;
 
         /// <summary>
         /// 
         /// </summary>
         public double Min
         {
-            get { return min;  }
-            set { min = value; }
+            get { return _min;  }
+            set { _min = value; }
         }
 
         /// <summary>
@@ -21,8 +21,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// </summary>
         public double Max
         {
-            get { return max;  }
-            set { max = value; }
+            get { return _max;  }
+            set { _max = value; }
         }
 
         /// <summary>
@@ -38,8 +38,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// </summary>
         public Interval()
         {
-            min = 0.0;
-            max = 0.0;
+            _min = 0.0;
+            _max = 0.0;
         }
 
         /// <summary>

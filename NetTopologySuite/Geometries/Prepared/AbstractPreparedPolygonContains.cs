@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Noding;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Noding;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
+namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
     /// A base class containing the logic for computes the <tt>contains</tt>
     /// and <tt>covers</tt> spatial relationship predicates
-    /// for a {@link PreparedPolygon} relative to all other {@link Geometry} classes.
+    /// for a <see cref="PreparedPolygon"/> relative to all other <see cref="IGeometry"/> classes.
     /// Uses short-circuit tests and indexing to improve performance. 
     ///</summary>
     /// <remarks>

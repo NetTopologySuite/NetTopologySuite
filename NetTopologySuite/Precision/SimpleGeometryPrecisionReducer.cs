@@ -1,8 +1,8 @@
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.Precision
+namespace NetTopologySuite.Precision
 {
     /// <summary>
     /// Reduces the precision of a <c>Geometry</c>

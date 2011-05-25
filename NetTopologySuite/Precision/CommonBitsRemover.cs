@@ -1,7 +1,7 @@
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Precision
+namespace NetTopologySuite.Precision
 {
     /// <summary>
     /// Allow computing and removing common mantissa bits from one or more Geometries.

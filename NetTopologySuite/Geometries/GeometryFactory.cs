@@ -1,11 +1,11 @@
 using System;
-using System.Collections;
+//using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Supplies a set of utility methods for building Geometry objects 
@@ -180,7 +180,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="linearRings">The <c>ICollection</c> of LinearRings to convert.</param>
         /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static ILinearRing[] ToLinearRingArray(ICollection linearRings) 
+        public static ILinearRing[] ToLinearRingArray(ICollection<IGeometry> linearRings) 
         {
             ILinearRing[] list = new ILinearRing[linearRings.Count];
             int i = 0;
@@ -208,7 +208,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="multiPoints">The <c>ICollection</c> of MultiPoints to convert.</param>
         /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static IMultiPoint[] ToMultiPointArray(ICollection multiPoints)
+        public static IMultiPoint[] ToMultiPointArray(ICollection<IGeometry> multiPoints)
         {
             IMultiPoint[] list = new IMultiPoint[multiPoints.Count];
             int i = 0;
@@ -222,7 +222,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="multiLineStrings">The <c>ICollection</c> of MultiLineStrings to convert.</param>
         /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static IMultiLineString[] ToMultiLineStringArray(ICollection multiLineStrings)
+        public static IMultiLineString[] ToMultiLineStringArray(ICollection<IGeometry> multiLineStrings)
         {
             IMultiLineString[] list = new IMultiLineString[multiLineStrings.Count];
             int i = 0;
@@ -236,7 +236,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="multiPolygons">The <c>ICollection</c> of MultiPolygons to convert.</param>
         /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static IMultiPolygon[] ToMultiPolygonArray(ICollection multiPolygons)
+        public static IMultiPolygon[] ToMultiPolygonArray(ICollection<IGeometry> multiPolygons)
         {
             IMultiPolygon[] list = new IMultiPolygon[multiPolygons.Count];
             int i = 0;
@@ -503,9 +503,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             // at this point we know the collection is hetereogenous.
             // Determine the type of the result from the first Geometry in the list
             // this should always return a point, since otherwise an empty collection would have already been returned
-            IEnumerator ienum = geomList.GetEnumerator();
+            IEnumerator<IGeometry> ienum = geomList.GetEnumerator();
             ienum.MoveNext();
-            IGeometry geom0 = (IGeometry) ienum.Current;
+            IGeometry geom0 = ienum.Current;
             bool isCollection = geomList.Count > 1;
 
             if (isCollection) 

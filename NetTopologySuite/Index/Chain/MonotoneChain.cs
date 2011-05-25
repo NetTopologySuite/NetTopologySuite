@@ -1,7 +1,7 @@
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Chain
+namespace NetTopologySuite.Index.Chain
 {
     /// <summary> 
     /// MonotoneChains are a way of partitioning the segments of a linestring to

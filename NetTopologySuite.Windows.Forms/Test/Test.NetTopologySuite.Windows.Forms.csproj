@@ -8,7 +8,7 @@
     <ProjectGuid>{AF47B26F-5EB8-4514-AEBF-FDD22244F5B1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GisSharpBlog.NetTopologySuite.Windows.Forms.Test</RootNamespace>
+    <RootNamespace>NetTopologySuite.Windows.Forms.Test</RootNamespace>
     <AssemblyName>Test.NetTopologySuite.Windows.Forms</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

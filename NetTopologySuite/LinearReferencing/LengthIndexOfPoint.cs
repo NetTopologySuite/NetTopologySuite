@@ -1,9 +1,9 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.LinearReferencing
+namespace NetTopologySuite.LinearReferencing
 {
 
     /// <summary>

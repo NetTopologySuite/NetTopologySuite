@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Linq;
 
-namespace GisSharpBlog.NetTopologySuite.Shapefile
+namespace NetTopologySuite.Shapefile
 {
     public class GlobalizationHelper
     {

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
+namespace NetTopologySuite.Index.Quadtree
 {
     //public class QuadTree : Quadtree<object>
     //{}

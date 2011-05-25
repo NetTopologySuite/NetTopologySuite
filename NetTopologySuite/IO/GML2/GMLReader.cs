@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 #if SILVERLIGHT
 using XmlTextWriter = System.Xml.XmlWriter;
 using XmlTextReader = System.Xml.XmlReader;
 using System.Xml.Linq;
 #endif
-namespace GisSharpBlog.NetTopologySuite.IO.GML2
+namespace NetTopologySuite.IO.GML2
 {
     /// <summary>
     /// Reads a GML document and creates a representation of the features based or NetTopologySuite model.

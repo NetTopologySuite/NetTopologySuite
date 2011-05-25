@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm.Locate;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Algorithm.Locate;
+using NetTopologySuite.Geometries.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
+namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
     /// A base class for predicate operations on <see cref="PreparedPolygon"/>s.
@@ -44,14 +44,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
             return true;
         }
 
-        /**
-         * Tests whether all components of the test Geometry 
-           * are contained in the interior of the target geometry.
-         * Handles both linear and point components.
-         * 
-         * @param geom a geometry to test
-         * @return true if all componenta of the argument are contained in the target geometry interior
-         */
+        ///<summary>
+        /// Tests whether all components of the test Geometry are contained in the interior of the target geometry.
+        ///</summary>
+        /// <remarks>Handles both linear and point components.</remarks>
+        /// <param name="testGeom">A geometry to test</param>
+        /// <returns>true if all componenta of the argument are contained in the target geometry interior</returns>
         protected bool IsAllTestComponentsInTargetInterior(IGeometry testGeom)
         {
             IList<ICoordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
@@ -64,14 +62,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
             return true;
         }
 
-        /**
-         * Tests whether any component of the test Geometry intersects
-         * the area of the target geometry.
-         * Handles test geometries with both linear and point components.
-         * 
-         * @param geom a geometry to test
-         * @return true if any component of the argument intersects the prepared area geometry
-         */
+        ///<summary>
+        /// Tests whether any component of the test Geometry intersects the area of the target geometry.
+        ///</summary>
+        /// <remarks>Handles test geometries with both linear and point components.</remarks>
+        /// <param name="testGeom">A geometry to test</param>
+        /// <returns>true if any component of the argument intersects the prepared area geometry</returns>
         protected bool IsAnyTestComponentInTarget(IGeometry testGeom)
         {
             IList<ICoordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
@@ -84,14 +80,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
             return false;
         }
 
-        /**
-         * Tests whether any component of the test Geometry intersects
-         * the interior of the target geometry.
-         * Handles test geometries with both linear and point components.
-         * 
-         * @param geom a geometry to test
-         * @return true if any component of the argument intersects the prepared area geometry interior
-         */
+        ///<summary>
+        /// Tests whether any component of the test Geometry intersects the interior of the target geometry.
+        ///</summary>
+        /// <remarks>Handles test geometries with both linear and point components.</remarks>
+        /// <param name="testGeom">A geometry to test</param>
+        /// <returns>true if any component of the argument intersects the prepared area geometry interior</returns>
         protected bool IsAnyTestComponentInTargetInterior(IGeometry testGeom)
         {
             IList<ICoordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
@@ -105,14 +99,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         }
 
 
-        /**
-         * Tests whether any component of the target geometry 
-         * intersects the test geometry (which must be an areal geometry) 
-         * 
-         * @param geom the test geometry
-         * @param repPts the representative points of the target geometry
-         * @return true if any component intersects the areal test geometry
-         */
+        ///<summary>
+        /// Tests whether any component of the target geometry intersects the test geometry (which must be an areal geometry)
+        ///</summary>
+        /// <param name="testGeom">The test geometry</param>
+        /// <param name="targetRepPts">The representative points of the target geometry</param>
+        /// <returns>true if any component intersects the areal test geometry</returns>
         protected bool IsAnyTargetComponentInAreaTest(IGeometry testGeom, IList<ICoordinate> targetRepPts)
         {
             IPointOnGeometryLocator piaLoc = new SimplePointInAreaLocator(testGeom);

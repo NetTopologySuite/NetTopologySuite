@@ -1,9 +1,9 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
+namespace NetTopologySuite.Samples.SimpleTests.Geometries
 {
     /// <summary>
     /// 

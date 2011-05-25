@@ -1,8 +1,8 @@
 using System;
-using GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests;
+using NetTopologySuite.Samples.SimpleTests.ShapeTests;
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
+namespace NetTopologySuite.Samples.SimpleTests
 {
     /// <summary>
     /// 
@@ -33,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
         /// <summary>
         /// 
         /// </summary>
-        //[Test]
+        [Test]
         public void SamplesTest()
         {
             SamplesTest(false);

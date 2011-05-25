@@ -1,8 +1,8 @@
-using System.Collections;
+//using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
 
     /// <summary>
@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             : base(segInt) { }
 
         /// <summary>
-        /// Returns a <see cref="IList"/> of fully noded <see cref="NodedSegmentString"/>s.
+        /// Returns a <see cref="IList{ISegmentString}"/> of fully noded <see cref="NodedSegmentString"/>s.
         /// The <see cref="NodedSegmentString"/>s have the same context as their parent.
         /// </summary>
         /// <returns></returns>
@@ -46,12 +46,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         public override void ComputeNodes(IList<ISegmentString> inputSegStrings)
         {
             _nodedSegStrings = inputSegStrings;
-            foreach (object obj0 in inputSegStrings)
+            foreach (var edge0 in inputSegStrings)
             {
-                ISegmentString edge0 = (ISegmentString) obj0;
-                foreach(object obj1 in inputSegStrings)
+                foreach (var edge1 in inputSegStrings)
                 {
-                    ISegmentString edge1 = (ISegmentString) obj1;
                     ComputeIntersects(edge0, edge1);
                 }
             }

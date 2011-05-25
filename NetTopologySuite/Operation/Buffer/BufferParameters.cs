@@ -1,7 +1,7 @@
 using System;
 using GeoAPI.Operations.Buffer;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
+namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
     /// Contains the parameters which describe how a buffer should be constructed.

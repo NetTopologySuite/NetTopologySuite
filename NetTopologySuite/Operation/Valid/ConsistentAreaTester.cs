@@ -1,11 +1,11 @@
 using System.Collections;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
-using GisSharpBlog.NetTopologySuite.Operation.Relate;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.GeometriesGraph.Index;
+using NetTopologySuite.Operation.Relate;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Valid
+namespace NetTopologySuite.Operation.Valid
 {
     /// <summary> 
     /// Checks that a {GeometryGraph} representing an area

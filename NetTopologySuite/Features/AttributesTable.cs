@@ -4,7 +4,7 @@ using System.Collections;
 using Hashtable = System.Collections.Generic.Dictionary<object, object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Features
+namespace NetTopologySuite.Features
 {
     /// <summary>
     /// Stores all attributes associated with a single <c>Geometry</c> feature.

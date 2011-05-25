@@ -5,10 +5,10 @@ using System.IO;
 using System.Runtime;
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Tests.Performances
+namespace NetTopologySuite.Tests.Performances
 {
     [TestFixture]
     public class SortedListsFixture

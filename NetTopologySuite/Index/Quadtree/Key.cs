@@ -1,8 +1,8 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
+namespace NetTopologySuite.Index.Quadtree
 {
     /// <summary> 
     /// A Key is a unique identifier for a node in a quadtree.

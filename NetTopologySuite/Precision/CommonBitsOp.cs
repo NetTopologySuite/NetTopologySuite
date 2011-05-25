@@ -1,6 +1,6 @@
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Precision
+namespace NetTopologySuite.Precision
 {
     /// <summary> 
     /// Provides versions of Geometry spatial functions which use

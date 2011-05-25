@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
-using GisSharpBlog.NetTopologySuite.Operation.Linemerge;
+using NetTopologySuite.IO;
+using NetTopologySuite.Operation.Linemerge;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
+namespace NetTopologySuite.Samples.Operation.Linemerge
 {
 	/// <summary> 
     /// Example of using the LineMerger class to sew together a set of fully noded 
@@ -17,11 +18,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
 			reader = new WKTReader();
 		}
 
-		virtual internal IList Data
+		virtual internal IList<IGeometry> Data
 		{
 			get
 			{
-				IList lines = new ArrayList();
+				IList<IGeometry> lines = new List<IGeometry>();
 				lines.Add(Read("LINESTRING (220 160, 240 150, 270 150, 290 170)"));
 				lines.Add(Read("LINESTRING (60 210, 30 190, 30 160)"));
 				lines.Add(Read("LINESTRING (70 430, 100 430, 120 420, 140 400)"));
@@ -62,14 +63,14 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
 		
 		internal virtual void Run()
 		{
-			IList lineStrings = Data;
+			IList<IGeometry> lineStrings = Data;
 			
 			LineMerger lineMerger = new LineMerger();
 			lineMerger.Add(lineStrings);
-		    ICollection mergedLineStrings = lineMerger.GetMergedLineStrings();
+		    var mergedLineStrings = lineMerger.GetMergedLineStrings();
 			
 			Console.WriteLine("Lines formed (" + mergedLineStrings.Count + "):");
-            foreach (object obj in mergedLineStrings)
+            foreach (var obj in mergedLineStrings)
 			    Console.WriteLine(obj);
 		}
 		

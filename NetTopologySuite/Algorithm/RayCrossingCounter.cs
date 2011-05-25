@@ -1,6 +1,6 @@
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm
+namespace NetTopologySuite.Algorithm
 {
     ///<summary>
     /// Counts the number of segments crossed by a horizontal ray extending to the right

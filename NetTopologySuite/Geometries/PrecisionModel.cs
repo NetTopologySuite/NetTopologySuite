@@ -1,7 +1,7 @@
 ﻿using System;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {        
     /// <summary> 
     /// Specifies the precision model of the <c>Coordinate</c>s in a <c>Geometry</c>.

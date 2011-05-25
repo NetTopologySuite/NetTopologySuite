@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
     public partial class Shapefile
     {

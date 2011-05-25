@@ -1,35 +1,36 @@
-using System.Collections;
+//using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
-using GisSharpBlog.NetTopologySuite.Operation.Overlay;
+using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Operation.Overlay;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Union
+namespace NetTopologySuite.Operation.Union
 {
-    /**
-     * Unions a collection of Geometry or a single Geometry 
-     * (which may be a collection) together.
-     * By using this special-purpose operation over a collection of geometries
-     * it is possible to take advantage of various optimizations to improve performance.
-     * Heterogeneous {@link GeometryCollection}s are fully supported.
-     * <p>
-     * The result obeys the following contract:
-     * <ul>
-     * <li>Unioning a set of overlapping {@link Polygons}s has the effect of
-     * merging the areas (i.e. the same effect as 
-     * iteratively unioning all individual polygons together).
-     * <li>Unioning a set of {@link LineString}s has the effect of fully noding and dissolving
-     * the linework.
-     * <li>Unioning a set of {@link Points}s has the effect of merging
-     * al identical points (producing a set with no duplicates).
-     * </ul>
-     * 
-     * @author mbdavis
-     *
-     */
+    ///<summary>
+    /// Unions a collection of Geometry or a single Geometry (which may be a collection) together.
+    ///</summary>
+    /// <remarks>
+    /// <para>
+    /// By using this special-purpose operation over a collection of geometries
+    /// it is possible to take advantage of various optimizations to improve performance.
+    /// </para>
+    /// <para>
+    /// Heterogeneous <see cref="IGeometryCollection"/>s are fully supported.
+    /// </para>
+    /// <para>
+    /// The result obeys the following contract:
+    /// <list type="Bullet">
+    /// <item>Unioning a set of overlapping <see cref="IPolygon"/>s has the effect of merging the areas (i.e. the same effect as iteratively unioning all individual polygons together).</item>
+    /// <item>Unioning a set of <see cref="ILineString"/>s has the effect of fully noding and dissolving the linework.</item>
+    /// <item>Unioning a set of <see cref="IPoint"/>s has the effect of merging all identical points (producing a set with no duplicates).</item> </list>
+    /// </para>
+    /// </remarks>
+    /// <author>
+    /// mbdavis
+    ///</author>
     public class UnaryUnionOp
     {
-        public static IGeometry Union(IList geoms)
+        public static IGeometry Union(IList<IGeometry> geoms)
         {
             UnaryUnionOp op = new UnaryUnionOp(geoms);
             return op.Union();
@@ -47,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
 
         private IGeometryFactory _geomFact;
 
-        public UnaryUnionOp(IList geoms)
+        public UnaryUnionOp(IEnumerable<IGeometry> geoms)
         {
             Extract(geoms);
         }
@@ -57,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
             Extract(geom);
         }
 
-        private void Extract(IEnumerable geoms)
+        private void Extract(IEnumerable<IGeometry> geoms)
         {
             foreach (IGeometry geom in geoms)
                 Extract(geom);

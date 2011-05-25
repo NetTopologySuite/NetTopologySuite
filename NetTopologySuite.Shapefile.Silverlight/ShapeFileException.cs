@@ -19,7 +19,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace GisSharpBlog.NetTopologySuite.Shapefile
+namespace NetTopologySuite.Shapefile
 {
     /// <summary>
     /// Exception thrown during shapefile operations

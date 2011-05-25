@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
+namespace NetTopologySuite.Geometries.Utilities
 {
     ///<summary>
     /// Extracts a single representative <see cref="ICoordinate"/> from each connected component of a <see cref="IGeometry"/>.

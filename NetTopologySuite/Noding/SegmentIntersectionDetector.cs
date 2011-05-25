@@ -1,8 +1,8 @@
 ﻿using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Index.Chain;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Index.Chain;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     ///<summary>
     /// Detects and records an intersection between two <see cref="ISegmentString"/>s,

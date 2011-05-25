@@ -1,12 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Noding;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Noding;
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>
     /// Validates that a collection of <see cref="Edge"/> is correctly noded.
@@ -20,13 +16,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         ///</summary>
         /// <param name="edges">an enmeration of Edges.</param>
         /// <exception cref="TopologyException">If the SegmentStrings are not correctly noded</exception>
-        public static void CheckValid(IEnumerable edges)
+        public static void CheckValid(IEnumerable<Edge> edges)
         {
             EdgeNodingValidator validator = new EdgeNodingValidator(edges);
             validator.CheckValid();
         }
 
-        private static IEnumerable<ISegmentString> ToSegmentStrings(IEnumerable edges)
+        private static IEnumerable<ISegmentString> ToSegmentStrings(IEnumerable<Edge> edges)
         {
             // convert Edges to SegmentStrings
             IList<ISegmentString> segStrings = new List<ISegmentString>();
@@ -40,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
        ///<summary>
        /// Creates a new validator for the given collection of <see cref="Edge"/>s.
        /// </summary> 
-       public EdgeNodingValidator(IEnumerable edges)
+       public EdgeNodingValidator(IEnumerable<Edge> edges)
         {
             _nv = new FastNodingValidator(ToSegmentStrings(edges));
         }

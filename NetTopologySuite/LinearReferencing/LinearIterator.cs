@@ -1,16 +1,16 @@
-using System.Collections;
+//using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.LinearReferencing
+namespace NetTopologySuite.LinearReferencing
 {
     /// <summary>
     /// An iterator over the components and coordinates of a linear geometry
     /// (<see cref="LineString" />s and <see cref="MultiLineString" />s.
     /// </summary>
-    public class LinearIterator :   IEnumerator<LinearIterator.LinearElement>, IEnumerator, 
-                                    IEnumerable<LinearIterator.LinearElement>, IEnumerable
+    public class LinearIterator :   IEnumerator<LinearIterator.LinearElement>, 
+                                    IEnumerable<LinearIterator.LinearElement>
     {
         /// <summary>
         /// 
@@ -24,26 +24,26 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             return loc.SegmentIndex;
         }
 
-        private IGeometry linear;
-        private int numLines;        
+        private readonly IGeometry _linear;
+        private int _numLines;        
 
         /*
          * Invariant: currentLine <> null if the iterator is pointing at a valid coordinate
          */
-        private ILineString currentLine;
+        private ILineString _currentLine;
 
-        private int componentIndex = 0;
-        private int vertexIndex = 0;
+        private int _componentIndex;
+        private int _vertexIndex;
 
         // Used for avoid the first call to Next() in MoveNext()
-        private bool atStart;
+        private bool _atStart;
         
         // Returned by Ienumerator.Current
-        private LinearElement current = null;
+        private LinearElement _current;
 
         // Cached start values - for Reset() call
-        private readonly int startComponentIndex = 0;
-        private readonly int startVertexIndex = 0;
+        private readonly int _startComponentIndex;
+        private readonly int _startVertexIndex;
 
         /// <summary>
         /// Creates an iterator initialized to the start of a linear <see cref="Geometry" />.
@@ -68,13 +68,13 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="vertexIndex">The vertex to start at.</param>
         public LinearIterator(IGeometry linear, int componentIndex, int vertexIndex)
         {
-            startComponentIndex = componentIndex;
-            startVertexIndex = vertexIndex;
+            _startComponentIndex = componentIndex;
+            _startVertexIndex = vertexIndex;
 
-            this.linear = linear;
+            _linear = linear;
             Reset();
 
-            current = new LinearElement(this);
+            _current = new LinearElement(this);
         }
 
         /// <summary>
@@ -82,12 +82,12 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         private void LoadCurrentLine()
         {
-            if (componentIndex >= numLines)
+            if (_componentIndex >= _numLines)
             {
-                currentLine = null;
+                _currentLine = null;
                 return;
             }
-            currentLine = (ILineString) linear.GetGeometryN(componentIndex);
+            _currentLine = (ILineString) _linear.GetGeometryN(_componentIndex);
         }        
 
         /// <summary>
@@ -98,9 +98,9 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <returns><c>true</c> if there are more vertices to scan.</returns>
         protected bool HasNext()
         {
-            if (componentIndex >= numLines)
+            if (_componentIndex >= _numLines)
                 return false;
-            if ((componentIndex == numLines - 1) && (vertexIndex >= currentLine.NumPoints))
+            if ((_componentIndex == _numLines - 1) && (_vertexIndex >= _currentLine.NumPoints))
                 return false;
             return true;
         }
@@ -113,12 +113,12 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             if (!HasNext()) 
                 return;
 
-            vertexIndex++;
-            if (vertexIndex >= currentLine.NumPoints)
+            _vertexIndex++;
+            if (_vertexIndex >= _currentLine.NumPoints)
             {
-                componentIndex++;
+                _componentIndex++;
                 LoadCurrentLine();
-                vertexIndex = 0;
+                _vertexIndex = 0;
             }
         }
 
@@ -130,9 +130,9 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         {
             get
             {
-                if (componentIndex >= numLines) 
+                if (_componentIndex >= _numLines) 
                     return false;                
-                if (vertexIndex < currentLine.NumPoints - 1)
+                if (_vertexIndex < _currentLine.NumPoints - 1)
                     return false;
                 return true;
             }
@@ -145,7 +145,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         {
             get
             {
-                return componentIndex;
+                return _componentIndex;
             }
         }
 
@@ -156,7 +156,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         {
             get
             {
-                return vertexIndex;
+                return _vertexIndex;
             }
         }
 
@@ -167,7 +167,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         {
             get
             {
-                return currentLine;
+                return _currentLine;
             }
         }
 
@@ -179,7 +179,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         {
             get
             {
-                return currentLine.GetCoordinateN(vertexIndex);
+                return _currentLine.GetCoordinateN(_vertexIndex);
             }
         }
 
@@ -192,8 +192,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         {
             get
             {
-                if (vertexIndex < Line.NumPoints - 1)
-                    return currentLine.GetCoordinateN(vertexIndex + 1);
+                if (_vertexIndex < Line.NumPoints - 1)
+                    return _currentLine.GetCoordinateN(_vertexIndex + 1);
                 return null;
             }
         }
@@ -213,7 +213,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         {
             get 
             {
-                return current;
+                return _current;
             }
         }
 
@@ -233,8 +233,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             // another line is loaded, it's necessary to re-ckeck with the new conditions.
             if (HasNext())
             {
-                if (atStart)
-                    atStart = false;
+                if (_atStart)
+                    _atStart = false;
                 else Next();
             }
             return HasNext();
@@ -249,7 +249,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// The <see cref="LinearElement">element</see> in the collection 
         /// at the current position of the enumerator.
         /// </returns>
-        object IEnumerator.Current
+        object System.Collections.IEnumerator.Current
         {
             get 
             {
@@ -266,12 +266,12 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </exception>
         public void Reset()
         {
-            numLines = linear.NumGeometries;
-            this.componentIndex = startComponentIndex;
-            this.vertexIndex = startVertexIndex;
+            _numLines = _linear.NumGeometries;
+            _componentIndex = _startComponentIndex;
+            _vertexIndex = _startVertexIndex;
             LoadCurrentLine();
             
-            atStart = true;
+            _atStart = true;
         }
 
         #endregion
@@ -299,8 +299,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             }
 
             // Dispose managed resources
-            current = null;
-            currentLine = null;
+            _current = null;
+            _currentLine = null;
         }
 
         #endregion
@@ -331,7 +331,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// An <see cref="T:System.Collections.IEnumerator"></see> object 
         /// that can be used to iterate through the collection.
         /// </returns>
-        IEnumerator IEnumerable.GetEnumerator()
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
@@ -345,15 +345,15 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         public class LinearElement
         {
-            private LinearIterator iterator = null;
+            private readonly LinearIterator _iterator;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="T:LinearElement"/> class.
+            /// Initializes a new instance of the <see cref="LinearElement"/> class.
             /// </summary>
             /// <param name="iterator">The iterator.</param>
             public LinearElement(LinearIterator iterator)
             {
-                this.iterator = iterator;
+                _iterator = iterator;
             }
 
             /// <summary>
@@ -363,7 +363,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             {
                 get
                 {
-                    return iterator.ComponentIndex;
+                    return _iterator.ComponentIndex;
                 }
             }
 
@@ -374,7 +374,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             {
                 get
                 {
-                    return iterator.VertexIndex;
+                    return _iterator.VertexIndex;
                 }
             }
 
@@ -385,7 +385,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             {
                 get
                 {
-                    return iterator.Line;
+                    return _iterator.Line;
                 }
             }
 
@@ -397,7 +397,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             {
                 get
                 {
-                    return iterator.IsEndOfLine;
+                    return _iterator.IsEndOfLine;
                 }
             }
 
@@ -409,7 +409,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             {
                 get
                 {
-                    return iterator.SegmentStart;
+                    return _iterator.SegmentStart;
                 }
             }
 
@@ -422,7 +422,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             {
                 get
                 {
-                    return iterator.SegmentEnd;
+                    return _iterator.SegmentEnd;
                 }
             }
         }

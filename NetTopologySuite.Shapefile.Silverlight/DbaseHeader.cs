@@ -21,9 +21,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Data;
+using NetTopologySuite.Data;
 
-namespace GisSharpBlog.NetTopologySuite.Shapefile
+namespace NetTopologySuite.Shapefile
 {
     /// <summary>
     /// Represents the header of an xBase file.

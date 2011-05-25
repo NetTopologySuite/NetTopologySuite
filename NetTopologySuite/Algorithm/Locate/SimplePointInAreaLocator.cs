@@ -1,9 +1,9 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
+namespace NetTopologySuite.Algorithm.Locate
 {
     ///<summary>Computes the location of points relative to an areal <see cref="IGeometry"/>, using a simple O(n) algorithm.
     /// This algorithm is suitable for use in cases where only one or a few points will be tested against a given area.
@@ -33,10 +33,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
 
             if (geom is IGeometryCollection)
             {
-                IEnumerator geomi = new GeometryCollectionEnumerator((IGeometryCollection)geom);
+                IEnumerator<IGeometry> geomi = new GeometryCollectionEnumerator((IGeometryCollection)geom);
                 while (geomi.MoveNext())
                 {
-                    IGeometry g2 = (IGeometry)geomi.Current;
+                    IGeometry g2 = geomi.Current;
                     if (g2 != geom)
                         if (ContainsPoint(p, g2))
                             return true;

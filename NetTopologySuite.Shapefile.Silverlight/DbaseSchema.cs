@@ -19,9 +19,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Data;
+using NetTopologySuite.Data;
 
-namespace GisSharpBlog.NetTopologySuite.Shapefile
+namespace NetTopologySuite.Shapefile
 {
     internal static class DbaseSchema
     {

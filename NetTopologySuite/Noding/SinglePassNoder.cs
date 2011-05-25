@@ -1,7 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     /// <summary>
     /// Base class for <see cref="INoder" />s which make a single pass to find intersections.
@@ -47,16 +46,16 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
 
         /// <summary>
-        /// Computes the noding for a collection of <see cref="SegmentString"/>s.
-        /// Some Noders may add all these nodes to the input <see cref="SegmentString"/>s;
+        /// Computes the noding for a collection of <see cref="ISegmentString"/>s.
+        /// Some Noders may add all these nodes to the input <see cref="ISegmentString"/>s;
         /// others may only add some or none at all.
         /// </summary>
         /// <param name="segStrings"></param>
         public abstract void ComputeNodes(IList<ISegmentString> segStrings);
 
         /// <summary>
-        /// Returns a <see cref="IList"/> of fully noded <see cref="SegmentString"/>s.
-        /// The <see cref="SegmentString"/>s have the same context as their parent.
+        /// Returns a <see cref="IList{ISegmentString}"/> of fully noded <see cref="ISegmentString"/>s.
+        /// The <see cref="ISegmentString"/>s have the same context as their parent.
         /// </summary>
         /// <returns></returns>
         public abstract IList<ISegmentString> GetNodedSubstrings();

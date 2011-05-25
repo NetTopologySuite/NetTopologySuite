@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
     /// <summary>
     /// Writes a PostGIS binary representation of a <c>Geometry</c>.

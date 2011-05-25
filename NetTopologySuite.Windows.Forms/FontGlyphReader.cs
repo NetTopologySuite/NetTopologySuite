@@ -1,24 +1,22 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using GeoAPI.Geometries;
+using NetTopologySuite.Geometries.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.Windows.Forms
+namespace NetTopologySuite.Windows.Forms
 {
 
-    /**
-     * Provides methods to read {@link Font} glyphs for strings 
-     * into {@link Polygonal} geometry.
-     * <p>
-     * It is suggested to use larger point sizes to render fonts glyphs,
-     * to reduce the effects of scale-dependent hints.
-     * The resulting geometry are in the base coordinate system 
-     * of the font.  
-     * The geometry can be further transformed as necessary using
-     * {@link AffineTransformation}s.
-     * 
-     * @author Martin Davis
-     *
-     */
+    ///<summary>
+    /// Provides methods to read <see cref="System.Drawing.Font"/> glyphs for strings 
+    /// into <see cref="IPolygonal"/> geometry.
+    ///</summary>
+    /// <remarks>
+    /// <para>
+    /// It is suggested to use larger point sizes to render fonts glyphs, to reduce the effects of scale-dependent hints.</para>
+    /// <para>The resulting geometry are in the base coordinate system of the font.</para>
+    /// <para>The geometry can be further transformed as necessary using <see cref="AffineTransformation"/>s</para>
+    /// </remarks>
+    /// <author>Martin Davis</author>
     public class FontGlyphReader
     {
         public const string FontSerif = "Serif";
@@ -28,30 +26,26 @@ namespace GisSharpBlog.NetTopologySuite.Windows.Forms
         // a flatness factor empirically determined to provide good results
         private const float FlatnessFactor = 400f;
 
-        /**
-         * Converts text rendered in the given font and pointsize to a {@link Geometry}
-         * using a standard flatness factor.
-         *  
-         * @param text the text to render
-         * @param fontName the name of the font
-         * @param pointSize the pointSize to render at
-         * @param geomFact the geometryFactory to use to create the result
-         * @return a polygonal geometry representing the rendered text
-         */
+        ///<summary>
+        /// Converts text rendered in the given <see cref="Font"/> and pointsize to a <see cref="IGeometry"/> using a standard flatness factor.
+        /// </summary>
+        /// <param name="text">The text to render</param>
+        /// <param name="font">The <see cref="FontFamily"/></param>
+        /// <param name="pointSize">The pointSize to render at</param>
+        /// <param name="geomFact">The geometry factory to use to create the result</param>
+        /// <returns>A polygonal geometry representing the rendered text</returns>
         public static IGeometry Read(string text, FontFamily font, int pointSize, IGeometryFactory geomFact)
         {
             return Read(text, font, FontStyle.Regular, pointSize, new PointF(0,0),  geomFact);
         }
 
-        /**
-         * Converts text rendered in the given {@link Font} to a {@link Geometry}
-         * using a standard flatness factor.
-         * 
-         * @param text the text to render
-         * @param font  the font to render with
-         * @param geomFact the geometryFactory to use to create the result
-         * @return a polygonal geometry representing the rendered text
-         */
+        ///<summary>
+        /// Converts text rendered in the given <see cref="Font"/> to a <see cref="IGeometry"/> using a standard flatness factor.
+        /// </summary>
+        /// <param name="text">The text to render</param>
+        /// <param name="font">The <see cref="FontFamily"/></param>
+        /// <param name="geomFact">The geometry factory to use to create the result</param>
+        /// <returns>A polygonal geometry representing the rendered text</returns>
         public static IGeometry Read(string text, FontFamily font, IGeometryFactory geomFact)
         {
             return Read(text, font, FontStyle.Regular, 12, new PointF(0,0), geomFact);
@@ -63,15 +57,18 @@ namespace GisSharpBlog.NetTopologySuite.Windows.Forms
             return Read(text, font, style, size, origin, StringFormat.GenericTypographic, size / FlatnessFactor, geomFact);
         }
 
-        /**
-         * Converts text rendered in the given {@link Font} to a {@link Geometry}
-         * 
-         * @param text the text to render
-         * @param font  the font to render with
-         * @param flatness the flatness to use
-         * @param geomFact the geometryFactory to use to create the result
-         * @return a polygonal geometry representing the rendered text
-         */
+        ///<summary>
+        /// Converts text rendered in the given <see cref="Font"/> and pointsize to a <see cref="IGeometry"/> using a standard flatness factor.
+        /// </summary>
+        /// <param name="text">The text to render</param>
+        /// <param name="font">The <see cref="FontFamily"/></param>
+        /// <param name="size">The size to render at</param>
+        /// <param name="style">The style to use</param>
+        /// <param name="flatness">The flatness to use</param>
+        /// <param name="origin">The point to start</param>
+        /// <param name="stringFormat">The string format to use</param>
+        /// <param name="geomFact">The geometry factory to use to create the result</param>
+        /// <returns>A polygonal geometry representing the rendered text</returns>
         public static IGeometry Read(string text, FontFamily font, FontStyle style, float size, PointF origin, StringFormat stringFormat, double flatness, IGeometryFactory geomFact)
         {
             var path = new GraphicsPath();

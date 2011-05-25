@@ -1,7 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
 
     /// <summary>
@@ -21,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         void ComputeNodes(IList<ISegmentString> segStrings);
 
         /// <summary>
-        /// Returns a <see cref="IList" /> of fully noded <see cref="ISegmentString" />s.
+        /// Returns a <see cref="IList{ISegmentString}" /> of fully noded <see cref="ISegmentString" />s.
         /// The <see cref="ISegmentString" />s have the same context as their parent.
         /// </summary>
         /// <returns></returns>

@@ -1,6 +1,6 @@
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Utilities
+namespace NetTopologySuite.Utilities
 {
     /// <summary>
     /// A <c>CoordinateFilter</c> that creates an array containing every coordinate in a <c>Geometry</c>.

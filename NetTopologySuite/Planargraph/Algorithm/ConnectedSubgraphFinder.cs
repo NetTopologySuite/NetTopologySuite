@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Stack = System.Collections.Generic.Stack<object>;
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
-namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
+namespace NetTopologySuite.Planargraph.Algorithm
 {
     /// <summary>
     /// Finds all connected <see cref="Subgraph" />s of a <see cref="PlanarGraph" />.

@@ -1,16 +1,9 @@
-namespace GisSharpBlog.NetTopologySuite.Index
+namespace NetTopologySuite.Index
 {
     /// <summary>
     /// A visitor for items in an index.
     /// </summary>
-    public interface IItemVisitor : IItemVisitor<object>
-    {
-    }
-
-    /// <summary>
-    /// A visitor for items in an index.
-    /// </summary>
-    public interface IItemVisitor<in T>
+    public interface IItemVisitor< T>
     {
         /// <summary>
         /// 

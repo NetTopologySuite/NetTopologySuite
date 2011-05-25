@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using GeoAPI.CoordinateSystems;
 using GeoAPI.CoordinateSystems.Transformations;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Samples.SimpleTests;
+using NetTopologySuite.CoordinateSystems.Transformations;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Samples.SimpleTests;
 using NUnit.Framework;
 using ProjNet.CoordinateSystems;
 using ProjNet.CoordinateSystems.Transformations;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
+namespace NetTopologySuite.Samples.Tests.Various
 {
     /// <summary>
     /// 

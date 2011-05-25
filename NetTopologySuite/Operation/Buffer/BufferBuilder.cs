@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using System.Linq;
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.Noding;
-using GisSharpBlog.NetTopologySuite.Operation.Overlay;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.Noding;
+using NetTopologySuite.Operation.Overlay;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
+namespace NetTopologySuite.Operation.Buffer
 {
     ///<summary>
     /// Builds the buffer geometry for a given input geometry and precision model.

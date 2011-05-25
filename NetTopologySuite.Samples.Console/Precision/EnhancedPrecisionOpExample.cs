@@ -1,10 +1,10 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
-using GisSharpBlog.NetTopologySuite.Precision;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
+using NetTopologySuite.Precision;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Precision
+namespace NetTopologySuite.Samples.Precision
 {	
 	/// <summary> 
     /// Example of using {EnhancedPrecisionOp} to avoid robustness problems.

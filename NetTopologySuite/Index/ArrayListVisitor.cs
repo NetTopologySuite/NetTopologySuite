@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace GisSharpBlog.NetTopologySuite.Index
+namespace NetTopologySuite.Index
 {
     public class ArrayListVisitor : ArrayListVisitor<object>
     {}

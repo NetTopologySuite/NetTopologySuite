@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation.Linemerge;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation.Linemerge;
 using QuickGraph;
 using QuickGraph.Algorithms.Observers;
 using QuickGraph.Algorithms.ShortestPath;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
+namespace NetTopologySuite.Samples.Tests.Various
 {
     /// <summary>
     /// A class that manages shortest path computation.

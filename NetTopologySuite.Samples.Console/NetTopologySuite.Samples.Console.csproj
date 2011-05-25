@@ -8,7 +8,7 @@
     <ProjectGuid>{39E8A390-5304-4447-99E2-3810941824AD}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GisSharpBlog.NetTopologySuite</RootNamespace>
+    <RootNamespace>NetTopologySuite</RootNamespace>
     <AssemblyName>NetTopologySuite.Samples.Console</AssemblyName>
     <SccProjectName>
     </SccProjectName>
@@ -18,7 +18,7 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
-    <StartupObject>GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Program</StartupObject>
+    <StartupObject>NetTopologySuite.Samples.SimpleTests.Program</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>

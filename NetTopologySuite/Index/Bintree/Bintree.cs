@@ -1,10 +1,13 @@
-using System.Collections;
+using System.Collections.Generic;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Index.Bintree
+namespace NetTopologySuite.Index.Bintree
 {
+    public class BinTree : Bintree<object>
+    {}
+
     /// <summary>
     /// An <c>BinTree</c> (or "Binary Interval Tree")
     /// is a 1-dimensional version of a quadtree.
@@ -27,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
     /// <para>This index is different to the Interval Tree of Edelsbrunner
     /// or the Segment Tree of Bentley.</para>
     /// </remarks>
-    public class Bintree
+    public class Bintree<T>
     {
         /// <summary>
         /// Ensure that the Interval for the inserted item has non-zero extents.
@@ -49,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             return new Interval(min, max);
         }
 
-        private readonly Root _root;
+        private readonly Root<T> _root;
         
         /*
         * Statistics:
@@ -60,14 +63,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         * a zero extent in both directions.  This value may be non-optimal, but
         * only one feature will be inserted with this value.
         **/
-        private double minExtent = 1.0;
+        private double _minExtent = 1.0;
 
         /// <summary>
         /// 
         /// </summary>
         public Bintree()
         {
-            _root = new Root();
+            _root = new Root<T>();
         }
 
         /// <summary>
@@ -115,10 +118,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// </summary>
         /// <param name="itemInterval"></param>
         /// <param name="item"></param>
-        public void Insert(Interval itemInterval, object item)
+        public void Insert(Interval itemInterval, T item)
         {
             CollectStats(itemInterval);
-            Interval insertInterval = EnsureExtent(itemInterval, minExtent);            
+            Interval insertInterval = EnsureExtent(itemInterval, _minExtent);            
             _root.Insert(insertInterval, item);            
         }
 
@@ -126,9 +129,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// 
         /// </summary>
         /// <returns></returns>
-        public IEnumerator GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
-            IList foundItems = new ArrayList();
+            IList<T> foundItems = new List<T>();
             _root.AddAllItems(foundItems);
             return foundItems.GetEnumerator();
         }
@@ -138,7 +141,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// </summary>
         /// <param name="x"></param>
         /// <returns></returns>
-        public IList Query(double x)
+        public IList<T> Query(double x)
         {
             return Query(new Interval(x, x));
         }
@@ -147,13 +150,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// min and max may be the same value.
         /// </summary>
         /// <param name="interval"></param>
-        public IList Query(Interval interval)
+        public IList<T> Query(Interval interval)
         {
             /*
              * the items that are matched are all items in intervals
              * which overlap the query interval
              */
-            IList foundItems = new ArrayList();
+            IList<T> foundItems = new List<T>();
             Query(interval, foundItems);
             return foundItems;
         }
@@ -163,7 +166,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// </summary>
         /// <param name="interval"></param>
         /// <param name="foundItems"></param>
-        public void Query(Interval interval, IList foundItems)
+        public void Query(Interval interval, IList<T> foundItems)
         {
             _root.AddAllItemsFromOverlapping(interval, foundItems);
         }
@@ -175,8 +178,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         private void CollectStats(Interval interval)
         {
             double del = interval.Width;
-            if (del < minExtent && del > 0.0)
-                minExtent = del;
+            if (del < _minExtent && del > 0.0)
+                _minExtent = del;
         }
     }
 }

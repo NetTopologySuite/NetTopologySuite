@@ -9,7 +9,7 @@
     <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GisSharpBlog.NetTopologySuite.Shapefile</RootNamespace>
+    <RootNamespace>NetTopologySuite.Shapefile</RootNamespace>
     <AssemblyName>NetTopologySuite.Shapefile.Silverlight</AssemblyName>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -46,9 +46,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GeoAPI.Silverlight">
-      <HintPath>..\ExternalReferences\GeoAPI.Silverlight.dll</HintPath>
-    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
@@ -85,6 +82,10 @@
     <Compile Include="ShapeType.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GeoAPI\GeoAPI.Silverlight\GeoAPI.Silverlight.csproj">
+      <Project>{9B913337-1114-4D05-8F24-D05A5FD588AD}</Project>
+      <Name>GeoAPI.Silverlight</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.Data.Silverlight\NetTopologySuite.Data.Silverlight.csproj">
       <Project>{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}</Project>
       <Name>NetTopologySuite.Data.Silverlight</Name>

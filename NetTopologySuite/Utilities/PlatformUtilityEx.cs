@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 #if SILVERLIGHT
-using GisSharpBlog.NetTopologySuite.Encodings;
+using NetTopologySuite.Encodings;
 using NetTopologySuite.Encodings;
 
 #endif
-namespace GisSharpBlog.NetTopologySuite.Utilities
+namespace NetTopologySuite.Utilities
 {
     public static class PlatformUtilityEx
     {

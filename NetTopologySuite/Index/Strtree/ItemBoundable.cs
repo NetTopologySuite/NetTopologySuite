@@ -1,4 +1,4 @@
-namespace GisSharpBlog.NetTopologySuite.Index.Strtree
+namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
     /// Boundable wrapper for a non-Boundable spatial object. Used internally by
@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// 
+        /// The bounds
         /// </summary>
         public object Bounds 
         {
@@ -32,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// 
+        /// The item
         /// </summary>
         public object Item
         {

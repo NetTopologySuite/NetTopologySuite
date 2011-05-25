@@ -1,10 +1,10 @@
 using System;
 using System.IO;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
+namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
 {
     /// <summary>
     /// 

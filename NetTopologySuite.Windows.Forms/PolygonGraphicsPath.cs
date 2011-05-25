@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Windows.Forms
+namespace NetTopologySuite.Windows.Forms
 {
 public class PolygonGraphicsPath 
 {

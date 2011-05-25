@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Planargraph;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Planargraph;
+using NetTopologySuite.Utilities;
 using Wintellect.PowerCollections;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
@@ -11,7 +10,7 @@ using Stack = System.Collections.Generic.Stack<object>;
 #endif
 
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
+namespace NetTopologySuite.Operation.Polygonize
 {
     /// <summary>
     /// Represents a planar graph of edges that can be used to compute a

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace GisSharpBlog.NetTopologySuite.Data
+namespace NetTopologySuite.Data
 {
     public class SchemaMismatchException : Exception
     {

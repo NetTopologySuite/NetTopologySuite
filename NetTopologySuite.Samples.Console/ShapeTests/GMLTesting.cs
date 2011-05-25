@@ -1,11 +1,11 @@
 using System.Diagnostics;
 using System.Xml;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
-using GisSharpBlog.NetTopologySuite.IO.GML2;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
+using NetTopologySuite.IO.GML2;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
+namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
 {
     /// <summary>
     /// 

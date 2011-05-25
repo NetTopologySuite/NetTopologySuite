@@ -1,8 +1,8 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Valid
+namespace NetTopologySuite.Operation.Valid
 {
     /// <summary>
     /// Contains information about the nature and location of 

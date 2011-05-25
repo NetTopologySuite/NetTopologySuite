@@ -3,9 +3,9 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
+namespace NetTopologySuite.Samples.SimpleTests.Geometries
 {
     /// <summary>
     /// 

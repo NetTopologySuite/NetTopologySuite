@@ -3,14 +3,14 @@ using System.Globalization;
 using System.IO;
 using System.Xml;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Utilities;
 
 #if SILVERLIGHT
 using XmlTextWriter = System.Xml.XmlWriter;
 using XmlTextReader = System.Xml.XmlReader;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.IO.GML2
+namespace NetTopologySuite.IO.GML2
 {
     /// <summary>
     /// Writes the GML representation of the features of NetTopologySuite model.

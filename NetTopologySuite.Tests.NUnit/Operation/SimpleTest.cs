@@ -1,9 +1,9 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
-using GisSharpBlog.NetTopologySuite.Operation;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
+using NetTopologySuite.Operation;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation
@@ -32,11 +32,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation
                     new Coordinate(2, 1));
         }
 
-        /**
-         * 
-         * 
-         * @throws Exception
-         */
         ///<summary>3 LineStrings touching at an endpoint.</summary>
         [Test]
         public void Test3TouchAtEndpoint()

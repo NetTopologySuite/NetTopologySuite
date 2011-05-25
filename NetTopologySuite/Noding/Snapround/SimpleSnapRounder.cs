@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
+namespace NetTopologySuite.Noding.Snapround
 {
 
     /// <summary>
@@ -82,7 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <param name="li"></param>
         private void SnapRound(IList<ISegmentString> segStrings, LineIntersector li)
         {
-            IList intersections = FindInteriorIntersections(segStrings, li);
+            IList<ICoordinate> intersections = FindInteriorIntersections(segStrings, li);
             ComputeSnaps(segStrings, intersections);
             ComputeVertexSnaps(segStrings);
         }
@@ -95,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <param name="segStrings"></param>
         /// <param name="li"></param>
         /// <returns>A list of <see cref="Coordinate" />s for the intersections.</returns>
-        private static IList FindInteriorIntersections(IList<ISegmentString> segStrings, LineIntersector li)
+        private static IList<ICoordinate> FindInteriorIntersections(IList<ISegmentString> segStrings, LineIntersector li)
         {
             IntersectionFinderAdder intFinderAdder = new IntersectionFinderAdder(li);
             SinglePassNoder noder = new MCIndexNoder(intFinderAdder);            
@@ -108,7 +108,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// </summary>
         /// <param name="segStrings"></param>
         /// <param name="snapPts"></param>
-        private void ComputeSnaps(IList<ISegmentString> segStrings, IList snapPts)
+        private void ComputeSnaps(IEnumerable<ISegmentString> segStrings, IEnumerable<ICoordinate> snapPts)
         {
             foreach (INodableSegmentString ss in segStrings)
                 ComputeSnaps(ss, snapPts);            
@@ -119,7 +119,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// </summary>
         /// <param name="ss"></param>
         /// <param name="snapPts"></param>
-        private void ComputeSnaps(INodableSegmentString ss, IList snapPts)
+        private void ComputeSnaps(INodableSegmentString ss, IEnumerable<ICoordinate> snapPts)
         {
             foreach (ICoordinate snapPt in snapPts)
             {

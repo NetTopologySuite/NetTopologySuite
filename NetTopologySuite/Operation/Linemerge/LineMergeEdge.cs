@@ -1,7 +1,7 @@
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Planargraph;
+using NetTopologySuite.Planargraph;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
+namespace NetTopologySuite.Operation.Linemerge
 {
     /// <summary>
     /// An edge of a <c>LineMergeGraph</c>. The <c>marked</c> field indicates

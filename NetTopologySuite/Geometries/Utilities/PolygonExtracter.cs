@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
+namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary> 
     /// Extracts all the <see cref="IPolygon"/> elements from a <see cref="IGeometry"/>.

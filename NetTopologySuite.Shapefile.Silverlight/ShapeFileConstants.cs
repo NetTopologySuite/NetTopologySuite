@@ -17,7 +17,7 @@
 
 using System;
 
-namespace GisSharpBlog.NetTopologySuite.Shapefile
+namespace NetTopologySuite.Shapefile
 {
 	/// <summary>
 	/// Represents invariant shapefile values, offsets and lengths

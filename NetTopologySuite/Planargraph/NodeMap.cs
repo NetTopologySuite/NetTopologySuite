@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Wintellect.PowerCollections;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Planargraph
+namespace NetTopologySuite.Planargraph
 {
     /// <summary>
     /// A map of <see cref="Node">nodes</see>, indexed by the coordinate of the node.

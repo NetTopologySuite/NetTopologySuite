@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Index;
-using GisSharpBlog.NetTopologySuite.Index.Quadtree;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Index;
+using NetTopologySuite.Index.Quadtree;
 
-namespace GisSharpBlog.NetTopologySuite.Simplify
+namespace NetTopologySuite.Simplify
 {
     /// <summary>
     /// An index of LineSegments.

@@ -1,8 +1,8 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
+using NetTopologySuite.IO;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Technique
+namespace NetTopologySuite.Samples.Technique
 {
 	/// <summary> 
     /// Shows a technique for using a zero-width buffer to compute

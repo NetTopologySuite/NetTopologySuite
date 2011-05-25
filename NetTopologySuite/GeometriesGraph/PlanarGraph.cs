@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
+using NetTopologySuite.Algorithm;
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary> 
     /// The computation of the <c>IntersectionMatrix</c> relies on the use of a structure
@@ -35,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        protected IList<Edge> edges = new List<Edge>();
+        private readonly IList<Edge> _edges = new List<Edge>();
 
         /// <summary>
         /// 
@@ -70,7 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public IEnumerator<Edge> GetEdgeEnumerator()
         {
-            return edges.GetEnumerator();            
+            return _edges.GetEnumerator();            
         }
 
         /// <summary>
@@ -82,6 +82,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             {
                 return edgeEndList;
             }
+        }
+
+        protected internal IList<Edge> Edges
+        {
+            get { return _edges; }
         }
 
         /// <summary>
@@ -107,7 +112,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="e"></param>
         protected void InsertEdge(Edge e)
         {
-            edges.Add(e);
+            _edges.Add(e);
         }
 
         /// <summary>
@@ -185,7 +190,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             // create all the nodes for the edges
             foreach (Edge e in edgesToAdd)
             {
-                edges.Add(e);
+                _edges.Add(e);
 
                 DirectedEdge de1 = new DirectedEdge(e, true);
                 DirectedEdge de2 = new DirectedEdge(e, false);
@@ -240,9 +245,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
         public Edge FindEdge(ICoordinate p0, ICoordinate p1)
         {
-            for (int i = 0; i < edges.Count; i++) 
+            for (int i = 0; i < _edges.Count; i++) 
             {
-                Edge e = edges[i];
+                Edge e = _edges[i];
                 ICoordinate[] eCoord = e.Coordinates;
                 if (p0.Equals(eCoord[0]) && p1.Equals(eCoord[1]))
                     return e;
@@ -259,9 +264,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
         public Edge FindEdgeInSameDirection(ICoordinate p0, ICoordinate p1)
         {
-            for (int i = 0; i < edges.Count; i++) 
+            for (int i = 0; i < _edges.Count; i++) 
             {
-                Edge e = edges[i];
+                Edge e = _edges[i];
                 ICoordinate[] eCoord = e.Coordinates;
                 if (MatchInSameDirection(p0, p1, eCoord[0], eCoord[1]))
                     return e;
@@ -297,10 +302,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public void WriteEdges(StreamWriter outstream)
         {
             outstream.WriteLine("Edges:");
-            for (int i = 0; i < edges.Count; i++) 
+            for (int i = 0; i < _edges.Count; i++) 
             {
                 outstream.WriteLine("edge " + i + ":");
-                Edge e = edges[i];
+                Edge e = _edges[i];
                 e.Write(outstream);
                 e.EdgeIntersectionList.Write(outstream);
             }

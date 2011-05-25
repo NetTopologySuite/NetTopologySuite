@@ -2,10 +2,10 @@ using System;
 using System.IO;
 using System.Text;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary> 
     /// Models the end of an edge incident on a node.
@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// This ordering is used to sort EdgeEnds around a node.
     /// </para>
     /// </remarks>
-    public class EdgeEnd : IComparable
+    public class EdgeEnd : IComparable<EdgeEnd>
     {
         /// <summary>
         /// The parent edge of this edge end.
@@ -43,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="edge"></param>
         protected EdgeEnd(Edge edge)
         {
-            this._edge = edge;
+            _edge = edge;
         }
 
         /// <summary>
@@ -183,9 +183,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public int CompareTo(object obj)
+        public int CompareTo(EdgeEnd e)
         {
-            EdgeEnd e = (EdgeEnd) obj;
+            //EdgeEnd e = (EdgeEnd) obj;
             return CompareDirection(e);
         }
 

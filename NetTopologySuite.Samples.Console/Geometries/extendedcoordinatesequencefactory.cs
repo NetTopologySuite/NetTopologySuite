@@ -1,7 +1,7 @@
 using System;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
+namespace NetTopologySuite.Samples.Geometries
 {	
 	/// <summary> 
     /// Creates ExtendedCoordinateSequenceFactory internally represented

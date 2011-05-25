@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// The <c>ICoordinateSequence</c> implementation that <c>Geometry</c>s use by default.

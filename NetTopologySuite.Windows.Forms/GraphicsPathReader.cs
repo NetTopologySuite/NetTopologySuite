@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Windows.Forms
+namespace NetTopologySuite.Windows.Forms
 {
     ///<summary>
-    /// Converts a Java2D {@link Shape} 
-    ///or the more general {@link PathIterator} into a {@link Geometry}.
+    /// Converts a DotNet <see cref="GraphicsPath"/>
+    /// or the more general <see cref="GraphicsPathIterator"/> into a <see cref="IGeometry"/>.
     ///</summary>
     ///<remarks>
     /// <para>
@@ -89,7 +89,7 @@ namespace GisSharpBlog.NetTopologySuite.Windows.Forms
                     holes.Add(hole);
                     seqIndex++;
                 }
-                var holeArray = GeometryFactory.ToLinearRingArray(holes);
+                var holeArray = holes.ToArray();//GeometryFactory.ToLinearRingArray(holes);
                 polys.Add(_geometryFactory.CreatePolygon(shell, holeArray));
             }
             return _geometryFactory.BuildGeometry(polys);

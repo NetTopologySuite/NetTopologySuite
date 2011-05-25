@@ -1,11 +1,7 @@
 using System.Collections.Generic;
-using IList = System.Collections.Generic.IList<object>;
-using GisSharpBlog.NetTopologySuite.Utilities;
-#if SILVERLIGHT
-using ArrayList = 
-#endif
+using NetTopologySuite.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Strtree
+namespace NetTopologySuite.Index.Strtree
 {
     /// <summary> 
     /// A node of the STR tree. The children of this node are either more nodes
@@ -34,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// Returns either child AbstractNodes, or if this is a leaf node, real data (wrapped
         /// in ItemBoundables).
         /// </summary>
-        public IList ChildBoundables
+        public IList<object >ChildBoundables
         {
             get
             {

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 
-namespace GisSharpBlog.NetTopologySuite.Index.IntervalRTree
+namespace NetTopologySuite.Index.IntervalRTree
 {
     /**
      * A static index on a set of 1-dimensional intervals,
@@ -20,25 +20,23 @@ namespace GisSharpBlog.NetTopologySuite.Index.IntervalRTree
      * 
      * @author Martin Davis
      */
-    public class SortedPackedIntervalRTree
+    public class SortedPackedIntervalRTree<T>
     {
-        private readonly List<IntervalRTreeNode> _leaves = new List<IntervalRTreeNode>();
-        private IntervalRTreeNode _root;
+        private readonly List<IntervalRTreeNode<T>> _leaves = new List<IntervalRTreeNode<T>>();
+        private IntervalRTreeNode<T>_root;
 
-        /**
-         * Adds an item to the index which is associated with the given interval
-         * 
-         * @param min the lower bound of the item interval
-         * @param max the upper bound of the item interval
-         * @param item the item to insert
-         * 
-         * @throw IllegalStateException if the index has already been queried
-         */
-        public void Insert(double min, double max, Object item)
+        ///<summary>
+        /// Adds an item to the index which is associated with the given interval
+        ///</summary>
+        /// <param name="min">The lower bound of the item interval</param>
+        /// <param name="max">The upper bound of the item interval</param>
+        /// <param name="item">The item to insert</param>
+        /// <exception cref="InvalidOperationException">if the index has already been queried</exception>
+        public void Insert(double min, double max, T item)
         {
             if (_root != null)
                 throw new InvalidOperationException("Index cannot be added to once it has been queried");
-            _leaves.Add(new IntervalRTreeLeafNode(min, max, item));
+            _leaves.Add(new IntervalRTreeLeafNode<T>(min, max, item));
         }
 
         private void Init()
@@ -47,15 +45,15 @@ namespace GisSharpBlog.NetTopologySuite.Index.IntervalRTree
             _root = BuildTree();
         }
 
-        private IntervalRTreeNode BuildTree()
+        private IntervalRTreeNode<T> BuildTree()
         {
             // sort the leaf nodes
-            _leaves.Sort(IntervalRTreeNode.NodeComparator.Instance);
+            _leaves.Sort(IntervalRTreeNode<T>.NodeComparator.Instance);
 
             // now group nodes into blocks of two and build tree up recursively
             var src = _leaves;
-            List<IntervalRTreeNode> temp;
-            List<IntervalRTreeNode> dest = new List<IntervalRTreeNode>();
+            List<IntervalRTreeNode<T>> temp;
+            List<IntervalRTreeNode<T>> dest = new List<IntervalRTreeNode<T>>();
 
             while (true)
             {
@@ -71,22 +69,22 @@ namespace GisSharpBlog.NetTopologySuite.Index.IntervalRTree
 
         private int _level;
 
-        private void BuildLevel(List<IntervalRTreeNode> src, List<IntervalRTreeNode> dest)
+        private void BuildLevel(List<IntervalRTreeNode<T>> src, List<IntervalRTreeNode<T>> dest)
         {
             _level++;
             dest.Clear();
             for (int i = 0; i < src.Count; i += 2)
             {
-                IntervalRTreeNode n1 = src[i];
-                IntervalRTreeNode n2 = (i + 1 < src.Count) ? src[i] : null;
+                IntervalRTreeNode<T> n1 = src[i];
+                IntervalRTreeNode<T> n2 = (i + 1 < src.Count) ? src[i] : null;
                 if (n2 == null)
                 {
                     dest.Add(n1);
                 }
                 else
                 {
-                    IntervalRTreeNode node =
-                        new IntervalRTreeBranchNode(src[i], src[i + 1]);
+                    IntervalRTreeNode<T> node =
+                        new IntervalRTreeBranchNode<T>(src[i], src[i + 1]);
                     //        printNode(node);
                     //				System.out.println(node);
                     dest.Add(node);
@@ -94,20 +92,19 @@ namespace GisSharpBlog.NetTopologySuite.Index.IntervalRTree
             }
         }
 
-        private void PrintNode(IntervalRTreeNode node)
+        private void PrintNode(IntervalRTreeNode<T> node)
         {
             Console.WriteLine(WKTWriter.ToLineString(new Coordinate(node.Min, _level), new Coordinate(node.Max, _level)));
         }
 
-        /**
-         * Search for intervals in the index which intersect the given closed interval
-         * and apply the visitor to them.
-         * 
-         * @param min the lower bound of the query interval
-         * @param max the upper bound of the query interval
-         * @param visitor the visitor to pass any matched items to
-         */
-        public void Query(double min, double max, IItemVisitor visitor)
+        ///<summary>
+        /// Search for intervals in the index which intersect the given closed interval
+        /// and apply the visitor to them.
+        ///</summary>
+        /// <param name="min">The lower bound of the query interval</param>
+        /// <param name="max">The upper bound of the query interval</param>
+        /// <param name="visitor">The visitor to pass any matched items to</param>
+        public void Query(double min, double max, IItemVisitor<T> visitor)
         {
             Init();
 

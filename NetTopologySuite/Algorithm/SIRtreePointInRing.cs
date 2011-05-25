@@ -1,9 +1,9 @@
 using IList = System.Collections.Generic.IList<object>;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Index.Strtree;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Index.Strtree;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm
+namespace NetTopologySuite.Algorithm
 {
     /// <summary> 
     /// Implements <c>PointInRing</c> using a <c>SIRtree</c> index to increase performance.

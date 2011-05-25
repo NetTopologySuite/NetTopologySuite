@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Shapefile
+namespace NetTopologySuite.Shapefile
 {
     public interface ISpatialIndex<TKey, TValue> :IDisposable
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GisSharpBlog.NetTopologySuite.Data
+namespace NetTopologySuite.Data
 {
     public interface IRecordFactory
     {

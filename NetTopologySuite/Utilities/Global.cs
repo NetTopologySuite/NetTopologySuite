@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace GisSharpBlog.NetTopologySuite.Utilities
+namespace NetTopologySuite.Utilities
 {
     /// <summary>
     /// 

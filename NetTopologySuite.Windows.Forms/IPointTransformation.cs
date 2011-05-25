@@ -33,7 +33,7 @@
 using System.Drawing;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Windows.Forms
+namespace NetTopologySuite.Windows.Forms
 {
     ///<summary>
     /// Transforms a geometry <see cref="ICoordinate"/> into a <see cref="PointF"/>,

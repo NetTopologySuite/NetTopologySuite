@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GisSharpBlog.NetTopologySuite.Features
+namespace NetTopologySuite.Features
 {
     /// <summary>
     /// 

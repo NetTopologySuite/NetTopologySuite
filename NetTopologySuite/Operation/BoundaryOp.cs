@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using Wintellect.PowerCollections;
 
-namespace GisSharpBlog.NetTopologySuite.Operation
+namespace NetTopologySuite.Operation
 {
     ///<summary>
     /// Computes the boundary of a <see cref="IGeometry"/>.

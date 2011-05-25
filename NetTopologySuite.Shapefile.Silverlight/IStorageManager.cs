@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace GisSharpBlog.NetTopologySuite.Shapefile
+namespace NetTopologySuite.Shapefile
 {
     public interface IStorageManager : IDisposable
     {

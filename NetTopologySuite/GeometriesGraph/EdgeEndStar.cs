@@ -1,16 +1,12 @@
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Utilities;
 using Wintellect.PowerCollections;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>
     /// A EdgeEndStar is an ordered list of EdgeEnds around a node.
@@ -22,23 +18,24 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// A map which maintains the edges in sorted order around the node.
         /// </summary>
-        protected IDictionary edgeMap = new OrderedDictionary<EdgeEnd, object>();
+        protected IDictionary<EdgeEnd, EdgeEnd> edgeMap = new OrderedDictionary<EdgeEnd, EdgeEnd>();
 
         /// <summary> 
         /// A list of all outgoing edges in the result, in CCW order.
         /// </summary>
-        protected IList edgeList;
+        protected IList<EdgeEnd> edgeList;
 
         /// <summary>
         /// The location of the point for this star in Geometry i Areas.
         /// </summary>
-        private Locations[] ptInAreaLocation = new Locations[] { Locations.Null, Locations.Null };
+        private readonly Locations[] _ptInAreaLocation = new[] { Locations.Null, Locations.Null };
 
+        /*
         /// <summary>
         /// 
         /// </summary>
-        public EdgeEndStar() { }
-
+        protected EdgeEndStar() { }
+         */
         /// <summary> 
         /// Insert a EdgeEnd into this EdgeEndStar.
         /// </summary>
@@ -51,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="e"></param>
         /// <param name="obj"></param>
-        protected void InsertEdgeEnd(EdgeEnd e, object obj)
+        protected void InsertEdgeEnd(EdgeEnd e, EdgeEnd obj)
         {
             edgeMap[e] = obj; 
             edgeList = null;    // edge list has changed - clear the cache
@@ -64,10 +61,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                IEnumerator it = GetEnumerator();
+                IEnumerator<EdgeEnd> it = GetEnumerator();
                 if (!it.MoveNext())
                     return null;
-                EdgeEnd e = (EdgeEnd) it.Current;
+                EdgeEnd e = it.Current;
                 return e.Coordinate;
             }
         }
@@ -89,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// once an iterator is requested, it is likely that insertion into
         /// the map is complete).
         /// </summary>
-        public IEnumerator GetEnumerator()
+        public IEnumerator<EdgeEnd> GetEnumerator()
         {
             return Edges.GetEnumerator();
         }
@@ -97,12 +94,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public IList Edges
+        public IList<EdgeEnd> Edges
         {
             get
             {
                 if (edgeList == null) 
-                    edgeList = new ArrayList(edgeMap.Values.CastPlatform());            
+                    edgeList = new List<EdgeEnd>(edgeMap.Values);            
                 return edgeList;
             }
         }
@@ -114,13 +111,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public EdgeEnd GetNextCW(EdgeEnd ee)
         {
-            IList temp = Edges;
+            IList<EdgeEnd> temp = Edges;
             temp = null;    // Hack for calling property
             int i = edgeList.IndexOf(ee);
             int iNextCW = i - 1;
             if (i == 0)
                 iNextCW = edgeList.Count - 1;
-            return (EdgeEnd) edgeList[iNextCW];
+            return edgeList[iNextCW];
         }
 
         /// <summary>
@@ -165,23 +162,21 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             * area label propagation, symLabel merging, then finally null label resolution.
             */
             bool[] hasDimensionalCollapseEdge = { false, false };
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
+            foreach (var e in Edges)
             {
-                EdgeEnd e = (EdgeEnd) it.Current;
                 Label label = e.Label;
                 for (int geomi = 0; geomi < 2; geomi++) 
                     if (label.IsLine(geomi) && label.GetLocation(geomi) == Locations.Boundary)
                         hasDimensionalCollapseEdge[geomi] = true;                
-            }        
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
+            }
+            foreach (var e in Edges)
             {
-                EdgeEnd e = (EdgeEnd) it.Current;
                 Label label = e.Label;        
                 for (int geomi = 0; geomi < 2; geomi++) 
                 {
                     if (label.IsAnyNull(geomi)) 
                     {
-                        Locations loc = Locations.Null;
+                        Locations loc;
                         if (hasDimensionalCollapseEdge[geomi])
                             loc = Locations.Exterior;                
                         else 
@@ -201,9 +196,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         private void ComputeEdgeEndLabels(IBoundaryNodeRule boundaryNodeRule)
         {
             // Compute edge label for each EdgeEnd
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
+            foreach (var ee in Edges)
             {
-                EdgeEnd ee = (EdgeEnd) it.Current;
                 ee.ComputeLabel(boundaryNodeRule);
             }
         }
@@ -218,9 +212,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public Locations GetLocation(int geomIndex, ICoordinate p, GeometryGraph[] geom)
         {
             // compute location only on demand
-            if (ptInAreaLocation[geomIndex] == Locations.Null) 
-                ptInAreaLocation[geomIndex] = SimplePointInAreaLocator.Locate(p, geom[geomIndex].Geometry);            
-            return ptInAreaLocation[geomIndex];
+            if (_ptInAreaLocation[geomIndex] == Locations.Null) 
+                _ptInAreaLocation[geomIndex] = SimplePointInAreaLocator.Locate(p, geom[geomIndex].Geometry);            
+            return _ptInAreaLocation[geomIndex];
         }
 
         /// <summary>
@@ -241,20 +235,19 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             // Since edges are stored in CCW order around the node,
             // As we move around the ring we move from the right to the left side of the edge
-            IList edges = Edges;
+            IList<EdgeEnd> edges = Edges;
             // if no edges, trivially consistent
             if (edges.Count <= 0)
                 return true;
             // initialize startLoc to location of last Curve side (if any)
             int lastEdgeIndex = edges.Count - 1;
-            Label startLabel = ((EdgeEnd) edges[lastEdgeIndex]).Label;
+            Label startLabel = edges[lastEdgeIndex].Label;
             Locations startLoc = startLabel.GetLocation(geomIndex, Positions.Left);
             Assert.IsTrue(startLoc != Locations.Null, "Found unlabelled area edge");
 
             Locations currLoc = startLoc;
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
+            foreach (EdgeEnd e in Edges)
             {
-                EdgeEnd e = (EdgeEnd) it.Current;
                 Label label = e.Label;
                 // we assume that we are only checking a area
                 Assert.IsTrue(label.IsArea(geomIndex), "Found non-area edge");
@@ -281,9 +274,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             // As we move around the ring we move from the right to the left side of the edge
             Locations startLoc = Locations.Null;
             // initialize loc to location of last Curve side (if any)
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
+            foreach (EdgeEnd e in Edges)
             {
-                EdgeEnd e = (EdgeEnd) it.Current;
                 Label label = e.Label;
                 if (label.IsArea(geomIndex) && label.GetLocation(geomIndex, Positions.Left) != Locations.Null)
                     startLoc = label.GetLocation(geomIndex, Positions.Left);
@@ -293,9 +285,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 return;
 
             Locations currLoc = startLoc;
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            foreach (EdgeEnd e in Edges)
             {
-                EdgeEnd e = (EdgeEnd) it.Current;
                 Label label = e.Label;
                 // set null On values to be in current location
                 if (label.GetLocation(geomIndex, Positions.On) == Locations.Null)
@@ -340,7 +331,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             GetEnumerator();   // force edgelist to be computed
             for (int i = 0; i < edgeList.Count; i++ ) 
             {
-                EdgeEnd e = (EdgeEnd) edgeList[i];
+                EdgeEnd e = edgeList[i];
                 if (e == eSearch) 
                     return i;
             }
@@ -352,12 +343,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="outstream"></param>
         public virtual void Write(StreamWriter outstream)
-        {            
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
-            {
-                EdgeEnd e = (EdgeEnd) it.Current;
+        {
+            foreach (EdgeEnd e in Edges)
                 e.Write(outstream);
-            }
         }
     }
 }

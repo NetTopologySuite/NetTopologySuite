@@ -1,27 +1,27 @@
 using System;
-using System.Collections;
+//using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.IO;
-using GisSharpBlog.NetTopologySuite.IO.GML2;
-using GisSharpBlog.NetTopologySuite.Operation;
-using GisSharpBlog.NetTopologySuite.Operation.Buffer;
-using GisSharpBlog.NetTopologySuite.Operation.Distance;
-using GisSharpBlog.NetTopologySuite.Operation.Overlay;
-using GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap;
-using GisSharpBlog.NetTopologySuite.Operation.Predicate;
-using GisSharpBlog.NetTopologySuite.Operation.Relate;
-using GisSharpBlog.NetTopologySuite.Operation.Union;
-using GisSharpBlog.NetTopologySuite.Operation.Valid;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.IO;
+using NetTopologySuite.IO.GML2;
+using NetTopologySuite.Operation;
+using NetTopologySuite.Operation.Buffer;
+using NetTopologySuite.Operation.Distance;
+using NetTopologySuite.Operation.Overlay;
+using NetTopologySuite.Operation.Overlay.Snap;
+using NetTopologySuite.Operation.Predicate;
+using NetTopologySuite.Operation.Relate;
+using NetTopologySuite.Operation.Union;
+using NetTopologySuite.Operation.Valid;
+using NetTopologySuite.Utilities;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {   
     /// <summary>  
     /// Basic implementation of <c>Geometry</c>.
@@ -1479,8 +1479,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The first non-zero <c>compareTo</c> result, if any; otherwise, zero.</returns>
         protected int Compare(List<IGeometry> a, List<IGeometry> b) 
         {
-            IEnumerator i = a.GetEnumerator();
-            IEnumerator j = b.GetEnumerator();
+            IEnumerator<IGeometry> i = a.GetEnumerator();
+            IEnumerator<IGeometry> j = b.GetEnumerator();
 
             while (i.MoveNext() && j.MoveNext()) 
             {

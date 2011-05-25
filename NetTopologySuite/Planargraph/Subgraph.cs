@@ -1,8 +1,8 @@
-using System.Collections;
+//using System.Collections;
 using System.Collections.Generic;
 using Wintellect.PowerCollections;
 
-namespace GisSharpBlog.NetTopologySuite.Planargraph
+namespace NetTopologySuite.Planargraph
 {
     /// <summary>
     /// A subgraph of a <see cref="PlanarGraph" />.
@@ -74,30 +74,30 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         }
 
         /// <summary>
-        /// Returns an <see cref="IEnumerator" /> over the <see cref="DirectedEdge" />s in this graph,
+        /// Returns an <see cref="IEnumerator{DirectedEdge}" /> over the <see cref="DirectedEdge" />s in this graph,
         /// in the order in which they were added.
         /// </summary>
         /// <returns></returns>
-        public IEnumerator GetDirEdgeEnumerator() 
+        public IEnumerator<DirectedEdge> GetDirEdgeEnumerator() 
         { 
             return dirEdges.GetEnumerator(); 
         }
 
         /// <summary>
-        /// Returns an <see cref="IEnumerator" /> over the <see cref="Edge" />s in this graph,
+        /// Returns an <see cref="IEnumerator{Edge}" /> over the <see cref="Edge" />s in this graph,
         /// in the order in which they were added.
         /// </summary>
         /// <returns></returns>
-        public IEnumerator GetEdgeEnumerator() 
+        public IEnumerator<Edge> GetEdgeEnumerator() 
         { 
             return edges.GetEnumerator(); 
         }
 
         /// <summary>
-        /// Returns an <see cref="IEnumerator" /> over the <see cref="Node" />s in this graph.
+        /// Returns an <see cref="IEnumerator{Node}" /> over the <see cref="Node" />s in this graph.
         /// </summary>
         /// <returns></returns>
-        public IEnumerator GetNodeEnumerator() 
+        public IEnumerator<Node> GetNodeEnumerator() 
         { 
             return nodeMap.GetEnumerator(); 
         }

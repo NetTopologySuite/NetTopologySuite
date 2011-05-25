@@ -1,21 +1,11 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Index.Chain;
-using GisSharpBlog.NetTopologySuite.Noding;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Index.Chain;
+using NetTopologySuite.Noding;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
+namespace NetTopologySuite.Geometries.Prepared
 {
-    /**
-     * 
-     * 
-     *
-     * The {@link addIntersections} method is called whenever the {@link Noder}
-     * 
-     * 
-     *
-     * @version 1.7
-     */
     ///<summary>
     /// Computes the intersections between two line segments in <see cref="ISegmentString"/>s
     /// and adds them to each string.

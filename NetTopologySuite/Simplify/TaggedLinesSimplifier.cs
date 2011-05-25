@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace GisSharpBlog.NetTopologySuite.Simplify
+namespace NetTopologySuite.Simplify
 {
     /// <summary>
     /// Simplifies a collection of TaggedLineStrings, preserving topology

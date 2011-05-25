@@ -1,12 +1,12 @@
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Planargraph;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Planargraph;
+using NetTopologySuite.Utilities;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
+namespace NetTopologySuite.Operation.Linemerge
 {
     /// <summary>
     /// Sews together a set of fully noded LineStrings. Sewing stops at nodes of degree 1
@@ -26,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// </summary>
         private class AnonymousGeometryComponentFilterImpl : IGeometryComponentFilter
         {
-            private LineMerger container = null;
+            private readonly LineMerger _container;
 
             /// <summary>
             /// 
@@ -34,7 +34,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             /// <param name="container"></param>
             public AnonymousGeometryComponentFilterImpl(LineMerger container)
             {
-                this.container = container;
+                _container = container;
             }
 
             /// <summary>
@@ -44,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             public void Filter(IGeometry component)
             {
                 if (component is ILineString)
-                    container.Add((ILineString) component);
+                    _container.Add((ILineString) component);
             }
         }
 
@@ -54,20 +54,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// extracted.
         /// </summary>
         /// <param name="geometries"></param>
-        public void Add(IList geometries) 
+        public void Add(IList<IGeometry> geometries) 
         {
-            IEnumerator i = geometries.GetEnumerator();
-            while (i.MoveNext())
-            {
-                IGeometry geometry = (IGeometry) i.Current;
+            foreach (IGeometry geometry in geometries)
                 Add(geometry);
-            }
         }
 
         private LineMergeGraph graph = new LineMergeGraph();
-        private IList mergedLineStrings = null;
-        private IList edgeStrings = null;
-        private IGeometryFactory factory = null;
+        private List<IGeometry> _mergedLineStrings;
+        private List<EdgeString> _edgeStrings;
+        private IGeometryFactory _factory;
 
         /// <summary>
         /// Adds a Geometry to be processed. May be called multiple times.
@@ -86,8 +82,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// <param name="lineString"></param>
         private void Add(ILineString lineString) 
         {
-            if (factory == null) 
-                this.factory = lineString.Factory;            
+            if (_factory == null) 
+                _factory = lineString.Factory;            
             graph.AddEdge(lineString);
         }
         
@@ -96,17 +92,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// </summary>
         private void Merge() 
         {
-            if (mergedLineStrings != null) 
+            if (_mergedLineStrings != null) 
                 return; 
-            edgeStrings = new ArrayList();
+            _edgeStrings = new List<EdgeString>();
             BuildEdgeStringsForObviousStartNodes();
             BuildEdgeStringsForIsolatedLoops();
-            mergedLineStrings = new ArrayList();    
-            for (IEnumerator i = edgeStrings.GetEnumerator(); i.MoveNext(); ) 
-            {
-                EdgeString edgeString = (EdgeString) i.Current;
-                mergedLineStrings.Add(edgeString.ToLineString());
-            }    
+            _mergedLineStrings = new List<IGeometry>();
+            foreach (EdgeString edgeString in _edgeStrings)
+                _mergedLineStrings.Add(edgeString.ToLineString());
         }
 
         /// <summary>
@@ -130,10 +123,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// </summary>
         private void BuildEdgeStringsForUnprocessedNodes() 
         {
-            IEnumerator i = graph.Nodes.GetEnumerator();
-            while (i.MoveNext())
+            foreach (Node node in graph.Nodes)
             {
-                Node node = (Node) i.Current;
                 if (!node.IsMarked) 
                 { 
                     Assert.IsTrue(node.Degree == 2);
@@ -148,10 +139,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// </summary>
         private void BuildEdgeStringsForNonDegree2Nodes() 
         {
-            IEnumerator i = graph.Nodes.GetEnumerator();
-            while (i.MoveNext()) 
+            foreach (Node node in graph.Nodes)
             {
-                Node node = (Node) i.Current;
                 if (node.Degree != 2) 
                 { 
                     BuildEdgeStringsStartingAt(node);
@@ -166,13 +155,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// <param name="node"></param>
         private void BuildEdgeStringsStartingAt(Node node) 
         {
-            IEnumerator i = node.OutEdges.GetEnumerator();
-            while (i.MoveNext()) 
+            foreach (LineMergeDirectedEdge directedEdge in node.OutEdges)
             {
-                LineMergeDirectedEdge directedEdge = (LineMergeDirectedEdge) i.Current;
                 if (directedEdge.Edge.IsMarked)
                     continue;
-                edgeStrings.Add(BuildEdgeStringStartingWith(directedEdge));
+                _edgeStrings.Add(BuildEdgeStringStartingWith(directedEdge));
             }
         }
 
@@ -183,7 +170,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// <returns></returns>
         private EdgeString BuildEdgeStringStartingWith(LineMergeDirectedEdge start) 
         {    
-            EdgeString edgeString = new EdgeString(factory);
+            EdgeString edgeString = new EdgeString(_factory);
             LineMergeDirectedEdge current = start;
             do 
             {
@@ -199,10 +186,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// Returns the LineStrings built by the merging process.
         /// </summary>
         /// <returns></returns>
-        public IList GetMergedLineStrings() 
+        public IList<IGeometry> GetMergedLineStrings() 
         {
             Merge();
-            return mergedLineStrings;
+            return _mergedLineStrings;
         }
     }
 }

@@ -1,4 +1,4 @@
-namespace GisSharpBlog.NetTopologySuite.Planargraph
+namespace NetTopologySuite.Planargraph
 {
     /// <summary>
     /// Represents an undirected edge of a {PlanarGraph}. An undirected edge

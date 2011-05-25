@@ -1,16 +1,16 @@
 using System;
-using System.Collections;
+//using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Utilities;
 using RTools_NTS.Util;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
     /// <summary>  
     /// Converts a Well-Known Text string to a <c>Geometry</c>.
@@ -41,9 +41,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
     /// </summary>
     public class WKTReader 
     {
-        private IGeometryFactory geometryFactory;
-        private IPrecisionModel precisionModel;
-        int index;
+        private readonly IGeometryFactory _geometryFactory;
+        private readonly IPrecisionModel _precisionModel;
+        int _index;
 
         /// <summary> 
         /// Creates a <c>WKTReader</c> that creates objects using a basic GeometryFactory.
@@ -57,8 +57,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="geometryFactory">The factory used to create <c>Geometry</c>s.</param>
         public WKTReader(IGeometryFactory geometryFactory) 
         {
-            this.geometryFactory = geometryFactory;
-            precisionModel = geometryFactory.PrecisionModel;
+            _geometryFactory = geometryFactory;
+            _precisionModel = geometryFactory.PrecisionModel;
         }
 
         /// <summary>
@@ -91,9 +91,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
         public IGeometry Read(TextReader reader) 
         {
             StreamTokenizer tokenizer = new StreamTokenizer(reader);
-            List<Token> tokens = new List<Token>();
+            IList<Token> tokens = new List<Token>();
             tokenizer.Tokenize(tokens);     // Read directly all tokens
-            index = 0;                      // Reset pointer to start of tokens
+            _index = 0;                      // Reset pointer to start of tokens
             try
             {
                 return ReadGeometryTaggedText(tokens);
@@ -120,7 +120,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// stream, or an empty array if "EMPTY" is the next element returned by
 		/// the stream.
 		/// </returns>
-		private ICoordinate[] GetCoordinates(IList tokens, Boolean skipExtraParenthesis)
+		private ICoordinate[] GetCoordinates(IList<Token> tokens, Boolean skipExtraParenthesis)
 		{
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
@@ -142,7 +142,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="tokens"></param>
         /// <param name="skipExtraParenthesis"></param>
         /// <returns></returns>
-        private ICoordinate GetPreciseCoordinate(IList tokens, Boolean skipExtraParenthesis)
+        private ICoordinate GetPreciseCoordinate(IList<Token> tokens, Boolean skipExtraParenthesis)
         {
             ICoordinate coord = new Coordinate();
 			Boolean extraParenthesisFound = false;
@@ -151,7 +151,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 				extraParenthesisFound = IsStringValueNext(tokens, "(");
 				if (extraParenthesisFound)
 				{
-					index++;
+					_index++;
 				}
 			}
 			coord.X = GetNextNumber(tokens);
@@ -163,16 +163,16 @@ namespace GisSharpBlog.NetTopologySuite.IO
 				extraParenthesisFound && 
 				IsStringValueNext(tokens, ")"))
 			{
-					index++;
+					_index++;
 			}
 
-			precisionModel.MakePrecise(coord);
+			_precisionModel.MakePrecise(coord);
             return coord;
         }
 
-		private Boolean IsStringValueNext(IList tokens, String stringValue)
+		private Boolean IsStringValueNext(IList<Token> tokens, String stringValue)
 		{
-			Token token = tokens[index] as Token;
+			Token token = tokens[_index] /*as Token*/;
 			return token.StringValue == stringValue;
 		}
 
@@ -181,9 +181,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="tokens"></param>
         /// <returns></returns>
-        private bool IsNumberNext(IList tokens) 
-        {            
-            Token token = tokens[index] as Token;                
+        private bool IsNumberNext(IList<Token> tokens) 
+        {
+            Token token = tokens[_index] /*as Token*/;            
             return token is FloatToken || token is IntToken;        
         }
 
@@ -195,31 +195,29 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// format. The next token must be a number.
         /// </param>
         /// <returns>The next number in the stream.</returns>
-		private double GetNextNumber(IList tokens) 
+		private double GetNextNumber(IList<Token> tokens)
         {
-            Token token = tokens[index++] as Token;            
+            Token token = tokens[_index++] /*as Token*/;
 
             if (token == null)
                 throw new ArgumentNullException("tokens", "Token list contains a null value");
-            else if (token is EofToken)
+            if (token is EofToken)
                 throw new ParseException("Expected number but encountered end of stream");
-            else if (token is EolToken)
+            if (token is EolToken)
                 throw new ParseException("Expected number but encountered end of line");
-            else if (token is FloatToken || token is IntToken)
+            if (token is FloatToken || token is IntToken)
                 return (double) token.ConvertToType(typeof(double));
-            else if (token is WordToken)
+            if (token is WordToken)
                 throw new ParseException("Expected number but encountered word: " + token.StringValue);
-            else if (token.StringValue == "(")
-				throw new ParseException("Expected number but encountered '('");
-            else if (token.StringValue == ")")
-				throw new ParseException("Expected number but encountered ')'");
-            else if (token.StringValue == ",")
+            if (token.StringValue == "(")
+                throw new ParseException("Expected number but encountered '('");
+            if (token.StringValue == ")")
+                throw new ParseException("Expected number but encountered ')'");
+            if (token.StringValue == ",")
                 throw new ParseException("Expected number but encountered ','");
-            else
-            {
-                Assert.ShouldNeverReachHere();
-                return double.NaN;
-            }
+            
+            Assert.ShouldNeverReachHere();
+            return double.NaN;
         }
 
         /// <summary>
@@ -231,7 +229,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </param>
         /// <returns>
         /// The next "EMPTY" or "(" in the stream as uppercase text.</returns>
-        private string GetNextEmptyOrOpener(IList tokens) 
+        private string GetNextEmptyOrOpener(IList<Token> tokens) 
         {
             string nextWord = GetNextWord(tokens);
             if (nextWord.Equals("EMPTY") || nextWord.Equals("(")) 
@@ -248,7 +246,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </param>
         /// <returns>
         /// The next ")" or "," in the stream.</returns>
-        private string GetNextCloserOrComma(IList tokens) 
+        private string GetNextCloserOrComma(IList<Token> tokens) 
         {
             string nextWord = GetNextWord(tokens);
             if (nextWord.Equals(",") || nextWord.Equals(")")) 
@@ -267,7 +265,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </param>
         /// <returns>
         /// The next ")" in the stream.</returns>
-        private string GetNextCloser(IList tokens) 
+        private string GetNextCloser(IList<Token> tokens) 
         {
             string nextWord = GetNextWord(tokens);    
             if (nextWord.Equals(")"))
@@ -283,29 +281,27 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// format. The next token must be a word.
         /// </param>
         /// <returns>The next word in the stream as uppercase text.</returns>
-        private string GetNextWord(IList tokens)
+        private string GetNextWord(IList<Token> tokens)
         {
-            Token token = tokens[index++] as Token;            
+            Token token = tokens[_index++] /*as Token*/;            
 
             if (token is EofToken)
                 throw new ParseException("Expected number but encountered end of stream");
-            else if (token is EolToken)
+            if (token is EolToken)
                 throw new ParseException("Expected number but encountered end of line");
-            else if (token is FloatToken || token is IntToken)
+            if (token is FloatToken || token is IntToken)
                 throw new ParseException("Expected word but encountered number: " + token.StringValue);
-            else if (token is WordToken)
+            if (token is WordToken)
                 return token.StringValue.ToUpper();
-            else if (token.StringValue == "(")
+            if (token.StringValue == "(")
                 return "(";
-            else if (token.StringValue == ")")
+            if (token.StringValue == ")")
                 return ")";
-            else if (token.StringValue == ",")
+            if (token.StringValue == ",")
                 return ",";
-            else
-            {
-                Assert.ShouldNeverReachHere();
-                return null;
-            }                     
+            
+            Assert.ShouldNeverReachHere();
+            return null;
         }
 
         /// <summary>
@@ -317,13 +313,13 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </param>
         /// <returns>A <c>Geometry</c> specified by the next token
         /// in the stream.</returns>
-        private IGeometry ReadGeometryTaggedText(IList tokens) 
+        private IGeometry ReadGeometryTaggedText(IList<Token> tokens) 
         {            
             /*
              * A new different implementation by Marc Jacquin:
              * this code manages also SRID values.
              */
-            IGeometry returned = null;
+            IGeometry returned;
             string sridValue = null;
             string type = tokens[0].ToString();
             
@@ -373,12 +369,12 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </param>
         /// <returns>A <c>Point</c> specified by the next token in
         /// the stream.</returns>
-        private IPoint ReadPointText(IList tokens) 
+        private IPoint ReadPointText(IList<Token> tokens) 
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
-                return geometryFactory.CreatePoint((ICoordinate) null);
-            IPoint point = geometryFactory.CreatePoint(GetPreciseCoordinate(tokens, false));
+                return _geometryFactory.CreatePoint((ICoordinate) null);
+            IPoint point = _geometryFactory.CreatePoint(GetPreciseCoordinate(tokens, false));
             GetNextCloser(tokens);
             return point;
         }
@@ -393,9 +389,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns>
         /// A <c>LineString</c> specified by the next
         /// token in the stream.</returns>
-        private ILineString ReadLineStringText(IList tokens) 
+        private ILineString ReadLineStringText(IList<Token> tokens) 
         {
-            return geometryFactory.CreateLineString(GetCoordinates(tokens, false));
+            return _geometryFactory.CreateLineString(GetCoordinates(tokens, false));
         }
 
         /// <summary>
@@ -407,9 +403,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </param>
         /// <returns>A <c>LinearRing</c> specified by the next
         /// token in the stream.</returns>
-        private ILinearRing ReadLinearRingText(IList tokens)
+        private ILinearRing ReadLinearRingText(IList<Token> tokens)
         {
-			return geometryFactory.CreateLinearRing(GetCoordinates(tokens, false));
+			return _geometryFactory.CreateLinearRing(GetCoordinates(tokens, false));
         }
 
         /// <summary>
@@ -422,9 +418,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns>
         /// A <c>MultiPoint</c> specified by the next
         /// token in the stream.</returns>
-        private IMultiPoint ReadMultiPointText(IList tokens) 
+        private IMultiPoint ReadMultiPointText(IList<Token> tokens) 
         {
-            return geometryFactory.CreateMultiPoint(ToPoints(GetCoordinates(tokens, true)));
+            return _geometryFactory.CreateMultiPoint(ToPoints(GetCoordinates(tokens, true)));
         }
 
         /// <summary> 
@@ -441,7 +437,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         {
             List<IPoint> points = new List<IPoint>();
             for (int i = 0; i < coordinates.Length; i++) 
-                points.Add(geometryFactory.CreatePoint(coordinates[i]));            
+                points.Add(_geometryFactory.CreatePoint(coordinates[i]));            
             return points.ToArray();
         }
         
@@ -456,12 +452,12 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// A <c>Polygon</c> specified by the next token
         /// in the stream.        
         /// </returns>
-        private IPolygon ReadPolygonText(IList tokens) 
+        private IPolygon ReadPolygonText(IList<Token> tokens) 
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
-                return geometryFactory.CreatePolygon(
-                    geometryFactory.CreateLinearRing(new ICoordinate[] { } ), new ILinearRing[] { } );
+                return _geometryFactory.CreatePolygon(
+                    _geometryFactory.CreateLinearRing(new ICoordinate[] { } ), new ILinearRing[] { } );
 
             List<ILinearRing> holes = new List<ILinearRing>();
             ILinearRing shell = ReadLinearRingText(tokens);
@@ -472,7 +468,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 holes.Add(hole);
                 nextToken = GetNextCloserOrComma(tokens);
             }
-            return geometryFactory.CreatePolygon(shell, holes.ToArray());
+            return _geometryFactory.CreatePolygon(shell, holes.ToArray());
         }
 
         /// <summary>
@@ -485,11 +481,11 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns>
         /// A <c>MultiLineString</c> specified by the
         /// next token in the stream.</returns>
-        private IMultiLineString ReadMultiLineStringText(IList tokens) 
+        private IMultiLineString ReadMultiLineStringText(IList<Token> tokens) 
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
-                return geometryFactory.CreateMultiLineString( new ILineString[] { } );
+                return _geometryFactory.CreateMultiLineString( new ILineString[] { } );
 
             List<ILineString> lineStrings = new List<ILineString>();
             ILineString lineString = ReadLineStringText(tokens);
@@ -501,7 +497,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 lineStrings.Add(lineString);
                 nextToken = GetNextCloserOrComma(tokens);
             }            
-            return geometryFactory.CreateMultiLineString(lineStrings.ToArray());
+            return _geometryFactory.CreateMultiLineString(lineStrings.ToArray());
         }
 
         /// <summary>  
@@ -514,11 +510,11 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// A <c>MultiPolygon</c> specified by the next
         /// token in the stream, or if if the coordinates used to create the
         /// <c>Polygon</c> shells and holes do not form closed linestrings.</returns>
-        private IMultiPolygon ReadMultiPolygonText(IList tokens) 
+        private IMultiPolygon ReadMultiPolygonText(IList<Token> tokens) 
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
-                return geometryFactory.CreateMultiPolygon(new IPolygon[]{});
+                return _geometryFactory.CreateMultiPolygon(new IPolygon[]{});
 
             List<IPolygon> polygons = new List<IPolygon>();
             IPolygon polygon = ReadPolygonText(tokens);
@@ -530,7 +526,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 polygons.Add(polygon);
                 nextToken = GetNextCloserOrComma(tokens);
             }            
-            return geometryFactory.CreateMultiPolygon(polygons.ToArray());
+            return _geometryFactory.CreateMultiPolygon(polygons.ToArray());
         }
 
         /// <summary>
@@ -544,11 +540,11 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns>
         /// A <c>GeometryCollection</c> specified by the
         /// next token in the stream.</returns>
-        private IGeometryCollection ReadGeometryCollectionText(IList tokens) 
+        private IGeometryCollection ReadGeometryCollectionText(IList<Token> tokens) 
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
-                return geometryFactory.CreateGeometryCollection(new IGeometry[] { } );
+                return _geometryFactory.CreateGeometryCollection(new IGeometry[] { } );
 
             List<IGeometry> geometries = new List<IGeometry>();
             IGeometry geometry = ReadGeometryTaggedText(tokens);
@@ -560,7 +556,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 geometries.Add(geometry);
                 nextToken = GetNextCloserOrComma(tokens);
             }            
-            return geometryFactory.CreateGeometryCollection(geometries.ToArray());
+            return _geometryFactory.CreateGeometryCollection(geometries.ToArray());
         }        
     }    
 }

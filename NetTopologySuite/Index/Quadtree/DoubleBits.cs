@@ -1,8 +1,8 @@
 using System;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Utilities;
 using BitConverter=System.BitConverter;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
+namespace NetTopologySuite.Index.Quadtree
 {
     /// <summary>
     /// DoubleBits manipulates Double numbers

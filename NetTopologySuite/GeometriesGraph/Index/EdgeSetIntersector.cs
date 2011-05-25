@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
+namespace NetTopologySuite.GeometriesGraph.Index
 {
     /// <summary>
     /// An <c>EdgeSetIntersector</c> computes all the intersections between the

@@ -1,12 +1,12 @@
 using System;
-using System.Collections;
+//using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Index.Bintree;
-using GisSharpBlog.NetTopologySuite.Index.Chain;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Index.Bintree;
+using NetTopologySuite.Index.Chain;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm
+namespace NetTopologySuite.Algorithm
 {
     /// <summary>
     /// Implements <c>IPointInRing</c>
@@ -20,8 +20,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         private class MCSelecter : MonotoneChainSelectAction
         {
-            private MCPointInRing container = null;
-            private ICoordinate p = null;
+            private readonly MCPointInRing _container;
+            private readonly ICoordinate _p;
 
             /// <summary>
             /// 
@@ -30,8 +30,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             /// <param name="p"></param>
             public MCSelecter(MCPointInRing container, ICoordinate p)
             {
-                this.container = container;
-                this.p = p;
+                _container = container;
+                _p = p;
             }
 
             /// <summary>
@@ -40,15 +40,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             /// <param name="ls"></param>
             public override void Select(LineSegment ls)
             {
-                container.TestLineSegment(p, ls);
+                _container.TestLineSegment(_p, ls);
             }
         }
 
-        private ILinearRing ring;
-        private Bintree tree;
-        private int crossings = 0;  // number of segment/ray crossings
+        private readonly ILinearRing _ring;
+        private Bintree<MonotoneChain> _tree;
+        private int _crossings;  // number of segment/ray crossings
 
-        private Interval interval = new Interval();
+        private readonly Interval _interval = new Interval();
 
         /// <summary>
         /// 
@@ -56,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="ring"></param>
         public MCPointInRing(ILinearRing ring)
         {
-            this.ring = ring;
+            _ring = ring;
             BuildIndex();
         }
 
@@ -65,18 +65,17 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         private void BuildIndex()
         {
-            tree = new Bintree();
+            _tree = new Bintree<MonotoneChain>();
 
-            ICoordinate[] pts = CoordinateArrays.RemoveRepeatedPoints(ring.Coordinates);
+            ICoordinate[] pts = CoordinateArrays.RemoveRepeatedPoints(_ring.Coordinates);
             IList<MonotoneChain> mcList = MonotoneChainBuilder.GetChains(pts);
 
-            for (int i = 0; i < mcList.Count; i++) 
+            foreach (MonotoneChain mc in mcList)
             {
-                MonotoneChain mc = (MonotoneChain) mcList[i];
                 IEnvelope mcEnv = mc.Envelope;
-                interval.Min = mcEnv.MinY;
-                interval.Max = mcEnv.MaxY;
-                tree.Insert(interval, mc);
+                _interval.Min = mcEnv.MinY;
+                _interval.Max = mcEnv.MaxY;
+                _tree.Insert(_interval, mc);
             }
         }        
 
@@ -87,25 +86,22 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns></returns>
         public bool IsInside(ICoordinate pt)
         {
-            crossings = 0;
+            _crossings = 0;
 
             // test all segments intersected by ray from pt in positive x direction
             IEnvelope rayEnv = new Envelope(Double.NegativeInfinity, Double.PositiveInfinity, pt.Y, pt.Y);
-            interval.Min = pt.Y;
-            interval.Max = pt.Y;
-            IList segs = tree.Query(interval);
+            _interval.Min = pt.Y;
+            _interval.Max = pt.Y;
+            IList<MonotoneChain> segs = _tree.Query(_interval);
 
             MCSelecter mcSelecter = new MCSelecter(this, pt);
-            for (IEnumerator i = segs.GetEnumerator(); i.MoveNext(); ) 
-            {
-                MonotoneChain mc = (MonotoneChain) i.Current;
+            foreach (MonotoneChain mc in segs)
                 TestMonotoneChain(rayEnv, mcSelecter, mc);
-            }
 
-            /*
+           /*
             *  p is inside if number of crossings is odd.
             */
-            if ((crossings % 2) == 1) 
+            if ((_crossings % 2) == 1) 
                 return true;            
             return false;
         }
@@ -116,7 +112,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="rayEnv"></param>
         /// <param name="mcSelecter"></param>
         /// <param name="mc"></param>
-        private void TestMonotoneChain(IEnvelope rayEnv, MCSelecter mcSelecter, MonotoneChain mc)
+        private static void TestMonotoneChain(IEnvelope rayEnv, MCSelecter mcSelecter, MonotoneChain mc)
         {
             mc.Select(rayEnv, mcSelecter);
         }
@@ -155,7 +151,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 *  crosses ray if strictly positive intersection.
                 */
                 if(0.0 < xInt) 
-                    crossings++;            
+                    _crossings++;            
             }
         }
     }

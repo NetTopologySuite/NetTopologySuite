@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Overlay.Validate
+namespace NetTopologySuite.Operation.Overlay.Validate
 {
     ///<summary>
     /// Finds the most likely <see cref="Locations"/> of a point relative to

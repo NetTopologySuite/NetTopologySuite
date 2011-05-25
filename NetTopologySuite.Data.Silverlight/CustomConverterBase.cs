@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GisSharpBlog.NetTopologySuite.Data
+namespace NetTopologySuite.Data
 {
     public abstract class CustomConverterBase<TFrom, TTo> : ICustomConverter<TFrom, TTo>
     {

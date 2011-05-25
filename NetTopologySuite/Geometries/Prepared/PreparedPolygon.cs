@@ -1,9 +1,9 @@
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm.Locate;
-using GisSharpBlog.NetTopologySuite.Noding;
-using GisSharpBlog.NetTopologySuite.Operation.Predicate;
+using NetTopologySuite.Algorithm.Locate;
+using NetTopologySuite.Noding;
+using NetTopologySuite.Operation.Predicate;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
+namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
     /// A prepared version for <see cref="IPolygonal"/> geometries.

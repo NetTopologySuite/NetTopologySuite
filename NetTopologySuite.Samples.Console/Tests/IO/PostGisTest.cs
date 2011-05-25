@@ -1,10 +1,10 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Tests.IO
+namespace NetTopologySuite.Tests.IO
 {
 	/// <summary>
 	/// Ported from PostGIS:

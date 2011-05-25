@@ -1,8 +1,8 @@
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Planargraph;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Planargraph;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
+namespace NetTopologySuite.Operation.Linemerge
 {
     /// <summary>
     /// A planar graph of edges that is analyzed to sew the edges together. The 

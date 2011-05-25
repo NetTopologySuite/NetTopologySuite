@@ -1,13 +1,13 @@
 using System;
 using System.Collections;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.Utilities;
 using Wintellect.PowerCollections;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Valid
+namespace NetTopologySuite.Operation.Valid
 {
     /// <summary>
     /// Implements the algorithsm required to compute the <see cref="Geometry.IsValid" />

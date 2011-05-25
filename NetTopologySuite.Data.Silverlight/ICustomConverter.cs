@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GisSharpBlog.NetTopologySuite.Data
+namespace NetTopologySuite.Data
 {
     public interface ICustomConverter<in TSource, out TTarget> : ICustomConverter
     {

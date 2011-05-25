@@ -1,11 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Overlay.Validate
+namespace NetTopologySuite.Operation.Overlay.Validate
 {
     ///<summary>
     /// Generates points offset by a given distance from both sides of the midpoint of all segments in a <see cref="IGeometry"/>.

@@ -9,7 +9,7 @@
     <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GisSharpBlog.NetTopologySuite</RootNamespace>
+    <RootNamespace>NetTopologySuite</RootNamespace>
     <AssemblyName>NetTopologySuite.Silverlight</AssemblyName>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>nts.snk</AssemblyOriginatorKeyFile>
@@ -43,9 +43,6 @@
     <DocumentationFile>bin\Release\NetTopologySuite.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GeoAPI.Silverlight">
-      <HintPath>..\ExternalReferences\GeoAPI.Silverlight.dll</HintPath>
-    </Reference>
     <Reference Include="PowerCollections.Silverlight">
       <HintPath>..\ExternalReferences\PowerCollections.Silverlight.dll</HintPath>
     </Reference>
@@ -184,10 +181,24 @@
     <Compile Include="..\NetTopologySuite\Utilities\PlatformUtilityEx.cs">
       <Link>Utilities\PlatformUtilityEx.cs</Link>
     </Compile>
-    <Compile Include="Extension\ICoordinateEx.cs" />
-    <Compile Include="Extension\IEnvelopeEx.cs" />
-    <Compile Include="FrameworkReplacements\SortedDictionary.cs" />
-    <Compile Include="FrameworkReplacements\Trace.cs" />
+    <Compile Include="..\NetTopologySuite\Algorithm\Locate\IndexedPointInAreaLocator.cs">
+      <Link>Algorithm\Locate\IndexedPointInAreaLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Algorithm\Locate\IPointOnGeometryLocator.cs">
+      <Link>Algorithm\Locate\IPointOnGeometryLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Algorithm\Locate\SimplePointInAreaLocator.cs">
+      <Link>Algorithm\Locate\SimplePointInAreaLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Algorithm\IPointInAreaLocator.cs">
+      <Link>Algorithm\IPointInAreaLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Algorithm\RayCrossingCounter.cs">
+      <Link>Algorithm\RayCrossingCounter.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Noding\SegmentIntersectionDetector.cs">
+      <Link>Noding\SegmentIntersectionDetector.cs</Link>
+    </Compile>
     <Compile Include="..\NetTopologySuite\Geometries\Coordinate.cs">
       <SubType>Code</SubType>
       <Link>Geometries\Coordinate.cs</Link>
@@ -482,7 +493,7 @@
       <Link>Index\Sweepline\SweepLineEvent.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Index\Sweepline\SweepLineIndex.cs">
-      <Link>SweepLineIndex.cs</Link>
+      <Link>Index\Sweepline\SweepLineIndex.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Index\Sweepline\SweepLineInterval.cs">
       <Link>Index\Sweepline\SweepLineInterval.cs</Link>
@@ -686,6 +697,18 @@
     </Compile>
     <Compile Include="..\NetTopologySuite\Operation\Buffer\BufferOp.cs">
       <Link>Operation\Buffer\BufferOp.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Operation\Buffer\BufferParameters.cs">
+      <Link>Operation\Buffer\BufferParameters.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Operation\Buffer\OffsetCurveVertexList.cs">
+      <Link>Operation\Buffer\OffsetCurveVertexList.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Operation\Union\UnaryUnionOp.cs">
+      <Link>Operation\Union\UnaryUnionOp.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Operation\Union\UnionInteracting.cs">
+      <Link>Operation\Union\UnionInteracting.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Operation\Buffer\BufferSubgraph.cs">
       <Link>Operation\Buffer\BufferSubgraph.cs</Link>
@@ -990,12 +1013,108 @@
     <Compile Include="..\NetTopologySuite\Utilities\UniqueCoordinateArrayFilter.cs">
       <Link>Utilities\UniqueCoordinateArrayFilter.cs</Link>
     </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Prepared\AbstractPreparedPolygonContains.cs">
+      <Link>Geometries\Prepared\AbstractPreparedPolygonContains.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Prepared\BasicPreparedGeometry.cs">
+      <Link>Geometries\Prepared\BasicPreparedGeometry.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Prepared\LineIntersectionAdder.cs">
+      <Link>Geometries\Prepared\LineIntersectionAdder.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Prepared\LineNode.cs">
+      <Link>Geometries\Prepared\LineNode.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Prepared\LineTopology.cs">
+      <Link>Geometries\Prepared\LineTopology.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Prepared\PreparedGeometryFactory.cs">
+      <Link>Geometries\Prepared\PreparedGeometryFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Prepared\PreparedLineString.cs">
+      <Link>Geometries\Prepared\PreparedLineString.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Prepared\PreparedLineStringIntersects.cs">
+      <Link>Geometries\Prepared\PreparedLineStringIntersects.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Prepared\PreparedPoint.cs">
+      <Link>Geometries\Prepared\PreparedPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Prepared\PreparedPolygon.cs">
+      <Link>Geometries\Prepared\PreparedPolygon.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Prepared\PreparedPolygonContains.cs">
+      <Link>Geometries\Prepared\PreparedPolygonContains.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Prepared\PreparedPolygonContainsProperly.cs">
+      <Link>Geometries\Prepared\PreparedPolygonContainsProperly.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Prepared\PreparedPolygonCovers.cs">
+      <Link>Geometries\Prepared\PreparedPolygonCovers.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Prepared\PreparedPolygonIntersects.cs">
+      <Link>Geometries\Prepared\PreparedPolygonIntersects.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Prepared\PreparedPolygonLineIntersection.cs">
+      <Link>Geometries\Prepared\PreparedPolygonLineIntersection.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Prepared\PreparedPolygonPredicate.cs">
+      <Link>Geometries\Prepared\PreparedPolygonPredicate.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Utilities\AffineTransformation.cs">
+      <Link>Geometries\Utilities\AffineTransformation.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Utilities\AffineTransformationBuilder.cs">
+      <Link>Geometries\Utilities\AffineTransformationBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Utilities\Matrix.cs">
+      <Link>Geometries\Utilities\Matrix.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Index\IntervalRTree\IntervalRTreeBranchNode.cs">
+      <Link>Index\IntervalRTree\IntervalRTreeBranchNode.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Index\IntervalRTree\IntervalRTreeLeafNode.cs">
+      <Link>Index\IntervalRTree\IntervalRTreeLeafNode.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Index\IntervalRTree\IntervalRTreeNode.cs">
+      <Link>Index\IntervalRTree\IntervalRTreeNode.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Index\IntervalRTree\SortedPackedIntervalRTree.cs">
+      <Link>Index\IntervalRTree\SortedPackedIntervalRTree.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Utilities\ComponentGeometryExtractor.cs">
+      <Link>Geometries\Utilities\ComponentGeometryExtractor.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Utilities\GeometryExtracter.cs">
+      <Link>Geometries\Utilities\GeometryExtracter.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Utilities\NoninvertibleTransformationException.cs">
+      <Link>Geometries\Utilities\NoninvertibleTransformationException.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Noding\SegmentStringUtil.cs">
+      <Link>Noding\SegmentStringUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Noding\FastSegmentSetIntersectionFinder.cs">
+      <Link>Noding\FastSegmentSetIntersectionFinder.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Noding\MCIndexSegmentSetMutualIntersector.cs">
+      <Link>Noding\MCIndexSegmentSetMutualIntersector.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Noding\SegmentSetMutualIntersector.cs">
+      <Link>Noding\SegmentSetMutualIntersector.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\IO\GeoTools\Handlers\ProbeLinearRing.cs">
+      <Link>IO\GeoTools\Handlers\ProbeLinearRing.cs</Link>
+    </Compile>
     <Compile Include="IO\GeoTools\Dbase\DbaseFileReader.SL.cs" />
     <Compile Include="IO\GeoTools\ShapefileDataReader.SL.cs" />
     <Compile Include="IO\GeoTools\SLShapeFileDataEnumerator.cs" />
     <Compile Include="IO\GeoTools\ShapefileReader.SL.cs" />
     <Compile Include="IO\GeoTools\StringToGeometryConverter.cs" />
     <Compile Include="IO\MyShapeFileReader.SL.cs" />
+    <Compile Include="Extension\ICoordinateEx.cs" />
+    <Compile Include="Extension\IEnvelopeEx.cs" />
+    <Compile Include="FrameworkReplacements\Trace.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\NetTopologySuite\License.txt">
@@ -1020,6 +1139,10 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GeoAPI\GeoAPI.Silverlight\GeoAPI.Silverlight.csproj">
+      <Project>{9B913337-1114-4D05-8F24-D05A5FD588AD}</Project>
+      <Name>GeoAPI.Silverlight</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.Data.Silverlight\NetTopologySuite.Data.Silverlight.csproj">
       <Project>{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}</Project>
       <Name>NetTopologySuite.Data.Silverlight</Name>
@@ -1029,6 +1152,7 @@
       <Name>NetTopologySuite.Encodings.Silverlight</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <!-- <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>

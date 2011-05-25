@@ -1,11 +1,11 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
+namespace NetTopologySuite.GeometriesGraph.Index
 {
     /// <summary> 
     /// MonotoneChains are a way of partitioning the segments of an edge to
@@ -28,19 +28,20 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        public static int[] ToIntArray(IList list)
+        [Obsolete("Use List<int>.ToArray()")]
+        public static int[] ToIntArray(IList<int >list)
         {
             int[] array = new int[list.Count];
             for (int i = 0; i < array.Length; i++) 
                 array[i] = Convert.ToInt32(list[i]);            
             return array;
         }
-
+        /*
         /// <summary>
         /// Default empty constructor.
         /// </summary>
         public MonotoneChainIndexer() { }
-
+        */
         /// <summary>
         /// 
         /// </summary>
@@ -50,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         {
             // find the startpoint (and endpoints) of all monotone chains in this edge
             int start = 0;
-            IList startIndexList = new ArrayList();
+            var startIndexList = new List<int>();
             startIndexList.Add(start);
             do 
             {
@@ -60,7 +61,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             } 
             while (start < pts.Length - 1);
             // copy list to an array of ints, for efficiency
-            int[] startIndex = ToIntArray(startIndexList);
+            int[] startIndex = startIndexList.ToArray(); /*ToIntArray(startIndexList);*/
             return startIndex;
         }
 
@@ -68,7 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// The index of the last point in the monotone chain.
         /// 
         /// </returns>
-        private int FindChainEnd(ICoordinate[] pts, int start)
+        private static int FindChainEnd(ICoordinate[] pts, int start)
         {
             // determine quadrant for chain
             int chainQuad = QuadrantOp.Quadrant(pts[start], pts[start + 1]);

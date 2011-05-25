@@ -2,7 +2,7 @@ using System;
 using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Strtree
+namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
     /// One-dimensional version of an STR-packed R-tree. SIR stands for

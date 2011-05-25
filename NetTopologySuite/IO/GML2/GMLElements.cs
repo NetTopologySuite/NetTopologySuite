@@ -1,4 +1,4 @@
-namespace GisSharpBlog.NetTopologySuite.IO.GML2
+namespace NetTopologySuite.IO.GML2
 {
     /// <summary>
     /// 

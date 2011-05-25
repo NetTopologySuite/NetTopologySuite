@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     ///<summary>
     /// An intersector for the red-blue intersection problem.

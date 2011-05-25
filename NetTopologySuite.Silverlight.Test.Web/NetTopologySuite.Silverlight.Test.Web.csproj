@@ -14,6 +14,7 @@
     <AssemblyName>NetTopologySuite.Silverlight.Test.Web</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightApplicationList>{0A5A2807-4D6A-4C1D-B492-9278D9C942C2}|..\NetTopologySuite.Silverlight.Test\NetTopologySuite.Silverlight.Test.csproj|ClientBin|False</SilverlightApplicationList>
+    <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

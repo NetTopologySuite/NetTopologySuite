@@ -2,7 +2,7 @@
 using System.IO;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
     public partial class ShapefileReader
     {

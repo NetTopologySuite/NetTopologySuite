@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.IO.Handlers
+namespace NetTopologySuite.IO.Handlers
 {
     /// <summary>
     /// Abstract class that defines the interfaces that other 'Shape' handlers must implement.

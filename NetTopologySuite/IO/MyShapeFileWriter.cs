@@ -1,8 +1,8 @@
 using System;
 using System.IO;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
     /// <summary>
     ///  A class for writing shapefiles data.

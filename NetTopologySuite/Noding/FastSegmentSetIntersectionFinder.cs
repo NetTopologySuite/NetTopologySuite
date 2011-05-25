@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using GisSharpBlog.NetTopologySuite.Algorithm;
+using NetTopologySuite.Algorithm;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     ///<summary>
     /// Finds if two sets of <see cref="ISegmentString"/>s intersect.

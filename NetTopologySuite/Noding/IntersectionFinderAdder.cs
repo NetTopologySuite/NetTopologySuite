@@ -1,13 +1,9 @@
-using System;
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Index.Chain;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Index.Chain;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     /// <summary>
     /// Finds proper and interior intersections in a set of <see cref="ISegmentString" />s,
@@ -15,8 +11,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public class IntersectionFinderAdder : ISegmentIntersector
     {
-        private LineIntersector li = null;
-        private readonly IList _interiorIntersections = null;
+        private readonly LineIntersector _li;
+        private readonly IList<ICoordinate> _interiorIntersections;
 
         /// <summary>
         /// Creates an intersection finder which finds all proper intersections.
@@ -24,14 +20,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="li">The <see cref="LineIntersector" /> to use.</param>
         public IntersectionFinderAdder(LineIntersector li)
         {
-            this.li = li;
-            _interiorIntersections = new ArrayList();
+            _li = li;
+            _interiorIntersections = new List<ICoordinate>();
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public IList InteriorIntersections
+        public IList<ICoordinate> InteriorIntersections
         {
             get
             {
@@ -63,17 +59,17 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             ICoordinate[] coordinates1 = e1.Coordinates;
             ICoordinate p10 = coordinates1[segIndex1];
             ICoordinate p11 = coordinates1[segIndex1 + 1];
-            li.ComputeIntersection(p00, p01, p10, p11);            
+            _li.ComputeIntersection(p00, p01, p10, p11);            
 
-            if (li.HasIntersection)
+            if (_li.HasIntersection)
             {
-                if (li.IsInteriorIntersection())
+                if (_li.IsInteriorIntersection())
                 {
-                    for(int intIndex = 0; intIndex < li.IntersectionNum; intIndex++)
-                        _interiorIntersections.Add(li.GetIntersection(intIndex));
+                    for(int intIndex = 0; intIndex < _li.IntersectionNum; intIndex++)
+                        _interiorIntersections.Add(_li.GetIntersection(intIndex));
                     
-                    ((NodedSegmentString)e0).AddIntersections(li, segIndex0, 0);
-                    ((NodedSegmentString)e1).AddIntersections(li, segIndex1, 1);
+                    ((NodedSegmentString)e0).AddIntersections(_li, segIndex0, 0);
+                    ((NodedSegmentString)e1).AddIntersections(_li, segIndex1, 1);
                 }
             }
         }

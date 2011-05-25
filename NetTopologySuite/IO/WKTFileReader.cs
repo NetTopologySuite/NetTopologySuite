@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
     ///<summary>
     /// Reads a sequence of <see cref="IGeometry"/>s in WKT format from a text file.

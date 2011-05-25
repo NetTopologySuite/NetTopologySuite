@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
     /// <summary>
     /// Writes features as ESRI GeoDatabase binary format in a SqlServer database,

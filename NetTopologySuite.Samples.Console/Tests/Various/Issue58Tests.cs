@@ -1,4 +1,4 @@
-namespace GisSharpBlog.NetTopologySuite.Tests.Various
+namespace NetTopologySuite.Tests.Various
 {
     using NetTopologySuite.IO;
     using NUnit.Framework;

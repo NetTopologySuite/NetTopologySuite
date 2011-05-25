@@ -1,13 +1,10 @@
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.GeometriesGraph;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Relate
+namespace NetTopologySuite.Operation.Relate
 {
     /// <summary>
     /// A collection of EdgeStubs which obey the following invariant:
@@ -17,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     public class EdgeEndBundle : EdgeEnd
     {
         //private readonly IBoundaryNodeRule _boundaryNodeRule;
-        private readonly IList _edgeEnds = new ArrayList();
+        private readonly IList<EdgeEnd> _edgeEnds = new List<EdgeEnd>();
 
         /// <summary>
         /// 
@@ -42,7 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// 
         /// </summary>
         /// <returns></returns>
-        public IEnumerator GetEnumerator() 
+        public IEnumerator<EdgeEnd> GetEnumerator() 
         { 
             return _edgeEnds.GetEnumerator(); 
         }
@@ -50,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// <summary>
         /// 
         /// </summary>
-        public IList EdgeEnds
+        public IList<EdgeEnd> EdgeEnds
         {
             get
             {
@@ -81,9 +78,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             // create the label.  If any of the edges belong to areas,
             // the label must be an area label
             bool isArea = false;
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            foreach (EdgeEnd e in _edgeEnds)
             {
-                EdgeEnd e = (EdgeEnd) it.Current;
                 if (e.Label.IsArea())
                     isArea = true;
             }
@@ -119,16 +115,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         ///  otherwise, the attribute is Null.
         /// </summary>
         /// <param name="geomIndex"></param>
+        /// <param name="boundaryNodeRule"></param>
         private void ComputeLabelOn(int geomIndex, IBoundaryNodeRule boundaryNodeRule)
         {
             // compute the On location value
             int boundaryCount = 0;
             bool foundInterior = false;
-            Locations loc = Locations.Null;
+            Locations loc;
 
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            foreach (EdgeEnd e in _edgeEnds)
             {
-                EdgeEnd e = (EdgeEnd) it.Current;
                 loc = e.Label.GetLocation(geomIndex);
                 if (loc == Locations.Boundary) 
                     boundaryCount++;
@@ -171,9 +167,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// <param name="side"></param>
         private void ComputeLabelSide(int geomIndex, Positions side)
         {
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            foreach (EdgeEnd e in _edgeEnds)
             {
-                EdgeEnd e = (EdgeEnd) it.Current;
                 if (e.Label.IsArea()) 
                 {
                     Locations loc = e.Label.GetLocation(geomIndex, side);
@@ -182,7 +177,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                         Label.SetLocation(geomIndex, side, Locations.Interior);
                         return;
                     }
-                    else if (loc == Locations.Exterior)
+                    if (loc == Locations.Exterior)
                         Label.SetLocation(geomIndex, side, Locations.Exterior);
                 }
             }
@@ -204,9 +199,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         public override void Write(StreamWriter outstream)
         {
             outstream.WriteLine("EdgeEndBundle--> Label: " + Label);
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            foreach (EdgeEnd ee in _edgeEnds)
             {
-                EdgeEnd ee = (EdgeEnd) it.Current;
                 ee.Write(outstream);
                 outstream.WriteLine();
             }

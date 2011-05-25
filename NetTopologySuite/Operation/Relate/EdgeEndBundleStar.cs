@@ -1,8 +1,7 @@
-using System.Collections;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.GeometriesGraph;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Relate
+namespace NetTopologySuite.Operation.Relate
 {
     /// <summary>
     /// An ordered list of <c>EdgeEndBundle</c>s around a <c>RelateNode</c>.
@@ -11,11 +10,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// </summary>
     public class EdgeEndBundleStar : EdgeEndStar
     {
+        /*
         /// <summary>
         /// 
         /// </summary>
         public EdgeEndBundleStar() { }
-
+         */
         /// <summary>
         /// Insert a EdgeEnd in order in the list.
         /// If there is an existing EdgeStubBundle which is parallel, the EdgeEnd is
@@ -25,14 +25,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// <param name="e"></param>
         public override void Insert(EdgeEnd e)
         {
-            EdgeEndBundle eb = (EdgeEndBundle) edgeMap[e];
-            if (eb == null) 
+            EdgeEnd ee;
+            //EdgeEndBundle eb; //= (EdgeEndBundle) edgeMap[e];
+            //if (eb == null)
+            if (!edgeMap.TryGetValue(e, out ee)) 
             {
-                eb = new EdgeEndBundle(e);
-                InsertEdgeEnd(e, eb);
+                //eb = new EdgeEndBundle(e);
+                //InsertEdgeEnd(e, eb);
+                InsertEdgeEnd(e, new EdgeEndBundle(e));
             }
             else 
-                eb.Insert(e);
+                ((EdgeEndBundle)ee).Insert(e);
             
         }
 
@@ -42,11 +45,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// <param name="im"></param>
         public void UpdateIM(IntersectionMatrix im)
         {
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
-            {
-                EdgeEndBundle esb = (EdgeEndBundle) it.Current;
+            foreach (EdgeEndBundle esb in Edges)
                 esb.UpdateIM(im);
-            }
         }
     }
 }

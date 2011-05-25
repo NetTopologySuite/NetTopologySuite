@@ -25,10 +25,10 @@ using System.Text;
 using System.IO;
 using System.Globalization;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Data;
-using GisSharpBlog.NetTopologySuite.Shapefile;
+using NetTopologySuite.Data;
+using NetTopologySuite.Shapefile;
 
-namespace GisSharpBlog.NetTopologySuite.Shapefile
+namespace NetTopologySuite.Shapefile
 {
     /// <summary>
     /// Represents a dBase file used to store attribute data in a Shapefile.

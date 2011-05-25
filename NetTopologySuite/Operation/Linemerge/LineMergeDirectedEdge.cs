@@ -1,8 +1,8 @@
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Planargraph;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Planargraph;
+using NetTopologySuite.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
+namespace NetTopologySuite.Operation.Linemerge
 {
     /// <summary>
     /// A <c>com.vividsolutions.jts.planargraph.DirectedEdge</c> of a <c>LineMergeGraph</c>. 

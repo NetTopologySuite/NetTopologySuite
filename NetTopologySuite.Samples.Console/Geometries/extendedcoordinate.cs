@@ -1,7 +1,7 @@
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
+namespace NetTopologySuite.Samples.Geometries
 {
 	public class ExtendedCoordinate : Coordinate
 	{				

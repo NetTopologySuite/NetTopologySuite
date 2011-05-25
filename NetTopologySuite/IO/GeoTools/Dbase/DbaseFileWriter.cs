@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Text;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
     /// <summary>
     /// This class aids in the writing of Dbase IV files. 

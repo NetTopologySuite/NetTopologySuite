@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Data;
+using NetTopologySuite.Data;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
     public partial class ShapefileDataReader : IRecordSource
     {

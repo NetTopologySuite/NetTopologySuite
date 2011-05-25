@@ -1,7 +1,7 @@
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Utilities;
 using BitConverter=System.BitConverter;
 
-namespace GisSharpBlog.NetTopologySuite.Precision
+namespace NetTopologySuite.Precision
 {
     /// <summary> 
     /// Determines the maximum number of common most-significant

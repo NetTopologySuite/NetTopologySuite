@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
-using GisSharpBlog.NetTopologySuite.IO;
-using GisSharpBlog.NetTopologySuite.Operation.Polygonize;
+using System.Collections.Generic;
+using GeoAPI.Geometries;
+using NetTopologySuite.IO;
+using NetTopologySuite.Operation.Polygonize;
+using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Poligonize
+namespace NetTopologySuite.Samples.Operation.Poligonize
 {
 	/// <summary>  
     /// Example of using Polygonizer class to polygonize a set of fully noded linestrings.
@@ -24,28 +27,32 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Poligonize
 			}
 		}
 		
-		
-		public PolygonizeExample() { }
-		
+        [Test]
+        public void Test()
+        {
+            Run();
+        }
+
 		internal virtual void Run()
 		{
 			WKTReader rdr = new WKTReader();
-			IList lines = new ArrayList();
-			
-			lines.Add(rdr.Read("LINESTRING (0 0 , 10 10)"));            // isolated edge
-            lines.Add(rdr.Read("LINESTRING (185 221, 100 100)"));       //dangling edge
-            lines.Add(rdr.Read("LINESTRING (185 221, 88 275, 180 316)"));
-            lines.Add(rdr.Read("LINESTRING (185 221, 292 281, 180 316)"));
-            lines.Add(rdr.Read("LINESTRING (189 98, 83 187, 185 221)"));
-            lines.Add(rdr.Read("LINESTRING (189 98, 325 168, 185 221)"));
-			
-			Polygonizer polygonizer = new Polygonizer();
+			IList<IGeometry> lines = new List<IGeometry>
+			                             {
+			                                 rdr.Read("LINESTRING (0 0 , 10 10)"),
+			                                 rdr.Read("LINESTRING (185 221, 100 100)"),
+			                                 rdr.Read("LINESTRING (185 221, 88 275, 180 316)"),
+			                                 rdr.Read("LINESTRING (185 221, 292 281, 180 316)"),
+			                                 rdr.Read("LINESTRING (189 98, 83 187, 185 221)"),
+			                                 rdr.Read("LINESTRING (189 98, 325 168, 185 221)")
+			                             };
+
+		    Polygonizer polygonizer = new Polygonizer();
 			polygonizer.Add(lines);
 			
-			ICollection polys = polygonizer.GetPolygons();
+			var polys = polygonizer.GetPolygons();
 			
 			Console.WriteLine("Polygons formed (" + polys.Count + "):");
-            foreach(object obj in polys)
+            foreach(var obj in polys)
 			    Console.WriteLine(obj);
 		}
 	}

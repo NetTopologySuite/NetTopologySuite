@@ -3,12 +3,12 @@ using System;
 using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
-using GisSharpBlog.NetTopologySuite.Index;
-using GisSharpBlog.NetTopologySuite.Index.IntervalRTree;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Index;
+using NetTopologySuite.Index.IntervalRTree;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm
+namespace NetTopologySuite.Algorithm
 {
     public class IndexedPointInAreaLocator : IPointInAreaLocator
     {
@@ -68,7 +68,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         }
         */
 
-        private class SegmentVisitor : IItemVisitor
+        private class SegmentVisitor : IItemVisitor<LineSegment>
         {
             private readonly RayCrossingCounter _counter;
 
@@ -77,16 +77,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 _counter = counter;
             }
 
-            public void VisitItem(Object item)
+            public void VisitItem(LineSegment seg)
             {
-                LineSegment seg = (LineSegment)item;
                 _counter.CountSegment(seg.GetCoordinate(0), seg.GetCoordinate(1));
             }
         }
 
         private class IntervalIndexedGeometry
         {
-            private readonly SortedPackedIntervalRTree _index = new SortedPackedIntervalRTree();
+            private readonly SortedPackedIntervalRTree<LineSegment> _index = new SortedPackedIntervalRTree<LineSegment>();
 
             public IntervalIndexedGeometry(IGeometry geom)
             {
@@ -122,7 +121,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 return visitor.Items;
             }
             */
-            public void Query(double min, double max, IItemVisitor visitor)
+            public void Query(double min, double max, IItemVisitor<LineSegment> visitor)
             {
                 _index.Query(min, max, visitor);
             }

@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.IO.Handlers
+namespace NetTopologySuite.IO.Handlers
 {
     /// <summary>
     /// Converts a Shapefile point to a OGIS Point.

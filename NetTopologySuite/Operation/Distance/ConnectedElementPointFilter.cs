@@ -1,11 +1,11 @@
 using System.Collections;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Distance
+namespace NetTopologySuite.Operation.Distance
 {
     /// <summary>
     /// Extracts a single point

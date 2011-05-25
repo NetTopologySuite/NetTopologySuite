@@ -20,10 +20,10 @@ using System.Collections.Generic;
 using GeoAPI.DataStructures;
 using System.IO;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Extension;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Extension;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Shapefile
+namespace NetTopologySuite.Shapefile
 {
     internal class ShapeFileHeader
     {

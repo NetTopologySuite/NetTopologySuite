@@ -1,14 +1,14 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Planargraph;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Planargraph;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
+namespace NetTopologySuite.Operation.Polygonize
 {
     /// <summary>
     /// Represents a ring of <c>PolygonizeDirectedEdge</c>s which form
@@ -29,16 +29,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <param name="testEr"></param>
         /// <returns>Containing EdgeRing, if there is one, OR
         /// null if no containing EdgeRing is found.</returns>
-        public static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IList shellList)
+        public static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IList<EdgeRing> shellList)
         {
             ILinearRing teString = testEr.Ring;
             IEnvelope testEnv = teString.EnvelopeInternal;
 
             EdgeRing minShell = null;
             IEnvelope minEnv = null;
-            for (IEnumerator it = shellList.GetEnumerator(); it.MoveNext(); )
+            foreach (EdgeRing tryShell in shellList)
             {
-                EdgeRing tryShell = (EdgeRing) it.Current;
                 ILinearRing tryRing = tryShell.Ring;
                 IEnvelope tryEnv = tryRing.EnvelopeInternal;
                 if (minShell != null)
@@ -91,14 +90,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             return true;
         }
         
-        private IGeometryFactory factory = null;
-        private IList deList = new ArrayList();
+        private readonly IGeometryFactory _factory;
+        private readonly IList<DirectedEdge> _deList = new List<DirectedEdge>();
 
         // cache the following data for efficiency
-        private ILinearRing ring = null;
+        private ILinearRing _ring;
 
-        private ICoordinate[] ringPts = null;
-        private IList holes;
+        private ICoordinate[] _ringPts;
+        private List<ILinearRing> _holes;
 
         /// <summary>
         /// 
@@ -106,7 +105,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <param name="factory"></param>
         public EdgeRing(IGeometryFactory factory)
         {
-            this.factory = factory;
+            _factory = factory;
         }
 
         /// <summary>
@@ -115,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <param name="de">The DirectedEdge to add.</param>
         public void Add(DirectedEdge de)
         {
-            deList.Add(de);
+            _deList.Add(de);
         }
 
         /// <summary>
@@ -138,9 +137,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <param name="hole">The LinearRing forming the hole.</param>
         public void AddHole(ILinearRing hole)
         {
-            if (holes == null)
-                holes = new ArrayList();
-            holes.Add(hole);
+            if (_holes == null)
+                _holes = new List<ILinearRing>();
+            _holes.Add(hole);
         }
 
         /// <summary>
@@ -151,13 +150,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             get
             {
                 ILinearRing[] holeLR = null;
-                if (holes != null)
+                if (_holes != null)
                 {
-                    holeLR = new ILinearRing[holes.Count];
-                    for (int i = 0; i < holes.Count; i++)
-                        holeLR[i] = (ILinearRing) holes[i];                    
+                    holeLR = new ILinearRing[_holes.Count];
+                    for (int i = 0; i < _holes.Count; i++)
+                        holeLR[i] = _holes[i];                    
                 }
-                IPolygon poly = factory.CreatePolygon(ring, holeLR);
+                IPolygon poly = _factory.CreatePolygon(_ring, holeLR);
                 return poly;
             }
         }
@@ -171,11 +170,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             {
                 ICoordinate[] tempcoords = Coordinates;
                 tempcoords = null;
-                if (ringPts.Length <= 3) 
+                if (_ringPts.Length <= 3) 
                     return false;
                 ILinearRing tempring = Ring;
                 tempring = null;
-                return ring.IsValid;
+                return _ring.IsValid;
             }
         }
 
@@ -187,18 +186,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         {
             get
             {
-                if (ringPts == null)
+                if (_ringPts == null)
                 {
                     CoordinateList coordList = new CoordinateList();
-                    for (IEnumerator i = deList.GetEnumerator(); i.MoveNext(); )
+                    foreach (DirectedEdge de in _deList)
                     {
-                        DirectedEdge de = (DirectedEdge) i.Current;
                         PolygonizeEdge edge = (PolygonizeEdge)de.Edge;
                         AddEdge(edge.Line.Coordinates, de.EdgeDirection, coordList);
                     }
-                    ringPts = coordList.ToCoordinateArray();
+                    _ringPts = coordList.ToCoordinateArray();
                 }
-                return ringPts;
+                return _ringPts;
             }
         }
 
@@ -214,7 +212,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             {
                 ICoordinate[] tempcoords = Coordinates;
                 tempcoords = null;
-                return factory.CreateLineString(ringPts);
+                return _factory.CreateLineString(_ringPts);
             }
         }
 
@@ -227,15 +225,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         {
             get
             {
-                if (ring != null) 
-                    return ring;
+                if (_ring != null) 
+                    return _ring;
                 ICoordinate[] tempcoords = Coordinates;
                 try
                 {
-                    ring = factory.CreateLinearRing(ringPts);
+                    _ring = _factory.CreateLinearRing(_ringPts);
                 }
                 catch (Exception) { }
-                return ring;
+                return _ring;
             }
         }
 

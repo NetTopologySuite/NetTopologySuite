@@ -1,7 +1,7 @@
 using System.Text;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary> 
     /// A <c>Label</c> indicates the topological relationship of a component

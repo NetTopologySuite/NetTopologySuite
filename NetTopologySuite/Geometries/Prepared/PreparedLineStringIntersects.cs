@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
-using GisSharpBlog.NetTopologySuite.Noding;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Noding;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
+namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
     /// Computes the <tt>intersects</tt> spatial relationship predicate

@@ -3,7 +3,7 @@ using GeoAPI.Geometries;
 #if SILVERLIGHT
 using GeoAPI;
 #endif
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Defines a rectangular region of the 2D coordinate plane.

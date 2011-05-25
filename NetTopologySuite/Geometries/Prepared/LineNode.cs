@@ -1,7 +1,7 @@
-using GisSharpBlog.NetTopologySuite.Noding;
+using NetTopologySuite.Noding;
 using LocationsEnum = GeoAPI.Geometries.Locations;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
+namespace NetTopologySuite.Geometries.Prepared
 {
     public class LineNode
     {

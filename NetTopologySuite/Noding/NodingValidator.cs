@@ -1,9 +1,9 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
+using NetTopologySuite.Algorithm;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     /// <summary>
     /// Validates that a collection of <see cref="ISegmentString" />s is correctly noded.
@@ -12,14 +12,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     public class NodingValidator
     {
         private readonly LineIntersector _li = new RobustLineIntersector();
-        private readonly IList _segStrings;
+        private readonly IList<ISegmentString> _segStrings;
         
         /// <summary>
         /// Creates a new validator for the given collection 
         /// of <see cref="ISegmentString"/>s.
         /// </summary>
         /// <param name="segStrings">The seg strings.</param>
-        public NodingValidator(IList segStrings)
+        public NodingValidator(IList<ISegmentString> segStrings)
         {
             _segStrings = segStrings;
         }
@@ -120,7 +120,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             }
         }
 
-        private static void CheckEndPtVertexIntersections(ICoordinate testPt, IList segStrings)
+        private static void CheckEndPtVertexIntersections(ICoordinate testPt, IEnumerable<ISegmentString> segStrings)
         {
             foreach (ISegmentString ss in segStrings)
             {

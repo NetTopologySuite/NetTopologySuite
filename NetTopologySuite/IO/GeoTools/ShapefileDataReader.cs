@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
     /// <summary>
     /// Creates a IDataReader that can be used to enumerate through an ESRI shape file.

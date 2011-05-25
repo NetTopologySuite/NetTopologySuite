@@ -21,7 +21,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace GisSharpBlog.NetTopologySuite.Shapefile
+namespace NetTopologySuite.Shapefile
 {
     internal partial class DbaseFile
     {

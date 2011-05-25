@@ -1,8 +1,8 @@
-using System.Collections;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using System.Collections.Generic;
+using NetTopologySuite.Geometries;
 using Wintellect.PowerCollections;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
 
     /// <summary>
@@ -37,7 +37,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         }
 
         private readonly ISegmentStringMerger _merger;
-        private readonly IDictionary _ocaMap = new OrderedDictionary<OrientedCoordinateArray, object>();
+        private readonly IDictionary<OrientedCoordinateArray, ISegmentString> _ocaMap = 
+            new OrderedDictionary<OrientedCoordinateArray, ISegmentString>();
         
         /// <summary>
         /// Creates a dissolver with a user-defined merge strategy.
@@ -55,13 +56,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             : this(null) { }
 
         /// <summary>
-        /// Dissolve all <see cref="ISegmentString" />s in the input <see cref="ICollection"/>.
+        /// Dissolve all <see cref="ISegmentString" />s in the input <see cref="IEnumerable{ISegmentString}"/>.
         /// </summary>
         /// <param name="segStrings"></param>
-        public void Dissolve(ICollection segStrings)
+        public void Dissolve(IEnumerable<ISegmentString> segStrings)
         {
-            foreach(object obj in segStrings)
-                Dissolve((ISegmentString)obj);
+            foreach(var obj in segStrings)
+                Dissolve(obj);
         }
 
         /// <summary>
@@ -102,13 +103,16 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <returns></returns>
         private ISegmentString FindMatching(OrientedCoordinateArray oca /*, ISegmentString segString*/)
         {
-            return (ISegmentString)_ocaMap[oca];            
+            ISegmentString ret;
+            if (_ocaMap.TryGetValue(oca, out ret))
+                return ret;
+            return null;
         }        
 
         /// <summary>
         /// Gets the collection of dissolved (i.e. unique) <see cref="ISegmentString" />s
         /// </summary>
-        public ICollection Dissolved
+        public ICollection<ISegmentString> Dissolved
         {
             get
             {

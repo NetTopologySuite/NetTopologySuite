@@ -1,7 +1,7 @@
 using System;
 using GeoAPI.Geometries;
 using GeoAPI.Geometries.Prepared;
-using GisSharpBlog.NetTopologySuite.Geometries.Prepared;
+using NetTopologySuite.Geometries.Prepared;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared

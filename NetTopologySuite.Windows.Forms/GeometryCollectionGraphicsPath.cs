@@ -36,14 +36,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Windows.Forms
+namespace NetTopologySuite.Windows.Forms
 {
-    /**
-     * 
-     * 
-     * @author Martin Davis
-     *
-     */
     ///<summary>
     /// A list of <see cref="GraphicsPath"/> which contains a heterogeneous collection of other shapes
     /// representing NTS <see cref="IGeometry"/>s.

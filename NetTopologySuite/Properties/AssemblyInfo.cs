@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+//using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("NetTopologySuite")]
@@ -16,3 +17,4 @@ using System.Runtime.InteropServices;
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
 [assembly: Guid("6B7EB658-792E-4178-B853-8AEB851513A9")]
+//[assembly: InternalsVisibleTo("NetTopologySuite.Silverlight.Test", AllInternalsVisible = true)]

@@ -4,11 +4,11 @@ using System.IO.IsolatedStorage;
 using System.Resources;
 using System.Windows;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Data;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
-using GisSharpBlog.NetTopologySuite.IO.GeoTools;
-using GisSharpBlog.NetTopologySuite.Shapefile;
+using NetTopologySuite.Data;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
+using NetTopologySuite.IO.GeoTools;
+using NetTopologySuite.Shapefile;
 using Microsoft.Silverlight.Testing.UnitTesting.Metadata.VisualStudio;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
@@ -104,7 +104,7 @@ namespace NetTopologySuite.Silverlight.Test
             EnsureFilesExistInIsolatedStorage();
 
             IMemoryRecordSet memoryRecordSet =
-                Shapefile.CreateDataReader(@"world.shp", new GeometryFactory()).ToInMemorySet();
+                IO.Shapefile.CreateDataReader(@"world.shp", new GeometryFactory()).ToInMemorySet();
 
 
             IGeometry geometry = new WKTReader().Read(_testPolygon);

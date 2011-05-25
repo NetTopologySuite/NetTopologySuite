@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
-using GisSharpBlog.NetTopologySuite.Operation.Overlay;
+using NetTopologySuite.IO;
+using NetTopologySuite.Operation.Overlay;
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Tests.Performances
+namespace NetTopologySuite.Tests.Performances
 {
     [TestFixture]
     public class NodingValidatorFixture

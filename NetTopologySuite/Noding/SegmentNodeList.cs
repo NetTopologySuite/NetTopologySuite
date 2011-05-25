@@ -1,21 +1,17 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Utilities;
 using Wintellect.PowerCollections;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     /// <summary>
     /// A list of the <see cref="SegmentNode" />s present along a noded <see cref="ISegmentString"/>.
     /// </summary>
-    public class SegmentNodeList : IEnumerable
+    public class SegmentNodeList : IEnumerable<object>
     {
         private readonly IDictionary<SegmentNode, Object> _nodeMap = new OrderedDictionary<SegmentNode, Object>();
         private readonly NodedSegmentString _edge;  // the parent edge
@@ -65,9 +61,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// Returns an iterator of SegmentNodes.
         /// </summary>
         /// <returns>An iterator of SegmentNodes.</returns>
-        public IEnumerator GetEnumerator() 
+        public IEnumerator<object>GetEnumerator() 
         { 
             return _nodeMap.Values.GetEnumerator(); 
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         /// <summary>
@@ -89,17 +90,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         private void AddCollapsedNodes()
         {
-            IList collapsedVertexIndexes = new ArrayList();
+            IList<int> collapsedVertexIndexes = new List<int>();
 
             FindCollapsesFromInsertedNodes(collapsedVertexIndexes);
             FindCollapsesFromExistingVertices(collapsedVertexIndexes);
 
             // node the collapses
-            foreach(var obj in collapsedVertexIndexes)
-            {
-                var vertexIndex = (int)obj;
+            foreach(var vertexIndex in collapsedVertexIndexes)
                 Add(_edge.GetCoordinate(vertexIndex), vertexIndex);
-            }
         }
 
         /// <summary>
@@ -107,7 +105,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// which are pre-existing in the vertex list.
         /// </summary>
         /// <param name="collapsedVertexIndexes"></param>
-        private void FindCollapsesFromExistingVertices(IList collapsedVertexIndexes)
+        private void FindCollapsesFromExistingVertices(IList<int> collapsedVertexIndexes)
         {
             for (var i = 0; i < _edge.Count - 2; i++)
             {
@@ -127,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// the vertex must be added as a node as well.
         /// </summary>
         /// <param name="collapsedVertexIndexes"></param>
-        private void FindCollapsesFromInsertedNodes(IList collapsedVertexIndexes)
+        private void FindCollapsesFromInsertedNodes(IList<int> collapsedVertexIndexes)
         {
             var collapsedVertexIndex = new int[1];
             
@@ -268,11 +266,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// <summary>
     /// 
     /// </summary>
-    class NodeVertexIterator : IEnumerator
+    class NodeVertexIterator : IEnumerator<object>
     {
         private SegmentNodeList _nodeList;
         private ISegmentString _edge;
-        private readonly IEnumerator _nodeIt;
+        private readonly IEnumerator<object> _nodeIt;
         private SegmentNode _currNode;
         private SegmentNode _nextNode;
         private int _currSegIndex;
@@ -286,6 +284,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             _nodeList = nodeList;
             _edge = nodeList.Edge;
             _nodeIt = nodeList.GetEnumerator();            
+        }
+
+        public void Dispose()
+        {
+            //throw new NotImplementedException();
         }
 
         /// <summary>

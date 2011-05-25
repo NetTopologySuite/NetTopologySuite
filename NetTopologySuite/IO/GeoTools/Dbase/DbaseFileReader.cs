@@ -3,12 +3,12 @@ using System.Collections;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Utilities;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
     /// <summary>
     /// Class that allows records in a dbase file to be enumerated.

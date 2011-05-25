@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Geometries.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Union
+namespace NetTopologySuite.Operation.Union
 {
     ///<summary>
     /// Experimental code to union MultiPolygons with processing limited to the elements which actually interact.

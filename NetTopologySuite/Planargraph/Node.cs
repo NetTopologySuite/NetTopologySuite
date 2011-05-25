@@ -1,13 +1,9 @@
-//using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using GeoAPI.Geometries;
 using Wintellect.PowerCollections;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
-namespace GisSharpBlog.NetTopologySuite.Planargraph
+namespace NetTopologySuite.Planargraph
 {
     /// <summary>
     /// A node in a <c>PlanarGraph</c> is a location where 0 or more <c>Edge</c>s

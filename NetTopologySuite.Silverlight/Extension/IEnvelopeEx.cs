@@ -1,7 +1,7 @@
 ﻿using System;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Extension
+namespace NetTopologySuite.Extension
 {
     public static class IEnvelopeEx
     {

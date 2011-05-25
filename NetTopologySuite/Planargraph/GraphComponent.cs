@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace GisSharpBlog.NetTopologySuite.Planargraph
+namespace NetTopologySuite.Planargraph
 {
     /// <summary>
     /// The base class for all graph component classes.

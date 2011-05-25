@@ -1,6 +1,6 @@
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
+namespace NetTopologySuite.Algorithm.Locate
 {
     ///<summary>
     /// An interface for classes which determine the <see cref="Locations"/> of

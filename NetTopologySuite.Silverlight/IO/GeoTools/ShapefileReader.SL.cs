@@ -2,9 +2,9 @@
 using System.IO;
 using System.IO.IsolatedStorage;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
     public partial class ShapefileReader
     {

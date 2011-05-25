@@ -1,14 +1,12 @@
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Noding;
+using NetTopologySuite.Noding;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
+namespace NetTopologySuite.Geometries.Prepared
 {
-    /**
-     * A prepared version for {@link Lineal} geometries.
-     * 
-     * @author mbdavis
-     *
-     */
+    ///<summary>
+    /// A prepared version for <see cref="ILineal"/> geometries.
+    ///</summary>
+    /// <author>mbdavis</author>
     public class PreparedLineString : BasicPreparedGeometry
     {
         private FastSegmentSetIntersectionFinder _segIntFinder;

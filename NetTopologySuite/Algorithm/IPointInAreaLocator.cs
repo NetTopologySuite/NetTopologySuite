@@ -1,6 +1,6 @@
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm
+namespace NetTopologySuite.Algorithm
 {
     ///<summary>
     /// An interface for classes which determine the <see cref="Locations"/> of points in areal geometries.

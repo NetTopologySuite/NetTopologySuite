@@ -1,4 +1,4 @@
-namespace GisSharpBlog.NetTopologySuite.Algorithm
+namespace NetTopologySuite.Algorithm
 {
     using System;
     using System.Text;

@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace NetTopologySuite.IO
 {
     /// <summary>
     /// Contains methods for writing a single <c>Geometry</c> in binary ESRI shapefile format.

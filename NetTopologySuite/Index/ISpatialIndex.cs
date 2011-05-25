@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Index
+namespace NetTopologySuite.Index
 {
     /// <summary> 
     /// The basic insertion and query operations supported by classes

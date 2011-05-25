@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using GisSharpBlog.NetTopologySuite.Data.InternalImpl;
+using NetTopologySuite.Data.InternalImpl;
 
-namespace GisSharpBlog.NetTopologySuite.Data
+namespace NetTopologySuite.Data
 {
     public class PropertyInfoFactory : IPropertyInfoFactory
     {

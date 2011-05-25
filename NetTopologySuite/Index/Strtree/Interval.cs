@@ -1,7 +1,7 @@
 using System;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using NetTopologySuite.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Strtree
+namespace NetTopologySuite.Index.Strtree
 {
     /// <summary> 
     /// A contiguous portion of 1D-space. Used internally by SIRtree.
