@@ -2,28 +2,36 @@
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Coordinates;
+#if BUFFERED
+using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
+using coordFac = NetTopologySuite.Coordinates.BufferedCoordinateFactory;
+using coordSeqFac = NetTopologySuite.Coordinates.BufferedCoordinateSequenceFactory;
+#else
+using coord = NetTopologySuite.Coordinates.Simple.Coordinate;
+using coordFac = NetTopologySuite.Coordinates.Simple.CoordinateFactory;
+using coordSeqFac = NetTopologySuite.Coordinates.Simple.CoordinateSequenceFactory;
+#endif
 
 namespace NetTopologySuite
 {
     public static class GeometryServices
     {
-        private static readonly Dictionary<PrecisionModelType, IGeometryFactory<BufferedCoordinate>> _factories =
-            new Dictionary<PrecisionModelType, IGeometryFactory<BufferedCoordinate>>();
+        private static readonly Dictionary<PrecisionModelType, IGeometryFactory<coord>> Factories =
+            new Dictionary<PrecisionModelType, IGeometryFactory<coord>>();
 
-        public static IGeometryFactory<BufferedCoordinate> GetGeometryFactory(PrecisionModelType pmtype)
+        public static IGeometryFactory<coord> GetGeometryFactory(PrecisionModelType pmtype)
         {
-            if (!_factories.ContainsKey(pmtype))
-                _factories.Add(pmtype, CreateGeometryFactory(pmtype));
+            if (!Factories.ContainsKey(pmtype))
+                Factories.Add(pmtype, CreateGeometryFactory(pmtype));
 
-            return _factories[pmtype];
+            return Factories[pmtype];
         }
 
-        private static IGeometryFactory<BufferedCoordinate> CreateGeometryFactory(PrecisionModelType pmtype)
+        private static IGeometryFactory<coord> CreateGeometryFactory(PrecisionModelType pmtype)
         {
-            return new GeometryFactory<BufferedCoordinate>(
-                new BufferedCoordinateSequenceFactory(
-                    new BufferedCoordinateFactory(pmtype))
+            return new GeometryFactory<coord>(
+                new coordSeqFac(
+                    new coordFac(pmtype))
                 );
         }
     }

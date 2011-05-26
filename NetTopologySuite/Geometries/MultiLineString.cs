@@ -178,8 +178,14 @@ namespace NetTopologySuite.Geometries
         public IMultiLineString<TCoordinate> Reverse()
         {
             IEnumerable<ILineString<TCoordinate>> reversed
-                = sl.Enumerable.Reverse(this as IEnumerable<ILineString<TCoordinate>>);
+                = Reverse(sl.Enumerable.Reverse(this as IEnumerable<ILineString<TCoordinate>>));
             return Factory.CreateMultiLineString(reversed);
+        }
+
+        private static IEnumerable<ILineString<TCoordinate>> Reverse(IEnumerable<ILineString<TCoordinate>> input)
+        {
+            foreach (var lineString in input)
+                yield return lineString.Reverse();
         }
 
         public override Boolean Equals(IGeometry<TCoordinate> other, Tolerance tolerance)

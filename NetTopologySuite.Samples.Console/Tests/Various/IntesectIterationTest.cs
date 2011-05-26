@@ -1,6 +1,7 @@
 using System;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
+using NetTopologySuite.Coordinates;
 using NetTopologySuite.Samples.SimpleTests;
 using NetTopologySuite.Coordinates;
 using NUnit.Framework;
@@ -21,8 +22,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         [TestFixtureSetUp]
         public void MyClassInitialize()
         {
-            WktReader<BufferedCoordinate> reader = new WktReader<BufferedCoordinate>(
-                GeoFactory, null);
+            var reader = Reader;
             geom1 =
                 reader.Read(
                     "POLYGON ((341789.494471447 4657916.08580466, 341789.494471447 4659272.20917602, 343145.617842805 4659272.20917602, 343145.617842805 4657916.08580466, 341789.494471447 4657916.08580466))");

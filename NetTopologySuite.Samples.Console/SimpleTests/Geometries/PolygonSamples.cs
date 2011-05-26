@@ -3,7 +3,11 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownBinary;
 using GeoAPI.Operations.Buffer;
-using NetTopologySuite.Coordinates;
+#if BUFFERED
+using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
+#else
+using coord = NetTopologySuite.Coordinates.Simple.Coordinate;
+#endif
 using NetTopologySuite.IO.WellKnownBinary;
 
 namespace NetTopologySuite.Samples.SimpleTests.Geometries
@@ -157,7 +161,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(geom2.AsText());
 
                 // ExpandToInclude tests
-                IExtents<BufferedCoordinate> extents = GeoFactory.CreateExtents(
+                IExtents<coord> extents = GeoFactory.CreateExtents(
                     CoordFactory.Create(0, 0),
                     CoordFactory.Create(0, 0));
                 extents.ExpandToInclude(geom1.Extents);
@@ -168,7 +172,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
                 polygon.Normalize();
 
                 Byte[] bytes = polygon.AsBinary();
-                IGeometry test1 = new WkbReader<BufferedCoordinate>(GeoFactory).Read(bytes);
+                IGeometry test1 = new WkbReader<coord>(GeoFactory).Read(bytes);
                 Write(test1.ToString());
 
                 //bytes = new GDBWriter().Write(polygon);

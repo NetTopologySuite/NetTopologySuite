@@ -5,9 +5,16 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NetTopologySuite.Operation.Linemerge;
 using NetTopologySuite.Samples.SimpleTests;
-using NetTopologySuite.Coordinates;
 using NUnit.Framework;
-
+#if BUFFERED
+using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
+using coordFac = NetTopologySuite.Coordinates.BufferedCoordinateFactory;
+using coordSeqFac = NetTopologySuite.Coordinates.BufferedCoordinateSequenceFactory;
+#else
+using coord = NetTopologySuite.Coordinates.Simple.Coordinate;
+using coordFac = NetTopologySuite.Coordinates.Simple.CoordinateFactory;
+using coordSeqFac = NetTopologySuite.Coordinates.Simple.CoordinateSequenceFactory;
+#endif
 namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
 {
     [TestFixture]
@@ -27,8 +34,8 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
             try
             {
                 IList<IGeometry> inputGeoms = fromWkt(inputWkt);
-                LineSequencer<BufferedCoordinate> sequencer
-                    = new LineSequencer<BufferedCoordinate>();
+                LineSequencer<coord> sequencer
+                    = new LineSequencer<coord>();
                 sequencer.Add(inputGeoms);
 
                 if (!sequencer.IsSequenceable())
@@ -37,14 +44,14 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
                 }
                 else
                 {
-                    IGeometry<BufferedCoordinate> expected
+                    IGeometry<coord> expected
                         = Reader.Read(expectedWkt);
-                    IGeometry<BufferedCoordinate> result = sequencer.GetSequencedLineStrings();
+                    IGeometry<coord> result = sequencer.GetSequencedLineStrings();
                     //Boolean isTrue = expected.EqualsExact(result);
                     Boolean isTrue = expected.Equals(result);
                     Assert.IsTrue(isTrue);
 
-                    Boolean isSequenced = LineSequencer<BufferedCoordinate>.IsSequenced(result);
+                    Boolean isSequenced = LineSequencer<coord>.IsSequenced(result);
                     Assert.IsTrue(isSequenced);
                 }
             }
@@ -59,9 +66,9 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         {
             try
             {
-                IGeometry<BufferedCoordinate> g
+                IGeometry<coord> g
                     = Reader.Read(inputWkt);
-                Boolean isSequenced = LineSequencer<BufferedCoordinate>.IsSequenced(g);
+                Boolean isSequenced = LineSequencer<coord>.IsSequenced(g);
                 Assert.IsTrue(isSequenced == expected);
             }
             catch (Exception ex)

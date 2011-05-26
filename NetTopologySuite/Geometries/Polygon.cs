@@ -149,29 +149,13 @@ namespace NetTopologySuite.Geometries
 
             foreach (ILinearRing<TCoordinate> ring in rings)
             {
-                if (ring.IsCcw)
-                {
-                    if (ExteriorRing == null || ExteriorRing.IsEmpty)
-                    {
-                        throw new TopologyException(
-                            "The coordinate sequence specifies holes without a shell.");
-                    }
-
-                    if (_holes == null)
-                    {
-                        _holes = new List<ILineString<TCoordinate>>();
-                    }
-                    _holes.Add(ring);
-                }
+                if (_shell == null)
+                    _shell = !ring.IsCcw ? ring : (ILinearRing<TCoordinate>)ring.Reverse();
                 else
                 {
-                    if (_shell != null)
-                    {
-                        throw new TopologyException(
-                            "The coordinate sequence specifies two exterior rings.");
-                    }
-
-                    _shell = ring;
+                    if (_holes == null)
+                        _holes = new List<ILineString<TCoordinate>>();
+                    _holes.Add(ring.IsCcw ? ring : ring.Reverse());
                 }
             }
         }

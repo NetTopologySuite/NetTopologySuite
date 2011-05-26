@@ -14,7 +14,7 @@ namespace NetTopologySuite.Samples.SimpleTests
             new Program().Start();
         }
 
-        private static BaseSamples sample;
+        private static BaseSamples _sample;
 
         public void Start()
         {
@@ -26,24 +26,24 @@ namespace NetTopologySuite.Samples.SimpleTests
         {
             try
             {
-                sample = new PointSamples();
-                sample.Start();
+                _sample = new PointSamples();
+                _sample.Start();
                 Console.WriteLine();
 
-                sample = new LineStringSamples();
-                sample.Start();
+                _sample = new LineStringSamples();
+                _sample.Start();
                 Console.WriteLine();
 
-                sample = new PolygonSamples();
-                sample.Start();
+                _sample = new PolygonSamples();
+                _sample.Start();
                 Console.WriteLine();
 
-                sample = new MultiPointSamples();
-                sample.Start();
+                _sample = new MultiPointSamples();
+                _sample.Start();
                 Console.WriteLine();
 
-                sample = new ValidationSuite();
-                sample.Start();
+                _sample = new ValidationSuite();
+                _sample.Start();
                 Console.WriteLine();
                 /*
                 sample = new SerializationSamples();

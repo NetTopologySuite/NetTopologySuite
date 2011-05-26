@@ -4,6 +4,15 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Samples.SimpleTests;
 using NetTopologySuite.Coordinates;
 using NUnit.Framework;
+#if BUFFERED
+using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
+using coordFac = NetTopologySuite.Coordinates.BufferedCoordinateFactory;
+using coordSeqFac = NetTopologySuite.Coordinates.BufferedCoordinateSequenceFactory;
+#else
+using coord = NetTopologySuite.Coordinates.Simple.Coordinate;
+using coordFac = NetTopologySuite.Coordinates.Simple.CoordinateFactory;
+using coordSeqFac = NetTopologySuite.Coordinates.Simple.CoordinateSequenceFactory;
+#endif
 
 namespace NetTopologySuite.Samples.Tests.Various
 {
@@ -14,9 +23,9 @@ namespace NetTopologySuite.Samples.Tests.Various
         /// Initializes a new instance of the <see cref="IsValidTest"/> class.
         /// </summary>
         public IsValidTest()
-            : base(new GeometryFactory<BufferedCoordinate>(
-                       new BufferedCoordinateSequenceFactory(
-                           new BufferedCoordinateFactory(1.0))))
+            : base(new GeometryFactory<coord>(
+                       new coordSeqFac(
+                           new coordFac(1.0))))
         {
         }
 

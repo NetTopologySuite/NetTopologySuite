@@ -13,7 +13,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void LineStringReverseTest()
         {
-            BufferedCoordinateFactory coordFactory = new BufferedCoordinateFactory();
+            var coordFactory = GeoFactory.CoordinateFactory;
 
             ILineString lineString = GeoFactory.CreateLineString(new ICoordinate[]
                                                                      {
@@ -69,7 +69,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             Assert.IsFalse(multiLineString == reverse);
 
             // Shouldn't the coordinates be reversed?
-            Assert.AreEqual(multiLineString.Coordinates[0], reverse.Coordinates[5]);
+            Assert.IsTrue(multiLineString.Coordinates[0].Equals(reverse.Coordinates[5]));
             Assert.AreEqual(multiLineString.Coordinates[1], reverse.Coordinates[4]);
             Assert.AreEqual(multiLineString.Coordinates[2], reverse.Coordinates[3]);
 

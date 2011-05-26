@@ -3,48 +3,56 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Coordinates;
+#if BUFFERED
+using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
+using coordFac = NetTopologySuite.Coordinates.BufferedCoordinateFactory;
+using coordSeqFac = NetTopologySuite.Coordinates.BufferedCoordinateSequenceFactory;
+#else
+using coord = NetTopologySuite.Coordinates.Simple.Coordinate;
+using coordFac = NetTopologySuite.Coordinates.Simple.CoordinateFactory;
+using coordSeqFac = NetTopologySuite.Coordinates.Simple.CoordinateSequenceFactory;
+#endif
 
 namespace NetTopologySuite.Samples.SimpleTests
 {
     public class BaseSamples
     {
-        private static readonly BufferedCoordinateFactory _coordFactory =
-            new BufferedCoordinateFactory();
+        private static readonly coordFac _coordFactory =
+            new coordFac();
 
-        private readonly IGeometryFactory<BufferedCoordinate> _factory;
+        private readonly IGeometryFactory<coord> _factory;
 
-        private readonly IWktGeometryReader<BufferedCoordinate> _reader;
+        private readonly IWktGeometryReader<coord> _reader;
 
         protected BaseSamples()
-            : this(new GeometryFactory<BufferedCoordinate>(
-                       new BufferedCoordinateSequenceFactory(_coordFactory)))
+            : this(new GeometryFactory<coord>(
+                       new coordSeqFac(_coordFactory)))
         {
         }
 
-        protected BaseSamples(IGeometryFactory<BufferedCoordinate> factory)
-            : this(factory, new WktReader<BufferedCoordinate>(factory, null))
+        protected BaseSamples(IGeometryFactory<coord> factory)
+            : this(factory, new WktReader<coord>(factory, null))
         {
         }
 
-        protected BaseSamples(IGeometryFactory<BufferedCoordinate> factory,
-                              IWktGeometryReader<BufferedCoordinate> reader)
+        protected BaseSamples(IGeometryFactory<coord> factory,
+                              IWktGeometryReader<coord> reader)
         {
             _factory = factory;
             _reader = reader;
         }
 
-        protected static ICoordinateFactory<BufferedCoordinate> CoordFactory
+        protected static ICoordinateFactory<coord> CoordFactory
         {
             get { return _coordFactory; }
         }
 
-        protected IGeometryFactory<BufferedCoordinate> GeoFactory
+        protected IGeometryFactory<coord> GeoFactory
         {
             get { return _factory; }
         }
 
-        protected IWktGeometryReader<BufferedCoordinate> Reader
+        protected IWktGeometryReader<coord> Reader
         {
             get { return _reader; }
         }

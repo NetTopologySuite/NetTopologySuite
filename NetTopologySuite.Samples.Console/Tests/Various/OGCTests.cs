@@ -8,6 +8,7 @@ using NUnit.Framework;
 namespace NetTopologySuite.Samples.Tests.Various
 {
     [TestFixture]
+    [Ignore("The expected result geometries are wrong!")]
     public class OgcTests : BaseSamples
     {
         private const String BlueLakeWkt =

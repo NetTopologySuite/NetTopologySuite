@@ -7,6 +7,15 @@ using NetTopologySuite.IO.WellKnownBinary;
 using NetTopologySuite.Samples.SimpleTests;
 using NetTopologySuite.Coordinates;
 using NUnit.Framework;
+#if BUFFERED
+using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
+using coordFac = NetTopologySuite.Coordinates.BufferedCoordinateFactory;
+using coordSeqFac = NetTopologySuite.Coordinates.BufferedCoordinateSequenceFactory;
+#else
+using coord = NetTopologySuite.Coordinates.Simple.Coordinate;
+using coordFac = NetTopologySuite.Coordinates.Simple.CoordinateFactory;
+using coordSeqFac = NetTopologySuite.Coordinates.Simple.CoordinateSequenceFactory;
+#endif
 
 namespace NetTopologySuite.Samples.Tests.Various
 {
@@ -36,7 +45,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void OracleWkbBigEndianWriteTest()
         {
-            ILinearRing<BufferedCoordinate> shell = GeoFactory.CreateLinearRing(new[]
+            ILinearRing<coord> shell = GeoFactory.CreateLinearRing(new[]
                                                                                     {
                                                                                         CoordFactory.Create(100, 100),
                                                                                         CoordFactory.Create(200, 100),
@@ -45,7 +54,7 @@ namespace NetTopologySuite.Samples.Tests.Various
                                                                                         CoordFactory.Create(100, 100)
                                                                                     });
 
-            ILinearRing<BufferedCoordinate> hole = GeoFactory.CreateLinearRing(new[]
+            ILinearRing<coord> hole = GeoFactory.CreateLinearRing(new[]
                                                                                    {
                                                                                        CoordFactory.Create(120, 120),
                                                                                        CoordFactory.Create(180, 120),
@@ -54,10 +63,10 @@ namespace NetTopologySuite.Samples.Tests.Various
                                                                                        CoordFactory.Create(120, 120)
                                                                                    });
 
-            IPolygon<BufferedCoordinate> polygon = GeoFactory.CreatePolygon(shell, new[] {hole});
+            IPolygon<coord> polygon = GeoFactory.CreatePolygon(shell, new[] { hole });
 
-            WkbWriter<BufferedCoordinate> writer =
-                new WkbWriter<BufferedCoordinate>(WkbByteOrder.BigEndian);
+            WkbWriter<coord> writer =
+                new WkbWriter<coord>(WkbByteOrder.BigEndian);
 
             Byte[] bytes = writer.Write(polygon);
 
@@ -76,8 +85,8 @@ namespace NetTopologySuite.Samples.Tests.Various
                                                   FileAccess.Read,
                                                   FileShare.Read))
             {
-                WkbReader<BufferedCoordinate> wkbreader =
-                    new WkbReader<BufferedCoordinate>(GeoFactory);
+                WkbReader<coord> wkbreader =
+                    new WkbReader<coord>(GeoFactory);
                 result = wkbreader.Read(stream);
             }
 
