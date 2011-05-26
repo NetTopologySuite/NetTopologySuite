@@ -2,12 +2,13 @@ using System;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Samples.SimpleTests;
+using GisSharpBlog.NetTopologySuite.SimpleTests;
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
+namespace GisSharpBlog.NetTopologySuite.Tests.Various
 {
     [TestFixture]
+    [Ignore("The expected result geometries are wrong!")]
     public class OgcTests : BaseSamples
     {
         private const String BlueLakeWkt =

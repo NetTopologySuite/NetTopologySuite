@@ -39,8 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 		
 		public override ILineString<TCoordinate> Reverse()
         {
-            ILineString<TCoordinate> reverse = base.Reverse();
-            return Factory.CreateLinearRing(reverse.Coordinates);
+            return Factory.CreateLinearRing(Coordinates.Clone().Reverse());
         }
 
         #region ILinearRing<TCoordinate> Members

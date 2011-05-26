@@ -5,8 +5,13 @@ using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
 using GisSharpBlog.NetTopologySuite.Operation.Linemerge;
-using NetTopologySuite.Coordinates;
 using NUnit.Framework;
+#if BUFFERED
+using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
+#else
+using coord = NetTopologySuite.Coordinates.Simple.Coordinate;
+
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
 {
@@ -24,7 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
             InitBlock();
         }
 
-        internal virtual IEnumerable<IGeometry<BufferedCoordinate>> Data
+        internal virtual IEnumerable<IGeometry<coord>> Data
         {
             get
             {
@@ -47,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
         private static void InitBlock()
         {
             _reader =
-                new WktReader<BufferedCoordinate>(
+                new WktReader<coord>(
                     GeometryServices.GetGeometryFactory(PrecisionModelType.DoubleFloating),
                     null);
         }
@@ -70,14 +75,14 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
         [Test]
         public void Run()
         {
-            IEnumerable<IGeometry<BufferedCoordinate>> lineStrings = Data;
+            IEnumerable<IGeometry<coord>> lineStrings = Data;
 
-            LineMerger<BufferedCoordinate> lineMerger
-                = new LineMerger<BufferedCoordinate>();
+            LineMerger<coord> lineMerger
+                = new LineMerger<coord>();
 
             lineMerger.Add(lineStrings);
 
-            IEnumerable<ILineString<BufferedCoordinate>> mergedLineStrings
+            IEnumerable<ILineString<coord>> mergedLineStrings
                 = lineMerger.MergedLineStrings;
 
             Console.WriteLine("Lines formed (" + Enumerable.Count(mergedLineStrings) + "):");
@@ -89,12 +94,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
         }
 
 
-        internal virtual IGeometry<BufferedCoordinate> Read(String lineWKT)
+        internal virtual IGeometry<coord> Read(String lineWKT)
         {
             try
             {
-                IGeometry<BufferedCoordinate> geom
-                    = _reader.Read(lineWKT) as IGeometry<BufferedCoordinate>;
+                IGeometry<coord> geom
+                    = _reader.Read(lineWKT) as IGeometry<coord>;
                 return geom;
             }
             catch (Exception ex)

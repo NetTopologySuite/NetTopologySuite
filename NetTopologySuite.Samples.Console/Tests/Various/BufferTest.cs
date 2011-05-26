@@ -3,13 +3,16 @@ using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Samples.SimpleTests;
+using GisSharpBlog.NetTopologySuite.SimpleTests;
 using GisSharpBlog.NetTopologySuite.Simplify;
-using NetTopologySuite.Coordinates;
+#if BUFFERED
+using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
+#else
+using coord = NetTopologySuite.Coordinates.Simple.Coordinate;
+#endif
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
+namespace GisSharpBlog.NetTopologySuite.Tests.Various
 {
     [TestFixture]
     public class BufferTest : BaseSamples
@@ -729,20 +732,20 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// Initializes a new instance of the <see cref="BufferTest"/> class.
         /// </summary>
         public BufferTest()
-            : base(GeometryServices.GetGeometryFactory(PrecisionModelType.Fixed))
+            : base(GeometryServices.GetGeometryFactory(PrecisionModelType.DoubleFloating))
         {
         }
 
-        private static void performTest(IGeometryFactory<BufferedCoordinate> factory)
+        private static void PerformTest(IGeometryFactory<coord> factory)
         {
-            IWktGeometryReader<BufferedCoordinate> decoder =
-                new WktReader<BufferedCoordinate>(factory, null);
-            IGeometry<BufferedCoordinate> path = decoder.Read(GeometryWkt);
+            IWktGeometryReader<coord> decoder =
+                new WktReader<coord>(factory, null);
+            IGeometry<coord> path = decoder.Read(GeometryWkt);
 
             Assert.IsNotNull(path);
             Debug.WriteLine(String.Format("Original Points: {0}", path.PointCount));
 
-            IGeometry simplified = DouglasPeuckerSimplifier<BufferedCoordinate>.Simplify(path, 2);
+            IGeometry simplified = DouglasPeuckerSimplifier<coord>.Simplify(path, 2);
             Assert.IsNotNull(simplified);
             Debug.WriteLine(String.Format("Simplified Points: {0}", simplified.PointCount));
 
@@ -754,22 +757,17 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         [Test]
         public void TestWithDefaultFactory()
         {
-            BufferedCoordinateSequenceFactory seqFactory
-                = new BufferedCoordinateSequenceFactory();
-            IGeometryFactory<BufferedCoordinate> @default
-                = new GeometryFactory<BufferedCoordinate>(seqFactory);
-
-            performTest(@default);
+            PerformTest(GeoFactory);
         }
 
         [Test]
         public void TestWithFixedFactory()
         {
-            BufferedCoordinateSequenceFactory seqFactory
-                = new BufferedCoordinateSequenceFactory();
-            IGeometryFactory<BufferedCoordinate> @fixed
+            coord seqFactory
+                = new coord();
+            IGeometryFactory<coord> @fixed
                 = GeometryServices.GetGeometryFactory(PrecisionModelType.Fixed);
-            performTest(@fixed);
+            PerformTest(@fixed);
         }
     }
 }

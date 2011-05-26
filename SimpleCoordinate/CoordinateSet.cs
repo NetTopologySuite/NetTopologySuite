@@ -30,12 +30,12 @@ namespace NetTopologySuite.Coordinates.Simple
     public class CoordinateSet : CoordinateSequence, ISet<Coordinate>
     {
         public CoordinateSet(CoordinateSequenceFactory factory)
-            : base(factory, 0) { }
+            : base((CoordinateFactory)factory.CoordinateFactory, 0) { }
 
         internal CoordinateSet(
             ICoordinateSequence<Coordinate> sequence,
             CoordinateSequenceFactory factory)
-            : base(factory, sequence)
+            : base((CoordinateFactory)factory.CoordinateFactory, sequence)
         {
             ICoordinateSequence<Coordinate> withoutDupes =
                 sequence.WithoutDuplicatePoints();

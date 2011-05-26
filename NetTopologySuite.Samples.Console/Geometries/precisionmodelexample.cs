@@ -2,8 +2,11 @@ using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using NetTopologySuite.Coordinates;
-
+#if BUFFERED
+using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
+#else
+using coord = NetTopologySuite.Coordinates.Simple.Coordinate;
+#endif
 namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 {
     /// <summary> 
@@ -74,9 +77,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
                                          PrecisionModelType pm)
         {
             Console.WriteLine("Running example using Precision Model = " + pm);
-            IGeometryFactory<BufferedCoordinate> fact
+            IGeometryFactory<coord> fact
                 = GeometryServices.GetGeometryFactory(pm);
-            WktReader<BufferedCoordinate> wktRdr = new WktReader<BufferedCoordinate>(fact, null);
+            WktReader<coord> wktRdr = new WktReader<coord>(fact, null);
 
             IGeometry a = wktRdr.Read(wktA);
             IGeometry b = wktRdr.Read(wktB);
@@ -91,9 +94,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
         {
             Console.WriteLine("-------------------------------------------");
             Console.WriteLine("Running example using Precision Model = " + pm);
-            IGeometryFactory<BufferedCoordinate> fact
+            IGeometryFactory<coord> fact
                 = GeometryServices.GetGeometryFactory(pm);
-            WktReader<BufferedCoordinate> wktRdr = new WktReader<BufferedCoordinate>(fact, null);
+            WktReader<coord> wktRdr = new WktReader<coord>(fact, null);
 
             IGeometry a = wktRdr.Read(wktA);
             IGeometry b = wktRdr.Read(wktB);

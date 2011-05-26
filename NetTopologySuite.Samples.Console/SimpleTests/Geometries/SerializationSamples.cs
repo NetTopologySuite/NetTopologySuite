@@ -6,7 +6,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NetTopologySuite.Coordinates;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
+namespace GisSharpBlog.NetTopologySuite.SimpleTests.Geometries
 {
     public class SerializationSamples : BaseSamples
     {

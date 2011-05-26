@@ -3,11 +3,20 @@ using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Samples.SimpleTests;
+using GisSharpBlog.NetTopologySuite.SimpleTests;
 using NetTopologySuite.Coordinates;
 using NUnit.Framework;
+#if BUFFERED
+using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
+using coordFac = NetTopologySuite.Coordinates.BufferedCoordinateFactory;
+using coordSeqFac = NetTopologySuite.Coordinates.BufferedCoordinateSequenceFactory;
+#else
+using coord = NetTopologySuite.Coordinates.Simple.Coordinate;
+using coordFac = NetTopologySuite.Coordinates.Simple.CoordinateFactory;
+using coordSeqFac = NetTopologySuite.Coordinates.Simple.CoordinateSequenceFactory;
+#endif
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
+namespace GisSharpBlog.NetTopologySuite.Tests.Various
 {
     [TestFixture]
     public class WktTest : BaseSamples
@@ -19,14 +28,14 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// </summary>
         public WktTest()
         {
-            writer = new WktWriter<BufferedCoordinate>();
+            writer = new WktWriter<coord>();
         }
 
         private void TestFormatting(ICoordinate c)
         {
-            IGeometryFactory<BufferedCoordinate> geoFactory;
-            ICoordinateSequenceFactory<BufferedCoordinate> seqFactory
-                = new BufferedCoordinateSequenceFactory();
+            IGeometryFactory<coord> geoFactory;
+            ICoordinateSequenceFactory<coord> seqFactory
+                = new coordSeqFac();
 
             // Double floating precision
             geoFactory = GeometryServices.GetGeometryFactory(PrecisionModelType.DoubleFloating);

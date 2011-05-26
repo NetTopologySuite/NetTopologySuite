@@ -1,9 +1,10 @@
 using System;
 using GisSharpBlog.NetTopologySuite.Samples.LinearReferencing;
-using GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries;
+using GisSharpBlog.NetTopologySuite.SimpleTests;
+using GisSharpBlog.NetTopologySuite.SimpleTests.Geometries;
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
+namespace GisSharpBlog.NetTopologySuite
 {
     [TestFixture]
     public class Program
@@ -14,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
             new Program().Start();
         }
 
-        private static BaseSamples sample;
+        private static BaseSamples _sample;
 
         public void Start()
         {
@@ -26,24 +27,24 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
         {
             try
             {
-                sample = new PointSamples();
-                sample.Start();
+                _sample = new PointSamples();
+                _sample.Start();
                 Console.WriteLine();
 
-                sample = new LineStringSamples();
-                sample.Start();
+                _sample = new LineStringSamples();
+                _sample.Start();
                 Console.WriteLine();
 
-                sample = new PolygonSamples();
-                sample.Start();
+                _sample = new PolygonSamples();
+                _sample.Start();
                 Console.WriteLine();
 
-                sample = new MultiPointSamples();
-                sample.Start();
+                _sample = new MultiPointSamples();
+                _sample.Start();
                 Console.WriteLine();
 
-                sample = new ValidationSuite();
-                sample.Start();
+                _sample = new ValidationSuite();
+                _sample.Start();
                 Console.WriteLine();
                 /*
                 sample = new SerializationSamples();

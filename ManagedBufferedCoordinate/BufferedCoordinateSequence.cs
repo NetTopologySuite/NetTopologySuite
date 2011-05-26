@@ -298,7 +298,9 @@ namespace NetTopologySuite.Coordinates
             // if we share a buffer, we can just import the indexes
             if (buf2DSeq != null && buf2DSeq._buffer == _buffer)
             {
+                if (buf2DSeq._reversed) buf2DSeq._sequence.Reverse();
                 _sequence.AddRange(buf2DSeq._sequence);
+                if (buf2DSeq._reversed) buf2DSeq._sequence.Reverse();
             }
             else
             {

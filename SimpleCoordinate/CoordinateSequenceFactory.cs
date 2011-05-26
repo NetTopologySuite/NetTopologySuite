@@ -61,8 +61,8 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public ISimpleCoordSequence Create(CoordinateDimensions dimension)
         {
-            checkDimension(dimension);
-            return new CoordinateSequence(this);
+            //CheckDimension(dimension);
+            return new CoordinateSequence(_coordFactory);
         }
 
         public IPrecisionModel<Coordinate> PrecisionModel
@@ -77,8 +77,8 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public ISimpleCoordSequence Create(Int32 size, CoordinateDimensions dimension)
         {
-            checkDimension(dimension);
-            return new CoordinateSequence(this, size);
+            //CheckDimension(dimension);
+            return new CoordinateSequence(_coordFactory, size);
         }
 
         public ISimpleCoordSequence Create(ISimpleCoordSequence coordSeq)
@@ -95,7 +95,7 @@ namespace NetTopologySuite.Coordinates.Simple
         {
             ISimpleCoordSequence newSequence = Create(CoordinateDimensions.Two);
 
-            Coordinate lastCoord = new Coordinate();
+            var lastCoord = new Coordinate();
 
             if (!direction)
             {
@@ -194,12 +194,12 @@ namespace NetTopologySuite.Coordinates.Simple
 
         ICoordinateSequence ICoordinateSequenceFactory.Create(IEnumerable<ICoordinate> coordinates)
         {
-            return Create(convertCoordinates(coordinates));
+            return Create(ConvertCoordinates(coordinates));
         }
 
         #endregion
 
-        private IEnumerable<Coordinate> convertCoordinates(IEnumerable<ICoordinate> coordinates)
+        private IEnumerable<Coordinate> ConvertCoordinates(IEnumerable<ICoordinate> coordinates)
         {
             foreach (ICoordinate coordinate in coordinates)
             {
@@ -207,16 +207,16 @@ namespace NetTopologySuite.Coordinates.Simple
             }
         }
 
-        private static void checkDimension(CoordinateDimensions dimension)
-        {
-            return;
+        //private static void CheckDimension(CoordinateDimensions dimension)
+        //{
+        //    return;
 
-            if (dimension != CoordinateDimensions.Two)
-            {
-                throw new NotSupportedException("Dimension can only be 2 for " +
-                                                "this factory.");
-            }
-        }
+        //    if (dimension != CoordinateDimensions.Two)
+        //    {
+        //        throw new NotSupportedException("Dimension can only be 2 for " +
+        //                                        "this factory.");
+        //    }
+        //}
 
 
         #region IMatrixFactory<DoubleComponent,Matrix> Member

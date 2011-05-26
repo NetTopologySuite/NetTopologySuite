@@ -3,9 +3,14 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownBinary;
 using GeoAPI.Operations.Buffer;
-using NetTopologySuite.Coordinates;
+using GeoAPI.Operations.Buffer;
+#if BUFFERED
+using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
+#else
+using coord = NetTopologySuite.Coordinates.Simple.Coordinate;
+#endif
 
-namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
+namespace GisSharpBlog.NetTopologySuite.SimpleTests.Geometries
 {
     public class LineStringSamples : BaseSamples
     {
@@ -13,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
 
         public LineStringSamples()
         {
-            BufferedCoordinateFactory coordFactory = new BufferedCoordinateFactory();
+            var coordFactory = GeoFactory.CoordinateFactory;
 
             ICoordinate[] coordinates = new ICoordinate[]
                                             {
@@ -27,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
 
         public override void Start()
         {
-            BufferedCoordinateFactory coordFactory = new BufferedCoordinateFactory();
+            var coordFactory = GeoFactory.CoordinateFactory;
 
             IPoint pointInLine = GeoFactory.CreatePoint(coordFactory.Create(20, 10));
             IPoint pointOutLine = GeoFactory.CreatePoint(coordFactory.Create(20, 31));
@@ -140,7 +145,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(geom2.AsText());
 
                 Byte[] bytes = line.AsBinary();
-                IGeometry test1 = new WkbReader<BufferedCoordinate>(GeoFactory).Read(bytes);
+                IGeometry test1 = new WkbReader<coord>(GeoFactory).Read(bytes);
                 Write(test1.ToString());
 
                 //bytes = new GDBWriter().Write(line);

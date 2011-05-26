@@ -48,6 +48,7 @@ namespace NetTopologySuite.Coordinates.Simple
     /// </summary>
     public class CoordinateSequence : ICoordSequence
     {
+        /*
         private static Int32 ForwardIndex(Int32 index)
         {
             return index;
@@ -57,53 +58,49 @@ namespace NetTopologySuite.Coordinates.Simple
         {
             return _coordinates.Count - (index + 1);
         }
+        */
 
-        private List<Coordinate> _coordinates = new List<Coordinate>();
-        private readonly CoordinateSequenceFactory _factory;
+        private List<Coordinate> _coordinates; // = new List<Coordinate>();
+        //private readonly CoordinateSequenceFactory _factory;
+        private readonly CoordinateFactory _coordFactory;
         //private Int32 _startIndex, _endIndex;
         private Coordinate _max = new Coordinate();
         private Coordinate _min = new Coordinate();
         private IExtents<Coordinate> _extents;
 
-        /**
-         * Constructs a sequence based on the given array (the
-         * array is not copied).
-         *
-         * @param coordinates the coordinate array that will be referenced.
-         */
+        ///<summary>
+        /// Constructs an empty sequence
+        ///</summary>
+        ///<param name="factory">The factory to create coordinate instance.</param>
+        internal CoordinateSequence(CoordinateFactory factory)
+            : this(factory, true)
+        {}
 
-        internal CoordinateSequence(CoordinateSequenceFactory factory)
+        private CoordinateSequence(CoordinateFactory factory, bool createList)
         {
-            _factory = factory;
+            _coordFactory = factory;
+            if (createList) _coordinates = new List<Coordinate>();
         }
 
-        //private CoordinateSequence(Boolean reversed, List<Coordinate> coordinates,
-        //                           Int32 startIndex, Int32 endIndex,
-        //                           CoordinateSequenceFactory factory)
-        //{
-        //    _coordinates = coordinates;
-        //    _reversed = reversed;
-        //    _startIndex = startIndex;
-        //    _endIndex = endIndex;
-        //    _factory = factory;
-        //}
-        internal CoordinateSequence(CoordinateSequenceFactory factory, IEnumerable<Coordinate> coordinates)
-            : this(factory)
+        /// <summary>
+        ///  Constructs a sequence populated with the supplied enumeration of coordinates
+        /// </summary>
+        ///<param name="factory">The factory to create coordinate instance.</param>
+        /// <param name="coordinates">The coordinates that make up the sequence</param>
+        internal CoordinateSequence(CoordinateFactory factory, IEnumerable<Coordinate> coordinates)
+            : this(factory, false)
         {
-            _coordinates.AddRange(Check(coordinates));
+            _coordinates = new List<Coordinate>(Check(coordinates, factory));
         }
 
-        /**
-         * Constructs a sequence of a given size, populated
-         * with new {@link Coordinate}s.
-         *
-         * @param size the size of the sequence to create
-         */
-
-        internal CoordinateSequence(CoordinateSequenceFactory factory, int size)
-            : this(factory)
+        ///<summary>
+        /// Constructs a sequence of a given size, populated with new <see cref="Coordinate"/>s.
+        ///</summary>
+        /// <param name="factory">The CoordinateSequenceFactory</param>
+        /// <param name="size">The size of the coordinate list</param>
+        internal CoordinateSequence(CoordinateFactory factory, int size)
+            : this(factory, false)
         {
-            _factory = factory;
             _coordinates = new List<Coordinate>(size);
             for (int i = 0; i < size; i++)
             {
@@ -118,13 +115,18 @@ namespace NetTopologySuite.Coordinates.Simple
          * @param coordinates the coordinate array that will be referenced.
          */
 
-        internal CoordinateSequence(CoordinateSequence coordSeq)
+        internal CoordinateSequence(IEnumerable<Coordinate> coordSeq)
         {
             if (coordSeq != null)
             {
-                _factory = coordSeq._factory;
                 foreach (Coordinate coord in coordSeq)
                     _coordinates.Add(Coordinate.Clone(coord));
+                _coordFactory = _coordinates[0].CoordinateFactory;
+            }
+            else
+            {
+                _coordinates = new List<Coordinate>();
+                _coordFactory = new CoordinateFactory();
             }
         }
 
@@ -155,7 +157,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public ICoordinateSequence<Coordinate> Clone()
         {
-            return new CoordinateSequence(_factory, _coordinates);
+            return new CoordinateSequence(_coordFactory, _coordinates);
         }
 
         /**
@@ -273,17 +275,12 @@ namespace NetTopologySuite.Coordinates.Simple
             return extents;
         }
 
-        /**
-         * Returns the string Representation of the coordinate array
-         *
-         * @return The string
-         */
-
+        ///<summary>Returns the string Representation of the coordinate array</summary>
         public override String ToString()
         {
             if (Count > 0)
             {
-                StringBuilder strBuf = new StringBuilder(17*Count);
+                var strBuf = new StringBuilder(17*Count);
                 strBuf.Append('(');
                 strBuf.Append(_coordinates[0]);
                 for (int i = 1; i < Count; i++)
@@ -304,8 +301,8 @@ namespace NetTopologySuite.Coordinates.Simple
                 return;
             }
 
-            Coordinate maxCoord = new Coordinate();
-            Coordinate minCoord = new Coordinate();
+            var maxCoord = new Coordinate();
+            var minCoord = new Coordinate();
 
             foreach (Coordinate current in _coordinates)
             {
@@ -320,23 +317,30 @@ namespace NetTopologySuite.Coordinates.Simple
             _min = minCoord;
         }
 
-        private Coordinate Check(Coordinate coord)
+        private static Coordinate Check(Coordinate coord, ICoordFactory factory)
         {
             if ( coord.IsEmpty )
                 throw new InvalidOperationException("Must not add empty coordinate to sequence");
 
-            if ( coord.CoordinateFactory == _factory.CoordinateFactory )
+            if ( coord.CoordinateFactory == factory )
                 return coord;
 
-            return _factory.CoordinateFactory.Create(coord);
+            return factory.Create(coord);
         }
 
-        private IEnumerable<Coordinate> Check(IEnumerable<Coordinate> coords)
+        private static IEnumerable<Coordinate> Check(IEnumerable<Coordinate> coords, ICoordFactory factory)
         {
             foreach (Coordinate coord in coords)
-                yield return Check(coord);
+                yield return Check(coord, factory);
         }
 
+        private static ICoordinateSequence<Coordinate> Check(ICoordinateSequence sequence, ICoordinateSequenceFactory<Coordinate> factory)
+        {
+            if (sequence is CoordinateSequence)
+                return (CoordinateSequence) sequence;
+            return factory.Create(sequence);
+        }
+        
         #region ICoordSequence<Coordinate> Member
 
         private Boolean _isFrozen;
@@ -348,18 +352,18 @@ namespace NetTopologySuite.Coordinates.Simple
 
             if (reverse)
             {
-                Stack<Coordinate> stack = new Stack<Coordinate>(coordinates);
+                var stack = new Stack<Coordinate>(coordinates);
                 coordinates = stack;
             }
 
             if (allowRepeated)
-                _coordinates.AddRange(Check(coordinates));
+                _coordinates.AddRange(Check(coordinates, _coordFactory));
             else
             {
                 foreach (Coordinate coordinate in coordinates)
                 {
                     if (_coordinates.Count == 0 || !coordinate.Equals(Last))
-                        _coordinates.Add(Check(coordinate));
+                        _coordinates.Add(Check(coordinate, _coordFactory));
                 }
             }
 
@@ -399,7 +403,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public ISet<Coordinate> AsSet()
         {
-            return new CoordinateSet(this, _factory);
+            return new CoordinateSet(this, new CoordinateSequenceFactory(_coordFactory));
         }
 
         public ICoordinateSequence<Coordinate> Clear()
@@ -411,18 +415,18 @@ namespace NetTopologySuite.Coordinates.Simple
         public ICoordinateSequence<Coordinate> CloseRing()
         {
             if (!_coordinates[0].Equals(_coordinates[Count - 1]))
-                _coordinates.Add(Check(_coordinates[0]));
+                _coordinates.Add(Check(_coordinates[0], _coordFactory));
             return this;
         }
 
         public ICoordinateSequenceFactory<Coordinate> CoordinateSequenceFactory
         {
-            get { return _factory; }
+            get { return new CoordinateSequenceFactory(_coordFactory); }
         }
 
         public ICoordinateFactory<Coordinate> CoordinateFactory
         {
-            get { return _factory.CoordinateFactory; }
+            get { return _coordFactory; }
         }
 
         int ICoordSequence.Count
@@ -465,12 +469,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public IExtents<Coordinate> GetExtents(IGeometryFactory<Coordinate> geometryFactory)
         {
-            if (_extents == null)
-            {
-                _extents = geometryFactory.CreateExtents(Minimum, Maximum);
-            }
-
-            return _extents;
+            return _extents ?? (_extents = geometryFactory.CreateExtents(Minimum, Maximum));
         }
 
         public Coordinate First
@@ -488,7 +487,7 @@ namespace NetTopologySuite.Coordinates.Simple
         {
             get
             {
-                Coordinate last = new Coordinate();
+                var last = new Coordinate();
                 foreach (Coordinate coordinate in _coordinates)
                 {
                     if (last.IsEmpty)
@@ -532,7 +531,7 @@ namespace NetTopologySuite.Coordinates.Simple
         public ICoordinateSequence<Coordinate> Insert(int index, Coordinate item)
         {
             CheckFrozen();
-            _coordinates.Insert(index, Check(item));
+            _coordinates.Insert(index, Check(item, _coordFactory));
             return this;
         }
 
@@ -540,15 +539,18 @@ namespace NetTopologySuite.Coordinates.Simple
         {
             get { return _isFrozen; }
         }
-
-        private Int32 computeIndex( Int32 index )
+        /*
+        private Int32 ComputeIndex( Int32 index )
         {
             return !_reversed ? index : LastIndex - index;
         }
+         */
         public Coordinate this[int index]
         {
-            get { return _coordinates[_indexComputer(index)]; }
-            set { _coordinates[_indexComputer(index)] = value; }
+            //get { return _coordinates[_indexComputer(index)]; }
+            //set { _coordinates[_indexComputer(index)] = value; }
+            get { return _coordinates[index]; }
+            set { _coordinates[index] = value; }
         }
 
         public Coordinate Last
@@ -567,7 +569,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public ICoordinateSequence<Coordinate> Merge(ICoordinateSequence<Coordinate> other)
         {
-            ICoordinateSequence<Coordinate> seq = _factory.Create(this);
+            ICoordinateSequence<Coordinate> seq = Clone();
             return seq.Append(other);
         }
 
@@ -588,14 +590,14 @@ namespace NetTopologySuite.Coordinates.Simple
         public ICoordinateSequence<Coordinate> Prepend(IEnumerable<Coordinate> coordinates)
         {
             CheckFrozen();
-            if (!_reversed)
-            {
-                List<Coordinate> newCoords = new List<Coordinate>(Check(coordinates));
+            //if (!_reversed)
+            //{
+                var newCoords = new List<Coordinate>(Check(coordinates, _coordFactory));
                 newCoords.AddRange(_coordinates);
                 _coordinates = newCoords;
-            }
-            else
-                _coordinates.AddRange(new Stack<Coordinate>(Check(coordinates)));
+            //}
+            //else
+            //    _coordinates.AddRange(new Stack<Coordinate>(Check(coordinates, _factory.CoordinateFactory)));
 
             OnSequenceChanged();
             return this;
@@ -608,25 +610,27 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public ICoordinateSequence<Coordinate> RemoveAt(int index)
         {
-            if (_reversed)
-                index = LastIndex - index;
+            //if (_reversed)
+            //    index = LastIndex - index;
             _coordinates.RemoveAt(index);
             OnSequenceChanged();
             return this;
         }
 
-        private Boolean _reversed;
-        private IndexComputer _indexComputer = ForwardIndex;
+        //private Boolean _reversed;
+        //private IndexComputer _indexComputer = ForwardIndex;
+
         public ICoordinateSequence<Coordinate> Reverse()
         {
             CheckFrozen();
-            if (_reversed)
-                _indexComputer = ForwardIndex;
-            else
-            {
-                _indexComputer = ReverseIndex;
-            }
-            _reversed = !_reversed;
+            //if (_reversed)
+            //    _indexComputer = ForwardIndex;
+            //else
+            //{
+            //    _indexComputer = ReverseIndex;
+            //}
+            //_reversed = !_reversed;
+            _coordinates = new List<Coordinate>(new Stack<Coordinate>(_coordinates));
             OnSequenceChanged();
             return this;
         }
@@ -677,7 +681,7 @@ namespace NetTopologySuite.Coordinates.Simple
                 wasClosed = true;
             }
 
-            List<Coordinate> newCoordinates = new List<Coordinate>(count);
+            var newCoordinates = new List<Coordinate>(count);
             newCoordinates.AddRange(_coordinates.GetRange(indexToBecomeFirst, Count - indexToBecomeFirst));
             newCoordinates.AddRange(_coordinates.GetRange(0, indexToBecomeFirst));
             _coordinates = newCoordinates;
@@ -692,30 +696,30 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public ICoordinateSequence<Coordinate> Slice(int startIndex, int endIndex)
         {
-            return new CoordinateSequence(_factory, GetRange(startIndex, endIndex - startIndex + 1));
+            return new CoordinateSequence(_coordFactory, GetRange(startIndex, endIndex - startIndex + 1));
         }
 
         public ICoordinateSequence<Coordinate> Sort()
         {
-            return Sort(0, LastIndex, _factory.DefaultComparer);
+            return Sort(0, LastIndex, ((CoordinateSequenceFactory)CoordinateSequenceFactory).DefaultComparer);
         }
 
         public ICoordinateSequence<Coordinate> Sort(int startIndex, int endIndex)
         {
-            return Sort(startIndex, endIndex, _factory.DefaultComparer);
+            return Sort(startIndex, endIndex, ((CoordinateSequenceFactory)CoordinateSequenceFactory).DefaultComparer);
         }
 
-        private Boolean IsSlice
-        {
-            get { return false; }
-        }
+        //private Boolean IsSlice
+        //{
+        //    get { return false; }
+        //}
 
         public ICoordinateSequence<Coordinate> Sort(int startIndex, int endIndex, IComparer<Coordinate> comparer)
         {
-            if ( IsSlice )
-            {
-                throw new NotSupportedException("Sorting a slice is not supported.");
-            }
+            //if ( IsSlice )
+            //{
+            //    throw new NotSupportedException("Sorting a slice is not supported.");
+            //}
 
             CheckFrozen();
 
@@ -759,13 +763,13 @@ namespace NetTopologySuite.Coordinates.Simple
         private IEnumerable<Coordinate> GetRange(Int32 startIndex, Int32 count)
         {
             IEnumerable<Coordinate> retVal;
-            if (!_reversed)
+            //if (!_reversed)
                 retVal = _coordinates.GetRange(startIndex,count);
-            else
-            {
-                retVal = new Stack<Coordinate>(
-                    _coordinates.GetRange(LastIndex - startIndex - count + 1, count));
-            }
+            //else
+            //{
+            //    retVal = new Stack<Coordinate>(
+            //        _coordinates.GetRange(LastIndex - startIndex - count + 1, count));
+            //}
             return retVal;
         }
 
@@ -790,7 +794,7 @@ namespace NetTopologySuite.Coordinates.Simple
         public ICoordinateSequence<Coordinate> Splice(IEnumerable<Coordinate> startCoordinates, int startIndex,
                                                       int endIndex, IEnumerable<Coordinate> endCoordinates)
         {
-            CoordinateSequence seq = new CoordinateSequence(_factory, GetRange(startIndex, endIndex-startIndex+1));
+            var seq = new CoordinateSequence(_coordFactory, GetRange(startIndex, endIndex-startIndex+1));
             if (startCoordinates != null ) 
                 seq.Prepend(startCoordinates);
             if( endCoordinates != null) 
@@ -815,15 +819,15 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public ICoordinateSequence<Coordinate> WithoutRepeatedPoints()
         {
-            List<Coordinate> coords = new List<Coordinate>();
-            Coordinate last = new Coordinate();
+            var coords = new List<Coordinate>();
+            var last = new Coordinate();
             foreach (Coordinate coordinate in _coordinates)
             {
                 if( !coordinate.Equals(last))
                     coords.Add(coordinate);
                 last = coordinate;
             }
-            return new CoordinateSequence(_factory, coords);
+            return new CoordinateSequence(_coordFactory, coords);
         }
 
         protected void SetSequenceInternal(CoordinateSequence sequence)
@@ -835,16 +839,15 @@ namespace NetTopologySuite.Coordinates.Simple
             else
             {
                 _coordinates.Clear();
-                _coordinates.AddRange(Check(sequence._coordinates));
+                _coordinates.AddRange(Check(sequence._coordinates, _coordFactory));
             }
         }
 
         public ICoordinateSequence<Coordinate> WithoutDuplicatePoints()
         {
-            HashSet<Coordinate> hs= new HashSet<Coordinate>();
-            //hs.AllowsDuplicates = false;
+            var hs= new HashSet<Coordinate>();
             hs.AddAll(_coordinates);
-            return new CoordinateSequence(_factory, hs.UniqueItems());
+            return new CoordinateSequence(_coordFactory, hs.UniqueItems());
         }
 
         public Pair<Coordinate> SegmentAt(int index)
@@ -927,12 +930,12 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public IEnumerator<Coordinate> GetEnumerator()
         {
-            IEnumerator<Coordinate> it;
-            if (!_reversed)
+            //IEnumerator<Coordinate> it;
+            //if (!_reversed)
                 return _coordinates.GetEnumerator();
 
-            Stack<Coordinate> stack = new Stack<Coordinate>(_coordinates);
-            return stack.GetEnumerator();
+            //Stack<Coordinate> stack = new Stack<Coordinate>(_coordinates);
+            //return stack.GetEnumerator();
         }
 
         #endregion
@@ -953,8 +956,8 @@ namespace NetTopologySuite.Coordinates.Simple
             Int32 size1 = Count;
             Int32 size2 = other.Count;
 
-            Int32 dim1 = (Int32) Dimension;
-            Int32 dim2 = (Int32) other.Dimension;
+            var dim1 = (Int32) Dimension;
+            var dim2 = (Int32) other.Dimension;
 
             // lower dimension is less than higher
             if (dim1 < dim2) return -1;
@@ -1002,7 +1005,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         ICoordinate[] ICoordinateSequence.ToArray()
         {
-            ICoordinate[] array = new ICoordinate[Count];
+            var array = new ICoordinate[Count];
 
             for (Int32 i = 0; i < Count; i++)
             {
@@ -1020,7 +1023,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         ICoordinateSequence ICoordinateSequence.Merge(ICoordinateSequence other)
         {
-            throw new NotImplementedException();
+            return Merge(Check(other, CoordinateSequenceFactory));
         }
 
         ICoordinateSequence ICoordinateSequence.Clone()
@@ -1030,12 +1033,12 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public bool Equals(ICoordinateSequence other, Tolerance tolerance)
         {
-            throw new NotImplementedException();
+            return Equals((ICoordinateSequence<Coordinate>) other, tolerance);
         }
 
         public IExtents GetExtents(IGeometryFactory geometryFactory)
         {
-            throw new NotImplementedException();
+            return GetExtents((IGeometryFactory<Coordinate>)geometryFactory);
         }
 
         ICoordinateSequence ICoordinateSequence.Freeze()
@@ -1065,12 +1068,12 @@ namespace NetTopologySuite.Coordinates.Simple
 
         ICoordinate ICoordinateSequence.Maximum
         {
-            get { throw new NotImplementedException(); }
+            get { return Maximum; }
         }
 
         ICoordinate ICoordinateSequence.Minimum
         {
-            get { throw new NotImplementedException(); }
+            get { return Minimum; }
         }
 
         ICoordinateSequence ICoordinateSequence.Reverse()
@@ -1085,12 +1088,13 @@ namespace NetTopologySuite.Coordinates.Simple
 
         ICoordinateSequenceFactory ICoordinateSequence.CoordinateSequenceFactory
         {
-            get { return _factory; }
+            get { return CoordinateSequenceFactory; }
         }
 
         Pair<ICoordinate> ICoordinateSequence.SegmentAt(int index)
         {
-            throw new NotImplementedException();
+            var ret = SegmentAt(index);
+            return new Pair<ICoordinate>(ret.First, ret.Second);
         }
 
         public event EventHandler SequenceChanged;
@@ -1123,17 +1127,18 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public bool Contains(object value)
         {
-            throw new NotImplementedException();
+            return ((IList)_coordinates).Contains(value);
         }
 
         public int IndexOf(object value)
         {
-            throw new NotImplementedException();
+            return ((IList)_coordinates).IndexOf(value);
         }
 
         public void Insert(int index, object value)
         {
-            throw new NotImplementedException();
+            ((IList)_coordinates).Insert(index, value);
+            OnSequenceChanged();
         }
 
         public bool IsFixedSize
@@ -1146,18 +1151,26 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public void Remove(object value)
         {
-            throw new NotImplementedException();
+            ((IList)_coordinates).Remove(value);
+            OnSequenceChanged();
         }
 
         void IList.RemoveAt(int index)
         {
-            throw new NotImplementedException();
+            ((IList)_coordinates).RemoveAt(index);
+            OnSequenceChanged();
         }
 
         object IList.this[int index]
         {
             get { return this[index]; }
-            set { throw new NotImplementedException(); }
+            set
+            {
+                var val = value as Coordinate;
+                if (val != null)
+                    _coordinates[index] = val;
+                OnSequenceChanged();
+            }
         }
 
         #endregion
