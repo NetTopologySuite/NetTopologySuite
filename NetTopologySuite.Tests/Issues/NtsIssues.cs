@@ -1,4 +1,5 @@
 using System;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
 using GeoAPI.Operations.Buffer;
@@ -16,6 +17,21 @@ namespace NetTopologySuite.Tests.Issues
     public class NtsIssues
     {
         private static readonly IWktGeometryReader<coord> Reader = TestFactories.GeometryFactory.WktReader;
+
+        [Test]
+        public void IssueSliceGetOverlappingTriplesWithReversedCoordinateSequence()
+        {
+            var linestring = Reader.Read("LINESTRING (10 10, 20 20, 30 30, 40 40, 50 50)");
+            var seq = linestring.Coordinates;
+            var seqReversed = seq.Reversed;
+            Console.WriteLine("\nReversed");
+            foreach (var overlappingTriple in Slice.GetOverlappingTriples(seqReversed))
+                Console.WriteLine(overlappingTriple.ToString());
+            Console.WriteLine("\nOriginal");
+            foreach (var overlappingTriple in Slice.GetOverlappingTriples(seq))
+                Console.WriteLine(overlappingTriple.ToString());
+        }
+
 
         public void Issue54()
         {
