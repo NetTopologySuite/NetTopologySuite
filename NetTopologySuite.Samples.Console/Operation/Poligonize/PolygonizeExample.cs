@@ -12,7 +12,7 @@ using Coord = NetTopologySuite.Coordinates.Coordinate;
 using CoordSeqFac = NetTopologySuite.Coordinates.CoordinateSequenceFactory;
 #else
 using Coord = NetTopologySuite.Coordinates.BufferedCoordinate;
-using CoordSeqFac = NetTopologySuite.Coordinates.Simple.BufferedCoordinateSequenceFactory;
+using CoordSeqFac = NetTopologySuite.Coordinates.BufferedCoordinateSequenceFactory;
 #endif
 
 namespace NetTopologySuite.Samples.Operation.Poligonize

@@ -6,7 +6,7 @@ using GeoAPI.Operations.Buffer;
 #if BUFFERED
 using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
 #else
-using coord = NetTopologySuite.Coordinates.Simple.Coordinate;
+using coord = NetTopologySuite.Coordinates.Coordinate;
 #endif
 using NetTopologySuite.IO.WellKnownBinary;
 

@@ -7,9 +7,9 @@ using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
 using coordFac = NetTopologySuite.Coordinates.BufferedCoordinateFactory;
 using coordSeqFac = NetTopologySuite.Coordinates.BufferedCoordinateSequenceFactory;
 #else
-using coord = NetTopologySuite.Coordinates.Simple.Coordinate;
-using coordFac = NetTopologySuite.Coordinates.Simple.CoordinateFactory;
-using coordSeqFac = NetTopologySuite.Coordinates.Simple.CoordinateSequenceFactory;
+using coord = NetTopologySuite.Coordinates.Coordinate;
+using coordFac = NetTopologySuite.Coordinates.CoordinateFactory;
+using coordSeqFac = NetTopologySuite.Coordinates.CoordinateSequenceFactory;
 #endif
 
 namespace NetTopologySuite
