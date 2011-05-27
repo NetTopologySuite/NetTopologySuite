@@ -859,7 +859,9 @@ namespace NetTopologySuite.Geometries
             if (ReferenceEquals(obj, this))
                 return true;
             if (GetType().Namespace != obj.GetType().Namespace)
-                return false;            
+                return false;           
+            if (!(obj is IGeometry))
+                return false;
             return Equals((IGeometry) obj);         
         }
 
