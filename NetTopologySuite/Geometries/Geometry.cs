@@ -795,7 +795,7 @@ namespace NetTopologySuite.Geometries
         /// <returns><c>true</c> if the two <c>Geometry</c>s are equal.</returns>
         public bool Equals(IGeometry g)
         {
-            if (Object.Equals(g, null))
+            if (Equals(g, null))
                 return false;
 
             if (ReferenceEquals(g, this))
@@ -853,7 +853,10 @@ namespace NetTopologySuite.Geometries
         /// <param name="obj"></param>
         /// <returns></returns>
         public override bool Equals(object obj)
-        {            
+        {
+            //These checks would mean double effort 
+            //(except for namespace, but I don't see the use for it)
+            /* 
             if (obj == null)
                 return false;
             if (ReferenceEquals(obj, this))
@@ -863,6 +866,8 @@ namespace NetTopologySuite.Geometries
             if (!(obj is IGeometry))
                 return false;
             return Equals((IGeometry) obj);         
+             */
+            return Equals(obj as IGeometry);
         }
 
         /// <summary>

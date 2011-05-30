@@ -1,4 +1,3 @@
-//using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Utilities;
@@ -42,9 +41,9 @@ namespace NetTopologySuite.Operation.Union
             return op.Union();
         }
 
-        private readonly List<IGeometry> _polygons = new List<IGeometry>();
-        private readonly List<IGeometry> _lines = new List<IGeometry>();
-        private readonly List<IGeometry> _points = new List<IGeometry>();
+        private readonly List<IPolygon> _polygons = new List<IPolygon>();
+        private readonly List<ILineString> _lines = new List<ILineString>();
+        private readonly List<IPoint> _points = new List<IPoint>();
 
         private IGeometryFactory _geomFact;
 
@@ -99,21 +98,21 @@ namespace NetTopologySuite.Operation.Union
             IGeometry unionPoints = null;
             if (_points.Count > 0)
             {
-                IGeometry ptGeom = _geomFact.BuildGeometry(_points);
+                IGeometry ptGeom = _geomFact.BuildGeometry(ToCollection(_points));
                 unionPoints = UnionNoOpt(ptGeom);
             }
 
             IGeometry unionLines = null;
             if (_lines.Count > 0)
             {
-                IGeometry lineGeom = _geomFact.BuildGeometry(_lines);
+                IGeometry lineGeom = _geomFact.BuildGeometry(ToCollection(_lines));
                 unionLines = UnionNoOpt(lineGeom);
             }
 
             IGeometry unionPolygons = null;
             if (_polygons.Count > 0)
             {
-                unionPolygons = CascadedPolygonUnion.Union(_polygons);
+                unionPolygons = CascadedPolygonUnion.Union(ToCollection(_polygons));
             }
 
             /**
@@ -124,6 +123,14 @@ namespace NetTopologySuite.Operation.Union
             IGeometry union = UnionWithNull(unionPointsLines, unionPolygons);
 
             return union;
+        }
+
+        private static ICollection<IGeometry> ToCollection<T>(IEnumerable<T> items) where T : IGeometry
+        {
+            var ret = new List<IGeometry>();
+            foreach (IGeometry geometry in items)
+                ret.Add(geometry);
+            return ret;
         }
 
         ///<summary>

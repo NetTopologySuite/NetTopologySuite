@@ -61,7 +61,7 @@ namespace  NetTopologySuite.Samples.Tests.Various
         /// <returns></returns>
         private static IGeometry CheckShapefile(string fileName)
         {
-            int count = 0;
+            //int count = 0;
             var geoms = new List<IGeometry>();
             using (ShapefileDataReader reader = new ShapefileDataReader(fileName, GeometryFactory.Floating))
             {                
@@ -77,11 +77,12 @@ namespace  NetTopologySuite.Samples.Tests.Various
                     //if (result == null)
                     //    result = current;
                     //else result = result.Union(current);
-                    Debug.WriteLine("Iteration => " + ++count);
+                    //Debug.WriteLine("Iteration => " + ++count);
                 }
             }
             IGeometry result = UnaryUnionOp.Union(geoms);
-            Debug.WriteLine("Operation result: " + result);
+            var write = new WKTWriter {Formatted = true, MaxCoordinatesPerLine = 3, Tab = 2};
+            Debug.WriteLine("Operation result: " + write.Write(result));
             return result;
         }
 
