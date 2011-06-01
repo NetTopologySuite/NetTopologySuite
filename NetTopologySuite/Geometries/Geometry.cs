@@ -97,7 +97,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        private static readonly Type[] SortedClasses = new Type[] 
+        private static readonly Type[] SortedClasses = new[] 
         {
             typeof(Point),
             typeof(MultiPoint),
@@ -186,9 +186,9 @@ namespace NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <param name="factory"></param>
-        public Geometry(IGeometryFactory factory)
+        protected Geometry(IGeometryFactory factory)
         {
-            this._factory = factory;
+            _factory = factory;
             _srid = factory.SRID;
         }
 
@@ -471,7 +471,7 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        private Dimensions dimension;
+        private Dimensions _dimension;
 
         /// <summary> 
         /// Returns the dimension of this <c>Geometry</c>.
@@ -482,8 +482,8 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public virtual Dimensions Dimension
         {
-            get { return dimension; }
-            set { dimension = value; }
+            get { return _dimension; }
+            set { _dimension = value; }
         }
 
 
@@ -657,7 +657,7 @@ namespace NetTopologySuite.Geometries
         /// <returns><c>true</c> if this <c>Geometry</c> is within <c>other</c>.</returns>
         public bool Within(IGeometry g)
         {
-            return g.Contains(this); ;
+            return g.Contains(this);
         }
 
         /// <summary>
@@ -811,7 +811,7 @@ namespace NetTopologySuite.Geometries
 
             // NOTE: Not in JTS!!!
             // We use an alternative method for compare GeometryCollections (but not subclasses!), 
-            if (isGeometryCollection(this) || isGeometryCollection(g))
+            if (IsGeometryCollection(this) || IsGeometryCollection(g))
                 return CompareGeometryCollections(this, g);
             
             // Use RelateOp comparation method
@@ -1277,35 +1277,42 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Converts this <c>Geometry</c> to normal form (or 
-        /// canonical form ). Normal form is a unique representation for <c>Geometry</c>
-        /// s. It can be used to test whether two <c>Geometry</c>s are equal
+        /// Converts this <c>Geometry</c> to normal form (or canonical form ).
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Normal form is a unique representation for <c>Geometry</c>s. 
+        /// It can be used to test whether two <c>Geometry</c>s are equal
         /// in a way that is independent of the ordering of the coordinates within
         /// them. Normal form equality is a stronger condition than topological
-        /// equality, but weaker than pointwise equality. The definitions for normal
+        /// equality, but weaker than pointwise equality.</para>
+        /// <para>The definitions for normal
         /// form use the standard lexicographical ordering for coordinates. "Sorted in
         /// order of coordinates" means the obvious extension of this ordering to
-        /// sequences of coordinates.
-        /// </summary>
+        /// sequences of coordinates.</para>
+        /// </remarks>
         public abstract void Normalize();
 
         /// <summary>
         /// Returns whether this <c>Geometry</c> is greater than, equal to,
-        /// or less than another <c>Geometry</c>. 
+        /// or less than another <c>Geometry</c>.</summary>
+        /// <remarks>
         /// If their classes are different, they are compared using the following
         /// ordering:
-        ///     Point (lowest),
-        ///     MultiPoint,
-        ///     LineString,
-        ///     LinearRing,
-        ///     MultiLineString,
-        ///     Polygon,
-        ///     MultiPolygon,
-        ///     GeometryCollection (highest).
+        /// <list>
+        /// <item>Point (lowest),</item>
+        /// <item>MultiPoint,</item>
+        /// <item>LineString,</item>
+        /// <item>LinearRing,</item>
+        /// <item>MultiLineString,</item>
+        /// <item>Polygon,</item>
+        /// <item>MultiPolygon,</item>
+        /// <item>GeometryCollection (highest).</item>
+        /// </list>
         /// If the two <c>Geometry</c>s have the same class, their first
         /// elements are compared. If those are the same, the second elements are
         /// compared, etc.
-        /// </summary>
+        /// </remarks>
         /// <param name="o">A <c>Geometry</c> with which to compare this <c>Geometry</c></param>
         /// <returns>
         /// A positive number, 0, or a negative number, depending on whether
@@ -1315,17 +1322,42 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public int CompareTo(object o) 
         {
-            return CompareTo((IGeometry) o);
+            return CompareTo(o as IGeometry);
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geom"></param>
-        /// <returns></returns>
+        /// Returns whether this <c>Geometry</c> is greater than, equal to,
+        /// or less than another <c>Geometry</c>.</summary>
+        /// <remarks>
+        /// If their classes are different, they are compared using the following
+        /// ordering:
+        /// <list>
+        /// <item>Point (lowest),</item>
+        /// <item>MultiPoint,</item>
+        /// <item>LineString,</item>
+        /// <item>LinearRing,</item>
+        /// <item>MultiLineString,</item>
+        /// <item>Polygon,</item>
+        /// <item>MultiPolygon,</item>
+        /// <item>GeometryCollection (highest).</item>
+        /// </list>
+        /// If the two <c>Geometry</c>s have the same class, their first
+        /// elements are compared. If those are the same, the second elements are
+        /// compared, etc.
+        /// </remarks>
+        /// <param name="o">A <c>Geometry</c> with which to compare this <c>Geometry</c></param>
+        /// <returns>
+        /// A positive number, 0, or a negative number, depending on whether
+        /// this object is greater than, equal to, or less than <c>o</c>, as
+        /// defined in "Normal Form For Geometry" in the NTS Technical
+        /// Specifications.
+        /// </returns>
         public int CompareTo(IGeometry geom)
         {
-            Geometry other = (Geometry) geom;
+            Geometry other =  geom as Geometry;
+            if (other == null)
+                return -1;
+
             if (ClassSortIndex != other.ClassSortIndex)
                 return ClassSortIndex - other.ClassSortIndex;
             if (IsEmpty && other.IsEmpty)
@@ -1337,36 +1369,34 @@ namespace NetTopologySuite.Geometries
             return CompareToSameClass(geom);
         }
 
-        /**
-          *  Returns whether this <code>Geometry</code> is greater than, equal to,
-          *  or less than another <code>Geometry</code>,
-          * using the given {@link CoordinateSequenceComparator}.
-          * <P>
-          *
-          *  If their classes are different, they are compared using the following
-          *  ordering:
-          *  <UL>
-          *    <LI> Point (lowest)
-          *    <LI> MultiPoint
-          *    <LI> LineString
-          *    <LI> LinearRing
-          *    <LI> MultiLineString
-          *    <LI> Polygon
-          *    <LI> MultiPolygon
-          *    <LI> GeometryCollection (highest)
-          *  </UL>
-          *  If the two <code>Geometry</code>s have the same class, their first
-          *  elements are compared. If those are the same, the second elements are
-          *  compared, etc.
-          *
-          *@param  o  a <code>Geometry</code> with which to compare this <code>Geometry</code>
-          *@param comp a <code>CoordinateSequenceComparator</code>
-          *
-          *@return    a positive number, 0, or a negative number, depending on whether
-          *      this object is greater than, equal to, or less than <code>o</code>, as
-          *      defined in "Normal Form For Geometry" in the JTS Technical
-          *      Specifications
-          */
+        /// <summary>
+        /// Returns whether this <c>Geometry</c> is greater than, equal to,
+        /// or less than another <c>Geometry</c>, using the given <see paramref="IComparer{ICoordinateSequence}"/>.</summary>
+        /// <remarks>
+        /// If their classes are different, they are compared using the following
+        /// ordering:
+        /// <list>
+        /// <item>Point (lowest),</item>
+        /// <item>MultiPoint,</item>
+        /// <item>LineString,</item>
+        /// <item>LinearRing,</item>
+        /// <item>MultiLineString,</item>
+        /// <item>Polygon,</item>
+        /// <item>MultiPolygon,</item>
+        /// <item>GeometryCollection (highest).</item>
+        /// </list>
+        /// If the two <c>Geometry</c>s have the same class, their first
+        /// elements are compared. If those are the same, the second elements are
+        /// compared, etc.
+        /// </remarks>
+        /// <param name="o">A <c>Geometry</c> with which to compare this <c>Geometry</c></param>
+        /// <param name="comp">A <c>IComparer&lt;ICoordinateSequence&gt;</c></param>
+        /// <returns>
+        /// A positive number, 0, or a negative number, depending on whether
+        /// this object is greater than, equal to, or less than <c>o</c>, as
+        /// defined in "Normal Form For Geometry" in the NTS Technical
+        /// Specifications.
+        /// </returns>
         public int CompareTo(Object o, IComparer<ICoordinateSequence> comp)
         {
             Geometry other = (Geometry)o;
@@ -1416,7 +1446,7 @@ namespace NetTopologySuite.Geometries
         /// </exception>
         protected void CheckNotGeometryCollection(IGeometry g) 
         {
-            if (isGeometryCollection(g)) 
+            if (IsGeometryCollection(g)) 
                 throw new ArgumentException("This method does not support GeometryCollection arguments");                            
         }
 
@@ -1428,9 +1458,11 @@ namespace NetTopologySuite.Geometries
         /// <exception cref="ArgumentException">
         /// If <c>g</c> is a <c>GeometryCollection</c>, but not one of its subclasses.
         /// </exception>        
-        private bool isGeometryCollection(IGeometry g)
+        private static bool IsGeometryCollection(IGeometry g)
         {
-            return g.GetType().Name == "GeometryCollection" && g.GetType().Namespace == GetType().Namespace;
+            return 
+                g is IGeometryCollection &&
+                g.GeometryType == "GeometryCollection"; ; /*g.GetType().Name == "GeometryCollection" && g.GetType().Namespace == GetType().Namespace;*/
         }
 
         /// <summary>
@@ -1484,15 +1516,15 @@ namespace NetTopologySuite.Geometries
         /// <param name="a">A <c>Collection</c> of <c>IComparable</c>s.</param>
         /// <param name="b">A <c>Collection</c> of <c>IComparable</c>s.</param>
         /// <returns>The first non-zero <c>compareTo</c> result, if any; otherwise, zero.</returns>
-        protected int Compare(List<IGeometry> a, List<IGeometry> b) 
+        protected static int Compare(List<IGeometry> a, List<IGeometry> b) 
         {
             IEnumerator<IGeometry> i = a.GetEnumerator();
             IEnumerator<IGeometry> j = b.GetEnumerator();
 
             while (i.MoveNext() && j.MoveNext()) 
             {
-                IComparable aElement = (IComparable) i.Current;
-                IComparable bElement = (IComparable) j.Current;
+                IComparable aElement = i.Current;
+                IComparable bElement = j.Current;
                 int comparison = aElement.CompareTo(bElement);            
                 if (comparison != 0)                 
                     return comparison;                
@@ -1514,7 +1546,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="b"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        protected bool Equal(ICoordinate a, ICoordinate b, double tolerance) 
+        protected static bool Equal(ICoordinate a, ICoordinate b, double tolerance) 
         {
             if (tolerance == 0)             
                 return a.Equals(b);             
@@ -1543,7 +1575,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="coord"></param>
         /// <param name="exemplar"></param>
         /// <returns></returns>
-        private IPoint CreatePointFromInternalCoord(ICoordinate coord, IGeometry exemplar)
+        private static IPoint CreatePointFromInternalCoord(ICoordinate coord, IGeometry exemplar)
         {
             exemplar.PrecisionModel.MakePrecise(coord);
             return exemplar.Factory.CreatePoint(coord);

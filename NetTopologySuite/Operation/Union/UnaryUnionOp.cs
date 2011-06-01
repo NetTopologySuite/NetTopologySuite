@@ -41,9 +41,9 @@ namespace NetTopologySuite.Operation.Union
             return op.Union();
         }
 
-        private readonly List<IPolygon> _polygons = new List<IPolygon>();
-        private readonly List<ILineString> _lines = new List<ILineString>();
-        private readonly List<IPoint> _points = new List<IPoint>();
+        private readonly List<IGeometry> _polygons = new List<IGeometry>();
+        private readonly List<IGeometry> _lines = new List<IGeometry>();
+        private readonly List<IGeometry> _points = new List<IGeometry>();
 
         private IGeometryFactory _geomFact;
 
@@ -73,9 +73,9 @@ namespace NetTopologySuite.Operation.Union
             LineStringExtracter.getLines(geom, lines);
             PointExtracter.getPoints(geom, points);
             */
-            GeometryExtracter.Extract(geom, _polygons);
-            GeometryExtracter.Extract(geom, _lines);
-            GeometryExtracter.Extract(geom, _points);
+            GeometryExtracter.Extract<IPolygon>(geom, _polygons);
+            GeometryExtracter.Extract<ILineString>(geom, _lines);
+            GeometryExtracter.Extract<IPoint>(geom, _points);
         }
 
         ///<summary>
@@ -98,21 +98,21 @@ namespace NetTopologySuite.Operation.Union
             IGeometry unionPoints = null;
             if (_points.Count > 0)
             {
-                IGeometry ptGeom = _geomFact.BuildGeometry(ToCollection(_points));
+                IGeometry ptGeom = _geomFact.BuildGeometry(_points);
                 unionPoints = UnionNoOpt(ptGeom);
             }
 
             IGeometry unionLines = null;
             if (_lines.Count > 0)
             {
-                IGeometry lineGeom = _geomFact.BuildGeometry(ToCollection(_lines));
+                IGeometry lineGeom = _geomFact.BuildGeometry(_lines);
                 unionLines = UnionNoOpt(lineGeom);
             }
 
             IGeometry unionPolygons = null;
             if (_polygons.Count > 0)
             {
-                unionPolygons = CascadedPolygonUnion.Union(ToCollection(_polygons));
+                unionPolygons = CascadedPolygonUnion.Union(_polygons);
             }
 
             /**
@@ -125,13 +125,14 @@ namespace NetTopologySuite.Operation.Union
             return union;
         }
 
-        private static ICollection<IGeometry> ToCollection<T>(IEnumerable<T> items) where T : IGeometry
-        {
-            var ret = new List<IGeometry>();
-            foreach (IGeometry geometry in items)
-                ret.Add(geometry);
-            return ret;
-        }
+
+        //private static ICollection<IGeometry> ToCollection<T>(IEnumerable<T> items) where T : IGeometry
+        //{
+        //    var ret = new List<IGeometry>();
+        //    foreach (IGeometry geometry in items)
+        //        ret.Add(geometry);
+        //    return ret;
+        //}
 
         ///<summary>
         /// Computes the union of two geometries, either of both of which may be null.

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 
@@ -6,19 +5,18 @@ namespace NetTopologySuite.Geometries.Utilities
 {
     public static class GeometryExtracter
     {
-
-        static bool IsOfClass<T>(Object o /*, Type clz*/) where T:class, IGeometry
-        {
-            return o is T;
-        }
-
+        //static bool IsOfClass<T>(Object o /*, Type clz*/) where T:class, IGeometry
+        //{
+        //    return o is T;
+        //}
+    
         ///<summary>
         /// Extracts the <see cref="T"/> elements from a single <see cref="IGeometry"/> and adds them to the provided <see cref="List{T}"/>.
         ///</summary>
         /// <param name="geom">the geometry from which to extract</param>
         /// <param name="list">the list to add the extracted elements to</param>
         /// <typeparam name="T">The geometry type to extract</typeparam>
-        public static IList<T> Extract<T>(IGeometry geom, IList<T> list) where T : class, IGeometry
+        public static IList<IGeometry> Extract<T>(IGeometry geom, IList<IGeometry> list) where T : class, IGeometry
         {
             if (geom is T)
             {
@@ -36,9 +34,9 @@ namespace NetTopologySuite.Geometries.Utilities
         /// Extracts the <see cref="T"/> elements from a single <see cref="IGeometry"/> and returns them in a <see cref="List{T}"/>.
         ///</summary>
         ///<param name="geom">the geometry from which to extract</param>
-        public static IList<T> Extract<T>(IGeometry geom) where T : class, IGeometry
+        public static IList<IGeometry> Extract<T>(IGeometry geom) where T : class, IGeometry
         {
-            return Extract(geom, new List<T>());
+            return Extract<T>(geom, new List<IGeometry>());
         }
 
     }
@@ -51,14 +49,14 @@ namespace NetTopologySuite.Geometries.Utilities
     {
 
         //private readonly Type _clz;
-        private readonly IList<T> _comps;
+        private readonly IList<IGeometry> _comps;
         /**
          * 
          */
         ///<summary>
         /// Constructs a filter with a list in which to store the elements found.
         ///</summary>
-        public GeometryExtracter(/*Type clz, */IList<T> comps)
+        public GeometryExtracter(/*Type clz, */IList<IGeometry> comps)
         {
             //_clz = clz;
             _comps = comps;
