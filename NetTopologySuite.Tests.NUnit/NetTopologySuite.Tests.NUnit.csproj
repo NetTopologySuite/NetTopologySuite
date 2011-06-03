@@ -54,6 +54,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithm\AngleTest.cs" />
+    <Compile Include="Algorithm\IndexedPointInAreaStressTest.cs" />
+    <Compile Include="Algorithm\PerturbedGridPolygonBuilder.cs" />
+    <Compile Include="Algorithm\PointInAreaStressTester.cs" />
     <Compile Include="Geometries\Prepared\PreparedPolygonIntersectsStressTest.cs" />
     <Compile Include="Geometries\Prepared\PreparedPolygonStressTest.cs" />
     <Compile Include="Geometries\Prepared\StressTestHarness.cs" />
