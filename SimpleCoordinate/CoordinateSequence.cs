@@ -37,12 +37,15 @@ namespace NetTopologySuite.Coordinates.Simple
     using ICoordSequenceFactory = ICoordinateSequenceFactory<Coordinate>;
     using C5;
 
+    /*
     /// <summary>
     /// Delegate to compute the index
     /// </summary>
     /// <param name="index">Index</param>
     /// <returns>Index</returns>
     internal delegate Int32 IndexComputer(Int32 index);
+     */
+
     /// <summary>
     /// An <see cref="ICoordinateSequence{Coordinate}"/>.
     /// </summary>
@@ -71,7 +74,7 @@ namespace NetTopologySuite.Coordinates.Simple
         ///<summary>
         /// Constructs an empty sequence
         ///</summary>
-        ///<param name="factory">The factory to create coordinate instance.</param>
+        ///<param name="factory">The factory to create coordinate instances.</param>
         internal CoordinateSequence(CoordinateFactory factory)
             : this(factory, true)
         {}
@@ -83,9 +86,9 @@ namespace NetTopologySuite.Coordinates.Simple
         }
 
         /// <summary>
-        ///  Constructs a sequence populated with the supplied enumeration of coordinates
+        ///  Constructs a sequence populated with the provided <see cref="Coordinate"/>s.
         /// </summary>
-        ///<param name="factory">The factory to create coordinate instance.</param>
+        ///<param name="factory">The factory to create coordinate instances</param>
         /// <param name="coordinates">The coordinates that make up the sequence</param>
         internal CoordinateSequence(CoordinateFactory factory, IEnumerable<Coordinate> coordinates)
             : this(factory, false)
@@ -103,18 +106,13 @@ namespace NetTopologySuite.Coordinates.Simple
         {
             _coordinates = new List<Coordinate>(size);
             for (int i = 0; i < size; i++)
-            {
                 _coordinates.Add(new Coordinate());
-            }
         }
 
-        /**
-         * Constructs a sequence based on the given array (the
-         * array is not copied).
-         *
-         * @param coordinates the coordinate array that will be referenced.
-         */
-
+        ///<summary>
+        /// Constructs a sequence based on the given <see cref="Coordinate"/>s.
+        ///</summary>
+        /// <param name="coordSeq">The coordinates that make up the sequence</param>
         internal CoordinateSequence(IEnumerable<Coordinate> coordSeq)
         {
             if (coordSeq != null)
@@ -125,8 +123,8 @@ namespace NetTopologySuite.Coordinates.Simple
             }
             else
             {
-                _coordinates = new List<Coordinate>();
                 _coordFactory = new CoordinateFactory();
+                _coordinates = new List<Coordinate>();
             }
         }
 
@@ -137,14 +135,10 @@ namespace NetTopologySuite.Coordinates.Simple
             get { return CoordinateDimensions.Three; }
         }
 
-        /**
-         * Get the Coordinate with index i.
-         *
-         * @param i
-         *                  the index of the coordinate
-         * @return the requested Coordinate instance
-         */
-
+        ///<summary>
+        /// The Coordinate with index i.
+        ///</summary>
+        /// <param name="i">The index of the coordinate</param>
         ICoordinate ICoordinateSequence.this[Int32 i]
         {
             get { return _coordinates[i]; }
@@ -160,12 +154,9 @@ namespace NetTopologySuite.Coordinates.Simple
             return new CoordinateSequence(_coordFactory, _coordinates);
         }
 
-        /**
-         * Returns the size of the coordinate sequence
-         *
-         * @return the number of coordinates
-         */
-
+        ///<summary>
+        /// Gets the size of the coordinate sequence
+        ///</summary>
         public Int32 Count
         {
             get { return _coordinates.Count; }
@@ -173,13 +164,11 @@ namespace NetTopologySuite.Coordinates.Simple
 
         #endregion
 
-        /**
-         * Get a copy of the Coordinate with index i.
-         *
-         * @param i  the index of the coordinate
-         * @return a copy of the requested Coordinate
-         */
-
+        ///<summary>
+        /// Get a copy of the Coordinate with index i.
+        ///</summary>
+        /// <param name="i">The index of the coordinate</param>
+        /// <returns>A copy of the requested Coordinate</returns>
         public Coordinate CoordinateCopy(int i)
         {
             return Coordinate.Clone(_coordinates[i]);
@@ -409,6 +398,7 @@ namespace NetTopologySuite.Coordinates.Simple
         public ICoordinateSequence<Coordinate> Clear()
         {
             _coordinates.Clear();
+            OnSequenceChanged();
             return this;
         }
 
@@ -532,6 +522,7 @@ namespace NetTopologySuite.Coordinates.Simple
         {
             CheckFrozen();
             _coordinates.Insert(index, Check(item, _coordFactory));
+            OnSequenceChanged();
             return this;
         }
 
@@ -1033,12 +1024,12 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public bool Equals(ICoordinateSequence other, Tolerance tolerance)
         {
-            return Equals((ICoordinateSequence<Coordinate>) other, tolerance);
+            return Equals(Check(other, CoordinateSequenceFactory), tolerance);
         }
 
         public IExtents GetExtents(IGeometryFactory geometryFactory)
         {
-            return GetExtents((IGeometryFactory<Coordinate>)geometryFactory);
+            return GetExtents(geometryFactory as IGeometryFactory<Coordinate>);
         }
 
         ICoordinateSequence ICoordinateSequence.Freeze()
@@ -1122,16 +1113,18 @@ namespace NetTopologySuite.Coordinates.Simple
 
         void IList.Clear()
         {
-            _coordinates.Clear();
+            Clear();
         }
 
         public bool Contains(object value)
         {
-            return ((IList)_coordinates).Contains(value);
+            return _coordinates != null && ((IList)_coordinates).Contains(value);
         }
 
         public int IndexOf(object value)
         {
+            if (_coordinates == null)
+                return -1;
             return ((IList)_coordinates).IndexOf(value);
         }
 
@@ -1179,7 +1172,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public void CopyTo(Array array, int index)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         int ICollection.Count
@@ -1189,12 +1182,12 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public bool IsSynchronized
         {
-            get { return false; }
+            get { return ((ICollection)_coordinates).IsSynchronized; }
         }
 
         public object SyncRoot
         {
-            get { throw new NotImplementedException(); }
+            get { return ((ICollection)_coordinates).SyncRoot; }
         }
 
         #endregion

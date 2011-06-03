@@ -62,13 +62,11 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
 
         public IGeometry<TCoordinate> GetResultGeometry()
         {
-
-            TopologyPreservingSimplifier<TCoordinate> container;
-            foreach (ILineString<TCoordinate> lineString in GeometryFilter.Filter<ILineString<TCoordinate>, TCoordinate>(_inputGeom))
+            foreach (ILineString<TCoordinate> lineString in GeometryComponentFilter<TCoordinate>.Filter<ILineString<TCoordinate>>(_inputGeom))
             {
                 Int32 pointCount = lineString is ILinearRing<TCoordinate> ? 4 : 2;
 
-                TaggedLineString<TCoordinate> taggedLine = new TaggedLineString<TCoordinate>(lineString, pointCount);
+                var taggedLine = new TaggedLineString<TCoordinate>(lineString, pointCount);
                 _lineStringMap.Add(lineString, taggedLine);
             }
 

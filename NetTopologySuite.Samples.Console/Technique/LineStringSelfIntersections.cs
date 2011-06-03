@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Technique
                     new BufferedCoordinateSequenceFactory());
 
             WktReader<BufferedCoordinate> rdr
-                = new WktReader<BufferedCoordinate>(geoFactory, null);
+                = new WktReader<BufferedCoordinate>(geoFactory);
 
             ILineString line1 = (ILineString) rdr.Read("LINESTRING (0 0, 10 10, 20 20)");
             ShowSelfIntersections(line1);

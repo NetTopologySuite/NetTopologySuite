@@ -23,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Distance
         {
             fact = new GeometryFactory<BufferedCoordinate>(
                 new BufferedCoordinateSequenceFactory());
-            wktRdr = new WktReader<BufferedCoordinate>(fact, null);
+            wktRdr = new WktReader<BufferedCoordinate>(fact);
         }
 
         [STAThread]

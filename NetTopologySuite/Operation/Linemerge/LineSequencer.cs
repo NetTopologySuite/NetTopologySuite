@@ -8,6 +8,7 @@ using GeoAPI.DataStructures.Collections.Generic;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using GisSharpBlog.NetTopologySuite.Planargraph.Algorithm;
 using NPack.Interfaces;
@@ -154,6 +155,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                 throw new ArgumentNullException("geometry");
             }
 
+            foreach (ILineString<TCoordinate> line in GeometryComponentFilter<TCoordinate>.Filter<ILineString<TCoordinate>>(geometry))
+                AddLine(line);
+
+            /*
             if (geometry is IHasGeometryComponents<TCoordinate>)
             {
                 IHasGeometryComponents<TCoordinate> container
@@ -171,6 +176,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             {
                 AddLine(geometry as ILineString<TCoordinate>);
             }
+             */
         }
 
         /*

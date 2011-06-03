@@ -22,7 +22,7 @@ namespace NetTopologySuite.Tests.NUnit.NTS
         {
             IGeometryFactory<Coordinate> geomFactory
                 = new GeometryFactory<Coordinate>(new CoordinateSequenceFactory());
-            IWktGeometryReader<Coordinate> wktReader = new WktReader<Coordinate>(geomFactory, null);
+            IWktGeometryReader<Coordinate> wktReader = new WktReader<Coordinate>(geomFactory);
 
             // Examples of failing combinations: (s1,*), (s2,*), (s3,s4)
             string[] s = new string[]

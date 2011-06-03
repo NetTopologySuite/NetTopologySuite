@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
@@ -103,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         {
             get
             {
-                polygonize();
+                Polygonize();
                 return _polyList;
             }
         }
@@ -115,7 +116,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         {
             get
             {
-                polygonize();
+                Polygonize();
                 return _dangles;
             }
         }
@@ -127,7 +128,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         {
             get
             {
-                polygonize();
+                Polygonize();
                 return _cutEdges;
             }
         }
@@ -139,7 +140,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         {
             get
             {
-                polygonize();
+                Polygonize();
                 return _invalidRingLines;
             }
         }
@@ -175,6 +176,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
                 throw new ArgumentNullException("g");
             }
 
+            foreach (ILineString<TCoordinate> line in GeometryComponentFilter<TCoordinate>.Filter<ILineString<TCoordinate>>(g))
+                AddLine(line);
+
+            /*
             if (g is IHasGeometryComponents<TCoordinate>)
             {
                 IHasGeometryComponents<TCoordinate> container
@@ -192,13 +197,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             {
                 addLine(g as ILineString<TCoordinate>);
             }
+             */
         }
 
         /// <summary>
         /// Add a linestring to the graph of polygon edges.
         /// </summary>
         /// <param name="line">The <c>LineString</c> to add.</param>
-        private void addLine(ILineString<TCoordinate> line)
+        private void AddLine(ILineString<TCoordinate> line)
         {
             // create a new graph using the factory from the input Geometry
             if (_graph == null)
@@ -211,7 +217,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Perform the polygonization, if it has not already been carried out.
         /// </summary>
-        private void polygonize()
+        private void Polygonize()
         {
             // check if already computed
             if (_doneComputing)
@@ -230,10 +236,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             IEnumerable<EdgeRing<TCoordinate>> edgeRingList = _graph.GetEdgeRings();
 
             List<EdgeRing<TCoordinate>> validEdgeRingList = new List<EdgeRing<TCoordinate>>();
-            findValidRings(edgeRingList, validEdgeRingList, _invalidRingLines);
+            FindValidRings(edgeRingList, validEdgeRingList, _invalidRingLines);
 
-            findShellsAndHoles(validEdgeRingList);
-            assignHolesToShells(_holeList, _shellList);
+            FindShellsAndHoles(validEdgeRingList);
+            AssignHolesToShells(_holeList, _shellList);
 
             foreach (EdgeRing<TCoordinate> ring in _shellList)
             {
@@ -244,7 +250,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         }
 
         // in Ruby: valid, invalid = edgeRingList.partition{|ring| ring.IsValid?}
-        private static void findValidRings(IEnumerable<EdgeRing<TCoordinate>> edgeRingList,
+        private static void FindValidRings(IEnumerable<EdgeRing<TCoordinate>> edgeRingList,
                                            ICollection<EdgeRing<TCoordinate>> validEdgeRingList,
                                            ICollection<ILineString<TCoordinate>> invalidRingList)
         {
@@ -261,7 +267,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             }
         }
 
-        private void findShellsAndHoles(IEnumerable<EdgeRing<TCoordinate>> edgeRingList)
+        private void FindShellsAndHoles(IEnumerable<EdgeRing<TCoordinate>> edgeRingList)
         {
             foreach (EdgeRing<TCoordinate> ring in edgeRingList)
             {
@@ -276,7 +282,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             }
         }
 
-        private static void assignHolesToShells(IEnumerable<EdgeRing<TCoordinate>> holeList,
+        private static void AssignHolesToShells(IEnumerable<EdgeRing<TCoordinate>> holeList,
                                                 IEnumerable<EdgeRing<TCoordinate>> shellList)
         {
             foreach (EdgeRing<TCoordinate> hole in holeList)
@@ -285,13 +291,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             }
         }
 
-        private static void AssignHoleToShell(EdgeRing<TCoordinate> holeER, IEnumerable<EdgeRing<TCoordinate>> shellList)
+        private static void AssignHoleToShell(EdgeRing<TCoordinate> holeEdgeRing, IEnumerable<EdgeRing<TCoordinate>> shellList)
         {
-            EdgeRing<TCoordinate> shell = EdgeRing<TCoordinate>.FindEdgeRingContaining(holeER, shellList);
+            EdgeRing<TCoordinate> shell = EdgeRing<TCoordinate>.FindEdgeRingContaining(holeEdgeRing, shellList);
 
             if (shell != null)
             {
-                shell.AddHole(holeER.Ring);
+                shell.AddHole(holeEdgeRing.Ring);
             }
         }
     }

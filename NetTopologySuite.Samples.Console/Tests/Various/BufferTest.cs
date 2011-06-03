@@ -739,7 +739,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         private static void PerformTest(IGeometryFactory<coord> factory)
         {
             IWktGeometryReader<coord> decoder =
-                new WktReader<coord>(factory, null);
+                new WktReader<coord>(factory);
             IGeometry<coord> path = decoder.Read(GeometryWkt);
 
             Assert.IsNotNull(path);

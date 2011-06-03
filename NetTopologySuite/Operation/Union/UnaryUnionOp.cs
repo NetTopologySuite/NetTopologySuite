@@ -40,9 +40,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
             IComparable<TCoordinate>, IConvertible,
             IComputable<Double, TCoordinate>
     {
-        private readonly List<ILineString<TCoordinate>> _lines = new List<ILineString<TCoordinate>>();
-        private readonly List<IPoint<TCoordinate>> _points = new List<IPoint<TCoordinate>>();
-        private readonly List<IPolygon<TCoordinate>> _polygons = new List<IPolygon<TCoordinate>>();
+        private readonly List<IGeometry<TCoordinate>> _lines = new List<IGeometry<TCoordinate>>();
+        private readonly List<IGeometry<TCoordinate>> _points = new List<IGeometry<TCoordinate>>();
+        private readonly List<IGeometry<TCoordinate>> _polygons = new List<IGeometry<TCoordinate>>();
 
         private IGeometryFactory<TCoordinate> _geomFact;
 
@@ -124,9 +124,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
             LineStringExtracter.getLines(geom, lines);
             PointExtracter.getPoints(geom, points);
             */
-            _polygons.AddRange(GeometryFilter.Extract<IPolygon<TCoordinate>, TCoordinate>(geom));
-            _lines.AddRange(GeometryFilter.Extract<ILineString<TCoordinate>, TCoordinate>(geom));
-            _points.AddRange(GeometryFilter.Extract<IPoint<TCoordinate>, TCoordinate>(geom));
+            _polygons.AddRange(GeometryExtracter<TCoordinate>.Extract<IPolygon<TCoordinate>>(geom));
+            _lines.AddRange(GeometryExtracter<TCoordinate>.Extract<ILineString<TCoordinate>>(geom));
+            _points.AddRange(GeometryExtracter<TCoordinate>.Extract<IPoint<TCoordinate>>(geom));
         }
 
         ///<summary>
@@ -146,14 +146,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
             if (_points.Count > 0)
             {
                 IGeometry<TCoordinate> ptGeom =
-                    _geomFact.BuildGeometry(convertPoints(_points));
+                    _geomFact.BuildGeometry(_points);
                 unionPoints = UnionNoOpt(ptGeom);
             }
 
             IGeometry<TCoordinate> unionLines = null;
             if (_lines.Count > 0)
             {
-                IGeometry<TCoordinate> lineGeom = _geomFact.BuildGeometry(convertLineStrings(_lines));
+                IGeometry<TCoordinate> lineGeom = _geomFact.BuildGeometry(_lines);
                 unionLines = UnionNoOpt(lineGeom);
             }
 
@@ -168,7 +168,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
              * but is mitigated by unioning lines and points first
              */
             IGeometry<TCoordinate> unionLA = UnionWithNull(unionLines, unionPolygons);
-            IGeometry<TCoordinate> union = null;
+            IGeometry<TCoordinate> union;
             if (unionPoints == null)
                 union = unionLA;
             else if (unionLA == null)
@@ -182,7 +182,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
             return union;
         }
 
-        private IEnumerable<IGeometry<TCoordinate>> convertPoints(IEnumerable<IPoint<TCoordinate>> geom)
+        /*
+        private static IEnumerable<IGeometry<TCoordinate>> convertPoints(IEnumerable<IPoint<TCoordinate>> geom)
         {
             foreach (IPoint<TCoordinate> point in geom)
                 yield return point;
@@ -193,6 +194,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
             foreach (ILineString<TCoordinate> line in geom)
                 yield return line;
         }
+         */
 
         /// <summary>
         /// Computes the union of two geometries, either of both of which may be null.

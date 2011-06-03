@@ -76,7 +76,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
                 if (_g0.IsEmpty || _g1.IsEmpty)
                     return 0.0;
 
-                computeMinDistance();
+                ComputeMinDistance();
                 return _minDistance;
             }
         }
@@ -174,7 +174,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         //    }
         //}
 
-        private void updateMinDistance(GeometryLocation<TCoordinate>? locGeom0,
+        private void UpdateMinDistance(GeometryLocation<TCoordinate>? locGeom0,
                                        GeometryLocation<TCoordinate>? locGeom1,
                                        Boolean flip)
         {
@@ -196,29 +196,27 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
             }
         }
 
-        private void computeMinDistance()
+        private void ComputeMinDistance()
         {
             if (_minDistanceLocation0.HasValue && _minDistanceLocation1.HasValue)
             {
                 return;
             }
 
-            computeContainmentDistance();
+            ComputeContainmentDistance();
 
             if (_minDistance <= _terminateDistance)
             {
                 return;
             }
 
-            computeLineDistance();
+            ComputeLineDistance();
         }
 
-        private void computeContainmentDistance()
+        private void ComputeContainmentDistance()
         {
-            IEnumerable<IPolygon<TCoordinate>> polys0 = GeometryFilter.Filter<IPolygon<TCoordinate>, TCoordinate>(_g0);
-            IEnumerable<IPolygon<TCoordinate>> polys1 = GeometryFilter.Filter<IPolygon<TCoordinate>, TCoordinate>(_g1);
-            //IList polys0 = PolygonExtracter<TCoordinate>.GetPolygons(geom[0]);
-            //IList polys1 = PolygonExtracter<TCoordinate>.GetPolygons(geom[1]);
+            IEnumerable<IPolygon<TCoordinate>> polys0 = PolygonExtracter<TCoordinate>.GetPolygons(_g0);
+            IEnumerable<IPolygon<TCoordinate>> polys1 = PolygonExtracter<TCoordinate>.GetPolygons(_g1);
 
             GeometryLocation<TCoordinate>? locPtPoly0;
             GeometryLocation<TCoordinate>? locPtPoly1;
@@ -227,9 +225,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
             if (Slice.CountGreaterThan(polys1, 0))
             {
                 IEnumerable<GeometryLocation<TCoordinate>> insideLocs0
-                    = getLocations(_g0);
+                    = GetLocations(_g0);
 
-                locPtPoly0 = computeInside(insideLocs0, polys1, out locPtPoly1);
+                locPtPoly0 = ComputeInside(insideLocs0, polys1, out locPtPoly1);
 
                 if (_minDistance <= _terminateDistance)
                 {
@@ -242,9 +240,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
             if (Slice.CountGreaterThan(polys0, 0))
             {
                 IEnumerable<GeometryLocation<TCoordinate>> insideLocs1
-                    = getLocations(_g1);
+                    = GetLocations(_g1);
 
-                locPtPoly0 = computeInside(insideLocs1, polys0, out locPtPoly1);
+                locPtPoly0 = ComputeInside(insideLocs1, polys0, out locPtPoly1);
 
                 if (_minDistance <= _terminateDistance)
                 {
@@ -256,13 +254,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
             }
         }
 
-        private static IEnumerable<GeometryLocation<TCoordinate>> getLocations(IGeometry<TCoordinate> g)
+        private static IEnumerable<GeometryLocation<TCoordinate>> GetLocations(IGeometry<TCoordinate> g)
         {
             if (g is IGeometryCollection<TCoordinate>)
             {
                 foreach (IGeometry<TCoordinate> geometry in (g as IGeometryCollection<TCoordinate>))
                 {
-                    foreach (GeometryLocation<TCoordinate> location in getLocations(geometry))
+                    foreach (GeometryLocation<TCoordinate> location in GetLocations(geometry))
                     {
                         yield return location;
                     }
@@ -272,12 +270,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
             {
                 if (g is IPoint || g is ILineString || g is IPolygon)
                 {
-                    yield return new GeometryLocation<TCoordinate>(g, 0, Slice.GetFirst(g.Coordinates));
+                    yield return new GeometryLocation<TCoordinate>(g, 0, g.Coordinates[0]);
                 }
             }
         }
 
-        private GeometryLocation<TCoordinate>? computeInside(IEnumerable<GeometryLocation<TCoordinate>> locs,
+        private GeometryLocation<TCoordinate>? ComputeInside(IEnumerable<GeometryLocation<TCoordinate>> locs,
                                                              IEnumerable<IPolygon<TCoordinate>> polys,
                                                              out GeometryLocation<TCoordinate>? locPtPoly1)
         {
@@ -289,7 +287,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
                 foreach (IPolygon<TCoordinate> poly in polys)
                 {
                     GeometryLocation<TCoordinate>? l0, l1;
-                    l0 = computeInside(loc, poly, out l1);;
+                    l0 = ComputeInside(loc, poly, out l1);;
                     if (l0.HasValue)
                     {
                         locPtPoly0 = l0;
@@ -305,7 +303,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
             return locPtPoly0;
         }
 
-        private GeometryLocation<TCoordinate>? computeInside(GeometryLocation<TCoordinate> ptLoc,
+        private GeometryLocation<TCoordinate>? ComputeInside(GeometryLocation<TCoordinate> ptLoc,
                                                              IPolygon<TCoordinate> poly,
                                                              out GeometryLocation<TCoordinate>? locPtPoly1)
         {
@@ -323,7 +321,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
             return null;
         }
 
-        private void computeLineDistance()
+        private void ComputeLineDistance()
         {
             GeometryLocation<TCoordinate>? locGeom0;
             GeometryLocation<TCoordinate>? locGeom1;
@@ -332,40 +330,34 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
              * Geometries are not wholely inside, so compute distance from lines and points
              * of one to lines and points of the other
              */
-            IEnumerable<ILineString<TCoordinate>> lines0 =
-                GeometryFilter.Filter<ILineString<TCoordinate>, TCoordinate>(_g0);
-               //LinearComponentExtracter<TCoordinate>.GetLines(_g0);
-            IEnumerable<ILineString<TCoordinate>> lines1 =
-                GeometryFilter.Filter<ILineString<TCoordinate>, TCoordinate>(_g1);
-                //LinearComponentExtracter<TCoordinate>.GetLines(_g1);
+            IEnumerable<ILineString<TCoordinate>> lines0 = LinearComponentExtracter<TCoordinate>.GetLines(_g0);
+            IEnumerable<ILineString<TCoordinate>> lines1 = LinearComponentExtracter<TCoordinate>.GetLines(_g1);
 
-            IEnumerable<IPoint<TCoordinate>> pts0 = GeometryFilter.Filter<IPoint<TCoordinate>, TCoordinate>(_g0);
-                //PointExtracter<TCoordinate>.GetPoints(_g0);
-            IEnumerable<IPoint<TCoordinate>> pts1 = GeometryFilter.Filter<IPoint<TCoordinate>, TCoordinate>(_g1);
-                //PointExtracter<TCoordinate>.GetPoints(_g1);
+            IEnumerable<IPoint<TCoordinate>> pts0 = PointExtracter<TCoordinate>.GetPoints(_g0);
+            IEnumerable<IPoint<TCoordinate>> pts1 = PointExtracter<TCoordinate>.GetPoints(_g1);
 
             // bail whenever minDistance goes to zero, since it can't get any less
             locGeom0 = computeMinDistanceLines(lines0, lines1, out locGeom1);
 
-            updateMinDistance(locGeom0, locGeom1, false);
+            UpdateMinDistance(locGeom0, locGeom1, false);
 
             if (_minDistance <= _terminateDistance)
             {
                 return;
             }
 
-            locGeom0 = computeMinDistanceLinesPoints(lines0, pts1, out locGeom1);
+            locGeom0 = ComputeMinDistanceLinesPoints(lines0, pts1, out locGeom1);
 
-            updateMinDistance(locGeom0, locGeom1, false);
+            UpdateMinDistance(locGeom0, locGeom1, false);
 
             if (_minDistance <= _terminateDistance)
             {
                 return;
             }
 
-            locGeom0 = computeMinDistanceLinesPoints(lines1, pts0, out locGeom1);
+            locGeom0 = ComputeMinDistanceLinesPoints(lines1, pts0, out locGeom1);
 
-            updateMinDistance(locGeom0, locGeom1, true);
+            UpdateMinDistance(locGeom0, locGeom1, true);
 
             if (_minDistance <= _terminateDistance)
             {
@@ -374,7 +366,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
 
             locGeom0 = computeMinDistancePoints(pts0, pts1, out locGeom1);
 
-            updateMinDistance(locGeom0, locGeom1, false);
+            UpdateMinDistance(locGeom0, locGeom1, false);
         }
 
         private GeometryLocation<TCoordinate>? computeMinDistanceLines(IEnumerable<ILineString<TCoordinate>> lines0,
@@ -390,7 +382,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
                 {
 
                     GeometryLocation<TCoordinate>? l0, l1;
-                    l0 = computeMinDistance(line0, line1, out l1);
+                    l0 = ComputeMinDistance(line0, line1, out l1);
                     if( l0.HasValue )
                     {
                         locGeom0 = l0;
@@ -440,7 +432,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
             return locGeom0;
         }
 
-        private GeometryLocation<TCoordinate>? computeMinDistanceLinesPoints(
+        private GeometryLocation<TCoordinate>? ComputeMinDistanceLinesPoints(
             IEnumerable<ILineString<TCoordinate>> lines,
             IEnumerable<IPoint<TCoordinate>> points,
             out GeometryLocation<TCoordinate>? locGeom1)
@@ -453,7 +445,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
                 foreach (IPoint<TCoordinate> point in points)
                 {
                     GeometryLocation<TCoordinate>? l0, l1;
-                    l0 = computeMinDistance(line, point, out l1);
+                    l0 = ComputeMinDistance(line, point, out l1);
                     if (l0.HasValue)
                     {
                         locGeom0 = l0;
@@ -469,7 +461,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
             return locGeom0;
         }
 
-        private GeometryLocation<TCoordinate>? computeMinDistance(ILineString<TCoordinate> line0,
+        private GeometryLocation<TCoordinate>? ComputeMinDistance(ILineString<TCoordinate> line0,
                                                                   ILineString<TCoordinate> line1,
                                                                   out GeometryLocation<TCoordinate>? locGeom1)
         {
@@ -518,7 +510,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
             return locGeom0;
         }
 
-        private GeometryLocation<TCoordinate>? computeMinDistance(ILineString<TCoordinate> line,
+        private GeometryLocation<TCoordinate>? ComputeMinDistance(ILineString<TCoordinate> line,
                                                                   IPoint<TCoordinate> pt,
                                                                   out GeometryLocation<TCoordinate>? locGeom1)
         {
@@ -584,7 +576,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <returns>A pair of <c>Coordinate</c>s of the nearest points.</returns>
         public Pair<TCoordinate>? NearestPoints()
         {
-            computeMinDistance();
+            ComputeMinDistance();
 
             if (!_minDistanceLocation0.HasValue || !_minDistanceLocation1.HasValue)
             {
@@ -605,7 +597,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// </returns>
         public Pair<GeometryLocation<TCoordinate>>? NearestLocations()
         {
-            computeMinDistance();
+            ComputeMinDistance();
 
             if (!_minDistanceLocation0.HasValue || !_minDistanceLocation1.HasValue)
             {

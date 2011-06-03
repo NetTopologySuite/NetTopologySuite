@@ -2,6 +2,7 @@ using System;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm.Locate;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Noding.Snapround;
 using NUnit.Framework;
 using Coord = NetTopologySuite.Coordinates.Simple.Coordinate;
 using CoordFac = NetTopologySuite.Coordinates.Simple.CoordinateFactory;
@@ -13,7 +14,10 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     public class IndexedPointInAreaStressTest
     {
         readonly CoordSeqFac _coordSeqFac = new CoordSeqFac(new CoordFac(1.0)); 
-
+        static IndexedPointInAreaStressTest()
+        {
+            HotPixel<Coord>.FloatingPrecisionGeometryFactory = new GeometryFactory<Coord>(new CoordSeqFac());
+        }
 
         [Test]
         public void TestGrid()

@@ -1,47 +1,41 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
-    /// <summary> 
-    /// Extracts all the 0-dimensional (<c>Point</c>) components from a <see cref="Geometry{TCoordinate}"/>.    
-    /// </summary>
-    public class PointExtracter<TCoordinate> : IGeometryFilter<TCoordinate>
-         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
-                             IComputable<TCoordinate>, IConvertible
+    ///<summary>
+    /// Class to extract all <see cref="IPoint{TCoordinate}"/> instances from a geometry.
+    ///</summary>
+    /// <typeparam name="TCoordinate"></typeparam>
+    public class PointExtracter<TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
-        /// <summary> 
-        /// Returns the Point components from a single point.
-        /// If more than one point is to be processed, it is more
-        /// efficient to create a single <c>PointExtracterFilter</c> instance
-        /// and pass it to multiple geometries.
-        /// </summary>
-        public static IList GetPoints(IGeometry geom)
+        ///<summary>
+        /// Extracts the <see cref="IPoint{TCoordinate}"/> elements from a single <see cref="IGeometry{TCoordinate}"/> and adds them to the provided <see cref="IList{IPoint{TCoordinate}}"/>.
+        ///</summary>
+        /// <param name="geometry">the geometry from which to extract</param>
+        /// <param name="list">the list to add the extracted elements to</param>
+        public static IEnumerable<IPoint<TCoordinate>> GetPoints(IGeometry<TCoordinate> geometry, IList<IPoint<TCoordinate>> list)
         {
-            IList pts = new ArrayList();
-            geom.Apply(new PointExtracter(pts));
-            return pts;
+            foreach (var item in GeometryFilter.Filter<IPoint<TCoordinate>, TCoordinate>(geometry))
+                list.Add(item);
+            return list;
         }
 
-        private IList pts;
-
-        /// <summary> 
-        /// Constructs a PointExtracterFilter with a list in which to store Points found.
-        /// </summary>
-        public PointExtracter(IList pts)
+        ///<summary>
+        /// Extracts the <see cref="IPoint{TCoordinate}"/> elements from a single <see cref="IGeometry{TCoordinate}"/>.
+        ///</summary>
+        /// <param name="geometry">the geometry from which to extract</param>
+        public static IEnumerable<IPoint<TCoordinate>> GetPoints(IGeometry<TCoordinate> geometry)
         {
-            this.pts = pts;
+            return GetPoints(geometry, new List<IPoint<TCoordinate>>());
         }
 
-        public void Filter(IGeometry<TCoordinate> geom)
-        {
-            if (geom is IPoint)
-            {
-                pts.Add(geom);
-            }
-        }
     }
 }

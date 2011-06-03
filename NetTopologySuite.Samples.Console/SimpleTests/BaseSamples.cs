@@ -31,7 +31,7 @@ namespace GisSharpBlog.NetTopologySuite.SimpleTests
         }
 
         protected BaseSamples(IGeometryFactory<coord> factory)
-            : this(factory, new WktReader<coord>(factory, null))
+            : this(factory, new WktReader<coord>(factory))
         {
         }
 

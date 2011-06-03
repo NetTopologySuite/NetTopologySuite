@@ -112,7 +112,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             _srid = srid ?? (spatialReference == null ? null : spatialReference.AuthorityCode);
             _spatialReference = spatialReference;
             _wktEncoder = new WktWriter<TCoordinate>();
-            _wktDecoder = new WktReader<TCoordinate>(this, null);
+            _wktDecoder = new WktReader<TCoordinate>(this);
             _wkbEncoder = new WkbWriter<TCoordinate>();
             _wkbDecoder = new WkbReader<TCoordinate>(this);
         }

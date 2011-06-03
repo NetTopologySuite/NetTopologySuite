@@ -23,8 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
                     new BufferedCoordinateSequenceFactory(coordFactory));
 
             // read a point from a WKT String (using the default point factory)
-            WktReader<BufferedCoordinate> reader = new WktReader<BufferedCoordinate>(geoFactory,
-                                                                                     null);
+            WktReader<BufferedCoordinate> reader = new WktReader<BufferedCoordinate>(geoFactory);
             IGeometry g1 = reader.Read("LINESTRING (0 0, 10 10, 20 20)");
 
             Console.WriteLine("Geometry 1: " + g1);

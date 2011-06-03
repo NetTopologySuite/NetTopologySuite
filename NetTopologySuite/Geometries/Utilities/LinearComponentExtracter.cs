@@ -7,13 +7,29 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
     /// <summary> 
-    /// Extracts all the 1-dimensional (<see cref="LineString{TCoordinate}"/>) 
-    /// components from a <see cref="Geometry{TCoordinate}"/>.
+    /// Extracts all the 1-dimensional (<see cref="ILineString{TCoordinate}"/>) 
+    /// components from a <see cref="IGeometry{TCoordinate}"/>.
     /// </summary>
-    public class LinearComponentExtracter<TCoordinate> : IGeometryComponentFilter<TCoordinate>
+    public class LinearComponentExtracter<TCoordinate> /*: IGeometryComponentFilter<TCoordinate>*/
         where TCoordinate : IEquatable<TCoordinate>, IComparable<TCoordinate>, ICoordinate<TCoordinate>,
             IComputable<double, TCoordinate>
     {
+        /// <summary> 
+        /// Extracts the linear components from a single point.
+        /// If more than one point is to be processed, it is more
+        /// efficient to create a single <see cref="LinearComponentExtracter{TCoordinate}"/> 
+        /// instance and pass it to multiple geometries.
+        /// </summary>
+        /// <param name="geometry">The point from which to extract linear components.</param>
+        /// <returns>The list of linear components.</returns>
+        public static IEnumerable<ILineString<TCoordinate>> GetLines(IGeometry<TCoordinate> geometry)
+        {
+            //IList<IGeometry<TCoordinate>> lines = new List<IGeometry<TCoordinate>>();
+            return new List<ILineString<TCoordinate>>(
+                GeometryComponentFilter<TCoordinate>.Filter<ILineString<TCoordinate>>(geometry));
+        }
+        
+        /*
         private readonly List<ILineString<TCoordinate>> _lines
             = new List<ILineString<TCoordinate>>();
 
@@ -72,5 +88,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 
             //jd: need to compare with JTS
         }
+         */
     }
 }

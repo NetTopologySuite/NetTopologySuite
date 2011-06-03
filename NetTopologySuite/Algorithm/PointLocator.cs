@@ -23,10 +23,16 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private Int32 _boundaryCount;
         private Boolean _isIn;
 
+        ///<summary>
+        ///</summary>
         public PointLocator() : this(new Mod2BoundaryNodeRule())
         {
         }
 
+        ///<summary>
+        ///</summary>
+        ///<param name="boundaryRule"></param>
+        ///<exception cref="ArgumentNullException"></exception>
         public PointLocator(IBoundaryNodeRule boundaryRule)
         {
             if (boundaryRule == null)
@@ -74,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             _isIn = false;
             _boundaryCount = 0;
 
-            computeLocation(p, geom);
+            ComputeLocation(p, geom);
 
             if (_boundaryRule.IsInBoundary(_boundaryCount))
             {
@@ -89,15 +95,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return Locations.Exterior;
         }
 
-        private void computeLocation(TCoordinate p, IGeometry<TCoordinate> geom)
+        private void ComputeLocation(TCoordinate p, IGeometry<TCoordinate> geom)
         {
             if (geom is ILineString<TCoordinate>)
             {
-                updateLocationInfo(locate(p, geom as ILineString<TCoordinate>));
+                UpdateLocationInfo(locate(p, geom as ILineString<TCoordinate>));
             }
             else if (geom is IPolygon<TCoordinate>)
             {
-                updateLocationInfo(locate(p, geom as IPolygon<TCoordinate>));
+                UpdateLocationInfo(locate(p, geom as IPolygon<TCoordinate>));
             }
             else if (geom is IMultiLineString<TCoordinate>)
             {
@@ -105,7 +111,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
                 foreach (ILineString<TCoordinate> l in (ml as IEnumerable<ILineString<TCoordinate>>))
                 {
-                    updateLocationInfo(Locate(p, l));
+                    UpdateLocationInfo(Locate(p, l));
                 }
             }
             else if (geom is IMultiPolygon<TCoordinate>)
@@ -114,7 +120,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
                 foreach (IPolygon<TCoordinate> poly in mpoly)
                 {
-                    updateLocationInfo(locate(p, poly));
+                    UpdateLocationInfo(locate(p, poly));
                 }
             }
             else if (geom is IGeometryCollection<TCoordinate>)
@@ -130,13 +136,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
                     if (computeGeometry != geom)
                     {
-                        computeLocation(p, computeGeometry);
+                        ComputeLocation(p, computeGeometry);
                     }
                 }
             }
         }
 
-        private void updateLocationInfo(Locations loc)
+        private void UpdateLocationInfo(Locations loc)
         {
             switch (loc)
             {
@@ -149,7 +155,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
         }
 
-        private Locations locate(TCoordinate p, ILineString<TCoordinate> l)
+        private static Locations locate(TCoordinate p, ILineString<TCoordinate> l)
         {
             ICoordinateSequence<TCoordinate> line = l.Coordinates;
 
@@ -183,7 +189,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return Locations.Exterior;
         }
 
-        private Locations locateInPolygonRing(TCoordinate p, ILinearRing<TCoordinate> ring)
+        private static Locations LocateInPolygonRing(TCoordinate p, ILinearRing<TCoordinate> ring)
         {
             if (ring.Factory == null)
             {
@@ -205,7 +211,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return Locations.Exterior;
         }
 
-        private Locations locate(TCoordinate p, IPolygon<TCoordinate> poly)
+        private static Locations locate(TCoordinate p, IPolygon<TCoordinate> poly)
         {
             if (poly.IsEmpty)
             {
@@ -214,7 +220,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             ILinearRing<TCoordinate> shell = poly.ExteriorRing as ILinearRing<TCoordinate>;
             Debug.Assert(shell != null);
-            Locations shellLoc = locateInPolygonRing(p, shell);
+            Locations shellLoc = LocateInPolygonRing(p, shell);
 
             if (shellLoc == Locations.Exterior)
             {
@@ -229,7 +235,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             // now test if the point lies in or on the holes
             foreach (ILinearRing<TCoordinate> hole in poly.InteriorRings)
             {
-                Locations holeLoc = locateInPolygonRing(p, hole);
+                Locations holeLoc = LocateInPolygonRing(p, hole);
 
                 if (holeLoc == Locations.Interior)
                 {

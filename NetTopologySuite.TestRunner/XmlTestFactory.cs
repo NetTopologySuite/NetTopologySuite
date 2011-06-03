@@ -43,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite
         public XmlTestFactory(ICoordinateSequenceFactory<TCoordinate> seqFactory)
         {
             _geometryFactory = new GeometryFactory<TCoordinate>(seqFactory);
-            _wktReader =  new WktReader<TCoordinate>(_geometryFactory, null);
+            _wktReader =  new WktReader<TCoordinate>(_geometryFactory);
             _wkbReader = new WkbReader<TCoordinate>(_geometryFactory);
 
         }

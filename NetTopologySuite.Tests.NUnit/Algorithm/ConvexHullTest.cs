@@ -14,8 +14,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     [TestFixture]
     public class ConvexHullTest
     {
-        private static IGeometryFactory<Coord> _geometryFactory;
-        private static IWktGeometryReader<Coord> _reader;
+        private static readonly IGeometryFactory<Coord> _geometryFactory;
+        private static readonly IWktGeometryReader<Coord> _reader;
 
         static ConvexHullTest()
         {

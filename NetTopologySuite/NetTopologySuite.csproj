@@ -119,6 +119,13 @@
     <Compile Include="Algorithm\SimplePointInRing.cs" />
     <Compile Include="Algorithm\SIRtreePointInRing.cs" />
     <Compile Include="Densify\Densifier.cs" />
+    <Compile Include="Geometries\Utilities\ComponentCoordinateExtractor.cs" />
+    <Compile Include="Geometries\Utilities\CoordinateSequenceFilter.cs" />
+    <Compile Include="Geometries\Utilities\GeometryComponentFilter.cs" />
+    <Compile Include="Geometries\Utilities\GeometryExtracter.cs" />
+    <Compile Include="Geometries\Utilities\LineStringExtracter.cs" />
+    <Compile Include="Geometries\Utilities\PointExtracter.cs" />
+    <Compile Include="Geometries\Utilities\PolygonExtracter.cs" />
     <Compile Include="Index\KdTree\KdNode.cs" />
     <Compile Include="Index\KdTree\KdTree.cs" />
     <Compile Include="Noding\BasicSegmentString.cs" />

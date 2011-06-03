@@ -53,8 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
         {
             _reader =
                 new WktReader<coord>(
-                    GeometryServices.GetGeometryFactory(PrecisionModelType.DoubleFloating),
-                    null);
+                    GeometryServices.GetGeometryFactory(PrecisionModelType.DoubleFloating));
         }
 
         [STAThread]

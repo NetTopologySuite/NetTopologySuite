@@ -64,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
                     new coordSeqFac(
                         (coordFac)CoordFactory));
             IPoint2D point = (IPoint2D) floatingFactory.CreatePoint(coordinate);
-            IWktGeometryReader wktReader = new WktReader<coord>(floatingFactory, null);
+            IWktGeometryReader wktReader = new WktReader<coord>(floatingFactory);
             IPoint2D test = (IPoint2D) wktReader.Read(point.ToString());
 
             // If i modify PrecisionModel.MaximumSignificantDigits from 16 to (as example) 20, 
@@ -85,7 +85,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
                     new coordSeqFac(
                         (coordFac)CoordFactory));
             IPoint2D point = (IPoint2D) floatingFactory.CreatePoint(coordinate);
-            IWktGeometryReader wktReader = new WktReader<coord>(floatingFactory, null);
+            IWktGeometryReader wktReader = new WktReader<coord>(floatingFactory);
             IPoint2D test = (IPoint2D) wktReader.Read(point.ToString());
 
             Debug.WriteLine(point.ToString());
@@ -107,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
                     new coordSeqFac(
                         new coordFac(PrecisionModelType.SingleFloating)));
             IPoint2D point = (IPoint2D) floatingFactory.CreatePoint(coordinate);
-            IWktGeometryReader wktReader = new WktReader<coord>(floatingFactory, null);
+            IWktGeometryReader wktReader = new WktReader<coord>(floatingFactory);
             IPoint2D test = (IPoint2D) wktReader.Read(point.ToString());
 
             Debug.WriteLine(point.ToString());
@@ -129,7 +129,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
                     new coordSeqFac(
                         new coordFac(PrecisionModelType.SingleFloating)));
             IPoint2D point = (IPoint2D) fixedFactory.CreatePoint(coordinate);
-            IWktGeometryReader wktReader = new WktReader<coord>(fixedFactory, null);
+            IWktGeometryReader wktReader = new WktReader<coord>(fixedFactory);
             IPoint2D test = (IPoint2D) wktReader.Read(point.ToString());
 
             Debug.WriteLine(point.ToString());

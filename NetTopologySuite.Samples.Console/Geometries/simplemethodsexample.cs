@@ -43,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
                 = new GeometryFactory<BufferedCoordinate>(
                     new BufferedCoordinateSequenceFactory());
             WktReader<BufferedCoordinate> wktRdr
-                = new WktReader<BufferedCoordinate>(geometryFactory, null);
+                = new WktReader<BufferedCoordinate>(geometryFactory);
 
             String wktA = "POLYGON((40 100, 40 20, 120 20, 120 100, 40 100))";
             String wktB = "LINESTRING(20 80, 80 60, 100 140)";

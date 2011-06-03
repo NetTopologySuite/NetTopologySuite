@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.LinearReferencing
                     new BufferedCoordinateFactory(1.0)));
 
         private static readonly WktReader<BufferedCoordinate> _reader
-            = new WktReader<BufferedCoordinate>(_factory, null);
+            = new WktReader<BufferedCoordinate>(_factory);
 
         [Test]
         public void Run()

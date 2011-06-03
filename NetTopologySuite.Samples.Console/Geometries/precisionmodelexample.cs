@@ -79,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
             Console.WriteLine("Running example using Precision Model = " + pm);
             IGeometryFactory<coord> fact
                 = GeometryServices.GetGeometryFactory(pm);
-            WktReader<coord> wktRdr = new WktReader<coord>(fact, null);
+            WktReader<coord> wktRdr = new WktReader<coord>(fact);
 
             IGeometry a = wktRdr.Read(wktA);
             IGeometry b = wktRdr.Read(wktB);
@@ -96,7 +96,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
             Console.WriteLine("Running example using Precision Model = " + pm);
             IGeometryFactory<coord> fact
                 = GeometryServices.GetGeometryFactory(pm);
-            WktReader<coord> wktRdr = new WktReader<coord>(fact, null);
+            WktReader<coord> wktRdr = new WktReader<coord>(fact);
 
             IGeometry a = wktRdr.Read(wktA);
             IGeometry b = wktRdr.Read(wktB);

@@ -44,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Poligonize
             IGeometryFactory<Coord> geoFactory =
                 new GeometryFactory<Coord>(new CoordSeqFac());
             WktReader<Coord> rdr
-                = new WktReader<Coord>(geoFactory, null);
+                = new WktReader<Coord>(geoFactory);
             List<IGeometry<Coord>> lines
                 = new List<IGeometry<Coord>>();
 
