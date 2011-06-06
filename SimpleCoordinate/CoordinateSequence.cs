@@ -1172,7 +1172,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public void CopyTo(Array array, int index)
         {
-            throw new NotSupportedException();
+            ((ICollection)_coordinates).CopyTo(array, index);
         }
 
         int ICollection.Count

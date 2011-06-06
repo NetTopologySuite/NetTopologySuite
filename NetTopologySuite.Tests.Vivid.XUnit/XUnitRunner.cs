@@ -1,10 +1,20 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
+using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GisSharpBlog.NetTopologySuite;
 using Xunit;
+
+#if BUFFERED
+using Coord = NetTopologySuite.Coordinates.BufferedCoordinate;
+using CoordFac = NetTopologySuite.Coordinates.BufferedCoordinateFactory;
+using CoordSeqFac = NetTopologySuite.Coordinates.BufferedCoordinateSequenceFactory;
+#else
+using Coord = NetTopologySuite.Coordinates.Simple.Coordinate;
+using CoordFac = NetTopologySuite.Coordinates.Simple.CoordinateFactory;
+using CoordSeqFac = NetTopologySuite.Coordinates.Simple.CoordinateSequenceFactory;
+#endif
 
 namespace NetTopologySuite.Tests.Vivid.XUnit
 {
@@ -14,10 +24,22 @@ namespace NetTopologySuite.Tests.Vivid.XUnit
     /// </summary>
     public abstract class XUnitRunner
     {
+        static ICoordinateFactory<Coord> CreateCoordinateFactory(PrecisionModelType precisionModel, Double scale)
+        {
+            if (Double.IsNaN(scale))
+                return new CoordFac(precisionModel);
+            return new CoordFac(scale);
+        }
+        
+        static ICoordinateSequenceFactory<Coord> CreateCoordinateSequenceFactory(ICoordinateFactory<Coord> coordinateFactory)
+        {
+            return new CoordSeqFac((CoordFac) coordinateFactory);
+        }
+
         private const String TestLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\vivid";
 
-        private readonly XmlTestController controller = new XmlTestController();
-        private XmlTestCollection _tests;
+        private readonly XmlTestController<Coord> _controller = new XmlTestController<Coord>();
+        private XmlTestCollection<Coord> _tests;
 
         protected XUnitRunner(string testFile)
         {
@@ -26,7 +48,7 @@ namespace NetTopologySuite.Tests.Vivid.XUnit
 
         private string TestFile { get; set; }
 
-        protected XmlTestCollection Tests
+        protected XmlTestCollection<Coord> Tests
         {
             get
             {
@@ -40,14 +62,14 @@ namespace NetTopologySuite.Tests.Vivid.XUnit
             get { return Tests.Count; }
         }
 
-        private XmlTestCollection LoadTests()
+        private XmlTestCollection<Coord> LoadTests()
         {
-            XmlTestCollection tests = controller.Load(Path.Combine(TestLocation, TestFile));
+            XmlTestCollection<Coord> tests = _controller.Load( Path.Combine(TestLocation, TestFile), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += tests_TestEvent;
             return tests;
         }
 
-        private void tests_TestEvent(object sender, XmlTestEventArgs args)
+        private void tests_TestEvent(object sender, XmlTestEventArgs<Coord> args)
         {
             Assert.True(args.Success);
         }
@@ -186,7 +208,7 @@ namespace NetTopologySuite.Tests.Vivid.XUnit
             ExecuteTest(20);
         }
 
-        //[Fact]
+        [Fact]
         public void ManualTest()
         {
             int id = GetTestId();
