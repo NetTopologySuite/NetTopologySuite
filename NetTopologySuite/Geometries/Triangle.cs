@@ -10,6 +10,9 @@ namespace NetTopologySuite.Geometries
     /// </summary>
     public class Triangle
     {
+        /**
+         * The coordinates of the vertices of the triangle
+         */
         private ICoordinate _p0, _p1, _p2;
 
         /// <summary>
@@ -39,23 +42,16 @@ namespace NetTopologySuite.Geometries
             set { _p2 = value; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="p0"></param>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        public Triangle(ICoordinate p0, ICoordinate p1, ICoordinate p2)
-        {
-            _p0 = p0;
-            _p1 = p1;
-            _p2 = p2;
-        }
-
         ///<summary>
         /// Tests whether the triangle is acute.
-        /// A triangle is acute iff all interior angles are acute.
-        ///</summary>
+        /// </summary>
+        /// <remarks>
+        /// <para>A triangle is acute iff all interior angles are acute.</para>
+        /// <para>This is a strict test - right triangles will return <c>false</c>
+        /// A triangle which is not acute is either right or obtuse.
+        /// </para>
+        /// Note: this implementation is not robust for angles very close to 90 degrees.
+        ///</remarks>
         /// <param name="a">A vertex of the triangle</param>
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
@@ -116,10 +112,10 @@ namespace NetTopologySuite.Geometries
         /// Computes the incentre of a triangle.
         ///</summary>
         /// <remarks>
-        /// The inCentre of a triangle is the point which is equidistant
+        /// The <c>InCentre</c> of a triangle is the point which is equidistant
         /// from the sides of the triangle.
         /// It is also the point at which the bisectors of the triangle's angles meet.
-        /// It is the centre of the incircle, which is the unique circle 
+        /// It is the centre of the triangle's <c>InCircle</c>, which is the unique circle 
         /// that is tangent to each of the triangle's three sides.
         /// </remarks>
         /// <param name="a">A vertex of the triangle</param>
@@ -145,6 +141,7 @@ namespace NetTopologySuite.Geometries
         /// medians intersect (a triangle median is the segment from a vertex of the triangle to the
         /// midpoint of the opposite side).
         /// The centroid divides each median in a ratio of 2:1.
+        /// The centroid always lies within the triangle.
         /// </remarks>
         /// <param name="a">A vertex of the triangle</param>
         /// <param name="b">A vertex of the triangle</param>
@@ -201,12 +198,14 @@ namespace NetTopologySuite.Geometries
         }
 
         ///<summary>
-        /// Computes the area of a triangle.
+        /// Computes the 2D area of a triangle.
+        /// The area value is always non-negative.
         ///</summary>
         /// <param name="a">A vertex of the triangle</param>
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <returns>The area of the triangle</returns>
+        /// <seealso cref="SignedArea"/>
         public static double Area(ICoordinate a, ICoordinate b, ICoordinate c)
         {
             return Math.Abs(
@@ -216,11 +215,99 @@ namespace NetTopologySuite.Geometries
                 / 2.0;
         }
 
+        ///<summary>
+        /// Computes the signed 2D area of a triangle.
+        ///</summary>
+        /// <remarks>
+        /// <para>
+        /// The area value is positive if the triangle is oriented CW,
+        /// and negative if it is oriented CCW.
+        /// </para>
+        /// <para>
+        /// The signed area value can be used to determine point orientation, but 
+        /// the implementation in this method is susceptible to round-off errors.  
+        /// Use <see cref="CGAlgorithms.OrientationIndex"/> for robust orientation
+        /// calculation.
+        /// </para>
+        /// </remarks>
+        /// <param name="a">A vertex of the triangle</param>
+        /// <param name="b">A vertex of the triangle</param>
+        /// <param name="c">A vertex of the triangle</param>
+        /// <returns>The area of the triangle</returns>
+        /// <seealso cref="Area"/>
+        /// <seealso cref="CGAlgorithms.OrientationIndex"/>
+
+        public static double SignedArea(ICoordinate a, ICoordinate b, ICoordinate c)
+        {
+            /**
+             * Uses the formula 1/2 * | u x v |
+             * where
+             * 	u,v are the side vectors of the triangle
+             *  x is the vector cross-product
+             * For 2D vectors, this formual simplifies to the expression below
+             */
+            return ((c.X - a.X) * (b.Y - a.Y) - (b.X - a.X) * (c.Y - a.Y)) / 2;
+        }
+
+        ///<summary>
+        /// Computes the 3D area of a triangle. 
+        /// The value computed is alway non-negative.
+        ///</summary>
+        /// <param name="a">A vertex of the triangle</param>
+        /// <param name="b">A vertex of the triangle</param>
+        /// <param name="c">A vertex of the triangle</param>
+        /// <returns>The 3D area of the triangle</returns>
+        public static double Area3D(ICoordinate a, ICoordinate b, ICoordinate c)
+        {
+            /**
+             * Uses the formula 1/2 * | u x v |
+             * where
+             * 	u,v are the side vectors of the triangle
+             *  x is the vector cross-product
+             */
+            // side vectors u and v
+            double ux = b.X - a.X;
+            double uy = b.Y - a.Y;
+            double uz = b.Z - a.Z;
+
+            double vx = c.X - a.X;
+            double vy = c.Y - a.Y;
+            double vz = c.Z - a.Z;
+
+            // cross-product = u x v 
+            double crossx = uy * vz - uz * vy;
+            double crossy = uz * vx - ux * vz;
+            double crossz = ux * vy - uy * vx;
+
+            // tri area = 1/2 * | u x v |
+            double absSq = crossx * crossx + crossy * crossy + crossz * crossz;
+            double area3D = Math.Sqrt(absSq) / 2;
+
+            return area3D;
+        }
+
         /// <summary>
-        /// The inCentre of a triangle is the point which is equidistant
-        /// from the sides of the triangle.  This is also the point at which the bisectors
-        /// of the angles meet.
+        /// Creates a new triangle with the given vertices.
         /// </summary>
+        /// <param name="p0">A vertex</param>
+        /// <param name="p1">A vertex</param>
+        /// <param name="p2">A vertex</param>
+        public Triangle(ICoordinate p0, ICoordinate p1, ICoordinate p2)
+        {
+            _p0 = p0;
+            _p1 = p1;
+            _p2 = p2;
+        }
+
+        /// <summary>
+        /// Gets the <c>InCentre</c> of this triangle
+        /// </summary>
+        /// <remarks>The <c>InCentre</c> of a triangle is the point which is equidistant
+        /// from the sides of the triangle.
+        /// This is also the point at which the bisectors of the angles meet.
+        /// It is the centre of the triangle's <c>InCircle</c>,
+        /// which is the unique circle that is tangent to each of the triangle's three sides.
+        /// </remarks>
         /// <returns>
         /// The point which is the InCentre of the triangle.
         /// </returns>

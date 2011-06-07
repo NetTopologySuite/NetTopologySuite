@@ -150,6 +150,7 @@
     <Compile Include="Geometries\MultiLineString.cs" />
     <Compile Include="Geometries\MultiPoint.cs" />
     <Compile Include="Geometries\MultiPolygon.cs" />
+    <Compile Include="Geometries\OctogonalEnvelope.cs" />
     <Compile Include="Geometries\PackedCoordinateSequence.cs" />
     <Compile Include="Geometries\PackedCoordinateSequenceFactory.cs" />
     <Compile Include="Geometries\Point.cs" />

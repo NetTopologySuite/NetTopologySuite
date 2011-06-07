@@ -82,6 +82,7 @@
   <ItemGroup>
     <Compile Include="Geometries\basicexample.cs" />
     <Compile Include="Geometries\constructionexample.cs" />
+    <Compile Include="Geometries\CreateOrientationDistanceMesh.cs" />
     <Compile Include="Geometries\extendedcoordinate.cs" />
     <Compile Include="Geometries\extendedcoordinateexample.cs" />
     <Compile Include="Geometries\extendedcoordinatesequence.cs" />

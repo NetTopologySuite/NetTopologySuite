@@ -7,6 +7,8 @@ namespace NetTopologySuite.Geometries
     /// Specifies the precision model of the <c>Coordinate</c>s in a <c>Geometry</c>.
     /// In other words, specifies the grid of allowable
     /// points for all <c>Geometry</c>s.
+    /// </summary>
+    /// <remarks>
     /// The <c>makePrecise</c> method allows rounding a coordinate to
     /// a "precise" value; that is, one whose
     /// precision is known exactly.
@@ -30,14 +32,21 @@ namespace NetTopologySuite.Geometries
     /// The scale factor specifies the grid which numbers are rounded to.
     /// Input coordinates are mapped to fixed coordinates according to the following
     /// equations:
-    ///  jtsPt.x = round( (inputPt.x * scale ) / scale
-    ///  jtsPt.y = round( (inputPt.y * scale ) / scale
+    /// <list>
+    /// <item>jtsPt.x = round( (inputPt.x * scale ) / scale</item>
+    /// <item>jtsPt.y = round( (inputPt.y * scale ) / scale</item>
+    /// </list>
+    /// <para>
+    /// For example, to specify 3 decimal places of precision, use a scale factor
+    /// of 1000. To specify -3 decimal places of precision (i.e. rounding to
+    /// the nearest 1000), use a scale factor of 0.001.
+    /// </para>
     /// Coordinates are represented internally as double-precision values.
     /// Since .NET uses the IEEE-394 floating point standard, this
     /// provides 53 bits of precision. (Thus the maximum precisely representable
     /// integer is 9,007,199,254,740,992).
     /// NTS methods currently do not handle inputs with different precision models.
-    /// </summary>
+    /// </remarks>
 #if !SILVERLIGHT
     [Serializable]
 #endif
@@ -195,13 +204,17 @@ namespace NetTopologySuite.Geometries
 	    }
 
         /// <summary>
-        /// Returns the multiplying factor used to obtain a precise coordinate.
-        /// This method is private because PrecisionModel is intended to
-        /// be an immutable (value) type.
+        /// Returns the scale factor used to specify a fixed precision model.
         /// </summary>
+        /// <remarks>
+        /// The number of decimal places of precision is 
+        /// equal to the base-10 logarithm of the scale factor.
+        /// Non-integral and negative scale factors are supported.
+        /// Negative scale factors indicate that the places 
+        /// of precision is to the left of the decimal point.  
+        /// </remarks>
         /// <returns>    
-        /// the amount by which to multiply a coordinate after subtracting
-        /// the offset.
+        /// The scale factor for the fixed precision model
         /// </returns>
         public double Scale
         {

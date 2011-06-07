@@ -12,6 +12,12 @@ namespace NetTopologySuite.Noding
     /// The <see cref="INodableSegmentString.AddIntersection" />  method is called whenever the <see cref="INoder" />
     /// detects that two <see cref="ISegmentString" />s might intersect.
     /// <para>
+    /// This class may be used either to find all intersections, or
+    /// to detect the presence of an intersection.  In the latter case,
+    /// Noders may choose to short-circuit their computation by calling the
+    /// <see cref="IsDone"/> property.
+    /// </para>
+    /// <para>
     /// </para>
     /// This class is an example of the Strategy pattern.
     /// <para>

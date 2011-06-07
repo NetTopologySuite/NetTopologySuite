@@ -22,7 +22,7 @@ namespace NetTopologySuite.GeometriesGraph
             validator.CheckValid();
         }
 
-        private static IEnumerable<ISegmentString> ToSegmentStrings(IEnumerable<Edge> edges)
+        public static IEnumerable<ISegmentString> ToSegmentStrings(IEnumerable<Edge> edges)
         {
             // convert Edges to SegmentStrings
             IList<ISegmentString> segStrings = new List<ISegmentString>();

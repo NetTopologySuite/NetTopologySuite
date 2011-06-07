@@ -55,7 +55,7 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// Returns a <see cref="IList"/> of fully noded <see cref="ISegmentString"/>s.
+        /// Returns a <see cref="IList{ISegmentString}"/> of fully noded <see cref="ISegmentString"/>s.
         /// The <see cref="ISegmentString"/>s have the same context as their parent.
         /// </summary>
         /// <returns></returns>

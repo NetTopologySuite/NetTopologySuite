@@ -580,11 +580,18 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Returns <c>true</c> if the DE-9IM intersection matrix for the two
-        /// <c>Geometry</c>s is FF*FF****.
+        /// Tests whether this geometry is disjoint to the specified geometry.
         /// </summary>
+        /// <remarks>
+        /// The <c>Disjoint</c> predicate has the following equivalent definitions:
+        /// <list type="Bullet">
+        /// <item>The DE-9IM intersection matrix for the two geometries matches <c>FF*FF****</c>.</item>
+        /// <item><c>!g.intersects(this)</c><br/>(<c>Disjoint</c> is the inverse of <c>Intersects</c>)</item>
+        /// </list>
+        /// </remarks>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
         /// <returns><c>true</c> if the two <c>Geometry</c>s are disjoint.</returns>
+        /// <see cref="Intersects"/>
         public bool Disjoint(IGeometry g)
         {
             // short-circuit test
@@ -594,9 +601,16 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Returns <c>true</c> if the DE-9IM intersection matrix for the two
-        /// <c>Geometry</c>s is FT*******, F**T***** or F***T****.
+        /// Tests whether this geometry touches the specified geometry
         /// </summary>
+        /// <remarks>
+        /// The <c>Touches</c> predicate has the following equivalent definitions:
+        /// <list type="Bullet">
+        /// <item>The geometries have at least one point in common, but their interiors do not intersect</item>
+        /// <item>The DE-9IM Intersection Matrix for the two geometries matches  <c>FT*******</c>, <c>F**T*****</c> or <c>F***T****</c>.</item>
+        /// </list>
+        /// If both geometries have dimension 0, this predicate returns <c>false</c>
+        /// </remarks>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
         /// <returns>
         /// <c>true</c> if the two <c>Geometry</c>s touch;
@@ -610,16 +624,45 @@ namespace NetTopologySuite.Geometries
             return Relate(g).IsTouches(Dimension, g.Dimension);
         }
 
-        /// <summary>  
-        /// Returns <c>true</c> if <c>disjoint</c> returns false.
-        /// </summary>
+        /// <summary>
+        /// Tests whether this geometry intersects the specified geometry.
+        ///</summary>
+        /// <remarks>
+        /// The <c>Intersects</c> predicate has the following equivalent definitions:
+        /// <list type="Bullet">
+        /// <item>The two geometries have at least one point in common</item>
+        /// <item>The DE-9IM Intersection Matrix for the two geometries matches<br/>
+        /// <c>[T********]</c> or<br/>
+        /// <c>[*T*******]</c> or<br/>
+        /// <c>[***T*****]</c> or<br/>
+        /// <c>[****T****]</c></item>
+        /// <item> <c>!g.disjoint(this)</c><br/>
+        /// (<c>Intersects</c> is the inverse of <c>Disjoint</c>)</item>
+        /// </list></remarks>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
         /// <returns><c>true</c> if the two <c>Geometry</c>s intersect.</returns>
+        /// <see cref="Disjoint"/>
         public bool Intersects(IGeometry g) 
         {
             // short-circuit test
             if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
                 return false;
+          /**
+            * TODO: (MD) Add optimizations:
+            *
+            * - for P-A case:
+            * If P is in env(A), test for point-in-poly
+            *
+            * - for A-A case:
+            * If env(A1).overlaps(env(A2))
+            * test for overlaps via point-in-poly first (both ways)
+            * Possibly optimize selection of point to test by finding point of A1
+            * closest to centre of env(A2).
+            * (Is there a test where we shouldn't bother - e.g. if env A
+            * is much smaller than env B, maybe there's no point in testing
+            * pt(B) in env(A)?
+            */
+
             // optimizations for rectangle arguments
             if (IsRectangle)
                 return RectangleIntersects.Intersects((IPolygon) this, g);
@@ -628,19 +671,31 @@ namespace NetTopologySuite.Geometries
             return Relate(g).IsIntersects();
         }
 
-        /// <summary>  
-        /// Returns <c>true</c> if the DE-9IM intersection matrix for the two
-        /// <c>Geometry</c>s is
-        ///  T*T****** (for a point and a curve, a point and an area or a line
-        /// and an area) 0******** (for two curves).
-        /// </summary>
-        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
-        /// <returns>
-        /// <c>true</c> if the two <c>Geometry</c>s cross.
-        /// For this function to return <c>true</c>, the <c>Geometry</c>
-        /// s must be a point and a curve; a point and a surface; two curves; or a
-        /// curve and a surface.
-        /// </returns>
+        ///<summary>
+        /// Tests whether this geometry crosses the specified geometry.
+        ///</summary>
+        /// <remarks>
+        /// The <c>Crosses</c> predicate has the following equivalent definitions:
+        /// <list type="Bullet">
+        /// <item>The geometries have some but not all interior points in common.</item>
+        /// <item>The DE-9IM Intersection Matrix for the two geometries matches
+        /// <list type="Table">
+        /// <listheader><item>Code</item><description>Description</description></listheader>
+        /// <item><c>[T*T******]</c></item><description>for P/L, P/A, and L/A situations</description>
+        /// <item><c>[T*****T**]</c></item><description>for L/P, L/A, and A/L situations)</description>
+        /// <item><c>[0********]</c></item><description>for L/L situations</description>
+        /// </list>
+        /// </item>
+        /// </list>
+        /// For any other combination of dimensions this predicate returns <code>false</code>.
+        /// <para>
+        /// The SFS defined this predicate only for P/L, P/A, L/L, and L/A situations.
+        /// NTS extends the definition to apply to L/P, A/P and A/L situations as well,
+        /// in order to make the relation symmetric.
+        /// </para>
+        /// </remarks>
+        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c></param>
+        /// <returns><c>true</c> if the two <c>Geometry</c>s cross.</returns>
         public bool Crosses(IGeometry g) 
         {
             // short-circuit test
@@ -650,21 +705,53 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if the DE-9IM intersection matrix for the two
-        /// <c>Geometry</c>s is T*F**F***.
+        /// Tests whether this geometry is within the specified geometry.
         /// </summary>
+        /// <remarks>
+        /// The <code>within</code> predicate has the following equivalent definitions:
+        /// <list type="Bullet">
+        /// <item>
+        /// Every point of this geometry is a point of the other geometry,
+        /// and the interiors of the two geometries have at least one point in common.
+        /// </item>
+        /// <item>The DE-9IM Intersection Matrix for the two geometries matches <c>[T*F**F***]</c></item>
+        /// <item><c>g.contains(this)</c><br/>(<c>Within</c> is the converse of <c>Contains</c>)</item>
+        /// </list>
+        /// <para>
+        /// An implication of the definition is that "The boundary of a Polygon is not within the Polygon".
+        /// In other words, if a geometry G is a subset of the points in the boundary of a polygon P, <c>G.within(P) = false</c>
+        /// </para>
+        /// </remarks>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
         /// <returns><c>true</c> if this <c>Geometry</c> is within <c>other</c>.</returns>
+        /// <see cref="Contains"/>
         public bool Within(IGeometry g)
         {
             return g.Contains(this);
         }
 
-        /// <summary>
-        /// Returns <c>true</c> if <c>other.within(this)</c> returns <c>true</c>.
+        ///<summary>
+        /// Tests whether this geometry contains the specified geometry.
         /// </summary>
-        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
-        /// <returns><c>true</c> if this <c>Geometry</c> contains <c>other</c>.</returns>
+        /// <remarks>
+        /// The <c>Contains</c> predicate has the following equivalent definitions:
+        /// <list type="Bullet">
+        /// <item>Every point of the other geometry is a point of this geometry,
+        /// and the interiors of the two geometries have at least one point in common.</item>
+        /// <item>The DE-9IM Intersection Matrix for the two geometries matches
+        /// <c>[T*****FF*]</c></item>
+        /// <item><c>g.within(this)</c><br/>
+        /// (<c>Contains</c> is the converse of <c>within</c>)</item>
+        /// </list>
+        /// <para>
+        /// An implication of the definition is that "Polygons do not
+        /// contain their boundary".  In other words, if a geometry G is a subset of
+        /// the points in the boundary of a polygon P, <c>P.contains(G) = false</c>
+        /// </para>
+        /// </remarks>
+        /// <param name="g">the <c>Geometry</c> with which to compare this <c>Geometry</c></param>
+        /// <returns><c>true</c> if this <c>Geometry</c> contains <c>g</c></returns>
+        /// <see cref="Within"/>
         public bool Contains(IGeometry g) 
         {
             // short-circuit test
@@ -678,11 +765,21 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if the DE-9IM intersection matrix for the two
-        /// <c>Geometry</c>s is
-        ///  T*T***T** (for two points or two surfaces)
-        ///  1*T***T** (for two curves).
+        /// Tests whether this geometry overlaps the specified geometry.
         /// </summary>
+        /// <remarks>
+        /// The <c>Overlaps</c> predicate has the following equivalent definitions:
+        /// <list type="Bullet">
+        /// <item>The geometries have some but not all points in common, 
+        /// they have the same dimension,
+        /// and the intersection of the interiors of the two geometries has
+        /// the same dimension as the geometries themselves.</item>
+        /// <item>The DE-9IM Intersection Matrix for the two geometries matches
+        ///  <c>[T*T***T**]</c> (for two points or two surfaces)
+        ///  or <c>[1*T***T**]</c> (for two curves)</item>
+        /// </list>
+        /// If the geometries are of different dimension this predicate returns <c>false</c>.
+        /// </remarks>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
         /// <returns>
         /// <c>true</c> if the two <c>Geometry</c>s overlap.
@@ -698,25 +795,36 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if this geometry covers the specified geometry.
-        /// <para>
-        /// The <c>Covers</c> predicate has the following equivalent definitions:
-        ///     - Every point of the other geometry is a point of this geometry.
-        ///     - The DE-9IM Intersection Matrix for the two geometries is <c>T*****FF*</c> or <c>*T****FF*</c> or <c>***T**FF*</c> or <c>****T*FF*</c>.
-        ///     - <c>g.CoveredBy(this)</c> (<c>Covers</c> is the inverse of <c>CoveredBy</c>).
-        /// </para>
-        /// Note the difference between <c>Covers</c> and <c>Contains</c>: <c>Covers</c> is a more inclusive relation.
-        /// In particular, unlike <c>Contains</c> it does not distinguish between
-        /// points in the boundary and in the interior of geometries.        
+        /// Tests whether this geometry covers the specified geometry
         /// </summary>
         /// <remarks>
+        /// The <c>covers</c> predicate has the following equivalent definitions:
+        /// <list>
+        /// <item>Every point of the other geometry is a point of this geometry.</item>
+        /// <item>The DE-9IM Intersection Matrix for the two geometries matches<br/>
+        /// <c>[T*****FF*]</c> or<br/>
+        /// <c>[*T****FF*]</c> or<br/>
+        /// <c>[***T**FF*]</c> or<br/>
+        /// <c>[****T*FF*]</c>
+        /// </item>
+        /// <item><c>g.coveredBy(this)</c>
+        /// (<c>covers</c> is the converse of <c>coveredBy</c>)</item>
+        /// </list>
+        /// If either geometry is empty, the value of this predicate is <c>false</c>.
+        /// <para>
+        /// This predicate is similar to <see cref="Contains"/>,
+        /// but is more inclusive (i.e. returns <tt>true</tt> for more cases).
+        /// In particular, unlike <c>Contains</c> it does not distinguish between
+        /// points in the boundary and in the interior of geometries.
         /// For most situations, <c>Covers</c> should be used in preference to <c>Contains</c>.
-        /// As an added benefit, <c>Covers</c> is more amenable to optimization, and hence should be more performant.
+        /// As an added benefit, <c>Covers</c> is more amenable to optimization,
+        /// and hence should be more performant.
+        /// </para>
         /// </remarks>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c></param>
         /// <returns><c>true</c> if this <c>Geometry</c> covers <paramref name="g" /></returns>
-        /// <seealso cref="Geometry.Contains" />
-        /// <seealso cref="Geometry.CoveredBy" />
+        /// <seealso cref="Contains" />
+        /// <seealso cref="CoveredBy" />
         public bool Covers(IGeometry g)
         {
             // short-circuit test
@@ -731,41 +839,58 @@ namespace NetTopologySuite.Geometries
             return Relate(g).IsCovers();
         }
 
-        /// <summary>
-        /// Returns <c>true</c> if this geometry is covered by the specified geometry.
-        /// <para>
+        ///<summary>Tests whether this geometry is covered by the specified geometry.</summary>
+        /// <remarks>
         /// The <c>CoveredBy</c> predicate has the following equivalent definitions:
-        ///     - Every point of this geometry is a point of the other geometry.
-        ///     - The DE-9IM Intersection Matrix for the two geometries is <c>T*F**F***</c> or <c>*TF**F***</c> or <c>**FT*F***</c> or <c>**F*TF***</c>.
-        ///     - <c>g.Covers(this)</c> (<c>CoveredBy</c> is the inverse of <c>Covers</c>).
+        /// <list>
+        /// <item>Every point of this geometry is a point of the other geometry.
+        /// </item>
+        /// <item>The DE-9IM Intersection Matrix for the two geometries matches
+        /// <c>[T*F**F***]</c> or<br/>
+        /// <c>[*TF**F***]</c> or<br/>
+        /// <c>[**FT*F***]</c> or<br/>
+        /// <c>[**F*TF***]</c></item>
+        /// <item><c>g.covers(this)</c><br/>
+        /// (<c>CoveredBy</c> is the converse of <c>Covers</c>)
+        /// </item>
+        /// </list>
+        /// If either geometry is empty, the value of this predicate is <c>false</c>.
+        /// <para>
+        /// This predicate is similar to <see cref="Within"/>, 
+        /// but is more inclusive (i.e. returns <c>true</c> for more cases).
         /// </para>
-        /// Note the difference between <c>CoveredBy</c> and <c>Within</c>: <c>CoveredBy</c> is a more inclusive relation.
-        /// </summary>
-        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c></param>.
-        /// <returns><c>true</c> if this <c>Geometry</c> is covered by <paramref name="g" />.</returns>
-        /// <seealso cref="Geometry.Within" />
-        /// <seealso cref="Geometry.Covers" />
+        ///</remarks>
+        ///<param name="g">the <c>Geometry</c> with which to compare this <c>Geometry</c></param>
+        ///<returns><c>true</c> if this <c>Geometry</c> is covered by <c>g</c></returns>
+        ///<seealso cref="Within"/>
+        ///<seealso cref="Covers"/>
         public bool CoveredBy(IGeometry g)
         {
             return g.Covers(this);
         }
 
-        /// <summary>  
-        /// Returns <c>true</c> if the elements in the DE-9IM intersection
-        /// matrix for the two <c>Geometry</c>s match the elements in <c>intersectionPattern</c>
-        /// , which may be:
-        ///  0
-        ///  1
-        ///  2
-        ///  T ( = 0, 1 or 2)
-        ///  F ( = -1)
-        ///  * ( = -1, 0, 1 or 2)
-        /// For more information on the DE-9IM, see the OpenGIS Simple Features
-        /// Specification.
+        ///<summary>
+        /// Tests whether the elements in the DE-9IM
+        /// <see cref="IntersectionMatrix"/> for the two <c>Geometry</c>s match the elements in <c>intersectionPattern</c>.
         /// </summary>
-        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
-        /// <param name="intersectionPattern">The pattern against which to check the intersection matrix for the two <c>Geometry</c>s.</param>
-        /// <returns><c>true</c> if the DE-9IM intersection matrix for the two <c>Geometry</c>s match <c>intersectionPattern</c>.</returns>
+        /// <remarks>
+        /// The pattern is a 9-character string, with symbols drawn from the following set:
+        /// <list>
+        ///<item>0 (dimension 0)</item>
+        ///<item>1 (dimension 1)</item>
+        ///<item>2 (dimension 2)</item>
+        ///<item>T ( matches 0, 1 or 2)</item>
+        ///<item>F ( matches FALSE)</item>
+        ///<item>* ( matches any value)</item>
+        /// </list> For more information on the DE-9IM, see the <i>OpenGIS Simple Features 
+        /// Specification</i>.
+        /// </remarks>
+        /// <param name="g">the <c>Geometry</c> with which to compare this <c>Geometry</c></param>
+        /// <param name="intersectionPattern">the pattern against which to check the 
+        /// intersection matrix for the two <c>Geometry</c>s</param>
+        /// <returns><c>true</c> if the DE-9IM intersection 
+        /// matrix for the two <c>Geometry</c>s match <c>intersectionPattern</c></returns>
+        /// <seealso cref="IntersectionMatrix"/>
         public bool Relate(IGeometry g, string intersectionPattern)
         {
             return Relate(g).Matches(intersectionPattern);
@@ -786,11 +911,21 @@ namespace NetTopologySuite.Geometries
 
             return RelateOp.Relate(this, g);
         }                    
-                
         /// <summary>
-        /// Returns <c>true</c> if the DE-9IM intersection matrix for the two
-        /// <c>Geometry</c>s is T*F**FFF*.
+        /// Tests whether this geometry is equal to the specified geometry.
         /// </summary>
+        /// <remarks>
+        /// The <c>equals</c> predicate has the following equivalent definitions:
+        /// <list>
+        /// <item>The two geometries have at least one point in common, and no point of either geometry lies in the exterior of the other geometry.
+        /// 
+        /// </item>
+        /// <item>The DE-9IM Intersection Matrix for the two geometries is <c>[T*F**FFF*]</c>
+        /// </item>
+        /// </list>
+        /// <b>Note</b> that this method computes topologically equality, not structural or
+        /// point-wise equality.
+        /// </remarks>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
         /// <returns><c>true</c> if the two <c>Geometry</c>s are equal.</returns>
         public bool Equals(IGeometry g)
@@ -973,21 +1108,34 @@ namespace NetTopologySuite.Geometries
         {            
             GMLWriter writer = new GMLWriter();
             return writer.Write(this);
-        }        
+        }
 
         /// <summary>
-        /// Returns a buffer region around this <c>Geometry</c> having the given width.
-        /// The buffer of a Geometry is the Minkowski sum or difference of the Geometry with a disc of radius <c>distance</c>.
+        /// Computes a buffer area around this geometry having the given width. The
+        /// buffer of a Geometry is the Minkowski sum or difference of the geometry
+        /// with a disc of radius <c>Abs(distance)</c>.
         /// </summary>
+        /// <remarks><para>Mathematically-exact buffer area boundaries can contain circular arcs. 
+        /// To represent these arcs using linear geometry they must be approximated with line segments.
+        /// The buffer geometry is constructed using 8 segments per quadrant to approximate 
+        /// the circular arcs.</para>
+        /// <para>The end cap style is <c>BufferStyle.CapRound</c>.</para>
+        /// <para>
+        /// The buffer operation always returns a polygonal result. The negative or
+        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.</para>
+        /// </remarks>
         /// <param name="distance">
         /// The width of the buffer, interpreted according to the
         /// <c>PrecisionModel</c> of the <c>Geometry</c>.
         /// </param>
         /// <returns>
-        /// All points whose distance from this <c>Geometry</c>
-        /// are less than or equal to <c>distance</c>.
+        /// a polygonal geometry representing the buffer region (which may be empty)
         /// </returns>
         /// <exception cref="TopologyException">If a robustness error occurs</exception>
+        ///// <seealso cref="Buffer(double, BufferStyle)"/>
+        /// <seealso cref="Buffer(double, int)"/>
+        /// <seealso cref="Buffer(double, EndCapStyle)"/>
+        /// <seealso cref="Buffer(double, IBufferParameters)"/>
         public IGeometry Buffer(double distance)
         {
             return BufferOp.Buffer(this, distance);
@@ -1138,7 +1286,7 @@ namespace NetTopologySuite.Geometries
             // Special case: if A.isEmpty ==> empty; if B.isEmpty ==> A
             if (IsEmpty) 
                 return Factory.CreateGeometryCollection(null);
-            if (other.IsEmpty) 
+            if (other == null || other.IsEmpty) 
                 return (IGeometry) Clone();
 
             CheckNotGeometryCollection(this);

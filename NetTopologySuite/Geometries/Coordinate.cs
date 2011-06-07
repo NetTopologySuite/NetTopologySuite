@@ -4,16 +4,14 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
-    /// A lightweight class used to store coordinates
-    /// on the 2-dimensional Cartesian plane.
+    /// A lightweight class used to store coordinates on the 2-dimensional Cartesian plane.
     /// It is distinct from <see cref="IPoint"/>, which is a subclass of <see cref="IGeometry"/>.
     /// Unlike objects of type <c>Point</c> (which contain additional
     /// information such as an envelope, a precision model, and spatial reference
     /// system information), a <c>Coordinate</c> only contains ordinate values
     /// and propertied.
     /// <c>Coordinate</c>s are two-dimensional points, with an additional Z-ordinate.
-    /// NTS does not support any operations on the Z-ordinate except
-    /// the basic accessor functions. 
+    /// NTS does not support any operations on the Z-ordinate except the basic accessor functions. 
     /// If a value is not specified, constructed coordinates will have a
     /// z-ordinate of <c>NaN</c>.  The standard comparison functions will ignore
     /// the z-ordinate.
