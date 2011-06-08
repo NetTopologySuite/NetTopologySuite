@@ -91,9 +91,20 @@ namespace NetTopologySuite.Coordinates.Simple
             return new Coordinate(this, x, y);
         }
 
-        public Coordinate Create(Double x, Double y, Double w)
+        public Coordinate Create(Double x, Double y, Double m)
         {
-            return new Coordinate(this, x, y, w, OrdinateFlags.XYW);
+            return new Coordinate(this, x, y, m, OrdinateFlags.XYM);
+        }
+
+        ICoordinate ICoordinateFactory.Create(double x, double y, double val, bool valIsM)
+        {
+            return Create(x, y, val, valIsM);
+        }
+
+        public Coordinate Create(Double x, Double y, Double val, bool valIsM)
+        {
+            OrdinateFlags flag = OrdinateFlags.XY | (valIsM ? OrdinateFlags.M : OrdinateFlags.W);
+            return new Coordinate(this, x, y, val, flag);
         }
 
         public Coordinate Create(params Double[] coordinates)
@@ -130,9 +141,20 @@ namespace NetTopologySuite.Coordinates.Simple
             return new Coordinate(this, x, y, z, OrdinateFlags.XYZ);
         }
 
-        public Coordinate Create3D(Double x, Double y, Double z, Double w)
+        public Coordinate Create3D(Double x, Double y, Double z, Double m)
         {
-            return new Coordinate(this, x, y, z, w, OrdinateFlags.XYZW);
+            return new Coordinate(this, x, y, z, m, OrdinateFlags.XYZM);
+        }
+
+        ICoordinate ICoordinateFactory.Create3D(double x, double y, double z, double val, bool valIsM)
+        {
+            return Create3D(x, y, z, val, valIsM);
+        }
+
+        public Coordinate Create3D(Double x, Double y, Double z, Double val, bool valIsM)
+        {
+            OrdinateFlags flags = OrdinateFlags.XYZ | (valIsM ? OrdinateFlags.M : OrdinateFlags.W);
+            return new Coordinate(this, x, y, z, val, OrdinateFlags.XYZM);
         }
 
         public Coordinate Create3D(params Double[] coordinates)
@@ -470,7 +492,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public Coordinate CreateVector(Double a, Double b, Double c)
         {
-            return Create(a, b, c);
+            return Create(a, b, c, false);
         }
 
         public Coordinate CreateVector(Double a, Double b)
@@ -485,7 +507,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public Coordinate CreateVector(DoubleComponent a, DoubleComponent b, DoubleComponent c)
         {
-            return Create((Double)a, (Double)b, (Double)c);
+            return Create((Double)a, (Double)b, (Double)c, false);
         }
 
         public Coordinate CreateVector(DoubleComponent a, DoubleComponent b)

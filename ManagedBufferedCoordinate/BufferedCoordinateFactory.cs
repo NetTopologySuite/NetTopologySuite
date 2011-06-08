@@ -152,9 +152,21 @@ namespace NetTopologySuite.Coordinates
             return getVertexInternal(x, y);
         }
 
-        public BufferedCoordinate Create(Double x, Double y, Double w)
+        public BufferedCoordinate Create(Double x, Double y, Double m)
         {
+            throw new InvalidOperationException("BufferedCoordinate cannot handle M values");
+        }
+
+        public BufferedCoordinate Create(double x, double y, double w, bool valIsM)
+        {
+            if (valIsM)
+                throw new InvalidOperationException("BufferedCoordinate cannot handle M values");
             return getVertexInternal(x, y, w);
+        }
+
+        ICoordinate ICoordinateFactory.Create(double x, double y, double val, bool valIsM)
+        {
+            return Create(x, y, val, valIsM);
         }
 
         public BufferedCoordinate Create(params Double[] coordinates)
@@ -187,9 +199,21 @@ namespace NetTopologySuite.Coordinates
             return getVertexInternal3D(x, y, z);
         }
 
-        public BufferedCoordinate Create3D(Double x, Double y, Double z, Double w)
+        public BufferedCoordinate Create3D(Double x, Double y, Double z, Double m)
         {
-            return getVertexInternal(x, y, z, w);
+            throw new InvalidOperationException("BufferedCoordinate cannot handle M values");
+        }
+
+        public BufferedCoordinate Create3D(double x, double y, double z, double val, bool valIsM)
+        {
+            if (valIsM)
+                throw new InvalidOperationException("BufferedCoordinate cannot handle M values");
+            return getVertexInternal(x, y, z, val);
+        }
+
+        ICoordinate ICoordinateFactory.Create3D(double x, double y, double z, double val, bool valIsM)
+        {
+            return Create3D(x, y, z, val, valIsM);
         }
 
         public BufferedCoordinate Create3D(params Double[] coordinates)
