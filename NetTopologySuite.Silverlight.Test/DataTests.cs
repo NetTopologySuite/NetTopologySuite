@@ -77,7 +77,9 @@ namespace NetTopologySuite.Silverlight.Test
                         {
                             if (isf.AvailableFreeSpace < res.Length)
                             {
-                                isf.IncreaseQuotaTo(isf.Quota + 10000000);
+                                if (!isf.IncreaseQuotaTo(isf.Quota + 10000000))
+                                    throw new IsolatedStorageException("Isolated storage file quota needs increasing.");
+                                //the test framework doesn't show the dialog box. todo: needs workaround.
 
                             }
 
