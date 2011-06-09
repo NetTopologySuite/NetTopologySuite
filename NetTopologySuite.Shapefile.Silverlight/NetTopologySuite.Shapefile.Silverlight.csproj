@@ -49,6 +49,7 @@
     <Reference Include="mscorlib" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ByteEncoder.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="IStorageManager.cs" />
     <Compile Include="NondisposingStream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceStorageManager.cs" />
     <Compile Include="ShapeFileConstants.cs" />
     <Compile Include="ShapeFileDataReader.cs" />
     <Compile Include="ShapeFileException.cs" />
