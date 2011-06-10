@@ -219,7 +219,6 @@
     <Compile Include="GeometriesGraph\Position.cs" />
     <Compile Include="GeometriesGraph\QuadrantOp.cs" />
     <Compile Include="GeometriesGraph\TopologyLocation.cs" />
-    <Compile Include="IO\GeoTools\Handlers\ProbeLinearRing.cs" />
     <Compile Include="IO\WKTFileReader.cs" />
     <Compile Include="Noding\FastSegmentSetIntersectionFinder.cs" />
     <Compile Include="Noding\MCIndexSegmentSetMutualIntersector.cs" />
@@ -265,59 +264,14 @@
     <Compile Include="Index\Sweepline\ISweepLineOverlapAction.cs" />
     <Compile Include="IO\BEBinaryReader.cs" />
     <Compile Include="IO\BEBinaryWriter.cs" />
-    <Compile Include="IO\GeoTools\BigEndianBinaryReader.cs" />
-    <Compile Include="IO\GeoTools\BigEndianBinaryWriter.cs" />
-    <Compile Include="IO\GeoTools\Dbase\ColumnStructure.cs" />
-    <Compile Include="IO\GeoTools\Dbase\DbaseFieldDescriptor.cs" />
-    <Compile Include="IO\GeoTools\Dbase\DbaseFileHeader.cs" />
-    <Compile Include="IO\GeoTools\Dbase\DbaseFileReader.cs" />
-    <Compile Include="IO\GeoTools\Dbase\DbaseFileReader.FullFat.cs" />
-    <Compile Include="IO\GeoTools\Dbase\DbaseFileWriter.cs" />
-    <Compile Include="IO\GeoTools\Shapefile.FullFat.cs" />
-    <Compile Include="IO\GeoTools\ShapefileDataReader.FullFat.cs" />
-    <Compile Include="IO\GeoTools\ShapefileReader.FullFat.cs" />
     <Compile Include="IO\GML2\GMLElements.cs" />
     <Compile Include="IO\GML2\GMLReader.cs" />
     <Compile Include="IO\GML2\GMLWriter.cs" />
-    <Compile Include="IO\GeoTools\Handlers\MultiLineHandler.cs" />
-    <Compile Include="IO\GeoTools\Handlers\MultiPointHandler.cs" />
-    <Compile Include="IO\GeoTools\Handlers\PointHandler.cs" />
-    <Compile Include="IO\GeoTools\Handlers\PolygonHandler.cs" />
-    <Compile Include="IO\GeoTools\Dbase\RowStructure.cs" />
-    <Compile Include="IO\GeoTools\Shapefile.cs" />
-    <Compile Include="IO\GeoTools\ShapefileDataReader.cs" />
-    <Compile Include="IO\GeoTools\ShapefileException.cs" />
-    <Compile Include="IO\GeoTools\ShapefileHeader.cs" />
-    <Compile Include="IO\GeoTools\ShapefileReader.cs" />
-    <Compile Include="IO\GeoTools\ShapefileWriter.cs" />
-    <Compile Include="IO\GeoTools\ShapefileDataWriter.cs" />
-    <Compile Include="IO\MsSqlSpatialReader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="IO\MsSqlSpatialWriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="IO\MyShapeFileReader.FullFat.cs" />
-    <Compile Include="IO\PostGisGeometryType.cs" />
-    <Compile Include="IO\PostGisReader.cs" />
-    <Compile Include="IO\PostGisWriter.cs" />
-    <Compile Include="IO\GDBReader.cs" />
-    <Compile Include="IO\GDBWriter.cs" />
     <Compile Include="IO\ParseException.cs" />
-    <Compile Include="IO\MyShapeFileReader.cs" />
-    <Compile Include="IO\MyShapeFileWriter.cs" />
-    <Compile Include="IO\GeoTools\Handlers\ShapeHandler.cs" />
-    <Compile Include="IO\ShapeGeometryType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="IO\ShapeReader.cs" />
-    <Compile Include="IO\ShapeWriter.cs" />
-    <Compile Include="IO\GeoTools\TokenType.cs" />
     <Compile Include="IO\WKBReader.cs" />
     <Compile Include="IO\WKBGeometryTypes.cs" />
     <Compile Include="IO\WKBWriter.cs" />
     <Compile Include="IO\WKTReader.cs" />
-    <Compile Include="IO\GeoTools\WktStreamTokenizer.cs" />
     <Compile Include="IO\WKTWriter.cs" />
     <Compile Include="LinearReferencing\ExtractLineByLocation.cs" />
     <Compile Include="LinearReferencing\LengthIndexedLine.cs" />
@@ -467,7 +421,6 @@
     <Compile Include="Utilities\RToolsUtil\StreamTokenizer.cs" />
     <Compile Include="Utilities\RToolsUtil\Token.cs" />
     <Compile Include="Utilities\RToolsUtil\VerbosityLevel.cs" />
-    <Compile Include="Utilities\GeoToolsStreamTokenizer.cs" />
     <Compile Include="Utilities\UniqueCoordinateArrayFilter.cs" />
   </ItemGroup>
   <ItemGroup>

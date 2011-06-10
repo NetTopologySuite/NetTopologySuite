@@ -354,7 +354,7 @@
       <Link>GeometriesGraph\Index\EdgeSetIntersector.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\GeometriesGraph\Index\MonotoneChain.cs">
-      <Link>Index\Chain\MonotoneChain.cs</Link>
+      <Link>GeometriesGraph\Index\MonotoneChain.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\GeometriesGraph\Index\MonotoneChainEdge.cs">
       <Link>GeometriesGraph\Index\MonotoneChainEdge.cs</Link>
@@ -384,7 +384,7 @@
       <Link>GeometriesGraph\Label.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\GeometriesGraph\Node.cs">
-      <Link>Index\BinTree\Node.cs</Link>
+      <Link>GeometriesGraph\Node.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\GeometriesGraph\NodeFactory.cs">
       <Link>GeometriesGraph\NodeFactory.cs</Link>
