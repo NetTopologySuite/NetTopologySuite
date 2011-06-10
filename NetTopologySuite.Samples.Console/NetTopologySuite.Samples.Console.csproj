@@ -152,9 +152,25 @@
       <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
       <Name>GeoAPI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GDB\NetTopologySuite.IO.GDB.csproj">
+      <Project>{548166D9-DF64-46FB-9EEC-212C7B7E7D85}</Project>
+      <Name>NetTopologySuite.IO.GDB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\NetTopologySuite.IO.GeoTools.csproj">
+      <Project>{21805958-869E-49F5-A4ED-0AC8599D62F0}</Project>
+      <Name>NetTopologySuite.IO.GeoTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.MsSqlSpatial\NetTopologySuite.IO.MsSqlSpatial.csproj">
+      <Project>{75BDB70A-AEB9-4592-9B5E-677D3D346A54}</Project>
+      <Name>NetTopologySuite.IO.MsSqlSpatial</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.PostGis\NetTopologySuite.IO.PostGis.csproj">
       <Project>{7505264F-7E3E-4F8D-A9D5-885B4F313C26}</Project>
       <Name>NetTopologySuite.IO.PostGis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile\NetTopologySuite.IO.ShapeFile.csproj">
+      <Project>{AB9096A7-89DD-4ABD-B535-A5258863F389}</Project>
+      <Name>NetTopologySuite.IO.ShapeFile</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>

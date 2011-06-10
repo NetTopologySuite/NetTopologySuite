@@ -72,20 +72,20 @@ namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
                 throw ex;
             }
 
-            // Test with MyShapefileReader (only for debug purpose!)
-            try
-            {
-                MyShapeFileReader reader = new MyShapeFileReader();
-                gc2 = reader.Read(file);                                
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            //// Test with MyShapefileReader (only for debug purpose!)
+            //try
+            //{
+            //    MyShapeFileReader reader = new MyShapeFileReader();
+            //    gc2 = reader.Read(file);                                
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw ex;
+            //}
 
-            // Check for equality
-            if (!gc1.EqualsExact(gc2))
-                throw new TopologyException("Both geometries must be equals!");
+            //// Check for equality
+            //if (!gc1.EqualsExact(gc2))
+            //    throw new TopologyException("Both geometries must be equals!");
         }
 
         private void TestBugCimino()
