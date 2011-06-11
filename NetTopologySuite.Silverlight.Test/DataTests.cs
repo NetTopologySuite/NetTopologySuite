@@ -201,6 +201,9 @@ namespace NetTopologySuite.Silverlight.Test
 
         }
 
+        /* 
+         * This class has been removed from the source
+         * 
         [Ignore]
         [TestMethod]
         public void TestMyShapeReader()
@@ -219,5 +222,6 @@ namespace NetTopologySuite.Silverlight.Test
                 }
             }
         }
+         */
     }
 }

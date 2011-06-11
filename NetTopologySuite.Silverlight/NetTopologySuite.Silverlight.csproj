@@ -145,16 +145,10 @@
     <Compile Include="..\NetTopologySuite\Features\IAttributesTable.cs">
       <Link>Features\IAttributesTable.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\MyShapeFileReader.cs">
-      <Link>IO\MyShapeFileReader.cs</Link>
-    </Compile>
-    <Compile Include="..\NetTopologySuite\IO\MyShapeFileWriter.cs">
-      <Link>IO\MyShapeFileWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\NetTopologySuite\IO\ShapeReader.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile\ShapeReader.cs">
       <Link>IO\ShapeReader.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\ShapeWriter.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile\ShapeWriter.cs">
       <Link>IO\ShapeWriter.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Noding\BasicSegmentString.cs">
@@ -508,22 +502,22 @@
     <Compile Include="..\NetTopologySuite\IO\BEBinaryWriter.cs">
       <Link>IO\BEBinaryWriter.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\GeoTools\BigEndianBinaryReader.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\BigEndianBinaryReader.cs">
       <Link>IO\GeoTools\BigEndianBinaryReader.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\GeoTools\BigEndianBinaryWriter.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\BigEndianBinaryWriter.cs">
       <Link>IO\GeoTools\BigEndianBinaryWriter.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\GeoTools\Dbase\DbaseFieldDescriptor.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\Dbase\DbaseFieldDescriptor.cs">
       <Link>IO\GeoTools\Dbase\DbaseFieldDescriptor.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\GeoTools\Dbase\DbaseFileHeader.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\Dbase\DbaseFileHeader.cs">
       <Link>IO\GeoTools\Dbase\DbaseFileHeader.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\GeoTools\Dbase\DbaseFileReader.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\Dbase\DbaseFileReader.cs">
       <Link>IO\GeoTools\Dbase\DbaseFileReader.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\GeoTools\Dbase\DbaseFileWriter.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\Dbase\DbaseFileWriter.cs">
       <Link>IO\GeoTools\Dbase\DbaseFileWriter.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\IO\GML2\GMLElements.cs">
@@ -535,50 +529,50 @@
     <Compile Include="..\NetTopologySuite\IO\GML2\GMLWriter.cs">
       <Link>IO\GML2\GMLWriter.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\GeoTools\Handlers\MultiLineHandler.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\Handlers\MultiLineHandler.cs">
       <Link>IO\GeoTools\Handlers\MultiLineHandler.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\GeoTools\Handlers\MultiPointHandler.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\Handlers\MultiPointHandler.cs">
       <Link>IO\GeoTools\Handlers\MultiPointHandler.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\GeoTools\Handlers\PointHandler.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\Handlers\PointHandler.cs">
       <Link>IO\GeoTools\Handlers\PointHandler.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\GeoTools\Handlers\PolygonHandler.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\Handlers\PolygonHandler.cs">
       <Link>IO\GeoTools\Handlers\PolygonHandler.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\GeoTools\Shapefile.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\Shapefile.cs">
       <Link>IO\GeoTools\Shapefile.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\GeoTools\ShapefileDataReader.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\ShapefileDataReader.cs">
       <Link>IO\GeoTools\ShapefileDataReader.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\GeoTools\ShapefileException.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\ShapefileException.cs">
       <Link>IO\GeoTools\ShapefileException.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\GeoTools\ShapefileHeader.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\ShapefileHeader.cs">
       <Link>IO\GeoTools\ShapefileHeader.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\GeoTools\ShapefileReader.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\ShapefileReader.cs">
       <Link>IO\GeoTools\ShapefileReader.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\GeoTools\ShapefileWriter.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\ShapefileWriter.cs">
       <Link>IO\GeoTools\ShapefileWriter.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\GeoTools\ShapefileDataWriter.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\ShapefileDataWriter.cs">
       <Link>IO\GeoTools\ShapefileDataWriter.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\IO\ParseException.cs">
       <Link>IO\ParseException.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\GeoTools\Handlers\ShapeHandler.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\Handlers\ShapeHandler.cs">
       <Link>IO\GeoTools\Handlers\ShapeHandler.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\ShapeGeometryType.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile\ShapeGeometryType.cs">
       <SubType>Code</SubType>
       <Link>IO\ShapeGeometryType.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\GeoTools\TokenType.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\TokenType.cs">
       <Link>IO\GeoTools\TokenType.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\IO\WKBReader.cs">
@@ -593,7 +587,7 @@
     <Compile Include="..\NetTopologySuite\IO\WKTReader.cs">
       <Link>IO\WKTReader.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\GeoTools\WktStreamTokenizer.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\WktStreamTokenizer.cs">
       <Link>IO\GeoTools\WktStreamTokenizer.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\IO\WKTWriter.cs">
@@ -1103,7 +1097,7 @@
     <Compile Include="..\NetTopologySuite\Noding\SegmentSetMutualIntersector.cs">
       <Link>Noding\SegmentSetMutualIntersector.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\IO\GeoTools\Handlers\ProbeLinearRing.cs">
+    <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\Handlers\ProbeLinearRing.cs">
       <Link>IO\GeoTools\Handlers\ProbeLinearRing.cs</Link>
     </Compile>
     <Compile Include="IO\GeoTools\Dbase\DbaseFileReader.SL.cs" />
@@ -1111,7 +1105,6 @@
     <Compile Include="IO\GeoTools\SLShapeFileDataEnumerator.cs" />
     <Compile Include="IO\GeoTools\ShapefileReader.SL.cs" />
     <Compile Include="IO\GeoTools\StringToGeometryConverter.cs" />
-    <Compile Include="IO\MyShapeFileReader.SL.cs" />
     <Compile Include="Extension\ICoordinateEx.cs" />
     <Compile Include="Extension\IEnvelopeEx.cs" />
     <Compile Include="FrameworkReplacements\Trace.cs" />
