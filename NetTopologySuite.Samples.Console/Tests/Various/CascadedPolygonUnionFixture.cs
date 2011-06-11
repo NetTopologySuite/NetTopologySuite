@@ -17,7 +17,7 @@ namespace  NetTopologySuite.Samples.Tests.Various
         public CascadedPolygonUnionFixture()
         {
             // Set current dir to shapefiles dir
-			Environment.CurrentDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../NetTopologySuite.Samples.Shapefiles");
+			Environment.CurrentDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, string.Format("..{0}..{0}..{0}NetTopologySuite.Samples.Shapefiles", Path.DirectorySeparatorChar));
         }
         [Test]
         public void PErformCascadedPolygonUnion()

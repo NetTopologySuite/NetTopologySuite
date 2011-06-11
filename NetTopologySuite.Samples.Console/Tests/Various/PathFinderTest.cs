@@ -24,7 +24,7 @@ namespace NetTopologySuite.Tests.Various
         {
             Environment.CurrentDirectory = Path.Combine(
                AppDomain.CurrentDomain.BaseDirectory,
-               @"../../../NetTopologySuite.Samples.Shapefiles");
+               string.Format("..{0}..{0}..{0}NetTopologySuite.Samples.Shapefiles", Path.DirectorySeparatorChar));
 
             factory = GeometryFactory.Fixed;       
         }

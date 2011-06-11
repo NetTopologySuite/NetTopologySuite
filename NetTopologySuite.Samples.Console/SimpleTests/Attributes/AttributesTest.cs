@@ -16,7 +16,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Attributes
         public override void Start()
         {
             // Set current dir to shapefiles dir
-			Environment.CurrentDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../NetTopologySuite.Samples.Shapefiles");
+			Environment.CurrentDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, string.Format("..{0}..{0}..{0}NetTopologySuite.Samples.Shapefiles", Path.DirectorySeparatorChar));
 
             // ReadFromShapeFile();
             // TestSharcDbf();
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Attributes
             var features = new Feature[1];
             features[0] = feature;
 
-            var shp_writer = new ShapefileDataWriter("C:\\line_string")
+            var shp_writer = new ShapefileDataWriter("line_string")
             {
                 Header = ShapefileDataWriter.GetHeader(features[0], features.Length)
             };
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Attributes
 
         private void TestSharcDbf()
         {
-			const string filename = @"\Strade.dbf";
+			const string filename = @"Strade.dbf";
             if (!File.Exists(filename))
                 throw new FileNotFoundException(filename + " not found at " + Environment.CurrentDirectory);
 
@@ -115,8 +115,12 @@ namespace NetTopologySuite.Samples.SimpleTests.Attributes
                     Console.WriteLine(name + ": " + table[name]);
             }
             
+            //Directory
+            var dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
+                                   string.Format(@"..{0}..{0}..{0}NetTopologySuite.Samples.Shapefiles{0}", 
+                                                 Path.DirectorySeparatorChar));
             // Test write with stub header            
-			var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../NetTopologySuite.Samples.Shapefiles/testWriteStubHeader");
+            var file = dir + "testWriteStubHeader";
 			if (File.Exists(file + ".shp")) File.Delete(file + ".shp");
             if (File.Exists(file + ".shx")) File.Delete(file + ".shx");
             if (File.Exists(file + ".dbf")) File.Delete(file + ".dbf");
@@ -126,7 +130,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Attributes
             dataWriter.Write(featureCollection);
 
             // Test write with header from a existing shapefile
-			file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../NetTopologySuite.Samples.Shapefiles/testWriteShapefileHeader");
+			file = dir + "testWriteShapefileHeader";
 			if (File.Exists(file + ".shp")) File.Delete(file + ".shp");
             if (File.Exists(file + ".shx")) File.Delete(file + ".shx");
             if (File.Exists(file + ".dbf")) File.Delete(file + ".dbf");
@@ -134,8 +138,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Attributes
             dataWriter = new ShapefileDataWriter(file)
             {
                 Header =
-                    ShapefileDataWriter.GetHeader(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                        @"../../../NetTopologySuite.Samples.Shapefiles/country.dbf"))
+                    ShapefileDataWriter.GetHeader(dir + "country.dbf")
             };
             dataWriter.Write(featureCollection);
         }
