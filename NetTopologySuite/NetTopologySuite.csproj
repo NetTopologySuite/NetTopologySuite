@@ -17,6 +17,21 @@
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_Net20|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,6 +44,7 @@
     <RunFxCop>false</RunFxCop>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <DocumentationFile>bin\Debug_Net20\NetTopologySuite.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release_Net20|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -38,6 +54,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release_Net20\NetTopologySuite.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_Net35|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,6 +66,7 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
     <DocumentationFile>bin\Debug_Net35\NetTopologySuite.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release_Net35|AnyCPU' ">
     <OutputPath>bin\Release_Net35\</OutputPath>
@@ -60,6 +78,7 @@
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Choose>
     <When Condition="'$(Configuration)' == 'Release_Net35' Or '$(Configuration)' == 'Debug_Net35'">
@@ -118,6 +137,42 @@
     <Compile Include="Algorithm\SimplePointInAreaLocator.cs" />
     <Compile Include="Algorithm\SimplePointInRing.cs" />
     <Compile Include="Algorithm\SIRtreePointInRing.cs" />
+    <Compile Include="CoordinateSystems\AngularUnit.cs" />
+    <Compile Include="CoordinateSystems\AxisInfo.cs" />
+    <Compile Include="CoordinateSystems\ComputationException.cs" />
+    <Compile Include="CoordinateSystems\CoordinateSystem.cs" />
+    <Compile Include="CoordinateSystems\CoordinateSystemFactory.cs" />
+    <Compile Include="CoordinateSystems\Datum.cs" />
+    <Compile Include="CoordinateSystems\Ellipsoid.cs" />
+    <Compile Include="CoordinateSystems\GeocentricCoordinateSystem.cs" />
+    <Compile Include="CoordinateSystems\GeographicCoordinateSystem.cs" />
+    <Compile Include="CoordinateSystems\HorizontalCoordinateSystem.cs" />
+    <Compile Include="CoordinateSystems\HorizontalDatum.cs" />
+    <Compile Include="CoordinateSystems\Info.cs" />
+    <Compile Include="CoordinateSystems\LinearUnit.cs" />
+    <Compile Include="CoordinateSystems\PrimeMeridian.cs" />
+    <Compile Include="CoordinateSystems\ProjectedCoordinateSystem.cs" />
+    <Compile Include="CoordinateSystems\Projection.cs" />
+    <Compile Include="CoordinateSystems\Projections\AlbersProjection.cs" />
+    <Compile Include="CoordinateSystems\Projections\CassiniSoldnerProjection.cs" />
+    <Compile Include="CoordinateSystems\Projections\DistanceAlongMeridian.cs" />
+    <Compile Include="CoordinateSystems\Projections\HotineObliqueMercator.cs" />
+    <Compile Include="CoordinateSystems\Projections\KrovakProjection.cs" />
+    <Compile Include="CoordinateSystems\Projections\LambertConformalConic.cs" />
+    <Compile Include="CoordinateSystems\Projections\MapProjection.cs" />
+    <Compile Include="CoordinateSystems\Projections\Mercator.cs" />
+    <Compile Include="CoordinateSystems\Projections\TransverseMercator.cs" />
+    <Compile Include="CoordinateSystems\Transformations\ConcatenatedTransform.cs" />
+    <Compile Include="CoordinateSystems\Transformations\CoordinateTransformation.cs" />
+    <Compile Include="CoordinateSystems\Transformations\CoordinateTransformationFactory.cs" />
+    <Compile Include="CoordinateSystems\Transformations\DatumTransform.cs" />
+    <Compile Include="CoordinateSystems\Transformations\GeocentricTransform.cs" />
+    <Compile Include="CoordinateSystems\Transformations\GeographicTransform.cs" />
+    <Compile Include="CoordinateSystems\Transformations\GeoMathTransform.cs" />
+    <Compile Include="CoordinateSystems\Transformations\MathTransform.cs" />
+    <Compile Include="CoordinateSystems\Transformations\MathTransformT.cs" />
+    <Compile Include="CoordinateSystems\Transformations\TransformException.cs" />
+    <Compile Include="CoordinateSystems\Unit.cs" />
     <Compile Include="Densify\Densifier.cs" />
     <Compile Include="Geometries\Utilities\ComponentCoordinateExtractor.cs" />
     <Compile Include="Geometries\Utilities\CoordinateSequenceFilter.cs" />
@@ -415,6 +470,23 @@
       <Project>{B139E1D5-091B-40D2-B7A2-7D7D82E13019}</Project>
       <Name>NPack</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeBuild">
