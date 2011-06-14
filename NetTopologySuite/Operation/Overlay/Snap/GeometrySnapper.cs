@@ -23,7 +23,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         {
             double snapTolerance = ComputeSizeBasedSnapTolerance(g);
 
-            /**
+            /*
              * Overlay is carried out in most precise precision model 
              * of inputs.  
              * If this precision model is fixed, then the snap tolerance
@@ -80,7 +80,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             snapGeom[0] = snapper0.SnapTo(g1, snapTolerance);
 
             GeometrySnapper snapper1 = new GeometrySnapper(g1);
-            /**
+            /*
              * Snap the second geometry to the snapped first geometry
              * (this strategy minimizes the number of possible different points in the result)
              */
@@ -91,9 +91,9 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         private IGeometry srcGeom;
 
         /// <summary>
-        /// 
+        /// Creates a new snapper acting on the given geometry
         /// </summary>
-        /// <param name="g"></param>
+        /// <param name="g">the geometry to snap</param>
         public GeometrySnapper(IGeometry g)
         {
             srcGeom = g;
@@ -132,11 +132,11 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <summary>
         ///  Snaps the vertices in the component <see cref="ILineString" />s
         ///  of the source geometry
-        ///  to the vertices of the given geometry.
+        ///  to the vertices of the given snap geometry.
         /// </summary>
-        /// <param name="g"></param>
+        /// <param name="g">a geometry to snap the source to</param>
         /// <param name="tolerance"></param>
-        /// <returns></returns>
+        /// <returns>a new snapped Geometry</returns>
         public IGeometry SnapTo(IGeometry g, double tolerance)
         {
             ICoordinate[] snapPts = ExtractTargetCoordinates(g);

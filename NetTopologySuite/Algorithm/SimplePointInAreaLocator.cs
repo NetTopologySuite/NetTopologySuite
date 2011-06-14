@@ -5,7 +5,7 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Algorithm
 {
     /// <summary>
-    /// Computes the locations of points
+    /// Computes the location of points
     /// relative to an an areal <see cref="IGeometry"/>,
     /// using a simple O(n) algorithm.
     /// This algorithm is suitable for use in cases where
@@ -21,8 +21,8 @@ namespace NetTopologySuite.Algorithm
         /// Determines the <see cref="Locations"/> of a point in an areal <see cref="IGeometry"/>.
         /// Currently this will never return a value of <see cref ="Locations.Boundary"/>.  
         /// </summary>
-        /// <param name="geom">the areal geometry to test</param>
         /// <param name="p">The point to test</param>
+        /// <param name="geom">the areal geometry to test</param>
         /// <returns>The Location of the point in the geometry</returns>
         public static Locations Locate(ICoordinate p, IGeometry geom)
         {

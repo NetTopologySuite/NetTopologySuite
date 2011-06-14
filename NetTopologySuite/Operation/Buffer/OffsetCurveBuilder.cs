@@ -54,13 +54,12 @@ namespace NetTopologySuite.Operation.Buffer
             _filletAngleQuantum = Math.PI / 2.0 / bufParams.QuadrantSegments;
         }
 
-        /**
-         * This method handles single points as well as lines.
-         * Lines are assumed to <b>not</b> be closed (the function will not
-         * fail for closed lines, but will generate superfluous line caps).
-         *
-         * @return a List of Coordinate[]
-         */
+        /// <summary>
+        /// This method handles single points as well as lines.
+        /// Lines are assumed to <b>not</b> be closed (the function will not
+        /// fail for closed lines, but will generate superfluous line caps).
+        /// </summary>
+        /// <returns>a List of Coordinate[]</returns>
         public IList<ICoordinate[]> GetLineCurve(ICoordinate[] inputPts, double distance)
         {
             var lineList = new List<ICoordinate[]>();
@@ -129,7 +128,7 @@ namespace NetTopologySuite.Operation.Buffer
             _maxCurveSegmentError = distance * (1 - Math.Cos(_filletAngleQuantum / 2.0));
             _vertexList = new OffsetCurveVertexList();
             _vertexList.PrecisionModel = _precisionModel;
-            /**
+            /*
              * Choose the min vertex separation as a small fraction of the offset distance.
              */
             _vertexList.MinimumVertexDistance = distance * MinCurveVertexFactor;
@@ -229,14 +228,14 @@ namespace NetTopologySuite.Operation.Buffer
         {
             _li.ComputeIntersection(_s0, _s1, _s1, _s2);
             int numInt = _li.IntersectionNum;
-            /**
+            /*
              * if numInt is < 2, the lines are parallel and in the same direction. In
              * this case the point can be ignored, since the offset lines will also be
              * parallel.
              */
             if (numInt >= 2)
             {
-                /**
+                /*
                  * segments are collinear but reversing. 
                  * Add an "end-cap" fillet
                  * all the way around to other direction This case should ONLY happen
@@ -280,7 +279,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         private void AddInsideTurn(int orientation, bool addStartPoint)
         {
-            /**
+            /*
              * add intersection point of offset segments (if any)
              */
             _li.ComputeIntersection(_offset0.P0, _offset0.P1,
@@ -291,7 +290,7 @@ namespace NetTopologySuite.Operation.Buffer
             }
             else
             {
-                /**
+                /*
                  * If no intersection, it means the angle is so small and/or the offset so large
                  * that the offsets segments don't intersect.
                  * In this case we must add a offset joining curve to make sure the buffer line

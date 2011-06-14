@@ -10,12 +10,16 @@ using ArrayList = System.Collections.Generic.List<object>;
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary> 
-    /// Supports creating a new <c>Geometry</c> which is a modification of an existing one.
+    /// A class which supports creating a new <c>Geometry</c> which are modifications of existing ones.
     /// Geometry objects are intended to be treated as immutable.
-    /// This class allows you to "modify" a Geometry
-    /// by traversing it and creating a new Geometry with the same overall structure but
-    /// possibly modified components.
-    /// The following kinds of modifications can be made:
+    /// This class allows you to "modifies" a Geometrys
+    /// by traversing them, applying a user-defined
+    /// <see cref="IGeometryEditorOperation"/> or <see cref="CoordinateOperation"/>
+    /// and creating a new Geometrys with the same structure but
+    /// (possibly) modified components.
+    /// <para>
+    /// Examples of the kinds of modifications which can be made are:
+    /// </para>
     /// <para>
     /// The values of the coordinates may be changed.
     /// Changing coordinate values may make the result Geometry invalid;
@@ -31,10 +35,10 @@ namespace NetTopologySuite.Geometries.Utilities
     /// (e.g. holes may be removed from a Polygon, or LineStrings removed from a MultiLineString).
     /// Deletions will be propagated up the component tree appropriately.
     /// </para>
-    /// Note that all changes must be consistent with the original Geometry's structure
-    /// (e.g. a Polygon cannot be collapsed into a LineString).
+    /// All changes must be consistent with the original Geometry's structure
+    /// (e.g. a <code>Polygon</code> cannot be collapsed into a <code>LineString</code>).
     /// The resulting Geometry is not checked for validity.
-    /// If validity needs to be enforced, the new Geometry's IsValid should be checked.
+    /// If validity needs to be enforced, the new Geometry's <see cref="IGeometry.IsValid"/> method should be called.
     /// </summary>    
     public class GeometryEditor
     {
@@ -61,7 +65,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
         /// <summary> 
         /// Edit the input <c>Geometry</c> with the given edit operation.
-        /// Clients will create subclasses of GeometryEditorOperation or
+        /// Clients can create subclasses of GeometryEditorOperation or
         /// CoordinateOperation to perform required modifications.
         /// </summary>
         /// <param name="geometry">The Geometry to edit.</param>

@@ -41,7 +41,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if the test geometry intersects</returns>
         public bool Intersects(IGeometry geom)
         {
-            /**
+            /*
              * Do point-in-poly tests first, since they are cheaper and may result
              * in a quick positive result.
              * 
@@ -50,7 +50,7 @@ namespace NetTopologySuite.Geometries.Prepared
             bool isInPrepGeomArea = IsAnyTestComponentInTarget(geom);
             if (isInPrepGeomArea) return true;
 
-            /**
+            /*
              * If any segments intersect, result is true
              */
             IList<ISegmentString> lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
@@ -58,7 +58,7 @@ namespace NetTopologySuite.Geometries.Prepared
             if (segsIntersect)
                 return true;
 
-            /**
+            /*
              * If the test has dimension = 2 as well, it is necessary to
              * test for proper inclusion of the target.
              * Since no segments intersect, it is sufficient to test representative points.

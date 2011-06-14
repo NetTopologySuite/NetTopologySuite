@@ -159,11 +159,11 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
 
-        /**
-         * Inserted edges are checked to see if an identical edge already exists.
-         * If so, the edge is not inserted, but its label is merged
-         * with the existing edge.
-         */
+        /// <summary>
+        /// Inserted edges are checked to see if an identical edge already exists.
+        /// If so, the edge is not inserted, but its label is merged
+        /// with the existing edge.
+        /// </summary>
         protected void InsertEdge(Edge e)
         {
             //<FIX> MD 8 Oct 03  speed up identical edge lookup
@@ -212,7 +212,7 @@ namespace NetTopologySuite.Operation.Buffer
                     subgraphList.Add(subgraph);
                 }
             }
-            /**
+            /*
              * Sort the subgraphs in descending order of their rightmost coordinate.
              * This ensures that when the Polygons for the subgraphs are built,
              * subgraphs for shells will have been built before the subgraphs for
@@ -223,14 +223,15 @@ namespace NetTopologySuite.Operation.Buffer
             return subgraphList;
         }
 
-        /**
-         * Completes the building of the input subgraphs by depth-labelling them,
-         * and adds them to the PolygonBuilder.
-         * The subgraph list must be sorted in rightmost-coordinate order.
-         *
-         * @param subgraphList the subgraphs to build
-         * @param polyBuilder the PolygonBuilder which will build the final polygons
-         */
+        /// <summary>
+        /// Completes the building of the input subgraphs by depth-labelling them,
+        /// and adds them to the PolygonBuilder.
+        /// </summary>
+        /// <remarks>
+        /// The subgraph list must be sorted in rightmost-coordinate order.
+        /// </remarks>
+        /// <param name="subgraphList"> the subgraphs to build</param>
+        /// <param name="polyBuilder"> the PolygonBuilder which will build the final polygons</param>
         private static void BuildSubgraphs(IEnumerable<BufferSubgraph> subgraphList, PolygonBuilder polyBuilder)
         {
             var processedGraphs = new List<BufferSubgraph>();

@@ -6,8 +6,10 @@ using NetTopologySuite.Operation.Overlay.Snap;
 namespace NetTopologySuite.Operation.Overlay.Validate
 {
     ///<summary>
-    /// Validates that the result of an overlay operation is geometrically correct within a given tolerance.
-    /// Uses fuzzy point location to find points which are.
+    /// Validates that the result of an overlay operation is geometrically correct within a determined tolerance.
+    /// Uses fuzzy point location to find points which are
+    /// definitely in either the interior or exterior of the result
+    /// geometry, and compares these results with the expected ones.
     ///</summary>
     /// <remarks>
     /// This algorithm is only useful where the inputs are polygonal.
@@ -45,7 +47,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
 
         public OverlayResultValidator(IGeometry a, IGeometry b, IGeometry result)
         {
-            /**
+            /*
              * The tolerance to use needs to depend on the size of the geometries.
              * It should not be more precise than double-precision can support. 
              */
@@ -109,7 +111,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             _location[1] = _locFinder[1].GetLocation(pt);
             _location[2] = _locFinder[2].GetLocation(pt);
 
-            /**
+            /*
              * If any location is on the Boundary, can't deduce anything, so just return true
              */
             if (HasLocation(_location, Locations.Boundary))

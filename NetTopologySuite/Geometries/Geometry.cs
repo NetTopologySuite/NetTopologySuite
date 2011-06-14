@@ -580,7 +580,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Tests whether this geometry is disjoint to the specified geometry.
+        /// Tests whether this geometry is disjoint from the specified geometry.
         /// </summary>
         /// <remarks>
         /// The <c>Disjoint</c> predicate has the following equivalent definitions:
@@ -647,7 +647,7 @@ namespace NetTopologySuite.Geometries
             // short-circuit test
             if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
                 return false;
-          /**
+           /*
             * TODO: (MD) Add optimizations:
             *
             * - for P-A case:
@@ -1125,78 +1125,156 @@ namespace NetTopologySuite.Geometries
         /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.</para>
         /// </remarks>
         /// <param name="distance">
-        /// The width of the buffer, interpreted according to the
+        /// The width of the buffer (may be positive, negative or 0), interpreted according to the
         /// <c>PrecisionModel</c> of the <c>Geometry</c>.
         /// </param>
         /// <returns>
         /// a polygonal geometry representing the buffer region (which may be empty)
         /// </returns>
         /// <exception cref="TopologyException">If a robustness error occurs</exception>
-        ///// <seealso cref="Buffer(double, BufferStyle)"/>
-        /// <seealso cref="Buffer(double, int)"/>
+        /// <seealso cref="Buffer(double, BufferStyle)"/>
         /// <seealso cref="Buffer(double, EndCapStyle)"/>
         /// <seealso cref="Buffer(double, IBufferParameters)"/>
+        /// <seealso cref="Buffer(double, int)"/>
+        /// <seealso cref="Buffer(double, int, BufferStyle)"/>
+        /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
         public IGeometry Buffer(double distance)
         {
             return BufferOp.Buffer(this, distance);
         }
 
         /// <summary>
-        /// Returns a buffer region around this <c>Geometry</c> having the given width.
-        /// The buffer of a Geometry is the Minkowski sum or difference of the Geometry with a disc of radius <c>distance</c>.
+        /// Computes a buffer region around this <c>Geometry</c> having the given width.
+        /// The buffer of a Geometry is the Minkowski sum or difference of the geometry
+        /// with a disc of radius <c>Abs(distance)</c>.
         /// </summary>
+        /// <remarks>
+        /// <para>The end cap style specifies the buffer geometry that will be
+        /// created at the ends of linestrings.  The styles provided are:
+        /// <ul>
+        /// <li><see cref="BufferStyle.CapRound" /> - (default) a semi-circle</li>
+        /// <li><see cref="BufferStyle.CapButt" /> - a straight line perpendicular to the end segment</li>
+        /// <li><see cref="BufferStyle.CapSquare" /> - a half-square</li>
+        /// </ul></para>
+        /// <para>The buffer operation always returns a polygonal result. The negative or
+        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.</para>
+        /// </remarks>
         /// <param name="distance">
         /// The width of the buffer, interpreted according to the
         /// <c>PrecisionModel</c> of the <c>Geometry</c>.
         /// </param>
         /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
         /// <returns>
-        /// All points whose distance from this <c>Geometry</c>
-        /// are less than or equal to <c>distance</c>.
+        /// a polygonal geometry representing the buffer region (which may be empty)
         /// </returns>
         /// <exception cref="TopologyException">If a robustness error occurs</exception>
+        /// <seealso cref="Buffer(double)"/>
+        /// <seealso cref="Buffer(double, EndCapStyle)"/>
+        /// <seealso cref="Buffer(double, IBufferParameters)"/>
+        /// <seealso cref="Buffer(double, int)"/>
+        /// <seealso cref="Buffer(double, int, BufferStyle)"/>
+        /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
         [Obsolete]
         public IGeometry Buffer(double distance, BufferStyle endCapStyle)
         {
             return BufferOp.Buffer(this, distance, BufferParameters.DefaultQuadrantSegments, endCapStyle);
         }
-        
+
+        /// <summary>
+        /// Computes a buffer region around this <c>Geometry</c> having the given width.
+        /// The buffer of a Geometry is the Minkowski sum or difference of the geometry
+        /// with a disc of radius <c>Abs(distance)</c>.
+        /// </summary>
+        /// <remarks>
+        /// <para>The end cap style specifies the buffer geometry that will be
+        /// created at the ends of linestrings.  The styles provided are:
+        /// <ul>
+        /// <li><see cref="EndCapStyle.Round" /> - (default) a semi-circle</li>
+        /// <li><see cref="EndCapStyle.Flat" /> - a straight line perpendicular to the end segment</li>
+        /// <li><see cref="EndCapStyle.Square" /> - a half-square</li>
+        /// </ul></para>
+        /// <para>The buffer operation always returns a polygonal result. The negative or
+        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.</para>
+        /// </remarks>
+        /// <param name="distance">
+        /// The width of the buffer, interpreted according to the
+        /// <c>PrecisionModel</c> of the <c>Geometry</c>.
+        /// </param>
+        /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
+        /// <returns>
+        /// a polygonal geometry representing the buffer region (which may be empty)
+        /// </returns>
+        /// <exception cref="TopologyException">If a robustness error occurs</exception>
+        /// <seealso cref="Buffer(double)"/>
+        /// <seealso cref="Buffer(double, BufferStyle)"/>
+        /// <seealso cref="Buffer(double, IBufferParameters)"/>
+        /// <seealso cref="Buffer(double, int)"/>
+        /// <seealso cref="Buffer(double, int, BufferStyle)"/>
+        /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
         public IGeometry Buffer(double distance, EndCapStyle endCapStyle)
         {
             return BufferOp.Buffer(this, distance, BufferParameters.DefaultQuadrantSegments, (BufferStyle)endCapStyle);
         }
 
         /// <summary>
-        /// Returns a buffer region around this <c>Geometry</c> having the given
-        /// width and with a specified number of segments used to approximate curves.
+        /// Computes a buffer region around this <c>Geometry</c> having the given
+        /// width and with a specified accuracy of approximation for circular arcs.
         /// The buffer of a Geometry is the Minkowski sum of the Geometry with
         /// a disc of radius <c>distance</c>.  Curves in the buffer polygon are
         /// approximated with line segments.  This method allows specifying the
         /// accuracy of that approximation.
         /// </summary>
+        /// <remarks><para>Mathematically-exact buffer area boundaries can contain circular arcs. 
+        /// To represent these arcs using linear geometry they must be approximated with line segments.
+        /// The <c>quadrantSegments</c> argument allows controlling the accuracy of
+	    /// the approximation by specifying the number of line segments used to
+	    /// represent a quadrant of a circle</para>
+        /// <para>The buffer operation always returns a polygonal result. The negative or
+        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.</para>
+        /// </remarks>
         /// <param name="distance">
-        /// The width of the buffer, interpreted according to the
+        /// The width of the buffer (may be positive, negative or 0), interpreted according to the
         /// <c>PrecisionModel</c> of the <c>Geometry</c>.
         /// </param>
         /// <param name="quadrantSegments">The number of segments to use to approximate a quadrant of a circle.</param>
         /// <returns>
-        /// All points whose distance from this <c>Geometry</c>
-        /// are less than or equal to <c>distance</c>.
+        /// a polygonal geometry representing the buffer region (which may be empty)
         /// </returns>
         /// <exception cref="TopologyException">If a robustness error occurs</exception>
+        /// <seealso cref="Buffer(double)"/>
+        /// <seealso cref="Buffer(double, BufferStyle)"/>
+        /// <seealso cref="Buffer(double, EndCapStyle)"/>
+        /// <seealso cref="Buffer(double, IBufferParameters)"/>
+        /// <seealso cref="Buffer(double, int, BufferStyle)"/>
+        /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
         public IGeometry Buffer(double distance, int quadrantSegments) 
         {
             return BufferOp.Buffer(this, distance, quadrantSegments);
         }
 
         /// <summary>
-        /// Returns a buffer region around this <c>Geometry</c> having the given
+        /// Computes a buffer region around this <c>Geometry</c> having the given
         /// width and with a specified number of segments used to approximate curves.
         /// The buffer of a Geometry is the Minkowski sum of the Geometry with
         /// a disc of radius <c>distance</c>.  Curves in the buffer polygon are
         /// approximated with line segments.  This method allows specifying the
         /// accuracy of that approximation.
         /// </summary>
+        /// <remarks><para>Mathematically-exact buffer area boundaries can contain circular arcs. 
+        /// To represent these arcs using linear geometry they must be approximated with line segments.
+        /// The <c>quadrantSegments</c> argument allows controlling the accuracy of
+        /// the approximation by specifying the number of line segments used to
+        /// represent a quadrant of a circle</para>
+        /// <para>The end cap style specifies the buffer geometry that will be
+        /// created at the ends of linestrings.  The styles provided are:
+        /// <ul>
+        /// <li><see cref="BufferStyle.CapRound" /> - (default) a semi-circle</li>
+        /// <li><see cref="BufferStyle.CapButt" /> - a straight line perpendicular to the end segment</li>
+        /// <li><see cref="BufferStyle.CapSquare" /> - a half-square</li>
+        /// </ul></para>
+        /// <para>The buffer operation always returns a polygonal result. The negative or
+        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.</para>
+        /// </remarks>
         /// <param name="distance">
         /// The width of the buffer, interpreted according to the
         /// <c>PrecisionModel</c> of the <c>Geometry</c>.
@@ -1204,20 +1282,104 @@ namespace NetTopologySuite.Geometries
         /// <param name="quadrantSegments">The number of segments to use to approximate a quadrant of a circle.</param>
         /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
         /// <returns>
-        /// All points whose distance from this <c>Geometry</c>
-        /// are less than or equal to <c>distance</c>.
+        /// a polygonal geometry representing the buffer region (which may be empty)
         /// </returns>
         /// <exception cref="TopologyException">If a robustness error occurs</exception>
+        /// <seealso cref="Buffer(double)"/>
+        /// <seealso cref="Buffer(double, BufferStyle)"/>
+        /// <seealso cref="Buffer(double, EndCapStyle)"/>
+        /// <seealso cref="Buffer(double, IBufferParameters)"/>
+        /// <seealso cref="Buffer(double, int)"/>
+        /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
+        [Obsolete]
         public IGeometry Buffer(double distance, int quadrantSegments, BufferStyle endCapStyle)
         {
             return BufferOp.Buffer(this, distance, quadrantSegments, endCapStyle);
         }
 
+        /// <summary>
+        /// Computes a buffer region around this <c>Geometry</c> having the given
+        /// width and with a specified number of segments used to approximate curves.
+        /// The buffer of a Geometry is the Minkowski sum of the Geometry with
+        /// a disc of radius <c>distance</c>.  Curves in the buffer polygon are
+        /// approximated with line segments.  This method allows specifying the
+        /// accuracy of that approximation.
+        /// </summary>
+        /// <remarks><para>Mathematically-exact buffer area boundaries can contain circular arcs. 
+        /// To represent these arcs using linear geometry they must be approximated with line segments.
+        /// The <c>quadrantSegments</c> argument allows controlling the accuracy of
+        /// the approximation by specifying the number of line segments used to
+        /// represent a quadrant of a circle</para>
+        /// <para>The end cap style specifies the buffer geometry that will be
+        /// created at the ends of linestrings.  The styles provided are:
+        /// <ul>
+        /// <li><see cref="EndCapStyle.Round" /> - (default) a semi-circle</li>
+        /// <li><see cref="EndCapStyle.Flat" /> - a straight line perpendicular to the end segment</li>
+        /// <li><see cref="EndCapStyle.Square" /> - a half-square</li>
+        /// </ul></para>
+        /// <para>The buffer operation always returns a polygonal result. The negative or
+        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.</para>
+        /// </remarks>
+        /// <param name="distance">
+        /// The width of the buffer, interpreted according to the
+        /// <c>PrecisionModel</c> of the <c>Geometry</c>.
+        /// </param>
+        /// <param name="quadrantSegments">The number of segments to use to approximate a quadrant of a circle.</param>
+        /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
+        /// <returns>
+        /// a polygonal geometry representing the buffer region (which may be empty)
+        /// </returns>
+        /// <exception cref="TopologyException">If a robustness error occurs</exception>
+        /// <seealso cref="Buffer(double)"/>
+        /// <seealso cref="Buffer(double, BufferStyle)"/>
+        /// <seealso cref="Buffer(double, EndCapStyle)"/>
+        /// <seealso cref="Buffer(double, IBufferParameters)"/>
+        /// <seealso cref="Buffer(double, int)"/>
+        /// <seealso cref="Buffer(double, int, BufferStyle)"/>
         public IGeometry Buffer(double distance, int quadrantSegments, EndCapStyle endCapStyle)
         {
             return BufferOp.Buffer(this, distance, quadrantSegments, (BufferStyle)endCapStyle);
         }
 
+        /// <summary>
+        /// Computes a buffer region around this <c>Geometry</c> having the given
+        /// width and with a specified number of segments used to approximate curves.
+        /// The buffer of a Geometry is the Minkowski sum of the Geometry with
+        /// a disc of radius <c>distance</c>.  Curves in the buffer polygon are
+        /// approximated with line segments.  This method allows specifying the
+        /// accuracy of that approximation.
+        /// </summary>
+        /// <remarks><para>Mathematically-exact buffer area boundaries can contain circular arcs. 
+        /// To represent these arcs using linear geometry they must be approximated with line segments.
+        /// The <c>bufferParameters</c> argument has a property <c>QuadrantSegments</c> controlling the accuracy of
+        /// the approximation by specifying the number of line segments used to
+        /// represent a quadrant of a circle</para>
+        /// <para>The <c>EndCapStyle</c> property of the <c>bufferParameters</c> argument specifies the buffer geometry that will be
+        /// created at the ends of linestrings.  The styles provided are:
+        /// <ul>
+        /// <li><see cref="EndCapStyle.Round" /> - (default) a semi-circle</li>
+        /// <li><see cref="EndCapStyle.Flat" /> - a straight line perpendicular to the end segment</li>
+        /// <li><see cref="EndCapStyle.Square" /> - a half-square</li>
+        /// </ul></para>
+        /// <para>The buffer operation always returns a polygonal result. The negative or
+        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.</para>
+        /// </remarks>
+        /// <param name="distance">
+        /// The width of the buffer, interpreted according to the
+        /// <c>PrecisionModel</c> of the <c>Geometry</c>.
+        /// </param>
+        /// <param name="bufferParameters">This argument type has a number of properties that control the construction of the
+        /// buffer, including <c>QuadrantSegments</c>, <c>EndCapStyle</c>, <c>JoinStyle</c>, and <c>MitreLimit</c></param>
+        /// <returns>
+        /// a polygonal geometry representing the buffer region (which may be empty)
+        /// </returns>
+        /// <exception cref="TopologyException">If a robustness error occurs</exception>
+        /// <seealso cref="Buffer(double)"/>
+        /// <seealso cref="Buffer(double, BufferStyle)"/>
+        /// <seealso cref="Buffer(double, EndCapStyle)"/>
+        /// <seealso cref="Buffer(double, int)"/>
+        /// <seealso cref="Buffer(double, int, BufferStyle)"/>
+        /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
         public IGeometry Buffer(double distance, IBufferParameters bufferParameters)
         {
             return BufferOp.Buffer(this, distance, bufferParameters);
@@ -1316,8 +1478,8 @@ namespace NetTopologySuite.Geometries
         }
 
         ///<summary> 
-        /// Computes the union of all the elements of this geometry. Heterogeneous <see cref="IGeometryCollection"/>s are fully supported.
-        /// 
+        /// Computes the union of all the elements of this geometry. Heterogeneous
+        /// <see cref="IGeometryCollection"/>s are fully supported.
         ///</summary>
         /// <remarks>
         /// The result obeys the following contract:
@@ -1493,7 +1655,7 @@ namespace NetTopologySuite.Geometries
         /// elements are compared. If those are the same, the second elements are
         /// compared, etc.
         /// </remarks>
-        /// <param name="o">A <c>Geometry</c> with which to compare this <c>Geometry</c></param>
+        /// <param name="geom">A <c>Geometry</c> with which to compare this <c>Geometry</c></param>
         /// <returns>
         /// A positive number, 0, or a negative number, depending on whether
         /// this object is greater than, equal to, or less than <c>o</c>, as

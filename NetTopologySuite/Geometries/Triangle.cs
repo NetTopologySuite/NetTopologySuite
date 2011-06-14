@@ -43,7 +43,7 @@ namespace NetTopologySuite.Geometries
         }
 
         ///<summary>
-        /// Tests whether the triangle is acute.
+        /// Tests whether a triangle is acute.
         /// </summary>
         /// <remarks>
         /// <para>A triangle is acute iff all interior angles are acute.</para>
@@ -181,7 +181,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The angle bisector cut point</returns>
         public static ICoordinate AngleBisector(ICoordinate a, ICoordinate b, ICoordinate c)
         {
-            /**
+            /*
              * Uses the fact that the lengths of the parts of the split segment
              * are proportional to the lengths of the adjacent triangle sides
              */
@@ -239,7 +239,7 @@ namespace NetTopologySuite.Geometries
 
         public static double SignedArea(ICoordinate a, ICoordinate b, ICoordinate c)
         {
-            /**
+            /*
              * Uses the formula 1/2 * | u x v |
              * where
              * 	u,v are the side vectors of the triangle
@@ -259,7 +259,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The 3D area of the triangle</returns>
         public static double Area3D(ICoordinate a, ICoordinate b, ICoordinate c)
         {
-            /**
+            /*
              * Uses the formula 1/2 * | u x v |
              * where
              * 	u,v are the side vectors of the triangle

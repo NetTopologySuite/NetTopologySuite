@@ -14,7 +14,7 @@ namespace NetTopologySuite.GeometriesGraph
         ///<summary>
         /// Checks whether the supplied <see cref="Edge"/>s are correctly noded. 
         ///</summary>
-        /// <param name="edges">an enmeration of Edges.</param>
+        /// <param name="edges">an enumeration of Edges.</param>
         /// <exception cref="TopologyException">If the SegmentStrings are not correctly noded</exception>
         public static void CheckValid(IEnumerable<Edge> edges)
         {

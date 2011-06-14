@@ -140,6 +140,16 @@ namespace NetTopologySuite.Operation.Overlay
 
             if (!NodingValidatorDisabled)
             {
+                /*
+                 * Check that the noding completed correctly.
+                 * 
+                 * This test is slow, but necessary in order to catch robustness failure 
+                 * situations.
+                 * If an exception is thrown because of a noding failure, 
+                 * then snapping will be performed, which will hopefully avoid the problem.
+                 * In the future hopefully a faster check can be developed.  
+                 * 
+                 */
                 var nv = new EdgeNodingValidator(_edgeList.Edges);
                 nv.CheckValid();
             }

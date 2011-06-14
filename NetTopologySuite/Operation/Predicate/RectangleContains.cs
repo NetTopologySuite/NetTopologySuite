@@ -87,10 +87,10 @@ namespace NetTopologySuite.Operation.Predicate
         }
 
         /// <summary>
-        /// 
+        /// Tests if a point is contained in the boundary of the target rectangle.
         /// </summary>
-        /// <param name="pt"></param>
-        /// <returns></returns>
+        /// <param name="pt">the point to test</param>
+        /// <returns>true if the point is contained in the boundary</returns>
         private bool IsPointContainedInBoundary(ICoordinate pt)
         {
             // we already know that the point is contained in the rectangle envelope
@@ -102,10 +102,10 @@ namespace NetTopologySuite.Operation.Predicate
         }
 
         /// <summary>
-        /// 
+        /// Tests if a linestring is completely contained in the boundary of the target rectangle.
         /// </summary>
-        /// <param name="line"></param>
-        /// <returns></returns>
+        /// <param name="line">the linestring to test</param>
+        /// <returns>true if the linestring is contained in the boundary</returns>
         private bool IsLineStringContainedInBoundary(ILineString line)
         {
             ICoordinateSequence seq = line.CoordinateSequence;
@@ -122,11 +122,11 @@ namespace NetTopologySuite.Operation.Predicate
         }
 
         /// <summary>
-        /// 
+        /// Tests if a line segment is contained in the boundary of the target rectangle.
         /// </summary>
-        /// <param name="p0"></param>
-        /// <param name="p1"></param>
-        /// <returns></returns>
+        /// <param name="p0">an endpoint of the segment</param>
+        /// <param name="p1">an endpoint of the segment</param>
+        /// <returns>true if the line segment is contained in the boundary</returns>
         private bool IsLineSegmentContainedInBoundary(ICoordinate p0, ICoordinate p1)
         {
             if (p0.Equals(p1))

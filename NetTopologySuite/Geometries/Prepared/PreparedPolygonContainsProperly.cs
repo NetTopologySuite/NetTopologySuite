@@ -52,7 +52,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if the polygon properly contains the geometry</returns>
         public bool ContainsProperly(IGeometry geom)
         {
-            /**
+            /*
              * Do point-in-poly tests first, since they are cheaper and may result
              * in a quick negative result.
              * 
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Geometries.Prepared
             bool isAllInPrepGeomAreaInterior = IsAllTestComponentsInTargetInterior(geom);
             if (!isAllInPrepGeomAreaInterior) return false;
 
-            /**
+            /*
              * If any segments intersect, result is false.
              */
             IList<ISegmentString> lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
@@ -69,7 +69,7 @@ namespace NetTopologySuite.Geometries.Prepared
             if (segsIntersect)
                 return false;
 
-            /**
+            /*
              * Given that no segments intersect, if any vertex of the target
              * is contained in some test component.
              * the test is NOT properly contained.

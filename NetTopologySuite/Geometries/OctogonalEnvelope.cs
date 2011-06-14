@@ -3,15 +3,17 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries
 {
-    /**
-     * A Bounding Container which is in the shape of an octagon.
-     * The OctagonalEnvelope of a geometric object
-     * is tight along the four extremal rectilineal parallels
-     * and along the four extremal diagonal parallels.
-     * Depending on the shape of the contained
-     * geometry, the octagon may be degenerate to any extreme
-     * (e.g. it may be a rectangle, a line, or a point).
-     */
+    /// <summary>
+    /// A Bounding Container which is in the shape of an octagon.
+    /// </summary>
+    /// <remarks>
+    /// The OctagonalEnvelope of a geometric object
+    /// is tight along the four extremal rectilineal parallels
+    /// and along the four extremal diagonal parallels.
+    /// Depending on the shape of the contained
+    /// geometry, the octagon may be degenerate to any extreme
+    /// (e.g. it may be a rectangle, a line, or a point).
+    /// </remarks>
     public class OctagonalEnvelope
     {
         private static double ComputeA(double x, double y)
@@ -34,50 +36,50 @@ namespace NetTopologySuite.Geometries
         private double _minB;
         private double _maxB;
 
-        /**
-         * Creates a new null bounding octagon
-         */
+        /// <summary>
+        /// Creates a new null bounding octagon
+        /// </summary>
         public OctagonalEnvelope()
         {
         }
 
-        /**
-         * Creates a new null bounding octagon bounding a {@link Coordinate}
-         */
+        /// <summary>
+        /// Creates a new null bounding octagon bounding a <see cref="ICoordinate" />
+        /// </summary>
         public OctagonalEnvelope(Coordinate p)
         {
             ExpandToInclude(p);
         }
 
-        /**
-         * Creates a new null bounding octagon bounding a pair of {@link Coordinate}s
-         */
+        /// <summary>
+        /// Creates a new null bounding octagon bounding a pair of <see cref="Coordinate" />s
+        /// </summary>
         public OctagonalEnvelope(Coordinate p0, Coordinate p1)
         {
             ExpandToInclude(p0);
             ExpandToInclude(p1);
         }
 
-        /**
-         * Creates a new null bounding octagon bounding an {@link Envelope}
-         */
+        /// <summary>
+        /// Creates a new null bounding octagon bounding an <see cref="Envelope" />
+        /// </summary>
         public OctagonalEnvelope(Envelope env)
         {
             ExpandToInclude(env);
         }
 
-        /**
-         * Creates a new null bounding octagon bounding an {@link OctagonalEnvelope}
-         * (the copy constructor).
-         */
+        /// <summary>
+        /// Creates a new null bounding octagon bounding an <see cref="OctagonalEnvelope" />
+        /// (the copy constructor).
+        /// </summary>
         public OctagonalEnvelope(OctagonalEnvelope oct)
         {
             ExpandToInclude(oct);
         }
 
-        /**
-         * Creates a new null bounding octagon bounding a {@link Geometry}
-         */
+        /// <summary>
+        /// Creates a new null bounding octagon bounding a <see cref="IGeometry" />
+        /// </summary>
         public OctagonalEnvelope(IGeometry geom)
         {
             ExpandToInclude(geom);
@@ -93,9 +95,9 @@ namespace NetTopologySuite.Geometries
         public double MinB { get { return _minB; } }
         public double MaxB { get { return _maxB; } }
 
-        /**
-         *  Sets the value of this object to the null value
-         */
+        ///
+        ///  Sets the value of this object to the null value
+        ///
         public Boolean IsNull
         {
             get { return Double.IsNaN(_minX); }
@@ -213,11 +215,11 @@ namespace NetTopologySuite.Geometries
                 IsNull = true;
         }
 
-        /**
-         * Tests if the extremal values for this octagon are valid.
-         *
-         * @return <code>true</code> if this object has valid values
-         */
+        ///
+        /// Tests if the extremal values for this octagon are valid.
+        ///
+        /// @return <code>true</code> if this object has valid values
+        ///
         private Boolean IsValid
         {
             get

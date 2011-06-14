@@ -15,10 +15,10 @@ namespace NetTopologySuite.Algorithm
         private IGeometry _areaGeom;
         private IntervalIndexedGeometry _index;
 
-        /**
-         * Creates a new locator for a given {@link Geometry}
-         * @param g the Geometry to locate in
-         */
+        /// <summary>
+        /// Creates a new locator for a given <see cref="IGeometry" />
+        /// </summary>
+        /// <param name="g"> the Geometry to locate in</param>
         public IndexedPointInAreaLocator(IGeometry g)
         {
             _areaGeom = g;
@@ -32,12 +32,11 @@ namespace NetTopologySuite.Algorithm
             _index = new IntervalIndexedGeometry(g);
         }
 
-        /**
-         * Determines the {@link Location} of a point in an areal {@link Geometry}.
-         * 
-         * @param p the point to test
-         * @return the location of the point in the geometry  
-         */
+        /// <summary>
+        /// Determines the <see cref="Location" /> of a point in an areal <see cref="IGeometry" />.
+        /// </summary>
+        /// <param name="p"> the point to test</param>
+        /// <returns> the location of the point in the geometry</returns>  
         public Locations Locate(ICoordinate p)
         {
             RayCrossingCounter rcc = new RayCrossingCounter(p);

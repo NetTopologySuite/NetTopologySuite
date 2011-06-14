@@ -284,7 +284,7 @@ namespace NetTopologySuite.Geometries
         /// The Z-ordinate is ignored.
         /// </summary>
         /// <param name="p"><c>Coordinate</c> with which to do the distance comparison.</param>
-        /// <returns></returns>
+        /// <returns>the 2-dimensional Euclidean distance between the locations</returns>
         public double Distance(ICoordinate p)
         {
             var dx = _x - p.X;

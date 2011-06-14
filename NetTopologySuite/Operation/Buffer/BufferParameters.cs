@@ -42,17 +42,17 @@ namespace NetTopologySuite.Operation.Buffer
         [Obsolete]
         public const int JOIN_BEVEL = 3;
 
-        /**
-         * The default number of facets into which to divide a fillet of 90 degrees.
-         * A value of 8 gives less than 2% max error in the buffer distance.
-         * For a max error of < 1%, use QS = 12
-         */
+        /// <summary>
+        /// The default number of facets into which to divide a fillet of 90 degrees.
+        /// A value of 8 gives less than 2% max error in the buffer distance.
+        /// For a max error of &lt; 1%, use QS = 12
+        /// </summary>
         public const int DefaultQuadrantSegments = 8;
 
-        /**
-         * The default mitre limit
-         * Allows fairly pointy mitres.
-         */
+        /// <summary>
+        /// The default mitre limit
+        /// Allows fairly pointy mitres.
+        /// </summary>
         public const double DefaultMitreLimit = 5.0;
 
 
@@ -77,28 +77,26 @@ namespace NetTopologySuite.Operation.Buffer
             QuadrantSegments = quadrantSegments;
         }
 
-        /**
-         * Creates a set of parameters with the
-         * given quadrantSegments and endCapStyle values.
-         * 
-         * @param quadrantSegments the number of quadrant segments to use
-         * @param endCapStyle the end cap style to use
-         */
+        /// <summary>
+        /// Creates a set of parameters with the
+        /// given quadrantSegments and endCapStyle values.
+        /// </summary>
+        /// <param name="quadrantSegments"> the number of quadrant segments to use</param>
+        /// <param name="endCapStyle"> the end cap style to use</param>
         public BufferParameters(int quadrantSegments,
             EndCapStyle endCapStyle) : this(quadrantSegments)
         {
             EndCapStyle = endCapStyle;
         }
 
-        /**
-         * Creates a set of parameters with the
-         * given parameter values.
-         * 
-         * @param quadrantSegments the number of quadrant segments to use
-         * @param endCapStyle the end cap style to use
-         * @param joinStyle the join style to use
-         * @param mitreLimit the mitre limit to use
-         */
+        /// <summary>
+        /// Creates a set of parameters with the
+        /// given parameter values.
+        /// </summary>
+        /// <param name="quadrantSegments"> the number of quadrant segments to use</param>
+        /// <param name="endCapStyle"> the end cap style to use</param>
+        /// <param name="joinStyle"> the join style to use</param>
+        /// <param name="mitreLimit"> the mitre limit to use</param>
         public BufferParameters(int quadrantSegments,
             EndCapStyle endCapStyle,
             JoinStyle joinStyle,
@@ -126,7 +124,7 @@ namespace NetTopologySuite.Operation.Buffer
             set
             {
                 _quadrantSegments = value;
-                /** 
+                /*
                  * Indicates how to construct fillets.
                  * If qs &gt;= 1, fillet is round, and qs indicates number of 
                  * segments to use to approximate a quarter-circle.
@@ -149,7 +147,7 @@ namespace NetTopologySuite.Operation.Buffer
                     _quadrantSegments = 1;
                 }
 
-                /**
+                /*
                  * If join style was set by the value,
                  * use the default for the actual quadrantSegments value.
                  */
@@ -165,9 +163,9 @@ namespace NetTopologySuite.Operation.Buffer
         ///</summary>
         /// <remarks>
         /// <para>
-        /// The styles supported are <see cref="EndCapStyle.Round"/>, <see cref="EndCapStyle.Flat"/>, and <see cref="EndCapStyle.Square"/>.
+        /// The styles supported are <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Round"/>, <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Flat"/>, and <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Square"/>.
         /// </para>
-        /// <para>The default is <see cref="EndCapStyle.Round"/>.</para>
+        /// <para>The default is <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Round"/>.</para>
         /// </remarks>
         public EndCapStyle EndCapStyle
         {
@@ -180,7 +178,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// Gets/Sets the join style for outside (reflex) corners between line segments.
         ///</summary>
         /// <remarks>
-        /// <para>Allowable values are <see cref="JoinStyle.Round"/> (which is the default), <see cref="JoinStyle.Mitre"/> and <see cref="JoinStyle.Bevel"/></para>
+        /// <para>Allowable values are <see cref="GeoAPI.Operations.Buffer.JoinStyle.Round"/> (which is the default), <see cref="GeoAPI.Operations.Buffer.JoinStyle.Mitre"/> and <see cref="GeoAPI.Operations.Buffer.JoinStyle.Bevel"/></para>
         /// </remarks>
         public JoinStyle JoinStyle
         {

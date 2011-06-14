@@ -6,8 +6,8 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Operation.Predicate
 {
     /// <summary>
-    /// Tests if any line segments in two sets of CoordinateSequences intersect.
-    /// Optimized for small geometry size.
+    /// Tests if any line segments in two sets of <see cref="CoordinateSequences"/> intersect.
+    /// Optimized for use when at least one input is of small size.
     /// Short-circuited to return as soon an intersection is found.
     /// </summary>
     public class SegmentIntersectionTester 

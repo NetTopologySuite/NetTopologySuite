@@ -42,7 +42,7 @@ namespace NetTopologySuite.Geometries.Prepared
             if (geom is IPuntal)
                 return new PreparedPoint((IPuntal)geom);
 
-            /**
+            /*
              * Default representation.
              */
             return new BasicPreparedGeometry(geom);

@@ -10,9 +10,9 @@ namespace NetTopologySuite.IO
     /// Extends the <see cref="BinaryWriter" /> class to allow writing values in the BigEndian format.    
     /// </summary>
     /// <remarks>
-    /// While <see cref="BigEndianBinaryWriter" /> extends <see cref="BinaryWriter" /> 
-    /// adding methods for writing integer values (<see cref="BigEndianBinaryWriter.WriteIntBE" />)
-    /// and double values (<see cref="BigEndianBinaryWriter.WriteDoubleBE" />) in the BigEndian format,
+    /// While <see cref="BEBinaryWriter" /> extends <see cref="BinaryWriter" /> 
+    /// adding methods for writing integer values (<see cref="BEBinaryWriter.Write(int)" />)
+    /// and double values (<see cref="BEBinaryWriter.Write(double)" />) in the BigEndian format,
     /// this implementation overrides methods, such <see cref="BinaryWriter.Write(int)" /> 
     /// and <see cref="BinaryWriter.Write(double)" /> and more, 
     /// for writing <see cref="T:ByteOrder.BigEndian" /> values in the BigEndian format.

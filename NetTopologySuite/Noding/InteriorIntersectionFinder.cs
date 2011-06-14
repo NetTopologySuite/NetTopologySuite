@@ -69,7 +69,7 @@ namespace NetTopologySuite.Noding
         ///<summary>
         /// This method is called by clients of the <see cref="ISegmentIntersector"/> class to process
         /// intersections for two segments of the <see cref="ISegmentString"/>s being intersected.
-        /// Note that some clients (such as <see cref="MonotoneChain"/>}s) may optimize away
+        /// Note that some clients (such as <see cref="NetTopologySuite.GeometriesGraph.Index.MonotoneChain"/>}s) may optimize away
         /// this call for segment pairs which they have determined do not intersect
         /// (e.g. by an disjoint envelope test).
         ///</summary>
@@ -89,7 +89,7 @@ namespace NetTopologySuite.Noding
             // don't bother intersecting a segment with itself
             if (e0 == e1 && segIndex0 == segIndex1) return;
 
-            /**
+            /*
              * If enabled, only test end segments (on either segString).
              * 
              */

@@ -75,7 +75,7 @@ namespace NetTopologySuite.Geometries.Utilities
                 }
             }
 
-            /**
+            /*
              * A is now (virtually) in upper-triangular form.
              * The solution vector is determined by back-substitution.
              */

@@ -265,6 +265,7 @@ namespace NetTopologySuite.Index.Strtree
         /// Subtrees which do not contain any items are not included.
         /// Builds the tree if necessary.
         /// </summary>
+        /// <returns>a List of items and/or Lists</returns>
         public IList ItemsTree()
         {
             if (!_built) { Build(); }

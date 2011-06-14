@@ -561,6 +561,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>
         /// <c>true</c> if <c>(x, y)</c> lies in the interior or on the boundary of this <c>Envelope</c>.
         /// </returns>
+        /// <see cref="Covers(double, double)"/>
         public bool Contains(double x, double y)
         {
             return Covers(x, y);

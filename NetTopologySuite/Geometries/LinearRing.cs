@@ -50,7 +50,7 @@ namespace NetTopologySuite.Geometries
 	        }
         }
 
-  /**
+  /*
 
 
         /// <summary>

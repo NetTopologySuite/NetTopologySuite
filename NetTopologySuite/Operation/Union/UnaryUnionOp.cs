@@ -115,7 +115,7 @@ namespace NetTopologySuite.Operation.Union
                 unionPolygons = CascadedPolygonUnion.Union(_polygons);
             }
 
-            /**
+            /*
              * Performing two unions is somewhat inefficient,
              * but is mitigated by unioning lines and points first
              */

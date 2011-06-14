@@ -3,70 +3,81 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries.Utilities
 {
-    /**
-     * Represents a affine transformation on the 2D Cartesian plane. 
-     * It can be used to transform a {@link Coordinate} or {@link Geometry}.
-     * An affine transformation is a mapping of the 2D plane into itself
-     * via a series of transformations of the following basic types:
-     * <ul>
-     * <li>reflection (through a line)
-     * <li>rotation (around the origin)
-     * <li>scaling (relative to the origin)
-     * <li>shearing (in both the X and Y directions)
-     * <li>translation 
-     * </ul>
-     * In general, affine transformations preserve straightness and parallel lines,
-     * but do not preserve distance or shape.
-     * <p>
-     * An affine transformation can be represented by a 3x3 
-     * matrix in the following form:
-     * <blockquote><pre>
-     * T = | m00 m01 m02 |
-     *     | m10 m11 m12 |
-     *     |  0   0   1  |
-     * </pre></blockquote>
-     * A coordinate P = (x, y) can be transformed to a new coordinate P' = (x', y')
-     * by representing it as a 3x1 matrix and using matrix multiplication to compute:
-     * <blockquote><pre>
-     * | x' |  = T x | x |
-     * | y' |        | y |
-     * | 1  |        | 1 |
-     * </pre></blockquote>
-     * Affine transformations can be composed using the {@link #compose} method.
-     * The composition of transformations is in general not commutative.
-     * transformation matrices as follows:
-     * <blockquote><pre>
-     * A.compose(B) = T<sub>B</sub> x T<sub>A</sub>
-     * </pre></blockquote>
-     * This produces a transformation whose effect is that of A followed by B.
-     * Composition is computed via multiplication of the 
-     * The methods {@link #reflect}, {@link #rotate}, {@link #scale}, {@link #shear}, and {@link #translate} 
-     * have the effect of composing a transformation of that type with
-     * the transformation they are invoked on.  
-     * <p>
-     * Affine transformations may be invertible or non-invertible.  
-     * If a transformation is invertible, then there exists 
-     * an inverse transformation which when composed produces 
-     * the identity transformation.  
-     * The {@link #getInverse} method
-     * computes the inverse of a transformation, if one exists.
-     * 
-     * @author Martin Davis
-     *
-     */
+    /// <summary>
+    /// Represents a affine transformation on the 2D Cartesian plane.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// It can be used to transform a <see cref="ICoordinate"/> or <see cref="IGeometry"/>.
+    /// An affine transformation is a mapping of the 2D plane into itself
+    /// via a series of transformations of the following basic types:
+    /// <ul>
+    /// <li>reflection (through a line)</li>
+    /// <li>rotation (around the origin)</li>
+    /// <li>scaling (relative to the origin)</li>
+    /// <li>shearing (in both the X and Y directions)</li>
+    /// <li>translation</li>
+    /// </ul>
+    /// </para>
+    /// <para>
+    /// In general, affine transformations preserve straightness and parallel lines,
+    /// but do not preserve distance or shape.
+    /// </para>
+    /// <para>
+    /// An affine transformation can be represented by a 3x3 
+    /// matrix in the following form:
+    /// <blockquote><pre>
+    /// T = | m00 m01 m02 |
+    ///     | m10 m11 m12 |
+    ///     |  0   0   1  |
+    /// </pre></blockquote>
+    /// A coordinate P = (x, y) can be transformed to a new coordinate P' = (x', y')
+    /// by representing it as a 3x1 matrix and using matrix multiplication to compute:
+    /// <blockquote><pre>
+    /// | x' |  = T x | x |
+    /// | y' |        | y |
+    /// | 1  |        | 1 |
+    /// </pre></blockquote>
+    /// </para>
+    /// <para>
+    /// Affine transformations can be composed using the <see cref="Compose"/> method.
+    /// The composition of transformations is in general not commutative.
+    /// transformation matrices as follows:
+    /// <blockquote><pre>
+    /// A.compose(B) = T<sub>B</sub> x T<sub>A</sub>
+    /// </pre></blockquote>
+    /// </para>
+    /// <para>
+    /// This produces a transformation whose effect is that of A followed by B.
+    /// Composition is computed via multiplication of the 
+    /// The methods <see cref="Reflect"/>, <see cref="Rotate"/>, <see cref="Scale"/>, <see cref="Shear"/>, and <see cref="Translate"/> 
+    /// have the effect of composing a transformation of that type with
+    /// the transformation they are invoked on.  
+    /// </para>
+    /// <para>
+    /// Affine transformations may be invertible or non-invertible.  
+    /// If a transformation is invertible, then there exists 
+    /// an inverse transformation which when composed produces 
+    /// the identity transformation.  
+    /// The <see cref="GetInverse"/> method
+    /// computes the inverse of a transformation, if one exists.
+    /// </para>
+    /// <para>
+    /// @author Martin Davis
+    /// </para> 
+    /// </remarks>
     public class AffineTransformation : ICloneable, ICoordinateSequenceFilter, IEquatable<AffineTransformation>
     {
 
-        /**
-         * Creates a transformation for a reflection about the 
-         * line (x0,y0) - (x1,y1).
-         * 
-         * @param x0 the x-ordinate of a point on the reflection line
-         * @param y0 the y-ordinate of a point on the reflection line
-         * @param x1 the x-ordinate of a another point on the reflection line
-         * @param y1 the y-ordinate of a another point on the reflection line
-         * @return a transformation for the reflection
-         */
+        /// <summary>
+        /// Creates a transformation for a reflection about the 
+        /// line (x0,y0) - (x1,y1).
+        /// </summary>
+        /// <param name="x0"> the x-ordinate of a point on the reflection line</param>
+        /// <param name="y0"> the y-ordinate of a point on the reflection line</param>
+        /// <param name="x1"> the x-ordinate of a another point on the reflection line</param>
+        /// <param name="y1"> the y-ordinate of a another point on the reflection line</param>
+        /// <returns> a transformation for the reflection</returns>
         public static AffineTransformation ReflectionInstance(double x0, double y0, double x1, double y1)
         {
             AffineTransformation trans = new AffineTransformation();
@@ -74,14 +85,13 @@ namespace NetTopologySuite.Geometries.Utilities
             return trans;
         }
 
-        /**
-         * Creates a transformation for a reflection about the 
-         * line (0,0) - (x,y).
-         * 
-         * @param x the x-ordinate of a point on the reflection line
-         * @param y the y-ordinate of a point on the reflection line
-         * @return a transformation for the reflection
-         */
+        /// <summary>
+        /// Creates a transformation for a reflection about the 
+        /// line (0,0) - (x,y).
+        /// </summary>
+        /// <param name="x"> the x-ordinate of a point on the reflection line</param>
+        /// <param name="y"> the y-ordinate of a point on the reflection line</param>
+        /// <returns> a transformation for the reflection</returns>
         public static AffineTransformation ReflectionInstance(double x, double y)
         {
             AffineTransformation trans = new AffineTransformation();
@@ -89,32 +99,34 @@ namespace NetTopologySuite.Geometries.Utilities
             return trans;
         }
 
-        /**
-         * Creates a transformation for a rotation
-         * about the origin 
-         * by an angle <i>theta</i>.
-         * Positive angles correspond to a rotation 
-         * in the counter-clockwise direction.
-         * 
-         * @param theta the rotation angle, in radians
-         * @return a transformation for the rotation
-         */
+        /// <summary>
+        /// Creates a transformation for a rotation
+        /// about the origin 
+        /// by an angle <i>theta</i>.
+        /// </summary>
+        /// <remarks>
+        /// Positive angles correspond to a rotation 
+        /// in the counter-clockwise direction.
+        /// </remarks>
+        /// <param name="theta"> the rotation angle, in radians</param>
+        /// <returns> a transformation for the rotation</returns>
         public static AffineTransformation RotationInstance(double theta)
         {
             return RotationInstance(Math.Sin(theta), Math.Cos(theta));
         }
 
-        /**
-         * Creates a transformation for a rotation 
-         * by an angle <i>theta</i>,
-         * specified by the sine and cosine of the angle.
-         * This allows providing exact values for sin(theta) and cos(theta)
-         * for the common case of rotations of multiples of quarter-circles. 
-         * 
-         * @param sinTheta the sine of the rotation angle
-         * @param cosTheta the cosine of the rotation angle
-         * @return a transformation for the rotation
-         */
+        /// <summary>
+        /// Creates a transformation for a rotation 
+        /// by an angle <i>theta</i>,
+        /// specified by the sine and cosine of the angle.
+        /// </summary>
+        /// <remarks>
+        /// This allows providing exact values for sin(theta) and cos(theta)
+        /// for the common case of rotations of multiples of quarter-circles. 
+        /// </remarks>
+        /// <param name="sinTheta"> the sine of the rotation angle</param>
+        /// <param name="cosTheta"> the cosine of the rotation angle</param>
+        /// <returns> a transformation for the rotation</returns>
         public static AffineTransformation RotationInstance(double sinTheta, double cosTheta)
         {
             AffineTransformation trans = new AffineTransformation();
@@ -122,35 +134,37 @@ namespace NetTopologySuite.Geometries.Utilities
             return trans;
         }
 
-        /**
-         * Creates a transformation for a rotation
-         * about the point (x,y) by an angle <i>theta</i>.
-         * Positive angles correspond to a rotation 
-         * in the counter-clockwise direction.
-         * 
-         * @param theta the rotation angle, in radians
-         * @param x the x-ordinate of the rotation point
-         * @param y the y-ordinate of the rotation point
-         * @return a transformation for the rotation
-         */
+        /// <summary>
+        /// Creates a transformation for a rotation
+        /// about the point (x,y) by an angle <i>theta</i>.
+        /// </summary>
+        /// <remarks>
+        /// Positive angles correspond to a rotation 
+        /// in the counter-clockwise direction.
+        /// </remarks>
+        /// <param name="theta"> the rotation angle, in radians</param>
+        /// <param name="x"> the x-ordinate of the rotation point</param>
+        /// <param name="y"> the y-ordinate of the rotation point</param>
+        /// <returns> a transformation for the rotation</returns>
         public static AffineTransformation RotationInstance(double theta, double x, double y)
         {
             return RotationInstance(Math.Sin(theta), Math.Cos(theta), x, y);
         }
 
-        /**
-         * Creates a transformation for a rotation 
-         * about the point (x,y) by an angle <i>theta</i>,
-         * specified by the sine and cosine of the angle.
-         * This allows providing exact values for sin(theta) and cos(theta)
-         * for the common case of rotations of multiples of quarter-circles. 
-         * 
-         * @param sinTheta the sine of the rotation angle
-         * @param cosTheta the cosine of the rotation angle
-         * @param x the x-ordinate of the rotation point
-         * @param y the y-ordinate of the rotation point
-         * @return a transformation for the rotation
-         */
+        /// <summary>
+        /// Creates a transformation for a rotation 
+        /// about the point (x,y) by an angle <i>theta</i>,
+        /// specified by the sine and cosine of the angle.
+        /// </summary>
+        /// <remarks>
+        /// This allows providing exact values for sin(theta) and cos(theta)
+        /// for the common case of rotations of multiples of quarter-circles. 
+        /// </remarks>
+        /// <param name="sinTheta"> the sine of the rotation angle</param>
+        /// <param name="cosTheta"> the cosine of the rotation angle</param>
+        /// <param name="x"> the x-ordinate of the rotation point</param>
+        /// <param name="y"> the y-ordinate of the rotation point</param>
+        /// <returns> a transformation for the rotation</returns>
         public static AffineTransformation RotationInstance(double sinTheta, double cosTheta, double x, double y)
         {
             AffineTransformation trans = new AffineTransformation();
@@ -158,13 +172,12 @@ namespace NetTopologySuite.Geometries.Utilities
             return trans;
         }
 
-        /**
-         * Creates a transformation for a scaling relative to the origin.
-         * 
-         * @param xScale the value to scale by in the x direction
-         * @param yScale the value to scale by in the y direction
-         * @return a transformation for the scaling
-         */
+        /// <summary>
+        /// Creates a transformation for a scaling relative to the origin.
+        /// </summary> 
+        /// <param name="xScale"> the value to scale by in the x direction</param>
+        /// <param name="yScale"> the value to scale by in the y direction</param>
+        /// <returns> a transformation for the scaling</returns>
         public static AffineTransformation ScaleInstance(double xScale, double yScale)
         {
             AffineTransformation trans = new AffineTransformation();
@@ -172,13 +185,12 @@ namespace NetTopologySuite.Geometries.Utilities
             return trans;
         }
 
-        /**
-         * Creates a transformation for a shear.
-         * 
-         * @param xShear the value to shear by in the x direction
-         * @param yShear the value to shear by in the y direction
-         * @return a tranformation for the shear
-         */
+        /// <summary>
+        /// Creates a transformation for a shear.
+        /// </summary>
+        /// <param name="xShear"> the value to shear by in the x direction</param>
+        /// <param name="yShear"> the value to shear by in the y direction</param>
+        /// <returns> a tranformation for the shear</returns>
         public static AffineTransformation ShearInstance(double xShear, double yShear)
         {
             AffineTransformation trans = new AffineTransformation();
@@ -186,13 +198,12 @@ namespace NetTopologySuite.Geometries.Utilities
             return trans;
         }
 
-        /**
-         * Creates a transformation for a translation.
-         * 
-         * @param x the value to translate by in the x direction
-         * @param y the value to translate by in the y direction
-         * @return a tranformation for the translation
-         */
+        /// <summary>
+        /// Creates a transformation for a translation.
+        /// </summary>
+        /// <param name="x"> the value to translate by in the x direction</param>
+        /// <param name="y"> the value to translate by in the y direction</param>
+        /// <returns> a tranformation for the translation</returns>
         public static AffineTransformation TranslationInstance(double x, double y)
         {
             AffineTransformation trans = new AffineTransformation();
@@ -209,23 +220,21 @@ namespace NetTopologySuite.Geometries.Utilities
         private double _m11;
         private double _m12;
 
-        /**
-         * Constructs a new identity transformation
-         *
-         */
+        /// <summary>
+        /// Constructs a new identity transformation
+        /// </summary>
         public AffineTransformation()
         {
             SetToIdentity();
         }
 
-        /**
-         * Constructs a new transformation whose 
-         * matrix has the specified values.
-         * 
-         * @param matrix an array containing the 6 values { m00, m01, m02, m10, m11, m12 }
-         * @throws NullPointerException if matrix is null
-         * @throws ArrayIndexOutOfBoundsException if matrix is too small 
-         */
+        /// <summary>
+        /// Constructs a new transformation whose 
+        /// matrix has the specified values.
+        /// </summary> 
+        /// <param name="matrix"> an array containing the 6 values { m00, m01, m02, m10, m11, m12 }</param>
+        /// <exception cref="NullReferenceException"> if matrix is null</exception>
+        /// <exception cref="IndexOutOfRangeException"> if matrix is too small</exception>   
         public AffineTransformation(double[] matrix)
         {
             _m00 = matrix[0];
@@ -236,17 +245,16 @@ namespace NetTopologySuite.Geometries.Utilities
             _m12 = matrix[5];
         }
 
-        /**
-         * Constructs a new transformation whose 
-         * matrix has the specified values.
-         * 
-         * @param m00 the entry for the [0, 0] element in the transformation matrix 
-         * @param m01 the entry for the [0, 1] element in the transformation matrix
-         * @param m02 the entry for the [0, 2] element in the transformation matrix
-         * @param m10 the entry for the [1, 0] element in the transformation matrix
-         * @param m11 the entry for the [1, 1] element in the transformation matrix
-         * @param m12 the entry for the [1, 2] element in the transformation matrix
-         */
+        /// <summary>
+        /// Constructs a new transformation whose 
+        /// matrix has the specified values.
+        /// </summary> 
+        /// <param name="m00"> the entry for the [0, 0] element in the transformation matrix</param>
+        /// <param name="m01"> the entry for the [0, 1] element in the transformation matrix</param>
+        /// <param name="m02"> the entry for the [0, 2] element in the transformation matrix</param>
+        /// <param name="m10"> the entry for the [1, 0] element in the transformation matrix</param>
+        /// <param name="m11"> the entry for the [1, 1] element in the transformation matrix</param>
+        /// <param name="m12"> the entry for the [1, 2] element in the transformation matrix</param>
         public AffineTransformation(double m00,
             double m01,
             double m02,
@@ -257,30 +265,27 @@ namespace NetTopologySuite.Geometries.Utilities
             SetTransformation(m00, m01, m02, m10, m11, m12);
         }
 
-        /**
-         * Constructs a transformation which is
-         * a copy of the given one.
-         * 
-         * @param trans the transformation to copy
-         */
+        /// <summary>
+        /// Constructs a transformation which is
+        /// a copy of the given one.
+        /// </summary>
+        /// <param name="trans"> the transformation to copy</param>
         public AffineTransformation(AffineTransformation trans)
         {
             SetTransformation(trans);
         }
 
-        /**
-         * Constructs a transformation
-         * which maps the given source
-         * points into the given destination points.
-         * 
-         * @param src0 source point 0
-         * @param src1 source point 1
-         * @param src2 source point 2
-         * @param dest0 the mapped point for source point 0
-         * @param dest1 the mapped point for source point 1
-         * @param dest2 the mapped point for source point 2
-         * 
-         */
+        /// <summary>
+        /// Constructs a transformation
+        /// which maps the given source
+        /// points into the given destination points.
+        /// </summary> 
+        /// <param name="src0"> source point 0</param>
+        /// <param name="src1"> source point 1</param>
+        /// <param name="src2"> source point 2</param>
+        /// <param name="dest0"> the mapped point for source point 0</param>
+        /// <param name="dest1"> the mapped point for source point 1</param>
+        /// <param name="dest2"> the mapped point for source point 2</param>
         public AffineTransformation(ICoordinate src0,
             ICoordinate src1,
             ICoordinate src2,
@@ -291,16 +296,18 @@ namespace NetTopologySuite.Geometries.Utilities
         {
         }
 
-        /**
-         * Sets this transformation to be the identity transformation.
-         * The identity transformation has the matrix:
-         * <blockquote><pre>
-         * | 1 0 0 |
-         * | 0 1 0 |
-         * | 0 0 1 |
-         * </pre></blockquote>
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Sets this transformation to be the identity transformation.
+        /// </summary>
+        /// <remarks>
+        /// The identity transformation has the matrix:
+        /// <blockquote><pre>
+        /// | 1 0 0 |
+        /// | 0 1 0 |
+        /// | 0 0 1 |
+        /// </pre></blockquote>
+        /// </remarks>
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation SetToIdentity()
         {
             _m00 = 1.0; _m01 = 0.0; _m02 = 0.0;
@@ -308,17 +315,16 @@ namespace NetTopologySuite.Geometries.Utilities
             return this;
         }
 
-        /**
-         * Sets this transformation's matrix to have the given values.
-         * 
-         * @param m00 the entry for the [0, 0] element in the transformation matrix 
-         * @param m01 the entry for the [0, 1] element in the transformation matrix
-         * @param m02 the entry for the [0, 2] element in the transformation matrix
-         * @param m10 the entry for the [1, 0] element in the transformation matrix
-         * @param m11 the entry for the [1, 1] element in the transformation matrix
-         * @param m12 the entry for the [1, 2] element in the transformation matrix
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Sets this transformation's matrix to have the given values.
+        /// </summary>
+        /// <param name="m00"> the entry for the [0, 0] element in the transformation matrix</param>
+        /// <param name="m01"> the entry for the [0, 1] element in the transformation matrix</param>
+        /// <param name="m02"> the entry for the [0, 2] element in the transformation matrix</param>
+        /// <param name="m10"> the entry for the [1, 0] element in the transformation matrix</param>
+        /// <param name="m11"> the entry for the [1, 1] element in the transformation matrix</param>
+        /// <param name="m12"> the entry for the [1, 2] element in the transformation matrix</param>
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation SetTransformation(double m00,
             double m01,
             double m02,
@@ -335,12 +341,11 @@ namespace NetTopologySuite.Geometries.Utilities
             return this;
         }
 
-        /**
-         * Sets this transformation to be a copy of the given one
-         * 
-         * @param trans a transformation to copy
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Sets this transformation to be a copy of the given one
+        /// </summary>
+        /// <param name="trans"> a transformation to copy</param>
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation SetTransformation(AffineTransformation trans)
         {
             _m00 = trans._m00; _m01 = trans._m01; _m02 = trans._m02;
@@ -348,17 +353,18 @@ namespace NetTopologySuite.Geometries.Utilities
             return this;
         }
 
-        /**
-         * Gets an array containing the entries
-         * of the transformation matrix.
-         * Only the 6 non-trivial entries are returned,
-         * in the sequence:
-         * <pre>
-         * m00, m01, m02, m10, m11, m12
-         * </pre>
-         * 
-         * @return an array of length 6
-         */
+        /// <summary>
+        /// Gets an array containing the entries
+        /// of the transformation matrix.
+        /// </summary>
+        /// <remarks>
+        /// Only the 6 non-trivial entries are returned,
+        /// in the sequence:
+        /// <pre>
+        /// m00, m01, m02, m10, m11, m12
+        /// </pre>
+        /// </remarks>
+        /// <returns> an array of length 6</returns>
         public double[] MatrixEntries
         {
             get
@@ -367,71 +373,78 @@ namespace NetTopologySuite.Geometries.Utilities
             }
         }
 
-        /**
-        * Computes the determinant of the transformation matrix. 
-        * The determinant is computed as:
-        * <blockquote><pre>
-        * | m00 m01 m02 |
-        * | m10 m11 m12 | = m00 * m11 - m01 * m10
-        * |  0   0   1  |
-        * </pre></blockquote>
-        * If the determinant is zero, 
-        * the transform is singular (not invertible), 
-        * and operations which attempt to compute
-        * an inverse will throw a <tt>NoninvertibleTransformException</tt>. 
-
-        * @return the determinant of the transformation
-        * @see #getInverse()
-        */
-        ///<returns>The determinant of the transformation</returns>
-        ///<see cref="GetInverse()"/>
+        /// <summary>
+        /// Computes the determinant of the transformation matrix. 
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The determinant is computed as:
+        /// <blockquote><pre>
+        /// | m00 m01 m02 |
+        /// | m10 m11 m12 | = m00 * m11 - m01 * m10
+        /// |  0   0   1  |
+        /// </pre></blockquote>
+        /// </para>
+        /// <para>
+        /// If the determinant is zero, 
+        /// the transform is singular (not invertible), 
+        /// and operations which attempt to compute
+        /// an inverse will throw a <see cref="NoninvertibleTransformationException"/>. 
+        /// </para>
+        /// </remarks>
+        /// <returns> the determinant of the transformation</returns>
+        /// <see cref="GetInverse()" />
+        ///
+        /// <returns>The determinant of the transformation</returns>
+        /// <see cref="GetInverse"/>
         public double Determinant
         {
             get { return _m00*_m11 - _m01*_m10; }
         }
 
-        /**
-         * Computes the inverse of this transformation, if one
-         * exists.
-         * The inverse is the transformation which when 
-         * composed with this one produces the identity 
-         * transformation.
-         * A transformation has an inverse if and only if it
-         * is not singular (i.e. its
-         * determinant is non-zero).
-         * Geometrically, an transformation is non-invertible
-         * if it maps the plane to a line or a point.
-         * If no inverse exists this method
-         * will throw a <tt>NoninvertibleTransformationException</tt>.
-         * <p>
-         * The matrix of the inverse is equal to the 
-         * inverse of the matrix for the transformation.
-         * It is computed as follows:
-         * <blockquote><pre>  
-         *                 1    
-         * inverse(A)  =  ---   x  adjoint(A) 
-         *                det 
-         *
-         *
-         *             =   1       |  m11  -m01   m01*m12-m02*m11  |
-         *                ---   x  | -m10   m00  -m00*m12+m10*m02  |
-         *                det      |  0     0     m00*m11-m10*m01  |
-         *
-         *
-         *
-         *             = |  m11/det  -m01/det   m01*m12-m02*m11/det |
-         *               | -m10/det   m00/det  -m00*m12+m10*m02/det |
-         *               |   0           0          1               |
-         *
-         * </pre></blockquote>  
-         *  
-         * @return a new inverse transformation
-         * @throws NoninvertibleTransformationException
-         * @see #getDeterminant()
-         */
-        ///<returns>A new inverse transformation</returns>
-        ///<see cref="Determinant"/>
-        ///<exception cref="NoninvertibleTransformationException"></exception>
+        /// <summary>
+        /// Computes the inverse of this transformation, if one
+        /// exists.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// * The inverse is the transformation which when 
+        /// * composed with this one produces the identity 
+        /// * transformation.
+        /// * A transformation has an inverse if and only if it
+        /// * is not singular (i.e. its
+        /// * determinant is non-zero).
+        /// * Geometrically, an transformation is non-invertible
+        /// * if it maps the plane to a line or a point.
+        /// * If no inverse exists this method
+        /// * will throw a <see cref="NoninvertibleTransformationException"/>.
+        /// </para>
+        /// <para>
+        /// * The matrix of the inverse is equal to the 
+        /// * inverse of the matrix for the transformation.
+        /// * It is computed as follows:
+        /// * <blockquote><pre>  
+        /// *                 1    
+        /// * inverse(A)  =  ---   x  adjoint(A) 
+        /// *                det 
+        /// *
+        /// *
+        /// *             =   1       |  m11  -m01   m01*m12-m02*m11  |
+        /// *                ---   x  | -m10   m00  -m00*m12+m10*m02  |
+        /// *                det      |  0     0     m00*m11-m10*m01  |
+        /// *
+        /// *
+        /// *
+        /// *             = |  m11/det  -m01/det   m01*m12-m02*m11/det |
+        /// *               | -m10/det   m00/det  -m00*m12+m10*m02/det |
+        /// *               |   0           0          1               |
+        /// *
+        /// * </pre></blockquote> 
+        /// </para>
+        /// </remarks>
+        /// <returns>A new inverse transformation</returns>
+        /// <see cref="Determinant"/>
+        /// <exception cref="NoninvertibleTransformationException"></exception>
         public AffineTransformation GetInverse()
         {
             double det = Determinant;
@@ -499,23 +512,23 @@ namespace NetTopologySuite.Geometries.Utilities
             return this;
         }
 
-        /**
-         * Sets this transformation to be a reflection 
-         * about the line defined by vector (x,y).
-         * The transformation for a reflection
-         * is computed by:
-         * <blockquote><pre>
-         * d = sqrt(x<sup>2</sup> + y<sup>2</sup>)  
-         * sin = x / d;
-         * cos = x / d;
-         * 
-         * T<sub>ref</sub> = T<sub>rot(sin, cos)</sub> x T<sub>scale(1, -1)</sub> x T<sub>rot(-sin, cos)</sub  
-         * </pre></blockquote> 
-         * 
-         * @param x the x-component of the reflection line vector
-         * @param y the y-component of the reflection line vector
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Sets this transformation to be a reflection 
+        /// about the line defined by vector (x,y).
+        /// </summary>
+        /// <remarks>
+        /// The transformation for a reflection
+        /// is computed by:
+        /// <blockquote><pre>
+        /// d = sqrt(x<sup>2</sup> + y<sup>2</sup>)  
+        /// sin = x / d;
+        /// cos = x / d; 
+        /// T<sub>ref</sub> = T<sub>rot(sin, cos)</sub> x T<sub>scale(1, -1)</sub> x T<sub>rot(-sin, cos)</sub>  
+        /// </pre></blockquote> 
+        /// </remarks>
+        /// <param name="x"> the x-component of the reflection line vector</param>
+        /// <param name="y"> the y-component of the reflection line vector</param>
+        /// <returns> this transformation, with an updated matrix</returns> 
         public AffineTransformation SetToReflection(double x, double y)
         {
             if (x == 0.0 && y == 0.0)
@@ -534,43 +547,45 @@ namespace NetTopologySuite.Geometries.Utilities
             return this;
         }
 
-        /**
-         * Sets this transformation to be a rotation around the orign.
-         * A positive rotation angle corresponds 
-         * to a counter-clockwise rotation.
-         * The transformation matrix for a rotation
-         * by an angle <tt>theta</tt>
-         * has the value:
-         * <blockquote><pre>  
-         * |  cos(theta)  -sin(theta)   0 |
-         * |  sin(theta)   cos(theta)   0 |
-         * |           0            0   1 |
-         * </pre></blockquote> 
-         * 
-         * @param theta the rotation angle, in radians
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Sets this transformation to be a rotation around the orign.
+        /// </summary>
+        /// <remarks>
+        /// A positive rotation angle corresponds 
+        /// to a counter-clockwise rotation.
+        /// The transformation matrix for a rotation
+        /// by an angle <code>theta</code>
+        /// has the value:
+        /// <blockquote><pre>  
+        /// |  cos(theta)  -sin(theta)   0 |
+        /// |  sin(theta)   cos(theta)   0 |
+        /// |           0            0   1 |
+        /// </pre></blockquote> 
+        /// </remarks>
+        /// <param name="theta"> the rotation angle, in radians</param>
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation SetToRotation(double theta)
         {
             SetToRotation(Math.Sin(theta), Math.Cos(theta));
             return this;
         }
 
-        /**
-         * Sets this transformation to be a rotation around the origin
-         * by specifying the sin and cos of the rotation angle directly.
-         * The transformation matrix for the rotation
-         * has the value:
-         * <blockquote><pre>  
-         * |  cosTheta  -sinTheta   0 |
-         * |  sinTheta   cosTheta   0 |
-         * |         0          0   1 |
-         * </pre></blockquote> 
-         * 
-         * @param sinTheta the sine of the rotation angle
-         * @param cosTheta the cosine of the rotation angle
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Sets this transformation to be a rotation around the origin
+        /// by specifying the sin and cos of the rotation angle directly.
+        /// </summary>
+        /// <remarks>
+        /// The transformation matrix for the rotation
+        /// has the value:
+        /// <blockquote><pre>  
+        /// |  cosTheta  -sinTheta   0 |
+        /// |  sinTheta   cosTheta   0 |
+        /// |         0          0   1 |
+        /// </pre></blockquote> 
+        /// </remarks>
+        /// <param name="sinTheta"> the sine of the rotation angle</param>
+        /// <param name="cosTheta"> the cosine of the rotation angle</param>
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation SetToRotation(double sinTheta, double cosTheta)
         {
             _m00 = cosTheta; _m01 = -sinTheta; _m02 = 0.0;
@@ -578,25 +593,26 @@ namespace NetTopologySuite.Geometries.Utilities
             return this;
         }
 
-        /**
-         * Sets this transformation to be a rotation
-         * around a given point (x,y).
-         * A positive rotation angle corresponds 
-         * to a counter-clockwise rotation.
-         * The transformation matrix for a rotation
-         * by an angle <tt>theta</tt>
-         * has the value:
-         * <blockquote><pre>  
-         * |  cosTheta  -sinTheta   x-x*cos+y*sin |
-         * |  sinTheta   cosTheta   y-x*sin-y*cos |
-         * |           0            0   1 |
-         * </pre></blockquote> 
-         * 
-         * @param theta the rotation angle, in radians
-         * @param x the x-ordinate of the rotation point
-         * @param y the y-ordinate of the rotation point
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Sets this transformation to be a rotation
+        /// around a given point (x,y).
+        /// </summary>
+        /// <remarks>
+        /// A positive rotation angle corresponds 
+        /// to a counter-clockwise rotation.
+        /// The transformation matrix for a rotation
+        /// by an angle <tt>theta</tt>
+        /// has the value:
+        /// <blockquote><pre>  
+        /// |  cosTheta  -sinTheta   x-x*cos+y*sin |
+        /// |  sinTheta   cosTheta   y-x*sin-y*cos |
+        /// |           0            0   1 |
+        /// </pre></blockquote> 
+        /// </remarks>
+        /// <param name="theta"> the rotation angle, in radians</param>
+        /// <param name="x"> the x-ordinate of the rotation point</param>
+        /// <param name="y"> the y-ordinate of the rotation point</param>
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation SetToRotation(double theta, double x, double y)
         {
             SetToRotation(Math.Sin(theta), Math.Cos(theta), x, y);
@@ -604,24 +620,25 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
 
-        /**
-         * Sets this transformation to be a rotation
-         * around a given point (x,y)
-         * by specifying the sin and cos of the rotation angle directly.
-         * The transformation matrix for the rotation
-         * has the value:
-         * <blockquote><pre>  
-         * |  cosTheta  -sinTheta   x-x*cos+y*sin |
-         * |  sinTheta   cosTheta   y-x*sin-y*cos |
-         * |         0          0         1       |
-         * </pre></blockquote> 
-         * 
-         * @param sinTheta the sine of the rotation angle
-         * @param cosTheta the cosine of the rotation angle
-         * @param x the x-ordinate of the rotation point
-         * @param y the y-ordinate of the rotation point
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Sets this transformation to be a rotation
+        /// around a given point (x,y)
+        /// by specifying the sin and cos of the rotation angle directly.
+        /// </summary>
+        /// <remarks>
+        /// The transformation matrix for the rotation
+        /// has the value:
+        /// <blockquote><pre>  
+        /// |  cosTheta  -sinTheta   x-x*cos+y*sin |
+        /// |  sinTheta   cosTheta   y-x*sin-y*cos |
+        /// |         0          0         1       |
+        /// </pre></blockquote> 
+        /// </remarks>
+        /// <param name="sinTheta"> the sine of the rotation angle</param>
+        /// <param name="cosTheta"> the cosine of the rotation angle</param>
+        /// <param name="x"> the x-ordinate of the rotation point</param>
+        /// <param name="y"> the y-ordinate of the rotation point</param>
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation SetToRotation(double sinTheta, double cosTheta, double x, double y)
         {
             _m00 = cosTheta; _m01 = -sinTheta; _m02 = x - x * cosTheta + y * sinTheta;
@@ -629,20 +646,21 @@ namespace NetTopologySuite.Geometries.Utilities
             return this;
         }
 
-        /**
-         * Sets this transformation to be a scaling.
-         * The transformation matrix for a scale
-         * has the value:
-         * <blockquote><pre>  
-         * |  xScale      0  dx |
-         * |  1      yScale  dy |
-         * |  0           0   1 |
-         * </pre></blockquote> 
-         * 
-         * @param xScale the amount to scale x-ordinates by
-         * @param yScale the amount to scale y-ordinates by
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Sets this transformation to be a scaling.
+        /// </summary>
+        /// <remarks>
+        /// The transformation matrix for a scale
+        /// has the value:
+        /// <blockquote><pre>  
+        /// |  xScale      0  dx |
+        /// |  1      yScale  dy |
+        /// |  0           0   1 |
+        /// </pre></blockquote> 
+        /// </remarks>
+        /// <param name="xScale"> the amount to scale x-ordinates by</param>
+        /// <param name="yScale"> the amount to scale y-ordinates by</param>
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation SetToScale(double xScale, double yScale)
         {
             _m00 = xScale; _m01 = 0.0; _m02 = 0.0;
@@ -650,24 +668,25 @@ namespace NetTopologySuite.Geometries.Utilities
             return this;
         }
 
-        /**
-         * Sets this transformation to be a shear.
-         * The transformation matrix for a shear 
-         * has the value:
-         * <blockquote><pre>  
-         * |  1      xShear  0 |
-         * |  yShear      1  0 |
-         * |  0           0  1 |
-         * </pre></blockquote> 
-         * Note that a shear of (1, 1) is <i>not</i> 
-         * equal to shear(1, 0) composed with shear(0, 1).
-         * Instead, shear(1, 1) corresponds to a mapping onto the 
-         * line x = y.
-         * 
-         * @param xShear the x component to shear by
-         * @param yShear the y component to shear by
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Sets this transformation to be a shear.
+        /// </summary>
+        /// <remarks>
+        /// The transformation matrix for a shear 
+        /// has the value:
+        /// <blockquote><pre>  
+        /// |  1      xShear  0 |
+        /// |  yShear      1  0 |
+        /// |  0           0  1 |
+        /// </pre></blockquote> 
+        /// Note that a shear of (1, 1) is <i>not</i> 
+        /// equal to shear(1, 0) composed with shear(0, 1).
+        /// Instead, shear(1, 1) corresponds to a mapping onto the 
+        /// line x = y.
+        /// </remarks>
+        /// <param name="xShear"> the x component to shear by</param>
+        /// <param name="yShear"> the y component to shear by</param>
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation SetToShear(double xShear, double yShear)
         {
             _m00 = 1.0; _m01 = xShear; _m02 = 0.0;
@@ -675,19 +694,21 @@ namespace NetTopologySuite.Geometries.Utilities
             return this;
         }
 
-        /**
-         * Sets this transformation to be a translation.
-         * For a translation by the vector (x, y)
-         * the transformation matrix has the value:
-         * <blockquote><pre>  
-         * |  1  0  dx |
-         * |  1  0  dy |
-         * |  0  0   1 |
-         * </pre></blockquote> 
-         * @param dx the x component to translate by
-         * @param dy the y component to translate by
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Sets this transformation to be a translation.
+        /// </summary>
+        /// <remarks>
+        /// For a translation by the vector (x, y)
+        /// the transformation matrix has the value:
+        /// <blockquote><pre>  
+        /// |  1  0  dx |
+        /// |  1  0  dy |
+        /// |  0  0   1 |
+        /// </pre></blockquote> 
+        /// </remarks>
+        /// <param name="dx"> the x component to translate by</param>
+        /// <param name="dy"> the y component to translate by</param>
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation SetToTranslation(double dx, double dy)
         {
             _m00 = 1.0; _m01 = 0.0; _m02 = dx;
@@ -695,145 +716,140 @@ namespace NetTopologySuite.Geometries.Utilities
             return this;
         }
 
-        /**
-         * Updates the value of this transformation
-         * to that of a reflection transformation composed 
-         * with the current value.
-         * 
-         * @param x0 the x-ordinate of a point on the line to reflect around
-         * @param y0 the y-ordinate of a point on the line to reflect around
-         * @param x1 the x-ordinate of a point on the line to reflect around
-         * @param y1 the y-ordinate of a point on the line to reflect around
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Updates the value of this transformation
+        /// to that of a reflection transformation composed 
+        /// with the current value.
+        /// </summary>
+        /// <param name="x0"> the x-ordinate of a point on the line to reflect around</param>
+        /// <param name="y0"> the y-ordinate of a point on the line to reflect around</param>
+        /// <param name="x1"> the x-ordinate of a point on the line to reflect around</param>
+        /// <param name="y1"> the y-ordinate of a point on the line to reflect around</param>
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation Reflect(double x0, double y0, double x1, double y1)
         {
             Compose(ReflectionInstance(x0, y0, x1, y1));
             return this;
         }
 
-        /**
-         * Updates the value of this transformation
-         * to that of a reflection transformation composed 
-         * with the current value.
-         * 
-         * @param x the x-ordinate of the line to reflect around
-         * @param y the y-ordinate of the line to reflect around
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Updates the value of this transformation
+        /// to that of a reflection transformation composed 
+        /// with the current value.
+        /// </summary>
+        /// <param name="x"> the x-ordinate of the line to reflect around</param>
+        /// <param name="y"> the y-ordinate of the line to reflect around</param>
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation Reflect(double x, double y)
         {
             Compose(ReflectionInstance(x, y));
             return this;
         }
 
-        /**
-         * Updates the value of this transformation
-         * to that of a rotation transformation composed 
-         * with the current value.
-         * Positive angles correspond to a rotation 
-         * in the counter-clockwise direction.
-         * 
-         * @param theta the angle to rotate by in radians
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Updates the value of this transformation
+        /// to that of a rotation transformation composed 
+        /// with the current value.
+        /// </summary>
+        /// <remarks>
+        /// Positive angles correspond to a rotation 
+        /// in the counter-clockwise direction.
+        /// </remarks>
+        /// <param name="theta"> the angle to rotate by in radians</param>
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation Rotate(double theta)
         {
             Compose(RotationInstance(theta));
             return this;
         }
 
-        /**
-         * Updates the value of this transformation
-         * to that of a rotation around the origin composed 
-         * with the current value,
-         * with the sin and cos of the rotation angle specified directly.
-         * 
-         * @param sinTheta the sine of the angle to rotate by
-         * @param cosTheta the cosine of the angle to rotate by
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Updates the value of this transformation
+        /// to that of a rotation around the origin composed 
+        /// with the current value,
+        /// with the sin and cos of the rotation angle specified directly.
+        /// </summary>
+        /// <param name="sinTheta"> the sine of the angle to rotate by</param>
+        /// <param name="cosTheta"> the cosine of the angle to rotate by</param>
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation Rotate(double sinTheta, double cosTheta)
         {
             Compose(RotationInstance(sinTheta, cosTheta));
             return this;
         }
 
-        /**
-         * Updates the value of this transformation
-         * to that of a rotation around a given point composed 
-         * with the current value.
-         * Positive angles correspond to a rotation 
-         * in the counter-clockwise direction.
-         * 
-         * @param theta the angle to rotate by, in radians
-         * @param x the x-ordinate of the rotation point
-         * @param y the y-ordinate of the rotation point
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Updates the value of this transformation
+        /// to that of a rotation around a given point composed 
+        /// with the current value.
+        /// </summary>
+        /// <remarks>
+        /// Positive angles correspond to a rotation 
+        /// in the counter-clockwise direction.
+        /// </remarks>
+        /// <param name="theta"> the angle to rotate by, in radians</param>
+        /// <param name="x"> the x-ordinate of the rotation point</param>
+        /// <param name="y"> the y-ordinate of the rotation point</param>
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation Rotate(double theta, double x, double y)
         {
             Compose(RotationInstance(theta, x, y));
             return this;
         }
 
-        /**
-         * Updates the value of this transformation
-         * to that of a rotation around a given point composed 
-         * with the current value,
-         * with the sin and cos of the rotation angle specified directly.
-         * 
-         * @param sinTheta the sine of the angle to rotate by
-         * @param cosTheta the cosine of the angle to rotate by
-         * @param x the x-ordinate of the rotation point
-         * @param y the y-ordinate of the rotation point
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Updates the value of this transformation
+        /// to that of a rotation around a given point composed 
+        /// with the current value,
+        /// with the sin and cos of the rotation angle specified directly.
+        /// </summary>
+        /// <param name="sinTheta"> the sine of the angle to rotate by</param>
+        /// <param name="cosTheta"> the cosine of the angle to rotate by</param>
+        /// <param name="x"> the x-ordinate of the rotation point</param>
+        /// <param name="y"> the y-ordinate of the rotation point</param>
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation Rotate(double sinTheta, double cosTheta, double x, double y)
         {
             Compose(RotationInstance(sinTheta, cosTheta));
             return this;
         }
 
-        /**
-         * Updates the value of this transformation
-         * to that of a scale transformation composed 
-         * with the current value.
-         * 
-         * @param xScale the value to scale by in the x direction
-         * @param yScale the value to scale by in the y direction
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Updates the value of this transformation
+        /// to that of a scale transformation composed 
+        /// with the current value.
+        /// </summary>
+        /// <param name="xScale"> the value to scale by in the x direction</param>
+        /// <param name="yScale"> the value to scale by in the y direction</param>
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation Scale(double xScale, double yScale)
         {
             Compose(ScaleInstance(xScale, yScale));
             return this;
         }
 
-        /**
-         * Updates the value of this transformation
-         * to that of a shear transformation composed 
-         * with the current value.
-         * 
-         * @param xShear the value to shear by in the x direction
-         * @param yShear the value to shear by in the y direction
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Updates the value of this transformation
+        /// to that of a shear transformation composed 
+        /// with the current value.
+        /// </summary>
+        /// <param name="xShear"> the value to shear by in the x direction</param>
+        /// <param name="yShear"> the value to shear by in the y direction</param>
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation Shear(double xShear, double yShear)
         {
             Compose(ShearInstance(xShear, yShear));
             return this;
         }
 
-        /**
-         * Updates the value of this transformation
-         * to that of a translation transformation composed 
-         * with the current value.
-         * 
-         * @param x the value to translate by in the x direction
-         * @param y the value to translate by in the y direction
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Updates the value of this transformation
+        /// to that of a translation transformation composed 
+        /// with the current value.
+        /// </summary>
+        /// <param name="x"> the value to translate by in the x direction</param>
+        /// <param name="y"> the value to translate by in the y direction</param>
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation Translate(double x, double y)
         {
             Compose(TranslationInstance(x, y));
@@ -841,20 +857,21 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
 
-        /**
-         * Updates this transformation to be
-         * the composition of this transformation with the given {@link AffineTransformation}. 
-         * This produces a transformation whose effect 
-         * is equal to applying this transformation 
-         * followed by the argument transformation.
-         * Mathematically,
-         * <blockquote><pre>
-         * A.compose(B) = T<sub>B</sub> x T<sub>A</sub>
-         * </pre></blockquote>
-         * 
-         * @param trans an affine transformation
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Updates this transformation to be
+        /// the composition of this transformation with the given <see cref="AffineTransformation" />. 
+        /// </summary>
+        /// <remarks>
+        /// This produces a transformation whose effect 
+        /// is equal to applying this transformation 
+        /// followed by the argument transformation.
+        /// Mathematically,
+        /// <blockquote><pre>
+        /// A.compose(B) = T<sub>B</sub> x T<sub>A</sub>
+        /// </pre></blockquote>
+        /// </remarks>
+        /// <param name="trans"> an affine transformation</param>
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation Compose(AffineTransformation trans)
         {
             double mp00 = trans._m00 * _m00 + trans._m01 * _m10;
@@ -872,20 +889,21 @@ namespace NetTopologySuite.Geometries.Utilities
             return this;
         }
 
-        /**
-         * Updates this transformation to be the composition 
-         * of a given {@link AffineTransformation} with this transformation.
-         * This produces a transformation whose effect 
-         * is equal to applying the argument transformation 
-         * followed by this transformation.
-         * Mathematically,
-         * <blockquote><pre>
-         * A.composeBefore(B) = T<sub>A</sub> x T<sub>B</sub>
-         * </pre></blockquote>
-         * 
-         * @param trans an affine transformation
-         * @return this transformation, with an updated matrix
-         */
+        /// <summary>
+        /// Updates this transformation to be the composition 
+        /// of a given {@link AffineTransformation} with this transformation.
+        /// </summary>
+        /// <remarks>
+        /// This produces a transformation whose effect 
+        /// is equal to applying the argument transformation 
+        /// followed by this transformation.
+        /// Mathematically,
+        /// <blockquote><pre>
+        /// A.composeBefore(B) = T<sub>A</sub> x T<sub>B</sub>
+        /// </pre></blockquote>
+        /// </remarks>
+        /// <param name="trans"> an affine transformation</param>
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation ComposeBefore(AffineTransformation trans)
         {
             double mp00 = _m00 * trans._m00 + _m01 * trans._m10;
@@ -903,15 +921,15 @@ namespace NetTopologySuite.Geometries.Utilities
             return this;
         }
 
-        /**
-         * Applies this transformation to the <tt>src</tt> coordinate
-         * and places the results in the <tt>dest</tt> coordinate
-         * (which may be the same as the source).
-         * 
-         * @param src the coordinate to transform
-         * @param dest the coordinate to accept the results 
-         * @return the <tt>dest</tt> coordinate
-         */
+        /// <summary>
+        /// Applies this transformation to the <tt>src</tt> coordinate
+        /// and places the results in the <tt>dest</tt> coordinate
+        /// (which may be the same as the source).
+        /// </summary>
+        /// <param name="src"> the coordinate to transform</param>
+        /// <param name="dest"> the coordinate to accept the results</param> 
+        /// <returns> the <code>dest</code> coordinate</returns>
+        ///
         public ICoordinate Transform(ICoordinate src, ICoordinate dest)
         {
             double xp = _m00 * src.X + _m01 * src.Y + _m02;
@@ -921,13 +939,12 @@ namespace NetTopologySuite.Geometries.Utilities
             return dest;
         }
 
-        /**
-         * Applies this transformation to the i'th coordinate
-         * in the given CoordinateSequence.
-         * 
-         *@param seq  a <code>CoordinateSequence</code>
-         *@param i the index of the coordinate to transform
-         */
+        /// <summary>
+        /// Applies this transformation to the i'th coordinate
+        /// in the given CoordinateSequence.
+        /// </summary>
+        ///<param name="seq"> a <code>CoordinateSequence</code></param>
+        ///<param name="i"> the index of the coordinate to transform</param>
         public void Transform(ICoordinateSequence seq, int i)
         {
             double xp = _m00 * seq.GetOrdinate(i, Ordinates.X) + _m01 * seq.GetOrdinate(i, Ordinates.Y) + _m02;
@@ -936,12 +953,6 @@ namespace NetTopologySuite.Geometries.Utilities
             seq.SetOrdinate(i, Ordinates.Y, yp);
         }
 
-        /**
-         * 
-         * 
-         *@param seq  
-         *@param i 
-         */
         ///<summary>
         /// Transforms the i'th coordinate in the input sequence
         ///</summary>
@@ -957,12 +968,11 @@ namespace NetTopologySuite.Geometries.Utilities
             get { return true; }
         }
 
-        /**
-         * Reports that this filter should continue to be executed until 
-         * all coordinates have been transformed.
-         * 
-         * @return false
-         */
+        /// <summary>
+        /// Reports that this filter should continue to be executed until 
+        /// all coordinates have been transformed.
+        /// </summary>
+        /// <returns> false</returns>
         public Boolean Done
         {
             get { return false; }

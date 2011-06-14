@@ -25,7 +25,7 @@ namespace NetTopologySuite.Geometries.Prepared
             if (!EnvelopesIntersect(g))
                 return false;
 
-            /**
+            /*
              * This avoids computing topology for the test geometry
              */
             return IsAnyTargetComponentInTest(g);

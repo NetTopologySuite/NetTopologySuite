@@ -249,16 +249,18 @@ namespace NetTopologySuite.Geometries
         /// Creates a <see cref="IGeometry"/> with the same extent as the given envelope.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// The Geometry returned is guaranteed to be valid. 
         /// To provide this behaviour, the following cases occur:
+        /// </para>
         /// <para>
         /// If the <c>Envelope</c> is:
-        /// <list type="Table">
-        /// <item>null</item><description>returns an empty <see cref="IPoint"/></description>
-        /// <item>a point</item><description>returns a non-empty <see cref="IPoint"/></description>
-        /// <item>a line</item><description>returns a two-point <see cref="ILineString"/></description>
-        /// <item>a rectangle</item><description>returns a {@link Polygon}> whose points are (minx, miny), (maxx, miny), (maxx, maxy), (minx, maxy), (minx, miny).</description>
-        /// </list>
+        /// <ul>
+        /// <li>null returns an empty <see cref="IPoint"/></li>
+        /// <li>a point returns a non-empty <see cref="IPoint"/></li>
+        /// <li>a line returns a two-point <see cref="ILineString"/></li>
+        /// <li>a rectangle returns a <see cref="IPolygon"/> whose points are (minx, miny), (maxx, miny), (maxx, maxy), (minx, maxy), (minx, miny).</li>
+        /// </ul>
         /// </para>
         /// </remarks>
         /// <param name="envelope">The <c>Envelope</c></param>       

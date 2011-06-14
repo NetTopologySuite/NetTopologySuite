@@ -62,12 +62,12 @@ namespace NetTopologySuite.Algorithm
         }        
 
         /// <summary> 
-        /// Tests whether a point lies inside a ring.
+        /// Tests whether a point lies inside or on a ring.
         /// </summary>
         /// <remarks>
         /// <para>The ring may be oriented in either direction.</para>
         /// <para>A point lying exactly on the ring boundary is considered to be inside the ring.</para>
-        /// <para>This algorithm does not attempt to first check the point against the envelope
+        /// <para>This method does <i>not</i> first check the point against the envelope
         /// of the ring.</para>
         /// </remarks>
         /// <param name="p">Point to check for ring inclusion.</param>
@@ -95,15 +95,13 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary> 
-        /// Test whether a point lies on the line segments defined by a
+        /// Tests whether a point lies on the line segments defined by a
         /// list of coordinates.
         /// </summary>
         /// <param name="p"></param>
         /// <param name="pt"></param>
-        /// <returns> 
-        /// <c>true</c> true if
-        /// the point is a vertex of the line or lies in the interior of a line
-        /// segment in the linestring.
+        /// <returns>true if the point is a vertex of the line
+        /// or lies in the interior of a line segment in the linestring
         /// </returns>
         public static bool IsOnLine(ICoordinate p, ICoordinate[] pt) 
         {

@@ -87,7 +87,7 @@ namespace NetTopologySuite.Noding
 
         private void CheckInteriorIntersections()
         {
-            /**
+            /*
              * MD - It may even be reliable to simply check whether 
              * end segments (of SegmentStrings) have an interior intersection,
              * since noding should have split any true interior intersections already.

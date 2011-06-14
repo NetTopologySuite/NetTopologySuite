@@ -256,17 +256,18 @@ namespace NetTopologySuite.Geometries
             return CGAlgorithms.DistancePointLinePerpendicular(p, P0, P1);
         }
 
-        /**
-         * Computes the {@link Coordinate} that lies a given
-         * fraction along the line defined by this segment.
-         * A fraction of <code>0.0</code> returns the start point of the segment;
-         * a fraction of <code>1.0</code> returns the end point of the segment.
-         * If the fraction is < 0.0 or > 1.0 the point returned 
-         * will lie before the start or beyond the end of the segment. 
-         *
-         * @param segmentLengthFraction the fraction of the segment length along the line
-         * @return the point at that distance
-         */
+        /// <summary>
+        /// Computes the <see cref="ICoordinate" /> that lies a given
+        /// fraction along the line defined by this segment.
+        /// </summary>
+        /// <remarks>
+        /// A fraction of <code>0.0</code> returns the start point of the segment;
+        /// A fraction of <code>1.0</code> returns the end point of the segment.
+        /// If the fraction is &lt; 0.0 or &gt; 1.0 the point returned 
+        /// will lie before the start or beyond the end of the segment. 
+        /// </remarks>
+        /// <param name="segmentLengthFraction"> the fraction of the segment length along the line</param>
+        /// <returns> the point at that distance</returns>
         public ICoordinate PointAlong(double segmentLengthFraction)
         {
             ICoordinate coord = new Coordinate();
@@ -275,20 +276,21 @@ namespace NetTopologySuite.Geometries
             return coord;
         }
 
-        /**
-         * Computes the {@link Coordinate} that lies a given
-         * fraction along the line defined by this segment and offset from 
-         * the segment by a given distance.
-         * A fraction of <code>0.0</code> offsets from the start point of the segment;
-         * a fraction of <code>1.0</code> offsets from the end point of the segment.
-         * The computed point is offset to the left of the line if the offset distance is
-         * positive, to the right if negative.
-         *
-         * @param segmentLengthFraction the fraction of the segment length along the line
-         * @param offsetDistance the distance the point is offset from the segment
-         *    (positive is to the left, negative is to the right)
-         * @return the point at that distance and offset
-         */
+        /// <summary>
+        /// Computes the <see cref="ICoordinate" /> that lies a given
+        /// </summary>
+        /// <remarks>
+        /// A fraction along the line defined by this segment and offset from 
+        /// the segment by a given distance.
+        /// A fraction of <code>0.0</code> offsets from the start point of the segment;
+        /// A fraction of <code>1.0</code> offsets from the end point of the segment.
+        /// The computed point is offset to the left of the line if the offset distance is
+        /// positive, to the right if negative.
+        /// </remarks>
+        /// <param name="segmentLengthFraction"> the fraction of the segment length along the line</param>
+        /// <param name="offsetDistance"> the distance the point is offset from the segment</param>
+        /// (positive is to the left, negative is to the right)
+        /// <returns> the point at that distance and offset</returns>
         public ICoordinate PointAlongOffset(double segmentLengthFraction, double offsetDistance)
         {
             // the point on the segment line
@@ -341,18 +343,18 @@ namespace NetTopologySuite.Geometries
             return r;
         }
 
-        /**
-         * Computes the fraction of distance (in <tt>[0.0, 1.0]</tt>) 
-         * that the projection of a point occurs along this line segment.
-         * If the point is beyond either ends of the line segment,
-         * the closest fractional value (<tt>0.0</tt> or <tt>1.0</tt>) is returned.
-         * <p>
-         * Essentially, this is the {@link #projectionFactor} clamped to 
-         * the range <tt>[0.0, 1.0]</tt>.
-         *  
-         * @param inputPt the point
-         * @return the fraction along the line segment the projection of the point occurs
-         */
+        /// <summary>
+        /// Computes the fraction of distance (in [0.0, 1.0]) 
+        /// that the projection of a point occurs along this line segment.
+        /// If the point is beyond either ends of the line segment,
+        /// the closest fractional value (0.0 or 1.0) is returned.
+        /// </summary>
+        /// <remarks>
+        /// Essentially, this is the <see cref="ProjectionFactor(ICoordinate)" /> clamped to 
+        /// the range [0.0, 1.0].
+        /// </remarks>
+        /// <param name="inputPt"> the point</param>
+        /// <returns> the fraction along the line segment the projection of the point occurs</returns>
         public double SegmentFraction(ICoordinate inputPt)
         {
             double segFrac = ProjectionFactor(inputPt);
@@ -493,6 +495,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="line"></param>
         /// <returns> An intersection point, or <c>null</c> if there is none.</returns>
+        /// <see cref="RobustLineIntersector"/>
         public ICoordinate Intersection(LineSegment line)
         {
             LineIntersector li = new RobustLineIntersector();

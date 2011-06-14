@@ -95,10 +95,10 @@ namespace NetTopologySuite.Noding
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="oca"></param>
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="oca"></param>
         /*/// <param name="segString"></param>*/
         /// <returns></returns>
         private ISegmentString FindMatching(OrientedCoordinateArray oca /*, ISegmentString segString*/)

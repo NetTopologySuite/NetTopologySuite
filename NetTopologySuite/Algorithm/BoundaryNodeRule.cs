@@ -84,7 +84,7 @@ namespace NetTopologySuite.Algorithm
             }
         }
 
-        ///<summary>
+        /// <summary>
         /// A {@link BoundaryNodeRule} which specifies that any points which are endpoints
         /// of lineal components are in the boundary of the
         /// parent geometry.
@@ -92,12 +92,12 @@ namespace NetTopologySuite.Algorithm
         /// of boundary.
         /// Under this rule {@link LinearRing}s have a non-empty boundary
         /// (the common endpoint of the underlying LineString).
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// This rule is useful when dealing with linear networks.
         /// For example, it can be used to check
         /// whether linear networks are correctly noded.
-         // The usual network topology constraint is that linear segments may touch only at endpoints.
+        /// The usual network topology constraint is that linear segments may touch only at endpoints.
         /// In the case of a segment touching a closed segment (ring) at one point,
         /// the Mod2 rule cannot distinguish between the permitted case of touching at the
         /// node point and the invalid case of touching at some other interior (non-node) point.

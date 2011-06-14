@@ -44,6 +44,7 @@ namespace NetTopologySuite.Noding
         /// Reports whether the client of this class needs to continue testing
         /// all intersections in an arrangement.
         ///</summary>
+        ///<returns>if there is no need to continue testing segments</returns>
         Boolean IsDone { get; }
 
     }

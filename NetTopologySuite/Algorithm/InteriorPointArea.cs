@@ -54,8 +54,8 @@ namespace NetTopologySuite.Algorithm
 
         /// <summary> 
         /// Tests the interior vertices (if any)
-        /// defined by a areal Geometry for the best inside point.
-        /// If a Geometry is not of dimension 2 it is not tested.
+        /// defined by an areal Geometry for the best inside point.
+        /// If a component Geometry is not of dimension 2 it is not tested.
         /// </summary>
         /// <param name="geom">The point to add.</param>
         private void Add(IGeometry geom)

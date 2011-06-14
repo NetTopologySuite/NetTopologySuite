@@ -181,7 +181,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="e"></param>
         /// <returns></returns>
         public int CompareTo(EdgeEnd e)
         {

@@ -90,9 +90,9 @@ namespace NetTopologySuite.Geometries.Prepared
             return _baseGeom.Contains(g);
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether the base <see cref="IGeometry"/> contains a given geometry.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// <para>
         /// The <c>ContainsProperly</c> predicate has the following equivalent definitions:
@@ -114,7 +114,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// </remarks>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry properly contains the given geometry</returns>
-        //// <see cref="IGeometry.ContainsProperly(IGeometry)"/>
+        /// <see cref="IPreparedGeometry.ContainsProperly(IGeometry)"/>
         /// <remarks>Default implementation.</remarks>
         public virtual bool ContainsProperly(IGeometry g)
         {

@@ -47,7 +47,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if the test geometry intersects</returns>
         public bool Intersects(IGeometry geom)
         {
-            /**
+            /*
              * If any segments intersect, obviously intersects = true
              */
             IList<ISegmentString> lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
@@ -57,18 +57,18 @@ namespace NetTopologySuite.Geometries.Prepared
             if (segsIntersect)
                 return true;
 
-            /**
+            /*
              * For L/L case we are done
              */
             if (geom.Dimension == Dimensions.Curve) return false;
 
-            /**
+            /*
              * For L/A case, need to check for proper inclusion of the target in the test
              */
             if (geom.Dimension == Dimensions.Surface
                     && prepLine.IsAnyTargetComponentInTest(geom)) return true;
 
-            /** 
+            /*
              * For L/P case, need to check if any points lie on line(s)
              */
             if (geom.Dimension == Dimensions.Point)
@@ -89,7 +89,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if any point of the argument intersects the prepared geometry</returns>
         protected bool IsAnyTestPointInTarget(IGeometry testGeom)
         {
-            /**
+            /*
              * This could be optimized by using the segment index on the lineal target.
              * However, it seems like the L/P case would be pretty rare in practice.
              */

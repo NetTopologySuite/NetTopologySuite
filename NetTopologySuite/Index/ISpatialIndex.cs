@@ -33,7 +33,7 @@ namespace NetTopologySuite.Index
 
         /// <summary>
         /// Queries the index for all items whose extents intersect the given search <see cref="Envelope" />,
-        /// and applies an <see cref="IItemVisitor" /> to them.
+        /// and applies an <see cref="IItemVisitor{T}" /> to them.
         /// Note that some kinds of indexes may also return objects which do not in fact
         /// intersect the query envelope.
         /// </summary>

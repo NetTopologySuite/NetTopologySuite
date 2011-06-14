@@ -61,10 +61,10 @@ namespace NetTopologySuite.Algorithm
         ///<summary>
         /// Returns the angle of the vector from p0 to p1, relative to the positive X-axis.
         /// </summary>
-        /// <remarks>The angle will be in the range [ -Pi, Pi ].</remarks>
+        /// <remarks>The angle is normalized to be in the range [ -Pi, Pi ].</remarks>
         /// <param name="p0">The start-point</param>
         /// <param name="p1">The end-point</param>
-        /// <returns>The angle (in radians) that p0-p1 makes with the positive X-axis</returns>
+        /// <returns>The normalized angle (in radians) that p0-p1 makes with the positive X-axis</returns>
         public static double Angle(ICoordinate p0, ICoordinate p1)
         {
             double dx = p1.X - p0.X;
@@ -76,10 +76,10 @@ namespace NetTopologySuite.Algorithm
         /// Returns the angle that the vector from (0,0) to p, relative to the positive X-axis.
         ///</summary>
         /// <remarks>
-        /// The angle will be in the range [ -Pi, Pi ].
+        /// The angle is normalized to be in the range [ -Pi, Pi ].
         /// </remarks>
         /// <param name="p">The point</param>
-        /// <returns>The angle (in radians) that (0,0)-p makes with the positive X-axis.</returns>
+        /// <returns>The normalized angle (in radians) that (0,0)-p makes with the positive X-axis.</returns>
         public static double Angle(ICoordinate p)
         {
             return Math.Atan2(p.Y, p.X);

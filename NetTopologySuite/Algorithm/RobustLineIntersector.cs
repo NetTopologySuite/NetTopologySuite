@@ -61,12 +61,12 @@ namespace NetTopologySuite.Algorithm
             if (collinear)
                 return ComputeCollinearIntersection(p1, p2, q1, q2);
 
-            /**
+            /*
              * At this point we know that there is a single intersection point
              * (since the lines are not collinear).
              */
 
-            /**
+            /*
              *  Check if the intersection is an endpoint. If it is, copy the endpoint as
              *  the intersection point. Copying the point rather than computing it
              *  ensures the point has the exact value, which is important for
@@ -78,7 +78,7 @@ namespace NetTopologySuite.Algorithm
             {
                 IsProper = false;
 
-                /**
+                /*
                  * Check for two equal endpoints.  
                  * This is done explicitly rather than by the orientation tests
                  * below in order to improve robustness.
@@ -186,7 +186,7 @@ namespace NetTopologySuite.Algorithm
         {
             ICoordinate intPt = IntersectionWithNormalization(p1, p2, q1, q2);
 
-            /**
+            /*
              * Due to rounding it can happen that the computed intersection is
              * outside the envelopes of the input segments.  Clearly this
              * is inconsistent. 

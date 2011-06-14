@@ -26,7 +26,7 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             get
             {
-                /**
+                /*
                  * MD - Another option would be to use a simple scan for 
                  * segment testing for small geometries.  
                  * However, testing indicates that there is no particular advantage 

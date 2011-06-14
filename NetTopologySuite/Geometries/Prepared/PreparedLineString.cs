@@ -20,7 +20,7 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             get
             {
-                /**
+                /*
                  * MD - Another option would be to use a simple scan for 
                  * segment testing for small geometries.  
                  * However, testing indicates that there is no particular advantage 
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Geometries.Prepared
             return PreparedLineStringIntersects.Intersects(this, g);
         }
 
-        /**
+        /*
          * There's not much point in trying to optimize contains, since 
          * contains for linear targets requires the entire test geometry 
          * to exactly match the target linework.

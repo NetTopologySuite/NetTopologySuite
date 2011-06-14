@@ -7,80 +7,85 @@ using NetTopologySuite.Noding.Snapround;
 
 namespace NetTopologySuite.Operation.Buffer
 {
-    /**
-     * Computes the buffer of a geometry, for both positive and negative buffer distances.
-     * <p>
-     * In GIS, the positive buffer of a geometry is defined as
-     * the Minkowski sum or difference of the geometry
-     * with a circle of radius equal to the absolute value of the buffer distance.
-     * In the CAD/CAM world buffers are known as </i>offset curves</i>.
-     * In morphological analysis they are known as <i>erosion</i> and <i>dilation</i>
-     * <p>
-     * The buffer operation always returns a polygonal result.
-     * The negative or zero-distance buffer of lines and points is always an empty {@link Polygon}.
-     * <p>
-     * Since true buffer curves may contain circular arcs,
-     * computed buffer polygons can only be approximations to the true geometry.
-     * The user can control the accuracy of the curve approximation by specifying
-     * the number of linear segments used to approximate curves.
-     * <p>
-     * The <b>end cap style</b> of a linear buffer may be specified. The
-     * following end cap styles are supported:
-     * <ul
-     * <li>{@link #CAP_ROUND} - the usual round end caps
-     * <li>{@link #CAP_BUTT} - end caps are truncated flat at the line ends
-     * <li>{@link #CAP_SQUARE} - end caps are squared off at the buffer distance beyond the line ends
-     * </ul>
-     * <p>
-     *
-     * @version 1.7
-     */
+    /// <summary>
+    /// Computes the buffer of a geometry, for both positive and negative buffer distances.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// In GIS, the positive buffer of a geometry is defined as
+    /// the Minkowski sum or difference of the geometry
+    /// with a circle of radius equal to the absolute value of the buffer distance.
+    /// In the CAD/CAM world buffers are known as <i>offset curves</i>.
+    /// In morphological analysis they are known as <i>erosion</i> and <i>dilation</i>
+    /// </para>
+    /// <para>
+    /// The buffer operation always returns a polygonal result.
+    /// The negative or zero-distance buffer of lines and points is always an empty <see cref="IPolygon" />.
+    /// </para>    
+    /// <para>
+    /// Since true buffer curves may contain circular arcs,
+    /// computed buffer polygons can only be approximations to the true geometry.
+    /// The user can control the accuracy of the curve approximation by specifying
+    /// the number of linear segments used to approximate curves.
+    /// </para>
+    /// <para>
+    /// The <b>end cap style</b> of a linear buffer may be specified. The
+    /// following end cap styles are supported:
+    /// <ul>
+    /// <li><see cref="GeoAPI.Operations.Buffer.BufferStyle.CapRound" /> - the usual round end caps</li>
+    /// <li><see cref="GeoAPI.Operations.Buffer.BufferStyle.CapButt" /> - end caps are truncated flat at the line ends</li>
+    /// <li><see cref="GeoAPI.Operations.Buffer.BufferStyle.CapSquare" /> - end caps are squared off at the buffer distance beyond the line ends</li>
+    /// </ul>
+    /// </para>
+    ///
+    /// @version 1.7
+    /// </remarks>
     public class BufferOp
     {
-        ///**
-        // * Specifies a round line buffer end cap style.
-        // * @deprecated use BufferParameters
-        // */
-        //public static final int CAP_ROUND = BufferParameters.CAP_ROUND;
-        ///**
-        // * Specifies a butt (or flat) line buffer end cap style.
-        // * @deprecated use BufferParameters
-        // */
-        //public static final int CAP_BUTT = BufferParameters.CAP_FLAT;
+        // /**
+        //  * Specifies a round line buffer end cap style.
+        //  * @deprecated use BufferParameters
+        //  */
+        // public static final int CAP_ROUND = BufferParameters.CAP_ROUND;
+        // /**
+        //  * Specifies a butt (or flat) line buffer end cap style.
+        //  * @deprecated use BufferParameters
+        //  */
+        // public static final int CAP_BUTT = BufferParameters.CAP_FLAT;
 
-        ///**
-        // * Specifies a butt (or flat) line buffer end cap style.
-        // * @deprecated use BufferParameters
-        // */
-        //public static final int CAP_FLAT = BufferParameters.CAP_FLAT;
-        ///**
-        // * Specifies a square line buffer end cap style.
-        // * @deprecated use BufferParameters
-        // */
-        //public static final int CAP_SQUARE = BufferParameters.CAP_SQUARE;
+        // /**
+        //  * Specifies a butt (or flat) line buffer end cap style.
+        //  * @deprecated use BufferParameters
+        //  */
+        // public static final int CAP_FLAT = BufferParameters.CAP_FLAT;
+        // /**
+        //  * Specifies a square line buffer end cap style.
+        //  * @deprecated use BufferParameters
+        //  */
+        // public static final int CAP_SQUARE = BufferParameters.CAP_SQUARE;
 
-        /**
-         * A number of digits of precision which leaves some computational "headroom"
-         * for floating point operations.
-         * 
-         * This value should be less than the decimal precision of double-precision values (16).
-         */
+        /// <summary>
+        /// A number of digits of precision which leaves some computational "headroom"
+        /// for floating point operations.
+        /// </summary>
+        /// <remarks>
+        /// This value should be less than the decimal precision of double-precision values (16).
+        /// </remarks>
         private const int MaxPrecisionDigits = 12;
 
-        /**
-         * Compute a scale factor to limit the precision of
-         * a given combination of Geometry and buffer distance.
-         * The scale factor is determined by a combination of
-         * the number of digits of precision in the (geometry + buffer distance),
-         * limited by the supplied <code>maxPrecisionDigits</code> value.
-         *
-         * @param g the Geometry being buffered
-         * @param distance the buffer distance
-         * @param maxPrecisionDigits the max # of digits that should be allowed by
-         *          the precision determined by the computed scale factor
-         *
-         * @return a scale factor for the buffer computation
-         */
+        /// <summary>
+        /// Compute a scale factor to limit the precision of
+        /// a given combination of Geometry and buffer distance.
+        /// The scale factor is determined by a combination of
+        /// the number of digits of precision in the (geometry + buffer distance),
+        /// limited by the supplied <code>maxPrecisionDigits</code> value.
+        /// </summary>
+        /// <param name="g"> the Geometry being buffered</param>
+        /// <param name="distance"> the buffer distance</param>
+        /// <param name="maxPrecisionDigits"> the max # of digits that should be allowed by
+        ///          the precision determined by the computed scale factor</param>
+        ///
+        /// <returns> a scale factor for the buffer computation</returns>
         private static double PrecisionScaleFactor(IGeometry g,
             double distance,
           int maxPrecisionDigits)
@@ -98,13 +103,12 @@ namespace NetTopologySuite.Operation.Buffer
             return scaleFactor;
         }
 
-        /**
-         * Computes the buffer of a geometry for a given buffer distance.
-         *
-         * @param g the geometry to buffer
-         * @param distance the buffer distance
-         * @return the buffer of the input geometry
-         */
+        /// <summary>
+        /// Computes the buffer of a geometry for a given buffer distance.
+        /// </summary>
+        /// <param name="g"> the geometry to buffer</param>
+        /// <param name="distance"> the buffer distance</param>
+        /// <returns> the buffer of the input geometry</returns>
         public static IGeometry Buffer(IGeometry g, double distance)
         {
             BufferOp gBuf = new BufferOp(g);
@@ -114,16 +118,14 @@ namespace NetTopologySuite.Operation.Buffer
             return geomBuf;
         }
 
-        /**
-         * Comutes the buffer for a geometry for a given buffer distance
-         * and accuracy of approximation.
-         *
-         * @param g the geometry to buffer
-         * @param distance the buffer distance
-         * @param params the buffer parameters to use
-         * @return the buffer of the input geometry
-         *
-         */
+        /// <summary>
+        /// Comutes the buffer for a geometry for a given buffer distance
+        /// and accuracy of approximation.
+        /// </summary>
+        /// <param name="g"> the geometry to buffer</param>
+        /// <param name="distance"> the buffer distance</param>
+        /// <param name="parameters"> the buffer parameters to use</param>
+        /// <returns> the buffer of the input geometry</returns>
         public static IGeometry Buffer(IGeometry g, double distance, IBufferParameters parameters)
         {
             BufferOp bufOp = new BufferOp(g, parameters);
@@ -131,16 +133,14 @@ namespace NetTopologySuite.Operation.Buffer
             return geomBuf;
         }
 
-        /**
-         * Comutes the buffer for a geometry for a given buffer distance
-         * and accuracy of approximation.
-         *
-         * @param g the geometry to buffer
-         * @param distance the buffer distance
-         * @param quadrantSegments the number of segments used to approximate a quarter circle
-         * @return the buffer of the input geometry
-         *
-         */
+        /// <summary>
+        /// Comutes the buffer for a geometry for a given buffer distance
+        /// and accuracy of approximation.
+        /// </summary>
+        /// <param name="g"> the geometry to buffer</param>
+        /// <param name="distance"> the buffer distance</param>
+        /// <param name="quadrantSegments"> the number of segments used to approximate a quarter circle</param>
+        /// <returns> the buffer of the input geometry</returns>
         public static IGeometry Buffer(IGeometry g, double distance, int quadrantSegments)
         {
             BufferOp bufOp = new BufferOp(g);
@@ -149,17 +149,15 @@ namespace NetTopologySuite.Operation.Buffer
             return geomBuf;
         }
 
-        /**
-         * Comutes the buffer for a geometry for a given buffer distance
-         * and accuracy of approximation.
-         *
-         * @param g the geometry to buffer
-         * @param distance the buffer distance
-         * @param quadrantSegments the number of segments used to approximate a quarter circle
-         * @param endCapStyle the end cap style to use
-         * @return the buffer of the input geometry
-         *
-         */
+        /// <summary>
+        /// Comutes the buffer for a geometry for a given buffer distance
+        /// and accuracy of approximation.
+        /// </summary>
+        /// <param name="g"> the geometry to buffer</param>
+        /// <param name="distance"> the buffer distance</param>
+        /// <param name="quadrantSegments"> the number of segments used to approximate a quarter circle</param>
+        /// <param name="endCapStyle"> the end cap style to use</param>
+        /// <returns> the buffer of the input geometry</returns>
         public static IGeometry Buffer(IGeometry g, double distance,
           int quadrantSegments,
           BufferStyle endCapStyle)
@@ -179,59 +177,52 @@ namespace NetTopologySuite.Operation.Buffer
         private IGeometry _resultGeometry;
         private Exception _saveException;   // debugging only
 
-        /**
-         * Initializes a buffer computation for the given geometry
-         *
-         * @param g the geometry to buffer
-         */
+        /// <summary>
+        /// Initializes a buffer computation for the given geometry
+        /// </summary>
+        /// <param name="g"> the geometry to buffer</param>
         public BufferOp(IGeometry g)
         {
             _argGeom = g;
         }
 
-        /**
-         * Initializes a buffer computation for the given geometry
-         * with the given set of parameters
-         *
-         * @param g the geometry to buffer
-         * @param bufParams the buffer parameters to use
-         */
+        /// <summary>
+        /// Initializes a buffer computation for the given geometry
+        /// with the given set of parameters
+        /// </summary>
+        /// <param name="g"> the geometry to buffer</param>
+        /// <param name="bufParams"> the buffer parameters to use</param>
         public BufferOp(IGeometry g, IBufferParameters bufParams)
         {
             _argGeom = g;
             _bufParams = bufParams;
         }
 
-        /**
-         * Specifies the end cap style of the generated buffer.
-         * The styles supported are {@link #CAP_ROUND}, {@link #CAP_BUTT}, and {@link #CAP_SQUARE}.
-         * The default is CAP_ROUND.
-         *
-         * @param endCapStyle the end cap style to specify
-         */
+        /// <summary>
+        /// Specifies the end cap style of the generated buffer.
+        /// The styles supported are <see cref="GeoAPI.Operations.Buffer.BufferStyle.CapRound" />, <see cref="GeoAPI.Operations.Buffer.BufferStyle.CapButt" />, and <see cref="GeoAPI.Operations.Buffer.BufferStyle.CapSquare" />.
+        /// The default is <see cref="GeoAPI.Operations.Buffer.BufferStyle.CapRound" />.
+        /// </summary>
         public BufferStyle BufferStyle
         {
             get { return (BufferStyle)_bufParams.EndCapStyle; }
             set { _bufParams.EndCapStyle = (EndCapStyle)value; }
         }
 
-        /**
-         * Sets the number of segments used to approximate a angle fillet
-         *
-         * @param quadrantSegments the number of segments in a fillet for a quadrant
-         */
+        /// <summary>
+        /// Sets the number of segments used to approximate a angle fillet
+        /// </summary>
         public int QuadrantSegments
         {
             get { return _bufParams.QuadrantSegments; }
             set { _bufParams.QuadrantSegments = value; }
         }
 
-        /**
-         * Returns the buffer computed for a geometry for a given buffer distance.
-         *
-         * @param distance the buffer distance
-         * @return the buffer of the input geometry
-         */
+        /// <summary>
+        /// Returns the buffer computed for a geometry for a given buffer distance.
+        ///</summary>
+        /// <param name="distance"> the buffer distance</param>
+        /// <returns> the buffer of the input geometry</returns>
         public IGeometry GetResultGeometry(double distance)
         {
             _distance = distance;

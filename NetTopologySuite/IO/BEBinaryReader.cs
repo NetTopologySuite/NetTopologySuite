@@ -9,9 +9,9 @@ namespace NetTopologySuite.IO
     /// Extends the <see cref="BinaryReader" /> class to allow reading values in the BigEndian format.    
     /// </summary>
     /// <remarks>
-    /// While <see cref="BigEndianBinaryReader" /> extends <see cref="BinaryReader" /> 
-    /// adding methods for reading integer values (<see cref="BigEndianBinaryReader.ReadInt32BE" />)
-    /// and double values (<see cref="BigEndianBinaryReader.ReadDoubleBE" />) in the BigEndian format, 
+    /// While <see cref="BEBinaryReader" /> extends <see cref="BinaryReader" /> 
+    /// adding methods for reading integer values (<see cref="BEBinaryReader.ReadInt32" />)
+    /// and double values (<see cref="BEBinaryReader.ReadDouble" />) in the BigEndian format, 
     /// this implementation overrides methods, such <see cref="BinaryReader.ReadInt32" /> 
     /// and <see cref="BinaryReader.ReadDouble" /> and more, 
     /// for reading <see cref="T:ByteOrder.BigEndian" /> values in the BigEndian format.

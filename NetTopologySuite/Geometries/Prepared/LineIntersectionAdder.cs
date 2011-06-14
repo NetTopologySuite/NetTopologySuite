@@ -6,18 +6,18 @@ using NetTopologySuite.Noding;
 
 namespace NetTopologySuite.Geometries.Prepared
 {
-    ///<summary>
+    /// <summary>
     /// Computes the intersections between two line segments in <see cref="ISegmentString"/>s
     /// and adds them to each string.
-    ///</summary>
+    /// </summary>
     /// <remarks></remarks>
     /// <para>
     /// The <see cref="ISegmentIntersector"/> is passed to a <see cref="INoder"/>.
     /// </para>
-    ///// <para>
-    ///// The <see cref="AddIntersections()"/> method is called whenever the <see cref="INoder"/>
-    ///// detects that two SegmentStrings <i>might</i> intersect.
-    ///// </para>
+    /// <para>
+    /// The <see cref="NodedSegmentString.AddIntersections(LineIntersector, int, int)"/> method is called whenever the <see cref="INoder"/>
+    /// detects that two SegmentStrings <i>might</i> intersect.
+    /// </para>
     /// <para>This class is an example of the <i>Strategy</i> pattern.</para>
     public class LineIntersectionAdder : ISegmentIntersector
     {

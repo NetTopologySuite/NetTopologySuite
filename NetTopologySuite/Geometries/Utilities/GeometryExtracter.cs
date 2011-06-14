@@ -11,7 +11,7 @@ namespace NetTopologySuite.Geometries.Utilities
         //}
     
         ///<summary>
-        /// Extracts the <see cref="T"/> elements from a single <see cref="IGeometry"/> and adds them to the provided <see cref="List{T}"/>.
+        /// Extracts the <code>T</code> elements from a single <see cref="IGeometry"/> and adds them to the provided <see cref="List{T}"/>.
         ///</summary>
         /// <param name="geom">the geometry from which to extract</param>
         /// <param name="list">the list to add the extracted elements to</param>
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         ///<summary>
-        /// Extracts the <see cref="T"/> elements from a single <see cref="IGeometry"/> and returns them in a <see cref="List{T}"/>.
+        /// Extracts the <code>T</code> elements from a single <see cref="IGeometry"/> and returns them in a <see cref="List{T}"/>.
         ///</summary>
         ///<param name="geom">the geometry from which to extract</param>
         public static IList<IGeometry> Extract<T>(IGeometry geom) where T : class, IGeometry
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Geometries.Utilities
     }
 
     ///<summary>
-    /// Extracts all the <see cref="T"/> elements from a <see cref="IGeometry"/>.
+    /// Extracts all the <code>T</code> elements from a <see cref="IGeometry"/>.
     ///</summary>
     public class GeometryExtracter<T> : IGeometryFilter
         where T: IGeometry

@@ -119,7 +119,7 @@ namespace NetTopologySuite.Noding
                 if (!isProper)
                     _hasNonProperIntersection = true;
 
-                /**
+                /*
                  * If this is the kind of intersection we are searching for
                  * OR no location has yet been recorded
                  * save the location data
@@ -147,7 +147,7 @@ namespace NetTopologySuite.Noding
         {
             get
             {
-              /**
+              /*
                * If finding all types, we can stop
                * when both possible types have been found.
                */
@@ -156,7 +156,7 @@ namespace NetTopologySuite.Noding
                     return _hasProperIntersection && _hasNonProperIntersection;
                 }
 
-                /**
+                /*
                  * If searching for a proper intersection, only stop if one is found
                  */
                 if (_findProper)

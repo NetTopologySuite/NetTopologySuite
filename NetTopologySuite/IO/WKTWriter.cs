@@ -256,7 +256,7 @@ namespace NetTopologySuite.IO
         /// Converts a <c>Geometry</c> to its Well-known Text representation.
         /// </summary>
         /// <param name="geometry">A <c>Geometry</c> to process</param>
-        /// <param name="useFormatted"></param>
+        /// <param name="useFormating"></param>
         /// <param name="writer"></param>
         /// <returns>
         /// A "Geometry Tagged Text" string (see the OpenGIS Simple

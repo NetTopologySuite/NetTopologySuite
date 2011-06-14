@@ -67,7 +67,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p2">Another endpoint of the segment</param>
         public void CountSegment(ICoordinate p1, ICoordinate p2)
         {
-            /**
+            /*
              * For each segment, check if it crosses 
              * a horizontal ray running from the test point in the positive x direction.
              */
@@ -82,7 +82,7 @@ namespace NetTopologySuite.Algorithm
                 _isPointOnSegment = true;
                 return;
             }
-            /**
+            /*
              * For horizontal segments, check if the point is on the segment.
              * Otherwise, horizontal segments are not counted.
              */
@@ -101,7 +101,7 @@ namespace NetTopologySuite.Algorithm
                 }
                 return;
             }
-            /**
+            /*
              * Evaluate all non-horizontal segments which cross a horizontal ray to the
              * right of the test pt. To avoid double-counting shared vertices, we use the
              * convention that
@@ -121,7 +121,7 @@ namespace NetTopologySuite.Algorithm
                 double x2 = p2.X - _p.X;
                 double y2 = p2.Y - _p.Y;
 
-                /**
+                /*
                  * The translated segment straddles the x-axis. Compute the sign of the
                  * ordinate of intersection with the x-axis. (y2 != y1, so denominator
                  * will never be 0.0)

@@ -18,10 +18,10 @@ namespace NetTopologySuite.GeometriesGraph.Index
         int _nOverlaps;
 
 
-        /// <summary>
-        /// A SimpleMCSweepLineIntersector creates monotone chains from the edges
-        /// and compares them using a simple sweep-line along the x-axis.
-        /// </summary>
+        ///// <summary>
+        ///// A SimpleMCSweepLineIntersector creates monotone chains from the edges
+        ///// and compares them using a simple sweep-line along the x-axis.
+        ///// </summary>
         /*public SimpleMCSweepLineIntersector() { }*/
 
         /// <summary>

@@ -321,13 +321,13 @@ namespace NetTopologySuite.Geometries
         
         /// <summary>
         /// Returns <c>true</c> if the two arrays are identical, both <c>null</c>, or pointwise
-        /// equal, using a user-defined <see cref="IComparer" /> 
+        /// equal, using a user-defined <see cref="System.Collections.IComparer" /> 
         /// for <see cref="Coordinate" />s.
         /// </summary>
         /// <param name="coord1">An array of <see cref="Coordinate" />s.</param>
         /// <param name="coord2">Another array of <see cref="Coordinate" />s.</param>
         /// <param name="coordinateComparer">
-        ///  A <see cref="IComparer" /> for <see cref="Coordinate" />s.
+        /// A <see cref="System.Collections.IComparer" /> for <see cref="Coordinate" />s.
         /// </param>
         /// <returns></returns>
         public static bool Equals(ICoordinate[] coord1, ICoordinate[] coord2,

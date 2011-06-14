@@ -152,10 +152,10 @@ namespace NetTopologySuite.Simplify
             return newSeg;
         }
 
-        ///*
-        //* Index of section to be tested for flattening - reusable
-        //*/
-        ////private int[] validSectionIndex = new int[2];
+        // /*
+        //  * Index of section to be tested for flattening - reusable
+        //  */
+        //  private int[] validSectionIndex = new int[2];
 
         /// <summary>
         /// 

@@ -195,6 +195,7 @@ namespace NetTopologySuite.IO
         /// format. The next token must be a number.
         /// </param>
         /// <returns>The next number in the stream.</returns>
+        /// <exception cref="ParseException">if the next token is not a valid number</exception>
 		private double GetNextNumber(IList<Token> tokens)
         {
             Token token = tokens[_index++] /*as Token*/;

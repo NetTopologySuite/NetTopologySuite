@@ -64,9 +64,9 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         private bool _preserveType;
 
-        /// <summary>
-        /// 
-        /// </summary>
+        ///// <summary>
+        ///// 
+        ///// </summary>
         /*public GeometryTransformer() { }*/
 
         /// <summary>

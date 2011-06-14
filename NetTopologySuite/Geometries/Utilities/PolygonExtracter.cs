@@ -6,6 +6,7 @@ namespace NetTopologySuite.Geometries.Utilities
     /// <summary> 
     /// Extracts all the <see cref="IPolygon"/> elements from a <see cref="IGeometry"/>.
     /// </summary>
+    /// <see cref="GeometryExtracter"/>
     public class PolygonExtracter : IGeometryFilter
     {
         /// <summary>

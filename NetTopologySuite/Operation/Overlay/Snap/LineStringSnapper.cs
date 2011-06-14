@@ -5,7 +5,7 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Operation.Overlay.Snap
 {
     /// <summary>
-    /// Snaps the vertices and segments of a LineString to a set of target snap vertices.
+    /// Snaps the vertices and segments of a <see cref="LineString"/> to a set of target snap vertices.
     /// A snapping distance tolerance is used to control where snapping is performed.
     /// </summary>
     public class LineStringSnapper
@@ -17,17 +17,17 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         private bool isClosed = false;
 
         /// <summary>
-        /// Creates a new snapper using the points in the given {@link LineString}
+        /// Creates a new snapper using the points in the given <see cref="LineString"/>
         /// as target snap points.
         /// </summary>
-        /// <param name="line"></param>
-        /// <param name="snapTolerance"></param>
+        /// <param name="line">a LineString to snap</param>
+        /// <param name="snapTolerance">the snap tolerance to use</param>
         public LineStringSnapper(ILineString line, double snapTolerance) : 
             this(line.Coordinates, snapTolerance) { }
 
         /// <summary>
         /// Creates a new snapper using the given points
-        /// as target snap points.
+        /// as source points to be snapped.
         /// </summary>
         /// <param name="srcPts"></param>
         /// <param name="snapTolerance"></param>
@@ -42,8 +42,8 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// Snaps the vertices and segments of the source LineString 
         /// to the given set of target snap points.
         /// </summary>
-        /// <param name="snapPts"></param>
-        /// <returns></returns>
+        /// <param name="snapPts">the vertices to snap to</param>
+        /// <returns>list of the snapped points</returns>
         public ICoordinate[] SnapTo(ICoordinate[] snapPts)
         {
             CoordinateList coordList = new CoordinateList(srcPts);
@@ -56,8 +56,8 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <summary>
         /// Snap source vertices to vertices in the target.
         /// </summary>
-        /// <param name="srcCoords"></param>
-        /// <param name="snapPts"></param>
+        /// <param name="srcCoords">the points to snap</param>
+        /// <param name="snapPts">the points to snap to</param>
         private void SnapVertices(CoordinateList srcCoords, ICoordinate[] snapPts)
         {
             // try snapping vertices
@@ -119,7 +119,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             {
                 ICoordinate snapPt = snapPts[i];
                 int index = FindSegmentIndexToSnap(snapPt, srcCoords);
-                /**
+                /*
                  * If a segment to snap to was found, "crack" it at the snap pt.
                  * The new pt is inserted immediately into the src segment list,
                  * so that subsequent snapping will take place on the latest segments.
@@ -150,7 +150,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
                 seg.P0 = srcCoords[i];
                 seg.P1 = srcCoords[i + 1];
 
-                /**
+                /*
                  * If the snap pt is already in the src list, don't snap
                  */
                 if (seg.P0.Equals2D(snapPt) || seg.P1.Equals2D(snapPt))
