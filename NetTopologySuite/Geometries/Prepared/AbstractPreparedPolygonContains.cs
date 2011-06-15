@@ -171,11 +171,10 @@ namespace NetTopologySuite.Geometries.Prepared
             return false;
         }
 
-        /**
-         * Tests whether a geometry consists of a single polygon with no holes.
-         *  
-         * @return true if the geometry is a single polygon with no holes
-         */
+        /// <summary>
+        /// Tests whether a geometry consists of a single polygon with no holes.
+        /// </summary>
+        /// <returns>True if the geometry is a single polygon with no holes</returns>
         private static bool IsSingleShell(IGeometry geom)
         {
             // handles single-element MultiPolygons, as well as Polygons

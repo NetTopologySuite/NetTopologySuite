@@ -66,6 +66,7 @@
     <Compile Include="IO\WKBTest.cs" />
     <Compile Include="IO\WKTWriterTest.cs" />
     <Compile Include="Operation\BoundaryTest.cs" />
+    <Compile Include="Operation\Buffer\Test.cs" />
     <Compile Include="Operation\SimpleTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
