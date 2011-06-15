@@ -10,9 +10,17 @@ using NetTopologySuite.Index.IntervalRTree;
 
 namespace NetTopologySuite.Algorithm
 {
+    ///<summary>
+    /// Determines the <see cref="Locations"/> of <see cref="ICoordinate"/>s relative to
+    /// a <see cref="IPolygonal"/> geometry, using indexing for efficiency.
+    ///</summary>
+    /// <remarks>
+    /// This algorithm is suitable for use in cases where
+    /// many points will be tested against a given area.
+    /// </remarks>
+    /// <author>Martin Davis</author>
     public class IndexedPointInAreaLocator : IPointInAreaLocator
     {
-        private IGeometry _areaGeom;
         private IntervalIndexedGeometry _index;
 
         /// <summary>
@@ -21,7 +29,6 @@ namespace NetTopologySuite.Algorithm
         /// <param name="g"> the Geometry to locate in</param>
         public IndexedPointInAreaLocator(IGeometry g)
         {
-            _areaGeom = g;
             if (!(g is IPolygonal))
                 throw new ArgumentException("Argument must be Polygonal");
             BuildIndex(g);

@@ -86,6 +86,8 @@
     <Compile Include="Algorithm\CentroidPoint.cs" />
     <Compile Include="Algorithm\CGAlgorithms.cs" />
     <Compile Include="Algorithm\ConvexHull.cs" />
+    <Compile Include="Algorithm\Distance\EuclidianDistanceToPoint.cs" />
+    <Compile Include="Algorithm\Distance\PointPairDistance.cs" />
     <Compile Include="Algorithm\HCoordinate.cs" />
     <Compile Include="Algorithm\IndexedPointInAreaLocator.cs" />
     <Compile Include="Algorithm\InteriorPointArea.cs" />
@@ -424,6 +426,7 @@
     <Compile Include="Utilities\UniqueCoordinateArrayFilter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithm\Distance\DiscreteHausdorffDistance.cs" />
     <Content Include="License.txt" />
     <Content Include="ReadMe.txt" />
     <Content Include="Utilities\RToolsUtil\Rtools.Util.License.txt" />

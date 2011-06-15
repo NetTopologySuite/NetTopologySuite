@@ -6,7 +6,7 @@ namespace NetTopologySuite.Algorithm
 {
     /// <summary>
     /// Computes the location of points
-    /// relative to an an areal <see cref="IGeometry"/>,
+    /// relative to a <see cref="IPolygonal"/> <see cref="IGeometry"/>,
     /// using a simple O(n) algorithm.
     /// This algorithm is suitable for use in cases where
     /// only one or a few points will be tested against a given area.

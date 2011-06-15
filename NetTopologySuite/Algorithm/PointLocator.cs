@@ -6,11 +6,19 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Algorithm
 {
     /// <summary> 
-    /// Computes the topological relationship (Location) of a single point to a Geometry.
-    /// The algorithm obeys the SFS boundaryDetermination rule to correctly determine
-    /// whether the point lies on the boundary or not.
-    /// Note that instances of this class are not reentrant.
+    /// Computes the topological relationship (<see cref="Locations"/>) of a single point to a Geometry.
     /// </summary>
+    /// <remarks>
+    /// A <see cref="IBoundaryNodeRule"/> may be specified to control the evaluation of whether the point lies on the boundary or not
+    /// The default rule is to use the the <i>SFS Boundary Determination Rule</i>
+    /// <para>
+    /// Notes:
+    /// <list Type="Bullet">
+    /// <item><see cref="ILinearRing"/>s do not enclose any area - points inside the ring are still in the EXTERIOR of the ring.</item>
+    /// </list>
+    /// Instances of this class are not reentrant.
+    /// </para>
+    /// </remarks>
     public class PointLocator
     {
         // default is to use OGC SFS rule
@@ -162,15 +170,6 @@ namespace NetTopologySuite.Algorithm
   	        if (! ring.EnvelopeInternal.Intersects(p)) return Locations.Exterior;
 
   	        return CGAlgorithms.LocatePointInRing(p, ring.Coordinates);
-  	
-          	/*
-            // can this test be folded into IsPointInRing?
-            if (CGAlgorithms.IsOnLine(p, ring.Coordinates))
-                return Locations.Boundary;
-            if (CGAlgorithms.IsPointInRing(p, ring.Coordinates))
-                return Locations.Interior;
-            return Locations.Exterior;
-            */
         }
 
         /// <summary>
