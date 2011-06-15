@@ -409,7 +409,7 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         ///<summary>
-        /// Tests whether two locations are on the same segment in the parent <see cref="IGeometry"/>{@link }.
+        /// Tests whether two locations are on the same segment in the parent <see cref="IGeometry"/>.
         /// </summary>
         /// <param name="loc">A location on the same geometry</param>
         /// <returns><c>true</c> if the locations are on the same segment of the parent geometry</returns>

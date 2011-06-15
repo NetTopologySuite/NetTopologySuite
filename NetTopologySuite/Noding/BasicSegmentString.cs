@@ -7,7 +7,7 @@ namespace NetTopologySuite.Noding
     ///<summary>
     /// Represents a list of contiguous line segments,
     /// and supports noding the segments.
-    /// The line segments are represented by an array of {@link Coordinate}s.
+    /// The line segments are represented by an array of <see cref="Coordinate" />s.
     /// Intended to optimize the noding of contiguous segments by
     /// reducing the number of allocated objects.
     /// SegmentStrings can carry a context object, which is useful

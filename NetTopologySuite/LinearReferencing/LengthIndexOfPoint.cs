@@ -48,7 +48,7 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Find the nearest location along a linear {@link Geometry} to a given point.
+        /// Find the nearest location along a linear <see cref="Geometry" /> to a given point.
         /// </summary>
         /// <param name="inputPt">The coordinate to locate.</param>
         /// <returns>The location of the nearest point.</returns>

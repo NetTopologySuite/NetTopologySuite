@@ -44,7 +44,7 @@ namespace NetTopologySuite.LinearReferencing
         }
         
         /// <summary>     
-        /// Find the nearest location along a linear {@link Geometry} to a given point.
+        /// Find the nearest location along a linear <see cref="Geometry" /> to a given point.
         /// </summary>
         /// <param name="inputPt">The coordinate to locate.</param>
         /// <returns>The location of the nearest point.</returns>
@@ -130,9 +130,9 @@ namespace NetTopologySuite.LinearReferencing
 
         /*
         /// <summary>
-        /// Computes the fraction of distance (in <tt>[0.0, 1.0]</tt>) that a point occurs along a line segment.
+        /// Computes the fraction of distance (in <c>[0.0, 1.0]</c>) that a point occurs along a line segment.
         /// </summary>
-        /// <remarks>If the point is beyond either ends of the line segment, the closest fractional value (<tt>0.0</tt> or <tt>1.0</tt>) is returned.</remarks>
+        /// <remarks>If the point is beyond either ends of the line segment, the closest fractional value (<c>0.0</c> or <c>1.0</c>) is returned.</remarks>
         /// <param name="seg">The line segment to use</param>
         /// <param name="inputPt">The point</param>
         /// <returns>The fraction along the line segment the point occurs</returns>

@@ -8,7 +8,7 @@ namespace NetTopologySuite.Operation.Predicate
 {
     /// <summary>
     /// Optimized implementation of spatial predicate "intersects"
-    /// for cases where the first {@link Geometry} is a rectangle.    
+    /// for cases where the first <see cref="IGeometry" /> is a rectangle.    
     /// As a further optimization,
     /// this class can be used directly to test many geometries against a single
     /// rectangle.

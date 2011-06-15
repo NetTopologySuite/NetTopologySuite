@@ -5,7 +5,7 @@ using NetTopologySuite.Noding;
 namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
-    /// Computes the <c>containsProperly</c> spatial relationship predicate for {@link PreparedPolygon}s relative to all other {@link Geometry} classes.<br/>
+    /// Computes the <c>containsProperly</c> spatial relationship predicate for <see cref="PreparedPolygon" />s relative to all other {@link Geometry} classes.<br/>
     /// Uses short-circuit tests and indexing to improve performance. 
     ///</summary>
     ///<remarks>

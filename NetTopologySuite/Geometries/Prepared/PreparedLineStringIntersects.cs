@@ -7,7 +7,7 @@ using NetTopologySuite.Noding;
 namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
-    /// Computes the <tt>intersects</tt> spatial relationship predicate
+    /// Computes the <i>intersects</i> spatial relationship predicate
     /// for a target <see cref="PreparedLineString"/> relative to other <see cref="IGeometry"/> classes.
     ///</summary>
     /// <remarks>

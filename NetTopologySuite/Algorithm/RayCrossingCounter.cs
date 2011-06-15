@@ -150,7 +150,7 @@ namespace NetTopologySuite.Algorithm
         ///<summary>
         /// Reports whether the point lies exactly on one of the supplied segments.
         /// <remarks>
-        /// This method may be called at any time as segments are processed. If the result of this method is <tt>true</tt>, 
+        /// This method may be called at any time as segments are processed. If the result of this method is <c>true</c>, 
         /// no further segments need be supplied, since the result will never change again.
         /// </remarks>
         ///</summary>

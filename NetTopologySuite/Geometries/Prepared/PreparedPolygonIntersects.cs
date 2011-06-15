@@ -5,7 +5,7 @@ using NetTopologySuite.Noding;
 namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
-    /// Computes the <tt>intersects</tt> spatial relationship predicate
+    /// Computes the <i>intersects</i> spatial relationship predicate
     /// for <see cref="PreparedPolygon"/>s relative to all other <see cref="IGeometry"/> classes.
     ///</summary>
     /// <remarks>Uses short-circuit tests and indexing to improve performance.</remarks>

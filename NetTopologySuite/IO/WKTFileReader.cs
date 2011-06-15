@@ -19,9 +19,9 @@ namespace NetTopologySuite.IO
         private int _count;
 
         ///<summary>
-        /// Creates a new <tt>WKTFileReader</tt> given the <tt>File</tt> to read from and a <tt>WKTReader</tt> to use to parse the geometries.
+        /// Creates a new <see cref="WKTFileReader" /> given the <paramref name="file" /> to read from and a <see cref="WKTReader" /> to use to parse the geometries.
         ///</summary>
-        /// <param name="file"> the <tt>FileInfo</tt> to read from</param>
+        /// <param name="file"> the <see cref="FileInfo" /> to read from</param>
         /// <param name="wktReader">the geometry reader to use</param>
         public WKTFileReader(FileInfo file, WKTReader wktReader)
         {
@@ -30,7 +30,7 @@ namespace NetTopologySuite.IO
         }
 
         ///<summary>
-        /// Creates a new <tt>WKTFileReader</tt>, given the name of the file to read from.
+        /// Creates a new <see cref="WKTFileReader" />, given the name of the file to read from.
         ///</summary>
         /// <param name="filename">The name of the file to read from</param>
         /// <param name="wktReader">The geometry reader to use</param>
@@ -55,7 +55,7 @@ namespace NetTopologySuite.IO
         /// <remarks>
         /// <para>
         /// If an offset is specified, geometries read up to the offset count are skipped.</para>
-        /// <para>If a limit is specified, no more than <tt>limit</tt> geometries are read.</para>
+        /// <para>If a limit is specified, no more than <see cref="Limit" /> geometries are read.</para>
         /// </remarks>
         /// <returns>The list of geometries read</returns>
         public IList<IGeometry> Read()

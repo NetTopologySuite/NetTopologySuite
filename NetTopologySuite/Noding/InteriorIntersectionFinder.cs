@@ -122,7 +122,7 @@ namespace NetTopologySuite.Noding
         }
 
         ///<summary>
-        /// Tests whether a segment in a {@link ISegmentString} is an end segment.
+        /// Tests whether a segment in a <see cref="ISegmentString" /> is an end segment.
         /// (either the first or last).
         ///</summary>
         ///<param name="segStr">a segment string</param>

@@ -85,12 +85,12 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// A {@link BoundaryNodeRule} which specifies that any points which are endpoints
+        /// A <see cref="IBoundaryNodeRule" /> which specifies that any points which are endpoints
         /// of lineal components are in the boundary of the
         /// parent geometry.
         /// This corresponds to the "intuitive" topological definition
         /// of boundary.
-        /// Under this rule {@link LinearRing}s have a non-empty boundary
+        /// Under this rule <see cref="NetTopologySuite.Geometries.LinearRing" />s have a non-empty boundary
         /// (the common endpoint of the underlying LineString).
         /// </summary>
         /// <remarks>
