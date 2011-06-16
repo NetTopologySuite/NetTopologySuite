@@ -153,7 +153,7 @@ namespace NetTopologySuite.Operation.Buffer
             {
                 Label oldLabel = (Label)segStr.Context;
                 Edge edge = new Edge(segStr.Coordinates, new Label(oldLabel));
-                InsertEdge(edge);
+                InsertUniqueEdge(edge);
             }
             //saveEdges(edgeList.getEdges(), "run" + runCount + "_collapsedEdges");
         }
@@ -164,7 +164,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// If so, the edge is not inserted, but its label is merged
         /// with the existing edge.
         /// </summary>
-        protected void InsertEdge(Edge e)
+        protected void InsertUniqueEdge(Edge e)
         {
             //<FIX> MD 8 Oct 03  speed up identical edge lookup
             // fast lookup

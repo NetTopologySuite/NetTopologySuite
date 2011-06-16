@@ -26,7 +26,7 @@ namespace NetTopologySuite.Simplify
         public void Add(TaggedLineString line) 
         {
             TaggedLineSegment[] segs = line.Segments;
-            for (int i = 0; i < segs.Length - 1; i++) 
+            for (int i = 0; i < segs.Length; i++) 
             {
                 TaggedLineSegment seg = segs[i];
                 Add(seg);

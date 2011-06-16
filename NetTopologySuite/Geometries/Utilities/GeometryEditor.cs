@@ -1,16 +1,14 @@
-//using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Utilities;
 using System.Linq;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary> 
     /// A class which supports creating a new <c>Geometry</c> which are modifications of existing ones.
+    /// </summary>
+    /// <remarks>
     /// Geometry objects are intended to be treated as immutable.
     /// This class allows you to "modifies" a Geometrys
     /// by traversing them, applying a user-defined
@@ -19,43 +17,59 @@ namespace NetTopologySuite.Geometries.Utilities
     /// (possibly) modified components.
     /// <para>
     /// Examples of the kinds of modifications which can be made are:
-    /// </para>
-    /// <para>
+    /// <list type="Bullet">
+    /// <item>
     /// The values of the coordinates may be changed.
-    /// Changing coordinate values may make the result Geometry invalid;
-    /// this is not checked by the GeometryEditor.
-    /// </para>
-    /// <para>The coordinate lists may be changed
-    /// (e.g. by adding or deleting coordinates).
+    /// The editor does not check whether changing coordinate values makes the result Geometry invalid
+    /// </item>
+    /// <item>
+    /// The coordinate lists may be changed (e.g. by adding or deleting coordinates).
     /// The modifed coordinate lists must be consistent with their original parent component
     /// (e.g. a LinearRing must always have at least 4 coordinates, and the first and last
     /// coordinate must be equal).
-    /// </para>
-    /// <para>Components of the original point may be deleted
+    /// </item>
+    /// <item>
+    /// Components of the original point may be deleted
     /// (e.g. holes may be removed from a Polygon, or LineStrings removed from a MultiLineString).
     /// Deletions will be propagated up the component tree appropriately.
+    /// </item></list>
     /// </para>
+    /// <para>
     /// All changes must be consistent with the original Geometry's structure
     /// (e.g. a <code>Polygon</code> cannot be collapsed into a <code>LineString</code>).
+    /// If changing the structure is required, use a {@link GeometryTransformer}.
+    /// </para>
+    /// <para>
+    /// This class supports the case where an edited Geometry needs to
+    /// be created under a new GeometryFactory, via the {@link GeometryEditor(GeometryFactory)}
+    /// constructor.  
+    /// Examples of situations where this is required is if the geometry is 
+    /// transformed to a new SRID and/or a new PrecisionModel.</para>
+    /// <para>
     /// The resulting Geometry is not checked for validity.
-    /// If validity needs to be enforced, the new Geometry's <see cref="IGeometry.IsValid"/> method should be called.
-    /// </summary>    
+    /// If validity needs to be enforced, the new Geometry's <see cref="IGeometry.IsValid"/> method should be called.</para>
+    /// </remarks>
+    /// <seealso cref="GeometryTransformer"/>
+    /// <seealso cref="IGeometry.IsValid"/>
     public class GeometryEditor
     {
         /// <summary> 
         /// The factory used to create the modified Geometry.
         /// </summary>
+        /// <remarks>
+        /// If <tt>null</tt> the GeometryFactory of the input is used.
+        /// </remarks>
         private IGeometryFactory _factory;
 
         /// <summary> 
         /// Creates a new GeometryEditor object which will create
-        /// an edited <c>Geometry</c> with the same {GeometryFactory} as the input Geometry.
+        /// edited <see cref="IGeometry"/> with the same <see cref="IGeometryFactory"/> as the input Geometry.
         /// </summary>
         public GeometryEditor() { }
 
         /// <summary> 
         /// Creates a new GeometryEditor object which will create
-        /// the edited Geometry with the given GeometryFactory.
+        /// edited <see cref="IGeometry"/>s with the given <see cref="IGeometryFactory"/>.
         /// </summary>
         /// <param name="factory">The GeometryFactory to create the edited Geometry with.</param>
         public GeometryEditor(IGeometryFactory factory)

@@ -1,7 +1,11 @@
 using System.Collections.Generic;
 using System.IO;
+using GeoAPI.Geometries;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Quadtree;
+using NetTopologySuite.Noding;
+using Wintellect.PowerCollections;
+
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
@@ -18,12 +22,13 @@ namespace NetTopologySuite.GeometriesGraph
 
         /// <summary>
         /// An index of the edges, for fast lookup.
-        /// a Quadtree is used, because this index needs to be dynamic
-        /// (e.g. allow insertions after queries).
-        /// An alternative would be to use an ordered set based on the values
-        /// of the edge coordinates.
+        ///// a Quadtree is used, because this index needs to be dynamic
+        ///// (e.g. allow insertions after queries).
+        ///// An alternative would be to use an ordered set based on the values
+        ///// of the edge coordinates.
         /// </summary>
-        private readonly ISpatialIndex<Edge> _index = new Quadtree<Edge>();
+        ////private readonly ISpatialIndex<Edge> _index = new Quadtree<Edge>();
+        private readonly IDictionary<OrientedCoordinateArray, Edge> _ocaMap = new OrderedDictionary<OrientedCoordinateArray, Edge>();
 
 
         /// <summary>
@@ -42,7 +47,9 @@ namespace NetTopologySuite.GeometriesGraph
         public void Add(Edge e)
         {
             _edges.Add(e);
-            _index.Insert(e.Envelope, e);
+            var oca = new OrientedCoordinateArray(e.Coordinates);
+            _ocaMap.Add(oca, e);
+            //_index.Insert(e.Envelope, e);
         }
 
         /// <summary>
@@ -63,7 +70,6 @@ namespace NetTopologySuite.GeometriesGraph
             get { return _edges; }
         }
 
-        // <FIX> fast lookup for edges
         /// <summary>
         /// If there is an edge equal to e already in the list, return it.
         /// Otherwise return null.
@@ -75,13 +81,11 @@ namespace NetTopologySuite.GeometriesGraph
         /// </returns>
         public Edge FindEqualEdge(Edge e)
         {
-            var testEdges = _index.Query(e.Envelope);
-            foreach (Edge testEdge in testEdges)
-            {
-                if (testEdge.Equals(e)) 
-                    return testEdge;
-            }
-            return null;
+            var oca = new OrientedCoordinateArray(e.Coordinates);
+            // will return null if no edge matches
+            Edge matchEdge;
+            _ocaMap.TryGetValue(oca, out matchEdge);
+            return matchEdge; 
         }
 
         /// <summary>

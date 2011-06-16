@@ -9,16 +9,22 @@ using ArrayList = System.Collections.Generic.List<object>;
 namespace NetTopologySuite.Operation.Linemerge
 {
     /// <summary>
-    /// Sews together a set of fully noded LineStrings. Sewing stops at nodes of degree 1
+    /// Sews together a set of fully noded LineStrings.
+    /// </summary>
+    /// <remarks>
+    /// <para> Sewing stops at nodes of degree 1
     /// or 3 or more -- the exception is an isolated loop, which only has degree-2 nodes,
     /// in which case a node is simply chosen as a starting point. The direction of each
     /// merged LineString will be that of the majority of the LineStrings from which it
-    /// was derived.
+    /// was derived.</para>
+    /// <para>
     /// Any dimension of Geometry is handled -- the constituent linework is extracted to 
     /// form the edges. The edges must be correctly noded; that is, they must only meet
     /// at their endpoints.  The LineMerger will still run on incorrectly noded input
-    /// but will not form polygons from incorrected noded edges.
-    /// </summary>
+    /// but will not form polygons from incorrected noded edges.</para>
+    /// <para>
+    /// <b>NOTE:</b>once merging has been performed, no more</para>
+    /// </remarks>
     public class LineMerger 
     {
         /// <summary>
@@ -48,19 +54,7 @@ namespace NetTopologySuite.Operation.Linemerge
             }
         }
 
-        /// <summary>
-        /// Adds a collection of Geometries to be processed. May be called multiple times.
-        /// Any dimension of Geometry may be added; the constituent linework will be
-        /// extracted.
-        /// </summary>
-        /// <param name="geometries"></param>
-        public void Add(IList<IGeometry> geometries) 
-        {
-            foreach (IGeometry geometry in geometries)
-                Add(geometry);
-        }
-
-        private LineMergeGraph graph = new LineMergeGraph();
+        private readonly LineMergeGraph _graph = new LineMergeGraph();
         private List<IGeometry> _mergedLineStrings;
         private List<EdgeString> _edgeStrings;
         private IGeometryFactory _factory;
@@ -77,6 +71,19 @@ namespace NetTopologySuite.Operation.Linemerge
         }
 
         /// <summary>
+        /// Adds a collection of Geometries to be processed. May be called multiple times.
+        /// Any dimension of Geometry may be added; the constituent linework will be
+        /// extracted.
+        /// </summary>
+        /// <param name="geometries"></param>
+        public void Add(IEnumerable<IGeometry> geometries)
+        {
+            _mergedLineStrings = null;
+            foreach (IGeometry geometry in geometries)
+                Add(geometry);
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="lineString"></param>
@@ -84,7 +91,7 @@ namespace NetTopologySuite.Operation.Linemerge
         {
             if (_factory == null) 
                 _factory = lineString.Factory;            
-            graph.AddEdge(lineString);
+            _graph.AddEdge(lineString);
         }
         
         /// <summary>
@@ -93,7 +100,12 @@ namespace NetTopologySuite.Operation.Linemerge
         private void Merge() 
         {
             if (_mergedLineStrings != null) 
-                return; 
+                return;
+
+            // reset marks (this allows incremental processing)
+            GraphComponent.SetMarked(_graph.GetNodeEnumerator(), false);
+            GraphComponent.SetMarked(_graph.GetEdgeEnumerator(), false);
+
             _edgeStrings = new List<EdgeString>();
             BuildEdgeStringsForObviousStartNodes();
             BuildEdgeStringsForIsolatedLoops();
@@ -123,7 +135,7 @@ namespace NetTopologySuite.Operation.Linemerge
         /// </summary>
         private void BuildEdgeStringsForUnprocessedNodes() 
         {
-            foreach (Node node in graph.Nodes)
+            foreach (Node node in _graph.Nodes)
             {
                 if (!node.IsMarked) 
                 { 
@@ -139,7 +151,7 @@ namespace NetTopologySuite.Operation.Linemerge
         /// </summary>
         private void BuildEdgeStringsForNonDegree2Nodes() 
         {
-            foreach (Node node in graph.Nodes)
+            foreach (Node node in _graph.Nodes)
             {
                 if (node.Degree != 2) 
                 { 

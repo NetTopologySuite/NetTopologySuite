@@ -260,9 +260,14 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
-        public  bool IsArea(int geomIndex) 
+        public bool IsArea(int geomIndex)
         {
-            return elt[geomIndex].IsArea;   
+            /*  Testing
+            if (elt[0].getLocations().length != elt[1].getLocations().length) {
+                System.out.println(this);
+            }
+                */
+            return elt[geomIndex].IsArea;
         }
 
         /// <summary>

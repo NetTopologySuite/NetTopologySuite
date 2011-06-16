@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph.Index;
 using NetTopologySuite.Utilities;
@@ -60,6 +61,10 @@ namespace NetTopologySuite.GeometriesGraph
         private IList<Node> _boundaryNodes;
         private bool _hasTooFewPoints;
         private ICoordinate _invalidPoint;
+
+        private IPointOnGeometryLocator _areaPtLocator;
+        // for use if geometry is not Polygonal
+        private readonly PointLocator _ptLocator = new PointLocator();
 
         /// <summary>
         /// 
@@ -454,5 +459,26 @@ namespace NetTopologySuite.GeometriesGraph
                  InsertBoundaryPoint(argIndex, coord);
             else InsertPoint(argIndex, coord, loc);
         }
+
+        // MD - experimental for now
+        ///<summary>
+        /// Determines the <see cref="Locations"/> of the given <see cref="ICoordinate"/> in this geometry.
+        ///</summary>
+        /// <param name="pt">The point to test</param>
+        /// <returns>
+        /// The location of the point in the geometry
+        /// </returns>
+        public Locations Locate(ICoordinate pt)
+        {
+            if (_parentGeom is IPolygonal && _parentGeom.NumGeometries > 50) {
+  	            // lazily init point locator
+  	            if (_areaPtLocator == null) {
+  		            _areaPtLocator = new NetTopologySuite.Algorithm.Locate.IndexedPointInAreaLocator(_parentGeom);
+  	            }
+  	            return _areaPtLocator.Locate(pt);
+            }
+  	        return _ptLocator.Locate(pt, _parentGeom);
+        }
+
     }
 }

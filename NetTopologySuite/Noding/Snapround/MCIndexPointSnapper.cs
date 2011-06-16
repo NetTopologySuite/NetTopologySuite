@@ -130,12 +130,13 @@ namespace NetTopologySuite.Noding.Snapround
             /// <param name="startIndex"></param>
             public override void Select(MonotoneChain mc, int startIndex)
             {
-                INodableSegmentString ss = (INodableSegmentString) mc.Context;
+                var ss = (INodableSegmentString) mc.Context;
                 // don't snap a vertex to itself
                 if (_parentEdge != null) 
                     if (ss == _parentEdge && startIndex == _vertexIndex)
                         return;
-                _isNodeAdded = SimpleSnapRounder.AddSnappedNode(_hotPixel, ss, startIndex);
+                //_isNodeAdded = SimpleSnapRounder.addSnappedNode(hotPixel, ss, startIndex);
+                _isNodeAdded = _hotPixel.AddSnappedNode(ss, startIndex);
             }
         }
     }

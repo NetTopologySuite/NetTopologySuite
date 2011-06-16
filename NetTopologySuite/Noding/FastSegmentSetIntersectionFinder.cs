@@ -13,9 +13,10 @@ namespace NetTopologySuite.Noding
     /// </remarks>
     public class FastSegmentSetIntersectionFinder
     {
-        private MCIndexSegmentSetMutualIntersector _segSetMutInt;
-        // for testing purposes
-        //	private SimpleSegmentSetMutualIntersector mci;  
+        private SegmentSetMutualIntersector _segSetMutInt; 
+
+        //for testing purposes
+        //private SimpleSegmentSetMutualIntersector mci;  
 
         public FastSegmentSetIntersectionFinder(IList<ISegmentString> baseSegStrings)
         {
@@ -25,6 +26,7 @@ namespace NetTopologySuite.Noding
         private void Init(IList<ISegmentString> baseSegStrings)
         {
             _segSetMutInt = new MCIndexSegmentSetMutualIntersector();
+            //segSetMutInt = new MCIndexIntersectionSegmentSetMutualIntersector();
             //		mci = new SimpleSegmentSetMutualIntersector();
             _segSetMutInt.SetBaseSegments(baseSegStrings);
         }

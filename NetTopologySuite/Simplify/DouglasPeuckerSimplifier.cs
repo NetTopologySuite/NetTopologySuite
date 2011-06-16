@@ -6,6 +6,8 @@ namespace NetTopologySuite.Simplify
 {
     /// <summary>
     /// Simplifies a <c>Geometry</c> using the standard Douglas-Peucker algorithm.
+    /// </summary>
+    /// <remarks>
     /// Ensures that any polygonal geometries returned are valid.
     /// Simple lines are not guaranteed to remain simple after simplification.
     /// Note that in general D-P does not preserve topology -
@@ -14,7 +16,7 @@ namespace NetTopologySuite.Simplify
     /// and lines can cross.
     /// To simplify point while preserving topology use TopologySafeSimplifier.
     /// (However, using D-P is significantly faster).
-    /// </summary>
+    /// </remarks>
     public class DouglasPeuckerSimplifier
     {
         /// <summary>
@@ -32,6 +34,7 @@ namespace NetTopologySuite.Simplify
 
         private readonly IGeometry _inputGeom;
         private double _distanceTolerance;
+        private bool _isEnsureValidTopology = true;
 
         /// <summary>
         /// 
@@ -42,19 +45,43 @@ namespace NetTopologySuite.Simplify
             _inputGeom = inputGeom;
         }
 
+
         /// <summary>
-        /// 
+        /// Gets/Sets the distance tolerance for the simplification.
         /// </summary>
+        /// <remarks>
+        /// All vertices in the simplified geometry will be within this
+        /// distance of the original geometry.
+        /// The tolerance value must be non-negative. 
+        /// </remarks>
         public double DistanceTolerance
         {
-            get
-            {
-                return _distanceTolerance; 
-            }
+            get { return _distanceTolerance; }
             set
             {
-                _distanceTolerance = value; 
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException("value", "value must be non-negative");
+                _distanceTolerance = value;
             }
+        }
+
+        /// <summary>
+        /// Controls whether simplified polygons will be "fixed"
+        /// to have valid topology.
+        /// </summary>
+        /// <remarks>
+        /// The caller may choose to disable this because:
+        /// <list type="Bullet">
+        /// <item>valid topology is not required</item>
+        /// <item>fixing topology is a relative expensive operation</item>
+        /// <item>in some pathological cases the topology fixing operation may either fail or run for too long</item>
+        /// </list>
+        /// The default is to fix polygon topology.
+        /// </remarks>
+        public bool EnsureValidTopology 
+        {
+            get { return _isEnsureValidTopology; }
+            set { _isEnsureValidTopology = value; } 
         }
 
         /// <summary>
@@ -63,7 +90,7 @@ namespace NetTopologySuite.Simplify
         /// <returns></returns>
         public IGeometry GetResultGeometry()
         {
-            return (new DPTransformer(this)).Transform(_inputGeom);
+            return (new DPTransformer(this, EnsureValidTopology)).Transform(_inputGeom);
         }
 
         /// <summary>
@@ -74,14 +101,17 @@ namespace NetTopologySuite.Simplify
 // ReSharper restore InconsistentNaming
         {
             private readonly DouglasPeuckerSimplifier _container;
+            private bool _ensureValidTopology;
 
             /// <summary>
             /// 
             /// </summary>
             /// <param name="container"></param>
-            public DPTransformer(DouglasPeuckerSimplifier container)
+            /// <param name="ensureValidTopology"></param>
+            public DPTransformer(DouglasPeuckerSimplifier container, bool ensureValidTopology)
             {
                 _container = container;
+                _ensureValidTopology = ensureValidTopology;
             }
 
             /// <summary>
@@ -98,18 +128,32 @@ namespace NetTopologySuite.Simplify
             }
 
             /// <summary>
-            /// 
+            /// Simplifies a polygon, fixing it if required.
             /// </summary>
             /// <param name="geom"></param>
             /// <param name="parent"></param>
             /// <returns></returns>
             protected override IGeometry TransformPolygon(IPolygon geom, IGeometry parent)
             {
-                IGeometry roughGeom = base.TransformPolygon(geom, parent);
+                IGeometry rawGeom = base.TransformPolygon(geom, parent);
                 // don't try and correct if the parent is going to do this
                 if (parent is IMultiPolygon) 
-                    return roughGeom;            
-                return CreateValidArea(roughGeom);
+                    return rawGeom;
+                return CreateValidArea(rawGeom);
+            }
+
+            ///<summary>
+            /// Simplifies a LinearRing.  If the simplification results in a degenerate ring, remove the component.
+            ///</summary>
+            /// <returns>null if the simplification results in a degenerate ring</returns>
+            protected override IGeometry TransformLinearRing(ILinearRing geom, IGeometry parent) 
+            {
+  	            Boolean removeDegenerateRings = parent is IPolygon;
+  	            IGeometry simpResult = base.TransformLinearRing(geom, parent);
+  	            
+                if (removeDegenerateRings && ! (simpResult is ILinearRing))
+  		            return null;
+  	            return simpResult;
             }
 
             /// <summary>
@@ -124,14 +168,6 @@ namespace NetTopologySuite.Simplify
                 return CreateValidArea(roughGeom);
             }
 
-            protected override IGeometry TransformLinearRing(ILinearRing geom, IGeometry parent)
-            {
-                Boolean removeDegenerateRings = parent is IPolygon;
-                IGeometry simpleResult = base.TransformLinearRing(geom, parent);
-
-                return removeDegenerateRings && !(simpleResult is ILinearRing) ? null : simpleResult;
-            }
-
             /// <summary>
             /// Creates a valid area point from one that possibly has
             /// bad topology (i.e. self-intersections).
@@ -142,11 +178,13 @@ namespace NetTopologySuite.Simplify
             /// areas.  This also may return empty geometries, if the input
             /// has no actual area.
             /// </summary>
-            /// <param name="roughAreaGeom">An area point possibly containing self-intersections.</param>
+            /// <param name="rawAreaGeom">An area point possibly containing self-intersections.</param>
             /// <returns>A valid area point.</returns>
-            private IGeometry CreateValidArea(IGeometry roughAreaGeom)
+            private IGeometry CreateValidArea(IGeometry rawAreaGeom)
             {
-                return roughAreaGeom.Buffer(0.0);
+                if (_ensureValidTopology)
+                    return rawAreaGeom.Buffer(0.0);
+                return rawAreaGeom;
             }
         }
     }

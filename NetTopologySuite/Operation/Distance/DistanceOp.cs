@@ -53,10 +53,23 @@ namespace NetTopologySuite.Operation.Distance
         /// <param name="g0">A <c>Geometry</c>.</param>
         /// <param name="g1">Another <c>Geometry</c>.</param>
         /// <returns>The closest points in the geometries.</returns>
-        public static ICoordinate[] ClosestPoints(IGeometry g0, IGeometry g1)
+        public static ICoordinate[] NearestPoints(IGeometry g0, IGeometry g1)
         {
             DistanceOp distOp = new DistanceOp(g0, g1);
-            return distOp.ClosestPoints();
+            return distOp.NearestPoints();
+        }
+
+        /// <summary>
+        /// Compute the the closest points of two geometries.
+        /// The points are presented in the same order as the input Geometries.
+        /// </summary>
+        /// <param name="g0">A <c>Geometry</c>.</param>
+        /// <param name="g1">Another <c>Geometry</c>.</param>
+        /// <returns>The closest points in the geometries.</returns>
+        [Obsolete("Renamed to NearestPoints")]
+        public static ICoordinate[] ClosestPoints(IGeometry g0, IGeometry g1)
+        {
+            return NearestPoints(g0, g1);
         }
 
         private readonly PointLocator _ptLocator = new PointLocator();
@@ -102,20 +115,42 @@ namespace NetTopologySuite.Operation.Distance
         /// The points are presented in the same order as the input Geometries.
         /// </summary>
         /// <returns>A pair of <c>Coordinate</c>s of the closest points.</returns>
+        [Obsolete("Renamed to NearestPoints")]
         public ICoordinate[] ClosestPoints()
         {
-            ComputeMinDistance();
-            ICoordinate[] closestPts = new[] { _minDistanceLocation[0].Coordinate, 
-                                                           _minDistanceLocation[1].Coordinate };
-            return closestPts;
+            return NearestPoints();
         }
 
         /// <summary>
         /// Report the locations of the closest points in the input geometries.
         /// The locations are presented in the same order as the input Geometries.
         /// </summary>
-        /// <returns>A pair of {GeometryLocation}s for the closest points.</returns>
+        /// <returns>A pair of <see cref="GeometryLocation"/>s for the closest points.</returns>
+        [Obsolete("Renamed to NearestLocations")]
         public GeometryLocation[] ClosestLocations()
+        {
+            return NearestLocations();
+        }
+
+        /// <summary>
+        /// Report the coordinates of the nearest points in the input geometries.
+        /// The points are presented in the same order as the input Geometries.
+        /// </summary>
+        /// <returns>A pair of <c>Coordinate</c>s of the nearest points.</returns>
+        public ICoordinate[] NearestPoints()
+        {
+            ComputeMinDistance();
+            ICoordinate[] nearestPts = new[] { _minDistanceLocation[0].Coordinate, 
+                                               _minDistanceLocation[1].Coordinate };
+            return nearestPts;
+        }
+
+        /// <summary>
+        /// Report the locations of the nearest points in the input geometries.
+        /// The locations are presented in the same order as the input Geometries.
+        /// </summary>
+        /// <returns>A pair of <see cref="GeometryLocation"/>s for the nearest points.</returns>
+        public GeometryLocation[] NearestLocations()
         {
             ComputeMinDistance();
             return _minDistanceLocation;
@@ -164,7 +199,7 @@ namespace NetTopologySuite.Operation.Distance
             ComputeContainmentDistance();
             if (_minDistance <= _terminateDistance)
                 return;
-            ComputeLineDistance();
+            ComputeFacetDistance();
         }
 
         /// <summary>
@@ -172,11 +207,10 @@ namespace NetTopologySuite.Operation.Distance
         /// </summary>
         private void ComputeContainmentDistance()
         {
-            IList<IPolygon> polys0 = PolygonExtracter.GetPolygons(_geom[0]);
-            IList<IPolygon> polys1 = PolygonExtracter.GetPolygons(_geom[1]);
-
             GeometryLocation[] locPtPoly = new GeometryLocation[2];
-            // test if either point is wholely inside the other
+            
+            // test if either geometry has a vertex inside the other
+            IList<IPolygon> polys1 = PolygonExtracter.GetPolygons(_geom[1]);
             if (polys1.Count > 0)
             {
                 IList<GeometryLocation> insideLocs0 = ConnectedElementLocationFilter.GetLocations(_geom[0]);
@@ -188,6 +222,8 @@ namespace NetTopologySuite.Operation.Distance
                     return;
                 }
             }
+
+            IList<IPolygon> polys0 = PolygonExtracter.GetPolygons(_geom[0]);
             if (polys0.Count > 0)
             {
                 IList<GeometryLocation> insideLocs1 = ConnectedElementLocationFilter.GetLocations(_geom[1]);
@@ -230,6 +266,7 @@ namespace NetTopologySuite.Operation.Distance
         private void ComputeInside(GeometryLocation ptLoc, IPolygon poly, GeometryLocation[] locPtPoly)
         {
             ICoordinate pt = ptLoc.Coordinate;
+            // if pt is not in exterior, distance to geom is 0
             if (Locations.Exterior != _ptLocator.Locate(pt, poly))
             {
                 _minDistance = 0.0;
@@ -241,9 +278,9 @@ namespace NetTopologySuite.Operation.Distance
         }
 
         /// <summary>
-        /// 
+        /// Computes distance between facets (lines and points) of input geometries.
         /// </summary>
-        private void ComputeLineDistance()
+        private void ComputeFacetDistance()
         {
             GeometryLocation[] locGeom = new GeometryLocation[2];
 
@@ -257,7 +294,7 @@ namespace NetTopologySuite.Operation.Distance
             IList<IPoint> pts0 = PointExtracter.GetPoints(_geom[0]);
             IList<IPoint> pts1 = PointExtracter.GetPoints(_geom[1]);
 
-            // bail whenever minDistance goes to zero, since it can't get any less
+            // exit whenever minDistance goes LE than terminateDistance
             ComputeMinDistanceLines(lines0, lines1, locGeom);
             UpdateMinDistance(locGeom, false);
             if (_minDistance <= _terminateDistance) return;
@@ -314,7 +351,6 @@ namespace NetTopologySuite.Operation.Distance
                     if (dist < _minDistance)
                     {
                         _minDistance = dist;
-                        // this is wrong - need to determine closest points on both segments!!!
                         locGeom[0] = new GeometryLocation(pt0, 0, pt0.Coordinate);
                         locGeom[1] = new GeometryLocation(pt1, 0, pt1.Coordinate);
                     }

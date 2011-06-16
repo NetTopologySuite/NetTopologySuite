@@ -125,7 +125,8 @@ namespace NetTopologySuite.Noding.Snapround
             {
                 HotPixel hotPixel = new HotPixel(snapPt, _scaleFactor, _li);
                 for (int i = 0; i < ss.Count - 1; i++)
-                    AddSnappedNode(hotPixel, ss, i);
+                    //AddSnappedNode(hotPixel, ss, i);
+                    hotPixel.AddSnappedNode(ss, i);
             }
         }
 
@@ -160,14 +161,17 @@ namespace NetTopologySuite.Noding.Snapround
                     if (e0 == e1)
                         if (i0 == i1) 
                             continue;
-                    
-                    bool isNodeAdded = AddSnappedNode(hotPixel, e1, i1);
+
+                    bool isNodeAdded = //AddSnappedNode(hotPixel, e1, i1);
+                                       hotPixel.AddSnappedNode(e1, i1);
                     // if a node is created for a vertex, that vertex must be noded too
                     if (isNodeAdded)
                         e0.AddIntersection(pts0[i0], i0);                    
                 }
             }
         }
+
+  /* refactored to HotPixel
 
         /// <summary>
         /// Adds a new node (equal to the snap pt) to the segment
@@ -189,5 +193,6 @@ namespace NetTopologySuite.Noding.Snapround
             }
             return false;
         }
+*/
     }
 }

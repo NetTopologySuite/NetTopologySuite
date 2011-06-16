@@ -476,7 +476,7 @@ namespace NetTopologySuite.Operation.Valid
         /// </summary>
         private void CheckHolesNotNested(IPolygon p, GeometryGraph graph)
         {
-            QuadtreeNestedRingTester nestedTester = new QuadtreeNestedRingTester(graph);
+            var nestedTester = new IndexedNestedRingTester(graph);
             foreach (ILinearRing innerHole in p.Holes)
                 nestedTester.Add(innerHole);
             bool isNonNested = nestedTester.IsNonNested();

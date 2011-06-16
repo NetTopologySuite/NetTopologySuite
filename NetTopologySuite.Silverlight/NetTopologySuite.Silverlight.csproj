@@ -701,11 +701,17 @@
     <Compile Include="..\NetTopologySuite\Operation\Union\UnaryUnionOp.cs">
       <Link>Operation\Union\UnaryUnionOp.cs</Link>
     </Compile>
+    <Compile Include="..\NetTopologySuite\Operation\Union\PointGeometryUnion.cs">
+      <Link>Operation\Union\PointGeometryUnion.cs</Link>
+    </Compile>
     <Compile Include="..\NetTopologySuite\Operation\Union\UnionInteracting.cs">
       <Link>Operation\Union\UnionInteracting.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Operation\Buffer\BufferSubgraph.cs">
       <Link>Operation\Buffer\BufferSubgraph.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Operation\Buffer\BufferInputLineSimplifier.cs">
+      <Link>Operation\Buffer\BufferInputLineSimplifier.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Operation\Buffer\OffsetCurveBuilder.cs">
       <Link>Operation\Buffer\OffsetCurveBuilder.cs</Link>
@@ -856,6 +862,9 @@
     </Compile>
     <Compile Include="..\NetTopologySuite\Operation\Valid\QuadtreeNestedRingTester.cs">
       <Link>Operation\Valid\QuadtreeNestedRingTester.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Operation\Valid\IndexedNestedRingTester.cs">
+      <Link>Operation\Valid\IndexedNestedRingTester.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Operation\Valid\RepeatedPointTester.cs">
       <Link>Operation\Valid\RepeatedPointTester.cs</Link>

@@ -13,13 +13,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
     /// </summary>
     public abstract class EdgeSetIntersector
     {
-        /*
-        /// <summary>
-        /// Default empty constructor.
-        /// </summary>
-        protected EdgeSetIntersector() { }
-         */
-        /// <summary>
+         /// <summary>
         /// Computes all self-intersections between edges in a set of edges,
         /// allowing client to choose whether self-intersections are computed.
         /// </summary>

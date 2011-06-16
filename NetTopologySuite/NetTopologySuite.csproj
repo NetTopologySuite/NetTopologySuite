@@ -313,6 +313,7 @@
     <Compile Include="Noding\Snapround\SimpleSnapRounder.cs" />
     <Compile Include="Operation\BoundaryOp.cs" />
     <Compile Include="Operation\Buffer\BufferBuilder.cs" />
+    <Compile Include="Operation\Buffer\BufferInputLineSimplifier.cs" />
     <Compile Include="Operation\Buffer\BufferOp.cs" />
     <Compile Include="Operation\Buffer\BufferParameters.cs" />
     <Compile Include="Operation\Buffer\BufferSubgraph.cs" />
@@ -321,6 +322,11 @@
     <Compile Include="Operation\Buffer\OffsetCurveVertexList.cs" />
     <Compile Include="Operation\Buffer\RightmostEdgeFinder.cs" />
     <Compile Include="Operation\Buffer\SubgraphDepthLocater.cs" />
+    <Compile Include="Operation\Buffer\Validate\BufferCurveMaximumDistanceFinder.cs" />
+    <Compile Include="Operation\Buffer\Validate\BufferDistanceValidator.cs" />
+    <Compile Include="Operation\Buffer\Validate\BufferResultValidator.cs" />
+    <Compile Include="Operation\Buffer\Validate\DistanceToPointFinder.cs" />
+    <Compile Include="Operation\Buffer\Validate\PointPairDistance.cs" />
     <Compile Include="Operation\Distance\ConnectedElementLocationFilter.cs" />
     <Compile Include="Operation\Distance\ConnectedElementPointFilter.cs" />
     <Compile Include="Operation\Distance\DistanceOp.cs" />
@@ -365,10 +371,12 @@
     <Compile Include="Operation\Relate\RelateNodeGraph.cs" />
     <Compile Include="Operation\Relate\RelateOp.cs" />
     <Compile Include="Operation\Union\CascadedPolygonUnion.cs" />
+    <Compile Include="Operation\Union\PointGeometryUnion.cs" />
     <Compile Include="Operation\Union\UnaryUnionOp.cs" />
     <Compile Include="Operation\Union\UnionInteracting.cs" />
     <Compile Include="Operation\Valid\ConnectedInteriorTester.cs" />
     <Compile Include="Operation\Valid\ConsistentAreaTester.cs" />
+    <Compile Include="Operation\Valid\IndexedNestedRingTester.cs" />
     <Compile Include="Operation\Valid\IsValidOp.cs" />
     <Compile Include="Operation\Valid\QuadtreeNestedRingTester.cs" />
     <Compile Include="Operation\Valid\RepeatedPointTester.cs" />
@@ -387,6 +395,7 @@
     <Compile Include="Precision\CommonBits.cs" />
     <Compile Include="Precision\CommonBitsOp.cs" />
     <Compile Include="Precision\CommonBitsRemover.cs" />
+    <Compile Include="Precision\CoordinatePrecisionReducerFilter.cs" />
     <Compile Include="Precision\EnhancedPrecisionOp.cs" />
     <Compile Include="Precision\SimpleGeometryPrecisionReducer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -412,6 +421,7 @@
     <Compile Include="Utilities\HexConverter.cs" />
     <Compile Include="Utilities\Global.cs" />
     <Compile Include="Utilities\PlatformUtilityEx.cs" />
+    <Compile Include="Utilities\PriorityQueue.cs" />
     <Compile Include="Utilities\Radians.cs" />
     <Compile Include="Utilities\ReverseOrder.cs" />
     <Compile Include="Utilities\RToolsUtil\BufferedTextReader.cs" />

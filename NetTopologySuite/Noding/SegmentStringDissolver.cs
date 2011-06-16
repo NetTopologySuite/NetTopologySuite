@@ -8,19 +8,27 @@ namespace NetTopologySuite.Noding
     /// <summary>
     /// Dissolves a noded collection of <see cref="ISegmentString" />s to produce
     /// a set of merged linework with unique segments.
-    /// A custom merging strategy can be applied when two identical (up to orientation)
+    /// </summary>
+    /// <remarks>
+    /// A custom <see cref="ISegmentStringMerger"/> merging strategy
+    /// can be supplied.  
+    /// This strategy will be called when two identical (up to orientation)
     /// strings are dissolved together.
-    /// The default merging strategy is simply to discard the merged string.
+    /// The default merging strategy is simply to discard one of the merged strings.
     ///<para>
     /// A common use for this class is to merge noded edges
     /// while preserving topological labelling.
+    /// This requires a custom merging strategy to be supplied 
+    /// to merge the topology labels appropriately.
     /// </para>
-    /// </summary>
+    ///</remarks>
     public class SegmentStringDissolver
     {
         /// <summary>
-        /// 
+        /// A merging strategy which can be used to update the context data of <see cref="ISegmentString"/>s 
+        /// which are merged during the dissolve process.
         /// </summary>
+        /// <author>mbdavis</author>
         public interface ISegmentStringMerger
         {
             /// <summary>

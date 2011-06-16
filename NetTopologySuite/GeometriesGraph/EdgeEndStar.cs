@@ -209,7 +209,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="p"></param>
         /// <param name="geom"></param>
         /// <returns></returns>
-        public Locations GetLocation(int geomIndex, ICoordinate p, GeometryGraph[] geom)
+        private Locations GetLocation(int geomIndex, ICoordinate p, GeometryGraph[] geom)
         {
             // compute location only on demand
             if (_ptInAreaLocation[geomIndex] == Locations.Null) 

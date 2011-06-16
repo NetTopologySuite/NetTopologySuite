@@ -216,11 +216,13 @@ namespace NetTopologySuite.Utilities
 
         /// <summary>
         /// Creates a elliptical arc, as a LineString.
-        /// </summary>
-        /// <param name="startAng"></param>
-        /// <param name="endAng"></param>
+        /// </summary><remarks>
+        /// The arc is always created in a counter-clockwise direction.
+        /// </remarks>
+        /// <param name="startAng">Start angle in radians</param>
+        /// <param name="angExtent">Size of angle in radians</param>
         /// <returns></returns>
-        public ILineString CreateArc(double startAng, double endAng)
+        public ILineString CreateArc(double startAng, double angExtent)
         {
             IEnvelope env = _dim.Envelope;
             double xRadius = env.Width / 2.0;
@@ -229,10 +231,10 @@ namespace NetTopologySuite.Utilities
             double centreX = env.MinX + xRadius;
             double centreY = env.MinY + yRadius;
 
-            double angSize = (endAng - startAng);
+            double angSize = angExtent;
             if (angSize <= 0.0 || angSize > 2 * Math.PI)
                 angSize = 2 * Math.PI;
-            double angInc = angSize / _nPts;
+            double angInc = angSize / (_nPts - 1);
 
             ICoordinate[] pts = new ICoordinate[_nPts];
             int iPt = 0;
@@ -246,6 +248,50 @@ namespace NetTopologySuite.Utilities
             }
             ILineString line = GeomFact.CreateLineString(pts);
             return line;
+        }
+
+        ///<summary>
+        /// Creates an elliptical arc polygon.
+        ///</summary>
+        /// <remarks>
+        /// The polygon is formed from the specified arc of an ellipse
+        /// and the two radii connecting the endpoints to the centre of the ellipse.
+        /// </remarks>
+        /// <param name="startAng">Start angle in radians</param>
+        /// <param name="angExtent">Size of angle in radians</param>
+        /// <returns>An elliptical arc polygon</returns>
+        public IPolygon CreateArcPolygon(double startAng, double angExtent)
+        {
+            var env = _dim.Envelope;
+            double xRadius = env.Width / 2.0;
+            double yRadius = env.Height / 2.0;
+
+            double centreX = env.MinX + xRadius;
+            double centreY = env.MinY + yRadius;
+
+            double angSize = angExtent;
+            if (angSize <= 0.0 || angSize > 2 * Math.PI)
+                angSize = 2 * Math.PI;
+            double angInc = angSize / (_nPts - 1);
+            // double check = angInc * nPts;
+            // double checkEndAng = startAng + check;
+
+            var pts = new ICoordinate[_nPts + 2];
+
+            int iPt = 0;
+            pts[iPt++] = CreateCoord(centreX, centreY);
+            for (int i = 0; i < _nPts; i++)
+            {
+                double ang = startAng + angInc * i;
+
+                double x = xRadius * Math.Cos(ang) + centreX;
+                double y = yRadius * Math.Sin(ang) + centreY;
+                pts[iPt++] = CreateCoord(x, y);
+            }
+            pts[iPt] = CreateCoord(centreX, centreY);
+            var ring = GeomFact.CreateLinearRing(pts);
+            var geom = GeomFact.CreatePolygon(ring, null);
+            return geom;
         }
 
         /// <summary>

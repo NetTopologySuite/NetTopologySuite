@@ -24,13 +24,13 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             double snapTolerance = ComputeSizeBasedSnapTolerance(g);
 
             /*
-             * Overlay is carried out in most precise precision model 
-             * of inputs.  
-             * If this precision model is fixed, then the snap tolerance
-             * must reflect the grid size.  
-             * Precisely, the snap tolerance should be at least 
-             * the distance from a corner of a precision grid cell
-             * to the centre point of the cell.  
+		     * Overlay is carried out in the precision model 
+		     * of the two inputs.  
+		     * If this precision model is of type FIXED, then the snap tolerance
+		     * must reflect the precision grid size.  
+		     * Specifically, the snap tolerance should be at least 
+		     * the distance from a corner of a precision grid cell
+		     * to the centre point of the cell.  
              */
             IPrecisionModel pm = g.PrecisionModel;
             if (pm.PrecisionModelType == PrecisionModels.Fixed)

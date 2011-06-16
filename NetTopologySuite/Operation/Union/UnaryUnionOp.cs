@@ -20,7 +20,15 @@ namespace NetTopologySuite.Operation.Union
     /// The result obeys the following contract:
     /// <list type="Bullet">
     /// <item>Unioning a set of overlapping <see cref="IPolygon"/>s has the effect of merging the areas (i.e. the same effect as iteratively unioning all individual polygons together).</item>
-    /// <item>Unioning a set of <see cref="ILineString"/>s has the effect of fully noding and dissolving the linework.</item>
+    /// <item>Unioning a set of <see cref="ILineString"/>s has the effect of <b>fully noding</b> 
+    /// and <b>dissolving</b> the input linework.
+    /// In this context "fully noded" means that there will be a node or endpoint in the output 
+    /// for every endpoint or line segment crossing in the input.
+    /// "Dissolved" means that any duplicate (e.g. coincident) line segments or portions
+    /// of line segments will be reduced to a single line segment in the output.  
+    /// This is consistent with the semantics of the 
+    /// <see cref="IGeometry.Union(IGeometry)"/> operation.
+    /// If <b>merged</b> linework is required, the {@link LineMerger} class can be used.</item>
     /// <item>Unioning a set of <see cref="IPoint"/>s has the effect of merging all identical points (producing a set with no duplicates).</item> </list>
     /// </para>
     /// </remarks>
@@ -35,6 +43,12 @@ namespace NetTopologySuite.Operation.Union
             return op.Union();
         }
 
+        public static IGeometry Union(IList<IGeometry> geoms, IGeometryFactory geomFact)
+        {
+            UnaryUnionOp op = new UnaryUnionOp(geoms, geomFact);
+            return op.Union();
+        }
+	
         public static IGeometry Union(IGeometry geom)
         {
             UnaryUnionOp op = new UnaryUnionOp(geom);
@@ -49,6 +63,12 @@ namespace NetTopologySuite.Operation.Union
 
         public UnaryUnionOp(IEnumerable<IGeometry> geoms)
         {
+            Extract(geoms);
+        }
+
+        public UnaryUnionOp(IEnumerable<IGeometry> geoms, IGeometryFactory geomFact)
+        {
+            _geomFact = geomFact;
             Extract(geoms);
         }
 
@@ -80,11 +100,12 @@ namespace NetTopologySuite.Operation.Union
 
         ///<summary>
         /// Gets the union of the input geometries.
+	    /// If no input geometries were provided, a POINT EMPTY is returned.
         ///</summary>
         /// <returns>
         /// <list>
         /// <item>a Geometry containing the union</item>
-        /// <item><c>null</c>if no geometries were provided in the input</item>
+        /// <item>An empty <see cref="IGeometryCollection"/> if no geometries were provided in the input</item>
         /// </list>
         /// </returns>
         public IGeometry Union()
@@ -119,8 +140,17 @@ namespace NetTopologySuite.Operation.Union
              * Performing two unions is somewhat inefficient,
              * but is mitigated by unioning lines and points first
              */
-            IGeometry unionPointsLines = UnionWithNull(unionPoints, unionLines);
-            IGeometry union = UnionWithNull(unionPointsLines, unionPolygons);
+            var unionLA = UnionWithNull(unionLines, unionPolygons);
+            IGeometry union;
+            if (unionPoints == null)
+                union = unionLA;
+            else if (unionLA == null)
+                union = unionPoints;
+            else
+                union = PointGeometryUnion.Union((IPuntal)unionPoints, unionLA);
+
+            if (union == null)
+                return _geomFact.CreateGeometryCollection(null);
 
             return union;
         }

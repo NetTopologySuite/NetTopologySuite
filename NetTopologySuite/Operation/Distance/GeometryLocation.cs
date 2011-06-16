@@ -4,85 +4,89 @@ namespace NetTopologySuite.Operation.Distance
 {
     /// <summary>
     /// Represents the location of a point on a Geometry.
-    /// Maintains both the actual point location (which of course
-    /// may not be exact) as well as information about the component
+    /// Maintains both the actual point location 
+    /// (which may not be exact, if the point is not a vertex) 
+    /// as well as information about the component
     /// and segment index where the point occurs.
     /// Locations inside area Geometrys will not have an associated segment index,
-    /// so in this case the segment index will have the sentinel value of InsideArea.
+    /// so in this case the segment index will have the sentinel value of <see cref="InsideArea"/>.
     /// </summary>
     public class GeometryLocation
     {
         /// <summary>
-        /// Special value of segment-index for locations inside area geometries. These
-        /// locations do not have an associated segment index.
+        /// A special value of segmentIndex used for locations inside area geometries. 
+        /// These locations are not located on a segment, 
+        /// and thus do not have an associated segment index.
         /// </summary>
         public const int InsideArea = -1;
 
-        private IGeometry component = null;
-        private int segIndex;
-        private ICoordinate pt = null;
+        private readonly IGeometry _component;
+        private readonly int _segIndex;
+        private readonly ICoordinate _pt;
 
         /// <summary>
         /// Constructs a GeometryLocation specifying a point on a point, as well as the 
-        /// segment that the point is on (or InsideArea if the point is not on a segment).
+        /// segment that the point is on (or <see cref="InsideArea"/> if the point is not on a segment).
         /// </summary>
-        /// <param name="component"></param>
-        /// <param name="segIndex"></param>
-        /// <param name="pt"></param>
+        /// <param name="component">The component of the geometry containing the point</param>
+        /// <param name="segIndex">The segment index of the location, or <see cref="InsideArea"/></param>
+        /// <param name="pt">The coordinate of the location</param>
         public GeometryLocation(IGeometry component, int segIndex, ICoordinate pt)
         {
-            this.component = component;
-            this.segIndex = segIndex;
-            this.pt = pt;
+            _component = component;
+            _segIndex = segIndex;
+            _pt = pt;
         }
 
         /// <summary> 
         /// Constructs a GeometryLocation specifying a point inside an area point.
         /// </summary>
+        /// <param name="component">The component of the geometry containing the point</param>
+        /// <param name="pt">The coordinate of the location</param>
         public GeometryLocation(IGeometry component, ICoordinate pt) : this(component, InsideArea, pt) { }
 
         /// <summary>
-        /// Returns the point associated with this location.
+        /// Returns the geometry component on (or in) which this location occurs.
         /// </summary>
         public IGeometry GeometryComponent
         {
             get
             {
-                return component;
+                return _component;
             }
         }
 
         /// <summary>
         /// Returns the segment index for this location. If the location is inside an
-        /// area, the index will have the value InsideArea;
+        /// area, the index will have the value <see cref="InsideArea"/>.
         /// </summary>
         public int SegmentIndex
         {
             get
             {
-                return segIndex;
+                return _segIndex;
             }
         }
 
         /// <summary>
-        /// Returns the location.
+        /// Returns the <see cref="ICoordinate"/> of this location.
         /// </summary>
         public ICoordinate Coordinate
         {
             get
             {
-                return pt;
+                return _pt;
             }
         }
 
         /// <summary>
-        /// Returns whether this GeometryLocation represents a point inside an area point.
+        /// Tests whether this location represents a point inside an area geometry.
         /// </summary>
         public bool IsInsideArea
         {
             get
             {
-                return segIndex == InsideArea;
+                return _segIndex == InsideArea;
             }
         }
     }
