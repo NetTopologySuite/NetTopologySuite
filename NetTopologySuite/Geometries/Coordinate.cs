@@ -6,21 +6,28 @@ namespace NetTopologySuite.Geometries
     /// <summary>
     /// A lightweight class used to store coordinates on the 2-dimensional Cartesian plane.
     /// It is distinct from <see cref="IPoint"/>, which is a subclass of <see cref="IGeometry"/>.
-    /// Unlike objects of type <c>Point</c> (which contain additional
+    /// Unlike objects of type <see cref="IPoint"/> (which contain additional
     /// information such as an envelope, a precision model, and spatial reference
     /// system information), a <c>Coordinate</c> only contains ordinate values
     /// and propertied.
     /// <c>Coordinate</c>s are two-dimensional points, with an additional Z-ordinate.
     /// NTS does not support any operations on the Z-ordinate except the basic accessor functions. 
-    /// If a value is not specified, constructed coordinates will have a
-    /// z-ordinate of <c>NaN</c>.  The standard comparison functions will ignore
-    /// the z-ordinate.
+    /// If an Z-ordinate value is not specified or not defined, 
+    /// constructed coordinates have a Z-ordinate of <code>NaN</code>
+    /// (which is also the value of <see cref="NullOrdinate"/>).  
     /// </summary>
 #if !SILVERLIGHT
     [Serializable]
 #endif
     public class Coordinate : ICoordinate
     {
+        /**
+         * The value used to indicate a null or missing ordinate value.
+         * In particular, used for the value of ordinates for dimensions 
+         * greater than the defined dimension of a coordinate.
+         */
+        public const double NullOrdinate = Double.NaN;
+        
         private double _x; // = Double.NaN;
         private double _y; // = Double.NaN;
         private double _z; // = Double.NaN;
@@ -92,7 +99,7 @@ namespace NetTopologySuite.Geometries
                     case Ordinates.Z:
                         return _z;
                     default:
-                        return Double.NaN;
+                        return NullOrdinate;
                 }
             }
             set
@@ -115,7 +122,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///  Constructs a <c>Coordinate</c> at (0,0,NaN).
         /// </summary>
-        public Coordinate() : this(0.0, 0.0, Double.NaN) { }
+        public Coordinate() : this(0.0, 0.0, NullOrdinate) { }
 
         /// <summary>
         /// Constructs a <c>Coordinate</c> having the same (x,y,z) values as
@@ -129,7 +136,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="x">X value.</param>
         /// <param name="y">Y value.</param>
-        public Coordinate(double x, double y) : this(x, y, Double.NaN) { }
+        public Coordinate(double x, double y) : this(x, y, NullOrdinate) { }
 
         /// <summary>
         /// Gets/Sets <c>Coordinate</c>s (x,y,z) values.

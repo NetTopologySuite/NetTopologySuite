@@ -525,6 +525,19 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        public override IGeometry Reverse()
+        {
+            Polygon poly = (Polygon)Clone();
+            poly.Shell = (LinearRing)((LinearRing)_shell.Clone()).Reverse();
+            poly.Holes = new LinearRing[_holes.Length];
+            for (int i = 0; i < _holes.Length; i++)
+            {
+                poly.Holes[i] = (LinearRing)((LinearRing)_holes[i].Clone()).Reverse();
+            }
+            return poly;// return the clone
+        }
+
+
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
@@ -557,6 +570,7 @@ namespace NetTopologySuite.Geometries
             {
                 return _shell;
             }
+            private set { _shell = value; }
         }
 
         /// <summary>
@@ -568,6 +582,7 @@ namespace NetTopologySuite.Geometries
             {
                 return _holes;
             }
+            private set { _holes = value; }
         }
 
         /*END ADDED BY MPAUL42 */

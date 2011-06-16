@@ -467,6 +467,23 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        ///<summary>
+        /// Creates a <see cref="IGeometryCollection"/> with
+        /// every component reversed.
+        /// The order of the components in the collection are not reversed.
+        ///</summary>
+        /// <returns>A <see cref="IGeometryCollection"/></returns> in the reverse order
+        public override IGeometry Reverse()
+        {
+            int n = _geometries.Length;
+            IGeometry[] revGeoms = new IGeometry[n];
+            for (int i = 0; i < _geometries.Length; i++)
+            {
+                revGeoms[i] = _geometries[i].Reverse();
+            }
+            return Factory.CreateGeometryCollection(revGeoms);
+        }
+
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>

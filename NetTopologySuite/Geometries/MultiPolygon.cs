@@ -126,5 +126,21 @@ namespace NetTopologySuite.Geometries
                 return false;
             return base.EqualsExact(other, tolerance);
         }
+
+        ///<summary>Creates a {@link MultiPolygon} with every component reversed.
+        ///</summary>
+        /// <remarks>The order of the components in the collection are not reversed.</remarks>
+        /// <returns>An <see cref="IMultiPolygon"/> in the reverse order</returns>
+        public override IGeometry Reverse()
+        {
+            int n = Geometries.Length;
+            IPolygon[] revGeoms = new IPolygon[n];
+            for (int i = 0; i < Geometries.Length; i++)
+            {
+                revGeoms[i] = (Polygon)Geometries[i].Reverse();
+            }
+            return Factory.CreateMultiPolygon(revGeoms);
+        }
+
     }
 }

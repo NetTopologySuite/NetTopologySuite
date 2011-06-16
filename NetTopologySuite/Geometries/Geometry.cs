@@ -97,7 +97,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        private static readonly Type[] SortedClasses = new[] 
+        private static Type[] _sortedClasses;/* = new[] 
         {
             typeof(Point),
             typeof(MultiPoint),
@@ -107,7 +107,7 @@ namespace NetTopologySuite.Geometries
             typeof(Polygon),
             typeof(MultiPolygon),
             typeof(GeometryCollection),    
-        };                    
+        };                    */
 
         //FObermaier: not *readonly* due to SRID property in geometryfactory
         private /*readonly*/ IGeometryFactory _factory;
@@ -124,15 +124,21 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        /**
+         * An object reference which can be used to carry ancillary data defined
+         * by the client.
+         */
         private object _userData;
         
         /// <summary> 
         /// Gets/Sets the user data object for this point, if any.
+        /// </summary>
+        /// <remarks>
         /// A simple scheme for applications to add their own custom data to a Geometry.
         /// An example use might be to add an object representing a Coordinate Reference System.
         /// Note that user data objects are not present in geometries created by
         /// construction methods.
-        /// </summary>
+        /// </remarks>
         public object UserData
         {
             get
@@ -154,13 +160,24 @@ namespace NetTopologySuite.Geometries
         private int _srid;
 
         /// <summary>  
-        /// Gets/Sets the ID of the Spatial Reference System used by the <c>Geometry</c>. 
+        /// Sets the ID of the Spatial Reference System used by the <c>Geometry</c>.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// <b>NOTE:</b> This method should only be used for exceptional circumstances or 
+        /// for backwards compatibility.  Normally the SRID should be set on the 
+        /// <see cref="IGeometryFactory"/> used to create the geometry.
+        /// SRIDs set using this method will <i>not</i> be propagated to 
+        /// geometries returned by constructive methods.
+        /// </remarks>
+        /// <seealso cref="IGeometryFactory"/>  
+        /*
         /// NTS supports Spatial Reference System information in the simple way
         /// defined in the SFS. A Spatial Reference System ID (SRID) is present in
         /// each <c>Geometry</c> object. <c>Geometry</c> provides basic
         /// accessor operations for this field, but no others. The SRID is represented
         /// as an integer.
-        /// </summary>        
+         */
         public int SRID
         {
             get 
@@ -243,21 +260,37 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Returns a vertex of this <c>Geometry</c>.
+        /// Returns a vertex of this <c>Geometry</c>
+        /// (usually, but not necessarily, the first one).
         /// </summary>
-        /// <returns>    
-        /// a Coordinate which is a vertex of this <c>Geometry</c>.
-        /// Returns <c>null</c> if this Geometry is empty.
+        /// <remarks>
+        /// The returned coordinate should not be assumed to be an actual Coordinate object used in the internal representation. 
+        /// </remarks>
+        /// <returns>a Coordinate which is a vertex of this <c>Geometry</c>.</returns>
+        /// <returns><c>null</c> if this Geometry is empty.
         /// </returns>
         public abstract ICoordinate Coordinate { get; }
 
-        /// <summary>  
-        /// Returns this <c>Geometry</c> s vertices. If you modify the coordinates
-        /// in this array, be sure to call GeometryChanged afterwards.
-        /// The <c>Geometry</c>s contained by composite <c>Geometry</c>s
-        /// must be Geometry's; that is, they must implement <c>Coordinates</c>.
+        /// <summary>
+        /// Returns an array containing the values of all the vertices for 
+        /// this geometry.
         /// </summary>
+        /// <remarks>
+        /// If the geometry is a composite, the array will contain all the vertices
+        /// for the components, in the order in which the components occur in the geometry.
+        /// <para>
+        /// In general, the array cannot be assumed to be the actual internal 
+        /// storage for the vertices.  Thus modifying the array
+        /// may not modify the geometry itself. 
+        /// Use the <see cref="ICoordinateSequence.SetOrdinate"/> method
+        /// (possibly on the components) to modify the underlying data.
+        /// If the coordinates are modified, 
+        /// <see cref="IGeometry.GeometryChanged"/> must be called afterwards.
+        /// </para> 
+        /// </remarks>
         /// <returns>The vertices of this <c>Geometry</c>.</returns>
+        /// <seealso cref="IGeometry.GeometryChanged"/>
+        /// <seealso cref="ICoordinateSequence.SetOrdinate"/>
         public abstract ICoordinate[] Coordinates { get; }
 
         /// <summary>  
@@ -474,11 +507,22 @@ namespace NetTopologySuite.Geometries
         private Dimensions _dimension;
 
         /// <summary> 
-        /// Returns the dimension of this <c>Geometry</c>.
+        /// Returns the dimension of this geometry.
         /// </summary>
+        /// <remarks>
+        /// The dimension of a geometry is is the topological 
+        /// dimension of its embedding in the 2-D Euclidean plane.
+        /// In the NTS spatial model, dimension values are in the set {0,1,2}.
+        /// <para>
+        /// Note that this is a different concept to the dimension of 
+        /// the vertex <see cref="ICoordinate"/>s.
+        /// The geometry dimension can never be greater than the coordinate dimension.
+        /// For example, a 0-dimensional geometry (e.g. a Point) 
+        /// may have a coordinate dimension of 3 (X,Y,Z). 
+        /// </para>
+        /// </remarks>
         /// <returns>  
-        /// The dimension of the class implementing this interface, whether
-        /// or not this object is the empty point.
+        /// The topological dimensions of this geometry
         /// </returns>
         public virtual Dimensions Dimension
         {
@@ -561,9 +605,12 @@ namespace NetTopologySuite.Geometries
 
         /// <summary>
         /// Notifies this Geometry that its Coordinates have been changed by an external
-        /// party (using a CoordinateFilter, for example). The Geometry will flush
-        /// and/or update any information it has cached (such as its Envelope).
+        /// party (for example, via a <see cref="ICoordinateFilter"/>).
         /// </summary>
+        /// <remarks>
+        /// When this method is called the geometry will flush
+        /// and/or update any derived information it has cached (such as its <see cref="IEnvelope"/> ).
+        /// </remarks>
         public void GeometryChanged()
         {
             Apply(new GeometryChangedFilter());
@@ -682,7 +729,7 @@ namespace NetTopologySuite.Geometries
         /// <list type="Table">
         /// <listheader><item>Code</item><description>Description</description></listheader>
         /// <item><c>[T*T******]</c></item><description>for P/L, P/A, and L/A situations</description>
-        /// <item><c>[T*****T**]</c></item><description>for L/P, L/A, and A/L situations)</description>
+        /// <item><c>[T*****T**]</c></item><description>for L/P, A/P, and A/L situations)</description>
         /// <item><c>[0********]</c></item><description>for L/L situations</description>
         /// </list>
         /// </item>
@@ -718,8 +765,8 @@ namespace NetTopologySuite.Geometries
         /// <item><c>g.contains(this)</c><br/>(<c>Within</c> is the converse of <c>Contains</c>)</item>
         /// </list>
         /// <para>
-        /// An implication of the definition is that "The boundary of a Polygon is not within the Polygon".
-        /// In other words, if a geometry G is a subset of the points in the boundary of a polygon P, <c>G.within(P) = false</c>
+        /// An implication of the definition is that "The boundary of a geometry is not within the Polygon".
+        /// In other words, if a geometry A is a subset of the points in the boundary of a geometry B, <c>A.within(B) = false</c>
         /// </para>
         /// </remarks>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
@@ -744,9 +791,9 @@ namespace NetTopologySuite.Geometries
         /// (<c>Contains</c> is the converse of <c>within</c>)</item>
         /// </list>
         /// <para>
-        /// An implication of the definition is that "Polygons do not
-        /// contain their boundary".  In other words, if a geometry G is a subset of
-        /// the points in the boundary of a polygon P, <c>P.contains(G) = false</c>
+        /// An implication of the definition is that "Geometries do not
+        /// contain their boundary".  In other words, if a geometry A is a subset of
+        /// the points in the boundary of a geometry B, <c>B.contains(A) = false</c>
         /// </para>
         /// </remarks>
         /// <param name="g">the <c>Geometry</c> with which to compare this <c>Geometry</c></param>
@@ -924,7 +971,7 @@ namespace NetTopologySuite.Geometries
         /// </item>
         /// </list>
         /// <b>Note</b> that this method computes topologically equality, not structural or
-        /// point-wise equality.
+        /// vertex-wise equality.
         /// </remarks>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
         /// <returns><c>true</c> if the two <c>Geometry</c>s are equal.</returns>
@@ -1396,6 +1443,13 @@ namespace NetTopologySuite.Geometries
             return (new ConvexHull(this)).GetConvexHull();         
         }
 
+        ///<summary>
+        /// Computes a new geometry which has all component coordinate sequences
+        /// in reverse order (opposite orientation) to this one.
+        ///</summary>
+        /// <returns>A reversed geometry</returns>
+        public abstract IGeometry Reverse();
+
         /// <summary>
         /// Returns a <c>Geometry</c> representing the points shared by this
         /// <c>Geometry</c> and <c>other</c>.
@@ -1535,21 +1589,26 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Performs an operation with or on this <c>Geometry</c>'s
-        /// coordinates. If you are using this method to modify the point, be sure
-        /// to call GeometryChanged() afterwards. Note that you cannot use this
-        /// method to
-        /// modify this Geometry if its underlying CoordinateSequence's Get method
-        /// returns a copy of the Coordinate, rather than the actual Coordinate stored
-        /// (if it even stores Coordinates at all).
+        /// Performs an operation with or on this <c>Geometry</c>'s coordinates. 
         /// </summary>
+        /// <remarks>
+        /// If this method modifies any coordinate values,
+        /// <see cref="GeometryChanged"/> must be called to update the geometry state. 
+        /// Note that you cannot use this method to
+        /// modify this Geometry if its underlying CoordinateSequence's #get method
+        /// returns a copy of the Coordinate, rather than the actual Coordinate stored
+        /// (if it even stores Coordinate objects at all).
+        /// </remarks>
         /// <param name="filter">The filter to apply to this <c>Geometry</c>'s coordinates</param>
         public abstract void Apply(ICoordinateFilter filter);
 
         ///<summary>
-        /// Performs an operation on the coordinates in this <c>Geometry</c>'s <see cref="ICoordinateSequence"/>s. 
-        /// If this method modifies any coordinate values, <see cref="GeometryChanged()"/> must be called to update the geometry state.
-        ///</summary>
+        /// Performs an operation on the coordinates in this <c>Geometry</c>'s <see cref="ICoordinateSequence"/>s.
+        /// </summary>
+        /// <remarks>
+        /// If the filter reports that a coordinate value has been changed, 
+        /// <see cref="GeometryChanged"/> will be called automatically.
+        ///</remarks>
         /// <param name="filter">The filter to apply</param>
         public abstract void Apply(ICoordinateSequenceFilter filter);
 
@@ -1871,13 +1930,31 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                for (int i = 0; i < SortedClasses.Length; i++)                
-                    if (GetType().Equals(SortedClasses[i]))                                        
+                if (_sortedClasses == null)
+                    InitSortedClasses();
+                for (int i = 0; i < _sortedClasses.Length; i++)                
+                    if (GetType().Equals(_sortedClasses[i]))                                        
                         return i;                                    
                 Assert.ShouldNeverReachHere(String.Format("Class not supported: {0}", GetType().FullName));
                 return -1;
             }
         }
+
+        private static void InitSortedClasses()
+        {
+            _sortedClasses = new []
+                                 {
+                                     typeof (Point),
+                                     typeof (MultiPoint),
+                                     typeof (LineString),
+                                     typeof (LinearRing),
+                                     typeof (MultiLineString),
+                                     typeof (Polygon),
+                                     typeof (MultiPolygon),
+                                     typeof (GeometryCollection),
+                                 };
+        }
+
 
         /// <summary>
         /// 

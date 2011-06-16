@@ -3,12 +3,37 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries
 {
-    /// <summary>  
-    /// Basic implementation of <c>LinearRing</c>.
-    /// The first and last point in the coordinate sequence must be equal.
-    /// Either orientation of the ring is allowed.
-    /// A valid ring must not self-intersect.
+    /**
+     * Models an OGC SFS <code>LinearRing</code>.
+     * A LinearRing is a LineString which is both closed and simple.
+     * In other words,
+     * the first and last coordinate in the ring must be equal,
+     * and the interior of the ring must not self-intersect.
+     * Either orientation of the ring is allowed.
+     * <p>
+     * A ring must have either 0 or 4 or more points.  
+     * The first and last points must be equal (in 2D).
+     * If these conditions are not met, the constructors throw 
+     * an {@link IllegalArgumentException}
+     *
+     * @version 1.7
+     */
+
+    /// <summary>
+    /// Models an OGC SFS <c>LinearRing</c>.
     /// </summary>
+    /// <remarks>
+    /// A LinearRing is a LineString which is both closed and simple.
+    /// In other words,
+    /// the first and last coordinate in the ring must be equal,
+    /// and the interior of the ring must not self-intersect.
+    /// Either orientation of the ring is allowed.
+    /// <para>
+    /// A ring must have either 0 or 4 or more points.  
+    /// The first and last points must be equal (in 2D).
+    /// If these conditions are not met, the constructors throw 
+    /// an <see cref="ArgumentException"/></para>
+    /// </remarks>
 #if !SILVERLIGHT
     [Serializable]
 #endif
@@ -23,6 +48,7 @@ namespace NetTopologySuite.Geometries
         /// This array must not contain <c>null</c> elements.
         /// </param>
         /// <param name="factory"></param>
+        /// <exception cref="ArgumentException">If the ring is not closed, or has too few points</exception>
         public LinearRing(ICoordinateSequence points, IGeometryFactory factory) : base(points, factory)
         {            
             ValidateConstruction();
@@ -96,6 +122,8 @@ namespace NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
+        /// <exception cref="ArgumentException">If the ring is not closed, or has too few points</exception>
+        [Obsolete("Use GeometryFactory instead")]
         public LinearRing(ICoordinate[] points) : 
             this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
         

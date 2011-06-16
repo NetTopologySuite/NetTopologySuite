@@ -259,7 +259,7 @@ namespace NetTopologySuite.Geometries
         /// <li>null returns an empty <see cref="IPoint"/></li>
         /// <li>a point returns a non-empty <see cref="IPoint"/></li>
         /// <li>a line returns a two-point <see cref="ILineString"/></li>
-        /// <li>a rectangle returns a <see cref="IPolygon"/> whose points are (minx, miny), (maxx, miny), (maxx, maxy), (minx, maxy), (minx, miny).</li>
+        /// <li>a rectangle returns a <see cref="IPolygon"/> whose points are (minx, maxy), (maxx, maxy), (maxx, miny), (minx, miny).</li>
         /// </ul>
         /// </para>
         /// </remarks>
@@ -292,9 +292,9 @@ namespace NetTopologySuite.Geometries
             ILinearRing ring = this.CreateLinearRing(new ICoordinate[]
             {
                 new Coordinate(envelope.MinX, envelope.MinY),
+                new Coordinate(envelope.MinX, envelope.MaxY),
                 new Coordinate(envelope.MaxX, envelope.MinY),
                 new Coordinate(envelope.MaxX, envelope.MaxY),
-                new Coordinate(envelope.MinX, envelope.MaxY),
                 new Coordinate(envelope.MinX, envelope.MinY),
             });
             return CreatePolygon(ring, null);
@@ -480,6 +480,9 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public IGeometry BuildGeometry(ICollection<IGeometry> geomList) 
         {
+            /**
+             * Determine some facts about the geometries in the list
+             */
             Type geomClass = null;
             bool isHeterogeneous = false;
             bool hasGeometryCollection = false;
@@ -495,6 +498,9 @@ namespace NetTopologySuite.Geometries
                     hasGeometryCollection = true;
             }
 
+            /**
+             * Now construct an appropriate geometry to return
+             */
             // for the empty point, return an empty GeometryCollection
             if (geomClass == null) 
                 return CreateGeometryCollection(null);

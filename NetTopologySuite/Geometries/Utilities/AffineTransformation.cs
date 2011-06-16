@@ -1,5 +1,6 @@
 using System;
 using GeoAPI.Geometries;
+using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Geometries.Utilities
 {
@@ -1044,7 +1045,16 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>A copy of this transformation</returns>
         public object Clone()
         {
-            return new AffineTransformation(this);
+            
+            try
+            {
+                return MemberwiseClone();
+            }
+            catch (Exception)
+            {
+                return new AffineTransformation(this);
+                //Assert.ShouldNeverReachHere();
+            }
         }
     }
 }

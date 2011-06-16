@@ -132,15 +132,20 @@ namespace NetTopologySuite.Geometries
         /// and the order of their coordinate sequences are reversed.
         /// </summary>
         /// <returns>a <see cref="MultiLineString" /> in the reverse order.</returns>
-        public IMultiLineString Reverse()
+        public override IGeometry Reverse()
         {
             int nLines = Geometries.Length;
             ILineString[] revLines = new ILineString[nLines];
             for (int i = 0; i < Geometries.Length; i++)
-                revLines[nLines - 1 - i] = ((ILineString) Geometries[i]).Reverse();            
+                revLines[nLines - 1 - i] = (ILineString) Geometries[i].Reverse();            
             return Factory.CreateMultiLineString(revLines);
         }
 
+        IMultiLineString IMultiLineString.Reverse()
+        {
+            return (IMultiLineString) Reverse();
+
+        }
         /// <summary>
         /// 
         /// </summary>

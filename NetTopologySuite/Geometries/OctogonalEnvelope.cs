@@ -26,6 +26,9 @@ namespace NetTopologySuite.Geometries
             return x - y;
         }
 
+        private static readonly double SQRT2 = Math.Sqrt(2.0);
+  
+
         // initialize in the null state
         private double _minX = Double.NaN;
         private double _maxX;
@@ -200,7 +203,7 @@ namespace NetTopologySuite.Geometries
         {
             if (IsNull) return;
 
-            double diagonalDistance = Math.Sqrt(2.0) * distance;
+            double diagonalDistance = SQRT2 * distance;
 
             _minX -= distance;
             _maxX += distance;

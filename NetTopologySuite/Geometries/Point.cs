@@ -292,6 +292,11 @@ namespace NetTopologySuite.Geometries
             return p; 
         }
 
+        public override IGeometry Reverse()
+        {
+            return (IGeometry)Clone();
+        }
+
         /// <summary>
         /// 
         /// </summary>
