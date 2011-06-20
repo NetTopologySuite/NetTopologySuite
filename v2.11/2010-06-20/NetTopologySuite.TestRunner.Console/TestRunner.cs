@@ -1,0 +1,257 @@
+using System;
+using System.Diagnostics;
+using System.IO;
+using GeoAPI.Coordinates;
+using NPack.Interfaces;
+using SysConsole = System.Console;
+
+namespace GisSharpBlog.NetTopologySuite.Console
+{
+    internal class TestRunner<TCoordinate> where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
+    {
+        private static Double elapsedTime;
+
+        private Int32 _simpleTestCount;
+        private Int32 _simpleTestFailures;
+        private Int32 _simpleTestExceptions;
+        private XmlTestType _filterType = XmlTestType.None;
+        private Boolean _verbose = true;
+
+        private readonly TestInfoCollection _listTestInfo;
+        private Int32 _testCount;
+        private Int32 _failures;
+        private Int32 _exceptions;
+        private Int32 _totalCount;
+
+
+        public TestRunner(TestInfoCollection listTestInfo)
+        {
+            _listTestInfo = listTestInfo;
+        }
+
+        public TestRunner(XmlTestType filter, Boolean verbose)
+        {
+            _filterType = filter;
+            _verbose = verbose;
+        }
+
+        public void SimpleTestReset(XmlTestType filter, Boolean verbose)
+        {
+            _simpleTestCount = 0;
+            _simpleTestFailures = 0;
+            _simpleTestExceptions = 0;
+            _filterType = filter;
+            _verbose = verbose;
+        }
+
+        public void OnSimpleTest(Object sender, XmlTestEventArgs<TCoordinate> args)
+        {
+            if (_filterType == XmlTestType.None ||
+                args.Test.TestType == _filterType)
+            {
+                if (_verbose)
+                {
+                    SysConsole.WriteLine("Test {0}, {1} ({2} : {3})",
+                                      args.Index,
+                                      args.Success,
+                                      args.Test.TestType,
+                                      args.Test.Description);
+                }
+
+                ++_simpleTestCount;
+
+                if (!args.Success)
+                {
+                    _simpleTestFailures++;
+                }
+
+                if (args.Test.Thrown != null)
+                {
+                    _simpleTestExceptions++;
+                }
+            }
+        }
+
+        public void OnTest(Object sender, XmlTestEventArgs<TCoordinate> args)
+        {
+            ++_testCount;
+            if (!args.Success)
+            {
+                _failures++;
+            }
+            if (args.Test.Thrown != null)
+            {
+                _exceptions++;
+            }
+        }
+
+        public void PrintSimpleTestResult(Int32 totalTest)
+        {
+            SysConsole.WriteLine(
+                "Test Cases : {0}, Test Run: {1}, Failures: {2}, Test Exceptions: {3}",
+                totalTest,
+                _simpleTestCount,
+                _simpleTestFailures,
+                _simpleTestExceptions);
+
+            SysConsole.WriteLine();
+        }
+
+        public void PrintResult()
+        {
+            SysConsole.WriteLine();
+
+            SysConsole.WriteLine("   ************************ Final Results ********************   ");
+            SysConsole.WriteLine(
+                            "Total Test Cases : {0}, Test Run: {1}, Failures: {2}, Test Exceptions: {3}",
+                            _totalCount,
+                            _testCount,
+                            _failures,
+                            _exceptions);
+            SysConsole.WriteLine("Total elapsed time in milliseconds: " + elapsedTime);
+            elapsedTime = 0;
+
+            SysConsole.WriteLine();
+        }
+
+        public Boolean Run(
+            XmlTestDocument<TCoordinate>.CreateCoordinateFactory createCoordinateFactory,
+            XmlTestDocument<TCoordinate>.CreateCoordinateSequenceFactory createCoordinateSequenceFactory)
+        {
+            if (_listTestInfo != null)
+            {
+                try
+                {
+                    XmlTestController<TCoordinate> controller = new XmlTestController<TCoordinate>();
+
+                    _totalCount = 0;
+                    for (Int32 i = 0; i < _listTestInfo.Count; i++)
+                    {
+                        TestInfo info = _listTestInfo[i];
+                        if (info != null)
+                        {
+                            if (info.FileName != null)
+                            {
+                                runTestFile(info, controller, createCoordinateFactory, createCoordinateSequenceFactory);
+                            }
+                            else if (info.Directory != null)
+                            {
+                                runTestDirectory(info, controller, createCoordinateFactory, createCoordinateSequenceFactory );
+                            }
+                        }
+                    }
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    XmlTestExceptionManager.Publish(ex);
+                    return false;
+                }
+            }
+            return false;
+        }
+
+        public void OnErrorEvent(Object sender, XmlTestErrorEventArgs args)
+        {
+            Exception ex = args.Thrown;
+
+            if (ex != null)
+            {
+                SysConsole.WriteLine(ex.Message);
+                SysConsole.WriteLine();
+                SysConsole.WriteLine(ex.Source);
+                SysConsole.WriteLine();
+                SysConsole.WriteLine(ex.StackTrace);
+            }
+        }
+
+        private void runTestFile(TestInfo info, XmlTestController<TCoordinate> controller, 
+            XmlTestDocument<TCoordinate>.CreateCoordinateFactory createCoordinateFactory,
+            XmlTestDocument<TCoordinate>.CreateCoordinateSequenceFactory createCoordinateSequenceFactory)
+        {
+            if (info != null)
+            {
+                XmlTestCollection<TCoordinate> listTests = null;
+                try
+                {
+                    listTests = controller.Load(info.FileName, createCoordinateFactory, createCoordinateSequenceFactory );
+                }
+                catch (Exception ex)
+                {
+                    XmlTestExceptionManager.Publish(ex);
+                }
+
+                SimpleTestReset(info.Filter, info.Verbose);
+
+                if (listTests != null && listTests.Count > 0)
+                {
+                    listTests.TestEvent += OnSimpleTest;
+                    listTests.TestEvent += OnTest;
+
+                    if (info.Exception)
+                    {
+                        XmlTestExceptionManager.ErrorEvent += OnErrorEvent;
+                    }
+
+                    try
+                    {
+                        SysConsole.WriteLine("Running...{0}", listTests.Name);
+
+                        Stopwatch timer = new Stopwatch();
+
+                        timer.Start();
+
+                        listTests.RunTests();
+
+                        timer.Stop();
+
+                        PrintSimpleTestResult(listTests.Count);
+
+                        SysConsole.WriteLine("Duration in milliseconds: {0}", timer.ElapsedMilliseconds);
+
+                        elapsedTime += (timer.ElapsedMilliseconds);
+
+                        _totalCount += listTests.Count;
+
+                        listTests.TestEvent -= OnSimpleTest;
+                        listTests.TestEvent -= OnTest;
+
+                        if (info.Exception)
+                        {
+                            XmlTestExceptionManager.ErrorEvent -= OnErrorEvent;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        XmlTestExceptionManager.Publish(ex);
+                    }
+                }
+            }
+        }
+
+        private void runTestDirectory(TestInfo info, XmlTestController<TCoordinate> controller, 
+            XmlTestDocument<TCoordinate>.CreateCoordinateFactory createCoordinateFactory,
+            XmlTestDocument<TCoordinate>.CreateCoordinateSequenceFactory createCoordinateSequenceFactory)
+        {
+            if (info != null && info.Directory != null)
+            {
+                try
+                {
+                    String[] files = Directory.GetFiles(info.Directory, "*.xml");
+
+                    foreach (String file in files)
+                    {
+                        info.FileName = file;
+                        runTestFile(info, controller, createCoordinateFactory, createCoordinateSequenceFactory);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    XmlTestExceptionManager.Publish(ex);
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{752B413E-079E-4645-9B4F-C04738BB706D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NetTopologySuite.Tests.NUnit</RootNamespace>
+    <AssemblyName>NetTopologySuite.Tests.NUnit</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ExternalReferences\nunit\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Algorithm\AbstractPointInRingTest.cs" />
+    <Compile Include="Algorithm\AngleTest.cs" />
+    <Compile Include="Algorithm\ComputeOrientationTest.cs" />
+    <Compile Include="Algorithm\ConvexHullTest.cs" />
+    <Compile Include="Algorithm\Distance\DiscreteHaussdorfDistanceTest.cs" />
+    <Compile Include="Algorithm\IndexedPointInAreaStressTest.cs" />
+    <Compile Include="Algorithm\IsCCWTest.cs" />
+    <Compile Include="Algorithm\LocatePointInRingTest.cs" />
+    <Compile Include="Algorithm\PerturbedGridPolygonBuilder.cs" />
+    <Compile Include="Algorithm\PointInAreaStressTester.cs" />
+    <Compile Include="Algorithm\PointInRingTest.cs" />
+    <Compile Include="Algorithm\RobustLineIntersectionTest.cs" />
+    <Compile Include="GeometryUtils.cs" />
+    <Compile Include="Index\DoubleBitsTest.cs" />
+    <Compile Include="Index\IntervalTest.cs" />
+    <Compile Include="Index\SpatialIndexTest.cs" />
+    <Compile Include="Index\STRTreeTest.cs" />
+    <Compile Include="Noding\SegmentPointComparatorFullTest.cs" />
+    <Compile Include="Noding\SegmentPointComparatorTest.cs" />
+    <Compile Include="Noding\SnapRound\SnapRoundingTest.cs" />
+    <Compile Include="NTS\GoogleGroups.cs" />
+    <Compile Include="NTS\Issues.cs" />
+    <Compile Include="Operation\Buffer\BufferTest.cs" />
+    <Compile Include="Operation\Buffer\BufferValidator.cs" />
+    <Compile Include="Operation\Buffer\FileBufferResultValidatorTest.cs" />
+    <Compile Include="Operation\Distance\DistanceTest.cs" />
+    <Compile Include="Operation\Linemerge\LineMergerTest.cs" />
+    <Compile Include="Operation\Linemerge\LineSequencerTest.cs" />
+    <Compile Include="Operation\Overlay\FixedPrecisionSnappingTest.cs" />
+    <Compile Include="Operation\Overlay\OverlayNodingStressTest.cs" />
+    <Compile Include="Operation\Polygonize\Polygonize.cs" />
+    <Compile Include="Operation\Relate\RelateBoundaryNodeRuleTest.cs" />
+    <Compile Include="Operation\Union\CascadedPolygonUnionTest.cs" />
+    <Compile Include="Operation\Union\CascadedPolygonUnionTester.cs" />
+    <Compile Include="Operation\Union\UnaryUnionTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Simplify\DouglasPeuckerSimplifierTest.cs" />
+    <Compile Include="Simplify\GeometryOperationValidator.cs" />
+    <Compile Include="Simplify\SameStructureTester.cs" />
+    <Compile Include="Simplify\TopologyPreservingSimplifierTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj">
+      <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
+      <Name>GeoAPI.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ManagedBufferedCoordinate\ManagedBufferedCoordinate.csproj">
+      <Project>{8A1C8DC2-9E24-47E9-A51C-AA46E0B0260C}</Project>
+      <Name>ManagedBufferedCoordinate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
+      <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
+      <Name>NetTopologySuite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NPack\NPack\NPack.csproj">
+      <Project>{B139E1D5-091B-40D2-B7A2-7D7D82E13019}</Project>
+      <Name>NPack</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SimpleCoordinate\Coordinates.Simple.csproj">
+      <Project>{FA286D16-E405-4FCB-95EA-BE1F9A4A83A4}</Project>
+      <Name>Coordinates.Simple</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
