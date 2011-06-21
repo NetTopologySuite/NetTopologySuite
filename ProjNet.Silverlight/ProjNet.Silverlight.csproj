@@ -1,4 +1,8 @@
-﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ProjNet</RootNamespace>
     <AssemblyName>ProjNet.Silverlight</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
     <ThrowErrorsInValidation>false</ThrowErrorsInValidation>
@@ -27,28 +31,20 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>Bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
-    <NoStdLib>true</NoStdLib>
-    <NoConfig>true</NoConfig>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>Bin\Release</OutputPath>
+    <OutputPath>$(SolutionDir)ExternalReferences\</OutputPath>
     <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>Bin\Release\ProjNet.Silverlight.XML</DocumentationFile>
+    <DocumentationFile>$(SolutionDir)ExternalReferences\ProjNet.Silverlight.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
@@ -57,220 +53,118 @@
     <Reference Include="System.Windows" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\AngularUnit.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\AngularUnit.cs">
       <Link>CoordinateSystems\AngularUnit.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\AxisInfo.cs">
-      <Link>CoordinateSystems\AxisInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\AxisOrientationEnum.cs">
-      <Link>CoordinateSystems\AxisOrientationEnum.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\CoordinateSystem.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\CoordinateSystem.cs">
       <Link>CoordinateSystems\CoordinateSystem.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\CoordinateSystemFactory.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\CoordinateSystemFactory.cs">
       <Link>CoordinateSystems\CoordinateSystemFactory.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Datum.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Datum.cs">
       <Link>CoordinateSystems\Datum.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\DatumType.cs">
-      <Link>CoordinateSystems\DatumType.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Ellipsoid.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Ellipsoid.cs">
       <Link>CoordinateSystems\Ellipsoid.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\GeocentricCoordinateSystem.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\GeocentricCoordinateSystem.cs">
       <Link>CoordinateSystems\GeocentricCoordinateSystem.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\GeographicCoordinateSystem.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\GeographicCoordinateSystem.cs">
       <Link>CoordinateSystems\GeographicCoordinateSystem.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\GeographicTransform.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\GeographicTransform.cs">
       <Link>CoordinateSystems\GeographicTransform.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\HorizontalCoordinateSystem.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\HorizontalCoordinateSystem.cs">
       <Link>CoordinateSystems\HorizontalCoordinateSystem.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\HorizontalDatum.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\HorizontalDatum.cs">
       <Link>CoordinateSystems\HorizontalDatum.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\IAngularUnit.cs">
-      <Link>CoordinateSystems\IAngularUnit.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\ICompoundCoordinateSystem.cs">
-      <Link>CoordinateSystems\ICompoundCoordinateSystem.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\ICoordinateSystem.cs">
-      <Link>CoordinateSystems\ICoordinateSystem.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\ICoordinateSystemFactory.cs">
-      <Link>CoordinateSystems\ICoordinateSystemFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\IDatum.cs">
-      <Link>CoordinateSystems\IDatum.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\IEllipsoid.cs">
-      <Link>CoordinateSystems\IEllipsoid.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\IFittedCoordinateSystem.cs">
-      <Link>CoordinateSystems\IFittedCoordinateSystem.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\IGeocentricCoordinateSystem.cs">
-      <Link>CoordinateSystems\IGeocentricCoordinateSystem.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\IGeodeticSpatialReference.cs">
-      <Link>CoordinateSystems\IGeodeticSpatialReference.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\IGeographicCoordinateSystem.cs">
-      <Link>CoordinateSystems\IGeographicCoordinateSystem.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\IGeographicTransform.cs">
-      <Link>CoordinateSystems\IGeographicTransform.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\IHorizontalCoordinateSystem.cs">
-      <Link>CoordinateSystems\IHorizontalCoordinateSystem.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\IHorizontalDatum.cs">
-      <Link>CoordinateSystems\IHorizontalDatum.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\IInfo.cs">
-      <Link>CoordinateSystems\IInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\ILinearUnit.cs">
-      <Link>CoordinateSystems\ILinearUnit.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\ILocalCoordinateSystem.cs">
-      <Link>CoordinateSystems\ILocalCoordinateSystem.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\ILocalDatum.cs">
-      <Link>CoordinateSystems\ILocalDatum.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Info.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Info.cs">
       <Link>CoordinateSystems\Info.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\IParameterInfo.cs">
-      <Link>CoordinateSystems\IParameterInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\IPrimeMeridian.cs">
-      <Link>CoordinateSystems\IPrimeMeridian.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\IProjectedCoordinateSystem.cs">
-      <Link>CoordinateSystems\IProjectedCoordinateSystem.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\IProjection.cs">
-      <Link>CoordinateSystems\IProjection.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\IUnit.cs">
-      <Link>CoordinateSystems\IUnit.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\IVerticalCoordinateSystem.cs">
-      <Link>CoordinateSystems\IVerticalCoordinateSystem.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\IVerticalDatum.cs">
-      <Link>CoordinateSystems\IVerticalDatum.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\LinearUnit.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\LinearUnit.cs">
       <Link>CoordinateSystems\LinearUnit.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Parameter.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Parameter.cs">
       <Link>CoordinateSystems\Parameter.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\PrimeMeridian.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\PrimeMeridian.cs">
       <Link>CoordinateSystems\PrimeMeridian.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\ProjectedCoordinateSystem.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\ProjectedCoordinateSystem.cs">
       <Link>CoordinateSystems\ProjectedCoordinateSystem.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Projection.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projection.cs">
       <Link>CoordinateSystems\Projection.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\ProjectionParameter.cs">
-      <Link>CoordinateSystems\ProjectionParameter.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Projections\AlbersProjection.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\AlbersProjection.cs">
       <Link>CoordinateSystems\Projections\AlbersProjection.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Projections\KrovakProjection.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\KrovakProjection.cs">
       <Link>CoordinateSystems\Projections\KrovakProjection.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Projections\LambertConformalConic.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\LambertConformalConic.cs">
       <Link>CoordinateSystems\Projections\LambertConformalConic.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Projections\MapProjection.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\MapProjection.cs">
       <Link>CoordinateSystems\Projections\MapProjection.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Projections\Mercator.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\Mercator.cs">
       <Link>CoordinateSystems\Projections\Mercator.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Projections\TransverseMercator.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\TransverseMercator.cs">
       <Link>CoordinateSystems\Projections\TransverseMercator.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Transformations\ConcatenatedTransform.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Transformations\ConcatenatedTransform.cs">
       <Link>CoordinateSystems\Transformations\ConcatenatedTransform.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Transformations\CoordinateTransformation.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Transformations\CoordinateTransformation.cs">
       <Link>CoordinateSystems\Transformations\CoordinateTransformation.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Transformations\CoordinateTransformationFactory.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Transformations\CoordinateTransformationFactory.cs">
       <Link>CoordinateSystems\Transformations\CoordinateTransformationFactory.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Transformations\DatumTransform.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Transformations\DatumTransform.cs">
       <Link>CoordinateSystems\Transformations\DatumTransform.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Transformations\DomainFlags.cs">
-      <Link>CoordinateSystems\Transformations\DomainFlags.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Transformations\GeocentricTransform.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Transformations\GeocentricTransform.cs">
       <Link>CoordinateSystems\Transformations\GeocentricTransform.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Transformations\GeographicTransform.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Transformations\GeographicTransform.cs">
       <Link>CoordinateSystems\Transformations\GeographicTransform.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Transformations\ICoordinateTransformation.cs">
-      <Link>CoordinateSystems\Transformations\ICoordinateTransformation.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Transformations\ICoordinateTransformationAuthorityFactory.cs">
-      <Link>CoordinateSystems\Transformations\ICoordinateTransformationAuthorityFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Transformations\ICoordinateTransformationFactory.cs">
-      <Link>CoordinateSystems\Transformations\ICoordinateTransformationFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Transformations\IMathTransform.cs">
-      <Link>CoordinateSystems\Transformations\IMathTransform.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Transformations\IMathTransformFactory.cs">
-      <Link>CoordinateSystems\Transformations\IMathTransformFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Transformations\MathTransform.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Transformations\MathTransform.cs">
       <Link>CoordinateSystems\Transformations\MathTransform.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Transformations\TransformType.cs">
-      <Link>CoordinateSystems\Transformations\TransformType.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\Unit.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Unit.cs">
       <Link>CoordinateSystems\Unit.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\CoordinateSystems\WGS84ConversionInfo.cs">
-      <Link>CoordinateSystems\WGS84ConversionInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\IO\CoordinateSystems\CoordinateSystemWktReader.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\IO\CoordinateSystems\CoordinateSystemWktReader.cs">
       <Link>IO\CoordinateSystems\CoordinateSystemWktReader.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\IO\CoordinateSystems\StreamTokenizer.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\IO\CoordinateSystems\StreamTokenizer.cs">
       <Link>IO\CoordinateSystems\StreamTokenizer.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\IO\CoordinateSystems\TokenType.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\IO\CoordinateSystems\TokenType.cs">
       <Link>IO\CoordinateSystems\TokenType.cs</Link>
     </Compile>
-    <Compile Include="..\SharpMap.CoordinateSystems\IO\CoordinateSystems\WKTStreamTokenizer.cs">
+    <Compile Include="..\ProjNet.CoordinateSystems\IO\CoordinateSystems\WKTStreamTokenizer.cs">
       <Link>IO\CoordinateSystems\WKTStreamTokenizer.cs</Link>
     </Compile>
     <Compile Include="Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets" Condition="" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\GeoAPI\GeoAPI.Silverlight\GeoAPI.Silverlight.csproj">
+      <Project>{9B913337-1114-4D05-8F24-D05A5FD588AD}</Project>
+      <Name>GeoAPI.Silverlight</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
