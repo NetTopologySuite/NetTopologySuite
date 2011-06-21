@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Silverlight", "Silverlight", "{45AD0514-73DD-4488-ABF6-153592641236}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI.Silverlight", "GeoAPI\GeoAPI.Silverlight\GeoAPI.Silverlight.csproj", "{9B913337-1114-4D05-8F24-D05A5FD588AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjNet.Silverlight", "ProjNet.Silverlight\ProjNet.Silverlight.csproj", "{01B70884-C425-405F-B914-938E9122FC27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjNET", "ProjNet.CoordinateSystems\ProjNET.csproj", "{E028BDD2-55E1-4E5F-BE31-35FAEC8D6428}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI", "GeoAPI\GeoAPI\GeoAPI.csproj", "{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9B913337-1114-4D05-8F24-D05A5FD588AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B913337-1114-4D05-8F24-D05A5FD588AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B913337-1114-4D05-8F24-D05A5FD588AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B913337-1114-4D05-8F24-D05A5FD588AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01B70884-C425-405F-B914-938E9122FC27}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{01B70884-C425-405F-B914-938E9122FC27}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{01B70884-C425-405F-B914-938E9122FC27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01B70884-C425-405F-B914-938E9122FC27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E028BDD2-55E1-4E5F-BE31-35FAEC8D6428}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{E028BDD2-55E1-4E5F-BE31-35FAEC8D6428}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{E028BDD2-55E1-4E5F-BE31-35FAEC8D6428}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E028BDD2-55E1-4E5F-BE31-35FAEC8D6428}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9B913337-1114-4D05-8F24-D05A5FD588AD} = {45AD0514-73DD-4488-ABF6-153592641236}
+		{01B70884-C425-405F-B914-938E9122FC27} = {45AD0514-73DD-4488-ABF6-153592641236}
+	EndGlobalSection
+EndGlobal

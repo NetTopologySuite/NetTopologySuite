@@ -48,8 +48,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
-    <Reference Include="system" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Windows" />
   </ItemGroup>
   <ItemGroup>
@@ -159,7 +157,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\GeoAPI\GeoAPI.Silverlight\GeoAPI.Silverlight.csproj">
+    <ProjectReference Include="..\GeoAPI\GeoAPI.Silverlight\GeoAPI.Silverlight.csproj">
       <Project>{9B913337-1114-4D05-8F24-D05A5FD588AD}</Project>
       <Name>GeoAPI.Silverlight</Name>
     </ProjectReference>
