@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <!-- The configuration and platform will be used to determine which
+         assemblies to include from solution and project documentation
+         sources -->
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{77bcd10b-b3df-401b-87c7-71edf4cfd436}</ProjectGuid>
+    <SHFBSchemaVersion>1.9.3.0</SHFBSchemaVersion>
+    <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
+         Studio adds them anyway -->
+    <AssemblyName>Documentation</AssemblyName>
+    <RootNamespace>Documentation</RootNamespace>
+    <Name>Documentation</Name>
+    <!-- SHFB properties -->
+    <OutputPath>.\Help\</OutputPath>
+    <HtmlHelpName>NetTopologySuite</HtmlHelpName>
+    <Language>en-US</Language>
+    <DocumentationSources>
+      <DocumentationSource sourceFile="..\NetTopologySuite\NetTopologySuite.csproj" xmlns="" />
+    </DocumentationSources>
+    <NamespaceSummaries>
+      <NamespaceSummaryItem name="NetTopologySuite.Algorithm" isDocumented="True" xmlns="">Contains classes and interfaces implementing fundamental computational geometry algorithms.
+
+Robustness:
+Geometrical algorithms involve a combination of combinatorial and numerical computation. As with all numerical computation using finite-precision numbers, the algorithms chosen are susceptible to problems of robustness. A robustness problem occurs when a numerical calculation produces an incorrect answer for some inputs due to round-off errors. Robustness problems are especially serious in geometric computation, since they can result in errors during topology building. 
+There are many approaches to dealing with the problem of robustness in geometrical computation. Not surprisingly, most robust algorithms are substantially more complex and less performant than the non-robust versions. Fortunately, NTS is sensitive to robustness problems in only a few key functions (such as line intersection and the point-in-polygon test). There are efficient robust algorithms available for these functions, and these algorithms are implemented in NTS. 
+
+Computational Performance
+Runtime performance is an important consideration for a production-quality implementation of geometric algorithms. The most computationally intensive algorithm used in NTS is intersection detection. NTS methods need to determine both all intersection between the line segments in a single Geometry (self-intersection) and all intersections between the line segments of two different Geometries. 
+The obvious naive algorithm for intersection detection (comparing every segment with every other) has unacceptably slow performance. There is a large literature of faster algorithms for intersection detection. Unfortunately, many of them involve substantial code complexity. NTS tries to balance code simplicity with performance gains. It uses some simple techniques to produce substantial performance gains for common types of input data. 
+
+Package Specification
+Java Topology Suite Technical Specifications 
+OpenGIS Simple Features Specification for SQL</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.Geometries" isDocumented="True" xmlns="">Contains the Geometry interface hierarchy and supporting classes.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.Geometries.Utilities" isDocumented="True" xmlns="">Provides classes that parse and modify Geometry objects.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.GeometriesGraph" isDocumented="True" xmlns="">Contains classes that implement topology graphs. 
+
+The Net Topology Suite (NTS) is a .Net API that implements a core set of spatial data operations using an explicit precision model and robust geometric algorithms. NTS is intended to be used in the development of applications that support the validation, cleaning, integration and querying of spatial datasets. 
+
+NTS attempts to implement the OpenGIS Simple Features Specification (SFS) as accurately as possible. In some cases the SFS is unclear or omits a specification; in this case NTS attempts to choose a reasonable and consistent alternative. Differences from and elaborations of the SFS are documented in this specification.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.GeometriesGraph.Index" isDocumented="True" xmlns="">Contains classes that implement indexes for performing noding on geometry graph edges.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.Index" isDocumented="True" xmlns="">Provides classes for various kinds of spatial indexes.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.Index.Bintree" isDocumented="True" xmlns="">Contains classes that implement a Binary Interval Tree index</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.Index.Chain" isDocumented="True" xmlns="">Contains classes that implement Monotone Chains</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.Index.Quadtree" isDocumented="True" xmlns="">Contains classes that implement a Quadtree spatial index</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.Index.Strtree" isDocumented="True" xmlns="">Contains 2-D and 1-D versions of the Sort-Tile-Recursive (STR) tree, a query-only R-tree.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.Index.Sweepline" isDocumented="True" xmlns="">Contains classes which implement a sweepline algorithm for scanning geometric data structures.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.IO" isDocumented="True" xmlns="">Contains the interfaces for converting JTS objects to and from other formats. 
+The Net Topology Suite (NTS) is a .Net API that implements a core set of spatial data operations using an explicit precision model and robust geometric algorithms. NTS is intended to be used in the development of applications that support the validation, cleaning, integration and querying of spatial datasets. 
+
+NTS attempts to implement the OpenGIS Simple Features Specification (SFS) as accurately as possible. In some cases the SFS is unclear or omits a specification; in this case NTS attempts to choose a reasonable and consistent alternative. Differences from and elaborations of the SFS are documented in this specification. 
+
+Package Specification
+Java Topology Suite Technical Specifications 
+OpenGIS Simple Features Specification for SQL</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.IO.GML2" isDocumented="True" xmlns="">Classes to read and write the GML2 geometry format.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.LinearReferencing" isDocumented="True" xmlns="">Contains classes and interfaces implementing linear referencing on linear geometries 
+Linear Referencing
+Linear Referencing is a way of defining positions along linear geometries (LineStrings and MultiLineStrings). It is used extensively in linear network systems. There are numerous possible Linear Referencing Methods which can be used to define positions along linear geometry. This package supports two: 
+Linear Location
+A linear location is a triple (component index, segment index, segment fraction) which precisely specifies a point on a linear geometry. It allows for efficient mapping of the index value to actual coordinate values. 
+Length
+The natural concept of using the length along the geometry to specify a position. 
+
+Package Specification
+Java Topology Suite Technical Specifications</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.Noding" isDocumented="True" xmlns="">Classes to compute nodings for arrangements of line segments and line segment sequences.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.Noding.Snapround" isDocumented="True" xmlns="">Contains classes to implement the Snap Rounding algorithm for noding linestrings.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.Operation" isDocumented="True" xmlns="">Provides classes for implementing operations on geometries</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.Operation.Buffer" isDocumented="True" xmlns="">Provides classes for computing buffers of geometries</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.Operation.Distance" isDocumented="True" xmlns="">Provides classes for computing the distance between geometries</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.Operation.Overlay" isDocumented="True" xmlns="">Contains classes that perform a topological overlay to compute boolean spatial functions. 
+The Overlay Algorithm is used in spatial analysis methods for computing set-theoretic operations (boolean combinations) of input {@link Geometry}s. The algorithm for computing the overlay uses the intersection operations supported by topology graphs. To compute an overlay it is necessary to explicitly compute the resultant graph formed by the computed intersections. 
+
+The algorithm to compute a set-theoretic spatial analysis method has the following steps: 
+
+Build topology graphs of the two input geometries. For each geometry all self-intersection nodes are computed and added to the graph. 
+
+- Compute nodes for all intersections between edges and nodes of the graphs. 
+- Compute the labeling for the computed nodes by merging the labels from the input graphs. 
+- Compute new edges between the compute intersection nodes. Label the edges appropriately. 
+- Build the resultant graph from the new nodes and edges. 
+- Compute the labeling for isolated components of the graph. Add the isolated components to the resultant graph. 
+- Compute the result of the boolean combination by selecting the node and edges with the appropriate labels. Polygonize areas and sew linear geometries together. 
+
+Package Specification
+Java Topology Suite Technical Specifications 
+OpenGIS Simple Features Specification for SQL</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.Operation.Polygonize" isDocumented="True" xmlns="">Contains classes to implement a polygonization algorithm. This package can be used to create polygons from fully noded linework.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.Operation.Relate" isDocumented="True" xmlns="">Contains classes to implement the computation of the spatial relationships of Geometrys. 
+
+The relate algorithm computes the IntersectionMatrix describing the relationship of two Geometrys. The algorithm for computing relate uses the intersection operations supported by topology graphs. Although the relate result depends on the resultant graph formed by the computed intersections, there is no need to explicitly compute the entire graph. It is sufficient to compute the local structure of the graph at each intersection node. 
+
+The algorithm to compute relate has the following steps: 
+- Build topology graphs of the two input geometries. For each geometry all self-intersection nodes are computed and added to the graph. 
+- Compute nodes for all intersections between edges and nodes of the graphs. 
+- Compute the labeling for the computed nodes by merging the labels from the input graphs. 
+- Compute the labeling for isolated components of the graph (see below) 
+- Compute the IntersectionMatrix from the labels on the nodes and edges. 
+- Labeling isolated components
+
+Isolated components are components (edges or nodes) of an input Geometry which do not contain any intersections with the other input Geometry. The topological relationship of these components to the other input Geometry must be computed in order to determine the complete labeling of the component. This can be done by testing whether the component lies in the interior or exterior of the other Geometry. If the other Geometry is 1-dimensional, the isolated component must lie in the exterior (since otherwise it would have an intersection with an edge of the Geometry). If the other Geometry is 2-dimensional, a Point-In-Polygon test can be used to determine whether the isolated component is in the interior or exterior. 
+
+Package Specification
+Java Topology Suite Technical Specifications 
+OpenGIS Simple Features Specification for SQL</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.Operation.Valid" isDocumented="True" xmlns="">Provides classes for testing the validity of geometries.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.Planargraph" isDocumented="True" xmlns="">Contains classes to implement a planar graph data structure.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.Precision" isDocumented="True" xmlns="">Provides classes for manipulating the precision model of Geometries</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NetTopologySuite.Utilities" isDocumented="True" xmlns="">Contains support classes for the Net Topology Suite.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="RTools_NTS.Util" isDocumented="False" xmlns="" />
+    </NamespaceSummaries>
+    <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, TypeParameter, AutoDocumentDispose</MissingTags>
+    <ProjectSummary>The NTS Topology Suite is an API for modelling and manipulating 2-dimensional linear geometry. It provides numerous geometric predicates and functions. NTS conforms to the Simple Features Specification for SQL published by the Open GIS Consortium.</ProjectSummary>
+    <HelpTitle>NTS - Topology Suite</HelpTitle>
+    <RootNamespaceContainer>True</RootNamespaceContainer>
+    <RootNamespaceTitle>NetTopologySuite</RootNamespaceTitle>
+    <SdkLinkTarget>Self</SdkLinkTarget>
+  </PropertyGroup>
+  <!-- There are no properties for these groups.  AnyCPU needs to appear in
+       order for Visual Studio to perform the build.  The others are optional
+       common platform types that may appear. -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Win32' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Win32' ">
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">
+      <Name>GeoAPI</Name>
+      <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="PowerCollections">
+      <HintPath>..\ExternalReferences\PowerCollections.dll</HintPath>
+    </Reference>
+    <Reference Include="sysglobl, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <Reference Include="System.Xml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  </ItemGroup>
+  <!-- Import the SHFB build targets -->
+  <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
+</Project>
