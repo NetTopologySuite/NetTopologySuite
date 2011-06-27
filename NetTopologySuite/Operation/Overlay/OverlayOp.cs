@@ -54,24 +54,24 @@ namespace NetTopologySuite.Operation.Overlay
         /// This method will handle arguments of Location.NULL correctly.
         /// </summary>
         /// <returns><c>true</c> if the locations correspond to the opCode.</returns>
-        public static bool IsResultOfOp(Locations loc0, Locations loc1, SpatialFunction opCode)
+        public static bool IsResultOfOp(Location loc0, Location loc1, SpatialFunction opCode)
         {
-            if (loc0 == Locations.Boundary) 
-                loc0 = Locations.Interior;
-            if (loc1 == Locations.Boundary) 
-                loc1 = Locations.Interior;
+            if (loc0 == Location.Boundary) 
+                loc0 = Location.Interior;
+            if (loc1 == Location.Boundary) 
+                loc1 = Location.Interior;
             
             switch (opCode) 
             {
                 case SpatialFunction.Intersection:
-                    return loc0 == Locations.Interior && loc1 == Locations.Interior;
+                    return loc0 == Location.Interior && loc1 == Location.Interior;
                 case SpatialFunction.Union:
-                    return loc0 == Locations.Interior || loc1 == Locations.Interior;
+                    return loc0 == Location.Interior || loc1 == Location.Interior;
                 case SpatialFunction.Difference:
-                    return loc0 == Locations.Interior && loc1 != Locations.Interior;
+                    return loc0 == Location.Interior && loc1 != Location.Interior;
                 case SpatialFunction.SymDifference:
-                    return   (loc0 == Locations.Interior &&  loc1 != Locations.Interior)
-                          || (loc0 != Locations.Interior &&  loc1 == Locations.Interior);
+                    return   (loc0 == Location.Interior &&  loc1 != Location.Interior)
+                          || (loc0 != Location.Interior &&  loc1 == Location.Interior);
 	            default:
                     return false;
             }            
@@ -510,7 +510,7 @@ namespace NetTopologySuite.Operation.Overlay
             {
                 var geom = it.Current;
                 var loc = _ptLocator.Locate(coord, geom);
-                if (loc != Locations.Exterior) 
+                if (loc != Location.Exterior) 
                     return true;
             }
             return false;
@@ -539,23 +539,23 @@ namespace NetTopologySuite.Operation.Overlay
             IGeometry result = null;
             switch (ResultDimension(opCode, arg[0].Geometry, arg[1].Geometry))
             {
-                case Dimensions.Dontcare:
+                case Dimension.Dontcare:
                     result = _geomFact.CreateGeometryCollection(new Geometry[0]);
                     break;
-                case Dimensions.Point:
+                case Dimension.Point:
                     result = _geomFact.CreatePoint((Coordinate)null);
                     break;
-                case Dimensions.Curve:
+                case Dimension.Curve:
                     result = _geomFact.CreateLineString((Coordinate[])null);
                     break;
-                case Dimensions.Surface:
+                case Dimension.Surface:
                     result = _geomFact.CreatePolygon(null, null);
                     break;
             }
             return result;
         }
 
-        private static Dimensions ResultDimension(SpatialFunction opCode, IGeometry g0, IGeometry g1)
+        private static Dimension ResultDimension(SpatialFunction opCode, IGeometry g0, IGeometry g1)
         {
             var dim0 = (int)g0.Dimension;
             var dim1 = (int)g1.Dimension;
@@ -576,7 +576,7 @@ namespace NetTopologySuite.Operation.Overlay
                     resultDimension = Math.Max(dim0, dim1);
                     break;
             }
-            return (Dimensions)resultDimension;
+            return (Dimension)resultDimension;
         }
 
     }

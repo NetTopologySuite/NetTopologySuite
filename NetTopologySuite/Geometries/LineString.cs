@@ -23,9 +23,9 @@ namespace NetTopologySuite.Geometries
     /// If these conditions are not met, the constructors throw an <see cref="ArgumentException"/>.
     /// </para>
     /// </remarks>
-#if !SILVERLIGHT
+//#if !SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public class LineString : Geometry, ILineString
     {
         /// <summary>
@@ -105,26 +105,26 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override Dimensions Dimension 
+        public override Dimension Dimension 
         {
             get
             {
-                return Dimensions.Curve;
+                return Dimension.Curve;
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public override Dimensions BoundaryDimension
+        public override Dimension BoundaryDimension
         {
             get
             {
                 if (IsClosed)
                 {
-                    return Dimensions.False;
+                    return Dimension.False;
                 }
-                return Dimensions.Point;
+                return Dimension.Point;
             }
         }
 
@@ -450,7 +450,7 @@ namespace NetTopologySuite.Geometries
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:LineString"/> class.
+        /// Initializes a new instance of the <see cref="LineString"/> class.
         /// </summary>        
         /// <remarks>
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
@@ -458,7 +458,7 @@ namespace NetTopologySuite.Geometries
         /// </remarks>
         /// <param name="points">The coordinates used for create this <see cref="LineString" />.</param>
         /// <exception cref="ArgumentException">If too few points are provided</exception>
-        [Obsolete("Use GeometryFactory instead")]
+        //[Obsolete("Use GeometryFactory instead")]
         public LineString(ICoordinate[] points) : 
             this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
 
@@ -475,9 +475,9 @@ namespace NetTopologySuite.Geometries
             }
             set
             {
-                _points.SetOrdinate(n, Ordinates.X, value.X);
-                _points.SetOrdinate(n, Ordinates.Y, value.Y);
-                _points.SetOrdinate(n, Ordinates.Z, value.Z);
+                _points.SetOrdinate(n, Ordinate.X, value.X);
+                _points.SetOrdinate(n, Ordinate.Y, value.Y);
+                _points.SetOrdinate(n, Ordinate.Z, value.Z);
             }
         }
 

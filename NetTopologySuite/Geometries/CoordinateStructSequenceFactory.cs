@@ -3,9 +3,9 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries
 {
-#if!SILVERLIGHT
+//#if!SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public sealed class CoordinateStructSequenceFactory : ICoordinateSequenceFactory
     {
         private static readonly CoordinateStructSequenceFactory instance = new CoordinateStructSequenceFactory();

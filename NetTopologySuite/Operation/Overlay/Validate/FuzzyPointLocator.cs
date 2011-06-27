@@ -6,7 +6,7 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Operation.Overlay.Validate
 {
     ///<summary>
-    /// Finds the most likely <see cref="Locations"/> of a point relative to
+    /// Finds the most likely <see cref="Location"/> of a point relative to
     /// the polygonal components of a geometry, using a tolerance value.
     ///</summary> 
     ///<remarks>
@@ -32,10 +32,10 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             _linework = ExtractLinework(g);
         }
 
-        public Locations GetLocation(ICoordinate pt)
+        public Location GetLocation(ICoordinate pt)
         {
             if (IsWithinToleranceOfBoundary(pt))
-                return Locations.Boundary;
+                return Location.Boundary;
             /*
             double dist = linework.distance(point);
 

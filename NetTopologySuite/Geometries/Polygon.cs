@@ -14,9 +14,9 @@ namespace NetTopologySuite.Geometries
     /// The shell and holes must conform to the assertions specified in the
     /// <see href="http://www.opengis.org/techno/specs.htm"/> OpenGIS Simple Features Specification for SQL.     
     /// </summary>
-#if !SILVERLIGHT
+//#if !SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public class Polygon : Geometry, IPolygon
     {
         /// <summary>
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Geometries
         private ILinearRing[] _holes; 
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Polygon"/> class.
+        /// Initializes a new instance of the <see cref="Polygon"/> class.
         /// </summary>
         /// <param name="shell">
         /// The outer boundary of the new <c>Polygon</c>,
@@ -141,22 +141,22 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override Dimensions Dimension
+        public override Dimension Dimension
         {
             get
             {
-                return Dimensions.Surface;
+                return Dimension.Surface;
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public override Dimensions BoundaryDimension
+        public override Dimension BoundaryDimension
         {
             get
             {
-                return Dimensions.Curve;
+                return Dimension.Curve;
             }
         }
 

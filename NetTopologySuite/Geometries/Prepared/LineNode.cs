@@ -1,5 +1,5 @@
+using GeoAPI.Geometries;
 using NetTopologySuite.Noding;
-using LocationsEnum = GeoAPI.Geometries.Locations;
 
 namespace NetTopologySuite.Geometries.Prepared
 {
@@ -9,37 +9,37 @@ namespace NetTopologySuite.Geometries.Prepared
         public const int Backward = 1;
 
         private readonly SegmentNode _node;
-        private readonly LocationsEnum[] _location = new[] { LocationsEnum.Exterior, LocationsEnum.Exterior };
+        private readonly Location[] _location = new[] { GeoAPI.Geometries.Location.Exterior, GeoAPI.Geometries.Location.Exterior };
 
-        public LineNode(SegmentNode node, LocationsEnum locForward, LocationsEnum locBackward)
+        public LineNode(SegmentNode node, Location locForward, Location locBackward)
         {
             _node = node;
             _location[Forward] = locForward;
             _location[Backward] = locBackward;
         }
 
-        public void MergeLabel(LocationsEnum locForward, LocationsEnum locBackward)
+        public void MergeLabel(Location locForward, Location locBackward)
         {
             _location[Forward] = MergeLocation(_location[Forward], locForward);
             _location[Backward] = MergeLocation(_location[Backward], locForward);
         }
 
-        private static LocationsEnum MergeLocation(LocationsEnum loc1, LocationsEnum loc2)
+        private static Location MergeLocation(Location loc1, Location loc2)
         {
-            LocationsEnum mergeLoc = loc1;
-            if (loc2 == LocationsEnum.Interior)
+            Location mergeLoc = loc1;
+            if (loc2 == GeoAPI.Geometries.Location.Interior)
             {
-                mergeLoc = LocationsEnum.Interior;
+                mergeLoc = GeoAPI.Geometries.Location.Interior;
             }
             return mergeLoc;
         }
 
-        public LocationsEnum[] Locations
+        public Location[] Location
         {
             get { return _location; }
         }
 
-        public LocationsEnum GetLocation(int position)
+        public Location GetLocation(int position)
         {
             return _location[position];
         }

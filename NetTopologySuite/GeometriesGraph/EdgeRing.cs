@@ -19,7 +19,7 @@ namespace NetTopologySuite.GeometriesGraph
         private int _maxNodeDegree = -1;
         private readonly List<DirectedEdge> _edges = new List<DirectedEdge>();  // the DirectedEdges making up this EdgeRing
         private readonly List<ICoordinate> _pts = new List<ICoordinate>();
-        private readonly Label _label = new Label(Locations.Null); // label stores the locations of each point on the face surrounded by this ring
+        private readonly Label _label = new Label(Location.Null); // label stores the locations of each point on the face surrounded by this ring
         private ILinearRing _ring;  // the ring created for this EdgeRing
         private bool _isHole;
         private EdgeRing _shell;   // if non-null, the ring is a hole and this EdgeRing is its containing shell
@@ -287,12 +287,12 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         protected void MergeLabel(Label deLabel, int geomIndex)
         {
-            Locations loc = deLabel.GetLocation(geomIndex, Positions.Right);
+            Location loc = deLabel.GetLocation(geomIndex, Positions.Right);
             // no information to be had from this label
-            if (loc == Locations.Null) 
+            if (loc == Location.Null) 
                 return;
             // if there is no current RHS value, set it
-            if (_label.GetLocation(geomIndex) == Locations.Null)
+            if (_label.GetLocation(geomIndex) == Location.Null)
             {
                 _label.SetLocation(geomIndex, loc);
                 return;

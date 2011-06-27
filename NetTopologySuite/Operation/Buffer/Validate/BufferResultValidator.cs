@@ -107,7 +107,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         private void CheckExpectedEmpty()
         {
             // can't check areal features
-            if (_input.Dimension >= Dimensions.Surface) return;
+            if (_input.Dimension >= Dimension.Surface) return;
             // can't check positive distances
             if (_distance > 0.0) return;
 

@@ -41,9 +41,9 @@ namespace NetTopologySuite.Operation.Union
             foreach (IPoint point in PointExtracter.GetPoints(_pointGeom))
             {
                 ICoordinate coord = point.Coordinate;
-                Locations loc = locater.Locate(coord, _otherGeom);
+                Location loc = locater.Locate(coord, _otherGeom);
 
-                if (loc == Locations.Exterior)
+                if (loc == Location.Exterior)
                 {
                     exteriorCoords.Add(coord);
                 }

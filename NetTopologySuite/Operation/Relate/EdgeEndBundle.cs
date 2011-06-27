@@ -84,8 +84,8 @@ namespace NetTopologySuite.Operation.Relate
                     isArea = true;
             }
             if (isArea)
-                 Label = new Label(Locations.Null, Locations.Null, Locations.Null);
-            else Label = new Label(Locations.Null);
+                 Label = new Label(Location.Null, Location.Null, Location.Null);
+            else Label = new Label(Location.Null);
 
             // compute the On label, and the side labels if present
             for (int i = 0; i < 2; i++)
@@ -121,20 +121,20 @@ namespace NetTopologySuite.Operation.Relate
             // compute the On location value
             int boundaryCount = 0;
             bool foundInterior = false;
-            Locations loc;
+            Location loc;
 
             foreach (EdgeEnd e in _edgeEnds)
             {
                 loc = e.Label.GetLocation(geomIndex);
-                if (loc == Locations.Boundary) 
+                if (loc == Location.Boundary) 
                     boundaryCount++;
-                if (loc == Locations.Interior) 
+                if (loc == Location.Interior) 
                     foundInterior = true;
             }
 
-            loc = Locations.Null;
+            loc = Location.Null;
             if (foundInterior) 
-                loc = Locations.Interior;
+                loc = Location.Interior;
             if (boundaryCount > 0) 
                 loc = GeometryGraph.DetermineBoundary(boundaryNodeRule, boundaryCount);            
             Label.SetLocation(geomIndex, loc);
@@ -171,14 +171,14 @@ namespace NetTopologySuite.Operation.Relate
             {
                 if (e.Label.IsArea()) 
                 {
-                    Locations loc = e.Label.GetLocation(geomIndex, side);
-                    if (loc == Locations.Interior)
+                    Location loc = e.Label.GetLocation(geomIndex, side);
+                    if (loc == Location.Interior)
                     {
-                        Label.SetLocation(geomIndex, side, Locations.Interior);
+                        Label.SetLocation(geomIndex, side, Location.Interior);
                         return;
                     }
-                    if (loc == Locations.Exterior)
-                        Label.SetLocation(geomIndex, side, Locations.Exterior);
+                    if (loc == Location.Exterior)
+                        Label.SetLocation(geomIndex, side, Location.Exterior);
                 }
             }
         }

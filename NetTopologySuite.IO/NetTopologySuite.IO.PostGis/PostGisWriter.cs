@@ -486,7 +486,7 @@ namespace NetTopologySuite.IO
             {
                 // CoordinateArraySequence will always return 3, so we have to
                 // check, if the third ordinate contains NaN, then the geom is actually 2-dimensional
-                return Double.IsNaN(coords.GetOrdinate(0, Ordinates.Z)) ? false : true;
+                return Double.IsNaN(coords.GetOrdinate(0, Ordinate.Z)) ? false : true;
             }
             else return false;
         }

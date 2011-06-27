@@ -34,10 +34,10 @@ namespace NetTopologySuite.GeometriesGraph
             // the "Mod-2 Rule"
             return boundaryCount % 2 == 1;
         }*/
-        public static Locations DetermineBoundary(IBoundaryNodeRule boundaryNodeRule, int boundaryCount)
+        public static Location DetermineBoundary(IBoundaryNodeRule boundaryNodeRule, int boundaryCount)
         {
             return boundaryNodeRule.IsInBoundary(boundaryCount)
-                ? Locations.Boundary : Locations.Interior;
+                ? Location.Boundary : Location.Interior;
         }
 
         private readonly IGeometry _parentGeom;
@@ -244,7 +244,7 @@ namespace NetTopologySuite.GeometriesGraph
         private void AddPoint(IPoint p)
         {
             ICoordinate coord = p.Coordinate;
-            InsertPoint(_argIndex, coord, Locations.Interior);
+            InsertPoint(_argIndex, coord, Location.Interior);
         }
 
         /// <summary> 
@@ -255,7 +255,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="lr"></param>
         /// <param name="cwLeft"></param>
         /// <param name="cwRight"></param>
-        private void AddPolygonRing(ILinearRing lr, Locations cwLeft, Locations cwRight)
+        private void AddPolygonRing(ILinearRing lr, Location cwLeft, Location cwRight)
         {
             ICoordinate[] coord = CoordinateArrays.RemoveRepeatedPoints(lr.Coordinates);
             if (coord.Length < 4) 
@@ -264,18 +264,18 @@ namespace NetTopologySuite.GeometriesGraph
                 _invalidPoint = coord[0];
                 return;
             }
-            Locations left = cwLeft;
-            Locations right = cwRight;
+            Location left = cwLeft;
+            Location right = cwRight;
             if (CGAlgorithms.IsCCW(coord)) 
             {
                 left = cwRight;
                 right = cwLeft;
             }
-            Edge e = new Edge(coord, new Label(_argIndex, Locations.Boundary, left, right));
+            Edge e = new Edge(coord, new Label(_argIndex, Location.Boundary, left, right));
             _lineEdgeMap[lr] = e;
             InsertEdge(e);
             // insert the endpoint as a node, to mark that it is on the boundary
-            InsertPoint(_argIndex, coord[0], Locations.Boundary);
+            InsertPoint(_argIndex, coord[0], Location.Boundary);
         }
 
         /// <summary>
@@ -284,13 +284,13 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="p"></param>
         private void AddPolygon(IPolygon p)
         {
-            AddPolygonRing(p.Shell, Locations.Exterior, Locations.Interior);
+            AddPolygonRing(p.Shell, Location.Exterior, Location.Interior);
 
             for (int i = 0; i < p.NumInteriorRings; i++)             
                 // Holes are topologically labelled opposite to the shell, since
                 // the interior of the polygon lies on their opposite side
                 // (on the left, if the hole is oriented CW)
-                AddPolygonRing(p.Holes[i], Locations.Interior, Locations.Exterior);            
+                AddPolygonRing(p.Holes[i], Location.Interior, Location.Exterior);            
         }
 
         /// <summary>
@@ -309,7 +309,7 @@ namespace NetTopologySuite.GeometriesGraph
 
             // add the edge for the LineString
             // line edges do not have locations for their left and right sides
-            Edge e = new Edge(coord, new Label(_argIndex, Locations.Interior));            
+            Edge e = new Edge(coord, new Label(_argIndex, Location.Interior));            
             _lineEdgeMap[line] = e;
             InsertEdge(e);
 
@@ -333,8 +333,8 @@ namespace NetTopologySuite.GeometriesGraph
             InsertEdge(e);
             ICoordinate[] coord = e.Coordinates;
             // insert the endpoint as a node, to mark that it is on the boundary
-            InsertPoint(_argIndex, coord[0], Locations.Boundary);
-            InsertPoint(_argIndex, coord[coord.Length - 1], Locations.Boundary);
+            InsertPoint(_argIndex, coord[0], Location.Boundary);
+            InsertPoint(_argIndex, coord[coord.Length - 1], Location.Boundary);
         }
 
         /// <summary>
@@ -344,7 +344,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="pt"></param>
         public void AddPoint(ICoordinate pt)
         {
-            InsertPoint(_argIndex, pt, Locations.Interior);
+            InsertPoint(_argIndex, pt, Location.Interior);
         }
 
         /// <summary>
@@ -391,7 +391,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="argIndex"></param>
         /// <param name="coord"></param>
         /// <param name="onLocation"></param>
-        private void InsertPoint(int argIndex, ICoordinate coord, Locations onLocation)
+        private void InsertPoint(int argIndex, ICoordinate coord, Location onLocation)
         {
             Node n = NodeMap.AddNode(coord);
             Label lbl = n.Label;
@@ -414,14 +414,14 @@ namespace NetTopologySuite.GeometriesGraph
             // the new point to insert is on a boundary
             int boundaryCount = 1;
             // determine the current location for the point (if any)
-            Locations loc = Locations.Null;
+            Location loc = Location.Null;
             if (lbl != null) 
                 loc = lbl.GetLocation(argIndex, Positions.On);
-            if (loc == Locations.Boundary) 
+            if (loc == Location.Boundary) 
                 boundaryCount++;
 
             // determine the boundary status of the point according to the Boundary Determination Rule
-            Locations newLoc = DetermineBoundary(_boundaryNodeRule, boundaryCount);
+            Location newLoc = DetermineBoundary(_boundaryNodeRule, boundaryCount);
             lbl.SetLocation(argIndex, newLoc);
         }
 
@@ -433,7 +433,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             foreach (Edge e in Edges)
             {
-                Locations eLoc = e.Label.GetLocation(argIndex);
+                Location eLoc = e.Label.GetLocation(argIndex);
                 foreach (EdgeIntersection ei in e.EdgeIntersectionList)
                 {
                     AddSelfIntersectionNode(argIndex, ei.Coordinate, eLoc);
@@ -450,25 +450,25 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="argIndex"></param>
         /// <param name="coord"></param>
         /// <param name="loc"></param>
-        private void AddSelfIntersectionNode(int argIndex, ICoordinate coord, Locations loc)
+        private void AddSelfIntersectionNode(int argIndex, ICoordinate coord, Location loc)
         {
             // if this node is already a boundary node, don't change it
             if (IsBoundaryNode(argIndex, coord)) 
                 return;
-            if (loc == Locations.Boundary && _useBoundaryDeterminationRule)
+            if (loc == Location.Boundary && _useBoundaryDeterminationRule)
                  InsertBoundaryPoint(argIndex, coord);
             else InsertPoint(argIndex, coord, loc);
         }
 
         // MD - experimental for now
         ///<summary>
-        /// Determines the <see cref="Locations"/> of the given <see cref="ICoordinate"/> in this geometry.
+        /// Determines the <see cref="Location"/> of the given <see cref="ICoordinate"/> in this geometry.
         ///</summary>
         /// <param name="pt">The point to test</param>
         /// <returns>
         /// The location of the point in the geometry
         /// </returns>
-        public Locations Locate(ICoordinate pt)
+        public Location Locate(ICoordinate pt)
         {
             if (_parentGeom is IPolygonal && _parentGeom.NumGeometries > 50) {
   	            // lazily init point locator

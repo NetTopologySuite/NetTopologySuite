@@ -18,7 +18,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         private ILinearRing hole = null;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:NormalizeTest"/> class.
+        /// Initializes a new instance of the <see cref="NormalizeTest"/> class.
         /// </summary>
         public NormalizeTest() : base() { }
 

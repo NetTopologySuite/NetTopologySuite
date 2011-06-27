@@ -66,13 +66,13 @@ namespace NetTopologySuite.LinearReferencing
         private double _segmentFraction;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:LinearLocation"/> class:
+        /// Initializes a new instance of the <see cref="LinearLocation"/> class:
         /// creates a location referring to the start of a linear geometry.
         /// </summary>
         public LinearLocation() { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:LinearLocation"/> class:
+        /// Initializes a new instance of the <see cref="LinearLocation"/> class:
         /// creates a location referring to the start of a linear geometry.
         /// </summary>
         /// <param name="segmentIndex">Index of the segment.</param>
@@ -81,7 +81,7 @@ namespace NetTopologySuite.LinearReferencing
             this(0, segmentIndex, segmentFraction) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:LinearLocation"/> class:
+        /// Initializes a new instance of the <see cref="LinearLocation"/> class:
         /// creates a location referring to the start of a linear geometry.
         /// </summary>
         /// <param name="componentIndex">Index of the component.</param>

@@ -7,9 +7,9 @@ namespace NetTopologySuite.Geometries
     /// <summary>
     /// Basic implementation of <c>MultiPolygon</c>.
     /// </summary>
-#if !SILVERLIGHT
+//#if !SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public class MultiPolygon : GeometryCollection, IMultiPolygon 
     {
         /// <summary>
@@ -51,22 +51,22 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override Dimensions Dimension
+        public override Dimension Dimension
         {
             get
             {
-                return Dimensions.Surface;
+                return Dimension.Surface;
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public override Dimensions BoundaryDimension
+        public override Dimension BoundaryDimension
         {
             get
             {
-                return Dimensions.Curve;
+                return Dimension.Curve;
             }
         }
 

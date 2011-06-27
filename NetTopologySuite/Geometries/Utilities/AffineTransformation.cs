@@ -948,10 +948,10 @@ namespace NetTopologySuite.Geometries.Utilities
         ///<param name="i"> the index of the coordinate to transform</param>
         public void Transform(ICoordinateSequence seq, int i)
         {
-            double xp = _m00 * seq.GetOrdinate(i, Ordinates.X) + _m01 * seq.GetOrdinate(i, Ordinates.Y) + _m02;
-            double yp = _m10 * seq.GetOrdinate(i, Ordinates.X) + _m11 * seq.GetOrdinate(i, Ordinates.Y) + _m12;
-            seq.SetOrdinate(i, Ordinates.X, xp);
-            seq.SetOrdinate(i, Ordinates.Y, yp);
+            double xp = _m00 * seq.GetOrdinate(i, Ordinate.X) + _m01 * seq.GetOrdinate(i, Ordinate.Y) + _m02;
+            double yp = _m10 * seq.GetOrdinate(i, Ordinate.X) + _m11 * seq.GetOrdinate(i, Ordinate.Y) + _m12;
+            seq.SetOrdinate(i, Ordinate.X, xp);
+            seq.SetOrdinate(i, Ordinate.Y, yp);
         }
 
         ///<summary>

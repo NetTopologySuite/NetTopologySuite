@@ -21,11 +21,11 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="label"></param>
         public static void UpdateIM(Label label, IntersectionMatrix im)
         {
-            im.SetAtLeastIfValid(label.GetLocation(0, Positions.On), label.GetLocation(1, Positions.On), Dimensions.Curve);
+            im.SetAtLeastIfValid(label.GetLocation(0, Positions.On), label.GetLocation(1, Positions.On), Dimension.Curve);
             if (label.IsArea())
             {
-                im.SetAtLeastIfValid(label.GetLocation(0, Positions.Left), label.GetLocation(1, Positions.Left), Dimensions.Surface);
-                im.SetAtLeastIfValid(label.GetLocation(0, Positions.Right), label.GetLocation(1, Positions.Right), Dimensions.Surface);
+                im.SetAtLeastIfValid(label.GetLocation(0, Positions.Left), label.GetLocation(1, Positions.Left), Dimension.Surface);
+                im.SetAtLeastIfValid(label.GetLocation(0, Positions.Right), label.GetLocation(1, Positions.Right), Dimension.Surface);
             }
         }
 

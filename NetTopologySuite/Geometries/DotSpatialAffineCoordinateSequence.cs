@@ -3,9 +3,9 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries
 {
-#if !SILVERLIGHT    
+//#if !SILVERLIGHT    
     [Serializable]
-#endif
+//#endif
     public class DotSpatialAffineCoordinateSequence : ICoordinateSequence
     {
         private readonly double[] _xy;
@@ -74,7 +74,7 @@ namespace NetTopologySuite.Geometries
                 _xy[j++] = coordSeq.GetX(i);
                 _xy[j++] = coordSeq.GetY(i);
                 if (_z != null)
-                    _z[i] = coordSeq.GetOrdinate(i, Ordinates.X);
+                    _z[i] = coordSeq.GetOrdinate(i, Ordinate.X);
             }
         }
 
@@ -117,15 +117,15 @@ namespace NetTopologySuite.Geometries
             return _xy[2*index + 1];
         }
 
-        public double GetOrdinate(int index, Ordinates ordinate)
+        public double GetOrdinate(int index, Ordinate ordinate)
         {
             switch (ordinate)
             {
-                case Ordinates.X:
+                case Ordinate.X:
                     return _xy[index*2];
-                case Ordinates.Y:
+                case Ordinate.Y:
                     return _xy[index*2+1];
-                case Ordinates.Z:
+                case Ordinate.Z:
                     return _z != null ? _z[index] : double.NaN;
                 /*case Ordinates.M:*/
                 default:
@@ -133,17 +133,17 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        public void SetOrdinate(int index, Ordinates ordinate, double value)
+        public void SetOrdinate(int index, Ordinate ordinate, double value)
         {
             switch (ordinate)
             {
-                case Ordinates.X:
+                case Ordinate.X:
                     _xy[index*2] = value;
                     break;
-                case Ordinates.Y:
+                case Ordinate.Y:
                     _xy[index*2 + 1] = value;
                     break;
-                case Ordinates.Z:
+                case Ordinate.Z:
                     if (_z != null)
                         _z[index] = value;
                     break;
@@ -328,25 +328,25 @@ namespace NetTopologySuite.Geometries
         public double X
         {
             get { return _sequence.GetX(_index); }
-            set { _sequence.SetOrdinate(_index, Ordinates.X, value); }
+            set { _sequence.SetOrdinate(_index, Ordinate.X, value); }
         }
 
         public double Y
         {
             get { return _sequence.GetY(_index); }
-            set { _sequence.SetOrdinate(_index, Ordinates.Y, value); }
+            set { _sequence.SetOrdinate(_index, Ordinate.Y, value); }
         }
 
         public double Z
         {
-            get { return _sequence.GetOrdinate(_index, Ordinates.Z); }
-            set { _sequence.SetOrdinate(_index, Ordinates.Z, value); }
+            get { return _sequence.GetOrdinate(_index, Ordinate.Z); }
+            set { _sequence.SetOrdinate(_index, Ordinate.Z, value); }
         }
 
         public double M
         {
-            get { return _sequence.GetOrdinate(_index, Ordinates.M); }
-            set { _sequence.SetOrdinate(_index, Ordinates.Z, value); }
+            get { return _sequence.GetOrdinate(_index, Ordinate.M); }
+            set { _sequence.SetOrdinate(_index, Ordinate.Z, value); }
         }
 
         public ICoordinate CoordinateValue
@@ -360,7 +360,7 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        public double this[Ordinates index]
+        public double this[Ordinate index]
         {
             get { return _sequence.GetOrdinate(_index, index); }
             set { _sequence.SetOrdinate(_index, index, value); }

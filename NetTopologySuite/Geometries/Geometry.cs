@@ -25,6 +25,8 @@ namespace NetTopologySuite.Geometries
 {   
     /// <summary>  
     /// Basic implementation of <c>Geometry</c>.
+    /// </summary>
+    /// <remarks>
     /// <c>Clone</c> returns a deep copy of the object.
     /// <para>
     /// Binary Predicates: 
@@ -83,15 +85,15 @@ namespace NetTopologySuite.Geometries
     /// analysis methods, it will throw an exception. If possible the exception will
     /// report the location of the collapse. 
     /// </para>
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// <see cref="object.Equals(object)" /> and <see cref="object.GetHashCode" /> are not overridden, so that when two
     /// topologically equal Geometries are added to Collections and Dictionaries, they
     /// remain distinct. This behaviour is desired in many cases.
+    /// </para>
     /// </remarks>
-#if !SILVERLIGHT
+//#if !SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public abstract class Geometry : IGeometry
     {        
         /// <summary>
@@ -438,14 +440,14 @@ namespace NetTopologySuite.Geometries
                     return null;
 
                 ICoordinate centPt = null;
-                Dimensions dim = Dimension;
-                if (dim == Dimensions.Point)
+                Dimension dim = Dimension;
+                if (dim == Dimension.Point)
                 {
                     CentroidPoint cent = new CentroidPoint();
                     cent.Add(this);
                     centPt = cent.Centroid;
                 }
-                else if (dim == Dimensions.Curve)
+                else if (dim == Dimension.Curve)
                 {
                     CentroidLine cent = new CentroidLine();
                     cent.Add(this);
@@ -463,23 +465,25 @@ namespace NetTopologySuite.Geometries
 
         /// <summary>
         /// Computes an interior point of this <c>Geometry</c>.
+        /// </summary>
+        /// <remarks>
         /// An interior point is guaranteed to lie in the interior of the Geometry,
         /// if it possible to calculate such a point exactly. Otherwise,
         /// the point may lie on the boundary of the point.
-        /// </summary>
+        /// </remarks>
         /// <returns>A <c>Point</c> which is in the interior of this Geometry.</returns>
         public IPoint InteriorPoint
         {
             get
             {
                 ICoordinate interiorPt = null;
-                Dimensions dim = Dimension;
-                if (dim == Dimensions.Point)
+                Dimension dim = Dimension;
+                if (dim == Dimension.Point)
                 {
                     InteriorPointPoint intPt = new InteriorPointPoint(this);
                     interiorPt = intPt.InteriorPoint;
                 }
-                else if (dim == Dimensions.Curve)
+                else if (dim == Dimension.Curve)
                 {
                     InteriorPointLine intPt = new InteriorPointLine(this);
                     interiorPt = intPt.InteriorPoint;
@@ -504,7 +508,7 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        private Dimensions _dimension;
+        private Dimension _dimension;
 
         /// <summary> 
         /// Returns the dimension of this geometry.
@@ -524,7 +528,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>  
         /// The topological dimensions of this geometry
         /// </returns>
-        public virtual Dimensions Dimension
+        public virtual Dimension Dimension
         {
             get { return _dimension; }
             set { _dimension = value; }
@@ -555,7 +559,7 @@ namespace NetTopologySuite.Geometries
         /// <c>Dimension.False</c> if the boundary is the empty point.
         /// </returns>
         /// NOTE: make abstract, remove setter and change geoapi
-        public virtual Dimensions BoundaryDimension { get; set; }
+        public virtual Dimension BoundaryDimension { get; set; }
 
         /// <summary>  
         /// Returns this <c>Geometry</c>s bounding box. If this <c>Geometry</c>
@@ -577,9 +581,9 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        
         /// <summary> 
-        /// Returns the minimum and maximum x and y values in this <c>Geometry</c>
-        /// , or a null <c>Envelope</c> if this <c>Geometry</c> is empty.
+        /// Returns the minimum and maximum x and y values in this <c>Geometry</c>, or a null <c>Envelope</c> if this <c>Geometry</c> is empty.
         /// </summary>
         /// <returns>    
         /// This <c>Geometry</c>s bounding box; if the <c>Geometry</c>
@@ -590,7 +594,7 @@ namespace NetTopologySuite.Geometries
             get
             {
                 if (_envelope == null)
-                    _envelope = ComputeEnvelopeInternal();                
+                    _envelope = ComputeEnvelopeInternal();
                 return _envelope;
             }
         }
@@ -1835,8 +1839,8 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns the minimum and maximum x and y values in this <c>Geometry</c>
-        /// , or a null <c>Envelope</c> if this <c>Geometry</c> is empty.
+        /// Returns the minimum and maximum x and y values in this <c>Geometry</c>,
+        /// or a null <c>Envelope</c> if this <c>Geometry</c> is empty.
         /// Unlike <c>EnvelopeInternal</c>, this method calculates the <c>Envelope</c>
         /// each time it is called; <c>EnvelopeInternal</c> caches the result
         /// of this method.        

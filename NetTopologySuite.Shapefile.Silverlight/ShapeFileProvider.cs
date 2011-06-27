@@ -2242,19 +2242,19 @@ namespace NetTopologySuite.Shapefile
 
         private struct CoordinateValues
         {
-            public Double this[Ordinates ordinate]
+            public Double this[Ordinate ordinate]
             {
                 get
                 {
                     switch (ordinate)
                     {
-                        case Ordinates.X:
+                        case Ordinate.X:
                             return X;
-                        case Ordinates.Y:
+                        case Ordinate.Y:
                             return Y;
-                        case Ordinates.M:
+                        case Ordinate.M:
                             return M;
-                        case Ordinates.Z:
+                        case Ordinate.Z:
                             return Z;
                         default:
                             throw new ArgumentException();
@@ -3127,7 +3127,7 @@ namespace NetTopologySuite.Shapefile
         //    _shapeFileWriter.Write(ByteEncoder.GetLittleEndian(box.GetMax(Ordinates.Y)));
         //}
 
-        private static Tuple<double, double> GetOrdinateRange(IGeometry geometry, Ordinates ordinate)
+        private static Tuple<double, double> GetOrdinateRange(IGeometry geometry, Ordinate ordinate)
         {
             double min = double.MaxValue;
             double max = double.MinValue;
@@ -3154,7 +3154,7 @@ namespace NetTopologySuite.Shapefile
             return Tuple.Create(min, max);
         }
 
-        private static Tuple<double, double> GetOrdinateRange(IEnumerable<IGeometry> geometries, Ordinates ordinate)
+        private static Tuple<double, double> GetOrdinateRange(IEnumerable<IGeometry> geometries, Ordinate ordinate)
         {
             double min = double.MaxValue;
             double max = double.MinValue;

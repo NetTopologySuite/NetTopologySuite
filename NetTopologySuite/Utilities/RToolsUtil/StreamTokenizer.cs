@@ -116,9 +116,9 @@ namespace RTools_NTS.Util
 	/// This is separated from the StreamTokenizer so that common settings
 	/// are easy to package and keep together.
 	/// </summary>
-#if !SILVERLIGHT
+//#if !SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public class StreamTokenizerSettings
 	{
 		// ---------------------------------------------------------------------

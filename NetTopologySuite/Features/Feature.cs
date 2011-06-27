@@ -3,34 +3,31 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Features
 {
-    /// <summary>
-    /// 
-    /// </summary>
-#if !SILVERLIGHT
+//#if !SILVERLIGHT
     [Serializable]
-#endif
+//#endif
      public class Feature
     {
-        private IGeometry geometry = null;
+        private IGeometry _geometry;
 
         /// <summary>
         /// Geometry representation of the feature.
         /// </summary>
         public IGeometry Geometry
         {
-            get { return geometry; }
-            set { geometry = value; }
+            get { return _geometry; }
+            set { _geometry = value; }
         }
 
-        private IAttributesTable attributes = null;
+        private IAttributesTable _attributes;
 
         /// <summary>
         /// Attributes table of the feature.
         /// </summary>
         public IAttributesTable Attributes
         {
-            get { return attributes; }
-            set { attributes = value; }
+            get { return _attributes; }
+            set { _attributes = value; }
         }
         
         /// <summary>
@@ -40,8 +37,8 @@ namespace NetTopologySuite.Features
         /// <param name="attributes"></param>
         public Feature(IGeometry geometry, IAttributesTable attributes) : this()
         {
-            this.geometry = geometry;
-            this.attributes = attributes;
+            _geometry = geometry;
+            _attributes = attributes;
         }
 
         /// <summary>

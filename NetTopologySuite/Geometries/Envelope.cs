@@ -14,9 +14,9 @@ namespace NetTopologySuite.Geometries
     /// When Envelope objects are created or initialized,
     /// the supplies extent values are automatically sorted into the correct order.    
     /// </summary>
-#if !SILVERLIGHT
+//#if !SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public class Envelope : IEnvelope
     {
         /// <summary>

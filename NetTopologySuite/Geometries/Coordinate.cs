@@ -5,20 +5,26 @@ namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// A lightweight class used to store coordinates on the 2-dimensional Cartesian plane.
+    /// </summary>
+    /// <remarks>
+    /// <para>
     /// It is distinct from <see cref="IPoint"/>, which is a subclass of <see cref="IGeometry"/>.
     /// Unlike objects of type <see cref="IPoint"/> (which contain additional
     /// information such as an envelope, a precision model, and spatial reference
     /// system information), a <c>Coordinate</c> only contains ordinate values
     /// and propertied.
+    /// </para>
+    /// <para>
     /// <c>Coordinate</c>s are two-dimensional points, with an additional Z-ordinate.
     /// NTS does not support any operations on the Z-ordinate except the basic accessor functions. 
     /// If an Z-ordinate value is not specified or not defined, 
     /// constructed coordinates have a Z-ordinate of <code>NaN</code>
-    /// (which is also the value of <see cref="NullOrdinate"/>).  
-    /// </summary>
-#if !SILVERLIGHT
+    /// (which is also the value of <see cref="NullOrdinate"/>).
+    /// </para>
+    /// </remarks>
+//#if !SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public class Coordinate : ICoordinate
     {
         /**
@@ -86,17 +92,17 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="index">The index of the ordinate</param>
         /// <returns>The ordinate value</returns>
-        public double this[Ordinates index]
+        public double this[Ordinate index]
         {
             get
             {
                 switch (index)
                 {
-                    case Ordinates.X:
+                    case Ordinate.X:
                         return _x;
-                    case Ordinates.Y:
+                    case Ordinate.Y:
                         return _y;
-                    case Ordinates.Z:
+                    case Ordinate.Z:
                         return _z;
                     default:
                         return NullOrdinate;
@@ -106,13 +112,13 @@ namespace NetTopologySuite.Geometries
             {
                 switch (index)
                 {
-                    case Ordinates.X:
+                    case Ordinate.X:
                         _x = value;
                         break;
-                    case Ordinates.Y:
+                    case Ordinate.Y:
                         _y = value;
                         break;
-                    case Ordinates.Z:
+                    case Ordinate.Z:
                         _z = value;
                         break;
                 }

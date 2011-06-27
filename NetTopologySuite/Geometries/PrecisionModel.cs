@@ -47,9 +47,9 @@ namespace NetTopologySuite.Geometries
     /// integer is 9,007,199,254,740,992).
     /// NTS methods currently do not handle inputs with different precision models.
     /// </remarks>
-#if !SILVERLIGHT
+//#if !SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public class PrecisionModel : IPrecisionModel
     {
         ///<summary>

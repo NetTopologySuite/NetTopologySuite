@@ -38,7 +38,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
 
         private readonly IGeometry[] _geom;
         private readonly FuzzyPointLocator[] _locFinder;
-        private readonly Locations[] _location = new Locations[3];
+        private readonly Location[] _location = new Location[3];
         private readonly double _boundaryDistanceTolerance = Tolerance;
         private readonly List<ICoordinate> _testCoords = new List<ICoordinate>();
 
@@ -114,42 +114,42 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             /*
              * If any location is on the Boundary, can't deduce anything, so just return true
              */
-            if (HasLocation(_location, Locations.Boundary))
+            if (HasLocation(_location, Location.Boundary))
                 return true;
 
             return IsValidResult(overlayOp, _location);
         }
 
-        private static bool HasLocation(Locations[] location, Locations loc)
+        private static bool HasLocation(Location[] _location, Location loc)
         {
             for (int i = 0; i < 3; i++)
             {
-                if (location[i] == loc)
+                if (_location[i] == loc)
                     return true;
             }
             return false;
         }
 
-        private static bool IsValidResult(SpatialFunction overlayOp, Locations[] location)
+        private static bool IsValidResult(SpatialFunction overlayOp, Location[] _location)
         {
-            bool expectedInterior = OverlayOp.IsResultOfOp(location[0], location[1], overlayOp);
+            bool expectedInterior = OverlayOp.IsResultOfOp(_location[0], _location[1], overlayOp);
 
-            bool resultInInterior = (location[2] == Locations.Interior);
+            bool resultInInterior = (_location[2] == Location.Interior);
             // MD use simpler: boolean isValid = (expectedInterior == resultInInterior);
             bool isValid = !(expectedInterior ^ resultInInterior);
 
-            if (!isValid) ReportResult(overlayOp, location, expectedInterior);
+            if (!isValid) ReportResult(overlayOp, _location, expectedInterior);
 
             return isValid;
         }
 
-        private static void ReportResult(SpatialFunction overlayOp, Locations[] location, bool expectedInterior)
+        private static void ReportResult(SpatialFunction overlayOp, Location[] _location, bool expectedInterior)
         {
             Console.WriteLine(overlayOp + ":"
-                    + " A:" + Location.ToLocationSymbol(location[0])
-                    + " B:" + Location.ToLocationSymbol(location[1])
+                    + " A:" + LocationUtility.ToLocationSymbol(_location[0])
+                    + " B:" + LocationUtility.ToLocationSymbol(_location[1])
                     + " expected:" + (expectedInterior ? 'i' : 'e')
-                    + " actual:" + Location.ToLocationSymbol(location[2])
+                    + " actual:" + LocationUtility.ToLocationSymbol(_location[2])
                     );
         }
     }

@@ -453,7 +453,7 @@ namespace NetTopologySuite.IO
             writer.Write(WriteNumber(seq.GetX(i)) + " " + WriteNumber(seq.GetY(i)));
             if (_outputDimension >= 3 && seq.Dimension >= 3)
             {
-                double z = seq.GetOrdinate(i, Ordinates.Z);
+                double z = seq.GetOrdinate(i, Ordinate.Z);
                 if (!Double.IsNaN(z))
                 {
                     writer.Write(" ");

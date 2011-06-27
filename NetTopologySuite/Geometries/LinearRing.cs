@@ -3,22 +3,6 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries
 {
-    /**
-     * Models an OGC SFS <code>LinearRing</code>.
-     * A LinearRing is a LineString which is both closed and simple.
-     * In other words,
-     * the first and last coordinate in the ring must be equal,
-     * and the interior of the ring must not self-intersect.
-     * Either orientation of the ring is allowed.
-     * <p>
-     * A ring must have either 0 or 4 or more points.  
-     * The first and last points must be equal (in 2D).
-     * If these conditions are not met, the constructors throw 
-     * an {@link IllegalArgumentException}
-     *
-     * @version 1.7
-     */
-
     /// <summary>
     /// Models an OGC SFS <c>LinearRing</c>.
     /// </summary>
@@ -34,9 +18,9 @@ namespace NetTopologySuite.Geometries
     /// If these conditions are not met, the constructors throw 
     /// an <see cref="ArgumentException"/></para>
     /// </remarks>
-#if !SILVERLIGHT
+//#if !SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public class LinearRing : LineString, ILinearRing
     {
         /// <summary>
@@ -68,11 +52,11 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Returns <c>Dimensions.False</c>, since by definition LinearRings do not have a boundary.
         /// </summary>
-        public override Dimensions BoundaryDimension
+        public override Dimension BoundaryDimension
         {
 	        get 
 	        { 
-		         return Dimensions.False;
+		         return Dimension.False;
 	        }
         }
 
@@ -115,7 +99,7 @@ namespace NetTopologySuite.Geometries
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:LinearRing"/> class.
+        /// Initializes a new instance of the <see cref="LinearRing"/> class.
         /// </summary>
         /// <param name="points">The points used for create this instance.</param>
         /// <remarks>
@@ -123,7 +107,7 @@ namespace NetTopologySuite.Geometries
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         /// <exception cref="ArgumentException">If the ring is not closed, or has too few points</exception>
-        [Obsolete("Use GeometryFactory instead")]
+        //[Obsolete("Use GeometryFactory instead")]
         public LinearRing(ICoordinate[] points) : 
             this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
         

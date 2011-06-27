@@ -76,14 +76,14 @@ namespace NetTopologySuite.Operation.Relate
         {
             foreach (Edge e in geomGraph.Edges)
             {
-                Locations eLoc = e.Label.GetLocation(argIndex);
+                Location eLoc = e.Label.GetLocation(argIndex);
                 foreach (EdgeIntersection ei in e.EdgeIntersectionList)
                 {
                     RelateNode n = (RelateNode) _nodes.AddNode(ei.Coordinate);
-                    if (eLoc == Locations.Boundary)
+                    if (eLoc == Location.Boundary)
                         n.SetLabelBoundary(argIndex);
                     else if (n.Label.IsNull(argIndex))
-                        n.SetLabel(argIndex, Locations.Interior);                            
+                        n.SetLabel(argIndex, Location.Interior);                            
                 }
             }
         }

@@ -91,9 +91,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         public void PrintStats()
         {
             Console.WriteLine("Location counts: "
-                              + "\nBoundary = " + _locationCount[(Int32)Locations.Boundary]
-                              + "\nInterior = " + _locationCount[(Int32)Locations.Interior]
-                              + "\nExterior = " + _locationCount[(Int32)Locations.Exterior]
+                              + "\nBoundary = " + _locationCount[(Int32)Location.Boundary]
+                              + "\nInterior = " + _locationCount[(Int32)Location.Interior]
+                              + "\nExterior = " + _locationCount[(Int32)Location.Exterior]
                 );
         }
         /**
@@ -105,12 +105,12 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             //Console.WriteLine(WKTWriter.toPoint(p));
 
-            Locations loc1 = _pia1.Locate(p);
-            Locations loc2 = _pia2.Locate(p);
+            Location loc1 = _pia1.Locate(p);
+            Location loc2 = _pia2.Locate(p);
 
             _locationCount[(Int32)loc1]++;
 
-            if ((loc1 == Locations.Boundary || loc2 == Locations.Boundary)
+            if ((loc1 == Location.Boundary || loc2 == Location.Boundary)
                 && IgnoreBoundaryResults)
                 return true;
 

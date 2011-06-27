@@ -1109,6 +1109,7 @@
     <Compile Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\Handlers\ProbeLinearRing.cs">
       <Link>IO\GeoTools\Handlers\ProbeLinearRing.cs</Link>
     </Compile>
+    <Compile Include="FrameworkReplacements\SerializableAttribute.cs" />
     <Compile Include="IO\GeoTools\Dbase\DbaseFileReader.SL.cs" />
     <Compile Include="IO\GeoTools\ShapefileDataReader.SL.cs" />
     <Compile Include="IO\GeoTools\SLShapeFileDataEnumerator.cs" />

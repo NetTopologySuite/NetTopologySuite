@@ -9,9 +9,9 @@ namespace NetTopologySuite.Geometries
     /// <summary>
     /// Basic implementation of <c>MultiLineString</c>.
     /// </summary>    
-#if !SILVERLIGHT
+//#if !SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public class MultiLineString : GeometryCollection, IMultiLineString
     {
         /// <summary>
@@ -50,11 +50,11 @@ namespace NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <value></value>
-        public override Dimensions Dimension
+        public override Dimension Dimension
         {
             get
             {
-                return Dimensions.Curve;
+                return Dimension.Curve;
             }
         }
 
@@ -62,13 +62,13 @@ namespace NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <value></value>
-        public override Dimensions BoundaryDimension
+        public override Dimension BoundaryDimension
         {
             get
             {
                 if (IsClosed)
-                    return Dimensions.False;                
-                return Dimensions.Point;
+                    return Dimension.False;                
+                return Dimension.Point;
             }
         }
 

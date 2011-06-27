@@ -11,7 +11,7 @@ using NetTopologySuite.Index.IntervalRTree;
 namespace NetTopologySuite.Algorithm
 {
     ///<summary>
-    /// Determines the <see cref="Locations"/> of <see cref="ICoordinate"/>s relative to
+    /// Determines the <see cref="Location"/> of <see cref="ICoordinate"/>s relative to
     /// a <see cref="IPolygonal"/> geometry, using indexing for efficiency.
     ///</summary>
     /// <remarks>
@@ -40,11 +40,11 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Determines the <see cref="Location" /> of a point in an areal <see cref="IGeometry" />.
+        /// Determines the <see cref="LocationUtility" /> of a point in an areal <see cref="IGeometry" />.
         /// </summary>
         /// <param name="p"> the point to test</param>
         /// <returns> the location of the point in the geometry</returns>  
-        public Locations Locate(ICoordinate p)
+        public Location Locate(ICoordinate p)
         {
             RayCrossingCounter rcc = new RayCrossingCounter(p);
 

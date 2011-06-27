@@ -32,9 +32,9 @@ namespace NetTopologySuite.Geometries
 
             for (int dim = 0; dim < seq.Dimension; dim++)
             {
-                double tmp = seq.GetOrdinate(i, (Ordinates)dim);
-                seq.SetOrdinate(i, (Ordinates)dim, seq.GetOrdinate(j, (Ordinates)dim));
-                seq.SetOrdinate(j, (Ordinates)dim, tmp);
+                double tmp = seq.GetOrdinate(i, (Ordinate)dim);
+                seq.SetOrdinate(i, (Ordinate)dim, seq.GetOrdinate(j, (Ordinate)dim));
+                seq.SetOrdinate(j, (Ordinate)dim, tmp);
             }
         }
 
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="destPos">The index of the coordinate in <see paramref="dest"/></param>
         public static void CopyCoord(ICoordinateSequence src, int srcPos, ICoordinateSequence dest, int destPos)
         {
-            for (Ordinates dim = 0; (int)dim < src.Dimension; dim++)
+            for (Ordinate dim = 0; (int)dim < src.Dimension; dim++)
                 dest.SetOrdinate(destPos, dim, src.GetOrdinate(srcPos, dim));
         }
 

@@ -3,9 +3,9 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries
 {
-#if!SILVERLIGHT
+//#if!SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public struct CoordinateStruct : ICoordinate 
     {
         private double x;
@@ -58,17 +58,17 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        public double this[Ordinates index]
+        public double this[Ordinate index]
         {
             get
             {
                 switch (index)
                 {
-                    case Ordinates.X:
+                    case Ordinate.X:
                         return x;
-                    case Ordinates.Y:
+                    case Ordinate.Y:
                         return y;
-                    case Ordinates.Z:
+                    case Ordinate.Z:
                         return z;
                     default:
                         return Double.NaN;
@@ -78,13 +78,13 @@ namespace NetTopologySuite.Geometries
             {
                 switch (index)
                 {
-                    case Ordinates.X:
+                    case Ordinate.X:
                         x = value;
                         break;
-                    case Ordinates.Y:
+                    case Ordinate.Y:
                         y = value;
                         break;
-                    case Ordinates.Z:
+                    case Ordinate.Z:
                         z = value;
                         break;
                 }

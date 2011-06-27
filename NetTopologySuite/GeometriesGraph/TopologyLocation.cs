@@ -7,27 +7,35 @@ namespace NetTopologySuite.GeometriesGraph
     /// <summary> 
     /// A TopologyLocation is the labelling of a
     /// GraphComponent's topological relationship to a single Geometry.
+    /// </summary>
+    /// <remarks>
     /// If the parent component is an area edge, each side and the edge itself
     /// have a topological location.  These locations are named:
-    ///  On: on the edge
-    ///  Left: left-hand side of the edge
-    ///  Right: right-hand side
+    /// <list type="Table">
+    /// <item>On</item><description>on the edge</description> 
+    /// <item>Left</item><description>left-hand side of the edge</description>
+    /// <item>Right</item><description>right-hand side</description>
+    /// </list>
+    /// <para>
     /// If the parent component is a line edge or node, there is a single
-    /// topological relationship attribute, On.
+    /// topological relationship attribute, On.</para>
+    /// <para>
     /// The possible values of a topological location are
-    /// { Location.Null, Location.Exterior, Location.Boundary, Location.Interior } 
-    /// The labelling is stored in an array location[j] where
+    /// { <see cref="Location.Null"/>, <see cref="Location.Exterior"/>, <see cref="Location.Boundary"/>, <see cref="Location.Interior"/> }</para>
+    /// <para>
+    /// The labelling is stored in an array _location[j] where
     /// where j has the values On, Left, Right.
-    /// </summary>
+    /// </para>
+    /// </remarks>
     public class TopologyLocation 
     {
-        private Locations[] location;
+        private Location[] _location;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="location"></param>
-        public TopologyLocation(Locations[] location)
+        public TopologyLocation(Location[] location)
         {
             Init(location.Length);
         }
@@ -41,22 +49,22 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="on"></param>
         /// <param name="left"></param>
         /// <param name="right"></param>
-        public TopologyLocation(Locations on, Locations left, Locations right) 
+        public TopologyLocation(Location on, Location left, Location right) 
         {
             Init(3);
-            location[(int) Positions.On] = on;
-            location[(int) Positions.Left] = left;
-            location[(int) Positions.Right] = right;
+            _location[(int) Positions.On] = on;
+            _location[(int) Positions.Left] = left;
+            _location[(int) Positions.Right] = right;
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="on"></param>
-        public TopologyLocation(Locations on) 
+        public TopologyLocation(Location on) 
         {
             Init(1);
-            location[(int) Positions.On] = on;
+            _location[(int) Positions.On] = on;
         }
 
         /// <summary>
@@ -68,9 +76,9 @@ namespace NetTopologySuite.GeometriesGraph
             if (gl == null)
                 throw new ArgumentNullException("gl", "null topology location specified");
 
-            Init(gl.location.Length);
-            for (int i = 0; i < location.Length; i++) 
-                location[i] = gl.location[i];                            
+            Init(gl._location.Length);
+            for (int i = 0; i < _location.Length; i++) 
+                _location[i] = gl._location[i];                            
         }
 
         /// <summary>
@@ -79,8 +87,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="size"></param>
         private void Init(int size)
         {
-            location = new Locations[size];
-            SetAllLocations(Locations.Null);
+            _location = new Location[size];
+            SetAllLocations(Location.Null);
         }
         
         /// <summary>
@@ -88,12 +96,12 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        public  Locations Get(Positions posIndex)
+        public  Location Get(Positions posIndex)
         {
             int index = (int)posIndex;
-            if (index < location.Length)
-                return location[index];
-            return Locations.Null;
+            if (index < _location.Length)
+                return _location[index];
+            return Location.Null;
         }
 
         /// <summary>
@@ -102,7 +110,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        public  Locations this[Positions posIndex]
+        public  Location this[Positions posIndex]
         {
             get
             {
@@ -121,8 +129,8 @@ namespace NetTopologySuite.GeometriesGraph
         {
             get
             {
-                for (int i = 0; i < location.Length; i++)
-                    if (location[i] != Locations.Null) 
+                for (int i = 0; i < _location.Length; i++)
+                    if (_location[i] != Location.Null) 
                         return false;
                 return true;
             }
@@ -135,8 +143,8 @@ namespace NetTopologySuite.GeometriesGraph
         {
             get
             {
-                for (int i = 0; i < location.Length; i++)
-                    if (location[i] == Locations.Null) 
+                for (int i = 0; i < _location.Length; i++)
+                    if (_location[i] == Location.Null) 
                         return true;
                 return false;
             }
@@ -150,7 +158,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public  bool IsEqualOnSide(TopologyLocation le, int locIndex)
         {
-            return location[locIndex] == le.location[locIndex];
+            return _location[locIndex] == le._location[locIndex];
         }
 
         /// <summary>
@@ -160,7 +168,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return location.Length > 1;
+                return _location.Length > 1;
             }
         }
 
@@ -171,7 +179,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return location.Length == 1;
+                return _location.Length == 1;
             }
         }
 
@@ -180,32 +188,32 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         public  void Flip()
         {
-            if (location.Length <= 1) 
+            if (_location.Length <= 1) 
                 return;
-            Locations temp = location[(int)Positions.Left];
-            location[(int)Positions.Left] = location[(int)Positions.Right];
-            location[(int)Positions.Right] = temp;
+            Location temp = _location[(int)Positions.Left];
+            _location[(int)Positions.Left] = _location[(int)Positions.Right];
+            _location[(int)Positions.Right] = temp;
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="locValue"></param>
-        public  void SetAllLocations(Locations locValue)
+        public  void SetAllLocations(Location locValue)
         {
-            for (int i = 0; i < location.Length; i++) 
-                location[i] = locValue;            
+            for (int i = 0; i < _location.Length; i++) 
+                _location[i] = locValue;            
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="locValue"></param>
-        public  void SetAllLocationsIfNull(Locations locValue)
+        public  void SetAllLocationsIfNull(Location locValue)
         {
-            for (int i = 0; i < location.Length; i++) 
-                if (location[i] == Locations.Null) 
-                    location[i] = locValue;
+            for (int i = 0; i < _location.Length; i++) 
+                if (_location[i] == Location.Null) 
+                    _location[i] = locValue;
         }
 
         /// <summary>
@@ -213,16 +221,16 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="locIndex"></param>
         /// <param name="locValue"></param>
-        public  void SetLocation(Positions locIndex, Locations locValue)
+        public  void SetLocation(Positions locIndex, Location locValue)
         {
-            location[(int)locIndex] = locValue;            
+            _location[(int)locIndex] = locValue;            
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="locValue"></param>
-        public  void SetLocation(Locations locValue)
+        public  void SetLocation(Location locValue)
         {
             SetLocation(Positions.On, locValue);
         }
@@ -231,9 +239,9 @@ namespace NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <returns></returns>
-        public  Locations[] GetLocations() 
+        public  Location[] GetLocations() 
         {
-            return location; 
+            return _location; 
         }
 
         /// <summary>
@@ -242,11 +250,11 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="on"></param>
         /// <param name="left"></param>
         /// <param name="right"></param>
-        public  void SetLocations(Locations on, Locations left, Locations right) 
+        public  void SetLocations(Location on, Location left, Location right) 
         {
-            location[(int)Positions.On] = on;
-            location[(int)Positions.Left] = left;
-            location[(int)Positions.Right] = right;
+            _location[(int)Positions.On] = on;
+            _location[(int)Positions.Left] = left;
+            _location[(int)Positions.Right] = right;
         }
 
         /// <summary>
@@ -255,8 +263,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="gl"></param>
         public  void SetLocations(TopologyLocation gl) 
         {
-            for (int i = 0; i < gl.location.Length; i++) 
-                location[i] = gl.location[i];            
+            for (int i = 0; i < gl._location.Length; i++) 
+                _location[i] = gl._location[i];            
         }
 
         /// <summary>
@@ -264,10 +272,10 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="loc"></param>
         /// <returns></returns>
-        public  bool AllPositionsEqual(Locations loc)
+        public  bool AllPositionsEqual(Location loc)
         {
-            for (int i = 0; i < location.Length; i++) 
-                if (location[i] != loc) 
+            for (int i = 0; i < _location.Length; i++) 
+                if (_location[i] != loc) 
                     return false;
             return true;
         }
@@ -279,17 +287,17 @@ namespace NetTopologySuite.GeometriesGraph
         public  void Merge(TopologyLocation gl)
         {
             // if the src is an Area label & and the dest is not, increase the dest to be an Area
-            if (gl.location.Length > location.Length) 
+            if (gl._location.Length > _location.Length) 
             {
-                Locations[] newLoc = new Locations[3];
-                newLoc[(int)Positions.On] = location[(int)Positions.On];
-                newLoc[(int)Positions.Left] = Locations.Null;
-                newLoc[(int)Positions.Right] = Locations.Null;
-                location = newLoc;
+                Location[] newLoc = new Location[3];
+                newLoc[(int)Positions.On] = _location[(int)Positions.On];
+                newLoc[(int)Positions.Left] = Location.Null;
+                newLoc[(int)Positions.Right] = Location.Null;
+                _location = newLoc;
             }
-            for (int i = 0; i < location.Length; i++) 
-                if (location[i] == Locations.Null && i < gl.location.Length)
-                    location[i] = gl.location[i];
+            for (int i = 0; i < _location.Length; i++) 
+                if (_location[i] == Location.Null && i < gl._location.Length)
+                    _location[i] = gl._location[i];
         }
 
         /// <summary>
@@ -299,11 +307,11 @@ namespace NetTopologySuite.GeometriesGraph
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            if (location.Length > 1)
-                sb.Append(Location.ToLocationSymbol(location[(int)Positions.Left]));
-            sb.Append(Location.ToLocationSymbol(location[(int)Positions.On]));
-            if (location.Length > 1)
-                sb.Append(Location.ToLocationSymbol(location[(int)Positions.Right]));
+            if (_location.Length > 1)
+                sb.Append(LocationUtility.ToLocationSymbol(_location[(int)Positions.Left]));
+            sb.Append(LocationUtility.ToLocationSymbol(_location[(int)Positions.On]));
+            if (_location.Length > 1)
+                sb.Append(LocationUtility.ToLocationSymbol(_location[(int)Positions.Right]));
             return sb.ToString();
         }
     }

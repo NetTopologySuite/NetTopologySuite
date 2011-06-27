@@ -6,9 +6,9 @@ namespace NetTopologySuite.Geometries
     /// <summary>
     /// Creates CoordinateSequences represented as an array of Coordinates.
     /// </summary>
-#if !SILVERLIGHT
+//#if !SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public sealed class CoordinateArraySequenceFactory : ICoordinateSequenceFactory
     {
         private static readonly CoordinateArraySequenceFactory instance = new CoordinateArraySequenceFactory();

@@ -11,9 +11,9 @@ namespace NetTopologySuite.Geometries
     /// <summary>
     /// Basic implementation of <c>GeometryCollection</c>.
     /// </summary>
-#if !SILVERLIGHT
+//#if !SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public class GeometryCollection : Geometry, IGeometryCollection
     {
         /// <summary>
@@ -116,13 +116,13 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override Dimensions Dimension 
+        public override Dimension Dimension 
         {
             get
             {
-                Dimensions dimension = Dimensions.False;
+                Dimension dimension = Dimension.False;
                 for (int i = 0; i < _geometries.Length; i++)
-                    dimension = (Dimensions) Math.Max((int)dimension, (int)_geometries[i].Dimension);
+                    dimension = (Dimension) Math.Max((int)dimension, (int)_geometries[i].Dimension);
                 return dimension;
             }
         }
@@ -130,13 +130,13 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override Dimensions BoundaryDimension
+        public override Dimension BoundaryDimension
         {
             get
             {
-                Dimensions dimension = Dimensions.False;
+                Dimension dimension = Dimension.False;
                 for (int i = 0; i < _geometries.Length; i++)
-                    dimension = (Dimensions) Math.Max((int) dimension, (int) (_geometries[i].BoundaryDimension));
+                    dimension = (Dimension) Math.Max((int) dimension, (int) (_geometries[i].BoundaryDimension));
                 return dimension;
             }
         }

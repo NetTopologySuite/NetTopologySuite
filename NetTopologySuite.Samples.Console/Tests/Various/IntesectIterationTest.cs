@@ -62,7 +62,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:IntesectIterationTest"/> class.
+        /// Initializes a new instance of the <see cref="IntesectIterationTest"/> class.
         /// </summary>
         public IntesectIterationTest() : base() { }
 

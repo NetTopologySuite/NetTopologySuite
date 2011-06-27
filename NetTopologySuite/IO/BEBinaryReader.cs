@@ -14,18 +14,18 @@ namespace NetTopologySuite.IO
     /// and double values (<see cref="BEBinaryReader.ReadDouble" />) in the BigEndian format, 
     /// this implementation overrides methods, such <see cref="BinaryReader.ReadInt32" /> 
     /// and <see cref="BinaryReader.ReadDouble" /> and more, 
-    /// for reading <see cref="T:ByteOrder.BigEndian" /> values in the BigEndian format.
+    /// for reading <see cref="ByteOrder.BigEndian" /> values in the BigEndian format.
     /// </remarks>
     public class BEBinaryReader : BinaryReader
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:BEBinaryReader"/> class.
+        /// Initializes a new instance of the <see cref="BEBinaryReader"/> class.
         /// </summary>
         /// <param name="stream">The stream.</param>
 		public BEBinaryReader(Stream stream)  : base(stream) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:BEBinaryReader"/> class.
+        /// Initializes a new instance of the <see cref="BEBinaryReader"/> class.
         /// </summary>
         /// <param name="input">The supplied stream.</param>
         /// <param name="encoding">The character encoding.</param>

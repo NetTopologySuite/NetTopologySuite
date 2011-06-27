@@ -267,7 +267,7 @@ namespace NetTopologySuite.Operation.Distance
         {
             ICoordinate pt = ptLoc.Coordinate;
             // if pt is not in exterior, distance to geom is 0
-            if (Locations.Exterior != _ptLocator.Locate(pt, poly))
+            if (Location.Exterior != _ptLocator.Locate(pt, poly))
             {
                 _minDistance = 0.0;
                 locPtPoly[0] = ptLoc;

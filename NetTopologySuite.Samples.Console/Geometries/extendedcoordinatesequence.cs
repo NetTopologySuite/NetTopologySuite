@@ -175,17 +175,17 @@ namespace NetTopologySuite.Samples.Geometries
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <returns></returns>
-        public double GetOrdinate(int index, Ordinates ordinate)
+        public double GetOrdinate(int index, Ordinate ordinate)
         {
             switch (ordinate)
             {
-                case Ordinates.X: 
+                case Ordinate.X: 
                     return coordinates[index].X;
-                case Ordinates.Y: 
+                case Ordinate.Y: 
                         return coordinates[index].Y;
-                    case Ordinates.Z: 
+                    case Ordinate.Z: 
                     return coordinates[index].Z;
-                case Ordinates.M: 
+                case Ordinate.M: 
                         return coordinates[index].M;
                 default:
                     return Double.NaN;
@@ -198,20 +198,20 @@ namespace NetTopologySuite.Samples.Geometries
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <param name="value">The new ordinate value.</param>
-        public void SetOrdinate(int index, Ordinates ordinate, double value)
+        public void SetOrdinate(int index, Ordinate ordinate, double value)
         {
             switch (ordinate)
             {
-                case Ordinates.X:
+                case Ordinate.X:
                     coordinates[index].X = value;
                     break;
-                case Ordinates.Y: 
+                case Ordinate.Y: 
                     coordinates[index].Y = value;
                     break;
-                case Ordinates.Z: 
+                case Ordinate.Z: 
                     coordinates[index].Z = value;
                     break;
-                case Ordinates.M: 
+                case Ordinate.M: 
                     coordinates[index].M = value;
                     break;
                 default:

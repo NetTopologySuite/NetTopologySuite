@@ -17,14 +17,14 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="location"></param>
+        /// <param name="_location"></param>
         /// <returns></returns>
-        public static int DepthAtLocation(Locations location)
+        public static int DepthAtLocation(Location _location)
         {
-            if (location == Locations.Exterior) 
+            if (_location == Location.Exterior) 
                 return 0;
 
-            if (location == Locations.Interior) 
+            if (_location == Location.Interior) 
                 return 1;
 
             return @null;
@@ -89,11 +89,11 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        public Locations GetLocation(int geomIndex, Positions posIndex)
+        public Location GetLocation(int geomIndex, Positions posIndex)
         {
             if (depth[geomIndex, (int)posIndex] <= 0) 
-                return Locations.Exterior;
-            return Locations.Interior;
+                return Location.Exterior;
+            return Location.Interior;
         }
 
         /// <summary>
@@ -101,10 +101,10 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
-        /// <param name="location"></param>
-        public void Add(int geomIndex, Positions posIndex, Locations location)
+        /// <param name="_location"></param>
+        public void Add(int geomIndex, Positions posIndex, Location _location)
         {
-            if (location == Locations.Interior)
+            if (_location == Location.Interior)
                 depth[geomIndex, (int)posIndex]++;
         }
 
@@ -155,8 +155,8 @@ namespace NetTopologySuite.GeometriesGraph
             {
                 for (int j = 1; j < 3; j++)
                 {
-                    Locations loc = lbl.GetLocation(i, (Positions)j);
-                    if (loc == Locations.Exterior || loc == Locations.Interior)
+                    Location loc = lbl.GetLocation(i, (Positions)j);
+                    if (loc == Location.Exterior || loc == Location.Interior)
                     {
                         // initialize depth if it is null, otherwise add this location value
                         if (IsNull(i, (Positions)j))

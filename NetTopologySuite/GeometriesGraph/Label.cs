@@ -32,7 +32,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns>Label as Line label.</returns>
         public static Label ToLineLabel(Label label)
         {
-            Label lineLabel = new Label(Locations.Null);
+            Label lineLabel = new Label(Location.Null);
             for (int i = 0; i < 2; i++) 
                 lineLabel.SetLocation(i, label.GetLocation(i));            
             return lineLabel;
@@ -45,7 +45,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// Initialize the locations to Null.
         /// </summary>
         /// <param name="onLoc"></param>
-        public Label(Locations onLoc)
+        public Label(Location onLoc)
         {
             elt[0] = new TopologyLocation(onLoc);
             elt[1] = new TopologyLocation(onLoc);
@@ -57,10 +57,10 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="onLoc"></param>
-        public Label(int geomIndex, Locations onLoc)
+        public Label(int geomIndex, Location onLoc)
         {
-            elt[0] = new TopologyLocation(Locations.Null);
-            elt[1] = new TopologyLocation(Locations.Null);
+            elt[0] = new TopologyLocation(Location.Null);
+            elt[1] = new TopologyLocation(Location.Null);
             elt[geomIndex].SetLocation(onLoc);
         }
 
@@ -71,7 +71,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="onLoc"></param>
         /// <param name="leftLoc"></param>
         /// <param name="rightLoc"></param>
-        public Label(Locations onLoc, Locations leftLoc, Locations rightLoc)
+        public Label(Location onLoc, Location leftLoc, Location rightLoc)
         {
             elt[0] = new TopologyLocation(onLoc, leftLoc, rightLoc);
             elt[1] = new TopologyLocation(onLoc, leftLoc, rightLoc);
@@ -85,10 +85,10 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="onLoc"></param>
         /// <param name="leftLoc"></param>
         /// <param name="rightLoc"></param>
-        public Label(int geomIndex, Locations onLoc, Locations leftLoc, Locations rightLoc)
+        public Label(int geomIndex, Location onLoc, Location leftLoc, Location rightLoc)
         {
-            elt[0] = new TopologyLocation(Locations.Null, Locations.Null, Locations.Null);
-            elt[1] = new TopologyLocation(Locations.Null, Locations.Null, Locations.Null);
+            elt[0] = new TopologyLocation(Location.Null, Location.Null, Location.Null);
+            elt[1] = new TopologyLocation(Location.Null, Location.Null, Location.Null);
             elt[geomIndex].SetLocations(onLoc, leftLoc, rightLoc);
         }        
 
@@ -117,7 +117,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        public  Locations GetLocation(int geomIndex, Positions posIndex) 
+        public  Location GetLocation(int geomIndex, Positions posIndex) 
         { 
             return elt[geomIndex].Get(posIndex); 
         }
@@ -127,7 +127,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
-        public  Locations GetLocation(int geomIndex) 
+        public  Location GetLocation(int geomIndex) 
         { 
             return elt[geomIndex].Get(Positions.On); 
         }
@@ -137,50 +137,50 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
-        /// <param name="location"></param>
-        public  void SetLocation(int geomIndex, Positions posIndex, Locations location)
+        /// <param name="_location"></param>
+        public  void SetLocation(int geomIndex, Positions posIndex, Location _location)
         {
-            elt[geomIndex].SetLocation(posIndex, location);
+            elt[geomIndex].SetLocation(posIndex, _location);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="geomIndex"></param>
-        /// <param name="location"></param>
-        public  void SetLocation(int geomIndex, Locations location)
+        /// <param name="_location"></param>
+        public  void SetLocation(int geomIndex, Location _location)
         {
-            elt[geomIndex].SetLocation(Positions.On, location);
+            elt[geomIndex].SetLocation(Positions.On, _location);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="geomIndex"></param>
-        /// <param name="location"></param>
-        public  void SetAllLocations(int geomIndex, Locations location)
+        /// <param name="_location"></param>
+        public  void SetAllLocations(int geomIndex, Location _location)
         {
-            elt[geomIndex].SetAllLocations(location);
+            elt[geomIndex].SetAllLocations(_location);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="geomIndex"></param>
-        /// <param name="location"></param>
-        public  void SetAllLocationsIfNull(int geomIndex, Locations location)
+        /// <param name="_location"></param>
+        public  void SetAllLocationsIfNull(int geomIndex, Location _location)
         {
-            elt[geomIndex].SetAllLocationsIfNull(location);
+            elt[geomIndex].SetAllLocationsIfNull(_location);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="location"></param>
-        public  void SetAllLocationsIfNull(Locations location)
+        /// <param name="_location"></param>
+        public  void SetAllLocationsIfNull(Location _location)
         {
-            SetAllLocationsIfNull(0, location);
-            SetAllLocationsIfNull(1, location);
+            SetAllLocationsIfNull(0, _location);
+            SetAllLocationsIfNull(1, _location);
         }
 
         /// <summary> 
@@ -298,7 +298,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="loc"></param>
         /// <returns></returns>
-        public  bool AllPositionsEqual(int geomIndex, Locations loc)
+        public  bool AllPositionsEqual(int geomIndex, Location loc)
         {
             return elt[geomIndex].AllPositionsEqual(loc);
         }
