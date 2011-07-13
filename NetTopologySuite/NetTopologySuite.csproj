@@ -67,15 +67,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ExternalReferences\PowerCollections.dll</HintPath>
     </Reference>
-    <Reference Include="ProjNET, Version=1.0.2794.16965, Culture=neutral, PublicKeyToken=a1f5bdcd9c6f5740, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ExternalReferences\ProjNET.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -429,7 +424,6 @@
     <Content Include="Utilities\RToolsUtil\Rtools.Util.License.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="NTS.ndoc" />
     <None Include="nts.snk" />
   </ItemGroup>
   <ItemGroup>
