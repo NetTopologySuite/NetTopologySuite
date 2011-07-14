@@ -67,7 +67,7 @@ namespace NetTopologySuite.Geometries
         }
 
         ///<summary>
-        /// Compares two {@link CoordinateSequence}s for relative order.
+        /// Compares two <see cref="ICoordinateSequence" />s for relative order.
         ///</summary>
         /// <param name="o1">A coordinate sequence</param>
         /// <param name="o2">A coordinate sequence</param>

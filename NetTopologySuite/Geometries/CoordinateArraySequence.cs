@@ -10,9 +10,7 @@ namespace NetTopologySuite.Geometries
     /// modifications to them are actually changing the
     /// CoordinateSequence's underlying data.
     /// </summary>
-//#if !SILVERLIGHT
     [Serializable]
-//#endif
     public class CoordinateArraySequence : ICoordinateSequence
     {    
         protected ICoordinate[] coordinates;

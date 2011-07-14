@@ -28,7 +28,7 @@ namespace NetTopologySuite.Operation
     /// <item>Valid polygonal geometries are simple by definition, so
     ///<c>IsSimple</c> trivially returns true.
     ///(Hint: in order to check if a polygonal geometry has self-intersections,
-    ///use {@link Geometry#isValid}).</item>
+    ///use <see cref="NetTopologySuite.Geometries.Geometry.IsValid()" />).</item>
     ///<item>Linear geometries are simple iff they do not self-intersect at points
     ///other than boundary points. 
     ///(Using the Mod-2 rule, this means that closed linestrings

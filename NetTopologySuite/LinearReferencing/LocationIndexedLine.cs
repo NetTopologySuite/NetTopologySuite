@@ -110,7 +110,7 @@ namespace NetTopologySuite.LinearReferencing
 
         ///<summary>
         /// Finds the index for a point on the line which is greater than the given index. 
-        /// If no such index exists, returns <tt>minIndex</tt>.
+        /// If no such index exists, returns <paramref name="minIndex" />.
         ///</summary>
         /// <remarks>
         /// <para>

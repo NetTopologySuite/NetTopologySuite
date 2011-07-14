@@ -6,8 +6,8 @@ using NetTopologySuite.Noding;
 namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
-    /// A base class containing the logic for computes the <tt>contains</tt>
-    /// and <tt>covers</tt> spatial relationship predicates
+    /// A base class containing the logic for computes the <i>contains</i>
+    /// and <i>covers</i> spatial relationship predicates
     /// for a <see cref="PreparedPolygon"/> relative to all other <see cref="IGeometry"/> classes.
     /// Uses short-circuit tests and indexing to improve performance. 
     ///</summary>
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Geometries.Prepared
         }
 
         ///<summary>
-        /// Evaluate the <tt>contains</tt> or <tt>covers</tt> relationship
+        /// Evaluate the <i>contains</i> or <i>covers</i> relationship
         /// for the given geometry.
         ///</summary>
         /// <param name="geom">the test geometry</param>

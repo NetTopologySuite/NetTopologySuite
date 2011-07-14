@@ -538,7 +538,7 @@ namespace NetTopologySuite.Geometries
         /// Tests if the <c>Envelope other</c> lies wholely inside this <c>Envelope</c> (inclusive of the boundary).
         ///</summary>
         /// <remarks>
-        /// Note that this is <b>not</b> the same definition as the SFS <tt>contains</tt>,
+        /// Note that this is <b>not</b> the same definition as the SFS <i>contains</i>,
         /// which would exclude the envelope boundary.
         /// </remarks>
         /// <para>The <c>Envelope</c> to check</para>
@@ -553,7 +553,7 @@ namespace NetTopologySuite.Geometries
         /// Tests if the given point lies in or on the envelope.
         ///</summary>
         /// <remarks>
-        /// Note that this is <b>not</b> the same definition as the SFS <tt>contains</tt>,
+        /// Note that this is <b>not</b> the same definition as the SFS <i>contains</i>,
         /// which would exclude the envelope boundary.
         /// </remarks>
         /// <param name="p">the point which this <c>Envelope</c> is being checked for containing</param>
@@ -568,7 +568,7 @@ namespace NetTopologySuite.Geometries
         /// Tests if the given point lies in or on the envelope.
         ///</summary>
         /// <remarks>
-        /// Note that this is <b>not</b> the same definition as the SFS <tt>contains</tt>, which would exclude the envelope boundary.
+        /// Note that this is <b>not</b> the same definition as the SFS <i>contains</i>, which would exclude the envelope boundary.
         /// </remarks>
         /// <param name="x">the x-coordinate of the point which this <c>Envelope</c> is being checked for containing</param>
         /// <param name="y">the y-coordinate of the point which this <c>Envelope</c> is being checked for containing</param>

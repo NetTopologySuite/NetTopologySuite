@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace NetTopologySuite.Noding
 {
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Noding
 
         ///<summary>
         ///</summary>
-        /// <param name="segStrings">A collection of {@link SegmentString}s to node</param>
+        /// <param name="segStrings">A collection of <see cref="ISegmentString" />s to node</param>
         public abstract void SetBaseSegments(IList<ISegmentString> segStrings);
 
         ///<summary>

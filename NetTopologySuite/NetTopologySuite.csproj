@@ -106,9 +106,6 @@
     <Compile Include="Algorithm\SimplePointInAreaLocator.cs" />
     <Compile Include="Algorithm\SimplePointInRing.cs" />
     <Compile Include="Algorithm\SIRtreePointInRing.cs" />
-    <Compile Include="CoordinateSystems\Transformations\GeometryTransform.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Features\AttributesTable.cs">
     </Compile>
     <Compile Include="Features\Feature.cs" />
@@ -216,13 +213,6 @@
     <Compile Include="GeometriesGraph\Position.cs" />
     <Compile Include="GeometriesGraph\QuadrantOp.cs" />
     <Compile Include="GeometriesGraph\TopologyLocation.cs" />
-    <Compile Include="IO\WKTFileReader.cs" />
-    <Compile Include="Noding\FastSegmentSetIntersectionFinder.cs" />
-    <Compile Include="Noding\MCIndexSegmentSetMutualIntersector.cs" />
-    <Compile Include="Noding\SegmentIntersectionDetector.cs" />
-    <Compile Include="Noding\SegmentSetMutualIntersector.cs" />
-    <Compile Include="Noding\SegmentStringUtil.cs" />
-    <Compile Include="Geometries\Utilities\SineStarFactory.cs" />
     <Compile Include="Index\ArrayListVisitor.cs" />
     <Compile Include="Index\Bintree\Bintree.cs" />
     <Compile Include="Index\Bintree\Interval.cs" />
@@ -255,10 +245,17 @@
     <Compile Include="Index\Strtree\ItemBoundable.cs" />
     <Compile Include="Index\Strtree\SIRtree.cs" />
     <Compile Include="Index\Strtree\STRtree.cs" />
+    <Compile Include="Index\Sweepline\ISweepLineOverlapAction.cs" />
     <Compile Include="Index\Sweepline\SweepLineEvent.cs" />
     <Compile Include="Index\Sweepline\SweepLineIndex.cs" />
     <Compile Include="Index\Sweepline\SweepLineInterval.cs" />
-    <Compile Include="Index\Sweepline\ISweepLineOverlapAction.cs" />
+    <Compile Include="IO\WKTFileReader.cs" />
+    <Compile Include="Noding\FastSegmentSetIntersectionFinder.cs" />
+    <Compile Include="Noding\MCIndexSegmentSetMutualIntersector.cs" />
+    <Compile Include="Noding\SegmentIntersectionDetector.cs" />
+    <Compile Include="Noding\SegmentSetMutualIntersector.cs" />
+    <Compile Include="Noding\SegmentStringUtil.cs" />
+    <Compile Include="Geometries\Utilities\SineStarFactory.cs" />
     <Compile Include="IO\BEBinaryReader.cs" />
     <Compile Include="IO\BEBinaryWriter.cs" />
     <Compile Include="IO\GML2\GMLElements.cs" />
@@ -437,7 +434,6 @@
     <Content Include="Utilities\RToolsUtil\Rtools.Util.License.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="NTS.ndoc" />
     <None Include="nts.snk" />
   </ItemGroup>
   <ItemGroup>

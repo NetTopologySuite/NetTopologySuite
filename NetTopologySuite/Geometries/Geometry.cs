@@ -213,18 +213,18 @@ namespace NetTopologySuite.Geometries
 
         /// <summary>  
         /// Returns the name of this object's interface.
-		/// </summary>
-		/// <returns>The name of this <c>Geometry</c>s most specific interface.</returns>
+        /// </summary>
+        /// <returns>The name of this <c>Geometry</c>s most specific interface.</returns>
         public abstract string GeometryType { get; }
 
         /// <summary>  
         /// Returns true if the array contains any non-empty <c>Geometry</c>s.
-		/// </summary>
-		/// <param name="geometries"> an array of <c>Geometry</c>s; no elements may be <c>null</c></param>
-		/// <returns>            
+        /// </summary>
+        /// <param name="geometries"> an array of <c>Geometry</c>s; no elements may be <c>null</c></param>
+        /// <returns>            
         /// <c>true</c> if any of the <c>Geometry</c>s
-		/// <c>IsEmpty</c> methods return <c>false</c>.
-		/// </returns>
+        /// <c>IsEmpty</c> methods return <c>false</c>.
+        /// </returns>
         protected static bool HasNonEmptyElements(IGeometry[] geometries)
         {
             foreach (IGeometry g in geometries)
@@ -864,7 +864,7 @@ namespace NetTopologySuite.Geometries
         /// If either geometry is empty, the value of this predicate is <c>false</c>.
         /// <para>
         /// This predicate is similar to <see cref="Contains"/>,
-        /// but is more inclusive (i.e. returns <tt>true</tt> for more cases).
+        /// but is more inclusive (i.e. returns <c>true</c> for more cases).
         /// In particular, unlike <c>Contains</c> it does not distinguish between
         /// points in the boundary and in the interior of geometries.
         /// For most situations, <c>Covers</c> should be used in preference to <c>Contains</c>.
@@ -1278,8 +1278,8 @@ namespace NetTopologySuite.Geometries
         /// <remarks><para>Mathematically-exact buffer area boundaries can contain circular arcs. 
         /// To represent these arcs using linear geometry they must be approximated with line segments.
         /// The <c>quadrantSegments</c> argument allows controlling the accuracy of
-	    /// the approximation by specifying the number of line segments used to
-	    /// represent a quadrant of a circle</para>
+        /// the approximation by specifying the number of line segments used to
+        /// represent a quadrant of a circle</para>
         /// <para>The buffer operation always returns a polygonal result. The negative or
         /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.</para>
         /// </remarks>

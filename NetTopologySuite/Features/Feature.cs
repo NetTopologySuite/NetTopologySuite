@@ -3,10 +3,11 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Features
 {
-//#if !SILVERLIGHT
+    ///<summary>
+    /// Feature class
+    ///</summary>
     [Serializable]
-//#endif
-     public class Feature
+    public class Feature
     {
         private IGeometry _geometry;
 

@@ -113,6 +113,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.ShapeFi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.GDB", "NetTopologySuite.IO\NetTopologySuite.IO.GDB\NetTopologySuite.IO.GDB.csproj", "{548166D9-DF64-46FB-9EEC-212C7B7E7D85}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetTopologySuite.CoordinateSystems.Transformation", "NetTopologySuite.CoordinateSystems.Transformation", "{489ED983-F8DE-4879-B118-F94C55DA335F}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True

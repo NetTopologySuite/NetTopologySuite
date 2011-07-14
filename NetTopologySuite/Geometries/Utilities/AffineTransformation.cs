@@ -602,7 +602,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// A positive rotation angle corresponds 
         /// to a counter-clockwise rotation.
         /// The transformation matrix for a rotation
-        /// by an angle <tt>theta</tt>
+        /// by an angle <paramref name="theta" />
         /// has the value:
         /// <blockquote><pre>  
         /// |  cosTheta  -sinTheta   x-x*cos+y*sin |
@@ -892,7 +892,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
         /// <summary>
         /// Updates this transformation to be the composition 
-        /// of a given {@link AffineTransformation} with this transformation.
+        /// of a given <see cref="AffineTransformation" /> with this transformation.
         /// </summary>
         /// <remarks>
         /// This produces a transformation whose effect 
@@ -923,8 +923,8 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Applies this transformation to the <tt>src</tt> coordinate
-        /// and places the results in the <tt>dest</tt> coordinate
+        /// Applies this transformation to the <paramref name="src" /> coordinate
+        /// and places the results in the <paramref name="dest" /> coordinate
         /// (which may be the same as the source).
         /// </summary>
         /// <param name="src"> the coordinate to transform</param>

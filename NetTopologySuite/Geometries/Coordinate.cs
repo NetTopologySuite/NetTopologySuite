@@ -5,8 +5,6 @@ namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// A lightweight class used to store coordinates on the 2-dimensional Cartesian plane.
-    /// </summary>
-    /// <remarks>
     /// <para>
     /// It is distinct from <see cref="IPoint"/>, which is a subclass of <see cref="IGeometry"/>.
     /// Unlike objects of type <see cref="IPoint"/> (which contain additional
@@ -21,17 +19,15 @@ namespace NetTopologySuite.Geometries
     /// constructed coordinates have a Z-ordinate of <code>NaN</code>
     /// (which is also the value of <see cref="NullOrdinate"/>).
     /// </para>
-    /// </remarks>
-//#if !SILVERLIGHT
+    /// </summary>
     [Serializable]
-//#endif
     public class Coordinate : ICoordinate
     {
-        /**
-         * The value used to indicate a null or missing ordinate value.
-         * In particular, used for the value of ordinates for dimensions 
-         * greater than the defined dimension of a coordinate.
-         */
+        ///<summary>
+        /// The value used to indicate a null or missing ordinate value.
+        /// In particular, used for the value of ordinates for dimensions 
+        /// greater than the defined dimension of a coordinate.
+        ///</summary>
         public const double NullOrdinate = Double.NaN;
         
         private double _x; // = Double.NaN;

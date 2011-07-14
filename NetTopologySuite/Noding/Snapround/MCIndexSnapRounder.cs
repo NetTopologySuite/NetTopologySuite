@@ -9,7 +9,7 @@ namespace NetTopologySuite.Noding.Snapround
 
     /// <summary>
     /// Uses Snap Rounding to compute a rounded,
-    /// fully noded arrangement from a set of {@link SegmentString}s.
+    /// fully noded arrangement from a set of <see cref="ISegmentString" />s.
     /// Implements the Snap Rounding technique described in 
     /// papers by Hobby, Guibas and Marimont, and Goodrich et al.
     /// Snap Rounding assumes that all vertices lie on a uniform grid

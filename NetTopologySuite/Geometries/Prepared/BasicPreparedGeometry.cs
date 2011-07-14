@@ -106,8 +106,8 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <para>
         /// An example use case for this predicate is computing the intersections
         /// of a set of geometries with a large polygonal geometry.  
-        /// Since <tt>intersection</tt> is a fairly slow operation, it can be more efficient
-        /// to use <tt>containsProperly</tt> to filter out test geometries which lie
+        /// Since <i>intersection</i> is a fairly slow operation, it can be more efficient
+        /// to use <see cref="ContainsProperly" /> to filter out test geometries which lie
         /// wholly inside the area.  In these cases the intersection 
         /// known a priori to be simply the original test geometry. 
         /// </para>
