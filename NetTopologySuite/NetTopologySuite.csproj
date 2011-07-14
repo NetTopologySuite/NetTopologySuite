@@ -106,6 +106,7 @@
     <Compile Include="Algorithm\SimplePointInAreaLocator.cs" />
     <Compile Include="Algorithm\SimplePointInRing.cs" />
     <Compile Include="Algorithm\SIRtreePointInRing.cs" />
+    <Compile Include="CoordinateSystems\Transformations\GeometryTransform.cs" />
     <Compile Include="Features\AttributesTable.cs">
     </Compile>
     <Compile Include="Features\Feature.cs" />

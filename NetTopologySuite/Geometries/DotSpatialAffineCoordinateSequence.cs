@@ -25,9 +25,9 @@ namespace NetTopologySuite.Geometries
             int j = 0;
             for (int i = 0; i < coordinates.Length; i++)
             {
-                _xy[j++] = coordinates[i].X;
-                _xy[j++] = coordinates[i].Y;
-                _z[i] = coordinates[i].Z;
+                XY[j++] = coordinates[i].X;
+                XY[j++] = coordinates[i].Y;
+                Z[i] = coordinates[i].Z;
             }
         }
         
@@ -43,7 +43,7 @@ namespace NetTopologySuite.Geometries
             
             _z = new double[size];
             for(var i = 0; i < size; i++)
-                _z[i] = double.NaN;
+                Z[i] = double.NaN;
         }
 
         /// <summary>
@@ -56,11 +56,11 @@ namespace NetTopologySuite.Geometries
             if (dsCoordSeq != null)
             {
                 _xy = new double[2 * dsCoordSeq.Count];
-                Buffer.BlockCopy(dsCoordSeq._xy, 0, _xy, 0, 16*dsCoordSeq.Count);
-                if (dsCoordSeq._z != null)
+                Buffer.BlockCopy(dsCoordSeq.XY, 0, XY, 0, 16*dsCoordSeq.Count);
+                if (dsCoordSeq.Z != null)
                 {
                     _z = new double[dsCoordSeq.Count];
-                    Buffer.BlockCopy(dsCoordSeq._z, 0, _z, 0, 8 * dsCoordSeq.Count);
+                    Buffer.BlockCopy(dsCoordSeq.Z, 0, Z, 0, 8 * dsCoordSeq.Count);
                 }
                 return;
             }
@@ -71,10 +71,10 @@ namespace NetTopologySuite.Geometries
             var j = 0;
             for (var i = 0; i < coordSeq.Count; i++ )
             {
-                _xy[j++] = coordSeq.GetX(i);
-                _xy[j++] = coordSeq.GetY(i);
-                if (_z != null)
-                    _z[i] = coordSeq.GetOrdinate(i, Ordinate.X);
+                XY[j++] = coordSeq.GetX(i);
+                XY[j++] = coordSeq.GetY(i);
+                if (Z != null)
+                    Z[i] = coordSeq.GetOrdinate(i, Ordinate.X);
             }
         }
 
@@ -87,7 +87,7 @@ namespace NetTopologySuite.Geometries
         public object Clone()
         {
             return new DotSpatialAffineCoordinateSequence(
-                (double[]) _xy.Clone(), (double[]) _z.Clone());
+                (double[]) XY.Clone(), (double[]) Z.Clone());
         }
 
         public ICoordinate GetCoordinate(int i)
@@ -97,24 +97,24 @@ namespace NetTopologySuite.Geometries
 
         public ICoordinate GetCoordinateCopy(int i)
         {
-            return new Coordinate(_xy[2*i], _xy[2*i+1], _z != null ? _z[i] : double.NaN );
+            return new Coordinate(XY[2*i], XY[2*i+1], Z != null ? Z[i] : double.NaN );
         }
 
         public void GetCoordinate(int index, ICoordinate coord)
         {
-            coord.X = _xy[2*index];
-            coord.Y = _xy[2*index + 1];
-            coord.Z = _z != null ? _z[index] : double.NaN;
+            coord.X = XY[2*index];
+            coord.Y = XY[2*index + 1];
+            coord.Z = Z != null ? Z[index] : double.NaN;
         }
 
         public double GetX(int index)
         {
-            return _xy[2*index];
+            return XY[2*index];
         }
 
         public double GetY(int index)
         {
-            return _xy[2*index + 1];
+            return XY[2*index + 1];
         }
 
         public double GetOrdinate(int index, Ordinate ordinate)
@@ -122,11 +122,11 @@ namespace NetTopologySuite.Geometries
             switch (ordinate)
             {
                 case Ordinate.X:
-                    return _xy[index*2];
+                    return XY[index*2];
                 case Ordinate.Y:
-                    return _xy[index*2+1];
+                    return XY[index*2+1];
                 case Ordinate.Z:
-                    return _z != null ? _z[index] : double.NaN;
+                    return Z != null ? Z[index] : double.NaN;
                 /*case Ordinates.M:*/
                 default:
                     throw new NotSupportedException();
@@ -138,14 +138,14 @@ namespace NetTopologySuite.Geometries
             switch (ordinate)
             {
                 case Ordinate.X:
-                    _xy[index*2] = value;
+                    XY[index*2] = value;
                     break;
                 case Ordinate.Y:
-                    _xy[index*2 + 1] = value;
+                    XY[index*2 + 1] = value;
                     break;
                 case Ordinate.Z:
-                    if (_z != null)
-                        _z[index] = value;
+                    if (Z != null)
+                        Z[index] = value;
                     break;
                     /*case Ordinates.M:*/
                 default:
@@ -174,18 +174,34 @@ namespace NetTopologySuite.Geometries
         {
             var j = 0;
             for (var i = 0; i < Count; i++ ) 
-                env.ExpandToInclude( _xy[j++], _xy[j++]);            
+                env.ExpandToInclude( XY[j++], XY[j++]);            
             return env;
         }
 
         public int Dimension
         {
-            get { return _z == null ? 2 : 3; }
+            get { return Z == null ? 2 : 3; }
         }
 
         public int Count
         {
-            get { return _xy.Length / 2; }
+            get { return XY.Length / 2; }
+        }
+
+        /// <summary>
+        /// Gets the vector with x- and y-ordinate values;
+        /// </summary>
+        public double[] XY
+        {
+            get { return _xy; }
+        }
+
+        /// <summary>
+        /// Gets the vector with z-ordinate values
+        /// </summary>
+        public double[] Z
+        {
+            get { return _z; }
         }
     }
 
