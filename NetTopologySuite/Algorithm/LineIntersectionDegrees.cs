@@ -1,4 +1,4 @@
-﻿namespace GisSharpBlog.NetTopologySuite.Algorithm
+﻿namespace NetTopologySuite.Algorithm
 {
     /// <summary>
     /// Specifies the degrees of intersection between two lines or line

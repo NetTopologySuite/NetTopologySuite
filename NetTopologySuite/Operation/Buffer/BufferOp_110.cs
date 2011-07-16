@@ -2,13 +2,13 @@ using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Noding;
-using GisSharpBlog.NetTopologySuite.Noding.Snapround;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Noding;
+using NetTopologySuite.Noding.Snapround;
 using NPack;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
+namespace NetTopologySuite.Operation.Buffer
 {
     public class BufferOp_110<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,

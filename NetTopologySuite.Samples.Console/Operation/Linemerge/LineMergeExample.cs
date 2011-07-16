@@ -4,7 +4,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Operation.Linemerge;
+using NetTopologySuite.Operation.Linemerge;
 using NUnit.Framework;
 #if BUFFERED
 using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
@@ -13,7 +13,7 @@ using coord = NetTopologySuite.Coordinates.Simple.Coordinate;
 
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
+namespace NetTopologySuite.Samples.Operation.Linemerge
 {
     /// <summary> 
     /// Example of using the <see cref="LineMerger{TCoordinate}"/> class to 

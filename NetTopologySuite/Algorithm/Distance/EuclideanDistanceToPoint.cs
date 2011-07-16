@@ -2,10 +2,10 @@ using System;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm.Distance
+namespace NetTopologySuite.Algorithm.Distance
 {
     public class EuclideanDistanceToPoint<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,

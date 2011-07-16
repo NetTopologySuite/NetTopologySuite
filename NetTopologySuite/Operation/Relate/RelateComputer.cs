@@ -4,12 +4,12 @@ using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.GeometriesGraph.Index;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Relate
+namespace NetTopologySuite.Operation.Relate
 {
     /// <summary>
     /// Computes the topological relationship between two Geometries.

@@ -4,7 +4,7 @@ using System.Diagnostics;
 using GeoAPI.DataStructures;
 using GeoAPI.Indexing;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Strtree
+namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
     /// One-dimensional version of an STR-packed R-tree.

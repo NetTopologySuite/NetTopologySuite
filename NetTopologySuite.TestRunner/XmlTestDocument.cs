@@ -5,12 +5,12 @@ using System.Globalization;
 using System.IO;
 using System.Xml;
 using GeoAPI.Coordinates;
-using GisSharpBlog.NetTopologySuite;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Coordinates;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite
+namespace NetTopologySuite
 {
     public class XmlTestDocument<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,

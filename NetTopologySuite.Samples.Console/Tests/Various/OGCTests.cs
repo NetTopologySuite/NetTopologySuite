@@ -2,10 +2,10 @@ using System;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.SimpleTests;
+using NetTopologySuite.SimpleTests;
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Tests.Various
+namespace NetTopologySuite.Tests.Various
 {
     [TestFixture]
     [Ignore("The expected result geometries are wrong!")]

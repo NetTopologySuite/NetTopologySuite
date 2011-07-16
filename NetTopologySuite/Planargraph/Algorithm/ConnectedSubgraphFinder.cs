@@ -8,7 +8,7 @@ using NPack.Interfaces;
 using System.Linq;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
+namespace NetTopologySuite.Planargraph.Algorithm
 {
     /// <summary>
     /// Finds all connected <see cref="Subgraph{TCoordinate}" />s of a 

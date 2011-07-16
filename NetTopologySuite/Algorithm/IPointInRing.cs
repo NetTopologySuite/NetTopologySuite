@@ -1,7 +1,7 @@
 using System;
 using GeoAPI.Coordinates;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm
+namespace NetTopologySuite.Algorithm
 {
     /// <summary> 
     /// An interface for classes which test whether a <typeparamref name="TCoordinate"/>

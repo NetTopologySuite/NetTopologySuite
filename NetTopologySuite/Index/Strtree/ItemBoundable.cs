@@ -1,7 +1,7 @@
 using System;
 using GeoAPI.Indexing;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Strtree
+namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
     /// Boundable wrapper for a non-boundable object. Used internally by

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation.Linemerge;
-using GisSharpBlog.NetTopologySuite.SimpleTests;
+using NetTopologySuite.Operation.Linemerge;
+using NetTopologySuite.SimpleTests;
 using NUnit.Framework;
 #if BUFFERED
 using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
@@ -15,7 +15,7 @@ using coord = NetTopologySuite.Coordinates.Simple.Coordinate;
 using coordFac = NetTopologySuite.Coordinates.Simple.CoordinateFactory;
 using coordSeqFac = NetTopologySuite.Coordinates.Simple.CoordinateSequenceFactory;
 #endif
-namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
+namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
 {
     [TestFixture]
     public class LineSequencerTest : BaseSamples

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Relate
+namespace NetTopologySuite.Operation.Relate
 {
     /// <summary>
     /// Implements a simple graph of <see cref="Node{TCoordinate}"/>s and 

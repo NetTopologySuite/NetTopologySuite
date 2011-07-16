@@ -1,9 +1,9 @@
 using System;
 using GeoAPI.Coordinates;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     ///<summary>
     /// Represents a list of contiguous line segments,

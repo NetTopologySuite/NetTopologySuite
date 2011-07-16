@@ -3,15 +3,14 @@ using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Noding;
-using GisSharpBlog.NetTopologySuite.Noding.Snapround;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Noding;
+using NetTopologySuite.Noding.Snapround;
 using NPack;
 using NPack.Interfaces;
 
-//using GisSharpBlog.NetTopologySuite.Precision;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
+namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
     /// Computes the buffer of a geometry, for both positive and negative 

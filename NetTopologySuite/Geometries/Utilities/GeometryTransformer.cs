@@ -11,7 +11,7 @@ using NPack.Interfaces;
 using System.Linq;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
+namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
     /// A framework for processes which transform an input <see cref="Geometry{TCoordinate}"/> into

@@ -2,8 +2,13 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.DataStructures;
 using GeoAPI.Indexing;
+#if DOTNET35
+using sl = System.Linq;
+#else
+using sl = GeoAPI.DataStructures;
+#endif
 
-namespace GisSharpBlog.NetTopologySuite.Index.RTree
+namespace NetTopologySuite.Index.RTree
 {
     ///<summary>
     /// A static index on a set of 1-dimensional intervals, using an R-Tree packed based on the order of the interval midpoints.
@@ -72,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.RTree
         {
             checkNotBuilt();
             return
-                _leaves.RemoveAll(delegate(RTreeNode<TBounds, TItem> o) { return Enumerable.Contains(o.Items, item); }) >
+                _leaves.RemoveAll(delegate(RTreeNode<TBounds, TItem> o) { return sl.Enumerable.Contains(o.Items, item); }) >
                 0;
         }
 

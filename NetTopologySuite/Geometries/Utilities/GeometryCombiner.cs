@@ -4,9 +4,9 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
-//using GeoAPI.
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
+
+namespace NetTopologySuite.Geometries.Utilities
 {
     public class GeometryCombiner<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,

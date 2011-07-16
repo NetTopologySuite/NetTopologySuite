@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Distance
+namespace NetTopologySuite.Operation.Distance
 {
     /// <summary>
     /// Computes the distance and

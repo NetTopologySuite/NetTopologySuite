@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Coordinates;
 using NPack;
 using Xunit;

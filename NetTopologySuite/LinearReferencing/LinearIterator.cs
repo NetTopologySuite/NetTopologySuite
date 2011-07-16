@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.LinearReferencing
+namespace NetTopologySuite.LinearReferencing
 {
     /// <summary>
     /// An iterator over the components and coordinates of a linear geometry

@@ -1,10 +1,10 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
+namespace NetTopologySuite.Operation.Overlay
 {
     /// <summary>
     /// A ring of edges with the property that no node

@@ -5,7 +5,7 @@ using GeoAPI.Geometries;
 using NPack;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
+namespace NetTopologySuite.Index.Quadtree
 {
     public class QuadTreeNodeKey<TCoordinate> : AbstractNodeKey<IExtents<TCoordinate>, TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,

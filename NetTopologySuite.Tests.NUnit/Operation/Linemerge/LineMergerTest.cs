@@ -33,7 +33,7 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation.Linemerge;
+using NetTopologySuite.Operation.Linemerge;
 using NetTopologySuite.Coordinates.Simple;
 using NUnit.Framework;
 

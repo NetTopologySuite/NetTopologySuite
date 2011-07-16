@@ -1,11 +1,11 @@
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.SimpleTests;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.SimpleTests;
 using NetTopologySuite.Coordinates;
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Tests.Various
+namespace NetTopologySuite.Tests.Various
 {
     [TestFixture]
     public class CoversTest : BaseSamples

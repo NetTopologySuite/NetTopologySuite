@@ -1,6 +1,6 @@
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Prepared;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Prepared;
 using NetTopologySuite.Coordinates;
 using Xunit;
 

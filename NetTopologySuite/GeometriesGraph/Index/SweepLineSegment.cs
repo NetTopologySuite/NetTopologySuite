@@ -4,7 +4,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
+namespace NetTopologySuite.GeometriesGraph.Index
 {
     public class SweepLineSegment<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,

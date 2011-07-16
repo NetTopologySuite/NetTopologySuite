@@ -1,9 +1,9 @@
 using System;
 using GeoAPI.Coordinates;
-using GisSharpBlog.NetTopologySuite.Algorithm;
+using NetTopologySuite.Algorithm;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     public class SegmentIntersectionDetector<TCoordinate> : ISegmentIntersector<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,

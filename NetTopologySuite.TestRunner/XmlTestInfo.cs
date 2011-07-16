@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Specialized;
 
-namespace GisSharpBlog.NetTopologySuite
+namespace NetTopologySuite
 {
     public class XmlTestInfo
     {

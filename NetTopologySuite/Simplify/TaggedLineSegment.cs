@@ -2,10 +2,10 @@ using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Simplify
+namespace NetTopologySuite.Simplify
 {
     /// <summary>
     /// A LineSegment which is tagged with its location in a <see cref="Geometry{TCoordinate}"/>.

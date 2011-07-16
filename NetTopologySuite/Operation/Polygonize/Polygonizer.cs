@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
+namespace NetTopologySuite.Operation.Polygonize
 {
     /// <summary>
     /// Polygonizes a set of Geometrys which contain linework that

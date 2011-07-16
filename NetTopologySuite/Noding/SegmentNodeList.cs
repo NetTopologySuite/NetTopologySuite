@@ -7,10 +7,12 @@ using GeoAPI.DataStructures;
 using NPack.Interfaces;
 
 #if DOTNET35
-using System.Linq;
+using sl = System.Linq;
+#else
+using sl = GeoAPI.DataStructures;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     /// <summary>
     /// An ordered enumeration of the <see cref="SegmentNode{TCoordinate}" />s 
@@ -91,7 +93,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             // since the endpoints are nodes
             SegmentNode<TCoordinate> previousNode = Slice.GetFirst(this);
             List<NodedSegmentString<TCoordinate>> retval = new List<NodedSegmentString<TCoordinate>>();
-            foreach (SegmentNode<TCoordinate> node in Enumerable.Skip(this, 1))
+            foreach (SegmentNode<TCoordinate> node in sl.Enumerable.Skip(this, 1))
             {
                 NodedSegmentString<TCoordinate> nd = createSplitEdge(previousNode, node);
                 previousNode = node;
@@ -166,7 +168,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             SegmentNode<TCoordinate> previousEdgeIntersection = Slice.GetFirst(this);
 
             // there should always be at least two entries in the list, since the endpoints are nodes
-            foreach (SegmentNode<TCoordinate> edgeIntersection in Enumerable.Skip(this, 1))
+            foreach (SegmentNode<TCoordinate> edgeIntersection in sl.Enumerable.Skip(this, 1))
             {
                 Int32 collapsedVertexIndex;
 

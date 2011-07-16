@@ -43,7 +43,7 @@ using GeoAPI.Units;
 using GeoAPI.DataStructures;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Projections
+namespace NetTopologySuite.CoordinateSystems.Projections
 {
 
     internal class InverseKrovakProjection<TCoordinate> : KrovakProjection<TCoordinate>

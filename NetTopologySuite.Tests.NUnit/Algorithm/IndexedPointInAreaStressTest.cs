@@ -1,8 +1,8 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm.Locate;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Noding.Snapround;
+using NetTopologySuite.Algorithm.Locate;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Noding.Snapround;
 using NUnit.Framework;
 using Coord = NetTopologySuite.Coordinates.Simple.Coordinate;
 using CoordFac = NetTopologySuite.Coordinates.Simple.CoordinateFactory;

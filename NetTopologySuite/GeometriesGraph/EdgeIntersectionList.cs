@@ -1,5 +1,7 @@
+#if !DOTNET40
 #define C5
 //#define goletas
+#endif
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +16,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>
     /// A list of edge intersections along an <see cref="Edge{TCoordinate}"/>.

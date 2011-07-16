@@ -49,7 +49,7 @@ using GeoAPI.DataStructures;
 using NPack.Interfaces;
 using GeoAPI.Units;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Projections
+namespace NetTopologySuite.CoordinateSystems.Projections
 {
     internal class InverseLambertConformalConic2SP<TCoordinate> : LambertConformalConic2SP<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,

@@ -24,7 +24,7 @@ using GeoAPI.Coordinates;
 using NPack;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Index.KdTree
+namespace NetTopologySuite.Index.KdTree
 {
     ///<summary>
     /// A node of a <see cref="KdTree{TCoordinate}"/>, which represents one or more points in the same location.

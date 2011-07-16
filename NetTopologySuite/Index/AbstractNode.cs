@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Indexing;
 
-namespace GisSharpBlog.NetTopologySuite.Index
+namespace NetTopologySuite.Index
 {
     public abstract class AbstractNode<TBounds, TItem> : ISpatialIndexNode<TBounds, TItem>
         where TItem : IBoundable<TBounds>

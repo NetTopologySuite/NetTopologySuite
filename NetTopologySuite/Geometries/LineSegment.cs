@@ -5,10 +5,10 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
-using GisSharpBlog.NetTopologySuite.Algorithm;
+using NetTopologySuite.Algorithm;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary> 
     /// Represents a line segment defined by two <typeparamref name="TCoordinate"/>s.

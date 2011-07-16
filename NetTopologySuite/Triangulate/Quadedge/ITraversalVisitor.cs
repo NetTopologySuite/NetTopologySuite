@@ -2,7 +2,7 @@ using System;
 using GeoAPI.Coordinates;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Triangulate.Quadedge
+namespace NetTopologySuite.Triangulate.Quadedge
 {
 
         ///<summary>

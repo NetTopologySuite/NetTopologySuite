@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Index.KdTree;
-using GisSharpBlog.NetTopologySuite.Triangulate.Quadedge;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Index.KdTree;
+using NetTopologySuite.Triangulate.Quadedge;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Triangulate
+namespace NetTopologySuite.Triangulate
 {
 /**
  * Computes a Conforming Delaunay Triangulation over a set of sites and a set of

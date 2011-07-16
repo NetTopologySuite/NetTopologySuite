@@ -36,10 +36,10 @@ using System;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Algorithms;
-using GisSharpBlog.NetTopologySuite.Algorithm;
+using NetTopologySuite.Algorithm;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Triangulate.Quadedge
+namespace NetTopologySuite.Triangulate.Quadedge
     {
     
         public enum VertexClassification

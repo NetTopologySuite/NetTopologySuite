@@ -4,15 +4,15 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
 #if DOTNET35
 using System.Linq;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
+namespace NetTopologySuite.Operation.Overlay
 {
     /// <summary>
     /// Forms <see cref="IPolygon{TCoordinate}" />s out of a graph of 

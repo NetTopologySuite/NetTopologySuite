@@ -1,7 +1,7 @@
 ﻿using System;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
-using GisSharpBlog.NetTopologySuite.Index.Strtree;
+using NetTopologySuite.Index.Strtree;
 using NetTopologySuite.Coordinates;
 using Xunit;
 #if unbuffered

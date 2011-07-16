@@ -29,7 +29,7 @@ using GeoAPI.CoordinateSystems;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
+namespace NetTopologySuite.CoordinateSystems
 {
     /// <summary>
     /// A 3D coordinate system, with its origin at the center of the Earth.

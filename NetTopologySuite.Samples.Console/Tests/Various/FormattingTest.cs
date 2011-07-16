@@ -4,8 +4,8 @@ using System.Globalization;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.SimpleTests;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.SimpleTests;
 using NUnit.Framework;
 #if BUFFERED
 using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
@@ -18,7 +18,7 @@ using coordSeqFac = NetTopologySuite.Coordinates.Simple.CoordinateSequenceFactor
 #endif
 
 
-namespace GisSharpBlog.NetTopologySuite.Tests.Various
+namespace NetTopologySuite.Tests.Various
 {
     [TestFixture]
     public class FormattingTest : BaseSamples

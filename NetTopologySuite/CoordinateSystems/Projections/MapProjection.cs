@@ -47,10 +47,10 @@ using GeoAPI.Coordinates;
 using GeoAPI.CoordinateSystems;
 using GeoAPI.Units;
 using NPack.Interfaces;
-using GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations;
+using NetTopologySuite.CoordinateSystems.Transformations;
 using GeoAPI.DataStructures;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Projections
+namespace NetTopologySuite.CoordinateSystems.Projections
 {
     /// <summary>
     /// Base class for concrete map projections.

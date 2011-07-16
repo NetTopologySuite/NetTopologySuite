@@ -1,10 +1,10 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Diagnostics;
-using GisSharpBlog.NetTopologySuite.Planargraph;
+using NetTopologySuite.Planargraph;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
+namespace NetTopologySuite.Operation.Linemerge
 {
     /// <summary>
     /// A <see cref="DirectedEdge{TCoordinate}"/> of a <see cref="LineMergeGraph{TCoordinate}"/>. 

@@ -1,9 +1,9 @@
 using System;
 using GeoAPI.Coordinates;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Relate
+namespace NetTopologySuite.Operation.Relate
 {
     /// <summary>
     /// Used by the <see cref="NodeMap{TCoordinate}"/> in a 

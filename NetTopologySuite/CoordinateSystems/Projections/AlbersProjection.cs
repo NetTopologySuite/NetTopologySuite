@@ -49,7 +49,7 @@ using GeoAPI.Units;
 using NPack.Interfaces;
 using GeoAPI.DataStructures;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Projections
+namespace NetTopologySuite.CoordinateSystems.Projections
 {
     internal class InverseAlbersProjection<TCoordinate> : AlbersProjection<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,

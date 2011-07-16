@@ -37,7 +37,7 @@ using Enumerable = GeoAPI.DataStructures.Enumerable;
 using Processor = GeoAPI.DataStructures.Processor;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
+namespace NetTopologySuite.CoordinateSystems.Transformations
 {
     internal class ConcatenatedTransform<TCoordinate> : MathTransform<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,

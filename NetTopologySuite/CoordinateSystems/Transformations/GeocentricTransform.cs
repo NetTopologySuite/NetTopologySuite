@@ -30,7 +30,7 @@ using GeoAPI.DataStructures;
 using NPack.Interfaces;
 using GeoAPI.Units;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
+namespace NetTopologySuite.CoordinateSystems.Transformations
 {
     internal class InverseGeocentricTransform<TCoordinate> : GeocentricTransform<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,

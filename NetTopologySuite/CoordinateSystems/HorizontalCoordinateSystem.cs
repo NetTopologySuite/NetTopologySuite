@@ -27,7 +27,7 @@ using GeoAPI.CoordinateSystems;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
+namespace NetTopologySuite.CoordinateSystems
 {
     /// <summary>
     /// A 2D coordinate system suitable for positions on the Earth's surface.

@@ -1,18 +1,22 @@
+#if !DOTNET40
 #define C5
+#endif
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 #if C5
 using C5;
 #endif
+#if !DOTNET40
 using GeoAPI.DataStructures.Collections.Generic;
+#endif
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.GeometriesGraph.Index;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation
+namespace NetTopologySuite.Operation
 {
     /// <summary>
     /// Tests whether a <see cref="IGeometry{TCoordinate}"/> is simple.
@@ -110,7 +114,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation
 #if C5
             TreeSet<TCoordinate> points = new TreeSet<TCoordinate>();
 #else
+#if DOTNET40
+            ISet<TCoordinate> points = new SortedSet<TCoordinate>();
+#else
             ISet<TCoordinate> points = new ListSet<TCoordinate>();
+#endif
 #endif
             for (Int32 i = 0; i < mp.Count; i++)
             {

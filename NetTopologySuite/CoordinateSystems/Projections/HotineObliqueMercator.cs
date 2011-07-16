@@ -13,7 +13,7 @@ using GeoAPI.DataStructures;
 using GeoAPI.Units;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Projections
+namespace NetTopologySuite.CoordinateSystems.Projections
 {
 
     internal class InverseHotineObliqueMercator<TCoordinate> : HotineObliqueMercator<TCoordinate>

@@ -2,13 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+#if !DOTNET40
 using C5;
+#endif
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Triangulate.Quadedge
+namespace NetTopologySuite.Triangulate.Quadedge
 {
     /// <summary>
     /// A class that contains the {@link QuadEdge}s representing a planar

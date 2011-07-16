@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using GeoAPI.Coordinates;
-using GisSharpBlog.NetTopologySuite;
-using GisSharpBlog.NetTopologySuite.Algorithm;
+using NetTopologySuite;
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.Coordinates;
 using Xunit;
 #if unbuffered

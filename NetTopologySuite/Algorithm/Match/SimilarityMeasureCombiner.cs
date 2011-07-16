@@ -1,6 +1,6 @@
 using System;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm.Match
+namespace NetTopologySuite.Algorithm.Match
 {
 
     /// <summary>

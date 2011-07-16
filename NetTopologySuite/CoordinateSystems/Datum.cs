@@ -24,7 +24,7 @@
 using System;
 using GeoAPI.CoordinateSystems;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
+namespace NetTopologySuite.CoordinateSystems
 {
     /// <summary>
     /// A set of quantities from which other quantities are calculated.

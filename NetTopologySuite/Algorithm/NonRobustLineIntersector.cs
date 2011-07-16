@@ -4,7 +4,7 @@ using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm
+namespace NetTopologySuite.Algorithm
 {
     /// <summary> 
     /// A non-robust version of <see cref="LineIntersector{TCoordinate}"/>.

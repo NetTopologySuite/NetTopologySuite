@@ -4,7 +4,7 @@ using System.IO;
 using GeoAPI.Coordinates;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite
+namespace NetTopologySuite
 {
     public class XmlTestController<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using C5;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
+namespace NetTopologySuite.Operation.Buffer
 {
     ///<summary>
     /// A list of the vertices in a constructed offset curve. Automatically removes close adjacent vertices.

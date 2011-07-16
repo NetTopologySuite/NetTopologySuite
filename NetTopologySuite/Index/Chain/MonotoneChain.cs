@@ -5,10 +5,10 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Chain
+namespace NetTopologySuite.Index.Chain
 {
     /// <summary> 
     /// A <see cref="MonotoneChain{TCoordinate}"/> is a way of partitioning 

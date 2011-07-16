@@ -29,7 +29,7 @@ using GeoAPI.CoordinateSystems.Transformations;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
+namespace NetTopologySuite.CoordinateSystems.Transformations
 {
 
     public class InverseCoordinateTransformation<TCoordinate> : CoordinateTransformation<TCoordinate>

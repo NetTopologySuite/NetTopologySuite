@@ -2,7 +2,7 @@ using System;
 using GeoAPI.Coordinates;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Triangulate
+namespace NetTopologySuite.Triangulate
 {
     ///<summary>
     /// An interface for factories which create a <see cref="ConstraintVertex{TCoordinate}"/>

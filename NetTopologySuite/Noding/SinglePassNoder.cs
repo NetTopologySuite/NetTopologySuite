@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     /// <summary>
     /// Base class for <see cref="INoder{TCoordinate}" />s which make a single pass to find intersections.

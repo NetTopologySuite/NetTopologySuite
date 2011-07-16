@@ -1,4 +1,4 @@
-namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
+namespace NetTopologySuite.Index.Sweepline
 {
     // TODO: replace this with a generator rather than a visitor
     public interface ISweepLineOverlapAction

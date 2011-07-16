@@ -1,7 +1,7 @@
 ﻿using System;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm
+namespace NetTopologySuite.Algorithm
 {
     /// <summary>
     /// The Mod-2 Boundary Node Rule (as used in the OGC SFS). 

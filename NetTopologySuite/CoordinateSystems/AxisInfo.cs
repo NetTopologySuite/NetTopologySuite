@@ -25,7 +25,7 @@ using System;
 using System.Globalization;
 using GeoAPI.CoordinateSystems;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
+namespace NetTopologySuite.CoordinateSystems
 {
     /// <summary>
     /// Details of axis. This is used to label axes, and indicate the orientation.

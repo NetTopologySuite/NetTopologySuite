@@ -6,11 +6,11 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>
     /// An <see cref="EdgeEndStar{TCoordinate}"/> is an ordered list of 

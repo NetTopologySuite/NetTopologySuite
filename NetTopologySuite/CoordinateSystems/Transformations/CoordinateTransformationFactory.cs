@@ -30,9 +30,9 @@ using GeoAPI.CoordinateSystems.Transformations;
 using GeoAPI.Geometries;
 using NPack;
 using NPack.Interfaces;
-using GisSharpBlog.NetTopologySuite.CoordinateSystems.Projections;
+using NetTopologySuite.CoordinateSystems.Projections;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
+namespace NetTopologySuite.CoordinateSystems.Transformations
 {
     /// <summary>
     /// Creates coordinate transformations.

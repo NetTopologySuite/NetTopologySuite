@@ -3,7 +3,7 @@ using System.IO;
 using System.Xml;
 using SysConsole = System.Console;
 
-namespace GisSharpBlog.NetTopologySuite.Console
+namespace NetTopologySuite.Console
 {
     /// <summary>
     /// Summary description for TestOptionsParser.

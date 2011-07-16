@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Planargraph
+namespace NetTopologySuite.Planargraph
 {
     /// <summary>
     /// A sorted collection of <see cref="DirectedEdge{TCoordinate}"/>s 

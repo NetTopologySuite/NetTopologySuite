@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
+namespace NetTopologySuite.Index.Sweepline
 {
     /// <summary>
     /// A sweepline implements a sorted index on a set of intervals.

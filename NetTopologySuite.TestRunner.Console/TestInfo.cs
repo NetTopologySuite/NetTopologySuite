@@ -1,7 +1,7 @@
 using System;
-using GisSharpBlog.NetTopologySuite;
+using NetTopologySuite;
 
-namespace GisSharpBlog.NetTopologySuite.Console
+namespace NetTopologySuite.Console
 {
     /// <summary>
     /// Summary description for TestInfo.

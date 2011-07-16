@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !DOTNET40
+using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures.Collections.Generic;
@@ -120,3 +121,4 @@ namespace NetTopologySuite.Coordinates
         #endregion
     }
 }
+#endif

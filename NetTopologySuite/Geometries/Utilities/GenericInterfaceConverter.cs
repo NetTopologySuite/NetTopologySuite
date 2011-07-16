@@ -4,7 +4,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
+namespace NetTopologySuite.Geometries.Utilities
 {
     internal static class GenericInterfaceConverter<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,

@@ -2,7 +2,7 @@ using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 #if unbuffered
 using coord = NetTopologySuite.Coordinates.Simple.Coordinate;

@@ -4,12 +4,18 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
-using GisSharpBlog.NetTopologySuite.Index.RTree;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Index.RTree;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
+#if DOTNET35
+using sl = System.Linq;
+#else
+using sl = GeoAPI.DataStructures;
+#endif
+
+namespace NetTopologySuite.Algorithm.Locate
 {
     public class IndexedPointInAreaLocator<TCoordinate> : IPointOnGeometryLocator<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
@@ -89,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
             private void AddLine(ICoordinateSequence<TCoordinate> coordinateSequence)
             {
                 TCoordinate p0 = coordinateSequence.First;
-                foreach (TCoordinate p1 in Enumerable.Skip(coordinateSequence,1))
+                foreach (TCoordinate p1 in sl.Enumerable.Skip(coordinateSequence, 1))
                 {
                     LineSegment<TCoordinate> segment = new LineSegment<TCoordinate>(p0, p1);
                     _index.Insert(segment.Bounds, segment);

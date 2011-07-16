@@ -25,7 +25,7 @@ using System.Globalization;
 using System.Text;
 using GeoAPI.CoordinateSystems;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
+namespace NetTopologySuite.CoordinateSystems
 {
     /// <summary>
     /// Definition of linear units.

@@ -2,9 +2,9 @@ using System;
 using System.Text;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary> 
     /// A <see cref="Label"/> indicates the topological relationship of a component

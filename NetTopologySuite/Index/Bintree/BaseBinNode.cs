@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using GeoAPI.DataStructures;
 using GeoAPI.Indexing;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Bintree
+namespace NetTopologySuite.Index.Bintree
 {
     /// <summary> 
     /// The base class for nodes in a <see cref="BinTree{TItem}"/>.

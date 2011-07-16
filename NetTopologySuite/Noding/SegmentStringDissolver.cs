@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     /// <summary>
     /// Dissolves a noded collection of <see cref="NodedSegmentString{TCoordinate}" />s to produce

@@ -26,7 +26,10 @@ using System.Collections.Generic;
 using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
+#if !DOTNET40
 using GeoAPI.DataStructures.Collections.Generic;
+using C5;
+#endif
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 
@@ -390,10 +393,12 @@ namespace NetTopologySuite.Coordinates.Simple
             return AddRange(coordinates);
         }
 
+#if !DOTNET40
         public ISet<Coordinate> AsSet()
         {
             return new CoordinateSet(this, new CoordinateSequenceFactory(_coordFactory));
         }
+#endif
 
         public ICoordinateSequence<Coordinate> Clear()
         {

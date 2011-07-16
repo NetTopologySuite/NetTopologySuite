@@ -7,7 +7,13 @@ using GeoAPI.Geometries;
 using GeoAPI.Indexing;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Strtree
+#if DOTNET35
+using sl = System.Linq;
+#else
+using sl = GeoAPI.DataStructures;
+#endif
+
+namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>  
     /// A query-only R-tree created using the Sort-Tile-Recursive (STR) algorithm.
@@ -344,7 +350,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
                 slices[j] = sliceChildren;
                 Int32 boundablesAddedToSlice = 0;
 
-                foreach (IBoundable<IExtents<TCoordinate>> childBoundable in Enumerable.Skip(childBoundables, offset))
+                foreach (IBoundable<IExtents<TCoordinate>> childBoundable in sl.Enumerable.Skip(childBoundables, offset))
                 {
                     if (boundablesAddedToSlice >= sliceCapacity)
                     {

@@ -49,7 +49,7 @@ namespace NetTopologySuite.Tests.Issues
             IPolygon<coord> poly = (IPolygon<coord>)Reader.Read("POLYGON((5 5, 95 5, 95 95, 5 95, 5 5))");
             BufferParameters bp = new BufferParameters(
                 1, BufferParameters.BufferEndCapStyle.CapSquare, BufferParameters.BufferJoinStyle.JoinMitre, 5);
-            IGeometry<coord> geom = GisSharpBlog.NetTopologySuite.Operation.Buffer.BufferOp_110<coord>.Buffer(poly, 5, bp);
+            IGeometry<coord> geom = NetTopologySuite.Operation.Buffer.BufferOp_110<coord>.Buffer(poly, 5, bp);
             System.Diagnostics.Debug.WriteLine(geom.ToString());
             IPolygon<coord> result =
                 (IPolygon<coord>) Reader.Read("POLYGON((0 0, 100 0, 100 100, 0 100, 0 0))");

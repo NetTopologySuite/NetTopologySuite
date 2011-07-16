@@ -2,7 +2,7 @@ using System;
 using GeoAPI.Coordinates;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>
     /// A factory for producing nodes in a <see cref="GeometryGraph{TCoordinate}"/>.

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Diagnostics;
-using GisSharpBlog.NetTopologySuite.Triangulate;
+using NetTopologySuite.Triangulate;
 using NUnit.Framework;
 using GeoAPI.Algorithms;
 #if unbuffered

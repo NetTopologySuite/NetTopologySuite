@@ -4,14 +4,16 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 #if DOTNET35
-using System.Linq;
+using sl = System.Linq;
+#else
+using sl = GeoAPI.DataStructures;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm
+namespace NetTopologySuite.Algorithm
 {
     /// <summary>
     /// Specifies and implements various fundamental computational geometric algorithms.
@@ -191,7 +193,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             {
                 if (first.Equals(highPoint))
                 {
-                    foreach (TCoordinate coordinate in Enumerable.Skip(ring, 1))
+                    foreach (TCoordinate coordinate in sl.Enumerable.Skip(ring, 1))
                     {
                         if (!coordinate.Equals(highPoint))
                         {
@@ -213,7 +215,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             {
                 if (last.Equals(highPoint))
                 {
-                    foreach (TCoordinate coordinate in Enumerable.Skip(Enumerable.Reverse(ring), 1))
+                    foreach (TCoordinate coordinate in sl.Enumerable.Skip(sl.Enumerable.Reverse(ring), 1))
                     {
                         if (!coordinate.Equals(highPoint))
                         {

@@ -4,9 +4,9 @@ using System.Text;
 using NPack.Interfaces;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm.Distance;
+using NetTopologySuite.Algorithm.Distance;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm.Match
+namespace NetTopologySuite.Algorithm.Match
 {
     /// <summary>
     /// Measures the degree of similarity between two <see cref="IGeometry{TCoordinate}"/>s

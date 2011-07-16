@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Noding;
+using NetTopologySuite.Noding;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
+namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
     /// <see cref="ISpatialRelation{TCoordinate}.Intersects(GeoAPI.Geometries.IGeometry{TCoordinate})"/> operation for <see cref="PreparedPolygon{TCoordinate}"/>.

@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.GeometriesGraph.Index;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
+namespace NetTopologySuite.Operation.Overlay
 {
     /// <summary>
     /// Nodes a set of edges.

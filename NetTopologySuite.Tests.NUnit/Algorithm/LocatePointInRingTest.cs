@@ -1,6 +1,6 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.Coordinates.Simple;
 using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Algorithm

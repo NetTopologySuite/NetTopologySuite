@@ -4,7 +4,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
+namespace NetTopologySuite.Geometries.Utilities
 {
     ///<summary>
     /// Extracts a single representative <see cref="ICoordinate{TCoordinate}"/> from each connected component of a <see cref="IGeometry"/>.

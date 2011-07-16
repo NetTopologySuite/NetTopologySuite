@@ -5,11 +5,11 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation.Overlay;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation.Overlay;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary> 
     /// A <see cref="DirectedEdgeStar{TCoordinate}"/> is an ordered list of 

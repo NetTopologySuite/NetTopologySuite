@@ -24,6 +24,11 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using NPack;
+#if DOTNET35
+using sl = System.Linq;
+#else
+using sl = GeoAPI.DataStructures;
+#endif
 
 namespace NetTopologySuite.Coordinates.Simple
 {
@@ -99,7 +104,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
             if (!direction)
             {
-                coordinates = Enumerable.Reverse(coordinates);
+                coordinates = sl.Enumerable.Reverse(coordinates);
             }
 
             foreach (Coordinate coordinate in coordinates)

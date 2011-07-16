@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation.Union;
+using NetTopologySuite.Operation.Union;
 using NetTopologySuite.Coordinates.Simple;
 using NUnit.Framework;
 

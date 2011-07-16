@@ -25,7 +25,7 @@ using System;
 using System.Text;
 using GeoAPI.CoordinateSystems;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
+namespace NetTopologySuite.CoordinateSystems
 {
     /// <summary>
     /// The <see cref="Info"/> class implements the 

@@ -5,7 +5,7 @@ using GeoAPI.Geometries;
 using NPack.Interfaces;
 using System.Text;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm.Match
+namespace NetTopologySuite.Algorithm.Match
 {
     public class AreaSimilarityMeasure<TCoordinate> : ISimilarityMeasure<TCoordinate>
             where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,

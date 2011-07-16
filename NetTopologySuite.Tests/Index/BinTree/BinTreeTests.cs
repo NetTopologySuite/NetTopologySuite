@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using GeoAPI.DataStructures;
-using GisSharpBlog.NetTopologySuite.Index.Bintree;
+using NetTopologySuite.Index.Bintree;
 using Xunit;
 
 namespace NetTopologySuite.Tests.Index

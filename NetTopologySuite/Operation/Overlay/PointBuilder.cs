@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
+namespace NetTopologySuite.Operation.Overlay
 {
     /// <summary>
     /// Constructs <see cref="IPoint{TCoordinate}"/>s from the 

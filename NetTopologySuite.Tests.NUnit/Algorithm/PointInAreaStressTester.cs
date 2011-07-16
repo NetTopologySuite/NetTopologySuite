@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm.Locate;
+using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Coordinates.Simple;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm

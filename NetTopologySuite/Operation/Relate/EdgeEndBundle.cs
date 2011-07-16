@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Relate
+namespace NetTopologySuite.Operation.Relate
 {
     /// <summary>
     /// A collection of <see cref="EdgeEnd{TCoordinate}"/>s which 

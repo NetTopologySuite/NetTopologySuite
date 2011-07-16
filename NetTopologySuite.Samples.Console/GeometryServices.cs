@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 #if BUFFERED
 using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
 using coordFac = NetTopologySuite.Coordinates.BufferedCoordinateFactory;
@@ -12,7 +12,7 @@ using coordFac = NetTopologySuite.Coordinates.Simple.CoordinateFactory;
 using coordSeqFac = NetTopologySuite.Coordinates.Simple.CoordinateSequenceFactory;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite
+namespace NetTopologySuite
 {
     public static class GeometryServices
     {

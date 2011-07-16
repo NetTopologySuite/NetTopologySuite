@@ -5,7 +5,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
+namespace NetTopologySuite.Geometries.Utilities
 {
     ///<summary>
     /// Class to extract all <see cref="IPoint{TCoordinate}"/> instances from a geometry.

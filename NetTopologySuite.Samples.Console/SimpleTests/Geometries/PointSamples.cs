@@ -9,7 +9,7 @@ using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
 using coord = NetTopologySuite.Coordinates.Simple.Coordinate;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.SimpleTests.Geometries
+namespace NetTopologySuite.SimpleTests.Geometries
 {
     public class PointSamples : BaseSamples
     {

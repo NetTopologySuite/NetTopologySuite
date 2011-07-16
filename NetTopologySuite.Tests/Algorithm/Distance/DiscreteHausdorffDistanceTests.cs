@@ -1,7 +1,7 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm.Distance;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Algorithm.Distance;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Coordinates;
 using NetTopologySuite.Coordinates.Simple;
 using Xunit;

@@ -2,7 +2,7 @@ using System;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation.Distance;
+using NetTopologySuite.Operation.Distance;
 using NetTopologySuite.Coordinates.Simple;
 using NUnit.Framework;
 

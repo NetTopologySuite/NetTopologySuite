@@ -48,7 +48,7 @@ using GeoAPI.Units;
 using GeoAPI.DataStructures;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Projections
+namespace NetTopologySuite.CoordinateSystems.Projections
 {
 
     internal class InverseCassiniSoldnerProjection<TCoordinate> : CassiniSoldnerProjection<TCoordinate>

@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Operation.Buffer.Validate;
+using NetTopologySuite.Operation.Buffer.Validate;
 using NetTopologySuite.Coordinates.Simple;
 using NUnit.Framework;
 

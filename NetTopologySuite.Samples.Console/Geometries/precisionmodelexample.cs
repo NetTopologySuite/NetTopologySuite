@@ -7,7 +7,7 @@ using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
 #else
 using coord = NetTopologySuite.Coordinates.Simple.Coordinate;
 #endif
-namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
+namespace NetTopologySuite.Samples.Geometries
 {
     /// <summary> 
     /// An example showing the results of using different precision models

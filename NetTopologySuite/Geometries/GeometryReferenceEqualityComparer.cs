@@ -5,7 +5,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
     public class GeometryReferenceEqualityComparer<TCoordinate> : IEqualityComparer<IGeometry<TCoordinate>>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,

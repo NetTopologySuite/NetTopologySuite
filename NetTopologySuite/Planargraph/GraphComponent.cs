@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Planargraph
+namespace NetTopologySuite.Planargraph
 {
     /// <summary>
     /// The base class for all graph component classes.

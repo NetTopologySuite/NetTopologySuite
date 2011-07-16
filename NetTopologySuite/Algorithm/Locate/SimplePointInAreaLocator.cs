@@ -3,7 +3,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
+namespace NetTopologySuite.Algorithm.Locate
 {
     ///<summary>
     /// Simple Point in Area Locator

@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace GisSharpBlog.NetTopologySuite.Console
+namespace NetTopologySuite.Console
 {
     /// <summary>
     /// Summary description for TestInfoCollection.

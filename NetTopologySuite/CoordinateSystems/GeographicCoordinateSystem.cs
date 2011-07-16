@@ -29,7 +29,7 @@ using GeoAPI.CoordinateSystems;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
+namespace NetTopologySuite.CoordinateSystems
 {
     /// <summary>
     /// A coordinate system based on latitude and longitude. 

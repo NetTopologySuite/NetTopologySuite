@@ -5,12 +5,12 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.Operation.Overlay;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.Operation.Overlay;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Valid
+namespace NetTopologySuite.Operation.Valid
 {
     /// <summary> 
     /// This class tests that the interior of an area <see cref="Geometry{TCoordinate}" />

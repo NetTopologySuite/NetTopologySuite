@@ -2,10 +2,10 @@ using System;
 using GeoAPI;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
+using NetTopologySuite.Algorithm;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>  
     /// Basic implementation of <see cref="LinearRing{TCoordinate}" />.

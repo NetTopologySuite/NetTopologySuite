@@ -28,7 +28,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.CoordinateSystems;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
+namespace NetTopologySuite.CoordinateSystems
 {
     /// <summary>
     /// A 2D cartographic coordinate system.

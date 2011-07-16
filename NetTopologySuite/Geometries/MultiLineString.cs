@@ -4,14 +4,16 @@ using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation;
+using NetTopologySuite.Operation;
 using NPack.Interfaces;
 
 #if DOTNET35
-using System.Linq;
+using sl = System.Linq;
+#else
+using sl = GeoAPI.DataStructures;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Basic implementation of <see cref="IMultiLineString{TCoordinate}"/>.
@@ -177,7 +179,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public IMultiLineString<TCoordinate> Reverse()
         {
             IEnumerable<ILineString<TCoordinate>> reversed
-                = Reverse(Enumerable.Reverse(this as IEnumerable<ILineString<TCoordinate>>));
+                = Reverse(sl.Enumerable.Reverse(this as IEnumerable<ILineString<TCoordinate>>));
             return Factory.CreateMultiLineString(reversed);
         }
 

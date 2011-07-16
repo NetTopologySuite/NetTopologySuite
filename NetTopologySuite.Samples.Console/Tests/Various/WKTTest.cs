@@ -3,7 +3,7 @@ using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.SimpleTests;
+using NetTopologySuite.SimpleTests;
 using NetTopologySuite.Coordinates;
 using NUnit.Framework;
 #if BUFFERED
@@ -16,7 +16,7 @@ using coordFac = NetTopologySuite.Coordinates.Simple.CoordinateFactory;
 using coordSeqFac = NetTopologySuite.Coordinates.Simple.CoordinateSequenceFactory;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Tests.Various
+namespace NetTopologySuite.Tests.Various
 {
     [TestFixture]
     public class WktTest : BaseSamples

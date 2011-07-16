@@ -4,7 +4,7 @@ using System.Diagnostics;
 using GeoAPI.Coordinates;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
+namespace NetTopologySuite.GeometriesGraph.Index
 {
     /// <summary> 
     /// A <see cref="SimpleMonotoneChainSweepLineIntersector{TCoordinate}"/> 

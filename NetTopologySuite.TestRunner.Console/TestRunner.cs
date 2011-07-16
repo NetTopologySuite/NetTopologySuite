@@ -5,7 +5,7 @@ using GeoAPI.Coordinates;
 using NPack.Interfaces;
 using SysConsole = System.Console;
 
-namespace GisSharpBlog.NetTopologySuite.Console
+namespace NetTopologySuite.Console
 {
     internal class TestRunner<TCoordinate> where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
             IComparable<TCoordinate>, IConvertible,

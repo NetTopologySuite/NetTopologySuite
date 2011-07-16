@@ -4,15 +4,15 @@ using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
 #if DOTNET35
 using System.Linq;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
+namespace NetTopologySuite.Operation.Overlay
 {
     /// <summary>
     /// The spatial functions supported by this class.

@@ -30,7 +30,7 @@ using GeoAPI.CoordinateSystems.Transformations;
 using NPack;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
+namespace NetTopologySuite.CoordinateSystems.Transformations
 {
     /// <summary>
     /// Abstract class for creating multi-dimensional coordinate points transformations.

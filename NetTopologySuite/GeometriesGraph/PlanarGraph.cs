@@ -1,4 +1,7 @@
+#if !DOTNET40
 #define C5
+//#define goletas
+#endif
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,11 +11,11 @@ using C5;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     using sgc = System.Collections.Generic;
     /// <summary> 
@@ -92,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 #if C5
             return new C5.ArrayList<Edge<TCoordinate>>();
 #else
-            return new List<EdgeEnd<TCoordinate>>();
+            return new List<Edge<TCoordinate>>();
 #endif
         }
 

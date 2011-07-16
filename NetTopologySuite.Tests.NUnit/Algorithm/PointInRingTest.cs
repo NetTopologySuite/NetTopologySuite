@@ -1,5 +1,5 @@
 using System;
-using GisSharpBlog.NetTopologySuite.Algorithm;
+using NetTopologySuite.Algorithm;
 using GeoAPI.Geometries;
 using Coord = NetTopologySuite.Coordinates.Simple.Coordinate;
 using NUnit.Framework;

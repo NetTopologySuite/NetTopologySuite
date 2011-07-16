@@ -30,7 +30,7 @@ using GeoAPI.DataStructures;
 using NPack;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
+namespace NetTopologySuite.CoordinateSystems.Transformations
 {
     internal class InverseDatumTransform<TCoordinate> : DatumTransform<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,

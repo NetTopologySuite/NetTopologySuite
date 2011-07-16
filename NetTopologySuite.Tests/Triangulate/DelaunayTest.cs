@@ -1,7 +1,7 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Triangulate;
+using NetTopologySuite.Triangulate;
 using NetTopologySuite.Coordinates;
 using NUnit.Framework;
 #if unbuffered

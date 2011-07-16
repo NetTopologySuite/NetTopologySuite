@@ -3,11 +3,14 @@ using System;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm.Distance;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Algorithm.Distance;
+using NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
+#if DOTNET35
+using sl = System.Linq;
+#endif
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Buffer.Validate
+namespace NetTopologySuite.Operation.Buffer.Validate
 {
     public class BufferCurveMaximumDistanceFinder<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,

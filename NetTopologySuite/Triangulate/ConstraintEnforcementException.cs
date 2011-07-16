@@ -2,7 +2,7 @@ using System;
 using GeoAPI.Coordinates;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Triangulate
+namespace NetTopologySuite.Triangulate
 {
 ///<summary>
 /// Indicates a failure during constraint enforcement.

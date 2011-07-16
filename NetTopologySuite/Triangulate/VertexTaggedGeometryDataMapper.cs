@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+#if !DOTNET40
 using C5;
+#endif
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Triangulate
+namespace NetTopologySuite.Triangulate
 {
     ///<summary>
     ///Creates a map between the vertex {@link Coordinate}s of a 
@@ -25,8 +26,11 @@ namespace GisSharpBlog.NetTopologySuite.Triangulate
                             IComputable<Double, TCoordinate>, IConvertible
 
     {
+#if DOTNET40
+        private readonly SortedDictionary<TCoordinate, IGeometry<TCoordinate>> _coordDataMap = new SortedDictionary<TCoordinate, IGeometry<TCoordinate>>();
+#else
         private readonly TreeDictionary<TCoordinate, IGeometry<TCoordinate>> _coordDataMap = new TreeDictionary<TCoordinate, IGeometry<TCoordinate>>();
-
+#endif
         public VertexTaggedGeometryDataMapper()
         {
 
@@ -57,7 +61,11 @@ namespace GisSharpBlog.NetTopologySuite.Triangulate
             }
         }
 
+#if DOTNET40
+        public IEnumerable<TCoordinate> GetCoordinates()
+#else
         public ISorted<TCoordinate> GetCoordinates()
+#endif
         {
             return _coordDataMap.Keys;
         }

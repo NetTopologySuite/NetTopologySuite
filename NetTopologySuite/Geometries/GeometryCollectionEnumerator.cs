@@ -5,7 +5,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Iterates over all <see cref="Geometry{TCoordinate}"/>'s in a <see cref="GeometryCollection{TCoordinate}" />. 

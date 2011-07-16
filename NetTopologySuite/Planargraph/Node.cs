@@ -1,15 +1,19 @@
+#if !DOTNET40
 #define C5
+#endif
 using System;
 using System.Collections.Generic;
 #if C5
 using C5;
 #endif
 using GeoAPI.Coordinates;
+#if !DOTNET40
 using GeoAPI.DataStructures.Collections.Generic;
-using GisSharpBlog.NetTopologySuite.Geometries;
+#endif
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Planargraph
+namespace NetTopologySuite.Planargraph
 {
     /// <summary>
     /// A node in a <see cref="PlanarGraph{TCoordinate}"/> is a location 
@@ -92,13 +96,20 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         {
             IEnumerable<Edge<TCoordinate>> edges0 = DirectedEdge<TCoordinate>.ToEdges(node0.OutEdges.Edges);
 #if C5
-            HashSet<Edge<TCoordinate>> commonEdges = new HashSet<Edge<TCoordinate>>();
+            C5.HashSet<Edge<TCoordinate>> commonEdges = new C5.HashSet<Edge<TCoordinate>>();
+#else
+#if DOTNET40
+            ISet<Edge<TCoordinate>> commonEdges = new HashSet<Edge<TCoordinate>>(edges0);
 #else
             ISet<Edge<TCoordinate>> commonEdges = new HashedSet<Edge<TCoordinate>>(edges0);
 #endif
+#endif
             IEnumerable<Edge<TCoordinate>> edges1 = DirectedEdge<TCoordinate>.ToEdges(node1.OutEdges.Edges);
-
+#if DOTNET40
+            commonEdges.IntersectWith(edges1);
+#else
             commonEdges.RetainAll(edges1);
+#endif
             return commonEdges;
         }
 

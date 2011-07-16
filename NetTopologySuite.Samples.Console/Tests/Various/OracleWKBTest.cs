@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownBinary;
-using GisSharpBlog.NetTopologySuite.SimpleTests;
+using NetTopologySuite.SimpleTests;
 using NUnit.Framework;
 #if BUFFERED
 using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
@@ -15,7 +15,7 @@ using coordFac = NetTopologySuite.Coordinates.Simple.CoordinateFactory;
 using coordSeqFac = NetTopologySuite.Coordinates.Simple.CoordinateSequenceFactory;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Tests.Various
+namespace NetTopologySuite.Tests.Various
 {
     [TestFixture]
     public class OracleWkbTest : BaseSamples

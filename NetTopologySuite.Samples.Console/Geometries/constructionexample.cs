@@ -1,10 +1,10 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Coordinates;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
+namespace NetTopologySuite.Samples.Geometries
 {
     /// <summary> 
     /// Examples of constructing Geometries programmatically.

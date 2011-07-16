@@ -29,7 +29,7 @@ using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
+namespace NetTopologySuite.CoordinateSystems
 {
     /// <summary>
     /// Builds up complex objects from simpler objects or values.

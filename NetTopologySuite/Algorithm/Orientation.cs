@@ -1,4 +1,4 @@
-﻿namespace GisSharpBlog.NetTopologySuite.Algorithm
+﻿namespace NetTopologySuite.Algorithm
 {
     public enum Orientation
     {

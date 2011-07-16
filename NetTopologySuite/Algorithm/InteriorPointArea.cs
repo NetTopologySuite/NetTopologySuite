@@ -2,10 +2,10 @@ using System;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm
+namespace NetTopologySuite.Algorithm
 {
     /// <summary> 
     /// Computes a point in the interior of an area point.

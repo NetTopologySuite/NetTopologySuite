@@ -2,11 +2,11 @@ using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
+namespace NetTopologySuite.Noding.Snapround
 {
     /// <summary>
     /// Implements a "hot pixel" as used in the Snap Rounding algorithm.

@@ -13,7 +13,7 @@ using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 using System;
 
-namespace GisSharpBlog.NetTopologySuite.Console
+namespace NetTopologySuite.Console
 {
     public class Arguments
     {

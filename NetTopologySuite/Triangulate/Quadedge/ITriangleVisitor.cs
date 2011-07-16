@@ -3,7 +3,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Triangulate.Quadedge
+namespace NetTopologySuite.Triangulate.Quadedge
 {
     ///<summary>
     /// An interface for algorithms which process the triangles in a <see cref="QuadEdgeSubdivision{TCoordinate}"/>

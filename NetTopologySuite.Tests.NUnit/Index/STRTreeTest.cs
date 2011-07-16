@@ -1,14 +1,13 @@
 
 using System;
 using System.Collections.Generic;
-//using GeoAPI.Diagnostics;
 using System.IO;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Index;
-using GisSharpBlog.NetTopologySuite.Index.Strtree;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Index;
+using NetTopologySuite.Index.Strtree;
 using NetTopologySuite.Coordinates.Simple;
 using NUnit.Framework;
 

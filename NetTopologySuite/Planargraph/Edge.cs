@@ -2,7 +2,7 @@ using System;
 using GeoAPI.Coordinates;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Planargraph
+namespace NetTopologySuite.Planargraph
 {
     /// <summary>
     /// Represents an undirected edge of a <see cref="PlanarGraph{TCoordinate}"/>. 

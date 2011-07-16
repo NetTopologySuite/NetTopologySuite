@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using System.Runtime;
 using System.Diagnostics;
 using NetTopologySuite.Coordinates;

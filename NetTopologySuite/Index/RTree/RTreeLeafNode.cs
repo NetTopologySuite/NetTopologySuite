@@ -2,7 +2,7 @@ using System;
 using GeoAPI.DataStructures;
 using GeoAPI.Indexing;
 
-namespace GisSharpBlog.NetTopologySuite.Index.RTree
+namespace NetTopologySuite.Index.RTree
 {
     ///<summary>
     ///</summary>

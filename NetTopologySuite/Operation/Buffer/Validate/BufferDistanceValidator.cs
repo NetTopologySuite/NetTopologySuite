@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm.Distance;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
-using GisSharpBlog.NetTopologySuite.Operation.Distance;
+using NetTopologySuite.Algorithm.Distance;
+using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Operation.Distance;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Buffer.Validate
+namespace NetTopologySuite.Operation.Buffer.Validate
 {
     public class BufferDistanceValidator<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,

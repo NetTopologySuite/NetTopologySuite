@@ -2,7 +2,7 @@ using System;
 using GeoAPI.Coordinates;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     /// <summary>
     /// Computes the intersections between two line segments in <see cref="NodedSegmentString{TCoordinate}" />s

@@ -28,7 +28,7 @@ using GeoAPI.CoordinateSystems;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
+namespace NetTopologySuite.CoordinateSystems
 {
     /// <summary>
     /// Base interface for all coordinate systems.

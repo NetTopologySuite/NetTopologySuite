@@ -1,8 +1,7 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-//using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap;
+using NetTopologySuite.Operation.Overlay.Snap;
 using NetTopologySuite.Coordinates.Simple;
 using NUnit.Framework;
 

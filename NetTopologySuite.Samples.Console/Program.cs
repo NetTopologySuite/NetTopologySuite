@@ -1,10 +1,10 @@
 using System;
-using GisSharpBlog.NetTopologySuite.Samples.LinearReferencing;
-using GisSharpBlog.NetTopologySuite.SimpleTests;
-using GisSharpBlog.NetTopologySuite.SimpleTests.Geometries;
+using NetTopologySuite.Samples.LinearReferencing;
+using NetTopologySuite.SimpleTests;
+using NetTopologySuite.SimpleTests.Geometries;
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite
+namespace NetTopologySuite
 {
     [TestFixture]
     public class Program

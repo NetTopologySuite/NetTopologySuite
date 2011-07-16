@@ -5,7 +5,7 @@ using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Simplify
+namespace NetTopologySuite.Simplify
 {
     /// <summary>
     /// Simplifies a collection of TaggedLineStrings, preserving topology

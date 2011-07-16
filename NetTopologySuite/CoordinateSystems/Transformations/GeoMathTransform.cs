@@ -27,7 +27,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.CoordinateSystems;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
+namespace NetTopologySuite.CoordinateSystems.Transformations
 {
     public abstract class GeoMathTransform<TCoordinate> : MathTransform<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,

@@ -5,7 +5,7 @@ using GeoAPI;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Coordinates.Simple;
 using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
@@ -266,7 +266,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                                                    }
 
                                                    Assert.IsTrue(
-                                                       GisSharpBlog.NetTopologySuite.Operation.Buffer.Validate.
+                                                       NetTopologySuite.Operation.Buffer.Validate.
                                                            BufferResultValidator<Coordinate>.IsValid(_original,
                                                                                                      _bufferDistance,
                                                                                                      _buffer),

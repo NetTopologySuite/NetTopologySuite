@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
+namespace NetTopologySuite.Noding.Snapround
 {
     ///<summary>
     /// Nodes a list of <see cref="IGeometry{TCoordiante}"/>s using Snap Rounding

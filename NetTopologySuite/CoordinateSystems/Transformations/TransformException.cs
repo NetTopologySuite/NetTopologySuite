@@ -24,7 +24,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
+namespace NetTopologySuite.CoordinateSystems.Transformations
 {
     [Serializable]
     public class TransformException : Exception

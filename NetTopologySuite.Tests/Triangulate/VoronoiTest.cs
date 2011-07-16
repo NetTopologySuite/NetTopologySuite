@@ -1,10 +1,10 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Triangulate.Quadedge;
+using NetTopologySuite.Triangulate.Quadedge;
 using NetTopologySuite.Coordinates;
 using NUnit.Framework;
-using GisSharpBlog.NetTopologySuite.Triangulate;
+using NetTopologySuite.Triangulate;
 
 #if unbuffered
 using coord = NetTopologySuite.Coordinates.Simple.Coordinate;

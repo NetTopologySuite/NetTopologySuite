@@ -1,10 +1,10 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.SimpleTests;
+using NetTopologySuite.SimpleTests;
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Tests.Various
+namespace NetTopologySuite.Tests.Various
 {
     [TestFixture]
     public class NormalizeTest : BaseSamples

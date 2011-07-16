@@ -3,7 +3,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm.Distance
+namespace NetTopologySuite.Algorithm.Distance
 {
     public class PointPairDistance<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,

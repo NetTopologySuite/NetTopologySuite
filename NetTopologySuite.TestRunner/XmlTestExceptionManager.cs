@@ -1,6 +1,6 @@
 using System;
 
-namespace GisSharpBlog.NetTopologySuite
+namespace NetTopologySuite
 {
     public class XmlTestErrorEventArgs : EventArgs
     {

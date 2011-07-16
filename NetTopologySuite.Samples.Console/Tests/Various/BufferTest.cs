@@ -3,8 +3,8 @@ using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.SimpleTests;
-using GisSharpBlog.NetTopologySuite.Simplify;
+using NetTopologySuite.SimpleTests;
+using NetTopologySuite.Simplify;
 #if BUFFERED
 using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
 #else
@@ -12,7 +12,7 @@ using coord = NetTopologySuite.Coordinates.Simple.Coordinate;
 #endif
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Tests.Various
+namespace NetTopologySuite.Tests.Various
 {
     [TestFixture]
     public class BufferTest : BaseSamples

@@ -1,7 +1,7 @@
 ﻿using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 
 #if unbuffered
 using coord = NetTopologySuite.Coordinates.Simple.Coordinate;

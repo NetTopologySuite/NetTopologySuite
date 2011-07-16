@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Relate
+namespace NetTopologySuite.Operation.Relate
 {
     /// <summary> 
     /// An <see cref="EdgeEndBuilder{TCoordinate}"/> creates <see cref="EdgeEnd{TCoordinate}"/>s 

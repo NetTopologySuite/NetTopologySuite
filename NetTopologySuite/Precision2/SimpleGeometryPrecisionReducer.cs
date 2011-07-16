@@ -23,8 +23,8 @@ namespace GisSharpBlog.NetTopologySuite.Precision
     /// The buffer algorithm does not depend on the validity of the input point.
     /// </remarks>
     public class SimpleGeometryPrecisionReducer<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
-                            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
+                            IComputable<TCoordinate>, IConvertible
     {
         private readonly IPrecisionModel<TCoordinate> _newPrecisionModel = null;
         private Boolean _removeCollapsed = true;
@@ -96,19 +96,19 @@ namespace GisSharpBlog.NetTopologySuite.Precision
                     return null;
                 }
 
-                TCoordinate[] reducedCoords = new TCoordinate[coordinates.Length];
+                IEnumerable<TCoordinate> reducedCoords = new ICoordinate[coordinates.Length];
 
                 // copy coordinates and reduce
                 for (Int32 i = 0; i < coordinates.Length; i++)
                 {
-                    TCoordinate coord = new Coordinate(coordinates[i]);
+                    ICoordinate coord = new Coordinate(coordinates[i]);
                     _container._newPrecisionModel.MakePrecise(coord);
                     reducedCoords[i] = coord;
                 }
 
                 // remove repeated points, to simplify returned point as much as possible
                 CoordinateList noRepeatedCoordList = new CoordinateList(reducedCoords, false);
-                TCoordinate[] noRepeatedCoords = noRepeatedCoordList.ToCoordinateArray();
+                ICoordinate[] noRepeatedCoords = noRepeatedCoordList.ToCoordinateArray();
 
                 /*
                 * Check to see if the removal of repeated points

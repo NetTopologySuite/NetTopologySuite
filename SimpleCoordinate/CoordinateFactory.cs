@@ -20,7 +20,11 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+#if DOTNET35
+using System.Linq;
+#else
 using GeoAPI.DataStructures;
+#endif
 using NPack;
 using NPack.Interfaces;
 

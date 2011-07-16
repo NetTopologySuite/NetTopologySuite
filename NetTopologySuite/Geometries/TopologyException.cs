@@ -1,7 +1,7 @@
 using System;
 using GeoAPI.Coordinates;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary> 
     /// Indicates an invalid or inconsistent topological 

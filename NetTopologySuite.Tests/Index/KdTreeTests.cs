@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Index.KdTree;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Index.KdTree;
 #if buffered
 using NetTopologySuite.Tests.OperationTests.Union;
 using coord = NetTopologySuite.Coordinates.BufferedCoordinate;

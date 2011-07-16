@@ -28,7 +28,7 @@ using GeoAPI.CoordinateSystems;
 using GeoAPI.CoordinateSystems.Transformations;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
+namespace NetTopologySuite.CoordinateSystems.Transformations
 {
     /// <summary>
     /// The <see cref="GeographicTransform{TCoordinate}"/> class is 

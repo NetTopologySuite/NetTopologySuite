@@ -4,14 +4,16 @@ using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Index.Chain;
+using NetTopologySuite.Index.Chain;
 using NPack.Interfaces;
 
 #if DOTNET35
-using System.Linq;
+using sl = System.Linq;
+#else
+using sl = GeoAPI.DataStructures;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
+namespace NetTopologySuite.GeometriesGraph.Index
 {
     /// <summary> 
     /// <see cref="MonotoneChain{TCoordinate}"/>s are a way of 
@@ -91,7 +93,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
                     // keeping it lazy
                     IEnumerable<Int32> starts =
                         MonotoneChainBuilder.GetChainStartIndices(_coordinates);
-                    _startIndexes = Enumerable.ToArray(starts);
+                    _startIndexes = sl.Enumerable.ToArray(starts);
                 }
 
                 return _startIndexes;

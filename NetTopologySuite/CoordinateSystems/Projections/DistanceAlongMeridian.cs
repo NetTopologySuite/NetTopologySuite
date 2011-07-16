@@ -26,7 +26,7 @@
 using System;
 using GeoAPI.Units;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Projections
+namespace NetTopologySuite.CoordinateSystems.Projections
 {
     ///<summary>
     /// 

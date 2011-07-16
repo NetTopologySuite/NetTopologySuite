@@ -4,7 +4,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures.Collections.Generic;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Planargraph
+namespace NetTopologySuite.Planargraph
 {
     /// <summary>
     /// A subgraph of a <see cref="PlanarGraph{TCoordinate}" />.

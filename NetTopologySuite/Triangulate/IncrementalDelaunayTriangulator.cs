@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
-using GisSharpBlog.NetTopologySuite.Triangulate.Quadedge;
+using NetTopologySuite.Triangulate.Quadedge;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Triangulate
+namespace NetTopologySuite.Triangulate
 {
     ///<summary>
     /// Computes a Delauanay Triangulation of a set of {@link Vertex}es, using an incrementatal insertion algorithm.

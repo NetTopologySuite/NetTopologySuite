@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
+namespace NetTopologySuite.GeometriesGraph.Index
 {
     /// <summary>
     /// An <see cref="EdgeSetIntersector{TCoordinate}"/> computes all the 

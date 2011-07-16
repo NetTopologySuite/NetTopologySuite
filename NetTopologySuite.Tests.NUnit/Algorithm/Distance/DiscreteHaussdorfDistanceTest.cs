@@ -1,6 +1,6 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm.Distance;
+using NetTopologySuite.Algorithm.Distance;
 using NUnit.Framework;
 
 using Coord = NetTopologySuite.Coordinates.Simple.Coordinate;

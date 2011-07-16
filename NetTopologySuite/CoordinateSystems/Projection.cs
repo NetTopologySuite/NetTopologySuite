@@ -27,7 +27,7 @@ using System.Globalization;
 using System.Text;
 using GeoAPI.CoordinateSystems;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
+namespace NetTopologySuite.CoordinateSystems
 {
     /// <summary>
     /// The Projection class defines the standard information stored with a projection

@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace GisSharpBlog.NetTopologySuite
+namespace NetTopologySuite
 {
     public sealed class Global
     {

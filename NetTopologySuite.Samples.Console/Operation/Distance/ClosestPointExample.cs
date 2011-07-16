@@ -2,12 +2,12 @@ using System;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation.Distance;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation.Distance;
 using NetTopologySuite.Coordinates;
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Distance
+namespace NetTopologySuite.Samples.Operation.Distance
 {
     /// <summary> 
     /// Example of computing distance and closest points between geometries

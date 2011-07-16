@@ -1,12 +1,12 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Index.Chain;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Index.Chain;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     /// <summary>
     /// Computes the intersections between two line segments in 

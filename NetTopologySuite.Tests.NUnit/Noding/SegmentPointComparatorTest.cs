@@ -1,6 +1,7 @@
-using GisSharpBlog.NetTopologySuite.Noding;
+using NetTopologySuite.Noding;
 using NUnit.Framework;
 using Coordinate = NetTopologySuite.Coordinates.Simple.Coordinate;
+
 namespace NetTopologySuite.Tests.NUnit.Noding
 {
     [TestFixture]

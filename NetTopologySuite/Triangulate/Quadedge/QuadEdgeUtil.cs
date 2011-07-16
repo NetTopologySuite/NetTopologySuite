@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Triangulate.Quadedge
+namespace NetTopologySuite.Triangulate.Quadedge
 {
     ///<summary>
     /// Utilities for working with <see cref="QuadEdge{TCoordinate}"/>s.

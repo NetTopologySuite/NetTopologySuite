@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Index.Strtree;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Index.Strtree;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NetTopologySuite.Coordinates;
 

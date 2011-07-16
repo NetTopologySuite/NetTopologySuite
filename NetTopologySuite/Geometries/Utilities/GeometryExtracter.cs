@@ -4,7 +4,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
+namespace NetTopologySuite.Geometries.Utilities
 {
     ///<summary>
     /// Class to extract geometries of a specific type from a geometry.

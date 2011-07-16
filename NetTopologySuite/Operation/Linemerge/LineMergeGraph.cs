@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Planargraph;
+using NetTopologySuite.Planargraph;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
+namespace NetTopologySuite.Operation.Linemerge
 {
     /// <summary>
     /// A planar graph of edges that is analyzed to sew the edges together. The 

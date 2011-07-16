@@ -1,4 +1,4 @@
-using GisSharpBlog.NetTopologySuite.Noding.Snapround;
+using NetTopologySuite.Noding.Snapround;
 using NetTopologySuite.Coordinates.Simple;
 using NUnit.Framework;
 

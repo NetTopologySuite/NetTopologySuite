@@ -1,10 +1,10 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Simplify
+namespace NetTopologySuite.Simplify
 {
     /// <summary>
     /// Simplifies an <see cref="IGeometry{TCoordinate}"/> using the standard Douglas-Peucker algorithm.

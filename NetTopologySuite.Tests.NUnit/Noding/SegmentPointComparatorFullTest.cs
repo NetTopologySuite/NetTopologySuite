@@ -1,7 +1,7 @@
 using System;
 using GeoAPI.Coordinates;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Noding;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Noding;
 using NUnit.Framework;
 using Coordinate = NetTopologySuite.Coordinates.Simple.Coordinate;
 

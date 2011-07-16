@@ -23,7 +23,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
+namespace NetTopologySuite.CoordinateSystems
 {
     /// <summary>
     /// Exception thrown when a computation fails.

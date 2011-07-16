@@ -4,12 +4,19 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using GeoAPI.Coordinates;
+#if !DOTNET40
 using GeoAPI.DataStructures.Collections.Generic;
+#endif
 using GeoAPI.Geometries;
 using NPack;
 using NPack.Interfaces;
+
 #if DOTNET35
 using System.Linq;
+using sl = System.Linq;
+#else
+using GeoAPI.DataStructures;
+using sl = GeoAPI.DataStructures;
 #endif
 
 namespace NetTopologySuite.Coordinates
@@ -244,7 +251,8 @@ namespace NetTopologySuite.Coordinates
 
             if (reverse)
             {
-                coordinates = Enumerable.Reverse(coordinates);
+
+                coordinates = sl.Enumerable.Reverse(coordinates);
             }
 
             Int32 lastIndex = -1;
@@ -314,11 +322,12 @@ namespace NetTopologySuite.Coordinates
             return this;
         }
 
+#if !DOTNET40
         public ISet<BufferedCoordinate> AsSet()
         {
             return new BufferedCoordinateSet(this, _factory, _buffer);
         }
-
+#endif
         public IBufferedCoordSequence Clear()
         {
             _sequence.Clear();
@@ -803,7 +812,7 @@ namespace NetTopologySuite.Coordinates
             }
             else
             {
-                foreach (BufferedCoordinate coordinate in Enumerable.Reverse(coordinates))
+                foreach (BufferedCoordinate coordinate in sl.Enumerable.Reverse(coordinates))
                 {
                     Prepend(coordinate);
                 }
@@ -1118,6 +1127,12 @@ namespace NetTopologySuite.Coordinates
             {
                 if (_skipIndexes != null)
                 {
+#if DOTNET40
+                    sliceSkips = new SortedSet<int>();
+                    for (int i = transformedStart; i < transformedEnd; i++)
+                        sliceSkips.Add(i);
+                    sliceSkips.IntersectWith(_skipIndexes);
+#else
                     Int32 i = transformedStart;
                     generator = delegate() { return i++; };
                     condition = delegate(Int32 v) { return v <= transformedEnd; };
@@ -1125,6 +1140,7 @@ namespace NetTopologySuite.Coordinates
                     sliceSkips.AddRange(Set<Int32>
                                             .Create(generator, condition)
                                             .Intersect(_skipIndexes));
+#endif
                 }
 
                 return new BufferedCoordinateSequence(_reversed,
@@ -1149,7 +1165,12 @@ namespace NetTopologySuite.Coordinates
                 if (_skipIndexes != null)
                 {
                     sliceSkips = new SortedSet<Int32>();
+#if DOTNET40
+                    foreach (int sliceSkip in _skipIndexes)
+                        sliceSkips.Add(sliceSkip);
+#else
                     sliceSkips.AddRange(_skipIndexes);
+#endif
                 }
             }
             else
@@ -1198,9 +1219,19 @@ namespace NetTopologySuite.Coordinates
                 if (_skipIndexes != null)
                 {
                     sliceSkips = new SortedSet<Int32>();
+#if DOTNET40
+                    int val = generator();
+                    while(condition(val))
+                    {
+                        sliceSkips.Add(val);
+                        val = generator();
+                    }
+                    sliceSkips.IntersectWith(_skipIndexes);
+#else
                     sliceSkips.AddRange(Set<Int32>
                                             .Create(generator, condition)
                                             .Intersect(_skipIndexes));
+#endif
                 }
             }
 
@@ -1779,7 +1810,14 @@ namespace NetTopologySuite.Coordinates
                         do
                         {
                             lastSkips = skips;
+#if DOTNET40
+                            int tmpMainIndex = mainIndex;
+                            int tmpSkips = skips;
+                            IEnumerable<int> t = _skipIndexes.Where(x => x <= tmpMainIndex + tmpSkips);
+                            skips = t.Count();
+#else
                             skips = _skipIndexes.CountAtAndBefore(mainIndex + skips);
+#endif
                         } while (lastSkips != skips);
 
                         mainIndex += skips;

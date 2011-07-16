@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation.Polygonize;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation.Polygonize;
 using NetTopologySuite.Coordinates;
 
 #if simple
