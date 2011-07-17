@@ -1,7 +1,7 @@
 using System;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Simplify;
+using NetTopologySuite.Simplify;
 using NetTopologySuite.Coordinates.Simple;
 using NUnit.Framework;
 

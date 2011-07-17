@@ -1,8 +1,8 @@
 using System;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using GeoAPI.DataStructures;
 using BitConverter = System.BitConverter;
 
-namespace GisSharpBlog.NetTopologySuite.Precision
+namespace NetTopologySuite.Precision
 {
     /// <summary> 
     /// Determines the maximum number of common most-significant
@@ -74,9 +74,13 @@ namespace GisSharpBlog.NetTopologySuite.Precision
 
         private Boolean _isFirst = true;
         private Int32 _commonSignificandBitsCount = 53;
-        private Int64 _commonBits = 0;
+        private Int64 _commonBits;
         private Int64 _commonSignExp;
 
+        ///<summary>
+        /// Adds a <see langword="Double"/>.
+        ///</summary>
+        ///<param name="num">number to add</param>
         public void Add(Double num)
         {
             Int64 numBits = BitConverter.DoubleToInt64Bits(num);
@@ -101,6 +105,9 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             _commonBits = ZeroLowerBits(_commonBits, 64 - (12 + _commonSignificandBitsCount));
         }
 
+        /// <summary>
+        /// Common as <see langword="Double"/>.
+        /// </summary>
         public Double Common
         {
             get { return BitConverter.Int64BitsToDouble(_commonBits); }
@@ -112,7 +119,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         public string ToString(Int64 bits)
         {
             Double x = BitConverter.Int64BitsToDouble(bits);
-            string numStr = HexConverter.ConvertAnyToAny(bits.ToString(), 10, 2);
+            string numStr = NumberBaseConverter.ConvertAnyToAny(bits.ToString(), 10, 2);
             string padStr = "0000000000000000000000000000000000000000000000000000000000000000" + numStr;
             string bitStr = padStr.Substring(padStr.Length - 64);
             string str = bitStr.Substring(0, 1) + "  " + bitStr.Substring(1, 12) + "(exp) "

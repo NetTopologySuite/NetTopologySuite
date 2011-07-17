@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Utilities;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Precision
+namespace NetTopologySuite.Precision
 {
     /// <summary>
     /// Reduces the precision of a <see cref="Geometry{TCoordinate}"/>
@@ -23,8 +23,8 @@ namespace GisSharpBlog.NetTopologySuite.Precision
     /// The buffer algorithm does not depend on the validity of the input point.
     /// </remarks>
     public class SimpleGeometryPrecisionReducer<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
-                            IComputable<TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IPrecisionModel<TCoordinate> _newPrecisionModel = null;
         private Boolean _removeCollapsed = true;
@@ -96,19 +96,19 @@ namespace GisSharpBlog.NetTopologySuite.Precision
                     return null;
                 }
 
-                IEnumerable<TCoordinate> reducedCoords = new ICoordinate[coordinates.Length];
+                TCoordinate[] reducedCoords = new TCoordinate[coordinates.Length];
 
                 // copy coordinates and reduce
                 for (Int32 i = 0; i < coordinates.Length; i++)
                 {
-                    ICoordinate coord = new Coordinate(coordinates[i]);
+                    TCoordinate coord = new Coordinate(coordinates[i]);
                     _container._newPrecisionModel.MakePrecise(coord);
                     reducedCoords[i] = coord;
                 }
 
                 // remove repeated points, to simplify returned point as much as possible
                 CoordinateList noRepeatedCoordList = new CoordinateList(reducedCoords, false);
-                ICoordinate[] noRepeatedCoords = noRepeatedCoordList.ToCoordinateArray();
+                TCoordinate[] noRepeatedCoords = noRepeatedCoordList.ToCoordinateArray();
 
                 /*
                 * Check to see if the removal of repeated points
