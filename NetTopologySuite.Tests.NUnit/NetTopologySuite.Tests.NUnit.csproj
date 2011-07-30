@@ -53,22 +53,112 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithm\AbstractPointInRingTest.cs" />
     <Compile Include="Algorithm\AngleTest.cs" />
+    <Compile Include="Algorithm\ComputeOrientationTest.cs" />
+    <Compile Include="Algorithm\ConvexHullTest.cs" />
+    <Compile Include="Algorithm\Distance\DiscreteHausdorffDistanceTest.cs" />
     <Compile Include="Algorithm\IndexedPointInAreaStressTest.cs" />
+    <Compile Include="Algorithm\IsCCWTest.cs" />
+    <Compile Include="Algorithm\LocatePointInRingTest.cs" />
+    <Compile Include="Algorithm\MCPointInRingTest.cs" />
+    <Compile Include="Algorithm\MinimumBoundingCircleStressTest.cs" />
+    <Compile Include="Algorithm\MinimumBoundingCircleTest.cs" />
+    <Compile Include="Algorithm\MinimumDiameterTest.cs" />
+    <Compile Include="Algorithm\NonRobustLineIntersectorTest.cs" />
     <Compile Include="Algorithm\PerturbedGridPolygonBuilder.cs" />
     <Compile Include="Algorithm\PointInAreaStressTester.cs" />
+    <Compile Include="Algorithm\PointInRingTest.cs" />
+    <Compile Include="Algorithm\PointLocatorTest.cs" />
+    <Compile Include="Algorithm\RayCrossingCounterTest.cs" />
+    <Compile Include="Algorithm\RobustLineIntersectionTest.cs" />
+    <Compile Include="Algorithm\RobustLineIntersectorTest.cs" />
+    <Compile Include="Algorithm\SimpleRayCrossingStressTest.cs" />
+    <Compile Include="Geometries\AreaLengthTest.cs" />
+    <Compile Include="Geometries\BidirectionalComparatorTest.cs" />
+    <Compile Include="Geometries\CoordinateArraysTest.cs" />
+    <Compile Include="Geometries\EnvelopeTest.cs" />
+    <Compile Include="Geometries\GeometryCollectionImplTest.cs" />
+    <Compile Include="Geometries\GeometryImplTest.cs" />
+    <Compile Include="Geometries\Implementation\BasicCoordinateSequenceTest.cs" />
+    <Compile Include="Geometries\Implementation\CoordinateArraySequenceTest.cs" />
+    <Compile Include="Geometries\Implementation\CoordinateSequenceTestBase.cs" />
+    <Compile Include="Geometries\Implementation\PackedCoordinateSequenceTest.cs" />
+    <Compile Include="Geometries\IntersectionMatrixTest.cs" />
+    <Compile Include="Geometries\IsRectangleTest.cs" />
+    <Compile Include="Geometries\LineSegmentTest.cs" />
+    <Compile Include="Geometries\LineStringImplTest.cs" />
+    <Compile Include="Geometries\MultiPointImplTest.cs" />
+    <Compile Include="Geometries\NormalizeTest.cs" />
+    <Compile Include="Geometries\PointImplTest.cs" />
+    <Compile Include="Geometries\PrecisionModelTest.cs" />
+    <Compile Include="Geometries\PredicateShortCircuitTest.cs" />
     <Compile Include="Geometries\Prepared\PreparedPolygonIntersectsStressTest.cs" />
     <Compile Include="Geometries\Prepared\PreparedPolygonStressTest.cs" />
     <Compile Include="Geometries\Prepared\StressTestHarness.cs" />
+    <Compile Include="Geometries\RectanglePredicateSyntheticTest.cs" />
+    <Compile Include="Geometries\RectanglePredicateTest.cs" />
+    <Compile Include="Geometries\SegmentDensifier.cs" />
     <Compile Include="Geometries\TriangleTest.cs" />
     <Compile Include="Geometries\Utility\AffineTransformationBuilderTest.cs" />
     <Compile Include="Geometries\Utility\AffineTransformationTest.cs" />
+    <Compile Include="GeometryUtils.cs" />
+    <Compile Include="Index\DoubleBitsTest.cs" />
+    <Compile Include="Index\IntervalTest.cs" />
+    <Compile Include="Index\QuadtreeTestCase.cs" />
+    <Compile Include="Index\SIRtreeTestCase.cs" />
+    <Compile Include="Index\SpatialIndexTestCase.cs" />
+    <Compile Include="Index\STRtreeTestCase.cs" />
+    <Compile Include="Index\STRtreeDemo.cs" />
+    <Compile Include="IO\SerializabilityTest.cs" />
     <Compile Include="IO\WKBTest.cs" />
+    <Compile Include="IO\WKTReaderExpTest.cs" />
+    <Compile Include="IO\WKTReaderParseErrorTest.cs" />
+    <Compile Include="IO\WKTReaderTest.cs" />
     <Compile Include="IO\WKTWriterTest.cs" />
+    <Compile Include="LinearReferencing\AbstractIndexedLineTestCase.cs" />
+    <Compile Include="LinearReferencing\LengthIndexedLineTestCase.cs" />
+    <Compile Include="LinearReferencing\LinearLocationTest.cs" />
+    <Compile Include="LinearReferencing\LocationIndexedLineTestCase.cs" />
+    <Compile Include="Noding\SegmentPointComparatorFullTest.cs" />
+    <Compile Include="Noding\SegmentPointComparatorTest.cs" />
+    <Compile Include="Noding\Snapround\SnapRoundingTest.cs" />
     <Compile Include="Operation\BoundaryTest.cs" />
+    <Compile Include="Operation\Buffer\BufferResultValidatorTest.cs" />
+    <Compile Include="Operation\Buffer\BufferTest.cs" />
+    <Compile Include="Operation\Buffer\BufferValidator.cs" />
+    <Compile Include="Operation\Buffer\FileBufferResultValidatorTest.cs" />
     <Compile Include="Operation\Buffer\Test.cs" />
+    <Compile Include="Operation\Distance\DistanceTest.cs" />
+    <Compile Include="Operation\LineMerge\LineMergerTest.cs" />
+    <Compile Include="Operation\LineMerge\LineSequencerTest.cs" />
+    <Compile Include="Operation\Overlay\FixedPrecisionSnappingTest.cs" />
+    <Compile Include="Operation\Overlay\OverlayNodingStressTest.cs" />
+    <Compile Include="Operation\Polygonize\PolygonizeTest.cs" />
+    <Compile Include="Operation\Relate\RelateBoundaryNodeRuleTest.cs" />
     <Compile Include="Operation\SimpleTest.cs" />
+    <Compile Include="Operation\Union\CascadedPolygonUnionFileTest.cs" />
+    <Compile Include="Operation\Union\CascadedPolygonUnionTest.cs" />
+    <Compile Include="Operation\Union\CascadedPolygonUnionTester.cs" />
+    <Compile Include="Operation\Union\UnaryUnionTest.cs" />
+    <Compile Include="Operation\Valid\IsValidTest.cs" />
+    <Compile Include="Operation\Valid\ValidClosedRingTest.cs" />
+    <Compile Include="Operation\Valid\ValidSelfTouchingRingFormingHoleTest.cs" />
+    <Compile Include="Precision\GeometryPrecisionReducerTest.cs" />
+    <Compile Include="Precision\SimpleGeometryPrecisionReducerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Simplify\DouglasPeuckerSimplifierTest.cs" />
+    <Compile Include="Simplify\GeometryOperationValidator.cs" />
+    <Compile Include="Simplify\SameStructureTester.cs" />
+    <Compile Include="Simplify\TopologyPreservingSimplifierTest.cs" />
+    <Compile Include="TestData\EmbeddedResourceManager.cs" />
+    <Compile Include="Utilities\PriorityQueueTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestData\africa.wkt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestData\europe.wkt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">
@@ -80,7 +170,6 @@
       <Name>NetTopologySuite</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

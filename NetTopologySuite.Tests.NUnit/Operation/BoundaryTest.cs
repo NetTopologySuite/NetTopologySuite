@@ -8,22 +8,20 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation
 {
-/**
- * Tests {@link BoundaryOp} with different {@link BoundaryNodeRule}s.
- *
- * @author Martin Davis
- * @version 1.7
- */
+    /// <summary>
+    /// Tests <see cref="BoundaryOp"/> with different <see cref="BoundaryNodeRule"/>s.
+    /// </summary>
+    /// <author>Martin Davis</author>
+    /// <version>1.7</version>
     public class BoundaryTest
     {
         private static GeometryFactory fact = new GeometryFactory();
         private static WKTReader rdr = new WKTReader(fact);
 
-        /**
-         * For testing only.
-         *
-         * @throws Exception
-         */
+        /// <summary>
+        /// For testing only.
+        /// </summary>
+        /// <exception cref="Exception" />
         [Test]
         public void Test1()
         {

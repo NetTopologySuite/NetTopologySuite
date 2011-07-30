@@ -6,14 +6,12 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.IO
 {
-    /**
-     * Test for {@link WKTWriter}.
-     *
-     * @version 1.7
-     */
+    /// <summary>
+    /// Test for <see cref="WKTWriter"/>.
+    /// </summary>
+    /// <version>1.7</version>
     public class WKTWriterTest
     {
-
         private static PrecisionModel precisionModel = new PrecisionModel(1);
         GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
         WKTWriter writer = new WKTWriter();

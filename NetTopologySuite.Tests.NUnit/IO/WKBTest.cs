@@ -8,10 +8,10 @@ using Assert = NUnit.Framework.Assert;
 
 namespace NetTopologySuite.Tests.NUnit.IO
 {
-    /**
-     * Tests the {@link WKBReader} and {@link WKBWriter}.
-     * Tests all geometries with both 2 and 3 dimensions and both byte orderings.
-     */
+    /// <summary>
+    /// Tests the <see cref="WKBReader"/> and <see cref="WKBWriter"/>.
+    /// Tests all geometries with both 2 and 3 dimensions and both byte orderings.
+    /// </summary>
     public class WKBTest
     {
         private static readonly GeometryFactory GeomFactory = new GeometryFactory();

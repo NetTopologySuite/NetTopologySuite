@@ -170,6 +170,7 @@ namespace NetTopologySuite.Algorithm
             Stack<ICoordinate> ps = new Stack<ICoordinate>(c.Length);
             ps.Push(c[0]);
             ps.Push(c[1]);
+            if(c.Length > 2)
             ps.Push(c[2]);
             for (int i = 3; i < c.Length; i++)
             {

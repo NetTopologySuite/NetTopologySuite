@@ -611,7 +611,7 @@ namespace NetTopologySuite.IO
         private void AppendMultiPointText(IMultiPoint multiPoint, int level, TextWriter writer)
         {
             if (multiPoint.IsEmpty) 
-                writer.Write(" EMPTY");
+                writer.Write("EMPTY");
             else 
             {
                 writer.Write("(");

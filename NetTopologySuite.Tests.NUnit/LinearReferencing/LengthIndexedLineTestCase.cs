@@ -1,0 +1,172 @@
+using System;
+using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
+using NetTopologySuite.LinearReferencing;
+using NUnit.Framework;
+
+namespace NetTopologySuite.Tests.NUnit.LinearReferencing
+{
+    /// <summary>
+    /// Tests the <see cref="LengthIndexedLine" /> class
+    /// </summary>
+    [TestFixture]
+    public class LengthIndexedLineTestCase : AbstractIndexedLineTestCase
+    {
+        [Test]
+        public void TestExtractLineBeyondRange()
+        {
+            CheckExtractLine("LINESTRING (0 0, 10 10)", -100, 100, "LINESTRING (0 0, 10 10)");
+        }
+
+        [Test]
+        public void TestExtractLineReverse()
+        {
+            CheckExtractLine("LINESTRING (0 0, 10 0)", 9, 1, "LINESTRING (9 0, 1 0)");
+        }
+
+        [Test]
+        public void TestExtractLineReverseMulti()
+        {
+            CheckExtractLine("MULTILINESTRING ((0 0, 10 0), (20 0, 25 0, 30 0))",
+                                19, 1, "MULTILINESTRING ((29 0, 25 0, 20 0), (10 0, 1 0))");
+        }
+
+        [Test]
+        public void TestExtractLineNegative()
+        {
+            CheckExtractLine("LINESTRING (0 0, 10 0)", -9, -1, "LINESTRING (1 0, 9 0)");
+        }
+
+        [Test]
+        public void TestExtractLineNegativeReverse()
+        {
+            CheckExtractLine("LINESTRING (0 0, 10 0)", -1, -9, "LINESTRING (9 0, 1 0)");
+        }
+
+        [Test]
+        public void TestExtractLineIndexAtEndpoint()
+        {
+            CheckExtractLine("MULTILINESTRING ((0 0, 10 0), (20 0, 25 0, 30 0))",
+                                10, -1, "LINESTRING (20 0, 25 0, 29 0)");
+        }
+
+        [Test]
+        public void TestExtractLineBothIndicesAtEndpoint()
+        {
+            CheckExtractLine("MULTILINESTRING ((0 0, 10 0), (20 0, 25 0, 30 0))",
+                                10, 10, "LINESTRING (20 0, 20 0)");
+        }
+
+        [Test]
+        public void TestExtractLineBothIndicesAtEndpointNegative()
+        {
+            CheckExtractLine("MULTILINESTRING ((0 0, 10 0), (20 0, 25 0, 30 0))",
+                                -10, 10, "LINESTRING (20 0, 20 0)");
+        }
+
+        [Test]
+        public void TestExtractPointBeyondRange()
+        {
+            IGeometry linearGeom = Read("LINESTRING (0 0, 10 10)");
+            LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
+            ICoordinate pt = indexedLine.ExtractPoint(100);
+            Assert.IsTrue(pt.Equals(new Coordinate(10, 10)));
+
+            ICoordinate pt2 = indexedLine.ExtractPoint(0);
+            Assert.IsTrue(pt2.Equals(new Coordinate(0, 0)));
+        }
+
+        [Test]
+        public void TestProjectPointWithDuplicateCoords()
+        {
+            IGeometry linearGeom = Read("LINESTRING (0 0, 10 0, 10 0, 20 0)");
+            LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
+            double projIndex = indexedLine.Project(new Coordinate(10, 1));
+            Assert.IsTrue(projIndex == 10.0);
+        }
+
+        /// <summary>
+        /// These tests work for LengthIndexedLine, but not LocationIndexedLine
+        /// </summary>
+        [Ignore("NTS does not have a method overload for the ExtractPoint method which takes an index and an offset distance.  Once this migrated to NTS, the following block can be uncommented")]
+        public void TestOffsetStartPointRepeatedPoint()
+        {
+            //TODO: Uncomment when NTS has a method overload for the ExtractPoint method which takes an index and an offset distance
+            //RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(0 0)", 1.0, "POINT (-0.7071067811865475 0.7071067811865475)");
+            //RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(0 0)", -1.0, "POINT (0.7071067811865475 -0.7071067811865475)");
+            //RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(10 10)", 5.0, "POINT (6.464466094067262 13.535533905932738)");
+            //RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(10 10)", -5.0, "POINT (13.535533905932738 6.464466094067262)");
+        }
+
+        /// <summary>
+        /// Tests that z values are interpolated
+        /// </summary>
+        [Test]
+        public void TestComputeZ()
+        {
+            IGeometry linearGeom = Read("LINESTRING (0 0 0, 10 10 10)");
+            LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
+            double projIndex = indexedLine.Project(new Coordinate(5, 5));
+            ICoordinate projPt = indexedLine.ExtractPoint(projIndex);
+            //    System.out.println(projPt);
+            Assert.IsTrue(projPt.Equals3D(new Coordinate(5, 5, 5)));
+        }
+
+        /// <summary>
+        /// Tests that if the input does not have Z ordinates, neither does the output.
+        /// </summary>
+        [Test]
+        public void TestComputeZNaN()
+        {
+            IGeometry linearGeom = Read("LINESTRING (0 0, 10 10 10)");
+            LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
+            double projIndex = indexedLine.Project(new Coordinate(5, 5));
+            ICoordinate projPt = indexedLine.ExtractPoint(projIndex);
+            Assert.IsTrue(Double.IsNaN(projPt.Z));
+        }
+
+        private void CheckExtractLine(String wkt, double start, double end, String expected)
+        {
+            IGeometry linearGeom = Read(wkt);
+            LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
+            IGeometry result = indexedLine.ExtractLine(start, end);
+            CheckExpected(result, expected);
+        }
+
+        protected override IGeometry IndicesOfThenExtract(IGeometry linearGeom, IGeometry subLine)
+        {
+            LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
+            double[] loc = indexedLine.IndicesOf(subLine);
+            IGeometry result = indexedLine.ExtractLine(loc[0], loc[1]);
+            return result;
+        }
+
+        protected override bool IndexOfAfterCheck(IGeometry linearGeom, ICoordinate testPt)
+        {
+            LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
+
+            // check locations are consecutive
+            double loc1 = indexedLine.IndexOf(testPt);
+            double loc2 = indexedLine.IndexOfAfter(testPt, loc1);
+            if (loc2 <= loc1) return false;
+
+            // check extracted points are the same as the input
+            ICoordinate pt1 = indexedLine.ExtractPoint(loc1);
+            ICoordinate pt2 = indexedLine.ExtractPoint(loc2);
+            if (!pt1.Equals2D(testPt)) return false;
+            if (!pt2.Equals2D(testPt)) return false;
+
+            return true;
+        }
+
+        //TODO: Uncomment when NTS has a method overload for the ExtractPoint method which takes an index and an offset distance
+        //protected override ICoordinate ExtractOffsetAt(IGeometry linearGeom, ICoordinate testPt, double offsetDistance)
+        //{
+        //    LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
+        //    double index = indexedLine.IndexOf(testPt);
+        //    return indexedLine.ExtractPoint(index, offsetDistance);
+        //}
+    }
+}

@@ -183,8 +183,10 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         private bool IsNumberNext(IList<Token> tokens) 
         {
-            Token token = tokens[_index] /*as Token*/;            
-            return token is FloatToken || token is IntToken;        
+            Token token = tokens[_index] /*as Token*/;
+            return token is FloatToken ||
+                   token is IntToken ||
+                   (token is WordToken && string.Compare(token.Object.ToString(), double.NaN.ToString(), true) == 0);        
         }
 
         /// <summary>
@@ -209,16 +211,21 @@ namespace NetTopologySuite.IO
             if (token is FloatToken || token is IntToken)
                 return (double) token.ConvertToType(typeof(double));
             if (token is WordToken)
+            {
+                if (string.Compare(token.Object.ToString(), double.NaN.ToString(), true) == 0)
+                {
+                    return Double.NaN;
+                }
                 throw new ParseException("Expected number but encountered word: " + token.StringValue);
+            }
             if (token.StringValue == "(")
                 throw new ParseException("Expected number but encountered '('");
             if (token.StringValue == ")")
                 throw new ParseException("Expected number but encountered ')'");
             if (token.StringValue == ",")
                 throw new ParseException("Expected number but encountered ','");
-            
-            Assert.ShouldNeverReachHere();
-            return double.NaN;
+
+            throw new ParseException("Expected number but encountered '" + token.StringValue + "'");
         }
 
         /// <summary>

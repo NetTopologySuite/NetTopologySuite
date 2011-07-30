@@ -48,10 +48,10 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             set { _ignoreBoundaryResults = value; }
         }
 
-        /**
-         * 
-         * @return true if all point locations were computed correctly
-         */
+        /// <summary>
+        /// Run
+        /// </summary>
+        /// <returns> true if all point locations were computed correctly</returns>
         public Boolean Run()
         {
             Stopwatch sw = new Stopwatch();
@@ -96,11 +96,12 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                               + "\nExterior = " + _locationCount[(Int32)Locations.Exterior]
                 );
         }
-        /**
-         * 
-         * @param p
-         * @return true if the point location is determined to be the same by both PIA locaters
-         */
+
+        /// <summary>
+        /// TestPointInArea
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns>true if the point location is determined to be the same by both PIA locaters</returns>
         private Boolean TestPointInArea(ICoordinate p)
         {
             //Console.WriteLine(WKTWriter.toPoint(p));

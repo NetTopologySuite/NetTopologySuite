@@ -1,0 +1,97 @@
+using System;
+using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
+using NUnit.Framework;
+
+namespace NetTopologySuite.Tests.NUnit.Algorithm
+{
+    [Ignore("The Minimum Bounding Circle logic does not look to have been included in NTS as yet")]
+    public class MinimumBoundingCircleTest
+    {
+        private IPrecisionModel precisionModel;
+        private IGeometryFactory geometryFactory;
+        WKTReader reader;
+
+        public MinimumBoundingCircleTest()
+        {
+            precisionModel = new PrecisionModel(1);
+            geometryFactory = new GeometryFactory(precisionModel, 0);
+            reader = new WKTReader(geometryFactory);
+        }
+
+        [Test]
+        public void TestEmptyPoint()
+        {
+            DoMinimumBoundingCircleTest("POINT EMPTY", "MULTIPOINT EMPTY");
+        }
+
+        [Test]
+        public void TestPoint()
+        {
+            DoMinimumBoundingCircleTest("POINT (10 10)", "POINT (10 10)", new Coordinate(10, 10), 0);
+        }
+
+        [Test]
+        public void TestPoints2()
+        {
+            DoMinimumBoundingCircleTest("MULTIPOINT ((10 10), (20 20))", "MULTIPOINT ((10 10), (20 20))", new Coordinate(15, 15), 7.0710678118654755);
+        }
+
+        [Test]
+        public void TestPointsInLine()
+        {
+            DoMinimumBoundingCircleTest("MULTIPOINT ((10 10), (20 20), (30 30))", "MULTIPOINT ((10 10), (30 30))",
+            new Coordinate(20, 20), 14.142135623730951);
+        }
+
+        [Test]
+        public void TestPoints3()
+        {
+            DoMinimumBoundingCircleTest("MULTIPOINT ((10 10), (20 20), (10 20))", "MULTIPOINT ((10 10), (20 20), (10 20))",
+            new Coordinate(15, 15), 7.0710678118654755);
+        }
+
+        [Test]
+        public void TestTriangleWithMiddlePoint()
+        {
+            DoMinimumBoundingCircleTest("MULTIPOINT ((10 10), (20 20), (10 20), (15 19))", "MULTIPOINT ((10 10), (20 20), (10 20))",
+            new Coordinate(15, 15), 7.0710678118654755);
+        }
+
+        static double TOLERANCE = 1.0e-5;
+
+        [Test]
+        private void DoMinimumBoundingCircleTest(String wkt, String expectedWKT)
+        {
+            DoMinimumBoundingCircleTest(wkt, expectedWKT, null, -1);
+        }
+
+        [Test]
+        private void DoMinimumBoundingCircleTest(String wkt, String expectedWKT, Coordinate expectedCentre, double expectedRadius)
+        {
+            //TODO: Once MinimuBoundingCircle is introduced, uncomment the lines below
+            //MinimumBoundingCircle mbc = new MinimumBoundingCircle(reader.Read(wkt));
+            //Coordinate[] exPts = mbc.ExtremalPoints();
+            //Geometry actual = geometryFactory.CreateMultiPoint(exPts);
+            //double actualRadius = mbc.Radius();
+            //Coordinate actualCentre = mbc.Centre();
+            //Console.WriteLine("   Centre = " + actualCentre + "   Radius = " + actualRadius);
+
+            //Geometry expected = reader.Read(expectedWKT);
+            //bool isEqual = actual.Equals(expected);
+            //// need this hack because apparently equals does not work for MULTIPOINT EMPTY
+            //if (actual.IsEmpty() && expected.IsEmpty())
+            //isEqual = true;
+            //Assert.IsTrue(isEqual);
+  	
+            //if (expectedCentre != null) {
+            //    Assert.IsTrue(expectedCentre.Distance(actualCentre) < TOLERANCE);
+            //}
+            //if (expectedRadius >= 0) {
+            //    Assert.IsTrue(Math.Abs(expectedRadius - actualRadius) < TOLERANCE);
+            //}
+        }
+    }
+}

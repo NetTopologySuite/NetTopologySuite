@@ -314,6 +314,8 @@
     <Compile Include="Operation\Buffer\OffsetCurveVertexList.cs" />
     <Compile Include="Operation\Buffer\RightmostEdgeFinder.cs" />
     <Compile Include="Operation\Buffer\SubgraphDepthLocater.cs" />
+    <Compile Include="Operation\Buffer\Validate\BufferDistanceValidator.cs" />
+    <Compile Include="Operation\Buffer\Validate\BufferResultValidator.cs" />
     <Compile Include="Operation\Distance\ConnectedElementLocationFilter.cs" />
     <Compile Include="Operation\Distance\ConnectedElementPointFilter.cs" />
     <Compile Include="Operation\Distance\DistanceOp.cs" />
