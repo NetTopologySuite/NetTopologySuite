@@ -5,11 +5,10 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
 {
-    /**
-     * Tests {@link AffineTransformationBuilder}.
-     * 
-     * @author Martin Davis
-     */
+    /// <summary>
+    /// Tests <see cref="AffineTransformationBuilder"/>
+    /// </summary>  
+    /// <author>Martin Davis</author>
     public class AffineTransformationBuilderTest
     {
         //[Test]

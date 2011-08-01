@@ -6,15 +6,12 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 {
-    /**
-     * Stress tests {@link PreparedPolygon} for contains operation.
-     * 
-     * @author Owner
-     *
-     */
+    /// <summary>
+    /// Stress tests <see cref="PreparedPolygon"> for contains operation.
+    /// </summary>
+    /// <author>Owner</author>
     public class PreparedPolygonPredicateStressTest
     {
-
         bool testFailed = false;
 
         [Test]

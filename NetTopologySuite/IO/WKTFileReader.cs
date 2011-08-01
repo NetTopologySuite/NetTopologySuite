@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
+using RTools_NTS.Util;
 
 namespace NetTopologySuite.IO
 {
@@ -27,6 +28,7 @@ namespace NetTopologySuite.IO
         {
             _file = file;
             _wktReader = wktReader;
+            Limit = -1;
         }
 
         ///<summary>
@@ -80,6 +82,20 @@ namespace NetTopologySuite.IO
         private IList<IGeometry> Read(/*BufferedReader*/StreamReader bufferedReader)
         {
             IList<IGeometry> geoms = new List<IGeometry>();
+            var tokens = _wktReader.Tokenize(bufferedReader);
+            if (tokens[tokens.Count-1] is EofToken)
+                tokens.RemoveAt(tokens.Count-1);
+            
+            _wktReader.Index = 0;
+            while (!IsAtEndOfTokens(tokens) && !IsAtLimit(geoms))
+            {
+                var g = _wktReader.ReadGeometryTaggedText(tokens);
+                if (_count >= Offset)
+                    geoms.Add(g);
+                _count++;
+            }
+
+            /*
             while (!IsAtEndOfFile(bufferedReader) && !IsAtLimit(geoms))
             {
                 IGeometry g = _wktReader.Read(bufferedReader);
@@ -87,6 +103,7 @@ namespace NetTopologySuite.IO
                     geoms.Add(g);
                 _count++;
             }
+             */
             return geoms;
         }
 
@@ -97,10 +114,15 @@ namespace NetTopologySuite.IO
             return true;
         }
 
+        private bool IsAtEndOfTokens(IList<Token> tokens)
+        {
+            return !(_wktReader.Index < tokens.Count);
+        }
+
         ///<summary>
         /// Tests if reader is at EOF.
         ///</summary>
-        private static bool IsAtEndOfFile(/*BufferedReader*/StreamReader bufferedReader)
+        private bool IsAtEndOfFile(/*BufferedReader*/StreamReader bufferedReader)
         {
             return bufferedReader.EndOfStream;
             /*

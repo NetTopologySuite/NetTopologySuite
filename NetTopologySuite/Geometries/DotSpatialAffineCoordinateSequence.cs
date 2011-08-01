@@ -127,7 +127,7 @@ namespace NetTopologySuite.Geometries
                     return XY[index*2+1];
                 case Ordinate.Z:
                     return Z != null ? Z[index] : double.NaN;
-                /*case Ordinates.M:*/
+                /*case Ordinate.M:*/
                 default:
                     throw new NotSupportedException();
             }
@@ -147,7 +147,7 @@ namespace NetTopologySuite.Geometries
                     if (Z != null)
                         Z[index] = value;
                     break;
-                    /*case Ordinates.M:*/
+                    /*case Ordinate.M:*/
                 default:
                     throw new NotSupportedException();
             }

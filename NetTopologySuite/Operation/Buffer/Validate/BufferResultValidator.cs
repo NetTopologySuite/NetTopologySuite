@@ -78,11 +78,17 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             return _isValid;
         }
 
+        /// <summary>
+        /// Gets the error message
+        /// </summary>
         public String ErrorMessage
         {
             get { return _errorMsg; }
         }
 
+        /// <summary>
+        /// Gets the error location
+        /// </summary>
         public ICoordinate ErrorLocation
         {
             get { return _errorLocation; }

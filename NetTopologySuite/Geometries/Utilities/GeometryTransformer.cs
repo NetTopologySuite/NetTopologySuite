@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries.Utilities
@@ -249,23 +250,31 @@ namespace NetTopologySuite.Geometries.Utilities
             if (shell == null || ! (shell is ILinearRing) || shell.IsEmpty)
                 isAllValidLinearRings = false;
 
-            var holes = new List<ILinearRing>();
+            var holes = new List<ILineString>();
             for (int i = 0; i < geom.NumInteriorRings; i++) 
             {
                 IGeometry hole = TransformLinearRing(geom.Holes[i], geom);
                 if (hole == null || hole.IsEmpty) continue;            
                 if (!(hole is ILinearRing))
                     isAllValidLinearRings = false;
-                holes.Add((ILinearRing)hole);
+                holes.Add((ILineString)hole);
             }
 
             if (isAllValidLinearRings)
-                return Factory.CreatePolygon((ILinearRing)   shell, holes.ToArray());
-            else 
+            {
+#if !SILVERLIGHT
+                var holesAsLinearRing = holes.ConvertAll<ILinearRing>(ls => (ILinearRing) ls).ToArray();
+#else
+                var holesAsLinearRing = (from ls in holes select ((ILinearRing) ls)).ToArray();
+#endif
+
+                return Factory.CreatePolygon((ILinearRing)shell, holesAsLinearRing);
+            }
+            else
             {
                 var components = new List<IGeometry>();
-                if (shell != null) 
-                    components.Add(shell);                
+                if (shell != null)
+                    components.Add(shell);
                 foreach (IGeometry hole in holes)
                     components.Add(hole);
                 return Factory.BuildGeometry(components);

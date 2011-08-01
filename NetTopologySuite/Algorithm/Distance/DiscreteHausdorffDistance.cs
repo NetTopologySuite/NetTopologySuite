@@ -29,6 +29,13 @@ namespace NetTopologySuite.Algorithm.Distance
             return dist.Distance();
         }
 
+        public static double Distance(IGeometry g0, IGeometry g1, double densifyFraction)
+        {
+            DiscreteHausdorffDistance dist = new DiscreteHausdorffDistance(g0, g1);
+            dist.DensifyFraction = densifyFraction;
+            return dist.Distance();
+        }
+
         private readonly IGeometry _g0;
         private readonly IGeometry _g1;
         private readonly PointPairDistance _ptDist = new PointPairDistance();

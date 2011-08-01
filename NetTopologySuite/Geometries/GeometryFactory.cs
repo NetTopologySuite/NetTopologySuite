@@ -293,8 +293,8 @@ namespace NetTopologySuite.Geometries
             {
                 new Coordinate(envelope.MinX, envelope.MinY),
                 new Coordinate(envelope.MinX, envelope.MaxY),
-                new Coordinate(envelope.MaxX, envelope.MinY),
                 new Coordinate(envelope.MaxX, envelope.MaxY),
+                new Coordinate(envelope.MaxX, envelope.MinY),
                 new Coordinate(envelope.MinX, envelope.MinY),
             });
             return CreatePolygon(ring, null);

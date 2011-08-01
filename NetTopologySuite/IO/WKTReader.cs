@@ -6,9 +6,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 using RTools_NTS.Util;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace NetTopologySuite.IO
 {
@@ -44,6 +41,10 @@ namespace NetTopologySuite.IO
         private readonly IGeometryFactory _geometryFactory;
         private readonly IPrecisionModel _precisionModel;
         int _index;
+
+        private static readonly System.Globalization.CultureInfo InvariantCulture =
+            System.Globalization.CultureInfo.InvariantCulture;
+        private static readonly string NaNString = double.NaN.ToString(InvariantCulture); /*"NaN"*/
 
         /// <summary> 
         /// Creates a <c>WKTReader</c> that creates objects using a basic GeometryFactory.
@@ -88,11 +89,14 @@ namespace NetTopologySuite.IO
         /// </param>
         /// <returns>A <c>Geometry</c> read from <c>reader</c>.
         /// </returns>
-        public IGeometry Read(TextReader reader) 
+        public IGeometry Read(TextReader reader)
         {
+            var tokens = Tokenize(reader);
+            /*
             StreamTokenizer tokenizer = new StreamTokenizer(reader);
             IList<Token> tokens = new List<Token>();
             tokenizer.Tokenize(tokens);     // Read directly all tokens
+             */
             _index = 0;                      // Reset pointer to start of tokens
             try
             {
@@ -103,6 +107,16 @@ namespace NetTopologySuite.IO
                 throw new ParseException(e.ToString());
             }            
         }
+
+        internal IList<Token> Tokenize(TextReader reader)
+        {
+            StreamTokenizer tokenizer = new StreamTokenizer(reader);
+            IList<Token> tokens = new List<Token>();
+            tokenizer.Tokenize(tokens);     // Read directly all tokens
+            return tokens;
+        }
+
+        internal int Index { get { return _index; } set { _index = value; } }
 
 		/// <summary>
 		/// Returns the next array of <c>Coordinate</c>s in the stream.
@@ -183,8 +197,10 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         private bool IsNumberNext(IList<Token> tokens) 
         {
-            Token token = tokens[_index] /*as Token*/;            
-            return token is FloatToken || token is IntToken;        
+            Token token = tokens[_index] /*as Token*/;
+            return token is FloatToken ||
+                   token is IntToken ||
+                   (token is WordToken && string.Compare(token.Object.ToString(), NaNString, StringComparison.InvariantCultureIgnoreCase) == 0);        
         }
 
         /// <summary>
@@ -209,16 +225,21 @@ namespace NetTopologySuite.IO
             if (token is FloatToken || token is IntToken)
                 return (double) token.ConvertToType(typeof(double));
             if (token is WordToken)
+            {
+                if (string.Compare(token.Object.ToString(), NaNString, StringComparison.InvariantCultureIgnoreCase) == 0)
+                {
+                    return Double.NaN;
+                }
                 throw new ParseException("Expected number but encountered word: " + token.StringValue);
+            }
             if (token.StringValue == "(")
                 throw new ParseException("Expected number but encountered '('");
             if (token.StringValue == ")")
                 throw new ParseException("Expected number but encountered ')'");
             if (token.StringValue == ",")
                 throw new ParseException("Expected number but encountered ','");
-            
-            Assert.ShouldNeverReachHere();
-            return double.NaN;
+
+            throw new ParseException("Expected number but encountered '" + token.StringValue + "'");
         }
 
         /// <summary>
@@ -284,7 +305,7 @@ namespace NetTopologySuite.IO
         /// <returns>The next word in the stream as uppercase text.</returns>
         private string GetNextWord(IList<Token> tokens)
         {
-            Token token = tokens[_index++] /*as Token*/;            
+            Token token = tokens[_index++] /*as Token*/;
 
             if (token is EofToken)
                 throw new ParseException("Expected number but encountered end of stream");
@@ -314,7 +335,7 @@ namespace NetTopologySuite.IO
         /// </param>
         /// <returns>A <c>Geometry</c> specified by the next token
         /// in the stream.</returns>
-        private IGeometry ReadGeometryTaggedText(IList<Token> tokens) 
+        internal IGeometry ReadGeometryTaggedText(IList<Token> tokens) 
         {            
             /*
              * A new different implementation by Marc Jacquin:
@@ -322,7 +343,7 @@ namespace NetTopologySuite.IO
              */
             IGeometry returned;
             string sridValue = null;
-            string type = tokens[0].ToString();
+            string type = tokens[_index].ToString();
             
             if (type == "SRID") 
             {
