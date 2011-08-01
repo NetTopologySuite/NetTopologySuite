@@ -123,9 +123,9 @@ namespace NetTopologySuite.Index.Quadtree
         /// <summary> 
         /// Removes a single item from the tree.
         /// </summary>
-        /// <param name="itemEnv">The Envelope of the item to remove.</param>
+        /// <param name="itemEnv">The Envelope of the item to be removed.</param>
         /// <param name="item">The item to remove.</param>
-        /// <returns><c>true</c> if the item was found.</returns>
+        /// <returns><c>true</c> if the item was found (and thus removed).</returns>
         public bool Remove(IEnvelope itemEnv, T item)
         {
             IEnvelope posEnv = EnsureExtent(itemEnv, _minExtent);
@@ -133,10 +133,19 @@ namespace NetTopologySuite.Index.Quadtree
         }        
 
         /// <summary>
-        /// 
+        /// Queries the tree and returns items which may lie in the given search envelope.
         /// </summary>
-        /// <param name="searchEnv"></param>
-        /// <returns></returns>
+        /// <remarks>
+        /// Precisely, the items that are returned are all items in the tree 
+        /// whose envelope <b>may</b> intersect the search Envelope.
+        /// Note that some items with non-intersecting envelopes may be returned as well;
+        /// the client is responsible for filtering these out.
+        /// In most situations there will be many items in the tree which do not
+        /// intersect the search envelope and which are not returned - thus
+        /// providing improved performance over a simple linear scan.    
+        /// </remarks>
+        /// <param name="searchEnv">The envelope of the desired query area.</param>
+        /// <returns>A List of items which may intersect the search envelope</returns>
         public IList<T> Query(IEnvelope searchEnv)
         {
             /*
@@ -149,10 +158,19 @@ namespace NetTopologySuite.Index.Quadtree
         }
 
         /// <summary>
-        /// 
+        /// Queries the tree and visits items which may lie in the given search envelope.
         /// </summary>
-        /// <param name="searchEnv"></param>
-        /// <param name="visitor"></param>
+        /// <remarks>
+        /// Precisely, the items that are visited are all items in the tree 
+        /// whose envelope <b>may</b> intersect the search Envelope.
+        /// Note that some items with non-intersecting envelopes may be visited as well;
+        /// the client is responsible for filtering these out.
+        /// In most situations there will be many items in the tree which do not
+        /// intersect the search envelope and which are not visited - thus
+        /// providing improved performance over a simple linear scan.    
+        /// </remarks>
+        /// <param name="searchEnv">The envelope of the desired query area.</param>
+        /// <param name="visitor">A visitor object which is passed the visited items</param>
         public void Query(IEnvelope searchEnv, IItemVisitor<T> visitor)
         {
             /*

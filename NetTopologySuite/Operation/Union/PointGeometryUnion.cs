@@ -1,12 +1,9 @@
-#define Goletas
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries.Utilities;
+using Wintellect.PowerCollections;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Union
+namespace NetTopologySuite.Operation.Union
 {
     public class PointGeometryUnion
     {
@@ -14,9 +11,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
         private readonly IGeometry _otherGeom;
         private readonly IGeometry _pointGeom;
 
-        public PointGeometryUnion(IPoint pointGeom, IGeometry otherGeom)
+        public PointGeometryUnion(IPuntal pointGeom, IGeometry otherGeom)
         {
-            _pointGeom = pointGeom;
+            _pointGeom = (IGeometry)pointGeom;
             _otherGeom = otherGeom;
             _geomFact = otherGeom.Factory;
         }
@@ -29,29 +26,24 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
         ///<param name="pointGeom"></param>
         ///<param name="otherGeom"></param>
         ///<returns></returns>
-        public static IGeometry Union(IPoint pointGeom, IGeometry otherGeom)
+        public static IGeometry Union(IPuntal pointGeom, IGeometry otherGeom)
         {
-            PointGeometryUnion unioner = new PointGeometryUnion(pointGeom, otherGeom);
+            var unioner = new PointGeometryUnion(pointGeom, otherGeom);
             return unioner.Union();
         }
 
         public IGeometry Union()
         {
             PointLocator locater = new PointLocator();
-
             // use a set to eliminate duplicates, as required for union
-#if Goletas
-            HashSet<ICoordinate> exteriorCoords = new HashSet<ICoordinate>();
-#else
-            TreeSet exteriorCoords = new TreeSet();
-#endif
+            var exteriorCoords = new OrderedSet<ICoordinate>();
 
             foreach (IPoint point in PointExtracter.GetPoints(_pointGeom))
             {
                 ICoordinate coord = point.Coordinate;
-                Locations loc = locater.Locate(coord, _otherGeom);
+                Location loc = locater.Locate(coord, _otherGeom);
 
-                if (loc == Locations.Exterior)
+                if (loc == Location.Exterior)
                 {
                     exteriorCoords.Add(coord);
                 }
@@ -64,9 +56,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
             }
 
             // make a puntal geometry of appropriate size
-            IGeometry ptComp = null;
             ICoordinateSequence coords = _geomFact.CoordinateSequenceFactory.Create(exteriorCoords.ToArray());
-            ptComp = coords.Count == 1 ? (IGeometry)_geomFact.CreatePoint(coords.GetCoordinate(0)) : _geomFact.CreateMultiPoint(coords);
+            IGeometry ptComp = coords.Count == 1 ? (IGeometry)_geomFact.CreatePoint(coords.GetCoordinate(0)) : _geomFact.CreateMultiPoint(coords);
 
             // add point component to the other geometry
             return GeometryCombiner.Combine(ptComp, _otherGeom);

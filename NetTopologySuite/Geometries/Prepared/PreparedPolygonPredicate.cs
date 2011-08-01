@@ -37,8 +37,8 @@ namespace NetTopologySuite.Geometries.Prepared
             IList<ICoordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
             foreach (ICoordinate p in coords)
             {
-                Locations loc = _targetPointLocator.Locate(p);
-                if (loc == Locations.Exterior)
+                Location loc = _targetPointLocator.Locate(p);
+                if (loc == Location.Exterior)
                     return false;
             }
             return true;
@@ -55,8 +55,8 @@ namespace NetTopologySuite.Geometries.Prepared
             IList<ICoordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
             foreach (ICoordinate p in coords)
             {
-                Locations loc = _targetPointLocator.Locate(p);
-                if (loc != Locations.Interior)
+                Location loc = _targetPointLocator.Locate(p);
+                if (loc != Location.Interior)
                     return false;
             }
             return true;
@@ -73,8 +73,8 @@ namespace NetTopologySuite.Geometries.Prepared
             IList<ICoordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
             foreach (ICoordinate p in coords)
             {
-                Locations loc = _targetPointLocator.Locate(p);
-                if (loc != Locations.Exterior)
+                Location loc = _targetPointLocator.Locate(p);
+                if (loc != Location.Exterior)
                     return true;
             }
             return false;
@@ -91,8 +91,8 @@ namespace NetTopologySuite.Geometries.Prepared
             IList<ICoordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
             foreach (ICoordinate p in coords)
             {
-                Locations loc = _targetPointLocator.Locate(p);
-                if (loc == Locations.Interior)
+                Location loc = _targetPointLocator.Locate(p);
+                if (loc == Location.Interior)
                     return true;
             }
             return false;
@@ -110,8 +110,8 @@ namespace NetTopologySuite.Geometries.Prepared
             IPointOnGeometryLocator piaLoc = new SimplePointInAreaLocator(testGeom);
             foreach (ICoordinate p in targetRepPts)
             {
-                Locations loc = piaLoc.Locate(p);
-                if (loc != Locations.Exterior)
+                Location loc = piaLoc.Locate(p);
+                if (loc != Location.Exterior)
                     return true;
             }
             return false;

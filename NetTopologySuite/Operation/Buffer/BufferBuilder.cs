@@ -29,9 +29,9 @@ namespace NetTopologySuite.Operation.Buffer
         {
             var lLoc = label.GetLocation(0, Positions.Left);
             var rLoc = label.GetLocation(0, Positions.Right);
-            if (lLoc == Locations.Interior && rLoc == Locations.Exterior)
+            if (lLoc == Location.Interior && rLoc == Location.Exterior)
                 return 1;
-            if (lLoc == Locations.Exterior && rLoc == Locations.Interior)
+            if (lLoc == Location.Exterior && rLoc == Location.Interior)
                 return -1;
             return 0;
         }
@@ -153,7 +153,7 @@ namespace NetTopologySuite.Operation.Buffer
             {
                 Label oldLabel = (Label)segStr.Context;
                 Edge edge = new Edge(segStr.Coordinates, new Label(oldLabel));
-                InsertEdge(edge);
+                InsertUniqueEdge(edge);
             }
             //saveEdges(edgeList.getEdges(), "run" + runCount + "_collapsedEdges");
         }
@@ -164,7 +164,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// If so, the edge is not inserted, but its label is merged
         /// with the existing edge.
         /// </summary>
-        protected void InsertEdge(Edge e)
+        protected void InsertUniqueEdge(Edge e)
         {
             //<FIX> MD 8 Oct 03  speed up identical edge lookup
             // fast lookup

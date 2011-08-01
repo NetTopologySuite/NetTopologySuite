@@ -106,7 +106,7 @@ namespace NetTopologySuite.GeometriesGraph
             IList<Node> bdyNodes = new List<Node>();
             foreach (Node node in _nodeMap.Values)
             {
-                if (node.Label.GetLocation(geomIndex) == Locations.Boundary)
+                if (node.Label.GetLocation(geomIndex) == Location.Boundary)
                     bdyNodes.Add(node);
             }
             return bdyNodes;

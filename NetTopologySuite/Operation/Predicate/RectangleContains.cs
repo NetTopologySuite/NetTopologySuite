@@ -93,12 +93,16 @@ namespace NetTopologySuite.Operation.Predicate
         /// <returns>true if the point is contained in the boundary</returns>
         private bool IsPointContainedInBoundary(ICoordinate pt)
         {
-            // we already know that the point is contained in the rectangle envelope
-            if (!(pt.X == rectEnv.MinX || pt.X == rectEnv.MaxX))
-                return false;
-            if (!(pt.Y == rectEnv.MinY || pt.Y == rectEnv.MaxY))
-                return false;
-            return true;
+
+            /**
+             * contains = false iff the point is properly contained in the rectangle.
+             * 
+             * This code assumes that the point lies in the rectangle envelope
+             */
+            return pt.X == rectEnv.MinX
+                    || pt.X == rectEnv.MaxX
+                    || pt.Y == rectEnv.MinY
+                    || pt.Y == rectEnv.MaxY;
         }
 
         /// <summary>

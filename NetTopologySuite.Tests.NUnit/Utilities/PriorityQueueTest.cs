@@ -1,57 +1,57 @@
 using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 using NUnit.Framework;
+using NetTopologySuite.Utilities;
+using Assert = NUnit.Framework.Assert;
 
 namespace NetTopologySuite.Tests.NUnit.Utilities
 {
-    [TestFixture(Ignore = true, IgnoreReason = "The PriorityQueue class has not been migrated to NTS yet.  Once this class exists in NTS the commented blocks below can be uncommented")]
+    [TestFixture]
     public class PriorityQueueTest
     {
-        //[Test]
-        //public void TestOrder1()
-        //{
-        //    PriorityQueue q = new PriorityQueue();
-        //    q.Add(new Integer(1));
-        //    q.Add(new Integer(10));
-        //    q.Add(new Integer(5));
-        //    q.Add(new Integer(8));
-        //    q.Add(new Integer(-1));
-        //    CheckOrder(q);
-        //}
+        [Test]
+        public void TestOrder1()
+        {
+            PriorityQueue<int> q = new PriorityQueue<int>();
+            q.Add(1);
+            q.Add(10);
+            q.Add(5);
+            q.Add(8);
+            q.Add(-1);
+            CheckOrder(q);
+        }
 
-        //[Test]
-        //public void TestOrderRandom1()
-        //{
-        //    PriorityQueue q = new PriorityQueue();
-        //    addRandomItems(q, 100);
-        //    CheckOrder(q);
-        //}
+        [Test]
+        public void TestOrderRandom1()
+        {
+            PriorityQueue<int> q = new PriorityQueue<int>();
+            addRandomItems(q, 100);
+            CheckOrder(q);
+        }
 
-        //private void addRandomItems(PriorityQueue q, int num)
-        //{
-        //    var random = new Random();
+        private void addRandomItems(PriorityQueue<int> q, int num)
+        {
+            var random = new Random();
 
-        //    for (int i = 0; i < num; i++)
-        //    {
-        //        q.Add((int)(num * random.NextDouble()));
-        //    }
-        //}
+            for (int i = 0; i < num; i++)
+            {
+                q.Add((int)(num * random.NextDouble()));
+            }
+        }
 
-        //private void CheckOrder(PriorityQueue q)
-        //{
-        //    Comparable curr = null;
+        private void CheckOrder<T>(PriorityQueue<T> q)
+            where T: IComparable<T>
+        {
+            IComparable<T> curr = null;
 
-        //    while (! q.isEmpty()) {
-        //        Comparable next = (Comparable) q.Poll();
-        //        Console.WriteLine(next);
-        //        if (curr == null)
-        //            curr = next;
-        //        else
-        //            Assert.IsTrue(next.compareTo(curr) >= 0);
-        //    }
-        //}
+            while (!q.IsEmpty())
+            {
+                IComparable<T> next = (IComparable<T>)q.Poll();
+                Console.WriteLine(next);
+                if (curr == null)
+                    curr = next;
+                else
+                    Assert.IsTrue(next.CompareTo((T)curr) >= 0);
+            }
+        }
     }
 }

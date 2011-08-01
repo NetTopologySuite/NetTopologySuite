@@ -27,8 +27,8 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary> 
-        /// Returns either child AbstractNodes, or if this is a leaf node, real data (wrapped
-        /// in ItemBoundables).
+        /// Returns either child <see cref="AbstractNode"/>s, or if this is a leaf node, real data (wrapped
+        /// in <see cref="ItemBoundable"/>s).
         /// </summary>
         public IList<object >ChildBoundables
         {

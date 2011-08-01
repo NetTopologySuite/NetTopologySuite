@@ -15,9 +15,9 @@ namespace NetTopologySuite.Geometries
     /// object as a way of computing segment properties on the
     /// segments defined by arrays or lists of <c>Coordinate</c>s.
     /// </summary>    
-#if !SILVERLIGHT
+//#if !SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public class LineSegment : IComparable
     {
         private ICoordinate _p0, _p1;

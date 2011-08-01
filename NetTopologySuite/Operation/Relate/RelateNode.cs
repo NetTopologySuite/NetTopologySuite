@@ -23,7 +23,7 @@ namespace NetTopologySuite.Operation.Relate
         /// </summary>
         public override void ComputeIM(IntersectionMatrix im)
         {
-            im.SetAtLeastIfValid(Label.GetLocation(0), Label.GetLocation(1), Dimensions.Point);
+            im.SetAtLeastIfValid(Label.GetLocation(0), Label.GetLocation(1), Dimension.Point);
         }
 
         /// <summary>

@@ -62,10 +62,10 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 
             if (!validator.IsValid())
             {
-                String msg = validator.GetErrorMessage();
+                String msg = validator.ErrorMessage;
 
                 Console.WriteLine(msg);
-                Console.WriteLine(WKTWriter.ToPoint(validator.GetErrorLocation()));
+                Console.WriteLine(WKTWriter.ToPoint(validator.ErrorLocation));
                 Console.WriteLine(g);
             }
             Assert.IsTrue(validator.IsValid());

@@ -7,32 +7,44 @@ namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
     /// A framework for processes which transform an input <c>Geometry</c> into
-    /// an output <c>Geometry</c>, possibly changing its structure and type(s).
+    /// an output <see cref="IGeometry"/>, possibly changing its structure and type(s).
+    /// </summary>
+    /// <remarks>
+    /// <para>
     /// This class is a framework for implementing subclasses
     /// which perform transformations on
     /// various different Geometry subclasses.
+    /// </para>
+    /// <para>
     /// It provides an easy way of applying specific transformations
     /// to given point types, while allowing unhandled types to be simply copied.
     /// Also, the framework handles ensuring that if subcomponents change type
     /// the parent geometries types change appropriately to maintain valid structure.
     /// Subclasses will override whichever <c>TransformX</c> methods
     /// they need to to handle particular Geometry types.
-    /// A typically usage would be a transformation that may transform Polygons into
-    /// Polygons, LineStrings
-    /// or Points.  This class would likely need to override the TransformMultiPolygon
-    /// method to ensure that if input Polygons change type the result is a GeometryCollection,
-    /// not a MultiPolygon.
-    /// The default behaviour of this class is to simply recursively transform
-    /// each Geometry component into an identical object by copying.
-    /// Note that all <c>TransformX</c> methods may return <c>null</c>,
+    /// </para>
+    /// <para>
+    /// A typically usage would be a transformation that may transform <c>Polygons</c> into
+    /// <c>Polygons</c>, <c>LineStrings</c> or <c>Points</c>, depending on the geometry of the input
+    /// (For instance, a simplification operation).  
+    /// This class would likely need to override the <see cref="TransformMultiPolygon"/>
+    /// method to ensure that if input Polygons change type the result is a <c>GeometryCollection</c>,
+    /// not a <c>MultiPolygon</c>.</para>
+    /// <para>
+    /// The default behaviour of this class is simply to recursively transform
+    /// each Geometry component into an identical object by deep copying down
+    /// to the level of, but not including, coordinates.
+    /// </para>
+    /// <para>
+    /// Note that all <c>Transform<i>XXX</i></c> methods may return <c>null</c>,
     /// to avoid creating empty point objects. This will be handled correctly
-    /// by the transformer. <c>transformX</c> methods should always return valid
+    /// by the transformer. <c>Transform<i>XXX</i></c> methods should always return valid
     /// geometry - if they cannot do this they should return <c>null</c>
     /// (for instance, it may not be possible for a transformLineString implementation
     /// to return at least two points - in this case, it should return <c>null</c>).
     /// The <see cref="Transform"/> method itself will always
-    /// return a non-null Geometry object (but this may be empty).
-    /// </summary>    
+    /// return a non-null Geometry object (but this may be empty).</para>
+    /// </remarks>>    
     public class GeometryTransformer 
     {
         /*

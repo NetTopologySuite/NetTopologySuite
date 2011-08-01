@@ -36,9 +36,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             ICoordinateSequence seq = csFactory.Create(SIZE, 3);
             for (int i = 0; i < seq.Count; i++)
             {
-                seq.SetOrdinate(i, Ordinates.X, coords[i].X);
-                seq.SetOrdinate(i, Ordinates.Y, coords[i].Y);
-                seq.SetOrdinate(i, Ordinates.Z, coords[i].Z);
+                seq.SetOrdinate(i, Ordinate.X, coords[i].X);
+                seq.SetOrdinate(i, Ordinate.Y, coords[i].Y);
+                seq.SetOrdinate(i, Ordinate.Z, coords[i].Z);
             }
 
             Assert.IsTrue(IsEqual(seq, coords));
@@ -54,8 +54,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             ICoordinateSequence seq = csFactory.Create(SIZE, 2);
             for (int i = 0; i < seq.Count; i++)
             {
-                seq.SetOrdinate(i, Ordinates.X, coords[i].X);
-                seq.SetOrdinate(i, Ordinates.Y, coords[i].Y);
+                seq.SetOrdinate(i, Ordinate.X, coords[i].X);
+                seq.SetOrdinate(i, Ordinate.Y, coords[i].Y);
             }
 
             for (int i = 0; i < seq.Count; i++)
@@ -100,9 +100,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             {
                 if (!coord.Equals(seq.GetCoordinate(i))) return false;
 
-                if (coord.X != seq.GetOrdinate(i, Ordinates.X)) return false;
-                if (coord.Y != seq.GetOrdinate(i, Ordinates.Y)) return false;
-                if (coord.Z != seq.GetOrdinate(i, Ordinates.Z)) return false;
+                if (coord.X != seq.GetOrdinate(i, Ordinate.X)) return false;
+                if (coord.Y != seq.GetOrdinate(i, Ordinate.Y)) return false;
+                if (coord.Z != seq.GetOrdinate(i, Ordinate.Z)) return false;
             }
             return true;
         }
@@ -130,9 +130,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
                 if (coords[i].Y != seq.GetY(i)) return false;
 
                 // Ordinate indexed getters
-                if (coords[i].X != seq.GetOrdinate(i, Ordinates.X)) return false;
-                if (coords[i].Y != seq.GetOrdinate(i, Ordinates.Y)) return false;
-                if (coords[i].Z != seq.GetOrdinate(i, Ordinates.Z)) return false;
+                if (coords[i].X != seq.GetOrdinate(i, Ordinate.X)) return false;
+                if (coords[i].Y != seq.GetOrdinate(i, Ordinate.Y)) return false;
+                if (coords[i].Z != seq.GetOrdinate(i, Ordinate.Z)) return false;
 
                 // Coordinate getter
                 seq.GetCoordinate(i, p);

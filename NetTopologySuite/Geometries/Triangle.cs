@@ -187,7 +187,6 @@ namespace NetTopologySuite.Geometries
              */
             double len0 = b.Distance(a);
             double len2 = b.Distance(c);
-            //double lenSeg = a.Distance(c);
             double frac = len0 / (len0 + len2);
             double dx = c.X - a.X;
             double dy = c.Y - a.Y;

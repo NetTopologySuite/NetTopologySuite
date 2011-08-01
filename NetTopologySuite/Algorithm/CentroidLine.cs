@@ -11,27 +11,33 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public class CentroidLine
     {
-        private ICoordinate centSum = new Coordinate();
-        private double totalLength = 0.0;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public CentroidLine() { }
+        private readonly ICoordinate _centSum = new Coordinate();
+        private double _totalLength;
 
         /// <summary> 
-        /// Adds the linestring(s) defined by a Geometry to the centroid total.
-        /// If the point is not linear it does not contribute to the centroid.
+        /// Adds the linear components of by a Geometry to the centroid total.
+        /// If the geometry has no linear components it does not contribute to the centroid.
         /// </summary>
         /// <param name="geom">The point to add.</param>
         public void Add(IGeometry geom)
         {
             if (geom is ILineString)             
-                Add(geom.Coordinates);            
+                Add(geom.Coordinates);
 
-            else if (geom is IGeometryCollection) 
+            else if (geom is IPolygon)
             {
-                IGeometryCollection gc = (IGeometryCollection) geom;
+                var poly = (IPolygon) geom;
+                // add linear components of a polygon
+                Add(poly.ExteriorRing.Coordinates);
+                for (int i = 0; i < poly.NumInteriorRings; i++)
+                {
+                    Add(poly.GetInteriorRingN(i).Coordinates);
+                }
+            }
+
+            else if (geom is IGeometryCollection)
+            {
+                var gc = (IGeometryCollection)geom;
                 foreach (IGeometry geometry in gc.Geometries)
                     Add(geometry);
             }
@@ -45,8 +51,8 @@ namespace NetTopologySuite.Algorithm
             get
             {
                 ICoordinate cent = new Coordinate();
-                cent.X = centSum.X / totalLength;
-                cent.Y = centSum.Y / totalLength;
+                cent.X = _centSum.X / _totalLength;
+                cent.Y = _centSum.Y / _totalLength;
                 return cent;
             }
         }
@@ -60,12 +66,12 @@ namespace NetTopologySuite.Algorithm
             for (int i = 0; i < pts.Length - 1; i++)
             {
                 double segmentLen = pts[i].Distance(pts[i + 1]);
-                totalLength += segmentLen;
+                _totalLength += segmentLen;
 
                 double midx = (pts[i].X + pts[i + 1].X) / 2;
-                centSum.X += segmentLen * midx;
+                _centSum.X += segmentLen * midx;
                 double midy = (pts[i].Y + pts[i + 1].Y) / 2;
-                centSum.Y += segmentLen * midy;
+                _centSum.Y += segmentLen * midy;
             }
         }
     }

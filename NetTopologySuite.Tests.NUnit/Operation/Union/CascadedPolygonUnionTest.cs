@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
+using NetTopologySuite.Operation.Union;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Union

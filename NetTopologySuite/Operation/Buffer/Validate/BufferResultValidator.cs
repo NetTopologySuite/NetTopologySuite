@@ -1,141 +1,182 @@
+using System;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
+
 namespace NetTopologySuite.Operation.Buffer.Validate
 {
-    using System;
-
-    using GeoAPI.Geometries;
-    using NetTopologySuite.Geometries;
-    using NetTopologySuite.Operation.Distance;
-    using NetTopologySuite.Geometries.Utilities;
-
     /// <summary>
     /// Validates that the result of a buffer operation
     /// is geometrically correct, within a computed tolerance.
-    /// <p>
-    /// This is a heuristic test, and may return false positive results
+    /// </summary>
+    /// <remarks>
+    /// <para>This is a heuristic test, and may return false positive results
     /// (I.e. it may fail to detect an invalid result.)
     /// It should never return a false negative result, however
-    /// (I.e. it should never report a valid result as invalid.)
-    /// <p>
-    /// This test may be (much) more expensive than the original
-    /// buffer computation.
-    /// </summary>
-    /// <author>
-    /// Martin Davis
-    /// </author>
-    public class BufferResultValidator 
+    /// (I.e. it should never report a valid result as invalid.)</para>
+    /// <para>This test may be (much) more expensive than the original buffer computation.</para>
+    /// </remarks>
+    /// <author>Martin Davis</author>
+    public class BufferResultValidator
     {
-        private IGeometry input;
-        private double distance;
-        private IGeometry result;
-        private bool isValid = true;
-        private string errorMsg = null;
-        private ICoordinate errorLocation = null;
-  
-        public BufferResultValidator(IGeometry input, double distance, IGeometry result)
-        {
-            this.input = input;
-            this.distance = distance;
-            this.result = result;
-        }
+        public static bool Verbose;
+
+        /**
+         * Maximum allowable fraction of buffer distance the 
+         * actual distance can differ by.
+         * 1% sometimes causes an error - 1.2% should be safe.
+         */
+        private const double MaxEnvDiffFrac = .012;
 
         public static bool IsValid(IGeometry g, double distance, IGeometry result)
         {
             BufferResultValidator validator = new BufferResultValidator(g, distance, result);
-            return validator.IsValid();
+            if (validator.IsValid())
+                return true;
+            return false;
+        }
+
+        ///<summary>Checks whether the geometry buffer is valid, and returns an error message if not.
+        ///</summary>
+        /// <param name="g"></param>
+        /// <param name="distance"></param>
+        /// <param name="result"></param>
+        /// <returns><c>null</c>if the buffer is valid, an appropriate error message if not</returns>
+        /// 
+        public static String IsValidMessage(IGeometry g, double distance, IGeometry result)
+        {
+            BufferResultValidator validator = new BufferResultValidator(g, distance, result);
+            if (!validator.IsValid())
+                return validator.ErrorMessage;
+            return null;
+        }
+
+        private readonly IGeometry _input;
+        private readonly double _distance;
+        private readonly IGeometry _result;
+        private bool _isValid = true;
+        private String _errorMsg;
+        private ICoordinate _errorLocation;
+
+        public BufferResultValidator(IGeometry input, double distance, IGeometry result)
+        {
+            _input = input;
+            _distance = distance;
+            _result = result;
         }
 
         public bool IsValid()
         {
             CheckPolygonal();
-            if (! isValid) return isValid;
+            if (!_isValid) return _isValid;
             CheckExpectedEmpty();
-            if (! isValid) return isValid;
+            if (!_isValid) return _isValid;
             CheckEnvelope();
-            if (! isValid) return isValid;
+            if (!_isValid) return _isValid;
             CheckArea();
-            if (! isValid) return isValid;
-  	
+            if (!_isValid) return _isValid;
             CheckDistance();
-  	
-            return isValid;
+            return _isValid;
         }
-  
-        public string GetErrorMessage()
+
+        /// <summary>
+        /// Gets the error message
+        /// </summary>
+        public String ErrorMessage
         {
-            return errorMsg;
+            get { return _errorMsg; }
         }
-  
-        public ICoordinate GetErrorLocation()
+
+        /// <summary>
+        /// Gets the error location
+        /// </summary>
+        public ICoordinate ErrorLocation
         {
-            return errorLocation;
+            get { return _errorLocation; }
         }
-  
+
+        private void Report(String checkName)
+        {
+            if (!Verbose) return;
+            Console.WriteLine("Check " + checkName + ": "
+                + (_isValid ? "passed" : "FAILED"));
+        }
+
         private void CheckPolygonal()
         {
-            if (! (result is IPolygon 
-  		            || result is IMultiPolygon))
-            isValid = false;
-            errorMsg = "Result is not polygonal";
+            if (!(_result is IPolygon
+                    || _result is IMultiPolygon))
+                _isValid = false;
+            _errorMsg = "Result is not polygonal";
+            Report("Polygonal");
         }
-  
+
         private void CheckExpectedEmpty()
         {
             // can't check areal features
-            if (Convert.ToInt32(input.Dimension) >= 2) return;
+            if (_input.Dimension >= Dimension.Surface) return;
             // can't check positive distances
-            if (distance > 0.0) return;
-  		
+            if (_distance > 0.0) return;
+
             // at this point can expect an empty result
-            if (! result.IsEmpty) {
-  	            isValid = false;
-  	            errorMsg = "Result is non-empty";
+            if (!_result.IsEmpty)
+            {
+                _isValid = false;
+                _errorMsg = "Result is non-empty";
             }
+            Report("ExpectedEmpty");
         }
-  
+
         private void CheckEnvelope()
         {
-            if (distance < 0.0) return;
-  	
-            double padding = distance * 0.01;
+            if (_distance < 0.0) return;
+
+            double padding = _distance * MaxEnvDiffFrac;
             if (padding == 0.0) padding = 0.001;
 
-            Envelope expectedEnv = new Envelope(input.EnvelopeInternal);
-            expectedEnv.ExpandBy(distance);
-  	
-            Envelope bufEnv = new Envelope(result.EnvelopeInternal);
+            IEnvelope expectedEnv = new Envelope(_input.EnvelopeInternal);
+            expectedEnv.ExpandBy(_distance);
+
+            IEnvelope bufEnv = new Envelope(_result.EnvelopeInternal);
             bufEnv.ExpandBy(padding);
 
-            if (! bufEnv.Contains(expectedEnv)) {
-  	            isValid = false;
-  	            errorMsg = "Buffer envelope is incorrect";
+            if (!bufEnv.Contains(expectedEnv))
+            {
+                _isValid = false;
+                _errorMsg = "Buffer envelope is incorrect";
             }
+            Report("Envelope");
         }
-  
+
         private void CheckArea()
         {
-            double inputArea = input.Area;
-            double resultArea = result.Area;
-  	
-            if (distance > 0.0
-  		            && inputArea > resultArea) {
-  	            isValid = false;
-  	            errorMsg = "Area of positive buffer is smaller than input";
+            double inputArea = _input.Area;
+            double resultArea = _result.Area;
+
+            if (_distance > 0.0
+                    && inputArea > resultArea)
+            {
+                _isValid = false;
+                _errorMsg = "Area of positive buffer is smaller than input";
             }
-            if (distance < 0.0
-  		            && inputArea < resultArea) {
-  	            isValid = false;
-  	            errorMsg = "Area of negative buffer is larger than input";
+            if (_distance < 0.0
+                    && inputArea < resultArea)
+            {
+                _isValid = false;
+                _errorMsg = "Area of negative buffer is larger than input";
             }
+            Report("Area");
         }
-  
+
         private void CheckDistance()
         {
-            BufferDistanceValidator distValid = new BufferDistanceValidator(input, distance, result);
-            if (! distValid.IsValid()) {
-  	            isValid = false;
-  	            errorMsg = "Buffer curve is incorrect distance from input";
-  	            errorLocation = distValid.GetErrorLocation();
+            BufferDistanceValidator distValid = new BufferDistanceValidator(_input, _distance, _result);
+            if (!distValid.IsValid())
+            {
+                _isValid = false;
+                _errorMsg = distValid.ErrorMessage;
+                _errorLocation = distValid.ErrorLocation;
             }
+            Report("Distance");
         }
     }
 }

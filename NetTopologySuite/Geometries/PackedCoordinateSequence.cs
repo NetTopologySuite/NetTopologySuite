@@ -78,8 +78,8 @@ namespace NetTopologySuite.Geometries
         /// <param name="c">A Coordinate to receive the value.</param>
         public void GetCoordinate(int i, ICoordinate c) 
         {
-            c.X = GetOrdinate(i, Ordinates.X);
-            c.Y = GetOrdinate(i, Ordinates.Y);
+            c.X = GetOrdinate(i, Ordinate.X);
+            c.Y = GetOrdinate(i, Ordinate.Y);
         }        
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public double GetX(int index) 
         {
-            return GetOrdinate(index, Ordinates.X);
+            return GetOrdinate(index, Ordinate.X);
         }
 
         /// <summary>
@@ -145,19 +145,19 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public double GetY(int index) 
         {
-            return GetOrdinate(index, Ordinates.Y);
+            return GetOrdinate(index, Ordinate.Y);
         }
 
         /// <summary>
         /// Returns the ordinate of a coordinate in this sequence.
         /// Ordinate indices 0 and 1 are assumed to be X and Y.
-        /// Ordinates indices greater than 1 have user-defined semantics
+        /// Ordinate indices greater than 1 have user-defined semantics
         /// (for instance, they may contain other dimensions or measure values).
         /// </summary>
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <returns></returns>
-        public abstract double GetOrdinate(int index, Ordinates ordinate);
+        public abstract double GetOrdinate(int index, Ordinate ordinate);
 
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace NetTopologySuite.Geometries
         public void SetX(int index, double value) 
         {
             CoordRef = null;
-            SetOrdinate(index, Ordinates.X, value);
+            SetOrdinate(index, Ordinate.X, value);
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace NetTopologySuite.Geometries
         public void SetY(int index, double value) 
         {
             CoordRef = null;
-            SetOrdinate(index, Ordinates.Y, value);
+            SetOrdinate(index, Ordinate.Y, value);
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="ordinate">The ordinate index in the coordinate, 0 based, 
         /// smaller than the number of dimensions.</param>
         /// <param name="value">The new ordinate value.</param>
-        public abstract void SetOrdinate(int index, Ordinates ordinate, double value);
+        public abstract void SetOrdinate(int index, Ordinate ordinate, double value);
 
         /// <summary>
         /// Returns a Coordinate representation of the specified coordinate, by always
@@ -310,7 +310,7 @@ namespace NetTopologySuite.Geometries
         {
             double x = _coords[index * Dimension];
             double y = _coords[index * Dimension + 1];
-            double z = Dimension == 2 ? 0.0 : _coords[index * Dimension + 2];
+            double z = Dimension == 2 ? Coordinate.NullOrdinate : _coords[index * Dimension + 2];
             return new Coordinate(x, y, z);
         }
 
@@ -339,13 +339,13 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Returns the ordinate of a coordinate in this sequence.
         /// Ordinate indices 0 and 1 are assumed to be X and Y.
-        /// Ordinates indices greater than 1 have user-defined semantics
+        /// Ordinate indices greater than 1 have user-defined semantics
         /// (for instance, they may contain other dimensions or measure values).
         /// </summary>
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <returns></returns>
-        public override double GetOrdinate(int index, Ordinates ordinate) 
+        public override double GetOrdinate(int index, Ordinate ordinate) 
         {
             return _coords[index * Dimension + (int) ordinate];
         }
@@ -361,7 +361,7 @@ namespace NetTopologySuite.Geometries
         /// Warning: for performance reasons the ordinate index is not checked:
         /// if it is over dimensions you may not get an exception but a meaningless value.
         /// </remarks>
-        public override void SetOrdinate(int index, Ordinates ordinate, double value) 
+        public override void SetOrdinate(int index, Ordinate ordinate, double value) 
         {
             CoordRef = null;
             _coords[index * Dimension + (int) ordinate] = value;
@@ -494,13 +494,13 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Returns the ordinate of a coordinate in this sequence.
         /// Ordinate indices 0 and 1 are assumed to be X and Y.
-        /// Ordinates indices greater than 1 have user-defined semantics
+        /// Ordinate indices greater than 1 have user-defined semantics
         /// (for instance, they may contain other dimensions or measure values).
         /// </summary>
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <returns></returns>
-        public override double GetOrdinate(int index, Ordinates ordinate) 
+        public override double GetOrdinate(int index, Ordinate ordinate) 
         {
             return _coords[index * Dimension + (int) ordinate];
         }
@@ -516,7 +516,7 @@ namespace NetTopologySuite.Geometries
         /// Warning: for performance reasons the ordinate index is not checked:
         /// if it is over dimensions you may not get an exception but a meaningless value.
         /// </remarks>
-        public override void SetOrdinate(int index, Ordinates ordinate, double value) 
+        public override void SetOrdinate(int index, Ordinate ordinate, double value) 
         {
             CoordRef = null;
             _coords[index * Dimension + (int) ordinate] = (float) value;

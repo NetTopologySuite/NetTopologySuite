@@ -12,10 +12,10 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     {
         private WKTReader reader = new WKTReader();
 
-        protected override void RunPtInRing(Locations expectedLoc, Coordinate pt, String wkt)
+        protected override void RunPtInRing(Location expectedLoc, Coordinate pt, String wkt)
         {
   	        // isPointInRing is not defined for pts on boundary
-  	        if (expectedLoc == Locations.Boundary)
+  	        if (expectedLoc == Location.Boundary)
   		        return;
   	 
             IGeometry geom = reader.Read(wkt);
@@ -23,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 return;
     
             LinearRing ring = (LinearRing)((Polygon) geom).ExteriorRing;
-            bool expected = expectedLoc == Locations.Interior;
+            bool expected = expectedLoc == Location.Interior;
             MCPointInRing pir = new MCPointInRing(ring);
             bool result = pir.IsInside(pt);
             Assert.AreEqual(expected, result);

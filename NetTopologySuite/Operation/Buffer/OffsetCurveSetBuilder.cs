@@ -51,7 +51,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="lineList"></param>
         /// <param name="leftLoc"></param>
         /// <param name="rightLoc"></param>
-        private void AddCurves(IEnumerable<ICoordinate[]> lineList, Locations leftLoc, Locations rightLoc)
+        private void AddCurves(IEnumerable<ICoordinate[]> lineList, Location leftLoc, Location rightLoc)
         {
             foreach (ICoordinate[] coords in lineList)
                 AddCurve(coords, leftLoc, rightLoc);
@@ -66,13 +66,13 @@ namespace NetTopologySuite.Operation.Buffer
         /// Left: Location.Exterior.
         /// Right: Location.Interior.
         /// </summary>
-        private void AddCurve(ICoordinate[] coord, Locations leftLoc, Locations rightLoc)
+        private void AddCurve(ICoordinate[] coord, Location leftLoc, Location rightLoc)
         {
             // don't add null curves!
             if (coord.Length < 2) 
                 return;
             // add the edge for a coordinate list which is a raw offset curve
-            var e = new NodedSegmentString(coord, new Label(0, Locations.Boundary, leftLoc, rightLoc));
+            var e = new NodedSegmentString(coord, new Label(0, Location.Boundary, leftLoc, rightLoc));
             _curveList.Add(e);
         }
 
@@ -124,7 +124,7 @@ namespace NetTopologySuite.Operation.Buffer
                 return;
             var coord = p.Coordinates;
             var lineList = _curveBuilder.GetLineCurve(coord, _distance);
-            AddCurves(lineList, Locations.Exterior, Locations.Interior);
+            AddCurves(lineList, Location.Exterior, Location.Interior);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace NetTopologySuite.Operation.Buffer
                 return;
             var coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
             var lineList = _curveBuilder.GetLineCurve(coord, _distance);
-            AddCurves(lineList, Locations.Exterior, Locations.Interior);
+            AddCurves(lineList, Location.Exterior, Location.Interior);
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace NetTopologySuite.Operation.Buffer
                 return;
 
             AddPolygonRing(shellCoord, offsetDistance, offsetSide, 
-                           Locations.Exterior, Locations.Interior);
+                           Location.Exterior, Location.Interior);
 
             for (var i = 0; i < p.NumInteriorRings; i++)
             {
@@ -178,7 +178,7 @@ namespace NetTopologySuite.Operation.Buffer
                 // the interior of the polygon lies on their opposite side
                 // (on the left, if the hole is oriented CCW)
                 AddPolygonRing(holeCoord, offsetDistance, Position.Opposite(offsetSide),
-                               Locations.Interior, Locations.Exterior);
+                               Location.Interior, Location.Exterior);
             }
         }
 
@@ -195,7 +195,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="cwLeftLoc">The location on the L side of the ring (if it is CW).</param>
         /// <param name="cwRightLoc">The location on the R side of the ring (if it is CW).</param>
         private void AddPolygonRing(ICoordinate[] coord, double offsetDistance, 
-            Positions side, Locations cwLeftLoc, Locations cwRightLoc)
+            Positions side, Location cwLeftLoc, Location cwRightLoc)
         {
             var leftLoc = cwLeftLoc;
             var rightLoc = cwRightLoc;

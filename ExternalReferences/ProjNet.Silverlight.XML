@@ -4,9 +4,10 @@
         <name>ProjNet.Silverlight</name>
     </assembly>
     <members>
-        <member name="T:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform">
+        <member name="T:ProjNet.CoordinateSystems.Transformations.GeographicTransform">
             <summary>
-            
+            The GeographicTransform class is implemented on geographic transformation objects and
+            implements datum transformations between geographic coordinate systems.
             </summary>
         </member>
         <member name="T:ProjNet.CoordinateSystems.Transformations.MathTransform">
@@ -160,79 +161,76 @@
             Gets an XML representation of this object.
             </summary>
         </member>
-        <member name="F:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform._inverse">
+        <member name="M:ProjNet.CoordinateSystems.Transformations.GeographicTransform.Inverse">
             <summary>
-            
+            Creates the inverse transform of this object.
             </summary>
+            <remarks>This method may fail if the transform is not one to one. However, all cartographic projections should succeed.</remarks>
+            <returns></returns>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform.#ctor">
+        <member name="M:ProjNet.CoordinateSystems.Transformations.GeographicTransform.Transform(System.Double[])">
             <summary>
-            
-            </summary>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation})">
-            <summary>
-            
-            </summary>
-            <param name="transformlist"></param>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform.Transform(System.Double[])">
-            <summary>
-            Transforms a point
+            Transforms a coordinate point. The passed parameter point should not be modified.
             </summary>
             <param name="point"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform.TransformList(System.Collections.Generic.List{System.Double[]})">
+        <member name="M:ProjNet.CoordinateSystems.Transformations.GeographicTransform.TransformList(System.Collections.Generic.List{System.Double[]})">
             <summary>
-            Transforms a list point
+            Transforms a list of coordinate point ordinal values.
             </summary>
+            <remarks>
+            This method is provided for efficiently transforming many points. The supplied array 
+            of ordinal values will contain packed ordinal values. For example, if the source 
+            dimension is 3, then the ordinals will be packed in this order (x0,y0,z0,x1,y1,z1 ...).
+            The size of the passed array must be an integer multiple of DimSource. The returned 
+            ordinal values are packed in a similar way. In some DCPs. the ordinals may be 
+            transformed in-place, and the returned array may be the same as the passed array.
+            So any client code should not attempt to reuse the passed ordinal values (although
+            they can certainly reuse the passed array). If there is any problem then the server
+            implementation will throw an exception. If this happens then the client should not
+            make any assumptions about the state of the ordinal values.
+            </remarks>
             <param name="points"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform.Inverse">
-            <summary>
-            Returns the inverse of this conversion.
-            </summary>
-            <returns>IMathTransform that is the reverse of the current conversion.</returns>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform.Invert">
+        <member name="M:ProjNet.CoordinateSystems.Transformations.GeographicTransform.Invert">
             <summary>
             Reverses the transformation
             </summary>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform.CoordinateTransformationList">
+        <member name="P:ProjNet.CoordinateSystems.Transformations.GeographicTransform.SourceGCS">
             <summary>
-            
+            Gets or sets the source geographic coordinate system for the transformation.
             </summary>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform.WKT">
+        <member name="P:ProjNet.CoordinateSystems.Transformations.GeographicTransform.TargetGCS">
             <summary>
-            Gets a Well-Known text representation of this object.
+            Gets or sets the target geographic coordinate system for the transformation.
             </summary>
-            <value></value>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform.XML">
+        <member name="P:ProjNet.CoordinateSystems.Transformations.GeographicTransform.WKT">
             <summary>
-            Gets an XML representation of this object.
+            Returns the Well-known text for this object
+            as defined in the simple features specification. [NOT IMPLEMENTED].
             </summary>
-            <value></value>
         </member>
-        <member name="T:ProjNet.CoordinateSystems.Projections.AlbersProjection">
+        <member name="P:ProjNet.CoordinateSystems.Transformations.GeographicTransform.XML">
             <summary>
-            	Implements the Albers projection.
+            Gets an XML representation of this object [NOT IMPLEMENTED].
+            </summary>
+        </member>
+        <member name="T:ProjNet.CoordinateSystems.Projections.KrovakProjection">
+            <summary>
+            Implemetns the Krovak Projection.
             </summary>
             <remarks>
-            	<para>Implements the Albers projection. The Albers projection is most commonly
-            	used to project the United States of America. It gives the northern
-            	border with Canada a curved appearance.</para>
-            	
-            	<para>The <a href="http://www.geog.mcgill.ca/courses/geo201/mapproj/naaeana.gif">Albers Equal Area</a>
-            	projection has the property that the area bounded
-            	by any pair of parallels and meridians is exactly reproduced between the 
-            	image of those parallels and meridians in the projected domain, that is,
-            	the projection preserves the correct area of the earth though distorts
-            	direction, distance and shape somewhat.</para>
+            <para>The normal case of the Lambert Conformal conic is for the axis of the cone 
+            to be coincident with the minor axis of the ellipsoid, that is the axis of the cone 
+            is normal to the ellipsoid at a pole. For the Oblique Conformal Conic the axis 
+            of the cone is normal to the ellipsoid at a defined location and its extension 
+            cuts the minor axis at a defined angle. This projection is used in the Czech Republic 
+            and Slovakia under the name "Krovak" projection.</para>
             </remarks>
         </member>
         <member name="T:ProjNet.CoordinateSystems.Projections.MapProjection">
@@ -557,11 +555,57 @@
             as "from projection to geographic". If this projection is inverted, this will be the other way around.
             </summary>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Projections.AlbersProjection.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter})">
+        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection.MAXIMUM_ITERATIONS">
+            Maximum number of iterations for iterative computations.
+        </member>
+        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection.ITERATION_TOLERANCE">
+            When to stop the iteration.
+        </member>
+        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection.S45">
+            Useful constant - 45° in radians.
+        </member>
+        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._azimuth">
+            Azimuth of the centre line passing through the centre of the projection.
+            This is equals to the co-latitude of the cone axis at point of intersection
+            with the ellipsoid.
+        </member>
+        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._pseudoStandardParallel">
+            Latitude of pseudo standard parallel.
+        </member>
+        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._sinAzim">
+            Useful variables calculated from parameters defined by user.
+        </member>
+        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._cosAzim">
+            Useful variables calculated from parameters defined by user.
+        </member>
+        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._n">
+            Useful variables calculated from parameters defined by user.
+        </member>
+        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._tanS2">
+            Useful variables calculated from parameters defined by user.
+        </member>
+        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._alfa">
+            Useful variables calculated from parameters defined by user.
+        </member>
+        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._hae">
+            Useful variables calculated from parameters defined by user.
+        </member>
+        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._k1">
+            Useful variables calculated from parameters defined by user.
+        </member>
+        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._ka">
+            Useful variables calculated from parameters defined by user.
+        </member>
+        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._ro0">
+            Useful variables calculated from parameters defined by user.
+        </member>
+        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._rop">
+            Useful variables calculated from parameters defined by user.
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Projections.KrovakProjection.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter})">
             <summary>
-            Creates an instance of an Albers projection object.
+            Creates an instance of an LambertConformalConic2SPProjection projection object.
             </summary>
-            <param name="parameters">List of parameters to initialize the projection.</param>
             <remarks>
             <para>The parameters this projection expects are listed below.</para>
             <list type="table">
@@ -574,17 +618,18 @@
             <item><term>northing_at_false_origin</term><description>The northing value assigned to the false origin.</description></item>
             </list>
             </remarks>
+            <param name="parameters">List of parameters to initialize the projection.</param>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Projections.AlbersProjection.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter},System.Boolean)">
+        <member name="M:ProjNet.CoordinateSystems.Projections.KrovakProjection.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter},System.Boolean)">
             <summary>
             Creates an instance of an Albers projection object.
             </summary>
             <remarks>
             <para>The parameters this projection expects are listed below.</para>
             <list type="table">
-            <listheader><term>Items</term><description>Descriptions</description></listheader>
-            <item><term>latitude_of_center</term><description>The latitude of the point which is not the natural origin and at which grid coordinate values false easting and false northing are defined.</description></item>
-            <item><term>longitude_of_center</term><description>The longitude of the point which is not the natural origin and at which grid coordinate values false easting and false northing are defined.</description></item>
+            <listheader><term>Parameter</term><description>Description</description></listheader>
+            <item><term>latitude_of_origin</term><description>The latitude of the point which is not the natural origin and at which grid coordinate values false easting and false northing are defined.</description></item>
+            <item><term>central_meridian</term><description>The longitude of the point which is not the natural origin and at which grid coordinate values false easting and false northing are defined.</description></item>
             <item><term>standard_parallel_1</term><description>For a conic projection with two standard parallels, this is the latitude of intersection of the cone with the ellipsoid that is nearest the pole.  Scale is true along this parallel.</description></item>
             <item><term>standard_parallel_2</term><description>For a conic projection with two standard parallels, this is the latitude of intersection of the cone with the ellipsoid that is furthest from the pole.  Scale is true along this parallel.</description></item>
             <item><term>false_easting</term><description>The easting value assigned to the false origin.</description></item>
@@ -594,65 +639,29 @@
             <param name="parameters">List of parameters to initialize the projection.</param>
             <param name="isInverse">Indicates whether the projection forward (meters to degrees or degrees to meters).</param>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Projections.AlbersProjection.DegreesToMeters(System.Double[])">
+        <member name="M:ProjNet.CoordinateSystems.Projections.KrovakProjection.DegreesToMeters(System.Double[])">
             <summary>
             Converts coordinates in decimal degrees to projected meters.
             </summary>
             <param name="lonlat">The point in decimal degrees.</param>
             <returns>Point in projected meters</returns>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Projections.AlbersProjection.MetersToDegrees(System.Double[])">
+        <member name="M:ProjNet.CoordinateSystems.Projections.KrovakProjection.MetersToDegrees(System.Double[])">
             <summary>
             Converts coordinates in projected meters to decimal degrees.
             </summary>
             <param name="p">Point in meters</param>
             <returns>Transformed point in decimal degrees</returns>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Projections.AlbersProjection.Inverse">
+        <member name="M:ProjNet.CoordinateSystems.Projections.KrovakProjection.Inverse">
             <summary>
             Returns the inverse of this projection.
             </summary>
             <returns>IMathTransform that is the reverse of the current projection.</returns>
         </member>
-        <member name="T:ProjNet.CoordinateSystems.Transformations.CoordinateTransformationFactory">
+        <member name="T:ProjNet.CoordinateSystems.Unit">
             <summary>
-            Creates coordinate transformations.
-            </summary>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Transformations.CoordinateTransformationFactory.CreateFromCoordinateSystems(GeoAPI.CoordinateSystems.ICoordinateSystem,GeoAPI.CoordinateSystems.ICoordinateSystem)">
-            <summary>
-            Creates a transformation between two coordinate systems.
-            </summary>
-            <remarks>
-            This method will examine the coordinate systems in order to construct
-            a transformation between them. This method may fail if no path between 
-            the coordinate systems is found, using the normal failing behavior of 
-            the DCP (e.g. throwing an exception).</remarks>
-            <param name="sourceCS">Source coordinate system</param>
-            <param name="targetCS">Target coordinate system</param>
-            <returns></returns>		
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Transformations.CoordinateTransformationFactory.CreateGeog2Geog(GeoAPI.CoordinateSystems.IGeographicCoordinateSystem,GeoAPI.CoordinateSystems.IGeographicCoordinateSystem)">
-            <summary>
-            Geographic to geographic transformation
-            </summary>
-            <remarks>Adds a datum shift if nessesary</remarks>
-            <param name="source"></param>
-            <param name="target"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Transformations.CoordinateTransformationFactory.CreateGeoc2Geoc(GeoAPI.CoordinateSystems.IGeocentricCoordinateSystem,GeoAPI.CoordinateSystems.IGeocentricCoordinateSystem)">
-            <summary>
-            Geocentric to Geocentric transformation
-            </summary>
-            <param name="source"></param>
-            <param name="target"></param>
-            <returns></returns>
-        </member>
-        <member name="T:ProjNet.CoordinateSystems.GeographicTransform">
-            <summary>
-            The GeographicTransform class is implemented on geographic transformation objects and
-            implements datum transformations between geographic coordinate systems.
+            Class for defining units
             </summary>
         </member>
         <member name="T:ProjNet.CoordinateSystems.Info">
@@ -747,23 +756,26 @@
             Returns an XML string of the info object
             </summary>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.GeographicTransform.Forward(System.Collections.Generic.List{System.Double[]})">
+        <member name="M:ProjNet.CoordinateSystems.Unit.#ctor(System.Double,System.String,System.String,System.Int64,System.String,System.String,System.String)">
             <summary>
-            Transforms an array of points from the source geographic coordinate
-            system to the target geographic coordinate system.
+            Initializes a new unit
             </summary>
-            <param name="points">On input points in the source geographic coordinate system</param>
-            <returns>Output points in the target geographic coordinate system</returns>
+            <param name="conversionFactor">Conversion factor to base unit</param>
+            <param name="name">Name of unit</param>
+            <param name="authority">Authority name</param>
+            <param name="authorityCode">Authority-specific identification code.</param>
+            <param name="alias">Alias</param>
+            <param name="abbreviation">Abbreviation</param>
+            <param name="remarks">Provider-supplied remarks</param>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.GeographicTransform.Inverse(System.Collections.Generic.List{System.Double[]})">
+        <member name="M:ProjNet.CoordinateSystems.Unit.#ctor(System.String,System.Double)">
             <summary>
-            Transforms an array of points from the target geographic coordinate
-            system to the source geographic coordinate system.
+            Initializes a new unit
             </summary>
-            <param name="points">Input points in the target geographic coordinate system,</param>
-            <returns>Output points in the source geographic coordinate system</returns>
+            <param name="name">Name of unit</param>
+            <param name="conversionFactor">Conversion factor to base unit</param>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.GeographicTransform.EqualParams(System.Object)">
+        <member name="M:ProjNet.CoordinateSystems.Unit.EqualParams(System.Object)">
             <summary>
             Checks whether the values of this instance is equal to the values of another instance.
             Only parameters used for coordinate system are used for comparison.
@@ -772,28 +784,18 @@
             <param name="obj"></param>
             <returns>True if equal</returns>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.GeographicTransform.SourceGCS">
+        <member name="P:ProjNet.CoordinateSystems.Unit.ConversionFactor">
             <summary>
-            Gets or sets the source geographic coordinate system for the transformation.
+            Gets or sets the number of units per base-unit.
             </summary>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.GeographicTransform.TargetGCS">
-            <summary>
-            Gets or sets the target geographic coordinate system for the transformation.
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.GeographicTransform.ParameterInfo">
-            <summary>
-            Returns an accessor interface to the parameters for this geographic transformation.
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.GeographicTransform.WKT">
+        <member name="P:ProjNet.CoordinateSystems.Unit.WKT">
             <summary>
             Returns the Well-known text for this object
             as defined in the simple features specification.
             </summary>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.GeographicTransform.XML">
+        <member name="P:ProjNet.CoordinateSystems.Unit.XML">
             <summary>
             Gets an XML representation of this object [NOT IMPLEMENTED].
             </summary>
@@ -903,256 +905,40 @@
             <param name="authority">String to place the authority in.</param>
             <param name="authorityCode">String to place the authority code in.</param>
         </member>
-        <member name="T:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader">
+        <member name="T:ProjNet.Converters.WellKnownText.TokenType">
             <summary>
-            Creates an object based on the supplied Well Known Text (WKT).
+            Represents the type of token created by the StreamTokenizer class.
             </summary>
         </member>
-        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.Parse(System.String)">
+        <member name="F:ProjNet.Converters.WellKnownText.TokenType.Word">
             <summary>
-            Reads and parses a WKT-formatted projection string.
-            </summary>
-            <param name="wkt">String containing WKT.</param>
-            <returns>Object representation of the WKT.</returns>
-            <exception cref="T:System.ArgumentException">If a token is not recognised.</exception>
-        </member>
-        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadUnit(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
-            <summary>
-            Returns a IUnit given a piece of WKT.
-            </summary>
-            <param name="tokenizer">WktStreamTokenizer that has the WKT.</param>
-            <returns>An object that implements the IUnit interface.</returns>
-        </member>
-        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadLinearUnit(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
-            <summary>
-            Returns a <see cref="T:ProjNet.CoordinateSystems.LinearUnit"/> given a piece of WKT.
-            </summary>
-            <param name="tokenizer">WktStreamTokenizer that has the WKT.</param>
-            <returns>An object that implements the IUnit interface.</returns>
-        </member>
-        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadAngularUnit(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
-            <summary>
-            Returns a <see cref="T:ProjNet.CoordinateSystems.AngularUnit"/> given a piece of WKT.
-            </summary>
-            <param name="tokenizer">WktStreamTokenizer that has the WKT.</param>
-            <returns>An object that implements the IUnit interface.</returns>
-        </member>
-        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadAxis(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
-            <summary>
-            Returns a <see cref="T:GeoAPI.CoordinateSystems.AxisInfo"/> given a piece of WKT.
-            </summary>
-            <param name="tokenizer">WktStreamTokenizer that has the WKT.</param>
-            <returns>An AxisInfo object.</returns>
-        </member>
-        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadCoordinateSystem(System.String,ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
-            <summary>
-            
-            </summary>
-            <param name="coordinateSystem"></param>
-            <param name="tokenizer"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadWGS84ConversionInfo(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
-            <summary>
-            Reads either 3, 6 or 7 parameter Bursa-Wolf values from TOWGS84 token
-            </summary>
-            <param name="tokenizer"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadEllipsoid(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
-            <summary>
-            
-            </summary>
-            <param name="tokenizer"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadProjection(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
-            <summary>
-            
-            </summary>
-            <param name="tokenizer"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadProjectedCoordinateSystem(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
-            <summary>
-            
-            </summary>
-            <param name="tokenizer"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadGeographicCoordinateSystem(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
-            <summary>
-            
-            </summary>
-            <param name="tokenizer"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadHorizontalDatum(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
-            <summary>
-            
-            </summary>
-            <param name="tokenizer"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadPrimeMeridian(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
-            <summary>
-            
-            </summary>
-            <param name="tokenizer"></param>
-            <returns></returns>
-        </member>
-        <member name="T:ProjNet.CoordinateSystems.Projections.LambertConformalConic2SP">
-            <summary>
-            Implemetns the Lambert Conformal Conic 2SP Projection.
-            </summary>
-            <remarks>
-            <para>The Lambert Conformal Conic projection is a standard projection for presenting maps
-            of land areas whose East-West extent is large compared with their North-South extent.
-            This projection is "conformal" in the sense that lines of latitude and longitude, 
-            which are perpendicular to one another on the earth's surface, are also perpendicular
-            to one another in the projected domain.</para>
-            </remarks>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Projections.LambertConformalConic2SP.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter})">
-            <summary>
-            Creates an instance of an LambertConformalConic2SPProjection projection object.
-            </summary>
-            <remarks>
-            <para>The parameters this projection expects are listed below.</para>
-            <list type="table">
-            <listheader><term>Items</term><description>Descriptions</description></listheader>
-            <item><term>latitude_of_false_origin</term><description>The latitude of the point which is not the natural origin and at which grid coordinate values false easting and false northing are defined.</description></item>
-            <item><term>longitude_of_false_origin</term><description>The longitude of the point which is not the natural origin and at which grid coordinate values false easting and false northing are defined.</description></item>
-            <item><term>latitude_of_1st_standard_parallel</term><description>For a conic projection with two standard parallels, this is the latitude of intersection of the cone with the ellipsoid that is nearest the pole.  Scale is true along this parallel.</description></item>
-            <item><term>latitude_of_2nd_standard_parallel</term><description>For a conic projection with two standard parallels, this is the latitude of intersection of the cone with the ellipsoid that is furthest from the pole.  Scale is true along this parallel.</description></item>
-            <item><term>easting_at_false_origin</term><description>The easting value assigned to the false origin.</description></item>
-            <item><term>northing_at_false_origin</term><description>The northing value assigned to the false origin.</description></item>
-            </list>
-            </remarks>
-            <param name="parameters">List of parameters to initialize the projection.</param>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Projections.LambertConformalConic2SP.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter},System.Boolean)">
-            <summary>
-            Creates an instance of an Albers projection object.
-            </summary>
-            <remarks>
-            <para>The parameters this projection expects are listed below.</para>
-            <list type="table">
-            <listheader><term>Parameter</term><description>Description</description></listheader>
-            <item><term>latitude_of_origin</term><description>The latitude of the point which is not the natural origin and at which grid coordinate values false easting and false northing are defined.</description></item>
-            <item><term>central_meridian</term><description>The longitude of the point which is not the natural origin and at which grid coordinate values false easting and false northing are defined.</description></item>
-            <item><term>standard_parallel_1</term><description>For a conic projection with two standard parallels, this is the latitude of intersection of the cone with the ellipsoid that is nearest the pole.  Scale is true along this parallel.</description></item>
-            <item><term>standard_parallel_2</term><description>For a conic projection with two standard parallels, this is the latitude of intersection of the cone with the ellipsoid that is furthest from the pole.  Scale is true along this parallel.</description></item>
-            <item><term>false_easting</term><description>The easting value assigned to the false origin.</description></item>
-            <item><term>false_northing</term><description>The northing value assigned to the false origin.</description></item>
-            </list>
-            </remarks>
-            <param name="parameters">List of parameters to initialize the projection.</param>
-            <param name="isInverse">Indicates whether the projection forward (meters to degrees or degrees to meters).</param>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Projections.LambertConformalConic2SP.DegreesToMeters(System.Double[])">
-            <summary>
-            Converts coordinates in decimal degrees to projected meters.
-            </summary>
-            <param name="lonlat">The point in decimal degrees.</param>
-            <returns>Point in projected meters</returns>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Projections.LambertConformalConic2SP.MetersToDegrees(System.Double[])">
-            <summary>
-            Converts coordinates in projected meters to decimal degrees.
-            </summary>
-            <param name="p">Point in meters</param>
-            <returns>Transformed point in decimal degrees</returns>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Projections.LambertConformalConic2SP.Inverse">
-            <summary>
-            Returns the inverse of this projection.
-            </summary>
-            <returns>IMathTransform that is the reverse of the current projection.</returns>
-        </member>
-        <member name="T:ProjNet.CoordinateSystems.LinearUnit">
-            <summary>
-            Definition of linear units.
+            Indicates that the token is a word.
             </summary>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.LinearUnit.#ctor(System.Double,System.String,System.String,System.Int64,System.String,System.String,System.String)">
+        <member name="F:ProjNet.Converters.WellKnownText.TokenType.Number">
             <summary>
-            Creates an instance of a linear unit
-            </summary>
-            <param name="metersPerUnit">Number of meters per <see cref="T:ProjNet.CoordinateSystems.LinearUnit"/></param>
-            <param name="name">Name</param>
-            <param name="authority">Authority name</param>
-            <param name="authorityCode">Authority-specific identification code.</param>
-            <param name="alias">Alias</param>
-            <param name="abbreviation">Abbreviation</param>
-            <param name="remarks">Provider-supplied remarks</param>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.LinearUnit.EqualParams(System.Object)">
-            <summary>
-            Checks whether the values of this instance is equal to the values of another instance.
-            Only parameters used for coordinate system are used for comparison.
-            Name, abbreviation, authority, alias and remarks are ignored in the comparison.
-            </summary>
-            <param name="obj"></param>
-            <returns>True if equal</returns>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.LinearUnit.Metre">
-            <summary>
-            Returns the meters linear unit.
-            Also known as International metre. SI standard unit.
+            Indicates that the token is a number. 
             </summary>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.LinearUnit.Foot">
+        <member name="F:ProjNet.Converters.WellKnownText.TokenType.Eol">
             <summary>
-            Returns the foot linear unit (1ft = 0.3048m).
+            Indicates that the end of line has been read. The field can only have this value if the eolIsSignificant method has been called with the argument true. 
             </summary>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.LinearUnit.USSurveyFoot">
+        <member name="F:ProjNet.Converters.WellKnownText.TokenType.Eof">
             <summary>
-            Returns the US Survey foot linear unit (1ftUS = 0.304800609601219m).
+            Indicates that the end of the input stream has been reached.
             </summary>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.LinearUnit.NauticalMile">
+        <member name="F:ProjNet.Converters.WellKnownText.TokenType.Whitespace">
             <summary>
-            Returns the Nautical Mile linear unit (1NM = 1852m).
+            Indictaes that the token is white space (space, tab, newline).
             </summary>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.LinearUnit.ClarkesFoot">
+        <member name="F:ProjNet.Converters.WellKnownText.TokenType.Symbol">
             <summary>
-            Returns Clarke's foot.
+            Characters that are not whitespace, numbers, etc...
             </summary>
-            <remarks>
-            Assumes Clarke's 1865 ratio of 1 British foot = 0.3047972654 French legal metres applies to the international metre. 
-            Used in older Australian, southern African &amp; British West Indian mapping.
-            </remarks>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.LinearUnit.MetersPerUnit">
-            <summary>
-            Gets or sets the number of meters per <see cref="T:ProjNet.CoordinateSystems.LinearUnit"/>.
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.LinearUnit.WKT">
-            <summary>
-            Returns the Well-known text for this object
-            as defined in the simple features specification.
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.LinearUnit.XML">
-            <summary>
-            Gets an XML representation of this object
-            </summary>
-        </member>
-        <member name="T:ProjNet.CoordinateSystems.SilverlightExtensions">
-            <summary>
-            Silverlight Extension methods
-            </summary>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.SilverlightExtensions.Transform(GeoAPI.CoordinateSystems.Transformations.IMathTransform,System.Windows.Point)">
-            <summary>
-            Transforms a coordinate point.
-            </summary>
-            <param name="point">Input point</param>
-            <returns>Transformed point</returns>
         </member>
         <member name="T:ProjNet.CoordinateSystems.Transformations.DatumTransform">
             <summary>
@@ -1210,6 +996,191 @@
             <value></value>
         </member>
         <member name="P:ProjNet.CoordinateSystems.Transformations.DatumTransform.XML">
+            <summary>
+            Gets an XML representation of this object.
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:ProjNet.CoordinateSystems.Projections.AlbersProjection">
+            <summary>
+            	Implements the Albers projection.
+            </summary>
+            <remarks>
+            	<para>Implements the Albers projection. The Albers projection is most commonly
+            	used to project the United States of America. It gives the northern
+            	border with Canada a curved appearance.</para>
+            	
+            	<para>The <a href="http://www.geog.mcgill.ca/courses/geo201/mapproj/naaeana.gif">Albers Equal Area</a>
+            	projection has the property that the area bounded
+            	by any pair of parallels and meridians is exactly reproduced between the 
+            	image of those parallels and meridians in the projected domain, that is,
+            	the projection preserves the correct area of the earth though distorts
+            	direction, distance and shape somewhat.</para>
+            </remarks>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Projections.AlbersProjection.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter})">
+            <summary>
+            Creates an instance of an Albers projection object.
+            </summary>
+            <param name="parameters">List of parameters to initialize the projection.</param>
+            <remarks>
+            <para>The parameters this projection expects are listed below.</para>
+            <list type="table">
+            <listheader><term>Items</term><description>Descriptions</description></listheader>
+            <item><term>latitude_of_false_origin</term><description>The latitude of the point which is not the natural origin and at which grid coordinate values false easting and false northing are defined.</description></item>
+            <item><term>longitude_of_false_origin</term><description>The longitude of the point which is not the natural origin and at which grid coordinate values false easting and false northing are defined.</description></item>
+            <item><term>latitude_of_1st_standard_parallel</term><description>For a conic projection with two standard parallels, this is the latitude of intersection of the cone with the ellipsoid that is nearest the pole.  Scale is true along this parallel.</description></item>
+            <item><term>latitude_of_2nd_standard_parallel</term><description>For a conic projection with two standard parallels, this is the latitude of intersection of the cone with the ellipsoid that is furthest from the pole.  Scale is true along this parallel.</description></item>
+            <item><term>easting_at_false_origin</term><description>The easting value assigned to the false origin.</description></item>
+            <item><term>northing_at_false_origin</term><description>The northing value assigned to the false origin.</description></item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Projections.AlbersProjection.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter},System.Boolean)">
+            <summary>
+            Creates an instance of an Albers projection object.
+            </summary>
+            <remarks>
+            <para>The parameters this projection expects are listed below.</para>
+            <list type="table">
+            <listheader><term>Items</term><description>Descriptions</description></listheader>
+            <item><term>latitude_of_center</term><description>The latitude of the point which is not the natural origin and at which grid coordinate values false easting and false northing are defined.</description></item>
+            <item><term>longitude_of_center</term><description>The longitude of the point which is not the natural origin and at which grid coordinate values false easting and false northing are defined.</description></item>
+            <item><term>standard_parallel_1</term><description>For a conic projection with two standard parallels, this is the latitude of intersection of the cone with the ellipsoid that is nearest the pole.  Scale is true along this parallel.</description></item>
+            <item><term>standard_parallel_2</term><description>For a conic projection with two standard parallels, this is the latitude of intersection of the cone with the ellipsoid that is furthest from the pole.  Scale is true along this parallel.</description></item>
+            <item><term>false_easting</term><description>The easting value assigned to the false origin.</description></item>
+            <item><term>false_northing</term><description>The northing value assigned to the false origin.</description></item>
+            </list>
+            </remarks>
+            <param name="parameters">List of parameters to initialize the projection.</param>
+            <param name="isInverse">Indicates whether the projection forward (meters to degrees or degrees to meters).</param>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Projections.AlbersProjection.DegreesToMeters(System.Double[])">
+            <summary>
+            Converts coordinates in decimal degrees to projected meters.
+            </summary>
+            <param name="lonlat">The point in decimal degrees.</param>
+            <returns>Point in projected meters</returns>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Projections.AlbersProjection.MetersToDegrees(System.Double[])">
+            <summary>
+            Converts coordinates in projected meters to decimal degrees.
+            </summary>
+            <param name="p">Point in meters</param>
+            <returns>Transformed point in decimal degrees</returns>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Projections.AlbersProjection.Inverse">
+            <summary>
+            Returns the inverse of this projection.
+            </summary>
+            <returns>IMathTransform that is the reverse of the current projection.</returns>
+        </member>
+        <member name="T:ProjNet.CoordinateSystems.Transformations.GeocentricTransform">
+            <summary>
+            
+            </summary>
+            <remarks>
+            <para>Latitude, Longitude and ellipsoidal height in terms of a 3-dimensional geographic system
+            may by expressed in terms of a geocentric (earth centered) Cartesian coordinate reference system
+            X, Y, Z with the Z axis corresponding to the earth's rotation axis positive northwards, the X
+            axis through the intersection of the prime meridian and equator, and the Y axis through
+            the intersection of the equator with longitude 90 degrees east. The geographic and geocentric
+            systems are based on the same geodetic datum.</para>
+            <para>Geocentric coordinate reference systems are conventionally taken to be defined with the X
+            axis through the intersection of the Greenwich meridian and equator. This requires that the equivalent
+            geographic coordinate reference systems based on a non-Greenwich prime meridian should first be
+            transformed to their Greenwich equivalent. Geocentric coordinates X, Y and Z take their units from
+            the units of the ellipsoid axes (a and b). As it is conventional for X, Y and Z to be in metres,
+            if the ellipsoid axis dimensions are given in another linear unit they should first be converted
+            to metres.</para>
+            </remarks>
+        </member>
+        <member name="F:ProjNet.CoordinateSystems.Transformations.GeocentricTransform._isInverse">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:ProjNet.CoordinateSystems.Transformations.GeocentricTransform._Parameters">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:ProjNet.CoordinateSystems.Transformations.GeocentricTransform._inverse">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Transformations.GeocentricTransform.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter},System.Boolean)">
+            <summary>
+            Initializes a geocentric projection object
+            </summary>
+            <param name="parameters">List of parameters to initialize the projection.</param>
+            <param name="isInverse">Indicates whether the projection forward (meters to degrees or degrees to meters).</param>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Transformations.GeocentricTransform.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter})">
+            <summary>
+            Initializes a geocentric projection object
+            </summary>
+            <param name="parameters">List of parameters to initialize the projection.</param>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Transformations.GeocentricTransform.Inverse">
+            <summary>
+            Returns the inverse of this conversion.
+            </summary>
+            <returns>IMathTransform that is the reverse of the current conversion.</returns>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Transformations.GeocentricTransform.DegreesToMeters(System.Double[])">
+            <summary>
+            Converts coordinates in decimal degrees to projected meters.
+            </summary>
+            <param name="lonlat">The point in decimal degrees.</param>
+            <returns>Point in projected meters</returns>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Transformations.GeocentricTransform.MetersToDegrees(System.Double[])">
+            <summary>
+            Converts coordinates in projected meters to decimal degrees.
+            </summary>
+            <param name="pnt">Point in meters</param>
+            <returns>Transformed point in decimal degrees</returns>		
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Transformations.GeocentricTransform.Transform(System.Double[])">
+            <summary>
+            Transforms a coordinate point. The passed parameter point should not be modified.
+            </summary>
+            <param name="point"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Transformations.GeocentricTransform.TransformList(System.Collections.Generic.List{System.Double[]})">
+            <summary>
+            Transforms a list of coordinate point ordinal values.
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+            <remarks>
+            This method is provided for efficiently transforming many points. The supplied array
+            of ordinal values will contain packed ordinal values. For example, if the source
+            dimension is 3, then the ordinals will be packed in this order (x0,y0,z0,x1,y1,z1 ...).
+            The size of the passed array must be an integer multiple of DimSource. The returned
+            ordinal values are packed in a similar way. In some DCPs. the ordinals may be
+            transformed in-place, and the returned array may be the same as the passed array.
+            So any client code should not attempt to reuse the passed ordinal values (although
+            they can certainly reuse the passed array). If there is any problem then the server
+            implementation will throw an exception. If this happens then the client should not
+            make any assumptions about the state of the ordinal values.
+            </remarks>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Transformations.GeocentricTransform.Invert">
+            <summary>
+            Reverses the transformation
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.Transformations.GeocentricTransform.WKT">
+            <summary>
+            Gets a Well-Known text representation of this object.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.Transformations.GeocentricTransform.XML">
             <summary>
             Gets an XML representation of this object.
             </summary>
@@ -1440,440 +1411,138 @@
             Gets an XML representation of this object.
             </summary>
         </member>
-        <member name="T:ProjNet.CoordinateSystems.HorizontalDatum">
+        <member name="T:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader">
             <summary>
-            Horizontal datum defining the standard datum information.
+            Creates an object based on the supplied Well Known Text (WKT).
             </summary>
         </member>
-        <member name="T:ProjNet.CoordinateSystems.Datum">
+        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.Parse(System.String)">
             <summary>
-            A set of quantities from which other quantities are calculated.
+            Reads and parses a WKT-formatted projection string.
             </summary>
-            <remarks>
-            For the OGC abstract model, it can be defined as a set of real points on the earth 
-            that have coordinates. EG. A datum can be thought of as a set of parameters 
-            defining completely the origin and orientation of a coordinate system with respect 
-            to the earth. A textual description and/or a set of parameters describing the 
-            relationship of a coordinate system to some predefined physical locations (such 
-            as center of mass) and physical directions (such as axis of spin). The definition 
-            of the datum may also include the temporal behavior (such as the rate of change of
-            the orientation of the coordinate axes).
-            </remarks>
+            <param name="wkt">String containing WKT.</param>
+            <returns>Object representation of the WKT.</returns>
+            <exception cref="T:System.ArgumentException">If a token is not recognised.</exception>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Datum.#ctor(GeoAPI.CoordinateSystems.DatumType,System.String,System.String,System.Int64,System.String,System.String,System.String)">
+        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadUnit(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
             <summary>
-            Initializes a new instance of a Datum object
+            Returns a IUnit given a piece of WKT.
             </summary>
-            <param name="type">Datum type</param>
-            <param name="name">Name</param>
-            <param name="authority">Authority name</param>
-            <param name="code">Authority-specific identification code.</param>
-            <param name="alias">Alias</param>
-            <param name="abbreviation">Abbreviation</param>
-            <param name="remarks">Provider-supplied remarks</param>
+            <param name="tokenizer">WktStreamTokenizer that has the WKT.</param>
+            <returns>An object that implements the IUnit interface.</returns>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Datum.EqualParams(System.Object)">
+        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadLinearUnit(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
             <summary>
-            Checks whether the values of this instance is equal to the values of another instance.
-            Only parameters used for coordinate system are used for comparison.
-            Name, abbreviation, authority, alias and remarks are ignored in the comparison.
+            Returns a <see cref="T:ProjNet.CoordinateSystems.LinearUnit"/> given a piece of WKT.
             </summary>
-            <param name="obj"></param>
-            <returns>True if equal</returns>
+            <param name="tokenizer">WktStreamTokenizer that has the WKT.</param>
+            <returns>An object that implements the IUnit interface.</returns>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.Datum.DatumType">
+        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadAngularUnit(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
             <summary>
-            Gets or sets the type of the datum as an enumerated code.
+            Returns a <see cref="T:ProjNet.CoordinateSystems.AngularUnit"/> given a piece of WKT.
             </summary>
+            <param name="tokenizer">WktStreamTokenizer that has the WKT.</param>
+            <returns>An object that implements the IUnit interface.</returns>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.HorizontalDatum.#ctor(GeoAPI.CoordinateSystems.IEllipsoid,GeoAPI.CoordinateSystems.Wgs84ConversionInfo,GeoAPI.CoordinateSystems.DatumType,System.String,System.String,System.Int64,System.String,System.String,System.String)">
+        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadAxis(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
             <summary>
-            Initializes a new instance of a horizontal datum
+            Returns a <see cref="T:GeoAPI.CoordinateSystems.AxisInfo"/> given a piece of WKT.
             </summary>
-            <param name="ellipsoid">Ellipsoid</param>
-            <param name="toWgs84">Parameters for a Bursa Wolf transformation into WGS84</param>
-            <param name="type">Datum type</param>
-            <param name="name">Name</param>
-            <param name="authority">Authority name</param>
-            <param name="code">Authority-specific identification code.</param>
-            <param name="alias">Alias</param>
-            <param name="abbreviation">Abbreviation</param>
-            <param name="remarks">Provider-supplied remarks</param>
+            <param name="tokenizer">WktStreamTokenizer that has the WKT.</param>
+            <returns>An AxisInfo object.</returns>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.HorizontalDatum.EqualParams(System.Object)">
+        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadCoordinateSystem(System.String,ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
             <summary>
-            Checks whether the values of this instance is equal to the values of another instance.
-            Only parameters used for coordinate system are used for comparison.
-            Name, abbreviation, authority, alias and remarks are ignored in the comparison.
+            
             </summary>
-            <param name="obj"></param>
-            <returns>True if equal</returns>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.HorizontalDatum.WGS84">
-            <summary>
-            EPSG's WGS 84 datum has been the then current realisation. No distinction is made between the original WGS 84 
-            frame, WGS 84 (G730), WGS 84 (G873) and WGS 84 (G1150). Since 1997, WGS 84 has been maintained within 10cm of 
-            the then current ITRF.
-            </summary>
-            <remarks>
-            <para>Area of use: World</para>
-            <para>Origin description: Defined through a consistent set of station coordinates. These have changed with time: by 0.7m 
-            on 29/6/1994 [WGS 84 (G730)], a further 0.2m on 29/1/1997 [WGS 84 (G873)] and a further 0.06m on 
-            20/1/2002 [WGS 84 (G1150)].</para>
-            </remarks>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.HorizontalDatum.WGS72">
-            <summary>
-            World Geodetic System 1972
-            </summary>
-            <remarks>
-            <para>Used by GPS before 1987. For Transit satellite positioning see also WGS 72BE. Datum code 6323 reserved for southern hemisphere ProjCS's.</para>
-            <para>Area of use: World</para>
-            <para>Origin description: Developed from a worldwide distribution of terrestrial and
-            geodetic satellite observations and defined through a set of station coordinates.</para>
-            </remarks>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.HorizontalDatum.ETRF89">
-            <summary>
-            European Terrestrial Reference System 1989
-            </summary>
-            <remarks>
-            <para>Area of use: 
-            Europe: Albania; Andorra; Austria; Belgium; Bosnia and Herzegovina; Bulgaria; Croatia; 
-            Cyprus; Czech Republic; Denmark; Estonia; Finland; Faroe Islands; France; Germany; Greece; 
-            Hungary; Ireland; Italy; Latvia; Liechtenstein; Lithuania; Luxembourg; Malta; Netherlands; 
-            Norway; Poland; Portugal; Romania; San Marino; Serbia and Montenegro; Slovakia; Slovenia; 
-            Spain; Svalbard; Sweden; Switzerland; United Kingdom (UK) including Channel Islands and 
-            Isle of Man; Vatican City State.</para>
-            <para>Origin description: Fixed to the stable part of the Eurasian continental 
-            plate and consistent with ITRS at the epoch 1989.0.</para>
-            </remarks>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.HorizontalDatum.ED50">
-            <summary>
-            European Datum 1950
-            </summary>
-            <remarks>
-            <para>Area of use:
-            Europe - west - Denmark; Faroe Islands; France offshore; Israel offshore; Italy including San 
-            Marino and Vatican City State; Ireland offshore; Netherlands offshore; Germany; Greece (offshore);
-            North Sea; Norway; Spain; Svalbard; Turkey; United Kingdom UKCS offshore. Egypt - Western Desert.
-            </para>
-            <para>Origin description: Fundamental point: Potsdam (Helmert Tower). 
-            Latitude: 52 deg 22 min 51.4456 sec N; Longitude: 13 deg  3 min 58.9283 sec E (of Greenwich).</para>
-            </remarks>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.HorizontalDatum.Ellipsoid">
-            <summary>
-            Gets or sets the ellipsoid of the datum
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.HorizontalDatum.Wgs84Parameters">
-            <summary>
-            Gets preferred parameters for a Bursa Wolf transformation into WGS84
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.HorizontalDatum.WKT">
-            <summary>
-            Returns the Well-known text for this object
-            as defined in the simple features specification.
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.HorizontalDatum.XML">
-            <summary>
-            Gets an XML representation of this object
-            </summary>
-        </member>
-        <member name="T:ProjNet.CoordinateSystems.Transformations.GeographicTransform">
-            <summary>
-            The GeographicTransform class is implemented on geographic transformation objects and
-            implements datum transformations between geographic coordinate systems.
-            </summary>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Transformations.GeographicTransform.Inverse">
-            <summary>
-            Creates the inverse transform of this object.
-            </summary>
-            <remarks>This method may fail if the transform is not one to one. However, all cartographic projections should succeed.</remarks>
+            <param name="coordinateSystem"></param>
+            <param name="tokenizer"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Transformations.GeographicTransform.Transform(System.Double[])">
+        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadWGS84ConversionInfo(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
             <summary>
-            Transforms a coordinate point. The passed parameter point should not be modified.
+            Reads either 3, 6 or 7 parameter Bursa-Wolf values from TOWGS84 token
             </summary>
-            <param name="point"></param>
+            <param name="tokenizer"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Transformations.GeographicTransform.TransformList(System.Collections.Generic.List{System.Double[]})">
+        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadEllipsoid(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
             <summary>
-            Transforms a list of coordinate point ordinal values.
+            
             </summary>
-            <remarks>
-            This method is provided for efficiently transforming many points. The supplied array 
-            of ordinal values will contain packed ordinal values. For example, if the source 
-            dimension is 3, then the ordinals will be packed in this order (x0,y0,z0,x1,y1,z1 ...).
-            The size of the passed array must be an integer multiple of DimSource. The returned 
-            ordinal values are packed in a similar way. In some DCPs. the ordinals may be 
-            transformed in-place, and the returned array may be the same as the passed array.
-            So any client code should not attempt to reuse the passed ordinal values (although
-            they can certainly reuse the passed array). If there is any problem then the server
-            implementation will throw an exception. If this happens then the client should not
-            make any assumptions about the state of the ordinal values.
-            </remarks>
-            <param name="points"></param>
+            <param name="tokenizer"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Transformations.GeographicTransform.Invert">
+        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadProjection(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
             <summary>
-            Reverses the transformation
+            
+            </summary>
+            <param name="tokenizer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadProjectedCoordinateSystem(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
+            <summary>
+            
+            </summary>
+            <param name="tokenizer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadGeographicCoordinateSystem(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
+            <summary>
+            
+            </summary>
+            <param name="tokenizer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadHorizontalDatum(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
+            <summary>
+            
+            </summary>
+            <param name="tokenizer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.ReadPrimeMeridian(ProjNet.Converters.WellKnownText.WktStreamTokenizer)">
+            <summary>
+            
+            </summary>
+            <param name="tokenizer"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ProjNet.CoordinateSystems.Transformations.CoordinateTransformationFactory">
+            <summary>
+            Creates coordinate transformations.
             </summary>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.Transformations.GeographicTransform.SourceGCS">
+        <member name="M:ProjNet.CoordinateSystems.Transformations.CoordinateTransformationFactory.CreateFromCoordinateSystems(GeoAPI.CoordinateSystems.ICoordinateSystem,GeoAPI.CoordinateSystems.ICoordinateSystem)">
             <summary>
-            Gets or sets the source geographic coordinate system for the transformation.
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.Transformations.GeographicTransform.TargetGCS">
-            <summary>
-            Gets or sets the target geographic coordinate system for the transformation.
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.Transformations.GeographicTransform.WKT">
-            <summary>
-            Returns the Well-known text for this object
-            as defined in the simple features specification. [NOT IMPLEMENTED].
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.Transformations.GeographicTransform.XML">
-            <summary>
-            Gets an XML representation of this object [NOT IMPLEMENTED].
-            </summary>
-        </member>
-        <member name="T:ProjNet.CoordinateSystems.Projections.Mercator">
-            <summary>
-            Implements the Mercator projection.
+            Creates a transformation between two coordinate systems.
             </summary>
             <remarks>
-            <para>This map projection introduced in 1569 by Gerardus Mercator. It is often described as a cylindrical projection,
-            but it must be derived mathematically. The meridians are equally spaced, parallel vertical lines, and the
-            parallels of latitude are parallel, horizontal straight lines, spaced farther and farther apart as their distance
-            from the Equator increases. This projection is widely used for navigation charts, because any straight line
-            on a Mercator-projection map is a line of constant true bearing that enables a navigator to plot a straight-line
-            course. It is less practical for world maps because the scale is distorted; areas farther away from the equator
-            appear disproportionately large. On a Mercator projection, for example, the landmass of Greenland appears to be
-            greater than that of the continent of South America; in actual area, Greenland is smaller than the Arabian Peninsula.
-            </para>
-            </remarks>
+            This method will examine the coordinate systems in order to construct
+            a transformation between them. This method may fail if no path between 
+            the coordinate systems is found, using the normal failing behavior of 
+            the DCP (e.g. throwing an exception).</remarks>
+            <param name="sourceCS">Source coordinate system</param>
+            <param name="targetCS">Target coordinate system</param>
+            <returns></returns>		
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Projections.Mercator.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter})">
+        <member name="M:ProjNet.CoordinateSystems.Transformations.CoordinateTransformationFactory.CreateGeog2Geog(GeoAPI.CoordinateSystems.IGeographicCoordinateSystem,GeoAPI.CoordinateSystems.IGeographicCoordinateSystem)">
             <summary>
-            Initializes the MercatorProjection object with the specified parameters to project points. 
+            Geographic to geographic transformation
             </summary>
-            <param name="parameters">ParameterList with the required parameters.</param>
-            <remarks>
-            </remarks>
+            <remarks>Adds a datum shift if nessesary</remarks>
+            <param name="source"></param>
+            <param name="target"></param>
+            <returns></returns>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Projections.Mercator.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter},System.Boolean)">
+        <member name="M:ProjNet.CoordinateSystems.Transformations.CoordinateTransformationFactory.CreateGeoc2Geoc(GeoAPI.CoordinateSystems.IGeocentricCoordinateSystem,GeoAPI.CoordinateSystems.IGeocentricCoordinateSystem)">
             <summary>
-            Initializes the MercatorProjection object with the specified parameters.
+            Geocentric to Geocentric transformation
             </summary>
-            <param name="parameters">List of parameters to initialize the projection.</param>
-            <param name="isInverse">Indicates whether the projection forward (meters to degrees or degrees to meters).</param>
-            <remarks>
-            <para>The parameters this projection expects are listed below.</para>
-            <list type="table">
-            <listheader><term>Items</term><description>Descriptions</description></listheader>
-            <item><term>central_meridian</term><description>The longitude of the point from which the values of both the geographical coordinates on the ellipsoid and the grid coordinates on the projection are deemed to increment or decrement for computational purposes. Alternatively it may be considered as the longitude of the point which in the absence of application of false coordinates has grid coordinates of (0,0).</description></item>
-            <item><term>latitude_of_origin</term><description>The latitude of the point from which the values of both the geographical coordinates on the ellipsoid and the grid coordinates on the projection are deemed to increment or decrement for computational purposes. Alternatively it may be considered as the latitude of the point which in the absence of application of false coordinates has grid coordinates of (0,0).</description></item>
-            <item><term>scale_factor</term><description>The factor by which the map grid is reduced or enlarged during the projection process, defined by its value at the natural origin.</description></item>
-            <item><term>false_easting</term><description>Since the natural origin may be at or near the centre of the projection and under normal coordinate circumstances would thus give rise to negative coordinates over parts of the mapped area, this origin is usually given false coordinates which are large enough to avoid this inconvenience. The False Easting, FE, is the easting value assigned to the abscissa (east).</description></item>
-            <item><term>false_northing</term><description>Since the natural origin may be at or near the centre of the projection and under normal coordinate circumstances would thus give rise to negative coordinates over parts of the mapped area, this origin is usually given false coordinates which are large enough to avoid this inconvenience. The False Northing, FN, is the northing value assigned to the ordinate.</description></item>
-            </list>
-            </remarks>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Projections.Mercator.DegreesToMeters(System.Double[])">
-            <summary>
-            Converts coordinates in decimal degrees to projected meters.
-            </summary>
-            <remarks>
-            <para>The parameters this projection expects are listed below.</para>
-            <list type="table">
-            <listheader><term>Items</term><description>Descriptions</description></listheader>
-            <item><term>longitude_of_natural_origin</term><description>The longitude of the point from which the values of both the geographical coordinates on the ellipsoid and the grid coordinates on the projection are deemed to increment or decrement for computational purposes. Alternatively it may be considered as the longitude of the point which in the absence of application of false coordinates has grid coordinates of (0,0).  Sometimes known as ""central meridian""."</description></item>
-            <item><term>latitude_of_natural_origin</term><description>The latitude of the point from which the values of both the geographical coordinates on the ellipsoid and the grid coordinates on the projection are deemed to increment or decrement for computational purposes. Alternatively it may be considered as the latitude of the point which in the absence of application of false coordinates has grid coordinates of (0,0).</description></item>
-            <item><term>scale_factor_at_natural_origin</term><description>The factor by which the map grid is reduced or enlarged during the projection process, defined by its value at the natural origin.</description></item>
-            <item><term>false_easting</term><description>Since the natural origin may be at or near the centre of the projection and under normal coordinate circumstances would thus give rise to negative coordinates over parts of the mapped area, this origin is usually given false coordinates which are large enough to avoid this inconvenience. The False Easting, FE, is the easting value assigned to the abscissa (east).</description></item>
-            <item><term>false_northing</term><description>Since the natural origin may be at or near the centre of the projection and under normal coordinate circumstances would thus give rise to negative coordinates over parts of the mapped area, this origin is usually given false coordinates which are large enough to avoid this inconvenience. The False Northing, FN, is the northing value assigned to the ordinate .</description></item>
-            </list>
-            </remarks>
-            <param name="lonlat">The point in decimal degrees.</param>
-            <returns>Point in projected meters</returns>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Projections.Mercator.MetersToDegrees(System.Double[])">
-            <summary>
-            Converts coordinates in projected meters to decimal degrees.
-            </summary>
-            <param name="p">Point in meters</param>
-            <returns>Transformed point in decimal degrees</returns>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Projections.Mercator.Inverse">
-            <summary>
-            Returns the inverse of this projection.
-            </summary>
-            <returns>IMathTransform that is the reverse of the current projection.</returns>
-        </member>
-        <member name="T:ProjNet.CoordinateSystems.PrimeMeridian">
-            <summary>
-            A meridian used to take longitude measurements from.
-            </summary>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.PrimeMeridian.#ctor(System.Double,GeoAPI.CoordinateSystems.IAngularUnit,System.String,System.String,System.Int64,System.String,System.String,System.String)">
-            <summary>
-            Initializes a new instance of a prime meridian
-            </summary>
-            <param name="longitude">Longitude of prime meridian</param>
-            <param name="angularUnit">Angular unit</param>
-            <param name="name">Name</param>
-            <param name="authority">Authority name</param>
-            <param name="authorityCode">Authority-specific identification code.</param>
-            <param name="alias">Alias</param>
-            <param name="abbreviation">Abbreviation</param>
-            <param name="remarks">Provider-supplied remarks</param>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.PrimeMeridian.EqualParams(System.Object)">
-            <summary>
-            Checks whether the values of this instance is equal to the values of another instance.
-            Only parameters used for coordinate system are used for comparison.
-            Name, abbreviation, authority, alias and remarks are ignored in the comparison.
-            </summary>
-            <param name="obj"></param>
-            <returns>True if equal</returns>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Greenwich">
-            <summary>
-            Greenwich prime meridian
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Lisbon">
-            <summary>
-            Lisbon prime meridian
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Paris">
-            <summary>
-            Paris prime meridian.
-            Value adopted by IGN (Paris) in 1936. Equivalent to 2 deg 20min 14.025sec. Preferred by EPSG to earlier value of 2deg 20min 13.95sec (2.596898 grads) used by RGS London.
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Bogota">
-            <summary>
-            Bogota prime meridian
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Madrid">
-            <summary>
-            Madrid prime meridian
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Rome">
-            <summary>
-            Rome prime meridian
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Bern">
-            <summary>
-            Bern prime meridian.
-            1895 value. Newer value of 7 deg 26 min 22.335 sec E determined in 1938.
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Jakarta">
-            <summary>
-            Jakarta prime meridian
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Ferro">
-            <summary>
-            Ferro prime meridian.
-            Used in Austria and former Czechoslovakia.
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Brussels">
-            <summary>
-            Brussels prime meridian
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Stockholm">
-            <summary>
-            Stockholm prime meridian
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Athens">
-            <summary>
-            Athens prime meridian.
-            Used in Greece for older mapping based on Hatt projection.
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Oslo">
-            <summary>
-            Oslo prime meridian.
-            Formerly known as Kristiania or Christiania.
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Longitude">
-            <summary>
-            Gets or sets the longitude of the prime meridian (relative to the Greenwich prime meridian).
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.AngularUnit">
-            <summary>
-            Gets or sets the AngularUnits.
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.WKT">
-            <summary>
-            Returns the Well-known text for this object
-            as defined in the simple features specification.
-            </summary>
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.XML">
-            <summary>
-            Gets an XML representation of this object
-            </summary>
-        </member>
-        <member name="T:ProjNet.Converters.WellKnownText.TokenType">
-            <summary>
-            Represents the type of token created by the StreamTokenizer class.
-            </summary>
-        </member>
-        <member name="F:ProjNet.Converters.WellKnownText.TokenType.Word">
-            <summary>
-            Indicates that the token is a word.
-            </summary>
-        </member>
-        <member name="F:ProjNet.Converters.WellKnownText.TokenType.Number">
-            <summary>
-            Indicates that the token is a number. 
-            </summary>
-        </member>
-        <member name="F:ProjNet.Converters.WellKnownText.TokenType.Eol">
-            <summary>
-            Indicates that the end of line has been read. The field can only have this value if the eolIsSignificant method has been called with the argument true. 
-            </summary>
-        </member>
-        <member name="F:ProjNet.Converters.WellKnownText.TokenType.Eof">
-            <summary>
-            Indicates that the end of the input stream has been reached.
-            </summary>
-        </member>
-        <member name="F:ProjNet.Converters.WellKnownText.TokenType.Whitespace">
-            <summary>
-            Indictaes that the token is white space (space, tab, newline).
-            </summary>
-        </member>
-        <member name="F:ProjNet.Converters.WellKnownText.TokenType.Symbol">
-            <summary>
-            Characters that are not whitespace, numbers, etc...
-            </summary>
+            <param name="source"></param>
+            <param name="target"></param>
+            <returns></returns>
         </member>
         <member name="T:ProjNet.CoordinateSystems.Ellipsoid">
             <summary>
@@ -2005,6 +1674,47 @@
         <member name="P:ProjNet.CoordinateSystems.Ellipsoid.XML">
             <summary>
             Gets an XML representation of this object
+            </summary>
+        </member>
+        <member name="T:ProjNet.CoordinateSystems.Datum">
+            <summary>
+            A set of quantities from which other quantities are calculated.
+            </summary>
+            <remarks>
+            For the OGC abstract model, it can be defined as a set of real points on the earth 
+            that have coordinates. EG. A datum can be thought of as a set of parameters 
+            defining completely the origin and orientation of a coordinate system with respect 
+            to the earth. A textual description and/or a set of parameters describing the 
+            relationship of a coordinate system to some predefined physical locations (such 
+            as center of mass) and physical directions (such as axis of spin). The definition 
+            of the datum may also include the temporal behavior (such as the rate of change of
+            the orientation of the coordinate axes).
+            </remarks>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Datum.#ctor(GeoAPI.CoordinateSystems.DatumType,System.String,System.String,System.Int64,System.String,System.String,System.String)">
+            <summary>
+            Initializes a new instance of a Datum object
+            </summary>
+            <param name="type">Datum type</param>
+            <param name="name">Name</param>
+            <param name="authority">Authority name</param>
+            <param name="code">Authority-specific identification code.</param>
+            <param name="alias">Alias</param>
+            <param name="abbreviation">Abbreviation</param>
+            <param name="remarks">Provider-supplied remarks</param>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Datum.EqualParams(System.Object)">
+            <summary>
+            Checks whether the values of this instance is equal to the values of another instance.
+            Only parameters used for coordinate system are used for comparison.
+            Name, abbreviation, authority, alias and remarks are ignored in the comparison.
+            </summary>
+            <param name="obj"></param>
+            <returns>True if equal</returns>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.Datum.DatumType">
+            <summary>
+            Gets or sets the type of the datum as an enumerated code.
             </summary>
         </member>
         <member name="T:ProjNet.CoordinateSystems.CoordinateSystemFactory">
@@ -2198,22 +1908,17 @@
             <param name="primeMeridian">Prime meridian</param>
             <returns>Geocentric Coordinate System</returns>
         </member>
-        <member name="T:ProjNet.CoordinateSystems.AngularUnit">
+        <member name="T:ProjNet.CoordinateSystems.PrimeMeridian">
             <summary>
-            Definition of angular units.
+            A meridian used to take longitude measurements from.
             </summary>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.AngularUnit.#ctor(System.Double)">
+        <member name="M:ProjNet.CoordinateSystems.PrimeMeridian.#ctor(System.Double,GeoAPI.CoordinateSystems.IAngularUnit,System.String,System.String,System.Int64,System.String,System.String,System.String)">
             <summary>
-            Initializes a new instance of a angular unit
+            Initializes a new instance of a prime meridian
             </summary>
-            <param name="radiansPerUnit">Radians per unit</param>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.AngularUnit.#ctor(System.Double,System.String,System.String,System.Int64,System.String,System.String,System.String)">
-            <summary>
-            Initializes a new instance of a angular unit
-            </summary>
-            <param name="radiansPerUnit">Radians per unit</param>
+            <param name="longitude">Longitude of prime meridian</param>
+            <param name="angularUnit">Angular unit</param>
             <param name="name">Name</param>
             <param name="authority">Authority name</param>
             <param name="authorityCode">Authority-specific identification code.</param>
@@ -2221,7 +1926,7 @@
             <param name="abbreviation">Abbreviation</param>
             <param name="remarks">Provider-supplied remarks</param>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.AngularUnit.EqualParams(System.Object)">
+        <member name="M:ProjNet.CoordinateSystems.PrimeMeridian.EqualParams(System.Object)">
             <summary>
             Checks whether the values of this instance is equal to the values of another instance.
             Only parameters used for coordinate system are used for comparison.
@@ -2230,67 +1935,288 @@
             <param name="obj"></param>
             <returns>True if equal</returns>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.AngularUnit.Degrees">
+        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Greenwich">
             <summary>
-            The angular degrees are PI/180 = 0.017453292519943295769236907684886 radians
+            Greenwich prime meridian
             </summary>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.AngularUnit.Radian">
+        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Lisbon">
             <summary>
-            SI standard unit
+            Lisbon prime meridian
             </summary>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.AngularUnit.Grad">
+        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Paris">
             <summary>
-            Pi / 200 = 0.015707963267948966192313216916398 radians
+            Paris prime meridian.
+            Value adopted by IGN (Paris) in 1936. Equivalent to 2 deg 20min 14.025sec. Preferred by EPSG to earlier value of 2deg 20min 13.95sec (2.596898 grads) used by RGS London.
             </summary>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.AngularUnit.Gon">
+        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Bogota">
             <summary>
-            Pi / 200 = 0.015707963267948966192313216916398 radians
-            </summary>		
-        </member>
-        <member name="P:ProjNet.CoordinateSystems.AngularUnit.RadiansPerUnit">
-            <summary>
-            Gets or sets the number of radians per <see cref="T:ProjNet.CoordinateSystems.AngularUnit"/>.
+            Bogota prime meridian
             </summary>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.AngularUnit.WKT">
+        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Madrid">
+            <summary>
+            Madrid prime meridian
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Rome">
+            <summary>
+            Rome prime meridian
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Bern">
+            <summary>
+            Bern prime meridian.
+            1895 value. Newer value of 7 deg 26 min 22.335 sec E determined in 1938.
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Jakarta">
+            <summary>
+            Jakarta prime meridian
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Ferro">
+            <summary>
+            Ferro prime meridian.
+            Used in Austria and former Czechoslovakia.
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Brussels">
+            <summary>
+            Brussels prime meridian
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Stockholm">
+            <summary>
+            Stockholm prime meridian
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Athens">
+            <summary>
+            Athens prime meridian.
+            Used in Greece for older mapping based on Hatt projection.
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Oslo">
+            <summary>
+            Oslo prime meridian.
+            Formerly known as Kristiania or Christiania.
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.Longitude">
+            <summary>
+            Gets or sets the longitude of the prime meridian (relative to the Greenwich prime meridian).
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.AngularUnit">
+            <summary>
+            Gets or sets the AngularUnits.
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.WKT">
             <summary>
             Returns the Well-known text for this object
             as defined in the simple features specification.
             </summary>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.AngularUnit.XML">
+        <member name="P:ProjNet.CoordinateSystems.PrimeMeridian.XML">
             <summary>
-            Gets an XML representation of this object.
+            Gets an XML representation of this object
             </summary>
         </member>
-        <member name="T:ProjNet.CoordinateSystems.Unit">
+        <member name="T:ProjNet.CoordinateSystems.Parameter">
             <summary>
-            Class for defining units
+            A named parameter value.
             </summary>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Unit.#ctor(System.Double,System.String,System.String,System.Int64,System.String,System.String,System.String)">
+        <member name="M:ProjNet.CoordinateSystems.Parameter.#ctor(System.String,System.Double)">
             <summary>
-            Initializes a new unit
+            Creates an instance of a parameter
             </summary>
-            <param name="conversionFactor">Conversion factor to base unit</param>
-            <param name="name">Name of unit</param>
-            <param name="authority">Authority name</param>
-            <param name="authorityCode">Authority-specific identification code.</param>
-            <param name="alias">Alias</param>
-            <param name="abbreviation">Abbreviation</param>
-            <param name="remarks">Provider-supplied remarks</param>
+            <remarks>Units are always either meters or degrees.</remarks>
+            <param name="name">Name of parameter</param>
+            <param name="value">Value</param>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Unit.#ctor(System.String,System.Double)">
+        <member name="P:ProjNet.CoordinateSystems.Parameter.Name">
             <summary>
-            Initializes a new unit
+            Parameter name
             </summary>
-            <param name="name">Name of unit</param>
-            <param name="conversionFactor">Conversion factor to base unit</param>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Unit.EqualParams(System.Object)">
+        <member name="P:ProjNet.CoordinateSystems.Parameter.Value">
+            <summary>
+            Parameter value
+            </summary>
+        </member>
+        <member name="T:ProjNet.CoordinateSystems.Projections.Mercator">
+            <summary>
+            Implements the Mercator projection.
+            </summary>
+            <remarks>
+            <para>This map projection introduced in 1569 by Gerardus Mercator. It is often described as a cylindrical projection,
+            but it must be derived mathematically. The meridians are equally spaced, parallel vertical lines, and the
+            parallels of latitude are parallel, horizontal straight lines, spaced farther and farther apart as their distance
+            from the Equator increases. This projection is widely used for navigation charts, because any straight line
+            on a Mercator-projection map is a line of constant true bearing that enables a navigator to plot a straight-line
+            course. It is less practical for world maps because the scale is distorted; areas farther away from the equator
+            appear disproportionately large. On a Mercator projection, for example, the landmass of Greenland appears to be
+            greater than that of the continent of South America; in actual area, Greenland is smaller than the Arabian Peninsula.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Projections.Mercator.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter})">
+            <summary>
+            Initializes the MercatorProjection object with the specified parameters to project points. 
+            </summary>
+            <param name="parameters">ParameterList with the required parameters.</param>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Projections.Mercator.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter},System.Boolean)">
+            <summary>
+            Initializes the MercatorProjection object with the specified parameters.
+            </summary>
+            <param name="parameters">List of parameters to initialize the projection.</param>
+            <param name="isInverse">Indicates whether the projection forward (meters to degrees or degrees to meters).</param>
+            <remarks>
+            <para>The parameters this projection expects are listed below.</para>
+            <list type="table">
+            <listheader><term>Items</term><description>Descriptions</description></listheader>
+            <item><term>central_meridian</term><description>The longitude of the point from which the values of both the geographical coordinates on the ellipsoid and the grid coordinates on the projection are deemed to increment or decrement for computational purposes. Alternatively it may be considered as the longitude of the point which in the absence of application of false coordinates has grid coordinates of (0,0).</description></item>
+            <item><term>latitude_of_origin</term><description>The latitude of the point from which the values of both the geographical coordinates on the ellipsoid and the grid coordinates on the projection are deemed to increment or decrement for computational purposes. Alternatively it may be considered as the latitude of the point which in the absence of application of false coordinates has grid coordinates of (0,0).</description></item>
+            <item><term>scale_factor</term><description>The factor by which the map grid is reduced or enlarged during the projection process, defined by its value at the natural origin.</description></item>
+            <item><term>false_easting</term><description>Since the natural origin may be at or near the centre of the projection and under normal coordinate circumstances would thus give rise to negative coordinates over parts of the mapped area, this origin is usually given false coordinates which are large enough to avoid this inconvenience. The False Easting, FE, is the easting value assigned to the abscissa (east).</description></item>
+            <item><term>false_northing</term><description>Since the natural origin may be at or near the centre of the projection and under normal coordinate circumstances would thus give rise to negative coordinates over parts of the mapped area, this origin is usually given false coordinates which are large enough to avoid this inconvenience. The False Northing, FN, is the northing value assigned to the ordinate.</description></item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Projections.Mercator.DegreesToMeters(System.Double[])">
+            <summary>
+            Converts coordinates in decimal degrees to projected meters.
+            </summary>
+            <remarks>
+            <para>The parameters this projection expects are listed below.</para>
+            <list type="table">
+            <listheader><term>Items</term><description>Descriptions</description></listheader>
+            <item><term>longitude_of_natural_origin</term><description>The longitude of the point from which the values of both the geographical coordinates on the ellipsoid and the grid coordinates on the projection are deemed to increment or decrement for computational purposes. Alternatively it may be considered as the longitude of the point which in the absence of application of false coordinates has grid coordinates of (0,0).  Sometimes known as ""central meridian""."</description></item>
+            <item><term>latitude_of_natural_origin</term><description>The latitude of the point from which the values of both the geographical coordinates on the ellipsoid and the grid coordinates on the projection are deemed to increment or decrement for computational purposes. Alternatively it may be considered as the latitude of the point which in the absence of application of false coordinates has grid coordinates of (0,0).</description></item>
+            <item><term>scale_factor_at_natural_origin</term><description>The factor by which the map grid is reduced or enlarged during the projection process, defined by its value at the natural origin.</description></item>
+            <item><term>false_easting</term><description>Since the natural origin may be at or near the centre of the projection and under normal coordinate circumstances would thus give rise to negative coordinates over parts of the mapped area, this origin is usually given false coordinates which are large enough to avoid this inconvenience. The False Easting, FE, is the easting value assigned to the abscissa (east).</description></item>
+            <item><term>false_northing</term><description>Since the natural origin may be at or near the centre of the projection and under normal coordinate circumstances would thus give rise to negative coordinates over parts of the mapped area, this origin is usually given false coordinates which are large enough to avoid this inconvenience. The False Northing, FN, is the northing value assigned to the ordinate .</description></item>
+            </list>
+            </remarks>
+            <param name="lonlat">The point in decimal degrees.</param>
+            <returns>Point in projected meters</returns>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Projections.Mercator.MetersToDegrees(System.Double[])">
+            <summary>
+            Converts coordinates in projected meters to decimal degrees.
+            </summary>
+            <param name="p">Point in meters</param>
+            <returns>Transformed point in decimal degrees</returns>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Projections.Mercator.Inverse">
+            <summary>
+            Returns the inverse of this projection.
+            </summary>
+            <returns>IMathTransform that is the reverse of the current projection.</returns>
+        </member>
+        <member name="T:ProjNet.CoordinateSystems.Projections.LambertConformalConic2SP">
+            <summary>
+            Implemetns the Lambert Conformal Conic 2SP Projection.
+            </summary>
+            <remarks>
+            <para>The Lambert Conformal Conic projection is a standard projection for presenting maps
+            of land areas whose East-West extent is large compared with their North-South extent.
+            This projection is "conformal" in the sense that lines of latitude and longitude, 
+            which are perpendicular to one another on the earth's surface, are also perpendicular
+            to one another in the projected domain.</para>
+            </remarks>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Projections.LambertConformalConic2SP.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter})">
+            <summary>
+            Creates an instance of an LambertConformalConic2SPProjection projection object.
+            </summary>
+            <remarks>
+            <para>The parameters this projection expects are listed below.</para>
+            <list type="table">
+            <listheader><term>Items</term><description>Descriptions</description></listheader>
+            <item><term>latitude_of_false_origin</term><description>The latitude of the point which is not the natural origin and at which grid coordinate values false easting and false northing are defined.</description></item>
+            <item><term>longitude_of_false_origin</term><description>The longitude of the point which is not the natural origin and at which grid coordinate values false easting and false northing are defined.</description></item>
+            <item><term>latitude_of_1st_standard_parallel</term><description>For a conic projection with two standard parallels, this is the latitude of intersection of the cone with the ellipsoid that is nearest the pole.  Scale is true along this parallel.</description></item>
+            <item><term>latitude_of_2nd_standard_parallel</term><description>For a conic projection with two standard parallels, this is the latitude of intersection of the cone with the ellipsoid that is furthest from the pole.  Scale is true along this parallel.</description></item>
+            <item><term>easting_at_false_origin</term><description>The easting value assigned to the false origin.</description></item>
+            <item><term>northing_at_false_origin</term><description>The northing value assigned to the false origin.</description></item>
+            </list>
+            </remarks>
+            <param name="parameters">List of parameters to initialize the projection.</param>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Projections.LambertConformalConic2SP.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter},System.Boolean)">
+            <summary>
+            Creates an instance of an Albers projection object.
+            </summary>
+            <remarks>
+            <para>The parameters this projection expects are listed below.</para>
+            <list type="table">
+            <listheader><term>Parameter</term><description>Description</description></listheader>
+            <item><term>latitude_of_origin</term><description>The latitude of the point which is not the natural origin and at which grid coordinate values false easting and false northing are defined.</description></item>
+            <item><term>central_meridian</term><description>The longitude of the point which is not the natural origin and at which grid coordinate values false easting and false northing are defined.</description></item>
+            <item><term>standard_parallel_1</term><description>For a conic projection with two standard parallels, this is the latitude of intersection of the cone with the ellipsoid that is nearest the pole.  Scale is true along this parallel.</description></item>
+            <item><term>standard_parallel_2</term><description>For a conic projection with two standard parallels, this is the latitude of intersection of the cone with the ellipsoid that is furthest from the pole.  Scale is true along this parallel.</description></item>
+            <item><term>false_easting</term><description>The easting value assigned to the false origin.</description></item>
+            <item><term>false_northing</term><description>The northing value assigned to the false origin.</description></item>
+            </list>
+            </remarks>
+            <param name="parameters">List of parameters to initialize the projection.</param>
+            <param name="isInverse">Indicates whether the projection forward (meters to degrees or degrees to meters).</param>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Projections.LambertConformalConic2SP.DegreesToMeters(System.Double[])">
+            <summary>
+            Converts coordinates in decimal degrees to projected meters.
+            </summary>
+            <param name="lonlat">The point in decimal degrees.</param>
+            <returns>Point in projected meters</returns>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Projections.LambertConformalConic2SP.MetersToDegrees(System.Double[])">
+            <summary>
+            Converts coordinates in projected meters to decimal degrees.
+            </summary>
+            <param name="p">Point in meters</param>
+            <returns>Transformed point in decimal degrees</returns>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Projections.LambertConformalConic2SP.Inverse">
+            <summary>
+            Returns the inverse of this projection.
+            </summary>
+            <returns>IMathTransform that is the reverse of the current projection.</returns>
+        </member>
+        <member name="T:ProjNet.CoordinateSystems.Projection">
+            <summary>
+            The Projection class defines the standard information stored with a projection
+            objects. A projection object implements a coordinate transformation from a geographic
+            coordinate system to a projected coordinate system, given the ellipsoid for the
+            geographic coordinate system. It is expected that each coordinate transformation of
+            interest, e.g., Transverse Mercator, Lambert, will be implemented as a class of
+            type Projection, supporting the IProjection interface.
+            </summary>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Projection.GetParameter(System.Int32)">
+            <summary>
+            Gets an indexed parameter of the projection.
+            </summary>
+            <param name="n">Index of parameter</param>
+            <returns>n'th parameter</returns>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Projection.GetParameter(System.String)">
+            <summary>
+            Gets an named parameter of the projection.
+            </summary>
+            <remarks>The parameter name is case insensitive</remarks>
+            <param name="name">Name of parameter</param>
+            <returns>parameter or null if not found</returns>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Projection.EqualParams(System.Object)">
             <summary>
             Checks whether the values of this instance is equal to the values of another instance.
             Only parameters used for coordinate system are used for comparison.
@@ -2299,20 +2225,30 @@
             <param name="obj"></param>
             <returns>True if equal</returns>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.Unit.ConversionFactor">
+        <member name="P:ProjNet.CoordinateSystems.Projection.NumParameters">
             <summary>
-            Gets or sets the number of units per base-unit.
+            Gets the number of parameters of the projection.
             </summary>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.Unit.WKT">
+        <member name="P:ProjNet.CoordinateSystems.Projection.Parameters">
+            <summary>
+            Gets or sets the parameters of the projection
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.Projection.ClassName">
+            <summary>
+            Gets the projection classification name (e.g. "Transverse_Mercator").
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.Projection.WKT">
             <summary>
             Returns the Well-known text for this object
             as defined in the simple features specification.
             </summary>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.Unit.XML">
+        <member name="P:ProjNet.CoordinateSystems.Projection.XML">
             <summary>
-            Gets an XML representation of this object [NOT IMPLEMENTED].
+            Gets an XML representation of this object
             </summary>
         </member>
         <member name="T:ProjNet.CoordinateSystems.Projections.TransverseMercator">
@@ -2377,233 +2313,62 @@
             </summary>
             <returns>IMathTransform that is the reverse of the current projection.</returns>
         </member>
-        <member name="T:ProjNet.CoordinateSystems.Projections.KrovakProjection">
+        <member name="T:ProjNet.CoordinateSystems.GeographicTransform">
             <summary>
-            Implemetns the Krovak Projection.
-            </summary>
-            <remarks>
-            <para>The normal case of the Lambert Conformal conic is for the axis of the cone 
-            to be coincident with the minor axis of the ellipsoid, that is the axis of the cone 
-            is normal to the ellipsoid at a pole. For the Oblique Conformal Conic the axis 
-            of the cone is normal to the ellipsoid at a defined location and its extension 
-            cuts the minor axis at a defined angle. This projection is used in the Czech Republic 
-            and Slovakia under the name "Krovak" projection.</para>
-            </remarks>
-        </member>
-        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection.MAXIMUM_ITERATIONS">
-            Maximum number of iterations for iterative computations.
-        </member>
-        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection.ITERATION_TOLERANCE">
-            When to stop the iteration.
-        </member>
-        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection.S45">
-            Useful constant - 45° in radians.
-        </member>
-        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._azimuth">
-            Azimuth of the centre line passing through the centre of the projection.
-            This is equals to the co-latitude of the cone axis at point of intersection
-            with the ellipsoid.
-        </member>
-        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._pseudoStandardParallel">
-            Latitude of pseudo standard parallel.
-        </member>
-        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._sinAzim">
-            Useful variables calculated from parameters defined by user.
-        </member>
-        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._cosAzim">
-            Useful variables calculated from parameters defined by user.
-        </member>
-        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._n">
-            Useful variables calculated from parameters defined by user.
-        </member>
-        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._tanS2">
-            Useful variables calculated from parameters defined by user.
-        </member>
-        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._alfa">
-            Useful variables calculated from parameters defined by user.
-        </member>
-        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._hae">
-            Useful variables calculated from parameters defined by user.
-        </member>
-        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._k1">
-            Useful variables calculated from parameters defined by user.
-        </member>
-        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._ka">
-            Useful variables calculated from parameters defined by user.
-        </member>
-        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._ro0">
-            Useful variables calculated from parameters defined by user.
-        </member>
-        <member name="F:ProjNet.CoordinateSystems.Projections.KrovakProjection._rop">
-            Useful variables calculated from parameters defined by user.
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Projections.KrovakProjection.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter})">
-            <summary>
-            Creates an instance of an LambertConformalConic2SPProjection projection object.
-            </summary>
-            <remarks>
-            <para>The parameters this projection expects are listed below.</para>
-            <list type="table">
-            <listheader><term>Items</term><description>Descriptions</description></listheader>
-            <item><term>latitude_of_false_origin</term><description>The latitude of the point which is not the natural origin and at which grid coordinate values false easting and false northing are defined.</description></item>
-            <item><term>longitude_of_false_origin</term><description>The longitude of the point which is not the natural origin and at which grid coordinate values false easting and false northing are defined.</description></item>
-            <item><term>latitude_of_1st_standard_parallel</term><description>For a conic projection with two standard parallels, this is the latitude of intersection of the cone with the ellipsoid that is nearest the pole.  Scale is true along this parallel.</description></item>
-            <item><term>latitude_of_2nd_standard_parallel</term><description>For a conic projection with two standard parallels, this is the latitude of intersection of the cone with the ellipsoid that is furthest from the pole.  Scale is true along this parallel.</description></item>
-            <item><term>easting_at_false_origin</term><description>The easting value assigned to the false origin.</description></item>
-            <item><term>northing_at_false_origin</term><description>The northing value assigned to the false origin.</description></item>
-            </list>
-            </remarks>
-            <param name="parameters">List of parameters to initialize the projection.</param>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Projections.KrovakProjection.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter},System.Boolean)">
-            <summary>
-            Creates an instance of an Albers projection object.
-            </summary>
-            <remarks>
-            <para>The parameters this projection expects are listed below.</para>
-            <list type="table">
-            <listheader><term>Parameter</term><description>Description</description></listheader>
-            <item><term>latitude_of_origin</term><description>The latitude of the point which is not the natural origin and at which grid coordinate values false easting and false northing are defined.</description></item>
-            <item><term>central_meridian</term><description>The longitude of the point which is not the natural origin and at which grid coordinate values false easting and false northing are defined.</description></item>
-            <item><term>standard_parallel_1</term><description>For a conic projection with two standard parallels, this is the latitude of intersection of the cone with the ellipsoid that is nearest the pole.  Scale is true along this parallel.</description></item>
-            <item><term>standard_parallel_2</term><description>For a conic projection with two standard parallels, this is the latitude of intersection of the cone with the ellipsoid that is furthest from the pole.  Scale is true along this parallel.</description></item>
-            <item><term>false_easting</term><description>The easting value assigned to the false origin.</description></item>
-            <item><term>false_northing</term><description>The northing value assigned to the false origin.</description></item>
-            </list>
-            </remarks>
-            <param name="parameters">List of parameters to initialize the projection.</param>
-            <param name="isInverse">Indicates whether the projection forward (meters to degrees or degrees to meters).</param>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Projections.KrovakProjection.DegreesToMeters(System.Double[])">
-            <summary>
-            Converts coordinates in decimal degrees to projected meters.
-            </summary>
-            <param name="lonlat">The point in decimal degrees.</param>
-            <returns>Point in projected meters</returns>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Projections.KrovakProjection.MetersToDegrees(System.Double[])">
-            <summary>
-            Converts coordinates in projected meters to decimal degrees.
-            </summary>
-            <param name="p">Point in meters</param>
-            <returns>Transformed point in decimal degrees</returns>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Projections.KrovakProjection.Inverse">
-            <summary>
-            Returns the inverse of this projection.
-            </summary>
-            <returns>IMathTransform that is the reverse of the current projection.</returns>
-        </member>
-        <member name="T:ProjNet.CoordinateSystems.Transformations.GeocentricTransform">
-            <summary>
-            
-            </summary>
-            <remarks>
-            <para>Latitude, Longitude and ellipsoidal height in terms of a 3-dimensional geographic system
-            may by expressed in terms of a geocentric (earth centered) Cartesian coordinate reference system
-            X, Y, Z with the Z axis corresponding to the earth's rotation axis positive northwards, the X
-            axis through the intersection of the prime meridian and equator, and the Y axis through
-            the intersection of the equator with longitude 90 degrees east. The geographic and geocentric
-            systems are based on the same geodetic datum.</para>
-            <para>Geocentric coordinate reference systems are conventionally taken to be defined with the X
-            axis through the intersection of the Greenwich meridian and equator. This requires that the equivalent
-            geographic coordinate reference systems based on a non-Greenwich prime meridian should first be
-            transformed to their Greenwich equivalent. Geocentric coordinates X, Y and Z take their units from
-            the units of the ellipsoid axes (a and b). As it is conventional for X, Y and Z to be in metres,
-            if the ellipsoid axis dimensions are given in another linear unit they should first be converted
-            to metres.</para>
-            </remarks>
-        </member>
-        <member name="F:ProjNet.CoordinateSystems.Transformations.GeocentricTransform._isInverse">
-            <summary>
-            
+            The GeographicTransform class is implemented on geographic transformation objects and
+            implements datum transformations between geographic coordinate systems.
             </summary>
         </member>
-        <member name="F:ProjNet.CoordinateSystems.Transformations.GeocentricTransform._Parameters">
+        <member name="M:ProjNet.CoordinateSystems.GeographicTransform.Forward(System.Collections.Generic.List{System.Double[]})">
             <summary>
-            
+            Transforms an array of points from the source geographic coordinate
+            system to the target geographic coordinate system.
+            </summary>
+            <param name="points">On input points in the source geographic coordinate system</param>
+            <returns>Output points in the target geographic coordinate system</returns>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.GeographicTransform.Inverse(System.Collections.Generic.List{System.Double[]})">
+            <summary>
+            Transforms an array of points from the target geographic coordinate
+            system to the source geographic coordinate system.
+            </summary>
+            <param name="points">Input points in the target geographic coordinate system,</param>
+            <returns>Output points in the source geographic coordinate system</returns>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.GeographicTransform.EqualParams(System.Object)">
+            <summary>
+            Checks whether the values of this instance is equal to the values of another instance.
+            Only parameters used for coordinate system are used for comparison.
+            Name, abbreviation, authority, alias and remarks are ignored in the comparison.
+            </summary>
+            <param name="obj"></param>
+            <returns>True if equal</returns>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.GeographicTransform.SourceGCS">
+            <summary>
+            Gets or sets the source geographic coordinate system for the transformation.
             </summary>
         </member>
-        <member name="F:ProjNet.CoordinateSystems.Transformations.GeocentricTransform._inverse">
+        <member name="P:ProjNet.CoordinateSystems.GeographicTransform.TargetGCS">
             <summary>
-            
+            Gets or sets the target geographic coordinate system for the transformation.
             </summary>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Transformations.GeocentricTransform.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter},System.Boolean)">
+        <member name="P:ProjNet.CoordinateSystems.GeographicTransform.ParameterInfo">
             <summary>
-            Initializes a geocentric projection object
-            </summary>
-            <param name="parameters">List of parameters to initialize the projection.</param>
-            <param name="isInverse">Indicates whether the projection forward (meters to degrees or degrees to meters).</param>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Transformations.GeocentricTransform.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter})">
-            <summary>
-            Initializes a geocentric projection object
-            </summary>
-            <param name="parameters">List of parameters to initialize the projection.</param>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Transformations.GeocentricTransform.Inverse">
-            <summary>
-            Returns the inverse of this conversion.
-            </summary>
-            <returns>IMathTransform that is the reverse of the current conversion.</returns>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Transformations.GeocentricTransform.DegreesToMeters(System.Double[])">
-            <summary>
-            Converts coordinates in decimal degrees to projected meters.
-            </summary>
-            <param name="lonlat">The point in decimal degrees.</param>
-            <returns>Point in projected meters</returns>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Transformations.GeocentricTransform.MetersToDegrees(System.Double[])">
-            <summary>
-            Converts coordinates in projected meters to decimal degrees.
-            </summary>
-            <param name="pnt">Point in meters</param>
-            <returns>Transformed point in decimal degrees</returns>		
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Transformations.GeocentricTransform.Transform(System.Double[])">
-            <summary>
-            Transforms a coordinate point. The passed parameter point should not be modified.
-            </summary>
-            <param name="point"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Transformations.GeocentricTransform.TransformList(System.Collections.Generic.List{System.Double[]})">
-            <summary>
-            Transforms a list of coordinate point ordinal values.
-            </summary>
-            <param name="points"></param>
-            <returns></returns>
-            <remarks>
-            This method is provided for efficiently transforming many points. The supplied array
-            of ordinal values will contain packed ordinal values. For example, if the source
-            dimension is 3, then the ordinals will be packed in this order (x0,y0,z0,x1,y1,z1 ...).
-            The size of the passed array must be an integer multiple of DimSource. The returned
-            ordinal values are packed in a similar way. In some DCPs. the ordinals may be
-            transformed in-place, and the returned array may be the same as the passed array.
-            So any client code should not attempt to reuse the passed ordinal values (although
-            they can certainly reuse the passed array). If there is any problem then the server
-            implementation will throw an exception. If this happens then the client should not
-            make any assumptions about the state of the ordinal values.
-            </remarks>
-        </member>
-        <member name="M:ProjNet.CoordinateSystems.Transformations.GeocentricTransform.Invert">
-            <summary>
-            Reverses the transformation
+            Returns an accessor interface to the parameters for this geographic transformation.
             </summary>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.Transformations.GeocentricTransform.WKT">
+        <member name="P:ProjNet.CoordinateSystems.GeographicTransform.WKT">
             <summary>
-            Gets a Well-Known text representation of this object.
+            Returns the Well-known text for this object
+            as defined in the simple features specification.
             </summary>
-            <value></value>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.Transformations.GeocentricTransform.XML">
+        <member name="P:ProjNet.CoordinateSystems.GeographicTransform.XML">
             <summary>
-            Gets an XML representation of this object.
+            Gets an XML representation of this object [NOT IMPLEMENTED].
             </summary>
-            <value></value>
         </member>
         <member name="T:ProjNet.CoordinateSystems.GeographicCoordinateSystem">
             <summary>
@@ -2739,32 +2504,99 @@
             Gets an XML representation of this object
             </summary>
         </member>
-        <member name="T:ProjNet.CoordinateSystems.Projection">
+        <member name="T:ProjNet.CoordinateSystems.SilverlightExtensions">
             <summary>
-            The Projection class defines the standard information stored with a projection
-            objects. A projection object implements a coordinate transformation from a geographic
-            coordinate system to a projected coordinate system, given the ellipsoid for the
-            geographic coordinate system. It is expected that each coordinate transformation of
-            interest, e.g., Transverse Mercator, Lambert, will be implemented as a class of
-            type Projection, supporting the IProjection interface.
+            Silverlight Extension methods
             </summary>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Projection.GetParameter(System.Int32)">
+        <member name="M:ProjNet.CoordinateSystems.SilverlightExtensions.Transform(GeoAPI.CoordinateSystems.Transformations.IMathTransform,System.Windows.Point)">
             <summary>
-            Gets an indexed parameter of the projection.
+            Transforms a coordinate point.
             </summary>
-            <param name="n">Index of parameter</param>
-            <returns>n'th parameter</returns>
+            <param name="point">Input point</param>
+            <returns>Transformed point</returns>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Projection.GetParameter(System.String)">
+        <member name="T:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform">
             <summary>
-            Gets an named parameter of the projection.
+            
             </summary>
-            <remarks>The parameter name is case insensitive</remarks>
-            <param name="name">Name of parameter</param>
-            <returns>parameter or null if not found</returns>
         </member>
-        <member name="M:ProjNet.CoordinateSystems.Projection.EqualParams(System.Object)">
+        <member name="F:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform._inverse">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform.#ctor(System.Collections.Generic.List{GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation})">
+            <summary>
+            
+            </summary>
+            <param name="transformlist"></param>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform.Transform(System.Double[])">
+            <summary>
+            Transforms a point
+            </summary>
+            <param name="point"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform.TransformList(System.Collections.Generic.List{System.Double[]})">
+            <summary>
+            Transforms a list point
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform.Inverse">
+            <summary>
+            Returns the inverse of this conversion.
+            </summary>
+            <returns>IMathTransform that is the reverse of the current conversion.</returns>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform.Invert">
+            <summary>
+            Reverses the transformation
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform.CoordinateTransformationList">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform.WKT">
+            <summary>
+            Gets a Well-Known text representation of this object.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.Transformations.ConcatenatedTransform.XML">
+            <summary>
+            Gets an XML representation of this object.
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:ProjNet.CoordinateSystems.LinearUnit">
+            <summary>
+            Definition of linear units.
+            </summary>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.LinearUnit.#ctor(System.Double,System.String,System.String,System.Int64,System.String,System.String,System.String)">
+            <summary>
+            Creates an instance of a linear unit
+            </summary>
+            <param name="metersPerUnit">Number of meters per <see cref="T:ProjNet.CoordinateSystems.LinearUnit"/></param>
+            <param name="name">Name</param>
+            <param name="authority">Authority name</param>
+            <param name="authorityCode">Authority-specific identification code.</param>
+            <param name="alias">Alias</param>
+            <param name="abbreviation">Abbreviation</param>
+            <param name="remarks">Provider-supplied remarks</param>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.LinearUnit.EqualParams(System.Object)">
             <summary>
             Checks whether the values of this instance is equal to the values of another instance.
             Only parameters used for coordinate system are used for comparison.
@@ -2773,30 +2605,221 @@
             <param name="obj"></param>
             <returns>True if equal</returns>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.Projection.NumParameters">
+        <member name="P:ProjNet.CoordinateSystems.LinearUnit.Metre">
             <summary>
-            Gets the number of parameters of the projection.
+            Returns the meters linear unit.
+            Also known as International metre. SI standard unit.
             </summary>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.Projection.Parameters">
+        <member name="P:ProjNet.CoordinateSystems.LinearUnit.Foot">
             <summary>
-            Gets or sets the parameters of the projection
+            Returns the foot linear unit (1ft = 0.3048m).
             </summary>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.Projection.ClassName">
+        <member name="P:ProjNet.CoordinateSystems.LinearUnit.USSurveyFoot">
             <summary>
-            Gets the projection classification name (e.g. "Transverse_Mercator").
+            Returns the US Survey foot linear unit (1ftUS = 0.304800609601219m).
             </summary>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.Projection.WKT">
+        <member name="P:ProjNet.CoordinateSystems.LinearUnit.NauticalMile">
+            <summary>
+            Returns the Nautical Mile linear unit (1NM = 1852m).
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.LinearUnit.ClarkesFoot">
+            <summary>
+            Returns Clarke's foot.
+            </summary>
+            <remarks>
+            Assumes Clarke's 1865 ratio of 1 British foot = 0.3047972654 French legal metres applies to the international metre. 
+            Used in older Australian, southern African &amp; British West Indian mapping.
+            </remarks>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.LinearUnit.MetersPerUnit">
+            <summary>
+            Gets or sets the number of meters per <see cref="T:ProjNet.CoordinateSystems.LinearUnit"/>.
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.LinearUnit.WKT">
             <summary>
             Returns the Well-known text for this object
             as defined in the simple features specification.
             </summary>
         </member>
-        <member name="P:ProjNet.CoordinateSystems.Projection.XML">
+        <member name="P:ProjNet.CoordinateSystems.LinearUnit.XML">
             <summary>
             Gets an XML representation of this object
+            </summary>
+        </member>
+        <member name="T:ProjNet.CoordinateSystems.HorizontalDatum">
+            <summary>
+            Horizontal datum defining the standard datum information.
+            </summary>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.HorizontalDatum.#ctor(GeoAPI.CoordinateSystems.IEllipsoid,GeoAPI.CoordinateSystems.Wgs84ConversionInfo,GeoAPI.CoordinateSystems.DatumType,System.String,System.String,System.Int64,System.String,System.String,System.String)">
+            <summary>
+            Initializes a new instance of a horizontal datum
+            </summary>
+            <param name="ellipsoid">Ellipsoid</param>
+            <param name="toWgs84">Parameters for a Bursa Wolf transformation into WGS84</param>
+            <param name="type">Datum type</param>
+            <param name="name">Name</param>
+            <param name="authority">Authority name</param>
+            <param name="code">Authority-specific identification code.</param>
+            <param name="alias">Alias</param>
+            <param name="abbreviation">Abbreviation</param>
+            <param name="remarks">Provider-supplied remarks</param>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.HorizontalDatum.EqualParams(System.Object)">
+            <summary>
+            Checks whether the values of this instance is equal to the values of another instance.
+            Only parameters used for coordinate system are used for comparison.
+            Name, abbreviation, authority, alias and remarks are ignored in the comparison.
+            </summary>
+            <param name="obj"></param>
+            <returns>True if equal</returns>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.HorizontalDatum.WGS84">
+            <summary>
+            EPSG's WGS 84 datum has been the then current realisation. No distinction is made between the original WGS 84 
+            frame, WGS 84 (G730), WGS 84 (G873) and WGS 84 (G1150). Since 1997, WGS 84 has been maintained within 10cm of 
+            the then current ITRF.
+            </summary>
+            <remarks>
+            <para>Area of use: World</para>
+            <para>Origin description: Defined through a consistent set of station coordinates. These have changed with time: by 0.7m 
+            on 29/6/1994 [WGS 84 (G730)], a further 0.2m on 29/1/1997 [WGS 84 (G873)] and a further 0.06m on 
+            20/1/2002 [WGS 84 (G1150)].</para>
+            </remarks>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.HorizontalDatum.WGS72">
+            <summary>
+            World Geodetic System 1972
+            </summary>
+            <remarks>
+            <para>Used by GPS before 1987. For Transit satellite positioning see also WGS 72BE. Datum code 6323 reserved for southern hemisphere ProjCS's.</para>
+            <para>Area of use: World</para>
+            <para>Origin description: Developed from a worldwide distribution of terrestrial and
+            geodetic satellite observations and defined through a set of station coordinates.</para>
+            </remarks>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.HorizontalDatum.ETRF89">
+            <summary>
+            European Terrestrial Reference System 1989
+            </summary>
+            <remarks>
+            <para>Area of use: 
+            Europe: Albania; Andorra; Austria; Belgium; Bosnia and Herzegovina; Bulgaria; Croatia; 
+            Cyprus; Czech Republic; Denmark; Estonia; Finland; Faroe Islands; France; Germany; Greece; 
+            Hungary; Ireland; Italy; Latvia; Liechtenstein; Lithuania; Luxembourg; Malta; Netherlands; 
+            Norway; Poland; Portugal; Romania; San Marino; Serbia and Montenegro; Slovakia; Slovenia; 
+            Spain; Svalbard; Sweden; Switzerland; United Kingdom (UK) including Channel Islands and 
+            Isle of Man; Vatican City State.</para>
+            <para>Origin description: Fixed to the stable part of the Eurasian continental 
+            plate and consistent with ITRS at the epoch 1989.0.</para>
+            </remarks>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.HorizontalDatum.ED50">
+            <summary>
+            European Datum 1950
+            </summary>
+            <remarks>
+            <para>Area of use:
+            Europe - west - Denmark; Faroe Islands; France offshore; Israel offshore; Italy including San 
+            Marino and Vatican City State; Ireland offshore; Netherlands offshore; Germany; Greece (offshore);
+            North Sea; Norway; Spain; Svalbard; Turkey; United Kingdom UKCS offshore. Egypt - Western Desert.
+            </para>
+            <para>Origin description: Fundamental point: Potsdam (Helmert Tower). 
+            Latitude: 52 deg 22 min 51.4456 sec N; Longitude: 13 deg  3 min 58.9283 sec E (of Greenwich).</para>
+            </remarks>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.HorizontalDatum.Ellipsoid">
+            <summary>
+            Gets or sets the ellipsoid of the datum
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.HorizontalDatum.Wgs84Parameters">
+            <summary>
+            Gets preferred parameters for a Bursa Wolf transformation into WGS84
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.HorizontalDatum.WKT">
+            <summary>
+            Returns the Well-known text for this object
+            as defined in the simple features specification.
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.HorizontalDatum.XML">
+            <summary>
+            Gets an XML representation of this object
+            </summary>
+        </member>
+        <member name="T:ProjNet.CoordinateSystems.AngularUnit">
+            <summary>
+            Definition of angular units.
+            </summary>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.AngularUnit.#ctor(System.Double)">
+            <summary>
+            Initializes a new instance of a angular unit
+            </summary>
+            <param name="radiansPerUnit">Radians per unit</param>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.AngularUnit.#ctor(System.Double,System.String,System.String,System.Int64,System.String,System.String,System.String)">
+            <summary>
+            Initializes a new instance of a angular unit
+            </summary>
+            <param name="radiansPerUnit">Radians per unit</param>
+            <param name="name">Name</param>
+            <param name="authority">Authority name</param>
+            <param name="authorityCode">Authority-specific identification code.</param>
+            <param name="alias">Alias</param>
+            <param name="abbreviation">Abbreviation</param>
+            <param name="remarks">Provider-supplied remarks</param>
+        </member>
+        <member name="M:ProjNet.CoordinateSystems.AngularUnit.EqualParams(System.Object)">
+            <summary>
+            Checks whether the values of this instance is equal to the values of another instance.
+            Only parameters used for coordinate system are used for comparison.
+            Name, abbreviation, authority, alias and remarks are ignored in the comparison.
+            </summary>
+            <param name="obj"></param>
+            <returns>True if equal</returns>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.AngularUnit.Degrees">
+            <summary>
+            The angular degrees are PI/180 = 0.017453292519943295769236907684886 radians
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.AngularUnit.Radian">
+            <summary>
+            SI standard unit
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.AngularUnit.Grad">
+            <summary>
+            Pi / 200 = 0.015707963267948966192313216916398 radians
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.AngularUnit.Gon">
+            <summary>
+            Pi / 200 = 0.015707963267948966192313216916398 radians
+            </summary>		
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.AngularUnit.RadiansPerUnit">
+            <summary>
+            Gets or sets the number of radians per <see cref="T:ProjNet.CoordinateSystems.AngularUnit"/>.
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.AngularUnit.WKT">
+            <summary>
+            Returns the Well-known text for this object
+            as defined in the simple features specification.
+            </summary>
+        </member>
+        <member name="P:ProjNet.CoordinateSystems.AngularUnit.XML">
+            <summary>
+            Gets an XML representation of this object.
             </summary>
         </member>
     </members>

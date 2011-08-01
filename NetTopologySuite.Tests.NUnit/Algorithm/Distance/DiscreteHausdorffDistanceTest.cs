@@ -1,13 +1,13 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Algorithm.Distance;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm.Distance
 {
-    [Ignore("The DiscreteHausdorffDistance functionality has not been implemented in NTS yet")]
     public class DiscreteHausdorffDistanceTest
     {
         [Test]
@@ -46,22 +46,20 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Distance
 
         private void RunTest(String wkt1, String wkt2, double expectedDistance)
         {
-            //TODO: When DiscreteHausdorffDistance is implemented in NTS, uncomment the lines below
-            //Geometry g1 = GeometryUtils.readWKT(wkt1);
-            //Geometry g2 = GeometryUtils.readWKT(wkt2);
+            IGeometry g1 = GeometryUtils.ReadWKT(wkt1);
+            IGeometry g2 = GeometryUtils.ReadWKT(wkt2);
 
-            //double distance = DiscreteHausdorffDistance.distance(g1, g2);
-            //Assert.AreEqual(distance, expectedDistance, TOLERANCE);
+            double distance = DiscreteHausdorffDistance.Distance(g1, g2);
+            Assert.AreEqual(distance, expectedDistance, TOLERANCE);
         }
 
         private void RunTest(String wkt1, String wkt2, double densifyFrac, double expectedDistance)
         {
-            //TODO: When DiscreteHausdorffDistance is implemented in NTS, uncomment the lines below
-            //Geometry g1 = GeometryUtils.readWKT(wkt1);
-            //Geometry g2 = GeometryUtils.readWKT(wkt2);
+            IGeometry g1 = GeometryUtils.ReadWKT(wkt1);
+            IGeometry g2 = GeometryUtils.ReadWKT(wkt2);
 
-            //double distance = DiscreteHausdorffDistance.distance(g1, g2, densifyFrac);
-            //Assert.AreEqual(distance, expectedDistance, TOLERANCE);
+            double distance = DiscreteHausdorffDistance.Distance(g1, g2, densifyFrac);
+            Assert.AreEqual(distance, expectedDistance, TOLERANCE);
         }
     }
 }

@@ -14,11 +14,11 @@ namespace NetTopologySuite.GeometriesGraph
         /// Computes the factor for the change in depth when moving from one location to another.
         /// E.g. if crossing from the Interior to the Exterior the depth decreases, so the factor is -1.
         /// </summary>
-        public static int DepthFactor(Locations currLocation, Locations nextLocation)
+        public static int DepthFactor(Location currLocation, Location nextLocation)
         {
-            if (currLocation == Locations.Exterior && nextLocation == Locations.Interior)
+            if (currLocation == Location.Exterior && nextLocation == Location.Interior)
                 return 1;
-            else if (currLocation == Locations.Interior && nextLocation == Locations.Exterior)
+            else if (currLocation == Location.Interior && nextLocation == Location.Exterior)
                 return -1;
             return 0;
         }
@@ -260,7 +260,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// This edge is a line edge if
         /// at least one of the labels is a line label
-        /// any labels which are not line labels have all Locations = Exterior.
+        /// any labels which are not line labels have all Location = Exterior.
         /// </summary>
         public bool IsLineEdge
         {
@@ -268,9 +268,9 @@ namespace NetTopologySuite.GeometriesGraph
             {
                 bool isLine = Label.IsLine(0) || Label.IsLine(1);
                 bool isExteriorIfArea0 =
-                    !Label.IsArea(0) || Label.AllPositionsEqual(0, Locations.Exterior);
+                    !Label.IsArea(0) || Label.AllPositionsEqual(0, Location.Exterior);
                 bool isExteriorIfArea1 =
-                    !Label.IsArea(1) || Label.AllPositionsEqual(1, Locations.Exterior);
+                    !Label.IsArea(1) || Label.AllPositionsEqual(1, Location.Exterior);
                 return isLine && isExteriorIfArea0 && isExteriorIfArea1;
             }
         }
@@ -289,8 +289,8 @@ namespace NetTopologySuite.GeometriesGraph
                 for (int i = 0; i < 2; i++)
                 {
                     if (!(Label.IsArea(i)
-                        && Label.GetLocation(i, Positions.Left)  == Locations.Interior
-                        && Label.GetLocation(i, Positions.Right) == Locations.Interior))
+                        && Label.GetLocation(i, Positions.Left)  == Location.Interior
+                        && Label.GetLocation(i, Positions.Right) == Location.Interior))
                     {
                         isInteriorAreaEdge = false;
                     }
@@ -346,9 +346,9 @@ namespace NetTopologySuite.GeometriesGraph
         public void OLDSetEdgeDepths(Positions position, int depth)
         {
             int depthDelta = Edge.DepthDelta;
-            Locations loc = Label.GetLocation(0, position);
+            Location loc = Label.GetLocation(0, position);
             Positions oppositePos = Position.Opposite(position);
-            Locations oppositeLoc = Label.GetLocation(0, oppositePos);
+            Location oppositeLoc = Label.GetLocation(0, oppositePos);
             int delta = Math.Abs(depthDelta) * DepthFactor(loc, oppositeLoc);            
             int oppositeDepth = depth + delta;
             SetDepth(position, depth);

@@ -12,7 +12,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     {
         private WKTReader reader = new WKTReader();
 
-        protected override void RunPtInRing(Locations expectedLoc, Coordinate pt, string wkt)
+        protected override void RunPtInRing(Location expectedLoc, Coordinate pt, string wkt)
         {
             IGeometry geom = reader.Read(wkt);
             Assert.AreEqual(expectedLoc, CGAlgorithms.LocatePointInRing(pt, geom.Coordinates));

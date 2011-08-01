@@ -126,7 +126,11 @@ namespace NetTopologySuite.Index.Strtree
 
         protected AbstractNode Root
         {
-            get { return _root; }
+            get
+            {
+                if (!_built) Build();
+                return _root;
+            }
             set { _root = value; }
         }
 

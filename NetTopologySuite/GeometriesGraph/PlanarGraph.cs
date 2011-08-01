@@ -101,7 +101,7 @@ namespace NetTopologySuite.GeometriesGraph
             if (node == null) 
                 return false;
             Label label = node.Label;
-            if (label != null && label.GetLocation(geomIndex) == Locations.Boundary) 
+            if (label != null && label.GetLocation(geomIndex) == Location.Boundary) 
                 return true;
             return false;
         }

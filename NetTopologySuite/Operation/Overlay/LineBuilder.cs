@@ -183,7 +183,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="targetIndex"></param>
         private void LabelIsolatedLine(Edge e, int targetIndex)
         {
-            Locations loc = _ptLocator.Locate(e.Coordinate, _op.GetArgGeometry(targetIndex));
+            Location loc = _ptLocator.Locate(e.Coordinate, _op.GetArgGeometry(targetIndex));
             e.Label.SetLocation(targetIndex, loc);
         }
     }

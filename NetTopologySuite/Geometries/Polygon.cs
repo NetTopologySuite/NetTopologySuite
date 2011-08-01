@@ -14,9 +14,9 @@ namespace NetTopologySuite.Geometries
     /// The shell and holes must conform to the assertions specified in the
     /// <see href="http://www.opengis.org/techno/specs.htm"/> OpenGIS Simple Features Specification for SQL.     
     /// </summary>
-#if !SILVERLIGHT
+//#if !SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public class Polygon : Geometry, IPolygon
     {
         /// <summary>
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Geometries
         private ILinearRing[] _holes; 
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Polygon"/> class.
+        /// Initializes a new instance of the <see cref="Polygon"/> class.
         /// </summary>
         /// <param name="shell">
         /// The outer boundary of the new <c>Polygon</c>,
@@ -141,22 +141,22 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override Dimensions Dimension
+        public override Dimension Dimension
         {
             get
             {
-                return Dimensions.Surface;
+                return Dimension.Surface;
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public override Dimensions BoundaryDimension
+        public override Dimension BoundaryDimension
         {
             get
             {
-                return Dimensions.Curve;
+                return Dimension.Curve;
             }
         }
 
@@ -525,6 +525,19 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        public override IGeometry Reverse()
+        {
+            Polygon poly = (Polygon)Clone();
+            poly.Shell = (LinearRing)((LinearRing)_shell.Clone()).Reverse();
+            poly.Holes = new LinearRing[_holes.Length];
+            for (int i = 0; i < _holes.Length; i++)
+            {
+                poly.Holes[i] = (LinearRing)((LinearRing)_holes[i].Clone()).Reverse();
+            }
+            return poly;// return the clone
+        }
+
+
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
@@ -557,6 +570,7 @@ namespace NetTopologySuite.Geometries
             {
                 return _shell;
             }
+            private set { _shell = value; }
         }
 
         /// <summary>
@@ -568,6 +582,7 @@ namespace NetTopologySuite.Geometries
             {
                 return _holes;
             }
+            private set { _holes = value; }
         }
 
         /*END ADDED BY MPAUL42 */

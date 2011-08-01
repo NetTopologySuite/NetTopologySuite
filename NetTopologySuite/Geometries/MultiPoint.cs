@@ -6,9 +6,9 @@ namespace NetTopologySuite.Geometries
     /// <summary>  
     /// Models a collection of <c>Point</c>s.
     /// </summary>
-#if !SILVERLIGHT
+//#if !SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public class MultiPoint : GeometryCollection, IMultiPoint
     {
         /// <summary>
@@ -44,22 +44,22 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override Dimensions Dimension 
+        public override GeoAPI.Geometries.Dimension Dimension 
         {
             get
             {
-                return Dimensions.Point;
+                return Dimension.Point;
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public override Dimensions BoundaryDimension
+        public override Dimension BoundaryDimension
         {
             get
             {
-                return Dimensions.False;
+                return Dimension.False;
             }
         }
 

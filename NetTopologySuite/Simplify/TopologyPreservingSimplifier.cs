@@ -17,6 +17,7 @@ namespace NetTopologySuite.Simplify
     /// The result rings touch at no more than the number of touching point in the input
     /// (although they may touch at fewer points).
     /// </summary>
+    /// <see cref="DouglasPeuckerSimplifier"/>
     public class TopologyPreservingSimplifier
     {
         /// <summary>
@@ -97,6 +98,7 @@ namespace NetTopologySuite.Simplify
             /// <returns></returns>
             protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
             {
+                // for linear components (including rings), simplify the linestring
                 if (parent is ILineString)
                 {
                     TaggedLineString taggedLine = _container._lineStringMap[(ILineString)parent];

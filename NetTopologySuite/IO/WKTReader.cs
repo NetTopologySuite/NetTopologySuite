@@ -89,11 +89,14 @@ namespace NetTopologySuite.IO
         /// </param>
         /// <returns>A <c>Geometry</c> read from <c>reader</c>.
         /// </returns>
-        public IGeometry Read(TextReader reader) 
+        public IGeometry Read(TextReader reader)
         {
+            var tokens = Tokenize(reader);
+            /*
             StreamTokenizer tokenizer = new StreamTokenizer(reader);
             IList<Token> tokens = new List<Token>();
             tokenizer.Tokenize(tokens);     // Read directly all tokens
+             */
             _index = 0;                      // Reset pointer to start of tokens
             try
             {
@@ -104,6 +107,16 @@ namespace NetTopologySuite.IO
                 throw new ParseException(e.ToString());
             }            
         }
+
+        internal IList<Token> Tokenize(TextReader reader)
+        {
+            StreamTokenizer tokenizer = new StreamTokenizer(reader);
+            IList<Token> tokens = new List<Token>();
+            tokenizer.Tokenize(tokens);     // Read directly all tokens
+            return tokens;
+        }
+
+        internal int Index { get { return _index; } set { _index = value; } }
 
 		/// <summary>
 		/// Returns the next array of <c>Coordinate</c>s in the stream.
@@ -292,7 +305,7 @@ namespace NetTopologySuite.IO
         /// <returns>The next word in the stream as uppercase text.</returns>
         private string GetNextWord(IList<Token> tokens)
         {
-            Token token = tokens[_index++] /*as Token*/;            
+            Token token = tokens[_index++] /*as Token*/;
 
             if (token is EofToken)
                 throw new ParseException("Expected number but encountered end of stream");
@@ -322,7 +335,7 @@ namespace NetTopologySuite.IO
         /// </param>
         /// <returns>A <c>Geometry</c> specified by the next token
         /// in the stream.</returns>
-        private IGeometry ReadGeometryTaggedText(IList<Token> tokens) 
+        internal IGeometry ReadGeometryTaggedText(IList<Token> tokens) 
         {            
             /*
              * A new different implementation by Marc Jacquin:
@@ -330,7 +343,7 @@ namespace NetTopologySuite.IO
              */
             IGeometry returned;
             string sridValue = null;
-            string type = tokens[0].ToString();
+            string type = tokens[_index].ToString();
             
             if (type == "SRID") 
             {

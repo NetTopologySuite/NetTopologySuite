@@ -98,10 +98,12 @@ namespace NetTopologySuite.Tests.Various
         }
 
         [Test(Description="Simplification always returns a geometry of the same type as the input geometry, and by default it attempts to ensure valid topology (by applying  a buffer(0) - which is a bit of a hack, I admit). This is why it returns an empty polygon.")]
-        [Ignore("Test with NTS 1.10")]
+        [Ignore("The result is the same as in JTS 1.10")]
         public void TestSimplifyBadPoly()
         {
-            var geom = new Polygon(new LinearRing(new ICoordinate[] 
+            var geom = new WKTReader().Read("POLYGON ((1 1, 1 1, 1 1, 1 1, 1 1))");
+
+            var geom2 = new Polygon(new LinearRing(new ICoordinate[] 
             {
                 new Coordinate(1, 1), 
                 new Coordinate(1, 1),

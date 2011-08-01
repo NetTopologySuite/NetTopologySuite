@@ -76,7 +76,7 @@ namespace NetTopologySuite.Algorithm
         /// <see cref="IPointInRing"/>
         public static bool IsPointInRing(ICoordinate p, ICoordinate[] ring) 
         {
-            return LocatePointInRing(p, ring) != Locations.Exterior;
+            return LocatePointInRing(p, ring) != Location.Exterior;
         }
 
         ///<summary>
@@ -88,8 +88,8 @@ namespace NetTopologySuite.Algorithm
         /// </remarks>
         /// <param name="p">Point to check for ring inclusion</param>
         /// <param name="ring">An array of coordinates representing the ring (which must have first point identical to last point)</param>
-        /// <returns>The <see cref="Locations"/> of p relative to the ring</returns>
-        public static Locations LocatePointInRing(ICoordinate p, ICoordinate[] ring)
+        /// <returns>The <see cref="Location"/> of p relative to the ring</returns>
+        public static Location LocatePointInRing(ICoordinate p, ICoordinate[] ring)
         {
             return RayCrossingCounter.LocatePointInRing(p, ring);
         }

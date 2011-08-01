@@ -31,7 +31,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
         /// <returns></returns>
         private static double[] ToArray(double x, double y)
         {
-            return new double[] { x, y, };
+            return new[] { x, y, };
         }
 
 	    /// <summary>

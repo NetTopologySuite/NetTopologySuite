@@ -1,7 +1,8 @@
 using System;
-using System.Collections;
 #if SILVERLIGHT
 using Hashtable = System.Collections.Generic.Dictionary<object, object>;
+#else
+using System.Collections;
 #endif
 
 namespace NetTopologySuite.Features
@@ -9,15 +10,15 @@ namespace NetTopologySuite.Features
     /// <summary>
     /// Stores all attributes associated with a single <c>Geometry</c> feature.
     /// </summary>
-#if !SILVERLIGHT
+//#if !SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public class AttributesTable : IAttributesTable
     {        
         private const string IndexField = "_NTS_ID_";
         private const int IndexValue = 0;
         
-        private Hashtable attributes = new Hashtable();
+        private readonly Hashtable _attributes = new Hashtable();
 
         /// <summary>
         /// Initialize a new attribute table.
@@ -34,7 +35,7 @@ namespace NetTopologySuite.Features
         /// </summary>
         public int Count
         {
-            get { return attributes.Count; }
+            get { return _attributes.Count; }
         }
 
         /// <summary>
@@ -45,8 +46,8 @@ namespace NetTopologySuite.Features
         public string[] GetNames()
         {
             int index = 0;
-            string[] names = new string[attributes.Count];
-            foreach (string name in attributes.Keys)
+            string[] names = new string[_attributes.Count];
+            foreach (string name in _attributes.Keys)
                 names[index++] = name;
             return names;
         }
@@ -59,8 +60,8 @@ namespace NetTopologySuite.Features
         public object[] GetValues()
         {
             int index = 0;
-            object[] values = new object[attributes.Count];
-            foreach (object val in attributes.Values)
+            object[] values = new object[_attributes.Count];
+            foreach (object val in _attributes.Values)
                 values[index++] = val;
             return values;
         }
@@ -72,7 +73,7 @@ namespace NetTopologySuite.Features
         /// <returns></returns>
         public bool Exists(string attributeName)
         {
-            return attributes.ContainsKey(attributeName);
+            return _attributes.ContainsKey(attributeName);
         }
 
         /// <summary>
@@ -85,7 +86,7 @@ namespace NetTopologySuite.Features
         {
             if (Exists(attributeName))
                 throw new ArgumentException("Attribute " + attributeName + " already exists!");
-            attributes.Add(attributeName, attributeValue);
+            _attributes.Add(attributeName, attributeValue);
         }        
 
         /// <summary>
@@ -96,7 +97,7 @@ namespace NetTopologySuite.Features
         {
             if (!Exists(attributeName))
                 throw new ArgumentException("Attribute " + attributeName + " not exists!");
-            attributes.Remove(attributeName);
+            _attributes.Remove(attributeName);
         }
 
         /// <summary>
@@ -109,7 +110,7 @@ namespace NetTopologySuite.Features
         {
             if (!Exists(attributeName))
                 throw new ArgumentException("Attribute " + attributeName + " not exists!");
-            return attributes[attributeName].GetType();
+            return _attributes[attributeName].GetType();
         }
 
         /// <summary>
@@ -121,7 +122,7 @@ namespace NetTopologySuite.Features
         {
             if (!Exists(attributeName))
                 throw new ArgumentException("Attribute " + attributeName + " not exists!");
-            return attributes[attributeName];
+            return _attributes[attributeName];
         }
 
         /// <summary>
@@ -133,7 +134,7 @@ namespace NetTopologySuite.Features
         {
             if (!Exists(attributeName))
                 throw new ArgumentException("Attribute " + attributeName + " not exists!");
-            attributes[attributeName] = attributeValue;
+            _attributes[attributeName] = attributeValue;
         }
 
         /// <summary>

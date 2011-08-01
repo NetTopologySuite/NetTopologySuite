@@ -8,15 +8,30 @@ namespace NetTopologySuite.Precision
     /// Reduces the precision of a <c>Geometry</c>
     /// according to the supplied {PrecisionModel}, without
     /// attempting to preserve valid topology.
+    /// </summary>
+    /// <remarks>
     /// The topology of the resulting point may be invalid if
     /// topological collapse occurs due to coordinates being shifted.
     /// It is up to the client to check this and handle it if necessary.
     /// Collapses may not matter for some uses. An example
     /// is simplifying the input to the buffer algorithm.
     /// The buffer algorithm does not depend on the validity of the input point.
-    /// </summary>
+    /// </remarks>
     public class SimpleGeometryPrecisionReducer
     {
+
+        ///<summary>
+        /// Convenience method for doing precision reduction on a single geometry,
+        /// with collapses removed and keeping the geometry precision model the same.
+        ///</summary>
+        /// <returns>The reduced geometry</returns>
+        public static IGeometry Reduce(IGeometry g, PrecisionModel precModel)
+        {
+            var reducer = new SimpleGeometryPrecisionReducer(precModel);
+            return reducer.Reduce(g);
+        }
+	
+        
         private readonly PrecisionModel _newPrecisionModel;
         private bool _removeCollapsed = true;
         private bool _changePrecisionModel;

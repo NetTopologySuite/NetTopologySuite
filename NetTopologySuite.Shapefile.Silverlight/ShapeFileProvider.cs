@@ -2242,19 +2242,19 @@ namespace NetTopologySuite.Shapefile
 
         private struct CoordinateValues
         {
-            public Double this[Ordinates ordinate]
+            public Double this[Ordinate ordinate]
             {
                 get
                 {
                     switch (ordinate)
                     {
-                        case Ordinates.X:
+                        case Ordinate.X:
                             return X;
-                        case Ordinates.Y:
+                        case Ordinate.Y:
                             return Y;
-                        case Ordinates.M:
+                        case Ordinate.M:
                             return M;
-                        case Ordinates.Z:
+                        case Ordinate.Z:
                             return Z;
                         default:
                             throw new ArgumentException();
@@ -3099,20 +3099,20 @@ namespace NetTopologySuite.Shapefile
         //        throw new ArgumentException("shpType must be a Point type");
 
         //    _shapeFileWriter.Write(ByteEncoder.GetLittleEndian((Int32)shpType));
-        //    writeCoordinate(point[Ordinates.X], point[Ordinates.Y]);
+        //    writeCoordinate(point[Ordinate.X], point[Ordinate.Y]);
 
         //    if (shpType == ShapeType.PointZ)
         //    {
         //        _shapeFileWriter.Write(ByteEncoder.GetLittleEndian(
-        //            point.Coordinate.ContainsOrdinate(Ordinates.Z)
-        //            ? point[Ordinates.Z]
+        //            point.Coordinate.ContainsOrdinate(Ordinate.Z)
+        //            ? point[Ordinate.Z]
         //            : 0.0));
         //    }
         //    if (shpType == ShapeType.PointZ || shpType == ShapeType.PointM)
         //    {
         //        _shapeFileWriter.Write(ByteEncoder.GetLittleEndian(
-        //            point.Coordinate.ContainsOrdinate(Ordinates.M) && !IsShapefileNullValue(point[Ordinates.M])
-        //            ? point[Ordinates.M]
+        //            point.Coordinate.ContainsOrdinate(Ordinate.M) && !IsShapefileNullValue(point[Ordinate.M])
+        //            ? point[Ordinate.M]
         //            : NullDoubleValue));
         //    }
 
@@ -3121,13 +3121,13 @@ namespace NetTopologySuite.Shapefile
 
         //private void writeBoundingBox(IEnvelope box)
         //{
-        //    _shapeFileWriter.Write(ByteEncoder.GetLittleEndian(box.GetMin(Ordinates.X)));
-        //    _shapeFileWriter.Write(ByteEncoder.GetLittleEndian(box.GetMin(Ordinates.Y)));
-        //    _shapeFileWriter.Write(ByteEncoder.GetLittleEndian(box.GetMax(Ordinates.X)));
-        //    _shapeFileWriter.Write(ByteEncoder.GetLittleEndian(box.GetMax(Ordinates.Y)));
+        //    _shapeFileWriter.Write(ByteEncoder.GetLittleEndian(box.GetMin(Ordinate.X)));
+        //    _shapeFileWriter.Write(ByteEncoder.GetLittleEndian(box.GetMin(Ordinate.Y)));
+        //    _shapeFileWriter.Write(ByteEncoder.GetLittleEndian(box.GetMax(Ordinate.X)));
+        //    _shapeFileWriter.Write(ByteEncoder.GetLittleEndian(box.GetMax(Ordinate.Y)));
         //}
 
-        private static Tuple<double, double> GetOrdinateRange(IGeometry geometry, Ordinates ordinate)
+        private static Tuple<double, double> GetOrdinateRange(IGeometry geometry, Ordinate ordinate)
         {
             double min = double.MaxValue;
             double max = double.MinValue;
@@ -3154,7 +3154,7 @@ namespace NetTopologySuite.Shapefile
             return Tuple.Create(min, max);
         }
 
-        private static Tuple<double, double> GetOrdinateRange(IEnumerable<IGeometry> geometries, Ordinates ordinate)
+        private static Tuple<double, double> GetOrdinateRange(IEnumerable<IGeometry> geometries, Ordinate ordinate)
         {
             double min = double.MaxValue;
             double max = double.MinValue;
@@ -3176,12 +3176,12 @@ namespace NetTopologySuite.Shapefile
 
         //    foreach (IPoint point in ((IEnumerable<IPoint>)multiPoint))
         //    {
-        //        writeCoordinate(point[Ordinates.X], point[Ordinates.Y]);
+        //        writeCoordinate(point[Ordinate.X], point[Ordinate.Y]);
         //    }
 
         //    if (shpType == ShapeType.MultiPointZ)
         //    {
-        //        Pair<double> zrng = GetOrdinateRange((IEnumerable<IGeometry>)multiPoint, Ordinates.Z);
+        //        Pair<double> zrng = GetOrdinateRange((IEnumerable<IGeometry>)multiPoint, Ordinate.Z);
 
         //        double lowerBound = zrng.First == Double.MaxValue || IsShapefileNullValue(zrng.First)
         //                                ? 0.0
@@ -3196,8 +3196,8 @@ namespace NetTopologySuite.Shapefile
         //        foreach (ICoordinate c in multiPoint.Coordinates)
         //        {
         //            _shapeFileWriter.Write(ByteEncoder.GetLittleEndian(
-        //                c.ContainsOrdinate(Ordinates.Z) && !IsShapefileNullValue(c[Ordinates.Z])
-        //                ? c[Ordinates.Z]
+        //                c.ContainsOrdinate(Ordinate.Z) && !IsShapefileNullValue(c[Ordinate.Z])
+        //                ? c[Ordinate.Z]
         //                : 0.0
         //                ));
         //        }
@@ -3205,7 +3205,7 @@ namespace NetTopologySuite.Shapefile
 
         //    if (shpType == ShapeType.MultiPointZ || shpType == ShapeType.MultiPointM)
         //    {
-        //        Pair<double> mrng = GetOrdinateRange((IEnumerable<IGeometry>)multiPoint, Ordinates.M);
+        //        Pair<double> mrng = GetOrdinateRange((IEnumerable<IGeometry>)multiPoint, Ordinate.M);
 
         //        double lowerBound = mrng.First == Double.MaxValue || IsShapefileNullValue(mrng.First)
         //                                ? NullDoubleValue
@@ -3220,8 +3220,8 @@ namespace NetTopologySuite.Shapefile
         //        foreach (ICoordinate c in multiPoint.Coordinates)
         //        {
         //            _shapeFileWriter.Write(ByteEncoder.GetLittleEndian(
-        //                c.ContainsOrdinate(Ordinates.M) && !IsShapefileNullValue(c[Ordinates.M])
-        //                ? c[Ordinates.M]
+        //                c.ContainsOrdinate(Ordinate.M) && !IsShapefileNullValue(c[Ordinate.M])
+        //                ? c[Ordinate.M]
         //                : NullDoubleValue
         //                ));
         //        }
@@ -3242,7 +3242,7 @@ namespace NetTopologySuite.Shapefile
 
         //    foreach (ICoordinate point in points)
         //    {
-        //        writeCoordinate(point[Ordinates.X], point[Ordinates.Y]);
+        //        writeCoordinate(point[Ordinate.X], point[Ordinate.Y]);
         //    }
         //}
 
@@ -3260,7 +3260,7 @@ namespace NetTopologySuite.Shapefile
 
         //    if (shpType == ShapeType.PolyLineZ)
         //    {
-        //        Pair<double> zrng = GetOrdinateRange(lineString, Ordinates.Z);
+        //        Pair<double> zrng = GetOrdinateRange(lineString, Ordinate.Z);
 
         //        double lowerBound = zrng.First == Double.MaxValue || IsShapefileNullValue(zrng.First)
         //                                ? 0.0
@@ -3275,8 +3275,8 @@ namespace NetTopologySuite.Shapefile
         //        foreach (ICoordinate c in lineString.Coordinates)
         //        {
         //            _shapeFileWriter.Write(ByteEncoder.GetLittleEndian(
-        //                c.ContainsOrdinate(Ordinates.Z) && !IsShapefileNullValue(c[Ordinates.Z])
-        //                ? c[Ordinates.Z]
+        //                c.ContainsOrdinate(Ordinate.Z) && !IsShapefileNullValue(c[Ordinate.Z])
+        //                ? c[Ordinate.Z]
         //                : 0.0
         //                ));
         //        }
@@ -3284,7 +3284,7 @@ namespace NetTopologySuite.Shapefile
 
         //    if (shpType == ShapeType.PolyLineZ || shpType == ShapeType.PolyLineM)
         //    {
-        //        Pair<double> zrng = GetOrdinateRange(lineString, Ordinates.M);
+        //        Pair<double> zrng = GetOrdinateRange(lineString, Ordinate.M);
 
         //        double lowerBound = zrng.First == Double.MaxValue || IsShapefileNullValue(zrng.First)
         //                                ? NullDoubleValue
@@ -3299,8 +3299,8 @@ namespace NetTopologySuite.Shapefile
         //        foreach (ICoordinate c in lineString.Coordinates)
         //        {
         //            _shapeFileWriter.Write(ByteEncoder.GetLittleEndian(
-        //                c.ContainsOrdinate(Ordinates.M) && !IsShapefileNullValue(c[Ordinates.M])
-        //                ? c[Ordinates.M]
+        //                c.ContainsOrdinate(Ordinate.M) && !IsShapefileNullValue(c[Ordinate.M])
+        //                ? c[Ordinate.M]
         //                : NullDoubleValue
         //                ));
         //        }
@@ -3328,7 +3328,7 @@ namespace NetTopologySuite.Shapefile
 
         //    if (shpType == ShapeType.PolyLineZ)
         //    {
-        //        Pair<double> zrng = GetOrdinateRange((IEnumerable<IGeometry>)multiLineString, Ordinates.Z);
+        //        Pair<double> zrng = GetOrdinateRange((IEnumerable<IGeometry>)multiLineString, Ordinate.Z);
 
         //        double lowerBound = zrng.First == Double.MaxValue || IsShapefileNullValue(zrng.First)
         //                                ? 0.0
@@ -3343,8 +3343,8 @@ namespace NetTopologySuite.Shapefile
         //        foreach (ICoordinate c in multiLineString.Coordinates)
         //        {
         //            _shapeFileWriter.Write(ByteEncoder.GetLittleEndian(
-        //                c.ContainsOrdinate(Ordinates.Z) && !IsShapefileNullValue(c[Ordinates.Z])
-        //                ? c[Ordinates.Z]
+        //                c.ContainsOrdinate(Ordinate.Z) && !IsShapefileNullValue(c[Ordinate.Z])
+        //                ? c[Ordinate.Z]
         //                : 0.0
         //                ));
         //        }
@@ -3352,7 +3352,7 @@ namespace NetTopologySuite.Shapefile
 
         //    if (shpType == ShapeType.PolyLineZ || shpType == ShapeType.PolyLineM)
         //    {
-        //        Pair<double> zrng = GetOrdinateRange((IEnumerable<IGeometry>)multiLineString, Ordinates.M);
+        //        Pair<double> zrng = GetOrdinateRange((IEnumerable<IGeometry>)multiLineString, Ordinate.M);
 
         //        double lowerBound = zrng.First == Double.MaxValue || IsShapefileNullValue(zrng.First)
         //                                ? NullDoubleValue
@@ -3367,8 +3367,8 @@ namespace NetTopologySuite.Shapefile
         //        foreach (ICoordinate c in multiLineString.Coordinates)
         //        {
         //            _shapeFileWriter.Write(ByteEncoder.GetLittleEndian(
-        //                c.ContainsOrdinate(Ordinates.M) && !IsShapefileNullValue(c[Ordinates.M])
-        //                ? c[Ordinates.M]
+        //                c.ContainsOrdinate(Ordinate.M) && !IsShapefileNullValue(c[Ordinate.M])
+        //                ? c[Ordinate.M]
         //                : NullDoubleValue
         //                ));
         //        }
@@ -3417,7 +3417,7 @@ namespace NetTopologySuite.Shapefile
 
         //    if (shpType == ShapeType.PolygonZ)
         //    {
-        //        Pair<double> zrng = GetOrdinateRange(polygon, Ordinates.Z);
+        //        Pair<double> zrng = GetOrdinateRange(polygon, Ordinate.Z);
 
         //        double lowerBound = zrng.First == Double.MaxValue || IsShapefileNullValue(zrng.First)
         //                                ? 0.0
@@ -3432,8 +3432,8 @@ namespace NetTopologySuite.Shapefile
         //        foreach (ICoordinate c in getOrderedPolygonCoordinates(polygon))
         //        {
         //            _shapeFileWriter.Write(ByteEncoder.GetLittleEndian(
-        //                c.ContainsOrdinate(Ordinates.Z) && !IsShapefileNullValue(c[Ordinates.Z])
-        //                ? c[Ordinates.Z]
+        //                c.ContainsOrdinate(Ordinate.Z) && !IsShapefileNullValue(c[Ordinate.Z])
+        //                ? c[Ordinate.Z]
         //                : 0.0
         //                ));
         //        }
@@ -3441,7 +3441,7 @@ namespace NetTopologySuite.Shapefile
 
         //    if (shpType == ShapeType.PolygonZ || shpType == ShapeType.PolygonM)
         //    {
-        //        Pair<double> zrng = GetOrdinateRange(polygon, Ordinates.M);
+        //        Pair<double> zrng = GetOrdinateRange(polygon, Ordinate.M);
 
         //        double lowerBound = zrng.First == Double.MaxValue || IsShapefileNullValue(zrng.First)
         //                                ? NullDoubleValue
@@ -3456,8 +3456,8 @@ namespace NetTopologySuite.Shapefile
         //        foreach (ICoordinate c in getOrderedPolygonCoordinates(polygon))
         //        {
         //            _shapeFileWriter.Write(ByteEncoder.GetLittleEndian(
-        //                c.ContainsOrdinate(Ordinates.M) && !IsShapefileNullValue(c[Ordinates.M])
-        //                ? c[Ordinates.M]
+        //                c.ContainsOrdinate(Ordinate.M) && !IsShapefileNullValue(c[Ordinate.M])
+        //                ? c[Ordinate.M]
         //                : NullDoubleValue
         //                ));
         //        }
@@ -3510,7 +3510,7 @@ namespace NetTopologySuite.Shapefile
 
         //    if (shpType == ShapeType.PolygonZ)
         //    {
-        //        Pair<double> zrng = GetOrdinateRange((IEnumerable<IGeometry>)mpoly, Ordinates.Z);
+        //        Pair<double> zrng = GetOrdinateRange((IEnumerable<IGeometry>)mpoly, Ordinate.Z);
 
         //        double lowerBound = zrng.First == Double.MaxValue || IsShapefileNullValue(zrng.First)
         //                                ? 0.0
@@ -3525,8 +3525,8 @@ namespace NetTopologySuite.Shapefile
         //        foreach (ICoordinate c in getOrderedMultiPolygonCoordinates(mpoly))
         //        {
         //            _shapeFileWriter.Write(ByteEncoder.GetLittleEndian(
-        //                c.ContainsOrdinate(Ordinates.Z) && !IsShapefileNullValue(c[Ordinates.Z])
-        //                ? c[Ordinates.Z]
+        //                c.ContainsOrdinate(Ordinate.Z) && !IsShapefileNullValue(c[Ordinate.Z])
+        //                ? c[Ordinate.Z]
         //                : 0.0
         //                ));
         //        }
@@ -3534,7 +3534,7 @@ namespace NetTopologySuite.Shapefile
 
         //    if (shpType == ShapeType.PolygonZ || shpType == ShapeType.PolygonM)
         //    {
-        //        Pair<double> zrng = GetOrdinateRange((IEnumerable<IGeometry>)mpoly, Ordinates.M);
+        //        Pair<double> zrng = GetOrdinateRange((IEnumerable<IGeometry>)mpoly, Ordinate.M);
 
         //        double lowerBound = zrng.First == Double.MaxValue || IsShapefileNullValue(zrng.First)
         //                                ? NullDoubleValue
@@ -3549,8 +3549,8 @@ namespace NetTopologySuite.Shapefile
         //        foreach (ICoordinate c in getOrderedMultiPolygonCoordinates(mpoly))
         //        {
         //            _shapeFileWriter.Write(ByteEncoder.GetLittleEndian(
-        //                c.ContainsOrdinate(Ordinates.M) && !IsShapefileNullValue(c[Ordinates.M])
-        //                ? c[Ordinates.M]
+        //                c.ContainsOrdinate(Ordinate.M) && !IsShapefileNullValue(c[Ordinate.M])
+        //                ? c[Ordinate.M]
         //                : NullDoubleValue
         //                ));
         //        }
@@ -3564,7 +3564,7 @@ namespace NetTopologySuite.Shapefile
         //private void writePolygonCoordinates(IPolygon polygon)
         //{
         //    foreach (ICoordinate c in getOrderedPolygonCoordinates(polygon))
-        //        writeCoordinate(c[Ordinates.X], c[Ordinates.Y]);
+        //        writeCoordinate(c[Ordinate.X], c[Ordinate.Y]);
         //}
 
         private IEnumerable<ICoordinate> getOrderedPolygonCoordinates(IPolygon poly)

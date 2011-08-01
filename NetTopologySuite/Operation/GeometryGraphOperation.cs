@@ -10,7 +10,7 @@ namespace NetTopologySuite.Operation
     public class GeometryGraphOperation
     {        
   
-        private LineIntersector li = new RobustLineIntersector();
+        private LineIntersector _li = new RobustLineIntersector();
 
         /// <summary>
         /// 
@@ -19,11 +19,11 @@ namespace NetTopologySuite.Operation
         {
             get
             {
-                return li;
+                return _li;
             }
             set
             {
-                li = value;
+                _li = value;
             }
 
         }

@@ -8,17 +8,17 @@ namespace NetTopologySuite.Geometries
     /// <summary>
     /// Basic implementation of <c>Point</c>.
     /// </summary>
-#if !SILVERLIGHT
+//#if !SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public class Point : Geometry, IPoint
     {
-        private static readonly ICoordinate emptyCoordinate = null;
+        private static readonly ICoordinate EmptyCoordinate = null;
 
         /// <summary>
         /// Represents an empty <c>Point</c>.
         /// </summary>
-        public static readonly IPoint Empty = new GeometryFactory().CreatePoint(emptyCoordinate);
+        public static readonly IPoint Empty = new GeometryFactory().CreatePoint(EmptyCoordinate);
 
         /// <summary>  
         /// The <c>Coordinate</c> wrapped by this <c>Point</c>.
@@ -37,7 +37,7 @@ namespace NetTopologySuite.Geometries
         }             
 
          /// <summary>
-        /// Initializes a new instance of the <see cref="T:Point"/> class.
+        /// Initializes a new instance of the <see cref="Point"/> class.
         /// </summary>
         /// <param name="coordinate">The coordinate used for create this <see cref="Point" />.</param>
         /// <remarks>
@@ -122,22 +122,22 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override Dimensions Dimension
+        public override Dimension Dimension
         {
             get
             {
-                return Dimensions.Point;
+                return Dimension.Point;
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public override Dimensions BoundaryDimension 
+        public override Dimension BoundaryDimension 
         {
             get
             {
-                return Dimensions.False;
+                return Dimension.False;
             }
         }
 
@@ -292,6 +292,11 @@ namespace NetTopologySuite.Geometries
             return p; 
         }
 
+        public override IGeometry Reverse()
+        {
+            return (IGeometry)Clone();
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -322,7 +327,7 @@ namespace NetTopologySuite.Geometries
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Point"/> class.
+        /// Initializes a new instance of the <see cref="Point"/> class.
         /// </summary>
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
@@ -335,7 +340,7 @@ namespace NetTopologySuite.Geometries
             this(DefaultFactory.CoordinateSequenceFactory.Create(new ICoordinate[] { new Coordinate(x, y, z) }), DefaultFactory) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Point"/> class.
+        /// Initializes a new instance of the <see cref="Point"/> class.
         /// </summary>
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>

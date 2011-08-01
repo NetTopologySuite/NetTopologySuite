@@ -6,11 +6,19 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Algorithm
 {
     /// <summary> 
-    /// Computes the topological relationship (Location) of a single point to a Geometry.
-    /// The algorithm obeys the SFS boundaryDetermination rule to correctly determine
-    /// whether the point lies on the boundary or not.
-    /// Note that instances of this class are not reentrant.
+    /// Computes the topological relationship (<see cref="Location"/>) of a single point to a Geometry.
     /// </summary>
+    /// <remarks>
+    /// A <see cref="IBoundaryNodeRule"/> may be specified to control the evaluation of whether the point lies on the boundary or not
+    /// The default rule is to use the the <i>SFS Boundary Determination Rule</i>
+    /// <para>
+    /// Notes:
+    /// <list Type="Bullet">
+    /// <item><see cref="ILinearRing"/>s do not enclose any area - points inside the ring are still in the EXTERIOR of the ring.</item>
+    /// </list>
+    /// Instances of this class are not reentrant.
+    /// </para>
+    /// </remarks>
     public class PointLocator
     {
         // default is to use OGC SFS rule
@@ -39,7 +47,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns><c>true</c> if the point is in the interior or boundary of the Geometry.</returns>
         public bool Intersects(ICoordinate p, IGeometry geom)
         {
-            return Locate(p, geom) != Locations.Exterior;
+            return Locate(p, geom) != Location.Exterior;
         }
 
         /// <summary> 
@@ -48,10 +56,10 @@ namespace NetTopologySuite.Algorithm
         /// The algorithm for multi-part Geometries takes into account the boundaryDetermination rule.
         /// </summary>
         /// <returns>The Location of the point relative to the input Geometry.</returns>
-        public Locations Locate(ICoordinate p, IGeometry geom)
+        public Location Locate(ICoordinate p, IGeometry geom)
         {
             if (geom.IsEmpty)
-                return Locations.Exterior;
+                return Location.Exterior;
             if (geom is ILineString) 
                 return Locate(p, (ILineString) geom);
             if (geom is IPolygon) 
@@ -61,11 +69,11 @@ namespace NetTopologySuite.Algorithm
             _numBoundaries = 0;
             ComputeLocation(p, geom);
             if (_boundaryRule.IsInBoundary(_numBoundaries))
-                return Locations.Boundary;
+                return Location.Boundary;
             if (_numBoundaries > 0 || _isIn)
-                return Locations.Interior;
+                return Location.Interior;
 
-            return Locations.Exterior;
+            return Location.Exterior;
         }
 
         /// <summary>
@@ -109,22 +117,22 @@ namespace NetTopologySuite.Algorithm
         /// 
         /// </summary>
         /// <param name="loc"></param>
-        private void UpdateLocationInfo(Locations loc)
+        private void UpdateLocationInfo(Location loc)
         {
-            if(loc == Locations.Interior) 
+            if(loc == Location.Interior) 
                 _isIn = true;
-            if(loc == Locations.Boundary) 
+            if(loc == Location.Boundary) 
                 _numBoundaries++;
         }
 
-        private static Locations Locate(ICoordinate p, IPoint pt)
+        private static Location Locate(ICoordinate p, IPoint pt)
         {
             // no point in doing envelope test, since equality test is just as fast
 
             ICoordinate ptCoord = pt.Coordinate;
             if (ptCoord.Equals2D(p))
-                return Locations.Interior;
-            return Locations.Exterior;
+                return Location.Interior;
+            return Location.Exterior;
         }
 
 
@@ -134,20 +142,20 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p"></param>
         /// <param name="l"></param>
         /// <returns></returns>
-        private static Locations Locate(ICoordinate p, ILineString l)
+        private static Location Locate(ICoordinate p, ILineString l)
         {
             // bounding-box check
             if (!l.EnvelopeInternal.Intersects(p)) 
-                return Locations.Exterior;
+                return Location.Exterior;
   	
 
             ICoordinate[] pt = l.Coordinates;
             if(!l.IsClosed)
                 if(p.Equals(pt[0]) || p.Equals(pt[pt.Length - 1]))
-                    return Locations.Boundary;                            
+                    return Location.Boundary;                            
             if (CGAlgorithms.IsOnLine(p, pt))
-                return Locations.Interior;
-            return Locations.Exterior;
+                return Location.Interior;
+            return Location.Exterior;
         }
 
         /// <summary>
@@ -156,21 +164,12 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p"></param>
         /// <param name="ring"></param>
         /// <returns></returns>
-        private static Locations LocateInPolygonRing(ICoordinate p, ILinearRing ring)
+        private static Location LocateInPolygonRing(ICoordinate p, ILinearRing ring)
         {
   	        // bounding-box check
-  	        if (! ring.EnvelopeInternal.Intersects(p)) return Locations.Exterior;
+  	        if (! ring.EnvelopeInternal.Intersects(p)) return Location.Exterior;
 
   	        return CGAlgorithms.LocatePointInRing(p, ring.Coordinates);
-  	
-          	/*
-            // can this test be folded into IsPointInRing?
-            if (CGAlgorithms.IsOnLine(p, ring.Coordinates))
-                return Locations.Boundary;
-            if (CGAlgorithms.IsPointInRing(p, ring.Coordinates))
-                return Locations.Interior;
-            return Locations.Exterior;
-            */
         }
 
         /// <summary>
@@ -179,26 +178,26 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p"></param>
         /// <param name="poly"></param>
         /// <returns></returns>
-        private Locations Locate(ICoordinate p, IPolygon poly)
+        private Location Locate(ICoordinate p, IPolygon poly)
         {
             if (poly.IsEmpty) 
-                return Locations.Exterior;
+                return Location.Exterior;
             ILinearRing shell = poly.Shell;
-            Locations shellLoc = LocateInPolygonRing(p, shell);
-            if (shellLoc == Locations.Exterior) 
-                return Locations.Exterior;
-            if (shellLoc == Locations.Boundary) 
-                return Locations.Boundary;
+            Location shellLoc = LocateInPolygonRing(p, shell);
+            if (shellLoc == Location.Exterior) 
+                return Location.Exterior;
+            if (shellLoc == Location.Boundary) 
+                return Location.Boundary;
             // now test if the point lies in or on the holes
             foreach (ILinearRing hole in poly.InteriorRings)
             {
-                Locations holeLoc = LocateInPolygonRing(p, hole);
-                if (holeLoc == Locations.Interior) 
-                    return Locations.Exterior;
-                if (holeLoc == Locations.Boundary) 
-                    return Locations.Boundary;
+                Location holeLoc = LocateInPolygonRing(p, hole);
+                if (holeLoc == Location.Interior) 
+                    return Location.Exterior;
+                if (holeLoc == Location.Boundary) 
+                    return Location.Boundary;
             }
-            return Locations.Interior;
+            return Location.Interior;
         }
     }
 }

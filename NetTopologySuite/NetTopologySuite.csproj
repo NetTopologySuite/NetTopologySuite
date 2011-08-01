@@ -81,6 +81,8 @@
     <Compile Include="Algorithm\CentroidPoint.cs" />
     <Compile Include="Algorithm\CGAlgorithms.cs" />
     <Compile Include="Algorithm\ConvexHull.cs" />
+    <Compile Include="Algorithm\Distance\EuclidianDistanceToPoint.cs" />
+    <Compile Include="Algorithm\Distance\PointPairDistance.cs" />
     <Compile Include="Algorithm\HCoordinate.cs" />
     <Compile Include="Algorithm\IndexedPointInAreaLocator.cs" />
     <Compile Include="Algorithm\InteriorPointArea.cs" />
@@ -104,9 +106,7 @@
     <Compile Include="Algorithm\SimplePointInAreaLocator.cs" />
     <Compile Include="Algorithm\SimplePointInRing.cs" />
     <Compile Include="Algorithm\SIRtreePointInRing.cs" />
-    <Compile Include="CoordinateSystems\Transformations\GeometryTransform.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="CoordinateSystems\Transformations\GeometryTransform.cs" />
     <Compile Include="Features\AttributesTable.cs">
     </Compile>
     <Compile Include="Features\Feature.cs" />
@@ -214,13 +214,6 @@
     <Compile Include="GeometriesGraph\Position.cs" />
     <Compile Include="GeometriesGraph\QuadrantOp.cs" />
     <Compile Include="GeometriesGraph\TopologyLocation.cs" />
-    <Compile Include="IO\WKTFileReader.cs" />
-    <Compile Include="Noding\FastSegmentSetIntersectionFinder.cs" />
-    <Compile Include="Noding\MCIndexSegmentSetMutualIntersector.cs" />
-    <Compile Include="Noding\SegmentIntersectionDetector.cs" />
-    <Compile Include="Noding\SegmentSetMutualIntersector.cs" />
-    <Compile Include="Noding\SegmentStringUtil.cs" />
-    <Compile Include="Geometries\Utilities\SineStarFactory.cs" />
     <Compile Include="Index\ArrayListVisitor.cs" />
     <Compile Include="Index\Bintree\Bintree.cs" />
     <Compile Include="Index\Bintree\Interval.cs" />
@@ -253,10 +246,17 @@
     <Compile Include="Index\Strtree\ItemBoundable.cs" />
     <Compile Include="Index\Strtree\SIRtree.cs" />
     <Compile Include="Index\Strtree\STRtree.cs" />
+    <Compile Include="Index\Sweepline\ISweepLineOverlapAction.cs" />
     <Compile Include="Index\Sweepline\SweepLineEvent.cs" />
     <Compile Include="Index\Sweepline\SweepLineIndex.cs" />
     <Compile Include="Index\Sweepline\SweepLineInterval.cs" />
-    <Compile Include="Index\Sweepline\ISweepLineOverlapAction.cs" />
+    <Compile Include="IO\WKTFileReader.cs" />
+    <Compile Include="Noding\FastSegmentSetIntersectionFinder.cs" />
+    <Compile Include="Noding\MCIndexSegmentSetMutualIntersector.cs" />
+    <Compile Include="Noding\SegmentIntersectionDetector.cs" />
+    <Compile Include="Noding\SegmentSetMutualIntersector.cs" />
+    <Compile Include="Noding\SegmentStringUtil.cs" />
+    <Compile Include="Geometries\Utilities\SineStarFactory.cs" />
     <Compile Include="IO\BEBinaryReader.cs" />
     <Compile Include="IO\BEBinaryWriter.cs" />
     <Compile Include="IO\GML2\GMLElements.cs" />
@@ -306,6 +306,7 @@
     <Compile Include="Noding\Snapround\SimpleSnapRounder.cs" />
     <Compile Include="Operation\BoundaryOp.cs" />
     <Compile Include="Operation\Buffer\BufferBuilder.cs" />
+    <Compile Include="Operation\Buffer\BufferInputLineSimplifier.cs" />
     <Compile Include="Operation\Buffer\BufferOp.cs" />
     <Compile Include="Operation\Buffer\BufferParameters.cs" />
     <Compile Include="Operation\Buffer\BufferSubgraph.cs" />
@@ -314,8 +315,11 @@
     <Compile Include="Operation\Buffer\OffsetCurveVertexList.cs" />
     <Compile Include="Operation\Buffer\RightmostEdgeFinder.cs" />
     <Compile Include="Operation\Buffer\SubgraphDepthLocater.cs" />
+    <Compile Include="Operation\Buffer\Validate\BufferCurveMaximumDistanceFinder.cs" />
     <Compile Include="Operation\Buffer\Validate\BufferDistanceValidator.cs" />
     <Compile Include="Operation\Buffer\Validate\BufferResultValidator.cs" />
+    <Compile Include="Operation\Buffer\Validate\DistanceToPointFinder.cs" />
+    <Compile Include="Operation\Buffer\Validate\PointPairDistance.cs" />
     <Compile Include="Operation\Distance\ConnectedElementLocationFilter.cs" />
     <Compile Include="Operation\Distance\ConnectedElementPointFilter.cs" />
     <Compile Include="Operation\Distance\DistanceOp.cs" />
@@ -360,10 +364,12 @@
     <Compile Include="Operation\Relate\RelateNodeGraph.cs" />
     <Compile Include="Operation\Relate\RelateOp.cs" />
     <Compile Include="Operation\Union\CascadedPolygonUnion.cs" />
+    <Compile Include="Operation\Union\PointGeometryUnion.cs" />
     <Compile Include="Operation\Union\UnaryUnionOp.cs" />
     <Compile Include="Operation\Union\UnionInteracting.cs" />
     <Compile Include="Operation\Valid\ConnectedInteriorTester.cs" />
     <Compile Include="Operation\Valid\ConsistentAreaTester.cs" />
+    <Compile Include="Operation\Valid\IndexedNestedRingTester.cs" />
     <Compile Include="Operation\Valid\IsValidOp.cs" />
     <Compile Include="Operation\Valid\QuadtreeNestedRingTester.cs" />
     <Compile Include="Operation\Valid\RepeatedPointTester.cs" />
@@ -382,6 +388,7 @@
     <Compile Include="Precision\CommonBits.cs" />
     <Compile Include="Precision\CommonBitsOp.cs" />
     <Compile Include="Precision\CommonBitsRemover.cs" />
+    <Compile Include="Precision\CoordinatePrecisionReducerFilter.cs" />
     <Compile Include="Precision\EnhancedPrecisionOp.cs" />
     <Compile Include="Precision\SimpleGeometryPrecisionReducer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -407,6 +414,7 @@
     <Compile Include="Utilities\HexConverter.cs" />
     <Compile Include="Utilities\Global.cs" />
     <Compile Include="Utilities\PlatformUtilityEx.cs" />
+    <Compile Include="Utilities\PriorityQueue.cs" />
     <Compile Include="Utilities\Radians.cs" />
     <Compile Include="Utilities\ReverseOrder.cs" />
     <Compile Include="Utilities\RToolsUtil\BufferedTextReader.cs" />
@@ -421,6 +429,7 @@
     <Compile Include="Utilities\UniqueCoordinateArrayFilter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithm\Distance\DiscreteHausdorffDistance.cs" />
     <Content Include="License.txt" />
     <Content Include="ReadMe.txt" />
     <Content Include="Utilities\RToolsUtil\Rtools.Util.License.txt" />

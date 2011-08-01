@@ -7,9 +7,9 @@ namespace NetTopologySuite.Geometries
     /// <summary>
     /// Basic implementation of <c>MultiPolygon</c>.
     /// </summary>
-#if !SILVERLIGHT
+//#if !SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public class MultiPolygon : GeometryCollection, IMultiPolygon 
     {
         /// <summary>
@@ -51,22 +51,22 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override Dimensions Dimension
+        public override Dimension Dimension
         {
             get
             {
-                return Dimensions.Surface;
+                return Dimension.Surface;
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public override Dimensions BoundaryDimension
+        public override Dimension BoundaryDimension
         {
             get
             {
-                return Dimensions.Curve;
+                return Dimension.Curve;
             }
         }
 
@@ -126,5 +126,21 @@ namespace NetTopologySuite.Geometries
                 return false;
             return base.EqualsExact(other, tolerance);
         }
+
+        ///<summary>Creates a {@link MultiPolygon} with every component reversed.
+        ///</summary>
+        /// <remarks>The order of the components in the collection are not reversed.</remarks>
+        /// <returns>An <see cref="IMultiPolygon"/> in the reverse order</returns>
+        public override IGeometry Reverse()
+        {
+            int n = Geometries.Length;
+            IPolygon[] revGeoms = new IPolygon[n];
+            for (int i = 0; i < Geometries.Length; i++)
+            {
+                revGeoms[i] = (Polygon)Geometries[i].Reverse();
+            }
+            return Factory.CreateMultiPolygon(revGeoms);
+        }
+
     }
 }

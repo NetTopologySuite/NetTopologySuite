@@ -18,7 +18,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         private string blobFile = String.Empty;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:OracleWKBTest"/> class.
+        /// Initializes a new instance of the <see cref="OracleWKBTest"/> class.
         /// </summary>
         public OracleWKBTest() : base() { }
 

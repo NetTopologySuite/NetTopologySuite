@@ -3,9 +3,9 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries
 {
-#if!SILVERLIGHT
+//#if!SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public class CoordinateStructSequence : CoordinateArraySequence 
     {
         public CoordinateStructSequence(ICoordinate[] coordinates) : base(coordinates) { }

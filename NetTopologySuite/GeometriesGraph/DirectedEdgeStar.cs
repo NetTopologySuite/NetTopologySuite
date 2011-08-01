@@ -118,7 +118,7 @@ namespace NetTopologySuite.GeometriesGraph
 
             // determine the overall labelling for this DirectedEdgeStar
             // (i.e. for the node it is based at)
-            _label = new Label(Locations.Null);
+            _label = new Label(Location.Null);
             IEnumerator<EdgeEnd> it = GetEnumerator();
             while(it.MoveNext()) 
             {
@@ -127,9 +127,9 @@ namespace NetTopologySuite.GeometriesGraph
                 Label eLabel = e.Label;
                 for (int i = 0; i < 2; i++) 
                 {
-                    Locations eLoc = eLabel.GetLocation(i);
-                    if (eLoc == Locations.Interior || eLoc == Locations.Boundary)
-                        _label.SetLocation(i, Locations.Interior);
+                    Location eLoc = eLabel.GetLocation(i);
+                    if (eLoc == Location.Interior || eLoc == Location.Boundary)
+                        _label.SetLocation(i, Location.Interior);
                 }
             }        
         }
@@ -329,7 +329,7 @@ namespace NetTopologySuite.GeometriesGraph
             * - Interior if the edge is outgoing
             * - Exterior if the edge is incoming
             */
-            Locations startLoc = Locations.Null;
+            Location startLoc = Location.Null;
             foreach (DirectedEdge nextOut in Edges)
             {
                 DirectedEdge nextIn   = nextOut.Sym;
@@ -337,18 +337,18 @@ namespace NetTopologySuite.GeometriesGraph
                 {
                     if (nextOut.IsInResult) 
                     {
-                        startLoc = Locations.Interior;
+                        startLoc = Location.Interior;
                         break;
                     }
                     if (nextIn.IsInResult)
                     {
-                        startLoc = Locations.Exterior;
+                        startLoc = Location.Exterior;
                         break;
                     }
                 }
             }
             // no A edges found, so can't determine if Curve edges are covered or not
-            if (startLoc == Locations.Null)
+            if (startLoc == Location.Null)
                 return;
 
             /*
@@ -356,18 +356,18 @@ namespace NetTopologySuite.GeometriesGraph
             * (Interior or Exterior) for the result area.
             * If Curve edges are found, mark them as covered if they are in the interior
             */
-            Locations currLoc = startLoc;
+            Location currLoc = startLoc;
             foreach (DirectedEdge nextOut in Edges)
             {
                 DirectedEdge nextIn   = nextOut.Sym;
                 if (nextOut.IsLineEdge)
-                    nextOut.Edge.Covered = (currLoc == Locations.Interior);
+                    nextOut.Edge.Covered = (currLoc == Location.Interior);
                 else {  
                     // edge is an Area edge
                     if (nextOut.IsInResult)
-                        currLoc = Locations.Exterior;
+                        currLoc = Location.Exterior;
                     if (nextIn.IsInResult)
-                        currLoc = Locations.Interior;
+                        currLoc = Location.Interior;
                 }   
             }
         }

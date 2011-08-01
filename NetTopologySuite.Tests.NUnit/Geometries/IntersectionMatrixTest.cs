@@ -1,8 +1,4 @@
-using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
@@ -10,9 +6,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class IntersectionMatrixTest
     {
-        private static Dimensions A = Dimensions.Surface;
-        private static Dimensions L = Dimensions.Curve;
-        private static Dimensions P = Dimensions.Point;
+        private static Dimension A = Dimension.Surface;
+        private static Dimension L = Dimension.Curve;
+        private static Dimension P = Dimension.Point;
 
         [Test]
         public void TestToString()

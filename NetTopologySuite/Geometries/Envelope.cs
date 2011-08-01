@@ -14,9 +14,9 @@ namespace NetTopologySuite.Geometries
     /// When Envelope objects are created or initialized,
     /// the supplies extent values are automatically sorted into the correct order.    
     /// </summary>
-#if !SILVERLIGHT
+//#if !SILVERLIGHT
     [Serializable]
-#endif
+//#endif
     public class Envelope : IEnvelope
     {
         /// <summary>
@@ -303,6 +303,17 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Gets the area of this envelope.
+        /// </summary>
+        /// <returns>The area of the envelope, or 0.0 if envelope is null</returns>
+        public double Area
+        {
+            get
+            {
+                return Width * Height;
+            }
+        }
+        /// <summary>
         /// Expands this envelope by a given distance in all directions.
         /// Both positive and negative distances are supported.
         /// </summary>
@@ -334,8 +345,9 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Enlarges the boundary of the <c>Envelope</c> so that it contains (p).
-        /// Does nothing if (p) is already on or within the boundaries.
+        /// Enlarges this <code>Envelope</code> so that it contains
+        /// the given <see cref="ICoordinate"/>. 
+        /// Has no effect if the point is already on or within the envelope.
         /// </summary>
         /// <param name="p">The Coordinate.</param>
         public void ExpandToInclude(ICoordinate p)
@@ -344,9 +356,10 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Enlarges the boundary of the <c>Envelope</c> so that it contains
-        /// (x,y). Does nothing if (x,y) is already on or within the boundaries.
+        /// Enlarges this <c>Envelope</c> so that it contains
+        /// the given <see cref="ICoordinate"/>. 
         /// </summary>
+        /// <remarks>Has no effect if the point is already on or within the envelope.</remarks>
         /// <param name="x">The value to lower the minimum x to or to raise the maximum x to.</param>
         /// <param name="y">The value to lower the minimum y to or to raise the maximum y to.</param>
         public void ExpandToInclude(double x, double y)
@@ -372,11 +385,12 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Enlarges the boundary of the <c>Envelope</c> so that it contains
-        /// <c>other</c>. Does nothing if <c>other</c> is wholly on or
-        /// within the boundaries.
+        /// Enlarges this <c>Envelope</c> so that it contains
+        /// the <c>other</c> Envelope. 
+        /// Has no effect if <c>other</c> is wholly on or
+        /// within the envelope.
         /// </summary>
-        /// <param name="other">the <c>Envelope</c> to merge with.</param>        
+        /// <param name="other">the <c>Envelope</c> to expand to include.</param>        
         public void ExpandToInclude(IEnvelope other)
         {
             if (other.IsNull)
@@ -732,20 +746,6 @@ namespace NetTopologySuite.Geometries
 #endif
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
-
-        /// <summary>
-        /// Returns the area of the envelope.
-        /// </summary>
-        public double Area
-        {
-            get
-            {
-                double area = 1;
-                area = area * (_maxx - _minx);
-                area = area * (_maxy - _miny);
-                return area;
-            }
-        }
 
         /// <summary>
         /// Creates a deep copy of the current envelope.

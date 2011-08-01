@@ -189,7 +189,9 @@ namespace NetTopologySuite.Operation.Buffer
             }
 
             // MD - testing  Result: breaks algorithm
-            Assert.IsTrue(startEdge != null, "unable to find edge to compute depths at " + n.Coordinate);
+            // only compute string append if assertion would fail
+            if (startEdge == null)
+                Assert.IsTrue(false, "unable to find edge to compute depths at " + n.Coordinate);
             ((DirectedEdgeStar) n.Edges).ComputeDepths(startEdge);
 
             // copy depths to sym edges

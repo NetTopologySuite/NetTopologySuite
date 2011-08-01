@@ -27,7 +27,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             _coord = coord;
             _edges = edges;
-            Label = new Label(0, Locations.Null);
+            Label = new Label(0, Location.Null);
         }
 
         /// <summary>
@@ -102,9 +102,9 @@ namespace NetTopologySuite.GeometriesGraph
         {
             for (int i = 0; i < 2; i++) 
             {
-                Locations loc = ComputeMergedLocation(label2, i);
-                Locations thisLoc = Label.GetLocation(i);
-                if (thisLoc == Locations.Null) 
+                Location loc = ComputeMergedLocation(label2, i);
+                Location thisLoc = Label.GetLocation(i);
+                if (thisLoc == Location.Null) 
                     Label.SetLocation(i, loc);
             }
         }
@@ -114,7 +114,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="argIndex"></param>
         /// <param name="onLocation"></param>
-        public void SetLabel(int argIndex, Locations onLocation)
+        public void SetLabel(int argIndex, Location onLocation)
         {
             if (Label == null) 
                  Label = new Label(argIndex, onLocation);            
@@ -129,21 +129,21 @@ namespace NetTopologySuite.GeometriesGraph
         public void SetLabelBoundary(int argIndex)
         {
             // determine the current location for the point (if any)
-            Locations loc = Locations.Null;
+            Location loc = Location.Null;
             if (Label != null)
                 loc = Label.GetLocation(argIndex);
             // flip the loc
-            Locations newLoc;
+            Location newLoc;
             switch (loc)
             {
-            case Locations.Boundary:
-                newLoc = Locations.Interior; 
+            case Location.Boundary:
+                newLoc = Location.Interior; 
                 break;
-            case Locations.Interior:
-                newLoc = Locations.Boundary; 
+            case Location.Interior:
+                newLoc = Location.Boundary; 
                 break;
             default:
-                newLoc = Locations.Boundary; 
+                newLoc = Location.Boundary; 
                 break;
             }
             Label.SetLocation(argIndex, newLoc);
@@ -158,14 +158,14 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="label2"></param>
         /// <param name="eltIndex"></param>
-        public Locations ComputeMergedLocation(Label label2, int eltIndex)
+        public Location ComputeMergedLocation(Label label2, int eltIndex)
         {
-            /*Locations loc = Locations.Null*/;
-            Locations loc = Label.GetLocation(eltIndex);
+            /*Location loc = Location.Null*/;
+            Location loc = Label.GetLocation(eltIndex);
             if (!label2.IsNull(eltIndex)) 
             {
-                Locations nLoc = label2.GetLocation(eltIndex);
-                if (loc != Locations.Boundary) 
+                Location nLoc = label2.GetLocation(eltIndex);
+                if (loc != Location.Boundary) 
                     loc = nLoc;
             }
             return loc;

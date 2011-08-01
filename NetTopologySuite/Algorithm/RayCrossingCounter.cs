@@ -29,13 +29,13 @@ namespace NetTopologySuite.Algorithm
     public class RayCrossingCounter
     {
         ///<summary>
-        /// Determines the <see cref="Locations"/> of a point in a ring.
+        /// Determines the <see cref="GeoAPI.Geometries.Location"/> of a point in a ring.
         /// This method is an exemplar of how to use this class.
         ///</summary>
         /// <param name="p">The point to test</param>
         /// <param name="ring">An array of Coordinates forming a ring</param>
         /// <returns>The location of the point in the ring</returns>
-        public static Locations LocatePointInRing(ICoordinate p, ICoordinate[] ring)
+        public static Location LocatePointInRing(ICoordinate p, ICoordinate[] ring)
         {
             RayCrossingCounter counter = new RayCrossingCounter(p);
 
@@ -157,24 +157,24 @@ namespace NetTopologySuite.Algorithm
         public bool IsOnSegment { get { return _isPointOnSegment; } }
 
         ///<summary>
-        /// Gets the <see cref="Locations"/> of the point relative to  the ring, polygon
+        /// Gets the <see cref="GeoAPI.Geometries.Location"/> of the point relative to  the ring, polygon
         /// or multipolygon from which the processed segments were provided.
         ///</summary>
         /// <remarks>This property only determines the correct location if <b>all</b> relevant segments have been processed</remarks>
-        public Locations Location
+        public Location Location
         {
             get
             {
                 if (_isPointOnSegment)
-                    return Locations.Boundary;
+                    return Location.Boundary;
 
                 // The point is in the interior of the ring if the number of X-crossings is
                 // odd.
                 if ((_crossingCount%2) == 1)
                 {
-                    return Locations.Interior;
+                    return Location.Interior;
                 }
-                return Locations.Exterior;
+                return Location.Exterior;
             }
         }
 
@@ -185,7 +185,7 @@ namespace NetTopologySuite.Algorithm
         /// This property only determines the correct location if <b>all</b> relevant segments have been processed</remarks>
         public bool IsPointInPolygon
         {
-            get { return Location != Locations.Exterior; } 
+            get { return Location != Location.Exterior; } 
         }
     }
 }

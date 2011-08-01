@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Utilities;
 
@@ -52,24 +54,24 @@ namespace NetTopologySuite.Operation.Overlay
         /// This method will handle arguments of Location.NULL correctly.
         /// </summary>
         /// <returns><c>true</c> if the locations correspond to the opCode.</returns>
-        public static bool IsResultOfOp(Locations loc0, Locations loc1, SpatialFunction opCode)
+        public static bool IsResultOfOp(Location loc0, Location loc1, SpatialFunction opCode)
         {
-            if (loc0 == Locations.Boundary) 
-                loc0 = Locations.Interior;
-            if (loc1 == Locations.Boundary) 
-                loc1 = Locations.Interior;
+            if (loc0 == Location.Boundary) 
+                loc0 = Location.Interior;
+            if (loc1 == Location.Boundary) 
+                loc1 = Location.Interior;
             
             switch (opCode) 
             {
                 case SpatialFunction.Intersection:
-                    return loc0 == Locations.Interior && loc1 == Locations.Interior;
+                    return loc0 == Location.Interior && loc1 == Location.Interior;
                 case SpatialFunction.Union:
-                    return loc0 == Locations.Interior || loc1 == Locations.Interior;
+                    return loc0 == Location.Interior || loc1 == Location.Interior;
                 case SpatialFunction.Difference:
-                    return loc0 == Locations.Interior && loc1 != Locations.Interior;
+                    return loc0 == Location.Interior && loc1 != Location.Interior;
                 case SpatialFunction.SymDifference:
-                    return   (loc0 == Locations.Interior &&  loc1 != Locations.Interior)
-                          || (loc0 != Locations.Interior &&  loc1 == Locations.Interior);
+                    return   (loc0 == Location.Interior &&  loc1 != Location.Interior)
+                          || (loc0 != Location.Interior &&  loc1 == Location.Interior);
 	            default:
                     return false;
             }            
@@ -177,14 +179,14 @@ namespace NetTopologySuite.Operation.Overlay
             _resultPointList = pointBuilder.Build(opCode);
 
             // gather the results from all calculations into a single Geometry for the result set
-            _resultGeom = ComputeGeometry(_resultPointList, _resultLineList, _resultPolyList);
+            _resultGeom = ComputeGeometry(_resultPointList, _resultLineList, _resultPolyList, opCode);
         }        
 
-        private void InsertUniqueEdges(IList<Edge> edges)
+        private void InsertUniqueEdges(IEnumerable<Edge> edges)
         {
             for (var i = edges.GetEnumerator(); i.MoveNext(); ) 
             {
-                var e = (Edge) i.Current;
+                var e = i.Current;
                 InsertUniqueEdge(e);
             }
         }
@@ -398,6 +400,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// </summary>
         private void LabelIncompleteNodes()
         {
+            //int nodeCount = 0;
             var ni = _graph.Nodes.GetEnumerator();
             while (ni.MoveNext()) 
             {
@@ -405,6 +408,7 @@ namespace NetTopologySuite.Operation.Overlay
                 var label = n.Label;
                 if (n.IsIsolated) 
                 {
+                    //nodeCount++;
                     if (label.IsNull(0))
                          LabelIncompleteNode(n, 0);
                     else LabelIncompleteNode(n, 1);
@@ -412,6 +416,14 @@ namespace NetTopologySuite.Operation.Overlay
                 // now update the labelling for the DirectedEdges incident on this node
                 ((DirectedEdgeStar) n.Edges).UpdateLabelling(label);
             }
+            /*
+            int nPoly0 = arg[0].getGeometry().getNumGeometries();
+            int nPoly1 = arg[1].getGeometry().getNumGeometries();
+            Console.WriteLine("# isolated nodes= " + nodeCount 
+                    + "   # poly[0] = " + nPoly0
+                    + "   # poly[1] = " + nPoly1);
+            */
+
         }
 
         /// <summary>
@@ -420,6 +432,8 @@ namespace NetTopologySuite.Operation.Overlay
         private void LabelIncompleteNode(GraphComponent n, int targetIndex)
         {
             var loc = _ptLocator.Locate(n.Coordinate, arg[targetIndex].Geometry);
+            // MD - 2008-10-24 - experimental for now
+            //int loc = arg[targetIndex].Locate(n.Coordinate);
             n.Label.SetLocation(targetIndex, loc);
         }
 
@@ -496,13 +510,13 @@ namespace NetTopologySuite.Operation.Overlay
             {
                 var geom = it.Current;
                 var loc = _ptLocator.Locate(coord, geom);
-                if (loc != Locations.Exterior) 
+                if (loc != Location.Exterior) 
                     return true;
             }
             return false;
         }
 
-        private IGeometry ComputeGeometry(IEnumerable<IGeometry> resultPtList, IEnumerable<IGeometry> resultLiList, IEnumerable<IGeometry> resultPlList)
+        private IGeometry ComputeGeometry(IEnumerable<IGeometry> resultPtList, IEnumerable<IGeometry> resultLiList, IEnumerable<IGeometry> resultPlList, SpatialFunction opCode)
         {
             var geomList = new List<IGeometry>();
 
@@ -511,8 +525,59 @@ namespace NetTopologySuite.Operation.Overlay
             geomList.AddRange(resultLiList);
             geomList.AddRange(resultPlList);
 
+            /*
+            if (geomList.Count == 0)
+                return CreateEmptyResult(opCode);
+            */
+
             // build the most specific point possible
             return _geomFact.BuildGeometry(geomList);
         }
+
+        private IGeometry CreateEmptyResult(SpatialFunction opCode)
+        {
+            IGeometry result = null;
+            switch (ResultDimension(opCode, arg[0].Geometry, arg[1].Geometry))
+            {
+                case Dimension.Dontcare:
+                    result = _geomFact.CreateGeometryCollection(new Geometry[0]);
+                    break;
+                case Dimension.Point:
+                    result = _geomFact.CreatePoint((Coordinate)null);
+                    break;
+                case Dimension.Curve:
+                    result = _geomFact.CreateLineString((Coordinate[])null);
+                    break;
+                case Dimension.Surface:
+                    result = _geomFact.CreatePolygon(null, null);
+                    break;
+            }
+            return result;
+        }
+
+        private static Dimension ResultDimension(SpatialFunction opCode, IGeometry g0, IGeometry g1)
+        {
+            var dim0 = (int)g0.Dimension;
+            var dim1 = (int)g1.Dimension;
+
+            int resultDimension = -1;
+            switch (opCode)
+            {
+                case SpatialFunction.Intersection:
+                    resultDimension = Math.Min(dim0, dim1);
+                    break;
+                case SpatialFunction.Union:
+                    resultDimension = Math.Max(dim0, dim1);
+                    break;
+                case SpatialFunction.Difference:
+                    resultDimension = dim0;
+                    break;
+                case SpatialFunction.SymDifference:
+                    resultDimension = Math.Max(dim0, dim1);
+                    break;
+            }
+            return (Dimension)resultDimension;
+        }
+
     }
 }

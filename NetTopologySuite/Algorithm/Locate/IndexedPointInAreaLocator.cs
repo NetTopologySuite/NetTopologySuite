@@ -38,12 +38,12 @@ namespace NetTopologySuite.Algorithm.Locate
         }
 
         ///<summary>
-        /// Determines the <see cref="Locations"/> of a point in an areal <see cref="IGeometry"/>.
+        /// Determines the <see cref="Location"/> of a point in an areal <see cref="IGeometry"/>.
         ///</summary>
         /// <param name="p">The point to test</param>
         /// <returns>The location of the point in the geometry
         /// </returns>
-        public Locations Locate(ICoordinate p)
+        public Location Locate(ICoordinate p)
         {
             RayCrossingCounter rcc = new RayCrossingCounter(p);
 

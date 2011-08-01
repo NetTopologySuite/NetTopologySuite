@@ -71,10 +71,10 @@ namespace NetTopologySuite.Shapefile
             writer.Write(ByteEncoder.GetBigEndian(FileLengthInWords));
             writer.Write(ByteEncoder.GetLittleEndian(ShapeFileConstants.VersionCode));
             writer.Write(ByteEncoder.GetLittleEndian((Int32)ShapeType));
-            writer.Write(ByteEncoder.GetLittleEndian(Extents.GetMin(Ordinates.X)));
-            writer.Write(ByteEncoder.GetLittleEndian(Extents.GetMin(Ordinates.Y)));
-            writer.Write(ByteEncoder.GetLittleEndian(Extents.GetMax(Ordinates.X)));
-            writer.Write(ByteEncoder.GetLittleEndian(Extents.GetMax(Ordinates.Y)));
+            writer.Write(ByteEncoder.GetLittleEndian(Extents.GetMin(Ordinate.X)));
+            writer.Write(ByteEncoder.GetLittleEndian(Extents.GetMin(Ordinate.Y)));
+            writer.Write(ByteEncoder.GetLittleEndian(Extents.GetMax(Ordinate.X)));
+            writer.Write(ByteEncoder.GetLittleEndian(Extents.GetMax(Ordinate.Y)));
             writer.Write(new Byte[32]); // Z-values and M-values
         }
 

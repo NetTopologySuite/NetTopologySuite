@@ -45,7 +45,8 @@ namespace NetTopologySuite.Operation.Buffer
         /// <summary>
         /// The default number of facets into which to divide a fillet of 90 degrees.
         /// A value of 8 gives less than 2% max error in the buffer distance.
-        /// For a max error of &lt; 1%, use QS = 12
+        /// For a max error of &lt; 1%, use QS = 12.
+        /// For a max error of &lt; 0.1%, use QS = 18.
         /// </summary>
         public const int DefaultQuadrantSegments = 8;
 
@@ -113,10 +114,18 @@ namespace NetTopologySuite.Operation.Buffer
         /// <remarks>
         /// QuadrantSegments is the number of line segments used to approximate an angle fillet.
         /// <list type="Table">
-        /// <item>qs &gt;>= 1</item><description>joins are round, and qs indicates the number of segments to use to approximate a quarter-circle.</description>
-        /// <item>qs = 0</item><description>joins are beveled</description>
-        /// <item>qs &lt; 0</item><description>joins are mitred, and the value of qs indicates the mitre ration limit as <c>mitreLimit = |qs|</c></description>
+        /// <item><c>QuadrantSegments</c> &gt;>= 1</item><description>joins are round, and <c>QuadrantSegments</c> indicates the number of segments to use to approximate a quarter-circle.</description>
+        /// <item><c>QuadrantSegments</c> = 0</item><description>joins are beveled</description>
+        /// <item><c>QuadrantSegments</c> &lt; 0</item><description>joins are mitred, and the value of qs indicates the mitre ration limit as <c>mitreLimit = |<tt>QuadrantSegments</tt>|</c></description>
         /// </list>
+        /// For round joins, <c>QuadrantSegments</c> determines the maximum
+        /// error in the approximation to the true buffer curve.
+        /// The default value of 8 gives less than 2% max error in the buffer distance.
+        /// For a max error of &lt; 1%, use QS = 12.
+        /// For a max error of &lt; 0.1%, use QS = 18.
+        /// The error is always less than the buffer distance 
+        /// (in other words, the computed buffer curve is always inside the true
+        /// curve).
         /// </remarks>
         public int QuadrantSegments
         {
@@ -128,7 +137,7 @@ namespace NetTopologySuite.Operation.Buffer
                  * Indicates how to construct fillets.
                  * If qs &gt;= 1, fillet is round, and qs indicates number of 
                  * segments to use to approximate a quarter-circle.
-                 * If qs = 0, fillet is butt (i.e. no filleting is performed)
+                 * If qs = 0, fillet is bevelled flat (i.e. no filleting is performed)
                  * If qs &lt; 0, fillet is mitred, and absolute value of qs
                  * indicates maximum length of mitre according to
                  * 
@@ -156,6 +165,17 @@ namespace NetTopologySuite.Operation.Buffer
                     _quadrantSegments = DefaultQuadrantSegments;
                 }
             }
+        }
+
+        ///<summary>
+        /// Computes the maximum distance error due to a given level of approximation to a true arc.
+        ///</summary>
+        /// <param name="quadSegs">The number of segments used to approximate a quarter-circle</param>
+        /// <returns>The error of approximation</returns>
+        public static double BufferDistanceError(int quadSegs)
+        {
+            double alpha = Math.PI / 2.0 / quadSegs;
+            return 1 - Math.Cos(alpha / 2.0);
         }
 
         ///<summary>

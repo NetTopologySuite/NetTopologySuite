@@ -6,27 +6,27 @@ namespace NetTopologySuite.Extension
     public static class ICoordinateEx
     {
 
-        public static bool ContainsOrdinate(this ICoordinate self, Ordinates ordinate)
+        public static bool ContainsOrdinate(this ICoordinate self, Ordinate ordinate)
         {
             switch (ordinate)
             {
-                case Ordinates.X:
-                case Ordinates.Y:
+                case Ordinate.X:
+                case Ordinate.Y:
                     return true;
                 default:
                     throw new NotImplementedException();
             }
         }
 
-        public static double GetOrdinate(this ICoordinate self, Ordinates ordinate)
+        public static double GetOrdinate(this ICoordinate self, Ordinate ordinate)
         {
             switch (ordinate)
             {
-                case Ordinates.X:
+                case Ordinate.X:
                     return self.X;
-                case Ordinates.Y:
+                case Ordinate.Y:
                     return self.Y;
-                case Ordinates.Z:
+                case Ordinate.Z:
                     return self.Z;
                 default:
                     throw new NotImplementedException();

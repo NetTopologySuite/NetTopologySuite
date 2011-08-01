@@ -63,7 +63,7 @@ namespace NetTopologySuite.Geometries.Prepared
              * test for proper inclusion of the target.
              * Since no segments intersect, it is sufficient to test representative points.
              */
-            if (geom.Dimension == Dimensions.Surface)
+            if (geom.Dimension == Dimension.Surface)
             {
                 // TODO: generalize this to handle GeometryCollections
                 bool isPrepGeomInArea = IsAnyTargetComponentInAreaTest(geom, prepPoly.RepresentativePoints);

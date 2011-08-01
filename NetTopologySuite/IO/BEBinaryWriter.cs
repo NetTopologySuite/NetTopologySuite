@@ -15,18 +15,18 @@ namespace NetTopologySuite.IO
     /// and double values (<see cref="BEBinaryWriter.Write(double)" />) in the BigEndian format,
     /// this implementation overrides methods, such <see cref="BinaryWriter.Write(int)" /> 
     /// and <see cref="BinaryWriter.Write(double)" /> and more, 
-    /// for writing <see cref="T:ByteOrder.BigEndian" /> values in the BigEndian format.
+    /// for writing <see cref="ByteOrder.BigEndian" /> values in the BigEndian format.
     /// </remarks>
     public class BEBinaryWriter : BinaryWriter
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:BEBinaryWriter"/> class.
+        /// Initializes a new instance of the <see cref="BEBinaryWriter"/> class.
         /// </summary>
         public BEBinaryWriter() : base() { }
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:BEBinaryWriter"/> class.
+        /// Initializes a new instance of the <see cref="BEBinaryWriter"/> class.
         /// </summary>
         /// <param name="output">The supplied stream.</param>
         /// <exception cref="T:System.ArgumentNullException">output is null. </exception>
@@ -35,7 +35,7 @@ namespace NetTopologySuite.IO
         public BEBinaryWriter(Stream output) : base(output) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:BEBinaryWriter"/> class.
+        /// Initializes a new instance of the <see cref="BEBinaryWriter"/> class.
         /// </summary>
         /// <param name="output">The supplied stream.</param>
         /// <param name="encoding">The character encoding.</param>

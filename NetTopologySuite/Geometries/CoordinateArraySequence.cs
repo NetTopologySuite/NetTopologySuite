@@ -10,9 +10,7 @@ namespace NetTopologySuite.Geometries
     /// modifications to them are actually changing the
     /// CoordinateSequence's underlying data.
     /// </summary>
-#if !SILVERLIGHT
     [Serializable]
-#endif
     public class CoordinateArraySequence : ICoordinateSequence
     {    
         protected ICoordinate[] coordinates;
@@ -123,21 +121,21 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Returns the ordinate of a coordinate in this sequence.
         /// Ordinate indices 0 and 1 are assumed to be X and Y.
-        /// Ordinates indices greater than 1 have user-defined semantics
+        /// Ordinate indices greater than 1 have user-defined semantics
         /// (for instance, they may contain other dimensions or measure values).
         /// </summary>
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <returns></returns>
-        public double GetOrdinate(int index, Ordinates ordinate)
+        public double GetOrdinate(int index, Ordinate ordinate)
         {
             switch (ordinate) 
             {
-                case Ordinates.X:  
+                case Ordinate.X:  
                     return coordinates[index].X;
-                case Ordinates.Y:  
+                case Ordinate.Y:  
                     return coordinates[index].Y;
-                case Ordinates.Z:  
+                case Ordinate.Z:  
                     return coordinates[index].Z;
                 default:
                     return Double.NaN;
@@ -183,17 +181,17 @@ namespace NetTopologySuite.Geometries
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <param name="value">The new ordinate value.</param>
-        public void SetOrdinate(int index, Ordinates ordinate, double value)
+        public void SetOrdinate(int index, Ordinate ordinate, double value)
         {
             switch (ordinate) 
             {
-                case Ordinates.X:  
+                case Ordinate.X:  
                     coordinates[index].X = value;
                     break;
-                case Ordinates.Y: 
+                case Ordinate.Y: 
                     coordinates[index].Y = value;
                     break;
-                case Ordinates.Z: 
+                case Ordinate.Z: 
                     coordinates[index].Z = value;
                     break;
                 default:

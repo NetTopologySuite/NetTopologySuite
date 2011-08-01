@@ -12,14 +12,14 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         [Test]
         public void TestBox()
         {
-            RunPtInRing(Locations.Interior, new Coordinate(10, 10),
+            RunPtInRing(Location.Interior, new Coordinate(10, 10),
                 "POLYGON ((0 0, 0 20, 20 20, 20 0, 0 0))");
         }
 
         [Test]
         public void TestComplexRing()
         {
-            RunPtInRing(Locations.Interior, new Coordinate(0, 0),
+            RunPtInRing(Location.Interior, new Coordinate(0, 0),
                 "POLYGON ((-40 80, -40 -80, 20 0, 20 -100, 40 40, 80 -80, 100 80, 140 -20, 120 140, 40 180,     60 40, 0 120, -20 -20, -40 80))");
         }
 
@@ -29,30 +29,30 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         [Test]
         public void TestComb()
         {
-            RunPtInRing(Locations.Boundary, new Coordinate(0, 0), Comb);
-            RunPtInRing(Locations.Boundary, new Coordinate(0, 1), Comb);
+            RunPtInRing(Location.Boundary, new Coordinate(0, 0), Comb);
+            RunPtInRing(Location.Boundary, new Coordinate(0, 1), Comb);
             // at vertex 
-            RunPtInRing(Locations.Boundary, new Coordinate(4, 5), Comb);
-            RunPtInRing(Locations.Boundary, new Coordinate(8, 5), Comb);
+            RunPtInRing(Location.Boundary, new Coordinate(4, 5), Comb);
+            RunPtInRing(Location.Boundary, new Coordinate(8, 5), Comb);
 
             // on horizontal segment
-            RunPtInRing(Locations.Boundary, new Coordinate(11, 5), Comb);
+            RunPtInRing(Location.Boundary, new Coordinate(11, 5), Comb);
             // on vertical segment
-            RunPtInRing(Locations.Boundary, new Coordinate(30, 5), Comb);
+            RunPtInRing(Location.Boundary, new Coordinate(30, 5), Comb);
             // on angled segment
-            RunPtInRing(Locations.Boundary, new Coordinate(22, 7), Comb);
+            RunPtInRing(Location.Boundary, new Coordinate(22, 7), Comb);
 
 
 
-            RunPtInRing(Locations.Interior, new Coordinate(1, 5), Comb);
-            RunPtInRing(Locations.Interior, new Coordinate(5, 5), Comb);
-            RunPtInRing(Locations.Interior, new Coordinate(1, 7), Comb);
+            RunPtInRing(Location.Interior, new Coordinate(1, 5), Comb);
+            RunPtInRing(Location.Interior, new Coordinate(5, 5), Comb);
+            RunPtInRing(Location.Interior, new Coordinate(1, 7), Comb);
 
 
 
-            RunPtInRing(Locations.Exterior, new Coordinate(12, 10), Comb);
-            RunPtInRing(Locations.Exterior, new Coordinate(16, 5), Comb);
-            RunPtInRing(Locations.Exterior, new Coordinate(35, 5), Comb);
+            RunPtInRing(Location.Exterior, new Coordinate(12, 10), Comb);
+            RunPtInRing(Location.Exterior, new Coordinate(16, 5), Comb);
+            RunPtInRing(Location.Exterior, new Coordinate(35, 5), Comb);
         }
 
         public static string RepeatedPts =
@@ -63,20 +63,20 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         */
         public void TestRepeatedPts()
         {
-            RunPtInRing(Locations.Boundary, new Coordinate(0, 0), RepeatedPts);
-            RunPtInRing(Locations.Boundary, new Coordinate(0, 1), RepeatedPts);
+            RunPtInRing(Location.Boundary, new Coordinate(0, 0), RepeatedPts);
+            RunPtInRing(Location.Boundary, new Coordinate(0, 1), RepeatedPts);
 
             // at vertex 
-            RunPtInRing(Locations.Boundary, new Coordinate(2, 5), RepeatedPts);
-            RunPtInRing(Locations.Boundary, new Coordinate(8, 5), RepeatedPts);
-            RunPtInRing(Locations.Boundary, new Coordinate(10, 5), RepeatedPts);
+            RunPtInRing(Location.Boundary, new Coordinate(2, 5), RepeatedPts);
+            RunPtInRing(Location.Boundary, new Coordinate(8, 5), RepeatedPts);
+            RunPtInRing(Location.Boundary, new Coordinate(10, 5), RepeatedPts);
 
-            RunPtInRing(Locations.Interior, new Coordinate(1, 5), RepeatedPts);
-            RunPtInRing(Locations.Interior, new Coordinate(3, 5), RepeatedPts);
+            RunPtInRing(Location.Interior, new Coordinate(1, 5), RepeatedPts);
+            RunPtInRing(Location.Interior, new Coordinate(3, 5), RepeatedPts);
 
         }
 
-        abstract protected void RunPtInRing(Locations expectedLoc, Coordinate pt, String wkt);
+        abstract protected void RunPtInRing(Location expectedLoc, Coordinate pt, String wkt);
 
     }
 }

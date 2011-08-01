@@ -44,7 +44,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 this.geom = geom;
             }
 		
-            public Locations Locate(ICoordinate p)
+            public Location Locate(ICoordinate p)
             {
                 RayCrossingCounter rcc = new RayCrossingCounter(p);
                 RayCrossingSegmentFilter filter = new RayCrossingSegmentFilter(rcc);

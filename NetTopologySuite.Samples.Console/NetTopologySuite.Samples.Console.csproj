@@ -64,8 +64,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ExternalReferences\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="ProjNET, Version=1.0.2794.16965, Culture=neutral, PublicKeyToken=a1f5bdcd9c6f5740, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="ProjNET">
       <HintPath>..\ExternalReferences\ProjNET.dll</HintPath>
     </Reference>
     <Reference Include="QuickGraph, Version=3.2.40122.0, Culture=neutral, PublicKeyToken=f3fb40175eec2af3, processorArchitecture=MSIL">

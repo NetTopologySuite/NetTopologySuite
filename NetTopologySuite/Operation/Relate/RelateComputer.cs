@@ -44,7 +44,7 @@ namespace NetTopologySuite.Operation.Relate
         {
             IntersectionMatrix im = new IntersectionMatrix();
             // since Geometries are finite and embedded in a 2-D space, the EE element must always be 2
-            im.Set(Locations.Exterior, Locations.Exterior, Dimensions.Surface);
+            im.Set(Location.Exterior, Location.Exterior, Dimension.Surface);
 
             // if the Geometries don't overlap there is nothing to do
             if (!_arg[0].Geometry.EnvelopeInternal.Intersects(_arg[1].Geometry.EnvelopeInternal))
@@ -123,8 +123,8 @@ namespace NetTopologySuite.Operation.Relate
         private void ComputeProperIntersectionIM(SegmentIntersector intersector, IntersectionMatrix im)
         {
             // If a proper intersection is found, we can set a lower bound on the IM.
-            Dimensions dimA = _arg[0].Geometry.Dimension;
-            Dimensions dimB = _arg[1].Geometry.Dimension;
+            Dimension dimA = _arg[0].Geometry.Dimension;
+            Dimension dimB = _arg[1].Geometry.Dimension;
             bool hasProper = intersector.HasProperIntersection;
             bool hasProperInterior = intersector.HasProperInteriorIntersection;
 
@@ -132,7 +132,7 @@ namespace NetTopologySuite.Operation.Relate
             /*
              * If edge segments of Areas properly intersect, the areas must properly overlap.
              */
-            if (dimA == Dimensions.Surface && dimB == Dimensions.Surface)
+            if (dimA == Dimension.Surface && dimB == Dimension.Surface)
             {
                 if (hasProper) 
                     im.SetAtLeast("212101212");
@@ -146,7 +146,7 @@ namespace NetTopologySuite.Operation.Relate
              * Note that it does not follow that the Interior of the Line intersects the Exterior
              * of the Area, since there may be another Area component which contains the rest of the Line.
              */
-            else if (dimA == Dimensions.Surface && dimB == Dimensions.Curve)
+            else if (dimA == Dimension.Surface && dimB == Dimension.Curve)
             {
                 if (hasProper) 
                     im.SetAtLeast("FFF0FFFF2");
@@ -154,7 +154,7 @@ namespace NetTopologySuite.Operation.Relate
                     im.SetAtLeast("1FFFFF1FF");
             }
 
-            else if (dimA == Dimensions.Curve && dimB == Dimensions.Surface)
+            else if (dimA == Dimension.Curve && dimB == Dimension.Surface)
             {
                 if (hasProper) 
                     im.SetAtLeast("F0FFFFFF2");
@@ -171,7 +171,7 @@ namespace NetTopologySuite.Operation.Relate
                both Geometries, since it is possible in a self-intersecting point to
                have a proper intersection on one segment that is also a boundary point of another segment.
             */
-            else if (dimA == Dimensions.Curve && dimB == Dimensions.Curve)
+            else if (dimA == Dimension.Curve && dimB == Dimension.Curve)
             {
                 if (hasProperInterior)
                     im.SetAtLeast("0FFFFFFFF");
@@ -209,16 +209,16 @@ namespace NetTopologySuite.Operation.Relate
         {
             foreach (Edge e in _arg[argIndex].Edges)
             {
-                Locations eLoc = e.Label.GetLocation(argIndex);
+                Location eLoc = e.Label.GetLocation(argIndex);
                 foreach (EdgeIntersection ei in e.EdgeIntersectionList)
                 {
                     RelateNode n = (RelateNode)_nodes.AddNode(ei.Coordinate);
-                    if (eLoc == Locations.Boundary)
+                    if (eLoc == Location.Boundary)
                         n.SetLabelBoundary(argIndex);
                     else
                     {
                         if (n.Label.IsNull(argIndex))
-                            n.SetLabel(argIndex, Locations.Interior);
+                            n.SetLabel(argIndex, Location.Interior);
                     }
                 }
             }
@@ -236,15 +236,15 @@ namespace NetTopologySuite.Operation.Relate
         {
             foreach (Edge e in _arg[argIndex].Edges)
             {
-                Locations eLoc = e.Label.GetLocation(argIndex);
+                Location eLoc = e.Label.GetLocation(argIndex);
                 foreach (EdgeIntersection ei in e.EdgeIntersectionList)
                 {
                     RelateNode n = (RelateNode)_nodes.Find(ei.Coordinate);
                     if (n.Label.IsNull(argIndex))
                     {
-                        if (eLoc == Locations.Boundary)
+                        if (eLoc == Location.Boundary)
                              n.SetLabelBoundary(argIndex);
-                        else n.SetLabel(argIndex, Locations.Interior);
+                        else n.SetLabel(argIndex, Location.Interior);
                     }
                 }
             }
@@ -260,14 +260,14 @@ namespace NetTopologySuite.Operation.Relate
             IGeometry ga = _arg[0].Geometry;
             if (!ga.IsEmpty)
             {
-                im.Set(Locations.Interior, Locations.Exterior, ga.Dimension);
-                im.Set(Locations.Boundary, Locations.Exterior, ga.BoundaryDimension);
+                im.Set(Location.Interior, Location.Exterior, ga.Dimension);
+                im.Set(Location.Boundary, Location.Exterior, ga.BoundaryDimension);
             }
             IGeometry gb = _arg[1].Geometry;
             if (!gb.IsEmpty)
             {
-                im.Set(Locations.Exterior, Locations.Interior, gb.Dimension);
-                im.Set(Locations.Exterior, Locations.Boundary, gb.BoundaryDimension);    
+                im.Set(Location.Exterior, Location.Interior, gb.Dimension);
+                im.Set(Location.Exterior, Location.Boundary, gb.BoundaryDimension);    
             }
         }
 
@@ -344,10 +344,10 @@ namespace NetTopologySuite.Operation.Relate
                 // since edge is not in boundary, may not need the full generality of PointLocator?
                 // Possibly should use ptInArea locator instead?  We probably know here
                 // that the edge does not touch the bdy of the target Geometry
-                Locations loc = _ptLocator.Locate(e.Coordinate, target);
+                Location loc = _ptLocator.Locate(e.Coordinate, target);
                 e.Label.SetAllLocations(targetIndex, loc);
             }
-            else e.Label.SetAllLocations(targetIndex, Locations.Exterior);            
+            else e.Label.SetAllLocations(targetIndex, Location.Exterior);            
         }
 
         /// <summary>
@@ -382,7 +382,7 @@ namespace NetTopologySuite.Operation.Relate
         /// <param name="targetIndex"></param>
         private void LabelIsolatedNode(Node n, int targetIndex)
         {
-            Locations loc = _ptLocator.Locate(n.Coordinate, _arg[targetIndex].Geometry);
+            Location loc = _ptLocator.Locate(n.Coordinate, _arg[targetIndex].Geometry);
             n.Label.SetAllLocations(targetIndex, loc);        
         }
     }

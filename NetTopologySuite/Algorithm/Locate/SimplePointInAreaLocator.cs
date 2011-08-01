@@ -12,18 +12,18 @@ namespace NetTopologySuite.Algorithm.Locate
     public class SimplePointInAreaLocator : IPointOnGeometryLocator
     {
         ///<summary>
-        /// Determines the <see cref="Locations"/> of a point in an areal <see cref="IGeometry"/>. Currently this will never return a value of <see cref="Locations.Boundary"/>.
+        /// Determines the <see cref="Location"/> of a point in an areal <see cref="IGeometry"/>. Currently this will never return a value of <see cref="Location.Boundary"/>.
         ///</summary>
         /// <param name="p">The point to test</param>
         /// <param name="geom">The areal geometry to test</param>
         /// <returns>The Location of the point in the geometry  </returns>
-        public static Locations Locate(ICoordinate p, IGeometry geom)
+        public static Location Locate(ICoordinate p, IGeometry geom)
         {
-            if (geom.IsEmpty) return Locations.Exterior;
+            if (geom.IsEmpty) return Location.Exterior;
 
             if (ContainsPoint(p, geom))
-                return Locations.Interior;
-            return Locations.Exterior;
+                return Location.Interior;
+            return Location.Exterior;
         }
 
         private static Boolean ContainsPoint(ICoordinate p, IGeometry geom)
@@ -80,7 +80,7 @@ namespace NetTopologySuite.Algorithm.Locate
             _geom = geom;
         }
 
-        public Locations Locate(ICoordinate p)
+        public Location Locate(ICoordinate p)
         {
             return Locate(p, _geom);
         }

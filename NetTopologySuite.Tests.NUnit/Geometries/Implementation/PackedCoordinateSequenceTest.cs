@@ -24,8 +24,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             ICoordinateSequence seq = csFactory.Create(SIZE, 2);
             for (int i = 0; i < seq.Count; i++)
             {
-                seq.SetOrdinate(i, Ordinates.X, coords[i].X);
-                seq.SetOrdinate(i, Ordinates.Y, coords[i].Y);
+                seq.SetOrdinate(i, Ordinate.X, coords[i].X);
+                seq.SetOrdinate(i, Ordinate.Y, coords[i].Y);
             }
 
             for (int i = 0; i < seq.Count; i++)
