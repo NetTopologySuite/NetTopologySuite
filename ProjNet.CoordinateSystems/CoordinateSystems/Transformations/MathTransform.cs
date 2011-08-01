@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.CoordinateSystems.Transformations;
+using GeoAPI.Geometries;
 
 namespace ProjNet.CoordinateSystems.Transformations
 {
@@ -170,8 +171,33 @@ namespace ProjNet.CoordinateSystems.Transformations
 		/// </summary>
 		public abstract void Invert();
 
+	    public ICoordinate Transform(ICoordinate coordinate)
+	    {
+	        var ret = Transform(new[] { coordinate.X, coordinate.Y, coordinate.Z });
+	        
+            coordinate.X = ret[0];
+	        coordinate.Y = ret[1];
+            if (DimTarget > 2) coordinate.Z = ret[2];
+	        
+            return coordinate;
+	    }
 
-		/// <summary>
+	    public ICoordinateSequence Transform(ICoordinateSequence coordinateSequence)
+	    {
+	        ICoordinate clone = coordinateSequence.GetCoordinate(0);
+            for (int i = 0; i < coordinateSequence.Count; i++)
+            {
+                clone.CoordinateValue = coordinateSequence.GetCoordinate(i);
+                clone = Transform(clone);
+                coordinateSequence.SetOrdinate(i, Ordinate.X, clone.X);
+                coordinateSequence.SetOrdinate(i, Ordinate.Y, clone.Y);
+                coordinateSequence.SetOrdinate(i, Ordinate.Z, clone.Z);
+            }
+	        return coordinateSequence;
+	    }
+
+
+	    /// <summary>
 		/// To convert degrees to radians, multiply degrees by pi/180. 
 		/// </summary>
 		protected static double Degrees2Radians(double deg)
