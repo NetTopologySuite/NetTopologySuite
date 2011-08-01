@@ -6,9 +6,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 using RTools_NTS.Util;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace NetTopologySuite.IO
 {
@@ -44,6 +41,10 @@ namespace NetTopologySuite.IO
         private readonly IGeometryFactory _geometryFactory;
         private readonly IPrecisionModel _precisionModel;
         int _index;
+
+        private static readonly System.Globalization.CultureInfo InvariantCulture =
+            System.Globalization.CultureInfo.InvariantCulture;
+        private static readonly string NaNString = double.NaN.ToString(InvariantCulture); /*"NaN"*/
 
         /// <summary> 
         /// Creates a <c>WKTReader</c> that creates objects using a basic GeometryFactory.
@@ -186,7 +187,7 @@ namespace NetTopologySuite.IO
             Token token = tokens[_index] /*as Token*/;
             return token is FloatToken ||
                    token is IntToken ||
-                   (token is WordToken && string.Compare(token.Object.ToString(), double.NaN.ToString(), true) == 0);        
+                   (token is WordToken && string.Compare(token.Object.ToString(), NaNString, StringComparison.InvariantCultureIgnoreCase) == 0);        
         }
 
         /// <summary>
@@ -212,7 +213,7 @@ namespace NetTopologySuite.IO
                 return (double) token.ConvertToType(typeof(double));
             if (token is WordToken)
             {
-                if (string.Compare(token.Object.ToString(), double.NaN.ToString(), true) == 0)
+                if (string.Compare(token.Object.ToString(), NaNString, StringComparison.InvariantCultureIgnoreCase) == 0)
                 {
                     return Double.NaN;
                 }
