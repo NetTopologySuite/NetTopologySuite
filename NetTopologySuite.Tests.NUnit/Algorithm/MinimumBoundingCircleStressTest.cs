@@ -15,7 +15,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         [Test]
         public void TestStressRun()
         {
-            var count = 1000;
+            var count = 100;
             while (count-- > 0)
             {
                 int n = random.Next(0, 10000);

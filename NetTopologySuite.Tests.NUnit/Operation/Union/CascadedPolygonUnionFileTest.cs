@@ -1,8 +1,5 @@
 using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
+using NetTopologySuite.Operation.Union;
 using NetTopologySuite.Tests.NUnit.TestData;
 using NUnit.Framework;
 
@@ -13,7 +10,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
     /// using data from files.
     /// </summary>
     /// <author>mbdavis</author>
-    [TestFixture(Ignore = true, IgnoreReason = "The CascadedPolygonUnionTester class uses classes in NetTopologySuite.Algorithm.Match which have not been migrated to NTS yet")]
+    //[TestFixture(Ignore = true, IgnoreReason = "The CascadedPolygonUnionTester class uses classes in NetTopologySuite.Algorithm.Match which have not been migrated to NTS yet")]
     public class CascadedPolygonUnionFileTest
     {
         [Test]
@@ -23,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
                 "NetTopologySuite.Tests.NUnit.TestData.africa.wkt");
 
             RunTest(filePath,
-                    CascadedPolygonUnionTester.MIN_SIMILARITY_MEAURE);
+                    CascadedPolygonUnionTester.MinSimilarityMeaure);
 
             EmbeddedResourceManager.CleanUpTempFile(filePath);
         }
@@ -35,7 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
                 "NetTopologySuite.Tests.NUnit.TestData.europe.wkt");
 
             RunTest(filePath,
-                    CascadedPolygonUnionTester.MIN_SIMILARITY_MEAURE);
+                    CascadedPolygonUnionTester.MinSimilarityMeaure);
 
             EmbeddedResourceManager.CleanUpTempFile(filePath);
         }
@@ -46,8 +43,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
         {
 
             var geoms = GeometryUtils.ReadWKTFile(filename);
-            // TODO: Need to uncomment once the NetTopologySuite.Algorithm.Match namespace and classes are migrated to NTS
-            //Assert.IsTrue(tester.Test(geoms, minimumMeasure));
+            Assert.IsTrue(tester.Test(geoms, minimumMeasure));
         }
     }
 }

@@ -131,8 +131,8 @@ namespace NetTopologySuite.Geometries.Utilities
   		        return;
   	        }
   	        // if not being forced, and this is a linear component
-  	        if (geom is ILineString) 
-  		        _lines.Add((ILinearRing)geom);
+  	        if (geom is ILineString)
+                _lines.Add((ILineString)geom);
   	
   	        // else this is not a linear component, so skip it
         }

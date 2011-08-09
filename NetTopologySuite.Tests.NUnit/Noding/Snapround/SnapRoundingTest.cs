@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
@@ -13,7 +14,6 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
     /// <summary>
     /// Test Snap Rounding
     /// </summary>
-    [TestFixture(Ignore = true, IgnoreReason = "The Geometry Noder has not yet been migrated to NTS from JTS")]
     public class SnapRoundingTest
     {
         WKTReader rdr = new WKTReader();
@@ -80,21 +80,20 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
 
         void RunRounding(string[] wkt)
         {
-            // The GeometryNoder is not yet in NTS.  When it is migrated the following lines can be uncommented.  Strangely though, there are no asserts
-            ////IList geoms = FromWKT(wkt);
-            ////PrecisionModel pm = new PrecisionModel(1.0);
-            ////GeometryNoder noder = new GeometryNoder(pm);
-            ////IList nodedLines = noder.Node(geoms);
-            /////*
-            ////for (Iterator it = nodedLines.iterator(); it.hasNext(); ) {
-            ////System.out.println(it.next());
-            ////}
-            ////*/
+            var geoms = FromWKT(wkt);
+            PrecisionModel pm = new PrecisionModel(1.0);
+            GeometryNoder noder = new GeometryNoder(pm);
+            var nodedLines = noder.Node(geoms);
+            
+            foreach ( var ls in nodedLines)
+                Console.WriteLine(ls);
+            
+            
         }
 
-        IList FromWKT(string[] wkts)
+        ICollection<IGeometry> FromWKT(string[] wkts)
         {
-            IList geomList = new ArrayList();
+            ICollection<IGeometry> geomList = new List<IGeometry>();
             for (int i = 0; i < wkts.Length; i++)
             {
                 try {
