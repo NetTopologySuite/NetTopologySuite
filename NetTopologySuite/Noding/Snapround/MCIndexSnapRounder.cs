@@ -35,7 +35,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// Initializes a new instance of the <see cref="MCIndexSnapRounder"/> class.
         /// </summary>
         /// <param name="pm">The <see cref="PrecisionModel" /> to use.</param>
-        public MCIndexSnapRounder(PrecisionModel pm) 
+        public MCIndexSnapRounder(IPrecisionModel pm) 
         {
             _li = new RobustLineIntersector {PrecisionModel = pm};
             _scaleFactor = pm.Scale;

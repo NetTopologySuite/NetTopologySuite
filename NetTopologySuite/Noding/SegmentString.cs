@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Noding
 {
@@ -18,10 +19,10 @@ namespace NetTopologySuite.Noding
     public class NodedSegmentString : INodableSegmentString
     {
         /// <summary>
-        /// 
+
         /// </summary>
-        /// <param name="segStrings"></param>
-        /// <returns></returns>
+        /// <param name="segStrings">A collection of NodedSegmentStrings</param>
+        /// <returns>A collection of NodedSegmentStrings representing the substrings</returns>
         public static IList<ISegmentString> GetNodedSubstrings(IList<ISegmentString> segStrings)
         {
             IList<ISegmentString> resultEdgelist = new List<ISegmentString>();
@@ -30,10 +31,10 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// 
+
         /// </summary>
-        /// <param name="segStrings"></param>
-        /// <param name="resultEdgelist"></param>
+        /// <param name="segStrings">A collection of NodedSegmentStrings</param>
+        /// <param name="resultEdgelist">A list which will collect the NodedSegmentStrings representing the substrings</param>
         public static void GetNodedSubstrings(IList<ISegmentString> segStrings, IList<ISegmentString> resultEdgelist)
         {
             foreach (var obj in segStrings)
@@ -204,6 +205,10 @@ namespace NetTopologySuite.Noding
                 throw new NotSupportedException(
                     "Setting line segments in a ISegmentString not supported.");
             }
+        }
+        public override String ToString()
+        {
+            return WKTWriter.ToLineString(new CoordinateArraySequence(_pts));
         }
 
     }

@@ -41,7 +41,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// Returns a <see cref="IList"/> of fully noded <see cref="ISegmentString"/>s.
         /// The <see cref="ISegmentString"/>s have the same context as their parent.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A Collection of NodedSegmentStrings representing the substrings</returns>
         public IList<ISegmentString> GetNodedSubstrings()
         {
             return NodedSegmentString.GetNodedSubstrings(_nodedSegStrings);
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// Some Noders may add all these nodes to the input <see cref="ISegmentString" />s;
         /// others may only add some or none at all.
         /// </summary>
-        /// <param name="inputSegmentStrings"></param>
+        /// <param name="inputSegmentStrings">A collection of NodedSegmentStrings</param>
         public void ComputeNodes(IList<ISegmentString> inputSegmentStrings)
         {
             _nodedSegStrings = inputSegmentStrings;
@@ -94,7 +94,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// </summary>
         /// <param name="segStrings"></param>
         /// <param name="li"></param>
-        /// <returns>A list of <see cref="Coordinate" />s for the intersections.</returns>
+        /// <returns>A list of <see cref="ICoordinate" />s for the intersections.</returns>
         private static IList<ICoordinate> FindInteriorIntersections(IList<ISegmentString> segStrings, LineIntersector li)
         {
             IntersectionFinderAdder intFinderAdder = new IntersectionFinderAdder(li);
@@ -171,28 +171,5 @@ namespace NetTopologySuite.Noding.Snapround
             }
         }
 
-  /* refactored to HotPixel
-
-        /// <summary>
-        /// Adds a new node (equal to the snap pt) to the segment
-        /// if the segment passes through the hot pixel.
-        /// </summary>
-        /// <param name="hotPix"></param>
-        /// <param name="segStr"></param>
-        /// <param name="segIndex"></param>
-        /// <returns></returns>
-        public static bool AddSnappedNode(HotPixel hotPix, INodableSegmentString segStr, int segIndex)
-        {
-            ICoordinate p0 = segStr.Coordinates[segIndex];
-            ICoordinate p1 = segStr.Coordinates[segIndex + 1];
-
-            if (hotPix.Intersects(p0, p1))
-            {
-                segStr.AddIntersection(hotPix.Coordinate, segIndex);
-                return true;
-            }
-            return false;
-        }
-*/
     }
 }

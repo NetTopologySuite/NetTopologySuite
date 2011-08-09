@@ -234,6 +234,8 @@
     <Compile Include="Index\IntervalRTree\IntervalRTreeNode.cs" />
     <Compile Include="Index\IntervalRTree\SortedPackedIntervalRTree.cs" />
     <Compile Include="Index\ISpatialIndex.cs" />
+    <Compile Include="Index\KdTree\KdNode.cs" />
+    <Compile Include="Index\KdTree\KdTree.cs" />
     <Compile Include="Index\Quadtree\DoubleBits.cs" />
     <Compile Include="Index\Quadtree\IntervalSize.cs" />
     <Compile Include="Index\Quadtree\Key.cs" />
@@ -302,6 +304,7 @@
     <Compile Include="Noding\SegmentStringDissolver.cs" />
     <Compile Include="Noding\SimpleNoder.cs" />
     <Compile Include="Noding\SinglePassNoder.cs" />
+    <Compile Include="Noding\Snapround\GeometryNoder.cs" />
     <Compile Include="Noding\Snapround\HotPixel.cs" />
     <Compile Include="Noding\Snapround\MCIndexPointSnapper.cs" />
     <Compile Include="Noding\Snapround\MCIndexSnapRounder.cs" />
