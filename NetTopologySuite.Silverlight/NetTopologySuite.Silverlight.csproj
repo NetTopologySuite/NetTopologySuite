@@ -281,6 +281,18 @@
     <Compile Include="..\NetTopologySuite\Geometries\Triangle.cs">
       <Link>Geometries\Triangle.cs</Link>
     </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Utilities\AffineTransformation.cs">
+      <Link>Geometries\Utilities\AffineTransformation.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Utilities\AffineTransformationBuilder.cs">
+      <Link>Geometries\Utilities\AffineTransformationBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Utilities\AffineTransformationFactory.cs">
+      <Link>Geometries\Utilities\AffineTransformationFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Utilities\GeometryCollectionMapper.cs">
+      <Link>Geometries\Utilities\GeometryCollectionMapper.cs</Link>
+    </Compile>
     <Compile Include="..\NetTopologySuite\Geometries\Utilities\GeometryCombiner.cs">
       <Link>Geometries\Utilities\GeometryCombiner.cs</Link>
     </Compile>
@@ -1060,12 +1072,6 @@
     </Compile>
     <Compile Include="..\NetTopologySuite\Geometries\Prepared\PreparedPolygonPredicate.cs">
       <Link>Geometries\Prepared\PreparedPolygonPredicate.cs</Link>
-    </Compile>
-    <Compile Include="..\NetTopologySuite\Geometries\Utilities\AffineTransformation.cs">
-      <Link>Geometries\Utilities\AffineTransformation.cs</Link>
-    </Compile>
-    <Compile Include="..\NetTopologySuite\Geometries\Utilities\AffineTransformationBuilder.cs">
-      <Link>Geometries\Utilities\AffineTransformationBuilder.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Geometries\Utilities\Matrix.cs">
       <Link>Geometries\Utilities\Matrix.cs</Link>

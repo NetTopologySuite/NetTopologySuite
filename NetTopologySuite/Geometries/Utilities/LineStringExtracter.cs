@@ -12,21 +12,21 @@ namespace NetTopologySuite.Geometries.Utilities
         /// Extracts the <see cref="ILineString"/> elements from a single <see cref="IGeometry"/> and adds them to the<see cref="List{ILineString}"/>.
         ///</summary>
         /// <param name="geom">The geometry from which to extract</param>
-        /// <param name="list">The list to add the extracted elements to</param>
+        /// <param name="lines">The list to add the extracted elements to</param>
         /// <returns>The <see cref="List{ILineString}"/></returns>
-        public static IList<ILineString> GetLines(IGeometry geom, IList<ILineString> list)
+        public static IList<ILineString> GetLines(IGeometry geom, IList<ILineString> lines)
         {
             if (geom is ILineString)
             {
-                list.Add((ILineString)geom);
+                lines.Add((ILineString)geom);
             }
             else if (geom is IGeometryCollection)
             {
-                geom.Apply(new LineStringExtracter(list));
+                geom.Apply(new LineStringExtracter(lines));
             }
             // skip non-LineString elemental geometries
 
-            return list;
+            return lines;
         }
 
         ///<summary>

@@ -3,17 +3,26 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Geometries.Utilities
 {
     ///<summary>
-    /// Builds an <see cref="AffineTransformation"/> defined by three control points and their images under the transformation.
+    /// Builds an <see cref="AffineTransformation"/> defined by a set of control vectors.
     ///</summary>
     /// <remarks>
     /// <para>
-    /// A transformation is well-defined by a set of three control points 
-    /// as long as the points are not collinear (this includes the degenerate situation
-    /// where two or more points are identical).
-    /// If the control points are not well-defined, the system of equations
+    /// A control vector consists of a source point and a destination point, 
+    /// which is the image of the source point under the desired transformation.
+    /// </para>
+    /// <para>
+    /// A transformation is well-defined
+    /// by a set of three control vectors 
+    /// if and only if the source points are not collinear. 
+    /// (In particular, the degenerate situation
+    /// where two or more source points are identical will not produce a well-defined transformation).
+    /// A well-defined transformation exists and is unique.
+    /// If the control vectors are not well-defined, the system of equations
     /// defining the transformation matrix entries is not solvable,
-    /// and no transformation can be determined.
-    /// If the control point images are collinear or non-unique,
+    /// and no transformation can be determined.</para>
+    /// <para>
+    /// No such restriction applies to the destination points.
+    /// However, if the destination points are collinear or non-unique,
     /// a non-invertible transformations will be generated.
     /// </para>
     /// <para>
@@ -62,16 +71,17 @@ namespace NetTopologySuite.Geometries.Utilities
         ///<summary>
         /// Computes the <see cref="AffineTransformation"/>
         /// determined by the control point mappings,
-        /// or <c>null</c> if the control points do not determine a unique transformation.
+        /// or <c>null</c> if the control vectors do not determine a well-defined transformation.
         ///</summary>
         /// <returns>
         /// <list>
         /// <item>An affine transformation</item>
-        /// <item>null if the control points do not determine a unique transformation</item>
+        /// <item><c>null</c> if the control vectors do not determine a well-defined transformation.</item>
         /// </list>
         /// </returns>
         public AffineTransformation GetTransformation()
         {
+            // compute full 3-point transformation
             bool isSolvable = Compute();
             if (isSolvable)
                 return new AffineTransformation(_m00, _m01, _m02, _m10, _m11, _m12);

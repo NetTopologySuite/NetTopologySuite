@@ -157,9 +157,6 @@
     <Compile Include="Geometries\PrecisionModel.cs" />
     <Compile Include="Geometries\Prepared\AbstractPreparedPolygonContains.cs" />
     <Compile Include="Geometries\Prepared\BasicPreparedGeometry.cs" />
-    <Compile Include="Geometries\Prepared\LineIntersectionAdder.cs" />
-    <Compile Include="Geometries\Prepared\LineNode.cs" />
-    <Compile Include="Geometries\Prepared\LineTopology.cs" />
     <Compile Include="Geometries\Prepared\PreparedGeometryFactory.cs" />
     <Compile Include="Geometries\Prepared\PreparedLineString.cs" />
     <Compile Include="Geometries\Prepared\PreparedLineStringIntersects.cs" />
@@ -169,13 +166,14 @@
     <Compile Include="Geometries\Prepared\PreparedPolygonContainsProperly.cs" />
     <Compile Include="Geometries\Prepared\PreparedPolygonCovers.cs" />
     <Compile Include="Geometries\Prepared\PreparedPolygonIntersects.cs" />
-    <Compile Include="Geometries\Prepared\PreparedPolygonLineIntersection.cs" />
     <Compile Include="Geometries\Prepared\PreparedPolygonPredicate.cs" />
     <Compile Include="Geometries\TopologyException.cs" />
     <Compile Include="Geometries\Triangle.cs" />
     <Compile Include="Geometries\Utilities\AffineTransformation.cs" />
     <Compile Include="Geometries\Utilities\AffineTransformationBuilder.cs" />
+    <Compile Include="Geometries\Utilities\AffineTransformationFactory.cs" />
     <Compile Include="Geometries\Utilities\ComponentGeometryExtractor.cs" />
+    <Compile Include="Geometries\Utilities\GeometryCollectionMapper.cs" />
     <Compile Include="Geometries\Utilities\GeometryCombiner.cs" />
     <Compile Include="Geometries\Utilities\GeometryEditor.cs" />
     <Compile Include="Geometries\Utilities\GeometryExtracter.cs" />

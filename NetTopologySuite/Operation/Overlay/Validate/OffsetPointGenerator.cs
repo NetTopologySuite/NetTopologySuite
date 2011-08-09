@@ -30,7 +30,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         public List<ICoordinate> GetPoints()
         {
             _offsetPts = new List<ICoordinate>();
-            IList<ILineString> lines = LinearComponentExtracter.GetLines(_g);
+            var lines = LinearComponentExtracter.GetLines(_g);
             foreach (ILineString line in lines)
                 ExtractPoints(line);
 

@@ -342,13 +342,19 @@ namespace NetTopologySuite.Geometries
         /// uniform rounding behaviour no matter where the number is
         /// on the number line.
         /// </summary>
+        /// <remarks>
+        /// This method has no effect on NaN values
+        /// </remarks>
         /// <param name="val"></param>
         public double MakePrecise(double val) 
         {
-  	        if (_modelType == PrecisionModels.FloatingSingle)
+            // don't change NaN values
+            if (Double.IsNaN(val)) return val;
+
+            if (_modelType == PrecisionModels.FloatingSingle)
             {                
   		        float floatSingleVal = (float) val;
-  		        return (double)floatSingleVal;
+  		        return floatSingleVal;
   	        }  	        
             if (_modelType == PrecisionModels.Fixed) 
   		        // return Math.Round(val * scale) / scale;          // Diego Guidi say's: i use the Java Round algorithm (used in JTS 1.6)

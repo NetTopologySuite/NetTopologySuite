@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
-    [Ignore("The Minimum Bounding Circle logic does not look to have been included in NTS as yet")]
+    //[Ignore("The Minimum Bounding Circle logic does not look to have been included in NTS as yet")]
     public class MinimumBoundingCircleTest
     {
         private IPrecisionModel precisionModel;
@@ -30,7 +30,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         [Test]
         public void TestPoint()
         {
-            DoMinimumBoundingCircleTest("POINT (10 10)", "POINT (10 10)", new Coordinate(10, 10), 0);
+            DoMinimumBoundingCircleTest("POINT (10 10)", "MULTIPOINT ((10 10))", new Coordinate(10, 10), 0);
         }
 
         [Test]
@@ -69,29 +69,30 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
 
         [Test]
-        private void DoMinimumBoundingCircleTest(String wkt, String expectedWKT, Coordinate expectedCentre, double expectedRadius)
+        private void DoMinimumBoundingCircleTest(String wkt, String expectedWKT, ICoordinate expectedCentre, double expectedRadius)
         {
-            //TODO: Once MinimuBoundingCircle is introduced, uncomment the lines below
-            //MinimumBoundingCircle mbc = new MinimumBoundingCircle(reader.Read(wkt));
-            //Coordinate[] exPts = mbc.ExtremalPoints();
-            //Geometry actual = geometryFactory.CreateMultiPoint(exPts);
-            //double actualRadius = mbc.Radius();
-            //Coordinate actualCentre = mbc.Centre();
-            //Console.WriteLine("   Centre = " + actualCentre + "   Radius = " + actualRadius);
+            MinimumBoundingCircle mbc = new MinimumBoundingCircle(reader.Read(wkt));
+            ICoordinate[] exPts = mbc.GetExtremalPoints();
+            IGeometry actual = geometryFactory.CreateMultiPoint(exPts);
+            double actualRadius = mbc.GetRadius();
+            ICoordinate actualCentre = mbc.GetCentre();
+            Console.WriteLine("   Centre = " + actualCentre + "   Radius = " + actualRadius);
 
-            //Geometry expected = reader.Read(expectedWKT);
-            //bool isEqual = actual.Equals(expected);
-            //// need this hack because apparently equals does not work for MULTIPOINT EMPTY
-            //if (actual.IsEmpty() && expected.IsEmpty())
-            //isEqual = true;
-            //Assert.IsTrue(isEqual);
-  	
-            //if (expectedCentre != null) {
-            //    Assert.IsTrue(expectedCentre.Distance(actualCentre) < TOLERANCE);
-            //}
-            //if (expectedRadius >= 0) {
-            //    Assert.IsTrue(Math.Abs(expectedRadius - actualRadius) < TOLERANCE);
-            //}
+            IGeometry expected = reader.Read(expectedWKT);
+            bool isEqual = actual.Equals(expected);
+            // need this hack because apparently equals does not work for MULTIPOINT EMPTY
+            if (actual.IsEmpty && expected.IsEmpty)
+                isEqual = true;
+            Assert.IsTrue(isEqual);
+
+            if (expectedCentre != null)
+            {
+                Assert.IsTrue(expectedCentre.Distance(actualCentre) < TOLERANCE);
+            }
+            if (expectedRadius >= 0)
+            {
+                Assert.IsTrue(Math.Abs(expectedRadius - actualRadius) < TOLERANCE);
+            }
         }
     }
 }

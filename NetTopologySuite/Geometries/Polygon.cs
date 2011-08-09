@@ -245,9 +245,9 @@ namespace NetTopologySuite.Geometries
             get
             {
                 double area = 0.0;
-                area += Math.Abs(CGAlgorithms.SignedArea(_shell.Coordinates));
+                area += Math.Abs(CGAlgorithms.SignedArea(_shell.CoordinateSequence));
                 for (int i = 0; i < _holes.Length; i++)
-                    area -= Math.Abs(CGAlgorithms.SignedArea(_holes[i].Coordinates));                
+                    area -= Math.Abs(CGAlgorithms.SignedArea(_holes[i].CoordinateSequence));                
                 return area;
             }
         }

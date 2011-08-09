@@ -71,10 +71,31 @@ namespace NetTopologySuite.Geometries
         public ICoordinate GetCoordinate(int i)
         {
             return base[i];
-        }        
+        }
 
         /// <summary>
-        /// Add an array of coordinates.
+        /// Adds a section of an array of coordinates to the list.
+        /// </summary>
+        /// <param name="coord">The coordinates</param>
+        /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed</param>
+        /// <param name="start">The index to start from</param>
+        /// <param name="end">The index to add up to but not including</param>
+        /// <returns>true (as by general collection contract)</returns>
+        public bool Add(ICoordinate[] coord, bool allowRepeated, int start, int end)
+        {
+            int inc = 1;
+            if (start > end) inc = -1;
+
+            for (int i = start; i != end; i += inc)
+            {
+                Add(coord[i], allowRepeated);
+            }
+            return true;
+        }
+
+
+        /// <summary>
+        /// Adds an array of coordinates.
         /// </summary>
         /// <param name="coord">Coordinates to be inserted.</param>
         /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed.</param>
@@ -92,7 +113,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Add an array of coordinates.
+        /// Adds an array of coordinates.
         /// </summary>
         /// <param name="coord">Coordinates to be inserted.</param>
         /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed.</param>
@@ -103,7 +124,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Add a coordinate.
+        /// Adds a coordinate.
         /// </summary>
         /// <param name="obj">Coordinate to be inserted, as object.</param>
         /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed.</param>
@@ -136,7 +157,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        ///Inserts the specified coordinate at the specified position in this list.
+        /// Inserts the specified coordinate at the specified position in this list.
         /// </summary>
         /// <param name="i">The position at which to insert</param>
         /// <param name="coord">the coordinate to insert</param>
@@ -187,7 +208,7 @@ namespace NetTopologySuite.Geometries
         public void CloseRing()
         {
             if (Count > 0)
-                Add(this[0], false);
+                Add(new Coordinate(this[0]), false);
         }
 
         /// <summary>

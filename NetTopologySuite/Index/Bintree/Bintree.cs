@@ -126,6 +126,18 @@ namespace NetTopologySuite.Index.Bintree
         }
 
         /// <summary>
+        /// Removes a single item from the tree.
+        /// </summary>
+        /// <param name="itemInterval">itemEnv the Envelope of the item to be removed</param>
+        /// <param name="item">the item to remove</param>
+        /// <returns><c>true</c> if the item was found (and thus removed)</returns>
+        public bool Remove(Interval itemInterval, T item)
+        {
+            Interval insertInterval = EnsureExtent(itemInterval, _minExtent);
+            return _root.Remove(insertInterval, item);
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
@@ -147,7 +159,10 @@ namespace NetTopologySuite.Index.Bintree
         }
 
         /// <summary>
-        /// min and max may be the same value.
+        /// Queries the tree to find all candidate items which 
+        /// may overlap the query interval.
+        /// If the query interval is <tt>null</tt>, all items in the tree are found.
+        /// <c>min</c> and <c>max</c> may be the same value.
         /// </summary>
         /// <param name="interval"></param>
         public IList<T> Query(Interval interval)
@@ -162,11 +177,13 @@ namespace NetTopologySuite.Index.Bintree
         }
 
         /// <summary>
-        /// 
+        /// Adds items in the tree which potentially overlap the query interval
+        /// to the given collection.
+        /// If the query interval is <c>null</c>, add all items in the tree.
         /// </summary>
-        /// <param name="interval"></param>
-        /// <param name="foundItems"></param>
-        public void Query(Interval interval, IList<T> foundItems)
+        /// <param name="interval">A query interval, or <c>null</c></param>
+        /// <param name="foundItems">The candidate items found</param>
+        public void Query(Interval interval, ICollection<T> foundItems)
         {
             _root.AddAllItemsFromOverlapping(interval, foundItems);
         }

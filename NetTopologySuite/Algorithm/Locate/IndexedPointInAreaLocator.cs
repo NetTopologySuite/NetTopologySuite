@@ -99,7 +99,7 @@ namespace NetTopologySuite.Algorithm.Locate
 
             private void Init(IGeometry geom)
             {
-                IList<ILineString> lines = LinearComponentExtracter.GetLines(geom);
+                var lines = LinearComponentExtracter.GetLines(geom);
                 foreach (ILineString line in lines)
                 {
                     ICoordinate[] pts = line.Coordinates;

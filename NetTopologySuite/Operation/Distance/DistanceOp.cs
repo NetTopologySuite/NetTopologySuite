@@ -288,8 +288,8 @@ namespace NetTopologySuite.Operation.Distance
              * Geometries are not wholely inside, so compute distance from lines and points
              * of one to lines and points of the other
              */
-            IList<ILineString> lines0 = LinearComponentExtracter.GetLines(_geom[0]);
-            IList<ILineString> lines1 = LinearComponentExtracter.GetLines(_geom[1]);
+            var lines0 = LinearComponentExtracter.GetLines(_geom[0]);
+            var lines1 = LinearComponentExtracter.GetLines(_geom[1]);
 
             IList<IPoint> pts0 = PointExtracter.GetPoints(_geom[0]);
             IList<IPoint> pts1 = PointExtracter.GetPoints(_geom[1]);

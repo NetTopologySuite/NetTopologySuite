@@ -47,7 +47,7 @@ namespace NetTopologySuite.Algorithm
         /// point set defined by the vertices of the given geometry.
         /// </summary>
         /// <param name="geom">The geometry to use to obtain the point set </param>
-        public MinimumBoundingCircle(Geometry geom)
+        public MinimumBoundingCircle(IGeometry geom)
         {
             _input = geom;
         }

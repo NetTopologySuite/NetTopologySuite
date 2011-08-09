@@ -5,7 +5,7 @@ using NetTopologySuite.Utilities;
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
-    /// Represents a affine transformation on the 2D Cartesian plane.
+    /// Represents an affine transformation on the 2D Cartesian plane.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -183,6 +183,23 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             AffineTransformation trans = new AffineTransformation();
             trans.SetToScale(xScale, yScale);
+            return trans;
+        }
+
+        /// <summary>
+        /// Creates a transformation for a scaling relative to the point (x,y).
+        /// </summary>
+        /// <param name="xScale">The value to scale by in the x direction</param>
+        /// <param name="yScale">The value to scale by in the y direction</param>
+        /// <param name="x">The x-ordinate of the point to scale around</param>
+        /// <param name="y">The y-ordinate of the point to scale around</param>
+        /// <returns>A transformation for the scaling</returns>
+        public static AffineTransformation ScaleInstance(double xScale, double yScale, double x, double y)
+        {
+            AffineTransformation trans = new AffineTransformation();
+            trans.Translate(-x, -y);
+            trans.Scale(xScale, yScale);
+            trans.Translate(x, y);
             return trans;
         }
 
@@ -938,6 +955,18 @@ namespace NetTopologySuite.Geometries.Utilities
             dest.X = xp;
             dest.Y = yp;
             return dest;
+        }
+
+        /// <summary>
+        /// Cretaes a new <see cref="IGeometry"/> which is the result of this transformation applied to the input Geometry.
+        /// </summary>
+        /// <param name="g">A <c>Geometry</c></param>
+        /// <returns>The transformed Geometry</returns>
+        public IGeometry Transform(IGeometry g)
+        {
+            IGeometry g2 = (IGeometry)g.Clone();
+            g2.Apply(this);
+            return g2;
         }
 
         /// <summary>

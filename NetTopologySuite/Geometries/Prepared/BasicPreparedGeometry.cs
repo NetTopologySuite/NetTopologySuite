@@ -91,7 +91,7 @@ namespace NetTopologySuite.Geometries.Prepared
         }
 
         /// <summary>
-        /// Tests whether the base <see cref="IGeometry"/> contains a given geometry.
+        /// Tests whether the base <see cref="IGeometry"/> properly contains a given geometry.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -100,22 +100,29 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <item>Every point of the other geometry is a point of this geometry's interior.</item>
         /// <item>The DE-9IM Intersection Matrix for the two geometries matches <c>>[T**FF*FF*]</c></item>
         /// </list>
-        /// The advantage to using this predicate is that it can be computed
-        /// efficiently, with no need to compute topology at individual points.
+	    /// In other words, if the test geometry has any interaction with the boundary of the target
+	    /// geometry the result of <c>ContainsProperly</c> is <c>false</c>. 
+	    /// This is different semantics to the {@link Geometry#contains} predicate,
+	    /// in which test geometries can intersect the target's boundary and still be contained.
+	    /// <para>
+	    /// The advantage of using this predicate is that it can be computed
+	    /// efficiently, since it avoids the need to compute the full topological relationship
+	    /// of the input boundaries in cases where they intersect.
         /// </para>
         /// <para>
-        /// An example use case for this predicate is computing the intersections
+        /// An example use case is computing the intersections
         /// of a set of geometries with a large polygonal geometry.  
         /// Since <i>intersection</i> is a fairly slow operation, it can be more efficient
         /// to use <see cref="ContainsProperly" /> to filter out test geometries which lie
-        /// wholly inside the area.  In these cases the intersection 
-        /// known a priori to be simply the original test geometry. 
+        /// wholly inside the area.  In these cases the intersection is
+        /// known <c>a priori</c> to be simply the original test geometry. 
         /// </para>
         /// </remarks>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry properly contains the given geometry</returns>
         /// <see cref="IPreparedGeometry.ContainsProperly(IGeometry)"/>
         /// <remarks>Default implementation.</remarks>
+        /// <seealso cref="Contains"/>
         public virtual bool ContainsProperly(IGeometry g)
         {
             // since raw relate is used, provide some optimizations

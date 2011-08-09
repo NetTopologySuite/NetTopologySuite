@@ -5,6 +5,7 @@ using System.Xml;
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
 using NetTopologySuite.IO.GML2;
 using NetTopologySuite.Operation;
@@ -375,6 +376,9 @@ namespace NetTopologySuite.Geometries
         /// and the <c>Geometry</c> g.
         /// </summary>
         /// <param name="g">The <c>Geometry</c> from which to compute the distance.</param>
+        /// <returns>The distance between the geometries</returns>
+        /// <returns>0 if either input geometry is empty</returns>
+        /// <exception cref="ArgumentException">if g is null</exception>
         public double Distance(IGeometry g)
         {
             return DistanceOp.Distance(this, g);
@@ -815,13 +819,17 @@ namespace NetTopologySuite.Geometries
             return Relate(g).IsContains();
         }
 
+        /*
+   * <li>The geometries have at least one point each not shared by the other
+   * (or equivalently neither covers the other),
+         */
         /// <summary>
         /// Tests whether this geometry overlaps the specified geometry.
         /// </summary>
         /// <remarks>
         /// The <c>Overlaps</c> predicate has the following equivalent definitions:
         /// <list type="Bullet">
-        /// <item>The geometries have some but not all points in common, 
+        /// <item>The geometries have at least one point each not shared by the other (or equivalently neither covers the other),
         /// they have the same dimension,
         /// and the intersection of the interiors of the two geometries has
         /// the same dimension as the geometries themselves.</item>
@@ -1173,7 +1181,9 @@ namespace NetTopologySuite.Geometries
         /// <para>The end cap style is <c>BufferStyle.CapRound</c>.</para>
         /// <para>
         /// The buffer operation always returns a polygonal result. The negative or
-        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.</para>
+        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.
+        /// This is also the result for the buffers of degenerate (zero-area) polygons.
+        /// </para>
         /// </remarks>
         /// <param name="distance">
         /// The width of the buffer (may be positive, negative or 0), interpreted according to the
@@ -1281,7 +1291,9 @@ namespace NetTopologySuite.Geometries
         /// the approximation by specifying the number of line segments used to
         /// represent a quadrant of a circle</para>
         /// <para>The buffer operation always returns a polygonal result. The negative or
-        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.</para>
+        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.
+        /// This is also the result for the buffers of degenerate (zero-area) polygons.
+        /// </para>
         /// </remarks>
         /// <param name="distance">
         /// The width of the buffer (may be positive, negative or 0), interpreted according to the
@@ -1413,7 +1425,9 @@ namespace NetTopologySuite.Geometries
         /// <li><see cref="EndCapStyle.Square" /> - a half-square</li>
         /// </ul></para>
         /// <para>The buffer operation always returns a polygonal result. The negative or
-        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.</para>
+        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.
+        ///	This is also the result for the buffers of degenerate (zero-area) polygons.
+        /// </para>
         /// </remarks>
         /// <param name="distance">
         /// The width of the buffer, interpreted according to the
@@ -1458,9 +1472,16 @@ namespace NetTopologySuite.Geometries
         /// Returns a <c>Geometry</c> representing the points shared by this
         /// <c>Geometry</c> and <c>other</c>.
         /// </summary>
+        /// <remarks>
+        /// <see cref="IGeometryCollection"/>s support intersection with 
+        /// homogeneous collection types, with the semantics that
+        /// the result is a <see cref="IGeometryCollection"/> of the
+        /// intersection of each element of the target with the argument. 
+        /// </remarks>
         /// <param name="other">The <c>Geometry</c> with which to compute the intersection.</param>
         /// <returns>The points common to the two <c>Geometry</c>s.</returns>
-        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="TopologyException">if a robustness error occurs.</exception>
+        /// <exception cref="ArgumentException">if the argument is a non-empty geometry collectiont</exception>
         public IGeometry Intersection(IGeometry other) 
         {
             // Special case: if one input is empty ==> empty
@@ -1469,7 +1490,15 @@ namespace NetTopologySuite.Geometries
             if (other.IsEmpty) 
                 return Factory.CreateGeometryCollection(null);
 
-
+            // compute for GCs
+            if (IsGeometryCollection(this))
+            {
+                IGeometry g2 = other;
+                return GeometryCollectionMapper.Map(
+                    (IGeometryCollection) this, g => g.Intersection(g2));
+            }
+        //    if (isGeometryCollection(other))
+        //      return other.intersection(this);
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);        
             return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.Intersection);
@@ -1503,6 +1532,9 @@ namespace NetTopologySuite.Geometries
         /// <returns>The point set difference of this <c>Geometry</c> with <c>other</c>.</returns>
         public IGeometry Difference(IGeometry other)
         {
+            // mod to handle empty cases better - return type of input
+            //if (IsEmpty) || other.isEmpty()) return (IGeometry) clone();
+
             // Special case: if A.isEmpty ==> empty; if B.isEmpty ==> A
             if (IsEmpty) 
                 return Factory.CreateGeometryCollection(null);
@@ -1819,7 +1851,7 @@ namespace NetTopologySuite.Geometries
         /// </exception>
         protected void CheckNotGeometryCollection(IGeometry g) 
         {
-            if (IsGeometryCollection(g)) 
+            if (IsNonHomogenousGeometryCollection(g)) 
                 throw new ArgumentException("This method does not support GeometryCollection arguments");                            
         }
 
@@ -1831,12 +1863,19 @@ namespace NetTopologySuite.Geometries
         /// <exception cref="ArgumentException">
         /// If <c>g</c> is a <c>GeometryCollection</c>, but not one of its subclasses.
         /// </exception>        
-        private static bool IsGeometryCollection(IGeometry g)
+        private static bool IsNonHomogenousGeometryCollection(IGeometry g)
         {
             return 
                 g is IGeometryCollection &&
                 g.GeometryType == "GeometryCollection"; ; /*g.GetType().Name == "GeometryCollection" && g.GetType().Namespace == GetType().Namespace;*/
         }
+
+        
+        protected static bool IsGeometryCollection(IGeometry g)
+        {
+            return g is IGeometryCollection;
+        }
+        
 
         /// <summary>
         /// Returns the minimum and maximum x and y values in this <c>Geometry</c>,

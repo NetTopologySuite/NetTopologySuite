@@ -81,7 +81,14 @@ namespace NetTopologySuite.Geometries
         }
 
         ///<summary>Computes the circumcentre of a triangle.</summary>
-        /// <returns>The circumcentre is the centre of the circumcircle, the smallest circle which encloses the triangle.</returns>
+        /// <remarks>
+        /// The circumcentre is the centre of the circumcircle, 
+        /// the smallest circle which encloses the triangle.
+        /// It is also the common intersection point of the
+        /// perpendicular bisectors of the sides of the triangle,
+        /// and is the only point which has equal distance to all three
+        /// vertices of the triangle.
+        /// </remarks>
         /// <param name="a">A vertex of the triangle</param>
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>

@@ -6,7 +6,8 @@ using NetTopologySuite.Algorithm;
 namespace NetTopologySuite.GeometriesGraph.Index
 {
     /// <summary>
-    /// 
+    /// Computes the intersection of line segments,
+    /// and adds the intersection to the edges containing the segments.
     /// </summary>
     public class SegmentIntersector
     {

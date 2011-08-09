@@ -88,26 +88,93 @@ namespace NetTopologySuite.Index.Bintree
         protected abstract bool IsSearchMatch(Interval interval);
 
         /// <summary>
-        /// 
+        /// Adds items in the tree which potentially overlap the query interval
+        /// to the given collection.
+        /// If the query interval is <tt>null</tt>, add all items in the tree.
         /// </summary>
-        /// <param name="interval"></param>
-        /// <param name="resultItems"></param>
-        /// <returns></returns>
-        public  IList<T> AddAllItemsFromOverlapping(Interval interval, IList<T> resultItems)
+        /// <param name="interval">A query interval, or <c>null</c></param>
+        /// <param name="resultItems">The candidate items found</param>
+        public void AddAllItemsFromOverlapping(Interval interval, ICollection<T> resultItems)
         {
-            if (!IsSearchMatch(interval))
-                return _items;
-            // resultItems.addAll(items);
+            if (interval != null && !IsSearchMatch(interval))
+                return;
+
+            // some of these may not actually overlap - this is allowed by the bintree contract
+            //resultItems.AddAll(items);
             foreach (T o in _items)
                 resultItems.Add(o);
+
+            if (Subnode[0] != null) Subnode[0].AddAllItemsFromOverlapping(interval, resultItems);
+            if (Subnode[1] != null) Subnode[1].AddAllItemsFromOverlapping(interval, resultItems);
+        }
+
+        /// <summary>
+        /// Removes a single item from this subtree.
+        /// </summary>
+        /// <param name="itemInterval">The envelope containing the item</param>
+        /// <param name="item">The item to remove</param>
+        /// <returns><c>true</c> if the item was found and removed</returns>
+        public bool Remove(Interval itemInterval, T item)
+        {
+            // use interval to restrict nodes scanned
+            if (!IsSearchMatch(itemInterval))
+                return false;
+
+            bool found = false;
             for (int i = 0; i < 2; i++)
+            {
                 if (Subnode[i] != null)
-                    Subnode[i].AddAllItemsFromOverlapping(interval, resultItems);                            
-            return _items;
+                {
+                    found = Subnode[i].Remove(itemInterval, item);
+                    if (found)
+                    {
+                        // trim subtree if empty
+                        if (Subnode[i].IsPrunable)
+                            Subnode[i] = null;
+                        break;
+                    }
+                }
+            }
+            // if item was found lower down, don't need to search for it here
+            if (found) return true;
+
+            // otherwise, try and remove the item from the list of items in this node
+            found = _items.Remove(item);
+            return found;
+        }
+
+        /// <summary>
+        /// Gets whether this node is prunable
+        /// </summary>
+        public bool IsPrunable
+        {
+            get { return !(HasChildren || HasItems); }
+        }
+
+        /// <summary>
+        /// Gets whether this node has any children
+        /// </summary>
+        public bool HasChildren
+        {
+            get
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    if (Subnode[i] != null)
+                        return true;
+                }
+                return false;
+            }
         }
 
         /// <summary>
         /// 
+        /// </summary>
+        public bool HasItems { get { return _items.Count != 0; }
+        }
+
+        /// <summary>
+        /// Gets whether this node has any subnodes
         /// </summary>
         public  int Depth
         {
