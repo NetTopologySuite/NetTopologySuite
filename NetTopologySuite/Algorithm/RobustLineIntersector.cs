@@ -25,11 +25,11 @@ namespace NetTopologySuite.Algorithm
                     IsProper = true;
                     if (p.Equals(p1) || p.Equals(p2))
                         IsProper = false;
-                    result = DoIntersect;
+                    result = PointIntersection;
                     return;
                 }
             }
-            result = DontIntersect;
+            result = NoIntersection;
         }
 
         public override int ComputeIntersect(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2)
@@ -38,7 +38,7 @@ namespace NetTopologySuite.Algorithm
 
             // first try a fast test to see if the envelopes of the lines intersect
             if (!Envelope.Intersects(p1, p2, q1, q2))
-                return DontIntersect;
+                return NoIntersection;
 
             // for each endpoint, compute which side of the other segment it lies
             // if both endpoints lie on the same side of the other segment,
@@ -48,14 +48,14 @@ namespace NetTopologySuite.Algorithm
 
             if ((Pq1 > 0 && Pq2 > 0) ||
                 (Pq1 < 0 && Pq2 < 0))
-                return DontIntersect;
+                return NoIntersection;
 
             int Qp1 = CGAlgorithms.OrientationIndex(q1, q2, p1);
             int Qp2 = CGAlgorithms.OrientationIndex(q1, q2, p2);
 
             if ((Qp1 > 0 && Qp2 > 0) ||
                 (Qp1 < 0 && Qp2 < 0))
-                return DontIntersect;
+                return NoIntersection;
 
             bool collinear = Pq1 == 0 && Pq2 == 0 && Qp1 == 0 && Qp2 == 0;
             if (collinear)
@@ -112,7 +112,7 @@ namespace NetTopologySuite.Algorithm
                 IsProper = true;
                 intPt[0] = Intersection(p1, p2, q1, q2);
             }
-            return DoIntersect;
+            return PointIntersection;
         }
 
         /// <summary>
@@ -134,39 +134,39 @@ namespace NetTopologySuite.Algorithm
             {
                 intPt[0] = q1;
                 intPt[1] = q2;
-                return Collinear;
+                return CollinearIntersection;
             }
             if (q1p1q2 && q1p2q2)
             {
                 intPt[0] = p1;
                 intPt[1] = p2;
-                return Collinear;
+                return CollinearIntersection;
             }
             if (p1q1p2 && q1p1q2)
             {
                 intPt[0] = q1;
                 intPt[1] = p1;
-                return q1.Equals(p1) /* && !p1q2p2 && !q1p2q2 */ ? DoIntersect : Collinear;
+                return q1.Equals(p1) /* && !p1q2p2 && !q1p2q2 */ ? PointIntersection : CollinearIntersection;
             }
             if (p1q1p2 && q1p2q2)
             {
                 intPt[0] = q1;
                 intPt[1] = p2;
-                return q1.Equals(p2) /* && !p1q2p2 && !q1p1q2 */ ? DoIntersect : Collinear;
+                return q1.Equals(p2) /* && !p1q2p2 && !q1p1q2 */ ? PointIntersection : CollinearIntersection;
             }
             if (p1q2p2 && q1p1q2)
             {
                 intPt[0] = q2;
                 intPt[1] = p1;
-                return q2.Equals(p1) /* && !p1q1p2 && !q1p2q2 */? DoIntersect : Collinear;
+                return q2.Equals(p1) /* && !p1q1p2 && !q1p2q2 */? PointIntersection : CollinearIntersection;
             }
             if (p1q2p2 && q1p2q2)
             {
                 intPt[0] = q2;
                 intPt[1] = p2;
-                return q2.Equals(p2) /* && !p1q1p2 && !q1p1q2 */ ? DoIntersect : Collinear;
+                return q2.Equals(p2) /* && !p1q1p2 && !q1p1q2 */ ? PointIntersection : CollinearIntersection;
             }
-            return DontIntersect;
+            return NoIntersection;
         }
 
         /// <summary> 

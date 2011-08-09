@@ -86,7 +86,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <returns>The circumcentre of the triangle</returns>
-        public static ICoordinate Circumcentre(Coordinate a, Coordinate b, Coordinate c)
+        public static ICoordinate Circumcentre(ICoordinate a, ICoordinate b, ICoordinate c)
         {
             // compute the perpendicular bisector of chord ab
             HCoordinate cab = PerpendicularBisector(a, b);

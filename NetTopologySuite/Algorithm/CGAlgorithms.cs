@@ -129,10 +129,15 @@ namespace NetTopologySuite.Algorithm
         /// </remarks>
         /// <param name="ring">An array of <see cref="ICoordinate"/>s froming a ring</param>
         /// <returns>true if the ring is oriented <see cref="Orientation.CounterClockwise"/></returns>
+        /// <exception cref="ArgumentException">If there are too few points to determine orientation (&lt;3)</exception>
         public static bool IsCCW(ICoordinate[] ring) 
         {
             // # of points without closing endpoint
             int nPts = ring.Length - 1;
+            
+            // sanity check
+            if (nPts < 3)
+                throw new ArgumentException("Ring has fewer than 3 points, so orientation cannot be determined");
 
             // find highest point
             ICoordinate hiPt = ring[0];
@@ -289,6 +294,32 @@ namespace NetTopologySuite.Algorithm
             return Math.Abs(s) * Math.Sqrt(((B.X - A.X) * (B.X - A.X) + (B.Y - A.Y) * (B.Y - A.Y)));
         }
 
+        /// <summary>
+        /// Computes the distance from a point to a sequence of line segments.
+        /// </summary>
+        /// <param name="p">A point</param>
+        /// <param name="line">A sequence of contiguous line segments defined by their vertices</param>
+        /// <returns>The minimum distance between the point and the line segments</returns>
+        /// <exception cref="ArgumentException">If there are too few points to make up a line (at least one?)</exception>
+        public static double DistancePointLine(ICoordinate p, ICoordinate[] line)
+        {
+            if (line.Length == 0)
+                throw new ArgumentException("Line array must contain at least one vertex");
+
+            // this handles the case of length = 1
+            double minDistance = p.Distance(line[0]);
+            for (int i = 0; i < line.Length - 1; i++)
+            {
+                double dist = CGAlgorithms.DistancePointLine(p, line[i], line[i + 1]);
+                if (dist < minDistance)
+                {
+                    minDistance = dist;
+                }
+            }
+            return minDistance;
+        }
+
+
         /// <summary> 
         /// Computes the distance from a line segment AB to a line segment CD.
         /// Note: NON-ROBUST!
@@ -356,10 +387,20 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Returns the signed area for a ring.  The area is positive ifthe ring is oriented CW.
+        /// Returns the signed area for a ring.
+        /// <remarks>
+        /// <para>
+        /// The area is
+        /// </para>  
+        /// <list type="Table">
+        /// <item>positive</item><description>if the ring is oriented CW</description>
+        /// <item>negative</item><description>if the ring is oriented CCW</description>
+        /// <item>zero</item><description>if the ring is degenerate or flat</description>
+        /// </list>
+        /// </remarks>
         /// </summary>
-        /// <param name="ring"></param>
-        /// <returns></returns>
+        /// <param name="ring">The coordinates of the ring</param>
+        /// <returns>The signed area of the ring</returns>
         public static double SignedArea(ICoordinate[] ring)
         {
             if (ring.Length < 3) 
@@ -377,21 +418,74 @@ namespace NetTopologySuite.Algorithm
             return -sum  / 2.0;
         }
 
-        /// <summary> 
+        /// <summary>
+        /// Returns the signed area for a ring.
+        /// <remarks>
+        /// <para>
+        /// The area is
+        /// </para>  
+        /// <list type="Table">
+        /// <item>positive</item><description>if the ring is oriented CW</description>
+        /// <item>negative</item><description>if the ring is oriented CCW</description>
+        /// <item>zero</item><description>if the ring is degenerate or flat</description>
+        /// </list>
+        /// </remarks>
+        /// </summary>
+        /// <param name="ring">The coordinates forming the ring</param>
+        /// <returns>The signed area of the ring</returns>
+        public static double SignedArea(ICoordinateSequence ring)
+        {
+            int n = ring.Count;
+            if (n < 3) return 0.0;
+            double sum = 0.0;
+            Coordinate p = new Coordinate();
+            ring.GetCoordinate(0, p);
+            double bx = p.X;
+            double by = p.Y;
+            for (int i = 1; i < n; i++)
+            {
+                ring.GetCoordinate(i, p);
+                double cx = p.X;
+                double cy = p.Y;
+                sum += (bx + cx) * (cy - by);
+                bx = cx;
+                by = cy;
+            }
+            return -sum / 2.0;
+        }
+
+        /// <summary>
         /// Computes the length of a linestring specified by a sequence of points.
         /// </summary>
-        /// <param name="pts">The points specifying the linestring.</param>
-        /// <returns>The length of the linestring.</returns>
-        public static double Length(ICoordinateSequence pts) 
+        /// <param name="pts">The points specifying the linestring</param>
+        /// <returns>The length of the linestring</returns>
+        public static double Length(ICoordinateSequence pts)
         {
-            if (pts.Count < 1) 
-                return 0.0;
-            
-            double sum = 0.0;
-            for (int i = 1; i < pts.Count; i++) 
-                sum += pts.GetCoordinate(i).Distance(pts.GetCoordinate(i - 1));
-            
-            return sum;
+            // optimized for processing CoordinateSequences
+            int n = pts.Count;
+            if (n <= 1) return 0.0;
+
+            double len = 0.0;
+
+            Coordinate p = new Coordinate();
+            pts.GetCoordinate(0, p);
+            double x0 = p.X;
+            double y0 = p.Y;
+
+            for (int i = 1; i < n; i++)
+            {
+                pts.GetCoordinate(i, p);
+                double x1 = p.X;
+                double y1 = p.Y;
+                double dx = x1 - x0;
+                double dy = y1 - y0;
+
+                len += Math.Sqrt(dx * dx + dy * dy);
+
+                x0 = x1;
+                y0 = y1;
+            }
+            return len;
         }
     }
 }

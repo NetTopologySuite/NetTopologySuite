@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 using Wintellect.PowerCollections;

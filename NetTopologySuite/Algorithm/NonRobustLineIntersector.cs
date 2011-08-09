@@ -23,11 +23,6 @@ namespace NetTopologySuite.Algorithm
                 return false;            
             return (a < 0 && b < 0) || (a > 0 && b > 0);
         }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        public NonRobustLineIntersector() { }
 
         /// <summary>
         /// 
@@ -67,7 +62,7 @@ namespace NetTopologySuite.Algorithm
             // if r != 0 the point does not lie on the line
             if (r != 0) 
             {
-                result = DontIntersect;
+                result = NoIntersection;
                 return;
             }
 
@@ -76,7 +71,7 @@ namespace NetTopologySuite.Algorithm
             double dist = RParameter(p1, p2, p);
             if (dist < 0.0 || dist > 1.0)
             {
-                result = DontIntersect;
+                result = NoIntersection;
                 return;
             }
 
@@ -84,7 +79,7 @@ namespace NetTopologySuite.Algorithm
             if (p.Equals(p1) || p.Equals(p2))             
                 IsProper = false;
             
-            result = DoIntersect;
+            result = PointIntersection;
         }
 
         /// <summary>
@@ -137,7 +132,7 @@ namespace NetTopologySuite.Algorithm
             *  same side of line 1, the line segments do not intersect.
             */
             if (r3 != 0 && r4 != 0 && IsSameSignAndNonZero(r3, r4))             
-                return DontIntersect;           
+                return NoIntersection;           
 
             /*
             *  Compute a2, b2, c2
@@ -158,7 +153,7 @@ namespace NetTopologySuite.Algorithm
             *  not intersect.
             */
             if (r1 != 0 && r2 != 0 && IsSameSignAndNonZero(r1, r2)) 
-                return DontIntersect;            
+                return NoIntersection;            
 
             /*
             *  Line segments intersect: compute intersection point.
@@ -183,7 +178,7 @@ namespace NetTopologySuite.Algorithm
             if (PrecisionModel != null) 
                 PrecisionModel.MakePrecise(pa);
             
-            return DoIntersect;
+            return PointIntersection;
         }
 
         /// <summary>
@@ -230,18 +225,18 @@ namespace NetTopologySuite.Algorithm
 
             // check for no intersection
             if (t3 > r2 || t4 < r1) 
-                return DontIntersect;
+                return NoIntersection;
             
             // check for single point intersection
             if (q4 == p1) 
             {
                 pa.CoordinateValue = p1;
-                return DoIntersect;
+                return PointIntersection;
             }
             if (q3 == p2)
             {
                 pa.CoordinateValue = p2;
-                return DoIntersect;
+                return PointIntersection;
             }
 
             // intersection MUST be a segment - compute endpoints
@@ -251,7 +246,7 @@ namespace NetTopologySuite.Algorithm
             pb.CoordinateValue = p2;
             if (t4 < r2) pb.CoordinateValue = q4;
             
-            return Collinear;
+            return CollinearIntersection;
         }
 
         /// <summary> 
@@ -260,7 +255,7 @@ namespace NetTopologySuite.Algorithm
         /// of the line from p1 to p2.
         /// This is equal to the 'distance' of p along p1-p2.
         /// </summary>
-        private double RParameter(ICoordinate p1, ICoordinate p2, ICoordinate p)
+        private static double RParameter(ICoordinate p1, ICoordinate p2, ICoordinate p)
         {
             // compute maximum delta, for numerical stability
             // also handle case of p1-p2 being vertical or horizontal

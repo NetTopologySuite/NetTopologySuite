@@ -9,7 +9,7 @@ namespace NetTopologySuite.Algorithm.Distance
     /// <remarks>
     /// Also computes two points which are separated by the distance.
     /// </remarks>
-    public class EuclideanDistanceToPoint
+    public class DistanceToPoint
     {
 
         // used for point-line distance calculation

@@ -10,6 +10,20 @@ namespace NetTopologySuite.Geometries
     /// </summary>
     public static class CoordinateArrays
     {
+
+         /// <summary>
+        /// Tests whether an array of <see cref="ICoordinate"/>s forms a ring, by checking length and closure.
+        /// Self-intersection is not checked.
+        /// </summary>
+        /// <param name="pts">An array of Coordinates</param>
+        /// <returns>true if the coordinate form a ring.</returns>
+        public static bool IsRing(ICoordinate[] pts)
+        {
+            if (pts.Length < 4) return false;
+            if (!pts[0].Equals2D(pts[pts.Length - 1])) return false;
+            return true;
+        }
+        
         /// <summary>
         /// Finds a <see cref="Coordinate "/> in a list of <see cref="Coordinate "/>s 
         /// which is not contained in another list of <see cref="Coordinate "/>s.
@@ -116,6 +130,23 @@ namespace NetTopologySuite.Geometries
 	        for(var i = 0; i < coordinates.Length; i++)            
             	copy[i] = new Coordinate(coordinates[i]);            
             return copy;
+        }
+
+        /// <summary>
+        /// Creates a deep copy of a given section of a source <see cref="ICoordinate"/> array into a destination Coordinate array.
+        /// The destination array must be an appropriate size to receive the copied coordinates.
+        /// </summary>
+        /// <param name="src">An array of Coordinates</param>
+        /// <param name="srcStart">The index to start copying from</param>
+        /// <param name="dest">The array to receive the deep-copied coordinates</param>
+        /// <param name="destStart">The destination index to start copying to</param>
+        /// <param name="length">The number of items to copy</param>
+        public static void CopyDeep(ICoordinate[] src, int srcStart, ICoordinate[] dest, int destStart, int length)
+        {
+            for (int i = 0; i < length; i++)
+            {
+                dest[destStart + i] = new Coordinate(src[srcStart + i]);
+            }
         }
 
         /// <summary>

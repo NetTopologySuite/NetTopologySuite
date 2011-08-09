@@ -5,30 +5,73 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Algorithm.Distance
 {
     ///<summary>
-    /// Implements algorithm for computing a distance metric which can be thought of as the "Discrete Hausdorff Distance". 
-    /// This is the Hausdorff distance restricted to discrete points for one of the geometries.
-    ///</summary>
+    /// An algorithm for computing a distance metric
+    /// which is an approximation to the Hausdorff Distance
+    /// based on a discretization of the input {@link Geometry}.
+    /// </summary>
     /// <remarks>
-    /// Also determines two points of the Geometries which are separated by the computed distance.
     /// <para>
-    /// <b>NOTE:</b>The current implementation supports only vertices as the discrete locations.
-    /// This could be extended to allow an arbitrary density of points to be used.
+    /// The algorithm computes the Hausdorff distance restricted to discrete points
+    /// for one of the geometries.
+    /// The points can be either the vertices of the geometries (the default), 
+    /// or the geometries with line segments densified by a given fraction.
+    /// Also determines two points of the Geometries which are separated by the computed distance.
     /// </para>
     /// <para>
-    /// <b>NOTE:</b> This algorithm is NOT equivalent to the standard Hausdorff distance.
-    /// However, it computes an approximation that is correct for a large subset of useful cases.
-    /// One important part of this subset is Linestrings that are roughly parallel to each other,
-    /// and roughly equal in length.  This is a useful metric for line matching.
+    /// This algorithm is an approximation to the standard Hausdorff distance.
+    /// Specifically, 
+    /// <code>
+    /// for all geometries a, b:    DHD(a, b) &lt;= HD(a, b)
+    /// </code>
+    /// The approximation can be made as close as needed by densifying the input geometries.  
+    /// In the limit, this value will approach the true Hausdorff distance:
+    /// <code>
+    /// DHD(A, B, densifyFactor) -> HD(A, B) as densifyFactor -> 0.0
+    /// </code>
+    /// The default approximation is exact or close enough for a large subset of useful cases.
+    /// </para>
+    /// <para>
+    /// Examples of these are:
+    /// <list type="Bullet">
+    /// <item>
+    /// computing distance between Linestrings that are roughly parallel to each other,
+    /// and roughly equal in length.  This occurs in matching linear networks.
+    /// </item>
+    /// <item>Testing similarity of geometries.</item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// An example where the default approximation is not close is:
+    /// <code>
+    /// A = LINESTRING (0 0, 100 0, 10 100, 10 100)
+    /// B = LINESTRING (0 100, 0 10, 80 10)
+    /// 
+    /// DHD(A, B) = 22.360679774997898
+    /// HD(A, B) ~= 47.8
+    /// </code>
     /// </para>
     /// </remarks>
     public class DiscreteHausdorffDistance
     {
+        /// <summary>
+        /// Computes the Discrete Hausdorff Distance of two <see cref="IGeometry"/>s.
+        /// </summary>
+        /// <param name="g0">A geometry</param>
+        /// <param name="g1">A geometry</param>
+        /// <returns>The Discrete Hausdorff Distance</returns>
         public static double Distance(IGeometry g0, IGeometry g1)
         {
             DiscreteHausdorffDistance dist = new DiscreteHausdorffDistance(g0, g1);
             return dist.Distance();
         }
 
+        /// <summary>
+        /// Computes the Discrete Hausdorff Distance of two <see cref="IGeometry"/>s.
+        /// </summary>
+        /// <param name="g0">A geometry</param>
+        /// <param name="g1">A geometry</param>
+        /// <param name="densifyFraction">The densify fraction. A value of 0 indicates, that no densification should take place</param>
+        /// <returns>The Discrete Hausdorff Distance</returns>
         public static double Distance(IGeometry g0, IGeometry g1, double densifyFraction)
         {
             DiscreteHausdorffDistance dist = new DiscreteHausdorffDistance(g0, g1);
@@ -40,7 +83,7 @@ namespace NetTopologySuite.Algorithm.Distance
         private readonly IGeometry _g1;
         private readonly PointPairDistance _ptDist = new PointPairDistance();
         /**
-         * Value of 0.0 indicates not set
+         * Value of 0.0 indicates that no densification should take place
          */
         private double _densifyFrac;
 
@@ -54,8 +97,8 @@ namespace NetTopologySuite.Algorithm.Distance
         /// Gets/sets the fraction by which to densify each segment.
         ///</summary>
         /// <remarks>
-        /// Each segment will be split into a number of equal-length
-        /// subsegments, whose fraction of the total length is closest ]
+        /// Each segment will be (virtually) split into a number of equal-length
+        /// subsegments, whose fraction of the total length is closest
         /// to the given fraction.
         /// </remarks>
         public double DensifyFraction
@@ -122,7 +165,7 @@ namespace NetTopologySuite.Algorithm.Distance
             public void Filter(ICoordinate pt)
             {
                 _minPtDist.Initialize();
-                EuclideanDistanceToPoint.ComputeDistance(geom, pt, _minPtDist);
+                DistanceToPoint.ComputeDistance(geom, pt, _minPtDist);
                 _maxPtDist.SetMaximum(_minPtDist);
             }
 
@@ -163,7 +206,7 @@ namespace NetTopologySuite.Algorithm.Distance
                     double y = p0.Y + i * dely;
                     ICoordinate pt = new Coordinate(x, y);
                     _minPtDist.Initialize();
-                    EuclideanDistanceToPoint.ComputeDistance(_geom, pt, _minPtDist);
+                    DistanceToPoint.ComputeDistance(_geom, pt, _minPtDist);
                     _maxPtDist.SetMaximum(_minPtDist);
                 }
 

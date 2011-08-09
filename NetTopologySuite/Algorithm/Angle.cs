@@ -76,7 +76,7 @@ namespace NetTopologySuite.Algorithm
         /// Returns the angle that the vector from (0,0) to p, relative to the positive X-axis.
         ///</summary>
         /// <remarks>
-        /// The angle is normalized to be in the range [ -Pi, Pi ].
+        /// The angle is normalized to be in the range ( -Pi, Pi ].
         /// </remarks>
         /// <param name="p">The point</param>
         /// <returns>The normalized angle (in radians) that (0,0)-p makes with the positive X-axis.</returns>
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Algorithm
         ///</summary>
         /// <remarks>
         /// <para>An angle is acute if it is less than 90 degrees.</para>
-        /// <para>Note: this implementation is not robust for angles very close to 90 degrees.</para>    
+        /// <para>Note: this implementation is not precise (deterministic) for angles very close to 90 degrees.</para>    
         /// </remarks>
         /// <param name="p0">An endpoint of the angle</param>
         /// <param name="p1">The base of the angle</param>
@@ -111,7 +111,7 @@ namespace NetTopologySuite.Algorithm
         ///</summary>
         /// <remarks>
         /// <para>An angle is obtuse if it is greater than 90 degrees.</para>
-        /// <para>Note: this implementation is not robust for angles very close to 90 degrees.</para>    
+        /// <para>Note: this implementation is not precise (deterministic) for angles very close to 90 degrees.</para>    
         /// </remarks>
         /// <param name="p0">An endpoint of the angle</param>
         /// <param name="p1">The base of the angle</param>
@@ -131,7 +131,7 @@ namespace NetTopologySuite.Algorithm
         /// Returns the unoriented smallest angle between two vectors.
         ///</summary>
         /// <remarks>
-        /// The computed angle will be in the range [0, Pi].
+        /// The computed angle will be in the range [0, Pi).
         /// </remarks>
         /// <param name="tip1">The tip of one vector</param>
         /// <param name="tail">The tail of each vector</param>
@@ -207,7 +207,8 @@ namespace NetTopologySuite.Algorithm
             return Orientation.None;
         }
 
-        ///<summary>Computes the normalized value of an angle, which is the equivalent angle in the range [ -Pi, Pi ].
+        ///<summary>
+        /// Computes the normalized value of an angle, which is the equivalent angle in the range ( -Pi, Pi ].
         ///</summary>
         /// <param name="angle">The angle to normalize</param>
         /// <returns>An equivalent angle in the range (-Pi, Pi]</returns>
@@ -222,6 +223,21 @@ namespace NetTopologySuite.Algorithm
 
         ///<summary>
         /// Computes the normalized positive value of an angle, which is the equivalent angle in the range [ 0, 2*Pi ).
+        /// <para>
+        /// E.g.
+        /// <list>
+        /// <item></item>
+        /// <item>NormalizePositive(0.0) = 0.0</item>
+        /// <item>NormalizePositive(-PI) = <see cref="System.Math.PI"/></item>
+        /// <item>NormalizePositive(-2PI) = 0.0</item>
+        /// <item>NormalizePositive(-3PI) = <see cref="System.Math.PI"/></item>
+        /// <item>NormalizePositive(-4PI) = 0</item>
+        /// <item>NormalizePositive(PI) = <see cref="System.Math.PI"/></item>
+        /// <item>NormalizePositive(2PI) = 0.0</item>
+        /// <item>NormalizePositive(3PI) = <see cref="System.Math.PI"/></item>
+        /// <item>NormalizePositive(4PI) = 0.0</item>
+        /// </list>
+        /// </para>
         ///</summary>
         /// <remarks></remarks>
         /// <param name="angle">The angle to normalize, in radians.</param>

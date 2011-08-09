@@ -1,6 +1,7 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Algorithm.Distance
 {
@@ -99,6 +100,11 @@ namespace NetTopologySuite.Algorithm.Distance
             double dist = p0.Distance(p1);
             if (dist < _distance)
                 Initialize(p0, p1, dist);
+        }
+
+        public override string ToString()
+        {
+  	        return WKTWriter.ToLineString(_pt[0], _pt[1]);
         }
     }
 }

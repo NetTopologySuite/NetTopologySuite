@@ -58,10 +58,17 @@ namespace NetTopologySuite.Geometries
         public LineSegment(LineSegment ls) : this(ls._p0, ls._p1) { }
 
         /// <summary>
-        /// Creates an instance of this class using two empty coordinates
+        /// 
         /// </summary>
         public LineSegment() : this(new Coordinate(), new Coordinate()) { }
 
+        /// <summary>
+        /// Creates an instance of this class
+        /// </summary>
+        /// <param name="x0"></param>
+        /// <param name="y0"></param>
+        /// <param name="x1"></param>
+        /// <param name="y1"></param>
         public LineSegment(double x0, double y0, double x1, double y1)
             : this(new Coordinate(x0, y0), new Coordinate(x1, y1))
         {
@@ -291,6 +298,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="offsetDistance"> the distance the point is offset from the segment</param>
         /// (positive is to the left, negative is to the right)
         /// <returns> the point at that distance and offset</returns>
+        /// <exception cref="ApplicationException"> if the segment has zero length</exception>
         public ICoordinate PointAlongOffset(double segmentLengthFraction, double offsetDistance)
         {
             // the point on the segment line
@@ -300,9 +308,17 @@ namespace NetTopologySuite.Geometries
             double dx = P1.X - P0.X;
             double dy = P1.Y - P0.Y;
             double len = Math.Sqrt(dx * dx + dy * dy);
-            // u is the vector that is the length of the offset, in the direction of the segment
-            double ux = offsetDistance * dx / len;
-            double uy = offsetDistance * dy / len;
+            double ux = 0.0;
+            double uy = 0.0;
+            if (offsetDistance != 0.0)
+            {
+                if (len <= 0.0)
+                    throw new ApplicationException("Cannot compute offset from zero-length line segment");
+
+                // u is the vector that is the length of the offset, in the direction of the segment
+                ux = offsetDistance*dx/len;
+                uy = offsetDistance*dy/len;
+            }
 
             // the offset point is the seg point plus the offset vector rotated 90 degrees CCW
             double offsetx = segx - uy;
@@ -441,7 +457,7 @@ namespace NetTopologySuite.Geometries
             // test for intersection
             var intPt = Intersection(line);
             if (intPt != null)
-                return new ICoordinate[] { intPt, intPt };            
+                return new[] { intPt, intPt };            
 
             /*
             *  if no intersection closest pair contains at least one endpoint.
@@ -503,6 +519,43 @@ namespace NetTopologySuite.Geometries
             if (li.HasIntersection)
             return li.GetIntersection(0);
             return null;
+        }
+
+        /// <summary>
+        /// Computes the intersection point of the lines defined by two segments, if there is one.
+        /// </summary>
+        /// <remarks>
+        /// There may be 0, 1 or an infinite number of intersection points between two lines.
+        /// If there is a unique intersection point, it is returned. 
+        /// Otherwise, <c>null</c> is returned.
+        /// If more information is required about the details of the intersection,
+        /// the <see cref="RobustLineIntersector"/> class should be used.
+        /// </remarks>
+        /// <param name="line">A line segment defining a straight line</param>
+        /// <returns>An intersection point, or <c>null</c> if there is none or an infinite number</returns>
+        /// <seealso cref="RobustLineIntersector"/>
+        public ICoordinate LineIntersection(LineSegment line)
+        {
+            try
+            {
+                ICoordinate intPt = HCoordinate.Intersection(_p0, _p1, line._p0, line._p1);
+                return intPt;
+            }
+            catch (NotRepresentableException ex)
+            {
+                // eat this exception, and return null;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Creates a LineString with the same coordinates as this segment
+        /// </summary>
+        /// <param name="geomFactory">the geometery factory to use</param>
+        /// <returns>A LineString with the same geometry as this segment</returns>
+        public ILineString ToGeometry(IGeometryFactory geomFactory)
+        {
+            return geomFactory.CreateLineString(new[] { _p0, _p1 });
         }
 
         /// <summary>  
@@ -601,7 +654,18 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            long bits0 = BitConverter.DoubleToInt64Bits(_p0.X);
+            bits0 ^= BitConverter.DoubleToInt64Bits(_p0.Y) * 31;
+            int hash0 = (((int)bits0) ^ ((int)(bits0 >> 32)));
+
+            long bits1 = BitConverter.DoubleToInt64Bits(_p1.X);
+            bits1 ^= BitConverter.DoubleToInt64Bits(_p1.Y) * 31;
+            int hash1 = (((int)bits1) ^ ((int)(bits1 >> 32)));
+
+            // XOR is supposed to be a good way to combine hashcodes
+            return hash0 ^ hash1;
+            
+            //return base.GetHashCode();
         }
     }
 }

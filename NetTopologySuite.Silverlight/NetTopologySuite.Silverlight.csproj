@@ -123,9 +123,6 @@
     <Compile Include="..\NetTopologySuite\Algorithm\RobustLineIntersector.cs">
       <Link>Algorithm\RobustLineIntersector.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\Algorithm\SimplePointInAreaLocator.cs">
-      <Link>Algorithm\SimplePointInAreaLocator.cs</Link>
-    </Compile>
     <Compile Include="..\NetTopologySuite\Algorithm\SimplePointInRing.cs">
       <Link>Algorithm\SimplePointInRing.cs</Link>
     </Compile>
@@ -1152,7 +1149,10 @@
       <Name>NetTopologySuite.Encodings.Silverlight</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Algorithm\Distance\" />
+    <Folder Include="Algorithm\Match\" />
+  </ItemGroup>
   <!-- <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>

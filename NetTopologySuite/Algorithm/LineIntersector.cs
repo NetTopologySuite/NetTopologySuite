@@ -17,9 +17,31 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public abstract class LineIntersector 
     {
-        public const int DontIntersect = 0;        
-        public const int DoIntersect = 1;        
+        /**
+          * These are deprecated, due to ambiguous naming
+          */
+
+        [Obsolete("Ambiguous naming, use NoIntersection")]
+        public const int DontIntersect = 0;
+        [Obsolete("Ambiguous naming, use PointIntersection")]
+        public const int DoIntersect = 1;
+        [Obsolete("Ambiguous naming, use CollinearIntersection")]
         public const int Collinear = 2;
+
+        /// <summary>
+        /// Indicates that line segments do not intersect
+        /// </summary>
+        public readonly static int NoIntersection = 0;
+  
+        /// <summary>
+        /// Indicates that line segments intersect in a single point
+        /// </summary>
+        public readonly static int PointIntersection = 1;
+  
+        /// <summary>
+        /// Indicates that line segments intersect in a line segment
+        /// </summary>
+        public readonly static int CollinearIntersection = 2;
 
         /// <summary> 
         /// Computes the "edge distance" of an intersection point p along a segment.
@@ -137,7 +159,7 @@ namespace NetTopologySuite.Algorithm
         
         protected bool IsCollinear 
         {
-            get { return result == Collinear; }
+            get { return result == CollinearIntersection; }
         }
 
         /// <summary>
@@ -179,7 +201,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns><c>true</c> if the input geometries intersect.</returns>
         public bool HasIntersection
         {
-            get { return this.result != DontIntersect; }
+            get { return this.result != NoIntersection; }
         }
 
         /// <summary>

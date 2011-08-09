@@ -81,10 +81,9 @@
     <Compile Include="Algorithm\CentroidPoint.cs" />
     <Compile Include="Algorithm\CGAlgorithms.cs" />
     <Compile Include="Algorithm\ConvexHull.cs" />
-    <Compile Include="Algorithm\Distance\EuclidianDistanceToPoint.cs" />
+    <Compile Include="Algorithm\Distance\DistanceToPoint.cs" />
     <Compile Include="Algorithm\Distance\PointPairDistance.cs" />
     <Compile Include="Algorithm\HCoordinate.cs" />
-    <Compile Include="Algorithm\IndexedPointInAreaLocator.cs" />
     <Compile Include="Algorithm\InteriorPointArea.cs" />
     <Compile Include="Algorithm\InteriorPointLine.cs" />
     <Compile Include="Algorithm\InteriorPointPoint.cs" />
@@ -93,7 +92,12 @@
     <Compile Include="Algorithm\Locate\IndexedPointInAreaLocator.cs" />
     <Compile Include="Algorithm\Locate\IPointOnGeometryLocator.cs" />
     <Compile Include="Algorithm\Locate\SimplePointInAreaLocator.cs" />
+    <Compile Include="Algorithm\Match\AreaSimilarityMeasure.cs" />
+    <Compile Include="Algorithm\Match\HausdorffSimilarityMeasure.cs" />
+    <Compile Include="Algorithm\Match\ISimilarityMeasure.cs" />
+    <Compile Include="Algorithm\Match\SimilarityMeasureCombiner.cs" />
     <Compile Include="Algorithm\MCPointInRing.cs" />
+    <Compile Include="Algorithm\MinimumBoundingCircle.cs" />
     <Compile Include="Algorithm\MinimumDiameter.cs" />
     <Compile Include="Algorithm\NonRobustCGAlgorithms.cs" />
     <Compile Include="Algorithm\NonRobustLineIntersector.cs" />
@@ -103,9 +107,9 @@
     <Compile Include="Algorithm\RayCrossingCounter.cs" />
     <Compile Include="Algorithm\RobustDeterminant.cs" />
     <Compile Include="Algorithm\RobustLineIntersector.cs" />
-    <Compile Include="Algorithm\SimplePointInAreaLocator.cs" />
     <Compile Include="Algorithm\SimplePointInRing.cs" />
     <Compile Include="Algorithm\SIRtreePointInRing.cs" />
+    <Compile Include="Algorithm\VectorMath.cs" />
     <Compile Include="CoordinateSystems\Transformations\GeometryTransform.cs" />
     <Compile Include="Features\AttributesTable.cs">
     </Compile>
