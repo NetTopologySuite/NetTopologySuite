@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Utilities;
 using Wintellect.PowerCollections;
@@ -191,7 +192,9 @@ namespace NetTopologySuite.Operation.Buffer
             // MD - testing  Result: breaks algorithm
             // only compute string append if assertion would fail
             if (startEdge == null)
-                Assert.IsTrue(false, "unable to find edge to compute depths at " + n.Coordinate);
+                //Assert.IsTrue(false, "unable to find edge to compute depths at " + n.Coordinate);
+                throw new TopologyException("unable to find edge to compute depths at " + n.Coordinate);
+
             ((DirectedEdgeStar) n.Edges).ComputeDepths(startEdge);
 
             // copy depths to sym edges

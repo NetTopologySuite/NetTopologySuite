@@ -87,8 +87,8 @@ namespace NetTopologySuite.Operation.Overlay.Validate
 
         private void AddTestPts(IGeometry g)
         {
-            OffsetPointGenerator ptGen = new OffsetPointGenerator(g, 5 * _boundaryDistanceTolerance);
-            _testCoords.AddRange(ptGen.GetPoints());
+            OffsetPointGenerator ptGen = new OffsetPointGenerator(g);
+            _testCoords.AddRange(ptGen.GetPoints(5 * _boundaryDistanceTolerance));
         }
 
         private bool CheckValid(SpatialFunction overlayOp)
@@ -120,36 +120,36 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             return IsValidResult(overlayOp, _location);
         }
 
-        private static bool HasLocation(Location[] _location, Location loc)
+        private static bool HasLocation(Location[] location, Location loc)
         {
             for (int i = 0; i < 3; i++)
             {
-                if (_location[i] == loc)
+                if (location[i] == loc)
                     return true;
             }
             return false;
         }
 
-        private static bool IsValidResult(SpatialFunction overlayOp, Location[] _location)
+        private static bool IsValidResult(SpatialFunction overlayOp, Location[] location)
         {
-            bool expectedInterior = OverlayOp.IsResultOfOp(_location[0], _location[1], overlayOp);
+            bool expectedInterior = OverlayOp.IsResultOfOp(location[0], location[1], overlayOp);
 
-            bool resultInInterior = (_location[2] == Location.Interior);
+            bool resultInInterior = (location[2] == Location.Interior);
             // MD use simpler: boolean isValid = (expectedInterior == resultInInterior);
             bool isValid = !(expectedInterior ^ resultInInterior);
 
-            if (!isValid) ReportResult(overlayOp, _location, expectedInterior);
+            if (!isValid) ReportResult(overlayOp, location, expectedInterior);
 
             return isValid;
         }
 
-        private static void ReportResult(SpatialFunction overlayOp, Location[] _location, bool expectedInterior)
+        private static void ReportResult(SpatialFunction overlayOp, Location[] location, bool expectedInterior)
         {
             Console.WriteLine(overlayOp + ":"
-                    + " A:" + LocationUtility.ToLocationSymbol(_location[0])
-                    + " B:" + LocationUtility.ToLocationSymbol(_location[1])
+                    + " A:" + LocationUtility.ToLocationSymbol(location[0])
+                    + " B:" + LocationUtility.ToLocationSymbol(location[1])
                     + " expected:" + (expectedInterior ? 'i' : 'e')
-                    + " actual:" + LocationUtility.ToLocationSymbol(_location[2])
+                    + " actual:" + LocationUtility.ToLocationSymbol(location[2])
                     );
         }
     }

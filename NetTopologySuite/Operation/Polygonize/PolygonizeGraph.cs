@@ -187,7 +187,7 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// Computes the EdgeRings formed by the edges in this graph.        
+        /// Computes the minimal EdgeRings formed by the edges in this graph.        
         /// </summary>
         /// <returns>A list of the{EdgeRings found by the polygonization process.</returns>
         public IList<EdgeRing> GetEdgeRings()
@@ -199,8 +199,8 @@ namespace NetTopologySuite.Operation.Polygonize
             IList<DirectedEdge> maximalRings = FindLabeledEdgeRings(dirEdges);
             ConvertMaximalToMinimalEdgeRings(maximalRings);
 
-            // find all edgerings
-            IList<EdgeRing  > edgeRingList = new List<EdgeRing>();
+            // find all edgerings (which will now be minimal ones, as required)
+            IList<EdgeRing> edgeRingList = new List<EdgeRing>();
             foreach (PolygonizeDirectedEdge de in dirEdges)
             {
                 if (de.IsMarked) continue;
@@ -213,7 +213,9 @@ namespace NetTopologySuite.Operation.Polygonize
         }
         
         /// <summary>
-        /// 
+        /// Finds and labels all edgerings in the graph.
+        /// The edge rings are labelling with unique integers.
+        /// The labelling allows detecting cut edges.
         /// </summary>
         /// <param name="dirEdges">A List of the DirectedEdges in the graph.</param>
         /// <returns>A List of DirectedEdges, one for each edge ring found.</returns>
@@ -363,7 +365,7 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// Traverse a ring of DirectedEdges, accumulating them into a list.
+        /// Traverses a ring of DirectedEdges, accumulating them into a list.
         /// This assumes that all dangling directed edges have been removed
         /// from the graph, so that there is always a next dirEdge.
         /// </summary>
@@ -449,5 +451,34 @@ namespace NetTopologySuite.Operation.Polygonize
             return dangleLines.AsReadOnly();
                 //new ArrayList(dangleLines.CastPlatform());
         }
+
+        /// <summary>
+        /// Traverses the polygonized edge rings in the graph
+        /// and computes the depth parity (odd or even)
+        /// relative to the exterior of the graph.
+        /// 
+        /// If the client has requested that the output
+        /// be polygonally valid, only odd polygons will be constructed. 
+        /// </summary>
+        public void ComputeDepthParity()
+        {
+            while (true)
+            {
+                PolygonizeDirectedEdge de = null; //findLowestDirEdge();
+                if (de == null)
+                    return;
+                ComputeDepthParity(de);
+            }
+        }
+
+        ///<summary>
+        /// Traverses all connected edges, computing the depth parity of the associated polygons.
+        ///</summary>
+        /// <param name="de"></param>
+        private void ComputeDepthParity(PolygonizeDirectedEdge de)
+        {
+
+        }
+
     }
 }

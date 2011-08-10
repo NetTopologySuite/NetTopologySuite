@@ -31,20 +31,26 @@ namespace NetTopologySuite.Operation.Buffer
         private double _maxCurveSegmentError;
 
         //private const double MinCurveVertexFactor = 1.0E-6;
-  /**
-   * Factor which controls how close curve vertices can be to be snapped
-   */
-  private const double CURVE_VERTEX_SNAP_DISTANCE_FACTOR = 1.0E-6;
+        /**
+         * Factor which controls how close curve vertices can be to be snapped
+         */
+        private const double CurveVertexSnapDistanceFactor = 1.0E-6;
   
-  /**
-   * Factor which controls how close curve vertices on inside turns can be to be snapped 
-   */
-  private const double INSIDE_TURN_VERTEX_SNAP_DISTANCE_FACTOR = 1.0E-3;
+        /**
+         * Factor which controls how close offset segments can be to
+         * skip adding a filler or mitre.
+         */
+        private const double OFFSET_SEGMENT_SEPARATION_FACTOR = 1.0E-3;
+
+        /**
+         * Factor which controls how close curve vertices on inside turns can be to be snapped 
+         */
+        private const double INSIDE_TURN_VERTEX_SNAP_DISTANCE_FACTOR = 1.0E-3;
     
-  /**
-   * Factor which determines how short closing segs can be for round buffers
-   */
-  private const int MAX_CLOSING_SEG_FRACTION = 80;
+        /**
+         * Factor which determines how short closing segs can be for round buffers
+         */
+        private const int MAX_CLOSING_SEG_FRACTION = 80;
 
         private double _distance;
         private readonly IPrecisionModel _precisionModel;
@@ -172,16 +178,17 @@ namespace NetTopologySuite.Operation.Buffer
             /*
              * Choose the min vertex separation as a small fraction of the offset distance.
              */
-            _vertexList.MinimumVertexDistance = distance * CURVE_VERTEX_SNAP_DISTANCE_FACTOR;
+            _vertexList.MinimumVertexDistance = distance * CurveVertexSnapDistanceFactor;
         }
-  
+
         /**
         * Use a value which results in a potential distance error which is
         * significantly less than the error due to 
         * the quadrant segment discretization.
-        * For QS = 8 a value of 400 is reasonable.
+        * For QS = 8 a value of 100 is reasonable.
+        * This should produce a maximum of 1% distance error.
         */
-        private const double SIMPLIFY_FACTOR = 400.0;
+        private const double SimplifyFactor = 400.0;
   
         /**
         * Computes the distance tolerance to use during input
@@ -190,14 +197,14 @@ namespace NetTopologySuite.Operation.Buffer
         * @param distance the buffer distance
         * @return the simplification tolerance
         */
-        private static double simplifyTolerance(double bufDistance)
+        private static double SimplifyTolerance(double bufDistance)
         {
-            return bufDistance/SIMPLIFY_FACTOR;
+            return bufDistance/SimplifyFactor;
         }
 
         private void ComputeLineBufferCurve(ICoordinate[] inputPts)
         {
-            double distTol = simplifyTolerance(_distance);
+            double distTol = SimplifyTolerance(_distance);
 
             //--------- compute points for left side of line
             // Simplify the appropriate side of the line before generating
@@ -267,7 +274,7 @@ namespace NetTopologySuite.Operation.Buffer
         private void ComputeRingBufferCurve(ICoordinate[] inputPts, Positions side)
         {
             // simplify input line to improve performance
-            double distTol = simplifyTolerance(_distance);
+            double distTol = SimplifyTolerance(_distance);
             // ensure that correct side is simplified
             if (side == Positions.Right)
                 distTol = -distTol;
@@ -337,6 +344,10 @@ namespace NetTopologySuite.Operation.Buffer
 
         private void AddCollinear(bool addStartPoint)
         {
+            /**
+             * This test could probably be done more efficiently,
+             * but the situation of exact collinearity should be fairly rare.
+             */
             _li.ComputeIntersection(_s0, _s1, _s1, _s2);
             int numInt = _li.IntersectionNum;
             /*
@@ -377,10 +388,13 @@ namespace NetTopologySuite.Operation.Buffer
         private void AddOutsideTurn(int orientation, bool addStartPoint)
         {
             /**
-             * If offset endpoints are very close together, just snap them together.
-             * This avoids problems with computing mitre corners in degenerate cases.
+  	         * Heuristic: If offset endpoints are very close together, 
+  	         * just use one of them as the corner vertex.
+  	         * This avoids problems with computing mitre corners in the case
+  	         * where the two segments are almost parallel 
+  	         * (which is hard to compute a robust intersection for).
              */
-            if (_offset0.P1.Distance(_offset1.P0) < _distance * CURVE_VERTEX_SNAP_DISTANCE_FACTOR)
+            if (_offset0.P1.Distance(_offset1.P0) < _distance * OFFSET_SEGMENT_SEPARATION_FACTOR)
             {
                 _vertexList.AddPt(_offset0.P1);
                 return;
@@ -405,7 +419,7 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         ///<summary>
-        /// Adds the offset points for an inside (concave) turn
+        /// Adds the offset points for an inside (concave) turn.
         ///</summary>
         /// <param name="orientation"></param>
         /// <param name="addStartPoint"></param>
@@ -424,12 +438,19 @@ namespace NetTopologySuite.Operation.Buffer
                 /*
                  * If no intersection is detected, it means the angle is so small and/or the offset so
                  * large that the offsets segments don't intersect. In this case we must
-                 * add a "closing segment" to make sure the buffer line is continuous
+                 * add a "closing segment" to make sure the buffer curve is continuous,
+                 * fairly smooth (e.g. no sharp reversals in direction)
                  * and tracks the buffer correctly around the corner. The curve connects
                  * the endpoints of the segment offsets to points
                  * which lie toward the centre point of the corner.
                  * The joining curve will not appear in the final buffer outline, since it
                  * is completely internal to the buffer polygon.
+                 * 
+                 * In complex buffer cases the closing segment may cut across many other
+                 * segments in the generated offset curve.  In order to improve the 
+                 * performance of the noding, the closing segment should be kept as short as possible.
+                 * (But not too short, since that would defeat it's purpose).
+                 * This is the purpose of the closingSegFactor heuristic value.
                  * 
                  * The intersection test above is vulnerable to robustness errors; i.e. it
                  * may be that the offsets should intersect very close to their endpoints,
@@ -445,7 +466,9 @@ namespace NetTopologySuite.Operation.Buffer
                 }
                 else
                 {
-                    // add endpoint of this segment offset
+                    /**
+                     * Add "closing segment" of required length.
+                     */
                     _vertexList.AddPt(_offset0.P1);
 
                     // add closing segments of required length
@@ -570,9 +593,9 @@ namespace NetTopologySuite.Operation.Buffer
             ICoordinate intPt;
 
             /*
-             * This computation is unstable if the offset segments are nearly collinear, 
-             * but this case should be eliminated earlier by the check if 
-             * the offset segment endpoints are almost coincident
+             * This computation is unstable if the offset segments are nearly collinear. 
+  	         * Howver, this situation should have been eliminated earlier by the check for 
+  	         * whether the offset segment endpoints are almost coincident
              */
             try
             {

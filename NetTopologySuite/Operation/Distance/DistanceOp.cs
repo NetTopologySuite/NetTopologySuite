@@ -103,9 +103,15 @@ namespace NetTopologySuite.Operation.Distance
         /// <summary>
         /// Report the distance between the closest points on the input geometries.
         /// </summary>
+        /// <returns>0 if either input geometry is empty</returns>
         /// <returns>The distance between the geometries.</returns>
+        /// <exception cref="ApplicationException"> if either input geometry is null</exception>
         public double Distance()
         {
+            if (_geom[0] == null || _geom[1] == null)
+                throw new ApplicationException("null geometries are not supported");
+            if (_geom[0].IsEmpty || _geom[1].IsEmpty)
+                return 0.0;
             ComputeMinDistance();
             return _minDistance;
         }
@@ -208,8 +214,13 @@ namespace NetTopologySuite.Operation.Distance
         private void ComputeContainmentDistance()
         {
             GeometryLocation[] locPtPoly = new GeometryLocation[2];
+            ComputeContainmentDistance(0, locPtPoly);
+            if (_minDistance <= _terminateDistance) return;
+            ComputeContainmentDistance(1, locPtPoly);
             
             // test if either geometry has a vertex inside the other
+            
+            /*
             IList<IPolygon> polys1 = PolygonExtracter.GetPolygons(_geom[1]);
             if (polys1.Count > 0)
             {
@@ -222,7 +233,7 @@ namespace NetTopologySuite.Operation.Distance
                     return;
                 }
             }
-
+            
             IList<IPolygon> polys0 = PolygonExtracter.GetPolygons(_geom[0]);
             if (polys0.Count > 0)
             {
@@ -236,8 +247,56 @@ namespace NetTopologySuite.Operation.Distance
                     return;
                 }
             }
+             */
         }
 
+        private void ComputeContainmentDistance(int polyGeomIndex, GeometryLocation[] locPtPoly)
+        {
+            int locationsIndex = 1 - polyGeomIndex;
+            var polys = PolygonExtracter.GetPolygons(_geom[polyGeomIndex]);
+            if (polys.Count > 0)
+            {
+                var insideLocs = ConnectedElementLocationFilter.GetLocations(_geom[locationsIndex]);
+                ComputeContainmentDistance(insideLocs, polys, locPtPoly);
+                if (_minDistance <= _terminateDistance)
+                {
+                    // this assigment is determined by the order of the args in the computeInside call above
+                    _minDistanceLocation[locationsIndex] = locPtPoly[0];
+                    _minDistanceLocation[polyGeomIndex] = locPtPoly[1];
+                    return;
+                }
+            }
+        }
+
+        private void ComputeContainmentDistance(IList<GeometryLocation> locs, IList<IPolygon> polys, GeometryLocation[] locPtPoly)
+        {
+            for (int i = 0; i < locs.Count; i++)
+            {
+                GeometryLocation loc = locs[i];
+                for (int j = 0; j < polys.Count; j++)
+                {
+                    ComputeContainmentDistance(loc, polys[j], locPtPoly);
+                    if (_minDistance <= _terminateDistance) return;
+                }
+            }
+        }
+
+        private void ComputeContainmentDistance(GeometryLocation ptLoc,
+            IPolygon poly,
+            GeometryLocation[] locPtPoly)
+        {
+            var pt = ptLoc.Coordinate;
+            // if pt is not in exterior, distance to geom is 0
+            if (Location.Exterior != _ptLocator.Locate(pt, poly))
+            {
+                _minDistance = 0.0;
+                locPtPoly[0] = ptLoc;
+                locPtPoly[1] = new GeometryLocation(poly, pt); ;
+                return;
+            }
+        }
+
+        /*
         /// <summary>
         /// 
         /// </summary>
@@ -276,6 +335,8 @@ namespace NetTopologySuite.Operation.Distance
                 return;
             }
         }
+
+        */
 
         /// <summary>
         /// Computes distance between facets (lines and points) of input geometries.

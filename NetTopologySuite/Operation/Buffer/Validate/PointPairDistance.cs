@@ -1,7 +1,6 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Operation.Buffer.Validate
 {
@@ -79,11 +78,6 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             double dist = p0.Distance(p1);
             if (dist < _distance)
                 Initialize(p0, p1, dist);
-        }
-
-        public override String ToString()
-        {
-            return WKTWriter.ToLineString(_pt[0], _pt[1]);
         }
     }
 }

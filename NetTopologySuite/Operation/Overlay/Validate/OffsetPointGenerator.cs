@@ -9,43 +9,63 @@ namespace NetTopologySuite.Operation.Overlay.Validate
     ///<summary>
     /// Generates points offset by a given distance from both sides of the midpoint of all segments in a <see cref="IGeometry"/>.
     ///</summary>
-    /// <remarks>Can be used to generate probe points for determining whether a polygonal overlay result is incorrect.
+    /// <remarks>
+    /// <para>
+    /// Can be used to generate probe points for determining whether a polygonal overlay result is incorrect.
+    /// </para>
+    /// <para>
+    /// The input geometry may have any orientation for its rings,
+    /// but <see cref="SetSidesToGenerate(bool, bool)"/> is
+    /// only meaningful if the orientation is known.
+    /// </para>
     ///</remarks>
     /// <author>Martin Davis</author>
     public class OffsetPointGenerator
     {
-        private readonly double _offsetDistance;
+        //private readonly double _offsetDistance;
+        private bool _doLeft = true;
+        private bool _doRight = true;
         private readonly IGeometry _g;
-        private List<ICoordinate> _offsetPts;
 
-        public OffsetPointGenerator(IGeometry g, double offsetDistance)
+        public OffsetPointGenerator(IGeometry g)
         {
             _g = g;
-            _offsetDistance = offsetDistance;
+        }
+
+        /**
+         * Set the sides on which to generate offset points.
+         * 
+         * @param doLeft
+         * @param doRight
+         */
+        public void SetSidesToGenerate(bool doLeft, bool doRight)
+        {
+            _doLeft = doLeft;
+            _doRight = doRight;
         }
 
         ///<summary>
         /// Gets the computed offset points.
         ///</summary>
-        public List<ICoordinate> GetPoints()
+        public List<ICoordinate> GetPoints(double offsetDistance)
         {
-            _offsetPts = new List<ICoordinate>();
+            var offsetPts = new List<ICoordinate>();
             var lines = LinearComponentExtracter.GetLines(_g);
             foreach (ILineString line in lines)
-                ExtractPoints(line);
+                ExtractPoints(line, offsetDistance, offsetPts);
 
             //System.out.println(toMultiPoint(offsetPts));
-            return _offsetPts;
+            return offsetPts;
         }
 
-        private void ExtractPoints(ILineString line)
+        private void ExtractPoints(ILineString line, double offsetDistance, IList<ICoordinate> offsetPts)
         {
             ICoordinateSequence coordinateSequence = line.CoordinateSequence;
             for (int i = 0; i < coordinateSequence.Count; i++)
             {
                 ComputeOffsetPoints(
                     coordinateSequence.GetCoordinate(i),
-                                        coordinateSequence.GetCoordinate(i+1));
+                                        coordinateSequence.GetCoordinate(i+1), offsetDistance, offsetPts);
             }
         }
 
@@ -55,23 +75,31 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         ///</summary>
         /// <param name="p0">The first point of the segment to offset from.</param>
         /// <param name="p1">The second point of the segment to offset from</param>
-        private void ComputeOffsetPoints(ICoordinate p0, ICoordinate p1)
+        ///<param name="offsetDistance"></param>
+        ///<param name="offsetPts"></param>
+        private void ComputeOffsetPoints(ICoordinate p0, ICoordinate p1, double offsetDistance, IList<ICoordinate> offsetPts)
         {
             double dx = p1.X - p0.Y;
             double dy = p1.Y - p0.Y;
             double len = Math.Sqrt(dx * dx + dy * dy);
             // u is the vector that is the length of the offset, in the direction of the segment
-            double ux = _offsetDistance * dx / len;
-            double uy = _offsetDistance * dy / len;
+            double ux = offsetDistance * dx / len;
+            double uy = offsetDistance * dy / len;
 
             double midX = (p1.X + p0.X) / 2;
             double midY = (p1.Y + p0.Y) / 2;
 
-            ICoordinate offsetLeft = new Coordinate(midX - uy, midY + ux);
-            ICoordinate offsetRight = new Coordinate(midX + uy, midY - ux);
+            if (_doLeft)
+            {
+                ICoordinate offsetLeft = new Coordinate(midX - uy, midY + ux);
+                offsetPts.Add(offsetLeft);
+            }
 
-            _offsetPts.Add(offsetLeft);
-            _offsetPts.Add(offsetRight);
+            if (_doRight)
+            {
+                ICoordinate offsetRight = new Coordinate(midX + uy, midY - ux);
+                offsetPts.Add(offsetRight);
+            }
         }
 
     }

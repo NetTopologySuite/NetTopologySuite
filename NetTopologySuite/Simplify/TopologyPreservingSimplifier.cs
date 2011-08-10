@@ -11,11 +11,13 @@ namespace NetTopologySuite.Simplify
     /// The simplification uses a maximum distance difference algorithm
     /// similar to the one used in the Douglas-Peucker algorithm.
     /// In particular, if the input is an areal point
-    /// ( <c>Polygon</c> or <c>MultiPolygon</c> )
+    /// ( <c>Polygon</c> or <c>MultiPolygon</c> ):
     /// The result has the same number of shells and holes (rings) as the input,
     /// in the same order
     /// The result rings touch at no more than the number of touching point in the input
     /// (although they may touch at fewer points).
+    /// (The key implication of this constraint is that the 
+    /// output will be topologically valid if the input was.) 
     /// </summary>
     /// <see cref="DouglasPeuckerSimplifier"/>
     public class TopologyPreservingSimplifier

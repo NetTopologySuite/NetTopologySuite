@@ -13,8 +13,10 @@ namespace NetTopologySuite.IO
 
         ///<summary>
         /// Converts a hexadecimal string to a byte array.
+        /// The hexadecimal digit symbols are case-insensitive.
         ///</summary>
         /// <param name="hex">A string containing hex digits</param>
+        /// <returns>An array of bytes with the value of the hex string</returns>
         public static byte[] HexToBytes(String hex)
         {
             int byteLen = hex.Length / 2;
@@ -91,10 +93,11 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// 
+        /// Reads a <see cref="IGeometry"/> in binary WKB format from an array of <see cref="byte"/>s.
         /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
+        /// <param name="data">The byte array to read from</param>
+        /// <returns>The geometry read</returns>
+        /// <exception cref="ParseException"> if the WKB data is ill-formed.</exception>
         public IGeometry Read(byte[] data)
         {
             using (Stream stream = new MemoryStream(data))            
@@ -102,10 +105,11 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// 
+        /// Reads a <see cref="IGeometry"/> in binary WKB format from an <see cref="Stream"/>.
         /// </summary>
-        /// <param name="stream"></param>
-        /// <returns></returns>
+        /// <param name="stream">The stream to read from</param>
+        /// <returns>The geometry read</returns>
+        /// <exception cref="ParseException"> if the WKB data is ill-formed.</exception>
         public virtual IGeometry Read(Stream stream)
         {
             BinaryReader reader = null;

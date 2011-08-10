@@ -8,23 +8,27 @@ using ArrayList = System.Collections.Generic.List<object>;
 namespace NetTopologySuite.Operation.Polygonize
 {
     /// <summary>
-    /// Polygonizes a set of Geometrys which contain linework that
+    /// Polygonizes a set of <see cref="IGeometry"/>s which contain linework that
     /// represents the edges of a planar graph.
-    /// Any dimension of Geometry is handled - the constituent linework is extracted
-    /// to form the edges.
-    /// The edges must be correctly noded; that is, they must only meet
-    /// at their endpoints.  The Polygonizer will still run on incorrectly noded input
-    /// but will not form polygons from incorrected noded edges.
+    /// </summary>
+    /// <remarks>
+    /// <para>All types of Geometry are accepted as input;
+    /// the constituent linework is extracted as the edges to be polygonized.
+    /// The processed edges must be correctly noded; that is, they must only meet
+    /// at their endpoints.  The Polygonizer will run on incorrectly noded input
+    /// but will not form polygons from non-noded edges, 
+    /// and will report them as errors.
+    /// </para><para>
     /// The Polygonizer reports the follow kinds of errors:
     /// Dangles - edges which have one or both ends which are not incident on another edge endpoint
     /// Cut Edges - edges which are connected at both ends but which do not form part of polygon
     /// Invalid Ring Lines - edges which form rings which are invalid
-    /// (e.g. the component lines contain a self-intersection).
-    /// </summary>
+    /// (e.g. the component lines contain a self-intersection).</para>
+    /// </remarks>
     public class Polygonizer
     {
         /// <summary>
-        /// Add every linear element in a point into the polygonizer graph.
+        /// Adds every linear element in a <see cref="IGeometry"/> into the polygonizer graph.
         /// </summary>
         private class LineStringAdder : IGeometryComponentFilter
         {
@@ -53,7 +57,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Default factory.
         /// </summary>
-        private readonly LineStringAdder lineStringAdder;
+        private readonly LineStringAdder _lineStringAdder;
 
         /// <summary>
         /// 
@@ -96,11 +100,11 @@ namespace NetTopologySuite.Operation.Polygonize
         /// </summary>
         public Polygonizer() 
         {
-            lineStringAdder = new LineStringAdder(this);
+            _lineStringAdder = new LineStringAdder(this);
         }
 
         /// <summary>
-        /// Add a collection of geometries to be polygonized.
+        /// Adds a collection of <see cref="IGeometry"/>s to be polygonized.
         /// May be called multiple times.
         /// Any dimension of Geometry may be added;
         /// the constituent linework will be extracted and used.
@@ -113,7 +117,7 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// Add a point to the linework to be polygonized.
+        /// Adds a <see cref="IGeometry"/> to the linework to be polygonized.
         /// May be called multiple times.
         /// Any dimension of Geometry may be added;
         /// the constituent linework will be extracted and used
@@ -121,13 +125,13 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <param name="g">A <c>Geometry</c> with linework to be polygonized.</param>
 		public void Add(IGeometry g)
         {
-            g.Apply(lineStringAdder);
+            g.Apply(_lineStringAdder);
         }
 
         /// <summary>
-        /// Add a linestring to the graph of polygon edges.
+        /// Adds a  to the graph of polygon edges.
         /// </summary>
-        /// <param name="line">The <c>LineString</c> to add.</param>
+        /// <param name="line">The <see cref="ILineString"/> to add.</param>
         private void Add(ILineString line)
         {
             // create a new graph using the factory from the input Geometry
@@ -137,7 +141,7 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// Compute and returns the list of polygons formed by the polygonization.
+        /// Gets the list of polygons formed by the polygonization.
         /// </summary>        
         public IList<IGeometry> GetPolygons()
         {
@@ -146,7 +150,7 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary> 
-        /// Compute and returns the list of dangling lines found during polygonization.
+        /// Gets the list of dangling lines found during polygonization.
         /// </summary>
         public ICollection<ILineString> GetDangles()
         {
@@ -155,7 +159,7 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// Compute and returns the list of cut edges found during polygonization.
+        /// Gets the list of cut edges found during polygonization.
         /// </summary>
         public ICollection<ILineString> GetCutEdges()
         {
@@ -164,7 +168,7 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// Compute and returns the list of lines forming invalid rings found during polygonization.
+        /// Gets the list of lines forming invalid rings found during polygonization.
         /// </summary>
         public IList<IGeometry> GetInvalidRingLines()
         {
@@ -173,7 +177,7 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// Perform the polygonization, if it has not already been carried out.
+        /// Performs the polygonization, if it has not already been carried out.
         /// </summary>
         private void Polygonize()
         {
@@ -183,7 +187,7 @@ namespace NetTopologySuite.Operation.Polygonize
 
             polyList = new List<IGeometry>();
 
-            // if no geometries were supplied it's possible graph could be null
+            // if no geometries were supplied it's possible that graph is null
             if (graph == null) 
                 return;
 

@@ -160,6 +160,9 @@ namespace NetTopologySuite.Operation.Buffer
             // if the polygon would be completely eroded
             if (_distance < 0.0 && IsErodedCompletely(shellCoord, _distance))
                 return;
+            // don't attemtp to buffer a polygon with too few distinct vertices
+            if (_distance <= 0.0 && shellCoord.Length < 3)
+                return;
 
             AddPolygonRing(shellCoord, offsetDistance, offsetSide, 
                            Location.Exterior, Location.Interior);

@@ -31,6 +31,11 @@ namespace NetTopologySuite.Operation.Union
     /// If <b>merged</b> linework is required, the {@link LineMerger} class can be used.</item>
     /// <item>Unioning a set of <see cref="IPoint"/>s has the effect of merging all identical points (producing a set with no duplicates).</item> </list>
     /// </para>
+    /// <para>
+    /// <c>UnaryUnion</c> always operates on the individual components of MultiGeometries.
+    /// So it is possible to use it to "clean" invalid self-intersecting MultiPolygons
+    /// (although the polygon components must all still be individually valid.)
+    /// </para>
     /// </remarks>
     /// <author>
     /// mbdavis
@@ -115,7 +120,12 @@ namespace NetTopologySuite.Operation.Union
                 return null;
             }
 
-
+            /**
+             * For points and lines, only a single union operation is 
+             * required, since the OGC model allowings self-intersecting 
+             * MultiPoint and MultiLineStrings.
+             * This is not the case for polygons, so Cascaded Union is required.
+             */
             IGeometry unionPoints = null;
             if (_points.Count > 0)
             {

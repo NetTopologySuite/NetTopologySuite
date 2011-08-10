@@ -1,3 +1,4 @@
+/*
 // ParseUtil.cs
 // 
 // Copyright (C) 2002-2004 Ryan Seghers
@@ -29,7 +30,7 @@ namespace RTools_NTS.Util
 	/// StreamTokenizer.  These currently use Token[] but could be adapted
 	/// for ArrayList.
 	/// </summary>
-	public class ParseUtil
+	public static class ParseUtil
 	{
 		/// <summary>
 		/// Build an Array of a particular type from a list of tokens.  
@@ -460,3 +461,4 @@ namespace RTools_NTS.Util
 		}
 	}
 }
+*/

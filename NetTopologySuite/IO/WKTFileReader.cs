@@ -15,7 +15,10 @@ namespace NetTopologySuite.IO
     /// </author>
     public class WKTFileReader
     {
+        private const int MaxLookahead = 2048;
+        
         private readonly FileInfo _file;
+        private TextReader _reader;
         private readonly WKTReader _wktReader;
         private int _count;
 
@@ -42,6 +45,17 @@ namespace NetTopologySuite.IO
         }
 
         ///<summary>
+        /// Creates a new <see cref="WKTFileReader" />, given a <see cref="StreamReader"/> of the file to read from.
+        ///</summary>
+        /// <param name="reader">The stream reader of the file to read from</param>
+        /// <param name="wktReader">The geometry reader to use</param>
+        public WKTFileReader(TextReader reader, WKTReader wktReader)
+        {
+            _reader = reader;
+            _wktReader = wktReader;
+        }
+
+        ///<summary>
         /// Gets/Sets the maximum number of geometries to read.
         ///</summary>
         public int Limit { get; set; }
@@ -63,26 +77,30 @@ namespace NetTopologySuite.IO
         public IList<IGeometry> Read()
         {
             _count = 0;
-            StreamReader fileReader = new StreamReader(_file.OpenRead());
+
+            if (_file != null)
+                _reader =  new StreamReader(new BufferedStream(_file.OpenRead(), MaxLookahead)); 
+
             try
             {
                 //BufferedReader bufferedReader = new BufferedReader(fileReader);
                 //try {
-                return Read(fileReader/*bufferedReader*/);
+                return Read(_reader/*bufferedReader*/);
                 //} finally {
                 //    bufferedReader.close();
                 //}
             }
             finally
             {
-                fileReader.Close();
+                _reader.Close();
             }
         }
 
-        private IList<IGeometry> Read(/*BufferedReader*/StreamReader bufferedReader)
+        private IList<IGeometry> Read(TextReader bufferedReader)
         {
             IList<IGeometry> geoms = new List<IGeometry>();
             var tokens = _wktReader.Tokenize(bufferedReader);
+            
             if (tokens[tokens.Count-1] is EofToken)
                 tokens.RemoveAt(tokens.Count-1);
             

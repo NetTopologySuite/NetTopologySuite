@@ -20,7 +20,8 @@ using System.IO;
 
 namespace RTools_NTS.Util
 {
-	/// <summary>
+	/*
+    /// <summary>
 	/// Wraps a TextReader with buffering for speed. This is not finished,
 	/// and preliminary testing indicates it isn't faster than FCL implementation.
 	/// </summary>
@@ -70,4 +71,5 @@ namespace RTools_NTS.Util
 			cb = null;
 		}
 	}
+     */
 }
