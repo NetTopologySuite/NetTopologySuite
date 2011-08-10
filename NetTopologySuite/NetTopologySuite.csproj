@@ -405,31 +405,6 @@
     <Compile Include="Simplify\TaggedLineString.cs" />
     <Compile Include="Simplify\TaggedLineStringSimplifier.cs" />
     <Compile Include="Simplify\TopologyPreservingSimplifier.cs" />
-    <Compile Include="Triangulate\ConformingDelaunayTriangulationBuilder.cs" />
-    <Compile Include="Triangulate\ConformingDelaunayTriangulator.cs" />
-    <Compile Include="Triangulate\ConstraintEnforcementException.cs" />
-    <Compile Include="Triangulate\ConstraintSplitPointFinder.cs" />
-    <Compile Include="Triangulate\ConstraintVertex.cs" />
-    <Compile Include="Triangulate\ConstraintVertexFactory.cs" />
-    <Compile Include="Triangulate\DelaunayTriangulationBuilder.cs" />
-    <Compile Include="Triangulate\IncrementalDelaunayTriangulator.cs" />
-    <Compile Include="Triangulate\MidpointSplitPointFinder.cs" />
-    <Compile Include="Triangulate\NonEncroachingSplitPointFinder.cs" />
-    <Compile Include="Triangulate\quadedge\EdgeConnectedTriangleTraversal.cs" />
-    <Compile Include="Triangulate\quadedge\LastFoundQuadEdgeLocator.cs" />
-    <Compile Include="Triangulate\quadedge\LocateFailureException.cs" />
-    <Compile Include="Triangulate\quadedge\QuadEdge.cs" />
-    <Compile Include="Triangulate\quadedge\IQuadEdgeLocator.cs" />
-    <Compile Include="Triangulate\quadedge\QuadEdgeSubdivision.cs" />
-    <Compile Include="Triangulate\quadedge\QuadEdgeTriangle.cs" />
-    <Compile Include="Triangulate\quadedge\QuadEdgeUtil.cs" />
-    <Compile Include="Triangulate\quadedge\ITraversalVisitor.cs" />
-    <Compile Include="Triangulate\quadedge\ITriangleVisitor.cs" />
-    <Compile Include="Triangulate\quadedge\Vertex.cs" />
-    <Compile Include="Triangulate\Segment.cs" />
-    <Compile Include="Triangulate\SplitSegment.cs" />
-    <Compile Include="Triangulate\VertexTaggedGeometryDataMapper.cs" />
-    <Compile Include="Triangulate\VoronoiDiagramBuilder.cs" />
     <Compile Include="Utilities\Assert.cs" />
     <Compile Include="Utilities\AssertionFailedException.cs" />
     <Compile Include="Utilities\BitConverter.cs" />
@@ -463,8 +438,6 @@
     <Compile Include="Algorithm\Distance\DiscreteHausdorffDistance.cs" />
     <Content Include="License.txt" />
     <Content Include="ReadMe.txt" />
-    <Content Include="Triangulate\package.xml" />
-    <Content Include="Triangulate\quadedge\package.xml" />
     <Content Include="Utilities\RToolsUtil\Rtools.Util.License.txt" />
   </ItemGroup>
   <ItemGroup>
