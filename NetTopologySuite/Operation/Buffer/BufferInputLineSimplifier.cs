@@ -214,30 +214,30 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="i2">The end index of section</param>
         /// <param name="distanceTol">The tolerated distance</param>
         private bool IsShallowSampled(ICoordinate p0, ICoordinate p2, int i0, int i2, double distanceTol)
-  {
-    // check every n'th point to see if it is within tolerance
-  	int inc = (i2 - i0) / NumPtsToCheck;
-  	if (inc <= 0) inc = 1;
+        {
+            // check every n'th point to see if it is within tolerance
+            int inc = (i2 - i0) / NumPtsToCheck;
+            if (inc <= 0) inc = 1;
   	
-  	for (int i = i0; i < i2; i += inc) {
-  		if (! IsShallow(p0, p2, _inputLine[i], distanceTol)) return false;
-  	}
-  	return true;
-  }
+            for (int i = i0; i < i2; i += inc) {
+  	            if (! IsShallow(p0, p2, _inputLine[i], distanceTol)) return false;
+            }
+            return true;
+        }
   
-  private static bool IsShallow(ICoordinate p0, ICoordinate p1, ICoordinate p2, double distanceTol)
-  {
-    double dist = CGAlgorithms.DistancePointLine(p1, p0, p2);
-    return dist < distanceTol;
-  }
+        private static bool IsShallow(ICoordinate p0, ICoordinate p1, ICoordinate p2, double distanceTol)
+        {
+            double dist = CGAlgorithms.DistancePointLine(p1, p0, p2);
+            return dist < distanceTol;
+        }
   
   
-  private bool IsConcave(ICoordinate p0, ICoordinate p1, ICoordinate p2)
-  {
-    var orientation = CGAlgorithms.ComputeOrientation(p0, p1, p2);
-    bool isConcave = (orientation == _angleOrientation);
-    return isConcave;
-  }
+        private bool IsConcave(ICoordinate p0, ICoordinate p1, ICoordinate p2)
+        {
+            var orientation = CGAlgorithms.ComputeOrientation(p0, p1, p2);
+            bool isConcave = (orientation == _angleOrientation);
+            return isConcave;
+        }
 
     }
 }

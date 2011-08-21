@@ -95,7 +95,7 @@ namespace NetTopologySuite.Geometries
 
 
         /// <summary>
-        /// Adds an array of coordinates.
+        /// Adds an array of coordinates to the list.
         /// </summary>
         /// <param name="coord">Coordinates to be inserted.</param>
         /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed.</param>
@@ -113,7 +113,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Adds an array of coordinates.
+        /// Adds an array of coordinates to the list.
         /// </summary>
         /// <param name="coord">Coordinates to be inserted.</param>
         /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed.</param>
@@ -124,7 +124,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Adds a coordinate.
+        /// Adds a coordinate to the list.
         /// </summary>
         /// <param name="obj">Coordinate to be inserted, as object.</param>
         /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed.</param>

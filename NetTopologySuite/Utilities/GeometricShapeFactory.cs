@@ -12,6 +12,7 @@ namespace NetTopologySuite.Utilities
     public class GeometricShapeFactory
     {
         protected IGeometryFactory GeomFact;
+        protected IPrecisionModel precModel = null;
         private readonly Dimensions _dim = new Dimensions();
         private int _nPts = 100;
 
@@ -27,6 +28,7 @@ namespace NetTopologySuite.Utilities
         public GeometricShapeFactory(IGeometryFactory geomFact)
         {
             GeomFact = geomFact;
+            precModel = geomFact.PrecisionModel;
         }
 
         /// <summary>
@@ -63,11 +65,12 @@ namespace NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Gets the envelope of the shape
+        /// Gets or sets the envelope of the shape
         /// </summary>
         public IEnvelope Envelope
         {
             get { return _dim.Envelope; }
+            set { _dim.Envelope = value; }
         }
 
         /// <summary>
@@ -133,8 +136,13 @@ namespace NetTopologySuite.Utilities
         protected ICoordinate CreateCoord(double x, double y)
         {
             ICoordinate p = new Coordinate(x, y);
-            GeomFact.PrecisionModel.MakePrecise(p);
+            precModel.MakePrecise(p);
             return p;
+        }
+
+        protected ICoordinate CreateCoordTrans(double x, double y, ICoordinate trans)
+        {
+            return CreateCoord(x + trans.X, y + trans.Y);
         }
 
         /// <summary>
@@ -208,6 +216,68 @@ namespace NetTopologySuite.Utilities
                 pts[iPt++] = pt;
             }
             pts[iPt] = pts[0];
+
+            ILinearRing ring = GeomFact.CreateLinearRing(pts);
+            IPolygon poly = GeomFact.CreatePolygon(ring, null);
+            return poly;
+        }
+
+        /// <summary>
+        /// Creates a squircular <see cref="Polygon"/>.
+        /// </summary>
+        /// <returns>a squircle</returns>
+        public IPolygon CreateSquircle()
+        {
+            return CreateSupercircle(4);
+        }
+
+        /// <summary>
+        /// Creates a supercircular <see cref="Polygon"/>
+        /// of a given positive power.
+        /// </summary>
+        /// <returns>a supercircle</returns>
+        public IPolygon CreateSupercircle(double power)
+        {
+            double recipPow = 1.0 / power;
+
+            IEnvelope env = _dim.Envelope;
+
+            double radius = _dim.Size / 2;
+            ICoordinate centre = _dim.Centre;
+
+            double r4 = Math.Pow(radius, power);
+            double y0 = radius;
+
+            double xyInt = Math.Pow(r4 / 2, recipPow);
+
+            int nSegsInOct = _nPts / 8;
+            int totPts = nSegsInOct * 8 + 1;
+            ICoordinate[] pts = new Coordinate[totPts];
+            double xInc = xyInt / nSegsInOct;
+
+            for (int i = 0; i <= nSegsInOct; i++)
+            {
+                double x = 0.0;
+                double y = y0;
+                if (i != 0)
+                {
+                    x = xInc * i;
+                    double x4 = Math.Pow(x, power);
+                    y = Math.Pow(r4 - x4, recipPow);
+                }
+                pts[i] = CreateCoordTrans(x, y, centre);
+                pts[2 * nSegsInOct - i] = CreateCoordTrans(y, x, centre);
+
+                pts[2 * nSegsInOct + i] = CreateCoordTrans(y, -x, centre);
+                pts[4 * nSegsInOct - i] = CreateCoordTrans(x, -y, centre);
+
+                pts[4 * nSegsInOct + i] = CreateCoordTrans(-x, -y, centre);
+                pts[6 * nSegsInOct - i] = CreateCoordTrans(-y, -x, centre);
+
+                pts[6 * nSegsInOct + i] = CreateCoordTrans(-y, x, centre);
+                pts[8 * nSegsInOct - i] = CreateCoordTrans(-x, y, centre);
+            }
+            pts[pts.Length - 1] = new Coordinate(pts[0]);
 
             ILinearRing ring = GeomFact.CreateLinearRing(pts);
             IPolygon poly = GeomFact.CreatePolygon(ring, null);
@@ -372,6 +442,13 @@ namespace NetTopologySuite.Utilities
                         return new Envelope(Centre.X - Width / 2, Centre.X + Width / 2,
                                             Centre.Y - Height / 2, Centre.Y + Height / 2);                    
                     return new Envelope(0, Width, 0, Height);
+                }
+                set
+                {
+    	            this.width = value.Width;
+                    this.height = value.Height;
+                    this.Base = new Coordinate(value.MinX, value.MinY);
+                    this.centre = new Coordinate(value.Centre);
                 }
             }
         }

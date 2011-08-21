@@ -1,197 +1,170 @@
-/*
- * The JTS Topology Suite is a collection of Java classes that
- * implement the fundamental operations required to validate a given
- * geo-spatial data set to a known topological specification.
- *
- * Copyright (C) 2001 Vivid Solutions
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * For more information, contact:
- *
- *     Vivid Solutions
- *     Suite #1A
- *     2328 Government Street
- *     Victoria BC  V8T 5G5
- *     Canada
- *
- *     (250)385-6040
- *     www.vividsolutions.com
- */
-package com.vividsolutions.jts.triangulate;
+using System.Collections.Generic;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Triangulate.QuadEdge;
+using NetTopologySuite.Geometries.Utilities;
+using Wintellect.PowerCollections;
 
-import java.util.*;
-
-import com.vividsolutions.jts.geom.*;
-import com.vividsolutions.jts.geom.util.*;
-import com.vividsolutions.jts.triangulate.quadedge.*;
-
-/**
- * A utility class which creates Conforming Delaunay Trianglulations
- * from collections of points and linear constraints, and extract the resulting 
- * triangulation edges or triangles as geometries. 
- * 
- * @author Martin Davis
- *
- */
-public class ConformingDelaunayTriangulationBuilder 
+namespace NetTopologySuite.Triangulate
 {
-	private Collection siteCoords;
-	private Geometry constraintLines;
-	private double tolerance = 0.0;
-	private QuadEdgeSubdivision subdiv = null;
+    /// <summary>
+    /// A utility class which creates Conforming Delaunay Trianglulations
+    /// from collections of points and linear constraints, and extract the resulting 
+    /// triangulation edges or triangles as geometries. 
+    /// </summary>
+    /// <author>Martin Davis</author>
+    public class ConformingDelaunayTriangulationBuilder
+    {
+        private ICollection<ICoordinate> siteCoords;
+        private IGeometry constraintLines;
+        private double tolerance = 0.0;
+        private QuadEdgeSubdivision subdiv = null;
 
-	private Map vertexMap = new TreeMap();
-	
-	public ConformingDelaunayTriangulationBuilder()
-	{
-	}
-	
-	/**
-	 * Sets the sites (point or vertices) which will be triangulated.
-	 * All vertices of the given geometry will be used as sites.
-	 * 
-	 * @param geom the geometry from which the sites will be extracted.
-	 */
-	public void setSites(Geometry geom)
-	{
-		siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom);
-	}
+        private IDictionary<ICoordinate, Vertex> vertexMap = new OrderedDictionary<ICoordinate, Vertex>();
 
-	/**
-	 * Sets the linear constraints to be conformed to.
-	 * All linear components in the input will be used as constraints.
-	 * 
-	 * @param constraintLines the lines to constraint to
-	 */
-	public void setConstraints(Geometry constraintLines)
-	{
-		this.constraintLines = constraintLines;
-	}
-	
-	/**
-	 * Sets the snapping tolerance which will be used
-	 * to improved the robustness of the triangulation computation.
-	 * A tolerance of 0.0 specifies that no snapping will take place.
-	 * 
-	 * @param tolerance the tolerance distance to use
-	 */
-	public void setTolerance(double tolerance)
-	{
-		this.tolerance = tolerance;
-	}
-	
-	
-	private void create()
-	{
-		if (subdiv != null) return;
+        public ConformingDelaunayTriangulationBuilder()
+        {
+        }
 
-		Envelope siteEnv = DelaunayTriangulationBuilder.envelope(siteCoords);
-		
-		List sites = createConstraintVertices(siteCoords);
-		
-		List segments = new ArrayList();
-		if (constraintLines != null) {
-			siteEnv.expandToInclude(constraintLines.getEnvelopeInternal());
-			createVertices(constraintLines);
-			segments = createConstraintSegments(constraintLines);
-		}
-		
-		ConformingDelaunayTriangulator cdt = new ConformingDelaunayTriangulator(sites, tolerance);
-		
-		cdt.setConstraints(segments, new ArrayList(vertexMap.values()));
-		
-		cdt.formInitialDelaunay();
-		cdt.enforceConstraints();
-		subdiv = cdt.getSubdivision();
-	}
-	
-	private static List createConstraintVertices(Collection coords)
-	{
-		List verts = new ArrayList();
-		for (Iterator i = coords.iterator(); i.hasNext(); ) {
-			Coordinate coord = (Coordinate) i.next();
-			verts.add(new ConstraintVertex(coord));
-		}
-		return verts;
-	}
+        /// <summary>
+        /// Sets the sites (point or vertices) which will be triangulated.
+        /// All vertices of the given geometry will be used as sites.
+        /// </summary>
+        /// <remarks>The geometry from which the sites will be extracted.</remarks>
+        public IGeometry Sites
+        {
+            set
+            {
+                siteCoords = DelaunayTriangulationBuilder.ExtractUniqueCoordinates(value);
+            }
+        }
 
-	private void createVertices(Geometry geom)
-	{
-		Coordinate[] coords = geom.getCoordinates();
-		for (int i = 0; i < coords.length; i++) {
-			Vertex v = new ConstraintVertex(coords[i]);
-			vertexMap.put(coords[i], v);
-		}
-	}
-	
-	private static List createConstraintSegments(Geometry geom)
-	{
-		List lines = LinearComponentExtracter.getLines(geom);
-		List constraintSegs = new ArrayList();
-		for (Iterator i = lines.iterator(); i.hasNext(); ) {
-			LineString line = (LineString) i.next();
-			createConstraintSegments(line, constraintSegs);
-		}
-		return constraintSegs;
-	}
-	
-	private static void createConstraintSegments(LineString line, List constraintSegs)
-	{
-		Coordinate[] coords = line.getCoordinates();
-		for (int i = 1; i < coords.length; i++) {
-			constraintSegs.add(new Segment(coords[i-1], coords[i]));
-		}
-	}
+        /// <summary>
+        /// Sets the linear constraints to be conformed to.
+        /// All linear components in the input will be used as constraints.
+        /// </summary>
+        /// <remarks>The lines to constraint to</remarks>
+        ///
+        public IGeometry Constraints
+        {
+            set
+            {
+                this.constraintLines = value;
+            }
+        }
 
-	/**
-	 * Gets the QuadEdgeSubdivision which models the computed triangulation.
-	 * 
-	 * @return the subdivision containing the triangulation
-	 */
-	public QuadEdgeSubdivision getSubdivision()
-	{
-		create();
-		return subdiv;
-	}
-	
-	/**
-	 * Gets the edges of the computed triangulation as a {@link MultiLineString}.
-	 * 
-	 * @param geomFact the geometry factory to use to create the output
-	 * @return the edges of the triangulation
-	 */
-	public Geometry getEdges(GeometryFactory geomFact)
-	{
-		create();
-		return subdiv.getEdges(geomFact);
-	}
-	
-	/**
-	 * Gets the faces of the computed triangulation as a {@link GeometryCollection} 
-	 * of {@link Polygon}.
-	 * 
-	 * @param geomFact the geometry factory to use to create the output
-	 * @return the faces of the triangulation
-	 */
-	public Geometry getTriangles(GeometryFactory geomFact)
-	{
-		create();
-		return subdiv.getTriangles(geomFact);
-	}
+        /// <summary>
+        /// Sets the snapping tolerance which will be used
+        /// to improved the robustness of the triangulation computation.
+        /// A tolerance of 0.0 specifies that no snapping will take place.
+        /// </summary>
+        /// <remarks>The tolerance distance to use</remarks>
+        public double Tolerance
+        {
+            set
+            {
+                this.tolerance = value;
+            }
+        }
 
+        private void Create()
+        {
+            if (subdiv != null) return;
+
+            var siteEnv = DelaunayTriangulationBuilder.Envelope(siteCoords);
+
+            var sites = CreateConstraintVertices(siteCoords);
+
+            IList<Segment> segments = new List<Segment>();
+            if (constraintLines != null)
+            {
+                siteEnv.ExpandToInclude(constraintLines.EnvelopeInternal);
+                CreateVertices(constraintLines);
+                segments = CreateConstraintSegments(constraintLines);
+            }
+
+            ConformingDelaunayTriangulator cdt = new ConformingDelaunayTriangulator(sites, tolerance);
+
+            cdt.SetConstraints(segments, new List<Vertex>(vertexMap.Values));
+
+            cdt.FormInitialDelaunay();
+            cdt.EnforceConstraints();
+            subdiv = cdt.Subdivision;
+        }
+
+        private static IList<Vertex> CreateConstraintVertices(ICollection<ICoordinate> coords)
+        {
+            var verts = new List<Vertex>();
+            foreach (var coord in coords)
+            {
+                verts.Add(new ConstraintVertex(coord));
+            }
+            return verts;
+        }
+
+        private void CreateVertices(IGeometry geom)
+        {
+            var coords = geom.Coordinates;
+            for (int i = 0; i < coords.Length; i++)
+            {
+                Vertex v = new ConstraintVertex(coords[i]);
+                vertexMap.Add(coords[i], v);
+            }
+        }
+
+        private static IList<Segment> CreateConstraintSegments(IGeometry geom)
+        {
+            var lines = LinearComponentExtracter.GetLines(geom);
+            var constraintSegs = new List<Segment>();
+            foreach (var line in lines)
+            {
+                CreateConstraintSegments(line, constraintSegs);
+            }
+            return constraintSegs;
+        }
+
+        private static void CreateConstraintSegments(ILineString line, IList<Segment> constraintSegs)
+        {
+            var coords = line.Coordinates;
+            for (int i = 1; i < coords.Length; i++)
+            {
+                constraintSegs.Add(new Segment(coords[i - 1], coords[i]));
+            }
+        }
+
+        /// <summary>
+        /// Gets the QuadEdgeSubdivision which models the computed triangulation.
+        /// </summary>
+        /// <returns>The subdivision containing the triangulation</returns>
+        public QuadEdgeSubdivision getSubdivision()
+        {
+            Create();
+            return subdiv;
+        }
+
+        /// <summary>
+        /// Gets the edges of the computed triangulation as a <see cref="IMultiLineString"/>.
+        /// </summary>
+        /// <param name="geomFact">The geometry factory to use to create the output</param>
+        /// <returns>the edges of the triangulation</returns>
+        public IMultiLineString GetEdges(IGeometryFactory geomFact)
+        {
+            Create();
+            return subdiv.GetEdges(geomFact);
+        }
+
+        /// <summary>
+        /// Gets the faces of the computed triangulation as a <see cref="IGeometryCollection"/> 
+        /// of <see cref="Polygon"/>.
+        /// </summary>
+        /// <param name="geomFact">the geometry factory to use to create the output</param>
+        /// <returns>the faces of the triangulation</returns>
+        public IGeometryCollection GetTriangles(IGeometryFactory geomFact)
+        {
+            Create();
+            return subdiv.GetTriangles(geomFact);
+        }
+
+    }
 }
-
 

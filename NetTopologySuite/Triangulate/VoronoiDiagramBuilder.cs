@@ -1,180 +1,153 @@
-/*
- * The JTS Topology Suite is a collection of Java classes that
- * implement the fundamental operations required to validate a given
- * geo-spatial data set to a known topological specification.
- *
- * Copyright (C) 2001 Vivid Solutions
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * For more information, contact:
- *
- *     Vivid Solutions
- *     Suite #1A
- *     2328 Government Street
- *     Victoria BC  V8T 5G5
- *     Canada
- *
- *     (250)385-6040
- *     www.vividsolutions.com
- */
-package com.vividsolutions.jts.triangulate;
+using System;
+using System.Collections.Generic;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Triangulate.QuadEdge;
 
-import java.util.*;
-
-import com.vividsolutions.jts.geom.*;
-import com.vividsolutions.jts.triangulate.quadedge.*;
-
-/**
- * A utility class which creates Voronoi Diagrams
- * from collections of points.
- * The diagram is returned as a {@link GeometryCollection} of {@link Polygon}s,
- * clipped to the larger of a supplied envelope or to an envelope determined
- * by the input sites.
- * 
- * @author Martin Davis
- *
- */
-public class VoronoiDiagramBuilder 
+namespace NetTopologySuite.Triangulate
 {
-	private Collection siteCoords;
-	private double tolerance = 0.0;
-	private QuadEdgeSubdivision subdiv = null;
-	private Envelope clipEnv = null;
-	private Envelope diagramEnv = null; 
-	
-	/**
-	 * Creates a new Voronoi diagram builder.
-	 *
-	 */
-	public VoronoiDiagramBuilder()
-	{
-	}
-	
-	/**
-	 * Sets the sites (point or vertices) which will be diagrammed.
-	 * All vertices of the given geometry will be used as sites.
-	 * 
-	 * @param geom the geometry from which the sites will be extracted.
-	 */
-	public void setSites(Geometry geom)
-	{
-		// remove any duplicate points (they will cause the triangulation to fail)
-		siteCoords = DelaunayTriangulationBuilder.extractUniqueCoordinates(geom);
-	}
-	
-	/**
-	 * Sets the sites (point or vertices) which will be diagrammed
-	 * from a collection of {@link Coordinate}s.
-	 * 
-	 * @param geom a collection of Coordinates.
-	 */
-	public void setSites(Collection coords)
-	{
-		// remove any duplicate points (they will cause the triangulation to fail)
-		siteCoords = DelaunayTriangulationBuilder.unique(CoordinateArrays.toCoordinateArray(coords));
-	}
-	
-	/**
-	 * Sets the envelope to clip the diagram to.
-	 * The diagram will be clipped to the larger
-	 * of this envelope or an envelope surrounding the sites.
-	 * 
-	 * @param clipEnv the clip envelope.
-	 */
-	public void setClipEnvelope(Envelope clipEnv)
-	{
-		this.clipEnv = clipEnv;
-	}
-	/**
-	 * Sets the snapping tolerance which will be used
-	 * to improved the robustness of the triangulation computation.
-	 * A tolerance of 0.0 specifies that no snapping will take place.
-	 * 
-	 * @param tolerance the tolerance distance to use
-	 */
-	public void setTolerance(double tolerance)
-	{
-		this.tolerance = tolerance;
-	}
-	
-	private void create()
-	{
-		if (subdiv != null) return;
-		
-		Envelope siteEnv = DelaunayTriangulationBuilder.envelope(siteCoords);
-		diagramEnv = siteEnv;
-		// add a buffer around the final envelope
-		double expandBy = Math.max(diagramEnv.getWidth(), diagramEnv.getHeight());
-		diagramEnv.expandBy(expandBy);
-		if (clipEnv != null)
-			diagramEnv.expandToInclude(clipEnv);
-		
-		List vertices = DelaunayTriangulationBuilder.toVertices(siteCoords);
-		subdiv = new QuadEdgeSubdivision(siteEnv, tolerance);
-		IncrementalDelaunayTriangulator triangulator = new IncrementalDelaunayTriangulator(subdiv);
-		triangulator.insertSites(vertices);
-	}
-	
-	/**
-	 * Gets the {@link QuadEdgeSubdivision} which models the computed diagram.
-	 * 
-	 * @return the subdivision containing the triangulation
-	 */
-	public QuadEdgeSubdivision getSubdivision()
-	{
-		create();
-		return subdiv;
-	}
-	
-	/**
-	 * Gets the faces of the computed diagram as a {@link GeometryCollection} 
-	 * of {@link Polygon}s, clipped as specified.
-	 * 
-	 * @param geomFact the geometry factory to use to create the output
-	 * @return the faces of the diagram
-	 */
-	public Geometry getDiagram(GeometryFactory geomFact)
-	{
-		create();
-		Geometry polys = subdiv.getVoronoiDiagram(geomFact);
-		
-		// clip polys to diagramEnv
-		return clipGeometryCollection(polys, diagramEnv);
-	}
-	
-	private static Geometry clipGeometryCollection(Geometry geom, Envelope clipEnv)
-	{
-		Geometry clipPoly = geom.getFactory().toGeometry(clipEnv);
-		List clipped = new ArrayList();
-		for (int i = 0; i < geom.getNumGeometries(); i++) {
-			Geometry g = geom.getGeometryN(i);
-			Geometry result = null;
-			// don't clip unless necessary
-			if (clipEnv.contains(g.getEnvelopeInternal()))
-					result = g;
-			else if (clipEnv.intersects(g.getEnvelopeInternal())) {
-				result = clipPoly.intersection(g);
-				// keep vertex key info
-				result.setUserData(g.getUserData());
-			}
 
-			if (result != null && ! result.isEmpty()) {
-				clipped.add(result);
-			}
-		}
-		return geom.getFactory().createGeometryCollection(GeometryFactory.toGeometryArray(clipped));
-	}
+    /// <summary>
+    /// A utility class which creates Voronoi Diagrams
+    /// from collections of points.
+    /// The diagram is returned as a <see cref="IGeometryCollection"/> of <see cref="Polygon"/>s,
+    /// clipped to the larger of a supplied envelope or to an envelope determined
+    /// by the input sites.
+    /// </summary>
+    /// <author>Martin Davis</author>
+    public class VoronoiDiagramBuilder
+    {
+        private ICollection<ICoordinate> siteCoords;
+        private double tolerance = 0.0;
+        private QuadEdgeSubdivision subdiv = null;
+        private Envelope clipEnv = null;
+        private Envelope diagramEnv = null;
+
+        /// <summary>
+        /// Creates a new Voronoi diagram builder.
+        ///
+        ///
+        public VoronoiDiagramBuilder()
+        {
+        }
+
+        /// <summary>
+        /// Sets the sites (point or vertices) which will be diagrammed.
+        /// All vertices of the given geometry will be used as sites.
+        /// </summary>
+        /// <param name="geom">geom the geometry from which the sites will be extracted.</param>
+        public void SetSites(IGeometry geom)
+        {
+            // remove any duplicate points (they will cause the triangulation to fail)
+            siteCoords = DelaunayTriangulationBuilder.ExtractUniqueCoordinates(geom);
+        }
+
+        /// <summary>
+        /// Sets the sites (point or vertices) which will be diagrammed
+        /// from a collection of <see cref="ICoordinate"/>s.
+        /// </summary>
+        /// <param name="geom">a collection of Coordinates.</param>
+        public void SetSites(ICollection<ICoordinate> geom)
+        {
+            // remove any duplicate points (they will cause the triangulation to fail)
+            siteCoords = DelaunayTriangulationBuilder.Unique(CoordinateArrays.ToCoordinateArray(geom));
+        }
+
+        /// <summary>
+        /// Sets the envelope to clip the diagram to.
+        /// The diagram will be clipped to the larger
+        /// of this envelope or an envelope surrounding the sites.
+        /// </summary>
+        /// <remarks>the clip envelope.</remarks>
+        public Envelope ClipEnvelope
+        {
+            set
+            {
+                this.clipEnv = value;
+            }
+        }
+
+        /// <summary>
+        /// Sets the snapping tolerance which will be used
+        /// to improved the robustness of the triangulation computation.
+        /// A tolerance of 0.0 specifies that no snapping will take place.
+        /// </summary>
+        /// <remarks>tolerance the tolerance distance to use</remarks>
+        public double Tolerance
+        {
+            set
+            {
+                this.tolerance = value;
+            }
+        }
+
+        private void Create()
+        {
+            if (subdiv != null) return;
+
+            Envelope siteEnv = DelaunayTriangulationBuilder.Envelope(siteCoords);
+            diagramEnv = siteEnv;
+            // add a buffer around the final envelope
+            double expandBy = Math.Max(diagramEnv.Width, diagramEnv.Height);
+            diagramEnv.ExpandBy(expandBy);
+            if (clipEnv != null)
+                diagramEnv.ExpandToInclude(clipEnv);
+
+            var vertices = DelaunayTriangulationBuilder.ToVertices(siteCoords);
+            subdiv = new QuadEdgeSubdivision(siteEnv, tolerance);
+            IncrementalDelaunayTriangulator triangulator = new IncrementalDelaunayTriangulator(subdiv);
+            triangulator.InsertSites(vertices);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="QuadEdgeSubdivision"/> which models the computed diagram.
+        /// </summary>
+        /// <returns>the subdivision containing the triangulation</returns>
+        public QuadEdgeSubdivision GetSubdivision()
+        {
+            Create();
+            return subdiv;
+        }
+
+        /// <summary>
+        /// Gets the faces of the computed diagram as a <see cref="IGeometryCollection"/> 
+        /// of <see cref="Polygon"/>s, clipped as specified.
+        /// </summary>
+        /// <param name="geomFact">the geometry factory to use to create the output</param>
+        /// <returns>the faces of the diagram</returns>
+        public IGeometryCollection GetDiagram(IGeometryFactory geomFact)
+        {
+            Create();
+            IGeometryCollection polys = subdiv.GetVoronoiDiagram(geomFact);
+
+            // clip polys to diagramEnv
+            return ClipGeometryCollection(polys, diagramEnv);
+        }
+
+        private static IGeometryCollection ClipGeometryCollection(IGeometryCollection geom, Envelope clipEnv)
+        {
+            IGeometry clipPoly = geom.Factory.ToGeometry(clipEnv);
+            var clipped = new List<IGeometry>();
+            for (int i = 0; i < geom.NumGeometries; i++)
+            {
+                IGeometry g = geom.GetGeometryN(i);
+                IGeometry result = null;
+                // don't clip unless necessary
+                if (clipEnv.Contains(g.EnvelopeInternal))
+                    result = g;
+                else if (clipEnv.Intersects(g.EnvelopeInternal))
+                {
+                    result = clipPoly.Intersection(g);
+                    // keep vertex key info
+                    result.UserData = g.UserData;
+                }
+
+                if (result != null && !result.IsEmpty)
+                {
+                    clipped.Add(result);
+                }
+            }
+            return geom.Factory.CreateGeometryCollection(GeometryFactory.ToGeometryArray(clipped));
+        }
+    }
 }

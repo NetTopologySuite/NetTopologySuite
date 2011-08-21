@@ -162,8 +162,9 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// Tests if the LinearRing ring formed by this edge ring is topologically valid.
+        /// Tests if the <see cref="ILinearRing" /> ring formed by this edge ring is topologically valid.
         /// </summary>
+        /// <return>true if the ring is valid.</return>
         public bool IsValid
         {
             get

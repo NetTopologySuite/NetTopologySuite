@@ -387,10 +387,10 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Returns the signed area for a ring.
+        /// Computes the signed area for a ring.
         /// <remarks>
         /// <para>
-        /// The area is
+        /// The signed area is
         /// </para>  
         /// <list type="Table">
         /// <item>positive</item><description>if the ring is oriented CW</description>
@@ -419,10 +419,10 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Returns the signed area for a ring.
+        /// Computes the signed area for a ring.
         /// <remarks>
         /// <para>
-        /// The area is
+        /// The signed area is
         /// </para>  
         /// <list type="Table">
         /// <item>positive</item><description>if the ring is oriented CW</description>

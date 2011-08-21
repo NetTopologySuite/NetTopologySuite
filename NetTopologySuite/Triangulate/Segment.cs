@@ -5,92 +5,79 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Triangulate
 {
 
-    /**
-     * Models a constraint segment in a triangulation.
-     * A constraint segment is an oriented straight line segment between a start point
-     * and an end point.
-     * 
-     * @author David Skea
-     * @author Martin Davis
-     */
-
+    /// <summary>
+    /// Models a constraint segment in a triangulation.
+    /// A constraint segment is an oriented straight line segment between a start point
+    /// and an end point.
+    /// 
+    /// @author David Skea
+    /// @author Martin Davis
+    ///
     public class Segment
     {
         private readonly LineSegment _ls;
         private Object _data;
 
-        /** 
-         * Creates a new instance for the given ordinates.
-         */
-
+        /// <summary> 
+        /// Creates a new instance for the given ordinates.
+        /// </summary>
         public Segment(double x1, double y1, double z1, double x2, double y2, double z2)
             :this(new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2))
         {
         }
 
-        /** 
-         * Creates a new instance for the given ordinates,  with associated external data. 
-         */
-
+        /// <summary> 
+        /// Creates a new instance for the given ordinates,  with associated external data. 
+        /// </summary>
         public Segment(double x1, double y1, double z1, double x2, double y2, double z2, Object data)
             : this(new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2), data)
         {
         }
 
-        /** 
-         * Creates a new instance for the given points, with associated external data.
-         * 
-         * @param p0 the start point
-         * @param p1 the end point
-         * @param data an external data object
-         */
-
+        /// <summary> 
+        /// Creates a new instance for the given points, with associated external data.
+        /// </summary>
+        /// <param name="p0">the start point</param>
+        /// <param name="p1">the end point</param>
+        /// <param name="data">an external data object</param>
         public Segment(ICoordinate p0, ICoordinate p1, Object data)
         {
             _ls = new LineSegment(p0, p1);
             _data = data;
         }
 
-        /** 
-         * Creates a new instance for the given points.
-         * 
-         * @param p0 the start point
-         * @param p1 the end point
-         */
-
+        /// <summary> 
+        /// Creates a new instance for the given points.
+        /// </summary>
+        /// <param name="p0">the start point</param>
+        /// <param name="p1">the end point</param>
         public Segment(ICoordinate p0, ICoordinate p1)
         {
             _ls = new LineSegment(p0, p1);
         }
 
-        /**
-         * Gets the start coordinate of the segment
-         * 
-         * @return a Coordinate
-         */
-
+        /// <summary>
+        /// Gets the start coordinate of the segment
+        /// </summary>
+        /// <remarks>a Coordinate</remarks>
         public ICoordinate Start
         {
             get {return _ls.GetCoordinate(0);}
         }
 
-        /**
-         * Gets the end coordinate of the segment
-         * 
-         * @return a Coordinate
-         */
-
+        /// <summary>
+        /// Gets the end coordinate of the segment
+        /// </summary>
+        /// <remarks>a Coordinate</remarks>
         public ICoordinate End
         {
             get {return _ls.GetCoordinate(1);}
         }
 
-        /**
-         * Gets the start X ordinate of the segment
-         * 
-         * @return the X ordinate value
-         */
-
+        /// <summary>
+        /// Gets the start X ordinate of the segment
+        /// </summary>
+        /// <remarks>the X ordinate value</remarks>
         public double StartX
         {
             get
@@ -100,12 +87,10 @@ namespace NetTopologySuite.Triangulate
             }
         }
 
-        /**
-         * Gets the start Y ordinate of the segment
-         * 
-         * @return the Y ordinate value
-         */
-
+        /// <summary>
+        /// Gets the start Y ordinate of the segment
+        /// </summary>
+        /// <remarks>the Y ordinate value</remarks>
         public double StartY
         {
             get
@@ -115,12 +100,10 @@ namespace NetTopologySuite.Triangulate
             }
         }
 
-        /**
-         * Gets the start Z ordinate of the segment
-         * 
-         * @return the Z ordinate value
-         */
-
+        /// <summary>
+        /// Gets the start Z ordinate of the segment
+        /// </summary>
+        /// <remarks>the Z ordinate value</remarks>
         public double StartZ
         {
             get
@@ -130,12 +113,10 @@ namespace NetTopologySuite.Triangulate
             }
         }
 
-        /**
-         * Gets the end X ordinate of the segment
-         * 
-         * @return the X ordinate value
-         */
-
+        /// <summary>
+        /// Gets the end X ordinate of the segment
+        /// </summary>
+        /// <remarks>the X ordinate value</remarks>
         public double EndX
         {
             get
@@ -145,12 +126,10 @@ namespace NetTopologySuite.Triangulate
             }
         }
 
-        /**
-         * Gets the end Y ordinate of the segment
-         * 
-         * @return the Y ordinate value
-         */
-
+        /// <summary>
+        /// Gets the end Y ordinate of the segment
+        /// </summary>
+        /// <remarks>he Y ordinate value</remarks>
         public double EndY
         {
             get
@@ -160,12 +139,10 @@ namespace NetTopologySuite.Triangulate
             }
         }
 
-        /**
-         * Gets the end Z ordinate of the segment
-         * 
-         * @return the Z ordinate value
-         */
-
+        /// <summary>
+        /// Gets the end Z ordinate of the segment
+        /// </summary>
+        /// <remarks>the Z ordinate value</remarks>
         public double EndZ
         {
             get
@@ -175,23 +152,19 @@ namespace NetTopologySuite.Triangulate
             }
         }
 
-        /**
-         * Gets a <tt>LineSegment</tt> modelling this segment.
-         * 
-         * @return a LineSegment
-         */
-
+        /// <summary>
+        /// Gets a <tt>LineSegment</tt> modelling this segment.
+        /// </summary>
+        /// <remarks>a LineSegment</remarks>
         public LineSegment LineSegment
         {
            get {return _ls;}
         }
 
-        /**
-         * Gets or sets the external data associated with this segment
-         * 
-         * @return a data object
-         */
-
+        /// <summary>
+        /// Gets or sets the external data associated with this segment
+        /// </summary>
+        /// <remarks>a data object</remarks>
         public Object Data
         {
             get {return _data;}
@@ -201,37 +174,31 @@ namespace NetTopologySuite.Triangulate
             }
         }
 
-        /**
-         * Determines whether two segments are topologically equal.
-         * I.e. equal up to orientation.
-         * 
-         * @param s a segment
-         * @return true if the segments are topologically equal
-         */
-
+        /// <summary>
+        /// Determines whether two segments are topologically equal.
+        /// I.e. equal up to orientation.
+        /// </summary>
+        /// <param name="s">a segment</param>
+        /// <returns>true if the segments are topologically equal</returns>
         public bool EqualsTopologically(Segment s)
         {
             return _ls.EqualsTopologically(s.LineSegment);
         }
 
-        /**
-         * Computes the intersection point between this segment and another one.
-         * 
-         * @param s a segment
-         * @return the intersection point, or <code>null</code> if there is none
-         */
-
+        /// <summary>
+        /// Computes the intersection point between this segment and another one.
+        /// </summary>
+        /// <param name="s">a segment</param>
+        /// <returns>the intersection point, or <code>null</code> if there is none</returns>
         public ICoordinate Intersection(Segment s)
         {
             return _ls.Intersection(s.LineSegment);
         }
 
-        /**
-         * Computes a string representation of this segment.
-         * 
-         * @return a string
-         */
-
+        /// <summary>
+        /// Computes a string representation of this segment.
+        /// </summary>
+        /// <returns>a string</returns>
         public override String ToString()
         {
             return _ls.ToString();

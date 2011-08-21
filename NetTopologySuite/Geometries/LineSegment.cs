@@ -509,7 +509,7 @@ namespace NetTopologySuite.Geometries
         /// more information is required about the details of the intersection,
         /// the {RobustLineIntersector} class should be used.
         /// </summary>
-        /// <param name="line"></param>
+        /// <param name="line">A line segment</param>
         /// <returns> An intersection point, or <c>null</c> if there is none.</returns>
         /// <see cref="RobustLineIntersector"/>
         public ICoordinate Intersection(LineSegment line)

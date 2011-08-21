@@ -5,33 +5,24 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
-/**
- * Models a site (node) in a {@link QuadEdgeSubdivision}. 
- * The sites can be points on a lineString representing a
- * linear site. 
- * The vertex can be considered as a vector with a norm, length, inner product, cross
- * product, etc. Additionally, point relations (e.g., is a point to the left of a line, the circle
- * defined by this point and two others, etc.) are also defined in this class.
- * 
- * @author David Skea
- * @author Martin Davis
- */
-
+    /// <summary>
+    /// Models a site (node) in a <see cref="QuadEdgeSubdivision"/>. 
+    /// The sites can be points on a lineString representing a
+    /// linear site. 
+    /// The vertex can be considered as a vector with a norm, length, inner product, cross
+    /// product, etc. Additionally, point relations (e.g., is a point to the left of a line, the circle
+    /// defined by this point and two others, etc.) are also defined in this class.
+    /// </summary>
+    /// <author>David Skea</author>
+    /// <author>Martin Davis</author>
     public class Vertex
     {
-        public static readonly 
         private int LEFT = 0;
-        public static readonly 
         private int RIGHT = 1;
-        public static readonly 
         private int BEYOND = 2;
-        public static readonly 
         private int BEHIND = 3;
-        public static readonly 
         private int BETWEEN = 4;
-        public static readonly 
         private int ORIGIN = 5;
-        public static readonly 
         private int DESTINATION = 6;
 
         private readonly ICoordinate _p;
@@ -47,7 +38,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             _p = new Coordinate(x, y, z);
         }
 
-        public Vertex(Coordinate p)
+        public Vertex(ICoordinate p)
         {
             _p = new Coordinate(p);
         }
@@ -78,7 +69,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return "POINT (" + _p.X + " " + _p.Y + ")";
         }
 
-        public bool equals(Vertex x)
+        public bool Equals(Vertex x)
         {
             if (_p.X == x.X && _p.Y == x.Y)
             {
@@ -87,7 +78,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return false;
         }
 
-        public bool equals(Vertex x, double tolerance)
+        public bool Equals(Vertex x, double tolerance)
         {
             if (_p.Distance(x.Coordinate) < tolerance)
             {
@@ -117,37 +108,31 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return BETWEEN;
         }
 
-        /**
-     * Computes the cross product k = u X v.
-     * 
-     * @param v a vertex
-     * @return returns the magnitude of u X v
-     */
-
+        /// <summary>
+        /// Computes the cross product k = u X v.
+        /// </summary>
+        /// <param name="v">a vertex</param>
+        /// <returns>returns the magnitude of u X v</returns>
         private double CrossProduct(Vertex v)
         {
             return (_p.X*v.Y - _p.Y*v.X);
         }
 
-        /**
-     * Computes the inner or dot product
-     * 
-     * @param v, a vertex
-     * @return returns the dot product u.v
-     */
-
+        /// <summary>
+        /// Computes the inner or dot product
+        /// </summary>
+        /// <param name="v">a vertex</param>
+        /// <returns>the dot product u.v</returns>
         private double Dot(Vertex v)
         {
             return (_p.X*v.X + _p.Y*v.Y);
         }
 
-        /**
-     * Computes the scalar product c(v)
-     * 
-     * @param v, a vertex
-     * @return returns the scaled vector
-     */
-
+        /// <summary>
+        /// Computes the scalar product c(v)
+        /// </summary>
+        /// <param name="c">a vertex</param>
+        /// <returns>the scaled vector</returns>
         private Vertex Times(double c)
         {
             return (new Vertex(c*_p.X, c*_p.Y));
@@ -183,30 +168,28 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
         /** ************************************************************* */
         /***********************************************************************************************
-     * Geometric primitives /
-     **********************************************************************************************/
+        * Geometric primitives /
+        **********************************************************************************************/
 
-        /**
-     * Computes twice the area of the oriented triangle (a, b, c), i.e., the area is positive if the
-     * triangle is oriented counterclockwise.
-     */
+        /// <summary>
+        /// Computes twice the area of the oriented triangle (a, b, c), i.e., the area is positive if the
+        /// triangle is oriented counterclockwise.
+        /// </summary>
         private static double TriArea(Vertex a, Vertex b, Vertex c)
         {
             return (b._p.X - a._p.X)*(c._p.Y - a._p.Y)
                    - (b._p.Y - a._p.Y)*(c._p.X - a._p.X);
         }
 
-        /**
-     * Tests if this is inside the circle defined by the points a, b, c. This test uses simple
-     * double-precision arithmetic, and thus may not be robust.
-     * 
-     * @param a
-     * @param b
-     * @param c
-     * @return true if this point is inside the circle defined by the points a, b, c
-     */
-
-        private bool InCircle(Vertex a, Vertex b, Vertex c)
+        /// <summary>
+        /// Tests if this is inside the circle defined by the points a, b, c. This test uses simple
+        /// double-precision arithmetic, and thus may not be robust.
+        /// </summary>
+        /// <param name="a" />
+        /// <param name="b" />
+        /// <param name="c" />
+        /// <returns>true if this point is inside the circle defined by the points a, b, c</returns>
+        internal bool InCircle(Vertex a, Vertex b, Vertex c)
         {
             Vertex d = this;
             bool isInCircle =
@@ -237,15 +220,14 @@ namespace NetTopologySuite.Triangulate.QuadEdge
   }
 */
 
-        /**
-     * Tests whether the triangle formed by this vertex and two
-     * other vertices is in CCW orientation.
-     * 
-     * @param b a vertex
-     * @param c a vertex
-     * @returns true if the triangle is oriented CCW
-     */
-        private bool IsCCW(Vertex b, Vertex c)
+        /// <summary>
+        /// Tests whether the triangle formed by this vertex and two
+        /// other vertices is in CCW orientation.
+        /// </summary>
+        /// <param name="b">a vertex</param>
+        /// <param name="c">a vertex</param>
+        /// <returns>true if the triangle is oriented CCW</returns>
+        private bool IsCcw(Vertex b, Vertex c)
         {
             // is equal to the signed area of the triangle
 
@@ -286,34 +268,32 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return new HCoordinate(l1, l2);
         }
 
-        private double distance(Vertex v1, Vertex v2)
+        private double Distance(Vertex v1, Vertex v2)
         {
             return Math.Sqrt(Math.Pow(v2.X - v1.X, 2.0)
                              + Math.Pow(v2.Y - v1.Y, 2.0));
         }
 
-        /**
-     * Computes the value of the ratio of the circumradius to shortest edge. If smaller than some
-     * given tolerance B, the associated triangle is considered skinny. For an equal lateral
-     * triangle this value is 0.57735. The ratio is related to the minimum triangle angle theta by:
-     * circumRadius/shortestEdge = 1/(2sin(theta)).
-     * 
-     * @param b second vertex of the triangle
-     * @param c third vertex of the triangle
-     * @return ratio of circumradius to shortest edge.
-     */
-
+        /// <summary>
+        /// Computes the value of the ratio of the circumradius to shortest edge. If smaller than some
+        /// given tolerance B, the associated triangle is considered skinny. For an equal lateral
+        /// triangle this value is 0.57735. The ratio is related to the minimum triangle angle theta by:
+        /// circumRadius/shortestEdge = 1/(2sin(theta)).
+        /// </summary>
+        /// <param name="b">second vertex of the triangle</param>
+        /// <param name="c">third vertex of the triangle</param>
+        /// <returns>ratio of circumradius to shortest edge.</returns>
         public double CircumRadiusRatio(Vertex b, Vertex c)
         {
             Vertex x = this.CircleCenter(b, c);
-            double radius = distance(x, b);
-            double edgeLength = distance(this, b);
-            double el = distance(b, c);
+            double radius = Distance(x, b);
+            double edgeLength = Distance(this, b);
+            double el = Distance(b, c);
             if (el < edgeLength)
             {
                 edgeLength = el;
             }
-            el = distance(c, this);
+            el = Distance(c, this);
             if (el < edgeLength)
             {
                 edgeLength = el;
@@ -321,13 +301,11 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return radius/edgeLength;
         }
 
-        /**
-     * returns a new vertex that is mid-way between this vertex and another end point.
-     * 
-     * @param a the other end point.
-     * @return the point mid-way between this and that.
-     */
-
+        /// <summary>
+        /// returns a new vertex that is mid-way between this vertex and another end point.
+        /// </summary>
+        /// <param name="a">the other end point.</param>
+        /// <returns>the point mid-way between this and that.</returns>
         public Vertex MidPoint(Vertex a)
         {
             double xm = (_p.X + a.X)/2.0;
@@ -336,14 +314,12 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return new Vertex(xm, ym, zm);
         }
 
-        /**
-     * Computes the centre of the circumcircle of this vertex and two others.
-     * 
-     * @param b
-     * @param c
-     * @return the Coordinate which is the circumcircle of the 3 points.
-     */
-
+        /// <summary>
+        /// Computes the centre of the circumcircle of this vertex and two others.
+        /// </summary>
+        /// <param name="b" />
+        /// <param name="c" />
+        /// <returns>the Coordinate which is the circumcircle of the 3 points.</returns>
         public Vertex CircleCenter(Vertex b, Vertex c)
         {
             Vertex a = new Vertex(this.X, this.Y);
@@ -366,12 +342,11 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return cc;
         }
 
-        /**
-     * For this vertex enclosed in a triangle defined by three verticies v0, v1 and v2, interpolate
-     * a z value from the surrounding vertices.
-     */
-
-        public double interpolateZValue(Vertex v0, Vertex v1, Vertex v2)
+        /// <summary>
+        /// For this vertex enclosed in a triangle defined by three verticies v0, v1 and v2, interpolate
+        /// a z value from the surrounding vertices.
+        /// </summary>
+        public double InterpolateZValue(Vertex v0, Vertex v1, Vertex v2)
         {
             double x0 = v0.X;
             double y0 = v0.Y;
@@ -388,10 +363,9 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return z;
         }
 
-        /**
-     * Interpolates the Z value of a point enclosed in a 3D triangle.
-     */
-
+        /// <summary>
+        /// Interpolates the Z value of a point enclosed in a 3D triangle.
+        /// </summary>
         public static double InterpolateZ(Coordinate p, Coordinate v0, Coordinate v1, Coordinate v2)
         {
             double x0 = v0.X;
@@ -409,15 +383,13 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return z;
         }
 
-        /**
-     * Computes the interpolated Z-value for a point p lying on the segment p0-p1
-     * 
-     * @param p
-     * @param p0
-     * @param p1
-     * @return
-     */
-
+        /// <summary>
+        /// Computes the interpolated Z-value for a point p lying on the segment p0-p1
+        /// </summary>  
+        /// <param name="p" />
+        /// <param name="p0" />
+        /// <param name="p1" />
+        /// <returns />
         public static double InterpolateZ(Coordinate p, Coordinate p0, Coordinate p1)
         {
             double segLen = p0.Distance(p1);
@@ -545,6 +517,5 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         // return (bx.subtract(ax).multiply(cy.subtract(ay)).subtract(by.subtract(ay).multiply(
         // cx.subtract(ax))));
         // }
-
     }
 }

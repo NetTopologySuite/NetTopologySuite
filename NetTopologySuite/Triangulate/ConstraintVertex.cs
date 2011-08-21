@@ -1,109 +1,75 @@
-/*
- * The JTS Topology Suite is a collection of Java classes that
- * implement the fundamental operations required to validate a given
- * geo-spatial data set to a known topological specification.
- *
- * Copyright (C) 2001 Vivid Solutions
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * For more information, contact:
- *
- *     Vivid Solutions
- *     Suite #1A
- *     2328 Government Street
- *     Victoria BC  V8T 5G5
- *     Canada
- *
- *     (250)385-6040
- *     www.vividsolutions.com
- */
-package com.vividsolutions.jts.triangulate;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Triangulate.QuadEdge;
 
+namespace NetTopologySuite.Triangulate
+{
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.triangulate.quadedge.Vertex;
+    /// <summary>
+    /// A vertex in a Constrained Delaunay Triangulation.
+    /// The vertex may or may not lie on a constraint.
+    /// If it does it may carry extra information about the original constraint.
+    /// </summary>
+    /// <author>Martin Davis</author>
+    public class ConstraintVertex : Vertex
+    {
+        private bool isOnConstraint;
+        private object constraint = null;
 
-/**
- * A vertex in a Constrained Delaunay Triangulation.
- * The vertex may or may not lie on a constraint.
- * If it does it may carry extra information about the original constraint.
- * 
- * @author Martin Davis
- */
-public class ConstraintVertex extends Vertex {
-    private boolean isOnConstraint;
-    private Object  constraint = null;
+        /// <summary>
+        /// Creates a new constraint vertex
+        /// </summary>
+        /// <param name="p">the location of the vertex</param>
+        public ConstraintVertex(ICoordinate p)
+            : base(p)
+        {
+        }
 
-    /**
-     * Creates a new constraint vertex
-     * 
-     * @param p the location of the vertex
-     */
-    public ConstraintVertex(Coordinate p) {
-        super(p);
-    }
+        /// <summary>
+        /// Gets or sets whether this vertex lies on a constraint.
+        /// </summary>
+        /// <remarks>true if the vertex lies on a constraint</remarks>
+        public bool IsOnConstraint
+        {
+            get
+            {
+                return isOnConstraint;
+            }
+            set
+            {
+                this.isOnConstraint = value;
+            }
+        }
 
-    /**
-     * Sets whether this vertex lies on a constraint.
-     * 
-     * @param isOnConstraint true if this vertex lies on a constraint
-     */
-    public void setOnConstraint(boolean isOnConstraint) {
-        this.isOnConstraint = isOnConstraint;
-    }
+        /// <summary>
+        /// Gets or sets the external constraint object
+        /// </summary>
+        /// <remarks>object which carries information about the constraint this vertex lies on</remarks>
+        public object Constraint
+        {
+            get
+            {
+                return constraint;
+            }
+            set
+            {
+                isOnConstraint = true;
+                this.constraint = value;
+            }
+        }
 
-    /**
-     * Tests whether this vertex lies on a constraint.
-     * 
-     * @return true if the vertex lies on a constraint
-     */
-    public boolean isOnConstraint() {
-        return isOnConstraint;
-    }
-
-    /**
-     * Sets the external constraint information
-     * 
-     * @param constraint an object which carries information about the constraint this vertex lies on
-     */
-    public void setConstraint(Object constraint) {
-        isOnConstraint = true;
-        this.constraint = constraint;
-    }
-
-    /**
-     * Gets the external constraint object
-     * 
-     * @return the external constraint object
-     */
-    public Object getConstraint() {
-        return constraint;
-    }
-
-    /**
-     * Merges the constraint data in the vertex <tt>other</tt> into this vertex. 
-     * This method is called when an inserted vertex is
-     * very close to an existing vertex in the triangulation.
-     * 
-     * @param other the constraint vertex to merge
-     */
-    protected void merge(ConstraintVertex other) {
-        if (other.isOnConstraint) {
-            isOnConstraint = true;
-            constraint = other.constraint;
+        /// <summary>
+        /// Merges the constraint data in the vertex <tt>other</tt> into this vertex. 
+        /// This method is called when an inserted vertex is
+        /// very close to an existing vertex in the triangulation.
+        /// </summary>
+        /// <param name="other">the constraint vertex to merge</param>
+        protected internal void Merge(ConstraintVertex other)
+        {
+            if (other.isOnConstraint) {
+                isOnConstraint = true;
+                constraint = other.constraint;
+            }
         }
     }
 }

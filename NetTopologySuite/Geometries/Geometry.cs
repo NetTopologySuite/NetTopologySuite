@@ -1336,7 +1336,9 @@ namespace NetTopologySuite.Geometries
         /// <li><see cref="BufferStyle.CapSquare" /> - a half-square</li>
         /// </ul></para>
         /// <para>The buffer operation always returns a polygonal result. The negative or
-        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.</para>
+        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.
+        /// This is also the result for the buffers of degenerate (zero-area) polygons.
+        /// </para>
         /// </remarks>
         /// <param name="distance">
         /// The width of the buffer, interpreted according to the
@@ -1381,7 +1383,9 @@ namespace NetTopologySuite.Geometries
         /// <li><see cref="EndCapStyle.Square" /> - a half-square</li>
         /// </ul></para>
         /// <para>The buffer operation always returns a polygonal result. The negative or
-        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.</para>
+        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.
+        /// This is also the result for the buffers of degenerate (zero-area) polygons.
+        /// </para>
         /// </remarks>
         /// <param name="distance">
         /// The width of the buffer, interpreted according to the

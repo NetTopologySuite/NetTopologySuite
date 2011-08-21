@@ -1,563 +1,558 @@
-/*
- * The JTS Topology Suite is a collection of Java classes that
- * implement the fundamental operations required to validate a given
- * geo-spatial data set to a known topological specification.
- *
- * Copyright (C) 2001 Vivid Solutions
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * For more information, contact:
- *
- *     Vivid Solutions
- *     Suite #1A
- *     2328 Government Street
- *     Victoria BC  V8T 5G5
- *     Canada
- *
- *     (250)385-6040
- *     www.vividsolutions.com
- */
+using System;
+using System.Diagnostics;
+using System.Collections.Generic;
+using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Index.KdTree;
+using NetTopologySuite.Triangulate.QuadEdge;
 
-package com.vividsolutions.jts.triangulate;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
-import com.vividsolutions.jts.algorithm.ConvexHull;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.util.Debug;
-import com.vividsolutions.jts.index.kdtree.KdNode;
-import com.vividsolutions.jts.index.kdtree.KdTree;
-import com.vividsolutions.jts.triangulate.quadedge.LastFoundQuadEdgeLocator;
-import com.vividsolutions.jts.triangulate.quadedge.QuadEdgeSubdivision;
-import com.vividsolutions.jts.triangulate.quadedge.Vertex;
-
-/**
- * Computes a Conforming Delaunay Triangulation over a set of sites and a set of
- * linear constraints.
- * <p>
- * A conforming Delaunay triangulation is a true Delaunay triangulation. In it
- * each constraint segment is present as a union of one or more triangulation
- * edges. Constraint segments may be subdivided into two or more triangulation
- * edges by the insertion of additional sites. The additional sites are called
- * Steiner points, and are necessary to allow the segments to be faithfully
- * reflected in the triangulation while maintaining the Delaunay property.
- * Another way of stating this is that in a conforming Delaunay triangulation
- * every constraint segment will be the union of a subset of the triangulation
- * edges (up to tolerance).
- * <p>
- * A Conforming Delaunay triangulation is distinct from a Constrained Delaunay triangulation.
- * A Constrained Delaunay triangulation is not necessarily fully Delaunay, 
- * and it contains the constraint segments exactly as edges of the triangulation.
- * <p>
- * A typical usage pattern for the triangulator is:
- * <pre>
- * 	 ConformingDelaunayTriangulator cdt = new ConformingDelaunayTriangulator(sites, tolerance);
- * 
- *   // optional	
- *   cdt.setSplitPointFinder(splitPointFinder);
- *   cdt.setVertexFactory(vertexFactory);
- *   
- *	 cdt.setConstraints(segments, new ArrayList(vertexMap.values()));
- *	 cdt.formInitialDelaunay();
- *	 cdt.enforceConstraints();
- *	 subdiv = cdt.getSubdivision();
- * </pre>
- * 
- * @author David Skea
- * @author Martin Davis
- */
-public class ConformingDelaunayTriangulator 
+namespace NetTopologySuite.Triangulate
 {
-	private static Envelope computeVertexEnvelope(Collection vertices) {
-		Envelope env = new Envelope();
-		for (Iterator i = vertices.iterator(); i.hasNext();) {
-			Vertex v = (Vertex) i.next();
-			env.expandToInclude(v.getCoordinate());
-		}
-		return env;
-	}
 
-	private List initialVertices; // List<Vertex>
-	private List segVertices; // List<Vertex>
+    /// <summary>
+    /// Computes a Conforming Delaunay Triangulation over a set of sites and a set of
+    /// linear constraints.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// A conforming Delaunay triangulation is a true Delaunay triangulation. In it
+    /// each constraint segment is present as a union of one or more triangulation
+    /// edges. Constraint segments may be subdivided into two or more triangulation
+    /// edges by the insertion of additional sites. The additional sites are called
+    /// Steiner points, and are necessary to allow the segments to be faithfully
+    /// reflected in the triangulation while maintaining the Delaunay property.
+    /// Another way of stating this is that in a conforming Delaunay triangulation
+    /// every constraint segment will be the union of a subset of the triangulation
+    /// edges (up to tolerance).
+    /// </para>
+    /// <para>
+    /// A Conforming Delaunay triangulation is distinct from a Constrained Delaunay triangulation.
+    /// A Constrained Delaunay triangulation is not necessarily fully Delaunay, 
+    /// and it contains the constraint segments exactly as edges of the triangulation.
+    /// </para>
+    /// <para>
+    /// A typical usage pattern for the triangulator is:
+    /// <code>
+    /// 	 ConformingDelaunayTriangulator cdt = new ConformingDelaunayTriangulator(sites, tolerance);
+    /// 
+    ///   // optional	
+    ///   cdt.setSplitPointFinder(splitPointFinder);
+    ///   cdt.setVertexFactory(vertexFactory);
+    ///   
+    ///	 cdt.setConstraints(segments, new ArrayList(vertexMap.values()));
+    ///	 cdt.formInitialDelaunay();
+    ///	 cdt.enforceConstraints();
+    ///	 subdiv = cdt.getSubdivision();
+    /// </code>
+    /// </para>
+    /// </remarks>
+    /// <author>David Skea</author>
+    /// <author>Martin Davis</author>
+    public class ConformingDelaunayTriangulator 
+    {
+	    private static Envelope ComputeVertexEnvelope(ICollection<Vertex> vertices)
+        {
+		    Envelope env = new Envelope();
+            foreach (var v in vertices)
+            {
+			    env.ExpandToInclude(v.Coordinate);
+		    }
+		    return env;
+	    }
 
-	// MD - using a Set doesn't seem to be much faster
-	// private Set segments = new HashSet();
-	private List segments = new ArrayList(); // List<Segment>
-	private QuadEdgeSubdivision subdiv = null;
-	private IncrementalDelaunayTriangulator incDel;
-	private Geometry convexHull;
-	private ConstraintSplitPointFinder splitFinder = new NonEncroachingSplitPointFinder();
-	private KdTree kdt = null;
-	private ConstraintVertexFactory vertexFactory = null;
+	    private IList<Vertex> initialVertices; // List<Vertex>
+	    private IList<Vertex> segVertices; // List<Vertex>
 
-	// allPointsEnv expanded by a small buffer
-	private Envelope computeAreaEnv;
-	// records the last split point computed, for error reporting
-	private Coordinate splitPt = null;
+	    // MD - using a Set doesn't seem to be much faster
+	    // private Set segments = new HashSet();
+	    private IList<Segment> segments = new List<Segment>(); // List<Segment>
+	    private QuadEdgeSubdivision subdiv = null;
+	    private IncrementalDelaunayTriangulator incDel;
+	    private IGeometry convexHull;
+	    private ConstraintSplitPointFinder splitFinder = new NonEncroachingSplitPointFinder();
+	    private KdTree<Vertex> kdt = null;
+	    private ConstraintVertexFactory vertexFactory = null;
 
-	private double tolerance; // defines if two sites are the same.
+	    // allPointsEnv expanded by a small buffer
+	    private Envelope computeAreaEnv;
+	    // records the last split point computed, for error reporting
+	    private ICoordinate splitPt = null;
 
-	/**
-	 * Creates a Conforming Delaunay Triangulation based on the given
-	 * unconstrained initial vertices. The initial vertex set should not contain
-	 * any vertices which appear in the constraint set.
-	 * 
-	 * @param initialVertices
-	 *          a collection of {@link ConstraintVertex}
-	 * @param tolerance
-	 *          the distance tolerance below which points are considered identical
-	 */
-	public ConformingDelaunayTriangulator(Collection initialVertices,
-			double tolerance) {
-		this.initialVertices = new ArrayList(initialVertices);
-		this.tolerance = tolerance;
-		kdt = new KdTree(tolerance);
-	}
+	    private double tolerance; // defines if two sites are the same.
 
-	/**
-	 * Sets the constraints to be conformed to by the computed triangulation.
-	 * The unique set of vertices (as {@link ConstraintVertex}es) 
-	 * forming the constraints must also be supplied.
-	 * Supplying it explicitly allows the ConstraintVertexes to be initialized
-	 * appropriately(e.g. with external data), and avoids re-computing the unique set
-	 * if it is already available.
-	 * 
-	 * @param segments a list of the constraint {@link Segment}s
-	 * @param segVertices the set of unique {@link ConstraintVertex}es referenced by the segments
-	 */
-	public void setConstraints(List segments, List segVertices) {
-		this.segments = segments;
-		this.segVertices = segVertices;
-	}
+	    /// <summary>
+	    /// Creates a Conforming Delaunay Triangulation based on the given
+	    /// unconstrained initial vertices. The initial vertex set should not contain
+	    /// any vertices which appear in the constraint set.
+	    /// </summary>
+        /// <param name="initialVertices">a collection of <see cref="ConstraintVertex"/></param>
+        /// <param name="tolerance">the distance tolerance below which points are considered identical</param>
+	    public ConformingDelaunayTriangulator(IList<Vertex> initialVertices,
+			    double tolerance)
+        {
+		    this.initialVertices = new List<Vertex>(initialVertices);
+		    this.tolerance = tolerance;
+		    kdt = new KdTree<Vertex>(tolerance);
+	    }
 
-	/**
-	 * Sets the {@link ConstraintSplitPointFinder} to be
-	 * used during constraint enforcement.
-	 * Different splitting strategies may be appropriate
-	 * for special situations. 
-	 * 
-	 * @param splitFinder the ConstraintSplitPointFinder to be used
-	 */
-	public void setSplitPointFinder(ConstraintSplitPointFinder splitFinder) {
-		this.splitFinder = splitFinder;
-	}
+	    /// <summary>
+	    /// Sets the constraints to be conformed to by the computed triangulation.
+        /// The unique set of vertices (as <see cref="ConstraintVertex"/>es) 
+	    /// forming the constraints must also be supplied.
+	    /// Supplying it explicitly allows the ConstraintVertexes to be initialized
+	    /// appropriately(e.g. with external data), and avoids re-computing the unique set
+	    /// if it is already available.
+	    /// </summary>
+        /// <param name="segments">list of the constraint {@link Segment}s</param>
+        /// <param name="segVertices">the set of unique <see cref="ConstraintVertex"/>es referenced by the segments</param>
+	    public void SetConstraints(IList<Segment> segments, IList<Vertex> segVertices)
+        {
+		    this.segments = segments;
+		    this.segVertices = segVertices;
+	    }
 
-	/**
-	 * Gets the tolerance value used to construct the triangulation.
-	 * 
-	 * @return a tolerance value
-	 */
-	public double getTolerance()
-	{
-		return tolerance;
-	}
+	    /// <summary>
+        /// Sets the <see cref="ConstraintSplitPointFinder"/> to be
+	    /// used during constraint enforcement.
+	    /// Different splitting strategies may be appropriate
+	    /// for special situations. 
+	    /// </summary>
+        /// <remarks>the ConstraintSplitPointFinder to be used</remarks>
+        public ConstraintSplitPointFinder SplitPointFinder
+        {
+            set
+            {
+                this.splitFinder = value;
+            }
+	    }
+
+	    /// <summary>
+	    /// Gets the tolerance value used to construct the triangulation.
+	    /// </summary>
+        /// <remarks>a tolerance value</remarks>
+	    public double Tolerance
+	    {
+            get
+            {
+                return tolerance;
+            }
+	    }
 	
-	/**
-	 * Gets the <tt>ConstraintVertexFactory</tt> used to create new constraint vertices at split points.
-	 * 
-	 * @return
-	 */
-	public ConstraintVertexFactory getVertexFactory() {
-		return vertexFactory;
-	}
+	    /// <summary>
+        /// Gets and sets the <see cref="ConstraintVertexFactory"/> used to create new constraint vertices at split points.
+        /// </summary>
+	    /// <remarks>Allows the setting of a custom {@link ConstraintVertexFactory} to be used
+	    /// to allow vertices carrying extra information to be created.
+        /// </remarks>
+	    public ConstraintVertexFactory VertexFactory
+        {
+            get
+            {
+                return vertexFactory;
+            }
+            set
+            {
+                this.vertexFactory = value;
+            }
+	    }
 
-	/**
-	 * Sets a custom {@link ConstraintVertexFactory} to be used
-	 * to allow vertices carrying extra information to be created.
-	 * 
-	 * @param vertexFactory the ConstraintVertexFactory to be used
-	 */
-	public void setVertexFactory(ConstraintVertexFactory vertexFactory) {
-		this.vertexFactory = vertexFactory;
-	}
+	    /// <summary>
+        /// Gets the <see cref="QuadEdgeSubdivision"/> which represents the triangulation.
+	    /// </summary>
+	    public QuadEdgeSubdivision Subdivision
+        {
+            get
+            {
+                return subdiv;
+            }
+	    }
 
-	/**
-	 * Gets the {@link QuadEdgeSubdivision} which represents the triangulation.
-	 * 
-	 * @return a subdivision
-	 */
-	public QuadEdgeSubdivision getSubdivision() {
-		return subdiv;
-	}
+	    /// <summary>
+        /// Gets the <see cref="KdTree{Vertex}"/> which contains the vertices of the triangulation.
+        /// </summary>
+	    public KdTree<Vertex> KDT
+        {
+            get
+            {
+                return kdt;
+            }
+	    }
 
-	/**
-	 * Gets the {@link KdTree} which contains the vertices of the triangulation.
-	 * 
-	 * @return a KdTree
-	 */
-	public KdTree getKDT() {
-		return kdt;
-	}
+	    /// <summary> 
+	    /// Gets the sites (vertices) used to initialize the triangulation.
+        /// </summary>
+	    public IList<Vertex> InitialVertices
+        {
+            get
+            {
+                return initialVertices;
+            }
+	    }
 
-	/** 
-	 * Gets the sites (vertices) used to initialize the triangulation.
-	 *  
-	 * @return a List of Vertex
-	 */
-	public List getInitialVertices() {
-		return initialVertices;
-	}
+	    /// <summary>
+        /// Gets the <see cref="Segment"/>s which represent the constraints.
+	    /// </summary>
+	    public ICollection<Segment> ConstraintSegments
+        {
+            get
+            {
+                return segments;
+            }
+	    }
 
-	/**
-	 * Gets the {@link Segment}s which represent the constraints.
-	 * 
-	 * @return a collection of Segments
-	 */
-	public Collection getConstraintSegments() {
-		return segments;
-	}
+	    /// <summary>
+	    /// Gets the convex hull of all the sites in the triangulation,
+	    /// including constraint vertices.
+	    /// Only valid after the constraints have been enforced.
+	    /// </summary>
+        /// <remarks>the convex hull of the sites</remarks>
+	    public IGeometry ConvexHull
+        {
+            get
+            {
+                return convexHull;
+            }
+	    }
 
-	/**
-	 * Gets the convex hull of all the sites in the triangulation,
-	 * including constraint vertices.
-	 * Only valid after the constraints have been enforced.
-	 * 
-	 * @return the convex hull of the sites
-	 */
-	public Geometry getConvexHull() {
-		return convexHull;
-	}
+	    // ==================================================================
 
-	// ==================================================================
+	    private void ComputeBoundingBox()
+        {
+		    Envelope vertexEnv = ComputeVertexEnvelope(initialVertices);
+		    Envelope segEnv = ComputeVertexEnvelope(segVertices);
 
-	private void computeBoundingBox() {
-		Envelope vertexEnv = computeVertexEnvelope(initialVertices);
-		Envelope segEnv = computeVertexEnvelope(segVertices);
+		    Envelope allPointsEnv = new Envelope(vertexEnv);
+		    allPointsEnv.ExpandToInclude(segEnv);
 
-		Envelope allPointsEnv = new Envelope(vertexEnv);
-		allPointsEnv.expandToInclude(segEnv);
+		    double deltaX = allPointsEnv.Width * 0.2;
+		    double deltaY = allPointsEnv.Height * 0.2;
 
-		double deltaX = allPointsEnv.getWidth() * 0.2;
-		double deltaY = allPointsEnv.getHeight() * 0.2;
+		    double delta = Math.Max(deltaX, deltaY);
 
-		double delta = Math.max(deltaX, deltaY);
+		    computeAreaEnv = new Envelope(allPointsEnv);
+		    computeAreaEnv.ExpandBy(delta);
+	    }
 
-		computeAreaEnv = new Envelope(allPointsEnv);
-		computeAreaEnv.expandBy(delta);
-	}
+	    private void ComputeConvexHull()
+        {
+		    GeometryFactory fact = new GeometryFactory();
+		    ICoordinate[] coords = GetPointArray();
+		    ConvexHull hull = new ConvexHull(coords, fact);
+		    convexHull = hull.GetConvexHull();
+	    }
 
-	private void computeConvexHull() {
-		GeometryFactory fact = new GeometryFactory();
-		Coordinate[] coords = getPointArray();
-		ConvexHull hull = new ConvexHull(coords, fact);
-		convexHull = hull.getConvexHull();
-	}
+	    // /**
+	    // * Adds the segments in the Convex Hull of all sites in the input data as
+	    // linear constraints.
+	    // * This is required if TIN Refinement is performed. The hull segments are
+	    // flagged with a
+	    // unique
+	    // * data object to allow distinguishing them.
+	    // *
+	    // * @param convexHullSegmentData the data object to attach to each convex
+	    // hull segment
+	    // */
+	    // private void addConvexHullToConstraints(Object convexHullSegmentData) {
+	    // Coordinate[] coords = convexHull.getCoordinates();
+	    // for (int i = 1; i < coords.length; i++) {
+	    // Segment s = new Segment(coords[i - 1], coords[i], convexHullSegmentData);
+	    // addConstraintIfUnique(s);
+	    // }
+	    // }
 
-	// /**
-	// * Adds the segments in the Convex Hull of all sites in the input data as
-	// linear constraints.
-	// * This is required if TIN Refinement is performed. The hull segments are
-	// flagged with a
-	// unique
-	// * data object to allow distinguishing them.
-	// *
-	// * @param convexHullSegmentData the data object to attach to each convex
-	// hull segment
-	// */
-	// private void addConvexHullToConstraints(Object convexHullSegmentData) {
-	// Coordinate[] coords = convexHull.getCoordinates();
-	// for (int i = 1; i < coords.length; i++) {
-	// Segment s = new Segment(coords[i - 1], coords[i], convexHullSegmentData);
-	// addConstraintIfUnique(s);
-	// }
-	// }
+	    // private void addConstraintIfUnique(Segment r) {
+	    // boolean exists = false;
+	    // Iterator it = segments.iterator();
+	    // Segment s = null;
+	    // while (it.hasNext()) {
+	    // s = (Segment) it.next();
+	    // if (r.equalsTopo(s)) {
+	    // exists = true;
+	    // }
+	    // }
+	    // if (!exists) {
+	    // segments.add((Object) r);
+	    // }
+	    // }
 
-	// private void addConstraintIfUnique(Segment r) {
-	// boolean exists = false;
-	// Iterator it = segments.iterator();
-	// Segment s = null;
-	// while (it.hasNext()) {
-	// s = (Segment) it.next();
-	// if (r.equalsTopo(s)) {
-	// exists = true;
-	// }
-	// }
-	// if (!exists) {
-	// segments.add((Object) r);
-	// }
-	// }
+	    private ICoordinate[] GetPointArray()
+        {
+		    ICoordinate[] pts = new Coordinate[initialVertices.Count
+				    + segVertices.Count];
+		    int index = 0;
+            foreach (var v in initialVertices)
+            {
+			    pts[index++] = v.Coordinate;
+		    }
+            foreach (var v in segVertices)
+            {
+			    pts[index++] = v.Coordinate;
+		    }
+		    return pts;
+	    }
 
-	private Coordinate[] getPointArray() {
-		Coordinate[] pts = new Coordinate[initialVertices.size()
-				+ segVertices.size()];
-		int index = 0;
-		for (Iterator i = initialVertices.iterator(); i.hasNext();) {
-			Vertex v = (Vertex) i.next();
-			pts[index++] = v.getCoordinate();
-		}
-		for (Iterator i2 = segVertices.iterator(); i2.hasNext();) {
-			Vertex v = (Vertex) i2.next();
-			pts[index++] = v.getCoordinate();
-		}
-		return pts;
-	}
+	    private ConstraintVertex CreateVertex(ICoordinate p)
+        {
+		    ConstraintVertex v = null;
+		    if (vertexFactory != null)
+			    v = vertexFactory.CreateVertex(p, null);
+		    else
+			    v = new ConstraintVertex(p);
+		    return v;
+	    }
 
-	private ConstraintVertex createVertex(Coordinate p) {
-		ConstraintVertex v = null;
-		if (vertexFactory != null)
-			v = vertexFactory.createVertex(p, null);
-		else
-			v = new ConstraintVertex(p);
-		return v;
-	}
+	    /// <summary>
+	    /// Creates a vertex on a constraint segment
+	    /// </summary>
+        /// <param name="p">the location of the vertex to create</param>
+        /// <param name="seg">the constraint segment it lies on</param>
+        /// <returns>the new constraint vertex</returns>
+	    private ConstraintVertex CreateVertex(ICoordinate p, Segment seg)
+        {
+		    ConstraintVertex v = null;
+		    if (vertexFactory != null)
+			    v = vertexFactory.CreateVertex(p, seg);
+		    else
+			    v = new ConstraintVertex(p);
+		    v.IsOnConstraint = true;
+		    return v;
+	    }
 
-	/**
-	 * Creates a vertex on a constraint segment
-	 * 
-	 * @param p the location of the vertex to create
-	 * @param seg the constraint segment it lies on
-	 * @return the new constraint vertex
-	 */
-	private ConstraintVertex createVertex(Coordinate p, Segment seg) {
-		ConstraintVertex v = null;
-		if (vertexFactory != null)
-			v = vertexFactory.createVertex(p, seg);
-		else
-			v = new ConstraintVertex(p);
-		v.setOnConstraint(true);
-		return v;
-	}
+	    /// <summary>
+	    /// Inserts all sites in a collection
+	    /// </summary>
+        /// <param name="vertices">a collection of ConstraintVertex</param>
+	    private void InsertSites(ICollection<Vertex> vertices)
+        {
+            
+		    Debug.WriteLine("Adding sites: " + vertices.Count);
+            foreach (var v in vertices)
+            {
+                InsertSite((ConstraintVertex)v);
+		    }
+	    }
 
-	/**
-	 * Inserts all sites in a collection
-	 * 
-	 * @param vertices a collection of ConstraintVertex
-	 */
-	private void insertSites(Collection vertices) {
-		Debug.println("Adding sites: " + vertices.size());
-		for (Iterator i = vertices.iterator(); i.hasNext();) {
-			ConstraintVertex v = (ConstraintVertex) i.next();
-			insertSite(v);
-		}
-	}
+	    private ConstraintVertex InsertSite(ConstraintVertex v)
+        {
+		    var kdnode = kdt.Insert(v.Coordinate, v);
+		    if (!kdnode.IsRepeated) {
+			    incDel.InsertSite(v);
+		    }
+            else
+            {
+			    ConstraintVertex snappedV = (ConstraintVertex) kdnode.Data;
+			    snappedV.Merge(v);
+			    return snappedV;
+			    // testing
+			    // if ( v.isOnConstraint() && ! currV.isOnConstraint()) {
+			    // System.out.println(v);
+			    // }
+		    }
+		    return v;
+	    }
 
-	private ConstraintVertex insertSite(ConstraintVertex v) {
-		KdNode kdnode = kdt.insert(v.getCoordinate(), v);
-		if (!kdnode.isRepeated()) {
-			incDel.insertSite(v);
-		} else {
-			ConstraintVertex snappedV = (ConstraintVertex) kdnode.getData();
-			snappedV.merge(v);
-			return snappedV;
-			// testing
-			// if ( v.isOnConstraint() && ! currV.isOnConstraint()) {
-			// System.out.println(v);
-			// }
-		}
-		return v;
-	}
+	    /// <summary>
+	    /// Inserts a site into the triangulation, maintaining the conformal Delaunay property.
+	    /// This can be used to further refine the triangulation if required
+	    /// (e.g. to approximate the medial axis of the constraints,
+	    /// or to improve the grading of the triangulation).
+	    /// </summary>
+        /// <param name="p">the location of the site to insert</param>
+	    public void InsertSite(Coordinate p)
+        {
+		    InsertSite(CreateVertex(p));
+	    }
 
-	/**
-	 * Inserts a site into the triangulation, maintaining the conformal Delaunay property.
-	 * This can be used to further refine the triangulation if required
-	 * (e.g. to approximate the medial axis of the constraints,
-	 * or to improve the grading of the triangulation).
-	 * 
-	 * @param p the location of the site to insert
-	 */
-	public void insertSite(Coordinate p) {
-		insertSite(createVertex(p));
-	}
+	    // ==================================================================
 
-	// ==================================================================
+	    /// <summary>
+	    /// Computes the Delaunay triangulation of the initial sites.
+	    /// </summary>
+	    public void FormInitialDelaunay()
+        {
+		    ComputeBoundingBox();
+		    subdiv = new QuadEdgeSubdivision(computeAreaEnv, tolerance);
+		    subdiv.SetLocator(new LastFoundQuadEdgeLocator(subdiv));
+		    incDel = new IncrementalDelaunayTriangulator(subdiv);
+		    InsertSites(initialVertices);
+	    }
 
-	/**
-	 * Computes the Delaunay triangulation of the initial sites.
-	 */
-	public void formInitialDelaunay() {
-		computeBoundingBox();
-		subdiv = new QuadEdgeSubdivision(computeAreaEnv, tolerance);
-		subdiv.setLocator(new LastFoundQuadEdgeLocator(subdiv));
-		incDel = new IncrementalDelaunayTriangulator(subdiv);
-		insertSites(initialVertices);
-	}
+	    // ==================================================================
 
-	// ==================================================================
+	    private int MAX_SPLIT_ITER = 99;
 
-	private final static int MAX_SPLIT_ITER = 99;
+	    /// <summary>
+	    /// Enforces the supplied constraints into the triangulation.
+	    /// </summary>
+        /// <exception cref="ConstraintEnforcementException">
+        /// if the constraints cannot be enforced</exception>
+	    public void EnforceConstraints()
+        {
+		    AddConstraintVertices();
+		    // if (true) return;
 
-	/**
-	 * Enforces the supplied constraints into the triangulation.
-	 * 
-	 * @throws ConstraintEnforcementException
-	 *           if the constraints cannot be enforced
-	 */
-	public void enforceConstraints() {
-		addConstraintVertices();
-		// if (true) return;
+		    int count = 0;
+		    int splits = 0;
+		    do {
+			    splits = EnforceGabriel(segments);
 
-		int count = 0;
-		int splits = 0;
-		do {
-			splits = enforceGabriel(segments);
+			    count++;
+			    Debug.WriteLine("Iter: " + count + "   Splits: " + splits
+					    + "   Current # segments = " + segments.Count);
+		    } while (splits > 0 && count < MAX_SPLIT_ITER);
+		    if (count == MAX_SPLIT_ITER) {
+			    Debug.WriteLine("ABORTED! Too many iterations while enforcing constraints");
+                if (!Debugger.IsAttached)
+				    throw new ConstraintEnforcementException(
+						    "Too many splitting iterations while enforcing constraints.  Last split point was at: ",
+						    splitPt);
+		    }
+	    }
 
-			count++;
-			Debug.println("Iter: " + count + "   Splits: " + splits
-					+ "   Current # segments = " + segments.size());
-		} while (splits > 0 && count < MAX_SPLIT_ITER);
-		if (count == MAX_SPLIT_ITER) {
-			Debug.println("ABORTED! Too many iterations while enforcing constraints");
-			if (!Debug.isDebugging())
-				throw new ConstraintEnforcementException(
-						"Too many splitting iterations while enforcing constraints.  Last split point was at: ",
-						splitPt);
-		}
-	}
+	    private void AddConstraintVertices()
+        {
+		    ComputeConvexHull();
+		    // insert constraint vertices as sites
+		    InsertSites(segVertices);
+	    }
 
-	private void addConstraintVertices() {
-		computeConvexHull();
-		// insert constraint vertices as sites
-		insertSites(segVertices);
-	}
+	    /*
+	     * private List findMissingConstraints() { List missingSegs = new ArrayList();
+	     * for (int i = 0; i < segments.size(); i++) { Segment s = (Segment)
+	     * segments.get(i); QuadEdge q = subdiv.locate(s.getStart(), s.getEnd()); if
+	     * (q == null) missingSegs.add(s); } return missingSegs; }
+	     */
 
-	/*
-	 * private List findMissingConstraints() { List missingSegs = new ArrayList();
-	 * for (int i = 0; i < segments.size(); i++) { Segment s = (Segment)
-	 * segments.get(i); QuadEdge q = subdiv.locate(s.getStart(), s.getEnd()); if
-	 * (q == null) missingSegs.add(s); } return missingSegs; }
-	 */
+	    private int EnforceGabriel(ICollection<Segment> segsToInsert)
+        {
+		    var newSegments = new List<Segment>();
+		    int splits = 0;
+		    var segsToRemove = new List<Segment>();
 
-	private int enforceGabriel(Collection segsToInsert) {
-		List newSegments = new ArrayList();
-		int splits = 0;
-		List segsToRemove = new ArrayList();
+		    /*
+		     * On each iteration must always scan all constraint (sub)segments, since
+		     * some constraints may be rebroken by Delaunay triangle flipping caused by
+		     * insertion of another constraint. However, this process must converge
+		     * eventually, with no splits remaining to find.
+		     */
+            foreach (var seg in segsToInsert)
+            {
+			    // System.out.println(seg);
 
-		/**
-		 * On each iteration must always scan all constraint (sub)segments, since
-		 * some constraints may be rebroken by Delaunay triangle flipping caused by
-		 * insertion of another constraint. However, this process must converge
-		 * eventually, with no splits remaining to find.
-		 */
-		for (Iterator i = segsToInsert.iterator(); i.hasNext();) {
-			Segment seg = (Segment) i.next();
-			// System.out.println(seg);
+			    ICoordinate encroachPt = FindNonGabrielPoint(seg);
+			    // no encroachment found - segment must already be in subdivision
+			    if (encroachPt == null)
+				    continue;
 
-			Coordinate encroachPt = findNonGabrielPoint(seg);
-			// no encroachment found - segment must already be in subdivision
-			if (encroachPt == null)
-				continue;
+			    // compute split point
+			    splitPt = splitFinder.FindSplitPoint(seg, encroachPt);
+			    ConstraintVertex splitVertex = CreateVertex(splitPt, seg);
 
-			// compute split point
-			splitPt = splitFinder.findSplitPoint(seg, encroachPt);
-			ConstraintVertex splitVertex = createVertex(splitPt, seg);
+			    // DebugFeature.addLineSegment(DEBUG_SEG_SPLIT, encroachPt, splitPt, "");
+			    // Debug.println(WKTWriter.toLineString(encroachPt, splitPt));
 
-			// DebugFeature.addLineSegment(DEBUG_SEG_SPLIT, encroachPt, splitPt, "");
-			// Debug.println(WKTWriter.toLineString(encroachPt, splitPt));
+			    /*
+			     * Check whether the inserted point still equals the split pt. This will
+			     * not be the case if the split pt was too close to an existing site. If
+			     * the point was snapped, the triangulation will not respect the inserted
+			     * constraint - this is a failure. This can be caused by:
+			     * <ul>
+			     * <li>An initial site that lies very close to a constraint segment The
+			     * cure for this is to remove any initial sites which are close to
+			     * constraint segments in a preprocessing phase.
+			     * <li>A narrow constraint angle which causing repeated splitting until
+			     * the split segments are too small. The cure for this is to either choose
+			     * better split points or "guard" narrow angles by cracking the segments
+			     * equidistant from the corner.
+			     * </ul>
+			     */
+			    var insertedVertex = InsertSite(splitVertex);
+			    if (!insertedVertex.Coordinate.Equals2D(splitPt)) {
+				    Debug.WriteLine("Split pt snapped to: " + insertedVertex);
+				    // throw new ConstraintEnforcementException("Split point snapped to
+				    // existing point
+				    // (tolerance too large or constraint interior narrow angle?)",
+				    // splitPt);
+			    }
 
-			/**
-			 * Check whether the inserted point still equals the split pt. This will
-			 * not be the case if the split pt was too close to an existing site. If
-			 * the point was snapped, the triangulation will not respect the inserted
-			 * constraint - this is a failure. This can be caused by:
-			 * <ul>
-			 * <li>An initial site that lies very close to a constraint segment The
-			 * cure for this is to remove any initial sites which are close to
-			 * constraint segments in a preprocessing phase.
-			 * <li>A narrow constraint angle which causing repeated splitting until
-			 * the split segments are too small. The cure for this is to either choose
-			 * better split points or "guard" narrow angles by cracking the segments
-			 * equidistant from the corner.
-			 * </ul>
-			 */
-			ConstraintVertex insertedVertex = insertSite(splitVertex);
-			if (!insertedVertex.getCoordinate().equals2D(splitPt)) {
-				Debug.println("Split pt snapped to: " + insertedVertex);
-				// throw new ConstraintEnforcementException("Split point snapped to
-				// existing point
-				// (tolerance too large or constraint interior narrow angle?)",
-				// splitPt);
-			}
+			    // split segment and record the new halves
+			    Segment s1 = new Segment(seg.StartX, seg.StartY, seg
+					    .StartZ, splitVertex.X, splitVertex.Y, splitVertex
+					    .Z, seg.Data);
+			    Segment s2 = new Segment(splitVertex.X, splitVertex.Y,
+					    splitVertex.Z, seg.EndX, seg.EndY, seg.EndZ, seg
+							    .Data);
+			    newSegments.Add(s1);
+			    newSegments.Add(s2);
+			    segsToRemove.Add(seg);
 
-			// split segment and record the new halves
-			Segment s1 = new Segment(seg.getStartX(), seg.getStartY(), seg
-					.getStartZ(), splitVertex.getX(), splitVertex.getY(), splitVertex
-					.getZ(), seg.getData());
-			Segment s2 = new Segment(splitVertex.getX(), splitVertex.getY(),
-					splitVertex.getZ(), seg.getEndX(), seg.getEndY(), seg.getEndZ(), seg
-							.getData());
-			newSegments.add(s1);
-			newSegments.add(s2);
-			segsToRemove.add(seg);
+			    splits = splits + 1;
+		    }
+            foreach (var seg in segsToRemove)
+            {
+                segsToInsert.Remove(seg);
+            }
 
-			splits = splits + 1;
-		}
-		segsToInsert.removeAll(segsToRemove);
-		segsToInsert.addAll(newSegments);
+            foreach (var seg in newSegments)
+            {
+                segsToInsert.Add(seg);
+            }
 
-		return splits;
-	}
+		    return splits;
+	    }
 
-//	public static final String DEBUG_SEG_SPLIT = "C:\\proj\\CWB\\test\\segSplit.jml";
+    //	public static final String DEBUG_SEG_SPLIT = "C:\\proj\\CWB\\test\\segSplit.jml";
 
-	/**
-	 * Given a set of points stored in the kd-tree and a line segment defined by
-	 * two points in this set, finds a {@link Coordinate} in the circumcircle of
-	 * the line segment, if one exists. This is called the Gabriel point - if none
-	 * exists then the segment is said to have the Gabriel condition. Uses the
-	 * heuristic of finding the non-Gabriel point closest to the midpoint of the
-	 * segment.
-	 * 
-	 * @param p
-	 *          start of the line segment
-	 * @param q
-	 *          end of the line segment
-	 * @return a point which is non-Gabriel
-	 * @return null if no point is non-Gabriel
-	 */
-	private Coordinate findNonGabrielPoint(Segment seg) {
-		Coordinate p = seg.getStart();
-		Coordinate q = seg.getEnd();
-		// Find the mid point on the line and compute the radius of enclosing circle
-		Coordinate midPt = new Coordinate((p.x + q.x) / 2.0, (p.y + q.y) / 2.0);
-		double segRadius = p.distance(midPt);
+	    /// <summary>
+	    /// Given a set of points stored in the kd-tree and a line segment defined by
+	    /// two points in this set, finds a {@link Coordinate} in the circumcircle of
+	    /// the line segment, if one exists. This is called the Gabriel point - if none
+	    /// exists then the segment is said to have the Gabriel condition. Uses the
+	    /// heuristic of finding the non-Gabriel point closest to the midpoint of the
+	    /// segment.
+	    /// </summary>
+        /// <param name="seg">the line segment</param>
+	    /// <returns>a point which is non-Gabriel,
+	    /// or null if no point is non-Gabriel
+        /// </returns>
+	    private ICoordinate FindNonGabrielPoint(Segment seg)
+        {
+		    ICoordinate p = seg.Start;
+		    ICoordinate q = seg.End;
+		    // Find the mid point on the line and compute the radius of enclosing circle
+		    var midPt = new Coordinate((p.X + q.X) / 2.0, (p.Y + q.Y) / 2.0);
+		    double segRadius = p.Distance(midPt);
 
-		// compute envelope of circumcircle
-		Envelope env = new Envelope(midPt);
-		env.expandBy(segRadius);
-		// Find all points in envelope
-		List result = kdt.query(env);
+		    // compute envelope of circumcircle
+		    Envelope env = new Envelope(midPt);
+		    env.ExpandBy(segRadius);
+		    // Find all points in envelope
+		    var result = kdt.Query(env);
 
-		// For each point found, test if it falls strictly in the circle
-		// find closest point
-		Coordinate closestNonGabriel = null;
-		double minDist = Double.MAX_VALUE;
-		for (Iterator i = result.iterator(); i.hasNext();) {
-			KdNode nextNode = (KdNode) i.next();
-			Coordinate testPt = nextNode.getCoordinate();
-			// ignore segment endpoints
-			if (testPt.equals2D(p) || testPt.equals2D(q))
-				continue;
+		    // For each point found, test if it falls strictly in the circle
+		    // find closest point
+		    ICoordinate closestNonGabriel = null;
+		    double minDist = Double.MaxValue;
+            foreach (var nextNode in result)
+            {
+			    ICoordinate testPt = nextNode.Coordinate;
+			    // ignore segment endpoints
+			    if (testPt.Equals2D(p) || testPt.Equals2D(q))
+				    continue;
 
-			double testRadius = midPt.distance(testPt);
-			if (testRadius < segRadius) {
-				// double testDist = seg.distance(testPt);
-				double testDist = testRadius;
-				if (closestNonGabriel == null || testDist < minDist) {
-					closestNonGabriel = testPt;
-					minDist = testDist;
-				}
-			}
-		}
-		return closestNonGabriel;
-	}
+			    double testRadius = midPt.Distance(testPt);
+			    if (testRadius < segRadius) {
+				    // double testDist = seg.distance(testPt);
+				    double testDist = testRadius;
+				    if (closestNonGabriel == null || testDist < minDist) {
+					    closestNonGabriel = testPt;
+					    minDist = testDist;
+				    }
+			    }
+		    }
+		    return closestNonGabriel;
+	    }
 
+    }
 }

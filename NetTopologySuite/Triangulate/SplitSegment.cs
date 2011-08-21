@@ -3,25 +3,21 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Triangulate
 {
-/**
- * Models a constraint segment which can be split in two in various ways, 
- * according to certain geometric constraints.
- * 
- * @author Martin Davis
- */
-
+    /// <summary>
+    /// Models a constraint segment which can be split in two in various ways, 
+    /// according to certain geometric constraints.
+    /// </summary>
+    /// <author>Martin Davis</author>
     public class SplitSegment
     {
-        /**
-         * Computes the {@link Coordinate} that lies a given fraction along the line defined by the
-         * reverse of the given segment. A fraction of <code>0.0</code> returns the end point of the
-         * segment; a fraction of <code>1.0</code> returns the start point of the segment.
-         * 
-         * @param seg the LineSegment
-         * @param segmentLengthFraction the fraction of the segment length along the line
-         * @return the point at that distance
-         */
-
+        /// <summary>
+        /// Computes the {@link Coordinate} that lies a given fraction along the line defined by the
+        /// reverse of the given segment. A fraction of <code>0.0</code> returns the end point of the
+        /// segment; a fraction of <code>1.0</code> returns the start point of the segment.
+        /// </summary>
+        /// <param name="seg">the LineSegment</param>
+        /// <param name="segmentLengthFraction">the fraction of the segment length along the line</param>
+        /// <returns>the point at that distance</returns>
         private static ICoordinate PointAlongReverse(LineSegment seg, double segmentLengthFraction)
         {
             Coordinate coord = new Coordinate();
@@ -65,7 +61,7 @@ namespace NetTopologySuite.Triangulate
                 _splitPt = PointAlongReverse(_seg, frac);
         }
 
-        public void SplitAt(Coordinate pt)
+        public void SplitAt(ICoordinate pt)
         {
             // check that given pt doesn't violate min length
             double minFrac = _minimumLen/_segLen;

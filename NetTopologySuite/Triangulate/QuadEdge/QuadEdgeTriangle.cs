@@ -6,25 +6,21 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
-    /**
-     * Models a triangle formed from {@link Quadedge}s in a {@link Subdivision}. Provides methods to
-     * access the topological and geometric properties of the triangle. Triangle edges are oriented CCW.
-     * 
-     * @author Martin Davis
-     * @version 1.0
-     */
-
+    /// <summary>
+    /// Models a triangle formed from <see cref="Quadedge"/>s in a <see cref="Subdivision"/>. Provides methods to
+    /// access the topological and geometric properties of the triangle. Triangle edges are oriented CCW.
+    /// </summary>
+    /// <author>Martin Davis</author>
+    /// <version>1.0</version>
     public class QuadEdgeTriangle
     {
 
-        /**
-         * Tests whether the point pt is contained in the triangle defined by 3 {@link Vertex}es.
-         * 
-         * @param tri an array containing at least 3 Vertexes
-         * @param pt the point to test
-         * @return true if the point is contained in the triangle
-         */
-
+        /// <summary>
+        /// Tests whether the point pt is contained in the triangle defined by 3 <see cref="Vertex"/>es.
+        /// </summary>
+        /// <param name="tri">an array containing at least 3 Vertexes</param>
+        /// <param name="pt">the point to test</param>
+        /// <returns>true if the point is contained in the triangle</returns>
         public static bool Contains(Vertex[] tri, ICoordinate pt)
         {
             var ring = new ICoordinate[]
@@ -37,14 +33,12 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return CGAlgorithms.IsPointInRing(pt, ring);
         }
 
-        /**
-         * Tests whether the point pt is contained in the triangle defined by 3 {@link QuadEdge}es.
-         * 
-         * @param tri an array containing at least 3 QuadEdges
-         * @param pt the point to test
-         * @return true if the point is contained in the triangle
-         */
-
+        /// <summary>
+        /// Tests whether the point pt is contained in the triangle defined by 3 <see cref="QuadEdge"/>es.
+        /// </summary>
+        /// <param name="tri">an array containing at least 3 QuadEdges</param>
+        /// <param name="pt">the point to test</param>
+        /// <returns>true if the point is contained in the triangle</returns>
         public static bool Contains(QuadEdge[] tri, ICoordinate pt)
         {
             var ring = new []
@@ -57,7 +51,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return CGAlgorithms.IsPointInRing(pt, ring);
         }
 
-        public static IGeometry toPolygon(Vertex[] v)
+        public static IGeometry ToPolygon(Vertex[] v)
         {
             var ringPts = new []
                                        {
@@ -72,7 +66,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return tri;
         }
 
-        public static IGeometry toPolygon(QuadEdge[] e)
+        public static IGeometry ToPolygon(QuadEdge[] e)
         {
             var ringPts = new []
                                        {
@@ -87,14 +81,12 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return tri;
         }
 
-        /**
-         * Finds the next index around the triangle. Index may be an edge or vertex index.
-         * 
-         * @param index
-         * @return
-         */
-
-        public static int nextIndex(int index)
+        /// <summary>
+        /// Finds the next index around the triangle. Index may be an edge or vertex index.
+        /// </summary>
+        /// <param name="index" />
+        /// <returns />
+        public static int NextIndex(int index)
         {
             return index = (index + 1)%3;
         }
@@ -106,61 +98,58 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             this.edge = (QuadEdge[]) edge.Clone();
         }
 
-        public void kill()
+        public void Kill()
         {
             edge = null;
         }
 
-        public bool isLive()
+        public bool IsLive()
         {
             return edge != null;
         }
 
-        public QuadEdge[] getEdges()
+        public QuadEdge[] GetEdges()
         {
             return edge;
         }
 
-        public QuadEdge getEdge(int i)
+        public QuadEdge GetEdge(int i)
         {
             return edge[i];
         }
 
-        public Vertex getVertex(int i)
+        public Vertex GetVertex(int i)
         {
             return edge[i].Orig;
         }
 
-        /**
-         * Gets the vertices for this triangle.
-         * 
-         * @return a new array containing the triangle vertices
-         */
-
-        public Vertex[] getVertices()
+        /// <summary>
+        /// Gets the vertices for this triangle.
+        /// </summary>
+        /// <returns>a new array containing the triangle vertices</returns>
+        public Vertex[] GetVertices()
         {
             Vertex[] vert = new Vertex[3];
             for (int i = 0; i < 3; i++)
             {
-                vert[i] = getVertex(i);
+                vert[i] = GetVertex(i);
             }
             return vert;
         }
 
-        public ICoordinate getCoordinate(int i)
+        public ICoordinate GetCoordinate(int i)
         {
             return edge[i].Orig.Coordinate;
         }
 
-        /**
-         * Gets the index for the given edge of this triangle
-         * 
-         * @param e a QuadEdge
-         * @return the index of the edge in this triangle
-         * @return -1 if the edge is not an edge of this triangle
-         */
-
-        public int getEdgeIndex(QuadEdge e)
+        /// <summary>
+        /// Gets the index for the given edge of this triangle
+        /// </summary>
+        /// <param name="e">a QuadEdge</param>
+        /// <returns>the index of the edge in this triangle,
+        /// or -1 if the edge is not an edge of this triangle
+        /// </returns>
+        public int GetEdgeIndex(QuadEdge e)
         {
             for (int i = 0; i < 3; i++)
             {
@@ -170,15 +159,14 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return -1;
         }
 
-        /**
-         * Gets the index for the edge that starts at vertex v.
-         * 
-         * @param v the vertex to find the edge for
-         * @return the index of the edge starting at the vertex
-         * @return -1 if the vertex is not in the triangle
-         */
-
-        public int getEdgeIndex(Vertex v)
+        /// <summary>
+        /// Gets the index for the edge that starts at vertex v.
+        /// </summary>
+        /// <param name="v">the vertex to find the edge for</param>
+        /// <returns>the index of the edge starting at the vertex, 
+        /// or -1 if the vertex is not in the triangle
+        /// </returns>
+        public int GetEdgeIndex(Vertex v)
         {
             for (int i = 0; i < 3; i++)
             {
@@ -188,14 +176,14 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return -1;
         }
 
-        public void getEdgeSegment(int i, LineSegment seg)
+        public void GetEdgeSegment(int i, LineSegment seg)
         {
             seg.P0 = edge[i].Orig.Coordinate;
             int nexti = (i + 1)%3;
             seg.P1 = edge[nexti].Orig.Coordinate;
         }
 
-        public ICoordinate[] getCoordinates()
+        public ICoordinate[] GetCoordinates()
         {
             var pts = new ICoordinate[4];
             for (int i = 0; i < 3; i++)
@@ -208,59 +196,57 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
         public bool Contains(Coordinate pt)
         {
-            var ring = getCoordinates();
+            var ring = GetCoordinates();
             return CGAlgorithms.IsPointInRing(pt, ring);
         }
 
-        public IGeometry getGeometry(GeometryFactory fact)
+        public IGeometry GetGeometry(GeometryFactory fact)
         {
-            ILinearRing ring = fact.CreateLinearRing(getCoordinates());
+            ILinearRing ring = fact.CreateLinearRing(GetCoordinates());
             IPolygon tri = fact.CreatePolygon(ring, null);
             return tri;
         }
 
         public override String ToString()
         {
-            return getGeometry(new GeometryFactory()).ToString();
+            return GetGeometry(new GeometryFactory()).ToString();
         }
 
-        /**
-         * Tests whether this triangle is adjacent to the outside of the subdivision.
-         * 
-         * @return true if the triangle is adjacent to the subdivision exterior
-         */
-
-        public bool isBorder()
+        /// <summary>
+        /// Tests whether this triangle is adjacent to the outside of the subdivision.
+        /// </summary>
+        /// <returns>true if the triangle is adjacent to the subdivision exterior</returns>
+        public bool IsBorder()
         {
             for (int i = 0; i < 3; i++)
             {
-                if (getAdjacentTriangleAcrossEdge(i) == null)
+                if (GetAdjacentTriangleAcrossEdge(i) == null)
                     return true;
             }
             return false;
         }
 
-        public bool isBorder(int i)
+        public bool IsBorder(int i)
         {
-            return getAdjacentTriangleAcrossEdge(i) == null;
+            return GetAdjacentTriangleAcrossEdge(i) == null;
         }
 
-        public QuadEdgeTriangle getAdjacentTriangleAcrossEdge(int edgeIndex)
+        public QuadEdgeTriangle GetAdjacentTriangleAcrossEdge(int edgeIndex)
         {
-            return (QuadEdgeTriangle) getEdge(edgeIndex).Sym().Data;
+            return (QuadEdgeTriangle) GetEdge(edgeIndex).Sym.Data;
         }
 
-        public int getAdjacentTriangleEdgeIndex(int i)
+        public int GetAdjacentTriangleEdgeIndex(int i)
         {
-            return getAdjacentTriangleAcrossEdge(i).getEdgeIndex(getEdge(i).Sym());
+            return GetAdjacentTriangleAcrossEdge(i).GetEdgeIndex(GetEdge(i).Sym);
         }
 
-        public IList<QuadEdgeTriangle> getTrianglesAdjacentToVertex(int vertexIndex)
+        public IList<QuadEdgeTriangle> GetTrianglesAdjacentToVertex(int vertexIndex)
         {
             // Assert: isVertex
             var adjTris = new List<QuadEdgeTriangle>();
 
-            QuadEdge start = getEdge(vertexIndex);
+            QuadEdge start = GetEdge(vertexIndex);
             QuadEdge qe = start;
             do
             {
@@ -269,29 +255,26 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 {
                     adjTris.Add(adjTri);
                 }
-                qe = qe.oNext();
+                qe = qe.ONext;
             } while (qe != start);
 
             return adjTris;
 
         }
 
-        /**
-         * Gets the neighbours of this triangle. If there is no neighbour triangle, the array element is
-         * <code>null</code>
-         * 
-         * @return an array containing the 3 neighbours of this triangle
-         */
-
-        public QuadEdgeTriangle[] getNeighbours()
+        /// <summary>
+        /// Gets the neighbours of this triangle. If there is no neighbour triangle, the array element is
+        /// <code>null</code>
+        /// </summary>
+        /// <returns>an array containing the 3 neighbours of this triangle</returns>
+        public QuadEdgeTriangle[] GetNeighbours()
         {
             QuadEdgeTriangle[] neigh = new QuadEdgeTriangle[3];
             for (int i = 0; i < 3; i++)
             {
-                neigh[i] = (QuadEdgeTriangle) getEdge(i).Sym().Data;
+                neigh[i] = (QuadEdgeTriangle) GetEdge(i).Sym.Data;
             }
             return neigh;
         }
-
     }
 }

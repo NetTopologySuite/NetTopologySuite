@@ -42,6 +42,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="dx"></param>
         /// <param name="dy"></param>
+        /// <exception cref="ArgumentException">If the displacements are both 0</exception>
         public static int Quadrant(double dx, double dy)
         {
             if (dx == 0.0 && dy == 0.0)

@@ -1,51 +1,56 @@
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
-/**
- * Locates {@link QuadEdge}s in a {@link QuadEdgeSubdivision},
- * optimizing the search by starting in the
- * locality of the last edge found.
- * 
- * @author Martin Davis
- */
-
+    /// <summary>
+    /// Locates <see cref="QuadEdge"/>s in a <see cref="QuadEdgeSubdivision"/>,
+    /// optimizing the search by starting in the
+    /// locality of the last edge found.
+    /// </summary>
+    /// <author>Martin Davis</author>
     public class LastFoundQuadEdgeLocator : IQuadEdgeLocator
     {
-    private readonly QuadEdgeSubdivision _subdiv;
-    private QuadEdge _lastEdge;
+        private readonly QuadEdgeSubdivision _subdiv;
+        private QuadEdge _lastEdge;
 
-    public LastFoundQuadEdgeLocator(QuadEdgeSubdivision subdiv)
-    {
-        _subdiv = subdiv;
-        init();
-    }
-
-    private void init()
-    {
-        _lastEdge = findEdge();
-    }
-
-    private QuadEdge findEdge()
-    {
-        var edges = _subdiv.getEdges();
-        // assume there is an edge - otherwise will get an exception
-        return (QuadEdge) edges.iterator().next();
-    }
-
-    /**
-     * Locates an edge e, such that either v is on e, or e is an edge of a triangle containing v.
-     * The search starts from the last located edge amd proceeds on the general direction of v.
-     */
-
-    public QuadEdge Locate(Vertex v)
-    {
-        if (! _lastEdge.IsLive)
+        public LastFoundQuadEdgeLocator(QuadEdgeSubdivision subdiv)
         {
-            init();
+            _subdiv = subdiv;
+            Init();
         }
 
-        QuadEdge e = _subdiv.locateFromEdge(v, _lastEdge);
-        _lastEdge = e;
-        return e;
+        private void Init()
+        {
+            _lastEdge = FindEdge();
+        }
+
+        private QuadEdge FindEdge()
+        {
+            var edges = _subdiv.GetEdges();
+            // assume there is an edge - otherwise will get an exception
+            var enumerator = edges.GetEnumerator();
+            if (enumerator.MoveNext())
+            {
+                return enumerator.Current;
+            }
+            else
+            {
+                throw new System.IndexOutOfRangeException();
+            }
+        }
+
+        /// <summary>
+        /// Locates an edge e, such that either v is on e, or e is an edge of a triangle containing v.
+        /// The search starts from the last located edge amd proceeds on the general direction of v.
+        /// </summary>
+        public QuadEdge Locate(Vertex v)
+        {
+            if (! _lastEdge.IsLive)
+            {
+                Init();
+            }
+
+            QuadEdge e = _subdiv.LocateFromEdge(v, _lastEdge);
+            _lastEdge = e;
+            return e;
+        }
     }
-}
 }
