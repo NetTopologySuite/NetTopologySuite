@@ -96,7 +96,7 @@ namespace NetTopologySuite.Triangulate
             get
             {
                 var p = _ls.GetCoordinate(0);
-                return p.X;
+                return p.Y;
             }
         }
 

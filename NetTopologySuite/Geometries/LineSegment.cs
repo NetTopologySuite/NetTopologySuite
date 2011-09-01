@@ -635,17 +635,22 @@ namespace NetTopologySuite.Geometries
                    P0.Equals(other.P1) && P1.Equals(other.P0);
         }
 
+        private static readonly System.Globalization.CultureInfo _cultureInfo =
+            System.Globalization.CultureInfo.InvariantCulture;
+
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
+        /// 
         public override string ToString()
         {
+            
             var sb = new StringBuilder("LINESTRING( ");
-            sb.Append(P0.X).Append(" ");
-            sb.Append(P0.Y).Append(", ");
-            sb.Append(P1.X).Append(" ");
-            sb.Append(P1.Y).Append(")");
+            sb.AppendFormat(_cultureInfo, "{0}" ,P0.X).Append(" ");
+            sb.AppendFormat(_cultureInfo, "{0}", P0.Y).Append(", ");
+            sb.AppendFormat(_cultureInfo, "{0}", P1.X).Append(" ");
+            sb.AppendFormat(_cultureInfo, "{0}", P1.Y).Append(")");
             return sb.ToString();
         }
 

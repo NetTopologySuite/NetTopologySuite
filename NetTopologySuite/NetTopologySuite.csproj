@@ -462,6 +462,10 @@
     <Compile Include="Algorithm\Distance\DiscreteHausdorffDistance.cs" />
     <Content Include="License.txt" />
     <Content Include="ReadMe.txt" />
+    <Content Include="Triangulate\TriangulateSummary.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Triangulate\QuadEdge\QuadEdgeSummary.xml" />
     <Content Include="Utilities\RToolsUtil\Rtools.Util.License.txt" />
   </ItemGroup>
   <ItemGroup>

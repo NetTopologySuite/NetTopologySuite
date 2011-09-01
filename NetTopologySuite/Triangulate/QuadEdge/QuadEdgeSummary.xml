@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<doc>
+  <assembly>
+    <name>NetTopologySuite</name>
+  </assembly>
+  <members>
+    <member name="N:NetTopologySuite.Triangulate.QuadEdge">
+      <summary>
+        Classes to implement a topological subdivision of quadeges, to support creating triangulations
+        and Voronoi diagrams.
+      </summary>
+    </member>
+  </members>
+</doc>
+

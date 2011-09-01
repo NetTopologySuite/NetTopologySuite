@@ -397,13 +397,17 @@ namespace NetTopologySuite.Triangulate
 		    // if (true) return;
 
 		    int count = 0;
-		    int splits;
+	        int splits, oldSegmentCount = _segments.Count;
 		    do {
-			    splits = EnforceGabriel(this._segments);
+			    splits = EnforceGabriel(_segments);
 
 			    count++;
 			    Debug.WriteLine("Iter: " + count + "   Splits: " + splits
-					    + "   Current # segments = " + this._segments.Count);
+					    + "   Current # segments = " + _segments.Count);
+
+                for(var i = oldSegmentCount; i < _segments.Count; i++)
+                    Debug.WriteLine("Segments added: #" + i + ": " + _segments[i].LineSegment);
+		        oldSegmentCount = _segments.Count;
 		    } while (splits > 0 && count < MaxSplitIteration);
 		    if (count == MaxSplitIteration) {
 			    Debug.WriteLine("ABORTED! Too many iterations while enforcing constraints");
@@ -472,6 +476,8 @@ namespace NetTopologySuite.Triangulate
 			     * </ul>
 			     */
 			    var insertedVertex = InsertSite(splitVertex);
+			    Debug.WriteLine("inserted vertex: " + insertedVertex.ToString());
+
 			    if (!insertedVertex.Coordinate.Equals2D(this._splitPt)) {
 				    Debug.WriteLine("Split pt snapped to: " + insertedVertex);
 				    // throw new ConstraintEnforcementException("Split point snapped to
@@ -487,6 +493,8 @@ namespace NetTopologySuite.Triangulate
 			    Segment s2 = new Segment(splitVertex.X, splitVertex.Y,
 					    splitVertex.Z, seg.EndX, seg.EndY, seg.EndZ, seg
 							    .Data);
+
+                Debug.WriteLine("Segment " + seg.ToString() + " splitted to \n\t" + s1.ToString() + "\n\t"+ s2.ToString());
 			    newSegments.Add(s1);
 			    newSegments.Add(s2);
 			    segsToRemove.Add(seg);

@@ -27,12 +27,9 @@ namespace NetTopologySuite.Triangulate
         /// All vertices of the given geometry will be used as sites.
         /// </summary>
         /// <remarks>The geometry from which the sites will be extracted.</remarks>
-        public IGeometry Sites
+        public void SetSites(IGeometry sites)
         {
-            set
-            {
-                this._siteCoords = DelaunayTriangulationBuilder.ExtractUniqueCoordinates(value);
-            }
+            _siteCoords = DelaunayTriangulationBuilder.ExtractUniqueCoordinates(sites);
         }
 
         /// <summary>
@@ -45,7 +42,7 @@ namespace NetTopologySuite.Triangulate
         {
             set
             {
-                this._constraintLines = value;
+                _constraintLines = value;
             }
         }
 
@@ -63,36 +60,36 @@ namespace NetTopologySuite.Triangulate
             }
             set
             {
-                this._tolerance = value;
+                _tolerance = value;
             }
         }
 
         private void Create()
         {
-            if (this._subdiv != null) return;
+            if (_subdiv != null) return;
 
-            var siteEnv = DelaunayTriangulationBuilder.Envelope(this._siteCoords);
+            var siteEnv = DelaunayTriangulationBuilder.Envelope(_siteCoords);
 
-            var sites = CreateConstraintVertices(this._siteCoords);
+            var sites = CreateConstraintVertices(_siteCoords);
 
             IList<Segment> segments = new List<Segment>();
-            if (this._constraintLines != null)
+            if (_constraintLines != null)
             {
-                siteEnv.ExpandToInclude(this._constraintLines.EnvelopeInternal);
-                CreateVertices(this._constraintLines);
-                segments = CreateConstraintSegments(this._constraintLines);
+                siteEnv.ExpandToInclude(_constraintLines.EnvelopeInternal);
+                CreateVertices(_constraintLines);
+                segments = CreateConstraintSegments(_constraintLines);
             }
 
-            ConformingDelaunayTriangulator cdt = new ConformingDelaunayTriangulator(sites, this._tolerance);
+            ConformingDelaunayTriangulator cdt = new ConformingDelaunayTriangulator(sites, _tolerance);
 
-            cdt.SetConstraints(segments, new List<Vertex>(this._vertexMap.Values));
+            cdt.SetConstraints(segments, new List<Vertex>(_vertexMap.Values));
 
             cdt.FormInitialDelaunay();
             cdt.EnforceConstraints();
-            this._subdiv = cdt.Subdivision;
+            _subdiv = cdt.Subdivision;
         }
 
-        private static IList<Vertex> CreateConstraintVertices(ICollection<ICoordinate> coords)
+        private static IEnumerable<Vertex> CreateConstraintVertices(IEnumerable<ICoordinate> coords)
         {
             var verts = new List<Vertex>();
             foreach (var coord in coords)
@@ -108,7 +105,7 @@ namespace NetTopologySuite.Triangulate
             for (int i = 0; i < coords.Length; i++)
             {
                 Vertex v = new ConstraintVertex(coords[i]);
-                this._vertexMap.Add(coords[i], v);
+                _vertexMap.Add(coords[i], v);
             }
         }
 
@@ -139,7 +136,7 @@ namespace NetTopologySuite.Triangulate
         public QuadEdgeSubdivision GetSubdivision()
         {
             Create();
-            return this._subdiv;
+            return _subdiv;
         }
 
         /// <summary>
@@ -150,7 +147,7 @@ namespace NetTopologySuite.Triangulate
         public IMultiLineString GetEdges(IGeometryFactory geomFact)
         {
             Create();
-            return this._subdiv.GetEdges(geomFact);
+            return _subdiv.GetEdges(geomFact);
         }
 
         /// <summary>
@@ -162,7 +159,7 @@ namespace NetTopologySuite.Triangulate
         public IGeometryCollection GetTriangles(IGeometryFactory geomFact)
         {
             Create();
-            return this._subdiv.GetTriangles(geomFact);
+            return _subdiv.GetTriangles(geomFact);
         }
 
     }
