@@ -110,6 +110,7 @@
     <Compile Include="Algorithm\SIRtreePointInRing.cs" />
     <Compile Include="Algorithm\VectorMath.cs" />
     <Compile Include="CoordinateSystems\Transformations\GeometryTransform.cs" />
+    <Compile Include="Densify\Densifier.cs" />
     <Compile Include="Features\AttributesTable.cs">
     </Compile>
     <Compile Include="Features\Feature.cs" />
