@@ -63,9 +63,6 @@
     <DocumentationFile>bin\Release\NetTopologySuite.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GeoAPI">
-      <HintPath>..\ExternalReferences\GeoAPI.dll</HintPath>
-    </Reference>
     <Reference Include="PowerCollections">
       <HintPath>..\ExternalReferences\PowerCollections.dll</HintPath>
     </Reference>
@@ -502,6 +499,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Geometries\Implementation\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">
+      <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
+      <Name>GeoAPI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
