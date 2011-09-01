@@ -17,19 +17,11 @@ namespace NetTopologySuite.Triangulate
     /// <author>Martin Davis</author>
     public class VoronoiDiagramBuilder
     {
-        private ICollection<ICoordinate> siteCoords;
-        private double tolerance = 0.0;
-        private QuadEdgeSubdivision subdiv = null;
-        private Envelope clipEnv = null;
-        private Envelope diagramEnv = null;
-
-        /// <summary>
-        /// Creates a new Voronoi diagram builder.
-        ///
-        ///
-        public VoronoiDiagramBuilder()
-        {
-        }
+        private ICollection<ICoordinate> _siteCoords;
+        private double _tolerance;
+        private QuadEdgeSubdivision _subdiv;
+        private Envelope _clipEnv;
+        private Envelope _diagramEnv;
 
         /// <summary>
         /// Sets the sites (point or vertices) which will be diagrammed.
@@ -39,7 +31,7 @@ namespace NetTopologySuite.Triangulate
         public void SetSites(IGeometry geom)
         {
             // remove any duplicate points (they will cause the triangulation to fail)
-            siteCoords = DelaunayTriangulationBuilder.ExtractUniqueCoordinates(geom);
+            this._siteCoords = DelaunayTriangulationBuilder.ExtractUniqueCoordinates(geom);
         }
 
         /// <summary>
@@ -50,7 +42,7 @@ namespace NetTopologySuite.Triangulate
         public void SetSites(ICollection<ICoordinate> geom)
         {
             // remove any duplicate points (they will cause the triangulation to fail)
-            siteCoords = DelaunayTriangulationBuilder.Unique(CoordinateArrays.ToCoordinateArray(geom));
+            this._siteCoords = DelaunayTriangulationBuilder.Unique(CoordinateArrays.ToCoordinateArray(geom));
         }
 
         /// <summary>
@@ -63,7 +55,7 @@ namespace NetTopologySuite.Triangulate
         {
             set
             {
-                this.clipEnv = value;
+                this._clipEnv = value;
             }
         }
 
@@ -77,25 +69,25 @@ namespace NetTopologySuite.Triangulate
         {
             set
             {
-                this.tolerance = value;
+                this._tolerance = value;
             }
         }
 
         private void Create()
         {
-            if (subdiv != null) return;
+            if (this._subdiv != null) return;
 
-            Envelope siteEnv = DelaunayTriangulationBuilder.Envelope(siteCoords);
-            diagramEnv = siteEnv;
+            Envelope siteEnv = DelaunayTriangulationBuilder.Envelope(this._siteCoords);
+            this._diagramEnv = siteEnv;
             // add a buffer around the final envelope
-            double expandBy = Math.Max(diagramEnv.Width, diagramEnv.Height);
-            diagramEnv.ExpandBy(expandBy);
-            if (clipEnv != null)
-                diagramEnv.ExpandToInclude(clipEnv);
+            double expandBy = Math.Max(this._diagramEnv.Width, this._diagramEnv.Height);
+            this._diagramEnv.ExpandBy(expandBy);
+            if (this._clipEnv != null)
+                this._diagramEnv.ExpandToInclude(this._clipEnv);
 
-            var vertices = DelaunayTriangulationBuilder.ToVertices(siteCoords);
-            subdiv = new QuadEdgeSubdivision(siteEnv, tolerance);
-            IncrementalDelaunayTriangulator triangulator = new IncrementalDelaunayTriangulator(subdiv);
+            var vertices = DelaunayTriangulationBuilder.ToVertices(this._siteCoords);
+            this._subdiv = new QuadEdgeSubdivision(siteEnv, this._tolerance);
+            IncrementalDelaunayTriangulator triangulator = new IncrementalDelaunayTriangulator(this._subdiv);
             triangulator.InsertSites(vertices);
         }
 
@@ -106,7 +98,7 @@ namespace NetTopologySuite.Triangulate
         public QuadEdgeSubdivision GetSubdivision()
         {
             Create();
-            return subdiv;
+            return this._subdiv;
         }
 
         /// <summary>
@@ -118,10 +110,10 @@ namespace NetTopologySuite.Triangulate
         public IGeometryCollection GetDiagram(IGeometryFactory geomFact)
         {
             Create();
-            IGeometryCollection polys = subdiv.GetVoronoiDiagram(geomFact);
+            IGeometryCollection polys = this._subdiv.GetVoronoiDiagram(geomFact);
 
             // clip polys to diagramEnv
-            return ClipGeometryCollection(polys, diagramEnv);
+            return ClipGeometryCollection(polys, this._diagramEnv);
         }
 
         private static IGeometryCollection ClipGeometryCollection(IGeometryCollection geom, Envelope clipEnv)

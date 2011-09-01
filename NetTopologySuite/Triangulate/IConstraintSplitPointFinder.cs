@@ -12,7 +12,7 @@ namespace NetTopologySuite.Triangulate
     /// constraints, it is sometimes possible to choose better locations for splitting.
     /// </summary>
     /// <author>mbdavis</author>
-    public interface ConstraintSplitPointFinder
+    public interface IConstraintSplitPointFinder
     {
         /// <summary>
         /// Finds a point at which to split an encroached segment to allow the original segment to appear

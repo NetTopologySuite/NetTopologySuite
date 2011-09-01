@@ -152,6 +152,7 @@
     <Compile Include="Simplify\SameStructureTester.cs" />
     <Compile Include="Simplify\TopologyPreservingSimplifierTest.cs" />
     <Compile Include="TestData\EmbeddedResourceManager.cs" />
+    <Compile Include="Triangulate\BasicFunctionalityTest.cs" />
     <Compile Include="Utilities\PriorityQueueTest.cs" />
   </ItemGroup>
   <ItemGroup>

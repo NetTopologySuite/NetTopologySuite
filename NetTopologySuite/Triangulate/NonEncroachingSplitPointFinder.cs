@@ -8,12 +8,8 @@ namespace NetTopologySuite.Triangulate
     /// segments while preventing further encroachment. (This is not always possible for narrow angles).
     /// </summary>
     /// <author>Martin Davis</author>
-    public class NonEncroachingSplitPointFinder : ConstraintSplitPointFinder
+    public class NonEncroachingSplitPointFinder : IConstraintSplitPointFinder
     {
-        public NonEncroachingSplitPointFinder()
-        {
-        }
-
         /// <summary>
         /// A basic strategy for finding split points when nothing extra is known about the geometry of
         /// the situation.

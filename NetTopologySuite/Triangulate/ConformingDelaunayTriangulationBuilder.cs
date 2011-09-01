@@ -15,16 +15,12 @@ namespace NetTopologySuite.Triangulate
     /// <author>Martin Davis</author>
     public class ConformingDelaunayTriangulationBuilder
     {
-        private ICollection<ICoordinate> siteCoords;
-        private IGeometry constraintLines;
-        private double tolerance = 0.0;
-        private QuadEdgeSubdivision subdiv = null;
+        private ICollection<ICoordinate> _siteCoords;
+        private IGeometry _constraintLines;
+        private double _tolerance;
+        private QuadEdgeSubdivision _subdiv;
 
-        private IDictionary<ICoordinate, Vertex> vertexMap = new OrderedDictionary<ICoordinate, Vertex>();
-
-        public ConformingDelaunayTriangulationBuilder()
-        {
-        }
+        private readonly IDictionary<ICoordinate, Vertex> _vertexMap = new OrderedDictionary<ICoordinate, Vertex>();
 
         /// <summary>
         /// Sets the sites (point or vertices) which will be triangulated.
@@ -35,7 +31,7 @@ namespace NetTopologySuite.Triangulate
         {
             set
             {
-                siteCoords = DelaunayTriangulationBuilder.ExtractUniqueCoordinates(value);
+                this._siteCoords = DelaunayTriangulationBuilder.ExtractUniqueCoordinates(value);
             }
         }
 
@@ -49,7 +45,7 @@ namespace NetTopologySuite.Triangulate
         {
             set
             {
-                this.constraintLines = value;
+                this._constraintLines = value;
             }
         }
 
@@ -61,35 +57,39 @@ namespace NetTopologySuite.Triangulate
         /// <remarks>The tolerance distance to use</remarks>
         public double Tolerance
         {
+            get
+            {
+                return _tolerance;
+            }
             set
             {
-                this.tolerance = value;
+                this._tolerance = value;
             }
         }
 
         private void Create()
         {
-            if (subdiv != null) return;
+            if (this._subdiv != null) return;
 
-            var siteEnv = DelaunayTriangulationBuilder.Envelope(siteCoords);
+            var siteEnv = DelaunayTriangulationBuilder.Envelope(this._siteCoords);
 
-            var sites = CreateConstraintVertices(siteCoords);
+            var sites = CreateConstraintVertices(this._siteCoords);
 
             IList<Segment> segments = new List<Segment>();
-            if (constraintLines != null)
+            if (this._constraintLines != null)
             {
-                siteEnv.ExpandToInclude(constraintLines.EnvelopeInternal);
-                CreateVertices(constraintLines);
-                segments = CreateConstraintSegments(constraintLines);
+                siteEnv.ExpandToInclude(this._constraintLines.EnvelopeInternal);
+                CreateVertices(this._constraintLines);
+                segments = CreateConstraintSegments(this._constraintLines);
             }
 
-            ConformingDelaunayTriangulator cdt = new ConformingDelaunayTriangulator(sites, tolerance);
+            ConformingDelaunayTriangulator cdt = new ConformingDelaunayTriangulator(sites, this._tolerance);
 
-            cdt.SetConstraints(segments, new List<Vertex>(vertexMap.Values));
+            cdt.SetConstraints(segments, new List<Vertex>(this._vertexMap.Values));
 
             cdt.FormInitialDelaunay();
             cdt.EnforceConstraints();
-            subdiv = cdt.Subdivision;
+            this._subdiv = cdt.Subdivision;
         }
 
         private static IList<Vertex> CreateConstraintVertices(ICollection<ICoordinate> coords)
@@ -108,7 +108,7 @@ namespace NetTopologySuite.Triangulate
             for (int i = 0; i < coords.Length; i++)
             {
                 Vertex v = new ConstraintVertex(coords[i]);
-                vertexMap.Add(coords[i], v);
+                this._vertexMap.Add(coords[i], v);
             }
         }
 
@@ -136,10 +136,10 @@ namespace NetTopologySuite.Triangulate
         /// Gets the QuadEdgeSubdivision which models the computed triangulation.
         /// </summary>
         /// <returns>The subdivision containing the triangulation</returns>
-        public QuadEdgeSubdivision getSubdivision()
+        public QuadEdgeSubdivision GetSubdivision()
         {
             Create();
-            return subdiv;
+            return this._subdiv;
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace NetTopologySuite.Triangulate
         public IMultiLineString GetEdges(IGeometryFactory geomFact)
         {
             Create();
-            return subdiv.GetEdges(geomFact);
+            return this._subdiv.GetEdges(geomFact);
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace NetTopologySuite.Triangulate
         public IGeometryCollection GetTriangles(IGeometryFactory geomFact)
         {
             Create();
-            return subdiv.GetTriangles(geomFact);
+            return this._subdiv.GetTriangles(geomFact);
         }
 
     }

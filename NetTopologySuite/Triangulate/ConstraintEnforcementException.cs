@@ -13,7 +13,7 @@ namespace NetTopologySuite.Triangulate
     public class ConstraintEnforcementException : ApplicationException
     {
 
-        private long serialVersionUID = 386496846550080140L;
+        //private long serialVersionUID = 386496846550080140L;
 
         private static String MsgWithCoord(String msg, ICoordinate pt) {
             if (pt != null)
@@ -21,7 +21,7 @@ namespace NetTopologySuite.Triangulate
             return msg;
         }
 
-        private Coordinate pt = null;
+        private readonly ICoordinate _pt;
 
         /// <summary>
         /// Creates a new instance with a given message.
@@ -40,7 +40,7 @@ namespace NetTopologySuite.Triangulate
         public ConstraintEnforcementException(String msg, ICoordinate pt)
             : base(MsgWithCoord(msg, pt))
         {
-            this.pt = new Coordinate(pt);
+            this._pt = new Coordinate(pt);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Triangulate
         {
             get
             {
-                return pt;
+                return this._pt;
             }
         }
     }

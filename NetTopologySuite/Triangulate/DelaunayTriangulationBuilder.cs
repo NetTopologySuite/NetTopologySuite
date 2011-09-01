@@ -65,16 +65,9 @@ namespace NetTopologySuite.Triangulate
             return env;
         }
 
-        private ICollection<ICoordinate> siteCoords;
-        private double tolerance = 0.0;
-        private QuadEdgeSubdivision subdiv = null;
-
-        /// <summary>
-        /// Creates a new triangulation builder.
-        /// </summary>
-        public DelaunayTriangulationBuilder()
-        {
-        }
+        private ICollection<ICoordinate> _siteCoords;
+        private double _tolerance;
+        private QuadEdgeSubdivision _subdiv;
 
         /// <summary>
         /// Sets the sites (point or vertices) which will be triangulated.
@@ -84,7 +77,7 @@ namespace NetTopologySuite.Triangulate
         public void SetSites(IGeometry geom)
         {
             // remove any duplicate points (they will cause the triangulation to fail)
-            siteCoords = ExtractUniqueCoordinates(geom);
+            this._siteCoords = ExtractUniqueCoordinates(geom);
         }
 
         /// <summary>
@@ -95,7 +88,7 @@ namespace NetTopologySuite.Triangulate
         public void SetSites(ICollection<ICoordinate> coords)
         {
             // remove any duplicate points (they will cause the triangulation to fail)
-            siteCoords = Unique(CoordinateArrays.ToCoordinateArray(coords));
+            this._siteCoords = Unique(CoordinateArrays.ToCoordinateArray(coords));
         }
 
         /// <summary>
@@ -103,20 +96,20 @@ namespace NetTopologySuite.Triangulate
         /// to improved the robustness of the triangulation computation.
         /// A tolerance of 0.0 specifies that no snapping will take place.
         /// </summary>
-        /// <param name="tolerance">the tolerance distance to use</param>
-        public void SetTolerance(double tolerance)
+        ///// <param name="tolerance">the tolerance distance to use</param>
+        public double Tolerance
         {
-            this.tolerance = tolerance;
+            set {  this._tolerance = value; }
         }
 
         private void Create()
         {
-            if (subdiv != null) return;
+            if (this._subdiv != null) return;
 
-            var siteEnv = Envelope(siteCoords);
-            var vertices = ToVertices(siteCoords);
-            subdiv = new QuadEdgeSubdivision(siteEnv, tolerance);
-            IncrementalDelaunayTriangulator triangulator = new IncrementalDelaunayTriangulator(subdiv);
+            var siteEnv = Envelope(this._siteCoords);
+            var vertices = ToVertices(this._siteCoords);
+            this._subdiv = new QuadEdgeSubdivision(siteEnv, this._tolerance);
+            IncrementalDelaunayTriangulator triangulator = new IncrementalDelaunayTriangulator(this._subdiv);
             triangulator.InsertSites(vertices);
         }
 
@@ -127,7 +120,7 @@ namespace NetTopologySuite.Triangulate
         public QuadEdgeSubdivision GetSubdivision()
         {
             Create();
-            return subdiv;
+            return this._subdiv;
         }
 
         /// <summary>
@@ -135,10 +128,10 @@ namespace NetTopologySuite.Triangulate
         /// </summary>
         /// <param name="geomFact">the geometry factory to use to create the output</param>
         /// <returns>the edges of the triangulation</returns>
-        public IMultiLineString GetEdges(GeometryFactory geomFact)
+        public IMultiLineString GetEdges(IGeometryFactory geomFact)
         {
             Create();
-            return subdiv.GetEdges(geomFact);
+            return this._subdiv.GetEdges(geomFact);
         }
 
         /// <summary>
@@ -147,10 +140,10 @@ namespace NetTopologySuite.Triangulate
         /// </summary>
         /// <param name="geomFact">the geometry factory to use to create the output</param>
         /// <returns>the faces of the triangulation</returns>
-        public IGeometryCollection GetTriangles(GeometryFactory geomFact)
+        public IGeometryCollection GetTriangles(IGeometryFactory geomFact)
         {
             Create();
-            return subdiv.GetTriangles(geomFact);
+            return this._subdiv.GetTriangles(geomFact);
         }
     }
 }

@@ -33,7 +33,7 @@ namespace NetTopologySuite.Algorithm
         private readonly ICoordinate _cg3 = new Coordinate();   // partial centroid sum
 
         // data for linear centroid computation, if needed
-        private readonly Coordinate _centSum = new Coordinate();
+        private readonly ICoordinate _centSum = new Coordinate();
         private double _totalLength;
 
         /// <summary> 

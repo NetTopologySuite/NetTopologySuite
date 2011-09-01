@@ -22,10 +22,6 @@ namespace NetTopologySuite.Triangulate
     {
         private IDictionary<ICoordinate, object> coordDataMap = new OrderedDictionary<ICoordinate, object>();
 
-        public VertexTaggedGeometryDataMapper()
-        {
-        }
-
         public void LoadSourceGeometries(ICollection<IGeometry> geoms)
         {
             foreach (var geom in geoms)

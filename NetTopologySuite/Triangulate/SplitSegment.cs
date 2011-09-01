@@ -20,7 +20,7 @@ namespace NetTopologySuite.Triangulate
         /// <returns>the point at that distance</returns>
         private static ICoordinate PointAlongReverse(LineSegment seg, double segmentLengthFraction)
         {
-            Coordinate coord = new Coordinate();
+            var coord = new Coordinate();
             coord.X = seg.P1.X - segmentLengthFraction*(seg.P1.X - seg.P0.X);
             coord.Y = seg.P1.Y - segmentLengthFraction*(seg.P1.Y - seg.P0.Y);
             return coord;

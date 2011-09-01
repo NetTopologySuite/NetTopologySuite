@@ -410,7 +410,7 @@
     <Compile Include="Triangulate\ConformingDelaunayTriangulationBuilder.cs" />
     <Compile Include="Triangulate\ConformingDelaunayTriangulator.cs" />
     <Compile Include="Triangulate\ConstraintEnforcementException.cs" />
-    <Compile Include="Triangulate\ConstraintSplitPointFinder.cs" />
+    <Compile Include="Triangulate\IConstraintSplitPointFinder.cs" />
     <Compile Include="Triangulate\ConstraintVertex.cs" />
     <Compile Include="Triangulate\ConstraintVertexFactory.cs" />
     <Compile Include="Triangulate\DelaunayTriangulationBuilder.cs" />

@@ -11,8 +11,8 @@ namespace NetTopologySuite.Triangulate
     /// <version>1.0</version>
     public class IncrementalDelaunayTriangulator
     {
-        private QuadEdgeSubdivision subdiv;
-        private bool isUsingTolerance = false;
+        private readonly QuadEdgeSubdivision _subdiv;
+        private bool _isUsingTolerance;
 
         /// <summary>
         /// Creates a new triangulator using the given <see cref="QuadEdgeSubdivision"/>.
@@ -21,8 +21,8 @@ namespace NetTopologySuite.Triangulate
         /// <param name="subdiv">a subdivision in which to build the TIN</param>
         public IncrementalDelaunayTriangulator(QuadEdgeSubdivision subdiv)
         {
-            this.subdiv = subdiv;
-            isUsingTolerance = subdiv.Tolerance > 0.0;
+            this._subdiv = subdiv;
+            this._isUsingTolerance = subdiv.Tolerance > 0.0;
         }
 
         /// <summary>
@@ -56,29 +56,29 @@ namespace NetTopologySuite.Triangulate
              * existing edge. Without this test zero-width triangles have been observed
              * to be created)
              */
-            var e = subdiv.Locate(v);
+            var e = this._subdiv.Locate(v);
 
-            if (subdiv.IsVertexOfEdge(e, v)) {
+            if (this._subdiv.IsVertexOfEdge(e, v)) {
                 // point is already in subdivision.
                 return e; 
-            } 
-            else if (subdiv.IsOnEdge(e, v.Coordinate))
+            }
+            if (this._subdiv.IsOnEdge(e, v.Coordinate))
             {
                 // the point lies exactly on an edge, so delete the edge 
                 // (it will be replaced by a pair of edges which have the point as a vertex)
                 e = e.OPrev;
-                subdiv.Delete(e.ONext);
+                this._subdiv.Delete(e.ONext);
             }
 
             /*
              * Connect the new point to the vertices of the containing triangle 
              * (or quadrilateral, if the new point fell on an existing edge.)
              */
-            var baseQuadEdge = subdiv.MakeEdge(e.Orig, v);
+            var baseQuadEdge = this._subdiv.MakeEdge(e.Orig, v);
             NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Splice(baseQuadEdge, e);
             var startEdge = baseQuadEdge;
             do {
-                baseQuadEdge = subdiv.Connect(e, baseQuadEdge.Sym);
+                baseQuadEdge = this._subdiv.Connect(e, baseQuadEdge.Sym);
                 e = baseQuadEdge.OPrev;
             } while (e.LNext != startEdge);
 

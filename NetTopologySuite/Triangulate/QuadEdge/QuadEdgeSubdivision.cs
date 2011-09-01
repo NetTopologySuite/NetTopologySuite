@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
-using Wintellect.PowerCollections;
 
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
@@ -31,6 +28,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
     /// within a TIN. Normally the frame edges, frame connecting edges, and frame
     /// triangles are not included in client processing.
     /// </para>
+    /// </summary>
     /// <author>David Skea</author>
     /// <author>Martin Davis</author>
     public class QuadEdgeSubdivision
@@ -56,9 +54,9 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         // private static QuadEdgeSubdivision currentSubdiv;
 
         // used for edge extraction to ensure edge uniqueness
-        private int visitedKey = 0;
+        private int _visitedKey;
         //private Set quadEdges = new HashSet();
-        private IList<QuadEdge> quadEdges = new List<QuadEdge>();
+        private readonly IList<QuadEdge> _quadEdges = new List<QuadEdge>();
         private readonly QuadEdge _startingEdge;
         private readonly double _tolerance;
         private readonly double _edgeCoincidenceTolerance;
@@ -89,7 +87,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             double deltaX = env.Width;
             double deltaY = env.Height;
-            double offset = 0.0;
+            double offset;
             if (deltaX > deltaY) {
                 offset = deltaX * 10.0;
             } else {
@@ -145,17 +143,17 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /// <summary>
-        /// Gets the collection of base <see cref="Quadedge"/>s (one for every pair of
+        /// Gets the collection of base <see cref="QuadEdge"/>s (one for every pair of
         /// vertices which is connected).
         /// </summary>
         /// <returns>a collection of QuadEdges</returns>
         public IList<QuadEdge> GetEdges()
         {
-            return quadEdges;
+            return this._quadEdges;
         }
 
         /// <summary>
-        /// Sets the <see cref="QuadEdgeLocator"/> to use for locating containing triangles
+        /// Sets the <see cref="IQuadEdgeLocator"/> to use for locating containing triangles
         /// in this subdivision.
         /// </summary>
         /// <param name="locator">a QuadEdgeLocator</param>
@@ -173,7 +171,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public QuadEdge MakeEdge(Vertex o, Vertex d)
         {
             QuadEdge q = QuadEdge.MakeEdge(o, d);
-            quadEdges.Add(q);
+            this._quadEdges.Add(q);
             return q;
         }
 
@@ -188,7 +186,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public QuadEdge Connect(QuadEdge a, QuadEdge b)
         {
             QuadEdge q = QuadEdge.Connect(a, b);
-            quadEdges.Add(q);
+            this._quadEdges.Add(q);
             return q;
         }
 
@@ -207,10 +205,10 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             QuadEdge eRotSym = e.Rot.Sym;
 
             // this is inefficient on an ArrayList, but this method should be called infrequently
-            quadEdges.Remove(e);
-            quadEdges.Remove(eSym);
-            quadEdges.Remove(eRot);
-            quadEdges.Remove(eRotSym);
+            this._quadEdges.Remove(e);
+            this._quadEdges.Remove(eSym);
+            this._quadEdges.Remove(eRot);
+            this._quadEdges.Remove(eRotSym);
 
             e.Delete();
             eSym.Delete();
@@ -239,7 +237,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public QuadEdge LocateFromEdge(Vertex v, QuadEdge startEdge)
         {
             int iter = 0;
-            int maxIter = quadEdges.Count;
+            int maxIter = this._quadEdges.Count;
 
             QuadEdge e = startEdge;
 
@@ -266,13 +264,20 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
                 if ((v.Equals(e.Orig)) || (v.Equals(e.Dest))) {
                     break;
-                } else if (v.RightOf(e)) {
+                }
+                if (v.RightOf(e))
+                {
                     e = e.Sym;
-                } else if (!v.RightOf(e.ONext)) {
+                } 
+                else if (!v.RightOf(e.ONext)) 
+                {
                     e = e.ONext;
-                } else if (!v.RightOf(e.DPrev)) {
+                } 
+                else if (!v.RightOf(e.DPrev)) 
+                {
                     e = e.DPrev;
-                } else {
+                } else 
+                {
                     // on edge or in triangle containing edge
                     break;
                 }
@@ -302,7 +307,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>a quadedge on the edge of a triangle which touches or contains the location,
         /// or null if no such triangle exists
         /// </returns>
-        public QuadEdge Locate(Coordinate p) {
+        public QuadEdge Locate(ICoordinate p) {
             return _locator.Locate(new Vertex(p));
         }
 
@@ -315,7 +320,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>the edge joining the coordinates, if present,
         /// or null if no such edge exists
         /// </returns>
-        public QuadEdge Locate(Coordinate p0, Coordinate p1) {
+        public QuadEdge Locate(ICoordinate p0, ICoordinate p1) {
             // find an edge containing one of the points
             QuadEdge e = _locator.Locate(new Vertex(p0));
             if (e == null)
@@ -474,7 +479,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public IEnumerable<Vertex> GetVertices(bool includeFrame) 
         {
             var vertices = new HashSet<Vertex>();
-            foreach(var qe in quadEdges)
+            foreach(var qe in this._quadEdges)
             {
                 Vertex v = qe.Orig;
                 //System.out.println(v);
@@ -515,7 +520,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             var edges = new List<QuadEdge>();
             var visitedVertices = new HashSet<Vertex>();
-            foreach(var qe in quadEdges)
+            foreach(var qe in this._quadEdges)
             {
                 Vertex v = qe.Orig;
                 //System.out.println(v);
@@ -554,7 +559,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>a List of QuadEdges</returns>
         public IList<QuadEdge> GetPrimaryEdges(bool includeFrame)
         {
-            visitedKey++;
+            this._visitedKey++;
 
             var edges = new List<QuadEdge>();
             var edgeStack = new Stack<QuadEdge>();
@@ -588,10 +593,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <author>mbdavis</author>
         private class TriangleCircumcentreVisitor : ITriangleVisitor 
         {
-            public TriangleCircumcentreVisitor()
-            {
-            }
-
             public void Visit(QuadEdge[] triEdges) 
             {
                 ICoordinate a = triEdges[0].Orig.Coordinate;
@@ -603,7 +604,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 Vertex ccVertex = new Vertex(cc);
                 // save the circumcentre as the origin for the dual edges originating in this triangle
                 for (int i = 0; i < 3; i++) {
-                    triEdges[i].Rot.SetOrig(ccVertex);
+                    triEdges[i].Rot.Orig = ccVertex;
                 }
             }
         }
@@ -615,7 +616,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public void VisitTriangles(ITriangleVisitor triVisitor,
                                     bool includeFrame)
         {
-            visitedKey++;
+            this._visitedKey++;
 
             // visited flag is used to record visited edges of triangles
             // setVisitedAll(false);
@@ -641,7 +642,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// Only one visitor is allowed to be active at a
         /// time, so this is safe.
         /// </summary>
-        private QuadEdge[] triEdges = new QuadEdge[3];
+        private readonly QuadEdge[] _triEdges = new QuadEdge[3];
 
         /// <summary>
         /// Stores the edges for a visited triangle. Also pushes sym (neighbour) edges
@@ -650,6 +651,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="edge" />
         /// <param name="edgeStack" />
         /// <param name="includeFrame" />
+        /// <param name="visitedEdges"></param>
         /// <returns>the visited triangle edges,
         /// or null if the triangle should not be visited (for instance, if it is
         ///         outer)
@@ -661,7 +663,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             int edgeCount = 0;
             bool isFrame = false;
             do {
-                triEdges[edgeCount] = curr;
+                this._triEdges[edgeCount] = curr;
 
                 if (IsFrameEdge(curr))
                     isFrame = true;
@@ -680,7 +682,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
             if (isFrame && !includeFrame)
                 return null;
-            return triEdges;
+            return this._triEdges;
         }
 
         /// <summary>
@@ -699,15 +701,15 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
         private class TriangleEdgesListVisitor : ITriangleVisitor
         {
-            private IList<QuadEdge[]> triList = new List<QuadEdge[]>();
+            private readonly IList<QuadEdge[]> _triList = new List<QuadEdge[]>();
 
             public void Visit(QuadEdge[] triEdges)
             {
-                triList.Add((QuadEdge[])triEdges.Clone());
+                this._triList.Add((QuadEdge[])triEdges.Clone());
             }
 
             public IList<QuadEdge[]> GetTriangleEdges() {
-                return triList;
+                return this._triList;
             }
         }
 
@@ -726,17 +728,17 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
         private class TriangleVertexListVisitor : ITriangleVisitor
         {
-            private IList<Vertex[]> triList = new List<Vertex[]>();
+            private readonly IList<Vertex[]> _triList = new List<Vertex[]>();
 
             public void Visit(QuadEdge[] triEdges)
             {
-                triList.Add(new Vertex[] { triEdges[0].Orig, triEdges[1].Orig,
+                this._triList.Add(new[] { triEdges[0].Orig, triEdges[1].Orig,
                             triEdges[2].Orig });
             }
 
             public IList<Vertex[]> GetTriangleVertices()
             {
-                return triList;
+                return this._triList;
             }
         }
 
@@ -754,47 +756,44 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
         private class TriangleCoordinatesVisitor : ITriangleVisitor
         {
-            private CoordinateList coordList = new CoordinateList();
+            private readonly CoordinateList _coordList = new CoordinateList();
 
-            private IList<ICoordinate[]> triCoords = new List<ICoordinate[]>();
-
-            public TriangleCoordinatesVisitor() {
-            }
+            private readonly IList<ICoordinate[]> _triCoords = new List<ICoordinate[]>();
 
             public void Visit(QuadEdge[] triEdges)
             {
-                coordList.Clear();
+                this._coordList.Clear();
                 for (int i = 0; i < 3; i++)
                 {
                     Vertex v = triEdges[i].Orig;
-                    coordList.Add(v.Coordinate);
+                    this._coordList.Add(v.Coordinate);
                 }
-                if (coordList.Count > 0)
+                if (this._coordList.Count > 0)
                 {
-                    coordList.CloseRing();
-                    ICoordinate[] pts = coordList.ToCoordinateArray();
+                    this._coordList.CloseRing();
+                    ICoordinate[] pts = this._coordList.ToCoordinateArray();
                     if (pts.Length != 4)
                     {
-                        String loc = "";
-                        if (pts.Length >= 2)
-                            loc = WKTWriter.ToLineString(pts[0], pts[1]);
-                        else {
-                            if (pts.Length >= 1)
-                                loc = WKTWriter.ToPoint(pts[0]);
-                        }
+                        //String loc = "";
+                        //if (pts.Length >= 2)
+                        //    loc = WKTWriter.ToLineString(pts[0], pts[1]);
+                        //else {
+                        //    if (pts.Length >= 1)
+                        //        loc = WKTWriter.ToPoint(pts[0]);
+                        //}
 
-                        // Assert.isTrue(pts.length == 4, "Too few points for visited triangle at " + loc);
-                        //com.vividsolutions.jts.util.Debug.println("too few points for triangle at " + loc);
+                        //// Assert.isTrue(pts.length == 4, "Too few points for visited triangle at " + loc);
+                        ////com.vividsolutions.jts.util.Debug.println("too few points for triangle at " + loc);
                         return;
                     }
 
-                    triCoords.Add(pts);
+                    this._triCoords.Add(pts);
                 }
             }
 
             public IList<ICoordinate[]> GetTriangles()
             {
-                return triCoords;
+                return this._triCoords;
             }
         }
 
@@ -811,7 +810,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             int i = 0;
             foreach (var qe in quadEdges)
             {
-                edges[i++] = geomFact.CreateLineString(new ICoordinate[] {
+                edges[i++] = geomFact.CreateLineString(new[] {
                                                         qe.Orig.Coordinate, qe.Dest.Coordinate });
             }
             return geomFact.CreateMultiLineString(edges);
@@ -901,7 +900,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             QuadEdge startQE = qe;
 
             do {
-                // Coordinate cc = circumcentre(qe);
+                // ICoordinate cc = circumcentre(qe);
                 // use previously computed circumcentre
                 ICoordinate cc = qe.Rot.Orig.Coordinate;
                 cellPts.Add(cc);
@@ -910,7 +909,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 qe = qe.OPrev;
             } while (qe != startQE);
     
-            CoordinateList coordList = new CoordinateList();
+            var coordList = new CoordinateList();
             coordList.AddAll(cellPts, false);
             coordList.CloseRing();
             ICoordinate[] pts = coordList.ToCoordinateArray();

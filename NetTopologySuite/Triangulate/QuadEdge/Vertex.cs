@@ -366,7 +366,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <summary>
         /// Interpolates the Z value of a point enclosed in a 3D triangle.
         /// </summary>
-        public static double InterpolateZ(Coordinate p, Coordinate v0, Coordinate v1, Coordinate v2)
+        public static double InterpolateZ(ICoordinate p, ICoordinate v0, ICoordinate v1, ICoordinate v2)
         {
             double x0 = v0.X;
             double y0 = v0.Y;
@@ -390,7 +390,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="p0" />
         /// <param name="p1" />
         /// <returns />
-        public static double InterpolateZ(Coordinate p, Coordinate p0, Coordinate p1)
+        public static double InterpolateZ(ICoordinate p, ICoordinate p0, ICoordinate p1)
         {
             double segLen = p0.Distance(p1);
             double ptLen = p.Distance(p0);
@@ -410,7 +410,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         // * @param nonRobustInCircle
         // * @return the robust value
         // */
-        // private boolean checkRobustInCircle(Coordinate a, Coordinate b, Coordinate c, Coordinate p,
+        // private boolean checkRobustInCircle(ICoordinate a, ICoordinate b, ICoordinate c, ICoordinate p,
         // boolean nonRobustInCircle) {
         // // *
         // boolean isInCircleDD = inCircleDD(a, b, c, p);

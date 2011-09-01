@@ -7,7 +7,7 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
     /// <summary>
-    /// Models a triangle formed from <see cref="Quadedge"/>s in a <see cref="Subdivision"/>. Provides methods to
+    /// Models a triangle formed from <see cref="QuadEdge"/>s in a <see cref="QuadEdgeSubdivision"/>. Provides methods to
     /// access the topological and geometric properties of the triangle. Triangle edges are oriented CCW.
     /// </summary>
     /// <author>Martin Davis</author>
@@ -23,13 +23,13 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>true if the point is contained in the triangle</returns>
         public static bool Contains(Vertex[] tri, ICoordinate pt)
         {
-            var ring = new ICoordinate[]
-                                    {
-                                        tri[0].Coordinate,
-                                        tri[1].Coordinate,
-                                        tri[2].Coordinate,
-                                        tri[0].Coordinate
-                                    };
+            var ring = new[]
+                {
+                    tri[0].Coordinate, 
+                    tri[1].Coordinate, 
+                    tri[2].Coordinate, 
+                    tri[0].Coordinate
+                };
             return CGAlgorithms.IsPointInRing(pt, ring);
         }
 
@@ -81,6 +81,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return tri;
         }
 
+        /*
         /// <summary>
         /// Finds the next index around the triangle. Index may be an edge or vertex index.
         /// </summary>
@@ -90,37 +91,37 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             return index = (index + 1)%3;
         }
-
-        private QuadEdge[] edge;
+         */
+        private QuadEdge[] _edge;
 
         public QuadEdgeTriangle(QuadEdge[] edge)
         {
-            this.edge = (QuadEdge[]) edge.Clone();
+            this._edge = (QuadEdge[]) edge.Clone();
         }
 
         public void Kill()
         {
-            edge = null;
+            this._edge = null;
         }
 
         public bool IsLive()
         {
-            return edge != null;
+            return this._edge != null;
         }
 
         public QuadEdge[] GetEdges()
         {
-            return edge;
+            return this._edge;
         }
 
         public QuadEdge GetEdge(int i)
         {
-            return edge[i];
+            return this._edge[i];
         }
 
         public Vertex GetVertex(int i)
         {
-            return edge[i].Orig;
+            return this._edge[i].Orig;
         }
 
         /// <summary>
@@ -129,7 +130,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>a new array containing the triangle vertices</returns>
         public Vertex[] GetVertices()
         {
-            Vertex[] vert = new Vertex[3];
+            var vert = new Vertex[3];
             for (int i = 0; i < 3; i++)
             {
                 vert[i] = GetVertex(i);
@@ -139,7 +140,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
         public ICoordinate GetCoordinate(int i)
         {
-            return edge[i].Orig.Coordinate;
+            return this._edge[i].Orig.Coordinate;
         }
 
         /// <summary>
@@ -153,7 +154,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             for (int i = 0; i < 3; i++)
             {
-                if (edge[i] == e)
+                if (this._edge[i] == e)
                     return i;
             }
             return -1;
@@ -170,7 +171,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             for (int i = 0; i < 3; i++)
             {
-                if (edge[i].Orig == v)
+                if (this._edge[i].Orig == v)
                     return i;
             }
             return -1;
@@ -178,9 +179,9 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
         public void GetEdgeSegment(int i, LineSegment seg)
         {
-            seg.P0 = edge[i].Orig.Coordinate;
+            seg.P0 = this._edge[i].Orig.Coordinate;
             int nexti = (i + 1)%3;
-            seg.P1 = edge[nexti].Orig.Coordinate;
+            seg.P1 = this._edge[nexti].Orig.Coordinate;
         }
 
         public ICoordinate[] GetCoordinates()
@@ -188,13 +189,13 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             var pts = new ICoordinate[4];
             for (int i = 0; i < 3; i++)
             {
-                pts[i] = edge[i].Orig.Coordinate;
+                pts[i] = this._edge[i].Orig.Coordinate;
             }
             pts[3] = new Coordinate(pts[0]);
             return pts;
         }
 
-        public bool Contains(Coordinate pt)
+        public bool Contains(ICoordinate pt)
         {
             var ring = GetCoordinates();
             return CGAlgorithms.IsPointInRing(pt, ring);
@@ -250,7 +251,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             QuadEdge qe = start;
             do
             {
-                QuadEdgeTriangle adjTri = (QuadEdgeTriangle) qe.Data;
+                var adjTri = (QuadEdgeTriangle) qe.Data;
                 if (adjTri != null)
                 {
                     adjTris.Add(adjTri);
@@ -269,7 +270,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>an array containing the 3 neighbours of this triangle</returns>
         public QuadEdgeTriangle[] GetNeighbours()
         {
-            QuadEdgeTriangle[] neigh = new QuadEdgeTriangle[3];
+            var neigh = new QuadEdgeTriangle[3];
             for (int i = 0; i < 3; i++)
             {
                 neigh[i] = (QuadEdgeTriangle) GetEdge(i).Sym.Data;

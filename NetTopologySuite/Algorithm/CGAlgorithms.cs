@@ -438,7 +438,7 @@ namespace NetTopologySuite.Algorithm
             int n = ring.Count;
             if (n < 3) return 0.0;
             double sum = 0.0;
-            Coordinate p = new Coordinate();
+            var p = new Coordinate();
             ring.GetCoordinate(0, p);
             double bx = p.X;
             double by = p.Y;
@@ -467,7 +467,7 @@ namespace NetTopologySuite.Algorithm
 
             double len = 0.0;
 
-            Coordinate p = new Coordinate();
+            var p = new Coordinate();
             pts.GetCoordinate(0, p);
             double x0 = p.X;
             double y0 = p.Y;

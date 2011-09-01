@@ -15,7 +15,7 @@ namespace NetTopologySuite.Triangulate
     /// </ul>
     /// </summary>
     /// <author>Martin Davis</author>
-    public class MidpointSplitPointFinder : ConstraintSplitPointFinder
+    public class MidpointSplitPointFinder : IConstraintSplitPointFinder
     {
         /// <summary>
         /// Gets the midpoint of the split segment

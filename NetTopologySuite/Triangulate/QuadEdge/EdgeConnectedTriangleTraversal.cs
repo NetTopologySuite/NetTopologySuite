@@ -11,10 +11,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
     {
         private readonly LinkedList<QuadEdgeTriangle> _triQueue = new LinkedList<QuadEdgeTriangle>();
 
-        public EdgeConnectedTriangleTraversal()
-        {
-        }
-
         public void Init(QuadEdgeTriangle tri)
         {
             _triQueue.AddLast(tri);

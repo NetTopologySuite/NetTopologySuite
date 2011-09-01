@@ -4,7 +4,7 @@ using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
-    /// <summary
+    /// <summary>
     /// A class that represents the edge data structure which implements the quadedge algebra. 
     /// The quadedge algebra was described in a well-known paper by Guibas and Stolfi,
     /// "Primitives for the manipulation of general subdivisions and the computation of Voronoi diagrams", 
@@ -26,7 +26,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
     /// <author>Martin Davis</author>
     public class QuadEdge
     {
-        /// <summary
+        /// <summary>
         /// Creates a new QuadEdge quartet from <see cref="Vertex"/>o to <see cref="Vertex"/> d.
         /// </summary>
         /// <param name="o">the origin Vertex</param>
@@ -49,14 +49,13 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             q2.SetNext(q2);
             q3.SetNext(q1);
 
-            QuadEdge
-            baseQE = q0;
-            baseQE.SetOrig(o);
-            baseQE.SetDest(d);
+            QuadEdge baseQE = q0;
+            baseQE.Orig = o;
+            baseQE.Dest = d;
             return baseQE;
         }
 
-        /// <summary
+        /// <summary>
         /// Creates a new QuadEdge connecting the destination of a to the origin of
         /// b, in such a way that all three have the same left face after the
         /// connection is complete. Additionally, the data pointers of the new edge
@@ -110,8 +109,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             Splice(e.Sym, b);
             Splice(e, a.LNext);
             Splice(e.Sym, b.LNext);
-            e.SetOrig(a.Dest);
-            e.SetDest(b.Dest);
+            e.Orig = a.Dest;
+            e.Dest = b.Dest;
         }
 
         // the dual of this edge, directed from right to left
@@ -319,6 +318,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /***********************************************************************************************
          * Data Access
          **********************************************************************************************/
+        /*
         /// <summary>
         /// Sets the vertex for this edge's origin
         /// </summary>
@@ -327,32 +327,43 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             _vertex = o;
         }
+         */
 
+        /*
         /// <summary>
         /// Sets the vertex for this edge's destination
         /// </summary>
         /// <param name="d">the destination vertex</param>
         internal void SetDest(Vertex d)
         {
-            Sym.SetOrig(d);
+            Sym.Orig = d;
         }
+         */
 
         /// <summary>
-        /// Gets the vertex for the edge's origin
+        /// Gets or sets the vertex for the edge's origin
         /// </summary>
         /// <remarks>Gets the origin vertex</remarks>
         public Vertex Orig
         {
             get { return _vertex; }
+            internal set
+            {
+                _vertex = value;
+            }
         }
 
         /// <summary>
-        /// Gets the vertex for the edge's destination
+        /// Gets or sets the vertex for the edge's destination
         /// </summary>
         /// <remarks>Gets the destination vertex</remarks>
         public Vertex Dest
         {
             get { return Sym.Orig; }
+            internal set
+            {
+                Sym.Orig = value;
+            }
         }
 
         /// <summary>
