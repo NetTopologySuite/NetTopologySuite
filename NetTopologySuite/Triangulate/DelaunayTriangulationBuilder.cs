@@ -77,7 +77,7 @@ namespace NetTopologySuite.Triangulate
         public void SetSites(IGeometry geom)
         {
             // remove any duplicate points (they will cause the triangulation to fail)
-            this._siteCoords = ExtractUniqueCoordinates(geom);
+            _siteCoords = ExtractUniqueCoordinates(geom);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace NetTopologySuite.Triangulate
         public void SetSites(ICollection<ICoordinate> coords)
         {
             // remove any duplicate points (they will cause the triangulation to fail)
-            this._siteCoords = Unique(CoordinateArrays.ToCoordinateArray(coords));
+            _siteCoords = Unique(CoordinateArrays.ToCoordinateArray(coords));
         }
 
         /// <summary>
@@ -99,17 +99,17 @@ namespace NetTopologySuite.Triangulate
         ///// <param name="tolerance">the tolerance distance to use</param>
         public double Tolerance
         {
-            set {  this._tolerance = value; }
+            set {  _tolerance = value; }
         }
 
         private void Create()
         {
-            if (this._subdiv != null) return;
+            if (_subdiv != null) return;
 
-            var siteEnv = Envelope(this._siteCoords);
-            var vertices = ToVertices(this._siteCoords);
-            this._subdiv = new QuadEdgeSubdivision(siteEnv, this._tolerance);
-            IncrementalDelaunayTriangulator triangulator = new IncrementalDelaunayTriangulator(this._subdiv);
+            var siteEnv = Envelope(_siteCoords);
+            var vertices = ToVertices(_siteCoords);
+            _subdiv = new QuadEdgeSubdivision(siteEnv, _tolerance);
+            IncrementalDelaunayTriangulator triangulator = new IncrementalDelaunayTriangulator(_subdiv);
             triangulator.InsertSites(vertices);
         }
 
@@ -120,7 +120,7 @@ namespace NetTopologySuite.Triangulate
         public QuadEdgeSubdivision GetSubdivision()
         {
             Create();
-            return this._subdiv;
+            return _subdiv;
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace NetTopologySuite.Triangulate
         public IMultiLineString GetEdges(IGeometryFactory geomFact)
         {
             Create();
-            return this._subdiv.GetEdges(geomFact);
+            return _subdiv.GetEdges(geomFact);
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace NetTopologySuite.Triangulate
         public IGeometryCollection GetTriangles(IGeometryFactory geomFact)
         {
             Create();
-            return this._subdiv.GetTriangles(geomFact);
+            return _subdiv.GetTriangles(geomFact);
         }
     }
 }

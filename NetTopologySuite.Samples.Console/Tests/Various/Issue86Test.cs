@@ -7,7 +7,8 @@ namespace NetTopologySuite.Tests.Various
     public class Issue86Test
     {
         [Test]
-        public void test()
+        [Ignore("Different conversion methods produce different lengths")]
+        public void Test()
         {
             var x = LonLat_to_Merc(new Coordinate(37.8686517, 47.94573));
             var y = LonLat_to_Merc(new Coordinate(37.8686533, 47.9457283));

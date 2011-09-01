@@ -213,7 +213,7 @@ namespace NetTopologySuite.Index.Quadtree
 
             // this node may have items as well as subnodes (since items may not
             // be wholely contained in any single subnode
-            foreach (T o in this._items)
+            foreach (T o in _items)
                 resultItems.Add(o);
 
             for (int i = 0; i < 4; i++)            

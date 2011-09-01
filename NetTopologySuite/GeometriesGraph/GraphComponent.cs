@@ -33,7 +33,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="label"></param>
         protected GraphComponent(Label label)
         {
-            this._label = label;
+            _label = label;
         }
 
         /// <summary>

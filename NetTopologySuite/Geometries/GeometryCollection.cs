@@ -463,7 +463,7 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                return this._geometries[i];
+                return _geometries[i];
             }
         }
 

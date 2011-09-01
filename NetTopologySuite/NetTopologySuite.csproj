@@ -443,6 +443,7 @@
     <Compile Include="Utilities\Guard.cs" />
     <Compile Include="Utilities\HexConverter.cs" />
     <Compile Include="Utilities\Global.cs" />
+    <Compile Include="Utilities\Memory.cs" />
     <Compile Include="Utilities\PlatformUtilityEx.cs" />
     <Compile Include="Utilities\PriorityQueue.cs" />
     <Compile Include="Utilities\Radians.cs" />
@@ -461,6 +462,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithm\Distance\DiscreteHausdorffDistance.cs" />
+    <Content Include="Densify\DensifySummary.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="License.txt" />
     <Content Include="ReadMe.txt" />
     <Content Include="Triangulate\TriangulateSummary.xml">

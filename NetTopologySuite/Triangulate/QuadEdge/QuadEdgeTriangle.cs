@@ -96,32 +96,32 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
         public QuadEdgeTriangle(QuadEdge[] edge)
         {
-            this._edge = (QuadEdge[]) edge.Clone();
+            _edge = (QuadEdge[]) edge.Clone();
         }
 
         public void Kill()
         {
-            this._edge = null;
+            _edge = null;
         }
 
         public bool IsLive()
         {
-            return this._edge != null;
+            return _edge != null;
         }
 
         public QuadEdge[] GetEdges()
         {
-            return this._edge;
+            return _edge;
         }
 
         public QuadEdge GetEdge(int i)
         {
-            return this._edge[i];
+            return _edge[i];
         }
 
         public Vertex GetVertex(int i)
         {
-            return this._edge[i].Orig;
+            return _edge[i].Orig;
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
         public ICoordinate GetCoordinate(int i)
         {
-            return this._edge[i].Orig.Coordinate;
+            return _edge[i].Orig.Coordinate;
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             for (int i = 0; i < 3; i++)
             {
-                if (this._edge[i] == e)
+                if (_edge[i] == e)
                     return i;
             }
             return -1;
@@ -171,7 +171,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             for (int i = 0; i < 3; i++)
             {
-                if (this._edge[i].Orig == v)
+                if (_edge[i].Orig == v)
                     return i;
             }
             return -1;
@@ -179,9 +179,9 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
         public void GetEdgeSegment(int i, LineSegment seg)
         {
-            seg.P0 = this._edge[i].Orig.Coordinate;
+            seg.P0 = _edge[i].Orig.Coordinate;
             int nexti = (i + 1)%3;
-            seg.P1 = this._edge[nexti].Orig.Coordinate;
+            seg.P1 = _edge[nexti].Orig.Coordinate;
         }
 
         public ICoordinate[] GetCoordinates()
@@ -189,7 +189,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             var pts = new ICoordinate[4];
             for (int i = 0; i < 3; i++)
             {
-                pts[i] = this._edge[i].Orig.Coordinate;
+                pts[i] = _edge[i].Orig.Coordinate;
             }
             pts[3] = new Coordinate(pts[0]);
             return pts;

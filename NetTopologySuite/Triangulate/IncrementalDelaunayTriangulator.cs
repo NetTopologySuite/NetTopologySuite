@@ -21,8 +21,8 @@ namespace NetTopologySuite.Triangulate
         /// <param name="subdiv">a subdivision in which to build the TIN</param>
         public IncrementalDelaunayTriangulator(QuadEdgeSubdivision subdiv)
         {
-            this._subdiv = subdiv;
-            this._isUsingTolerance = subdiv.Tolerance > 0.0;
+            _subdiv = subdiv;
+            _isUsingTolerance = subdiv.Tolerance > 0.0;
         }
 
         /// <summary>
@@ -56,29 +56,29 @@ namespace NetTopologySuite.Triangulate
              * existing edge. Without this test zero-width triangles have been observed
              * to be created)
              */
-            var e = this._subdiv.Locate(v);
+            var e = _subdiv.Locate(v);
 
-            if (this._subdiv.IsVertexOfEdge(e, v)) {
+            if (_subdiv.IsVertexOfEdge(e, v)) {
                 // point is already in subdivision.
                 return e; 
             }
-            if (this._subdiv.IsOnEdge(e, v.Coordinate))
+            if (_subdiv.IsOnEdge(e, v.Coordinate))
             {
                 // the point lies exactly on an edge, so delete the edge 
                 // (it will be replaced by a pair of edges which have the point as a vertex)
                 e = e.OPrev;
-                this._subdiv.Delete(e.ONext);
+                _subdiv.Delete(e.ONext);
             }
 
             /*
              * Connect the new point to the vertices of the containing triangle 
              * (or quadrilateral, if the new point fell on an existing edge.)
              */
-            var baseQuadEdge = this._subdiv.MakeEdge(e.Orig, v);
+            var baseQuadEdge = _subdiv.MakeEdge(e.Orig, v);
             NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Splice(baseQuadEdge, e);
             var startEdge = baseQuadEdge;
             do {
-                baseQuadEdge = this._subdiv.Connect(e, baseQuadEdge.Sym);
+                baseQuadEdge = _subdiv.Connect(e, baseQuadEdge.Sym);
                 e = baseQuadEdge.OPrev;
             } while (e.LNext != startEdge);
 

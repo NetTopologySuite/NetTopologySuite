@@ -79,7 +79,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <param name="factory"></param>
         public PolygonizeGraph(IGeometryFactory factory)
         {
-            this._factory = factory;
+            _factory = factory;
         }
 
         /// <summary>

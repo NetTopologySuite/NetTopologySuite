@@ -49,7 +49,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             _eiList = new EdgeIntersectionList(this);
 
-            this._pts = pts;
+            _pts = pts;
             Label = label;
         }
 

@@ -184,7 +184,7 @@ namespace NetTopologySuite.Algorithm
             sb.Append(this.inputLines[3]).Append(" : ");
 
             if (this.IsEndPoint)  sb.Append(" endpoint");
-            if (this._isProper)   sb.Append(" proper");
+            if (_isProper)   sb.Append(" proper");
             if (this.IsCollinear) sb.Append(" collinear");
 
             return sb.ToString();                        
@@ -192,7 +192,7 @@ namespace NetTopologySuite.Algorithm
         
         protected bool IsEndPoint 
         {
-            get { return this.HasIntersection && !this._isProper; }
+            get { return this.HasIntersection && !_isProper; }
         }
 
         /// <summary> 

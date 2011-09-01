@@ -181,7 +181,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="next">edge</param>
         public void SetNext(QuadEdge next)
         {
-            this._next = next;
+            _next = next;
         }
 
         /***************************************************************************

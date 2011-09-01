@@ -89,9 +89,9 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="segmentFraction">The segment fraction.</param>
         public LinearLocation(int componentIndex, int segmentIndex, double segmentFraction)
         {
-            this._componentIndex = componentIndex;
-            this._segmentIndex = segmentIndex;
-            this._segmentFraction = segmentFraction;
+            _componentIndex = componentIndex;
+            _segmentIndex = segmentIndex;
+            _segmentFraction = segmentFraction;
             Normalize();
         }
 

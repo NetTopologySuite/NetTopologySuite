@@ -76,8 +76,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="p1"></param>
         protected void Init(ICoordinate p0, ICoordinate p1)
         {
-            this._p0 = p0;
-            this._p1 = p1;
+            _p0 = p0;
+            _p1 = p1;
             _dx = p1.X - p0.X;
             _dy = p1.Y - p0.Y;
             _quadrant = QuadrantOp.Quadrant(_dx, _dy);
@@ -174,7 +174,7 @@ namespace NetTopologySuite.GeometriesGraph
             }
             set
             {
-                this._node = value;
+                _node = value;
             }
         }
 

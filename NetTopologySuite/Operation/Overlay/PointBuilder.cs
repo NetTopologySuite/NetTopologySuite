@@ -24,7 +24,7 @@ namespace NetTopologySuite.Operation.Overlay
         {
             _op = op;
             _geometryFactory = geometryFactory;
-            //this._ptLocator = ptLocator;
+            //_ptLocator = ptLocator;
         }
 
         /// <summary>

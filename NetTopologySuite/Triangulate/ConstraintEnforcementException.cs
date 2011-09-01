@@ -40,7 +40,7 @@ namespace NetTopologySuite.Triangulate
         public ConstraintEnforcementException(String msg, ICoordinate pt)
             : base(MsgWithCoord(msg, pt))
         {
-            this._pt = new Coordinate(pt);
+            _pt = new Coordinate(pt);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Triangulate
         {
             get
             {
-                return this._pt;
+                return _pt;
             }
         }
     }
