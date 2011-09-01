@@ -54,16 +54,24 @@ namespace NetTopologySuite.Samples.Tests.Various
             { 
                 new Coordinate(12, 12), 
                 new Coordinate(24, 24), 
-                new Coordinate(36, 36), 
+                new Coordinate(24, 36), 
             });
-            IMultiLineString multiLineString = Factory.CreateMultiLineString(new ILineString[] { lineString1, lineString2, });
+            IMultiLineString multiLineString = Factory.CreateMultiLineString(new[] { lineString1, lineString2, });
             IMultiLineString reverse = multiLineString.Reverse();
 
             Debug.WriteLine(multiLineString.ToString());
             Debug.WriteLine(reverse.ToString());
 
-            Assert.IsTrue(multiLineString.Equals(reverse));
+            Assert.IsFalse(multiLineString.Equals(reverse));
             Assert.IsFalse(multiLineString.EqualsExact(reverse));
+
+            IGeometry result2 = reverse[1];
+            Assert.IsTrue(lineString1.Equals(result2));
+            Assert.IsFalse(lineString1.EqualsExact(result2));
+
+            IGeometry result1 = reverse[0];
+            Assert.IsTrue(lineString2.Equals(result1));
+            Assert.IsFalse(lineString2.EqualsExact(result1));
         }
     }
 }
