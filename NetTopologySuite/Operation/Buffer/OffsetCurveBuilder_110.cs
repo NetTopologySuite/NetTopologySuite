@@ -10,6 +10,8 @@ using NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 #if DOTNET35
 using sl = System.Linq;
+#else
+using sl = GeoAPI.DataStructures;
 #endif
 namespace NetTopologySuite.Operation.Buffer
 {

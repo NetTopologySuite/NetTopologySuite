@@ -1,0 +1,11 @@
+copy "GeoAPI\GeoAPI.Net.%1.%3.csproj" "GeoAPI\GeoAPI.Net.%2.%3.csproj"
+copy "NetTopologySuite\NetTopologySuite.%1.%3.csproj" "NetTopologySuite\NetTopologySuite.%2.%3.csproj"
+copy "NetTopologySuite\Coordinates\Buffered\ManagedBufferedCoordinate.%1.%3.csproj" "NetTopologySuite\Coordinates\Buffered\ManagedBufferedCoordinate.%2.%3.csproj"
+copy "NetTopologySuite\Coordinates\Buffered\Tests\ManagedBufferedCoordinateTests.%1.%3.csproj" "NetTopologySuite\Coordinates\Buffered\Tests\ManagedBufferedCoordinateTests.%2.%3.csproj"
+copy "NetTopologySuite\Coordinates\Simple\NetTopologySuite.Coordinates.Simple.%1.%3.csproj" "NetTopologySuite\Coordinates\Simple\NetTopologySuite.Coordinates.Simple.%2.%3.csproj"
+copy "NetTopologySuite\Coordinates\Simple\Tests\NetTopologySuite.Coordinates.Simple.Tests.%1.%3.csproj" "NetTopologySuite\Coordinates\Simple\Tests\NetTopologySuite.Coordinates.Simple.Tests.%2.%3.csproj"
+copy "NetTopologySuite.TestRunner\NetTopologySuite.TestRunner.%1.%3.csproj" "NetTopologySuite.TestRunner\NetTopologySuite.TestRunner.%2.%3.csproj"
+copy "NetTopologySuite.TestRunner.Console\NetTopologySuite.TestRunner.Console.%1.%3.csproj "NetTopologySuite.TestRunner.Console\NetTopologySuite.TestRunner.Console.%2.%3.csproj
+copy "NetTopologySuite.Tests.NUnit\NetTopologySuite.Tests.NUnit.%1.%3.csproj" "NetTopologySuite.Tests.NUnit\NetTopologySuite.Tests.NUnit.%2.%3.csproj"
+copy "NPack\NPack.%1.%3.csproj" "NPack\NPack.%2.%3.csproj"
+copy "NPack.Matrix\NPack.Matrix.%1.%3.csproj" "NPack.Matrix\NPack.Matrix.%2.%3.csproj"

@@ -4,6 +4,10 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NPack.Interfaces;
+using sgc = System.Collections.Generic;
+#if !DOTNET35
+using C5;
+#endif
 
 namespace NetTopologySuite.Triangulate.Quadedge
 {
@@ -18,12 +22,12 @@ namespace NetTopologySuite.Triangulate.Quadedge
     /// support extraction of Voronoi diagrams.
     /// This is easily accomplished, since the Voronoi diagram is the dual
     /// of the Delaunay triangulation.
-    /// <p>
+    /// <para>
     /// Subdivisions can be provided with a tolerance value. Inserted vertices which
     /// are closer than this value to vertices already in the subdivision will be
     /// ignored. Using a suitable tolerance value can prevent robustness failures
     /// from happening during Delaunay triangulation.
-    /// <p>
+    /// </para>
     /// Subdivisions maintain a <b>frame</b> triangle around the client-created
     /// edges. The frame is used to provide a bounded "container" for all edges
     /// within a TIN. Normally the frame edges, frame connecting edges, and frame
@@ -542,9 +546,9 @@ namespace NetTopologySuite.Triangulate.Quadedge
   ///</summary>
   ///<param name="includeFrame"></param>
   ///<returns></returns>
-  public IList<QuadEdge<TCoordinate>> GetVertexUniqueEdges(Boolean includeFrame) 
+  public sgc.IList<QuadEdge<TCoordinate>> GetVertexUniqueEdges(Boolean includeFrame) 
   {
-      IList<QuadEdge<TCoordinate>> edges = new List<QuadEdge<TCoordinate>>();
+      var edges = new List<QuadEdge<TCoordinate>>();
       SortedList<Int32, Vertex<TCoordinate>> visited = new SortedList<Int32, Vertex<TCoordinate>>();
       foreach (QuadEdge<TCoordinate> qe in _quadEdges)
       {
@@ -889,7 +893,7 @@ namespace NetTopologySuite.Triangulate.Quadedge
   /// This allows easily associating external data associated with the sites to the cells.
   ///</summary>
   ///<returns>an enumeration of polygons</returns>
-  public IList<IGeometry<TCoordinate>> GetVoronoiCellPolygons()
+  public sgc.IList<IGeometry<TCoordinate>> GetVoronoiCellPolygons()
   {
   	/*
   	 * Compute circumcentres of triangles as vertices for dual edges.
@@ -897,7 +901,7 @@ namespace NetTopologySuite.Triangulate.Quadedge
   	 * and more importantly ensures that the computed centres
   	 * are consistent across the Voronoi cells.
   	 */ 
-      IList<IGeometry<TCoordinate>> vorCells = new List<IGeometry<TCoordinate>>();
+      var vorCells = new List<IGeometry<TCoordinate>>();
   	VisitTriangles(new TriangleCircumcentreVisitor(), true);
 
       foreach (QuadEdge<TCoordinate> qe in GetVertexUniqueEdges(false)    )

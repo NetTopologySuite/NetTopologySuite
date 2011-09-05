@@ -10,6 +10,8 @@ using BitConverter = GisSharpBlog.NetTopologySuite.Utilities;
 #endif
 #if DOTNET35
 using sl = System.Linq;
+#else
+using sl = GeoAPI.DataStructures;
 #endif
 
 namespace NetTopologySuite.Coordinates

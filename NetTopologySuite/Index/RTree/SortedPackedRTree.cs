@@ -4,6 +4,8 @@ using GeoAPI.DataStructures;
 using GeoAPI.Indexing;
 #if DOTNET35
 using sl = System.Linq;
+#else
+using sl = GeoAPI.DataStructures;
 #endif
 
 namespace NetTopologySuite.Index.RTree

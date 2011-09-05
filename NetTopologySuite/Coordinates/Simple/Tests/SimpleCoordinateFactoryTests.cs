@@ -8,6 +8,9 @@ using NUnit.Framework;
 #if DOTNET35
 using System.Linq;
 using sl = System.Linq;
+#else
+using GeoAPI.DataStructures;
+using sl = GeoAPI.DataStructures;
 #endif
 
 namespace SimpleCoordinateTests
