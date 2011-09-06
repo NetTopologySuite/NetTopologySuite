@@ -56,9 +56,9 @@
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
       <Name>NetTopologySuite.VS2010.Net20</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ManagedBufferedCoordinate.VS2010.Net35.csproj">
+    <ProjectReference Include="..\ManagedBufferedCoordinate.VS2010.Net20.csproj">
       <Project>{8A1C8DC2-9E24-47E9-A51C-AA46E0B0260C}</Project>
-      <Name>ManagedBufferedCoordinate.VS2010.Net35</Name>
+      <Name>ManagedBufferedCoordinate.VS2010.Net20</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(SolutionDir)GeoAPI.Net.VS2010.targets" />
