@@ -1,5 +1,10 @@
+#if useFullGeoAPI
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Distance;
+#else
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+#endif
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Buffer.Validate

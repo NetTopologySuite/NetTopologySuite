@@ -1,7 +1,11 @@
 using System;
 //using System.Collections;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+#if useFullGeoAPI
+using ICoordinate = GeoAPI.Geometries.ICoordinate;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+#endif
 
 namespace NetTopologySuite.Geometries
 {
@@ -10,7 +14,6 @@ namespace NetTopologySuite.Geometries
     /// </summary>
     public static class CoordinateArrays
     {
-
          /// <summary>
         /// Tests whether an array of <see cref="ICoordinate"/>s forms a ring, by checking length and closure.
         /// Self-intersection is not checked.

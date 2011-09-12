@@ -1,4 +1,9 @@
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using NetTopologySuite.Geometries;
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+#endif
 using NetTopologySuite.GeometriesGraph;
 
 namespace NetTopologySuite.Operation.Relate

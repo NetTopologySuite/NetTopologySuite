@@ -1,7 +1,13 @@
 using System;
 //using System.Collections;
 using System.Collections.Generic;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using ILinearRing = NetTopologySuite.Geometries.LinearRing;
+using IEnvelope = NetTopologySuite.Geometries.Envelope;
+#endif
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.Bintree;
 using NetTopologySuite.Index.Chain;

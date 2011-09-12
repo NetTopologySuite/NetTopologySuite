@@ -1,5 +1,9 @@
 using System;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+#endif
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 
@@ -25,7 +29,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         private int ORIGIN = 5;
         private int DESTINATION = 6;
 
-        private readonly ICoordinate _p;
+        private readonly Coordinate _p;
         // private int edgeNumber = -1;
 
         public Vertex(double x, double y)
@@ -71,7 +75,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
         public bool Equals(Vertex x)
         {
-            if (_p.X == x.X && _p.Y == x.Y)
+            if (_p.X == x._p.X && _p.Y == x._p.Y)
             {
                 return true;
             }
@@ -97,7 +101,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 return LEFT;
             if (sa < 0.0)
                 return RIGHT;
-            if ((a.X*b.X < 0.0) || (a.Y*b.Y < 0.0))
+            if ((a._p.X * b._p.X < 0.0) || (a._p.Y * b._p.Y < 0.0))
                 return BEHIND;
             if (a.Magnitude() < b.Magnitude())
                 return BEYOND;
@@ -115,7 +119,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>returns the magnitude of u X v</returns>
         private double CrossProduct(Vertex v)
         {
-            return (_p.X*v.Y - _p.Y*v.X);
+         return (_p.X * v._p.Y - _p.Y * v._p.X);
         }
 
         /// <summary>
@@ -125,7 +129,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>the dot product u.v</returns>
         private double Dot(Vertex v)
         {
-            return (_p.X*v.X + _p.Y*v.Y);
+         return (_p.X * v._p.X + _p.Y * v._p.Y);
         }
 
         /// <summary>
@@ -142,14 +146,14 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
         private Vertex Sum(Vertex v)
         {
-            return (new Vertex(_p.X + v.X, _p.Y + v.Y));
+         return (new Vertex(_p.X + v._p.X, _p.Y + v._p.Y));
         }
 
         /* and subtraction */
 
         private Vertex Sub(Vertex v)
         {
-            return (new Vertex(_p.X - v.X, _p.Y - v.Y));
+         return (new Vertex(_p.X - v._p.X, _p.Y - v._p.Y));
         }
 
         /* magnitude of vector */
@@ -177,8 +181,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// </summary>
         private static double TriArea(Vertex a, Vertex b, Vertex c)
         {
-            return (b._p.X - a._p.X)*(c._p.Y - a._p.Y)
-                   - (b._p.Y - a._p.Y)*(c._p.X - a._p.X);
+         return (b._p.X - a._p.X) * (c._p.Y - a._p.Y)
+                   - (b._p.Y - a._p.Y) * (c._p.X - a._p.X);
         }
 
         /// <summary>
@@ -231,7 +235,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             // is equal to the signed area of the triangle
 
-            return (b._p.X - _p.X)*(c._p.Y - _p.Y)
+            return (b._p.X - _p.X) * (c._p.Y - _p.Y)
                    - (b._p.Y - _p.Y)*(c._p.X - _p.X) > 0;
 
             // original rolled code
@@ -261,17 +265,17 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         private static HCoordinate Bisector(Vertex a, Vertex b)
         {
             // returns the perpendicular bisector of the line segment ab
-            double dx = b.X - a.X;
-            double dy = b.Y - a.Y;
-            HCoordinate l1 = new HCoordinate(a.X + dx/2.0, a.Y + dy/2.0, 1.0);
-            HCoordinate l2 = new HCoordinate(a.X - dy + dx/2.0, a.Y + dx + dy/2.0, 1.0);
+         double dx = b._p.X - a._p.X;
+         double dy = b._p.Y - a._p.Y;
+         HCoordinate l1 = new HCoordinate(a._p.X + dx / 2.0, a._p.Y + dy / 2.0, 1.0);
+         HCoordinate l2 = new HCoordinate(a._p.X - dy + dx / 2.0, a._p.Y + dx + dy / 2.0, 1.0);
             return new HCoordinate(l1, l2);
         }
 
         private double Distance(Vertex v1, Vertex v2)
         {
-            return Math.Sqrt(Math.Pow(v2.X - v1.X, 2.0)
-                             + Math.Pow(v2.Y - v1.Y, 2.0));
+         return Math.Sqrt(Math.Pow(v2._p.X - v1._p.X, 2.0)
+                             + Math.Pow(v2._p.Y - v1._p.Y, 2.0));
         }
 
         /// <summary>
@@ -308,8 +312,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>the point mid-way between this and that.</returns>
         public Vertex MidPoint(Vertex a)
         {
-            double xm = (_p.X + a.X)/2.0;
-            double ym = (_p.Y + a.Y)/2.0;
+         double xm = (_p.X + a._p.X) / 2.0;
+         double ym = (_p.Y + a._p.Y) / 2.0;
             double zm = (_p.Z + a.Z)/2.0;
             return new Vertex(xm, ym, zm);
         }
@@ -322,7 +326,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>the Coordinate which is the circumcircle of the 3 points.</returns>
         public Vertex CircleCenter(Vertex b, Vertex c)
         {
-            Vertex a = new Vertex(this.X, this.Y);
+         Vertex a = new Vertex(this._p.X, this._p.Y);
             // compute the perpendicular bisector of cord ab
             HCoordinate cab = Bisector(a, b);
             // compute the perpendicular bisector of cord bc
@@ -348,15 +352,15 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// </summary>
         public double InterpolateZValue(Vertex v0, Vertex v1, Vertex v2)
         {
-            double x0 = v0.X;
-            double y0 = v0.Y;
-            double a = v1.X - x0;
-            double b = v2.X - x0;
-            double c = v1.Y - y0;
-            double d = v2.Y - y0;
+         double x0 = v0._p.X;
+         double y0 = v0._p.Y;
+         double a = v1._p.X - x0;
+         double b = v2._p.X - x0;
+         double c = v1._p.Y - y0;
+         double d = v2._p.Y - y0;
             double det = a*d - b*c;
-            double dx = this.X - x0;
-            double dy = this.Y - y0;
+            double dx = _p.X - x0;
+            double dy = _p.Y - y0;
             double t = (d*dx - b*dy)/det;
             double u = (-c*dx + a*dy)/det;
             double z = v0.Z + t*(v1.Z - v0.Z) + u*(v2.Z - v0.Z);
@@ -366,7 +370,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <summary>
         /// Interpolates the Z value of a point enclosed in a 3D triangle.
         /// </summary>
-        public static double InterpolateZ(ICoordinate p, ICoordinate v0, ICoordinate v1, ICoordinate v2)
+        public static double InterpolateZ(Coordinate p, Coordinate v0, Coordinate v1, Coordinate v2)
         {
             double x0 = v0.X;
             double y0 = v0.Y;
@@ -463,14 +467,14 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         // }
         //
         // private static boolean inCircleDD(Coordinate a, Coordinate b, Coordinate c, Coordinate p) {
-        // DoubleDouble px = new DoubleDouble(p.x);
-        // DoubleDouble py = new DoubleDouble(p.y);
-        // DoubleDouble ax = new DoubleDouble(a.x);
-        // DoubleDouble ay = new DoubleDouble(a.y);
-        // DoubleDouble bx = new DoubleDouble(b.x);
-        // DoubleDouble by = new DoubleDouble(b.y);
-        // DoubleDouble cx = new DoubleDouble(c.x);
-        // DoubleDouble cy = new DoubleDouble(c.y);
+        // DoubleDouble px = new DoubleDouble(p.X);
+        // DoubleDouble py = new DoubleDouble(p.Y);
+        // DoubleDouble ax = new DoubleDouble(a.X);
+        // DoubleDouble ay = new DoubleDouble(a.Y);
+        // DoubleDouble bx = new DoubleDouble(b.X);
+        // DoubleDouble by = new DoubleDouble(b.Y);
+        // DoubleDouble cx = new DoubleDouble(c.X);
+        // DoubleDouble cy = new DoubleDouble(c.Y);
         //
         // DoubleDouble aTerm = (ax.multiply(ax).add(ay.multiply(ay))).multiply(triAreaDD(
         // bx,

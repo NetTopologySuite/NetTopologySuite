@@ -1,6 +1,17 @@
 using System;
 using System.Collections.Generic;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using IEnvelope = NetTopologySuite.Geometries.Envelope;
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using IGeometryCollection = NetTopologySuite.Geometries.GeometryCollection;
+using IMultiLineString = NetTopologySuite.Geometries.MultiLineString;
+using ILineString = NetTopologySuite.Geometries.LineString;
+using IGeometryFactory = NetTopologySuite.Geometries.GeometryFactory;
+using IPolygon = NetTopologySuite.Geometries.Polygon;
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+#endif
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Triangulate.QuadEdge
@@ -437,7 +448,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return false;
         }
 
-        private LineSegment seg = new LineSegment();
+        private readonly LineSegment _seg = new LineSegment();
 
         /// <summary>
         /// Tests whether a {@link Coordinate} lies on a {@link QuadEdge}, up to a
@@ -446,10 +457,10 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="e">a QuadEdge</param>
         /// <param name="p">a point</param>
         /// <returns>true if the vertex lies on the edge</returns>
-        public bool IsOnEdge(QuadEdge e, ICoordinate p)
+        public bool IsOnEdge(QuadEdge e, Coordinate p)
         {
-            seg.SetCoordinates(e.Orig.Coordinate, e.Dest.Coordinate);
-            double dist = seg.Distance(p);
+            _seg.SetCoordinates(e.Orig.Coordinate, e.Dest.Coordinate);
+            double dist = _seg.Distance(p);
             // heuristic (hack?)
             return dist < _edgeCoincidenceTolerance;
         }
@@ -595,12 +606,12 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             public void Visit(QuadEdge[] triEdges) 
             {
-                ICoordinate a = triEdges[0].Orig.Coordinate;
-                ICoordinate b = triEdges[1].Orig.Coordinate;
-                ICoordinate c = triEdges[2].Orig.Coordinate;
+                var a = triEdges[0].Orig.Coordinate;
+                var b = triEdges[1].Orig.Coordinate;
+                var c = triEdges[2].Orig.Coordinate;
 			
                 // TODO: choose the most accurate circumcentre based on the edges
-                ICoordinate cc = Triangle.Circumcentre(a, b, c);
+                var cc = Triangle.Circumcentre(a, b, c);
                 Vertex ccVertex = new Vertex(cc);
                 // save the circumcentre as the origin for the dual edges originating in this triangle
                 for (int i = 0; i < 3; i++) {

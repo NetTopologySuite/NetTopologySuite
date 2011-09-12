@@ -1,7 +1,24 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+#region geoapi vs nts
+#if useFullGeoAPI
+using GeoAPI.Geometries;
+#else
+using IEnvelope = NetTopologySuite.Geometries.Envelope;
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using IGeometryFactory = NetTopologySuite.Geometries.GeometryFactory;
+using IPoint = NetTopologySuite.Geometries.Point;
+using ILineString = NetTopologySuite.Geometries.LineString;
+using ILinearRing = NetTopologySuite.Geometries.LinearRing;
+using IPolygon = NetTopologySuite.Geometries.Polygon;
+using IGeometryCollection = NetTopologySuite.Geometries.GeometryCollection;
+using IMultiPoint = NetTopologySuite.Geometries.MultiPoint;
+using IMultiLineString = NetTopologySuite.Geometries.MultiLineString;
+using IMultiPolygon = NetTopologySuite.Geometries.MultiPolygon;
+#endif
+#endregion
 
 namespace NetTopologySuite.Geometries
 {
@@ -17,7 +34,10 @@ namespace NetTopologySuite.Geometries
 //#if !SILVERLIGHT
     [Serializable]
 //#endif
-    public class Polygon : Geometry, IPolygon
+    public class Polygon : Geometry
+#if useFullGeoAPI
+        , IPolygon
+#endif
     {
         /// <summary>
         /// Represents an empty <c>Polygon</c>.

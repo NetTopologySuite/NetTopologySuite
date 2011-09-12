@@ -1,5 +1,11 @@
 using System;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using IPoint = NetTopologySuite.Geometries.Point;
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+#endif
 
 namespace NetTopologySuite.Geometries
 {
@@ -21,7 +27,10 @@ namespace NetTopologySuite.Geometries
     /// </para>
     /// </summary>
     [Serializable]
-    public class Coordinate : ICoordinate
+    public class Coordinate : IEquatable<Coordinate>, IComparable<Coordinate>
+#if useFullGeoAPI
+        , ICoordinate
+#endif
     {
         ///<summary>
         /// The value used to indicate a null or missing ordinate value.
@@ -30,9 +39,12 @@ namespace NetTopologySuite.Geometries
         ///</summary>
         public const double NullOrdinate = Double.NaN;
         
-        private double _x; // = Double.NaN;
-        private double _y; // = Double.NaN;
-        private double _z; // = Double.NaN;
+        /*
+        // ReSharper disable InconsistentNaming
+        internal double _x; // = Double.NaN;
+        internal double _y; // = Double.NaN;
+        internal double _z; // = Double.NaN;
+        // ReSharper restore InconsistentNaming
 
         /// <summary>
         /// X coordinate.
@@ -61,14 +73,11 @@ namespace NetTopologySuite.Geometries
             set { _z = value; }
         }
 
-        /// <summary>
-        /// The measure value
-        /// </summary>
-        public virtual double M
-        {
-            get { return Double.NaN; }
-            set { }
-        }
+         */
+
+        public double X;
+        public double Y;
+        public double Z;
 
         /// <summary>
         /// Constructs a <c>Coordinate</c> at (x,y,z).
@@ -78,9 +87,9 @@ namespace NetTopologySuite.Geometries
         /// <param name="z">Z value.</param>
         public Coordinate(double x, double y, double z)
         {
-            _x = x;
-            _y = y;
-            _z = z;
+            X = x;
+            Y = y;
+            Z = z;
         }
 
         /// <summary>
@@ -92,30 +101,37 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                switch (index)
-                {
-                    case Ordinate.X:
-                        return _x;
-                    case Ordinate.Y:
-                        return _y;
-                    case Ordinate.Z:
-                        return _z;
-                    default:
-                        return NullOrdinate;
-                }
+                if (index == Ordinate.X)
+                    return X;
+                if (index == Ordinate.Y)
+                    return Y;
+                if (index == Ordinate.Z)
+                    return Z;
+                return NullOrdinate;
+                //switch (index)
+                //{
+                //    case Ordinate.X:
+                //        return _x;
+                //    case Ordinate.Y:
+                //        return _y;
+                //    case Ordinate.Z:
+                //        return _z;
+                //    default:
+                //        return NullOrdinate;
+                //}
             }
             set
             {
                 switch (index)
                 {
                     case Ordinate.X:
-                        _x = value;
+                        X = value;
                         break;
                     case Ordinate.Y:
-                        _y = value;
+                        Y = value;
                         break;
                     case Ordinate.Z:
-                        _z = value;
+                        Z = value;
                         break;
                 }
             }
@@ -131,7 +147,7 @@ namespace NetTopologySuite.Geometries
         /// <c>other</c>.
         /// </summary>
         /// <param name="c"><c>Coordinate</c> to copy.</param>
-        public Coordinate(ICoordinate c) : this(c.X, c.Y, c.Z) { }
+        public Coordinate(Coordinate c) : this(c.X, c.Y, c.Z) { }
 
         /// <summary>
         /// Constructs a <c>Coordinate</c> at (x,y,NaN).
@@ -143,14 +159,14 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets/Sets <c>Coordinate</c>s (x,y,z) values.
         /// </summary>
-        public ICoordinate CoordinateValue
+        public Coordinate CoordinateValue
         {
             get { return this; }
             set
             {
-                _x = value.X;
-                _y = value.Y;
-                _z = value.Z;
+                X = value.X;
+                Y = value.Y;
+                Z = value.Z;
             }
         }
 
@@ -162,7 +178,7 @@ namespace NetTopologySuite.Geometries
         /// <c>true</c> if the x- and y-coordinates are equal;
         /// the Z coordinates do not have to be equal.
         /// </returns>
-        public bool Equals2D(ICoordinate other)
+        public bool Equals2D(Coordinate other)
         {
             return X == other.X && Y == other.Y;
         }
@@ -177,9 +193,16 @@ namespace NetTopologySuite.Geometries
         {
             if (other == null)
                 return false;
+            if (other is Coordinate)
+                return Equals(other as Coordinate);
+#if useFullGeoAPI
             if (!(other is ICoordinate))
                 return false;
+
             return Equals((ICoordinate)other);
+#else
+            return false;
+#endif
         }
 
         /// <summary>
@@ -187,7 +210,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public Boolean Equals(ICoordinate other)
+        public Boolean Equals(Coordinate other)
         {
             return Equals2D(other);
         }
@@ -229,8 +252,9 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public int CompareTo(object o)
         {
-            var other = (ICoordinate)o;
-            return CompareTo(other);
+            if (o is Coordinate)
+                return CompareTo((Coordinate)o);
+            return ((ICoordinate) this).CompareTo((ICoordinate) o);
         }
 
         /// <summary>
@@ -246,15 +270,15 @@ namespace NetTopologySuite.Geometries
         /// A negative integer, zero, or a positive integer as this <c>Coordinate</c>
         ///         is less than, equal to, or greater than the specified <c>Coordinate</c>.
         /// </returns>
-        public int CompareTo(ICoordinate other)
+        public int CompareTo(Coordinate other)
         {
-            if (_x < other.X)
+            if (X < other.X)
                 return -1;
-            if (_x > other.X)
+            if (X > other.X)
                 return 1;
-            if (_y < other.Y)
+            if (Y < other.Y)
                 return -1;
-            if (_y > other.Y)
+            if (Y > other.Y)
                 return 1;
             return 0;
         }
@@ -264,10 +288,10 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other"><c>Coordinate</c> with which to do the 3D comparison.</param>
         /// <returns><c>true</c> if <c>other</c> is a <c>Coordinate</c> with the same values for x, y and z.</returns>
-        public bool Equals3D(ICoordinate other)
+        public bool Equals3D(Coordinate other)
         {
-            return (_x == other.X) && (_y == other.Y) &&
-                ((_z == other.Z) || (Double.IsNaN(Z) && Double.IsNaN(other.Z)));
+            return (X == other.X) && (Y == other.Y) &&
+                ((Z == other.Z) || (Double.IsNaN(Z) && Double.IsNaN(other.Z)));
         }
 
         /// <summary>
@@ -276,7 +300,7 @@ namespace NetTopologySuite.Geometries
         /// <returns><c>string</c> of the form <I>(x,y,z)</I></returns>
         public override string ToString()
         {
-            return "(" + _x + ", " + _y + ", " + _z + ")";
+            return "(" + X + ", " + Y + ", " + Z + ")";
         }
 
         /// <summary>
@@ -296,8 +320,8 @@ namespace NetTopologySuite.Geometries
         /// <returns>the 2-dimensional Euclidean distance between the locations</returns>
         public double Distance(ICoordinate p)
         {
-            var dx = _x - p.X;
-            var dy = _y - p.Y;
+            var dx = X - p.X;
+            var dy = Y - p.Y;
             return Math.Sqrt(dx * dx + dy * dy);
         }
 
@@ -434,5 +458,146 @@ namespace NetTopologySuite.Geometries
         }
 
         /* END ADDED BY MPAUL42: monoGIS team */
+
+        #region explicit ICoordinate
+
+#if useFullGeoAPI
+        /// <summary>
+        /// Constructs a <c>Coordinate</c> having the same (x,y,z) values as
+        /// <c>other</c>.
+        /// </summary>
+        /// <param name="c"><c>Coordinate</c> to copy.</param>
+        public Coordinate(ICoordinate c) : this(c.X, c.Y, c.Z) { }
+
+        
+        double ICoordinate.X
+        {
+            get { return _x; }
+            set { _x = value; }
+        }
+
+        double ICoordinate.Y
+        {
+            get { return _y; }
+            set { _y = value; }
+        }
+
+        double ICoordinate.Z
+        {
+            get { return _z; }
+            set { _z = value; }
+        }
+
+        /// <summary>
+        /// The measure value
+        /// </summary>
+        double ICoordinate.M
+        {
+            get { return Double.NaN; }
+            set { }
+        }
+
+        /// <summary>
+        /// Gets/Sets <c>Coordinate</c>s (x,y,z) values.
+        /// </summary>
+        ICoordinate ICoordinate.CoordinateValue
+        {
+            get { return this; }
+            set
+            {
+                _x = value.X;
+                _y = value.Y;
+                _z = value.Z;
+            }
+        }
+
+
+        /// <summary>
+        /// Computes the 2-dimensional Euclidean distance to another location.
+        /// The Z-ordinate is ignored.
+        /// </summary>
+        /// <param name="p"><c>Coordinate</c> with which to do the distance comparison.</param>
+        /// <returns>the 2-dimensional Euclidean distance between the locations</returns>
+        double ICoordinate.Distance(ICoordinate p)
+        {
+            var dx = _x - p.X;
+            var dy = _y - p.Y;
+            return Math.Sqrt(dx * dx + dy * dy);
+        }
+
+        /// <summary>
+        /// Returns whether the planar projections of the two <c>Coordinate</c>s are equal.
+        ///</summary>
+        /// <param name="other"><c>Coordinate</c> with which to do the 2D comparison.</param>
+        /// <returns>
+        /// <c>true</c> if the x- and y-coordinates are equal;
+        /// the Z coordinates do not have to be equal.
+        /// </returns>
+        bool ICoordinate.Equals2D(ICoordinate other)
+        {
+            return X == other.X && Y == other.Y;
+        }
+
+        /// <summary>
+        /// Returns <c>true</c> if <c>other</c> has the same values for x, y and z.
+        /// </summary>
+        /// <param name="other"><c>Coordinate</c> with which to do the 3D comparison.</param>
+        /// <returns><c>true</c> if <c>other</c> is a <c>Coordinate</c> with the same values for x, y and z.</returns>
+        bool ICoordinate.Equals3D(ICoordinate other)
+        {
+            return (_x == other.X) && (_y == other.Y) &&
+                ((_z == other.Z) || (Double.IsNaN(Z) && Double.IsNaN(other.Z)));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        Boolean IEquatable<ICoordinate>.Equals(ICoordinate other)
+        {
+            return ((ICoordinate)this).Equals2D(other);
+        }
+
+        /// <summary>
+        /// Compares this object with the specified object for order.
+        /// Since Coordinates are 2.5D, this routine ignores the z value when making the comparison.
+        /// Returns
+        ///   -1  : this.x lowerthan other.x || ((this.x == other.x) AND (this.y lowerthan other.y))
+        ///    0  : this.x == other.x AND this.y = other.y 
+        ///    1  : this.x greaterthan other.x || ((this.x == other.x) AND (this.y greaterthan other.y)) 
+        /// </summary>
+        /// <param name="other"><c>Coordinate</c> with which this <c>Coordinate</c> is being compared.</param>
+        /// <returns>
+        /// A negative integer, zero, or a positive integer as this <c>Coordinate</c>
+        ///         is less than, equal to, or greater than the specified <c>Coordinate</c>.
+        /// </returns>
+        int IComparable<ICoordinate>.CompareTo(ICoordinate other)
+        {
+            if (_x < other.X)
+                return -1;
+            if (_x > other.X)
+                return 1;
+            if (_y < other.Y)
+                return -1;
+            if (_y > other.Y)
+                return 1;
+            return 0;
+        }
+#endif
+        #endregion
     }
+
+#if useFullGeoAPI
+    public static class CoordinateEx
+    {
+        public static Coordinate ToCoordinate(this ICoordinate coordinate)
+        {
+            if (coordinate is Coordinate)
+                return (Coordinate)coordinate;
+            
+            return new Coordinate(coordinate);
+        }
+    }
+#endif
 }

@@ -1,4 +1,6 @@
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#endif
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Triangulate
@@ -20,10 +22,15 @@ namespace NetTopologySuite.Triangulate
         /// <summary>
         /// Gets the midpoint of the split segment
         /// </summary>
-        public ICoordinate FindSplitPoint(Segment seg, ICoordinate encroachPt)
+        public Coordinate FindSplitPoint(Segment seg, Coordinate encroachPt)
         {
-            ICoordinate p0 = seg.Start;
-            ICoordinate p1 = seg.End;
+#if useFullGeoAPI
+            var p0 = seg.Start.ToCoordinate();
+            var p1 = seg.End.ToCoordinate();
+#else
+            var p0 = seg.Start;
+            var p1 = seg.End;
+#endif
             return new Coordinate((p0.X + p1.X) / 2, (p0.Y + p1.Y) / 2);
         }
     }

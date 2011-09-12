@@ -1,5 +1,9 @@
+#if useFullGeoAPI
 using GeoAPI.Geometries;
-
+#else
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using IGeometryCollection = NetTopologySuite.Geometries.GeometryCollection;
+#endif
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
@@ -8,12 +12,7 @@ namespace NetTopologySuite.Geometries.Utilities
     /// </summary>
     public abstract class ShortCircuitedGeometryVisitor
     {
-        private bool isDone = false;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public ShortCircuitedGeometryVisitor() { }
+        private bool _isDone;
 
         /// <summary>
         /// 
@@ -21,7 +20,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="geom"></param>
         public void ApplyTo(IGeometry geom) 
         {
-            for (int i = 0; i < geom.NumGeometries && ! isDone; i++) 
+            for (int i = 0; i < geom.NumGeometries && ! _isDone; i++) 
             {
                 IGeometry element = geom.GetGeometryN(i);
                 if (!(element is IGeometryCollection)) 
@@ -29,7 +28,7 @@ namespace NetTopologySuite.Geometries.Utilities
                     Visit(element);
                     if (IsDone()) 
                     {
-                        isDone = true;
+                        _isDone = true;
                         return;
                     }
                 }

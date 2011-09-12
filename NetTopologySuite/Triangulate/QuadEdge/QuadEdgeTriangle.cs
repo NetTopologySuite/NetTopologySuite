@@ -1,6 +1,13 @@
 using System;
 using System.Collections.Generic;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using ILinearRing = NetTopologySuite.Geometries.LinearRing;
+using IPolygon = NetTopologySuite.Geometries.Polygon;
+#endif
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 

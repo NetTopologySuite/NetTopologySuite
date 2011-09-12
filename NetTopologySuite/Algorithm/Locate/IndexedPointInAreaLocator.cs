@@ -1,6 +1,11 @@
 using System;
-using System.Collections.Generic;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using IPolygonal = NetTopologySuite.Geometries.IPolygonal;
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+#endif
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Index;

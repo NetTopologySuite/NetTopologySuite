@@ -1,6 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using IPrecisionModel = NetTopologySuite.Geometries.PrecisionModel;
+using IGeometryFactory = NetTopologySuite.Geometries.GeometryFactory;
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using ILineString = NetTopologySuite.Geometries.LineString;
+#endif
 using GeoAPI.Operations.Buffer;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
@@ -110,7 +118,7 @@ namespace NetTopologySuite.Operation.Buffer
             _graph.AddEdges(_edgeList.Edges);
 
             IEnumerable<BufferSubgraph> subgraphList = CreateSubgraphs(_graph);
-            PolygonBuilder polyBuilder = new PolygonBuilder(_geomFact);
+            var polyBuilder = new PolygonBuilder(_geomFact);
             BuildSubgraphs(subgraphList, polyBuilder);
             var resultPolyList = polyBuilder.Polygons;
 

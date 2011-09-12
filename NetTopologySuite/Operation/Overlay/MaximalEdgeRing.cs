@@ -1,5 +1,9 @@
 using System.Collections.Generic;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using IGeometryFactory = NetTopologySuite.Geometries.GeometryFactory;
+#endif
 using NetTopologySuite.GeometriesGraph;
 
 namespace NetTopologySuite.Operation.Overlay

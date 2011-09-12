@@ -4,10 +4,10 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Quadtree;
 using NetTopologySuite.Noding;
-using Wintellect.PowerCollections;
 
 #if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
+//using ArrayList = System.Collections.Generic.List<object>;
+using Wintellect.PowerCollections;
 #endif
 
 namespace NetTopologySuite.GeometriesGraph
@@ -28,7 +28,13 @@ namespace NetTopologySuite.GeometriesGraph
         ///// of the edge coordinates.
         /// </summary>
         ////private readonly ISpatialIndex<Edge> _index = new Quadtree<Edge>();
-        private readonly IDictionary<OrientedCoordinateArray, Edge> _ocaMap = new OrderedDictionary<OrientedCoordinateArray, Edge>();
+        private readonly IDictionary<OrientedCoordinateArray, Edge> _ocaMap =
+#if SILVERLIGHT
+            new OrderedDictionary<OrientedCoordinateArray, Edge>();
+#else
+            new SortedDictionary<OrientedCoordinateArray, Edge>();
+#endif
+
 
 
         /// <summary>

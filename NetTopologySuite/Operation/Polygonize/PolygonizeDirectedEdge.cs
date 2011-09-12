@@ -1,4 +1,8 @@
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+#endif
 using NetTopologySuite.Planargraph;
 
 namespace NetTopologySuite.Operation.Polygonize
@@ -10,9 +14,9 @@ namespace NetTopologySuite.Operation.Polygonize
     /// </summary>
     public class PolygonizeDirectedEdge : DirectedEdge
     {
-        private EdgeRing edgeRing = null;
-        private PolygonizeDirectedEdge next = null;
-        private long label = -1;
+        private EdgeRing _edgeRing;
+        private PolygonizeDirectedEdge _next;
+        private long _label = -1;
 
         /// <summary>
         /// Constructs a directed edge connecting the <c>from</c> node to the
@@ -39,11 +43,11 @@ namespace NetTopologySuite.Operation.Polygonize
         {
             get
             {
-                return label;
+                return _label;
             }
             set
             {
-                label = value;
+                _label = value;
             }
         }
 
@@ -55,11 +59,11 @@ namespace NetTopologySuite.Operation.Polygonize
         {
             get
             {
-                return next;
+                return _next;
             }
             set
             {
-                next = value;
+                _next = value;
             }
         }
 
@@ -83,11 +87,11 @@ namespace NetTopologySuite.Operation.Polygonize
         {
             get
             {
-                return this.edgeRing;
+                return this._edgeRing;
             }
             set
             {
-                edgeRing = value;
+                _edgeRing = value;
             }
         }
     }

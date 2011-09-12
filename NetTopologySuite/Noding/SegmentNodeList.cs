@@ -4,7 +4,9 @@ using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
+#if SILVERLIGHT
 using Wintellect.PowerCollections;
+#endif
 
 namespace NetTopologySuite.Noding
 {
@@ -13,7 +15,12 @@ namespace NetTopologySuite.Noding
     /// </summary>
     public class SegmentNodeList : IEnumerable<object>
     {
-        private readonly IDictionary<SegmentNode, Object> _nodeMap = new OrderedDictionary<SegmentNode, Object>();
+        private readonly IDictionary<SegmentNode, Object> _nodeMap = 
+#if SILVERLIGHT
+            new OrderedDictionary<SegmentNode, Object>();
+#else
+            new SortedDictionary<SegmentNode, Object>();
+#endif
         private readonly NodedSegmentString _edge;  // the parent edge
 
         /// <summary>

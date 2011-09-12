@@ -1,4 +1,10 @@
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using NetTopologySuite.Geometries;
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using IEnvelope = NetTopologySuite.Geometries.Envelope;
+#endif
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.GeometriesGraph

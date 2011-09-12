@@ -1,4 +1,8 @@
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+#endif
 
 namespace NetTopologySuite.Algorithm
 {

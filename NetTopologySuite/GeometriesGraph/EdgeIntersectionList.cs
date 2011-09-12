@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
+#if SILVERLIGHT
 using Wintellect.PowerCollections;
+#endif
 
 namespace NetTopologySuite.GeometriesGraph
 {
@@ -12,7 +14,12 @@ namespace NetTopologySuite.GeometriesGraph
     public class EdgeIntersectionList
     {
         // a list of EdgeIntersections      
-        private readonly IDictionary<EdgeIntersection, EdgeIntersection> nodeMap = new OrderedDictionary<EdgeIntersection, EdgeIntersection>();
+        private readonly IDictionary<EdgeIntersection, EdgeIntersection> nodeMap = 
+#if SILVERLIGHT
+            new OrderedDictionary<EdgeIntersection, EdgeIntersection>();
+#else
+            new SortedDictionary<EdgeIntersection, EdgeIntersection>();
+#endif
         private readonly Edge edge;  // the parent edge
 
         /// <summary>

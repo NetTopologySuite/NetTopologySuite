@@ -230,7 +230,12 @@ namespace NetTopologySuite.Operation
         /// </summary>
         private bool HasClosedEndpointIntersection(GeometryGraph graph)
         {
-            IDictionary<ICoordinate, EndpointInfo> endPoints = new OrderedDictionary<ICoordinate, EndpointInfo>();
+            IDictionary<ICoordinate, EndpointInfo> endPoints = 
+#if SILVERLIGHT
+            new OrderedDictionary<ICoordinate, EndpointInfo>();
+#else
+            new SortedDictionary<ICoordinate, EndpointInfo>();
+#endif
             foreach (Edge e in graph.Edges)
             {
                 //int maxSegmentIndex = e.MaximumSegmentIndex;

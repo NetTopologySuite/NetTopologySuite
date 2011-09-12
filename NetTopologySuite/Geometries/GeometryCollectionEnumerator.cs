@@ -1,6 +1,11 @@
 using System;
 using System.Collections.Generic;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using IGeometryCollection = NetTopologySuite.Geometries.GeometryCollection;
+#endif
 
 namespace NetTopologySuite.Geometries
 {

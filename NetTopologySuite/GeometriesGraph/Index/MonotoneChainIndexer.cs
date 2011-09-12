@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+#endif
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif

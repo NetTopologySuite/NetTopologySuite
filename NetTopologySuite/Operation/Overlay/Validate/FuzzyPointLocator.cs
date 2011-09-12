@@ -1,5 +1,13 @@
 using System.Collections.Generic;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using ILineString = NetTopologySuite.Geometries.LineString;
+using IMultiLineString = NetTopologySuite.Geometries.MultiLineString;
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using IPolygon = NetTopologySuite.Geometries.Polygon;
+#endif
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 

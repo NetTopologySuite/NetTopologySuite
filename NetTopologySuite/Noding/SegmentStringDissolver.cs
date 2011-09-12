@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
+#if SILVERLIGHT
 using Wintellect.PowerCollections;
+#endif
 
 namespace NetTopologySuite.Noding
 {
@@ -46,7 +48,11 @@ namespace NetTopologySuite.Noding
 
         private readonly ISegmentStringMerger _merger;
         private readonly IDictionary<OrientedCoordinateArray, ISegmentString> _ocaMap = 
+#if SILVERLIGHT
             new OrderedDictionary<OrientedCoordinateArray, ISegmentString>();
+#else
+            new SortedDictionary<OrientedCoordinateArray, ISegmentString>();
+#endif
         
         /// <summary>
         /// Creates a dissolver with a user-defined merge strategy.

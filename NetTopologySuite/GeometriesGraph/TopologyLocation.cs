@@ -1,6 +1,10 @@
 using System;
 using System.Text;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using NetTopologySuite.Geometries;
+#endif
 
 namespace NetTopologySuite.GeometriesGraph
 {

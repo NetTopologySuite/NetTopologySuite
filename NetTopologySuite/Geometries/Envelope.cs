@@ -3,6 +3,16 @@ using GeoAPI.Geometries;
 #if SILVERLIGHT
 using GeoAPI;
 #endif
+#if useFullGeoApi
+using ICoordinate = GeoAPI.Geometries.ICoordinate;
+using IEnvelope = GeoAPI.Geometries.IEnvelope;
+using IPoint = NetTopologySuite.Geometries.Point;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using IEnvelope = NetTopologySuite.Geometries.Envelope;
+using IPoint = NetTopologySuite.Geometries.Point;
+#endif
+
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
@@ -17,7 +27,12 @@ namespace NetTopologySuite.Geometries
 //#if !SILVERLIGHT
     [Serializable]
 //#endif
-    public class Envelope : IEnvelope
+    public class Envelope 
+#if useFullGeoAPI
+        : IEnvelope
+#else
+        : ICloneable
+#endif
     {
         /// <summary>
         /// Test the point q to see whether it intersects the Envelope

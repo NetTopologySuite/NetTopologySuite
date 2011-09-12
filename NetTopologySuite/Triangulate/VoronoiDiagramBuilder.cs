@@ -10,7 +10,7 @@ namespace NetTopologySuite.Triangulate
     /// <summary>
     /// A utility class which creates Voronoi Diagrams
     /// from collections of points.
-    /// The diagram is returned as a <see cref="IGeometryCollection"/> of <see cref="Polygon"/>s,
+    /// The diagram is returned as a <see cref="IGeometryCollection"/> of <see cref="IPolygon"/>s,
     /// clipped to the larger of a supplied envelope or to an envelope determined
     /// by the input sites.
     /// </summary>

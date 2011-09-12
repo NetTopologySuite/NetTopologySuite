@@ -2,7 +2,24 @@ using System;
 //using System.Collections;
 using System.Collections;
 using System.Collections.Generic;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using IEnvelope = NetTopologySuite.Geometries.Envelope;
+using IPrecisionModel = NetTopologySuite.Geometries.PrecisionModel;
+using ICoordinateSequence = NetTopologySuite.Geometries.ICoordinateSequence;
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using IPoint = NetTopologySuite.Geometries.Point;
+using ILineString = NetTopologySuite.Geometries.LineString;
+using ILinearRing = NetTopologySuite.Geometries.LinearRing;
+using IPolygon = NetTopologySuite.Geometries.Polygon;
+using IGeometryCollection = NetTopologySuite.Geometries.GeometryCollection;
+using IMultiPoint = NetTopologySuite.Geometries.MultiPoint;
+using IMultiLineString = NetTopologySuite.Geometries.MultiLineString;
+using IMultiPolygon = NetTopologySuite.Geometries.MultiPolygon;
+using IGeometryFactory = NetTopologySuite.Geometries.GeometryFactory;
+#endif
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Planargraph;
 using NetTopologySuite.Planargraph.Algorithm;

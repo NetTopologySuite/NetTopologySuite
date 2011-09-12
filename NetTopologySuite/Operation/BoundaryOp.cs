@@ -1,8 +1,25 @@
 using System.Collections.Generic;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using IGeometryFactory = NetTopologySuite.Geometries.GeometryFactory;
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using IPoint = NetTopologySuite.Geometries.Point;
+using ILineString = NetTopologySuite.Geometries.LineString;
+using ILinearRing = NetTopologySuite.Geometries.LinearRing;
+using IPolygon = NetTopologySuite.Geometries.Polygon;
+using IGeometryCollection = NetTopologySuite.Geometries.GeometryCollection;
+using IMultiPoint = NetTopologySuite.Geometries.MultiPoint;
+using IMultiLineString = NetTopologySuite.Geometries.MultiLineString;
+using IMultiPolygon = NetTopologySuite.Geometries.MultiPolygon;
+
+#endif
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+#if SILVERLIGHT
 using Wintellect.PowerCollections;
+#endif
 
 namespace NetTopologySuite.Operation
 {
@@ -82,7 +99,12 @@ namespace NetTopologySuite.Operation
         private ICoordinate[] ComputeBoundaryCoordinates(IMultiLineString mLine)
         {
             IList<ICoordinate> bdyPts = new List<ICoordinate>();
-            _endpointMap = new OrderedDictionary<ICoordinate, Counter>();
+            _endpointMap =
+#if SILVERLIGHT
+            new OrderedDictionary<ICoordinate, Counter>();
+#else
+            new SortedDictionary<ICoordinate, Counter>();
+#endif
             for (int i = 0; i < mLine.NumGeometries; i++)
             {
                 ILineString line = (ILineString)mLine.GetGeometryN(i);

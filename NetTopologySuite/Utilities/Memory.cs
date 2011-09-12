@@ -28,6 +28,11 @@ namespace NetTopologySuite.Utilities
         public const double MB = 1048576;
         public const double GB = 1073741824;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mem"></param>
+        /// <returns></returns>
         public static String Format(long mem)
         {
             if (mem < 2 * KB)

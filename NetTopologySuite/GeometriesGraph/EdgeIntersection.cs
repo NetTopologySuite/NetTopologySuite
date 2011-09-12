@@ -1,7 +1,12 @@
 using System;
 using System.IO;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
+#if useFullGeoAPI
+using GeoAPI.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+#endif
+
 
 namespace NetTopologySuite.GeometriesGraph
 {

@@ -1,7 +1,14 @@
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+
+#if useFullGeoAPI
+using GeoAPI.Geometries;
+#else
+using ILineString = NetTopologySuite.Geometries.LineString;
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using ICoordinateSequence = NetTopologySuite.Geometries.ICoordinateSequence;
+#endif
 
 namespace NetTopologySuite.Operation.Predicate
 {

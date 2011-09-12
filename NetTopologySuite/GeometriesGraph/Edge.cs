@@ -1,10 +1,16 @@
 using System;
 using System.IO;
 using System.Text;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.GeometriesGraph.Index;
+
+#if useFullGeoAPI
+using GeoAPI.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using IEnvelope = NetTopologySuite.Geometries.Envelope;
+#endif
 
 namespace NetTopologySuite.GeometriesGraph
 {

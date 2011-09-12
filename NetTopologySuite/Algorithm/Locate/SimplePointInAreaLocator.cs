@@ -1,7 +1,16 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
+#if useFullGeoAPI
+using GeoAPI.Geometries;
+#else
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using IPolygon = NetTopologySuite.Geometries.Polygon;
+using IGeometryCollection = NetTopologySuite.Geometries.GeometryCollection;
+using ILinearRing = NetTopologySuite.Geometries.LinearRing;
+using ILineString = NetTopologySuite.Geometries.LineString;
+#endif
 
 namespace NetTopologySuite.Algorithm.Locate
 {

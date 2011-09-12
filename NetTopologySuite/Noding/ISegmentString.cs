@@ -1,5 +1,9 @@
 using System;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+#endif
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Noding

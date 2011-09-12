@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+#if SILVERLIGHT
 using Wintellect.PowerCollections;
+#endif
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Planargraph
@@ -9,7 +11,12 @@ namespace NetTopologySuite.Planargraph
     /// </summary>   
     public class NodeMap
     {
-        private readonly IDictionary<ICoordinate, Node> _nodeMap = new OrderedDictionary<ICoordinate, Node>();
+        private readonly IDictionary<ICoordinate, Node> _nodeMap = 
+#if SILVERLIGHT
+            new OrderedDictionary<ICoordinate, Node>();
+#else
+            new SortedDictionary<ICoordinate, Node>();
+#endif
         /*
         /// <summary>
         /// Constructs a NodeMap without any Nodes.

@@ -2,7 +2,11 @@ using System;
 //using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+
+#endif
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 using RTools_NTS.Util;

@@ -1,5 +1,19 @@
 using System.Collections.Generic;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using IEnvelope = NetTopologySuite.Geometries.Envelope;
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using IPoint = NetTopologySuite.Geometries.Point;
+using ILineString = NetTopologySuite.Geometries.LineString;
+using ILinearRing = NetTopologySuite.Geometries.LinearRing;
+using IPolygon = NetTopologySuite.Geometries.Polygon;
+using IGeometryCollection = NetTopologySuite.Geometries.GeometryCollection;
+using IMultiPoint = NetTopologySuite.Geometries.MultiPoint;
+using IMultiLineString = NetTopologySuite.Geometries.MultiLineString;
+using IMultiPolygon = NetTopologySuite.Geometries.MultiPolygon;
+#endif
 
 namespace NetTopologySuite.Geometries.Utilities
 {
@@ -19,7 +33,12 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="geom">the geometry from which to extract</param>
         /// <param name="list">the list to add the extracted elements to</param>
         /// <typeparam name="T">The geometry type to extract</typeparam>
-        public static IList<IGeometry> Extract<T>(IGeometry geom, IList<IGeometry> list) where T : class, IGeometry
+        public static IList<IGeometry> Extract<T>(IGeometry geom, IList<IGeometry> list)
+#if useFullGeoAPI
+            where T : class, IGeometry
+#else
+            where T : Geometry
+#endif
         {
             if (geom is T)
             {
@@ -37,7 +56,12 @@ namespace NetTopologySuite.Geometries.Utilities
         /// Extracts the <code>T</code> elements from a single <see cref="IGeometry"/> and returns them in a <see cref="List{T}"/>.
         ///</summary>
         ///<param name="geom">the geometry from which to extract</param>
-        public static IList<IGeometry> Extract<T>(IGeometry geom) where T : class, IGeometry
+        public static IList<IGeometry> Extract<T>(IGeometry geom)
+#if useFullGeoAPI
+            where T : class, IGeometry
+#else
+ where T : Geometry
+#endif
         {
             return Extract<T>(geom, new List<IGeometry>());
         }

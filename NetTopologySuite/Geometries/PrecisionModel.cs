@@ -1,5 +1,21 @@
 ﻿using System;
+#region geoapi vs nts
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using IPrecisionModel = NetTopologySuite.Geometries.PrecisionModel;
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using IPoint = NetTopologySuite.Geometries.Point;
+using ILineString = NetTopologySuite.Geometries.LineString;
+using ILinearRing = NetTopologySuite.Geometries.LinearRing;
+using IPolygon = NetTopologySuite.Geometries.Polygon;
+using IGeometryCollection = NetTopologySuite.Geometries.GeometryCollection;
+using IMultiPoint = NetTopologySuite.Geometries.MultiPoint;
+using IMultiLineString = NetTopologySuite.Geometries.MultiLineString;
+using IMultiPolygon = NetTopologySuite.Geometries.MultiPolygon;
+#endif
+#endregion
 
 namespace NetTopologySuite.Geometries
 {        
@@ -50,7 +66,10 @@ namespace NetTopologySuite.Geometries
 //#if !SILVERLIGHT
     [Serializable]
 //#endif
-    public class PrecisionModel : IPrecisionModel
+    public class PrecisionModel
+#if useFullGeoAPI
+        : IPrecisionModel
+#endif
     {
         ///<summary>
         /// Determines which of two <see cref="IPrecisionModel"/>s is the most precise

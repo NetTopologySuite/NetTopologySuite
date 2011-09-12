@@ -1,9 +1,17 @@
 using System.Collections.Generic;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using IGeometryFactory = NetTopologySuite.Geometries.GeometryFactory;
+using ILineString = NetTopologySuite.Geometries.LineString;
+using IMultiLineString = NetTopologySuite.Geometries.MultiLineString;
+using IGeometryCollection = NetTopologySuite.Geometries.GeometryCollection;
+#endif
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Triangulate.QuadEdge;
 using NetTopologySuite.Geometries.Utilities;
-using Wintellect.PowerCollections;
 
 namespace NetTopologySuite.Triangulate
 {
@@ -20,7 +28,7 @@ namespace NetTopologySuite.Triangulate
         private double _tolerance;
         private QuadEdgeSubdivision _subdiv;
 
-        private readonly IDictionary<ICoordinate, Vertex> _vertexMap = new OrderedDictionary<ICoordinate, Vertex>();
+        private readonly IDictionary<ICoordinate, Vertex> _vertexMap = new SortedDictionary<ICoordinate, Vertex>();// new SortedDictionary<ICoordinate, Vertex>();
 
         /// <summary>
         /// Sets the sites (point or vertices) which will be triangulated.

@@ -77,7 +77,7 @@ namespace NetTopologySuite.Triangulate
 	    // allPointsEnv expanded by a small buffer
 	    private Envelope _computeAreaEnv;
 	    // records the last split point computed, for error reporting
-	    private ICoordinate _splitPt;
+	    private Coordinate _splitPt;
 
 	    private readonly double _tolerance; // defines if two sites are the same.
 
@@ -452,7 +452,7 @@ namespace NetTopologySuite.Triangulate
             {
 			    // System.out.println(seg);
 
-			    ICoordinate encroachPt = FindNonGabrielPoint(seg);
+			    var encroachPt = FindNonGabrielPoint(seg);
 			    // no encroachment found - segment must already be in subdivision
 			    if (encroachPt == null)
 				    continue;
@@ -534,10 +534,10 @@ namespace NetTopologySuite.Triangulate
 	    /// <returns>a point which is non-Gabriel,
 	    /// or null if no point is non-Gabriel
         /// </returns>
-	    private ICoordinate FindNonGabrielPoint(Segment seg)
+	    private Coordinate FindNonGabrielPoint(Segment seg)
         {
-		    ICoordinate p = seg.Start;
-		    ICoordinate q = seg.End;
+		    var p = seg.Start.ToCoordinate();
+		    var q = seg.End.ToCoordinate();
 		    // Find the mid point on the line and compute the radius of enclosing circle
 		    var midPt = new Coordinate((p.X + q.X) / 2.0, (p.Y + q.Y) / 2.0);
 		    double segRadius = p.Distance(midPt);
@@ -550,11 +550,11 @@ namespace NetTopologySuite.Triangulate
 
 		    // For each point found, test if it falls strictly in the circle
 		    // find closest point
-		    ICoordinate closestNonGabriel = null;
+		    Coordinate closestNonGabriel = null;
 		    double minDist = Double.MaxValue;
             foreach (var nextNode in result)
             {
-			    ICoordinate testPt = nextNode.Coordinate;
+			    var testPt = nextNode.Coordinate.ToCoordinate();
 			    // ignore segment endpoints
 			    if (testPt.Equals2D(p) || testPt.Equals2D(q))
 				    continue;

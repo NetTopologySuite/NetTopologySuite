@@ -1,4 +1,9 @@
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using ILinearRing = NetTopologySuite.Geometries.LinearRing;
+#endif
 
 namespace NetTopologySuite.Algorithm
 {

@@ -1,8 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using GeoAPI.Geometries;
 using NetTopologySuite.Operation.Valid;
+#if useFullGeoAPI
+using GeoAPI.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using IPoint = NetTopologySuite.Geometries.Point;
+using IEnvelope = NetTopologySuite.Geometries.Envelope;
+using IGeometryFactory = NetTopologySuite.Geometries.GeometryFactory;
+#endif
 
 namespace NetTopologySuite.Geometries
 {
@@ -12,7 +20,10 @@ namespace NetTopologySuite.Geometries
 //#if !SILVERLIGHT
     [Serializable]
 //#endif
-    public class Point : Geometry, IPoint
+    public class Point : Geometry
+#if useFullGeoAPI
+        , IPoint
+#endif
     {
         private static readonly ICoordinate EmptyCoordinate = null;
 
@@ -378,6 +389,7 @@ namespace NetTopologySuite.Geometries
 
         /* END ADDED BY MPAUL42: monoGIS team */
 
+#if useFullGeoAPI
         /// <summary>
         /// 
         /// </summary>        
@@ -394,6 +406,7 @@ namespace NetTopologySuite.Geometries
                 Coordinate.M = value;
             }
         }
+#endif
     
     }
 }

@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
+#if SILVERLIGHT
 using Wintellect.PowerCollections;
+#endif
 
 namespace NetTopologySuite.GeometriesGraph
 {
@@ -10,7 +12,12 @@ namespace NetTopologySuite.GeometriesGraph
     /// </summary>
     public class NodeMap
     {        
-        private readonly IDictionary<ICoordinate, Node > _nodeMap = new OrderedDictionary<ICoordinate, Node>();
+        private readonly IDictionary<ICoordinate, Node > _nodeMap =
+#if SILVERLIGHT
+            new OrderedDictionary<ICoordinate, Node>();
+#else
+            new SortedDictionary<ICoordinate, Node>();
+#endif
         private readonly NodeFactory _nodeFact;
 
         /// <summary>

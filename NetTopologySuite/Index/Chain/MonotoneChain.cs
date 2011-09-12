@@ -1,4 +1,9 @@
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using IEnvelope = NetTopologySuite.Geometries.Envelope;
+#endif
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Index.Chain

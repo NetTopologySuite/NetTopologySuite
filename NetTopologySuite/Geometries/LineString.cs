@@ -1,9 +1,26 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Operation;
 using NetTopologySuite.Utilities;
+#region geoapi vs nts
+#if useFullGeoAPI
+using GeoAPI.Geometries;
+#else
+using IGeometryFactory = NetTopologySuite.Geometries.GeometryFactory;
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using IEnvelope = NetTopologySuite.Geometries.Envelope;
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using IPoint = NetTopologySuite.Geometries.Point;
+using ILineString = NetTopologySuite.Geometries.LineString;
+using ILinearRing = NetTopologySuite.Geometries.LinearRing;
+using IPolygon = NetTopologySuite.Geometries.Polygon;
+using IGeometryCollection = NetTopologySuite.Geometries.GeometryCollection;
+using IMultiPoint = NetTopologySuite.Geometries.MultiPoint;
+using IMultiLineString = NetTopologySuite.Geometries.MultiLineString;
+using IMultiPolygon = NetTopologySuite.Geometries.MultiPolygon;
+#endif
+#endregion
 
 namespace NetTopologySuite.Geometries
 {
@@ -26,7 +43,10 @@ namespace NetTopologySuite.Geometries
 //#if !SILVERLIGHT
     [Serializable]
 //#endif
-    public class LineString : Geometry, ILineString
+    public class LineString : Geometry
+#if useFullGeoAPI
+        , ILineString
+#endif
     {
         /// <summary>
         /// Represents an empty <c>LineString</c>.
@@ -266,10 +286,12 @@ namespace NetTopologySuite.Geometries
             return Factory.CreateLineString(array);
         }
 
+#if useFullGeoAPI
         ILineString ILineString.Reverse()
         {
             return (ILineString) Reverse();
         }
+#endif
 
         /// <summary>
         /// Returns true if the given point is a vertex of this <c>LineString</c>.

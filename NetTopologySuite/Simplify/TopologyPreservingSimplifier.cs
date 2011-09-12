@@ -1,5 +1,14 @@
 using System.Collections.Generic;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using NetTopologySuite.Geometries;
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using ILineString = NetTopologySuite.Geometries.LineString;
+using ILinearRing = NetTopologySuite.Geometries.LinearRing;
+#endif
+
 using NetTopologySuite.Geometries.Utilities;
 
 namespace NetTopologySuite.Simplify

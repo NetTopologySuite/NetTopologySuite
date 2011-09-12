@@ -1,5 +1,10 @@
 ﻿using System.Collections.Generic;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using IGeometryCollection = NetTopologySuite.Geometries.GeometryCollection;
+#endif
 
 namespace NetTopologySuite.Geometries.Utilities
 {
@@ -22,7 +27,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns></returns>
         public static IGeometryCollection Map(IGeometryCollection gc, MapGeometryDelegate op)
         {
-            GeometryCollectionMapper mapper = new GeometryCollectionMapper(op);
+            var mapper = new GeometryCollectionMapper(op);
             return mapper.Map(gc);
         }
 

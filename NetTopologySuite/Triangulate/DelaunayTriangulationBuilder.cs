@@ -1,6 +1,15 @@
 using System;
 using System.Collections.Generic;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using IEnvelope = NetTopologySuite.Geometries.Envelope;
+using IGeometryFactory = NetTopologySuite.Geometries.GeometryFactory;
+using IGeometryCollection = NetTopologySuite.Geometries.GeometryCollection;
+using IMultiLineString = NetTopologySuite.Geometries.MultiLineString;
+#endif
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Triangulate.QuadEdge;
 

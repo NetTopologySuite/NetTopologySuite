@@ -1,5 +1,10 @@
 using IList = System.Collections.Generic.IList<object>;
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using ILinearRing = NetTopologySuite.Geometries.LinearRing;
+#endif
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.Strtree;
 

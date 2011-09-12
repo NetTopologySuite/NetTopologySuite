@@ -1,4 +1,12 @@
+#if useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using ILineString = NetTopologySuite.Geometries.LineString;
+using IPolygon = NetTopologySuite.Geometries.Polygon;
+using IGeometryCollection = NetTopologySuite.Geometries.GeometryCollection;
+#endif
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Buffer.Validate

@@ -1,6 +1,11 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
+#if useFullGeoAPI
+using ICoordinate = GeoAPI.Geometries.ICoordinate;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+#endif
 
 namespace NetTopologySuite.Geometries
 {

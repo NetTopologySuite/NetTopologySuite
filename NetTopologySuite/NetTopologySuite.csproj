@@ -120,36 +120,40 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Geometries\CoordinateArrays.cs" />
-    <Compile Include="Geometries\CoordinateArraySequence.cs" />
-    <Compile Include="Geometries\CoordinateArraySequenceFactory.cs" />
+    <Compile Include="Geometries\Dimension.cs" />
+    <Compile Include="Geometries\ICoordinateFilter.cs" />
+    <Compile Include="Geometries\ICoordinateSequence.cs" />
+    <Compile Include="Geometries\ICoordinateSequenceFactory.cs" />
+    <Compile Include="Geometries\ICoordinateSequenceFilter.cs" />
+    <Compile Include="Geometries\IGeometryComponentFilter.cs" />
+    <Compile Include="Geometries\IGeometryFilter.cs" />
+    <Compile Include="Geometries\ILineal.cs" />
+    <Compile Include="Geometries\Implementation\CoordinateArraySequence.cs" />
+    <Compile Include="Geometries\Implementation\CoordinateArraySequenceFactory.cs" />
     <Compile Include="Geometries\CoordinateList.cs" />
     <Compile Include="Geometries\CoordinateSequenceComparator.cs" />
     <Compile Include="Geometries\CoordinateSequences.cs" />
-    <Compile Include="Geometries\CoordinateStruct.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Geometries\CoordinateStructSequence.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Geometries\CoordinateStructSequenceFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Geometries\DefaultCoordinateSequence.cs" />
     <Compile Include="Geometries\DefaultCoordinateSequenceFactory.cs" />
-    <Compile Include="Geometries\DotSpatialAffineCoordinateSequence.cs" />
-    <Compile Include="Geometries\DotSpatialAffineCoordinateSequenceFactory.cs" />
     <Compile Include="Geometries\Envelope.cs" />
     <Compile Include="Geometries\Geometry.cs" />
     <Compile Include="Geometries\GeometryCollection.cs" />
     <Compile Include="Geometries\GeometryCollectionEnumerator.cs" />
     <Compile Include="Geometries\GeometryFactory.cs" />
+    <Compile Include="Geometries\IntersectionMatrix.cs" />
+    <Compile Include="Geometries\IPolygonal.cs" />
+    <Compile Include="Geometries\IPrecisionModel.cs" />
+    <Compile Include="Geometries\IPuntal.cs" />
     <Compile Include="Geometries\LinearRing.cs" />
     <Compile Include="Geometries\LineSegment.cs" />
     <Compile Include="Geometries\LineString.cs" />
+    <Compile Include="Geometries\Location.cs" />
     <Compile Include="Geometries\MultiLineString.cs" />
     <Compile Include="Geometries\MultiPoint.cs" />
     <Compile Include="Geometries\MultiPolygon.cs" />
     <Compile Include="Geometries\OctogonalEnvelope.cs" />
+    <Compile Include="Geometries\Ordinate.cs" />
+    <Compile Include="Geometries\Ordinates.cs" />
     <Compile Include="Geometries\PackedCoordinateSequence.cs" />
     <Compile Include="Geometries\PackedCoordinateSequenceFactory.cs" />
     <Compile Include="Geometries\Point.cs" />
@@ -157,6 +161,7 @@
     <Compile Include="Geometries\PrecisionModel.cs" />
     <Compile Include="Geometries\Prepared\AbstractPreparedPolygonContains.cs" />
     <Compile Include="Geometries\Prepared\BasicPreparedGeometry.cs" />
+    <Compile Include="Geometries\Prepared\IPreparedGeometry.cs" />
     <Compile Include="Geometries\Prepared\PreparedGeometryFactory.cs" />
     <Compile Include="Geometries\Prepared\PreparedLineString.cs" />
     <Compile Include="Geometries\Prepared\PreparedLineStringIntersects.cs" />
@@ -506,9 +511,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Geometries\Implementation\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">
       <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>

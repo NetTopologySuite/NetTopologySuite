@@ -1,9 +1,29 @@
 using System;
 //using System.Collections;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+//using GeoAPI.Geometries;
+//using NetTopologySuite.Geometries.Implementation;
+using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Utilities;
+
+#if !useFullGeoAPI
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using IEnvelope = NetTopologySuite.Geometries.Envelope;
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using IPoint = NetTopologySuite.Geometries.Point;
+using ILineString = NetTopologySuite.Geometries.LineString;
+using ILinearRing = NetTopologySuite.Geometries.LinearRing;
+using IPolygon = NetTopologySuite.Geometries.Polygon;
+using IGeometryCollection = NetTopologySuite.Geometries.GeometryCollection;
+using IMultiPoint = NetTopologySuite.Geometries.MultiPoint;
+using IMultiLineString = NetTopologySuite.Geometries.MultiLineString;
+using IMultiPolygon = NetTopologySuite.Geometries.MultiPolygon;
+using IGeometryFactory = NetTopologySuite.Geometries.GeometryFactory;
+using IPrecisionModel = NetTopologySuite.Geometries.PrecisionModel;
+#else
+using GeoAPI.Geometries;
+#endif
 
 namespace NetTopologySuite.Geometries
 {
@@ -19,7 +39,10 @@ namespace NetTopologySuite.Geometries
 //#if !SILVERLIGHT
     [Serializable]
 //#endif
-    public class GeometryFactory : IGeometryFactory
+    public class GeometryFactory 
+#if useFullGeoAPI
+        : IGeometryFactory
+#endif
     {
         /// <summary>
         /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 

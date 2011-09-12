@@ -1,7 +1,11 @@
 using System;
 using System.IO;
 using System.Text;
+#if !useFullGeoAPI
 using GeoAPI.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+#endif
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Utilities;
 

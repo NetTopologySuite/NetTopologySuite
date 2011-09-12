@@ -1,11 +1,24 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Utilities;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
+#region geoapi vs nts
+#if useFullGeoAPI
+using GeoAPI.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+using IEnvelope = NetTopologySuite.Geometries.Envelope;
+using IGeometry = NetTopologySuite.Geometries.Geometry;
+using IPoint = NetTopologySuite.Geometries.Point;
+using ILineString = NetTopologySuite.Geometries.LineString;
+using ILinearRing = NetTopologySuite.Geometries.LinearRing;
+using IPolygon = NetTopologySuite.Geometries.Polygon;
+using IGeometryCollection = NetTopologySuite.Geometries.GeometryCollection;
+using IMultiPoint = NetTopologySuite.Geometries.MultiPoint;
+using IMultiLineString = NetTopologySuite.Geometries.MultiLineString;
+using IMultiPolygon = NetTopologySuite.Geometries.MultiPolygon;
+using IGeometryFactory = NetTopologySuite.Geometries.GeometryFactory;
 #endif
-
+#endregion
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
@@ -14,7 +27,12 @@ namespace NetTopologySuite.Geometries
 //#if !SILVERLIGHT
     [Serializable]
 //#endif
-    public class GeometryCollection : Geometry, IGeometryCollection
+    public class GeometryCollection : Geometry
+#if useFullGeoAPI
+        , IGeometryCollection
+#else
+        , IEnumerable<Geometry>
+#endif
     {
         /// <summary>
         /// Represents an empty <c>GeometryCollection</c>.

@@ -1,5 +1,8 @@
+#if useFullGeoAPI
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
+#else
+using ICoordinate = NetTopologySuite.Geometries.Coordinate;
+#endif
 using NetTopologySuite.Triangulate.QuadEdge;
 
 namespace NetTopologySuite.Triangulate
@@ -13,8 +16,8 @@ namespace NetTopologySuite.Triangulate
     /// <author>Martin Davis</author>
     public class ConstraintVertex : Vertex
     {
-        private bool isOnConstraint;
-        private object constraint = null;
+        private bool _isOnConstraint;
+        private object _constraint;
 
         /// <summary>
         /// Creates a new constraint vertex
@@ -33,11 +36,11 @@ namespace NetTopologySuite.Triangulate
         {
             get
             {
-                return isOnConstraint;
+                return _isOnConstraint;
             }
             set
             {
-                this.isOnConstraint = value;
+                this._isOnConstraint = value;
             }
         }
 
@@ -49,12 +52,12 @@ namespace NetTopologySuite.Triangulate
         {
             get
             {
-                return constraint;
+                return _constraint;
             }
             set
             {
-                isOnConstraint = true;
-                this.constraint = value;
+                _isOnConstraint = true;
+                this._constraint = value;
             }
         }
 
@@ -66,9 +69,9 @@ namespace NetTopologySuite.Triangulate
         /// <param name="other">the constraint vertex to merge</param>
         protected internal void Merge(ConstraintVertex other)
         {
-            if (other.isOnConstraint) {
-                isOnConstraint = true;
-                constraint = other.constraint;
+            if (other._isOnConstraint) {
+                _isOnConstraint = true;
+                _constraint = other._constraint;
             }
         }
     }
