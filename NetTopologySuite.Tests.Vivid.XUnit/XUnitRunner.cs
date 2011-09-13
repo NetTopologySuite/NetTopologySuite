@@ -21,7 +21,7 @@
             this.TestFile = testFile;
         }
 
-        private string TestFile { get; set; }
+        protected string TestFile { get; set; }
 
         protected XmlTestCollection Tests
         {
@@ -37,7 +37,7 @@
             get { return this.Tests.Count; }
         }
 
-        private XmlTestCollection LoadTests()
+        protected XmlTestCollection LoadTests()
         {
             return this.controller.Load(Path.Combine(this.TestLocation, this.TestFile));
         }

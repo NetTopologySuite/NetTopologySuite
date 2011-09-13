@@ -8,7 +8,7 @@
     <ProjectGuid>{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetTopologySuite.Tests.Vivid.XUnit</RootNamespace>
+    <RootNamespace>NetTopologySuite.Tests.XUnit</RootNamespace>
     <AssemblyName>NetTopologySuite.Tests.Vivid.XUnit</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -61,8 +61,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XUnitExternalTests.cs" />
+    <Compile Include="XUnitFailureTests.cs" />
+    <Compile Include="XUnitGeneralTests.cs" />
     <Compile Include="XUnitRunner.cs" />
-    <Compile Include="XUnitTests.cs" />
+    <Compile Include="XUnitVividTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetTopologySuite.TestRunner\NetTopologySute.TestRunner.csproj">
