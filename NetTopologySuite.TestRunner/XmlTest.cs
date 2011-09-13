@@ -294,14 +294,14 @@ namespace Open.Topology.TestRunner
                 {
                     // DEBUG ERRORS: retry to launch the test and analyze...                                       
                     Console.WriteLine();
-                    Console.WriteLine("Retry failed test: " + Description);
+                    Console.WriteLine("Retry failed test: {0}", Description);
                     Console.WriteLine(Argument1);
                     Console.WriteLine(Argument2);                    
                     Console.WriteLine(A);
                     Console.WriteLine(B);                    
                     Console.WriteLine("Test type: " + TestType);
                     m_bSuccess = RunTest();                    
-                    Console.WriteLine(String.Format("Result expected is {0}, but was {1}", true, m_bSuccess));
+                    Console.WriteLine("Result expected is {0}, but was {1}", true, m_bSuccess);
                     Console.WriteLine();
                 }
                 return m_bSuccess;

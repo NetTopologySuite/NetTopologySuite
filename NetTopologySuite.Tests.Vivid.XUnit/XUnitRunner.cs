@@ -1,24 +1,24 @@
-﻿using System;
-using System.IO;
-using Open.Topology.TestRunner;
-using Xunit;
-
-namespace NetTopologySuite.Tests.Vivid.XUnit
+﻿namespace NetTopologySuite.Tests.XUnit
 {
+    using System;
+    using System.IO;
+    using Open.Topology.TestRunner;
+    using Xunit;
+
     /// <summary>
     /// A class designed to allow debugging of individual tests from within the vivid set
     /// mainly to aid debugging v2 side by side with v1.7.x
     /// </summary>
     public abstract class XUnitRunner
     {
-        private const String TestLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\vivid";
+        protected abstract string TestLocation { get; }
 
         private readonly XmlTestController controller = new XmlTestController();
         private XmlTestCollection _tests;
 
         protected XUnitRunner(string testFile)
         {
-            TestFile = testFile;
+            this.TestFile = testFile;
         }
 
         private string TestFile { get; set; }
@@ -27,160 +27,180 @@ namespace NetTopologySuite.Tests.Vivid.XUnit
         {
             get
             {
-                _tests = _tests ?? LoadTests();
-                return _tests;
+                this._tests = this._tests ?? this.LoadTests();
+                return this._tests;
             }
         }
 
         public Int32 Count
         {
-            get { return Tests.Count; }
+            get { return this.Tests.Count; }
         }
 
         private XmlTestCollection LoadTests()
         {
-            return controller.Load(Path.Combine(TestLocation, TestFile));
+            return this.controller.Load(Path.Combine(this.TestLocation, this.TestFile));
         }
 
-        [Fact]
+        //[Fact]
         public void TestCountOk()
         {
-            if (Count > 20)
-                TestAll();
+            if (this.Count > 20)
+                this.TestAll();
         }
 
-        [Fact]
+        //[Fact]
         public void Test1()
         {
-            ExecuteTest(1);
+            this.ExecuteTest(1);
         }
 
-        [Fact]
+        //[Fact]
         public void Test2()
         {
-            ExecuteTest(2);
+            this.ExecuteTest(2);
         }
 
-        [Fact]
+        //[Fact]
         public void Test3()
         {
-            ExecuteTest(3);
+            this.ExecuteTest(3);
         }
 
-        [Fact]
+        //[Fact]
         public void Test4()
         {
-            ExecuteTest(4);
+            this.ExecuteTest(4);
         }
 
-        [Fact]
+        //[Fact]
         public void Test5()
         {
-            ExecuteTest(5);
+            this.ExecuteTest(5);
         }
 
-        [Fact]
+        //[Fact]
         public void Test6()
         {
-            ExecuteTest(6);
+            this.ExecuteTest(6);
         }
 
-        [Fact]
+        //[Fact]
         public void Test7()
         {
-            ExecuteTest(7);
+            this.ExecuteTest(7);
         }
 
-        [Fact]
+        //[Fact]
         public void Test8()
         {
-            ExecuteTest(8);
+            this.ExecuteTest(8);
         }
 
-        [Fact]
+        //[Fact]
         public void Test9()
         {
-            ExecuteTest(9);
+            this.ExecuteTest(9);
         }
 
-        [Fact]
+        //[Fact]
         public void Test10()
         {
-            ExecuteTest(10);
+            this.ExecuteTest(10);
         }
 
-        [Fact]
+        //[Fact]
         public void Test11()
         {
-            ExecuteTest(11);
+            this.ExecuteTest(11);
         }
 
-        [Fact]
+        //[Fact]
         public void Test12()
         {
-            ExecuteTest(12);
+            this.ExecuteTest(12);
         }
 
-        [Fact]
+        //[Fact]
         public void Test13()
         {
-            ExecuteTest(13);
+            this.ExecuteTest(13);
         }
 
-        [Fact]
+        //[Fact]
         public void Test14()
         {
-            ExecuteTest(14);
+            this.ExecuteTest(14);
         }
 
-        [Fact]
+        //[Fact]
         public void Test15()
         {
-            ExecuteTest(15);
+            this.ExecuteTest(15);
         }
 
-        [Fact]
+        //[Fact]
         public void Test16()
         {
-            ExecuteTest(16);
+            this.ExecuteTest(16);
         }
 
-        [Fact]
+        //[Fact]
         public void Test17()
         {
-            ExecuteTest(17);
+            this.ExecuteTest(17);
         }
 
-        [Fact]
+        //[Fact]
         public void Test18()
         {
-            ExecuteTest(18);
+            this.ExecuteTest(18);
         }
 
-        [Fact]
+        //[Fact]
         public void Test19()
         {
-            ExecuteTest(19);
+            this.ExecuteTest(19);
+        }
+
+        //[Fact]
+        public void Test20()
+        {
+            this.ExecuteTest(20);
+        }
+
+        private TestResults ExecuteTest(int i)
+        {
+            if (i >= this.Count)
+                throw new ArgumentException("i > Count");
+
+            XmlTest test = this.Tests[i];
+            var b = test.RunTest();
+            return new TestResults(test.Description, b);
         }
 
         [Fact]
-        public void Test20()
-        {
-            ExecuteTest(20);
-        }
-
-        private void ExecuteTest(int i)
-        {
-            if (i < Count)
-                Tests[i].RunTest();
-        }
-
-        //some test files contain hundreds of tests..
-
         public void TestAll()
         {
-            for (int i = 0; i < Count; i++)
-                ExecuteTest(i);
+            for (int i = 0; i < this.Count; i++)
+            {
+                TestResults result = this.ExecuteTest(i);
+                Assert.True(result.Success, String.Format("Test {0} failed", i));
+            }
         }
+    }
+
+    public class TestResults
+    {
+        public TestResults(string description, bool success)
+        {
+            this.Description = description;
+            this.Success = success;
+        }
+
+        public string Description { get; private set; }
+
+        public bool Success { get; private set; }
+
     }
 }

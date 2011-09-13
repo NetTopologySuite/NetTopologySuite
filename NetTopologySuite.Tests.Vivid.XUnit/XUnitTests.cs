@@ -1,238 +1,160 @@
-﻿using NetTopologySuite.Tests.Vivid.XUnit;
-
-namespace NetTopologySuite.Tests.XUnit
+﻿namespace NetTopologySuite.Tests.XUnit
 {
-    public class TestBoundary : XUnitRunner
+    using System;
+    
+    public abstract class VividXUnitRunner : XUnitRunner
     {
-        public TestBoundary()
-            : base("TestBoundary.xml")
-        {
-        }
+        protected VividXUnitRunner(string testFile) : base(testFile) { }
+
+        private const String testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\vivid";
+
+        protected override string TestLocation { get { return testLocation; } }
     }
 
-    public class TestCentroid : XUnitRunner
+    public class TestBoundary : VividXUnitRunner
     {
-        public TestCentroid()
-            : base("TestCentroid.xml")
-        {
-        }
+        public TestBoundary() : base("TestBoundary.xml") { }
     }
 
-    public class TestConvexHullBig : XUnitRunner
+    public class TestCentroid : VividXUnitRunner
     {
-        public TestConvexHullBig()
-            : base("TestConvexHull-big.xml")
-        {
-        }
+        public TestCentroid() : base("TestCentroid.xml") { }
     }
 
-    public class TestConvexHull : XUnitRunner
+    public class TestConvexHullBig : VividXUnitRunner
     {
-        public TestConvexHull()
-            : base("TestConvexHull.xml")
-        {
-        }
+        public TestConvexHullBig() : base("TestConvexHull-big.xml") { }
     }
 
-    public class TestFunctionAA : XUnitRunner
-    {
-        public TestFunctionAA()
-            : base("TestFunctionAA.xml")
-        {
-        }
+    public class TestConvexHull : VividXUnitRunner
+    { 
+        public TestConvexHull() : base("TestConvexHull.xml") { }
     }
 
-    public class TestFunctionAAPrec : XUnitRunner
+    public class TestFunctionAA : VividXUnitRunner
     {
-        public TestFunctionAAPrec()
-            : base("TestFunctionAAPrec.xml")
-        {
-        }
+        public TestFunctionAA() : base("TestFunctionAA.xml") { }
+    }
+
+    public class TestFunctionAAPrec : VividXUnitRunner
+    {
+        public TestFunctionAAPrec() : base("TestFunctionAAPrec.xml") { }
     }
 
 
-    public class TestFunctionLA : XUnitRunner
+    public class TestFunctionLA : VividXUnitRunner
     {
-        public TestFunctionLA()
-            : base("TestFunctionLA.xml")
-        {
-        }
+        public TestFunctionLA() : base("TestFunctionLA.xml") { }
     }
 
-    public class TestFunctionLAPrec : XUnitRunner
+    public class TestFunctionLAPrec : VividXUnitRunner
     {
-        public TestFunctionLAPrec()
-            : base("TestFunctionLAPrec.xml")
-        {
-        }
+        public TestFunctionLAPrec() : base("TestFunctionLAPrec.xml") { }
     }
 
 
-    public class TestFunctionLL : XUnitRunner
+    public class TestFunctionLL : VividXUnitRunner
     {
-        public TestFunctionLL()
-            : base("TestFunctionLL.xml")
-        {
-        }
+        public TestFunctionLL() : base("TestFunctionLL.xml") { }
     }
 
-    public class TestFunctionLLPrec : XUnitRunner
+    public class TestFunctionLLPrec : VividXUnitRunner
     {
-        public TestFunctionLLPrec()
-            : base("TestFunctionLLPrec.xml")
-        {
-        }
+        public TestFunctionLLPrec() : base("TestFunctionLLPrec.xml") { }
     }
 
-    public class TestFunctionPA : XUnitRunner
+    public class TestFunctionPA : VividXUnitRunner
     {
-        public TestFunctionPA()
-            : base("TestFunctionPA.xml")
-        {
-        }
+        public TestFunctionPA() : base("TestFunctionPA.xml") { }
     }
 
-    public class TestFunctionPL : XUnitRunner
+    public class TestFunctionPL : VividXUnitRunner
     {
-        public TestFunctionPL()
-            : base("TestFunctionPL.xml")
-        {
-        }
+        public TestFunctionPL() : base("TestFunctionPL.xml") { }
     }
 
-    public class TestFunctionPLPrec : XUnitRunner
+    public class TestFunctionPLPrec : VividXUnitRunner
     {
-        public TestFunctionPLPrec()
-            : base("TestFunctionPLPrec.xml")
-        {
-        }
+        public TestFunctionPLPrec() : base("TestFunctionPLPrec.xml") { }
     }
 
-    public class TestFunctionPP : XUnitRunner
+    public class TestFunctionPP : VividXUnitRunner
     {
-        public TestFunctionPP()
-            : base("TestFunctionPP.xml")
-        {
-        }
+        public TestFunctionPP() : base("TestFunctionPP.xml") { }
     }
 
-    public class TestInteriorPoint : XUnitRunner
+    public class TestInteriorPoint : VividXUnitRunner
     {
-        public TestInteriorPoint()
-            : base("TestInteriorPoint.xml")
-        {
-        }
+        public TestInteriorPoint() : base("TestInteriorPoint.xml") { } 
     }
 
-    public class TestRectanglePredicate : XUnitRunner
+    public class TestRectanglePredicate : VividXUnitRunner
     {
-        public TestRectanglePredicate()
-            : base("TestRectanglePredicate.xml")
-        {
-        }
+        public TestRectanglePredicate() : base("TestRectanglePredicate.xml") { }
     }
 
-    public class TestRelateAA : XUnitRunner
+    public class TestRelateAA : VividXUnitRunner
     {
-        public TestRelateAA()
-            : base("TestRelateAA.xml")
-        {
-        }
+        public TestRelateAA() : base("TestRelateAA.xml") { }
     }
 
-    public class TestRelateAC : XUnitRunner
+    public class TestRelateAC : VividXUnitRunner
     {
-        public TestRelateAC()
-            : base("TestRelateAC.xml")
-        {
-        }
+        public TestRelateAC() : base("TestRelateAC.xml") { }
     }
 
-    public class TestRelateLA : XUnitRunner
+    public class TestRelateLA : VividXUnitRunner
     {
-        public TestRelateLA()
-            : base("TestRelateLA.xml")
-        {
-        }
+        public TestRelateLA() : base("TestRelateLA.xml") { }
     }
 
-    public class TestRelateLC : XUnitRunner
+    public class TestRelateLC : VividXUnitRunner
     {
-        public TestRelateLC()
-            : base("TestRelateLC.xml")
-        {
-        }
+        public TestRelateLC() : base("TestRelateLC.xml") { }
     }
 
-    public class TestRelateLL : XUnitRunner
+    public class TestRelateLL : VividXUnitRunner
     {
-        public TestRelateLL()
-            : base("TestRelateLL.xml")
-        {
-        }
+        public TestRelateLL() : base("TestRelateLL.xml") { }
     }
 
-    public class TestRelatePA : XUnitRunner
+    public class TestRelatePA : VividXUnitRunner
     {
-        public TestRelatePA()
-            : base("TestRelatePA.xml")
-        {
-        }
+        public TestRelatePA() : base("TestRelatePA.xml") { }
     }
 
-    public class TestRelatePL : XUnitRunner
-    {
-        public TestRelatePL()
-            : base("TestRelatePL.xml")
-        {
-        }
+    public class TestRelatePL : VividXUnitRunner 
+    { 
+        public TestRelatePL() : base("TestRelatePL.xml") { }
     }
 
-    public class TestRelatePP : XUnitRunner
+    public class TestRelatePP : VividXUnitRunner
     {
-        public TestRelatePP()
-            : base("TestRelatePP.xml")
-        {
-        }
+        public TestRelatePP() : base("TestRelatePP.xml") { }
     }
 
-    public class TestSimple : XUnitRunner
+    public class TestSimple : VividXUnitRunner
     {
-        public TestSimple()
-            : base("TestSimple.xml")
-        {
-        }
+        public TestSimple() : base("TestSimple.xml") { }
     }
 
-    public class TestValid : XUnitRunner
+    public class TestValid : VividXUnitRunner
     {
-        public TestValid()
-            : base("TestValid.xml")
-        {
-        }
+        public TestValid() : base("TestValid.xml") { }
     }
 
-    public class TestValid2Big : XUnitRunner
+    public class TestValid2Big : VividXUnitRunner
     {
-        public TestValid2Big()
-            : base("TestValid2-Big.xml")
-        {
-        }
+        public TestValid2Big() : base("TestValid2-Big.xml") { }
     }
 
-    public class TestValid2 : XUnitRunner
+    public class TestValid2 : VividXUnitRunner
     {
-        public TestValid2()
-            : base("TestValid2.xml")
-        {
-        }
+        public TestValid2() : base("TestValid2.xml") { }
     }
 
-    public class TestWithinDistance : XUnitRunner
+    public class TestWithinDistance : VividXUnitRunner
     {
-        public TestWithinDistance()
-            : base("TestWithinDistance.xml")
-        {
-        }
+        public TestWithinDistance() : base("TestWithinDistance.xml") { }
     }
 }
