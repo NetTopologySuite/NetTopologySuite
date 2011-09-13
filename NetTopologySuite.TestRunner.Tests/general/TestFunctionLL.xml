@@ -86,7 +86,7 @@
   </b>
 <test>
   <op name="getboundary" arg1="A">
-    MULTIPOINT(40 360, 120 360)
+    MULTIPOINT((40 360), (120 360))
   </op>
 </test>
 <test>
@@ -131,7 +131,7 @@
   </b>
 <test>
   <op name="getboundary" arg1="A">
-    MULTIPOINT(220 240, 20 280)
+    MULTIPOINT((220 240), (20 280))
   </op>
 </test>
 <test>
@@ -222,7 +222,7 @@
   </b>
 <test>
   <op name="getboundary" arg1="A">
-    MULTIPOINT(80 320, 80 300)
+    MULTIPOINT((80 320), (80 300))
   </op>
 </test>
 <test>
@@ -269,7 +269,7 @@
   </b>
 <test>
   <op name="getboundary" arg1="A">
-    MULTIPOINT(60 200, 140 200)
+    MULTIPOINT((60 200), (140 200))
   </op>
 </test>
 <test>
@@ -280,7 +280,7 @@
 </test>
 <test>
   <op name="intersection" arg1="A" arg2="B">
-    MULTIPOINT(60 200, 140 200)
+    MULTIPOINT((60 200), (140 200))
   </op>
 </test>
 <test>
@@ -325,7 +325,7 @@
 </test>
 <test>
   <op name="intersection" arg1="A" arg2="B">
-    MULTIPOINT(100 120, 180 200)
+    MULTIPOINT((100 120), (180 200))
   </op>
 </test>
 <test>

@@ -9,7 +9,7 @@
 
 <case>
   <desc>P - single point</desc>
-  <a>    MULTIPOINT (60 300, 200 200, 240 240, 200 300, 40 140, 80 240, 140 240, 100 160, 140 200, 60 200)
+  <a>    MULTIPOINT ((60 300), (200 200), (240 240), (200 300), (40 140), (80 240), (140 240), (100 160), (140 200), (60 200))
 	</a>
 <test><op name="getInteriorPoint" arg1="A" >    POINT (140 240)   </op></test>
 </case>

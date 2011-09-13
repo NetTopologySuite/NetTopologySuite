@@ -20,7 +20,7 @@
 <case>
   <desc>mPA - points in B: E, I</desc>
   <a>
-    MULTIPOINT(0 20, 40 20)
+    MULTIPOINT((0 20), (40 20))
   </a>
   <b>
     POLYGON(
@@ -36,7 +36,7 @@
 <case>
   <desc>mPA - points in B: E, B</desc>
   <a>
-    MULTIPOINT(0 20, 20 20)
+    MULTIPOINT((0 20), (20 20))
   </a>
   <b>
     POLYGON(
@@ -52,7 +52,7 @@
 <case>
   <desc>mPA - points in B: B, I</desc>
   <a>
-    MULTIPOINT(20 20, 40 20)
+    MULTIPOINT((20 20), (40 20))
   </a>
   <b>
     POLYGON(
@@ -68,7 +68,7 @@
 <case>
   <desc>mPA - points in B: I, B, E</desc>
   <a>
-    MULTIPOINT(80 260, 140 260, 180 260)
+    MULTIPOINT((80 260), (140 260), (180 260))
   </a>
   <b>
     POLYGON(

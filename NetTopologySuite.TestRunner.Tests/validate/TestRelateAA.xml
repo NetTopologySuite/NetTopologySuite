@@ -182,36 +182,6 @@
 </case>
 
 <case>
-<desc>A/A-3-1-8: the closing point of a polygon touching the boundary of another polygon where the closing point touching the boundary at a vertex [dim(0){A.A.Bdy.CP = B.A.Bdy.TP}]</desc>
-  <a>
-    POLYGON(
-      (160 200, 210 70, 120 70, 160 200))
-  </a>
-  <b>
-    POLYGON(
-      (160 200, 260 40, 70 40, 160 200, 20 20, 310 20, 160 200))
-  </b>
-  <test>
-    <op name="relate" arg1="A" arg2="B" arg3="FF2F01212">true</op>
-  </test>
-</case>
-
-<case>
-<desc>A/A-3-1-9: the closing point of a polygon touching the boundary of another polygon where the closing point intersecting the boundary at a non-vertex [dim(0){A.A.Bdy.CP = B.A.Bdy.TP}]</desc>
-  <a>
-    POLYGON(
-      (110 140, 200 70, 200 160, 110 140))
-  </a>
-  <b>
-    POLYGON(
-      (110 140, 110 50, 60 50, 60 90, 160 190, 20 110, 20 20, 200 20, 110 140))
-  </b>
-  <test>
-    <op name="relate" arg1="A" arg2="B" arg3="FF2F01212">true</op>
-  </test>
-</case>
-
-<case>
 <desc>A/A-3-2-1: two polygons touching at multiple points [dim(0){A.A.Bdy.CP = B.A.Bdy.CP}, dim(0){A.A.Bdy.V = B.A.Bdy.V}]</desc>
   <a>
     POLYGON(

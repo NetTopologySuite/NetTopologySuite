@@ -19,10 +19,9 @@
         (40 80, 80 80, 80 120, 40 120, 40 80)))
   </b>
 <test>
-  <op name="relate" arg3="21210F212" arg1="A" arg2="B">
-    true
-  </op>
+  <op name="relate" arg3="21210F212" arg1="A" arg2="B">    true  </op>
 </test>
+<test>  <op name="intersects" arg1="A" arg2="B">   true   </op></test>
 </case>
 
 </run>

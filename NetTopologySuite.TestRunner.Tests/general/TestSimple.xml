@@ -16,7 +16,7 @@
 <case>
   <desc>mP - multipoint with repeated points</desc>
   <a>
-    MULTIPOINT (80 280, 80 220, 160 220, 80 220)
+    MULTIPOINT ((80 280), (80 220), (160 220), (80 220))
   </a>
 <test>
   <op name="isSimple" arg1="A">
@@ -28,7 +28,7 @@
 <case>
   <desc>mP - multipoint with no repeated points</desc>
   <a>
-    MULTIPOINT (80 280, 80 220, 160 220)
+    MULTIPOINT ((80 280), (80 220), (160 220))
   </a>
 <test>
   <op name="isSimple" arg1="A">

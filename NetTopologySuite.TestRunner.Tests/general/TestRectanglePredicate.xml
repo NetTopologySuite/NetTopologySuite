@@ -106,6 +106,48 @@
 </case>
 
 <case>
+  <desc>L (3 pts) in polygon boundary</desc>
+  <a>
+    POLYGON((0 0, 100 0, 100 100, 0 100, 0 0))
+  </a>
+  <b>
+    LINESTRING( 10 0, 100 0, 100 50 )
+  </b>
+<test>  <op name="intersects" arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="contains" arg1="A" arg2="B">   false   </op> </test>
+<test>  <op name="covers" arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="coveredBy" arg1="B" arg2="A">   true   </op> </test>
+</case>
+
+<case>
+  <desc>L (4 pts) in polygon boundary</desc>
+  <a>
+    POLYGON((0 0, 100 0, 100 100, 0 100, 0 0))
+  </a>
+  <b>
+    LINESTRING( 10 0, 100 0, 100 100, 50 100 )
+  </b>
+<test>  <op name="intersects" arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="contains" arg1="A" arg2="B">   false   </op> </test>
+<test>  <op name="covers" arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="coveredBy" arg1="B" arg2="A">   true   </op> </test>
+</case>
+
+<case>
+  <desc>mL with one component contained and one in boundary</desc>
+  <a>
+    POLYGON((0 0, 100 0, 100 100, 0 100, 0 0))
+  </a>
+  <b>
+    MULTILINESTRING( (10 0, 20 0), (10 10, 20 20) )
+  </b>
+<test>  <op name="intersects" arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="contains" arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="covers" arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="coveredBy" arg1="B" arg2="A">   true   </op> </test>
+</case>
+
+<case>
   <desc>mL with one component contained</desc>
   <a>
     POLYGON((0 0, 100 0, 100 100, 0 100, 0 0))
@@ -116,6 +158,64 @@
 <test>  <op name="intersects" arg1="A" arg2="B">   true   </op> </test>
 <test>  <op name="contains" arg1="A" arg2="B">   false   </op> </test>
 </case>
+
+<case>
+  <desc>P in polygon boundary (Y axis)</desc>
+  <a>
+    POLYGON((0 0, 100 0, 100 100, 0 100, 0 0)) 
+  </a>
+  <b>
+    POINT(100 50) 
+  </b>
+<test>  <op name="intersects" arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="contains" arg1="A" arg2="B">   false   </op> </test>
+<test>  <op name="covers" arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="coveredBy" arg1="B" arg2="A">   true   </op> </test>
+</case>
+
+<case>
+  <desc>P in polygon boundary (X axis)</desc>
+  <a>
+    POLYGON((0 0, 100 0, 100 100, 0 100, 0 0)) 
+  </a>
+  <b>
+    POINT(50 100) 
+  </b>
+<test>  <op name="intersects" arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="contains" arg1="A" arg2="B">   false   </op> </test>
+<test>  <op name="covers" arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="coveredBy" arg1="B" arg2="A">   true   </op> </test>
+</case>
+
+<case>
+  <desc>P in polygon</desc>
+  <a>
+    POLYGON((0 0, 100 0, 100 100, 0 100, 0 0)) 
+  </a>
+  <b>
+    POINT(60 60) 
+  </b>
+<test>  <op name="intersects" arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="contains" arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="covers" arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="coveredBy" arg1="B" arg2="A">   true   </op> </test>
+</case>
+
+<case>
+  <desc>mP in polygon boundary and interior</desc>
+  <a>
+    POLYGON((0 0, 100 0, 100 100, 0 100, 0 0)) 
+  </a>
+  <b>
+    MULTIPOINT((50 100), (60 60)) 
+  </b>
+<test>  <op name="intersects" arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="contains" arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="covers" arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="coveredBy" arg1="B" arg2="A">   true   </op> </test>
+</case>
+
+
 
 
 </run>

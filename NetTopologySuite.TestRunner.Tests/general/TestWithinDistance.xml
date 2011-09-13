@@ -44,7 +44,7 @@
 <case>
   <desc>mPA - points outside polygon</desc>
   <a>    POLYGON ((200 180, 60 140, 60 260, 200 180))  </a>
-  <b>    MULTIPOINT (140 280, 140 320)  </b>
+  <b>    MULTIPOINT ((140 280), (140 320))  </b>
 <test><op name="isWithinDistance" arg1="A" arg2="B" arg3="60">    true   </op></test>
 <test><op name="isWithinDistance" arg1="A" arg2="B" arg3="57">    false  </op></test>
 </case>

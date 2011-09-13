@@ -2894,119 +2894,119 @@
 <case>
   <desc>Test 415</desc>
   <a>
-    MULTIPOINT (20 80, 110 160, 20 160)
+    MULTIPOINT ((20 80), (110 160), (20 160))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 416</desc>
   <a>
-    MULTIPOINT (20 80, 60 120, 20 160)
+    MULTIPOINT ((20 80), (60 120), (20 160))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 417</desc>
   <a>
-    MULTIPOINT (10 80, 110 170, 110 120)
+    MULTIPOINT ((10 80), (110 170), (110 120))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 418</desc>
   <a>
-    MULTIPOINT (10 80, 110 170, 160 120)
+    MULTIPOINT ((10 80), (110 170), (160 120))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 419</desc>
   <a>
-    MULTIPOINT (20 120, 60 120, 110 120, 160 120, 200 120)
+    MULTIPOINT ((20 120), (60 120), (110 120), (160 120), (200 120))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 420</desc>
   <a>
-    MULTIPOINT (60 120, 110 120, 160 120)
+    MULTIPOINT ((60 120), (110 120), (160 120))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 421</desc>
   <a>
-    MULTIPOINT (60 120, 160 120, 160 40, 60 40)
+    MULTIPOINT ((60 120), (160 120), (160 40), (60 40))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 422</desc>
   <a>
-    MULTIPOINT (20 150, 60 120, 110 80)
+    MULTIPOINT ((20 150), (60 120), (110 80))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 423</desc>
   <a>
-    MULTIPOINT (110 80, 160 120, 200 160)
+    MULTIPOINT ((110 80), (160 120), (200 160))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 424</desc>
   <a>
-    MULTIPOINT (110 80, 110 120, 110 160)
+    MULTIPOINT ((110 80), (110 120), (110 160))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 425</desc>
   <a>
-    MULTIPOINT (110 170, 110 80)
+    MULTIPOINT ((110 170), (110 80))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 426</desc>
   <a>
-    MULTIPOINT (60 120, 160 120, 110 80, 110 170)
+    MULTIPOINT ((60 120), (160 120), (110 80), (110 170))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 427</desc>
   <a>
-    MULTIPOINT (90 80, 130 80)
+    MULTIPOINT ((90 80), (130 80))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 428</desc>
   <a>
-    MULTIPOINT (60 120, 160 120, 110 80)
+    MULTIPOINT ((60 120), (160 120), (110 80))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 429</desc>
   <a>
-    MULTIPOINT (40 170, 40 90, 130 170)
+    MULTIPOINT ((40 170), (40 90), (130 170))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 430</desc>
   <a>
-    MULTIPOINT (90 170, 280 170, 190 90)
+    MULTIPOINT ((90 170), (280 170), (190 90))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 431</desc>
   <a>
-    MULTIPOINT (190 110, 150 70, 230 70)
+    MULTIPOINT ((190 110), (150 70), (230 70))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
@@ -3531,112 +3531,112 @@
 <case>
   <desc>Test 506</desc>
   <a>
-    MULTIPOINT (50 250, 90 220, 130 190)
+    MULTIPOINT ((50 250), (90 220), (130 190))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 507</desc>
   <a>
-    MULTIPOINT (180 180, 230 130, 280 80)
+    MULTIPOINT ((180 180), (230 130), (280 80))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 508</desc>
   <a>
-    MULTIPOINT (50 120, 90 80, 130 40)
+    MULTIPOINT ((50 120), (90 80), (130 40))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 509</desc>
   <a>
-    MULTIPOINT (300 280, 340 240, 380 200)
+    MULTIPOINT ((300 280), (340 240), (380 200))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 510</desc>
   <a>
-    MULTIPOINT (230 150, 260 120, 290 90)
+    MULTIPOINT ((230 150), (260 120), (290 90))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 511</desc>
   <a>
-    MULTIPOINT (200 190, 240 150, 270 110)
+    MULTIPOINT ((200 190), (240 150), (270 110))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 512</desc>
   <a>
-    MULTIPOINT (160 150, 190 120, 220 90)
+    MULTIPOINT ((160 150), (190 120), (220 90))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 513</desc>
   <a>
-    MULTIPOINT (120 190, 160 150, 200 110)
+    MULTIPOINT ((120 190), (160 150), (200 110))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 514</desc>
   <a>
-    MULTIPOINT (90 80, 160 150, 340 240)
+    MULTIPOINT ((90 80), (160 150), (340 240))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 515</desc>
   <a>
-    MULTIPOINT (90 80, 160 150, 300 150)
+    MULTIPOINT ((90 80), (160 150), (300 150))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 516</desc>
   <a>
-    MULTIPOINT (90 80, 160 150, 240 150)
+    MULTIPOINT ((90 80), (160 150), (240 150))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 517</desc>
   <a>
-    MULTIPOINT (90 80, 130 120, 210 150)
+    MULTIPOINT ((90 80), (130 120), (210 150))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 518</desc>
   <a>
-    MULTIPOINT (130 120, 210 150, 340 200)
+    MULTIPOINT ((130 120), (210 150), (340 200))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 519</desc>
   <a>
-    MULTIPOINT (160 150, 240 150, 340 210)
+    MULTIPOINT ((160 150), (240 150), (340 210))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 520</desc>
   <a>
-    MULTIPOINT (160 150, 300 150, 340 150)
+    MULTIPOINT ((160 150), (300 150), (340 150))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 521</desc>
   <a>
-    MULTIPOINT (160 150, 240 150, 340 240)
+    MULTIPOINT ((160 150), (240 150), (340 240))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
@@ -3657,84 +3657,84 @@
 <case>
   <desc>Test 524</desc>
   <a>
-    MULTIPOINT (20 20, 80 80, 20 120)
+    MULTIPOINT ((20 20), (80 80), (20 120))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 525</desc>
   <a>
-    MULTIPOINT (40 40, 80 60, 120 100)
+    MULTIPOINT ((40 40), (80 60), (120 100))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 526</desc>
   <a>
-    MULTIPOINT (40 40, 120 100, 80 60)
+    MULTIPOINT ((40 40), (120 100), (80 60))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 527</desc>
   <a>
-    MULTIPOINT (40 40, 60 100, 100 60, 120 120)
+    MULTIPOINT ((40 40), (60 100), (100 60), (120 120))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 528</desc>
   <a>
-    MULTIPOINT (20 120, 60 60, 100 100, 140 40)
+    MULTIPOINT ((20 120), (60 60), (100 100), (140 40))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 529</desc>
   <a>
-    MULTIPOINT (20 20, 80 70, 140 120, 200 170)
+    MULTIPOINT ((20 20), (80 70), (140 120), (200 170))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 530</desc>
   <a>
-    MULTIPOINT (20 20, 140 120, 80 70, 200 170)
+    MULTIPOINT ((20 20), (140 120), (80 70), (200 170))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 531</desc>
   <a>
-    MULTIPOINT (80 70, 20 20, 200 170, 140 120)
+    MULTIPOINT ((80 70), (20 20), (200 170), (140 120))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 532</desc>
   <a>
-    MULTIPOINT (80 70, 140 120)
+    MULTIPOINT ((80 70), (140 120))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 533</desc>
   <a>
-    MULTIPOINT (140 120, 80 70)
+    MULTIPOINT ((140 120), (80 70))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 534</desc>
   <a>
-    MULTIPOINT (80 170, 140 120, 200 80)
+    MULTIPOINT ((80 170), (140 120), (200 80))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 535</desc>
   <a>
-    MULTIPOINT (80 170, 140 120, 200 80, 80 70)
+    MULTIPOINT ((80 170), (140 120), (200 80), (80 70))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
@@ -3748,7 +3748,7 @@
 <case>
   <desc>Test 537</desc>
   <a>
-    MULTIPOINT (10 10, 20 20)
+    MULTIPOINT ((10 10), (20 20))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
@@ -3825,7 +3825,7 @@
 <case>
   <desc>Test 548</desc>
   <a>
-    MULTIPOINT (130 240, 130 240, 130 240, 570 240, 570 240, 570 240, 650 240)
+    MULTIPOINT ((130 240), (130 240), (130 240), (570 240), (570 240), (570 240), (650 240))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
@@ -3867,14 +3867,14 @@
 <case>
   <desc>Test 554</desc>
   <a>
-    MULTIPOINT (70 340, 70 50, 430 50, 420 340, 340 120, 390 110, 390 70, 350 100, 350 50, 370 90, 320 80, 360 120, 350 80, 390 90, 420 80, 410 60, 410 100, 370 100, 380 60, 370 80, 380 100, 360 80, 370 80, 380 70, 390 80, 390 70, 410 70, 400 60, 410 60, 410 60, 410 60, 370 70, 410 50, 410 50, 410 50, 410 50, 410 50, 410 50, 410 50)
+    MULTIPOINT ((70 340), (70 50), (430 50), (420 340), (340 120), (390 110), (390 70), (350 100), (350 50), (370 90), (320 80), (360 120), (350 80), (390 90), (420 80), (410 60), (410 100), (370 100), (380 60), (370 80), (380 100), (360 80), (370 80), (380 70), (390 80), (390 70), (410 70), (400 60), (410 60), (410 60), (410 60), (370 70), (410 50), (410 50), (410 50), (410 50), (410 50), (410 50), (410 50))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 555</desc>
   <a>
-    MULTIPOINT (140 350, 510 140, 110 140, 250 290, 250 50, 300 370, 450 310, 440 160, 290 280, 220 160, 100 260, 320 230, 200 280, 360 130, 330 210, 380 80, 220 210, 380 310, 260 150, 260 110, 170 130)
+    MULTIPOINT ((140 350), (510 140), (110 140), (250 290), (250 50), (300 370), (450 310), (440 160), (290 280), (220 160), (100 260), (320 230), (200 280), (360 130), (330 210), (380 80), (220 210), (380 310), (260 150), (260 110), (170 130))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
@@ -3888,7 +3888,7 @@
 <case>
   <desc>Test 557</desc>
   <a>
-    MULTIPOINT (50 320, 50 280, 50 230, 50 160, 50 120, 100 120, 160 120, 210 120, 210 180, 210 150, 180 180, 140 180, 140 210, 140 260, 160 180, 140 300, 140 320, 110 320, 80 320)
+    MULTIPOINT ((50 320), (50 280), (50 230), (50 160), (50 120), (100 120), (160 120), (210 120), (210 180), (210 150), (180 180), (140 180), (140 210), (140 260), (160 180), (140 300), (140 320), (110 320), (80 320))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
@@ -4462,7 +4462,7 @@
 <case>
   <desc>Test 640</desc>
   <a>
-    MULTIPOINT (120 320, 180 260, 180 320, 180 200, 300 200, 200 220)
+    MULTIPOINT ((120 320), (180 260), (180 320), (180 200), (300 200), (200 220))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
@@ -4476,14 +4476,14 @@
 <case>
   <desc>Test 642</desc>
   <a>
-    MULTIPOINT (200 360, 420 340, 400 100, 340 120, 200 140, 200 160, 220 180, 260 200, 200 360, 420 340, 400 100, 340 120, 200 140, 200 160, 220 180, 260 200)
+    MULTIPOINT ((200 360), (420 340), (400 100), (340 120), (200 140), (200 160), (220 180), (260 200), (200 360), (420 340), (400 100), (340 120), (200 140), (200 160), (220 180), (260 200))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 643</desc>
   <a>
-    MULTIPOINT (40 90, 20 20, 70 70)
+    MULTIPOINT ((40 90), (20 20), (70 70))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
@@ -4511,7 +4511,7 @@
 <case>
   <desc>Test 647</desc>
   <a>
-    MULTIPOINT (100 320, 100 260, 100 220, 100 200, 100 180, 120 180, 200 180, 220 180, 220 260, 220 320, 200 320, 160 320, 140 320, 120 320, 100 320, 100 260, 100 220, 100 200, 100 180, 120 180, 200 180, 220 180, 220 260, 220 320, 200 320, 160 320, 140 320, 120 320)
+    MULTIPOINT ((100 320), (100 260), (100 220), (100 200), (100 180), (120 180), (200 180), (220 180), (220 260), (220 320), (200 320), (160 320), (140 320), (120 320), (100 320), (100 260), (100 220), (100 200), (100 180), (120 180), (200 180), (220 180), (220 260), (220 320), (200 320), (160 320), (140 320), (120 320))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
@@ -4525,7 +4525,7 @@
 <case>
   <desc>Test 649</desc>
   <a>
-    MULTIPOINT (-560 -180, -420 -180, -500 -220, -500 -340, -500 -280, -500 -140, -320 -140, -420 -140, -320 -180, -280 -140, -320 -120, -560 -180, -420 -180, -500 -220, -500 -340, -500 -280, -500 -140, -320 -140, -420 -140, -320 -180, -280 -140, -320 -120)
+    MULTIPOINT ((-560 -180), (-420 -180), (-500 -220), (-500 -340), (-500 -280), (-500 -140), (-320 -140), (-420 -140), (-320 -180), (-280 -140), (-320 -120), (-560 -180), (-420 -180), (-500 -220), (-500 -340), (-500 -280), (-500 -140), (-320 -140), (-420 -140), (-320 -180), (-280 -140), (-320 -120))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
@@ -4546,21 +4546,21 @@
 <case>
   <desc>Test 652</desc>
   <a>
-    MULTIPOINT (100 100, 200 200)
+    MULTIPOINT ((100 100), (200 200))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 653</desc>
   <a>
-    MULTIPOINT (100 100, 200 200, 300 300, 500 500)
+    MULTIPOINT ((100 100), (200 200), (300 300), (500 500))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 654</desc>
   <a>
-    MULTIPOINT (100 100, 200 200, 400 400, 600 600)
+    MULTIPOINT ((100 100), (200 200), (400 400), (600 600))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
@@ -4980,7 +4980,7 @@
 <case>
   <desc>Test 714</desc>
   <a>
-    MULTIPOINT (0 20, 40 20)
+    MULTIPOINT ((0 20), (40 20))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
@@ -4994,21 +4994,21 @@
 <case>
   <desc>Test 716</desc>
   <a>
-    MULTIPOINT (0 20, 20 20)
+    MULTIPOINT ((0 20), (20 20))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 717</desc>
   <a>
-    MULTIPOINT (20 20, 40 20)
+    MULTIPOINT ((20 20), (40 20))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 718</desc>
   <a>
-    MULTIPOINT (80 260, 140 260, 180 260)
+    MULTIPOINT ((80 260), (140 260), (180 260))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
@@ -5050,7 +5050,7 @@
 <case>
   <desc>Test 724</desc>
   <a>
-    MULTIPOINT (40 40, 100 40)
+    MULTIPOINT ((40 40), (100 40))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
@@ -5064,14 +5064,14 @@
 <case>
   <desc>Test 726</desc>
   <a>
-    MULTIPOINT (40 40, 60 60)
+    MULTIPOINT ((40 40), (60 60))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 727</desc>
   <a>
-    MULTIPOINT (60 60, 100 100)
+    MULTIPOINT ((60 60), (100 100))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
@@ -5092,21 +5092,21 @@
 <case>
   <desc>Test 730</desc>
   <a>
-    MULTIPOINT (40 40, 80 60, 40 100)
+    MULTIPOINT ((40 40), (80 60), (40 100))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 731</desc>
   <a>
-    MULTIPOINT (80 280, 80 220, 160 220, 80 220)
+    MULTIPOINT ((80 280), (80 220), (160 220), (80 220))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>
 <case>
   <desc>Test 732</desc>
   <a>
-    MULTIPOINT (80 280, 80 220, 160 220)
+    MULTIPOINT ((80 280), (80 220), (160 220))
   </a>
   <test> <op name="isValid" arg1="A"> true </op> </test>
 </case>

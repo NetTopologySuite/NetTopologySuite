@@ -49,7 +49,7 @@
 <case>
   <desc>mPL - touches Bdy and Ext</desc>
   <a>
-    MULTIPOINT(40 40, 100 40)
+    MULTIPOINT((40 40), (100 40))
   </a>
   <b>
     LINESTRING(40 40, 80 80)
@@ -64,7 +64,7 @@
 <case>
   <desc>mPL - touches Int and Bdy</desc>
   <a>
-    MULTIPOINT(40 40, 60 60)
+    MULTIPOINT((40 40), (60 60))
   </a>
   <b>
     LINESTRING(40 40, 80 80)
@@ -79,7 +79,7 @@
 <case>
   <desc>mPL - touches Int and Ext</desc>
   <a>
-    MULTIPOINT(60 60, 100 100)
+    MULTIPOINT((60 60), (100 100))
   </a>
   <b>
     LINESTRING(40 40, 80 80)
@@ -94,7 +94,7 @@
 <case>
   <desc>mPL - touches IntNV and Ext</desc>
   <a>
-    MULTIPOINT(60 60, 100 100)
+    MULTIPOINT((60 60), (100 100))
   </a>
   <b>
     LINESTRING(40 40, 80 80)
@@ -109,7 +109,7 @@
 <case>
   <desc>mPL - touches IntV and Ext</desc>
   <a>
-    MULTIPOINT(60 60, 100 100)
+    MULTIPOINT((60 60), (100 100))
   </a>
   <b>
     LINESTRING(40 40, 60 60, 80 80)
