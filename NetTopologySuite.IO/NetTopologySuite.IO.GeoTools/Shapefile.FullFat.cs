@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
@@ -13,9 +11,6 @@ namespace NetTopologySuite.IO
 {
     public partial class Shapefile
     {
-
-
-
         /// <summary>
         /// Creates a DataTable representing the information in a shape file.
         /// </summary>

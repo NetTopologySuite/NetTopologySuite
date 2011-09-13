@@ -43,9 +43,6 @@
     <DocumentationFile>bin\Release\NetTopologySuite.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PowerCollections.Silverlight">
-      <HintPath>..\ExternalReferences\PowerCollections.Silverlight.dll</HintPath>
-    </Reference>
     <Reference Include="ProjNet.Silverlight">
       <HintPath>..\ExternalReferences\ProjNet.Silverlight.dll</HintPath>
     </Reference>
@@ -53,7 +50,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Microsoft SDKs\Silverlight\v4.0\Libraries\Client\System.Xml.Linq.dll</HintPath>
+      <HintPath>..\..\..\..\Programmi\Microsoft SDKs\Silverlight\v4.0\Libraries\Client\System.Xml.Linq.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -1142,6 +1139,10 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\PowerCollections\Source\PowerCollections.SL\PowerCollections.Silverlight.csproj">
+      <Project>{48808C52-FE5E-43BB-8ADD-197748552773}</Project>
+      <Name>PowerCollections.Silverlight</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GeoAPI\GeoAPI.Silverlight\GeoAPI.Silverlight.csproj">
       <Project>{9B913337-1114-4D05-8F24-D05A5FD588AD}</Project>
       <Name>GeoAPI.Silverlight</Name>
