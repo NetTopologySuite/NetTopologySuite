@@ -72,7 +72,7 @@ namespace Open.Topology.TestRunner
             }
 
             string arg3 = testInfo.GetValue("arg3");
-            if (arg3 != null && arg3.Length > 0)            
+            if (arg3 != null && arg3.Length > 0)
                 xmlTest.Argument2 = arg3;
 
             string strResult = testInfo.GetValue("result");

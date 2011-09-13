@@ -1,23 +1,12 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<project xmlns="Other.xsd">
-    <test verbose="false" exception="true" interactive="false" filter="none">
-        <files>
-            <file>C:\Documents and Settings\Davide\Documenti\Visual Studio\Projects\NetTopologySuite\test\vivid\TestBoundary.xml</file>
-            <file>C:\Documents and Settings\Davide\Documenti\Visual Studio\Projects\NetTopologySuite\test\vivid\TestBoundary.xml</file>
-        </files>
-        <dirs>
-            <dir>C:\Documents and Settings\Davide\Documenti\Visual Studio\Projects\NetTopologySuite\test</dir>
-            <dir>C:\Documents and Settings\Davide\Documenti\Visual Studio\Projects\NetTopologySuite\test</dir>
-        </dirs>
-    </test>
-    <test verbose="false" exception="true" interactive="false" filter="none">
-        <files>
-            <file>C:\Documents and Settings\Davide\Documenti\Visual Studio\Projects\NetTopologySuite\test\vivid\TestBoundary.xml</file>
-        </files>
-    </test>
-    <test verbose="false" exception="true" interactive="false" filter="none">
-        <dirs>
-            <dir>C:\Documents and Settings\Davide\Documenti\Visual Studio\Projects\NetTopologySuite\test</dir>
-        </dirs>
-    </test>
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<project>
+	<test verbose="false" exception="true" interactive="false" filter="none">
+		<dirs>
+      <dir>..\..\..\NetTopologySuite.TestRunner.Tests\general</dir>
+			<dir>..\..\..\NetTopologySuite.TestRunner.Tests\robust</dir>
+			<dir>..\..\..\NetTopologySuite.TestRunner.Tests\stmlf</dir>
+			<dir>..\..\..\NetTopologySuite.TestRunner.Tests\failure</dir>
+			<dir>..\..\..\NetTopologySuite.TestRunner.Tests\external</dir>			
+		</dirs>
+	</test>
 </project>

@@ -91,11 +91,12 @@ namespace Open.Topology.TestRunner
 
                     if (testItem != null)
                     {
-                        XmlTestEventArgs args = 
-                            new XmlTestEventArgs(i, testItem.Run(), testItem);
-
+                        bool run = testItem.Run();
                         if (TestEvent != null)
-                            TestEvent(this, args);
+                        {
+                            XmlTestEventArgs args = new XmlTestEventArgs(i, run, testItem);
+                            this.TestEvent(this, args);
+                        }
                     }
                 }
 

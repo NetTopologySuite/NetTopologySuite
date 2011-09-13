@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5AF10590
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Robust", "Robust", "{71AF5313-7B61-47C0-B7A1-FBEAEB035011}"
 	ProjectSection(SolutionItems) = preProject
+		NetTopologySuite.TestRunner.Tests\robust\ExternalRobustness.xml = NetTopologySuite.TestRunner.Tests\robust\ExternalRobustness.xml
+		NetTopologySuite.TestRunner.Tests\robust\TestRobustOverlayError.xml = NetTopologySuite.TestRunner.Tests\robust\TestRobustOverlayError.xml
 		NetTopologySuite.TestRunner.Tests\robust\TestRobustOverlayFixed.xml = NetTopologySuite.TestRunner.Tests\robust\TestRobustOverlayFixed.xml
 		NetTopologySuite.TestRunner.Tests\robust\TestRobustOverlayFloat.xml = NetTopologySuite.TestRunner.Tests\robust\TestRobustOverlayFloat.xml
 		NetTopologySuite.TestRunner.Tests\robust\TestRobustRelate.xml = NetTopologySuite.TestRunner.Tests\robust\TestRobustRelate.xml
@@ -99,6 +101,59 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.ShapeFile", "NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile\NetTopologySuite.IO.ShapeFile.csproj", "{AB9096A7-89DD-4ABD-B535-A5258863F389}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections", "..\PowerCollections\Source\PowerCollections\PowerCollections.csproj", "{5821977D-AC2C-4912-BCD0-6E6B1A756167}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{DDB44977-857B-4618-9F68-E40B73BE24AE}"
+	ProjectSection(SolutionItems) = preProject
+		NetTopologySuite.TestRunner.Tests\external\GEOSBuffer.xml = NetTopologySuite.TestRunner.Tests\external\GEOSBuffer.xml
+		NetTopologySuite.TestRunner.Tests\external\TestBufferExternal.xml = NetTopologySuite.TestRunner.Tests\external\TestBufferExternal.xml
+		NetTopologySuite.TestRunner.Tests\external\TestBufferExternal2.xml = NetTopologySuite.TestRunner.Tests\external\TestBufferExternal2.xml
+		NetTopologySuite.TestRunner.Tests\external\TestOverlay.xml = NetTopologySuite.TestRunner.Tests\external\TestOverlay.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Failure", "Failure", "{E2D52739-3B05-4A98-B51A-635A28063E03}"
+	ProjectSection(SolutionItems) = preProject
+		NetTopologySuite.TestRunner.Tests\failure\TestBigNastyBuffer.xml = NetTopologySuite.TestRunner.Tests\failure\TestBigNastyBuffer.xml
+		NetTopologySuite.TestRunner.Tests\failure\TestOverlay.xml = NetTopologySuite.TestRunner.Tests\failure\TestOverlay.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stmlf", "Stmlf", "{12E63A01-01E0-4DF5-B845-C89339F116B0}"
+	ProjectSection(SolutionItems) = preProject
+		NetTopologySuite.TestRunner.Tests\stmlf\stmlf-cases-20061018_int.xml = NetTopologySuite.TestRunner.Tests\stmlf\stmlf-cases-20061018_int.xml
+		NetTopologySuite.TestRunner.Tests\stmlf\stmlf-cases-20061020_int.xml = NetTopologySuite.TestRunner.Tests\stmlf\stmlf-cases-20061020_int.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "General", "General", "{597394F6-7FF8-4446-A103-093AEF2BF85E}"
+	ProjectSection(SolutionItems) = preProject
+		NetTopologySuite.TestRunner.Tests\general\TestBoundary.xml = NetTopologySuite.TestRunner.Tests\general\TestBoundary.xml
+		NetTopologySuite.TestRunner.Tests\general\TestCentroid.xml = NetTopologySuite.TestRunner.Tests\general\TestCentroid.xml
+		NetTopologySuite.TestRunner.Tests\general\TestConvexHull-big.xml = NetTopologySuite.TestRunner.Tests\general\TestConvexHull-big.xml
+		NetTopologySuite.TestRunner.Tests\general\TestConvexHull.xml = NetTopologySuite.TestRunner.Tests\general\TestConvexHull.xml
+		NetTopologySuite.TestRunner.Tests\general\TestFunctionAA.xml = NetTopologySuite.TestRunner.Tests\general\TestFunctionAA.xml
+		NetTopologySuite.TestRunner.Tests\general\TestFunctionAAPrec.xml = NetTopologySuite.TestRunner.Tests\general\TestFunctionAAPrec.xml
+		NetTopologySuite.TestRunner.Tests\general\TestFunctionLA.xml = NetTopologySuite.TestRunner.Tests\general\TestFunctionLA.xml
+		NetTopologySuite.TestRunner.Tests\general\TestFunctionLAPrec.xml = NetTopologySuite.TestRunner.Tests\general\TestFunctionLAPrec.xml
+		NetTopologySuite.TestRunner.Tests\general\TestFunctionLL.xml = NetTopologySuite.TestRunner.Tests\general\TestFunctionLL.xml
+		NetTopologySuite.TestRunner.Tests\general\TestFunctionLLPrec.xml = NetTopologySuite.TestRunner.Tests\general\TestFunctionLLPrec.xml
+		NetTopologySuite.TestRunner.Tests\general\TestFunctionPA.xml = NetTopologySuite.TestRunner.Tests\general\TestFunctionPA.xml
+		NetTopologySuite.TestRunner.Tests\general\TestFunctionPL.xml = NetTopologySuite.TestRunner.Tests\general\TestFunctionPL.xml
+		NetTopologySuite.TestRunner.Tests\general\TestFunctionPLPrec.xml = NetTopologySuite.TestRunner.Tests\general\TestFunctionPLPrec.xml
+		NetTopologySuite.TestRunner.Tests\general\TestFunctionPP.xml = NetTopologySuite.TestRunner.Tests\general\TestFunctionPP.xml
+		NetTopologySuite.TestRunner.Tests\general\TestInteriorPoint.xml = NetTopologySuite.TestRunner.Tests\general\TestInteriorPoint.xml
+		NetTopologySuite.TestRunner.Tests\general\TestRectanglePredicate.xml = NetTopologySuite.TestRunner.Tests\general\TestRectanglePredicate.xml
+		NetTopologySuite.TestRunner.Tests\general\TestRelateAA.xml = NetTopologySuite.TestRunner.Tests\general\TestRelateAA.xml
+		NetTopologySuite.TestRunner.Tests\general\TestRelateAC.xml = NetTopologySuite.TestRunner.Tests\general\TestRelateAC.xml
+		NetTopologySuite.TestRunner.Tests\general\TestRelateLA.xml = NetTopologySuite.TestRunner.Tests\general\TestRelateLA.xml
+		NetTopologySuite.TestRunner.Tests\general\TestRelateLC.xml = NetTopologySuite.TestRunner.Tests\general\TestRelateLC.xml
+		NetTopologySuite.TestRunner.Tests\general\TestRelateLL.xml = NetTopologySuite.TestRunner.Tests\general\TestRelateLL.xml
+		NetTopologySuite.TestRunner.Tests\general\TestRelatePA.xml = NetTopologySuite.TestRunner.Tests\general\TestRelatePA.xml
+		NetTopologySuite.TestRunner.Tests\general\TestRelatePL.xml = NetTopologySuite.TestRunner.Tests\general\TestRelatePL.xml
+		NetTopologySuite.TestRunner.Tests\general\TestRelatePP.xml = NetTopologySuite.TestRunner.Tests\general\TestRelatePP.xml
+		NetTopologySuite.TestRunner.Tests\general\TestSimple.xml = NetTopologySuite.TestRunner.Tests\general\TestSimple.xml
+		NetTopologySuite.TestRunner.Tests\general\TestValid.xml = NetTopologySuite.TestRunner.Tests\general\TestValid.xml
+		NetTopologySuite.TestRunner.Tests\general\TestValid2-big.xml = NetTopologySuite.TestRunner.Tests\general\TestValid2-big.xml
+		NetTopologySuite.TestRunner.Tests\general\TestValid2.xml = NetTopologySuite.TestRunner.Tests\general\TestValid2.xml
+		NetTopologySuite.TestRunner.Tests\general\TestWithinDistance.xml = NetTopologySuite.TestRunner.Tests\general\TestWithinDistance.xml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -188,6 +243,10 @@ Global
 		{71AF5313-7B61-47C0-B7A1-FBEAEB035011} = {5AF10590-5E1C-4052-83C6-95C94B747195}
 		{4692ED72-2D05-4DDC-8411-748A9BE61958} = {5AF10590-5E1C-4052-83C6-95C94B747195}
 		{20350EA5-0BB8-4233-9C11-90E9A8D3C254} = {5AF10590-5E1C-4052-83C6-95C94B747195}
+		{DDB44977-857B-4618-9F68-E40B73BE24AE} = {5AF10590-5E1C-4052-83C6-95C94B747195}
+		{E2D52739-3B05-4A98-B51A-635A28063E03} = {5AF10590-5E1C-4052-83C6-95C94B747195}
+		{12E63A01-01E0-4DF5-B845-C89339F116B0} = {5AF10590-5E1C-4052-83C6-95C94B747195}
+		{597394F6-7FF8-4446-A103-093AEF2BF85E} = {5AF10590-5E1C-4052-83C6-95C94B747195}
 		{548166D9-DF64-46FB-9EEC-212C7B7E7D85} = {02B84BA9-0E7D-456F-B52F-8ADE0160DA7B}
 		{21805958-869E-49F5-A4ED-0AC8599D62F0} = {02B84BA9-0E7D-456F-B52F-8ADE0160DA7B}
 		{75BDB70A-AEB9-4592-9B5E-677D3D346A54} = {02B84BA9-0E7D-456F-B52F-8ADE0160DA7B}
