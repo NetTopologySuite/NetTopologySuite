@@ -62,7 +62,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             Debug.WriteLine(multiLineString.ToString());
             Debug.WriteLine(reverse.ToString());
 
-            Assert.IsFalse(multiLineString.Equals(reverse));
+            Assert.IsTrue(multiLineString.Equals(reverse));
             Assert.IsFalse(multiLineString.EqualsExact(reverse));
 
             IGeometry result2 = reverse[1];
