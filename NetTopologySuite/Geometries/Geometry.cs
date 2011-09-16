@@ -1004,7 +1004,6 @@ namespace NetTopologySuite.Geometries
                 return false;
 
             // NOTE: Not in JTS!!!
-            // We use an alternative method for compare GeometryCollections (but not subclasses!), 
             if (IsGeometryCollection(this) || IsGeometryCollection(g))
                 return CompareGeometryCollections(this, g);
             
@@ -1877,7 +1876,7 @@ namespace NetTopologySuite.Geometries
         
         protected static bool IsGeometryCollection(IGeometry g)
         {
-            return g is IGeometryCollection;
+            return IsNonHomogenousGeometryCollection(g);
         }
         
 
