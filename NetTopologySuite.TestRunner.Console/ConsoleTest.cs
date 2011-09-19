@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Open.Topology.TestRunner;
 
 namespace ConsoleTestRunner
@@ -10,10 +11,13 @@ namespace ConsoleTestRunner
     {        
         static void PrintMenu()
         {
-            Console.WriteLine("** Interactive Test Instructions **");
+            Console.WriteLine("\n\n**\n**\n** Interactive Test Instructions \n**\n**\n**\n");
             Console.WriteLine("a. Enter the name of the test script file to run.");
-            Console.WriteLine("b. Or enter 'exit' (without the quote) to end the test.");
-            Console.WriteLine("c. Or enter 'default' (without the quote) to run the default tests.");
+            Console.WriteLine("b. Enter (without the quote)");
+            Console.WriteLine("   - 'default' to run the default tests.");
+            Console.WriteLine("   - 'other' to run the other tests.");
+            Console.WriteLine("   - 'all' to run default and other tests.");
+            Console.WriteLine("c. Enter 'exit' (without the quote) to end the test.");
             Console.WriteLine();
             Console.Write("Test Runner>>");
         }
@@ -35,13 +39,32 @@ namespace ConsoleTestRunner
                 XmlTestCollection listTests = null;
                 try
                 {
-                    if (fileName == "default")
+                    switch (fileName)
                     {
-                        RunDefault();
-                    }
-                    else
-                    {
-                        listTests = controller.Load(fileName);
+                        case "default":
+                            RunDefault();
+                            break;
+                        case "other":
+                            RunOther();
+                            break;
+                        case "all":
+                            RunDefault();
+                            RunOther();
+                            break;
+                        default:
+                            if (Directory.Exists(fileName))
+                            {
+                                string tmp = Path.GetTempFileName();
+                                File.AppendAllText(tmp,
+                                                   string.Format(
+                                                       "<?xml version=\"1.0\" encoding=\"utf-8\" ?><project><test verbose=\"false\" exception=\"true\" interactive=\"false\" filter=\"none\"><dirs><dir>{0}</dir></dirs></test></project>",
+                                                       fileName));
+                                listTests = controller.Load(tmp);
+                            }
+                            else
+                                listTests = controller.Load(fileName);
+
+                            break;
                     }
                 }
                 catch (Exception ex)
@@ -101,6 +124,20 @@ namespace ConsoleTestRunner
                 runner.Run();
                 runner.PrintResult();
             }   
+        }
+
+        static void RunOther()
+        {
+            TestOptionsParser parserOptions = new TestOptionsParser();
+            TestInfoCollection listTests =
+                parserOptions.ParseProject(@"..\..\..\NetTopologySuite.TestRunner.Tests\Other.xml");
+
+            if (listTests != null && listTests.Count > 0)
+            {
+                TestRunner runner = new TestRunner(listTests);
+                runner.Run();
+                runner.PrintResult();
+            }
         }
 
         /// <summary>

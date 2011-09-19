@@ -185,7 +185,7 @@
             for (int i = 0; i < this.Count; i++)
             {
                 TestResults result = this.ExecuteTest(i);
-                Assert.True(result.Success, String.Format("Test {0} failed", i));
+                Assert.True(result.Success, String.Format("Test {0} failed\n{1}", i, result.Description));
             }
         }
     }

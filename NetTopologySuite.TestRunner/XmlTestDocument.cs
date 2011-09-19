@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Xml;
 using NetTopologySuite.Geometries;
+using Open.Topology.TestRunner.Result;
 
 namespace Open.Topology.TestRunner
 {
@@ -192,7 +193,17 @@ namespace Open.Topology.TestRunner
                 {
                     pm = new PrecisionModel();
                 }
-                m_objFactory   = new XmlTestFactory(pm);
+
+                IResultMatcher resultMatcher = null;
+                XmlNode rm = root["resultMatcher"];
+                if (rm != null)
+                {
+                    rm = rm.FirstChild;
+                    if (rm.Value.EndsWith("BufferResultMatcher", StringComparison.InvariantCultureIgnoreCase))
+                        resultMatcher = new BufferResultMatcher();
+                }
+
+                m_objFactory   = new XmlTestFactory(pm, resultMatcher);
                 m_listCurTests = new XmlTestCollection();
 
                 m_listCurTests.Name = strTestDescription;

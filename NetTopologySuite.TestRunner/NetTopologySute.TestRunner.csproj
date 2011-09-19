@@ -19,7 +19,7 @@
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
-    <RootNamespace>NetTopologySuite</RootNamespace>
+    <RootNamespace>Open.Topology.TestRunner</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
     </StartupObject>
@@ -111,6 +111,9 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Result\Result.cs" />
+    <Compile Include="Result\IResultMatcher.cs" />
+    <Compile Include="Utility\WKTOrWKBReader.cs" />
     <Compile Include="XmlTest.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -2,7 +2,10 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using GeoAPI.Geometries;
+using GeoAPI.Operations.Buffer;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation.Buffer;
+using Open.Topology.TestRunner.Result;
 
 namespace Open.Topology.TestRunner
 {
@@ -87,6 +90,8 @@ namespace Open.Topology.TestRunner
         Within                  = 30,
         Covers                  = 31,
         CoveredBy               = 32,
+        BufferMitredJoin        = 33,
+        Densify                 = 34,
     }
  
     #endregion
@@ -131,13 +136,15 @@ namespace Open.Topology.TestRunner
 
         private double    m_dTolerance     = Double.Epsilon;
 
+	    private readonly IResultMatcher _resultMatcher;
+
         #endregion
 
         #region Constructors and Destructor
 		
-        public XmlTest(string description, bool bIsDefaultTarget, double tolerance)
+        public XmlTest(string description, bool bIsDefaultTarget, double tolerance, IResultMatcher resultMatcher)
 		{
-            if (description != null && description.Length != 0)
+            if (!string.IsNullOrEmpty(description))
             {
                 m_strDescription = description;
             }
@@ -150,6 +157,7 @@ namespace Open.Topology.TestRunner
 
             m_bIsDefaultTarget = bIsDefaultTarget;
             m_dTolerance       = tolerance;
+            _resultMatcher = resultMatcher;
 		}
 
         #endregion
@@ -336,6 +344,9 @@ namespace Open.Topology.TestRunner
                 case XmlTestType.Buffer:
                     return TestBuffer();
 
+                case XmlTestType.BufferMitredJoin:
+                    return TestBufferMitredJoin();
+
                 case XmlTestType.Centroid:
                     return TestCentroid();
 
@@ -347,6 +358,9 @@ namespace Open.Topology.TestRunner
 
                 case XmlTestType.Crosses:
                     return TestCrosses();
+
+                case XmlTestType.Densify:
+                    return TestDensify();
 
                 case XmlTestType.Difference:
                     return TestDifference();
@@ -518,13 +532,26 @@ namespace Open.Topology.TestRunner
         protected virtual bool TestBuffer()            
         {
             Geometry geoResult = (Geometry)m_objResult;
-            double dArg        = Double.Parse((string)m_objArgument2, GetNumberFormatInfo());
+            double dArg;
+            if (m_objArgument1 is IGeometry)
+                Double.TryParse((string)m_objArgument2, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
+            else
+                Double.TryParse((string)m_objArgument1, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
 
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
                 Geometry buffer = (Geometry) m_objGeometryA.Buffer(dArg);
                 if (buffer != null)
                 {
+                    if (_resultMatcher is IResultMatcher<GeometryResult>)
+                    {
+                        var exp = new GeometryResult(geoResult);
+                        var res = new GeometryResult(buffer);
+                        return ((IResultMatcher<GeometryResult>)_resultMatcher).IsMatch(
+                            m_objGeometryA, "buffer", new[] { m_objArgument1 }, res, exp, m_dTolerance);
+
+                    }
+                    
                     if (buffer.IsEmpty && geoResult.IsEmpty)
                     {
                         return true;
@@ -533,7 +560,7 @@ namespace Open.Topology.TestRunner
                     if (geoResult.GetType().Name == "GeometryCollection")
                     {
                         return CompareGeometries(geoResult, buffer);
-                   }
+                    }
 
                     return buffer.Equals(geoResult);
                 }
@@ -543,6 +570,15 @@ namespace Open.Topology.TestRunner
                 Geometry buffer = (Geometry) m_objGeometryB.Buffer(dArg);
                 if (buffer != null)
                 {
+                    if (_resultMatcher is IResultMatcher<GeometryResult>)
+                    {
+                        var exp = new GeometryResult(geoResult);
+                        var res = new GeometryResult(buffer);
+                        return ((IResultMatcher<GeometryResult>)_resultMatcher).IsMatch(
+                            m_objGeometryB, "buffer", new[] { m_objArgument1 }, res, exp, m_dTolerance);
+
+                    }
+
                     if (buffer.IsEmpty && geoResult.IsEmpty)
                     {
                         return true;
@@ -557,6 +593,32 @@ namespace Open.Topology.TestRunner
                 }
             }
 
+            return false;
+        }
+
+        protected virtual bool TestBufferMitredJoin()            
+        {
+            Geometry geoResult = (Geometry)m_objResult;
+            double dArg;
+            Double.TryParse((string)m_objArgument1, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
+
+            if (m_bIsDefaultTarget && m_objGeometryA != null)
+            {
+                var bp = new BufferParameters {JoinStyle = JoinStyle.Mitre};
+                Geometry buffer = (Geometry) m_objGeometryA.Buffer(dArg, bp);
+                if (buffer != null)
+                {
+                    if (_resultMatcher is IResultMatcher<GeometryResult>)
+                    {
+                        var exp = new GeometryResult(geoResult);
+                        var res = new GeometryResult(buffer);
+                        return ((IResultMatcher<GeometryResult>) _resultMatcher).IsMatch(
+                            m_objGeometryA, "buffer", new[] {m_objArgument1}, res, exp, m_dTolerance);
+
+                    }
+                    return buffer.Equals(geoResult);
+                }
+            }
             return false;
         }
 
@@ -705,7 +767,31 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestDifference()        
+        protected virtual bool TestDensify()
+        {
+            var geoResult = m_objResult as IGeometry;
+
+            var dArg = GetDoubleArgument();
+
+            var geom = m_bIsDefaultTarget && m_objGeometryA != null ? m_objGeometryA : m_objGeometryB;
+
+            if (geom != null)
+            {
+                var res = NetTopologySuite.Densify.Densifier.Densify(geom, dArg);
+                return res.Equals(geoResult);
+            }
+            return false;
+        }
+
+	    private double GetDoubleArgument()
+	    {
+            if (m_objArgument1 is IGeometry)
+                return Double.Parse((string) m_objArgument2, NumberStyles.Any, GetNumberFormatInfo());
+            
+            return Double.Parse((string)m_objArgument1, NumberStyles.Any, GetNumberFormatInfo());
+        }
+
+	    protected virtual bool TestDifference()        
         {
             Trace.Assert(m_objResult != null, "The result object cannot be null");
 
@@ -1399,7 +1485,9 @@ namespace Open.Topology.TestRunner
             {
                 if (m_objArgument1 == null)
                 {
-                    Geometry union = (Geometry) m_objGeometryA.Union(m_objGeometryB);
+                    var geom = m_objGeometryB ?? m_objGeometryA;
+                    
+                    Geometry union = (Geometry) m_objGeometryA.Union(geom);
                     if (union != null)
                     {
                         if (union.IsEmpty && geoResult.IsEmpty)

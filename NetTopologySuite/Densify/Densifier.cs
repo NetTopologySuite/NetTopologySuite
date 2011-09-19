@@ -87,7 +87,7 @@ namespace NetTopologySuite.Densify
 
             set
             {
-                if (_distanceTolerance <= 0.0)
+                if (value <= 0.0)
                     throw new ArgumentException("Tolerance must be positive");
                 _distanceTolerance = value;
             }

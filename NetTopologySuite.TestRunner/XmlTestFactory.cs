@@ -2,7 +2,8 @@ using System;
 using System.Globalization;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
+using Open.Topology.TestRunner.Result;
+using Open.Topology.TestRunner.Utility;
 
 namespace Open.Topology.TestRunner
 {
@@ -31,52 +32,56 @@ namespace Open.Topology.TestRunner
         }
 
         protected GeometryFactory m_objGeometryFactory = null;
-        protected WKTReader m_objReader = null;
+        private WKTOrWKBReader m_objReader = null;
 
-        public XmlTestFactory(PrecisionModel pm)
+	    private readonly IResultMatcher _resultMatcher;
+
+        public XmlTestFactory(PrecisionModel pm, IResultMatcher resultMatcher)
 		{
             m_objGeometryFactory = new GeometryFactory(pm);
-            m_objReader = new WKTReader(m_objGeometryFactory);
+            _resultMatcher = resultMatcher;
+            m_objReader = new WKTOrWKBReader(m_objGeometryFactory);
         }
 
         public XmlTest Create(XmlTestInfo testInfo, double tolerance)
         {
             XmlTest xmlTest = new XmlTest(testInfo.GetValue("desc"), 
-                testInfo.IsDefaultTarget(), tolerance);
+                testInfo.IsDefaultTarget(), tolerance, _resultMatcher);
 
             // Handle test type or name.
             string strTestType = testInfo.GetValue("name");
-            if (strTestType == null || strTestType.Length == 0)
+            if (string.IsNullOrEmpty(strTestType))
                 return null;
             
             ParseType(strTestType, xmlTest);
 
             // Handle the Geometry A:
-            string wktA = testInfo.GetValue("a");
-            if (wktA != null && wktA.Length > 0)
-                ParseGeometry(Target.A, wktA, xmlTest);
+            string wkt = testInfo.GetValue("a");
+            if (!string.IsNullOrEmpty(wkt))
+                ParseGeometry(Target.A, wkt, xmlTest);
             
             // Handle the Geometry B:
-            string wktB = testInfo.GetValue("b");
-            if (wktB != null && wktB.Length > 0)           
-                ParseGeometry(Target.B, wktB, xmlTest);            
+            wkt = testInfo.GetValue("b");
+            if (!string.IsNullOrEmpty(wkt))           
+                ParseGeometry(Target.B, wkt, xmlTest);
 
-            // Handle the arguments
             string arg2 = testInfo.GetValue("arg2");
-            if (arg2 != null && arg2.Length > 0)
+            if (!string.IsNullOrEmpty(arg2))
             {
-                if (arg2 == "a")
+                if (arg2 == "a" || arg2 == "A")
                     xmlTest.Argument1 = xmlTest.A;
-                else if (arg2 == "b")
+                else if (arg2 == "b" || arg2 == "B")
                     xmlTest.Argument1 = xmlTest.B;
+                else
+                    xmlTest.Argument1 = arg2;
             }
 
             string arg3 = testInfo.GetValue("arg3");
-            if (arg3 != null && arg3.Length > 0)
+            if (!string.IsNullOrEmpty(arg3))
                 xmlTest.Argument2 = arg3;
 
             string strResult = testInfo.GetValue("result");
-            if (strResult == null || strResult.Length == 0)
+            if (string.IsNullOrEmpty(strResult))
                 return null;
 
             ParseResult(strResult, xmlTest);
@@ -99,7 +104,10 @@ namespace Open.Topology.TestRunner
             
             else if (testType == "buffer")
                 xmlTestItem.TestType = XmlTestType.Buffer;
-            
+
+            else if (testType == "buffermitredjoin")
+                xmlTestItem.TestType = XmlTestType.BufferMitredJoin;
+
             else if (testType == "getcentroid")
                 xmlTestItem.TestType = XmlTestType.Centroid;
             
@@ -111,7 +119,10 @@ namespace Open.Topology.TestRunner
             
             else if (testType == "crosses")
                 xmlTestItem.TestType = XmlTestType.Crosses;
-            
+
+            else if (testType == "densify")
+                xmlTestItem.TestType = XmlTestType.Densify;
+
             else if (testType == "difference")
                 xmlTestItem.TestType = XmlTestType.Difference;
             
@@ -234,8 +245,10 @@ namespace Open.Topology.TestRunner
                 // Here we expect a point
                 case XmlTestType.Boundary:
                 case XmlTestType.Buffer:
+                case XmlTestType.BufferMitredJoin:
                 case XmlTestType.Centroid:
                 case XmlTestType.ConvexHull:
+                case XmlTestType.Densify:
                 case XmlTestType.Difference:
                 case XmlTestType.Envelope:
                 case XmlTestType.InteriorPoint:
