@@ -22,7 +22,7 @@ namespace NetTopologySuite.Operation.Linemerge
         /// whether this DirectedEdge's direction is the same as or
         /// opposite to that of the parent Edge (if any).
         /// </param>
-        public LineMergeDirectedEdge(Node from, Node to, ICoordinate directionPt, bool edgeDirection) 
+        public LineMergeDirectedEdge(Node from, Node to, Coordinate directionPt, bool edgeDirection) 
             : base(from, to, directionPt, edgeDirection) { }
 
         /// <summary>

@@ -26,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [Test]
         public void TestWriteLineString()
         {
-            ICoordinate[] coordinates = { new Coordinate(10, 10, 0),
+            Coordinate[] coordinates = { new Coordinate(10, 10, 0),
                                  new Coordinate(20, 20, 0),
                                  new Coordinate(30, 40, 0) };
             ILineString lineString = geometryFactory.CreateLineString(coordinates);
@@ -56,10 +56,10 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [Test]
         public void TestWriteMultiLineString()
         {
-            ICoordinate[] coordinates1 = { new Coordinate(10, 10, 0),
+            Coordinate[] coordinates1 = { new Coordinate(10, 10, 0),
                                   new Coordinate(20, 20, 0) };
             ILineString lineString1 = geometryFactory.CreateLineString(coordinates1);
-            ICoordinate[] coordinates2 = { new Coordinate(15, 15, 0),
+            Coordinate[] coordinates2 = { new Coordinate(15, 15, 0),
                                   new Coordinate(30, 15, 0) };
             ILineString lineString2 = geometryFactory.CreateLineString(coordinates2);
             ILineString[] lineStrings = { lineString1, lineString2 };
@@ -70,14 +70,14 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [Test]
         public void TestWriteMultiPolygon()
         {
-            ICoordinate[] coordinates1 = { new Coordinate(10, 10, 0),
+            Coordinate[] coordinates1 = { new Coordinate(10, 10, 0),
                                  new Coordinate(10, 20, 0),
                                  new Coordinate(20, 20, 0),
                                  new Coordinate(20, 15, 0),
                                  new Coordinate(10, 10, 0) };
             ILinearRing linearRing1 = geometryFactory.CreateLinearRing(coordinates1);
             IPolygon polygon1 = geometryFactory.CreatePolygon(linearRing1, new LinearRing[] { });
-            ICoordinate[] coordinates2 = { new Coordinate(60, 60, 0),
+            Coordinate[] coordinates2 = { new Coordinate(60, 60, 0),
                                  new Coordinate(70, 70, 0),
                                  new Coordinate(80, 60, 0),
                                  new Coordinate(60, 60, 0) };
@@ -96,7 +96,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         {
             IPoint point1 = geometryFactory.CreatePoint(new Coordinate(10, 10));
             IPoint point2 = geometryFactory.CreatePoint(new Coordinate(30, 30));
-            ICoordinate[] coordinates = { new Coordinate(15, 15, 0),
+            Coordinate[] coordinates = { new Coordinate(15, 15, 0),
                                  new Coordinate(20, 20, 0) };
             ILineString lineString1 = geometryFactory.CreateLineString(coordinates);
             IGeometry[] geometries = { point1, point2, lineString1 };

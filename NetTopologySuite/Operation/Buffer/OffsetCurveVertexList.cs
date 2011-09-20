@@ -12,14 +12,14 @@ namespace NetTopologySuite.Operation.Buffer
     /// <author>Martin Davis</author>
     public class OffsetCurveVertexList
     {
-        private readonly List<ICoordinate> _ptList;
+        private readonly List<Coordinate> _ptList;
         private IPrecisionModel _precisionModel;
 
         private double _minimimVertexDistance;
 
         public OffsetCurveVertexList()
         {
-            _ptList = new List<ICoordinate>();
+            _ptList = new List<Coordinate>();
         }
 
         /// <summary>
@@ -37,12 +37,12 @@ namespace NetTopologySuite.Operation.Buffer
         /// Function to add a point
         /// </summary>
         /// <remarks>
-        /// The point is only added if <see cref="IsDuplicate(ICoordinate)"/> evaluates to false.
+        /// The point is only added if <see cref="IsDuplicate(Coordinate)"/> evaluates to false.
         /// </remarks>
         /// <param name="pt">The point to add.</param>
-        public void AddPt(ICoordinate pt)
+        public void AddPt(Coordinate pt)
         {
-            ICoordinate bufPt = new Coordinate(pt);
+            Coordinate bufPt = new Coordinate(pt);
             _precisionModel.MakePrecise(bufPt);
             // don't add duplicate (or near-duplicate) points
             if (IsDuplicate(bufPt))
@@ -56,11 +56,11 @@ namespace NetTopologySuite.Operation.Buffer
         ///</summary>
         /// <param name="pt">The point to test</param>
         /// <returns>true if the point duplicates the previous point</returns>
-        private bool IsDuplicate(ICoordinate pt)
+        private bool IsDuplicate(Coordinate pt)
         {
             if (_ptList.Count < 1)
                 return false;
-            ICoordinate lastPt = _ptList[_ptList.Count - 1];
+            Coordinate lastPt = _ptList[_ptList.Count - 1];
             double ptDist = pt.Distance(lastPt);
             if (ptDist < _minimimVertexDistance)
                 return true;
@@ -73,9 +73,9 @@ namespace NetTopologySuite.Operation.Buffer
         public void CloseRing()
         {
             if (_ptList.Count < 1) return;
-            ICoordinate startPt = new Coordinate(_ptList[0]);
-            ICoordinate lastPt = _ptList[_ptList.Count - 1];
-            /*ICoordinate last2Pt = null;
+            Coordinate startPt = new Coordinate(_ptList[0]);
+            Coordinate lastPt = _ptList[_ptList.Count - 1];
+            /*Coordinate last2Pt = null;
               if (ptList.Count >= 2)
                   last2Pt = (Coordinate)ptList[ptList.Count - 2];*/
             if (startPt.Equals(lastPt)) return;
@@ -85,18 +85,18 @@ namespace NetTopologySuite.Operation.Buffer
         /// <summary>
         /// Gets the Coordinates for the curve.
         /// </summary>
-        public ICoordinate[] Coordinates
+        public Coordinate[] Coordinates
         {
             get
             {
                 // check that points are a ring - add the startpoint again if they are not
                 if (_ptList.Count > 1)
                 {
-                    ICoordinate start = _ptList[0];
-                    ICoordinate end = _ptList[_ptList.Count - 1];
+                    Coordinate start = _ptList[0];
+                    Coordinate end = _ptList[_ptList.Count - 1];
                     if (!start.Equals(end)) AddPt(start);
                 }
-                ICoordinate[] coord = _ptList.ToArray();
+                Coordinate[] coord = _ptList.ToArray();
                 return coord;
             }
         }

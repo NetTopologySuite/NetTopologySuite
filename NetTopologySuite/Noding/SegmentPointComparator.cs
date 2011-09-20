@@ -26,7 +26,7 @@ namespace NetTopologySuite.Noding
         ///  0 if the two nodes are equal, or
         ///  1 if node1 occurs first.
         /// </returns>
-        public static int Compare(Octants octant, ICoordinate p0, ICoordinate p1)
+        public static int Compare(Octants octant, Coordinate p0, Coordinate p1)
         {
             // nodes can only be equal if their coordinates are equal
             if (p0.Equals2D(p1)) 

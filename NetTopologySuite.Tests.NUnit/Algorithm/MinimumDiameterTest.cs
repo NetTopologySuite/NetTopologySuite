@@ -59,7 +59,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         private void DoMinimumDiameterTest(bool convex, String wkt, Coordinate c0, Coordinate c1) 
         {
-            ICoordinate[] minimumDiameter = new MinimumDiameter(new WKTReader().Read(wkt), convex).Diameter.Coordinates;
+            Coordinate[] minimumDiameter = new MinimumDiameter(new WKTReader().Read(wkt), convex).Diameter.Coordinates;
             double tolerance = 1E-10;
             Assert.AreEqual(c0.X, minimumDiameter[0].X, tolerance);
             Assert.AreEqual(c0.Y, minimumDiameter[0].Y, tolerance);

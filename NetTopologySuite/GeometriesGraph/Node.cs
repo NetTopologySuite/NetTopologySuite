@@ -11,7 +11,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// Only non-null if this node is precise.
         /// </summary>
-        private ICoordinate _coord;     
+        private Coordinate _coord;     
         
         /// <summary>
         /// 
@@ -23,7 +23,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="coord"></param>
         /// <param name="edges"></param>
-        public Node(ICoordinate coord, EdgeEndStar edges)
+        public Node(Coordinate coord, EdgeEndStar edges)
         {
             _coord = coord;
             _edges = edges;
@@ -33,7 +33,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public override ICoordinate Coordinate
+        public override Coordinate Coordinate
         {
             get
             {

@@ -65,16 +65,16 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
             for (int i = 0; i < _numLines; i++)
             {
-                ICoordinate p0 = new Coordinate(GetRandOrdinate(), 0);
-                ICoordinate p1 = new Coordinate(GetRandOrdinate(), GridWidth);
+                Coordinate p0 = new Coordinate(GetRandOrdinate(), 0);
+                Coordinate p1 = new Coordinate(GetRandOrdinate(), GridWidth);
                 ILineString line = _geomFactory.CreateLineString(new [] { p0, p1 });
                 lines[index++] = line;
             }
 
             for (int i = 0; i < _numLines; i++)
             {
-                ICoordinate p0 = new Coordinate(0, GetRandOrdinate());
-                ICoordinate p1 = new Coordinate(GridWidth, GetRandOrdinate());
+                Coordinate p0 = new Coordinate(0, GetRandOrdinate());
+                Coordinate p1 = new Coordinate(GridWidth, GetRandOrdinate());
                 ILineString line = _geomFactory.CreateLineString(new [] { p0, p1 });
                 lines[index++] = line;
             }

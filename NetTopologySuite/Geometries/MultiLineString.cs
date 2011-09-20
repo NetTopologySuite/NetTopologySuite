@@ -121,7 +121,7 @@ namespace NetTopologySuite.Geometries
                 //if(IsEmpty)
                 //    return Factory.CreateGeometryCollection(null);
                 //GeometryGraph g = new GeometryGraph(0, this);
-                //ICoordinate[] pts = g.GetBoundaryPoints();
+                //Coordinate[] pts = g.GetBoundaryPoints();
                 //return Factory.CreateMultiPoint(pts);
             }
         }

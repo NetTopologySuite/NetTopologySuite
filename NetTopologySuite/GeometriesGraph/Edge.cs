@@ -29,7 +29,7 @@ namespace NetTopologySuite.GeometriesGraph
             }
         }
 
-        private ICoordinate[] _pts;
+        private Coordinate[] _pts;
         
         private IEnvelope _env;
         private readonly EdgeIntersectionList _eiList;
@@ -45,7 +45,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="pts"></param>
         /// <param name="label"></param>
-        public Edge(ICoordinate[] pts, Label label)
+        public Edge(Coordinate[] pts, Label label)
         {
             _eiList = new EdgeIntersectionList(this);
 
@@ -57,12 +57,12 @@ namespace NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="pts"></param>
-        public Edge(ICoordinate[] pts) : this(pts, null) { }
+        public Edge(Coordinate[] pts) : this(pts, null) { }
 
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate[] Points
+        public Coordinate[] Points
         {
             get
             {
@@ -103,7 +103,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate[] Coordinates
+        public Coordinate[] Coordinates
         {
             get
             {
@@ -116,7 +116,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public ICoordinate GetCoordinate(int i)
+        public Coordinate GetCoordinate(int i)
         {
             try
             {
@@ -132,7 +132,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public override ICoordinate Coordinate
+        public override Coordinate Coordinate
         {
             get
             {
@@ -260,7 +260,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             get
             {
-                var newPts = new ICoordinate[2];
+                var newPts = new Coordinate[2];
                 newPts[0] = Points[0];
                 newPts[1] = Points[1];
                 var newe = new Edge(newPts, Label.ToLineLabel(Label));
@@ -318,7 +318,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="intIndex"></param>
         public void AddIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
         {
-            ICoordinate intPt = new Coordinate(li.GetIntersection(intIndex));
+            Coordinate intPt = new Coordinate(li.GetIntersection(intIndex));
             var normalizedSegmentIndex = segmentIndex;
             var dist = li.GetEdgeDistance(geomIndex, intIndex);        
             

@@ -2521,12 +2521,12 @@ namespace NetTopologySuite.Shapefile
             return recordType;
         }
 
-        private ICoordinate readCoordinate()
+        private Coordinate readCoordinate()
         {
             Double x = ByteEncoder.GetLittleEndian(_shapeFileReader.ReadDouble());
             Double y = ByteEncoder.GetLittleEndian(_shapeFileReader.ReadDouble());
 
-            ICoordinate coord = new Coordinate(x, y);
+            var coord = new Coordinate(x, y);
 
             //return CoordinateTransformation == null
             //           ? coord
@@ -2535,11 +2535,11 @@ namespace NetTopologySuite.Shapefile
             return coord;
         }
 
-        private ICoordinate readCoordinate(StreamOffsetUtility offsetUtility, ShapeType shpType, int numShapeParts, int numShapePoints, int pointIndex)
+        private Coordinate readCoordinate(StreamOffsetUtility offsetUtility, ShapeType shpType, int numShapeParts, int numShapePoints, int pointIndex)
         {
             StreamOffset offset = offsetUtility.CalculateOffsets(shpType, numShapeParts, numShapePoints, pointIndex);
             CoordinateValues values = offsetUtility.GetValues(offset, _shapeFileReader);
-            ICoordinate coordinate = null;
+            Coordinate coordinate = null;
 
 
             if (!offset.Z.HasValue && !offset.M.HasValue)
@@ -2657,8 +2657,8 @@ namespace NetTopologySuite.Shapefile
 
             offsetUtility.Seek(_shapeFileReader.BaseStream, offsetUtility.IndexEntry.AbsoluteByteOffset + ShapeFileConstants.ShapeRecordHeaderByteLength + 4);
 
-            ICoordinate min = readCoordinate();
-            ICoordinate max = readCoordinate();
+            Coordinate min = readCoordinate();
+            Coordinate max = readCoordinate();
 
             return new Envelope(min, max);
         }
@@ -2733,7 +2733,7 @@ namespace NetTopologySuite.Shapefile
             if (Array.IndexOf(PointTypes, shpType) == -1)
                 throw new ArgumentException("shpType must be a point type");
 
-            ICoordinate coord = readCoordinate(offsetUtility, shpType, 1, 1, 0);
+            Coordinate coord = readCoordinate(offsetUtility, shpType, 1, 1, 0);
             IPoint point = GeometryFactory.CreatePoint(coord);
             return point;
         }
@@ -2759,7 +2759,7 @@ namespace NetTopologySuite.Shapefile
 
             for (Int32 i = 0; i < pointCount; i++)
             {
-                ICoordinate coord = readCoordinate(offsetUtility, shpType, pointCount, pointCount, i);
+                var coord = readCoordinate(offsetUtility, shpType, pointCount, pointCount, i);
                 IPoint point = GeometryFactory.CreatePoint(coord);
                 points.Add(point);
             }
@@ -2794,10 +2794,10 @@ namespace NetTopologySuite.Shapefile
         private void readSegments(StreamOffsetUtility offsetUtility, ShapeType shpType, int numParts, int numPoints, int lineId, int[] segments,
                                   ref ICoordinateSequence coordinates)
         {
-            List<ICoordinate> newCoordinates = new List<ICoordinate>(coordinates.ToCoordinateArray());
+            var newCoordinates = new List<Coordinate>(coordinates.ToCoordinateArray());
             for (Int32 i = segments[lineId]; i < segments[lineId + 1]; i++)
             {
-                ICoordinate coord = readCoordinate(offsetUtility, shpType, numParts, numPoints, i);
+                var coord = readCoordinate(offsetUtility, shpType, numParts, numPoints, i);
 
                 newCoordinates.Add(coord);
             }

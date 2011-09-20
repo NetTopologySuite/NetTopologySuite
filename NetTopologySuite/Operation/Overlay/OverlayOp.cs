@@ -484,7 +484,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// This method is used to decide if a point node should be included in the result or not.
         /// </summary>
         /// <returns><c>true</c> if the coord point is covered by a result Line or Area point.</returns>
-        public bool IsCoveredByLA(ICoordinate coord)
+        public bool IsCoveredByLA(Coordinate coord)
         {
             if (IsCovered(coord, _resultLineList)) 
                 return true;
@@ -494,7 +494,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// This method is used to decide if an L edge should be included in the result or not.
         /// </summary>
         /// <returns><c>true</c> if the coord point is covered by a result Area point.</returns>
-        public bool IsCoveredByA(ICoordinate coord)
+        public bool IsCoveredByA(Coordinate coord)
         {
             return IsCovered(coord, _resultPolyList);
         }
@@ -503,7 +503,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <c>true</c> if the coord is located in the interior or boundary of
         /// a point in the list.
         /// </returns>
-        private bool IsCovered(ICoordinate coord, IEnumerable<IGeometry> geomList)
+        private bool IsCovered(Coordinate coord, IEnumerable<IGeometry> geomList)
         {
             var it = geomList.GetEnumerator();
             while (it.MoveNext()) 

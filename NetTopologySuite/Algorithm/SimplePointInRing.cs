@@ -11,7 +11,7 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        private ICoordinate[] pts;
+        private Coordinate[] pts;
 
         /// <summary>
         /// 
@@ -27,7 +27,7 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        public bool IsInside(ICoordinate pt)
+        public bool IsInside(Coordinate pt)
         {
             return CGAlgorithms.IsPointInRing(pt, pts);
         }

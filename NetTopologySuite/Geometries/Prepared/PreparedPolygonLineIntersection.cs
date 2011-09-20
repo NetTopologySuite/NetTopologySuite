@@ -48,7 +48,7 @@ namespace NetTopologySuite.Geometries.Prepared
                 return _prepPoly.Geometry.Intersection(geom);
 
             // TODO: handle multilinestrings
-            ICoordinate[] pts = geom.Coordinates;
+            Coordinate[] pts = geom.Coordinates;
             LineTopology lineTopo = new LineTopology(pts, geom.Factory);
             ComputeIntersection(lineTopo);
             return lineTopo.Result;

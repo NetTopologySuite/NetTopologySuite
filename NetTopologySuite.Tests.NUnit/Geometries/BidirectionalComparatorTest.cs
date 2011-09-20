@@ -35,9 +35,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             LineString g0 = (LineString)rdr.Read(wkt0);
             LineString g1 = (LineString)rdr.Read(wkt1);
-            ICoordinate[] pts0 = g0.Coordinates;
-            ICoordinate[] pts1 = g1.Coordinates;
-            IComparer<ICoordinate[]> comp = new CoordinateArrays.BidirectionalComparator();
+            Coordinate[] pts0 = g0.Coordinates;
+            Coordinate[] pts1 = g1.Coordinates;
+            IComparer<Coordinate[]> comp = new CoordinateArrays.BidirectionalComparator();
             return comp.Compare(pts0, pts1);
         }
     }

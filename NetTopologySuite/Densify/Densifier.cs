@@ -37,7 +37,7 @@ namespace NetTopologySuite.Densify
         /// <param name="distanceTolerance">The distance tolerance (<see cref="DistanceTolerance"/>)</param>
         /// <param name="precModel">The precision model to apply on the new coordinates</param>
         /// <returns>The densified coordinate sequence</returns>
-        private static ICoordinate[] DensifyPoints(ICoordinate[] pts,
+        private static Coordinate[] DensifyPoints(Coordinate[] pts,
                                                    double distanceTolerance, IPrecisionModel precModel)
         {
             var seg = new LineSegment();

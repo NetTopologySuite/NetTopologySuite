@@ -240,7 +240,7 @@ namespace NetTopologySuite.Operation.Overlay
         {
             ILinearRing teString = testEr.LinearRing;
             IEnvelope testEnv = teString.EnvelopeInternal;
-            ICoordinate testPt = teString.GetCoordinateN(0);
+            Coordinate testPt = teString.GetCoordinateN(0);
 
             EdgeRing minShell = null;
             IEnvelope minEnv = null;
@@ -286,7 +286,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        public bool ContainsPoint(ICoordinate p)
+        public bool ContainsPoint(Coordinate p)
         {
             foreach (EdgeRing er in _shellList)
             {

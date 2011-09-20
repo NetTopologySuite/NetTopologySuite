@@ -31,7 +31,7 @@ namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
         {
             point = Factory.CreatePoint(new Coordinate(100, 100));
 
-            ICoordinate[] coordinates = new ICoordinate[]
+            Coordinate[] coordinates = new Coordinate[]
             {
                  new Coordinate(10,10),
                  new Coordinate(20,20),
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
             };
             line = Factory.CreateLineString(coordinates);
 
-            coordinates = new ICoordinate[]
+            coordinates = new Coordinate[]
             {
                 new Coordinate(100,100),
                 new Coordinate(200,100),
@@ -47,7 +47,7 @@ namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
                 new Coordinate(100,200),
                 new Coordinate(100,100),
             };
-            ICoordinate[] interior1 = new ICoordinate[] 
+            Coordinate[] interior1 = new Coordinate[] 
             { 
                 new Coordinate(120,120),
                 new Coordinate(180,120),
@@ -59,7 +59,7 @@ namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
             ILinearRing[] holes = new ILinearRing[] { Factory.CreateLinearRing(interior1), };
             polygon = Factory.CreatePolygon(linearRing, holes);
 
-            coordinates = new ICoordinate[]
+            coordinates = new Coordinate[]
             {
                 new Coordinate(100,100),
                 new Coordinate(200,200),

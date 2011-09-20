@@ -43,8 +43,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             IGeometry g = m.GetGeometryN(1);
             Assert.IsTrue(g is Point);
             Point p = (Point) g;
-            ICoordinate externalCoordinate = new Coordinate();
-            ICoordinate internaCoordinate = p.Coordinate;
+            Coordinate externalCoordinate = new Coordinate();
+            Coordinate internaCoordinate = p.Coordinate;
             externalCoordinate.X = internaCoordinate.X;
             externalCoordinate.Y = internaCoordinate.Y;
             Assert.AreEqual(3.333, externalCoordinate.X, 1E-10);

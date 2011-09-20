@@ -9,7 +9,7 @@ using NetTopologySuite.Index.IntervalRTree;
 namespace NetTopologySuite.Algorithm.Locate
 {
     ///<summary>
-    /// Determines the location of <see cref="ICoordinate"/>s relative to
+    /// Determines the location of <see cref="Coordinate"/>s relative to
     /// a <see cref="IPolygonal"/> geometry, using indexing for efficiency.
     /// This algorithm is suitable for use in cases where
     /// many points will be tested against a given area.
@@ -43,7 +43,7 @@ namespace NetTopologySuite.Algorithm.Locate
         /// <param name="p">The point to test</param>
         /// <returns>The location of the point in the geometry
         /// </returns>
-        public Location Locate(ICoordinate p)
+        public Location Locate(Coordinate p)
         {
             RayCrossingCounter rcc = new RayCrossingCounter(p);
 
@@ -102,12 +102,12 @@ namespace NetTopologySuite.Algorithm.Locate
                 var lines = LinearComponentExtracter.GetLines(geom);
                 foreach (ILineString line in lines)
                 {
-                    ICoordinate[] pts = line.Coordinates;
+                    Coordinate[] pts = line.Coordinates;
                     AddLine(pts);
                 }
             }
 
-            private void AddLine(ICoordinate[] pts)
+            private void AddLine(Coordinate[] pts)
             {
                 for (int i = 1; i < pts.Length; i++)
                 {

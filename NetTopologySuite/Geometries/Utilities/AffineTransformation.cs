@@ -9,7 +9,7 @@ namespace NetTopologySuite.Geometries.Utilities
     /// </summary>
     /// <remarks>
     /// <para>
-    /// It can be used to transform a <see cref="ICoordinate"/> or <see cref="IGeometry"/>.
+    /// It can be used to transform a <see cref="Coordinate"/> or <see cref="IGeometry"/>.
     /// An affine transformation is a mapping of the 2D plane into itself
     /// via a series of transformations of the following basic types:
     /// <ul>
@@ -304,12 +304,12 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="dest0"> the mapped point for source point 0</param>
         /// <param name="dest1"> the mapped point for source point 1</param>
         /// <param name="dest2"> the mapped point for source point 2</param>
-        public AffineTransformation(ICoordinate src0,
-            ICoordinate src1,
-            ICoordinate src2,
-            ICoordinate dest0,
-            ICoordinate dest1,
-            ICoordinate dest2)
+        public AffineTransformation(Coordinate src0,
+            Coordinate src1,
+            Coordinate src2,
+            Coordinate dest0,
+            Coordinate dest1,
+            Coordinate dest2)
             : this(new AffineTransformationBuilder(src0, src1, src2, dest0, dest1, dest2).GetTransformation())
         {
         }
@@ -948,7 +948,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="dest"> the coordinate to accept the results</param> 
         /// <returns> the <code>dest</code> coordinate</returns>
         ///
-        public ICoordinate Transform(ICoordinate src, ICoordinate dest)
+        public Coordinate Transform(Coordinate src, Coordinate dest)
         {
             double xp = _m00 * src.X + _m01 * src.Y + _m02;
             double yp = _m10 * src.X + _m11 * src.Y + _m12;

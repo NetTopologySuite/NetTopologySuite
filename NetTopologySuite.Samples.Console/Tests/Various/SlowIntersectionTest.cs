@@ -85,7 +85,7 @@
         public void TestSegmentStringWithCoordinateArraySequenceFactory()
         {
             string[] strings = ss.Split('|');
-            ICoordinate[] coordinates = new ICoordinate[strings.Length];
+            Coordinate[] coordinates = new Coordinate[strings.Length];
             for (int i = 0; i < strings.Length; i++)
             {
                 string[] components = strings[i].Split(',');
@@ -103,7 +103,7 @@
         public void TestSegmentStringWithDotSpatialAffineCoordinateSequenceFactory()
         {
             string[] strings = ss.Split('|');
-            ICoordinate[] coordinates = new ICoordinate[strings.Length];
+            Coordinate[] coordinates = new Coordinate[strings.Length];
             for (int i = 0; i < strings.Length; i++)
             {
                 string[] components = strings[i].Split(',');
@@ -122,7 +122,7 @@
             if (sequence == null)
                 throw new ArgumentNullException("sequence");
 
-            ICoordinate[] coordinates = sequence.ToCoordinateArray();
+            Coordinate[] coordinates = sequence.ToCoordinateArray();
             NodedSegmentString segmentString = new NodedSegmentString(coordinates, null);
             Stopwatch watch = new Stopwatch();
             NodingValidator validator = new NodingValidator(new[] { segmentString });

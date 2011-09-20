@@ -28,7 +28,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">the coordinates, which may not be null nor contain null elements.</param>
         /// <returns></returns>
-        public ICoordinateSequence Create(ICoordinate[] coordinates) 
+        public ICoordinateSequence Create(Coordinate[] coordinates) 
         {
             return new CoordinateArraySequence(coordinates);
         }

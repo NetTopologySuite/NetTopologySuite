@@ -17,14 +17,14 @@ namespace NetTopologySuite.IO.GML2
     /// </summary>
     public class GMLReader
     {
-        private IGeometryFactory factory = null;
+        private readonly IGeometryFactory _factory;
         
         /// <summary>
         /// <c>Geometry</c> builder.
         /// </summary>
         protected IGeometryFactory Factory
         {
-            get { return factory; }
+            get { return _factory; }
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="factory"></param>
         public GMLReader(IGeometryFactory factory)
         {
-            this.factory = factory;
+            this._factory = factory;
         }
 
 #if !SILVERLIGHT
@@ -119,7 +119,7 @@ namespace NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <returns></returns>
-        protected ICoordinate ReadCoordinate(XmlReader reader)
+        protected Coordinate ReadCoordinate(XmlReader reader)
         {
             double x = 0, y = 0;
             while (reader.Read())
@@ -152,11 +152,11 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// Extract a <see cref="ICoordinate" /> from a x,y string value.
+        /// Extract a <see cref="Coordinate" /> from a x,y string value.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected ICoordinate ReadCoordinates(string value)
+        protected Coordinate ReadCoordinates(string value)
         {
             string[] values = value.Split(',');
             double x = XmlConvert.ToDouble(values[0]);
@@ -184,7 +184,7 @@ namespace NetTopologySuite.IO.GML2
                             string[] coords = reader.Value.Split(' ');
                             if (coords.Length != 1)
                                 throw new ApplicationException("Should never reach here!");
-                            ICoordinate c = ReadCoordinates(coords[0]);
+                            Coordinate c = ReadCoordinates(coords[0]);
                             Factory.CreatePoint(c);
                         }
                         break;
@@ -203,7 +203,7 @@ namespace NetTopologySuite.IO.GML2
         /// <returns></returns>
         protected ILineString ReadLineString(XmlReader reader)
         {
-            List<ICoordinate> coordinates = new List<ICoordinate>();
+            List<Coordinate> coordinates = new List<Coordinate>();
             while (reader.Read())
             {
                 switch (reader.NodeType)
@@ -219,7 +219,7 @@ namespace NetTopologySuite.IO.GML2
                             {
                                 if (String.IsNullOrEmpty(coord))
                                     continue;
-                                ICoordinate c = ReadCoordinates(coord);
+                                Coordinate c = ReadCoordinates(coord);
                                 coordinates.Add(c);
                             }
                             return Factory.CreateLineString(coordinates.ToArray());

@@ -73,9 +73,9 @@ namespace NetTopologySuite.IO.Handlers
                 points.Capacity = length;
                 for (int i = 0; i < length; i++)
                 {
-                    ICoordinate external = new Coordinate(file.ReadDouble(), file.ReadDouble() );					
+                    Coordinate external = new Coordinate(file.ReadDouble(), file.ReadDouble() );					
                     geometryFactory.PrecisionModel.MakePrecise( external);
-                    ICoordinate internalCoord = external;
+                    Coordinate internalCoord = external;
 
                     // Thanks to Abhay Menon!
                     if (!Double.IsNaN(internalCoord.Y) && !Double.IsNaN(internalCoord.X))
@@ -118,7 +118,7 @@ namespace NetTopologySuite.IO.Handlers
             {
                 ILinearRing testRing = holes[i];
                 IEnvelope testEnv = testRing.EnvelopeInternal;
-                ICoordinate testPt = testRing.GetCoordinateN(0);
+                Coordinate testPt = testRing.GetCoordinateN(0);
                 ILinearRing tryRing;
                 for (int j = 0; j < shells.Count; j++)
                 {

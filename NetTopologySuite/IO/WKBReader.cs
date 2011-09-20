@@ -277,7 +277,7 @@ namespace NetTopologySuite.IO
         /// <param name="reader"></param>
         /// <param name="cs"></param>
         /// <returns></returns>
-        protected ICoordinate ReadCoordinate(BinaryReader reader, CoordinateSystem cs)
+        protected Coordinate ReadCoordinate(BinaryReader reader, CoordinateSystem cs)
         {
             Coordinate coordinate;
             switch (cs)
@@ -311,7 +311,7 @@ namespace NetTopologySuite.IO
         protected ILinearRing ReadRing(BinaryReader reader, CoordinateSystem cs)
         {
             int numPoints = reader.ReadInt32();
-            ICoordinate[] coordinates = new ICoordinate[numPoints];
+            Coordinate[] coordinates = new Coordinate[numPoints];
             for (int i = 0; i < numPoints; i++)
                 coordinates[i] = ReadCoordinate(reader, cs);
             return Factory.CreateLinearRing(coordinates);
@@ -337,7 +337,7 @@ namespace NetTopologySuite.IO
         protected IGeometry ReadLineString(BinaryReader reader, CoordinateSystem cs)
         {
             int numPoints = reader.ReadInt32();
-            ICoordinate[] coordinates = new ICoordinate[numPoints];
+            Coordinate[] coordinates = new Coordinate[numPoints];
             for (int i = 0; i < numPoints; i++)
                 coordinates[i] = ReadCoordinate(reader, cs);
             return Factory.CreateLineString(coordinates);

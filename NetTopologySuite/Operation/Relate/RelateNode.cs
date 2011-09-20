@@ -14,7 +14,7 @@ namespace NetTopologySuite.Operation.Relate
         /// </summary>
         /// <param name="coord"></param>
         /// <param name="edges"></param>
-        public RelateNode(ICoordinate coord, EdgeEndStar edges) :
+        public RelateNode(Coordinate coord, EdgeEndStar edges) :
             base(coord, edges) { }
 
         /// <summary>

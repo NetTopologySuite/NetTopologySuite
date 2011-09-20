@@ -136,19 +136,24 @@ namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projectio
             Target = tmp;
         }
 
-        public ICoordinate Transform(ICoordinate coordinate)
+        public Coordinate Transform(Coordinate coordinate)
         {
-            var xy = new[] {coordinate.X, coordinate.Y};
-            var z = new[] {coordinate.Z};
+            var xy = new[] { coordinate.X, coordinate.Y };
+            var z = new[] { coordinate.Z };
 
             Reproject.ReprojectPoints(xy, z, Source, Target, 0, 1);
 
-            var ret = (ICoordinate)coordinate.Clone();
+            var ret = (Coordinate)coordinate.Clone();
             ret.X = xy[0];
             ret.Y = xy[1];
             ret.Z = z[0];
 
             return ret;
+        }
+
+        public ICoordinate Transform(ICoordinate coordinate)
+        {
+            return Transform(coordinate.ToCoordinate());
         }
 
         public ICoordinateSequence Transform(ICoordinateSequence coordinateSequence)

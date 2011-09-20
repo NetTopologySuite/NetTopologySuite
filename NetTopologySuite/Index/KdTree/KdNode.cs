@@ -12,7 +12,7 @@ namespace NetTopologySuite.Index.KdTree
         where T : class
     {
 
-        private readonly ICoordinate _p;
+        private readonly Coordinate _p;
         private readonly T _data;
         private KdNode<T> _left;
         private KdNode<T> _right;
@@ -38,7 +38,7 @@ namespace NetTopologySuite.Index.KdTree
         /// </summary>
         /// <param name="p">The point location of new node</param>
         /// <param name="data">A data objects to associate with this node</param>
-        public KdNode(ICoordinate p, T data)
+        public KdNode(Coordinate p, T data)
         {
             _p = new Coordinate(p);
             _left = null;
@@ -66,7 +66,7 @@ namespace NetTopologySuite.Index.KdTree
         /// <summary>
         /// Gets the location of this node
         /// </summary>
-        public ICoordinate Coordinate
+        public Coordinate Coordinate
         {
             get { return _p; }
         }

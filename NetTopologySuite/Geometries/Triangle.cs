@@ -13,12 +13,12 @@ namespace NetTopologySuite.Geometries
         /**
          * The coordinates of the vertices of the triangle
          */
-        private ICoordinate _p0, _p1, _p2;
+        private Coordinate _p0, _p1, _p2;
 
         /// <summary>
         /// A corner point of the triangle
         /// </summary>
-        public ICoordinate P0
+        public Coordinate P0
         {
             get { return _p0; }
             set { _p0 = value; }
@@ -27,7 +27,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// A corner point of the triangle
         /// </summary>
-        public ICoordinate P1
+        public Coordinate P1
         {
             get { return _p1; }
             set { _p1 = value; }
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// A corner point of the triangle
         /// </summary>
-        public ICoordinate P2
+        public Coordinate P2
         {
             get { return _p2; }
             set { _p2 = value; }
@@ -56,7 +56,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <returns>True if the triangle is acute.</returns>
-        public static Boolean IsAcute(ICoordinate a, ICoordinate b, ICoordinate c)
+        public static Boolean IsAcute(Coordinate a, Coordinate b, Coordinate c)
         {
             if (!AngleUtility.IsAcute(a, b, c)) return false;
             if (!AngleUtility.IsAcute(b, c, a)) return false;
@@ -70,7 +70,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="a">A point</param>
         /// <param name="b">Another point</param>
         /// <returns>The perpendicular bisector, as an HCoordinate line segment a-b.</returns>
-        public static HCoordinate PerpendicularBisector(ICoordinate a, ICoordinate b)
+        public static HCoordinate PerpendicularBisector(Coordinate a, Coordinate b)
         {
             // returns the perpendicular bisector of the line segment ab
             double dx = b.X - a.X;
@@ -93,7 +93,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <returns>The circumcentre of the triangle</returns>
-        public static ICoordinate Circumcentre(ICoordinate a, ICoordinate b, ICoordinate c)
+        public static Coordinate Circumcentre(Coordinate a, Coordinate b, Coordinate c)
         {
             // compute the perpendicular bisector of chord ab
             HCoordinate cab = PerpendicularBisector(a, b);
@@ -101,7 +101,7 @@ namespace NetTopologySuite.Geometries
             HCoordinate cbc = PerpendicularBisector(b, c);
             // compute the intersection of the bisectors (circle radii)
             HCoordinate hcc = new HCoordinate(cab, cbc);
-            ICoordinate cc;
+            Coordinate cc;
             try
             {
                 cc = new Coordinate(hcc.GetX(), hcc.GetY());
@@ -129,7 +129,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <returns>The point which is the incentre of the triangle</returns>
-        public static ICoordinate InCentreFn(ICoordinate a, ICoordinate b, ICoordinate c)
+        public static Coordinate InCentreFn(Coordinate a, Coordinate b, Coordinate c)
         {
             // the lengths of the sides, labelled by their opposite vertex
             double len0 = b.Distance(c);
@@ -154,7 +154,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         ///<returns>The centroid of the triangle</returns>
-        public static ICoordinate Centroid(ICoordinate a, ICoordinate b, ICoordinate c)
+        public static Coordinate Centroid(Coordinate a, Coordinate b, Coordinate c)
         {
             double x = (a.X + b.X + c.X) / 3;
             double y = (a.Y + b.Y + c.Y) / 3;
@@ -166,7 +166,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <returns>The length of the longest side of the triangle</returns>
-        public static double LongestSideLength(ICoordinate a, ICoordinate b, ICoordinate c)
+        public static double LongestSideLength(Coordinate a, Coordinate b, Coordinate c)
         {
             // ReSharper disable InconsistentNaming
             double lenAB = a.Distance(b);
@@ -186,7 +186,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <returns>The angle bisector cut point</returns>
-        public static ICoordinate AngleBisector(ICoordinate a, ICoordinate b, ICoordinate c)
+        public static Coordinate AngleBisector(Coordinate a, Coordinate b, Coordinate c)
         {
             /*
              * Uses the fact that the lengths of the parts of the split segment
@@ -198,7 +198,7 @@ namespace NetTopologySuite.Geometries
             double dx = c.X - a.X;
             double dy = c.Y - a.Y;
 
-            ICoordinate splitPt = new Coordinate(a.X + frac * dx,
+            Coordinate splitPt = new Coordinate(a.X + frac * dx,
                                                 a.Y + frac * dy);
             return splitPt;
         }
@@ -212,7 +212,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="c">A vertex of the triangle</param>
         /// <returns>The area of the triangle</returns>
         /// <seealso cref="SignedArea"/>
-        public static double Area(ICoordinate a, ICoordinate b, ICoordinate c)
+        public static double Area(Coordinate a, Coordinate b, Coordinate c)
         {
             return Math.Abs(
                   a.X * (c.Y - b.Y)
@@ -243,7 +243,7 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="Area"/>
         /// <seealso cref="CGAlgorithms.OrientationIndex"/>
 
-        public static double SignedArea(ICoordinate a, ICoordinate b, ICoordinate c)
+        public static double SignedArea(Coordinate a, Coordinate b, Coordinate c)
         {
             /*
              * Uses the formula 1/2 * | u x v |
@@ -263,7 +263,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <returns>The 3D area of the triangle</returns>
-        public static double Area3D(ICoordinate a, ICoordinate b, ICoordinate c)
+        public static double Area3D(Coordinate a, Coordinate b, Coordinate c)
         {
             /*
              * Uses the formula 1/2 * | u x v |
@@ -298,7 +298,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="p0">A vertex</param>
         /// <param name="p1">A vertex</param>
         /// <param name="p2">A vertex</param>
-        public Triangle(ICoordinate p0, ICoordinate p1, ICoordinate p2)
+        public Triangle(Coordinate p0, Coordinate p1, Coordinate p2)
         {
             _p0 = p0;
             _p1 = p1;
@@ -317,7 +317,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>
         /// The point which is the InCentre of the triangle.
         /// </returns>
-        public ICoordinate InCentre
+        public Coordinate InCentre
         {
             get { return InCentreFn(P0, P1, P2); }
         }

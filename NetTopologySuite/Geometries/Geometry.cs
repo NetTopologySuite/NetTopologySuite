@@ -272,7 +272,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>a Coordinate which is a vertex of this <c>Geometry</c>.</returns>
         /// <returns><c>null</c> if this Geometry is empty.
         /// </returns>
-        public abstract ICoordinate Coordinate { get; }
+        public abstract Coordinate Coordinate { get; }
 
         /// <summary>
         /// Returns an array containing the values of all the vertices for 
@@ -294,7 +294,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The vertices of this <c>Geometry</c>.</returns>
         /// <seealso cref="IGeometry.GeometryChanged"/>
         /// <seealso cref="ICoordinateSequence.SetOrdinate"/>
-        public abstract ICoordinate[] Coordinates { get; }
+        public abstract Coordinate[] Coordinates { get; }
 
         /// <summary>  
         /// Returns the count of this <c>Geometry</c>s vertices. The <c>Geometry</c>
@@ -443,7 +443,7 @@ namespace NetTopologySuite.Geometries
                 if (IsEmpty) 
                     return null;
 
-                ICoordinate centPt = null;
+                Coordinate centPt = null;
                 Dimension dim = Dimension;
                 if (dim == Dimension.Point)
                 {
@@ -480,7 +480,7 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                ICoordinate interiorPt = null;
+                Coordinate interiorPt = null;
                 Dimension dim = Dimension;
                 if (dim == Dimension.Point)
                 {
@@ -523,7 +523,7 @@ namespace NetTopologySuite.Geometries
         /// In the NTS spatial model, dimension values are in the set {0,1,2}.
         /// <para>
         /// Note that this is a different concept to the dimension of 
-        /// the vertex <see cref="ICoordinate"/>s.
+        /// the vertex <see cref="Coordinate"/>s.
         /// The geometry dimension can never be greater than the coordinate dimension.
         /// For example, a 0-dimensional geometry (e.g. a Point) 
         /// may have a coordinate dimension of 3 (X,Y,Z). 
@@ -1961,7 +1961,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="b"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        protected static bool Equal(ICoordinate a, ICoordinate b, double tolerance) 
+        protected static bool Equal(Coordinate a, Coordinate b, double tolerance) 
         {
             if (tolerance == 0)             
                 return a.Equals(b);             
@@ -2008,7 +2008,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="coord"></param>
         /// <param name="exemplar"></param>
         /// <returns></returns>
-        private static IPoint CreatePointFromInternalCoord(ICoordinate coord, IGeometry exemplar)
+        private static IPoint CreatePointFromInternalCoord(Coordinate coord, IGeometry exemplar)
         {
             exemplar.PrecisionModel.MakePrecise(coord);
             return exemplar.Factory.CreatePoint(coord);

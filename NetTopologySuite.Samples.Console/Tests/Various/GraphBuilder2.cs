@@ -29,9 +29,9 @@ namespace NetTopologySuite.Samples.Tests.Various
 
         private readonly bool bidirectional;
 
-        private readonly AdjacencyGraph<ICoordinate, IEdge<ICoordinate>> graph;
+        private readonly AdjacencyGraph<Coordinate, IEdge<Coordinate>> graph;
         private readonly IList<ILineString> strings;
-        private IDictionary<IEdge<ICoordinate>, double> consts;
+        private IDictionary<IEdge<Coordinate>, double> consts;
         private IGeometryFactory factory;
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace NetTopologySuite.Samples.Tests.Various
 
             factory = null;
             strings = new List<ILineString>();
-            graph = new AdjacencyGraph<ICoordinate, IEdge<ICoordinate>>(true);
+            graph = new AdjacencyGraph<Coordinate, IEdge<Coordinate>>(true);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace NetTopologySuite.Samples.Tests.Various
                     strings.Add(line);
                 else continue; // Skip vertex check because line is already present
 
-                foreach (ICoordinate coord in line.Coordinates)
+                foreach (Coordinate coord in line.Coordinates)
                 {
                     if (!graph.ContainsVertex(coord))
                         graph.AddVertex(coord);
@@ -151,7 +151,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             if (bidirectional)
                 numberOfEdgesInLines *= 2;
 
-            consts = new Dictionary<IEdge<ICoordinate>, double>(numberOfEdgesInLines);
+            consts = new Dictionary<IEdge<Coordinate>, double>(numberOfEdgesInLines);
 
             foreach (ILineString line in strings)
             {
@@ -162,8 +162,8 @@ namespace NetTopologySuite.Samples.Tests.Various
                     for (int counter = 0; counter < bound; counter++)
                     {
                         // Prepare a segment
-                        ICoordinate src = line.Coordinates[counter];
-                        ICoordinate dst = line.Coordinates[counter + 1];
+                        Coordinate src = line.Coordinates[counter];
+                        Coordinate dst = line.Coordinates[counter + 1];
 
                         // Here we calculate the weight of the edge
                         ILineString lineString = factory.CreateLineString(
@@ -171,7 +171,7 @@ namespace NetTopologySuite.Samples.Tests.Various
                         double weight = computer(lineString);
 
                         // Add the edge
-                        IEdge<ICoordinate> localEdge = new Edge<ICoordinate>(src, dst);
+                        IEdge<Coordinate> localEdge = new Edge<Coordinate>(src, dst);
                         graph.AddEdge(localEdge);
                         consts.Add(localEdge, weight);
 
@@ -179,7 +179,7 @@ namespace NetTopologySuite.Samples.Tests.Various
                             continue;
 
                         // Add the reversed edge
-                        IEdge<ICoordinate> localEdgeRev = new Edge<ICoordinate>(dst, src);
+                        IEdge<Coordinate> localEdgeRev = new Edge<Coordinate>(dst, src);
                         graph.AddEdge(localEdgeRev);
                         consts.Add(localEdgeRev, weight);
                     }
@@ -209,7 +209,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         /// <param name="source">The source node</param>
         /// <param name="destination">The destination node</param>
         /// <returns>A line string geometric shape of the path</returns>
-        public ILineString Perform(ICoordinate source, ICoordinate destination)
+        public ILineString Perform(Coordinate source, Coordinate destination)
         {
             if (!graph.ContainsVertex(source))
                 throw new ArgumentException("key not found in the graph", "source");
@@ -218,27 +218,27 @@ namespace NetTopologySuite.Samples.Tests.Various
 
             // Build algorithm
             var dijkstra =
-                new DijkstraShortestPathAlgorithm<ICoordinate, IEdge<ICoordinate>>(graph, edge => consts[edge]);
+                new DijkstraShortestPathAlgorithm<Coordinate, IEdge<Coordinate>>(graph, edge => consts[edge]);
 
             // Attach a Distance observer to give us the distances between edges
             var distanceObserver =
-                new VertexDistanceRecorderObserver<ICoordinate, IEdge<ICoordinate>>(edge => consts[edge]);
+                new VertexDistanceRecorderObserver<Coordinate, IEdge<Coordinate>>(edge => consts[edge]);
             distanceObserver.Attach(dijkstra);
 
             // Attach a Vertex Predecessor Recorder Observer to give us the paths
             var predecessorObserver =
-                new VertexPredecessorRecorderObserver<ICoordinate, IEdge<ICoordinate>>();
+                new VertexPredecessorRecorderObserver<Coordinate, IEdge<Coordinate>>();
             predecessorObserver.Attach(dijkstra);
 
             // Run the algorithm with A set to be the source
             dijkstra.Compute(source);
 
             // Get the path computed to the destination.
-            IEnumerable<IEdge<ICoordinate>> path;
+            IEnumerable<IEdge<Coordinate>> path;
             var result = predecessorObserver.TryGetPath(destination, out path);
 
             // Then we need to turn that into a geomery.
-            return result ? BuildString(new List<IEdge<ICoordinate>>(path)) : null;
+            return result ? BuildString(new List<IEdge<Coordinate>>(path)) : null;
 
             // if the count is greater than one then a 
             // path could not be found, so we return null 
@@ -251,7 +251,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         /// </summary>
         /// <param name="path">Shortest path from the QucikGraph Library</param>
         /// <returns></returns>
-        private ILineString BuildString(IList<IEdge<ICoordinate>> path)
+        private ILineString BuildString(IList<IEdge<Coordinate>> path)
         {
             // if the path has no links then return a null reference
             if (path.Count < 1)
@@ -259,7 +259,7 @@ namespace NetTopologySuite.Samples.Tests.Various
 
             // if we get here then we now that there is at least one
             // edge in the path.
-            var links = new ICoordinate[path.Count + 1];
+            var links = new Coordinate[path.Count + 1];
 
             // Add each node to the list of coordinates in to the array.
             int i;

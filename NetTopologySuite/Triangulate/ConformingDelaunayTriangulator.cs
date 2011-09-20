@@ -77,7 +77,7 @@ namespace NetTopologySuite.Triangulate
 	    // allPointsEnv expanded by a small buffer
 	    private Envelope _computeAreaEnv;
 	    // records the last split point computed, for error reporting
-	    private ICoordinate _splitPt;
+	    private Coordinate _splitPt;
 
 	    private readonly double _tolerance; // defines if two sites are the same.
 
@@ -241,7 +241,7 @@ namespace NetTopologySuite.Triangulate
 	    private void ComputeConvexHull()
         {
 		    GeometryFactory fact = new GeometryFactory();
-		    ICoordinate[] coords = GetPointArray();
+		    Coordinate[] coords = GetPointArray();
 		    ConvexHull hull = new ConvexHull(coords, fact);
 		    _convexHull = hull.GetConvexHull();
 	    }
@@ -280,9 +280,9 @@ namespace NetTopologySuite.Triangulate
 	    // }
 	    // }
 
-	    private ICoordinate[] GetPointArray()
+	    private Coordinate[] GetPointArray()
         {
-		    ICoordinate[] pts = new Coordinate[_initialVertices.Count
+		    Coordinate[] pts = new Coordinate[_initialVertices.Count
 				    + _segVertices.Count];
 		    int index = 0;
             foreach (var v in _initialVertices)
@@ -296,7 +296,7 @@ namespace NetTopologySuite.Triangulate
 		    return pts;
 	    }
 
-	    private ConstraintVertex CreateVertex(ICoordinate p)
+	    private ConstraintVertex CreateVertex(Coordinate p)
         {
 		    ConstraintVertex v = null;
 		    if (_vertexFactory != null)
@@ -312,7 +312,7 @@ namespace NetTopologySuite.Triangulate
         /// <param name="p">the location of the vertex to create</param>
         /// <param name="seg">the constraint segment it lies on</param>
         /// <returns>the new constraint vertex</returns>
-	    private ConstraintVertex CreateVertex(ICoordinate p, Segment seg)
+	    private ConstraintVertex CreateVertex(Coordinate p, Segment seg)
         {
 		    ConstraintVertex v;
 		    if (_vertexFactory != null)
@@ -363,7 +363,7 @@ namespace NetTopologySuite.Triangulate
 	    /// or to improve the grading of the triangulation).
 	    /// </summary>
         /// <param name="p">the location of the site to insert</param>
-	    public void InsertSite(ICoordinate p)
+	    public void InsertSite(Coordinate p)
         {
 		    InsertSite(CreateVertex(p));
 	    }
@@ -452,7 +452,7 @@ namespace NetTopologySuite.Triangulate
             {
 			    // System.out.println(seg);
 
-			    ICoordinate encroachPt = FindNonGabrielPoint(seg);
+			    Coordinate encroachPt = FindNonGabrielPoint(seg);
 			    // no encroachment found - segment must already be in subdivision
 			    if (encroachPt == null)
 				    continue;
@@ -534,10 +534,10 @@ namespace NetTopologySuite.Triangulate
 	    /// <returns>a point which is non-Gabriel,
 	    /// or null if no point is non-Gabriel
         /// </returns>
-	    private ICoordinate FindNonGabrielPoint(Segment seg)
+	    private Coordinate FindNonGabrielPoint(Segment seg)
         {
-		    ICoordinate p = seg.Start;
-		    ICoordinate q = seg.End;
+		    Coordinate p = seg.Start;
+		    Coordinate q = seg.End;
 		    // Find the mid point on the line and compute the radius of enclosing circle
 		    var midPt = new Coordinate((p.X + q.X) / 2.0, (p.Y + q.Y) / 2.0);
 		    double segRadius = p.Distance(midPt);
@@ -550,11 +550,11 @@ namespace NetTopologySuite.Triangulate
 
 		    // For each point found, test if it falls strictly in the circle
 		    // find closest point
-		    ICoordinate closestNonGabriel = null;
+		    Coordinate closestNonGabriel = null;
 		    double minDist = Double.MaxValue;
             foreach (var nextNode in result)
             {
-			    ICoordinate testPt = nextNode.Coordinate;
+			    Coordinate testPt = nextNode.Coordinate;
 			    // ignore segment endpoints
 			    if (testPt.Equals2D(p) || testPt.Equals2D(q))
 				    continue;

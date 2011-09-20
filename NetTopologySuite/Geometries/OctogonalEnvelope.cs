@@ -47,7 +47,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Creates a new null bounding octagon bounding a <see cref="ICoordinate" />
+        /// Creates a new null bounding octagon bounding a <see cref="Coordinate" />
         /// </summary>
         public OctagonalEnvelope(Coordinate p)
         {
@@ -154,7 +154,7 @@ namespace NetTopologySuite.Geometries
             return this;
         }
 
-        public OctagonalEnvelope ExpandToInclude(ICoordinate p)
+        public OctagonalEnvelope ExpandToInclude(Coordinate p)
         {
             ExpandToInclude(p.X, p.Y);
             return this;
@@ -250,7 +250,7 @@ namespace NetTopologySuite.Geometries
             return true;
         }
 
-        public Boolean Intersects(ICoordinate p)
+        public Boolean Intersects(Coordinate p)
         {
             if (_minX > p.X) return false;
             if (_maxX < p.X) return false;
@@ -287,17 +287,17 @@ namespace NetTopologySuite.Geometries
                 return geomFactory.CreatePoint((ICoordinateSequence)null);
             }
 
-            ICoordinate px00 = new Coordinate(_minX, _minA - _minX);
-            ICoordinate px01 = new Coordinate(_minX, _minX - _minB);
+            Coordinate px00 = new Coordinate(_minX, _minA - _minX);
+            Coordinate px01 = new Coordinate(_minX, _minX - _minB);
 
-            ICoordinate px10 = new Coordinate(_maxX, _maxX - _maxB);
-            ICoordinate px11 = new Coordinate(_maxX, _maxA - _maxX);
+            Coordinate px10 = new Coordinate(_maxX, _maxX - _maxB);
+            Coordinate px11 = new Coordinate(_maxX, _maxA - _maxX);
 
-            ICoordinate py00 = new Coordinate(_minA - _minY, _minY);
-            ICoordinate py01 = new Coordinate(_minY + _maxB, _minY);
+            Coordinate py00 = new Coordinate(_minA - _minY, _minY);
+            Coordinate py01 = new Coordinate(_minY + _maxB, _minY);
 
-            ICoordinate py10 = new Coordinate(_maxY + _minB, _maxY);
-            ICoordinate py11 = new Coordinate(_maxA - _maxY, _maxY);
+            Coordinate py10 = new Coordinate(_maxY + _minB, _maxY);
+            Coordinate py11 = new Coordinate(_maxA - _maxY, _maxY);
 
             IPrecisionModel pm = geomFactory.PrecisionModel;
             pm.MakePrecise(px00);
@@ -323,7 +323,7 @@ namespace NetTopologySuite.Geometries
             {
                 return geomFactory.CreatePoint(px00);
             }
-            ICoordinate[] pts;
+            Coordinate[] pts;
             if (coordList.Count == 2)
             {
                 pts = coordList.ToCoordinateArray();

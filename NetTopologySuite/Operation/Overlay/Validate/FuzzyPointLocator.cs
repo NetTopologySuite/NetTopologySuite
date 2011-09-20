@@ -32,7 +32,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             _linework = ExtractLinework(g);
         }
 
-        public Location GetLocation(ICoordinate pt)
+        public Location GetLocation(Coordinate pt)
         {
             if (IsWithinToleranceOfBoundary(pt))
                 return Location.Boundary;
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             return g.Factory.CreateMultiLineString(linework.ToArray());
         }
 
-        private bool IsWithinToleranceOfBoundary(ICoordinate pt)
+        private bool IsWithinToleranceOfBoundary(Coordinate pt)
         {
             for (int i = 0; i < _linework.NumGeometries; i++)
             {

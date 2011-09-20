@@ -9,7 +9,7 @@ namespace NetTopologySuite.Noding
     /// </summary>
     public class OrientedCoordinateArray : IComparable
     {
-        private ICoordinate[] pts = null;
+        private Coordinate[] pts = null;
         private bool orientation = false;
 
         /// <summary>
@@ -17,7 +17,7 @@ namespace NetTopologySuite.Noding
         /// for the given <see cref="Coordinate" /> array.
         /// </summary>
         /// <param name="pts"></param>
-        public OrientedCoordinateArray(ICoordinate[] pts)
+        public OrientedCoordinateArray(Coordinate[] pts)
         {
             this.pts = pts;
             orientation = Orientation(pts);
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Noding
         /// <c>true</c> if the points are oriented forwards, or
         /// <c>false</c>if the points are oriented in reverse.
         /// </returns>
-        private static bool Orientation(ICoordinate[] pts)
+        private static bool Orientation(Coordinate[] pts)
         {
             return CoordinateArrays.IncreasingDirection(pts) == 1;
         }
@@ -59,7 +59,7 @@ namespace NetTopologySuite.Noding
         /// <param name="pts2"></param>
         /// <param name="orientation2"></param>
         /// <returns></returns>
-        private static int CompareOriented(ICoordinate[] pts1, bool orientation1, ICoordinate[] pts2, bool orientation2)
+        private static int CompareOriented(Coordinate[] pts1, bool orientation1, Coordinate[] pts2, bool orientation2)
         {
             int dir1 = orientation1 ? 1 : -1;
             int dir2 = orientation2 ? 1 : -1;

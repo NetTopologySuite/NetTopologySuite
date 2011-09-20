@@ -62,8 +62,8 @@ namespace NetTopologySuite.Noding
         /// <param name="e1"></param>
         private void ComputeIntersects(ISegmentString e0, ISegmentString e1)
         {
-            ICoordinate[] pts0 = e0.Coordinates;
-            ICoordinate[] pts1 = e1.Coordinates;
+            Coordinate[] pts0 = e0.Coordinates;
+            Coordinate[] pts1 = e1.Coordinates;
             for (int i0 = 0; i0 < pts0.Length - 1; i0++)
                 for (int i1 = 0; i1 < pts1.Length - 1; i1++)
                     SegmentIntersector.ProcessIntersections(e0, i0, e1, i1);

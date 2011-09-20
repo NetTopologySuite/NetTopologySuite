@@ -14,14 +14,14 @@ namespace NetTopologySuite.Geometries
         /// <param name="msg"></param>
         /// <param name="pt"></param>
         /// <returns></returns>
-        private static string MsgWithCoord(string msg, ICoordinate pt)
+        private static string MsgWithCoord(string msg, Coordinate pt)
         {
             if (pt != null)
             return msg + " [ " + pt + " ]";
             return msg;
         }
 
-        private ICoordinate pt = null;
+        private Coordinate pt = null;
 
         /// <summary>
         /// 
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="msg"></param>
         /// <param name="pt"></param>
-        public TopologyException(string msg, ICoordinate pt) 
+        public TopologyException(string msg, Coordinate pt) 
             : base (MsgWithCoord(msg, pt))
         {            
             this.pt = new Coordinate(pt);
@@ -43,7 +43,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {

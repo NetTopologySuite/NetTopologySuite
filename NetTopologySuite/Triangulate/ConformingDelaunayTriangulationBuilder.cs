@@ -15,12 +15,12 @@ namespace NetTopologySuite.Triangulate
     /// <author>Martin Davis</author>
     public class ConformingDelaunayTriangulationBuilder
     {
-        private ICollection<ICoordinate> _siteCoords;
+        private ICollection<Coordinate> _siteCoords;
         private IGeometry _constraintLines;
         private double _tolerance;
         private QuadEdgeSubdivision _subdiv;
 
-        private readonly IDictionary<ICoordinate, Vertex> _vertexMap = new OrderedDictionary<ICoordinate, Vertex>();
+        private readonly IDictionary<Coordinate, Vertex> _vertexMap = new OrderedDictionary<Coordinate, Vertex>();
 
         /// <summary>
         /// Sets the sites (point or vertices) which will be triangulated.
@@ -89,7 +89,7 @@ namespace NetTopologySuite.Triangulate
             _subdiv = cdt.Subdivision;
         }
 
-        private static IEnumerable<Vertex> CreateConstraintVertices(IEnumerable<ICoordinate> coords)
+        private static IEnumerable<Vertex> CreateConstraintVertices(IEnumerable<Coordinate> coords)
         {
             var verts = new List<Vertex>();
             foreach (var coord in coords)

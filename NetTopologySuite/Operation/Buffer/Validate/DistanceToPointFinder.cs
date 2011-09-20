@@ -13,7 +13,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         // used for point-line distance calculation
         private static readonly LineSegment TempSegment = new LineSegment();
 
-        public static void ComputeDistance(IGeometry geom, ICoordinate pt, PointPairDistance ptDist)
+        public static void ComputeDistance(IGeometry geom, Coordinate pt, PointPairDistance ptDist)
         {
             if (geom is ILineString)
             {
@@ -38,7 +38,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             }
         }
 
-        public static void ComputeDistance(ILineString line, ICoordinate pt, PointPairDistance ptDist)
+        public static void ComputeDistance(ILineString line, Coordinate pt, PointPairDistance ptDist)
         {
             var coords = line.Coordinates;
             for (int i = 0; i < coords.Length - 1; i++)
@@ -50,13 +50,13 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             }
         }
 
-        public static void ComputeDistance(LineSegment segment, ICoordinate pt, PointPairDistance ptDist)
+        public static void ComputeDistance(LineSegment segment, Coordinate pt, PointPairDistance ptDist)
         {
             var closestPt = segment.ClosestPoint(pt);
             ptDist.SetMinimum(closestPt, pt);
         }
 
-        public static void ComputeDistance(IPolygon poly, ICoordinate pt, PointPairDistance ptDist)
+        public static void ComputeDistance(IPolygon poly, Coordinate pt, PointPairDistance ptDist)
         {
             ComputeDistance(poly.ExteriorRing, pt, ptDist);
             for (int i = 0; i < poly.NumInteriorRings; i++)

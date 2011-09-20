@@ -50,7 +50,7 @@ namespace NetTopologySuite.Index.Quadtree
         }
 
         private readonly IEnvelope _env;
-        private readonly ICoordinate _centre;
+        private readonly Coordinate _centre;
         private readonly int _level;
 
         /// <summary>

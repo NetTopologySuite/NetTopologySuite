@@ -20,7 +20,7 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        public ICoordinateSequence Create(ICoordinate[] coordinates) 
+        public ICoordinateSequence Create(Coordinate[] coordinates) 
         {
             return new CoordinateStructSequence(coordinates);
         }

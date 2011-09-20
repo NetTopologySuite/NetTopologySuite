@@ -91,9 +91,9 @@ namespace NetTopologySuite.Operation.Polygonize
             if (line.IsEmpty) 
                 return;
 
-            ICoordinate[] linePts = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
-            ICoordinate startPt = linePts[0];
-            ICoordinate endPt = linePts[linePts.Length - 1];
+            Coordinate[] linePts = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
+            Coordinate startPt = linePts[0];
+            Coordinate endPt = linePts[linePts.Length - 1];
 
             Node nStart = GetNode(startPt);
             Node nEnd = GetNode(endPt);
@@ -110,7 +110,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        private Node GetNode(ICoordinate pt)
+        private Node GetNode(Coordinate pt)
         {
             Node node = FindNode(pt);
             if (node == null) 

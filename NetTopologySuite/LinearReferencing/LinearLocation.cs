@@ -32,7 +32,7 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Computes the <see cref="ICoordinate" /> of a point a given fraction
+        /// Computes the <see cref="Coordinate" /> of a point a given fraction
         /// along the line segment <c>(p0, p1)</c>.
         /// </summary>
         /// <remarks>
@@ -49,7 +49,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="p1">The last point of the line segment.</param>
         /// <param name="fraction">The length to the desired point.</param>
         /// <returns></returns>
-        public static ICoordinate PointAlongSegmentByFraction(ICoordinate p0, ICoordinate p1, double fraction)
+        public static Coordinate PointAlongSegmentByFraction(Coordinate p0, Coordinate p1, double fraction)
         {
             if (fraction <= 0.0) return p0;
             if (fraction >= 1.0) return p1;
@@ -185,8 +185,8 @@ namespace NetTopologySuite.LinearReferencing
             if (_segmentIndex >= lineComp.NumPoints - 1)
                 segIndex = lineComp.NumPoints - 2;
 
-            ICoordinate p0 = lineComp.GetCoordinateN(segIndex);
-            ICoordinate p1 = lineComp.GetCoordinateN(segIndex + 1);
+            Coordinate p0 = lineComp.GetCoordinateN(segIndex);
+            Coordinate p1 = lineComp.GetCoordinateN(segIndex + 1);
             return p0.Distance(p1);
         }
 
@@ -255,13 +255,13 @@ namespace NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="linearGeom">A linear geometry.</param>
         /// <returns>The <see cref="Coordinate" /> at the location.</returns>
-        public ICoordinate GetCoordinate(IGeometry linearGeom)
+        public Coordinate GetCoordinate(IGeometry linearGeom)
         {
             ILineString lineComp = (ILineString) linearGeom.GetGeometryN(_componentIndex);
-            ICoordinate p0 = lineComp.GetCoordinateN(_segmentIndex);
+            Coordinate p0 = lineComp.GetCoordinateN(_segmentIndex);
             if (_segmentIndex >= lineComp.NumPoints - 1)
                 return p0;
-            ICoordinate p1 = lineComp.GetCoordinateN(_segmentIndex + 1);
+            Coordinate p1 = lineComp.GetCoordinateN(_segmentIndex + 1);
             return PointAlongSegmentByFraction(p0, p1, _segmentFraction);
         }
 
@@ -273,14 +273,14 @@ namespace NetTopologySuite.LinearReferencing
         public LineSegment GetSegment(IGeometry linearGeom)
         {
             ILineString lineComp = (ILineString)linearGeom.GetGeometryN(_componentIndex);
-            ICoordinate p0 = lineComp.GetCoordinateN(_segmentIndex);
+            Coordinate p0 = lineComp.GetCoordinateN(_segmentIndex);
             // check for endpoint - return last segment of the line if so
             if (_segmentIndex >= lineComp.NumPoints - 1)
             {
-                ICoordinate prev = lineComp.GetCoordinateN(lineComp.NumPoints - 2);
+                Coordinate prev = lineComp.GetCoordinateN(lineComp.NumPoints - 2);
                 return new LineSegment(prev, p0);
             }
-            ICoordinate p1 = lineComp.GetCoordinateN(_segmentIndex + 1);
+            Coordinate p1 = lineComp.GetCoordinateN(_segmentIndex + 1);
             return new LineSegment(p0, p1);
         }
 

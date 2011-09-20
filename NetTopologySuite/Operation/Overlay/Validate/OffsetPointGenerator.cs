@@ -47,9 +47,9 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         ///<summary>
         /// Gets the computed offset points.
         ///</summary>
-        public List<ICoordinate> GetPoints(double offsetDistance)
+        public List<Coordinate> GetPoints(double offsetDistance)
         {
-            var offsetPts = new List<ICoordinate>();
+            var offsetPts = new List<Coordinate>();
             var lines = LinearComponentExtracter.GetLines(_g);
             foreach (ILineString line in lines)
                 ExtractPoints(line, offsetDistance, offsetPts);
@@ -58,7 +58,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             return offsetPts;
         }
 
-        private void ExtractPoints(ILineString line, double offsetDistance, IList<ICoordinate> offsetPts)
+        private void ExtractPoints(ILineString line, double offsetDistance, IList<Coordinate> offsetPts)
         {
             ICoordinateSequence coordinateSequence = line.CoordinateSequence;
             for (int i = 0; i < coordinateSequence.Count; i++)
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         /// <param name="p1">The second point of the segment to offset from</param>
         ///<param name="offsetDistance"></param>
         ///<param name="offsetPts"></param>
-        private void ComputeOffsetPoints(ICoordinate p0, ICoordinate p1, double offsetDistance, IList<ICoordinate> offsetPts)
+        private void ComputeOffsetPoints(Coordinate p0, Coordinate p1, double offsetDistance, IList<Coordinate> offsetPts)
         {
             double dx = p1.X - p0.Y;
             double dy = p1.Y - p0.Y;
@@ -91,13 +91,13 @@ namespace NetTopologySuite.Operation.Overlay.Validate
 
             if (_doLeft)
             {
-                ICoordinate offsetLeft = new Coordinate(midX - uy, midY + ux);
+                Coordinate offsetLeft = new Coordinate(midX - uy, midY + ux);
                 offsetPts.Add(offsetLeft);
             }
 
             if (_doRight)
             {
-                ICoordinate offsetRight = new Coordinate(midX + uy, midY - ux);
+                Coordinate offsetRight = new Coordinate(midX + uy, midY - ux);
                 offsetPts.Add(offsetRight);
             }
         }

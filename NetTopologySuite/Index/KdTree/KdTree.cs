@@ -48,7 +48,7 @@ namespace NetTopologySuite.Index.KdTree
         /// </summary>
         /// <param name="p">The point to insert</param>
         /// <returns>The kdnode containing the point</returns>
-        public KdNode<T> Insert(ICoordinate p)
+        public KdNode<T> Insert(Coordinate p)
         {
             return Insert(p, null);
         }
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Index.KdTree
         /// node is returned with its counter incremented. This can be checked
         /// by testing returnedNode.getCount() > 1.
         /// </returns>
-        public KdNode<T> Insert(ICoordinate p, T data)
+        public KdNode<T> Insert(Coordinate p, T data)
         {
             if (_root == null)
             {

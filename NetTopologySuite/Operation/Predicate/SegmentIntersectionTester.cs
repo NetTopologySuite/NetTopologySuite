@@ -16,10 +16,10 @@ namespace NetTopologySuite.Operation.Predicate
         private readonly LineIntersector li = new RobustLineIntersector();
 
         private bool _hasIntersection;
-        private ICoordinate pt00 = new Coordinate();
-        private ICoordinate pt01 = new Coordinate();
-        private ICoordinate pt10 = new Coordinate();
-        private ICoordinate pt11 = new Coordinate();
+        private Coordinate pt00 = new Coordinate();
+        private Coordinate pt01 = new Coordinate();
+        private Coordinate pt10 = new Coordinate();
+        private Coordinate pt11 = new Coordinate();
 
         /// <summary>
         /// 

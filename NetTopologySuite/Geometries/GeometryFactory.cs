@@ -83,7 +83,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="coord"></param>
         /// <param name="exemplar"></param>
         /// <returns></returns>
-        public static IPoint CreatePointFromInternalCoord(ICoordinate coord, IGeometry exemplar)
+        public static IPoint CreatePointFromInternalCoord(Coordinate coord, IGeometry exemplar)
         {
             exemplar.PrecisionModel.MakePrecise(coord);
             return exemplar.Factory.CreatePoint(coord);
@@ -281,7 +281,7 @@ namespace NetTopologySuite.Geometries
             if (envelope.MinX == envelope.MaxX
                     || envelope.MinY == envelope.MaxY)
             {
-                return CreateLineString(new ICoordinate[] 
+                return CreateLineString(new Coordinate[] 
                     {
                         new Coordinate(envelope.MinX, envelope.MinY),
                         new Coordinate(envelope.MaxX, envelope.MaxY)
@@ -289,7 +289,7 @@ namespace NetTopologySuite.Geometries
             }
 
 
-            ILinearRing ring = this.CreateLinearRing(new ICoordinate[]
+            ILinearRing ring = this.CreateLinearRing(new Coordinate[]
             {
                 new Coordinate(envelope.MinX, envelope.MinY),
                 new Coordinate(envelope.MinX, envelope.MaxY),
@@ -305,7 +305,7 @@ namespace NetTopologySuite.Geometries
         /// an empty Geometry.
         /// </summary>
         /// <param name="coordinate"></param>
-        public IPoint CreatePoint(ICoordinate coordinate) 
+        public IPoint CreatePoint(Coordinate coordinate) 
         {
             return CreatePoint(coordinate != null ? CoordinateSequenceFactory.Create(new[] { coordinate }) : null);
         }
@@ -326,7 +326,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
         /// <returns></returns>
-        public ILineString CreateLineString(ICoordinate[] coordinates)
+        public ILineString CreateLineString(Coordinate[] coordinates)
         {
             return CreateLineString(coordinates != null ? CoordinateSequenceFactory.Create(coordinates) : null);
         }
@@ -348,7 +348,7 @@ namespace NetTopologySuite.Geometries
         /// linestring. Consecutive points must not be equal.
         /// </summary>
         /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
-        public ILinearRing CreateLinearRing(ICoordinate[] coordinates)
+        public ILinearRing CreateLinearRing(Coordinate[] coordinates)
         {
             return CreateLinearRing(coordinates != null ? CoordinateSequenceFactory.Create(coordinates) : null);
         }
@@ -401,7 +401,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">An array (without null elements), or an empty array, or <c>null</c></param>
         /// <returns>A <see cref="IMultiPoint"/> object</returns>
-        public IMultiPoint CreateMultiPoint(ICoordinate[] coordinates)
+        public IMultiPoint CreateMultiPoint(Coordinate[] coordinates)
         {
             return CreateMultiPoint(coordinates != null ? CoordinateSequenceFactory.Create(coordinates) : null);
         }
@@ -414,7 +414,7 @@ namespace NetTopologySuite.Geometries
         public IMultiPoint CreateMultiPoint(ICoordinateSequence coordinates)
         {
             if (coordinates == null)
-                coordinates = CoordinateSequenceFactory.Create(new ICoordinate[] { });
+                coordinates = CoordinateSequenceFactory.Create(new Coordinate[] { });
 
             List<IPoint> points = new List<IPoint>();
             for (int i = 0; i < coordinates.Count; i++)
@@ -547,7 +547,7 @@ namespace NetTopologySuite.Geometries
 
         private class AnonymousCoordinateOperationImpl : GeometryEditor.CoordinateOperation
         {
-            public override ICoordinate[] Edit(ICoordinate[] coordinates, IGeometry geometry)
+            public override Coordinate[] Edit(Coordinate[] coordinates, IGeometry geometry)
             {
                 return coordinates;
             }

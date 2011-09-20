@@ -37,7 +37,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 seq.GetCoordinate(i + 1, p1);
                 Densify(p0, p1, segLength);
             }
-            ICoordinate[] newPts = newCoords.ToCoordinateArray();
+            Coordinate[] newPts = newCoords.ToCoordinateArray();
             return inputLine.Factory.CreateLineString(newPts);
         }
 

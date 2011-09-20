@@ -18,7 +18,7 @@ namespace NetTopologySuite.Samples.Geometries
 			Console.WriteLine("Geometry 1: " + g1);
 			
 			// create a point by specifying the coordinates directly
-			ICoordinate[] coordinates = new ICoordinate[] { new Coordinate(0, 0), 
+			Coordinate[] coordinates = new Coordinate[] { new Coordinate(0, 0), 
                 new Coordinate(10, 10), new Coordinate(20, 20) };
 			// use the default factory, which gives full double-precision
 			IGeometry g2 = new GeometryFactory().CreateLineString(coordinates);

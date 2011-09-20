@@ -36,9 +36,9 @@ namespace NetTopologySuite.Algorithm
         private readonly IGeometry _inputGeom;
         private readonly bool _isConvex;
 
-        private ICoordinate[] _convexHullPts;
+        private Coordinate[] _convexHullPts;
         private LineSegment _minBaseSeg = new LineSegment();
-        private ICoordinate _minWidthPt;
+        private Coordinate _minWidthPt;
         private int _minPtIndex;
         private double _minWidth;
 
@@ -81,7 +81,7 @@ namespace NetTopologySuite.Algorithm
         /// Gets the <c>Coordinate</c> forming one end of the minimum diameter.
         /// </summary>
         /// <returns>A coordinate forming one end of the minimum diameter.</returns>
-        public ICoordinate WidthCoordinate
+        public Coordinate WidthCoordinate
         {
             get
             {
@@ -116,11 +116,11 @@ namespace NetTopologySuite.Algorithm
                 // return empty linearRing if no minimum width calculated
                 if (_minWidthPt == null)
                 {
-                    //ICoordinate[] nullCoords = null;
-                    return _inputGeom.Factory.CreateLineString((ICoordinate[])null);
+                    //Coordinate[] nullCoords = null;
+                    return _inputGeom.Factory.CreateLineString((Coordinate[])null);
                 }
 
-                ICoordinate basePt = _minBaseSeg.Project(_minWidthPt);
+                Coordinate basePt = _minBaseSeg.Project(_minWidthPt);
                 return _inputGeom.Factory.CreateLineString(new[] { basePt, _minWidthPt });
             }
         }
@@ -183,7 +183,7 @@ namespace NetTopologySuite.Algorithm
         /// Leaves the width information in the instance variables.
         /// </summary>
         /// <param name="pts"></param>
-        private void ComputeConvexRingMinDiameter(ICoordinate[] pts)
+        private void ComputeConvexRingMinDiameter(Coordinate[] pts)
         {
             // for each segment in the ring
             _minWidth = Double.MaxValue;
@@ -206,7 +206,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="seg"></param>
         /// <param name="startIndex"></param>
         /// <returns></returns>
-        private int FindMaxPerpDistance(ICoordinate[] pts, LineSegment seg, int startIndex)
+        private int FindMaxPerpDistance(Coordinate[] pts, LineSegment seg, int startIndex)
         {
             double maxPerpDistance = seg.DistancePerpendicular(pts[startIndex]);
             double nextPerpDistance = maxPerpDistance;
@@ -238,7 +238,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="pts"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        private static int NextIndex(ICoordinate[] pts, int index)
+        private static int NextIndex(Coordinate[] pts, int index)
         {
             index++;
             if (index >= pts.Length) index = 0;
@@ -306,10 +306,10 @@ namespace NetTopologySuite.Algorithm
             LineSegment minParaLine = ComputeSegmentForLine(-dy, dx, minPara);
 
             // compute vertices of rectangle (where the para/perp max & min lines intersect)
-            ICoordinate p0 = maxParaLine.LineIntersection(maxPerpLine);
-            ICoordinate p1 = minParaLine.LineIntersection(maxPerpLine);
-            ICoordinate p2 = minParaLine.LineIntersection(minPerpLine);
-            ICoordinate p3 = maxParaLine.LineIntersection(minPerpLine);
+            Coordinate p0 = maxParaLine.LineIntersection(maxPerpLine);
+            Coordinate p1 = minParaLine.LineIntersection(maxPerpLine);
+            Coordinate p2 = minParaLine.LineIntersection(minPerpLine);
+            Coordinate p3 = maxParaLine.LineIntersection(minPerpLine);
 
             ILinearRing shell = _inputGeom.Factory.CreateLinearRing(
                 new[] { p0, p1, p2, p3, p0 });
@@ -317,7 +317,7 @@ namespace NetTopologySuite.Algorithm
 
         }
 
-        private static double ComputeC(double a, double b, ICoordinate p)
+        private static double ComputeC(double a, double b, Coordinate p)
         {
             return a * p.Y - b * p.X;
         }

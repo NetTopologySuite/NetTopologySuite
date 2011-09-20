@@ -17,26 +17,26 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
         /// </summary>
         public PolygonSamples() : base(new GeometryFactory(new PrecisionModel(PrecisionModels.Fixed)))
         {
-            shell = Factory.CreateLinearRing(new ICoordinate[] { new Coordinate(100,100),
+            shell = Factory.CreateLinearRing(new [] { new Coordinate(100,100),
                                                                  new Coordinate(200,100),
                                                                  new Coordinate(200,200),                
                                                                  new Coordinate(100,200),
                                                                  new Coordinate(100,100), });
-            hole = Factory.CreateLinearRing(new ICoordinate[] {  new Coordinate(120,120),
+            hole = Factory.CreateLinearRing(new [] {  new Coordinate(120,120),
                                                                  new Coordinate(180,120),
                                                                  new Coordinate(180,180),                                                                                
                                                                  new Coordinate(120,180),                                                                
                                                                  new Coordinate(120,120), });
-            polygon = Factory.CreatePolygon(shell, new ILinearRing[] { hole, });
+            polygon = Factory.CreatePolygon(shell, new [] { hole, });
         }
 
         public override void Start()
         {
             IPoint interiorPoint = Factory.CreatePoint(new Coordinate(130, 150));
             IPoint exteriorPoint = Factory.CreatePoint(new Coordinate(650, 1500));
-            ILineString aLine = Factory.CreateLineString(new ICoordinate[] { new Coordinate(23, 32.2), new Coordinate(10, 222) });
-            ILineString anotherLine = Factory.CreateLineString(new ICoordinate[] { new Coordinate(0, 1), new Coordinate(30, 30) });
-            ILineString intersectLine = Factory.CreateLineString(new ICoordinate[] { new Coordinate(0, 1), new Coordinate(300, 300) });            
+            ILineString aLine = Factory.CreateLineString(new [] { new Coordinate(23, 32.2), new Coordinate(10, 222) });
+            ILineString anotherLine = Factory.CreateLineString(new [] { new Coordinate(0, 1), new Coordinate(30, 30) });
+            ILineString intersectLine = Factory.CreateLineString(new [] { new Coordinate(0, 1), new Coordinate(300, 300) });            
 
             try
             {               

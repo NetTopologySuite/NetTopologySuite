@@ -11,7 +11,7 @@ namespace NetTopologySuite.Samples.Tests.Various
     [TestFixture]
     public class CoordinateArraysTest : BaseSamples
     {
-        ICoordinate[] array = new ICoordinate[]  
+        Coordinate[] array = new Coordinate[]  
         {  
             new Coordinate(10, 10), 
             new Coordinate(20, 20),
@@ -32,7 +32,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void ExtractTest()
         {
-            ICoordinate[] result = CoordinateArrays.Extract(array, 1, 5);
+            Coordinate[] result = CoordinateArrays.Extract(array, 1, 5);
             Assert.AreEqual(5, result.Length);
             Assert.AreEqual(result[0], array[1]);
             Assert.AreEqual(result[1], array[2]);
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         [ExpectedException("System.ArgumentException")]
         public void ExtractTest2()
         {            
-            ICoordinate[] result = CoordinateArrays.Extract(array, 1, 10);
+            Coordinate[] result = CoordinateArrays.Extract(array, 1, 10);
             Assert.IsNull(result);
         }
 
@@ -58,7 +58,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void EqualsComparerTest()
         {
-            ICoordinate[] reverse = CoordinateArrays.CopyDeep(array);
+            Coordinate[] reverse = CoordinateArrays.CopyDeep(array);
             CoordinateArrays.Reverse(reverse);
             Assert.IsFalse(CoordinateArrays.Equals(array, reverse));
             Assert.IsFalse(CoordinateArrays.Equals(array, reverse, new CoordinateArrays.ForwardComparator()));

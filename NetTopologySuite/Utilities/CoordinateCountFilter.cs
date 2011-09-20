@@ -31,7 +31,7 @@ namespace NetTopologySuite.Utilities
         /// 
         /// </summary>
         /// <param name="coord"></param>
-        public void Filter(ICoordinate coord) 
+        public void Filter(Coordinate coord) 
         {
             _n++;
         }

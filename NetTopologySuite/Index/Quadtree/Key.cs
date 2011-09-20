@@ -26,7 +26,7 @@ namespace NetTopologySuite.Index.Quadtree
         }
 
         // the fields which make up the key
-        private readonly ICoordinate _pt = new Coordinate();
+        private readonly Coordinate _pt = new Coordinate();
         private int _level;
 
         // auxiliary data which is derived from the key for use in computation
@@ -44,7 +44,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate Point
+        public Coordinate Point
         {
             get
             {
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate Centre
+        public Coordinate Centre
         {
             get
             {

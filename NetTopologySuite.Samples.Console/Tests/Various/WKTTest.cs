@@ -42,7 +42,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             TestFormatting(new Coordinate(0, 0));
         }
 
-        private void TestFormatting(ICoordinate c)
+        private void TestFormatting(Coordinate c)
         {            
             IGeometry point = GeometryFactory.Floating.CreatePoint(c);
             String result = writer.Write(point);

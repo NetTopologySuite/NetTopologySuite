@@ -88,7 +88,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="li"></param>
         private void SnapRound(IList<ISegmentString> segStrings, LineIntersector li)
         {
-            IList<ICoordinate> intersections = FindInteriorIntersections(segStrings, li);
+            IList<Coordinate> intersections = FindInteriorIntersections(segStrings, li);
             ComputeIntersectionSnaps(intersections);
             ComputeVertexSnaps(segStrings);        
         }
@@ -102,7 +102,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="segStrings"></param>
         /// <param name="li"></param>
         /// <returns>A list of Coordinates for the intersections.</returns>
-        private IList<ICoordinate> FindInteriorIntersections(IList<ISegmentString> segStrings, LineIntersector li)
+        private IList<Coordinate> FindInteriorIntersections(IList<ISegmentString> segStrings, LineIntersector li)
         {
             IntersectionFinderAdder intFinderAdder = new IntersectionFinderAdder(li);
             _noder.SegmentIntersector = intFinderAdder;
@@ -114,9 +114,9 @@ namespace NetTopologySuite.Noding.Snapround
         /// Computes nodes introduced as a result of snapping segments to snap points (hot pixels).
         /// </summary>
         /// <param name="snapPts"></param>
-        private void ComputeIntersectionSnaps(IEnumerable<ICoordinate> snapPts)
+        private void ComputeIntersectionSnaps(IEnumerable<Coordinate> snapPts)
         {
-            foreach (ICoordinate snapPt in snapPts)
+            foreach (Coordinate snapPt in snapPts)
             {
                 HotPixel hotPixel = new HotPixel(snapPt, _scaleFactor, _li);
                 _pointSnapper.Snap(hotPixel);
@@ -141,7 +141,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="e"></param>
         private void ComputeVertexSnaps(INodableSegmentString e)
         {
-            ICoordinate[] pts0 = e.Coordinates;
+            Coordinate[] pts0 = e.Coordinates;
             for(int i = 0; i < pts0.Length - 1; i++)
             {
                 HotPixel hotPixel = new HotPixel(pts0[i], _scaleFactor, _li);

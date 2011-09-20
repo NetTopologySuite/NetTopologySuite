@@ -57,7 +57,7 @@ namespace NetTopologySuite.Algorithm
         /// My hypothesis is that the function is safe to use for points which are the
         /// result of rounding points which lie on the line, but not safe to use for truncated points.
         /// </summary>
-        public static double ComputeEdgeDistance(ICoordinate p, ICoordinate p0, ICoordinate p1)
+        public static double ComputeEdgeDistance(Coordinate p, Coordinate p0, Coordinate p1)
         {
             double dx = Math.Abs(p1.X - p0.X);
             double dy = Math.Abs(p1.Y - p0.Y);
@@ -88,7 +88,7 @@ namespace NetTopologySuite.Algorithm
         /// This function is non-robust, since it may compute the square of large numbers.
         /// Currently not sure how to improve this.
         /// </summary>
-        public static double NonRobustComputeEdgeDistance(ICoordinate p, ICoordinate p1, ICoordinate p2)
+        public static double NonRobustComputeEdgeDistance(Coordinate p, Coordinate p1, Coordinate p2)
         {
             double dx = p.X - p1.X;
             double dy = p.Y - p1.Y;
@@ -99,9 +99,9 @@ namespace NetTopologySuite.Algorithm
 
         protected int result;
         
-        protected ICoordinate[] inputLines;
+        protected Coordinate[] inputLines;
         
-        protected ICoordinate[] intPt = new ICoordinate[2];
+        protected Coordinate[] intPt = new Coordinate[2];
 
         /// <summary> 
         /// The indexes of the endpoints of the intersection lines, in order along
@@ -111,8 +111,8 @@ namespace NetTopologySuite.Algorithm
 
         private bool _isProper;
         
-        protected ICoordinate pa;        
-        protected ICoordinate pb;
+        protected Coordinate pa;        
+        protected Coordinate pb;
 
         /// <summary> 
         /// If MakePrecise is true, computed intersection coordinates will be made precise
@@ -155,7 +155,7 @@ namespace NetTopologySuite.Algorithm
         /// The actual value of the intersection (if there is one)
         /// is equal to the value of <c>p</c>.
         /// </summary>
-        public abstract void ComputeIntersection(ICoordinate p, ICoordinate p1, ICoordinate p2);
+        public abstract void ComputeIntersection(Coordinate p, Coordinate p1, Coordinate p2);
         
         protected bool IsCollinear 
         {
@@ -167,13 +167,13 @@ namespace NetTopologySuite.Algorithm
         /// This function computes both the bool value of the hasIntersection test
         /// and the (approximate) value of the intersection point itself (if there is one).
         /// </summary>
-        public void ComputeIntersection(ICoordinate p1, ICoordinate p2, ICoordinate p3, ICoordinate p4)
+        public void ComputeIntersection(Coordinate p1, Coordinate p2, Coordinate p3, Coordinate p4)
         {
             this.inputLines = new[] { p1, p2, p3, p4 };
             this.result = this.ComputeIntersect(p1, p2, p3, p4);        
         }
 
-        public abstract int ComputeIntersect(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2);
+        public abstract int ComputeIntersect(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2);
         
         public override string ToString() 
         {
@@ -217,7 +217,7 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="intIndex">is 0 or 1.</param>
         /// <returns>The intIndex'th intersection point.</returns>
-        public ICoordinate GetIntersection(int intIndex)  
+        public Coordinate GetIntersection(int intIndex)  
         { 
             return this.intPt[intIndex]; 
         }
@@ -239,7 +239,7 @@ namespace NetTopologySuite.Algorithm
         /// It does not return true if the input point is internal to the intersection segment.
         /// </summary>
         /// <returns><c>true</c> if the input point is one of the intersection points.</returns>
-        public bool IsIntersection(ICoordinate pt) 
+        public bool IsIntersection(Coordinate pt) 
         {
             for (int i = 0; i < this.result; i++) 
                 if (this.intPt[i].Equals2D(pt)) 
@@ -304,7 +304,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>
         /// The intIndex'th intersection point in the direction of the specified input line segment.
         /// </returns>
-        public ICoordinate GetIntersectionAlongSegment(int segmentIndex, int intIndex) 
+        public Coordinate GetIntersectionAlongSegment(int segmentIndex, int intIndex) 
         {
             // lazily compute int line array
             this.ComputeIntLineIndex();

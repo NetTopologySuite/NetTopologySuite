@@ -14,7 +14,7 @@ namespace NetTopologySuite.Geometries
 //#endif
     public class Point : Geometry, IPoint
     {
-        private static readonly ICoordinate EmptyCoordinate = null;
+        private static readonly Coordinate EmptyCoordinate = null;
 
         /// <summary>
         /// Represents an empty <c>Point</c>.
@@ -45,8 +45,8 @@ namespace NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public Point(ICoordinate coordinate) :   
-            this(GeometryFactory.Default.CoordinateSequenceFactory.Create(new ICoordinate[] { coordinate } ),
+        public Point(Coordinate coordinate) :   
+            this(GeometryFactory.Default.CoordinateSequenceFactory.Create(new Coordinate[] { coordinate } ),
             GeometryFactory.Default) { }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Geometries
         public Point(ICoordinateSequence coordinates, IGeometryFactory factory) : base(factory)
         {               
             if (coordinates == null) 
-                coordinates = factory.CoordinateSequenceFactory.Create(new ICoordinate[] { });
+                coordinates = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
             Debug.Assert(coordinates.Count <= 1);
             this.coordinates = (ICoordinateSequence) coordinates;
         }        
@@ -68,11 +68,11 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override ICoordinate[] Coordinates 
+        public override Coordinate[] Coordinates 
         {
             get
             {
-                return IsEmpty ? new ICoordinate[] { } : new ICoordinate[] { this.Coordinate };
+                return IsEmpty ? new Coordinate[] { } : new Coordinate[] { this.Coordinate };
             }
         }
 
@@ -186,7 +186,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override ICoordinate Coordinate
+        public override Coordinate Coordinate
         {
             get
             {
@@ -345,7 +345,7 @@ namespace NetTopologySuite.Geometries
         /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public Point(double x, double y, double z) : 
-            this(DefaultFactory.CoordinateSequenceFactory.Create(new ICoordinate[] { new Coordinate(x, y, z) }), DefaultFactory) { }
+            this(DefaultFactory.CoordinateSequenceFactory.Create(new Coordinate[] { new Coordinate(x, y, z) }), DefaultFactory) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Point"/> class.
@@ -357,7 +357,7 @@ namespace NetTopologySuite.Geometries
         /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public Point(double x, double y)
-            : this(DefaultFactory.CoordinateSequenceFactory.Create(new ICoordinate[] { new Coordinate(x, y) }), DefaultFactory) { }
+            : this(DefaultFactory.CoordinateSequenceFactory.Create(new Coordinate[] { new Coordinate(x, y) }), DefaultFactory) { }
 
         /// <summary>
         /// 
@@ -385,13 +385,13 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                if (Coordinate == null)
+                if ((Coordinate as ICoordinate) == null)
                     throw new ArgumentOutOfRangeException("M called on empty Point");
-                return Coordinate.M;
+                return ((ICoordinate)Coordinate).M;
             }
             set
             {
-                Coordinate.M = value;
+                ((ICoordinate)Coordinate).M = value;
             }
         }
     

@@ -46,8 +46,8 @@ namespace NetTopologySuite.Operation.Polygonize
                 // the hole envelope cannot equal the shell envelope
                 if (tryEnv.Equals(testEnv)) continue;
 
-                // ICoordinate testPt = PointNotInList(teString.Coordinates, tryRing.Coordinates);
-                ICoordinate testPt = CoordinateArrays.PointNotInList(teString.Coordinates, tryRing.Coordinates);
+                // Coordinate testPt = PointNotInList(teString.Coordinates, tryRing.Coordinates);
+                Coordinate testPt = CoordinateArrays.PointNotInList(teString.Coordinates, tryRing.Coordinates);
                 if (tryEnv.Contains(testEnv) && CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates))
                     isContained = true;
                 // check if this new containing ring is smaller than the current minimum ring
@@ -67,9 +67,9 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <param name="pts">An array of <c>Coordinate</c>s to test the input points against.</param>
         /// <returns>A <c>Coordinate</c> from <c>testPts</c> which is not in <c>pts</c>, 
         /// or <c>null</c>.</returns>
-        public static ICoordinate PointNotInList(ICoordinate[] testPts, ICoordinate[] pts)
+        public static Coordinate PointNotInList(Coordinate[] testPts, Coordinate[] pts)
         {
-            foreach (ICoordinate testPt in testPts)
+            foreach (Coordinate testPt in testPts)
                 if (!IsInList(testPt, pts))
                     return testPt;
             return null;
@@ -82,9 +82,9 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <param name="pt">A <c>Coordinate</c> for the test point.</param>
         /// <param name="pts">An array of <c>Coordinate</c>s to test,</param>
         /// <returns><c>true</c> if the point is in the array.</returns>
-        public static bool IsInList(ICoordinate pt, ICoordinate[] pts)
+        public static bool IsInList(Coordinate pt, Coordinate[] pts)
         {
-            foreach (ICoordinate p in pts)
+            foreach (Coordinate p in pts)
                 if (pt.Equals(p))
                     return true;
             return true;
@@ -96,7 +96,7 @@ namespace NetTopologySuite.Operation.Polygonize
         // cache the following data for efficiency
         private ILinearRing _ring;
 
-        private ICoordinate[] _ringPts;
+        private Coordinate[] _ringPts;
         private List<ILinearRing> _holes;
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace NetTopologySuite.Operation.Polygonize
         {
             get
             {
-                ICoordinate[] tempcoords = Coordinates;
+                Coordinate[] tempcoords = Coordinates;
                 tempcoords = null;
                 if (_ringPts.Length <= 3) 
                     return false;
@@ -183,7 +183,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// Computes and returns the list of coordinates which are contained in this ring.
         /// The coordinatea are computed once only and cached.
         /// </summary>
-        private ICoordinate[] Coordinates
+        private Coordinate[] Coordinates
         {
             get
             {
@@ -211,7 +211,7 @@ namespace NetTopologySuite.Operation.Polygonize
         {
             get
             {
-                ICoordinate[] tempcoords = Coordinates;
+                Coordinate[] tempcoords = Coordinates;
                 tempcoords = null;
                 return _factory.CreateLineString(_ringPts);
             }
@@ -228,7 +228,7 @@ namespace NetTopologySuite.Operation.Polygonize
             {
                 if (_ring != null) 
                     return _ring;
-                ICoordinate[] tempcoords = Coordinates;
+                Coordinate[] tempcoords = Coordinates;
                 try
                 {
                     _ring = _factory.CreateLinearRing(_ringPts);
@@ -244,7 +244,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <param name="coords"></param>
         /// <param name="isForward"></param>
         /// <param name="coordList"></param>
-        private static void AddEdge(ICoordinate[] coords, bool isForward, CoordinateList coordList)
+        private static void AddEdge(Coordinate[] coords, bool isForward, CoordinateList coordList)
         {
             if (isForward)
             {

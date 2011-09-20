@@ -189,7 +189,7 @@ namespace NetTopologySuite.Operation.Predicate
             if (! rectEnv.Intersects(elementEnv))
                 return;
             // test each corner of rectangle for inclusion
-            ICoordinate rectPt = new Coordinate();
+            Coordinate rectPt = new Coordinate();
             for (int i = 0; i < 4; i++) 
             {
                 rectSeq.GetCoordinate(i, rectPt);

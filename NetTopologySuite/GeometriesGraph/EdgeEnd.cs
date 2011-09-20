@@ -33,7 +33,7 @@ namespace NetTopologySuite.GeometriesGraph
         private Label _label;
 
         private Node _node;          // the node this edge end originates at
-        private ICoordinate _p0, _p1;  // points of initial line segment
+        private Coordinate _p0, _p1;  // points of initial line segment
         private double _dx, _dy;      // the direction vector for this edge from its starting point
         private int _quadrant;
 
@@ -52,7 +52,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="edge"></param>
         /// <param name="p0"></param>
         /// <param name="p1"></param>
-        public EdgeEnd(Edge edge, ICoordinate p0, ICoordinate p1) : 
+        public EdgeEnd(Edge edge, Coordinate p0, Coordinate p1) : 
             this(edge, p0, p1, null) { }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <param name="label"></param>
-        public EdgeEnd(Edge edge, ICoordinate p0, ICoordinate p1, Label label)
+        public EdgeEnd(Edge edge, Coordinate p0, Coordinate p1, Label label)
             : this(edge)
         {
             Init(p0, p1);
@@ -74,7 +74,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="p0"></param>
         /// <param name="p1"></param>
-        protected void Init(ICoordinate p0, ICoordinate p1)
+        protected void Init(Coordinate p0, Coordinate p1)
         {
             _p0 = p0;
             _p1 = p1;
@@ -111,7 +111,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -122,7 +122,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate DirectedCoordinate
+        public Coordinate DirectedCoordinate
         {
             get
             {

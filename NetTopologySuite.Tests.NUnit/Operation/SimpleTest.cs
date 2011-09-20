@@ -81,12 +81,12 @@ namespace NetTopologySuite.Tests.NUnit.Operation
         }
 
         private static void RunIsSimpleTest(String wkt, IBoundaryNodeRule bnRule, bool expectedResult,
-                                     ICoordinate expectedLocation)
+                                     Coordinate expectedLocation)
         {
             IGeometry g = rdr.Read(wkt);
             IsSimpleOp op = new IsSimpleOp(g, bnRule);
             bool isSimple = op.IsSimple();
-            ICoordinate nonSimpleLoc = op.NonSimpleLocation;
+            Coordinate nonSimpleLoc = op.NonSimpleLocation;
 
             // if geom is not simple, should have a valid location
             Assert.IsTrue(isSimple || nonSimpleLoc != null);

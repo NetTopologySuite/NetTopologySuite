@@ -12,7 +12,7 @@ namespace NetTopologySuite.Index.Quadtree
     public class Root<T> : NodeBase<T>
     {
         // the singleton root quad is centred at the origin.
-        private static readonly ICoordinate Origin = new Coordinate(0.0, 0.0);
+        private static readonly Coordinate Origin = new Coordinate(0.0, 0.0);
 
         ///// <summary>
         ///// 

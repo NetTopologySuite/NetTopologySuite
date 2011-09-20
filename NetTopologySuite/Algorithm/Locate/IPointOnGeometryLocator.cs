@@ -14,6 +14,6 @@ namespace NetTopologySuite.Algorithm.Locate
         ///</summary>
         ///<param name="p">The point to test</param>
         ///<returns>The location of the point in the geometry</returns>
-        Location Locate(ICoordinate p);
+        Location Locate(Coordinate p);
     }
 }

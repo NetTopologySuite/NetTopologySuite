@@ -86,7 +86,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">Coordinates array, which may not be null nor contain null elements</param>
         /// <returns></returns>
-        public ICoordinateSequence Create(ICoordinate[] coordinates)
+        public ICoordinateSequence Create(Coordinate[] coordinates)
         {
             if (type == PackedType.Double)
                  return new PackedDoubleCoordinateSequence(coordinates, dimension);

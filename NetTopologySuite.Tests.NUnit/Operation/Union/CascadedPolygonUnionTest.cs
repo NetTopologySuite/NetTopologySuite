@@ -67,7 +67,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
             {
                 for (int j = 0; j < num; j++)
                 {
-                    ICoordinate pt = new Coordinate(i, j);
+                    Coordinate pt = new Coordinate(i, j);
                     IGeometry ptGeom = _geomFact.CreatePoint(pt);
                     IGeometry disc = ptGeom.Buffer(radius);
                     geoms.Add(disc);

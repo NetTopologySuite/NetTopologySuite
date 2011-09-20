@@ -175,7 +175,7 @@ namespace NetTopologySuite.LinearReferencing
         /// Gets the first <see cref="Coordinate" /> of the current segment
         /// (the coordinate of the current vertex).
         /// </summary>
-        private ICoordinate SegmentStart
+        private Coordinate SegmentStart
         {
             get
             {
@@ -188,7 +188,7 @@ namespace NetTopologySuite.LinearReferencing
         /// (the coordinate of the next vertex).
         /// If the iterator is at the end of a line, <c>null</c> is returned.
         /// </summary>
-        private ICoordinate SegmentEnd
+        private Coordinate SegmentEnd
         {
             get
             {
@@ -405,7 +405,7 @@ namespace NetTopologySuite.LinearReferencing
             /// Gets the first <see cref="Coordinate" /> of the current segment
             /// (the coordinate of the current vertex).
             /// </summary>
-            public ICoordinate SegmentStart
+            public Coordinate SegmentStart
             {
                 get
                 {
@@ -418,7 +418,7 @@ namespace NetTopologySuite.LinearReferencing
             /// (the coordinate of the next vertex).
             /// If the iterator is at the end of a line, <c>null</c> is returned.
             /// </summary>
-            public ICoordinate SegmentEnd
+            public Coordinate SegmentEnd
             {
                 get
                 {

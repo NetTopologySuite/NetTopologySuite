@@ -20,9 +20,9 @@ namespace NetTopologySuite.Operation.Linemerge
         {
             if (lineString.IsEmpty)
                 return;
-            ICoordinate[] coordinates = CoordinateArrays.RemoveRepeatedPoints(lineString.Coordinates);
-            ICoordinate startCoordinate = coordinates[0];
-            ICoordinate endCoordinate = coordinates[coordinates.Length - 1];
+            Coordinate[] coordinates = CoordinateArrays.RemoveRepeatedPoints(lineString.Coordinates);
+            Coordinate startCoordinate = coordinates[0];
+            Coordinate endCoordinate = coordinates[coordinates.Length - 1];
             Node startNode = GetNode(startCoordinate);
             Node endNode = GetNode(endCoordinate);
             DirectedEdge directedEdge0 = new LineMergeDirectedEdge(startNode, endNode, 
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Operation.Linemerge
         /// </summary>
         /// <param name="coordinate"></param>
         /// <returns></returns>
-        private Node GetNode(ICoordinate coordinate) 
+        private Node GetNode(Coordinate coordinate) 
         {
             Node node = FindNode(coordinate);
             if (node == null) 

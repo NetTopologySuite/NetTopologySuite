@@ -63,7 +63,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override ICoordinate Coordinate 
+        public override Coordinate Coordinate 
         {
             get
             {
@@ -80,15 +80,15 @@ namespace NetTopologySuite.Geometries
         /// is only a temporary container which is not synchronized back.
         /// </summary>
         /// <returns>The collected coordinates.</returns>
-        public override ICoordinate[] Coordinates
+        public override Coordinate[] Coordinates
         {
             get
             {
-                ICoordinate[] coordinates = new ICoordinate[NumPoints];
+                Coordinate[] coordinates = new Coordinate[NumPoints];
                 int k = -1;
                 for (int i = 0; i < _geometries.Length; i++)
                 {
-                    ICoordinate[] childCoordinates = _geometries[i].Coordinates;
+                    Coordinate[] childCoordinates = _geometries[i].Coordinates;
                     for (int j = 0; j < childCoordinates.Length; j++)
                     {
                         k++;

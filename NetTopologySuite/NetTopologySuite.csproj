@@ -113,9 +113,6 @@
     <Compile Include="Features\Feature.cs" />
     <Compile Include="Features\IAttributesTable.cs" />
     <Compile Include="Algorithm\Angle.cs" />
-    <Compile Include="Geometries\Coordinate.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Geometries\CoordinateArrays.cs" />
     <Compile Include="Geometries\CoordinateArraySequence.cs" />
     <Compile Include="Geometries\CoordinateArraySequenceFactory.cs" />
@@ -507,13 +504,13 @@
     <Folder Include="Geometries\Implementation\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\PowerCollections\Source\PowerCollections\PowerCollections.csproj">
-      <Project>{5821977D-AC2C-4912-BCD0-6E6B1A756167}</Project>
-      <Name>PowerCollections</Name>
-    </ProjectReference>
     <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">
       <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
       <Name>GeoAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PowerCollections\PowerCollections\PowerCollections.csproj">
+      <Project>{5821977D-AC2C-4912-BCD0-6E6B1A756167}</Project>
+      <Name>PowerCollections</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -27,7 +27,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="p2">Another extremal point of the envelope.</param>
         /// <param name="q">Point to test for intersection.</param>
         /// <returns><c>true</c> if q intersects the envelope p1-p2.</returns>
-        public static bool Intersects(ICoordinate p1, ICoordinate p2, ICoordinate q)
+        public static bool Intersects(Coordinate p1, Coordinate p2, Coordinate q)
         {
             return ((q.X >= (p1.X < p2.X ? p1.X : p2.X)) && (q.X <= (p1.X > p2.X ? p1.X : p2.X))) &&
                    ((q.Y >= (p1.Y < p2.Y ? p1.Y : p2.Y)) && (q.Y <= (p1.Y > p2.Y ? p1.Y : p2.Y)));
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="q1">One extremal point of the envelope Q.</param>
         /// <param name="q2">Another extremal point of the envelope Q.</param>
         /// <returns><c>true</c> if Q intersects Point</returns>
-        public static bool Intersects(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2)
+        public static bool Intersects(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
             
             double minp = Math.Min(p1.X, p2.X);
@@ -114,7 +114,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="p1">The first Coordinate.</param>
         /// <param name="p2">The second Coordinate.</param>
-        public Envelope(ICoordinate p1, ICoordinate p2)
+        public Envelope(Coordinate p1, Coordinate p2)
         {
             Init(p1.X, p2.X, p1.Y, p2.Y);
         }
@@ -123,7 +123,7 @@ namespace NetTopologySuite.Geometries
         /// Creates an <c>Envelope</c> for a region defined by a single Coordinate.
         /// </summary>
         /// <param name="p">The Coordinate.</param>
-        public Envelope(ICoordinate p)
+        public Envelope(Coordinate p)
         {
             Init(p.X, p.X, p.Y, p.Y);
         }
@@ -182,7 +182,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="p1">The first Coordinate.</param>
         /// <param name="p2">The second Coordinate.</param>
-        public void Init(ICoordinate p1, ICoordinate p2)
+        public void Init(Coordinate p1, Coordinate p2)
         {
             Init(p1.X, p2.X, p1.Y, p2.Y);
         }
@@ -191,7 +191,7 @@ namespace NetTopologySuite.Geometries
         /// Initialize an <c>Envelope</c> for a region defined by a single Coordinate.
         /// </summary>
         /// <param name="p">The Coordinate.</param>
-        public void Init(ICoordinate p)
+        public void Init(Coordinate p)
         {
             Init(p.X, p.X, p.Y, p.Y);
         }
@@ -346,18 +346,18 @@ namespace NetTopologySuite.Geometries
 
         /// <summary>
         /// Enlarges this <code>Envelope</code> so that it contains
-        /// the given <see cref="ICoordinate"/>. 
+        /// the given <see cref="Coordinate"/>. 
         /// Has no effect if the point is already on or within the envelope.
         /// </summary>
         /// <param name="p">The Coordinate.</param>
-        public void ExpandToInclude(ICoordinate p)
+        public void ExpandToInclude(Coordinate p)
         {
             ExpandToInclude(p.X, p.Y);
         }
 
         /// <summary>
         /// Enlarges this <c>Envelope</c> so that it contains
-        /// the given <see cref="ICoordinate"/>. 
+        /// the given <see cref="Coordinate"/>. 
         /// </summary>
         /// <remarks>Has no effect if the point is already on or within the envelope.</remarks>
         /// <param name="x">The value to lower the minimum x to or to raise the maximum x to.</param>
@@ -434,7 +434,7 @@ namespace NetTopologySuite.Geometries
         /// The centre coordinate of this envelope, 
         /// or <c>null</c> if the envelope is null.
         /// </returns>.
-        public ICoordinate Centre
+        public Coordinate Centre
         {
             get
             {
@@ -496,7 +496,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="p"></param>
         /// <returns></returns>
         [Obsolete("Use Intersects instead")]
-        public bool Overlaps(ICoordinate p)
+        public bool Overlaps(Coordinate p)
         {
             return Intersects(p);
         }
@@ -518,7 +518,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="p"> the <c>Coordinate</c> to be tested.</param>
         /// <returns><c>true</c> if the point overlaps this <c>Envelope</c>.</returns>
-        public bool Intersects(ICoordinate p)
+        public bool Intersects(Coordinate p)
         {
             return Intersects(p.X, p.Y);
         }
@@ -558,8 +558,8 @@ namespace NetTopologySuite.Geometries
         /// </remarks>
         /// <param name="p">the point which this <c>Envelope</c> is being checked for containing</param>
         /// <returns><c>true</c> if the point lies in the interior or on the boundary of this <c>Envelope</c>. </returns>
-        /// <see cref="Covers(ICoordinate)"/>
-        public bool Contains(ICoordinate p)
+        /// <see cref="Covers(Coordinate)"/>
+        public bool Contains(Coordinate p)
         {
             return Covers(p);
         }
@@ -601,7 +601,7 @@ namespace NetTopologySuite.Geometries
         ///</summary>
         /// <param name="p">the point which this <c>Envelope</c> is being checked for containing</param>
         /// <returns><c>true</c> if the point lies in the interior or on the boundary of this <c>Envelope</c>.</returns>
-        public bool Covers(ICoordinate p)
+        public bool Covers(Coordinate p)
         {
             return Covers(p.X, p.Y);
         }
@@ -767,7 +767,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Calculates the union of the current box and the given coordinate.
         /// </summary>
-        public IEnvelope Union(ICoordinate coord)
+        public IEnvelope Union(Coordinate coord)
         {
             Envelope env = (Envelope)Clone();
             env.ExpandToInclude(coord);
@@ -794,7 +794,7 @@ namespace NetTopologySuite.Geometries
         /// Moves the envelope to the indicated coordinate.
         /// </summary>
         /// <param name="centre">The new centre coordinate.</param>
-        public void SetCentre(ICoordinate centre)
+        public void SetCentre(Coordinate centre)
         {
             SetCentre(centre, Width, Height);
         }
@@ -835,7 +835,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="centre">The new centre coordinate.</param>
         /// <param name="width">The new width.</param>
         /// <param name="height">The new height.</param>
-        public void SetCentre(ICoordinate centre, double width, double height)
+        public void SetCentre(Coordinate centre, double width, double height)
         {
             _minx = centre.X - (width / 2);
             _maxx = centre.X + (width / 2);

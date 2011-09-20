@@ -31,7 +31,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         [Test]
         public void TestCreateBySizeAndModify()
         {
-            ICoordinate[] coords = CreateArray(SIZE);
+            Coordinate[] coords = CreateArray(SIZE);
 
             ICoordinateSequence seq = csFactory.Create(SIZE, 3);
             for (int i = 0; i < seq.Count; i++)
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 
             for (int i = 0; i < seq.Count; i++)
             {
-                ICoordinate p = seq.GetCoordinate(i);
+                Coordinate p = seq.GetCoordinate(i);
                 Assert.IsTrue(Double.IsNaN(p.Z));
             }
         }
@@ -115,7 +115,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         * @param coords
         * @return
         */
-        bool IsEqual(ICoordinateSequence seq, ICoordinate[] coords)
+        bool IsEqual(ICoordinateSequence seq, Coordinate[] coords)
         {
             if (seq.Count != coords.Length) return false;
 

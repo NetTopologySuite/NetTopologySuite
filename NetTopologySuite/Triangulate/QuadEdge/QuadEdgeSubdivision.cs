@@ -307,7 +307,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>a quadedge on the edge of a triangle which touches or contains the location,
         /// or null if no such triangle exists
         /// </returns>
-        public QuadEdge Locate(ICoordinate p) {
+        public QuadEdge Locate(Coordinate p) {
             return _locator.Locate(new Vertex(p));
         }
 
@@ -320,7 +320,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>the edge joining the coordinates, if present,
         /// or null if no such edge exists
         /// </returns>
-        public QuadEdge Locate(ICoordinate p0, ICoordinate p1) {
+        public QuadEdge Locate(Coordinate p0, Coordinate p1) {
             // find an edge containing one of the points
             QuadEdge e = _locator.Locate(new Vertex(p0));
             if (e == null)
@@ -446,7 +446,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="e">a QuadEdge</param>
         /// <param name="p">a point</param>
         /// <returns>true if the vertex lies on the edge</returns>
-        public bool IsOnEdge(QuadEdge e, ICoordinate p)
+        public bool IsOnEdge(QuadEdge e, Coordinate p)
         {
             seg.SetCoordinates(e.Orig.Coordinate, e.Dest.Coordinate);
             double dist = seg.Distance(p);
@@ -595,12 +595,12 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             public void Visit(QuadEdge[] triEdges) 
             {
-                ICoordinate a = triEdges[0].Orig.Coordinate;
-                ICoordinate b = triEdges[1].Orig.Coordinate;
-                ICoordinate c = triEdges[2].Orig.Coordinate;
+                Coordinate a = triEdges[0].Orig.Coordinate;
+                Coordinate b = triEdges[1].Orig.Coordinate;
+                Coordinate c = triEdges[2].Orig.Coordinate;
 			
                 // TODO: choose the most accurate circumcentre based on the edges
-                ICoordinate cc = Triangle.Circumcentre(a, b, c);
+                Coordinate cc = Triangle.Circumcentre(a, b, c);
                 Vertex ccVertex = new Vertex(cc);
                 // save the circumcentre as the origin for the dual edges originating in this triangle
                 for (int i = 0; i < 3; i++) {
@@ -747,7 +747,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// </summary>
         /// <param name="includeFrame">true if the frame triangles should be included</param>
         /// <returns>a list of Coordinate[4] representing each triangle</returns>
-        public IList<ICoordinate[]> GetTriangleCoordinates(bool includeFrame)
+        public IList<Coordinate[]> GetTriangleCoordinates(bool includeFrame)
         {
             var visitor = new TriangleCoordinatesVisitor();
             VisitTriangles(visitor, includeFrame);
@@ -758,7 +758,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             private readonly CoordinateList _coordList = new CoordinateList();
 
-            private readonly IList<ICoordinate[]> _triCoords = new List<ICoordinate[]>();
+            private readonly IList<Coordinate[]> _triCoords = new List<Coordinate[]>();
 
             public void Visit(QuadEdge[] triEdges)
             {
@@ -771,7 +771,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 if (_coordList.Count > 0)
                 {
                     _coordList.CloseRing();
-                    ICoordinate[] pts = _coordList.ToCoordinateArray();
+                    Coordinate[] pts = _coordList.ToCoordinateArray();
                     if (pts.Length != 4)
                     {
                         //String loc = "";
@@ -791,7 +791,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 }
             }
 
-            public IList<ICoordinate[]> GetTriangles()
+            public IList<Coordinate[]> GetTriangles()
             {
                 return _triCoords;
             }
@@ -896,13 +896,13 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>a polygon indicating the cell extent</returns>
         public IPolygon GetVoronoiCellPolygon(QuadEdge qe, IGeometryFactory geomFact)
         {
-            var cellPts = new List<ICoordinate>();
+            var cellPts = new List<Coordinate>();
             QuadEdge startQE = qe;
 
             do {
-                // ICoordinate cc = circumcentre(qe);
+                // Coordinate cc = circumcentre(qe);
                 // use previously computed circumcentre
-                ICoordinate cc = qe.Rot.Orig.Coordinate;
+                Coordinate cc = qe.Rot.Orig.Coordinate;
                 cellPts.Add(cc);
       
                 // move to next triangle CW around vertex
@@ -912,7 +912,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             var coordList = new CoordinateList();
             coordList.AddAll(cellPts, false);
             coordList.CloseRing();
-            ICoordinate[] pts = coordList.ToCoordinateArray();
+            Coordinate[] pts = coordList.ToCoordinateArray();
             IPolygon cellPoly = geomFact.CreatePolygon(geomFact.CreateLinearRing(pts), null);
     
             Vertex v = startQE.Orig;

@@ -14,7 +14,7 @@ namespace NetTopologySuite.Samples.Geometries
 	/// </summary>	
 	public class ExtendedCoordinateSequence : ICoordinateSequence
 	{
-		public static ExtendedCoordinate[] Copy(ICoordinate[] coordinates)
+		public static ExtendedCoordinate[] Copy(Coordinate[] coordinates)
 		{
 			ExtendedCoordinate[] copy = new ExtendedCoordinate[coordinates.Length];
 			for (int i = 0; i < coordinates.Length; i++)			
@@ -35,7 +35,7 @@ namespace NetTopologySuite.Samples.Geometries
 		/// Always makes a copy of the input array, since the actual class
 		/// of the Coordinates in the input array may be different from ExtendedCoordinate.
 		/// </summary>
-		public ExtendedCoordinateSequence(ICoordinate[] copyCoords)
+		public ExtendedCoordinateSequence(Coordinate[] copyCoords)
 		{
 			coordinates = Copy(copyCoords);
 		}
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-		public ICoordinate GetCoordinate(int i)
+		public Coordinate GetCoordinate(int i)
 		{
 			return coordinates[i];
 		}
@@ -94,7 +94,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// be built from scratch.
         /// </summary>
         /// <returns></returns>
-		public virtual ICoordinate[] ToCoordinateArray()
+		public virtual Coordinate[] ToCoordinateArray()
 		{
 			return coordinates;
 		}
@@ -124,9 +124,9 @@ namespace NetTopologySuite.Samples.Geometries
         /// </summary>
         /// <param name="index">The index.</param>
         /// <returns></returns>
-        public ICoordinate GetCoordinateCopy(int index)
+        public Coordinate GetCoordinateCopy(int index)
         {
-            return new Coordinate(coordinates[index]);
+            return new ExtendedCoordinate(coordinates[index]);
         }
 
         /// <summary>
@@ -135,10 +135,15 @@ namespace NetTopologySuite.Samples.Geometries
         /// </summary>
         /// <param name="index">The index of the coordinate to copy.</param>
         /// <param name="coord">A Coordinate to receive the value.</param>
-        public void GetCoordinate(int index, ICoordinate coord)
+        public void GetCoordinate(int index, Coordinate coord)
         {
             coord.X = coordinates[index].X;
             coord.Y = coordinates[index].Y;
+            coord.Z = coordinates[index].Z;
+
+            var exCoord = coord as ExtendedCoordinate;
+            if (exCoord != null)
+                exCoord.M = coordinates[index].M;
         }
 
 

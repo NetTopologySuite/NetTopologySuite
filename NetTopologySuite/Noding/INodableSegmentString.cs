@@ -12,7 +12,7 @@ namespace NetTopologySuite.Noding
         ///</summary>
         ///<param name="intPt">the location of the intersection</param>
         ///<param name="segmentIndex">the index of the segment containing the intersection</param>
-        void AddIntersection(ICoordinate intPt, Int32 segmentIndex);
+        void AddIntersection(Coordinate intPt, Int32 segmentIndex);
 
     }
 }

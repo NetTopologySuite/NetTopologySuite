@@ -31,7 +31,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         private bool _hasProperInterior;
 
         // the proper intersection point found
-        private ICoordinate _properIntersectionPoint;
+        private Coordinate _properIntersectionPoint;
 
         private readonly LineIntersector _li;
         private readonly bool _includeProper;
@@ -73,7 +73,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <returns> 
         /// The proper intersection point, or <c>null</c> if none was found.
         /// </returns>
-        public ICoordinate ProperIntersectionPoint
+        public Coordinate ProperIntersectionPoint
         {
             get
             {
@@ -166,10 +166,10 @@ namespace NetTopologySuite.GeometriesGraph.Index
                 return;             // Diego Guidi say's: Avoid overload equality, i use references equality, otherwise TOPOLOGY ERROR!
                             
             NumTests++;
-            ICoordinate p00 = e0.Coordinates[segIndex0];
-            ICoordinate p01 = e0.Coordinates[segIndex0 + 1];
-            ICoordinate p10 = e1.Coordinates[segIndex1];
-            ICoordinate p11 = e1.Coordinates[segIndex1 + 1];
+            Coordinate p00 = e0.Coordinates[segIndex0];
+            Coordinate p01 = e0.Coordinates[segIndex0 + 1];
+            Coordinate p10 = e1.Coordinates[segIndex1];
+            Coordinate p11 = e1.Coordinates[segIndex1 + 1];
             _li.ComputeIntersection(p00, p01, p10, p11);            
             /*
              *  Always record any non-proper intersections.
@@ -196,7 +196,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
                     }
                     if (_li.IsProper)
                     {
-                        _properIntersectionPoint = (ICoordinate) _li.GetIntersection(0).Clone();
+                        _properIntersectionPoint = (Coordinate) _li.GetIntersection(0).Clone();
                         _hasProper = true;
                         if (!IsBoundaryPoint(_li, _bdyNodes))
                             _hasProperInterior = true;                        
@@ -232,7 +232,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         {
             foreach (Node node in bdyNodes)
             {
-                ICoordinate pt = node.Coordinate;
+                Coordinate pt = node.Coordinate;
                 if (li.IsIntersection(pt)) 
                     return true;
             }

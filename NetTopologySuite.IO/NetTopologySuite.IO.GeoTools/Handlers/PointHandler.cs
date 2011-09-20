@@ -32,8 +32,7 @@ namespace NetTopologySuite.IO.Handlers
             type = (ShapeGeometryType) EnumUtility.Parse(typeof (ShapeGeometryType), shapeTypeNum.ToString());
             if (type == ShapeGeometryType.NullShape)
             {
-                ICoordinate emptyCoordinate = null;
-                return geometryFactory.CreatePoint(emptyCoordinate);
+                return geometryFactory.CreatePoint((Coordinate)null);
             }
 
             if (!(type == ShapeGeometryType.Point  || type == ShapeGeometryType.PointM ||
@@ -42,7 +41,7 @@ namespace NetTopologySuite.IO.Handlers
 
             double x = file.ReadDouble();
             double y = file.ReadDouble();		    
-            ICoordinate external = new Coordinate(x,y);			
+            var external = new Coordinate(x,y);			
             geometryFactory.PrecisionModel.MakePrecise(external);
             IPoint point = geometryFactory.CreatePoint(external);
             GrabZMValue(file);

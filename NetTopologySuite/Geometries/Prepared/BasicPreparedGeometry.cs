@@ -17,7 +17,7 @@ namespace NetTopologySuite.Geometries.Prepared
     public class BasicPreparedGeometry : IPreparedGeometry
     {
         private readonly IGeometry _baseGeom;
-        private readonly IList<ICoordinate> _representativePts;  // List<Coordinate>
+        private readonly IList<Coordinate> _representativePts;  // List<Coordinate>
 
         public BasicPreparedGeometry(IGeometry geom)
         {
@@ -32,7 +32,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// One vertex is included for every component of the geometry
         /// (i.e. including one for every ring of polygonal geometries)
         ///</summary>
-        public IList<ICoordinate> RepresentativePoints
+        public IList<Coordinate> RepresentativePoints
         {
             get { return _representativePts; }
         }
@@ -46,7 +46,7 @@ namespace NetTopologySuite.Geometries.Prepared
         public bool IsAnyTargetComponentInTest(IGeometry testGeom)
         {
             var locator = new PointLocator();
-            foreach (ICoordinate representativePoint in RepresentativePoints)
+            foreach (Coordinate representativePoint in RepresentativePoints)
             {
                 if (locator.Intersects(representativePoint, testGeom))
                     return true;

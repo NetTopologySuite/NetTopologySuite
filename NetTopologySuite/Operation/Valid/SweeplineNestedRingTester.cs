@@ -22,7 +22,7 @@ namespace NetTopologySuite.Operation.Valid
         private IList rings = new ArrayList();
         private IEnvelope totalEnv = new Envelope();
         private SweepLineIndex sweepLine;
-        private ICoordinate nestedPt = null;
+        private Coordinate nestedPt = null;
 
         /// <summary>
         /// 
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate NestedPoint 
+        public Coordinate NestedPoint 
         {
             get
             {
@@ -88,11 +88,11 @@ namespace NetTopologySuite.Operation.Valid
         /// <returns></returns>
         private bool IsInside(ILinearRing innerRing, ILinearRing searchRing)
         {
-            ICoordinate[] innerRingPts = innerRing.Coordinates;
-            ICoordinate[] searchRingPts = searchRing.Coordinates;
+            Coordinate[] innerRingPts = innerRing.Coordinates;
+            Coordinate[] searchRingPts = searchRing.Coordinates;
             if (!innerRing.EnvelopeInternal.Intersects(searchRing.EnvelopeInternal))
                 return false;
-            ICoordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, graph);
+            Coordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, graph);
             Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
             bool isInside = CGAlgorithms.IsPointInRing(innerRingPt, searchRingPts);
             if (isInside) 

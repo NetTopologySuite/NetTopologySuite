@@ -17,7 +17,7 @@ namespace NetTopologySuite.Algorithm.Locate
         /// <param name="p">The point to test</param>
         /// <param name="geom">The areal geometry to test</param>
         /// <returns>The Location of the point in the geometry  </returns>
-        public static Location Locate(ICoordinate p, IGeometry geom)
+        public static Location Locate(Coordinate p, IGeometry geom)
         {
             if (geom.IsEmpty) return Location.Exterior;
 
@@ -26,7 +26,7 @@ namespace NetTopologySuite.Algorithm.Locate
             return Location.Exterior;
         }
 
-        private static Boolean ContainsPoint(ICoordinate p, IGeometry geom)
+        private static Boolean ContainsPoint(Coordinate p, IGeometry geom)
         {
             if (geom is IPolygon)
                 return ContainsPointInPolygon(p, (IPolygon)geom);
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Algorithm.Locate
             return false;
         }
 
-        public static Boolean ContainsPointInPolygon(ICoordinate p, IPolygon poly)
+        public static Boolean ContainsPointInPolygon(Coordinate p, IPolygon poly)
         {
             if (poly.IsEmpty) return false;
             ILinearRing shell = (ILinearRing)poly.ExteriorRing;
@@ -65,7 +65,7 @@ namespace NetTopologySuite.Algorithm.Locate
         /// <param name="p">The point to test</param>
         /// <param name="ring">A linear ring</param>
         /// <returns><c>true</c> if the point lies inside the ring</returns>
-        private static Boolean IsPointInRing(ICoordinate p, ILinearRing ring)
+        private static Boolean IsPointInRing(Coordinate p, ILinearRing ring)
         {
             // short-circuit if point is not in ring envelope
             if (!ring.EnvelopeInternal.Intersects(p))
@@ -80,7 +80,7 @@ namespace NetTopologySuite.Algorithm.Locate
             _geom = geom;
         }
 
-        public Location Locate(ICoordinate p)
+        public Location Locate(Coordinate p)
         {
             return Locate(p, _geom);
         }

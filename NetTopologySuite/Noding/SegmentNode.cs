@@ -13,7 +13,7 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// 
         /// </summary>
-        public readonly ICoordinate Coordinate;   // the point of intersection
+        public readonly Coordinate Coordinate;   // the point of intersection
         
         /// <summary>
         /// 
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Noding
         /// <param name="coord"></param>
         /// <param name="segmentIndex"></param>
         /// <param name="segmentOctant"></param>
-        public SegmentNode(INodableSegmentString segString, ICoordinate coord, int segmentIndex, Octants segmentOctant) 
+        public SegmentNode(INodableSegmentString segString, Coordinate coord, int segmentIndex, Octants segmentOctant) 
         {
             Coordinate = null;
             this.segString = segString;

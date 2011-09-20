@@ -23,9 +23,9 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="dest1"></param>
         /// <param name="dest2"></param>
         /// <returns>The computed transformation</returns>
-        public static AffineTransformation CreateFromControlVectors(ICoordinate src0,
-                ICoordinate src1, ICoordinate src2, ICoordinate dest0, ICoordinate dest1,
-                ICoordinate dest2)
+        public static AffineTransformation CreateFromControlVectors(Coordinate src0,
+                Coordinate src1, Coordinate src2, Coordinate dest0, Coordinate dest1,
+                Coordinate dest2)
         {
             AffineTransformationBuilder builder = new AffineTransformationBuilder(src0,
                     src1, src2, dest0, dest1, dest2);
@@ -46,10 +46,10 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="dest1"></param>
         /// <returns>The computed transformation</returns>
         /// <returns><c>null</c> if the control vectors do not determine a well-defined transformation</returns>
-        public static AffineTransformation CreateFromControlVectors(ICoordinate src0,
-                ICoordinate src1, ICoordinate dest0, ICoordinate dest1)
+        public static AffineTransformation CreateFromControlVectors(Coordinate src0,
+                Coordinate src1, Coordinate dest0, Coordinate dest1)
         {
-            ICoordinate rotPt = new Coordinate(dest1.X - dest0.X, dest1.Y - dest0.Y);
+            Coordinate rotPt = new Coordinate(dest1.X - dest0.X, dest1.Y - dest0.Y);
 
             double ang = AngleUtility.AngleBetweenOriented(src1, src0, rotPt);
 
@@ -78,8 +78,8 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="src0">The start point of the control vector</param>
         /// <param name="dest0">The end point of the control vector</param>
         /// <returns>The computed transformation</returns>
-        public static AffineTransformation CreateFromControlVectors(ICoordinate src0,
-                ICoordinate dest0)
+        public static AffineTransformation CreateFromControlVectors(Coordinate src0,
+                Coordinate dest0)
         {
             double dx = dest0.X - src0.X;
             double dy = dest0.Y - src0.Y;
@@ -94,8 +94,8 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="dest">The destination points of the vectors</param>
         /// <returns>The computed transformation</returns>
         /// <exception cref="ArgumentException">if the control vector arrays are too short, long or of different lengths</exception>
-        public static AffineTransformation CreateFromControlVectors(ICoordinate[] src,
-                ICoordinate[] dest)
+        public static AffineTransformation CreateFromControlVectors(Coordinate[] src,
+                Coordinate[] dest)
         {
             if (src.Length != dest.Length)
                 throw new ArgumentException(
@@ -130,10 +130,10 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="dest1">The end point of the destination baseline</param>
         /// <returns></returns>
         public static AffineTransformation CreateFromBaseLines(
-                ICoordinate src0, ICoordinate src1,
-                ICoordinate dest0, ICoordinate dest1)
+                Coordinate src0, Coordinate src1,
+                Coordinate dest0, Coordinate dest1)
         {
-            ICoordinate rotPt = new Coordinate(src0.X + dest1.X - dest0.X, src0.Y + dest1.Y - dest0.Y);
+            Coordinate rotPt = new Coordinate(src0.X + dest1.X - dest0.X, src0.Y + dest1.Y - dest0.Y);
 
             double ang = AngleUtility.AngleBetweenOriented(src1, src0, rotPt);
 

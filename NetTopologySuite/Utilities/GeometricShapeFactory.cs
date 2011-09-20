@@ -36,7 +36,7 @@ namespace NetTopologySuite.Utilities
         /// (which in most cases is the
         /// lower left point of the envelope containing the shape).
         /// </summary>
-        public ICoordinate Base  
+        public Coordinate Base  
         {
             get
             {
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Utilities
         /// Gets/Sets the location of the shape by specifying the centre of
         /// the shape's bounding box.
         /// </summary>
-        public ICoordinate Centre
+        public Coordinate Centre
         {
             get
             {
@@ -133,14 +133,14 @@ namespace NetTopologySuite.Utilities
             }
         }
 
-        protected ICoordinate CreateCoord(double x, double y)
+        protected Coordinate CreateCoord(double x, double y)
         {
-            ICoordinate p = new Coordinate(x, y);
+            Coordinate p = new Coordinate(x, y);
             precModel.MakePrecise(p);
             return p;
         }
 
-        protected ICoordinate CreateCoordTrans(double x, double y, ICoordinate trans)
+        protected Coordinate CreateCoordTrans(double x, double y, Coordinate trans)
         {
             return CreateCoord(x + trans.X, y + trans.Y);
         }
@@ -158,7 +158,7 @@ namespace NetTopologySuite.Utilities
             double XsegLen = _dim.Envelope.Width / nSide;
             double YsegLen = _dim.Envelope.Height / nSide;
 
-            ICoordinate[] pts = new ICoordinate[4 * nSide + 1];
+            Coordinate[] pts = new Coordinate[4 * nSide + 1];
             IEnvelope env = _dim.Envelope;            
 
             for (i = 0; i < nSide; i++) 
@@ -205,14 +205,14 @@ namespace NetTopologySuite.Utilities
             double centreX = env.MinX + xRadius;
             double centreY = env.MinY + yRadius;
 
-            ICoordinate[] pts = new ICoordinate[_nPts + 1];
+            Coordinate[] pts = new Coordinate[_nPts + 1];
             int iPt = 0;
             for (int i = 0; i < _nPts; i++) 
             {
                 double ang = i * (2 * Math.PI / _nPts);
                 double x = xRadius * Math.Cos(ang) + centreX;
                 double y = yRadius * Math.Sin(ang) + centreY;
-                ICoordinate pt = CreateCoord(x, y);
+                Coordinate pt = CreateCoord(x, y);
                 pts[iPt++] = pt;
             }
             pts[iPt] = pts[0];
@@ -243,7 +243,7 @@ namespace NetTopologySuite.Utilities
             IEnvelope env = _dim.Envelope;
 
             double radius = _dim.Size / 2;
-            ICoordinate centre = _dim.Centre;
+            Coordinate centre = _dim.Centre;
 
             double r4 = Math.Pow(radius, power);
             double y0 = radius;
@@ -252,7 +252,7 @@ namespace NetTopologySuite.Utilities
 
             int nSegsInOct = _nPts / 8;
             int totPts = nSegsInOct * 8 + 1;
-            ICoordinate[] pts = new Coordinate[totPts];
+            Coordinate[] pts = new Coordinate[totPts];
             double xInc = xyInt / nSegsInOct;
 
             for (int i = 0; i <= nSegsInOct; i++)
@@ -306,14 +306,14 @@ namespace NetTopologySuite.Utilities
                 angSize = 2 * Math.PI;
             double angInc = angSize / (_nPts - 1);
 
-            ICoordinate[] pts = new ICoordinate[_nPts];
+            Coordinate[] pts = new Coordinate[_nPts];
             int iPt = 0;
             for (int i = 0; i < _nPts; i++) 
             {
                 double ang = startAng + i * angInc;
                 double x = xRadius * Math.Cos(ang) + centreX;
                 double y = yRadius * Math.Sin(ang) + centreY;
-                ICoordinate pt = CreateCoord(x, y);
+                Coordinate pt = CreateCoord(x, y);
                 pts[iPt++] = pt;
             }
             ILineString line = GeomFact.CreateLineString(pts);
@@ -346,7 +346,7 @@ namespace NetTopologySuite.Utilities
             // double check = angInc * nPts;
             // double checkEndAng = startAng + check;
 
-            var pts = new ICoordinate[_nPts + 2];
+            var pts = new Coordinate[_nPts + 2];
 
             int iPt = 0;
             pts[iPt++] = CreateCoord(centreX, centreY);
@@ -369,23 +369,23 @@ namespace NetTopologySuite.Utilities
         /// </summary>
         protected class Dimensions
         {
-            private ICoordinate _basecoord;
+            private Coordinate _basecoord;
 
             /// <summary>
             /// 
             /// </summary>
-            public ICoordinate Base
+            public Coordinate Base
             {
                 get { return _basecoord; }
                 set { _basecoord = value; }
             }
 
-            private ICoordinate centre;
+            private Coordinate centre;
 
             /// <summary>
             /// 
             /// </summary>
-            public ICoordinate Centre
+            public Coordinate Centre
             {
                 get { return centre; }
                 set { centre = value; }

@@ -31,7 +31,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             IsValidOp isValidOp = new IsValidOp(line);
             bool valid = isValidOp.IsValid;
             TopologyValidationError err = isValidOp.ValidationError;
-            ICoordinate errCoord = err.Coordinate;
+            Coordinate errCoord = err.Coordinate;
 
             Assert.AreEqual(TopologyValidationErrors.InvalidCoordinate, err.ErrorType);
             Assert.IsTrue(Double.IsNaN(errCoord.Y));

@@ -19,7 +19,7 @@ namespace NetTopologySuite.Simplify
         private readonly LineSegmentIndex _inputIndex = new LineSegmentIndex();
         private readonly LineSegmentIndex _outputIndex = new LineSegmentIndex();
         private TaggedLineString _line;
-        private ICoordinate[] _linePts;
+        private Coordinate[] _linePts;
         private double _distanceTolerance;        
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace NetTopologySuite.Simplify
         /// <param name="j"></param>
         /// <param name="maxDistance"></param>
         /// <returns></returns>
-        private int FindFurthestPoint(ICoordinate[] pts, int i, int j, double[] maxDistance)
+        private int FindFurthestPoint(Coordinate[] pts, int i, int j, double[] maxDistance)
         {
             LineSegment seg = new LineSegment();
             seg.P0 = pts[i];
@@ -122,7 +122,7 @@ namespace NetTopologySuite.Simplify
             int maxIndex = i;
             for (int k = i + 1; k < j; k++) 
             {
-                ICoordinate midPt = pts[k];
+                Coordinate midPt = pts[k];
                 double distance = seg.Distance(midPt);
                 if (distance > maxDist) 
                 {
@@ -143,8 +143,8 @@ namespace NetTopologySuite.Simplify
         private LineSegment Flatten(int start, int end)
         {
             // make a new segment for the simplified point
-            ICoordinate p0 = _linePts[start];
-            ICoordinate p1 = _linePts[end];
+            Coordinate p0 = _linePts[start];
+            Coordinate p1 = _linePts[end];
             LineSegment newSeg = new LineSegment(p0, p1);
             // update the indexes
             Remove(_line, start, end);

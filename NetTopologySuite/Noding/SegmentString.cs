@@ -45,14 +45,14 @@ namespace NetTopologySuite.Noding
         }
 
         private readonly SegmentNodeList _nodeList;
-        private readonly ICoordinate[] _pts;
+        private readonly Coordinate[] _pts;
 
         /// <summary>
         /// Creates a new segment string from a list of vertices.
         /// </summary>
         /// <param name="pts">The vertices of the segment string.</param>
         /// <param name="data">The user-defined data of this segment string (may be null).</param>
-        public NodedSegmentString(ICoordinate[] pts, Object data)
+        public NodedSegmentString(Coordinate[] pts, Object data)
         {
             _nodeList = new SegmentNodeList(this);
 
@@ -87,7 +87,7 @@ namespace NetTopologySuite.Noding
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public ICoordinate GetCoordinate(int i) 
+        public Coordinate GetCoordinate(int i) 
         { 
             return _pts[i]; 
         }
@@ -95,7 +95,7 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate[] Coordinates
+        public Coordinate[] Coordinates
         {
             get { return _pts; }
         }
@@ -124,7 +124,7 @@ namespace NetTopologySuite.Noding
         }
 
 
-        private static Octants SafeOctant(ICoordinate p0, ICoordinate p1)
+        private static Octants SafeOctant(Coordinate p0, Coordinate p1)
         {
   	        if (p0.Equals2D(p1)) return Octants.Zero;
   	        return Octant.GetOctant(p0, p1);
@@ -156,7 +156,7 @@ namespace NetTopologySuite.Noding
         /// <param name="intIndex"></param>
         public void AddIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
         {
-            ICoordinate intPt = new Coordinate(li.GetIntersection(intIndex));
+            Coordinate intPt = new Coordinate(li.GetIntersection(intIndex));
             AddIntersection(intPt, segmentIndex);
         }
 
@@ -165,7 +165,7 @@ namespace NetTopologySuite.Noding
         /// </summary>
         /// <param name="intPt"></param>
         /// <param name="segmentIndex"></param>
-        public void AddIntersection(ICoordinate intPt, int segmentIndex)
+        public void AddIntersection(Coordinate intPt, int segmentIndex)
         {
             var normalizedSegmentIndex = segmentIndex;
             // normalize the intersection point location

@@ -18,7 +18,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
         /// </summary>
         public MultiPointSamples() : base()
         {
-            ICoordinate[] coordinates = new ICoordinate[]
+            Coordinate[] coordinates = new Coordinate[]
             {
                 new Coordinate(100,100),
                 new Coordinate(200,200),

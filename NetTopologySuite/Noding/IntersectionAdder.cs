@@ -37,7 +37,7 @@ namespace NetTopologySuite.Noding
         private bool hasInterior = false;
 
         // the proper intersection point found
-        private ICoordinate properIntersectionPoint = null;
+        private Coordinate properIntersectionPoint = null;
 
         private LineIntersector li = null;        
         
@@ -84,7 +84,7 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// Returns the proper intersection point, or <c>null</c> if none was found.
         /// </summary>
-        public ICoordinate ProperIntersectionPoint
+        public Coordinate ProperIntersectionPoint
         {
             get
             {
@@ -190,12 +190,12 @@ namespace NetTopologySuite.Noding
                 return;
 
             NumTests++;
-            ICoordinate[] coordinates0 = e0.Coordinates;
-            ICoordinate p00 = coordinates0[segIndex0];
-            ICoordinate p01 = coordinates0[segIndex0 + 1];
-            ICoordinate[] coordinates1 = e1.Coordinates;
-            ICoordinate p10 = coordinates1[segIndex1];
-            ICoordinate p11 = coordinates1[segIndex1 + 1];
+            Coordinate[] coordinates0 = e0.Coordinates;
+            Coordinate p00 = coordinates0[segIndex0];
+            Coordinate p01 = coordinates0[segIndex0 + 1];
+            Coordinate[] coordinates1 = e1.Coordinates;
+            Coordinate p10 = coordinates1[segIndex1];
+            Coordinate p11 = coordinates1[segIndex1 + 1];
 
             li.ComputeIntersection(p00, p01, p10, p11);            
             if(li.HasIntersection)

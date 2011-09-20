@@ -12,12 +12,12 @@ namespace NetTopologySuite.Geometries
     {
 
          /// <summary>
-        /// Tests whether an array of <see cref="ICoordinate"/>s forms a ring, by checking length and closure.
+        /// Tests whether an array of <see cref="Coordinate"/>s forms a ring, by checking length and closure.
         /// Self-intersection is not checked.
         /// </summary>
         /// <param name="pts">An array of Coordinates</param>
         /// <returns>true if the coordinate form a ring.</returns>
-        public static bool IsRing(ICoordinate[] pts)
+        public static bool IsRing(Coordinate[] pts)
         {
             if (pts.Length < 4) return false;
             if (!pts[0].Equals2D(pts[pts.Length - 1])) return false;
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Geometries
         /// A <see cref="Coordinate" /> from <paramref name="testPts" /> 
         /// which is not in <paramref name="pts" />, or <c>null</c>.
         /// </returns>
-        public static ICoordinate PointNotInList(ICoordinate[] testPts, ICoordinate[] pts)
+        public static Coordinate PointNotInList(Coordinate[] testPts, Coordinate[] pts)
         {
             for (var i = 0; i < testPts.Length; i++)
             {
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="pts1"></param>
         /// <param name="pts2"></param>
         /// <returns></returns>
-        public static int Compare(ICoordinate[] pts1, ICoordinate[] pts2)
+        public static int Compare(Coordinate[] pts1, Coordinate[] pts2)
         {
             var i = 0;
             while (i < pts1.Length && i < pts2.Length)
@@ -86,7 +86,7 @@ namespace NetTopologySuite.Geometries
         /// <c>1</c> if the array is smaller at the start or is a palindrome,
         /// <c>-1</c> if smaller at the end.
         /// </returns>
-        public static int IncreasingDirection(ICoordinate[] pts)
+        public static int IncreasingDirection(Coordinate[] pts)
         {
             for (var i = 0; i < pts.Length / 2; i++)
             {
@@ -107,7 +107,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="pts1"></param>
         /// <param name="pts2"></param>
         /// <returns></returns>
-        private static bool IsEqualReversed(ICoordinate[] pts1, ICoordinate[] pts2)
+        private static bool IsEqualReversed(Coordinate[] pts1, Coordinate[] pts2)
         {
             for (var i = 0; i < pts1.Length; i++)
             {
@@ -124,16 +124,16 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">Array of Coordinates.</param>
         /// <returns>Deep copy of the input.</returns>
-        public static ICoordinate[] CopyDeep(ICoordinate[] coordinates)
+        public static Coordinate[] CopyDeep(Coordinate[] coordinates)
         {
-            var copy = new ICoordinate[coordinates.Length];            
+            var copy = new Coordinate[coordinates.Length];            
 	        for(var i = 0; i < coordinates.Length; i++)            
             	copy[i] = new Coordinate(coordinates[i]);            
             return copy;
         }
 
         /// <summary>
-        /// Creates a deep copy of a given section of a source <see cref="ICoordinate"/> array into a destination Coordinate array.
+        /// Creates a deep copy of a given section of a source <see cref="Coordinate"/> array into a destination Coordinate array.
         /// The destination array must be an appropriate size to receive the copied coordinates.
         /// </summary>
         /// <param name="src">An array of Coordinates</param>
@@ -141,7 +141,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="dest">The array to receive the deep-copied coordinates</param>
         /// <param name="destStart">The destination index to start copying to</param>
         /// <param name="length">The number of items to copy</param>
-        public static void CopyDeep(ICoordinate[] src, int srcStart, ICoordinate[] dest, int destStart, int length)
+        public static void CopyDeep(Coordinate[] src, int srcStart, Coordinate[] dest, int destStart, int length)
         {
             for (int i = 0; i < length; i++)
             {
@@ -159,10 +159,10 @@ namespace NetTopologySuite.Geometries
         /// If <paramref name="coordList"/> contains not only <see cref="Coordinate" />s.
         /// </exception>
         [Obsolete("Use generic method instead")]
-        public static ICoordinate[] ToCoordinateArray(System.Collections.ICollection coordList)
+        public static Coordinate[] ToCoordinateArray(System.Collections.ICollection coordList)
         {
-            var tempList = new List<ICoordinate>(coordList.Count);
-            foreach (ICoordinate coord in coordList)
+            var tempList = new List<Coordinate>(coordList.Count);
+            foreach (Coordinate coord in coordList)
                 tempList.Add(coord);
             return tempList.ToArray();
         }
@@ -173,9 +173,9 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordList"><see cref="ICollection{T}"/> of coordinates.</param>
         /// <returns></returns>
-        public static ICoordinate[] ToCoordinateArray(ICollection<ICoordinate> coordList)
+        public static Coordinate[] ToCoordinateArray(ICollection<Coordinate> coordList)
         {
-            var tempList = new List<ICoordinate>(coordList.Count);
+            var tempList = new List<Coordinate>(coordList.Count);
             foreach (var coord in coordList)
                 tempList.Add(coord);
             return tempList.ToArray();
@@ -187,7 +187,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coord">Array of Coordinates.</param>
         /// <returns>true if coord has repeated points; false otherwise.</returns>
-      	public static bool HasRepeatedPoints(ICoordinate[] coord)
+      	public static bool HasRepeatedPoints(Coordinate[] coord)
       	{
             for(var i = 1; i < coord.Length; i++)            
             	if(coord[i - 1].Equals(coord[i]))                
@@ -202,9 +202,9 @@ namespace NetTopologySuite.Geometries
         /// <param name="n">Length amount.</param>
         /// <param name="c">Array of Coordinates.</param>
         /// <returns>New Coordinate array.</returns>
-        public static ICoordinate[] AtLeastNCoordinatesOrNothing(int n, ICoordinate[] c)
+        public static Coordinate[] AtLeastNCoordinatesOrNothing(int n, Coordinate[] c)
       	{
-            return (c.Length >= n) ? (c) : (new ICoordinate[] { });
+            return (c.Length >= n) ? (c) : (new Coordinate[] { });
         }
 
         /// <summary>
@@ -214,7 +214,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>        
-      	public static ICoordinate[] RemoveRepeatedPoints(ICoordinate[] coord)
+      	public static Coordinate[] RemoveRepeatedPoints(Coordinate[] coord)
       	{
             if (!HasRepeatedPoints(coord))
                 return coord;
@@ -226,7 +226,7 @@ namespace NetTopologySuite.Geometries
         /// Reverses the coordinates in an array in-place.
         /// </summary>
         /// <param name="coord">Array of Coordinates.</param>
-      	public static void Reverse(ICoordinate[] coord)
+      	public static void Reverse(Coordinate[] coord)
       	{
             // This implementation uses FCL capabilities
             Array.Reverse(coord);
@@ -250,7 +250,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="coord1">First array of Coordinates.</param>
         /// <param name="coord2">Second array of Coordinates.</param>
         /// <returns><c>true</c> if two Coordinates array are equals; false otherwise</returns>
-        public static bool Equals(ICoordinate[] coord1, ICoordinate[] coord2)
+        public static bool Equals(Coordinate[] coord1, Coordinate[] coord2)
       	{
             if (coord1 == coord2) 
                 return true;
@@ -269,7 +269,7 @@ namespace NetTopologySuite.Geometries
         /// in the forward direction of their coordinates,
         /// using lexicographic ordering.
         /// </summary>        
-        public class ForwardComparator : IComparer<ICoordinate[]>
+        public class ForwardComparator : IComparer<Coordinate[]>
         {
             /// <summary>
             /// Compares the specified <see cref="Coordinate" />s arrays.
@@ -277,7 +277,7 @@ namespace NetTopologySuite.Geometries
             /// <param name="pts1"></param>
             /// <param name="pts2"></param>
             /// <returns></returns>
-            public int Compare(ICoordinate[] pts1, ICoordinate[] pts2)
+            public int Compare(Coordinate[] pts1, Coordinate[] pts2)
             {
                 return CoordinateArrays.Compare(pts1, pts2);
             }
@@ -290,7 +290,7 @@ namespace NetTopologySuite.Geometries
         /// If the arrays are not equal, the ordering returned
         /// is the ordering in the forward direction.
         /// </summary>        
-        public class BidirectionalComparator : IComparer<ICoordinate[]>
+        public class BidirectionalComparator : IComparer<Coordinate[]>
         {
             /// <summary>
             /// 
@@ -298,7 +298,7 @@ namespace NetTopologySuite.Geometries
             /// <param name="pts1"></param>
             /// <param name="pts2"></param>
             /// <returns></returns>
-            public int Compare(ICoordinate[] pts1, ICoordinate[] pts2)
+            public int Compare(Coordinate[] pts1, Coordinate[] pts2)
             {
                 if (pts1.Length < pts2.Length)
                     return -1;
@@ -322,7 +322,7 @@ namespace NetTopologySuite.Geometries
             /// <param name="pts1"></param>
             /// <param name="pts2"></param>
             /// <returns></returns>
-            public int OLDcompare(ICoordinate[] pts1, ICoordinate[] pts2)
+            public int OLDcompare(Coordinate[] pts1, Coordinate[] pts2)
             {
                 if (pts1.Length < pts2.Length)
                     return -1;
@@ -361,8 +361,8 @@ namespace NetTopologySuite.Geometries
         /// A <see cref="System.Collections.IComparer" /> for <see cref="Coordinate" />s.
         /// </param>
         /// <returns></returns>
-        public static bool Equals(ICoordinate[] coord1, ICoordinate[] coord2,
-                IComparer<ICoordinate[]> coordinateComparer)
+        public static bool Equals(Coordinate[] coord1, Coordinate[] coord2,
+                IComparer<Coordinate[]> coordinateComparer)
         {
             if (coord1 == coord2) 
                 return true;
@@ -380,9 +380,9 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">Array to search.</param>
         /// <returns>The minimum coordinate in the array, found using <c>CompareTo</c>.</returns>
-      	public static ICoordinate MinCoordinate(ICoordinate[] coordinates)
+      	public static Coordinate MinCoordinate(Coordinate[] coordinates)
         {
-            ICoordinate minCoord = null;
+            Coordinate minCoord = null;
             for (var i = 0; i < coordinates.Length; i++)
             	if (minCoord == null || minCoord.CompareTo(coordinates[i]) > 0)
                     minCoord = coordinates[i];
@@ -394,12 +394,12 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">Array to rearrange.</param>
         /// <param name="firstCoordinate">Coordinate to make first.</param>
-        public static void Scroll(ICoordinate[] coordinates, ICoordinate firstCoordinate)
+        public static void Scroll(Coordinate[] coordinates, Coordinate firstCoordinate)
         {
             var i = IndexOf(firstCoordinate, coordinates);
             if (i < 0) 
                 return;
-            var newCoordinates = new ICoordinate[coordinates.Length];
+            var newCoordinates = new Coordinate[coordinates.Length];
             Array.Copy(coordinates, i, newCoordinates, 0, coordinates.Length - i);
             Array.Copy(coordinates, 0, newCoordinates, coordinates.Length - i, i);
             Array.Copy(newCoordinates, 0, coordinates, 0, coordinates.Length);
@@ -412,7 +412,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="coordinate">A <see cref="Coordinate" /> to search for.</param>
         /// <param name="coordinates">A <see cref="Coordinate" /> array to search.</param>
         /// <returns>The position of <c>coordinate</c>, or -1 if it is not found.</returns>
-        public static int IndexOf(ICoordinate coordinate, ICoordinate[] coordinates)
+        public static int IndexOf(Coordinate coordinate, Coordinate[] coordinates)
         {
             for (var i = 0; i < coordinates.Length; i++)
         	    if (coordinate.Equals(coordinates[i]))
@@ -428,11 +428,11 @@ namespace NetTopologySuite.Geometries
         /// <param name="start">The index of the start of the subsequence to extract.</param>
         /// <param name="end">The index of the end of the subsequence to extract.</param>
         /// <returns>A subsequence of the input array.</returns>
-        public static ICoordinate[] Extract(ICoordinate[] pts, int start, int end)
+        public static Coordinate[] Extract(Coordinate[] pts, int start, int end)
         {
             // Code using FLC features
             var len = end - start + 1;
-            var extractPts = new ICoordinate[len];
+            var extractPts = new Coordinate[len];
             Array.Copy(pts, start, extractPts, 0, len);
 
             /* Original JTS code

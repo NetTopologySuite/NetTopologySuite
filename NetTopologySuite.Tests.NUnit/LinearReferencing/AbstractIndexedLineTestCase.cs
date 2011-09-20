@@ -169,12 +169,12 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         {
             IGeometry input = Read(inputStr);
             IGeometry testPoint = Read(testPtWKT);
-            ICoordinate testPt = testPoint.Coordinate;
+            Coordinate testPt = testPoint.Coordinate;
             bool resultOK = IndexOfAfterCheck(input, testPt);
             Assert.IsTrue(resultOK);
         }
 
-        protected abstract bool IndexOfAfterCheck(IGeometry input, ICoordinate testPt);
+        protected abstract bool IndexOfAfterCheck(IGeometry input, Coordinate testPt);
 
         static double TOLERANCE_DIST = 0.001;
 
@@ -184,9 +184,9 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         //    IGeometry input = Read(inputWKT);
         //    IGeometry testPoint = Read(testPtWKT);
         //    IGeometry expectedPoint = Read(expectedPtWKT);
-        //    ICoordinate testPt = testPoint.Coordinate;
-        //    ICoordinate expectedPt = expectedPoint.Coordinate;
-        //    ICoordinate offsetPt = ExtractOffsetAt(input, testPt, offsetDistance);
+        //    Coordinate testPt = testPoint.Coordinate;
+        //    Coordinate expectedPt = expectedPoint.Coordinate;
+        //    Coordinate offsetPt = ExtractOffsetAt(input, testPt, offsetDistance);
 
         //    bool isOk = offsetPt.Distance(expectedPt) < TOLERANCE_DIST;
         //    if (!isOk)
@@ -195,6 +195,6 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         //}
 
         //TODO: Uncomment when NTS has a method overload for the ExtractPoint method which takes an index and an offset distance
-        //protected abstract ICoordinate ExtractOffsetAt(IGeometry input, ICoordinate testPt, double offsetDistance);
+        //protected abstract Coordinate ExtractOffsetAt(IGeometry input, Coordinate testPt, double offsetDistance);
     }
 }

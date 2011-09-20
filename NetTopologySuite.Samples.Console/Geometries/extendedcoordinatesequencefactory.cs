@@ -24,7 +24,7 @@ namespace NetTopologySuite.Samples.Geometries
 		/// directly if it is an instance of ExtendedCoordinate[]; otherwise it is
 		/// copied.
 		/// </summary>
-		public virtual ICoordinateSequence Create(ICoordinate[] coordinates)
+		public virtual ICoordinateSequence Create(Coordinate[] coordinates)
 		{
 			return coordinates is ExtendedCoordinate[] ?
                 new ExtendedCoordinateSequence((ExtendedCoordinate[]) coordinates) :

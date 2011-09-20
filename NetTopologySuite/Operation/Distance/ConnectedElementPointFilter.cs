@@ -17,20 +17,20 @@ namespace NetTopologySuite.Operation.Distance
         /// found inside the specified point. Thus, if the specified point is
         /// not a GeometryCollection, an empty list will be returned.
         /// </summary>
-        public static IList<ICoordinate> GetCoordinates(Geometry geom)
+        public static IList<Coordinate> GetCoordinates(Geometry geom)
         {
-            IList<ICoordinate> pts = new List<ICoordinate>();
+            IList<Coordinate> pts = new List<Coordinate>();
             geom.Apply(new ConnectedElementPointFilter(pts));
             return pts;
         }
 
-        private readonly IList<ICoordinate> _pts;
+        private readonly IList<Coordinate> _pts;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="pts"></param>
-        ConnectedElementPointFilter(IList<ICoordinate> pts)
+        ConnectedElementPointFilter(IList<Coordinate> pts)
         {
             _pts = pts;
         }

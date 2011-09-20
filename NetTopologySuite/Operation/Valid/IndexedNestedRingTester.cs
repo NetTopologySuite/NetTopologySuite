@@ -23,14 +23,14 @@ namespace NetTopologySuite.Operation.Valid
         private readonly IList<ILineString> _rings = new List<ILineString>();
         private readonly IEnvelope _totalEnv = new Envelope();
         private ISpatialIndex _index;
-        private ICoordinate _nestedPt;
+        private Coordinate _nestedPt;
 
         public IndexedNestedRingTester(GeometryGraph graph)
         {
             _graph = graph;
         }
 
-        public ICoordinate NestedPoint { get {return _nestedPt; }}
+        public Coordinate NestedPoint { get {return _nestedPt; }}
 
         public void Add(ILinearRing ring)
         {
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Operation.Valid
             for (int i = 0; i < _rings.Count; i++)
             {
                 var innerRing = (ILinearRing)_rings[i];
-                ICoordinate[] innerRingPts = innerRing.Coordinates;
+                Coordinate[] innerRingPts = innerRing.Coordinates;
 
                 var results = _index.Query(innerRing.EnvelopeInternal);
                 //System.out.println(results.size());
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Operation.Valid
                     if (!innerRing.EnvelopeInternal.Intersects(searchRing.EnvelopeInternal))
                         continue;
 
-                    ICoordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, _graph);
+                    Coordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, _graph);
                     Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
                     //Coordinate innerRingPt = innerRingPts[0];
 

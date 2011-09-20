@@ -136,10 +136,10 @@ namespace NetTopologySuite.Geometries.Prepared
             if (e0 == e1 && segIndex0 == segIndex1) return;
             NumTests++;
 
-            ICoordinate p00 = e0.Coordinates[segIndex0];
-            ICoordinate p01 = e0.Coordinates[segIndex0 + 1];
-            ICoordinate p10 = e1.Coordinates[segIndex1];
-            ICoordinate p11 = e1.Coordinates[segIndex1 + 1];
+            var p00 = e0.Coordinates[segIndex0];
+            var p01 = e0.Coordinates[segIndex0 + 1];
+            var p10 = e1.Coordinates[segIndex1];
+            var p11 = e1.Coordinates[segIndex1 + 1];
 
             li.ComputeIntersection(p00, p01, p10, p11);
             //if (li.hasIntersection() && li.isProper()) Debug.println(li);

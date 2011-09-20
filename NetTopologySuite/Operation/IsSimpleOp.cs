@@ -43,7 +43,7 @@ namespace NetTopologySuite.Operation
     {
         private IGeometry _geom;
         private bool _isClosedEndpointsInInterior = true;
-        private ICoordinate _nonSimpleLocation;
+        private Coordinate _nonSimpleLocation;
 
         /// <summary>
         /// Creates a simplicity checker using the default SFS Mod-2 Boundary Node Rule
@@ -92,7 +92,7 @@ namespace NetTopologySuite.Operation
         /// (i.e. where it has a non-boundary self-intersection).
         /// <see cref="IsSimple()"/> must be called before this location is accessed
         ///</summary>
-        public ICoordinate NonSimpleLocation
+        public Coordinate NonSimpleLocation
         {
             get { return _nonSimpleLocation; }
         }
@@ -133,11 +133,11 @@ namespace NetTopologySuite.Operation
             if (mp.IsEmpty) 
                 return true;
             
-            Set<ICoordinate> points = new Set<ICoordinate>();
+            Set<Coordinate> points = new Set<Coordinate>();
             for (int i = 0; i < mp.NumGeometries; i++)
             {
                 IPoint pt = (IPoint)mp.GetGeometryN(i);
-                ICoordinate p = pt.Coordinate;
+                Coordinate p = pt.Coordinate;
                 if (points.Contains(p))
                 {
                     _nonSimpleLocation = p;
@@ -198,7 +198,7 @@ namespace NetTopologySuite.Operation
         /// </summary>
         private class EndpointInfo
         {
-            public ICoordinate Point;
+            public Coordinate Point;
             public bool IsClosed; /*{ get; private set; }*/
             public int Degree; /* { get; private set; } */
 
@@ -206,7 +206,7 @@ namespace NetTopologySuite.Operation
             /// Creates an instance of this class
             /// </summary>
             /// <param name="pt">The endpoint</param>
-            public EndpointInfo(ICoordinate pt)
+            public EndpointInfo(Coordinate pt)
             {
                 Point = pt;
                 //IsClosed = false;
@@ -230,14 +230,14 @@ namespace NetTopologySuite.Operation
         /// </summary>
         private bool HasClosedEndpointIntersection(GeometryGraph graph)
         {
-            IDictionary<ICoordinate, EndpointInfo> endPoints = new OrderedDictionary<ICoordinate, EndpointInfo>();
+            IDictionary<Coordinate, EndpointInfo> endPoints = new OrderedDictionary<Coordinate, EndpointInfo>();
             foreach (Edge e in graph.Edges)
             {
                 //int maxSegmentIndex = e.MaximumSegmentIndex;
                 bool isClosed = e.IsClosed;
-                ICoordinate p0 = e.GetCoordinate(0);
+                Coordinate p0 = e.GetCoordinate(0);
                 AddEndpoint(endPoints, p0, isClosed);
-                ICoordinate p1 = e.GetCoordinate(e.NumPoints - 1);
+                Coordinate p1 = e.GetCoordinate(e.NumPoints - 1);
                 AddEndpoint(endPoints, p1, isClosed);
             }
 
@@ -258,7 +258,7 @@ namespace NetTopologySuite.Operation
         /// <param name="endPoints"></param>
         /// <param name="p"></param>
         /// <param name="isClosed"></param>
-        private static void AddEndpoint(IDictionary<ICoordinate, EndpointInfo> endPoints, ICoordinate p, bool isClosed)
+        private static void AddEndpoint(IDictionary<Coordinate, EndpointInfo> endPoints, Coordinate p, bool isClosed)
         {
             EndpointInfo eiInfo;
             if (!endPoints.TryGetValue(p, out eiInfo))

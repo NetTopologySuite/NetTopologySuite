@@ -83,7 +83,7 @@ namespace NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="coordinate"></param>
         /// <param name="writer"></param>        
-        protected void Write(ICoordinate coordinate, XmlTextWriter writer)
+        protected void Write(Coordinate coordinate, XmlTextWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, "coord", GMLElements.gmlNS);
             writer.WriteElementString(GMLElements.gmlPrefix, "X", GMLElements.gmlNS, coordinate.X.ToString("g", NumberFormatter));
@@ -96,9 +96,9 @@ namespace NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="coordinates"></param>
         /// <param name="writer"></param>        
-        protected void Write(ICoordinate[] coordinates, XmlTextWriter writer)
+        protected void Write(Coordinate[] coordinates, XmlTextWriter writer)
         {
-            foreach (ICoordinate coord in coordinates)
+            foreach (Coordinate coord in coordinates)
                 Write(coord, writer);
         }
 

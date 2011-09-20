@@ -20,10 +20,10 @@ namespace NetTopologySuite.Triangulate
         /// <summary>
         /// Gets the midpoint of the split segment
         /// </summary>
-        public ICoordinate FindSplitPoint(Segment seg, ICoordinate encroachPt)
+        public Coordinate FindSplitPoint(Segment seg, Coordinate encroachPt)
         {
-            ICoordinate p0 = seg.Start;
-            ICoordinate p1 = seg.End;
+            Coordinate p0 = seg.Start;
+            Coordinate p1 = seg.End;
             return new Coordinate((p0.X + p1.X) / 2, (p0.Y + p1.Y) / 2);
         }
     }

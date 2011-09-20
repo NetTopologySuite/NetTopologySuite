@@ -40,13 +40,13 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 	    /// <param name="ls"></param>
 	    /// <param name="transform"></param>
 	    /// <returns></returns>
-	    private static ICoordinate[] ExtractCoordinates(IGeometry ls, IMathTransform transform)
+	    private static Coordinate[] ExtractCoordinates(IGeometry ls, IMathTransform transform)
 	    {
 	        List<double[]> points = new List<double[]>(ls.NumPoints);
-	        foreach (ICoordinate c in ls.Coordinates)
+	        foreach (Coordinate c in ls.Coordinates)
 	            points.Add(ToArray(c.X, c.Y));
 	        points = transform.TransformList(points);
-	        List<ICoordinate> coords = new List<ICoordinate>(points.Count);
+	        List<Coordinate> coords = new List<Coordinate>(points.Count);
 	        foreach (double[] p in points)
 	            coords.Add(new Coordinate(p[0], p[1]));
 	        return coords.ToArray();
@@ -132,7 +132,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		{
 			try 
             {
-				ICoordinate[] coords = ExtractCoordinates(l, transform);
+				Coordinate[] coords = ExtractCoordinates(l, transform);
                 return factory.CreateLineString(coords); 
             }
 			catch { return null; }
@@ -150,7 +150,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		{
 			try 
             {
-                ICoordinate[] coords = ExtractCoordinates(r, transform);
+                Coordinate[] coords = ExtractCoordinates(r, transform);
                 return factory.CreateLinearRing(coords);
             }
 			catch { return null; }

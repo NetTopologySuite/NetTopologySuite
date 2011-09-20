@@ -113,18 +113,18 @@ namespace NetTopologySuite.Operation.Valid
         };
 
         private TopologyValidationErrors errorType;
-        private ICoordinate pt;
+        private Coordinate pt;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="errorType"></param>
         /// <param name="pt"></param>
-        public TopologyValidationError(TopologyValidationErrors errorType, ICoordinate pt)
+        public TopologyValidationError(TopologyValidationErrors errorType, Coordinate pt)
         {
             this.errorType = errorType;
             if(pt != null)
-                this.pt = (ICoordinate) pt.Clone();
+                this.pt = (Coordinate) pt.Clone();
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {

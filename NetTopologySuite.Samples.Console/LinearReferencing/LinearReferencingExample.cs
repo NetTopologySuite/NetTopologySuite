@@ -49,7 +49,7 @@ namespace NetTopologySuite.Samples.LinearReferencing
             double[] index = indexedLine.IndicesOf(subLine);
             Console.WriteLine("Indices of extracted line: " + index[0] + " " + index[1]);
 
-            ICoordinate midpt = indexedLine.ExtractPoint((index[0] + index[1]) / 2);
+            Coordinate midpt = indexedLine.ExtractPoint((index[0] + index[1]) / 2);
             Console.WriteLine("Midpoint of extracted line: " + midpt);
         }
     }

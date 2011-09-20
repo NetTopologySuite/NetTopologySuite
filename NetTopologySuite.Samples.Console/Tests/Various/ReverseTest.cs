@@ -23,7 +23,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void LineStringReverseTest()
         {
-            ILineString lineString = Factory.CreateLineString(new ICoordinate[] 
+            ILineString lineString = Factory.CreateLineString(new Coordinate[] 
             { 
                 new Coordinate(10, 10), 
                 new Coordinate(20, 20), 
@@ -44,13 +44,13 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void MultiLineStringReverseTest()
         {
-            ILineString lineString1 = Factory.CreateLineString(new ICoordinate[] 
+            ILineString lineString1 = Factory.CreateLineString(new Coordinate[] 
             { 
                 new Coordinate(10, 10), 
                 new Coordinate(20, 20), 
                 new Coordinate(20, 30), 
             });
-            ILineString lineString2 = Factory.CreateLineString(new ICoordinate[] 
+            ILineString lineString2 = Factory.CreateLineString(new Coordinate[] 
             { 
                 new Coordinate(12, 12), 
                 new Coordinate(24, 24), 

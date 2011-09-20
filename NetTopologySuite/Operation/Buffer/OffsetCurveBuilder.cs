@@ -107,9 +107,9 @@ namespace NetTopologySuite.Operation.Buffer
         /// fail for closed lines, but will generate superfluous line caps).
         /// </summary>
         /// <returns>a List of Coordinate[]</returns>
-        public IList<ICoordinate[]> GetLineCurve(ICoordinate[] inputPts, double distance)
+        public IList<Coordinate[]> GetLineCurve(Coordinate[] inputPts, double distance)
         {
-            var lineList = new List<ICoordinate[]>();
+            var lineList = new List<Coordinate[]>();
             // a zero or negative width buffer of a line/point is empty
             if (distance <= 0.0) return lineList;
 
@@ -132,7 +132,7 @@ namespace NetTopologySuite.Operation.Buffer
 
             //System.out.println(vertexList);
 
-            ICoordinate[] lineCoord = _vertexList.Coordinates;
+            Coordinate[] lineCoord = _vertexList.Coordinates;
             lineList.Add(lineCoord);
             return lineList;
         }
@@ -140,10 +140,10 @@ namespace NetTopologySuite.Operation.Buffer
         ///<summary>
         /// This method handles the degenerate cases of single points and lines, as well as rings.
         ///</summary>
-        /// <returns>a List of ICoordinate[]</returns>
-        public IList<ICoordinate[]> GetRingCurve(ICoordinate[] inputPts, Positions side, double distance)
+        /// <returns>a List of Coordinate[]</returns>
+        public IList<Coordinate[]> GetRingCurve(Coordinate[] inputPts, Positions side, double distance)
         {
-            var lineList = new List<ICoordinate[]>();
+            var lineList = new List<Coordinate[]>();
             Init(distance);
             if (inputPts.Length <= 2)
                 return GetLineCurve(inputPts, distance);
@@ -159,9 +159,9 @@ namespace NetTopologySuite.Operation.Buffer
             return lineList;
         }
 
-        private static ICoordinate[] CopyCoordinates(ICoordinate[] pts)
+        private static Coordinate[] CopyCoordinates(Coordinate[] pts)
         {
-            ICoordinate[] copy = new Coordinate[pts.Length];
+            Coordinate[] copy = new Coordinate[pts.Length];
             for (int i = 0; i < copy.Length; i++)
             {
                 copy[i] = new Coordinate(pts[i]);
@@ -202,7 +202,7 @@ namespace NetTopologySuite.Operation.Buffer
             return bufDistance/SimplifyFactor;
         }
 
-        private void ComputeLineBufferCurve(ICoordinate[] inputPts)
+        private void ComputeLineBufferCurve(Coordinate[] inputPts)
         {
             double distTol = SimplifyTolerance(_distance);
 
@@ -244,7 +244,7 @@ namespace NetTopologySuite.Operation.Buffer
             _vertexList.CloseRing();
         }
 
-        private void OldcomputeLineBufferCurve(ICoordinate[] inputPts)
+        private void OldcomputeLineBufferCurve(Coordinate[] inputPts)
         {
             int n = inputPts.Length - 1;
 
@@ -271,7 +271,7 @@ namespace NetTopologySuite.Operation.Buffer
             _vertexList.CloseRing();
         }
 
-        private void ComputeRingBufferCurve(ICoordinate[] inputPts, Positions side)
+        private void ComputeRingBufferCurve(Coordinate[] inputPts, Positions side)
         {
             // simplify input line to improve performance
             double distTol = SimplifyTolerance(_distance);
@@ -291,14 +291,14 @@ namespace NetTopologySuite.Operation.Buffer
             _vertexList.CloseRing();
         }
 
-        private ICoordinate _s0, _s1, _s2;
+        private Coordinate _s0, _s1, _s2;
         private readonly LineSegment _seg0 = new LineSegment();
         private readonly LineSegment _seg1 = new LineSegment();
         private readonly LineSegment _offset0 = new LineSegment();
         private readonly LineSegment _offset1 = new LineSegment();
         private Positions _side;
 
-        private void InitSideSegments(ICoordinate s1, ICoordinate s2, Positions side)
+        private void InitSideSegments(Coordinate s1, Coordinate s2, Positions side)
         {
             _s1 = s1;
             _s2 = s2;
@@ -309,7 +309,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         private static double _maxClosingSegLen = 3.0;
 
-        private void AddNextSegment(ICoordinate p, bool addStartPoint)
+        private void AddNextSegment(Coordinate p, bool addStartPoint)
         {
             // s0-s1-s2 are the coordinates of the previous segment and the current one
             _s0 = _s1;
@@ -531,7 +531,7 @@ namespace NetTopologySuite.Operation.Buffer
         ///<summary>
         /// Add an end cap around point p1, terminating a line segment coming from p0
         ///</summary>
-        private void AddLineEndCap(ICoordinate p0, ICoordinate p1)
+        private void AddLineEndCap(Coordinate p0, Coordinate p1)
         {
             LineSegment seg = new LineSegment(p0, p1);
 
@@ -559,14 +559,14 @@ namespace NetTopologySuite.Operation.Buffer
                     break;
                 case EndCapStyle.Square:
                     // add a square defined by extensions of the offset segment endpoints
-                    ICoordinate squareCapSideOffset = new Coordinate();
+                    Coordinate squareCapSideOffset = new Coordinate();
                     squareCapSideOffset.X = Math.Abs(_distance) * Math.Cos(angle);
                     squareCapSideOffset.Y = Math.Abs(_distance) * Math.Sin(angle);
 
-                    ICoordinate squareCapLOffset = new Coordinate(
+                    Coordinate squareCapLOffset = new Coordinate(
                         offsetL.P1.X + squareCapSideOffset.X,
                         offsetL.P1.Y + squareCapSideOffset.Y);
-                    ICoordinate squareCapROffset = new Coordinate(
+                    Coordinate squareCapROffset = new Coordinate(
                         offsetR.P1.X + squareCapSideOffset.X,
                         offsetR.P1.Y + squareCapSideOffset.Y);
                     _vertexList.AddPt(squareCapLOffset);
@@ -584,13 +584,13 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="offset0">The first offset segment</param>
         /// <param name="offset1">The second offset segment</param>
         /// <param name="distance">The offset distance</param>
-        private void AddMitreJoin(ICoordinate p,
+        private void AddMitreJoin(Coordinate p,
               LineSegment offset0,
               LineSegment offset1,
               double distance)
         {
             bool isMitreWithinLimit = true;
-            ICoordinate intPt;
+            Coordinate intPt;
 
             /*
              * This computation is unstable if the offset segments are nearly collinear. 
@@ -643,7 +643,7 @@ namespace NetTopologySuite.Operation.Buffer
               double distance,
               double mitreLimit)
         {
-            ICoordinate basePt = _seg0.P1;
+            Coordinate basePt = _seg0.P1;
 
             double ang0 = AngleUtility.Angle(basePt, _seg0.P0);
             double ang1 = AngleUtility.Angle(basePt, _seg1.P1);
@@ -668,15 +668,15 @@ namespace NetTopologySuite.Operation.Buffer
             // compute the midpoint of the bevel segment
             double bevelMidX = basePt.X + mitreDist * Math.Cos(mitreMidAng);
             double bevelMidY = basePt.Y + mitreDist * Math.Sin(mitreMidAng);
-            ICoordinate bevelMidPt = new Coordinate(bevelMidX, bevelMidY);
+            Coordinate bevelMidPt = new Coordinate(bevelMidX, bevelMidY);
 
             // compute the mitre midline segment from the corner point to the bevel segment midpoint
             LineSegment mitreMidLine = new LineSegment(basePt, bevelMidPt);
 
             // finally the bevel segment endpoints are computed as offsets from 
             // the mitre midline
-            ICoordinate bevelEndLeft = mitreMidLine.PointAlongOffset(1.0, bevelHalfLen);
-            ICoordinate bevelEndRight = mitreMidLine.PointAlongOffset(1.0, -bevelHalfLen);
+            Coordinate bevelEndLeft = mitreMidLine.PointAlongOffset(1.0, bevelHalfLen);
+            Coordinate bevelEndRight = mitreMidLine.PointAlongOffset(1.0, -bevelHalfLen);
 
             if (_side == Positions.Left)
             {
@@ -711,7 +711,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="p1">Endpoint of fillet curve</param>
         /// <param name="direction">The orientation of the fillet</param>
         /// <param name="radius">The radius of the fillet</param>
-        private void AddFillet(ICoordinate p, ICoordinate p0, ICoordinate p1, int direction, double radius)
+        private void AddFillet(Coordinate p, Coordinate p0, Coordinate p1, int direction, double radius)
         {
             double dx0 = p0.X - p.X;
             double dy0 = p0.Y - p.Y;
@@ -744,7 +744,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="endAngle">The end angle (in radians)</param>
         /// <param name="direction">Is -1 for a CW angle, 1 for a CCW angle</param>
         /// <param name="radius">The radius of the fillet</param>
-        private void AddFillet(ICoordinate p, double startAngle, double endAngle, int direction, double radius)
+        private void AddFillet(Coordinate p, double startAngle, double endAngle, int direction, double radius)
         {
             int directionFactor = direction == CGAlgorithms.Clockwise ? -1 : 1;
 
@@ -760,7 +760,7 @@ namespace NetTopologySuite.Operation.Buffer
             currAngleInc = totalAngle / nSegs;
 
             double currAngle = initAngle;
-            ICoordinate pt = new Coordinate();
+            Coordinate pt = new Coordinate();
             while (currAngle < totalAngle)
             {
                 double angle = startAngle + directionFactor * currAngle;
@@ -775,10 +775,10 @@ namespace NetTopologySuite.Operation.Buffer
         ///<summary>
         /// Adds a CW circle around a point
         ///</summary>
-        private void AddCircle(ICoordinate p, double distance)
+        private void AddCircle(Coordinate p, double distance)
         {
             // add start point
-            ICoordinate pt = new Coordinate(p.X + distance, p.Y);
+            Coordinate pt = new Coordinate(p.X + distance, p.Y);
             _vertexList.AddPt(pt);
             AddFillet(p, 0.0, 2.0 * Math.PI, -1, distance);
         }
@@ -786,7 +786,7 @@ namespace NetTopologySuite.Operation.Buffer
         ///<summary>
         /// Adds a CW square around a point
         ///</summary>
-        private void AddSquare(ICoordinate p, double distance)
+        private void AddSquare(Coordinate p, double distance)
         {
             // add start point
             _vertexList.AddPt(new Coordinate(p.X + distance, p.Y + distance));

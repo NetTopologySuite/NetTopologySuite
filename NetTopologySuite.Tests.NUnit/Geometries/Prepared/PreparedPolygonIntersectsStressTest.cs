@@ -40,7 +40,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             Test(poly);
         }
 
-        static IGeometry CreateCircle(ICoordinate origin, double size, int nPts)
+        static IGeometry CreateCircle(Coordinate origin, double size, int nPts)
         {
             GeometricShapeFactory gsf = new GeometricShapeFactory();
             gsf.Centre = origin;
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             return circle;
         }
 
-        static IGeometry CreateSineStar(ICoordinate origin, double size, int nPts)
+        static IGeometry CreateSineStar(Coordinate origin, double size, int nPts)
         {
             SineStarFactory gsf = new SineStarFactory();
             gsf.Centre = origin;
@@ -70,14 +70,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             double width = env.Width;
             double xOffset = width * rnd.NextDouble();
             double yOffset = env.Height * rnd.NextDouble();
-            ICoordinate basePt = new Coordinate(
+            Coordinate basePt = new Coordinate(
                             env.MinX + xOffset,
                             env.MinY + yOffset);
             ILineString line = CreateTestLine(basePt, size, nPts);
             return line;
         }
 
-        static ILineString CreateTestLine(ICoordinate basePt, double size, int nPts)
+        static ILineString CreateTestLine(Coordinate basePt, double size, int nPts)
         {
             GeometricShapeFactory gsf = new GeometricShapeFactory();
             gsf.Centre = basePt;

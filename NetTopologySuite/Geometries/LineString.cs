@@ -31,7 +31,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Represents an empty <c>LineString</c>.
         /// </summary>
-        public static readonly ILineString Empty = new GeometryFactory().CreateLineString(new ICoordinate[] { });
+        public static readonly ILineString Empty = new GeometryFactory().CreateLineString(new Coordinate[] { });
 
         /// <summary>  
         /// The points of this <c>LineString</c>.
@@ -41,7 +41,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override ICoordinate[] Coordinates
+        public override Coordinate[] Coordinates
         {
             get
             {
@@ -73,7 +73,7 @@ namespace NetTopologySuite.Geometries
             : base(factory)
         {            
             if (points == null) 
-                points = factory.CoordinateSequenceFactory.Create(new ICoordinate[] { });
+                points = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
             if (points.Count == 1)
                 throw new ArgumentException("Invalid number of points in LineString (found "
                       + points.Count + " - must be 0 or >= 2)");
@@ -85,7 +85,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public ICoordinate GetCoordinateN(int n) 
+        public Coordinate GetCoordinateN(int n) 
         {
             return _points.GetCoordinate(n);
         }
@@ -93,7 +93,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override ICoordinate Coordinate
+        public override Coordinate Coordinate
         {
             get
             {
@@ -261,7 +261,7 @@ namespace NetTopologySuite.Geometries
             ICoordinateSequence seq = (ICoordinateSequence)_points.Clone();
 
             // Personalized implementation using Array.Reverse: maybe it's faster?
-            ICoordinate[] array = seq.ToCoordinateArray();
+            Coordinate[] array = seq.ToCoordinateArray();
             Array.Reverse(array);
             return Factory.CreateLineString(array);
         }
@@ -276,7 +276,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="pt">The <c>Coordinate</c> to check.</param>
         /// <returns><c>true</c> if <c>pt</c> is one of this <c>LineString</c>'s vertices.</returns>
-        public bool IsCoordinate(ICoordinate pt) 
+        public bool IsCoordinate(Coordinate pt) 
         {
             for (int i = 0; i < _points.Count; i++) 
                 if (_points.GetCoordinate(i).Equals(pt))
@@ -296,7 +296,7 @@ namespace NetTopologySuite.Geometries
             //Convert to array, then access array directly, to avoid the function-call overhead
             //of calling Getter millions of times. ToArray may be inefficient for
             //non-BasicCoordinateSequence CoordinateSequences. [Jon Aquino]
-            ICoordinate[] coordinates = _points.ToCoordinateArray();
+            Coordinate[] coordinates = _points.ToCoordinateArray();
             double minx = coordinates[0].X;
             double miny = coordinates[0].Y;
             double maxx = coordinates[0].X;
@@ -459,7 +459,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="points">The coordinates used for create this <see cref="LineString" />.</param>
         /// <exception cref="ArgumentException">If too few points are provided</exception>
         //[Obsolete("Use GeometryFactory instead")]
-        public LineString(ICoordinate[] points) : 
+        public LineString(Coordinate[] points) : 
             this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
 
         /// <summary>
@@ -467,7 +467,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public ICoordinate this[int n]
+        public Coordinate this[int n]
         {
             get
             {

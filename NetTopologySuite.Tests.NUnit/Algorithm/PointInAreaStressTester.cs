@@ -75,7 +75,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                     // compute test point
                     double x = areaEnv.MinX + i * xStep;
                     double y = areaEnv.MinY + j * yStep;
-                    ICoordinate pt = new Coordinate(x, y);
+                    Coordinate pt = new Coordinate(x, y);
                     _geomFactory.PrecisionModel.MakePrecise(pt);
 
                     Boolean isEqual = TestPointInArea(pt);
@@ -102,7 +102,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// </summary>
         /// <param name="p"></param>
         /// <returns>true if the point location is determined to be the same by both PIA locaters</returns>
-        private Boolean TestPointInArea(ICoordinate p)
+        private Boolean TestPointInArea(Coordinate p)
         {
             //Console.WriteLine(WKTWriter.toPoint(p));
 

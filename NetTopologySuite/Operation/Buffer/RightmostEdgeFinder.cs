@@ -13,7 +13,7 @@ namespace NetTopologySuite.Operation.Buffer
     public class RightmostEdgeFinder
     {        
         private int minIndex = -1;
-        private ICoordinate minCoord = null;
+        private Coordinate minCoord = null;
         private DirectedEdge minDe = null;
         private DirectedEdge orientedDe = null;
 
@@ -37,7 +37,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -108,10 +108,10 @@ namespace NetTopologySuite.Operation.Buffer
              * If these segments are both above or below the rightmost point, we need to
              * determine their relative orientation to decide which is rightmost.
              */
-            ICoordinate[] pts = minDe.Edge.Coordinates;
+            Coordinate[] pts = minDe.Edge.Coordinates;
             Assert.IsTrue(minIndex > 0 && minIndex < pts.Length, "rightmost point expected to be interior vertex of edge");
-            ICoordinate pPrev = pts[minIndex - 1];
-            ICoordinate pNext = pts[minIndex + 1];
+            Coordinate pPrev = pts[minIndex - 1];
+            Coordinate pNext = pts[minIndex + 1];
             int orientation = CGAlgorithms.ComputeOrientation(minCoord, pNext, pPrev);
             bool usePrev = false;
             // both segments are below min point
@@ -130,7 +130,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="de"></param>
         private void CheckForRightmostCoordinate(DirectedEdge de)
         {
-            ICoordinate[] coord = de.Edge.Coordinates;
+            Coordinate[] coord = de.Edge.Coordinates;
             for (int i = 0; i < coord.Length - 1; i++)
             {
                 // only check vertices which are the start or end point of a non-horizontal segment
@@ -173,7 +173,7 @@ namespace NetTopologySuite.Operation.Buffer
         private Positions GetRightmostSideOfSegment(DirectedEdge de, int i)
         {
             Edge e = de.Edge;
-            ICoordinate[] coord = e.Coordinates;
+            Coordinate[] coord = e.Coordinates;
 
             if (i < 0 || i + 1 >= coord.Length) 
                 return Positions.Parallel;

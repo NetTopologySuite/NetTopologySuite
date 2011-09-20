@@ -20,7 +20,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
     public class MonotoneChainEdge
     {
         private Edge e;
-        private ICoordinate[] pts; // cache a reference to the coord array, for efficiency
+        private Coordinate[] pts; // cache a reference to the coord array, for efficiency
         // the lists of start/end indexes of the monotone chains.
         // Includes the end point of the edge as a sentinel
         private int[] startIndex;
@@ -43,7 +43,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate[] Coordinates
+        public Coordinate[] Coordinates
         {
             get
             {
@@ -122,10 +122,10 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="ei"></param>
         private void ComputeIntersectsForChain( int start0, int end0, MonotoneChainEdge mce, int start1, int end1, SegmentIntersector ei)
         {
-            ICoordinate p00 = pts[start0];
-            ICoordinate p01 = pts[end0];
-            ICoordinate p10 = mce.pts[start1];
-            ICoordinate p11 = mce.pts[end1];
+            Coordinate p00 = pts[start0];
+            Coordinate p01 = pts[end0];
+            Coordinate p10 = mce.pts[start1];
+            Coordinate p11 = mce.pts[end1];
             
             // terminating condition for the recursion
             if (end0 - start0 == 1 && end1 - start1 == 1)

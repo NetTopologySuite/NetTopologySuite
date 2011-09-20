@@ -6,7 +6,7 @@ namespace NetTopologySuite.Geometries
 //#if!SILVERLIGHT
     [Serializable]
 //#endif
-    public struct CoordinateStruct : ICoordinate 
+    public struct CoordinateStruct : ICoordinate, ICloneable
     {
         private double x;
         private double y;
@@ -21,7 +21,7 @@ namespace NetTopologySuite.Geometries
 
         public CoordinateStruct(double x, double y) : this(x, y, Double.NaN) { }
 
-        public CoordinateStruct(ICoordinate c) : this(c.X, c.Y, c.Z) { }
+        public CoordinateStruct(Coordinate c) : this(c.X, c.Y, c.Z) { }
 
         public double X
         {
@@ -47,9 +47,9 @@ namespace NetTopologySuite.Geometries
             set {  }
         }
 
-        public ICoordinate CoordinateValue
+        public Coordinate CoordinateValue
         {
-            get { return this; }
+            get { return ((ICoordinate)this).ToCoordinate(); }
             set
             {
                 x = value.X;
@@ -91,19 +91,19 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        public double Distance(ICoordinate p)
+        public double Distance(Coordinate p)
         {
             double dx = x - p.X;
             double dy = y - p.Y;
             return Math.Sqrt(dx * dx + dy * dy);
         }
 
-        public bool Equals2D(ICoordinate other)
+        public bool Equals2D(Coordinate other)
         {
             return (x == other.X) && (y == other.Y);
         }
 
-        public bool Equals3D(ICoordinate other)
+        public bool Equals3D(Coordinate other)
         {
             return (x == other.X) && (y == other.Y) && 
                 ((z == other.Z) || (Double.IsNaN(Z) && Double.IsNaN(other.Z)));
@@ -116,11 +116,11 @@ namespace NetTopologySuite.Geometries
         
         public int CompareTo(object obj)
         {
-            ICoordinate other = (ICoordinate) obj;
+            Coordinate other = (Coordinate) obj;
             return CompareTo(other);
         }
 
-        public int CompareTo(ICoordinate other)
+        public int CompareTo(Coordinate other)
         {
             if (x < other.X)
                 return -1;
@@ -133,7 +133,7 @@ namespace NetTopologySuite.Geometries
             return 0;
         }
 
-        public bool Equals(ICoordinate other)
+        public bool Equals(Coordinate other)
         {
             return Equals2D(other);
         }
@@ -174,6 +174,70 @@ namespace NetTopologySuite.Geometries
         {
             long f = BitConverter.DoubleToInt64Bits(value);
             return (int)(f ^ (f >> 32));
+        }
+
+        ICoordinate ICoordinate.CoordinateValue
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        double ICoordinate.this[Ordinate index]
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        double ICoordinate.Distance(ICoordinate other)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool ICoordinate.Equals2D(ICoordinate other)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool ICoordinate.Equals3D(ICoordinate other)
+        {
+            throw new NotImplementedException();
+        }
+
+        Coordinate ICoordinate.ToCoordinate()
+        {
+            return new Coordinate(x, y, z);
+        }
+
+        object ICloneable.Clone()
+        {
+            return new CoordinateStruct(x, y, z);
+        }
+
+        int IComparable.CompareTo(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        int IComparable<ICoordinate>.CompareTo(ICoordinate other)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IEquatable<ICoordinate>.Equals(ICoordinate other)
+        {
+            throw new NotImplementedException();
         }
     }
 }

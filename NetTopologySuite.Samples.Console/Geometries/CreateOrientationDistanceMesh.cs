@@ -12,7 +12,7 @@ namespace NetTopologySuite.Samples.Geometries
         [Test]
         public void BuildGeometries()
         {
-            ICoordinate coord = new Coordinate(3412805, 5320858);
+            Coordinate coord = new Coordinate(3412805, 5320858);
 
             var orientation =
                 new List<String>(new[]
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Samples.Geometries
 
         }
 
-        public IEnumerable<IGeometry> BuildConcentricBuffers(ICoordinate coord)
+        public IEnumerable<IGeometry> BuildConcentricBuffers(Coordinate coord)
         {
             IPoint center = GeometryFactory.Floating.CreatePoint(coord);
             IPolygon lastPolygon = null;
@@ -54,7 +54,7 @@ namespace NetTopologySuite.Samples.Geometries
         }
 
 
-        public IList<IGeometry> BuildSlices(ICoordinate coord)
+        public IList<IGeometry> BuildSlices(Coordinate coord)
         {
             const double start = 101.25d;
             const double range = -22.5d;
@@ -76,7 +76,7 @@ namespace NetTopologySuite.Samples.Geometries
             return slices;
         }
 
-        static ICoordinate GetNextCoordinate(ICoordinate start, double angle, double distance)
+        static Coordinate GetNextCoordinate(Coordinate start, double angle, double distance)
         {
             const double toRadians = Math.PI/180d;
             double angleInRadians = angle*toRadians;

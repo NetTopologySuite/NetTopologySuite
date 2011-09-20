@@ -41,7 +41,7 @@ namespace NetTopologySuite.Noding
         /// <param name="intPt"></param>
         /// <param name="segmentIndex"></param>
         /// <returns>The SegmentIntersection found or added.</returns>
-        public SegmentNode Add(ICoordinate intPt, int segmentIndex)
+        public SegmentNode Add(Coordinate intPt, int segmentIndex)
         {
             var eiNew = new SegmentNode(_edge, intPt, segmentIndex, _edge.GetSegmentOctant(segmentIndex));
             object eiObj;
@@ -237,7 +237,7 @@ namespace NetTopologySuite.Noding
             if(!useIntPt1)
                 npts--;
 
-            var pts = new ICoordinate[npts];
+            var pts = new Coordinate[npts];
             var ipt = 0;
             pts[ipt++] = new Coordinate(ei0.Coordinate);
             for (var i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)

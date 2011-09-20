@@ -147,7 +147,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns>
         /// A coordinate in this component (or null, if there are none).
         /// </returns>
-        abstract public ICoordinate Coordinate { get; protected set; }
+        abstract public Coordinate Coordinate { get; protected set; }
 
         /// <summary>
         /// Compute the contribution to an IM for this component.

@@ -29,7 +29,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="p0">The point coordinate.</param>
         /// <returns></returns>
-        public static String ToPoint(ICoordinate p0)
+        public static String ToPoint(Coordinate p0)
         {
 #if LikeJTS
 			return "POINT(" + p0.X + " " + p0.Y + ")";
@@ -71,7 +71,7 @@ namespace NetTopologySuite.IO
         /// <param name="p0">The first coordinate.</param>
         /// <param name="p1">The second coordinate.</param>
         /// <returns></returns>
-        public static String ToLineString(ICoordinate p0, ICoordinate p1)
+        public static String ToLineString(Coordinate p0, Coordinate p1)
         {
 #if LikeJTS
 			return "LINESTRING(" + p0.X + " " + p0.Y + ", " + p1.X + " " + p1.Y + ")";
@@ -323,7 +323,7 @@ namespace NetTopologySuite.IO
         /// The <c>PrecisionModel</c> to use to convert
         /// from a precise coordinate to an external coordinate.
         /// </param>
-        private void AppendPointTaggedText(ICoordinate coordinate, int level, TextWriter writer, IPrecisionModel precisionModel)
+        private void AppendPointTaggedText(Coordinate coordinate, int level, TextWriter writer, IPrecisionModel precisionModel)
         {
             writer.Write("POINT ");
             AppendPointText(coordinate, level, writer, precisionModel);
@@ -431,7 +431,7 @@ namespace NetTopologySuite.IO
         /// The <c>PrecisionModel</c> to use to convert
         /// from a precise coordinate to an external coordinate.
         /// </param>
-        private void AppendPointText(ICoordinate coordinate, int level, TextWriter writer, IPrecisionModel precisionModel)
+        private void AppendPointText(Coordinate coordinate, int level, TextWriter writer, IPrecisionModel precisionModel)
         {
             if (coordinate == null) 
                 writer.Write("EMPTY");
@@ -472,7 +472,7 @@ namespace NetTopologySuite.IO
         /// The <c>PrecisionModel</c> to use to convert
         /// from a precise coordinate to an external coordinate.
         /// </param>
-        private void AppendCoordinate(ICoordinate coordinate, TextWriter writer, IPrecisionModel precisionModel)
+        private void AppendCoordinate(Coordinate coordinate, TextWriter writer, IPrecisionModel precisionModel)
         {
 			writer.Write(WriteNumber(coordinate.X) + " " + WriteNumber(coordinate.Y));
             if (_outputDimension >= 3 && !double.IsNaN(coordinate.Z))

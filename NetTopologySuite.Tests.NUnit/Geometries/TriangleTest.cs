@@ -27,7 +27,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         public void CheckArea3D(String wkt, double expectedValue) 
         {
             IGeometry g = reader.Read(wkt);
-            ICoordinate[] pt = g.Coordinates;
+            Coordinate[] pt = g.Coordinates;
             double area3D = Triangle.Area3D(pt[0], pt[1], pt[2]);
       //		System.out.println("area3D = " + area3D);
             Assert.AreEqual(expectedValue, area3D, Tolerance);
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         public static void CheckArea(String wkt, double expectedValue)
         {
             IGeometry g = Reader.Read(wkt);
-            ICoordinate[] pt = g.Coordinates;
+            Coordinate[] pt = g.Coordinates;
 
             /*
             double signedArea = Triangle.SignedArea(pt[0], pt[1], pt[2]);
@@ -74,7 +74,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         private static void CheckAcute(String wkt, Boolean expectedValue)
         {
             IGeometry g = Reader.Read(wkt);
-            ICoordinate[] pt = g.Coordinates;
+            Coordinate[] pt = g.Coordinates;
 
             Boolean isAcute = Triangle.IsAcute(pt[0], pt[1], pt[2]);
             Console.WriteLine("isAcute = " + isAcute);

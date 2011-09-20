@@ -21,16 +21,16 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public class CentralEndpointIntersector
     {
-        public static ICoordinate GetIntersection(ICoordinate p00, ICoordinate p01, ICoordinate p10, ICoordinate p11)
+        public static Coordinate GetIntersection(Coordinate p00, Coordinate p01, Coordinate p10, Coordinate p11)
         {
             CentralEndpointIntersector intor = new CentralEndpointIntersector(p00, p01, p10, p11);
             return intor.Intersection;
         }
 
-        private readonly ICoordinate[] _pts;
-        private ICoordinate _intPt;
+        private readonly Coordinate[] _pts;
+        private Coordinate _intPt;
 
-        public CentralEndpointIntersector(ICoordinate p00, ICoordinate p01, ICoordinate p10, ICoordinate p11)
+        public CentralEndpointIntersector(Coordinate p00, Coordinate p01, Coordinate p10, Coordinate p11)
         {
             _pts = new[] { p00, p01, p10, p11 };
             Compute();
@@ -38,18 +38,18 @@ namespace NetTopologySuite.Algorithm
 
         private void Compute()
         {
-            ICoordinate centroid = Average(_pts);
+            Coordinate centroid = Average(_pts);
             _intPt = FindNearestPoint(centroid, _pts);
         }
 
-        public ICoordinate Intersection
+        public Coordinate Intersection
         {
             get { return _intPt; }
         }
 
-        private static ICoordinate Average(ICoordinate[] pts)
+        private static Coordinate Average(Coordinate[] pts)
         {
-            ICoordinate avg = new Coordinate();
+            Coordinate avg = new Coordinate();
             int n = pts.Length;
             for (int i = 0; i < pts.Length; i++)
             {
@@ -67,10 +67,10 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// Determines a point closest to the given point.
         /// </summary>        
-        private static ICoordinate FindNearestPoint(ICoordinate p, ICoordinate[] pts)
+        private static Coordinate FindNearestPoint(Coordinate p, Coordinate[] pts)
         {
             double minDist = Double.MaxValue;
-            ICoordinate result = null;
+            Coordinate result = null;
             for (int i = 0; i < pts.Length; i++)
             {
                 double dist = p.Distance(pts[i]);

@@ -12,8 +12,8 @@ namespace NetTopologySuite.Noding
 
         private Boolean _isCheckEndSegmentsOnly;
         private readonly LineIntersector _li;
-        private ICoordinate _interiorIntersection;
-        private ICoordinate[] _intSegments;
+        private Coordinate _interiorIntersection;
+        private Coordinate[] _intSegments;
 
         ///<summary>
         /// Creates an intersection finder which finds an interior intersection if one exists
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Noding
         /// Gets the computed location of the intersection.
         /// Due to round-off, the location may not be exact.
         ///</summary>
-        public ICoordinate InteriorIntersection
+        public Coordinate InteriorIntersection
         {
             get { return _interiorIntersection; }
         }
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Noding
         ///<summary>
         /// Gets the endpoints of the intersecting segments.
         ///</summary>
-        public ICoordinate[] IntersectionSegments
+        public Coordinate[] IntersectionSegments
         {
             get { return _intSegments; }
         }
@@ -100,10 +100,10 @@ namespace NetTopologySuite.Noding
                     return;
             }
 
-            ICoordinate p00 = e0.Coordinates[segIndex0];
-            ICoordinate p01 = e0.Coordinates[segIndex0 + 1];
-            ICoordinate p10 = e1.Coordinates[segIndex1];
-            ICoordinate p11 = e1.Coordinates[segIndex1 + 1];
+            Coordinate p00 = e0.Coordinates[segIndex0];
+            Coordinate p01 = e0.Coordinates[segIndex0 + 1];
+            Coordinate p10 = e1.Coordinates[segIndex1];
+            Coordinate p11 = e1.Coordinates[segIndex1 + 1];
 
             /*var res = */_li.ComputeIntersection(p00, p01, p10, p11);
             if (_li.HasIntersection /*res.HasIntersection*/)

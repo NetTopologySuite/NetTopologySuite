@@ -17,7 +17,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="env"></param>
         /// <param name="centre"></param>
-        public static int GetSubnodeIndex(IEnvelope env, ICoordinate centre)
+        public static int GetSubnodeIndex(IEnvelope env, Coordinate centre)
         {
             int subnodeIndex = -1;
             if (env.MinX >= centre.X)

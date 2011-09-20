@@ -13,7 +13,7 @@ namespace NetTopologySuite.Operation.Relate
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>
-        public override Node CreateNode(ICoordinate coord)
+        public override Node CreateNode(Coordinate coord)
         {
             return new RelateNode(coord, new EdgeEndBundleStar());
         }

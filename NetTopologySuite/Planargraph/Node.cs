@@ -32,7 +32,7 @@ namespace NetTopologySuite.Planargraph
         /// <summary>
         /// The location of this Node.
         /// </summary>
-        protected ICoordinate pt;
+        protected Coordinate pt;
 
         /// <summary>
         /// The collection of DirectedEdges that leave this Node.
@@ -43,14 +43,14 @@ namespace NetTopologySuite.Planargraph
         /// Constructs a Node with the given location.
         /// </summary>
         /// <param name="pt"></param>
-        public Node(ICoordinate pt) : this(pt, new DirectedEdgeStar()) { }
+        public Node(Coordinate pt) : this(pt, new DirectedEdgeStar()) { }
 
         /// <summary>
         /// Constructs a Node with the given location and collection of outgoing DirectedEdges.
         /// </summary>
         /// <param name="pt"></param>
         /// <param name="deStar"></param>
-        public Node(ICoordinate pt, DirectedEdgeStar deStar)
+        public Node(Coordinate pt, DirectedEdgeStar deStar)
         {
             this.pt = pt;
             this.deStar = deStar;
@@ -59,7 +59,7 @@ namespace NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the location of this Node.
         /// </summary>
-        public ICoordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {

@@ -23,7 +23,7 @@ namespace NetTopologySuite.Operation.Valid
         /// </summary>
         /// <param name="coord">The coordinate to validate.</param>
         /// <returns><c>true</c> if the coordinate is valid.</returns>
-        public static bool IsValidCoordinate(ICoordinate coord)
+        public static bool IsValidCoordinate(Coordinate coord)
         {
             if (Double.IsNaN(coord.X))      
                 return false;
@@ -44,14 +44,14 @@ namespace NetTopologySuite.Operation.Valid
         /// <param name="searchRing"></param>
         /// <param name="graph"></param>
         /// <returns>The point found, or <c>null</c> if none found.</returns>
-        public static ICoordinate FindPointNotNode(ICoordinate[] testCoords, ILinearRing searchRing, GeometryGraph graph)
+        public static Coordinate FindPointNotNode(Coordinate[] testCoords, ILinearRing searchRing, GeometryGraph graph)
         {
             // find edge corresponding to searchRing.
             Edge searchEdge = graph.FindEdge(searchRing);
             // find a point in the testCoords which is not a node of the searchRing
             EdgeIntersectionList eiList = searchEdge.EdgeIntersectionList;
             // somewhat inefficient - is there a better way? (Use a node map, for instance?)
-            foreach(ICoordinate pt in testCoords)
+            foreach(Coordinate pt in testCoords)
                 if(!eiList.IsIntersection(pt))
                     return pt;            
             return null;
@@ -299,9 +299,9 @@ namespace NetTopologySuite.Operation.Valid
         /// 
         /// </summary>
         /// <param name="coords"></param>
-        private void CheckInvalidCoordinates(ICoordinate[] coords)
+        private void CheckInvalidCoordinates(Coordinate[] coords)
         {
-            foreach (ICoordinate c in coords)
+            foreach (Coordinate c in coords)
             {
                 if (!IsValidCoordinate(c))
                 {
@@ -409,7 +409,7 @@ namespace NetTopologySuite.Operation.Valid
         /// </summary>
         private void CheckNoSelfIntersectingRing(EdgeIntersectionList eiList)
         {
-            Set<ICoordinate> nodeSet = new Set<ICoordinate>();    
+            Set<Coordinate> nodeSet = new Set<Coordinate>();    
             bool isFirst = true;
             foreach(EdgeIntersection ei in eiList)
             {                
@@ -445,7 +445,7 @@ namespace NetTopologySuite.Operation.Valid
             for (int i = 0; i < p.NumInteriorRings; i++)
             {
                 ILinearRing hole = p.Holes[i];
-                ICoordinate holePt = FindPointNotNode(hole.Coordinates, shell, graph);
+                Coordinate holePt = FindPointNotNode(hole.Coordinates, shell, graph);
 
                 /*
                  * If no non-node hole vertex can be found, the hole must
@@ -521,11 +521,11 @@ namespace NetTopologySuite.Operation.Valid
         /// </summary>
         private void CheckShellNotNested(ILinearRing shell, IPolygon p, GeometryGraph graph)
         {
-            ICoordinate[] shellPts = shell.Coordinates;
+            Coordinate[] shellPts = shell.Coordinates;
             // test if shell is inside polygon shell
             ILinearRing polyShell = p.Shell;
-            ICoordinate[] polyPts = polyShell.Coordinates;
-            ICoordinate shellPt = FindPointNotNode(shellPts, polyShell, graph);
+            Coordinate[] polyPts = polyShell.Coordinates;
+            Coordinate shellPt = FindPointNotNode(shellPts, polyShell, graph);
             // if no point could be found, we can assume that the shell is outside the polygon
             if (shellPt == null) return;
             bool insidePolyShell = CGAlgorithms.IsPointInRing(shellPt, polyPts);
@@ -543,7 +543,7 @@ namespace NetTopologySuite.Operation.Valid
              * returns a null coordinate.
              * Otherwise, the shell is not properly contained in a hole, which is an error.
              */
-            ICoordinate badNestedPt = null;
+            Coordinate badNestedPt = null;
             for (int i = 0; i < p.NumInteriorRings; i++)
             {
                 ILinearRing hole = p.Holes[i];
@@ -565,19 +565,19 @@ namespace NetTopologySuite.Operation.Valid
         /// <c>null</c> if the shell is properly contained, or
         /// a Coordinate which is not inside the hole if it is not.
         /// </returns>
-        private ICoordinate CheckShellInsideHole(ILinearRing shell, ILinearRing hole, GeometryGraph graph)
+        private Coordinate CheckShellInsideHole(ILinearRing shell, ILinearRing hole, GeometryGraph graph)
         {
-            ICoordinate[] shellPts = shell.Coordinates;
-            ICoordinate[] holePts = hole.Coordinates;
+            Coordinate[] shellPts = shell.Coordinates;
+            Coordinate[] holePts = hole.Coordinates;
             // TODO: improve performance of this - by sorting pointlists?
-            ICoordinate shellPt = FindPointNotNode(shellPts, hole, graph);
+            Coordinate shellPt = FindPointNotNode(shellPts, hole, graph);
             // if point is on shell but not hole, check that the shell is inside the hole
             if (shellPt != null)
             {
                 bool insideHole = CGAlgorithms.IsPointInRing(shellPt, holePts);
                 if (!insideHole) return shellPt;                
             }
-            ICoordinate holePt = FindPointNotNode(holePts, shell, graph);
+            Coordinate holePt = FindPointNotNode(holePts, shell, graph);
             // if point is on hole but not shell, check that the hole is outside the shell
             if (holePt != null)
             {

@@ -8,13 +8,13 @@ namespace NetTopologySuite.Geometries.Prepared
         private readonly IGeometryFactory _geomFact;
         private readonly NodedSegmentString _segStr;
 
-        public LineTopology(ICoordinate[] pts, IGeometryFactory geomFact)
+        public LineTopology(Coordinate[] pts, IGeometryFactory geomFact)
         {
             _segStr = new NodedSegmentString(pts, this);
             _geomFact = geomFact;
         }
 
-        public void AddIntersection(ICoordinate intPt, int segmentIndex)
+        public void AddIntersection(Coordinate intPt, int segmentIndex)
         {
             _segStr.AddIntersection(intPt, segmentIndex);
         }
@@ -23,7 +23,7 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             get
             {
-                ICoordinate[] resultPts = new Coordinate[0];
+                var resultPts = new Coordinate[0];
                 return _geomFact.CreateLineString(resultPts);
             }
         }

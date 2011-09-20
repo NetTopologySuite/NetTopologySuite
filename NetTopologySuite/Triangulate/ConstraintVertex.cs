@@ -20,7 +20,7 @@ namespace NetTopologySuite.Triangulate
         /// Creates a new constraint vertex
         /// </summary>
         /// <param name="p">the location of the vertex</param>
-        public ConstraintVertex(ICoordinate p)
+        public ConstraintVertex(Coordinate p)
             : base(p)
         {
         }

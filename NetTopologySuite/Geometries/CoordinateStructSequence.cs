@@ -14,14 +14,14 @@ namespace NetTopologySuite.Geometries
 
         public CoordinateStructSequence(ICoordinateSequence coordSeq) : base(coordSeq) { }
 
-        public override ICoordinate GetCoordinateCopy(int i)
+        public override Coordinate GetCoordinateCopy(int i)
         {
-            return new CoordinateStruct(coordinates[i]);
+            return new Coordinate(coordinates[i]);
         }
 
         public override object Clone() 
         {
-            ICoordinate[] cloneCoordinates = GetClonedCoordinates();
+            Coordinate[] cloneCoordinates = GetClonedCoordinates();
             return new CoordinateStructSequence(cloneCoordinates);
         }
     }

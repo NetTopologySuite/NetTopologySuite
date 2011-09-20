@@ -63,7 +63,7 @@ namespace NetTopologySuite.Geometries.Utilities
             double centreX = env.MinX + radius;
             double centreY = env.MinY + radius;
 
-            ICoordinate[] pts = new ICoordinate[NumPoints + 1];
+            Coordinate[] pts = new Coordinate[NumPoints + 1];
             int iPt = 0;
             for (int i = 0; i < NumPoints; i++)
             {

@@ -30,7 +30,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 
             for (int i = 0; i < seq.Count; i++)
             {
-                ICoordinate p = seq.GetCoordinate(i);
+                Coordinate p = seq.GetCoordinate(i);
                 Assert.IsTrue(p.Z == 0.0);
             }
         }

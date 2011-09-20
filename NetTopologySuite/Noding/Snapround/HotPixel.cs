@@ -18,11 +18,11 @@ namespace NetTopologySuite.Noding.Snapround
     {
         private LineIntersector li = null;
 
-        private ICoordinate pt = null;
-        private ICoordinate originalPt = null;        
+        private Coordinate pt = null;
+        private Coordinate originalPt = null;        
 
-        private ICoordinate p0Scaled = null;
-        private ICoordinate p1Scaled = null;
+        private Coordinate p0Scaled = null;
+        private Coordinate p1Scaled = null;
 
         private double scaleFactor;
 
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Noding.Snapround
          *  10
          *  23
          */
-        private ICoordinate[] corner = new ICoordinate[4];
+        private Coordinate[] corner = new Coordinate[4];
 
         private Envelope safeEnv = null;
 
@@ -46,7 +46,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="pt"></param>
         /// <param name="scaleFactor"></param>
         /// <param name="li"></param>
-        public HotPixel(ICoordinate pt, double scaleFactor, LineIntersector li)
+        public HotPixel(Coordinate pt, double scaleFactor, LineIntersector li)
         {
             originalPt = pt;
             this.pt = pt;
@@ -64,7 +64,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -91,7 +91,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// 
         /// </summary>
         /// <param name="pt"></param>
-        private void InitCorners(ICoordinate pt)
+        private void InitCorners(Coordinate pt)
         {
             double tolerance = 0.5;
             minx = pt.X - tolerance;
@@ -121,7 +121,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <returns></returns>
-        public bool Intersects(ICoordinate p0, ICoordinate p1)
+        public bool Intersects(Coordinate p0, Coordinate p1)
         {
             if (scaleFactor == 1.0)
                 return IntersectsScaled(p0, p1);
@@ -136,7 +136,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// </summary>
         /// <param name="p"></param>
         /// <param name="pScaled"></param>
-        private void CopyScaled(ICoordinate p, ICoordinate pScaled)
+        private void CopyScaled(Coordinate p, Coordinate pScaled)
         {
             pScaled.X = Scale(p.X);
             pScaled.Y = Scale(p.Y);
@@ -148,7 +148,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <returns></returns>
-        public bool IntersectsScaled(ICoordinate p0, ICoordinate p1)
+        public bool IntersectsScaled(Coordinate p0, Coordinate p1)
         {
             double segMinx = Math.Min(p0.X, p1.X);
             double segMaxx = Math.Max(p0.X, p1.X);
@@ -179,7 +179,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <returns></returns>
-        private bool IntersectsToleranceSquare(ICoordinate p0, ICoordinate p1)
+        private bool IntersectsToleranceSquare(Coordinate p0, Coordinate p1)
         {
             bool intersectsLeft = false;
             bool intersectsBottom = false;
@@ -216,7 +216,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <returns></returns>
-        private bool IntersectsPixelClosure(ICoordinate p0, ICoordinate p1)
+        private bool IntersectsPixelClosure(Coordinate p0, Coordinate p1)
         {
             li.ComputeIntersection(p0, p1, corner[0], corner[1]);
             if(li.HasIntersection) return true;

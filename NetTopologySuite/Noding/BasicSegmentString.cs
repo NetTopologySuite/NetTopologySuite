@@ -17,7 +17,7 @@ namespace NetTopologySuite.Noding
     public class BasicSegmentString : ISegmentString
     {
 
-        private readonly ICoordinate[] _pts;
+        private readonly Coordinate[] _pts;
         private Object _data;
 
         ///<summary>
@@ -25,7 +25,7 @@ namespace NetTopologySuite.Noding
         ///</summary>
         ///<param name="pts">the vertices of the segment string</param>
         ///<param name="data">the user-defined data of this segment string (may be null)</param>
-        public BasicSegmentString(ICoordinate[] pts, Object data)
+        public BasicSegmentString(Coordinate[] pts, Object data)
         {
             _pts = pts;
             _data = data;
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Noding
             set { _data = value; }
         }
 
-        public ICoordinate[] Coordinates { get { return _pts; } }
+        public Coordinate[] Coordinates { get { return _pts; } }
 
         public Boolean IsClosed
         {

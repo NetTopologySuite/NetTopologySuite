@@ -40,7 +40,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             Run(nIter, poly);
         }
 
-        static IGeometry CreateCircle(ICoordinate origin, double size, int nPts)
+        static IGeometry CreateCircle(Coordinate origin, double size, int nPts)
         {
             GeometricShapeFactory gsf = new GeometricShapeFactory();
             gsf.Centre = origin;
@@ -70,7 +70,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             double width = env.Width;
             double xOffset = width * rnd.NextDouble();
             double yOffset = env.Height * rnd.NextDouble();
-            ICoordinate basePt = new Coordinate(
+            Coordinate basePt = new Coordinate(
                             env.MinX + xOffset,
                             env.MinY + yOffset);
             IGeometry test = CreateTestCircle(basePt, size, nPts);
@@ -81,7 +81,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             return test;
         }
 
-        static IGeometry CreateTestCircle(ICoordinate origin, double size, int nPts)
+        static IGeometry CreateTestCircle(Coordinate origin, double size, int nPts)
         {
             GeometricShapeFactory gsf = new GeometricShapeFactory();
             gsf.Centre = origin;

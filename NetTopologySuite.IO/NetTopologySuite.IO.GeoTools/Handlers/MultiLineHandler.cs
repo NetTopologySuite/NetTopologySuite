@@ -66,7 +66,7 @@ namespace NetTopologySuite.IO.Handlers
                 {
                     double x = file.ReadDouble();
                     double y = file.ReadDouble();
-                    ICoordinate external = new Coordinate(x, y);
+                    Coordinate external = new Coordinate(x, y);
                     geometryFactory.PrecisionModel.MakePrecise(external);
                     points.Add(external);				    
                 }

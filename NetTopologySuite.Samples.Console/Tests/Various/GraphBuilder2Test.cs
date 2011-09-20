@@ -20,27 +20,27 @@ namespace NetTopologySuite.Tests.Various
         {
             factory = GeometryFactory.Fixed;
 
-            a = factory.CreateLineString(new ICoordinate[]
+            a = factory.CreateLineString(new Coordinate[]
                                              {
                                                  new Coordinate(0, 0),
                                                  new Coordinate(100, 0),
                                                  new Coordinate(200, 100),
                                                  new Coordinate(200, 200),
                                              });
-            b = factory.CreateLineString(new ICoordinate[]
+            b = factory.CreateLineString(new Coordinate[]
                                              {
                                                  new Coordinate(0, 0),
                                                  new Coordinate(100, 100),
                                                  new Coordinate(200, 200),
                                              });
-            c = factory.CreateLineString(new ICoordinate[]
+            c = factory.CreateLineString(new Coordinate[]
                                              {
                                                  new Coordinate(0, 0),
                                                  new Coordinate(0, 100),
                                                  new Coordinate(100, 200),
                                                  new Coordinate(200, 200),
                                              });
-            d = factory.CreateLineString(new ICoordinate[]
+            d = factory.CreateLineString(new Coordinate[]
                                              {
                                                  new Coordinate(0, 0),
                                                  new Coordinate(300, 0),
@@ -48,14 +48,14 @@ namespace NetTopologySuite.Tests.Various
                                                  new Coordinate(150, 200),
                                                  new Coordinate(150, 300),
                                              });
-            e = factory.CreateLineString(new ICoordinate[]
+            e = factory.CreateLineString(new Coordinate[]
                                              {
                                                  new Coordinate(100, 300),
                                                  new Coordinate(150, 300),
                                                  new Coordinate(200, 300),
                                              });
 
-            result = factory.CreateLineString(new ICoordinate[]
+            result = factory.CreateLineString(new Coordinate[]
                                                   {
                                                       new Coordinate(0, 0),
                                                       new Coordinate(300, 0),
@@ -86,7 +86,7 @@ namespace NetTopologySuite.Tests.Various
         /// <param name="fileName">The name of the shape file we want to load</param>
         /// <param name="src"></param>
         /// <param name="dst"></param>
-        public ILineString TestGraphBuilder2WithSampleGeometries(string fileName, ICoordinate src, ICoordinate dst)
+        public ILineString TestGraphBuilder2WithSampleGeometries(string fileName, Coordinate src, Coordinate dst)
         {
             var reader = new ShapefileReader(fileName);
             var edges = reader.ReadAll();
@@ -99,8 +99,8 @@ namespace NetTopologySuite.Tests.Various
         /// <param name="edges"></param>
         /// <param name="src"></param>
         /// <param name="dst"></param>
-        public ILineString TestGraphBuilder2WithSampleGeometries(IGeometryCollection edges, ICoordinate src,
-                                                                 ICoordinate dst)
+        public ILineString TestGraphBuilder2WithSampleGeometries(IGeometryCollection edges, Coordinate src,
+                                                                 Coordinate dst)
         {
             var builder = new GraphBuilder2(true);
             foreach (IMultiLineString edge in edges.Geometries)
@@ -244,8 +244,8 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsInstanceOf(typeof (GeometryCollection), edges);
             Assert.AreEqual(count, edges.NumGeometries);
 
-            ICoordinate startCoord = new Coordinate(2317300d, 4843961d);
-            ICoordinate endCoord = new Coordinate(2322739d, 4844539d);
+            Coordinate startCoord = new Coordinate(2317300d, 4843961d);
+            Coordinate endCoord = new Coordinate(2322739d, 4844539d);
 
             var startFound = false;
             var endFound = false;
@@ -259,14 +259,14 @@ namespace NetTopologySuite.Tests.Various
 
                 if (!startFound)
                 {
-                    var coords = new List<ICoordinate>(str.Coordinates);
+                    var coords = new List<Coordinate>(str.Coordinates);
                     if (coords.Contains(startCoord))
                         startFound = true;
                 }
 
                 if (!endFound)
                 {
-                    var coords = new List<ICoordinate>(str.Coordinates);
+                    var coords = new List<Coordinate>(str.Coordinates);
                     if (coords.Contains(endCoord))
                         endFound = true;
                 }
@@ -349,7 +349,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsTrue(builder.Add(a));
             Assert.IsTrue(builder.Add(b, c));
             Assert.IsTrue(builder.Add(d));
-            builder.Add(GeometryFactory.Default.CreateLineString(new ICoordinate[]
+            builder.Add(GeometryFactory.Default.CreateLineString(new Coordinate[]
                                                                      {
                                                                          new Coordinate(0, 0),
                                                                          new Coordinate(50, 50),

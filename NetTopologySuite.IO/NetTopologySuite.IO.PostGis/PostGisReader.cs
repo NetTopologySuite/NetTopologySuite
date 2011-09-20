@@ -136,11 +136,11 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-		protected ICoordinate ReadCoordinate(BinaryReader reader, bool hasZ, bool hasM)
+		protected Coordinate ReadCoordinate(BinaryReader reader, bool hasZ, bool hasM)
         {
 			double X = reader.ReadDouble();
 			double Y = reader.ReadDouble();
-			ICoordinate result;
+			Coordinate result;
 			if (hasZ)
 			{
 				double Z = reader.ReadDouble();
@@ -172,10 +172,10 @@ namespace NetTopologySuite.IO
 		/// </summary>
 		/// <param name="reader"></param>
 		/// <returns></returns>
-		protected ICoordinate[] ReadCoordinateArray(BinaryReader reader, bool hasZ, bool hasM)
+		protected Coordinate[] ReadCoordinateArray(BinaryReader reader, bool hasZ, bool hasM)
 		{
 			int numPoints = reader.ReadInt32();
-			ICoordinate[] coordinates = new ICoordinate[numPoints];
+			Coordinate[] coordinates = new Coordinate[numPoints];
 			for (int i = 0; i < numPoints; i++)
 				 coordinates[i] = ReadCoordinate(reader, hasZ, hasM);
 			return coordinates;
@@ -188,7 +188,7 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
 		protected ILineString ReadLineString(BinaryReader reader, bool hasZ, bool hasM)
         {
-			ICoordinate[] coordinates = ReadCoordinateArray(reader, hasZ, hasM);
+			Coordinate[] coordinates = ReadCoordinateArray(reader, hasZ, hasM);
             return Factory.CreateLineString(coordinates);
         }
 
@@ -199,7 +199,7 @@ namespace NetTopologySuite.IO
 		/// <returns></returns>
 		protected ILinearRing ReadLinearRing(BinaryReader reader, bool hasZ, bool hasM)
 		{
-			ICoordinate[] coordinates = ReadCoordinateArray(reader, hasZ, hasM);
+			Coordinate[] coordinates = ReadCoordinateArray(reader, hasZ, hasM);
 			return Factory.CreateLinearRing(coordinates);
 		}
 

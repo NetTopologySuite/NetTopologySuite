@@ -16,7 +16,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p"></param>
         /// <param name="ring"></param>
         /// <returns></returns>
-        public static bool IsPointInRing(ICoordinate p, ICoordinate[] ring)
+        public static bool IsPointInRing(Coordinate p, Coordinate[] ring)
         {
             int		i, i1;		    // point index; i1 = i-1 mod n
             double	xInt;		    // x intersection of e with ray
@@ -28,8 +28,8 @@ namespace NetTopologySuite.Algorithm
 	        for (i = 1; i < nPts; i++ ) 
             {
 		        i1 = i - 1;
-                ICoordinate p1 = ring[i];
-                ICoordinate p2 = ring[i1];
+                Coordinate p1 = ring[i];
+                Coordinate p2 = ring[i1];
 		        x1 = p1.X - p.X;
 		        y1 = p1.Y - p.Y;
 		        x2 = p2.X - p.X;
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Algorithm
         /// <c>true</c> if the ring is oriented counter-clockwise.
         /// throws <c>ArgumentException</c> if the ring is degenerate (does not contain 3 different points)
         /// </returns>
-        public static bool IsCCW(ICoordinate[] ring)
+        public static bool IsCCW(Coordinate[] ring)
         {
             // # of points without closing endpoint
             int nPts = ring.Length - 1;
@@ -71,11 +71,11 @@ namespace NetTopologySuite.Algorithm
 
             // algorithm to check if a Ring is stored in CCW order
             // find highest point
-            ICoordinate hip = ring[0];
+            Coordinate hip = ring[0];
             int hii = 0;
             for (int i = 1; i <= nPts; i++) 
             {
-                ICoordinate p = ring[i];
+                Coordinate p = ring[i];
                 if (p.Y > hip.Y) 
                 {
                     hip = p;
@@ -95,8 +95,8 @@ namespace NetTopologySuite.Algorithm
                 iNext = (iNext + 1) % nPts;
             while (ring[iNext].Equals(hip) && iNext != hii);
 
-            ICoordinate prev = ring[iPrev];
-            ICoordinate next = ring[iNext];
+            Coordinate prev = ring[iPrev];
+            Coordinate next = ring[iNext];
             if (prev.Equals(hip) || next.Equals(hip) || prev.Equals(next))
                 throw new ArgumentException("degenerate ring (does not contain 3 different points)");
 
@@ -134,7 +134,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p2"></param>
         /// <param name="q"></param>
         /// <returns></returns>
-        public static int ComputeOrientation(ICoordinate p1, ICoordinate p2, ICoordinate q) 
+        public static int ComputeOrientation(Coordinate p1, Coordinate p2, Coordinate q) 
         {
                 double dx1 = p2.X - p1.X;
                 double dy1 = p2.Y - p1.Y;

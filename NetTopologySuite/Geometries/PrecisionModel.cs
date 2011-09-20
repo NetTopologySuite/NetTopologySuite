@@ -275,7 +275,7 @@ namespace NetTopologySuite.Geometries
         /// precise representation of <c>external</c>.
         /// </param>        
         [Obsolete("Use MakePrecise instead")]
-        public void ToInternal(ICoordinate cexternal, ICoordinate cinternal) 
+        public void ToInternal(Coordinate cexternal, Coordinate cinternal) 
         {
             if (IsFloating) 
             {
@@ -299,9 +299,9 @@ namespace NetTopologySuite.Geometries
         /// representation of <c>external</c>
         /// </returns>
         [Obsolete("Use MakePrecise instead")]
-        public ICoordinate ToInternal(ICoordinate cexternal) 
+        public Coordinate ToInternal(Coordinate cexternal) 
         {
-            ICoordinate cinternal = new Coordinate(cexternal);
+            Coordinate cinternal = new Coordinate(cexternal);
             MakePrecise( cinternal);
             return cinternal;
         }
@@ -315,9 +315,9 @@ namespace NetTopologySuite.Geometries
         /// external representation of <c>internal</c>.
         /// </returns>
         [Obsolete("No longer needed, since internal representation is same as external representation")]
-        public ICoordinate ToExternal(ICoordinate cinternal) 
+        public Coordinate ToExternal(Coordinate cinternal) 
         {
-            ICoordinate cexternal = new Coordinate(cinternal);
+            Coordinate cexternal = new Coordinate(cinternal);
             return cexternal;
         }
 
@@ -330,7 +330,7 @@ namespace NetTopologySuite.Geometries
         /// external representation of <c>internal</c>.
         /// </param>
         [Obsolete("No longer needed, since internal representation is same as external representation")]
-        public void ToExternal(ICoordinate cinternal, ICoordinate cexternal) 
+        public void ToExternal(Coordinate cinternal, Coordinate cexternal) 
         {
             cexternal.X = cinternal.X;
             cexternal.Y = cinternal.Y;
@@ -367,7 +367,7 @@ namespace NetTopologySuite.Geometries
         /// Rounds a Coordinate to the PrecisionModel grid.
         /// </summary>
         /// <param name="coord"></param>
-        public void MakePrecise(ICoordinate coord)
+        public void MakePrecise(Coordinate coord)
         {
             // optimization for full precision
             if (_modelType == PrecisionModels.Floating) 

@@ -76,7 +76,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns></returns>
         private ILineString ComputeLine(LinearLocation start, LinearLocation end)
         {
-            ICoordinate[] coordinates = line.Coordinates;
+            Coordinate[] coordinates = line.Coordinates;
             CoordinateList newCoordinates = new CoordinateList();
 
             int startSegmentIndex = start.SegmentIndex;
@@ -101,7 +101,7 @@ namespace NetTopologySuite.LinearReferencing
             if (newCoordinates.Count <= 0)
                 newCoordinates.Add(start.GetCoordinate(line));
 
-            ICoordinate[] newCoordinateArray = newCoordinates.ToCoordinateArray();
+            Coordinate[] newCoordinateArray = newCoordinates.ToCoordinateArray();
 
             /*
              * Ensure there is enough coordinates to build a valid line.
@@ -109,7 +109,7 @@ namespace NetTopologySuite.LinearReferencing
              * There will always be at least one coordinate in the coordList.
              */
             if (newCoordinateArray.Length <= 1)
-                newCoordinateArray = new ICoordinate[] { newCoordinateArray[0], newCoordinateArray[0] };
+                newCoordinateArray = new Coordinate[] { newCoordinateArray[0], newCoordinateArray[0] };
             
             return line.Factory.CreateLineString(newCoordinateArray);
         }
@@ -136,7 +136,7 @@ namespace NetTopologySuite.LinearReferencing
                 if (compare < 0)
                     break;
 
-                ICoordinate pt = element.SegmentStart;
+                Coordinate pt = element.SegmentStart;
                 builder.Add(pt);
                 if (element.IsEndOfLine)
                     builder.EndLine();

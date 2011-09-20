@@ -14,7 +14,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>
-        public override Node CreateNode(ICoordinate coord)
+        public override Node CreateNode(Coordinate coord)
         {
             return new Node(coord, new DirectedEdgeStar());
         }

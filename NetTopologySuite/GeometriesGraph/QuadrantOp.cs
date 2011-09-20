@@ -64,7 +64,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <exception cref="ArgumentException"> if the points are equal</exception>
-        public static int Quadrant(ICoordinate p0, ICoordinate p1)
+        public static int Quadrant(Coordinate p0, Coordinate p1)
         {
             if (p1.X == p0.X && p1.Y == p0.Y)
                 throw new ArgumentException("Cannot compute the quadrant for two identical points " + p0);

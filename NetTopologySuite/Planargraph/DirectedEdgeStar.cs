@@ -64,7 +64,7 @@ namespace NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the coordinate for the node at wich this star is based.
         /// </summary>
-        public ICoordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {

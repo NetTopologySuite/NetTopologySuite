@@ -48,9 +48,9 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns></returns>
         public virtual LinearLocation[] IndicesOf(IGeometry subLine)
         {
-            ICoordinate startPt = ((ILineString) subLine.GetGeometryN(0)).GetCoordinateN(0);
+            Coordinate startPt = ((ILineString) subLine.GetGeometryN(0)).GetCoordinateN(0);
             ILineString lastLine = (ILineString) subLine.GetGeometryN(subLine.NumGeometries - 1);
-            ICoordinate endPt = lastLine.GetCoordinateN(lastLine.NumPoints - 1);
+            Coordinate endPt = lastLine.GetCoordinateN(lastLine.NumPoints - 1);
 
             LocationIndexOfPoint locPt = new LocationIndexOfPoint(linearGeom);
             LinearLocation[] subLineLoc = new LinearLocation[2];

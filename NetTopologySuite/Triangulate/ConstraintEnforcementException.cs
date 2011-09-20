@@ -15,13 +15,13 @@ namespace NetTopologySuite.Triangulate
 
         //private long serialVersionUID = 386496846550080140L;
 
-        private static String MsgWithCoord(String msg, ICoordinate pt) {
+        private static String MsgWithCoord(String msg, Coordinate pt) {
             if (pt != null)
                 return msg + " [ " + WKTWriter.ToPoint(pt) + " ]";
             return msg;
         }
 
-        private readonly ICoordinate _pt;
+        private readonly Coordinate _pt;
 
         /// <summary>
         /// Creates a new instance with a given message.
@@ -37,7 +37,7 @@ namespace NetTopologySuite.Triangulate
         /// </summary>
         /// <param name="msg">a string</param>
         /// <param name="pt">the location of the error</param>
-        public ConstraintEnforcementException(String msg, ICoordinate pt)
+        public ConstraintEnforcementException(String msg, Coordinate pt)
             : base(MsgWithCoord(msg, pt))
         {
             _pt = new Coordinate(pt);
@@ -47,7 +47,7 @@ namespace NetTopologySuite.Triangulate
         /// Gets the approximate location of this error.
         /// </summary>
         /// <remarks>a location</remarks>
-        public ICoordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {

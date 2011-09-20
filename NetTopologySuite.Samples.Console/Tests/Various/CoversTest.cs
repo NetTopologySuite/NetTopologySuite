@@ -14,13 +14,13 @@ namespace NetTopologySuite.Samples.Tests.Various
         private Polygon polygon1 = null;
         private Polygon polygon2 = null;
 
-        ICoordinate[] array1 = new ICoordinate[]  {   new Coordinate(10, 10), 
+        Coordinate[] array1 = new Coordinate[]  {   new Coordinate(10, 10), 
                                                     new Coordinate(50, 10),
                                                     new Coordinate(50, 50),
                                                     new Coordinate(10, 50),
                                                     new Coordinate(10, 10), };
 
-        ICoordinate[] array2 = new ICoordinate[]  {   new Coordinate(11, 11), 
+        Coordinate[] array2 = new Coordinate[]  {   new Coordinate(11, 11), 
                                                     new Coordinate(20, 11),
                                                     new Coordinate(20, 20),
                                                     new Coordinate(11, 20),

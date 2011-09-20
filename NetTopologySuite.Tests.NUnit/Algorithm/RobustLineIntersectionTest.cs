@@ -111,12 +111,12 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         void ComputeIntersection(String wkt1, String wkt2,
                                  int expectedIntersectionNum, 
-                                 ICoordinate[] intPt, 
+                                 Coordinate[] intPt, 
                                  double distanceTolerance)
         {
             LineString l1 = (LineString) reader.Read(wkt1);
             LineString l2 = (LineString) reader.Read(wkt2);
-            ICoordinate[] pt = new Coordinate[] {
+            Coordinate[] pt = new Coordinate[] {
                 new Coordinate(l1.Coordinates[0]), new Coordinate(l1.Coordinates[1]),
                 new Coordinate(l2.Coordinates[0]), new Coordinate(l2.Coordinates[1])
             };
@@ -130,12 +130,12 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             LineString l1 = (LineString) reader.Read(wkt1);
             LineString l2 = (LineString) reader.Read(wkt2);
-            ICoordinate[] pt = new Coordinate[] {
+            Coordinate[] pt = new Coordinate[] {
                 new Coordinate(l1.Coordinates[0]), new Coordinate(l1.Coordinates[1]),
                 new Coordinate(l2.Coordinates[0]), new Coordinate(l2.Coordinates[1])
             };
             IGeometry g = reader.Read(expectedWKT);
-            ICoordinate[] intPt = g.Coordinates;
+            Coordinate[] intPt = g.Coordinates;
             ComputeIntersection(pt, expectedIntersectionNum, intPt, distanceTolerance);
         }
 	
@@ -144,9 +144,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         * @param expectedIntersectionNum
         * @param intPt the expected intersection points (maybe null if not tested)
         */
-        void ComputeIntersection(ICoordinate[] pt, 
+        void ComputeIntersection(Coordinate[] pt, 
                                  int expectedIntersectionNum, 
-                                 ICoordinate[] intPt,
+                                 Coordinate[] intPt,
                                  double distanceTolerance)
         {
             LineIntersector li = new RobustLineIntersector();
@@ -183,7 +183,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             }
         }
 	
-        void TestIntPoints(ICoordinate p, ICoordinate q, double distanceTolerance)
+        void TestIntPoints(Coordinate p, Coordinate q, double distanceTolerance)
         {
             bool isEqual = equals(p, q, distanceTolerance);
             Assert.IsTrue(isEqual, "Int Pts not equal - "
@@ -191,7 +191,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 + WKTWriter.ToPoint(q));
         }
 	
-        public static bool equals(ICoordinate p0, ICoordinate p1, double distanceTolerance)
+        public static bool equals(Coordinate p0, Coordinate p1, double distanceTolerance)
         {
             return p0.Distance(p1) <= distanceTolerance;
         }

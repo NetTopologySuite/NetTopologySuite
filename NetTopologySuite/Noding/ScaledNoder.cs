@@ -98,13 +98,13 @@ namespace NetTopologySuite.Noding
         /// </summary>
         /// <param name="pts"></param>
         /// <returns></returns>
-        private ICoordinate[] Scale(ICoordinate[] pts)
+        private Coordinate[] Scale(Coordinate[] pts)
         {
-            ICoordinate[] roundPts = new ICoordinate[pts.Length];
+            Coordinate[] roundPts = new Coordinate[pts.Length];
             for (int i = 0; i < pts.Length; i++)
                 roundPts[i] = new Coordinate(Math.Round((pts[i].X - _offsetX) * _scaleFactor),
                                              Math.Round((pts[i].Y - _offsetY) * _scaleFactor));
-            ICoordinate[] roundPtsNoDup = CoordinateArrays.RemoveRepeatedPoints(roundPts);
+            Coordinate[] roundPtsNoDup = CoordinateArrays.RemoveRepeatedPoints(roundPts);
             return roundPtsNoDup;
         }      
 
@@ -122,7 +122,7 @@ namespace NetTopologySuite.Noding
         /// 
         /// </summary>
         /// <param name="pts"></param>
-        private void Rescale(ICoordinate[] pts)
+        private void Rescale(Coordinate[] pts)
         {
             for (int i = 0; i < pts.Length; i++) 
             {
