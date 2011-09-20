@@ -85,6 +85,39 @@ namespace Open.Topology.TestRunner.Result
         }
     }
 
+    public class IntegerResult : IResult<Int32>
+    {
+        public IntegerResult(int result)
+        {
+            Value = result;
+        }
+
+        public Int32 Value { get; private set; }
+
+        public bool Equals(IResult other, double tolerance)
+        {
+            if (!(other is IResult<int>))
+                return false;
+            return Math.Abs(Value - ((IResult<Int32>)other).Value) <= tolerance;
+        }
+
+        public string ToShortString()
+        {
+            return Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+        public string ToLongString()
+        {
+            return Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+        public string ToFormattedString()
+        {
+            return Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        }
+    }
+
+
     public class GeometryResult : IResult<IGeometry>
     {
         public GeometryResult(IGeometry result)

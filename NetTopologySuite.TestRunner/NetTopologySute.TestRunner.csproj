@@ -111,6 +111,10 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Operations\GeometryMethodOperation.cs" />
+    <Compile Include="Operations\IGeometryOperation.cs" />
+    <Compile Include="Operations\LoggingGeometryOperation.cs" />
+    <Compile Include="Operations\NTSTestReflectionException.cs" />
     <Compile Include="Result\Result.cs" />
     <Compile Include="Result\IResultMatcher.cs" />
     <Compile Include="Utility\WKTOrWKBReader.cs" />
