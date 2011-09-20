@@ -51,8 +51,8 @@ namespace NetTopologySuite.IO.Handlers
         public static IEnvelope GetEnvelopeExternal(IEnvelope envelope)
         {
             // Get envelope in external coordinates
-            ICoordinate min = new Coordinate(envelope.MinX, envelope.MinY);
-            ICoordinate max = new Coordinate(envelope.MaxX, envelope.MaxY);
+            var min = new Coordinate(envelope.MinX, envelope.MinY);
+            var max = new Coordinate(envelope.MaxX, envelope.MaxY);
             IEnvelope bounds = new Envelope(min.X, max.X, min.Y, max.Y);
             return bounds;
         }

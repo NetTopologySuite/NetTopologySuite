@@ -57,7 +57,7 @@ namespace NetTopologySuite.IO.Handlers
         public override void Write(IGeometry geometry, BinaryWriter file, IGeometryFactory geometryFactory)
         {
             file.Write(int.Parse(EnumUtility.Format(typeof(ShapeGeometryType), this.ShapeType, "d")));
-            ICoordinate external = geometry.Coordinates[0];
+            var external = geometry.Coordinates[0];
             file.Write(external.X);
             file.Write(external.Y);
         }

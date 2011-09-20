@@ -153,7 +153,8 @@ namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projectio
 
         public ICoordinate Transform(ICoordinate coordinate)
         {
-            return Transform(coordinate.ToCoordinate());
+            var ret = Transform(coordinate.ToCoordinate());
+            return ret as ICoordinate;
         }
 
         public ICoordinateSequence Transform(ICoordinateSequence coordinateSequence)

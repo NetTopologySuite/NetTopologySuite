@@ -120,7 +120,7 @@ namespace NetTopologySuite.IO.Handlers
                 CoordinateList points = new CoordinateList(multi.GetGeometryN(part).Coordinates);
                 for (int i = 0; i < points.Count; i++)
                 {
-                    ICoordinate external = points[i];
+                    var external = points[i];
                     file.Write(external.X);
                     file.Write(external.Y);
                 }

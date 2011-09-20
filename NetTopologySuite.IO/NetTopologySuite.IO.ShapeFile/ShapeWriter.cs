@@ -27,7 +27,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="coordinate"></param>
         /// <param name="writer"></param>
-        public void Write(ICoordinate coordinate, BinaryWriter writer)
+        public void Write(Coordinate coordinate, BinaryWriter writer)
         {
             writer.Write((double) coordinate.X);
             writer.Write((double) coordinate.Y);

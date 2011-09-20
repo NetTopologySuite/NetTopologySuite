@@ -8,7 +8,7 @@ namespace NetTopologySuite.Geometries
 //#endif
     public class CoordinateStructSequence : CoordinateArraySequence 
     {
-        public CoordinateStructSequence(ICoordinate[] coordinates) : base(coordinates) { }
+        public CoordinateStructSequence(Coordinate[] coordinates) : base(coordinates) { }
         
         public CoordinateStructSequence(int size) : base(size) { }
 

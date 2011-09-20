@@ -135,7 +135,7 @@ namespace NetTopologySuite.Windows.Forms
             return poly.Path;
         }
 
-        private void Append(PolygonGraphicsPath poly, ICoordinate[] coords)
+        private void Append(PolygonGraphicsPath poly, Coordinate[] coords)
         {
             GraphicsPath ring = null;
             for (var i = 0; i < coords.Length; i++)
@@ -213,12 +213,12 @@ namespace NetTopologySuite.Windows.Forms
             return _pointFactory.CreatePoint(viewPoint);
         }
 
-        private PointF TransformPoint(ICoordinate model)
+        private PointF TransformPoint(Coordinate model)
         {
             return TransformPoint(model, new PointF());
         }
 
-        private PointF TransformPoint(ICoordinate model, PointF view)
+        private PointF TransformPoint(Coordinate model, PointF view)
         {
             _pointTransformer.Transform(model, ref view);
             /**

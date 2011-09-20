@@ -3,7 +3,10 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Samples.Geometries
 {
-	public class ExtendedCoordinate : Coordinate, ICoordinate
+	public class ExtendedCoordinate : Coordinate
+#if ImplementsICoordinate
+        , ICoordinate
+#endif
 	{				
 		// A Coordinate subclass should provide all of these methods
 		

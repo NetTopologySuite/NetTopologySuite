@@ -142,7 +142,7 @@ namespace NetTopologySuite.IO
         /// <param name="indexParts"></param>
         /// <param name="coords"></param>
         /// <returns></returns>
-        public IGeometry CreateMultiLineString(int numPoints, int[] indexParts, ICoordinate[] coords)
+        public IGeometry CreateMultiLineString(int numPoints, int[] indexParts, Coordinate[] coords)
         {
             // Support vars
             ILineString[] strings = new ILineString[indexParts.Length];
@@ -184,7 +184,7 @@ namespace NetTopologySuite.IO
         /// <param name="indexParts"></param>
         /// <param name="coords"></param>
         /// <returns></returns>
-        public IGeometry CreateSingleOrMultiPolygon(int numPoints, int[] indexParts, ICoordinate[] coords)
+        public IGeometry CreateSingleOrMultiPolygon(int numPoints, int[] indexParts, Coordinate[] coords)
         {
             // Support vars
             int i = 0;

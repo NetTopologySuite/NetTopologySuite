@@ -92,7 +92,7 @@ namespace NetTopologySuite.Geometries
 
         public Coordinate GetCoordinate(int i)
         {
-            return new DotSpatialAffineCoordinate(this, i);
+            return new Coordinate(XY[2 * i], XY[2 * i + 1], Z != null ? Z[i] : double.NaN);
         }
 
         public Coordinate GetCoordinateCopy(int i)
@@ -155,17 +155,16 @@ namespace NetTopologySuite.Geometries
 
         public Coordinate[] ToCoordinateArray()
         {
-            //var j = 0;
+            var j = 0;
             var count = Count;
             var ret = new Coordinate[count];
             for (var i = 0; i < count; i++)
             {
-                ret[i] = new DotSpatialAffineCoordinate(this, i);
-                /*
+                //ret[i] = new DotSpatialAffineCoordinate(this, i);
+                
                 ret[i] = new Coordinate(_xy[j++], _xy[j++]);
                 if (_z != null)
                     ret[i].Z = _z[i];
-                 */
             }
             return ret;
         }

@@ -45,14 +45,14 @@ namespace NetTopologySuite.Windows.Forms
 {
     public class IdentityPointTransformation : IPointTransformation
     {
-	    public void Transform(ICoordinate model, ref PointF view)
+	    public void Transform(Coordinate model, ref PointF view)
 	    {
 	        view.X = (float) model.X;
 	        view.Y = (float) model.Y;
 
 	    }
 
-        public PointF[] Transform (ICoordinate[] model)
+        public PointF[] Transform (Coordinate[] model)
         {
             var ret = new PointF[model.Length];
             for (var i = 0; i < model.Length; i++ )
@@ -70,14 +70,14 @@ namespace NetTopologySuite.Windows.Forms
             _yOffset = yOffset;
         }
         
-        public void Transform(ICoordinate model, ref PointF view)
+        public void Transform(Coordinate model, ref PointF view)
         {
             view.X = (float)model.X;
             view.Y = _yOffset-(float)model.Y;
 
         }
 
-        public PointF[] Transform(ICoordinate[] model)
+        public PointF[] Transform(Coordinate[] model)
         {
             var ret = new PointF[model.Length];
             for (var i = 0; i < model.Length; i++)
