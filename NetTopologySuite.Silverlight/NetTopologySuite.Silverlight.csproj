@@ -1139,10 +1139,6 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\PowerCollections\Source\PowerCollections.SL\PowerCollections.Silverlight.csproj">
-      <Project>{48808C52-FE5E-43BB-8ADD-197748552773}</Project>
-      <Name>PowerCollections.Silverlight</Name>
-    </ProjectReference>
     <ProjectReference Include="..\GeoAPI\GeoAPI.Silverlight\GeoAPI.Silverlight.csproj">
       <Project>{9B913337-1114-4D05-8F24-D05A5FD588AD}</Project>
       <Name>GeoAPI.Silverlight</Name>
@@ -1154,6 +1150,10 @@
     <ProjectReference Include="..\NetTopologySuite.Encodings.Silverlight\NetTopologySuite.Encodings.Silverlight.csproj">
       <Project>{C7FA023B-0259-47C4-8051-EE7EB639DD39}</Project>
       <Name>NetTopologySuite.Encodings.Silverlight</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PowerCollections\PowerCollections.SL\PowerCollections.Silverlight.csproj">
+      <Project>{48808C52-FE5E-43BB-8ADD-197748552773}</Project>
+      <Name>PowerCollections.Silverlight</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

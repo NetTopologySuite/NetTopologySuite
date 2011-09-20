@@ -7,8 +7,9 @@ namespace NetTopologySuite.Densify
 {
     /// <summary>
     /// Densifies a geometry by inserting extra vertices along the line segments
-    /// in the geometry. The densified geometry contains no line segment which
-    /// is longer than the given distance tolerance.
+    /// contained in the geometry. 
+    /// All segments in the created densified geometry will be no longer than
+    /// than the given distance tolerance.
     /// </summary>
     /// <remarks>
     /// <para>Densified polygonal geometries are guaranteed to be topologically correct.</para>

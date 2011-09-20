@@ -20,7 +20,41 @@ namespace NetTopologySuite.Algorithm
     /// *************************************************************************
     /// </summary>
     public class RobustDeterminant
-    {     
+    {
+        /*
+        
+        // test point to allow injecting test code
+        public static int SignOfDet2x2(double x1, double y1, double x2, double y2) 
+        {
+          int d1 = OriginalSignOfDet2x2(x1, y1, x2, y2); 
+          int d2 = -OriginalSignOfDet2x2(y1, x1, x2, y2); 
+          assert d1 == -d2;
+          return d1;
+        }
+         */
+
+        /*
+         * Test code to force a standard ordering of input ordinates.
+         * A possible fix for a rare problem where evaluation is order-dependent.
+         */
+        /*
+        public static int SignOfDet2x2(double x1, double y1, double x2, double y2) 
+        {
+          if (x1 > x2) {
+            return -SignOfDet2x2ordX(x2, y2, x1, y1);
+          }
+          return SignOfDet2x2ordX(x1, y1, x2, y2);
+        }
+    
+        private static int SignOfDet2x2ordX(double x1, double y1, double x2, double y2) 
+        {
+          if (y1 > y2) {
+            return -OriginalSignOfDet2x2(y1, x1, y2, x2);
+          }
+          return OriginalSignOfDet2x2(x1, y1, x2, y2);
+        }
+         */
+
 
         /// <summary>
         /// Computes the sign of the determinant of the 2x2 matrix with the given entries, in a robust way.
@@ -36,6 +70,7 @@ namespace NetTopologySuite.Algorithm
         /// <item>0 if the determinant is null.</item>
         /// </list>
         /// </returns>
+        //private static int OriginalSignOfDet2x2(double x1, double y1, double x2, double y2) {
         public static int SignOfDet2x2(double x1, double y1, double x2, double y2)
         {
             // returns -1 if the determinant is negative,

@@ -120,9 +120,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Validate", "Validate", "{20
 		NetTopologySuite.TestRunner.Tests\validate\TestRelatePP.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelatePP.xml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections", "..\PowerCollections\Source\PowerCollections\PowerCollections.csproj", "{5821977D-AC2C-4912-BCD0-6E6B1A756167}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections", "PowerCollections\PowerCollections\PowerCollections.csproj", "{5821977D-AC2C-4912-BCD0-6E6B1A756167}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections.Silverlight", "..\PowerCollections\Source\PowerCollections.SL\PowerCollections.Silverlight.csproj", "{48808C52-FE5E-43BB-8ADD-197748552773}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections.Silverlight", "PowerCollections\PowerCollections.SL\PowerCollections.Silverlight.csproj", "{48808C52-FE5E-43BB-8ADD-197748552773}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{B16871B3-8528-4932-A5DF-A07127BF0DB0}"
 	ProjectSection(SolutionItems) = preProject

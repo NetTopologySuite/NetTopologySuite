@@ -2,6 +2,7 @@ using System;
 //using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
+using NetTopologySuite.Mathematics;
 
 namespace NetTopologySuite.Geometries
 {
@@ -423,6 +424,9 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Extracts a subsequence of the input <see cref="Coordinate" /> array
         /// from indices <paramref name="start" /> to <paramref name="end"/> (inclusive).
+        /// The input indices are clamped to the array size;
+        /// If the end index is less than the start index,
+        /// the extracted array will be empty.
         /// </summary>
         /// <param name="pts">The input array.</param>
         /// <param name="start">The index of the start of the subsequence to extract.</param>
@@ -430,10 +434,19 @@ namespace NetTopologySuite.Geometries
         /// <returns>A subsequence of the input array.</returns>
         public static ICoordinate[] Extract(ICoordinate[] pts, int start, int end)
         {
+            start = MathUtil.Clamp(start, 0, pts.Length);
+            end = MathUtil.Clamp(end, -1, pts.Length);
+
+            int npts = end - start + 1;
+            if (end < 0) npts = 0;
+            if (start >= pts.Length) npts = 0;
+            if (end < start) npts = 0;
+
+            var extractPts = new ICoordinate[npts];
+            if (npts == 0) return extractPts;
+            
             // Code using FLC features
-            var len = end - start + 1;
-            var extractPts = new ICoordinate[len];
-            Array.Copy(pts, start, extractPts, 0, len);
+            Array.Copy(pts, start, extractPts, 0, npts);
 
             /* Original JTS code
             int iPts = 0;

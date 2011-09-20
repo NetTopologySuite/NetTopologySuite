@@ -105,7 +105,11 @@
     <Compile Include="Algorithm\RobustLineIntersector.cs" />
     <Compile Include="Algorithm\SimplePointInRing.cs" />
     <Compile Include="Algorithm\SIRtreePointInRing.cs" />
-    <Compile Include="Algorithm\VectorMath.cs" />
+    <Compile Include="Mathematics\DD.cs" />
+    <Compile Include="Mathematics\MathUtil.cs" />
+    <Compile Include="Mathematics\Matrix.cs" />
+    <Compile Include="Mathematics\Vector2D.cs" />
+    <Compile Include="Mathematics\VectorMath.cs" />
     <Compile Include="CoordinateSystems\Transformations\GeometryTransform.cs" />
     <Compile Include="Densify\Densifier.cs" />
     <Compile Include="Features\AttributesTable.cs">
@@ -507,13 +511,13 @@
     <Folder Include="Geometries\Implementation\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\PowerCollections\Source\PowerCollections\PowerCollections.csproj">
-      <Project>{5821977D-AC2C-4912-BCD0-6E6B1A756167}</Project>
-      <Name>PowerCollections</Name>
-    </ProjectReference>
     <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">
       <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
       <Name>GeoAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PowerCollections\PowerCollections\PowerCollections.csproj">
+      <Project>{5821977D-AC2C-4912-BCD0-6E6B1A756167}</Project>
+      <Name>PowerCollections</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -91,15 +91,15 @@ namespace NetTopologySuite.Operation.Buffer
           int maxPrecisionDigits)
         {
             IEnvelope env = g.EnvelopeInternal;
-            double envSize = Math.Max(env.Height, env.Width);
+            double envSize = System.Math.Max(env.Height, env.Width);
             double expandByDistance = distance > 0.0 ? distance : 0.0;
             double bufEnvSize = envSize + 2 * expandByDistance;
 
             // the smallest power of 10 greater than the buffer envelope
-            int bufEnvLog10 = (int)(Math.Log(bufEnvSize) / Math.Log(10) + 1.0);
+            int bufEnvLog10 = (int)(System.Math.Log(bufEnvSize) / System.Math.Log(10) + 1.0);
             int minUnitLog10 = bufEnvLog10 - maxPrecisionDigits;
             // scale factor is inverse of min Unit size, so flip sign of exponent
-            double scaleFactor = Math.Pow(10.0, -minUnitLog10);
+            double scaleFactor = System.Math.Pow(10.0, -minUnitLog10);
             return scaleFactor;
         }
 

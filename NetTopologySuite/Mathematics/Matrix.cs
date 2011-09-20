@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 
-namespace NetTopologySuite.Geometries.Utilities
+namespace NetTopologySuite.Mathematics
 {
     /// <summary>
-    /// Implements some 2D matrix operations (in particular, solving systems of linear equations).
+    /// Implements some 2D matrix operations 
+    /// (in particular, solving systems of linear equations).
     /// </summary>
     /// <author>Martin Davis</author>
     public class Matrix
@@ -27,21 +28,16 @@ namespace NetTopologySuite.Geometries.Utilities
             m[j] = temp;
         }
 
-        ///<summary>
+        /// <summary>
         /// Solves a system of equations using Gaussian Elimination.
-        /// In order to avoid overhead the algorithm runs in-place
-        /// on A - if A should not be modified the client must supply a copy.
-        ///</summary>
-        /// <param name="a">A an nxn matrix in row/column order )modified by this method)</param>
+        /// In order to avoid overhead the algorithm runs in-place 
+        /// on <see paramref="a"/> - if <see paramref="a"/> should not be modified the client must supply a copy.
+        /// </summary>
+        /// <param name="a">An nxn matrix in row/column order )modified by this method)</param>
         /// <param name="b">A vector of length n</param>
-        /// <exception cref="ArgumentException">if the matrix is the wrong size</exception>
-        /// <returns>
-        /// <list type="Bullet">
-        /// <item>A vector containing the solution (if any)</item>
-        /// <item><c>null</c> if the system has no or no unique solution</item>
-        /// </list>
+        /// <returns>a vector containing the solution (if any), otherwise, if the system has no or no unique solution, null
         /// </returns>
-        /// 
+        /// <exception cref="ArgumentException">If the matrix has the wrong size</exception>
         public static double[] Solve(double[][] a, double[] b)
         {
             int n = b.Length;
@@ -75,7 +71,7 @@ namespace NetTopologySuite.Geometries.Utilities
                 }
             }
 
-            /*
+            /**
              * A is now (virtually) in upper-triangular form.
              * The solution vector is determined by back-substitution.
              */

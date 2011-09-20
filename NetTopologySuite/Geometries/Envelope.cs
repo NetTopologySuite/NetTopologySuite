@@ -345,6 +345,39 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Gets the minimum extent of this envelope across both dimensions.
+        /// </summary>
+        /// <returns></returns>
+        public double MinExtent
+        {
+            get
+            {
+                if (IsNull) return 0.0;
+                double w = Width;
+                double h = Height;
+                if (w < h) return w;
+                return h;
+            }
+        }
+
+        /// <summary>
+        /// Gets the maximum extent of this envelope across both dimensions.
+        /// </summary>
+        /// <returns></returns>
+        public double MaxExtent
+        {
+            get
+            {
+                if (IsNull) return 0.0;
+                double w = Width;
+                double h = Height;
+                if (w > h) return w;
+                return h;
+            }
+        }
+  
+
+        /// <summary>
         /// Enlarges this <code>Envelope</code> so that it contains
         /// the given <see cref="ICoordinate"/>. 
         /// Has no effect if the point is already on or within the envelope.
@@ -445,10 +478,13 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        /// Computes the intersection of two <see cref="IEnvelope"/>s.
         /// </summary>
-        /// <param name="env"></param>
-        /// <returns></returns>
+        /// <param name="env">The envelope to intersect with</param>
+        /// <returns>
+        /// A new Envelope representing the intersection of the envelopes (this will be
+        /// the null envelope if either argument is null, or they do not intersect
+        /// </returns>
         public IEnvelope Intersection(IEnvelope env)
         {
             if (IsNull || env.IsNull || !Intersects(env))
@@ -637,14 +673,14 @@ namespace NetTopologySuite.Geometries
 
             if (_maxx < env.MinX)
                 dx = env.MinX - _maxx;
-            if (_minx > env.MaxX)
+            else if (_minx > env.MaxX)
                 dx = _minx - env.MaxX;
 
             double dy = 0.0;
 
             if (_maxy < env.MinY)
                 dy = env.MinY - _maxy;
-            if (_miny > env.MaxY)
+            else if (_miny > env.MaxY)
                 dy = _miny - env.MaxY;
 
             // if either is zero, the envelopes overlap either vertically or horizontally
@@ -653,7 +689,7 @@ namespace NetTopologySuite.Geometries
             if (dy == 0.0)
                 return dx;
 
-            return Math.Sqrt(dx * dx + dy * dy);
+            return System.Math.Sqrt(dx * dx + dy * dy);
         }
 
         public override bool Equals(object other)

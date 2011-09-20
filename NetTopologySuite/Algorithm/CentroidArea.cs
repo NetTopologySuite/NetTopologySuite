@@ -77,7 +77,7 @@ namespace NetTopologySuite.Algorithm
             get
             {
                 ICoordinate cent = new Coordinate();
-                if (Math.Abs(_areasum2) > 0.0)
+                if (System.Math.Abs(_areasum2) > 0.0)
                 {
                     cent.X = _cg3.X / 3 / _areasum2;
                     cent.Y = _cg3.Y / 3 / _areasum2;

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
@@ -100,9 +101,13 @@ namespace NetTopologySuite.Algorithm
         /// to use an octilateral defined by the points in the 8 cardinal directions.
         /// Note that even if the method used to determine the polygon vertices
         /// is not 100% robust, this does not affect the robustness of the convex hull.
+        /// <para>
+        /// To satisfy the requirements of the Graham Scan algorithm, 
+        /// the returned array has at least 3 entries.
+        /// </para>
         /// </summary>
-        /// <param name="pts"></param>
-        /// <returns></returns>
+        /// <param name="pts">The coordinates to reduce</param>
+        /// <returns>The reduced array of coordinates</returns>
         private ICoordinate[] Reduce(ICoordinate[] pts)
         {
             ICoordinate[] polyPts = ComputeOctRing(inputPts);
@@ -126,10 +131,30 @@ namespace NetTopologySuite.Algorithm
                 if (!CGAlgorithms.IsPointInRing(inputPts[i], polyPts))                
                     reducedSet.Add(inputPts[i]);
 
-            ICoordinate[] arr = new ICoordinate[reducedSet.Count];
-            reducedSet.CopyTo(arr, 0);
-            return arr;
+            ICoordinate[] reducedPts = CoordinateArrays.ToCoordinateArray((ICollection<ICoordinate>)reducedSet);// new ICoordinate[reducedSet.Count];
+
+            // ensure that computed array has at least 3 points (not necessarily unique)  
+            if (reducedPts.Length < 3)
+                return PadArray3(reducedPts);
+
+            return reducedPts;
         }
+
+        private ICoordinate[] PadArray3(ICoordinate[] pts)
+        {
+            ICoordinate[] pad = new Coordinate[3];
+            for (int i = 0; i < pad.Length; i++)
+            {
+                if (i < pts.Length)
+                {
+                    pad[i] = pts[i];
+                }
+                else
+                    pad[i] = pts[0];
+            }
+            return pad;
+        }
+    
 
         /// <summary>
         /// 
