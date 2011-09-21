@@ -99,7 +99,7 @@ namespace NetTopologySuite.Index.KdTree
                 // test if point is already a node
                 if (currentNode != null)
                 {
-                    bool isInTolerance = p.Distance(currentNode.Coordinate) < _tolerance;
+                    bool isInTolerance = p.Distance(currentNode.Coordinate) <= _tolerance;
 
                     // if (isInTolerance && ! p.equals2D(currentNode.getCoordinate())) {
                     // System.out.println("KDTree: Snapped!");

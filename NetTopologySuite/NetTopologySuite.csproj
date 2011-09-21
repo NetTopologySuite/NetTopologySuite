@@ -105,6 +105,9 @@
     <Compile Include="Algorithm\RobustLineIntersector.cs" />
     <Compile Include="Algorithm\SimplePointInRing.cs" />
     <Compile Include="Algorithm\SIRtreePointInRing.cs" />
+    <Compile Include="Index\Strtree\BoundablePair.cs" />
+    <Compile Include="Index\Strtree\GeometryItemDistance.cs" />
+    <Compile Include="Index\Strtree\IItemDistance.cs" />
     <Compile Include="Mathematics\DD.cs" />
     <Compile Include="Mathematics\MathUtil.cs" />
     <Compile Include="Mathematics\Matrix.cs" />

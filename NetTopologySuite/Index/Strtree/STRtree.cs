@@ -343,5 +343,130 @@ namespace NetTopologySuite.Index.Strtree
         {
             return new AnonymousYComparerImpl(this);
         }
+
+        /**
+         * Finds the two nearest items in the tree, 
+         * using {@link ItemDistance} as the distance metric.
+         * A Branch-and-Bound tree traversal algorithm is used
+         * to provide an efficient search.
+         * 
+         * @param itemDist a distance metric applicable to the items in this tree
+         * @return the pair of the nearest items
+         */
+        public Object[] NearestNeighbour(IItemDistance itemDist)
+        {
+            BoundablePair bp = new BoundablePair(this.Root, this.Root, itemDist);
+            return this.NearestNeighbour(bp);
+        }
+
+        /**
+         * Finds the nearest item to the given object
+         * in this tree, 
+         * using {@link ItemDistance} as the distance metric.
+         * A Branch-and-Bound tree traversal algorithm is used
+         * to provide an efficient search.
+         * 
+         * @param env the envelope of the query item
+         * @param item the item to find the nearest neighbour of
+         * @param itemDist a distance metric applicable to the items in this tree and the query item
+         * @return the nearest item in this tree
+         */
+        public Object NearestNeighbour(IEnvelope env, Object item, IItemDistance itemDist)
+        {
+            IBoundable bnd = new ItemBoundable(env, item);
+            BoundablePair bp = new BoundablePair(this.Root, bnd, itemDist);
+            return this.NearestNeighbour(bp)[0];
+        }
+
+        /**
+         * Finds the two nearest items from this tree 
+         * and another tree,
+         * using {@link ItemDistance} as the distance metric.
+         * A Branch-and-Bound tree traversal algorithm is used
+         * to provide an efficient search.
+         * The result value is a pair of items, 
+         * the first from this tree and the second
+         * from the argument tree.
+         * 
+         * @param tree another tree
+         * @param itemDist a distance metric applicable to the items in the trees
+         * @return the pair of the nearest items, one from each tree
+         */
+        public Object[] NearestNeighbour(STRtree tree, IItemDistance itemDist)
+        {
+            BoundablePair bp = new BoundablePair(this.Root, tree.Root, itemDist);
+            return this.NearestNeighbour(bp);
+        }
+
+        private Object[] NearestNeighbour(BoundablePair initBndPair)
+        {
+            return this.NearestNeighbour(initBndPair, Double.PositiveInfinity);
+        }
+
+        private Object[] NearestNeighbour(BoundablePair initBndPair, double maxDistance)
+        {
+            double distanceLowerBound = maxDistance;
+            BoundablePair minPair = null;
+
+            // initialize internal structures
+            PriorityQueue<BoundablePair> priQ = new PriorityQueue<BoundablePair>();
+
+            // initialize queue
+            priQ.Add(initBndPair);
+
+            while (!priQ.IsEmpty() && distanceLowerBound > 0.0)
+            {
+                // pop head of queue and expand one side of pair
+                BoundablePair bndPair = priQ.Poll();
+                double currentDistance = bndPair.Distance; //bndPair.GetDistance();
+
+                /**
+                 * If the distance for the first node in the queue
+                 * is >= the current minimum distance, all other nodes
+                 * in the queue must also have a greater distance.
+                 * So the current minDistance must be the true minimum,
+                 * and we are done.
+                 */
+                if (currentDistance >= distanceLowerBound)
+                    break;
+
+                /**
+                 * If the pair members are leaves
+                 * then their distance is the exact lower bound.
+                 * Update the distanceLowerBound to reflect this
+                 * (which must be smaller, due to the test 
+                 * immediately prior to this). 
+                 */
+                if (bndPair.IsLeaves())
+                {
+                    // assert: currentDistance < minimumDistanceFound
+                    distanceLowerBound = currentDistance;
+                    minPair = bndPair;
+                }
+                else
+                {
+                    // testing - does allowing a tolerance improve speed?
+                    // Ans: by only about 10% - not enough to matter
+                    /*
+                    double maxDist = bndPair.getMaximumDistance();
+                    if (maxDist * .99 < lastComputedDistance) 
+                      return;
+                    //*/
+
+                    /**
+                     * Otherwise, expand one side of the pair,
+                     * (the choice of which side to expand is heuristically determined) 
+                     * and insert the new expanded pairs into the queue
+                     */
+                    bndPair.ExpandToQueue(priQ, distanceLowerBound);
+                }
+            }
+            // done - return items with min distance
+            return new[] {    
+          ((ItemBoundable) minPair.GetBoundable(0)).Item,
+          ((ItemBoundable) minPair.GetBoundable(1)).Item
+      };
+        }
+
     }
 }
