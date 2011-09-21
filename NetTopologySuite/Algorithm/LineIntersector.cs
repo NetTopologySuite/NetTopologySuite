@@ -99,7 +99,7 @@ namespace NetTopologySuite.Algorithm
 
         protected int result;
         
-        protected Coordinate[] inputLines;
+        protected Coordinate[][] inputLines;
         
         protected Coordinate[] intPt = new Coordinate[2];
 
@@ -122,6 +122,10 @@ namespace NetTopologySuite.Algorithm
 
         protected LineIntersector() 
         {
+            inputLines = new Coordinate[2][];
+            inputLines[0] = new Coordinate[2];
+            inputLines[1] = new Coordinate[2];
+            
             this.intPt[0] = new Coordinate();
             this.intPt[1] = new Coordinate();
             // alias the intersection points for ease of reference
@@ -169,7 +173,11 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         public void ComputeIntersection(Coordinate p1, Coordinate p2, Coordinate p3, Coordinate p4)
         {
-            this.inputLines = new[] { p1, p2, p3, p4 };
+            inputLines[0][0] = p1;
+            inputLines[0][1] = p2;
+            inputLines[1][0] = p3;
+            inputLines[1][1] = p4;
+            //this.inputLines = new[] { p1, p2, p3, p4 };
             this.result = this.ComputeIntersect(p1, p2, p3, p4);        
         }
 
@@ -178,10 +186,10 @@ namespace NetTopologySuite.Algorithm
         public override string ToString() 
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(this.inputLines[0]).Append("-");
-            sb.Append(this.inputLines[1]).Append(" ");
-            sb.Append(this.inputLines[2]).Append("-");
-            sb.Append(this.inputLines[3]).Append(" : ");
+            sb.Append(this.inputLines[0][0]).Append("-");
+            sb.Append(this.inputLines[0][1]).Append(" ");
+            sb.Append(this.inputLines[1][0]).Append("-");
+            sb.Append(this.inputLines[1][1]).Append(" : ");
 
             if (this.IsEndPoint)  sb.Append(" endpoint");
             if (_isProper)   sb.Append(" proper");
@@ -273,8 +281,8 @@ namespace NetTopologySuite.Algorithm
             for (int i = 0; i < this.result; i++)
             {
                 int index = inputLineIndex == 0 ? 0 : 2;
-                if (!(this.intPt[i].Equals2D(this.inputLines[index]) || 
-                      this.intPt[i].Equals2D(this.inputLines[index + 1])))                                   
+                if (!(this.intPt[i].Equals2D(this.inputLines[inputLineIndex][0]) ||
+                      this.intPt[i].Equals2D(this.inputLines[inputLineIndex][1])))                                   
                     return true;
             }
             return false;
@@ -354,8 +362,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The edge distance of the intersection point.</returns>
         public double GetEdgeDistance(int segmentIndex, int intIndex) 
         {
-            int index = segmentIndex == 0 ? 0 : 2;
-            double dist = ComputeEdgeDistance(this.intPt[intIndex], this.inputLines[index], this.inputLines[index + 1]);
+            double dist = ComputeEdgeDistance(this.intPt[intIndex], this.inputLines[segmentIndex][0], this.inputLines[segmentIndex][1]);
             return dist;
         }
     }
