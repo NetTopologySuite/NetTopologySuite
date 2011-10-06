@@ -1564,8 +1564,7 @@ namespace Open.Topology.TestRunner
             {
                 if (_objArgument1 == null)
                 {
-                    Geometry geom = (Geometry)_objGeometryB ?? (Geometry)_objGeometryA;
-                    Geometry union = (Geometry)_objGeometryA.Union(geom);
+                    Geometry union = (Geometry)_objGeometryA.Union();
                     
                     if (union != null)
                     {
