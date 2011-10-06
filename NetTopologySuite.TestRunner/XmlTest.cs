@@ -751,7 +751,6 @@ namespace Open.Topology.TestRunner
             bool bResult = (bool)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
             {
-                if (_geometryOperation != null)
                 if (_objArgument1 == null)
                 {
                     return _objGeometryA.Contains(_objGeometryB) == bResult;
