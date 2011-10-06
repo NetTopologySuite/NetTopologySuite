@@ -53,7 +53,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public NodeBase() { }
+        protected NodeBase() { }
 
         /// <summary>
         /// 

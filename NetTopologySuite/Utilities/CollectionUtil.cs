@@ -60,6 +60,23 @@ namespace NetTopologySuite.Utilities
         }
 
         /// <summary>
+        /// Executes a function on each item in a <see cref="ICollection" />
+        /// and returns the results in a new <see cref="IList" />.
+        /// </summary>
+        /// <param name="coll"></param>
+        /// <returns></returns>
+        public static IList<TOut> Cast<TIn, TOut>(ICollection<TIn> coll)
+            where TIn: class
+            where TOut : class
+        {
+            IList<TOut> result = new List<TOut>(coll.Count);
+            foreach (var obj in coll)
+                result.Add(obj as TOut);
+            return result;
+        }
+
+
+        /// <summary>
         /// Executes a function on each item in a <see cref="IList{T}" />
         /// and returns the results in a new <see cref="IList{T}" />.
         /// </summary>

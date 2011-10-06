@@ -76,5 +76,10 @@ namespace NetTopologySuite.Windows.Forms
             return GraphicsPathReader.Read(path, flatness, geomFact);
         }
 
+        public static IGeometry Read(string text, Font font, IGeometryFactory geomFact)
+        {
+            return Read(text, font.FontFamily, font.Style, font.Size, new PointF(0, 0), StringFormat.GenericTypographic,
+                        FlatnessFactor, geomFact);
+        }
     }
 }

@@ -61,7 +61,8 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         private void ExtractPoints(ILineString line, double offsetDistance, IList<ICoordinate> offsetPts)
         {
             ICoordinateSequence coordinateSequence = line.CoordinateSequence;
-            for (int i = 0; i < coordinateSequence.Count; i++)
+            int maxIndex = coordinateSequence.Count - 1;
+            for (int i = 0; i < maxIndex; i++)
             {
                 ComputeOffsetPoints(
                     coordinateSequence.GetCoordinate(i),

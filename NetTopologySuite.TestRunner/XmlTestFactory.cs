@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
+using Open.Topology.TestRunner.Operations;
 using Open.Topology.TestRunner.Result;
 using Open.Topology.TestRunner.Utility;
 
@@ -12,16 +13,15 @@ namespace Open.Topology.TestRunner
 	/// </summary>
 	public class XmlTestFactory
 	{
-        private static NumberFormatInfo nfi = null;
+        private static NumberFormatInfo _nfi;
 
         protected static IFormatProvider GetNumberFormatInfo()
         {
-            if (nfi == null)
+            if (_nfi == null)
             {
-                nfi = new NumberFormatInfo();
-                nfi.NumberDecimalSeparator = ".";
+                _nfi = new NumberFormatInfo {NumberDecimalSeparator = "."};
             }
-            return nfi;
+            return _nfi;
         }
 
         protected enum Target
@@ -31,22 +31,23 @@ namespace Open.Topology.TestRunner
             C = 3
         }
 
-        protected GeometryFactory m_objGeometryFactory = null;
-        private WKTOrWKBReader m_objReader = null;
-
+        protected GeometryFactory ObjGeometryFactory;
+        private readonly WKTOrWKBReader _objReader;
+	    private readonly IGeometryOperation _geometryOperation;
 	    private readonly IResultMatcher _resultMatcher;
 
-        public XmlTestFactory(PrecisionModel pm, IResultMatcher resultMatcher)
+        public XmlTestFactory(PrecisionModel pm, IGeometryOperation geometryOperation, IResultMatcher resultMatcher)
 		{
-            m_objGeometryFactory = new GeometryFactory(pm);
+            ObjGeometryFactory = new GeometryFactory(pm);
+            _geometryOperation = geometryOperation;
             _resultMatcher = resultMatcher;
-            m_objReader = new WKTOrWKBReader(m_objGeometryFactory);
+            _objReader = new WKTOrWKBReader(ObjGeometryFactory);
         }
 
         public XmlTest Create(XmlTestInfo testInfo, double tolerance)
         {
             XmlTest xmlTest = new XmlTest(testInfo.GetValue("desc"), 
-                testInfo.IsDefaultTarget(), tolerance, _resultMatcher);
+                testInfo.IsDefaultTarget(), tolerance, _geometryOperation, _resultMatcher);
 
             // Handle test type or name.
             string strTestType = testInfo.GetValue("name");
@@ -79,6 +80,8 @@ namespace Open.Topology.TestRunner
             string arg3 = testInfo.GetValue("arg3");
             if (!string.IsNullOrEmpty(arg3))
                 xmlTest.Argument2 = arg3;
+
+
 
             string strResult = testInfo.GetValue("result");
             if (string.IsNullOrEmpty(strResult))
@@ -258,7 +261,7 @@ namespace Open.Topology.TestRunner
                 {
                     try
                     {
-                        xmlTestItem.Result = m_objReader.Read(result);                        
+                        xmlTestItem.Result = _objReader.Read(result);                        
                         return true;
                     }
                     catch (Exception ex)
@@ -297,18 +300,18 @@ namespace Open.Topology.TestRunner
                     }
                 }
 
-                default:
-                    break;
+                //default:
+                //    break;
             }
             return false;
         }
 
         protected bool ParseGeometry(Target targetType, string targetText, XmlTest xmlTestItem)
         {   
-            IGeometry geom = null;
+            IGeometry geom;
             try
             {
-                geom = m_objReader.Read(targetText);
+                geom = _objReader.Read(targetText);
             }
             catch (Exception ex)
             {
