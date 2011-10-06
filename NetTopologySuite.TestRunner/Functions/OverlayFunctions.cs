@@ -31,8 +31,7 @@ namespace Open.Topology.TestRunner.Functions
 
         public static IGeometry unaryUnion(IGeometry a)
         {
-            return a.Union();
+            return a.Union(a);
         }
-
     }
 }
