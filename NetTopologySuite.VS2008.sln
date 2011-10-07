@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.ShapeFi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections", "..\PowerCollections\Source\PowerCollections\PowerCollections.csproj", "{5821977D-AC2C-4912-BCD0-6E6B1A756167}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Windows.Media", "NetTopologySuite.Windows.Media\NetTopologySuite.Windows.Media.csproj", "{AB09858E-BD48-498C-BB65-B90A5E5F9F26}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -121,6 +123,10 @@ Global
 		{5821977D-AC2C-4912-BCD0-6E6B1A756167}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5821977D-AC2C-4912-BCD0-6E6B1A756167}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5821977D-AC2C-4912-BCD0-6E6B1A756167}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB09858E-BD48-498C-BB65-B90A5E5F9F26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB09858E-BD48-498C-BB65-B90A5E5F9F26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB09858E-BD48-498C-BB65-B90A5E5F9F26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB09858E-BD48-498C-BB65-B90A5E5F9F26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

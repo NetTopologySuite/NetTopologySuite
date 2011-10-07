@@ -67,6 +67,7 @@
     <Compile Include="XUnitRobustTests.cs" />
     <Compile Include="XUnitRunner.cs" />
     <Compile Include="XUnitStMLFTests.cs" />
+    <Compile Include="XUnitValidateTests.cs" />
     <Compile Include="XUnitVividTests.cs" />
   </ItemGroup>
   <ItemGroup>

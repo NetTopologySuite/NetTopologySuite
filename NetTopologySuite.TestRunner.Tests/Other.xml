@@ -6,9 +6,8 @@
 			<dir>..\..\..\NetTopologySuite.TestRunner.Tests\failure</dir>
 			<dir>..\..\..\NetTopologySuite.TestRunner.Tests\external</dir>
       <dir>..\..\..\NetTopologySuite.TestRunner.Tests\stmlf</dir>
-      <!-- Deleted in newer JTS versions
+      <!-- Deleted in newer JTS versions -->
       <dir>..\..\..\NetTopologySuite.TestRunner.Tests\vivid</dir>
-       -->
     </dirs>
 	</test>
 </project>
