@@ -3,19 +3,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AF47B26F-5EB8-4514-AEBF-FDD22244F5B1}</ProjectGuid>
+    <ProjectGuid>{AB09858E-BD48-498C-BB65-B90A5E5F9F26}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetTopologySuite.Windows.Forms.Test</RootNamespace>
-    <AssemblyName>Test.NetTopologySuite.Windows.Forms</AssemblyName>
+    <RootNamespace>NetTopologySuite.Windows.Media</RootNamespace>
+    <AssemblyName>NetTopologySuite.Windows.Media</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -36,40 +32,32 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.2.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ExternalReferences\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Drawing" />
+    <Reference Include="System.Core" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\GeoAPI\GeoAPI\GeoAPI.csproj">
+    <Compile Include="FontGlyphReader.cs" />
+    <Compile Include="GeometryCollectionGraphicsPath.cs" />
+    <Compile Include="WpfGeometryReader.cs" />
+    <Compile Include="WpfGeometryWriter.cs" />
+    <Compile Include="IdentityPointTransformation.cs" />
+    <Compile Include="IPointTransformation.cs" />
+    <Compile Include="PointWpfGeometryFactory.cs" />
+    <Compile Include="PolygonWpfGeometry.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">
       <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
       <Name>GeoAPI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\NetTopologySuite.Windows.Media\NetTopologySuite.Windows.Media.csproj">
-      <Project>{AB09858E-BD48-498C-BB65-B90A5E5F9F26}</Project>
-      <Name>NetTopologySuite.Windows.Media</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\NetTopologySuite\NetTopologySuite.csproj">
+    <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
       <Name>NetTopologySuite</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.Windows.Forms.csproj">
-      <Project>{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}</Project>
-      <Name>NetTopologySuite.Windows.Forms</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="BasicTest.cs" />
-    <Compile Include="BasicTestMedia.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

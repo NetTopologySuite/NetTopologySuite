@@ -83,28 +83,14 @@ namespace NetTopologySuite.Windows.Forms
         public abstract GraphicsPath CreatePoint(PointF point);
     }
 
-    public class Dot : BasePointShapeFactory
+    public class Dot : Square
     {
-
         ///<summary>
         /// Creates a new factory for points with default size.
         ///</summary>
         public Dot()
+            : base(1)
         { }
-
-        ///<summary>Creates a factory for points of given size.</summary>
-        /// <param name="size">the size of the points</param>
-        public Dot(double size) : base(size) { }
-
-        ///<summary>
-        /// Creates a shape representing an <see cref="IPoint"/>.
-        ///</summary>
-        public override GraphicsPath CreatePoint(PointF point)
-        {
-            var pointMarker = new GraphicsPath();
-            pointMarker.AddRectangle(new RectangleF(point, new SizeF(1,1)));
-            return pointMarker;
-        }
     }
 
     public class Square : BasePointShapeFactory
