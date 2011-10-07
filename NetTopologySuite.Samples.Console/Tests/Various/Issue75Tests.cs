@@ -6,7 +6,6 @@ namespace NetTopologySuite.Tests.Various
     [TestFixture]
     class Issue75Tests
     {
-
         [Test]
         public void EqualsThrowsInvalidCastExceptionBugFix()
         {
