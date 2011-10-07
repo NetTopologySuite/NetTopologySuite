@@ -2,6 +2,7 @@
 {
     using System;
     
+    [Obsolete("XML tests from old JTS versions")]
     public abstract class VividXUnitRunner : XUnitRunner
     {
         protected VividXUnitRunner(string testFile) : base(testFile) { }
