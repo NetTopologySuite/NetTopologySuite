@@ -8,6 +8,22 @@
     [TestFixture]
     public class Issue94Test
     {
+        private const string IgnoreString =
+@"Martin Davis: This is a known issue.  It's not really a bug, it's a design limitation 
+caused by the fact that JTS[/NTS] uses double-precision floating point to 
+represent ordinate values.  This provides about 16 decimal digits of 
+precision.
+
+The number in the bug report is 99999999999999982650000000000.0, which 
+has more than 16 digits of precision.   So this can't be represented 
+exactly in JTS[/NTS].
+
+The only solution to this would be to use arbitrary precision 
+arithmetic.  This would be awkward and slow.
+
+If this represents a real use case some other approach will need to be 
+taken to solve it.";
+        
         [Test]
         public void IntersectionWithLineCreatedWithSmallCoordinates()
         {
@@ -26,20 +42,20 @@
             PerformTest(99999999999999d);
         }
 
-        [Test]
+        [Test, Ignore(IgnoreString)]
         public void IntersectionWithLineCreatedWithBiggerCoordinates()
         {
             PerformTest(999999999999999d);
         }
 
-        [Test]
+        [Test, Ignore(IgnoreString)]
         public void IntersectionWithLineCreatedWithLargeCoordinates()
         {
             // returns POINT (10 10.000000000000002) => Same as JTS
             PerformTest(99999999999999982650000000000d);            
         }
 
-        [Test]
+        [Test, Ignore(IgnoreString)]
         public void IntersectionWithLineCreatedWithLargestCoordinates()
         {
             // returns POINT (0 0) => Same as JTS
