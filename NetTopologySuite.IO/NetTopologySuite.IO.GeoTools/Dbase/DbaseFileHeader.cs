@@ -124,7 +124,7 @@ namespace NetTopologySuite.IO
 			if (tempFieldName.Length > 11) 
 			{
 				tempFieldName = tempFieldName.Substring(0,11);
-				Trace.Write("FieldName "+fieldName+" is longer than 11 characters, truncating to "+tempFieldName);
+				Trace.WriteLine("FieldName "+fieldName+" is longer than 11 characters, truncating to "+tempFieldName);
 			}        
 			tempFieldDescriptors[_fieldDescriptions.Length].Name = tempFieldName;
         

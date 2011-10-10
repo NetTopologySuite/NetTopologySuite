@@ -1,4 +1,7 @@
 using System;
+#if SILVERLIGHT
+using ApplicationException = System.Exception;
+#endif
 
 namespace NetTopologySuite.IO
 {

@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D1262B8E-2200-4E89-8ED5-1BF2BA0FDE7A}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NetTopologySuite.IO</RootNamespace>
+    <AssemblyName>NetTopologySuite.IO.GeoTools.SilverLight</AssemblyName>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\BigEndianBinaryReader.cs">
+      <Link>BigEndianBinaryReader.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.ShapeFile\ShapeGeometryType.cs">
+      <Link>ShapeGeometryType.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\BigEndianBinaryWriter.cs">
+      <Link>BigEndianBinaryWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\Dbase\DbaseFieldDescriptor.cs">
+      <Link>Dbase\DbaseFieldDescriptor.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\Dbase\DbaseFileHeader.cs">
+      <Link>Dbase\DbaseFileHeader.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\Dbase\DbaseFileReader.cs">
+      <Link>Dbase\DbaseFileReader.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\Dbase\DbaseFileWriter.cs">
+      <Link>Dbase\DbaseFileWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\Handlers\MultiLineHandler.cs">
+      <Link>Handlers\MultiLineHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\Handlers\MultiPointHandler.cs">
+      <Link>Handlers\MultiPointHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\Handlers\PointHandler.cs">
+      <Link>Handlers\PointHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\Handlers\PolygonHandler.cs">
+      <Link>Handlers\PolygonHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\Handlers\ProbeLinearRing.cs">
+      <Link>Handlers\ProbeLinearRing.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\Handlers\ShapeHandler.cs">
+      <Link>Handlers\ShapeHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\Shapefile.cs">
+      <Link>Shapefile.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\ShapefileDataReader.cs">
+      <Link>ShapefileDataReader.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\ShapefileDataWriter.cs">
+      <Link>ShapefileDataWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\ShapefileException.cs">
+      <Link>ShapefileException.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\ShapefileHeader.cs">
+      <Link>ShapefileHeader.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\ShapefileReader.cs">
+      <Link>ShapefileReader.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\ShapefileWriter.cs">
+      <Link>ShapefileWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\TokenType.cs">
+      <Link>TokenType.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\WktStreamTokenizer.cs">
+      <Link>WktStreamTokenizer.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\GeoToolsStreamTokenizer.cs">
+      <Link>GeoToolsStreamTokenizer.cs</Link>
+    </Compile>
+    <Compile Include="Dbase\DbaseFileReader.SL.cs" />
+    <Compile Include="ShapefileDataReader.SL.cs" />
+    <Compile Include="ShapefileReader.SL.cs" />
+    <Compile Include="SLShapeFileDataEnumerator.cs" />
+    <Compile Include="StringToGeometryConverter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\GeoAPI\GeoAPI.Silverlight\GeoAPI.Silverlight.csproj">
+      <Project>{9B913337-1114-4D05-8F24-D05A5FD588AD}</Project>
+      <Name>GeoAPI.Silverlight</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NetTopologySuite.Data.Silverlight\NetTopologySuite.Data.Silverlight.csproj">
+      <Project>{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}</Project>
+      <Name>NetTopologySuite.Data.Silverlight</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NetTopologySuite.Silverlight\NetTopologySuite.Silverlight.csproj">
+      <Project>{71FAD7D8-11F5-444B-B9F9-D2EFF68C8F26}</Project>
+      <Name>NetTopologySuite.Silverlight</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

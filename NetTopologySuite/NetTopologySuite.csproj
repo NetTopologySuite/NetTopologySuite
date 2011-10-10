@@ -457,9 +457,9 @@
     <Compile Include="Utilities\RToolsUtil\VerbosityLevel.cs" />
     <Compile Include="Utilities\StreamTokenizer.cs" />
     <Compile Include="Utilities\UniqueCoordinateArrayFilter.cs" />
+    <Compile Include="Algorithm\Distance\DiscreteHausdorffDistance.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithm\Distance\DiscreteHausdorffDistance.cs" />
     <Content Include="Densify\DensifySummary.xml">
       <SubType>Designer</SubType>
     </Content>

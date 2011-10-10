@@ -115,6 +115,10 @@
       <Project>{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}</Project>
       <Name>NetTopologySuite.Data.Silverlight</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools.Silverlight\NetTopologySuite.IO.GeoTools.SilverLight.csproj">
+      <Project>{D1262B8E-2200-4E89-8ED5-1BF2BA0FDE7A}</Project>
+      <Name>NetTopologySuite.IO.GeoTools.SilverLight</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.Shapefile.Silverlight\NetTopologySuite.Shapefile.Silverlight.csproj">
       <Project>{A1CD501C-D498-41C7-91E3-276E2BEEA867}</Project>
       <Name>NetTopologySuite.Shapefile.Silverlight</Name>
