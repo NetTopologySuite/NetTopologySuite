@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B9C93F98-1667-40A2-B02F-90D5CE14121F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NetTopologySuite.IO.Tests</RootNamespace>
+    <AssemblyName>NetTopologySuite.IO.Tests</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Security">
+      <HintPath>..\..\packages\Npgsql.2.0.11\lib\Net35\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql">
+      <HintPath>..\..\packages\Npgsql.2.0.11\lib\Net35\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NUnit.2.5.10.11092\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.mocks, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NUnit.2.5.10.11092\lib\nunit.mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="pnunit.framework, Version=1.0.4109.34242, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NUnit.2.5.10.11092\lib\pnunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.76.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <HintPath>..\..\packages\System.Data.SQLite.x86.1.0.76.0\lib\net20\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.76.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Data.SQLite.x86.1.0.76.0\lib\net20\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AbstractIOFixture.cs" />
+    <Compile Include="PostgisFixture.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomGeometryHelper.cs" />
+    <Compile Include="SpatiaLiteFixture.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\GeoAPI\GeoAPI\GeoAPI.csproj">
+      <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
+      <Name>GeoAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NetTopologySuite\NetTopologySuite.csproj">
+      <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
+      <Name>NetTopologySuite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO.GDB\NetTopologySuite.IO.GDB.csproj">
+      <Project>{548166D9-DF64-46FB-9EEC-212C7B7E7D85}</Project>
+      <Name>NetTopologySuite.IO.GDB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO.GeoTools\NetTopologySuite.IO.GeoTools.csproj">
+      <Project>{21805958-869E-49F5-A4ED-0AC8599D62F0}</Project>
+      <Name>NetTopologySuite.IO.GeoTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO.MsSqlSpatial\NetTopologySuite.IO.MsSqlSpatial.csproj">
+      <Project>{75BDB70A-AEB9-4592-9B5E-677D3D346A54}</Project>
+      <Name>NetTopologySuite.IO.MsSqlSpatial</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO.Oracle\NetTopologySuite.IO.Oracle.csproj">
+      <Project>{05EF5AD0-ABF0-4F97-9C33-C69F0AF8DB51}</Project>
+      <Name>NetTopologySuite.IO.Oracle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO.PostGis\NetTopologySuite.IO.PostGis.csproj">
+      <Project>{7505264F-7E3E-4F8D-A9D5-885B4F313C26}</Project>
+      <Name>NetTopologySuite.IO.PostGis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO.ShapeFile\NetTopologySuite.IO.ShapeFile.csproj">
+      <Project>{AB9096A7-89DD-4ABD-B535-A5258863F389}</Project>
+      <Name>NetTopologySuite.IO.ShapeFile</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO.SpatiaLite\NetTopologySuite.IO.SpatiaLite.csproj">
+      <Project>{AD33B357-E789-4102-8DC3-F18EEE507583}</Project>
+      <Name>NetTopologySuite.IO.SpatiaLite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO.SqlServer2008\NetTopologySuite.IO.SqlServer2008.csproj">
+      <Project>{8E6A486B-5418-4FE1-A14F-CF2F3B74D4E0}</Project>
+      <Name>NetTopologySuite.IO.SqlServer2008</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
