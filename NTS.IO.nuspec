@@ -9,9 +9,9 @@
     <licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
     <projectUrl>http://code.google.com/p/nettopologysuite</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description></description>
-    <summary>This package contains several IO libraries to cope with spatial data from various sources.
-    Among others ShapeFile, SqlServer2008.</summary>
+    <description>This package contains several IO libraries to cope with spatial data from various sources.
+    Among others ShapeFile, SqlServer2008.</description>
+    <summary>IO library for NetTopologySuite</summary>
     <tags>NTS PostGis SpatiaLite Oracle SqlServer2008 Shapefile</tags>
     <language>en-US</language>
     <frameworkAssemblies>
