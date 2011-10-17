@@ -8,11 +8,11 @@ namespace NetTopologySuite.Encodings
 {
     public static class EncodingEx
     {
-        private static IEncodingRegistry _encodingRegistry = new EncodingRegistry();
+        private static readonly IEncodingRegistry EncodingRegistry = new EncodingRegistry();
 
-        public static Encoding GetACSII()
+        public static Encoding GetASCII()
         {
-            return _encodingRegistry.ASCII;
+            return EncodingRegistry.ASCII;
         }
 
         private static readonly Func<Encoding, int> Accessor = GetAccessor();
@@ -34,9 +34,8 @@ namespace NetTopologySuite.Encodings
             if (self is UTF8Encoding)
                 return 65001;
 
-            return _encodingRegistry.GetCodePage(self);
-
-            return Accessor(self);
+            return EncodingRegistry.GetCodePage(self);
+            //return Accessor(self);
         }
     }
 }

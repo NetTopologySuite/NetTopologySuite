@@ -241,7 +241,7 @@ namespace NetTopologySuite.Shapefile
 
             return _dbaseToEncoding.TryGetValue(dBaseEncoding, out pair)
                        ? pair.Encoding
-                       : EncodingEx.GetACSII();
+                       : EncodingEx.GetASCII();
         }
 
         /// <summary>

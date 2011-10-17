@@ -43,9 +43,6 @@
     <DocumentationFile>bin\Release\NetTopologySuite.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ProjNet.Silverlight">
-      <HintPath>..\ExternalReferences\ProjNet.Silverlight.dll</HintPath>
-    </Reference>
     <Reference Include="system" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -1223,10 +1220,6 @@
       <Project>{9B913337-1114-4D05-8F24-D05A5FD588AD}</Project>
       <Name>GeoAPI.Silverlight</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.Data.Silverlight\NetTopologySuite.Data.Silverlight.csproj">
-      <Project>{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}</Project>
-      <Name>NetTopologySuite.Data.Silverlight</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.Encodings.Silverlight\NetTopologySuite.Encodings.Silverlight.csproj">
       <Project>{C7FA023B-0259-47C4-8051-EE7EB639DD39}</Project>
       <Name>NetTopologySuite.Encodings.Silverlight</Name>
@@ -1266,7 +1259,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="5770daa9-84e5-4770-af43-f6b815894368" />
+      <UserProperties ProjectLinkReference="5770daa9-84e5-4770-af43-f6b815894368" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

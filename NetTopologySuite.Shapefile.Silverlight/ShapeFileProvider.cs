@@ -577,7 +577,7 @@ namespace NetTopologySuite.Shapefile
 
                 return HasDbf
                            ? _dbaseFile.Encoding
-                           : EncodingEx.GetACSII();
+                           : EncodingEx.GetASCII();
             }
         }
 
