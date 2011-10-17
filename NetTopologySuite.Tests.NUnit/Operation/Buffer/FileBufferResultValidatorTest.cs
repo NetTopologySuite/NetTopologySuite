@@ -25,6 +25,17 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             EmbeddedResourceManager.CleanUpTempFile(filePath);
         }
 
+        [Test]
+        public void TestPerformanceAfrica()
+        {
+            var filePath = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile("NetTopologySuite.Tests.NUnit.TestData.africa.wkt");
+
+            //    runTest(TestFiles.DATA_DIR + "world.wkt");
+            PerformanceTest(filePath);
+
+            EmbeddedResourceManager.CleanUpTempFile(filePath);
+        }
+
         void RunTest(String filename)
         {
             WKTFileReader fileRdr = new WKTFileReader(filename, rdr);
@@ -36,6 +47,19 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             RunAll(polys, 10.0);
             RunAll(polys, 100.0);
             RunAll(polys, 1000.0);
+        }
+
+        void PerformanceTest(String filename)
+        {
+            WKTFileReader fileRdr = new WKTFileReader(filename, rdr);
+            IList<IGeometry> polys = fileRdr.Read();
+
+            //RunAll(polys, 0.01);
+            //RunAll(polys, 0.1);
+            RunAll(polys, 1.0);
+            //RunAll(polys, 10.0);
+            //RunAll(polys, 100.0);
+            //RunAll(polys, 1000.0);
         }
 
         void RunAll(IList<IGeometry> geoms, double dist)

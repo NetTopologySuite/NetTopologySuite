@@ -20,9 +20,9 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.IO
 {
-    internal class GaiaGeoReader
+    public class GaiaGeoReader
     {
-        internal static IGeometry Read(byte[] blob)
+        public static IGeometry Read(byte[] blob)
         {
             //if (GaiaGeoEmptyHelper.IsEmptyBlob(blob))
             //{
