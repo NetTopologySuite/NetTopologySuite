@@ -5,12 +5,16 @@ using System.Runtime.InteropServices;
 // Allgemeine Informationen über eine Assembly werden über die folgenden 
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
-[assembly: AssemblyTitle("NetTopologySuite.IO.GeoTools2")]
+[assembly: AssemblyTitle("NetTopologySuite.IO.GeoTools")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("NetTopologySuite.IO.GeoTools2")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
+#if DEBUG
+[assembly: AssemblyConfiguration("Debug")]
+#else
+[assembly: AssemblyConfiguration("Stable")]
+#endif
+[assembly: AssemblyCompany("NetTopologySuite - Team")]
+[assembly: AssemblyProduct("NetTopologySuite.IO.GeoTools")]
+[assembly: AssemblyCopyright("Copyright © 2007 - 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +36,4 @@ using System.Runtime.InteropServices;
 // Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern 
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.11.0.0")]

@@ -37,7 +37,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -45,7 +45,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -64,13 +64,16 @@
     <Compile Include="XUnitExternalTests.cs" />
     <Compile Include="XUnitFailureTests.cs" />
     <Compile Include="XUnitGeneralTests.cs" />
+    <Compile Include="XUnitRobustTests.cs" />
     <Compile Include="XUnitRunner.cs" />
+    <Compile Include="XUnitStMLFTests.cs" />
+    <Compile Include="XUnitValidateTests.cs" />
     <Compile Include="XUnitVividTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetTopologySuite.TestRunner\NetTopologySute.TestRunner.csproj">
+    <ProjectReference Include="..\NetTopologySuite.TestRunner\NetTopologySuite.TestRunner.csproj">
       <Project>{13669184-2446-404F-8894-5E20B6C3FCC6}</Project>
-      <Name>NetTopologySute.TestRunner</Name>
+      <Name>NetTopologySuite.TestRunner</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

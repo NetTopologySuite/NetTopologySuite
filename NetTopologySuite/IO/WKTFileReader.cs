@@ -79,8 +79,11 @@ namespace NetTopologySuite.IO
             _count = 0;
 
             if (_file != null)
+#if SILVERLIGHT
+                _reader = new StreamReader(_file.OpenRead());
+#else
                 _reader =  new StreamReader(new BufferedStream(_file.OpenRead(), MaxLookahead)); 
-
+#endif
             try
             {
                 //BufferedReader bufferedReader = new BufferedReader(fileReader);

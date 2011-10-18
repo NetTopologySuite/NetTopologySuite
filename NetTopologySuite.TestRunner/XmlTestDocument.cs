@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Xml;
 using NetTopologySuite.Geometries;
+using Open.Topology.TestRunner.Operations;
 using Open.Topology.TestRunner.Result;
 
 namespace Open.Topology.TestRunner
@@ -194,6 +196,31 @@ namespace Open.Topology.TestRunner
                     pm = new PrecisionModel();
                 }
 
+                IGeometryOperation geometryOperation = null;
+                XmlNode go = root["geometryOperation"];
+                if (go != null)
+                {
+                    go = go.FirstChild;
+                    switch (go.Value)
+                    {
+                        case "com.vividsolutions.jtstest.geomop.PreparedGeometryOperation":
+                            geometryOperation = new PreparedGeometryOperation();
+                            break;
+                        case "com.vividsolutions.jtstest.geomop.BufferValidatedGeometryOperation":
+                            geometryOperation = new BufferValidatedGeometryOperation();
+                            break;
+                        case "com.vividsolutions.jtstest.geomop.OverlayValidatedGeometryOperation":
+                            geometryOperation = new OverlayValidatedGeometryOperation();
+                            break;
+                            
+                        default:
+                            Console.WriteLine(string.Format("\n *** {0} *** \n", go.Value));
+                            Console.ReadKey(true);
+                            geometryOperation = new GeometryMethodOperation();
+                            break;
+                    }
+                }
+
                 IResultMatcher resultMatcher = null;
                 XmlNode rm = root["resultMatcher"];
                 if (rm != null)
@@ -201,9 +228,13 @@ namespace Open.Topology.TestRunner
                     rm = rm.FirstChild;
                     if (rm.Value.EndsWith("BufferResultMatcher", StringComparison.InvariantCultureIgnoreCase))
                         resultMatcher = new BufferResultMatcher();
+                    else
+                    {
+                        throw new NotSupportedException();
+                    }
                 }
 
-                m_objFactory   = new XmlTestFactory(pm, resultMatcher);
+                m_objFactory   = new XmlTestFactory(pm, geometryOperation, resultMatcher);
                 m_listCurTests = new XmlTestCollection();
 
                 m_listCurTests.Name = strTestDescription;

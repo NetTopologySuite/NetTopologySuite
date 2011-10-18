@@ -708,23 +708,36 @@ namespace RTools_NTS.Util
 		{
 			// try base 10 separately since it will be the most
 			// common case
-			try
-			{
-				obj = Int32.Parse(s);
-				return;
-			}
-			catch(Exception) 
-			{
-				// try 64 bit base 10
-				try
-				{
-					obj = Int64.Parse(s);
-					return;
-				}
-				catch(Exception)
-				{ 					
-				}  // don't give up yet
-			}
+		    Int32 val32;
+            if (Int32.TryParse(s, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out val32))
+            {
+                obj = val32;
+                return;
+            }
+
+		    Int64 val64;
+            if (Int64.TryParse(s, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out val64))
+            {
+                obj = val64;
+                return;
+            }
+            //try
+            //{
+            //    obj = Int32.Parse(s);
+            //    return;
+            //}
+            //catch(Exception) 
+            //{
+            //    // try 64 bit base 10
+            //    try
+            //    {
+            //        obj = Int64.Parse(s);
+            //        return;
+            //    }
+            //    catch(Exception)
+            //    { 					
+            //    }  // don't give up yet
+            //}
 
 			// not a normal int, try other bases
 			int[] bases = {16, 2, 8};

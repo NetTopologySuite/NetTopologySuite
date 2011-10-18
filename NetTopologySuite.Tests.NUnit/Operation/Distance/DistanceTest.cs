@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Distance;
@@ -11,37 +10,37 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Distance
     [TestFixture]
     public class DistanceTest
     {
-        private PrecisionModel precisionModel;
-        private GeometryFactory geometryFactory;
-        private WKTReader reader;
+        private readonly PrecisionModel _precisionModel;
+        private readonly GeometryFactory _geometryFactory;
+        private readonly WKTReader _reader;
 
         public DistanceTest()
         {
-            precisionModel = new PrecisionModel(1);
-            geometryFactory = new GeometryFactory(precisionModel, 0);
-            reader = new WKTReader(geometryFactory);
+            _precisionModel = new PrecisionModel(1);
+            _geometryFactory = new GeometryFactory(_precisionModel, 0);
+            _reader = new WKTReader(_geometryFactory);
         }
 
         [Test]
         public void TestEverything()
         {
-            IGeometry g1 = reader.Read("POLYGON ((40 320, 200 380, 320 80, 40 40, 40 320),  (180 280, 80 280, 100 100, 220 140, 180 280))");
-            IGeometry g2 = reader.Read("POLYGON ((160 240, 120 240, 120 160, 160 140, 160 240))");
+            IGeometry g1 = _reader.Read("POLYGON ((40 320, 200 380, 320 80, 40 40, 40 320),  (180 280, 80 280, 100 100, 220 140, 180 280))");
+            IGeometry g2 = _reader.Read("POLYGON ((160 240, 120 240, 120 160, 160 140, 160 240))");
             Assert.AreEqual(18.97366596, g1.Distance(g2), 1E-5);
 
-            g2 = reader.Read("POLYGON ((160 240, 120 240, 120 160, 180 100, 160 240))");
+            g2 = _reader.Read("POLYGON ((160 240, 120 240, 120 160, 180 100, 160 240))");
             Assert.AreEqual(0.0, g1.Distance(g2), 1E-5);
 
-            LineString l1 = (LineString) reader.Read("LINESTRING(10 10, 20 20, 30 40)");
-            LineString l2 = (LineString) reader.Read("LINESTRING(10 10, 20 20, 30 40)");
+            LineString l1 = (LineString) _reader.Read("LINESTRING(10 10, 20 20, 30 40)");
+            LineString l2 = (LineString) _reader.Read("LINESTRING(10 10, 20 20, 30 40)");
             Assert.AreEqual(0.0, l1.Distance(l2), 1E-5);
         }
 
         [Ignore("This test is resulting in failure for the distance to the empty polygon because the default position is being calculated as the minimum distance location, which is a constance of Double.MaxValue.  In JTS beyond version 1.9 there is a change to default empty geometry to a distance of 0.  This test should be enabled once the new logic in NetTopologySuite.Operation.Distance.DistanceOp is migrated to NTS")]
         public void TestEmpty()
         {
-            IGeometry g1 = reader.Read("POINT (0 0)");
-            IGeometry g2 = reader.Read("POLYGON EMPTY");
+            IGeometry g1 = _reader.Read("POINT (0 0)");
+            IGeometry g2 = _reader.Read("POLYGON EMPTY");
             Assert.AreEqual(0.0, g1.Distance(g2), 0.0);
         }
 
@@ -92,11 +91,11 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Distance
         {
             DistanceOp op = new DistanceOp(new WKTReader().Read(wkt0), new WKTReader().Read(wkt1));
             double tolerance = 1E-10;
-            Assert.AreEqual(distance, op.ClosestPoints()[0].Distance(op.ClosestPoints()[1]), tolerance);
-            Assert.AreEqual(p0.X, op.ClosestPoints()[0].X, tolerance);
-            Assert.AreEqual(p0.Y, op.ClosestPoints()[0].Y, tolerance);
-            Assert.AreEqual(p1.X, op.ClosestPoints()[1].X, tolerance);
-            Assert.AreEqual(p1.Y, op.ClosestPoints()[1].Y, tolerance);
+            Assert.AreEqual(distance, op.NearestPoints()[0].Distance(op.NearestPoints()[1]), tolerance);
+            Assert.AreEqual(p0.X, op.NearestPoints()[0].X, tolerance);
+            Assert.AreEqual(p0.Y, op.NearestPoints()[0].Y, tolerance);
+            Assert.AreEqual(p1.X, op.NearestPoints()[1].X, tolerance);
+            Assert.AreEqual(p1.Y, op.NearestPoints()[1].Y, tolerance);
         }
     }
 }

@@ -129,9 +129,9 @@ namespace Open.Topology.TestRunner.Result
 
         public bool Equals(IResult other, double tolerance)
         {
-            if (!(other is IResult<Double>))
+            if (!(other is IResult<IGeometry>))
                 return false;
-            var otherGeometryResult = (GeometryResult)other;
+            var otherGeometryResult = (IResult<IGeometry>)other;
             var otherGeometry = otherGeometryResult.Value;
 
             var thisGeometryClone = (IGeometry)Value.Clone();

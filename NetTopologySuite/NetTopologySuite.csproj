@@ -41,12 +41,13 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -56,7 +57,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -105,6 +106,7 @@
     <Compile Include="Algorithm\RobustLineIntersector.cs" />
     <Compile Include="Algorithm\SimplePointInRing.cs" />
     <Compile Include="Algorithm\SIRtreePointInRing.cs" />
+    <Compile Include="Geometries\GeometryComponentFilter.cs" />
     <Compile Include="Index\Strtree\BoundablePair.cs" />
     <Compile Include="Index\Strtree\GeometryItemDistance.cs" />
     <Compile Include="Index\Strtree\IItemDistance.cs" />
@@ -332,7 +334,10 @@
     <Compile Include="Operation\Distance\ConnectedElementLocationFilter.cs" />
     <Compile Include="Operation\Distance\ConnectedElementPointFilter.cs" />
     <Compile Include="Operation\Distance\DistanceOp.cs" />
+    <Compile Include="Operation\Distance\FacetSequence.cs" />
+    <Compile Include="Operation\Distance\FacetSequenceTreeBuilder.cs" />
     <Compile Include="Operation\Distance\GeometryLocation.cs" />
+    <Compile Include="Operation\Distance\IndexedFacedDistance.cs" />
     <Compile Include="Operation\GeometryGraphOperation.cs" />
     <Compile Include="Operation\IsSimpleOp.cs" />
     <Compile Include="Operation\Linemerge\EdgeString.cs" />
@@ -429,6 +434,7 @@
     <Compile Include="Triangulate\QuadEdge\QuadEdgeSubdivision.cs" />
     <Compile Include="Triangulate\QuadEdge\QuadEdgeTriangle.cs" />
     <Compile Include="Triangulate\QuadEdge\QuadEdgeUtil.cs" />
+    <Compile Include="Triangulate\QuadEdge\TrianglePredicate.cs" />
     <Compile Include="Triangulate\QuadEdge\Vertex.cs" />
     <Compile Include="Triangulate\Segment.cs" />
     <Compile Include="Triangulate\SplitSegment.cs" />
@@ -463,9 +469,9 @@
     <Compile Include="Utilities\RToolsUtil\VerbosityLevel.cs" />
     <Compile Include="Utilities\StreamTokenizer.cs" />
     <Compile Include="Utilities\UniqueCoordinateArrayFilter.cs" />
+    <Compile Include="Algorithm\Distance\DiscreteHausdorffDistance.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithm\Distance\DiscreteHausdorffDistance.cs" />
     <Content Include="Densify\DensifySummary.xml">
       <SubType>Designer</SubType>
     </Content>

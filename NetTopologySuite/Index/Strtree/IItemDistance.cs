@@ -1,7 +1,7 @@
+using System;
+
 namespace NetTopologySuite.Index.Strtree
 {
-    using System;
-
     /// <summary>
     /// A function method which computes the distance
     /// between two <see cref="ItemBoundable"/>s in an <see cref="STRtree"/>.
@@ -10,15 +10,6 @@ namespace NetTopologySuite.Index.Strtree
     /// <author>Martin Davis</author>
     public interface IItemDistance
     {
-        /**
-         * 
-         * 
-         * @param item1
-         * @param item2
-         * @return the distance between the items
-         * 
-         * @throws IllegalArgumentException 
-         */
         /// <summary>
         /// Computes the distance between two items.
         /// </summary>

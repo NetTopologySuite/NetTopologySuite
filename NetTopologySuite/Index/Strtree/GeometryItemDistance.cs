@@ -1,18 +1,15 @@
+using System;
+using GeoAPI.Geometries;
+
 namespace NetTopologySuite.Index.Strtree
 {
-    using System;
-
-    using GeoAPI.Geometries;
-
     /// <summary>
     /// An <see cref="IItemDistance"/> function for
     /// items which are <see cref="IGeometry"/> using the <see cref="IGeometry.Distance(IGeometry)"/> method.
-    /// 
     /// </summary>
     /// <author>Martin Davis</author>
     public class GeometryItemDistance : IItemDistance
     {
-
         /// <summary>
         /// Computes the distance between two {@link Geometry} items, 
         /// using the <see cref="IGeometry.Distance(IGeometry)"/> method.

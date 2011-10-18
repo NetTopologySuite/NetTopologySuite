@@ -1,4 +1,8 @@
+#if !SILVERLIGHT
 using System;
+#else
+using ApplicationException = System.Exception;
+#endif
 
 namespace NetTopologySuite.Algorithm
 {

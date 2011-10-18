@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <project>
 	<test verbose="false" exception="true" interactive="false" filter="none">
-		<dirs>
-      <dir>..\..\..\NetTopologySuite.TestRunner.Tests\general</dir>
-			<dir>..\..\..\NetTopologySuite.TestRunner.Tests\robust</dir>
-			<dir>..\..\..\NetTopologySuite.TestRunner.Tests\stmlf</dir>
+		<dirs>      
+			<dir>..\..\..\NetTopologySuite.TestRunner.Tests\robust</dir>			
 			<dir>..\..\..\NetTopologySuite.TestRunner.Tests\failure</dir>
-			<dir>..\..\..\NetTopologySuite.TestRunner.Tests\external</dir>			
-		</dirs>
+			<dir>..\..\..\NetTopologySuite.TestRunner.Tests\external</dir>
+      <dir>..\..\..\NetTopologySuite.TestRunner.Tests\stmlf</dir>
+      <!-- Deleted in newer JTS versions -->
+      <dir>..\..\..\NetTopologySuite.TestRunner.Tests\vivid</dir>
+    </dirs>
 	</test>
 </project>

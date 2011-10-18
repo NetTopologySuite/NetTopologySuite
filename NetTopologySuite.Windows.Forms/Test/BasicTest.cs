@@ -10,7 +10,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Windows.Forms.Test
 {
-    public class BasicTest
+    public class BasicTestForms
     {
         [Test]
         public void TestFontGlypthReader()
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Windows.Forms.Test
         [Test]
         public void TestMultiPoint()
         {
-            PerformTest(new Dot(15));
+            PerformTest(new Dot());
             PerformTest(new Triangle(15));
             PerformTest(new Square(15));
             PerformTest(new Star(15));
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Windows.Forms.Test
             PerformTest(new Cross(15));
         }
 
-        static BasicTest()
+        static BasicTestForms()
         {
             var gf = GeometryFactory.Default;
             _multiPoint = gf.CreateMultiPoint(

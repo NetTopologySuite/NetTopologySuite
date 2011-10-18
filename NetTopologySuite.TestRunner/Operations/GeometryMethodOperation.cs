@@ -67,9 +67,19 @@ namespace Open.Topology.TestRunner.Operations
 
         private static readonly MethodInfo[] GeometryMethods = typeof (IGeometry).GetMethods();
 
+        public Type GetReturnType(XmlTestType op)
+        {
+            return GetReturnType(op.ToString());
+        }
+
         public Type GetReturnType(String opName)
         {
             return GetGeometryReturnType(opName);
+        }
+
+        public IResult Invoke(XmlTestType opName, IGeometry geometry, Object[] args)
+        {
+            return Invoke(opName.ToString(), geometry, args);
         }
 
         public IResult Invoke(String opName, IGeometry geometry, Object[] args)

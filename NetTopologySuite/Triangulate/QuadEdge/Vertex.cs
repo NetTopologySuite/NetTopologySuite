@@ -15,7 +15,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
     /// </summary>
     /// <author>David Skea</author>
     /// <author>Martin Davis</author>
-    public class Vertex
+    public class Vertex : IEquatable<Vertex>
     {
         private int LEFT = 0;
         private int RIGHT = 1;
@@ -28,37 +28,64 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         private readonly ICoordinate _p;
         // private int edgeNumber = -1;
 
+        /// <summary>
+        /// Creates an instance of this class using the given x- and y-ordinate valuse
+        /// </summary>
+        /// <param name="x">x-ordinate value</param>
+        /// <param name="y">y-ordinate value</param>
         public Vertex(double x, double y)
         {
             _p = new Coordinate(x, y);
         }
 
+        /// <summary>
+        /// Creates an instance of this class using the given x-, y- and z-ordinate values
+        /// </summary>
+        /// <param name="x">x-ordinate value</param>
+        /// <param name="y">y-ordinate value</param>
+        /// <param name="z">z-ordinate value</param>
         public Vertex(double x, double y, double z)
         {
             _p = new Coordinate(x, y, z);
         }
 
+        /// <summary>
+        /// Creates an instance of this class using a clone of the given <see cref="ICoordinate"/>.
+        /// </summary>
+        /// <param name="p">The coordinate</param>
         public Vertex(ICoordinate p)
         {
             _p = new Coordinate(p);
         }
 
+        /// <summary>
+        /// Gets the x-ordinate value
+        /// </summary>
         public double X
         {
             get { return _p.X; }
         }
 
+        /// <summary>
+        /// Gets the y-ordinate value
+        /// </summary>
         public double Y
         {
             get { return _p.Y; }
         }
 
+        /// <summary>
+        /// Gets the z-ordinate value
+        /// </summary>
         public double Z
         {
             get { return _p.Z; }
             set { _p.Z = value; }
         }
 
+        /// <summary>
+        /// Gets the coordinate
+        /// </summary>
         public ICoordinate Coordinate
         {
             get { return _p; }
@@ -172,53 +199,19 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         **********************************************************************************************/
 
         /// <summary>
-        /// Computes twice the area of the oriented triangle (a, b, c), i.e., the area is positive if the
-        /// triangle is oriented counterclockwise.
-        /// </summary>
-        private static double TriArea(Vertex a, Vertex b, Vertex c)
-        {
-            return (b._p.X - a._p.X)*(c._p.Y - a._p.Y)
-                   - (b._p.Y - a._p.Y)*(c._p.X - a._p.X);
-        }
-
-        /// <summary>
         /// Tests if this is inside the circle defined by the points a, b, c. This test uses simple
         /// double-precision arithmetic, and thus may not be robust.
         /// </summary>
-        /// <param name="a" />
-        /// <param name="b" />
-        /// <param name="c" />
-        /// <returns>true if this point is inside the circle defined by the points a, b, c</returns>
-        internal bool InCircle(Vertex a, Vertex b, Vertex c)
+        /// <param name="a">A vertex of the triangle</param>
+        /// <param name="b">A vertex of the triangle</param>
+        /// <param name="c">A vertex of the triangle</param>
+        /// <returns>true if this vertex is inside the circumcircle (a, b, c)</returns>
+        public Boolean IsInCircle(Vertex a, Vertex b, Vertex c) 
         {
-            Vertex d = this;
-            bool isInCircle =
-                (a._p.X*a._p.X + a._p.Y*a._p.Y)*TriArea(b, c, d)
-                - (b._p.X*b._p.X + b._p.Y*b._p.Y)*TriArea(a, c, d)
-                + (c._p.X*c._p.X + c._p.Y*c._p.Y)*TriArea(a, b, d)
-                - (d._p.X*d._p.X + d._p.Y*d._p.Y)*TriArea(a, b, c)
-                > 0;
-            return isInCircle;
+            return TrianglePredicate.IsInCircleRobust(a._p, b._p, c._p, _p);
+            // non-robust - best to not use
+            //return TrianglePredicate.isInCircle(a.p, b.p, c.p, this.p);
         }
-
-/*
-  public boolean OLDinCircle(Vertex a, Vertex b, Vertex c) {
-      Vertex d = this;
-      boolean isInCircle = (a.getX() * a.getX() + a.getY() * a.getY()) * triArea(b, c, d)
-              - (b.getX() * b.getX() + b.getY() * b.getY()) * triArea(a, c, d)
-              + (c.getX() * c.getX() + c.getY() * c.getY()) * triArea(a, b, d)
-              - (d.getX() * d.getX() + d.getY() * d.getY()) * triArea(a, b, c) 
-              > 0;
-
-      // boolean isInCircleRobust = checkRobustInCircle(a.p, b.p, c.p, p, isInCircle);
-
-      // if (! isInCircle)
-      // System.out.println(WKTWriter.toLineString(new CoordinateArraySequence(new Coordinate[] {
-      // a.p, b.p, c.p, p })));
-
-      return isInCircle;
-  }
-*/
 
         /// <summary>
         /// Tests whether the triangle formed by this vertex and two
@@ -229,23 +222,25 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>true if the triangle is oriented CCW</returns>
         private bool IsCcw(Vertex b, Vertex c)
         {
-            // is equal to the signed area of the triangle
+            /*
+            // test code used to check for robustness of triArea 
+            boolean isCCW = (b.p.x - p.x) * (c.p.y - p.y) 
+                          - (b.p.y - p.y) * (c.p.x - p.x) > 0;
+            //boolean isCCW = triArea(this, b, c) > 0;
+            boolean isCCWRobust = CGAlgorithms.orientationIndex(p, b.p, c.p) == CGAlgorithms.COUNTERCLOCKWISE; 
+            if (isCCWRobust != isCCW)
+                System.out.println("CCW failure");
+            //
+             */
 
-            return (b._p.X - _p.X)*(c._p.Y - _p.Y)
-                   - (b._p.Y - _p.Y)*(c._p.X - _p.X) > 0;
+            // is equal to the signed area of the triangle
+            return (b._p.X - _p.X) * (c._p.Y - _p.Y)
+                 - (b._p.Y - _p.Y) * (c._p.X - _p.X) > 0;
 
             // original rolled code
             //boolean isCCW = triArea(this, b, c) > 0;
             //return isCCW;
 
-            /*
-         // MD - used to check for robustness of triArea 
-        boolean isCCW = triArea(this, b, c) > 0;
-        boolean isCCWRobust = CGAlgorithms.orientationIndex(p, b.p, c.p) == CGAlgorithms.COUNTERCLOCKWISE; 
-        if (isCCWRobust != isCCW)
-        	System.out.println("CCW failure");
-        return isCCW;
-        //*/
         }
 
         internal bool RightOf(QuadEdge e)
@@ -398,124 +393,5 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             double pz = p0.Z + dz*(ptLen/segLen);
             return pz;
         }
-
-        // /**
-        // * Checks if the computed value for isInCircle is correct, using double-double precision
-        // * arithmetic.
-        // *
-        // * @param a
-        // * @param b
-        // * @param c
-        // * @param p
-        // * @param nonRobustInCircle
-        // * @return the robust value
-        // */
-        // private boolean checkRobustInCircle(ICoordinate a, ICoordinate b, ICoordinate c, ICoordinate p,
-        // boolean nonRobustInCircle) {
-        // // *
-        // boolean isInCircleDD = inCircleDD(a, b, c, p);
-        // boolean isInCircleCC = inCircleCC(a, b, c, p);
-        //
-        // Coordinate circumCentre = Triangle.circumcentre(a, b, c);
-        // System.out.println("p radius diff a = "
-        // + (p.distance(circumCentre) - a.distance(circumCentre)) / a.distance(circumCentre));
-        //
-        // if (nonRobustInCircle != isInCircleDD || nonRobustInCircle != isInCircleCC) {
-        // System.out.println("inCircle robustness failure (double result = " + nonRobustInCircle
-        // + ", DD result = " + isInCircleDD + ", CC result = " + isInCircleCC + ")");
-        // System.out.println(WKTWriter.toLineString(new CoordinateArraySequence(new Coordinate[]{
-        // a,
-        // b,
-        // c,
-        // p})));
-        // System.out.println("Circumcentre = " + WKTWriter.toPoint(circumCentre)
-        // + " radius = " + a.distance(circumCentre));
-        // System.out.println("p radius diff a = "
-        // + (p.distance(circumCentre) - a.distance(circumCentre)));
-        // System.out.println("p radius diff b = "
-        // + (p.distance(circumCentre) - b.distance(circumCentre)));
-        // System.out.println("p radius diff c = "
-        // + (p.distance(circumCentre) - c.distance(circumCentre)));
-        // }
-        // return isInCircleDD;
-        // }
-
-        // /**
-        // * Computes the inCircle test using the circumcentre. In general this doesn't appear to be any
-        // * more robust than the standard calculation. However, there is at least one case where the
-        // test
-        // * point is far enough from the circumcircle that this test gives the correct answer.
-        // LINESTRING
-        // * (1507029.9878 518325.7547, 1507022.1120341457 518332.8225183258, 1507029.9833 518325.7458,
-        // * 1507029.9896965567 518325.744909031)
-        // *
-        // * @param a
-        // * @param b
-        // * @param c
-        // * @param p
-        // * @return
-        // */
-        // private static boolean inCircleCC(Coordinate a, Coordinate b, Coordinate c, Coordinate p) {
-        // Coordinate cc = Triangle.circumcentre(a, b, c);
-        // double ccRadius = a.distance(cc);
-        // double pRadiusDiff = p.distance(cc) - ccRadius;
-        // return pRadiusDiff <= 0;
-        // }
-        //
-        // private static boolean inCircleDD(Coordinate a, Coordinate b, Coordinate c, Coordinate p) {
-        // DoubleDouble px = new DoubleDouble(p.x);
-        // DoubleDouble py = new DoubleDouble(p.y);
-        // DoubleDouble ax = new DoubleDouble(a.x);
-        // DoubleDouble ay = new DoubleDouble(a.y);
-        // DoubleDouble bx = new DoubleDouble(b.x);
-        // DoubleDouble by = new DoubleDouble(b.y);
-        // DoubleDouble cx = new DoubleDouble(c.x);
-        // DoubleDouble cy = new DoubleDouble(c.y);
-        //
-        // DoubleDouble aTerm = (ax.multiply(ax).add(ay.multiply(ay))).multiply(triAreaDD(
-        // bx,
-        // by,
-        // cx,
-        // cy,
-        // px,
-        // py));
-        // DoubleDouble bTerm = (bx.multiply(bx).add(by.multiply(by))).multiply(triAreaDD(
-        // ax,
-        // ay,
-        // cx,
-        // cy,
-        // px,
-        // py));
-        // DoubleDouble cTerm = (cx.multiply(cx).add(cy.multiply(cy))).multiply(triAreaDD(
-        // ax,
-        // ay,
-        // bx,
-        // by,
-        // px,
-        // py));
-        // DoubleDouble pTerm = (px.multiply(px).add(py.multiply(py))).multiply(triAreaDD(
-        // ax,
-        // ay,
-        // bx,
-        // by,
-        // cx,
-        // cy));
-        //
-        // DoubleDouble sum = aTerm.subtract(bTerm).add(cTerm).subtract(pTerm);
-        // boolean isInCircle = sum.doubleValue() > 0;
-        //
-        // return isInCircle;
-        // }
-
-        // /**
-        // * Computes twice the area of the oriented triangle (a, b, c), i.e., the area is positive if
-        // the
-        // * triangle is oriented counterclockwise.
-        // */
-        // private static DoubleDouble triAreaDD(DoubleDouble ax, DoubleDouble ay, DoubleDouble bx,
-        // DoubleDouble by, DoubleDouble cx, DoubleDouble cy) {
-        // return (bx.subtract(ax).multiply(cy.subtract(ay)).subtract(by.subtract(ay).multiply(
-        // cx.subtract(ax))));
-        // }
     }
 }

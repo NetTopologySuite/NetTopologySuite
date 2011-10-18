@@ -122,7 +122,7 @@ namespace NetTopologySuite.Shapefile
                 foreach (DbaseField field in header.Columns)
                 {
                     String colName = field.ColumnName + new String('\0', DbaseConstants.FieldNameLength);
-                    Byte[] colNameBytes = EncodingEx.GetACSII().GetBytes(colName.Substring(0, DbaseConstants.FieldNameLength));
+                    Byte[] colNameBytes = EncodingEx.GetASCII().GetBytes(colName.Substring(0, DbaseConstants.FieldNameLength));
                     _binaryWriter.Write(colNameBytes);
                     Char fieldTypeCode = DbaseSchema.GetFieldTypeCode(field.DataType);
                     _binaryWriter.Write(fieldTypeCode);
@@ -260,7 +260,7 @@ namespace NetTopologySuite.Shapefile
 
             private void writeNullString(Int32 length)
             {
-                Byte[] bytes = EncodingEx.GetACSII().GetBytes(new String('\0', length));
+                Byte[] bytes = EncodingEx.GetASCII().GetBytes(new String('\0', length));
                 _binaryWriter.Write(bytes);
             }
 
@@ -277,7 +277,7 @@ namespace NetTopologySuite.Shapefile
                 //_format.Insert(5, decimalPlaces).Insert(3, length);
                 throw new NotImplementedException("fix line above");
                 String number = String.Format(DbaseConstants.StorageNumberFormat, _format.ToString(), value);
-                Byte[] bytes = EncodingEx.GetACSII().GetBytes(number);
+                Byte[] bytes = EncodingEx.GetASCII().GetBytes(number);
                 _binaryWriter.Write(bytes);
             }
 
@@ -289,7 +289,7 @@ namespace NetTopologySuite.Shapefile
 
             private void writeDateTime(DateTime dateTime)
             {
-                Byte[] bytes = EncodingEx.GetACSII().GetBytes(dateTime.ToString("yyyyMMdd"));
+                Byte[] bytes = EncodingEx.GetASCII().GetBytes(dateTime.ToString("yyyyMMdd"));
                 _binaryWriter.Write(bytes);
             }
 
@@ -302,7 +302,7 @@ namespace NetTopologySuite.Shapefile
 
             private void writeBoolean(Boolean value)
             {
-                Byte[] bytes = value ? EncodingEx.GetACSII().GetBytes("T") : EncodingEx.GetACSII().GetBytes("F");
+                Byte[] bytes = value ? EncodingEx.GetASCII().GetBytes("T") : EncodingEx.GetASCII().GetBytes("F");
                 _binaryWriter.Write(bytes);
             }
 

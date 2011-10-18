@@ -3,6 +3,10 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
+#if SILVERLIGHT
+using ApplicationException = System.Exception;
+#endif
+
 namespace NetTopologySuite.Triangulate
 {
     /// <summary>

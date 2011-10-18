@@ -20,8 +20,8 @@ namespace NetTopologySuite.Triangulate
         private ICollection<ICoordinate> _siteCoords;
         private double _tolerance;
         private QuadEdgeSubdivision _subdiv;
-        private Envelope _clipEnv;
-        private Envelope _diagramEnv;
+        private IEnvelope _clipEnv;
+        private IEnvelope _diagramEnv;
 
         /// <summary>
         /// Sets the sites (point or vertices) which will be diagrammed.
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Triangulate
         /// of this envelope or an envelope surrounding the sites.
         /// </summary>
         /// <remarks>the clip envelope.</remarks>
-        public Envelope ClipEnvelope
+        public IEnvelope ClipEnvelope
         {
             set
             {
@@ -116,13 +116,13 @@ namespace NetTopologySuite.Triangulate
             return ClipGeometryCollection(polys, _diagramEnv);
         }
 
-        private static IGeometryCollection ClipGeometryCollection(IGeometryCollection geom, Envelope clipEnv)
+        private static IGeometryCollection ClipGeometryCollection(IGeometryCollection geom, IEnvelope clipEnv)
         {
-            IGeometry clipPoly = geom.Factory.ToGeometry(clipEnv);
+            var clipPoly = geom.Factory.ToGeometry(clipEnv);
             var clipped = new List<IGeometry>();
             for (int i = 0; i < geom.NumGeometries; i++)
             {
-                IGeometry g = geom.GetGeometryN(i);
+                var g = geom.GetGeometryN(i);
                 IGeometry result = null;
                 // don't clip unless necessary
                 if (clipEnv.Contains(g.EnvelopeInternal))

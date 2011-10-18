@@ -2,6 +2,7 @@
 {
     using System;
     
+    [Obsolete("XML tests from old JTS versions")]
     public abstract class VividXUnitRunner : XUnitRunner
     {
         protected VividXUnitRunner(string testFile) : base(testFile) { }
@@ -93,29 +94,29 @@
         public TestRectanglePredicate() : base("TestRectanglePredicate.xml") { }
     }
 
-    public class TestRelateAA : VividXUnitRunner
+    public class TestRelateAA_Vivid : VividXUnitRunner
     {
-        public TestRelateAA() : base("TestRelateAA.xml") { }
+        public TestRelateAA_Vivid() : base("TestRelateAA.xml") { }
     }
 
-    public class TestRelateAC : VividXUnitRunner
+    public class TestRelateAC_Vivid : VividXUnitRunner
     {
-        public TestRelateAC() : base("TestRelateAC.xml") { }
+        public TestRelateAC_Vivid() : base("TestRelateAC.xml") { }
     }
 
-    public class TestRelateLA : VividXUnitRunner
+    public class TestRelateLA_Vivid : VividXUnitRunner
     {
-        public TestRelateLA() : base("TestRelateLA.xml") { }
+        public TestRelateLA_Vivid() : base("TestRelateLA.xml") { }
     }
 
-    public class TestRelateLC : VividXUnitRunner
+    public class TestRelateLC_Vivid : VividXUnitRunner
     {
-        public TestRelateLC() : base("TestRelateLC.xml") { }
+        public TestRelateLC_Vivid() : base("TestRelateLC.xml") { }
     }
 
-    public class TestRelateLL : VividXUnitRunner
+    public class TestRelateLL_Vivid : VividXUnitRunner
     {
-        public TestRelateLL() : base("TestRelateLL.xml") { }
+        public TestRelateLL_Vivid() : base("TestRelateLL.xml") { }
     }
 
     public class TestRelatePA : VividXUnitRunner

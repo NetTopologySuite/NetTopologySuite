@@ -55,7 +55,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
@@ -76,7 +76,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
@@ -103,6 +103,7 @@
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
@@ -111,12 +112,48 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Functions\AffineTransformationFunctions.cs" />
+    <Compile Include="Functions\BaseGeometryFunction.cs" />
+    <Compile Include="Functions\BufferFunctions.cs" />
+    <Compile Include="Functions\ConstructionFunctions.cs" />
+    <Compile Include="Functions\ConversionFunctions.cs" />
+    <Compile Include="Functions\CreateGeometryFunctions.cs" />
+    <Compile Include="Functions\CreateRandomGeometries.cs" />
+    <Compile Include="Functions\DistanceFunctions.cs" />
+    <Compile Include="Functions\GeometryFunctionRegistry.cs" />
+    <Compile Include="Functions\GeometryFunctions.cs" />
+    <Compile Include="Functions\IGeometryFunction.cs" />
+    <Compile Include="Functions\NodingFunctions.cs" />
+    <Compile Include="Functions\NTSFunctions.cs" />
+    <Compile Include="Functions\OverlayFunctions.cs" />
+    <Compile Include="Functions\PolygonizeFunctions.cs" />
+    <Compile Include="Functions\PrecisionFunctions.cs" />
+    <Compile Include="Functions\SelectionFunctions.cs" />
+    <Compile Include="Functions\SimplificationFunctions.cs" />
+    <Compile Include="Functions\StaticMethodGeometryFunction.cs" />
+    <Compile Include="Functions\TestCaseGeometryFunctions.cs" />
+    <Compile Include="Operations\ArgumentConverter.cs" />
+    <Compile Include="Operations\BufferValidatedGeometryOperation.cs" />
+    <Compile Include="Operations\GeometryFunctionOperation.cs" />
     <Compile Include="Operations\GeometryMethodOperation.cs" />
+    <Compile Include="Operations\IGeometryMatcher.cs" />
     <Compile Include="Operations\IGeometryOperation.cs" />
     <Compile Include="Operations\LoggingGeometryOperation.cs" />
+    <Compile Include="Operations\NormalizedGeometryMatcher.cs" />
     <Compile Include="Operations\NTSTestReflectionException.cs" />
+    <Compile Include="Operations\OverlayValidatedGeometryOperation.cs" />
+    <Compile Include="Operations\PreparedGeometryOperation.cs" />
+    <Compile Include="Operations\PreparedGeometryTeeOperation.cs" />
+    <Compile Include="Operations\TeeGeometryOperation.cs" />
+    <Compile Include="Result\BufferResultMatcher.cs" />
+    <Compile Include="Result\EqualityResultMatcher.cs" />
+    <Compile Include="Result\NullResultMatcher.cs" />
     <Compile Include="Result\Result.cs" />
     <Compile Include="Result\IResultMatcher.cs" />
+    <Compile Include="Utility\ClassUtility.cs" />
+    <Compile Include="Utility\DoubleKeyMap.cs" />
+    <Compile Include="Utility\FunctionsUtility.cs" />
+    <Compile Include="Utility\StringUtility.cs" />
     <Compile Include="Utility\WKTOrWKBReader.cs" />
     <Compile Include="XmlTest.cs">
       <SubType>Code</SubType>
@@ -147,6 +184,10 @@
     <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">
       <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
       <Name>GeoAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.Windows.Forms\NetTopologySuite.Windows.Forms.csproj">
+      <Project>{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}</Project>
+      <Name>NetTopologySuite.Windows.Forms</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
@@ -187,4 +228,9 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

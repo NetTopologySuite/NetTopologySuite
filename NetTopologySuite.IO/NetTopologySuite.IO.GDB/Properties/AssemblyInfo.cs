@@ -7,10 +7,14 @@ using System.Runtime.InteropServices;
 // die mit einer Assembly verknüpft sind.
 [assembly: AssemblyTitle("NetTopologySuite.IO.GDB")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+#if DEBUG
+[assembly: AssemblyConfiguration("Debug")]
+#else
+[assembly: AssemblyConfiguration("Stable")]
+#endif
+[assembly: AssemblyCompany("NetTopologySuite - Team")]
 [assembly: AssemblyProduct("NetTopologySuite.IO.GDB")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
+[assembly: AssemblyCopyright("Copyright © 2007 - 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -23,14 +27,4 @@ using System.Runtime.InteropServices;
 [assembly: Guid("c4673b71-80df-455c-9208-03c4a01f70ba")]
 
 // Versionsinformationen für eine Assembly bestehen aus den folgenden vier Werten:
-//
-//      Hauptversion
-//      Nebenversion 
-//      Buildnummer
-//      Revision
-//
-// Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern 
-// übernehmen, indem Sie "*" eingeben:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.11.*")]

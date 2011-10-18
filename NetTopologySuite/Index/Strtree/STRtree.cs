@@ -5,9 +5,6 @@ using System.Linq;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace NetTopologySuite.Index.Strtree
 {
@@ -22,7 +19,7 @@ namespace NetTopologySuite.Index.Strtree
     /// Described in: P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
     /// </summary>
-    public class STRtree : AbstractSTRtree, ISpatialIndex 
+    public class STRtree : AbstractSTRtree, ISpatialIndex
     {
         /// <summary>
         /// 
@@ -46,10 +43,10 @@ namespace NetTopologySuite.Index.Strtree
             /// <param name="o1"></param>
             /// <param name="o2"></param>
             /// <returns></returns>
-            public int Compare(object o1, object o2) 
+            public int Compare(object o1, object o2)
             {
                 return _container.CompareDoubles(CentreX((IEnvelope) ((IBoundable) o1).Bounds),
-                                                CentreX((IEnvelope) ((IBoundable) o2).Bounds));
+                                                 CentreX((IEnvelope) ((IBoundable) o2).Bounds));
             }
         }
 
@@ -75,10 +72,10 @@ namespace NetTopologySuite.Index.Strtree
             /// <param name="o1"></param>
             /// <param name="o2"></param>
             /// <returns></returns>
-            public int Compare(object o1, object o2) 
+            public int Compare(object o1, object o2)
             {
                 return _container.CompareDoubles(CentreY((IEnvelope) ((IBoundable) o1).Bounds),
-                                                CentreY((IEnvelope) ((IBoundable) o2).Bounds));
+                                                 CentreY((IEnvelope) ((IBoundable) o2).Bounds));
             }
         }
 
@@ -92,20 +89,22 @@ namespace NetTopologySuite.Index.Strtree
             /// </summary>
             /// <param name="nodeCapacity"></param>
             public AnonymousAbstractNodeImpl(int nodeCapacity) :
-                base(nodeCapacity) { }
+                base(nodeCapacity)
+            {
+            }
 
             /// <summary>
             /// 
             /// </summary>
             /// <returns></returns>
-            protected override object ComputeBounds() 
+            protected override object ComputeBounds()
             {
                 IEnvelope bounds = null;
                 foreach (object i in ChildBoundables)
                 {
                     IBoundable childBoundable = (IBoundable) i;
-                    if (bounds == null) 
-                         bounds =  new Envelope((IEnvelope) childBoundable.Bounds);                
+                    if (bounds == null)
+                        bounds = new Envelope((IEnvelope) childBoundable.Bounds);
                     else bounds.ExpandToInclude((IEnvelope) childBoundable.Bounds);
                 }
                 return bounds;
@@ -134,7 +133,7 @@ namespace NetTopologySuite.Index.Strtree
             /// <param name="aBounds"></param>
             /// <param name="bBounds"></param>
             /// <returns></returns>
-            public bool Intersects(object aBounds, object bBounds) 
+            public bool Intersects(object aBounds, object bBounds)
             {
                 return ((IEnvelope) aBounds).Intersects((IEnvelope) bBounds);
             }
@@ -145,7 +144,9 @@ namespace NetTopologySuite.Index.Strtree
         /// <summary> 
         /// Constructs an STRtree with the default (10) node capacity.
         /// </summary>
-        public STRtree() : this(DefaultNodeCapacity) { }
+        public STRtree() : this(DefaultNodeCapacity)
+        {
+        }
 
         /// <summary> 
         /// Constructs an STRtree with the given maximum number of child nodes that
@@ -153,7 +154,9 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         /// <remarks>The minimum recommended capacity setting is 4.</remarks>
         public STRtree(int nodeCapacity) :
-            base(nodeCapacity) { }
+            base(nodeCapacity)
+        {
+        }
 
         /// <summary>
         /// 
@@ -163,7 +166,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <returns></returns>
         private static double Avg(double a, double b)
         {
-            return (a + b) / 2d;
+            return (a + b)/2d;
         }
 
         /// <summary>
@@ -198,11 +201,11 @@ namespace NetTopologySuite.Index.Strtree
         protected override IList CreateParentBoundables(IList childBoundables, int newLevel)
         {
             Assert.IsTrue(childBoundables.Count != 0);
-            int minLeafCount = (int)Math.Ceiling((childBoundables.Count / (double)NodeCapacity));
+            int minLeafCount = (int) Math.Ceiling((childBoundables.Count/(double) NodeCapacity));
             var sortedChildBoundables = new List<object>(childBoundables);
             sortedChildBoundables.Sort(new AnonymousXComparerImpl(this));
             IList[] verticalSlices = VerticalSlices(sortedChildBoundables,
-                (int) Math.Ceiling(Math.Sqrt(minLeafCount)));
+                                                    (int) Math.Ceiling(Math.Sqrt(minLeafCount)));
             IList tempList = CreateParentBoundablesFromVerticalSlices(verticalSlices, newLevel);
             return tempList;
         }
@@ -244,7 +247,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <param name="sliceCount"></param>
         protected IList[] VerticalSlices(IList childBoundables, int sliceCount)
         {
-            int sliceCapacity = (int)Math.Ceiling(childBoundables.Count / (double)sliceCount);
+            int sliceCapacity = (int) Math.Ceiling(childBoundables.Count/(double) sliceCount);
             IList[] slices = new IList[sliceCount];
             IEnumerator<object> i = childBoundables.GetEnumerator();
             for (int j = 0; j < sliceCount; j++)
@@ -273,7 +276,7 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
-        protected override AbstractNode CreateNode(int level) 
+        protected override AbstractNode CreateNode(int level)
         {
             return new AnonymousAbstractNodeImpl(level);
         }
@@ -283,10 +286,7 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         protected override IIntersectsOp IntersectsOp
         {
-            get
-            {
-                return new AnonymousIntersectsOpImpl(this);
-            }
+            get { return new AnonymousIntersectsOpImpl(this); }
         }
 
         /// <summary>
@@ -294,9 +294,9 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="itemEnv"></param>
         /// <param name="item"></param>
-        public void Insert(IEnvelope itemEnv, object item) 
+        public void Insert(IEnvelope itemEnv, object item)
         {
-            if (itemEnv.IsNull)  
+            if (itemEnv.IsNull)
                 return;
             base.Insert(itemEnv, item);
         }
@@ -305,7 +305,7 @@ namespace NetTopologySuite.Index.Strtree
         /// Returns items whose bounds intersect the given envelope.
         /// </summary>
         /// <param name="searchEnv"></param>
-        public IList<object> Query(IEnvelope searchEnv) 
+        public IList<object> Query(IEnvelope searchEnv)
         {
             //Yes this method does something. It specifies that the bounds is an
             //Envelope. super.query takes an object, not an Envelope. [Jon Aquino 10/24/2003]
@@ -330,77 +330,74 @@ namespace NetTopologySuite.Index.Strtree
         /// <param name="itemEnv">The Envelope of the item to remove.</param>
         /// <param name="item">The item to remove.</param>
         /// <returns><c>true</c> if the item was found.</returns>
-        public bool Remove(IEnvelope itemEnv, object item) 
+        public bool Remove(IEnvelope itemEnv, object item)
         {
             return base.Remove(itemEnv, item);
-        }        
-        
+        }
+
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        protected override IComparer<object> GetComparer() 
+        protected override IComparer<object> GetComparer()
         {
             return new AnonymousYComparerImpl(this);
         }
 
-        /**
-         * Finds the two nearest items in the tree, 
-         * using {@link ItemDistance} as the distance metric.
-         * A Branch-and-Bound tree traversal algorithm is used
-         * to provide an efficient search.
-         * 
-         * @param itemDist a distance metric applicable to the items in this tree
-         * @return the pair of the nearest items
-         */
+        /// <summary>
+        /// Finds the two nearest items in the tree, 
+        /// using <see cref="IItemDistance"/> as the distance metric.
+        /// A Branch-and-Bound tree traversal algorithm is used
+        /// to provide an efficient search.
+        /// </summary>
+        /// <param name="itemDist">A distance metric applicable to the items in this tree</param>
+        /// <returns>The pair of the nearest items</returns>
         public Object[] NearestNeighbour(IItemDistance itemDist)
         {
-            BoundablePair bp = new BoundablePair(this.Root, this.Root, itemDist);
-            return this.NearestNeighbour(bp);
+            var bp = new BoundablePair(Root, Root, itemDist);
+            return NearestNeighbour(bp);
         }
 
-        /**
-         * Finds the nearest item to the given object
-         * in this tree, 
-         * using {@link ItemDistance} as the distance metric.
-         * A Branch-and-Bound tree traversal algorithm is used
-         * to provide an efficient search.
-         * 
-         * @param env the envelope of the query item
-         * @param item the item to find the nearest neighbour of
-         * @param itemDist a distance metric applicable to the items in this tree and the query item
-         * @return the nearest item in this tree
-         */
+        /// <summary>
+        /// Finds the nearest item to the given object
+        /// in this tree, 
+        /// using <see cref="IItemDistance"/> as the distance metric.
+        /// A Branch-and-Bound tree traversal algorithm is used
+        /// to provide an efficient search.
+        /// </summary>
+        /// <param name="env">The envelope of the query item</param>
+        /// <param name="item">The item to find the nearest neighbour of</param>
+        /// <param name="itemDist">A distance metric applicable to the items in this tree and the query item</param>
+        /// <returns>The nearest item in this tree</returns>
         public Object NearestNeighbour(IEnvelope env, Object item, IItemDistance itemDist)
         {
             IBoundable bnd = new ItemBoundable(env, item);
-            BoundablePair bp = new BoundablePair(this.Root, bnd, itemDist);
-            return this.NearestNeighbour(bp)[0];
+            var bp = new BoundablePair(Root, bnd, itemDist);
+            return NearestNeighbour(bp)[0];
         }
 
-        /**
-         * Finds the two nearest items from this tree 
-         * and another tree,
-         * using {@link ItemDistance} as the distance metric.
-         * A Branch-and-Bound tree traversal algorithm is used
-         * to provide an efficient search.
-         * The result value is a pair of items, 
-         * the first from this tree and the second
-         * from the argument tree.
-         * 
-         * @param tree another tree
-         * @param itemDist a distance metric applicable to the items in the trees
-         * @return the pair of the nearest items, one from each tree
-         */
+        /// <summary>
+        /// Finds the two nearest items from this tree 
+        /// and another tree,
+        /// using <see cref="IItemDistance"/> as the distance metric.
+        /// A Branch-and-Bound tree traversal algorithm is used
+        /// to provide an efficient search.
+        /// The result value is a pair of items, 
+        /// the first from this tree and the second
+        /// from the argument tree.
+        /// </summary>
+        /// <param name="tree">Another tree</param>
+        /// <param name="itemDist">A distance metric applicable to the items in the trees</param>
+        /// <returns>The pair of the nearest items, one from each tree</returns>
         public Object[] NearestNeighbour(STRtree tree, IItemDistance itemDist)
         {
-            BoundablePair bp = new BoundablePair(this.Root, tree.Root, itemDist);
-            return this.NearestNeighbour(bp);
+            BoundablePair bp = new BoundablePair(Root, tree.Root, itemDist);
+            return NearestNeighbour(bp);
         }
 
         private Object[] NearestNeighbour(BoundablePair initBndPair)
         {
-            return this.NearestNeighbour(initBndPair, Double.PositiveInfinity);
+            return NearestNeighbour(initBndPair, Double.PositiveInfinity);
         }
 
         private Object[] NearestNeighbour(BoundablePair initBndPair, double maxDistance)
@@ -409,7 +406,7 @@ namespace NetTopologySuite.Index.Strtree
             BoundablePair minPair = null;
 
             // initialize internal structures
-            PriorityQueue<BoundablePair> priQ = new PriorityQueue<BoundablePair>();
+            var priQ = new PriorityQueue<BoundablePair>();
 
             // initialize queue
             priQ.Add(initBndPair);
@@ -437,7 +434,7 @@ namespace NetTopologySuite.Index.Strtree
                  * (which must be smaller, due to the test 
                  * immediately prior to this). 
                  */
-                if (bndPair.IsLeaves())
+                if (bndPair.IsLeaves)
                 {
                     // assert: currentDistance < minimumDistanceFound
                     distanceLowerBound = currentDistance;
@@ -461,11 +458,14 @@ namespace NetTopologySuite.Index.Strtree
                     bndPair.ExpandToQueue(priQ, distanceLowerBound);
                 }
             }
+            if (minPair != null)
             // done - return items with min distance
-            return new[] {    
-          ((ItemBoundable) minPair.GetBoundable(0)).Item,
-          ((ItemBoundable) minPair.GetBoundable(1)).Item
-      };
+            return new[]
+                       {
+                           ((ItemBoundable) minPair.GetBoundable(0)).Item,
+                           ((ItemBoundable) minPair.GetBoundable(1)).Item
+                       };
+            return null;
         }
 
     }
