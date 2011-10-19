@@ -99,7 +99,7 @@ namespace NetTopologySuite.Algorithm
 
         protected int result;
         
-        protected ICoordinate[] inputLines;
+        protected ICoordinate[][] inputLines;
         
         protected ICoordinate[] intPt = new ICoordinate[2];
 
@@ -122,8 +122,12 @@ namespace NetTopologySuite.Algorithm
 
         protected LineIntersector() 
         {
-            this.intPt[0] = new Coordinate();
-            this.intPt[1] = new Coordinate();
+            inputLines = new ICoordinate[2][];
+            inputLines[0] = new ICoordinate[2];
+            inputLines[1] = new ICoordinate[2];
+            
+            intPt[0] = new Coordinate();
+            intPt[1] = new Coordinate();
             // alias the intersection points for ease of reference
             this.pa = this.intPt[0];
             this.pb = this.intPt[1];
@@ -149,6 +153,25 @@ namespace NetTopologySuite.Algorithm
             set { _precisionModel = value; }
         }
 
+        /**
+         * 
+         * 
+         * @param segmentIndex 
+         * @param ptIndex 
+         * @return 
+         */
+        /// <summary>
+        /// Gets an endpoint of an input segment.
+        /// </summary>
+        /// <param name="segmentIndex">the index of the input segment (0 or 1)</param>
+        /// <param name="ptIndex">the index of the endpoint (0 or 1)</param>
+        /// <returns>The specified endpoint</returns>
+        public ICoordinate GetEndpoint(int segmentIndex, int ptIndex)
+        {
+            return inputLines[segmentIndex][ptIndex];
+        }
+  
+
         /// <summary> 
         /// Compute the intersection of a point p and the line p1-p2.
         /// This function computes the bool value of the hasIntersection test.
@@ -169,7 +192,12 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         public void ComputeIntersection(ICoordinate p1, ICoordinate p2, ICoordinate p3, ICoordinate p4)
         {
-            this.inputLines = new[] { p1, p2, p3, p4 };
+            //this.inputLines = new[] { p1, p2, p3, p4 };
+            inputLines[0][0] = p1;
+            inputLines[0][1] = p2;
+            inputLines[1][0] = p3;
+            inputLines[1][1] = p4;
+
             this.result = this.ComputeIntersect(p1, p2, p3, p4);        
         }
 
@@ -255,9 +283,9 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         public bool IsInteriorIntersection()
         {
-            if (this.IsInteriorIntersection(0)) 
+            if (IsInteriorIntersection(0)) 
                 return true;
-            if (this.IsInteriorIntersection(1)) 
+            if (IsInteriorIntersection(1)) 
                 return true;
             return false;
         }
@@ -270,11 +298,10 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         public bool IsInteriorIntersection(int inputLineIndex)
         {
-            for (int i = 0; i < this.result; i++)
+            for (int i = 0; i < result; i++)
             {
-                int index = inputLineIndex == 0 ? 0 : 2;
-                if (!(this.intPt[i].Equals2D(this.inputLines[index]) || 
-                      this.intPt[i].Equals2D(this.inputLines[index + 1])))                                   
+                if (!(intPt[i].Equals2D(inputLines[inputLineIndex][0]) ||
+                      intPt[i].Equals2D(inputLines[inputLineIndex][1])))                                   
                     return true;
             }
             return false;
@@ -313,7 +340,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Computes the index of the intIndex'th intersection point in the direction of
+        /// Computes the index (order) of the intIndex'th intersection point in the direction of
         /// a specified input line segment.
         /// </summary>
         /// <param name="segmentIndex">is 0 or 1.</param>
@@ -323,9 +350,9 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         public int GetIndexAlongSegment(int segmentIndex, int intIndex) 
         {
-            this.ComputeIntLineIndex();
+            ComputeIntLineIndex();
             int index = segmentIndex == 0 ? 0 : 2;
-            return this.intLineIndex[index + intIndex];
+            return intLineIndex[index + intIndex];
         }
 
         protected void ComputeIntLineIndex(int segmentIndex) 
@@ -354,8 +381,8 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The edge distance of the intersection point.</returns>
         public double GetEdgeDistance(int segmentIndex, int intIndex) 
         {
-            int index = segmentIndex == 0 ? 0 : 2;
-            double dist = ComputeEdgeDistance(this.intPt[intIndex], this.inputLines[index], this.inputLines[index + 1]);
+            double dist = ComputeEdgeDistance(intPt[intIndex], inputLines[segmentIndex][0],
+                inputLines[segmentIndex][1]);
             return dist;
         }
     }

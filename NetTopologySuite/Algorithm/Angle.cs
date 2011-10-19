@@ -33,9 +33,9 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public static class AngleUtility
     {
-        public const double PiTimes2 = 2.0 * Math.PI;
-        public const double PiOver2 = Math.PI / 2.0;
-        public const double PiOver4 = Math.PI / 4.0;
+        public const double PiTimes2 = 2.0 * System.Math.PI;
+        public const double PiOver2 = System.Math.PI / 2.0;
+        public const double PiOver4 = System.Math.PI / 4.0;
 
         ///<summary>
         /// Converts from radians to degrees.
@@ -44,7 +44,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The angle in degrees</returns>
         public static double ToDegrees(double radians)
         {
-            return (radians * 180) / (Math.PI);
+            return (radians * 180) / (System.Math.PI);
         }
 
         ///<summary>
@@ -54,7 +54,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The angle in radians</returns>
         public static double ToRadians(double angleDegrees)
         {
-            return (angleDegrees * Math.PI) / 180.0;
+            return (angleDegrees * System.Math.PI) / 180.0;
         }
 
 
@@ -69,7 +69,7 @@ namespace NetTopologySuite.Algorithm
         {
             double dx = p1.X - p0.X;
             double dy = p1.Y - p0.Y;
-            return Math.Atan2(dy, dx);
+            return System.Math.Atan2(dy, dx);
         }
 
         ///<summary>
@@ -82,7 +82,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The normalized angle (in radians) that (0,0)-p makes with the positive X-axis.</returns>
         public static double Angle(ICoordinate p)
         {
-            return Math.Atan2(p.Y, p.X);
+            return System.Math.Atan2(p.Y, p.X);
         }
 
         ///<summary>
@@ -161,9 +161,9 @@ namespace NetTopologySuite.Algorithm
 		double angDel = a2 - a1;
 		
 		// normalize, maintaining orientation
-		if (angDel <= -Math.PI)
+        if (angDel <= -System.Math.PI)
 			return angDel + PiTimes2;
-		if (angDel > Math.PI)
+        if (angDel > System.Math.PI)
             return angDel - PiTimes2;
 		return angDel;
   }
@@ -181,7 +181,7 @@ namespace NetTopologySuite.Algorithm
         {
             double anglePrev = Angle(p1, p0);
             double angleNext = Angle(p1, p2);
-            return Math.Abs(angleNext - anglePrev);
+            return System.Math.Abs(angleNext - anglePrev);
         }
 
         ///<summary>
@@ -192,7 +192,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>Whether a1 must turn <see cref="Orientation.Clockwise"/>, <see cref="Orientation.CounterClockwise"/> or <see cref="Orientation.None"/> to overlap a2.</returns>
         public static Orientation GetTurn(double ang1, double ang2)
         {
-            double crossproduct = Math.Sin(ang2 - ang1);
+            double crossproduct = System.Math.Sin(ang2 - ang1);
 
             if (crossproduct > 0)
             {
@@ -214,9 +214,9 @@ namespace NetTopologySuite.Algorithm
         /// <returns>An equivalent angle in the range (-Pi, Pi]</returns>
         public static double Normalize(double angle)
         {
-            while (angle > Math.PI)
+            while (angle > System.Math.PI)
                 angle -= PiTimes2;
-            while (angle <= -Math.PI)
+            while (angle <= -System.Math.PI)
                 angle += PiTimes2;
             return angle;
         }
@@ -288,9 +288,9 @@ namespace NetTopologySuite.Algorithm
                 delAngle = ang1 - ang2;
             }
 
-            if (delAngle > Math.PI)
+            if (delAngle > System.Math.PI)
             {
-                delAngle = (2 * Math.PI) - delAngle;
+                delAngle = (2 * System.Math.PI) - delAngle;
             }
 
             return delAngle;

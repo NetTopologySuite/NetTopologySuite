@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
+using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
@@ -774,21 +776,27 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                     ICoordinate[] pts = _coordList.ToCoordinateArray();
                     if (pts.Length != 4)
                     {
-                        //String loc = "";
-                        //if (pts.Length >= 2)
-                        //    loc = WKTWriter.ToLineString(pts[0], pts[1]);
-                        //else {
-                        //    if (pts.Length >= 1)
-                        //        loc = WKTWriter.ToPoint(pts[0]);
-                        //}
-
-                        //// Assert.isTrue(pts.length == 4, "Too few points for visited triangle at " + loc);
-                        ////com.vividsolutions.jts.util.Debug.println("too few points for triangle at " + loc);
+                        //CheckTriangleSize(pts);
                         return;
                     }
 
                     _triCoords.Add(pts);
                 }
+            }
+
+            private static void CheckTriangleSize(ICoordinate[] pts)
+            {
+                String loc = "";
+                if (pts.Length >= 2)
+                    loc = WKTWriter.ToLineString(pts[0], pts[1]);
+                else
+                {
+                    if (pts.Length >= 1)
+                        loc = WKTWriter.ToPoint(pts[0]);
+                }
+
+                Assert.IsTrue(pts.Length == 4, "Too few points for visited triangle at " + loc);
+                ////com.vividsolutions.jts.util.Debug.println("too few points for triangle at " + loc);
             }
 
             public IList<ICoordinate[]> GetTriangles()
@@ -912,6 +920,14 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             var coordList = new CoordinateList();
             coordList.AddAll(cellPts, false);
             coordList.CloseRing();
+
+            if (coordList.Count < 4) 
+            {
+                Console.WriteLine(coordList);
+                coordList.Add(coordList[coordList.Count-1], true);
+            }
+    
+
             ICoordinate[] pts = coordList.ToCoordinateArray();
             IPolygon cellPoly = geomFact.CreatePolygon(geomFact.CreateLinearRing(pts), null);
     

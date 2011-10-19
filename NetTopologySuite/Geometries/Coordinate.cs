@@ -318,7 +318,7 @@ namespace NetTopologySuite.Geometries
         /// Joshua Bloch's book <i>Effective Java"</i>
         /// </summary>
         /// <param name="value">A hashcode for the double value</param>
-        private static int GetHashCode(double value)
+        internal static int GetHashCode(double value)
         {
             /*
              * From the java language specification, it says:

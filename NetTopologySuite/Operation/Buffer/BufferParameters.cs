@@ -148,7 +148,7 @@ namespace NetTopologySuite.Operation.Buffer
                 if (_quadrantSegments < 0)
                 {
                     _joinStyle = JoinStyle.Mitre;
-                    _mitreLimit = Math.Abs(_quadrantSegments);
+                    _mitreLimit = System.Math.Abs(_quadrantSegments);
                 }
 
                 if (value <= 0)
@@ -174,8 +174,8 @@ namespace NetTopologySuite.Operation.Buffer
         /// <returns>The error of approximation</returns>
         public static double BufferDistanceError(int quadSegs)
         {
-            double alpha = Math.PI / 2.0 / quadSegs;
-            return 1 - Math.Cos(alpha / 2.0);
+            double alpha = System.Math.PI / 2.0 / quadSegs;
+            return 1 - System.Math.Cos(alpha / 2.0);
         }
 
         ///<summary>

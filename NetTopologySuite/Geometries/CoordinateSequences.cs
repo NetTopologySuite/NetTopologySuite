@@ -67,5 +67,63 @@ namespace NetTopologySuite.Geometries
                 dest.SetOrdinate(destPos, dim, src.GetOrdinate(srcPos, dim));
         }
 
+        /// <summary>
+        /// Tests whether a <see cref="ICoordinateSequence"/> forms a valid <see cref="ILinearRing"/>,
+        /// by checking the sequence length and closure
+        /// (whether the first and last points are identical in 2D). 
+        /// Self-intersection is not checked.
+        /// </summary>
+        /// <param name="seq">The sequence to test</param>
+        /// <returns>True if the sequence is a ring</returns>
+        /// <seealso cref="ILinearRing"/>
+        public static bool IsRing(ICoordinateSequence seq)
+        {
+            int n = seq.Count;
+            if (n == 0) return true;
+            // too few points
+            if (n <= 3)
+                return false;
+            // test if closed
+            return seq.GetOrdinate(0, Ordinate.X) == seq.GetOrdinate(n - 1, Ordinate.X)
+                && seq.GetOrdinate(0, Ordinate.Y) == seq.GetOrdinate(n - 1, Ordinate.Y);
+        }
+
+        /// <summary>
+        /// Ensures that a CoordinateSequence forms a valid ring, 
+        /// returning a new closed sequence of the correct length if required.
+        /// If the input sequence is already a valid ring, it is returned 
+        /// without modification.
+        /// If the input sequence is too short or is not closed, 
+        /// it is extended with one or more copies of the start point.
+        /// </summary>
+        /// <param name="fact">The CoordinateSequenceFactory to use to create the new sequence</param>
+        /// <param name="seq">The sequence to test</param>
+        /// <returns>The original sequence, if it was a valid ring, or a new sequence which is valid.</returns>
+        public static ICoordinateSequence EnsureValidRing(ICoordinateSequenceFactory fact, ICoordinateSequence seq)
+        {
+            int n = seq.Count;
+            if (n == 0) return seq;
+            // too short - make a new one
+            if (n <= 3)
+                return CreateClosedRing(fact, seq, 4);
+
+            var isClosed = seq.GetOrdinate(0, Ordinate.X) == seq.GetOrdinate(n - 1, Ordinate.X) &&
+                           seq.GetOrdinate(0, Ordinate.Y) == seq.GetOrdinate(n - 1, Ordinate.Y);
+            if (isClosed) return seq;
+            // make a new closed ring
+            return CreateClosedRing(fact, seq, n + 1);
+        }
+
+        private static ICoordinateSequence CreateClosedRing(ICoordinateSequenceFactory fact, ICoordinateSequence seq, int size)
+        {
+            var newseq = fact.Create(size, seq.Dimension);
+            int n = seq.Count;
+            Copy(seq, 0, newseq, 0, n);
+            // fill remaining coordinates with start point
+            for (int i = n; i < size; i++)
+                Copy(seq, 0, newseq, i, 1);
+            return newseq;
+        }
+
     }
 }

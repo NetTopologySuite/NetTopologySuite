@@ -2,7 +2,7 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
-namespace NetTopologySuite.Algorithm
+namespace NetTopologySuite.Mathematics
 {
     /// <summary>
     /// Functions for performing vector mathematics.

@@ -86,7 +86,7 @@ namespace NetTopologySuite.Triangulate
             // is satisfied.
             do {
                 var t = e.OPrev;
-                if (t.Dest.RightOf(e) && v.InCircle(e.Orig, t.Dest, e.Dest)) {
+                if (t.Dest.RightOf(e) && v.IsInCircle(e.Orig, t.Dest, e.Dest)) {
                     NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Swap(e);
                     e = e.OPrev;
                 } else if (e.ONext == startEdge) {

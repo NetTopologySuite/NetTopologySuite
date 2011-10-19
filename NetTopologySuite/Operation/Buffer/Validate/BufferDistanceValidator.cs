@@ -56,7 +56,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
 
         public bool IsValid()
         {
-            double posDistance = Math.Abs(_bufDistance);
+            double posDistance = System.Math.Abs(_bufDistance);
             double distDelta = MaxDistanceDiffFrac * posDistance;
             _minValidDistance = posDistance - distDelta;
             _maxValidDistance = posDistance + distDelta;

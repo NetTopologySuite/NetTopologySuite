@@ -72,7 +72,7 @@ namespace NetTopologySuite.Index.Chain
         }
 
         /// <summary>
-        /// 
+        /// Gets or sets the Id
         /// </summary>
         public int Id
         {
@@ -87,7 +87,7 @@ namespace NetTopologySuite.Index.Chain
         }
 
         /// <summary>
-        /// 
+        /// Gets the chain's context
         /// </summary>
         public object Context
         {
@@ -98,7 +98,7 @@ namespace NetTopologySuite.Index.Chain
         }
 
         /// <summary>
-        /// 
+        /// Gets the chain's envelope
         /// </summary>
         public IEnvelope Envelope
         {
@@ -115,7 +115,7 @@ namespace NetTopologySuite.Index.Chain
         }
 
         /// <summary>
-        /// 
+        /// Gets the start index
         /// </summary>
         public int StartIndex
         {
@@ -126,7 +126,7 @@ namespace NetTopologySuite.Index.Chain
         }
 
         /// <summary>
-        /// 
+        /// Gets the end index of the underlying linestring
         /// </summary>
         public int EndIndex
         {
@@ -137,7 +137,7 @@ namespace NetTopologySuite.Index.Chain
         }
 
         /// <summary>
-        /// 
+        /// Returns a part of the monotone chain as <see cref="LineSegment"/>
         /// </summary>
         /// <param name="index"></param>
         /// <param name="ls"></param>
@@ -167,8 +167,17 @@ namespace NetTopologySuite.Index.Chain
         /// Determine all the line segments in the chain whose envelopes overlap
         /// the searchEnvelope, and process them.
         /// </summary>
-        /// <param name="searchEnv"></param>
-        /// <param name="mcs"></param>
+        /// <remarks>
+        /// The monotone chain search algorithm attempts to optimize 
+        /// performance by not calling the select action on chain segments
+        /// which it can determine are not in the search envelope.
+        /// However, it *may* call the select action on segments
+        /// which do not intersect the search envelope.
+        /// This saves on the overhead of checking envelope intersection
+        /// each time, since clients may be able to do this more efficiently.
+        /// </remarks>
+        /// <param name="searchEnv">The search envelope</param>
+        /// <param name="mcs">The select action to execute on selected segments</param>
         public void Select(IEnvelope searchEnv, MonotoneChainSelectAction mcs)
         {
             ComputeSelect(searchEnv, _start, _end, mcs);
@@ -207,12 +216,29 @@ namespace NetTopologySuite.Index.Chain
             if (mid < end0)
                 ComputeSelect(searchEnv, mid, end0, mcs);            
         }
-            
+
+        /**
+ * 
+ * <p>
+ * 
+ * @param searchEnv the search envelope
+ * @param mco t
+ */
+
         /// <summary>
-        /// 
+        /// Determine all the line segments in two chains which may overlap, and process them.
         /// </summary>
-        /// <param name="mc"></param>
-        /// <param name="mco"></param>
+        /// <remarks>
+        /// The monotone chain search algorithm attempts to optimize 
+        /// performance by not calling the overlap action on chain segments
+        /// which it can determine do not overlap.
+        /// However, it *may* call the overlap action on segments
+        /// which do not actually interact.
+        /// This saves on the overhead of checking intersection
+        /// each time, since clients may be able to do this more efficiently.
+        /// </remarks>
+        /// <param name="mc">The monotone chain</param>
+        /// <param name="mco">The overlap action to execute on selected segments</param>
         public  void ComputeOverlaps(MonotoneChain mc, MonotoneChainOverlapAction mco)
         {
             ComputeOverlaps(_start, _end, mc, mc._start, mc._end, mco);

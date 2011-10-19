@@ -37,7 +37,7 @@ namespace NetTopologySuite.Index.Quadtree
             double width = max - min;
             if (width == 0.0) 
                 return true;
-            double maxAbs = Math.Max(Math.Abs(min), Math.Abs(max));
+            double maxAbs = System.Math.Max(System.Math.Abs(min), System.Math.Abs(max));
             double scaledInterval = width / maxAbs;
             int level = DoubleBits.GetExponent(scaledInterval);
             return level <= MinBinaryExponent;

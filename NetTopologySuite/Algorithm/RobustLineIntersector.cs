@@ -3,7 +3,7 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Algorithm
 {
     /// <summary> 
-    /// A robust version of <c>LineIntersector</c>.
+    /// A robust version of <see cref="LineIntersector"/>.
     /// </summary>
     public class RobustLineIntersector : LineIntersector
     {
@@ -286,13 +286,13 @@ namespace NetTopologySuite.Algorithm
         /// Since this test is for debugging purposes only, no attempt is
         /// made to optimize the envelope test.
         /// </summary>
-        /// <param name="intPt"></param>
+        /// <param name="intPoint"></param>
         /// <returns><c>true</c> if the input point lies within both input segment envelopes.</returns>
-        private bool IsInSegmentEnvelopes(ICoordinate intPt)
+        private bool IsInSegmentEnvelopes(ICoordinate intPoint)
         {
-            IEnvelope env0 = new Envelope(inputLines[0], inputLines[1]);
-            IEnvelope env1 = new Envelope(inputLines[2], inputLines[3]);
-            return env0.Contains(intPt) && env1.Contains(intPt);
+            IEnvelope env0 = new Envelope(inputLines[0][0], inputLines[0][1]);
+            IEnvelope env1 = new Envelope(inputLines[1][0], inputLines[1][1]);
+            return env0.Contains(intPoint) && env1.Contains(intPoint);
         }
     }
 }

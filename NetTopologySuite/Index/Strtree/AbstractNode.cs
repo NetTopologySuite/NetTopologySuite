@@ -30,7 +30,7 @@ namespace NetTopologySuite.Index.Strtree
         /// Returns either child <see cref="AbstractNode"/>s, or if this is a leaf node, real data (wrapped
         /// in <see cref="ItemBoundable"/>s).
         /// </summary>
-        public IList<object >ChildBoundables
+        public IList<object> ChildBoundables
         {
             get
             {

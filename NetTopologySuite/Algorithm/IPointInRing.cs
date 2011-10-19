@@ -5,7 +5,7 @@ namespace NetTopologySuite.Algorithm
     /// <summary> 
     /// An interface for classes which test whether a <c>Coordinate</c> lies inside a ring.
     /// </summary>
-    /// <see cref="Locate.IPointOnGeometryLocator"/> for more general functionality
+    /// <see cref="Locate.IPointOnGeometryLocator"/>
     public interface IPointInRing
     {
         /// <summary>

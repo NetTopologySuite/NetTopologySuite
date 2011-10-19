@@ -24,7 +24,7 @@ namespace NetTopologySuite.Noding
         /// <returns></returns>
         public static bool IsAdjacentSegments(int i1, int i2)
         {
-            return Math.Abs(i1 - i2) == 1;
+            return System.Math.Abs(i1 - i2) == 1;
         }
 
         /**

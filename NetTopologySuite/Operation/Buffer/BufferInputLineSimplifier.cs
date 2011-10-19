@@ -84,7 +84,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// </returns>
         public ICoordinate[] Simplify(double distanceTol)
         {
-            _distanceTol = Math.Abs(distanceTol);
+            _distanceTol = System.Math.Abs(distanceTol);
             if (distanceTol < 0)
                 _angleOrientation = CGAlgorithms.Clockwise;
 
