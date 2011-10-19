@@ -1,3 +1,5 @@
+using System;
+
 namespace NetTopologySuite.IO.Tests
 {
     using System.Configuration;
@@ -5,9 +7,17 @@ namespace NetTopologySuite.IO.Tests
     using System.Data.SQLite;
     using System.IO;
     using GeoAPI.Geometries;
+    using NUnit.Framework;
 
     public class SpatiaLiteFixture : AbstractIOFixture
     {
+        public override void OnFixtureSetUp()
+        {
+            base.OnFixtureSetUp();
+            Ordinates = Ordinates.XY;
+            Compressed = false;
+        }
+        
         public bool HasZ
         {
             get { return (this.Ordinates & Ordinates.Z) == Ordinates.Z; }
@@ -20,9 +30,11 @@ namespace NetTopologySuite.IO.Tests
 
         public bool Compressed { get; set; }
 
+        protected virtual string Name { get { return "SpatiaLite.sqlite";  } }
+
         protected override void AddAppConfigSpecificItems(KeyValueConfigurationCollection kvcc)
         {
-            kvcc.Add("SpatiaLiteCompressed", "false");
+            //kvcc.Add("SpatiaLiteCompressed", "false");
         }
 
         protected override void ReadAppConfigInternal(AppSettingsReader asr)
@@ -32,10 +44,10 @@ namespace NetTopologySuite.IO.Tests
 
         protected override void CreateTestStore()
         {
-            if (File.Exists("SpatiaLite.sqlite"))
-                File.Delete("SpatiaLite.sqlite");
+            if (File.Exists(Name))
+                File.Delete(Name);
 
-            using (SQLiteConnection conn = new SQLiteConnection("Data Source=\"SpatiaLite.sqlite\""))
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=\""+Name+"\""))
             {
                 conn.Open();
                 using (SQLiteCommand cmd = conn.CreateCommand())
@@ -47,6 +59,28 @@ namespace NetTopologySuite.IO.Tests
             }
         }
 
+        protected override void CheckEquality(IGeometry gIn, IGeometry gParsed)
+        {
+            var res = gIn.EqualsExact(gParsed);
+            if (res) return;
+
+            if (Compressed)
+            {
+                var discreteHausdorffDistance =
+                    Algorithm.Distance.DiscreteHausdorffDistance.Distance(gIn, gParsed);
+                if (discreteHausdorffDistance > 0.05)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine(gIn.AsText());
+                    Console.WriteLine(gParsed.AsText());
+                    Console.WriteLine("DiscreteHausdorffDistance=" + discreteHausdorffDistance);
+                }
+                Assert.IsTrue(discreteHausdorffDistance < 0.001);
+            }
+            else
+                Assert.IsTrue(false);
+        }
+
         protected override IGeometry Read(byte[] b)
         {
             return GaiaGeoReader.Read(b);
@@ -54,8 +88,8 @@ namespace NetTopologySuite.IO.Tests
 
         protected override byte[] Write(IGeometry gIn)
         {
-            byte[] b = GaiaGeoWriter.Write(gIn);
-            using (SQLiteConnection conn = new SQLiteConnection("Data Source=\"SpatiaLite.sqlite\""))
+            byte[] b = GaiaGeoWriter.Write(gIn, (Ordinates & Ordinates.Z) == Ordinates.Z, (Ordinates & Ordinates.M) == Ordinates.M, Compressed);
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=\""+Name+"\""))
             {
                 conn.Open();
                 using (SQLiteCommand cmd = conn.CreateCommand())
@@ -71,4 +105,36 @@ namespace NetTopologySuite.IO.Tests
             return b;
         }
     }
+
+    public class SpatiaLiteFixtureCompressed : SpatiaLiteFixture
+    {
+
+        protected override string Name { get { return "SpatiaLiteCompressed.sqlite"; } }
+        public override void OnFixtureSetUp()
+        {
+            base.OnFixtureSetUp();
+            Compressed = true;
+        }
+    }
+    
+    public class SpatiaLiteFixture3D : SpatiaLiteFixture
+    {
+        protected override string Name { get { return "SpatiaLite3D.sqlite"; } }
+        public override void OnFixtureSetUp()
+        {
+            base.OnFixtureSetUp();
+            Ordinates = Ordinates.XYZ;
+        }
+    }
+
+    public class SpatiaLiteFixture3DCompressed : SpatiaLiteFixture3D
+    {
+        protected override string Name { get { return "SpatiaLite3DCompressed.sqlite"; } }
+        public override void OnFixtureSetUp()
+        {
+            base.OnFixtureSetUp();
+            Compressed = true;
+        }
+    }
+
 }

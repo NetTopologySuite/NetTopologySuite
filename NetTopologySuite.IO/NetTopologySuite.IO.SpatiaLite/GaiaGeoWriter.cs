@@ -44,31 +44,23 @@ namespace NetTopologySuite.IO
                     bw.Write((byte) GaiaGeoBlobMark.GAIA_MARK_START);
                     bw.Write((byte) GaiaGeoEndianMarker.GAIA_LITTLE_ENDIAN);
                     //SRID
-                    gaiaExport.WriteInt32(geom.SRID, bw);
+                    gaiaExport.WriteInt32(bw, geom.SRID);
                     //MBR
                     var env = geom.EnvelopeInternal; //.Coordinates;
                     if (geom.IsEmpty)
                     {
-                        gaiaExport.WriteDouble(0d, bw);
-                        gaiaExport.WriteDouble(0d, bw);
-                        gaiaExport.WriteDouble(0d, bw);
-                        gaiaExport.WriteDouble(0d, bw);
+                        gaiaExport.WriteDouble(bw, 0d, 0d, 0d, 0d);
                     }
                     else
                     {
-                        gaiaExport.WriteDouble(env.MinX, bw);
-                        gaiaExport.WriteDouble(env.MinY, bw);
-                        gaiaExport.WriteDouble(env.MaxX, bw);
-                        gaiaExport.WriteDouble(env.MaxY, bw);
+                        gaiaExport.WriteDouble(bw, env.MinX, env.MinY, env.MaxX, env.MaxY);
                     }
 
                     bw.Write((byte)GaiaGeoBlobMark.GAIA_MARK_MBR);
                     Debug.Assert(ms.Position == 39);
 
-                    WriteCoordinates writeCoordinates = SetWriteCoordinatesFunction(gaiaExport);
-
                     //Write geometry
-                    WriteGeometry(geom, writeCoordinates, gaiaExport, bw);
+                    WriteGeometry(geom, gaiaExport, bw);
 
                     bw.Write((byte)GaiaGeoBlobMark.GAIA_MARK_END);
                 }
@@ -101,39 +93,45 @@ namespace NetTopologySuite.IO
 
         }
 
-        private static void WriteGeometry(IGeometry geom, WriteCoordinates writeCoordinates, GaiaExport gaiaExport, BinaryWriter bw)
+        private static void WriteGeometry(IGeometry geom, GaiaExport gaiaExport, BinaryWriter bw)
         {
-            
+
+            WriteCoordinates writeCoordinates = SetWriteCoordinatesFunction(gaiaExport);
+
             //Geometry type
+            int coordinateFlag = gaiaExport.CoordinateFlag;
+            int coordinateFlagNotValidForCompression = coordinateFlag > 1000000
+                                                           ? coordinateFlag - 1000000
+                                                           : coordinateFlag;
             switch (geom.GeometryType.ToUpper())
             {
                 case "POINT":
-                    gaiaExport.WriteInt32((int)(GaiaGeoGeometry.GAIA_POINT) | gaiaExport.CoordinateFlag, bw);
+                    gaiaExport.WriteInt32(bw, (int)(GaiaGeoGeometry.GAIA_POINT) | coordinateFlagNotValidForCompression);
                     WritePoint((IPoint)geom, writeCoordinates, gaiaExport, bw);
                     break;
                 case "LINESTRING":
-                    gaiaExport.WriteInt32((int)GaiaGeoGeometry.GAIA_LINESTRING | gaiaExport.CoordinateFlag, bw);
+                    gaiaExport.WriteInt32(bw, (int)GaiaGeoGeometry.GAIA_LINESTRING | coordinateFlag);
                     WriteLineString((ILineString)geom, writeCoordinates, gaiaExport, bw);
                     break;
                 case "POLYGON":
-                    gaiaExport.WriteInt32((int)GaiaGeoGeometry.GAIA_POLYGON | gaiaExport.CoordinateFlag, bw);
+                    gaiaExport.WriteInt32(bw, (int)GaiaGeoGeometry.GAIA_POLYGON | coordinateFlag);
                     WritePolygon((IPolygon) geom, writeCoordinates, gaiaExport, bw);
                     break;
                 case "MULTIPOINT":
-                    gaiaExport.WriteInt32((int)GaiaGeoGeometry.GAIA_MULTIPOINT | gaiaExport.CoordinateFlag, bw);
+                    gaiaExport.WriteInt32(bw, (int)GaiaGeoGeometry.GAIA_MULTIPOINT | coordinateFlagNotValidForCompression);
                     WriteMultiPoint((IMultiPoint) geom, writeCoordinates, gaiaExport, bw);
                     break;
                 case "MULTILINESTRING":
-                    gaiaExport.WriteInt32((int)GaiaGeoGeometry.GAIA_MULTILINESTRING | gaiaExport.CoordinateFlag, bw);
+                    gaiaExport.WriteInt32(bw, (int)GaiaGeoGeometry.GAIA_MULTILINESTRING | coordinateFlag);
                     WriteMultiLineString((IMultiLineString) geom, writeCoordinates, gaiaExport, bw);
                     break;
                 case "MULTIPOLYGON":
-                    gaiaExport.WriteInt32((int)GaiaGeoGeometry.GAIA_MULTIPOLYGON | gaiaExport.CoordinateFlag, bw);
+                    gaiaExport.WriteInt32(bw, (int)GaiaGeoGeometry.GAIA_MULTIPOLYGON | coordinateFlag);
                     WriteMultiPolygon((IMultiPolygon) geom, writeCoordinates, gaiaExport, bw);
                     break;
                 case "GEOMETRYCOLLECTION":
-                    gaiaExport.WriteInt32((int)GaiaGeoGeometry.GAIA_GEOMETRYCOLLECTION | gaiaExport.CoordinateFlag, bw);
-                    WriteGeometryCollection((IGeometryCollection)geom, writeCoordinates, gaiaExport, bw);
+                    gaiaExport.WriteInt32(bw, (int)GaiaGeoGeometry.GAIA_GEOMETRYCOLLECTION | coordinateFlagNotValidForCompression);
+                    WriteGeometryCollection((IGeometryCollection)geom, gaiaExport, bw);
                     break;
                 default:
                     throw new ArgumentException("unknown geometry type");
@@ -141,34 +139,34 @@ namespace NetTopologySuite.IO
             
         }
 
-        private static void WriteGeometryCollection(IGeometryCollection geom, WriteCoordinates writeCoordinates, GaiaExport gaiaExport, BinaryWriter bw)
+        private static void WriteGeometryCollection(IGeometryCollection geom, GaiaExport gaiaExport, BinaryWriter bw)
         {
-            gaiaExport.WriteInt32(geom.NumGeometries, bw);
+            gaiaExport.WriteInt32(bw, geom.NumGeometries);
             for (var i = 0; i < geom.NumGeometries; i++)
             {
                 bw.Write((byte) GaiaGeoBlobMark.GAIA_MARK_ENTITY);
-                WriteGeometry(geom[i], writeCoordinates, gaiaExport, bw);
+                WriteGeometry(geom[i], gaiaExport, bw);
             }
         }
 
         private static void WriteMultiPolygon(IGeometryCollection geom, WriteCoordinates writeCoordinates, GaiaExport gaiaExport, BinaryWriter bw)
         {
-            gaiaExport.WriteInt32(geom.NumGeometries, bw);
+            gaiaExport.WriteInt32(bw, geom.NumGeometries);
             for (var i = 0; i < geom.NumGeometries; i++)
             {
                 bw.Write((byte)GaiaGeoBlobMark.GAIA_MARK_ENTITY);
-                gaiaExport.WriteInt32(gaiaExport.CoordinateFlag | (int)GaiaGeoGeometry.GAIA_POLYGON, bw);
+                gaiaExport.WriteInt32(bw, gaiaExport.CoordinateFlag | (int)GaiaGeoGeometry.GAIA_POLYGON);
                 WritePolygon((IPolygon)geom[i], writeCoordinates, gaiaExport, bw);
             }
         }
 
         private static void WriteMultiLineString(IMultiLineString geom, WriteCoordinates writeCoordinates, GaiaExport gaiaExport, BinaryWriter bw)
         {
-            gaiaExport.WriteInt32(geom.NumGeometries, bw);
+            gaiaExport.WriteInt32(bw, geom.NumGeometries);
             for (var i = 0; i < geom.NumGeometries; i++)
             {
                 bw.Write((byte)GaiaGeoBlobMark.GAIA_MARK_ENTITY);
-                gaiaExport.WriteInt32(gaiaExport.CoordinateFlag | (int)GaiaGeoGeometry.GAIA_LINESTRING, bw);
+                gaiaExport.WriteInt32(bw, gaiaExport.CoordinateFlag | (int)GaiaGeoGeometry.GAIA_LINESTRING);
                 WriteLineString((ILineString) geom[i], writeCoordinates, gaiaExport, bw);
             }
         }
@@ -176,28 +174,29 @@ namespace NetTopologySuite.IO
         private static void WriteMultiPoint(IMultiPoint geom, WriteCoordinates writeCoordinates, GaiaExport gaiaExport, BinaryWriter bw)
         {
             var wi = gaiaExport.WriteInt32;
-            var wd = gaiaExport.WriteDouble;
-
-            wi(geom.NumGeometries, bw);
-            var coords = geom.Coordinates;
+            
+            // number of coordinates
+            wi(bw, geom.NumGeometries);
+            
+            // get the coordinate flag
+            var coordinateFlag = gaiaExport.CoordinateFlagUncompressed;
 
             for (var i = 0; i < geom.NumGeometries; i++)
             {
+                //write entity begin marker
                 bw.Write((byte)GaiaGeoBlobMark.GAIA_MARK_ENTITY);
-                var c = coords[i];
-                wi(gaiaExport.CoordinateFlag | (int)GaiaGeoGeometry.GAIA_POINT, bw);
-                wd(c.X, bw);
-                wd(c.Y, bw);
-                if ((gaiaExport.CoordinateFlag & (int)GaiaDimensionModels.GAIA_Z) == (int)GaiaDimensionModels.GAIA_Z)
-                    wd(c.Z, bw);
-                if ((gaiaExport.CoordinateFlag & (int)GaiaDimensionModels.GAIA_M) == (int)GaiaDimensionModels.GAIA_M)
-                    wd(c.M, bw);
+                
+                //write entity marker
+                wi(bw, coordinateFlag + (int) GaiaGeoGeometryEntity.GAIA_TYPE_POINT);
+                
+                //write coordinates
+                writeCoordinates(((IPoint) geom[i]).CoordinateSequence, gaiaExport, bw);
             }
         }
 
         private static void WritePolygon(IPolygon geom, WriteCoordinates writeCoordinates, GaiaExport gaiaExport, BinaryWriter bw)
         {
-            gaiaExport.WriteInt32(geom.NumInteriorRings + 1, bw);
+            gaiaExport.WriteInt32(bw, geom.NumInteriorRings + 1);
             WriteLineString(geom.Shell, writeCoordinates, gaiaExport, bw);
             for (var i = 0; i < geom.NumInteriorRings; i++ )
                 WriteLineString(geom.GetInteriorRingN(i), writeCoordinates, gaiaExport, bw);
@@ -206,7 +205,7 @@ namespace NetTopologySuite.IO
         private static void WriteLineString(ILineString geom, WriteCoordinates writeCoordinates, GaiaExport gaiaExport, BinaryWriter bw)
         {
             var seq = geom.CoordinateSequence;
-            gaiaExport.WriteInt32(seq.Count, bw);
+            gaiaExport.WriteInt32(bw, seq.Count);
             writeCoordinates(geom.CoordinateSequence, gaiaExport, bw);
         }
 
@@ -248,8 +247,7 @@ namespace NetTopologySuite.IO
             for (var i = 0; i < coordinateSequence.Count; i++)
             {
                 var c = coordinateSequence.GetCoordinate(i);
-                wd(c.X, bw);
-                wd(c.Y, bw);
+                wd(bw, c.X, c.Y);
             }
         }
 
@@ -259,9 +257,7 @@ namespace NetTopologySuite.IO
             for (var i = 0; i < coordinateSequence.Count; i++)
             {
                 var c = coordinateSequence.GetCoordinate(i);
-                wd(c.X, bw);
-                wd(c.Y, bw);
-                wd(c.Z, bw);
+                wd(bw, c.X, c.Y, c.Z);
             }
         }
 
@@ -271,9 +267,7 @@ namespace NetTopologySuite.IO
             for (var i = 0; i < coordinateSequence.Count; i++)
             {
                 var c = coordinateSequence.GetCoordinate(i);
-                wd(c.X, bw);
-                wd(c.Y, bw);
-                wd(c.M, bw);
+                wd(bw, c.X, c.Y, c.M);
             }
         }
 
@@ -283,9 +277,7 @@ namespace NetTopologySuite.IO
             for (var i = 0; i < coordinateSequence.Count; i++)
             {
                 var c = coordinateSequence.GetCoordinate(i);
-                wd(c.X, bw);
-                wd(c.Y, bw);
-                wd(c.Z, bw);
+                wd(bw, c.X, c.Y, c.Z, c.M);
             }
         }
 
@@ -295,83 +287,101 @@ namespace NetTopologySuite.IO
             
             // Write initial coordinate
             var cprev = coordinateSequence.GetCoordinate(0);
-            wd(cprev.X, bw);
-            wd(cprev.Y, bw);
+            wd(bw, cprev.X, cprev.Y);
 
             var ws = export.WriteSingle;
-
-            for (var i = 1; i < coordinateSequence.Count; i++)
+            var maxIndex = coordinateSequence.Count-1;
+            if (maxIndex <= 0) return;
+            
+            for (var i = 1; i < maxIndex; i++)
             {
                 var c = coordinateSequence.GetCoordinate(i);
-                var fx = (float)(c.X - cprev.X);
-                var fy = (float)(c.Y - cprev.Y);
-                ws(fx, bw);
-                ws(fy, bw);
+                var fx = (float) (c.X - cprev.X);
+                var fy = (float) (c.Y - cprev.Y);
+                ws(bw, fx, fy);
+                cprev = c;
             }
+
+            // Write last coordinate
+            cprev = coordinateSequence.GetCoordinate(maxIndex);
+            wd(bw, cprev.X, cprev.Y);
         }
 
         private static void WriteCompressedXYZ(ICoordinateSequence coordinateSequence, GaiaExport export, BinaryWriter bw)
         {
-            
+
+            var wd = export.WriteDouble;
+
             // Write initial coordinate
             var cprev = coordinateSequence.GetCoordinate(0);
-            export.WriteDouble(cprev.X, bw);
-            export.WriteDouble(cprev.Y, bw);
-            export.WriteDouble(cprev.Z, bw);
+            wd(bw, cprev.X, cprev.Y, cprev.Z);
 
-            for (var i = 1; i < coordinateSequence.Count; i++)
+            var maxIndex = coordinateSequence.Count -1;
+            if (maxIndex <= 0) return;
+
+            var ws = export.WriteSingle;
+            for (var i = 1; i < maxIndex; i++)
             {
-                ICoordinate c = coordinateSequence.GetCoordinate(i);
+                var c = coordinateSequence.GetCoordinate(i);
                 var fx = (float)(c.X - cprev.X);
                 var fy = (float)(c.Y - cprev.Y);
                 var fz = (float)(c.Z - cprev.Z);
-                export.WriteSingle(fx, bw);
-                export.WriteSingle(fy, bw);
-                export.WriteSingle(fz, bw);
+                ws(bw, fx, fy, fz);
+                cprev = c;
             }
+            cprev = coordinateSequence.GetCoordinate(maxIndex);
+            wd(bw, cprev.X, cprev.Y, cprev.Z);
         }
 
         private static void WriteCompressedXYM(ICoordinateSequence coordinateSequence, GaiaExport export, BinaryWriter bw)
         {
+            var wd = export.WriteDouble;
+
             // Write initial coordinate
             var cprev = coordinateSequence.GetCoordinate(0);
-            export.WriteDouble(cprev.X, bw);
-            export.WriteDouble(cprev.Y, bw);
-            export.WriteDouble(cprev.M, bw);
+            wd(bw, cprev.X, cprev.Y, cprev.M);
 
-            for (var i = 1; i < coordinateSequence.Count; i++)
+            var maxIndex = coordinateSequence.Count-1;
+            if (maxIndex <= 0) return;
+
+            var ws = export.WriteSingle;
+            for (var i = 1; i < maxIndex; i++)
             {
-                ICoordinate c = coordinateSequence.GetCoordinate(i);
+                var c = coordinateSequence.GetCoordinate(i);
                 var fx = (float)(c.X - cprev.X);
                 var fy = (float)(c.Y - cprev.Y);
                 var fm = (float)(c.M - cprev.M);
-                export.WriteSingle(fx, bw);
-                export.WriteSingle(fy, bw);
-                export.WriteSingle(fm, bw);
+                ws(bw, fx, fy, fm);
+                cprev = c;
             }
+            cprev = coordinateSequence.GetCoordinate(maxIndex);
+            wd(bw, cprev.X, cprev.Y, cprev.M);
         }
 
         private static void WriteCompressedXYZM(ICoordinateSequence coordinateSequence, GaiaExport export, BinaryWriter bw)
         {
+            var wd = export.WriteDouble;
+
             // Write initial coordinate
             var cprev = coordinateSequence.GetCoordinate(0);
-            export.WriteDouble(cprev.X, bw);
-            export.WriteDouble(cprev.Y, bw);
-            export.WriteDouble(cprev.Z, bw);
-            export.WriteDouble(cprev.M, bw);
+            wd(bw, cprev.X, cprev.Y, cprev.Z, cprev.M);
 
-            for (var i = 1; i < coordinateSequence.Count; i++)
+            var maxIndex = coordinateSequence.Count - 1;
+            if (maxIndex <= 0) return;
+
+            var ws = export.WriteSingle;
+            for (var i = 1; i < maxIndex; i++)
             {
                 var c = coordinateSequence.GetCoordinate(i);
                 var fx = (float)(c.X - cprev.X);
                 var fy = (float)(c.Y - cprev.Y);
                 var fz = (float)(c.Z - cprev.Z);
                 var fm = (float)(c.M - cprev.M);
-                export.WriteSingle(fx, bw);
-                export.WriteSingle(fy, bw);
-                export.WriteSingle(fz, bw);
-                export.WriteSingle(fm, bw);
+                ws(bw, fx, fy, fz, fm);
+                cprev = c;
             }
+            cprev = coordinateSequence.GetCoordinate(maxIndex);
+            wd(bw, cprev.X, cprev.Y, cprev.Z, cprev.M);
         }
     }
 }

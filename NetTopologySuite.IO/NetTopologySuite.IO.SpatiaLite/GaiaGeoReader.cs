@@ -104,11 +104,9 @@ namespace NetTopologySuite.IO
             offset = 39;
 
             var type = (GaiaGeoGeometry)gaiaImport.GetInt32(blob, ref offset);
-            ReadCoordinatesFunction readCoordinates = SetReadCoordinatesFunction(gaiaImport, type);
-
 
             //offset = 39;
-            IGeometry geom = ParseWkbGeometry(type, blob, ref offset, readCoordinates, gaiaImport);
+            IGeometry geom = ParseWkbGeometry(type, blob, ref offset, gaiaImport);
             //switch (type)
             //{
             //    /* parsing elementary geometries */
@@ -284,17 +282,23 @@ namespace NetTopologySuite.IO
                 return ReadCompressedXYM;
             if (gaiaImport.HasZ)
                 return ReadCompressedXYZ;
-            return ReadXY;
+            return ReadCompressedXY;
         }
 
         private static GaiaGeoGeometry ToBaseGeometryType(GaiaGeoGeometry geometry)
         {
-            return (GaiaGeoGeometry)((int)(geometry) & 0xff);
+            var geometryInt = (int) geometry;
+            if (geometryInt > 1000000) geometryInt -= 1000000;
+            if (geometryInt > 3000) geometryInt -= 3000;
+            if (geometryInt > 2000) geometryInt -= 2000;
+            if (geometryInt > 1000) geometryInt -= 1000;
+            return (GaiaGeoGeometry)geometryInt;
         }
 
-        private static IGeometry ParseWkbGeometry(GaiaGeoGeometry type, byte[] blob, ref int offset, ReadCoordinatesFunction readCoordinates, GaiaImport gaiaImport)
+        private static IGeometry ParseWkbGeometry(GaiaGeoGeometry type, byte[] blob, ref int offset, GaiaImport gaiaImport)
         {
-            gaiaImport.SetGeometryType(type);
+
+            ReadCoordinatesFunction readCoordinates = SetReadCoordinatesFunction(gaiaImport, type);
 
             switch (ToBaseGeometryType(type))
             {
@@ -317,7 +321,7 @@ namespace NetTopologySuite.IO
                     return ParseWkbMultiPolygon(blob, ref offset, readCoordinates, gaiaImport);
 
                 case GaiaGeoGeometry.GAIA_GEOMETRYCOLLECTION:
-                    return ParseWkbGeometryCollection(blob, ref offset, readCoordinates, gaiaImport);
+                    return ParseWkbGeometryCollection(blob, ref offset, gaiaImport);
             }
             return null;
         }
@@ -361,7 +365,7 @@ namespace NetTopologySuite.IO
                     throw new Exception();
 
                 var gt = getInt32(blob, ref offset);
-                if ((gt & 0xff) != (int)GaiaGeoGeometry.GAIA_POINT)
+                if (ToBaseGeometryType((GaiaGeoGeometry)gt) != GaiaGeoGeometry.GAIA_POINT)
                     throw new Exception();
 
                 coords[i] = new Coordinate(getDouble(blob, ref offset),
@@ -398,7 +402,7 @@ namespace NetTopologySuite.IO
                     throw new Exception();
                       
                 var gt = gaiaImport.GetInt32(blob, ref offset);
-                if ((gt & 0xff) != (int)GaiaGeoGeometry.GAIA_LINESTRING)
+                if (ToBaseGeometryType((GaiaGeoGeometry)gt) != GaiaGeoGeometry.GAIA_LINESTRING)
                     throw new Exception();
 
                 lineStrings[i] = ParseWkbLineString(blob, ref offset, GeometryFactory.Default.CreateLineString, readCoordinates, gaiaImport);
@@ -427,7 +431,7 @@ namespace NetTopologySuite.IO
                     throw new Exception();
 
                 var gt = gaiaImport.GetInt32(blob, ref offset);
-                if ((gt & 0xff) != (int)GaiaGeoGeometry.GAIA_POLYGON)
+                if (ToBaseGeometryType((GaiaGeoGeometry)gt) != GaiaGeoGeometry.GAIA_POLYGON)
                     throw new Exception();
 
                 polygons[i] = ParseWkbPolygon(blob, ref offset, readCoordinates, gaiaImport);
@@ -435,7 +439,7 @@ namespace NetTopologySuite.IO
             return GeometryFactory.Default.CreateMultiPolygon(polygons);
         }
 
-        private static IGeometryCollection ParseWkbGeometryCollection(byte[] blob, ref int offset, ReadCoordinatesFunction readCoordinates, GaiaImport gaiaImport)
+        private static IGeometryCollection ParseWkbGeometryCollection(byte[] blob, ref int offset, GaiaImport gaiaImport)
         {
             var number = gaiaImport.GetInt32(blob, ref offset);
             var geometries = new IGeometry[number];
@@ -444,7 +448,7 @@ namespace NetTopologySuite.IO
                 if (blob[offset++] != (byte)GaiaGeoBlobMark.GAIA_MARK_ENTITY)
                     throw new Exception();
 
-                geometries[i] = ParseWkbGeometry((GaiaGeoGeometry)gaiaImport.GetInt32(blob, ref offset), blob, ref offset, readCoordinates, gaiaImport);
+                geometries[i] = ParseWkbGeometry((GaiaGeoGeometry)gaiaImport.GetInt32(blob, ref offset), blob, ref offset, gaiaImport);
             }
             return GeometryFactory.Default.CreateGeometryCollection(geometries);
         }
@@ -504,6 +508,7 @@ namespace NetTopologySuite.IO
             }
             return ret;
         }
+
         private static ICoordinate[] ReadCompressedXY(byte[] buffer, ref int offset, int number, GaiaImport import)
         {
             var getDouble = import.GetDouble;
@@ -511,12 +516,16 @@ namespace NetTopologySuite.IO
 
             var ret = new ICoordinate[number];
             ret[0] = new Coordinate(getDouble(buffer, ref offset), getDouble(buffer, ref offset));
-            for (var i = 1; i < number; i++)
+
+            if (number == 1) return ret;
+
+            for (var i = 1; i < number - 1; i++)
             {
                 var fx = getSingle(buffer, ref offset);
                 var fy = getSingle(buffer, ref offset);
-                ret[i] = new Coordinate(ret[i].X + fx, ret[i].Y - fy);
+                ret[i] = new Coordinate(ret[i-1].X + fx, ret[i-1].Y + fy);
             }
+            ret[number-1] = new Coordinate(getDouble(buffer, ref offset), getDouble(buffer, ref offset));
             return ret;
         }
 
@@ -527,13 +536,17 @@ namespace NetTopologySuite.IO
 
             var ret = new ICoordinate[number];
             ret[0] = new Coordinate(getDouble(buffer, ref offset), getDouble(buffer, ref offset), getDouble(buffer, ref offset));
-            for (var i = 1; i < number; i++)
+
+            if (number == 1) return ret;
+
+            for (var i = 1; i < number - 1; i++)
             {
                 var fx = getSingle(buffer, ref offset);
                 var fy = getSingle(buffer, ref offset);
                 var fz = getSingle(buffer, ref offset);
-                ret[i] = new Coordinate(ret[i].X + fx, ret[i].Y - fy, ret[i].Z + fz);
+                ret[i] = new Coordinate(ret[i-1].X + fx, ret[i-1].Y + fy, ret[i-1].Z + fz);
             }
+            ret[number-1] = new Coordinate(getDouble(buffer, ref offset), getDouble(buffer, ref offset), getDouble(buffer, ref offset));
             return ret;
         }
 
@@ -544,14 +557,22 @@ namespace NetTopologySuite.IO
 
             var ret = new ICoordinate[number];
             ret[0] = new Coordinate(getDouble(buffer, ref offset), getDouble(buffer, ref offset));
+            //skip m
             getDouble(buffer, ref offset);
-            for (var i = 1; i < number; i++)
+            
+            if (number == 1) return ret;
+
+            for (var i = 1; i < number - 1; i++)
             {
                 var fx = getSingle(buffer, ref offset);
                 var fy = getSingle(buffer, ref offset);
+                //skip m
                 getSingle(buffer, ref offset);
-                ret[i] = new Coordinate(ret[i].X + fx, ret[i].Y - fy);
+                ret[i] = new Coordinate(ret[i-1].X + fx, ret[i-1].Y + fy);
             }
+            ret[number - 1] = new Coordinate(getDouble(buffer, ref offset), getDouble(buffer, ref offset));
+            //skip m
+            getDouble(buffer, ref offset);
             return ret;
         }
 
@@ -562,15 +583,22 @@ namespace NetTopologySuite.IO
 
             var ret = new ICoordinate[number];
             ret[0] = new Coordinate(getDouble(buffer, ref offset), getDouble(buffer, ref offset), getDouble(buffer, ref offset));
+            //skip m
             getDouble(buffer, ref offset);
-            for (var i = 1; i < number; i++)
+
+            if (number == 1) return ret;
+
+            for (var i = 1; i < number - 1; i++)
             {
                 var fx = getSingle(buffer, ref offset);
                 var fy = getSingle(buffer, ref offset);
                 var fz = getSingle(buffer, ref offset);
+                //skip m
                 getSingle(buffer, ref offset);
-                ret[i] = new Coordinate(ret[i].X + fx, ret[i].Y - fy, ret[i].Z + fz);
+                ret[i] = new Coordinate(ret[i].X + fx, ret[i-1].Y - fy, ret[i-1].Z + fz);
             }
+            //skip m
+            ret[number - 1] = new Coordinate(getDouble(buffer, ref offset), getDouble(buffer, ref offset), getDouble(buffer, ref offset));
             return ret;
         }
 

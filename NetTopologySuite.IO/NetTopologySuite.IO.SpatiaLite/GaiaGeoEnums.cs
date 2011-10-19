@@ -71,7 +71,7 @@ internal static class GaiaGeoEmptyHelper
     /// <summary>
     /// Generic geometry classes
     /// </summary>
-    internal enum GaiaGeoGeometryType : byte
+    internal enum GaiaGeoGeometryEntity
     {
         GAIA_TYPE_NONE = 0,
         GAIA_TYPE_POINT = 1,

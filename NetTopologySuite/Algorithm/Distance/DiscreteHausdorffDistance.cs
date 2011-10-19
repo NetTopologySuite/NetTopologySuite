@@ -7,7 +7,7 @@ namespace NetTopologySuite.Algorithm.Distance
     ///<summary>
     /// An algorithm for computing a distance metric
     /// which is an approximation to the Hausdorff Distance
-    /// based on a discretization of the input {@link Geometry}.
+    /// based on a discretization of the input <see cref="IGeometry"/>.
     /// </summary>
     /// <remarks>
     /// <para>

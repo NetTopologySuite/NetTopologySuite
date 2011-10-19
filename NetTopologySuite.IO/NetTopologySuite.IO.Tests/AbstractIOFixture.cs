@@ -30,9 +30,8 @@
         private void CheckAppConfigPresent()
         {
             string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "NetTopologySuite.IO.Tests.dll.config");
-            if (File.Exists(path))
-                File.Delete(path);
-            this.CreateAppConfig();
+            if (!File.Exists(path))
+                this.CreateAppConfig();
             this.ReadAppConfig();
         }
 
@@ -156,6 +155,11 @@
             IGeometry gParsed = this.Read(b);
 
             Assert.IsNotNull(gParsed);
+            CheckEquality(gIn, gParsed);
+        }
+
+        protected virtual void CheckEquality(IGeometry gIn, IGeometry gParsed)
+        {
             Assert.IsTrue(gIn.EqualsExact(gParsed));
         }
 

@@ -27,21 +27,33 @@ namespace NetTopologySuite.IO
             //Debug.Assert(geometryTypeFlag != GaiaGeoGeometry.GAIA_UNKNOWN);
             //Debug.Assert(geometryTypeFlag > 0);
 
-            var cflag = ((int)geometryTypeFlag) & (0x7fffff00);
-            if (cflag == CoordinateFlag)
-                return;
 
-            CoordinateFlag = cflag;
 
-            var tmp = CoordinateFlag & 0xff00;
-            HasZ = (tmp == 1000) || (tmp == 3000);
-            HasM = (tmp == 2000) || (tmp == 3000);
+            var cflag = ((int) geometryTypeFlag);
+            if (cflag > 1000000)
+            {
+                Compressed = true;
+                cflag -= 1000000;
+            }
+
+            if (cflag > 3000) 
+                cflag = 3000;
+            else if (cflag > 2000)
+                cflag = 2000;
+            else if (cflag > 1000)
+                cflag = 1000;
+            else 
+                cflag = 0;
+
+            CoordinateFlag = cflag | (Compressed?1000000 : 0);
+
+            HasZ = (cflag == 1000) || (cflag == 3000);
+            HasM = (cflag == 2000) || (cflag == 3000);
 
             Dimension = GaiaDimensionModels.GAIA_XY;
             if (HasZ) Dimension |= GaiaDimensionModels.GAIA_Z;
             if (HasM) Dimension |= GaiaDimensionModels.GAIA_M;
 
-            Compressed = (CoordinateFlag > 1000000);
         }
 
         public void SetCoordinateType(bool hasZ, bool hasM, bool useCompression)
@@ -67,6 +79,7 @@ namespace NetTopologySuite.IO
         }
 
         public int CoordinateFlag { get; private set; }
+        public int CoordinateFlagUncompressed { get { return CoordinateFlag > 1000000 ? CoordinateFlag - 1000000 : CoordinateFlag; } }
 
         public GaiaDimensionModels Dimension { get; private set; }
         
@@ -195,9 +208,9 @@ namespace NetTopologySuite.IO
 
 #region Export
 
-    internal delegate void WriteDoubleFunction(Double value, BinaryWriter bw);
-    internal delegate void WriteInt32Function(Int32 value, BinaryWriter bw);
-    internal delegate void WriteSingleFunction(Single value, BinaryWriter bw);
+    internal delegate void WriteDoubleFunction(BinaryWriter bw, params Double[] value);
+    internal delegate void WriteInt32Function(BinaryWriter bw, params Int32[] value);
+    internal delegate void WriteSingleFunction(BinaryWriter bw, params Single[] value);
 
     internal class GaiaExport : GaiaGeoIO
     {
@@ -228,48 +241,60 @@ namespace NetTopologySuite.IO
 
         #region Double
 
-        private static void WriteUnconvertedDouble(Double value, BinaryWriter bw)
+        private static void WriteUnconvertedDouble(BinaryWriter bw, params Double[] value)
         {
-            bw.Write(value);
+            foreach (var d in value)
+                bw.Write(d);
         }
 
-        private static void WriteConvertedDouble(Double value, BinaryWriter bw)
+        private static void WriteConvertedDouble(BinaryWriter bw, params Double[] value)
         {
-            var tmp = BitConverter.GetBytes(value);
-            Array.Reverse(tmp);
-            bw.Write(tmp);
+            foreach (var d in value)
+            {
+                var tmp = BitConverter.GetBytes(d);
+                Array.Reverse(tmp);
+                bw.Write(tmp);
+            }
         }
 
         #endregion
 
         #region Single
 
-        private static void WriteUnconvertedSingle(Single value, BinaryWriter bw)
+        private static void WriteUnconvertedSingle(BinaryWriter bw, params Single[] value)
         {
-            bw.Write(value);
+            foreach (var f in value)
+                bw.Write(f);
         }
 
-        private static void WriteConvertedSingle(Single value, BinaryWriter bw)
+        private static void WriteConvertedSingle(BinaryWriter bw, params Single[] value)
         {
-            var tmp = BitConverter.GetBytes(value);
-            Array.Reverse(tmp);
-            bw.Write(tmp);
+            foreach (var f in value)
+            {
+                var tmp = BitConverter.GetBytes(f);
+                Array.Reverse(tmp);
+                bw.Write(tmp);
+            }
         }
 
         #endregion
 
         #region Int32
 
-        internal static void WriteUnconvertedInt32(Int32 value, BinaryWriter bw)
+        internal static void WriteUnconvertedInt32(BinaryWriter bw, params Int32[] value)
         {
-            bw.Write(value);
+            foreach (var i in value)
+                bw.Write(i);
         }
 
-        private static void WriteConvertedInt32(Int32 value, BinaryWriter bw)
+        private static void WriteConvertedInt32(BinaryWriter bw, params Int32[] value)
         {
-            var tmp = BitConverter.GetBytes(value);
-            Array.Reverse(tmp);
-            bw.Write(tmp);
+            foreach (var i in value)
+            {
+                var tmp = BitConverter.GetBytes(i);
+                Array.Reverse(tmp);
+                bw.Write(tmp);
+            }
         }
 
         #endregion
