@@ -22,7 +22,7 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.IO
 {
-    internal class MsSql2008GeometryWriter
+    public class MsSql2008GeometryWriter
     {
         private readonly SqlGeometryBuilder builder = new SqlGeometryBuilder();
 

@@ -22,7 +22,7 @@ using System.IO;
 
 namespace NetTopologySuite.IO
 {
-    internal class MsSql2008GeometryReader
+    public class MsSql2008GeometryReader
     {
         public IGeometry Read(byte[] bytes)
         {
