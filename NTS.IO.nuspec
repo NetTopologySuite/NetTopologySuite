@@ -20,7 +20,7 @@
     </frameworkAssemblies>
     <dependencies>
       <dependency id="GeoAPI" version="1.5.0" />
-      <dependency id="NetTopologySuite" version="1.11.0" />
+      <dependency id="NetTopologySuite" version="1.12.0" />
       <dependency id="Microsoft.SqlServer.Types" version="10.50.1600.1" />
     </dependencies>  </metadata>
   <files>
