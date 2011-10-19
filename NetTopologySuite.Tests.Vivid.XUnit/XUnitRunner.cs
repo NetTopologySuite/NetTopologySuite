@@ -181,7 +181,7 @@
 
         [Fact]
         public void TestAll()
-        {
+        {            
             bool success = true;
             for (int i = 0; i < this.Count; i++)
             {
@@ -190,18 +190,18 @@
                     TestResults result = this.ExecuteTest(i);
                     if (result.Success)
                     {
-                        Console.WriteLine(String.Format("Test {0} success\n{1}", i, result.Description));
+                        Console.WriteLine("Test {0} success\n{1}", i, result.Description);
                         continue;
                     }
 
-                    Console.WriteLine(String.Format("Test {0} failed\n{1}", i, result.Description));
+                    Console.WriteLine("Test {0} failed\n{1}", i, result.Description);
                     success = false;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(String.Format("Test {0} thrown exception\n{1}", i, ex.Message));
+                    Console.WriteLine("Test {0} thrown exception\n{1}", i, ex.Message);
                     success = false;
-                }
+                }                
             }
             Assert.True(success, "Fixture failed");
         }

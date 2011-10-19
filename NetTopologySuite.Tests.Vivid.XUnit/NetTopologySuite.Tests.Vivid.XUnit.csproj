@@ -71,12 +71,6 @@
     <Compile Include="XUnitVividTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetTopologySuite.TestRunner\NetTopologySuite.TestRunner.csproj">
-      <Project>{13669184-2446-404F-8894-5E20B6C3FCC6}</Project>
-      <Name>NetTopologySuite.TestRunner</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
@@ -92,6 +86,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetTopologySuite.TestRunner\NetTopologySuite.TestRunner.csproj">
+      <Project>{13669184-2446-404F-8894-5E20B6C3FCC6}</Project>
+      <Name>NetTopologySuite.TestRunner</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
