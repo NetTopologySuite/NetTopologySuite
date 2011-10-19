@@ -162,9 +162,6 @@
     <Compile Include="..\NetTopologySuite\Algorithm\SIRtreePointInRing.cs">
       <Link>Algorithm\SIRtreePointInRing.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\Algorithm\VectorMath.cs">
-      <Link>Algorithm\VectorMath.cs</Link>
-    </Compile>
     <Compile Include="..\NetTopologySuite\CoordinateSystems\Transformations\GeometryTransform.cs">
       <Link>CoordinateSystems\Transformations\GeometryTransform.cs</Link>
     </Compile>
@@ -233,6 +230,9 @@
     </Compile>
     <Compile Include="..\NetTopologySuite\Geometries\GeometryCollectionEnumerator.cs">
       <Link>Geometries\GeometryCollectionEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\GeometryComponentFilter.cs">
+      <Link>Geometries\GeometryComponentFilter.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Geometries\GeometryFactory.cs">
       <Link>Geometries\GeometryFactory.cs</Link>
@@ -546,8 +546,17 @@
     <Compile Include="..\NetTopologySuite\Index\Strtree\AbstractSTRtree.cs">
       <Link>Index\Strtree\AbstractSTRtree.cs</Link>
     </Compile>
+    <Compile Include="..\NetTopologySuite\Index\Strtree\BoundablePair.cs">
+      <Link>Index\Strtree\BoundablePair.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Index\Strtree\GeometryItemDistance.cs">
+      <Link>Index\Strtree\GeometryItemDistance.cs</Link>
+    </Compile>
     <Compile Include="..\NetTopologySuite\Index\Strtree\IBoundable.cs">
       <Link>Index\Strtree\IBoundable.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Index\Strtree\IItemDistance.cs">
+      <Link>Index\Strtree\IItemDistance.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Index\Strtree\Interval.cs">
       <Link>Index\Strtree\Interval.cs</Link>
@@ -638,6 +647,21 @@
     </Compile>
     <Compile Include="..\NetTopologySuite\LinearReferencing\LocationIndexOfPoint.cs">
       <Link>LinearReferencing\LocationIndexOfPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Mathematics\DD.cs">
+      <Link>Math\DD.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Mathematics\MathUtil.cs">
+      <Link>Math\MathUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Mathematics\Matrix.cs">
+      <Link>Math\Matrix.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Mathematics\Vector2D.cs">
+      <Link>Math\Vector2D.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Mathematics\VectorMath.cs">
+      <Link>Math\VectorMath.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Noding\BasicSegmentString.cs">
       <Link>Noding\BasicSegmentString.cs</Link>
@@ -1083,6 +1107,9 @@
     <Compile Include="..\NetTopologySuite\Triangulate\QuadEdge\QuadEdgeUtil.cs">
       <Link>Triangulate\QuadEdge\QuadEdgeUtil.cs</Link>
     </Compile>
+    <Compile Include="..\NetTopologySuite\Triangulate\QuadEdge\TrianglePredicate.cs">
+      <Link>Triangulate\QuadEdge\TrianglePredicate.cs</Link>
+    </Compile>
     <Compile Include="..\NetTopologySuite\Triangulate\QuadEdge\Vertex.cs">
       <Link>Triangulate\QuadEdge\Vertex.cs</Link>
     </Compile>
@@ -1259,7 +1286,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkReference="5770daa9-84e5-4770-af43-f6b815894368" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="5770daa9-84e5-4770-af43-f6b815894368" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

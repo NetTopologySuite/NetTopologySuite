@@ -55,7 +55,7 @@ namespace NetTopologySuite.IO.Tests
                 cn.Open();
                 using (var cmd = cn.CreateCommand())
                 {
-                    cmd.CommandText = "INSERT INTO \"nts_io_postgis_2d\" VALUES(@P1, @P3, @P2);";
+                    cmd.CommandText = "INSERT INTO \"nts_io_postgis_2d\" VALUES(@P1, @P2, @P3);";
                     var p1 = new NpgsqlParameter("P1", NpgsqlDbType.Integer) {NpgsqlValue = Counter};
                     var p2 = new NpgsqlParameter("P2", NpgsqlDbType.Text) { NpgsqlValue = gIn.AsText() };
                     var p3 = new NpgsqlParameter("P3", NpgsqlDbType.Bytea) { NpgsqlValue = b };
