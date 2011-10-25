@@ -21,9 +21,9 @@ namespace NetTopologySuite.Operation.Valid
     {
         private readonly GeometryGraph _graph;  // used to find non-node vertices
         private readonly IList<ILinearRing> _rings = new List<ILinearRing>();
-        private readonly IEnvelope _totalEnv = new Envelope();
+        private readonly Envelope _totalEnv = new Envelope();
         private ISpatialIndex<ILinearRing> _quadtree;
-        private ICoordinate _nestedPt;
+        private Coordinate _nestedPt;
 
         /// <summary>
         /// 
@@ -37,7 +37,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate NestedPoint
+        public Coordinate NestedPoint
         {
             get
             {
@@ -66,19 +66,19 @@ namespace NetTopologySuite.Operation.Valid
             for (int i = 0; i < _rings.Count; i++)
             {
                 ILinearRing innerRing = _rings[i];
-                ICoordinate[] innerRingPts = innerRing.Coordinates;
+                Coordinate[] innerRingPts = innerRing.Coordinates;
 
                 var results = _quadtree.Query(innerRing.EnvelopeInternal);
                 for (int j = 0; j < results.Count; j++)
                 {
                     ILinearRing searchRing = results[j];
-                    ICoordinate[] searchRingPts = searchRing.Coordinates;
+                    Coordinate[] searchRingPts = searchRing.Coordinates;
 
                     if (innerRing == searchRing) continue;
 
                     if (!innerRing.EnvelopeInternal.Intersects(searchRing.EnvelopeInternal)) continue;
 
-                    ICoordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, _graph);
+                    Coordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, _graph);
                     Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
 
                     bool isInside = CGAlgorithms.IsPointInRing(innerRingPt, searchRingPts);

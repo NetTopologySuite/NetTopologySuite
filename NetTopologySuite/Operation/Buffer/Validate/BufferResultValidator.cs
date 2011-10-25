@@ -55,7 +55,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         private readonly IGeometry _result;
         private bool _isValid = true;
         private String _errorMsg;
-        private ICoordinate _errorLocation;
+        private Coordinate _errorLocation;
 
         public BufferResultValidator(IGeometry input, double distance, IGeometry result)
         {
@@ -89,7 +89,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// <summary>
         /// Gets the error location
         /// </summary>
-        public ICoordinate ErrorLocation
+        public Coordinate ErrorLocation
         {
             get { return _errorLocation; }
         }
@@ -133,10 +133,10 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             double padding = _distance * MaxEnvDiffFrac;
             if (padding == 0.0) padding = 0.001;
 
-            IEnvelope expectedEnv = new Envelope(_input.EnvelopeInternal);
+            Envelope expectedEnv = new Envelope(_input.EnvelopeInternal);
             expectedEnv.ExpandBy(_distance);
 
-            IEnvelope bufEnv = new Envelope(_result.EnvelopeInternal);
+            Envelope bufEnv = new Envelope(_result.EnvelopeInternal);
             bufEnv.ExpandBy(padding);
 
             if (!bufEnv.Contains(expectedEnv))

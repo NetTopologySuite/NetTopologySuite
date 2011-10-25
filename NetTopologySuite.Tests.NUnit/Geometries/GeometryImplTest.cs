@@ -118,7 +118,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         class CoordinateFilter : ICoordinateFilter
         {
-            public void Filter(ICoordinate coord) {
+            public void Filter(Coordinate coord) {
                 coord.X += 1;
                 coord.Y += 1;
             }
@@ -214,8 +214,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                         100, 100));
             IPoint somethingNotEqualButSameClass = geometryFactory.CreatePoint(new Coordinate(
                         999, 100));
-            IPoint sameClassButEmpty = geometryFactory.CreatePoint((ICoordinate)null);
-            IPoint anotherSameClassButEmpty = geometryFactory.CreatePoint((ICoordinate)null);
+            IPoint sameClassButEmpty = geometryFactory.CreatePoint((Coordinate)null);
+            IPoint anotherSameClassButEmpty = geometryFactory.CreatePoint((Coordinate)null);
             PointCollectionFactory collectionFactory = new PointCollectionFactory();
 
             DoTestEqualsExact(x, somethingExactlyEqual,

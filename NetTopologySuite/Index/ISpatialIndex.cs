@@ -20,7 +20,7 @@ namespace NetTopologySuite.Index
         /// <summary>
         /// Adds a spatial item with an extent specified by the given <c>Envelope</c> to the index.
         /// </summary>
-        void Insert(IEnvelope itemEnv, T item);
+        void Insert(Envelope itemEnv, T item);
 
         /// <summary> 
         /// Queries the index for all items whose extents intersect the given search <c>Envelope</c> 
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Index
         /// </summary>
         /// <param name="searchEnv">The envelope to query for.</param>
         /// <returns>A list of the items found by the query.</returns>
-        IList<T> Query(IEnvelope searchEnv);
+        IList<T> Query(Envelope searchEnv);
 
         /// <summary>
         /// Queries the index for all items whose extents intersect the given search <see cref="Envelope" />,
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Index
         /// </summary>
         /// <param name="searchEnv">The envelope to query for.</param>
         /// <param name="visitor">A visitor object to apply to the items found.</param>
-        void Query(IEnvelope searchEnv, IItemVisitor<T> visitor);
+        void Query(Envelope searchEnv, IItemVisitor<T> visitor);
 
         /// <summary> 
         /// Removes a single item from the tree.
@@ -47,6 +47,6 @@ namespace NetTopologySuite.Index
         /// <param name="itemEnv">The Envelope of the item to remove.</param>
         /// <param name="item">The item to remove.</param>
         /// <returns> <c>true</c> if the item was found.</returns>
-        bool Remove(IEnvelope itemEnv, T item);
+        bool Remove(Envelope itemEnv, T item);
     }
 }

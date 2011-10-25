@@ -35,8 +35,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="p">The point to test</param>
         /// <returns>true if this point is inside the circle defined by the points a, b, c</returns>
         public static bool IsInCircleNonRobust(
-            ICoordinate a, ICoordinate b, ICoordinate c,
-            ICoordinate p)
+            Coordinate a, Coordinate b, Coordinate c,
+            Coordinate p)
         {
             bool isInCircle =
                 (a.X*a.X + a.Y*a.Y)*TriArea(b, c, p)
@@ -64,8 +64,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="p">The point to test</param>
         /// <returns>true if this point is inside the circle defined by the points a, b, c</returns>
         public static bool IsInCircleNormalized(
-            ICoordinate a, ICoordinate b, ICoordinate c,
-            ICoordinate p)
+            Coordinate a, Coordinate b, Coordinate c,
+            Coordinate p)
         {
             double adx = a.X - p.X;
             double ady = a.Y - p.Y;
@@ -93,7 +93,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <returns>The area of the triangle defined by the points a, b, c</returns>
-        private static double TriArea(ICoordinate a, ICoordinate b, ICoordinate c)
+        private static double TriArea(Coordinate a, Coordinate b, Coordinate c)
         {
             return (b.X - a.X)*(c.Y - a.Y)
                    - (b.Y - a.Y)*(c.X - a.X);
@@ -112,8 +112,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="p">The point to test</param>
         /// <returns>true if this point is inside the circle defined by the points a, b, c</returns>
         public static bool IsInCircleRobust(
-            ICoordinate a, ICoordinate b, ICoordinate c,
-            ICoordinate p)
+            Coordinate a, Coordinate b, Coordinate c,
+            Coordinate p)
         {
             //checkRobustInCircle(a, b, c, p);
             //    return isInCircleNonRobust(a, b, c, p);       
@@ -134,8 +134,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="p">The point to test</param>
         /// <returns>true if this point is inside the circle defined by the points a, b, c</returns>
         public static bool IsInCircleDDSlow(
-            ICoordinate a, ICoordinate b, ICoordinate c,
-            ICoordinate p)
+            Coordinate a, Coordinate b, Coordinate c,
+            Coordinate p)
         {
             DD px = DD.valueOf(p.X);
             DD py = DD.valueOf(p.Y);
@@ -196,8 +196,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="p">The point to test</param>
         /// <returns>true if this point is inside the circle defined by the points a, b, c</returns>
         public static bool IsInCircleDDFast(
-            ICoordinate a, ICoordinate b, ICoordinate c,
-            ICoordinate p)
+            Coordinate a, Coordinate b, Coordinate c,
+            Coordinate p)
         {
             DD aTerm = (DD.sqr(a.X).selfAdd(DD.sqr(a.Y)))
                 .selfMultiply(TriAreaDDFast(b, c, p));
@@ -227,7 +227,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="c">a vertex of the triangle</param>
         /// <returns>The area of a triangle defined by the points a, b and c</returns>
         private static DD TriAreaDDFast(
-            ICoordinate a, ICoordinate b, ICoordinate c)
+            Coordinate a, Coordinate b, Coordinate c)
         {
 
             DD t1 = DD.valueOf(b.X).selfSubtract(a.X)
@@ -314,10 +314,10 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="c">A vertex of the triangle</param>
         /// <param name="p">The point to test</param>
         /// <returns>The area of a triangle defined by the points a, b and c</returns>
-        public static bool IsInCircleCC(ICoordinate a, ICoordinate b, ICoordinate c,
-                                        ICoordinate p)
+        public static bool IsInCircleCC(Coordinate a, Coordinate b, Coordinate c,
+                                        Coordinate p)
         {
-            ICoordinate cc = Triangle.Circumcentre(a, b, c);
+            Coordinate cc = Triangle.Circumcentre(a, b, c);
             double ccRadius = a.Distance(cc);
             double pRadiusDiff = p.Distance(cc) - ccRadius;
             return pRadiusDiff <= 0;
@@ -331,14 +331,14 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <param name="p">The point to test</param>
-        private static void CheckRobustInCircle(ICoordinate a, ICoordinate b, ICoordinate c,
-                                                ICoordinate p)
+        private static void CheckRobustInCircle(Coordinate a, Coordinate b, Coordinate c,
+                                                Coordinate p)
         {
             bool nonRobustInCircle = IsInCircleNonRobust(a, b, c, p);
             bool isInCircleDD = IsInCircleDDSlow(a, b, c, p);
             bool isInCircleCC = IsInCircleCC(a, b, c, p);
 
-            ICoordinate circumCentre = Triangle.Circumcentre(a, b, c);
+            Coordinate circumCentre = Triangle.Circumcentre(a, b, c);
             Console.WriteLine("p radius diff a = "
                               + Math.Abs(p.Distance(circumCentre) - a.Distance(circumCentre))
                               /a.Distance(circumCentre));

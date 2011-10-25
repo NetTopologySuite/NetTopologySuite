@@ -49,7 +49,7 @@ namespace NetTopologySuite.Algorithm
         /// -1 if q is clockwise (right) from p1-p2,
         /// 0 if q is collinear with p1-p2.
         /// </returns>
-        public static int OrientationIndex(ICoordinate p1, ICoordinate p2, ICoordinate q) 
+        public static int OrientationIndex(Coordinate p1, Coordinate p2, Coordinate q) 
         {
             /**
              * MD - 9 Aug 2010
@@ -97,10 +97,10 @@ namespace NetTopologySuite.Algorithm
         /// of the ring.</para>
         /// </remarks>
         /// <param name="p">Point to check for ring inclusion.</param>
-        /// <param name="ring">An array of <see cref="ICoordinate"/>s representing the ring (which must have first point identical to last point)</param>
+        /// <param name="ring">An array of <see cref="Coordinate"/>s representing the ring (which must have first point identical to last point)</param>
         /// <returns>true if p is inside ring.</returns>
         /// <see cref="IPointInRing"/>
-        public static bool IsPointInRing(ICoordinate p, ICoordinate[] ring) 
+        public static bool IsPointInRing(Coordinate p, Coordinate[] ring) 
         {
             return LocatePointInRing(p, ring) != Location.Exterior;
         }
@@ -115,7 +115,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p">Point to check for ring inclusion</param>
         /// <param name="ring">An array of coordinates representing the ring (which must have first point identical to last point)</param>
         /// <returns>The <see cref="Location"/> of p relative to the ring</returns>
-        public static Location LocatePointInRing(ICoordinate p, ICoordinate[] ring)
+        public static Location LocatePointInRing(Coordinate p, Coordinate[] ring)
         {
             return RayCrossingCounter.LocatePointInRing(p, ring);
         }
@@ -129,13 +129,13 @@ namespace NetTopologySuite.Algorithm
         /// <returns>true if the point is a vertex of the line
         /// or lies in the interior of a line segment in the linestring
         /// </returns>
-        public static bool IsOnLine(ICoordinate p, ICoordinate[] pt) 
+        public static bool IsOnLine(Coordinate p, Coordinate[] pt) 
         {
             LineIntersector lineIntersector = new RobustLineIntersector();
             for (int i = 1; i < pt.Length; i++) 
             {
-                ICoordinate p0 = pt[i - 1];
-                ICoordinate p1 = pt[i];
+                Coordinate p0 = pt[i - 1];
+                Coordinate p1 = pt[i];
                 lineIntersector.ComputeIntersection(p, p0, p1);
                 if (lineIntersector.HasIntersection) 
                     return true;                
@@ -144,7 +144,7 @@ namespace NetTopologySuite.Algorithm
         }
  
 		/// <summary>
-        /// Computes whether a ring defined by an array of <see cref="ICoordinate" />s is oriented counter-clockwise.
+        /// Computes whether a ring defined by an array of <see cref="Coordinate" />s is oriented counter-clockwise.
         /// </summary>>
         /// <remarks>
         /// <list type="Bullet">
@@ -153,10 +153,10 @@ namespace NetTopologySuite.Algorithm
         /// </list>
         /// <para>This algorithm is only guaranteed to work with valid rings. If the ring is invalid (e.g. self-crosses or touches), the computed result may not be correct.</para>
         /// </remarks>
-        /// <param name="ring">An array of <see cref="ICoordinate"/>s froming a ring</param>
+        /// <param name="ring">An array of <see cref="Coordinate"/>s froming a ring</param>
         /// <returns>true if the ring is oriented <see cref="Orientation.CounterClockwise"/></returns>
         /// <exception cref="ArgumentException">If there are too few points to determine orientation (&lt;3)</exception>
-        public static bool IsCCW(ICoordinate[] ring) 
+        public static bool IsCCW(Coordinate[] ring) 
         {
             // # of points without closing endpoint
             int nPts = ring.Length - 1;
@@ -166,11 +166,11 @@ namespace NetTopologySuite.Algorithm
                 throw new ArgumentException("Ring has fewer than 3 points, so orientation cannot be determined");
 
             // find highest point
-            ICoordinate hiPt = ring[0];
+            Coordinate hiPt = ring[0];
             int hiIndex = 0;
             for (int i = 1; i <= nPts; i++)
             {
-                ICoordinate p = ring[i];
+                Coordinate p = ring[i];
                 if (p.Y > hiPt.Y)
                 {
                     hiPt = p;
@@ -193,8 +193,8 @@ namespace NetTopologySuite.Algorithm
                 iNext = (iNext + 1) % nPts;
             while (ring[iNext].Equals2D(hiPt) && iNext != hiIndex);
 
-            ICoordinate prev = ring[iPrev];
-            ICoordinate next = ring[iNext];
+            Coordinate prev = ring[iPrev];
+            Coordinate next = ring[iNext];
 
             /*
              * This check catches cases where the ring contains an A-B-A configuration of points.
@@ -239,7 +239,7 @@ namespace NetTopologySuite.Algorithm
         /// -1 if q is clockwise from p1-p2,
         /// 0 if q is collinear with p1-p2-
         /// </returns>
-        public static int ComputeOrientation(ICoordinate p1, ICoordinate p2, ICoordinate q) 
+        public static int ComputeOrientation(Coordinate p1, Coordinate p2, Coordinate q) 
         {
             return OrientationIndex(p1, p2, q);
         }
@@ -252,7 +252,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="A">One point of the line.</param>
         /// <param name="B">Another point of the line (must be different to A).</param>
         /// <returns> The distance from p to line segment AB.</returns>
-        public static double DistancePointLine(ICoordinate p, ICoordinate A, ICoordinate B)
+        public static double DistancePointLine(Coordinate p, Coordinate A, Coordinate B)
         {
             // if start = end, then just compute distance to one of the endpoints
             if (A.X == B.X && A.Y == B.Y) 
@@ -302,7 +302,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="A">One point of the line.</param>
         /// <param name="B">Another point of the line (must be different to A).</param>
         /// <returns>The perpendicular distance from p to line AB.</returns>
-        public static double DistancePointLinePerpendicular(ICoordinate p, ICoordinate A, ICoordinate B)
+        public static double DistancePointLinePerpendicular(Coordinate p, Coordinate A, Coordinate B)
         {
             // use comp.graphics.algorithms Frequently Asked Questions method
             /*(2)
@@ -327,7 +327,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="line">A sequence of contiguous line segments defined by their vertices</param>
         /// <returns>The minimum distance between the point and the line segments</returns>
         /// <exception cref="ArgumentException">If there are too few points to make up a line (at least one?)</exception>
-        public static double DistancePointLine(ICoordinate p, ICoordinate[] line)
+        public static double DistancePointLine(Coordinate p, Coordinate[] line)
         {
             if (line.Length == 0)
                 throw new ArgumentException("Line array must contain at least one vertex");
@@ -355,7 +355,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="C">One point of the line.</param>
         /// <param name="D">Another point of the line (must be different to A).</param>
         /// <returns>The distance from line segment AB to line segment CD.</returns>
-        public static double DistanceLineLine(ICoordinate A, ICoordinate B, ICoordinate C, ICoordinate D)
+        public static double DistanceLineLine(Coordinate A, Coordinate B, Coordinate C, Coordinate D)
         {
             // check for zero-length segments
             if (A.Equals(B))    
@@ -427,7 +427,7 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="ring">The coordinates of the ring</param>
         /// <returns>The signed area of the ring</returns>
-        public static double SignedArea(ICoordinate[] ring)
+        public static double SignedArea(Coordinate[] ring)
         {
             if (ring.Length < 3) 
                 return 0.0;

@@ -20,7 +20,7 @@ namespace NetTopologySuite.Triangulate
     /// <see cref="VoronoiDiagramBuilder"/>
     public class VertexTaggedGeometryDataMapper
     {
-        private readonly IDictionary<ICoordinate, object> _coordDataMap = new OrderedDictionary<ICoordinate, object>();
+        private readonly IDictionary<Coordinate, object> _coordDataMap = new OrderedDictionary<Coordinate, object>();
 
         public void LoadSourceGeometries(IGeometry geoms)
         {
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Triangulate
             }
         }
 
-        private void LoadVertices(ICoordinate[] pts, object data)
+        private void LoadVertices(Coordinate[] pts, object data)
         {
             for (int i = 0; i < pts.Length; i++)
             {
@@ -56,11 +56,11 @@ namespace NetTopologySuite.Triangulate
             }
         }
 
-        public IList<ICoordinate> Coordinates
+        public IList<Coordinate> Coordinates
         {
             get
             {
-                return new List<ICoordinate>(_coordDataMap.Keys);
+                return new List<Coordinate>(_coordDataMap.Keys);
             }
         }
 
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Triangulate
             for (int i = 0; i < targetGeom.NumGeometries; i++)
             {
                 var geom = targetGeom.GetGeometryN(i);
-                var vertexKey = (ICoordinate)geom.UserData;
+                var vertexKey = (Coordinate)geom.UserData;
                 if (vertexKey == null) continue;
                 geom.UserData = _coordDataMap[vertexKey];
             }

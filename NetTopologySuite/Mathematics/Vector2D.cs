@@ -88,7 +88,7 @@ namespace NetTopologySuite.Mathematics
             y = v.y;
         }
 
-        public Vector2D(ICoordinate from, ICoordinate to)
+        public Vector2D(Coordinate from, Coordinate to)
         {
             x = to.X - from.X;
             y = to.Y - from.Y;

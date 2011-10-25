@@ -29,8 +29,8 @@ namespace NetTopologySuite.Samples.Tests.Various
         private IGeometryFactory factory;
         private readonly List<ILineString> strings;
         
-        private readonly AdjacencyGraph<ICoordinate, IEdge<ICoordinate>> graph;
-        private IDictionary<IEdge<ICoordinate>, double> consts;
+        private readonly AdjacencyGraph<Coordinate, IEdge<Coordinate>> graph;
+        private IDictionary<IEdge<Coordinate>, double> consts;
        
         /// <summary>
         /// Initializes a new instance of the <see cref="GraphBuilder2"/> class.
@@ -44,7 +44,7 @@ namespace NetTopologySuite.Samples.Tests.Various
 
             factory = null;
             strings = new List<ILineString>();
-            graph   = new AdjacencyGraph<ICoordinate, IEdge<ICoordinate>>(true);
+            graph   = new AdjacencyGraph<Coordinate, IEdge<Coordinate>>(true);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         /// 
         /// </summary>
         /// <param name="coord"></param>
-        private void AddCoordinateToGraph(ICoordinate coord)
+        private void AddCoordinateToGraph(Coordinate coord)
         {
             if (!graph.ContainsVertex(coord))
                  graph.AddVertex(coord);
@@ -152,7 +152,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             if (bidirectional)
                 numberOfEdgesInLines *= 2;
 
-            consts = new Dictionary<IEdge<ICoordinate>, double>(numberOfEdgesInLines);
+            consts = new Dictionary<IEdge<Coordinate>, double>(numberOfEdgesInLines);
 
             foreach (var line in strings)
             {
@@ -167,14 +167,14 @@ namespace NetTopologySuite.Samples.Tests.Various
                 var weight = computer(line);
 
                 // Add the edge
-                IEdge<ICoordinate> localEdge = new Edge<ICoordinate>(src, dst);
+                IEdge<Coordinate> localEdge = new Edge<Coordinate>(src, dst);
                 graph.AddEdge(localEdge);
                 consts.Add(localEdge, weight);
 
                 if (bidirectional)
                 {
                     // Add the reversed edge
-                    IEdge<ICoordinate> localEdgeRev = new Edge<ICoordinate>(dst, src);
+                    IEdge<Coordinate> localEdgeRev = new Edge<Coordinate>(dst, src);
                     graph.AddEdge(localEdgeRev);
                     consts.Add(localEdgeRev, weight);
                 }                
@@ -209,7 +209,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         /// with all the elements of the graph that composes the shortest path,
         /// sequenced using a <see cref="LineSequencer"/>.
         /// </returns>
-        public IGeometry Find(ICoordinate source, ICoordinate destination)
+        public IGeometry Find(Coordinate source, Coordinate destination)
         {
             if (!graph.ContainsVertex(source))
                 throw new ArgumentException("key not found in the graph", "source");
@@ -218,27 +218,27 @@ namespace NetTopologySuite.Samples.Tests.Various
 
             // Build algorithm
             var dijkstra =
-                new DijkstraShortestPathAlgorithm<ICoordinate, IEdge<ICoordinate>>(graph, edge => consts[edge]);
+                new DijkstraShortestPathAlgorithm<Coordinate, IEdge<Coordinate>>(graph, edge => consts[edge]);
 
             // Attach a Distance observer to give us the distances between edges
             var distanceObserver =
-                new VertexDistanceRecorderObserver<ICoordinate, IEdge<ICoordinate>>(edge => consts[edge]);
+                new VertexDistanceRecorderObserver<Coordinate, IEdge<Coordinate>>(edge => consts[edge]);
             distanceObserver.Attach(dijkstra);
 
             // Attach a Vertex Predecessor Recorder Observer to give us the paths
             var predecessorObserver =
-                new VertexPredecessorRecorderObserver<ICoordinate, IEdge<ICoordinate>>();
+                new VertexPredecessorRecorderObserver<Coordinate, IEdge<Coordinate>>();
             predecessorObserver.Attach(dijkstra);
 
             // Run the algorithm with A set to be the source
             dijkstra.Compute(source);
 
             // Get the path computed to the destination.
-            IEnumerable<IEdge<ICoordinate>> path;
+            IEnumerable<IEdge<Coordinate>> path;
             var result = predecessorObserver.TryGetPath(destination, out path);
 
             // Then we need to turn that into a geomery.
-            return result ? BuildString(new List<IEdge<ICoordinate>>(path)) : null;
+            return result ? BuildString(new List<IEdge<Coordinate>>(path)) : null;
         }
 
         /// <summary>
@@ -252,7 +252,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         /// with all the elements of the graph that composes the shortest path,
         /// sequenced using a <see cref="LineSequencer"/>.
         /// </returns>
-        private IGeometry BuildString(ICollection<IEdge<ICoordinate>> paths)
+        private IGeometry BuildString(ICollection<IEdge<Coordinate>> paths)
         {
             // if the path has no links then return a null reference
             if (paths.Count < 1)
@@ -280,7 +280,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         /// <param name="str"></param>
         /// <param name="src"></param>
         /// <returns></returns>
-        private static bool IsBound(IGeometry str, ICoordinate src)
+        private static bool IsBound(IGeometry str, Coordinate src)
         {
             var coordinates = str.Coordinates;
             var start = 0;

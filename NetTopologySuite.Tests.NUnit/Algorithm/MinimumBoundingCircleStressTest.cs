@@ -25,30 +25,30 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         private void Run(int nPts)
         {
-            ICoordinate[] randPts = CreateRandomPoints(nPts);
+            Coordinate[] randPts = CreateRandomPoints(nPts);
             IGeometry mp = _geomFact.CreateMultiPoint(randPts);
             MinimumBoundingCircle mbc = new MinimumBoundingCircle(mp);
-            ICoordinate centre = mbc.GetCentre();
+            Coordinate centre = mbc.GetCentre();
             double radius = mbc.GetRadius();
             Console.WriteLine("Testing " + nPts + " random points.  Radius = " + radius);
 
             checkWithinCircle(randPts, centre, radius, 0.0001);
         }
 
-        private void checkWithinCircle(ICoordinate[] pts, ICoordinate centre, double radius, double tolerance)
+        private void checkWithinCircle(Coordinate[] pts, Coordinate centre, double radius, double tolerance)
         {
             for (int i = 0; i < pts.Length; i++)
             {
-                ICoordinate p = pts[i];
+                Coordinate p = pts[i];
                 double ptRadius = centre.Distance(p);
                 double error = ptRadius - radius;
                 Assert.LessOrEqual(error, tolerance);
             }
         }
 
-        private ICoordinate[] CreateRandomPoints(int n)
+        private Coordinate[] CreateRandomPoints(int n)
         {
-            ICoordinate[] pts = new ICoordinate[n];
+            Coordinate[] pts = new Coordinate[n];
             for (int i = 0; i < n; i++)
             {
                 double x = 100 * random.NextDouble();

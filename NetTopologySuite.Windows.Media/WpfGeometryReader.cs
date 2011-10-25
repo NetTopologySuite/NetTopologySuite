@@ -80,7 +80,7 @@ namespace NetTopologySuite.Windows.Media
                 seqIndex++;
 
                 var holes = new List<ILinearRing>();
-                ICoordinate[] holePts;
+                Coordinate[] holePts;
                 // add holes as long as rings are CCW
                 while (seqIndex < pathPtSeq.Count && IsHole(holePts = pathPtSeq[seqIndex]))
                 {
@@ -94,7 +94,7 @@ namespace NetTopologySuite.Windows.Media
             return _geometryFactory.BuildGeometry(polys);
         }
 
-        private static bool IsHole(ICoordinate[] pts)
+        private static bool IsHole(Coordinate[] pts)
         {
             return CGAlgorithms.IsCCW(pts);
         }
@@ -106,12 +106,12 @@ namespace NetTopologySuite.Windows.Media
         /// <param name="pathGeometry">A path figure collection</param>
         /// <returns>A list of coordinate arrays</returns>
         /// <exception cref="ArgumentException">If a non-linear segment type is encountered</exception>
-        private static IList<ICoordinate[]> ToCoordinates(PathGeometry pathGeometry)
+        private static IList<Coordinate[]> ToCoordinates(PathGeometry pathGeometry)
         {
             if (pathGeometry.MayHaveCurves())
                 throw new ArgumentException("WPF geometry must not have non-linear segments");
 
-            var coordArrays = new List<ICoordinate[]>();
+            var coordArrays = new List<Coordinate[]>();
 
             var pathFigures = pathGeometry.Figures;
 
@@ -123,14 +123,14 @@ namespace NetTopologySuite.Windows.Media
             return coordArrays;
         }
 
-        private static IList<ICoordinate[]> ToCoordinates(WpfGeometry wpfGeometry)
+        private static IList<Coordinate[]> ToCoordinates(WpfGeometry wpfGeometry)
         {
             return ToCoordinates(PathGeometry.CreateFromGeometry(wpfGeometry));
         }
 
-        private static ICoordinate[] NextCoordinateArray(PathFigure pathFigure)
+        private static Coordinate[] NextCoordinateArray(PathFigure pathFigure)
         {
-            var coordinateList = new List<ICoordinate>(pathFigure.Segments.Count + 1);
+            var coordinateList = new List<Coordinate>(pathFigure.Segments.Count + 1);
             
             coordinateList.Add(ToCoordinate(pathFigure.StartPoint));
             foreach (var segment in pathFigure.Segments)
@@ -151,7 +151,7 @@ namespace NetTopologySuite.Windows.Media
             return coordinateList.ToArray();
         }
 
-        private static ICoordinate ToCoordinate(WpfPoint point)
+        private static Coordinate ToCoordinate(WpfPoint point)
         {
             return new Coordinate(point.X, point.Y);
         }

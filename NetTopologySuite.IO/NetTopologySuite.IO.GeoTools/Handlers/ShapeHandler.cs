@@ -48,12 +48,12 @@ namespace NetTopologySuite.IO.Handlers
         /// </summary>
         /// <param name="envelope"></param>
         /// <returns></returns>
-        public static IEnvelope GetEnvelopeExternal(IEnvelope envelope)
+        public static Envelope GetEnvelopeExternal(Envelope envelope)
         {
             // Get envelope in external coordinates
-            ICoordinate min = new Coordinate(envelope.MinX, envelope.MinY);
-            ICoordinate max = new Coordinate(envelope.MaxX, envelope.MaxY);
-            IEnvelope bounds = new Envelope(min.X, max.X, min.Y, max.Y);
+            Coordinate min = new Coordinate(envelope.MinX, envelope.MinY);
+            Coordinate max = new Coordinate(envelope.MaxX, envelope.MaxY);
+            Envelope bounds = new Envelope(min.X, max.X, min.Y, max.Y);
             return bounds;
         }
 
@@ -63,7 +63,7 @@ namespace NetTopologySuite.IO.Handlers
         /// <param name="precisionModel"></param>
         /// <param name="envelope"></param>
         /// <returns></returns>
-        public static IEnvelope GetEnvelopeExternal(IPrecisionModel precisionModel, IEnvelope envelope)
+        public static Envelope GetEnvelopeExternal(IPrecisionModel precisionModel, Envelope envelope)
         {
             return GetEnvelopeExternal(envelope);
         }

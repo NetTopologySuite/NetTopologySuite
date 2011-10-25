@@ -28,13 +28,13 @@ namespace NetTopologySuite.Samples.Tests.Various
         [SetUp]
         public void Init()
         {
-            shell = Factory.CreateLinearRing(new ICoordinate[] {    new Coordinate(100,100),
+            shell = Factory.CreateLinearRing(new Coordinate[] {    new Coordinate(100,100),
                                                                     new Coordinate(200,100),
                                                                     new Coordinate(200,200),                
                                                                     new Coordinate(100,200),
                                                                     new Coordinate(100,100), });
             // NOTE: Hole is created with not correct order for holes
-            hole = Factory.CreateLinearRing(new ICoordinate[] {      new Coordinate(120,120),
+            hole = Factory.CreateLinearRing(new Coordinate[] {      new Coordinate(120,120),
                                                                     new Coordinate(180,120),
                                                                     new Coordinate(180,180),                                                                                
                                                                     new Coordinate(120,180),                                                                

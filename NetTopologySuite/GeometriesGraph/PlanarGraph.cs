@@ -95,7 +95,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="coord"></param>
         /// <returns></returns>
-        public bool IsBoundaryNode(int geomIndex, ICoordinate coord)
+        public bool IsBoundaryNode(int geomIndex, Coordinate coord)
         {
             Node node = _nodes.Find(coord);
             if (node == null) 
@@ -166,7 +166,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>
-        public Node AddNode(ICoordinate coord) 
+        public Node AddNode(Coordinate coord) 
         {
             return _nodes.AddNode(coord); 
         }
@@ -175,7 +175,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// The node if found; null otherwise
         /// </returns>
         /// <param name="coord"></param>
-        public Node Find(ICoordinate coord) 
+        public Node Find(Coordinate coord) 
         {
             return _nodes.Find(coord); 
         }
@@ -243,12 +243,12 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
-        public Edge FindEdge(ICoordinate p0, ICoordinate p1)
+        public Edge FindEdge(Coordinate p0, Coordinate p1)
         {
             for (int i = 0; i < _edges.Count; i++) 
             {
                 Edge e = _edges[i];
-                ICoordinate[] eCoord = e.Coordinates;
+                Coordinate[] eCoord = e.Coordinates;
                 if (p0.Equals(eCoord[0]) && p1.Equals(eCoord[1]))
                     return e;
             }
@@ -262,12 +262,12 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="p0"></param>
         ///<param name="p1"></param>
         /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
-        public Edge FindEdgeInSameDirection(ICoordinate p0, ICoordinate p1)
+        public Edge FindEdgeInSameDirection(Coordinate p0, Coordinate p1)
         {
             for (int i = 0; i < _edges.Count; i++) 
             {
                 Edge e = _edges[i];
-                ICoordinate[] eCoord = e.Coordinates;
+                Coordinate[] eCoord = e.Coordinates;
                 if (MatchInSameDirection(p0, p1, eCoord[0], eCoord[1]))
                     return e;
                 if (MatchInSameDirection(p0, p1, eCoord[eCoord.Length - 1], eCoord[eCoord.Length - 2]))
@@ -285,7 +285,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="p1"></param>
         /// <param name="ep0"></param>
         /// <param name="ep1"></param>
-        private static bool MatchInSameDirection(ICoordinate p0, ICoordinate p1, ICoordinate ep0, ICoordinate ep1)
+        private static bool MatchInSameDirection(Coordinate p0, Coordinate p1, Coordinate ep0, Coordinate ep1)
         {
             if (! p0.Equals(ep0))
                 return false;

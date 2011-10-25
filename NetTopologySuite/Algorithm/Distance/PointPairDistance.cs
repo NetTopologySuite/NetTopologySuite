@@ -13,7 +13,7 @@ namespace NetTopologySuite.Algorithm.Distance
     /// </remarks>
     public class PointPairDistance
     {
-        private readonly ICoordinate[] _pt = { new Coordinate(), new Coordinate() };
+        private readonly Coordinate[] _pt = { new Coordinate(), new Coordinate() };
         private double _distance = Double.NaN;
         private Boolean _isNull = true;
 
@@ -27,7 +27,7 @@ namespace NetTopologySuite.Algorithm.Distance
         ///</summary>
         /// <param name="p0">1st coordinate</param>
         /// <param name="p1">2nd coordinate</param>
-        public void Initialize(ICoordinate p0, ICoordinate p1)
+        public void Initialize(Coordinate p0, Coordinate p1)
         {
             _pt[0].CoordinateValue = p0;
             _pt[1].CoordinateValue = p1;
@@ -41,7 +41,7 @@ namespace NetTopologySuite.Algorithm.Distance
         /// <param name="p0">1st coordinate</param>
         /// <param name="p1">2nd coordinate</param>
         /// <param name="distance">the distance between <see paramref="p0"/> and <see paramref="p1"/></param>
-        private void Initialize(ICoordinate p0, ICoordinate p1, double distance)
+        private void Initialize(Coordinate p0, Coordinate p1, double distance)
         {
             _pt[0].CoordinateValue = p0;
             _pt[1].CoordinateValue = p1;
@@ -60,20 +60,20 @@ namespace NetTopologySuite.Algorithm.Distance
         /// <summary>
         /// Returns an array containing the paired points
         /// </summary>
-        public ICoordinate[] Coordinates
+        public Coordinate[] Coordinates
         {
             get { return _pt; }
         }
 
 
-        public ICoordinate this[int i] { get { return _pt[i]; } }
+        public Coordinate this[int i] { get { return _pt[i]; } }
 
         public void SetMaximum(PointPairDistance ptDist)
         {
             SetMaximum(ptDist._pt[0], ptDist._pt[1]);
         }
 
-        public void SetMaximum(ICoordinate p0, ICoordinate p1)
+        public void SetMaximum(Coordinate p0, Coordinate p1)
         {
             if (_isNull)
             {
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Algorithm.Distance
             SetMinimum(ptDist._pt[0], ptDist._pt[1]);
         }
 
-        public void SetMinimum(ICoordinate p0, ICoordinate p1)
+        public void SetMinimum(Coordinate p0, Coordinate p1)
         {
             if (_isNull)
             {

@@ -12,7 +12,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
     {
         private double snapTolerance = 0.0;
 
-        private ICoordinate[] srcPts;
+        private Coordinate[] srcPts;
         private LineSegment seg = new LineSegment(); // for reuse during snapping
         private bool isClosed = false;
 
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// </summary>
         /// <param name="srcPts"></param>
         /// <param name="snapTolerance"></param>
-        public LineStringSnapper(ICoordinate[] srcPts, double snapTolerance)
+        public LineStringSnapper(Coordinate[] srcPts, double snapTolerance)
         {
             this.srcPts = srcPts;
             isClosed = srcPts[0].Equals2D(srcPts[srcPts.Length - 1]);
@@ -44,12 +44,12 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// </summary>
         /// <param name="snapPts">the vertices to snap to</param>
         /// <returns>list of the snapped points</returns>
-        public ICoordinate[] SnapTo(ICoordinate[] snapPts)
+        public Coordinate[] SnapTo(Coordinate[] snapPts)
         {
             CoordinateList coordList = new CoordinateList(srcPts);
             SnapVertices(coordList, snapPts);
             SnapSegments(coordList, snapPts);
-            ICoordinate[] newPts = coordList.ToCoordinateArray();
+            Coordinate[] newPts = coordList.ToCoordinateArray();
             return newPts;
         }
 
@@ -58,14 +58,14 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// </summary>
         /// <param name="srcCoords">the points to snap</param>
         /// <param name="snapPts">the points to snap to</param>
-        private void SnapVertices(CoordinateList srcCoords, ICoordinate[] snapPts)
+        private void SnapVertices(CoordinateList srcCoords, Coordinate[] snapPts)
         {
             // try snapping vertices
             // assume src list has a closing point (is a ring)
             for (int i = 0; i < srcCoords.Count - 1; i++)
             {
-                ICoordinate srcPt = srcCoords[i];
-                ICoordinate snapVert = FindSnapForVertex(srcPt, snapPts);
+                Coordinate srcPt = srcCoords[i];
+                Coordinate snapVert = FindSnapForVertex(srcPt, snapPts);
                 if (snapVert != null)
                 {
                     // update src with snap pt
@@ -83,9 +83,9 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <param name="pt"></param>
         /// <param name="snapPts"></param>
         /// <returns></returns>
-        private ICoordinate FindSnapForVertex(ICoordinate pt, ICoordinate[] snapPts)
+        private Coordinate FindSnapForVertex(Coordinate pt, Coordinate[] snapPts)
         {
-            foreach (ICoordinate coord in snapPts)
+            foreach (Coordinate coord in snapPts)
             {
                 // if point is already equal to a src pt, don't snap
                 if (pt.Equals2D(coord))
@@ -106,7 +106,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// </summary>
         /// <param name="srcCoords"></param>
         /// <param name="snapPts"></param>
-        private void SnapSegments(CoordinateList srcCoords, ICoordinate[] snapPts)
+        private void SnapSegments(CoordinateList srcCoords, Coordinate[] snapPts)
         {
             int distinctPtCount = snapPts.Length;
 
@@ -117,7 +117,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
 
             for (int i = 0; i < distinctPtCount; i++)
             {
-                ICoordinate snapPt = snapPts[i];
+                Coordinate snapPt = snapPts[i];
                 int index = FindSegmentIndexToSnap(snapPt, srcCoords);
                 /*
                  * If a segment to snap to was found, "crack" it at the snap pt.
@@ -141,7 +141,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <param name="snapPt"></param>
         /// <param name="srcCoords"></param>
         /// <returns>-1 if no segment snaps.</returns>
-        private int FindSegmentIndexToSnap(ICoordinate snapPt, CoordinateList srcCoords)
+        private int FindSegmentIndexToSnap(Coordinate snapPt, CoordinateList srcCoords)
         {
             double minDist = Double.MaxValue;
             int snapIndex = -1;

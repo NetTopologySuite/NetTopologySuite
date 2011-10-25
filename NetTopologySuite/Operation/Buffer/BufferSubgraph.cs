@@ -19,7 +19,7 @@ namespace NetTopologySuite.Operation.Buffer
         private readonly RightmostEdgeFinder _finder;
         private readonly List<DirectedEdge> _dirEdgeList  = new List<DirectedEdge>();
         private readonly List<Node> _nodes        = new List<Node>();
-        private ICoordinate _rightMostCoord;
+        private Coordinate _rightMostCoord;
 
         /// <summary>
         /// 
@@ -54,7 +54,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <summary>
         /// Gets the rightmost coordinate in the edges of the subgraph.
         /// </summary>
-        public ICoordinate RightMostCoordinate
+        public Coordinate RightMostCoordinate
         {
             get
             {

@@ -108,7 +108,7 @@ namespace NetTopologySuite.Geometries
         /// </remarks>
         /// <exception cref="ArgumentException">If the ring is not closed, or has too few points</exception>
         //[Obsolete("Use GeometryFactory instead")]
-        public LinearRing(ICoordinate[] points) : 
+        public LinearRing(Coordinate[] points) : 
             this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
         
         /* END ADDED BY MPAUL42: monoGIS team */

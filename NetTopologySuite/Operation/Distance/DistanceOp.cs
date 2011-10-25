@@ -53,7 +53,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <param name="g0">A <c>Geometry</c>.</param>
         /// <param name="g1">Another <c>Geometry</c>.</param>
         /// <returns>The closest points in the geometries.</returns>
-        public static ICoordinate[] NearestPoints(IGeometry g0, IGeometry g1)
+        public static Coordinate[] NearestPoints(IGeometry g0, IGeometry g1)
         {
             DistanceOp distOp = new DistanceOp(g0, g1);
             return distOp.NearestPoints();
@@ -67,7 +67,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <param name="g1">Another <c>Geometry</c>.</param>
         /// <returns>The closest points in the geometries.</returns>
         [Obsolete("Renamed to NearestPoints")]
-        public static ICoordinate[] ClosestPoints(IGeometry g0, IGeometry g1)
+        public static Coordinate[] ClosestPoints(IGeometry g0, IGeometry g1)
         {
             return NearestPoints(g0, g1);
         }
@@ -122,7 +122,7 @@ namespace NetTopologySuite.Operation.Distance
         /// </summary>
         /// <returns>A pair of <c>Coordinate</c>s of the closest points.</returns>
         [Obsolete("Renamed to NearestPoints")]
-        public ICoordinate[] ClosestPoints()
+        public Coordinate[] ClosestPoints()
         {
             return NearestPoints();
         }
@@ -143,10 +143,10 @@ namespace NetTopologySuite.Operation.Distance
         /// The points are presented in the same order as the input Geometries.
         /// </summary>
         /// <returns>A pair of <c>Coordinate</c>s of the nearest points.</returns>
-        public ICoordinate[] NearestPoints()
+        public Coordinate[] NearestPoints()
         {
             ComputeMinDistance();
-            ICoordinate[] nearestPts = new[] { _minDistanceLocation[0].Coordinate, 
+            Coordinate[] nearestPts = new[] { _minDistanceLocation[0].Coordinate, 
                                                _minDistanceLocation[1].Coordinate };
             return nearestPts;
         }
@@ -324,7 +324,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <param name="locPtPoly"></param>
         private void ComputeInside(GeometryLocation ptLoc, IPolygon poly, GeometryLocation[] locPtPoly)
         {
-            ICoordinate pt = ptLoc.Coordinate;
+            Coordinate pt = ptLoc.Coordinate;
             // if pt is not in exterior, distance to geom is 0
             if (Location.Exterior != _ptLocator.Locate(pt, poly))
             {
@@ -448,8 +448,8 @@ namespace NetTopologySuite.Operation.Distance
         {
             if (line0.EnvelopeInternal.Distance(line1.EnvelopeInternal) > _minDistance) 
                 return;
-            ICoordinate[] coord0 = line0.Coordinates;
-            ICoordinate[] coord1 = line1.Coordinates;
+            Coordinate[] coord0 = line0.Coordinates;
+            Coordinate[] coord1 = line1.Coordinates;
             // brute force approach!
             for (int i = 0; i < coord0.Length - 1; i++)
             {
@@ -463,7 +463,7 @@ namespace NetTopologySuite.Operation.Distance
                         _minDistance = dist;
                         LineSegment seg0 = new LineSegment(coord0[i], coord0[i + 1]);
                         LineSegment seg1 = new LineSegment(coord1[j], coord1[j + 1]);
-                        ICoordinate[] closestPt = seg0.ClosestPoints(seg1);
+                        Coordinate[] closestPt = seg0.ClosestPoints(seg1);
                         locGeom[0] = new GeometryLocation(line0, i, closestPt[0]);
                         locGeom[1] = new GeometryLocation(line1, j, closestPt[1]);
                     }
@@ -481,8 +481,8 @@ namespace NetTopologySuite.Operation.Distance
         private void ComputeMinDistance(ILineString line, IPoint pt, GeometryLocation[] locGeom)
         {
             if (line.EnvelopeInternal.Distance(pt.EnvelopeInternal) > _minDistance) return;
-            ICoordinate[] coord0 = line.Coordinates;
-            ICoordinate coord = pt.Coordinate;
+            Coordinate[] coord0 = line.Coordinates;
+            Coordinate coord = pt.Coordinate;
             // brute force approach!
             for (int i = 0; i < coord0.Length - 1; i++)
             {
@@ -491,7 +491,7 @@ namespace NetTopologySuite.Operation.Distance
                 {
                     _minDistance = dist;
                     LineSegment seg = new LineSegment(coord0[i], coord0[i + 1]);
-                    ICoordinate segClosestPoint = seg.ClosestPoint(coord);
+                    Coordinate segClosestPoint = seg.ClosestPoint(coord);
                     locGeom[0] = new GeometryLocation(line, i, segClosestPoint);
                     locGeom[1] = new GeometryLocation(pt, 0, coord);
                 }

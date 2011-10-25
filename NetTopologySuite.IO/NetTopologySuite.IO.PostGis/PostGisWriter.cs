@@ -123,7 +123,7 @@ namespace NetTopologySuite.IO
         /// <param name="coordinate"></param>
 		/// <param name="baseGeometry"></param>
         /// <param name="writer"></param>
-		protected void Write(ICoordinate coordinate, IGeometry baseGeometry, BinaryWriter writer)
+		protected void Write(Coordinate coordinate, IGeometry baseGeometry, BinaryWriter writer)
 		{
 			if (coordinate != null)
 			{
@@ -168,7 +168,7 @@ namespace NetTopologySuite.IO
 		/// <param name="coordinates"></param>
 		/// <param name="baseGeometry"></param>
 		/// <param name="writer"></param>
-		private void Write(ICoordinate[] coordinates, IGeometry baseGeometry, BinaryWriter writer)
+		private void Write(Coordinate[] coordinates, IGeometry baseGeometry, BinaryWriter writer)
 		{
 			writer.Write((int) coordinates.Length);
 			for (int i = 0; i < coordinates.Length; i++)
@@ -389,7 +389,7 @@ namespace NetTopologySuite.IO
 		/// <param name="coordinates"></param>
 		/// <param name="geometry"></param>
 		/// <returns></returns>
-		private int SetByteStream(ICoordinate[] coordinates, IGeometry geometry)
+		private int SetByteStream(Coordinate[] coordinates, IGeometry geometry)
 		{
 			// number of points
 			int result = 4;
@@ -435,7 +435,7 @@ namespace NetTopologySuite.IO
 		/// </summary>
 		/// <param name="geometry"></param>
 		/// <returns></returns>
-		protected int SetByteStream(ICoordinate coordinate, IGeometry geometry)
+		protected int SetByteStream(Coordinate coordinate, IGeometry geometry)
 		{
 			if (coordinate == null)
 				return 0;

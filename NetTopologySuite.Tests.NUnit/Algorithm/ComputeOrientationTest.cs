@@ -39,7 +39,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(IsAllOrientationsEqual(pts1));
         }
 
-        private bool IsAllOrientationsEqual(ICoordinate[] pts)
+        private bool IsAllOrientationsEqual(Coordinate[] pts)
         {
             int[] orient = new int[3];
             orient[0] = CGAlgorithms.ComputeOrientation(pts[0], pts[1], pts[2]);
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             return orient[0] == orient[1] && orient[0] == orient[2];
         }
 
-        private ICoordinate[] GetCoordinates(String wkt)
+        private Coordinate[] GetCoordinates(String wkt)
         {
             IGeometry geom = reader.Read(wkt);
             return geom.Coordinates;

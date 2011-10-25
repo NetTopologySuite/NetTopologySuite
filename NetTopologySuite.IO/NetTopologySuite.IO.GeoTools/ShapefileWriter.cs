@@ -70,8 +70,8 @@ namespace NetTopologySuite.IO
 			shpHeader.FileLength = shpLength;
 
 			// get envelope in external coordinates
-            IEnvelope env = geometryCollection.EnvelopeInternal;
-			IEnvelope bounds = ShapeHandler.GetEnvelopeExternal(geometryFactory.PrecisionModel,  env);
+            Envelope env = geometryCollection.EnvelopeInternal;
+			Envelope bounds = ShapeHandler.GetEnvelopeExternal(geometryFactory.PrecisionModel,  env);
 			shpHeader.Bounds = bounds;
 
 			// assumes Geometry type of the first item will the same for all other items

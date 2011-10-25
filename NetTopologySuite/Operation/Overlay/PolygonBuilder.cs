@@ -239,15 +239,15 @@ namespace NetTopologySuite.Operation.Overlay
         private static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IEnumerable<EdgeRing> shellList)
         {
             ILinearRing teString = testEr.LinearRing;
-            IEnvelope testEnv = teString.EnvelopeInternal;
-            ICoordinate testPt = teString.GetCoordinateN(0);
+            Envelope testEnv = teString.EnvelopeInternal;
+            Coordinate testPt = teString.GetCoordinateN(0);
 
             EdgeRing minShell = null;
-            IEnvelope minEnv = null;
+            Envelope minEnv = null;
             foreach (EdgeRing tryShell in shellList)
             {
                 ILinearRing tryRing = tryShell.LinearRing;
-                IEnvelope tryEnv = tryRing.EnvelopeInternal;
+                Envelope tryEnv = tryRing.EnvelopeInternal;
                 if (minShell != null)
                     minEnv = minShell.LinearRing.EnvelopeInternal;
                 bool isContained = false;
@@ -286,7 +286,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        public bool ContainsPoint(ICoordinate p)
+        public bool ContainsPoint(Coordinate p)
         {
             foreach (EdgeRing er in _shellList)
             {

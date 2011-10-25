@@ -21,14 +21,14 @@ namespace NetTopologySuite.Algorithm
         private class MCSelecter : MonotoneChainSelectAction
         {
             private readonly MCPointInRing _container;
-            private readonly ICoordinate _p;
+            private readonly Coordinate _p;
 
             /// <summary>
             /// 
             /// </summary>
             /// <param name="container"></param>
             /// <param name="p"></param>
-            public MCSelecter(MCPointInRing container, ICoordinate p)
+            public MCSelecter(MCPointInRing container, Coordinate p)
             {
                 _container = container;
                 _p = p;
@@ -67,12 +67,12 @@ namespace NetTopologySuite.Algorithm
         {
             _tree = new Bintree<MonotoneChain>();
 
-            ICoordinate[] pts = CoordinateArrays.RemoveRepeatedPoints(_ring.Coordinates);
+            Coordinate[] pts = CoordinateArrays.RemoveRepeatedPoints(_ring.Coordinates);
             IList<MonotoneChain> mcList = MonotoneChainBuilder.GetChains(pts);
 
             foreach (MonotoneChain mc in mcList)
             {
-                IEnvelope mcEnv = mc.Envelope;
+                Envelope mcEnv = mc.Envelope;
                 _interval.Min = mcEnv.MinY;
                 _interval.Max = mcEnv.MaxY;
                 _tree.Insert(_interval, mc);
@@ -84,12 +84,12 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        public bool IsInside(ICoordinate pt)
+        public bool IsInside(Coordinate pt)
         {
             _crossings = 0;
 
             // test all segments intersected by ray from pt in positive x direction
-            IEnvelope rayEnv = new Envelope(Double.NegativeInfinity, Double.PositiveInfinity, pt.Y, pt.Y);
+            Envelope rayEnv = new Envelope(Double.NegativeInfinity, Double.PositiveInfinity, pt.Y, pt.Y);
             _interval.Min = pt.Y;
             _interval.Max = pt.Y;
             IList<MonotoneChain> segs = _tree.Query(_interval);
@@ -112,7 +112,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="rayEnv"></param>
         /// <param name="mcSelecter"></param>
         /// <param name="mc"></param>
-        private static void TestMonotoneChain(IEnvelope rayEnv, MCSelecter mcSelecter, MonotoneChain mc)
+        private static void TestMonotoneChain(Envelope rayEnv, MCSelecter mcSelecter, MonotoneChain mc)
         {
             mc.Select(rayEnv, mcSelecter);
         }
@@ -122,7 +122,7 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="p"></param>
         /// <param name="seg"></param>
-        private void TestLineSegment(ICoordinate p, LineSegment seg) 
+        private void TestLineSegment(Coordinate p, LineSegment seg) 
         {
             double xInt;  // x intersection of segment with ray
             double x1;    // translated coordinates
@@ -133,8 +133,8 @@ namespace NetTopologySuite.Algorithm
             /*
             *  Test if segment crosses ray from test point in positive x direction.
             */
-            ICoordinate p1 = seg.P0;
-            ICoordinate p2 = seg.P1;
+            Coordinate p1 = seg.P0;
+            Coordinate p2 = seg.P1;
             x1 = p1.X - p.X;
             y1 = p1.Y - p.Y;
             x2 = p2.X - p.X;

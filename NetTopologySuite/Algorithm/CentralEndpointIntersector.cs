@@ -1,6 +1,5 @@
 ﻿using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -21,16 +20,33 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public class CentralEndpointIntersector
     {
-        public static ICoordinate GetIntersection(ICoordinate p00, ICoordinate p01, ICoordinate p10, ICoordinate p11)
+        /// <summary>
+        /// Computes an approximate intersection of two line segments
+        /// by taking the most central of the endpoints of the segments.
+        /// This is effective in cases where the segments are nearly parallel
+        /// and should intersect at an endpoint.
+        /// </summary>
+        /// <param name="p00">The 1st coordinate of the 1st line segement.</param>
+        /// <param name="p01">The 2nd coordinate of the 1st line segemen.</param>
+        /// <param name="p10">The 1st coordinate of the 2nd line segement.</param>
+        /// <param name="p11">The 2nd coordinate of the 2nd line segement.</param>
+        /// <returns></returns>
+        public static Coordinate GetIntersection(Coordinate p00, Coordinate p01, Coordinate p10, Coordinate p11)
         {
-            CentralEndpointIntersector intor = new CentralEndpointIntersector(p00, p01, p10, p11);
+            var intor = new CentralEndpointIntersector(p00, p01, p10, p11);
             return intor.Intersection;
         }
 
-        private readonly ICoordinate[] _pts;
-        private ICoordinate _intPt;
+        private readonly Coordinate[] _pts;
 
-        public CentralEndpointIntersector(ICoordinate p00, ICoordinate p01, ICoordinate p10, ICoordinate p11)
+        /// <summary>
+        /// Creates an instance of this class using the provided input coordinates
+        /// </summary>
+        /// <param name="p00">The 1st coordinate of the 1st line segement.</param>
+        /// <param name="p01">The 2nd coordinate of the 1st line segemen.</param>
+        /// <param name="p10">The 1st coordinate of the 2nd line segement.</param>
+        /// <param name="p11">The 2nd coordinate of the 2nd line segement.</param>
+        public CentralEndpointIntersector(Coordinate p00, Coordinate p01, Coordinate p10, Coordinate p11)
         {
             _pts = new[] { p00, p01, p10, p11 };
             Compute();
@@ -38,19 +54,19 @@ namespace NetTopologySuite.Algorithm
 
         private void Compute()
         {
-            ICoordinate centroid = Average(_pts);
-            _intPt = FindNearestPoint(centroid, _pts);
+            var centroid = Average(_pts);
+            Intersection = FindNearestPoint(centroid, _pts);
         }
 
-        public ICoordinate Intersection
-        {
-            get { return _intPt; }
-        }
+        /// <summary>
+        /// Gets the intersection point
+        /// </summary>
+        public Coordinate Intersection { get; private set; }
 
-        private static ICoordinate Average(ICoordinate[] pts)
+        private static Coordinate Average(Coordinate[] pts)
         {
-            ICoordinate avg = new Coordinate();
-            int n = pts.Length;
+            var avg = new Coordinate();
+            var n = pts.Length;
             for (int i = 0; i < pts.Length; i++)
             {
                 avg.X += pts[i].X;
@@ -67,10 +83,10 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// Determines a point closest to the given point.
         /// </summary>        
-        private static ICoordinate FindNearestPoint(ICoordinate p, ICoordinate[] pts)
+        private static Coordinate FindNearestPoint(Coordinate p, Coordinate[] pts)
         {
             double minDist = Double.MaxValue;
-            ICoordinate result = null;
+            Coordinate result = null;
             for (int i = 0; i < pts.Length; i++)
             {
                 double dist = p.Distance(pts[i]);

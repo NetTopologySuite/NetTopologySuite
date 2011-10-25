@@ -60,7 +60,7 @@ namespace NetTopologySuite.GeometriesGraph
         private readonly int _argIndex;  // the index of this point as an argument to a spatial function (used for labelling)
         private IList<Node> _boundaryNodes;
         private bool _hasTooFewPoints;
-        private ICoordinate _invalidPoint;
+        private Coordinate _invalidPoint;
 
         private IPointOnGeometryLocator _areaPtLocator;
         // for use if geometry is not Polygonal
@@ -116,7 +116,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate InvalidPoint
+        public Coordinate InvalidPoint
         {
             get
             {
@@ -157,14 +157,14 @@ namespace NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <returns></returns>
-        public ICoordinate[] GetBoundaryPoints()
+        public Coordinate[] GetBoundaryPoints()
         {
             var coll = BoundaryNodes;
-            ICoordinate[] pts = new ICoordinate[coll.Count];
+            Coordinate[] pts = new Coordinate[coll.Count];
             int i = 0;
             foreach (Node node in coll)
             {
-                pts[i++] = (ICoordinate) node.Coordinate.Clone();
+                pts[i++] = (Coordinate) node.Coordinate.Clone();
             }
             return pts;
         }
@@ -243,7 +243,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="p"></param>
         private void AddPoint(IPoint p)
         {
-            ICoordinate coord = p.Coordinate;
+            Coordinate coord = p.Coordinate;
             InsertPoint(_argIndex, coord, Location.Interior);
         }
 
@@ -257,7 +257,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="cwRight"></param>
         private void AddPolygonRing(ILinearRing lr, Location cwLeft, Location cwRight)
         {
-            ICoordinate[] coord = CoordinateArrays.RemoveRepeatedPoints(lr.Coordinates);
+            Coordinate[] coord = CoordinateArrays.RemoveRepeatedPoints(lr.Coordinates);
             if (coord.Length < 4) 
             {
                 _hasTooFewPoints = true;
@@ -299,7 +299,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="line"></param>
         private void AddLineString(ILineString line)
         {
-            ICoordinate[] coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
+            Coordinate[] coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
             if (coord.Length < 2) 
             {
                 _hasTooFewPoints = true;
@@ -331,7 +331,7 @@ namespace NetTopologySuite.GeometriesGraph
         public void AddEdge(Edge e)
         {
             InsertEdge(e);
-            ICoordinate[] coord = e.Coordinates;
+            Coordinate[] coord = e.Coordinates;
             // insert the endpoint as a node, to mark that it is on the boundary
             InsertPoint(_argIndex, coord[0], Location.Boundary);
             InsertPoint(_argIndex, coord[coord.Length - 1], Location.Boundary);
@@ -342,7 +342,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// Point Geometry part, which has a location of INTERIOR.
         /// </summary>
         /// <param name="pt"></param>
-        public void AddPoint(ICoordinate pt)
+        public void AddPoint(Coordinate pt)
         {
             InsertPoint(_argIndex, pt, Location.Interior);
         }
@@ -391,7 +391,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="argIndex"></param>
         /// <param name="coord"></param>
         /// <param name="onLocation"></param>
-        private void InsertPoint(int argIndex, ICoordinate coord, Location onLocation)
+        private void InsertPoint(int argIndex, Coordinate coord, Location onLocation)
         {
             Node n = NodeMap.AddNode(coord);
             Label lbl = n.Label;
@@ -407,7 +407,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="argIndex"></param>
         /// <param name="coord"></param>
-        private void InsertBoundaryPoint(int argIndex, ICoordinate coord)
+        private void InsertBoundaryPoint(int argIndex, Coordinate coord)
         {
             Node n = NodeMap.AddNode(coord);
             Label lbl = n.Label;
@@ -450,7 +450,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="argIndex"></param>
         /// <param name="coord"></param>
         /// <param name="loc"></param>
-        private void AddSelfIntersectionNode(int argIndex, ICoordinate coord, Location loc)
+        private void AddSelfIntersectionNode(int argIndex, Coordinate coord, Location loc)
         {
             // if this node is already a boundary node, don't change it
             if (IsBoundaryNode(argIndex, coord)) 
@@ -462,13 +462,13 @@ namespace NetTopologySuite.GeometriesGraph
 
         // MD - experimental for now
         ///<summary>
-        /// Determines the <see cref="Location"/> of the given <see cref="ICoordinate"/> in this geometry.
+        /// Determines the <see cref="Location"/> of the given <see cref="Coordinate"/> in this geometry.
         ///</summary>
         /// <param name="pt">The point to test</param>
         /// <returns>
         /// The location of the point in the geometry
         /// </returns>
-        public Location Locate(ICoordinate pt)
+        public Location Locate(Coordinate pt)
         {
             if (_parentGeom is IPolygonal && _parentGeom.NumGeometries > 50) {
   	            // lazily init point locator

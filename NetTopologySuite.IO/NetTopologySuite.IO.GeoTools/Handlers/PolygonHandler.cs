@@ -73,9 +73,9 @@ namespace NetTopologySuite.IO.Handlers
                 points.Capacity = length;
                 for (int i = 0; i < length; i++)
                 {
-                    ICoordinate external = new Coordinate(file.ReadDouble(), file.ReadDouble() );					
+                    Coordinate external = new Coordinate(file.ReadDouble(), file.ReadDouble() );					
                     geometryFactory.PrecisionModel.MakePrecise( external);
-                    ICoordinate internalCoord = external;
+                    Coordinate internalCoord = external;
 
                     // Thanks to Abhay Menon!
                     if (!Double.IsNaN(internalCoord.Y) && !Double.IsNaN(internalCoord.X))
@@ -117,13 +117,13 @@ namespace NetTopologySuite.IO.Handlers
             for (int i = 0; i < holes.Count; i++)
             {
                 ILinearRing testRing = holes[i];
-                IEnvelope testEnv = testRing.EnvelopeInternal;
-                ICoordinate testPt = testRing.GetCoordinateN(0);
+                Envelope testEnv = testRing.EnvelopeInternal;
+                Coordinate testPt = testRing.GetCoordinateN(0);
                 ILinearRing tryRing;
                 for (int j = 0; j < shells.Count; j++)
                 {
                     tryRing = shells[j];
-                    IEnvelope tryEnv = tryRing.EnvelopeInternal;
+                    Envelope tryEnv = tryRing.EnvelopeInternal;
                     bool isContained = false;
                     CoordinateList coordList = new CoordinateList(tryRing.Coordinates);
                     if (tryEnv.Contains(testEnv) && 
@@ -181,8 +181,8 @@ namespace NetTopologySuite.IO.Handlers
 
             file.Write(int.Parse(EnumUtility.Format(typeof(ShapeGeometryType), ShapeType, "d")));
 
-            IEnvelope box = multi.EnvelopeInternal;
-            IEnvelope bounds = GetEnvelopeExternal(geometryFactory.PrecisionModel,  box);
+            Envelope box = multi.EnvelopeInternal;
+            Envelope bounds = GetEnvelopeExternal(geometryFactory.PrecisionModel,  box);
             file.Write(bounds.MinX);
             file.Write(bounds.MinY);
             file.Write(bounds.MaxX);
@@ -214,11 +214,11 @@ namespace NetTopologySuite.IO.Handlers
             for (int part = 0; part < multi.NumGeometries; part++)
             {
                 IPolygon poly = (IPolygon) multi.Geometries[part];
-                ICoordinate[] points = poly.ExteriorRing.Coordinates;
+                Coordinate[] points = poly.ExteriorRing.Coordinates;
                 WriteCoords(points, file, geometryFactory);
                 foreach(ILinearRing ring in poly.InteriorRings)
                 {
-                    ICoordinate[] points2 = ring.Coordinates;					
+                    Coordinate[] points2 = ring.Coordinates;					
                     WriteCoords(points2, file, geometryFactory);
                 }
             }
@@ -230,10 +230,10 @@ namespace NetTopologySuite.IO.Handlers
         /// <param name="points"></param>
         /// <param name="file"></param>
         /// <param name="geometryFactory"></param>
-        private static void WriteCoords(IEnumerable<ICoordinate> points, BinaryWriter file, IGeometryFactory geometryFactory)
+        private static void WriteCoords(IEnumerable<Coordinate> points, BinaryWriter file, IGeometryFactory geometryFactory)
         {
-            ICoordinate external;
-            foreach (ICoordinate point in points)
+            Coordinate external;
+            foreach (Coordinate point in points)
             {
                 // external = geometryFactory.PrecisionModel.ToExternal(point);
                 external = point;
@@ -279,9 +279,9 @@ namespace NetTopologySuite.IO.Handlers
         /// <param name="testPoint">TestPoint the point to test for.</param>
         /// <param name="pointList">PointList the list of points to look through.</param>
         /// <returns>true if testPoint is a point in the pointList list.</returns>
-        private bool PointInList(ICoordinate testPoint, CoordinateList pointList) 
+        private bool PointInList(Coordinate testPoint, CoordinateList pointList) 
         {
-            foreach(ICoordinate p in pointList)
+            foreach(Coordinate p in pointList)
                 if (p.Equals2D(testPoint))
                     return true;
             return false;

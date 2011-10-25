@@ -30,7 +30,7 @@ namespace NetTopologySuite.Algorithm
         private void BuildIndex()
         {
             _sirTree = new SIRtree();
-            ICoordinate[] pts = _ring.Coordinates;
+            Coordinate[] pts = _ring.Coordinates;
             for (int i = 1; i < pts.Length; i++) 
             {
                 if (pts[i - 1].Equals(pts[i])) 
@@ -46,7 +46,7 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        public bool IsInside(ICoordinate pt)
+        public bool IsInside(Coordinate pt)
         {
             _crossings = 0;
 
@@ -71,7 +71,7 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="p"></param>
         /// <param name="seg"></param>
-        private void TestLineSegment(ICoordinate p, LineSegment seg) 
+        private void TestLineSegment(Coordinate p, LineSegment seg) 
         {
             double xInt;  // x intersection of segment with ray
             double x1;    // translated coordinates
@@ -82,8 +82,8 @@ namespace NetTopologySuite.Algorithm
             /*
             *  Test if segment crosses ray from test point in positive x direction.
             */
-            ICoordinate p1 = seg.P0;
-            ICoordinate p2 = seg.P1;
+            Coordinate p1 = seg.P0;
+            Coordinate p2 = seg.P1;
             x1 = p1.X - p.X;
             y1 = p1.Y - p.Y;
             x2 = p2.X - p.X;

@@ -15,14 +15,14 @@ namespace NetTopologySuite.Simplify
         /// <param name="pts"></param>
         /// <param name="distanceTolerance"></param>
         /// <returns></returns>
-        public static ICoordinate[] Simplify(ICoordinate[] pts, double distanceTolerance)
+        public static Coordinate[] Simplify(Coordinate[] pts, double distanceTolerance)
         {
             DouglasPeuckerLineSimplifier simp = new DouglasPeuckerLineSimplifier(pts);
             simp.DistanceTolerance = distanceTolerance;
             return simp.Simplify();
         }
 
-        private readonly ICoordinate[] _pts;
+        private readonly Coordinate[] _pts;
         private bool[] _usePt;
         private double _distanceTolerance;       
 
@@ -30,7 +30,7 @@ namespace NetTopologySuite.Simplify
         /// 
         /// </summary>
         /// <param name="pts"></param>
-        public DouglasPeuckerLineSimplifier(ICoordinate[] pts)
+        public DouglasPeuckerLineSimplifier(Coordinate[] pts)
         {
             _pts = pts;
         }
@@ -54,7 +54,7 @@ namespace NetTopologySuite.Simplify
         /// 
         /// </summary>
         /// <returns></returns>
-        public ICoordinate[] Simplify()
+        public Coordinate[] Simplify()
         {
             _usePt = new bool[_pts.Length];
             for (int i = 0; i < _pts.Length; i++)

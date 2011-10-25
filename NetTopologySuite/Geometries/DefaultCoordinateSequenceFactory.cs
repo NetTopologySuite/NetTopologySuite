@@ -48,7 +48,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="coordinates">Coordinates array, which may not be null
         /// nor contain null elements</param>
         /// <returns>Singleton instance of DefaultCoordinateSequenceFactory.</returns>
-        public ICoordinateSequence Create(ICoordinate[] coordinates)
+        public ICoordinateSequence Create(Coordinate[] coordinates)
         {
             return new DefaultCoordinateSequence(coordinates);
         }

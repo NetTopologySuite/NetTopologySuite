@@ -36,7 +36,7 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Windows.Media
 {
     ///<summary>
-    /// Transforms a geometry <see cref="ICoordinate"/> into a <see cref="Point"/>,
+    /// Transforms a geometry <see cref="Coordinate"/> into a <see cref="Point"/>,
     /// possibly with a mathematical transformation of the ordinate values.
     /// Transformation from a model coordinate system to a view coordinate system 
     /// can be efficiently performed by supplying an appropriate transformation.
@@ -45,17 +45,17 @@ namespace NetTopologySuite.Windows.Media
     public interface IPointTransformation
     {
         ///<summary>
-        /// Transforms a <see cref="ICoordinate"/> into a <see cref="Point"/>.
+        /// Transforms a <see cref="Coordinate"/> into a <see cref="Point"/>.
         ///</summary>
         ///<param name="src">The source coordinate</param>
         ///<param name="dest">The destination point</param>
-        void Transform(ICoordinate src, ref Point dest);
+        void Transform(Coordinate src, ref Point dest);
 
         /// <summary>
-        /// Transforms an array of <see cref="ICoordinate"/>s into an array of <see cref="Point"/>s.
+        /// Transforms an array of <see cref="Coordinate"/>s into an array of <see cref="Point"/>s.
         /// </summary>
-        /// <param name="src">An array of <see cref="ICoordinate"/>s</param>
+        /// <param name="src">An array of <see cref="Coordinate"/>s</param>
         /// <returns>An array of <see cref="Point"/>s</returns>
-        Point[] Transform(ICoordinate[] src);
+        Point[] Transform(Coordinate[] src);
     }
 }

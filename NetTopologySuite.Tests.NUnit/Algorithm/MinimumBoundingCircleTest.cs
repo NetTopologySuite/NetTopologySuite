@@ -69,13 +69,13 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
 
         [Test]
-        private void DoMinimumBoundingCircleTest(String wkt, String expectedWKT, ICoordinate expectedCentre, double expectedRadius)
+        private void DoMinimumBoundingCircleTest(String wkt, String expectedWKT, Coordinate expectedCentre, double expectedRadius)
         {
             MinimumBoundingCircle mbc = new MinimumBoundingCircle(reader.Read(wkt));
-            ICoordinate[] exPts = mbc.GetExtremalPoints();
+            Coordinate[] exPts = mbc.GetExtremalPoints();
             IGeometry actual = geometryFactory.CreateMultiPoint(exPts);
             double actualRadius = mbc.GetRadius();
-            ICoordinate actualCentre = mbc.GetCentre();
+            Coordinate actualCentre = mbc.GetCentre();
             Console.WriteLine("   Centre = " + actualCentre + "   Radius = " + actualRadius);
 
             IGeometry expected = reader.Read(expectedWKT);

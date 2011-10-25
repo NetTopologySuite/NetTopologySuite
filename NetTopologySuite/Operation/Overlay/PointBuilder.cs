@@ -76,7 +76,7 @@ namespace NetTopologySuite.Operation.Overlay
             IList<IGeometry> nonCoveredPointList = new List<IGeometry>();
             foreach (Node n in resultNodeList)
             {
-                ICoordinate coord = n.Coordinate;
+                Coordinate coord = n.Coordinate;
                 if (!_op.IsCoveredByLA(coord))
                 {
                     IPoint pt = _geometryFactory.CreatePoint(coord);

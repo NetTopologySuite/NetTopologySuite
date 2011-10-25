@@ -27,27 +27,27 @@ namespace NetTopologySuite.IO.Tests
         /// <summary>
         /// Gets a random coordinate
         /// </summary>
-        protected ICoordinate RandomCoordinate
+        protected Coordinate RandomCoordinate
         { 
             get 
             { 
-                ICoordinate c = CreateCoordinate();
+                Coordinate c = CreateCoordinate();
                 c.X = RandomOrdinate(Ordinate.X);
                 c.Y = RandomOrdinate(Ordinate.Y);
                 if ((Ordinates & Ordinates.Z) == Ordinates.Z)
                     c.Z = RandomOrdinate(Ordinate.Z);
-                if ((Ordinates & Ordinates.M) == Ordinates.M)
-                    c.M = RandomOrdinate(Ordinate.M);
+                //if ((Ordinates & Ordinates.M) == Ordinates.M)
+                //    c.M = RandomOrdinate(Ordinate.M);
 
                 return c;
             }
         }
 
-        protected ICoordinate[] RandomCoordinates
+        protected Coordinate[] RandomCoordinates
         {
             get
             {
-                var pts = new ICoordinate[RND.Next(4, 15)];
+                var pts = new Coordinate[RND.Next(4, 15)];
                 for (var i = 0; i < pts.Length; i++)
                     pts[i] = RandomCoordinate;
                 return pts;
@@ -191,10 +191,10 @@ namespace NetTopologySuite.IO.Tests
         }}
 
         /// <summary>
-        /// Delegate function to create ICoordinate instances. This is particulary handy for m-ordinate coordinate classes
+        /// Delegate function to create Coordinate instances. This is particulary handy for m-ordinate coordinate classes
         /// </summary>
         /// <returns></returns>
-        protected delegate ICoordinate CreateCoordinateDelegate();
+        protected delegate Coordinate CreateCoordinateDelegate();
 
         /// <summary>
         /// Function to create a random ordinates. For x-ordinates the values are limited to <see cref="MinX"/> and <see cref="MaxX"/>. For y-Ordinates the bounds are <see cref="MinY"/> and <see cref="MaxY"/>. z- and m-ordinates are limited to the range [0; 1000[.

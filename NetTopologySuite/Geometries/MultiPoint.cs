@@ -128,7 +128,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="n">The index of the <c>Coordinate</c> to retrieve, beginning at 0.
         /// </param>
         /// <returns>The <c>n</c>th <c>Coordinate</c>.</returns>
-        protected ICoordinate GetCoordinate(int n) 
+        protected Coordinate GetCoordinate(int n) 
         {
             return Geometries[n].Coordinate;
         }

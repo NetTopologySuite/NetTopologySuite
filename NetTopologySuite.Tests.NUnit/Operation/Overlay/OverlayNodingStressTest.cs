@@ -78,7 +78,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
         {
 	        RotatedRectangleFactory rrFact = new RotatedRectangleFactory();
 	        double basex = angle2 * MAX_DISPLACEMENT - (MAX_DISPLACEMENT / 2);
-	        ICoordinate baseCoord = new Coordinate(basex, basex);
+	        Coordinate baseCoord = new Coordinate(basex, basex);
 	        IPolygon rr1 = rrFact.CreateRectangle(100, 20, angle1, baseCoord);
 
 	        // limit size of accumulated star
@@ -140,7 +140,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
             return CreateRectangle(length, width, angle, new Coordinate(0, 0));
         }
 
-        public IPolygon CreateRectangle(double length, double width, double angle, ICoordinate baseCoord)
+        public IPolygon CreateRectangle(double length, double width, double angle, Coordinate baseCoord)
         {
             double posx = length / 2 * Math.Cos(angle);
             double posy = length / 2 * Math.Sin(angle);

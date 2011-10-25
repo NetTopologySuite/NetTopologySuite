@@ -51,9 +51,9 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="lineList"></param>
         /// <param name="leftLoc"></param>
         /// <param name="rightLoc"></param>
-        private void AddCurves(IEnumerable<ICoordinate[]> lineList, Location leftLoc, Location rightLoc)
+        private void AddCurves(IEnumerable<Coordinate[]> lineList, Location leftLoc, Location rightLoc)
         {
-            foreach (ICoordinate[] coords in lineList)
+            foreach (Coordinate[] coords in lineList)
                 AddCurve(coords, leftLoc, rightLoc);
         }
 
@@ -66,7 +66,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// Left: Location.Exterior.
         /// Right: Location.Interior.
         /// </summary>
-        private void AddCurve(ICoordinate[] coord, Location leftLoc, Location rightLoc)
+        private void AddCurve(Coordinate[] coord, Location leftLoc, Location rightLoc)
         {
             // don't add null curves!
             if (coord.Length < 2) 
@@ -197,7 +197,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="side">The side of the ring on which to construct the buffer line.</param>
         /// <param name="cwLeftLoc">The location on the L side of the ring (if it is CW).</param>
         /// <param name="cwRightLoc">The location on the R side of the ring (if it is CW).</param>
-        private void AddPolygonRing(ICoordinate[] coord, double offsetDistance, 
+        private void AddPolygonRing(Coordinate[] coord, double offsetDistance, 
             Positions side, Location cwLeftLoc, Location cwRightLoc)
         {
             var leftLoc = cwLeftLoc;
@@ -220,7 +220,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="ringCoord"></param>
         /// <param name="bufferDistance"></param>
         /// <returns></returns>
-        private bool IsErodedCompletely(ICoordinate[] ringCoord, double bufferDistance)
+        private bool IsErodedCompletely(Coordinate[] ringCoord, double bufferDistance)
         {
             // degenerate ring has no area
             if (ringCoord.Length < 4)
@@ -263,7 +263,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="triangleCoord"></param>
         /// <param name="bufferDistance"></param>
         /// <returns></returns>
-        private bool IsTriangleErodedCompletely(ICoordinate[] triangleCoord, double bufferDistance)
+        private bool IsTriangleErodedCompletely(Coordinate[] triangleCoord, double bufferDistance)
         {
             var tri = new Triangle(triangleCoord[0], triangleCoord[1], triangleCoord[2]);
             var inCentre = tri.InCentre;

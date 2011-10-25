@@ -192,8 +192,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
         /// <param name="yp">the expected output y</param>
         static void CheckTransformation(double x, double y, AffineTransformation trans, double xp, double yp)
         {
-            ICoordinate p = new Coordinate(x, y);
-            ICoordinate p2 = new Coordinate();
+            Coordinate p = new Coordinate(x, y);
+            Coordinate p2 = new Coordinate();
             trans.Transform(p, p2);
             Assert.AreEqual(xp, p2.X, .00005);
             Assert.AreEqual(yp, p2.Y, .00005);
@@ -202,7 +202,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             try
             {
                 AffineTransformation invTrans = trans.GetInverse();
-                ICoordinate pInv = new Coordinate();
+                Coordinate pInv = new Coordinate();
                 invTrans.Transform(p2, pInv);
                 Assert.AreEqual(x, pInv.X, .00005);
                 Assert.AreEqual(y, pInv.Y, .00005);

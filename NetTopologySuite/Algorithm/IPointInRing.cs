@@ -13,6 +13,6 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        bool IsInside(ICoordinate pt);
+        bool IsInside(Coordinate pt);
     }
 }

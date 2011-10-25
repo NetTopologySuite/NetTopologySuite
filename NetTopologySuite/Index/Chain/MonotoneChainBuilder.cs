@@ -9,7 +9,7 @@ namespace NetTopologySuite.Index.Chain
 {
     /// <summary> 
     /// Constructs <see cref="MonotoneChain"/>s
-    /// for sequences of <see cref="ICoordinate"/>s.
+    /// for sequences of <see cref="Coordinate"/>s.
     /// </summary>
     public class MonotoneChainBuilder
     {
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Index.Chain
         /// </summary>
         /// <param name="pts"></param>
         /// <returns></returns>
-        public static IList<MonotoneChain> GetChains(ICoordinate[] pts)
+        public static IList<MonotoneChain> GetChains(Coordinate[] pts)
         {
             return GetChains(pts, null);
         }
@@ -47,7 +47,7 @@ namespace NetTopologySuite.Index.Chain
         /// </summary>
         /// <param name="pts"></param>
         /// <param name="context"></param>
-        public static IList<MonotoneChain> GetChains(ICoordinate[] pts, object context)
+        public static IList<MonotoneChain> GetChains(Coordinate[] pts, object context)
         {
             IList<MonotoneChain> mcList = new List<MonotoneChain>();
             int[] startIndex = GetChainStartIndices(pts);
@@ -66,7 +66,7 @@ namespace NetTopologySuite.Index.Chain
         /// for use as a sentinel.
         /// </summary>
         /// <param name="pts"></param>
-        public static int[] GetChainStartIndices(ICoordinate[] pts)
+        public static int[] GetChainStartIndices(Coordinate[] pts)
         {
             // find the startpoint (and endpoints) of all monotone chains in this edge
             int start = 0;
@@ -96,7 +96,7 @@ namespace NetTopologySuite.Index.Chain
         /// <returns> 
         /// The index of the last point in the monotone chain starting at <c>start</c>.
         /// </returns>
-        private static int FindChainEnd(ICoordinate[] pts, int start)
+        private static int FindChainEnd(Coordinate[] pts, int start)
         {
             int safeStart = start;
             // skip any zero-length segments at the start of the sequence

@@ -6,9 +6,9 @@ namespace Open.Topology.TestRunner.Utility
     public class FunctionsUtil
     {
 
-        public static readonly IEnvelope DefaultEnvelope = new Envelope(0, 100, 0, 100);
+        public static readonly Envelope DefaultEnvelope = new Envelope(0, 100, 0, 100);
 
-        public static IEnvelope getEnvelopeOrDefault(IGeometry g)
+        public static Envelope getEnvelopeOrDefault(IGeometry g)
         {
             if (g == null) return DefaultEnvelope;
             return g.EnvelopeInternal;

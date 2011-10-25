@@ -125,7 +125,7 @@ namespace NetTopologySuite.Noding
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <returns></returns>
-        public static Octants GetOctant(ICoordinate p0, ICoordinate p1)
+        public static Octants GetOctant(Coordinate p0, Coordinate p1)
         {
             double dx = p1.X - p0.X;
             double dy = p1.Y - p0.Y;

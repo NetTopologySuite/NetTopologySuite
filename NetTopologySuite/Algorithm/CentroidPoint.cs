@@ -11,7 +11,7 @@ namespace NetTopologySuite.Algorithm
     public class CentroidPoint
     {
         private int ptCount = 0;
-        private ICoordinate centSum = new Coordinate();
+        private Coordinate centSum = new Coordinate();
 
         /// <summary>
         /// 
@@ -40,7 +40,7 @@ namespace NetTopologySuite.Algorithm
         /// Adds the length defined by a coordinate.
         /// </summary>
         /// <param name="pt">A coordinate.</param>
-        public void Add(ICoordinate pt)
+        public void Add(Coordinate pt)
         {
             ptCount += 1;
             centSum.X += pt.X;
@@ -50,11 +50,11 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate Centroid
+        public Coordinate Centroid
         {
             get
             {
-                ICoordinate cent = new Coordinate();
+                Coordinate cent = new Coordinate();
                 cent.X = centSum.X / ptCount;
                 cent.Y = centSum.Y / ptCount;
                 return cent;

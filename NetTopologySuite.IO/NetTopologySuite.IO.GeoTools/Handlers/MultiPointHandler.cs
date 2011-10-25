@@ -82,8 +82,8 @@ namespace NetTopologySuite.IO.Handlers
             
             file.Write(int.Parse(EnumUtility.Format(typeof(ShapeGeometryType), ShapeType, "d")));
 
-            IEnvelope box = geometry.EnvelopeInternal;
-            IEnvelope bounds = GetEnvelopeExternal(geometryFactory.PrecisionModel, box);
+            Envelope box = geometry.EnvelopeInternal;
+            Envelope bounds = GetEnvelopeExternal(geometryFactory.PrecisionModel, box);
             file.Write(bounds.MinX);
             file.Write(bounds.MinY);
             file.Write(bounds.MaxX);

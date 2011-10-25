@@ -15,7 +15,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
         private readonly string filepath = String.Empty;
         private IFormatter serializer = null;
 
-        private ICoordinate[] coordinates = null;
+        private Coordinate[] coordinates = null;
         private IPoint point = null;
         private ILineString line = null;
         private IPolygon polygon = null;
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
 
             point = Factory.CreatePoint(new Coordinate(100, 100));
 
-            coordinates = new ICoordinate[]
+            coordinates = new Coordinate[]
             {
                  new Coordinate(10,10),
                  new Coordinate(20,20),
@@ -37,7 +37,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
             };
             line = Factory.CreateLineString(coordinates);
 
-            coordinates = new ICoordinate[]
+            coordinates = new Coordinate[]
             {
                 new Coordinate(100,100),
                 new Coordinate(200,100),
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
             ILinearRing linearRing = Factory.CreateLinearRing(coordinates);
             polygon = Factory.CreatePolygon(linearRing, null);
 
-            coordinates = new ICoordinate[]
+            coordinates = new Coordinate[]
             {
                 new Coordinate(100,100),
                 new Coordinate(200,200),

@@ -52,7 +52,7 @@ namespace NetTopologySuite.Operation
                 return GetEmptyMultiPoint();
             }
 
-            ICoordinate[] bdyPts = ComputeBoundaryCoordinates(mLine);
+            Coordinate[] bdyPts = ComputeBoundaryCoordinates(mLine);
 
             // return Point or MultiPoint
             if (bdyPts.Length == 1)
@@ -76,13 +76,13 @@ namespace NetTopologySuite.Operation
         /// <summary>
         /// A map which maintains the edges in sorted order around the node.
         /// </summary>
-        private IDictionary<ICoordinate, Counter> _endpointMap;
+        private IDictionary<Coordinate, Counter> _endpointMap;
         //private Map endpointMap;
 
-        private ICoordinate[] ComputeBoundaryCoordinates(IMultiLineString mLine)
+        private Coordinate[] ComputeBoundaryCoordinates(IMultiLineString mLine)
         {
-            IList<ICoordinate> bdyPts = new List<ICoordinate>();
-            _endpointMap = new OrderedDictionary<ICoordinate, Counter>();
+            IList<Coordinate> bdyPts = new List<Coordinate>();
+            _endpointMap = new OrderedDictionary<Coordinate, Counter>();
             for (int i = 0; i < mLine.NumGeometries; i++)
             {
                 ILineString line = (ILineString)mLine.GetGeometryN(i);
@@ -92,7 +92,7 @@ namespace NetTopologySuite.Operation
                 AddEndpoint(line.GetCoordinateN(line.NumPoints - 1));
             }
 
-            foreach (KeyValuePair<ICoordinate, Counter> entry in _endpointMap)
+            foreach (KeyValuePair<Coordinate, Counter> entry in _endpointMap)
             {
                 Counter counter = entry.Value;
                 int valence = counter.Count;
@@ -105,7 +105,7 @@ namespace NetTopologySuite.Operation
             return CoordinateArrays.ToCoordinateArray(bdyPts);
         }
 
-        private void AddEndpoint(ICoordinate pt)
+        private void AddEndpoint(Coordinate pt)
         {
             Counter counter;
             if (!_endpointMap.TryGetValue(pt, out counter))
@@ -131,7 +131,7 @@ namespace NetTopologySuite.Operation
                 {
                     return line.StartPoint;
                 }
-                return _geomFact.CreateMultiPoint((ICoordinate[])null);
+                return _geomFact.CreateMultiPoint((Coordinate[])null);
             }
             return _geomFact.CreateMultiPoint(new[]
                         {

@@ -25,7 +25,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         private int ORIGIN = 5;
         private int DESTINATION = 6;
 
-        private readonly ICoordinate _p;
+        private readonly Coordinate _p;
         // private int edgeNumber = -1;
 
         /// <summary>
@@ -50,10 +50,10 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /// <summary>
-        /// Creates an instance of this class using a clone of the given <see cref="ICoordinate"/>.
+        /// Creates an instance of this class using a clone of the given <see cref="Coordinate"/>.
         /// </summary>
         /// <param name="p">The coordinate</param>
-        public Vertex(ICoordinate p)
+        public Vertex(Coordinate p)
         {
             _p = new Coordinate(p);
         }
@@ -86,7 +86,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <summary>
         /// Gets the coordinate
         /// </summary>
-        public ICoordinate Coordinate
+        public Coordinate Coordinate
         {
             get { return _p; }
         }
@@ -361,7 +361,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <summary>
         /// Interpolates the Z value of a point enclosed in a 3D triangle.
         /// </summary>
-        public static double InterpolateZ(ICoordinate p, ICoordinate v0, ICoordinate v1, ICoordinate v2)
+        public static double InterpolateZ(Coordinate p, Coordinate v0, Coordinate v1, Coordinate v2)
         {
             double x0 = v0.X;
             double y0 = v0.Y;
@@ -385,7 +385,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="p0" />
         /// <param name="p1" />
         /// <returns />
-        public static double InterpolateZ(ICoordinate p, ICoordinate p0, ICoordinate p1)
+        public static double InterpolateZ(Coordinate p, Coordinate p0, Coordinate p1)
         {
             double segLen = p0.Distance(p1);
             double ptLen = p.Distance(p0);

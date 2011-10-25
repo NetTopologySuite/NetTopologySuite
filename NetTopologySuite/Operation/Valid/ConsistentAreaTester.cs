@@ -23,7 +23,7 @@ namespace NetTopologySuite.Operation.Valid
         private RelateNodeGraph nodeGraph = new RelateNodeGraph();
 
         // the intersection point found (if any)
-        private ICoordinate invalidPoint;
+        private Coordinate invalidPoint;
 
         /// <summary>
         /// 
@@ -37,7 +37,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// Returns the intersection point, or <c>null</c> if none was found.
         /// </summary>        
-        public ICoordinate InvalidPoint
+        public Coordinate InvalidPoint
         {
             get
             {
@@ -80,7 +80,7 @@ namespace NetTopologySuite.Operation.Valid
                     RelateNode node = (RelateNode) nodeIt.Current;
                     if (!node.Edges.IsAreaLabelsConsistent(geomGraph))
                     {
-                        invalidPoint = (ICoordinate) node.Coordinate.Clone();
+                        invalidPoint = (Coordinate) node.Coordinate.Clone();
                         return false;
                     }
                 }

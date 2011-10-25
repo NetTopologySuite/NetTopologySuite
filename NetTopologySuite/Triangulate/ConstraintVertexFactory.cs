@@ -10,6 +10,6 @@ namespace NetTopologySuite.Triangulate
     /// <author>Martin Davis</author>
     public interface ConstraintVertexFactory
     {
-        ConstraintVertex CreateVertex(ICoordinate p, Segment constraintSeg);
+        ConstraintVertex CreateVertex(Coordinate p, Segment constraintSeg);
     }
 }

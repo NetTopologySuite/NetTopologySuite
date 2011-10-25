@@ -358,7 +358,7 @@ namespace NetTopologySuite.IO
             var getDouble = gaiaImport.GetDouble;
 
             var number = getInt32(blob, ref offset);
-            var coords = new ICoordinate[number];
+            var coords = new Coordinate[number];
             for (var i = 0; i < number; i++)
             {
                 if (blob[offset++] != (byte)GaiaGeoBlobMark.GAIA_MARK_ENTITY)
@@ -373,12 +373,12 @@ namespace NetTopologySuite.IO
                 if (gaiaImport.HasZ)
                     coords[i].Z = getDouble(blob, ref offset);
                 if (gaiaImport.HasM)
-                    coords[i].M = getDouble(blob, ref offset);
+                    /*coords[i].M =*/getDouble(blob, ref offset);
             }
             return GeometryFactory.Default.CreateMultiPoint(coords);
         }
 
-        private delegate ILineString CreateLineStringFunction(ICoordinate[] coordinates);
+        private delegate ILineString CreateLineStringFunction(Coordinate[] coordinates);
 
         private static ILineString ParseWkbLineString(byte[] blob, ref int offset, ReadCoordinatesFunction readCoordinates, GaiaImport gaiaImport)
         {
@@ -453,12 +453,12 @@ namespace NetTopologySuite.IO
             return GeometryFactory.Default.CreateGeometryCollection(geometries);
         }
 
-        private delegate ICoordinate[] ReadCoordinatesFunction(byte[] buffer, ref int offset, int number, GaiaImport import);
+        private delegate Coordinate[] ReadCoordinatesFunction(byte[] buffer, ref int offset, int number, GaiaImport import);
 
-        private static ICoordinate[] ReadXY(byte[] buffer, ref int offset, int number, GaiaImport import)
+        private static Coordinate[] ReadXY(byte[] buffer, ref int offset, int number, GaiaImport import)
         {
             var getDouble = import.GetDouble;
-            var ret = new ICoordinate[number];
+            var ret = new Coordinate[number];
             for (var i = 0; i < number; i ++)
             {
                 ret[i] = new Coordinate(getDouble(buffer, ref offset),
@@ -467,11 +467,11 @@ namespace NetTopologySuite.IO
             return ret;
         }
 
-        private static ICoordinate[] ReadXYZ(byte[] buffer, ref int offset, int number, GaiaImport import)
+        private static Coordinate[] ReadXYZ(byte[] buffer, ref int offset, int number, GaiaImport import)
         {
             var getDouble = import.GetDouble;
 
-            var ret = new ICoordinate[number];
+            var ret = new Coordinate[number];
             for (var i = 0; i < number; i++)
             {
                 ret[i] = new Coordinate(getDouble(buffer, ref offset),
@@ -481,10 +481,10 @@ namespace NetTopologySuite.IO
             return ret;
         }
 
-        private static ICoordinate[] ReadXYM(byte[] buffer, ref int offset, int number, GaiaImport import)
+        private static Coordinate[] ReadXYM(byte[] buffer, ref int offset, int number, GaiaImport import)
         {
             var getDouble = import.GetDouble;
-            var ret = new ICoordinate[number];
+            var ret = new Coordinate[number];
             for (var i = 0; i < number; i++)
             {
                 ret[i] = new Coordinate(getDouble(buffer, ref offset),
@@ -494,11 +494,11 @@ namespace NetTopologySuite.IO
             return ret;
         }
 
-        private static ICoordinate[] ReadXYZM(byte[] buffer, ref int offset, int number, GaiaImport import)
+        private static Coordinate[] ReadXYZM(byte[] buffer, ref int offset, int number, GaiaImport import)
         {
             var getDouble = import.GetDouble;
 
-            var ret = new ICoordinate[number];
+            var ret = new Coordinate[number];
             for (var i = 0; i < number; i++)
             {
                 ret[i] = new Coordinate(getDouble(buffer, ref offset),
@@ -509,12 +509,12 @@ namespace NetTopologySuite.IO
             return ret;
         }
 
-        private static ICoordinate[] ReadCompressedXY(byte[] buffer, ref int offset, int number, GaiaImport import)
+        private static Coordinate[] ReadCompressedXY(byte[] buffer, ref int offset, int number, GaiaImport import)
         {
             var getDouble = import.GetDouble;
             var getSingle = import.GetSingle;
 
-            var ret = new ICoordinate[number];
+            var ret = new Coordinate[number];
             ret[0] = new Coordinate(getDouble(buffer, ref offset), getDouble(buffer, ref offset));
 
             if (number == 1) return ret;
@@ -529,12 +529,12 @@ namespace NetTopologySuite.IO
             return ret;
         }
 
-        private static ICoordinate[] ReadCompressedXYZ(byte[] buffer, ref int offset, int number, GaiaImport import)
+        private static Coordinate[] ReadCompressedXYZ(byte[] buffer, ref int offset, int number, GaiaImport import)
         {
             var getDouble = import.GetDouble;
             var getSingle = import.GetSingle;
 
-            var ret = new ICoordinate[number];
+            var ret = new Coordinate[number];
             ret[0] = new Coordinate(getDouble(buffer, ref offset), getDouble(buffer, ref offset), getDouble(buffer, ref offset));
 
             if (number == 1) return ret;
@@ -550,12 +550,12 @@ namespace NetTopologySuite.IO
             return ret;
         }
 
-        private static ICoordinate[] ReadCompressedXYM(byte[] buffer, ref int offset, int number, GaiaImport import)
+        private static Coordinate[] ReadCompressedXYM(byte[] buffer, ref int offset, int number, GaiaImport import)
         {
             var getDouble = import.GetDouble;
             var getSingle = import.GetSingle;
 
-            var ret = new ICoordinate[number];
+            var ret = new Coordinate[number];
             ret[0] = new Coordinate(getDouble(buffer, ref offset), getDouble(buffer, ref offset));
             //skip m
             getDouble(buffer, ref offset);
@@ -576,12 +576,12 @@ namespace NetTopologySuite.IO
             return ret;
         }
 
-        private static ICoordinate[] ReadCompressedXYZM(byte[] buffer, ref int offset, int number, GaiaImport import)
+        private static Coordinate[] ReadCompressedXYZM(byte[] buffer, ref int offset, int number, GaiaImport import)
         {
             var getDouble = import.GetDouble;
             var getSingle = import.GetSingle;
 
-            var ret = new ICoordinate[number];
+            var ret = new Coordinate[number];
             ret[0] = new Coordinate(getDouble(buffer, ref offset), getDouble(buffer, ref offset), getDouble(buffer, ref offset));
             //skip m
             getDouble(buffer, ref offset);

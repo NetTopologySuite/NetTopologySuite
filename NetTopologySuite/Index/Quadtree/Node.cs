@@ -7,7 +7,7 @@ namespace NetTopologySuite.Index.Quadtree
 {
     //public class Node : Node<object>
     //{
-    //    public Node(IEnvelope env, int level) : base(env, level)
+    //    public Node(Envelope env, int level) : base(env, level)
     //    {
     //    }
     //}
@@ -24,7 +24,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="env"></param>
         /// <returns></returns>
-        public static Node<T> CreateNode(IEnvelope env)
+        public static Node<T> CreateNode(Envelope env)
         {
             Key key = new Key(env);
             var node = new Node<T>(key.Envelope, key.Level);
@@ -37,9 +37,9 @@ namespace NetTopologySuite.Index.Quadtree
         /// <param name="node"></param>
         /// <param name="addEnv"></param>
         /// <returns></returns>
-        public static Node<T> CreateExpanded(Node<T> node, IEnvelope addEnv)
+        public static Node<T> CreateExpanded(Node<T> node, Envelope addEnv)
         {
-            IEnvelope expandEnv = new Envelope(addEnv);
+            Envelope expandEnv = new Envelope(addEnv);
             if (node != null) 
                 expandEnv.ExpandToInclude(node._env);
 
@@ -49,8 +49,8 @@ namespace NetTopologySuite.Index.Quadtree
             return largerNode;
         }
 
-        private readonly IEnvelope _env;
-        private readonly ICoordinate _centre;
+        private readonly Envelope _env;
+        private readonly Coordinate _centre;
         private readonly int _level;
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="env"></param>
         /// <param name="level"></param>
-        public Node(IEnvelope env, int level)
+        public Node(Envelope env, int level)
         {
             _env = env;
             _level = level;
@@ -70,7 +70,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public IEnvelope Envelope
+        public Envelope Envelope
         {
             get
             {
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <returns></returns>
-        protected override bool IsSearchMatch(IEnvelope searchEnv)
+        protected override bool IsSearchMatch(Envelope searchEnv)
         {
             return _env.Intersects(searchEnv);
         }
@@ -94,7 +94,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// it does not already exist.
         /// </summary>
         /// <param name="searchEnv"></param>
-        public Node<T> GetNode(IEnvelope searchEnv)
+        public Node<T> GetNode(Envelope searchEnv)
         {
             int subnodeIndex = GetSubnodeIndex(searchEnv, _centre);            
             // if subquadIndex is -1 searchEnv is not contained in a subquad
@@ -113,7 +113,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// node containing the envelope.
         /// </summary>
         /// <param name="searchEnv"></param>
-        public NodeBase<T> Find(IEnvelope searchEnv)
+        public NodeBase<T> Find(Envelope searchEnv)
         {
             int subnodeIndex = GetSubnodeIndex(searchEnv, _centre);
             if (subnodeIndex == -1)
@@ -206,7 +206,7 @@ namespace NetTopologySuite.Index.Quadtree
 	            default:
 		            break;
             }
-            IEnvelope sqEnv = new Envelope(minx, maxx, miny, maxy);
+            Envelope sqEnv = new Envelope(minx, maxx, miny, maxy);
             var node = new Node<T>(sqEnv, _level - 1);
             return node;
         }

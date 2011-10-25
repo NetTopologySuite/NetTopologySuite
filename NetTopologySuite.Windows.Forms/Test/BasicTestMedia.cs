@@ -63,7 +63,7 @@ namespace NetTopologySuite.Windows.Media.Test
         {
             var gf = GeometryFactory.Default;
             _multiPoint = gf.CreateMultiPoint(
-                new ICoordinate[]
+                new []
                     {
                         new Coordinate(100*_random.NextDouble(), 100*_random.NextDouble()),
                         new Coordinate(100*_random.NextDouble(), 100*_random.NextDouble()),

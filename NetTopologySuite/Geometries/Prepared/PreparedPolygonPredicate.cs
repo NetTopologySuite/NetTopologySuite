@@ -34,8 +34,8 @@ namespace NetTopologySuite.Geometries.Prepared
         /// </returns>
         protected bool IsAllTestComponentsInTarget(IGeometry testGeom)
         {
-            IList<ICoordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
-            foreach (ICoordinate p in coords)
+            IList<Coordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
+            foreach (Coordinate p in coords)
             {
                 Location loc = _targetPointLocator.Locate(p);
                 if (loc == Location.Exterior)
@@ -52,8 +52,8 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if all componenta of the argument are contained in the target geometry interior</returns>
         protected bool IsAllTestComponentsInTargetInterior(IGeometry testGeom)
         {
-            IList<ICoordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
-            foreach (ICoordinate p in coords)
+            IList<Coordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
+            foreach (Coordinate p in coords)
             {
                 Location loc = _targetPointLocator.Locate(p);
                 if (loc != Location.Interior)
@@ -70,8 +70,8 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if any component of the argument intersects the prepared area geometry</returns>
         protected bool IsAnyTestComponentInTarget(IGeometry testGeom)
         {
-            IList<ICoordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
-            foreach (ICoordinate p in coords)
+            IList<Coordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
+            foreach (Coordinate p in coords)
             {
                 Location loc = _targetPointLocator.Locate(p);
                 if (loc != Location.Exterior)
@@ -88,8 +88,8 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if any component of the argument intersects the prepared area geometry interior</returns>
         protected bool IsAnyTestComponentInTargetInterior(IGeometry testGeom)
         {
-            IList<ICoordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
-            foreach (ICoordinate p in coords)
+            IList<Coordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
+            foreach (Coordinate p in coords)
             {
                 Location loc = _targetPointLocator.Locate(p);
                 if (loc == Location.Interior)
@@ -105,10 +105,10 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <param name="testGeom">The test geometry</param>
         /// <param name="targetRepPts">The representative points of the target geometry</param>
         /// <returns>true if any component intersects the areal test geometry</returns>
-        protected bool IsAnyTargetComponentInAreaTest(IGeometry testGeom, IList<ICoordinate> targetRepPts)
+        protected bool IsAnyTargetComponentInAreaTest(IGeometry testGeom, IList<Coordinate> targetRepPts)
         {
             IPointOnGeometryLocator piaLoc = new SimplePointInAreaLocator(testGeom);
-            foreach (ICoordinate p in targetRepPts)
+            foreach (Coordinate p in targetRepPts)
             {
                 Location loc = piaLoc.Locate(p);
                 if (loc != Location.Exterior)

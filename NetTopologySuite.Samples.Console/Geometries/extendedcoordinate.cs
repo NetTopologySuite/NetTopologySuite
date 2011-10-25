@@ -3,7 +3,7 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Samples.Geometries
 {
-	public class ExtendedCoordinate : Coordinate
+	public class ExtendedCoordinate : Coordinate, ICoordinate
 	{				
 		// A Coordinate subclass should provide all of these methods
 		
@@ -20,7 +20,7 @@ namespace NetTopologySuite.Samples.Geometries
 			_m = m;
 		}
 		
-		public ExtendedCoordinate(ICoordinate coord) : base(coord)
+		public ExtendedCoordinate(Coordinate coord) : base(coord)
 		{
 			_m = 0.0;
 		}
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Samples.Geometries
 		/// </summary>		
 		private double _m;
         
-         public override double M
+        public double M
         {
             get { return _m; }
             set { _m = value; }

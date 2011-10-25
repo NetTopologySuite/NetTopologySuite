@@ -1,3 +1,5 @@
+using GeoAPI.Geometries;
+
 namespace NetTopologySuite.Tests.Various
 {
     using Geometries;

@@ -37,7 +37,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// </summary>
         private class QueryVisitor : IItemVisitor<object>
         {
-            readonly IEnvelope _env;
+            readonly Envelope _env;
             readonly HotPixelSnapAction _action;
 
             /// <summary>
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Noding.Snapround
             /// </summary>
             /// <param name="env"></param>
             /// <param name="action"></param>
-            public QueryVisitor(IEnvelope env, HotPixelSnapAction action)
+            public QueryVisitor(Envelope env, HotPixelSnapAction action)
             {
                 _env = env;
                 _action = action;
@@ -73,7 +73,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <returns><c>true</c> if a node was added for this pixel.</returns>
         public bool Snap(HotPixel hotPixel, ISegmentString parentEdge, int vertexIndex)
         {
-            IEnvelope pixelEnv = hotPixel.GetSafeEnvelope();
+            Envelope pixelEnv = hotPixel.GetSafeEnvelope();
             HotPixelSnapAction hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, vertexIndex);
             _index.Query(pixelEnv, new QueryVisitor(pixelEnv, hotPixelSnapAction));
             return hotPixelSnapAction.IsNodeAdded;

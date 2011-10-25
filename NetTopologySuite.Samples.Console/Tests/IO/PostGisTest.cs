@@ -169,7 +169,7 @@ namespace NetTopologySuite.Tests.IO
 		public void LineString3D()
 		{
 			const int size = 10;
-			ICoordinate[] points = new ICoordinate[size];
+			Coordinate[] points = new Coordinate[size];
 			for (int i = 0; i < size; i++)
 			{
 				// just some arbitrary values

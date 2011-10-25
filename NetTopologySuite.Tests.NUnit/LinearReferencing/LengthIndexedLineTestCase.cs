@@ -71,10 +71,10 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         {
             IGeometry linearGeom = Read("LINESTRING (0 0, 10 10)");
             LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
-            ICoordinate pt = indexedLine.ExtractPoint(100);
+            Coordinate pt = indexedLine.ExtractPoint(100);
             Assert.IsTrue(pt.Equals(new Coordinate(10, 10)));
 
-            ICoordinate pt2 = indexedLine.ExtractPoint(0);
+            Coordinate pt2 = indexedLine.ExtractPoint(0);
             Assert.IsTrue(pt2.Equals(new Coordinate(0, 0)));
         }
 
@@ -109,7 +109,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             IGeometry linearGeom = Read("LINESTRING (0 0 0, 10 10 10)");
             LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
             double projIndex = indexedLine.Project(new Coordinate(5, 5));
-            ICoordinate projPt = indexedLine.ExtractPoint(projIndex);
+            Coordinate projPt = indexedLine.ExtractPoint(projIndex);
             //    System.out.println(projPt);
             Assert.IsTrue(projPt.Equals3D(new Coordinate(5, 5, 5)));
         }
@@ -123,7 +123,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             IGeometry linearGeom = Read("LINESTRING (0 0, 10 10 10)");
             LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
             double projIndex = indexedLine.Project(new Coordinate(5, 5));
-            ICoordinate projPt = indexedLine.ExtractPoint(projIndex);
+            Coordinate projPt = indexedLine.ExtractPoint(projIndex);
             Assert.IsTrue(Double.IsNaN(projPt.Z));
         }
 
@@ -143,7 +143,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             return result;
         }
 
-        protected override bool IndexOfAfterCheck(IGeometry linearGeom, ICoordinate testPt)
+        protected override bool IndexOfAfterCheck(IGeometry linearGeom, Coordinate testPt)
         {
             LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
 
@@ -153,8 +153,8 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             if (loc2 <= loc1) return false;
 
             // check extracted points are the same as the input
-            ICoordinate pt1 = indexedLine.ExtractPoint(loc1);
-            ICoordinate pt2 = indexedLine.ExtractPoint(loc2);
+            Coordinate pt1 = indexedLine.ExtractPoint(loc1);
+            Coordinate pt2 = indexedLine.ExtractPoint(loc2);
             if (!pt1.Equals2D(testPt)) return false;
             if (!pt2.Equals2D(testPt)) return false;
 
@@ -162,7 +162,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         }
 
         //TODO: Uncomment when NTS has a method overload for the ExtractPoint method which takes an index and an offset distance
-        //protected override ICoordinate ExtractOffsetAt(IGeometry linearGeom, ICoordinate testPt, double offsetDistance)
+        //protected override Coordinate ExtractOffsetAt(IGeometry linearGeom, Coordinate testPt, double offsetDistance)
         //{
         //    LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
         //    double index = indexedLine.IndexOf(testPt);

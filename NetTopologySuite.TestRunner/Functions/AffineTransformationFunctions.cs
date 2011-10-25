@@ -10,8 +10,8 @@ namespace Open.Topology.TestRunner.Functions
         public static IGeometry TransformByVectors(IGeometry g, IGeometry control)
 	{
 		var nControl = control.NumGeometries;
-		var src = new ICoordinate[nControl];
-		var dest = new ICoordinate[nControl];
+		var src = new Coordinate[nControl];
+		var dest = new Coordinate[nControl];
 		for (int i = 0; i < nControl; i++) {
 			var contComp = control.GetGeometryN(i);
 			var pts = contComp.Coordinates;
@@ -36,12 +36,12 @@ namespace Open.Topology.TestRunner.Functions
             return trans.Transform(g);
         }
 
-        private static ICoordinate EnvelopeCentre(IGeometry g)
+        private static Coordinate EnvelopeCentre(IGeometry g)
         {
             return g.EnvelopeInternal.Centre;
         }
 
-        private static ICoordinate EnvelopeLowerLeft(IGeometry g)
+        private static Coordinate EnvelopeLowerLeft(IGeometry g)
         {
             var env = g.EnvelopeInternal;
             return new Coordinate(env.MinX, env.MinY);

@@ -50,7 +50,7 @@ namespace NetTopologySuite.Samples.Technique
         /// <returns></returns>
         public static IGeometry GetEndPoints(IGeometry g)
 		{
-			List<ICoordinate> endPtList = new List<ICoordinate>();
+			List<Coordinate> endPtList = new List<Coordinate>();
 			if (g is ILineString)
 			{
 				ILineString line = (ILineString) g;
@@ -67,7 +67,7 @@ namespace NetTopologySuite.Samples.Technique
                     endPtList.Add(line.GetCoordinateN(line.NumPoints - 1));
 				}
 			}
-			ICoordinate[] endPts = endPtList.ToArray();
+			Coordinate[] endPts = endPtList.ToArray();
 			return GeometryFactory.Default.CreateMultiPoint(endPts);
 		}
 	}

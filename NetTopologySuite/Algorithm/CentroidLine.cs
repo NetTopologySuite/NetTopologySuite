@@ -11,7 +11,7 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public class CentroidLine
     {
-        private readonly ICoordinate _centSum = new Coordinate();
+        private readonly Coordinate _centSum = new Coordinate();
         private double _totalLength;
 
         /// <summary> 
@@ -46,11 +46,11 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate Centroid
+        public Coordinate Centroid
         {
             get
             {
-                ICoordinate cent = new Coordinate();
+                Coordinate cent = new Coordinate();
                 cent.X = _centSum.X / _totalLength;
                 cent.Y = _centSum.Y / _totalLength;
                 return cent;
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Algorithm
         /// Adds the length defined by an array of coordinates.
         /// </summary>
         /// <param name="pts">An array of <c>Coordinate</c>s.</param>
-        public void Add(ICoordinate[] pts)
+        public void Add(Coordinate[] pts)
         {
             for (int i = 0; i < pts.Length - 1; i++)
             {

@@ -45,7 +45,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
 
         private bool _isValid = true;
         private String _errMsg;
-        private ICoordinate _errorLocation;
+        private Coordinate _errorLocation;
 
         public BufferDistanceValidator(IGeometry input, double bufDistance, IGeometry result)
         {
@@ -89,7 +89,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             get { return _errMsg; }
         }
 
-        public ICoordinate ErrorLocation
+        public Coordinate ErrorLocation
         {
             get { return _errorLocation; }
         }

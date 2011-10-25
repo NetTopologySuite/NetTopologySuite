@@ -20,7 +20,7 @@ namespace NetTopologySuite.Simplify
         /// <param name="p1"></param>
         /// <param name="parent"></param>
         /// <param name="index"></param>
-        public TaggedLineSegment(ICoordinate p0, ICoordinate p1, IGeometry parent, int index)
+        public TaggedLineSegment(Coordinate p0, Coordinate p1, IGeometry parent, int index)
             : base(p0, p1)
         {            
             _parent = parent;
@@ -32,7 +32,7 @@ namespace NetTopologySuite.Simplify
         /// </summary>
         /// <param name="p0"></param>
         /// <param name="p1"></param>
-        public TaggedLineSegment(ICoordinate p0, ICoordinate p1) 
+        public TaggedLineSegment(Coordinate p0, Coordinate p1) 
             : this(p0, p1, null, -1) { }
 
         /// <summary>

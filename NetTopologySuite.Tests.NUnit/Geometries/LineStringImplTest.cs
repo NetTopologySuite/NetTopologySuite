@@ -111,7 +111,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         public void TestGetCoordinates()
         {
             LineString l = (LineString) reader.Read("LINESTRING(1.111 2.222, 5.555 6.666, 3.333 4.444)");
-            ICoordinate[] coordinates = l.Coordinates;
+            Coordinate[] coordinates = l.Coordinates;
             Assert.AreEqual(new Coordinate(5.555, 6.666), coordinates[1]);
         }
 

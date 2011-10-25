@@ -28,9 +28,9 @@ namespace NetTopologySuite.Operation.Valid
         /// <param name="coord"></param>
         /// <param name="pt"></param>
         /// <returns></returns>
-        public static ICoordinate FindDifferentPoint(ICoordinate[] coord, ICoordinate pt)
+        public static Coordinate FindDifferentPoint(Coordinate[] coord, Coordinate pt)
         {
-            foreach (ICoordinate c in coord)
+            foreach (Coordinate c in coord)
                 if (!c.Equals(pt))
                     return c;            
             return null;
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Operation.Valid
 
         // save a coordinate for any disconnected interior found
         // the coordinate will be somewhere on the ring surrounding the disconnected interior
-        private ICoordinate _disconnectedRingcoord;
+        private Coordinate _disconnectedRingcoord;
 
         /// <summary>
         /// 
@@ -56,7 +56,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -162,13 +162,13 @@ namespace NetTopologySuite.Operation.Valid
         /// <param name="graph"></param>
         private void VisitInteriorRing(ILineString ring, PlanarGraph graph)
         {
-            ICoordinate[] pts = ring.Coordinates;
-            ICoordinate pt0 = pts[0];
+            Coordinate[] pts = ring.Coordinates;
+            Coordinate pt0 = pts[0];
             /*
              * Find first point in coord list different to initial point.
              * Need special check since the first point may be repeated.
              */
-            ICoordinate pt1 = FindDifferentPoint(pts, pt0);
+            Coordinate pt1 = FindDifferentPoint(pts, pt0);
             Edge e = graph.FindEdgeInSameDirection(pt0, pt1);
             DirectedEdge de = (DirectedEdge) graph.FindEdgeEnd(e);
             DirectedEdge intDe = null;

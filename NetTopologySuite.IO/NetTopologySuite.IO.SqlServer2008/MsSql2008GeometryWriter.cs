@@ -102,10 +102,10 @@ namespace NetTopologySuite.IO
             builder.EndGeometry();
         }
 
-        private void AddCoordinates(ICoordinate[] coordinates)
+        private void AddCoordinates(Coordinate[] coordinates)
         {
             int points = 0;
-            Array.ForEach<ICoordinate>(coordinates, delegate(ICoordinate coordinate)
+            Array.ForEach<Coordinate>(coordinates, delegate(Coordinate coordinate)
             {
                 double? z = null;
                 if (!double.IsNaN(coordinate.Z) && !double.IsInfinity(coordinate.Z))

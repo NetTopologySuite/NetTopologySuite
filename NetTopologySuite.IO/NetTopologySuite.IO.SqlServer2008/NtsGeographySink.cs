@@ -30,8 +30,8 @@ namespace NetTopologySuite.IO
 		private IGeometry geometry;
 		private int srid;
 		private readonly Stack<OpenGisGeographyType> types = new Stack<OpenGisGeographyType>();
-		private List<ICoordinate> coordinates = new List<ICoordinate>();
-		private readonly List<ICoordinate[]> rings = new List<ICoordinate[]>();
+		private List<Coordinate> coordinates = new List<Coordinate>();
+		private readonly List<Coordinate[]> rings = new List<Coordinate[]>();
 		private readonly List<IGeometry> geometries = new List<IGeometry>();
 		private bool inFigure;
 
@@ -42,7 +42,7 @@ namespace NetTopologySuite.IO
 
 		private void AddCoordinate(double x, double y, double? z, double? m)
 		{
-			ICoordinate coordinate;
+			Coordinate coordinate;
 			if (z.HasValue)
 			{
 				coordinate = new Coordinate(y, x, z.Value);
@@ -71,7 +71,7 @@ namespace NetTopologySuite.IO
 			{
 				throw new ApplicationException();
 			}
-			this.coordinates = new List<ICoordinate>();
+			this.coordinates = new List<Coordinate>();
 			AddCoordinate(x, y, z, m);
 			this.inFigure = true;
 		}
@@ -152,7 +152,7 @@ namespace NetTopologySuite.IO
 			ILinearRing shell = new LinearRing(this.rings[0]);
 			ILinearRing[] holes =
 				this.rings.GetRange(1, this.rings.Count - 1)
-					.ConvertAll<ILinearRing>(delegate(ICoordinate[] coordinates)
+					.ConvertAll<ILinearRing>(delegate(Coordinate[] coordinates)
 					{
 						return new LinearRing(coordinates);
 					}).ToArray();

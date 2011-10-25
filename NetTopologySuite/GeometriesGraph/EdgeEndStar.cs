@@ -58,7 +58,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns>
         /// The coordinate for the node this star is based at.
         /// </returns>
-        public ICoordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -182,7 +182,7 @@ namespace NetTopologySuite.GeometriesGraph
                             loc = Location.Exterior;                
                         else 
                         {
-                            ICoordinate p = e.Coordinate;
+                            Coordinate p = e.Coordinate;
                             loc = GetLocation(geomi, p, geomGraph);
                         }
                         label.SetAllLocationsIfNull(geomi, loc);
@@ -210,7 +210,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="p"></param>
         /// <param name="geom"></param>
         /// <returns></returns>
-        private Location GetLocation(int geomIndex, ICoordinate p, GeometryGraph[] geom)
+        private Location GetLocation(int geomIndex, Coordinate p, GeometryGraph[] geom)
         {
             // compute location only on demand
             if (_ptInAreaLocation[geomIndex] == Location.Null) 

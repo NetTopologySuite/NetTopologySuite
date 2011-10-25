@@ -65,7 +65,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p0">The start-point</param>
         /// <param name="p1">The end-point</param>
         /// <returns>The normalized angle (in radians) that p0-p1 makes with the positive X-axis</returns>
-        public static double Angle(ICoordinate p0, ICoordinate p1)
+        public static double Angle(Coordinate p0, Coordinate p1)
         {
             double dx = p1.X - p0.X;
             double dy = p1.Y - p0.Y;
@@ -80,7 +80,7 @@ namespace NetTopologySuite.Algorithm
         /// </remarks>
         /// <param name="p">The point</param>
         /// <returns>The normalized angle (in radians) that (0,0)-p makes with the positive X-axis.</returns>
-        public static double Angle(ICoordinate p)
+        public static double Angle(Coordinate p)
         {
             return System.Math.Atan2(p.Y, p.X);
         }
@@ -95,7 +95,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p0">An endpoint of the angle</param>
         /// <param name="p1">The base of the angle</param>
         /// <param name="p2">Another endpoint of the angle</param>
-        public static Boolean IsAcute(ICoordinate p0, ICoordinate p1, ICoordinate p2)
+        public static Boolean IsAcute(Coordinate p0, Coordinate p1, Coordinate p2)
         {
             // relies on fact that A dot B is positive iff A ang B is acute
             double dx0 = p0.X - p1.X;
@@ -116,7 +116,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p0">An endpoint of the angle</param>
         /// <param name="p1">The base of the angle</param>
         /// <param name="p2">Another endpoint of the angle</param>
-        public static Boolean IsObtuse(ICoordinate p0, ICoordinate p1, ICoordinate p2)
+        public static Boolean IsObtuse(Coordinate p0, Coordinate p1, Coordinate p2)
         {
             // relies on fact that A dot B is negative iff A ang B is obtuse
             double dx0 = p0.X - p1.X;
@@ -136,7 +136,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="tip1">The tip of one vector</param>
         /// <param name="tail">The tail of each vector</param>
         /// <param name="tip2">The tip of the other vector</param>
-        public static double AngleBetween(ICoordinate tip1, ICoordinate tail, ICoordinate tip2)
+        public static double AngleBetween(Coordinate tip1, Coordinate tail, Coordinate tip2)
         {
             double a1 = Angle(tail, tip1);
             double a2 = Angle(tail, tip2);
@@ -154,7 +154,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="tail">The tail of each vector</param>
         /// <param name="tip2">The tip of v2</param>
         /// <returns>The angle between v1 and v2, relative to v1</returns>
-  public static double AngleBetweenOriented(ICoordinate tip1, ICoordinate tail, ICoordinate tip2) 
+  public static double AngleBetweenOriented(Coordinate tip1, Coordinate tail, Coordinate tip2) 
   {
 		double a1 = Angle(tail, tip1);
 		double a2 = Angle(tail, tip2);
@@ -177,7 +177,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p1">The next point of the ring</param>
         /// <param name="p2">The next point of the ring</param>
         /// <returns>The interior angle based at <see paramref="p1"/>p1</returns>
-        public static double InteriorAngle(ICoordinate p0, ICoordinate p1, ICoordinate p2)
+        public static double InteriorAngle(Coordinate p0, Coordinate p1, Coordinate p2)
         {
             double anglePrev = Angle(p1, p0);
             double angleNext = Angle(p1, p2);

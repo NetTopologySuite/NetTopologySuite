@@ -47,7 +47,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         /// <param name="pts"></param>
         /// <returns></returns>
-        public int[] GetChainStartIndices(ICoordinate[] pts)
+        public int[] GetChainStartIndices(Coordinate[] pts)
         {
             // find the startpoint (and endpoints) of all monotone chains in this edge
             int start = 0;
@@ -69,7 +69,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// The index of the last point in the monotone chain.
         /// 
         /// </returns>
-        private static int FindChainEnd(ICoordinate[] pts, int start)
+        private static int FindChainEnd(Coordinate[] pts, int start)
         {
             // determine quadrant for chain
             int chainQuad = QuadrantOp.Quadrant(pts[start], pts[start + 1]);

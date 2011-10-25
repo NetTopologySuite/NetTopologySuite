@@ -18,7 +18,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
         /// </summary>
         public LineStringSamples() : base()            
         {
-            ICoordinate[] coordinates = new ICoordinate[]
+            Coordinate[] coordinates = new Coordinate[]
             {
                  new Coordinate(10, 10),
                  new Coordinate(20, 20),
@@ -34,8 +34,8 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
         {
             IPoint pointInLine = Factory.CreatePoint(new Coordinate(20, 10));
             IPoint pointOutLine = Factory.CreatePoint(new Coordinate(20, 31));
-            ILineString aLine = Factory.CreateLineString(new ICoordinate[] { new Coordinate(23, 32.2), new Coordinate(922, 11) });
-            ILineString anotherLine = Factory.CreateLineString(new ICoordinate[] { new Coordinate(0, 1), new Coordinate(30, 30) });
+            ILineString aLine = Factory.CreateLineString(new Coordinate[] { new Coordinate(23, 32.2), new Coordinate(922, 11) });
+            ILineString anotherLine = Factory.CreateLineString(new Coordinate[] { new Coordinate(0, 1), new Coordinate(30, 30) });
 
             try
             {

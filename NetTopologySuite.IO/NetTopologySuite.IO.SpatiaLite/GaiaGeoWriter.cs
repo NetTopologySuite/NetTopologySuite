@@ -267,7 +267,7 @@ namespace NetTopologySuite.IO
             for (var i = 0; i < coordinateSequence.Count; i++)
             {
                 var c = coordinateSequence.GetCoordinate(i);
-                wd(bw, c.X, c.Y, c.M);
+                wd(bw, c.X, c.Y, 0d);
             }
         }
 
@@ -277,7 +277,7 @@ namespace NetTopologySuite.IO
             for (var i = 0; i < coordinateSequence.Count; i++)
             {
                 var c = coordinateSequence.GetCoordinate(i);
-                wd(bw, c.X, c.Y, c.Z, c.M);
+                wd(bw, c.X, c.Y, c.Z, 0d);
             }
         }
 
@@ -339,7 +339,7 @@ namespace NetTopologySuite.IO
 
             // Write initial coordinate
             var cprev = coordinateSequence.GetCoordinate(0);
-            wd(bw, cprev.X, cprev.Y, cprev.M);
+            wd(bw, cprev.X, cprev.Y, 0d/*cprev.M*/);
 
             var maxIndex = coordinateSequence.Count-1;
             if (maxIndex <= 0) return;
@@ -350,12 +350,12 @@ namespace NetTopologySuite.IO
                 var c = coordinateSequence.GetCoordinate(i);
                 var fx = (float)(c.X - cprev.X);
                 var fy = (float)(c.Y - cprev.Y);
-                var fm = (float)(c.M - cprev.M);
+                var fm = 0f;// (float)(c.M - cprev.M);
                 ws(bw, fx, fy, fm);
                 cprev = c;
             }
             cprev = coordinateSequence.GetCoordinate(maxIndex);
-            wd(bw, cprev.X, cprev.Y, cprev.M);
+            wd(bw, cprev.X, cprev.Y, 0d/*cprev.M*/);
         }
 
         private static void WriteCompressedXYZM(ICoordinateSequence coordinateSequence, GaiaExport export, BinaryWriter bw)
@@ -364,7 +364,7 @@ namespace NetTopologySuite.IO
 
             // Write initial coordinate
             var cprev = coordinateSequence.GetCoordinate(0);
-            wd(bw, cprev.X, cprev.Y, cprev.Z, cprev.M);
+            wd(bw, cprev.X, cprev.Y, cprev.Z, 0d/*cprev.M*/);
 
             var maxIndex = coordinateSequence.Count - 1;
             if (maxIndex <= 0) return;
@@ -376,12 +376,12 @@ namespace NetTopologySuite.IO
                 var fx = (float)(c.X - cprev.X);
                 var fy = (float)(c.Y - cprev.Y);
                 var fz = (float)(c.Z - cprev.Z);
-                var fm = (float)(c.M - cprev.M);
+                var fm = 0f;// (float)(c.M - cprev.M);
                 ws(bw, fx, fy, fz, fm);
                 cprev = c;
             }
             cprev = coordinateSequence.GetCoordinate(maxIndex);
-            wd(bw, cprev.X, cprev.Y, cprev.Z, cprev.M);
+            wd(bw, cprev.X, cprev.Y, cprev.Z, 0d/*cprev.M*/);
         }
     }
 }

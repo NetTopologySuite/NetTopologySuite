@@ -34,12 +34,12 @@ namespace NetTopologySuite.Geometries.Utilities
     /// <author>Martin Davis</author>
     public class AffineTransformationBuilder
     {
-        private readonly ICoordinate _src0;
-        private readonly ICoordinate _src1;
-        private readonly ICoordinate _src2;
-        private readonly ICoordinate _dest0;
-        private readonly ICoordinate _dest1;
-        private readonly ICoordinate _dest2;
+        private readonly Coordinate _src0;
+        private readonly Coordinate _src1;
+        private readonly Coordinate _src2;
+        private readonly Coordinate _dest0;
+        private readonly Coordinate _dest1;
+        private readonly Coordinate _dest2;
 
         // the matrix entries for the transformation
         private double _m00, _m01, _m02, _m10, _m11, _m12;
@@ -53,12 +53,12 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="dest0">The image of <paramref name="src0"/> under the required transformation</param>
         /// <param name="dest1">The image of <paramref name="src1"/> under the required transformation</param>
         /// <param name="dest2">The image of <paramref name="src2"/> under the required transformation</param>
-        public AffineTransformationBuilder(ICoordinate src0,
-            ICoordinate src1,
-            ICoordinate src2,
-            ICoordinate dest0,
-            ICoordinate dest1,
-            ICoordinate dest2)
+        public AffineTransformationBuilder(Coordinate src0,
+            Coordinate src1,
+            Coordinate src2,
+            Coordinate dest0,
+            Coordinate dest1,
+            Coordinate dest2)
         {
             _src0 = src0;
             _src1 = src1;

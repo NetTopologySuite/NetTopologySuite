@@ -49,10 +49,10 @@ namespace NetTopologySuite.Index.Chain
     ///</remarks>
     public class MonotoneChain
     {
-        private readonly ICoordinate[] _pts;
+        private readonly Coordinate[] _pts;
         private readonly int _start;
         private readonly int _end;
-        private IEnvelope _env;
+        private Envelope _env;
         private readonly object _context;  // user-defined information
         private int _id;                   // useful for optimizing chain comparisons
 
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Index.Chain
         /// <param name="start"></param>
         /// <param name="end"></param>
         /// <param name="context"></param>
-        public MonotoneChain(ICoordinate[] pts, int start, int end, object context)
+        public MonotoneChain(Coordinate[] pts, int start, int end, object context)
         {
             _pts = pts;
             _start = start;
@@ -100,14 +100,14 @@ namespace NetTopologySuite.Index.Chain
         /// <summary>
         /// Gets the chain's envelope
         /// </summary>
-        public IEnvelope Envelope
+        public Envelope Envelope
         {
             get
             {
                 if (_env == null)
                 {
-                    ICoordinate p0 = _pts[_start];
-                    ICoordinate p1 = _pts[_end];
+                    Coordinate p0 = _pts[_start];
+                    Coordinate p1 = _pts[_end];
                     _env = new Envelope(p0, p1);
                 }
                 return _env;
@@ -151,11 +151,11 @@ namespace NetTopologySuite.Index.Chain
         /// Return the subsequence of coordinates forming this chain.
         /// Allocates a new array to hold the Coordinates.
         /// </summary>
-        public ICoordinate[] Coordinates
+        public Coordinate[] Coordinates
         {
             get
             {
-                ICoordinate[] coord = new ICoordinate[_end - _start + 1];
+                Coordinate[] coord = new Coordinate[_end - _start + 1];
                 int index = 0;
                 for (int i = _start; i <= _end; i++) 
                     coord[index++] = _pts[i];                
@@ -178,7 +178,7 @@ namespace NetTopologySuite.Index.Chain
         /// </remarks>
         /// <param name="searchEnv">The search envelope</param>
         /// <param name="mcs">The select action to execute on selected segments</param>
-        public void Select(IEnvelope searchEnv, MonotoneChainSelectAction mcs)
+        public void Select(Envelope searchEnv, MonotoneChainSelectAction mcs)
         {
             ComputeSelect(searchEnv, _start, _end, mcs);
         }
@@ -190,10 +190,10 @@ namespace NetTopologySuite.Index.Chain
         /// <param name="start0"></param>
         /// <param name="end0"></param>
         /// <param name="mcs"></param>
-        private void ComputeSelect(IEnvelope searchEnv, int start0, int end0, MonotoneChainSelectAction mcs)
+        private void ComputeSelect(Envelope searchEnv, int start0, int end0, MonotoneChainSelectAction mcs)
         {
-            ICoordinate p0 = _pts[start0];
-            ICoordinate p1 = _pts[end0];
+            Coordinate p0 = _pts[start0];
+            Coordinate p1 = _pts[end0];
             mcs.TempEnv1.Init(p0, p1);
             
             // terminating condition for the recursion
@@ -255,10 +255,10 @@ namespace NetTopologySuite.Index.Chain
         /// <param name="mco"></param>
         private void ComputeOverlaps(int start0, int end0, MonotoneChain mc, int start1, int end1, MonotoneChainOverlapAction mco)
         {
-            ICoordinate p00 = _pts[start0];
-            ICoordinate p01 = _pts[end0];
-            ICoordinate p10 = mc._pts[start1];
-            ICoordinate p11 = mc._pts[end1];
+            Coordinate p00 = _pts[start0];
+            Coordinate p01 = _pts[end0];
+            Coordinate p10 = mc._pts[start1];
+            Coordinate p11 = mc._pts[end1];
             
             // terminating condition for the recursion
             if (end0 - start0 == 1 && end1 - start1 == 1)

@@ -25,7 +25,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Attributes
 
         private void TestShapeCreation()
         {
-            var points = new ICoordinate[3];
+            var points = new Coordinate[3];
             points[0] = new Coordinate(0, 0);
             points[1] = new Coordinate(1, 0);
             points[2] = new Coordinate(1, 1);

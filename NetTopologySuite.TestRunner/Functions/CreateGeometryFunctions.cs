@@ -32,19 +32,19 @@ namespace Open.Topology.TestRunner.Functions
 
         private static IGeometry fontGlyph(IGeometry g, String text, Font font)
         {
-            IEnvelope env = FunctionsUtil.getEnvelopeOrDefault(g);
-            IGeometryFactory geomFact = FunctionsUtil.getFactoryOrDefault(g);
+            var env = FunctionsUtil.getEnvelopeOrDefault(g);
+            var geomFact = FunctionsUtil.getFactoryOrDefault(g);
 
-            IGeometry textGeom = FontGlyphReader.Read(text, font, geomFact);
+            var textGeom = FontGlyphReader.Read(text, font, geomFact);
             var envText = textGeom.EnvelopeInternal;
 
             if (g != null)
             {
                 // transform to baseline
-                ICoordinate baseText0 = new Coordinate(envText.MinX, envText.MinY);
-                ICoordinate baseText1 = new Coordinate(envText.MaxX, envText.MinY);
-                ICoordinate baseGeom0 = new Coordinate(env.MinX, env.MinY);
-                ICoordinate baseGeom1 = new Coordinate(env.MaxX, env.MinY);
+                var baseText0 = new Coordinate(envText.MinX, envText.MinY);
+                var baseText1 = new Coordinate(envText.MaxX, envText.MinY);
+                var baseGeom0 = new Coordinate(env.MinX, env.MinY);
+                var baseGeom1 = new Coordinate(env.MaxX, env.MinY);
                 AffineTransformation trans = AffineTransformationFactory.CreateFromBaseLines(baseText0, baseText1,
                                                                                              baseGeom0, baseGeom1);
                 return trans.Transform(textGeom);

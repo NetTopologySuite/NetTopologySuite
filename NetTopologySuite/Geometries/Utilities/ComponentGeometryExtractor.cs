@@ -4,30 +4,30 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Geometries.Utilities
 {
     ///<summary>
-    /// Extracts a single representative <see cref="ICoordinate"/> from each connected component of a <see cref="IGeometry"/>.
+    /// Extracts a single representative <see cref="Coordinate"/> from each connected component of a <see cref="IGeometry"/>.
     ///</summary>
     /// <version>1.9</version>
     public class ComponentCoordinateExtracter : IGeometryComponentFilter
     {
 
         ///<summary>
-        /// Extracts a single representative <see cref="ICoordinate"/> from each connected component of a <see cref="IGeometry"/>.
+        /// Extracts a single representative <see cref="Coordinate"/> from each connected component of a <see cref="IGeometry"/>.
         ///</summary>
         /// <param name="geom">The Geometry from which to extract</param>
         /// <returns>A list of Coordinates</returns>
-        public static IList<ICoordinate> GetCoordinates(IGeometry geom)
+        public static IList<Coordinate> GetCoordinates(IGeometry geom)
         {
-            IList<ICoordinate> coords = new List<ICoordinate>();
+            IList<Coordinate> coords = new List<Coordinate>();
             geom.Apply(new ComponentCoordinateExtracter(coords));
             return coords;
         }
 
-        private readonly IList<ICoordinate> _coords;
+        private readonly IList<Coordinate> _coords;
 
         ///<summary>
         /// Constructs a LineExtracterFilter with a list in which to store LineStrings found.
         ///</summary>
-        public ComponentCoordinateExtracter(IList<ICoordinate> coords)
+        public ComponentCoordinateExtracter(IList<Coordinate> coords)
         {
             _coords = coords;
         }

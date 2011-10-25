@@ -224,7 +224,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
     class AverageZFilter : ICoordinateFilter
     {
-        public void Filter(ICoordinate coord)
+        public void Filter(Coordinate coord)
         {
             coord.Z = (coord.X + coord.Y) / 2;
         }

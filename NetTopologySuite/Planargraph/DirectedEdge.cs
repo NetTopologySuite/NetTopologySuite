@@ -35,8 +35,8 @@ namespace NetTopologySuite.Planargraph
         protected Node from;        
         protected Node to;
         
-        protected ICoordinate p0;
-        protected ICoordinate p1;
+        protected Coordinate p0;
+        protected Coordinate p1;
 
         private DirectedEdge _sym;  // optional
         
@@ -58,7 +58,7 @@ namespace NetTopologySuite.Planargraph
         /// Whether this DirectedEdge's direction is the same as or
         /// opposite to that of the parent Edge (if any).
         /// </param>
-        public DirectedEdge(Node from, Node to, ICoordinate directionPt, bool edgeDirection)
+        public DirectedEdge(Node from, Node to, Coordinate directionPt, bool edgeDirection)
         {
             this.from = from;
             this.to = to;
@@ -96,7 +96,7 @@ namespace NetTopologySuite.Planargraph
         /// Returns a point to which an imaginary line is drawn from the from-node to
         /// specify this DirectedEdge's orientation.
         /// </summary>
-        public ICoordinate DirectionPt
+        public Coordinate DirectionPt
         {
             get { return p1; }
         }
@@ -130,7 +130,7 @@ namespace NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the coordinate of the from-node.
         /// </summary>
-        public ICoordinate Coordinate
+        public Coordinate Coordinate
         {
             get { return from.Coordinate; }
         }

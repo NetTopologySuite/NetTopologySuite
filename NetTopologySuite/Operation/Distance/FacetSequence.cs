@@ -18,8 +18,8 @@ namespace NetTopologySuite.Operation.Distance
         private readonly int _end;
 
         // temporary Coordinates to materialize points from the CoordinateSequence
-        private readonly ICoordinate _pt = new Coordinate();
-        private readonly ICoordinate _seqPt = new Coordinate();
+        private readonly Coordinate _pt = new Coordinate();
+        private readonly Coordinate _seqPt = new Coordinate();
 
         /// <summary>
         /// Creates a new section based on a CoordinateSequence.
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <summary>
         /// Gets the envelope of this facet sequence
         /// </summary>
-        public IEnvelope Envelope
+        public Envelope Envelope
         {
             get
             {
@@ -75,7 +75,7 @@ namespace NetTopologySuite.Operation.Distance
         /// </summary>
         /// <param name="index">The index</param>
         /// <returns>The coordinate at the given index</returns>
-        public ICoordinate GetCoordinate(int index)
+        public Coordinate GetCoordinate(int index)
         {
             return _pts.GetCoordinate(_start + index);
         }
@@ -154,7 +154,7 @@ namespace NetTopologySuite.Operation.Distance
             return minDistance;
         }
 
-        private double ComputePointLineDistance(ICoordinate pt, FacetSequence facetSeq)
+        private double ComputePointLineDistance(Coordinate pt, FacetSequence facetSeq)
         {
             double minDistance = Double.MaxValue;
 

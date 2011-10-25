@@ -15,7 +15,7 @@ namespace NetTopologySuite.Operation.Linemerge
     {
         private IGeometryFactory factory;
         private IList directedEdges = new ArrayList();
-        private ICoordinate[] coordinates = null;
+        private Coordinate[] coordinates = null;
 
         /// <summary>
         /// Constructs an EdgeString with the given factory used to convert this EdgeString
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Operation.Linemerge
         /// <summary>
         /// 
         /// </summary>
-        private ICoordinate[] Coordinates
+        private Coordinate[] Coordinates
         {
             get
             {

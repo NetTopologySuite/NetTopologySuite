@@ -25,7 +25,7 @@ namespace NetTopologySuite.Operation.Predicate
         }
 
         private IPolygon rectangle;
-        private IEnvelope rectEnv;
+        private Envelope rectEnv;
 
         /// <summary>
         /// Create a new contains computer for two geometries.
@@ -91,7 +91,7 @@ namespace NetTopologySuite.Operation.Predicate
         /// </summary>
         /// <param name="pt">the point to test</param>
         /// <returns>true if the point is contained in the boundary</returns>
-        private bool IsPointContainedInBoundary(ICoordinate pt)
+        private bool IsPointContainedInBoundary(Coordinate pt)
         {
 
             /**
@@ -113,8 +113,8 @@ namespace NetTopologySuite.Operation.Predicate
         private bool IsLineStringContainedInBoundary(ILineString line)
         {
             ICoordinateSequence seq = line.CoordinateSequence;
-            ICoordinate p0 = new Coordinate();
-            ICoordinate p1 = new Coordinate();
+            Coordinate p0 = new Coordinate();
+            Coordinate p1 = new Coordinate();
             for (int i = 0; i < seq.Count - 1; i++)
             {
                 seq.GetCoordinate(i, p0);
@@ -131,7 +131,7 @@ namespace NetTopologySuite.Operation.Predicate
         /// <param name="p0">an endpoint of the segment</param>
         /// <param name="p1">an endpoint of the segment</param>
         /// <returns>true if the line segment is contained in the boundary</returns>
-        private bool IsLineSegmentContainedInBoundary(ICoordinate p0, ICoordinate p1)
+        private bool IsLineSegmentContainedInBoundary(Coordinate p0, Coordinate p1)
         {
             if (p0.Equals(p1))
                 return IsPointContainedInBoundary(p0);

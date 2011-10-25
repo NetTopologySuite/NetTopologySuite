@@ -18,11 +18,11 @@ namespace NetTopologySuite.Mathematics
         /// <param name="p1">A point</param>
         /// <param name="p2">A point</param>
         /// <returns>The normal vector to the triangle <paramref name="p0"/>-<paramref name="p1"/>-<paramref name="p2"/></returns>
-        public static ICoordinate NormalToTriangle(ICoordinate p0, ICoordinate p1, ICoordinate p2)
+        public static Coordinate NormalToTriangle(Coordinate p0, Coordinate p1, Coordinate p2)
         {
-            ICoordinate v1 = new Coordinate(p1.X - p0.X, p1.Y - p0.Y, p1.Z - p0.Z);
-            ICoordinate v2 = new Coordinate(p2.X - p0.X, p2.Y - p0.Y, p2.Z - p0.Z);
-            ICoordinate cp = CrossProduct(v1, v2);
+            Coordinate v1 = new Coordinate(p1.X - p0.X, p1.Y - p0.Y, p1.Z - p0.Z);
+            Coordinate v2 = new Coordinate(p2.X - p0.X, p2.Y - p0.Y, p2.Z - p0.Z);
+            Coordinate cp = CrossProduct(v1, v2);
             Normalize(cp);
             return cp;
         }
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Mathematics
         /// Normalizes the vector <param name="v"></param>
         /// </summary>
         /// <param name="v">The normalized <paramref name="v"/></param>
-        public static void Normalize(ICoordinate v)
+        public static void Normalize(Coordinate v)
         {
             double absVal = Math.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z);
             v.X /= absVal;
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Mathematics
         /// <param name="v1">A vector</param>
         /// <param name="v2">A vector</param>
         /// <returns>The cross product of <paramref name="v1"/> and <paramref name="v2"/></returns>
-        public static ICoordinate CrossProduct(ICoordinate v1, ICoordinate v2)
+        public static Coordinate CrossProduct(Coordinate v1, Coordinate v2)
         {
             double x = Det(v1.Y, v1.Z, v2.Y, v2.Z);
             double y = -Det(v1.X, v1.Z, v2.X, v2.Z);
@@ -59,7 +59,7 @@ namespace NetTopologySuite.Mathematics
         /// <param name="v1">A vector</param>
         /// <param name="v2">A vector</param>
         /// <returns>The dot product of <paramref name="v1"/> and <paramref name="v2"/></returns>
-        public static double DotProduct(ICoordinate v1, ICoordinate v2)
+        public static double DotProduct(Coordinate v1, Coordinate v2)
         {
             return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
         }

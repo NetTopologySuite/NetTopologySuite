@@ -60,7 +60,7 @@ namespace NetTopologySuite.Noding
             if (IsValid)
                 return "no intersections found";
 
-            ICoordinate[] intSegs = _segInt.IntersectionSegments;
+            Coordinate[] intSegs = _segInt.IntersectionSegments;
             return "found non-noded intersection between "
                 + WKTWriter.ToLineString(intSegs[0], intSegs[1])
                 + " and "

@@ -12,7 +12,7 @@ namespace NetTopologySuite.Operation.Valid
     {
 
         // save the repeated coord found (if any)
-        private ICoordinate repeatedCoord;
+        private Coordinate repeatedCoord;
 
         /// <summary>
         /// 
@@ -22,7 +22,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -55,7 +55,7 @@ namespace NetTopologySuite.Operation.Valid
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>
-        public bool HasRepeatedPoint(ICoordinate[] coord)
+        public bool HasRepeatedPoint(Coordinate[] coord)
         {
             for (int i = 1; i < coord.Length; i++)
             {

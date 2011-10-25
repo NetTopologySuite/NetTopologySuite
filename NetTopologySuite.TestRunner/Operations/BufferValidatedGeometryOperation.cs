@@ -192,7 +192,7 @@ namespace Open.Topology.TestRunner.Operations
             }
         }
 
-        private static void ReportError(String msg, ICoordinate loc)
+        private static void ReportError(String msg, Coordinate loc)
         {
             String locStr = "";
             if (loc != null)

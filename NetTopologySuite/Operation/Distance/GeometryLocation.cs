@@ -22,7 +22,7 @@ namespace NetTopologySuite.Operation.Distance
 
         private readonly IGeometry _component;
         private readonly int _segIndex;
-        private readonly ICoordinate _pt;
+        private readonly Coordinate _pt;
 
         /// <summary>
         /// Constructs a GeometryLocation specifying a point on a point, as well as the 
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <param name="component">The component of the geometry containing the point</param>
         /// <param name="segIndex">The segment index of the location, or <see cref="InsideArea"/></param>
         /// <param name="pt">The coordinate of the location</param>
-        public GeometryLocation(IGeometry component, int segIndex, ICoordinate pt)
+        public GeometryLocation(IGeometry component, int segIndex, Coordinate pt)
         {
             _component = component;
             _segIndex = segIndex;
@@ -43,7 +43,7 @@ namespace NetTopologySuite.Operation.Distance
         /// </summary>
         /// <param name="component">The component of the geometry containing the point</param>
         /// <param name="pt">The coordinate of the location</param>
-        public GeometryLocation(IGeometry component, ICoordinate pt) : this(component, InsideArea, pt) { }
+        public GeometryLocation(IGeometry component, Coordinate pt) : this(component, InsideArea, pt) { }
 
         /// <summary>
         /// Returns the geometry component on (or in) which this location occurs.
@@ -69,9 +69,9 @@ namespace NetTopologySuite.Operation.Distance
         }
 
         /// <summary>
-        /// Returns the <see cref="ICoordinate"/> of this location.
+        /// Returns the <see cref="Coordinate"/> of this location.
         /// </summary>
-        public ICoordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {

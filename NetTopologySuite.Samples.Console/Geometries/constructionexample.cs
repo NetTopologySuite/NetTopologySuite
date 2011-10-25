@@ -27,7 +27,7 @@ namespace NetTopologySuite.Samples.Geometries
 			IPoint p2 = fact.CreatePoint(new Coordinate(1, 1));
 			Console.WriteLine(p1);
 			
-			IMultiPoint mpt = fact.CreateMultiPoint(new ICoordinate[]{ new Coordinate(0, 0), new Coordinate(1, 1), });
+			IMultiPoint mpt = fact.CreateMultiPoint(new Coordinate[]{ new Coordinate(0, 0), new Coordinate(1, 1), });
 			Console.WriteLine(mpt);
 		}
 	}

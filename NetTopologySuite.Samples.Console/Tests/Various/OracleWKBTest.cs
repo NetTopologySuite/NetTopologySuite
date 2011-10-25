@@ -56,12 +56,12 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test] 
         public void OracleWKBBigIndianWriteTest()
         {
-            ILinearRing shell = Factory.CreateLinearRing(new ICoordinate[] {    new Coordinate(100,100),
+            ILinearRing shell = Factory.CreateLinearRing(new Coordinate[] {    new Coordinate(100,100),
                                                                                 new Coordinate(200,100),
                                                                                 new Coordinate(200,200),                
                                                                                 new Coordinate(100,200),
                                                                                 new Coordinate(100,100), });
-            ILinearRing hole = Factory.CreateLinearRing(new ICoordinate[] {     new Coordinate(120,120),
+            ILinearRing hole = Factory.CreateLinearRing(new Coordinate[] {     new Coordinate(120,120),
                                                                                 new Coordinate(180,120),
                                                                                 new Coordinate(180,180),                                                                                
                                                                                 new Coordinate(120,180),                                                                

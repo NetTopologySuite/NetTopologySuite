@@ -83,7 +83,7 @@ public class CreateRandomGeometryFunctions {
         double y0 = env.MinY + yLen * RND.NextDouble();
         double x1 = env.MinX + xLen * RND.NextDouble();
         double y1 = env.MinY + yLen * RND.NextDouble();
-      lines.Add(geomFact.CreateLineString(new ICoordinate[] {
+      lines.Add(geomFact.CreateLineString(new [] {
           new Coordinate(x0, y0), new Coordinate(x1, y1) }));
     }
     return geomFact.BuildGeometry(lines);
@@ -106,7 +106,7 @@ public class CreateRandomGeometryFunctions {
           double y0 = env.MinY + j * yLen + yLen * RND.NextDouble();
           double x1 = env.MinX + i * xLen + xLen * RND.NextDouble();
           double y1 = env.MinY + j * yLen + yLen * RND.NextDouble();
-        lines.Add(geomFact.CreateLineString(new ICoordinate[] {
+        lines.Add(geomFact.CreateLineString(new [] {
             new Coordinate(x0, y0), new Coordinate(x1, y1) }));
       }
     }
@@ -119,7 +119,7 @@ public class CreateRandomGeometryFunctions {
     double width = env.Width;
     double hgt = env.Height;
 
-    var pts = new ICoordinate[nPts];
+    var pts = new Coordinate[nPts];
 
     for (int i = 0; i < nPts; i++) {
         double xLen = width * RND.NextDouble();
@@ -135,11 +135,11 @@ public class CreateRandomGeometryFunctions {
     double xLen = env.Width;
     double yLen = env.Height;
 
-    var pts = new ICoordinate[nPts];
+    var pts = new Coordinate[nPts];
 
     bool xory = true;
     for (int i = 0; i < nPts; i++) {
-      ICoordinate pt = null;
+      Coordinate pt = null;
       if (i == 0) {
        pt = randomPtAround(env.Centre, xLen, yLen);
       }
@@ -171,7 +171,7 @@ public class CreateRandomGeometryFunctions {
     }
   }
   
-  private static ICoordinate randomPtAround(ICoordinate basePt, double xLen, double yLen)
+  private static Coordinate randomPtAround(Coordinate basePt, double xLen, double yLen)
   {
       double x0 = basePt.X + xLen * (RND.NextDouble() - 0.5);
       double y0 = basePt.Y + yLen * (RND.NextDouble() - 0.5);

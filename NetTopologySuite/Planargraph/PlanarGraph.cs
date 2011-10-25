@@ -41,7 +41,7 @@ namespace NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        public Node FindNode(ICoordinate pt)
+        public Node FindNode(Coordinate pt)
         {
             return nodeMap.Find(pt);
         }

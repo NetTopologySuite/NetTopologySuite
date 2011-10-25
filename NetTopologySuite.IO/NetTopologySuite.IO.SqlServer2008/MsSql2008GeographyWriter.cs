@@ -103,10 +103,10 @@ namespace NetTopologySuite.IO
 			_builder.EndGeography();
 		}
 
-		private void AddCoordinates(ICoordinate[] coordinates)
+		private void AddCoordinates(Coordinate[] coordinates)
 		{
 			int points = 0;
-			Array.ForEach(coordinates, delegate(ICoordinate coordinate)
+			Array.ForEach(coordinates, delegate(Coordinate coordinate)
 			{
 				double? z = null;
 				if (!double.IsNaN(coordinate.Z) && !double.IsInfinity(coordinate.Z))

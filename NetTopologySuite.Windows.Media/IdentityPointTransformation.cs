@@ -45,14 +45,14 @@ namespace NetTopologySuite.Windows.Media
 {
     public class IdentityPointTransformation : IPointTransformation
     {
-	    public void Transform(ICoordinate model, ref WpfPoint view)
+	    public void Transform(Coordinate model, ref WpfPoint view)
 	    {
 	        view.X = model.X;
 	        view.Y = model.Y;
 
 	    }
 
-        public WpfPoint[] Transform (ICoordinate[] model)
+        public WpfPoint[] Transform (Coordinate[] model)
         {
             var ret = new WpfPoint[model.Length];
             for (var i = 0; i < model.Length; i++ )
@@ -70,14 +70,14 @@ namespace NetTopologySuite.Windows.Media
             _yOffset = yOffset;
         }
         
-        public void Transform(ICoordinate model, ref WpfPoint view)
+        public void Transform(Coordinate model, ref WpfPoint view)
         {
             view.X = (float)model.X;
             view.Y = _yOffset-(float)model.Y;
 
         }
 
-        public WpfPoint[] Transform(ICoordinate[] model)
+        public WpfPoint[] Transform(Coordinate[] model)
         {
             var ret = new WpfPoint[model.Length];
             for (var i = 0; i < model.Length; i++)

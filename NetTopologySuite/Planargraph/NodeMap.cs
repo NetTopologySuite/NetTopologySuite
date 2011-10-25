@@ -9,7 +9,7 @@ namespace NetTopologySuite.Planargraph
     /// </summary>   
     public class NodeMap
     {
-        private readonly IDictionary<ICoordinate, Node> _nodeMap = new OrderedDictionary<ICoordinate, Node>();
+        private readonly IDictionary<Coordinate, Node> _nodeMap = new OrderedDictionary<Coordinate, Node>();
         /*
         /// <summary>
         /// Constructs a NodeMap without any Nodes.
@@ -32,7 +32,7 @@ namespace NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        public Node Remove(ICoordinate pt)
+        public Node Remove(Coordinate pt)
         {
             if (_nodeMap.ContainsKey(pt))
                 return null;
@@ -46,7 +46,7 @@ namespace NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>
-        public Node Find(ICoordinate coord)
+        public Node Find(Coordinate coord)
         {
             Node res;
             if (_nodeMap.TryGetValue(coord, out res))

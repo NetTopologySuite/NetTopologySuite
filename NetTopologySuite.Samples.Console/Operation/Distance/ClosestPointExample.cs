@@ -64,7 +64,7 @@ namespace NetTopologySuite.Samples.Operation.Distance
 				double distance = distOp.Distance();
 				Console.WriteLine("Distance = " + distance);
 				
-				ICoordinate[] closestPt = distOp.NearestPoints();
+				Coordinate[] closestPt = distOp.NearestPoints();
 				ILineString closestPtLine = fact.CreateLineString(closestPt);
 				Console.WriteLine("Closest points: " + closestPtLine + " (distance = " + closestPtLine.Length + ")");
 			}

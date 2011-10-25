@@ -63,7 +63,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
                 this.geom = geom;
             }
 
-            public void Filter(ICoordinate pt)
+            public void Filter(Coordinate pt)
             {
                 minPtDist.Initialize();
                 DistanceToPointFinder.ComputeDistance(geom, pt, minPtDist);

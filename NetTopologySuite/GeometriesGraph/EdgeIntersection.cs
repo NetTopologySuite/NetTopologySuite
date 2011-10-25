@@ -17,12 +17,12 @@ namespace NetTopologySuite.GeometriesGraph
     /// </summary>
     public class EdgeIntersection : IComparable
     {
-        private readonly ICoordinate _coordinate;   
+        private readonly Coordinate _coordinate;   
 
         /// <summary>
         /// The point of intersection.
         /// </summary>
-        public ICoordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -74,7 +74,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="coord"></param>
         /// <param name="segmentIndex"></param>
         /// <param name="dist"></param>
-        public EdgeIntersection(ICoordinate coord, int segmentIndex, double dist) 
+        public EdgeIntersection(Coordinate coord, int segmentIndex, double dist) 
         {
             _coordinate = new Coordinate(coord);
             _segmentIndex = segmentIndex;

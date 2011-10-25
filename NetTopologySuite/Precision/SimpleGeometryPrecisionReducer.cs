@@ -121,23 +121,23 @@ namespace NetTopologySuite.Precision
             /// <param name="coordinates"></param>
             /// <param name="geom"></param>
             /// <returns></returns>
-            public override ICoordinate[] Edit(ICoordinate[] coordinates, IGeometry geom)
+            public override Coordinate[] Edit(Coordinate[] coordinates, IGeometry geom)
             {
                 if (coordinates.Length == 0) 
                     return null;
 
-                ICoordinate[] reducedCoords = new ICoordinate[coordinates.Length];
+                Coordinate[] reducedCoords = new Coordinate[coordinates.Length];
                 // copy coordinates and reduce
                 for (int i = 0; i < coordinates.Length; i++) 
                 {
-                    ICoordinate coord = new Coordinate(coordinates[i]);
+                    Coordinate coord = new Coordinate(coordinates[i]);
                     _container._newPrecisionModel.MakePrecise( coord);
                     reducedCoords[i] = coord;
                 }
 
                 // remove repeated points, to simplify returned point as much as possible
                 CoordinateList noRepeatedCoordList = new CoordinateList(reducedCoords, false);
-                ICoordinate[] noRepeatedCoords = noRepeatedCoordList.ToCoordinateArray();
+                Coordinate[] noRepeatedCoords = noRepeatedCoordList.ToCoordinateArray();
 
                 /*
                 * Check to see if the removal of repeated points
@@ -155,7 +155,7 @@ namespace NetTopologySuite.Precision
                 if (geom is ILinearRing) 
                     minLength = 4;
 
-                ICoordinate[] collapsedCoords = reducedCoords;
+                Coordinate[] collapsedCoords = reducedCoords;
                 if (_container._removeCollapsed) 
                     collapsedCoords = null;
 

@@ -17,9 +17,9 @@ public class PolygonWpfGeometry
     /// Creates a new polygon shape.
     ///</summary>
     /// <param name="shellVertices">The vertices of the shell</param>
-    /// <param name="holeVerticesCollection">A collection of ICoordinate[] for each hole</param>
-    public PolygonWpfGeometry(ICoordinate[] shellVertices,
-        IEnumerable<ICoordinate[]> holeVerticesCollection)
+    /// <param name="holeVerticesCollection">A collection of Coordinate[] for each hole</param>
+    public PolygonWpfGeometry(Coordinate[] shellVertices,
+        IEnumerable<Coordinate[]> holeVerticesCollection)
     {
         var path = new WpfStreamGeometry();
         using (var sgc = path.Open())
@@ -74,7 +74,7 @@ public class PolygonWpfGeometry
     ///<param name="coordinates">A coordinate sequence</param>
     ///<param name="filled">Starting paramter for </param>
     ///<returns>The path for the coordinate sequence</returns>
-    private static void AddRing(StreamGeometryContext sgc, ICoordinate[] coordinates, bool filled)
+    private static void AddRing(StreamGeometryContext sgc, Coordinate[] coordinates, bool filled)
     {
         if (coordinates.Length <= 0) 
             return;
@@ -84,12 +84,12 @@ public class PolygonWpfGeometry
             sgc.PolyLineTo(ToPoint(coordinates, 1), true, true);
     }
 
-    private static WpfPoint ToPoint(ICoordinate coordinate)
+    private static WpfPoint ToPoint(Coordinate coordinate)
     {
         return new WpfPoint(coordinate.X, coordinate.Y);
     }
 
-    private static IList<WpfPoint> ToPoint(ICoordinate[] coordinates, int start)
+    private static IList<WpfPoint> ToPoint(Coordinate[] coordinates, int start)
     {
         var ret = new List<WpfPoint>(coordinates.Length - start);
         for( var i = start; i < coordinates.Length; i++)

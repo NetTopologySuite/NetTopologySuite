@@ -49,7 +49,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <returns></returns>
         public static double ComputeSizeBasedSnapTolerance(IGeometry g)
         {
-            IEnvelope env = g.EnvelopeInternal;
+            Envelope env = g.EnvelopeInternal;
             double minDimension = Math.Min(env.Height, env.Width);
             double snapTol = minDimension * SnapPrexisionFactor;
             return snapTol;
@@ -104,7 +104,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// </summary>
         /// <param name="ringPts"></param>
         /// <returns></returns>
-        private double ComputeSnapTolerance(ICoordinate[] ringPts)
+        private double ComputeSnapTolerance(Coordinate[] ringPts)
         {
             double minSegLen = ComputeMinimumSegmentLength(ringPts);
             // Use a small percentage of this to be safe
@@ -117,7 +117,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// </summary>
         /// <param name="pts"></param>
         /// <returns></returns>
-        private double ComputeMinimumSegmentLength(ICoordinate[] pts)
+        private double ComputeMinimumSegmentLength(Coordinate[] pts)
         {
             double minSegLen = Double.MaxValue;
             for (int i = 0; i < pts.Length - 1; i++) 
@@ -139,7 +139,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <returns>a new snapped Geometry</returns>
         public IGeometry SnapTo(IGeometry g, double tolerance)
         {
-            ICoordinate[] snapPts = ExtractTargetCoordinates(g);
+            Coordinate[] snapPts = ExtractTargetCoordinates(g);
 
             SnapTransformer snapTrans = new SnapTransformer(tolerance, snapPts);
             return snapTrans.Transform(srcGeom);
@@ -150,11 +150,11 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// </summary>
         /// <param name="g"></param>
         /// <returns></returns>
-        public ICoordinate[] ExtractTargetCoordinates(IGeometry g)
+        public Coordinate[] ExtractTargetCoordinates(IGeometry g)
         {
             // TODO: should do this more efficiently.  Use CoordSeq filter to get points, KDTree for uniqueness & queries
-            Set<ICoordinate> ptSet = new Set<ICoordinate>(g.Coordinates);
-            ICoordinate[] result = new ICoordinate[ptSet.Count];
+            Set<Coordinate> ptSet = new Set<Coordinate>(g.Coordinates);
+            Coordinate[] result = new Coordinate[ptSet.Count];
             ptSet.CopyTo(result, 0);
             return result;
         }
@@ -166,14 +166,14 @@ namespace NetTopologySuite.Operation.Overlay.Snap
     class SnapTransformer : GeometryTransformer
     {
         private double snapTolerance;
-        private ICoordinate[] snapPts;
+        private Coordinate[] snapPts;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="snapTolerance"></param>
         /// <param name="snapPts"></param>
-        public SnapTransformer(double snapTolerance, ICoordinate[] snapPts)
+        public SnapTransformer(double snapTolerance, Coordinate[] snapPts)
         {
             this.snapTolerance = snapTolerance;
             this.snapPts = snapPts;
@@ -187,8 +187,8 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <returns></returns>
         protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
         {
-            ICoordinate[] srcPts = coords.ToCoordinateArray();
-            ICoordinate[] newPts = SnapLine(srcPts, snapPts);
+            Coordinate[] srcPts = coords.ToCoordinateArray();
+            Coordinate[] newPts = SnapLine(srcPts, snapPts);
             return Factory.CoordinateSequenceFactory.Create(newPts);
         }
 
@@ -198,7 +198,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <param name="srcPts"></param>
         /// <param name="snapPts"></param>
         /// <returns></returns>
-        private ICoordinate[] SnapLine(ICoordinate[] srcPts, ICoordinate[] snapPts)
+        private Coordinate[] SnapLine(Coordinate[] srcPts, Coordinate[] snapPts)
         {
             LineStringSnapper snapper = new LineStringSnapper(srcPts, snapTolerance);
             return snapper.SnapTo(snapPts);

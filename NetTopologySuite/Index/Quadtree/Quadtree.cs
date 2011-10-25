@@ -32,7 +32,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="itemEnv"></param>
         /// <param name="minExtent"></param>
-        public static IEnvelope EnsureExtent(IEnvelope itemEnv, double minExtent)
+        public static Envelope EnsureExtent(Envelope itemEnv, double minExtent)
         {
             //The names "ensureExtent" and "minExtent" are misleading -- sounds like
             //this method ensures that the extents are greater than minExtent.
@@ -113,10 +113,10 @@ namespace NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="itemEnv"></param>
         /// <param name="item"></param>
-        public void Insert(IEnvelope itemEnv, T item)
+        public void Insert(Envelope itemEnv, T item)
         {
             CollectStats(itemEnv);
-            IEnvelope insertEnv = EnsureExtent(itemEnv, _minExtent);
+            Envelope insertEnv = EnsureExtent(itemEnv, _minExtent);
             _root.Insert(insertEnv, item);
         }
 
@@ -126,9 +126,9 @@ namespace NetTopologySuite.Index.Quadtree
         /// <param name="itemEnv">The Envelope of the item to be removed.</param>
         /// <param name="item">The item to remove.</param>
         /// <returns><c>true</c> if the item was found (and thus removed).</returns>
-        public bool Remove(IEnvelope itemEnv, T item)
+        public bool Remove(Envelope itemEnv, T item)
         {
-            IEnvelope posEnv = EnsureExtent(itemEnv, _minExtent);
+            Envelope posEnv = EnsureExtent(itemEnv, _minExtent);
             return _root.Remove(posEnv, item);
         }        
 
@@ -146,7 +146,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// </remarks>
         /// <param name="searchEnv">The envelope of the desired query area.</param>
         /// <returns>A List of items which may intersect the search envelope</returns>
-        public IList<T> Query(IEnvelope searchEnv)
+        public IList<T> Query(Envelope searchEnv)
         {
             /*
             * the items that are matched are the items in quads which
@@ -171,7 +171,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// </remarks>
         /// <param name="searchEnv">The envelope of the desired query area.</param>
         /// <param name="visitor">A visitor object which is passed the visited items</param>
-        public void Query(IEnvelope searchEnv, IItemVisitor<T> visitor)
+        public void Query(Envelope searchEnv, IItemVisitor<T> visitor)
         {
             /*
             * the items that are matched are the items in quads which
@@ -194,7 +194,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// 
         /// </summary>
         /// <param name="itemEnv"></param>
-        private void CollectStats(IEnvelope itemEnv)
+        private void CollectStats(Envelope itemEnv)
         {
             double delX = itemEnv.Width;
             if (delX < _minExtent && delX > 0.0)

@@ -90,7 +90,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
 
         private void UpdateNonClosedRing(LinearRing ring)
         {
-            ICoordinate[] pts = ring.Coordinates;
+            Coordinate[] pts = ring.Coordinates;
             pts[0].X += 0.0001;
         }
     }

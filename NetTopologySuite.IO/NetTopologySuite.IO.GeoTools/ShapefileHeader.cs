@@ -15,7 +15,7 @@ namespace NetTopologySuite.IO
 		private int _fileLength = -1;
 		private int _version = 1000;
         private ShapeGeometryType _shapeType = ShapeGeometryType.NullShape;
-		private IEnvelope _bounds;
+		private Envelope _bounds;
 	
 		/// <summary>
 		/// Initializes a new instance of the ShapefileHeader class with values read in from the stream.
@@ -64,7 +64,7 @@ namespace NetTopologySuite.IO
 		/// <summary>
 		/// Gets and sets the bounds of the shape file.
 		/// </summary>
-		public IEnvelope Bounds
+		public Envelope Bounds
 		{
 			get
 			{

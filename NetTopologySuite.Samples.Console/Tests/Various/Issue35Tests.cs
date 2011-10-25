@@ -103,7 +103,7 @@ namespace NetTopologySuite.Tests.Various
         {
             var geom = new WKTReader().Read("POLYGON ((1 1, 1 1, 1 1, 1 1, 1 1))");
 
-            var geom2 = new Polygon(new LinearRing(new ICoordinate[] 
+            var geom2 = new Polygon(new LinearRing(new Coordinate[] 
             {
                 new Coordinate(1, 1), 
                 new Coordinate(1, 1),

@@ -51,7 +51,7 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         public IGeometry ReadPoint(BinaryReader reader)
         {
-            ICoordinate coordinate = ReadCoordinate(reader);
+            Coordinate coordinate = ReadCoordinate(reader);
             IGeometry point = CreatePoint(coordinate);
             return point;
         }
@@ -70,7 +70,7 @@ namespace NetTopologySuite.IO
 
             int[] indexParts = ReadIndexParts(reader, numParts);
 
-            ICoordinate[] coords = ReadCoordinates(reader, numPoints);
+            Coordinate[] coords = ReadCoordinates(reader, numPoints);
 
             if (numParts == 1)
                  return CreateLineString(coords);
@@ -91,7 +91,7 @@ namespace NetTopologySuite.IO
 
             int[] indexParts = ReadIndexParts(reader, numParts);
 
-            ICoordinate[] coords = ReadCoordinates(reader, numPoints);
+            Coordinate[] coords = ReadCoordinates(reader, numPoints);
 
             if (numParts == 1)
                  return CreateSimpleSinglePolygon(coords);
@@ -108,7 +108,7 @@ namespace NetTopologySuite.IO
             ReadBoundingBox(reader);  // Jump boundingbox
 
             int numPoints = ReadNumPoints(reader);
-            ICoordinate[] coords = new ICoordinate[numPoints];
+            Coordinate[] coords = new Coordinate[numPoints];
             for (int i = 0; i < numPoints; i++)
                 coords[i] = ReadCoordinate(reader);
             return CreateMultiPoint(coords);
@@ -119,7 +119,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="coordinate"></param>
         /// <returns></returns>
-        public IPoint CreatePoint(ICoordinate coordinate)
+        public IPoint CreatePoint(Coordinate coordinate)
         {
             return Factory.CreatePoint(coordinate);
         }
@@ -129,7 +129,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="coords"></param>
         /// <returns></returns>
-        public ILineString CreateLineString(ICoordinate[] coords)
+        public ILineString CreateLineString(Coordinate[] coords)
         {
             return Factory.CreateLineString(coords);
         }
@@ -141,11 +141,11 @@ namespace NetTopologySuite.IO
         /// <param name="indexParts"></param>
         /// <param name="coords"></param>
         /// <returns></returns>
-        public IGeometry CreateMultiLineString(int numPoints, int[] indexParts, ICoordinate[] coords)
+        public IGeometry CreateMultiLineString(int numPoints, int[] indexParts, Coordinate[] coords)
         {
             // Support vars
             ILineString[] strings = new ILineString[indexParts.Length];
-            ICoordinate[] destCoords = null;
+            Coordinate[] destCoords = null;
             int index = 0;
             int length = 0;
             int partIndex = 1;
@@ -158,7 +158,7 @@ namespace NetTopologySuite.IO
                 if (i == indexParts[partIndex])
                 {
                     length = indexParts[partIndex] - indexParts[partIndex - 1];
-                    destCoords = new ICoordinate[length];
+                    destCoords = new Coordinate[length];
                     Array.Copy(coords, indexParts[partIndex - 1], destCoords, 0, length);
                     partIndex++;
                     strings[index++] = Factory.CreateLineString(destCoords);
@@ -168,7 +168,7 @@ namespace NetTopologySuite.IO
             // Create last part
             int lastIndex = indexParts.Length - 1;
             length = numPoints - indexParts[lastIndex];
-            destCoords = new ICoordinate[length];
+            destCoords = new Coordinate[length];
             Array.Copy(coords, indexParts[lastIndex], destCoords, 0, length);
             strings[index] = Factory.CreateLineString(destCoords);
 
@@ -183,13 +183,13 @@ namespace NetTopologySuite.IO
         /// <param name="indexParts"></param>
         /// <param name="coords"></param>
         /// <returns></returns>
-        public IGeometry CreateSingleOrMultiPolygon(int numPoints, int[] indexParts, ICoordinate[] coords)
+        public IGeometry CreateSingleOrMultiPolygon(int numPoints, int[] indexParts, Coordinate[] coords)
         {
             // Support vars
             int i = 0;
             int index = 0;
             int shellLength = 0;
-            ICoordinate[] shellCoords = null;
+            Coordinate[] shellCoords = null;
             ILinearRing[] shells = new ILinearRing[indexParts.Length];
             ArrayList polygonIndex = new ArrayList();
 
@@ -198,7 +198,7 @@ namespace NetTopologySuite.IO
             {
                 // Init vars
                 shellLength = indexParts[i + 1] - indexParts[i];
-                shellCoords = new ICoordinate[shellLength];
+                shellCoords = new Coordinate[shellLength];
                 Array.Copy(coords, indexParts[i], shellCoords, 0, shellLength);
 
                 // Verify polygon area
@@ -212,7 +212,7 @@ namespace NetTopologySuite.IO
             // Adding last shell            
             int lastIndex = indexParts.Length - 1;
             shellLength = numPoints - indexParts[lastIndex];
-            shellCoords = new ICoordinate[shellLength];
+            shellCoords = new Coordinate[shellLength];
             Array.Copy(coords, indexParts[lastIndex], shellCoords, 0, shellLength);
             if (!CGAlgorithms.IsCCW(shellCoords))
                 polygonIndex.Add(lastIndex);
@@ -273,7 +273,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="coords"></param>
         /// <returns></returns>
-        public IPolygon CreateSimpleSinglePolygon(ICoordinate[] coords)
+        public IPolygon CreateSimpleSinglePolygon(Coordinate[] coords)
         {
             return Factory.CreatePolygon(Factory.CreateLinearRing(coords), null);
         }
@@ -283,7 +283,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="coords"></param>
         /// <returns></returns>
-        public IMultiPoint CreateMultiPoint(ICoordinate[] coords)
+        public IMultiPoint CreateMultiPoint(Coordinate[] coords)
         {
             return Factory.CreateMultiPoint(coords);
         }        
@@ -338,9 +338,9 @@ namespace NetTopologySuite.IO
         /// <param name="reader"></param>
         /// <param name="numPoints"></param>
         /// <returns></returns>
-        public ICoordinate[] ReadCoordinates(BinaryReader reader, int numPoints)
+        public Coordinate[] ReadCoordinates(BinaryReader reader, int numPoints)
         {
-            ICoordinate[] coords = new ICoordinate[numPoints];
+            Coordinate[] coords = new Coordinate[numPoints];
             for (int i = 0; i < numPoints; i++)
                 coords[i] = ReadCoordinate(reader);
             return coords;
@@ -351,7 +351,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public ICoordinate ReadCoordinate(BinaryReader reader)
+        public Coordinate ReadCoordinate(BinaryReader reader)
         {
             return new Coordinate(reader.ReadDouble(), reader.ReadDouble());
         }

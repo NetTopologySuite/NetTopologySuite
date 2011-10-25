@@ -49,7 +49,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             return result;
         }
 
-        protected override bool IndexOfAfterCheck(IGeometry linearGeom, ICoordinate testPt)
+        protected override bool IndexOfAfterCheck(IGeometry linearGeom, Coordinate testPt)
         {
             LocationIndexedLine indexedLine = new LocationIndexedLine(linearGeom);
 
@@ -59,15 +59,15 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             if (loc2.CompareTo(loc1) <= 0) return false;
 
             // check extracted points are the same as the input
-            ICoordinate pt1 = indexedLine.ExtractPoint(loc1);
-            ICoordinate pt2 = indexedLine.ExtractPoint(loc2);
+            Coordinate pt1 = indexedLine.ExtractPoint(loc1);
+            Coordinate pt2 = indexedLine.ExtractPoint(loc2);
             if (!pt1.Equals2D(testPt)) return false;
             if (!pt2.Equals2D(testPt)) return false;
 
             return true;
         }
 
-        //protected override ICoordinate ExtractOffsetAt(IGeometry linearGeom, ICoordinate testPt, double offsetDistance)
+        //protected override Coordinate ExtractOffsetAt(IGeometry linearGeom, Coordinate testPt, double offsetDistance)
         //{
         //    LocationIndexedLine indexedLine = new LocationIndexedLine(linearGeom);
         //    LinearLocation index = indexedLine.IndexOf(testPt);

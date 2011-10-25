@@ -221,7 +221,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             IGeometry input = reader.Read(wktInput);
             IGeometry envGeomExpected = reader.Read(wktEnvGeomExpected);
 
-            IEnvelope env = input.EnvelopeInternal;
+            Envelope env = input.EnvelopeInternal;
             IGeometry envGeomActual = geometryFactory.ToGeometry(env);
             bool isEqual = envGeomActual.Equals(envGeomExpected);
             Assert.IsTrue(isEqual);

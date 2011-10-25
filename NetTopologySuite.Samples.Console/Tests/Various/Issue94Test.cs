@@ -65,8 +65,8 @@ taken to solve it.";
         private static void PerformTest(double value) 
         {
             IGeometryFactory factory = GeometryFactory.Default;
-            ILineString ls1 = factory.CreateLineString(new ICoordinate[] { new Coordinate(0, 0), new Coordinate(50, 50) });            
-            ILineString ls2 = factory.CreateLineString(new ICoordinate[] { new Coordinate(10, value), new Coordinate(10, -value) });
+            ILineString ls1 = factory.CreateLineString(new Coordinate[] { new Coordinate(0, 0), new Coordinate(50, 50) });            
+            ILineString ls2 = factory.CreateLineString(new Coordinate[] { new Coordinate(10, value), new Coordinate(10, -value) });
             IGeometry result = ls1.Intersection(ls2);
             IGeometry expected = factory.CreatePoint(new Coordinate(10, 10));
             Assert.That(result, Is.EqualTo(expected));

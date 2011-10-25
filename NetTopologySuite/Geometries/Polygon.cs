@@ -86,7 +86,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override ICoordinate Coordinate
+        public override Coordinate Coordinate
         {
             get
             {
@@ -97,15 +97,15 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override ICoordinate[] Coordinates
+        public override Coordinate[] Coordinates
         {
             get
             {
                 if (IsEmpty)
-                    return new ICoordinate[] { };
-                ICoordinate[] coordinates = new ICoordinate[NumPoints];
+                    return new Coordinate[] { };
+                Coordinate[] coordinates = new Coordinate[NumPoints];
                 int k = -1;
-                ICoordinate[] shellCoordinates = _shell.Coordinates;
+                Coordinate[] shellCoordinates = _shell.Coordinates;
                 for (int x = 0; x < shellCoordinates.Length; x++)
                 {
                     k++;
@@ -113,7 +113,7 @@ namespace NetTopologySuite.Geometries
                 }
                 for (int i = 0; i < _holes.Length; i++)
                 {
-                    ICoordinate[] childCoordinates = _holes[i].Coordinates;
+                    Coordinate[] childCoordinates = _holes[i].Coordinates;
                     for (int j = 0; j < childCoordinates.Length; j++)
                     {
                         k++;
@@ -292,7 +292,7 @@ namespace NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <returns></returns>
-        protected override IEnvelope ComputeEnvelopeInternal() 
+        protected override Envelope ComputeEnvelopeInternal() 
         {
             return _shell.EnvelopeInternal;
         }
@@ -468,9 +468,9 @@ namespace NetTopologySuite.Geometries
         {
             if (ring.IsEmpty) 
                 return;            
-            ICoordinate[] uniqueCoordinates = new ICoordinate[ring.Coordinates.Length - 1];
+            Coordinate[] uniqueCoordinates = new Coordinate[ring.Coordinates.Length - 1];
             Array.Copy(ring.Coordinates, 0, uniqueCoordinates, 0, uniqueCoordinates.Length);
-            ICoordinate minCoordinate = CoordinateArrays.MinCoordinate(ring.Coordinates);
+            Coordinate minCoordinate = CoordinateArrays.MinCoordinate(ring.Coordinates);
             CoordinateArrays.Scroll(uniqueCoordinates, minCoordinate);
             Array.Copy(uniqueCoordinates, 0, ring.Coordinates, 0, uniqueCoordinates.Length);
             ring.Coordinates[uniqueCoordinates.Length] = uniqueCoordinates[0];

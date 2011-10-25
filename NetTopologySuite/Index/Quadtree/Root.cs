@@ -12,7 +12,7 @@ namespace NetTopologySuite.Index.Quadtree
     public class Root<T> : NodeBase<T>
     {
         // the singleton root quad is centred at the origin.
-        private static readonly ICoordinate Origin = new Coordinate(0.0, 0.0);
+        private static readonly Coordinate Origin = new Coordinate(0.0, 0.0);
 
         ///// <summary>
         ///// 
@@ -22,7 +22,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <summary> 
         /// Insert an item into the quadtree this is the root of.
         /// </summary>
-        public void Insert(IEnvelope itemEnv, T item)
+        public void Insert(Envelope itemEnv, T item)
         {
             int index = GetSubnodeIndex(itemEnv, Origin);
             // if index is -1, itemEnv must cross the X or Y axis.
@@ -57,7 +57,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// the given QuadNode root.  Lower levels of the tree will be created
         /// if necessary to hold the item.
         /// </summary>
-        private static void InsertContained(Node<T> tree, IEnvelope itemEnv, T item)
+        private static void InsertContained(Node<T> tree, Envelope itemEnv, T item)
         {
             Assert.IsTrue(tree.Envelope.Contains(itemEnv));
             /*
@@ -79,7 +79,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <returns></returns>
-        protected override bool IsSearchMatch(IEnvelope searchEnv)
+        protected override bool IsSearchMatch(Envelope searchEnv)
         {
             return true;
         }

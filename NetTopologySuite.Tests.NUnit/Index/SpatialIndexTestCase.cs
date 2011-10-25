@@ -24,7 +24,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             Console.WriteLine("Cells Per Grid Side: " + CELLS_PER_GRID_SIDE);
             Console.WriteLine("Offset For 2nd Set Of Features: " + OFFSET);
             var index = CreateSpatialIndex();
-            var sourceData = new List<IEnvelope>();
+            var sourceData = new List<Envelope>();
             AddSourceData(0, sourceData);
             AddSourceData(OFFSET, sourceData);
             Console.WriteLine("Feature Count: " + sourceData.Count);
@@ -33,7 +33,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             DoTest(index, QUERY_ENVELOPE_EXTENT_2, sourceData);
         }
 
-        private void Insert(IList<IEnvelope> sourceData, ISpatialIndex<object> index)
+        private void Insert(IList<Envelope> sourceData, ISpatialIndex<object> index)
         {
             foreach (var envelope in sourceData)
             {
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
         private static double QUERY_ENVELOPE_EXTENT_1 = 1.009;
         private static double QUERY_ENVELOPE_EXTENT_2 = 11.7;
 
-        private void AddSourceData(double offset, IList<IEnvelope> sourceData)
+        private void AddSourceData(double offset, IList<Envelope> sourceData)
         {
             for (int i = 0; i < CELLS_PER_GRID_SIDE; i++)
             {
@@ -64,7 +64,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             }
         }
 
-        private void DoTest(ISpatialIndex<object> index, double queryEnvelopeExtent, IList<IEnvelope> sourceData)
+        private void DoTest(ISpatialIndex<object> index, double queryEnvelopeExtent, IList<Envelope> sourceData)
         {
             Console.WriteLine("---------------");
             Console.WriteLine("Envelope Extent: " + queryEnvelopeExtent);
@@ -115,7 +115,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             }
         }
 
-        private IList<object> IntersectingEnvelopes(IEnvelope queryEnvelope, IList<IEnvelope> envelopes)
+        private IList<object> IntersectingEnvelopes(Envelope queryEnvelope, IList<Envelope> envelopes)
         {
             var intersectingEnvelopes = new List<object>();
             foreach (var candidate in envelopes)

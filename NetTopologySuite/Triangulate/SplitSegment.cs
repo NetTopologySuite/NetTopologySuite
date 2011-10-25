@@ -18,7 +18,7 @@ namespace NetTopologySuite.Triangulate
         /// <param name="seg">the LineSegment</param>
         /// <param name="segmentLengthFraction">the fraction of the segment length along the line</param>
         /// <returns>the point at that distance</returns>
-        private static ICoordinate PointAlongReverse(LineSegment seg, double segmentLengthFraction)
+        private static Coordinate PointAlongReverse(LineSegment seg, double segmentLengthFraction)
         {
             var coord = new Coordinate();
             coord.X = seg.P1.X - segmentLengthFraction*(seg.P1.X - seg.P0.X);
@@ -28,7 +28,7 @@ namespace NetTopologySuite.Triangulate
 
         private readonly LineSegment _seg;
         private readonly double _segLen;
-        private ICoordinate _splitPt;
+        private Coordinate _splitPt;
         private double _minimumLen;
 
         public SplitSegment(LineSegment seg)
@@ -46,12 +46,12 @@ namespace NetTopologySuite.Triangulate
             set {_minimumLen = value;}
         }
 
-        public ICoordinate SplitPoint
+        public Coordinate SplitPoint
         {
             get { return _splitPt; }
         }
 
-        public void SplitAt(double length, ICoordinate endPt)
+        public void SplitAt(double length, Coordinate endPt)
         {
             double actualLen = GetConstrainedLength(length);
             double frac = actualLen/_segLen;
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Triangulate
                 _splitPt = PointAlongReverse(_seg, frac);
         }
 
-        public void SplitAt(ICoordinate pt)
+        public void SplitAt(Coordinate pt)
         {
             // check that given pt doesn't violate min length
             double minFrac = _minimumLen/_segLen;

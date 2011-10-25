@@ -10,7 +10,7 @@ namespace NetTopologySuite.GeometriesGraph
     /// </summary>
     public class NodeMap
     {        
-        private readonly IDictionary<ICoordinate, Node > _nodeMap = new OrderedDictionary<ICoordinate, Node>();
+        private readonly IDictionary<Coordinate, Node > _nodeMap = new OrderedDictionary<Coordinate, Node>();
         private readonly NodeFactory _nodeFact;
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// This method expects that a node has a coordinate value.
         /// </summary>
         /// <param name="coord"></param>
-        public Node AddNode(ICoordinate coord)
+        public Node AddNode(Coordinate coord)
         {
             Node node;
             if (!_nodeMap.TryGetValue(coord, out node))
@@ -62,7 +62,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="e"></param>
         public void Add(EdgeEnd e)
         {
-            ICoordinate p = e.Coordinate;
+            Coordinate p = e.Coordinate;
             Node n = AddNode(p);
             n.Add(e);
         }
@@ -71,7 +71,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// The node if found; null otherwise.
         /// </returns>
         /// <param name="coord"></param>
-        public Node Find(ICoordinate coord)
+        public Node Find(Coordinate coord)
         {
             Node res;
             if (!_nodeMap.TryGetValue(coord, out res))

@@ -10,10 +10,10 @@ namespace NetTopologySuite.IO
     /// Writes a Well-Known Binary byte data representation of a <c>Geometry</c>.
     /// </summary>
     /// <remarks>
-    /// WKBWriter stores <see cref="ICoordinate" /> X,Y,Z values if <see cref="ICoordinate.Z" /> is not <see cref="double.NaN"/>, 
-    /// otherwise <see cref="ICoordinate.Z" /> value is discarded and only X,Y are stored.
+    /// WKBWriter stores <see cref="Coordinate" /> X,Y,Z values if <see cref="Coordinate.Z" /> is not <see cref="double.NaN"/>, 
+    /// otherwise <see cref="Coordinate.Z" /> value is discarded and only X,Y are stored.
     /// </remarks>
-    // Thanks to Roberto Acioli for ICoordinate.Z patch
+    // Thanks to Roberto Acioli for Coordinate.Z patch
     public class WKBWriter
     {
 
@@ -266,7 +266,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="coordinate"></param>
         /// <param name="writer"></param>
-        protected void Write(ICoordinate coordinate, BinaryWriter writer)
+        protected void Write(Coordinate coordinate, BinaryWriter writer)
         {
             writer.Write(coordinate.X);
             writer.Write(coordinate.Y);

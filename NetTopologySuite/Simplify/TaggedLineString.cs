@@ -60,7 +60,7 @@ namespace NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate[] ParentCoordinates
+        public Coordinate[] ParentCoordinates
         {
             get
             {
@@ -71,7 +71,7 @@ namespace NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate[] ResultCoordinates
+        public Coordinate[] ResultCoordinates
         {
             get
             {
@@ -106,7 +106,7 @@ namespace NetTopologySuite.Simplify
         /// </summary>
         private void Init()
         {
-            ICoordinate[] pts = _parentLine.Coordinates;
+            Coordinate[] pts = _parentLine.Coordinates;
             _segs = new TaggedLineSegment[pts.Length - 1];
             for (int i = 0; i < pts.Length - 1; i++)
             {
@@ -158,9 +158,9 @@ namespace NetTopologySuite.Simplify
         /// </summary>
         /// <param name="segs"></param>
         /// <returns></returns>
-        private static ICoordinate[] ExtractCoordinates(IList<LineSegment> segs)
+        private static Coordinate[] ExtractCoordinates(IList<LineSegment> segs)
         {
-            ICoordinate[] pts = new ICoordinate[segs.Count + 1];
+            Coordinate[] pts = new Coordinate[segs.Count + 1];
             LineSegment seg = null;
             for (int i = 0; i < segs.Count; i++)
             {

@@ -47,9 +47,9 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public ICoordinate GetCoordinate(int i) 
+        public Coordinate GetCoordinate(int i) 
         {
-            ICoordinate[] arr = GetCachedCoords();
+            Coordinate[] arr = GetCachedCoords();
             if(arr != null)
                  return arr[i];
             return GetCoordinateInternal(i);
@@ -65,7 +65,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>
         /// A copy of the i'th coordinate in the sequence
         /// </returns>
-        public ICoordinate GetCoordinateCopy(int i) 
+        public Coordinate GetCoordinateCopy(int i) 
         {
             return GetCoordinateInternal(i);
         }
@@ -76,7 +76,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="i">The index of the coordinate to copy.</param>
         /// <param name="c">A Coordinate to receive the value.</param>
-        public void GetCoordinate(int i, ICoordinate c) 
+        public void GetCoordinate(int i, Coordinate c) 
         {
             c.X = GetOrdinate(i, Ordinate.X);
             c.Y = GetOrdinate(i, Ordinate.Y);
@@ -91,14 +91,14 @@ namespace NetTopologySuite.Geometries
         /// be built from scratch.
         /// </summary>
         /// <returns></returns>
-        public ICoordinate[] ToCoordinateArray() 
+        public Coordinate[] ToCoordinateArray() 
         {
-            ICoordinate[] arr = GetCachedCoords();
+            Coordinate[] arr = GetCachedCoords();
             // testing - never cache
             if (arr != null)
                 return arr;
 
-            arr = new ICoordinate[Count];
+            arr = new Coordinate[Count];
             for (int i = 0; i < arr.Length; i++) 
                 arr[i] = GetCoordinateInternal(i);
             
@@ -110,11 +110,11 @@ namespace NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <returns></returns>
-        private ICoordinate[] GetCachedCoords()
+        private Coordinate[] GetCachedCoords()
         {
             if (CoordRef != null) 
             {
-                ICoordinate[] arr = (ICoordinate[]) CoordRef.Target;
+                Coordinate[] arr = (Coordinate[]) CoordRef.Target;
                 if (arr != null) 
                     return arr;
                 
@@ -201,7 +201,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        protected abstract ICoordinate GetCoordinateInternal(int index);
+        protected abstract Coordinate GetCoordinateInternal(int index);
 
         /// <summary>
         /// Creates a new object that is a copy of the current instance.
@@ -217,7 +217,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="env">The envelope to expand.</param>
         /// <returns>A reference to the expanded envelope.</returns>
-        public abstract IEnvelope ExpandEnvelope(IEnvelope env);
+        public abstract Envelope ExpandEnvelope(Envelope env);
     }
 
     /// <summary>
@@ -266,10 +266,10 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates"></param>
         /// <param name="dimension"></param>
-        public PackedDoubleCoordinateSequence(ICoordinate[] coordinates, int dimension) 
+        public PackedDoubleCoordinateSequence(Coordinate[] coordinates, int dimension) 
         {
             if (coordinates == null)
-                coordinates = new ICoordinate[0];
+                coordinates = new Coordinate[0];
             Dimension = dimension;
 
             _coords = new double[coordinates.Length * Dimension];
@@ -287,7 +287,7 @@ namespace NetTopologySuite.Geometries
         /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
         /// </summary>
         /// <param name="coordinates"></param>
-        public PackedDoubleCoordinateSequence(ICoordinate[] coordinates) : this(coordinates, 3) { }
+        public PackedDoubleCoordinateSequence(Coordinate[] coordinates) : this(coordinates, 3) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
@@ -306,7 +306,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        protected override ICoordinate GetCoordinateInternal(int index) 
+        protected override Coordinate GetCoordinateInternal(int index) 
         {
             double x = _coords[index * Dimension];
             double y = _coords[index * Dimension + 1];
@@ -373,7 +373,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="env">The envelope to expand.</param>
         /// <returns>A reference to the expanded envelope.</returns>
-        public override IEnvelope ExpandEnvelope(IEnvelope env)
+        public override Envelope ExpandEnvelope(Envelope env)
         {
             for (int i = 0; i < _coords.Length; i += Dimension)
                 env.ExpandToInclude(_coords[i], _coords[i + 1]);        
@@ -427,10 +427,10 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates"></param>
         /// <param name="dimension"></param>
-        public PackedFloatCoordinateSequence(ICoordinate[] coordinates, int dimension) 
+        public PackedFloatCoordinateSequence(Coordinate[] coordinates, int dimension) 
         {
             if (coordinates == null)
-                coordinates = new ICoordinate[0];
+                coordinates = new Coordinate[0];
             Dimension = dimension;
 
             _coords = new float[coordinates.Length * Dimension];
@@ -461,7 +461,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        protected override ICoordinate GetCoordinateInternal(int index) 
+        protected override Coordinate GetCoordinateInternal(int index) 
         {
             double x = _coords[index * Dimension];
             double y = _coords[index * Dimension + 1];
@@ -528,7 +528,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="env">The envelope to expand.</param>
         /// <returns>A reference to the expanded envelope.</returns>
-        public override IEnvelope ExpandEnvelope(IEnvelope env)
+        public override Envelope ExpandEnvelope(Envelope env)
         {
         for (int i = 0; i < _coords.Length; i += Dimension )
             env.ExpandToInclude(_coords[i], _coords[i + 1]);      

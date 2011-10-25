@@ -52,7 +52,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             }
         }
 
-        private static void InitTree(TestTree t, IList<IEnvelope> sourceEnvelopes)
+        private static void InitTree(TestTree t, IList<Envelope> sourceEnvelopes)
         {
             foreach (var sourceEnvelope in sourceEnvelopes)
             {
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             t.Build();
         }
 
-        public static void PrintSourceData(IList<IEnvelope> sourceEnvelopes)
+        public static void PrintSourceData(IList<Envelope> sourceEnvelopes)
         {
             Console.WriteLine("============ Source Data ============\n");
             Console.Write("GEOMETRYCOLLECTION(");
@@ -85,9 +85,9 @@ namespace NetTopologySuite.Tests.NUnit.Index
             Console.WriteLine(")\n");
         }
 
-        private static IList<IEnvelope> SourceData()
+        private static IList<Envelope> SourceData()
         {
-            var envelopes = new List<IEnvelope>();
+            var envelopes = new List<Envelope>();
             for (int i = 0; i < ITEM_COUNT; i++)
             {
                 envelopes.Add(RandomRectangle().EnvelopeInternal);

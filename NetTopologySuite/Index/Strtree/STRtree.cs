@@ -45,8 +45,8 @@ namespace NetTopologySuite.Index.Strtree
             /// <returns></returns>
             public int Compare(object o1, object o2)
             {
-                return _container.CompareDoubles(CentreX((IEnvelope) ((IBoundable) o1).Bounds),
-                                                 CentreX((IEnvelope) ((IBoundable) o2).Bounds));
+                return _container.CompareDoubles(CentreX((Envelope) ((IBoundable) o1).Bounds),
+                                                 CentreX((Envelope) ((IBoundable) o2).Bounds));
             }
         }
 
@@ -74,8 +74,8 @@ namespace NetTopologySuite.Index.Strtree
             /// <returns></returns>
             public int Compare(object o1, object o2)
             {
-                return _container.CompareDoubles(CentreY((IEnvelope) ((IBoundable) o1).Bounds),
-                                                 CentreY((IEnvelope) ((IBoundable) o2).Bounds));
+                return _container.CompareDoubles(CentreY((Envelope) ((IBoundable) o1).Bounds),
+                                                 CentreY((Envelope) ((IBoundable) o2).Bounds));
             }
         }
 
@@ -99,13 +99,13 @@ namespace NetTopologySuite.Index.Strtree
             /// <returns></returns>
             protected override object ComputeBounds()
             {
-                IEnvelope bounds = null;
+                Envelope bounds = null;
                 foreach (object i in ChildBoundables)
                 {
                     IBoundable childBoundable = (IBoundable) i;
                     if (bounds == null)
-                        bounds = new Envelope((IEnvelope) childBoundable.Bounds);
-                    else bounds.ExpandToInclude((IEnvelope) childBoundable.Bounds);
+                        bounds = new Envelope((Envelope) childBoundable.Bounds);
+                    else bounds.ExpandToInclude((Envelope) childBoundable.Bounds);
                 }
                 return bounds;
             }
@@ -135,7 +135,7 @@ namespace NetTopologySuite.Index.Strtree
             /// <returns></returns>
             public bool Intersects(object aBounds, object bBounds)
             {
-                return ((IEnvelope) aBounds).Intersects((IEnvelope) bBounds);
+                return ((Envelope) aBounds).Intersects((Envelope) bBounds);
             }
         }
 
@@ -174,7 +174,7 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        private static double CentreX(IEnvelope e)
+        private static double CentreX(Envelope e)
         {
             return Avg(e.MinX, e.MaxX);
         }
@@ -184,7 +184,7 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        private static double CentreY(IEnvelope e)
+        private static double CentreY(Envelope e)
         {
             return Avg(e.MinY, e.MaxY);
         }
@@ -294,7 +294,7 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="itemEnv"></param>
         /// <param name="item"></param>
-        public void Insert(IEnvelope itemEnv, object item)
+        public void Insert(Envelope itemEnv, object item)
         {
             if (itemEnv.IsNull)
                 return;
@@ -305,7 +305,7 @@ namespace NetTopologySuite.Index.Strtree
         /// Returns items whose bounds intersect the given envelope.
         /// </summary>
         /// <param name="searchEnv"></param>
-        public IList<object> Query(IEnvelope searchEnv)
+        public IList<object> Query(Envelope searchEnv)
         {
             //Yes this method does something. It specifies that the bounds is an
             //Envelope. super.query takes an object, not an Envelope. [Jon Aquino 10/24/2003]
@@ -317,7 +317,7 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
-        public void Query(IEnvelope searchEnv, IItemVisitor<object> visitor)
+        public void Query(Envelope searchEnv, IItemVisitor<object> visitor)
         {
             //Yes this method does something. It specifies that the bounds is an
             //Envelope. super.query takes an Object, not an Envelope. [Jon Aquino 10/24/2003]
@@ -330,7 +330,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <param name="itemEnv">The Envelope of the item to remove.</param>
         /// <param name="item">The item to remove.</param>
         /// <returns><c>true</c> if the item was found.</returns>
-        public bool Remove(IEnvelope itemEnv, object item)
+        public bool Remove(Envelope itemEnv, object item)
         {
             return base.Remove(itemEnv, item);
         }
@@ -369,7 +369,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <param name="item">The item to find the nearest neighbour of</param>
         /// <param name="itemDist">A distance metric applicable to the items in this tree and the query item</param>
         /// <returns>The nearest item in this tree</returns>
-        public Object NearestNeighbour(IEnvelope env, Object item, IItemDistance itemDist)
+        public Object NearestNeighbour(Envelope env, Object item, IItemDistance itemDist)
         {
             IBoundable bnd = new ItemBoundable(env, item);
             var bp = new BoundablePair(Root, bnd, itemDist);

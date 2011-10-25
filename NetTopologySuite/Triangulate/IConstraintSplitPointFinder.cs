@@ -21,6 +21,6 @@ namespace NetTopologySuite.Triangulate
         /// <param name="seg">the encroached segment</param>
         /// <param name="encroachPt">the encroaching point</param>
         /// <returns>the point at which to split the encroached segment</returns>
-        ICoordinate FindSplitPoint(Segment seg, ICoordinate encroachPt);
+        Coordinate FindSplitPoint(Segment seg, Coordinate encroachPt);
     }
 }

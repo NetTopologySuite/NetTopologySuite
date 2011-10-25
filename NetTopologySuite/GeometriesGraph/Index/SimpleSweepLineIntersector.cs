@@ -82,7 +82,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="edgeSet"></param>
         private void Add(Edge edge, object edgeSet)
         {
-            ICoordinate[] pts = edge.Coordinates;
+            Coordinate[] pts = edge.Coordinates;
             for (int i = 0; i < pts.Length - 1; i++) 
             {
                 SweepLineSegment ss = new SweepLineSegment(edge, i);

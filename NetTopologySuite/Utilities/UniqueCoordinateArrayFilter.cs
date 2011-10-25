@@ -9,12 +9,12 @@ namespace NetTopologySuite.Utilities
     /// </summary>
     public class UniqueCoordinateArrayFilter : ICoordinateFilter 
     {
-        private readonly List<ICoordinate> _list = new List<ICoordinate>();
+        private readonly List<Coordinate> _list = new List<Coordinate>();
 
         /// <summary>
         /// Returns the gathered <c>Coordinate</c>s.
         /// </summary>
-        public ICoordinate[] Coordinates
+        public Coordinate[] Coordinates
         {
             get { return _list.ToArray(); }
         }
@@ -23,7 +23,7 @@ namespace NetTopologySuite.Utilities
         /// 
         /// </summary>
         /// <param name="coord"></param>
-        public void Filter(ICoordinate coord) 
+        public void Filter(Coordinate coord) 
         {
             if (!_list.Contains(coord))
                  _list.Add(coord);            

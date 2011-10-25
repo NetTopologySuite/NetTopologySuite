@@ -82,8 +82,8 @@ namespace NetTopologySuite.LinearReferencing
             {
                 if (!element.IsEndOfLine)
                 {
-                    ICoordinate p0 = element.SegmentStart;
-                    ICoordinate p1 = element.SegmentEnd;
+                    Coordinate p0 = element.SegmentStart;
+                    Coordinate p1 = element.SegmentEnd;
                     double segLen = p1.Distance(p0);
                     // length falls in this segment
                     if (totalLength + segLen > length)
@@ -113,8 +113,8 @@ namespace NetTopologySuite.LinearReferencing
             {
                 if (!element.IsEndOfLine)
                 {
-                    ICoordinate p0 = element.SegmentStart;
-                    ICoordinate p1 = element.SegmentEnd;
+                    Coordinate p0 = element.SegmentStart;
+                    Coordinate p1 = element.SegmentEnd;
                     double segLen = p1.Distance(p0);
                     // length falls in this segment
                     if (loc.ComponentIndex == element.ComponentIndex && loc.SegmentIndex == element.VertexIndex)

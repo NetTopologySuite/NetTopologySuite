@@ -51,11 +51,11 @@ namespace NetTopologySuite.Utilities
 		public int Compare(object x, object y)
 		{
 			int returnValue;
-            if (x is ICoordinate && y is  ICoordinate)
+            if (x is Coordinate && y is  Coordinate)
             {
 			
-			    ICoordinate coord1 = (ICoordinate) x;
-                ICoordinate coord2 = (ICoordinate) y;
+			    Coordinate coord1 = (Coordinate) x;
+                Coordinate coord2 = (Coordinate) y;
 				if (coord1.X < coord2.X) 
 					returnValue = -1;
 				else if (coord1.X > coord2.X) 
@@ -66,7 +66,7 @@ namespace NetTopologySuite.Utilities
 					returnValue = 1;
 				else returnValue = 0;
 			}
-			else throw new ArgumentException("Wrong arguments type: ICoordinate expected");
+			else throw new ArgumentException("Wrong arguments type: Coordinate expected");
 			return returnValue;
 		}
 	}

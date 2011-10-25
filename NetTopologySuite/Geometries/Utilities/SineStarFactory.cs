@@ -48,7 +48,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>The geometry representing the sine star</returns>
         public IGeometry CreateSineStar()
         {
-            IEnvelope env = Envelope;
+            Envelope env = Envelope;
             double radius = env.Width / 2.0;
 
             double armRatio = ArmLengthRatio;
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Geometries.Utilities
             double centreX = env.MinX + radius;
             double centreY = env.MinY + radius;
 
-            ICoordinate[] pts = new ICoordinate[NumPoints + 1];
+            Coordinate[] pts = new Coordinate[NumPoints + 1];
             int iPt = 0;
             for (int i = 0; i < NumPoints; i++)
             {

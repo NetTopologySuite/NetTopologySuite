@@ -26,9 +26,9 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p2">2nd Coordinate of 1st linesegment</param>
         /// <param name="q1">1st Coordinate of 2nd linesegment</param>
         /// <param name="q2">2nd Coordinate of 2nd linesegment</param>
-        public static ICoordinate Intersection(
-            ICoordinate p1, ICoordinate p2,
-            ICoordinate q1, ICoordinate q2)
+        public static Coordinate Intersection(
+            Coordinate p1, Coordinate p2,
+            Coordinate q1, Coordinate q2)
         {
             // unrolled computation
             double px = p1.Y - p2.Y;
@@ -69,12 +69,12 @@ namespace NetTopologySuite.Algorithm
         /// <param name="q1"></param>
         /// <param name="q2"></param>
         /// <returns></returns>
-        public static ICoordinate OldIntersection(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2)            
+        public static Coordinate OldIntersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)            
         {
             HCoordinate l1 = new HCoordinate(new HCoordinate(p1), new HCoordinate(p2));
             HCoordinate l2 = new HCoordinate(new HCoordinate(q1), new HCoordinate(q2));
             HCoordinate intHCoord = new HCoordinate(l1, l2);
-            ICoordinate intPt = intHCoord.Coordinate;
+            Coordinate intPt = intHCoord.Coordinate;
             return intPt;
         }
 
@@ -139,7 +139,7 @@ namespace NetTopologySuite.Algorithm
         /// 
         /// </summary>
         /// <param name="p"></param>
-        public HCoordinate(ICoordinate p) 
+        public HCoordinate(Coordinate p) 
         {
             _x = p.X;
             _y = p.Y;
@@ -186,7 +186,7 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate Coordinate
+        public Coordinate Coordinate
         {
             get 
             { 
@@ -195,12 +195,12 @@ namespace NetTopologySuite.Algorithm
         }
 
         ///<summary>
-        /// Constructs a homogeneous coordinate which is the intersection of the lines <see cref="ICoordinate"/>s.
+        /// Constructs a homogeneous coordinate which is the intersection of the lines <see cref="Coordinate"/>s.
         /// define by the homogenous coordinates represented by two
         ///</summary>
         /// <param name="p1">A coordinate</param>
         /// <param name="p2">A coordinate</param>
-        public HCoordinate(ICoordinate p1, ICoordinate p2)
+        public HCoordinate(Coordinate p1, Coordinate p2)
         {
             // optimization when it is known that w = 1
             _x = p1.Y - p2.Y;
@@ -208,7 +208,7 @@ namespace NetTopologySuite.Algorithm
             _w = p1.X * p2.Y - p2.X * p1.Y;
         }
 
-        public HCoordinate(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2)
+        public HCoordinate(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
             // unrolled computation
             double px = p1.Y - p2.Y;

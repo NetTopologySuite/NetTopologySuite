@@ -59,9 +59,9 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
 
         private static readonly Random RND = new Random(998715632);
 
-        private static ICollection<ICoordinate> RandomPointsInGrid(int nPts)
+        private static ICollection<Coordinate> RandomPointsInGrid(int nPts)
         {
-            var pts = new List<ICoordinate>();
+            var pts = new List<Coordinate>();
 
             int nSide = (int) Math.Sqrt(nPts) + 1;
 
@@ -77,9 +77,9 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             return pts;
         }
 
-        private static ICollection<ICoordinate> RandomPoints(int nPts)
+        private static ICollection<Coordinate> RandomPoints(int nPts)
         {
-            var pts = new List<ICoordinate>();
+            var pts = new List<Coordinate>();
 
             for (int i = 0; i < nPts; i++)
             {

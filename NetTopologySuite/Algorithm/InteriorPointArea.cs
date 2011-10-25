@@ -28,7 +28,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         private readonly IGeometryFactory _factory;
-        private ICoordinate _interiorPoint;
+        private Coordinate _interiorPoint;
         private double _maxWidth;
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate InteriorPoint
+        public Coordinate InteriorPoint
         {
             get
             {
@@ -132,12 +132,12 @@ namespace NetTopologySuite.Algorithm
         /// <returns></returns>
         protected ILineString HorizontalBisector(IGeometry geometry)
         {
-            IEnvelope envelope = geometry.EnvelopeInternal;
+            Envelope envelope = geometry.EnvelopeInternal;
 
             // Assert: for areas, minx <> maxx
             double avgY = Avg(envelope.MinY, envelope.MaxY);
             return _factory.CreateLineString(
-                new ICoordinate[] { new Coordinate(envelope.MinX, avgY), new Coordinate(envelope.MaxX, avgY) });
+                new Coordinate[] { new Coordinate(envelope.MinX, avgY), new Coordinate(envelope.MaxX, avgY) });
         }
 
         /// <summary> 
@@ -145,7 +145,7 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="envelope">The envelope to analyze.</param>
         /// <returns> The centre of the envelope.</returns>
-        public ICoordinate Centre(IEnvelope envelope)
+        public Coordinate Centre(Envelope envelope)
         {
             return new Coordinate(Avg(envelope.MinX, envelope.MaxX), Avg(envelope.MinY, envelope.MaxY));
         }

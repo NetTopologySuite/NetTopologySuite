@@ -40,7 +40,7 @@ namespace NetTopologySuite.Triangulate
         /// <param name="p0">the start point</param>
         /// <param name="p1">the end point</param>
         /// <param name="data">an external data object</param>
-        public Segment(ICoordinate p0, ICoordinate p1, Object data)
+        public Segment(Coordinate p0, Coordinate p1, Object data)
         {
             _ls = new LineSegment(p0, p1);
             _data = data;
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Triangulate
         /// </summary>
         /// <param name="p0">the start point</param>
         /// <param name="p1">the end point</param>
-        public Segment(ICoordinate p0, ICoordinate p1)
+        public Segment(Coordinate p0, Coordinate p1)
         {
             _ls = new LineSegment(p0, p1);
         }
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Triangulate
         /// Gets the start coordinate of the segment
         /// </summary>
         /// <remarks>a Coordinate</remarks>
-        public ICoordinate Start
+        public Coordinate Start
         {
             get {return _ls.GetCoordinate(0);}
         }
@@ -69,7 +69,7 @@ namespace NetTopologySuite.Triangulate
         /// Gets the end coordinate of the segment
         /// </summary>
         /// <remarks>a Coordinate</remarks>
-        public ICoordinate End
+        public Coordinate End
         {
             get {return _ls.GetCoordinate(1);}
         }
@@ -190,7 +190,7 @@ namespace NetTopologySuite.Triangulate
         /// </summary>
         /// <param name="s">a segment</param>
         /// <returns>the intersection point, or <code>null</code> if there is none</returns>
-        public ICoordinate Intersection(Segment s)
+        public Coordinate Intersection(Segment s)
         {
             return _ls.Intersection(s.LineSegment);
         }

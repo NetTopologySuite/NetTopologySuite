@@ -32,7 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         public void TestGetCoordinates()
         {
             GeometryCollection g = (GeometryCollection)reader.Read("GEOMETRYCOLLECTION (POINT (10 10), POINT (30 30), LINESTRING (15 15, 20 20))");
-            ICoordinate[] coordinates = g.Coordinates;
+            Coordinate[] coordinates = g.Coordinates;
             Assert.AreEqual(4, g.NumPoints);
             Assert.AreEqual(4, coordinates.Length);
             Assert.AreEqual(new Coordinate(10, 10), coordinates[0]);

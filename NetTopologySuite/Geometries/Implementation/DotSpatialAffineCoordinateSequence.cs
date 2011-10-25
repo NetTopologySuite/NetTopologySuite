@@ -12,7 +12,7 @@ namespace NetTopologySuite.Geometries
         private readonly double[] _z;
         //private double[] _m;
         
-        public DotSpatialAffineCoordinateSequence(ICoordinate[] coordinates) 
+        public DotSpatialAffineCoordinateSequence(Coordinate[] coordinates) 
         {
             if (coordinates == null)
             {
@@ -90,17 +90,17 @@ namespace NetTopologySuite.Geometries
                 (double[]) XY.Clone(), (double[]) Z.Clone());
         }
 
-        public ICoordinate GetCoordinate(int i)
+        public Coordinate GetCoordinate(int i)
         {
             return new DotSpatialAffineCoordinate(this, i);
         }
 
-        public ICoordinate GetCoordinateCopy(int i)
+        public Coordinate GetCoordinateCopy(int i)
         {
             return new Coordinate(XY[2*i], XY[2*i+1], Z != null ? Z[i] : double.NaN );
         }
 
-        public void GetCoordinate(int index, ICoordinate coord)
+        public void GetCoordinate(int index, Coordinate coord)
         {
             coord.X = XY[2*index];
             coord.Y = XY[2*index + 1];
@@ -153,11 +153,11 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        public ICoordinate[] ToCoordinateArray()
+        public Coordinate[] ToCoordinateArray()
         {
             //var j = 0;
             var count = Count;
-            var ret = new ICoordinate[count];
+            var ret = new Coordinate[count];
             for (var i = 0; i < count; i++)
             {
                 ret[i] = new DotSpatialAffineCoordinate(this, i);
@@ -170,7 +170,7 @@ namespace NetTopologySuite.Geometries
             return ret;
         }
 
-        public IEnvelope ExpandEnvelope(IEnvelope env)
+        public Envelope ExpandEnvelope(Envelope env)
         {
             var j = 0;
             for (var i = 0; i < Count; i++ ) 
@@ -208,7 +208,7 @@ namespace NetTopologySuite.Geometries
 #if !SILVERLIGHT
     [Serializable]
 #endif
-    public class DotSpatialAffineCoordinate : ICoordinate
+    public class DotSpatialAffineCoordinate : Coordinate
     {
         private readonly DotSpatialAffineCoordinateSequence _sequence;
         private readonly Int32 _index;
@@ -239,7 +239,7 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public int CompareTo(object o)
         {
-            var other = (ICoordinate)o;
+            var other = (Coordinate)o;
             return CompareTo(other);
         }
 
@@ -256,7 +256,7 @@ namespace NetTopologySuite.Geometries
         /// A negative integer, zero, or a positive integer as this <c>Coordinate</c>
         ///         is less than, equal to, or greater than the specified <c>Coordinate</c>.
         /// </returns>
-        public int CompareTo(ICoordinate other)
+        public int CompareTo(Coordinate other)
         {
             if (X < other.X)
                 return -1;
@@ -269,7 +269,7 @@ namespace NetTopologySuite.Geometries
             return 0;
         }
 
-        public double Distance(ICoordinate p)
+        public double Distance(Coordinate p)
         {
             var dx = X - p.X;
             var dy = Y - p.Y;
@@ -284,7 +284,7 @@ namespace NetTopologySuite.Geometries
         /// <c>true</c> if the x- and y-coordinates are equal;
         /// the Z coordinates do not have to be equal.
         /// </returns>
-        public bool Equals2D(ICoordinate other)
+        public bool Equals2D(Coordinate other)
         {
             return X == other.X && Y == other.Y;
         }
@@ -299,9 +299,9 @@ namespace NetTopologySuite.Geometries
         {
             if (other == null)
                 return false;
-            if (!(other is ICoordinate))
+            if (!(other is Coordinate))
                 return false;
-            return Equals((ICoordinate)other);
+            return Equals((Coordinate)other);
         }
 
         /// <summary>
@@ -330,12 +330,12 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public Boolean Equals(ICoordinate other)
+        public Boolean Equals(Coordinate other)
         {
             return Equals2D(other);
         }
 
-        public bool Equals3D(ICoordinate other)
+        public bool Equals3D(Coordinate other)
         {
             
             throw new NotImplementedException();
@@ -365,7 +365,7 @@ namespace NetTopologySuite.Geometries
             set { _sequence.SetOrdinate(_index, Ordinate.Z, value); }
         }
 
-        public ICoordinate CoordinateValue
+        public Coordinate CoordinateValue
         {
             get { return this; }
             set

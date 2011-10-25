@@ -127,7 +127,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="coords">The coordinate array to copy.</param>
         /// <returns>A coordinate sequence for the array.</returns>
-        protected virtual ICoordinateSequence CreateCoordinateSequence(ICoordinate[] coords)
+        protected virtual ICoordinateSequence CreateCoordinateSequence(Coordinate[] coords)
         {
             return Factory.CoordinateSequenceFactory.Create(coords);
         }

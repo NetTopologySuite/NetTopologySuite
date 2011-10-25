@@ -134,12 +134,12 @@ namespace NetTopologySuite.IO
 		/// stream, or an empty array if "EMPTY" is the next element returned by
 		/// the stream.
 		/// </returns>
-		private ICoordinate[] GetCoordinates(IList<Token> tokens, Boolean skipExtraParenthesis)
+		private Coordinate[] GetCoordinates(IList<Token> tokens, Boolean skipExtraParenthesis)
 		{
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
-                return new ICoordinate[]{};
-            List<ICoordinate> coordinates = new List<ICoordinate>();
+                return new Coordinate[]{};
+            List<Coordinate> coordinates = new List<Coordinate>();
 			coordinates.Add(GetPreciseCoordinate(tokens, skipExtraParenthesis));
             nextToken = GetNextCloserOrComma(tokens);
             while (nextToken.Equals(",")) 
@@ -156,9 +156,9 @@ namespace NetTopologySuite.IO
         /// <param name="tokens"></param>
         /// <param name="skipExtraParenthesis"></param>
         /// <returns></returns>
-        private ICoordinate GetPreciseCoordinate(IList<Token> tokens, Boolean skipExtraParenthesis)
+        private Coordinate GetPreciseCoordinate(IList<Token> tokens, Boolean skipExtraParenthesis)
         {
-            ICoordinate coord = new Coordinate();
+            Coordinate coord = new Coordinate();
 			Boolean extraParenthesisFound = false;
 			if (skipExtraParenthesis)
 			{
@@ -395,7 +395,7 @@ namespace NetTopologySuite.IO
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
-                return _geometryFactory.CreatePoint((ICoordinate) null);
+                return _geometryFactory.CreatePoint((Coordinate) null);
             IPoint point = _geometryFactory.CreatePoint(GetPreciseCoordinate(tokens, false));
             GetNextCloser(tokens);
             return point;
@@ -455,7 +455,7 @@ namespace NetTopologySuite.IO
         /// <c>Point</c>s created using this <c>WKTReader</c>
         /// s <c>GeometryFactory</c>.
         /// </returns>
-        private IPoint[] ToPoints(ICoordinate[] coordinates) 
+        private IPoint[] ToPoints(Coordinate[] coordinates) 
         {
             List<IPoint> points = new List<IPoint>();
             for (int i = 0; i < coordinates.Length; i++) 
@@ -479,7 +479,7 @@ namespace NetTopologySuite.IO
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
                 return _geometryFactory.CreatePolygon(
-                    _geometryFactory.CreateLinearRing(new ICoordinate[] { } ), new ILinearRing[] { } );
+                    _geometryFactory.CreateLinearRing(new Coordinate[] { } ), new ILinearRing[] { } );
 
             List<ILinearRing> holes = new List<ILinearRing>();
             ILinearRing shell = ReadLinearRingText(tokens);

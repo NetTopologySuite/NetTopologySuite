@@ -44,11 +44,11 @@ namespace Open.Topology.TestRunner.Functions
             var geomFact = FunctionsUtil.getFactoryOrDefault(g);
             var line = new ILineString[3];
             var p0 = (new LineSegment(pts[1], pts[2])).ClosestPoint(cc);
-            line[0] = geomFact.CreateLineString(new ICoordinate[] {p0, cc});
+            line[0] = geomFact.CreateLineString(new Coordinate[] {p0, cc});
             var p1 = (new LineSegment(pts[0], pts[2])).ClosestPoint(cc);
-            line[1] = geomFact.CreateLineString(new ICoordinate[] {p1, cc});
+            line[1] = geomFact.CreateLineString(new Coordinate[] {p1, cc});
             var p2 = (new LineSegment(pts[0], pts[1])).ClosestPoint(cc);
-            line[2] = geomFact.CreateLineString(new ICoordinate[] {p2, cc});
+            line[2] = geomFact.CreateLineString(new Coordinate[] {p2, cc});
             return geomFact.CreateMultiLineString(line);
         }
 
@@ -66,14 +66,14 @@ namespace Open.Topology.TestRunner.Functions
             var cc = Triangle.InCentreFn(pts[0], pts[1], pts[2]);
             var geomFact = FunctionsUtil.getFactoryOrDefault(g);
             var line = new ILineString[3];
-            line[0] = geomFact.CreateLineString(new ICoordinate[] {pts[0], cc});
-            line[1] = geomFact.CreateLineString(new ICoordinate[] {pts[1], cc});
-            line[2] = geomFact.CreateLineString(new ICoordinate[] {pts[2], cc});
+            line[0] = geomFact.CreateLineString(new Coordinate[] {pts[0], cc});
+            line[1] = geomFact.CreateLineString(new Coordinate[] {pts[1], cc});
+            line[2] = geomFact.CreateLineString(new Coordinate[] {pts[2], cc});
             return geomFact.CreateMultiLineString(line);
         }
 
 
-        private static ICoordinate[] trianglePts(IGeometry g)
+        private static Coordinate[] trianglePts(IGeometry g)
         {
             var pts = g.Coordinates;
             if (pts.Length < 3)

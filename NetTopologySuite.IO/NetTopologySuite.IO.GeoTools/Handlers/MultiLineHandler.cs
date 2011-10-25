@@ -66,7 +66,7 @@ namespace NetTopologySuite.IO.Handlers
                 {
                     double x = file.ReadDouble();
                     double y = file.ReadDouble();
-                    ICoordinate external = new Coordinate(x, y);
+                    var external = new Coordinate(x, y);
                     geometryFactory.PrecisionModel.MakePrecise(external);
                     points.Add(external);				    
                 }
@@ -94,7 +94,7 @@ namespace NetTopologySuite.IO.Handlers
 
             file.Write(int.Parse(EnumUtility.Format(typeof(ShapeGeometryType), ShapeType, "d")));
         
-            IEnvelope box = multi.EnvelopeInternal;
+            Envelope box = multi.EnvelopeInternal;
             file.Write(box.MinX);
             file.Write(box.MinY);
             file.Write(box.MaxX);
@@ -120,7 +120,7 @@ namespace NetTopologySuite.IO.Handlers
                 CoordinateList points = new CoordinateList(multi.GetGeometryN(part).Coordinates);
                 for (int i = 0; i < points.Count; i++)
                 {
-                    ICoordinate external = points[i];
+                    Coordinate external = points[i];
                     file.Write(external.X);
                     file.Write(external.Y);
                 }

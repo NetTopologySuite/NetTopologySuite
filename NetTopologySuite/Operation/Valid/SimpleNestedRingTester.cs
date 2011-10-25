@@ -18,7 +18,7 @@ namespace NetTopologySuite.Operation.Valid
     {        
         private GeometryGraph graph;  // used to find non-node vertices
         private IList rings = new ArrayList();
-        private ICoordinate nestedPt;
+        private Coordinate nestedPt;
 
         /// <summary>
         /// 
@@ -41,7 +41,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate NestedPoint
+        public Coordinate NestedPoint
         {
             get
             {
@@ -58,18 +58,18 @@ namespace NetTopologySuite.Operation.Valid
             for (int i = 0; i < rings.Count; i++) 
             {
                 ILinearRing innerRing = (ILinearRing) rings[i];
-                ICoordinate[] innerRingPts = innerRing.Coordinates;
+                Coordinate[] innerRingPts = innerRing.Coordinates;
 
                 for (int j = 0; j < rings.Count; j++) 
                 {
                     ILinearRing searchRing = (ILinearRing) rings[j];
-                    ICoordinate[] searchRingPts = searchRing.Coordinates;
+                    Coordinate[] searchRingPts = searchRing.Coordinates;
 
                     if (innerRing == searchRing) continue;
 
                     if (!innerRing.EnvelopeInternal.Intersects(searchRing.EnvelopeInternal)) continue;
 
-                    ICoordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, graph);
+                    Coordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, graph);
                     Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
 
                     bool isInside = CGAlgorithms.IsPointInRing(innerRingPt, searchRingPts);

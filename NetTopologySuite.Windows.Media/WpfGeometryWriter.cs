@@ -180,7 +180,7 @@ namespace NetTopologySuite.Windows.Media
             _pointFactory.AddShape(viewPoint, sgc);
         }
 
-        private IList<WpfPoint> TransformPoints(ICoordinate[] model, int start)
+        private IList<WpfPoint> TransformPoints(Coordinate[] model, int start)
         {
             var ret = new List<WpfPoint>(model.Length - start);
             for( int i = 1; i < model.Length; i++)
@@ -188,12 +188,12 @@ namespace NetTopologySuite.Windows.Media
             return ret;
         }
 
-        private WpfPoint TransformPoint(ICoordinate model)
+        private WpfPoint TransformPoint(Coordinate model)
         {
             return TransformPoint(model, new WpfPoint());
         }
 
-        private WpfPoint TransformPoint(ICoordinate model, WpfPoint view)
+        private WpfPoint TransformPoint(Coordinate model, WpfPoint view)
         {
             _pointTransformer.Transform(model, ref view);
             /**

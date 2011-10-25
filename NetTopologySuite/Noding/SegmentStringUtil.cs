@@ -22,7 +22,7 @@ namespace NetTopologySuite.Noding
             ICollection<ILineString> lines = LinearComponentExtracter.GetLines(geom);
             foreach (ILineString line in lines)
             {
-                ICoordinate[] pts = line.Coordinates;
+                Coordinate[] pts = line.Coordinates;
                 segStr.Add(new NodedSegmentString(pts, geom));
             }
             return segStr;

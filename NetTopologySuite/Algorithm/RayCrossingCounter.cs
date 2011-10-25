@@ -35,14 +35,14 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p">The point to test</param>
         /// <param name="ring">An array of Coordinates forming a ring</param>
         /// <returns>The location of the point in the ring</returns>
-        public static Location LocatePointInRing(ICoordinate p, ICoordinate[] ring)
+        public static Location LocatePointInRing(Coordinate p, Coordinate[] ring)
         {
             RayCrossingCounter counter = new RayCrossingCounter(p);
 
             for (int i = 1; i < ring.Length; i++)
             {
-                ICoordinate p1 = ring[i];
-                ICoordinate p2 = ring[i - 1];
+                Coordinate p1 = ring[i];
+                Coordinate p2 = ring[i - 1];
                 counter.CountSegment(p1, p2);
                 if (counter.IsOnSegment)
                     return counter.Location;
@@ -50,12 +50,12 @@ namespace NetTopologySuite.Algorithm
             return counter.Location;
         }
 
-        private readonly ICoordinate _p;
+        private readonly Coordinate _p;
         private int _crossingCount;
         // true if the test point lies on an input segment
         private bool _isPointOnSegment;
 
-        public RayCrossingCounter(ICoordinate p)
+        public RayCrossingCounter(Coordinate p)
         {
             _p = p;
         }
@@ -65,7 +65,7 @@ namespace NetTopologySuite.Algorithm
         ///</summary>
         /// <param name="p1">An endpoint of the segment</param>
         /// <param name="p2">Another endpoint of the segment</param>
-        public void CountSegment(ICoordinate p1, ICoordinate p2)
+        public void CountSegment(Coordinate p1, Coordinate p2)
         {
             /*
              * For each segment, check if it crosses 

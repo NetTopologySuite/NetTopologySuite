@@ -17,7 +17,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="env"></param>
         /// <param name="centre"></param>
-        public static int GetSubnodeIndex(IEnvelope env, ICoordinate centre)
+        public static int GetSubnodeIndex(Envelope env, Coordinate centre)
         {
             int subnodeIndex = -1;
             if (env.MinX >= centre.X)
@@ -96,7 +96,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <param name="itemEnv">The envelope containing the item.</param>
         /// <param name="item">The item to remove.</param>
         /// <returns><c>true</c> if the item was found and removed.</returns>
-        public bool Remove(IEnvelope itemEnv, T item)
+        public bool Remove(Envelope itemEnv, T item)
         {
             // use envelope to restrict nodes scanned
             if (!IsSearchMatch(itemEnv))
@@ -199,14 +199,14 @@ namespace NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <returns></returns>
-        protected abstract bool IsSearchMatch(IEnvelope searchEnv);
+        protected abstract bool IsSearchMatch(Envelope searchEnv);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="resultItems"></param>
-        public void AddAllItemsFromOverlapping(IEnvelope searchEnv, ref IList<T> resultItems)
+        public void AddAllItemsFromOverlapping(Envelope searchEnv, ref IList<T> resultItems)
         {
             if (!IsSearchMatch(searchEnv))
                 return;
@@ -226,7 +226,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
-        public void Visit(IEnvelope searchEnv, IItemVisitor<T> visitor)
+        public void Visit(Envelope searchEnv, IItemVisitor<T> visitor)
         {
             if (!IsSearchMatch(searchEnv))
                 return;
@@ -245,7 +245,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
-        private void VisitItems(IEnvelope searchEnv, IItemVisitor<T> visitor)
+        private void VisitItems(Envelope searchEnv, IItemVisitor<T> visitor)
         {
             // would be nice to filter items based on search envelope, but can't until they contain an envelope
             for (IEnumerator<T> i = _items.GetEnumerator(); i.MoveNext(); )            

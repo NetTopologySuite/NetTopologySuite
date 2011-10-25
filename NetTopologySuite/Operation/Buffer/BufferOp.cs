@@ -90,7 +90,7 @@ namespace NetTopologySuite.Operation.Buffer
             double distance,
           int maxPrecisionDigits)
         {
-            IEnvelope env = g.EnvelopeInternal;
+            Envelope env = g.EnvelopeInternal;
             double envSize = System.Math.Max(env.Height, env.Width);
             double expandByDistance = distance > 0.0 ? distance : 0.0;
             double bufEnvSize = envSize + 2 * expandByDistance;

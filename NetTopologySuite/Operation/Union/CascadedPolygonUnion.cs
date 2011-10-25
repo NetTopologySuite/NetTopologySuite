@@ -226,7 +226,7 @@ namespace NetTopologySuite.Operation.Union
             return UnionUsingEnvelopeIntersection(g0, g1, commonEnv);
         }
 
-        private IGeometry UnionUsingEnvelopeIntersection(IGeometry g0, IGeometry g1, IEnvelope common)
+        private IGeometry UnionUsingEnvelopeIntersection(IGeometry g0, IGeometry g1, Envelope common)
         {
             var disjointPolys = new List<IGeometry>();
 
@@ -241,7 +241,7 @@ namespace NetTopologySuite.Operation.Union
             return overallUnion;
         }
 
-        private IGeometry ExtractByEnvelope(IEnvelope env, IGeometry geom, IList<IGeometry> disjointGeoms)
+        private IGeometry ExtractByEnvelope(Envelope env, IGeometry geom, IList<IGeometry> disjointGeoms)
         {
             var intersectingGeoms = new List<IGeometry>();
             for (var i = 0; i < geom.NumGeometries; i++)

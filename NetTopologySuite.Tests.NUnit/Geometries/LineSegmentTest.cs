@@ -41,12 +41,12 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             double expectedX, double expectedY)
         {
             LineSegment seg = new LineSegment(x0, y0, x1, y1);
-            ICoordinate p = seg.PointAlongOffset(segFrac, offset);
+            Coordinate p = seg.PointAlongOffset(segFrac, offset);
 
             Assert.IsTrue(EqualsTolerance(new Coordinate(expectedX, expectedY), p, 0.000001));
         }
 
-        public static bool EqualsTolerance(ICoordinate p0, ICoordinate p1, double tolerance)
+        public static bool EqualsTolerance(Coordinate p0, Coordinate p1, double tolerance)
         {
             if (Math.Abs(p0.X - p1.X) > tolerance) return false;
             if (Math.Abs(p0.Y - p1.Y) > tolerance) return false;

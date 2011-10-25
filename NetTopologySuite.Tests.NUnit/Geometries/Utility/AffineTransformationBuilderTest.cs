@@ -99,20 +99,20 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
         //    double pp2x, double pp2y
         //    )
         //{
-        //    ICoordinate p0 = new Coordinate(p0x, p0y);
-        //    ICoordinate p1 = new Coordinate(p1x, p1y);
-        //    ICoordinate p2 = new Coordinate(p2x, p2y);
+        //    Coordinate p0 = new Coordinate(p0x, p0y);
+        //    Coordinate p1 = new Coordinate(p1x, p1y);
+        //    Coordinate p2 = new Coordinate(p2x, p2y);
 
-        //    ICoordinate pp0 = new Coordinate(pp0x, pp0y);
-        //    ICoordinate pp1 = new Coordinate(pp1x, pp1y);
-        //    ICoordinate pp2 = new Coordinate(pp2x, pp2y);
+        //    Coordinate pp0 = new Coordinate(pp0x, pp0y);
+        //    Coordinate pp1 = new Coordinate(pp1x, pp1y);
+        //    Coordinate pp2 = new Coordinate(pp2x, pp2y);
 
         //    AffineTransformationBuilder atb = new AffineTransformationBuilder(
         //        p0, p1, p2,
         //        pp0, pp1, pp2);
         //    AffineTransformation trans = atb.GetTransformation();
 
-        //    ICoordinate dest = new Coordinate();
+        //    Coordinate dest = new Coordinate();
         //    AssertEqualPoint(pp0, trans.Transform(p0, dest));
         //    AssertEqualPoint(pp1, trans.Transform(p1, dest));
         //    AssertEqualPoint(pp2, trans.Transform(p2, dest));
@@ -163,13 +163,13 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             double pp2x, double pp2y
             )
         {
-            ICoordinate p0 = new Coordinate(p0x, p0y);
-            ICoordinate p1 = new Coordinate(p1x, p1y);
-            ICoordinate p2 = new Coordinate(p2x, p2y);
+            Coordinate p0 = new Coordinate(p0x, p0y);
+            Coordinate p1 = new Coordinate(p1x, p1y);
+            Coordinate p2 = new Coordinate(p2x, p2y);
 
-            ICoordinate pp0 = new Coordinate(pp0x, pp0y);
-            ICoordinate pp1 = new Coordinate(pp1x, pp1y);
-            ICoordinate pp2 = new Coordinate(pp2x, pp2y);
+            Coordinate pp0 = new Coordinate(pp0x, pp0y);
+            Coordinate pp1 = new Coordinate(pp1x, pp1y);
+            Coordinate pp2 = new Coordinate(pp2x, pp2y);
 
             AffineTransformationBuilder atb = new AffineTransformationBuilder(
                 p0, p1, p2,
@@ -209,23 +209,23 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             Coordinate p1,
             Coordinate p2)
         {
-            ICoordinate pp0 = trans.Transform(p0, new Coordinate());
-            ICoordinate pp1 = trans.Transform(p1, new Coordinate());
-            ICoordinate pp2 = trans.Transform(p2, new Coordinate());
+            Coordinate pp0 = trans.Transform(p0, new Coordinate());
+            Coordinate pp1 = trans.Transform(p1, new Coordinate());
+            Coordinate pp2 = trans.Transform(p2, new Coordinate());
 
             AffineTransformationBuilder atb = new AffineTransformationBuilder(
                 p0, p1, p2,
                 pp0, pp1, pp2);
             AffineTransformation atbTrans = atb.GetTransformation();
 
-            ICoordinate dest = new Coordinate();
+            Coordinate dest = new Coordinate();
             AssertEqualPoint(pp0, atbTrans.Transform(p0, dest));
             AssertEqualPoint(pp1, atbTrans.Transform(p1, dest));
             AssertEqualPoint(pp2, atbTrans.Transform(p2, dest));
         }
 
 
-        private static void AssertEqualPoint(ICoordinate p, ICoordinate q)
+        private static void AssertEqualPoint(Coordinate p, Coordinate q)
         {
             Assert.AreEqual(p.X, q.X, 0.00005);
             Assert.AreEqual(p.Y, q.Y, 0.00005);

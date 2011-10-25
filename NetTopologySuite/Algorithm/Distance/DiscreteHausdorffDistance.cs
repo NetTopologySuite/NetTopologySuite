@@ -126,7 +126,7 @@ namespace NetTopologySuite.Algorithm.Distance
             return _ptDist.Distance;
         }
 
-        public ICoordinate[] Coordinates { get { return _ptDist.Coordinates; } }
+        public Coordinate[] Coordinates { get { return _ptDist.Coordinates; } }
 
         private void Compute(IGeometry g0, IGeometry g1)
         {
@@ -162,7 +162,7 @@ namespace NetTopologySuite.Algorithm.Distance
                 this.geom = geom;
             }
 
-            public void Filter(ICoordinate pt)
+            public void Filter(Coordinate pt)
             {
                 _minPtDist.Initialize();
                 DistanceToPoint.ComputeDistance(geom, pt, _minPtDist);
@@ -198,8 +198,8 @@ namespace NetTopologySuite.Algorithm.Distance
                 if (index == 0)
                     return;
 
-                ICoordinate p0 = seq.GetCoordinate(index - 1);
-                ICoordinate p1 = seq.GetCoordinate(index);
+                Coordinate p0 = seq.GetCoordinate(index - 1);
+                Coordinate p1 = seq.GetCoordinate(index);
 
                 double delx = (p1.X - p0.X) / _numSubSegs;
                 double dely = (p1.Y - p0.Y) / _numSubSegs;
@@ -208,7 +208,7 @@ namespace NetTopologySuite.Algorithm.Distance
                 {
                     double x = p0.X + i * delx;
                     double y = p0.Y + i * dely;
-                    ICoordinate pt = new Coordinate(x, y);
+                    Coordinate pt = new Coordinate(x, y);
                     _minPtDist.Initialize();
                     DistanceToPoint.ComputeDistance(_geom, pt, _minPtDist);
                     _maxPtDist.SetMaximum(_minPtDist);

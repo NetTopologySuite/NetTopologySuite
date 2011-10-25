@@ -122,8 +122,8 @@ namespace NetTopologySuite.Simplify
             /// <returns></returns>
             protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
             {
-                ICoordinate[] inputPts = coords.ToCoordinateArray();
-                ICoordinate[] newPts = DouglasPeuckerLineSimplifier.Simplify(inputPts, _container.DistanceTolerance);
+                Coordinate[] inputPts = coords.ToCoordinateArray();
+                Coordinate[] newPts = DouglasPeuckerLineSimplifier.Simplify(inputPts, _container.DistanceTolerance);
                 return Factory.CoordinateSequenceFactory.Create(newPts);
             }
 

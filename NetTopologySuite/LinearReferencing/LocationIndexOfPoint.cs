@@ -19,13 +19,13 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="linearGeom"></param>
         /// <param name="inputPt"></param>
         /// <returns></returns>
-        public static LinearLocation IndexOf(IGeometry linearGeom, ICoordinate inputPt)
+        public static LinearLocation IndexOf(IGeometry linearGeom, Coordinate inputPt)
         {
             LocationIndexOfPoint locater = new LocationIndexOfPoint(linearGeom);
             return locater.IndexOf(inputPt);
         }
 
-        public static LinearLocation IndexOfAfter(IGeometry linearGeom, ICoordinate inputPt, LinearLocation minIndex)
+        public static LinearLocation IndexOfAfter(IGeometry linearGeom, Coordinate inputPt, LinearLocation minIndex)
         {
             LocationIndexOfPoint locater = new LocationIndexOfPoint(linearGeom);
             return locater.IndexOfAfter(inputPt, minIndex);
@@ -48,7 +48,7 @@ namespace NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="inputPt">The coordinate to locate.</param>
         /// <returns>The location of the nearest point.</returns>
-        public LinearLocation IndexOf(ICoordinate inputPt)
+        public LinearLocation IndexOf(Coordinate inputPt)
         {
             return IndexOfFromStart(inputPt, null);
         }
@@ -63,7 +63,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="inputPt">The coordinate to locate.</param>
         /// <param name="minIndex">The minimum location for the point location.</param>
         /// <returns>The location of the nearest point.</returns>
-        public LinearLocation IndexOfAfter(ICoordinate inputPt, LinearLocation minIndex)
+        public LinearLocation IndexOfAfter(Coordinate inputPt, LinearLocation minIndex)
         {
             if (minIndex == null) 
                 return IndexOf(inputPt);
@@ -89,7 +89,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="inputPt"></param>
         /// <param name="minIndex"></param>
         /// <returns></returns>
-        private LinearLocation IndexOfFromStart(ICoordinate inputPt, LinearLocation minIndex)
+        private LinearLocation IndexOfFromStart(Coordinate inputPt, LinearLocation minIndex)
         {
             double minDistance = Double.MaxValue;
             int minComponentIndex = 0;
@@ -136,7 +136,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="seg">The line segment to use</param>
         /// <param name="inputPt">The point</param>
         /// <returns>The fraction along the line segment the point occurs</returns>
-        public static double SegmentFraction(LineSegment seg, ICoordinate inputPt)
+        public static double SegmentFraction(LineSegment seg, Coordinate inputPt)
         {
             double segFrac = seg.ProjectionFactor(inputPt);
             if (segFrac < 0.0)

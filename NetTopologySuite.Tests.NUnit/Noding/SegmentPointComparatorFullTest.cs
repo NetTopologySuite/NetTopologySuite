@@ -85,8 +85,8 @@ namespace NetTopologySuite.Tests.NUnit.Noding
 
         private void CheckPointsAtDistance(LineSegment seg, double dist0, double dist1)
         {
-            ICoordinate p0 = computePoint(seg, dist0);
-            ICoordinate p1 = computePoint(seg, dist1);
+            Coordinate p0 = computePoint(seg, dist0);
+            Coordinate p1 = computePoint(seg, dist1);
             if (p0.Equals(p1))
             {
                 CheckNodePosition(seg, p0, p1, 0);
@@ -98,7 +98,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding
             }
         }
 
-        private void CheckNodePosition(LineSegment seg, ICoordinate p0, ICoordinate p1, int expectedPositionValue)
+        private void CheckNodePosition(LineSegment seg, Coordinate p0, Coordinate p1, int expectedPositionValue)
         {
             Octants octant = Octant.GetOctant(seg.P0, seg.P1);
             int posValue = SegmentPointComparator.Compare(octant, p0, p1);

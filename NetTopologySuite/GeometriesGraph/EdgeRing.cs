@@ -18,7 +18,7 @@ namespace NetTopologySuite.GeometriesGraph
         
         private int _maxNodeDegree = -1;
         private readonly List<DirectedEdge> _edges = new List<DirectedEdge>();  // the DirectedEdges making up this EdgeRing
-        private readonly List<ICoordinate> _pts = new List<ICoordinate>();
+        private readonly List<Coordinate> _pts = new List<Coordinate>();
         private readonly Label _label = new Label(Location.Null); // label stores the locations of each point on the face surrounded by this ring
         private ILinearRing _ring;  // the ring created for this EdgeRing
         private bool _isHole;
@@ -71,7 +71,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public ICoordinate GetCoordinate(int i) 
+        public Coordinate GetCoordinate(int i) 
         {
             return _pts[i]; 
         }
@@ -158,10 +158,10 @@ namespace NetTopologySuite.GeometriesGraph
         {
             if (_ring != null) 
                 return;   // don't compute more than once
-            ICoordinate[] coord = _pts.ToArray();
-            /* new ICoordinate[_pts.Count];
+            Coordinate[] coord = _pts.ToArray();
+            /* new Coordinate[_pts.Count];
             for (int i = 0; i < _pts.Count; i++)            
-                coord[i] = (ICoordinate) _pts[i];
+                coord[i] = (Coordinate) _pts[i];
              */
             _ring = _geometryFactory.CreateLinearRing(coord);
             _isHole = CGAlgorithms.IsCCW(_ring.Coordinates);
@@ -307,7 +307,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="isFirstEdge"></param>
         protected void AddPoints(Edge edge, bool isForward, bool isFirstEdge)
         {
-            ICoordinate[] edgePts = edge.Coordinates;
+            Coordinate[] edgePts = edge.Coordinates;
             if (isForward)
             {
                 int startIndex = 1;
@@ -332,10 +332,10 @@ namespace NetTopologySuite.GeometriesGraph
         /// It will also check any holes, if they have been assigned.
         /// </summary>
         /// <param name="p"></param>
-        public bool ContainsPoint(ICoordinate p)
+        public bool ContainsPoint(Coordinate p)
         {
             ILinearRing shell = LinearRing;
-            IEnvelope env = shell.EnvelopeInternal;
+            Envelope env = shell.EnvelopeInternal;
             if (!env.Contains(p)) 
                 return false;
             if (!CGAlgorithms.IsPointInRing(p, shell.Coordinates)) 

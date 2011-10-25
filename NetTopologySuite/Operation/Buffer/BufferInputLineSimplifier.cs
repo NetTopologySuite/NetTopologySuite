@@ -49,7 +49,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="inputLine">The coordinate list to simplify</param>
         /// <param name="distanceTol">simplification distance tolerance to use</param>
         /// <returns>The simplified coordinate list</returns>
-        public static ICoordinate[] Simplify(ICoordinate[] inputLine, double distanceTol)
+        public static Coordinate[] Simplify(Coordinate[] inputLine, double distanceTol)
         {
             var simp = new BufferInputLineSimplifier(inputLine);
             return simp.Simplify(distanceTol);
@@ -61,12 +61,12 @@ namespace NetTopologySuite.Operation.Buffer
         private const int Delete = 1;
         //private const int Keep = 2;
 
-        private readonly ICoordinate[] _inputLine;
+        private readonly Coordinate[] _inputLine;
         private double _distanceTol;
         private byte[] _isDeleted;
         private int _angleOrientation = CGAlgorithms.CounterClockwise;
 
-        public BufferInputLineSimplifier(ICoordinate[] inputLine)
+        public BufferInputLineSimplifier(Coordinate[] inputLine)
         {
             _inputLine = inputLine;
         }
@@ -82,7 +82,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <returns>
         /// The simplified coordinates list
         /// </returns>
-        public ICoordinate[] Simplify(double distanceTol)
+        public Coordinate[] Simplify(double distanceTol)
         {
             _distanceTol = System.Math.Abs(distanceTol);
             if (distanceTol < 0)
@@ -163,7 +163,7 @@ namespace NetTopologySuite.Operation.Buffer
             return next;
         }
 
-        private ICoordinate[] CollapseLine()
+        private Coordinate[] CollapseLine()
         {
             var coordList = new CoordinateList();
             for (int i = 0; i < _inputLine.Length; i++)
@@ -191,7 +191,7 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /*
-        private bool IsShallowConcavity(ICoordinate p0, ICoordinate p1, ICoordinate p2, double distanceTol)
+        private bool IsShallowConcavity(Coordinate p0, Coordinate p1, Coordinate p2, double distanceTol)
         {
             int orientation = CGAlgorithms.ComputeOrientation(p0, p1, p2);
             bool isAngleToSimplify = (orientation == _angleOrientation);
@@ -213,7 +213,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="i0">The start index of section</param>
         /// <param name="i2">The end index of section</param>
         /// <param name="distanceTol">The tolerated distance</param>
-        private bool IsShallowSampled(ICoordinate p0, ICoordinate p2, int i0, int i2, double distanceTol)
+        private bool IsShallowSampled(Coordinate p0, Coordinate p2, int i0, int i2, double distanceTol)
         {
             // check every n'th point to see if it is within tolerance
             int inc = (i2 - i0) / NumPtsToCheck;
@@ -225,14 +225,14 @@ namespace NetTopologySuite.Operation.Buffer
             return true;
         }
   
-        private static bool IsShallow(ICoordinate p0, ICoordinate p1, ICoordinate p2, double distanceTol)
+        private static bool IsShallow(Coordinate p0, Coordinate p1, Coordinate p2, double distanceTol)
         {
             double dist = CGAlgorithms.DistancePointLine(p1, p0, p2);
             return dist < distanceTol;
         }
   
   
-        private bool IsConcave(ICoordinate p0, ICoordinate p1, ICoordinate p2)
+        private bool IsConcave(Coordinate p0, Coordinate p1, Coordinate p2)
         {
             var orientation = CGAlgorithms.ComputeOrientation(p0, p1, p2);
             bool isConcave = (orientation == _angleOrientation);

@@ -237,7 +237,7 @@ namespace NetTopologySuite.Operation.Buffer
             var processedGraphs = new List<BufferSubgraph>();
             foreach (var subgraph in subgraphList)
             {
-                ICoordinate p = subgraph.RightMostCoordinate;
+                Coordinate p = subgraph.RightMostCoordinate;
                 //      int outsideDepth = 0;
                 //      if (polyBuilder.containsPoint(p))
                 //        outsideDepth = 1;

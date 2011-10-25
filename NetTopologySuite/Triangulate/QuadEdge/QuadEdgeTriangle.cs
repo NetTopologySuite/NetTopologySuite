@@ -46,7 +46,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="tri">an array containing at least 3 Vertexes</param>
         /// <param name="pt">the point to test</param>
         /// <returns>true if the point is contained in the triangle</returns>
-        public static bool Contains(Vertex[] tri, ICoordinate pt)
+        public static bool Contains(Vertex[] tri, Coordinate pt)
         {
             var ring = new[]
                            {
@@ -64,7 +64,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="tri">an array containing at least 3 QuadEdges</param>
         /// <param name="pt">the point to test</param>
         /// <returns>true if the point is contained in the triangle</returns>
-        public static bool Contains(QuadEdge[] tri, ICoordinate pt)
+        public static bool Contains(QuadEdge[] tri, Coordinate pt)
         {
             var ring = new[]
                            {
@@ -182,7 +182,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return vert;
         }
 
-        public ICoordinate GetCoordinate(int i)
+        public Coordinate GetCoordinate(int i)
         {
             return _edge[i].Orig.Coordinate;
         }
@@ -228,9 +228,9 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             seg.P1 = _edge[nexti].Orig.Coordinate;
         }
 
-        public ICoordinate[] GetCoordinates()
+        public Coordinate[] GetCoordinates()
         {
-            var pts = new ICoordinate[4];
+            var pts = new Coordinate[4];
             for (int i = 0; i < 3; i++)
             {
                 pts[i] = _edge[i].Orig.Coordinate;
@@ -239,7 +239,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return pts;
         }
 
-        public bool Contains(ICoordinate pt)
+        public bool Contains(Coordinate pt)
         {
             var ring = GetCoordinates();
             return CGAlgorithms.IsPointInRing(pt, ring);

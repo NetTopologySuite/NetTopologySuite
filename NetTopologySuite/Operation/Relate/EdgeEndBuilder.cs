@@ -89,7 +89,7 @@ namespace NetTopologySuite.Operation.Relate
                 iPrev--;
             }
 
-            ICoordinate pPrev = edge.GetCoordinate(iPrev);
+            Coordinate pPrev = edge.GetCoordinate(iPrev);
             // if prev intersection is past the previous vertex, use it instead
             if (eiPrev != null && eiPrev.SegmentIndex >= iPrev)
                 pPrev = eiPrev.Coordinate;
@@ -119,7 +119,7 @@ namespace NetTopologySuite.Operation.Relate
             if (iNext >= edge.NumPoints && eiNext == null)          
                 return;
 
-            ICoordinate pNext = edge.GetCoordinate(iNext);
+            Coordinate pNext = edge.GetCoordinate(iNext);
             // if the next intersection is in the same segment as the current, use it as the endpoint
             if (eiNext != null && eiNext.SegmentIndex == eiCurr.SegmentIndex)
                 pNext = eiNext.Coordinate;

@@ -40,7 +40,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 "LINEARRING(10 10, 10 20, 20 10, 10 10)");
         }
 
-        private void RunPtLocator(Location expected, ICoordinate pt, String wkt)
+        private void RunPtLocator(Location expected, Coordinate pt, String wkt)
         {
             IGeometry geom = reader.Read(wkt);
             PointLocator pointLocator = new PointLocator();

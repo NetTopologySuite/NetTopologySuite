@@ -13,7 +13,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p"></param>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
-        public override void ComputeIntersection(ICoordinate p, ICoordinate p1, ICoordinate p2)
+        public override void ComputeIntersection(Coordinate p, Coordinate p1, Coordinate p2)
         {
             IsProper = false;
             // do between check first, since it is faster than the orientation test
@@ -32,7 +32,7 @@ namespace NetTopologySuite.Algorithm
             result = NoIntersection;
         }
 
-        public override int ComputeIntersect(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2)
+        public override int ComputeIntersect(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
             IsProper = false;
 
@@ -123,7 +123,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="q1"></param>
         /// <param name="q2"></param>
         /// <returns></returns>
-        private int ComputeCollinearIntersection(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2)
+        private int ComputeCollinearIntersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
             bool p1q1p2 = Envelope.Intersects(p1, p2, q1);
             bool p1q2p2 = Envelope.Intersects(p1, p2, q2);
@@ -182,9 +182,9 @@ namespace NetTopologySuite.Algorithm
         /// <param name="q1"></param>
         /// <param name="q2"></param>
         /// <returns></returns>
-        private ICoordinate Intersection(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2)
+        private Coordinate Intersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
-            ICoordinate intPt = IntersectionWithNormalization(p1, p2, q1, q2);
+            Coordinate intPt = IntersectionWithNormalization(p1, p2, q1, q2);
 
             /*
              * Due to rounding it can happen that the computed intersection is
@@ -211,16 +211,16 @@ namespace NetTopologySuite.Algorithm
             return intPt;
         }
 
-        private ICoordinate IntersectionWithNormalization(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2)
+        private Coordinate IntersectionWithNormalization(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
-            ICoordinate n1 = new Coordinate(p1);
-            ICoordinate n2 = new Coordinate(p2);
-            ICoordinate n3 = new Coordinate(q1);
-            ICoordinate n4 = new Coordinate(q2);
-            ICoordinate normPt = new Coordinate();
+            Coordinate n1 = new Coordinate(p1);
+            Coordinate n2 = new Coordinate(p2);
+            Coordinate n3 = new Coordinate(q1);
+            Coordinate n4 = new Coordinate(q2);
+            Coordinate normPt = new Coordinate();
             NormalizeToEnvCentre(n1, n2, n3, n4, normPt);
 
-            ICoordinate intPt = SafeHCoordinateIntersection(n1, n2, n3, n4);
+            Coordinate intPt = SafeHCoordinateIntersection(n1, n2, n3, n4);
             intPt.X += normPt.X;
             intPt.Y += normPt.Y;
             return intPt;
@@ -232,9 +232,9 @@ namespace NetTopologySuite.Algorithm
         /// (usually due to the segments being approximately parallel).
         /// If this happens, a reasonable approximation is computed instead.
         /// </summary>
-        private static ICoordinate SafeHCoordinateIntersection(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2)
+        private static Coordinate SafeHCoordinateIntersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
-            ICoordinate intPt;
+            Coordinate intPt;
             try
             {
                 intPt = HCoordinate.Intersection(p1, p2, q1, q2);
@@ -251,7 +251,7 @@ namespace NetTopologySuite.Algorithm
         /// so that the midpoint of their intersection envelope
         /// lies at the origin.
         /// </summary>
-        private void NormalizeToEnvCentre(ICoordinate n00, ICoordinate n01, ICoordinate n10, ICoordinate n11, ICoordinate normPt)
+        private void NormalizeToEnvCentre(Coordinate n00, Coordinate n01, Coordinate n10, Coordinate n11, Coordinate normPt)
         {
             double minX0 = n00.X < n01.X ? n00.X : n01.X;
             double minY0 = n00.Y < n01.Y ? n00.Y : n01.Y;
@@ -288,10 +288,10 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="intPoint"></param>
         /// <returns><c>true</c> if the input point lies within both input segment envelopes.</returns>
-        private bool IsInSegmentEnvelopes(ICoordinate intPoint)
+        private bool IsInSegmentEnvelopes(Coordinate intPoint)
         {
-            IEnvelope env0 = new Envelope(inputLines[0][0], inputLines[0][1]);
-            IEnvelope env1 = new Envelope(inputLines[1][0], inputLines[1][1]);
+            Envelope env0 = new Envelope(inputLines[0][0], inputLines[0][1]);
+            Envelope env1 = new Envelope(inputLines[1][0], inputLines[1][1]);
             return env0.Contains(intPoint) && env1.Contains(intPoint);
         }
     }

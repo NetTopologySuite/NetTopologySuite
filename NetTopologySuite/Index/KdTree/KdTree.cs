@@ -48,7 +48,7 @@ namespace NetTopologySuite.Index.KdTree
         /// </summary>
         /// <param name="p">The point to insert</param>
         /// <returns>The kdnode containing the point</returns>
-        public KdNode<T> Insert(ICoordinate p)
+        public KdNode<T> Insert(Coordinate p)
         {
             return Insert(p, null);
         }
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Index.KdTree
         /// node is returned with its counter incremented. This can be checked
         /// by testing returnedNode.getCount() > 1.
         /// </returns>
-        public KdNode<T> Insert(ICoordinate p, T data)
+        public KdNode<T> Insert(Coordinate p, T data)
         {
             if (_root == null)
             {
@@ -135,7 +135,7 @@ namespace NetTopologySuite.Index.KdTree
         }
 
         private void QueryNode(KdNode<T> currentNode, KdNode<T> bottomNode,
-                IEnvelope queryEnv, bool odd, ICollection<KdNode<T>> result)
+                Envelope queryEnv, bool odd, ICollection<KdNode<T>> result)
         {
             if (currentNode == bottomNode)
                 return;
@@ -178,7 +178,7 @@ namespace NetTopologySuite.Index.KdTree
         /// </summary>
         /// <param name="queryEnv">The range rectangle to query</param>
         /// <returns>A collection of the KdNodes found</returns>
-        public ICollection<KdNode<T>> Query(IEnvelope queryEnv)
+        public ICollection<KdNode<T>> Query(Envelope queryEnv)
         {
             ICollection<KdNode<T>> result = new Collection<KdNode<T>>();
             QueryNode(_root, last, queryEnv, true, result);
@@ -190,7 +190,7 @@ namespace NetTopologySuite.Index.KdTree
         /// </summary>
         /// <param name="queryEnv">The range rectangle to query</param>
         /// <param name="result">A collection to accumulate the result nodes into</param>
-        public void Query(IEnvelope queryEnv, ICollection<KdNode<T>> result)
+        public void Query(Envelope queryEnv, ICollection<KdNode<T>> result)
         {
             QueryNode(_root, last, queryEnv, true, result);
         }

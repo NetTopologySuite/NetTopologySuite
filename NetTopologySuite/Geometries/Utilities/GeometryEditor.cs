@@ -200,7 +200,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
                 if (geometry is Point)
                 {
-                    ICoordinate[] newCoordinates = Edit(geometry.Coordinates, geometry);
+                    Coordinate[] newCoordinates = Edit(geometry.Coordinates, geometry);
                     return factory.CreatePoint((newCoordinates.Length > 0) ? newCoordinates[0] : null);
                 }
 
@@ -213,7 +213,7 @@ namespace NetTopologySuite.Geometries.Utilities
             /// <param name="coordinates">The coordinate array to operate on.</param>
             /// <param name="geometry">The point containing the coordinate list.</param>
             /// <returns>An edited coordinate array (which may be the same as the input).</returns>
-            public abstract ICoordinate[] Edit(ICoordinate[] coordinates, IGeometry geometry);
+            public abstract Coordinate[] Edit(Coordinate[] coordinates, IGeometry geometry);
         }
     }
 }

@@ -14,9 +14,9 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public class InteriorPointLine
     {
-        private readonly ICoordinate _centroid;
+        private readonly Coordinate _centroid;
         private double _minDistance = Double.MaxValue;
-        private ICoordinate _interiorPoint;
+        private Coordinate _interiorPoint;
 
         /// <summary>
         /// 
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate InteriorPoint
+        public Coordinate InteriorPoint
         {
             get
             {
@@ -64,7 +64,7 @@ namespace NetTopologySuite.Algorithm
         /// 
         /// </summary>
         /// <param name="pts"></param>
-        private void AddInterior(ICoordinate[] pts)
+        private void AddInterior(Coordinate[] pts)
         {
             for (int i = 1; i < pts.Length - 1; i++)
                 Add(pts[i]);
@@ -93,7 +93,7 @@ namespace NetTopologySuite.Algorithm
         /// 
         /// </summary>
         /// <param name="pts"></param>
-        private void AddEndpoints(ICoordinate[] pts)
+        private void AddEndpoints(Coordinate[] pts)
         {
             Add(pts[0]);
             Add(pts[pts.Length - 1]);
@@ -103,7 +103,7 @@ namespace NetTopologySuite.Algorithm
         /// 
         /// </summary>
         /// <param name="point"></param>
-        private void Add(ICoordinate point)
+        private void Add(Coordinate point)
         {
             double dist = point.Distance(_centroid);
             if (dist < _minDistance)

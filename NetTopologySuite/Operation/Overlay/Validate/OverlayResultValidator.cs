@@ -40,9 +40,9 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         private readonly FuzzyPointLocator[] _locFinder;
         private readonly Location[] _location = new Location[3];
         private readonly double _boundaryDistanceTolerance = Tolerance;
-        private readonly List<ICoordinate> _testCoords = new List<ICoordinate>();
+        private readonly List<Coordinate> _testCoords = new List<Coordinate>();
 
-        private ICoordinate _invalidLocation;
+        private Coordinate _invalidLocation;
 
 
         public OverlayResultValidator(IGeometry a, IGeometry b, IGeometry result)
@@ -80,7 +80,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             return isValid;
         }
 
-        public ICoordinate InvalidLocation
+        public Coordinate InvalidLocation
         {
             get { return _invalidLocation; }
         }
@@ -95,7 +95,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         {
             for (int i = 0; i < _testCoords.Count; i++)
             {
-                ICoordinate pt = _testCoords[i];
+                Coordinate pt = _testCoords[i];
                 if (!CheckValid(overlayOp, pt))
                 {
                     _invalidLocation = pt;
@@ -105,7 +105,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             return true;
         }
 
-        private bool CheckValid(SpatialFunction overlayOp, ICoordinate pt)
+        private bool CheckValid(SpatialFunction overlayOp, Coordinate pt)
         {
             _location[0] = _locFinder[0].GetLocation(pt);
             _location[1] = _locFinder[1].GetLocation(pt);

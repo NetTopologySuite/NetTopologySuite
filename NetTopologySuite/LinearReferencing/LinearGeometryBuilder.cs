@@ -18,7 +18,7 @@ namespace NetTopologySuite.LinearReferencing
         private bool ignoreInvalidLines = false;
         private bool fixInvalidLines = false;
 
-        private ICoordinate lastPt = null;
+        private Coordinate lastPt = null;
 
         /// <summary>
         /// 
@@ -65,7 +65,7 @@ namespace NetTopologySuite.LinearReferencing
         /// Adds a point to the current line.
         /// </summary>
         /// <param name="pt">The <see cref="Coordinate" /> to add.</param>
-        public void Add(ICoordinate pt)
+        public void Add(Coordinate pt)
         {
             Add(pt, true);
         }
@@ -75,7 +75,7 @@ namespace NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="pt">The <see cref="Coordinate" /> to add.</param>
         /// <param name="allowRepeatedPoints">If <c>true</c>, allows the insertions of repeated points.</param>
-        public void Add(ICoordinate pt, bool allowRepeatedPoints)
+        public void Add(Coordinate pt, bool allowRepeatedPoints)
         {
             if (coordList == null)
                 coordList = new CoordinateList();
@@ -86,7 +86,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate LastCoordinate
+        public Coordinate LastCoordinate
         {
             get
             {
@@ -108,8 +108,8 @@ namespace NetTopologySuite.LinearReferencing
                 return;
             }
 
-            ICoordinate[] rawPts = coordList.ToCoordinateArray();
-            ICoordinate[] pts = rawPts;
+            Coordinate[] rawPts = coordList.ToCoordinateArray();
+            Coordinate[] pts = rawPts;
             if (FixInvalidLines)
                 pts = ValidCoordinateSequence(rawPts);
 
@@ -136,11 +136,11 @@ namespace NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="pts"></param>
         /// <returns></returns>
-        private ICoordinate[] ValidCoordinateSequence(ICoordinate[] pts)
+        private Coordinate[] ValidCoordinateSequence(Coordinate[] pts)
         {
             if (pts.Length >= 2) 
                 return pts;
-            ICoordinate[] validPts = new ICoordinate[] { pts[0], pts[0] };
+            Coordinate[] validPts = new Coordinate[] { pts[0], pts[0] };
             return validPts;
         }
 

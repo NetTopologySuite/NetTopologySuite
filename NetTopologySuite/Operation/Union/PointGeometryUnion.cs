@@ -36,11 +36,11 @@ namespace NetTopologySuite.Operation.Union
         {
             PointLocator locater = new PointLocator();
             // use a set to eliminate duplicates, as required for union
-            var exteriorCoords = new OrderedSet<ICoordinate>();
+            var exteriorCoords = new OrderedSet<Coordinate>();
 
             foreach (IPoint point in PointExtracter.GetPoints(_pointGeom))
             {
-                ICoordinate coord = point.Coordinate;
+                Coordinate coord = point.Coordinate;
                 Location loc = locater.Locate(coord, _otherGeom);
 
                 if (loc == Location.Exterior)

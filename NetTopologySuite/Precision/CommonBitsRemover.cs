@@ -8,7 +8,7 @@ namespace NetTopologySuite.Precision
     /// </summary>
     public class CommonBitsRemover
     {
-        private ICoordinate _commonCoord;
+        private Coordinate _commonCoord;
         private readonly CommonCoordinateFilter _ccFilter = new CommonCoordinateFilter();
 
         /*
@@ -33,7 +33,7 @@ namespace NetTopologySuite.Precision
         /// <summary>
         /// The common bits of the Coordinates in the supplied Geometries.
         /// </summary>
-        public ICoordinate CommonCoordinate
+        public Coordinate CommonCoordinate
         {
             get { return _commonCoord; }
         }
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Precision
         {
             if (_commonCoord.X == 0.0 && _commonCoord.Y == 0.0)
                 return geom;
-            ICoordinate invCoord = new Coordinate(_commonCoord);
+            Coordinate invCoord = new Coordinate(_commonCoord);
             invCoord.X = -invCoord.X;
             invCoord.Y = -invCoord.Y;
             Translater trans = new Translater(invCoord);            
@@ -82,7 +82,7 @@ namespace NetTopologySuite.Precision
             /// 
             /// </summary>
             /// <param name="coord"></param>
-            public void Filter(ICoordinate coord)
+            public void Filter(Coordinate coord)
             {
                 commonBitsX.Add(coord.X);
                 commonBitsY.Add(coord.Y);
@@ -91,7 +91,7 @@ namespace NetTopologySuite.Precision
             /// <summary>
             /// 
             /// </summary>
-            public ICoordinate CommonCoordinate
+            public Coordinate CommonCoordinate
             {
                 get
                 {
@@ -105,13 +105,13 @@ namespace NetTopologySuite.Precision
         /// </summary>
         class Translater : ICoordinateFilter
         {
-            private readonly ICoordinate _trans;
+            private readonly Coordinate _trans;
 
             /// <summary>
             /// 
             /// </summary>
             /// <param name="trans"></param>
-            public Translater(ICoordinate trans)
+            public Translater(Coordinate trans)
             {
                 _trans = trans;
             }
@@ -120,7 +120,7 @@ namespace NetTopologySuite.Precision
             /// 
             /// </summary>
             /// <param name="coord"></param>
-            public void Filter(ICoordinate coord)
+            public void Filter(Coordinate coord)
             {
                 coord.X += _trans.X;
                 coord.Y += _trans.Y;

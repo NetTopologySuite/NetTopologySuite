@@ -32,7 +32,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="OracleGeometryWriter.cs" />
+    <Compile Include="Sdo\SdoEType.cs" />
+    <Compile Include="Sdo\SdoGTemplate.cs" />
+    <Compile Include="UdtBase\OracleArrayTypeFactoryBase.cs" />
+    <Compile Include="OracleGeometryReader.cs" />
+    <Compile Include="Sdo\SdoPoint.cs" />
+    <Compile Include="UdtBase\OracleUdtBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sdo\SdoGeometry.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\GeoAPI\GeoAPI\GeoAPI.csproj">
@@ -43,6 +51,17 @@
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
       <Name>NetTopologySuite</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Oracle.DataAccess, Version=2.112.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Oracle\obe\product\11.2.0\client_1\odp.net\bin\2.x\Oracle.DataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Spec\b28400.pdf" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

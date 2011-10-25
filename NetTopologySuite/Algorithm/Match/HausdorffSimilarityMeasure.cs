@@ -37,7 +37,7 @@ namespace NetTopologySuite.Algorithm.Match
         {
             double distance = DiscreteHausdorffDistance.Distance(g1, g2, DensifyFraction);
 
-            IEnvelope env = new Envelope(g1.EnvelopeInternal);
+            Envelope env = new Envelope(g1.EnvelopeInternal);
             env.ExpandToInclude(g2.EnvelopeInternal);
             double envSize = DiagonalSize(env);
             // normalize so that more similarity produces a measure closer to 1
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Algorithm.Match
         /// </summary>
         /// <param name="env"></param>
         /// <returns></returns>
-        public static double DiagonalSize(IEnvelope env)
+        public static double DiagonalSize(Envelope env)
         {
             if (env.IsNull) return 0.0;
 

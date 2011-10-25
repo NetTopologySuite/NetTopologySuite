@@ -10,7 +10,7 @@
         protected override void AddAppConfigSpecificItems(KeyValueConfigurationCollection kvcc)
         {
             // NOTE: insert a valid connection string to a postgis db
-            kvcc.Add("PostGisConnectionString", "Server=127.0.0.1;Port=5432;Database=nts;User Id=postgres;Password=postgres;");            
+            kvcc.Add("PostGisConnectionString", "Server=127.0.0.1;Port=5432;Database=obe;User Id=postgres;Password=1.Kennwort;");            
         }
 
         protected override void ReadAppConfigInternal(AppSettingsReader asr)
@@ -20,7 +20,7 @@
 
         protected override void CreateTestStore()
         {
-            using (NpgsqlConnection conn = new NpgsqlConnection(this.ConnectionString))
+            using (var conn = new NpgsqlConnection(this.ConnectionString))
             {
                 conn.Open();
                 using (NpgsqlCommand cmd = conn.CreateCommand())
@@ -41,7 +41,7 @@
 
         protected override IGeometry Read(byte[] b)
         {
-            PostGisReader pgReader = new PostGisReader(this.RandomGeometryHelper.Factory);
+            var pgReader = new PostGisReader(this.RandomGeometryHelper.Factory);
             return pgReader.Read(b);
         }
 

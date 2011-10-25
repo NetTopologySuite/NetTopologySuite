@@ -15,7 +15,7 @@ namespace NetTopologySuite.Triangulate
     public class DelaunayTriangulationBuilder
     {
         /// <summary>
-        /// Extracts the unique <see cref="ICoordinate"/>s from the given <see cref="IGeometry"/>.
+        /// Extracts the unique <see cref="Coordinate"/>s from the given <see cref="IGeometry"/>.
         /// </summary>
         /// <param name="geom">the geometry to extract from</param>
         /// <returns>a List of the unique Coordinates</returns>
@@ -24,11 +24,11 @@ namespace NetTopologySuite.Triangulate
             if (geom == null)
                 return new CoordinateList();
 
-            ICoordinate[] coords = geom.Coordinates;
+            Coordinate[] coords = geom.Coordinates;
             return Unique(coords);
         }
 
-        public static CoordinateList Unique(ICoordinate[] coords)
+        public static CoordinateList Unique(Coordinate[] coords)
         {
             Array.Sort(coords);
             CoordinateList coordList = new CoordinateList(coords, false);
@@ -36,11 +36,11 @@ namespace NetTopologySuite.Triangulate
         }
 
         /// <summary>
-        /// Converts all <see cref="ICoordinate"/>s in a collection to <see cref="Vertex"/>es.
+        /// Converts all <see cref="Coordinate"/>s in a collection to <see cref="Vertex"/>es.
         /// </summary>
         /// <param name="coords">the coordinates to convert</param>
         /// <returns>a List of Vertex objects</returns>
-        public static IList<Vertex> ToVertices(ICollection<ICoordinate> coords)
+        public static IList<Vertex> ToVertices(ICollection<Coordinate> coords)
         {
             var verts = new List<Vertex>();
             foreach (var coord in coords)
@@ -51,11 +51,11 @@ namespace NetTopologySuite.Triangulate
         }
 
         /// <summary>
-        /// Computes the <see cref="Envelope"/> of a collection of <see cref="ICoordinate"/>s.
+        /// Computes the <see cref="Envelope"/> of a collection of <see cref="Coordinate"/>s.
         /// </summary>
         /// <param name="coords">a List of Coordinates</param>
         /// <returns>the envelope of the set of coordinates</returns>
-        public static Envelope Envelope(ICollection<ICoordinate> coords)
+        public static Envelope Envelope(ICollection<Coordinate> coords)
         {
             Envelope env = new Envelope();
             foreach (var coord in coords)
@@ -65,7 +65,7 @@ namespace NetTopologySuite.Triangulate
             return env;
         }
 
-        private ICollection<ICoordinate> _siteCoords;
+        private ICollection<Coordinate> _siteCoords;
         private double _tolerance;
         private QuadEdgeSubdivision _subdiv;
 
@@ -82,10 +82,10 @@ namespace NetTopologySuite.Triangulate
 
         /// <summary>
         /// Sets the sites (point or vertices) which will be triangulated
-        /// from a collection of <see cref="ICoordinate"/>s.
+        /// from a collection of <see cref="Coordinate"/>s.
         /// </summary>
         /// <param name="coords">a collection of Coordinates.</param>
-        public void SetSites(ICollection<ICoordinate> coords)
+        public void SetSites(ICollection<Coordinate> coords)
         {
             // remove any duplicate points (they will cause the triangulation to fail)
             _siteCoords = Unique(CoordinateArrays.ToCoordinateArray(coords));

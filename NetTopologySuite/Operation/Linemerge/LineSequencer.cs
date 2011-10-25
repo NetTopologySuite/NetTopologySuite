@@ -70,15 +70,15 @@ namespace NetTopologySuite.Operation.Linemerge
             IMultiLineString mls = geom as IMultiLineString;
 
             // The nodes in all subgraphs which have been completely scanned
-            OrderedSet<ICoordinate> prevSubgraphNodes = new OrderedSet<ICoordinate>();
+            OrderedSet<Coordinate> prevSubgraphNodes = new OrderedSet<Coordinate>();
 
-            ICoordinate lastNode = null;
-            IList<ICoordinate> currNodes = new List<ICoordinate>();
+            Coordinate lastNode = null;
+            IList<Coordinate> currNodes = new List<Coordinate>();
             for (int i = 0; i < mls.NumGeometries; i++) 
             {
                 ILineString line = (ILineString) mls.GetGeometryN(i);
-                ICoordinate startNode = line.GetCoordinateN(0);
-                ICoordinate endNode   = line.GetCoordinateN(line.NumPoints - 1);
+                Coordinate startNode = line.GetCoordinateN(0);
+                Coordinate endNode   = line.GetCoordinateN(line.NumPoints - 1);
 
                 /*
                  * If this linestring is connected to a previous subgraph, geom is not sequenced
@@ -489,7 +489,7 @@ namespace NetTopologySuite.Operation.Linemerge
 
         private static ILineString Reverse(ILineString line)
         {
-            ICoordinate[] pts = line.Coordinates;                     
+            Coordinate[] pts = line.Coordinates;                     
             Array.Reverse(pts);
             ILineString rev = line.Factory.CreateLineString(pts);
             rev.UserData = line.UserData; // Maintain UserData in reverse process

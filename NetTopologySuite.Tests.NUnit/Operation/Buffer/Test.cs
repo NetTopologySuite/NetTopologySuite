@@ -12,7 +12,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
         {
             var geom =
                 new Polygon(
-                    new LinearRing(new ICoordinate[]
+                    new LinearRing(new Coordinate[]
                                        {
                                            new Coordinate(0, 0), new Coordinate(0, 10), new Coordinate(10, 10),
                                            new Coordinate(10, 0), new Coordinate(0, 0)

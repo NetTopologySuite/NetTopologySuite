@@ -51,7 +51,7 @@ namespace NetTopologySuite.Noding
                 CheckCollapse(pts[i], pts[i + 1], pts[i + 2]);            
         }
 
-        private static void CheckCollapse(ICoordinate p0, ICoordinate p1, ICoordinate p2)
+        private static void CheckCollapse(Coordinate p0, Coordinate p1, Coordinate p2)
         {
             if (p0.Equals(p2))
                 throw new ApplicationException(String.Format(
@@ -94,7 +94,7 @@ namespace NetTopologySuite.Noding
                         "found non-noded intersection at {0}-{1} and {2}-{3}", p00, p01, p10, p11));                            
         }
 
-        private static bool HasInteriorIntersection(LineIntersector li, ICoordinate p0, ICoordinate p1)
+        private static bool HasInteriorIntersection(LineIntersector li, Coordinate p0, Coordinate p1)
         {
             for (var i = 0; i < li.IntersectionNum; i++)
             {
@@ -120,7 +120,7 @@ namespace NetTopologySuite.Noding
             }
         }
 
-        private static void CheckEndPtVertexIntersections(ICoordinate testPt, IEnumerable<ISegmentString> segStrings)
+        private static void CheckEndPtVertexIntersections(Coordinate testPt, IEnumerable<ISegmentString> segStrings)
         {
             foreach (ISegmentString ss in segStrings)
             {

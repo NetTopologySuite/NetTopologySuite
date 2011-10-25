@@ -40,25 +40,25 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 	    /// <param name="ls"></param>
 	    /// <param name="transform"></param>
 	    /// <returns></returns>
-	    private static ICoordinate[] ExtractCoordinates(IGeometry ls, IMathTransform transform)
+	    private static Coordinate[] ExtractCoordinates(IGeometry ls, IMathTransform transform)
 	    {
 	        List<double[]> points = new List<double[]>(ls.NumPoints);
-	        foreach (ICoordinate c in ls.Coordinates)
+	        foreach (Coordinate c in ls.Coordinates)
 	            points.Add(ToArray(c.X, c.Y));
 	        points = transform.TransformList(points);
-	        List<ICoordinate> coords = new List<ICoordinate>(points.Count);
+	        List<Coordinate> coords = new List<Coordinate>(points.Count);
 	        foreach (double[] p in points)
 	            coords.Add(new Coordinate(p[0], p[1]));
 	        return coords.ToArray();
 	    }
 
 	    /// <summary>
-		/// Transforms a <see cref="IEnvelope" /> object.
+		/// Transforms a <see cref="Envelope" /> object.
 		/// </summary>
         /// <param name="box"></param>
 		/// <param name="transform"></param>
 		/// <returns></returns>
-		public static IEnvelope TransformBox(IEnvelope box, IMathTransform transform)
+		public static Envelope TransformBox(Envelope box, IMathTransform transform)
 		{
 			if (box == null) return null;
 
@@ -68,7 +68,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
             corners[2] = transform.Transform(ToArray(box.MinX, box.MaxY)); //UL
             corners[3] = transform.Transform(ToArray(box.MaxX, box.MinY)); //LR
 
-			IEnvelope result = new Envelope();
+			Envelope result = new Envelope();
             foreach (double[] p in corners)
 				result.ExpandToInclude(p[0], p[1]);
 			return result;
@@ -132,7 +132,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		{
 			try 
             {
-				ICoordinate[] coords = ExtractCoordinates(l, transform);
+				Coordinate[] coords = ExtractCoordinates(l, transform);
                 return factory.CreateLineString(coords); 
             }
 			catch { return null; }
@@ -150,7 +150,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		{
 			try 
             {
-                ICoordinate[] coords = ExtractCoordinates(r, transform);
+                Coordinate[] coords = ExtractCoordinates(r, transform);
                 return factory.CreateLinearRing(coords);
             }
 			catch { return null; }

@@ -65,7 +65,7 @@ namespace NetTopologySuite.Index.Strtree
                                               (ItemBoundable) _boundable2);
             }
             // otherwise compute distance between bounds of boundables
-            return ((IEnvelope) _boundable1.Bounds).Distance(((IEnvelope) _boundable2.Bounds));
+            return ((Envelope) _boundable1.Bounds).Distance(((Envelope) _boundable2.Bounds));
         }
 
 
@@ -82,11 +82,11 @@ namespace NetTopologySuite.Index.Strtree
         private double MaxDistance()
         {
           return maximumDistance( 
-              (IEnvelope) boundable1.Bounds,
-              (IEnvelope) boundable2.Bounds);      	
+              (Envelope) boundable1.Bounds,
+              (Envelope) boundable2.Bounds);      	
         }
   
-        private static double MaximumDistance(IEnvelope env1, IEnvelope env2)
+        private static double MaximumDistance(Envelope env1, Envelope env2)
         {
           double minx = Math.Min(env1.GetMinX(), env2.GetMinX());
           double miny = Math.Min(env1.GetMinY(), env2.GetMinY());
@@ -153,7 +153,7 @@ namespace NetTopologySuite.Index.Strtree
 
         private static double Area(IBoundable b)
         {
-            return ((IEnvelope) b.Bounds).Area;
+            return ((Envelope) b.Bounds).Area;
         }
 
         /// <summary>

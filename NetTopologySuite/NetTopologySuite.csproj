@@ -106,6 +106,7 @@
     <Compile Include="Algorithm\RobustLineIntersector.cs" />
     <Compile Include="Algorithm\SimplePointInRing.cs" />
     <Compile Include="Algorithm\SIRtreePointInRing.cs" />
+    <Compile Include="Geometries\Geometry.cs" />
     <Compile Include="Geometries\GeometryComponentFilter.cs" />
     <Compile Include="Index\Strtree\BoundablePair.cs" />
     <Compile Include="Index\Strtree\GeometryItemDistance.cs" />
@@ -122,30 +123,16 @@
     <Compile Include="Features\Feature.cs" />
     <Compile Include="Features\IAttributesTable.cs" />
     <Compile Include="Algorithm\Angle.cs" />
-    <Compile Include="Geometries\Coordinate.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Geometries\CoordinateArrays.cs" />
-    <Compile Include="Geometries\CoordinateArraySequence.cs" />
-    <Compile Include="Geometries\CoordinateArraySequenceFactory.cs" />
+    <Compile Include="Geometries\Implementation\CoordinateArraySequence.cs" />
+    <Compile Include="Geometries\Implementation\CoordinateArraySequenceFactory.cs" />
     <Compile Include="Geometries\CoordinateList.cs" />
     <Compile Include="Geometries\CoordinateSequenceComparator.cs" />
     <Compile Include="Geometries\CoordinateSequences.cs" />
-    <Compile Include="Geometries\CoordinateStruct.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Geometries\CoordinateStructSequence.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Geometries\CoordinateStructSequenceFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Geometries\DefaultCoordinateSequence.cs" />
     <Compile Include="Geometries\DefaultCoordinateSequenceFactory.cs" />
-    <Compile Include="Geometries\DotSpatialAffineCoordinateSequence.cs" />
-    <Compile Include="Geometries\DotSpatialAffineCoordinateSequenceFactory.cs" />
-    <Compile Include="Geometries\Envelope.cs" />
-    <Compile Include="Geometries\Geometry.cs" />
+    <Compile Include="Geometries\Implementation\DotSpatialAffineCoordinateSequence.cs" />
+    <Compile Include="Geometries\Implementation\DotSpatialAffineCoordinateSequenceFactory.cs" />
     <Compile Include="Geometries\GeometryCollection.cs" />
     <Compile Include="Geometries\GeometryCollectionEnumerator.cs" />
     <Compile Include="Geometries\GeometryFactory.cs" />
@@ -156,8 +143,8 @@
     <Compile Include="Geometries\MultiPoint.cs" />
     <Compile Include="Geometries\MultiPolygon.cs" />
     <Compile Include="Geometries\OctogonalEnvelope.cs" />
-    <Compile Include="Geometries\PackedCoordinateSequence.cs" />
-    <Compile Include="Geometries\PackedCoordinateSequenceFactory.cs" />
+    <Compile Include="Geometries\Implementation\PackedCoordinateSequence.cs" />
+    <Compile Include="Geometries\Implementation\PackedCoordinateSequenceFactory.cs" />
     <Compile Include="Geometries\Point.cs" />
     <Compile Include="Geometries\Polygon.cs" />
     <Compile Include="Geometries\PrecisionModel.cs" />
@@ -516,9 +503,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Geometries\Implementation\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">
       <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>

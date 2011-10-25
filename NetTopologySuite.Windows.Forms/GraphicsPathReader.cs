@@ -81,7 +81,7 @@ namespace NetTopologySuite.Windows.Forms
                 seqIndex++;
 
                 var holes = new List<ILinearRing>();
-                ICoordinate[] holePts;
+                Coordinate[] holePts;
                 // add holes as long as rings are CCW
                 while (seqIndex < pathPtSeq.Count && IsHole(holePts = pathPtSeq[seqIndex]))
                 {
@@ -95,7 +95,7 @@ namespace NetTopologySuite.Windows.Forms
             return _geometryFactory.BuildGeometry(polys);
         }
 
-        private static bool IsHole(ICoordinate[] pts)
+        private static bool IsHole(Coordinate[] pts)
         {
             return CGAlgorithms.IsCCW(pts);
         }
@@ -107,18 +107,18 @@ namespace NetTopologySuite.Windows.Forms
         /// <param name="pathIt">A path iterator</param>
         /// <returns>A list of coordinate arrays</returns>
         /// <exception cref="ArgumentException">If a non-linear segment type is encountered</exception>
-        public static IList<ICoordinate[]> ToCoordinates(GraphicsPathIterator pathIt)
+        public static IList<Coordinate[]> ToCoordinates(GraphicsPathIterator pathIt)
         {
             if (pathIt.HasCurve())
                 throw new ArgumentException("Path must not have non-linear segments");
 
-            var coordArrays = new List<ICoordinate[]>();
+            var coordArrays = new List<Coordinate[]>();
             int startIndex, endIndex;
             bool isClosed;
 
             while (pathIt.NextSubpath(out startIndex, out endIndex, out isClosed) > 0)
             {
-                ICoordinate[] pts = NextCoordinateArray(pathIt, startIndex, endIndex, isClosed);
+                Coordinate[] pts = NextCoordinateArray(pathIt, startIndex, endIndex, isClosed);
                 coordArrays.Add(pts);
                 if (endIndex == pathIt.Count - 1) break;
 
@@ -126,14 +126,14 @@ namespace NetTopologySuite.Windows.Forms
             return coordArrays;
         }
 
-        private static ICoordinate[] NextCoordinateArray(GraphicsPathIterator pathIt, int start, int end, bool isClosed)
+        private static Coordinate[] NextCoordinateArray(GraphicsPathIterator pathIt, int start, int end, bool isClosed)
         {
             var num = end - start + 1;
             var points = new PointF[num];
             var types = new byte[num];
             pathIt.CopyData(ref points, ref types, start, end);
 
-            var ret = new ICoordinate[num + (isClosed ? 1 : 0)];
+            var ret = new Coordinate[num + (isClosed ? 1 : 0)];
             for (var i = 0; i < num; i++)
                 ret[i] = new Coordinate(points[i].X, points[i].Y);
             if (isClosed)

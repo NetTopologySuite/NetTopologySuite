@@ -16,7 +16,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="env"></param>
         /// <returns></returns>
-        public static int ComputeQuadLevel(IEnvelope env)
+        public static int ComputeQuadLevel(Envelope env)
         {
             double dx = env.Width;
             double dy = env.Height;
@@ -26,17 +26,17 @@ namespace NetTopologySuite.Index.Quadtree
         }
 
         // the fields which make up the key
-        private readonly ICoordinate _pt = new Coordinate();
+        private readonly Coordinate _pt = new Coordinate();
         private int _level;
 
         // auxiliary data which is derived from the key for use in computation
-        private IEnvelope _env;
+        private Envelope _env;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="itemEnv"></param>
-        public Key(IEnvelope itemEnv)
+        public Key(Envelope itemEnv)
         {
             ComputeKey(itemEnv);
         }
@@ -44,7 +44,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate Point
+        public Coordinate Point
         {
             get
             {
@@ -66,7 +66,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public IEnvelope Envelope
+        public Envelope Envelope
         {
             get
             {
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinate Centre
+        public Coordinate Centre
         {
             get
             {
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// whose extent is a power of two and which is based at a power of 2.
         /// </summary>
         /// <param name="itemEnv"></param>
-        public void ComputeKey(IEnvelope itemEnv)
+        public void ComputeKey(Envelope itemEnv)
         {
             _level = ComputeQuadLevel(itemEnv);
             _env = new Envelope();
@@ -108,7 +108,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="level"></param>
         /// <param name="itemEnv"></param>
-        private void ComputeKey(int level, IEnvelope itemEnv)
+        private void ComputeKey(int level, Envelope itemEnv)
         {
             double quadSize = DoubleBits.PowerOf2(level);            
             _pt.X = Math.Floor(itemEnv.MinX / quadSize) * quadSize;

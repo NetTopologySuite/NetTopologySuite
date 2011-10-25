@@ -17,11 +17,11 @@ namespace NetTopologySuite.Triangulate
     /// <author>Martin Davis</author>
     public class VoronoiDiagramBuilder
     {
-        private ICollection<ICoordinate> _siteCoords;
+        private ICollection<Coordinate> _siteCoords;
         private double _tolerance;
         private QuadEdgeSubdivision _subdiv;
-        private IEnvelope _clipEnv;
-        private IEnvelope _diagramEnv;
+        private Envelope _clipEnv;
+        private Envelope _diagramEnv;
 
         /// <summary>
         /// Sets the sites (point or vertices) which will be diagrammed.
@@ -36,10 +36,10 @@ namespace NetTopologySuite.Triangulate
 
         /// <summary>
         /// Sets the sites (point or vertices) which will be diagrammed
-        /// from a collection of <see cref="ICoordinate"/>s.
+        /// from a collection of <see cref="Coordinate"/>s.
         /// </summary>
         /// <param name="geom">a collection of Coordinates.</param>
-        public void SetSites(ICollection<ICoordinate> geom)
+        public void SetSites(ICollection<Coordinate> geom)
         {
             // remove any duplicate points (they will cause the triangulation to fail)
             _siteCoords = DelaunayTriangulationBuilder.Unique(CoordinateArrays.ToCoordinateArray(geom));
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Triangulate
         /// of this envelope or an envelope surrounding the sites.
         /// </summary>
         /// <remarks>the clip envelope.</remarks>
-        public IEnvelope ClipEnvelope
+        public Envelope ClipEnvelope
         {
             set
             {
@@ -116,7 +116,7 @@ namespace NetTopologySuite.Triangulate
             return ClipGeometryCollection(polys, _diagramEnv);
         }
 
-        private static IGeometryCollection ClipGeometryCollection(IGeometryCollection geom, IEnvelope clipEnv)
+        private static IGeometryCollection ClipGeometryCollection(IGeometryCollection geom, Envelope clipEnv)
         {
             var clipPoly = geom.Factory.ToGeometry(clipEnv);
             var clipped = new List<IGeometry>();

@@ -18,7 +18,7 @@ namespace NetTopologySuite.Noding
         ///<summary>
         /// Points that make up ISegmentString
         ///</summary>
-        ICoordinate[] Coordinates { get; }
+        Coordinate[] Coordinates { get; }
         ///<summary>
         /// Size of Coordinate Sequence
         ///</summary>

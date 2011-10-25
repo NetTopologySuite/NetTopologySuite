@@ -55,7 +55,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         private void ReadGoodCheckCoordinate(String wkt, double x, double y)
         {
             IGeometry g = rdr.Read(wkt);
-            ICoordinate pt = g.Coordinate;
+            Coordinate pt = g.Coordinate;
             Assert.AreEqual(pt.X, x, 0.0001);
             Assert.AreEqual(pt.Y, y, 0.0001);
         }

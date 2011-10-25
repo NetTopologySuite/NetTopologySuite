@@ -44,13 +44,13 @@ namespace Open.Topology.TestRunner.Functions
         {
             var gf = FunctionsUtil.getFactoryOrDefault(g);
 
-            var jTop = new ICoordinate[]
+            var jTop = new Coordinate[]
                            {
                                new Coordinate(0, HEIGHT),
                                new Coordinate(J_WIDTH, HEIGHT),
                                new Coordinate(J_WIDTH, J_RADIUS)
                            };
-            var jBottom = new ICoordinate[]
+            var jBottom = new Coordinate[]
                               {
                                   new Coordinate(J_WIDTH - J_RADIUS, 0),
                                   new Coordinate(0, 0)
@@ -74,12 +74,12 @@ namespace Open.Topology.TestRunner.Functions
         {
             var gf = FunctionsUtil.getFactoryOrDefault(g);
 
-            var tTop = new ICoordinate[]
+            var tTop = new []
                            {
                                new Coordinate(J_WIDTH, HEIGHT),
                                new Coordinate(WIDTH - S_RADIUS - 5, HEIGHT)
                            };
-            var tBottom = new ICoordinate[]
+            var tBottom = new []
                               {
                                   new Coordinate(J_WIDTH + 0.5*T_WIDTH, HEIGHT),
                                   new Coordinate(J_WIDTH + 0.5*T_WIDTH, 0)
@@ -98,12 +98,12 @@ namespace Open.Topology.TestRunner.Functions
 
             double centreX = WIDTH - S_RADIUS;
 
-            var top = new ICoordinate[]
+            var top = new []
                           {
                               new Coordinate(WIDTH, HEIGHT),
                               new Coordinate(centreX, HEIGHT)
                           };
-            var bottom = new ICoordinate[]
+            var bottom = new []
                              {
                                  new Coordinate(centreX, 0),
                                  new Coordinate(WIDTH - 2*S_RADIUS, 0)

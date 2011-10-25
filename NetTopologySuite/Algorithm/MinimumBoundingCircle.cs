@@ -38,8 +38,8 @@ namespace NetTopologySuite.Algorithm
          */
 
         private readonly IGeometry _input;
-        private ICoordinate[] _extremalPts;
-        private ICoordinate _centre;
+        private Coordinate[] _extremalPts;
+        private Coordinate _centre;
         private double _radius;
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace NetTopologySuite.Algorithm
         /// and the geometry of those points.
         /// </remarks>
         /// <returns>The points defining the Minimum Bounding Circle</returns>
-        public ICoordinate[] GetExtremalPoints()
+        public Coordinate[] GetExtremalPoints()
         {
             Compute();
             return _extremalPts;
@@ -97,7 +97,7 @@ namespace NetTopologySuite.Algorithm
         /// Gets the centre point of the computed Minimum Bounding Circle.
         /// </summary>
         /// <returns>the centre point of the Minimum Bounding Circle, null if the input is empty</returns>
-        public ICoordinate GetCentre()
+        public Coordinate GetCentre()
         {
             Compute();
             return _centre;
@@ -148,17 +148,17 @@ namespace NetTopologySuite.Algorithm
 
         private void ComputeCirclePoints()
         {
-            ICoordinate[] pts;
+            Coordinate[] pts;
             // handle degenerate cases
             if (_input.IsEmpty)
             {
-                _extremalPts = new ICoordinate[0];
+                _extremalPts = new Coordinate[0];
                 return;
             }
             if (_input.NumPoints == 1)
             {
                 pts = _input.Coordinates;
-                _extremalPts = new ICoordinate[] { new Coordinate(pts[0]) };
+                _extremalPts = new Coordinate[] { new Coordinate(pts[0]) };
                 return;
             }
 
@@ -169,13 +169,13 @@ namespace NetTopologySuite.Algorithm
              */
 
             // check for degenerate or trivial cases
-            ICoordinate[] hullPts = convexHull.Coordinates;
+            Coordinate[] hullPts = convexHull.Coordinates;
 
             // strip duplicate final point, if any
             pts = hullPts;
             if (hullPts[0].Equals2D(hullPts[hullPts.Length - 1]))
             {
-                pts = new ICoordinate[hullPts.Length - 1];
+                pts = new Coordinate[hullPts.Length - 1];
                 CoordinateArrays.CopyDeep(hullPts, 0, pts, 0, hullPts.Length - 1);
             }
 
@@ -186,10 +186,10 @@ namespace NetTopologySuite.Algorithm
             }
 
             // find a point P with minimum Y ordinate
-            ICoordinate P = LowestPoint(pts);
+            Coordinate P = LowestPoint(pts);
 
             // find a point Q such that the angle that PQ makes with the x-axis is minimal
-            ICoordinate Q = PointWitMinAngleWithX(pts, P);
+            Coordinate Q = PointWitMinAngleWithX(pts, P);
 
             /**
              * Iterate over the remaining points to find 
@@ -200,12 +200,12 @@ namespace NetTopologySuite.Algorithm
              */
             for (int i = 0; i < pts.Length; i++)
             {
-                ICoordinate R = PointWithMinAngleWithSegment(pts, P, Q);
+                Coordinate R = PointWithMinAngleWithSegment(pts, P, Q);
 
                 // if PRQ is obtuse, then MBC is determined by P and Q
                 if (AngleUtility.IsObtuse(P, R, Q))
                 {
-                    _extremalPts = new ICoordinate[] { new Coordinate(P), new Coordinate(Q) };
+                    _extremalPts = new Coordinate[] { new Coordinate(P), new Coordinate(Q) };
                     return;
                 }
                 // if RPQ is obtuse, update baseline and iterate
@@ -221,15 +221,15 @@ namespace NetTopologySuite.Algorithm
                     continue;
                 }
                 // otherwise all angles are acute, and the MBC is determined by the triangle PQR
-                _extremalPts = new ICoordinate[] { new Coordinate(P), new Coordinate(Q), new Coordinate(R) };
+                _extremalPts = new Coordinate[] { new Coordinate(P), new Coordinate(Q), new Coordinate(R) };
                 return;
             }
             Assert.ShouldNeverReachHere("Logic failure in Minimum Bounding Circle algorithm");
         }
 
-        private static ICoordinate LowestPoint(ICoordinate[] pts)
+        private static Coordinate LowestPoint(Coordinate[] pts)
         {
-            ICoordinate min = pts[0];
+            Coordinate min = pts[0];
             for (int i = 1; i < pts.Length; i++)
             {
                 if (pts[i].Y < min.Y)
@@ -238,14 +238,14 @@ namespace NetTopologySuite.Algorithm
             return min;
         }
 
-        private static ICoordinate PointWitMinAngleWithX(ICoordinate[] pts, ICoordinate P)
+        private static Coordinate PointWitMinAngleWithX(Coordinate[] pts, Coordinate P)
         {
             double minSin = Double.MaxValue;
-            ICoordinate minAngPt = null;
+            Coordinate minAngPt = null;
             for (int i = 0; i < pts.Length; i++)
             {
 
-                ICoordinate p = pts[i];
+                Coordinate p = pts[i];
                 if (p == P) continue;
 
                 /**
@@ -266,13 +266,13 @@ namespace NetTopologySuite.Algorithm
             return minAngPt;
         }
 
-        private static ICoordinate PointWithMinAngleWithSegment(ICoordinate[] pts, ICoordinate P, ICoordinate Q)
+        private static Coordinate PointWithMinAngleWithSegment(Coordinate[] pts, Coordinate P, Coordinate Q)
         {
             double minAng = Double.MaxValue;
-            ICoordinate minAngPt = null;
+            Coordinate minAngPt = null;
             for (int i = 0; i < pts.Length; i++)
             {
-                ICoordinate p = pts[i];
+                Coordinate p = pts[i];
                 if (p == P) continue;
                 if (p == Q) continue;
 
