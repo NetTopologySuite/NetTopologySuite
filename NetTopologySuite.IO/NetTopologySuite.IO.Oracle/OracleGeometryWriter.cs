@@ -19,13 +19,14 @@ namespace NetTopologySuite.IO
  */
     public class OracleGeometryWriter
     {
-	private OracleConnection _connection;
-	private int _dimension = 2:;
-	private int srid = SridNull;
-	
-	private String DATATYPE = "MDSYS.SDO_GEOMETRY";
-	
-	/**
+        private const int SridNull = -1;
+	    private OracleConnection _connection;
+	    private int _dimension = 2;
+	    private int _srid = SridNull;
+
+        private const String Datatype = "MDSYS.SDO_GEOMETRY";
+
+        /**
 	 * Initialize the Oracle MDSYS.GEOMETRY Encoder with a valid oracle connection. 
 	 * 
 	 * The connection should have sufficient priveledges to view the description of the MDSYS.GEOMETRY type.
@@ -59,9 +60,11 @@ namespace NetTopologySuite.IO
 	 * 
 	 * @param srid
 	 */
-	public void setSRID(int srid){
-		this.srid = srid;
-	}
+	public int SRID
+    {
+        get { return _srid; }
+        set { _srid = value; }
+    }
 
 	/**
 	 * This routine will translate the JTS Geometry into an Oracle MDSYS.GEOMETRY STRUCT.
@@ -88,87 +91,87 @@ namespace NetTopologySuite.IO
 	public SdoGeometry Write(IGeometry geom)
     {
 		
-		// this line may be problematic ... for v9i and later 
-		// need to revisit.
+//        // this line may be problematic ... for v9i and later 
+//        // need to revisit.
 		
-		// was this ... does not work for 9i
-//		if( geom == null) return toSTRUCT( null, DATATYPE );
+//        // was this ... does not work for 9i
+////		if( geom == null) return toSTRUCT( null, DATATYPE );
 		
-		//works fro 9i
-		if( geom == null) return new SdoGeometry();
+//        //works fro 9i
+//        if( geom == null) return new SdoGeometry();
 		
-		// does not work for 9i
-//		if( geom == null) return null;
+//        // does not work for 9i
+////		if( geom == null) return null;
 		
-		//empty geom
-		if( geom.IsEmpty || geom.Coordinate == null) 
-			return new SdoGeometry();
+//        //empty geom
+//        if( geom.IsEmpty || geom.Coordinate == null) 
+//            return new SdoGeometry();
 
-	    var ret = new SdoGeometry();
-	    var gtype = GType(geom);
-	    var gtypeint = (int) gtype;
-        ret.Sdo_Gtype = gtypeint;
-	    ret.Sdo_Srid = (decimal) geom.SRID == -1 ? srid : geom
-	        ;
-        ret.Point = 
+//        var ret = new SdoGeometry();
+//        var gtype = GType(geom);
+//        var gtypeint = (int) gtype;
+//        ret.Sdo_Gtype = gtypeint;
+//        ret.Sdo_Srid = geom.SRID == -1 ? _srid : geom.SRID;
+//        ret.Point = 
             
-            //int srid = geom.getFactory().getSRID();
-        int srid = this.srid == Constants.SRID_NULL? geom.getSRID() : this.srid;
-        NUMBER SDO_SRID = srid == Constants.SRID_NULL ? null : new NUMBER( srid );
+//            //int srid = geom.getFactory().getSRID();
+//        int _srid = this._srid == Constants.SRID_NULL? geom.getSRID() : this._srid;
+//        NUMBER SDO_SRID = _srid == Constants.SRID_NULL ? null : new NUMBER( _srid );
         
-        double[] point = Point( geom );
+//        double[] point = Point( geom );
         
-        SdoPoint SDO_POINT;
+//        SdoPoint SDO_POINT;
         
-        ret.OrdinatesArray SDO_ELEM_INFO;
-        ARRAY SDO_ORDINATES;
+//        ret.OrdinatesArray SDO_ELEM_INFO;
+//        ARRAY SDO_ORDINATES;
         
-        if( point == null ){
-            int elemInfo[] = ElemInfo( geom , gtype);
+//        if( point == null ){
+//            int elemInfo[] = ElemInfo( geom , gtype);
             
-            var list = new List<double[]>();
-            coordinates(list, geom);
+//            var list = new List<double[]>();
+//            coordinates(list, geom);
                         
-            int dim = gtypeint / 1000;
-            int lrs = (gtypeint - dim*1000)/100;
-            int len = dim+lrs; // size per coordinate
-            var ordinates = new double[list.Count*len];
+//            int dim = gtypeint / 1000;
+//            int lrs = (gtypeint - dim*1000)/100;
+//            int len = dim+lrs; // size per coordinate
+//            var ordinates = new double[list.Count*len];
             
-            int k=0;
-            for(int i=0;i<list.Count && k<ordinates.Length;i++){
-            	int j=0;
-            	double[] ords = (double[]) list[i];
-            	for(;j<len && j<ords.Length;j++){
-            		ordinates[k++] = ords[j];
-            	}
-            	for(;j<len;j++){ // mostly safety
-            		ordinates[k++] = Double.NaN;
-            	}
-            }
+//            int k=0;
+//            for(int i=0;i<list.Count && k<ordinates.Length;i++){
+//                int j=0;
+//                double[] ords = (double[]) list[i];
+//                for(;j<len && j<ords.Length;j++){
+//                    ordinates[k++] = ords[j];
+//                }
+//                for(;j<len;j++){ // mostly safety
+//                    ordinates[k++] = Double.NaN;
+//                }
+//            }
             
-            SDO_POINT = null;
-            SDO_ELEM_INFO = toARRAY( elemInfo, "MDSYS.SDO_ELEM_INFO_ARRAY" );
-            SDO_ORDINATES = toARRAY( ordinates, "MDSYS.SDO_ORDINATE_ARRAY" );                        
-        }
-        else { // Point Optimization
-            Datum data[] = new Datum[]{
-                toNUMBER( point[0] ),
-                toNUMBER( point[1] ),
-                toNUMBER( point[2] ),
-            };
-            SDO_POINT = toSTRUCT( data, "MDSYS.SDO_POINT_TYPE"  );
-            SDO_ELEM_INFO = null;
-            SDO_ORDINATES = null;
-        }                
-        Datum attributes[] = new Datum[]{
-            SDO_GTYPE,
-            SDO_SRID,
-            SDO_POINT,
-            SDO_ELEM_INFO,
-            SDO_ORDINATES
-        };
-        return toSTRUCT( attributes, DATATYPE );      
-	}
+//            SDO_POINT = null;
+//            SDO_ELEM_INFO = toARRAY( elemInfo, "MDSYS.SDO_ELEM_INFO_ARRAY" );
+//            SDO_ORDINATES = toARRAY( ordinates, "MDSYS.SDO_ORDINATE_ARRAY" );                        
+//        }
+//        else { // Point Optimization
+//            Datum data[] = new Datum[]{
+//                toNUMBER( point[0] ),
+//                toNUMBER( point[1] ),
+//                toNUMBER( point[2] ),
+//            };
+//            SDO_POINT = toSTRUCT( data, "MDSYS.SDO_POINT_TYPE"  );
+//            SDO_ELEM_INFO = null;
+//            SDO_ORDINATES = null;
+//        }                
+//        Datum attributes[] = new Datum[]{
+//            SDO_GTYPE,
+//            SDO_SRID,
+//            SDO_POINT,
+//            SDO_ELEM_INFO,
+//            SDO_ORDINATES
+//        };
+//        return toSTRUCT( attributes, Datatype );   
+	    return null;
+    }
 
 	/**
      * Encode Geometry as described by GTYPE and ELEM_INFO
@@ -248,7 +251,7 @@ namespace NetTopologySuite.IO
     {
         for (int i = 0; i < sequence.Count; i++)
         {
-            ICoordinate coord = sequence.GetCoordinate(i);
+            Coordinate coord = sequence.GetCoordinate(i);
             list.Add(Double.IsNaN(coord.Z) 
                 ? new[] {coord.X, coord.Y} 
                 : new[] {coord.X, coord.Y, coord.Z});

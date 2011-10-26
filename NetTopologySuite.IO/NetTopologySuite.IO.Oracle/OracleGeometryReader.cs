@@ -182,7 +182,7 @@ namespace NetTopologySuite.IO
             int geomTemplate = gType - (dim*1000) - (lrs*100);
 
             //CoordinateSequence coords = null;
-            List<ICoordinate> coords;
+            List<Coordinate> coords;
 
             if (lrs == 0 && geomTemplate == 1 && point != null && elemInfo == null)
             {
@@ -251,11 +251,11 @@ namespace NetTopologySuite.IO
              * @throws IllegalArgumentException
              */
 
-        private static List<ICoordinate> Coordinates(int dim, int lrs, int gtemplate, Decimal[] ordinates)
+        private static List<Coordinate> Coordinates(int dim, int lrs, int gtemplate, Decimal[] ordinates)
         {
             if ((ordinates == null) || (ordinates.Length == 0))
             {
-                return new List<ICoordinate>();
+                return new List<Coordinate>();
             }
 
             //
@@ -263,7 +263,7 @@ namespace NetTopologySuite.IO
             //
             if ((dim == 2) && (lrs == 0) && (gtemplate == 01) && (ordinates.Length == 3))
             {
-                var pt = new List<ICoordinate>(1)
+                var pt = new List<Coordinate>(1)
                              {
                                  new Coordinate((Double) ordinates[0], (Double) ordinates[1],
                                                 (Double) ordinates[2])
@@ -285,7 +285,7 @@ namespace NetTopologySuite.IO
 
             // we would have to ask for a dimension which represents all the requested
             // dimension and measures from a mask array in the future
-           var pts = new List<ICoordinate>(length);
+           var pts = new List<Coordinate>(length);
 
             for (int i = 0; i < length; i++)
             {
@@ -332,7 +332,7 @@ namespace NetTopologySuite.IO
              */
 
         private IGeometryCollection CreateCollection(int dim, int lrs, Decimal[] elemInfo, int elemIndex,
-                                                    List<ICoordinate> coords, int numGeom)
+                                                    List<Coordinate> coords, int numGeom)
         {
 
             int sOffset = StartingOffset(elemInfo, elemIndex);
@@ -425,7 +425,7 @@ namespace NetTopologySuite.IO
              */
 
         private IMultiPolygon CreateMultiPolygon(int dim, int lrs, decimal[] elemInfo, int elemIndex,
-                                                List<ICoordinate> coords, int numGeom)
+                                                List<Coordinate> coords, int numGeom)
         {
 
             int sOffset = StartingOffset(elemInfo, elemIndex);
@@ -485,7 +485,7 @@ namespace NetTopologySuite.IO
              */
 
         private IMultiLineString CreateMultiLine(int dim, int lrs, Decimal[] elemInfo, int elemIndex,
-                                                List<ICoordinate> coords, int numGeom)
+                                                List<Coordinate> coords, int numGeom)
         {
 
             int sOffset = StartingOffset(elemInfo, elemIndex);
@@ -540,7 +540,7 @@ namespace NetTopologySuite.IO
              * @return MultiPoint
              */
 
-        private IMultiPoint CreateMultiPoint(int dim, int lrs, Decimal[] elemInfo, int elemIndex, List<ICoordinate> coords)
+        private IMultiPoint CreateMultiPoint(int dim, int lrs, Decimal[] elemInfo, int elemIndex, List<Coordinate> coords)
         {
             int sOffset = StartingOffset(elemInfo, elemIndex);
             SdoEType etype = EType(elemInfo, elemIndex);
@@ -581,7 +581,7 @@ namespace NetTopologySuite.IO
              * @throws IllegalArgumentException When faced with an invalid SDO encoding
              */
 
-        private IPolygon CreatePolygon(int dim, int lrs, Decimal[] elemInfo, int elemIndex, List<ICoordinate> coords)
+        private IPolygon CreatePolygon(int dim, int lrs, Decimal[] elemInfo, int elemIndex, List<Coordinate> coords)
         {
 
             int sOffset = StartingOffset(elemInfo, elemIndex);
@@ -659,7 +659,7 @@ namespace NetTopologySuite.IO
                                   * @throws IllegalArgumentException If circle, or curve is requested
                                   */
 
-        private ILinearRing CreateLinearRing(int dim, int lrs, Decimal[] elemInfo, int elemIndex, List<ICoordinate> coords)
+        private ILinearRing CreateLinearRing(int dim, int lrs, Decimal[] elemInfo, int elemIndex, List<Coordinate> coords)
         {
         
                 int
@@ -696,10 +696,10 @@ namespace NetTopologySuite.IO
             {
                 // interpretation == 3
                 // rectangle does not maintain measures
-                List<ICoordinate> pts = new List<ICoordinate>(5);
-                List<ICoordinate> ptssrc = SubList(coords, start, end);
-                ICoordinate min = ptssrc[0];
-                ICoordinate max = ptssrc[1];
+                List<Coordinate> pts = new List<Coordinate>(5);
+                List<Coordinate> ptssrc = SubList(coords, start, end);
+                Coordinate min = ptssrc[0];
+                Coordinate max = ptssrc[1];
                 pts.AddRange(new[]
                                  {
                                      min, new Coordinate(max.X, min.Y), max, new Coordinate(min.X, max.Y) , min
@@ -724,7 +724,7 @@ namespace NetTopologySuite.IO
                                   * @throws IllegalArgumentException If asked to create a curve
                                   */
 
-        private ILineString CreateLine(int dim, int lrs, Decimal[] elemInfo, int elemIndex, List<ICoordinate> coords)
+        private ILineString CreateLine(int dim, int lrs, Decimal[] elemInfo, int elemIndex, List<Coordinate> coords)
         {
         
                 int
@@ -757,17 +757,17 @@ namespace NetTopologySuite.IO
 
 
 
-        private static ICoordinate[] ToPointArray(ICollection<ICoordinate> input)
+        private static Coordinate[] ToPointArray(ICollection<Coordinate> input)
         {
-            var pts = new List<ICoordinate>(input.Count);
-            foreach (ICoordinate point in input)
+            var pts = new List<Coordinate>(input.Count);
+            foreach (Coordinate point in input)
                 pts.Add(new Coordinate(point.X, point.Y, point.Y));
 
             return pts.ToArray();
         }
 
         /**
-                                  * Create ICoordinate as encoded.
+                                  * Create Coordinate as encoded.
                                   *
                                   * @param gf
                                   * @param dim The number of Dimensions
@@ -775,10 +775,10 @@ namespace NetTopologySuite.IO
                                   * @param elemIndex
                                   * @param coords
                                   *
-                                  * @return ICoordinate
+                                  * @return Coordinate
                                   */
 
-        private IPoint CreatePoint(int dim, int lrs, Decimal[] elemInfo, int elemIndex, List<ICoordinate> coords)
+        private IPoint CreatePoint(int dim, int lrs, Decimal[] elemInfo, int elemIndex, List<Coordinate> coords)
         {
             int sOffset = StartingOffset(elemInfo, elemIndex);
             SdoEType etype = EType(elemInfo, elemIndex);
@@ -798,7 +798,7 @@ namespace NetTopologySuite.IO
             int start = (sOffset - 1)/len;
             int eOffset = StartingOffset(elemInfo, elemIndex + 1); // -1 for end
         
-            ICoordinate point;
+            Coordinate point;
             if ((sOffset == 1) && (eOffset == -1))
             {
                 // Use all Coordinates
@@ -831,7 +831,7 @@ namespace NetTopologySuite.IO
                                   */
 
 
-        private static List<ICoordinate> SubList(List<ICoordinate> coords, int start, int end)
+        private static List<Coordinate> SubList(List<Coordinate> coords, int start, int end)
         {
             if ((start == 0) && (end == coords.Count))
             {
@@ -843,7 +843,7 @@ namespace NetTopologySuite.IO
 
 
 
-        private static ICoordinate[] SubArray(List<ICoordinate> coords, int start, int end)
+        private static Coordinate[] SubArray(List<Coordinate> coords, int start, int end)
         {
             return coords.GetRange(start, end - start).ToArray();
         }
