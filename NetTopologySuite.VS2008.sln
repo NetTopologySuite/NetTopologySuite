@@ -37,8 +37,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.PostGis
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.ShapeFile", "NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile\NetTopologySuite.IO.ShapeFile.csproj", "{AB9096A7-89DD-4ABD-B535-A5258863F389}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections", "..\PowerCollections\Source\PowerCollections\PowerCollections.csproj", "{5821977D-AC2C-4912-BCD0-6E6B1A756167}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Windows.Media", "NetTopologySuite.Windows.Media\NetTopologySuite.Windows.Media.csproj", "{AB09858E-BD48-498C-BB65-B90A5E5F9F26}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.SpatiaLite", "NetTopologySuite.IO\NetTopologySuite.IO.SpatiaLite\NetTopologySuite.IO.SpatiaLite.csproj", "{AD33B357-E789-4102-8DC3-F18EEE507583}"
@@ -50,6 +48,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.TestRunner.Console", "NetTopologySuite.TestRunner.Console\NetTopologySuite.TestRunner.Console.csproj", "{85945EF0-2BD4-42C1-A934-C3485FCE9021}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.Tests", "NetTopologySuite.IO\NetTopologySuite.IO.Tests\NetTopologySuite.IO.Tests.csproj", "{B9C93F98-1667-40A2-B02F-90D5CE14121F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections", "PowerCollections\PowerCollections\PowerCollections.csproj", "{5821977D-AC2C-4912-BCD0-6E6B1A756167}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -140,12 +140,6 @@ Global
 		{AB9096A7-89DD-4ABD-B535-A5258863F389}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB9096A7-89DD-4ABD-B535-A5258863F389}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB9096A7-89DD-4ABD-B535-A5258863F389}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5821977D-AC2C-4912-BCD0-6E6B1A756167}.Bug|Any CPU.ActiveCfg = Release|Any CPU
-		{5821977D-AC2C-4912-BCD0-6E6B1A756167}.Bug|Any CPU.Build.0 = Release|Any CPU
-		{5821977D-AC2C-4912-BCD0-6E6B1A756167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5821977D-AC2C-4912-BCD0-6E6B1A756167}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5821977D-AC2C-4912-BCD0-6E6B1A756167}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5821977D-AC2C-4912-BCD0-6E6B1A756167}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AB09858E-BD48-498C-BB65-B90A5E5F9F26}.Bug|Any CPU.ActiveCfg = Release|Any CPU
 		{AB09858E-BD48-498C-BB65-B90A5E5F9F26}.Bug|Any CPU.Build.0 = Release|Any CPU
 		{AB09858E-BD48-498C-BB65-B90A5E5F9F26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -182,6 +176,12 @@ Global
 		{B9C93F98-1667-40A2-B02F-90D5CE14121F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9C93F98-1667-40A2-B02F-90D5CE14121F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9C93F98-1667-40A2-B02F-90D5CE14121F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5821977D-AC2C-4912-BCD0-6E6B1A756167}.Bug|Any CPU.ActiveCfg = Release|Any CPU
+		{5821977D-AC2C-4912-BCD0-6E6B1A756167}.Bug|Any CPU.Build.0 = Release|Any CPU
+		{5821977D-AC2C-4912-BCD0-6E6B1A756167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5821977D-AC2C-4912-BCD0-6E6B1A756167}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5821977D-AC2C-4912-BCD0-6E6B1A756167}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5821977D-AC2C-4912-BCD0-6E6B1A756167}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
