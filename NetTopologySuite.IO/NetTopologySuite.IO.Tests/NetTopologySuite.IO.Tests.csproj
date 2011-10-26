@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B9C93F98-1667-40A2-B02F-90D5CE14121F}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -94,10 +94,6 @@
     <ProjectReference Include="..\NetTopologySuite.IO.MsSqlSpatial\NetTopologySuite.IO.MsSqlSpatial.csproj">
       <Project>{75BDB70A-AEB9-4592-9B5E-677D3D346A54}</Project>
       <Name>NetTopologySuite.IO.MsSqlSpatial</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO.Oracle\NetTopologySuite.IO.Oracle.csproj">
-      <Project>{05EF5AD0-ABF0-4F97-9C33-C69F0AF8DB51}</Project>
-      <Name>NetTopologySuite.IO.Oracle</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.IO.PostGis\NetTopologySuite.IO.PostGis.csproj">
       <Project>{7505264F-7E3E-4F8D-A9D5-885B4F313C26}</Project>
