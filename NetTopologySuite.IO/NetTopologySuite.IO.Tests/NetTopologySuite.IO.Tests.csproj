@@ -35,6 +35,9 @@
     <Reference Include="Mono.Security">
       <HintPath>..\..\packages\Npgsql.2.0.11\lib\Net35\Mono.Security.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.4.0.3\lib\net35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Npgsql">
       <HintPath>..\..\packages\Npgsql.2.0.11\lib\Net35\Npgsql.dll</HintPath>
     </Reference>
@@ -66,6 +69,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractIOFixture.cs" />
+    <Compile Include="GeoJsonFixture.cs" />
+    <Compile Include="GeoJsonTests.cs" />
     <Compile Include="PostgisFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomGeometryHelper.cs" />
@@ -86,6 +91,10 @@
     <ProjectReference Include="..\NetTopologySuite.IO.GDB\NetTopologySuite.IO.GDB.csproj">
       <Project>{548166D9-DF64-46FB-9EEC-212C7B7E7D85}</Project>
       <Name>NetTopologySuite.IO.GDB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO.GeoJSON\NetTopologySuite.IO.GeoJSON.csproj">
+      <Project>{1583F1F7-7E7D-42EE-99F9-E072453BCE34}</Project>
+      <Name>NetTopologySuite.IO.GeoJSON</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.IO.GeoTools\NetTopologySuite.IO.GeoTools.csproj">
       <Project>{21805958-869E-49F5-A4ED-0AC8599D62F0}</Project>
