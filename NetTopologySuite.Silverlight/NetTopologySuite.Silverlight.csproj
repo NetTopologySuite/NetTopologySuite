@@ -177,17 +177,8 @@
     <Compile Include="..\NetTopologySuite\Features\IAttributesTable.cs">
       <Link>Features\IAttributesTable.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\Geometries\Coordinate.cs">
-      <Link>Geometries\Coordinate.cs</Link>
-    </Compile>
     <Compile Include="..\NetTopologySuite\Geometries\CoordinateArrays.cs">
       <Link>Geometries\CoordinateArrays.cs</Link>
-    </Compile>
-    <Compile Include="..\NetTopologySuite\Geometries\CoordinateArraySequence.cs">
-      <Link>Geometries\CoordinateArraySequence.cs</Link>
-    </Compile>
-    <Compile Include="..\NetTopologySuite\Geometries\CoordinateArraySequenceFactory.cs">
-      <Link>Geometries\CoordinateArraySequenceFactory.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Geometries\CoordinateList.cs">
       <Link>Geometries\CoordinateList.cs</Link>
@@ -198,29 +189,11 @@
     <Compile Include="..\NetTopologySuite\Geometries\CoordinateSequences.cs">
       <Link>Geometries\CoordinateSequences.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite\Geometries\CoordinateStruct.cs">
-      <Link>Geometries\CoordinateStruct.cs</Link>
-    </Compile>
-    <Compile Include="..\NetTopologySuite\Geometries\CoordinateStructSequence.cs">
-      <Link>Geometries\CoordinateStructSequence.cs</Link>
-    </Compile>
-    <Compile Include="..\NetTopologySuite\Geometries\CoordinateStructSequenceFactory.cs">
-      <Link>Geometries\CoordinateStructSequenceFactory.cs</Link>
-    </Compile>
     <Compile Include="..\NetTopologySuite\Geometries\DefaultCoordinateSequence.cs">
       <Link>Geometries\DefaultCoordinateSequence.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Geometries\DefaultCoordinateSequenceFactory.cs">
       <Link>Geometries\DefaultCoordinateSequenceFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\NetTopologySuite\Geometries\DotSpatialAffineCoordinateSequence.cs">
-      <Link>Geometries\DotSpatialAffineCoordinateSequence.cs</Link>
-    </Compile>
-    <Compile Include="..\NetTopologySuite\Geometries\DotSpatialAffineCoordinateSequenceFactory.cs">
-      <Link>Geometries\DotSpatialAffineCoordinateSequenceFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\NetTopologySuite\Geometries\Envelope.cs">
-      <Link>Geometries\Envelope.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Geometries\Geometry.cs">
       <Link>Geometries\Geometry.cs</Link>
@@ -236,6 +209,24 @@
     </Compile>
     <Compile Include="..\NetTopologySuite\Geometries\GeometryFactory.cs">
       <Link>Geometries\GeometryFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Implementation\CoordinateArraySequence.cs">
+      <Link>Geometries\Implementation\CoordinateArraySequence.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Implementation\CoordinateArraySequenceFactory.cs">
+      <Link>Geometries\Implementation\CoordinateArraySequenceFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Implementation\DotSpatialAffineCoordinateSequence.cs">
+      <Link>Geometries\Implementation\DotSpatialAffineCoordinateSequence.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Implementation\DotSpatialAffineCoordinateSequenceFactory.cs">
+      <Link>Geometries\Implementation\DotSpatialAffineCoordinateSequenceFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Implementation\PackedCoordinateSequence.cs">
+      <Link>Geometries\Implementation\PackedCoordinateSequence.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Implementation\PackedCoordinateSequenceFactory.cs">
+      <Link>Geometries\Implementation\PackedCoordinateSequenceFactory.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Geometries\LinearRing.cs">
       <Link>Geometries\LinearRing.cs</Link>
@@ -257,12 +248,6 @@
     </Compile>
     <Compile Include="..\NetTopologySuite\Geometries\OctogonalEnvelope.cs">
       <Link>Geometries\OctogonalEnvelope.cs</Link>
-    </Compile>
-    <Compile Include="..\NetTopologySuite\Geometries\PackedCoordinateSequence.cs">
-      <Link>Geometries\PackedCoordinateSequence.cs</Link>
-    </Compile>
-    <Compile Include="..\NetTopologySuite\Geometries\PackedCoordinateSequenceFactory.cs">
-      <Link>Geometries\PackedCoordinateSequenceFactory.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Geometries\Point.cs">
       <Link>Geometries\Point.cs</Link>
@@ -1214,7 +1199,6 @@
     </Compile>
     <Compile Include="FrameworkReplacements\ApplicationException.cs" />
     <Compile Include="FrameworkReplacements\ICloneable.cs" />
-    <Compile Include="FrameworkReplacements\SerializableAttribute.cs" />
     <Compile Include="Extension\ICoordinateEx.cs" />
     <Compile Include="Extension\IEnvelopeEx.cs" />
     <Compile Include="FrameworkReplacements\Trace.cs" />
@@ -1286,7 +1270,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="5770daa9-84e5-4770-af43-f6b815894368" />
+      <UserProperties ProjectLinkReference="5770daa9-84e5-4770-af43-f6b815894368" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

@@ -141,8 +141,8 @@ namespace NetTopologySuite.Shapefile
             Double xMax = ByteEncoder.GetLittleEndian(reader.ReadDouble());
             Double yMax = ByteEncoder.GetLittleEndian(reader.ReadDouble());
 
-            ICoordinate min = new Coordinate(xMin, yMin);
-            ICoordinate max = new Coordinate(xMax, yMax);
+            var min = new Coordinate(xMin, yMin);
+            var max = new Coordinate(xMax, yMax);
 
             Extents = min.Equals(max) && min.Equals(new Coordinate(0, 0)) //jd: if the shapefile has just been created the box wil be 0,0,0,0 in this case create an empty extents
                 ? new Envelope()
