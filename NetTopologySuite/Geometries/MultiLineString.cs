@@ -72,10 +72,11 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        /// 
+
+        /// <summary>  
+        /// Returns the name of this object's interface.
         /// </summary>
-        /// <value></value>
+        /// <returns>"MultiLineString"</returns>
         public override string GeometryType
         {
             get
@@ -84,6 +85,13 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        /// <summary>
+        /// Gets the OGC geometry type
+        /// </summary>
+        public override OgcGeometryType OgcGeometryType
+        {
+            get { return OgcGeometryType.MultiLineString; }
+        }
         /// <summary>
         /// Gets a value indicating whether this instance is closed.
         /// </summary>

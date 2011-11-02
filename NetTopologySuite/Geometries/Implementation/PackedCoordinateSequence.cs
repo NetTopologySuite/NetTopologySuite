@@ -1,7 +1,7 @@
 using System;
 using GeoAPI.Geometries;
 
-namespace NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries.Implementation
 {
     /// <summary>
     /// A <c>CoordinateSequence</c> implementation based on a packed arrays.

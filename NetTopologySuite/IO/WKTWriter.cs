@@ -5,11 +5,13 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using GeoAPI.Geometries;
+using GeoAPI.IO;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO
 {
+
     /// <summary> 
     /// Outputs the textual representation of a <see cref="Geometry" />.
     /// The <see cref="WKTWriter" /> outputs coordinates rounded to the precision
@@ -22,7 +24,7 @@ namespace NetTopologySuite.IO
     /// not define a special tag for LinearRings. The standard tag to use is
     /// "LINESTRING".
     /// </summary>
-    public class WKTWriter 
+    public class WKTWriter : ITextGeometryWriter
     {
         /// <summary>
         /// Generates the WKT for a <c>Point</c>.
@@ -183,6 +185,12 @@ namespace NetTopologySuite.IO
                 _indentTabStr = StringOfChar(' ', value);
             }
         }
+
+        public bool EmitSRID { get; set; }
+
+        public bool EmitZ{ get; set; }
+
+        public bool EmitM{ get; set; }
 
         /// <summary>
         /// Converts a <c>Geometry</c> to its Well-known Text representation.

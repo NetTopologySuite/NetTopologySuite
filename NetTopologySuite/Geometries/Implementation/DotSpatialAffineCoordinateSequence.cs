@@ -1,7 +1,7 @@
 using System;
 using GeoAPI.Geometries;
 
-namespace NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries.Implementation
 {
 //#if !SILVERLIGHT    
     [Serializable]

@@ -1,14 +1,15 @@
 using System;
 using System.IO;
 using GeoAPI.Geometries;
+using GeoAPI.IO;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.IO
-{    
+{
     /// <summary>
     /// Converts a Well-Known Binary byte data to a <c>Geometry</c>.
     /// </summary>
-    public class WKBReader
+    public class WKBReader : IBinaryGeometryReader
     {
 
         ///<summary>
@@ -68,14 +69,14 @@ namespace NetTopologySuite.IO
             throw new ArgumentException("Invalid hex digit: " + hex);
         }
         
-        private IGeometryFactory factory;
+        private IGeometryFactory _factory;
 
         /// <summary>
         /// <c>Geometry</c> builder.
         /// </summary>
         protected IGeometryFactory Factory
         {
-            get { return factory; }
+            get { return _factory; }
         }
 
         /// <summary>
@@ -89,7 +90,17 @@ namespace NetTopologySuite.IO
         /// <param name="factory"></param>
         public WKBReader(IGeometryFactory factory)
         {
-            this.factory = factory;
+            _factory = factory;
+        }
+
+        IGeometryFactory IGeometryReader<byte[], Stream>.Factory
+        {
+            get { return _factory; }
+            set
+            {
+                if (value != null)
+                    _factory = value;
+            }
         }
 
         /// <summary>
@@ -145,8 +156,8 @@ namespace NetTopologySuite.IO
             if (hasSRID)
                 srid = reader.ReadInt32();
 
-            if (factory.SRID != srid)
-                factory = new GeometryFactory((PrecisionModel)GeometryFactory.Default.PrecisionModel, srid);
+            if (_factory.SRID != srid)
+                _factory = new GeometryFactory((PrecisionModel)GeometryFactory.Default.PrecisionModel, srid);
 
             typeInt = typeInt & 0xffff;
             if (hasZ && ((typeInt / 1000) & 1) != 1)

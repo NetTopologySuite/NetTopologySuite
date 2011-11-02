@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
+using GeoAPI.IO;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Operation;
 using NetTopologySuite.Utilities;
@@ -210,15 +211,21 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        /// 
+        /// <summary>  
+        /// Returns the name of this object's interface.
         /// </summary>
+        /// <returns>"LineString"</returns>
         public override string GeometryType
         {
             get
             {
                 return "LineString";
             }
+        }
+
+        public override OgcGeometryType OgcGeometryType
+        {
+            get { return OgcGeometryType.LineString; }
         }
 
         /// <summary>  

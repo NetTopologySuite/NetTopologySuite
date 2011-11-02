@@ -194,15 +194,24 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        /// 
+        /// <summary>  
+        /// Returns the name of this object's interface.
         /// </summary>
+        /// <returns>"Point"</returns>
         public override string GeometryType 
         {
             get
             {
                 return "Point";
             }
+        }
+
+        /// <summary>
+        /// Gets the OGC geometry type
+        /// </summary>
+        public override OgcGeometryType OgcGeometryType
+        {
+            get { return OgcGeometryType.Point; }
         }
 
         /// <summary>

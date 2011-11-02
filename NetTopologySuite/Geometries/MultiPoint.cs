@@ -63,9 +63,10 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        /// 
+        /// <summary>  
+        /// Returns the name of this object's interface.
         /// </summary>
+        /// <returns>"MultiPoint"</returns>
         public override string GeometryType
         {
             get
@@ -74,6 +75,10 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        public override OgcGeometryType OgcGeometryType
+        {
+            get { return OgcGeometryType.MultiPoint; }
+        }
        ///<summary>
        /// Gets the boundary of this geometry.
        /// Zero-dimensional geometries have no boundary by definition,

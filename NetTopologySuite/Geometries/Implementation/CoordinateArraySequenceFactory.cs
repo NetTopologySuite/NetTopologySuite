@@ -1,4 +1,4 @@
-namespace NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries.Implementation
 {
     using System;
     using GeoAPI.Geometries;

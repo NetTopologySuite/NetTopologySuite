@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using GeoAPI.Geometries;
+using GeoAPI.IO;
 using GeoAPI.Operations.Buffer;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries.Utilities;
@@ -217,6 +218,11 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <returns>The name of this <c>Geometry</c>s most specific interface.</returns>
         public abstract string GeometryType { get; }
+
+        /// <summary>
+        /// Gets the OGC geometry type
+        /// </summary>
+        public abstract OgcGeometryType OgcGeometryType { get; }
 
         /// <summary>  
         /// Returns true if the array contains any non-empty <c>Geometry</c>s.

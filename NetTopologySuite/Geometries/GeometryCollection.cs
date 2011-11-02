@@ -188,15 +188,24 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>        
+        /// <summary>  
+        /// Returns the name of this object's interface.
+        /// </summary>
+        /// <returns>"GeometryCollection"</returns>
         public override string GeometryType
         {
             get
             {                
                 return "GeometryCollection";
             }
+        }
+
+        /// <summary>
+        /// Gets the OGC geometry type
+        /// </summary>
+        public override OgcGeometryType OgcGeometryType
+        {
+            get { return OgcGeometryType.GeometryCollection; }
         }
 
         ///// <summary>

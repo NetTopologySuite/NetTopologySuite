@@ -70,14 +70,23 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        /// 
+        /// <summary>  
+        /// Returns the name of this object's interface.
         /// </summary>
+        /// <returns>"MultiPolygon"</returns>
         public override string GeometryType
         {
             get
             {
                 return "MultiPolygon";
+            }
+        }
+
+        public override OgcGeometryType OgcGeometryType
+        {
+            get
+            {
+                return OgcGeometryType.MultiPolygon;
             }
         }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GeoAPI.CoordinateSystems.Transformations;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
@@ -42,14 +43,9 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 	    /// <returns></returns>
 	    private static Coordinate[] ExtractCoordinates(IGeometry ls, IMathTransform transform)
 	    {
-	        List<double[]> points = new List<double[]>(ls.NumPoints);
-	        foreach (Coordinate c in ls.Coordinates)
-	            points.Add(ToArray(c.X, c.Y));
-	        points = transform.TransformList(points);
-	        List<Coordinate> coords = new List<Coordinate>(points.Count);
-	        foreach (double[] p in points)
-	            coords.Add(new Coordinate(p[0], p[1]));
-	        return coords.ToArray();
+	        var points = ls.Coordinates;
+	        var transPoints = transform.TransformList(points);
+	        return transPoints.ToArray();
 	    }
 
 	    /// <summary>
@@ -188,14 +184,9 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
         public static IMultiPoint TransformMultiPoint(IGeometryFactory factory, 
             IMultiPoint points, IMathTransform transform)
 		{
-            List<double[]> pointList = new List<double[]>(points.Geometries.Length);
-			foreach (IPoint p in points.Geometries)
-                pointList.Add(ToArray(p.X, p.Y));
-			pointList = transform.TransformList(pointList);
-			IPoint[] array = new IPoint[pointList.Count];
-            for (int i = 0; i < pointList.Count; i++)
-                array[i] = ToNTS(factory, pointList[i][0], pointList[i][1]);
-		    return factory.CreateMultiPoint(array);
+		    var pts = points.Coordinates;
+            var transPoints = transform.TransformList(pts);
+		    return factory.CreateMultiPoint(transPoints.ToArray());
 		}
 
 		/// <summary>

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
+using GeoAPI.IO;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 using RTools_NTS.Util;
@@ -36,10 +37,10 @@ namespace NetTopologySuite.IO
     /// <see cref="WKTReader" /> reads also non-standard "LINEARRING" tags.
     /// </remarks>
     /// </summary>
-    public class WKTReader 
+    public class WKTReader : ITextGeometryReader
     {
-        private readonly IGeometryFactory _geometryFactory;
-        private readonly IPrecisionModel _precisionModel;
+        private IGeometryFactory _geometryFactory;
+        private IPrecisionModel _precisionModel;
         int _index;
 
         private static readonly System.Globalization.CultureInfo InvariantCulture =
@@ -61,6 +62,20 @@ namespace NetTopologySuite.IO
             _geometryFactory = geometryFactory;
             _precisionModel = geometryFactory.PrecisionModel;
         }
+
+        IGeometryFactory IGeometryReader<string, TextReader>.Factory
+        {
+            get { return _geometryFactory; }
+            set
+            {
+                if (value != null)
+                {
+                    _geometryFactory = value;
+                    _precisionModel = value.PrecisionModel;
+                }
+            }
+        }
+
 
         /// <summary>
         /// Converts a Well-known Text representation to a <c>Geometry</c>.

@@ -1,7 +1,7 @@
 using System;
 using GeoAPI.Geometries;
 
-namespace NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries.Implementation
 {
     /// <summary>
     /// Builds packed array coordinate sequences. The array data type can be either

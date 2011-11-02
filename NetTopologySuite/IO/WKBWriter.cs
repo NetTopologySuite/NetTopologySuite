@@ -2,10 +2,12 @@ using System;
 using System.IO;
 using System.Text;
 using GeoAPI.Geometries;
+using GeoAPI.IO;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO
 {
+
     /// <summary>
     /// Writes a Well-Known Binary byte data representation of a <c>Geometry</c>.
     /// </summary>
@@ -14,7 +16,7 @@ namespace NetTopologySuite.IO
     /// otherwise <see cref="Coordinate.Z" /> value is discarded and only X,Y are stored.
     /// </remarks>
     // Thanks to Roberto Acioli for Coordinate.Z patch
-    public class WKBWriter
+    public class WKBWriter : IBinaryGeometryWriter
     {
 
         ///<summary>Converts a byte array to a hexadecimal string.</summary>

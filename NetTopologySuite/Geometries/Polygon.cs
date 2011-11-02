@@ -225,9 +225,10 @@ namespace NetTopologySuite.Geometries
             return _holes[n];
         }
 
-        /// <summary>
-        /// 
+        /// <summary>  
+        /// Returns the name of this object's interface.
         /// </summary>
+        /// <returns>"Polygon"</returns>
         public override string GeometryType
         {
             get
@@ -236,6 +237,10 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        public override OgcGeometryType OgcGeometryType
+        {
+            get { return OgcGeometryType.Polygon; }
+        }
         /// <summary> 
         /// Returns the area of this <c>Polygon</c>
 		/// </summary>
@@ -244,7 +249,7 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                double area = 0.0;
+                var area = 0.0;
                 area += Math.Abs(CGAlgorithms.SignedArea(_shell.CoordinateSequence));
                 for (int i = 0; i < _holes.Length; i++)
                     area -= Math.Abs(CGAlgorithms.SignedArea(_holes[i].CoordinateSequence));                
