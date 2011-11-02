@@ -1,9 +1,4 @@
-using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
-using NUnit.Framework;
+using NetTopologySuite.Geometries.Implementation;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 {

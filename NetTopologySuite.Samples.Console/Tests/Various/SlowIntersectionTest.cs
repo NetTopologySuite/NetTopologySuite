@@ -1,4 +1,6 @@
-﻿namespace NetTopologySuite.Tests.Various
+﻿using NetTopologySuite.Geometries.Implementation;
+
+namespace NetTopologySuite.Tests.Various
 {
     using System;
     using System.Diagnostics;

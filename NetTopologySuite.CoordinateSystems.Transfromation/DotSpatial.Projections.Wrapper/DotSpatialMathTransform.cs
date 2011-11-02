@@ -4,6 +4,7 @@ using DotSpatial.Projections;
 using GeoAPI.CoordinateSystems.Transformations;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
 
 namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projections
 {
@@ -100,7 +101,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projectio
             return xy;
         }
 
-        public List<double[]> TransformList(List<double[]> points)
+        public IList<double[]> TransformList(IList<double[]> points)
         {
             var xy = new double[2 * points.Count];
             var z = new double[points.Count];
@@ -129,6 +130,35 @@ namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projectio
             return ret;
         }
 
+        public IList<Coordinate> TransformList(IList<Coordinate> points)
+        {
+            var xy = new double[2 * points.Count];
+            var z = new double[points.Count];
+
+            for (int i = 0; i < points.Count; i++)
+            {
+                xy[2 * i] = points[i].X;
+                xy[2 * i + 1] = points[i].Y;
+                if (DimSource > 2)
+                    z[i] = points[i].Z;
+            }
+
+            Reproject.ReprojectPoints(xy, z, Source, Target, 0, points.Count);
+
+            var ret = new List<Coordinate>(points.Count);
+            if (DimTarget > 2)
+            {
+                for (int i = 0; i < points.Count; i++)
+                    ret.Add(new Coordinate( xy[2 * i], xy[2 * i + 1], z[i] ));
+            }
+            else
+            {
+                for (int i = 0; i < points.Count; i++)
+                    ret.Add(new Coordinate( xy[2 * i], xy[2 * i + 1]));
+            }
+            return ret;
+        }
+
         public void Invert()
         {
             var tmp = Source;
@@ -136,6 +166,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projectio
             Target = tmp;
         }
 
+        [Obsolete]
         public ICoordinate Transform(ICoordinate coordinate)
         {
             var xy = new[] {coordinate.X, coordinate.Y};
@@ -151,6 +182,24 @@ namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projectio
             return ret;
         }
 
+        public Coordinate Transform(Coordinate coordinate)
+        {
+            var xy = new[] { coordinate.X, coordinate.Y };
+            double[] z = null;
+            if (coordinate.Z != coordinate.Z)
+                z = new[] { coordinate.Z };
+
+            Reproject.ReprojectPoints(xy, z, Source, Target, 0, 1);
+
+            var ret = (Coordinate)coordinate.Clone();
+            ret.X = xy[0];
+            ret.Y = xy[1];
+            if (z != null)
+                ret.Z = z[0];
+
+            return ret;
+        }
+
         public ICoordinateSequence Transform(ICoordinateSequence coordinateSequence)
         {
             //use shortcut if possible
@@ -158,14 +207,16 @@ namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projectio
                 return TransformDotSpatialAffine((DotSpatialAffineCoordinateSequence) coordinateSequence);
 
             var xy = new double[2*coordinateSequence.Count];
-            var z = new double[coordinateSequence.Count];
+            double[] z = null;
+            if (!double.IsNaN(coordinateSequence.GetOrdinate(0, Ordinate.Z)))
+                z = new double[coordinateSequence.Count];
 
             var j = 0;
             for (var i = 0; i < coordinateSequence.Count; i++)
             {
                 xy[j++] = coordinateSequence.GetOrdinate(i, Ordinate.X);
                 xy[j++] = coordinateSequence.GetOrdinate(i, Ordinate.Z);
-                z[i] = coordinateSequence.GetOrdinate(i, Ordinate.Z);
+                if (z != null) z[i] = coordinateSequence.GetOrdinate(i, Ordinate.Z);
             }
 
             Reproject.ReprojectPoints(xy, z, Source, Target, 0, coordinateSequence.Count);
@@ -176,7 +227,10 @@ namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projectio
             {
                 ret.SetOrdinate(i, Ordinate.X, xy[j]);
                 ret.SetOrdinate(i, Ordinate.X, xy[j]);
-                if (DimTarget > 2) ret.SetOrdinate(i, Ordinate.Z, z[j]);
+                if (z != null && DimTarget>2) 
+                    ret.SetOrdinate(i, Ordinate.Z, z[j]);
+                else 
+                    ret.SetOrdinate(i,Ordinate.Z, coordinateSequence.GetOrdinate(i, Ordinate.Z));
             }
 
             return ret;

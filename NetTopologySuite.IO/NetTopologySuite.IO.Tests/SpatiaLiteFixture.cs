@@ -39,7 +39,7 @@ namespace NetTopologySuite.IO.Tests
 
         protected override void ReadAppConfigInternal(AppSettingsReader asr)
         {
-            this.Compressed = (bool)asr.GetValue("SpatiaLiteCompressed", typeof(bool));
+            //this.Compressed = (bool)asr.GetValue("SpatiaLiteCompressed", typeof(bool));
         }
 
         protected override void CreateTestStore()
