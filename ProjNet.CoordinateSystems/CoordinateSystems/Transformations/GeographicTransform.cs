@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.CoordinateSystems;
 using GeoAPI.CoordinateSystems.Transformations;
+using GeoAPI.Geometries;
 
 namespace ProjNet.CoordinateSystems.Transformations
 {
@@ -125,15 +126,25 @@ namespace ProjNet.CoordinateSystems.Transformations
 		/// </remarks>
 		/// <param name="points"></param>
 		/// <returns></returns>
-        public override List<double[]> TransformList(List<double[]> points)
+        public override IList<double[]> TransformList(IList<double[]> points)
 		{
-            List<double[]> trans = new List<double[]>(points.Count);
-            foreach (double[] p in points)
+            var trans = new List<double[]>(points.Count);
+            foreach (var p in points)
 				trans.Add(Transform(p));
 			return trans;
 		}
 
-		/// <summary>
+	    public override IList<Coordinate> TransformList(IList<Coordinate> points)
+	    {
+	        var trans = new List<Coordinate>(points.Count);
+            foreach (var coordinate in points)
+	        {
+	            trans.Add(Transform(coordinate));
+	        }
+	        return trans;
+	    }
+
+	    /// <summary>
 		/// Reverses the transformation
 		/// </summary>
 		public override void Invert()

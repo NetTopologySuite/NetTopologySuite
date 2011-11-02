@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.CoordinateSystems;
 using GeoAPI.CoordinateSystems.Transformations;
+using GeoAPI.Geometries;
 
 namespace ProjNet.CoordinateSystems.Transformations
 {
@@ -122,13 +123,21 @@ namespace ProjNet.CoordinateSystems.Transformations
         /// implementation will throw an exception. If this happens then the client should not
         /// make any assumptions about the state of the ordinal values.
         /// </remarks>
-        public override List<double[]> TransformList(List<double[]> points)
+        public override IList<double[]> TransformList(IList<double[]> points)
 		{
-            List<double[]> pnts = new List<double[]>(points.Count);
-            foreach (double[] p in points)
+            var pnts = new List<double[]>(points.Count);
+            foreach (var p in points)
 				pnts.Add(Transform(p));
 			return pnts;
 		}
+
+        public override IList<Coordinate> TransformList(IList<Coordinate> points)
+        {
+            var pnts = new List<Coordinate>(points.Count);
+            foreach (var p in points)
+                pnts.Add(Transform(p));
+            return pnts;
+        }
 
         /// <summary>
         /// Reverses the transformation

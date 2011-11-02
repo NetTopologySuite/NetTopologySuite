@@ -40,6 +40,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using GeoAPI.CoordinateSystems;
+using GeoAPI.Geometries;
 using ProjNet.CoordinateSystems;
 using ProjNet.CoordinateSystems.Transformations;
 
@@ -289,7 +290,7 @@ namespace ProjNet.CoordinateSystems.Projections
         /// </summary>
         /// <param name="ord"></param>
         /// <returns></returns>
-        public override List<double[]> TransformList(List<double[]> ord)
+        public override IList<double[]> TransformList(IList<double[]> ord)
 		{
             List<double[]> result = new List<double[]>(ord.Count);
 			for (int i=0; i< ord.Count; i++)
@@ -300,7 +301,23 @@ namespace ProjNet.CoordinateSystems.Projections
 			return result;
 		}
 
-		/// <summary>
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ord"></param>
+        /// <returns></returns>
+        public override IList<Coordinate> TransformList(IList<Coordinate> ord)
+        {
+            var result = new List<Coordinate>(ord.Count);
+            
+            foreach(var c in ord)
+            {
+                result.Add(Transform(c));
+            }
+            return result;
+        }
+
+        /// <summary>
 		/// Checks whether the values of this instance is equal to the values of another instance.
 		/// Only parameters used for coordinate system are used for comparison.
 		/// Name, abbreviation, authority, alias and remarks are ignored in the comparison.

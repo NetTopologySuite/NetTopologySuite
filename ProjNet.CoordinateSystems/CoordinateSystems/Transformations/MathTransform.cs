@@ -164,13 +164,16 @@ namespace ProjNet.CoordinateSystems.Transformations
 		/// </remarks>
 		/// <param name="points"></param>
 		/// <returns></returns>
-        public abstract List<double[]> TransformList(List<double[]> points);
+        public abstract IList<double[]> TransformList(IList<double[]> points);
 
-		/// <summary>
+	    public abstract IList<Coordinate> TransformList(IList<Coordinate> points);
+
+	    /// <summary>
 		/// Reverses the transformation
 		/// </summary>
 		public abstract void Invert();
 
+        [Obsolete]
 	    public ICoordinate Transform(ICoordinate coordinate)
 	    {
 	        var ret = Transform(new[] { coordinate.X, coordinate.Y, coordinate.Z });
@@ -182,16 +185,32 @@ namespace ProjNet.CoordinateSystems.Transformations
             return coordinate;
 	    }
 
+        public Coordinate Transform(Coordinate coordinate)
+        {
+            var ordinates = DimSource == 2
+                                     ? new[] {coordinate.X, coordinate.Y}
+                                     : new[] {coordinate.X, coordinate.Y, coordinate.Z};
+
+            var ret = Transform(ordinates);
+            coordinate.X = ret[0];
+            coordinate.Y = ret[1];
+            if (DimTarget > 2) 
+                coordinate.Z = ret[2];
+
+            return coordinate;
+        }
+
 	    public ICoordinateSequence Transform(ICoordinateSequence coordinateSequence)
 	    {
-	        ICoordinate clone = coordinateSequence.GetCoordinate(0);
-            for (int i = 0; i < coordinateSequence.Count; i++)
+	        var clone = new Coordinate();
+            for (var i = 0; i < coordinateSequence.Count; i++)
             {
                 clone.CoordinateValue = coordinateSequence.GetCoordinate(i);
                 clone = Transform(clone);
                 coordinateSequence.SetOrdinate(i, Ordinate.X, clone.X);
                 coordinateSequence.SetOrdinate(i, Ordinate.Y, clone.Y);
-                coordinateSequence.SetOrdinate(i, Ordinate.Z, clone.Z);
+                if (DimTarget > 2)
+                    coordinateSequence.SetOrdinate(i, Ordinate.Z, clone.Z);
             }
 	        return coordinateSequence;
 	    }

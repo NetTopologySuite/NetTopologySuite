@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.CoordinateSystems;
 using GeoAPI.CoordinateSystems.Transformations;
+using GeoAPI.Geometries;
 
 namespace ProjNet.CoordinateSystems.Transformations
 {
@@ -213,13 +214,13 @@ namespace ProjNet.CoordinateSystems.Transformations
         /// <param name="point"></param>
         /// <returns></returns>
         public override double[] Transform(double[] point)
-		{
-			if (!_isInverse)
-				 return this.DegreesToMeters(point);
-			else return this.MetersToDegrees(point);
-		}
+        {
+            if (!_isInverse)
+				 return DegreesToMeters(point);
+            return MetersToDegrees(point);
+        }
 
-        /// <summary>
+	    /// <summary>
         /// Transforms a list of coordinate point ordinal values.
         /// </summary>
         /// <param name="points"></param>
@@ -236,18 +237,28 @@ namespace ProjNet.CoordinateSystems.Transformations
         /// implementation will throw an exception. If this happens then the client should not
         /// make any assumptions about the state of the ordinal values.
         /// </remarks>
-        public override List<double[]> TransformList(List<double[]> points)
+        public override IList<double[]> TransformList(IList<double[]> points)
 		{
-            List<double[]> result = new List<double[]>(points.Count);
-			for (int i = 0; i < points.Count; i++)
+            var result = new List<double[]>(points.Count);
+			for (var i = 0; i < points.Count; i++)
 			{
-                double[] point = points[i];
+                var point = points[i];
 				result.Add(Transform(point));
 			}
 			return result;
 		}
 
-		/// <summary>
+	    public override IList<Coordinate> TransformList(IList<Coordinate> points)
+	    {
+	        var result = new List<Coordinate>(points.Count);
+	        foreach (var coordinate in points)
+	        {
+	            result.Add(Transform(coordinate));
+	        }
+	        return result;
+	    }
+
+	    /// <summary>
 		/// Reverses the transformation
 		/// </summary>
 		public override void Invert()
