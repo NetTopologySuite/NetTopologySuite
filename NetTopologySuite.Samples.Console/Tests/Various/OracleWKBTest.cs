@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using GeoAPI.Geometries;
+using GeoAPI.IO;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Samples.SimpleTests;

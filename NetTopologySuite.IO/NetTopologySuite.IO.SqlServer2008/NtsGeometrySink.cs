@@ -18,25 +18,40 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.Geometries;
 using Microsoft.SqlServer.Types;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.IO
 {
     internal class NtsGeometrySink : IGeometrySink
     {
-        private IGeometry geometry;
-        private int srid;
-        private readonly Stack<OpenGisGeometryType> types = new Stack<OpenGisGeometryType>();
-        private List<Coordinate> coordinates = new List<Coordinate>();
-        private readonly List<Coordinate[]> rings = new List<Coordinate[]>();
-        private readonly List<IGeometry> geometries = new List<IGeometry>();
-        private bool inFigure;
+        private readonly IGeometryFactory _factory;
+        
+        private IGeometry _geometry;
+        private int _srid;
+        
+        private readonly Stack<OpenGisGeometryType> _types = new Stack<OpenGisGeometryType>();
+        private List<Coordinate> _coordinates = new List<Coordinate>();
+        private Stack<List<IGeometry>> _ccGeometriesStack = new Stack<List<IGeometry>>();
+        private List<IGeometry> _ccGeometries = new List<IGeometry>();
+        private readonly List<Coordinate[]> _rings = new List<Coordinate[]>();
+        //private readonly List<IGeometry> _geometries = new List<IGeometry>();
+        private bool _inFigure;
+
+        //public NtsGeometrySink()
+        //    :this(GeometryFactory.Default)
+        //{
+        //}
+
+        public NtsGeometrySink(IGeometryFactory @default)
+        {
+            _factory = @default;
+        }
 
         public IGeometry ConstructedGeometry
         {
-            get { return this.geometry; }
+            get { return _geometry; }
         }
 
         private void AddCoordinate(double x, double y, double? z, double? m)
@@ -50,14 +65,14 @@ namespace NetTopologySuite.IO
             {
                 coordinate = new Coordinate(x, y);
             }
-            this.coordinates.Add(coordinate);
+            this._coordinates.Add(coordinate);
         }
 
         #region IGeometrySink Members
 
         public void AddLine(double x, double y, double? z, double? m)
         {
-            if (!this.inFigure)
+            if (!_inFigure)
             {
                 throw new ApplicationException();
             }
@@ -66,35 +81,46 @@ namespace NetTopologySuite.IO
 
         public void BeginFigure(double x, double y, double? z, double? m)
         {
-            if (this.inFigure)
+            if (_inFigure)
             {
                 throw new ApplicationException();
             }
-            this.coordinates = new List<Coordinate>();
+            _coordinates = new List<Coordinate>();
             AddCoordinate(x, y, z, m);
-            this.inFigure = true;
+            _inFigure = true;
         }
 
         public void BeginGeometry(OpenGisGeometryType type)
         {
-            this.types.Push(type);
+            _types.Push(type);
+
+            switch (type)
+            {
+                case OpenGisGeometryType.GeometryCollection:
+                case OpenGisGeometryType.MultiPoint:
+                case OpenGisGeometryType.MultiLineString:
+                case OpenGisGeometryType.MultiPolygon:
+                    _ccGeometries = new List<IGeometry>();
+                    _ccGeometriesStack.Push(_ccGeometries);
+                    break;
+            }
         }
 
         public void EndFigure()
         {
-            OpenGisGeometryType type = this.types.Peek();
+            var type = _types.Peek();
             if (type == OpenGisGeometryType.Polygon)
             {
-                this.rings.Add(this.coordinates.ToArray());
+                _rings.Add(_coordinates.ToArray());
             }
-            this.inFigure = false;
+            _inFigure = false;
         }
 
         public void EndGeometry()
         {
             IGeometry geometry = null;
 
-            OpenGisGeometryType type = this.types.Pop();
+            OpenGisGeometryType type = _types.Pop();
 
 			switch (type)
 			{
@@ -121,82 +147,80 @@ namespace NetTopologySuite.IO
 					break;
 			}
 
-            if (this.types.Count == 0)
+            // Do we have a single geometry entry?
+            if (_types.Count == 0)
             {
-				this.geometry = geometry;
-				this.geometry.SRID = this.srid;
+                _geometry = geometry;
+                if (_geometry != null) _geometry.SRID = _srid;
             }
             else
             {
-				this.geometries.Add(geometry);
-			}
+                switch (type)
+                {
+                    case OpenGisGeometryType.GeometryCollection:
+                    case OpenGisGeometryType.MultiPoint:
+                    case OpenGisGeometryType.MultiLineString:
+                    case OpenGisGeometryType.MultiPolygon:
+                        _ccGeometriesStack.Pop();
+                        _ccGeometries = _ccGeometriesStack.Peek();
+                        break;
+                }
+                _ccGeometries.Add(geometry);
+            }
         }
 
 		private IGeometry BuildPoint()
 		{
-			return new Point(this.coordinates[0]);
+			return _factory.CreatePoint(_coordinates[0]);
 		}
 
-		private LineString BuildLineString()
+		private ILineString BuildLineString()
 		{
-			return new LineString(this.coordinates.ToArray());
+            return _factory.CreateLineString(_coordinates.ToArray());
 		}
 
 		private IGeometry BuildPolygon()
 		{
-			if (this.rings.Count == 0)
+			if (_rings.Count == 0)
 			{
-				return Polygon.Empty;
+			    return _factory.CreatePolygon(null, null);
 			}
-			ILinearRing shell = new LinearRing(this.rings[0]);
-			ILinearRing[] holes =
-				this.rings.GetRange(1, this.rings.Count - 1)
-					.ConvertAll<ILinearRing>(delegate(Coordinate[] coordinates)
-					{
-						return new LinearRing(coordinates);
-					}).ToArray();
-			this.rings.Clear();
-			return new Polygon(shell, holes);
+            var shell = _factory.CreateLinearRing(_rings[0]);
+			var holes = _rings.GetRange(1, _rings.Count - 1)
+					.ConvertAll(coordinates => _factory.CreateLinearRing(coordinates)).ToArray();
+			_rings.Clear();
+            return _factory.CreatePolygon(shell, holes);
 		}
 
 		private IGeometry BuildMultiPoint()
 		{
-			IPoint[] points =
-				this.geometries.ConvertAll<IPoint>(delegate(IGeometry g)
-				{
-					return g as IPoint;
-				}).ToArray();
-			return new MultiPoint(points);
+			var points = _ccGeometries 
+                .ConvertAll(g => g as IPoint).ToArray();
+            return _factory.CreateMultiPoint(points);
 		}
 
 		private IGeometry BuildMultiLineString()
 		{
-			ILineString[] lineStrings =
-				this.geometries.ConvertAll<ILineString>(delegate(IGeometry g)
-				{
-					return g as ILineString;
-				}).ToArray();
-			return new MultiLineString(lineStrings);
+            var lineStrings = _ccGeometries
+                .ConvertAll(g => g as ILineString).ToArray();
+            return _factory.CreateMultiLineString(lineStrings);
 		}
 
 		private IGeometry BuildMultiPolygon()
 		{
-			IPolygon[] polygons =
-				this.geometries.ConvertAll<IPolygon>(delegate(IGeometry g)
-				{
-					return g as IPolygon;
-				}).ToArray();
-			return new MultiPolygon(polygons);
+            var polygons = _ccGeometries.ConvertAll(g => g as IPolygon).ToArray();
+            return _factory.CreateMultiPolygon(polygons);
 		}
 
-		private GeometryCollection BuildGeometryCollection()
+		private IGeometryCollection BuildGeometryCollection()
 		{
-			return new GeometryCollection(this.geometries.ToArray());
+            var geometries = _ccGeometries.ToArray();
+            return _factory.CreateGeometryCollection(geometries);
 		}
 
         public void SetSrid(int srid)
         {
-            this.srid = srid;
+            _srid = srid;
         }
 
         #endregion

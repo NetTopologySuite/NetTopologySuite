@@ -1,5 +1,6 @@
 namespace NetTopologySuite.IO
 {
+    /*
     /// <summary>
     /// Byte order
     /// </summary>
@@ -15,7 +16,7 @@ namespace NetTopologySuite.IO
 		/// </summary>
         LittleEndian = 0x01,
     }
-
+    */
     /// <summary>
     /// WKB Geometry Types
     /// </summary>

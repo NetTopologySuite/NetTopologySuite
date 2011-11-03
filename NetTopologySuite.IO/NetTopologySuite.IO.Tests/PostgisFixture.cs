@@ -10,7 +10,8 @@
         protected override void AddAppConfigSpecificItems(KeyValueConfigurationCollection kvcc)
         {
             // NOTE: insert a valid connection string to a postgis db
-            kvcc.Add("PostGisConnectionString", "Server=127.0.0.1;Port=5432;Database=obe;User Id=postgres;Password=1.Kennwort;");            
+            if (kvcc["PostGisConnectionString"] == null)
+                kvcc.Add("PostGisConnectionString", "Server=127.0.0.1;Port=5432;Database=obe;User Id=postgres;Password=1.Kennwort;");            
         }
 
         protected override void ReadAppConfigInternal(AppSettingsReader asr)
@@ -37,6 +38,7 @@
                     cmd.ExecuteNonQuery();
                 }
             }
+            RandomGeometryHelper.Ordinates = Ordinates.XY;
         }
 
         protected override IGeometry Read(byte[] b)

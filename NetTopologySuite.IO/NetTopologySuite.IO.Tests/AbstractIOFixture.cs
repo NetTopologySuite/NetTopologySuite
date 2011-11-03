@@ -21,6 +21,7 @@
         public virtual void OnFixtureSetUp()
         {
             this.CheckAppConfigPresent();
+            
             this.CreateTestStore();
         }
 
@@ -32,7 +33,19 @@
             string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "NetTopologySuite.IO.Tests.dll.config");
             if (!File.Exists(path))
                 this.CreateAppConfig();
+            this.UpdateAppConfig();
             this.ReadAppConfig();
+        }
+
+        private void UpdateAppConfig()
+        {
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
+            var appSettings = config.AppSettings.Settings;
+            AddAppConfigSpecificItems(appSettings);
+            config.Save(ConfigurationSaveMode.Full);
+            ConfigurationManager.RefreshSection("appSettings");
+
         }
 
         private void CreateAppConfig()
@@ -48,8 +61,6 @@
             appSettings.Add("MinY", "-90");
             appSettings.Add("MaxY", "90");
             appSettings.Add("Srid", "4326");
-
-            this.AddAppConfigSpecificItems(appSettings);
 
             config.Save(ConfigurationSaveMode.Full);
             ConfigurationManager.RefreshSection("appSettings");

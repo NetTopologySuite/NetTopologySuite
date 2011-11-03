@@ -4,6 +4,7 @@
 using System;
 using System.IO;
 using GeoAPI.Geometries;
+using GeoAPI.IO;
 
 namespace NetTopologySuite.IO
 {
@@ -12,7 +13,7 @@ namespace NetTopologySuite.IO
     /// </summary>
     public class PostGisWriter
     {
-        protected ByteOrder encodingType;
+        protected ByteOrder EncodingType;
 
         /// <summary>
         /// Initializes writer with LittleIndian byte order.
@@ -26,7 +27,7 @@ namespace NetTopologySuite.IO
         /// <param name="encodingType">Encoding type</param>
 		public PostGisWriter(ByteOrder encodingType)
         {
-            this.encodingType = encodingType;
+            this.EncodingType = encodingType;
         }
 
         /// <summary>
@@ -52,7 +53,7 @@ namespace NetTopologySuite.IO
             BinaryWriter writer = null;
             try
             {
-				if (encodingType == ByteOrder.LittleEndian)
+				if (EncodingType == ByteOrder.LittleEndian)
 					 writer = new BinaryWriter(stream);
 				else writer = new BEBinaryWriter(stream);
 				Write(geometry, writer);
@@ -98,7 +99,7 @@ namespace NetTopologySuite.IO
         /// <param name="writer"></param>
 		private void WriteHeader(IGeometry geometry, PostGisGeometryType type, BinaryWriter writer)
 		{
-			writer.Write((byte) encodingType);
+			writer.Write((byte) EncodingType);
 
 			// write typeword
 			uint typeword = (uint) type;
@@ -466,9 +467,9 @@ namespace NetTopologySuite.IO
                  return hasZ((geometry as IPoint).CoordinateSequence);
             if (geometry is ILineString) 
                  return hasZ((geometry as ILineString).CoordinateSequence);
-            else if (geometry is IPolygon) 
-                 return hasZ((geometry as IPolygon).ExteriorRing.CoordinateSequence);
-            else return hasZ(geometry.GetGeometryN(0));            
+            if (geometry is IPolygon) 
+                return hasZ((geometry as IPolygon).ExteriorRing.CoordinateSequence);
+            return hasZ(geometry.GetGeometryN(0));
         }
 
         /// <summary>
@@ -481,8 +482,8 @@ namespace NetTopologySuite.IO
             if (coords == null || coords.Count == 0)
                 return false;
 
-            int dimensions = coords.Dimension;
-            if (coords.Dimension == 3)
+            var dimensions = coords.Dimension;
+            if (dimensions == 3)
             {
                 // CoordinateArraySequence will always return 3, so we have to
                 // check, if the third ordinate contains NaN, then the geom is actually 2-dimensional

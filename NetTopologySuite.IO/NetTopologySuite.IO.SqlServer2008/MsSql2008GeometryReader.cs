@@ -17,29 +17,37 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
 
 using GeoAPI.Geometries;
+using GeoAPI.IO;
 using Microsoft.SqlServer.Types;
 using System.IO;
 
 namespace NetTopologySuite.IO
 {
-    public class MsSql2008GeometryReader
+    public class MsSql2008GeometryReader : IBinaryGeometryReader, IGeometryReader<SqlGeometry, Stream>
     {
+        public IGeometryFactory Factory { get; set; }
+
         public IGeometry Read(byte[] bytes)
         {
-            using (MemoryStream stream = new MemoryStream(bytes))
+            using (var stream = new MemoryStream(bytes))
             {
-                using (BinaryReader reader = new BinaryReader(stream))
-                {
-                    SqlGeometry sqlGeometry = new SqlGeometry();
-                    sqlGeometry.Read(reader);
-                    return Read(sqlGeometry);
-                }
+                return Read(stream);
+            }
+        }
+
+        public IGeometry Read(Stream stream)
+        {
+            using (var reader = new BinaryReader(stream))
+            {
+                var sqlGeometry = new SqlGeometry();
+                sqlGeometry.Read(reader);
+                return Read(sqlGeometry);
             }
         }
 
         public IGeometry Read(SqlGeometry geometry)
         {
-            NtsGeometrySink builder = new NtsGeometrySink();
+            var builder = new NtsGeometrySink(Factory);
             geometry.Populate(builder);
             return builder.ConstructedGeometry;
         }

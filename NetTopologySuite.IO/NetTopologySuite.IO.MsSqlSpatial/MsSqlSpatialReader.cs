@@ -1,5 +1,6 @@
 using System.IO;
 using GeoAPI.Geometries;
+using GeoAPI.IO;
 
 namespace NetTopologySuite.IO
 {
@@ -8,7 +9,7 @@ namespace NetTopologySuite.IO
 		public override IGeometry Read(Stream stream)
 		{
 			BinaryReader reader = null;
-			ByteOrder byteOrder = (ByteOrder)stream.ReadByte();
+			var byteOrder = (ByteOrder)stream.ReadByte();
 			try
 			{
 				if (byteOrder == ByteOrder.BigEndian)

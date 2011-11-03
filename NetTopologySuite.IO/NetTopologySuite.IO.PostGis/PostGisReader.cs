@@ -4,6 +4,7 @@
 using System;
 using System.IO;
 using GeoAPI.Geometries;
+using GeoAPI.IO;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.IO
@@ -11,16 +12,21 @@ namespace NetTopologySuite.IO
 	/// <summary>
 	/// Converts a PostGIS binary data to a <c>Geometry</c>.
 	/// </summary>
-	public class PostGisReader
+	public class PostGisReader : IBinaryGeometryReader
 	{
-		private IGeometryFactory factory = null;
+		private IGeometryFactory _factory;
 
         /// <summary>
         /// <c>Geometry</c> builder.
         /// </summary>
-        protected IGeometryFactory Factory
+        public IGeometryFactory Factory
         {
-            get { return factory; }
+            get { return _factory; }
+            set
+            {
+                if (value != null)
+                    _factory = value;
+            }
         }
 
         /// <summary>
@@ -34,7 +40,7 @@ namespace NetTopologySuite.IO
         /// <param name="factory"></param>
 		public PostGisReader(IGeometryFactory factory)
         {
-            this.factory = factory;
+            this._factory = factory;
         }
 
         /// <summary>
@@ -131,51 +137,60 @@ namespace NetTopologySuite.IO
 			return result;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="reader"></param>
+	    /// <summary>
+	    /// 
+	    /// </summary>
+	    /// <param name="reader"></param>
+        /// <param name="hasZ">Indicates that coordinates have z-ordinates.</param>
+        /// <param name="hasM">Indicates that coordinates have m-ordinates.</param>
         /// <returns></returns>
-		protected Coordinate ReadCoordinate(BinaryReader reader, bool hasZ, bool hasM)
+	    protected Coordinate ReadCoordinate(BinaryReader reader, bool hasZ, bool hasM)
         {
-			double X = reader.ReadDouble();
-			double Y = reader.ReadDouble();
+			var x = reader.ReadDouble();
+			var y = reader.ReadDouble();
 			Coordinate result;
 			if (hasZ)
 			{
-				double Z = reader.ReadDouble();
-				result = new Coordinate(X, Y, Z);
+				var z = reader.ReadDouble();
+				result = new Coordinate(x, y, z);
 			}
-			else result = new Coordinate(X, Y);
+			else
+			{
+			    result = new Coordinate(x, y);
+			}
 			
 			if (hasM)
 			{
-				double M = reader.ReadDouble();
+				/*var m = */reader.ReadDouble();
 				//result.setM(M);
 			}
 
 			return result;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="reader"></param>
+	    /// <summary>
+	    /// 
+	    /// </summary>
+	    /// <param name="reader"></param>
+        /// <param name="hasZ">Indicates that coordinates have z-ordinates.</param>
+        /// <param name="hasM">Indicates that coordinates have m-ordinates.</param>
         /// <returns></returns>
-		protected IPoint ReadPoint(BinaryReader reader, bool hasZ, bool hasM)
+	    protected IPoint ReadPoint(BinaryReader reader, bool hasZ, bool hasM)
         {
             return Factory.CreatePoint(ReadCoordinate(reader, hasZ, hasM));
         }
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="reader"></param>
-		/// <returns></returns>
-		protected Coordinate[] ReadCoordinateArray(BinaryReader reader, bool hasZ, bool hasM)
+	    /// <summary>
+	    /// 
+	    /// </summary>
+	    /// <param name="reader"></param>
+	    /// <param name="hasZ">Indicates that coordinate has a z-ordinate.</param>
+	    /// <param name="hasM">Indicates that coordinate has a m-ordinate-</param>
+	    /// <returns></returns>
+	    protected Coordinate[] ReadCoordinateArray(BinaryReader reader, bool hasZ, bool hasM)
 		{
 			int numPoints = reader.ReadInt32();
-			Coordinate[] coordinates = new Coordinate[numPoints];
+			var coordinates = new Coordinate[numPoints];
 			for (int i = 0; i < numPoints; i++)
 				 coordinates[i] = ReadCoordinate(reader, hasZ, hasM);
 			return coordinates;
@@ -185,6 +200,8 @@ namespace NetTopologySuite.IO
         /// 
         /// </summary>
         /// <param name="reader"></param>
+        /// <param name="hasZ">Indicates that coordinate has a z-ordinate.</param>
+        /// <param name="hasM">Indicates that coordinate has a m-ordinate-</param>
         /// <returns></returns>
 		protected ILineString ReadLineString(BinaryReader reader, bool hasZ, bool hasM)
         {
@@ -196,7 +213,9 @@ namespace NetTopologySuite.IO
 		/// 
 		/// </summary>
 		/// <param name="reader"></param>
-		/// <returns></returns>
+        /// <param name="hasZ">Indicates that coordinates have z-ordinates.</param>
+        /// <param name="hasM">Indicates that coordinates have m-ordinates.</param>
+        /// <returns></returns>
 		protected ILinearRing ReadLinearRing(BinaryReader reader, bool hasZ, bool hasM)
 		{
 			Coordinate[] coordinates = ReadCoordinateArray(reader, hasZ, hasM);
@@ -207,6 +226,8 @@ namespace NetTopologySuite.IO
         /// 
         /// </summary>
         /// <param name="reader"></param>
+        /// <param name="hasZ">Indicates that coordinates have z-ordinates.</param>
+        /// <param name="hasM">Indicates that coordinates have m-ordinates.</param>
         /// <returns></returns>
 		protected IPolygon ReadPolygon(BinaryReader reader, bool hasZ, bool hasM)
         {

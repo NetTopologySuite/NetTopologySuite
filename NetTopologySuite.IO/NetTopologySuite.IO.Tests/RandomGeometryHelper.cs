@@ -208,7 +208,7 @@ namespace NetTopologySuite.IO.Tests
                 case Ordinate.X:
                     return MinX + RND.NextDouble()*(MaxX - MinX);
                 case Ordinate.Y:
-                    return MinX + RND.NextDouble()*(MaxX - MinX);
+                    return MinY + RND.NextDouble()*(MaxY - MinY);
                 default:
                     return RND.NextDouble()*1000;
             }

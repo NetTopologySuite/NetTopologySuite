@@ -33,6 +33,10 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.SqlServer.Types, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.SqlServer.Types.10.50.1600.1\lib\Net20\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Security">
       <HintPath>..\..\packages\Npgsql.2.0.11\lib\Net35\Mono.Security.dll</HintPath>
     </Reference>
@@ -76,6 +80,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomGeometryHelper.cs" />
     <Compile Include="SpatiaLiteFixture.cs" />
+    <Compile Include="SqlGeographyFixture.cs" />
+    <Compile Include="SqlGeometryFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -10,7 +10,7 @@ namespace NetTopologySuite.Geometries.Implementation
     {
         private readonly double[] _xy;
         private readonly double[] _z;
-        //private double[] _m;
+        private double[] _m;
         
         public DotSpatialAffineCoordinateSequence(Coordinate[] coordinates) 
         {
@@ -92,7 +92,10 @@ namespace NetTopologySuite.Geometries.Implementation
 
         public Coordinate GetCoordinate(int i)
         {
-            return new DotSpatialAffineCoordinate(this, i);
+            var j = 2*i;
+            return _z != null 
+                ? new Coordinate(_xy[j++], _xy[j], _z[i])
+                : new Coordinate(_xy[j++], _xy[j]);
         }
 
         public Coordinate GetCoordinateCopy(int i)
@@ -155,17 +158,18 @@ namespace NetTopologySuite.Geometries.Implementation
 
         public Coordinate[] ToCoordinateArray()
         {
-            //var j = 0;
+            var j = 0;
             var count = Count;
             var ret = new Coordinate[count];
-            for (var i = 0; i < count; i++)
+            if (_z != null)
             {
-                ret[i] = new DotSpatialAffineCoordinate(this, i);
-                /*
-                ret[i] = new Coordinate(_xy[j++], _xy[j++]);
-                if (_z != null)
-                    ret[i].Z = _z[i];
-                 */
+                for (var i = 0; i < count; i++)
+                    ret[i] = new Coordinate(_xy[j++], _xy[j++], _z[i]);
+            }
+            else
+            {
+                for (var i = 0; i < count; i++)
+                    ret[i] = new Coordinate(_xy[j++], _xy[j++]);
             }
             return ret;
         }
@@ -205,6 +209,7 @@ namespace NetTopologySuite.Geometries.Implementation
         }
     }
 
+    /*
 #if !SILVERLIGHT
     [Serializable]
 #endif
@@ -382,4 +387,5 @@ namespace NetTopologySuite.Geometries.Implementation
             set { _sequence.SetOrdinate(_index, index, value); }
         }
     }
+     */
 }

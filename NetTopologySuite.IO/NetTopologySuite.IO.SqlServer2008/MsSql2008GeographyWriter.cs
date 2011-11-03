@@ -19,93 +19,172 @@
 using System;
 
 using System.Diagnostics;
+using System.IO;
 using GeoAPI.Geometries;
+using GeoAPI.IO;
 using Microsoft.SqlServer.Types;
 
 namespace NetTopologySuite.IO
 {
-	public class MsSql2008GeographyWriter
+    public class MsSql2008GeographyWriter : IBinaryGeometryWriter, IGeometryWriter<SqlGeography, Stream>
 	{
-		private readonly SqlGeographyBuilder _builder = new SqlGeographyBuilder();
+		//private readonly SqlGeographyBuilder _builder = new SqlGeographyBuilder();
 
-		public SqlGeography Write(IGeometry geometry)
-		{
-			_builder.SetSrid(geometry.SRID);
-			AddGeometry(geometry);
-			return _builder.ConstructedGeography;
-		}
+        public bool EmitSRID { get { return true; } set { } }
 
-		private void AddGeometry(IGeometry geometry)
+	    public bool EmitZ { get; set; }
+
+	    public bool EmitM { get; set; }
+
+	    public SqlGeography WriteGeography(IGeometry geometry)
+	    {
+	        var builder = new SqlGeographyBuilder();
+            
+            builder.SetSrid(geometry.SRID);
+            AddGeometry(builder, geometry);
+            return builder.ConstructedGeography;
+        }
+        
+        SqlGeography IGeometryWriter<SqlGeography, Stream>.Write(IGeometry geometry)
+        {
+            return WriteGeography(geometry);
+        }
+
+        public byte[] Write(IGeometry geometry)
+        {
+            var sqlGeography = WriteGeography(geometry);
+            using (var ms = new MemoryStream())
+            {
+                using (var bw = new BinaryWriter(ms))
+                {
+                    sqlGeography.Write(bw);
+                }
+                return ms.ToArray();
+            }
+        }
+
+	    public void Write(IGeometry geometry, Stream stream)
+	    {
+            var sqlGeography = WriteGeography(geometry);
+	        using(var bw = new BinaryWriter(stream))
+	        {
+	            sqlGeography.Write(bw);
+	        }
+	    }
+
+	    private void AddGeometry(SqlGeographyBuilder builder, IGeometry geometry)
 		{
 			if (geometry is IPoint)
 			{
-				AddPoint(geometry);
+                AddPoint(builder, geometry);
 			}
 			else if (geometry is ILineString)
 			{
-				AddLineString(geometry);
+                AddLineString(builder, geometry);
 			}
 			else if (geometry is IPolygon)
 			{
-				AddPolygon(geometry);
+                AddPolygon(builder, geometry);
 			}
 			else if (geometry is IMultiPoint)
 			{
-				AddGeometryCollection(geometry, OpenGisGeographyType.MultiPoint);
+                AddGeometryCollection(builder, geometry, OpenGisGeographyType.MultiPoint);
 			}
 			else if (geometry is IMultiLineString)
 			{
-				AddGeometryCollection(geometry, OpenGisGeographyType.MultiLineString);
+                AddGeometryCollection(builder, geometry, OpenGisGeographyType.MultiLineString);
 			}
 			else if (geometry is IMultiPolygon)
 			{
-				AddGeometryCollection(geometry, OpenGisGeographyType.MultiPolygon);
+                AddGeometryCollection(builder, geometry, OpenGisGeographyType.MultiPolygon);
 			}
 			else if (geometry is IGeometryCollection)
 			{
-				AddGeometryCollection(geometry, OpenGisGeographyType.GeometryCollection);
+                AddGeometryCollection(builder, geometry, OpenGisGeographyType.GeometryCollection);
 			}
 		}
 
-		private void AddGeometryCollection(IGeometry geometry, OpenGisGeographyType type)
+		private void AddGeometryCollection(SqlGeographyBuilder builder, IGeometry geometry, OpenGisGeographyType type)
 		{
-			_builder.BeginGeography(type);
+			builder.BeginGeography(type);
 			var coll = geometry as IGeometryCollection;
             Debug.Assert(coll != null, "coll != null");
-		    Array.ForEach(coll.Geometries, AddGeometry);
-		    _builder.EndGeography();
+		    Array.ForEach(coll.Geometries, geometry1 => AddGeometry(builder, geometry1));
+		    builder.EndGeography();
 		}
 
-		private void AddPolygon(IGeometry geometry)
+		private void AddPolygon(SqlGeographyBuilder builder, IGeometry geometry)
 		{
-			_builder.BeginGeography(OpenGisGeographyType.Polygon);
-			IPolygon polygon = geometry as IPolygon;
+			builder.BeginGeography(OpenGisGeographyType.Polygon);
+			var polygon = geometry as IPolygon;
 		    Debug.Assert(polygon != null, "polygon != null");
-		    AddCoordinates(polygon.ExteriorRing.Coordinates);
-			Array.ForEach<ILineString>(polygon.InteriorRings, delegate(ILineString ring)
-			{
-				AddCoordinates(ring.Coordinates);
-			});
-			_builder.EndGeography();
+            AddCoordinates(builder, polygon.ExteriorRing.CoordinateSequence);
+            Array.ForEach(polygon.InteriorRings, ring => AddCoordinates(builder, ring.CoordinateSequence));
+			builder.EndGeography();
 		}
 
-		private void AddLineString(IGeometry geometry)
+		private void AddLineString(SqlGeographyBuilder builder, IGeometry geometry)
 		{
-			_builder.BeginGeography(OpenGisGeographyType.LineString);
-			AddCoordinates(geometry.Coordinates);
-			_builder.EndGeography();
+			builder.BeginGeography(OpenGisGeographyType.LineString);
+            AddCoordinates(builder, ((ILineString)geometry).CoordinateSequence);
+			builder.EndGeography();
 		}
 
-		private void AddPoint(IGeometry geometry)
+		private void AddPoint(SqlGeographyBuilder builder, IGeometry geometry)
 		{
-			_builder.BeginGeography(OpenGisGeographyType.Point);
-			AddCoordinates(geometry.Coordinates);
-			_builder.EndGeography();
+			builder.BeginGeography(OpenGisGeographyType.Point);
+            AddCoordinates(builder, ((IPoint)geometry).CoordinateSequence);
+			builder.EndGeography();
 		}
 
-		private void AddCoordinates(Coordinate[] coordinates)
+		private void AddCoordinates(SqlGeographyBuilder builder, ICoordinateSequence coordinates)
 		{
-			int points = 0;
+		    for (var i = 0; i < coordinates.Count; i++)
+		    {
+		        AddCoordinate(builder, coordinates, i);
+		    }
+
+		}
+
+        private void AddCoordinate(SqlGeographyBuilder builder, ICoordinateSequence coordinates, int index)
+        {
+            var x = coordinates.GetOrdinate(index, Ordinate.Y);
+            var y = coordinates.GetOrdinate(index, Ordinate.X);
+
+            Double? z = null, m = null;
+            if (EmitZ)
+            {
+                z = coordinates.GetOrdinate(index, Ordinate.Z);
+                if (Double.IsNaN(z.Value)) z = 0d;
+            }
+
+            if (EmitM)
+            {
+                m = coordinates.GetOrdinate(index, Ordinate.M);
+                if (Double.IsNaN(m.Value)) m = 0d;
+            }
+
+            if (index == 0)
+            {
+                builder.BeginFigure(x, y, z, m);
+            }
+            else
+            {
+                builder.AddLine(x, y, z, m);
+            }
+
+            if (index == coordinates.Count - 1)
+            {
+                builder.EndFigure();
+            }
+        }
+
+        /*
+        private void AddCoordinates(Coordinate[] coordinates)
+        {
+            
+            int points = 0;
+
 			Array.ForEach(coordinates, delegate(Coordinate coordinate)
 			{
 				double? z = null;
@@ -128,10 +207,13 @@ namespace NetTopologySuite.IO
 				_builder.EndFigure();
 			}
 		}
+         */
 
+        /*
 		public SqlGeography ConstructedGeography
 		{
 			get { return _builder.ConstructedGeography; }
 		}
+         */
 	}
 }

@@ -16,7 +16,7 @@ namespace NetTopologySuite.Samples.Tests.Various
     /// 
     /// </summary>
     [TestFixture]
-    //[Ignore("Need to update ProjNet to GeoAPI v1.2")]
+    [Ignore("Need to update ProjNet to GeoAPI v1.6")]
     public class SRSConversionTest :  BaseSamples
     {
         /// <summary>

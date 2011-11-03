@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using GeoAPI.Geometries;
+using GeoAPI.IO;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
@@ -14,19 +15,24 @@ namespace NetTopologySuite.IO
     /// <summary>
     /// Contains methods for reading a single <c>Geometry</c> in binary ESRI shapefile format.
     /// </summary>
-    public class ShapeReader
+    public class ShapeReader 
     {
         /// <summary>
         /// Geometry creator.
         /// </summary>
-        private GeometryFactory factory = null;
+        private IGeometryFactory _factory = null;
 
         /// <summary>
         /// 
         /// </summary>
-        public GeometryFactory Factory
+        public IGeometryFactory Factory
         {
-            get { return factory; }            
+            get { return _factory; }
+            set
+            {
+                if (value != null)
+                    _factory = value;
+            }
         }
 
         /// <summary>
@@ -38,9 +44,9 @@ namespace NetTopologySuite.IO
         /// Initialize reader with the given <c>GeometryFactory</c>.
         /// </summary>
         /// <param name="factory"></param>
-        public ShapeReader(GeometryFactory factory)
+        public ShapeReader(IGeometryFactory factory)
         {
-            this.factory = factory;
+            this._factory = factory;
         }
 
 

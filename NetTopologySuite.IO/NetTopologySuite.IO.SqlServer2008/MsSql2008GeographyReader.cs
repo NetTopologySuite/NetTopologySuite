@@ -18,28 +18,36 @@
 
 using GeoAPI.Geometries;
 using System.IO;
+using GeoAPI.IO;
 using Microsoft.SqlServer.Types;
 
 namespace NetTopologySuite.IO
 {
-	public class MsSql2008GeographyReader
+	public class MsSql2008GeographyReader : IBinaryGeometryReader, IGeometryReader<SqlGeography, Stream>
 	{
-		public IGeometry Read(byte[] bytes)
+	    public IGeometryFactory Factory { get; set; }
+
+	    public IGeometry Read(byte[] bytes)
 		{
 			using (MemoryStream stream = new MemoryStream(bytes))
 			{
-				using (BinaryReader reader = new BinaryReader(stream))
-				{
-					SqlGeography sqlGeography = new SqlGeography();
-					sqlGeography.Read(reader);
-					return Read(sqlGeography);
-				}
+			    return Read(stream);
 			}
 		}
 
+        public IGeometry Read(Stream stream)
+        {
+            using (BinaryReader reader = new BinaryReader(stream))
+            {
+                SqlGeography sqlGeography = new SqlGeography();
+                sqlGeography.Read(reader);
+                return Read(sqlGeography);
+            }
+        }
+
 		public IGeometry Read(SqlGeography geometry)
 		{
-			NtsGeographySink builder = new NtsGeographySink();
+			var builder = new NtsGeographySink(Factory);
 			geometry.Populate(builder);
 			return builder.ConstructedGeometry;
 		}
