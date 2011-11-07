@@ -23,7 +23,7 @@ using System.IO;
 
 namespace NetTopologySuite.IO
 {
-    public class MsSql2008GeometryReader : IBinaryGeometryReader, IGeometryReader<SqlGeometry, Stream>
+    public class MsSql2008GeometryReader : IBinaryGeometryReader, IGeometryReader<SqlGeometry>
     {
         public IGeometryFactory Factory { get; set; }
 
@@ -52,6 +52,30 @@ namespace NetTopologySuite.IO
             return builder.ConstructedGeometry;
         }
 
+        #region Implementation of IGeometryIOSettings
 
+        public bool HandleSRID
+        {
+            get { return true; }
+            set { }
+        }
+
+        public Ordinates AllowedOrdinates
+        {
+            get { return Factory.CoordinateSequenceFactory.Ordinates & Ordinates.XYZM; }
+        }
+
+        private Ordinates _handleOrdinates;
+        public Ordinates HandleOrdinates
+        {
+            get { return _handleOrdinates; }
+            set
+            {
+                value |= AllowedOrdinates;
+                _handleOrdinates = value;
+            }
+        }
+
+        #endregion
     }
 }

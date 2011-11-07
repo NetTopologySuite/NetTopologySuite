@@ -64,6 +64,11 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        public Ordinates Ordinates
+        {
+            get { return Ordinates.XYZ; }
+        }
+
         /// <summary>
         /// Returns the coordinate at specified index.
         /// </summary>

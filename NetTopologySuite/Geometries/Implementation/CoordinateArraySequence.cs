@@ -61,7 +61,12 @@ namespace NetTopologySuite.Geometries.Implementation
                 return 3;
             }
         }
-        
+
+        public Ordinates Ordinates
+        {
+            get { return Ordinates.XYZ; }
+        }
+
         /// <summary>
         /// Get the Coordinate with index i.
         /// </summary>
@@ -194,8 +199,8 @@ namespace NetTopologySuite.Geometries.Implementation
                 case Ordinate.Z: 
                     Coordinates[index].Z = value;
                     break;
-                default:
-                    throw new ArgumentException("invalid ordinate index: " + ordinate);
+                //default:
+                //    //throw new ArgumentException("invalid ordinate index: " + ordinate);
             }
         }
 

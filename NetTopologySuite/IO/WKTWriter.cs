@@ -211,6 +211,11 @@ namespace NetTopologySuite.IO
             return sw.ToString();
         }
 
+        public void Write(IGeometry geometry, Stream stream)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Converts a <c>Geometry</c> to its Well-known Text representation.
         /// </summary>
@@ -753,5 +758,37 @@ namespace NetTopologySuite.IO
             for (int i = 0; i < level; i++)
                 writer.Write(_indentTabStr);
         }
+
+        #region Implementation of IGeometryIOSettings
+
+        public bool HandleSRID
+        {
+            get { return EmitSRID; }
+            set { EmitSRID = value; }
+        }
+
+        public Ordinates AllowedOrdinates
+        {
+            get { return Ordinates.XYZM; }
+        }
+
+        public Ordinates HandleOrdinates
+        {
+            get
+            {
+                var ret = Ordinates.XY;
+                if (EmitZ) ret |= Ordinates.Z;
+                if (EmitM) ret |= Ordinates.M;
+                return ret;
+            }
+            set
+            {
+                value &= AllowedOrdinates;
+                if ((value & Ordinates.Z) != 0) EmitZ = true;
+                if ((value & Ordinates.M) != 0) EmitM = true;
+            }
+        }
+
+        #endregion
     }
 }

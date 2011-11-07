@@ -40,7 +40,8 @@ namespace NetTopologySuite.IO
         /// <param name="factory"></param>
 		public PostGisReader(IGeometryFactory factory)
         {
-            this._factory = factory;
+            _factory = factory;
+            HandleOrdinates = AllowedOrdinates;
         }
 
         /// <summary>
@@ -62,7 +63,7 @@ namespace NetTopologySuite.IO
         public IGeometry Read(Stream stream)
         {
             BinaryReader reader = null;
-            ByteOrder byteOrder = (ByteOrder) stream.ReadByte();
+            var byteOrder = (ByteOrder) stream.ReadByte();
 			// "Rewind" to let Read(BinaryReader) skip this byte
 			// in collection and non-collection geometries.
 			stream.Position = 0;
@@ -94,13 +95,17 @@ namespace NetTopologySuite.IO
 			int typeword = reader.ReadInt32();
 
 			// cut off high flag bits
-			PostGisGeometryType geometryType = (PostGisGeometryType)(typeword & 0x1FFFFFFF);
+			var geometryType = (PostGisGeometryType)(typeword & 0x1FFFFFFF);
 
-			bool hasZ = (typeword & 0x80000000) != 0;
-			bool hasM = (typeword & 0x40000000) != 0;
-			bool hasS = (typeword & 0x20000000) != 0;
+			var hasZ = (typeword & 0x80000000) != 0;
+			var hasM = (typeword & 0x40000000) != 0;
+			var hasS = (typeword & 0x20000000) != 0;
 
-			int srid = -1;
+            var ordinates = Ordinates.XY;
+            if (hasZ) ordinates |= Ordinates.Z;
+            if (hasM) ordinates |= Ordinates.M;
+
+			var srid = -1;
 
 			if (hasS)
 				srid = reader.ReadInt32();
@@ -109,13 +114,13 @@ namespace NetTopologySuite.IO
             switch (geometryType)
             {
                 case PostGisGeometryType.Point:
-					result = ReadPoint(reader, hasZ, hasM);
+                    result = ReadPoint(reader, ordinates);
 					break;
 				case PostGisGeometryType.LineString:
-					result = ReadLineString(reader, hasZ, hasM);
+                    result = ReadLineString(reader, ordinates);
 					break;
 				case PostGisGeometryType.Polygon:
-					result = ReadPolygon(reader, hasZ, hasM);
+                    result = ReadPolygon(reader, ordinates);
 					break;
 				case PostGisGeometryType.MultiPoint:
 					result = ReadMultiPoint(reader);
@@ -138,104 +143,87 @@ namespace NetTopologySuite.IO
         }
 
 	    /// <summary>
-	    /// 
+	    /// Reads a point from the stream
 	    /// </summary>
-	    /// <param name="reader"></param>
-        /// <param name="hasZ">Indicates that coordinates have z-ordinates.</param>
-        /// <param name="hasM">Indicates that coordinates have m-ordinates.</param>
-        /// <returns></returns>
-	    protected Coordinate ReadCoordinate(BinaryReader reader, bool hasZ, bool hasM)
+	    /// <param name="reader">The binary reader.</param>
+        /// <param name="ordinates">The ordinates to read. <see cref="Ordinates.XY"/> are always read.</param>
+        /// <returns>The Point.</returns>
+	    protected IPoint ReadPoint(BinaryReader reader, Ordinates ordinates)
         {
-			var x = reader.ReadDouble();
-			var y = reader.ReadDouble();
-			Coordinate result;
-			if (hasZ)
-			{
-				var z = reader.ReadDouble();
-				result = new Coordinate(x, y, z);
-			}
-			else
-			{
-			    result = new Coordinate(x, y);
-			}
-			
-			if (hasM)
-			{
-				/*var m = */reader.ReadDouble();
-				//result.setM(M);
-			}
-
-			return result;
+            return Factory.CreatePoint(ReadCoordinateSequence(reader, 1, ordinates));
         }
 
 	    /// <summary>
-	    /// 
+	    /// Reads a coordinate sequence from the stream, which length is not yet known.
 	    /// </summary>
-	    /// <param name="reader"></param>
-        /// <param name="hasZ">Indicates that coordinates have z-ordinates.</param>
-        /// <param name="hasM">Indicates that coordinates have m-ordinates.</param>
-        /// <returns></returns>
-	    protected IPoint ReadPoint(BinaryReader reader, bool hasZ, bool hasM)
-        {
-            return Factory.CreatePoint(ReadCoordinate(reader, hasZ, hasM));
-        }
-
-	    /// <summary>
-	    /// 
-	    /// </summary>
-	    /// <param name="reader"></param>
-	    /// <param name="hasZ">Indicates that coordinate has a z-ordinate.</param>
-	    /// <param name="hasM">Indicates that coordinate has a m-ordinate-</param>
-	    /// <returns></returns>
-	    protected Coordinate[] ReadCoordinateArray(BinaryReader reader, bool hasZ, bool hasM)
+        /// <param name="reader">The binary reader</param>
+        /// <param name="ordinates">The ordinates to read. <see cref="Ordinates.XY"/> are always read.</param>
+	    /// <returns>The coordinate sequence</returns>
+	    protected ICoordinateSequence ReadCoordinateSequence(BinaryReader reader, Ordinates ordinates)
 		{
-			int numPoints = reader.ReadInt32();
-			var coordinates = new Coordinate[numPoints];
-			for (int i = 0; i < numPoints; i++)
-				 coordinates[i] = ReadCoordinate(reader, hasZ, hasM);
-			return coordinates;
+			var numPoints = reader.ReadInt32();
+	        return ReadCoordinateSequence(reader, numPoints, ordinates);
 		}
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <param name="hasZ">Indicates that coordinate has a z-ordinate.</param>
-        /// <param name="hasM">Indicates that coordinate has a m-ordinate-</param>
-        /// <returns></returns>
-		protected ILineString ReadLineString(BinaryReader reader, bool hasZ, bool hasM)
+	    /// <summary>
+	    /// Reads a <see cref="ICoordinateSequence"/> from the stream
+	    /// </summary>
+	    /// <param name="reader">The binary reader</param>
+	    /// <param name="numPoints">The number of points in the coordinate sequence.</param>
+	    /// <param name="ordinates">The ordinates to read. <see cref="Ordinates.XY"/> are always read.</param>
+	    /// <returns>The coordinate sequence</returns>
+	    protected ICoordinateSequence ReadCoordinateSequence(BinaryReader reader, int numPoints, Ordinates ordinates)
         {
-			Coordinate[] coordinates = ReadCoordinateArray(reader, hasZ, hasM);
+            var sequence = _factory.CoordinateSequenceFactory.Create(numPoints, ordinates);
+            for (var i = 0; i < numPoints; i++)
+            {
+                sequence.SetOrdinate(i, Ordinate.X, reader.ReadDouble());
+                sequence.SetOrdinate(i, Ordinate.Y, reader.ReadDouble());
+                if ((ordinates & Ordinates.Z) != 0)
+                    sequence.SetOrdinate(i, Ordinate.Z, reader.ReadDouble());
+                if ((ordinates & Ordinates.M) != 0)
+                    sequence.SetOrdinate(i, Ordinate.M, reader.ReadDouble());
+            }
+            return sequence;
+        }
+
+        /// <summary>
+        /// Reads a <see cref="ILineString"/> from the input stream.
+        /// </summary>
+        /// <param name="reader">The binary reader.</param>
+        /// <param name="ordinates">The ordinates to read. <see cref="Ordinates.XY"/> are always read.</param>
+        /// <returns>The LineString.</returns>
+		protected ILineString ReadLineString(BinaryReader reader, Ordinates ordinates)
+        {
+            var coordinates = ReadCoordinateSequence(reader, ordinates);
             return Factory.CreateLineString(coordinates);
         }
 
 		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="reader"></param>
-        /// <param name="hasZ">Indicates that coordinates have z-ordinates.</param>
-        /// <param name="hasM">Indicates that coordinates have m-ordinates.</param>
-        /// <returns></returns>
-		protected ILinearRing ReadLinearRing(BinaryReader reader, bool hasZ, bool hasM)
+        /// Reads a <see cref="ILinearRing"/> line string from the input stream.
+        /// </summary>
+		/// <param name="reader">The binary reader.</param>
+        /// <param name="ordinates">The ordinates to read. <see cref="Ordinates.XY"/> are always read.</param>
+        /// <returns>The LinearRing.</returns>
+		protected ILinearRing ReadLinearRing(BinaryReader reader, Ordinates ordinates)
 		{
-			Coordinate[] coordinates = ReadCoordinateArray(reader, hasZ, hasM);
+			var coordinates = ReadCoordinateSequence(reader, ordinates);
 			return Factory.CreateLinearRing(coordinates);
 		}
 
         /// <summary>
-        /// 
+        /// Reads a <see cref="IPolygon"/> from the input stream.
         /// </summary>
-        /// <param name="reader"></param>
-        /// <param name="hasZ">Indicates that coordinates have z-ordinates.</param>
-        /// <param name="hasM">Indicates that coordinates have m-ordinates.</param>
-        /// <returns></returns>
-		protected IPolygon ReadPolygon(BinaryReader reader, bool hasZ, bool hasM)
+        /// <param name="reader">The binary reader.</param>
+        /// <param name="ordinates">The ordinates to read. <see cref="Ordinates.XY"/> are always read.</param>
+        /// <returns>The LineString.</returns>
+        protected IPolygon ReadPolygon(BinaryReader reader, Ordinates ordinates)
         {
-			int numRings = reader.ReadInt32();
-            ILinearRing exteriorRing = ReadLinearRing(reader, hasZ, hasM);
-            ILinearRing[] interiorRings = new ILinearRing[numRings - 1];
-            for (int i = 0; i < numRings - 1; i++)
-				interiorRings[i] = ReadLinearRing(reader, hasZ, hasM);
+			var numRings = reader.ReadInt32();
+            var exteriorRing = ReadLinearRing(reader, ordinates);
+            var interiorRings = new ILinearRing[numRings - 1];
+            for (var i = 0; i < numRings - 1; i++)
+				interiorRings[i] = ReadLinearRing(reader, ordinates);
             return Factory.CreatePolygon(exteriorRing, interiorRings);
         }
 
@@ -301,5 +289,31 @@ namespace NetTopologySuite.IO
 			ReadGeometryArray(reader, geometries);
             return Factory.CreateGeometryCollection(geometries);
         }
+
+	    #region Implementation of IGeometryIOSettings
+
+	    public bool HandleSRID
+	    {
+	        get { return true; }
+	        set { }
+	    }
+
+	    public Ordinates AllowedOrdinates
+	    {
+	        get { return _factory.CoordinateSequenceFactory.Ordinates | Ordinates.XYZM; }
+	    }
+
+	    private Ordinates _handleOrdinates;
+	    public Ordinates HandleOrdinates
+	    {
+	        get { return _handleOrdinates; }
+	        set 
+            { 
+                value |= AllowedOrdinates;
+	            _handleOrdinates = value;
+	        }
+	    }
+
+	    #endregion
 	}
 }

@@ -159,7 +159,8 @@ namespace NetTopologySuite.Tests.IO
 
 			// The real thing:
 			IPoint source = new Point(123, 456, 789);
-			byte[] bytes = new PostGisWriter().Write(source);
+		    var pgWriter = new PostGisWriter { HandleOrdinates = Ordinates.XYZ};
+			byte[] bytes = pgWriter.Write(source);
 			IPoint target = (IPoint)new PostGisReader().Read(bytes);
 			Assert.AreEqual(source.X, target.X);
 			Assert.AreEqual(source.Y, target.Y);
@@ -177,7 +178,8 @@ namespace NetTopologySuite.Tests.IO
 				points[i] = new Coordinate(100*Math.Sin(i), 200*Math.Cos(i), 300*Math.Tan(i));
 			}
 			ILineString source = new LineString(points);
-			byte[] bytes = new PostGisWriter().Write(source);
+		    var pgWriter = new PostGisWriter() {HandleOrdinates = Ordinates.XYZ};
+            byte[] bytes = pgWriter.Write(source);
 			ILineString target = (ILineString)new PostGisReader().Read(bytes);
 			for (int i = 0; i < size; i++)
 			{

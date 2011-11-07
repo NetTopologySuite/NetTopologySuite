@@ -1,3 +1,5 @@
+using NetTopologySuite.Utilities;
+
 namespace NetTopologySuite.Geometries.Implementation
 {
     using System;
@@ -42,5 +44,14 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             return new CoordinateArraySequence(size);
         }
+        public ICoordinateSequence Create(int size, Ordinates ordinates)
+        {
+            return new CoordinateArraySequence(size);
+        }
+        public Ordinates Ordinates
+        {
+            get { return Ordinates.XYZ; }
+        }
+
     }
 }

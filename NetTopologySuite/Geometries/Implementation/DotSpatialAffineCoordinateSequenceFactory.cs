@@ -38,7 +38,18 @@
 
         public ICoordinateSequence Create(int size, int dimension)
         {
-            return new DotSpatialAffineCoordinateSequence(size, dimension);
+
+            return new DotSpatialAffineCoordinateSequence(size, OrdinatesUtility.DimensionToOrdinates(dimension));
         }
+
+        public ICoordinateSequence Create(int size, Ordinates ordinates)
+        {
+            return new DotSpatialAffineCoordinateSequence(size, Ordinates & ordinates);
+        }
+        public Ordinates Ordinates
+        {
+            get { return Ordinates.XYZM; }
+        }
+
     }
 }

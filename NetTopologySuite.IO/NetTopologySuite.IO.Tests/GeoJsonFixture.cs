@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.IO;
 using GeoAPI.Geometries;
+using NUnit.Framework;
 using NetTopologySuite.Geometries;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -61,6 +62,12 @@ namespace NetTopologySuite.IO.Tests
                     s.Write(res);
                 return ms.ToArray();
             }
+        }
+
+        [Ignore("GeometryCollections containing GeometryCollections is not implemented")]
+        public override void TestGeometryCollection()
+        {
+            base.TestGeometryCollection();
         }
     }
 }

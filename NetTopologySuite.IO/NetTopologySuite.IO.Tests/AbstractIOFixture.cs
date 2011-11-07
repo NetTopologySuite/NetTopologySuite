@@ -217,7 +217,8 @@
         }
 
         [Test]
-        public void TestGeometryCollection()
+
+        public virtual void TestGeometryCollection()
         {
             for (int i = 0; i < 5; i++)
                 this.PerformTest(this.RandomGeometryHelper.GeometryCollection);

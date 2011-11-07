@@ -172,7 +172,7 @@ namespace NetTopologySuite.Geometries
         /// for backwards compatibility.  Normally the SRID should be set on the 
         /// <see cref="IGeometryFactory"/> used to create the geometry.
         /// SRIDs set using this method will <i>not</i> be propagated to 
-        /// geometries returned by constructive methods.
+        /// geometries returned by constructive methods.</para>
         /// </remarks>
         /// <seealso cref="IGeometryFactory"/>  
         /*

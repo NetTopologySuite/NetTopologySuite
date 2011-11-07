@@ -73,7 +73,12 @@ namespace NetTopologySuite.Samples.Geometries
 			return new ExtendedCoordinateSequence(cloneCoordinates);
 		}
 
-        /// <summary>
+	    public Ordinates Ordinates
+	    {
+	        get { return Ordinates.XYZM; }
+	    }
+
+	    /// <summary>
         /// Returns the number of coordinates in this sequence.
         /// </summary>
         /// <value></value>

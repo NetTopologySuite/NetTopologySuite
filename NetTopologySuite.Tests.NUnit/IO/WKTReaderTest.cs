@@ -102,7 +102,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [Test]
         public void TestReadZ()
         {
-            Assert.AreEqual(new Coordinate(1, 2, 3), reader.Read("POINT(1 2 3)").Coordinate);
+            Assert.AreEqual(new Coordinate(1, 2, 3), reader.Read("POINT (1 2 3)").Coordinate);
         }
 
         [Test]

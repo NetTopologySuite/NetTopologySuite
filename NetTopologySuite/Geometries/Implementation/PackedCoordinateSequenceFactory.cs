@@ -90,7 +90,7 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             if (type == PackedType.Double)
                  return new PackedDoubleCoordinateSequence(coordinates, dimension);
-            else return new PackedFloatCoordinateSequence(coordinates, dimension);
+            return new PackedFloatCoordinateSequence(coordinates, dimension);
         }
 
         /// <summary>
@@ -103,7 +103,26 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             if (type == PackedType.Double)
                  return new PackedDoubleCoordinateSequence(coordSeq.ToCoordinateArray(), dimension);
-            else return new PackedFloatCoordinateSequence(coordSeq.ToCoordinateArray(), dimension);
+            return new PackedFloatCoordinateSequence(coordSeq.ToCoordinateArray(), dimension);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="ICoordinateSequence" /> of the specified size and ordinates.
+        /// For this to be useful, the <see cref="ICoordinateSequence" /> implementation must be mutable.
+        /// </summary>
+        /// <param name="size">The number of coordinates</param>
+        /// <param name="ordinates">
+        /// The ordinates each coordinate has. <see cref="Ordinates.XY"/> is fix, <see cref="Ordinates.Z"/> and <see cref="Ordinates.M"/> can be set.
+        /// </param>
+        /// <returns></returns>
+        public ICoordinateSequence Create(int size, Ordinates ordinates)
+        {
+            return Create(size, OrdinatesUtility.OrdinatesToDimension(ordinates));
+        }
+
+        public Ordinates Ordinates
+        {
+            get { return Ordinates.XYZ; }
         }
 
         /// <summary>
@@ -116,7 +135,7 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             if (type == PackedType.Double)
                  return new PackedDoubleCoordinateSequence(packedCoordinates, dimension);
-            else return new PackedFloatCoordinateSequence(packedCoordinates, dimension);
+            return new PackedFloatCoordinateSequence(packedCoordinates, dimension);
         }
 
         /// <summary>

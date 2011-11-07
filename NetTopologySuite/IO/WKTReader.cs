@@ -63,7 +63,7 @@ namespace NetTopologySuite.IO
             _precisionModel = geometryFactory.PrecisionModel;
         }
 
-        IGeometryFactory IGeometryReader<string, TextReader>.Factory
+        public IGeometryFactory Factory
         {
             get { return _geometryFactory; }
             set
@@ -75,7 +75,6 @@ namespace NetTopologySuite.IO
                 }
             }
         }
-
 
         /// <summary>
         /// Converts a Well-known Text representation to a <c>Geometry</c>.
@@ -93,6 +92,11 @@ namespace NetTopologySuite.IO
             {
                 return Read(reader);
             }            
+        }
+
+        public IGeometry Read(Stream stream)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>  
@@ -594,6 +598,27 @@ namespace NetTopologySuite.IO
                 nextToken = GetNextCloserOrComma(tokens);
             }            
             return _geometryFactory.CreateGeometryCollection(geometries.ToArray());
-        }        
+        }
+
+        #region Implementation of IGeometryIOSettings
+
+        public bool HandleSRID
+        {
+            get { return true; }
+            set { }
+        }
+
+        public Ordinates AllowedOrdinates
+        {
+            get { return Ordinates.XYZ; }
+        }
+
+        public Ordinates HandleOrdinates
+        {
+            get { return AllowedOrdinates; }
+            set { }
+        }
+
+        #endregion
     }    
 }

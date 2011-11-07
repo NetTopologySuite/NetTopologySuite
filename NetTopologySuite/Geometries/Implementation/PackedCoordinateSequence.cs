@@ -21,6 +21,12 @@ namespace NetTopologySuite.Geometries.Implementation
         private int _dimension;
 
         /// <summary>
+        /// The ordinates
+        /// </summary>
+        private Ordinates _ordinates;
+
+
+        /// <summary>
         /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
         /// </summary>
         /// <value></value>
@@ -28,6 +34,11 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             get { return _dimension; }
             protected set { _dimension = value; }
+        }
+
+        public Ordinates Ordinates
+        {
+            get { throw new NotImplementedException(); }
         }
 
         /// <summary>

@@ -50,7 +50,11 @@ namespace NetTopologySuite.IO
             return (char)('A' + (n - 10));
         }
 
-        public bool EmitSRID { get; set; }
+        public bool EmitSRID
+        {
+            get { return HandleSRID; } 
+            set { HandleSRID = value; }
+        }
 
         private bool _emitZ;
         public bool EmitZ
@@ -192,7 +196,9 @@ namespace NetTopologySuite.IO
             EncodingType = encodingType;
             EmitSRID = emitSRID;
             EmitZ = emitZ;
+            HandleOrdinates |= Ordinates.Z;
             EmitM = emitM;
+            HandleOrdinates |= Ordinates.M;
         }
 
         /// <summary>
@@ -563,5 +569,42 @@ namespace NetTopologySuite.IO
             if (EmitZ) _coordinateSize += 8;
             if (EmitM) _coordinateSize += 8;
         }
+
+        #region Implementation of IGeometryIOBase
+
+        public bool HandleSRID { get; set; }
+
+        public Ordinates AllowedOrdinates
+        {
+            get { return Ordinates.XYZM; }
+        }
+
+        private Ordinates _handleOrdinates;
+        public Ordinates HandleOrdinates
+        {
+            get { return _handleOrdinates; }
+            set
+            {
+                value = Ordinates.XY | AllowedOrdinates & value;
+                if (value == _handleOrdinates)
+                    return;
+                
+                _handleOrdinates = value;
+                EmitZ = (value & Ordinates.Z) != 0;
+                EmitM = (value & Ordinates.M) != 0;
+            }
+        }
+
+        #endregion
+
+        #region Implementation of IBinaryGeometryWriter
+
+        public ByteOrder ByteOrder
+        {
+            get { return EncodingType; } 
+            set{}
+        }
+
+        #endregion
     }
 }

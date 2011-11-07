@@ -62,5 +62,15 @@ namespace NetTopologySuite.Geometries
         {
             throw new NotImplementedException();
         }
+
+        public ICoordinateSequence Create(int size, Ordinates ordinates)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Ordinates Ordinates
+        {
+            get { return Ordinates.XYZ; }
+        }
     }
 }

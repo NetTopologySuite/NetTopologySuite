@@ -41,6 +41,16 @@ namespace NetTopologySuite.Samples.Geometries
 	        throw new NotImplementedException();
 	    }
 
+	    public ICoordinateSequence Create(int size, Ordinates ordinates)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public Ordinates Ordinates
+	    {
+            get { return Ordinates.XYZM; }
+	    }
+
 	    static ExtendedCoordinateSequenceFactory()
 		{
 			instance = new ExtendedCoordinateSequenceFactory();

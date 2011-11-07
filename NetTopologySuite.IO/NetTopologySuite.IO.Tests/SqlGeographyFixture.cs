@@ -28,7 +28,6 @@ namespace NetTopologySuite.IO.Tests
         {
             base.ReadAppConfigInternal(asr);
             this.ConnectionString = (string)asr.GetValue("SqlServer2008ConnectionString", typeof(string));
-
         }
 
         #endregion
@@ -38,6 +37,16 @@ namespace NetTopologySuite.IO.Tests
     public class SqlGeographyFixture : SqlServer2008Fixture
     {
         #region Overrides of AbstractIOFixture
+
+        protected override void ReadAppConfigInternal(AppSettingsReader asr)
+        {
+            base.ReadAppConfigInternal(asr);
+            RandomGeometryHelper.MinX = 50.1;
+            RandomGeometryHelper.MaxX = 59.9;
+            RandomGeometryHelper.MinY = 50.1;
+            RandomGeometryHelper.MaxY = 59.9;
+
+        }
 
         protected override void CreateTestStore()
         {

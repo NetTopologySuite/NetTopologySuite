@@ -24,15 +24,9 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.IO
 {
-    public class MsSql2008GeometryWriter : IBinaryGeometryWriter, IGeometryWriter<SqlGeometry, Stream>
+    public class MsSql2008GeometryWriter : IBinaryGeometryWriter, IGeometryWriter<SqlGeometry>
     {
         //private readonly SqlGeometryBuilder _builder = new SqlGeometryBuilder();
-
-        public bool EmitSRID { get { return true; } set {} }
-
-        public bool EmitZ { get; set; }
-
-        public bool EmitM { get; set; }
 
         public byte[] Write(IGeometry geometry)
         {
@@ -50,7 +44,7 @@ namespace NetTopologySuite.IO
                 sqlGeometry.Write(writer);
         }
 
-        SqlGeometry IGeometryWriter<SqlGeometry, Stream>.Write(IGeometry geometry)
+        SqlGeometry IGeometryWriter<SqlGeometry>.Write(IGeometry geometry)
         {
             return WriteGeometry(geometry);
         }
@@ -142,13 +136,13 @@ namespace NetTopologySuite.IO
             var y = coordinates.GetOrdinate(index, Ordinate.Y);
 
             Double? z = null, m = null;
-            if (EmitZ)
+            if ((HandleOrdinates & Ordinates.Z) > 0)
             {
                 z = coordinates.GetOrdinate(index, Ordinate.Z);
                 if (Double.IsNaN(z.Value)) z = 0d;
             }
 
-            if (EmitM)
+            if ((HandleOrdinates & Ordinates.M) > 0)
             {
                 m = coordinates.GetOrdinate(index, Ordinate.M);
                 if (Double.IsNaN(m.Value)) m = 0d;
@@ -201,5 +195,41 @@ namespace NetTopologySuite.IO
             get { return _builder.ConstructedGeometry; }
         }
          */
+
+        #region Implementation of IGeometryIOBase
+
+        public bool HandleSRID
+        {
+            get { return true; }
+            set { }
+        }
+
+        public Ordinates AllowedOrdinates
+        {
+            get { return Ordinates.XYZM; }
+        }
+
+        private Ordinates _handleOrdinates;
+        public Ordinates HandleOrdinates
+        {
+            get { return _handleOrdinates; }
+            set
+            {
+                value = Ordinates.XY | (AllowedOrdinates & value);
+                _handleOrdinates = value;
+            }
+        }
+
+        #endregion
+
+        #region Implementation of IBinaryGeometryWriter
+
+        public ByteOrder ByteOrder
+        {
+            get { return ByteOrder.LittleEndian; }
+            set {  }
+        }
+
+        #endregion
     }
 }

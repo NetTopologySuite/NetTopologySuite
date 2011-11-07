@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries.Implementation
@@ -11,24 +12,27 @@ namespace NetTopologySuite.Geometries.Implementation
         private readonly double[] _xy;
         private readonly double[] _z;
         private double[] _m;
-        
-        public DotSpatialAffineCoordinateSequence(Coordinate[] coordinates) 
+        private Ordinates _ordinates;
+
+        public DotSpatialAffineCoordinateSequence(IList<Coordinate> coordinates) 
         {
             if (coordinates == null)
             {
                 _xy = new double[0];
                 return;
             }
-            _xy = new double[2 * coordinates.Length];
-            _z = new double[coordinates.Length];
+            _xy = new double[2 * coordinates.Count];
+            _z = new double[coordinates.Count];
 
-            int j = 0;
-            for (int i = 0; i < coordinates.Length; i++)
+            var j = 0;
+            for (int i = 0; i < coordinates.Count; i++)
             {
                 XY[j++] = coordinates[i].X;
                 XY[j++] = coordinates[i].Y;
                 Z[i] = coordinates[i].Z;
             }
+
+            _ordinates = Ordinates.XYZ;
         }
         
         /// <summary>
@@ -43,7 +47,35 @@ namespace NetTopologySuite.Geometries.Implementation
             
             _z = new double[size];
             for(var i = 0; i < size; i++)
-                Z[i] = double.NaN;
+                _z[i] = double.NaN;
+
+            _m = new double[size];
+            for (var i = 0; i < size; i++)
+                _m[i] = double.NaN;
+        }
+
+        /// <summary>
+        /// Constructs a sequence of a given size, populated with new Coordinates.
+        /// </summary>
+        /// <param name="size">The size of the sequence to create.</param>
+        /// <param name="ordinates">The kind of ordinates.</param>
+        public DotSpatialAffineCoordinateSequence(int size, Ordinates ordinates)
+        {
+            _xy = new double[2 * size];
+            _ordinates = ordinates;
+            if ((ordinates & Ordinates.Z) != 0)
+            {
+                _z = new double[size];
+                for (var i = 0; i < size; i++)
+                    _z[i] = double.NaN;
+            }
+
+            if ((ordinates & Ordinates.M) != 0)
+            {
+                _m = new double[size];
+                for (var i = 0; i < size; i++)
+                    _m[i] = double.NaN;
+            }
         }
 
         /// <summary>
@@ -83,7 +115,13 @@ namespace NetTopologySuite.Geometries.Implementation
             _xy = xy;
             _z = z;
         }
-        
+
+        public DotSpatialAffineCoordinateSequence(double[] xy, double[] z, double[] m)
+            :this(xy, z)
+        {
+            _m = m;
+        }
+
         public object Clone()
         {
             return new DotSpatialAffineCoordinateSequence(
@@ -185,6 +223,11 @@ namespace NetTopologySuite.Geometries.Implementation
         public int Dimension
         {
             get { return Z == null ? 2 : 3; }
+        }
+
+        public Ordinates Ordinates
+        {
+            get { return _ordinates; }
         }
 
         public int Count

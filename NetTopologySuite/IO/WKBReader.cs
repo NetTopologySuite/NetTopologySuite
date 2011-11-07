@@ -91,9 +91,11 @@ namespace NetTopologySuite.IO
         public WKBReader(IGeometryFactory factory)
         {
             _factory = factory;
+            HandleSRID = true;
+            HandleOrdinates = AllowedOrdinates;
         }
 
-        IGeometryFactory IGeometryReader<byte[], Stream>.Factory
+        IGeometryFactory IGeometryReader<byte[]>.Factory
         {
             get { return _factory; }
             set
@@ -156,8 +158,15 @@ namespace NetTopologySuite.IO
             if (hasSRID)
                 srid = reader.ReadInt32();
 
-            if (_factory.SRID != srid)
-                _factory = new GeometryFactory((PrecisionModel)GeometryFactory.Default.PrecisionModel, srid);
+            if (HandleSRID)
+            {
+                if (_factory.SRID != srid)
+                    _factory = new GeometryFactory(GeometryFactory.Default.PrecisionModel, srid);
+            }
+            else
+            {
+                _factory = GeometryFactory.Default;
+            }
 
             typeInt = typeInt & 0xffff;
             if (hasZ && ((typeInt / 1000) & 1) != 1)
@@ -282,6 +291,7 @@ namespace NetTopologySuite.IO
             return (WKBGeometryTypes) ((type & 0xffff) % 1000);
         }
 
+        
         /// <summary>
         /// 
         /// </summary>
@@ -557,5 +567,27 @@ namespace NetTopologySuite.IO
             }
             return Factory.CreateGeometryCollection(geometries);
         }
+
+        #region Implementation of IGeometryIOSettings
+
+        public bool HandleSRID { get; set; }
+
+        public Ordinates AllowedOrdinates
+        {
+            get { return Ordinates.XYZM & _factory.CoordinateSequenceFactory.Ordinates; }
+        }
+
+        private Ordinates _handleOrdinates;
+        public Ordinates HandleOrdinates
+        {
+            get { return _handleOrdinates; }
+            set
+            {
+                value = Ordinates.XY | (AllowedOrdinates & value);
+                _handleOrdinates = value;
+            }
+        }
+
+        #endregion
     }
 }
