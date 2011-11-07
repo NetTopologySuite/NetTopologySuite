@@ -51,8 +51,7 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         public byte[] Write(IGeometry geometry)
         {
-            var ordinates = HandleOrdinates;
-            return Write(geometry, ordinates);
+            return Write(geometry, HandleOrdinates);
         }
 
         public void Write(IGeometry geometry, Stream stream)
@@ -265,7 +264,8 @@ namespace NetTopologySuite.IO
                 ordinates, byteOrder, writer);
             writer.Write(polygon.NumInteriorRings + 1);
             Write(polygon.ExteriorRing as ILinearRing, ordinates, writer);
-			Write(polygon.InteriorRings, ordinates, byteOrder, writer);
+            for (var i = 0; i < polygon.NumInteriorRings; i++)
+                Write((ILinearRing)polygon.InteriorRings[i], ordinates, writer);
         }
 
         /// <summary>
@@ -293,7 +293,7 @@ namespace NetTopologySuite.IO
         /// <param name="writer">The writer to use.</param>
         private void Write(IMultiLineString multiLineString, Ordinates ordinates, ByteOrder byteOrder, BinaryWriter writer)
         {
-            WriteHeader(PostGisGeometryType.MultiLineString, HandleSRID ? -1 : multiLineString.SRID, ordinates, byteOrder, writer);
+            WriteHeader(PostGisGeometryType.MultiLineString, HandleSRID ? multiLineString.SRID : -1, ordinates, byteOrder, writer);
 			writer.Write(multiLineString.NumGeometries);
 			Write(multiLineString.Geometries, ordinates, byteOrder, writer);
         }
@@ -307,7 +307,7 @@ namespace NetTopologySuite.IO
         /// <param name="writer">The writer to use.</param>
         private void Write(IMultiPolygon multiPolygon, Ordinates ordinates, ByteOrder byteOrder, BinaryWriter writer)
         {
-            WriteHeader(PostGisGeometryType.MultiPolygon, HandleSRID ? -1 : multiPolygon.SRID, ordinates, byteOrder, writer);
+            WriteHeader(PostGisGeometryType.MultiPolygon, HandleSRID ? multiPolygon.SRID : -1, ordinates, byteOrder, writer);
 			writer.Write(multiPolygon.NumGeometries);
             Write(multiPolygon.Geometries, ordinates, byteOrder, writer);
         }
@@ -321,7 +321,7 @@ namespace NetTopologySuite.IO
         /// <param name="writer">The writer to use.</param>
         private void Write(IGeometryCollection geomCollection, Ordinates ordinates, ByteOrder byteOrder, BinaryWriter writer)
         {
-            WriteHeader(PostGisGeometryType.GeometryCollection, HandleSRID ? -1 : geomCollection.SRID, ordinates, byteOrder, writer);
+            WriteHeader(PostGisGeometryType.GeometryCollection, HandleSRID ? geomCollection.SRID  :- 1, ordinates, byteOrder, writer);
 			writer.Write(geomCollection.NumGeometries);
             Write(geomCollection.Geometries, ordinates, byteOrder, writer);
         }

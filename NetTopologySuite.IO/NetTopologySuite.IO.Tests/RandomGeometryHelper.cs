@@ -130,7 +130,11 @@ namespace NetTopologySuite.IO.Tests
                             return _geometricShapeFactory.CreateArcPolygon(2*Math.PI*RND.NextDouble(),
                                                                            2*Math.PI*RND.NextDouble());
                         default:
-                            return _geometricShapeFactory.CreateCircle();
+                            var poly =  _geometricShapeFactory.CreateCircle();
+                            var distance = -0.25 * Math.Min(_geometricShapeFactory.Height, _geometricShapeFactory.Width);
+                            var buffer = (IPolygon)poly.Buffer(distance);
+                            return _factory.CreatePolygon(poly.Shell, new[] {buffer.Shell});
+
                         case 2:
                             return _geometricShapeFactory.CreateRectangle();
                         case 3:

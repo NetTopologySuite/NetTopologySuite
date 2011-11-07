@@ -61,7 +61,15 @@ namespace NetTopologySuite.IO
         {
             get { return _emitZ; }
             set {
+                if (value ==_emitZ)
+                    return;
                 _emitZ = value;
+                
+                if (value)
+                    HandleOrdinates |= Ordinates.Z;
+                else
+                    HandleOrdinates &= ~Ordinates.Z;
+
                 CalcCoordinateSize();
             }
         }
@@ -72,7 +80,16 @@ namespace NetTopologySuite.IO
             get { return _emitM; }
             set
             {
+                if (value == _emitM)
+                    return;
+
                 _emitM = value;
+
+                if (value)
+                    HandleOrdinates |= Ordinates.M;
+                else
+                    HandleOrdinates &= ~Ordinates.M;
+
                 CalcCoordinateSize();
             }
         }
@@ -196,9 +213,9 @@ namespace NetTopologySuite.IO
             EncodingType = encodingType;
             EmitSRID = emitSRID;
             EmitZ = emitZ;
-            HandleOrdinates |= Ordinates.Z;
+            //HandleOrdinates |= Ordinates.Z;
             EmitM = emitM;
-            HandleOrdinates |= Ordinates.M;
+            //HandleOrdinates |= Ordinates.M;
         }
 
         /// <summary>
