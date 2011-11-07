@@ -108,6 +108,7 @@
     <Compile Include="Algorithm\SIRtreePointInRing.cs" />
     <Compile Include="Geometries\Geometry.cs" />
     <Compile Include="Geometries\GeometryComponentFilter.cs" />
+    <Compile Include="GeometryServices.cs" />
     <Compile Include="Index\Strtree\BoundablePair.cs" />
     <Compile Include="Index\Strtree\GeometryItemDistance.cs" />
     <Compile Include="Index\Strtree\IItemDistance.cs" />
