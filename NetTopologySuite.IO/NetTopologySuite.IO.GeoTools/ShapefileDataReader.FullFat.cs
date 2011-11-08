@@ -44,7 +44,6 @@ namespace NetTopologySuite.IO
             public void Reset()
             {
                 _parent.Reset();
-                //throw new NotImplementedException();
             }
 
             /// <summary>
@@ -448,8 +447,8 @@ namespace NetTopologySuite.IO
         {
             get
             {
-                // add one allow for the fact the first column is the WKB geometry
-                return _columnValues[this.GetOrdinal(name) + 1];
+                int ordinal = this.GetOrdinal(name);
+                return _columnValues[ordinal];
             }
         }
 
