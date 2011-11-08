@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 #if SILVERLIGHT
 using NetTopologySuite.Encodings;
-using NetTopologySuite.Encodings;
-
 #endif
 namespace NetTopologySuite.Utilities
 {

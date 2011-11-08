@@ -65,7 +65,7 @@ namespace NetTopologySuite.IO
             if (_header == null)
             {
                 FileStream stream = new FileStream(_filename, FileMode.Open, FileAccess.Read);
-                BinaryReader dbfStream = new BinaryReader(stream);
+                BinaryReader dbfStream = new BinaryReader(stream, PlatformUtilityEx.GetDefaultEncoding());
 
                 _header = new DbaseFileHeader();
                 // read the header
