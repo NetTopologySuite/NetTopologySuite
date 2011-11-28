@@ -90,6 +90,7 @@
     <Compile Include="Geometries\simplemethodsexample.cs" />
     <Compile Include="LinearReferencing\LinearReferencingExample.cs" />
     <Compile Include="Tests\IO\PostGisTest.cs" />
+    <Compile Include="Tests\IO\ShapeFileInvalidHeaderTest.cs" />
     <Compile Include="Tests\IO\ShapeFileReadTest.cs" />
     <Compile Include="Tests\IO\ShapefileWriteTest.cs" />
     <Compile Include="Tests\Performances\NodingValidatorFixture.cs" />

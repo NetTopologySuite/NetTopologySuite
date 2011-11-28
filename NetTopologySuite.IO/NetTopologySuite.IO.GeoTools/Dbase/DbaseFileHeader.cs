@@ -291,7 +291,12 @@ namespace NetTopologySuite.IO
 			}
         
 			// Last byte is a marker for the end of the field definitions.
-			reader.ReadBytes(1);        
+            if (reader.ReadBytes(1)[0] != 0x0d)
+                throw new ShapefileException("DBase Header is not terminated");
+
+            // Assure we are at the end of the header!
+            if (reader.BaseStream.Position != _headerLength)
+                reader.BaseStream.Seek(_headerLength, SeekOrigin.Begin);
 		}
     
 		/// <summary>

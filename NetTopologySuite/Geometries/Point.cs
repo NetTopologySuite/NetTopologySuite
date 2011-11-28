@@ -61,7 +61,7 @@ namespace NetTopologySuite.Geometries
         {               
             if (coordinates == null) 
                 coordinates = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
-            Debug.Assert(coordinates.Count <= 1);
+            NetTopologySuite.Utilities.Assert.IsTrue(coordinates.Count <= 1);
             this.coordinates = (ICoordinateSequence) coordinates;
         }        
 
