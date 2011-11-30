@@ -4,21 +4,21 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.IO
 {
     [TestFixture]
-    [Ignore("Sample file not published")]
+    [Ignore("Sample file(s) not published")]
     public class ShapeFileInvalidHeaderTest
     {
-        private string _invalidPath = CombinePaths("..", "..", "..", "NetTopologySuite.Samples.Shapefiles", "invalidheader.shp");
+        private readonly string _invalidPath = CombinePaths("..", "..", "..", "NetTopologySuite.Samples.Shapefiles", "invalidheader.shp");
 
         [Test]
         public void TestInvalidShapeFile()
         {
+            /*
             var s = new NetTopologySuite.IO.ShapefileReader(_invalidPath);
             var sh = s.Header;
             var g = s.ReadAll();
-
+            */
             var dbf = Path.ChangeExtension(_invalidPath, ".dbf");
             var d = new NetTopologySuite.IO.DbaseFileReader(dbf);
-            var dh = d.GetHeader();
 
             var de = d.GetEnumerator();
             Assert.IsNull(de.Current);
