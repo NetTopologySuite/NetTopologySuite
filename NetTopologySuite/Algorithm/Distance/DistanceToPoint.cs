@@ -11,10 +11,6 @@ namespace NetTopologySuite.Algorithm.Distance
     /// </remarks>
     public class DistanceToPoint
     {
-
-        // used for point-line distance calculation
-        private static readonly LineSegment TempSegment = new LineSegment();
-
         public static void ComputeDistance(IGeometry geom, Coordinate pt, PointPairDistance ptDist)
         {
             if (geom is ILineString)
@@ -46,9 +42,11 @@ namespace NetTopologySuite.Algorithm.Distance
             Coordinate[] coords = line.Coordinates;
             for (int i = 0; i < coords.Length - 1; i++)
             {
-                TempSegment.SetCoordinates(coords[i], coords[i + 1]);
+                // used for point-line distance calculation
+                LineSegment temp = new LineSegment();
+                temp.SetCoordinates(coords[i], coords[i + 1]);
                 // this is somewhat inefficient - could do better
-                Coordinate closestPt = TempSegment.ClosestPoint(pt);
+                Coordinate closestPt = temp.ClosestPoint(pt);
                 ptDist.SetMinimum(closestPt, pt);
             }
         }

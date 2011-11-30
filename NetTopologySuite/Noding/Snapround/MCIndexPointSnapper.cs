@@ -12,12 +12,6 @@ namespace NetTopologySuite.Noding.Snapround
     /// </summary>
     public class MCIndexPointSnapper
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        // Public in java code... temporary modified for "safe assembly" in Sql2005
-		internal static readonly int numberSnaps;        
-
         private IList<MonotoneChain> _monoChains;
         private readonly STRtree _index;
 
