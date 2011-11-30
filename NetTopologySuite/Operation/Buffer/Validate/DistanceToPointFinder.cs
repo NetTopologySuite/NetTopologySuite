@@ -7,8 +7,11 @@ namespace NetTopologySuite.Operation.Buffer.Validate
     /// Computes the Euclidean distance (L2 metric) from a Point to a Geometry.
     /// Also computes two points which are separated by the distance.
     ///</summary>
-    public class DistanceToPointFinder
+    public static class DistanceToPointFinder
     {
+        // used for point-line distance calculation
+        private static readonly LineSegment TempSegment = new LineSegment();
+
         public static void ComputeDistance(IGeometry geom, Coordinate pt, PointPairDistance ptDist)
         {
             if (geom is ILineString)
@@ -29,7 +32,8 @@ namespace NetTopologySuite.Operation.Buffer.Validate
                 }
             }
             else
-            { // assume geom is Point
+            { 
+                // assume geom is Point
                 ptDist.SetMinimum(geom.Coordinate, pt);
             }
         }
@@ -39,11 +43,9 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             var coords = line.Coordinates;
             for (int i = 0; i < coords.Length - 1; i++)
             {
-                // used for point-line distance calculation
-                LineSegment temp = new LineSegment();
-                temp.SetCoordinates(coords[i], coords[i + 1]);
+                TempSegment.SetCoordinates(coords[i], coords[i + 1]);
                 // this is somewhat inefficient - could do better
-                var closestPt = temp.ClosestPoint(pt);
+                var closestPt = TempSegment.ClosestPoint(pt);
                 ptDist.SetMinimum(closestPt, pt);
             }
         }

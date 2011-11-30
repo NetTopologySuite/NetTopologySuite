@@ -12,6 +12,7 @@ namespace NetTopologySuite.Simplify
     /// </summary>
     public class TaggedLineStringSimplifier
     {
+        private readonly LineIntersector li = new RobustLineIntersector();
         private readonly LineSegmentIndex _inputIndex = new LineSegmentIndex();
         private readonly LineSegmentIndex _outputIndex = new LineSegmentIndex();
         private TaggedLineString _line;
@@ -231,8 +232,7 @@ namespace NetTopologySuite.Simplify
         /// <param name="seg1"></param>
         /// <returns></returns>
         private bool HasInteriorIntersection(LineSegment seg0, LineSegment seg1)
-        {
-            LineIntersector li = new RobustLineIntersector();
+        {            
             li.ComputeIntersection(seg0.P0, seg0.P1, seg1.P0, seg1.P1);
             return li.IsInteriorIntersection();
         }
