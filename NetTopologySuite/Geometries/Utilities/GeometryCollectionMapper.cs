@@ -4,18 +4,21 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
-    /// 
+    /// Maps the members of a <see cref="IGeometryCollection"/>
+    /// into another <tt>GeometryCollection</tt> via a defined
+    /// mapping function.
     /// </summary>
+    /// <author>Martin Davis</author>
     public class GeometryCollectionMapper
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometry"></param>
         public delegate IGeometry MapGeometryDelegate(IGeometry geometry);
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="gc"></param>
         /// <param name="op"></param>
@@ -38,7 +41,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="gc"></param>
         /// <returns></returns>
@@ -57,12 +60,12 @@ namespace NetTopologySuite.Geometries.Utilities
 
         /*
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public interface IMapOp
         {
             /// <summary>
-            /// 
+            ///
             /// </summary>
             /// <param name="g"></param>
             /// <returns></returns>

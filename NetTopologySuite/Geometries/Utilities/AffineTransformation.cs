@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Geometries.Utilities
 {
@@ -25,7 +24,7 @@ namespace NetTopologySuite.Geometries.Utilities
     /// but do not preserve distance or shape.
     /// </para>
     /// <para>
-    /// An affine transformation can be represented by a 3x3 
+    /// An affine transformation can be represented by a 3x3
     /// matrix in the following form:
     /// <blockquote><pre>
     /// T = | m00 m01 m02 |
@@ -40,38 +39,40 @@ namespace NetTopologySuite.Geometries.Utilities
     /// | 1  |        | 1 |
     /// </pre></blockquote>
     /// </para>
+    /// <h3>Transformation Composition</h3>
     /// <para>
     /// Affine transformations can be composed using the <see cref="Compose"/> method.
-    /// The composition of transformations is in general not commutative.
-    /// transformation matrices as follows:
+    /// Composition is computed via multiplication of the
+    /// transformation matrices, and is defined as:
     /// <blockquote><pre>
     /// A.compose(B) = T<sub>B</sub> x T<sub>A</sub>
     /// </pre></blockquote>
     /// </para>
     /// <para>
     /// This produces a transformation whose effect is that of A followed by B.
-    /// Composition is computed via multiplication of the 
-    /// The methods <see cref="Reflect"/>, <see cref="Rotate"/>, <see cref="Scale"/>, <see cref="Shear"/>, and <see cref="Translate"/> 
+    /// The methods <see cref="Reflect"/>, <see cref="Rotate"/>,
+    /// <see cref="Scale"/>, <see cref="Shear"/>, and <see cref="Translate"/>
     /// have the effect of composing a transformation of that type with
-    /// the transformation they are invoked on.  
+    /// the transformation they are invoked on.
+    /// The composition of transformations is in general <i>not</i> commutative.
     /// </para>
+    /// <h3>Transformation Inversion</h3>
     /// <para>
-    /// Affine transformations may be invertible or non-invertible.  
-    /// If a transformation is invertible, then there exists 
-    /// an inverse transformation which when composed produces 
-    /// the identity transformation.  
+    /// Affine transformations may be invertible or non-invertible.
+    /// If a transformation is invertible, then there exists
+    /// an inverse transformation which when composed produces
+    /// the identity transformation.
     /// The <see cref="GetInverse"/> method
     /// computes the inverse of a transformation, if one exists.
     /// </para>
     /// <para>
     /// @author Martin Davis
-    /// </para> 
+    /// </para>
     /// </remarks>
     public class AffineTransformation : ICloneable, ICoordinateSequenceFilter, IEquatable<AffineTransformation>
     {
-
         /// <summary>
-        /// Creates a transformation for a reflection about the 
+        /// Creates a transformation for a reflection about the
         /// line (x0,y0) - (x1,y1).
         /// </summary>
         /// <param name="x0"> the x-ordinate of a point on the reflection line</param>
@@ -87,7 +88,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Creates a transformation for a reflection about the 
+        /// Creates a transformation for a reflection about the
         /// line (0,0) - (x,y).
         /// </summary>
         /// <param name="x"> the x-ordinate of a point on the reflection line</param>
@@ -102,11 +103,11 @@ namespace NetTopologySuite.Geometries.Utilities
 
         /// <summary>
         /// Creates a transformation for a rotation
-        /// about the origin 
+        /// about the origin
         /// by an angle <i>theta</i>.
         /// </summary>
         /// <remarks>
-        /// Positive angles correspond to a rotation 
+        /// Positive angles correspond to a rotation
         /// in the counter-clockwise direction.
         /// </remarks>
         /// <param name="theta"> the rotation angle, in radians</param>
@@ -117,13 +118,13 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Creates a transformation for a rotation 
+        /// Creates a transformation for a rotation
         /// by an angle <i>theta</i>,
         /// specified by the sine and cosine of the angle.
         /// </summary>
         /// <remarks>
         /// This allows providing exact values for sin(theta) and cos(theta)
-        /// for the common case of rotations of multiples of quarter-circles. 
+        /// for the common case of rotations of multiples of quarter-circles.
         /// </remarks>
         /// <param name="sinTheta"> the sine of the rotation angle</param>
         /// <param name="cosTheta"> the cosine of the rotation angle</param>
@@ -140,7 +141,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// about the point (x,y) by an angle <i>theta</i>.
         /// </summary>
         /// <remarks>
-        /// Positive angles correspond to a rotation 
+        /// Positive angles correspond to a rotation
         /// in the counter-clockwise direction.
         /// </remarks>
         /// <param name="theta"> the rotation angle, in radians</param>
@@ -153,13 +154,13 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Creates a transformation for a rotation 
+        /// Creates a transformation for a rotation
         /// about the point (x,y) by an angle <i>theta</i>,
         /// specified by the sine and cosine of the angle.
         /// </summary>
         /// <remarks>
         /// This allows providing exact values for sin(theta) and cos(theta)
-        /// for the common case of rotations of multiples of quarter-circles. 
+        /// for the common case of rotations of multiples of quarter-circles.
         /// </remarks>
         /// <param name="sinTheta"> the sine of the rotation angle</param>
         /// <param name="cosTheta"> the cosine of the rotation angle</param>
@@ -175,7 +176,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
         /// <summary>
         /// Creates a transformation for a scaling relative to the origin.
-        /// </summary> 
+        /// </summary>
         /// <param name="xScale"> the value to scale by in the x direction</param>
         /// <param name="yScale"> the value to scale by in the y direction</param>
         /// <returns> a transformation for the scaling</returns>
@@ -247,12 +248,12 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Constructs a new transformation whose 
+        /// Constructs a new transformation whose
         /// matrix has the specified values.
-        /// </summary> 
+        /// </summary>
         /// <param name="matrix"> an array containing the 6 values { m00, m01, m02, m10, m11, m12 }</param>
         /// <exception cref="NullReferenceException"> if matrix is null</exception>
-        /// <exception cref="IndexOutOfRangeException"> if matrix is too small</exception>   
+        /// <exception cref="IndexOutOfRangeException"> if matrix is too small</exception>
         public AffineTransformation(double[] matrix)
         {
             _m00 = matrix[0];
@@ -264,9 +265,9 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Constructs a new transformation whose 
+        /// Constructs a new transformation whose
         /// matrix has the specified values.
-        /// </summary> 
+        /// </summary>
         /// <param name="m00"> the entry for the [0, 0] element in the transformation matrix</param>
         /// <param name="m01"> the entry for the [0, 1] element in the transformation matrix</param>
         /// <param name="m02"> the entry for the [0, 2] element in the transformation matrix</param>
@@ -297,7 +298,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// Constructs a transformation
         /// which maps the given source
         /// points into the given destination points.
-        /// </summary> 
+        /// </summary>
         /// <param name="src0"> source point 0</param>
         /// <param name="src1"> source point 1</param>
         /// <param name="src2"> source point 2</param>
@@ -387,12 +388,12 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             get
             {
-                return new[] {_m00, _m01, _m02, _m10, _m11, _m12};
+                return new[] { _m00, _m01, _m02, _m10, _m11, _m12 };
             }
         }
 
         /// <summary>
-        /// Computes the determinant of the transformation matrix. 
+        /// Computes the determinant of the transformation matrix.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -404,10 +405,10 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </pre></blockquote>
         /// </para>
         /// <para>
-        /// If the determinant is zero, 
-        /// the transform is singular (not invertible), 
+        /// If the determinant is zero,
+        /// the transform is singular (not invertible),
         /// and operations which attempt to compute
-        /// an inverse will throw a <see cref="NoninvertibleTransformationException"/>. 
+        /// an inverse will throw a <see cref="NoninvertibleTransformationException"/>.
         /// </para>
         /// </remarks>
         /// <returns> the determinant of the transformation</returns>
@@ -417,7 +418,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <see cref="GetInverse"/>
         public double Determinant
         {
-            get { return _m00*_m11 - _m01*_m10; }
+            get { return _m00 * _m11 - _m01 * _m10; }
         }
 
         /// <summary>
@@ -426,8 +427,8 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <remarks>
         /// <para>
-        /// * The inverse is the transformation which when 
-        /// * composed with this one produces the identity 
+        /// * The inverse is the transformation which when
+        /// * composed with this one produces the identity
         /// * transformation.
         /// * A transformation has an inverse if and only if it
         /// * is not singular (i.e. its
@@ -438,13 +439,13 @@ namespace NetTopologySuite.Geometries.Utilities
         /// * will throw a <see cref="NoninvertibleTransformationException"/>.
         /// </para>
         /// <para>
-        /// * The matrix of the inverse is equal to the 
+        /// * The matrix of the inverse is equal to the
         /// * inverse of the matrix for the transformation.
         /// * It is computed as follows:
-        /// * <blockquote><pre>  
-        /// *                 1    
-        /// * inverse(A)  =  ---   x  adjoint(A) 
-        /// *                det 
+        /// * <blockquote><pre>
+        /// *                 1
+        /// * inverse(A)  =  ---   x  adjoint(A)
+        /// *                det
         /// *
         /// *
         /// *             =   1       |  m11  -m01   m01*m12-m02*m11  |
@@ -457,7 +458,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// *               | -m10/det   m00/det  -m00*m12+m10*m02/det |
         /// *               |   0           0          1               |
         /// *
-        /// * </pre></blockquote> 
+        /// * </pre></blockquote>
         /// </para>
         /// </remarks>
         /// <returns>A new inverse transformation</returns>
@@ -482,11 +483,11 @@ namespace NetTopologySuite.Geometries.Utilities
         ///<summary>
         /// Explicitly computes the math for a reflection.  May not work.
         /// </summary>
-        /// <param name="x0"></param>
-        /// <param name="y0"></param>
-        /// <param name="x1"></param>
-        /// <param name="y1"></param>
-        /// <returns></returns>
+        /// <param name="x0">The x-ordinate of one point on the reflection line</param>
+        /// <param name="y0">The y-ordinate of one point on the reflection line</param>
+        /// <param name="x1">The x-ordinate of another point on the reflection line</param>
+        /// <param name="y1">The y-ordinate of another point on the reflection line</param>
+        /// <returns>This transformation with an updated matrix</returns>
         public AffineTransformation SetToReflectionBasic(double x0, double y0, double x1, double y1)
         {
             if (x0 == x1 && y0 == y1)
@@ -505,6 +506,14 @@ namespace NetTopologySuite.Geometries.Utilities
             return this;
         }
 
+        /// <summary>
+        /// Sets this transformation to be a reflection about the line defined by a line <tt>(x0,y0) - (x1,y1)</tt>.
+        /// </summary>
+        /// <param name="x0">The x-ordinate of one point on the reflection line</param>
+        /// <param name="y0">The y-ordinate of one point on the reflection line</param>
+        /// <param name="x1">The x-ordinate of another point on the reflection line</param>
+        /// <param name="y1">The y-ordinate of another point on the reflection line</param>
+        /// <returns>This transformation with an updated matrix</returns>
         public AffineTransformation SetToReflection(double x0, double y0, double x1, double y1)
         {
             if (x0 == x1 && y0 == y1)
@@ -531,28 +540,44 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Sets this transformation to be a reflection 
+        /// Sets this transformation to be a reflection
         /// about the line defined by vector (x,y).
         /// </summary>
         /// <remarks>
         /// The transformation for a reflection
         /// is computed by:
         /// <blockquote><pre>
-        /// d = sqrt(x<sup>2</sup> + y<sup>2</sup>)  
+        /// d = sqrt(x<sup>2</sup> + y<sup>2</sup>)
         /// sin = x / d;
-        /// cos = x / d; 
-        /// T<sub>ref</sub> = T<sub>rot(sin, cos)</sub> x T<sub>scale(1, -1)</sub> x T<sub>rot(-sin, cos)</sub>  
-        /// </pre></blockquote> 
+        /// cos = x / d;
+        /// T<sub>ref</sub> = T<sub>rot(sin, cos)</sub> x T<sub>scale(1, -1)</sub> x T<sub>rot(-sin, cos)</sub>
+        /// </pre></blockquote>
         /// </remarks>
         /// <param name="x"> the x-component of the reflection line vector</param>
         /// <param name="y"> the y-component of the reflection line vector</param>
-        /// <returns> this transformation, with an updated matrix</returns> 
+        /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation SetToReflection(double x, double y)
         {
             if (x == 0.0 && y == 0.0)
             {
                 throw new ArgumentException("Reflection vector must be non-zero");
             }
+
+            /**
+             * Handle special case - x = y.
+             * This case is specified explicitly to avoid roundoff error.
+             */
+            if (x == y)
+            {
+                _m00 = 0.0;
+                _m01 = 1.0;
+                _m02 = 0.0;
+                _m10 = 1.0;
+                _m11 = 0.0;
+                _m12 = 0.0;
+                return this;
+            }
+
             // rotate vector to positive x axis direction
             double d = System.Math.Sqrt(x * x + y * y);
             double sin = y / d;
@@ -569,16 +594,16 @@ namespace NetTopologySuite.Geometries.Utilities
         /// Sets this transformation to be a rotation around the orign.
         /// </summary>
         /// <remarks>
-        /// A positive rotation angle corresponds 
+        /// A positive rotation angle corresponds
         /// to a counter-clockwise rotation.
         /// The transformation matrix for a rotation
         /// by an angle <code>theta</code>
         /// has the value:
-        /// <blockquote><pre>  
+        /// <blockquote><pre>
         /// |  cos(theta)  -sin(theta)   0 |
         /// |  sin(theta)   cos(theta)   0 |
         /// |           0            0   1 |
-        /// </pre></blockquote> 
+        /// </pre></blockquote>
         /// </remarks>
         /// <param name="theta"> the rotation angle, in radians</param>
         /// <returns> this transformation, with an updated matrix</returns>
@@ -595,11 +620,11 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <remarks>
         /// The transformation matrix for the rotation
         /// has the value:
-        /// <blockquote><pre>  
+        /// <blockquote><pre>
         /// |  cosTheta  -sinTheta   0 |
         /// |  sinTheta   cosTheta   0 |
         /// |         0          0   1 |
-        /// </pre></blockquote> 
+        /// </pre></blockquote>
         /// </remarks>
         /// <param name="sinTheta"> the sine of the rotation angle</param>
         /// <param name="cosTheta"> the cosine of the rotation angle</param>
@@ -616,16 +641,16 @@ namespace NetTopologySuite.Geometries.Utilities
         /// around a given point (x,y).
         /// </summary>
         /// <remarks>
-        /// A positive rotation angle corresponds 
+        /// A positive rotation angle corresponds
         /// to a counter-clockwise rotation.
         /// The transformation matrix for a rotation
         /// by an angle <paramref name="theta" />
         /// has the value:
-        /// <blockquote><pre>  
+        /// <blockquote><pre>
         /// |  cosTheta  -sinTheta   x-x*cos+y*sin |
         /// |  sinTheta   cosTheta   y-x*sin-y*cos |
         /// |           0            0   1 |
-        /// </pre></blockquote> 
+        /// </pre></blockquote>
         /// </remarks>
         /// <param name="theta"> the rotation angle, in radians</param>
         /// <param name="x"> the x-ordinate of the rotation point</param>
@@ -637,7 +662,6 @@ namespace NetTopologySuite.Geometries.Utilities
             return this;
         }
 
-
         /// <summary>
         /// Sets this transformation to be a rotation
         /// around a given point (x,y)
@@ -646,11 +670,11 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <remarks>
         /// The transformation matrix for the rotation
         /// has the value:
-        /// <blockquote><pre>  
+        /// <blockquote><pre>
         /// |  cosTheta  -sinTheta   x-x*cos+y*sin |
         /// |  sinTheta   cosTheta   y-x*sin-y*cos |
         /// |         0          0         1       |
-        /// </pre></blockquote> 
+        /// </pre></blockquote>
         /// </remarks>
         /// <param name="sinTheta"> the sine of the rotation angle</param>
         /// <param name="cosTheta"> the cosine of the rotation angle</param>
@@ -670,11 +694,11 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <remarks>
         /// The transformation matrix for a scale
         /// has the value:
-        /// <blockquote><pre>  
+        /// <blockquote><pre>
         /// |  xScale      0  dx |
         /// |  1      yScale  dy |
         /// |  0           0   1 |
-        /// </pre></blockquote> 
+        /// </pre></blockquote>
         /// </remarks>
         /// <param name="xScale"> the amount to scale x-ordinates by</param>
         /// <param name="yScale"> the amount to scale y-ordinates by</param>
@@ -690,16 +714,16 @@ namespace NetTopologySuite.Geometries.Utilities
         /// Sets this transformation to be a shear.
         /// </summary>
         /// <remarks>
-        /// The transformation matrix for a shear 
+        /// The transformation matrix for a shear
         /// has the value:
-        /// <blockquote><pre>  
+        /// <blockquote><pre>
         /// |  1      xShear  0 |
         /// |  yShear      1  0 |
         /// |  0           0  1 |
-        /// </pre></blockquote> 
-        /// Note that a shear of (1, 1) is <i>not</i> 
+        /// </pre></blockquote>
+        /// Note that a shear of (1, 1) is <i>not</i>
         /// equal to shear(1, 0) composed with shear(0, 1).
-        /// Instead, shear(1, 1) corresponds to a mapping onto the 
+        /// Instead, shear(1, 1) corresponds to a mapping onto the
         /// line x = y.
         /// </remarks>
         /// <param name="xShear"> the x component to shear by</param>
@@ -718,11 +742,11 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <remarks>
         /// For a translation by the vector (x, y)
         /// the transformation matrix has the value:
-        /// <blockquote><pre>  
+        /// <blockquote><pre>
         /// |  1  0  dx |
         /// |  1  0  dy |
         /// |  0  0   1 |
-        /// </pre></blockquote> 
+        /// </pre></blockquote>
         /// </remarks>
         /// <param name="dx"> the x component to translate by</param>
         /// <param name="dy"> the y component to translate by</param>
@@ -736,7 +760,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
         /// <summary>
         /// Updates the value of this transformation
-        /// to that of a reflection transformation composed 
+        /// to that of a reflection transformation composed
         /// with the current value.
         /// </summary>
         /// <param name="x0"> the x-ordinate of a point on the line to reflect around</param>
@@ -752,7 +776,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
         /// <summary>
         /// Updates the value of this transformation
-        /// to that of a reflection transformation composed 
+        /// to that of a reflection transformation composed
         /// with the current value.
         /// </summary>
         /// <param name="x"> the x-ordinate of the line to reflect around</param>
@@ -766,11 +790,11 @@ namespace NetTopologySuite.Geometries.Utilities
 
         /// <summary>
         /// Updates the value of this transformation
-        /// to that of a rotation transformation composed 
+        /// to that of a rotation transformation composed
         /// with the current value.
         /// </summary>
         /// <remarks>
-        /// Positive angles correspond to a rotation 
+        /// Positive angles correspond to a rotation
         /// in the counter-clockwise direction.
         /// </remarks>
         /// <param name="theta"> the angle to rotate by in radians</param>
@@ -783,7 +807,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
         /// <summary>
         /// Updates the value of this transformation
-        /// to that of a rotation around the origin composed 
+        /// to that of a rotation around the origin composed
         /// with the current value,
         /// with the sin and cos of the rotation angle specified directly.
         /// </summary>
@@ -798,11 +822,11 @@ namespace NetTopologySuite.Geometries.Utilities
 
         /// <summary>
         /// Updates the value of this transformation
-        /// to that of a rotation around a given point composed 
+        /// to that of a rotation around a given point composed
         /// with the current value.
         /// </summary>
         /// <remarks>
-        /// Positive angles correspond to a rotation 
+        /// Positive angles correspond to a rotation
         /// in the counter-clockwise direction.
         /// </remarks>
         /// <param name="theta"> the angle to rotate by, in radians</param>
@@ -817,7 +841,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
         /// <summary>
         /// Updates the value of this transformation
-        /// to that of a rotation around a given point composed 
+        /// to that of a rotation around a given point composed
         /// with the current value,
         /// with the sin and cos of the rotation angle specified directly.
         /// </summary>
@@ -834,7 +858,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
         /// <summary>
         /// Updates the value of this transformation
-        /// to that of a scale transformation composed 
+        /// to that of a scale transformation composed
         /// with the current value.
         /// </summary>
         /// <param name="xScale"> the value to scale by in the x direction</param>
@@ -848,7 +872,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
         /// <summary>
         /// Updates the value of this transformation
-        /// to that of a shear transformation composed 
+        /// to that of a shear transformation composed
         /// with the current value.
         /// </summary>
         /// <param name="xShear"> the value to shear by in the x direction</param>
@@ -862,7 +886,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
         /// <summary>
         /// Updates the value of this transformation
-        /// to that of a translation transformation composed 
+        /// to that of a translation transformation composed
         /// with the current value.
         /// </summary>
         /// <param name="x"> the value to translate by in the x direction</param>
@@ -874,14 +898,13 @@ namespace NetTopologySuite.Geometries.Utilities
             return this;
         }
 
-
         /// <summary>
         /// Updates this transformation to be
-        /// the composition of this transformation with the given <see cref="AffineTransformation" />. 
+        /// the composition of this transformation with the given <see cref="AffineTransformation" />.
         /// </summary>
         /// <remarks>
-        /// This produces a transformation whose effect 
-        /// is equal to applying this transformation 
+        /// This produces a transformation whose effect
+        /// is equal to applying this transformation
         /// followed by the argument transformation.
         /// Mathematically,
         /// <blockquote><pre>
@@ -908,12 +931,12 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Updates this transformation to be the composition 
+        /// Updates this transformation to be the composition
         /// of a given <see cref="AffineTransformation" /> with this transformation.
         /// </summary>
         /// <remarks>
-        /// This produces a transformation whose effect 
-        /// is equal to applying the argument transformation 
+        /// This produces a transformation whose effect
+        /// is equal to applying the argument transformation
         /// followed by this transformation.
         /// Mathematically,
         /// <blockquote><pre>
@@ -945,7 +968,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// (which may be the same as the source).
         /// </summary>
         /// <param name="src"> the coordinate to transform</param>
-        /// <param name="dest"> the coordinate to accept the results</param> 
+        /// <param name="dest"> the coordinate to accept the results</param>
         /// <returns> the <code>dest</code> coordinate</returns>
         ///
         public Coordinate Transform(Coordinate src, Coordinate dest)
@@ -999,7 +1022,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Reports that this filter should continue to be executed until 
+        /// Reports that this filter should continue to be executed until
         /// all coordinates have been transformed.
         /// </summary>
         /// <returns> false</returns>
@@ -1074,7 +1097,6 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>A copy of this transformation</returns>
         public object Clone()
         {
-            
             try
             {
                 return MemberwiseClone();

@@ -5,9 +5,13 @@ using NetTopologySuite.Operation.Predicate;
 
 namespace NetTopologySuite.Geometries.Prepared
 {
-    ///<summary>
+    /// <summary>
     /// A prepared version for <see cref="IPolygonal"/> geometries.
-    ///</summary>
+    /// This class supports both <see cref="IPolygon"/>s and <see cref="IMultiPolygon"/>s.
+    /// <para>This class does <b>not</b> support MultiPolygons which are non-valid
+    /// (e.g. with overlapping elements).
+    /// </para>
+    /// </summary>
     /// <author>mbdavis</author>
     public class PreparedPolygon : BasicPreparedGeometry
     {
@@ -27,9 +31,9 @@ namespace NetTopologySuite.Geometries.Prepared
             get
             {
                 /*
-                 * MD - Another option would be to use a simple scan for 
-                 * segment testing for small geometries.  
-                 * However, testing indicates that there is no particular advantage 
+                 * MD - Another option would be to use a simple scan for
+                 * segment testing for small geometries.
+                 * However, testing indicates that there is no particular advantage
                  * to this approach.
                  */
                 if (_segIntFinder == null)

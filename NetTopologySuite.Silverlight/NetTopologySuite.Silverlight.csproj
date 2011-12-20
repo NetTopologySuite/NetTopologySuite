@@ -324,6 +324,9 @@
     <Compile Include="..\NetTopologySuite\Geometries\Utilities\GeometryExtracter.cs">
       <Link>Geometries\Utilities\GeometryExtracter.cs</Link>
     </Compile>
+    <Compile Include="..\NetTopologySuite\Geometries\Utilities\GeometryMapper.cs">
+      <Link>Geometries\Utilities\GeometryMapper.cs</Link>
+    </Compile>
     <Compile Include="..\NetTopologySuite\Geometries\Utilities\GeometryTransformer.cs">
       <Link>Geometries\Utilities\GeometryTransformer.cs</Link>
     </Compile>
@@ -443,9 +446,6 @@
     </Compile>
     <Compile Include="..\NetTopologySuite\GeometriesGraph\TopologyLocation.cs">
       <Link>GeometriesGraph\TopologyLocation.cs</Link>
-    </Compile>
-    <Compile Include="..\NetTopologySuite\GeometryServices.cs">
-      <Link>GeometryServices.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Index\ArrayListVisitor.cs">
       <Link>Index\ArrayListVisitor.cs</Link>
@@ -747,6 +747,9 @@
     <Compile Include="..\NetTopologySuite\Noding\Snapround\SimpleSnapRounder.cs">
       <Link>Noding\Snapround\SimpleSnapRounder.cs</Link>
     </Compile>
+    <Compile Include="..\NetTopologySuite\NtsGeometryServices.cs">
+      <Link>NtsGeometryServices.cs</Link>
+    </Compile>
     <Compile Include="..\NetTopologySuite\Operation\BoundaryOp.cs">
       <Link>Operation\BoundaryOp.cs</Link>
     </Compile>
@@ -773,6 +776,15 @@
     </Compile>
     <Compile Include="..\NetTopologySuite\Operation\Buffer\OffsetCurveVertexList.cs">
       <Link>Operation\Buffer\OffsetCurveVertexList.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Operation\Buffer\OffsetSegmentGenerator.cs">
+      <Link>Operation\Buffer\OffsetSegmentGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Operation\Buffer\OffsetSegmentString.cs">
+      <Link>Operation\Buffer\OffsetSegmentString.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Operation\Buffer\OldOffsetCurveBuilder.cs">
+      <Link>Operation\Buffer\OldOffsetCurveBuilder.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Operation\Buffer\RightmostEdgeFinder.cs">
       <Link>Operation\Buffer\RightmostEdgeFinder.cs</Link>
@@ -804,8 +816,17 @@
     <Compile Include="..\NetTopologySuite\Operation\Distance\DistanceOp.cs">
       <Link>Operation\Distance\DistanceOp.cs</Link>
     </Compile>
+    <Compile Include="..\NetTopologySuite\Operation\Distance\FacetSequence.cs">
+      <Link>Operation\Distance\FacetSequence.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Operation\Distance\FacetSequenceTreeBuilder.cs">
+      <Link>Operation\Distance\FacetSequenceTreeBuilder.cs</Link>
+    </Compile>
     <Compile Include="..\NetTopologySuite\Operation\Distance\GeometryLocation.cs">
       <Link>Operation\Distance\GeometryLocation.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Operation\Distance\IndexedFacedDistance.cs">
+      <Link>Operation\Distance\IndexedFacedDistance.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Operation\GeometryGraphOperation.cs">
       <Link>Operation\GeometryGraphOperation.cs</Link>
@@ -1005,8 +1026,20 @@
     <Compile Include="..\NetTopologySuite\Precision\EnhancedPrecisionOp.cs">
       <Link>Precision\EnhancedPrecisionOp.cs</Link>
     </Compile>
+    <Compile Include="..\NetTopologySuite\Precision\GeometryPrecisionReducer.cs">
+      <Link>Precision\GeometryPrecisionReducer.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Precision\MinimumClearance.cs">
+      <Link>Precision\MinimumClearance.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Precision\PrecisionReducerCoordinateOperation.cs">
+      <Link>Precision\PrecisionReducerCoordinateOperation.cs</Link>
+    </Compile>
     <Compile Include="..\NetTopologySuite\Precision\SimpleGeometryPrecisionReducer.cs">
       <Link>Precision\SimpleGeometryPrecisionReducer.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Precision\SimpleMinimumClearance.cs">
+      <Link>Precision\SimpleMinimumClearance.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>

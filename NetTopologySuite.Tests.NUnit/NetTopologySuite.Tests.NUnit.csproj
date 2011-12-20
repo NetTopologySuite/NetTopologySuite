@@ -102,6 +102,7 @@
     <Compile Include="Geometries\TriangleTest.cs" />
     <Compile Include="Geometries\Utility\AffineTransformationBuilderTest.cs" />
     <Compile Include="Geometries\Utility\AffineTransformationTest.cs" />
+    <Compile Include="GeometryServiceProviderTest.cs" />
     <Compile Include="GeometryUtils.cs" />
     <Compile Include="Index\DoubleBitsTest.cs" />
     <Compile Include="Index\IntervalTest.cs" />
@@ -163,6 +164,10 @@
     <EmbeddedResource Include="TestData\europe.wkt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ProjNet4GeoAPI\ProjNet.CoordinateSystems\ProjNET.csproj">
+      <Project>{E028BDD2-55E1-4E5F-BE31-35FAEC8D6428}</Project>
+      <Name>ProjNET</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">
       <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
       <Name>GeoAPI</Name>

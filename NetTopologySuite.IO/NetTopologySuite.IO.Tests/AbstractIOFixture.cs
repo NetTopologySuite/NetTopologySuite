@@ -179,38 +179,38 @@
         protected abstract byte[] Write(IGeometry gIn);
 
         [Test]
-        public void TestPoint()
+        public virtual void TestPoint()
         {
             for (int i = 0; i < 5; i++)
                 this.PerformTest(this.RandomGeometryHelper.Point);
         }
         [Test]
-        public void TestLineString()
+        public virtual void TestLineString()
         {
             for (int i = 0; i < 5; i++)
                 this.PerformTest(this.RandomGeometryHelper.LineString);
         }
         [Test]
-        public void TestPolygon()
+        public virtual void TestPolygon()
         {
             for (int i = 0; i < 5; i++)
                 this.PerformTest(this.RandomGeometryHelper.Polygon);
         }
         [Test]
-        public void TestMultiPoint()
+        public virtual void TestMultiPoint()
         {
             for (int i = 0; i < 5; i++)
                 this.PerformTest(this.RandomGeometryHelper.MultiPoint);
         }
         [Test]
-        public void TestMultiLineString()
+        public virtual void TestMultiLineString()
         {
             for (int i = 0; i < 5; i++)
                 this.PerformTest(this.RandomGeometryHelper.MultiLineString);
         }
 
         [Test]
-        public void TestMultiPolygon()
+        public virtual void TestMultiPolygon()
         {
             for (int i = 0; i < 5; i++)
                 this.PerformTest(this.RandomGeometryHelper.MultiPolygon);

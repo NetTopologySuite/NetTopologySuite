@@ -6,13 +6,23 @@ using Wintellect.PowerCollections;
 namespace NetTopologySuite.Operation.Overlay.Snap
 {
     /// <summary>
-    /// Snaps the vertices and segments of a <see cref="IGeometry"/> to another Geometry's vertices.
-    /// Improves robustness for overlay operations, by eliminating
-    /// nearly parallel edges (which cause problems during noding and intersection calculation).
+    /// Snaps the vertices and segments of a <see cref="IGeometry"/>
+    /// to another Geometry's vertices.
+    /// A snap distance tolerance is used to control where snapping is performed.
+    /// Snapping one geometry to another can improve
+    /// robustness for overlay operations by eliminating
+    /// nearly-coincident edges
+    /// (which cause problems during noding and intersection calculation).
+    /// Too much snapping can result in invalid topology
+    /// beging created, so the number and location of snapped vertices
+    /// is decided using heuristics to determine when it
+    /// is safe to snap.
+    /// This can result in some potential snaps being omitted, however.
     /// </summary>
+    /// <author>Martin Davis</author>
     public class GeometrySnapper
     {
-        private const double SnapPrexisionFactor = 10E-10;
+        private const double SnapPrexisionFactor = 10E-9;
 
         /// <summary>
         /// Estimates the snap tolerance for a Geometry, taking into account its precision model.
@@ -24,13 +34,13 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             double snapTolerance = ComputeSizeBasedSnapTolerance(g);
 
             /*
-		     * Overlay is carried out in the precision model 
-		     * of the two inputs.  
+		     * Overlay is carried out in the precision model
+		     * of the two inputs.
 		     * If this precision model is of type FIXED, then the snap tolerance
-		     * must reflect the precision grid size.  
-		     * Specifically, the snap tolerance should be at least 
+		     * must reflect the precision grid size.
+		     * Specifically, the snap tolerance should be at least
 		     * the distance from a corner of a precision grid cell
-		     * to the centre point of the cell.  
+		     * to the centre point of the cell.
              */
             IPrecisionModel pm = g.PrecisionModel;
             if (pm.PrecisionModelType == PrecisionModels.Fixed)
@@ -43,7 +53,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="g"></param>
         /// <returns></returns>
@@ -56,7 +66,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="g0"></param>
         /// <param name="g1"></param>
@@ -75,20 +85,27 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <returns></returns>
         public static IGeometry[] Snap(IGeometry g0, IGeometry g1, double snapTolerance)
         {
-            IGeometry[] snapGeom = new IGeometry[2];
-            GeometrySnapper snapper0 = new GeometrySnapper(g0);
+            var snapGeom = new IGeometry[2];
+
+            var snapper0 = new GeometrySnapper(g0);
             snapGeom[0] = snapper0.SnapTo(g1, snapTolerance);
 
-            GeometrySnapper snapper1 = new GeometrySnapper(g1);
             /*
              * Snap the second geometry to the snapped first geometry
              * (this strategy minimizes the number of possible different points in the result)
              */
+            var snapper1 = new GeometrySnapper(g1);
             snapGeom[1] = snapper1.SnapTo(snapGeom[0], snapTolerance);
             return snapGeom;
         }
 
-        private IGeometry srcGeom;
+        public static IGeometry SnapToSelf(IGeometry g0, double snapTolerance, bool cleanResult)
+        {
+            var snapper0 = new GeometrySnapper(g0);
+            return snapper0.SnapToSelf(snapTolerance, cleanResult);
+        }
+
+        private readonly IGeometry _srcGeom;
 
         /// <summary>
         /// Creates a new snapper acting on the given geometry
@@ -96,37 +113,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <param name="g">the geometry to snap</param>
         public GeometrySnapper(IGeometry g)
         {
-            srcGeom = g;
-        }
-
-        /// <summary>
-        /// Computes the snap tolerance based on the input geometries.
-        /// </summary>
-        /// <param name="ringPts"></param>
-        /// <returns></returns>
-        private double ComputeSnapTolerance(Coordinate[] ringPts)
-        {
-            double minSegLen = ComputeMinimumSegmentLength(ringPts);
-            // Use a small percentage of this to be safe
-            double snapTol = minSegLen / 10;
-            return snapTol;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pts"></param>
-        /// <returns></returns>
-        private double ComputeMinimumSegmentLength(Coordinate[] pts)
-        {
-            double minSegLen = Double.MaxValue;
-            for (int i = 0; i < pts.Length - 1; i++) 
-            {
-                double segLen = pts[i].Distance(pts[i + 1]);
-                if (segLen < minSegLen)
-                    minSegLen = segLen;
-            }
-            return minSegLen;
+            _srcGeom = g;
         }
 
         /// <summary>
@@ -142,11 +129,32 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             Coordinate[] snapPts = ExtractTargetCoordinates(g);
 
             SnapTransformer snapTrans = new SnapTransformer(tolerance, snapPts);
-            return snapTrans.Transform(srcGeom);
+            return snapTrans.Transform(_srcGeom);
         }
 
         /// <summary>
-        /// 
+        /// Snaps the vertices in the component <see cref="ILineString"/>s
+        /// of the source geometry
+        /// to the vertices of the given snap geometry.
+        /// </summary>
+        /// <returns>The geometry snapped to itself</returns>
+        public IGeometry SnapToSelf(double snapTolerance, bool cleanResult)
+        {
+            var snapPts = ExtractTargetCoordinates(_srcGeom);
+
+            var snapTrans = new SnapTransformer(snapTolerance, snapPts, true);
+            var snappedGeom = snapTrans.Transform(_srcGeom);
+            var result = snappedGeom;
+            if (cleanResult && result is IPolygonal)
+            {
+                // TODO: use better cleaning approach
+                result = snappedGeom.Buffer(0);
+            }
+            return result;
+        }
+
+        /// <summary>
+        ///
         /// </summary>
         /// <param name="g"></param>
         /// <returns></returns>
@@ -158,29 +166,59 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             ptSet.CopyTo(result, 0);
             return result;
         }
+
+        /// <summary>
+        /// Computes the snap tolerance based on the input geometries.
+        /// </summary>
+        private static double ComputeSnapTolerance(Coordinate[] ringPts)
+        {
+            var minSegLen = ComputeMinimumSegmentLength(ringPts);
+            // use a small percentage of this to be safe
+            var snapTol = minSegLen / 10;
+            return snapTol;
+        }
+
+        private static double ComputeMinimumSegmentLength(Coordinate[] pts)
+        {
+            var minSegLen = Double.MaxValue;
+            for (var i = 0; i < pts.Length - 1; i++)
+            {
+                var segLen = pts[i].Distance(pts[i + 1]);
+                if (segLen < minSegLen)
+                    minSegLen = segLen;
+            }
+            return minSegLen;
+        }
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
-    class SnapTransformer : GeometryTransformer
+    internal class SnapTransformer : GeometryTransformer
     {
-        private double snapTolerance;
-        private Coordinate[] snapPts;
+        private readonly double _snapTolerance;
+        private readonly Coordinate[] _snapPts;
+        private bool _isSelfSnap;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="snapTolerance"></param>
         /// <param name="snapPts"></param>
         public SnapTransformer(double snapTolerance, Coordinate[] snapPts)
         {
-            this.snapTolerance = snapTolerance;
-            this.snapPts = snapPts;
+            _snapTolerance = snapTolerance;
+            _snapPts = snapPts;
+        }
+
+        public SnapTransformer(double snapTolerance, Coordinate[] snapPts, bool isSelfSnap)
+            : this(snapTolerance, snapPts)
+        {
+            _isSelfSnap = isSelfSnap;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coords"></param>
         /// <param name="parent"></param>
@@ -188,19 +226,20 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
         {
             Coordinate[] srcPts = coords.ToCoordinateArray();
-            Coordinate[] newPts = SnapLine(srcPts, snapPts);
+            Coordinate[] newPts = SnapLine(srcPts, _snapPts);
             return Factory.CoordinateSequenceFactory.Create(newPts);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="srcPts"></param>
         /// <param name="snapPts"></param>
         /// <returns></returns>
         private Coordinate[] SnapLine(Coordinate[] srcPts, Coordinate[] snapPts)
         {
-            LineStringSnapper snapper = new LineStringSnapper(srcPts, snapTolerance);
+            var snapper = new LineStringSnapper(srcPts, _snapTolerance);
+            snapper.AllowSnappingToSourceVertices = _isSelfSnap;
             return snapper.SnapTo(snapPts);
         }
     }

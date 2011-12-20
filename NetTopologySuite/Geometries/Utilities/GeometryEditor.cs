@@ -1,11 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using GeoAPI.Geometries;
 using NetTopologySuite.Utilities;
-using System.Linq;
 
 namespace NetTopologySuite.Geometries.Utilities
 {
-    /// <summary> 
+    /// <summary>
     /// A class which supports creating a new <c>Geometry</c> which are modifications of existing ones.
     /// </summary>
     /// <remarks>
@@ -25,7 +25,7 @@ namespace NetTopologySuite.Geometries.Utilities
     /// <item>
     /// The coordinate lists may be changed (e.g. by adding or deleting coordinates).
     /// The modifed coordinate lists must be consistent with their original parent component
-    /// (e.g. a LinearRing must always have at least 4 coordinates, and the first and last
+    /// (e.g. a <tt>LinearRing</tt> must always have at least 4 coordinates, and the first and last
     /// coordinate must be equal).
     /// </item>
     /// <item>
@@ -37,13 +37,13 @@ namespace NetTopologySuite.Geometries.Utilities
     /// <para>
     /// All changes must be consistent with the original Geometry's structure
     /// (e.g. a <code>Polygon</code> cannot be collapsed into a <code>LineString</code>).
-    /// If changing the structure is required, use a {@link GeometryTransformer}.
+    /// If changing the structure is required, use a <see cref="GeometryTransformer"/>.
     /// </para>
     /// <para>
     /// This class supports the case where an edited Geometry needs to
-    /// be created under a new GeometryFactory, via the {@link GeometryEditor(GeometryFactory)}
-    /// constructor.  
-    /// Examples of situations where this is required is if the geometry is 
+    /// be created under a new GeometryFactory, via the <see cref="GeometryEditor(IGeometryFactory)"/>
+    /// constructor.
+    /// Examples of situations where this is required is if the geometry is
     /// transformed to a new SRID and/or a new PrecisionModel.</para>
     /// <para>
     /// The resulting Geometry is not checked for validity.
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Geometries.Utilities
     /// <seealso cref="IGeometry.IsValid"/>
     public class GeometryEditor
     {
-        /// <summary> 
+        /// <summary>
         /// The factory used to create the modified Geometry.
         /// </summary>
         /// <remarks>
@@ -61,13 +61,13 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </remarks>
         private IGeometryFactory _factory;
 
-        /// <summary> 
+        /// <summary>
         /// Creates a new GeometryEditor object which will create
         /// edited <see cref="IGeometry"/> with the same <see cref="IGeometryFactory"/> as the input Geometry.
         /// </summary>
         public GeometryEditor() { }
 
-        /// <summary> 
+        /// <summary>
         /// Creates a new GeometryEditor object which will create
         /// edited <see cref="IGeometry"/>s with the given <see cref="IGeometryFactory"/>.
         /// </summary>
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Geometries.Utilities
             _factory = factory;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Edit the input <c>Geometry</c> with the given edit operation.
         /// Clients can create subclasses of GeometryEditorOperation or
         /// CoordinateOperation to perform required modifications.
@@ -103,7 +103,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="polygon"></param>
         /// <param name="operation"></param>
@@ -132,7 +132,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="collection"></param>
         /// <param name="operation"></param>
@@ -160,7 +160,7 @@ namespace NetTopologySuite.Geometries.Utilities
             return _factory.CreateGeometryCollection(geometries.ToArray());
         }
 
-        /// <summary> 
+        /// <summary>
         /// A interface which specifies an edit operation for Geometries.
         /// </summary>
         public interface IGeometryEditorOperation
@@ -179,13 +179,32 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
+        /// A GeometryEditorOperation which does not modify
+        /// the input geometry.
+        /// This can be used for simple changes of
+        /// <see cref="IGeometryFactory"/> (including PrecisionModel and SRID).
+        /// </summary>
+        /// <author>mbdavis</author>
+        public class NoOpGeometryOperation : IGeometryEditorOperation
+        {
+            internal NoOpGeometryOperation()
+            {
+            }
+
+            public IGeometry Edit(IGeometry geometry, IGeometryFactory factory)
+            {
+                return geometry;
+            }
+        }
+
+        /// <summary>
         /// A GeometryEditorOperation which modifies the coordinate list of a <c>Geometry</c>.
         /// Operates on Geometry subclasses which contains a single coordinate list.
-        /// </summary>      
+        /// </summary>
         public abstract class CoordinateOperation : IGeometryEditorOperation
         {
             /// <summary>
-            /// 
+            ///
             /// </summary>
             /// <param name="geometry"></param>
             /// <param name="factory"></param>
@@ -207,7 +226,7 @@ namespace NetTopologySuite.Geometries.Utilities
                 return geometry;
             }
 
-            /// <summary> 
+            /// <summary>
             /// Edits the array of <c>Coordinate</c>s from a <c>Geometry</c>.
             /// </summary>
             /// <param name="coordinates">The coordinate array to operate on.</param>

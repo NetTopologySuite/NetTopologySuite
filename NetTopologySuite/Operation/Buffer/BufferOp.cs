@@ -12,16 +12,18 @@ namespace NetTopologySuite.Operation.Buffer
     /// </summary>
     /// <remarks>
     /// <para>
-    /// In GIS, the positive buffer of a geometry is defined as
-    /// the Minkowski sum or difference of the geometry
+    /// In GIS, the positive (or negative) buffer of a geometry is defined as
+    /// the Minkowski sum (or difference) of the geometry
     /// with a circle of radius equal to the absolute value of the buffer distance.
     /// In the CAD/CAM world buffers are known as <i>offset curves</i>.
-    /// In morphological analysis they are known as <i>erosion</i> and <i>dilation</i>
+    /// In morphological analysis the
+    /// operation of postive and negative buffering
+    /// is referred to as <i>erosion</i> and <i>dilation</i>
     /// </para>
     /// <para>
     /// The buffer operation always returns a polygonal result.
     /// The negative or zero-distance buffer of lines and points is always an empty <see cref="IPolygon" />.
-    /// </para>    
+    /// </para>
     /// <para>
     /// Since true buffer curves may contain circular arcs,
     /// computed buffer polygons can only be approximations to the true geometry.
@@ -253,6 +255,7 @@ namespace NetTopologySuite.Operation.Buffer
                 }
                 catch (TopologyException ex)
                 {
+                    // update the saved exception to reflect the new input geometry
                     _saveException = ex;
                     // don't propagate the exception - it will be detected by fact that resultGeometry is null
                 }
@@ -276,7 +279,7 @@ namespace NetTopologySuite.Operation.Buffer
                 _saveException = ex;
                 // don't propagate the exception - it will be detected by fact that resultGeometry is null
 
-                // testing - propagate exception
+                // testing ONLY - propagate exception
                 //throw ex;
             }
         }

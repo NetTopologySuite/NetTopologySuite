@@ -6,6 +6,7 @@ using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph.Index;
 using NetTopologySuite.Utilities;
+
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 using Hashtable = System.Collections.Generic.Dictionary<object, object>;
@@ -18,7 +19,7 @@ namespace NetTopologySuite.GeometriesGraph
     /// </summary>
     public class GeometryGraph : PlanarGraph
     {
-        /// <summary> 
+        /// <summary>
         /// This method implements the Boundary Determination Rule
         /// for determining whether
         /// a component (node or edge) that appears multiple times in elements
@@ -34,6 +35,7 @@ namespace NetTopologySuite.GeometriesGraph
             // the "Mod-2 Rule"
             return boundaryCount % 2 == 1;
         }*/
+
         public static Location DetermineBoundary(IBoundaryNodeRule boundaryNodeRule, int boundaryCount)
         {
             return boundaryNodeRule.IsInBoundary(boundaryCount)
@@ -67,27 +69,27 @@ namespace NetTopologySuite.GeometriesGraph
         private readonly PointLocator _ptLocator = new PointLocator();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         private static EdgeSetIntersector CreateEdgeSetIntersector()
         {
-            // various options for computing intersections, from slowest to fastest                    
+            // various options for computing intersections, from slowest to fastest
             return new SimpleMCSweepLineIntersector();
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="argIndex"></param>
         /// <param name="parentGeom"></param>
         public GeometryGraph(int argIndex, IGeometry parentGeom)
-            :this(argIndex, parentGeom, BoundaryNodeRules.OgcSfsBoundaryRule)
+            : this(argIndex, parentGeom, BoundaryNodeRules.OgcSfsBoundaryRule)
         {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="argIndex"></param>
         /// <param name="parentGeom"></param>
@@ -99,13 +101,12 @@ namespace NetTopologySuite.GeometriesGraph
             _parentGeom = parentGeom;
             if (parentGeom != null)
                 Add(parentGeom);
-
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public  bool HasTooFewPoints
+        public bool HasTooFewPoints
         {
             get
             {
@@ -114,7 +115,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate InvalidPoint
         {
@@ -125,7 +126,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IGeometry Geometry
         {
@@ -141,7 +142,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IList<Node> BoundaryNodes
         {
@@ -154,7 +155,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public Coordinate[] GetBoundaryPoints()
@@ -164,13 +165,13 @@ namespace NetTopologySuite.GeometriesGraph
             int i = 0;
             foreach (Node node in coll)
             {
-                pts[i++] = (Coordinate) node.Coordinate.Clone();
+                pts[i++] = (Coordinate)node.Coordinate.Clone();
             }
             return pts;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="line"></param>
         /// <returns></returns>
@@ -180,7 +181,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edgelist"></param>
         public void ComputeSplitEdges(IList<Edge> edgelist)
@@ -192,7 +193,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="g"></param>
         private void Add(IGeometry g)
@@ -205,39 +206,39 @@ namespace NetTopologySuite.GeometriesGraph
             if (g is IMultiPolygon)
                 _useBoundaryDeterminationRule = false;
 
-            if (g is IPolygon)                 
-                AddPolygon((IPolygon) g);                                
+            if (g is IPolygon)
+                AddPolygon((IPolygon)g);
             // LineString also handles LinearRings
-            else if (g is ILineString)         
-                AddLineString((ILineString) g);
-            else if (g is IPoint) 
-                AddPoint((IPoint) g);
+            else if (g is ILineString)
+                AddLineString((ILineString)g);
+            else if (g is IPoint)
+                AddPoint((IPoint)g);
             else if (g is IMultiPoint)
-                AddCollection((IMultiPoint) g);
-            else if (g is IMultiLineString) 
-                AddCollection((IMultiLineString) g);
+                AddCollection((IMultiPoint)g);
+            else if (g is IMultiLineString)
+                AddCollection((IMultiLineString)g);
             else if (g is IMultiPolygon)
-                AddCollection((IMultiPolygon) g);
-            else if (g is IGeometryCollection) 
-                AddCollection((IGeometryCollection) g);
-            else  
+                AddCollection((IMultiPolygon)g);
+            else if (g is IGeometryCollection)
+                AddCollection((IGeometryCollection)g);
+            else
                 throw new NotSupportedException(g.GetType().FullName);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="gc"></param>
         private void AddCollection(IGeometryCollection gc)
         {
-            for (int i = 0; i < gc.NumGeometries; i++) 
+            for (int i = 0; i < gc.NumGeometries; i++)
             {
                 IGeometry g = gc.GetGeometryN(i);
                 Add(g);
             }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Add a Point to the graph.
         /// </summary>
         /// <param name="p"></param>
@@ -247,7 +248,8 @@ namespace NetTopologySuite.GeometriesGraph
             InsertPoint(_argIndex, coord, Location.Interior);
         }
 
-        /// <summary> 
+        /// <summary>
+        /// Adds a polygon ring to the graph. Empty rings are ignored.
         /// The left and right topological location arguments assume that the ring is oriented CW.
         /// If the ring is in the opposite orientation,
         /// the left and right locations must be interchanged.
@@ -257,8 +259,12 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="cwRight"></param>
         private void AddPolygonRing(ILinearRing lr, Location cwLeft, Location cwRight)
         {
+            // don't bother adding empty holes
+            if (lr.IsEmpty)
+                return;
+
             Coordinate[] coord = CoordinateArrays.RemoveRepeatedPoints(lr.Coordinates);
-            if (coord.Length < 4) 
+            if (coord.Length < 4)
             {
                 _hasTooFewPoints = true;
                 _invalidPoint = coord[0];
@@ -266,7 +272,7 @@ namespace NetTopologySuite.GeometriesGraph
             }
             Location left = cwLeft;
             Location right = cwRight;
-            if (CGAlgorithms.IsCCW(coord)) 
+            if (CGAlgorithms.IsCCW(coord))
             {
                 left = cwRight;
                 right = cwLeft;
@@ -279,28 +285,31 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="p"></param>
         private void AddPolygon(IPolygon p)
         {
             AddPolygonRing(p.Shell, Location.Exterior, Location.Interior);
 
-            for (int i = 0; i < p.NumInteriorRings; i++)             
+            for (int i = 0; i < p.NumInteriorRings; i++)
+            {
+                var hole = p.Holes[i];
                 // Holes are topologically labelled opposite to the shell, since
                 // the interior of the polygon lies on their opposite side
                 // (on the left, if the hole is oriented CW)
-                AddPolygonRing(p.Holes[i], Location.Interior, Location.Exterior);            
+                AddPolygonRing(hole, Location.Interior, Location.Exterior);
+            }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="line"></param>
         private void AddLineString(ILineString line)
         {
             Coordinate[] coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
-            if (coord.Length < 2) 
+            if (coord.Length < 2)
             {
                 _hasTooFewPoints = true;
                 _invalidPoint = coord[0];
@@ -309,7 +318,7 @@ namespace NetTopologySuite.GeometriesGraph
 
             // add the edge for the LineString
             // line edges do not have locations for their left and right sides
-            Edge e = new Edge(coord, new Label(_argIndex, Location.Interior));            
+            Edge e = new Edge(coord, new Label(_argIndex, Location.Interior));
             _lineEdgeMap[line] = e;
             InsertEdge(e);
 
@@ -323,7 +332,7 @@ namespace NetTopologySuite.GeometriesGraph
             InsertBoundaryPoint(_argIndex, coord[coord.Length - 1]);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Add an Edge computed externally.  The label on the Edge is assumed
         /// to be correct.
         /// </summary>
@@ -362,31 +371,31 @@ namespace NetTopologySuite.GeometriesGraph
             // optimized test for Polygons and Rings
             if (!computeRingSelfNodes &&
                (_parentGeom is ILinearRing || _parentGeom is IPolygon || _parentGeom is IMultiPolygon))
-                 esi.ComputeIntersections(Edges, si, false);            
-            else esi.ComputeIntersections(Edges, si, true);      
+                esi.ComputeIntersections(Edges, si, false);
+            else esi.ComputeIntersections(Edges, si, true);
             AddSelfIntersectionNodes(_argIndex);
             return si;
         }
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="g"></param>
         /// <param name="li"></param>
         /// <param name="includeProper"></param>
         /// <returns></returns>
-        public SegmentIntersector ComputeEdgeIntersections(GeometryGraph g, 
+        public SegmentIntersector ComputeEdgeIntersections(GeometryGraph g,
             LineIntersector li, bool includeProper)
         {
             SegmentIntersector si = new SegmentIntersector(li, includeProper, true);
             si.SetBoundaryNodes(BoundaryNodes, g.BoundaryNodes);
             EdgeSetIntersector esi = CreateEdgeSetIntersector();
-            esi.ComputeIntersections(Edges, g.Edges, si);        
+            esi.ComputeIntersections(Edges, g.Edges, si);
             return si;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="argIndex"></param>
         /// <param name="coord"></param>
@@ -395,12 +404,12 @@ namespace NetTopologySuite.GeometriesGraph
         {
             Node n = NodeMap.AddNode(coord);
             Label lbl = n.Label;
-            if (lbl == null) 
-                 n.Label = new Label(argIndex, onLocation);            
+            if (lbl == null)
+                n.Label = new Label(argIndex, onLocation);
             else lbl.SetLocation(argIndex, onLocation);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Adds candidate boundary points using the current <see cref="IBoundaryNodeRule"/>.
         /// This is used to add the boundary
         /// points of dim-1 geometries (Curves/MultiCurves).
@@ -415,9 +424,9 @@ namespace NetTopologySuite.GeometriesGraph
             int boundaryCount = 1;
             // determine the current location for the point (if any)
             Location loc = Location.Null;
-            if (lbl != null) 
+            if (lbl != null)
                 loc = lbl.GetLocation(argIndex, Positions.On);
-            if (loc == Location.Boundary) 
+            if (loc == Location.Boundary)
                 boundaryCount++;
 
             // determine the boundary status of the point according to the Boundary Determination Rule
@@ -426,7 +435,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="argIndex"></param>
         private void AddSelfIntersectionNodes(int argIndex)
@@ -453,10 +462,10 @@ namespace NetTopologySuite.GeometriesGraph
         private void AddSelfIntersectionNode(int argIndex, Coordinate coord, Location loc)
         {
             // if this node is already a boundary node, don't change it
-            if (IsBoundaryNode(argIndex, coord)) 
+            if (IsBoundaryNode(argIndex, coord))
                 return;
             if (loc == Location.Boundary && _useBoundaryDeterminationRule)
-                 InsertBoundaryPoint(argIndex, coord);
+                InsertBoundaryPoint(argIndex, coord);
             else InsertPoint(argIndex, coord, loc);
         }
 
@@ -470,15 +479,16 @@ namespace NetTopologySuite.GeometriesGraph
         /// </returns>
         public Location Locate(Coordinate pt)
         {
-            if (_parentGeom is IPolygonal && _parentGeom.NumGeometries > 50) {
-  	            // lazily init point locator
-  	            if (_areaPtLocator == null) {
-  		            _areaPtLocator = new NetTopologySuite.Algorithm.Locate.IndexedPointInAreaLocator(_parentGeom);
-  	            }
-  	            return _areaPtLocator.Locate(pt);
+            if (_parentGeom is IPolygonal && _parentGeom.NumGeometries > 50)
+            {
+                // lazily init point locator
+                if (_areaPtLocator == null)
+                {
+                    _areaPtLocator = new NetTopologySuite.Algorithm.Locate.IndexedPointInAreaLocator(_parentGeom);
+                }
+                return _areaPtLocator.Locate(pt);
             }
-  	        return _ptLocator.Locate(pt, _parentGeom);
+            return _ptLocator.Locate(pt, _parentGeom);
         }
-
     }
 }

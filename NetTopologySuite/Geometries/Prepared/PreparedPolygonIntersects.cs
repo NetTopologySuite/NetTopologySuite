@@ -10,7 +10,7 @@ namespace NetTopologySuite.Geometries.Prepared
     ///</summary>
     /// <remarks>Uses short-circuit tests and indexing to improve performance.</remarks>
     /// <author>Martin Davis</author>
-    public class PreparedPolygonIntersects : PreparedPolygonPredicate
+    internal class PreparedPolygonIntersects : PreparedPolygonPredicate
     {
         ///<summary>
         /// Computes the intersects predicate between a <see cref="PreparedPolygon"/>
@@ -44,7 +44,7 @@ namespace NetTopologySuite.Geometries.Prepared
             /*
              * Do point-in-poly tests first, since they are cheaper and may result
              * in a quick positive result.
-             * 
+             *
              * If a point of any test components lie in target, result is true
              */
             bool isInPrepGeomArea = IsAnyTestComponentInTarget(geom);
@@ -72,6 +72,5 @@ namespace NetTopologySuite.Geometries.Prepared
 
             return false;
         }
-
     }
 }

@@ -8,13 +8,13 @@ namespace NetTopologySuite.Geometries.Prepared
     /// </summary>
     /// <remarks>
     /// <para>
-    /// It is not possible to short-circuit in all cases, in particular 
+    /// It is not possible to short-circuit in all cases, in particular
     /// in the case where the test geometry touches the polygon linework.
     /// In this case full topology must be computed.
     /// </para>
     /// </remarks>
     /// <author>Martin Davis</author>
-    public class PreparedPolygonContains : AbstractPreparedPolygonContains
+    internal class PreparedPolygonContains : AbstractPreparedPolygonContains
     {
         ///<summary>
         /// Computes the <c>contains</c> spatial relationship predicate between a <see cref="PreparedPolygon"/> and a <see cref="IGeometry"/>.

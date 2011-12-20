@@ -13,16 +13,22 @@ namespace NetTopologySuite.Geometries
     /// and the interior of the ring must not self-intersect.
     /// Either orientation of the ring is allowed.
     /// <para>
-    /// A ring must have either 0 or 4 or more points.  
+    /// A ring must have either 0 or 4 or more points.
     /// The first and last points must be equal (in 2D).
-    /// If these conditions are not met, the constructors throw 
+    /// If these conditions are not met, the constructors throw
     /// an <see cref="ArgumentException"/></para>
     /// </remarks>
-//#if !SILVERLIGHT
+    //#if !SILVERLIGHT
     [Serializable]
-//#endif
+    //#endif
     public class LinearRing : LineString, ILinearRing
     {
+        /// <summary>
+        /// The minimum number of vertices allowed in a valid non-empty ring (= 4).
+        /// Empty rings with 0 vertices are also valid.
+        /// </summary>
+        public const int MinimumValidSize = 4;
+
         /// <summary>
         /// Constructs a <c>LinearRing</c> with the given points.
         /// </summary>
@@ -33,20 +39,21 @@ namespace NetTopologySuite.Geometries
         /// </param>
         /// <param name="factory"></param>
         /// <exception cref="ArgumentException">If the ring is not closed, or has too few points</exception>
-        public LinearRing(ICoordinateSequence points, IGeometryFactory factory) : base(points, factory)
-        {            
+        public LinearRing(ICoordinateSequence points, IGeometryFactory factory)
+            : base(points, factory)
+        {
             ValidateConstruction();
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        private void ValidateConstruction() 
+        private void ValidateConstruction()
         {
-	        if (!IsEmpty && !base.IsClosed) 
-                throw new ArgumentException("points must form a closed linestring");            
-            if (CoordinateSequence.Count >= 1 && CoordinateSequence.Count <= 3) 
-                throw new ArgumentException("Number of points must be 0 or >3");            
+            if (!IsEmpty && !base.IsClosed)
+                throw new ArgumentException("points must form a closed linestring");
+            if (CoordinateSequence.Count >= 1 && CoordinateSequence.Count < MinimumValidSize)
+                throw new ArgumentException("Number of points must be 0 or >3");
         }
 
         /// <summary>
@@ -54,63 +61,75 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public override Dimension BoundaryDimension
         {
-	        get 
-	        { 
-		         return Dimension.False;
-	        }
-        }
-
-  /*
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public override bool IsSimple
-        {
             get
             {
-                return true;
+                return Dimension.False;
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public override string GeometryType
-        {
-            get
-            {
-                return "LinearRing";
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         public override bool IsClosed
         {
             get
             {
-                return true;
+                if (IsEmpty)
+                {
+                    // empty LinearRings are closed by definition
+                    return true;
+                }
+                return base.IsClosed;
             }
         }
 
-        /* BEGIN ADDED BY MPAUL42: monoGIS team */
+        /*
+
+              /// <summary>
+              ///
+              /// </summary>
+              public override bool IsSimple
+              {
+                  get
+                  {
+                      return true;
+                  }
+              }
+
+              /// <summary>
+              ///
+              /// </summary>
+              public override string GeometryType
+              {
+                  get
+                  {
+                      return "LinearRing";
+                  }
+              }
+
+              /// <summary>
+              ///
+              /// </summary>
+              public override bool IsClosed
+              {
+                  get
+                  {
+                      return true;
+                  }
+              }
+
+              /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearRing"/> class.
         /// </summary>
         /// <param name="points">The points used for create this instance.</param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         /// <exception cref="ArgumentException">If the ring is not closed, or has too few points</exception>
         //[Obsolete("Use GeometryFactory instead")]
-        public LinearRing(Coordinate[] points) : 
+        public LinearRing(Coordinate[] points) :
             this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
-        
+
         /* END ADDED BY MPAUL42: monoGIS team */
     }
 }

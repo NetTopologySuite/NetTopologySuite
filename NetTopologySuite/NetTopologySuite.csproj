@@ -108,7 +108,8 @@
     <Compile Include="Algorithm\SIRtreePointInRing.cs" />
     <Compile Include="Geometries\Geometry.cs" />
     <Compile Include="Geometries\GeometryComponentFilter.cs" />
-    <Compile Include="GeometryServices.cs" />
+    <Compile Include="Geometries\Utilities\GeometryMapper.cs" />
+    <Compile Include="NtsGeometryServices.cs" />
     <Compile Include="Index\Strtree\BoundablePair.cs" />
     <Compile Include="Index\Strtree\GeometryItemDistance.cs" />
     <Compile Include="Index\Strtree\IItemDistance.cs" />
@@ -310,6 +311,9 @@
     <Compile Include="Operation\Buffer\BufferParameters.cs" />
     <Compile Include="Operation\Buffer\BufferSubgraph.cs" />
     <Compile Include="Operation\Buffer\OffsetCurveBuilder.cs" />
+    <Compile Include="Operation\Buffer\OffsetSegmentGenerator.cs" />
+    <Compile Include="Operation\Buffer\OffsetSegmentString.cs" />
+    <Compile Include="Operation\Buffer\OldOffsetCurveBuilder.cs" />
     <Compile Include="Operation\Buffer\OffsetCurveSetBuilder.cs" />
     <Compile Include="Operation\Buffer\OffsetCurveVertexList.cs" />
     <Compile Include="Operation\Buffer\RightmostEdgeFinder.cs" />
@@ -392,7 +396,11 @@
     <Compile Include="Precision\CommonBitsRemover.cs" />
     <Compile Include="Precision\CoordinatePrecisionReducerFilter.cs" />
     <Compile Include="Precision\EnhancedPrecisionOp.cs" />
+    <Compile Include="Precision\GeometryPrecisionReducer.cs" />
+    <Compile Include="Precision\MinimumClearance.cs" />
+    <Compile Include="Precision\PrecisionReducerCoordinateOperation.cs" />
     <Compile Include="Precision\SimpleGeometryPrecisionReducer.cs" />
+    <Compile Include="Precision\SimpleMinimumClearance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Simplify\DouglasPeuckerLineSimplifier.cs" />
     <Compile Include="Simplify\DouglasPeuckerSimplifier.cs" />

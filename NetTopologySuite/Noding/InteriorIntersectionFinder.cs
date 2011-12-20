@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Noding
 {
@@ -9,11 +9,12 @@ namespace NetTopologySuite.Noding
     ///</summary>
     public class InteriorIntersectionFinder : ISegmentIntersector
     {
-
+        private Boolean _findAllIntersections;
         private Boolean _isCheckEndSegmentsOnly;
         private readonly LineIntersector _li;
         private Coordinate _interiorIntersection;
         private Coordinate[] _intSegments;
+        private List<Coordinate> _intersections;
 
         ///<summary>
         /// Creates an intersection finder which finds an interior intersection if one exists
@@ -24,6 +25,8 @@ namespace NetTopologySuite.Noding
             _li = li;
             _interiorIntersection = null;
         }
+
+        public bool FindAllIntersections { get { return _findAllIntersections; } set { _findAllIntersections = value; } }
 
         ///<summary>
         /// Gets/Sets whether only end segments should be tested for interior intersection.
@@ -91,7 +94,7 @@ namespace NetTopologySuite.Noding
 
             /*
              * If enabled, only test end segments (on either segString).
-             * 
+             *
              */
             if (_isCheckEndSegmentsOnly)
             {
@@ -105,7 +108,8 @@ namespace NetTopologySuite.Noding
             Coordinate p10 = e1.Coordinates[segIndex1];
             Coordinate p11 = e1.Coordinates[segIndex1 + 1];
 
-            /*var res = */_li.ComputeIntersection(p00, p01, p10, p11);
+            /*var res = */
+            _li.ComputeIntersection(p00, p01, p10, p11);
             if (_li.HasIntersection /*res.HasIntersection*/)
             {
                 if (_li.IsInteriorIntersection() /* res.IsInteriorIntersection()*/)
@@ -117,6 +121,7 @@ namespace NetTopologySuite.Noding
                     _intSegments[3] = p11;
 
                     _interiorIntersection = _li.GetIntersection(0) /*res.GetIntersectionPoint(0)*/;
+                    _intersections.Add(_interiorIntersection);
                 }
             }
         }
@@ -139,9 +144,9 @@ namespace NetTopologySuite.Noding
         {
             get
             {
+                if (_findAllIntersections) return false;
                 return _interiorIntersection != null;
             }
         }
-
     }
 }

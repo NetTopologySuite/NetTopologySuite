@@ -6,24 +6,24 @@ namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
     /// Computes the <c>containsProperly</c> spatial relationship predicate for <see cref="PreparedPolygon" />s relative to all other {@link Geometry} classes.<br/>
-    /// Uses short-circuit tests and indexing to improve performance. 
+    /// Uses short-circuit tests and indexing to improve performance.
     ///</summary>
     ///<remarks>
     /// <para>
     /// A Geometry A <c>containsProperly</c> another Geometry B iff
     /// all points of B are contained in the Interior of A.
-    /// Equivalently, B is contained in A AND B does not intersect 
+    /// Equivalently, B is contained in A AND B does not intersect
     /// the Boundary of A.
     /// </para>
     /// <para>
     /// The advantage to using this predicate is that it can be computed
     /// efficiently, with no need to compute topology at individual points.
-    /// In a situation with many geometries intersecting the boundary 
+    /// In a situation with many geometries intersecting the boundary
     /// of the target geometry, this can make a performance difference.
     /// </para>
     ///</remarks>
     /// <author>Martin Davis</author>
-    public class PreparedPolygonContainsProperly : PreparedPolygonPredicate
+    internal class PreparedPolygonContainsProperly : PreparedPolygonPredicate
     {
         ///<summary>Computes the <c>containsProperly</c> predicate between a <see cref="PreparedPolygon"/> and a <see cref="IGeometry"/>.
         ///</summary>
@@ -55,7 +55,7 @@ namespace NetTopologySuite.Geometries.Prepared
             /*
              * Do point-in-poly tests first, since they are cheaper and may result
              * in a quick negative result.
-             * 
+             *
              * If a point of any test components does not lie in the target interior, result is false
              */
             bool isAllInPrepGeomAreaInterior = IsAllTestComponentsInTargetInterior(geom);
@@ -83,6 +83,5 @@ namespace NetTopologySuite.Geometries.Prepared
 
             return true;
         }
-
     }
 }

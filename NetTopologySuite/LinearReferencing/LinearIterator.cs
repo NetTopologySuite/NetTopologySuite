@@ -1,4 +1,6 @@
 //using System.Collections;
+
+using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
@@ -9,11 +11,11 @@ namespace NetTopologySuite.LinearReferencing
     /// An iterator over the components and coordinates of a linear geometry
     /// (<see cref="LineString" />s and <see cref="MultiLineString" />s.
     /// </summary>
-    public class LinearIterator :   IEnumerator<LinearIterator.LinearElement>, 
+    public class LinearIterator : IEnumerator<LinearIterator.LinearElement>,
                                     IEnumerable<LinearIterator.LinearElement>
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="loc"></param>
         /// <returns></returns>
@@ -24,8 +26,8 @@ namespace NetTopologySuite.LinearReferencing
             return loc.SegmentIndex;
         }
 
-        private readonly IGeometry _linear;
-        private int _numLines;        
+        private readonly IGeometry _linearGeom;
+        private int _numLines;
 
         /*
          * Invariant: currentLine <> null if the iterator is pointing at a valid coordinate
@@ -37,7 +39,7 @@ namespace NetTopologySuite.LinearReferencing
 
         // Used for avoid the first call to Next() in MoveNext()
         private bool _atStart;
-        
+
         // Returned by Ienumerator.Current
         private LinearElement _current;
 
@@ -48,37 +50,39 @@ namespace NetTopologySuite.LinearReferencing
         /// <summary>
         /// Creates an iterator initialized to the start of a linear <see cref="Geometry" />.
         /// </summary>
-        /// <param name="linear">The linear geometry to iterate over.</param>
-        public LinearIterator(IGeometry linear) : this(linear, 0, 0) { }
+        /// <param name="linearGeom">The linear geometry to iterate over.</param>
+        public LinearIterator(IGeometry linearGeom) : this(linearGeom, 0, 0) { }
 
         /// <summary>
         /// Creates an iterator starting at a <see cref="LinearLocation" /> on a linear <see cref="Geometry" />.
         /// </summary>
-        /// <param name="linear">The linear geometry to iterate over.</param>
+        /// <param name="linearGeom">The linear geometry to iterate over.</param>
         /// <param name="start">The location to start at.</param>
-        public LinearIterator(IGeometry linear, LinearLocation start) :
-            this(linear, start.ComponentIndex, SegmentEndVertexIndex(start)) { }
+        public LinearIterator(IGeometry linearGeom, LinearLocation start) :
+            this(linearGeom, start.ComponentIndex, SegmentEndVertexIndex(start)) { }
 
         /// <summary>
         /// Creates an iterator starting at
         /// a component and vertex in a linear <see cref="Geometry" />.
         /// </summary>
-        /// <param name="linear">The linear geometry to iterate over.</param>
+        /// <param name="linearGeom">The linear geometry to iterate over.</param>
         /// <param name="componentIndex">The component to start at.</param>
         /// <param name="vertexIndex">The vertex to start at.</param>
-        public LinearIterator(IGeometry linear, int componentIndex, int vertexIndex)
+        public LinearIterator(IGeometry linearGeom, int componentIndex, int vertexIndex)
         {
+            if (!(linearGeom is ILineal))
+                throw new ArgumentException("Lineal geometry is required.");
+            _linearGeom = linearGeom;
+            _numLines = linearGeom.NumGeometries;
+
             _startComponentIndex = componentIndex;
             _startVertexIndex = vertexIndex;
 
-            _linear = linear;
-            Reset();
-
-            _current = new LinearElement(this);
+            LoadCurrentLine();
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private void LoadCurrentLine()
         {
@@ -87,8 +91,8 @@ namespace NetTopologySuite.LinearReferencing
                 _currentLine = null;
                 return;
             }
-            _currentLine = (ILineString) _linear.GetGeometryN(_componentIndex);
-        }        
+            _currentLine = (ILineString)_linearGeom.GetGeometryN(_componentIndex);
+        }
 
         /// <summary>
         /// Evaluate if the iterator could step over.
@@ -104,13 +108,13 @@ namespace NetTopologySuite.LinearReferencing
                 return false;
             return true;
         }
-        
+
         /// <summary>
         /// Jump to the next element of the iteration.
         /// </summary>
         protected void Next()
         {
-            if (!HasNext()) 
+            if (!HasNext())
                 return;
 
             _vertexIndex++;
@@ -130,8 +134,8 @@ namespace NetTopologySuite.LinearReferencing
         {
             get
             {
-                if (_componentIndex >= _numLines) 
-                    return false;                
+                if (_componentIndex >= _numLines)
+                    return false;
                 if (_vertexIndex < _currentLine.NumPoints - 1)
                     return false;
                 return true;
@@ -201,23 +205,23 @@ namespace NetTopologySuite.LinearReferencing
         #region IEnumerator<LinearIterator.LinearElement> Members
 
         /// <summary>
-        /// Gets the <see cref="LinearElement">element</see> in the collection 
+        /// Gets the <see cref="LinearElement">element</see> in the collection
         /// at the current position of the enumerator.
         /// </summary>
         /// <value></value>
         /// <returns>
-        /// The <see cref="LinearElement">element</see> in the collection 
+        /// The <see cref="LinearElement">element</see> in the collection
         /// at the current position of the enumerator.
         /// </returns>
         public LinearElement Current
         {
-            get 
+            get
             {
                 return _current;
             }
         }
 
-        #endregion        
+        #endregion IEnumerator<LinearIterator.LinearElement> Members
 
         #region IEnumerator Members
 
@@ -241,45 +245,45 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Gets the <see cref="LinearElement">element</see> in the collection 
+        /// Gets the <see cref="LinearElement">element</see> in the collection
         /// at the current position of the enumerator.
         /// </summary>
         /// <value></value>
         /// <returns>
-        /// The <see cref="LinearElement">element</see> in the collection 
+        /// The <see cref="LinearElement">element</see> in the collection
         /// at the current position of the enumerator.
         /// </returns>
         object System.Collections.IEnumerator.Current
         {
-            get 
+            get
             {
                 return Current;
             }
         }
 
         /// <summary>
-        /// Sets the enumerator to its initial position, 
+        /// Sets the enumerator to its initial position,
         /// which is before the first element in the collection.
         /// </summary>
         /// <exception cref="T:System.InvalidOperationException">
-        /// The collection was modified after the enumerator was created. 
+        /// The collection was modified after the enumerator was created.
         /// </exception>
         public void Reset()
         {
-            _numLines = _linear.NumGeometries;
+            _numLines = _linearGeom.NumGeometries;
             _componentIndex = _startComponentIndex;
             _vertexIndex = _startVertexIndex;
             LoadCurrentLine();
-            
+
             _atStart = true;
         }
 
-        #endregion
+        #endregion IEnumerator Members
 
         #region IDisposable Members
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, 
+        /// Performs application-defined tasks associated with freeing,
         /// releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
@@ -288,7 +292,7 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="dispose"></param>
         protected void Dispose(bool dispose)
@@ -303,7 +307,7 @@ namespace NetTopologySuite.LinearReferencing
             _currentLine = null;
         }
 
-        #endregion
+        #endregion IDisposable Members
 
         #region IEnumerable<LinearIterator.LinearElement> Members
 
@@ -311,7 +315,7 @@ namespace NetTopologySuite.LinearReferencing
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns>
-        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"></see> that can be used 
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"></see> that can be used
         /// to iterate through the collection.
         /// </returns>
         public IEnumerator<LinearElement> GetEnumerator()
@@ -319,16 +323,16 @@ namespace NetTopologySuite.LinearReferencing
             return this;
         }
 
-        #endregion
+        #endregion IEnumerable<LinearIterator.LinearElement> Members
 
         #region IEnumerable Members
 
         /// <summary>
-        /// Returns an enumerator (of <see cref="LinearElement" />elements) 
+        /// Returns an enumerator (of <see cref="LinearElement" />elements)
         /// that iterates through a collection.
         /// </summary>
         /// <returns>
-        /// An <see cref="T:System.Collections.IEnumerator"></see> object 
+        /// An <see cref="T:System.Collections.IEnumerator"></see> object
         /// that can be used to iterate through the collection.
         /// </returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
@@ -336,7 +340,7 @@ namespace NetTopologySuite.LinearReferencing
             return GetEnumerator();
         }
 
-        #endregion
+        #endregion IEnumerable Members
 
         #region LinearElement
 
@@ -427,7 +431,6 @@ namespace NetTopologySuite.LinearReferencing
             }
         }
 
-        #endregion
-       
+        #endregion LinearElement
     }
 }

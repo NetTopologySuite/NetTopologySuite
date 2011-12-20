@@ -12,7 +12,7 @@ namespace NetTopologySuite.Geometries.Prepared
     /// In this case full topology must be computed.
     /// </para></remarks>
     /// <author>Martin Davis</author>
-    public class PreparedPolygonCovers : AbstractPreparedPolygonContains
+    internal class PreparedPolygonCovers : AbstractPreparedPolygonContains
     {
         ///<summary>
         /// Computes the <c>Covers</c> spatial relationship predicate for a <see cref="PreparedPolygon"/> relative to all other <see cref="IGeometry"/> classes.
@@ -56,6 +56,5 @@ namespace NetTopologySuite.Geometries.Prepared
             bool result = prepPoly.Geometry.Covers(geom);
             return result;
         }
-
     }
 }

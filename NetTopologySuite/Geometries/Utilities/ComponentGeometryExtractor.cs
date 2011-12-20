@@ -9,9 +9,11 @@ namespace NetTopologySuite.Geometries.Utilities
     /// <version>1.9</version>
     public class ComponentCoordinateExtracter : IGeometryComponentFilter
     {
-
         ///<summary>
-        /// Extracts a single representative <see cref="Coordinate"/> from each connected component of a <see cref="IGeometry"/>.
+        /// Extracts the linear components from a single geometry.
+        /// If more than one geometry is to be processed, it is more
+        /// efficient to create a single <see cref="ComponentCoordinateExtracter"/> instance
+        /// and pass it to multiple geometries.
         ///</summary>
         /// <param name="geom">The Geometry from which to extract</param>
         /// <returns>A list of Coordinates</returns>
@@ -39,6 +41,5 @@ namespace NetTopologySuite.Geometries.Utilities
                 || geom is IPoint)
                 _coords.Add(geom.Coordinate);
         }
-
     }
 }

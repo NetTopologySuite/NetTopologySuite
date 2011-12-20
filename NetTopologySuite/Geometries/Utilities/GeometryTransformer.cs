@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries.Utilities
@@ -26,8 +25,8 @@ namespace NetTopologySuite.Geometries.Utilities
     /// <para>
     /// A typically usage would be a transformation that may transform <c>Polygons</c> into
     /// <c>Polygons</c>, <c>LineStrings</c> or <c>Points</c>, depending on the geometry of the input
-    /// (For instance, a simplification operation).  
-    /// This class would likely need to override the <see cref="TransformMultiPolygon"/>
+    /// (For instance, a simplification operation).
+    /// This class would likely need to override the <see cref="TransformMultiPolygon(IMultiPolygon, IGeometry)"/>
     /// method to ensure that if input Polygons change type the result is a <c>GeometryCollection</c>,
     /// not a <c>MultiPolygon</c>.</para>
     /// <para>
@@ -42,10 +41,10 @@ namespace NetTopologySuite.Geometries.Utilities
     /// geometry - if they cannot do this they should return <c>null</c>
     /// (for instance, it may not be possible for a transformLineString implementation
     /// to return at least two points - in this case, it should return <c>null</c>).
-    /// The <see cref="Transform"/> method itself will always
+    /// The <see cref="Transform(IGeometry)"/> method itself will always
     /// return a non-null Geometry object (but this may be empty).</para>
-    /// </remarks>>    
-    public class GeometryTransformer 
+    /// </remarks>>
+    public class GeometryTransformer
     {
         /*
         * Possible extensions:
@@ -55,7 +54,7 @@ namespace NetTopologySuite.Geometries.Utilities
         private IGeometry _inputGeom;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected IGeometryFactory Factory;
 
@@ -65,20 +64,20 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         private bool pruneEmptyGeometry = true;
 
-        /// <summary> 
+        /// <summary>
         /// <c>true</c> if a homogenous collection result
         /// from a <c>GeometryCollection</c> should still
         /// be a general GeometryCollection.
         /// </summary>
-        private bool preserveGeometryCollectionType = true;        
+        private bool preserveGeometryCollectionType = true;
 
-        /// <summary> 
+        /// <summary>
         /// <c>true</c> if the type of the input should be preserved.
         /// </summary>
         private bool _preserveType;
 
         ///// <summary>
-        ///// 
+        /////
         ///// </summary>
         /*public GeometryTransformer() { }*/
 
@@ -89,12 +88,12 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             get
             {
-                return _inputGeom; 
+                return _inputGeom;
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="inputGeom"></param>
         /// <returns></returns>
@@ -103,25 +102,25 @@ namespace NetTopologySuite.Geometries.Utilities
             _inputGeom = inputGeom;
             Factory = inputGeom.Factory;
             if (inputGeom is IPoint)
-                return TransformPoint((IPoint) inputGeom, null);
+                return TransformPoint((IPoint)inputGeom, null);
             if (inputGeom is IMultiPoint)
-                return TransformMultiPoint((IMultiPoint) inputGeom, null);
+                return TransformMultiPoint((IMultiPoint)inputGeom, null);
             if (inputGeom is ILinearRing)
-                return TransformLineString((ILinearRing) inputGeom, null);
+                return TransformLineString((ILinearRing)inputGeom, null);
             if (inputGeom is ILineString)
-                return TransformLineString((ILineString) inputGeom, null);
+                return TransformLineString((ILineString)inputGeom, null);
             if (inputGeom is IMultiLineString)
-                return TransformMultiLineString((IMultiLineString) inputGeom, null);
+                return TransformMultiLineString((IMultiLineString)inputGeom, null);
             if (inputGeom is IPolygon)
-                return TransformPolygon((IPolygon) inputGeom, null);
+                return TransformPolygon((IPolygon)inputGeom, null);
             if (inputGeom is IMultiPolygon)
-                return TransformMultiPolygon((IMultiPolygon) inputGeom, null);
+                return TransformMultiPolygon((IMultiPolygon)inputGeom, null);
             if (inputGeom is IGeometryCollection)
-                return TransformGeometryCollection((IGeometryCollection) inputGeom, null);
+                return TransformGeometryCollection((IGeometryCollection)inputGeom, null);
             throw new ArgumentException("Unknown Geometry subtype: " + inputGeom.GetType().FullName);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Convenience method which provides standard way of
         /// creating a <c>CoordinateSequence</c>.
         /// </summary>
@@ -132,14 +131,14 @@ namespace NetTopologySuite.Geometries.Utilities
             return Factory.CoordinateSequenceFactory.Create(coords);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Convenience method which provides statndard way of copying {CoordinateSequence}s
         /// </summary>
         /// <param name="seq">The sequence to copy.</param>
         /// <returns>A deep copy of the sequence.</returns>
         protected virtual ICoordinateSequence Copy(ICoordinateSequence seq)
         {
-            return (ICoordinateSequence) seq.Clone();
+            return (ICoordinateSequence)seq.Clone();
         }
 
         /// <summary>
@@ -159,28 +158,28 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geom"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected virtual IGeometry TransformPoint(IPoint geom, IGeometry parent) 
+        protected virtual IGeometry TransformPoint(IPoint geom, IGeometry parent)
         {
             return Factory.CreatePoint(TransformCoordinates(geom.CoordinateSequence, geom));
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geom"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected virtual IGeometry TransformMultiPoint(IMultiPoint geom, IGeometry parent) 
+        protected virtual IGeometry TransformMultiPoint(IMultiPoint geom, IGeometry parent)
         {
             var transGeomList = new List<IGeometry>();
-            for (int i = 0; i < geom.NumGeometries; i++) 
+            for (int i = 0; i < geom.NumGeometries; i++)
             {
-                IGeometry transformGeom = TransformPoint((IPoint) geom.GetGeometryN(i), geom);
+                IGeometry transformGeom = TransformPoint((IPoint)geom.GetGeometryN(i), geom);
                 if (transformGeom == null) continue;
                 if (transformGeom.IsEmpty) continue;
                 transGeomList.Add(transformGeom);
@@ -189,46 +188,45 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geom"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected virtual IGeometry TransformLinearRing(ILinearRing geom, IGeometry parent) 
+        protected virtual IGeometry TransformLinearRing(ILinearRing geom, IGeometry parent)
         {
             ICoordinateSequence seq = TransformCoordinates(geom.CoordinateSequence, geom);
             int seqSize = seq.Count;
             // ensure a valid LinearRing
-            if (seqSize > 0 && seqSize < 4 && ! _preserveType)
+            if (seqSize > 0 && seqSize < 4 && !_preserveType)
                 return Factory.CreateLineString(seq);
             return Factory.CreateLinearRing(seq);
-
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geom"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected virtual IGeometry TransformLineString(ILineString geom, IGeometry parent) 
+        protected virtual IGeometry TransformLineString(ILineString geom, IGeometry parent)
         {
             // should check for 1-point sequences and downgrade them to points
             return Factory.CreateLineString(TransformCoordinates(geom.CoordinateSequence, geom));
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geom"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected virtual IGeometry TransformMultiLineString(IMultiLineString geom, IGeometry parent) 
+        protected virtual IGeometry TransformMultiLineString(IMultiLineString geom, IGeometry parent)
         {
             var transGeomList = new List<IGeometry>();
-            for (int i = 0; i < geom.NumGeometries; i++) 
+            for (int i = 0; i < geom.NumGeometries; i++)
             {
-                IGeometry transformGeom = TransformLineString((ILineString) geom.GetGeometryN(i), geom);
+                IGeometry transformGeom = TransformLineString((ILineString)geom.GetGeometryN(i), geom);
                 if (transformGeom == null) continue;
                 if (transformGeom.IsEmpty) continue;
                 transGeomList.Add(transformGeom);
@@ -237,24 +235,24 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geom"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected virtual IGeometry TransformPolygon(IPolygon geom, IGeometry parent) 
+        protected virtual IGeometry TransformPolygon(IPolygon geom, IGeometry parent)
         {
             bool isAllValidLinearRings = true;
             IGeometry shell = TransformLinearRing(geom.Shell, geom);
 
-            if (shell == null || ! (shell is ILinearRing) || shell.IsEmpty)
+            if (shell == null || !(shell is ILinearRing) || shell.IsEmpty)
                 isAllValidLinearRings = false;
 
             var holes = new List<ILineString>();
-            for (int i = 0; i < geom.NumInteriorRings; i++) 
+            for (int i = 0; i < geom.NumInteriorRings; i++)
             {
                 IGeometry hole = TransformLinearRing(geom.Holes[i], geom);
-                if (hole == null || hole.IsEmpty) continue;            
+                if (hole == null || hole.IsEmpty) continue;
                 if (!(hole is ILinearRing))
                     isAllValidLinearRings = false;
                 holes.Add((ILineString)hole);
@@ -262,8 +260,9 @@ namespace NetTopologySuite.Geometries.Utilities
 
             if (isAllValidLinearRings)
             {
+                //var holesAsLinearRing = (from ls in holes select ((ILinearRing)ls)).ToArray();
 #if !SILVERLIGHT
-                var holesAsLinearRing = holes.ConvertAll<ILinearRing>(ls => (ILinearRing) ls).ToArray();
+                var holesAsLinearRing = holes.ConvertAll<ILinearRing>(ls => (ILinearRing)ls).ToArray();
 #else
                 var holesAsLinearRing = (from ls in holes select ((ILinearRing) ls)).ToArray();
 #endif
@@ -282,17 +281,17 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geom"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected virtual IGeometry TransformMultiPolygon(IMultiPolygon geom, IGeometry parent) 
+        protected virtual IGeometry TransformMultiPolygon(IMultiPolygon geom, IGeometry parent)
         {
             var transGeomList = new List<IGeometry>();
-            for (int i = 0; i < geom.NumGeometries; i++) 
+            for (int i = 0; i < geom.NumGeometries; i++)
             {
-                IGeometry transformGeom = TransformPolygon((IPolygon) geom.GetGeometryN(i), geom);
+                IGeometry transformGeom = TransformPolygon((IPolygon)geom.GetGeometryN(i), geom);
                 if (transformGeom == null) continue;
                 if (transformGeom.IsEmpty) continue;
                 transGeomList.Add(transformGeom);
@@ -301,15 +300,15 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geom"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected virtual IGeometry TransformGeometryCollection(IGeometryCollection geom, IGeometry parent) 
+        protected virtual IGeometry TransformGeometryCollection(IGeometryCollection geom, IGeometry parent)
         {
             var transGeomList = new List<IGeometry>();
-            for (int i = 0; i < geom.NumGeometries; i++) 
+            for (int i = 0; i < geom.NumGeometries; i++)
             {
                 IGeometry transformGeom = Transform(geom.GetGeometryN(i));
                 if (transformGeom == null) continue;

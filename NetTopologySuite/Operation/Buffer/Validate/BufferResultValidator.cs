@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Buffer.Validate
 {
@@ -21,7 +20,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         public static bool Verbose;
 
         /**
-         * Maximum allowable fraction of buffer distance the 
+         * Maximum allowable fraction of buffer distance the
          * actual distance can differ by.
          * 1% sometimes causes an error - 1.2% should be safe.
          */
@@ -41,7 +40,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// <param name="distance"></param>
         /// <param name="result"></param>
         /// <returns><c>null</c>if the buffer is valid, an appropriate error message if not</returns>
-        /// 
+        ///
         public static String IsValidMessage(IGeometry g, double distance, IGeometry result)
         {
             BufferResultValidator validator = new BufferResultValidator(g, distance, result);
@@ -56,6 +55,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         private bool _isValid = true;
         private String _errorMsg;
         private Coordinate _errorLocation;
+        private IGeometry _errorIndicator;
 
         public BufferResultValidator(IGeometry input, double distance, IGeometry result)
         {
@@ -94,6 +94,20 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             get { return _errorLocation; }
         }
 
+        /// <summary>
+        /// Gets a geometry which indicates the location and nature of a validation failure.
+        /// <para>
+        /// If the failure is due to the buffer curve being too far or too close
+        /// to the input, the indicator is a line segment showing the location and size
+        /// of the discrepancy.
+        /// </para>
+        /// </summary>
+        /// <returns>A geometric error indicator or null, if no error was found</returns>
+        public IGeometry ErrorIndicator
+        {
+            get { return _errorIndicator; }
+        }
+
         private void Report(String checkName)
         {
             if (!Verbose) return;
@@ -107,6 +121,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
                     || _result is IMultiPolygon))
                 _isValid = false;
             _errorMsg = "Result is not polygonal";
+            _errorIndicator = _result;
             Report("Polygonal");
         }
 
@@ -122,6 +137,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             {
                 _isValid = false;
                 _errorMsg = "Result is non-empty";
+                _errorIndicator = _result;
             }
             Report("ExpectedEmpty");
         }
@@ -133,16 +149,17 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             double padding = _distance * MaxEnvDiffFrac;
             if (padding == 0.0) padding = 0.001;
 
-            Envelope expectedEnv = new Envelope(_input.EnvelopeInternal);
+            var expectedEnv = new Envelope(_input.EnvelopeInternal);
             expectedEnv.ExpandBy(_distance);
 
-            Envelope bufEnv = new Envelope(_result.EnvelopeInternal);
+            var bufEnv = new Envelope(_result.EnvelopeInternal);
             bufEnv.ExpandBy(padding);
 
             if (!bufEnv.Contains(expectedEnv))
             {
                 _isValid = false;
                 _errorMsg = "Buffer envelope is incorrect";
+                _errorIndicator = _result;
             }
             Report("Envelope");
         }
@@ -157,12 +174,14 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             {
                 _isValid = false;
                 _errorMsg = "Area of positive buffer is smaller than input";
+                _errorIndicator = _result;
             }
             if (_distance < 0.0
                     && inputArea < resultArea)
             {
                 _isValid = false;
                 _errorMsg = "Area of negative buffer is larger than input";
+                _errorIndicator = _result;
             }
             Report("Area");
         }
@@ -175,6 +194,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
                 _isValid = false;
                 _errorMsg = distValid.ErrorMessage;
                 _errorLocation = distValid.ErrorLocation;
+                _errorIndicator = _result;
             }
             Report("Distance");
         }

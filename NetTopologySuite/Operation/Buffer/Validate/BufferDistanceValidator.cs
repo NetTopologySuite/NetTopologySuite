@@ -11,7 +11,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
 {
     /// <summary>
     /// Validates that a given buffer curve lies an appropriate distance
-    /// from the input generating it. 
+    /// from the input generating it.
     /// </summary>
     /// <remarks>
     /// Useful only for round buffers (cap and join).
@@ -27,7 +27,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
     {
         public static bool Verbose;
         /**
-         * Maximum allowable fraction of buffer distance the 
+         * Maximum allowable fraction of buffer distance the
          * actual distance can differ by.
          * 1% sometimes causes an error - 1.2% should be safe.
          */
@@ -46,6 +46,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         private bool _isValid = true;
         private String _errMsg;
         private Coordinate _errorLocation;
+        private IGeometry _errorIndicator = null;
 
         public BufferDistanceValidator(IGeometry input, double bufDistance, IGeometry result)
         {
@@ -92,6 +93,19 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         public Coordinate ErrorLocation
         {
             get { return _errorLocation; }
+        }
+
+        /// <summary>
+        /// Gets a geometry which indicates the location and nature of a validation failure.
+        /// <para>
+        /// The indicator is a line segment showing the location and size
+        /// of the distance discrepancy.
+        /// </para>
+        /// </summary>
+        /// <returns>A geometric error indicator or null, if no error was found</returns>
+        public IGeometry ErrorIndicator
+        {
+            get { return _errorIndicator; }
         }
 
         private void CheckPositiveValid()
@@ -145,12 +159,12 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             DistanceOp distOp = new DistanceOp(g1, g2, minDist);
             _minDistanceFound = distOp.Distance();
 
-
             if (_minDistanceFound < minDist)
             {
                 _isValid = false;
                 var pts = distOp.NearestPoints();
                 _errorLocation = pts[1];
+                _errorIndicator = g1.Factory.CreateLineString(pts);
                 _errMsg = "Distance between buffer curve and input is too small "
                     + "(" + _minDistanceFound
                     + " at " + WKTWriter.ToLineString(pts[0], pts[1]) + " )";
@@ -182,6 +196,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
                 _isValid = false;
                 var pts = haus.Coordinates;
                 _errorLocation = pts[1];
+                _errorIndicator = input.Factory.CreateLineString(pts);
                 _errMsg = "Distance between buffer curve and input is too large "
                   + "(" + _maxDistanceFound
                   + " at " + WKTWriter.ToLineString(pts[0], pts[1]) + ")";
@@ -193,8 +208,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         {
           BufferCurveMaximumDistanceFinder maxDistFinder = new BufferCurveMaximumDistanceFinder(input);
           maxDistanceFound = maxDistFinder.findDistance(bufCurve);
-    
-    
+
           if (maxDistanceFound > maxDist) {
             isValid = false;
             PointPairDistance ptPairDist = maxDistFinder.getDistancePoints();
@@ -205,7 +219,5 @@ namespace NetTopologySuite.Operation.Buffer.Validate
           }
         }
         */
-
-
     }
 }

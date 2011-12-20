@@ -5,24 +5,27 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Operation.Overlay.Snap
 {
     /// <summary>
-    /// Snaps the vertices and segments of a <see cref="LineString"/> to a set of target snap vertices.
-    /// A snapping distance tolerance is used to control where snapping is performed.
+    /// Snaps the vertices and segments of a <see cref="ILineString"/>
+    ///  to a set of target snap vertices.
+    /// A snap distance tolerance is used to control where snapping is performed.
+    /// <para/>The implementation handles empty geometry and empty snap vertex sets.
     /// </summary>
     public class LineStringSnapper
     {
-        private double snapTolerance = 0.0;
+        private readonly double _snapTolerance;
 
-        private Coordinate[] srcPts;
-        private LineSegment seg = new LineSegment(); // for reuse during snapping
-        private bool isClosed = false;
+        private readonly Coordinate[] _srcPts;
+        private readonly LineSegment _seg = new LineSegment(); // for reuse during snapping
+        private bool _allowSnappingToSourceVertices;
+        private readonly bool _isClosed;
 
         /// <summary>
         /// Creates a new snapper using the points in the given <see cref="LineString"/>
         /// as target snap points.
         /// </summary>
-        /// <param name="line">a LineString to snap</param>
+        /// <param name="line">A LineString to snap (may be empty)</param>
         /// <param name="snapTolerance">the snap tolerance to use</param>
-        public LineStringSnapper(ILineString line, double snapTolerance) : 
+        public LineStringSnapper(ILineString line, double snapTolerance) :
             this(line.Coordinates, snapTolerance) { }
 
         /// <summary>
@@ -33,20 +36,32 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <param name="snapTolerance"></param>
         public LineStringSnapper(Coordinate[] srcPts, double snapTolerance)
         {
-            this.srcPts = srcPts;
-            isClosed = srcPts[0].Equals2D(srcPts[srcPts.Length - 1]);
-            this.snapTolerance = snapTolerance;
+            _srcPts = srcPts;
+            _isClosed = IsClosed(_srcPts);// srcPts[0].Equals2D(srcPts[srcPts.Length - 1]);
+            _snapTolerance = snapTolerance;
+        }
+
+        public bool AllowSnappingToSourceVertices
+        {
+            get { return _allowSnappingToSourceVertices; }
+            set { _allowSnappingToSourceVertices = value; }
+        }
+
+        private static bool IsClosed(Coordinate[] pts)
+        {
+            if (pts.Length <= 1) return false;
+            return pts[0].Equals2D(pts[pts.Length - 1]);
         }
 
         /// <summary>
-        /// Snaps the vertices and segments of the source LineString 
-        /// to the given set of target snap points.
+        /// Snaps the vertices and segments of the source LineString
+        /// to the given set of snap points.
         /// </summary>
         /// <param name="snapPts">the vertices to snap to</param>
         /// <returns>list of the snapped points</returns>
         public Coordinate[] SnapTo(Coordinate[] snapPts)
         {
-            CoordinateList coordList = new CoordinateList(srcPts);
+            CoordinateList coordList = new CoordinateList(_srcPts);
             SnapVertices(coordList, snapPts);
             SnapSegments(coordList, snapPts);
             Coordinate[] newPts = coordList.ToCoordinateArray();
@@ -61,24 +76,25 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         private void SnapVertices(CoordinateList srcCoords, Coordinate[] snapPts)
         {
             // try snapping vertices
-            // assume src list has a closing point (is a ring)
-            for (int i = 0; i < srcCoords.Count - 1; i++)
+            // if src is a ring then don't snap final vertex
+            var end = _isClosed ? srcCoords.Count - 1 : srcCoords.Count;
+            for (var i = 0; i < end; i++)
             {
-                Coordinate srcPt = srcCoords[i];
-                Coordinate snapVert = FindSnapForVertex(srcPt, snapPts);
+                var srcPt = srcCoords[i];
+                var snapVert = FindSnapForVertex(srcPt, snapPts);
                 if (snapVert != null)
                 {
                     // update src with snap pt
                     srcCoords[i] = new Coordinate(snapVert);
                     // keep final closing point in synch (rings only)
-                    if (i == 0 && isClosed)
+                    if (i == 0 && _isClosed)
                         srcCoords[srcCoords.Count - 1] = new Coordinate(snapVert);
                 }
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pt"></param>
         /// <param name="snapPts"></param>
@@ -90,39 +106,44 @@ namespace NetTopologySuite.Operation.Overlay.Snap
                 // if point is already equal to a src pt, don't snap
                 if (pt.Equals2D(coord))
                     return null;
-                if (pt.Distance(coord) < snapTolerance)
+                if (pt.Distance(coord) < _snapTolerance)
                     return coord;
             }
             return null;
         }
 
         /// <summary>
-        /// Snap segments of the source to nearby snap vertices.
-        /// Source segments are "cracked" at a snap vertex, and further
-        /// snapping takes place on the modified list of segments.
+        /// Snap segments of the source to nearby snap vertices.<para/>
+        /// Source segments are "cracked" at a snap vertex.
+        /// A single input segment may be snapped several times
+        /// to different snap vertices.<para/>
         /// For each distinct snap vertex, at most one source segment
-        /// is snapped to.  This prevents "cracking" multiple segments 
-        /// at the same point, which would almost certainly cause the result to be invalid.
+        /// is snapped to.  This prevents "cracking" multiple segments
+        /// at the same point, which would likely cause
+        /// topology collapse when being used on polygonal linework.
         /// </summary>
-        /// <param name="srcCoords"></param>
-        /// <param name="snapPts"></param>
+        /// <param name="srcCoords">The coordinates of the source linestring to snap</param>
+        /// <param name="snapPts">The target snap vertices</param>
         private void SnapSegments(CoordinateList srcCoords, Coordinate[] snapPts)
         {
-            int distinctPtCount = snapPts.Length;
+            // guard against empty input
+            if (snapPts.Length == 0) return;
 
-            // check for duplicate snap pts.  
-            // Need to do this better - need to check all points for dups (using a Set?)
+            var distinctPtCount = snapPts.Length;
+
+            // check for duplicate snap pts when they are sourced from a linear ring.
+            // TODO: Need to do this better - need to check *all* points for dups (using a Set?)
             if (snapPts[0].Equals2D(snapPts[snapPts.Length - 1]))
                 distinctPtCount = snapPts.Length - 1;
 
-            for (int i = 0; i < distinctPtCount; i++)
+            for (var i = 0; i < distinctPtCount; i++)
             {
-                Coordinate snapPt = snapPts[i];
-                int index = FindSegmentIndexToSnap(snapPt, srcCoords);
+                var snapPt = snapPts[i];
+                var index = FindSegmentIndexToSnap(snapPt, srcCoords);
                 /*
                  * If a segment to snap to was found, "crack" it at the snap pt.
                  * The new pt is inserted immediately into the src segment list,
-                 * so that subsequent snapping will take place on the latest segments.
+                 * so that subsequent snapping will take place on the modified segments.
                  * Duplicate points are not added.
                  */
                 if (index >= 0)
@@ -131,33 +152,44 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         }
 
         /// <summary>
-        /// Finds a src segment which snaps to (is close to) the given snap point
-        /// Only one segment is determined - this is to prevent
-        /// snapping to multiple segments, which would almost certainly cause invalid geometry
+        /// Finds a src segment which snaps to (is close to) the given snap point<para/>
+        /// Only a single segment is selected for snapping.
+        /// This prevents multiple segments snapping to the same snap vertex,
+        /// which would almost certainly cause invalid geometry
         /// to be created.
-        /// (The heuristic approach of snapping is really only appropriate when
-        /// snap pts snap to a unique spot on the src geometry)
+        /// (The heuristic approach of snapping used here
+        /// is really only appropriate when
+        /// snap pts snap to a unique spot on the src geometry)<para/>
+        /// Also, if the snap vertex occurs as a vertex in the src coordinate list,
+        /// no snapping is performed.
         /// </summary>
-        /// <param name="snapPt"></param>
-        /// <param name="srcCoords"></param>
-        /// <returns>-1 if no segment snaps.</returns>
+        /// <param name="snapPt">The point to snap to</param>
+        /// <param name="srcCoords">The source segment coordinates</param>
+        /// <returns>The index of the snapped segment</returns>
+        /// <returns>-1 if no segment snaps to the snap point.</returns>
         private int FindSegmentIndexToSnap(Coordinate snapPt, CoordinateList srcCoords)
         {
-            double minDist = Double.MaxValue;
-            int snapIndex = -1;
-            for (int i = 0; i < srcCoords.Count - 1; i++)
+            var minDist = Double.MaxValue;
+            var snapIndex = -1;
+            for (var i = 0; i < srcCoords.Count - 1; i++)
             {
-                seg.P0 = srcCoords[i];
-                seg.P1 = srcCoords[i + 1];
+                _seg.P0 = srcCoords[i];
+                _seg.P1 = srcCoords[i + 1];
 
                 /*
-                 * If the snap pt is already in the src list, don't snap
+                 * Check if the snap pt is equal to one of the segment endpoints.
+                 *
+                 * If the snap pt is already in the src list, don't snap at all.
                  */
-                if (seg.P0.Equals2D(snapPt) || seg.P1.Equals2D(snapPt))
+                if (_seg.P0.Equals2D(snapPt) || _seg.P1.Equals2D(snapPt))
+                {
+                    if (_allowSnappingToSourceVertices)
+                        continue;
                     return -1;
+                }
 
-                double dist = seg.Distance(snapPt);
-                if (dist < snapTolerance && dist < minDist)
+                var dist = _seg.Distance(snapPt);
+                if (dist < _snapTolerance && dist < minDist)
                 {
                     minDist = dist;
                     snapIndex = i;

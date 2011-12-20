@@ -1,3 +1,4 @@
+using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
@@ -5,21 +6,22 @@ using NetTopologySuite.Geometries.Utilities;
 namespace NetTopologySuite.Precision
 {
     /// <summary>
-    /// Reduces the precision of a <c>Geometry</c>
+    /// Reduces the precision of the coordinates of a <c>Geometry</c>
     /// according to the supplied {PrecisionModel}, without
     /// attempting to preserve valid topology.
     /// </summary>
     /// <remarks>
-    /// The topology of the resulting point may be invalid if
+    /// In case of <see cref="IPolygonal"/> geometries,
+    /// the topology of the resulting geometry may be invalid if
     /// topological collapse occurs due to coordinates being shifted.
     /// It is up to the client to check this and handle it if necessary.
     /// Collapses may not matter for some uses. An example
     /// is simplifying the input to the buffer algorithm.
     /// The buffer algorithm does not depend on the validity of the input point.
     /// </remarks>
+    [Obsolete("Use GeometryPrecisionReducer")]
     public class SimpleGeometryPrecisionReducer
     {
-
         ///<summary>
         /// Convenience method for doing precision reduction on a single geometry,
         /// with collapses removed and keeping the geometry precision model the same.
@@ -30,14 +32,13 @@ namespace NetTopologySuite.Precision
             var reducer = new SimpleGeometryPrecisionReducer(precModel);
             return reducer.Reduce(g);
         }
-	
-        
+
         private readonly PrecisionModel _newPrecisionModel;
         private bool _removeCollapsed = true;
         private bool _changePrecisionModel;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pm"></param>
         public SimpleGeometryPrecisionReducer(PrecisionModel pm)
@@ -65,7 +66,7 @@ namespace NetTopologySuite.Precision
         /// <summary>
         /// Gets/Sets whether the PrecisionModel of the new reduced Geometry
         /// will be changed to be the PrecisionModel supplied to
-        /// specify the reduction.  
+        /// specify the precision reduction.  <para/>
         /// The default is to not change the precision model.
         /// </summary>
         public bool ChangePrecisionModel
@@ -81,33 +82,33 @@ namespace NetTopologySuite.Precision
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geom"></param>
         /// <returns></returns>
         public IGeometry Reduce(IGeometry geom)
         {
             GeometryEditor geomEdit;
-            if (_changePrecisionModel) 
+            if (_changePrecisionModel)
             {
                 GeometryFactory newFactory = new GeometryFactory(_newPrecisionModel);
                 geomEdit = new GeometryEditor(newFactory);
             }
             else
-            // don't change point factory
-            geomEdit = new GeometryEditor();
+                // don't change point factory
+                geomEdit = new GeometryEditor();
             return geomEdit.Edit(geom, new PrecisionReducerCoordinateOperation(this));
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private class PrecisionReducerCoordinateOperation : GeometryEditor.CoordinateOperation
         {
             private readonly SimpleGeometryPrecisionReducer _container;
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             /// <param name="container"></param>
             public PrecisionReducerCoordinateOperation(SimpleGeometryPrecisionReducer container)
@@ -116,22 +117,22 @@ namespace NetTopologySuite.Precision
             }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             /// <param name="coordinates"></param>
             /// <param name="geom"></param>
             /// <returns></returns>
             public override Coordinate[] Edit(Coordinate[] coordinates, IGeometry geom)
             {
-                if (coordinates.Length == 0) 
+                if (coordinates.Length == 0)
                     return null;
 
                 Coordinate[] reducedCoords = new Coordinate[coordinates.Length];
                 // copy coordinates and reduce
-                for (int i = 0; i < coordinates.Length; i++) 
+                for (int i = 0; i < coordinates.Length; i++)
                 {
                     Coordinate coord = new Coordinate(coordinates[i]);
-                    _container._newPrecisionModel.MakePrecise( coord);
+                    _container._newPrecisionModel.MakePrecise(coord);
                     reducedCoords[i] = coord;
                 }
 
@@ -150,18 +151,18 @@ namespace NetTopologySuite.Precision
                 * (This may create an invalid point - the client must handle this.)
                 */
                 int minLength = 0;
-                if (geom is ILineString) 
+                if (geom is ILineString)
                     minLength = 2;
-                if (geom is ILinearRing) 
+                if (geom is ILinearRing)
                     minLength = 4;
 
                 Coordinate[] collapsedCoords = reducedCoords;
-                if (_container._removeCollapsed) 
+                if (_container._removeCollapsed)
                     collapsedCoords = null;
 
                 // return null or orginal length coordinate array
-                if (noRepeatedCoords.Length < minLength) 
-                    return collapsedCoords;                
+                if (noRepeatedCoords.Length < minLength)
+                    return collapsedCoords;
 
                 // ok to return shorter coordinate array
                 return noRepeatedCoords;

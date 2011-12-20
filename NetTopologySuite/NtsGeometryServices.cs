@@ -6,7 +6,7 @@ using NetTopologySuite.Geometries.Implementation;
 
 namespace NetTopologySuite
 {
-    public sealed class GeometryServices : IGeometryServices
+    public class NtsGeometryServices : IGeometryServices
     {
         private static IGeometryServices _instance;
         
@@ -24,9 +24,20 @@ namespace NetTopologySuite
 
                     lock (LockObject2)
                     {
-                        _instance = new GeometryServices();
+                        _instance = new NtsGeometryServices();
                     }
                     return _instance;
+                }
+            }
+
+            set
+            {
+                //Never 
+                if (value == null)
+                    return;
+                lock (LockObject1)
+                {
+                    _instance = value;
                 }
             }
         }
@@ -34,18 +45,38 @@ namespace NetTopologySuite
 
 
 
-        public GeometryServices()
+        public NtsGeometryServices()
+            :this(CoordinateArraySequenceFactory.Instance, 
+            new PrecisionModel(PrecisionModels.Floating), -1)
         {
-            DefaultCoordinateSequenceFactory = CoordinateArraySequenceFactory.Instance;
-            DefaultPrecisionModel = new PrecisionModel(PrecisionModels.Floating);
         }
 
+        public NtsGeometryServices(ICoordinateSequenceFactory coordinateSequenceFactory, 
+            IPrecisionModel precisionModel, int srid)
+        {
+            DefaultCoordinateSequenceFactory = coordinateSequenceFactory;
+            DefaultPrecisionModel = precisionModel;
+            DefaultSRID = srid;
+        }   
+        
         #region Implementation of IGeometryServices
+
+        private int _defaultSRID;
 
         /// <summary>
         /// Gets the default spatial reference id
         /// </summary>
-        public int DefaultSRID { get; private set; }
+        public int DefaultSRID
+        {
+            get { return _defaultSRID; }
+            set
+            {
+                if (value == _defaultSRID)
+                    return;
+
+                _defaultSRID = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the coordiate sequence factory to use
@@ -92,7 +123,7 @@ namespace NetTopologySuite
 
         public IGeometryFactory CreateGeometryFactory()
         {
-            return CreateGeometryFactory(-1);
+            return CreateGeometryFactory(DefaultSRID);
         }
 
         public IGeometryFactory CreateGeometryFactory(int srid)

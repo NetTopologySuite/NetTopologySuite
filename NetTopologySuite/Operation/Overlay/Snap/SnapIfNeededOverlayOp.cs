@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
@@ -10,7 +9,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
     /// to improve the robustness of the result.
     /// This class only uses snapping
     /// if an error is detected when running the standard JTS overlay code.
-    /// Errors detected include thrown exceptions 
+    /// Errors detected include thrown exceptions
     /// (in particular, <see cref="TopologyException" />)
     /// and invalid overlay computations.
     /// </summary>
@@ -22,57 +21,69 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             return op.GetResultGeometry(opCode);
         }
 
-        public static IGeometry intersection(IGeometry g0, IGeometry g1)
+        public static IGeometry Intersection(IGeometry g0, IGeometry g1)
         {
             return Overlay(g0, g1, SpatialFunction.Intersection);
         }
 
-        public static IGeometry union(IGeometry g0, IGeometry g1)
+        public static IGeometry Union(IGeometry g0, IGeometry g1)
         {
             return Overlay(g0, g1, SpatialFunction.Union);
         }
 
-        public static IGeometry difference(IGeometry g0, IGeometry g1)
+        public static IGeometry Difference(IGeometry g0, IGeometry g1)
         {
             return Overlay(g0, g1, SpatialFunction.Difference);
         }
 
-        public static IGeometry symDifference(IGeometry g0, IGeometry g1)
+        public static IGeometry SymDifference(IGeometry g0, IGeometry g1)
         {
             return Overlay(g0, g1, SpatialFunction.SymDifference);
         }
 
-        private readonly IGeometry[] geom = new IGeometry[2];
+        private readonly IGeometry[] _geom = new IGeometry[2];
 
         public SnapIfNeededOverlayOp(IGeometry g1, IGeometry g2)
         {
-            geom[0] = g1;
-            geom[1] = g2;
+            _geom[0] = g1;
+            _geom[1] = g2;
         }
 
         public IGeometry GetResultGeometry(SpatialFunction opCode)
         {
             IGeometry result = null;
             var isSuccess = false;
+            Exception savedException = null;
             try
             {
-                result = OverlayOp.Overlay(geom[0], geom[1], opCode);
+                result = OverlayOp.Overlay(_geom[0], _geom[1], opCode);
                 var isValid = true;
                 // not needed if noding validation is used
                 //      boolean isValid = OverlayResultValidator.isValid(geom[0], geom[1], OverlayOp.INTERSECTION, result);
                 // if (isValid)
-                    isSuccess = true;
-
+                isSuccess = true;
             }
             catch (Exception ex)
             {
-                // Ignore this exception, since the operation will be rerun                
-                Debug.WriteLine(ex);
+                savedException = ex;
+                //// Ignore this exception, since the operation will be rerun
+                //Debug.WriteLine(ex);
+                //Console.WriteLine(ex.Message));
+                //Console.WriteLine("Geom 0: " + geom[0]);
+                //Console.WriteLine("Geom 1: " + geom[1]);
             }
             if (!isSuccess)
             {
-                // This may still throw an exception - just let it go if it does
-                result = SnapOverlayOp.Overlay(geom[0], geom[1], opCode);
+                // this may still throw an exception
+                // if so, throw the original exception since it has the input coordinates
+                try
+                {
+                    result = SnapOverlayOp.Overlay(_geom[0], _geom[1], opCode);
+                }
+                catch (Exception)
+                {
+                    throw savedException;
+                }
             }
             return result;
         }

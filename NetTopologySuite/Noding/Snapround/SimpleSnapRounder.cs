@@ -6,23 +6,24 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Noding.Snapround
 {
-
     /// <summary>
     /// Uses Snap Rounding to compute a rounded,
     /// fully noded arrangement from a set of <see cref="ISegmentString" />s.
-    /// Implements the Snap Rounding technique described in Hobby, Guibas and Marimont, and Goodrich et al.
-    /// Snap Rounding assumes that all vertices lie on a uniform grid
-    /// (hence the precision model of the input must be fixed precision,
-    /// and all the input vertices must be rounded to that precision).
+    /// Implements the Snap Rounding technique described in
+    /// the papers by Hobby, Guibas & Marimont, and Goodrich et al.
+    /// Snap Rounding assumes that all vertices lie on a uniform grid;
+    /// hence the precision model of the input must be fixed precision,
+    /// and all the input vertices must be rounded to that precision.
     /// <para>
     /// This implementation uses simple iteration over the line segments.
+    /// This is not the most efficient approach for large sets of segments.
     /// This implementation appears to be fully robust using an integer precision model.
     /// It will function with non-integer precision models, but the
     /// results are not 100% guaranteed to be correctly noded.
     /// </para>
     /// </summary>
     public class SimpleSnapRounder : INoder
-    {        
+    {
         private readonly LineIntersector _li;
         private readonly double _scaleFactor;
         private IList<ISegmentString> _nodedSegStrings;
@@ -31,9 +32,9 @@ namespace NetTopologySuite.Noding.Snapround
         /// Initializes a new instance of the <see cref="SimpleSnapRounder"/> class.
         /// </summary>
         /// <param name="pm">The <see cref="PrecisionModel" /> to use.</param>
-        public SimpleSnapRounder(PrecisionModel pm) 
-        {            
-            _li = new RobustLineIntersector {PrecisionModel = pm};
+        public SimpleSnapRounder(PrecisionModel pm)
+        {
+            _li = new RobustLineIntersector { PrecisionModel = pm };
             _scaleFactor = pm.Scale;
         }
 
@@ -56,12 +57,12 @@ namespace NetTopologySuite.Noding.Snapround
         public void ComputeNodes(IList<ISegmentString> inputSegmentStrings)
         {
             _nodedSegStrings = inputSegmentStrings;
-            SnapRound(inputSegmentStrings, _li);            
+            SnapRound(inputSegmentStrings, _li);
         }
 
         /*
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="inputSegmentStrings"></param>
         private void CheckCorrectness(IList inputSegmentStrings)
@@ -75,8 +76,9 @@ namespace NetTopologySuite.Noding.Snapround
             catch (Exception ex) { Trace.WriteLine(ex.ToString()); }
         }
         */
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="segStrings"></param>
         /// <param name="li"></param>
@@ -98,7 +100,7 @@ namespace NetTopologySuite.Noding.Snapround
         private static IList<Coordinate> FindInteriorIntersections(IList<ISegmentString> segStrings, LineIntersector li)
         {
             IntersectionFinderAdder intFinderAdder = new IntersectionFinderAdder(li);
-            SinglePassNoder noder = new MCIndexNoder(intFinderAdder);            
+            SinglePassNoder noder = new MCIndexNoder(intFinderAdder);
             noder.ComputeNodes(segStrings);
             return intFinderAdder.InteriorIntersections;
         }
@@ -108,14 +110,14 @@ namespace NetTopologySuite.Noding.Snapround
         /// </summary>
         /// <param name="segStrings"></param>
         /// <param name="snapPts"></param>
-        private void ComputeSnaps(IEnumerable<ISegmentString> segStrings, IEnumerable<Coordinate> snapPts)
+        private void ComputeSnaps(IEnumerable<ISegmentString> segStrings, ICollection<Coordinate> snapPts)
         {
             foreach (INodableSegmentString ss in segStrings)
-                ComputeSnaps(ss, snapPts);            
+                ComputeSnaps(ss, snapPts);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="ss"></param>
         /// <param name="snapPts"></param>
@@ -134,12 +136,12 @@ namespace NetTopologySuite.Noding.Snapround
         /// Computes nodes introduced as a result of
         /// snapping segments to vertices of other segments.
         /// </summary>
-        /// <param name="edges"></param>
+        /// <param name="edges">The list of segment strings to snap together</param>
         public void ComputeVertexSnaps(IList<ISegmentString> edges)
         {
             foreach (INodableSegmentString edge0 in edges)
-                foreach (INodableSegmentString edge1 in edges)                    
-                    ComputeVertexSnaps(edge0, edge1);            
+                foreach (INodableSegmentString edge1 in edges)
+                    ComputeVertexSnaps(edge0, edge1);
         }
 
         /// <summary>
@@ -159,17 +161,16 @@ namespace NetTopologySuite.Noding.Snapround
                 {
                     // don't snap a vertex to itself
                     if (e0 == e1)
-                        if (i0 == i1) 
+                        if (i0 == i1)
                             continue;
 
                     bool isNodeAdded = //AddSnappedNode(hotPixel, e1, i1);
                                        hotPixel.AddSnappedNode(e1, i1);
                     // if a node is created for a vertex, that vertex must be noded too
                     if (isNodeAdded)
-                        e0.AddIntersection(pts0[i0], i0);                    
+                        e0.AddIntersection(pts0[i0], i0);
                 }
             }
         }
-
     }
 }

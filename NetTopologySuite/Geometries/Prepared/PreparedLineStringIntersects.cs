@@ -11,10 +11,10 @@ namespace NetTopologySuite.Geometries.Prepared
     /// for a target <see cref="PreparedLineString"/> relative to other <see cref="IGeometry"/> classes.
     ///</summary>
     /// <remarks>
-    /// Uses short-circuit tests and indexing to improve performance. 
+    /// Uses short-circuit tests and indexing to improve performance.
     /// </remarks>
     /// <author>Martin Davis</author>
-    public class PreparedLineStringIntersects
+    internal class PreparedLineStringIntersects
     {
         ///<summary>
         /// Computes the intersects predicate between a <see cref="PreparedLineString"/>
@@ -102,6 +102,5 @@ namespace NetTopologySuite.Geometries.Prepared
             }
             return false;
         }
-
     }
 }

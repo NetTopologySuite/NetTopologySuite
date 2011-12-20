@@ -9,35 +9,34 @@ namespace NetTopologySuite.Operation.Buffer
     /// <author>Martin Davis</author>
     public class BufferParameters : IBufferParameters
     {
-
         /**
-         * 
+         *
          */
         [Obsolete]
         public const int CAP_ROUND = 1;
         /**
-         * 
+         *
          */
         [Obsolete]
         public const int CAP_FLAT = 2;
         /**
-         * 
+         *
          */
         [Obsolete]
         public const int CAP_SQUARE = 3;
 
         /**
-         * 
+         *
          */
         [Obsolete]
         public const int JOIN_ROUND = 1;
         /**
-         * 
+         *
          */
         [Obsolete]
         public const int JOIN_MITRE = 2;
         /**
-         * 
+         *
          */
         [Obsolete]
         public const int JOIN_BEVEL = 3;
@@ -56,11 +55,11 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         public const double DefaultMitreLimit = 5.0;
 
-
         private int _quadrantSegments = DefaultQuadrantSegments;
         private EndCapStyle _endCapStyle = EndCapStyle.Round;
         private JoinStyle _joinStyle = JoinStyle.Round;
         private double _mitreLimit = DefaultMitreLimit;
+        private bool _isSingleSided;
 
         ///<summary>
         /// Creates a default set of parameters
@@ -85,7 +84,8 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="quadrantSegments"> the number of quadrant segments to use</param>
         /// <param name="endCapStyle"> the end cap style to use</param>
         public BufferParameters(int quadrantSegments,
-            EndCapStyle endCapStyle) : this(quadrantSegments)
+            EndCapStyle endCapStyle)
+            : this(quadrantSegments)
         {
             EndCapStyle = endCapStyle;
         }
@@ -102,7 +102,7 @@ namespace NetTopologySuite.Operation.Buffer
             EndCapStyle endCapStyle,
             JoinStyle joinStyle,
             double mitreLimit)
-            :this(quadrantSegments, endCapStyle)
+            : this(quadrantSegments, endCapStyle)
         {
             JoinStyle = joinStyle;
             MitreLimit = mitreLimit;
@@ -123,7 +123,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// The default value of 8 gives less than 2% max error in the buffer distance.
         /// For a max error of &lt; 1%, use QS = 12.
         /// For a max error of &lt; 0.1%, use QS = 18.
-        /// The error is always less than the buffer distance 
+        /// The error is always less than the buffer distance
         /// (in other words, the computed buffer curve is always inside the true
         /// curve).
         /// </remarks>
@@ -135,12 +135,12 @@ namespace NetTopologySuite.Operation.Buffer
                 _quadrantSegments = value;
                 /*
                  * Indicates how to construct fillets.
-                 * If qs &gt;= 1, fillet is round, and qs indicates number of 
+                 * If qs &gt;= 1, fillet is round, and qs indicates number of
                  * segments to use to approximate a quarter-circle.
                  * If qs = 0, fillet is bevelled flat (i.e. no filleting is performed)
                  * If qs &lt; 0, fillet is mitred, and absolute value of qs
                  * indicates maximum length of mitre according to
-                 * 
+                 *
                  * mitreLimit = |qs|
                  */
                 if (_quadrantSegments == 0)
@@ -193,7 +193,6 @@ namespace NetTopologySuite.Operation.Buffer
             set { _endCapStyle = value; }
         }
 
-
         ///<summary>
         /// Gets/Sets the join style for outside (reflex) corners between line segments.
         ///</summary>
@@ -213,10 +212,10 @@ namespace NetTopologySuite.Operation.Buffer
         /// <para>
         /// The mitre ratio is the ratio of the distance from the corner
         /// to the end of the mitred offset corner.
-        /// When two line segments meet at a sharp angle, 
+        /// When two line segments meet at a sharp angle,
         /// a miter join will extend far beyond the original geometry.
         /// (and in the extreme case will be infinitely far.)
-        /// To prevent unreasonable geometry, the mitre limit 
+        /// To prevent unreasonable geometry, the mitre limit
         /// allows controlling the maximum length of the join corner.
         /// Corners with a ratio which exceed the limit will be beveled.
         /// </para>
@@ -227,6 +226,21 @@ namespace NetTopologySuite.Operation.Buffer
             set { _mitreLimit = value; }
         }
 
-
+        /// <summary>
+        /// Gets or sets whether the computed buffer should be single-sided.
+        /// A single-sided buffer is constructed on only one side of each input line.
+        /// <para>
+        /// The side used is determined by the sign of the buffer distance:
+        /// <list type="Bullet">
+        /// <item>a positive distance indicates the left-hand side</item>
+        /// <item>a negative distance indicates the right-hand side</item>
+        /// </list>
+        /// The single-sided buffer of point geometries is  the same as the regular buffer.
+        /// </para><para>
+        /// The End Cap Style for single-sided buffers is always ignored,
+        /// and forced to the equivalent of <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Flat"/>.
+        /// </para>
+        /// </summary>
+        public bool IsSingleSided { get { return _isSingleSided; } set { _isSingleSided = value; } }
     }
 }

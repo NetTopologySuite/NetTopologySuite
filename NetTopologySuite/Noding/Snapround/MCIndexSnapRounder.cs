@@ -6,15 +6,14 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Noding.Snapround
 {
-
     /// <summary>
     /// Uses Snap Rounding to compute a rounded,
     /// fully noded arrangement from a set of <see cref="ISegmentString" />s.
-    /// Implements the Snap Rounding technique described in 
+    /// Implements the Snap Rounding technique described in
     /// papers by Hobby, Guibas and Marimont, and Goodrich et al.
-    /// Snap Rounding assumes that all vertices lie on a uniform grid
-    /// (hence the precision model of the input must be fixed precision,
-    /// and all the input vertices must be rounded to that precision).
+    /// Snap Rounding assumes that all vertices lie on a uniform grid;
+    /// hence the precision model of the input must be fixed precision,
+    /// and all the input vertices must be rounded to that precision.
     /// <para>
     /// This implementation uses a monotone chains and a spatial index to
     /// speed up the intersection tests.
@@ -24,7 +23,7 @@ namespace NetTopologySuite.Noding.Snapround
     /// </para>
     /// </summary>
     public class MCIndexSnapRounder : INoder
-    {        
+    {
         private readonly LineIntersector _li;
         private readonly double _scaleFactor;
         private MCIndexNoder _noder;
@@ -35,9 +34,9 @@ namespace NetTopologySuite.Noding.Snapround
         /// Initializes a new instance of the <see cref="MCIndexSnapRounder"/> class.
         /// </summary>
         /// <param name="pm">The <see cref="PrecisionModel" /> to use.</param>
-        public MCIndexSnapRounder(IPrecisionModel pm) 
+        public MCIndexSnapRounder(IPrecisionModel pm)
         {
-            _li = new RobustLineIntersector {PrecisionModel = pm};
+            _li = new RobustLineIntersector { PrecisionModel = pm };
             _scaleFactor = pm.Scale;
         }
 
@@ -62,12 +61,12 @@ namespace NetTopologySuite.Noding.Snapround
             _nodedSegStrings = inputSegmentStrings;
             _noder = new MCIndexNoder();
             _pointSnapper = new MCIndexPointSnapper(_noder.MonotoneChains, _noder.Index);
-            SnapRound(inputSegmentStrings, _li);            
+            SnapRound(inputSegmentStrings, _li);
         }
 
         /*
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="inputSegmentStrings"></param>
         private static void CheckCorrectness(IList inputSegmentStrings)
@@ -81,8 +80,9 @@ namespace NetTopologySuite.Noding.Snapround
             catch (Exception ex) { Trace.WriteLine(ex.ToString()); }
         }
          */
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="segStrings"></param>
         /// <param name="li"></param>
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Noding.Snapround
         {
             IList<Coordinate> intersections = FindInteriorIntersections(segStrings, li);
             ComputeIntersectionSnaps(intersections);
-            ComputeVertexSnaps(segStrings);        
+            ComputeVertexSnaps(segStrings);
         }
 
         /// <summary>
@@ -127,11 +127,11 @@ namespace NetTopologySuite.Noding.Snapround
         /// Computes nodes introduced as a result of
         /// snapping segments to vertices of other segments.
         /// </summary>
-        /// <param name="edges"></param>
+        /// <param name="edges">The list of segment strings to snap together</param>
         public void ComputeVertexSnaps(IList<ISegmentString> edges)
         {
             foreach (INodableSegmentString edge in edges)
-                ComputeVertexSnaps(edge);            
+                ComputeVertexSnaps(edge);
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace NetTopologySuite.Noding.Snapround
         private void ComputeVertexSnaps(INodableSegmentString e)
         {
             Coordinate[] pts0 = e.Coordinates;
-            for(int i = 0; i < pts0.Length - 1; i++)
+            for (int i = 0; i < pts0.Length - 1; i++)
             {
                 HotPixel hotPixel = new HotPixel(pts0[i], _scaleFactor, _li);
                 bool isNodeAdded = _pointSnapper.Snap(hotPixel, e, i);

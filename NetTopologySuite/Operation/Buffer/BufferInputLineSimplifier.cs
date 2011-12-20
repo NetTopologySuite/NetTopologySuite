@@ -1,4 +1,3 @@
-using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
@@ -15,25 +14,28 @@ namespace NetTopologySuite.Operation.Buffer
     /// shape which will be buffered.
     /// It also reduces the risk of gores created by
     /// the quantized fillet arcs (although this issue
-    /// should be eliminated in any case by the 
+    /// should be eliminated in any case by the
     /// offset curve generation logic).
     /// </para>
     /// <para>
     /// A key aspect of the simplification is that it
-    /// affects inside (concave or inward) corners only.  
+    /// affects inside (concave or inward) corners only.
     /// Convex (outward) corners are preserved, since they
-    /// are required to ensure that the eventual buffer curve
+    /// are required to ensure that the generated buffer curve
     /// lies at the correct distance from the input geometry.
     /// </para>
     /// <para>
     /// Another important heuristic used is that the end segments
     /// of the input are never simplified.  This ensures that
-    /// the client buffer code is able to generate end caps consistently.
+    /// the client buffer code is able to generate end caps faithfully.
     /// </para>
     /// <para>
     /// No attempt is made to avoid self-intersections in the output.
-    /// This is acceptable for use for generating a buffer offset curve, 
-    /// but means that this cannot be used as a general-purpose polygon simplification algorithm.
+    /// This is acceptable for use for generating a buffer offset curve,
+    /// since the buffer algorithm is insensitive to invalid polygonal
+    /// geometry.  However,
+    /// this means that this algorithm
+    /// cannot be used as a general-purpose polygon simplification technique.
     /// </para>
     /// </remarks>
     /// <author> Martin Davis</author>
@@ -41,8 +43,8 @@ namespace NetTopologySuite.Operation.Buffer
     {
         /// <summary>
         /// Simplify the input coordinate list.
-        /// If the distance tolerance is positive,  
-        /// concavities on the LEFT side of the line are simplified. 
+        /// If the distance tolerance is positive,
+        /// concavities on the LEFT side of the line are simplified.
         /// If the supplied distance tolerance is negative,
         /// concavities on the RIGHT side of the line are simplified.
         /// </summary>
@@ -142,11 +144,12 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /**
-         * 
+         *
          * @param index
-         * @return 
+         * @return
          * @return inputLine.length if there are no more non-deleted indices
          */
+
         /// <summary>
         /// Finds the next non-deleted index, or the end of the point array if none
         /// </summary>
@@ -184,7 +187,7 @@ namespace NetTopologySuite.Operation.Buffer
             if (!IsConcave(p0, p1, p2)) return false;
             if (!IsShallow(p0, p1, p2, distanceTol)) return false;
 
-            // MD - don't use this heuristic - it's too restricting 
+            // MD - don't use this heuristic - it's too restricting
             //  	if (p0.distance(p2) > distanceTol) return false;
 
             return IsShallowSampled(p0, p1, i0, i2, distanceTol);
@@ -218,26 +221,25 @@ namespace NetTopologySuite.Operation.Buffer
             // check every n'th point to see if it is within tolerance
             int inc = (i2 - i0) / NumPtsToCheck;
             if (inc <= 0) inc = 1;
-  	
-            for (int i = i0; i < i2; i += inc) {
-  	            if (! IsShallow(p0, p2, _inputLine[i], distanceTol)) return false;
+
+            for (int i = i0; i < i2; i += inc)
+            {
+                if (!IsShallow(p0, p2, _inputLine[i], distanceTol)) return false;
             }
             return true;
         }
-  
+
         private static bool IsShallow(Coordinate p0, Coordinate p1, Coordinate p2, double distanceTol)
         {
             double dist = CGAlgorithms.DistancePointLine(p1, p0, p2);
             return dist < distanceTol;
         }
-  
-  
+
         private bool IsConcave(Coordinate p0, Coordinate p1, Coordinate p2)
         {
             var orientation = CGAlgorithms.ComputeOrientation(p0, p1, p2);
             bool isConcave = (orientation == _angleOrientation);
             return isConcave;
         }
-
     }
 }

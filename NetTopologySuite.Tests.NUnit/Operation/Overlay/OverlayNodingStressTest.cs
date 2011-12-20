@@ -1,8 +1,6 @@
 using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Overlay.Snap;
 using NUnit.Framework;
 
@@ -20,10 +18,11 @@ using NUnit.Framework;
  * an exception is thrown.  It is expected (and has been observed)
  * that cross-snapping works extremely well on this dataset.
  */
+
 namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
 {
     [TestFixture]
-    public class OverlayNodingStressTest    
+    public class OverlayNodingStressTest
     {
         private static int ITER_LIMIT = 10000;
         private static int BATCH_SIZE = 20;
@@ -41,32 +40,33 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
         public void TestNoding()
         {
             int iterLimit = ITER_LIMIT;
-            for (int i = 0; i < iterLimit; i++) {
-	            Console.WriteLine("Iter: " + i
-			            + "  Noding failure count = " + failureCount);
-	            double ang1 = getRand() * Math.PI;
-	            double ang2 = getRand() * Math.PI;
-            //			Geometry[] geom = generateGeometryStar(ang1, ang2);
-	            IGeometry[] geom = GenerateGeometryAccum(ang1, ang2);
-	            CheckIntersection(geom[0], geom[1]);
+            for (int i = 0; i < iterLimit; i++)
+            {
+                Console.WriteLine("Iter: " + i
+                        + "  Noding failure count = " + failureCount);
+                double ang1 = getRand() * Math.PI;
+                double ang2 = getRand() * Math.PI;
+                //			Geometry[] geom = generateGeometryStar(ang1, ang2);
+                IGeometry[] geom = GenerateGeometryAccum(ang1, ang2);
+                CheckIntersection(geom[0], geom[1]);
             }
             Console.WriteLine(
-		            "Test count = " + iterLimit
-		            + "  Noding failure count = " + failureCount
-	            );
+                    "Test count = " + iterLimit
+                    + "  Noding failure count = " + failureCount
+                );
         }
 
         public IGeometry[] GenerateGeometryStar(double angle1, double angle2)
         {
-	        RotatedRectangleFactory rrFact = new RotatedRectangleFactory();
-	        IPolygon rr1 = rrFact.CreateRectangle(100, 20, angle1);
-	        IPolygon rr2 = rrFact.CreateRectangle(100, 20, angle2);
+            RotatedRectangleFactory rrFact = new RotatedRectangleFactory();
+            IPolygon rr1 = rrFact.CreateRectangle(100, 20, angle1);
+            IPolygon rr2 = rrFact.CreateRectangle(100, 20, angle2);
 
-	        // this line can be used to test for the presence of noding failures for
-	        // non-tricky cases
-	        // Geometry star = rr2;
-	        IGeometry star = rr1.Union(rr2);
-	        return new IGeometry[] { star, rr1 };
+            // this line can be used to test for the presence of noding failures for
+            // non-tricky cases
+            // Geometry star = rr2;
+            IGeometry star = rr1.Union(rr2);
+            return new IGeometry[] { star, rr1 };
         }
 
         private static double MAX_DISPLACEMENT = 60;
@@ -76,60 +76,62 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
 
         public IGeometry[] GenerateGeometryAccum(double angle1, double angle2)
         {
-	        RotatedRectangleFactory rrFact = new RotatedRectangleFactory();
-	        double basex = angle2 * MAX_DISPLACEMENT - (MAX_DISPLACEMENT / 2);
-	        Coordinate baseCoord = new Coordinate(basex, basex);
-	        IPolygon rr1 = rrFact.CreateRectangle(100, 20, angle1, baseCoord);
+            RotatedRectangleFactory rrFact = new RotatedRectangleFactory();
+            double basex = angle2 * MAX_DISPLACEMENT - (MAX_DISPLACEMENT / 2);
+            Coordinate baseCoord = new Coordinate(basex, basex);
+            IPolygon rr1 = rrFact.CreateRectangle(100, 20, angle1, baseCoord);
 
-	        // limit size of accumulated star
-	        geomCount++;
-	        if (geomCount >= BATCH_SIZE)
-		        geomCount = 0;
-	        if (geomCount == 0)
-		        baseAccum = null;
+            // limit size of accumulated star
+            geomCount++;
+            if (geomCount >= BATCH_SIZE)
+                geomCount = 0;
+            if (geomCount == 0)
+                baseAccum = null;
 
-	        if (baseAccum == null)
-		        baseAccum = rr1;
-	        else {
-	        // this line can be used to test for the presence of noding failures for
-	        // non-tricky cases
-	        // Geometry star = rr2;
-		        baseAccum = rr1.Union(baseAccum);
-	        }
-	        return new IGeometry[] { baseAccum, rr1 };
+            if (baseAccum == null)
+                baseAccum = rr1;
+            else
+            {
+                // this line can be used to test for the presence of noding failures for
+                // non-tricky cases
+                // Geometry star = rr2;
+                baseAccum = rr1.Union(baseAccum);
+            }
+            return new IGeometry[] { baseAccum, rr1 };
         }
 
         public void CheckIntersection(IGeometry baseGeom, IGeometry testGeom)
         {
-	        // this line can be used to test for the presence of noding failures for
-	        // non-tricky cases
-	        // Geometry star = rr2;
-	        Console.WriteLine("Star:");
-	        Console.WriteLine(baseGeom);
-	        Console.WriteLine("Rectangle:");
-	        Console.WriteLine(testGeom);
+            // this line can be used to test for the presence of noding failures for
+            // non-tricky cases
+            // Geometry star = rr2;
+            Console.WriteLine("Star:");
+            Console.WriteLine(baseGeom);
+            Console.WriteLine("Rectangle:");
+            Console.WriteLine(testGeom);
 
-	        // test to see whether the basic overlay code fails
-	        try
+            // test to see whether the basic overlay code fails
+            try
             {
-		        IGeometry intTrial = baseGeom.Intersection(testGeom);
-	        } catch (Exception ex) {
-		        failureCount++;
-	        }
+                IGeometry intTrial = baseGeom.Intersection(testGeom);
+            }
+            catch (Exception ex)
+            {
+                failureCount++;
+            }
 
-	        // this will throw an intersection if a robustness error occurs,
-	        // stopping the run
-	        IGeometry intersection = SnapIfNeededOverlayOp.intersection(baseGeom, testGeom);
-	        Console.WriteLine("Intersection:");
-	        Console.WriteLine(intersection);
+            // this will throw an intersection if a robustness error occurs,
+            // stopping the run
+            IGeometry intersection = SnapIfNeededOverlayOp.Intersection(baseGeom, testGeom);
+            Console.WriteLine("Intersection:");
+            Console.WriteLine(intersection);
         }
     }
 
-    class RotatedRectangleFactory
+    internal class RotatedRectangleFactory
     {
         public RotatedRectangleFactory()
         {
-
         }
 
         private static double PI_OVER_2 = Math.PI / 2;

@@ -13,8 +13,9 @@ namespace NetTopologySuite.Noding
     ///</summary>
     /// <remarks>
     /// <para>
-    /// This class assumes that at least one round of noding has already been performed
-    /// (which may still leave intersections, due to rounding issues).</para>
+    /// In the most common use case, validation stops after a single
+    /// non-noded intersection is detected.
+    /// </para>
     /// <para>Does NOT check a-b-a collapse situations.</para>
     /// <para>
     /// Also does not check for endpt-interior vertex intersections.
@@ -22,8 +23,8 @@ namespace NetTopologySuite.Noding
     /// able to compute intersections between vertices correctly.
     /// </para>
     /// <para>
-    /// User may either test the valid condition, or request that a <see cref="TopologyException"/>
-    /// be thrown.
+    /// The client may either test the <see cref="IsValid"/> condition,
+    /// or request that a suitable <see cref="TopologyException"/> be thrown.
     /// </para>
     /// </remarks>
     public class FastNodingValidator
@@ -31,13 +32,20 @@ namespace NetTopologySuite.Noding
         private readonly LineIntersector _li = new RobustLineIntersector();
 
         private readonly List<ISegmentString> _segStrings = new List<ISegmentString>();
+        private bool _findAllIntersections;
         private InteriorIntersectionFinder _segInt;
         private Boolean _isValid = true;
 
+        /// <summary>
+        /// Creates a new noding validator for a given set of linework.
+        /// </summary>
+        /// <param name="segStrings">A collection of <see cref="ISegmentString"/>s</param>
         public FastNodingValidator(IEnumerable<ISegmentString> segStrings)
         {
             _segStrings.AddRange(segStrings);
         }
+
+        public bool FindAllIntersections { get { return _findAllIntersections; } set { _findAllIntersections = value; } }
 
         ///<summary>
         /// Checks for an intersection and reports if one is found.
@@ -88,12 +96,13 @@ namespace NetTopologySuite.Noding
         private void CheckInteriorIntersections()
         {
             /*
-             * MD - It may even be reliable to simply check whether 
+             * MD - It may even be reliable to simply check whether
              * end segments (of SegmentStrings) have an interior intersection,
              * since noding should have split any true interior intersections already.
              */
             _isValid = true;
             _segInt = new InteriorIntersectionFinder(_li);
+            _segInt.FindAllIntersections = _findAllIntersections;
             MCIndexNoder noder = new MCIndexNoder(_segInt);
             noder.ComputeNodes(_segStrings); //.ComputeNodes(segStrings);
             if (_segInt.HasIntersection)
@@ -102,6 +111,5 @@ namespace NetTopologySuite.Noding
                 return;
             }
         }
-
     }
 }

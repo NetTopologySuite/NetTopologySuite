@@ -9,7 +9,7 @@ namespace NetTopologySuite.Geometries.Prepared
     /// A base class for predicate operations on <see cref="PreparedPolygon"/>s.
     ///</summary>
     /// <author>mbdavis</author>
-    public abstract class PreparedPolygonPredicate
+    internal abstract class PreparedPolygonPredicate
     {
         protected PreparedPolygon prepPoly;
         private readonly IPointOnGeometryLocator _targetPointLocator;
@@ -98,7 +98,6 @@ namespace NetTopologySuite.Geometries.Prepared
             return false;
         }
 
-
         ///<summary>
         /// Tests whether any component of the target geometry intersects the test geometry (which must be an areal geometry)
         ///</summary>
@@ -116,6 +115,5 @@ namespace NetTopologySuite.Geometries.Prepared
             }
             return false;
         }
-
     }
 }

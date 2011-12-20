@@ -13,7 +13,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// Raw curves need to be noded together and polygonized to form the final buffer area.
     /// </summary>
     public class OffsetCurveSetBuilder
-    {        
+    {
         private readonly IGeometry _inputGeom;
         private readonly double _distance;
         private readonly OffsetCurveBuilder _curveBuilder;
@@ -21,7 +21,7 @@ namespace NetTopologySuite.Operation.Buffer
         private readonly IList<ISegmentString> _curveList = new List<ISegmentString>();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="inputGeom"></param>
         /// <param name="distance"></param>
@@ -40,21 +40,9 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <returns>A Collection of SegmentStrings representing the raw buffer curves.</returns>
         public IList<ISegmentString> GetCurves()
-        {            
-            Add(_inputGeom);
-            return _curveList;         
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="lineList"></param>
-        /// <param name="leftLoc"></param>
-        /// <param name="rightLoc"></param>
-        private void AddCurves(IEnumerable<Coordinate[]> lineList, Location leftLoc, Location rightLoc)
         {
-            foreach (Coordinate[] coords in lineList)
-                AddCurve(coords, leftLoc, rightLoc);
+            Add(_inputGeom);
+            return _curveList;
         }
 
         /// <summary>
@@ -68,8 +56,8 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         private void AddCurve(Coordinate[] coord, Location leftLoc, Location rightLoc)
         {
-            // don't add null curves!
-            if (coord.Length < 2) 
+            // don't add null or trivial curves!
+            if (coord == null || coord.Length < 2)
                 return;
             // add the edge for a coordinate list which is a raw offset curve
             var e = new NodedSegmentString(coord, new Label(0, Location.Boundary, leftLoc, rightLoc));
@@ -77,32 +65,32 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="g"></param>
         private void Add(IGeometry g)
         {
             if (g.IsEmpty) return;
-            if (g is IPolygon)                 
-                AddPolygon((IPolygon) g);
+            if (g is IPolygon)
+                AddPolygon((IPolygon)g);
             // LineString also handles LinearRings
-            else if (g is ILineString)        
+            else if (g is ILineString)
                 AddLineString(g);
-            else if (g is IPoint) 
+            else if (g is IPoint)
                 AddPoint(g);
-            else if (g is IMultiPoint) 
+            else if (g is IMultiPoint)
                 AddCollection(g);
-            else if (g is IMultiLineString) 
+            else if (g is IMultiLineString)
                 AddCollection(g);
             else if (g is IMultiPolygon)
                 AddCollection(g);
-            else if (g is IGeometryCollection) 
+            else if (g is IGeometryCollection)
                 AddCollection(g);
-            else  throw new NotSupportedException(g.GetType().FullName);
+            else throw new NotSupportedException(g.GetType().FullName);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="gc"></param>
         private void AddCollection(IGeometry gc)
@@ -120,28 +108,30 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="p"></param>
         private void AddPoint(IGeometry p)
         {
-            if (_distance <= 0.0) 
+            // a zero or negative width buffer of a line/point is empty
+            if (_distance <= 0.0)
                 return;
             var coord = p.Coordinates;
-            var lineList = _curveBuilder.GetLineCurve(coord, _distance);
-            AddCurves(lineList, Location.Exterior, Location.Interior);
+            var curve = _curveBuilder.GetLineCurve(coord, _distance);
+            AddCurve(curve, Location.Exterior, Location.Interior);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="line"></param>
         private void AddLineString(IGeometry line)
         {
-            if (_distance <= 0.0) 
+            // a zero or negative width buffer of a line/point is empty
+            if (_distance <= 0.0 && !_curveBuilder.BufferParameters.IsSingleSided)
                 return;
             var coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
-            var lineList = _curveBuilder.GetLineCurve(coord, _distance);
-            AddCurves(lineList, Location.Exterior, Location.Interior);
+            var curve = _curveBuilder.GetLineCurve(coord, _distance);
+            AddCurve(curve, Location.Exterior, Location.Interior);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="p"></param>
         private void AddPolygon(IPolygon p)
@@ -164,12 +154,12 @@ namespace NetTopologySuite.Operation.Buffer
             if (_distance <= 0.0 && shellCoord.Length < 3)
                 return;
 
-            AddPolygonRing(shellCoord, offsetDistance, offsetSide, 
+            AddPolygonRing(shellCoord, offsetDistance, offsetSide,
                            Location.Exterior, Location.Interior);
 
             for (var i = 0; i < p.NumInteriorRings; i++)
             {
-                var hole = (ILinearRing) p.GetInteriorRingN(i);
+                var hole = (ILinearRing)p.GetInteriorRingN(i);
                 var holeCoord = CoordinateArrays.RemoveRepeatedPoints(hole.Coordinates);
 
                 // optimization - don't bother computing buffer for this hole
@@ -186,7 +176,7 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Add an offset curve for a ring.
+        /// Adds an offset curve for a polygon ring.
         /// The side and left and right topological location arguments
         /// assume that the ring is oriented CW.
         /// If the ring is in the opposite orientation,
@@ -197,19 +187,24 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="side">The side of the ring on which to construct the buffer line.</param>
         /// <param name="cwLeftLoc">The location on the L side of the ring (if it is CW).</param>
         /// <param name="cwRightLoc">The location on the R side of the ring (if it is CW).</param>
-        private void AddPolygonRing(Coordinate[] coord, double offsetDistance, 
+        private void AddPolygonRing(Coordinate[] coord, double offsetDistance,
             Positions side, Location cwLeftLoc, Location cwRightLoc)
         {
+            // don't bother adding ring if it is "flat" and will disappear in the output
+            if (offsetDistance == 0.0 && coord.Length < LinearRing.MinimumValidSize)
+                return;
+
             var leftLoc = cwLeftLoc;
             var rightLoc = cwRightLoc;
-            if (CGAlgorithms.IsCCW(coord))
+            if (coord.Length >= LinearRing.MinimumValidSize
+                && CGAlgorithms.IsCCW(coord))
             {
                 leftLoc = cwRightLoc;
                 rightLoc = cwLeftLoc;
                 side = Position.Opposite(side);
             }
-            var lineList = _curveBuilder.GetRingCurve(coord, side, offsetDistance);
-            AddCurves(lineList, leftLoc, rightLoc);
+            var curve = _curveBuilder.GetRingCurve(coord, side, offsetDistance);
+            AddCurve(curve, leftLoc, rightLoc);
         }
 
         /// <summary>
@@ -258,7 +253,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// This test is important, since it removes a problematic case where
         /// the buffer distance is slightly larger than the inCentre distance.
         /// In this case the triangle buffer curve "inverts" with incorrect topology,
-        /// producing an incorrect hole in the buffer.       
+        /// producing an incorrect hole in the buffer.
         /// </summary>
         /// <param name="triangleCoord"></param>
         /// <param name="bufferDistance"></param>
