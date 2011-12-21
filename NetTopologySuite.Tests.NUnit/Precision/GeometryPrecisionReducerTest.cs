@@ -1,6 +1,4 @@
-using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Precision;
@@ -8,29 +6,28 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Precision
 {
-    [TestFixture(Ignore = true, IgnoreReason = "The GeometryPrecisionReducer is not yet in NTS, because it was introduced in JTS 1.12.  When it is introduced, uncomment the commented areas below")]
+    [TestFixture]
     public class GeometryPrecisionReducerTest
     {
         private PrecisionModel pmFloat;
         private PrecisionModel pmFixed1;
-        private SimpleGeometryPrecisionReducer reducer;
-        private SimpleGeometryPrecisionReducer reducerKeepCollapse;
+        private GeometryPrecisionReducer reducer;
+        private GeometryPrecisionReducer reducerKeepCollapse;
 
         private GeometryFactory gfFloat;
         WKTReader reader;
 
         public GeometryPrecisionReducerTest()
         {
-            //TODO: Uncomment this block when the GeometryPrecisionReducer class is migrated to NTS
-            //pmFloat = new PrecisionModel();
-            //pmFixed1 = new PrecisionModel(1);
-            //reducer = new GeometryPrecisionReducer(pmFixed1);
-            //reducerKeepCollapse = new GeometryPrecisionReducer(pmFixed1);
+            pmFloat = new PrecisionModel();
+            pmFixed1 = new PrecisionModel(1);
+            reducer = new GeometryPrecisionReducer(pmFixed1);
+            reducerKeepCollapse = new GeometryPrecisionReducer(pmFixed1);
 
-            //gfFloat = new GeometryFactory(pmFloat, 0);
-            //reader = new WKTReader(gfFloat);
+            gfFloat = new GeometryFactory(pmFloat, 0);
+            reader = new WKTReader(gfFloat);
 
-            //reducerKeepCollapse.RemoveCollapsedComponents = false;
+            reducerKeepCollapse.RemoveCollapsedComponents = false;
         }
 
         [Test]
@@ -110,9 +107,8 @@ namespace NetTopologySuite.Tests.NUnit.Precision
         {
             IGeometry g = reader.Read("POLYGON ((10 10, 100 100, 200 10.1, 300 10, 10 10))");
             IGeometry g2 = reader.Read("POLYGON ((10 10, 100 100, 200 10,   300 10, 10 10))");
-            //TODO: Uncomment these lines when the GeometryPrecisionReducer class is migrated to NTS
-            //IGeometry gReduce = GeometryPrecisionReducer.reducePointwise(g, pmFixed1);
-            //Assert.IsTrue(gReduce.EqualsExact(g2));
+            IGeometry gReduce = GeometryPrecisionReducer.ReducePointwise(g, pmFixed1);
+            Assert.IsTrue(gReduce.EqualsExact(g2));
         }
 
         [Test]
@@ -129,9 +125,8 @@ namespace NetTopologySuite.Tests.NUnit.Precision
         {
             IGeometry g = reader.Read("POLYGON ((10 10, 100 100, 200 10.1, 300 100, 400 10, 10 10))");
             IGeometry g2 = reader.Read("POLYGON ((10 10, 100 100, 200 10,   300 100, 400 10, 10 10))");
-            //TODO: Uncomment these lines when the GeometryPrecisionReducer class is migrated to NTS
-            //IGeometry gReduce = GeometryPrecisionReducer.ReducePointwise(g, pmFixed1);
-            //Assert.IsTrue(gReduce.EqualsExact(g2));
+            IGeometry gReduce = GeometryPrecisionReducer.ReducePointwise(g, pmFixed1);
+            Assert.IsTrue(gReduce.EqualsExact(g2));
         }
     }
 }
