@@ -16,14 +16,25 @@ namespace NetTopologySuite.Simplify
     /// in the same order
     /// The result rings touch at no more than the number of touching point in the input
     /// (although they may touch at fewer points).
-    /// (The key implication of this constraint is that the 
-    /// output will be topologically valid if the input was.) 
+    /// (The key implication of this constraint is that the
+    /// output will be topologically valid if the input was.)
     /// </summary>
+    /// <remarks>
+    /// <h3>KNOWN BUGS</h3>
+    /// <list type="Bullet">
+    /// <item>If a small hole is very near an edge, it is possible for the edge to be moved by
+    /// a relatively large tolerance value and end up with the hole outside the result shell.
+    /// Similarly, it is possible for a small polygon component to end up inside
+    /// a nearby larger polygon.
+    ///  A workaround is to test for this situation in post-processing and remove
+    /// any invalid holes or polygons.</item>
+    /// </list>
+    /// </remarks>
     /// <see cref="DouglasPeuckerSimplifier"/>
     public class TopologyPreservingSimplifier
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geom"></param>
         /// <param name="distanceTolerance"></param>
@@ -40,7 +51,7 @@ namespace NetTopologySuite.Simplify
         private IDictionary<ILineString, TaggedLineString> _lineStringMap;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="inputGeom"></param>
         public TopologyPreservingSimplifier(IGeometry inputGeom)
@@ -49,7 +60,7 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public double DistanceTolerance
         {
@@ -64,7 +75,7 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public IGeometry GetResultGeometry()
@@ -77,14 +88,14 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private class LineStringTransformer : GeometryTransformer
         {
             private readonly TopologyPreservingSimplifier _container;
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             /// <param name="container"></param>
             public LineStringTransformer(TopologyPreservingSimplifier container)
@@ -93,7 +104,7 @@ namespace NetTopologySuite.Simplify
             }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             /// <param name="coords"></param>
             /// <param name="parent"></param>
@@ -112,14 +123,14 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private class LineStringMapBuilderFilter : IGeometryComponentFilter
         {
             private readonly TopologyPreservingSimplifier _container;
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             /// <param name="container"></param>
             public LineStringMapBuilderFilter(TopologyPreservingSimplifier container)
@@ -128,7 +139,7 @@ namespace NetTopologySuite.Simplify
             }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             /// <param name="geom"></param>
             public void Filter(IGeometry geom)

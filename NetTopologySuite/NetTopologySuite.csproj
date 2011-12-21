@@ -402,6 +402,11 @@
     <Compile Include="Precision\SimpleGeometryPrecisionReducer.cs" />
     <Compile Include="Precision\SimpleMinimumClearance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shape\Fractal\KochSnowflakeBuilder.cs" />
+    <Compile Include="Shape\Fractal\SierpinskiCarpetBuilder.cs" />
+    <Compile Include="Shape\GeometricShapeBuilder.cs" />
+    <Compile Include="Shape\Random\RandomPointsBuilder.cs" />
+    <Compile Include="Shape\Random\RandomPointsInGridBuilder.cs" />
     <Compile Include="Simplify\DouglasPeuckerLineSimplifier.cs" />
     <Compile Include="Simplify\DouglasPeuckerSimplifier.cs" />
     <Compile Include="Simplify\LineSegmentIndex.cs" />

@@ -1044,6 +1044,21 @@
     <Compile Include="..\NetTopologySuite\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\NetTopologySuite\Shape\Fractal\KochSnowflakeBuilder.cs">
+      <Link>Shape\Fractal\KochSnowflakeBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Shape\Fractal\SierpinskiCarpetBuilder.cs">
+      <Link>Shape\Fractal\SierpinskiCarpetBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Shape\GeometricShapeBuilder.cs">
+      <Link>Shape\GeometricShapeBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Shape\Random\RandomPointsBuilder.cs">
+      <Link>Shape\Random\RandomPointsBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Shape\Random\RandomPointsInGridBuilder.cs">
+      <Link>Shape\Random\RandomPointsInGridBuilder.cs</Link>
+    </Compile>
     <Compile Include="..\NetTopologySuite\Simplify\DouglasPeuckerLineSimplifier.cs">
       <Link>Simplify\DouglasPeuckerLineSimplifier.cs</Link>
     </Compile>

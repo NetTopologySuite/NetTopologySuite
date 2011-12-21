@@ -260,11 +260,14 @@ namespace NetTopologySuite.Geometries.Utilities
 
             if (isAllValidLinearRings)
             {
-                //var holesAsLinearRing = (from ls in holes select ((ILinearRing)ls)).ToArray();
 #if !SILVERLIGHT
                 var holesAsLinearRing = holes.ConvertAll<ILinearRing>(ls => (ILinearRing)ls).ToArray();
 #else
-                var holesAsLinearRing = (from ls in holes select ((ILinearRing) ls)).ToArray();
+
+                var tmp = new List<ILinearRing>();
+                foreach (var lineString in holes)
+                    tmp.Add((ILinearRing)lineString);
+                var holesAsLinearRing = tmp.ToArray();
 #endif
 
                 return Factory.CreatePolygon((ILinearRing)shell, holesAsLinearRing);
