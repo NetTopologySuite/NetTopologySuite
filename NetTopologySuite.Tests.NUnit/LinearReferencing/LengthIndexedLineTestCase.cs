@@ -1,8 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 using NetTopologySuite.LinearReferencing;
 using NUnit.Framework;
 
@@ -52,18 +49,36 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
                                 10, -1, "LINESTRING (20 0, 25 0, 29 0)");
         }
 
+        /**
+         * Tests that leading and trailing zero-length sublines are trimmed in the computed result,
+         * and that zero-length extracts return the lowest extracted zero-length line
+         */
+
+        [Test]
+        public void TestExtractLineIndexAtEndpointWithZeroLenComponents()
+        {
+            CheckExtractLine("MULTILINESTRING ((0 0, 10 0), (10 0, 10 0), (20 0, 25 0, 30 0))",
+                10, -1, "LINESTRING (20 0, 25 0, 29 0)");
+            CheckExtractLine("MULTILINESTRING ((0 0, 10 0), (10 0, 10 0), (20 0, 25 0, 30 0))",
+                5, 10, "LINESTRING (5 0, 10 0)");
+            CheckExtractLine("MULTILINESTRING ((0 0, 10 0), (10 0, 10 0), (10 0, 10 0), (20 0, 25 0, 30 0))",
+                10, 10, "LINESTRING (10 0, 10 0)");
+            CheckExtractLine("MULTILINESTRING ((0 0, 10 0), (10 0, 10 0), (10 0, 10 0), (10 0, 10 0), (20 0, 25 0, 30 0))",
+                10, -10, "LINESTRING (10 0, 10 0)");
+        }
+
         [Test]
         public void TestExtractLineBothIndicesAtEndpoint()
         {
             CheckExtractLine("MULTILINESTRING ((0 0, 10 0), (20 0, 25 0, 30 0))",
-                                10, 10, "LINESTRING (20 0, 20 0)");
+                                10, 10, "LINESTRING (10 0, 10 0)");
         }
 
         [Test]
         public void TestExtractLineBothIndicesAtEndpointNegative()
         {
             CheckExtractLine("MULTILINESTRING ((0 0, 10 0), (20 0, 25 0, 30 0))",
-                                -10, 10, "LINESTRING (20 0, 20 0)");
+                                -10, 10, "LINESTRING (10 0, 10 0)");
         }
 
         [Test]

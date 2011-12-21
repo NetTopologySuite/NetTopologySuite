@@ -9,28 +9,28 @@ namespace NetTopologySuite.LinearReferencing
     /// Computes the <see cref="LinearLocation" /> of the point
     /// on a linear <see cref="Geometry" />nearest a given <see cref="Coordinate"/>.
     /// The nearest point is not necessarily unique; this class
-    /// always computes the nearest point closest to the start of the geometry.
+    /// always computes the nearest point closest
+    /// to the start of the geometry.
     /// </summary>
     public class LocationIndexOfPoint
-    {        
+    {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="linearGeom"></param>
         /// <param name="inputPt"></param>
         /// <returns></returns>
         public static LinearLocation IndexOf(IGeometry linearGeom, Coordinate inputPt)
         {
-            LocationIndexOfPoint locater = new LocationIndexOfPoint(linearGeom);
+            var locater = new LocationIndexOfPoint(linearGeom);
             return locater.IndexOf(inputPt);
         }
 
         public static LinearLocation IndexOfAfter(IGeometry linearGeom, Coordinate inputPt, LinearLocation minIndex)
         {
-            LocationIndexOfPoint locater = new LocationIndexOfPoint(linearGeom);
+            var locater = new LocationIndexOfPoint(linearGeom);
             return locater.IndexOfAfter(inputPt, minIndex);
         }
-
 
         private readonly IGeometry _linearGeom;
 
@@ -42,8 +42,8 @@ namespace NetTopologySuite.LinearReferencing
         {
             _linearGeom = linearGeom;
         }
-        
-        /// <summary>     
+
+        /// <summary>
         /// Find the nearest location along a linear <see cref="Geometry" /> to a given point.
         /// </summary>
         /// <param name="inputPt">The coordinate to locate.</param>
@@ -65,15 +65,15 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>The location of the nearest point.</returns>
         public LinearLocation IndexOfAfter(Coordinate inputPt, LinearLocation minIndex)
         {
-            if (minIndex == null) 
+            if (minIndex == null)
                 return IndexOf(inputPt);
 
             // sanity check for minLocation at or past end of line
-            LinearLocation endLoc = LinearLocation.GetEndLocation(_linearGeom);
+            var endLoc = LinearLocation.GetEndLocation(_linearGeom);
             if (endLoc.CompareTo(minIndex) <= 0)
                 return endLoc;
 
-            LinearLocation closestAfter = IndexOfFromStart(inputPt, minIndex);
+            var closestAfter = IndexOfFromStart(inputPt, minIndex);
 
             /*
              * Return the minDistanceLocation found.
@@ -84,33 +84,34 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="inputPt"></param>
         /// <param name="minIndex"></param>
         /// <returns></returns>
         private LinearLocation IndexOfFromStart(Coordinate inputPt, LinearLocation minIndex)
         {
-            double minDistance = Double.MaxValue;
-            int minComponentIndex = 0;
-            int minSegmentIndex = 0;
-            double minFrac = -1.0;
+            var minDistance = Double.MaxValue;
+            var minComponentIndex = 0;
+            var minSegmentIndex = 0;
+            var minFrac = -1.0;
 
-            LineSegment seg = new LineSegment();
-            foreach (LinearIterator.LinearElement element in new LinearIterator(_linearGeom))
+            var seg = new LineSegment();
+            for (var it = new LinearIterator(_linearGeom);
+                 it.HasNext(); it.Next())
             {
-                if (!element.IsEndOfLine)
+                if (!it.IsEndOfLine)
                 {
-                    seg.P0 = element.SegmentStart;
-                    seg.P1 = element.SegmentEnd;
-                    double segDistance = seg.Distance(inputPt);
-                    double segFrac = seg.SegmentFraction(inputPt)/* SegmentFraction(seg, inputPt)*/;
+                    seg.P0 = it.SegmentStart;
+                    seg.P1 = it.SegmentEnd;
+                    var segDistance = seg.Distance(inputPt);
+                    var segFrac = seg.SegmentFraction(inputPt);
 
-                    int candidateComponentIndex = element.ComponentIndex;
-                    int candidateSegmentIndex = element.VertexIndex;
+                    var candidateComponentIndex = it.ComponentIndex;
+                    var candidateSegmentIndex = it.VertexIndex;
                     if (segDistance < minDistance)
                     {
-                        // ensure after minLocation, if any                        
+                        // ensure after minLocation, if any
                         if (minIndex == null ||
                             minIndex.CompareLocationValues(candidateComponentIndex, candidateSegmentIndex, segFrac) < 0)
                         {
@@ -121,7 +122,7 @@ namespace NetTopologySuite.LinearReferencing
                             minDistance = segDistance;
                         }
                     }
-                }                
+                }
             }
 
             LinearLocation loc = new LinearLocation(minComponentIndex, minSegmentIndex, minFrac);

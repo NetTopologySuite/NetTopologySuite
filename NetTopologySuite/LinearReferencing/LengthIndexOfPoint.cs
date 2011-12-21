@@ -5,26 +5,25 @@ using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.LinearReferencing
 {
-
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class LengthIndexOfPoint
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="linearGeom"></param>
         /// <param name="inputPt"></param>
         /// <returns></returns>
         public static double IndexOf(IGeometry linearGeom, Coordinate inputPt)
         {
-            LengthIndexOfPoint locater = new LengthIndexOfPoint(linearGeom);
+            var locater = new LengthIndexOfPoint(linearGeom);
             return locater.IndexOf(inputPt);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="linearGeom"></param>
         /// <param name="inputPt"></param>
@@ -32,11 +31,11 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns></returns>
         public static double IndexOfAfter(IGeometry linearGeom, Coordinate inputPt, double minIndex)
         {
-            LengthIndexOfPoint locater = new LengthIndexOfPoint(linearGeom);
+            var locater = new LengthIndexOfPoint(linearGeom);
             return locater.IndexOfAfter(inputPt, minIndex);
         }
 
-        private IGeometry linearGeom;
+        private readonly IGeometry _linearGeom;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LengthIndexOfPoint"/> class.
@@ -44,7 +43,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="linearGeom">A linear geometry.</param>
         public LengthIndexOfPoint(IGeometry linearGeom)
         {
-            this.linearGeom = linearGeom;
+            _linearGeom = linearGeom;
         }
 
         /// <summary>
@@ -60,9 +59,9 @@ namespace NetTopologySuite.LinearReferencing
         /// <summary>
         /// Finds the nearest index along the linear <see cref="Geometry" />
         /// to a given <see cref="Coordinate"/> after the specified minimum index.
-        /// If possible the location returned will be strictly 
+        /// If possible the location returned will be strictly
         /// greater than the <paramref name="minIndex" />.
-        /// If this is not possible, the value returned 
+        /// If this is not possible, the value returned
         /// will equal <paramref name="minIndex" />.
         /// (An example where this is not possible is when
         /// <paramref name="minIndex" /> = [end of line] ).
@@ -75,11 +74,11 @@ namespace NetTopologySuite.LinearReferencing
             if (minIndex < 0.0) return IndexOf(inputPt);
 
             // sanity check for minIndex at or past end of line
-            double endIndex = linearGeom.Length;
+            var endIndex = _linearGeom.Length;
             if (endIndex < minIndex)
                 return endIndex;
 
-            double closestAfter = IndexOfFromStart(inputPt, minIndex);
+            var closestAfter = IndexOfFromStart(inputPt, minIndex);
 
             /*
              * Return the minDistanceLocation found.
@@ -90,40 +89,44 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="inputPt"></param>
         /// <param name="minIndex"></param>
         /// <returns></returns>
         private double IndexOfFromStart(Coordinate inputPt, double minIndex)
         {
-            double minDistance = Double.MaxValue;
+            var minDistance = Double.MaxValue;
 
-            double ptMeasure = minIndex;
-            double segmentStartMeasure = 0.0;
+            var ptMeasure = minIndex;
+            var segmentStartMeasure = 0.0;
 
-            LineSegment seg = new LineSegment();
-            foreach(LinearIterator.LinearElement element in new LinearIterator(linearGeom))
+            var seg = new LineSegment();
+            var it = new LinearIterator(_linearGeom);
+
+            while (it.HasNext())
             {
-                if (!element.IsEndOfLine)
+                if (!it.IsEndOfLine)
                 {
-                    seg.P0 = element.SegmentStart;
-                    seg.P1 = element.SegmentEnd;
-                    double segDistance = seg.Distance(inputPt);
-                    double segMeasureToPt = SegmentNearestMeasure(seg, inputPt, segmentStartMeasure);
-                    if (segDistance < minDistance && segMeasureToPt > minIndex)
+                    seg.P0 = it.SegmentStart;
+                    seg.P1 = it.SegmentEnd;
+                    var segDistance = seg.Distance(inputPt);
+                    var segMeasureToPt = SegmentNearestMeasure(seg, inputPt, segmentStartMeasure);
+                    if (segDistance < minDistance
+                        && segMeasureToPt > minIndex)
                     {
                         ptMeasure = segMeasureToPt;
                         minDistance = segDistance;
                     }
                     segmentStartMeasure += seg.Length;
-                }                
+                }
+                it.Next();
             }
             return ptMeasure;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="seg"></param>
         /// <param name="inputPt"></param>

@@ -6,7 +6,7 @@ namespace NetTopologySuite.LinearReferencing
 {
     /// <summary>
     /// Represents a location along a <see cref="LineString" /> or <see cref="MultiLineString" />.
-    /// The referenced geometry is not maintained within this location, 
+    /// The referenced geometry is not maintained within this location,
     /// but must be provided for operations which require it.
     /// Various methods are provided to manipulate the location value
     /// and query the geometry it references.
@@ -20,12 +20,12 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>A new <c>LinearLocation</c>.</returns>
         public static LinearLocation GetEndLocation(IGeometry linear)
         {
-            if (! (linear is ILineString || linear is IMultiLineString))
+            if (!(linear is ILineString || linear is IMultiLineString))
             {
-                string message = String.Format("Expected {0} or {1}, but was {2}", 
+                string message = String.Format("Expected {0} or {1}, but was {2}",
                     typeof(ILineString), typeof(IMultiLineString), linear.GetType());
                 throw new ArgumentException(message, "linear");
-            }            
+            }
             LinearLocation loc = new LinearLocation();
             loc.SetToEnd(linear);
             return loc;
@@ -104,10 +104,10 @@ namespace NetTopologySuite.LinearReferencing
         {
             if (_segmentFraction < 0.0)
                 _segmentFraction = 0.0;
-            
+
             if (_segmentFraction > 1.0)
                 _segmentFraction = 1.0;
-            
+
             if (_componentIndex < 0)
             {
                 _componentIndex = 0;
@@ -142,7 +142,7 @@ namespace NetTopologySuite.LinearReferencing
 
             if (_segmentIndex >= linear.NumPoints)
             {
-                ILineString line = (ILineString) linear.GetGeometryN(_componentIndex);
+                ILineString line = (ILineString)linear.GetGeometryN(_componentIndex);
                 _segmentIndex = line.NumPoints - 1;
                 _segmentFraction = 1.0;
             }
@@ -163,13 +163,13 @@ namespace NetTopologySuite.LinearReferencing
             double segLen = GetSegmentLength(linearGeom);
             double lenToStart = _segmentFraction * segLen;
             double lenToEnd = segLen - lenToStart;
-            
+
             if (lenToStart <= lenToEnd && lenToStart < minDistance)
-                _segmentFraction = 0.0;            
+                _segmentFraction = 0.0;
             else if (lenToEnd <= lenToStart && lenToEnd < minDistance)
-                _segmentFraction = 1.0;            
+                _segmentFraction = 1.0;
         }
-     
+
         /// <summary>
         /// Gets the length of the segment in the given
         /// Geometry containing this location.
@@ -178,7 +178,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>The length of the segment.</returns>
         public double GetSegmentLength(IGeometry linearGeom)
         {
-            ILineString lineComp = (ILineString) linearGeom.GetGeometryN(_componentIndex);
+            ILineString lineComp = (ILineString)linearGeom.GetGeometryN(_componentIndex);
 
             // ensure segment index is valid
             int segIndex = _segmentIndex;
@@ -198,11 +198,11 @@ namespace NetTopologySuite.LinearReferencing
         public void SetToEnd(IGeometry linear)
         {
             _componentIndex = linear.NumGeometries - 1;
-            ILineString lastLine = (ILineString) linear.GetGeometryN(_componentIndex);
+            ILineString lastLine = (ILineString)linear.GetGeometryN(_componentIndex);
             _segmentIndex = lastLine.NumPoints - 1;
             _segmentFraction = 1.0;
         }
-        
+
         /// <summary>
         /// Gets the component index for this location.
         /// </summary>
@@ -239,7 +239,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <summary>
         /// Tests whether this location refers to a vertex:
         /// returns <c>true</c> if the location is a vertex.
-        /// </summary>        
+        /// </summary>
         public bool IsVertex
         {
             get
@@ -257,7 +257,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>The <see cref="Coordinate" /> at the location.</returns>
         public Coordinate GetCoordinate(IGeometry linearGeom)
         {
-            ILineString lineComp = (ILineString) linearGeom.GetGeometryN(_componentIndex);
+            ILineString lineComp = (ILineString)linearGeom.GetGeometryN(_componentIndex);
             Coordinate p0 = lineComp.GetCoordinateN(_segmentIndex);
             if (_segmentIndex >= lineComp.NumPoints - 1)
                 return p0;
@@ -294,7 +294,7 @@ namespace NetTopologySuite.LinearReferencing
         {
             if (_componentIndex < 0 || _componentIndex >= linearGeom.NumGeometries)
                 return false;
-            ILineString lineComp = (ILineString) linearGeom.GetGeometryN(_componentIndex);
+            ILineString lineComp = (ILineString)linearGeom.GetGeometryN(_componentIndex);
             if (_segmentIndex < 0 || _segmentIndex > lineComp.NumPoints)
                 return false;
             if (_segmentIndex == lineComp.NumPoints && _segmentFraction != 0.0)
@@ -308,37 +308,37 @@ namespace NetTopologySuite.LinearReferencing
         /// Compares the current instance with another object of the same type.
         /// </summary>
         /// <param name="obj">
-        /// The <c>LineStringLocation</c> with which this 
+        /// The <c>LineStringLocation</c> with which this
         /// <c>Coordinate</c> is being compared.
         /// </param>
         /// <returns>
-        /// A negative integer, zero, or a positive integer as this 
-        /// <c>LineStringLocation</c> is less than, equal to, 
+        /// A negative integer, zero, or a positive integer as this
+        /// <c>LineStringLocation</c> is less than, equal to,
         /// or greater than the specified <c>LineStringLocation</c>.
         /// </returns>
         /// <exception cref="T:System.ArgumentException">
-        /// <paramref name="obj" /> is not the same type as this instance. 
+        /// <paramref name="obj" /> is not the same type as this instance.
         /// </exception>
         public int CompareTo(object obj)
         {
-            LinearLocation other = (LinearLocation) obj;
+            LinearLocation other = (LinearLocation)obj;
             return CompareTo(other);
         }
- 
+
         /// <summary>
         /// Compares the current instance with another object of the same type.
         /// </summary>
         /// <param name="other">
-        /// The <c>LineStringLocation</c> with which this 
+        /// The <c>LineStringLocation</c> with which this
         /// <c>Coordinate</c> is being compared.
         /// </param>
         /// <returns>
-        /// A negative integer, zero, or a positive integer as this 
-        /// <c>LineStringLocation</c> is less than, equal to, 
+        /// A negative integer, zero, or a positive integer as this
+        /// <c>LineStringLocation</c> is less than, equal to,
         /// or greater than the specified <c>LineStringLocation</c>.
         /// </returns>
         public int CompareTo(LinearLocation other)
-        {            
+        {
             // compare component indices
             if (_componentIndex < other.ComponentIndex) return -1;
             if (_componentIndex > other.ComponentIndex) return 1;
@@ -388,7 +388,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="segmentFraction1">The second segment fraction.</param>
         /// <returns>
         /// A negative integer, zero, or a positive integer
-        /// as the first set of location values is less than, equal to, 
+        /// as the first set of location values is less than, equal to,
         /// or greater than the second set of locationValues.
         /// </returns>
         public static int CompareLocationValues(
@@ -424,6 +424,21 @@ namespace NetTopologySuite.LinearReferencing
                     && _segmentFraction == 0.0)
                 return true;
             return false;
+        }
+
+        /// <summary>
+        /// Tests whether this location is an endpoint of
+        /// the linear component it refers to.
+        /// </summary>
+        /// <param name="linearGeom">The linear geometry referenced by this location</param>
+        /// <returns>True if the location is a component endpoint</returns>
+        public bool IsEndpoint(IGeometry linearGeom)
+        {
+            var lineComp = (ILineString)linearGeom.GetGeometryN(_componentIndex);
+            // check for endpoint
+            var nseg = lineComp.NumPoints - 1;
+            return _segmentIndex >= nseg
+                || (_segmentIndex == nseg && _segmentFraction >= 1.0);
         }
 
         /// <summary>

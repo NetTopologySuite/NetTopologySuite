@@ -1,7 +1,6 @@
 //using System.Collections;
 
 using System;
-using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
@@ -11,15 +10,15 @@ namespace NetTopologySuite.LinearReferencing
     /// An iterator over the components and coordinates of a linear geometry
     /// (<see cref="LineString" />s and <see cref="MultiLineString" />s.
     /// </summary>
-    public class LinearIterator : IEnumerator<LinearIterator.LinearElement>,
-                                    IEnumerable<LinearIterator.LinearElement>
+    public class LinearIterator //: IEnumerator<LinearIterator.LinearElement>,
+    //    IEnumerable<LinearIterator.LinearElement>
     {
         /// <summary>
         ///
         /// </summary>
         /// <param name="loc"></param>
         /// <returns></returns>
-        private static int SegmentEndVertexIndex(LinearLocation loc)
+        public static int SegmentEndVertexIndex(LinearLocation loc)
         {
             if (loc.SegmentFraction > 0.0)
                 return loc.SegmentIndex + 1;
@@ -27,25 +26,24 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         private readonly IGeometry _linearGeom;
-        private int _numLines;
+        private readonly int _numLines;
 
         /*
          * Invariant: currentLine <> null if the iterator is pointing at a valid coordinate
          */
         private ILineString _currentLine;
-
         private int _componentIndex;
         private int _vertexIndex;
 
-        // Used for avoid the first call to Next() in MoveNext()
-        private bool _atStart;
+        //// Used for avoid the first call to Next() in MoveNext()
+        //private bool _atStart;
 
-        // Returned by Ienumerator.Current
-        private LinearElement _current;
+        //// Returned by Ienumerator.Current
+        //private LinearElement _current;
 
-        // Cached start values - for Reset() call
-        private readonly int _startComponentIndex;
-        private readonly int _startVertexIndex;
+        //// Cached start values - for Reset() call
+        //private readonly int _startComponentIndex;
+        //private readonly int _startVertexIndex;
 
         /// <summary>
         /// Creates an iterator initialized to the start of a linear <see cref="Geometry" />.
@@ -75,8 +73,8 @@ namespace NetTopologySuite.LinearReferencing
             _linearGeom = linearGeom;
             _numLines = linearGeom.NumGeometries;
 
-            _startComponentIndex = componentIndex;
-            _startVertexIndex = vertexIndex;
+            _componentIndex = componentIndex;
+            _vertexIndex = vertexIndex;
 
             LoadCurrentLine();
         }
@@ -100,11 +98,12 @@ namespace NetTopologySuite.LinearReferencing
         /// </summary>
         /// <returns></returns>
         /// <returns><c>true</c> if there are more vertices to scan.</returns>
-        protected bool HasNext()
+        public bool HasNext()
         {
             if (_componentIndex >= _numLines)
                 return false;
-            if ((_componentIndex == _numLines - 1) && (_vertexIndex >= _currentLine.NumPoints))
+            if (_componentIndex == _numLines - 1 &&
+                _vertexIndex >= _currentLine.NumPoints)
                 return false;
             return true;
         }
@@ -112,7 +111,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <summary>
         /// Jump to the next element of the iteration.
         /// </summary>
-        protected void Next()
+        public void Next()
         {
             if (!HasNext())
                 return;
@@ -130,7 +129,7 @@ namespace NetTopologySuite.LinearReferencing
         /// Checks whether the iterator cursor is pointing to the
         /// endpoint of a linestring.
         /// </summary>
-        private bool IsEndOfLine
+        public bool IsEndOfLine
         {
             get
             {
@@ -145,7 +144,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <summary>
         /// The component index of the vertex the iterator is currently at.
         /// </summary>
-        private int ComponentIndex
+        public int ComponentIndex
         {
             get
             {
@@ -156,7 +155,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <summary>
         /// The vertex index of the vertex the iterator is currently at.
         /// </summary>
-        private int VertexIndex
+        public int VertexIndex
         {
             get
             {
@@ -167,7 +166,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <summary>
         /// Gets the <see cref="LineString" /> component the iterator is current at.
         /// </summary>
-        private ILineString Line
+        public ILineString Line
         {
             get
             {
@@ -179,7 +178,7 @@ namespace NetTopologySuite.LinearReferencing
         /// Gets the first <see cref="Coordinate" /> of the current segment
         /// (the coordinate of the current vertex).
         /// </summary>
-        private Coordinate SegmentStart
+        public Coordinate SegmentStart
         {
             get
             {
@@ -192,7 +191,7 @@ namespace NetTopologySuite.LinearReferencing
         /// (the coordinate of the next vertex).
         /// If the iterator is at the end of a line, <c>null</c> is returned.
         /// </summary>
-        private Coordinate SegmentEnd
+        public Coordinate SegmentEnd
         {
             get
             {
@@ -202,235 +201,233 @@ namespace NetTopologySuite.LinearReferencing
             }
         }
 
-        #region IEnumerator<LinearIterator.LinearElement> Members
+        //#region IEnumerator<LinearIterator.LinearElement> Members
 
-        /// <summary>
-        /// Gets the <see cref="LinearElement">element</see> in the collection
-        /// at the current position of the enumerator.
-        /// </summary>
-        /// <value></value>
-        /// <returns>
-        /// The <see cref="LinearElement">element</see> in the collection
-        /// at the current position of the enumerator.
-        /// </returns>
-        public LinearElement Current
-        {
-            get
-            {
-                return _current;
-            }
-        }
+        ///// <summary>
+        ///// Gets the <see cref="LinearElement">element</see> in the collection
+        ///// at the current position of the enumerator.
+        ///// </summary>
+        ///// <value></value>
+        ///// <returns>
+        ///// The <see cref="LinearElement">element</see> in the collection
+        ///// at the current position of the enumerator.
+        ///// </returns>
+        //public LinearElement Current
+        //{
+        //    get
+        //    {
+        //        return _current;
+        //    }
+        //}
 
-        #endregion IEnumerator<LinearIterator.LinearElement> Members
+        //#region IEnumerator Members
 
-        #region IEnumerator Members
+        ///// <summary>
+        ///// Tests whether there are any vertices left to iterator over.
+        ///// If <c>true</c>, then moves the iterator ahead to the next vertex and (possibly) linear component,
+        ///// so that <see cref="Current" /> exposes the elements.
+        ///// </summary>
+        ///// <returns><c>true</c> if there are more vertices to scan.</returns>
+        //public bool MoveNext()
+        //{
+        //    // We must call HasNext() twice because, when in the Next() method
+        //    // another line is loaded, it's necessary to re-ckeck with the new conditions.
+        //    if (HasNext())
+        //    {
+        //        if (_atStart)
+        //            _atStart = false;
+        //        else Next();
+        //    }
+        //    return HasNext();
+        //}
 
-        /// <summary>
-        /// Tests whether there are any vertices left to iterator over.
-        /// If <c>true</c>, then moves the iterator ahead to the next vertex and (possibly) linear component,
-        /// so that <see cref="Current" /> exposes the elements.
-        /// </summary>
-        /// <returns><c>true</c> if there are more vertices to scan.</returns>
-        public bool MoveNext()
-        {
-            // We must call HasNext() twice because, when in the Next() method
-            // another line is loaded, it's necessary to re-ckeck with the new conditions.
-            if (HasNext())
-            {
-                if (_atStart)
-                    _atStart = false;
-                else Next();
-            }
-            return HasNext();
-        }
+        ///// <summary>
+        ///// Gets the <see cref="LinearElement">element</see> in the collection
+        ///// at the current position of the enumerator.
+        ///// </summary>
+        ///// <value></value>
+        ///// <returns>
+        ///// The <see cref="LinearElement">element</see> in the collection
+        ///// at the current position of the enumerator.
+        ///// </returns>
+        //object System.Collections.IEnumerator.Current
+        //{
+        //    get
+        //    {
+        //        return Current;
+        //    }
+        //}
 
-        /// <summary>
-        /// Gets the <see cref="LinearElement">element</see> in the collection
-        /// at the current position of the enumerator.
-        /// </summary>
-        /// <value></value>
-        /// <returns>
-        /// The <see cref="LinearElement">element</see> in the collection
-        /// at the current position of the enumerator.
-        /// </returns>
-        object System.Collections.IEnumerator.Current
-        {
-            get
-            {
-                return Current;
-            }
-        }
+        ///// <summary>
+        ///// Sets the enumerator to its initial position,
+        ///// which is before the first element in the collection.
+        ///// </summary>
+        ///// <exception cref="T:System.InvalidOperationException">
+        ///// The collection was modified after the enumerator was created.
+        ///// </exception>
+        //public void Reset()
+        //{
+        //    _numLines = _linearGeom.NumGeometries;
+        //    _componentIndex = _startComponentIndex;
+        //    _vertexIndex = _startVertexIndex;
+        //    LoadCurrentLine();
 
-        /// <summary>
-        /// Sets the enumerator to its initial position,
-        /// which is before the first element in the collection.
-        /// </summary>
-        /// <exception cref="T:System.InvalidOperationException">
-        /// The collection was modified after the enumerator was created.
-        /// </exception>
-        public void Reset()
-        {
-            _numLines = _linearGeom.NumGeometries;
-            _componentIndex = _startComponentIndex;
-            _vertexIndex = _startVertexIndex;
-            LoadCurrentLine();
+        //    _atStart = true;
+        //}
 
-            _atStart = true;
-        }
+        //#endregion IEnumerator Members
 
-        #endregion IEnumerator Members
+        //#region IDisposable Members
 
-        #region IDisposable Members
+        ///// <summary>
+        ///// Performs application-defined tasks associated with freeing,
+        ///// releasing, or resetting unmanaged resources.
+        ///// </summary>
+        //public void Dispose()
+        //{
+        //    Dispose(false);
+        //}
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing,
-        /// releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(false);
-        }
+        ///// <summary>
+        /////
+        ///// </summary>
+        ///// <param name="dispose"></param>
+        //protected void Dispose(bool dispose)
+        //{
+        //    if (dispose)
+        //    {
+        //        // Dispose unmanaged resources
+        //    }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="dispose"></param>
-        protected void Dispose(bool dispose)
-        {
-            if (dispose)
-            {
-                // Dispose unmanaged resources
-            }
+        //    // Dispose managed resources
+        //    _current = null;
+        //    _currentLine = null;
+        //}
 
-            // Dispose managed resources
-            _current = null;
-            _currentLine = null;
-        }
+        //#endregion IDisposable Members
 
-        #endregion IDisposable Members
+        //#region IEnumerable<LinearIterator.LinearElement> Members
 
-        #region IEnumerable<LinearIterator.LinearElement> Members
+        ///// <summary>
+        ///// Returns an enumerator that iterates through the collection.
+        ///// </summary>
+        ///// <returns>
+        ///// A <see cref="T:System.Collections.Generic.IEnumerator`1"></see> that can be used
+        ///// to iterate through the collection.
+        ///// </returns>
+        //public IEnumerator<LinearElement> GetEnumerator()
+        //{
+        //    return this;
+        //}
 
-        /// <summary>
-        /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"></see> that can be used
-        /// to iterate through the collection.
-        /// </returns>
-        public IEnumerator<LinearElement> GetEnumerator()
-        {
-            return this;
-        }
+        //#endregion IEnumerable<LinearIterator.LinearElement> Members
 
-        #endregion IEnumerable<LinearIterator.LinearElement> Members
+        //#region IEnumerable Members
 
-        #region IEnumerable Members
+        ///// <summary>
+        ///// Returns an enumerator (of <see cref="LinearElement" />elements)
+        ///// that iterates through a collection.
+        ///// </summary>
+        ///// <returns>
+        ///// An <see cref="T:System.Collections.IEnumerator"></see> object
+        ///// that can be used to iterate through the collection.
+        ///// </returns>
+        //System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        //{
+        //    return GetEnumerator();
+        //}
 
-        /// <summary>
-        /// Returns an enumerator (of <see cref="LinearElement" />elements)
-        /// that iterates through a collection.
-        /// </summary>
-        /// <returns>
-        /// An <see cref="T:System.Collections.IEnumerator"></see> object
-        /// that can be used to iterate through the collection.
-        /// </returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        //#endregion IEnumerable Members
 
-        #endregion IEnumerable Members
+        //#region LinearElement
 
-        #region LinearElement
+        ///// <summary>
+        ///// A class that exposes <see cref="LinearIterator" /> elements.
+        ///// </summary>
+        //public class LinearElement
+        //{
+        //    private readonly LinearIterator _iterator;
 
-        /// <summary>
-        /// A class that exposes <see cref="LinearIterator" /> elements.
-        /// </summary>
-        public class LinearElement
-        {
-            private readonly LinearIterator _iterator;
+        //    /// <summary>
+        //    /// Initializes a new instance of the <see cref="LinearElement"/> class.
+        //    /// </summary>
+        //    /// <param name="iterator">The iterator.</param>
+        //    public LinearElement(LinearIterator iterator)
+        //    {
+        //        _iterator = iterator;
+        //    }
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="LinearElement"/> class.
-            /// </summary>
-            /// <param name="iterator">The iterator.</param>
-            public LinearElement(LinearIterator iterator)
-            {
-                _iterator = iterator;
-            }
+        //    /// <summary>
+        //    /// The component index of the vertex the iterator is currently at.
+        //    /// </summary>
+        //    public int ComponentIndex
+        //    {
+        //        get
+        //        {
+        //            return _iterator.ComponentIndex;
+        //        }
+        //    }
 
-            /// <summary>
-            /// The component index of the vertex the iterator is currently at.
-            /// </summary>
-            public int ComponentIndex
-            {
-                get
-                {
-                    return _iterator.ComponentIndex;
-                }
-            }
+        //    /// <summary>
+        //    /// The vertex index of the vertex the iterator is currently at.
+        //    /// </summary>
+        //    public int VertexIndex
+        //    {
+        //        get
+        //        {
+        //            return _iterator.VertexIndex;
+        //        }
+        //    }
 
-            /// <summary>
-            /// The vertex index of the vertex the iterator is currently at.
-            /// </summary>
-            public int VertexIndex
-            {
-                get
-                {
-                    return _iterator.VertexIndex;
-                }
-            }
+        //    /// <summary>
+        //    /// Gets the <see cref="LineString" /> component the iterator is current at.
+        //    /// </summary>
+        //    public ILineString Line
+        //    {
+        //        get
+        //        {
+        //            return _iterator.Line;
+        //        }
+        //    }
 
-            /// <summary>
-            /// Gets the <see cref="LineString" /> component the iterator is current at.
-            /// </summary>
-            public ILineString Line
-            {
-                get
-                {
-                    return _iterator.Line;
-                }
-            }
+        //    /// <summary>
+        //    /// Checks whether the iterator cursor is pointing to the
+        //    /// endpoint of a linestring.
+        //    /// </summary>
+        //    public bool IsEndOfLine
+        //    {
+        //        get
+        //        {
+        //            return _iterator.IsEndOfLine;
+        //        }
+        //    }
 
-            /// <summary>
-            /// Checks whether the iterator cursor is pointing to the
-            /// endpoint of a linestring.
-            /// </summary>
-            public bool IsEndOfLine
-            {
-                get
-                {
-                    return _iterator.IsEndOfLine;
-                }
-            }
+        //    /// <summary>
+        //    /// Gets the first <see cref="Coordinate" /> of the current segment
+        //    /// (the coordinate of the current vertex).
+        //    /// </summary>
+        //    public Coordinate SegmentStart
+        //    {
+        //        get
+        //        {
+        //            return _iterator.SegmentStart;
+        //        }
+        //    }
 
-            /// <summary>
-            /// Gets the first <see cref="Coordinate" /> of the current segment
-            /// (the coordinate of the current vertex).
-            /// </summary>
-            public Coordinate SegmentStart
-            {
-                get
-                {
-                    return _iterator.SegmentStart;
-                }
-            }
+        //    /// <summary>
+        //    /// Gets the second <see cref="Coordinate" /> of the current segment
+        //    /// (the coordinate of the next vertex).
+        //    /// If the iterator is at the end of a line, <c>null</c> is returned.
+        //    /// </summary>
+        //    public Coordinate SegmentEnd
+        //    {
+        //        get
+        //        {
+        //            return _iterator.SegmentEnd;
+        //        }
+        //    }
+        //}
 
-            /// <summary>
-            /// Gets the second <see cref="Coordinate" /> of the current segment
-            /// (the coordinate of the next vertex).
-            /// If the iterator is at the end of a line, <c>null</c> is returned.
-            /// </summary>
-            public Coordinate SegmentEnd
-            {
-                get
-                {
-                    return _iterator.SegmentEnd;
-                }
-            }
-        }
-
-        #endregion LinearElement
+        //#endregion LinearElement
     }
 }

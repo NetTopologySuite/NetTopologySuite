@@ -22,11 +22,11 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>The extracted subline.</returns>
         public static IGeometry Extract(IGeometry line, LinearLocation start, LinearLocation end)
         {
-            ExtractLineByLocation ls = new ExtractLineByLocation(line);
+            var ls = new ExtractLineByLocation(line);
             return ls.Extract(start, end);
         }
 
-        private IGeometry line = null;
+        private readonly IGeometry _line;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtractLineByLocation"/> class.
@@ -34,7 +34,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="line"></param>
         public ExtractLineByLocation(IGeometry line)
         {
-            this.line = line;
+            _line = line;
         }
 
         /// <summary>
@@ -48,27 +48,36 @@ namespace NetTopologySuite.LinearReferencing
         public IGeometry Extract(LinearLocation start, LinearLocation end)
         {
             if (end.CompareTo(start) < 0)
-                return Reverse(ComputeLinear(end, start));            
+                return Reverse(ComputeLinear(end, start));
             return ComputeLinear(start, end);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="linear"></param>
         /// <returns></returns>
-        private IGeometry Reverse(IGeometry linear)
+        private static IGeometry Reverse(IGeometry linear)
         {
+            if (!(linear is ILineal))
+            {
+                Assert.ShouldNeverReachHere("non-linear geometry encountered");
+                return null;
+            }
+            return linear.Reverse();
+
+            /*
             if (linear is ILineString)
             return ((ILineString) linear).Reverse();
             if (linear is IMultiLineString)
             return ((IMultiLineString) linear).Reverse();
             Assert.ShouldNeverReachHere("non-linear geometry encountered");
             return null;
+             */
         }
 
         /// <summary>
-        /// Assumes input is valid 
+        /// Assumes input is valid
         /// (e.g. <paramref name="start" /> minor or equals to <paramref name="end" />).
         /// </summary>
         /// <param name="start"></param>
@@ -76,13 +85,13 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns></returns>
         private ILineString ComputeLine(LinearLocation start, LinearLocation end)
         {
-            Coordinate[] coordinates = line.Coordinates;
-            CoordinateList newCoordinates = new CoordinateList();
+            var coordinates = _line.Coordinates;
+            var newCoordinates = new CoordinateList();
 
-            int startSegmentIndex = start.SegmentIndex;
+            var startSegmentIndex = start.SegmentIndex;
             if (start.SegmentFraction > 0.0)
                 startSegmentIndex += 1;
-            int lastSegmentIndex = end.SegmentIndex;
+            var lastSegmentIndex = end.SegmentIndex;
             if (end.SegmentFraction == 1.0)
                 lastSegmentIndex += 1;
             if (lastSegmentIndex >= coordinates.Length)
@@ -91,17 +100,17 @@ namespace NetTopologySuite.LinearReferencing
             // Assert.IsTrue(end.SegmentFraction <= 1.0, "invalid segment fraction value");
 
             if (!start.IsVertex)
-                newCoordinates.Add(start.GetCoordinate(line));
-            for (int i = startSegmentIndex; i <= lastSegmentIndex; i++)
-                newCoordinates.Add(coordinates[i]);            
+                newCoordinates.Add(start.GetCoordinate(_line));
+            for (var i = startSegmentIndex; i <= lastSegmentIndex; i++)
+                newCoordinates.Add(coordinates[i]);
             if (!end.IsVertex)
-                newCoordinates.Add(end.GetCoordinate(line));
+                newCoordinates.Add(end.GetCoordinate(_line));
 
             // ensure there is at least one coordinate in the result
             if (newCoordinates.Count <= 0)
-                newCoordinates.Add(start.GetCoordinate(line));
+                newCoordinates.Add(start.GetCoordinate(_line));
 
-            Coordinate[] newCoordinateArray = newCoordinates.ToCoordinateArray();
+            var newCoordinateArray = newCoordinates.ToCoordinateArray();
 
             /*
              * Ensure there is enough coordinates to build a valid line.
@@ -109,13 +118,13 @@ namespace NetTopologySuite.LinearReferencing
              * There will always be at least one coordinate in the coordList.
              */
             if (newCoordinateArray.Length <= 1)
-                newCoordinateArray = new Coordinate[] { newCoordinateArray[0], newCoordinateArray[0] };
-            
-            return line.Factory.CreateLineString(newCoordinateArray);
+                newCoordinateArray = new[] { newCoordinateArray[0], newCoordinateArray[0] };
+
+            return _line.Factory.CreateLineString(newCoordinateArray);
         }
 
         /// <summary>
-        /// Assumes input is valid 
+        /// Assumes input is valid
         /// (e.g. <paramref name="start" /> minor or equals to <paramref name="end" />).
         /// </summary>
         /// <param name="start"></param>
@@ -123,27 +132,25 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns></returns>
         private IGeometry ComputeLinear(LinearLocation start, LinearLocation end)
         {
-            LinearGeometryBuilder builder = new LinearGeometryBuilder(line.Factory);
+            var builder = new LinearGeometryBuilder(_line.Factory);
             builder.FixInvalidLines = true;
 
             if (!start.IsVertex)
-                builder.Add(start.GetCoordinate(line));
+                builder.Add(start.GetCoordinate(_line));
 
-            LinearIterator it = new LinearIterator(line, start);
-            foreach (LinearIterator.LinearElement element in it)
+            for (var it = new LinearIterator(_line, start); it.HasNext(); it.Next())
             {
-                int compare = end.CompareLocationValues(element.ComponentIndex, element.VertexIndex, 0.0);
-                if (compare < 0)
+                if (end.CompareLocationValues(it.ComponentIndex, it.VertexIndex, 0.0) < 0)
                     break;
 
-                Coordinate pt = element.SegmentStart;
+                var pt = it.SegmentStart;
                 builder.Add(pt);
-                if (element.IsEndOfLine)
+                if (it.IsEndOfLine)
                     builder.EndLine();
-            }            
-            
+            }
+
             if (!end.IsVertex)
-                builder.Add(end.GetCoordinate(line));
+                builder.Add(end.GetCoordinate(_line));
 
             return builder.GetGeometry();
         }
