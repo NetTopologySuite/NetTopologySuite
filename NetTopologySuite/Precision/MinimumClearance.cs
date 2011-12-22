@@ -17,7 +17,8 @@ namespace NetTopologySuite.Precision
     /// The smaller the Minimum Clearance distance,
     /// the less vertex pertubation the geometry can tolerate
     /// before becoming invalid.
-    /// <para/>
+    /// </summary>
+    /// <remarks>
     /// The concept was introduced by Thompson and Van Oosterom
     /// [TV06], based on earlier work by Milenkovic [Mi88].
     /// <para/>
@@ -29,7 +30,7 @@ namespace NetTopologySuite.Precision
     /// An equivalent constructive definition [Mi88] is that
     /// <i>r</i> is the largest value such:
     /// <list type="Bullet">
-    /// <item>No two distinct vertices of G are closer than <i>r</i></item>
+    /// <item>No two distinct vertices of G are closer than <i>r</i>.</item>
     /// <item>No vertex of G is closer than <i>r</i> to an edge of G of which the vertex is not an endpoint</item>
     /// </list>
     /// The following image shows an example of the Minimum Clearance
@@ -76,8 +77,8 @@ namespace NetTopologySuite.Precision
     /// <i>Interchange of Spatial Data-Inhibiting Factors</i>,
     /// Agile 2006, Visegrad, Hungary. 2006</item>
     /// </list>
-    /// </summary>
-    /// <author>Martin Davis</author>
+    /// </remarks>
+    /// /// <author>Martin Davis</author>
     public class MinimumClearance
     {
         /// <summary>

@@ -479,9 +479,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="License.txt" />
-    <None Include="Precision\DocFiles\minClearance.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="Precision\DocFiles\minClearance.png" />
     <Content Include="ReadMe.txt" />
     <Content Include="Triangulate\TriangulateSummary.xml">
       <SubType>Designer</SubType>

@@ -4,11 +4,13 @@ using System.IO;
 using System.Xml;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
+
 #if SILVERLIGHT
 using XmlTextWriter = System.Xml.XmlWriter;
 using XmlTextReader = System.Xml.XmlReader;
 using System.Xml.Linq;
 #endif
+
 namespace NetTopologySuite.IO.GML2
 {
     /// <summary>
@@ -17,18 +19,18 @@ namespace NetTopologySuite.IO.GML2
     /// </summary>
     public class GMLReader
     {
-        private IGeometryFactory factory = null;
-        
+        private readonly IGeometryFactory _factory;
+
         /// <summary>
         /// <c>Geometry</c> builder.
         /// </summary>
         protected IGeometryFactory Factory
         {
-            get { return factory; }
+            get { return _factory; }
         }
 
         /// <summary>
-        /// Initialize reader with a standard <c>GeometryFactory</c>. 
+        /// Initialize reader with a standard <c>GeometryFactory</c>.
         /// </summary>
         public GMLReader() : this(GeometryFactory.Default) { }
 
@@ -38,10 +40,11 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="factory"></param>
         public GMLReader(IGeometryFactory factory)
         {
-            this.factory = factory;
+            _factory = factory;
         }
 
 #if !SILVERLIGHT
+
         /// <summary>
         /// Read a GML document and returns relative <c>Geometry</c>.
         /// </summary>
@@ -49,9 +52,10 @@ namespace NetTopologySuite.IO.GML2
         /// <returns></returns>
         public IGeometry Read(XmlDocument document)
         {
-            XmlReader reader = XmlTextReader.Create(new StringReader(document.InnerXml));
+            var reader = XmlReader.Create(new StringReader(document.InnerXml));
             return Read(reader);
         }
+
 #else
         public IGeometry Read(XDocument document)
         {
@@ -61,29 +65,29 @@ namespace NetTopologySuite.IO.GML2
 #endif
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="xmlText"></param>
         /// <returns></returns>
         public IGeometry Read(string xmlText)
         {
-            XmlReader reader =  XmlTextReader.Create(new StringReader(xmlText));
+            var reader = XmlReader.Create(new StringReader(xmlText));
             return Read(reader);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="stringReader"></param>
         /// <returns></returns>
         public IGeometry Read(StringReader stringReader)
         {
-            XmlReader reader = XmlTextReader.Create(stringReader);
+            var reader = XmlReader.Create(stringReader);
             return Read(reader);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
@@ -94,24 +98,22 @@ namespace NetTopologySuite.IO.GML2
 
             if (IsStartElement(reader, "Point"))
                 return ReadPoint(reader);
-            else if (IsStartElement(reader, "LineString"))
+            if (IsStartElement(reader, "LineString"))
                 return ReadLineString(reader);
-            else if (IsStartElement(reader, "Polygon"))
+            if (IsStartElement(reader, "Polygon"))
                 return ReadPolygon(reader);
-            else if (IsStartElement(reader, "MultiPoint"))
+            if (IsStartElement(reader, "MultiPoint"))
                 return ReadMultiPoint(reader);
-            else if (IsStartElement(reader, "MultiLineString"))
+            if (IsStartElement(reader, "MultiLineString"))
                 return ReadMultiLineString(reader);
-            else if (IsStartElement(reader, "MultiPolygon"))
+            if (IsStartElement(reader, "MultiPolygon"))
                 return ReadMultiPolygon(reader);
-            else if (IsStartElement(reader, "MultiGeometry"))
+            if (IsStartElement(reader, "MultiGeometry"))
                 return ReadGeometryCollection(reader);
-            else
-            {
-                // Go away until something readable is found...
-                reader.Read();
-                return Read(reader);
-            }
+
+            // Go away until something readable is found...
+            reader.Read();
+            return Read(reader);
         }
 
         /// <summary>
@@ -144,11 +146,13 @@ namespace NetTopologySuite.IO.GML2
                             return new Coordinate(x, y);
                         break;
 
+                    /*
                     default:
                         break;
+                     */
                 }
             }
-            throw new ArgumentException("ShouldNeverReachHere!");            
+            throw new ArgumentException("ShouldNeverReachHere!");
         }
 
         /// <summary>
@@ -165,7 +169,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
@@ -178,14 +182,14 @@ namespace NetTopologySuite.IO.GML2
                     case XmlNodeType.Element:
                         if (IsStartElement(reader, "coord"))
                             return Factory.CreatePoint(ReadCoordinate(reader));
-                        else if (IsStartElement(reader, "coordinates"))
+                        if (IsStartElement(reader, "coordinates"))
                         {
                             reader.Read(); // Jump to values
-                            string[] coords = reader.Value.Split(' ');
+                            string[] coords = reader.Value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                             if (coords.Length != 1)
                                 throw new ApplicationException("Should never reach here!");
-                            Coordinate c = ReadCoordinates(coords[0]);
-                            Factory.CreatePoint(c);
+                            var c = ReadCoordinates(coords[0]);
+                            return Factory.CreatePoint(c);
                         }
                         break;
 
@@ -194,10 +198,10 @@ namespace NetTopologySuite.IO.GML2
                 }
             }
             throw new ArgumentException("ShouldNeverReachHere!");
-        }        
+        }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
@@ -214,7 +218,7 @@ namespace NetTopologySuite.IO.GML2
                         else if (IsStartElement(reader, "coordinates"))
                         {
                             reader.Read(); // Jump to values
-                            string[] coords = reader.Value.Split(' ');                            
+                            string[] coords = reader.Value.Split(' ');
                             foreach (string coord in coords)
                             {
                                 if (String.IsNullOrEmpty(coord))
@@ -228,7 +232,7 @@ namespace NetTopologySuite.IO.GML2
 
                     case XmlNodeType.EndElement:
                         return Factory.CreateLineString(coordinates.ToArray());
-                    
+
                     default:
                         break;
                 }
@@ -237,7 +241,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
@@ -247,7 +251,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
@@ -279,7 +283,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
@@ -308,7 +312,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
@@ -337,7 +341,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
@@ -366,7 +370,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
@@ -404,17 +408,17 @@ namespace NetTopologySuite.IO.GML2
                 }
             }
             throw new ArgumentException("ShouldNeverReachHere!");
-        }       
+        }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="reader"></param>
         /// <param name="name"></param>
         /// <returns></returns>
         private static bool IsStartElement(XmlReader reader, string name)
         {
-            return  reader.IsStartElement(name, GMLElements.gmlNS) || 
+            return reader.IsStartElement(name, GMLElements.gmlNS) ||
                     reader.IsStartElement(GMLElements.gmlPrefix + ":" + name);
         }
     }
