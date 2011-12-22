@@ -42,12 +42,15 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.AreEqual(nts.DefaultSRID, factory.SRID);
             Assert.AreEqual(nts.DefaultPrecisionModel, factory.PrecisionModel);
             Assert.AreEqual(nts.DefaultCoordinateSequenceFactory, factory.CoordinateSequenceFactory);
+
+            // restore default!
+            GeometryServiceProvider.Instance = new NtsGeometryServices();
         }
 
         #region ProjNet
 
         //ToDo: Move this to some other test
-        [Test]
+        [Test, Ignore]
         public void TestProjNetCoordinateSystemProvider()
         {
             var csp = new ProjNetCoordinateSystemServices();

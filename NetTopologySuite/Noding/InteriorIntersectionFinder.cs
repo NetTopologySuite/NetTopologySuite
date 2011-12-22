@@ -14,7 +14,7 @@ namespace NetTopologySuite.Noding
         private readonly LineIntersector _li;
         private Coordinate _interiorIntersection;
         private Coordinate[] _intSegments;
-        private List<Coordinate> _intersections;
+        private readonly List<Coordinate> _intersections = new List<Coordinate>();
 
         ///<summary>
         /// Creates an intersection finder which finds an interior intersection if one exists
