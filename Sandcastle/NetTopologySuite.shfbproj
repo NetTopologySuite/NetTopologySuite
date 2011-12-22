@@ -19,10 +19,13 @@
     <HtmlHelpName>NetTopologySuite</HtmlHelpName>
     <Language>en-US</Language>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\NetTopologySuite\NetTopologySuite.csproj" xmlns="" />
-    </DocumentationSources>
+      <DocumentationSource sourceFile="..\GeoAPI\GeoAPI\GeoAPI.csproj" configuration="Release" platform="AnyCPU" />
+<DocumentationSource sourceFile="..\NetTopologySuite\NetTopologySuite.csproj" configuration="Release" platform="AnyCPU" />
+<DocumentationSource sourceFile="..\PowerCollections\PowerCollections\PowerCollections.csproj" configuration="Release" platform="AnyCPU" />
+<DocumentationSource sourceFile="..\NetTopologySuite\Triangulate\QuadEdge\QuadEdgeSummary.xml" />
+<DocumentationSource sourceFile="..\NetTopologySuite\Triangulate\TriangulateSummary.xml" /></DocumentationSources>
     <NamespaceSummaries>
-      <NamespaceSummaryItem name="NetTopologySuite.Algorithm" isDocumented="True" xmlns="">Contains classes and interfaces implementing fundamental computational geometry algorithms.
+      <NamespaceSummaryItem name="NetTopologySuite.Algorithm" isDocumented="True">Contains classes and interfaces implementing fundamental computational geometry algorithms.
 
 Robustness:
 Geometrical algorithms involve a combination of combinatorial and numerical computation. As with all numerical computation using finite-precision numbers, the algorithms chosen are susceptible to problems of robustness. A robustness problem occurs when a numerical calculation produces an incorrect answer for some inputs due to round-off errors. Robustness problems are especially serious in geometric computation, since they can result in errors during topology building. 
@@ -35,21 +38,21 @@ The obvious naive algorithm for intersection detection (comparing every segment 
 Package Specification
 Java Topology Suite Technical Specifications 
 OpenGIS Simple Features Specification for SQL</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.Geometries" isDocumented="True" xmlns="">Contains the Geometry interface hierarchy and supporting classes.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.Geometries.Utilities" isDocumented="True" xmlns="">Provides classes that parse and modify Geometry objects.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.GeometriesGraph" isDocumented="True" xmlns="">Contains classes that implement topology graphs. 
+<NamespaceSummaryItem name="NetTopologySuite.Geometries" isDocumented="True">Contains the Geometry interface hierarchy and supporting classes.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="NetTopologySuite.Geometries.Utilities" isDocumented="True">Provides classes that parse and modify Geometry objects.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="NetTopologySuite.GeometriesGraph" isDocumented="True">Contains classes that implement topology graphs. 
 
 The Net Topology Suite (NTS) is a .Net API that implements a core set of spatial data operations using an explicit precision model and robust geometric algorithms. NTS is intended to be used in the development of applications that support the validation, cleaning, integration and querying of spatial datasets. 
 
 NTS attempts to implement the OpenGIS Simple Features Specification (SFS) as accurately as possible. In some cases the SFS is unclear or omits a specification; in this case NTS attempts to choose a reasonable and consistent alternative. Differences from and elaborations of the SFS are documented in this specification.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.GeometriesGraph.Index" isDocumented="True" xmlns="">Contains classes that implement indexes for performing noding on geometry graph edges.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.Index" isDocumented="True" xmlns="">Provides classes for various kinds of spatial indexes.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.Index.Bintree" isDocumented="True" xmlns="">Contains classes that implement a Binary Interval Tree index</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.Index.Chain" isDocumented="True" xmlns="">Contains classes that implement Monotone Chains</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.Index.Quadtree" isDocumented="True" xmlns="">Contains classes that implement a Quadtree spatial index</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.Index.Strtree" isDocumented="True" xmlns="">Contains 2-D and 1-D versions of the Sort-Tile-Recursive (STR) tree, a query-only R-tree.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.Index.Sweepline" isDocumented="True" xmlns="">Contains classes which implement a sweepline algorithm for scanning geometric data structures.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.IO" isDocumented="True" xmlns="">Contains the interfaces for converting JTS objects to and from other formats. 
+<NamespaceSummaryItem name="NetTopologySuite.GeometriesGraph.Index" isDocumented="True">Contains classes that implement indexes for performing noding on geometry graph edges.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="NetTopologySuite.Index" isDocumented="True">Provides classes for various kinds of spatial indexes.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="NetTopologySuite.Index.Bintree" isDocumented="True">Contains classes that implement a Binary Interval Tree index</NamespaceSummaryItem>
+<NamespaceSummaryItem name="NetTopologySuite.Index.Chain" isDocumented="True">Contains classes that implement Monotone Chains</NamespaceSummaryItem>
+<NamespaceSummaryItem name="NetTopologySuite.Index.Quadtree" isDocumented="True">Contains classes that implement a Quadtree spatial index</NamespaceSummaryItem>
+<NamespaceSummaryItem name="NetTopologySuite.Index.Strtree" isDocumented="True">Contains 2-D and 1-D versions of the Sort-Tile-Recursive (STR) tree, a query-only R-tree.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="NetTopologySuite.Index.Sweepline" isDocumented="True">Contains classes which implement a sweepline algorithm for scanning geometric data structures.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="NetTopologySuite.IO" isDocumented="True">Contains the interfaces for converting JTS objects to and from other formats. 
 The Net Topology Suite (NTS) is a .Net API that implements a core set of spatial data operations using an explicit precision model and robust geometric algorithms. NTS is intended to be used in the development of applications that support the validation, cleaning, integration and querying of spatial datasets. 
 
 NTS attempts to implement the OpenGIS Simple Features Specification (SFS) as accurately as possible. In some cases the SFS is unclear or omits a specification; in this case NTS attempts to choose a reasonable and consistent alternative. Differences from and elaborations of the SFS are documented in this specification. 
@@ -57,8 +60,8 @@ NTS attempts to implement the OpenGIS Simple Features Specification (SFS) as acc
 Package Specification
 Java Topology Suite Technical Specifications 
 OpenGIS Simple Features Specification for SQL</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.IO.GML2" isDocumented="True" xmlns="">Classes to read and write the GML2 geometry format.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.LinearReferencing" isDocumented="True" xmlns="">Contains classes and interfaces implementing linear referencing on linear geometries 
+<NamespaceSummaryItem name="NetTopologySuite.IO.GML2" isDocumented="True">Classes to read and write the GML2 geometry format.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="NetTopologySuite.LinearReferencing" isDocumented="True">Contains classes and interfaces implementing linear referencing on linear geometries 
 Linear Referencing
 Linear Referencing is a way of defining positions along linear geometries (LineStrings and MultiLineStrings). It is used extensively in linear network systems. There are numerous possible Linear Referencing Methods which can be used to define positions along linear geometry. This package supports two: 
 Linear Location
@@ -68,12 +71,12 @@ The natural concept of using the length along the geometry to specify a position
 
 Package Specification
 Java Topology Suite Technical Specifications</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.Noding" isDocumented="True" xmlns="">Classes to compute nodings for arrangements of line segments and line segment sequences.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.Noding.Snapround" isDocumented="True" xmlns="">Contains classes to implement the Snap Rounding algorithm for noding linestrings.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.Operation" isDocumented="True" xmlns="">Provides classes for implementing operations on geometries</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.Operation.Buffer" isDocumented="True" xmlns="">Provides classes for computing buffers of geometries</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.Operation.Distance" isDocumented="True" xmlns="">Provides classes for computing the distance between geometries</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.Operation.Overlay" isDocumented="True" xmlns="">Contains classes that perform a topological overlay to compute boolean spatial functions. 
+<NamespaceSummaryItem name="NetTopologySuite.Noding" isDocumented="True">Classes to compute nodings for arrangements of line segments and line segment sequences.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="NetTopologySuite.Noding.Snapround" isDocumented="True">Contains classes to implement the Snap Rounding algorithm for noding linestrings.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="NetTopologySuite.Operation" isDocumented="True">Provides classes for implementing operations on geometries</NamespaceSummaryItem>
+<NamespaceSummaryItem name="NetTopologySuite.Operation.Buffer" isDocumented="True">Provides classes for computing buffers of geometries</NamespaceSummaryItem>
+<NamespaceSummaryItem name="NetTopologySuite.Operation.Distance" isDocumented="True">Provides classes for computing the distance between geometries</NamespaceSummaryItem>
+<NamespaceSummaryItem name="NetTopologySuite.Operation.Overlay" isDocumented="True">Contains classes that perform a topological overlay to compute boolean spatial functions. 
 The Overlay Algorithm is used in spatial analysis methods for computing set-theoretic operations (boolean combinations) of input {@link Geometry}s. The algorithm for computing the overlay uses the intersection operations supported by topology graphs. To compute an overlay it is necessary to explicitly compute the resultant graph formed by the computed intersections. 
 
 The algorithm to compute a set-theoretic spatial analysis method has the following steps: 
@@ -90,8 +93,8 @@ Build topology graphs of the two input geometries. For each geometry all self-in
 Package Specification
 Java Topology Suite Technical Specifications 
 OpenGIS Simple Features Specification for SQL</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.Operation.Polygonize" isDocumented="True" xmlns="">Contains classes to implement a polygonization algorithm. This package can be used to create polygons from fully noded linework.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.Operation.Relate" isDocumented="True" xmlns="">Contains classes to implement the computation of the spatial relationships of Geometrys. 
+<NamespaceSummaryItem name="NetTopologySuite.Operation.Polygonize" isDocumented="True">Contains classes to implement a polygonization algorithm. This package can be used to create polygons from fully noded linework.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="NetTopologySuite.Operation.Relate" isDocumented="True">Contains classes to implement the computation of the spatial relationships of Geometrys. 
 
 The relate algorithm computes the IntersectionMatrix describing the relationship of two Geometrys. The algorithm for computing relate uses the intersection operations supported by topology graphs. Although the relate result depends on the resultant graph formed by the computed intersections, there is no need to explicitly compute the entire graph. It is sufficient to compute the local structure of the graph at each intersection node. 
 
@@ -108,18 +111,20 @@ Isolated components are components (edges or nodes) of an input Geometry which d
 Package Specification
 Java Topology Suite Technical Specifications 
 OpenGIS Simple Features Specification for SQL</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.Operation.Valid" isDocumented="True" xmlns="">Provides classes for testing the validity of geometries.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.Planargraph" isDocumented="True" xmlns="">Contains classes to implement a planar graph data structure.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.Precision" isDocumented="True" xmlns="">Provides classes for manipulating the precision model of Geometries</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NetTopologySuite.Utilities" isDocumented="True" xmlns="">Contains support classes for the Net Topology Suite.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="RTools_NTS.Util" isDocumented="False" xmlns="" />
-    </NamespaceSummaries>
+<NamespaceSummaryItem name="NetTopologySuite.Operation.Valid" isDocumented="True">Provides classes for testing the validity of geometries.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="NetTopologySuite.Planargraph" isDocumented="True">Contains classes to implement a planar graph data structure.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="NetTopologySuite.Precision" isDocumented="True">Provides classes for manipulating the precision model of Geometries</NamespaceSummaryItem>
+<NamespaceSummaryItem name="NetTopologySuite.Utilities" isDocumented="True">Contains support classes for the Net Topology Suite.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="RTools_NTS.Util" isDocumented="False" />
+<NamespaceSummaryItem name="GeoAPI.CoordinateSystems" isDocumented="True" /></NamespaceSummaries>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, TypeParameter, AutoDocumentDispose</MissingTags>
     <ProjectSummary>The NTS Topology Suite is an API for modelling and manipulating 2-dimensional linear geometry. It provides numerous geometric predicates and functions. NTS conforms to the Simple Features Specification for SQL published by the Open GIS Consortium.</ProjectSummary>
     <HelpTitle>NTS - Topology Suite</HelpTitle>
-    <RootNamespaceContainer>True</RootNamespaceContainer>
+    <RootNamespaceContainer>False</RootNamespaceContainer>
     <RootNamespaceTitle>NetTopologySuite</RootNamespaceTitle>
     <SdkLinkTarget>Self</SdkLinkTarget>
+    <FrameworkVersion>.NET 3.5</FrameworkVersion>
+    <SolutionDir>..\..\</SolutionDir>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional
@@ -141,15 +146,6 @@ OpenGIS Simple Features Specification for SQL</NamespaceSummaryItem>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Win32' ">
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">
-      <Name>GeoAPI</Name>
-      <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="PowerCollections">
-      <HintPath>..\ExternalReferences\PowerCollections.dll</HintPath>
-    </Reference>
     <Reference Include="sysglobl, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
     <Reference Include="System.Xml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

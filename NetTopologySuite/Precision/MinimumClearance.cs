@@ -35,7 +35,7 @@ namespace NetTopologySuite.Precision
     /// The following image shows an example of the Minimum Clearance
     /// of a simple polygon.
     /// <para/>
-    /// <center><img src="doc-files/minClearance.png"/></center>
+    /// <center><img src="DocFiles/minClearance.png"/></center>
     /// <para/>
     /// If G has only a single vertex (i.e. is a
     /// <see cref="IPoint"/>), the value of the minimum clearance
