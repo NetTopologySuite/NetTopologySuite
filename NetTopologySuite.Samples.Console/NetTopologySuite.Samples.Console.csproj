@@ -125,6 +125,7 @@
     <Compile Include="Tests\Various\PathFinder.cs" />
     <Compile Include="Tests\Various\PathFinderTest.cs" />
     <Compile Include="Tests\Various\PrecisionTest.cs" />
+    <Compile Include="Tests\Various\QuadTreeTest.cs" />
     <Compile Include="Tests\Various\ReverseTest.cs" />
     <Compile Include="Tests\Various\RobustLineIntersectorTest.cs" />
     <Compile Include="Tests\Various\OGCTests.cs" />

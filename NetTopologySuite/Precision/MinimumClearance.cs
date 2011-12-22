@@ -7,108 +7,98 @@ using NetTopologySuite.Operation.Distance;
 
 namespace NetTopologySuite.Precision
 {
-    /**
-     * Computes the Minimum Clearance of a {@link Geometry}.
-     * <p>
-     * The <b>Minimum Clearance</b> is a measure of
-     * what magnitude of perturbation of
-     * the vertices of a geometry can be tolerated
-     * before the geometry becomes topologically invalid.
-     * The smaller the Minimum Clearance distance,
-     * the less vertex pertubation the geometry can tolerate
-     * before becoming invalid.
-     * <p>
-     * The concept was introduced by Thompson and Van Oosterom
-     * [TV06], based on earlier work by Milenkovic [Mi88].
-     * <p>
-     * The Minimum Clearance of a geometry G
-     * is defined to be the value <i>r</i>
-     * such that "the movement of all points by a distance
-     * of <i>r</i> in any direction will
-     * guarantee to leave the geometry valid" [TV06].
-     * An equivalent constructive definition [Mi88] is that
-     * <i>r</i> is the largest value such:
-     * <ol>
-     * <li>No two distinct vertices of G are closer than <i>r</i>
-     * <li>No vertex of G is closer than <i>r</i> to an edge of G
-     * of which the vertex is not an endpoint
-     * </ol>
-     * The following image shows an example of the Minimum Clearance
-     * of a simple polygon.
-     * <p>
-     * <center><img src='doc-files/minClearance.png'></center>
-     * <p>
-     * If G has only a single vertex (i.e. is a
-     * {@link Point}), the value of the minimum clearance
-     * is {@link Double#MAX_VALUE}.
-     * <p>
-     * If G is a {@link Puntal} or {@link Lineal} geometry,
-     * then in fact no amount of perturbation
-     * will render the geometry invalid.
-     * In this case a Minimum Clearance is still computed
-     * based on the vertex and segment distances
-     * according to the constructive definition.
-     * <p>
-     * It is possible for no Minimum Clearance to exist.
-     * For instance, a {@link MultiPoint} with all members identical
-     * has no Minimum Clearance
-     * (i.e. no amount of perturbation will cause
-     * the member points to become non-identical).
-     * Empty geometries also have no such distance.
-     * The lack of a meaningful MinimumClearance distance is detected
-     * and suitable values are returned by
-     * {@link #getDistance()} and {@link #getLine()}.
-     * <p>
-     * The computation of Minimum Clearance utilizes
-     * the {@link STRtree#nearestNeighbour(ItemDistance)}
-     * method to provide good performance even for
-     * large inputs.
-     * <p>
-     * An interesting note is that for the case of {@link MultiPoint}s,
-     * the computed Minimum Clearance line
-     * effectively determines the Nearest Neighbours in the collection.
-     *
-     * <h3>References</h3>
-     * <ul>
-     * <li>[Mi88] Milenkovic, V. J.,
-     * <i>Verifiable implementations of geometric algorithms
-     * using finite precision arithmetic</i>.
-     * in Artificial Intelligence, 377-401. 1988
-     * <li>[TV06] Thompson, Rod and van Oosterom, Peter,
-     * <i>Interchange of Spatial Data-Inhibiting Factors</i>,
-     * Agile 2006, Visegrad, Hungary. 2006
-     * </ul>
-     *
-     * @author Martin Davis
-     *
-     */
-
+    /// <summary>
+    /// Computes the Minimum Clearance of a <see cref="IGeometry"/>.
+    /// <para/>
+    /// The <b>Minimum Clearance</b> is a measure of
+    /// what magnitude of perturbation of
+    /// the vertices of a geometry can be tolerated
+    /// before the geometry becomes topologically invalid.
+    /// The smaller the Minimum Clearance distance,
+    /// the less vertex pertubation the geometry can tolerate
+    /// before becoming invalid.
+    /// <para/>
+    /// The concept was introduced by Thompson and Van Oosterom
+    /// [TV06], based on earlier work by Milenkovic [Mi88].
+    /// <para/>
+    /// The Minimum Clearance of a geometry G
+    /// is defined to be the value <i>r</i>
+    /// such that "the movement of all points by a distance
+    /// of <i>r</i> in any direction will
+    /// guarantee to leave the geometry valid" [TV06].
+    /// An equivalent constructive definition [Mi88] is that
+    /// <i>r</i> is the largest value such:
+    /// <list type="Bullet">
+    /// <item>No two distinct vertices of G are closer than <i>r</i></item>
+    /// <item>No vertex of G is closer than <i>r</i> to an edge of G of which the vertex is not an endpoint</item>
+    /// </list>
+    /// The following image shows an example of the Minimum Clearance
+    /// of a simple polygon.
+    /// <para/>
+    /// <center><img src="doc-files/minClearance.png"/></center>
+    /// <para/>
+    /// If G has only a single vertex (i.e. is a
+    /// <see cref="IPoint"/>), the value of the minimum clearance
+    /// is <see cref="double.MaxValue"/>.
+    /// <para/>
+    /// If G is a <see cref="IPuntal"/> or <see cref="ILineal"/> geometry,
+    /// then in fact no amount of perturbation
+    /// will render the geometry invalid.
+    /// In this case a Minimum Clearance is still computed
+    /// based on the vertex and segment distances
+    /// according to the constructive definition.
+    /// <para/>
+    /// It is possible for no Minimum Clearance to exist.
+    /// For instance, a <see cref="IMultiPoint"/> with all members identical
+    /// has no Minimum Clearance
+    /// (i.e. no amount of perturbation will cause
+    /// the member points to become non-identical).
+    /// Empty geometries also have no such distance.
+    /// The lack of a meaningful MinimumClearance distance is detected
+    /// and suitable values are returned by
+    /// <see cref="GetDistance()"/> and <see cref="GetLine()"/>.
+    /// <para/>
+    /// The computation of Minimum Clearance utilizes
+    /// the <see cref="STRtree.NearestNeighbour(NetTopologySuite.Index.Strtree.IItemDistance)"/>
+    /// method to provide good performance even for
+    /// large inputs.
+    /// <para/>
+    /// An interesting note is that for the case of <see cref="IMultiPoint"/>s,
+    /// the computed Minimum Clearance line
+    /// effectively determines the Nearest Neighbours in the collection.
+    /// <h3>References</h3>
+    /// <list type="Bullet">
+    /// <item>[Mi88] Milenkovic, V. J.,
+    /// <i>Verifiable implementations of geometric algorithms
+    /// using finite precision arithmetic</i>.
+    /// in Artificial Intelligence, 377-401. 1988</item>
+    /// <item>[TV06] Thompson, Rod and van Oosterom, Peter,
+    /// <i>Interchange of Spatial Data-Inhibiting Factors</i>,
+    /// Agile 2006, Visegrad, Hungary. 2006</item>
+    /// </list>
+    /// </summary>
+    /// <author>Martin Davis</author>
     public class MinimumClearance
     {
-        /**
-   * Computes the Minimum Clearance distance for
-   * the given Geometry.
-   *
-   * @param g the input geometry
-   * @return the Minimum Clearance distance
-   */
-
+        /// <summary>
+        /// Computes the Minimum Clearance distance for
+        /// the given Geometry.
+        /// </summary>
+        /// <param name="g">The input geometry</param>
+        /// <returns>The minimum clearance</returns>
         public static double GetDistance(IGeometry g)
         {
             var rp = new MinimumClearance(g);
             return rp.GetDistance();
         }
 
-        /**
-   * Gets a LineString containing two points
-   * which are at the Minimum Clearance distance
-   * for the given Geometry.
-   *
-   * @param g the input geometry
-   * @return the value of the minimum clearance distance
-   * @return <tt>LINESTRING EMPTY</tt> if no Minimum Clearance distance exists
-   */
-
+        /// <summary>
+        /// Gets a LineString containing two points
+        /// which are at the Minimum Clearance distance
+        /// for the given Geometry.
+        /// </summary>
+        /// <param name="g">The input geometry</param>
+        /// <returns>The value of the minimum clearance distance, <c>LINESTRING EMPTY</c> if no minimum clearance distance exists.</returns>
         public static IGeometry GetLine(IGeometry g)
         {
             var rp = new MinimumClearance(g);
@@ -119,47 +109,38 @@ namespace NetTopologySuite.Precision
         private double _minClearance;
         private Coordinate[] _minClearancePts;
 
-        /**
-   * Creates an object to compute the Minimum Clearance
-   * for the given Geometry
-   *
-   * @param geom the input geometry
-   */
-
+        /// <summary>
+        /// Creates an object to compute the Minimum Clearance for the given Geometry
+        /// </summary>
+        /// <param name="geom">The input geometry</param>
         public MinimumClearance(IGeometry geom)
         {
             _inputGeom = geom;
         }
 
-        /**
-   * Gets the Minimum Clearance distance.
-   * <p>
-   * If no distance exists
-   * (e.g. in the case of two identical points)
-   * <tt>Double.MAX_VALUE</tt> is returned.
-   *
-   * @return the value of the minimum clearance distance
-   * @return <tt>Double.MAX_VALUE</tt> if no Minimum Clearance distance exists
-   */
-
+        /// <summary>
+        /// Gets the Minimum Clearance distance.
+        /// <para>If no distance exists
+        ///  (e.g. in the case of two identical points)
+        /// <see cref="double.MaxValue"/> is returned.</para>
+        /// </summary>
+        /// <returns>
+        /// The value of the minimum clearance distance, <see cref="double.MaxValue"/> if no Minimum Clearance distance exists
+        /// </returns>
         public double GetDistance()
         {
             Compute();
             return _minClearance;
         }
 
-        /**
-   * Gets a LineString containing two points
-   * which are at the Minimum Clearance distance.
-   * <p>
-   * If no distance could be found
-   * (e.g. in the case of two identical points)
-   * <tt>LINESTRING EMPTY</tt> is returned.
-   *
-   * @return the value of the minimum clearance distance
-   * @return <tt>LINESTRING EMPTY</tt> if no Minimum Clearance distance exists
-   */
-
+        /// <summary>
+        /// Gets a LineString containing two points
+        /// which are at the Minimum Clearance distance.<para/>
+        /// If no distance could be found
+        /// (e.g. in the case of two identical points)
+        /// <c>LINESTRING EMPTY</c> is returned.
+        /// </summary>
+        /// <returns>The value of the minimum clearance distance, <c>LINESTRING EMPTY</c> if no minimum clearance distance exists.</returns>
         public ILineString GetLine()
         {
             Compute();
@@ -194,26 +175,21 @@ namespace NetTopologySuite.Precision
             _minClearancePts = mcd.Coordinates;
         }
 
-        /**
-   * Implements the MinimumClearance distance function:
-   * <ul>
-   * <li>dist(p1, p2) =
-   * <ul>
-   * <li>p1 != p2 : p1.distance(p2)
-   * <li>p1 == p2 : Double.MAX
-   * </ul>
-   * <li>dist(p, seg) =
-   * <ul>
-   * <li>p != seq.p1 && p != seg.p2 : seg.distance(p)
-   * <li>ELSE : Double.MAX
-   * </ul>
-   * </ul>
-   * Also computes the values of the nearest points, if any.
-   *
-   * @author Martin Davis
-   *
-   */
-
+        /// <summary>
+        /// Implements the MinimumClearance distance function:
+        /// <code>
+        /// dist(p1, p2) =
+        ///     p1 != p2 : p1.distance(p2)
+        ///     p1 == p2 : Double.MAX
+        ///
+        /// dist(p, seg) =
+        ///     p != seq.p1 && p != seg.p2
+        ///         ? seg.distance(p)
+        ///         : Double.MaxValue
+        /// </code>
+        /// Also computes the values of the nearest points, if any.
+        /// </summary>
+        /// <author>Martin Davis</author>
         private class MinClearanceDistance : IItemDistance
         {
             private double _minDist = Double.MaxValue;
@@ -250,11 +226,11 @@ namespace NetTopologySuite.Precision
                 {
                     for (int i2 = 0; i2 < fs2.Count; i2++)
                     {
-                        Coordinate p1 = fs1.GetCoordinate(i1);
-                        Coordinate p2 = fs2.GetCoordinate(i2);
+                        var p1 = fs1.GetCoordinate(i1);
+                        var p2 = fs2.GetCoordinate(i2);
                         if (!p1.Equals2D(p2))
                         {
-                            double d = p1.Distance(p2);
+                            var d = p1.Distance(p2);
                             if (d < _minDist)
                             {
                                 _minDist = d;
@@ -271,18 +247,18 @@ namespace NetTopologySuite.Precision
 
             private double SegmentDistance(FacetSequence fs1, FacetSequence fs2)
             {
-                for (int i1 = 0; i1 < fs1.Count; i1++)
+                for (var i1 = 0; i1 < fs1.Count; i1++)
                 {
-                    for (int i2 = 1; i2 < fs2.Count; i2++)
+                    for (var i2 = 1; i2 < fs2.Count; i2++)
                     {
-                        Coordinate p = fs1.GetCoordinate(i1);
+                        var p = fs1.GetCoordinate(i1);
 
-                        Coordinate seg0 = fs2.GetCoordinate(i2 - 1);
-                        Coordinate seg1 = fs2.GetCoordinate(i2);
+                        var seg0 = fs2.GetCoordinate(i2 - 1);
+                        var seg1 = fs2.GetCoordinate(i2);
 
                         if (!(p.Equals2D(seg0) || p.Equals2D(seg1)))
                         {
-                            double d = CGAlgorithms.DistancePointLine(p, seg0, seg1);
+                            var d = CGAlgorithms.DistancePointLine(p, seg0, seg1);
                             if (d < _minDist)
                             {
                                 _minDist = d;

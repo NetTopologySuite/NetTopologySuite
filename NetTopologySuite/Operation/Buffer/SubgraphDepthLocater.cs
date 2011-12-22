@@ -1,12 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
-using NetTopologySuite.Utilities;
 
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
@@ -22,20 +19,20 @@ namespace NetTopologySuite.Operation.Buffer
     /// </summary>
     public class SubgraphDepthLocater
     {
-        private readonly IList<BufferSubgraph> subgraphs;
-        private LineSegment seg = new LineSegment();        
+        private readonly IList<BufferSubgraph> _subgraphs;
+        private readonly LineSegment _seg = new LineSegment();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="subgraphs"></param>
         public SubgraphDepthLocater(IList<BufferSubgraph> subgraphs)
         {
-            this.subgraphs = subgraphs;
+            _subgraphs = subgraphs;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
@@ -47,7 +44,7 @@ namespace NetTopologySuite.Operation.Buffer
             if (stabbedSegments.Count == 0)
                 return 0;
             stabbedSegments.Sort();
-            DepthSegment ds = stabbedSegments[0];
+            var ds = stabbedSegments[0];
             return ds.LeftDepth;
         }
 
@@ -60,7 +57,7 @@ namespace NetTopologySuite.Operation.Buffer
         private IList<DepthSegment> FindStabbedSegments(Coordinate stabbingRayLeftPt)
         {
             IList<DepthSegment> stabbedSegments = new List<DepthSegment>();
-            foreach (BufferSubgraph bsg in subgraphs)
+            foreach (var bsg in _subgraphs)
             {
                 FindStabbedSegments(stabbingRayLeftPt, bsg.DirectedEdges, stabbedSegments);
             }
@@ -83,7 +80,7 @@ namespace NetTopologySuite.Operation.Buffer
             */
             foreach (DirectedEdge de in dirEdges)
             {
-                if (! de.IsForward) 
+                if (!de.IsForward)
                     continue;
                 FindStabbedSegments(stabbingRayLeftPt, de, stabbedSegments);
             }
@@ -102,31 +99,31 @@ namespace NetTopologySuite.Operation.Buffer
             Coordinate[] pts = dirEdge.Edge.Coordinates;
             for (int i = 0; i < pts.Length - 1; i++)
             {
-                seg.P0 = pts[i];
-                seg.P1 = pts[i + 1];
+                _seg.P0 = pts[i];
+                _seg.P1 = pts[i + 1];
                 // ensure segment always points upwards
-                if (seg.P0.Y > seg.P1.Y)
-                    seg.Reverse();
+                if (_seg.P0.Y > _seg.P1.Y)
+                    _seg.Reverse();
 
                 // skip segment if it is left of the stabbing line
-                double maxx = Math.Max(seg.P0.X, seg.P1.X);
+                var maxx = Math.Max(_seg.P0.X, _seg.P1.X);
                 if (maxx < stabbingRayLeftPt.X) continue;
 
                 // skip horizontal segments (there will be a non-horizontal one carrying the same depth info
-                if (seg.IsHorizontal) continue;
+                if (_seg.IsHorizontal) continue;
 
                 // skip if segment is above or below stabbing line
-                if (stabbingRayLeftPt.Y < seg.P0.Y || stabbingRayLeftPt.Y > seg.P1.Y) continue;
+                if (stabbingRayLeftPt.Y < _seg.P0.Y || stabbingRayLeftPt.Y > _seg.P1.Y) continue;
 
                 // skip if stabbing ray is right of the segment
-                if (CGAlgorithms.ComputeOrientation(seg.P0, seg.P1, stabbingRayLeftPt) == CGAlgorithms.Right) continue;
+                if (CGAlgorithms.ComputeOrientation(_seg.P0, _seg.P1, stabbingRayLeftPt) == CGAlgorithms.Right) continue;
 
                 // stabbing line cuts this segment, so record it
                 int depth = dirEdge.GetDepth(Positions.Left);
                 // if segment direction was flipped, use RHS depth instead
-                if (! seg.P0.Equals(pts[i]))
+                if (!_seg.P0.Equals(pts[i]))
                     depth = dirEdge.GetDepth(Positions.Right);
-                DepthSegment ds = new DepthSegment(seg, depth);
+                var ds = new DepthSegment(_seg, depth);
                 stabbedSegments.Add(ds);
             }
         }
@@ -137,28 +134,28 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         private class DepthSegment : IComparable
         {
-            private LineSegment upwardSeg;
-            private int leftDepth;
+            private readonly LineSegment _upwardSeg;
+            private int _leftDepth;
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             public int LeftDepth
             {
-                get { return leftDepth; }
-                set { leftDepth = value; }
+                get { return _leftDepth; }
+                set { _leftDepth = value; }
             }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             /// <param name="seg"></param>
             /// <param name="depth"></param>
             public DepthSegment(LineSegment seg, int depth)
             {
                 // input seg is assumed to be normalized
-                upwardSeg = new LineSegment(seg);
-                this.leftDepth = depth;
+                _upwardSeg = new LineSegment(seg);
+                _leftDepth = depth;
             }
 
             /// <summary>
@@ -171,13 +168,13 @@ namespace NetTopologySuite.Operation.Buffer
             /// <returns></returns>
             public int CompareTo(Object obj)
             {
-                DepthSegment other = (DepthSegment) obj;
+                var other = (DepthSegment)obj;
 
                 /*
                 * try and compute a determinate orientation for the segments.
                 * Test returns 1 if other is left of this (i.e. this > other)
                 */
-                int orientIndex = upwardSeg.OrientationIndex(other.upwardSeg);
+                int orientIndex = _upwardSeg.OrientationIndex(other._upwardSeg);
 
                 /*
                 * If comparison between this and other is indeterminate,
@@ -187,14 +184,14 @@ namespace NetTopologySuite.Operation.Buffer
                 * -1 if this is leftmost
                 */
                 if (orientIndex == 0)
-                    orientIndex = -1 * other.upwardSeg.OrientationIndex(upwardSeg);
+                    orientIndex = -1 * other._upwardSeg.OrientationIndex(_upwardSeg);
 
                 // if orientation is determinate, return it
                 if (orientIndex != 0)
                     return orientIndex;
 
                 // otherwise, segs must be collinear - sort based on minimum X value
-                return CompareX(this.upwardSeg, other.upwardSeg);
+                return CompareX(_upwardSeg, other._upwardSeg);
             }
 
             /// <summary>
@@ -209,10 +206,9 @@ namespace NetTopologySuite.Operation.Buffer
             /// <returns></returns>
             private int CompareX(LineSegment seg0, LineSegment seg1)
             {
-                int compare0 = seg0.P0.CompareTo(seg1.P0);
+                var compare0 = seg0.P0.CompareTo(seg1.P0);
                 if (compare0 != 0) return compare0;
                 return seg0.P1.CompareTo(seg1.P1);
-
             }
         }
     }

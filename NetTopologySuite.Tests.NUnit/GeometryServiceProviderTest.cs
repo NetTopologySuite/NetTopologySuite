@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using GeoAPI;
 using GeoAPI.CoordinateSystems;
-using NUnit.Framework;
 using NetTopologySuite.Geometries;
+using NUnit.Framework;
 using ProjNet;
 
 namespace NetTopologySuite.Tests.NUnit
@@ -16,11 +16,11 @@ namespace NetTopologySuite.Tests.NUnit
         {
             var nts = new NtsGeometryServices();
             var ntsFromGeoApi = GeometryServiceProvider.Instance;
-            
+
             Assert.IsNotNull(ntsFromGeoApi);
             Assert.IsNotNull(ntsFromGeoApi.DefaultCoordinateSequenceFactory);
             Assert.IsNotNull(ntsFromGeoApi.DefaultPrecisionModel);
-            
+
             Assert.IsTrue(nts.DefaultCoordinateSequenceFactory == ntsFromGeoApi.DefaultCoordinateSequenceFactory);
             Assert.IsTrue(nts.DefaultPrecisionModel.Equals(ntsFromGeoApi.DefaultPrecisionModel));
         }
@@ -34,16 +34,18 @@ namespace NetTopologySuite.Tests.NUnit
                     new PrecisionModel(10d), 4326);
 
             Assert.Throws<ArgumentNullException>(() => GeometryServiceProvider.Instance = null);
-            
+
             GeometryServiceProvider.Instance = nts;
             var factory = nts.CreateGeometryFactory();
-            
+
             Assert.IsNotNull(factory);
             Assert.AreEqual(nts.DefaultSRID, factory.SRID);
             Assert.AreEqual(nts.DefaultPrecisionModel, factory.PrecisionModel);
             Assert.AreEqual(nts.DefaultCoordinateSequenceFactory, factory.CoordinateSequenceFactory);
         }
+
         #region ProjNet
+
         //ToDo: Move this to some other test
         [Test]
         public void TestProjNetCoordinateSystemProvider()
@@ -66,8 +68,8 @@ namespace NetTopologySuite.Tests.NUnit
             var cs = csp.GetCoordinateSytem(wkt);
             Assert.IsNotNull(cs);
             Console.WriteLine(cs.WKT);
-            
         }
-        #endregion
+
+        #endregion ProjNet
     }
 }

@@ -9,10 +9,12 @@
     <licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
     <projectUrl>http://code.google.com/p/nettopologysuite</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <description>The NTS Topology Suite is an API for modelling and manipulating 2-dimensional linear geometry. It provides numerous geometric predicates and functions. NTS conforms to the Simple Features Specification.
-	This package contains Wintellect's PowerCollections and references GeoAPI.</description>
+    <description>
+      The NTS Topology Suite is an API for modelling and manipulating 2-dimensional linear geometry. It provides numerous geometric predicates and functions. NTS conforms to the Simple Features Specification.
+      This package contains Wintellect's PowerCollections and references GeoAPI.
+    </description>
     <summary>NTS Topology Suite is a direct-port of all the functionalities offered by JTS Topology Suite</summary>
-    <tags>NTS, Topology, OGC, SFS</tags>
+    <tags>NTS Topology OGC SFS</tags>
     <language>en-US</language>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System" targetFramework="" />
@@ -20,8 +22,9 @@
       <frameworkAssembly assemblyName="System.Xml" targetFramework="sl4" />
     </frameworkAssemblies>
     <dependencies>
-      <dependency id="GeoAPI" version="1.5.0" />
-    </dependencies>  </metadata>
+      <dependency id="GeoAPI" version="1.6.0" />
+    </dependencies>
+  </metadata>
   <files>
     <file src="Release\v3.5\AnyCPU\NetTopologySuite.dll" target="lib\net35\NetTopologySuite.dll" />
     <file src="Release\v3.5\AnyCPU\PowerCollections.dll" target="lib\net35\PowerCollections.dll" />

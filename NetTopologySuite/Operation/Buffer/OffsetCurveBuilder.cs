@@ -6,19 +6,16 @@ using NetTopologySuite.GeometriesGraph;
 
 namespace NetTopologySuite.Operation.Buffer
 {
-    /**
-     * Computes the raw offset curve for a
-     * single {@link Geometry} component (ring, line or point).
-     * A raw offset curve line is not noded -
-     * it may contain self-intersections (and usually will).
-     * The final buffer polygon is computed by forming a topological graph
-     * of all the noded raw curves and tracing outside contours.
-     * The points in the raw curve are rounded
-     * to a given {@link PrecisionModel}.
-     *
-     * @version 1.7
-     */
-
+    /// <summary>
+    /// Computes the raw offset curve for a
+    /// single <see cref="IGeometry"/> component (ring, line or point).
+    /// A raw offset curve line is not noded -
+    /// it may contain self-intersections (and usually will).
+    /// The final buffer polygon is computed by forming a topological graph
+    /// of all the noded raw curves and tracing outside contours.
+    /// The points in the raw curve are rounded
+    /// to a given <see cref="IPrecisionModel"/>.
+    /// </summary>
     public class OffsetCurveBuilder
     {
         private double _distance;
@@ -34,29 +31,23 @@ namespace NetTopologySuite.Operation.Buffer
             _bufParams = bufParams;
         }
 
-        /**
-   * Gets the buffer parameters being used to generate the curve.
-   *
-   * @return the buffer parameters being used
-   */
-
+        /// <summary>
+        /// Gets the buffer parameters being used to generate the curve.
+        /// </summary>
         public IBufferParameters BufferParameters
         {
             get { return _bufParams; }
         }
 
-        /**
-   * This method handles single points as well as LineStrings.
-   * LineStrings are assumed <b>not</b> to be closed (the function will not
-   * fail for closed lines, but will generate superfluous line caps).
-   *
-   * @param inputPts the vertices of the line to offset
-   * @param distance the offset distance
-   *
-   * @return a Coordinate array representing the curve
-   * @return null if the curve is empty
-   */
-
+        /// <summary>
+        /// This method handles single points as well as LineStrings.
+        /// LineStrings are assumed <b>not</b> to be closed (the function will not
+        /// fail for closed lines, but will generate superfluous line caps).
+        /// </summary>
+        /// <param name="inputPts">The vertices of the line to offset</param>
+        /// <param name="distance">The offset distance</param>
+        /// <returns>A Coordinate array representing the curve, <c>null</c> if the curve is empty
+        /// </returns>
         public Coordinate[] GetLineCurve(Coordinate[] inputPts, double distance)
         {
             _distance = distance;
@@ -86,14 +77,11 @@ namespace NetTopologySuite.Operation.Buffer
             return lineCoord;
         }
 
-        /**
-   * This method handles the degenerate cases of single points and lines,
-   * as well as rings.
-   *
-   * @return a Coordinate array representing the curve
-   * @return null if the curve is empty
-   */
-
+        /// <summary>
+        /// This method handles the degenerate cases of single points and lines,
+        /// as well as rings.
+        /// </summary>
+        /// <returns>A Coordinate array representing the curve, <c>null</c> if the curve is empty</returns>
         public Coordinate[] GetRingCurve(Coordinate[] inputPts, Positions side, double distance)
         {
             _distance = distance;
@@ -151,22 +139,20 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /**
-   * Use a value which results in a potential distance error which is
-   * significantly less than the error due to
-   * the quadrant segment discretization.
-   * For QS = 8 a value of 100 is reasonable.
-   * This should produce a maximum of 1% distance error.
-   */
+         * Use a value which results in a potential distance error which is
+         * significantly less than the error due to
+         * the quadrant segment discretization.
+         * For QS = 8 a value of 100 is reasonable.
+         * This should produce a maximum of 1% distance error.
+         */
         private const double SimplifyFactor = 100.0;
 
-        /**
-   * Computes the distance tolerance to use during input
-   * line simplification.
-   *
-   * @param distance the buffer distance
-   * @return the simplification tolerance
-   */
-
+        /// <summary>
+        /// Computes the distance tolerance to use during input
+        /// line simplification.
+        /// </summary>
+        /// <param name="bufDistance">The buffer distance</param>
+        /// <returns>The simplification tolerance</returns>
         private static double SimplifyTolerance(double bufDistance)
         {
             return bufDistance / SimplifyFactor;

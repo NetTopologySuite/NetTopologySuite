@@ -42,7 +42,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="pt">The point to add.</param>
         public void AddPt(Coordinate pt)
         {
-            Coordinate bufPt = new Coordinate(pt);
+            var bufPt = new Coordinate(pt);
             _precisionModel.MakePrecise(bufPt);
             // don't add duplicate (or near-duplicate) points
             if (IsDuplicate(bufPt))
@@ -60,8 +60,8 @@ namespace NetTopologySuite.Operation.Buffer
         {
             if (_ptList.Count < 1)
                 return false;
-            Coordinate lastPt = _ptList[_ptList.Count - 1];
-            double ptDist = pt.Distance(lastPt);
+            var lastPt = _ptList[_ptList.Count - 1];
+            var ptDist = pt.Distance(lastPt);
             if (ptDist < _minimimVertexDistance)
                 return true;
             return false;
@@ -73,8 +73,8 @@ namespace NetTopologySuite.Operation.Buffer
         public void CloseRing()
         {
             if (_ptList.Count < 1) return;
-            Coordinate startPt = new Coordinate(_ptList[0]);
-            Coordinate lastPt = _ptList[_ptList.Count - 1];
+            var startPt = new Coordinate(_ptList[0]);
+            var lastPt = _ptList[_ptList.Count - 1];
             /*Coordinate last2Pt = null;
               if (ptList.Count >= 2)
                   last2Pt = (Coordinate)ptList[ptList.Count - 2];*/
@@ -92,19 +92,19 @@ namespace NetTopologySuite.Operation.Buffer
                 // check that points are a ring - add the startpoint again if they are not
                 if (_ptList.Count > 1)
                 {
-                    Coordinate start = _ptList[0];
-                    Coordinate end = _ptList[_ptList.Count - 1];
+                    var start = _ptList[0];
+                    var end = _ptList[_ptList.Count - 1];
                     if (!start.Equals(end)) AddPt(start);
                 }
-                Coordinate[] coord = _ptList.ToArray();
+                var coord = _ptList.ToArray();
                 return coord;
             }
         }
 
         public override String ToString()
         {
-            GeometryFactory fact = new GeometryFactory();
-            ILineString line = fact.CreateLineString(Coordinates);
+            var fact = new GeometryFactory();
+            var line = fact.CreateLineString(Coordinates);
             return line.ToString();
         }
     }

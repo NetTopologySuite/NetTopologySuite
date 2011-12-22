@@ -1,14 +1,13 @@
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Precision
 {
     ///<summary>
-    /// Reduces the precision of the {@link Coordinate}s in a
-    /// <see cref="ICoordinateSequence"/> to match the supplied <see cref="PrecisionModel"/>.
+    /// Reduces the precision of the <see cref="Coordinate"/>s in a
+    /// <see cref="ICoordinateSequence"/> to match the supplied <see cref="IPrecisionModel"/>.
     ///</summary>
     /// <remarks>
-    /// Uses <see cref="PrecisionModel.MakePrecise(double)"/>.
+    /// Uses <see cref="IPrecisionModel.MakePrecise(double)"/>.
     /// The input is modified in-place, so
     /// it should be cloned beforehand if the
     /// original should not be modified.
@@ -16,13 +15,13 @@ namespace NetTopologySuite.Precision
     /// <author>mbdavis</author>
     public class CoordinatePrecisionReducerFilter : ICoordinateSequenceFilter
     {
-        private readonly PrecisionModel _precModel;
+        private readonly IPrecisionModel _precModel;
 
         ///<summary>
         /// Creates a new precision reducer filter.
         ///</summary>
         /// <param name="precModel">The PrecisionModel to use</param>
-        public CoordinatePrecisionReducerFilter(PrecisionModel precModel)
+        public CoordinatePrecisionReducerFilter(IPrecisionModel precModel)
         {
             _precModel = precModel;
         }

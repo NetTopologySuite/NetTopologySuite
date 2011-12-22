@@ -46,7 +46,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         private bool _isValid = true;
         private String _errMsg;
         private Coordinate _errorLocation;
-        private IGeometry _errorIndicator = null;
+        private IGeometry _errorIndicator;
 
         public BufferDistanceValidator(IGeometry input, double bufDistance, IGeometry result)
         {
@@ -57,7 +57,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
 
         public bool IsValid()
         {
-            double posDistance = System.Math.Abs(_bufDistance);
+            double posDistance = Math.Abs(_bufDistance);
             double distDelta = MaxDistanceDiffFrac * posDistance;
             _minValidDistance = posDistance - distDelta;
             _maxValidDistance = posDistance + distDelta;
@@ -156,7 +156,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// <param name="minDist">The minimum distance the geometries should be separated by</param>
         private void CheckMinimumDistance(IGeometry g1, IGeometry g2, double minDist)
         {
-            DistanceOp distOp = new DistanceOp(g1, g2, minDist);
+            var distOp = new DistanceOp(g1, g2, minDist);
             _minDistanceFound = distOp.Distance();
 
             if (_minDistanceFound < minDist)
@@ -187,7 +187,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             //    BufferCurveMaximumDistanceFinder maxDistFinder = new BufferCurveMaximumDistanceFinder(input);
             //    maxDistanceFound = maxDistFinder.findDistance(bufCurve);
 
-            DiscreteHausdorffDistance haus = new DiscreteHausdorffDistance(bufCurve, input);
+            var haus = new DiscreteHausdorffDistance(bufCurve, input);
             haus.DensifyFraction = 0.25;
             _maxDistanceFound = haus.OrientedDistance();
 

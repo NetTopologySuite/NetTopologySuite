@@ -4,46 +4,39 @@ using NetTopologySuite.Geometries.Utilities;
 
 namespace NetTopologySuite.Precision
 {
-    /**
-     * Reduces the precision of a {@link Geometry}
-     * according to the supplied {@link PrecisionModel},
-     * ensuring that the result is topologically valid.
-     *
-     * @version 1.12
-     */
-
+    /// <summary>
+    /// Reduces the precision of a <see cref="IGeometry"/>
+    /// according to the supplied <see cref="IPrecisionModel"/>,
+    /// ensuring that the result is topologically valid.
+    /// </summary>
     public class GeometryPrecisionReducer
     {
-        /**
-         * Convenience method for doing precision reduction
-       * on a single geometry,
-         * with collapses removed
-       * and keeping the geometry precision model the same,
-       * and preserving polygonal topology.
-         *
-         * @param g the geometry to reduce
-         * @param precModel the precision model to use
-         * @return the reduced geometry
-         */
-
+        /// <summary>
+        /// Convenience method for doing precision reduction
+        /// on a single geometry,
+        /// with collapses removed
+        /// and keeping the geometry precision model the same,
+        /// and preserving polygonal topology.
+        /// </summary>
+        /// <param name="g">The geometry to reduce</param>
+        /// <param name="precModel">The precision model to use</param>
+        /// <returns>The reduced geometry</returns>
         public static IGeometry Reduce(IGeometry g, IPrecisionModel precModel)
         {
-            GeometryPrecisionReducer reducer = new GeometryPrecisionReducer(precModel);
+            var reducer = new GeometryPrecisionReducer(precModel);
             return reducer.Reduce(g);
         }
 
-        /**
-         * Convenience method for doing pointwise precision reduction
-       * on a single geometry,
-         * with collapses removed
-       * and keeping the geometry precision model the same,
-       * but NOT preserving valid polygonal topology.
-         *
-         * @param g the geometry to reduce
-         * @param precModel the precision model to use
-         * @return the reduced geometry
-         */
-
+        /// <summary>
+        /// Convenience method for doing pointwise precision reduction
+        /// on a single geometry,
+        /// with collapses removed
+        /// and keeping the geometry precision model the same,
+        /// but NOT preserving valid polygonal topology.
+        /// </summary>
+        /// <param name="g">The geometry to reduce</param>
+        /// <param name="precModel">The precision model to use</param>
+        /// <returns>The reduced geometry</returns>
         public static IGeometry ReducePointwise(IGeometry g, IPrecisionModel precModel)
         {
             var reducer = new GeometryPrecisionReducer(precModel);
@@ -61,49 +54,38 @@ namespace NetTopologySuite.Precision
             _targetPrecModel = pm;
         }
 
-        /**
-         * Sets whether the reduction will result in collapsed components
-         * being removed completely, or simply being collapsed to an (invalid)
-         * Geometry of the same type.
-         * The default is to remove collapsed components.
-         *
-         * @param removeCollapsed if <code>true</code> collapsed components will be removed
-         */
-
+        /// <summary>Gets or sets whether the reduction will result in collapsed components
+        /// being removed completely, or simply being collapsed to an (invalid)
+        /// Geometry of the same type.
+        /// The default is to remove collapsed components.
+        /// </summary>
         public bool RemoveCollapsedComponents
         {
             get { return _removeCollapsed; }
             set { _removeCollapsed = value; }
         }
 
-        /**
-         * Sets whether the {@link PrecisionModel} of the new reduced Geometry
-         * will be changed to be the {@link PrecisionModel} supplied to
-         * specify the precision reduction.
-         * <p>
-         * The default is to <b>not</b> change the precision model
-         *
-         * @param changePrecisionModel if <code>true</code> the precision model of the created Geometry will be the
-         * the precisionModel supplied in the constructor.
-         */
-
+        /// <summary>
+        /// /// Gets or sets whether the <see cref = "IPrecisionModel"/> of the new reduced Geometry
+        /// will be changed to be the <see cref="IPrecisionModel"/> supplied to
+        /// specify the precision reduction.
+        /// <para/>
+        /// The default is to <b>not</b> change the precision model
+        /// </summary>
         public bool ChangePrecisionModel
         {
             get { return _changePrecisionModel; }
             set { _changePrecisionModel = value; }
         }
 
-        /**
-         * Sets whether the precision reduction will be done
-         * in pointwise fashion only.
-         * Pointwise precision reduction reduces the precision
-         * of the individual coordinates only, but does
-         * not attempt to recreate valid topology.
-         * This is only relevant for geometries containing polygonal components.
-         *
-         * @param isPointwise if reduction should be done pointwise only
-         */
-
+        /// <summary>
+        /// Gets or sets whether the precision reduction will be done
+        /// in pointwise fashion only.
+        /// Pointwise precision reduction reduces the precision
+        /// of the individual coordinates only, but does
+        /// not attempt to recreate valid topology.
+        /// This is only relevant for geometries containing polygonal components.
+        /// </summary>
         public bool Pointwise
         {
             get { return _isPointwise; }

@@ -5,23 +5,18 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Precision
 {
-    /**
-     * Computes the minimum clearance of a geometry or
-     * set of geometries.
-     * <p>
-     * The <b>Minimum Clearance</b> is a measure of
-     * what magnitude of perturbation of its vertices can be tolerated
-     * by a geometry before it becomes topologically invalid.
-     * <p>
-     * This class uses an inefficient O(N^2) scan.
-     * It is primarily for testing purposes.
-     *
-     *
-     * @see MinimumClearance
-     * @author Martin Davis
-     *
-     */
-
+    /// <summary>
+    /// Computes the minimum clearance of a geometry or
+    /// set of geometries.<para/>
+    /// The <b>Minimum Clearance</b> is a measure of
+    /// what magnitude of perturbation of its vertices can be tolerated
+    /// by a geometry before it becomes topologically invalid.
+    /// <para/>
+    /// This class uses an inefficient O(N^2) scan.
+    /// It is primarily for testing purposes.
+    /// </summary>
+    /// <seealso cref="MinimumClearance"/>
+    /// <author>Martin Davis</author>
     public class SimpleMinimumClearance
     {
         public static double GetDistance(IGeometry g)

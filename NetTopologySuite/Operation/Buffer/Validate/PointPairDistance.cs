@@ -1,17 +1,15 @@
 using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Buffer.Validate
 {
-    /**
-     * Contains a pair of points and the distance between them.
-     * Provides methods to update with a new point pair with
-     * either maximum or minimum distance.
-     */
+    /// <summary>
+    /// Contains a pair of points and the distance between them.
+    /// Provides methods to update with a new point pair with
+    /// either maximum or minimum distance.
+    /// </summary>
     public class PointPairDistance
     {
-
         private readonly Coordinate[] _pt = { new Coordinate(), new Coordinate() };
         private double _distance = Double.NaN;
         private bool _isNull = true;
@@ -26,12 +24,12 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             _isNull = false;
         }
 
-        /**
-         * Initializes the points, avoiding recomputing the distance.
-         * @param p0
-         * @param p1
-         * @param distance the distance between p0 and p1
-         */
+        /// <summary>
+        /// Initializes the points, avoiding recomputing the distance.
+        /// </summary>
+        /// <param name="p0">The first point</param>
+        /// <param name="p1">The second point</param>
+        /// <param name="distance">The distance between <paramref name="p0"/> and <paramref name="p1"/></param>
         private void Initialize(Coordinate p0, Coordinate p1, double distance)
         {
             _pt[0].CoordinateValue = p0;

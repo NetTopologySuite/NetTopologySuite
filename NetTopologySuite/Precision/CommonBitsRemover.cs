@@ -88,7 +88,7 @@ namespace NetTopologySuite.Precision
         /// <param name="geom">The Geometry to which to add the common coordinate bits.</param>
         public void AddCommonBits(IGeometry geom)
         {
-            Translater trans = new Translater(_commonCoord);
+            var trans = new Translater(_commonCoord);
             geom.Apply(trans);
             geom.GeometryChanged();
         }
@@ -98,8 +98,8 @@ namespace NetTopologySuite.Precision
         /// </summary>
         public class CommonCoordinateFilter : ICoordinateFilter
         {
-            private CommonBits commonBitsX = new CommonBits();
-            private CommonBits commonBitsY = new CommonBits();
+            private readonly CommonBits _commonBitsX = new CommonBits();
+            private readonly CommonBits _commonBitsY = new CommonBits();
 
             /// <summary>
             ///
@@ -107,8 +107,8 @@ namespace NetTopologySuite.Precision
             /// <param name="coord"></param>
             public void Filter(Coordinate coord)
             {
-                commonBitsX.Add(coord.X);
-                commonBitsY.Add(coord.Y);
+                _commonBitsX.Add(coord.X);
+                _commonBitsY.Add(coord.Y);
             }
 
             /// <summary>
@@ -118,7 +118,7 @@ namespace NetTopologySuite.Precision
             {
                 get
                 {
-                    return new Coordinate(commonBitsX.Common, commonBitsY.Common);
+                    return new Coordinate(_commonBitsX.Common, _commonBitsY.Common);
                 }
             }
         }
