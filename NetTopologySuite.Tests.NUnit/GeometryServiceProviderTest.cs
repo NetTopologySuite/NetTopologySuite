@@ -53,13 +53,13 @@ namespace NetTopologySuite.Tests.NUnit
         [Test, Ignore]
         public void TestProjNetCoordinateSystemProvider()
         {
-            var csp = new ProjNetCoordinateSystemServices();
-            var ids = new List<int> { 4326, 31466, };
+            //var csp = new ProjNetCoordinateSystemServices();
+            //var ids = new List<int> { 4326, 31466, };
 
-            foreach (var id in ids)
-            {
-                RunTestWkt(csp, id);
-            }
+            //foreach (var id in ids)
+            //{
+            //    RunTestWkt(csp, id);
+            //}
         }
 
         private static void RunTestWkt(ICoordinateSystemServices<ICoordinateSystem> csp, int srid)
