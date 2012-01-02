@@ -1,7 +1,8 @@
-﻿namespace NetTopologySuite.Tests.Various
+﻿using NUnit.Framework;
+
+namespace NetTopologySuite.Tests.Various
 {
     using Geometries;
-    using NUnit.Framework;
     using Samples.SimpleTests;
 
     [TestFixture]
@@ -365,7 +366,7 @@
 
             var coll = Reader.Read(text);
             Assert.IsNotNull(coll);
-            
+
             var union = coll.Buffer(0.0);
             Assert.IsNotNull(union);
         }

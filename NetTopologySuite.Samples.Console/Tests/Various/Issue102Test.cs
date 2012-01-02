@@ -1,11 +1,12 @@
-﻿namespace NetTopologySuite.Tests.Various
+﻿using NUnit.Framework;
+
+namespace NetTopologySuite.Tests.Various
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using GeoAPI.Geometries;
-    using NUnit.Framework;
     using NetTopologySuite.Geometries;
     using NetTopologySuite.Simplify;
 
@@ -76,8 +77,8 @@
                 Interlocked.Increment(ref _finishedJob);
             }
         }
-
     }
+
     public class Helper
     {
         private const int MinASCII = 63;

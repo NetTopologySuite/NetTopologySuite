@@ -80,6 +80,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\NetTopologySuite.Tests.NUnit\TestData\EmbeddedResourceManager.cs">
+      <Link>Tests\Various\EmbeddedResourceManager.cs</Link>
+    </Compile>
     <Compile Include="Geometries\basicexample.cs" />
     <Compile Include="Geometries\constructionexample.cs" />
     <Compile Include="Geometries\CreateOrientationDistanceMesh.cs" />
@@ -101,6 +104,7 @@
     <Compile Include="Tests\Various\CoordinateArraysTest.cs" />
     <Compile Include="Tests\Various\CascadedPolygonUnionFixture.cs" />
     <Compile Include="Tests\Various\Issue102Test.cs" />
+    <Compile Include="Tests\Various\Issue103Tests.cs" />
     <Compile Include="Tests\Various\Issue68Tests.cs" />
     <Compile Include="Tests\Various\CoversTest.cs" />
     <Compile Include="Tests\Various\DbfDateTest.cs" />
@@ -216,6 +220,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <EmbeddedResource Include="Tests\Various\cant-read-file1.gml" />
+    <EmbeddedResource Include="Tests\Various\cant-read-file2.gml" />
+    <EmbeddedResource Include="Tests\Various\cant-read-file3.gml" />
+    <EmbeddedResource Include="Tests\Various\cant-read-file4.gml" />
+    <EmbeddedResource Include="Tests\Various\read-ok-file.gml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

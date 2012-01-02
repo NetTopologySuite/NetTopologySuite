@@ -4,6 +4,7 @@ using System.IO;
 using System.Xml;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Utilities;
 
 #if SILVERLIGHT
 using XmlTextWriter = System.Xml.XmlWriter;
@@ -14,7 +15,7 @@ using System.Xml.Linq;
 namespace NetTopologySuite.IO.GML2
 {
     /// <summary>
-    /// Reads a GML document and creates a representation of the features based or NetTopologySuite model.
+    /// Reads a GML document and creates a representation of the features based on NetTopologySuite model.
     /// Uses GML 2.1.1 <c>Geometry.xsd</c> schema for base for features.
     /// </summary>
     public class GMLReader
@@ -169,12 +170,53 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
+        /// Extract a <see cref="Coordinate" /> from a pos entity string value.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected Coordinate ReadPosAsCoordinate(string[] value)
+        {
+            var ordinates = new double[Math.Min(3, value.Length)];
+            for (var i = 0; i < ordinates.Length; i++)
+            {
+                ordinates[i] = XmlConvert.ToDouble(value[i]);
+            }
+            return ordinates.Length == 2
+                ? new Coordinate(ordinates[0], ordinates[1])
+                : new Coordinate(ordinates[0], ordinates[1], ordinates[2]);
+        }
+
+        /// <summary>
+        /// Extract a <see cref="Coordinate" /> from a x,y string value.
+        /// </summary>
+        /// <param name="numOrdinates"> </param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected Coordinate[] ReadPosListAsCoordinates(int numOrdinates, string[] value)
+        {
+            Assert.IsTrue(value.Length % numOrdinates == 0);
+            var coordinates = new Coordinate[value.Length / numOrdinates];
+            var offset = 0;
+            for (var i = 0; i < coordinates.Length; i++)
+            {
+                var ords = new string[numOrdinates];
+                Array.Copy(value, offset, ords, 0, numOrdinates);
+                offset += numOrdinates;
+                coordinates[i] = ReadPosAsCoordinate(ords);
+            }
+
+            return coordinates;
+        }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
         protected IPoint ReadPoint(XmlReader reader)
         {
+            var numOrdinatesText = reader.GetAttribute("srsDimension");
+
             while (reader.Read())
             {
                 switch (reader.NodeType)
@@ -182,6 +224,17 @@ namespace NetTopologySuite.IO.GML2
                     case XmlNodeType.Element:
                         if (IsStartElement(reader, "coord"))
                             return Factory.CreatePoint(ReadCoordinate(reader));
+                        if (IsStartElement(reader, "pos"))
+                        {
+                            reader.Read(); // Jump to values
+                            string[] coords = reader.Value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                            if (!string.IsNullOrEmpty(numOrdinatesText))
+                            {
+                                var numOrdinates = XmlConvert.ToInt32(numOrdinatesText);
+                                Assert.IsTrue(coords.Length == numOrdinates, "srsDimension doen't match number of provided ordinates");
+                            }
+                            return Factory.CreatePoint(ReadPosAsCoordinate(coords));
+                        }
                         if (IsStartElement(reader, "coordinates"))
                         {
                             reader.Read(); // Jump to values
@@ -193,8 +246,8 @@ namespace NetTopologySuite.IO.GML2
                         }
                         break;
 
-                    default:
-                        break;
+                    //default:
+                    //    break;
                 }
             }
             throw new ArgumentException("ShouldNeverReachHere!");
@@ -207,25 +260,45 @@ namespace NetTopologySuite.IO.GML2
         /// <returns></returns>
         protected ILineString ReadLineString(XmlReader reader)
         {
-            List<Coordinate> coordinates = new List<Coordinate>();
+            var coordinates = new List<Coordinate>();
             while (reader.Read())
             {
                 switch (reader.NodeType)
                 {
                     case XmlNodeType.Element:
                         if (IsStartElement(reader, "coord"))
+                        {
                             coordinates.Add(ReadCoordinate(reader));
+                        }
+                        else if (IsStartElement(reader, "pos"))
+                        {
+                            reader.Read();
+                            var ordinates = reader.ReadContentAsString();
+                            coordinates.Add(ReadPosAsCoordinate(ordinates.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)));
+                            //reader.ReadEndElement();
+                            //return Factory.CreateLineString(coordinates.ToArray());
+                        }
                         else if (IsStartElement(reader, "coordinates"))
                         {
                             reader.Read(); // Jump to values
-                            string[] coords = reader.Value.Split(' ');
+                            string[] coords = reader.Value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                             foreach (string coord in coords)
                             {
                                 if (String.IsNullOrEmpty(coord))
                                     continue;
-                                Coordinate c = ReadCoordinates(coord);
+                                var c = ReadCoordinates(coord);
                                 coordinates.Add(c);
                             }
+                            //reader.ReadEndElement();
+                            return Factory.CreateLineString(coordinates.ToArray());
+                        }
+                        else if (IsStartElement(reader, "posList"))
+                        {
+                            var tmp = reader.GetAttribute("srsDimension");
+                            if (string.IsNullOrEmpty(tmp)) tmp = "2";
+                            reader.Read();
+                            coordinates.AddRange(ReadPosListAsCoordinates(XmlConvert.ToInt32(tmp), reader.ReadContentAsString().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)));
+                            reader.ReadEndElement();
                             return Factory.CreateLineString(coordinates.ToArray());
                         }
                         break;
@@ -233,8 +306,8 @@ namespace NetTopologySuite.IO.GML2
                     case XmlNodeType.EndElement:
                         return Factory.CreateLineString(coordinates.ToArray());
 
-                    default:
-                        break;
+                    //default:
+                    //    break;
                 }
             }
             throw new ArgumentException("ShouldNeverReachHere!");
@@ -258,15 +331,17 @@ namespace NetTopologySuite.IO.GML2
         protected IPolygon ReadPolygon(XmlReader reader)
         {
             ILinearRing exterior = null;
-            List<ILinearRing> interiors = new List<ILinearRing>();
+            var interiors = new List<ILinearRing>();
             while (reader.Read())
             {
                 switch (reader.NodeType)
                 {
                     case XmlNodeType.Element:
-                        if (IsStartElement(reader, "outerBoundaryIs"))
-                            exterior = ReadLinearRing(reader) as LinearRing;
-                        else if (IsStartElement(reader, "innerBoundaryIs"))
+                        if (IsStartElement(reader, "outerBoundaryIs") ||
+                            IsStartElement(reader, "exterior"))
+                            exterior = ReadLinearRing(reader);// as LinearRing;
+                        else if (IsStartElement(reader, "innerBoundaryIs") ||
+                            IsStartElement(reader, "interior"))
                             interiors.Add(ReadLinearRing(reader));
                         break;
 
@@ -275,8 +350,8 @@ namespace NetTopologySuite.IO.GML2
                             return Factory.CreatePolygon(exterior, interiors.ToArray());
                         break;
 
-                    default:
-                        break;
+                    //default:
+                    //    break;
                 }
             }
             throw new ArgumentException("ShouldNeverReachHere!");
@@ -289,7 +364,7 @@ namespace NetTopologySuite.IO.GML2
         /// <returns></returns>
         protected IMultiPoint ReadMultiPoint(XmlReader reader)
         {
-            List<IPoint> points = new List<IPoint>();
+            var points = new List<IPoint>();
             while (reader.Read())
             {
                 switch (reader.NodeType)
@@ -304,8 +379,8 @@ namespace NetTopologySuite.IO.GML2
                             return Factory.CreateMultiPoint(points.ToArray());
                         break;
 
-                    default:
-                        break;
+                    //default:
+                    //    break;
                 }
             }
             throw new ArgumentException("ShouldNeverReachHere!");
@@ -318,7 +393,7 @@ namespace NetTopologySuite.IO.GML2
         /// <returns></returns>
         protected IMultiLineString ReadMultiLineString(XmlReader reader)
         {
-            List<ILineString> lines = new List<ILineString>();
+            var lines = new List<ILineString>();
             while (reader.Read())
             {
                 switch (reader.NodeType)
@@ -333,8 +408,8 @@ namespace NetTopologySuite.IO.GML2
                             return Factory.CreateMultiLineString(lines.ToArray());
                         break;
 
-                    default:
-                        break;
+                    //default:
+                    //    break;
                 }
             }
             throw new ArgumentException("ShouldNeverReachHere!");
@@ -347,7 +422,7 @@ namespace NetTopologySuite.IO.GML2
         /// <returns></returns>
         protected IMultiPolygon ReadMultiPolygon(XmlReader reader)
         {
-            List<IPolygon> polygons = new List<IPolygon>();
+            var polygons = new List<IPolygon>();
             while (reader.Read())
             {
                 switch (reader.NodeType)
@@ -362,8 +437,8 @@ namespace NetTopologySuite.IO.GML2
                             return Factory.CreateMultiPolygon(polygons.ToArray());
                         break;
 
-                    default:
-                        break;
+                    //default:
+                    //    break;
                 }
             }
             throw new ArgumentException("ShouldNeverReachHere!");
@@ -376,7 +451,7 @@ namespace NetTopologySuite.IO.GML2
         /// <returns></returns>
         protected IGeometryCollection ReadGeometryCollection(XmlReader reader)
         {
-            List<IGeometry> collection = new List<IGeometry>();
+            var collection = new List<IGeometry>();
             while (reader.Read())
             {
                 switch (reader.NodeType)
@@ -403,8 +478,8 @@ namespace NetTopologySuite.IO.GML2
                             return Factory.CreateGeometryCollection(collection.ToArray());
                         break;
 
-                    default:
-                        break;
+                    //default:
+                    //    break;
                 }
             }
             throw new ArgumentException("ShouldNeverReachHere!");

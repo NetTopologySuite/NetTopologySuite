@@ -1,4 +1,5 @@
 ﻿using NetTopologySuite.Geometries.Implementation;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.Various
 {
@@ -9,7 +10,6 @@ namespace NetTopologySuite.Tests.Various
     using Geometries;
     using NetTopologySuite.IO;
     using Noding;
-    using NUnit.Framework;
 
     // see https://groups.google.com/d/topic/nettopologysuite/kmUFS48XBOs/discussion
     [TestFixture]
@@ -22,7 +22,7 @@ namespace NetTopologySuite.Tests.Various
         [Test]
         public void PrecisionTest()
         {
-            var fsteps = new[] {.3, .3, .2, .1, .1};
+            var fsteps = new[] { .3, .3, .2, .1, .1 };
             double d1 = 0, d2 = 0;
             var r = new Random(5587269);
             for (var i = 0; i < 1358 - 11; i++)
@@ -32,7 +32,7 @@ namespace NetTopologySuite.Tests.Various
                     {
                         var d = 1.5d * r.NextDouble();
                         var dtmp = matfak * d;
-                        var fMatFak = (float) matfak;
+                        var fMatFak = (float)matfak;
                         float ftmp = fMatFak * (float)d;
                         d1 += dtmp;
                         d2 += ftmp;
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Tests.Various
         [Test]
         public void TestWithDotSpatialAffineCoordinateSequenceFactory()
         {
-            PerformTest(new GeometryFactory(new PrecisionModel(PrecisionModels.Floating), 0, DotSpatialAffineCoordinateSequenceFactory.Instance));            
+            PerformTest(new GeometryFactory(new PrecisionModel(PrecisionModels.Floating), 0, DotSpatialAffineCoordinateSequenceFactory.Instance));
         }
 
         private static void PerformTest(IGeometryFactory factory)
@@ -71,11 +71,11 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsTrue(g2.IsValid);
             Assert.IsInstanceOf(typeof(IMultiPolygon), g2);
             Assert.IsInstanceOf(typeof(MultiPolygon), g2);
-            
+
             Stopwatch watch = new Stopwatch();
             watch.Start();
             IGeometry r = g1.Intersection(g2);
-            watch.Stop();            
+            watch.Stop();
             Assert.IsNotNull(r);
             Assert.IsInstanceOf(typeof(IMultiPolygon), r);
             Assert.IsInstanceOf(typeof(MultiPolygon), r);

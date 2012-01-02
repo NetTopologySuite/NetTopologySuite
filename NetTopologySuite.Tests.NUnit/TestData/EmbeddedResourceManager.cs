@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace NetTopologySuite.Tests.NUnit.TestData
 {
-    class EmbeddedResourceManager
+    internal class EmbeddedResourceManager
     {
         public static string SaveEmbeddedResourceToTempFile(string resourceName)
         {
@@ -25,7 +25,7 @@ namespace NetTopologySuite.Tests.NUnit.TestData
                 }
             }
 
-            var resourceNameComponents = resourceName.Split(new string[] {"."}, StringSplitOptions.RemoveEmptyEntries);
+            var resourceNameComponents = resourceName.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
 
             string fileName = resourceNameComponents[resourceNameComponents.Length - 2] + "." + resourceNameComponents[resourceNameComponents.Length - 1];
 
