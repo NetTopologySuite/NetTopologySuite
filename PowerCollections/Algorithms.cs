@@ -2,7 +2,7 @@
 // Written by Peter Golde
 // Copyright (c) 2004-2005, Wintellect
 //
-// Use and restribution of this code is subject to the license agreement 
+// Use and restribution of this code is subject to the license agreement
 // contained in the file "License.txt" accompanying this file.
 //******************************
 
@@ -12,18 +12,19 @@ using System.Collections.Generic;
 
 #pragma warning disable 419  // Ambigious cref in XML comment
 
+#if MakeVisible
 // Make internals of this library available to the unit test framework.
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("UnitTests")]
+#endif
 
 // Everything should be CLS compliant.
 [assembly: CLSCompliant(true)]
-
 
 namespace Wintellect.PowerCollections
 {
     /// <summary>
     /// The BinaryPredicate delegate type  encapsulates a method that takes two
-    /// items of the same type, and returns a boolean value representating 
+    /// items of the same type, and returns a boolean value representating
     /// some relationship between them. For example, checking whether two
     /// items are equal or equivalent is one kind of binary predicate.
     /// </summary>
@@ -52,6 +53,7 @@ namespace Wintellect.PowerCollections
 #if !SILVERLIGHT
     [Serializable]
 #endif
+
         private class ListRange<T> : ListBase<T>, ICollection<T>
         {
             private IList<T> wrappedList;
@@ -59,7 +61,7 @@ namespace Wintellect.PowerCollections
             private int count;
 
             /// <summary>
-            /// Create a sub-range view object on the indicate part 
+            /// Create a sub-range view object on the indicate part
             /// of the list.
             /// </summary>
             /// <param name="wrappedList">List to wrap.</param>
@@ -74,8 +76,9 @@ namespace Wintellect.PowerCollections
 
             public override int Count
             {
-                get { 
-                    return Math.Min(count, wrappedList.Count - start); 
+                get
+                {
+                    return Math.Min(count, wrappedList.Count - start);
                 }
             }
 
@@ -84,7 +87,8 @@ namespace Wintellect.PowerCollections
                 if (wrappedList.Count - start < count)
                     count = wrappedList.Count - start;
 
-                while (count > 0) {
+                while (count > 0)
+                {
                     wrappedList.RemoveAt(start + count - 1);
                     --count;
                 }
@@ -146,7 +150,7 @@ namespace Wintellect.PowerCollections
         /// <summary>
         /// Returns a view onto a sub-range of a list. Items from <paramref name="list"/> are not copied; the
         /// returned IList&lt;T&gt; is simply a different view onto the same underlying items. Changes to <paramref name="list"/>
-        /// are reflected in the view, and vice versa. Insertions and deletions in the view change the size of the 
+        /// are reflected in the view, and vice versa. Insertions and deletions in the view change the size of the
         /// view, but insertions and deletions in the underlying list do not.
         /// </summary>
         /// <remarks>This method can be used to apply an algorithm to a portion of a list. For example:
@@ -183,6 +187,7 @@ namespace Wintellect.PowerCollections
 #if !SILVERLIGHT
     [Serializable]
 #endif
+
         private class ArrayRange<T> : ListBase<T>
         {
             private T[] wrappedArray;
@@ -190,7 +195,7 @@ namespace Wintellect.PowerCollections
             private int count;
 
             /// <summary>
-            /// Create a sub-range view object on the indicate part 
+            /// Create a sub-range view object on the indicate part
             /// of the array.
             /// </summary>
             /// <param name="wrappedArray">Array to wrap.</param>
@@ -270,7 +275,7 @@ namespace Wintellect.PowerCollections
         /// <summary>
         /// Returns a view onto a sub-range of an array. Items from <paramref name="array"/> are not copied; the
         /// returned IList&lt;T&gt; is simply a different view onto the same underlying items. Changes to <paramref name="array"/>
-        /// are reflected in the view, and vice versa. Insertions and deletions in the view change the size of the 
+        /// are reflected in the view, and vice versa. Insertions and deletions in the view change the size of the
         /// view. After an insertion, the last item in <paramref name="array"/> "falls off the end". After a deletion, the
         /// last item in array becomes the default value (0 or null).
         /// </summary>
@@ -305,6 +310,7 @@ namespace Wintellect.PowerCollections
 #if !SILVERLIGHT
     [Serializable]
 #endif
+
         private class ReadOnlyCollection<T> : ICollection<T>
         {
             private ICollection<T> wrappedCollection;  // The collection we are wrapping (never null).
@@ -325,7 +331,6 @@ namespace Wintellect.PowerCollections
             {
                 throw new NotSupportedException(string.Format(Strings.CannotModifyCollection, "read-only collection"));
             }
-
 
             public IEnumerator<T> GetEnumerator()
             { return wrappedCollection.GetEnumerator(); }
@@ -386,6 +391,7 @@ namespace Wintellect.PowerCollections
 #if !SILVERLIGHT
     [Serializable]
 #endif
+
         private class ReadOnlyList<T> : IList<T>
         {
             private IList<T> wrappedList;  // The list we are wrapping (never null).
@@ -407,7 +413,6 @@ namespace Wintellect.PowerCollections
                 throw new NotSupportedException(string.Format(Strings.CannotModifyCollection, "read-only list"));
             }
 
-
             public IEnumerator<T> GetEnumerator()
             { return wrappedList.GetEnumerator(); }
 
@@ -418,10 +423,10 @@ namespace Wintellect.PowerCollections
             { return wrappedList.IndexOf(item); }
 
             public bool Contains(T item)
-            {  return wrappedList.Contains(item); }
+            { return wrappedList.Contains(item); }
 
             public void CopyTo(T[] array, int arrayIndex)
-            {  wrappedList.CopyTo(array, arrayIndex); }
+            { wrappedList.CopyTo(array, arrayIndex); }
 
             public int Count
             {
@@ -458,7 +463,7 @@ namespace Wintellect.PowerCollections
         /// <summary>
         /// Returns a read-only view onto a list. The returned IList&lt;T&gt; interface
         /// only allows operations that do not change the list: GetEnumerator, Contains, CopyTo,
-        /// Count, IndexOf, and the get accessor of the indexer. 
+        /// Count, IndexOf, and the get accessor of the indexer.
         /// The IsReadOnly property returns true, indicating that the list is read-only. All other
         /// methods on the interface throw a NotSupportedException.
         /// </summary>
@@ -466,7 +471,7 @@ namespace Wintellect.PowerCollections
         /// list is changed, then the read-only view also changes accordingly.</remarks>
         /// <typeparam name="T">The type of items in the list.</typeparam>
         /// <param name="list">The list to wrap.</param>
-        /// <returns>A read-only view onto <paramref name="list"/>. Returns null if <paramref name="list"/> is null. 
+        /// <returns>A read-only view onto <paramref name="list"/>. Returns null if <paramref name="list"/> is null.
         /// If <paramref name="list"/> is already read-only, returns <paramref name="list"/>.</returns>
         public static IList<T> ReadOnly<T>(IList<T> list)
         {
@@ -479,12 +484,13 @@ namespace Wintellect.PowerCollections
         }
 
         /// <summary>
-        /// The private class that implements a read-only wrapped for 
+        /// The private class that implements a read-only wrapped for
         /// IDictionary &lt;TKey,TValue&gt;.
         /// </summary>
 #if !SILVERLIGHT
     [Serializable]
 #endif
+
         private class ReadOnlyDictionary<TKey, TValue> : IDictionary<TKey, TValue>
         {
             // The dictionary that is wrapped
@@ -514,17 +520,17 @@ namespace Wintellect.PowerCollections
             { return wrappedDictionary.ContainsKey(key); }
 
             public ICollection<TKey> Keys
-            { 
-                get { return ReadOnly(wrappedDictionary.Keys); } 
+            {
+                get { return ReadOnly(wrappedDictionary.Keys); }
             }
 
             public ICollection<TValue> Values
-            { 
-                get { return ReadOnly(wrappedDictionary.Values); } 
+            {
+                get { return ReadOnly(wrappedDictionary.Values); }
             }
 
             public bool Remove(TKey key)
-            { 
+            {
                 MethodModifiesCollection();
                 return false;  // never reached
             }
@@ -534,7 +540,7 @@ namespace Wintellect.PowerCollections
 
             public TValue this[TKey key]
             {
-                get { return wrappedDictionary[key];}
+                get { return wrappedDictionary[key]; }
                 set { MethodModifiesCollection(); }
             }
 
@@ -561,7 +567,7 @@ namespace Wintellect.PowerCollections
             }
 
             public bool Remove(KeyValuePair<TKey, TValue> item)
-            { 
+            {
                 MethodModifiesCollection();
                 return false;     // never reached
             }
@@ -575,23 +581,23 @@ namespace Wintellect.PowerCollections
 
         /// <summary>
         /// Returns a read-only view onto a dictionary. The returned IDictionary&lt;TKey,TValue&gt; interface
-        /// only allows operations that do not change the dictionary. 
+        /// only allows operations that do not change the dictionary.
         /// The IsReadOnly property returns true, indicating that the dictionary is read-only. All other
         /// methods on the interface throw a NotSupportedException.
         /// </summary>
         /// <remarks>The data in the underlying dictionary is not copied. If the underlying
         /// dictionary is changed, then the read-only view also changes accordingly.</remarks>
         /// <param name="dictionary">The dictionary to wrap.</param>
-        /// <returns>A read-only view onto <paramref name="dictionary"/>. Returns null if <paramref name="dictionary"/> is null. 
+        /// <returns>A read-only view onto <paramref name="dictionary"/>. Returns null if <paramref name="dictionary"/> is null.
         /// If <paramref name="dictionary"/> is already read-only, returns <paramref name="dictionary"/>.</returns>
-        public static IDictionary<TKey,TValue> ReadOnly<TKey,TValue>(IDictionary<TKey,TValue> dictionary)
+        public static IDictionary<TKey, TValue> ReadOnly<TKey, TValue>(IDictionary<TKey, TValue> dictionary)
         {
             if (dictionary == null)
                 return null;
             else if (dictionary.IsReadOnly)
                 return dictionary;
             else
-                return new ReadOnlyDictionary<TKey,TValue>(dictionary);
+                return new ReadOnlyDictionary<TKey, TValue>(dictionary);
         }
 
         /// <summary>
@@ -601,13 +607,14 @@ namespace Wintellect.PowerCollections
 #if !SILVERLIGHT
     [Serializable]
 #endif
+
         private class TypedEnumerator<T> : IEnumerator<T>
         {
             private IEnumerator wrappedEnumerator;
 
             /// <summary>
             /// Create a typed IEnumerator&lt;T&gt;
-            /// view onto an untyped IEnumerator interface 
+            /// view onto an untyped IEnumerator interface
             /// </summary>
             /// <param name="wrappedEnumerator">IEnumerator to wrap.</param>
             public TypedEnumerator(IEnumerator wrappedEnumerator)
@@ -617,7 +624,7 @@ namespace Wintellect.PowerCollections
 
             T IEnumerator<T>.Current
             {
-                get { return (T) wrappedEnumerator.Current; }
+                get { return (T)wrappedEnumerator.Current; }
             }
 
             void IDisposable.Dispose()
@@ -649,6 +656,7 @@ namespace Wintellect.PowerCollections
 #if !SILVERLIGHT
     [Serializable]
 #endif
+
         private class TypedEnumerable<T> : IEnumerable<T>
         {
             private IEnumerable wrappedEnumerable;
@@ -672,24 +680,23 @@ namespace Wintellect.PowerCollections
             {
                 return wrappedEnumerable.GetEnumerator();
             }
-
         }
 
         /// <summary>
         /// Given a non-generic IEnumerable interface, wrap a generic IEnumerable&lt;T&gt;
-        /// interface around it. The generic interface will enumerate the same objects as the 
+        /// interface around it. The generic interface will enumerate the same objects as the
         /// underlying non-generic collection, but can be used in places that require a generic interface.
         /// The underlying non-generic collection must contain only items that
         /// are of type <paramref name="T"/> or a type derived from it. This method is useful
         /// when interfacing older, non-generic collections to newer code that uses generic interfaces.
         /// </summary>
         /// <remarks>Some collections implement both generic and non-generic interfaces. For efficiency,
-        /// this method will first attempt to cast <paramref name="untypedCollection"/> to IEnumerable&lt;T&gt;. 
+        /// this method will first attempt to cast <paramref name="untypedCollection"/> to IEnumerable&lt;T&gt;.
         /// If that succeeds, it is returned; otherwise, a wrapper object is created.</remarks>
         /// <typeparam name="T">The item type of the wrapper collection.</typeparam>
         /// <param name="untypedCollection">An untyped collection. This collection should only contain
         /// items of type <paramref name="T"/> or a type derived from it. </param>
-        /// <returns>A generic IEnumerable&lt;T&gt; wrapper around <paramref name="untypedCollection"/>. 
+        /// <returns>A generic IEnumerable&lt;T&gt; wrapper around <paramref name="untypedCollection"/>.
         /// If <paramref name="untypedCollection"/> is null, then null is returned.</returns>
         public static IEnumerable<T> TypedAs<T>(IEnumerable untypedCollection)
         {
@@ -709,6 +716,7 @@ namespace Wintellect.PowerCollections
 #if !SILVERLIGHT
     [Serializable]
 #endif
+
         private class TypedCollection<T> : ICollection<T>
         {
             private ICollection wrappedCollection;
@@ -732,10 +740,10 @@ namespace Wintellect.PowerCollections
             }
 
             public void Add(T item)
-            {  MethodModifiesCollection(); }
+            { MethodModifiesCollection(); }
 
             public void Clear()
-            {  MethodModifiesCollection(); }
+            { MethodModifiesCollection(); }
 
             public bool Remove(T item)
             { MethodModifiesCollection(); return false; }
@@ -743,7 +751,8 @@ namespace Wintellect.PowerCollections
             public bool Contains(T item)
             {
                 IEqualityComparer<T> equalityComparer = EqualityComparer<T>.Default;
-                foreach (object obj in wrappedCollection) {
+                foreach (object obj in wrappedCollection)
+                {
                     if (obj is T && equalityComparer.Equals(item, (T)obj))
                         return true;
                 }
@@ -751,11 +760,11 @@ namespace Wintellect.PowerCollections
             }
 
             public void CopyTo(T[] array, int arrayIndex)
-            {  wrappedCollection.CopyTo(array, arrayIndex); }
+            { wrappedCollection.CopyTo(array, arrayIndex); }
 
             public int Count
             {
-                get { return wrappedCollection.Count;  }
+                get { return wrappedCollection.Count; }
             }
 
             public bool IsReadOnly
@@ -764,22 +773,22 @@ namespace Wintellect.PowerCollections
             }
 
             public IEnumerator<T> GetEnumerator()
-            {  return new TypedEnumerator<T>(wrappedCollection.GetEnumerator()); }
+            { return new TypedEnumerator<T>(wrappedCollection.GetEnumerator()); }
 
             IEnumerator IEnumerable.GetEnumerator()
-            {  return wrappedCollection.GetEnumerator(); }
+            { return wrappedCollection.GetEnumerator(); }
         }
 
         /// <summary>
         /// Given a non-generic ICollection interface, wrap a generic ICollection&lt;T&gt;
-        /// interface around it. The generic interface will enumerate the same objects as the 
+        /// interface around it. The generic interface will enumerate the same objects as the
         /// underlying non-generic collection, but can be used in places that require a generic interface.
         /// The underlying non-generic collection must contain only items that
         /// are of type <paramref name="T"/> or a type derived from it. This method is useful
         /// when interfacing older, non-generic collections to newer code that uses generic interfaces.
         /// </summary>
         /// <remarks><para>Some collections implement both generic and non-generic interfaces. For efficiency,
-        /// this method will first attempt to cast <paramref name="untypedCollection"/> to ICollection&lt;T&gt;. 
+        /// this method will first attempt to cast <paramref name="untypedCollection"/> to ICollection&lt;T&gt;.
         /// If that succeeds, it is returned; otherwise, a wrapper object is created.</para>
         /// <para>Unlike the generic interface, the non-generic ICollection interfaces does
         /// not contain methods for adding or removing items from the collection. For this reason,
@@ -794,7 +803,7 @@ namespace Wintellect.PowerCollections
             if (untypedCollection == null)
                 return null;
             else if (untypedCollection is ICollection<T>)
-                return (ICollection<T>) untypedCollection;
+                return (ICollection<T>)untypedCollection;
             else
                 return new TypedCollection<T>(untypedCollection);
         }
@@ -806,6 +815,7 @@ namespace Wintellect.PowerCollections
 #if !SILVERLIGHT
     [Serializable]
 #endif
+
         private class TypedList<T> : IList<T>
         {
             private IList wrappedList;
@@ -820,7 +830,6 @@ namespace Wintellect.PowerCollections
                 this.wrappedList = wrappedList;
             }
 
-
             public IEnumerator<T> GetEnumerator()
             { return new TypedEnumerator<T>(wrappedList.GetEnumerator()); }
 
@@ -828,25 +837,25 @@ namespace Wintellect.PowerCollections
             { return wrappedList.GetEnumerator(); }
 
             public int IndexOf(T item)
-            {  return wrappedList.IndexOf(item); }
+            { return wrappedList.IndexOf(item); }
 
             public void Insert(int index, T item)
-            {  wrappedList.Insert(index, item); }
+            { wrappedList.Insert(index, item); }
 
             public void RemoveAt(int index)
-            {  wrappedList.RemoveAt(index); }
+            { wrappedList.RemoveAt(index); }
 
             public void Add(T item)
-            {  wrappedList.Add(item); }
+            { wrappedList.Add(item); }
 
             public void Clear()
-            {  wrappedList.Clear(); }
+            { wrappedList.Clear(); }
 
             public bool Contains(T item)
-            {  return wrappedList.Contains(item); }
+            { return wrappedList.Contains(item); }
 
             public void CopyTo(T[] array, int arrayIndex)
-            {  wrappedList.CopyTo(array, arrayIndex); }
+            { wrappedList.CopyTo(array, arrayIndex); }
 
             public T this[int index]
             {
@@ -856,7 +865,7 @@ namespace Wintellect.PowerCollections
 
             public int Count
             {
-                get { return wrappedList.Count ; }
+                get { return wrappedList.Count; }
             }
 
             public bool IsReadOnly
@@ -866,11 +875,13 @@ namespace Wintellect.PowerCollections
 
             public bool Remove(T item)
             {
-                if (wrappedList.Contains(item)) {
+                if (wrappedList.Contains(item))
+                {
                     wrappedList.Remove(item);
                     return true;
                 }
-                else {
+                else
+                {
                     return false;
                 }
             }
@@ -878,14 +889,14 @@ namespace Wintellect.PowerCollections
 
         /// <summary>
         /// Given a non-generic IList interface, wrap a generic IList&lt;T&gt;
-        /// interface around it. The generic interface will enumerate the same objects as the 
+        /// interface around it. The generic interface will enumerate the same objects as the
         /// underlying non-generic list, but can be used in places that require a generic interface.
         /// The underlying non-generic list must contain only items that
         /// are of type <paramref name="T"/> or a type derived from it. This method is useful
         /// when interfacing older, non-generic lists to newer code that uses generic interfaces.
         /// </summary>
         /// <remarks>Some collections implement both generic and non-generic interfaces. For efficiency,
-        /// this method will first attempt to cast <paramref name="untypedList"/> to IList&lt;T&gt;. 
+        /// this method will first attempt to cast <paramref name="untypedList"/> to IList&lt;T&gt;.
         /// If that succeeds, it is returned; otherwise, a wrapper object is created.</remarks>
         /// <typeparam name="T">The item type of the wrapper list.</typeparam>
         /// <param name="untypedList">An untyped list. This list should only contain
@@ -909,6 +920,7 @@ namespace Wintellect.PowerCollections
 #if !SILVERLIGHT
     [Serializable]
 #endif
+
         private class UntypedCollection<T> : ICollection
         {
             private ICollection<T> wrappedCollection;
@@ -923,7 +935,6 @@ namespace Wintellect.PowerCollections
                 this.wrappedCollection = wrappedCollection;
             }
 
-
             public void CopyTo(Array array, int index)
             {
                 if (array == null)
@@ -937,7 +948,8 @@ namespace Wintellect.PowerCollections
                 if (index >= array.Length || count > array.Length - index)
                     throw new ArgumentException("index", Strings.ArrayTooSmall);
 
-                foreach (T item in wrappedCollection) {
+                foreach (T item in wrappedCollection)
+                {
                     if (i >= count)
                         break;
 
@@ -970,7 +982,7 @@ namespace Wintellect.PowerCollections
 
         /// <summary>
         /// Given a generic ICollection&lt;T&gt; interface, wrap a non-generic (untyped)
-        /// ICollection interface around it. The non-generic interface will contain the same objects as the 
+        /// ICollection interface around it. The non-generic interface will contain the same objects as the
         /// underlying generic collection, but can be used in places that require a non-generic interface.
         /// This method is useful when interfacing generic interfaces with older code that uses non-generic interfaces.
         /// </summary>
@@ -998,6 +1010,7 @@ namespace Wintellect.PowerCollections
 #if !SILVERLIGHT
     [Serializable]
 #endif
+
         private class UntypedList<T> : IList
         {
             private IList<T> wrappedList;
@@ -1020,24 +1033,25 @@ namespace Wintellect.PowerCollections
             /// <param name="value">parameter value</param>
             private T ConvertToItemType(string name, object value)
             {
-                try {
+                try
+                {
                     return (T)value;
                 }
-                catch (InvalidCastException) {
+                catch (InvalidCastException)
+                {
                     throw new ArgumentException(string.Format(Strings.WrongType, value, typeof(T)), name);
                 }
             }
 
-
             public int Add(object value)
-            {  
+            {
                 // We assume that Add always adds to the end. Is this true?
                 wrappedList.Add(ConvertToItemType("value", value));
                 return wrappedList.Count - 1;
             }
 
             public void Clear()
-            {  wrappedList.Clear(); }
+            { wrappedList.Clear(); }
 
             public bool Contains(object value)
             {
@@ -1069,13 +1083,13 @@ namespace Wintellect.PowerCollections
             }
 
             public void Remove(object value)
-            {  
+            {
                 if (value is T)
-                    wrappedList.Remove((T)value); 
-            }   
+                    wrappedList.Remove((T)value);
+            }
 
             public void RemoveAt(int index)
-            {  wrappedList.RemoveAt(index);}
+            { wrappedList.RemoveAt(index); }
 
             public object this[int index]
             {
@@ -1096,7 +1110,8 @@ namespace Wintellect.PowerCollections
                 if (index >= array.Length || count > array.Length - index)
                     throw new ArgumentException("index", Strings.ArrayTooSmall);
 
-                foreach (T item in wrappedList) {
+                foreach (T item in wrappedList)
+                {
                     if (i >= count)
                         break;
 
@@ -1122,12 +1137,12 @@ namespace Wintellect.PowerCollections
             }
 
             public IEnumerator GetEnumerator()
-            {  return ((IEnumerable)wrappedList).GetEnumerator(); }
+            { return ((IEnumerable)wrappedList).GetEnumerator(); }
         }
 
         /// <summary>
         /// Given a generic IList&lt;T&gt; interface, wrap a non-generic (untyped)
-        /// IList interface around it. The non-generic interface will contain the same objects as the 
+        /// IList interface around it. The non-generic interface will contain the same objects as the
         /// underlying generic list, but can be used in places that require a non-generic interface.
         /// This method is useful when interfacing generic interfaces with older code that uses non-generic interfaces.
         /// </summary>
@@ -1156,6 +1171,7 @@ namespace Wintellect.PowerCollections
 #if !SILVERLIGHT
     [Serializable]
 #endif
+
         private class ArrayWrapper<T> : ListBase<T>, IList
         {
             private T[] wrappedArray;
@@ -1264,7 +1280,7 @@ namespace Wintellect.PowerCollections
         /// implicitely converted to an IList&lt;T&gt;, changes to the items in the array cannot
         /// be made through the interface. This method creates a read-write IList&lt;T&gt; wrapper
         /// on an array that can be used to make changes to the array. </para>
-        /// <para>Use this method when you need to pass an array to an algorithms that takes an 
+        /// <para>Use this method when you need to pass an array to an algorithms that takes an
         /// IList&lt;T&gt; and that tries to modify items in the list. Algorithms in this class generally do not
         /// need this method, since they have been design to operate on arrays even when they
         /// are passed as an IList&lt;T&gt;.</para>
@@ -1294,7 +1310,7 @@ namespace Wintellect.PowerCollections
         /// <param name="collection">The collection to process.</param>
         /// <param name="itemFind">The value to find and replace within <paramref name="collection"/>.</param>
         /// <param name="replaceWith">The new value to replace with.</param>
-        /// <returns>An new collection with the items from <paramref name="collection"/>, in the same order, 
+        /// <returns>An new collection with the items from <paramref name="collection"/>, in the same order,
         /// with the appropriate replacements made.</returns>
         public static IEnumerable<T> Replace<T>(IEnumerable<T> collection, T itemFind, T replaceWith)
         {
@@ -1309,7 +1325,7 @@ namespace Wintellect.PowerCollections
         /// <param name="itemFind">The value to find and replace within <paramref name="collection"/>.</param>
         /// <param name="replaceWith">The new value to replace with.</param>
         /// <param name="equalityComparer">The IEqualityComparer&lt;T&gt; used to compare items for equality. Only the Equals method will be called.</param>
-        /// <returns>An new collection with the items from <paramref name="collection"/>, in the same order, 
+        /// <returns>An new collection with the items from <paramref name="collection"/>, in the same order,
         /// with the appropriate replacements made.</returns>
         public static IEnumerable<T> Replace<T>(IEnumerable<T> collection, T itemFind, T replaceWith, IEqualityComparer<T> equalityComparer)
         {
@@ -1318,7 +1334,8 @@ namespace Wintellect.PowerCollections
             if (equalityComparer == null)
                 throw new ArgumentNullException("equalityComparer");
 
-            foreach (T item in collection) {
+            foreach (T item in collection)
+            {
                 if (equalityComparer.Equals(item, itemFind))
                     yield return replaceWith;
                 else
@@ -1333,7 +1350,7 @@ namespace Wintellect.PowerCollections
         /// <param name="predicate">The predicate used to evaluate items with the collection. If the predicate returns true for a particular
         /// item, the item is replaces with <paramref name="replaceWith"/>.</param>
         /// <param name="replaceWith">The new value to replace with.</param>
-        /// <returns>An new collection with the items from <paramref name="collection"/>, in the same order, 
+        /// <returns>An new collection with the items from <paramref name="collection"/>, in the same order,
         /// with the appropriate replacements made.</returns>
         public static IEnumerable<T> Replace<T>(IEnumerable<T> collection, Predicate<T> predicate, T replaceWith)
         {
@@ -1342,7 +1359,8 @@ namespace Wintellect.PowerCollections
             if (predicate == null)
                 throw new ArgumentNullException("predicate");
 
-            foreach (T item in collection) {
+            foreach (T item in collection)
+            {
                 if (predicate(item))
                     yield return replaceWith;
                 else
@@ -1389,7 +1407,8 @@ namespace Wintellect.PowerCollections
                 throw new ArgumentException(Strings.ListIsReadOnly, "list");
 
             int listCount = list.Count;
-            for (int index = 0; index < listCount; ++index) {
+            for (int index = 0; index < listCount; ++index)
+            {
                 if (equalityComparer.Equals(list[index], itemFind))
                     list[index] = replaceWith;
             }
@@ -1417,7 +1436,8 @@ namespace Wintellect.PowerCollections
                 throw new ArgumentException(Strings.ListIsReadOnly, "list");
 
             int listCount = list.Count;
-            for (int index = 0; index < listCount; ++index) {
+            for (int index = 0; index < listCount; ++index)
+            {
                 if (predicate(list[index]))
                     list[index] = replaceWith;
             }
@@ -1429,12 +1449,12 @@ namespace Wintellect.PowerCollections
 
         /// <summary>
         /// Remove consecutive equal items from a collection, yielding another collection. In each run of consecutive equal items
-        /// in the collection, all items after the first item in the run are removed. 
+        /// in the collection, all items after the first item in the run are removed.
         /// </summary>
         /// <remarks>The default sense of equality for T is used, as defined by T's
         /// implementation of IComparable&lt;T&gt;.Equals or object.Equals.</remarks>
         /// <param name="collection">The collection to process.</param>
-        /// <returns>An new collection with the items from <paramref name="collection"/>, in the same order, 
+        /// <returns>An new collection with the items from <paramref name="collection"/>, in the same order,
         /// with consecutive duplicates removed.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is null.</exception>
         public static IEnumerable<T> RemoveDuplicates<T>(IEnumerable<T> collection)
@@ -1449,7 +1469,7 @@ namespace Wintellect.PowerCollections
         /// </summary>
         /// <param name="collection">The collection to process.</param>
         /// <param name="equalityComparer">The IEqualityComparer&lt;T&gt; used to compare items for equality. Only the Equals method will be called.</param>
-        /// <returns>An new collection with the items from <paramref name="collection"/>, in the same order, 
+        /// <returns>An new collection with the items from <paramref name="collection"/>, in the same order,
         /// with consecutive duplicates removed.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="equalityComparer"/> is null.</exception>
         public static IEnumerable<T> RemoveDuplicates<T>(IEnumerable<T> collection, IEqualityComparer<T> equalityComparer)
@@ -1458,19 +1478,18 @@ namespace Wintellect.PowerCollections
                 throw new ArgumentNullException("equalityComparer");
 
             return RemoveDuplicates<T>(collection, equalityComparer.Equals);
-
         }
 
         /// <summary>
         /// Remove consecutive "equal" items from a collection, yielding another collection. In each run of consecutive equal items
-        /// in the collection, all items after the first item in the run are removed. The passed 
+        /// in the collection, all items after the first item in the run are removed. The passed
         /// BinaryPredicate is used to determine if two items are "equal".
         /// </summary>
         /// <remarks>Since an arbitrary BinaryPredicate is passed to this function, what is being removed need not be true equality. </remarks>
         /// <param name="collection">The collection to process.</param>
         /// <param name="predicate">The BinaryPredicate used to compare items for "equality". An item <c>current</c> is removed if <c>predicate(first, current)==true</c>, where
         /// <c>first</c> is the first item in the group of "duplicate" items.</param>
-        /// <returns>An new collection with the items from <paramref name="collection"/>, in the same order, 
+        /// <returns>An new collection with the items from <paramref name="collection"/>, in the same order,
         /// with consecutive "duplicates" removed.</returns>
         public static IEnumerable<T> RemoveDuplicates<T>(IEnumerable<T> collection, BinaryPredicate<T> predicate)
         {
@@ -1482,9 +1501,11 @@ namespace Wintellect.PowerCollections
             T current = default(T);
             bool atBeginning = true;
 
-            foreach (T item in collection) {
+            foreach (T item in collection)
+            {
                 // Is the new item different from the current item?
-                if (atBeginning || !predicate(current, item)) {
+                if (atBeginning || !predicate(current, item))
+                {
                     current = item;
                     yield return item;
                 }
@@ -1496,7 +1517,7 @@ namespace Wintellect.PowerCollections
         /// <summary>
         /// Remove consecutive equal items from a list or array. In each run of consecutive equal items
         /// in the list, all items after the first item in the run are removed. The removal is done in-place, changing
-        /// the list. 
+        /// the list.
         /// </summary>
         /// <remarks><para>The default sense of equality for T is used, as defined by T's
         /// implementation of IComparable&lt;T&gt;.Equals or object.Equals.</para>
@@ -1524,7 +1545,6 @@ namespace Wintellect.PowerCollections
                 throw new ArgumentNullException("equalityComparer");
 
             RemoveDuplicatesInPlace<T>(list, equalityComparer.Equals);
-
         }
 
         /// <summary>
@@ -1555,9 +1575,11 @@ namespace Wintellect.PowerCollections
             int listCount = list.Count;
 
             // Remove duplicates, compressing items to lower in the list.
-            while (j < listCount) {
+            while (j < listCount)
+            {
                 item = list[j];
-                if (i < 0 || !predicate(current, item)) {
+                if (i < 0 || !predicate(current, item))
+                {
                     current = item;
                     ++i;
                     if (i != j)
@@ -1567,16 +1589,20 @@ namespace Wintellect.PowerCollections
             }
 
             ++i;
-            if (i < listCount) {
+            if (i < listCount)
+            {
                 // remove items from the end.
-                if (list is ArrayWrapper<T> || (list is IList && ((IList)list).IsFixedSize)) {
+                if (list is ArrayWrapper<T> || (list is IList && ((IList)list).IsFixedSize))
+                {
                     // An array or similar. Null out the last elements.
                     while (i < listCount)
                         list[i++] = default(T);
                 }
-                else {
+                else
+                {
                     // Normal list.
-                    while (i < listCount) {
+                    while (i < listCount)
+                    {
                         list.RemoveAt(listCount - 1);
                         --listCount;
                     }
@@ -1643,13 +1669,16 @@ namespace Wintellect.PowerCollections
             int runLength = 0;
 
             // Go through the list, looking for a run of the given length.
-            foreach (T item in list) {
-                if (index > 0 && predicate(current, item)) {
+            foreach (T item in list)
+            {
+                if (index > 0 && predicate(current, item))
+                {
                     ++runLength;
                     if (runLength >= count)
                         return start;
                 }
-                else {
+                else
+                {
                     current = item;
                     start = index;
                     runLength = 1;
@@ -1687,15 +1716,18 @@ namespace Wintellect.PowerCollections
             int runLength = 0;
 
             // Scan the list in order, looking for the number of consecutive true items.
-            foreach (T item in list) {
-                if (predicate(item)) {
+            foreach (T item in list)
+            {
+                if (predicate(item))
+                {
                     if (start < 0)
                         start = index;
                     ++runLength;
                     if (runLength >= count)
                         return start;
                 }
-                else {
+                else
+                {
                     runLength = 0;
                     start = -1;
                 }
@@ -1710,12 +1742,11 @@ namespace Wintellect.PowerCollections
 
         #region Find and SearchForSubsequence
 
-
         /// <summary>
         /// Finds the first item in a collection that satisfies the condition
         /// defined by <paramref name="predicate"/>.
         /// </summary>
-        /// <remarks>If the default value for T could be present in the collection, and 
+        /// <remarks>If the default value for T could be present in the collection, and
         /// would be matched by the predicate, then this method is inappropriate, because
         /// you cannot disguish whether the default value for T was actually present in the collection,
         /// or no items matched the predicate. In this case, use TryFindFirstWhere.</remarks>
@@ -1749,8 +1780,10 @@ namespace Wintellect.PowerCollections
             if (predicate == null)
                 throw new ArgumentNullException("predicate");
 
-            foreach (T item in collection) {
-                if (predicate(item)) {
+            foreach (T item in collection)
+            {
+                if (predicate(item))
+                {
                     foundItem = item;
                     return true;
                 }
@@ -1765,9 +1798,9 @@ namespace Wintellect.PowerCollections
         /// Finds the last item in a collection that satisfies the condition
         /// defined by <paramref name="predicate"/>.
         /// </summary>
-        /// <remarks><para>If the collection implements IList&lt;T&gt;, then the list is scanned in reverse until a 
+        /// <remarks><para>If the collection implements IList&lt;T&gt;, then the list is scanned in reverse until a
         /// matching item is found. Otherwise, the entire collection is iterated in the forward direction.</para>
-        /// <para>If the default value for T could be present in the collection, and 
+        /// <para>If the default value for T could be present in the collection, and
         /// would be matched by the predicate, then this method is inappropriate, because
         /// you cannot disguish whether the default value for T was actually present in the collection,
         /// or no items matched the predicate. In this case, use TryFindFirstWhere.</para></remarks>
@@ -1789,7 +1822,7 @@ namespace Wintellect.PowerCollections
         /// Finds the last item in a collection that satisfies the condition
         /// defined by <paramref name="predicate"/>.
         /// </summary>
-        /// <remarks>If the collection implements IList&lt;T&gt;, then the list is scanned in reverse until a 
+        /// <remarks>If the collection implements IList&lt;T&gt;, then the list is scanned in reverse until a
         /// matching item is found. Otherwise, the entire collection is iterated in the forward direction.</remarks>
         /// <param name="collection">The collection to search.</param>
         /// <param name="predicate">A delegate that defined the condition to check for.</param>
@@ -1804,11 +1837,14 @@ namespace Wintellect.PowerCollections
                 throw new ArgumentNullException("predicate");
 
             IList<T> list = collection as IList<T>;
-            if (list != null) {
+            if (list != null)
+            {
                 // If it's a list, we can iterate in reverse.
-                for (int index = list.Count - 1; index >= 0; --index) {
+                for (int index = list.Count - 1; index >= 0; --index)
+                {
                     T item = list[index];
-                    if (predicate(item)) {
+                    if (predicate(item))
+                    {
                         foundItem = item;
                         return true;
                     }
@@ -1818,13 +1854,16 @@ namespace Wintellect.PowerCollections
                 foundItem = default(T);
                 return false;
             }
-            else {
+            else
+            {
                 // Otherwise, iterate the whole thing and remember the last matching one.
                 bool found = false;
                 foundItem = default(T);
 
-                foreach (T item in collection) {
-                    if (predicate(item)) {
+                foreach (T item in collection)
+                {
+                    if (predicate(item))
+                    {
                         foundItem = item;
                         found = true;
                     }
@@ -1848,8 +1887,10 @@ namespace Wintellect.PowerCollections
             if (predicate == null)
                 throw new ArgumentNullException("predicate");
 
-            foreach (T item in collection) {
-                if (predicate(item)) {
+            foreach (T item in collection)
+            {
+                if (predicate(item))
+                {
                     yield return item;
                 }
             }
@@ -1870,8 +1911,10 @@ namespace Wintellect.PowerCollections
                 throw new ArgumentNullException("predicate");
 
             int index = 0;
-            foreach (T item in list) {
-                if (predicate(item)) {
+            foreach (T item in list)
+            {
+                if (predicate(item))
+                {
                     return index;
                 }
                 ++index;
@@ -1895,8 +1938,10 @@ namespace Wintellect.PowerCollections
             if (predicate == null)
                 throw new ArgumentNullException("predicate");
 
-            for (int index = list.Count - 1; index >= 0; --index) {
-                if (predicate(list[index])) {
+            for (int index = list.Count - 1; index >= 0; --index)
+            {
+                if (predicate(list[index]))
+                {
                     return index;
                 }
             }
@@ -1920,8 +1965,10 @@ namespace Wintellect.PowerCollections
                 throw new ArgumentNullException("predicate");
 
             int index = 0;
-            foreach (T item in list) {
-                if (predicate(item)) {
+            foreach (T item in list)
+            {
+                if (predicate(item))
+                {
                     yield return index;
                 }
                 ++index;
@@ -1957,8 +2004,10 @@ namespace Wintellect.PowerCollections
                 throw new ArgumentNullException("equalityComparer");
 
             int index = 0;
-            foreach (T x in list) {
-                if (equalityComparer.Equals(x, item)) {
+            foreach (T x in list)
+            {
+                if (equalityComparer.Equals(x, item))
+                {
                     return index;
                 }
                 ++index;
@@ -1996,8 +2045,10 @@ namespace Wintellect.PowerCollections
             if (equalityComparer == null)
                 throw new ArgumentNullException("equalityComparer");
 
-            for (int index = list.Count - 1; index >= 0; --index) {
-                if (equalityComparer.Equals(list[index], item)) {
+            for (int index = list.Count - 1; index >= 0; --index)
+            {
+                if (equalityComparer.Equals(list[index], item))
+                {
                     return index;
                 }
             }
@@ -2035,8 +2086,10 @@ namespace Wintellect.PowerCollections
                 throw new ArgumentNullException("equalityComparer");
 
             int index = 0;
-            foreach (T x in list) {
-                if (equalityComparer.Equals(x, item)) {
+            foreach (T x in list)
+            {
+                if (equalityComparer.Equals(x, item))
+                {
                     yield return index;
                 }
                 ++index;
@@ -2050,7 +2103,7 @@ namespace Wintellect.PowerCollections
         /// implementation of IComparable&lt;T&gt;.Equals or object.Equals.</remarks>
         /// <param name="list">The list to search.</param>
         /// <param name="itemsToLookFor">The items to search for.</param>
-        /// <returns>The index of the first item equal to any of the items in the collection <paramref name="itemsToLookFor"/>. 
+        /// <returns>The index of the first item equal to any of the items in the collection <paramref name="itemsToLookFor"/>.
         /// -1 if no such item exists in the list.</returns>
         public static int FirstIndexOfMany<T>(IList<T> list, IEnumerable<T> itemsToLookFor)
         {
@@ -2063,9 +2116,9 @@ namespace Wintellect.PowerCollections
         /// </summary>
         /// <param name="list">The list to search.</param>
         /// <param name="itemsToLookFor">The items to search for.</param>
-        /// <param name="equalityComparer">The IEqualityComparer&lt;T&gt; used to compare items for equality. 
+        /// <param name="equalityComparer">The IEqualityComparer&lt;T&gt; used to compare items for equality.
         /// Only the Equals and GetHashCode methods will be called.</param>
-        /// <returns>The index of the first item equal to any of the items in the collection <paramref name="itemsToLookFor"/>. 
+        /// <returns>The index of the first item equal to any of the items in the collection <paramref name="itemsToLookFor"/>.
         /// -1 if no such item exists in the list.</returns>
         public static int FirstIndexOfMany<T>(IList<T> list, IEnumerable<T> itemsToLookFor, IEqualityComparer<T> equalityComparer)
         {
@@ -2081,8 +2134,10 @@ namespace Wintellect.PowerCollections
 
             // Scan the list for the items.
             int index = 0;
-            foreach (T x in list) {
-                if (setToLookFor.Contains(x)) {
+            foreach (T x in list)
+            {
+                if (setToLookFor.Contains(x))
+                {
                     return index;
                 }
                 ++index;
@@ -2093,16 +2148,16 @@ namespace Wintellect.PowerCollections
         }
 
         /// <summary>
-        /// Finds the index of the first item in a list "equal" to one of several given items. The passed 
+        /// Finds the index of the first item in a list "equal" to one of several given items. The passed
         /// BinaryPredicate is used to determine if two items are "equal".
         /// </summary>
-        /// <remarks>Since an arbitrary BinaryPredicate is passed to this function, what is being removed need not be true equality. This methods finds 
+        /// <remarks>Since an arbitrary BinaryPredicate is passed to this function, what is being removed need not be true equality. This methods finds
         /// first item X which satisfies BinaryPredicate(X,Y), where Y is one of the items in <paramref name="itemsToLookFor"/></remarks>
         /// <param name="list">The list to search.</param>
         /// <param name="itemsToLookFor">The items to search for.</param>
         /// <param name="predicate">The BinaryPredicate used to compare items for "equality". </param>
-        /// <returns>The index of the first item "equal" to any of the items in the collection <paramref name="itemsToLookFor"/>, using 
-        /// <paramref name="BinaryPredicate"/> as the test for equality. 
+        /// <returns>The index of the first item "equal" to any of the items in the collection <paramref name="itemsToLookFor"/>, using
+        /// <paramref name="BinaryPredicate"/> as the test for equality.
         /// -1 if no such item exists in the list.</returns>
         public static int FirstIndexOfMany<T>(IList<T> list, IEnumerable<T> itemsToLookFor, BinaryPredicate<T> predicate)
         {
@@ -2115,9 +2170,12 @@ namespace Wintellect.PowerCollections
 
             // Scan the list for the items.
             int index = 0;
-            foreach (T x in list) {
-                foreach (T y in itemsToLookFor) {
-                    if (predicate(x, y)) {
+            foreach (T x in list)
+            {
+                foreach (T y in itemsToLookFor)
+                {
+                    if (predicate(x, y))
+                    {
                         return index;
                     }
                 }
@@ -2136,7 +2194,7 @@ namespace Wintellect.PowerCollections
         /// implementation of IComparable&lt;T&gt;.Equals or object.Equals.</remarks>
         /// <param name="list">The list to search.</param>
         /// <param name="itemsToLookFor">The items to search for.</param>
-        /// <returns>The index of the last item equal to any of the items in the collection <paramref name="itemsToLookFor"/>. 
+        /// <returns>The index of the last item equal to any of the items in the collection <paramref name="itemsToLookFor"/>.
         /// -1 if no such item exists in the list.</returns>
         public static int LastIndexOfMany<T>(IList<T> list, IEnumerable<T> itemsToLookFor)
         {
@@ -2150,7 +2208,7 @@ namespace Wintellect.PowerCollections
         /// <param name="list">The list to search.</param>
         /// <param name="itemsToLookFor">The items to search for.</param>
         /// <param name="equalityComparer">The IEqualityComparer&lt;T&gt; used to compare items for equality.</param>
-        /// <returns>The index of the last item equal to any of the items in the collection <paramref name="itemsToLookFor"/>. 
+        /// <returns>The index of the last item equal to any of the items in the collection <paramref name="itemsToLookFor"/>.
         /// -1 if no such item exists in the list.</returns>
         public static int LastIndexOfMany<T>(IList<T> list, IEnumerable<T> itemsToLookFor, IEqualityComparer<T> equalityComparer)
         {
@@ -2165,8 +2223,10 @@ namespace Wintellect.PowerCollections
             Set<T> setToLookFor = new Set<T>(itemsToLookFor, equalityComparer);
 
             // Scan the list
-            for (int index = list.Count - 1; index >= 0; --index) {
-                if (setToLookFor.Contains(list[index])) {
+            for (int index = list.Count - 1; index >= 0; --index)
+            {
+                if (setToLookFor.Contains(list[index]))
+                {
                     return index;
                 }
             }
@@ -2176,16 +2236,16 @@ namespace Wintellect.PowerCollections
         }
 
         /// <summary>
-        /// Finds the index of the last item in a list "equal" to one of several given items. The passed 
+        /// Finds the index of the last item in a list "equal" to one of several given items. The passed
         /// BinaryPredicate is used to determine if two items are "equal".
         /// </summary>
-        /// <remarks>Since an arbitrary BinaryPredicate is passed to this function, what is being removed need not be true equality. This methods finds 
+        /// <remarks>Since an arbitrary BinaryPredicate is passed to this function, what is being removed need not be true equality. This methods finds
         /// last item X which satisfies BinaryPredicate(X,Y), where Y is one of the items in <paramref name="itemsToLookFor"/></remarks>
         /// <param name="list">The list to search.</param>
         /// <param name="itemsToLookFor">The items to search for.</param>
         /// <param name="predicate">The BinaryPredicate used to compare items for "equality". </param>
-        /// <returns>The index of the last item "equal" to any of the items in the collection <paramref name="itemsToLookFor"/>, using 
-        /// <paramref name="BinaryPredicate"/> as the test for equality. 
+        /// <returns>The index of the last item "equal" to any of the items in the collection <paramref name="itemsToLookFor"/>, using
+        /// <paramref name="BinaryPredicate"/> as the test for equality.
         /// -1 if no such item exists in the list.</returns>
         public static int LastIndexOfMany<T>(IList<T> list, IEnumerable<T> itemsToLookFor, BinaryPredicate<T> predicate)
         {
@@ -2197,9 +2257,12 @@ namespace Wintellect.PowerCollections
                 throw new ArgumentNullException("predicate");
 
             // Scan the list
-            for (int index = list.Count - 1; index >= 0; --index) {
-                foreach (T y in itemsToLookFor) {
-                    if (predicate(list[index], y)) {
+            for (int index = list.Count - 1; index >= 0; --index)
+            {
+                foreach (T y in itemsToLookFor)
+                {
+                    if (predicate(list[index], y))
+                    {
                         return index;
                     }
                 }
@@ -2210,7 +2273,7 @@ namespace Wintellect.PowerCollections
         }
 
         /// <summary>
-        /// Enumerates the indices of all the items in a list equal to one of several given items. 
+        /// Enumerates the indices of all the items in a list equal to one of several given items.
         /// </summary>
         /// <remarks>The default sense of equality for T is used, as defined by T's
         /// implementation of IComparable&lt;T&gt;.Equals or object.Equals.</remarks>
@@ -2246,8 +2309,10 @@ namespace Wintellect.PowerCollections
 
             // Scan the list
             int index = 0;
-            foreach (T x in list) {
-                if (setToLookFor.Contains(x)) {
+            foreach (T x in list)
+            {
+                if (setToLookFor.Contains(x))
+                {
                     yield return index;
                 }
                 ++index;
@@ -2255,16 +2320,16 @@ namespace Wintellect.PowerCollections
         }
 
         /// <summary>
-        /// Enumerates the indices of all the items in a list equal to one of several given items. The passed 
+        /// Enumerates the indices of all the items in a list equal to one of several given items. The passed
         /// BinaryPredicate is used to determine if two items are "equal".
         /// </summary>
-        /// <remarks>Since an arbitrary BinaryPredicate is passed to this function, what is being removed need not be true equality. This methods finds 
+        /// <remarks>Since an arbitrary BinaryPredicate is passed to this function, what is being removed need not be true equality. This methods finds
         /// last item X which satisfies BinaryPredicate(X,Y), where Y is one of the items in <paramref name="itemsToLookFor"/></remarks>
         /// <param name="list">The list to search.</param>
         /// <param name="itemsToLookFor">A collection of items to search for.</param>
         /// <param name="predicate">The BinaryPredicate used to compare items for "equality". </param>
-        /// <returns>An IEnumerable&lt;T&gt; that enumerates the indices of items "equal" to any of the items 
-        /// in the collection <paramref name="itemsToLookFor"/>, using 
+        /// <returns>An IEnumerable&lt;T&gt; that enumerates the indices of items "equal" to any of the items
+        /// in the collection <paramref name="itemsToLookFor"/>, using
         /// <paramref name="BinaryPredicate"/> as the test for equality. </returns>
         public static IEnumerable<int> IndicesOfMany<T>(IList<T> list, IEnumerable<T> itemsToLookFor, BinaryPredicate<T> predicate)
         {
@@ -2277,9 +2342,12 @@ namespace Wintellect.PowerCollections
 
             // Scan the list for the items.
             int index = 0;
-            foreach (T x in list) {
-                foreach (T y in itemsToLookFor) {
-                    if (predicate(x, y)) {
+            foreach (T x in list)
+            {
+                foreach (T y in itemsToLookFor)
+                {
+                    if (predicate(x, y))
+                    {
                         yield return index;
                     }
                 }
@@ -2289,7 +2357,7 @@ namespace Wintellect.PowerCollections
         }
 
         /// <summary>
-        /// Searchs a list for a sub-sequence of items that match a particular pattern. A subsequence 
+        /// Searchs a list for a sub-sequence of items that match a particular pattern. A subsequence
         /// of <paramref name="list"/> matches pattern at index i if list[i] is equal to the first item
         /// in <paramref name="pattern"/>, list[i+1] is equal to the second item in <paramref name="pattern"/>,
         /// and so forth for all the items in <paramref name="pattern"/>.
@@ -2306,10 +2374,10 @@ namespace Wintellect.PowerCollections
         }
 
         /// <summary>
-        /// Searchs a list for a sub-sequence of items that match a particular pattern. A subsequence 
+        /// Searchs a list for a sub-sequence of items that match a particular pattern. A subsequence
         /// of <paramref name="list"/> matches pattern at index i if list[i] is "equal" to the first item
         /// in <paramref name="pattern"/>, list[i+1] is "equal" to the second item in <paramref name="pattern"/>,
-        /// and so forth for all the items in <paramref name="pattern"/>. The passed 
+        /// and so forth for all the items in <paramref name="pattern"/>. The passed
         /// BinaryPredicate is used to determine if two items are "equal".
         /// </summary>
         /// <remarks>Since an arbitrary BinaryPredicate is passed to this function, what is being tested
@@ -2337,8 +2405,10 @@ namespace Wintellect.PowerCollections
             if (listCount == 0)
                 return -1;             // no room for a pattern;
 
-            for (int start = 0; start <= listCount - patternCount; ++start) {
-                for (int count = 0; count < patternCount; ++count) {
+            for (int start = 0; start <= listCount - patternCount; ++start)
+            {
+                for (int count = 0; count < patternCount; ++count)
+                {
                     if (!predicate(list[start + count], patternArray[count]))
                         goto NOMATCH;
                 }
@@ -2353,12 +2423,12 @@ namespace Wintellect.PowerCollections
             // no match found anywhere.
             return -1;
         }
-        
+
         /// <summary>
-        /// Searchs a list for a sub-sequence of items that match a particular pattern. A subsequence 
+        /// Searchs a list for a sub-sequence of items that match a particular pattern. A subsequence
         /// of <paramref name="list"/> matches pattern at index i if list[i] is equal to the first item
         /// in <paramref name="pattern"/>, list[i+1] is equal to the second item in <paramref name="pattern"/>,
-        /// and so forth for all the items in <paramref name="pattern"/>. The passed 
+        /// and so forth for all the items in <paramref name="pattern"/>. The passed
         /// instance of IEqualityComparer&lt;T&gt; is used for determining if two items are equal.
         /// </summary>
         /// <typeparam name="T">The type of items in the list.</typeparam>
@@ -2459,7 +2529,7 @@ namespace Wintellect.PowerCollections
         /// </remarks>
         /// <param name="collection1">The first collection.</param>
         /// <param name="collection2">The second collection.</param>
-        /// <param name="equalityComparer">The IEqualityComparer&lt;T&gt; used to compare items for equality. 
+        /// <param name="equalityComparer">The IEqualityComparer&lt;T&gt; used to compare items for equality.
         /// Only the Equals and GetHashCode member functions of this interface are called.</param>
         /// <returns>True if <paramref name="collection1"/> is a proper subset of <paramref name="collection2"/>, considered as sets.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection1"/> or <paramref name="collection2"/> is null.</exception>
@@ -2477,8 +2547,6 @@ namespace Wintellect.PowerCollections
             return bag2.IsProperSupersetOf(bag1);
         }
 
-        
-        
         /// <summary>
         /// Determines if two collections are disjoint, considered as sets. Two sets are disjoint if they
         /// have no common items.
@@ -2508,7 +2576,7 @@ namespace Wintellect.PowerCollections
         /// </remarks>
         /// <param name="collection1">The first collection.</param>
         /// <param name="collection2">The second collection.</param>
-        /// <param name="equalityComparer">The IEqualityComparerComparer&lt;T&gt; used to compare items for equality. 
+        /// <param name="equalityComparer">The IEqualityComparerComparer&lt;T&gt; used to compare items for equality.
         /// Only the Equals and GetHashCode member functions of this interface are called.</param>
         /// <returns>True if <paramref name="collection1"/> are <paramref name="collection2"/> are disjoint, considered as sets.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection1"/> or <paramref name="collection2"/> is null.</exception>
@@ -2523,7 +2591,8 @@ namespace Wintellect.PowerCollections
 
             Set<T> set1 = new Set<T>(collection1, equalityComparer);
 
-            foreach (T item2 in collection2) {
+            foreach (T item2 in collection2)
+            {
                 if (set1.Contains(item2))
                     return false;
             }
@@ -2560,7 +2629,7 @@ namespace Wintellect.PowerCollections
         /// </remarks>
         /// <param name="collection1">The first collection.</param>
         /// <param name="collection2">The second collection.</param>
-        /// <param name="equalityComparer">The IEqualityComparer&lt;T&gt; used to compare items for equality. 
+        /// <param name="equalityComparer">The IEqualityComparer&lt;T&gt; used to compare items for equality.
         /// Only the Equals and GetHashCode member functions of this interface are called.</param>
         /// <returns>True if <paramref name="collection1"/> are <paramref name="collection2"/> are equal, considered as sets.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection1"/> or <paramref name="collection2"/> is null.</exception>
@@ -2581,7 +2650,7 @@ namespace Wintellect.PowerCollections
         /// <summary>
         /// Computes the set-theoretic intersection of two collections. The intersection of two sets
         /// is all items that appear in both of the sets. If an item appears X times in one set,
-        /// and Y times in the other set, the intersection contains the item Minimum(X,Y) times. 
+        /// and Y times in the other set, the intersection contains the item Minimum(X,Y) times.
         /// The source collections are not changed.
         /// A new collection is created with the intersection of the collections; the order of the
         /// items in this collection is undefined.
@@ -2606,7 +2675,7 @@ namespace Wintellect.PowerCollections
         /// <summary>
         /// Computes the set-theoretic intersection of two collections. The intersection of two sets
         /// is all items that appear in both of the sets. If an item appears X times in one set,
-        /// and Y times in the other set, the intersection contains the item Minimum(X,Y) times. 
+        /// and Y times in the other set, the intersection contains the item Minimum(X,Y) times.
         /// The source collections are not changed.
         /// A new collection is created with the intersection of the collections; the order of the
         /// items in this collection is undefined.
@@ -2619,7 +2688,7 @@ namespace Wintellect.PowerCollections
         /// </remarks>
         /// <param name="collection1">The first collection to intersect.</param>
         /// <param name="collection2">The second collection to intersect.</param>
-        /// <param name="equalityComparer">The IEqualityComparer&lt;T&gt; used to compare items for equality. 
+        /// <param name="equalityComparer">The IEqualityComparer&lt;T&gt; used to compare items for equality.
         /// Only the Equals and GetHashCode member functions of this interface are called.</param>
         /// <returns>The intersection of the two collections, considered as sets.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection1"/> or <paramref name="collection2"/> is null.</exception>
@@ -2640,7 +2709,7 @@ namespace Wintellect.PowerCollections
         /// <summary>
         /// Computes the set-theoretic union of two collections. The union of two sets
         /// is all items that appear in either of the sets. If an item appears X times in one set,
-        /// and Y times in the other set, the union contains the item Maximum(X,Y) times. 
+        /// and Y times in the other set, the union contains the item Maximum(X,Y) times.
         /// The source collections are not changed.
         /// A new collection is created with the union of the collections; the order of the
         /// items in this collection is undefined.
@@ -2665,7 +2734,7 @@ namespace Wintellect.PowerCollections
         /// <summary>
         /// Computes the set-theoretic union of two collections. The union of two sets
         /// is all items that appear in either of the sets. If an item appears X times in one set,
-        /// and Y times in the other set, the union contains the item Maximum(X,Y) times. 
+        /// and Y times in the other set, the union contains the item Maximum(X,Y) times.
         /// The source collections are not changed.
         /// A new collection is created with the union of the collections; the order of the
         /// items in this collection is undefined.
@@ -2678,7 +2747,7 @@ namespace Wintellect.PowerCollections
         /// </remarks>
         /// <param name="collection1">The first collection to union.</param>
         /// <param name="collection2">The second collection to union.</param>
-        /// <param name="equalityComparer">The IEqualityComparer&lt;T&gt; used to compare items for equality. 
+        /// <param name="equalityComparer">The IEqualityComparer&lt;T&gt; used to compare items for equality.
         /// Only the Equals and GetHashCode member functions of this interface are called.</param>
         /// <returns>The union of the two collections, considered as sets.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection1"/> or <paramref name="collection2"/> is null.</exception>
@@ -2693,11 +2762,13 @@ namespace Wintellect.PowerCollections
 
             Bag<T> bag1 = new Bag<T>(collection1, equalityComparer);
             Bag<T> bag2 = new Bag<T>(collection2, equalityComparer);
-            if (bag1.Count > bag2.Count) {
+            if (bag1.Count > bag2.Count)
+            {
                 bag1.UnionWith(bag2);
                 return Util.CreateEnumerableWrapper(bag1);
             }
-            else {
+            else
+            {
                 bag2.UnionWith(bag1);
                 return Util.CreateEnumerableWrapper(bag2);
             }
@@ -2706,7 +2777,7 @@ namespace Wintellect.PowerCollections
         /// <summary>
         /// Computes the set-theoretic difference of two collections. The difference of two sets
         /// is all items that appear in the first set, but not in the second. If an item appears X times in the first set,
-        /// and Y times in the second set, the difference contains the item X - Y times (0 times if X &lt; Y). 
+        /// and Y times in the second set, the difference contains the item X - Y times (0 times if X &lt; Y).
         /// The source collections are not changed.
         /// A new collection is created with the difference of the collections; the order of the
         /// items in this collection is undefined.
@@ -2731,7 +2802,7 @@ namespace Wintellect.PowerCollections
         /// <summary>
         /// Computes the set-theoretic difference of two collections. The difference of two sets
         /// is all items that appear in the first set, but not in the second. If an item appears X times in the first set,
-        /// and Y times in the second set, the difference contains the item X - Y times (0 times if X &lt; Y). 
+        /// and Y times in the second set, the difference contains the item X - Y times (0 times if X &lt; Y).
         /// The source collections are not changed.
         /// A new collection is created with the difference of the collections; the order of the
         /// items in this collection is undefined.
@@ -2744,7 +2815,7 @@ namespace Wintellect.PowerCollections
         /// </remarks>
         /// <param name="collection1">The first collection to difference.</param>
         /// <param name="collection2">The second collection to difference.</param>
-        /// <param name="equalityComparer">The IEqualityComparer&lt;T&gt; used to compare items for equality. 
+        /// <param name="equalityComparer">The IEqualityComparer&lt;T&gt; used to compare items for equality.
         /// Only the Equals and GetHashCode member functions of this interface are called.</param>
         /// <returns>The difference of <paramref name="collection1"/> and <paramref name="collection2"/>, considered as sets.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection1"/> or <paramref name="collection2"/> is null.</exception>
@@ -2766,7 +2837,7 @@ namespace Wintellect.PowerCollections
         /// <summary>
         /// Computes the set-theoretic symmetric difference of two collections. The symmetric difference of two sets
         /// is all items that appear in the one of the sets, but not in the other. If an item appears X times in the one set,
-        /// and Y times in the other set, the symmetric difference contains the item AbsoluteValue(X - Y) times. 
+        /// and Y times in the other set, the symmetric difference contains the item AbsoluteValue(X - Y) times.
         /// The source collections are not changed.
         /// A new collection is created with the symmetric difference of the collections; the order of the
         /// items in this collection is undefined.
@@ -2791,7 +2862,7 @@ namespace Wintellect.PowerCollections
         /// <summary>
         /// Computes the set-theoretic symmetric difference of two collections. The symmetric difference of two sets
         /// is all items that appear in the one of the sets, but not in the other. If an item appears X times in the one set,
-        /// and Y times in the other set, the symmetric difference contains the item AbsoluteValue(X - Y) times. 
+        /// and Y times in the other set, the symmetric difference contains the item AbsoluteValue(X - Y) times.
         /// The source collections are not changed.
         /// A new collection is created with the symmetric difference of the collections; the order of the
         /// items in this collection is undefined.
@@ -2804,7 +2875,7 @@ namespace Wintellect.PowerCollections
         /// </remarks>
         /// <param name="collection1">The first collection to symmetric difference.</param>
         /// <param name="collection2">The second collection to symmetric difference.</param>
-        /// <param name="equalityComparer">The IEqualityComparer&lt;T&gt; used to compare items for equality. 
+        /// <param name="equalityComparer">The IEqualityComparer&lt;T&gt; used to compare items for equality.
         /// Only the Equals and GetHashCode member functions of this interface are called.</param>
         /// <returns>The symmetric difference of <paramref name="collection1"/> and <paramref name="collection2"/>, considered as sets.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection1"/> or <paramref name="collection2"/> is null.</exception>
@@ -2819,18 +2890,20 @@ namespace Wintellect.PowerCollections
 
             Bag<T> bag1 = new Bag<T>(collection1, equalityComparer);
             Bag<T> bag2 = new Bag<T>(collection2, equalityComparer);
-            if (bag1.Count > bag2.Count) {
+            if (bag1.Count > bag2.Count)
+            {
                 bag1.SymmetricDifferenceWith(bag2);
                 return Util.CreateEnumerableWrapper(bag1);
             }
-            else {
+            else
+            {
                 bag2.SymmetricDifferenceWith(bag1);
                 return Util.CreateEnumerableWrapper(bag2);
             }
         }
 
         /// <summary>
-        /// Computes the cartestian product of two collections: all possible pairs of items, with the first item taken from the first collection and 
+        /// Computes the cartestian product of two collections: all possible pairs of items, with the first item taken from the first collection and
         /// the second item taken from the second collection. If the first collection has N items, and the second collection has M items, the cartesian
         /// product will have N * M pairs.
         /// </summary>
@@ -2851,14 +2924,14 @@ namespace Wintellect.PowerCollections
                     yield return new Pair<TFirst, TSecond>(itemFirst, itemSecond);
         }
 
-        #endregion Set operations 
+        #endregion Set operations (coded except EqualSets)
 
         #region String representations (not yet coded)
 
         /// <summary>
         /// Gets a string representation of the elements in the collection.
         /// The string representation starts with "{", has a list of items separated
-        /// by commas (","), and ends with "}". Each item in the collection is 
+        /// by commas (","), and ends with "}". Each item in the collection is
         /// converted to a string by calling its ToString method (null is represented by "null").
         /// Contained collections (except strings) are recursively converted to strings by this method.
         /// </summary>
@@ -2872,7 +2945,7 @@ namespace Wintellect.PowerCollections
         /// <summary>
         /// Gets a string representation of the elements in the collection.
         /// The string to used at the beginning and end, and to separate items,
-        /// and supplied by parameters. Each item in the collection is 
+        /// and supplied by parameters. Each item in the collection is
         /// converted to a string by calling its ToString method (null is represented by "null").
         /// </summary>
         /// <param name="collection">A collection to get the string representation of.</param>
@@ -2903,7 +2976,8 @@ namespace Wintellect.PowerCollections
             builder.Append(start);
 
             // Call ToString on each item and put it in.
-            foreach (T item in collection) {
+            foreach (T item in collection)
+            {
                 if (!firstItem)
                     builder.Append(separator);
 
@@ -2925,12 +2999,12 @@ namespace Wintellect.PowerCollections
         /// Gets a string representation of the mappings in a dictionary.
         /// The string representation starts with "{", has a list of mappings separated
         /// by commas (", "), and ends with "}". Each mapping is represented
-        /// by "key->value". Each key and value in the dictionary is 
+        /// by "key->value". Each key and value in the dictionary is
         /// converted to a string by calling its ToString method (null is represented by "null").
         /// Contained collections (except strings) are recursively converted to strings by this method.
         /// </summary>
         /// <param name="dictionary">A dictionary to get the string representation of.</param>
-        /// <returns>The string representation of the collection, or "null" 
+        /// <returns>The string representation of the collection, or "null"
         /// if <paramref name="dictionary"/> is null.</returns>
         public static string ToString<TKey, TValue>(IDictionary<TKey, TValue> dictionary)
         {
@@ -2944,7 +3018,8 @@ namespace Wintellect.PowerCollections
             builder.Append("{");
 
             // Call ToString on each item and put it in.
-            foreach (KeyValuePair<TKey, TValue> pair in dictionary) {
+            foreach (KeyValuePair<TKey, TValue> pair in dictionary)
+            {
                 if (!firstItem)
                     builder.Append(", ");
 
@@ -2964,7 +3039,6 @@ namespace Wintellect.PowerCollections
                 else
                     builder.Append(pair.Value.ToString());
 
-
                 firstItem = false;
             }
 
@@ -2972,7 +3046,7 @@ namespace Wintellect.PowerCollections
             return builder.ToString();
         }
 
-        #endregion String representations
+        #endregion String representations (not yet coded)
 
         #region Shuffles and Permutations
 
@@ -2986,8 +3060,10 @@ namespace Wintellect.PowerCollections
         /// and is always returned.</returns>
         private static Random GetRandomGenerator()
         {
-            if (myRandomGenerator == null) {
-                lock (typeof(Algorithms)) {
+            if (myRandomGenerator == null)
+            {
+                lock (typeof(Algorithms))
+                {
                     if (myRandomGenerator == null)
                         myRandomGenerator = new Random();
                 }
@@ -3026,7 +3102,8 @@ namespace Wintellect.PowerCollections
             T[] array = Algorithms.ToArray(collection);
 
             int count = array.Length;
-            for (int i = count - 1; i >= 1; --i) {
+            for (int i = count - 1; i >= 1; --i)
+            {
                 // Pick an random number 0 through i inclusive.
                 int j = randomGenerator.Next(i + 1);
 
@@ -3069,7 +3146,8 @@ namespace Wintellect.PowerCollections
                 throw new ArgumentException(Strings.ListIsReadOnly, "list");
 
             int count = list.Count;
-            for (int i = count - 1; i >= 1; --i) {
+            for (int i = count - 1; i >= 1; --i)
+            {
                 // Pick an random number 0 through i inclusive.
                 int j = randomGenerator.Next(i + 1);
 
@@ -3116,10 +3194,11 @@ namespace Wintellect.PowerCollections
             if (randomGenerator == null)
                 throw new ArgumentNullException("randomGenerator");
 
-            // We need random access to the items in the collection. If it's not already an 
+            // We need random access to the items in the collection. If it's not already an
             // IList<T>, copy to a temporary list.
             IList<T> list = collection as IList<T>;
-            if (list == null) {
+            if (list == null)
+            {
                 list = new List<T>(collection);
             }
 
@@ -3130,7 +3209,8 @@ namespace Wintellect.PowerCollections
             T[] result = new T[count];  // the result array.
             Dictionary<int, T> swappedValues = new Dictionary<int, T>(count);   // holds swapped values from the list.
 
-            for (int i = 0; i < count; ++i) {
+            for (int i = 0; i < count; ++i)
+            {
                 // Set j to the index of the item to swap with, and value to the value to swap with.
                 T value;
                 int j = randomGenerator.Next(listCount - i) + i;
@@ -3141,7 +3221,8 @@ namespace Wintellect.PowerCollections
                     value = list[j];
 
                 result[i] = value;
-                if (i != j) {
+                if (i != j)
+                {
                     if (swappedValues.TryGetValue(i, out value))
                         swappedValues[j] = value;
                     else
@@ -3162,7 +3243,7 @@ namespace Wintellect.PowerCollections
         /// </summary>
         /// <typeparam name="T">The type of items to permute.</typeparam>
         /// <param name="collection">The collection of items to permute.</param>
-        /// <returns>An IEnumerable&lt;T[]&gt; that enumerations all the possible permutations of the 
+        /// <returns>An IEnumerable&lt;T[]&gt; that enumerations all the possible permutations of the
         /// items in <paramref name="collection"/>. Each permutations is returned as an array. The items in the array
         /// should be copied if they need to be used after the next permutation is generated; each permutation may
         /// reuse the same array instance.</returns>
@@ -3190,9 +3271,12 @@ namespace Wintellect.PowerCollections
             // is still O(1), and shorter and clearer to understand.
             int i = 0;
             T temp;
-            for (; ; ) {
-                if (state[i] < i + 1) {
-                    if (state[i] > 0) {
+            for (; ; )
+            {
+                if (state[i] < i + 1)
+                {
+                    if (state[i] > 0)
+                    {
                         temp = array[i + 1];
                         array[i + 1] = array[state[i] - 1];
                         array[state[i] - 1] = temp;
@@ -3207,7 +3291,8 @@ namespace Wintellect.PowerCollections
                     ++state[i];
                     i = 0;
                 }
-                else {
+                else
+                {
                     temp = array[i + 1];
                     array[i + 1] = array[i];
                     array[i] = temp;
@@ -3217,23 +3302,23 @@ namespace Wintellect.PowerCollections
                     if (i >= maxLength)
                         yield break;
                 }
-            } 
+            }
         }
 
         /// <summary>
-        /// Generates all the possible permutations of the items in <paramref name="collection"/>, in lexicographical order. 
+        /// Generates all the possible permutations of the items in <paramref name="collection"/>, in lexicographical order.
         /// Even if some items are equal, the same permutation will not be generated more than once. For example,
         /// if the collections contains the three items A, A, and B, then this method will generate only the three permutations, AAB, ABA,
-        /// BAA. 
+        /// BAA.
         /// </summary>
         /// <typeparam name="T">The type of items to permute.</typeparam>
         /// <param name="collection">The collection of items to permute.</param>
-        /// <returns>An IEnumerable&lt;T[]&gt; that enumerations all the possible permutations of the 
+        /// <returns>An IEnumerable&lt;T[]&gt; that enumerations all the possible permutations of the
         /// items in <paramref name="collection"/>. Each permutations is returned as an array. The items in the array
         /// should be copied if they need to be used after the next permutation is generated; each permutation may
         /// reuse the same array instance.</returns>
         public static IEnumerable<T[]> GenerateSortedPermutations<T>(IEnumerable<T> collection)
-            where T: IComparable<T>
+            where T : IComparable<T>
         {
             return GenerateSortedPermutations<T>(collection, Comparer<T>.Default);
         }
@@ -3243,12 +3328,12 @@ namespace Wintellect.PowerCollections
         /// supplied IComparer&lt;T&gt; instance is used to compare the items.
         /// Even if some items are equal, the same permutation will not be generated more than once. For example,
         /// if the collections contains the three items A, A, and B, then this method will generate only the three permutations, AAB, ABA,
-        /// BAA. 
+        /// BAA.
         /// </summary>
         /// <typeparam name="T">The type of items to permute.</typeparam>
         /// <param name="collection">The collection of items to permute.</param>
         /// <param name="comparer">The IComparer&lt;T&gt; used to compare the items.</param>
-        /// <returns>An IEnumerable&lt;T[]&gt; that enumerations all the possible permutations of the 
+        /// <returns>An IEnumerable&lt;T[]&gt; that enumerations all the possible permutations of the
         /// items in <paramref name="collection"/>. Each permutations is returned as an array. The items in the array
         /// should be copied if they need to be used after the next permutation is generated; each permutation may
         /// reuse the same array instance.</returns>
@@ -3274,11 +3359,13 @@ namespace Wintellect.PowerCollections
             // due to Jeffrey A. Johnson ("SEPA - a Simple Efficient Permutation Algorithm")
             int key, swap, i, j;
             T temp;
-            for (; ; ) {
+            for (; ; )
+            {
                 // Find the key point -- where array[key]<array[key+1]. Everything after the
                 // key is the tail.
                 key = length - 2;
-                while (comparer.Compare(array[key], array[key+1]) >= 0) {
+                while (comparer.Compare(array[key], array[key + 1]) >= 0)
+                {
                     --key;
                     if (key < 0)
                         yield break;
@@ -3297,7 +3384,8 @@ namespace Wintellect.PowerCollections
                 // Reverse the tail.
                 i = key + 1;
                 j = length - 1;
-                while (i < j) {
+                while (i < j)
+                {
                     temp = array[i];
                     array[i] = array[j];
                     array[j] = temp;
@@ -3313,12 +3401,12 @@ namespace Wintellect.PowerCollections
         /// supplied Comparison&lt;T&gt; delegate is used to compare the items.
         /// Even if some items are equal, the same permutation will not be generated more than once. For example,
         /// if the collections contains the three items A, A, and B, then this method will generate only the three permutations, AAB, ABA,
-        /// BAA. 
+        /// BAA.
         /// </summary>
         /// <typeparam name="T">The type of items to permute.</typeparam>
         /// <param name="collection">The collection of items to permute.</param>
         /// <param name="comparison">The Comparison&lt;T&gt; delegate used to compare the items.</param>
-        /// <returns>An IEnumerable&lt;T[]&gt; that enumerations all the possible permutations of the 
+        /// <returns>An IEnumerable&lt;T[]&gt; that enumerations all the possible permutations of the
         /// items in <paramref name="collection"/>. Each permutations is returned as an array. The items in the array
         /// should be copied if they need to be used after the next permutation is generated; each permutation may
         /// reuse the same array instance.</returns>
@@ -3368,8 +3456,10 @@ namespace Wintellect.PowerCollections
             bool foundOne = false;
 
             // Go through the collection, keeping the maximum found so far.
-            foreach (T item in collection) {
-                if (!foundOne || comparer.Compare(maxSoFar, item) < 0) {
+            foreach (T item in collection)
+            {
+                if (!foundOne || comparer.Compare(maxSoFar, item) < 0)
+                {
                     maxSoFar = item;
                 }
 
@@ -3435,8 +3525,10 @@ namespace Wintellect.PowerCollections
             bool foundOne = false;
 
             // Go through the collection, keeping the minimum found so far.
-            foreach (T item in collection) {
-                if (!foundOne || comparer.Compare(minSoFar, item) > 0) {
+            foreach (T item in collection)
+            {
+                if (!foundOne || comparer.Compare(minSoFar, item) > 0)
+                {
                     minSoFar = item;
                 }
 
@@ -3483,7 +3575,7 @@ namespace Wintellect.PowerCollections
 
         /// <summary>
         /// Finds the index of the maximum value in a list. A supplied IComparer&lt;T&gt; is used
-        /// to compare the items in the collection. 
+        /// to compare the items in the collection.
         /// </summary>
         /// <typeparam name="T">The type of items in the list.</typeparam>
         /// <param name="list">The list to search.</param>
@@ -3503,8 +3595,10 @@ namespace Wintellect.PowerCollections
 
             // Go through the collection, keeping the maximum found so far.
             int i = 0;
-            foreach (T item in list) {
-                if (indexSoFar < 0 || comparer.Compare(maxSoFar, item) < 0) {
+            foreach (T item in list)
+            {
+                if (indexSoFar < 0 || comparer.Compare(maxSoFar, item) < 0)
+                {
                     maxSoFar = item;
                     indexSoFar = i;
                 }
@@ -3549,7 +3643,7 @@ namespace Wintellect.PowerCollections
 
         /// <summary>
         /// Finds the index of the minimum value in a list. A supplied IComparer&lt;T&gt; is used
-        /// to compare the items in the collection. 
+        /// to compare the items in the collection.
         /// </summary>
         /// <typeparam name="T">The type of items in the list.</typeparam>
         /// <param name="list">The list to search.</param>
@@ -3570,8 +3664,10 @@ namespace Wintellect.PowerCollections
 
             // Go through the collection, keeping the minimum found so far.
             int i = 0;
-            foreach (T item in list) {
-                if (indexSoFar < 0 || comparer.Compare(minSoFar, item) > 0) {
+            foreach (T item in list)
+            {
+                if (indexSoFar < 0 || comparer.Compare(minSoFar, item) > 0)
+                {
                     minSoFar = item;
                     indexSoFar = i;
                 }
@@ -3617,7 +3713,7 @@ namespace Wintellect.PowerCollections
 
         /// <summary>
         /// Creates a sorted version of a collection. A supplied IComparer&lt;T&gt; is used
-        /// to compare the items in the collection. 
+        /// to compare the items in the collection.
         /// </summary>
         /// <param name="collection">The collection to sort.</param>
         /// <param name="comparer">The comparer instance used to compare items in the collection. Only
@@ -3668,7 +3764,7 @@ namespace Wintellect.PowerCollections
 
         /// <summary>
         /// Sorts a list or array in place. A supplied IComparer&lt;T&gt; is used
-        /// to compare the items in the list. 
+        /// to compare the items in the list.
         /// </summary>
         /// <remarks><para>The Quicksort algorithms is used to sort the items. In virtually all cases,
         /// this takes time O(N log N), where N is the number of items in the list.</para>
@@ -3686,7 +3782,8 @@ namespace Wintellect.PowerCollections
 
             // If we have an array, use the built-in array sort (faster than going through IList accessors
             // with virtual calls).
-            if (list is T[]) {
+            if (list is T[])
+            {
                 Array.Sort((T[])list, comparer);
                 return;
             }
@@ -3706,40 +3803,49 @@ namespace Wintellect.PowerCollections
             // Loop until we have nothing left to sort. On each iteration, l and r contains the bounds
             // of something to sort (unless r <= l), and leftStack/rightStack have a stack of unsorted
             // pieces (unles stackPtr == 0).
-            for (; ; ) {
-                if (l == r - 1) {
+            for (; ; )
+            {
+                if (l == r - 1)
+                {
                     // We have exactly 2 elements to sort. Compare them and swap if needed.
                     T e1, e2;
                     e1 = list[l];
                     e2 = list[r];
-                    if (comparer.Compare(e1, e2) > 0) {
+                    if (comparer.Compare(e1, e2) > 0)
+                    {
                         list[r] = e1;
                         list[l] = e2;
                     }
                     l = r;     // sort complete, find other work from the stack.
                 }
-                else if (l < r) {
+                else if (l < r)
+                {
                     // Sort the items in the inclusive range l .. r
 
                     // Get the left, middle, and right-most elements and sort them, yielding e1=smallest, e2=median, e3=largest
                     int m = l + (r - l) / 2;
                     T e1 = list[l], e2 = list[m], e3 = list[r], temp;
-                    if (comparer.Compare(e1, e2) > 0) { 
-                        temp = e1; e1 = e2; e2 = temp; 
+                    if (comparer.Compare(e1, e2) > 0)
+                    {
+                        temp = e1; e1 = e2; e2 = temp;
                     }
-                    if (comparer.Compare(e1, e3) > 0) {
+                    if (comparer.Compare(e1, e3) > 0)
+                    {
                         temp = e3; e3 = e2; e2 = e1; e1 = temp;
                     }
-                    else if (comparer.Compare(e2, e3) > 0) {
-                        temp = e2; e2 = e3; e3 = temp; 
+                    else if (comparer.Compare(e2, e3) > 0)
+                    {
+                        temp = e2; e2 = e3; e3 = temp;
                     }
 
-                    if (l == r - 2) {
+                    if (l == r - 2)
+                    {
                         // We have exactly 3 elements to sort, and we've done that. Store back and we're done.
                         list[l] = e1; list[m] = e2; list[r] = e3;
                         l = r;  // sort complete, find other work from the stack.
                     }
-                    else {
+                    else
+                    {
                         // Put the smallest at the left, largest in the middle, and the median at the right (which is the partitioning value)
                         list[l] = e1;
                         list[m] = e3;
@@ -3748,13 +3854,16 @@ namespace Wintellect.PowerCollections
                         // Partition into three parts, items <= partition, items == partition, and items >= partition
                         int i = l, j = r;
                         T item_i, item_j;
-                        for (; ; ) {
-                            do {
+                        for (; ; )
+                        {
+                            do
+                            {
                                 ++i;
                                 item_i = list[i];
                             } while (comparer.Compare(item_i, partition) < 0);
 
-                            do {
+                            do
+                            {
                                 --j;
                                 item_j = list[j];
                             } while (comparer.Compare(item_j, partition) > 0);
@@ -3770,7 +3879,7 @@ namespace Wintellect.PowerCollections
                         list[i] = partition;
                         ++i;
 
-                        // We have partitioned the list. 
+                        // We have partitioned the list.
                         //    Items in the inclusive range l .. j are <= partition.
                         //    Items in the inclusive range i .. r are >= partition.
                         //    Items in the inclusive range j+1 .. i - 1 are == partition (and in the correct final position).
@@ -3778,13 +3887,15 @@ namespace Wintellect.PowerCollections
                         // To do this, we stack one of the lists for later processing, and change l and r to the other list.
                         // If we always stack the larger of the two sub-parts, the stack cannot get greater
                         // than log2(Count) in size; i.e., a 32-element stack is enough for the maximum list size.
-                        if ((j - l) > (r - i)) {
+                        if ((j - l) > (r - i))
+                        {
                             // The right partition is smaller. Stack the left, and get ready to sort the right.
                             leftStack[stackPtr] = l;
                             rightStack[stackPtr] = j;
                             l = i;
                         }
-                        else {
+                        else
+                        {
                             // The left partition is smaller. Stack the right, and get ready to sort the left.
                             leftStack[stackPtr] = i;
                             rightStack[stackPtr] = r;
@@ -3793,13 +3904,15 @@ namespace Wintellect.PowerCollections
                         ++stackPtr;
                     }
                 }
-               else if (stackPtr > 0) {
+                else if (stackPtr > 0)
+                {
                     // We have a stacked sub-list to sort. Pop it off and sort it.
                     --stackPtr;
                     l = leftStack[stackPtr];
                     r = rightStack[stackPtr];
                 }
-                else {
+                else
+                {
                     // We have nothing left to sort.
                     break;
                 }
@@ -3838,7 +3951,7 @@ namespace Wintellect.PowerCollections
         /// <summary>
         /// Creates a sorted version of a collection. The sort is stable, which means that if items X and Y are equal,
         /// and X precedes Y in the unsorted collection, X will precede Y is the sorted collection. A supplied IComparer&lt;T&gt; is used
-        /// to compare the items in the collection. 
+        /// to compare the items in the collection.
         /// </summary>
         /// <param name="collection">The collection to sort.</param>
         /// <param name="comparer">The comparer instance used to compare items in the collection. Only
@@ -3861,7 +3974,7 @@ namespace Wintellect.PowerCollections
 
         /// <summary>
         /// Creates a sorted version of a collection. The sort is stable, which means that if items X and Y are equal,
-        /// and X precedes Y in the unsorted collection, X will precede Y is the sorted collection. 
+        /// and X precedes Y in the unsorted collection, X will precede Y is the sorted collection.
         /// A supplied Comparison&lt;T&gt; delegate is used
         /// to compare the items in the collection.
         /// </summary>
@@ -3877,7 +3990,7 @@ namespace Wintellect.PowerCollections
 
         /// <summary>
         /// Sorts a list or array in place. The sort is stable, which means that if items X and Y are equal,
-        /// and X precedes Y in the unsorted collection, X will precede Y is the sorted collection. 
+        /// and X precedes Y in the unsorted collection, X will precede Y is the sorted collection.
         /// </summary>
         /// <remarks><para>Values are compared by using the IComparable&lt;T&gt;
         /// interfaces implementation on the type T.</para>
@@ -3892,9 +4005,9 @@ namespace Wintellect.PowerCollections
 
         /// <summary>
         /// Sorts a list or array in place. The sort is stable, which means that if items X and Y are equal,
-        /// and X precedes Y in the unsorted collection, X will precede Y is the sorted collection. 
+        /// and X precedes Y in the unsorted collection, X will precede Y is the sorted collection.
         /// A supplied IComparer&lt;T&gt; is used
-        /// to compare the items in the list. 
+        /// to compare the items in the list.
         /// </summary>
         /// <remarks>Although arrays cast to IList&lt;T&gt; are normally read-only, this method
         /// will work correctly and modify an array passed as <paramref name="list"/>.</remarks>
@@ -3933,46 +4046,55 @@ namespace Wintellect.PowerCollections
             // Loop until we have nothing left to sort. On each iteration, l and r contains the bounds
             // of something to sort (unless r <= l), and leftStack/rightStack have a stack of unsorted
             // pieces (unles stackPtr == 0).
-            for (; ; ) {
-                if (l == r - 1) {
+            for (; ; )
+            {
+                if (l == r - 1)
+                {
                     // We have exactly 2 elements to sort. Compare them and swap if needed.
                     T e1, e2;
                     int o1, o2;
                     e1 = list[l]; o1 = order[l];
                     e2 = list[r]; o2 = order[r];
-                    if ((c = comparer.Compare(e1, e2)) > 0 || (c == 0 && o1 > o2)) {
+                    if ((c = comparer.Compare(e1, e2)) > 0 || (c == 0 && o1 > o2))
+                    {
                         list[r] = e1; order[r] = o1;
                         list[l] = e2; order[l] = o2;
                     }
                     l = r;     // sort complete, find other work from the stack.
                 }
-                else if (l < r) {
+                else if (l < r)
+                {
                     // Sort the items in the inclusive range l .. r
 
                     // Get the left, middle, and right-most elements and sort them, yielding e1=smallest, e2=median, e3=largest
                     int m = l + (r - l) / 2;
                     T e1 = list[l], e2 = list[m], e3 = list[r], temp;
                     int o1 = order[l], o2 = order[m], o3 = order[r], otemp;
-                    if ((c = comparer.Compare(e1, e2)) > 0 || (c == 0 && o1 > o2)) {
+                    if ((c = comparer.Compare(e1, e2)) > 0 || (c == 0 && o1 > o2))
+                    {
                         temp = e1; e1 = e2; e2 = temp;
                         otemp = o1; o1 = o2; o2 = otemp;
                     }
-                    if ((c = comparer.Compare(e1, e3)) > 0 || (c == 0 && o1 > o3)) {
+                    if ((c = comparer.Compare(e1, e3)) > 0 || (c == 0 && o1 > o3))
+                    {
                         temp = e3; e3 = e2; e2 = e1; e1 = temp;
                         otemp = o3; o3 = o2; o2 = o1; o1 = otemp;
                     }
-                    else if ((c = comparer.Compare(e2, e3)) > 0 || (c == 0 && o2 > o3)) {
+                    else if ((c = comparer.Compare(e2, e3)) > 0 || (c == 0 && o2 > o3))
+                    {
                         temp = e2; e2 = e3; e3 = temp;
                         otemp = o2; o2 = o3; o3 = otemp;
                     }
 
-                    if (l == r - 2) {
+                    if (l == r - 2)
+                    {
                         // We have exactly 3 elements to sort, and we've done that. Store back and we're done.
                         list[l] = e1; list[m] = e2; list[r] = e3;
                         order[l] = o1; order[m] = o2; order[r] = o3;
                         l = r;  // sort complete, find other work from the stack.
                     }
-                    else {
+                    else
+                    {
                         // Put the smallest at the left, largest in the middle, and the median at the right (which is the partitioning value)
                         list[l] = e1; order[l] = o1;
                         list[m] = e3; order[m] = o3;
@@ -3982,13 +4104,16 @@ namespace Wintellect.PowerCollections
                         int i = l, j = r;
                         T item_i, item_j;
                         int order_i, order_j;
-                        for (; ; ) {
-                            do {
+                        for (; ; )
+                        {
+                            do
+                            {
                                 ++i;
                                 item_i = list[i]; order_i = order[i];
                             } while ((c = comparer.Compare(item_i, partition)) < 0 || (c == 0 && order_i < order_partition));
 
-                            do {
+                            do
+                            {
                                 --j;
                                 item_j = list[j]; order_j = order[j];
                             } while ((c = comparer.Compare(item_j, partition)) > 0 || (c == 0 && order_j > order_partition));
@@ -4005,7 +4130,7 @@ namespace Wintellect.PowerCollections
                         list[i] = partition; order[i] = order_partition;
                         ++i;
 
-                        // We have partitioned the list. 
+                        // We have partitioned the list.
                         //    Items in the inclusive range l .. j are <= partition.
                         //    Items in the inclusive range i .. r are >= partition.
                         //    Items in the inclusive range j+1 .. i - 1 are == partition (and in the correct final position).
@@ -4013,13 +4138,15 @@ namespace Wintellect.PowerCollections
                         // To do this, we stack one of the lists for later processing, and change l and r to the other list.
                         // If we always stack the larger of the two sub-parts, the stack cannot get greater
                         // than log2(Count) in size; i.e., a 32-element stack is enough for the maximum list size.
-                        if ((j - l) > (r - i)) {
+                        if ((j - l) > (r - i))
+                        {
                             // The right partition is smaller. Stack the left, and get ready to sort the right.
                             leftStack[stackPtr] = l;
                             rightStack[stackPtr] = j;
                             l = i;
                         }
-                        else {
+                        else
+                        {
                             // The left partition is smaller. Stack the right, and get ready to sort the left.
                             leftStack[stackPtr] = i;
                             rightStack[stackPtr] = r;
@@ -4028,13 +4155,15 @@ namespace Wintellect.PowerCollections
                         ++stackPtr;
                     }
                 }
-                else if (stackPtr > 0) {
+                else if (stackPtr > 0)
+                {
                     // We have a stacked sub-list to sort. Pop it off and sort it.
                     --stackPtr;
                     l = leftStack[stackPtr];
                     r = rightStack[stackPtr];
                 }
-                else {
+                else
+                {
                     // We have nothing left to sort.
                     break;
                 }
@@ -4043,7 +4172,7 @@ namespace Wintellect.PowerCollections
 
         /// <summary>
         /// Sorts a list or array in place. The sort is stable, which means that if items X and Y are equal,
-        /// and X precedes Y in the unsorted collection, X will precede Y is the sorted collection. 
+        /// and X precedes Y in the unsorted collection, X will precede Y is the sorted collection.
         /// A supplied Comparison&lt;T&gt; delegate is used
         /// to compare the items in the list.
         /// </summary>
@@ -4068,7 +4197,7 @@ namespace Wintellect.PowerCollections
         /// order of the list.</param>
         /// <returns>The number of items equal to <paramref name="item"/> that appear in the list.</returns>
         public static int BinarySearch<T>(IList<T> list, T item, out int index)
-            where T: IComparable<T>
+            where T : IComparable<T>
         {
             return BinarySearch<T>(list, item, Comparer<T>.Default, out index);
         }
@@ -4096,33 +4225,40 @@ namespace Wintellect.PowerCollections
             int l = 0;
             int r = list.Count;
 
-            while (r > l) {
+            while (r > l)
+            {
                 int m = l + (r - l) / 2;
                 T middleItem = list[m];
                 int comp = comparer.Compare(middleItem, item);
-                if (comp < 0) {
+                if (comp < 0)
+                {
                     // middleItem < item
                     l = m + 1;
                 }
-                else if (comp > 0) {
+                else if (comp > 0)
+                {
                     r = m;
                 }
-                else {
+                else
+                {
                     // Found something equal to item at m. Now we need to find the start and end of this run of equal items.
                     int lFound = l, rFound = r, found = m;
 
                     // Find the start of the run.
                     l = lFound;
                     r = found;
-                    while (r > l) {
+                    while (r > l)
+                    {
                         m = l + (r - l) / 2;
                         middleItem = list[m];
                         comp = comparer.Compare(middleItem, item);
-                        if (comp < 0) {
+                        if (comp < 0)
+                        {
                             // middleItem < item
                             l = m + 1;
                         }
-                        else {
+                        else
+                        {
                             r = m;
                         }
                     }
@@ -4132,15 +4268,18 @@ namespace Wintellect.PowerCollections
                     // Find the end of the run.
                     l = found;
                     r = rFound;
-                    while (r > l) {
+                    while (r > l)
+                    {
                         m = l + (r - l) / 2;
                         middleItem = list[m];
                         comp = comparer.Compare(middleItem, item);
-                        if (comp <= 0) {
+                        if (comp <= 0)
+                        {
                             // middleItem <= item
                             l = m + 1;
                         }
-                        else {
+                        else
+                        {
                             r = m;
                         }
                     }
@@ -4149,7 +4288,7 @@ namespace Wintellect.PowerCollections
                 }
             }
 
-            // We did not find the item. l and r must be equal. 
+            // We did not find the item. l and r must be equal.
             System.Diagnostics.Debug.Assert(l == r);
             index = l;
             return 0;
@@ -4212,22 +4351,29 @@ namespace Wintellect.PowerCollections
             T smallestItem = default(T);
             int smallestItemIndex;
 
-            try {
+            try
+            {
                 // Get enumerators from each collection, and advance to the first element.
-                for (int i = 0; i < collections.Length; ++i) {
-                    if (collections[i] != null) {
+                for (int i = 0; i < collections.Length; ++i)
+                {
+                    if (collections[i] != null)
+                    {
                         enumerators[i] = collections[i].GetEnumerator();
                         more[i] = enumerators[i].MoveNext();
                     }
                 }
 
-                for (; ; ) {
+                for (; ; )
+                {
                     // Find the smallest item, and which collection it is in.
                     smallestItemIndex = -1;      // -1 indicates no smallest yet.
-                    for (int i = 0; i < enumerators.Length; ++i) {
-                        if (more[i]) {
+                    for (int i = 0; i < enumerators.Length; ++i)
+                    {
+                        if (more[i])
+                        {
                             T item = enumerators[i].Current;
-                            if (smallestItemIndex < 0 || comparer.Compare(smallestItem, item) > 0) {
+                            if (smallestItemIndex < 0 || comparer.Compare(smallestItem, item) > 0)
+                            {
                                 smallestItemIndex = i;
                                 smallestItem = item;
                             }
@@ -4245,9 +4391,11 @@ namespace Wintellect.PowerCollections
                     more[smallestItemIndex] = enumerators[smallestItemIndex].MoveNext();
                 }
             }
-            finally {
+            finally
+            {
                 // Dispose all enumerators.
-                foreach (IEnumerator<T> e in enumerators) {
+                foreach (IEnumerator<T> e in enumerators)
+                {
                     if (e != null)
                         e.Dispose();
                 }
@@ -4270,17 +4418,16 @@ namespace Wintellect.PowerCollections
             return MergeSorted<T>(Comparers.ComparerFromComparison<T>(comparison), collections);
         }
 
-
         /// <summary>
         /// Performs a lexicographical comparison of two sequences of values. A lexicographical comparison compares corresponding
-        /// pairs of elements from two sequences in order. If the first element of sequence1 is less than the first element of sequence2, 
+        /// pairs of elements from two sequences in order. If the first element of sequence1 is less than the first element of sequence2,
         /// then the comparison ends and the first sequence is lexicographically less than the second. If the first elements of each sequence
         /// are equal, then the comparison proceeds to the second element of each sequence. If one sequence is shorter than the other,
         /// but corresponding elements are all equal, then the shorter sequence is considered less than the longer one.
         /// </summary>
         /// <remarks>T must implement either IComparable&lt;T&gt; and this implementation is used
         /// to compare the items. </remarks>
-        /// <typeparam name="T">Types of items to compare. This type must implement IComparable&lt;T&gt; to allow 
+        /// <typeparam name="T">Types of items to compare. This type must implement IComparable&lt;T&gt; to allow
         /// items to be compared.</typeparam>
         /// <param name="sequence1">The first sequence to compare.</param>
         /// <param name="sequence2">The second sequence to compare.</param>
@@ -4296,7 +4443,7 @@ namespace Wintellect.PowerCollections
 
         /// <summary>
         /// Performs a lexicographical comparison of two sequences of values, using a supplied comparison delegate. A lexicographical comparison compares corresponding
-        /// pairs of elements from two sequences in order. If the first element of sequence1 is less than the first element of sequence2, 
+        /// pairs of elements from two sequences in order. If the first element of sequence1 is less than the first element of sequence2,
         /// then the comparison ends and the first sequence is lexicographically less than the second. If the first elements of each sequence
         /// are equal, then the comparison proceeds to the second element of each sequence. If one sequence is shorter than the other,
         /// but corresponding elements are all equal, then the shorter sequence is considered less than the longer one.
@@ -4304,7 +4451,7 @@ namespace Wintellect.PowerCollections
         /// <typeparam name="T">Types of items to compare.</typeparam>
         /// <param name="sequence1">The first sequence to compare.</param>
         /// <param name="sequence2">The second sequence to compare.</param>
-        /// <param name="comparison">The IComparison&lt;T&gt; delegate to compare items. 
+        /// <param name="comparison">The IComparison&lt;T&gt; delegate to compare items.
         /// Only the Compare member function of this interface is called.</param>
         /// <returns>Less than zero if <paramref name="sequence1"/> is lexicographically less than <paramref name="sequence2"/>.
         /// Greater than zero if <paramref name="sequence1"/> is lexicographically greater than <paramref name="sequence2"/>.
@@ -4316,7 +4463,7 @@ namespace Wintellect.PowerCollections
 
         /// <summary>
         /// Performs a lexicographical comparison of two sequences of values, using a supplied comparer interface. A lexicographical comparison compares corresponding
-        /// pairs of elements from two sequences in order. If the first element of sequence1 is less than the first element of sequence2, 
+        /// pairs of elements from two sequences in order. If the first element of sequence1 is less than the first element of sequence2,
         /// then the comparison ends and the first sequence is lexicographically less than the second. If the first elements of each sequence
         /// are equal, then the comparison proceeds to the second element of each sequence. If one sequence is shorter than the other,
         /// but corresponding elements are all equal, then the shorter sequence is considered less than the longer one.
@@ -4324,12 +4471,12 @@ namespace Wintellect.PowerCollections
         /// <typeparam name="T">Types of items to compare.</typeparam>
         /// <param name="sequence1">The first sequence to compare.</param>
         /// <param name="sequence2">The second sequence to compare.</param>
-        /// <param name="comparer">The IComparer&lt;T&gt; used to compare items. 
+        /// <param name="comparer">The IComparer&lt;T&gt; used to compare items.
         /// Only the Compare member function of this interface is called.</param>
         /// <returns>Less than zero if <paramref name="sequence1"/> is lexicographically less than <paramref name="sequence2"/>.
         /// Greater than zero if <paramref name="sequence1"/> is lexicographically greater than <paramref name="sequence2"/>.
         /// Zero if <paramref name="sequence1"/> is equal to <paramref name="sequence2"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="sequence1"/>, <paramref name="sequence2"/>, or 
+        /// <exception cref="ArgumentNullException"><paramref name="sequence1"/>, <paramref name="sequence2"/>, or
         /// <paramref name="comparer"/> is null.</exception>
         public static int LexicographicalCompare<T>(IEnumerable<T> sequence1, IEnumerable<T> sequence2, IComparer<T> comparer)
         {
@@ -4340,10 +4487,12 @@ namespace Wintellect.PowerCollections
             if (comparer == null)
                 throw new ArgumentNullException("comparer");
 
-            using (IEnumerator<T> enum1 = sequence1.GetEnumerator(), enum2 = sequence2.GetEnumerator()) {
+            using (IEnumerator<T> enum1 = sequence1.GetEnumerator(), enum2 = sequence2.GetEnumerator())
+            {
                 bool continue1, continue2;
 
-                for (; ; ) {
+                for (; ; )
+                {
                     continue1 = enum1.MoveNext(); continue2 = enum2.MoveNext();
                     if (!continue1 || !continue2)
                         break;
@@ -4364,9 +4513,9 @@ namespace Wintellect.PowerCollections
             }
         }
 
-        #endregion Sorting
+        #endregion Sorting and operations on sorted collections
 
-        #region Comparers/Comparison utilities 
+        #region Comparers/Comparison utilities
 
         /// <summary>
         /// A private class used by the LexicographicalComparer method to compare sequences
@@ -4375,6 +4524,7 @@ namespace Wintellect.PowerCollections
 #if !SILVERLIGHT
     [Serializable]
 #endif
+
         private class LexicographicalComparerClass<T> : IComparer<IEnumerable<T>>
         {
             IComparer<T> itemComparer;
@@ -4393,7 +4543,6 @@ namespace Wintellect.PowerCollections
             {
                 return LexicographicalCompare<T>(x, y, itemComparer);
             }
-
 
             // For comparing this comparer to others.
 
@@ -4421,7 +4570,7 @@ namespace Wintellect.PowerCollections
         /// to compare the items. </remarks>
         /// <returns>At IComparer&lt;IEnumerable&lt;T&gt;&gt; that compares sequences of T.</returns>
         public static IComparer<IEnumerable<T>> GetLexicographicalComparer<T>()
-            where T: IComparable<T>
+            where T : IComparable<T>
         {
             return GetLexicographicalComparer<T>(Comparer<T>.Default);
         }
@@ -4459,12 +4608,13 @@ namespace Wintellect.PowerCollections
         }
 
         /// <summary>
-        /// An IComparer instance that can be used to reverse the sense of 
+        /// An IComparer instance that can be used to reverse the sense of
         /// a wrapped IComparer instance.
         /// </summary>
 #if !SILVERLIGHT
     [Serializable]
 #endif
+
         private class ReverseComparerClass<T> : IComparer<T>
         {
             IComparer<T> comparer;
@@ -4479,7 +4629,7 @@ namespace Wintellect.PowerCollections
 
             public int Compare(T x, T y)
             {
-                return - comparer.Compare(x, y);
+                return -comparer.Compare(x, y);
             }
 
             // For comparing this comparer to others.
@@ -4522,8 +4672,9 @@ namespace Wintellect.PowerCollections
 #if !SILVERLIGHT
     [Serializable]
 #endif
+
         private class IdentityComparer<T> : IEqualityComparer<T>
-            where T:class
+            where T : class
         {
             public bool Equals(T x, T y)
             {
@@ -4551,7 +4702,7 @@ namespace Wintellect.PowerCollections
         /// <summary>
         /// Gets an IEqualityComparer&lt;T&gt; instance that can be used to compare objects
         /// of type T for object identity only. Two objects compare equal only if they
-        /// are references to the same object. 
+        /// are references to the same object.
         /// </summary>
         /// <returns>An IEqualityComparer&lt;T&gt; instance for identity comparison.</returns>
         public static IEqualityComparer<T> GetIdentityComparer<T>()
@@ -4562,7 +4713,7 @@ namespace Wintellect.PowerCollections
 
         /// <summary>
         /// Reverses the order of comparison of an Comparison&lt;T&gt;. The resulting comparison can be used,
-        /// for example, to sort a collection in descending order. 
+        /// for example, to sort a collection in descending order.
         /// </summary>
         /// <typeparam name="T">The type of items that are being compared.</typeparam>
         /// <param name="comparison">The comparison to reverse.</param>
@@ -4592,7 +4743,7 @@ namespace Wintellect.PowerCollections
         }
 
         /// <summary>
-        /// Given in IComparer&lt;T&gt; instenace that comparers two items from type T, 
+        /// Given in IComparer&lt;T&gt; instenace that comparers two items from type T,
         /// gets a Comparison delegate that performs the same comparison.
         /// </summary>
         /// <param name="comparer">The IComparer&lt;T&gt; instance to use.</param>
@@ -4614,6 +4765,7 @@ namespace Wintellect.PowerCollections
 #if !SILVERLIGHT
     [Serializable]
 #endif
+
         private class CollectionEqualityComparer<T> : IEqualityComparer<IEnumerable<T>>
         {
             private IEqualityComparer<T> equalityComparer;
@@ -4631,7 +4783,8 @@ namespace Wintellect.PowerCollections
             public int GetHashCode(IEnumerable<T> obj)
             {
                 int hash = 0x374F293E;
-                foreach (T t in obj) {
+                foreach (T t in obj)
+                {
                     int itemHash = Util.GetHashCode(t, equalityComparer);
                     hash += itemHash;
                     hash = (hash << 9) | (hash >> 23);
@@ -4642,20 +4795,20 @@ namespace Wintellect.PowerCollections
         }
 
         /// <summary>
-        /// Gets an IEqualityComparer&lt;IEnumerable&lt;T&gt;&gt; implementation 
+        /// Gets an IEqualityComparer&lt;IEnumerable&lt;T&gt;&gt; implementation
         /// that can be used to compare collections of elements (of type T). Two collections
-        /// of T's are equal if they have the same number of items, and corresponding 
+        /// of T's are equal if they have the same number of items, and corresponding
         /// items are equal, considered in order. This is the same notion of equality as
         /// in Algorithms.EqualCollections, but encapsulated in an IEqualityComparer&lt;IEnumerable&lt;T&gt;&gt; implementation.
         /// </summary>
         /// <example>
         /// The following code creates a Dictionary where the keys are a collection of strings.
         /// <code>
-        ///     Dictionary&lt;IEnumerable&lt;string&gt;, int&gt; = 
+        ///     Dictionary&lt;IEnumerable&lt;string&gt;, int&gt; =
         ///         new Dictionary&lt;IEnumerable&lt;string&gt;, int&gt;(Algorithms.GetCollectionEqualityComparer&lt;string&gt;());
         /// </code>
         /// </example>
-        /// <returns>IEqualityComparer&lt;IEnumerable&lt;T&gt;&gt; implementation suitable for 
+        /// <returns>IEqualityComparer&lt;IEnumerable&lt;T&gt;&gt; implementation suitable for
         /// comparing collections of T for equality.</returns>
         /// <seealso cref="Algorithms.EqualCollections"/>
         public static IEqualityComparer<IEnumerable<T>> GetCollectionEqualityComparer<T>()
@@ -4664,9 +4817,9 @@ namespace Wintellect.PowerCollections
         }
 
         /// <summary>
-        /// <para>Gets an IEqualityComparer&lt;IEnumerable&lt;T&gt;&gt; implementation 
+        /// <para>Gets an IEqualityComparer&lt;IEnumerable&lt;T&gt;&gt; implementation
         /// that can be used to compare collections of elements (of type T). Two collections
-        /// of T's are equal if they have the same number of items, and corresponding 
+        /// of T's are equal if they have the same number of items, and corresponding
         /// items are equal, considered in order. This is the same notion of equality as
         /// in Algorithms.EqualCollections, but encapsulated in an IEqualityComparer&lt;IEnumerable&lt;T&gt;&gt; implementation.</para>
         /// <para>An IEqualityComparer&lt;T&gt; is used to determine if individual T's are equal</para>
@@ -4674,12 +4827,12 @@ namespace Wintellect.PowerCollections
         /// <example>
         /// The following code creates a Dictionary where the keys are a collection of strings, compared in a case-insensitive way
         /// <code>
-        ///     Dictionary&lt;IEnumerable&lt;string&gt;, int&gt; = 
+        ///     Dictionary&lt;IEnumerable&lt;string&gt;, int&gt; =
         ///         new Dictionary&lt;IEnumerable&lt;string&gt;, int&gt;(Algorithms.GetCollectionEqualityComparer&lt;string&gt;(StringComparer.CurrentCultureIgnoreCase));
         /// </code>
         /// </example>
         /// <param name="equalityComparer">An IEqualityComparer&lt;T&gt; implementation used to compare individual T's.</param>
-        /// <returns>IEqualityComparer&lt;IEnumerable&lt;T&gt;&gt; implementation suitable for 
+        /// <returns>IEqualityComparer&lt;IEnumerable&lt;T&gt;&gt; implementation suitable for
         /// comparing collections of T for equality.</returns>
         /// <seealso cref="Algorithms.EqualCollections"/>
         public static IEqualityComparer<IEnumerable<T>> GetCollectionEqualityComparer<T>(IEqualityComparer<T> equalityComparer)
@@ -4698,6 +4851,7 @@ namespace Wintellect.PowerCollections
 #if !SILVERLIGHT
     [Serializable]
 #endif
+
         private class SetEqualityComparer<T> : IEqualityComparer<IEnumerable<T>>
         {
             private IEqualityComparer<T> equalityComparer;
@@ -4715,7 +4869,8 @@ namespace Wintellect.PowerCollections
             public int GetHashCode(IEnumerable<T> obj)
             {
                 int hash = 0x624F273C;
-                foreach (T t in obj) {
+                foreach (T t in obj)
+                {
                     int itemHash = Util.GetHashCode(t, equalityComparer);
                     hash += itemHash;
                 }
@@ -4725,9 +4880,9 @@ namespace Wintellect.PowerCollections
         }
 
         /// <summary>
-        /// <para>Gets an IEqualityComparer&lt;IEnumerable&lt;T&gt;&gt; implementation 
+        /// <para>Gets an IEqualityComparer&lt;IEnumerable&lt;T&gt;&gt; implementation
         /// that can be used to compare collections of elements (of type T). Two collections
-        /// of T's are equal if they have the same number of items, and corresponding 
+        /// of T's are equal if they have the same number of items, and corresponding
         /// items are equal, without regard to order. This is the same notion of equality as
         /// in Algorithms.EqualSets, but encapsulated in an IEqualityComparer&lt;IEnumerable&lt;T&gt;&gt; implementation.</para>
         /// <para>An IEqualityComparer&lt;T&gt; is used to determine if individual T's are equal</para>
@@ -4735,11 +4890,11 @@ namespace Wintellect.PowerCollections
         /// <example>
         /// The following code creates a Dictionary where the keys are a set of strings, without regard to order
         /// <code>
-        ///     Dictionary&lt;IEnumerable&lt;string&gt;, int&gt; = 
+        ///     Dictionary&lt;IEnumerable&lt;string&gt;, int&gt; =
         ///         new Dictionary&lt;IEnumerable&lt;string&gt;, int&gt;(Algorithms.GetSetEqualityComparer&lt;string&gt;(StringComparer.CurrentCultureIgnoreCase));
         /// </code>
         /// </example>
-        /// <returns>IEqualityComparer&lt;IEnumerable&lt;T&gt;&gt; implementation suitable for 
+        /// <returns>IEqualityComparer&lt;IEnumerable&lt;T&gt;&gt; implementation suitable for
         /// comparing collections of T for equality, without regard to order.</returns>
         /// <seealso cref="Algorithms.EqualSets"/>
         public static IEqualityComparer<IEnumerable<T>> GetSetEqualityComparer<T>()
@@ -4748,21 +4903,21 @@ namespace Wintellect.PowerCollections
         }
 
         /// <summary>
-        /// Gets an IEqualityComparer&lt;IEnumerable&lt;T&gt;&gt; implementation 
+        /// Gets an IEqualityComparer&lt;IEnumerable&lt;T&gt;&gt; implementation
         /// that can be used to compare collections of elements (of type T). Two collections
-        /// of T's are equal if they have the same number of items, and corresponding 
+        /// of T's are equal if they have the same number of items, and corresponding
         /// items are equal, without regard to order. This is the same notion of equality as
         /// in Algorithms.EqualSets, but encapsulated in an IEqualityComparer&lt;IEnumerable&lt;T&gt;&gt; implementation.
         /// </summary>
         /// <example>
         /// The following code creates a Dictionary where the keys are a set of strings, without regard to order
         /// <code>
-        ///     Dictionary&lt;IEnumerable&lt;string&gt;, int&gt; = 
+        ///     Dictionary&lt;IEnumerable&lt;string&gt;, int&gt; =
         ///         new Dictionary&lt;IEnumerable&lt;string&gt;, int&gt;(Algorithms.GetSetEqualityComparer&lt;string&gt;());
         /// </code>
         /// </example>
         /// <param name="equalityComparer">An IEqualityComparer&lt;T&gt; implementation used to compare individual T's.</param>
-        /// <returns>IEqualityComparer&lt;IEnumerable&lt;T&gt;&gt; implementation suitable for 
+        /// <returns>IEqualityComparer&lt;IEnumerable&lt;T&gt;&gt; implementation suitable for
         /// comparing collections of T for equality, without regard to order.</returns>
         /// <seealso cref="Algorithms.EqualSets"/>
         public static IEqualityComparer<IEnumerable<T>> GetSetEqualityComparer<T>(IEqualityComparer<T> equalityComparer)
@@ -4773,7 +4928,7 @@ namespace Wintellect.PowerCollections
             return new SetEqualityComparer<T>(equalityComparer);
         }
 
-        #endregion Sorting
+        #endregion Comparers/Comparison utilities
 
         #region Predicate operations
 
@@ -4793,7 +4948,8 @@ namespace Wintellect.PowerCollections
             if (predicate == null)
                 throw new ArgumentNullException("predicate");
 
-            foreach (T item in collection) {
+            foreach (T item in collection)
+            {
                 if (predicate(item))
                     return true;
             }
@@ -4817,7 +4973,8 @@ namespace Wintellect.PowerCollections
             if (predicate == null)
                 throw new ArgumentNullException("predicate");
 
-            foreach (T item in collection) {
+            foreach (T item in collection)
+            {
                 if (!predicate(item))
                     return false;
             }
@@ -4840,7 +4997,8 @@ namespace Wintellect.PowerCollections
                 throw new ArgumentNullException("predicate");
 
             int count = 0;
-            foreach (T item in collection) {
+            foreach (T item in collection)
+            {
                 if (predicate(item))
                     ++count;
             }
@@ -4873,7 +5031,8 @@ namespace Wintellect.PowerCollections
                 throw new ArgumentException(Strings.ListIsReadOnly, "collection");
 
             IList<T> list = collection as IList<T>;
-            if (list != null) {
+            if (list != null)
+            {
                 T item;
                 int i = -1, j = 0;
                 int listCount = list.Count;
@@ -4881,12 +5040,15 @@ namespace Wintellect.PowerCollections
 
                 // Remove item where predicate is true, compressing items to lower in the list. This is much more
                 // efficient than the naive algorithm that uses IList<T>.Remove().
-                while (j < listCount) {
+                while (j < listCount)
+                {
                     item = list[j];
-                    if (predicate(item)) {
+                    if (predicate(item))
+                    {
                         removed.Add(item);
                     }
-                    else {
+                    else
+                    {
                         ++i;
                         if (i != j)
                             list[i] = item;
@@ -4895,16 +5057,20 @@ namespace Wintellect.PowerCollections
                 }
 
                 ++i;
-                if (i < listCount) {
+                if (i < listCount)
+                {
                     // remove items from the end.
-                    if (list is IList && ((IList)list).IsFixedSize) {
+                    if (list is IList && ((IList)list).IsFixedSize)
+                    {
                         // An array or similar. Null out the last elements.
                         while (i < listCount)
                             list[i++] = default(T);
                     }
-                    else {
+                    else
+                    {
                         // Normal list.
-                        while (i < listCount) {
+                        while (i < listCount)
+                        {
                             list.RemoveAt(listCount - 1);
                             --listCount;
                         }
@@ -4913,8 +5079,9 @@ namespace Wintellect.PowerCollections
 
                 return removed;
             }
-            else {
-                // We have to copy all the items to remove to a List, because collections can't be modifed 
+            else
+            {
+                // We have to copy all the items to remove to a List, because collections can't be modifed
                 // during an enumeration.
                 List<T> removed = new List<T>();
 
@@ -4980,7 +5147,8 @@ namespace Wintellect.PowerCollections
             if (dictionary == null)
                 throw new ArgumentNullException("dictionary");
 
-            return delegate(TKey key) {
+            return delegate(TKey key)
+            {
                 TValue value;
                 if (dictionary.TryGetValue(key, out value))
                     return value;
@@ -5029,7 +5197,8 @@ namespace Wintellect.PowerCollections
 
             // Move from opposite ends of the list, swapping when necessary.
             int i = 0, j = list.Count - 1;
-            for (;;) {
+            for (; ; )
+            {
                 while (i <= j && predicate(list[i]))
                     ++i;
                 while (i <= j && !predicate(list[j]))
@@ -5037,7 +5206,8 @@ namespace Wintellect.PowerCollections
 
                 if (i > j)
                     break;
-                else {
+                else
+                {
                     T temp = list[i];
                     list[i] = list[j];
                     list[j] = temp;
@@ -5051,9 +5221,9 @@ namespace Wintellect.PowerCollections
 
         /// <summary>
         /// Partition a list or array based on a predicate. After partitioning, all items for which
-        /// the predicate returned true precede all items for which the predicate returned false. 
+        /// the predicate returned true precede all items for which the predicate returned false.
         /// The partition is stable, which means that if items X and Y have the same result from
-        /// the predicate, and X precedes Y in the original list, X will precede Y in the 
+        /// the predicate, and X precedes Y in the original list, X will precede Y in the
         /// partitioned list.
         /// </summary>
         /// <remarks>Although arrays cast to IList&lt;T&gt; are normally read-only, this method
@@ -5081,7 +5251,8 @@ namespace Wintellect.PowerCollections
 
             // Copy from list to temp buffer, true items at fron, false item (in reverse order) at back.
             int i = 0, j = listCount - 1;
-            foreach (T item in list) {
+            foreach (T item in list)
+            {
                 if (predicate(item))
                     temp[i++] = item;
                 else
@@ -5090,7 +5261,8 @@ namespace Wintellect.PowerCollections
 
             // Copy back to the original list.
             int index = 0;
-            while (index < i) {
+            while (index < i)
+            {
                 list[index] = temp[index];
                 index++;
             }
@@ -5117,7 +5289,8 @@ namespace Wintellect.PowerCollections
             if (collections == null)
                 throw new ArgumentNullException("collections");
 
-            foreach (IEnumerable<T> coll in collections) {
+            foreach (IEnumerable<T> coll in collections)
+            {
                 foreach (T item in coll)
                     yield return item;
             }
@@ -5139,13 +5312,13 @@ namespace Wintellect.PowerCollections
         }
 
         /// <summary>
-        /// Determines if the two collections contain equal items in the same order. The passed 
+        /// Determines if the two collections contain equal items in the same order. The passed
         /// instance of IEqualityComparer&lt;T&gt; is used for determining if two items are equal.
         /// </summary>
         /// <typeparam name="T">The type of items in the collections.</typeparam>
         /// <param name="collection1">The first collection to compare.</param>
         /// <param name="collection2">The second collection to compare.</param>
-        /// <param name="equalityComparer">The IEqualityComparer&lt;T&gt; used to compare items for equality. 
+        /// <param name="equalityComparer">The IEqualityComparer&lt;T&gt; used to compare items for equality.
         /// Only the Equals member function of this interface is called.</param>
         /// <returns>True if the collections have equal items in the same order. If both collections are empty, true is returned.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection1"/>, <paramref name="collection2"/>, or
@@ -5159,10 +5332,12 @@ namespace Wintellect.PowerCollections
             if (equalityComparer == null)
                 throw new ArgumentNullException("equalityComparer");
 
-            using (IEnumerator<T> enum1 = collection1.GetEnumerator(), enum2 = collection2.GetEnumerator()) {
+            using (IEnumerator<T> enum1 = collection1.GetEnumerator(), enum2 = collection2.GetEnumerator())
+            {
                 bool continue1, continue2;
 
-                for (; ; ) {
+                for (; ; )
+                {
                     continue1 = enum1.MoveNext(); continue2 = enum2.MoveNext();
                     if (!continue1 || !continue2)
                         break;
@@ -5178,7 +5353,7 @@ namespace Wintellect.PowerCollections
         }
 
         /// <summary>
-        /// Determines if the two collections contain "equal" items in the same order. The passed 
+        /// Determines if the two collections contain "equal" items in the same order. The passed
         /// BinaryPredicate is used to determine if two items are "equal".
         /// </summary>
         /// <remarks>Since an arbitrary BinaryPredicate is passed to this function, what is being tested
@@ -5194,7 +5369,7 @@ namespace Wintellect.PowerCollections
         /// <typeparam name="T">The type of items in the collections.</typeparam>
         /// <param name="collection1">The first collection to compare.</param>
         /// <param name="collection2">The second collection to compare.</param>
-        /// <param name="predicate">The BinaryPredicate used to compare items for "equality". 
+        /// <param name="predicate">The BinaryPredicate used to compare items for "equality".
         /// This predicate can compute any relation between two items; it need not represent equality or an equivalence relation.</param>
         /// <returns>True if <paramref name="predicate"/>returns true for each corresponding pair of
         /// items in the two collections. If both collections are empty, true is returned.</returns>
@@ -5209,10 +5384,12 @@ namespace Wintellect.PowerCollections
             if (predicate == null)
                 throw new ArgumentNullException("predicate");
 
-            using (IEnumerator<T> enum1 = collection1.GetEnumerator(), enum2 = collection2.GetEnumerator()) {
+            using (IEnumerator<T> enum1 = collection1.GetEnumerator(), enum2 = collection2.GetEnumerator())
+            {
                 bool continue1, continue2;
 
-                for (; ; ) {
+                for (; ; )
+                {
                     continue1 = enum1.MoveNext(); continue2 = enum2.MoveNext();
                     if (!continue1 || !continue2)
                         break;
@@ -5230,7 +5407,7 @@ namespace Wintellect.PowerCollections
         /// <summary>
         /// Create an array with the items in a collection.
         /// </summary>
-        /// <remarks>If <paramref name="collection"/> implements ICollection&lt;T&gt;T, then 
+        /// <remarks>If <paramref name="collection"/> implements ICollection&lt;T&gt;T, then
         /// ICollection&lt;T&gt;.CopyTo() is used to fill the array. Otherwise, the IEnumerable&lt;T&gt;.GetEnumerator()
         /// is used to fill the array.</remarks>
         /// <typeparam name="T">Element type of the collection.</typeparam>
@@ -5243,13 +5420,15 @@ namespace Wintellect.PowerCollections
                 throw new ArgumentNullException("collection");
 
             ICollection<T> coll = collection as ICollection<T>;
-            if (coll != null) {
+            if (coll != null)
+            {
                 // Use ICollection methods to do it more efficiently.
                 T[] array = new T[coll.Count];
                 coll.CopyTo(array, 0);
                 return array;
             }
-            else {
+            else
+            {
                 // We can't allocate the correct size array now, because IEnumerable doesn't
                 // have a Count property. We could enumerate twice, once to count and once
                 // to copy. Or we could enumerate once, copying to a List, then copy the list
@@ -5261,7 +5440,7 @@ namespace Wintellect.PowerCollections
         }
 
         /// <summary>
-        /// Count the number of items in an IEnumerable&lt;T&gt; collection. If 
+        /// Count the number of items in an IEnumerable&lt;T&gt; collection. If
         /// a more specific collection type is being used, it is more efficient to use
         /// the Count property, if one is provided.
         /// </summary>
@@ -5320,7 +5499,8 @@ namespace Wintellect.PowerCollections
                 throw new ArgumentNullException("equalityComparer");
 
             int count = 0;
-            foreach (T item in collection) {
+            foreach (T item in collection)
+            {
                 if (equalityComparer.Equals(item, find))
                     ++count;
             }
@@ -5346,7 +5526,8 @@ namespace Wintellect.PowerCollections
             if (n < 0)
                 throw new ArgumentOutOfRangeException("n", Strings.ArgMustNotBeNegative);
 
-            while (n-- > 0) {
+            while (n-- > 0)
+            {
                 yield return item;
             }
         }
@@ -5369,15 +5550,16 @@ namespace Wintellect.PowerCollections
                 throw new ArgumentNullException("list");
             if (list.IsReadOnly)
                 throw new ArgumentException(Strings.ListIsReadOnly, "list");
-            
+
             int count = list.Count;
-            for (int i = 0; i < count; ++i) {
+            for (int i = 0; i < count; ++i)
+            {
                 list[i] = value;
             }
         }
 
         /// <summary>
-        /// Replaces each item in a array with a given value. 
+        /// Replaces each item in a array with a given value.
         /// </summary>
         /// <param name="array">The array to modify.</param>
         /// <param name="value">The value to fill with.</param>
@@ -5387,7 +5569,8 @@ namespace Wintellect.PowerCollections
             if (array == null)
                 throw new ArgumentNullException("array");
 
-            for (int i = 0; i < array.Length; ++i) {
+            for (int i = 0; i < array.Length; ++i)
+            {
                 array[i] = value;
             }
         }
@@ -5401,7 +5584,7 @@ namespace Wintellect.PowerCollections
         /// <param name="count">The number of items to fill.</param>
         /// <param name="value">The value to fill with.</param>
         /// <exception cref="ArgumentException"><paramref name="list"/> is a read-only list.</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="start"/> or <paramref name="count"/> is negative, or 
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="start"/> or <paramref name="count"/> is negative, or
         /// <paramref name="start"/> + <paramref name="count"/> is greater than <paramref name="list"/>.Count.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="list"/> is null.</exception>
         public static void FillRange<T>(IList<T> list, int start, int count, T value)
@@ -5417,8 +5600,9 @@ namespace Wintellect.PowerCollections
                 throw new ArgumentOutOfRangeException("start");
             if (count < 0 || count > list.Count || start > list.Count - count)
                 throw new ArgumentOutOfRangeException("count");
-            
-            for (int i = start; i < count + start; ++i) {
+
+            for (int i = start; i < count + start; ++i)
+            {
                 list[i] = value;
             }
         }
@@ -5430,7 +5614,7 @@ namespace Wintellect.PowerCollections
         /// <param name="start">The index at which to start filling. The first index in the array has index 0.</param>
         /// <param name="count">The number of items to fill.</param>
         /// <param name="value">The value to fill with.</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="start"/> or <paramref name="count"/> is negative, or 
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="start"/> or <paramref name="count"/> is negative, or
         /// <paramref name="start"/> + <paramref name="count"/> is greater than <paramref name="array"/>.Length.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="array"/> is null.</exception>
         public static void FillRange<T>(T[] array, int start, int count, T value)
@@ -5445,7 +5629,8 @@ namespace Wintellect.PowerCollections
             if (count < 0 || count > array.Length || start > array.Length - count)
                 throw new ArgumentOutOfRangeException("count");
 
-            for (int i = start; i < count + start; ++i) {
+            for (int i = start; i < count + start; ++i)
+            {
                 array[i] = value;
             }
         }
@@ -5457,7 +5642,7 @@ namespace Wintellect.PowerCollections
         /// <param name="source">The collection that provide the source items. </param>
         /// <param name="dest">The list to store the items into.</param>
         /// <param name="destIndex">The index to begin copying items to.</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="destIndex"/> is negative or 
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="destIndex"/> is negative or
         /// greater than <paramref name="dest"/>.Count.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="dest"/> is null.</exception>
         public static void Copy<T>(IEnumerable<T> source, IList<T> dest, int destIndex)
@@ -5467,12 +5652,12 @@ namespace Wintellect.PowerCollections
 
         /// <summary>
         /// Copies all of the items from the collection <paramref name="source"/> to the array <paramref name="dest"/>, starting
-        /// at the index <paramref name="destIndex"/>. 
+        /// at the index <paramref name="destIndex"/>.
         /// </summary>
         /// <param name="source">The collection that provide the source items. </param>
         /// <param name="dest">The array to store the items into.</param>
         /// <param name="destIndex">The index to begin copying items to.</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="destIndex"/> is negative or 
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="destIndex"/> is negative or
         /// greater than <paramref name="dest"/>.Length.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="dest"/> is null.</exception>
         /// <exception cref="ArgumentException">The collection has more items than will fit into the array. In this case, the array
@@ -5487,9 +5672,11 @@ namespace Wintellect.PowerCollections
             if (destIndex < 0 || destIndex > dest.Length)
                 throw new ArgumentOutOfRangeException("destIndex");
 
-            using (IEnumerator<T> sourceEnum = source.GetEnumerator()) {
+            using (IEnumerator<T> sourceEnum = source.GetEnumerator())
+            {
                 // Overwrite items to the end of the destination array. If we hit the end, throw.
-                while (sourceEnum.MoveNext()) {
+                while (sourceEnum.MoveNext())
+                {
                     if (destIndex >= dest.Length)
                         throw new ArgumentException(Strings.ArrayTooSmall, "array");
                     dest[destIndex++] = sourceEnum.Current;
@@ -5506,7 +5693,7 @@ namespace Wintellect.PowerCollections
         /// <param name="dest">The list to store the items into.</param>
         /// <param name="destIndex">The index to begin copying items to.</param>
         /// <param name="count">The maximum number of items to copy.</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="destIndex"/> is negative or 
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="destIndex"/> is negative or
         /// greater than <paramref name="dest"/>.Count</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="dest"/> is null.</exception>
@@ -5526,15 +5713,18 @@ namespace Wintellect.PowerCollections
             if (count < 0)
                 throw new ArgumentOutOfRangeException("count");
 
-            using (IEnumerator<T> sourceEnum = source.GetEnumerator()) {
+            using (IEnumerator<T> sourceEnum = source.GetEnumerator())
+            {
                 // First, overwrite items to the end of the destination list.
-                while (destIndex < destCount && count > 0 && sourceEnum.MoveNext()) {
+                while (destIndex < destCount && count > 0 && sourceEnum.MoveNext())
+                {
                     dest[destIndex++] = sourceEnum.Current;
                     --count;
                 }
 
                 // Second, insert items until done.
-                while (count > 0 && sourceEnum.MoveNext()) {
+                while (count > 0 && sourceEnum.MoveNext())
+                {
                     dest.Insert(destCount++, sourceEnum.Current);
                     --count;
                 }
@@ -5550,7 +5740,7 @@ namespace Wintellect.PowerCollections
         /// <param name="dest">The array to store the items into.</param>
         /// <param name="destIndex">The index to begin copying items to.</param>
         /// <param name="count">The maximum number of items to copy. The array must be large enought to fit this number of items.</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="destIndex"/> is negative or 
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="destIndex"/> is negative or
         /// greater than <paramref name="dest"/>.Length.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative or <paramref name="destIndex"/> + <paramref name="count"/>
         /// is greater than <paramref name="dest"/>.Length.</exception>
@@ -5569,9 +5759,11 @@ namespace Wintellect.PowerCollections
             if (count < 0 || destIndex + count > destCount)
                 throw new ArgumentOutOfRangeException("count");
 
-            using (IEnumerator<T> sourceEnum = source.GetEnumerator()) {
+            using (IEnumerator<T> sourceEnum = source.GetEnumerator())
+            {
                 // First, overwrite items to the end of the destination array.
-                while (destIndex < destCount && count > 0 && sourceEnum.MoveNext()) {
+                while (destIndex < destCount && count > 0 && sourceEnum.MoveNext())
+                {
                     dest[destIndex++] = sourceEnum.Current;
                     --count;
                 }
@@ -5579,7 +5771,7 @@ namespace Wintellect.PowerCollections
         }
 
         /// <summary>
-        /// Copies <paramref name="count"/> items from the list <paramref name="source"/>, starting at the index <paramref name="sourceIndex"/>, 
+        /// Copies <paramref name="count"/> items from the list <paramref name="source"/>, starting at the index <paramref name="sourceIndex"/>,
         /// to the list <paramref name="dest"/>, starting at the index <paramref name="destIndex"/>. If necessary, the size of the destination list is expanded.
         /// The source and destination lists may be the same.
         /// </summary>
@@ -5588,9 +5780,9 @@ namespace Wintellect.PowerCollections
         /// <param name="dest">The list to store the items into.</param>
         /// <param name="destIndex">The index within <paramref name="dest"/>to begin copying items to.</param>
         /// <param name="count">The maximum number of items to copy.</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="sourceIndex"/> is negative or 
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="sourceIndex"/> is negative or
         /// greater than <paramref name="source"/>.Count</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="destIndex"/> is negative or 
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="destIndex"/> is negative or
         /// greater than <paramref name="dest"/>.Count</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative or too large.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="dest"/> is null.</exception>
@@ -5615,31 +5807,37 @@ namespace Wintellect.PowerCollections
             if (count > sourceCount - sourceIndex)
                 count = sourceCount - sourceIndex;
 
-            if (source == dest && sourceIndex > destIndex) {
-                while (count > 0) {
+            if (source == dest && sourceIndex > destIndex)
+            {
+                while (count > 0)
+                {
                     dest[destIndex++] = source[sourceIndex++];
                     --count;
                 }
             }
-            else {
+            else
+            {
                 int si, di;
 
                 // First, insert any items needed at the end
-                if (destIndex + count > destCount) {
+                if (destIndex + count > destCount)
+                {
                     int numberToInsert = destIndex + count - destCount;
                     si = sourceIndex + (count - numberToInsert);
                     di = destCount;
                     count -= numberToInsert;
-                    while (numberToInsert > 0) {
+                    while (numberToInsert > 0)
+                    {
                         dest.Insert(di++, source[si++]);
                         --numberToInsert;
                     }
                 }
-                   
+
                 // Do the copy, from end to beginning in case of overlap.
                 si = sourceIndex + count - 1;
                 di = destIndex + count - 1;
-                while (count > 0) {
+                while (count > 0)
+                {
                     dest[di--] = source[si--];
                     --count;
                 }
@@ -5647,8 +5845,8 @@ namespace Wintellect.PowerCollections
         }
 
         /// <summary>
-        /// Copies <paramref name="count"/> items from the list or array <paramref name="source"/>, starting at the index <paramref name="sourceIndex"/>, 
-        /// to the array <paramref name="dest"/>, starting at the index <paramref name="destIndex"/>. 
+        /// Copies <paramref name="count"/> items from the list or array <paramref name="source"/>, starting at the index <paramref name="sourceIndex"/>,
+        /// to the array <paramref name="dest"/>, starting at the index <paramref name="destIndex"/>.
         /// The source may be the same as the destination array.
         /// </summary>
         /// <param name="source">The list or array that provide the source items. </param>
@@ -5656,9 +5854,9 @@ namespace Wintellect.PowerCollections
         /// <param name="dest">The array to store the items into.</param>
         /// <param name="destIndex">The index within <paramref name="dest"/>to begin copying items to.</param>
         /// <param name="count">The maximum number of items to copy. The destination array must be large enough to hold this many items.</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="sourceIndex"/> is negative or 
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="sourceIndex"/> is negative or
         /// greater than <paramref name="source"/>.Count</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="destIndex"/> is negative or 
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="destIndex"/> is negative or
         /// greater than <paramref name="dest"/>.Length</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative or too large.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="dest"/> is null.</exception>
@@ -5682,14 +5880,17 @@ namespace Wintellect.PowerCollections
             if (count > sourceCount - sourceIndex)
                 count = sourceCount - sourceIndex;
 
-            if (source is T[]) {
+            if (source is T[])
+            {
                 // Array.Copy is probably faster, and also handles any overlapping issues.
                 Array.Copy((T[])source, sourceIndex, dest, destIndex, count);
             }
-            else {
+            else
+            {
                 int si = sourceIndex;
                 int di = destIndex;
-                while (count > 0) {
+                while (count > 0)
+                {
                     dest[di++] = source[si++];
                     --count;
                 }
@@ -5731,7 +5932,8 @@ namespace Wintellect.PowerCollections
             int i, j;
             i = 0;
             j = list.Count - 1;
-            while (i < j) {
+            while (i < j)
+            {
                 T temp = list[i];
                 list[i] = list[j];
                 list[j] = temp;
@@ -5744,7 +5946,7 @@ namespace Wintellect.PowerCollections
         /// Rotates a list and returns the rotated list, without changing the source list.
         /// </summary>
         /// <param name="source">The list to rotate.</param>
-        /// <param name="amountToRotate">The number of elements to rotate. This value can be positive or negative. 
+        /// <param name="amountToRotate">The number of elements to rotate. This value can be positive or negative.
         /// For example, rotating by positive 3 means that source[3] is the first item in the returned collection.
         /// Rotating by negative 3 means that source[source.Count - 3] is the first item in the returned collection.</param>
         /// <returns>A collection that contains the items from <paramref name="source"/> in rotated order.</returns>
@@ -5755,7 +5957,8 @@ namespace Wintellect.PowerCollections
                 throw new ArgumentNullException("source");
 
             int count = source.Count;
-            if (count != 0) {
+            if (count != 0)
+            {
                 amountToRotate = amountToRotate % count;
                 if (amountToRotate < 0)
                     amountToRotate += count;
@@ -5774,7 +5977,7 @@ namespace Wintellect.PowerCollections
         /// <remarks>Although arrays cast to IList&lt;T&gt; are normally read-only, this method
         /// will work correctly and modify an array passed as <paramref name="list"/>.</remarks>
         /// <param name="list">The list or array to rotate.</param>
-        /// <param name="amountToRotate">The number of elements to rotate. This value can be positive or negative. 
+        /// <param name="amountToRotate">The number of elements to rotate. This value can be positive or negative.
         /// For example, rotating by positive 3 means that list[3] is the first item in the resulting list.
         /// Rotating by negative 3 means that list[list.Count - 3] is the first item in the resulting list.</param>
         /// <exception cref="ArgumentNullException"><paramref name="list"/> is null.</exception>
@@ -5788,29 +5991,34 @@ namespace Wintellect.PowerCollections
                 throw new ArgumentException(Strings.ListIsReadOnly, "list");
 
             int count = list.Count;
-            if (count != 0) {
+            if (count != 0)
+            {
                 amountToRotate = amountToRotate % count;
                 if (amountToRotate < 0)
                     amountToRotate += count;
 
                 int itemsLeft = count;
                 int indexStart = 0;
-                while (itemsLeft > 0) {
+                while (itemsLeft > 0)
+                {
                     // Rotate an orbit of items through the list. If itemsLeft is relatively prime
                     // to count, this will rotate everything. If not, we need to do this several times until
                     // all items have been moved.
                     int index = indexStart;
                     T itemStart = list[indexStart];
-                    for (;;) {
+                    for (; ; )
+                    {
                         --itemsLeft;
                         int nextIndex = index + amountToRotate;
                         if (nextIndex >= count)
                             nextIndex -= count;
-                        if (nextIndex == indexStart) {
+                        if (nextIndex == indexStart)
+                        {
                             list[index] = itemStart;
                             break;
                         }
-                        else {
+                        else
+                        {
                             list[index] = list[nextIndex];
                             index = nextIndex;
                         }
@@ -5823,6 +6031,5 @@ namespace Wintellect.PowerCollections
         }
 
         #endregion Miscellaneous operations on IList
-
     }
 }
