@@ -1,6 +1,6 @@
 using System;
+using GeoAPI;
 using NetTopologySuite.Utilities;
-using BitConverter=System.BitConverter;
 
 namespace NetTopologySuite.Index.Quadtree
 {
@@ -13,15 +13,15 @@ namespace NetTopologySuite.Index.Quadtree
     /// The algorithms and constants in this class
     /// apply only to IEEE-754 double-precision floating point format.
     /// </summary>
-    public class DoubleBits 
+    public class DoubleBits
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public const int ExponentBias = 1023;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="exp"></param>
         /// <returns></returns>
@@ -31,11 +31,15 @@ namespace NetTopologySuite.Index.Quadtree
                 throw new ArgumentException("Exponent out of bounds");
             long expBias = exp + ExponentBias;
             long bits = expBias << 52;
+#if !WINDOWS_PHONE
             return BitConverter.Int64BitsToDouble(bits);
+#else
+            return bits.Int64ToDoubleBits();
+#endif
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="d"></param>
         /// <returns></returns>
@@ -46,7 +50,7 @@ namespace NetTopologySuite.Index.Quadtree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="d"></param>
         /// <returns></returns>
@@ -58,7 +62,7 @@ namespace NetTopologySuite.Index.Quadtree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="d"></param>
         /// <returns></returns>
@@ -69,20 +73,20 @@ namespace NetTopologySuite.Index.Quadtree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="d1"></param>
         /// <param name="d2"></param>
         /// <returns></returns>
         public static double MaximumCommonMantissa(double d1, double d2)
         {
-            if (d1 == 0.0 || d2 == 0.0) 
+            if (d1 == 0.0 || d2 == 0.0)
                 return 0.0;
 
             DoubleBits db1 = new DoubleBits(d1);
             DoubleBits db2 = new DoubleBits(d2);
 
-            if (db1.Exponent != db2.Exponent) 
+            if (db1.Exponent != db2.Exponent)
                 return 0.0;
 
             int maxCommon = db1.NumCommonMantissaBits(db2);
@@ -94,23 +98,31 @@ namespace NetTopologySuite.Index.Quadtree
         private long _xBits;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="x"></param>
         public DoubleBits(double x)
         {
             this.x = x;
+#if !WINDOWS_PHONE
             _xBits = BitConverter.DoubleToInt64Bits(x);
+#else
+            _xBits = x.DoubleToInt64Bits();
+#endif
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public double Double
         {
             get
             {
+#if !WINDOWS_PHONE
                 return BitConverter.Int64BitsToDouble(_xBits);
+#else
+                return _xBits.Int64ToDoubleBits();
+#endif
             }
         }
 
@@ -139,18 +151,18 @@ namespace NetTopologySuite.Index.Quadtree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="nBits"></param>
         public void ZeroLowerBits(int nBits)
         {
             long invMask = (1L << nBits) - 1L;
-            long mask = ~ invMask;
+            long mask = ~invMask;
             _xBits &= mask;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -160,7 +172,7 @@ namespace NetTopologySuite.Index.Quadtree
             return (_xBits & mask) != 0 ? 1 : 0;
         }
 
-        /// <summary> 
+        /// <summary>
         /// This computes the number of common most-significant bits in the mantissa.
         /// It does not count the hidden bit, which is always 1.
         /// It does not determine whether the numbers have the same exponent - if they do
@@ -171,9 +183,9 @@ namespace NetTopologySuite.Index.Quadtree
         public int NumCommonMantissaBits(DoubleBits db)
         {
             for (int i = 0; i < 52; i++)
-            {            
-            if (GetBit(i) != db.GetBit(i))
-                return i;
+            {
+                if (GetBit(i) != db.GetBit(i))
+                    return i;
             }
             return 52;
         }
@@ -182,12 +194,12 @@ namespace NetTopologySuite.Index.Quadtree
         /// A representation of the Double bits formatted for easy readability.
         /// </summary>
         public override string ToString()
-        {            
+        {
             string numStr = HexConverter.ConvertAny2Any(_xBits.ToString(), 10, 2);
-            
+
             // 64 zeroes!
             string zero64 = "0000000000000000000000000000000000000000000000000000000000000000";
-            string padStr =  zero64 + numStr;
+            string padStr = zero64 + numStr;
             string bitStr = padStr.Substring(padStr.Length - 64);
             string str = bitStr.Substring(0, 1) + "  "
                 + bitStr.Substring(1, 12) + "(" + Exponent + ") "

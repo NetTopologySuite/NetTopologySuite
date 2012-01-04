@@ -4,14 +4,15 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Utilities;
+using Wintellect.PowerCollections;
 
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
     /// <summary>
     /// A class that contains the <see cref="QuadEdge"/>s representing a planar
-    /// subdivision that models a triangulation. 
+    /// subdivision that models a triangulation.
     /// The subdivision is constructed using the
-    /// quadedge algebra defined in the classs <see cref="QuadEdge"/>. 
+    /// quadedge algebra defined in the classs <see cref="QuadEdge"/>.
     /// All metric calculations
     /// are done in the <see cref="Vertex"/> class.
     /// In addition to a triangulation, subdivisions
@@ -80,7 +81,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             _edgeCoincidenceTolerance = tolerance / EDGE_COINCIDENCE_TOL_FACTOR;
 
             CreateFrame(env);
-		
+
             _startingEdge = InitSubdiv();
             _locator = new LastFoundQuadEdgeLocator(this);
         }
@@ -90,23 +91,26 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             double deltaX = env.Width;
             double deltaY = env.Height;
             double offset;
-            if (deltaX > deltaY) {
+            if (deltaX > deltaY)
+            {
                 offset = deltaX * 10.0;
-            } else {
+            }
+            else
+            {
                 offset = deltaY * 10.0;
             }
 
             _frameVertex[0] = new Vertex((env.MaxX + env.MinX) / 2.0, env
-		            .MaxY
-		            + offset);
+                    .MaxY
+                    + offset);
             _frameVertex[1] = new Vertex(env.MinX - offset, env.MinY - offset);
             _frameVertex[2] = new Vertex(env.MaxX + offset, env.MinY - offset);
 
             _frameEnv = new Envelope(_frameVertex[0].Coordinate, _frameVertex[1]
-		            .Coordinate);
+                    .Coordinate);
             _frameEnv.ExpandToInclude(_frameVertex[2].Coordinate);
         }
-	
+
         private QuadEdge InitSubdiv()
         {
             // build initial subdivision from frame
@@ -118,7 +122,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             QuadEdge.Splice(ec.Sym, ea);
             return ea;
         }
-	
+
         /// <summary>
         /// Gets the vertex-equality tolerance value
         /// used in this subdivision
@@ -219,8 +223,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /// <summary>
-        /// Locates an edge of a triangle which contains a location 
-        /// specified by a Vertex v. 
+        /// Locates an edge of a triangle which contains a location
+        /// specified by a Vertex v.
         /// The edge returned has the
         /// property that either v is on e, or e is an edge of a triangle containing v.
         /// The search starts from startEdge amd proceeds on the general direction of v.
@@ -243,7 +247,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
             QuadEdge e = startEdge;
 
-            while (true) {
+            while (true)
+            {
                 iter++;
 
                 /*
@@ -251,11 +256,12 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                  * invalid subdivision. So just fail completely. (An alternative would be
                  * to perform an exhaustive search for the containing triangle, but this
                  * would mask errors in the subdivision topology)
-                 * 
+                 *
                  * This can also happen if two vertices are located very close together,
                  * since the orientation predicates may experience precision failures.
                  */
-                if (iter > maxIter) {
+                if (iter > maxIter)
+                {
                     throw new LocateFailureException(e.ToLineSegment());
                     // String msg = "Locate failed to converge (at edge: " + e + ").
                     // Possible causes include invalid Subdivision topology or very close
@@ -264,21 +270,23 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                     // dumpTriangles();
                 }
 
-                if ((v.Equals(e.Orig)) || (v.Equals(e.Dest))) {
+                if ((v.Equals(e.Orig)) || (v.Equals(e.Dest)))
+                {
                     break;
                 }
                 if (v.RightOf(e))
                 {
                     e = e.Sym;
-                } 
-                else if (!v.RightOf(e.ONext)) 
+                }
+                else if (!v.RightOf(e.ONext))
                 {
                     e = e.ONext;
-                } 
-                else if (!v.RightOf(e.DPrev)) 
+                }
+                else if (!v.RightOf(e.DPrev))
                 {
                     e = e.DPrev;
-                } else 
+                }
+                else
                 {
                     // on edge or in triangle containing edge
                     break;
@@ -289,13 +297,13 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /// <summary>
-        /// Finds a quadedge of a triangle containing a location 
+        /// Finds a quadedge of a triangle containing a location
         /// specified by a <see cref="Vertex"/>, if one exists.
         /// </summary>
         /// <param name="v">the vertex to locate</param>
         /// <returns>a quadedge on the edge of a triangle which touches or contains the location,
         /// or null if no such triangle exists
-        /// </returns> 
+        /// </returns>
         public QuadEdge Locate(Vertex v)
         {
             return _locator.Locate(v);
@@ -309,7 +317,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>a quadedge on the edge of a triangle which touches or contains the location,
         /// or null if no such triangle exists
         /// </returns>
-        public QuadEdge Locate(Coordinate p) {
+        public QuadEdge Locate(Coordinate p)
+        {
             return _locator.Locate(new Vertex(p));
         }
 
@@ -322,7 +331,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>the edge joining the coordinates, if present,
         /// or null if no such edge exists
         /// </returns>
-        public QuadEdge Locate(Coordinate p0, Coordinate p1) {
+        public QuadEdge Locate(Coordinate p0, Coordinate p1)
+        {
             // find an edge containing one of the points
             QuadEdge e = _locator.Locate(new Vertex(p0));
             if (e == null)
@@ -334,7 +344,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 baseQE = e.Sym;
             // check all edges around origin of base edge
             QuadEdge locEdge = baseQE;
-            do {
+            do
+            {
                 if (locEdge.Dest.Coordinate.Equals2D(p1))
                     return locEdge;
                 locEdge = locEdge.ONext;
@@ -364,7 +375,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             QuadEdge e = Locate(v);
 
-            if ((v.Equals(e.Orig, _tolerance)) || (v.Equals(e.Dest, _tolerance))) {
+            if ((v.Equals(e.Orig, _tolerance)) || (v.Equals(e.Dest, _tolerance)))
+            {
                 return e; // point already in subdivision.
             }
 
@@ -374,7 +386,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             QuadEdge baseQE = MakeEdge(e.Orig, v);
             QuadEdge.Splice(baseQE, e);
             QuadEdge startEdge = baseQE;
-            do {
+            do
+            {
                 baseQE = Connect(e, baseQE.Sym);
                 e = baseQE.OPrev;
             } while (e.LNext != startEdge);
@@ -465,7 +478,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>true if the vertex is a endpoint of the edge</returns>
         public bool IsVertexOfEdge(QuadEdge e, Vertex v)
         {
-            if ((v.Equals(e.Orig, _tolerance)) || (v.Equals(e.Dest, _tolerance))) {
+            if ((v.Equals(e.Orig, _tolerance)) || (v.Equals(e.Dest, _tolerance)))
+            {
                 return true;
             }
             return false;
@@ -478,25 +492,31 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="includeFrame">true if the frame vertices should be included</param>
         /// <returns>a collection of the subdivision vertices</returns>
         /// <see cref="GetVertexUniqueEdges"/>
-        public IEnumerable<Vertex> GetVertices(bool includeFrame) 
+        public IEnumerable<Vertex> GetVertices(bool includeFrame)
         {
-            var vertices = new HashSet<Vertex>();
-            foreach(var qe in _quadEdges)
+            var vertices =
+#if !WINDOWS_PHONE
+                new HashSet<Vertex>();
+#else
+ new Set<Vertex>();
+#endif
+
+            foreach (var qe in _quadEdges)
             {
                 Vertex v = qe.Orig;
                 //System.out.println(v);
-                if (includeFrame || ! IsFrameVertex(v))
-                vertices.Add(v);
-      
+                if (includeFrame || !IsFrameVertex(v))
+                    vertices.Add(v);
+
                 /*
                 * Inspect the sym edge as well, since it is
-                * possible that a vertex is only at the 
+                * possible that a vertex is only at the
                 * dest of all tracked quadedges.
                 */
                 Vertex vd = qe.Dest;
                 //System.out.println(vd);
-                if (includeFrame || ! IsFrameVertex(vd))
-                vertices.Add(vd);
+                if (includeFrame || !IsFrameVertex(vd))
+                    vertices.Add(vd);
             }
             return vertices;
         }
@@ -504,46 +524,55 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <summary>
         /// Gets a collection of <see cref="QuadEdge"/>s whose origin
         /// vertices are a unique set which includes
-        /// all vertices in the subdivision. 
+        /// all vertices in the subdivision.
         /// The frame vertices can be included if required.
         /// </summary>
         /// <remarks>
-        /// This is useful for algorithms which require traversing the 
+        /// This is useful for algorithms which require traversing the
         /// subdivision starting at all vertices.
         /// Returning a quadedge for each vertex
-        /// is more efficient than 
+        /// is more efficient than
         /// the alternative of finding the actual vertices
-        /// using <see cref="GetVertices"/> and then locating 
+        /// using <see cref="GetVertices"/> and then locating
         /// quadedges attached to them.
         /// </remarks>
         /// <param name="includeFrame">true if the frame vertices should be included</param>
         /// <returns>a collection of QuadEdge with the vertices of the subdivision as their origins</returns>
-        public IList<QuadEdge> GetVertexUniqueEdges(bool includeFrame) 
+        public IList<QuadEdge> GetVertexUniqueEdges(bool includeFrame)
         {
             var edges = new List<QuadEdge>();
-            var visitedVertices = new HashSet<Vertex>();
-            foreach(var qe in _quadEdges)
+            var visitedVertices =
+#if !WINDOWS_PHONE
+                new HashSet<Vertex>();
+#else
+ new Set<Vertex>();
+#endif
+            foreach (var qe in _quadEdges)
             {
                 Vertex v = qe.Orig;
                 //System.out.println(v);
-                if (! visitedVertices.Contains(v)) {
+                if (!visitedVertices.Contains(v))
+                {
                     visitedVertices.Add(v);
-                    if (includeFrame || ! IsFrameVertex(v)) {
+                    if (includeFrame || !IsFrameVertex(v))
+                    {
                         edges.Add(qe);
                     }
                 }
-      
+
                 /*
                 * Inspect the sym edge as well, since it is
-                * possible that a vertex is only at the 
+                * possible that a vertex is only at the
                 * dest of all tracked quadedges.
                 */
                 QuadEdge qd = qe.Sym;
                 Vertex vd = qd.Orig;
                 //System.out.println(vd);
-                if (! visitedVertices.Contains(vd)) {
+                if (!visitedVertices.Contains(vd))
+                {
                     visitedVertices.Add(vd);
-                    if (includeFrame || ! IsFrameVertex(vd)) {
+                    if (includeFrame || !IsFrameVertex(vd))
+                    {
                         edges.Add(qd);
                     }
                 }
@@ -552,9 +581,9 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /// <summary>
-        /// Gets all primary quadedges in the subdivision. 
+        /// Gets all primary quadedges in the subdivision.
         /// A primary edge is a <see cref="QuadEdge"/>
-        /// which occupies the 0'th position in its array of associated quadedges. 
+        /// which occupies the 0'th position in its array of associated quadedges.
         /// These provide the unique geometric edges of the triangulation.
         /// </summary>
         /// <param name="includeFrame">true if the frame edges are to be included</param>
@@ -566,46 +595,54 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             var edges = new List<QuadEdge>();
             var edgeStack = new Stack<QuadEdge>();
             edgeStack.Push(_startingEdge);
-		
-            var visitedEdges = new HashSet<QuadEdge>();
 
-            while (edgeStack.Count > 0) {
+            var visitedEdges =
+#if !WINDOWS_PHONE
+                new HashSet<QuadEdge>();
+#else
+ new Set<QuadEdge>();
+#endif
+
+            while (edgeStack.Count > 0)
+            {
                 var edge = edgeStack.Pop();
-                if (! visitedEdges.Contains(edge)) {
+                if (!visitedEdges.Contains(edge))
+                {
                     QuadEdge priQE = edge.GetPrimary();
 
-                    if (includeFrame || ! IsFrameEdge(priQE))
+                    if (includeFrame || !IsFrameEdge(priQE))
                         edges.Add(priQE);
 
                     edgeStack.Push(edge.ONext);
                     edgeStack.Push(edge.Sym.ONext);
-				
+
                     visitedEdges.Add(edge);
                     visitedEdges.Add(edge.Sym);
                 }
             }
             return edges;
         }
-  
+
         /// <summary>
-        /// A TriangleVisitor which computes and sets the 
-        /// circumcentre as the origin of the dual 
+        /// A TriangleVisitor which computes and sets the
+        /// circumcentre as the origin of the dual
         /// edges originating in each triangle.
         /// </summary>
         /// <author>mbdavis</author>
-        private class TriangleCircumcentreVisitor : ITriangleVisitor 
+        private class TriangleCircumcentreVisitor : ITriangleVisitor
         {
-            public void Visit(QuadEdge[] triEdges) 
+            public void Visit(QuadEdge[] triEdges)
             {
                 Coordinate a = triEdges[0].Orig.Coordinate;
                 Coordinate b = triEdges[1].Orig.Coordinate;
                 Coordinate c = triEdges[2].Orig.Coordinate;
-			
+
                 // TODO: choose the most accurate circumcentre based on the edges
                 Coordinate cc = Triangle.Circumcentre(a, b, c);
                 Vertex ccVertex = new Vertex(cc);
                 // save the circumcentre as the origin for the dual edges originating in this triangle
-                for (int i = 0; i < 3; i++) {
+                for (int i = 0; i < 3; i++)
+                {
                     triEdges[i].Rot.Orig = ccVertex;
                 }
             }
@@ -625,11 +662,17 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             var edgeStack = new Stack<QuadEdge>();
             edgeStack.Push(_startingEdge);
 
-            var visitedEdges = new HashSet<QuadEdge>();
-		
-            while (edgeStack.Count > 0) {
+            var visitedEdges =
+#if !WINDOWS_PHONE
+                new HashSet<QuadEdge>();
+#else
+ new Set<QuadEdge>();
+#endif
+
+            while (edgeStack.Count > 0)
+            {
                 var edge = edgeStack.Pop();
-                if (! visitedEdges.Contains(edge))
+                if (!visitedEdges.Contains(edge))
                 {
                     QuadEdge[] triEdges = FetchTriangleToVisit(edge, edgeStack,
                                                                 includeFrame, visitedEdges);
@@ -658,26 +701,31 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// or null if the triangle should not be visited (for instance, if it is
         ///         outer)
         /// </returns>
-        private QuadEdge[] FetchTriangleToVisit(QuadEdge edge, Stack<QuadEdge> edgeStack,
-                                                bool includeFrame, HashSet<QuadEdge> visitedEdges)
+        private QuadEdge[] FetchTriangleToVisit(QuadEdge edge, Stack<QuadEdge> edgeStack, bool includeFrame,
+#if !WINDOWS_PHONE
+            HashSet<QuadEdge> visitedEdges)
+#else
+ Set<QuadEdge> visitedEdges)
+#endif
         {
             QuadEdge curr = edge;
             int edgeCount = 0;
             bool isFrame = false;
-            do {
+            do
+            {
                 _triEdges[edgeCount] = curr;
 
                 if (IsFrameEdge(curr))
                     isFrame = true;
-			
+
                 // push sym edges to visit next
                 QuadEdge sym = curr.Sym;
-                if (! visitedEdges.Contains(sym))
+                if (!visitedEdges.Contains(sym))
                     edgeStack.Push(sym);
-			
+
                 // mark this edge as visited
                 visitedEdges.Add(curr);
-			
+
                 edgeCount++;
                 curr = curr.LNext;
             } while (curr != edge);
@@ -710,7 +758,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 _triList.Add((QuadEdge[])triEdges.Clone());
             }
 
-            public IList<QuadEdge[]> GetTriangleEdges() {
+            public IList<QuadEdge[]> GetTriangleEdges()
+            {
                 return _triList;
             }
         }
@@ -849,7 +898,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// </summary>
         /// <remarks>
         /// The userData of each polygon is set to be the <see cref="Coordinate" />
-        /// of the cell site.  This allows easily associating external 
+        /// of the cell site.  This allows easily associating external
         /// data associated with the sites to the cells.
         /// </remarks>
         /// <param name="geomFact">a geometry factory</param>
@@ -857,16 +906,16 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public IGeometryCollection GetVoronoiDiagram(IGeometryFactory geomFact)
         {
             var vorCells = GetVoronoiCellPolygons(geomFact);
-            return geomFact.CreateGeometryCollection(GeometryFactory.ToGeometryArray(vorCells));   
+            return geomFact.CreateGeometryCollection(GeometryFactory.ToGeometryArray(vorCells));
         }
-  
+
         /// <summary>
-        /// Gets a List of <see cref="IPolygon"/>s for the Voronoi cells 
+        /// Gets a List of <see cref="IPolygon"/>s for the Voronoi cells
         /// of this triangulation.
         /// </summary>
         /// <remarks>
         /// The UserData of each polygon is set to be the <see cref="Coordinate" />
-        /// of the cell site.  This allows easily associating external 
+        /// of the cell site.  This allows easily associating external
         /// data associated with the sites to the cells.
         /// </remarks>
         /// <param name="geomFact">a geometry factory</param>
@@ -875,10 +924,10 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             /*
              * Compute circumcentres of triangles as vertices for dual edges.
-             * Precomputing the circumcentres is more efficient, 
+             * Precomputing the circumcentres is more efficient,
              * and more importantly ensures that the computed centres
              * are consistent across the Voronoi cells.
-             */ 
+             */
             VisitTriangles(new TriangleCircumcentreVisitor(), true);
 
             var cells = new List<IGeometry>();
@@ -889,14 +938,14 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             }
             return cells;
         }
-  
+
         /// <summary>
         /// Gets the Voronoi cell around a site specified
         /// by the origin of a QuadEdge.
         /// </summary>
         /// <remarks>
         /// The userData of the polygon is set to be the <see cref="Coordinate" />
-        /// of the site.  This allows attaching external 
+        /// of the site.  This allows attaching external
         /// data associated with the site to this cell polygon.
         /// </remarks>
         /// <param name="qe">a quadedge originating at the cell site</param>
@@ -907,30 +956,30 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             var cellPts = new List<Coordinate>();
             QuadEdge startQE = qe;
 
-            do {
+            do
+            {
                 // Coordinate cc = circumcentre(qe);
                 // use previously computed circumcentre
                 Coordinate cc = qe.Rot.Orig.Coordinate;
                 cellPts.Add(cc);
-      
+
                 // move to next triangle CW around vertex
                 qe = qe.OPrev;
             } while (qe != startQE);
-    
+
             var coordList = new CoordinateList();
             coordList.AddAll(cellPts, false);
             coordList.CloseRing();
 
-            if (coordList.Count < 4) 
+            if (coordList.Count < 4)
             {
                 Console.WriteLine(coordList);
-                coordList.Add(coordList[coordList.Count-1], true);
+                coordList.Add(coordList[coordList.Count - 1], true);
             }
-    
 
             Coordinate[] pts = coordList.ToCoordinateArray();
             IPolygon cellPoly = geomFact.CreatePolygon(geomFact.CreateLinearRing(pts), null);
-    
+
             Vertex v = startQE.Orig;
             cellPoly.UserData = v.Coordinate;
             return cellPoly;

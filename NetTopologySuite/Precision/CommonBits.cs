@@ -1,9 +1,9 @@
+using GeoAPI;
 using NetTopologySuite.Utilities;
-using BitConverter=System.BitConverter;
 
 namespace NetTopologySuite.Precision
 {
-    /// <summary> 
+    /// <summary>
     /// Determines the maximum number of common most-significant
     /// bits in the mantissa of one or numbers.
     /// Can be used to compute the double-precision number which
@@ -78,17 +78,22 @@ namespace NetTopologySuite.Precision
 
         /*
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public CommonBits() { }
         */
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="num"></param>
         public void Add(double num)
         {
-            long numBits = BitConverter.DoubleToInt64Bits(num);            
+#if !WINDOWS_PHONE
+            long numBits = BitConverter.DoubleToInt64Bits(num);
+#else
+            long numBits = num.DoubleToInt64Bits();
+#endif
             if (_isFirst)
             {
                 _commonBits = numBits;
@@ -102,19 +107,23 @@ namespace NetTopologySuite.Precision
             {
                 _commonBits = 0;
                 return;
-            }            
+            }
             _commonMantissaBitsCount = NumCommonMostSigMantissaBits(_commonBits, numBits);
             _commonBits = ZeroLowerBits(_commonBits, 64 - (12 + _commonMantissaBitsCount));
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public double Common
         {
             get
             {
+#if !WINDOWS_PHONE
                 return BitConverter.Int64BitsToDouble(_commonBits);
+#else
+                return _commonBits.Int64ToDoubleBits();
+#endif
             }
         }
 
@@ -125,8 +134,12 @@ namespace NetTopologySuite.Precision
         /// <returns></returns>
         public string ToString(long bits)
         {
+#if !WINDOWS_PHONE
             double x = BitConverter.Int64BitsToDouble(bits);
-            string numStr = HexConverter.ConvertAny2Any(bits.ToString(), 10, 2);            
+#else
+            double x = bits.Int64ToDoubleBits();
+#endif
+            string numStr = HexConverter.ConvertAny2Any(bits.ToString(), 10, 2);
             string padStr = "0000000000000000000000000000000000000000000000000000000000000000" + numStr;
             string bitStr = padStr.Substring(padStr.Length - 64);
             string str = bitStr.Substring(0, 1) + "  " + bitStr.Substring(1, 12) + "(exp) "

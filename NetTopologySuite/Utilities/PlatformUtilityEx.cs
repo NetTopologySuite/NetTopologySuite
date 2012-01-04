@@ -1,15 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+
 #if SILVERLIGHT
-using NetTopologySuite.Encodings;
+
 #endif
+
 namespace NetTopologySuite.Utilities
 {
     public static class PlatformUtilityEx
     {
-#if SILVERLIGHT
+#if SILVERLIGHT && !WINDOWS_PHONE
 
         private static IEncodingRegistry _registry = new EncodingRegistry();
 
@@ -39,6 +40,7 @@ namespace NetTopologySuite.Utilities
         }
 
 #else
+
         public static ICollection CastPlatform(this ICollection self)
         {
             return self;
@@ -54,6 +56,8 @@ namespace NetTopologySuite.Utilities
             return self;
         }
 
+#if !WINDOWS_PHONE
+
         public static Encoding GetDefaultEncoding()
         {
             return Encoding.Default;
@@ -63,7 +67,15 @@ namespace NetTopologySuite.Utilities
         {
             return new ASCIIEncoding();
         }
+#else
+
+        public static Encoding GetDefaultEncoding()
+        {
+            return Encoding.UTF8;
+        }
+
 #endif
 
+#endif
     }
 }
