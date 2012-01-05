@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 
 #if SILVERLIGHT
+#if !WINDOWS_PHONE
+
+using NetTopologySuite.Encodings;
+
+#endif
+
+using System.Linq;
 
 #endif
 
@@ -12,7 +19,7 @@ namespace NetTopologySuite.Utilities
     {
 #if SILVERLIGHT && !WINDOWS_PHONE
 
-        private static IEncodingRegistry _registry = new EncodingRegistry();
+        private static readonly IEncodingRegistry Registry = new EncodingRegistry();
 
         public static IEnumerable<object> CastPlatform(this ICollection self)
         {
@@ -36,7 +43,7 @@ namespace NetTopologySuite.Utilities
 
         public static Encoding GetASCIIEncoding()
         {
-            return _registry.ASCII;
+            return Registry.ASCII;
         }
 
 #else

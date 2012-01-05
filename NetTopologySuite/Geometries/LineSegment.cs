@@ -1,8 +1,15 @@
 using System;
 using System.Text;
-using GeoAPI;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+
+#if !WINDOWS_PHONE
+using BitConverter = System.BitConverter;
+#else
+
+using BitConverter = GeoAPI.BitConverterEx;
+
+#endif
 
 namespace NetTopologySuite.Geometries
 {
@@ -659,7 +666,6 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public override int GetHashCode()
         {
-#if !WINDOWS_PHONE
             long bits0 = BitConverter.DoubleToInt64Bits(_p0.X);
             bits0 ^= BitConverter.DoubleToInt64Bits(_p0.Y) * 31;
             int hash0 = (((int)bits0) ^ ((int)(bits0 >> 32)));
@@ -672,19 +678,6 @@ namespace NetTopologySuite.Geometries
             return hash0 ^ hash1;
 
             //return base.GetHashCode();
-#else
-            long bits0 = _p0.X.DoubleToInt64Bits();
-            bits0 ^= _p0.Y.DoubleToInt64Bits() * 31;
-            int hash0 = (((int)bits0) ^ ((int)(bits0 >> 32)));
-
-            long bits1 = _p1.X.DoubleToInt64Bits();
-            bits1 ^= _p1.Y.DoubleToInt64Bits() * 31;
-            int hash1 = (((int)bits1) ^ ((int)(bits1 >> 32)));
-
-            // XOR is supposed to be a good way to combine hashcodes
-            return hash0 ^ hash1;
-
-#endif
         }
     }
 }

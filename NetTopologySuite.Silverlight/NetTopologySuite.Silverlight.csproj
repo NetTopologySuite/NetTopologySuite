@@ -637,19 +637,19 @@
       <Link>LinearReferencing\LocationIndexOfPoint.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Mathematics\DD.cs">
-      <Link>Math\DD.cs</Link>
+      <Link>Mathematics\DD.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Mathematics\MathUtil.cs">
-      <Link>Math\MathUtil.cs</Link>
+      <Link>Mathematics\MathUtil.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Mathematics\Matrix.cs">
-      <Link>Math\Matrix.cs</Link>
+      <Link>Mathematics\Matrix.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Mathematics\Vector2D.cs">
-      <Link>Math\Vector2D.cs</Link>
+      <Link>Mathematics\Vector2D.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Mathematics\VectorMath.cs">
-      <Link>Math\VectorMath.cs</Link>
+      <Link>Mathematics\VectorMath.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Noding\BasicSegmentString.cs">
       <Link>Noding\BasicSegmentString.cs</Link>

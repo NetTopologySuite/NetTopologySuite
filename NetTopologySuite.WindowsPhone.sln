@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010 Express for Windows Phone
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections.WindowsPhone", "PowerCollections\PowerCollections.WP\PowerCollections.WindowsPhone.csproj", "{D4C28EC9-4FAB-43AA-B063-96DCBAF44A30}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI.WindowsPhone", "GeoAPI\GeoAPI.WindowsPhone\GeoAPI.WindowsPhone.csproj", "{9924F9BF-24A6-4C73-AB60-FAEE784F4327}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.WindowsPhone", "WindowsPhone\NetTopologySuite\NetTopologySuite.WindowsPhone.csproj", "{56C111DE-CDB3-4228-8322-DFC9121175E6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D4C28EC9-4FAB-43AA-B063-96DCBAF44A30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4C28EC9-4FAB-43AA-B063-96DCBAF44A30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4C28EC9-4FAB-43AA-B063-96DCBAF44A30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4C28EC9-4FAB-43AA-B063-96DCBAF44A30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9924F9BF-24A6-4C73-AB60-FAEE784F4327}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9924F9BF-24A6-4C73-AB60-FAEE784F4327}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9924F9BF-24A6-4C73-AB60-FAEE784F4327}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9924F9BF-24A6-4C73-AB60-FAEE784F4327}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56C111DE-CDB3-4228-8322-DFC9121175E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56C111DE-CDB3-4228-8322-DFC9121175E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56C111DE-CDB3-4228-8322-DFC9121175E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56C111DE-CDB3-4228-8322-DFC9121175E6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

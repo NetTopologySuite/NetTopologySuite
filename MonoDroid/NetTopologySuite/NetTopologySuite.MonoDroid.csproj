@@ -1,23 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.20506</ProductVersion>
+    <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{56C111DE-CDB3-4228-8322-DFC9121175E6}</ProjectGuid>
-    <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <ProjectGuid>{11A3E3C2-CA59-4B5A-82A5-6BDF267540F9}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetTopologySuite</RootNamespace>
-    <AssemblyName>NetTopologySuite.WindowsPhone</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
-    <TargetFrameworkProfile>WindowsPhone</TargetFrameworkProfile>
-    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
-    <SilverlightApplication>false</SilverlightApplication>
-    <ValidateXaml>true</ValidateXaml>
-    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <RootNamespace>NetTopologySuite.MonoDroid</RootNamespace>
+    <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
+    <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
+    <AssemblyName>NetTopologySuite.MonoDroid</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\NetTopologySuite\nts.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
@@ -25,31 +19,55 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(SolutionDir)$(Configuration)\WP\$(Platform)\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <OutputPath>..\..\Debug\MonoDroid\AnyCPU</OutputPath>
+    <DefineConstants>DEBUG;MONODROID</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <RunFxCop>false</RunFxCop>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <ConsolePause>false</ConsolePause>
+    <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>$(SolutionDir)$(Configuration)\WP\$(Platform)\</OutputPath>
-    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Release\MonoDroid\AnyCPU</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>$(OutputPath)NetTopologySuite.XML</DocumentationFile>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <ConsolePause>false</ConsolePause>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <DefineConstants>MONODROID</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="system" />
+    <Reference Include="System" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Microsoft SDKs\Silverlight\v4.0\Libraries\Client\System.Xml.Linq.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="Mono.Android" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <ItemGroup>
+    <None Include="..\..\NetTopologySuite\License.txt">
+      <Link>License.txt</Link>
+    </None>
+    <None Include="..\..\NetTopologySuite\nts.snk">
+      <Link>nts.snk</Link>
+    </None>
+    <None Include="..\..\NetTopologySuite\ReadMe.txt">
+      <Link>ReadMe.txt</Link>
+    </None>
+    <None Include="..\..\NetTopologySuite\Precision\DocFiles\minClearance.png">
+      <Link>Precision\DocFiles\minClearance.png</Link>
+    </None>
+    <None Include="..\..\NetTopologySuite\Triangulate\QuadEdge\QuadEdgeSummary.xml">
+      <Link>Triangulate\QuadEdge\QuadEdgeSummary.xml</Link>
+    </None>
+    <None Include="..\..\NetTopologySuite\Utilities\RToolsUtil\Rtools.Util.License.txt">
+      <Link>Utilities\RToolsUtil\Rtools.Util.License.txt</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\NetTopologySuite\NtsGeometryServices.cs">
+      <Link>NtsGeometryServices.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\Algorithm\Angle.cs">
       <Link>Algorithm\Angle.cs</Link>
     </Compile>
@@ -74,15 +92,6 @@
     <Compile Include="..\..\NetTopologySuite\Algorithm\ConvexHull.cs">
       <Link>Algorithm\ConvexHull.cs</Link>
     </Compile>
-    <Compile Include="..\..\NetTopologySuite\Algorithm\Distance\DiscreteHausdorffDistance.cs">
-      <Link>Algorithm\Distance\DiscreteHausdorffDistance.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Algorithm\Distance\DistanceToPoint.cs">
-      <Link>Algorithm\Distance\DistanceToPoint.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Algorithm\Distance\PointPairDistance.cs">
-      <Link>Algorithm\Distance\PointPairDistance.cs</Link>
-    </Compile>
     <Compile Include="..\..\NetTopologySuite\Algorithm\HCoordinate.cs">
       <Link>Algorithm\HCoordinate.cs</Link>
     </Compile>
@@ -103,27 +112,6 @@
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Algorithm\LineIntersector.cs">
       <Link>Algorithm\LineIntersector.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Algorithm\Locate\IndexedPointInAreaLocator.cs">
-      <Link>Algorithm\Locate\IndexedPointInAreaLocator.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Algorithm\Locate\IPointOnGeometryLocator.cs">
-      <Link>Algorithm\Locate\IPointOnGeometryLocator.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Algorithm\Locate\SimplePointInAreaLocator.cs">
-      <Link>Algorithm\Locate\SimplePointInAreaLocator.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Algorithm\Match\AreaSimilarityMeasure.cs">
-      <Link>Algorithm\Match\AreaSimilarityMeasure.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Algorithm\Match\HausdorffSimilarityMeasure.cs">
-      <Link>Algorithm\Match\HausdorffSimilarityMeasure.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Algorithm\Match\ISimilarityMeasure.cs">
-      <Link>Algorithm\Match\ISimilarityMeasure.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Algorithm\Match\SimilarityMeasureCombiner.cs">
-      <Link>Algorithm\Match\SimilarityMeasureCombiner.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Algorithm\MCPointInRing.cs">
       <Link>Algorithm\MCPointInRing.cs</Link>
@@ -160,6 +148,36 @@
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Algorithm\SIRtreePointInRing.cs">
       <Link>Algorithm\SIRtreePointInRing.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Distance\DiscreteHausdorffDistance.cs">
+      <Link>Algorithm\Distance\DiscreteHausdorffDistance.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Distance\DistanceToPoint.cs">
+      <Link>Algorithm\Distance\DistanceToPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Distance\PointPairDistance.cs">
+      <Link>Algorithm\Distance\PointPairDistance.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Locate\IndexedPointInAreaLocator.cs">
+      <Link>Algorithm\Locate\IndexedPointInAreaLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Locate\IPointOnGeometryLocator.cs">
+      <Link>Algorithm\Locate\IPointOnGeometryLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Locate\SimplePointInAreaLocator.cs">
+      <Link>Algorithm\Locate\SimplePointInAreaLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Match\AreaSimilarityMeasure.cs">
+      <Link>Algorithm\Match\AreaSimilarityMeasure.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Match\HausdorffSimilarityMeasure.cs">
+      <Link>Algorithm\Match\HausdorffSimilarityMeasure.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Match\ISimilarityMeasure.cs">
+      <Link>Algorithm\Match\ISimilarityMeasure.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Match\SimilarityMeasureCombiner.cs">
+      <Link>Algorithm\Match\SimilarityMeasureCombiner.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\CoordinateSystems\Transformations\GeometryTransform.cs">
       <Link>CoordinateSystems\Transformations\GeometryTransform.cs</Link>
@@ -209,24 +227,6 @@
     <Compile Include="..\..\NetTopologySuite\Geometries\GeometryFactory.cs">
       <Link>Geometries\GeometryFactory.cs</Link>
     </Compile>
-    <Compile Include="..\..\NetTopologySuite\Geometries\Implementation\CoordinateArraySequence.cs">
-      <Link>Geometries\Implementation\CoordinateArraySequence.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Geometries\Implementation\CoordinateArraySequenceFactory.cs">
-      <Link>Geometries\Implementation\CoordinateArraySequenceFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Geometries\Implementation\DotSpatialAffineCoordinateSequence.cs">
-      <Link>Geometries\Implementation\DotSpatialAffineCoordinateSequence.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Geometries\Implementation\DotSpatialAffineCoordinateSequenceFactory.cs">
-      <Link>Geometries\Implementation\DotSpatialAffineCoordinateSequenceFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Geometries\Implementation\PackedCoordinateSequence.cs">
-      <Link>Geometries\Implementation\PackedCoordinateSequence.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Geometries\Implementation\PackedCoordinateSequenceFactory.cs">
-      <Link>Geometries\Implementation\PackedCoordinateSequenceFactory.cs</Link>
-    </Compile>
     <Compile Include="..\..\NetTopologySuite\Geometries\LinearRing.cs">
       <Link>Geometries\LinearRing.cs</Link>
     </Compile>
@@ -256,6 +256,30 @@
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Geometries\PrecisionModel.cs">
       <Link>Geometries\PrecisionModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\TopologyException.cs">
+      <Link>Geometries\TopologyException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Triangle.cs">
+      <Link>Geometries\Triangle.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Implementation\CoordinateArraySequence.cs">
+      <Link>Geometries\Implementation\CoordinateArraySequence.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Implementation\CoordinateArraySequenceFactory.cs">
+      <Link>Geometries\Implementation\CoordinateArraySequenceFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Implementation\DotSpatialAffineCoordinateSequence.cs">
+      <Link>Geometries\Implementation\DotSpatialAffineCoordinateSequence.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Implementation\DotSpatialAffineCoordinateSequenceFactory.cs">
+      <Link>Geometries\Implementation\DotSpatialAffineCoordinateSequenceFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Implementation\PackedCoordinateSequence.cs">
+      <Link>Geometries\Implementation\PackedCoordinateSequence.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Implementation\PackedCoordinateSequenceFactory.cs">
+      <Link>Geometries\Implementation\PackedCoordinateSequenceFactory.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Geometries\Prepared\AbstractPreparedPolygonContains.cs">
       <Link>Geometries\Prepared\AbstractPreparedPolygonContains.cs</Link>
@@ -292,12 +316,6 @@
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Geometries\Prepared\PreparedPolygonPredicate.cs">
       <Link>Geometries\Prepared\PreparedPolygonPredicate.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Geometries\TopologyException.cs">
-      <Link>Geometries\TopologyException.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Geometries\Triangle.cs">
-      <Link>Geometries\Triangle.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Geometries\Utilities\AffineTransformation.cs">
       <Link>Geometries\Utilities\AffineTransformation.cs</Link>
@@ -392,6 +410,30 @@
     <Compile Include="..\..\NetTopologySuite\GeometriesGraph\GraphComponent.cs">
       <Link>GeometriesGraph\GraphComponent.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Label.cs">
+      <Link>GeometriesGraph\Label.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Node.cs">
+      <Link>GeometriesGraph\Node.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\NodeFactory.cs">
+      <Link>GeometriesGraph\NodeFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\NodeMap.cs">
+      <Link>GeometriesGraph\NodeMap.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\PlanarGraph.cs">
+      <Link>GeometriesGraph\PlanarGraph.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Position.cs">
+      <Link>GeometriesGraph\Position.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\QuadrantOp.cs">
+      <Link>GeometriesGraph\QuadrantOp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\TopologyLocation.cs">
+      <Link>GeometriesGraph\TopologyLocation.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Index\EdgeSetIntersector.cs">
       <Link>GeometriesGraph\Index\EdgeSetIntersector.cs</Link>
     </Compile>
@@ -422,32 +464,17 @@
     <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Index\SweepLineSegment.cs">
       <Link>GeometriesGraph\Index\SweepLineSegment.cs</Link>
     </Compile>
-    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Label.cs">
-      <Link>GeometriesGraph\Label.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Node.cs">
-      <Link>GeometriesGraph\Node.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\NodeFactory.cs">
-      <Link>GeometriesGraph\NodeFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\NodeMap.cs">
-      <Link>GeometriesGraph\NodeMap.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\PlanarGraph.cs">
-      <Link>GeometriesGraph\PlanarGraph.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Position.cs">
-      <Link>GeometriesGraph\Position.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\QuadrantOp.cs">
-      <Link>GeometriesGraph\QuadrantOp.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\TopologyLocation.cs">
-      <Link>GeometriesGraph\TopologyLocation.cs</Link>
-    </Compile>
     <Compile Include="..\..\NetTopologySuite\Index\ArrayListVisitor.cs">
       <Link>Index\ArrayListVisitor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\IIndexVisitor.cs">
+      <Link>Index\IIndexVisitor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\IItemVisitor.cs">
+      <Link>Index\IItemVisitor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\ISpatialIndex.cs">
+      <Link>Index\ISpatialIndex.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Index\Bintree\Bintree.cs">
       <Link>Index\Bintree\Bintree.cs</Link>
@@ -479,12 +506,6 @@
     <Compile Include="..\..\NetTopologySuite\Index\Chain\MonotoneChainSelectAction.cs">
       <Link>Index\Chain\MonotoneChainSelectAction.cs</Link>
     </Compile>
-    <Compile Include="..\..\NetTopologySuite\Index\IIndexVisitor.cs">
-      <Link>Index\IIndexVisitor.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Index\IItemVisitor.cs">
-      <Link>Index\IItemVisitor.cs</Link>
-    </Compile>
     <Compile Include="..\..\NetTopologySuite\Index\IntervalRTree\IntervalRTreeBranchNode.cs">
       <Link>Index\IntervalRTree\IntervalRTreeBranchNode.cs</Link>
     </Compile>
@@ -496,9 +517,6 @@
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Index\IntervalRTree\SortedPackedIntervalRTree.cs">
       <Link>Index\IntervalRTree\SortedPackedIntervalRTree.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Index\ISpatialIndex.cs">
-      <Link>Index\ISpatialIndex.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Index\KdTree\KdNode.cs">
       <Link>Index\KdTree\KdNode.cs</Link>
@@ -575,15 +593,6 @@
     <Compile Include="..\..\NetTopologySuite\IO\BEBinaryWriter.cs">
       <Link>IO\BEBinaryWriter.cs</Link>
     </Compile>
-    <Compile Include="..\..\NetTopologySuite\IO\GML2\GMLElements.cs">
-      <Link>IO\GML2\GMLElements.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\IO\GML2\GMLReader.cs">
-      <Link>IO\GML2\GMLReader.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\IO\GML2\GMLWriter.cs">
-      <Link>IO\GML2\GMLWriter.cs</Link>
-    </Compile>
     <Compile Include="..\..\NetTopologySuite\IO\ParseException.cs">
       <Link>IO\ParseException.cs</Link>
     </Compile>
@@ -604,6 +613,15 @@
     </Compile>
     <Compile Include="..\..\NetTopologySuite\IO\WKTWriter.cs">
       <Link>IO\WKTWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\IO\GML2\GMLElements.cs">
+      <Link>IO\GML2\GMLElements.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\IO\GML2\GMLReader.cs">
+      <Link>IO\GML2\GMLReader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\IO\GML2\GMLWriter.cs">
+      <Link>IO\GML2\GMLWriter.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\LinearReferencing\ExtractLineByLocation.cs">
       <Link>LinearReferencing\ExtractLineByLocation.cs</Link>
@@ -636,19 +654,19 @@
       <Link>LinearReferencing\LocationIndexOfPoint.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Mathematics\DD.cs">
-      <Link>Math\DD.cs</Link>
+      <Link>Mathematics\DD.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Mathematics\MathUtil.cs">
-      <Link>Math\MathUtil.cs</Link>
+      <Link>Mathematics\MathUtil.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Mathematics\Matrix.cs">
-      <Link>Math\Matrix.cs</Link>
+      <Link>Mathematics\Matrix.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Mathematics\Vector2D.cs">
-      <Link>Math\Vector2D.cs</Link>
+      <Link>Mathematics\Vector2D.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Mathematics\VectorMath.cs">
-      <Link>Math\VectorMath.cs</Link>
+      <Link>Mathematics\VectorMath.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Noding\BasicSegmentString.cs">
       <Link>Noding\BasicSegmentString.cs</Link>
@@ -746,11 +764,14 @@
     <Compile Include="..\..\NetTopologySuite\Noding\Snapround\SimpleSnapRounder.cs">
       <Link>Noding\Snapround\SimpleSnapRounder.cs</Link>
     </Compile>
-    <Compile Include="..\..\NetTopologySuite\NtsGeometryServices.cs">
-      <Link>NtsGeometryServices.cs</Link>
-    </Compile>
     <Compile Include="..\..\NetTopologySuite\Operation\BoundaryOp.cs">
       <Link>Operation\BoundaryOp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\GeometryGraphOperation.cs">
+      <Link>Operation\GeometryGraphOperation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\IsSimpleOp.cs">
+      <Link>Operation\IsSimpleOp.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Operation\Buffer\BufferBuilder.cs">
       <Link>Operation\Buffer\BufferBuilder.cs</Link>
@@ -826,12 +847,6 @@
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Operation\Distance\IndexedFacedDistance.cs">
       <Link>Operation\Distance\IndexedFacedDistance.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Operation\GeometryGraphOperation.cs">
-      <Link>Operation\GeometryGraphOperation.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Operation\IsSimpleOp.cs">
-      <Link>Operation\IsSimpleOp.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Operation\Linemerge\EdgeString.cs">
       <Link>Operation\Linemerge\EdgeString.cs</Link>
@@ -983,9 +998,6 @@
     <Compile Include="..\..\NetTopologySuite\Operation\Valid\TopologyValidationError.cs">
       <Link>Operation\Valid\TopologyValidationError.cs</Link>
     </Compile>
-    <Compile Include="..\..\NetTopologySuite\Planargraph\Algorithm\ConnectedSubgraphFinder.cs">
-      <Link>Planargraph\Algorithm\ConnectedSubgraphFinder.cs</Link>
-    </Compile>
     <Compile Include="..\..\NetTopologySuite\Planargraph\DirectedEdge.cs">
       <Link>Planargraph\DirectedEdge.cs</Link>
     </Compile>
@@ -1009,6 +1021,9 @@
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Planargraph\Subgraph.cs">
       <Link>Planargraph\Subgraph.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Planargraph\Algorithm\ConnectedSubgraphFinder.cs">
+      <Link>Planargraph\Algorithm\ConnectedSubgraphFinder.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Precision\CommonBits.cs">
       <Link>Precision\CommonBits.cs</Link>
@@ -1040,17 +1055,14 @@
     <Compile Include="..\..\NetTopologySuite\Precision\SimpleMinimumClearance.cs">
       <Link>Precision\SimpleMinimumClearance.cs</Link>
     </Compile>
-    <Compile Include="..\..\NetTopologySuite\Properties\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
+    <Compile Include="..\..\NetTopologySuite\Shape\GeometricShapeBuilder.cs">
+      <Link>Shape\GeometricShapeBuilder.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Shape\Fractal\KochSnowflakeBuilder.cs">
       <Link>Shape\Fractal\KochSnowflakeBuilder.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Shape\Fractal\SierpinskiCarpetBuilder.cs">
       <Link>Shape\Fractal\SierpinskiCarpetBuilder.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Shape\GeometricShapeBuilder.cs">
-      <Link>Shape\GeometricShapeBuilder.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Shape\Random\RandomPointsBuilder.cs">
       <Link>Shape\Random\RandomPointsBuilder.cs</Link>
@@ -1112,6 +1124,18 @@
     <Compile Include="..\..\NetTopologySuite\Triangulate\NonEncroachingSplitPointFinder.cs">
       <Link>Triangulate\NonEncroachingSplitPointFinder.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\Segment.cs">
+      <Link>Triangulate\Segment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\SplitSegment.cs">
+      <Link>Triangulate\SplitSegment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\VertexTaggedGeometryDataMapper.cs">
+      <Link>Triangulate\VertexTaggedGeometryDataMapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\VoronoiDiagramBuilder.cs">
+      <Link>Triangulate\VoronoiDiagramBuilder.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\Triangulate\QuadEdge\EdgeConnectedTriangleTraversal.cs">
       <Link>Triangulate\QuadEdge\EdgeConnectedTriangleTraversal.cs</Link>
     </Compile>
@@ -1147,18 +1171,6 @@
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Triangulate\QuadEdge\Vertex.cs">
       <Link>Triangulate\QuadEdge\Vertex.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Triangulate\Segment.cs">
-      <Link>Triangulate\Segment.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Triangulate\SplitSegment.cs">
-      <Link>Triangulate\SplitSegment.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Triangulate\VertexTaggedGeometryDataMapper.cs">
-      <Link>Triangulate\VertexTaggedGeometryDataMapper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Triangulate\VoronoiDiagramBuilder.cs">
-      <Link>Triangulate\VoronoiDiagramBuilder.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Utilities\Assert.cs">
       <Link>Utilities\Assert.cs</Link>
@@ -1214,6 +1226,12 @@
     <Compile Include="..\..\NetTopologySuite\Utilities\ReverseOrder.cs">
       <Link>Utilities\ReverseOrder.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\StreamTokenizer.cs">
+      <Link>Utilities\StreamTokenizer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\UniqueCoordinateArrayFilter.cs">
+      <Link>Utilities\UniqueCoordinateArrayFilter.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\Utilities\RToolsUtil\BufferedTextReader.cs">
       <Link>Utilities\RToolsUtil\BufferedTextReader.cs</Link>
     </Compile>
@@ -1241,78 +1259,20 @@
     <Compile Include="..\..\NetTopologySuite\Utilities\RToolsUtil\VerbosityLevel.cs">
       <Link>Utilities\RToolsUtil\VerbosityLevel.cs</Link>
     </Compile>
-    <Compile Include="..\..\NetTopologySuite\Utilities\StreamTokenizer.cs">
-      <Link>Utilities\StreamTokenizer.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\Utilities\UniqueCoordinateArrayFilter.cs">
-      <Link>Utilities\UniqueCoordinateArrayFilter.cs</Link>
-    </Compile>
-    <Compile Include="FrameworkReplacements\ApplicationException.cs" />
-    <Compile Include="FrameworkReplacements\ICloneable.cs" />
     <Compile Include="Extension\ICoordinateEx.cs" />
     <Compile Include="Extension\IEnvelopeEx.cs" />
+    <Compile Include="FrameworkReplacements\ApplicationException.cs" />
+    <Compile Include="FrameworkReplacements\ICloneable.cs" />
     <Compile Include="FrameworkReplacements\Trace.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\NetTopologySuite\License.txt">
-      <Link>License.txt</Link>
-    </Content>
-    <Resource Include="..\..\NetTopologySuite\Precision\DocFiles\minClearance.png">
-      <Link>Precision\DocFiles\minClearance.png</Link>
-    </Resource>
-    <Content Include="..\..\NetTopologySuite\ReadMe.txt">
-      <Link>ReadMe.txt</Link>
-    </Content>
-    <Content Include="..\..\NetTopologySuite\Utilities\RToolsUtil\Rtools.Util.License.txt">
-      <Link>Utilities\RToolsUtil\Rtools.Util.License.txt</Link>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\NetTopologySuite\nts.snk">
-      <Link>nts.snk</Link>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\GeoAPI\GeoAPI.WindowsPhone\GeoAPI.WindowsPhone.csproj">
-      <Project>{9924F9BF-24A6-4C73-AB60-FAEE784F4327}</Project>
-      <Name>GeoAPI.WindowsPhone</Name>
+    <ProjectReference Include="..\..\GeoAPI\GeoAPI.MonoDroid\GeoAPI.MonoDroid.csproj">
+      <Project>{897A3D5B-501C-49BB-9037-793B957C06A0}</Project>
+      <Name>GeoAPI.MonoDroid</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\PowerCollections\PowerCollections.WP\PowerCollections.WindowsPhone.csproj">
-      <Project>{D4C28EC9-4FAB-43AA-B063-96DCBAF44A30}</Project>
-      <Name>PowerCollections.WindowsPhone</Name>
+    <ProjectReference Include="..\..\PowerCollections\PowerCollections.MonoDroid\PowerCollections.MonoDroid.csproj">
+      <Project>{72D7CE87-70A8-41DD-810F-BF959F31DB61}</Project>
+      <Name>PowerCollections.MonoDroid</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
-  <!-- <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup> -->
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
 </Project>

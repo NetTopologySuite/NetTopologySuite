@@ -222,7 +222,9 @@
     <None Include="app.config" />
     <EmbeddedResource Include="Tests\Various\cant-read-file1.gml" />
     <EmbeddedResource Include="Tests\Various\cant-read-file2.gml" />
-    <EmbeddedResource Include="Tests\Various\cant-read-file3.gml" />
+    <EmbeddedResource Include="Tests\Various\cant-read-file3.gml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tests\Various\cant-read-file4.gml" />
     <EmbeddedResource Include="Tests\Various\read-ok-file.gml" />
   </ItemGroup>

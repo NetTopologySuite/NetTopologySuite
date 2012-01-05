@@ -1,6 +1,13 @@
 using System;
-using GeoAPI;
 using NetTopologySuite.Utilities;
+
+#if !WINDOWS_PHONE && !MONODROID
+using BitConverter = System.BitConverter;
+#else
+
+using BitConverter = GeoAPI.BitConverterEx;
+
+#endif
 
 namespace NetTopologySuite.Index.Quadtree
 {
@@ -31,11 +38,7 @@ namespace NetTopologySuite.Index.Quadtree
                 throw new ArgumentException("Exponent out of bounds");
             long expBias = exp + ExponentBias;
             long bits = expBias << 52;
-#if !WINDOWS_PHONE
             return BitConverter.Int64BitsToDouble(bits);
-#else
-            return bits.Int64ToDoubleBits();
-#endif
         }
 
         /// <summary>
@@ -104,11 +107,7 @@ namespace NetTopologySuite.Index.Quadtree
         public DoubleBits(double x)
         {
             this.x = x;
-#if !WINDOWS_PHONE
             _xBits = BitConverter.DoubleToInt64Bits(x);
-#else
-            _xBits = x.DoubleToInt64Bits();
-#endif
         }
 
         /// <summary>
@@ -118,11 +117,7 @@ namespace NetTopologySuite.Index.Quadtree
         {
             get
             {
-#if !WINDOWS_PHONE
                 return BitConverter.Int64BitsToDouble(_xBits);
-#else
-                return _xBits.Int64ToDoubleBits();
-#endif
             }
         }
 

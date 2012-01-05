@@ -1,5 +1,12 @@
-using GeoAPI;
 using NetTopologySuite.Utilities;
+
+#if !WINDOWS_PHONE
+using BitConverter = System.BitConverter;
+#else
+
+using BitConverter = GeoAPI.BitConverterEx;
+
+#endif
 
 namespace NetTopologySuite.Precision
 {
@@ -89,11 +96,7 @@ namespace NetTopologySuite.Precision
         /// <param name="num"></param>
         public void Add(double num)
         {
-#if !WINDOWS_PHONE
             long numBits = BitConverter.DoubleToInt64Bits(num);
-#else
-            long numBits = num.DoubleToInt64Bits();
-#endif
             if (_isFirst)
             {
                 _commonBits = numBits;
@@ -119,11 +122,7 @@ namespace NetTopologySuite.Precision
         {
             get
             {
-#if !WINDOWS_PHONE
                 return BitConverter.Int64BitsToDouble(_commonBits);
-#else
-                return _commonBits.Int64ToDoubleBits();
-#endif
             }
         }
 
@@ -134,11 +133,7 @@ namespace NetTopologySuite.Precision
         /// <returns></returns>
         public string ToString(long bits)
         {
-#if !WINDOWS_PHONE
             double x = BitConverter.Int64BitsToDouble(bits);
-#else
-            double x = bits.Int64ToDoubleBits();
-#endif
             string numStr = HexConverter.ConvertAny2Any(bits.ToString(), 10, 2);
             string padStr = "0000000000000000000000000000000000000000000000000000000000000000" + numStr;
             string bitStr = padStr.Substring(padStr.Length - 64);
