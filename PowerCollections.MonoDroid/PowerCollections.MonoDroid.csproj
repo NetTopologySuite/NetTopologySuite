@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{72D7CE87-70A8-41DD-810F-BF959F31DB61}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>PowerCollections.MonoDroid</RootNamespace>
+    <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
+    <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
+    <AssemblyName>PowerCollections.MonoDroid</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\PowerCollections\PowerCollections.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <AndroidLinkMode>None</AndroidLinkMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <ConsolePause>false</ConsolePause>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Mono.Android" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="..\PowerCollections\Algorithms.cs">
+      <Link>Algorithms.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\Bag.cs">
+      <Link>Bag.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\BigList.cs">
+      <Link>BigList.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\CollectionBase.cs">
+      <Link>CollectionBase.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\Comparers.cs">
+      <Link>Comparers.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\Deque.cs">
+      <Link>Deque.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\DictionaryBase.cs">
+      <Link>DictionaryBase.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\Hash.cs">
+      <Link>Hash.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\ListBase.cs">
+      <Link>ListBase.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\MultiDictionary.cs">
+      <Link>MultiDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\MultiDictionaryBase.cs">
+      <Link>MultiDictionaryBase.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\OrderedBag.cs">
+      <Link>OrderedBag.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\OrderedDictionary.cs">
+      <Link>OrderedDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\OrderedMultiDictionary.cs">
+      <Link>OrderedMultiDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\OrderedSet.cs">
+      <Link>OrderedSet.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\Pair.cs">
+      <Link>Pair.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\ReadOnlyCollectionBase.cs">
+      <Link>ReadOnlyCollectionBase.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\ReadOnlyDictionaryBase.cs">
+      <Link>ReadOnlyDictionaryBase.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\ReadOnlyListBase.cs">
+      <Link>ReadOnlyListBase.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\ReadOnlyMultiDictionaryBase.cs">
+      <Link>ReadOnlyMultiDictionaryBase.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\RedBlack.cs">
+      <Link>RedBlack.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\Set.cs">
+      <Link>Set.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\Strings.cs">
+      <Link>Strings.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\Triple.cs">
+      <Link>Triple.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\Util.cs">
+      <Link>Util.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\PowerCollections\PowerCollections.snk">
+      <Link>PowerCollections.snk</Link>
+    </None>
+  </ItemGroup>
+</Project>
