@@ -1261,8 +1261,6 @@
     </Compile>
     <Compile Include="Extension\ICoordinateEx.cs" />
     <Compile Include="Extension\IEnvelopeEx.cs" />
-    <Compile Include="FrameworkReplacements\ApplicationException.cs" />
-    <Compile Include="FrameworkReplacements\ICloneable.cs" />
     <Compile Include="FrameworkReplacements\Trace.cs" />
   </ItemGroup>
   <ItemGroup>
