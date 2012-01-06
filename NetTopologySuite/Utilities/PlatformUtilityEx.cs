@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -19,6 +20,7 @@ namespace NetTopologySuite.Utilities
     {
 #if SILVERLIGHT && !WINDOWS_PHONE
 
+        [Obsolete("Not used anywhere within NTS")]
         private static readonly IEncodingRegistry Registry = new EncodingRegistry();
 
         public static IEnumerable<object> CastPlatform(this ICollection self)
@@ -36,11 +38,13 @@ namespace NetTopologySuite.Utilities
             return self;
         }
 
+        [Obsolete("Not used anywhere within NTS")]
         public static Encoding GetDefaultEncoding()
         {
             return Encoding.Unicode;
         }
 
+        [Obsolete("Not used anywhere within NTS")]
         public static Encoding GetASCIIEncoding()
         {
             return Registry.ASCII;
@@ -65,17 +69,20 @@ namespace NetTopologySuite.Utilities
 
 #if !WINDOWS_PHONE
 
+        [Obsolete("Not used anywhere within NTS")]
         public static Encoding GetDefaultEncoding()
         {
             return Encoding.Default;
         }
 
+        [Obsolete("Not used anywhere within NTS")]
         public static Encoding GetASCIIEncoding()
         {
             return new ASCIIEncoding();
         }
 #else
 
+        [Obsolete("Not used anywhere within NTS")]
         public static Encoding GetDefaultEncoding()
         {
             return Encoding.UTF8;

@@ -136,11 +136,11 @@
       <Project>{9B913337-1114-4D05-8F24-D05A5FD588AD}</Project>
       <Name>GeoAPI.Silverlight</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\NetTopologySuite.Data.Silverlight\NetTopologySuite.Data.Silverlight.csproj">
+    <ProjectReference Include="..\..\Silverlight\NetTopologySuite.Data\NetTopologySuite.Data.Silverlight.csproj">
       <Project>{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}</Project>
       <Name>NetTopologySuite.Data.Silverlight</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\NetTopologySuite.Silverlight\NetTopologySuite.Silverlight.csproj">
+    <ProjectReference Include="..\..\Silverlight\NetTopologySuite\NetTopologySuite.Silverlight.csproj">
       <Project>{71FAD7D8-11F5-444B-B9F9-D2EFF68C8F26}</Project>
       <Name>NetTopologySuite.Silverlight</Name>
     </ProjectReference>

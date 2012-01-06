@@ -107,23 +107,23 @@
     <Content Include="world.shx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GeoAPI\GeoAPI.Silverlight\GeoAPI.Silverlight.csproj">
+    <ProjectReference Include="..\..\GeoAPI\GeoAPI.Silverlight\GeoAPI.Silverlight.csproj">
       <Project>{9B913337-1114-4D05-8F24-D05A5FD588AD}</Project>
       <Name>GeoAPI.Silverlight</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.Data.Silverlight\NetTopologySuite.Data.Silverlight.csproj">
+    <ProjectReference Include="..\NetTopologySuite.Data\NetTopologySuite.Data.Silverlight.csproj">
       <Project>{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}</Project>
       <Name>NetTopologySuite.Data.Silverlight</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools.Silverlight\NetTopologySuite.IO.GeoTools.SilverLight.csproj">
+    <ProjectReference Include="..\..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools.Silverlight\NetTopologySuite.IO.GeoTools.SilverLight.csproj">
       <Project>{D1262B8E-2200-4E89-8ED5-1BF2BA0FDE7A}</Project>
       <Name>NetTopologySuite.IO.GeoTools.SilverLight</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.Shapefile.Silverlight\NetTopologySuite.Shapefile.Silverlight.csproj">
+    <ProjectReference Include="..\NetTopologySuite.IO.Shapefile\NetTopologySuite.Shapefile.Silverlight.csproj">
       <Project>{A1CD501C-D498-41C7-91E3-276E2BEEA867}</Project>
       <Name>NetTopologySuite.Shapefile.Silverlight</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.Silverlight\NetTopologySuite.Silverlight.csproj">
+    <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.Silverlight.csproj">
       <Project>{71FAD7D8-11F5-444B-B9F9-D2EFF68C8F26}</Project>
       <Name>NetTopologySuite.Silverlight</Name>
     </ProjectReference>
