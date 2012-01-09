@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using GeoAPI;
 using GeoAPI.CoordinateSystems;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
-using ProjNet;
 
 namespace NetTopologySuite.Tests.NUnit
 {
