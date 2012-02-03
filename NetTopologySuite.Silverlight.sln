@@ -41,11 +41,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections.Silverligh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI.Silverlight", "GeoAPI\GeoAPI.Silverlight\GeoAPI.Silverlight.csproj", "{9B913337-1114-4D05-8F24-D05A5FD588AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI", "GeoAPI\GeoAPI\GeoAPI.csproj", "{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.GeoTools.SilverLight", "NetTopologySuite.IO\NetTopologySuite.IO.GeoTools.Silverlight\NetTopologySuite.IO.GeoTools.SilverLight.csproj", "{D1262B8E-2200-4E89-8ED5-1BF2BA0FDE7A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Windows.Forms", "NetTopologySuite.Windows.Forms\NetTopologySuite.Windows.Forms.csproj", "{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}"
+EndProject
 Global
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
-	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = NetTopologySuite.vsmdi
 	EndGlobalSection
@@ -133,6 +135,24 @@ Global
 		{9B913337-1114-4D05-8F24-D05A5FD588AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B913337-1114-4D05-8F24-D05A5FD588AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B913337-1114-4D05-8F24-D05A5FD588AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Bug|Any CPU.ActiveCfg = Release|Any CPU
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Bug|Any CPU.Build.0 = Release|Any CPU
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1262B8E-2200-4E89-8ED5-1BF2BA0FDE7A}.Bug|Any CPU.ActiveCfg = Release|Any CPU
+		{D1262B8E-2200-4E89-8ED5-1BF2BA0FDE7A}.Bug|Any CPU.Build.0 = Release|Any CPU
+		{D1262B8E-2200-4E89-8ED5-1BF2BA0FDE7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1262B8E-2200-4E89-8ED5-1BF2BA0FDE7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1262B8E-2200-4E89-8ED5-1BF2BA0FDE7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1262B8E-2200-4E89-8ED5-1BF2BA0FDE7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}.Bug|Any CPU.ActiveCfg = Release|Any CPU
+		{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}.Bug|Any CPU.Build.0 = Release|Any CPU
+		{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -144,5 +164,11 @@ Global
 		{85945EF0-2BD4-42C1-A934-C3485FCE9021} = {7404154C-D788-443D-BD16-AC16F7858250}
 		{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8} = {7404154C-D788-443D-BD16-AC16F7858250}
 		{5821977D-AC2C-4912-BCD0-6E6B1A756167} = {7404154C-D788-443D-BD16-AC16F7858250}
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A} = {7404154C-D788-443D-BD16-AC16F7858250}
+		{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1} = {7404154C-D788-443D-BD16-AC16F7858250}
+	EndGlobalSection
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 EndGlobal
