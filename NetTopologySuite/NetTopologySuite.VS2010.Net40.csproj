@@ -265,7 +265,6 @@
     <Compile Include="Geometries\Polygon.cs" />
     <Compile Include="Geometries\Prepared\AbstractPreparedPolygonContains.cs" />
     <Compile Include="Geometries\Prepared\BasicPreparedGeometry.cs" />
-    <Compile Include="Geometries\Prepared\IPreparedGeometry.cs" />
     <Compile Include="Geometries\Prepared\PreparedGeometryFactory.cs" />
     <Compile Include="Geometries\Prepared\PreparedLineString.cs" />
     <Compile Include="Geometries\Prepared\PreparedLineStringIntersects.cs" />
@@ -489,7 +488,6 @@
     <Content Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="NTS.ndoc" />
     <None Include="nts.snk" />
   </ItemGroup>
   <ItemGroup>

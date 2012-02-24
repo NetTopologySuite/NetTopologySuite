@@ -165,9 +165,9 @@ namespace NetTopologySuite.Index.Quadtree
             return GetEnumerator();
         }
 
-        #endregion
+        #endregion IEnumerable<TItem> Members
 
-        /// <summary> 
+        /// <summary>
         /// Returns the index of the subquad that wholly contains the given envelope.
         /// If none does, returns -1.
         /// </summary>
@@ -176,11 +176,11 @@ namespace NetTopologySuite.Index.Quadtree
             Int32 subnodeIndex = -1;
 
             DoubleComponent cx, cy;
-            center.GetComponents(out cx, out cy);
+            ((IVector<DoubleComponent>)center).GetComponents(out cx, out cy);
 
             DoubleComponent xMin, yMin, xMax, yMax;
-            extents.Min.GetComponents(out xMin, out yMin);
-            extents.Max.GetComponents(out xMax, out yMax);
+            ((IVector<DoubleComponent>)extents.Min).GetComponents(out xMin, out yMin);
+            ((IVector<DoubleComponent>)extents.Max).GetComponents(out xMax, out yMax);
 
             if (xMin.GreaterThan(cx))
             {
@@ -255,7 +255,7 @@ namespace NetTopologySuite.Index.Quadtree
             return subnodeIndex;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Removes a single item from this subtree.
         /// </summary>
         /// <param name="itemExtents">The <see cref="IExtents{TCoordinate}"/> containing the item.</param>
@@ -305,7 +305,6 @@ namespace NetTopologySuite.Index.Quadtree
 
             return found;
         }
-
 
         protected override void CreateSubNodes()
         {

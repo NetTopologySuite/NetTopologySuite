@@ -844,14 +844,14 @@ namespace NetTopologySuite.Geometries
             get { return _min; }
         }
 
-        public Double GetMax(Ordinates ordinate)
+        public Double GetMax(Ordinates ordinates)
         {
-            return _max[ordinate];
+            return _max[ordinates];
         }
 
-        public Double GetMin(Ordinates ordinate)
+        public Double GetMin(Ordinates ordinates)
         {
-            return _min[ordinate];
+            return _min[ordinates];
         }
 
         public Double GetSize(Ordinates axis)

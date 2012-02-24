@@ -14,7 +14,7 @@ namespace NetTopologySuite.Index.Quadtree
 {
     /// <summary>
     /// A Quadtree is a spatial index structure for efficient querying
-    /// of 2D rectangles.  
+    /// of 2D rectangles.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -72,7 +72,7 @@ namespace NetTopologySuite.Index.Quadtree
             get { return _isDisposed; }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Returns the number of levels in the tree.
         /// </summary>
         public Int32 Depth
@@ -84,7 +84,7 @@ namespace NetTopologySuite.Index.Quadtree
             }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Returns the number of items in the tree.
         /// </summary>
         public Int32 Count
@@ -111,7 +111,7 @@ namespace NetTopologySuite.Index.Quadtree
             throw new NotImplementedException();
         }
 
-        #endregion
+        #endregion IEnumerable<TItem> Members
 
         #region ISpatialIndex<IExtents<TCoordinate>,TItem> Members
 
@@ -192,7 +192,7 @@ namespace NetTopologySuite.Index.Quadtree
             throw new NotImplementedException();
         }
 
-        #endregion
+        #endregion ISpatialIndex<IExtents<TCoordinate>,TItem> Members
 
         public static Int32 ComputeQuadLevel(IExtents<TCoordinate> extents)
         {
@@ -215,8 +215,8 @@ namespace NetTopologySuite.Index.Quadtree
             // Perhaps we should rename them to "ensurePositiveExtent" and "defaultExtent".
             // [Jon Aquino]
             DoubleComponent minx, maxx, miny, maxy;
-            itemExtents.Min.GetComponents(out minx, out miny);
-            itemExtents.Max.GetComponents(out maxx, out maxy);
+            ((IVector<DoubleComponent>)itemExtents.Min).GetComponents(out minx, out miny);
+            ((IVector<DoubleComponent>)itemExtents.Max).GetComponents(out maxx, out maxy);
 
             //Double minx = itemExtents.GetMin(Ordinates.X);
             //Double maxx = itemExtents.GetMax(Ordinates.X);
@@ -273,7 +273,7 @@ namespace NetTopologySuite.Index.Quadtree
             }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Removes a single item from the tree.
         /// </summary>
         /// <param name="itemExtents">The <see cref="IExtents{TCoordinate}"/> of the item to remove.</param>
@@ -304,7 +304,7 @@ namespace NetTopologySuite.Index.Quadtree
 
         #region Nested type: QuadTreeEntry
 
-        private struct QuadTreeEntry : IBoundable<IExtents<TCoordinate>>, IEquatable<QuadTreeEntry> 
+        private struct QuadTreeEntry : IBoundable<IExtents<TCoordinate>>, IEquatable<QuadTreeEntry>
         {
             private readonly IExtents<TCoordinate> _bounds;
             private readonly TItem _item;
@@ -337,9 +337,7 @@ namespace NetTopologySuite.Index.Quadtree
                 return _bounds.Intersects(bounds);
             }
 
-            #endregion
-
-          
+            #endregion IBoundable<IExtents<TCoordinate>> Members
 
             #region IEquatable<QuadTreeEntry> Members
 
@@ -348,9 +346,9 @@ namespace NetTopologySuite.Index.Quadtree
                 return Equals(Bounds, other.Bounds) && Equals(Item, other.Item);
             }
 
-            #endregion
+            #endregion IEquatable<QuadTreeEntry> Members
         }
 
-        #endregion
+        #endregion Nested type: QuadTreeEntry
     }
 }

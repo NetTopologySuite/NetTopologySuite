@@ -1,5 +1,5 @@
-// This code has lifted from ProjNet project code base, and the namespaces 
-// updated to fit into NetTopologySuit. This is an interim measure, so that 
+// This code has lifted from ProjNet project code base, and the namespaces
+// updated to fit into NetTopologySuit. This is an interim measure, so that
 // ProjNet can be removed from Sharpmap. This code is to be refactor / written
 //  to use the DotSpiatial project library.
 
@@ -10,7 +10,7 @@
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
-// 
+//
 // Proj.Net is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -18,11 +18,11 @@
 
 // You should have received a copy of the GNU Lesser General Public License
 // along with Proj.Net; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 // SOURCECODE IS MODIFIED FROM ANOTHER WORK AND IS ORIGINALLY BASED ON GeoTools.NET:
 /*
- *  Copyright (C) 2002 Urban Science Applications, Inc. 
+ *  Copyright (C) 2002 Urban Science Applications, Inc.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -72,6 +72,7 @@ namespace NetTopologySuite.CoordinateSystems.Projections
                 return true;
             }
         }
+
         public override TCoordinate Transform(TCoordinate coordinate)
         {
             Int64 i; // counter variable
@@ -116,12 +117,12 @@ namespace NetTopologySuite.CoordinateSystems.Projections
                 return CreateCoordinate((Degrees)lon, (Degrees)lat, coordinate);
             }
 
-            return CreateCoordinate((Degrees) new Radians(HalfPI*Sign(y)), new Degrees(_centralMeridian), coordinate);
+            return CreateCoordinate((Degrees)new Radians(HalfPI * Sign(y)), new Degrees(_centralMeridian), coordinate);
         }
     }
 
     /// <summary>
-    /// Implements the Universal (UTM) and Modified (MTM) Transverses Mercator projections. 
+    /// Implements the Universal (UTM) and Modified (MTM) Transverses Mercator projections.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -153,8 +154,8 @@ namespace NetTopologySuite.CoordinateSystems.Projections
         //static Double ind;		               /* spherical flag			*/
 
         /// <summary>
-        /// Initializes a <see cref="TransverseMercator{TCoordinate}"/> projection 
-        /// with the specified parameters. 
+        /// Initializes a <see cref="TransverseMercator{TCoordinate}"/> projection
+        /// with the specified parameters.
         /// </summary>
         /// <param name="parameters">Parameters of the projection.</param>
         /// <param name="coordinateFactory">Coordinate factory to use.</param>
@@ -226,6 +227,7 @@ namespace NetTopologySuite.CoordinateSystems.Projections
             _ml0 = semiMajor * MeridianLength(_latOrigin);
             _esp = E2 / (1.0 - E2);
         }
+
         /*
         /// <summary>
         /// Converts coordinates in decimal degrees to projected meters.
@@ -273,6 +275,7 @@ namespace NetTopologySuite.CoordinateSystems.Projections
                        : CreateCoordinate(x / MetersPerUnit, y / MetersPerUnit, (Double)lonlat[2]);
         }
         */
+
         public override string ProjectionClassName
         {
             get { return "Transverse_Mercator"; }
@@ -282,6 +285,7 @@ namespace NetTopologySuite.CoordinateSystems.Projections
         {
             get { return "Transverse_Mercator"; }
         }
+
         /*
         /// <summary>
         /// Converts coordinates in projected meters to decimal degrees.
@@ -374,6 +378,7 @@ namespace NetTopologySuite.CoordinateSystems.Projections
             return transformed;
         }
         */
+
         public override Int32 SourceDimension
         {
             get { throw new System.NotImplementedException(); }
@@ -399,7 +404,7 @@ namespace NetTopologySuite.CoordinateSystems.Projections
         public override TCoordinate Transform(TCoordinate point)
         {
             DoubleComponent lonVal, latVal;
-            point.GetComponents(out lonVal, out latVal);
+            ((IVector<DoubleComponent>)point).GetComponents(out lonVal, out latVal);
             Radians lon = (Radians)new Degrees((Double)lonVal);
             Radians lat = (Radians)new Degrees((Double)latVal);
             Double semiMajor = SemiMajor;
@@ -432,7 +437,7 @@ namespace NetTopologySuite.CoordinateSystems.Projections
                                         (61.0 - 58.0 * t + Math.Pow(t, 2) + 600.0 * c - 330.0 * _esp)))))
                        + _falseNorthing;
 
-            return CreateCoordinate(x*UnitsPerMeter, y*UnitsPerMeter, point);
+            return CreateCoordinate(x * UnitsPerMeter, y * UnitsPerMeter, point);
         }
     }
 }

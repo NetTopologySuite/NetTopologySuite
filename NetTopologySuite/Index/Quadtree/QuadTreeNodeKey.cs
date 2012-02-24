@@ -2,7 +2,6 @@
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using NPack;
 using NPack.Interfaces;
 
 namespace NetTopologySuite.Index.Quadtree
@@ -39,19 +38,15 @@ namespace NetTopologySuite.Index.Quadtree
         protected override IExtents<TCoordinate> CreateBounds(TCoordinate min, Double nodeSize)
         {
             return Bounds.Factory.CreateExtents(
-                min, ((IAddable<Double, TCoordinate>) min).Add(nodeSize));
+                min, ((IAddable<Double, TCoordinate>)min).Add(nodeSize));
         }
 
         protected override TCoordinate CreateLocation(IExtents<TCoordinate> bounds, Double nodeSize)
         {
-            TCoordinate min = bounds.Min;
-            DoubleComponent dminx, dminy;
-            min.GetComponents(out dminx, out dminy);
-            Double x = Math.Floor((Double)dminx/nodeSize)*nodeSize;
-            Double y = Math.Floor((Double)dminy/nodeSize)*nodeSize;
-            //Double x = Math.Floor(min[Ordinates.X] / nodeSize) * nodeSize;
-            //Double y = Math.Floor(min[Ordinates.Y] / nodeSize) * nodeSize;
-            return Bounds.Factory.CoordinateFactory.Create(x, y);
+            var xy = bounds.Min.ToArray2D();
+            xy[0] = Math.Floor(xy[0] / nodeSize) * nodeSize;
+            xy[1] = Math.Floor(xy[1] / nodeSize) * nodeSize;
+            return bounds.Factory.CoordinateFactory.Create(xy[0], xy[1]);
         }
     }
 }

@@ -6,6 +6,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.CoordinateSystems;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
+using GeoAPI.Geometries.Prepared;
 using GeoAPI.Indexing;
 using GeoAPI.Operations.Buffer;
 using NetTopologySuite.Algorithm;
@@ -16,14 +17,13 @@ using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Operation.Overlay.Snap;
 using NetTopologySuite.Operation.Predicate;
 using NetTopologySuite.Operation.Relate;
-using NetTopologySuite.Operation.Union;
 using NetTopologySuite.Operation.Valid;
 using NPack;
 using NPack.Interfaces;
 
 namespace NetTopologySuite.Geometries
 {
-    /// <summary>  
+    /// <summary>
     /// Basic implementation of <see cref="IGeometry{TCoordinate}"/>, the fundamental
     /// unit of spatial reasoning in NTS.
     /// </summary>
@@ -32,25 +32,25 @@ namespace NetTopologySuite.Geometries
     /// <see cref="Clone"/> returns a deep copy of the object.
     /// </para>
     /// <para>
-    /// Binary Predicates: 
+    /// Binary Predicates:
     /// Because it is not clear at this time what semantics for spatial
-    /// analysis methods involving <see cref="GeometryCollection{TCoordinate}" />s 
-    /// would be useful, <see cref="GeometryCollection{TCoordinate}" />s are not 
-    /// supported as arguments to binary predicates 
-    /// (other than <see cref="ConvexHull"/>) or the 
+    /// analysis methods involving <see cref="GeometryCollection{TCoordinate}" />s
+    /// would be useful, <see cref="GeometryCollection{TCoordinate}" />s are not
+    /// supported as arguments to binary predicates
+    /// (other than <see cref="ConvexHull"/>) or the
     /// <see cref="Relate(IGeometry{TCoordinate})"/> family of methods.
     /// </para>
     /// <para>
-    /// Set-Theoretic Methods: 
+    /// Set-Theoretic Methods:
     /// The spatial analysis methods will
     /// return the most specific class possible to represent the result. If the
-    /// result is homogeneous, a <see cref="Point{TCoordinate}"/>, 
-    /// <see cref="LineString{TCoordinate}"/>, or <see cref="Polygon{TCoordinate}" /> 
-    /// will be returned if the result contains a single element; 
-    /// otherwise, a <see cref="MultiPoint{TCoordinate}"/>, 
-    /// <see cref="MultiLineString{TCoordinate}"/>, or 
-    /// <see cref="MultiPolygon{TCoordinate}"/> 
-    /// will be returned. If the result is heterogeneous a 
+    /// result is homogeneous, a <see cref="Point{TCoordinate}"/>,
+    /// <see cref="LineString{TCoordinate}"/>, or <see cref="Polygon{TCoordinate}" />
+    /// will be returned if the result contains a single element;
+    /// otherwise, a <see cref="MultiPoint{TCoordinate}"/>,
+    /// <see cref="MultiLineString{TCoordinate}"/>, or
+    /// <see cref="MultiPolygon{TCoordinate}"/>
+    /// will be returned. If the result is heterogeneous a
     /// <see cref="GeometryCollection{TCoordinate}" /> will be returned.
     /// </para>
     /// <para>
@@ -74,47 +74,47 @@ namespace NetTopologySuite.Geometries
     /// ensure that the results are simple.
     /// </para>
     /// <para>
-    /// Constructed Points And The Precision Model: 
+    /// Constructed Points And The Precision Model:
     /// The results computed by the set-theoretic methods may
-    /// contain constructed points which are not present in the input <see cref="Geometry{TCoordinate}"/>s. 
+    /// contain constructed points which are not present in the input <see cref="Geometry{TCoordinate}"/>s.
     /// These new points arise from intersections between line segments in the
     /// edges of the input <see cref="Geometry{TCoordinate}"/>s. In the general case it is not
     /// possible to represent constructed points exactly. This is due to the fact
     /// that the coordinates of an intersection point may contain twice as many bits
     /// of precision as the coordinates of the input line segments. In order to
     /// represent these constructed points explicitly, NTS must truncate them to fit
-    /// the <see cref="PrecisionModel{TCoordinate}"/>. 
+    /// the <see cref="PrecisionModel{TCoordinate}"/>.
     /// Unfortunately, truncating coordinates moves them slightly. Line segments
     /// which would not be coincident in the exact result may become coincident in
     /// the truncated representation. This in turn leads to "topology collapses" --
     /// situations where a computed element has a lower dimension than it would in
-    /// the exact result. 
+    /// the exact result.
     /// When NTS detects topology collapses during the computation of spatial
-    /// analysis methods, it will throw a <see cref="TopologyException"/>. 
-    /// If possible the exception will report the location of the collapse. 
+    /// analysis methods, it will throw a <see cref="TopologyException"/>.
+    /// If possible the exception will report the location of the collapse.
     /// </para>
     /// <para>
-    /// NOTE: <see cref="Object.Equals(object)" /> and <see cref="Object.GetHashCode" /> 
-    /// are overridden, so that when two topologically equal Geometries are added 
-    /// to collections and hash table implementations, they will collide. 
+    /// NOTE: <see cref="Object.Equals(object)" /> and <see cref="Object.GetHashCode" />
+    /// are overridden, so that when two topologically equal Geometries are added
+    /// to collections and hash table implementations, they will collide.
     /// This behavior is <strong>not</strong> desired in many cases, and is
-    /// the opposite of JTS and previous versions of NTS. To get the desired behavior, 
-    /// use <see cref="GeometryReferenceEqualityComparer{TCoordinate}.Default"/> as 
-    /// the key equality comparer. The reasoning for this change is twofold. First, 
-    /// <see cref="ISpatialRelation{TCoordinate}"/> includes 
-    /// <see cref="IEquatable{IGeometry}"/> to derive the Equals method. 
+    /// the opposite of JTS and previous versions of NTS. To get the desired behavior,
+    /// use <see cref="GeometryReferenceEqualityComparer{TCoordinate}.Default"/> as
+    /// the key equality comparer. The reasoning for this change is twofold. First,
+    /// <see cref="ISpatialRelation{TCoordinate}"/> includes
+    /// <see cref="IEquatable{IGeometry}"/> to derive the Equals method.
     /// The sematics for this interface imply that the type-specific equality is
-    /// value-based, since if it was reference equality, the interface would not 
-    /// be implemented. Given the semantics of spatial relations, where two 
+    /// value-based, since if it was reference equality, the interface would not
+    /// be implemented. Given the semantics of spatial relations, where two
     /// <see cref="IGeometry"/> are equal if their coordinate-by-coordinate values are equal,
     /// implementing this interface makes sense. Second, this version of NTS is moving
     /// geometry objects toward immutability. This will allow greater ability to do
     /// distributed spatial processing and use functional-programming constructs as NTS evolves.
-    /// If a geometry instance is immutable, value-type equality is more meaningful and more 
+    /// If a geometry instance is immutable, value-type equality is more meaningful and more
     /// desired. The use of collections and hash table implementations which rely on reference
     /// equality become more of an implementation detail which can be effectively hidden
-    /// in instances where it is needed by a 
-    /// <see cref="GeometryReferenceEqualityComparer{TCoordinate}"/>. 
+    /// in instances where it is needed by a
+    /// <see cref="GeometryReferenceEqualityComparer{TCoordinate}"/>.
     /// </para>
     /// <para>
     /// DEVELOPER NOTE: should we implement a ReferenceGeometryCollection and ReferenceGeometryDictionary
@@ -170,7 +170,7 @@ namespace NetTopologySuite.Geometries
             get { return 1; }
         }
 
-        /// <summary>  
+        /// <summary>
         /// Returns the area of this <see cref="Geometry{TCoordinate}"/>.
         /// Areal Geometries have a non-zero area.
         /// They override this function to compute the area.
@@ -182,7 +182,7 @@ namespace NetTopologySuite.Geometries
             get { return 0.0; }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Returns the length of this <see cref="Geometry{TCoordinate}"/>.
         /// Linear geometries return their length.
         /// Areal geometries return their perimeter.
@@ -202,7 +202,7 @@ namespace NetTopologySuite.Geometries
         /// the point may lie on the boundary of the point.
         /// </summary>
         /// <returns>
-        /// An <see cref="IPoint{TCoordinate}"/> which is in the 
+        /// An <see cref="IPoint{TCoordinate}"/> which is in the
         /// interior of this Geometry.
         /// </returns>
         public IPoint<TCoordinate> InteriorPoint
@@ -249,16 +249,16 @@ namespace NetTopologySuite.Geometries
         #region IGeometry<TCoordinate> Members
 
         /// <summary>
-        /// Returns whether this <see cref="Geometry{TCoordinate}"/> is greater than, 
-        /// equal to, or less than another <see cref="Geometry{TCoordinate}"/>. 
+        /// Returns whether this <see cref="Geometry{TCoordinate}"/> is greater than,
+        /// equal to, or less than another <see cref="Geometry{TCoordinate}"/>.
         /// </summary>
         /// <param name="other">
-        /// A <see cref="Geometry{TCoordinate}"/> with which to 
+        /// A <see cref="Geometry{TCoordinate}"/> with which to
         /// compare this <see cref="Geometry{TCoordinate}"/>.
         /// </param>
         /// <returns>
         /// A positive number, 0, or a negative number, depending on whether
-        /// this object is greater than, equal to, or less than <paramref name="other"/>, 
+        /// this object is greater than, equal to, or less than <paramref name="other"/>,
         /// as defined in "Normal Form For Geometry" in the NTS Technical
         /// Specifications.
         /// </returns>
@@ -286,16 +286,16 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns whether this <see cref="Geometry{TCoordinate}"/> is greater than, 
-        /// equal to, or less than another <see cref="Geometry{TCoordinate}"/>. 
+        /// Returns whether this <see cref="Geometry{TCoordinate}"/> is greater than,
+        /// equal to, or less than another <see cref="Geometry{TCoordinate}"/>.
         /// </summary>
         /// <param name="other">
-        /// A <see cref="Geometry{TCoordinate}"/> with which to 
+        /// A <see cref="Geometry{TCoordinate}"/> with which to
         /// compare this <see cref="Geometry{TCoordinate}"/>.
         /// </param>
         /// <returns>
         /// A positive number, 0, or a negative number, depending on whether
-        /// this object is greater than, equal to, or less than <paramref name="other"/>, 
+        /// this object is greater than, equal to, or less than <paramref name="other"/>,
         /// as defined in "Normal Form For Geometry" in the NTS Technical
         /// Specifications.
         /// </returns>
@@ -365,8 +365,8 @@ namespace NetTopologySuite.Geometries
                 return false;
             }
 
-            // We use an alternative method for compare GeometryCollections 
-            // (but not subclasses!), 
+            // We use an alternative method for compare GeometryCollections
+            // (but not subclasses!),
             if (isGeometryCollection(this) || isGeometryCollection(g))
             {
                 return compareGeometryCollections(this, g);
@@ -380,7 +380,7 @@ namespace NetTopologySuite.Geometries
 
         public abstract IEnumerable<TCoordinate> GetVertexes();
 
-        /// <summary> 
+        /// <summary>
         /// Computes the centroid of this <see cref="Geometry{TCoordinate}"/>.
         /// The centroid is equal to the centroid of the set of component Geometries of highest
         /// dimension (since the lower-dimension geometries contribute zero "weight" to the centroid).
@@ -456,14 +456,14 @@ namespace NetTopologySuite.Geometries
 
         public abstract ICoordinateSequence<TCoordinate> Coordinates { get; }
 
-        /// <summary>  
+        /// <summary>
         /// Returns this <see cref="Geometry{TCoordinate}"/>s bounding box. If this <see cref="Geometry{TCoordinate}"/>
         /// is the empty point, returns an empty <c>Point</c>. If the <see cref="Geometry{TCoordinate}"/>
         /// is a point, returns a non-empty <c>Point</c>. Otherwise, returns a
         /// <see cref="Polygon{TCoordinate}" /> whose points are (minx, miny), (maxx, miny), (maxx,
         /// maxy), (minx, maxy), (minx, miny).
         /// </summary>
-        /// <returns>    
+        /// <returns>
         /// An empty <c>Point</c> (for empty <see cref="Geometry{TCoordinate}"/>s), a
         /// <c>Point</c> (for <c>Point</c>s) or a <see cref="Polygon{TCoordinate}" />
         /// (in all other cases).
@@ -481,7 +481,7 @@ namespace NetTopologySuite.Geometries
             get { return ExtentsInternal; }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Gets the factory which contains the context in which this point was created.
         /// </summary>
         /// <returns>The factory for this point.</returns>
@@ -490,11 +490,11 @@ namespace NetTopologySuite.Geometries
             get { return _factory; }
         }
 
-        /// <summary>  
-        /// Returns the <see cref="PrecisionModel{TCoordinate}"/> 
+        /// <summary>
+        /// Returns the <see cref="PrecisionModel{TCoordinate}"/>
         /// used by the <see cref="Geometry{TCoordinate}"/>.
         /// </summary>
-        /// <returns>    
+        /// <returns>
         /// The specification of the grid of allowable points, for this
         /// <see cref="Geometry{TCoordinate}"/> and all other <see cref="Geometry{TCoordinate}"/>s.
         /// </returns>
@@ -515,6 +515,16 @@ namespace NetTopologySuite.Geometries
             set { _spatialReference = value; }
         }
 
+        public IPreparedGeometry<TCoordinate> ToPreparedGeometry()
+        {
+            return new Prepared.PreparedGeometryFactory<TCoordinate>().Create(this);
+        }
+
+        IPreparedGeometry IGeometry.ToPreparedGeometry()
+        {
+            return ToPreparedGeometry();
+        }
+
         public Byte[] AsBinary()
         {
             return _factory.WkbWriter.Write(this);
@@ -525,10 +535,10 @@ namespace NetTopologySuite.Geometries
             return _factory.WktWriter.Write(this);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Returns the dimension of this <see cref="Geometry{TCoordinate}"/>s inherent boundary.
         /// </summary>
-        /// <returns>    
+        /// <returns>
         /// The dimension of the boundary of the class implementing this
         /// interface, whether or not this object is the empty point. Returns
         /// <c>Dimension.False</c> if the boundary is the empty point.
@@ -554,10 +564,10 @@ namespace NetTopologySuite.Geometries
             get { return Coordinates; }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Gets the dimension of this <see cref="Geometry{TCoordinate}"/>.
         /// </summary>
-        /// <returns>  
+        /// <returns>
         /// The dimension of the class implementing this interface, whether
         /// or not this object is the empty point.
         /// </returns>
@@ -573,7 +583,7 @@ namespace NetTopologySuite.Geometries
         /// <see cref="Geometry{TCoordinate}"/>s is T*F**FFF*.
         /// </summary>
         /// <param name="g">
-        /// The <see cref="Geometry{TCoordinate}"/> with which to compare this 
+        /// The <see cref="Geometry{TCoordinate}"/> with which to compare this
         /// <see cref="Geometry{TCoordinate}"/>.
         /// </param>
         /// <returns>
@@ -583,9 +593,9 @@ namespace NetTopologySuite.Geometries
         {
             if (g == null) throw new ArgumentNullException("g");
 
-            // TODO: this could be redone to relate the IGeometry 
+            // TODO: this could be redone to relate the IGeometry
             // instance to this instance, using ICoordinate
-            return Equals(convertIGeometry(g));
+            return Equals(ConvertIGeometry(g));
         }
 
         IExtents IGeometry.Extents
@@ -603,7 +613,7 @@ namespace NetTopologySuite.Geometries
             get { return GeometryType.ToString(); }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Returns whether or not the set of points in this <see cref="Geometry{TCoordinate}"/> is empty.
         /// </summary>
         /// <returns><see langword="true"/> if this <see cref="Geometry{TCoordinate}"/> equals the empty point.</returns>
@@ -624,10 +634,10 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Returns <see langword="false"/> if the <see cref="Geometry{TCoordinate}"/> not simple.
         /// Subclasses provide their own definition of "simple". If
-        /// this <see cref="Geometry{TCoordinate}"/> is empty, returns <see langword="true"/>. 
+        /// this <see cref="Geometry{TCoordinate}"/> is empty, returns <see langword="true"/>.
         /// </summary>
         /// <remarks>
         /// In general, the SFS specifications of simplicity seem to follow the
@@ -635,13 +645,13 @@ namespace NetTopologySuite.Geometries
         ///  A Geometry is simple if the only self-intersections are at boundary points.
         /// For all empty <see cref="Geometry{TCoordinate}"/>s, <c>IsSimple==true</c>.
         /// </remarks>
-        /// <returns>    
+        /// <returns>
         /// <see langword="true"/> if this <see cref="Geometry{TCoordinate}"/> has any points of
         /// self-tangency, self-intersection or other anomalous points.
         /// </returns>
         public abstract Boolean IsSimple { get; }
 
-        /// <summary>  
+        /// <summary>
         /// Tests the validity of this <see cref="Geometry{TCoordinate}"/>.
         /// Subclasses provide their own definition of "valid".
         /// </summary>
@@ -655,30 +665,30 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>  
+        /// <summary>
         /// Returns the count of this <see cref="Geometry{TCoordinate}"/>s vertices.
         /// </summary>
         /// <remarks>
-        /// The <see cref="Geometry{TCoordinate}"/>s contained by composite 
-        /// <see cref="Geometry{TCoordinate}"/>s must be 
-        /// <see cref="Geometry{TCoordinate}"/> instances; that is, 
+        /// The <see cref="Geometry{TCoordinate}"/>s contained by composite
+        /// <see cref="Geometry{TCoordinate}"/>s must be
+        /// <see cref="Geometry{TCoordinate}"/> instances; that is,
         /// they must implement <see cref="IGeometry{TCoordinate}.PointCount"/>.
         /// </remarks>
         /// <returns>The number of vertices in this <see cref="Geometry{TCoordinate}"/>.</returns>
         public abstract Int32 PointCount { get; }
 
-        /// <summary>  
+        /// <summary>
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>The name of this <see cref="Geometry{TCoordinate}"/>s most specific interface.</returns>
         public abstract OgcGeometryType GeometryType { get; }
 
         /// <summary>
-        /// Converts this <see cref="Geometry{TCoordinate}"/> to normal form (or 
+        /// Converts this <see cref="Geometry{TCoordinate}"/> to normal form (or
         /// canonical form).
         /// </summary>
         /// <remarks>
-        /// Normal form is a unique representation for 
+        /// Normal form is a unique representation for
         /// <see cref="Geometry{TCoordinate}"/>s. It can be used to test whether two <see cref="Geometry{TCoordinate}"/>s are equal
         /// in a way that is independent of the ordering of the coordinates within
         /// them. Normal form equality is a stronger condition than topological
@@ -694,20 +704,20 @@ namespace NetTopologySuite.Geometries
             get { return PrecisionModel; }
         }
 
-        /// <summary>  
-        /// Gets or sets the ID of the Spatial Reference System used by the 
+        /// <summary>
+        /// Gets or sets the ID of the Spatial Reference System used by the
         /// <see cref="Geometry{TCoordinate}"/>.
-        /// </summary>   
+        /// </summary>
         /// <remarks>
         /// NTS supports Spatial Reference System information in the simple way
         /// defined in the SFS. A Spatial Reference System ID (SRID) is present in
-        /// each <see cref="Geometry{TCoordinate}"/> object. 
+        /// each <see cref="Geometry{TCoordinate}"/> object.
         /// <see cref="Geometry{TCoordinate}"/> provides basic
-        /// accessor operations for this field, but no others. 
+        /// accessor operations for this field, but no others.
         /// <para>
         /// The SRID is represented as a nullable <see cref="Int32"/>.
         /// </para>
-        /// </remarks>     
+        /// </remarks>
         public String Srid
         {
             get { return _srid; }
@@ -735,7 +745,7 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Gets or sets the user data object for this point, if any.
         /// </summary>
         /// <remarks>
@@ -754,7 +764,7 @@ namespace NetTopologySuite.Geometries
             return Clone();
         }
 
-        /// <summary>  
+        /// <summary>
         /// Gets the boundary, or the empty point if this <see cref="Geometry{TCoordinate}"/>
         /// is empty. For a discussion of this function, see the OpenGIS Simple
         /// Features Specification. As stated in SFS Section 2.1.13.1, "the boundary
@@ -766,7 +776,7 @@ namespace NetTopologySuite.Geometries
             get { return _boundary; }
         }
 
-        /// <summary>  
+        /// <summary>
         /// Returns the minimum distance between this <see cref="Geometry{TCoordinate}"/>
         /// and the <see cref="Geometry{TCoordinate}"/> g.
         /// </summary>
@@ -878,6 +888,7 @@ namespace NetTopologySuite.Geometries
             return BufferOp<TCoordinate>.Buffer(this, distance, quadrantSegments, endCapStyle);
 #endif
         }
+
         public IGeometry<TCoordinate> Buffer(Double distance, BufferParameters bufferParameters)
         {
 #if buffer110
@@ -998,6 +1009,16 @@ namespace NetTopologySuite.Geometries
 
             // general case
             return Relate(g).IsContains();
+        }
+
+        public bool ContainsProperly(IGeometry<TCoordinate> g)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ContainsProperly(IGeometry<TCoordinate> g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
         }
 
         public Boolean Contains(IGeometry<TCoordinate> g, Tolerance tolerance)
@@ -1258,7 +1279,7 @@ namespace NetTopologySuite.Geometries
         }
 
         IGeometry ISpatialOperator.Buffer(Double distance,
-                                          BufferParameters bufferParameters )
+                                          BufferParameters bufferParameters)
         {
             return Buffer(distance, bufferParameters);
         }
@@ -1270,44 +1291,58 @@ namespace NetTopologySuite.Geometries
 
         IGeometry ISpatialOperator.Difference(IGeometry other)
         {
-            return Difference(convertIGeometry(other));
+            return Difference(ConvertIGeometry(other));
         }
 
         Double ISpatialOperator.Distance(IGeometry other)
         {
-            return Distance(convertIGeometry(other));
+            return Distance(ConvertIGeometry(other));
         }
 
         IGeometry ISpatialOperator.Intersection(IGeometry other)
         {
-            return Intersection(convertIGeometry(other));
+            return Intersection(ConvertIGeometry(other));
         }
 
         IGeometry ISpatialOperator.SymmetricDifference(IGeometry other)
         {
-            return SymmetricDifference(convertIGeometry(other));
+            return SymmetricDifference(ConvertIGeometry(other));
         }
 
         IGeometry ISpatialOperator.Union(IGeometry other)
         {
-            return Union(convertIGeometry(other));
+            return Union(ConvertIGeometry(other));
         }
 
-        Boolean ISpatialRelation.Contains(IGeometry other)
+        Boolean ISimpleSpatialRelation.Contains(IGeometry other)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return Contains(convertIGeometry(other));
+            return Contains(ConvertIGeometry(other));
+        }
+
+        Boolean ISimpleSpatialRelation.ContainsProperly(IGeometry other)
+        {
+            if (other == null) throw new ArgumentNullException("other");
+
+            return ContainsProperly(ConvertIGeometry(other));
         }
 
         Boolean ISpatialRelation.Contains(IGeometry other, Tolerance tolerance)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return Contains(convertIGeometry(other), tolerance);
+            return Contains(ConvertIGeometry(other), tolerance);
         }
 
-        Boolean ISpatialRelation.CoveredBy(IGeometry other)
+        Boolean ISpatialRelation.ContainsProperly(IGeometry other, Tolerance tolerance)
+        {
+            if (other == null) throw new ArgumentNullException("other");
+
+            return ContainsProperly(ConvertIGeometry(other), tolerance);
+        }
+
+        Boolean ISimpleSpatialRelation.CoveredBy(IGeometry other)
         {
             if (other == null) throw new ArgumentNullException("other");
 
@@ -1321,116 +1356,121 @@ namespace NetTopologySuite.Geometries
             return other.Covers(this, tolerance);
         }
 
-        Boolean ISpatialRelation.Covers(IGeometry other)
+        Boolean ISimpleSpatialRelation.Covers(IGeometry other)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return Covers(convertIGeometry(other));
+            return Covers(ConvertIGeometry(other));
         }
 
         Boolean ISpatialRelation.Covers(IGeometry other, Tolerance tolerance)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return Covers(convertIGeometry(other), tolerance);
+            return Covers(ConvertIGeometry(other), tolerance);
         }
 
-        Boolean ISpatialRelation.Crosses(IGeometry other)
+        Boolean ISimpleSpatialRelation.Crosses(IGeometry other)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return Crosses(convertIGeometry(other));
+            return Crosses(ConvertIGeometry(other));
         }
 
         Boolean ISpatialRelation.Crosses(IGeometry other, Tolerance tolerance)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return Crosses(convertIGeometry(other), tolerance);
+            return Crosses(ConvertIGeometry(other), tolerance);
         }
 
-        Boolean ISpatialRelation.Disjoint(IGeometry other)
+        Boolean ISimpleSpatialRelation.Disjoint(IGeometry other)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return Disjoint(convertIGeometry(other));
+            return Disjoint(ConvertIGeometry(other));
         }
 
         Boolean ISpatialRelation.Disjoint(IGeometry other, Tolerance tolerance)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return Disjoint(convertIGeometry(other), tolerance);
+            return Disjoint(ConvertIGeometry(other), tolerance);
         }
 
         Boolean ISpatialRelation.Equals(IGeometry other, Tolerance tolerance)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return Equals(convertIGeometry(other), tolerance);
+            return Equals(ConvertIGeometry(other), tolerance);
         }
 
         Boolean ISpatialRelation.EqualsExact(IGeometry other)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return EqualsExact(convertIGeometry(other));
+            return EqualsExact(ConvertIGeometry(other));
         }
 
         Boolean ISpatialRelation.EqualsExact(IGeometry other, Tolerance tolerance)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return EqualsExact(convertIGeometry(other), tolerance);
+            return EqualsExact(ConvertIGeometry(other), tolerance);
         }
 
-        Boolean ISpatialRelation.Intersects(IGeometry other)
+        Boolean ISimpleSpatialRelation.Intersects(IGeometry other)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return Intersects(convertIGeometry(other));
+            return Intersects(ConvertIGeometry(other));
         }
 
         Boolean ISpatialRelation.Intersects(IGeometry other, Tolerance tolerance)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return Intersects(convertIGeometry(other), tolerance);
+            return Intersects(ConvertIGeometry(other), tolerance);
         }
 
         Boolean ISpatialRelation.IsWithinDistance(IGeometry other, Double distance)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return IsWithinDistance(convertIGeometry(other), distance);
+            return IsWithinDistance(ConvertIGeometry(other), distance);
         }
 
         Boolean ISpatialRelation.IsWithinDistance(IGeometry other, Double distance, Tolerance tolerance)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return IsWithinDistance(convertIGeometry(other), distance, tolerance);
+            return IsWithinDistance(ConvertIGeometry(other), distance, tolerance);
         }
 
-        Boolean ISpatialRelation.Overlaps(IGeometry other)
+        Boolean ISimpleSpatialRelation.Overlaps(IGeometry other)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return Overlaps(convertIGeometry(other));
+            return Overlaps(ConvertIGeometry(other));
+        }
+
+        public bool Touches(IGeometry g)
+        {
+            throw new NotImplementedException();
         }
 
         Boolean ISpatialRelation.Overlaps(IGeometry other, Tolerance tolerance)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return Overlaps(convertIGeometry(other), tolerance);
+            return Overlaps(ConvertIGeometry(other), tolerance);
         }
 
         Boolean ISpatialRelation.Relate(IGeometry other, IntersectionMatrix intersectionPattern)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return Relate(convertIGeometry(other), intersectionPattern);
+            return Relate(ConvertIGeometry(other), intersectionPattern);
         }
 
         Boolean ISpatialRelation.Relate(IGeometry other,
@@ -1439,14 +1479,14 @@ namespace NetTopologySuite.Geometries
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return Relate(convertIGeometry(other), intersectionPattern, tolerance);
+            return Relate(ConvertIGeometry(other), intersectionPattern, tolerance);
         }
 
         Boolean ISpatialRelation.Relate(IGeometry other, String intersectionPattern)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return Relate(convertIGeometry(other), intersectionPattern);
+            return Relate(ConvertIGeometry(other), intersectionPattern);
         }
 
         Boolean ISpatialRelation.Relate(IGeometry other,
@@ -1455,40 +1495,40 @@ namespace NetTopologySuite.Geometries
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return Relate(convertIGeometry(other), intersectionPattern, tolerance);
+            return Relate(ConvertIGeometry(other), intersectionPattern, tolerance);
         }
 
         IntersectionMatrix ISpatialRelation.Relate(IGeometry other)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return Relate(convertIGeometry(other));
+            return Relate(ConvertIGeometry(other));
         }
 
         Boolean ISpatialRelation.Touches(IGeometry other)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return Touches(convertIGeometry(other));
+            return Touches(ConvertIGeometry(other));
         }
 
         Boolean ISpatialRelation.Touches(IGeometry other, Tolerance tolerance)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return Touches(convertIGeometry(other), tolerance);
+            return Touches(ConvertIGeometry(other), tolerance);
         }
 
-        Boolean ISpatialRelation.Within(IGeometry other)
+        Boolean ISimpleSpatialRelation.Within(IGeometry other)
         {
             if (other == null) throw new ArgumentNullException("other");
 
-            return Within(convertIGeometry(other));
+            return Within(ConvertIGeometry(other));
         }
 
         Boolean ISpatialRelation.Within(IGeometry other, Tolerance tolerance)
         {
-            return Within(convertIGeometry(other), tolerance);
+            return Within(ConvertIGeometry(other), tolerance);
         }
 
         IExtents<TCoordinate> IBoundable<IExtents<TCoordinate>>.Bounds
@@ -1506,18 +1546,18 @@ namespace NetTopologySuite.Geometries
             get { return SpatialReference; }
         }
 
-        #endregion
+        #endregion IGeometry<TCoordinate> Members
 
         #region Protected helper members
 
-        /// <summary> 
-        /// Returns the minimum and maximum x and y values in this 
-        /// <see cref="Geometry{TCoordinate}"/>, or a null 
-        /// <see cref="Extents{TCoordinate}"/> if this 
+        /// <summary>
+        /// Returns the minimum and maximum x and y values in this
+        /// <see cref="Geometry{TCoordinate}"/>, or a null
+        /// <see cref="Extents{TCoordinate}"/> if this
         /// <see cref="Geometry{TCoordinate}"/> is empty.
         /// </summary>
-        /// <returns>    
-        /// This <see cref="Geometry{TCoordinate}"/>s bounding box; 
+        /// <returns>
+        /// This <see cref="Geometry{TCoordinate}"/>s bounding box;
         /// if the <see cref="Geometry{TCoordinate}"/>
         /// is empty, <c>Envelope.IsNull</c> will return <see langword="true"/>.
         /// </returns>
@@ -1543,21 +1583,21 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns whether the two <see cref="Geometry{TCoordinate}"/>s are equal, 
-        /// from the point of view of the <see cref="EqualsExact"/> method. 
-        /// Called by <c>EqualsExact</c>. In general, two 
+        /// Returns whether the two <see cref="Geometry{TCoordinate}"/>s are equal,
+        /// from the point of view of the <see cref="EqualsExact"/> method.
+        /// Called by <c>EqualsExact</c>. In general, two
         /// <see cref="Geometry{TCoordinate}"/> classes are considered to be
-        /// "equivalent" only if they are the same class. 
-        /// An exception is <c>LineString</c>, which is considered to be 
+        /// "equivalent" only if they are the same class.
+        /// An exception is <c>LineString</c>, which is considered to be
         /// equivalent to its subclasses.
         /// </summary>
         /// <param name="other">
-        /// The <see cref="Geometry{TCoordinate}"/> with which to compare 
+        /// The <see cref="Geometry{TCoordinate}"/> with which to compare
         /// this <see cref="Geometry{TCoordinate}"/> for equality.
         /// </param>
         /// <returns>
-        /// <see langword="true"/> if the classes of the two 
-        /// <see cref="Geometry{TCoordinate}"/>s are considered 
+        /// <see langword="true"/> if the classes of the two
+        /// <see cref="Geometry{TCoordinate}"/>s are considered
         /// to be equal by the <see cref="EqualsExact"/> method.
         /// </returns>
         protected virtual Boolean IsEquivalentClass(IGeometry other)
@@ -1566,18 +1606,18 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Throws an exception if <paramref name="g"/> 's type is 
-        /// <see cref="IGeometryCollection{TCoordinate}" /> 
+        /// Throws an exception if <paramref name="g"/> 's type is
+        /// <see cref="IGeometryCollection{TCoordinate}" />
         /// (its subclasses do not trigger an exception).
         /// </summary>
         /// <param name="g">The <see cref="Geometry{TCoordinate}"/> to check.</param>
         /// <exception cref="ArgumentException">
-        /// if <paramref name="g"/> is a <see cref="GeometryCollection{TCoordinate}" />, 
+        /// if <paramref name="g"/> is a <see cref="GeometryCollection{TCoordinate}" />,
         /// but not one of its subclasses.
         /// </exception>
         protected static void CheckNotNonEmptyGeometryCollection(IGeometry<TCoordinate> g)
         {
-            if (isGeometryCollection(g) && !g.IsEmpty)//jd:allowing empty collections to pass 
+            if (isGeometryCollection(g) && !g.IsEmpty)//jd:allowing empty collections to pass
             {
                 throw new ArgumentException("This method does not support " +
                                             "GeometryCollection arguments");
@@ -1585,18 +1625,18 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns the minimum and maximum x and y values in this 
-        /// <see cref="Geometry{TCoordinate}"/>, or a null <see cref="Extents{TCoordinate}"/> 
+        /// Returns the minimum and maximum x and y values in this
+        /// <see cref="Geometry{TCoordinate}"/>, or a null <see cref="Extents{TCoordinate}"/>
         /// if this <see cref="Geometry{TCoordinate}"/> is empty.
         /// </summary>
         /// <remarks>
-        /// Unlike <see cref="Extents"/> or <see cref="ExtentsInternal"/>, this method 
+        /// Unlike <see cref="Extents"/> or <see cref="ExtentsInternal"/>, this method
         /// calculates the <see cref="Extents{TCoordinate}"/>
         /// each time it is called; <see cref="Extents"/> caches the result
-        /// of this method.        
+        /// of this method.
         /// </remarks>
         /// <returns>
-        /// This <see cref="Geometry{TCoordinate}"/>s bounding box; 
+        /// This <see cref="Geometry{TCoordinate}"/>s bounding box;
         /// if the <see cref="Geometry{TCoordinate}"/>
         /// is empty, <see cref="Extents{TCoordinate}.IsEmpty"/> will return <see langword="true"/>.
         /// </returns>
@@ -1621,7 +1661,7 @@ namespace NetTopologySuite.Geometries
         /// or less than another <see cref="IGeometry{TCoordinate}"/> having the same class.
         /// </summary>
         /// <param name="other">
-        /// A <see cref="Geometry{TCoordinate}"/> having the same class as this 
+        /// A <see cref="Geometry{TCoordinate}"/> having the same class as this
         /// <see cref="Geometry{TCoordinate}"/>.
         /// </param>
         /// <returns>
@@ -1632,23 +1672,23 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         protected internal abstract Int32 CompareToSameClass(IGeometry<TCoordinate> other);
 
-        #endregion
+        #endregion Protected helper members
 
         #region Private helper members
 
-        private static IGeometry<TCoordinate> convertIGeometry(IGeometry other)
+        internal static IGeometry<TCoordinate> ConvertIGeometry(IGeometry other)
         {
             return GenericInterfaceConverter<TCoordinate>.Convert(other);
         }
 
         /// <summary>
-        /// Returns <see langword="true"/> if <c>g</c>'s class is <see cref="GeometryCollection{TCoordinate}" />. 
+        /// Returns <see langword="true"/> if <c>g</c>'s class is <see cref="GeometryCollection{TCoordinate}" />.
         /// (its subclasses do not trigger an exception).
         /// </summary>
         /// <param name="g">The <see cref="Geometry{TCoordinate}"/> to check.</param>
         /// <exception cref="ArgumentException">
         /// If <c>g</c> is a <see cref="GeometryCollection{TCoordinate}" />, but not one of its subclasses.
-        /// </exception>        
+        /// </exception>
         private static Boolean isGeometryCollection(IGeometry<TCoordinate> g)
         {
             return g is IGeometryCollection<TCoordinate> &&
@@ -1711,7 +1751,7 @@ namespace NetTopologySuite.Geometries
             return true;
         }
 
-        #endregion
+        #endregion Private helper members
 
         #region Deprecated
 
@@ -1743,7 +1783,7 @@ namespace NetTopologySuite.Geometries
         //    Apply(new GeometryChangedFilter());
         //}
 
-        ///// <summary> 
+        ///// <summary>
         ///// Notifies this Geometry that its Coordinates have been changed by an external
         ///// party. When GeometryChanged is called, this method will be called for
         ///// this Geometry and its component Geometries.
@@ -1754,8 +1794,8 @@ namespace NetTopologySuite.Geometries
         //}
 
         /*
-         * [codekaizen 2008-01-14]  Removed this method due to the removal of 
-         *                          IO implementation. Use specific external IO 
+         * [codekaizen 2008-01-14]  Removed this method due to the removal of
+         *                          IO implementation. Use specific external IO
          *                          libraries to encode geometry instances.
          */
 
@@ -1763,7 +1803,7 @@ namespace NetTopologySuite.Geometries
         ///// Returns the feature representation as GML 2.1.1 XML document.
         ///// This XML document is based on <c>Geometry.xsd</c> schema.
         ///// NO features or XLink are implemented here!
-        ///// </summary>        
+        ///// </summary>
         //public XmlReader ToGMLFeature()
         //{
         //    GMLWriter writer = new GMLWriter();
@@ -1772,7 +1812,7 @@ namespace NetTopologySuite.Geometries
 
         /*
          * [codekaizen 2008-01-14]  replaced the following visitor pattern methods
-         *                          with enumeration / query pattern methods which 
+         *                          with enumeration / query pattern methods which
          *                          accept a Func<T, TResult> method.
          */
 
@@ -1865,7 +1905,7 @@ namespace NetTopologySuite.Geometries
         // ============= BEGIN ADDED BY MPAUL42: monoGIS team
 
         ///// <summary>
-        ///// A predefined <see cref="GeometryFactory{TCoordinate}" /> 
+        ///// A predefined <see cref="GeometryFactory{TCoordinate}" />
         ///// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModelType.Fixed" />.
         ///// </summary>
         ///// <seealso cref="GeometryFactory{TCoordinate}.CreateFixedPrecision"/>
@@ -1873,7 +1913,7 @@ namespace NetTopologySuite.Geometries
 
         // ============= END ADDED BY MPAUL42: monoGIS team
 
-        #endregion
+        #endregion Deprecated
 
         public override Boolean Equals(Object obj)
         {
@@ -1882,7 +1922,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns the Well-Known Text representation of this 
+        /// Returns the Well-Known Text representation of this
         /// <see cref="Geometry{TCoordinate}"/>.
         /// </summary>
         /// <remarks>
@@ -1890,7 +1930,7 @@ namespace NetTopologySuite.Geometries
         /// Features Specification.
         /// </remarks>
         /// <returns>
-        /// The Well-Known Text representation of this 
+        /// The Well-Known Text representation of this
         /// <see cref="Geometry{TCoordinate}"/>.
         /// </returns>
         public override String ToString()
@@ -1911,16 +1951,16 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns whether this <see cref="Geometry{TCoordinate}"/> is greater than, 
-        /// equal to, or less than another <see cref="Geometry{TCoordinate}"/>. 
+        /// Returns whether this <see cref="Geometry{TCoordinate}"/> is greater than,
+        /// equal to, or less than another <see cref="Geometry{TCoordinate}"/>.
         /// </summary>
         /// <param name="other">
-        /// A <see cref="Geometry{TCoordinate}"/> with which to 
+        /// A <see cref="Geometry{TCoordinate}"/> with which to
         /// compare this <see cref="Geometry{TCoordinate}"/>.
         /// </param>
         /// <returns>
         /// A positive number, 0, or a negative number, depending on whether
-        /// this object is greater than, equal to, or less than <paramref name="other"/>, 
+        /// this object is greater than, equal to, or less than <paramref name="other"/>,
         /// as defined in "Normal Form For Geometry" in the NTS Technical
         /// Specifications.
         /// </returns>
@@ -1949,12 +1989,11 @@ namespace NetTopologySuite.Geometries
 
         #region IGeometry Members
 
-
         IPoint IGeometry.PointOnSurface
         {
             get { return PointOnSurface; }
         }
 
-        #endregion
+        #endregion IGeometry Members
     }
 }

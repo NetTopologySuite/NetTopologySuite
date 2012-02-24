@@ -71,7 +71,7 @@ namespace NetTopologySuite.Index.Quadtree
             return Intersects(query);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Returns the subquad containing the envelope.
         /// Creates the subquad if it does not already exist.
         /// </summary>
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Index.Quadtree
             if (subnodeIndex != -1)
             {
                 // create the quad if it does not exist
-                Node<TCoordinate, TItem> node = getSubnode(subnodeIndex);
+                Node<TCoordinate, TItem> node = GetSubnode(subnodeIndex);
                 // recursively search the found/created quad
                 return node.GetNode(query);
             }
@@ -129,7 +129,7 @@ namespace NetTopologySuite.Index.Quadtree
             {
                 // the quad is not a direct child, so make a new child quad to contain it
                 // and recursively insert the quad
-                Node<TCoordinate, TItem> childNode = createSubnode(index);
+                Node<TCoordinate, TItem> childNode = CreateSubnode(index);
                 childNode.InsertNode(node);
                 SubNodesInternal[index] = childNode;
             }
@@ -149,17 +149,17 @@ namespace NetTopologySuite.Index.Quadtree
         /// Get the subquad for the index.
         /// If it doesn't exist, create it.
         /// </summary>
-        private Node<TCoordinate, TItem> getSubnode(Int32 index)
+        private Node<TCoordinate, TItem> GetSubnode(Int32 index)
         {
             if (SubNodesInternal[index] == null)
             {
-                SubNodesInternal[index] = createSubnode(index);
+                SubNodesInternal[index] = CreateSubnode(index);
             }
 
             return SubNodesInternal[index] as Node<TCoordinate, TItem>;
         }
 
-        private Node<TCoordinate, TItem> createSubnode(Int32 index)
+        private Node<TCoordinate, TItem> CreateSubnode(Int32 index)
         {
             // create a new subquad in the appropriate quadrant
             Double minx = 0.0;
@@ -168,12 +168,12 @@ namespace NetTopologySuite.Index.Quadtree
             Double maxy = 0.0;
 
             DoubleComponent cx, cy, bx, by;
-            _center.GetComponents(out cx, out cy);
+            ((IVector<DoubleComponent>)_center).GetComponents(out cx, out cy);
 
             switch (index)
             {
                 case 0:
-                    Bounds.Min.GetComponents(out bx, out by);
+                    ((IVector<DoubleComponent>)Bounds.Min).GetComponents(out bx, out by);
                     minx = (Double)bx;
                     maxx = (Double)cx;
                     miny = (Double)by;
@@ -203,7 +203,7 @@ namespace NetTopologySuite.Index.Quadtree
                     break;
 
                 case 3:
-                    Bounds.Max.GetComponents(out bx, out by);
+                    ((IVector<DoubleComponent>)Bounds.Max).GetComponents(out bx, out by);
                     minx = (Double)cx;
                     maxx = (Double)bx;
                     miny = (Double)cy;
@@ -219,7 +219,7 @@ namespace NetTopologySuite.Index.Quadtree
             }
 
             IExtents<TCoordinate> sqEnv = new Extents<TCoordinate>(_geoFactory, minx, maxx, miny, maxy);
-            Node<TCoordinate, TItem> node = new Node<TCoordinate, TItem>(sqEnv, _level - 1);
+            var node = new Node<TCoordinate, TItem>(sqEnv, _level - 1);
             return node;
         }
     }

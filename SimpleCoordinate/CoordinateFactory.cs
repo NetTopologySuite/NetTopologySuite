@@ -248,10 +248,10 @@ namespace NetTopologySuite.Coordinates.Simple
             {
                 return coordinate.IsEmpty
                     ? new Coordinate()
-                    : Create(coordinate[Ordinates.X],
-                             coordinate[Ordinates.Y],
-                             coordinate[Ordinates.Z],
-                             coordinate[Ordinates.W]);
+                    : Create(coordinate[GeoAPI.Coordinates.Ordinates.X],
+                             coordinate[GeoAPI.Coordinates.Ordinates.Y],
+                             coordinate[GeoAPI.Coordinates.Ordinates.Z],
+                             coordinate[GeoAPI.Coordinates.Ordinates.W]);
 
             }
 

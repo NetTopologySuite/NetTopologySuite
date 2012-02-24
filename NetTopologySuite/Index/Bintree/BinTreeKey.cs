@@ -25,7 +25,6 @@ namespace NetTopologySuite.Index.Bintree
         #endregion
 
         #region IAddable<DoubleBinTreeValue> Members
-
         public DoubleBinTreeValue Add(DoubleBinTreeValue other)
         {
             return new DoubleBinTreeValue(_value + other._value);

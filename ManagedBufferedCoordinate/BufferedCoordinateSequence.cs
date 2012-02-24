@@ -4,15 +4,19 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using GeoAPI.Coordinates;
+
 #if !DOTNET40
 using GeoAPI.DataStructures.Collections.Generic;
 #endif
+
 using GeoAPI.Geometries;
 using NPack;
 using NPack.Interfaces;
 
 #if DOTNET35
+
 using System.Linq;
+
 using sl = System.Linq;
 #else
 using GeoAPI.DataStructures;
@@ -21,10 +25,10 @@ using sl = GeoAPI.DataStructures;
 
 namespace NetTopologySuite.Coordinates
 {
+    using GeoAPI.DataStructures;
     using IBufferedCoordFactory = ICoordinateFactory<BufferedCoordinate>;
     using IBufferedCoordSequence = ICoordinateSequence<BufferedCoordinate>;
     using IBufferedCoordSequenceFactory = ICoordinateSequenceFactory<BufferedCoordinate>;
-    using GeoAPI.DataStructures;
 
     /// <summary>
     /// An <see cref="ICoordinateSequence{BufferedCoordinate}"/>.
@@ -131,7 +135,7 @@ namespace NetTopologySuite.Coordinates
         public override string ToString()
         {
             StringBuilder buffer = new StringBuilder();
-            
+
             if (_reversed)
             {
                 buffer.Append("Reversed ");
@@ -153,7 +157,7 @@ namespace NetTopologySuite.Coordinates
 
                 buffer.Append(") ");
             }
-            
+
             buffer.Append(IsFrozen ? "Frozen " : String.Empty);
             buffer.AppendFormat("Points: {0} ", Count);
 
@@ -229,6 +233,29 @@ namespace NetTopologySuite.Coordinates
             return array;
         }
 
+        public double[][] ToOrdinateArray2D()
+        {
+            var length = Count;
+            var res = new double[length][];
+            for (var i = 0; i < length; i++)
+                res[i] = this[i].ToArray2D();
+            return res;
+        }
+
+        public double[][] ToOrdinateArray(params Ordinates[] ordinates)
+        {
+            var length = Count;
+            var res = new double[length][];
+            for (var i = 0; i < length; i++)
+                res[i] = this[i].ToArray(ordinates);
+            return res;
+        }
+
+        public double[][] ToOrdinateArray(OrdinateFlags ordinates)
+        {
+            return ToOrdinateArray(OrdinateUtility.ToOrdinates(ordinates));
+        }
+
         public void Add(BufferedCoordinate item)
         {
             checkFrozen();
@@ -251,7 +278,6 @@ namespace NetTopologySuite.Coordinates
 
             if (reverse)
             {
-
                 coordinates = sl.Enumerable.Reverse(coordinates);
             }
 
@@ -328,6 +354,7 @@ namespace NetTopologySuite.Coordinates
             return new BufferedCoordinateSet(this, _factory, _buffer);
         }
 #endif
+
         public IBufferedCoordSequence Clear()
         {
             _sequence.Clear();
@@ -703,7 +730,7 @@ namespace NetTopologySuite.Coordinates
                                                                  out index);
                 List<Int32> list = getStorage(storage);
 
-                // TODO: I can't figure out a test to prove the defect in the 
+                // TODO: I can't figure out a test to prove the defect in the
                 // following commented-out line...
 
                 //_sequence[index] = _buffer.Add(value);
@@ -715,18 +742,18 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
-        public Double this[Int32 index, Ordinates ordinate]
+        public Double this[Int32 index, Ordinates ordinates]
         {
             get
             {
-                checkOrdinate(ordinate);
+                checkOrdinate(ordinates);
 
-                return this[index][ordinate];
+                return this[index][ordinates];
             }
             set
             {
                 checkFrozen();
-                checkOrdinate(ordinate);
+                checkOrdinate(ordinates);
 
                 throw new NotImplementedException();
                 //onSequenceChanged();
@@ -983,8 +1010,8 @@ namespace NetTopologySuite.Coordinates
 
             // TODO: consider using an internal start offset instead of a copy
             // also, not using the indexer on this sequence would boost performance.
-            // 
-            // This is a rather naive implementation, which should be adequate, as 
+            //
+            // This is a rather naive implementation, which should be adequate, as
             // this method is used infrequently.
             checkFrozen();
             Int32 count = Count;
@@ -1154,7 +1181,7 @@ namespace NetTopologySuite.Coordinates
             }
 
             // handle the 3 cases where the slice intersects the main
-            // sequence: either it does so completely, 
+            // sequence: either it does so completely,
             // partially including the start, or partially including the end.
             if (startStorage != SequenceStorage.MainList &&
                 endStorage != SequenceStorage.MainList)
@@ -1221,7 +1248,7 @@ namespace NetTopologySuite.Coordinates
                     sliceSkips = new SortedSet<Int32>();
 #if DOTNET40
                     int val = generator();
-                    while(condition(val))
+                    while (condition(val))
                     {
                         sliceSkips.Add(val);
                         val = generator();
@@ -1235,8 +1262,7 @@ namespace NetTopologySuite.Coordinates
                 }
             }
 
-
-            // The two cases where the slice starts and ends completely 
+            // The two cases where the slice starts and ends completely
             // within the prepended or appended cooridnates are already handled
             switch (endStorage)
             {
@@ -1440,9 +1466,10 @@ namespace NetTopologySuite.Coordinates
 
         public event EventHandler SequenceChanged;
 
-        #endregion
+        #endregion IBufferedCoordSequence Members
 
         #region Explicit ICoordinateSequence Members
+
         IExtents ICoordinateSequence.ExpandExtents(IExtents extents)
         {
             IExtents expanded = extents;
@@ -1495,7 +1522,7 @@ namespace NetTopologySuite.Coordinates
             get { return this[index]; }
             set
             {
-                if(value == null) throw new ArgumentNullException("value");
+                if (value == null) throw new ArgumentNullException("value");
                 BufferedCoordinate coord = _factory.CoordinateFactory.Create(value);
                 this[index] = coord;
             }
@@ -1536,16 +1563,19 @@ namespace NetTopologySuite.Coordinates
             get { return Reversed; }
         }
 
-        #endregion
+        #endregion Explicit ICoordinateSequence Members
 
         #region Explicit IEnumerable Members
+
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
-        #endregion
+
+        #endregion Explicit IEnumerable Members
 
         #region Explicit IList Members
+
         Object IList.this[Int32 index]
         {
             get { return this[index]; }
@@ -1622,9 +1652,11 @@ namespace NetTopologySuite.Coordinates
         {
             RemoveAt(index);
         }
-        #endregion
+
+        #endregion Explicit IList Members
 
         #region Explicit ICollection Members
+
         void ICollection.CopyTo(Array array, Int32 index)
         {
             checkCopyToParameters(array, index, "index");
@@ -1654,7 +1686,8 @@ namespace NetTopologySuite.Coordinates
         {
             return Clone();
         }
-        #endregion
+
+        #endregion Explicit ICollection Members
 
         #region Explicit IList<BufferedCoordinate> Members
 
@@ -1668,7 +1701,7 @@ namespace NetTopologySuite.Coordinates
             RemoveAt(index);
         }
 
-        #endregion
+        #endregion Explicit IList<BufferedCoordinate> Members
 
         #region Explicit ICollection<BufferedCoordinate> Members
 
@@ -1677,7 +1710,7 @@ namespace NetTopologySuite.Coordinates
             Clear();
         }
 
-        #endregion
+        #endregion Explicit ICollection<BufferedCoordinate> Members
 
         protected void OnSequenceChanged()
         {
@@ -1723,6 +1756,7 @@ namespace NetTopologySuite.Coordinates
         }
 
         #region Private helper members
+
         //private void swap(Int32 i, Int32 j)
         //{
         //    //checkIndex(i, "i");
@@ -1774,7 +1808,7 @@ namespace NetTopologySuite.Coordinates
 
             SequenceStorage storage;
 
-            // If the index is smaller than the prepended count, 
+            // If the index is smaller than the prepended count,
             // index into the prepended storage
             if (projectedIndex < prependCount)
             {
@@ -1830,11 +1864,11 @@ namespace NetTopologySuite.Coordinates
             return storage;
         }
 
-        private void checkOrdinate(Ordinates ordinate)
+        private void checkOrdinate(Ordinates ordinates)
         {
-            if (ordinate == Ordinates.Z || ordinate == Ordinates.M)
+            if (ordinates == Ordinates.Z || ordinates == Ordinates.M)
             {
-                throw new ArgumentOutOfRangeException("ordinate", ordinate,
+                throw new ArgumentOutOfRangeException("ordinates", ordinates,
                                                       "The ICoordinateSequence does " +
                                                       "not have this dimension");
             }
@@ -1938,8 +1972,8 @@ namespace NetTopologySuite.Coordinates
 
         private void appendCoordIndex(Int32 coordIndex)
         {
-            // if we are already appending indexes, put it in the 
-            // appropriate appending list... 
+            // if we are already appending indexes, put it in the
+            // appropriate appending list...
             if (_reversed && _prependedIndexes != null)
             {
                 _prependedIndexes.Add(coordIndex);
@@ -1966,7 +2000,7 @@ namespace NetTopologySuite.Coordinates
                     // if we are appending to a reversed sequence, we
                     // really want to prepend... however this would
                     // translate into an insert (read: copy), which we are currently
-                    // avoiding. Thus, add to the prepend list. 
+                    // avoiding. Thus, add to the prepend list.
                     // TODO: consider a heuristic to judge when an insert
                     // to the head of a list would be better than a multiple list
                     // sequence.
@@ -2021,7 +2055,7 @@ namespace NetTopologySuite.Coordinates
 
         private void prependCoordIndex(Int32 coordIndex)
         {
-            // if we are already prepending indexes, put it in the 
+            // if we are already prepending indexes, put it in the
             // appropriate prepending list...
             if (_reversed)
             {
@@ -2058,9 +2092,9 @@ namespace NetTopologySuite.Coordinates
                 }
                 else
                 {
-                    // We want to avoid copying the entire sequence in memory just to 
+                    // We want to avoid copying the entire sequence in memory just to
                     // insert a coordinate.
-                    // Thus, add to the prepend list. 
+                    // Thus, add to the prepend list.
                     // TODO: consider a heuristic to judge when an insert
                     // to the head of a list would be better than a multiple list
                     // sequence.
@@ -2133,7 +2167,7 @@ namespace NetTopologySuite.Coordinates
 
         private void appendInternal(BufferedCoordinateSequence sequence)
         {
-            // check to see if the sequences have different buffers, 
+            // check to see if the sequences have different buffers,
             // if so, just do a normal range append
             if (!ReferenceEquals(sequence._buffer, _buffer))
             {
@@ -2153,7 +2187,7 @@ namespace NetTopologySuite.Coordinates
 
         private void prependInternal(BufferedCoordinateSequence sequence)
         {
-            // check to see if the sequences have different buffers, 
+            // check to see if the sequences have different buffers,
             // if so, just do a normal range prepend
             if (!ReferenceEquals(sequence._buffer, _buffer))
             {
@@ -2179,7 +2213,7 @@ namespace NetTopologySuite.Coordinates
             // push the end index forward if the conditions are right:
             //  * no appended indexes
             //  * _endIndex is less than _sequence.Count
-            //  * the index of the appending coordinate is the same 
+            //  * the index of the appending coordinate is the same
             //    as the underlying sequence at _endIndex + 1
             if (_appendedIndexes == null)
             {
@@ -2218,7 +2252,7 @@ namespace NetTopologySuite.Coordinates
             // push the start index back if the conditions are right:
             //  * no prepended indexes
             //  * _startIndex is greater than 0
-            //  * the index of the prepending coordinate is the same 
+            //  * the index of the prepending coordinate is the same
             //    as the underlying sequence at _startIndex - 1
             if (_prependedIndexes == null)
             {
@@ -2257,7 +2291,7 @@ namespace NetTopologySuite.Coordinates
             // push the start index forward if the conditions are right:
             //  * no prepended indexes
             //  * _startIndex is greater than 0
-            //  * the index of the appending coordinate is the same 
+            //  * the index of the appending coordinate is the same
             //    as the underlying sequence at _startIndex - 1
             if (_prependedIndexes == null)
             {
@@ -2297,7 +2331,7 @@ namespace NetTopologySuite.Coordinates
             // push the end index forward if the conditions are right:
             //  * no appended indexes
             //  * _endIndex is less than _sequence.Count - 1
-            //  * the index of the prepending coordinate is the same 
+            //  * the index of the prepending coordinate is the same
             //    as the underlying sequence at _endIndex + 1
             if (_appendedIndexes == null)
             {
@@ -2376,6 +2410,7 @@ namespace NetTopologySuite.Coordinates
             List<Int32> list = getStorage(storage);
             return list[index];
         }
-        #endregion
+
+        #endregion Private helper members
     }
 }

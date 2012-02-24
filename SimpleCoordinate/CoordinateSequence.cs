@@ -2,43 +2,45 @@
 
 /*
  *  The attached / following is part of NetTopologySuite.Coordinates.Simple.
- *  
- *  NetTopologySuite.Coordinates.Simple is free software ? 2009 Ingenieurgruppe IVV GmbH & Co. KG, 
- *  www.ivv-aachen.de; you can redistribute it and/or modify it under the terms 
- *  of the current GNU Lesser General Public License (LGPL) as published by and 
- *  available from the Free Software Foundation, Inc., 
+ *
+ *  NetTopologySuite.Coordinates.Simple is free software ? 2009 Ingenieurgruppe IVV GmbH & Co. KG,
+ *  www.ivv-aachen.de; you can redistribute it and/or modify it under the terms
+ *  of the current GNU Lesser General Public License (LGPL) as published by and
+ *  available from the Free Software Foundation, Inc.,
  *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA: http://fsf.org/.
- *  This program is distributed without any warranty; 
+ *  This program is distributed without any warranty;
  *  without even the implied warranty of merchantability or fitness for purpose.
- *  See the GNU Lesser General Public License for the full details. 
- *  
+ *  See the GNU Lesser General Public License for the full details.
+ *
  *  This work was derived from NetTopologySuite.Coordinates.ManagedBufferedCoordinate
  *  by codekaizen
- *  
+ *
  *  Author: Felix Obermaier 2009
- *  
+ *
  */
 
-#endregion
+#endregion License
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
+
 #if !DOTNET40
 using GeoAPI.DataStructures.Collections.Generic;
 using C5;
 #endif
+
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Coordinates.Simple
 {
+    using C5;
     using ICoordFactory = ICoordinateFactory<Coordinate>;
     using ICoordSequence = ICoordinateSequence<Coordinate>;
-    using ICoordSequenceFactory = ICoordinateSequenceFactory<Coordinate>;
-    using C5;
 
     /*
     /// <summary>
@@ -80,7 +82,7 @@ namespace NetTopologySuite.Coordinates.Simple
         ///<param name="factory">The factory to create coordinate instances.</param>
         internal CoordinateSequence(CoordinateFactory factory)
             : this(factory, true)
-        {}
+        { }
 
         private CoordinateSequence(CoordinateFactory factory, bool createList)
         {
@@ -148,7 +150,7 @@ namespace NetTopologySuite.Coordinates.Simple
             set
             {
                 Assert.IsTrue(!value.IsEmpty);
-                _coordinates[i] = (Coordinate) value;
+                _coordinates[i] = (Coordinate)value;
             }
         }
 
@@ -165,7 +167,7 @@ namespace NetTopologySuite.Coordinates.Simple
             get { return _coordinates.Count; }
         }
 
-        #endregion
+        #endregion ICoordinateSequence<Coordinate> Members
 
         ///<summary>
         /// Get a copy of the Coordinate with index i.
@@ -207,15 +209,15 @@ namespace NetTopologySuite.Coordinates.Simple
          * @see com.vividsolutions.jts.geom.CoordinateSequence#getOrdinate(int, int)
          */
 
-        public Double GetOrdinate(int index, Ordinates ordinateIndex)
+        public Double GetOrdinate(int index, GeoAPI.Coordinates.Ordinates ordinatesIndex)
         {
-            switch (ordinateIndex)
+            switch (ordinatesIndex)
             {
-                case Ordinates.X:
+                case GeoAPI.Coordinates.Ordinates.X:
                     return _coordinates[index].X;
-                case Ordinates.Y:
+                case GeoAPI.Coordinates.Ordinates.Y:
                     return _coordinates[index].Y;
-                case Ordinates.Z:
+                case GeoAPI.Coordinates.Ordinates.Z:
                     return _coordinates[index].Z;
             }
             return Double.NaN;
@@ -231,7 +233,7 @@ namespace NetTopologySuite.Coordinates.Simple
          * @see com.vividsolutions.jts.geom.CoordinateSequence#setOrdinate(int, int, double)
          */
 
-        public void SetOrdinate(int index, Ordinates ordinateIndex, double value)
+        public void SetOrdinate(int index, GeoAPI.Coordinates.Ordinates ordinatesIndex, double value)
         {
             throw new NotSupportedException("SetOrdinate");
             //switch (ordinateIndex) {
@@ -272,7 +274,7 @@ namespace NetTopologySuite.Coordinates.Simple
         {
             if (Count > 0)
             {
-                var strBuf = new StringBuilder(17*Count);
+                var strBuf = new StringBuilder(17 * Count);
                 strBuf.Append('(');
                 strBuf.Append(_coordinates[0]);
                 for (int i = 1; i < Count; i++)
@@ -311,10 +313,10 @@ namespace NetTopologySuite.Coordinates.Simple
 
         private static Coordinate Check(Coordinate coord, ICoordFactory factory)
         {
-            if ( coord.IsEmpty )
+            if (coord.IsEmpty)
                 throw new InvalidOperationException("Must not add empty coordinate to sequence");
 
-            if ( coord.CoordinateFactory == factory )
+            if (coord.CoordinateFactory == factory)
                 return coord;
 
             return factory.Create(coord);
@@ -329,10 +331,10 @@ namespace NetTopologySuite.Coordinates.Simple
         private static ICoordinateSequence<Coordinate> Check(ICoordinateSequence sequence, ICoordinateSequenceFactory<Coordinate> factory)
         {
             if (sequence is CoordinateSequence)
-                return (CoordinateSequence) sequence;
+                return (CoordinateSequence)sequence;
             return factory.Create(sequence);
         }
-        
+
         #region ICoordSequence<Coordinate> Member
 
         private Boolean _isFrozen;
@@ -370,7 +372,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public ICoordinateSequence<Coordinate> AddSequence(ICoordinateSequence<Coordinate> sequence)
         {
-            return AddRange(sequence, true,false);
+            return AddRange(sequence, true, false);
         }
 
         public ICoordinateSequence<Coordinate> Append(Coordinate coordinate)
@@ -535,12 +537,14 @@ namespace NetTopologySuite.Coordinates.Simple
         {
             get { return _isFrozen; }
         }
+
         /*
         private Int32 ComputeIndex( Int32 index )
         {
             return !_reversed ? index : LastIndex - index;
         }
          */
+
         public Coordinate this[int index]
         {
             //get { return _coordinates[_indexComputer(index)]; }
@@ -580,7 +584,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public ICoordinateSequence<Coordinate> Prepend(Coordinate coordinate)
         {
-            return Prepend(new[] {coordinate});
+            return Prepend(new[] { coordinate });
         }
 
         public ICoordinateSequence<Coordinate> Prepend(IEnumerable<Coordinate> coordinates)
@@ -588,9 +592,9 @@ namespace NetTopologySuite.Coordinates.Simple
             CheckFrozen();
             //if (!_reversed)
             //{
-                var newCoords = new List<Coordinate>(Check(coordinates, _coordFactory));
-                newCoords.AddRange(_coordinates);
-                _coordinates = newCoords;
+            var newCoords = new List<Coordinate>(Check(coordinates, _coordFactory));
+            newCoords.AddRange(_coordinates);
+            _coordinates = newCoords;
             //}
             //else
             //    _coordinates.AddRange(new Stack<Coordinate>(Check(coordinates, _factory.CoordinateFactory)));
@@ -753,14 +757,14 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public ICoordinateSequence<Coordinate> Splice(Coordinate coordinate, int startIndex, int endIndex)
         {
-            return Splice(new[]{coordinate}, startIndex, endIndex, (IEnumerable<Coordinate>)null);
+            return Splice(new[] { coordinate }, startIndex, endIndex, (IEnumerable<Coordinate>)null);
         }
 
         private IEnumerable<Coordinate> GetRange(Int32 startIndex, Int32 count)
         {
             IEnumerable<Coordinate> retVal;
             //if (!_reversed)
-                retVal = _coordinates.GetRange(startIndex,count);
+            retVal = _coordinates.GetRange(startIndex, count);
             //else
             //{
             //    retVal = new Stack<Coordinate>(
@@ -772,28 +776,28 @@ namespace NetTopologySuite.Coordinates.Simple
         public ICoordinateSequence<Coordinate> Splice(Coordinate startCoordinate, int startIndex, int endIndex,
                                                       Coordinate endCoordinate)
         {
-            return Splice(new[] {startCoordinate}, startIndex, endIndex, new[] {endCoordinate});
+            return Splice(new[] { startCoordinate }, startIndex, endIndex, new[] { endCoordinate });
         }
 
         public ICoordinateSequence<Coordinate> Splice(IEnumerable<Coordinate> startCoordinates, int startIndex,
                                                       int endIndex, Coordinate endCoordinate)
         {
-            return Splice(startCoordinates, startIndex, endIndex, new[]{endCoordinate});
+            return Splice(startCoordinates, startIndex, endIndex, new[] { endCoordinate });
         }
 
         public ICoordinateSequence<Coordinate> Splice(Coordinate startCoordinate, int startIndex, int endIndex,
                                                       IEnumerable<Coordinate> endCoordinates)
         {
-            return Splice(new[]{startCoordinate}, startIndex, endIndex, endCoordinates);
+            return Splice(new[] { startCoordinate }, startIndex, endIndex, endCoordinates);
         }
 
         public ICoordinateSequence<Coordinate> Splice(IEnumerable<Coordinate> startCoordinates, int startIndex,
                                                       int endIndex, IEnumerable<Coordinate> endCoordinates)
         {
-            var seq = new CoordinateSequence(_coordFactory, GetRange(startIndex, endIndex-startIndex+1));
-            if (startCoordinates != null ) 
+            var seq = new CoordinateSequence(_coordFactory, GetRange(startIndex, endIndex - startIndex + 1));
+            if (startCoordinates != null)
                 seq.Prepend(startCoordinates);
-            if( endCoordinates != null) 
+            if (endCoordinates != null)
                 seq.Append(endCoordinates);
             return seq;
         }
@@ -813,13 +817,34 @@ namespace NetTopologySuite.Coordinates.Simple
             return _coordinates.ToArray();
         }
 
+        public double[][] ToOrdinateArray2D()
+        {
+            var ordinateArray = new double[_coordinates.Count][];
+            for (var i = 0; i < _coordinates.Count; i++)
+                ordinateArray[i] = _coordinates[i].ToArray2D();
+            return ordinateArray;
+        }
+
+        public double[][] ToOrdinateArray(params Ordinates[] ordinates)
+        {
+            var ordinateArray = new double[_coordinates.Count][];
+            for (var i = 0; i < _coordinates.Count; i++)
+                ordinateArray[i] = _coordinates[i].ToArray(ordinates);
+            return ordinateArray;
+        }
+
+        public double[][] ToOrdinateArray(OrdinateFlags ordinates)
+        {
+            return ToOrdinateArray(OrdinateUtility.ToOrdinates(ordinates));
+        }
+
         public ICoordinateSequence<Coordinate> WithoutRepeatedPoints()
         {
             var coords = new List<Coordinate>();
             var last = new Coordinate();
             foreach (Coordinate coordinate in _coordinates)
             {
-                if( !coordinate.Equals(last))
+                if (!coordinate.Equals(last))
                     coords.Add(coordinate);
                 last = coordinate;
             }
@@ -841,7 +866,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public ICoordinateSequence<Coordinate> WithoutDuplicatePoints()
         {
-            var hs= new HashSet<Coordinate>();
+            var hs = new HashSet<Coordinate>();
             hs.AddAll(_coordinates);
             return new CoordinateSequence(_coordFactory, hs.UniqueItems());
         }
@@ -856,7 +881,7 @@ namespace NetTopologySuite.Coordinates.Simple
             return new Pair<Coordinate>(this[index], this[index + 1]);
         }
 
-        #endregion
+        #endregion ICoordSequence<Coordinate> Member
 
         #region IList<Coordinate> Member
 
@@ -881,7 +906,7 @@ namespace NetTopologySuite.Coordinates.Simple
             set { this[index] = value; }
         }
 
-        #endregion
+        #endregion IList<Coordinate> Member
 
         #region ICollection<Coordinate> Member
 
@@ -915,12 +940,12 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public bool Remove(Coordinate item)
         {
-            if ( _coordinates.Contains(item))
+            if (_coordinates.Contains(item))
                 return _coordinates.Remove(item);
             return false;
         }
 
-        #endregion
+        #endregion ICollection<Coordinate> Member
 
         #region IEnumerable<Coordinate> Member
 
@@ -928,13 +953,13 @@ namespace NetTopologySuite.Coordinates.Simple
         {
             //IEnumerator<Coordinate> it;
             //if (!_reversed)
-                return _coordinates.GetEnumerator();
+            return _coordinates.GetEnumerator();
 
             //Stack<Coordinate> stack = new Stack<Coordinate>(_coordinates);
             //return stack.GetEnumerator();
         }
 
-        #endregion
+        #endregion IEnumerable<Coordinate> Member
 
         #region IEnumerable Member
 
@@ -943,7 +968,7 @@ namespace NetTopologySuite.Coordinates.Simple
             return GetEnumerator();
         }
 
-        #endregion
+        #endregion IEnumerable Member
 
         #region IComparable<ICoordinateSequence<Coordinate>> Member
 
@@ -952,8 +977,8 @@ namespace NetTopologySuite.Coordinates.Simple
             Int32 size1 = Count;
             Int32 size2 = other.Count;
 
-            var dim1 = (Int32) Dimension;
-            var dim2 = (Int32) other.Dimension;
+            var dim1 = (Int32)Dimension;
+            var dim2 = (Int32)other.Dimension;
 
             // lower dimension is less than higher
             if (dim1 < dim2) return -1;
@@ -980,7 +1005,7 @@ namespace NetTopologySuite.Coordinates.Simple
             return 0;
         }
 
-        #endregion
+        #endregion IComparable<ICoordinateSequence<Coordinate>> Member
 
         #region IEquatable<ICoordinateSequence<Coordinate>> Member
 
@@ -989,13 +1014,13 @@ namespace NetTopologySuite.Coordinates.Simple
             return Equals(other, Tolerance.Zero);
         }
 
-        #endregion
+        #endregion IEquatable<ICoordinateSequence<Coordinate>> Member
 
         #region ICoordinateSequence Member
 
-        Double ICoordinateSequence.this[int index, Ordinates ordinate]
+        Double ICoordinateSequence.this[int index, GeoAPI.Coordinates.Ordinates ordinates]
         {
-            get { return this[index][ordinate]; }
+            get { return this[index][ordinates]; }
             set { throw new NotSupportedException(); }
         }
 
@@ -1014,7 +1039,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public IExtents ExpandExtents(IExtents extents)
         {
-            return ExpandExtents((IExtents<Coordinate>) extents);
+            return ExpandExtents((IExtents<Coordinate>)extents);
         }
 
         ICoordinateSequence ICoordinateSequence.Merge(ICoordinateSequence other)
@@ -1095,7 +1120,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public event EventHandler SequenceChanged;
 
-        #endregion
+        #endregion ICoordinateSequence Member
 
         #region IList Member
 
@@ -1103,7 +1128,7 @@ namespace NetTopologySuite.Coordinates.Simple
         {
             if (value is Coordinate)
             {
-                Append((Coordinate) value);
+                Append((Coordinate)value);
                 return LastIndex;
             }
 
@@ -1171,7 +1196,7 @@ namespace NetTopologySuite.Coordinates.Simple
             }
         }
 
-        #endregion
+        #endregion IList Member
 
         #region ICollection Member
 
@@ -1195,7 +1220,7 @@ namespace NetTopologySuite.Coordinates.Simple
             get { return ((ICollection)_coordinates).SyncRoot; }
         }
 
-        #endregion
+        #endregion ICollection Member
 
         #region ICloneable Member
 
@@ -1204,7 +1229,7 @@ namespace NetTopologySuite.Coordinates.Simple
             return Clone();
         }
 
-        #endregion
+        #endregion ICloneable Member
 
         protected void OnSequenceChanged()
         {
@@ -1228,6 +1253,5 @@ namespace NetTopologySuite.Coordinates.Simple
                     "Sequence is frozen and cannot be modified.");
             }
         }
-
     }
 }

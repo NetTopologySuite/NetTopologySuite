@@ -4,12 +4,11 @@ using GeoAPI.DataStructures;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-using NPack;
 using NPack.Interfaces;
 
 namespace NetTopologySuite.Algorithm
 {
-    /// <summary> 
+    /// <summary>
     /// A robust version of <see cref="LineIntersector{TCoordinate}"/>.
     /// </summary>
     public class RobustLineIntersector<TCoordinate> : LineIntersector<TCoordinate>
@@ -17,7 +16,6 @@ namespace NetTopologySuite.Algorithm
             IComparable<TCoordinate>, IConvertible,
             IComputable<Double, TCoordinate>
     {
-
         ///<summary>
         /// Floating Precision Coordinate Factory is used for internal computation in
         /// the RobustLineIntersector Class to avoid problems with FixedPrecision
@@ -49,7 +47,7 @@ namespace NetTopologySuite.Algorithm
 
                     return new Intersection<TCoordinate>(p,
                                                          new Pair<TCoordinate>(p, p),
-                                                         new Pair<TCoordinate>(p1, p2), 
+                                                         new Pair<TCoordinate>(p1, p2),
                                                          false,
                                                          false,
                                                          isProper);
@@ -196,7 +194,7 @@ namespace NetTopologySuite.Algorithm
              * LINESTRING (2089426.5233462777 1180182.3877339689, 2085646.6891757075 1195618.7333999649)
              * LINESTRING (1889281.8148903656 1997547.0560044837, 2259977.3672235999 483675.17050843034)
              * intersection point = (2097408.2633752143,1144595.8008114607)
-             * 
+             *
              * MD - Dec 14 2006 - This does not seem to be a failure case any longer
              */
             if (!isInSegmentExtents(geoFactory, intersection, line0, line1))
@@ -212,7 +210,7 @@ namespace NetTopologySuite.Algorithm
             return intersection;
         }
 
-        /// <summary> 
+        /// <summary>
         /// This method computes the actual value of the intersection point.
         /// To obtain the maximum precision from the intersection calculation,
         /// the coordinates are normalized by subtracting the minimum
@@ -251,7 +249,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         // Computes a segment intersection using homogeneous coordinates.
-        // Round-off error can cause the raw computation to fail, 
+        // Round-off error can cause the raw computation to fail,
         // (usually due to the segments being approximately parallel).
         // If this happens, a reasonable approximation is computed instead.
         private static TCoordinate safeHCoordinateIntersection(ICoordinateFactory<TCoordinate> cf, TCoordinate p1, TCoordinate p2, TCoordinate q1, TCoordinate q2)
@@ -267,9 +265,9 @@ namespace NetTopologySuite.Algorithm
                 intersectionPoint = intersectHomogeneous(hP1, hP2, hQ1, hQ2);
                 //DoubleComponent x, y, w;
                 //intersectionPoint.GetComponents(out x, out y, out w);
-                Double x = (Double) intersectionPoint[Ordinates.X];
-                Double y = (Double) intersectionPoint[Ordinates.Y];
-                Double w = (Double) intersectionPoint[Ordinates.W];
+                Double x = (Double)intersectionPoint[Ordinates.X];
+                Double y = (Double)intersectionPoint[Ordinates.Y];
+                Double w = (Double)intersectionPoint[Ordinates.W];
                 return cf.Create((Double)x / (Double)w, (Double)y / (Double)w);
             }
             catch (NotRepresentableException e)
@@ -399,45 +397,55 @@ namespace NetTopologySuite.Algorithm
                                              ref TCoordinate n10, ref TCoordinate n11,
                                              out TCoordinate normPt)
         {
-            DoubleComponent n00X, n00Y, n01X, n01Y, n10X, n10Y, n11X, n11Y;
-            n00.GetComponents(out n00X, out n00Y);
-            n01.GetComponents(out n01X, out n01Y);
-            n10.GetComponents(out n10X, out n10Y);
-            n11.GetComponents(out n11X, out n11Y);
+            //DoubleComponent n00X, n00Y, n01X, n01Y, n10X, n10Y, n11X, n11Y;
+            //n00.GetComponents(out n00X, out n00Y);
+            //n01.GetComponents(out n01X, out n01Y);
+            //n10.GetComponents(out n10X, out n10Y);
+            //n11.GetComponents(out n11X, out n11Y);
+            var n00xy = n00.ToArray2D();
+            var n01xy = n01.ToArray2D();
+            var n10xy = n10.ToArray2D();
+            var n11xy = n11.ToArray2D();
 
-            //Double minX0 = n00[Ordinates.X] < n01[Ordinates.X] ? n00[Ordinates.X] : n01[Ordinates.X];
-            //Double minY0 = n00[Ordinates.Y] < n01[Ordinates.Y] ? n00[Ordinates.Y] : n01[Ordinates.Y];
-            //Double maxX0 = n00[Ordinates.X] > n01[Ordinates.X] ? n00[Ordinates.X] : n01[Ordinates.X];
-            //Double maxY0 = n00[Ordinates.Y] > n01[Ordinates.Y] ? n00[Ordinates.Y] : n01[Ordinates.Y];
-            DoubleComponent minX0 = n00X.LessThan(n01X) ? n00X : n01X;
-            DoubleComponent minY0 = n00Y.LessThan(n01Y) ? n00Y : n01Y;
-            DoubleComponent maxX0 = n00X.GreaterThan(n01X) ? n00X : n01X;
-            DoubleComponent maxY0 = n00Y.GreaterThan(n01Y) ? n00Y : n01Y;
+            ////Double minX0 = n00[Ordinates.X] < n01[Ordinates.X] ? n00[Ordinates.X] : n01[Ordinates.X];
+            ////Double minY0 = n00[Ordinates.Y] < n01[Ordinates.Y] ? n00[Ordinates.Y] : n01[Ordinates.Y];
+            ////Double maxX0 = n00[Ordinates.X] > n01[Ordinates.X] ? n00[Ordinates.X] : n01[Ordinates.X];
+            ////Double maxY0 = n00[Ordinates.Y] > n01[Ordinates.Y] ? n00[Ordinates.Y] : n01[Ordinates.Y];
+            //DoubleComponent minX0 = n00X.LessThan(n01X) ? n00X : n01X;
+            //DoubleComponent minY0 = n00Y.LessThan(n01Y) ? n00Y : n01Y;
+            //DoubleComponent maxX0 = n00X.GreaterThan(n01X) ? n00X : n01X;
+            //DoubleComponent maxY0 = n00Y.GreaterThan(n01Y) ? n00Y : n01Y;
+            var minX0 = n00xy[0] < n01xy[0] ? n00xy[0] : n01xy[0];
+            var minY0 = n00xy[1] < n01xy[1] ? n00xy[1] : n01xy[1];
+            var maxX0 = n00xy[0] > n01xy[0] ? n00xy[0] : n01xy[0];
+            var maxY0 = n00xy[1] > n01xy[1] ? n00xy[1] : n01xy[1];
 
-            //Double minX1 = n10[Ordinates.X] < n11[Ordinates.X] ? n10[Ordinates.X] : n11[Ordinates.X];
-            //Double minY1 = n10[Ordinates.Y] < n11[Ordinates.Y] ? n10[Ordinates.Y] : n11[Ordinates.Y];
-            //Double maxX1 = n10[Ordinates.X] > n11[Ordinates.X] ? n10[Ordinates.X] : n11[Ordinates.X];
-            //Double maxY1 = n10[Ordinates.Y] > n11[Ordinates.Y] ? n10[Ordinates.Y] : n11[Ordinates.Y];
+            ////Double minX1 = n10[Ordinates.X] < n11[Ordinates.X] ? n10[Ordinates.X] : n11[Ordinates.X];
+            ////Double minY1 = n10[Ordinates.Y] < n11[Ordinates.Y] ? n10[Ordinates.Y] : n11[Ordinates.Y];
+            ////Double maxX1 = n10[Ordinates.X] > n11[Ordinates.X] ? n10[Ordinates.X] : n11[Ordinates.X];
+            ////Double maxY1 = n10[Ordinates.Y] > n11[Ordinates.Y] ? n10[Ordinates.Y] : n11[Ordinates.Y];
+            //DoubleComponent minX1 = n10X.LessThan(n11X) ? n10X : n11X;
+            //DoubleComponent minY1 = n10Y.LessThan(n11Y) ? n10Y : n11Y;
+            //DoubleComponent maxX1 = n10X.GreaterThan(n11X) ? n10X : n11X;
+            //DoubleComponent maxY1 = n10Y.GreaterThan(n11Y) ? n10Y : n11Y;
+            var minX1 = n10xy[0] < n11xy[0] ? n10xy[0] : n11xy[0];
+            var minY1 = n10xy[1] < n11xy[1] ? n10xy[1] : n11xy[1];
+            var maxX1 = n10xy[0] > n11xy[0] ? n10xy[0] : n11xy[0];
+            var maxY1 = n10xy[1] > n11xy[1] ? n10xy[1] : n11xy[1];
 
-            DoubleComponent minX1 = n10X.LessThan(n11X) ? n10X : n11X;
-            DoubleComponent minY1 = n10Y.LessThan(n11Y) ? n10Y : n11Y;
-            DoubleComponent maxX1 = n10X.GreaterThan(n11X) ? n10X : n11X;
-            DoubleComponent maxY1 = n10Y.GreaterThan(n11Y) ? n10Y : n11Y;
-
-            //Double intMinX = minX0 > minX1 ? minX0 : minX1;
-            //Double intMaxX = maxX0 < maxX1 ? maxX0 : maxX1;
-            //Double intMinY = minY0 > minY1 ? minY0 : minY1;
-            //Double intMaxY = maxY0 < maxY1 ? maxY0 : maxY1;
-
-            DoubleComponent intMinX = minX0.GreaterThan(minX1) ? minX0 : minX1;
-            DoubleComponent intMaxX = maxX0.LessThan(maxX1) ? maxX0 : maxX1;
-            DoubleComponent intMinY = minY0.GreaterThan(minY1) ? minY0 : minY1;
-            DoubleComponent intMaxY = maxY0.LessThan(maxY1) ? maxY0 : maxY1;
+            var intMinX = minX0 > minX1 ? minX0 : minX1;
+            var intMaxX = maxX0 < maxX1 ? maxX0 : maxX1;
+            var intMinY = minY0 > minY1 ? minY0 : minY1;
+            var intMaxY = maxY0 < maxY1 ? maxY0 : maxY1;
+            //DoubleComponent intMinX = minX0.GreaterThan(minX1) ? minX0 : minX1;
+            //DoubleComponent intMaxX = maxX0.LessThan(maxX1) ? maxX0 : maxX1;
+            //DoubleComponent intMinY = minY0.GreaterThan(minY1) ? minY0 : minY1;
+            //DoubleComponent intMaxY = maxY0.LessThan(maxY1) ? maxY0 : maxY1;
 
             //Double intMidX = (intMinX + intMaxX)/2.0;
             //Double intMidY = (intMinY + intMaxY)/2.0;
-            Double intMidX = ((Double)intMinX + (Double)intMaxX) / 2.0;
-            Double intMidY = ((Double)intMinY + (Double)intMaxY) / 2.0;
+            var intMidX = (intMinX + intMaxX) / 2.0;
+            var intMidY = (intMinY + intMaxY) / 2.0;
             normPt = cf.Create(intMidX, intMidY);
 
             //Double n00X = n00[Ordinates.X] - intMidX;
@@ -449,22 +457,34 @@ namespace NetTopologySuite.Algorithm
             //Double n11X = n11[Ordinates.X] - intMidX;
             //Double n11Y = n11[Ordinates.Y] - intMidY;
 
-            n00X -= intMidX;
-            n00Y -= intMidY;
-            n01X -= intMidX;
-            n01Y -= intMidY;
-            n10X -= intMidX;
-            n10Y -= intMidY;
-            n11X -= intMidX;
-            n11Y -= intMidY;
+            //n00X -= intMidX;
+            //n00Y -= intMidY;
+            //n01X -= intMidX;
+            //n01Y -= intMidY;
+            //n10X -= intMidX;
+            //n10Y -= intMidY;
+            //n11X -= intMidX;
+            //n11Y -= intMidY;
+            n00xy[0] -= intMidX;
+            n00xy[1] -= intMidY;
+            n01xy[0] -= intMidX;
+            n01xy[1] -= intMidY;
+            n10xy[0] -= intMidX;
+            n10xy[1] -= intMidY;
+            n11xy[0] -= intMidX;
+            n11xy[1] -= intMidY;
 
-            n00 = cf.Create((Double)n00X, (Double)n00Y);
-            n01 = cf.Create((Double)n01X, (Double)n01Y);
-            n10 = cf.Create((Double)n10X, (Double)n10Y);
-            n11 = cf.Create((Double)n11X, (Double)n11Y);
+            //n00 = cf.Create((Double)n00X, (Double)n00Y);
+            //n01 = cf.Create((Double)n01X, (Double)n01Y);
+            //n10 = cf.Create((Double)n10X, (Double)n10Y);
+            //n11 = cf.Create((Double)n11X, (Double)n11Y);
+            n00 = cf.Create(n00xy[0], n00xy[1]);
+            n01 = cf.Create(n01xy[0], n01xy[1]);
+            n10 = cf.Create(n10xy[0], n10xy[1]);
+            n11 = cf.Create(n11xy[0], n11xy[1]);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Test whether a point lies in the envelopes of both input segments.
         /// </summary>
         /// <returns>
@@ -514,7 +534,7 @@ namespace NetTopologySuite.Algorithm
         //    n4 = new Coordinate(n4X, n4Y);
         //}
 
-        // [codekaizen 2008-01-15]  Method 'smallestInAbsValue' only used in 'normalizeToMinimum', 
+        // [codekaizen 2008-01-15]  Method 'smallestInAbsValue' only used in 'normalizeToMinimum',
         //                          which is unused in
         //                          /JTS/src/com/vividsolutions/jts/algorithm/RobustLineIntersector.java:1.37
 

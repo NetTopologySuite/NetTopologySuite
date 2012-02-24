@@ -2,25 +2,27 @@
 
 /*
  *  The attached / following is part of NetTopologySuite.Coordinates.Simple.
- *  
- *  NetTopologySuite.Coordinates.Simple is free software ? 2009 Ingenieurgruppe IVV GmbH & Co. KG, 
- *  www.ivv-aachen.de; you can redistribute it and/or modify it under the terms 
- *  of the current GNU Lesser General Public License (LGPL) as published by and 
- *  available from the Free Software Foundation, Inc., 
+ *
+ *  NetTopologySuite.Coordinates.Simple is free software ? 2009 Ingenieurgruppe IVV GmbH & Co. KG,
+ *  www.ivv-aachen.de; you can redistribute it and/or modify it under the terms
+ *  of the current GNU Lesser General Public License (LGPL) as published by and
+ *  available from the Free Software Foundation, Inc.,
  *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA: http://fsf.org/.
- *  This program is distributed without any warranty; 
+ *  This program is distributed without any warranty;
  *  without even the implied warranty of merchantability or fitness for purpose.
- *  See the GNU Lesser General Public License for the full details. 
- *  
+ *  See the GNU Lesser General Public License for the full details.
+ *
  *  This work was derived from NetTopologySuite.Coordinates.ManagedBufferedCoordinate
  *  by codekaizen
- *  
+ *
  *  Author: Felix Obermaier 2009
- *  
+ *
  */
 
-#endregion
+#endregion License
+
 #define class
+
 using System;
 using System.Globalization;
 using System.Text;
@@ -30,39 +32,38 @@ using NPack.Interfaces;
 
 namespace NetTopologySuite.Coordinates.Simple
 {
-    using IVector2D = IVector<DoubleComponent, Coordinate>;
     using IVectorD = IVector<DoubleComponent>;
 
-    [Flags]
-    public enum OrdinateFlags
-    {
-        None = 0,
-        X = 1,
-        Y = 2,
-        XY = 3,
-        Z = 4,
-        XYZ = 7,
-        M = 8,
-        XYM = 11,
-        XYZM = 15,
-        W = 16,
-        XYW = 19,
-        XYZW = 23,
-        XYMW = 27,
-        XYZMW = 31
-    }
+    //[Flags]
+    //public enum OrdinateFlags
+    //{
+    //    None = 0,
+    //    X = 1,
+    //    Y = 2,
+    //    XY = 3,
+    //    Z = 4,
+    //    XYZ = 7,
+    //    M = 8,
+    //    XYM = 11,
+    //    XYZM = 15,
+    //    W = 16,
+    //    XYW = 19,
+    //    XYZW = 23,
+    //    XYMW = 27,
+    //    XYZMW = 31
+    //}
 
 #if class
+
     public class Coordinate : ICoordinate3DM,
 #else
     public struct Coordinate : ICoordinate3DM,
 #endif
-                              ICoordinate<Coordinate>,
+ ICoordinate<Coordinate>,
                               IEquatable<Coordinate>,
                               IComparable<Coordinate>,
                               IComputable<Double, Coordinate>
     {
-
         public const double CoordinateNullValue = double.NaN;
 
         private static Boolean IsZ(OrdinateFlags flags)
@@ -91,6 +92,7 @@ namespace NetTopologySuite.Coordinates.Simple
         private const Int32 _hashCodeBase = 8547169;
 
 #if class
+
         public Coordinate()
         {
             _coordFactory = null;
@@ -101,7 +103,9 @@ namespace NetTopologySuite.Coordinates.Simple
             _m = CoordinateNullValue;
             _w = CoordinateNullValue;
         }
+
 #endif
+
         internal Coordinate(CoordinateFactory factory, Double x, Double y)
         {
             IPrecisionModel pm = factory.PrecisionModel;
@@ -137,7 +141,7 @@ namespace NetTopologySuite.Coordinates.Simple
                 _z = CoordinateNullValue;
                 _m = CoordinateNullValue;
             }
-            else if(IsZ(flags))
+            else if (IsZ(flags))
             {
                 _w = CoordinateNullValue;
                 _z = zmw;
@@ -184,7 +188,6 @@ namespace NetTopologySuite.Coordinates.Simple
             //_hashCode ^= _m.GetHashCode();
             //_hashCode ^= _w.GetHashCode();
         }
-
 
         internal Coordinate(CoordinateFactory factory, Coordinate coordinate)
         {
@@ -271,15 +274,14 @@ namespace NetTopologySuite.Coordinates.Simple
 
             if ((_flags & OrdinateFlags.XYZMW) > OrdinateFlags.XY)
             {
-            Boolean z = (HasZ || other.HasZ) ? _z == other._z : true;
-            Boolean m = (HasM || other.HasM) ? _m == other._m : true;
-            Boolean w = (HasW || other.HasW) ? _w == other._w : true;
-            return z && m && w;
+                Boolean z = (HasZ || other.HasZ) ? _z == other._z : true;
+                Boolean m = (HasM || other.HasM) ? _m == other._m : true;
+                Boolean w = (HasW || other.HasW) ? _w == other._w : true;
+                return z && m && w;
             }
 
             return true;
         }
-
 
         public Coordinate One
         {
@@ -344,16 +346,16 @@ namespace NetTopologySuite.Coordinates.Simple
             }
 
             StringBuilder sb = new StringBuilder(50);
-            sb.AppendFormat(CultureInfo.InvariantCulture,"{0} {1}", _x, _y);
-            if (HasZ) sb.AppendFormat(CultureInfo.InvariantCulture," {0}", _z);
-            if (HasW) sb.AppendFormat(CultureInfo.InvariantCulture," W:{0}", _w);
-            if (HasM) sb.AppendFormat(CultureInfo.InvariantCulture," M:{0}", _m);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "{0} {1}", _x, _y);
+            if (HasZ) sb.AppendFormat(CultureInfo.InvariantCulture, " {0}", _z);
+            if (HasW) sb.AppendFormat(CultureInfo.InvariantCulture, " W:{0}", _w);
+            if (HasM) sb.AppendFormat(CultureInfo.InvariantCulture, " M:{0}", _m);
 
             return sb.ToString();
         }
 
         private Boolean HasZ
-        { get { return IsZ(_flags); }}
+        { get { return IsZ(_flags); } }
 
         private Boolean HasM
         { get { return IsM(_flags); } }
@@ -362,9 +364,10 @@ namespace NetTopologySuite.Coordinates.Simple
         { get { return IsW(_flags); } }
 
         private Int32 _hashCode = 0;
+
         public override Int32 GetHashCode()
         {
-            if ( _hashCode == 0 )
+            if (_hashCode == 0)
                 _hashCode = _hashCodeBase ^ _x.GetHashCode() ^ _y.GetHashCode() ^ _z.GetHashCode() ^ _w.GetHashCode() ^ _m.GetHashCode();
             return _hashCode;
         }
@@ -381,7 +384,6 @@ namespace NetTopologySuite.Coordinates.Simple
                 return _coordFactory;
             }
         }
-
 
         #region ICoordinate3D Member
 
@@ -410,10 +412,9 @@ namespace NetTopologySuite.Coordinates.Simple
             y = Double.NaN;
             z = Double.NaN;
             w = 1d;
-
         }
 
-        #endregion
+        #endregion ICoordinate3D Member
 
         #region ICoordinate2D Member
 
@@ -443,22 +444,22 @@ namespace NetTopologySuite.Coordinates.Simple
             w = 1d;
         }
 
-        #endregion
+        #endregion ICoordinate2D Member
 
         #region ICoordinate Member
 
-        public bool ContainsOrdinate(Ordinates ordinate)
+        public bool ContainsOrdinate(GeoAPI.Coordinates.Ordinates ordinates)
         {
-            switch (ordinate)
+            switch (ordinates)
             {
-                case Ordinates.X:
-                case Ordinates.Y:
+                case GeoAPI.Coordinates.Ordinates.X:
+                case GeoAPI.Coordinates.Ordinates.Y:
                     return true;
-                case Ordinates.W:
+                case GeoAPI.Coordinates.Ordinates.W:
                     return HasW;
-                case Ordinates.Z:
+                case GeoAPI.Coordinates.Ordinates.Z:
                     return HasZ;
-                case Ordinates.M:
+                case GeoAPI.Coordinates.Ordinates.M:
                     return HasM;
                 default:
                     return false;
@@ -470,21 +471,21 @@ namespace NetTopologySuite.Coordinates.Simple
             return Distance(_coordFactory.Create(other));
         }
 
-        public Double this[Ordinates ordinate]
+        public Double this[GeoAPI.Coordinates.Ordinates ordinates]
         {
             get
             {
-                switch (ordinate)
+                switch (ordinates)
                 {
-                    case Ordinates.X:
+                    case GeoAPI.Coordinates.Ordinates.X:
                         return _x;
-                    case Ordinates.Y:
+                    case GeoAPI.Coordinates.Ordinates.Y:
                         return _y;
-                    case Ordinates.W:
+                    case GeoAPI.Coordinates.Ordinates.W:
                         return HasW ? _w : 1.0;
-                    case Ordinates.Z:
+                    case GeoAPI.Coordinates.Ordinates.Z:
                         return _z;
-                    case Ordinates.M:
+                    case GeoAPI.Coordinates.Ordinates.M:
                         return _m;
                     default:
                         return CoordinateNullValue;
@@ -497,7 +498,7 @@ namespace NetTopologySuite.Coordinates.Simple
             get { return _coordFactory == null; }
         }
 
-        #endregion
+        #endregion ICoordinate Member
 
         #region IVector<DoubleComponent> Member
 
@@ -555,7 +556,6 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public void GetComponents(out DoubleComponent a, out DoubleComponent b, out DoubleComponent c)
         {
-
             Double w, x, y, z;
             GetComponents(out x, out y, out z, out w);
             a = x;
@@ -573,7 +573,7 @@ namespace NetTopologySuite.Coordinates.Simple
             d = w;
         }
 
-        #endregion
+        #endregion IVector<DoubleComponent> Member
 
         #region IMatrix<DoubleComponent> Member
 
@@ -652,7 +652,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IMatrix<DoubleComponent> Member
 
         #region IEquatable<IMatrix<DoubleComponent>> Member
 
@@ -673,7 +673,7 @@ namespace NetTopologySuite.Coordinates.Simple
             //    && other[Ordinates.Y] == this[Ordinates.Y];
         }
 
-        #endregion
+        #endregion IEquatable<IMatrix<DoubleComponent>> Member
 
         #region IComparable<IMatrix<DoubleComponent>> Member
 
@@ -682,7 +682,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComparable<IMatrix<DoubleComponent>> Member
 
         #region IComputable<IMatrix<DoubleComponent>> Member
 
@@ -696,7 +696,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComputable<IMatrix<DoubleComponent>> Member
 
         #region INegatable<IMatrix<DoubleComponent>> Member
 
@@ -705,7 +705,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion INegatable<IMatrix<DoubleComponent>> Member
 
         #region ISubtractable<IMatrix<DoubleComponent>> Member
 
@@ -714,7 +714,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion ISubtractable<IMatrix<DoubleComponent>> Member
 
         #region IHasZero<IMatrix<DoubleComponent>> Member
 
@@ -723,7 +723,7 @@ namespace NetTopologySuite.Coordinates.Simple
             get { throw new NotSupportedException(); }
         }
 
-        #endregion
+        #endregion IHasZero<IMatrix<DoubleComponent>> Member
 
         #region IAddable<IMatrix<DoubleComponent>> Member
 
@@ -732,7 +732,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IAddable<IMatrix<DoubleComponent>> Member
 
         #region IDivisible<IMatrix<DoubleComponent>> Member
 
@@ -741,7 +741,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IDivisible<IMatrix<DoubleComponent>> Member
 
         #region IMultipliable<IMatrix<DoubleComponent>> Member
 
@@ -750,7 +750,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IMultipliable<IMatrix<DoubleComponent>> Member
 
         #region IBooleanComparable<IMatrix<DoubleComponent>> Member
 
@@ -774,7 +774,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IBooleanComparable<IMatrix<DoubleComponent>> Member
 
         #region IExponential<IMatrix<DoubleComponent>> Member
 
@@ -803,17 +803,17 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IExponential<IMatrix<DoubleComponent>> Member
 
         #region IEnumerable<DoubleComponent> Member
 
         public System.Collections.Generic.IEnumerator<DoubleComponent> GetEnumerator()
         {
-           foreach(DoubleComponent c in Components)
-               yield return c;
+            foreach (DoubleComponent c in Components)
+                yield return c;
         }
 
-        #endregion
+        #endregion IEnumerable<DoubleComponent> Member
 
         #region IEnumerable Member
 
@@ -822,7 +822,7 @@ namespace NetTopologySuite.Coordinates.Simple
             return GetEnumerator();
         }
 
-        #endregion
+        #endregion IEnumerable Member
 
         #region IComputable<double,IVector<DoubleComponent>> Member
 
@@ -831,7 +831,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComputable<double,IVector<DoubleComponent>> Member
 
         #region IComputable<IVector<DoubleComponent>> Member
 
@@ -845,7 +845,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComputable<IVector<DoubleComponent>> Member
 
         #region ISubtractable<IVector<DoubleComponent>> Member
 
@@ -854,7 +854,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion ISubtractable<IVector<DoubleComponent>> Member
 
         #region IHasZero<IVector<DoubleComponent>> Member
 
@@ -863,7 +863,7 @@ namespace NetTopologySuite.Coordinates.Simple
             get { throw new NotSupportedException(); }
         }
 
-        #endregion
+        #endregion IHasZero<IVector<DoubleComponent>> Member
 
         #region IAddable<IVector<DoubleComponent>> Member
 
@@ -872,7 +872,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IAddable<IVector<DoubleComponent>> Member
 
         #region IDivisible<IVector<DoubleComponent>> Member
 
@@ -881,7 +881,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IDivisible<IVector<DoubleComponent>> Member
 
         #region IHasOne<IVector<DoubleComponent>> Member
 
@@ -890,7 +890,7 @@ namespace NetTopologySuite.Coordinates.Simple
             get { return One; }
         }
 
-        #endregion
+        #endregion IHasOne<IVector<DoubleComponent>> Member
 
         #region IMultipliable<IVector<DoubleComponent>> Member
 
@@ -899,7 +899,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IMultipliable<IVector<DoubleComponent>> Member
 
         #region IBooleanComparable<IVector<DoubleComponent>> Member
 
@@ -923,7 +923,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IBooleanComparable<IVector<DoubleComponent>> Member
 
         #region IExponential<IVector<DoubleComponent>> Member
 
@@ -952,7 +952,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IExponential<IVector<DoubleComponent>> Member
 
         #region IAddable<double,IVector<DoubleComponent>> Member
 
@@ -961,7 +961,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IAddable<double,IVector<DoubleComponent>> Member
 
         #region ISubtractable<double,IVector<DoubleComponent>> Member
 
@@ -970,7 +970,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion ISubtractable<double,IVector<DoubleComponent>> Member
 
         #region IMultipliable<double,IVector<DoubleComponent>> Member
 
@@ -979,7 +979,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IMultipliable<double,IVector<DoubleComponent>> Member
 
         #region IDivisible<double,IVector<DoubleComponent>> Member
 
@@ -988,7 +988,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IDivisible<double,IVector<DoubleComponent>> Member
 
         #region IEquatable<IVector<DoubleComponent>> Member
 
@@ -997,7 +997,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IEquatable<IVector<DoubleComponent>> Member
 
         #region IComparable<IVector<DoubleComponent>> Member
 
@@ -1006,7 +1006,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComparable<IVector<DoubleComponent>> Member
 
         #region IComparable<ICoordinate> Member
 
@@ -1015,7 +1015,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComparable<ICoordinate> Member
 
         #region IEquatable<ICoordinate> Member
 
@@ -1031,11 +1031,11 @@ namespace NetTopologySuite.Coordinates.Simple
                 return false;
             }
 
-            return other[Ordinates.X] == this[Ordinates.X]
-                && other[Ordinates.Y] == this[Ordinates.Y];
+            return other[GeoAPI.Coordinates.Ordinates.X] == this[GeoAPI.Coordinates.Ordinates.X]
+                && other[GeoAPI.Coordinates.Ordinates.Y] == this[GeoAPI.Coordinates.Ordinates.Y];
         }
 
-        #endregion
+        #endregion IEquatable<ICoordinate> Member
 
         #region IConvertible Member
 
@@ -1124,7 +1124,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IConvertible Member
 
         #region IComputable<double,ICoordinate> Member
 
@@ -1133,7 +1133,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComputable<double,ICoordinate> Member
 
         #region IComputable<ICoordinate> Member
 
@@ -1147,7 +1147,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComputable<ICoordinate> Member
 
         #region INegatable<ICoordinate> Member
 
@@ -1156,7 +1156,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion INegatable<ICoordinate> Member
 
         #region ISubtractable<ICoordinate> Member
 
@@ -1165,7 +1165,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion ISubtractable<ICoordinate> Member
 
         #region IAddable<ICoordinate> Member
 
@@ -1174,7 +1174,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IAddable<ICoordinate> Member
 
         #region IDivisible<ICoordinate> Member
 
@@ -1183,7 +1183,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IDivisible<ICoordinate> Member
 
         #region IHasOne<ICoordinate> Member
 
@@ -1192,7 +1192,7 @@ namespace NetTopologySuite.Coordinates.Simple
             get { return One; }
         }
 
-        #endregion
+        #endregion IHasOne<ICoordinate> Member
 
         #region IMultipliable<ICoordinate> Member
 
@@ -1201,7 +1201,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IMultipliable<ICoordinate> Member
 
         #region IBooleanComparable<ICoordinate> Member
 
@@ -1225,7 +1225,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IBooleanComparable<ICoordinate> Member
 
         #region IExponential<ICoordinate> Member
 
@@ -1254,7 +1254,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IExponential<ICoordinate> Member
 
         #region IAddable<double,ICoordinate> Member
 
@@ -1263,7 +1263,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IAddable<double,ICoordinate> Member
 
         #region ISubtractable<double,ICoordinate> Member
 
@@ -1272,7 +1272,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion ISubtractable<double,ICoordinate> Member
 
         #region IMultipliable<double,ICoordinate> Member
 
@@ -1281,7 +1281,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IMultipliable<double,ICoordinate> Member
 
         #region IDivisible<double,ICoordinate> Member
 
@@ -1290,7 +1290,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IDivisible<double,ICoordinate> Member
 
         #region IComparable<ICoordinate2D> Member
 
@@ -1299,7 +1299,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComparable<ICoordinate2D> Member
 
         #region IEquatable<ICoordinate2D> Member
 
@@ -1308,7 +1308,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IEquatable<ICoordinate2D> Member
 
         #region IComparable<ICoordinate3D> Member
 
@@ -1317,7 +1317,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComparable<ICoordinate3D> Member
 
         #region IEquatable<ICoordinate3D> Member
 
@@ -1326,7 +1326,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IEquatable<ICoordinate3D> Member
 
         internal static Coordinate Homogenize(Coordinate coordinate)
         {
@@ -1342,7 +1342,6 @@ namespace NetTopologySuite.Coordinates.Simple
                 return coordinate;
             return new Coordinate(coordinate._coordFactory, coordinate._x, coordinate._y, coordinate._z, coordinate._m, CoordinateNullValue);
         }
-
 
         //#region ICoordinate2D Member
 
@@ -1400,7 +1399,7 @@ namespace NetTopologySuite.Coordinates.Simple
         //    get { throw new NotSupportedException(); }
         //}
 
-        #endregion
+        #endregion ICoordinate Member
 
         #region IVector<DoubleComponent> Member
 
@@ -1453,7 +1452,7 @@ namespace NetTopologySuite.Coordinates.Simple
         {
             a = _x;
             b = _y;
-            if (HasZ) { c = _z; return;}
+            if (HasZ) { c = _z; return; }
             if (HasM) { c = _m; return; }
             if (HasW) { c = _w; return; }
             c = Double.NaN;
@@ -1464,7 +1463,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotImplementedException();
         }
 
-        #endregion
+        #endregion IVector<DoubleComponent> Member
 
         #region IMatrix<DoubleComponent> Member
 
@@ -1535,7 +1534,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IMatrix<DoubleComponent> Member
 
         #region IEquatable<IMatrix<DoubleComponent>> Member
 
@@ -1544,7 +1543,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IEquatable<IMatrix<DoubleComponent>> Member
 
         #region IComparable<IMatrix<DoubleComponent>> Member
 
@@ -1553,7 +1552,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComparable<IMatrix<DoubleComponent>> Member
 
         #region IComputable<IMatrix<DoubleComponent>> Member
 
@@ -1567,7 +1566,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComputable<IMatrix<DoubleComponent>> Member
 
         #region ISubtractable<IMatrix<DoubleComponent>> Member
 
@@ -1576,7 +1575,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion ISubtractable<IMatrix<DoubleComponent>> Member
 
         #region IAddable<IMatrix<DoubleComponent>> Member
 
@@ -1585,7 +1584,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IAddable<IMatrix<DoubleComponent>> Member
 
         #region IDivisible<IMatrix<DoubleComponent>> Member
 
@@ -1594,7 +1593,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IDivisible<IMatrix<DoubleComponent>> Member
 
         #region IHasOne<IMatrix<DoubleComponent>> Member
 
@@ -1603,7 +1602,7 @@ namespace NetTopologySuite.Coordinates.Simple
             get { return One; }
         }
 
-        #endregion
+        #endregion IHasOne<IMatrix<DoubleComponent>> Member
 
         #region IMultipliable<IMatrix<DoubleComponent>> Member
 
@@ -1612,7 +1611,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IMultipliable<IMatrix<DoubleComponent>> Member
 
         #region IBooleanComparable<IMatrix<DoubleComponent>> Member
 
@@ -1636,7 +1635,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IBooleanComparable<IMatrix<DoubleComponent>> Member
 
         #region IExponential<IMatrix<DoubleComponent>> Member
 
@@ -1665,7 +1664,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IExponential<IMatrix<DoubleComponent>> Member
 
         #region IEnumerable<DoubleComponent> Member
 
@@ -1674,7 +1673,7 @@ namespace NetTopologySuite.Coordinates.Simple
             return GetEnumerator();
         }
 
-        #endregion
+        #endregion IEnumerable<DoubleComponent> Member
 
         #region INegatable<IVector<DoubleComponent>> Member
 
@@ -1683,7 +1682,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion INegatable<IVector<DoubleComponent>> Member
 
         #region ISubtractable<IVector<DoubleComponent>> Member
 
@@ -1692,7 +1691,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion ISubtractable<IVector<DoubleComponent>> Member
 
         #region IAddable<IVector<DoubleComponent>> Member
 
@@ -1701,7 +1700,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IAddable<IVector<DoubleComponent>> Member
 
         #region IDivisible<IVector<DoubleComponent>> Member
 
@@ -1710,7 +1709,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IDivisible<IVector<DoubleComponent>> Member
 
         #region IMultipliable<IVector<DoubleComponent>> Member
 
@@ -1719,7 +1718,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IMultipliable<IVector<DoubleComponent>> Member
 
         #region IBooleanComparable<IVector<DoubleComponent>> Member
 
@@ -1743,7 +1742,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IBooleanComparable<IVector<DoubleComponent>> Member
 
         #region IAddable<double,IVector<DoubleComponent>> Member
 
@@ -1752,7 +1751,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IAddable<double,IVector<DoubleComponent>> Member
 
         #region ISubtractable<double,IVector<DoubleComponent>> Member
 
@@ -1761,7 +1760,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion ISubtractable<double,IVector<DoubleComponent>> Member
 
         #region IMultipliable<double,IVector<DoubleComponent>> Member
 
@@ -1770,7 +1769,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IMultipliable<double,IVector<DoubleComponent>> Member
 
         #region IDivisible<double,IVector<DoubleComponent>> Member
 
@@ -1779,7 +1778,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IDivisible<double,IVector<DoubleComponent>> Member
 
         #region IEquatable<IVector<DoubleComponent>> Member
 
@@ -1788,7 +1787,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IEquatable<IVector<DoubleComponent>> Member
 
         #region IComparable<IVector<DoubleComponent>> Member
 
@@ -1797,7 +1796,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComparable<IVector<DoubleComponent>> Member
 
         #region IComparable<ICoordinate> Member
 
@@ -1806,7 +1805,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComparable<ICoordinate> Member
 
         #region IEquatable<ICoordinate> Member
 
@@ -1815,7 +1814,7 @@ namespace NetTopologySuite.Coordinates.Simple
             return Equals(other);
         }
 
-        #endregion
+        #endregion IEquatable<ICoordinate> Member
 
         #region IConvertible Member
 
@@ -1904,7 +1903,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IConvertible Member
 
         #region ISubtractable<ICoordinate> Member
 
@@ -1913,7 +1912,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion ISubtractable<ICoordinate> Member
 
         #region IHasZero<ICoordinate> Member
 
@@ -1922,7 +1921,7 @@ namespace NetTopologySuite.Coordinates.Simple
             get { throw new NotSupportedException(); }
         }
 
-        #endregion
+        #endregion IHasZero<ICoordinate> Member
 
         #region IAddable<ICoordinate> Member
 
@@ -1931,7 +1930,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IAddable<ICoordinate> Member
 
         #region IDivisible<ICoordinate> Member
 
@@ -1940,7 +1939,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IDivisible<ICoordinate> Member
 
         #region IMultipliable<ICoordinate> Member
 
@@ -1949,7 +1948,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IMultipliable<ICoordinate> Member
 
         #region IBooleanComparable<ICoordinate> Member
 
@@ -1973,7 +1972,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IBooleanComparable<ICoordinate> Member
 
         #region IComparable<ICoordinate2D> Member
 
@@ -1982,7 +1981,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComparable<ICoordinate2D> Member
 
         #region IEquatable<ICoordinate2D> Member
 
@@ -1991,7 +1990,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IEquatable<ICoordinate2D> Member
 
         #region IComparable<ICoordinate3D> Member
 
@@ -2000,7 +1999,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComparable<ICoordinate3D> Member
 
         #region IEquatable<ICoordinate3D> Member
 
@@ -2009,13 +2008,12 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IEquatable<ICoordinate3D> Member
 
         #region IEquatable<Coordinate> Member
 
         public bool Equals(Coordinate other)
         {
-            
 #if class
             if (ReferenceEquals(this, other))
                 return true;
@@ -2026,7 +2024,7 @@ namespace NetTopologySuite.Coordinates.Simple
             return ValueEquals(other);// && _coordFactory == other._coordFactory;
         }
 
-        #endregion
+        #endregion IEquatable<Coordinate> Member
 
         #region IComparable<Coordinate> Member
 
@@ -2101,7 +2099,7 @@ namespace NetTopologySuite.Coordinates.Simple
             return 0;
         }
 
-        #endregion
+        #endregion IComparable<Coordinate> Member
 
         #region IComputable<double,Coordinate> Member
 
@@ -2110,7 +2108,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComputable<double,Coordinate> Member
 
         #region IComputable<Coordinate> Member
 
@@ -2124,7 +2122,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComputable<Coordinate> Member
 
         #region INegatable<Coordinate> Member
 
@@ -2133,7 +2131,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion INegatable<Coordinate> Member
 
         #region ISubtractable<Coordinate> Member
 
@@ -2142,7 +2140,7 @@ namespace NetTopologySuite.Coordinates.Simple
             return new Coordinate(_coordFactory, _x - b.X, _y - b.Y);
         }
 
-        #endregion
+        #endregion ISubtractable<Coordinate> Member
 
         #region IHasZero<Coordinate> Member
 
@@ -2151,7 +2149,7 @@ namespace NetTopologySuite.Coordinates.Simple
             get { throw new NotSupportedException(); }
         }
 
-        #endregion
+        #endregion IHasZero<Coordinate> Member
 
         #region IAddable<Coordinate> Member
 
@@ -2160,16 +2158,16 @@ namespace NetTopologySuite.Coordinates.Simple
             return new Coordinate(_coordFactory, _x + b.X, _y + b.Y);
         }
 
-        #endregion
+        #endregion IAddable<Coordinate> Member
 
         #region IDivisible<Coordinate> Member
 
         public Coordinate Divide(Coordinate b)
         {
-            throw  new NotSupportedException();
+            throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IDivisible<Coordinate> Member
 
         #region IMultipliable<Coordinate> Member
 
@@ -2178,7 +2176,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IMultipliable<Coordinate> Member
 
         #region IBooleanComparable<Coordinate> Member
 
@@ -2202,7 +2200,7 @@ namespace NetTopologySuite.Coordinates.Simple
             return CompareTo(value) <= 0;
         }
 
-        #endregion
+        #endregion IBooleanComparable<Coordinate> Member
 
         #region IExponential<Coordinate> Member
 
@@ -2231,7 +2229,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IExponential<Coordinate> Member
 
         #region IAddable<double,Coordinate> Member
 
@@ -2240,7 +2238,7 @@ namespace NetTopologySuite.Coordinates.Simple
             return new Coordinate(_coordFactory, _x + b, _y + b, HasZ ? _z + b : Double.NaN, HasM ? _m + b : Double.NaN, HasW ? _w + b : Double.NaN);
         }
 
-        #endregion
+        #endregion IAddable<double,Coordinate> Member
 
         #region ISubtractable<double,Coordinate> Member
 
@@ -2249,7 +2247,7 @@ namespace NetTopologySuite.Coordinates.Simple
             return new Coordinate(_coordFactory, _x - b, _y - b, HasZ ? _z - b : Double.NaN, HasM ? _m - b : Double.NaN, HasW ? _w - b : Double.NaN);
         }
 
-        #endregion
+        #endregion ISubtractable<double,Coordinate> Member
 
         #region IMultipliable<double,Coordinate> Member
 
@@ -2258,7 +2256,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IMultipliable<double,Coordinate> Member
 
         #region IDivisible<double,Coordinate> Member
 
@@ -2267,7 +2265,7 @@ namespace NetTopologySuite.Coordinates.Simple
             return _coordFactory.Divide(this, b);
         }
 
-        #endregion
+        #endregion IDivisible<double,Coordinate> Member
 
         #region ICoordinate<Coordinate> Member
 
@@ -2277,7 +2275,7 @@ namespace NetTopologySuite.Coordinates.Simple
             Double dy = Y - other.Y;
             Double dz = HasZ && other.HasZ ? Z - other.Z : 0d;
 
-            return Math.Sqrt(dx*dx + dy*dy + dz*dz);
+            return Math.Sqrt(dx * dx + dy * dy + dz * dz);
         }
 
         Coordinate ICoordinate<Coordinate>.Zero
@@ -2295,7 +2293,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion ICoordinate<Coordinate> Member
 
         #region ICoordinate2DM Member
 
@@ -2304,7 +2302,7 @@ namespace NetTopologySuite.Coordinates.Simple
             get { return _m; }
         }
 
-        #endregion
+        #endregion ICoordinate2DM Member
 
         #region IComparable<ICoordinate2DM> Member
 
@@ -2313,7 +2311,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComparable<ICoordinate2DM> Member
 
         #region IEquatable<ICoordinate2DM> Member
 
@@ -2322,7 +2320,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IEquatable<ICoordinate2DM> Member
 
         #region IComparable<ICoordinate3DM> Member
 
@@ -2331,7 +2329,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComparable<ICoordinate3DM> Member
 
         #region IEquatable<ICoordinate3DM> Member
 
@@ -2340,7 +2338,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IEquatable<ICoordinate3DM> Member
 
         #region IVector<DoubleComponent,Coordinate> Member
 
@@ -2354,7 +2352,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IVector<DoubleComponent,Coordinate> Member
 
         #region IComputable<double,IVector<DoubleComponent,Coordinate>> Member
 
@@ -2363,7 +2361,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComputable<double,IVector<DoubleComponent,Coordinate>> Member
 
         #region IComputable<IVector<DoubleComponent,Coordinate>> Member
 
@@ -2377,7 +2375,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComputable<IVector<DoubleComponent,Coordinate>> Member
 
         #region INegatable<IVector<DoubleComponent,Coordinate>> Member
 
@@ -2386,7 +2384,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion INegatable<IVector<DoubleComponent,Coordinate>> Member
 
         #region ISubtractable<IVector<DoubleComponent,Coordinate>> Member
 
@@ -2395,7 +2393,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion ISubtractable<IVector<DoubleComponent,Coordinate>> Member
 
         #region IHasZero<IVector<DoubleComponent,Coordinate>> Member
 
@@ -2404,7 +2402,7 @@ namespace NetTopologySuite.Coordinates.Simple
             get { throw new NotSupportedException(); }
         }
 
-        #endregion
+        #endregion IHasZero<IVector<DoubleComponent,Coordinate>> Member
 
         #region IAddable<IVector<DoubleComponent,Coordinate>> Member
 
@@ -2413,7 +2411,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IAddable<IVector<DoubleComponent,Coordinate>> Member
 
         #region IDivisible<IVector<DoubleComponent,Coordinate>> Member
 
@@ -2422,7 +2420,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IDivisible<IVector<DoubleComponent,Coordinate>> Member
 
         #region IHasOne<IVector<DoubleComponent,Coordinate>> Member
 
@@ -2431,7 +2429,7 @@ namespace NetTopologySuite.Coordinates.Simple
             get { throw new NotSupportedException(); }
         }
 
-        #endregion
+        #endregion IHasOne<IVector<DoubleComponent,Coordinate>> Member
 
         #region IMultipliable<IVector<DoubleComponent,Coordinate>> Member
 
@@ -2440,7 +2438,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IMultipliable<IVector<DoubleComponent,Coordinate>> Member
 
         #region IBooleanComparable<IVector<DoubleComponent,Coordinate>> Member
 
@@ -2464,7 +2462,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IBooleanComparable<IVector<DoubleComponent,Coordinate>> Member
 
         #region IExponential<IVector<DoubleComponent,Coordinate>> Member
 
@@ -2493,7 +2491,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IExponential<IVector<DoubleComponent,Coordinate>> Member
 
         #region IAddable<double,IVector<DoubleComponent,Coordinate>> Member
 
@@ -2502,7 +2500,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IAddable<double,IVector<DoubleComponent,Coordinate>> Member
 
         #region ISubtractable<double,IVector<DoubleComponent,Coordinate>> Member
 
@@ -2511,7 +2509,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion ISubtractable<double,IVector<DoubleComponent,Coordinate>> Member
 
         #region IMultipliable<double,IVector<DoubleComponent,Coordinate>> Member
 
@@ -2520,7 +2518,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IMultipliable<double,IVector<DoubleComponent,Coordinate>> Member
 
         #region IDivisible<double,IVector<DoubleComponent,Coordinate>> Member
 
@@ -2529,7 +2527,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IDivisible<double,IVector<DoubleComponent,Coordinate>> Member
 
         #region IEquatable<IVector<DoubleComponent,Coordinate>> Member
 
@@ -2538,7 +2536,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IEquatable<IVector<DoubleComponent,Coordinate>> Member
 
         #region IComparable<IVector<DoubleComponent,Coordinate>> Member
 
@@ -2547,7 +2545,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IComparable<IVector<DoubleComponent,Coordinate>> Member
 
         #region IEquatable<Coordinate> Member
 
@@ -2556,7 +2554,7 @@ namespace NetTopologySuite.Coordinates.Simple
             return Equals(other);
         }
 
-        #endregion
+        #endregion IEquatable<Coordinate> Member
 
         #region ISubtractable<Coordinate> Member
 
@@ -2565,7 +2563,7 @@ namespace NetTopologySuite.Coordinates.Simple
             return _coordFactory.Subtract(this, b);
         }
 
-        #endregion
+        #endregion ISubtractable<Coordinate> Member
 
         #region IAddable<Coordinate> Member
 
@@ -2574,7 +2572,7 @@ namespace NetTopologySuite.Coordinates.Simple
             return _coordFactory.Add(this, b);
         }
 
-        #endregion
+        #endregion IAddable<Coordinate> Member
 
         #region IDivisible<Coordinate> Member
 
@@ -2583,7 +2581,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IDivisible<Coordinate> Member
 
         #region IMultipliable<Coordinate> Member
 
@@ -2592,7 +2590,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IMultipliable<Coordinate> Member
 
         #region IBooleanComparable<Coordinate> Member
 
@@ -2616,7 +2614,7 @@ namespace NetTopologySuite.Coordinates.Simple
             throw new NotSupportedException();
         }
 
-        #endregion
+        #endregion IBooleanComparable<Coordinate> Member
 
         #region IComparable<Coordinate> Member
 
@@ -2625,7 +2623,7 @@ namespace NetTopologySuite.Coordinates.Simple
             return CompareTo(other);
         }
 
-        #endregion
+        #endregion IComparable<Coordinate> Member
 
         private Ordinates IndexToOrdinate(Int32 index)
         {
@@ -2659,6 +2657,20 @@ namespace NetTopologySuite.Coordinates.Simple
                 default:
                     throw new IndexOutOfRangeException();
             }
+        }
+
+        public double[] ToArray2D()
+        {
+            return new[] { _x, _y };
+        }
+
+        public double[] ToArray(params Ordinates[] ordinates)
+        {
+            var res = new double[ordinates.Length];
+            var i = 0;
+            foreach (var ordinate in ordinates)
+                res[i] = this[ordinate];
+            return res;
         }
     }
 }

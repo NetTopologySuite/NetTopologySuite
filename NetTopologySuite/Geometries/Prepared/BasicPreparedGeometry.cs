@@ -1,13 +1,15 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GeoAPI.Geometries.Prepared;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
 
 namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
-    ///A base class for <see cref="IPreparedGeometry{TCoordinate}"/> subclasses.
+    ///A base class for <see cref="IPreparedGeometry"/> subclasses.
     ///Contains default implementations for methods, which simply delegate
     ///to the equivalent <see cref="IGeometry{TCoordinate}"/> methods.
     ///This class may be used as a "no-op" class for Geometry types
@@ -35,7 +37,7 @@ namespace NetTopologySuite.Geometries.Prepared
         ///<summary>
         ///Gets the list of representative points for this geometry.
         ///One vertex is included for every component of the geometry
-        ///(i.e. including one for every ring of polygonal geometries) 
+        ///(i.e. including one for every ring of polygonal geometries)
         ///</summary>
         public ICoordinateSequence<TCoordinate> RepresentativePoints
         {
@@ -50,7 +52,7 @@ namespace NetTopologySuite.Geometries.Prepared
         }
 
         ///<summary>
-        ///Determines whether the envelope of 
+        ///Determines whether the envelope of
         ///this geometry covers the Geometry g.
         ///</summary>
         ///<param name="g"> a Geometry</param>
@@ -58,7 +60,7 @@ namespace NetTopologySuite.Geometries.Prepared
         protected Boolean EnvelopeCovers(IGeometry<TCoordinate> g)
         {
             return _baseGeom.Extents.Contains(g.Extents);
-                //_baseGeom.Extents.Envelope.Covers(g.Envelope);
+            //_baseGeom.Extents.Envelope.Covers(g.Envelope);
         }
 
         ///<summary>
@@ -110,7 +112,7 @@ namespace NetTopologySuite.Geometries.Prepared
 
         ///<summary>
         ///Standard implementation for all geometries.
-        ///Supports {@link GeometryCollection}s as input.
+        ///Supports <see cref="IGeometryCollection"/>s as input.
         ///</summary>
         public virtual Boolean Disjoint(IGeometry<TCoordinate> g)
         {
@@ -149,10 +151,10 @@ namespace NetTopologySuite.Geometries.Prepared
             return _baseGeom.Within(g);
         }
 
-        #endregion
+        #endregion IPreparedGeometry<TCoordinate> Members
 
         ///<summary>
-        ///Tests whether any representative of the target geometry 
+        ///Tests whether any representative of the target geometry
         ///intersects the test geometry.
         ///This is useful in A/A, A/L, A/P, L/P, and P/P cases.
         ///</summary>
@@ -160,7 +162,7 @@ namespace NetTopologySuite.Geometries.Prepared
         ///<returns><value>True</value> if any component intersects the areal test geometry</returns>
         public Boolean IsAnyTargetComponentInTest(IGeometry<TCoordinate> testGeom)
         {
-            PointLocator<TCoordinate> locator = new PointLocator<TCoordinate>();
+            var locator = new PointLocator<TCoordinate>();
             foreach (TCoordinate p in _representativePts)
             {
                 if (locator.Intersects(p, testGeom))
@@ -170,7 +172,7 @@ namespace NetTopologySuite.Geometries.Prepared
         }
 
         ///<summary>
-        ///Determines whether a Geometry g interacts with 
+        ///Determines whether a Geometry g interacts with
         ///this geometry by testing the geometry envelopes.
         ///</summary>
         ///<param name="g"> a Geometry</param>
@@ -181,12 +183,72 @@ namespace NetTopologySuite.Geometries.Prepared
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns>WKT representation of base geometry</returns>
-        public String ToString()
+        public override String ToString()
         {
             return _baseGeom.ToString();
+        }
+
+        bool ISimpleSpatialRelation.Contains(IGeometry g)
+        {
+            return Contains(ConvertIGeometry(g));
+        }
+
+        bool ISimpleSpatialRelation.ContainsProperly(IGeometry g)
+        {
+            return ContainsProperly(ConvertIGeometry(g));
+        }
+
+        bool ISimpleSpatialRelation.CoveredBy(IGeometry g)
+        {
+            return CoveredBy(ConvertIGeometry(g));
+        }
+
+        bool ISimpleSpatialRelation.Covers(IGeometry g)
+        {
+            return Covers(ConvertIGeometry(g));
+        }
+
+        bool ISimpleSpatialRelation.Crosses(IGeometry g)
+        {
+            return Crosses(ConvertIGeometry(g));
+        }
+
+        bool ISimpleSpatialRelation.Disjoint(IGeometry g)
+        {
+            return Disjoint(ConvertIGeometry(g));
+        }
+
+        bool ISimpleSpatialRelation.Intersects(IGeometry g)
+        {
+            return Intersects(ConvertIGeometry(g));
+        }
+
+        bool ISimpleSpatialRelation.Overlaps(IGeometry g)
+        {
+            return Overlaps(ConvertIGeometry(g));
+        }
+
+        bool ISimpleSpatialRelation.Touches(IGeometry g)
+        {
+            return Touches(ConvertIGeometry(g));
+        }
+
+        bool ISimpleSpatialRelation.Within(IGeometry g)
+        {
+            return Within(g as IGeometry<TCoordinate>);
+        }
+
+        IGeometry IPreparedGeometry.Geometry
+        {
+            get { return Geometry; }
+        }
+
+        private static IGeometry<TCoordinate> ConvertIGeometry(IGeometry other)
+        {
+            return GenericInterfaceConverter<TCoordinate>.Convert(other);
         }
     }
 }

@@ -9,14 +9,14 @@ using NetTopologySuite.Algorithm;
 using NPack.Interfaces;
 
 #if DOTNET35
-using System.Linq;
+
 #endif
 
 namespace NetTopologySuite.Geometries
 {
-    /// <summary> 
+    /// <summary>
     /// Represents a linear polygon, which may include holes.
-    /// The shell and holes of the polygon are represented by 
+    /// The shell and holes of the polygon are represented by
     /// <see cref="ILinearRing{TCoordinates}"/>s.
     /// </summary>
     /// <remarks>
@@ -25,7 +25,7 @@ namespace NetTopologySuite.Geometries
     /// The orientation of the rings in the polygon does not matter.
     /// The shell and holes must conform to the assertions specified in the
     /// <see href="http://www.opengis.org/techno/specs.htm">
-    /// OpenGIS Simple Features Specification for SQL </see>.     
+    /// OpenGIS Simple Features Specification for SQL </see>.
     /// </remarks>
     [Serializable]
     public class Polygon<TCoordinate> : MultiCoordinateGeometry<TCoordinate>,
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Geometries
         //    new GeometryFactory<TCoordinate>().CreatePolygon(null, null);
 
         /// <summary>
-        /// The exterior boundary, or <see langword="null" /> if this 
+        /// The exterior boundary, or <see langword="null" /> if this
         /// <see cref="Polygon{TCoordinate}" /> is the empty point.
         /// </summary>
         private readonly ILinearRing<TCoordinate> _shell;
@@ -57,20 +57,20 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="shell">
         /// The outer boundary of the new <see cref="Polygon{TCoordinate}" />,
-        /// or <see langword="null" /> or an empty 
+        /// or <see langword="null" /> or an empty
         /// <see cref="LinearRing{TCoordinate}" /> if the empty
         /// point is to be created.
         /// </param>
         /// <param name="holes">
-        /// The inner boundaries of the new <see cref="Polygon{TCoordinate}" />, 
-        /// or <see langword="null" /> or empty 
+        /// The inner boundaries of the new <see cref="Polygon{TCoordinate}" />,
+        /// or <see langword="null" /> or empty
         /// <see cref="LinearRing{TCoordinate}" />s if the empty
         /// point is to be created.
         /// </param>
         /// <remarks>
-        /// For create this <see cref="Geometry{TCoordinate}"/> 
-        /// is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> 
+        /// For create this <see cref="Geometry{TCoordinate}"/>
+        /// is used a standard <see cref="GeometryFactory{TCoordinate}"/>
+        /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c>
         /// <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public Polygon(ILinearRing<TCoordinate> shell, IEnumerable<ILineString<TCoordinate>> holes)
@@ -81,19 +81,19 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Constructs a <see cref="Polygon{TCoordinate}" /> 
+        /// Constructs a <see cref="Polygon{TCoordinate}" />
         /// with the given exterior boundary and
         /// interior boundaries.
-        /// </summary>       
+        /// </summary>
         /// <param name="shell">
         /// The outer boundary of the new <see cref="Polygon{TCoordinate}" />,
-        /// or <see langword="null" /> or an empty 
+        /// or <see langword="null" /> or an empty
         /// <see cref="LinearRing{TCoordinate}" /> if the empty
         /// point is to be created.
         /// </param>
         /// <param name="holes">
         /// The inner boundaries of the new <see cref="Polygon{TCoordinate}" />,
-        /// or <see langword="null" /> or empty 
+        /// or <see langword="null" /> or empty
         /// <see cref="LinearRing{TCoordinate}" />s if the empty
         /// point is to be created.
         /// </param>
@@ -124,19 +124,19 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Constructs a <see cref="Polygon{TCoordinate}" /> 
+        /// Constructs a <see cref="Polygon{TCoordinate}" />
         /// with the given exterior boundary and
         /// interior boundaries.
-        /// </summary>       
+        /// </summary>
         /// <param name="sequence">
         /// The outer boundary of the new <see cref="Polygon{TCoordinate}" />,
-        /// or <see langword="null" /> or an empty 
+        /// or <see langword="null" /> or an empty
         /// <see cref="LinearRing{TCoordinate}" /> if the empty
         /// point is to be created.
         /// </param>
         /// <param name="factory">
         /// The inner boundaries of the new <see cref="Polygon{TCoordinate}" />,
-        /// or <see langword="null" /> or empty 
+        /// or <see langword="null" /> or empty
         /// <see cref="LinearRing{TCoordinate}" />s if the empty
         /// point is to be created.
         /// </param>
@@ -228,7 +228,7 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        #endregion
+        #endregion IHasGeometryComponents<TCoordinate> Members
 
         /* END ADDED BY MPAUL42: monoGIS team */
 
@@ -258,7 +258,7 @@ namespace NetTopologySuite.Geometries
         {
             foreach (TCoordinate coordinate in _shell.Coordinates)
                 yield return coordinate;
-            if ( _holes != null )
+            if (_holes != null)
                 foreach (ILineString<TCoordinate> s in _holes)
                     foreach (TCoordinate coord in s.Coordinates)
                         yield return coord;
@@ -418,7 +418,6 @@ namespace NetTopologySuite.Geometries
                 return false;
             }
 
-
             if (InteriorRingsCount != otherPolygon.InteriorRingsCount)
             {
                 return false;
@@ -572,7 +571,7 @@ namespace NetTopologySuite.Geometries
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         // [codekaizen 2008-01-14]  temporarily commented out in order to investigate
-        //                          usage of these properties. Are they redundant? 
+        //                          usage of these properties. Are they redundant?
         //                          Could they be conditionally compiled?
 
         //public ILinearRing<TCoordinate> Shell
@@ -591,7 +590,6 @@ namespace NetTopologySuite.Geometries
         {
             get { return _shell; }
         }
-
 
         IEnumerable<ILineString> IPolygon.InteriorRings
         {
@@ -613,7 +611,7 @@ namespace NetTopologySuite.Geometries
             get { return PointOnSurface; }
         }
 
-        #endregion
+        #endregion IPolygon<TCoordinate> Members
 
         protected override Extents<TCoordinate> ComputeExtentsInternal()
         {

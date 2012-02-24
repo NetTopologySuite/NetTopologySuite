@@ -169,7 +169,7 @@ namespace NetTopologySuite.Geometries
         {
         }
 
-        public Double this[Ordinates ordinate]
+        public Double this[Ordinates ordinates]
         {
             get
             {
@@ -178,13 +178,13 @@ namespace NetTopologySuite.Geometries
                     throw new InvalidOperationException("Point is empty.");
                 }
 
-                if (Coordinate.ContainsOrdinate(ordinate))
+                if (Coordinate.ContainsOrdinate(ordinates))
                 {
-                    return Coordinate[ordinate];
+                    return Coordinate[ordinates];
                 }
                 else
                 {
-                    throw new ArgumentOutOfRangeException("ordinate", ordinate,
+                    throw new ArgumentOutOfRangeException("ordinates", ordinates,
                                                           "Ordinate value doesn't " +
                                                           "exist in this point");
                 }

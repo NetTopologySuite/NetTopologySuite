@@ -3,13 +3,12 @@ using GeoAPI.Coordinates;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
-using NPack;
 using NPack.Interfaces;
 
 namespace NetTopologySuite.Index.Quadtree
 {
     /// <summary>
-    /// QuadRoot is the root of a single Quadtree.  
+    /// QuadRoot is the root of a single Quadtree.
     /// It is centered at the origin,
     /// and does not have a defined extent.
     /// </summary>
@@ -30,7 +29,7 @@ namespace NetTopologySuite.Index.Quadtree
             _origin = _geoFactory.CoordinateFactory.Create(0, 0);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Insert an item into the quadtree this is the root of.
         /// </summary>
         public void Insert(TItem item)
@@ -65,7 +64,7 @@ namespace NetTopologySuite.Index.Quadtree
 
             /*
             * At this point we have a subquad which exists and must contain
-            * contains the extents for the item.  Insert the item into the tree 
+            * contains the extents for the item.  Insert the item into the tree
             * at this subnode.
             */
             Node<TCoordinate, TItem> subQuad = SubNodesInternal[index] as Node<TCoordinate, TItem>;
@@ -82,7 +81,7 @@ namespace NetTopologySuite.Index.Quadtree
             return true;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Insert an item which is known to be contained in the tree rooted at
         /// the given QuadNode root.  Lower levels of the tree will be created
         /// if necessary to hold the item.
@@ -96,13 +95,10 @@ namespace NetTopologySuite.Index.Quadtree
             * to infinite recursion. Instead, use a heuristic of simply returning
             * the smallest existing quad containing the query
             */
-            DoubleComponent dminx, dmaxx, dminy, dmaxy;
-            itemExtents.Min.GetComponents(out dminx, out dminy);
-            itemExtents.Max.GetComponents(out dmaxx, out dmaxy);
-            Boolean isZeroX = IntervalSize.IsZeroWidth((Double)dminx, (Double)dmaxx);
-            Boolean isZeroY = IntervalSize.IsZeroWidth((Double)dminy, (Double)dmaxy);
-            //Boolean isZeroX = IntervalSize.IsZeroWidth(itemExtents.GetMin(Ordinates.X), itemExtents.GetMax(Ordinates.X));
-            //Boolean isZeroY = IntervalSize.IsZeroWidth(itemExtents.GetMin(Ordinates.Y), itemExtents.GetMax(Ordinates.Y));
+            var minXY = itemExtents.Min.ToArray2D();
+            var maxXY = itemExtents.Max.ToArray2D();
+            var isZeroX = IntervalSize.IsZeroWidth(minXY[0], maxXY[0]);
+            var isZeroY = IntervalSize.IsZeroWidth(minXY[1], maxXY[1]);
 
             BaseQuadNode<TCoordinate, TItem> node;
 

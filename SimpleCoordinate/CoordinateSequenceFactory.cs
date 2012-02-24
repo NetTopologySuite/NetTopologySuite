@@ -113,8 +113,8 @@ namespace NetTopologySuite.Coordinates.Simple
 
                 if (componentTransform != null)
                 {
-                    Double x = componentTransform(coordinate[Ordinates.X]);
-                    Double y = componentTransform(coordinate[Ordinates.Y]);
+                    Double x = componentTransform(coordinate[GeoAPI.Coordinates.Ordinates.X]);
+                    Double y = componentTransform(coordinate[GeoAPI.Coordinates.Ordinates.Y]);
                     c = _coordFactory.Create(x, y);
                 }
 
