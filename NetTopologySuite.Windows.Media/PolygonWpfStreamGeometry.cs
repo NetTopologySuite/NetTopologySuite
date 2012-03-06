@@ -1,3 +1,4 @@
+#if (STREAM_GEOMETRY) && (!SILVERLIGHT)
 using System.Collections.Generic;
 using System.Windows.Media;
 using GeoAPI.Geometries;
@@ -121,3 +122,4 @@ namespace NetTopologySuite.Windows.Media
         //}
     }
 }
+#endif

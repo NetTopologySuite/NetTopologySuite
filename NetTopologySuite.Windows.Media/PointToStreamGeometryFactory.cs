@@ -1,3 +1,5 @@
+#if (STREAM_GEOMETRY) && (!SILVERLIGHT)
+
 /*
  * The JTS Topology Suite is a collection of Java classes that
  * implement the fundamental operations required to validate a given
@@ -280,3 +282,4 @@ namespace NetTopologySuite.Windows.Media
         }
     }
 }
+#endif

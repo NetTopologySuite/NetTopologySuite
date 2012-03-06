@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3200B789-34A9-42F7-8FCF-0908D09E1BBE}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NetTopologySuite.Windows.Media</RootNamespace>
+    <AssemblyName>NetTopologySuite.Windows.Media</AssemblyName>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT PATH_GEOMETRY</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System.Windows" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Browser" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\NetTopologySuite.Windows.Media\FontGlyphReader.cs">
+      <Link>FontGlyphReader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Windows.Media\GeometryCollectionGraphicsPath.cs">
+      <Link>GeometryCollectionGraphicsPath.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Windows.Media\IdentityPointTransformation.cs">
+      <Link>IdentityPointTransformation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Windows.Media\IPointTransformation.cs">
+      <Link>IPointTransformation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Windows.Media\PointToPathGeometryFactory.cs">
+      <Link>PointToPathGeometryFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Windows.Media\PointToStreamGeometryFactory.cs">
+      <Link>PointToStreamGeometryFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Windows.Media\PolygonWpfPathGeometry.cs">
+      <Link>PolygonWpfPathGeometry.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Windows.Media\PolygonWpfStreamGeometry.cs">
+      <Link>PolygonWpfStreamGeometry.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Windows.Media\WpfGeometryReader.cs">
+      <Link>WpfGeometryReader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Windows.Media\WpfPathGeometryWriter.cs">
+      <Link>WpfPathGeometryWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Windows.Media\WpfStreamGeometryWriter.cs">
+      <Link>WpfStreamGeometryWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Windows.Media\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\GeoAPI\GeoAPI.Silverlight\GeoAPI.Silverlight.csproj">
+      <Project>{9B913337-1114-4D05-8F24-D05A5FD588AD}</Project>
+      <Name>GeoAPI.Silverlight</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.Silverlight.csproj">
+      <Project>{71FAD7D8-11F5-444B-B9F9-D2EFF68C8F26}</Project>
+      <Name>NetTopologySuite.Silverlight</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
