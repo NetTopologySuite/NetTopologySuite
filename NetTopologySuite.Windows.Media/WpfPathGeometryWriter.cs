@@ -1,4 +1,4 @@
-/*
+﻿/*
  * The JTS Topology Suite is a collection of Java classes that
  * implement the fundamental operations required to validate a given
  * geo-spatial data set to a known topological specification.
@@ -31,21 +31,22 @@
  *     www.vividsolutions.com
  */
 
+#if SILVERLIGHT || PATH_GEOMETRY
+
 using System;
 using System.Collections.Generic;
+using System.Windows.Media;
 using GeoAPI.Geometries;
 using WpfGeometry = System.Windows.Media.Geometry;
+using WpfPathGeometry = System.Windows.Media.PathGeometry;
 using WpfPoint = System.Windows.Point;
-using WpfStreamGeometry = System.Windows.Media.StreamGeometry;
-using WpfStreamGeometryContext = System.Windows.Media.StreamGeometryContext;
 
 namespace NetTopologySuite.Windows.Media
 {
-
     ///<summary>
     /// Writes <see cref="IGeometry"/>s into  <see cref="WpfGeometry"/>s.
     ///</summary>
-    public class WpfGeometryWriter
+    public class WpfPathGeometryWriter
     {
         /**
          * The point transformation used by default.
@@ -55,10 +56,10 @@ namespace NetTopologySuite.Windows.Media
         /**
          * The point shape factory used by default.
          */
-        public static readonly IPointShapeFactory DefaultPointFactory = new Square(3.0);
+        public static readonly IPointToPathGeometryFactory DefaultPointFactory = new SquarePath(3.0);
 
         private readonly IPointTransformation _pointTransformer = DefaultPointTransformation;
-        private readonly IPointShapeFactory _pointFactory = DefaultPointFactory;
+        private readonly IPointToPathGeometryFactory _pointFactory = DefaultPointFactory;
 
         ///**
         // * Cache a PointF object to use to transfer coordinates into shape
@@ -70,7 +71,7 @@ namespace NetTopologySuite.Windows.Media
         ///</summary>
         /// <param name="pointTransformer">A transformation from model to view space to use </param>
         /// <param name="pointFactory">The PointShapeFactory to use</param>
-        public WpfGeometryWriter(IPointTransformation pointTransformer, IPointShapeFactory pointFactory)
+        public WpfPathGeometryWriter(IPointTransformation pointTransformer, IPointToPathGeometryFactory pointFactory)
         {
             if (pointTransformer != null)
                 _pointTransformer = pointTransformer;
@@ -82,7 +83,7 @@ namespace NetTopologySuite.Windows.Media
         /// Creates a new GraphicsPathWriter with a specified point transformation and the default point shape factory.
         ///</summary>
         /// <param name="pointTransformer">A transformation from model to view space to use </param>
-        public WpfGeometryWriter(IPointTransformation pointTransformer)
+        public WpfPathGeometryWriter(IPointTransformation pointTransformer)
             : this(pointTransformer, null)
         {
         }
@@ -90,7 +91,7 @@ namespace NetTopologySuite.Windows.Media
         ///<summary>
         /// Creates a new GraphicsPathWriter with the default (identity) point transformation.
         ///</summary>
-        public WpfGeometryWriter()
+        public WpfPathGeometryWriter()
         {
         }
 
@@ -100,49 +101,45 @@ namespace NetTopologySuite.Windows.Media
         public WpfGeometry ToShape(IGeometry geometry)
         {
             if (geometry.IsEmpty)
-                return new WpfStreamGeometry();
+                return new WpfPathGeometry();
 
-            var p = new WpfStreamGeometry();
-            using (var sgc = p.Open())
-                AddShape(sgc, geometry);
+            var p = new WpfPathGeometry();
+            AddShape(p, geometry);
 
             p.Freeze();
             return p;
         }
 
-        private void AddShape(WpfStreamGeometryContext sgc, IPolygon p)
+        private void AddShape(WpfPathGeometry pathGeometry, IPolygon p)
         {
-            AddShape(sgc, p.Shell, true);
+            AddShape(pathGeometry, p.Shell, true);
             var holes = p.Holes;
-            if (holes != null)
-            {
-                foreach (ILinearRing hole in holes)
-                    AddShape(sgc, hole, true);
-            }
+            if (holes == null) return;
+
+            foreach (var hole in holes)
+                AddShape(pathGeometry, hole, true);
         }
 
-        private void AddShape(WpfStreamGeometryContext sgc, IGeometry geometry)
+        private void AddShape(WpfPathGeometry pathGeometry, IGeometry geometry)
         {
             if (geometry is IPolygon)
-                AddShape(sgc, (IPolygon)geometry);
+                AddShape(pathGeometry, (IPolygon)geometry);
+            else if (geometry is ILinearRing)
+                AddShape(pathGeometry, (ILinearRing)geometry);
             else if (geometry is ILineString)
-                AddShape(sgc, (ILineString)geometry);
-            //else if (geometry is IMultiLineString)
-            //    AddShape(sgc, (IMultiLineString)geometry);
+                AddShape(pathGeometry, (ILineString)geometry);
             else if (geometry is IPoint)
-                AddShape(sgc, (IPoint) geometry);
+                AddShape(pathGeometry, (IPoint)geometry);
             else if (geometry is IGeometryCollection)
-                AddShape(sgc, (IGeometryCollection)geometry);
+                AddShape(pathGeometry, (IGeometryCollection)geometry);
             else
             {
                 throw new ArgumentException(
                     "Unrecognized Geometry class: " + geometry.GetType());
             }
-            
         }
 
-
-        private void AddShape(WpfStreamGeometryContext sgc, IGeometryCollection gc)
+        private void AddShape(WpfPathGeometry sgc, IGeometryCollection gc)
         {
             foreach (IGeometry geometry in gc.Geometries)
             {
@@ -153,37 +150,34 @@ namespace NetTopologySuite.Windows.Media
         //private void AddShape(WpfStreamGeometryContext sgc, IMultiLineString mls)
         //{
         //    var path = new WpfStreamGeometry();
-        //    using 
+        //    using
         //    foreach (ILineString ml in mls)
         //        path.AddPath(ToShape(ml), false);
 
         //    return path;
         //}
 
-        private void AddShape(WpfStreamGeometryContext sgc, ILineString lineString)
+        private void AddShape(WpfPathGeometry pathGeometry, ILineString lineString, bool closed = false)
         {
             var coords = lineString.Coordinates;
-            sgc.BeginFigure(TransformPoint(coords[0]), false, false);
-            sgc.PolyLineTo(TransformPoints(coords, 1), true, true);
+            pathGeometry.Figures.Add(new PathFigure(TransformPoint(coords[0]), new[] { new PolyLineSegment(TransformPoints(coords, 1), true) }, closed));
         }
 
-        private void AddShape(WpfStreamGeometryContext sgc, ILinearRing linearRing, bool filled)
+        private void AddShape(WpfPathGeometry pathGeometry, ILinearRing linearRing)
         {
-            var coords = linearRing.Coordinates;
-            sgc.BeginFigure(TransformPoint(coords[0]), filled, true);
-            sgc.PolyLineTo(TransformPoints(coords, 1), true, true);
+            AddShape(pathGeometry, linearRing, true);
         }
 
-        private void AddShape(WpfStreamGeometryContext sgc, IPoint point)
+        private void AddShape(WpfPathGeometry pathGeometry, IPoint point)
         {
             var viewPoint = TransformPoint(point.Coordinate);
-            _pointFactory.AddShape(viewPoint, sgc);
+            _pointFactory.AddShape(viewPoint, pathGeometry);
         }
 
-        private IList<WpfPoint> TransformPoints(Coordinate[] model, int start)
+        private IEnumerable<WpfPoint> TransformPoints(Coordinate[] model, int start)
         {
             var ret = new List<WpfPoint>(model.Length - start);
-            for( int i = 1; i < model.Length; i++)
+            for (int i = 1; i < model.Length; i++)
                 ret.Add(TransformPoint(model[i], new WpfPoint()));
             return ret;
         }
@@ -205,3 +199,5 @@ namespace NetTopologySuite.Windows.Media
         }
     }
 }
+
+#endif

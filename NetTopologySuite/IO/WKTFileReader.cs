@@ -102,13 +102,9 @@ namespace NetTopologySuite.IO
         private IList<IGeometry> Read(TextReader bufferedReader)
         {
             IList<IGeometry> geoms = new List<IGeometry>();
-            var tokens = _wktReader.Tokenize(bufferedReader);
-            
-            if (tokens[tokens.Count-1] is EofToken)
-                tokens.RemoveAt(tokens.Count-1);
-            
-            _wktReader.Index = 0;
-            while (!IsAtEndOfTokens(tokens) && !IsAtLimit(geoms))
+            var tokens = _wktReader.Tokenizer(bufferedReader);
+            tokens.MoveNext();
+            while (!IsAtEndOfTokens(tokens.Current) && !IsAtLimit(geoms))
             {
                 var g = _wktReader.ReadGeometryTaggedText(tokens);
                 if (_count >= Offset)
@@ -135,9 +131,14 @@ namespace NetTopologySuite.IO
             return true;
         }
 
-        private bool IsAtEndOfTokens(IList<Token> tokens)
+        //private bool IsAtEndOfTokens(IList<Token> tokens)
+        //{
+        //    return !(_wktReader.Index < tokens.Count);
+        //}
+
+        private bool IsAtEndOfTokens(Token token)
         {
-            return !(_wktReader.Index < tokens.Count);
+            return token is EofToken;
         }
 
         ///<summary>

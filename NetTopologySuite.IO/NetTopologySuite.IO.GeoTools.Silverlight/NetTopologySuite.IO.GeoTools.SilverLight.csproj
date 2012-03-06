@@ -56,6 +56,9 @@
     <Compile Include="..\NetTopologySuite.IO.GeoTools\BigEndianBinaryReader.cs">
       <Link>BigEndianBinaryReader.cs</Link>
     </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoTools\Handlers\GeometryInstantiationErrorHandling.cs">
+      <Link>Handlers\GeometryInstantiationErrorHandling.cs</Link>
+    </Compile>
     <Compile Include="..\NetTopologySuite.IO.ShapeFile\ShapeGeometryType.cs">
       <Link>ShapeGeometryType.cs</Link>
     </Compile>

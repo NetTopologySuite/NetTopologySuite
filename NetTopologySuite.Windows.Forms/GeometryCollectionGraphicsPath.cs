@@ -30,6 +30,7 @@
  *     (250)385-6040
  *     www.vividsolutions.com
  */
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -45,6 +46,7 @@ namespace NetTopologySuite.Windows.Forms
     public class GeometryCollectionGraphicsPath
     {
         private readonly IList<GraphicsPath> _shapes = new List<GraphicsPath>();
+
         public GraphicsPath Path
         {
             get
@@ -63,9 +65,8 @@ namespace NetTopologySuite.Windows.Forms
 
         public Rectangle GetBounds()
         {
-            /**@todo Implement this java.awt.Shape method*/
-            throw new NotSupportedException(
-                "Method getBounds() not yet implemented.");
+            var res = GetBoundsF();
+            return Rectangle.Truncate(res);
         }
 
         public RectangleF GetBoundsF()
@@ -82,59 +83,60 @@ namespace NetTopologySuite.Windows.Forms
             return rectangle;
         }
 
-        //public bool Contains(double x, double y)
-        //{
-        //    /**@todo Implement this java.awt.Shape method*/
-        //    throw new NotSupportedException(
-        //        "Method contains() not yet implemented.");
-        //}
+        public bool Contains(double x, double y)
+        {
+            /**@todo Implement this java.awt.Shape method*/
+            throw new NotSupportedException(
+                "Method contains() not yet implemented.");
+        }
 
-        //public bool Contains(PointF p)
-        //{
-        //    /**@todo Implement this java.awt.Shape method*/
-        //    throw new NotSupportedException(
-        //        "Method contains() not yet implemented.");
-        //}
+        public bool Contains(PointF p)
+        {
+            /**@todo Implement this java.awt.Shape method*/
+            throw new NotSupportedException(
+                "Method contains() not yet implemented.");
+        }
 
-        //public bool Intersects(double x, double y, double w, double h)
-        //{
-        //    /**@todo Implement this java.awt.Shape method*/
-        //    throw new NotSupportedException(
-        //        "Method intersects() not yet implemented.");
-        //}
+        public bool Intersects(double x, double y, double w, double h)
+        {
+            /**@todo Implement this java.awt.Shape method*/
+            throw new NotSupportedException(
+                "Method intersects() not yet implemented.");
+        }
 
-        //public bool Intersects(RectangleF r)
-        //{
-        //    /**@todo Implement this java.awt.Shape method*/
-        //    throw new NotSupportedException(
-        //        "Method intersects() not yet implemented.");
-        //}
+        public bool Intersects(RectangleF r)
+        {
+            /**@todo Implement this java.awt.Shape method*/
+            throw new NotSupportedException(
+                "Method intersects() not yet implemented.");
+        }
 
-        //public bool Contains(double x, double y, double w, double h)
-        //{
-        //    /**@todo Implement this java.awt.Shape method*/
-        //    throw new NotSupportedException(
-        //        "Method contains() not yet implemented.");
-        //}
+        public bool Contains(double x, double y, double w, double h)
+        {
+            /**@todo Implement this java.awt.Shape method*/
+            throw new NotSupportedException(
+                "Method contains() not yet implemented.");
+        }
 
-        //public bool Contains(RectangleF r)
-        //{
-        //    /**@todo Implement this java.awt.Shape method*/
-        //    throw new NotSupportedException(
-        //        "Method contains() not yet implemented.");
-        //}
+        public bool Contains(RectangleF r)
+        {
+            /**@todo Implement this java.awt.Shape method*/
+            throw new NotSupportedException(
+                "Method contains() not yet implemented.");
+        }
 
         public GraphicsPathIterator GetPathIterator(Matrix at)
         {
-            var p = (GraphicsPath) Path.Clone();
+            var p = (GraphicsPath)Path.Clone();
             p.Flatten(at);
             return new GraphicsPathIterator(p);
         }
 
         public GraphicsPathIterator GetPathIterator(Matrix at, double flatness)
         {
-            // since Geometry is linear, can simply delegate to the simple method
-            return GetPathIterator(at);
+            var p = (GraphicsPath)Path.Clone();
+            p.Flatten(at, (float)flatness);
+            return new GraphicsPathIterator(p);
         }
     }
 }

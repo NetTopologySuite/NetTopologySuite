@@ -104,6 +104,7 @@
     <Compile Include="Geometries\precisionmodelexample.cs" />
     <Compile Include="Geometries\simplemethodsexample.cs" />
     <Compile Include="LinearReferencing\LinearReferencingExample.cs" />
+    <Compile Include="Tests\GeometryServicesTest.cs" />
     <Compile Include="Tests\IO\GmlTest.cs" />
     <Compile Include="Tests\IO\PostGisTest.cs" />
     <Compile Include="Tests\IO\ShapeFileInvalidHeaderTest.cs" />
@@ -236,7 +237,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <EmbeddedResource Include="Tests\Various\cant-read-file1.gml" />
-    <EmbeddedResource Include="Tests\Various\cant-read-file2.gml" />
+    <EmbeddedResource Include="Tests\Various\cant-read-file2.gml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tests\Various\cant-read-file3.gml">
       <SubType>Designer</SubType>
     </EmbeddedResource>

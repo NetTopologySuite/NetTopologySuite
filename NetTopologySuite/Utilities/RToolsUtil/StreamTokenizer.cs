@@ -30,6 +30,7 @@
 //		add NUnit wrap of built-in tests
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -647,7 +648,7 @@ namespace RTools_NTS.Util
 	/// started.
 	/// </para>
 	/// </remarks>
-	public class StreamTokenizer
+	public class StreamTokenizer : IEnumerable<Token>
 	{
 		// ----------------------------------------------------------------
 		#region Constants
@@ -1596,7 +1597,46 @@ namespace RTools_NTS.Util
 				else return(null);
 			}
 		}
-		#endregion		
+		#endregion
+
+	    #region Implementation of IEnumerable
+
+	    /// <summary>
+	    /// Gibt einen Enumerator zurück, der die Auflistung durchläuft.
+	    /// </summary>
+	    /// <returns>
+	    /// Ein <see cref="T:System.Collections.Generic.IEnumerator`1"/>, der zum Durchlaufen der Auflistung verwendet werden kann.
+	    /// </returns>
+	    /// <filterpriority>1</filterpriority>
+	    public IEnumerator<Token> GetEnumerator()
+	    {
+            Token token;
+            lineNumber = 1;
+
+            while (NextToken(out token))
+            {
+                if (token == null) throw new NullReferenceException(
+                        "StreamTokenizer: Tokenize: Got a null token from NextToken.");
+                yield return token;
+            }
+
+            // add the last token returned (EOF)
+            yield return token;
+        }
+
+	    /// <summary>
+	    /// Gibt einen Enumerator zurück, der eine Auflistung durchläuft.
+	    /// </summary>
+	    /// <returns>
+	    /// Ein <see cref="T:System.Collections.IEnumerator"/>-Objekt, das zum Durchlaufen der Auflistung verwendet werden kann.
+	    /// </returns>
+	    /// <filterpriority>2</filterpriority>
+	    IEnumerator IEnumerable.GetEnumerator()
+	    {
+	        return GetEnumerator();
+	    }
+
+	    #endregion
 	}
 }
 

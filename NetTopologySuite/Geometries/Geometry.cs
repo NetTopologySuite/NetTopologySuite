@@ -190,17 +190,21 @@ namespace NetTopologySuite.Geometries
             }
             set 
             {
+                
                 _srid = value;
-				IGeometryCollection collection = this as IGeometryCollection;
-				if (collection != null)
-				{
-					foreach (IGeometry geometry in collection.Geometries)
-					{
-						geometry.SRID = value;
-					}
-				}
-				_factory = new GeometryFactory(_factory.PrecisionModel, value, _factory.CoordinateSequenceFactory);
-			}
+
+                //Adjust the geometry factory
+                _factory = GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(
+                    _factory.PrecisionModel, value, _factory.CoordinateSequenceFactory);
+
+				var collection = this as IGeometryCollection;
+                if (collection == null) return;
+
+                foreach (var geometry in collection.Geometries)
+                {
+                    geometry.SRID = value;
+                }
+            }
         }
 
         /// <summary>

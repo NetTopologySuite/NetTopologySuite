@@ -52,6 +52,11 @@ namespace NetTopologySuite.IO
             return builder.ConstructedGeometry;
         }
 
+        /// <summary>
+        /// Gets or sets whether invalid linear rings should be fixed
+        /// </summary>
+        public bool RepairRings { get; set; }
+
         #region Implementation of IGeometryIOSettings
 
         public bool HandleSRID

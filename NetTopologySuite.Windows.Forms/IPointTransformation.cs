@@ -30,32 +30,33 @@
  *     (250)385-6040
  *     www.vividsolutions.com
  */
+
 using System.Drawing;
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Windows.Forms
 {
     ///<summary>
-    /// Transforms a geometry <see cref="ICoordinate"/> into a <see cref="PointF"/>,
+    /// Transforms a geometry <see cref="Coordinate"/> into a <see cref="PointF"/>,
     /// possibly with a mathematical transformation of the ordinate values.
-    /// Transformation from a model coordinate system to a view coordinate system 
+    /// Transformation from a model coordinate system to a view coordinate system
     /// can be efficiently performed by supplying an appropriate transformation.
     /// </summary>
     /// <author>Martin Davis</author>
     public interface IPointTransformation
     {
         ///<summary>
-        /// Transforms a <see cref="ICoordinate"/> into a <see cref="PointF"/>.
+        /// Transforms a <see cref="Coordinate"/> into a <see cref="PointF"/>.
         ///</summary>
         ///<param name="src">The source coordinate</param>
         ///<param name="dest">The destination point</param>
-        void Transform(ICoordinate src, ref PointF dest);
+        void Transform(Coordinate src, ref PointF dest);
 
         /// <summary>
-        /// Transforms an array of <see cref="ICoordinate"/>s into an array of <see cref="PointF"/>s.
+        /// Transforms an array of <see cref="Coordinate"/>s into an array of <see cref="PointF"/>s.
         /// </summary>
-        /// <param name="src">An array of <see cref="ICoordinate"/>s</param>
+        /// <param name="src">An array of <see cref="Coordinate"/>s</param>
         /// <returns>An array of <see cref="PointF"/>s</returns>
-        PointF[] Transform(ICoordinate[] src);
+        PointF[] Transform(Coordinate[] src);
     }
 }

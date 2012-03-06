@@ -61,7 +61,7 @@ namespace NetTopologySuite.Algorithm.Distance
         /// <returns>The Discrete Hausdorff Distance</returns>
         public static double Distance(IGeometry g0, IGeometry g1)
         {
-            DiscreteHausdorffDistance dist = new DiscreteHausdorffDistance(g0, g1);
+            var dist = new DiscreteHausdorffDistance(g0, g1);
             return dist.Distance();
         }
 
@@ -74,7 +74,7 @@ namespace NetTopologySuite.Algorithm.Distance
         /// <returns>The Discrete Hausdorff Distance</returns>
         public static double Distance(IGeometry g0, IGeometry g1, double densifyFraction)
         {
-            DiscreteHausdorffDistance dist = new DiscreteHausdorffDistance(g0, g1);
+            var dist = new DiscreteHausdorffDistance(g0, g1);
             dist.DensifyFraction = densifyFraction;
             return dist.Distance();
         }
@@ -136,13 +136,13 @@ namespace NetTopologySuite.Algorithm.Distance
 
         private void ComputeOrientedDistance(IGeometry discreteGeom, IGeometry geom, PointPairDistance ptDist)
         {
-            MaxPointDistanceFilter distFilter = new MaxPointDistanceFilter(geom);
+            var distFilter = new MaxPointDistanceFilter(geom);
             discreteGeom.Apply(distFilter);
             ptDist.SetMaximum(distFilter.MaxPointDistance);
 
             if (_densifyFrac > 0)
             {
-                MaxDensifiedByFractionDistanceFilter fracFilter = new MaxDensifiedByFractionDistanceFilter(geom, _densifyFrac);
+                var fracFilter = new MaxDensifiedByFractionDistanceFilter(geom, _densifyFrac);
                 discreteGeom.Apply(fracFilter);
                 ptDist.SetMaximum(fracFilter.MaxPointDistance);
 
@@ -155,17 +155,17 @@ namespace NetTopologySuite.Algorithm.Distance
             private readonly PointPairDistance _maxPtDist = new PointPairDistance();
             private readonly PointPairDistance _minPtDist = new PointPairDistance();
             //private EuclideanDistanceToPoint euclideanDist = new EuclideanDistanceToPoint();
-            private IGeometry geom;
+            private readonly IGeometry _geom;
 
             public MaxPointDistanceFilter(IGeometry geom)
             {
-                this.geom = geom;
+                _geom = geom;
             }
 
             public void Filter(Coordinate pt)
             {
                 _minPtDist.Initialize();
-                DistanceToPoint.ComputeDistance(geom, pt, _minPtDist);
+                DistanceToPoint.ComputeDistance(_geom, pt, _minPtDist);
                 _maxPtDist.SetMaximum(_minPtDist);
             }
 
@@ -198,17 +198,17 @@ namespace NetTopologySuite.Algorithm.Distance
                 if (index == 0)
                     return;
 
-                Coordinate p0 = seq.GetCoordinate(index - 1);
-                Coordinate p1 = seq.GetCoordinate(index);
+                var p0 = seq.GetCoordinate(index - 1);
+                var p1 = seq.GetCoordinate(index);
 
-                double delx = (p1.X - p0.X) / _numSubSegs;
-                double dely = (p1.Y - p0.Y) / _numSubSegs;
+                var delx = (p1.X - p0.X) / _numSubSegs;
+                var dely = (p1.Y - p0.Y) / _numSubSegs;
 
-                for (int i = 0; i < _numSubSegs; i++)
+                for (var i = 0; i < _numSubSegs; i++)
                 {
-                    double x = p0.X + i * delx;
-                    double y = p0.Y + i * dely;
-                    Coordinate pt = new Coordinate(x, y);
+                    var x = p0.X + i * delx;
+                    var y = p0.Y + i * dely;
+                    var pt = new Coordinate(x, y);
                     _minPtDist.Initialize();
                     DistanceToPoint.ComputeDistance(_geom, pt, _minPtDist);
                     _maxPtDist.SetMaximum(_minPtDist);

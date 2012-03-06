@@ -38,7 +38,6 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Windows.Forms
 {
-
     ///<summary>
     /// Writes <see cref="IGeometry"/>s int DotNet <see cref="GraphicsPath"/>s.
     ///</summary>
@@ -85,9 +84,10 @@ namespace NetTopologySuite.Windows.Forms
         }
 
         /**
-         * 
+         *
          *
          */
+
         ///<summary>
         /// Creates a new GraphicsPathWriter with the default (identity) point transformation.
         ///</summary>
@@ -100,7 +100,7 @@ namespace NetTopologySuite.Windows.Forms
         ///</summary>
         ///<remarks>
         /// Note that GraphicsPaths do not preserve information about which elements in heterogeneous collections are 1D and which are 2D.
-        /// For example, a GeometryCollection containing a ring and a disk will render as two disks if Graphics.FillPath is used, 
+        /// For example, a GeometryCollection containing a ring and a disk will render as two disks if Graphics.FillPath is used,
         /// or as two rings if Graphics.DrawPath is used. To avoid this issue use separate shapes for the components.
         ///</remarks>
         public GraphicsPath ToShape(IGeometry geometry)
@@ -135,7 +135,7 @@ namespace NetTopologySuite.Windows.Forms
             return poly.Path;
         }
 
-        private void Append(PolygonGraphicsPath poly, ICoordinate[] coords)
+        private void Append(PolygonGraphicsPath poly, Coordinate[] coords)
         {
             GraphicsPath ring = null;
             for (var i = 0; i < coords.Length; i++)
@@ -148,7 +148,7 @@ namespace NetTopologySuite.Windows.Forms
 
         /*
          // Obsolete (slower code)
-        private Shape OLDtoShape(Polygon p) 
+        private Shape OLDtoShape(Polygon p)
         {
             ArrayList holeVertexCollection = new ArrayList();
 
@@ -162,7 +162,6 @@ namespace NetTopologySuite.Windows.Forms
                 holeVertexCollection);
         }
 
-	
         private Coordinate[] toViewCoordinates(Coordinate[] modelCoordinates)
         {
             Coordinate[] viewCoordinates = new Coordinate[modelCoordinates.length];
@@ -213,12 +212,12 @@ namespace NetTopologySuite.Windows.Forms
             return _pointFactory.CreatePoint(viewPoint);
         }
 
-        private PointF TransformPoint(ICoordinate model)
+        private PointF TransformPoint(Coordinate model)
         {
             return TransformPoint(model, new PointF());
         }
 
-        private PointF TransformPoint(ICoordinate model, PointF view)
+        private PointF TransformPoint(Coordinate model, PointF view)
         {
             _pointTransformer.Transform(model, ref view);
             /**
@@ -226,7 +225,7 @@ namespace NetTopologySuite.Windows.Forms
              * to do rounding differently for drawing and filling, resulting in the draw
              * being a pixel off from the fill sometimes.
              */
-            return new PointF((float)Math.Round(view.X), (float)Math.Round(view.Y));
+            return new PointF((float)Math.Round(view.X, MidpointRounding.AwayFromZero), (float)Math.Round(view.Y, MidpointRounding.AwayFromZero));
         }
     }
 }

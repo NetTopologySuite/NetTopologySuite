@@ -9,30 +9,28 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class TriangleTest
     {
-
         private static readonly PrecisionModel PrecisionModel = new PrecisionModel();
         private static readonly IGeometryFactory GeometryFactory = new GeometryFactory(PrecisionModel, 0);
         private static readonly WKTReader Reader = new WKTReader(GeometryFactory);
 
         private const double Tolerance = 1E-5;
 
-        /*
         [Test]
-      public void TestArea3D()
-      {
-        CheckArea3D("POLYGON((0 0 10, 100 0 110, 100 100 110, 0 0 10))", 7071.067811865475);
-        CheckArea3D("POLYGON((0 0 10, 100 0 10, 50 100 110, 0 0 10))", 7071.067811865475);
-      }
-  
-        public void CheckArea3D(String wkt, double expectedValue) 
+        public void TestArea3D()
         {
-            IGeometry g = reader.Read(wkt);
+            CheckArea3D("POLYGON((0 0 10, 100 0 110, 100 100 110, 0 0 10))", 7071.067811865475);
+            CheckArea3D("POLYGON((0 0 10, 100 0 10, 50 100 110, 0 0 10))", 7071.067811865475);
+        }
+
+        public void CheckArea3D(String wkt, double expectedValue)
+        {
+            IGeometry g = Reader.Read(wkt);
             Coordinate[] pt = g.Coordinates;
-            double area3D = Triangle.Area3D(pt[0], pt[1], pt[2]);
-      //		System.out.println("area3D = " + area3D);
+            double area3D = Triangle.Area3D((Coordinate)pt[0], (Coordinate)pt[1], (Coordinate)pt[2]);
+            //		System.out.println("area3D = " + area3D);
             Assert.AreEqual(expectedValue, area3D, Tolerance);
         }
-        */
+
         [Test]
         public void TestArea()
         {
@@ -58,8 +56,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             */
             double area = Triangle.Area(pt[0], pt[1], pt[2]);
             Assert.AreEqual(Math.Abs(expectedValue), area, Tolerance);
-
         }
+
         [Test]
         public void TestAcute()
         {

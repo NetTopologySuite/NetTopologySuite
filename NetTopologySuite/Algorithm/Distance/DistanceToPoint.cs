@@ -27,9 +27,9 @@ namespace NetTopologySuite.Algorithm.Distance
             else if (geom is IGeometryCollection)
             {
                 var gc = (IGeometryCollection) geom;
-                for (int i = 0; i < gc.NumGeometries; i++)
+                for (var i = 0; i < gc.NumGeometries; i++)
                 {
-                    IGeometry g = gc.GetGeometryN(i);
+                    var g = gc.GetGeometryN(i);
                     ComputeDistance(g, pt, ptDist);
                 }
             }
@@ -42,26 +42,26 @@ namespace NetTopologySuite.Algorithm.Distance
 
         public static void ComputeDistance(ILineString line, Coordinate pt, PointPairDistance ptDist)
         {
-            Coordinate[] coords = line.Coordinates;
-            for (int i = 0; i < coords.Length - 1; i++)
+            var coords = line.Coordinates;
+            for (var i = 0; i < coords.Length - 1; i++)
             {
                 TempSegment.SetCoordinates(coords[i], coords[i + 1]);
                 // this is somewhat inefficient - could do better
-                Coordinate closestPt = TempSegment.ClosestPoint(pt);
+                var closestPt = TempSegment.ClosestPoint(pt);
                 ptDist.SetMinimum(closestPt, pt);
             }
         }
 
         public static void ComputeDistance(LineSegment segment, Coordinate pt, PointPairDistance ptDist)
         {
-            Coordinate closestPt = segment.ClosestPoint(pt);
+            var closestPt = segment.ClosestPoint(pt);
             ptDist.SetMinimum(closestPt, pt);
         }
 
         public static void ComputeDistance(IPolygon poly, Coordinate pt, PointPairDistance ptDist)
         {
             ComputeDistance(poly.ExteriorRing, pt, ptDist);
-            for (int i = 0; i < poly.NumInteriorRings; i++)
+            for (var i = 0; i < poly.NumInteriorRings; i++)
             {
                 ComputeDistance(poly.GetInteriorRingN(i), pt, ptDist);
             }

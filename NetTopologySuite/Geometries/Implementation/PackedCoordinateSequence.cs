@@ -25,6 +25,23 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         private Ordinates _ordinates;
 
+        private static Ordinates DimensionToOrdinate(int dimension)
+        {
+            switch (dimension)
+            {
+                case 2:
+                    return Ordinates.XY;
+                case 3:
+                    return Ordinates.XYZ;
+                case 4:
+                    return Ordinates.XYZM;
+                default:
+                    var flag = Ordinates.None;
+                    for (var i = 3; i < dimension; i++)
+                        flag |= (Ordinates) (1 << i);
+                    return Ordinates.XY | flag;
+            }
+        }
 
         /// <summary>
         /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
@@ -33,12 +50,16 @@ namespace NetTopologySuite.Geometries.Implementation
         public int Dimension
         {
             get { return _dimension; }
-            protected set { _dimension = value; }
+            protected set
+            {
+                _dimension = value;
+                _ordinates = DimensionToOrdinate(_dimension);
+            }
         }
 
         public Ordinates Ordinates
         {
-            get { throw new NotImplementedException(); }
+            get { return _ordinates; }
         }
 
         /// <summary>

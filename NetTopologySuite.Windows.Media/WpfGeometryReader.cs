@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using System.Windows.Media;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
 using WpfGeometry = System.Windows.Media.Geometry;
 using WpfLineSegment = System.Windows.Media.LineSegment;
 using WpfPoint = System.Windows.Point;
 
-namespace NetTopologySuite.Windows.Media   
+namespace NetTopologySuite.Windows.Media
 {
     ///<summary>
     /// Converts a WPF <see cref="WpfGeometry"/> into a <see cref="IGeometry"/>.
     ///</summary>
     ///<remarks>
     /// <para>
-    /// The coordinate system for <see cref="WpfGeometry"/> is typically screen coordinates, 
+    /// The coordinate system for <see cref="WpfGeometry"/> is typically screen coordinates,
     /// which has the Y axis inverted  relative to the usual JTS coordinate system.
     /// This is rectified during conversion. </para>
     /// <para>
@@ -23,7 +22,7 @@ namespace NetTopologySuite.Windows.Media
     /// That is, <see cref="System.Windows.Media.Geometry.MayHaveCurves"/> must always return false.
     /// Otherwise an exception will be thrown.
     /// </para>
-    /// </remarks>  
+    /// </remarks>
     /// <author>Martin Davis</author>
     public class WpfGeometryReader
     {
@@ -40,6 +39,7 @@ namespace NetTopologySuite.Windows.Media
             var pc = new WpfGeometryReader(geomFact);
             return pc.Read(pathIt);
         }
+
         ///<summary>
         /// Converts a <see cref="WpfGeometry"/> to a Geometry, flattening it first.
         ///</summary>
@@ -73,7 +73,7 @@ namespace NetTopologySuite.Windows.Media
             var seqIndex = 0;
             while (seqIndex < pathPtSeq.Count)
             {
-                // assume next seq is shell 
+                // assume next seq is shell
                 // TODO: test this
                 var pts = pathPtSeq[seqIndex];
                 var shell = _geometryFactory.CreateLinearRing(pts);
@@ -131,7 +131,7 @@ namespace NetTopologySuite.Windows.Media
         private static Coordinate[] NextCoordinateArray(PathFigure pathFigure)
         {
             var coordinateList = new List<Coordinate>(pathFigure.Segments.Count + 1);
-            
+
             coordinateList.Add(ToCoordinate(pathFigure.StartPoint));
             foreach (var segment in pathFigure.Segments)
             {
@@ -155,6 +155,5 @@ namespace NetTopologySuite.Windows.Media
         {
             return new Coordinate(point.X, point.Y);
         }
-
     }
 }

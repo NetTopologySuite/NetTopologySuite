@@ -112,7 +112,7 @@ namespace NetTopologySuite.Tests.IO
 		[Test]
 		public void General()
 		{
-			for (int i = 0; i < testset.Length; i++)
+			for (var i = 0; i < testset.Length; i++)
 			{
 				General(testset[i], -1);
 				General(testset[i], SRID);
@@ -126,10 +126,10 @@ namespace NetTopologySuite.Tests.IO
         /// <param name="srid"></param>
 		private static void General(string wkt, int srid)
 		{
-			IGeometry geom = wr.Read(wkt);
-			string parsed = geom.AsText();
-			IGeometry regeom = wr.Read(parsed);
-			string reparsed = regeom.AsText();
+			var geom = wr.Read(wkt);
+			var parsed = geom.AsText();
+			var regeom = wr.Read(parsed);
+			var reparsed = regeom.AsText();
 
 			geom.SRID = srid;
 			regeom.SRID = srid;
@@ -137,13 +137,16 @@ namespace NetTopologySuite.Tests.IO
 			Assert.IsTrue(geom.Equals(regeom));
 			Assert.AreEqual(parsed, reparsed);
 
-			byte[] bytesB = new PostGisWriter(ByteOrder.BigEndian).Write(regeom);
-			regeom = br.Read(bytesB);
-			Assert.IsTrue(geom.Equals(regeom));
+			var bytesB = new PostGisWriter(ByteOrder.BigEndian).Write(regeom);
+			var regeom2 = br.Read(bytesB);
+			Assert.IsTrue(geom.Equals(regeom2));
 
 			byte[] bytesL = new PostGisWriter(ByteOrder.LittleEndian).Write(regeom);
-			regeom = br.Read(bytesL);
-			Assert.IsTrue(geom.Equals(regeom));			
+			var regeom3 = br.Read(bytesL);
+			Assert.IsTrue(geom.Equals(regeom3));
+            Assert.IsTrue(regeom2.Equals(regeom3));
+			
+
 			Assert.AreEqual(bytesB.Length, bytesL.Length);
 		}
 

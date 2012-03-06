@@ -48,6 +48,7 @@
     <Compile Include="Dbase\DbaseFileWriter.cs" />
     <Compile Include="Dbase\RowStructure.cs" />
     <Compile Include="GeoToolsStreamTokenizer.cs" />
+    <Compile Include="Handlers\GeometryInstantiationErrorHandling.cs" />
     <Compile Include="Handlers\MultiLineHandler.cs" />
     <Compile Include="Handlers\MultiPointHandler.cs" />
     <Compile Include="Handlers\PointHandler.cs" />

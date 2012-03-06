@@ -7,13 +7,13 @@ namespace NetTopologySuite.Geometries.Utilities
     ///</summary>
     /// <remarks>
     /// <para>
-    /// A control vector consists of a source point and a destination point, 
+    /// A control vector consists of a source point and a destination point,
     /// which is the image of the source point under the desired transformation.
     /// </para>
     /// <para>
     /// A transformation is well-defined
-    /// by a set of three control vectors 
-    /// if and only if the source points are not collinear. 
+    /// by a set of three control vectors
+    /// if and only if the source points are not collinear.
     /// (In particular, the degenerate situation
     /// where two or more source points are identical will not produce a well-defined transformation).
     /// A well-defined transformation exists and is unique.
@@ -89,7 +89,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         ///<summary>
-        /// Computes the transformation matrix by 
+        /// Computes the transformation matrix by
         /// solving the two systems of linear equations
         /// defined by the control point mappings,
         /// if this is possible.
@@ -97,15 +97,15 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>True if the transformation matrix is solvable</returns>
         private bool Compute()
         {
-            double[] bx = new[] { _dest0.X, _dest1.X, _dest2.X };
-            double[] row0 = Solve(bx);
+            var bx = new[] { _dest0.X, _dest1.X, _dest2.X };
+            var row0 = Solve(bx);
             if (row0 == null) return false;
             _m00 = row0[0];
             _m01 = row0[1];
             _m02 = row0[2];
 
-            double[] by = new[] { _dest0.Y, _dest1.Y, _dest2.Y };
-            double[] row1 = Solve(by);
+            var by = new[] { _dest0.Y, _dest1.Y, _dest2.Y };
+            var row1 = Solve(by);
             if (row1 == null) return false;
             _m10 = row1[0];
             _m11 = row1[1];
@@ -121,10 +121,10 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>The solution vector, if it can be determinated, otherwise null</returns>
         private double[] Solve(double[] b)
         {
-            double[][] a = new double[3][];
-            a[0] = new[] {_src0.X, _src0.Y, 1};
-            a[1] = new[] {_src1.X, _src1.Y, 1};
-            a[2] = new[] {_src2.X, _src2.Y, 1};
+            var a = new double[3][];
+            a[0] = new[] { _src0.X, _src0.Y, 1 };
+            a[1] = new[] { _src1.X, _src1.Y, 1 };
+            a[2] = new[] { _src2.X, _src2.Y, 1 };
             return Matrix.Solve(a, b);
         }
     }

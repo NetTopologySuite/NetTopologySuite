@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using GeoAPI;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
@@ -47,6 +48,27 @@ namespace NetTopologySuite
                 }
             }
         }
+
+        private struct GeometryFactoryKey
+        {
+            private readonly IPrecisionModel _precisionModel;
+            private readonly ICoordinateSequenceFactory _factory;
+            private readonly int _srid;
+
+            public GeometryFactoryKey(IPrecisionModel precisionModel, ICoordinateSequenceFactory factory, int srid)
+            {
+                _precisionModel = precisionModel;
+                _factory = factory;
+                _srid = srid;
+            }
+
+            public override int GetHashCode()
+            {
+                return 889377 ^ _srid ^ _precisionModel.GetHashCode() ^ _factory.GetHashCode();
+            }
+        }
+
+        private readonly Dictionary<GeometryFactoryKey, IGeometryFactory> _factories = new Dictionary<GeometryFactoryKey, IGeometryFactory>();
 
         /// <summary>
         /// Creates an instance of this class, using the <see cref="CoordinateArraySequenceFactory"/> as default and a <see cref="PrecisionModels.Floating"/> precision model. No <see cref="DefaultSRID"/> is specified
@@ -140,7 +162,7 @@ namespace NetTopologySuite
 
         public IGeometryFactory CreateGeometryFactory(int srid)
         {
-            return new GeometryFactory(DefaultPrecisionModel, srid, DefaultCoordinateSequenceFactory);
+            return CreateGeometryFactory(DefaultPrecisionModel, srid, DefaultCoordinateSequenceFactory);
         }
 
         public void ReadConfiguration()
@@ -159,21 +181,17 @@ namespace NetTopologySuite
 
         public IGeometryFactory CreateGeometryFactory(ICoordinateSequenceFactory coordinateSequenceFactory)
         {
-            if (coordinateSequenceFactory == null)
-                throw new ArgumentNullException("coordinateSequenceFactory");
-            return new GeometryFactory(coordinateSequenceFactory);
+            return CreateGeometryFactory(DefaultPrecisionModel, DefaultSRID, coordinateSequenceFactory);
         }
 
         public IGeometryFactory CreateGeometryFactory(IPrecisionModel precisionModel)
         {
-            return new GeometryFactory(precisionModel);
+            return CreateGeometryFactory(precisionModel, DefaultSRID, DefaultCoordinateSequenceFactory);
         }
 
         public IGeometryFactory CreateGeometryFactory(IPrecisionModel precisionModel, int srid)
         {
-            if (precisionModel == null)
-                throw new ArgumentNullException("precisionModel");
-            return new GeometryFactory(precisionModel, srid);
+            return CreateGeometryFactory(precisionModel, srid, DefaultCoordinateSequenceFactory);
         }
 
         public IGeometryFactory CreateGeometryFactory(IPrecisionModel precisionModel, int srid, ICoordinateSequenceFactory coordinateSequenceFactory)
@@ -183,7 +201,14 @@ namespace NetTopologySuite
             if (coordinateSequenceFactory == null)
                 throw new ArgumentNullException("coordinateSequenceFactory");
 
-            return new GeometryFactory(precisionModel, srid, coordinateSequenceFactory);
+            var gfkey = new GeometryFactoryKey(precisionModel, coordinateSequenceFactory, srid);
+            IGeometryFactory factory;
+            if (!_factories.TryGetValue(gfkey, out factory))
+            {
+                factory = new GeometryFactory(precisionModel, srid, coordinateSequenceFactory);
+                _factories.Add(gfkey, factory);
+            }
+            return factory;
         }
 
         #endregion Implementation of IGeometryServices

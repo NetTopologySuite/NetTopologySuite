@@ -49,6 +49,7 @@ namespace NetTopologySuite.LinearReferencing
         /// Creates an iterator initialized to the start of a linear <see cref="Geometry" />.
         /// </summary>
         /// <param name="linearGeom">The linear geometry to iterate over.</param>
+        /// <exception cref="ArgumentException"> if <paramref name="linearGeom"/> is not lineal</exception>
         public LinearIterator(IGeometry linearGeom) : this(linearGeom, 0, 0) { }
 
         /// <summary>
@@ -56,6 +57,7 @@ namespace NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="linearGeom">The linear geometry to iterate over.</param>
         /// <param name="start">The location to start at.</param>
+        /// <exception cref="ArgumentException"> if <paramref name="linearGeom"/> is not lineal</exception>
         public LinearIterator(IGeometry linearGeom, LinearLocation start) :
             this(linearGeom, start.ComponentIndex, SegmentEndVertexIndex(start)) { }
 
@@ -66,6 +68,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="linearGeom">The linear geometry to iterate over.</param>
         /// <param name="componentIndex">The component to start at.</param>
         /// <param name="vertexIndex">The vertex to start at.</param>
+        /// <exception cref="ArgumentException"> if <paramref name="linearGeom"/> is not lineal</exception>
         public LinearIterator(IGeometry linearGeom, int componentIndex, int vertexIndex)
         {
             if (!(linearGeom is ILineal))

@@ -1,32 +1,31 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GeoAPI.IO;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Operation;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Geometries
 {
-    /// <summary>  
+    /// <summary>
     /// Models an OGC-style <code>LineString</code>
     /// </summary>
     /// <remarks>
     /// A LineString consists of a sequence of two or more vertices,
     /// along with all points along the linearly-interpolated curves
-    /// (line segments) between each 
+    /// (line segments) between each
     /// pair of consecutive vertices.
     /// Consecutive vertices may be equal.
-    /// The line segments in the line may intersect each other (in other words, 
+    /// The line segments in the line may intersect each other (in other words,
     /// the linestring may "curl back" in itself and self-intersect.
     /// Linestrings with exactly two identical points are invalid.
-    /// <para>A linestring must have either 0 or 2 or more points.  
+    /// <para>A linestring must have either 0 or 2 or more points.
     /// If these conditions are not met, the constructors throw an <see cref="ArgumentException"/>.
     /// </para>
     /// </remarks>
-//#if !SILVERLIGHT
+    //#if !SILVERLIGHT
     [Serializable]
-//#endif
+    //#endif
     public class LineString : Geometry, ILineString
     {
         /// <summary>
@@ -34,13 +33,13 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public static readonly ILineString Empty = new GeometryFactory().CreateLineString(new Coordinate[] { });
 
-        /// <summary>  
+        /// <summary>
         /// The points of this <c>LineString</c>.
         /// </summary>
         private ICoordinateSequence _points;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override Coordinate[] Coordinates
         {
@@ -51,7 +50,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public ICoordinateSequence CoordinateSequence
         {
@@ -62,37 +61,17 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="points">
-        /// The points of the linestring, or <c>null</c>
-        /// to create the empty point. Consecutive points may not be equal.
-        /// </param>
-        /// <param name="factory"></param>
-        /// <exception cref="ArgumentException">If too few points are provided</exception>
-        public LineString(ICoordinateSequence points, IGeometryFactory factory)
-            : base(factory)
-        {            
-            if (points == null) 
-                points = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
-            if (points.Count == 1)
-                throw new ArgumentException("Invalid number of points in LineString (found "
-                      + points.Count + " - must be 0 or >= 2)");
-            _points = points;
-        }
-
-        /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public Coordinate GetCoordinateN(int n) 
+        public Coordinate GetCoordinateN(int n)
         {
             return _points.GetCoordinate(n);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override Coordinate Coordinate
         {
@@ -104,9 +83,9 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public override Dimension Dimension 
+        public override Dimension Dimension
         {
             get
             {
@@ -115,7 +94,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override Dimension BoundaryDimension
         {
@@ -130,9 +109,9 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public override bool IsEmpty 
+        public override bool IsEmpty
         {
             get
             {
@@ -141,7 +120,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override int NumPoints
         {
@@ -152,19 +131,19 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public IPoint GetPointN(int n) 
+        public IPoint GetPointN(int n)
         {
             return Factory.CreatePoint(_points.GetCoordinate(n));
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public IPoint StartPoint 
+        public IPoint StartPoint
         {
             get
             {
@@ -175,7 +154,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IPoint EndPoint
         {
@@ -188,7 +167,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public virtual bool IsClosed
         {
@@ -201,7 +180,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsRing
         {
@@ -211,7 +190,7 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>  
+        /// <summary>
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"LineString"</returns>
@@ -228,7 +207,7 @@ namespace NetTopologySuite.Geometries
             get { return OgcGeometryType.LineString; }
         }
 
-        /// <summary>  
+        /// <summary>
         /// Returns the length of this <c>LineString</c>
         /// </summary>
         /// <returns>The length of the polygon.</returns>
@@ -241,7 +220,7 @@ namespace NetTopologySuite.Geometries
         }
 
         ///// <summary>
-        ///// 
+        /////
         ///// </summary>
         //public override bool IsSimple
         //{
@@ -275,7 +254,7 @@ namespace NetTopologySuite.Geometries
 
         ILineString ILineString.Reverse()
         {
-            return (ILineString) Reverse();
+            return (ILineString)Reverse();
         }
 
         /// <summary>
@@ -283,21 +262,21 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="pt">The <c>Coordinate</c> to check.</param>
         /// <returns><c>true</c> if <c>pt</c> is one of this <c>LineString</c>'s vertices.</returns>
-        public bool IsCoordinate(Coordinate pt) 
+        public bool IsCoordinate(Coordinate pt)
         {
-            for (int i = 0; i < _points.Count; i++) 
+            for (int i = 0; i < _points.Count; i++)
                 if (_points.GetCoordinate(i).Equals(pt))
-                    return true;                
+                    return true;
             return false;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
-        protected override Envelope ComputeEnvelopeInternal() 
+        protected override Envelope ComputeEnvelopeInternal()
         {
-            if (IsEmpty) 
+            if (IsEmpty)
                 return new Envelope();
 
             //Convert to array, then access array directly, to avoid the function-call overhead
@@ -307,8 +286,8 @@ namespace NetTopologySuite.Geometries
             double minx = coordinates[0].X;
             double miny = coordinates[0].Y;
             double maxx = coordinates[0].X;
-            double maxy = coordinates[0].Y;            
-            for (int i = 1; i < coordinates.Length; i++) 
+            double maxy = coordinates[0].Y;
+            for (int i = 1; i < coordinates.Length; i++)
             {
                 minx = minx < coordinates[i].X ? minx : coordinates[i].X;
                 maxx = maxx > coordinates[i].X ? maxx : coordinates[i].X;
@@ -326,31 +305,31 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance) 
+        public override bool EqualsExact(IGeometry other, double tolerance)
         {
-            if (!IsEquivalentClass(other)) 
+            if (!IsEquivalentClass(other))
                 return false;
 
-            ILineString otherLineString = (ILineString) other;
+            ILineString otherLineString = (ILineString)other;
             if (_points.Count != otherLineString.NumPoints)
                 return false;
 
             for (int i = 0; i < _points.Count; i++)
-                if (!Equal(_points.GetCoordinate(i), otherLineString.GetCoordinateN(i), tolerance))             
-                    return false;            
+                if (!Equal(_points.GetCoordinate(i), otherLineString.GetCoordinateN(i), tolerance))
+                    return false;
             return true;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="filter"></param>
-        public override void Apply(ICoordinateFilter filter) 
+        public override void Apply(ICoordinateFilter filter)
         {
             for (int i = 0; i < _points.Count; i++)
                 filter.Filter(_points.GetCoordinate(i));
@@ -371,56 +350,56 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="filter"></param>
-        public override void Apply(IGeometryFilter filter) 
+        public override void Apply(IGeometryFilter filter)
         {
             filter.Filter(this);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="filter"></param>
-        public override void Apply(IGeometryComponentFilter filter) 
+        public override void Apply(IGeometryComponentFilter filter)
         {
             filter.Filter(this);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public override object Clone()
         {
-            LineString ls = (LineString) base.Clone();
-            ls._points = (ICoordinateSequence) _points.Clone();
+            LineString ls = (LineString)base.Clone();
+            ls._points = (ICoordinateSequence)_points.Clone();
             return ls;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Normalizes a <c>LineString</c>.  A normalized linestring
         /// has the first point which is not equal to it's reflected point
         /// less than the reflected point.
         /// </summary>
         public override void Normalize()
         {
-            for (int i = 0; i < _points.Count / 2; i++) 
+            for (int i = 0; i < _points.Count / 2; i++)
             {
                 int j = _points.Count - 1 - i;
                 // skip equal points on both ends
-                if (!_points.GetCoordinate(i).Equals(_points.GetCoordinate(j))) 
+                if (!_points.GetCoordinate(i).Equals(_points.GetCoordinate(j)))
                 {
-                    if (_points.GetCoordinate(i).CompareTo(_points.GetCoordinate(j)) > 0) 
-                        CoordinateArrays.Reverse(Coordinates);                    
+                    if (_points.GetCoordinate(i).CompareTo(_points.GetCoordinate(j)) > 0)
+                        CoordinateArrays.Reverse(Coordinates);
                     return;
                 }
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="o"></param>
         /// <returns></returns>
@@ -432,19 +411,19 @@ namespace NetTopologySuite.Geometries
             // MD - optimized implementation
             int i = 0;
             int j = 0;
-            while (i < _points.Count && j < line.CoordinateSequence.Count) 
+            while (i < _points.Count && j < line.CoordinateSequence.Count)
             {
                 int comparison = _points.GetCoordinate(i).CompareTo(line.CoordinateSequence.GetCoordinate(j));
-                if (comparison != 0) 
-                    return comparison;                
+                if (comparison != 0)
+                    return comparison;
                 i++;
                 j++;
             }
-            if (i < _points.Count) 
+            if (i < _points.Count)
                 return 1;
             if (j < line.CoordinateSequence.Count)
-                return -1;            
-            return 0;            
+                return -1;
+            return 0;
         }
 
         protected internal override int CompareToSameClass(Object o, IComparer<ICoordinateSequence> comp)
@@ -458,19 +437,39 @@ namespace NetTopologySuite.Geometries
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LineString"/> class.
-        /// </summary>        
+        /// </summary>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         /// <param name="points">The coordinates used for create this <see cref="LineString" />.</param>
         /// <exception cref="ArgumentException">If too few points are provided</exception>
         //[Obsolete("Use GeometryFactory instead")]
-        public LineString(Coordinate[] points) : 
+        public LineString(Coordinate[] points) :
             this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="LineString"/> class.
+        /// </summary>
+        /// <param name="points">
+        /// The points of the linestring, or <c>null</c>
+        /// to create the empty point. Consecutive points may not be equal.
+        /// </param>
+        /// <param name="factory"></param>
+        /// <exception cref="ArgumentException">If too few points are provided</exception>
+        public LineString(ICoordinateSequence points, IGeometryFactory factory)
+            : base(factory)
+        {
+            if (points == null)
+                points = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
+            if (points.Count == 1)
+                throw new ArgumentException("Invalid number of points in LineString (found "
+                      + points.Count + " - must be 0 or >= 2)");
+            _points = points;
+        }
+
+        /// <summary>
+        ///
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
@@ -489,7 +488,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <value></value>
         public int Count
@@ -507,16 +506,16 @@ namespace NetTopologySuite.Geometries
         public double Angle
         {
             get
-            {       
+            {
                 double deltaX = EndPoint.X - StartPoint.X;
                 double deltaY = EndPoint.Y - StartPoint.Y;
                 double length = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
                 double angleRAD = Math.Asin(Math.Abs(EndPoint.Y - StartPoint.Y) / length);
                 double angle = (angleRAD * 180) / Math.PI;
 
-                if ( ((StartPoint.X < EndPoint.X) && (StartPoint.Y > EndPoint.Y)) ||
-                     ((StartPoint.X > EndPoint.X) && (StartPoint.Y < EndPoint.Y)) )
-                        angle = 360 - angle;                
+                if (((StartPoint.X < EndPoint.X) && (StartPoint.Y > EndPoint.Y)) ||
+                     ((StartPoint.X > EndPoint.X) && (StartPoint.Y < EndPoint.Y)))
+                    angle = 360 - angle;
                 return angle;
             }
         }

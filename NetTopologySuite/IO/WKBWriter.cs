@@ -7,18 +7,16 @@ using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO
 {
-
     /// <summary>
     /// Writes a Well-Known Binary byte data representation of a <c>Geometry</c>.
     /// </summary>
     /// <remarks>
-    /// WKBWriter stores <see cref="Coordinate" /> X,Y,Z values if <see cref="Coordinate.Z" /> is not <see cref="double.NaN"/>, 
+    /// WKBWriter stores <see cref="Coordinate" /> X,Y,Z values if <see cref="Coordinate.Z" /> is not <see cref="double.NaN"/>,
     /// otherwise <see cref="Coordinate.Z" /> value is discarded and only X,Y are stored.
     /// </remarks>
     // Thanks to Roberto Acioli for Coordinate.Z patch
     public class WKBWriter : IBinaryGeometryWriter
     {
-
         ///<summary>Converts a byte array to a hexadecimal string.</summary>
         /// <param name="bytes">A byte array</param>
         [Obsolete("Use ToHex(byte[])")]
@@ -31,7 +29,7 @@ namespace NetTopologySuite.IO
         /// <param name="bytes">A byte array</param>
         public static String ToHex(byte[] bytes)
         {
-            StringBuilder buf = new StringBuilder(bytes.Length*2);
+            var buf = new StringBuilder(bytes.Length * 2);
             for (int i = 0; i < bytes.Length; i++)
             {
                 byte b = bytes[i];
@@ -50,21 +48,31 @@ namespace NetTopologySuite.IO
             return (char)('A' + (n - 10));
         }
 
+        /// <summary>
+        /// Gets or sets whether the <see cref="IGeometry.SRID"/> value should be emitted
+        /// </summary>
+        [Obsolete("Use HandleSRID instead")]
         public bool EmitSRID
         {
-            get { return HandleSRID; } 
+            get { return HandleSRID; }
             set { HandleSRID = value; }
         }
 
         private bool _emitZ;
+
+        /// <summary>
+        /// Gets or sets whether the <see cref="Coordinate.Z"/> values should be emitted
+        /// </summary>
+        [Obsolete("Use HandleOrdinates instead")]
         public bool EmitZ
         {
             get { return _emitZ; }
-            set {
-                if (value ==_emitZ)
+            set
+            {
+                if (value == _emitZ)
                     return;
                 _emitZ = value;
-                
+
                 if (value)
                     HandleOrdinates |= Ordinates.Z;
                 else
@@ -75,6 +83,11 @@ namespace NetTopologySuite.IO
         }
 
         private bool _emitM;
+
+        /// <summary>
+        /// Gets or sets whether the <see cref="ICoordinate.M"/> values should be emitted
+        /// </summary>
+        [Obsolete("Use HandleOrdintes instead.")]
         public bool EmitM
         {
             get { return _emitM; }
@@ -93,7 +106,6 @@ namespace NetTopologySuite.IO
                 CalcCoordinateSize();
             }
         }
-
 
         private void WriteHeader(BinaryWriter writer, IGeometry geom)
         {
@@ -130,46 +142,46 @@ namespace NetTopologySuite.IO
             }
 
             //Modify WKB Geometry type
-            uint intGeometryType = (uint) geometryType & 0xff;
-            if (EmitZ)
+            var intGeometryType = (uint)geometryType & 0xff;
+            if ((HandleOrdinates & Ordinates.Z) == Ordinates.Z)
             {
                 intGeometryType += 1000;
                 intGeometryType |= 0x80000000;
             }
 
-            if (EmitM)
+            if ((HandleOrdinates & Ordinates.M) == Ordinates.M)
             {
                 intGeometryType += 2000;
                 intGeometryType |= 0x40000000;
             }
 
             //Flag for SRID if needed
-            if (EmitSRID)
+            if (HandleSRID)
                 intGeometryType |= 0x20000000;
 
             //
             writer.Write(intGeometryType);
 
             //Write SRID if needed
-            if (EmitSRID)
+            if (HandleSRID)
                 writer.Write(geom.SRID);
         }
-        
+
         protected ByteOrder EncodingType;
 
         /// <summary>
         /// Standard byte size for each complex point.
         /// Each complex point (LineString, Polygon, ...) contains:
         ///     1 byte for ByteOrder and
-        ///     4 bytes for WKBType.    
-        ///     4 bytes for SRID value  
+        ///     4 bytes for WKBType.
+        ///     4 bytes for SRID value
         /// </summary>
-        protected int InitCount { get { return 5 + (EmitSRID ? 4 : 0); }}
+        protected int InitCount { get { return 5 + (HandleSRID ? 4 : 0); } }
 
         /// <summary>
         /// Initializes writer with LittleIndian byte order.
         /// </summary>
-        public WKBWriter() : 
+        public WKBWriter() :
             this(ByteOrder.LittleEndian, false) { }
 
         /// <summary>
@@ -185,19 +197,9 @@ namespace NetTopologySuite.IO
         /// Initializes writer with the specified byte order.
         /// </summary>
         /// <param name="encodingType">Encoding type</param>
-        /// <param name="emitSRID">SRID values, present or not, should be emitted.</param>
-        public WKBWriter(ByteOrder encodingType, bool emitSRID) :
-            this(encodingType, emitSRID, false)
-        {
-        }
-        /// <summary>
-        /// Initializes writer with the specified byte order.
-        /// </summary>
-        /// <param name="encodingType">Encoding type</param>
-        /// <param name="emitSRID">SRID values, present or not, should be emitted.</param>
-        /// <param name="emitZ">Z values, present or not, should be emitted</param>
-        public WKBWriter(ByteOrder encodingType, bool emitSRID, bool emitZ) :
-            this(encodingType, emitSRID, emitZ, false)
+        /// <param name="handleSRID">SRID values, present or not, should be emitted.</param>
+        public WKBWriter(ByteOrder encodingType, bool handleSRID) :
+            this(encodingType, handleSRID, false)
         {
         }
 
@@ -205,17 +207,33 @@ namespace NetTopologySuite.IO
         /// Initializes writer with the specified byte order.
         /// </summary>
         /// <param name="encodingType">Encoding type</param>
-        /// <param name="emitSRID">SRID values, present or not, should be emitted.</param>
+        /// <param name="handleSRID">SRID values, present or not, should be emitted.</param>
+        /// <param name="emitZ">Z values, present or not, should be emitted</param>
+        public WKBWriter(ByteOrder encodingType, bool handleSRID, bool emitZ) :
+            this(encodingType, handleSRID, emitZ, false)
+        {
+        }
+
+        /// <summary>
+        /// Initializes writer with the specified byte order.
+        /// </summary>
+        /// <param name="encodingType">Encoding type</param>
+        /// <param name="handleSRID">SRID values, present or not, should be emitted.</param>
         /// <param name="emitZ">Z values, present or not, should be emitted</param>
         /// <param name="emitM">M values, present or not, should be emitted</param>
-        public WKBWriter(ByteOrder encodingType, bool emitSRID, bool emitZ, bool emitM)
+        public WKBWriter(ByteOrder encodingType, bool handleSRID, bool emitZ, bool emitM)
         {
             EncodingType = encodingType;
-            EmitSRID = emitSRID;
-            EmitZ = emitZ;
-            //HandleOrdinates |= Ordinates.Z;
-            EmitM = emitM;
-            //HandleOrdinates |= Ordinates.M;
+            HandleSRID = handleSRID;
+
+            var handleOrdinates = Ordinates.XY;
+            if (emitZ)
+                handleOrdinates |= Ordinates.Z;
+            if (emitM)
+                handleOrdinates |= Ordinates.M;
+
+            _handleOrdinates = handleOrdinates;
+            CalcCoordinateSize();
         }
 
         /// <summary>
@@ -241,9 +259,9 @@ namespace NetTopologySuite.IO
             BinaryWriter writer = null;
             try
             {
-                if (EncodingType == ByteOrder.LittleEndian)
-                     writer = new BinaryWriter(stream);
-                else writer = new BEBinaryWriter(stream);
+                writer = EncodingType == ByteOrder.LittleEndian
+                    ? new BinaryWriter(stream)
+                    : new BEBinaryWriter(stream);
                 Write(geometry, writer);
             }
             finally
@@ -254,7 +272,7 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="writer"></param>
@@ -283,11 +301,11 @@ namespace NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void WriteByteOrder(BinaryWriter writer)
         {
-            writer.Write((byte) EncodingType);
+            writer.Write((byte)EncodingType);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coordinate"></param>
         /// <param name="writer"></param>
@@ -295,61 +313,96 @@ namespace NetTopologySuite.IO
         {
             writer.Write(coordinate.X);
             writer.Write(coordinate.Y);
-            if (EmitZ)
+            if ((HandleOrdinates & Ordinates.Z) == Ordinates.Z)
                 writer.Write(coordinate.Z);
-            if (EmitM)
+            if ((HandleOrdinates & Ordinates.M) == Ordinates.M)
                 //NOTE: Implement
                 writer.Write(Double.NaN);
-            //if (!Double.IsNaN(coordinate.Z))
-            //    writer.Write((double)coordinate.Z);            
+        }
+
+        protected void Write(ICoordinateSequence sequence, bool emitSize, BinaryWriter writer)
+        {
+            if (emitSize)
+                writer.Write(sequence.Count);
+
+            // zm-values if not provided by sequence
+            var ordinateZ = Coordinate.NullOrdinate;
+            var ordinateM = Coordinate.NullOrdinate;
+
+            // test if zm-values are provided by sequence
+            var getZ = (sequence.Ordinates & Ordinates.Z) == Ordinates.Z;
+            var getM = (sequence.Ordinates & Ordinates.M) == Ordinates.M;
+
+            // test if zm-values should be emitted
+            var writeZ = (HandleOrdinates & Ordinates.Z) == Ordinates.Z;
+            var writeM = (HandleOrdinates & Ordinates.M) == Ordinates.M;
+
+            for (var index = 0; index < sequence.Count; index++)
+            {
+                writer.Write(sequence.GetOrdinate(index, Ordinate.X));
+                writer.Write(sequence.GetOrdinate(index, Ordinate.Y));
+                if (writeZ)
+                {
+                    if (getZ) ordinateZ = sequence.GetOrdinate(index, Ordinate.Z);
+                    writer.Write(ordinateZ);
+                }
+                if (writeM)
+                {
+                    if (getM) ordinateM = sequence.GetOrdinate(index, Ordinate.M);
+                    writer.Write(ordinateM);
+                }
+            }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="point"></param>
         /// <param name="writer"></param>
         protected void Write(IPoint point, BinaryWriter writer)
         {
-            //WriteByteOrder(writer);     // LittleIndian
+            ////WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, point);
-            //if (Double.IsNaN(point.Coordinate.Z))
-            //     writer.Write((int)WKBGeometryTypes.WKBPoint);
-            //else writer.Write((int)WKBGeometryTypes.WKBPointZ);
-            Write(point.Coordinate, writer);
+            ////if (Double.IsNaN(point.Coordinate.Z))
+            ////     writer.Write((int)WKBGeometryTypes.WKBPoint);
+            ////else writer.Write((int)WKBGeometryTypes.WKBPointZ);
+            //Write(point.Coordinate, writer);
+            Write(point.CoordinateSequence, false, writer);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="lineString"></param>
         /// <param name="writer"></param>
         protected void Write(ILineString lineString, BinaryWriter writer)
         {
-            //WriteByteOrder(writer);     // LittleIndian
+            ////WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, lineString);
-            //if (Double.IsNaN(lineString.Coordinate.Z))
-            //     writer.Write((int)WKBGeometryTypes.WKBLineString);
-            //else writer.Write((int)WKBGeometryTypes.WKBLineStringZ);
-            writer.Write(lineString.NumPoints);
-            for (int i = 0; i < lineString.Coordinates.Length; i++)
-                Write(lineString.Coordinates[i], writer);
+            ////if (Double.IsNaN(lineString.Coordinate.Z))
+            ////     writer.Write((int)WKBGeometryTypes.WKBLineString);
+            ////else writer.Write((int)WKBGeometryTypes.WKBLineStringZ);
+            //writer.Write(lineString.NumPoints);
+            //for (int i = 0; i < lineString.Coordinates.Length; i++)
+            //    Write(lineString.Coordinates[i], writer);
+            Write(lineString.CoordinateSequence, true, writer);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="ring"></param>
         /// <param name="writer"></param>
         protected void Write(ILinearRing ring, BinaryWriter writer)
         {
-            writer.Write(ring.NumPoints);
-            for (int i = 0; i < ring.Coordinates.Length; i++)
-                Write(ring.Coordinates[i], writer);
+            //writer.Write(ring.NumPoints);
+            //for (int i = 0; i < ring.Coordinates.Length; i++)
+            //    Write(ring.Coordinates[i], writer);
+            Write(ring.CoordinateSequence, true, writer);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="polygon"></param>
         /// <param name="writer"></param>
@@ -359,7 +412,7 @@ namespace NetTopologySuite.IO
             WriteHeader(writer, polygon);
             //if (Double.IsNaN(polygon.Coordinate.Z))
             //     writer.Write((int)WKBGeometryTypes.WKBPolygon);
-            //else writer.Write((int)WKBGeometryTypes.WKBPolygonZ);            
+            //else writer.Write((int)WKBGeometryTypes.WKBPolygonZ);
             writer.Write(polygon.NumInteriorRings + 1);
             Write(polygon.ExteriorRing as ILinearRing, writer);
             for (int i = 0; i < polygon.NumInteriorRings; i++)
@@ -367,7 +420,7 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="multiPoint"></param>
         /// <param name="writer"></param>
@@ -379,12 +432,12 @@ namespace NetTopologySuite.IO
             //     writer.Write((int)WKBGeometryTypes.WKBMultiPoint);
             //else writer.Write((int)WKBGeometryTypes.WKBMultiPointZ);
             writer.Write(multiPoint.NumGeometries);
-            for (int i = 0; i < multiPoint.NumGeometries; i++)
+            for (var i = 0; i < multiPoint.NumGeometries; i++)
                 Write(multiPoint.Geometries[i] as IPoint, writer);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="multiLineString"></param>
         /// <param name="writer"></param>
@@ -396,12 +449,12 @@ namespace NetTopologySuite.IO
             //     writer.Write((int)WKBGeometryTypes.WKBMultiLineString);
             //else writer.Write((int)WKBGeometryTypes.WKBMultiLineStringZ);
             writer.Write(multiLineString.NumGeometries);
-            for (int i = 0; i < multiLineString.NumGeometries; i++)
+            for (var i = 0; i < multiLineString.NumGeometries; i++)
                 Write(multiLineString.Geometries[i] as ILineString, writer);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="multiPolygon"></param>
         /// <param name="writer"></param>
@@ -413,12 +466,12 @@ namespace NetTopologySuite.IO
             //     writer.Write((int)WKBGeometryTypes.WKBMultiPolygon);
             //else writer.Write((int)WKBGeometryTypes.WKBMultiPolygonZ);
             writer.Write(multiPolygon.NumGeometries);
-            for (int i = 0; i < multiPolygon.NumGeometries; i++)
+            for (var i = 0; i < multiPolygon.NumGeometries; i++)
                 Write(multiPolygon.Geometries[i] as IPolygon, writer);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomCollection"></param>
         /// <param name="writer"></param>
@@ -430,7 +483,7 @@ namespace NetTopologySuite.IO
             //     writer.Write((int)WKBGeometryTypes.WKBGeometryCollection);
             //else writer.Write((int)WKBGeometryTypes.WKBGeometryCollectionZ);
             writer.Write(geomCollection.NumGeometries);
-            for (int i = 0; i < geomCollection.NumGeometries; i++)
+            for (var i = 0; i < geomCollection.NumGeometries; i++)
                 Write(geomCollection.Geometries[i], writer);
         }
 
@@ -483,26 +536,26 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
         protected int SetByteStream(IGeometryCollection geometry)
-        {            
+        {
             int count = InitCount;
             count += 4;
-            foreach (IGeometry geom in geometry.Geometries)
+            foreach (var geom in geometry.Geometries)
                 count += SetByteStream(geom);
             return count;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
         protected int SetByteStream(IMultiPolygon geometry)
-        {            
+        {
             int count = InitCount;
             count += 4;
             foreach (IPolygon geom in geometry.Geometries)
@@ -511,12 +564,12 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
         protected int SetByteStream(IMultiLineString geometry)
-        {                       
+        {
             int count = InitCount;
             count += 4;
             foreach (ILineString geom in geometry.Geometries)
@@ -525,21 +578,21 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
         protected int SetByteStream(IMultiPoint geometry)
-        {                        
+        {
             int count = InitCount;
             count += 4;     // NumPoints
             foreach (IPoint geom in geometry.Geometries)
-                count += SetByteStream(geom);            
+                count += SetByteStream(geom);
             return count;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
@@ -554,7 +607,7 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
@@ -564,12 +617,12 @@ namespace NetTopologySuite.IO
             int numPoints = geometry.NumPoints;
             int count = InitCount;
             count += 4;                             // NumPoints
-            count += pointSize * numPoints;            
+            count += pointSize * numPoints;
             return count;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
@@ -580,11 +633,12 @@ namespace NetTopologySuite.IO
         }
 
         private int _coordinateSize = 16;
+
         private void CalcCoordinateSize()
         {
             _coordinateSize = 16;
-            if (EmitZ) _coordinateSize += 8;
-            if (EmitM) _coordinateSize += 8;
+            if ((HandleOrdinates & Ordinates.Z) == Ordinates.Z) _coordinateSize += 8;
+            if ((HandleOrdinates & Ordinates.M) == Ordinates.M) _coordinateSize += 8;
         }
 
         #region Implementation of IGeometryIOBase
@@ -597,6 +651,7 @@ namespace NetTopologySuite.IO
         }
 
         private Ordinates _handleOrdinates;
+
         public Ordinates HandleOrdinates
         {
             get { return _handleOrdinates; }
@@ -605,23 +660,24 @@ namespace NetTopologySuite.IO
                 value = Ordinates.XY | AllowedOrdinates & value;
                 if (value == _handleOrdinates)
                     return;
-                
+
                 _handleOrdinates = value;
-                EmitZ = (value & Ordinates.Z) != 0;
-                EmitM = (value & Ordinates.M) != 0;
+                _emitZ = (value & Ordinates.Z) != 0;
+                _emitM = (value & Ordinates.M) != 0;
+                CalcCoordinateSize();
             }
         }
 
-        #endregion
+        #endregion Implementation of IGeometryIOBase
 
         #region Implementation of IBinaryGeometryWriter
 
         public ByteOrder ByteOrder
         {
-            get { return EncodingType; } 
-            set{}
+            get { return EncodingType; }
+            set { }
         }
 
-        #endregion
+        #endregion Implementation of IBinaryGeometryWriter
     }
 }

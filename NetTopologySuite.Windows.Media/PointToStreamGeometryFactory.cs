@@ -31,6 +31,7 @@
  *     www.vividsolutions.com
  */
 
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using GeoAPI.Geometries;
@@ -44,12 +45,17 @@ namespace NetTopologySuite.Windows.Media
 {
     ///<summary>
     /// An interface for classes which create <see cref="WpfGeometry"/>s to represent
-    /// <see cref="IPoint"/> geometries. Windows.Forms does not provide an actual 
-    /// point shape, so some other shape must be used to render points (e.g. such 
+    /// <see cref="IPoint"/> geometries. Windows.Forms does not provide an actual
+    /// point shape, so some other shape must be used to render points (e.g. such
     /// as a Rectangle or Ellipse)
     ///</summary>
     /// <author>Martin Davis</author>
-    public interface IPointShapeFactory
+    [Obsolete("Use IPointStreamGeometryFactory or IPointPathGeometryFactory")]
+    public interface IPointShapeFactory : IPointToStreamGeometryFactory
+    {
+    }
+
+    public interface IPointToStreamGeometryFactory
     {
         ///<summary>
         /// Creates a shape representing an <see cref="IPoint"/>.
@@ -61,7 +67,7 @@ namespace NetTopologySuite.Windows.Media
         void AddShape(WpfPoint viewPoint, WpfStreamGeometryContext sgc);
     }
 
-    public abstract class BasePointShapeFactory : IPointShapeFactory
+    public abstract class BasePointShapeFactory : IPointToStreamGeometryFactory
     {
         ///<summary>
         /// The default size of the shape
@@ -104,7 +110,7 @@ namespace NetTopologySuite.Windows.Media
         /// Creates a new factory for points with default size.
         ///</summary>
         public Dot()
-            :base(1)
+            : base(1)
         { }
     }
 
@@ -143,7 +149,7 @@ namespace NetTopologySuite.Windows.Media
 
         public override void AddShape(WpfPoint point, WpfStreamGeometryContext sgc)
         {
-            var start = new WpfPoint(point.X, (point.Y - Size/2));
+            var start = new WpfPoint(point.X, (point.Y - Size / 2));
             var linesTo = new List<WpfPoint>(
                 new[]
                     {
@@ -175,8 +181,7 @@ namespace NetTopologySuite.Windows.Media
 
         public override void AddShape(WpfPoint point, WpfStreamGeometryContext sgc)
         {
-
-            var start = new WpfPoint(point.X, (point.Y - Size/2));
+            var start = new WpfPoint(point.X, (point.Y - Size / 2));
             var linesTo = new List<WpfPoint>(
                 new[]
                     {
@@ -187,8 +192,8 @@ namespace NetTopologySuite.Windows.Media
             sgc.BeginFigure(start, true, true);
             sgc.PolyLineTo(linesTo, true, true);
         }
-
     }
+
     public class Circle : BasePointShapeFactory
     {
         ///<summary>
@@ -200,12 +205,12 @@ namespace NetTopologySuite.Windows.Media
 
         public override void AddShape(WpfPoint point, WpfStreamGeometryContext sgc)
         {
-            var start = new WpfPoint(point.X, point.Y - Size*0.5);
+            var start = new WpfPoint(point.X, point.Y - Size * 0.5);
             sgc.BeginFigure(start, true, true);
-            sgc.ArcTo(start, new Size(Size, Size), 360, true, WpfSweepDirection.Clockwise, true, true );
+            sgc.ArcTo(start, new Size(Size, Size), 360, true, WpfSweepDirection.Clockwise, true, true);
         }
-
     }
+
     public class Cross : BasePointShapeFactory
     {
         ///<summary>
@@ -245,6 +250,7 @@ namespace NetTopologySuite.Windows.Media
                 }), true, true);
         }
     }
+
     public class X : BasePointShapeFactory
     {
         ///<summary>
@@ -256,7 +262,7 @@ namespace NetTopologySuite.Windows.Media
 
         public override void AddShape(WpfPoint point, WpfStreamGeometryContext sgc)
         {
-            sgc.BeginFigure(new WpfPoint((point.X), (point.Y - Size*1/8)), true, true);
+            sgc.BeginFigure(new WpfPoint((point.X), (point.Y - Size * 1 / 8)), true, true);
             sgc.PolyLineTo(new List<WpfPoint>(new[]
                 {
                     new WpfPoint((point.X + Size*2/8), (point.Y - Size/2)),
@@ -271,8 +277,6 @@ namespace NetTopologySuite.Windows.Media
                     new WpfPoint((point.X - Size/2), (point.Y - Size/2)),
                     new WpfPoint((point.X - Size*2/8), (point.Y - Size/2))
                 }), true, true);
-
         }
-
     }
 }

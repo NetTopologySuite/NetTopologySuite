@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;PATH_GEOMETRY STREAM_GEOMETRY</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -27,7 +27,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;PATH_GEOMETRY STREAM_GEOMETRY</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -41,12 +41,15 @@
   <ItemGroup>
     <Compile Include="FontGlyphReader.cs" />
     <Compile Include="GeometryCollectionGraphicsPath.cs" />
+    <Compile Include="PointToPathGeometryFactory.cs" />
+    <Compile Include="PolygonWpfPathGeometry.cs" />
     <Compile Include="WpfGeometryReader.cs" />
-    <Compile Include="WpfGeometryWriter.cs" />
+    <Compile Include="WpfPathGeometryWriter.cs" />
+    <Compile Include="WpfStreamGeometryWriter.cs" />
     <Compile Include="IdentityPointTransformation.cs" />
     <Compile Include="IPointTransformation.cs" />
-    <Compile Include="PointWpfGeometryFactory.cs" />
-    <Compile Include="PolygonWpfGeometry.cs" />
+    <Compile Include="PointToStreamGeometryFactory.cs" />
+    <Compile Include="PolygonWpfStreamGeometry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

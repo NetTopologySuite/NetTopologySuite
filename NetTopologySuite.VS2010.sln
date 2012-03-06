@@ -58,7 +58,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.ShapeFi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.GDB", "NetTopologySuite.IO\NetTopologySuite.IO.GDB\NetTopologySuite.IO.GDB.csproj", "{548166D9-DF64-46FB-9EEC-212C7B7E7D85}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetTopologySuite.CoordinateSystems.Transformation", "NetTopologySuite.CoordinateSystems.Transformation", "{489ED983-F8DE-4879-B118-F94C55DA335F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DotSpatial", "DotSpatial", "{489ED983-F8DE-4879-B118-F94C55DA335F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Projections.Wrapper", "NetTopologySuite.CoordinateSystems.Transfromation\DotSpatial.Projections.Wrapper\DotSpatial.Projections.Wrapper.csproj", "{08759323-B999-405B-8688-80008A4190B0}"
 EndProject
@@ -97,6 +97,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections.WindowsPhone", "PowerCollections\PowerCollections.WP\PowerCollections.WindowsPhone.csproj", "{D4C28EC9-4FAB-43AA-B063-96DCBAF44A30}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.WindowsPhone", "WindowsPhone\NetTopologySuite\NetTopologySuite.WindowsPhone.csproj", "{56C111DE-CDB3-4228-8322-DFC9121175E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Converter.DotSpatial", "NetTopologySuite.Converter\NetTopologySuite.Converter.DotSpatial\NetTopologySuite.Converter.DotSpatial.csproj", "{3792E197-F5CD-46F9-811D-6EB6C3B10DEE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Converter.Test", "NetTopologySuite.Converter\NetTopologySuite.Converter.Test\NetTopologySuite.Converter.Test.csproj", "{4F3B0BD4-9527-404A-AFF9-1E7356DC5FBF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetTopologySuite.Converter", "NetTopologySuite.Converter", "{7C3204B9-50E4-4322-B0DF-DCB241875FF4}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -249,6 +255,14 @@ Global
 		{56C111DE-CDB3-4228-8322-DFC9121175E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56C111DE-CDB3-4228-8322-DFC9121175E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56C111DE-CDB3-4228-8322-DFC9121175E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3792E197-F5CD-46F9-811D-6EB6C3B10DEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3792E197-F5CD-46F9-811D-6EB6C3B10DEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3792E197-F5CD-46F9-811D-6EB6C3B10DEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3792E197-F5CD-46F9-811D-6EB6C3B10DEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F3B0BD4-9527-404A-AFF9-1E7356DC5FBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F3B0BD4-9527-404A-AFF9-1E7356DC5FBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F3B0BD4-9527-404A-AFF9-1E7356DC5FBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F3B0BD4-9527-404A-AFF9-1E7356DC5FBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -260,6 +274,7 @@ Global
 		{5AF10590-5E1C-4052-83C6-95C94B747195} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
 		{B9C93F98-1667-40A2-B02F-90D5CE14121F} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
 		{39E8A390-5304-4447-99E2-3810941824AD} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
+		{4F3B0BD4-9527-404A-AFF9-1E7356DC5FBF} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
 		{9B913337-1114-4D05-8F24-D05A5FD588AD} = {0D0E64CD-73D1-4C5F-AADA-965464C91A39}
 		{71FAD7D8-11F5-444B-B9F9-D2EFF68C8F26} = {0D0E64CD-73D1-4C5F-AADA-965464C91A39}
 		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E} = {0D0E64CD-73D1-4C5F-AADA-965464C91A39}
@@ -283,5 +298,6 @@ Global
 		{9924F9BF-24A6-4C73-AB60-FAEE784F4327} = {6B9ED8E2-F16D-456D-A42F-A2DE5A2E76E5}
 		{D4C28EC9-4FAB-43AA-B063-96DCBAF44A30} = {6B9ED8E2-F16D-456D-A42F-A2DE5A2E76E5}
 		{56C111DE-CDB3-4228-8322-DFC9121175E6} = {6B9ED8E2-F16D-456D-A42F-A2DE5A2E76E5}
+		{3792E197-F5CD-46F9-811D-6EB6C3B10DEE} = {7C3204B9-50E4-4322-B0DF-DCB241875FF4}
 	EndGlobalSection
 EndGlobal

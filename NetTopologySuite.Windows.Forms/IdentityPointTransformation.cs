@@ -33,7 +33,7 @@
 
 /**
  * Copies point ordinates with no transformation.
- * 
+ *
  * @author Martin Davis
  *
  */
@@ -45,22 +45,21 @@ namespace NetTopologySuite.Windows.Forms
 {
     public class IdentityPointTransformation : IPointTransformation
     {
-	    public void Transform(ICoordinate model, ref PointF view)
-	    {
-	        view.X = (float) model.X;
-	        view.Y = (float) model.Y;
+        public void Transform(Coordinate model, ref PointF view)
+        {
+            view.X = (float)model.X;
+            view.Y = (float)model.Y;
+        }
 
-	    }
-
-        public PointF[] Transform (ICoordinate[] model)
+        public PointF[] Transform(Coordinate[] model)
         {
             var ret = new PointF[model.Length];
-            for (var i = 0; i < model.Length; i++ )
-                ret[i] = new PointF((float) model[i].X, (float) model[i].Y);
-                return ret;
-            
+            for (var i = 0; i < model.Length; i++)
+                ret[i] = new PointF((float)model[i].X, (float)model[i].Y);
+            return ret;
         }
     }
+
     public class InvertYPointTransformation : IPointTransformation
     {
         private readonly float _yOffset;
@@ -69,22 +68,19 @@ namespace NetTopologySuite.Windows.Forms
         {
             _yOffset = yOffset;
         }
-        
-        public void Transform(ICoordinate model, ref PointF view)
+
+        public void Transform(Coordinate model, ref PointF view)
         {
             view.X = (float)model.X;
-            view.Y = _yOffset-(float)model.Y;
-
+            view.Y = _yOffset - (float)model.Y;
         }
 
-        public PointF[] Transform(ICoordinate[] model)
+        public PointF[] Transform(Coordinate[] model)
         {
             var ret = new PointF[model.Length];
             for (var i = 0; i < model.Length; i++)
-                ret[i] = new PointF((float)model[i].X, _yOffset-(float)model[i].Y);
+                ret[i] = new PointF((float)model[i].X, _yOffset - (float)model[i].Y);
             return ret;
-
         }
     }
 }
-

@@ -1,14 +1,13 @@
 using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.IO.Handlers
 {
     /// <summary>
     /// Abstract class that defines the interfaces that other 'Shape' handlers must implement.
     /// </summary>
-    public abstract class ShapeHandler 
+    public abstract class ShapeHandler
     {
         protected int bbindex = 0;
         protected double[] bbox;
@@ -34,7 +33,7 @@ namespace NetTopologySuite.IO.Handlers
         /// <param name="geometry">The geometry object to write.</param>
         /// <param name="file">The stream to write to.</param>
         /// <param name="geometryFactory">The geometry factory to use.</param>
-        public abstract void Write(IGeometry geometry, BinaryWriter file,  IGeometryFactory geometryFactory);
+        public abstract void Write(IGeometry geometry, BinaryWriter file, IGeometryFactory geometryFactory);
 
         /// <summary>
         /// Gets the length in bytes the Geometry will need when written as a shape file record.
@@ -44,7 +43,7 @@ namespace NetTopologySuite.IO.Handlers
         public abstract int GetLength(IGeometry geometry);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="envelope"></param>
         /// <returns></returns>
@@ -69,7 +68,7 @@ namespace NetTopologySuite.IO.Handlers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         protected bool HasZValue()
@@ -78,13 +77,13 @@ namespace NetTopologySuite.IO.Handlers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="shapeType"></param>
         /// <returns></returns>
         public static bool HasZValue(ShapeGeometryType shapeType)
         {
-            return  shapeType == ShapeGeometryType.PointZ ||
+            return shapeType == ShapeGeometryType.PointZ ||
                     shapeType == ShapeGeometryType.PointZM ||
                     shapeType == ShapeGeometryType.LineStringZ ||
                     shapeType == ShapeGeometryType.LineStringZM ||
@@ -93,7 +92,7 @@ namespace NetTopologySuite.IO.Handlers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         protected bool HasMValue()
@@ -102,13 +101,13 @@ namespace NetTopologySuite.IO.Handlers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="shapeType"></param>
         /// <returns></returns>
         public static bool HasMValue(ShapeGeometryType shapeType)
         {
-            return  shapeType == ShapeGeometryType.PointM ||
+            return shapeType == ShapeGeometryType.PointM ||
                     shapeType == ShapeGeometryType.PointZM ||
                     shapeType == ShapeGeometryType.LineStringM ||
                     shapeType == ShapeGeometryType.LineStringZM ||
@@ -117,7 +116,7 @@ namespace NetTopologySuite.IO.Handlers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         protected bool IsPoint()
@@ -126,7 +125,7 @@ namespace NetTopologySuite.IO.Handlers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="shapeType"></param>
         /// <returns></returns>
@@ -139,7 +138,7 @@ namespace NetTopologySuite.IO.Handlers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         protected bool IsMultiPoint()
@@ -148,7 +147,7 @@ namespace NetTopologySuite.IO.Handlers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="shapeType"></param>
         /// <returns></returns>
@@ -161,7 +160,7 @@ namespace NetTopologySuite.IO.Handlers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         protected bool IsLineString()
@@ -170,7 +169,7 @@ namespace NetTopologySuite.IO.Handlers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="shapeType"></param>
         /// <returns></returns>
@@ -183,8 +182,8 @@ namespace NetTopologySuite.IO.Handlers
         }
 
         /// <summary>
-        /// 
-        /// </summary>        
+        ///
+        /// </summary>
         /// <returns></returns>
         protected bool IsPolygon()
         {
@@ -192,7 +191,7 @@ namespace NetTopologySuite.IO.Handlers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="shapeType"></param>
         /// <returns></returns>
@@ -205,7 +204,7 @@ namespace NetTopologySuite.IO.Handlers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="file"></param>
         /// <param name="data"></param>
@@ -216,12 +215,12 @@ namespace NetTopologySuite.IO.Handlers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="file"></param>
         /// <param name="data"></param>
         protected void GetMValue(BigEndianBinaryReader file, IDictionary<ShapeGeometryType, double> data)
-        {            
+        {
             double m = file.ReadDouble();
             // data.Add(ShapeGeometryType.PointM, m);
         }
@@ -240,7 +239,7 @@ namespace NetTopologySuite.IO.Handlers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="file"></param>
         protected void GrabZMValues(BigEndianBinaryReader file)
@@ -277,8 +276,8 @@ namespace NetTopologySuite.IO.Handlers
         }
 
         /// <summary>
-        /// 
-        /// </summary>        
+        ///
+        /// </summary>
         /// <returns></returns>
         protected int GetBoundingBoxLength()
         {
@@ -290,5 +289,7 @@ namespace NetTopologySuite.IO.Handlers
                 bblength += 2;
             return bblength;
         }
+
+        public GeometryInstantiationErrorHandlingOption GeometryInstantiationErrorHandling { get; set; }
     }
 }

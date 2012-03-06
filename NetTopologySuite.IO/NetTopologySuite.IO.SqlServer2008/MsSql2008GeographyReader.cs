@@ -29,7 +29,7 @@ namespace NetTopologySuite.IO
 
 	    public IGeometry Read(byte[] bytes)
 		{
-			using (MemoryStream stream = new MemoryStream(bytes))
+			using (var stream = new MemoryStream(bytes))
 			{
 			    return Read(stream);
 			}
@@ -37,15 +37,20 @@ namespace NetTopologySuite.IO
 
         public IGeometry Read(Stream stream)
         {
-            using (BinaryReader reader = new BinaryReader(stream))
+            using (var reader = new BinaryReader(stream))
             {
-                SqlGeography sqlGeography = new SqlGeography();
+                var sqlGeography = new SqlGeography();
                 sqlGeography.Read(reader);
                 return Read(sqlGeography);
             }
         }
 
-		public IGeometry Read(SqlGeography geometry)
+	    /// <summary>
+	    /// Gets or sets whether invalid linear rings should be fixed
+	    /// </summary>
+	    public bool RepairRings { get; set; }
+
+	    public IGeometry Read(SqlGeography geometry)
 		{
 			var builder = new NtsGeographySink(Factory);
 			geometry.Populate(builder);

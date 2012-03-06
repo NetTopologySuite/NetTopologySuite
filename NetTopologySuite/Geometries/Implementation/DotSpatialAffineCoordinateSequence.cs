@@ -4,17 +4,17 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries.Implementation
 {
-//#if !SILVERLIGHT    
+    //#if !SILVERLIGHT
     [Serializable]
-//#endif
+    //#endif
     public class DotSpatialAffineCoordinateSequence : ICoordinateSequence
     {
         private readonly double[] _xy;
         private readonly double[] _z;
         private double[] _m;
-        private Ordinates _ordinates;
+        private readonly Ordinates _ordinates;
 
-        public DotSpatialAffineCoordinateSequence(IList<Coordinate> coordinates) 
+        public DotSpatialAffineCoordinateSequence(IList<Coordinate> coordinates)
         {
             if (coordinates == null)
             {
@@ -34,19 +34,19 @@ namespace NetTopologySuite.Geometries.Implementation
 
             _ordinates = Ordinates.XYZ;
         }
-        
+
         /// <summary>
         /// Constructs a sequence of a given size, populated with new Coordinates.
         /// </summary>
         /// <param name="size">The size of the sequence to create.</param>
         /// <param name="dimension">The number of dimensions.</param>
-        public DotSpatialAffineCoordinateSequence(int size, int dimension) 
+        public DotSpatialAffineCoordinateSequence(int size, int dimension)
         {
             _xy = new double[2 * size];
             if (dimension <= 2) return;
-            
+
             _z = new double[size];
-            for(var i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
                 _z[i] = double.NaN;
 
             _m = new double[size];
@@ -81,14 +81,14 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <summary>
         /// Constructs a sequence based on the given coordinate sequence.
         /// </summary>
-        /// <param name="coordSeq">The coordinate sequence.</param>      
+        /// <param name="coordSeq">The coordinate sequence.</param>
         public DotSpatialAffineCoordinateSequence(ICoordinateSequence coordSeq)
         {
             var dsCoordSeq = coordSeq as DotSpatialAffineCoordinateSequence;
             if (dsCoordSeq != null)
             {
                 _xy = new double[2 * dsCoordSeq.Count];
-                Buffer.BlockCopy(dsCoordSeq.XY, 0, XY, 0, 16*dsCoordSeq.Count);
+                Buffer.BlockCopy(dsCoordSeq.XY, 0, XY, 0, 16 * dsCoordSeq.Count);
                 if (dsCoordSeq.Z != null)
                 {
                     _z = new double[dsCoordSeq.Count];
@@ -101,7 +101,7 @@ namespace NetTopologySuite.Geometries.Implementation
             if (coordSeq.Dimension > 2) _z = new double[coordSeq.Count];
 
             var j = 0;
-            for (var i = 0; i < coordSeq.Count; i++ )
+            for (var i = 0; i < coordSeq.Count; i++)
             {
                 XY[j++] = coordSeq.GetX(i);
                 XY[j++] = coordSeq.GetY(i);
@@ -117,7 +117,7 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         public DotSpatialAffineCoordinateSequence(double[] xy, double[] z, double[] m)
-            :this(xy, z)
+            : this(xy, z)
         {
             _m = m;
         }
@@ -125,37 +125,37 @@ namespace NetTopologySuite.Geometries.Implementation
         public object Clone()
         {
             return new DotSpatialAffineCoordinateSequence(
-                (double[]) XY.Clone(), (double[]) Z.Clone());
+                (double[])XY.Clone(), (double[])Z.Clone());
         }
 
         public Coordinate GetCoordinate(int i)
         {
-            var j = 2*i;
-            return _z != null 
+            var j = 2 * i;
+            return _z != null
                 ? new Coordinate(_xy[j++], _xy[j], _z[i])
                 : new Coordinate(_xy[j++], _xy[j]);
         }
 
         public Coordinate GetCoordinateCopy(int i)
         {
-            return new Coordinate(XY[2*i], XY[2*i+1], Z != null ? Z[i] : double.NaN );
+            return new Coordinate(XY[2 * i], XY[2 * i + 1], Z != null ? Z[i] : double.NaN);
         }
 
         public void GetCoordinate(int index, Coordinate coord)
         {
-            coord.X = XY[2*index];
-            coord.Y = XY[2*index + 1];
+            coord.X = XY[2 * index];
+            coord.Y = XY[2 * index + 1];
             coord.Z = Z != null ? Z[index] : double.NaN;
         }
 
         public double GetX(int index)
         {
-            return XY[2*index];
+            return XY[2 * index];
         }
 
         public double GetY(int index)
         {
-            return XY[2*index + 1];
+            return XY[2 * index + 1];
         }
 
         public double GetOrdinate(int index, Ordinate ordinate)
@@ -163,9 +163,9 @@ namespace NetTopologySuite.Geometries.Implementation
             switch (ordinate)
             {
                 case Ordinate.X:
-                    return XY[index*2];
+                    return XY[index * 2];
                 case Ordinate.Y:
-                    return XY[index*2+1];
+                    return XY[index * 2 + 1];
                 case Ordinate.Z:
                     return Z != null ? Z[index] : double.NaN;
                 /*case Ordinate.M:*/
@@ -179,16 +179,16 @@ namespace NetTopologySuite.Geometries.Implementation
             switch (ordinate)
             {
                 case Ordinate.X:
-                    XY[index*2] = value;
+                    XY[index * 2] = value;
                     break;
                 case Ordinate.Y:
-                    XY[index*2 + 1] = value;
+                    XY[index * 2 + 1] = value;
                     break;
                 case Ordinate.Z:
                     if (Z != null)
                         Z[index] = value;
                     break;
-                    /*case Ordinate.M:*/
+                /*case Ordinate.M:*/
                 default:
                     throw new NotSupportedException();
             }
@@ -215,8 +215,8 @@ namespace NetTopologySuite.Geometries.Implementation
         public Envelope ExpandEnvelope(Envelope env)
         {
             var j = 0;
-            for (var i = 0; i < Count; i++ ) 
-                env.ExpandToInclude( XY[j++], XY[j++]);            
+            for (var i = 0; i < Count; i++)
+                env.ExpandToInclude(XY[j++], XY[j++]);
             return env;
         }
 
@@ -277,8 +277,8 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Since Coordinates are 2.5D, this routine ignores the z value when making the comparison.
         /// Returns
         ///   -1  : this.x lowerthan other.x || ((this.x == other.x) AND (this.y lowerthan other.y))
-        ///    0  : this.x == other.x AND this.y = other.y 
-        ///    1  : this.x greaterthan other.x || ((this.x == other.x) AND (this.y greaterthan other.y)) 
+        ///    0  : this.x == other.x AND this.y = other.y
+        ///    1  : this.x greaterthan other.x || ((this.x == other.x) AND (this.y greaterthan other.y))
         /// </summary>
         /// <param name="o"><c>Coordinate</c> with which this <c>Coordinate</c> is being compared.</param>
         /// <returns>
@@ -296,8 +296,8 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Since Coordinates are 2.5D, this routine ignores the z value when making the comparison.
         /// Returns
         ///   -1  : this.x lowerthan other.x || ((this.x == other.x) AND (this.y lowerthan other.y))
-        ///    0  : this.x == other.x AND this.y = other.y 
-        ///    1  : this.x greaterthan other.x || ((this.x == other.x) AND (this.y greaterthan other.y)) 
+        ///    0  : this.x == other.x AND this.y = other.y
+        ///    1  : this.x greaterthan other.x || ((this.x == other.x) AND (this.y greaterthan other.y))
         /// </summary>
         /// <param name="other"><c>Coordinate</c> with which this <c>Coordinate</c> is being compared.</param>
         /// <returns>
@@ -353,7 +353,7 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override int GetHashCode()
         {
@@ -374,7 +374,7 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
@@ -385,7 +385,6 @@ namespace NetTopologySuite.Geometries.Implementation
 
         public bool Equals3D(Coordinate other)
         {
-            
             throw new NotImplementedException();
         }
 
