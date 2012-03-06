@@ -15,6 +15,7 @@
     </description>
     <summary>NTS Topology Suite is a direct-port of all the functionalities offered by JTS Topology Suite</summary>
     <tags>NTS Topology OGC SFS</tags>
+    <copyright>Copyright 2007-2012</copyright>
     <language>en-US</language>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System" targetFramework="" />
@@ -28,9 +29,11 @@
   <files>
     <file src="Release\v3.5\AnyCPU\NetTopologySuite.dll" target="lib\net35\NetTopologySuite.dll" />
     <file src="Release\v3.5\AnyCPU\PowerCollections.dll" target="lib\net35\PowerCollections.dll" />
-    <file src="Release\Silverlightv4.0\AnyCPU\NetTopologySuite.Data.Silverlight.dll" target="lib\sl40\NetTopologySuite.Data.Silverlight.dll" />
-    <file src="Release\Silverlightv4.0\AnyCPU\NetTopologySuite.Encodings.Silverlight.dll" target="lib\sl40\NetTopologySuite.Encodings.Silverlight.dll" />
-    <file src="Release\Silverlightv4.0\AnyCPU\NetTopologySuite.Silverlight.dll" target="lib\sl40\NetTopologySuite.Silverlight.dll" />
-    <file src="Release\Silverlightv4.0\AnyCPU\PowerCollections.SilverLight.dll" target="lib\sl40\PowerCollections.SilverLight.dll" />
+    <file src="Release\Silverlightv4.0\AnyCPU\NetTopologySuite.Data.Silverlight.dll" target="lib\sl40" />
+    <file src="Release\Silverlightv4.0\AnyCPU\NetTopologySuite.Encodings.Silverlight.dll" target="lib\sl40" />
+    <file src="Release\Silverlightv4.0\AnyCPU\NetTopologySuite.Silverlight.dll" target="lib\sl40" />
+    <file src="Release\Silverlightv4.0\AnyCPU\PowerCollections.SilverLight.dll" target="lib\sl40" />
+    <file src="Release\WP\AnyCPU\NetTopologySuite.WindowsPhone.dll" target="lib\sl40-wp" />
+    <file src="Release\WP\AnyCPU\PowerCollections.WindowsPhone.dll" target="lib\sl40-wp" />
   </files>
 </package>

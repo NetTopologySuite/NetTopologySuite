@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using GeoAPI.Geometries;
@@ -55,7 +56,7 @@ public class PolygonWpfPathGeometry
 
     ///<summary>
     /// Adds a <see cref="PathFigure"/> representing a polygon ring
-    /// having the given coordinate sequence to the supplied <see cref="StreamGeometryContext"/>
+    /// having the given coordinate sequence to the supplied <see cref="pathGeometry"/>
     ///</summary>
     ///<param name="pathGeometry">The path geometry.</param>
     ///<param name="coordinates">A coordinate sequence</param>
@@ -64,22 +65,40 @@ public class PolygonWpfPathGeometry
     {
         if (coordinates.Length <= 0)
             return;
-
+#if SILVERLIGHT
+        var figure = new PathFigure();
+        figure.StartPoint = new Point(coordinates[0].X, coordinates[0].Y);
+        figure.Segments.Add(ToPolyLineSegment(coordinates));
+#else
         var figure = new PathFigure(ToPoint(coordinates[0]), ToPathSegments(coordinates), true);
+#endif
         pathGeometry.Figures.Add(figure);
     }
 
+#if !SILVERLIGHT
     private static IEnumerable<PathSegment> ToPathSegments(Coordinate[] coordinates)
     {
         for (var i = 1; i < coordinates.Length; i++)
             yield return new LineSegment(ToPoint(coordinates[i]), true);
     }
-
+#else
+    private static PolyLineSegment ToPolyLineSegment(IEnumerable<Coordinate> coordinates)
+    {
+        var res = new PolyLineSegment();
+        var pts = res.Points;
+        foreach (var coordinate in coordinates.Skip(1))
+        {
+            pts.Add(new Point(coordinate.X, coordinate.Y));
+        }
+        return res;
+    }
+#endif
     private static Point ToPoint(Coordinate coordinate)
     {
         return new Point(coordinate.X, coordinate.Y);
     }
 
+#if !SILVERLIGHT
     private static readonly Pen DefaultPen = new Pen(Brushes.Black, 1d);
 
     public Rect GetBounds()
@@ -130,4 +149,5 @@ public class PolygonWpfPathGeometry
     //    p.Flatten(at, (float)flatness);
     //    return new GraphicsPathIterator(p);
     //}
+#endif
 }
