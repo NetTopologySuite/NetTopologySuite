@@ -128,6 +128,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="argIndex"></param>
         public void SetLabelBoundary(int argIndex)
         {
+            if (Label == null) return;
+
             // determine the current location for the point (if any)
             Location loc = Location.Null;
             if (Label != null)
@@ -160,7 +162,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="eltIndex"></param>
         public Location ComputeMergedLocation(Label label2, int eltIndex)
         {
-            /*Location loc = Location.Null*/;
+            /*Location loc = Location.Null*/
             Location loc = Label.GetLocation(eltIndex);
             if (!label2.IsNull(eltIndex)) 
             {

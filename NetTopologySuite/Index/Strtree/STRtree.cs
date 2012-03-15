@@ -359,11 +359,15 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// Finds the nearest item to the given object
-        /// in this tree, 
+        /// Finds the item in this tree which is nearest to the given <paramref name="item"/>, 
         /// using <see cref="IItemDistance"/> as the distance metric.
         /// A Branch-and-Bound tree traversal algorithm is used
         /// to provide an efficient search.
+        /// <para/>
+        /// The query <paramref name="item"/> does <b>not</b> have to be 
+        /// contained in the tree, but it does 
+        /// have to be compatible with the <paramref name="itemDist"/> 
+        /// distance metric. 
         /// </summary>
         /// <param name="env">The envelope of the query item</param>
         /// <param name="item">The item to find the nearest neighbour of</param>
@@ -394,6 +398,7 @@ namespace NetTopologySuite.Index.Strtree
             BoundablePair bp = new BoundablePair(Root, tree.Root, itemDist);
             return NearestNeighbour(bp);
         }
+
 
         private Object[] NearestNeighbour(BoundablePair initBndPair)
         {

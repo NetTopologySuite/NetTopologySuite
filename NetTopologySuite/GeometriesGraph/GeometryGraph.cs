@@ -136,6 +136,9 @@ namespace NetTopologySuite.GeometriesGraph
             }
         }
 
+        /// <summary>
+        /// Gets the <see cref="IBoundaryNodeRule"/> used with this geometry graph.
+        /// </summary>
         public IBoundaryNodeRule BoundaryNodeRule
         {
             get { return _boundaryNodeRule; }
@@ -418,14 +421,14 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="coord"></param>
         private void InsertBoundaryPoint(int argIndex, Coordinate coord)
         {
-            Node n = NodeMap.AddNode(coord);
+            var n = NodeMap.AddNode(coord);
+            // nodes always have labels
             Label lbl = n.Label;
             // the new point to insert is on a boundary
             int boundaryCount = 1;
             // determine the current location for the point (if any)
-            Location loc = Location.Null;
-            if (lbl != null)
-                loc = lbl.GetLocation(argIndex, Positions.On);
+            //Location loc = Location.Null;
+            var loc = lbl.GetLocation(argIndex, Positions.On);
             if (loc == Location.Boundary)
                 boundaryCount++;
 

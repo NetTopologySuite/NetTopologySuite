@@ -5,13 +5,6 @@ using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Index.Quadtree
 {
-    //public class Node : Node<object>
-    //{
-    //    public Node(Envelope env, int level) : base(env, level)
-    //    {
-    //    }
-    //}
-
     /// <summary>
     /// Represents a node of a <c>Quadtree</c>.  Nodes contain
     /// items which have a spatial extent corresponding to the node's position
@@ -89,11 +82,12 @@ namespace NetTopologySuite.Index.Quadtree
         }
 
         /// <summary> 
-        /// Returns the subquad containing the envelope.
+        /// Returns the subquad containing the envelope <paramref name="searchEnv"/>.
         /// Creates the subquad if
         /// it does not already exist.
         /// </summary>
-        /// <param name="searchEnv"></param>
+        /// <param name="searchEnv">The envelope to search for</param>
+        /// <returns>The subquad containing the search envelope.</returns>
         public Node<T> GetNode(Envelope searchEnv)
         {
             int subnodeIndex = GetSubnodeIndex(searchEnv, _centre);            

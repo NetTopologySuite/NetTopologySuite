@@ -3,20 +3,17 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Index.Quadtree
 {
-    //public abstract class NodeBase : NodeBase<object>
-    //{}
-
     /// <summary>
     /// The base class for nodes in a <c>Quadtree</c>.
     /// </summary>
     public abstract class NodeBase<T> 
     {        
         /// <summary> 
-        /// Returns the index of the subquad that wholly contains the given envelope.
+        /// Gets the index of the subquad that wholly contains the given envelope.
         /// If none does, returns -1.
         /// </summary>
-        /// <param name="env"></param>
-        /// <param name="centre"></param>
+        /// <returns>The index of the subquad that wholly contains the given envelope</returns>
+        /// <returns>-1 if no subquad wholly contains the envelope</returns>
         public static int GetSubnodeIndex(Envelope env, Coordinate centre)
         {
             int subnodeIndex = -1;

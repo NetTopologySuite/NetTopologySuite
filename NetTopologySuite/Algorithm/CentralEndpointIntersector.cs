@@ -85,12 +85,13 @@ namespace NetTopologySuite.Algorithm
         /// </summary>        
         private static Coordinate FindNearestPoint(Coordinate p, Coordinate[] pts)
         {
-            double minDist = Double.MaxValue;
+            var minDist = Double.MaxValue;
             Coordinate result = null;
-            for (int i = 0; i < pts.Length; i++)
+            for (var i = 0; i < pts.Length; i++)
             {
-                double dist = p.Distance(pts[i]);
-                if (dist < minDist)
+                var dist = p.Distance(pts[i]);
+                // always initialize the result
+                if (i == 0 || dist < minDist)
                 {
                     minDist = dist;
                     result = pts[i];

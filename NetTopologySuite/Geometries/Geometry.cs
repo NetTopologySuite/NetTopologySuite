@@ -1093,21 +1093,25 @@ namespace NetTopologySuite.Geometries
         public static bool operator !=(Geometry obj1, IGeometry obj2)
         {
             return !(obj1 == obj2);
-        }    
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public override int GetHashCode()
-        {
-            int result = 17;
-            return GetHashCodeInternal(result, x => 37 * x );
-            /*
-            foreach (var coord in Coordinates)
-                result = 37 * result + coord.X.GetHashCode();                        
-             */
         }
 
+        /// <summary>
+        /// Gets a hash code for the Geometry.
+        /// </summary>
+        /// <returns>
+        /// An integer value suitable for use as a hashcode
+        /// </returns>
+        public override int GetHashCode()
+        {
+            return EnvelopeInternal.GetHashCode();
+            //int result = 17;
+            //return GetHashCodeInternal(result, x => 37 * x );
+            ////
+            ////foreach (var coord in Coordinates)
+            ////    result = 37 * result + coord.X.GetHashCode();                        
+            ////
+        }
+        [Obsolete]
         internal abstract int GetHashCodeInternal(int baseValue, Func<int, int> operation);
 
         /// <summary>

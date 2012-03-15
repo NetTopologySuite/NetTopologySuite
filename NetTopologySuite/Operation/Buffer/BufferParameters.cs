@@ -4,43 +4,22 @@ using GeoAPI.Operations.Buffer;
 namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
-    /// Contains the parameters which describe how a buffer should be constructed.
+    /// A value class containing the parameters which 
+    /// specify how a buffer should be constructed.
+    /// <para/>
+    /// The parameters allow control over:
+    /// <list type="Bullet">
+    /// <item>Quadrant segments (accuracy of approximation for circular arcs)</item>
+    /// <item>End Cap style</item>
+    /// <item>Join style</item>
+    /// <item>Mitre limit</item>
+    /// <item>whether the buffer is single-sided</item>
+    /// </list>
     /// </summary>
+    /// <seealso cref="IBufferParameters"/>
     /// <author>Martin Davis</author>
     public class BufferParameters : IBufferParameters
     {
-        /**
-         *
-         */
-        [Obsolete]
-        public const int CAP_ROUND = 1;
-        /**
-         *
-         */
-        [Obsolete]
-        public const int CAP_FLAT = 2;
-        /**
-         *
-         */
-        [Obsolete]
-        public const int CAP_SQUARE = 3;
-
-        /**
-         *
-         */
-        [Obsolete]
-        public const int JOIN_ROUND = 1;
-        /**
-         *
-         */
-        [Obsolete]
-        public const int JOIN_MITRE = 2;
-        /**
-         *
-         */
-        [Obsolete]
-        public const int JOIN_BEVEL = 3;
-
         /// <summary>
         /// The default number of facets into which to divide a fillet of 90 degrees.
         /// A value of 8 gives less than 2% max error in the buffer distance.
