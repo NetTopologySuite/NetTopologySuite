@@ -92,7 +92,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// 
         /// </summary>
-        protected IList<IGeometry> polyList;
+        protected ICollection<IGeometry> polyList;
 
         /// <summary>
         /// Create a polygonizer with the same {GeometryFactory}
@@ -110,9 +110,9 @@ namespace NetTopologySuite.Operation.Polygonize
         /// the constituent linework will be extracted and used.
         /// </summary>
         /// <param name="geomList">A list of <c>Geometry</c>s with linework to be polygonized.</param>
-        public void Add(IList<IGeometry> geomList)
+        public void Add(ICollection<IGeometry> geomList)
         {
-            foreach (IGeometry geometry in geomList)
+            foreach (var geometry in geomList)
                 Add(geometry);
         }
 
@@ -143,7 +143,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Gets the list of polygons formed by the polygonization.
         /// </summary>        
-        public IList<IGeometry> GetPolygons()
+        public ICollection<IGeometry> GetPolygons()
         {
             Polygonize();
             return polyList;

@@ -104,6 +104,7 @@
     <Compile Include="Algorithm\IPointInRing.cs" />
     <Compile Include="Algorithm\PointLocator.cs" />
     <Compile Include="Algorithm\RayCrossingCounter.cs" />
+    <Compile Include="Algorithm\RectangleLineIntersector.cs" />
     <Compile Include="Algorithm\RobustDeterminant.cs" />
     <Compile Include="Algorithm\RobustLineIntersector.cs" />
     <Compile Include="Algorithm\SimplePointInRing.cs" />

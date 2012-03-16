@@ -55,7 +55,9 @@
   <ItemGroup>
     <Compile Include="Algorithm\AbstractPointInRingTest.cs" />
     <Compile Include="Algorithm\AngleTest.cs" />
-    <Compile Include="Algorithm\ComputeOrientationTest.cs" />
+    <Compile Include="Algorithm\ComputeOrientationTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Algorithm\ConvexHullTest.cs" />
     <Compile Include="Algorithm\Distance\DiscreteHausdorffDistanceTest.cs" />
     <Compile Include="Algorithm\IndexedPointInAreaStressTest.cs" />
@@ -66,11 +68,14 @@
     <Compile Include="Algorithm\MinimumBoundingCircleTest.cs" />
     <Compile Include="Algorithm\MinimumDiameterTest.cs" />
     <Compile Include="Algorithm\NonRobustLineIntersectorTest.cs" />
+    <Compile Include="Algorithm\OrientationIndexFailureTest.cs" />
+    <Compile Include="Algorithm\OrientationIndexTest.cs" />
     <Compile Include="Algorithm\PerturbedGridPolygonBuilder.cs" />
     <Compile Include="Algorithm\PointInAreaStressTester.cs" />
     <Compile Include="Algorithm\PointInRingTest.cs" />
     <Compile Include="Algorithm\PointLocatorTest.cs" />
     <Compile Include="Algorithm\RayCrossingCounterTest.cs" />
+    <Compile Include="Algorithm\RectangleIntersectsTest.cs" />
     <Compile Include="Algorithm\RobustLineIntersectionTest.cs" />
     <Compile Include="Algorithm\RobustLineIntersectorTest.cs" />
     <Compile Include="Algorithm\SimpleRayCrossingStressTest.cs" />
@@ -136,6 +141,7 @@
     <Compile Include="Operation\Overlay\FixedPrecisionSnappingTest.cs" />
     <Compile Include="Operation\Overlay\OverlayNodingStressTest.cs" />
     <Compile Include="Operation\Polygonize\PolygonizeTest.cs" />
+    <Compile Include="Operation\Predicate\RectangleIntersectsPerformance.cs" />
     <Compile Include="Operation\Relate\RelateBoundaryNodeRuleTest.cs" />
     <Compile Include="Operation\SimpleTest.cs" />
     <Compile Include="Operation\Union\CascadedPolygonUnionFileTest.cs" />

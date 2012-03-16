@@ -147,8 +147,9 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// Returns the oriented smallest angle between two vectors.
         /// The computed angle will be in the range (-Pi, Pi].
-        /// A positive result corresponds to a <see cref="Orientation.CounterClockwise"/> rotation from v1 to v2;
-        /// a negative result corresponds to a <see cref="Orientation.Clockwise"/> rotation.
+        /// A positive result corresponds to a <see cref="Orientation.CounterClockwise"/> rotation (CCW) from v1 to v2;
+        /// a negative result corresponds to a <see cref="Orientation.Clockwise"/> (CW) rotation;
+        /// a zero result corresponds to no rotation.
         /// </summary>
         /// <param name="tip1">The tip of v1</param>
         /// <param name="tail">The tail of each vector</param>

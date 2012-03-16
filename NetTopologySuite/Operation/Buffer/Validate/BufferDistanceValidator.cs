@@ -138,7 +138,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
 
         private static IGeometry GetPolygonLines(IGeometry g)
         {
-            var lines = new List<ILineString>();
+            var lines = new List<IGeometry>();
             var lineExtracter = new LinearComponentExtracter(lines);
             var polys = PolygonExtracter.GetPolygons(g);
             foreach (var poly in polys)

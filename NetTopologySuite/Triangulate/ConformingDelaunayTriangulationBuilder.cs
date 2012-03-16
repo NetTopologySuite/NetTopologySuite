@@ -115,7 +115,7 @@ namespace NetTopologySuite.Triangulate
             var constraintSegs = new List<Segment>();
             foreach (var line in lines)
             {
-                CreateConstraintSegments(line, constraintSegs);
+                CreateConstraintSegments((ILineString)line, constraintSegs);
             }
             return constraintSegs;
         }

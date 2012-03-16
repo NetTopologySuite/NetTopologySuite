@@ -106,7 +106,9 @@ namespace NetTopologySuite.Windows.Media
             var p = new WpfPathGeometry();
             AddShape(p, geometry);
 
+#if !SILVERLIGHT
             p.Freeze();
+#endif
             return p;
         }
 
@@ -157,15 +159,25 @@ namespace NetTopologySuite.Windows.Media
         //    return path;
         //}
 
-        private void AddShape(WpfPathGeometry pathGeometry, ILineString lineString, bool closed = false)
+        private void AddShape(WpfPathGeometry pathGeometry, ILineString lineString, bool closed = false, bool filled = false)
         {
             var coords = lineString.Coordinates;
-            pathGeometry.Figures.Add(new PathFigure(TransformPoint(coords[0]), new[] { new PolyLineSegment(TransformPoints(coords, 1), true) }, closed));
+            
+            var polyLineSegment = new PolyLineSegment();
+            foreach (var coordinate in TransformPoints(coords, 1))
+                polyLineSegment.Points.Add(coordinate);
+
+            var figure = new PathFigure();
+            figure.StartPoint = TransformPoint(coords[0]);
+            figure.IsClosed = closed;
+            figure.IsFilled = filled;
+            figure.Segments.Add(polyLineSegment);
+            pathGeometry.Figures.Add(figure);
         }
 
-        private void AddShape(WpfPathGeometry pathGeometry, ILinearRing linearRing)
+        private void AddShape(WpfPathGeometry pathGeometry, ILinearRing linearRing, bool filled)
         {
-            AddShape(pathGeometry, linearRing, true);
+            AddShape(pathGeometry, linearRing, true, filled);
         }
 
         private void AddShape(WpfPathGeometry pathGeometry, IPoint point)

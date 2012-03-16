@@ -79,20 +79,20 @@ namespace NetTopologySuite.Noding.Snapround
             return lines;
         }
 
-        private IEnumerable<ILineString> ExtractLines(IEnumerable<IGeometry> geoms)
+        private static IEnumerable<IGeometry> ExtractLines(IEnumerable<IGeometry> geoms)
         {
-            IList<ILineString> lines = new List<ILineString>();
+            var lines = new List<IGeometry>();
             var lce = new LinearComponentExtracter(lines);
-            foreach (IGeometry geom in geoms)
+            foreach (var geom in geoms)
             {
                 geom.Apply(lce);
             }
             return lines;
         }
 
-        private static IList<ISegmentString> ToSegmentStrings(IEnumerable<ILineString> lines)
+        private static IList<ISegmentString> ToSegmentStrings(IEnumerable<IGeometry> lines)
         {
-            IList<ISegmentString> segStrings = new List<ISegmentString>();
+            var segStrings = new List<ISegmentString>();
             foreach (ILineString line in lines)
             {
                 segStrings.Add(new NodedSegmentString(line.Coordinates, null));

@@ -13,13 +13,30 @@ namespace NetTopologySuite.Algorithm
     /// However, other kinds of Boundary Node Rules are appropriate
     /// in specific situations (for instance, linear network topology
     /// usually follows the <see cref="BoundaryNodeRules.EndPointBoundaryNodeRule"/>.)
-    /// Some JTS operations allow the BoundaryNodeRule to be specified,
-    /// and respect this rule when computing the results of the operation.
+    /// Some JTS operations  
+    /// (such as <see cref="RelateOp"/>, <see cref="BoundaryOp"/> and <see cref="IsSimpleOp"/>)
+    /// allow the BoundaryNodeRule to be specified,
+    /// and respect the supplied rule when computing the results of the operation.
+    /// <para/>
+    /// An example use case for a non-SFS-standard Boundary Node Rule is
+    /// that of checking that a set of <see cref="ILineString"/>s have 
+    /// valid linear network topology, when turn-arounds are represented
+    /// as closed rings.  In this situation, the entry road to the
+    /// turn-around is only valid when it touches the turn-around ring
+    /// at the single (common) endpoint.  This is equivalent 
+    /// to requiring the set of <tt>LineString</tt>s to be 
+    /// <b>simple</b> under the <see cref="BoundaryNodeRules.EndPointBoundaryNodeRule"/>.
+    /// The SFS-standard <see cref="BoundaryNodeRules.Mod2BoundaryNodeRule"/> is not 
+    /// sufficient to perform this test, since it
+    /// states that closed rings have <b>no</b> boundary points.
+    /// <para/>
+    /// This interface and its subclasses follow the <tt>Strategy</tt> design pattern.
     ///</summary>
     /// <author>Martin Davis</author>
-    /// <see cref="RelateOp"/>
-    /// <see cref="IsSimpleOp"/>
-    /// <see cref="PointLocator"/>
+    /// <seealso cref="RelateOp"/>
+    /// <seealso cref="BoundaryOp"/>
+    /// <seealso cref="IsSimpleOp"/>
+    /// <seealso cref="PointLocator"/>
     public interface IBoundaryNodeRule
     {
         ///<summary>

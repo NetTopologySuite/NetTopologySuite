@@ -17,26 +17,28 @@ namespace NetTopologySuite.Operation
     /// A Geometry is simple if and only if the only self-intersections are at boundary points.
     /// </item>  
     /// </list>
-    /// This definition relies on the definition of boundary points.
-    /// The SFS uses the Mod-2 rule to determine which points are on the boundary of
-    /// lineal geometries, but this class supports
-    /// using other <see cref="IBoundaryNodeRule"/>s as well.
+    /// For <see cref="ILineal"/> geometries the evaluation of simplicity  
+    /// can be customized by supplying a <see cref="IBoundaryNodeRule"/>
+    /// to define how boundary points are determined.
+    /// The default is the SFS-standard <see cref="BoundaryNodeRules.Mod2BoundaryNodeRule"/>.
     /// </summary>
     /// <remarks>
     /// Simplicity is defined for each <see cref="IGeometry"/>} subclass as follows:
     /// <list type="Bullet">
-    /// <item>Valid polygonal geometries are simple by definition, so
-    ///<c>IsSimple</c> trivially returns true.
-    ///(Hint: in order to check if a polygonal geometry has self-intersections,
-    ///use <see cref="NetTopologySuite.Geometries.Geometry.IsValid()" />).</item>
-    ///<item>Linear geometries are simple iff they do not self-intersect at points
-    ///other than boundary points. 
-    ///(Using the Mod-2 rule, this means that closed linestrings
-    ///cannot be touched at their endpoints, since these are
-    ///interior points, not boundary points).</item>
-    ///<item>Zero-dimensional geometries (points) are simple iff they have no
-    ///repeated points.</item>
-    ///<item>Empty <see cref="IGeometry"/> are always simple</item>
+    /// <item>Valid <see cref="IPolygonal"/> geometries are simple by definition, so
+    /// <c>IsSimple</c> trivially returns true.
+    /// (Note: this means that <tt>isSimple</tt> cannot be used to test 
+    /// for (invalid) self-intersections in <tt>Polygon</tt>s.  
+    /// In order to check if a <tt>Polygonal</tt> geometry has self-intersections,
+    /// use <see cref="NetTopologySuite.Geometries.Geometry.IsValid()" />).</item>
+    /// <item><b><see cref="ILineal"/></b> geometries are simple if and only if they do not self-intersect at points
+    /// other than boundary points. 
+    /// (Note that under the <tt>Mod-2</tt> rule, closed <tt>LineString</tt>s
+    /// can never satisfy the SFS <tt>touches</tt> predicate at their endpoints, since these are
+    /// interior points, not boundary points).</item>
+    /// <item><b>Zero-dimensional (<see cref="IPuntal"/>)</b> geometries are simple if and only if they have no
+    /// repeated points.</item>
+    ///<item><b>Empty</b> <see cref="IGeometry"/>s are <i>always</i> simple by definition.</item>
     ///</list>
     /// </remarks>
     public class IsSimpleOp

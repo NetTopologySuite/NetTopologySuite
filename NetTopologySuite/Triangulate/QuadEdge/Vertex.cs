@@ -7,11 +7,16 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 {
     /// <summary>
     /// Models a site (node) in a <see cref="QuadEdgeSubdivision"/>. 
-    /// The sites can be points on a lineString representing a
-    /// linear site. 
+    /// The sites can be points on a line string representing a
+    /// linear site.<para/> 
     /// The vertex can be considered as a vector with a norm, length, inner product, cross
     /// product, etc. Additionally, point relations (e.g., is a point to the left of a line, the circle
     /// defined by this point and two others, etc.) are also defined in this class.
+    /// <para/>
+    /// It is common to want to attach user-defined data to 
+    /// the vertices of a subdivision.  
+    /// One way to do this is to subclass <tt>Vertex</tt>
+    /// to carry any desired information (see <see cref="ConstraintVertex"/>.
     /// </summary>
     /// <author>David Skea</author>
     /// <author>Martin Davis</author>

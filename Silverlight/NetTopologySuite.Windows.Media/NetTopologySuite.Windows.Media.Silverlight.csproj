@@ -55,9 +55,6 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\NetTopologySuite.Windows.Media\FontGlyphReader.cs">
-      <Link>FontGlyphReader.cs</Link>
-    </Compile>
     <Compile Include="..\..\NetTopologySuite.Windows.Media\GeometryCollectionGraphicsPath.cs">
       <Link>GeometryCollectionGraphicsPath.cs</Link>
     </Compile>

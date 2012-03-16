@@ -149,6 +149,9 @@
     <Compile Include="..\..\NetTopologySuite\Algorithm\RayCrossingCounter.cs">
       <Link>Algorithm\RayCrossingCounter.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\RectangleLineIntersector.cs">
+      <Link>Algorithm\RectangleLineIntersector.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\Algorithm\RobustDeterminant.cs">
       <Link>Algorithm\RobustDeterminant.cs</Link>
     </Compile>

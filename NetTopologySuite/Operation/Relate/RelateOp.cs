@@ -4,13 +4,21 @@ using NetTopologySuite.Algorithm;
 namespace NetTopologySuite.Operation.Relate
 {
     /// <summary>
-    /// Implements the SFS <c>relate()</c> operation on two <see cref="IGeometry"/>s.
-    /// This class supports specifying a custom <see cref="IBoundaryNodeRule"/>
+    /// Implements the SFS <c>relate()</c>  generalized spatial predicate on two <see cref="IGeometry"/>s.
+    /// <br/>
+    /// The class supports specifying a custom <see cref="IBoundaryNodeRule"/>
     /// to be used during the relate computation.
     /// </summary>
     /// <remarks>
+    /// If named spatial predicates are used on the result <see cref="IntersectionMatrix"/>
+    /// of the RelateOp, the result may or not be affected by the 
+    /// choice of <tt>BoundaryNodeRule</tt>, depending on the exact nature of the pattern.
+    /// For instance, <see cref="GeoAPI.Geometries.IntersectionMatrix.IsIntersects"/> is insensitive 
+    /// to the choice of <tt>BoundaryNodeRule</tt>, 
+    /// whereas <see cref="GeoAPI.Geometries.IntersectionMatrix.IsTouches"/> is affected by the rule chosen.
+    /// <para/> 
     /// <b>Note:</b> custom Boundary Node Rules do not (currently)
-    /// affect the results of other Geometry methods (such
+    /// affect the results of other <see cref="IGeometry"/> methods (such
     /// as <see cref="IGeometry.Boundary"/>.  The results of
     /// these methods may not be consistent with the relationship computed by
     /// a custom Boundary Node Rule.

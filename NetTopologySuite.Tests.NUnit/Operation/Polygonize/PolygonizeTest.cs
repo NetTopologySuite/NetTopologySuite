@@ -55,13 +55,13 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
 
         private void DoTest(String[] inputWKT, String[] expectedOutputWKT)
         {
-            Polygonizer polygonizer = new Polygonizer();
+            var polygonizer = new Polygonizer();
             polygonizer.Add(ToGeometries(inputWKT));
             Compare(ToGeometries(expectedOutputWKT), polygonizer.GetPolygons());
         }
 
-        private void Compare(IList<IGeometry> expectedGeometries,
-            IList<IGeometry> actualGeometries)
+        private void Compare(ICollection<IGeometry> expectedGeometries,
+            ICollection<IGeometry> actualGeometries)
         {
             Assert.AreEqual(expectedGeometries.Count, actualGeometries.Count,
                 "Geometry count, " + actualGeometries);
@@ -72,7 +72,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
             }
         }
 
-        private bool Contains(IList<IGeometry> geometries, IGeometry g)
+        private static bool Contains(IEnumerable<IGeometry> geometries, IGeometry g)
         {
             foreach (var element in geometries)
             {

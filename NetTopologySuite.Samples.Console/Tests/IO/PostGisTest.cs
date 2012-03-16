@@ -134,17 +134,17 @@ namespace NetTopologySuite.Tests.IO
 			geom.SRID = srid;
 			regeom.SRID = srid;
 
-			Assert.IsTrue(geom.Equals(regeom));
+            Assert.IsTrue(geom.EqualsExact(regeom));
 			Assert.AreEqual(parsed, reparsed);
 
 			var bytesB = new PostGisWriter(ByteOrder.BigEndian).Write(regeom);
 			var regeom2 = br.Read(bytesB);
-			Assert.IsTrue(geom.Equals(regeom2));
+			Assert.IsTrue(geom.EqualsExact(regeom2));
 
 			byte[] bytesL = new PostGisWriter(ByteOrder.LittleEndian).Write(regeom);
 			var regeom3 = br.Read(bytesL);
-			Assert.IsTrue(geom.Equals(regeom3));
-            Assert.IsTrue(regeom2.Equals(regeom3));
+            Assert.IsTrue(geom.EqualsExact(regeom3));
+            Assert.IsTrue(regeom2.EqualsExact(regeom3));
 			
 
 			Assert.AreEqual(bytesB.Length, bytesL.Length);

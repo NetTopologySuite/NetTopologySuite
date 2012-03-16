@@ -14,7 +14,7 @@ namespace NetTopologySuite.Triangulate
     /// <remarks>
     /// This class can be used in conjunction with <see cref="VoronoiDiagramBuilder"/>
     /// to transfer data objects from the input site geometries
-    /// to the constructed Voronou polygons.
+    /// to the constructed Voronoi polygons.
     /// </remarks>
     /// <author>Martin Davis</author>
     /// <see cref="VoronoiDiagramBuilder"/>

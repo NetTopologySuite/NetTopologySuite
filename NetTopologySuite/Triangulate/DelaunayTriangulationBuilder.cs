@@ -70,7 +70,7 @@ namespace NetTopologySuite.Triangulate
         private QuadEdgeSubdivision _subdiv;
 
         /// <summary>
-        /// Sets the sites (point or vertices) which will be triangulated.
+        /// Sets the sites (vertices) which will be triangulated.
         /// All vertices of the given geometry will be used as sites.
         /// </summary>
         /// <param name="geom">the geometry from which the sites will be extracted.</param>
@@ -81,7 +81,7 @@ namespace NetTopologySuite.Triangulate
         }
 
         /// <summary>
-        /// Sets the sites (point or vertices) which will be triangulated
+        /// Sets the sites (vertices) which will be triangulated
         /// from a collection of <see cref="Coordinate"/>s.
         /// </summary>
         /// <param name="coords">a collection of Coordinates.</param>

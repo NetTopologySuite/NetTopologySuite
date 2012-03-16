@@ -3,17 +3,12 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
-    /// A visitor to Geometry elements which can
-    /// be short-circuited by a given condition.
+    /// A visitor to <see cref="IGeometry"/> elements which  componets, which 
+    /// allows short-circuiting when a defined condition holds.
     /// </summary>
     public abstract class ShortCircuitedGeometryVisitor
     {
-        private bool isDone = false;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public ShortCircuitedGeometryVisitor() { }
+        private bool _isDone;
 
         /// <summary>
         /// 
@@ -21,15 +16,15 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="geom"></param>
         public void ApplyTo(IGeometry geom) 
         {
-            for (int i = 0; i < geom.NumGeometries && ! isDone; i++) 
+            for (var i = 0; i < geom.NumGeometries && ! _isDone; i++) 
             {
-                IGeometry element = geom.GetGeometryN(i);
+                var element = geom.GetGeometryN(i);
                 if (!(element is IGeometryCollection)) 
                 {
                     Visit(element);
                     if (IsDone()) 
                     {
-                        isDone = true;
+                        _isDone = true;
                         return;
                     }
                 }

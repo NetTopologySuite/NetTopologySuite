@@ -19,7 +19,7 @@ namespace NetTopologySuite.Noding
         public static IList<ISegmentString> ExtractSegmentStrings(IGeometry geom)
         {
             IList<ISegmentString> segStr = new List<ISegmentString>();
-            ICollection<ILineString> lines = LinearComponentExtracter.GetLines(geom);
+            var lines = LinearComponentExtracter.GetLines(geom);
             foreach (ILineString line in lines)
             {
                 Coordinate[] pts = line.Coordinates;

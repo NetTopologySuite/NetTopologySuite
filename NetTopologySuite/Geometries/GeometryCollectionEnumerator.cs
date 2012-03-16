@@ -12,7 +12,7 @@ namespace NetTopologySuite.Geometries
     /// simple to ignore the <c>GeometryCollection</c> objects if they are not
     /// needed.
     /// </summary>    
-    public class GeometryCollectionEnumerator : IEnumerator<IGeometry>
+    public class GeometryCollectionEnumerator : IEnumerator<IGeometry>, IEnumerable<IGeometry>
     {
         /// <summary>
         /// The <c>GeometryCollection</c> being iterated over.
@@ -130,5 +130,33 @@ namespace NetTopologySuite.Geometries
             if (_subcollectionEnumerator != null)
                 _subcollectionEnumerator.Dispose();
         }
+
+        #region Implementation of IEnumerable
+
+        /// <summary>
+        /// Gibt einen Enumerator zurück, der die Auflistung durchläuft.
+        /// </summary>
+        /// <returns>
+        /// Ein <see cref="T:System.Collections.Generic.IEnumerator`1"/>, der zum Durchlaufen der Auflistung verwendet werden kann.
+        /// </returns>
+        /// <filterpriority>1</filterpriority>
+        public IEnumerator<IGeometry> GetEnumerator()
+        {
+            return this;
+        }
+
+        /// <summary>
+        /// Gibt einen Enumerator zurück, der eine Auflistung durchläuft.
+        /// </summary>
+        /// <returns>
+        /// Ein <see cref="T:System.Collections.IEnumerator"/>-Objekt, das zum Durchlaufen der Auflistung verwendet werden kann.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
     }    
 }
