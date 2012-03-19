@@ -18,17 +18,26 @@ namespace NetTopologySuite.IO
         private bool _headerWritten;
         //private bool _recordsWritten;
         private DbaseFileHeader _header;
+        private Encoding _encoding;
 
         /// <summary>
         /// Initializes a new instance of the DbaseFileWriter class.
         /// </summary>
-        /// <param name="filename"></param>
-        public DbaseFileWriter(string filename)
+        public DbaseFileWriter(string filename) :  this(filename, Encoding.GetEncoding(1252)) { }
+
+        /// <summary>
+        /// Initializes a new instance of the DbaseFileWriter class.
+        /// </summary>
+        public DbaseFileWriter(string filename, Encoding enc)
         {
             if (filename == null)
                 throw new ArgumentNullException("filename");
+            if (enc == null) 
+                throw new ArgumentNullException("enc");
+
             FileStream filestream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.Write);
-            _writer = new BinaryWriter(filestream);
+            _encoding = enc;
+            _writer = new BinaryWriter(filestream, _encoding);
         }
 
         /// <summary>
@@ -42,6 +51,9 @@ namespace NetTopologySuite.IO
             //if (_recordsWritten)
             //    throw new InvalidOperationException("Records have already been written. Header file needs to be written first.");
             _headerWritten = true;
+            if (header.Encoding.WindowsCodePage != _encoding.WindowsCodePage)
+                header.Encoding = _encoding;
+
             header.WriteHeader(_writer);
             _header = header;
         }
