@@ -30,8 +30,9 @@ namespace NetTopologySuite.Triangulate
 
         public static CoordinateList Unique(Coordinate[] coords)
         {
-            Array.Sort(coords);
-            CoordinateList coordList = new CoordinateList(coords, false);
+            var coordsCopy = CoordinateArrays.CopyDeep(coords);
+            Array.Sort(coordsCopy);
+            var coordList = new CoordinateList(coordsCopy, false);
             return coordList;
         }
 

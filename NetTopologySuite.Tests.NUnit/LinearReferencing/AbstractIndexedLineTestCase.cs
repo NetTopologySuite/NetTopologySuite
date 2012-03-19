@@ -103,27 +103,25 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
                 "POINT (0 20)");
         }
 
-        [Ignore("NTS does not have a method overload for the ExtractPoint method which takes an index and an offset distance.  Once this migrated to NTS, the following block can be uncommented")]
+        [Test]
         public void TestOffsetStartPoint()
         {
-            //TODO: Uncomment when NTS has a method overload for the ExtractPoint method which takes an index and an offset distance
-            //RunOffsetTest("LINESTRING (0 0, 10 10, 20 20)", "POINT(0 0)", 1.0, "POINT (-0.7071067811865475 0.7071067811865475)");
-            //RunOffsetTest("LINESTRING (0 0, 10 10, 20 20)", "POINT(0 0)", -1.0, "POINT (0.7071067811865475 -0.7071067811865475)");
-            //RunOffsetTest("LINESTRING (0 0, 10 10, 20 20)", "POINT(10 10)", 5.0, "POINT (6.464466094067262 13.535533905932738)");
-            //RunOffsetTest("LINESTRING (0 0, 10 10, 20 20)", "POINT(10 10)", -5.0, "POINT (13.535533905932738 6.464466094067262)");
+            RunOffsetTest("LINESTRING (0 0, 10 10, 20 20)", "POINT(0 0)", 1.0, "POINT (-0.7071067811865475 0.7071067811865475)");
+            RunOffsetTest("LINESTRING (0 0, 10 10, 20 20)", "POINT(0 0)", -1.0, "POINT (0.7071067811865475 -0.7071067811865475)");
+            RunOffsetTest("LINESTRING (0 0, 10 10, 20 20)", "POINT(10 10)", 5.0, "POINT (6.464466094067262 13.535533905932738)");
+            RunOffsetTest("LINESTRING (0 0, 10 10, 20 20)", "POINT(10 10)", -5.0, "POINT (13.535533905932738 6.464466094067262)");
         }
 
-        [Ignore("NTS does not have a method overload for the ExtractPoint method which takes an index and an offset distance.  Once this migrated to NTS, the following block can be uncommented")]
+        [Test]
         public void TestOffsetStartPointRepeatedPoint()
         {
-            //TODO: Uncomment when NTS has a method overload for the ExtractPoint method which takes an index and an offset distance
-            //RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(0 0)", 1.0, "POINT (-0.7071067811865475 0.7071067811865475)");
-            //RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(0 0)", -1.0, "POINT (0.7071067811865475 -0.7071067811865475)");
+            RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(0 0)", 1.0, "POINT (-0.7071067811865475 0.7071067811865475)");
+            RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(0 0)", -1.0, "POINT (0.7071067811865475 -0.7071067811865475)");
             
             
             // These tests work for LengthIndexedLine, but not LocationIndexedLine
-            //runOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(10 10)", 5.0, "POINT (6.464466094067262 13.535533905932738)");
-            //runOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(10 10)", -5.0, "POINT (13.535533905932738 6.464466094067262)");
+            RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(10 10)", 5.0, "POINT (6.464466094067262 13.535533905932738)");
+            RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(10 10)", -5.0, "POINT (13.535533905932738 6.464466094067262)");
         }
 
         protected IGeometry Read(String wkt)
@@ -150,7 +148,10 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         protected void CheckExpected(IGeometry result, String expected)
         {
             IGeometry subLine = Read(expected);
-            Assert.IsTrue(result.EqualsExact(subLine, 1.0e-5));
+            var isEqual = result.EqualsExact(subLine, 1.0e-5);
+            if (! isEqual)
+                Console.WriteLine("Computed result is: " + result);
+            Assert.IsTrue(isEqual);
         }
 
         protected abstract IGeometry IndicesOfThenExtract(IGeometry input, IGeometry subLine);
@@ -179,22 +180,22 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         static double TOLERANCE_DIST = 0.001;
 
         //TODO: Uncomment when NTS has a method overload for the ExtractPoint method which takes an index and an offset distance
-        //protected void RunOffsetTest(String inputWKT, String testPtWKT, double offsetDistance, String expectedPtWKT)
-        //{
-        //    IGeometry input = Read(inputWKT);
-        //    IGeometry testPoint = Read(testPtWKT);
-        //    IGeometry expectedPoint = Read(expectedPtWKT);
-        //    Coordinate testPt = testPoint.Coordinate;
-        //    Coordinate expectedPt = expectedPoint.Coordinate;
-        //    Coordinate offsetPt = ExtractOffsetAt(input, testPt, offsetDistance);
+        protected void RunOffsetTest(String inputWKT, String testPtWKT, double offsetDistance, String expectedPtWKT)
+        {
+            IGeometry input = Read(inputWKT);
+            IGeometry testPoint = Read(testPtWKT);
+            IGeometry expectedPoint = Read(expectedPtWKT);
+            Coordinate testPt = testPoint.Coordinate;
+            Coordinate expectedPt = expectedPoint.Coordinate;
+            Coordinate offsetPt = ExtractOffsetAt(input, testPt, offsetDistance);
 
-        //    bool isOk = offsetPt.Distance(expectedPt) < TOLERANCE_DIST;
-        //    if (!isOk)
-        //        Console.WriteLine("Expected = " + expectedPoint + "  Actual = " + offsetPt);
-        //    Assert.IsTrue(isOk);
-        //}
+            bool isOk = offsetPt.Distance(expectedPt) < TOLERANCE_DIST;
+            if (!isOk)
+                Console.WriteLine("Expected = " + expectedPoint + "  Actual = " + offsetPt);
+            Assert.IsTrue(isOk);
+        }
 
         //TODO: Uncomment when NTS has a method overload for the ExtractPoint method which takes an index and an offset distance
-        //protected abstract Coordinate ExtractOffsetAt(IGeometry input, Coordinate testPt, double offsetDistance);
+        protected abstract Coordinate ExtractOffsetAt(IGeometry input, Coordinate testPt, double offsetDistance);
     }
 }

@@ -27,10 +27,10 @@ namespace NetTopologySuite.IO
     public class WKTWriter : ITextGeometryWriter
     {
         /// <summary>
-        /// Generates the WKT for a <c>Point</c>.
+        /// Generates the WKT for a <c>Point</c> specified by a <see cref="Coordinate"/>.
         /// </summary>
         /// <param name="p0">The point coordinate.</param>
-        /// <returns></returns>
+        /// <returns>The WKT</returns>
         public static String ToPoint(Coordinate p0)
         {
 #if LikeJTS
@@ -43,10 +43,10 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Generates the WKT for a N-point <c>LineString</c>.
+        /// Generates the WKT for a N-point <c>LineString</c> specified by a <see cref="ICoordinateSequence"/>.
         /// </summary>
-        /// <param name="seq">The sequence to output.</param>
-        /// <returns></returns>
+        /// <param name="seq">The sequence to write.</param>
+        /// <returns>The WKT</returns>
         public static String ToLineString(ICoordinateSequence seq)
         {
             var buf = new StringBuilder();
@@ -68,11 +68,11 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Generates the WKT for a 2-point <c>LineString</c>.
+        /// Generates the WKT for a <c>LineString</c> specified by two <see cref="Coordinate"/>s.
         /// </summary>
         /// <param name="p0">The first coordinate.</param>
         /// <param name="p1">The second coordinate.</param>
-        /// <returns></returns>
+        /// <returns>The WKT</returns>
         public static String ToLineString(Coordinate p0, Coordinate p1)
         {
 #if LikeJTS

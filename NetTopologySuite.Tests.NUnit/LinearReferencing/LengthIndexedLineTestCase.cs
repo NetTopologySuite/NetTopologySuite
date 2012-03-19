@@ -81,6 +81,19 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
                                 -10, 10, "LINESTRING (10 0, 10 0)");
         }
 
+        /**
+         * From GEOS Ticket #323
+         */
+        [Test]
+        public void TestProjectExtractPoint()
+        {
+            IGeometry linearGeom = Read("MULTILINESTRING ((0 2, 0 0), (-1 1, 1 1))");
+            LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
+            var index = indexedLine.Project(new Coordinate(1, 0));
+            Coordinate pt = indexedLine.ExtractPoint(index);
+            Assert.IsTrue(pt.Equals(new Coordinate(0, 0)));
+        }
+
         [Test]
         public void TestExtractPointBeyondRange()
         {
@@ -105,14 +118,13 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         /// <summary>
         /// These tests work for LengthIndexedLine, but not LocationIndexedLine
         /// </summary>
-        [Ignore("NTS does not have a method overload for the ExtractPoint method which takes an index and an offset distance.  Once this migrated to NTS, the following block can be uncommented")]
+        [Test]
         public void TestOffsetStartPointRepeatedPoint()
         {
-            //TODO: Uncomment when NTS has a method overload for the ExtractPoint method which takes an index and an offset distance
-            //RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(0 0)", 1.0, "POINT (-0.7071067811865475 0.7071067811865475)");
-            //RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(0 0)", -1.0, "POINT (0.7071067811865475 -0.7071067811865475)");
-            //RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(10 10)", 5.0, "POINT (6.464466094067262 13.535533905932738)");
-            //RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(10 10)", -5.0, "POINT (13.535533905932738 6.464466094067262)");
+            RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(0 0)", 1.0, "POINT (-0.7071067811865475 0.7071067811865475)");
+            RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(0 0)", -1.0, "POINT (0.7071067811865475 -0.7071067811865475)");
+            RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(10 10)", 5.0, "POINT (6.464466094067262 13.535533905932738)");
+            RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(10 10)", -5.0, "POINT (13.535533905932738 6.464466094067262)");
         }
 
         /// <summary>
@@ -176,12 +188,11 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             return true;
         }
 
-        //TODO: Uncomment when NTS has a method overload for the ExtractPoint method which takes an index and an offset distance
-        //protected override Coordinate ExtractOffsetAt(IGeometry linearGeom, Coordinate testPt, double offsetDistance)
-        //{
-        //    LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
-        //    double index = indexedLine.IndexOf(testPt);
-        //    return indexedLine.ExtractPoint(index, offsetDistance);
-        //}
+        protected override Coordinate ExtractOffsetAt(IGeometry linearGeom, Coordinate testPt, double offsetDistance)
+        {
+            LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
+            double index = indexedLine.IndexOf(testPt);
+            return indexedLine.ExtractPoint(index, offsetDistance);
+        }
     }
 }

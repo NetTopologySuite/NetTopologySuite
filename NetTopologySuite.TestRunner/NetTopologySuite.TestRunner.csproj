@@ -123,6 +123,7 @@
     <Compile Include="Functions\GeometryFunctionRegistry.cs" />
     <Compile Include="Functions\GeometryFunctions.cs" />
     <Compile Include="Functions\IGeometryFunction.cs" />
+    <Compile Include="Functions\LinearReferencingFunctions.cs" />
     <Compile Include="Functions\NodingFunctions.cs" />
     <Compile Include="Functions\NTSFunctions.cs" />
     <Compile Include="Functions\OverlayFunctions.cs" />

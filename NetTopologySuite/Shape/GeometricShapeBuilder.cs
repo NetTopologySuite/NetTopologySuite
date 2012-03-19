@@ -7,7 +7,6 @@ namespace NetTopologySuite.Shape
     public abstract class GeometricShapeBuilder
     {
         private Envelope _extent = new Envelope(0, 1, 0, 1);
-        private int _numPts;
         protected IGeometryFactory GeomFactory;
 
         protected GeometricShapeBuilder(IGeometryFactory geomFactory)
@@ -57,15 +56,11 @@ namespace NetTopologySuite.Shape
         }
 
         /// <summary>
-        /// Sets the total number of points in the created <see cref="IGeometry"/>.
+        /// Gets or sets the total number of points in the created <see cref="IGeometry"/>.
         /// The created geometry will have no more than this number of points,
         /// unless more are needed to create a valid geometry.
         /// </summary>
-        public int NumPoints
-        {
-            get { return _numPts; }
-            set { _numPts = value; }
-        }
+        public int NumPoints { get; set; }
 
         public abstract IGeometry GetGeometry();
 

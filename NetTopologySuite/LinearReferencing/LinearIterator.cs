@@ -28,9 +28,10 @@ namespace NetTopologySuite.LinearReferencing
         private readonly IGeometry _linearGeom;
         private readonly int _numLines;
 
-        /*
-         * Invariant: currentLine <> null if the iterator is pointing at a valid coordinate
-         */
+        /// <summary>
+        /// Invariant: currentLine <> null if the iterator is pointing at a valid coordinate
+        /// </summary>
+        /// <exception cref="ArgumentException">Thrown if <see cref="_linearGeom"/> is not <see cref="ILineal"/></exception>
         private ILineString _currentLine;
         private int _componentIndex;
         private int _vertexIndex;
@@ -130,7 +131,7 @@ namespace NetTopologySuite.LinearReferencing
 
         /// <summary>
         /// Checks whether the iterator cursor is pointing to the
-        /// endpoint of a linestring.
+        /// endpoint of a component <see cref="ILineString"/>.
         /// </summary>
         public bool IsEndOfLine
         {

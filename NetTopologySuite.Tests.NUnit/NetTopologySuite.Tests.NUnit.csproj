@@ -111,9 +111,11 @@
     <Compile Include="GeometryUtils.cs" />
     <Compile Include="Index\DoubleBitsTest.cs" />
     <Compile Include="Index\IntervalTest.cs" />
+    <Compile Include="Index\QuadtreeSerializationTest.cs" />
     <Compile Include="Index\QuadtreeTestCase.cs" />
     <Compile Include="Index\SIRtreeTestCase.cs" />
     <Compile Include="Index\SpatialIndexTestCase.cs" />
+    <Compile Include="Index\SpatialIndexTester.cs" />
     <Compile Include="Index\STRtreeTestCase.cs" />
     <Compile Include="Index\STRtreeDemo.cs" />
     <Compile Include="IO\SerializabilityTest.cs" />
@@ -151,6 +153,9 @@
     <Compile Include="Operation\Valid\IsValidTest.cs" />
     <Compile Include="Operation\Valid\ValidClosedRingTest.cs" />
     <Compile Include="Operation\Valid\ValidSelfTouchingRingFormingHoleTest.cs" />
+    <Compile Include="Performance\ExamplePerformanceTest.cs" />
+    <Compile Include="Performance\PerformanceTestCase.cs" />
+    <Compile Include="Performance\PerformanceTestRunner.cs" />
     <Compile Include="Precision\GeometryPrecisionReducerTest.cs" />
     <Compile Include="Precision\SimpleGeometryPrecisionReducerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

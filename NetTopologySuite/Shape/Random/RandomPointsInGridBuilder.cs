@@ -16,7 +16,6 @@ namespace NetTopologySuite.Shape.Random
         protected static readonly System.Random Rnd = new System.Random();
 
         private bool _isConstrainedToCircle;
-        private double _gutterFraction;
 
         /// <summary>
         /// Create a builder which will create shapes using the default
@@ -37,56 +36,70 @@ namespace NetTopologySuite.Shape.Random
         {
         }
 
+        /// <summary>
+        /// Gets or sets whether generated points are constrained to lie
+        /// within a circle contained within each grid cell.
+        /// This provides greater separation between points
+        /// in adjacent cells.
+        /// <para/>
+        /// The default is to not be constrained to a circle.
+        /// </summary>
         public bool ConstrainedToCircle
         {
             get { return _isConstrainedToCircle; }
             set { _isConstrainedToCircle = value; }
         }
 
-        public double GutterFraction
-        {
-            get { return _gutterFraction; }
-            set { _gutterFraction = value; }
-        }
+        /// <summary>
+        /// Gets or sets the fraction of the grid cell side which will be treated as
+        /// a gutter, in which no points will be created.
+        /// <para/>
+        /// The provided value is clamped to the range [0.0, 1.0].
+        /// </summary>
+        public double GutterFraction { get; set; }
 
+
+        /// <summary>
+        /// Gets the <see cref="IMultiPoint"/> containing the generated point
+        /// </summary>
+        /// <returns>A MultiPoint</returns>
         public override IGeometry GetGeometry()
         {
             var nCells = (int)Math.Sqrt(NumPoints) + 1;
+            
+            // ensure that at least numPts points are generated
+            if (nCells * nCells < NumPoints)
+                nCells += 1;
 
             var gridDX = Extent.Width / nCells;
             var gridDY = Extent.Height / nCells;
 
-            var gutterFrac = MathUtil.Clamp(_gutterFraction, 0.0, 1.0);
+            var gutterFrac = MathUtil.Clamp(GutterFraction, 0.0, 1.0);
             var gutterOffsetX = gridDX * gutterFrac / 2;
             var gutterOffsetY = gridDY * gutterFrac / 2;
             var cellFrac = 1.0 - gutterFrac;
             var cellDX = cellFrac * gridDX;
             var cellDY = cellFrac * gridDY;
 
-            var pts = new List<Coordinate>();
-
+            var pts = new Coordinate[nCells * nCells];
+            var index = 0;
             for (var i = 0; i < nCells; i++)
             {
                 for (var j = 0; j < nCells; j++)
                 {
                     var orgX = Extent.MinX + i * gridDX + gutterOffsetX;
                     var orgY = Extent.MinY + j * gridDY + gutterOffsetY;
-                    pts.Add(RandomPointInCell(orgX, orgY, cellDX, cellDY));
+                    pts[index++] = RandomPointInCell(orgX, orgY, cellDX, cellDY);
                 }
             }
-            return GeomFactory.CreateMultiPoint(pts.ToArray());
+            return GeomFactory.CreateMultiPoint(pts);
         }
 
         private Coordinate RandomPointInCell(double orgX, double orgY, double xLen, double yLen)
         {
-            if (_isConstrainedToCircle)
-            {
-                RandomPointInCircle(
-                    orgX,
-                    orgY,
-                    xLen, yLen);
-            }
-            return RandomPointInGridCell(orgX, orgY, xLen, yLen);
+            return _isConstrainedToCircle 
+                ? RandomPointInCircle(orgX, orgY, xLen, yLen)
+                : RandomPointInGridCell(orgX, orgY, xLen, yLen);
         }
 
         private Coordinate RandomPointInGridCell(double orgX, double orgY, double xLen, double yLen)
@@ -99,7 +112,7 @@ namespace NetTopologySuite.Shape.Random
         private static Coordinate RandomPointInCircle(double orgX, double orgY, double width, double height)
         {
             var centreX = orgX + width / 2;
-            var centreY = orgX + height / 2;
+            var centreY = orgY + height / 2;
 
             var rndAng = 2 * Math.PI * Rnd.NextDouble();
             var rndRadius = Rnd.NextDouble();

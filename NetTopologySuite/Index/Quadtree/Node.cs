@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Index.Quadtree
@@ -10,6 +9,7 @@ namespace NetTopologySuite.Index.Quadtree
     /// items which have a spatial extent corresponding to the node's position
     /// in the quadtree.
     /// </summary>
+    [Serializable]
     public class Node<T> : NodeBase<T>
     {
         /// <summary>

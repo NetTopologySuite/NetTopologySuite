@@ -51,6 +51,25 @@ namespace NetTopologySuite.LinearReferencing
             return index.GetCoordinate(_linearGeom);
         }
 
+        /// <summary>
+        /// Computes the <see cref="Coordinate"/> for the point
+        /// on the line at the given index, offset by the given distance.
+        /// If the index is out of range the first or last point on the
+        /// line will be returned.<para/>
+        /// The computed point is offset to the left of the line if the offset distance is
+        /// positive, to the right if negative.<para/>
+        /// The Z-ordinate of the computed point will be interpolated from
+        /// the Z-ordinates of the line segment containing it, if they exist.
+        /// </summary>
+        /// <param name="index">The index of the desired point</param>
+        /// <param name="offsetDistance">The distance the point is offset from the segment
+        /// (positive is to the left, negative is to the right)</param>
+        /// <returns>The Coordinate at the given index</returns>
+        public Coordinate ExtractPoint(LinearLocation index, double offsetDistance)
+        {
+            return index.GetSegment(_linearGeom).PointAlongOffset(index.SegmentFraction, offsetDistance);
+        }
+
         ///<summary>
         /// Computes the <see cref="Coordinate"/> for the point on the line at the given index, offset by the given distance.
         ///</summary>

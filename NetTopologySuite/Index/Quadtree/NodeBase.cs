@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 
@@ -6,6 +7,7 @@ namespace NetTopologySuite.Index.Quadtree
     /// <summary>
     /// The base class for nodes in a <c>Quadtree</c>.
     /// </summary>
+    [Serializable]
     public abstract class NodeBase<T> 
     {        
         /// <summary> 
@@ -117,7 +119,7 @@ namespace NetTopologySuite.Index.Quadtree
 
             // if item was found lower down, don't need to search for it here
             if (found) 
-                return found;
+                return true;
 
             // otherwise, try and remove the item from the list of items in this node
             if(_items.Contains(item))

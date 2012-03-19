@@ -20,11 +20,15 @@ namespace NetTopologySuite.Triangulate
         private double _tolerance;
         private QuadEdgeSubdivision _subdiv;
 
-        private readonly IDictionary<Coordinate, Vertex> _vertexMap = new OrderedDictionary<Coordinate, Vertex>();
+        private readonly IDictionary<Coordinate, Vertex> _constraintVertexMap = new OrderedDictionary<Coordinate, Vertex>();
 
         /// <summary>
         /// Sets the sites (point or vertices) which will be triangulated.
         /// All vertices of the given geometry will be used as sites.
+        /// The site vertices do not have to contain the constraint
+        /// vertices as well; any site vertices which are 
+        /// identical to a constraint vertex will be removed
+        /// from the site vertex set.
         /// </summary>
         /// <remarks>The geometry from which the sites will be extracted.</remarks>
         public void SetSites(IGeometry sites)
@@ -35,6 +39,8 @@ namespace NetTopologySuite.Triangulate
         /// <summary>
         /// Sets the linear constraints to be conformed to.
         /// All linear components in the input will be used as constraints.
+        /// The constraint vertices do not have to be disjoint from 
+        /// the site vertices.
         /// </summary>
         /// <remarks>The lines to constraint to</remarks>
         ///
@@ -70,8 +76,6 @@ namespace NetTopologySuite.Triangulate
 
             var siteEnv = DelaunayTriangulationBuilder.Envelope(_siteCoords);
 
-            var sites = CreateConstraintVertices(_siteCoords);
-
             IList<Segment> segments = new List<Segment>();
             if (_constraintLines != null)
             {
@@ -80,20 +84,25 @@ namespace NetTopologySuite.Triangulate
                 segments = CreateConstraintSegments(_constraintLines);
             }
 
-            ConformingDelaunayTriangulator cdt = new ConformingDelaunayTriangulator(sites, _tolerance);
+            var sites = CreateSiteVertices(_siteCoords);
 
-            cdt.SetConstraints(segments, new List<Vertex>(_vertexMap.Values));
+
+            var cdt = new ConformingDelaunayTriangulator(sites, _tolerance);
+
+            cdt.SetConstraints(segments, new List<Vertex>(_constraintVertexMap.Values));
 
             cdt.FormInitialDelaunay();
             cdt.EnforceConstraints();
             _subdiv = cdt.Subdivision;
         }
 
-        private static IEnumerable<Vertex> CreateConstraintVertices(IEnumerable<Coordinate> coords)
+        private IEnumerable<Vertex> CreateSiteVertices(IEnumerable<Coordinate> coords)
         {
             var verts = new List<Vertex>();
             foreach (var coord in coords)
             {
+                if (_constraintVertexMap.ContainsKey(coord))
+                    continue;
                 verts.Add(new ConstraintVertex(coord));
             }
             return verts;
@@ -105,7 +114,7 @@ namespace NetTopologySuite.Triangulate
             for (int i = 0; i < coords.Length; i++)
             {
                 Vertex v = new ConstraintVertex(coords[i]);
-                _vertexMap.Add(coords[i], v);
+                _constraintVertexMap.Add(coords[i], v);
             }
         }
 

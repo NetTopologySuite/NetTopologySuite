@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Index
 {
     //Tests are exposed by SpatialIndexTestCase type
-    public class STRtreeTestCase : SpatialIndexTestCase
+    public class STRtreeTestCase //: SpatialIndexTestCase
     {
         private class TestTree : SIRtree
         {
@@ -30,12 +30,24 @@ namespace NetTopologySuite.Tests.NUnit.Index
             }
         }
 
-        private GeometryFactory factory = new GeometryFactory();
+        private readonly GeometryFactory _factory = new GeometryFactory();
 
+        /*
         protected override ISpatialIndex<object> CreateSpatialIndex()
         {
             return (ISpatialIndex)new STRtree(4);
         }
+        */
+
+        [Test]
+        public void TestSpatialIndex()
+  {
+            var tester = new SpatialIndexTester();
+            tester.SpatialIndex = new STRtree(4);
+            tester.Init();
+            tester.Run();
+            Assert.IsTrue(tester.IsSuccess);
+  }
 
         [Test]
         public void TestCreateParentsFromVerticalSlice()
@@ -66,11 +78,11 @@ namespace NetTopologySuite.Tests.NUnit.Index
         public void TestQuery()
         {
             var geometries = new List<IGeometry>();
-            geometries.Add(factory.CreateLineString(new Coordinate[]{
+            geometries.Add(_factory.CreateLineString(new Coordinate[]{
                 new Coordinate(0, 0), new Coordinate(10, 10)}));
-            geometries.Add(factory.CreateLineString(new Coordinate[]{
+            geometries.Add(_factory.CreateLineString(new Coordinate[]{
                 new Coordinate(20, 20), new Coordinate(30, 30)}));
-            geometries.Add(factory.CreateLineString(new Coordinate[]{
+            geometries.Add(_factory.CreateLineString(new Coordinate[]{
                 new Coordinate(20, 20), new Coordinate(30, 30)}));
             STRtree t = new STRtree(4);
             foreach (var g in geometries) {

@@ -67,12 +67,12 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             return true;
         }
 
-        //protected override Coordinate ExtractOffsetAt(IGeometry linearGeom, Coordinate testPt, double offsetDistance)
-        //{
-        //    LocationIndexedLine indexedLine = new LocationIndexedLine(linearGeom);
-        //    LinearLocation index = indexedLine.IndexOf(testPt);
-
-        //    return indexedLine.ExtractPoint(index, offsetDistance);
-        //}
+        protected override Coordinate ExtractOffsetAt(IGeometry linearGeom, Coordinate testPt, double offsetDistance)
+        {
+            LocationIndexedLine indexedLine = new LocationIndexedLine(linearGeom);
+            LinearLocation index = indexedLine.IndexOf(testPt);
+            
+            return indexedLine.ExtractPoint(index, offsetDistance);
+        }
     }
 }

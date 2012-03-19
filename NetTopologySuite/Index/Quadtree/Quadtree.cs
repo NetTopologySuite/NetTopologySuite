@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Index.Quadtree
 {
@@ -24,6 +24,7 @@ namespace NetTopologySuite.Index.Quadtree
     /// This data structure is also known as an <c>MX-CIF quadtree</c>
     /// following the usage of Samet and others.
     /// </summary>
+    [Serializable]
     public class Quadtree<T> : ISpatialIndex<T>
     {
         /// <summary>
