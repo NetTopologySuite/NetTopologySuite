@@ -11,6 +11,8 @@ namespace NetTopologySuite.Tests.NUnit.Index
 
     public class SpatialIndexTester
     {
+        private static readonly bool Verbose = true;
+
         private List<Envelope> _sourceData;
 
         public SpatialIndexTester()
@@ -24,16 +26,20 @@ namespace NetTopologySuite.Tests.NUnit.Index
 
         public void Init()
         {
-            Console.WriteLine("===============================");
-            Console.WriteLine("Grid Extent: " + (CellExtent*CellsPerGridSide));
-            Console.WriteLine("Cell Extent: " + CellExtent);
-            Console.WriteLine("Feature Extent: " + FeatureExtent);
-            Console.WriteLine("Cells Per Grid Side: " + CellsPerGridSide);
-            Console.WriteLine("Offset For 2nd Set Of Features: " + OFFSET);
+            if (Verbose)
+            {
+                Console.WriteLine("===============================");
+                Console.WriteLine("Grid Extent: " + (CellExtent*CellsPerGridSide));
+                Console.WriteLine("Cell Extent: " + CellExtent);
+                Console.WriteLine("Feature Extent: " + FeatureExtent);
+                Console.WriteLine("Cells Per Grid Side: " + CellsPerGridSide);
+                Console.WriteLine("Offset For 2nd Set Of Features: " + OFFSET);
+            }
             _sourceData = new List<Envelope>();
             AddSourceData(0, _sourceData);
             AddSourceData(OFFSET, _sourceData);
-            Console.WriteLine("Feature Count: " + _sourceData.Count);
+            if (Verbose)
+                Console.WriteLine("Feature Count: " + _sourceData.Count);
             Insert(_sourceData, SpatialIndex);
         }
 
@@ -66,9 +72,9 @@ namespace NetTopologySuite.Tests.NUnit.Index
                 double maxx = minx + FeatureExtent;
                 for (int j = 0; j < CellsPerGridSide; j++)
                 {
-                    double miny = (j*CellExtent) + offset;
-                    double maxy = miny + FeatureExtent;
-                    Envelope e = new Envelope(minx, maxx, miny, maxy);
+                    var miny = (j*CellExtent) + offset;
+                    var maxy = miny + FeatureExtent;
+                    var e = new Envelope(minx, maxx, miny, maxy);
                     sourceData.Add(e);
                 }
             }
@@ -76,8 +82,11 @@ namespace NetTopologySuite.Tests.NUnit.Index
 
         private void DoTest(ISpatialIndex<object> index, double queryEnvelopeExtent, List<Envelope> sourceData)
         {
-            Console.WriteLine("---------------");
-            Console.WriteLine("Envelope Extent: " + queryEnvelopeExtent);
+            if (Verbose)
+            {
+                Console.WriteLine("---------------");
+                Console.WriteLine("Envelope Extent: " + queryEnvelopeExtent);
+            }
             int extraMatchCount = 0;
             int expectedMatchCount = 0;
             int actualMatchCount = 0;
@@ -101,13 +110,17 @@ namespace NetTopologySuite.Tests.NUnit.Index
                     queryCount++;
                 }
             }
-            Console.WriteLine("Expected Matches: " + expectedMatchCount);
-            Console.WriteLine("Actual Matches: " + actualMatchCount);
-            Console.WriteLine("Extra Matches: " + extraMatchCount);
-            Console.WriteLine("Query Count: " + queryCount);
-            Console.WriteLine("Average Expected Matches: " + (expectedMatchCount/(double) queryCount));
-            Console.WriteLine("Average Actual Matches: " + (actualMatchCount/(double) queryCount));
-            Console.WriteLine("Average Extra Matches: " + (extraMatchCount/(double) queryCount));
+
+            if (Verbose)
+            {
+                Console.WriteLine("Expected Matches: " + expectedMatchCount);
+                Console.WriteLine("Actual Matches: " + actualMatchCount);
+                Console.WriteLine("Extra Matches: " + extraMatchCount);
+                Console.WriteLine("Query Count: " + queryCount);
+                Console.WriteLine("Average Expected Matches: " + (expectedMatchCount/(double) queryCount));
+                Console.WriteLine("Average Actual Matches: " + (actualMatchCount/(double) queryCount));
+                Console.WriteLine("Average Extra Matches: " + (extraMatchCount/(double) queryCount));
+            }
         }
 
         private void Compare(IEnumerable<Envelope> expectedEnvelopes, IList<object> actualEnvelopes)

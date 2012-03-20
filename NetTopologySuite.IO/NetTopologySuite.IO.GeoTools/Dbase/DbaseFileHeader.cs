@@ -2,6 +2,9 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+#if SILVERLIGHT
+using NetTopologySuite.Encodings;
+#endif
 
 namespace NetTopologySuite.IO
 {
@@ -39,7 +42,12 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Initializes a new instance of the DbaseFileHeader class.
         /// </summary>
-        public DbaseFileHeader() : this(Encoding.GetEncoding(1252)) { }
+        public DbaseFileHeader() 
+#if !SILVERLIGHT
+            : this(Encoding.GetEncoding(1252)) { }
+#else
+            : this(CP1252.Instance) { }
+#endif
 
         /// <summary>
         /// Initializes a new instance of the DbaseFileHeader class.
@@ -323,9 +331,13 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         private Encoding DetectEncodingFromMark(int lcid)
         {
-            Encoding enc = Encoding.GetEncoding(1252);
+#if !SILVERLIGHT
+            var enc = Encoding.GetEncoding(1252);
+#else
+            var enc = CP1252.Instance;
+#endif
             string lc = "";
-            foreach (var it in dbfCodePages)
+            foreach (var it in _dbfCodePages)
             {
                 if ((int)it[0] == lcid)
                 {
@@ -338,8 +350,12 @@ namespace NetTopologySuite.IO
             {
                 try
                 {
-                    int winCP = int.Parse(lc.Replace("CP", ""));
-                    enc = Encoding.GetEncoding("windows-" + winCP);
+                    var winCodePage = int.Parse(lc.Replace("CP", ""));
+#if !SILVERLIGHT
+                    enc = Encoding.GetEncoding("windows-" + winCodePage);
+#else
+                    enc = new EncodingRegistry().GetEncoding(winCodePage);
+#endif
                 }
                 catch (Exception ee)
                 {
@@ -351,10 +367,14 @@ namespace NetTopologySuite.IO
 
         private int GetLCIDFromEncoding(Encoding enc)
         {
+#if !SILVERLIGHT
             int lcid = enc.WindowsCodePage;
+#else
+            int lcid = enc.CodePage();
+#endif
             int cpId = 0x03;
 
-            foreach (var cp in dbfCodePages)
+            foreach (var cp in _dbfCodePages)
             {
                 if (cp[1] as string == "CP" + lcid)
                     cpId = (int)cp[0];
@@ -363,8 +383,8 @@ namespace NetTopologySuite.IO
             return cpId;
         }
 
-        private readonly object[][] dbfCodePages = new object[][]
-        {
+        private readonly object[][] _dbfCodePages = new[]
+                                                        {
         new object[] {0x01 , "CP437",	}, // U.S. MS–DOS
 		new object[] { 0x02 , "CP850"	}, // International MS–DOS
 		new object[] { 0x03 , "CP1252"	}, // Windows ANSI

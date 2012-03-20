@@ -2,6 +2,9 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Text;
+#if SILVERLIGHT
+using NetTopologySuite.Encodings;
+#endif
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO
@@ -23,7 +26,13 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Initializes a new instance of the DbaseFileWriter class.
         /// </summary>
-        public DbaseFileWriter(string filename) :  this(filename, Encoding.GetEncoding(1252)) { }
+        public DbaseFileWriter(string filename) :  this(filename, 
+#if !SILVERLIGHT
+            Encoding.GetEncoding(1252)
+#else
+            CP1252.Instance
+#endif
+            ) { }
 
         /// <summary>
         /// Initializes a new instance of the DbaseFileWriter class.
@@ -51,8 +60,16 @@ namespace NetTopologySuite.IO
             //if (_recordsWritten)
             //    throw new InvalidOperationException("Records have already been written. Header file needs to be written first.");
             _headerWritten = true;
+            
+#if !SILVERLIGHT
             if (header.Encoding.WindowsCodePage != _encoding.WindowsCodePage)
+            {
+#else
+            if (header.Encoding.WebName != _encoding.WebName)
+            {
+#endif
                 header.Encoding = _encoding;
+            }
 
             header.WriteHeader(_writer);
             _header = header;

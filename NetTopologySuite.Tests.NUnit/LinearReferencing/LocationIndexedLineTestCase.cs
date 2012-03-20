@@ -1,8 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 using NetTopologySuite.LinearReferencing;
 using NUnit.Framework;
 
@@ -14,6 +11,19 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
     [TestFixture]
     public class LocationIndexedLineTestCase : AbstractIndexedLineTestCase
     {
+        [Test]
+        public override void TestOffsetStartPointRepeatedPoint()
+        {
+            RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(0 0)", 1.0, "POINT (-0.7071067811865475 0.7071067811865475)");
+            RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(0 0)", -1.0, "POINT (0.7071067811865475 -0.7071067811865475)");
+
+
+            //// These tests work for LengthIndexedLine, but not LocationIndexedLine
+            //RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(10 10)", 5.0, "POINT (6.464466094067262 13.535533905932738)");
+            //RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(10 10)", -5.0, "POINT (13.535533905932738 6.464466094067262)");
+        }
+        
+        
         [Test]
         public void TestMultiLineStringSimple()
         {

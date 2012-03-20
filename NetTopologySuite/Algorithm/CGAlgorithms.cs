@@ -432,16 +432,20 @@ namespace NetTopologySuite.Algorithm
             if (ring.Length < 3) 
                 return 0.0;
 
-            double sum = 0.0;
-            for (int i = 0; i < ring.Length - 1; i++) 
+            var sum = 0.0;
+            /**
+             * Based on the Shoelace formula.
+             * http://en.wikipedia.org/wiki/Shoelace_formula
+             */
+            var x0 = ring[0].X;
+            for (var i = 1; i < ring.Length - 1; i++)
             {
-                double bx = ring[i].X;
-                double by = ring[i].Y;
-                double cx = ring[i + 1].X;
-                double cy = ring[i + 1].Y;
-                sum += (bx + cx) * (cy - by);
+                var x = ring[i].X - x0;
+                var y1 = ring[i + 1].Y;
+                var y2 = ring[i == 0 ? ring.Length - 1 : i - 1].Y;
+                sum += x * (y2 - y1);
             }
-            return -sum  / 2.0;
+            return sum / 2.0;
         }
 
         /// <summary>
@@ -461,23 +465,31 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The signed area of the ring</returns>
         public static double SignedArea(ICoordinateSequence ring)
         {
-            int n = ring.Count;
-            if (n < 3) return 0.0;
-            double sum = 0.0;
-            var p = new Coordinate();
-            ring.GetCoordinate(0, p);
-            double bx = p.X;
-            double by = p.Y;
-            for (int i = 1; i < n; i++)
+            var n = ring.Count;
+            if (n < 3)
+                return 0.0;
+            /**
+             * Based on the Shoelace formula.
+             * http://en.wikipedia.org/wiki/Shoelace_formula
+             */
+            var p0 = new Coordinate();
+            var p1 = new Coordinate();
+            var p2 = new Coordinate();
+            ring.GetCoordinate(0, p1);
+            ring.GetCoordinate(1, p2);
+            var x0 = p1.X;
+            p2.X -= x0;
+            var sum = 0.0;
+            for (var i = 1; i < n - 1; i++)
             {
-                ring.GetCoordinate(i, p);
-                double cx = p.X;
-                double cy = p.Y;
-                sum += (bx + cx) * (cy - by);
-                bx = cx;
-                by = cy;
+                p0.Y = p1.Y;
+                p1.X = p2.X;
+                p1.Y = p2.Y;
+                ring.GetCoordinate(i + 1, p2);
+                p2.X -= x0;
+                sum += p1.X * (p0.Y - p2.Y);
             }
-            return -sum / 2.0;
+            return sum / 2.0;
         }
 
         /// <summary>

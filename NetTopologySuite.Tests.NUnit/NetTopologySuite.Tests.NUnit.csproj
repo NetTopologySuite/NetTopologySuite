@@ -111,7 +111,6 @@
     <Compile Include="GeometryUtils.cs" />
     <Compile Include="Index\DoubleBitsTest.cs" />
     <Compile Include="Index\IntervalTest.cs" />
-    <Compile Include="Index\QuadtreeSerializationTest.cs" />
     <Compile Include="Index\QuadtreeTestCase.cs" />
     <Compile Include="Index\SIRtreeTestCase.cs" />
     <Compile Include="Index\SpatialIndexTestCase.cs" />
@@ -153,6 +152,7 @@
     <Compile Include="Operation\Valid\IsValidTest.cs" />
     <Compile Include="Operation\Valid\ValidClosedRingTest.cs" />
     <Compile Include="Operation\Valid\ValidSelfTouchingRingFormingHoleTest.cs" />
+    <Compile Include="Performance\AreaPrecisionPerformanceTest.cs" />
     <Compile Include="Performance\ExamplePerformanceTest.cs" />
     <Compile Include="Performance\PerformanceTestCase.cs" />
     <Compile Include="Performance\PerformanceTestRunner.cs" />
@@ -167,6 +167,7 @@
     <Compile Include="Triangulate\BasicFunctionalityTest.cs" />
     <Compile Include="Triangulate\DelaunayPerformanceTest.cs" />
     <Compile Include="Utilities\PriorityQueueTest.cs" />
+    <Compile Include="Utilities\SerializationUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestData\africa.wkt" />

@@ -15,6 +15,7 @@ namespace NetTopologySuite.Index.Strtree
     /// data, both of which are treated here as Boundables.
     /// </para>
     /// </summary>
+    [Serializable]
     public abstract class AbstractSTRtree
     {
         /// <returns>
@@ -103,7 +104,7 @@ namespace NetTopologySuite.Index.Strtree
             return (AbstractNode)nodes[nodes.Count - 1];
         }
 
-        protected int CompareDoubles(double a, double b)
+        protected static int CompareDoubles(double a, double b)
         {
             return a > b ? 1 : a < b ? -1 : 0;
         }

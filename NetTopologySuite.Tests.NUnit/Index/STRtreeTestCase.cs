@@ -6,6 +6,7 @@ using NetTopologySuite.Index;
 using NetTopologySuite.Index.Strtree;
 using NetTopologySuite.IO;
 using NUnit.Framework;
+using NetTopologySuite.Tests.NUnit.Utilities;
 
 namespace NetTopologySuite.Tests.NUnit.Index
 {
@@ -42,12 +43,31 @@ namespace NetTopologySuite.Tests.NUnit.Index
         [Test]
         public void TestSpatialIndex()
   {
-            var tester = new SpatialIndexTester();
-            tester.SpatialIndex = new STRtree(4);
+            var tester = new SpatialIndexTester {SpatialIndex = new STRtree(4)};
             tester.Init();
             tester.Run();
             Assert.IsTrue(tester.IsSuccess);
   }
+        [Test]
+        public void TestSerialization()
+        {
+            var tester = new SpatialIndexTester { SpatialIndex = new STRtree(4)};
+            tester.Init();
+
+            Console.WriteLine("\n\nTest with original data\n");
+            tester.Run();
+            var tree1 = (STRtree)tester.SpatialIndex;
+            // create the index before serialization
+            tree1.Query(new Envelope());
+            var data = SerializationUtility.Serialize(tree1);
+            var tree2 = (STRtree) SerializationUtility.Deserialize(data);
+            tester.SpatialIndex = tree2;
+
+            Console.WriteLine("\n\nTest with deserialized data\n");
+            tester.Run();
+            tester.Run();
+            Assert.IsTrue(tester.IsSuccess);
+        }
 
         [Test]
         public void TestCreateParentsFromVerticalSlice()

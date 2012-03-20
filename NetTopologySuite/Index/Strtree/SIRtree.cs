@@ -12,45 +12,23 @@ namespace NetTopologySuite.Index.Strtree
     /// </summary>
     public class SIRtree : AbstractSTRtree 
     {
-        /// <summary>
-        /// 
-        /// </summary>
         private class AnnonymousComparerImpl : IComparer<object>
         {    
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="o1"></param>
-            /// <param name="o2"></param>
-            /// <returns></returns>
-    
             public int Compare(object o1, object o2) 
             {
-                return new SIRtree().CompareDoubles(((Interval)((IBoundable)o1).Bounds).Centre, 
-                                                    ((Interval)((IBoundable)o2).Bounds).Centre);
+                return CompareDoubles(((Interval)((IBoundable)o1).Bounds).Centre, 
+                                      ((Interval)((IBoundable)o2).Bounds).Centre);
             }
         }        
 
-        /// <summary>
-        /// 
-        /// </summary>
         private class AnonymousIntersectsOpImpl : IIntersectsOp
         {
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="aBounds"></param>
-            /// <param name="bBounds"></param>
-            /// <returns></returns>
             public bool Intersects(object aBounds, object bBounds) 
             {
                 return ((Interval)aBounds).Intersects((Interval)bBounds);
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         private class AnonymousAbstractNodeImpl : AbstractNode
         {
             /// <summary>
@@ -77,9 +55,9 @@ namespace NetTopologySuite.Index.Strtree
             }
         }       
 
-        private readonly IComparer<object> _comparator = new AnnonymousComparerImpl(); 
+        private static readonly IComparer<object> Comparator = new AnnonymousComparerImpl(); 
 
-        private readonly IIntersectsOp _intersectsOp = new AnonymousIntersectsOpImpl();
+        private static readonly IIntersectsOp IntersectsOperation = new AnonymousIntersectsOpImpl();
 
         /// <summary> 
         /// Constructs an SIRtree with the default (10) node capacity.
@@ -139,7 +117,7 @@ namespace NetTopologySuite.Index.Strtree
         {
             get
             {
-                return _intersectsOp;
+                return IntersectsOperation;
             }
         }
 
@@ -149,7 +127,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <returns></returns>
         protected override IComparer<object> GetComparer() 
         {
-            return _comparator;
+            return Comparator;
         }
     }
 }

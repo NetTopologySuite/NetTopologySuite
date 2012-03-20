@@ -13,6 +13,8 @@ namespace NetTopologySuite.Encodings
     /// </summary>
     public class CP1252 : Encoding
     {
+        public static Encoding Instance = new CP1252();
+        
         /// <summary>
         /// Gets the name registered with the
         /// Internet Assigned Numbers Authority (IANA) for the current encoding.

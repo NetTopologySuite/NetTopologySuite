@@ -22,7 +22,8 @@ namespace NetTopologySuite.Operation.Union
     /// <item>Unioning a set of overlapping <see cref="IPolygon"/>s has the effect of merging the areas (i.e. the same effect as iteratively unioning all individual polygons together).</item>
     /// <item>Unioning a set of <see cref="ILineString"/>s has the effect of <b>fully noding</b> 
     /// and <b>dissolving</b> the input linework.
-    /// In this context "fully noded" means that there will be a node or endpoint in the output 
+    /// In this context "fully noded" means that there will be 
+    /// an endpoint or node in the result  
     /// for every endpoint or line segment crossing in the input.
     /// "Dissolved" means that any duplicate (e.g. coincident) line segments or portions
     /// of line segments will be reduced to a single line segment in the output.  

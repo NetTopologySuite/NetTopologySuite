@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NetTopologySuite.Utilities;
 
@@ -8,6 +9,7 @@ namespace NetTopologySuite.Index.Strtree
     /// (AbstractNodes) or real data (ItemBoundables). If this node contains real data
     /// (rather than nodes), then we say that this node is a "leaf node".
     /// </summary>
+    [Serializable]
     public abstract class AbstractNode : IBoundable 
     {
         private readonly List<object> _childBoundables = new List<object>();

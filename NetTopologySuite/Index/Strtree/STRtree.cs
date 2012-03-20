@@ -17,120 +17,56 @@ namespace NetTopologySuite.Index.Strtree
     /// Described in: P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
     /// </summary>
+    [Serializable]
     public class STRtree : AbstractSTRtree, ISpatialIndex
     {
-        /// <summary>
-        /// 
-        /// </summary>        
-        private class AnonymousXComparerImpl : IComparer<object>
+        private static readonly AnonymousXComparerImpl XComparer = new AnonymousXComparerImpl();
+        private static readonly AnonymousYComparerImpl YComparer = new AnonymousYComparerImpl();
+        
+        private class AnonymousXComparerImpl : Comparer<object>
         {
-            private readonly STRtree _container;
-
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="container"></param>
-            public AnonymousXComparerImpl(STRtree container)
+            public override int Compare(object o1, object o2)
             {
-                _container = container;
-            }
-
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="o1"></param>
-            /// <param name="o2"></param>
-            /// <returns></returns>
-            public int Compare(object o1, object o2)
-            {
-                return _container.CompareDoubles(CentreX((Envelope) ((IBoundable) o1).Bounds),
-                                                 CentreX((Envelope) ((IBoundable) o2).Bounds));
+                return CompareDoubles(CentreX((Envelope) ((IBoundable) o1).Bounds),
+                                      CentreX((Envelope) ((IBoundable) o2).Bounds));
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private class AnonymousYComparerImpl : IComparer<object>
+        private class AnonymousYComparerImpl : Comparer<object>
         {
-            private readonly STRtree _container;
-
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="container"></param>
-            public AnonymousYComparerImpl(STRtree container)
+            public override int Compare(object o1, object o2)
             {
-                _container = container;
-            }
-
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="o1"></param>
-            /// <param name="o2"></param>
-            /// <returns></returns>
-            public int Compare(object o1, object o2)
-            {
-                return _container.CompareDoubles(CentreY((Envelope) ((IBoundable) o1).Bounds),
-                                                 CentreY((Envelope) ((IBoundable) o2).Bounds));
+                return CompareDoubles(CentreY((Envelope) ((IBoundable) o1).Bounds),
+                                      CentreY((Envelope) ((IBoundable) o2).Bounds));
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        [Serializable]
         private class AnonymousAbstractNodeImpl : AbstractNode
         {
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="nodeCapacity"></param>
             public AnonymousAbstractNodeImpl(int nodeCapacity) :
                 base(nodeCapacity)
             {
             }
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <returns></returns>
             protected override object ComputeBounds()
             {
                 Envelope bounds = null;
-                foreach (object i in ChildBoundables)
+                foreach (var i in ChildBoundables)
                 {
-                    IBoundable childBoundable = (IBoundable) i;
+                    var childBoundable = (IBoundable) i;
                     if (bounds == null)
                         bounds = new Envelope((Envelope) childBoundable.Bounds);
-                    else bounds.ExpandToInclude((Envelope) childBoundable.Bounds);
+                    else 
+                        bounds.ExpandToInclude((Envelope) childBoundable.Bounds);
                 }
                 return bounds;
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        private static readonly IIntersectsOp IntersectsOperation = new AnonymousIntersectsOpImpl();
         private class AnonymousIntersectsOpImpl : IIntersectsOp
         {
-            private STRtree _container;
-
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="container"></param>
-            public AnonymousIntersectsOpImpl(STRtree container)
-            {
-                _container = container;
-            }
-
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="aBounds"></param>
-            /// <param name="bBounds"></param>
-            /// <returns></returns>
             public bool Intersects(object aBounds, object bBounds)
             {
                 return ((Envelope) aBounds).Intersects((Envelope) bBounds);
@@ -199,12 +135,12 @@ namespace NetTopologySuite.Index.Strtree
         protected override IList CreateParentBoundables(IList childBoundables, int newLevel)
         {
             Assert.IsTrue(childBoundables.Count != 0);
-            int minLeafCount = (int) Math.Ceiling((childBoundables.Count/(double) NodeCapacity));
+            var minLeafCount = (int) Math.Ceiling((childBoundables.Count/(double) NodeCapacity));
             var sortedChildBoundables = new List<object>(childBoundables);
-            sortedChildBoundables.Sort(new AnonymousXComparerImpl(this));
-            IList[] verticalSlices = VerticalSlices(sortedChildBoundables,
+            sortedChildBoundables.Sort(XComparer);
+            var verticalSlices = VerticalSlices(sortedChildBoundables,
                                                     (int) Math.Ceiling(Math.Sqrt(minLeafCount)));
-            IList tempList = CreateParentBoundablesFromVerticalSlices(verticalSlices, newLevel);
+            var tempList = CreateParentBoundablesFromVerticalSlices(verticalSlices, newLevel);
             return tempList;
         }
 
@@ -217,10 +153,10 @@ namespace NetTopologySuite.Index.Strtree
         private IList CreateParentBoundablesFromVerticalSlices(IList[] verticalSlices, int newLevel)
         {
             Assert.IsTrue(verticalSlices.Length > 0);
-            IList parentBoundables = new List<object>();
+            var parentBoundables = new List<object>();
             for (int i = 0; i < verticalSlices.Length; i++)
             {
-                IList tempList = CreateParentBoundablesFromVerticalSlice(verticalSlices[i], newLevel);
+                var tempList = CreateParentBoundablesFromVerticalSlice(verticalSlices[i], newLevel);
                 foreach (object o in tempList)
                     parentBoundables.Add(o);
             }
@@ -245,13 +181,13 @@ namespace NetTopologySuite.Index.Strtree
         /// <param name="sliceCount"></param>
         protected IList[] VerticalSlices(IList childBoundables, int sliceCount)
         {
-            int sliceCapacity = (int) Math.Ceiling(childBoundables.Count/(double) sliceCount);
-            IList[] slices = new IList[sliceCount];
-            IEnumerator<object> i = childBoundables.GetEnumerator();
-            for (int j = 0; j < sliceCount; j++)
+            var sliceCapacity = (int) Math.Ceiling(childBoundables.Count/(double) sliceCount);
+            var slices = new IList[sliceCount];
+            var i = childBoundables.GetEnumerator();
+            for (var j = 0; j < sliceCount; j++)
             {
                 slices[j] = new List<object>();
-                int boundablesAddedToSlice = 0;
+                var boundablesAddedToSlice = 0;
                 /* 
                  *          Diego Guidi says:
                  *          the line below introduce an error: 
@@ -261,7 +197,7 @@ namespace NetTopologySuite.Index.Strtree
                 // while (i.MoveNext() && boundablesAddedToSlice < sliceCapacity)
                 while (boundablesAddedToSlice < sliceCapacity && i.MoveNext())
                 {
-                    IBoundable childBoundable = (IBoundable) i.Current;
+                    var childBoundable = (IBoundable) i.Current;
                     slices[j].Add(childBoundable);
                     boundablesAddedToSlice++;
                 }
@@ -284,7 +220,7 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         protected override IIntersectsOp IntersectsOp
         {
-            get { return new AnonymousIntersectsOpImpl(this); }
+            get { return IntersectsOperation; }
         }
 
         /// <summary>
@@ -339,7 +275,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <returns></returns>
         protected override IComparer<object> GetComparer()
         {
-            return new AnonymousYComparerImpl(this);
+            return YComparer;
         }
 
         /// <summary>
@@ -393,19 +329,19 @@ namespace NetTopologySuite.Index.Strtree
         /// <returns>The pair of the nearest items, one from each tree</returns>
         public Object[] NearestNeighbour(STRtree tree, IItemDistance itemDist)
         {
-            BoundablePair bp = new BoundablePair(Root, tree.Root, itemDist);
+            var bp = new BoundablePair(Root, tree.Root, itemDist);
             return NearestNeighbour(bp);
         }
 
 
-        private Object[] NearestNeighbour(BoundablePair initBndPair)
+        private static Object[] NearestNeighbour(BoundablePair initBndPair)
         {
             return NearestNeighbour(initBndPair, Double.PositiveInfinity);
         }
 
-        private Object[] NearestNeighbour(BoundablePair initBndPair, double maxDistance)
+        private static Object[] NearestNeighbour(BoundablePair initBndPair, double maxDistance)
         {
-            double distanceLowerBound = maxDistance;
+            var distanceLowerBound = maxDistance;
             BoundablePair minPair = null;
 
             // initialize internal structures
@@ -417,8 +353,8 @@ namespace NetTopologySuite.Index.Strtree
             while (!priQ.IsEmpty() && distanceLowerBound > 0.0)
             {
                 // pop head of queue and expand one side of pair
-                BoundablePair bndPair = priQ.Poll();
-                double currentDistance = bndPair.Distance; //bndPair.GetDistance();
+                var bndPair = priQ.Poll();
+                var currentDistance = bndPair.Distance; //bndPair.GetDistance();
 
                 /**
                  * If the distance for the first node in the queue
