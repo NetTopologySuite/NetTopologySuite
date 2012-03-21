@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 using Wintellect.PowerCollections;
 
@@ -49,7 +48,7 @@ namespace NetTopologySuite.Noding
             {
                 var ei = (SegmentNode)eiObj;
                 // debugging sanity check
-                Assert.IsTrue(ei.Coordinate.Equals2D(intPt), "Found equal nodes with different coordinates");               
+                Assert.IsTrue(ei.Coord.Equals2D(intPt), "Found equal nodes with different coordinates");               
                 return ei;
             }
             // node does not exist, so create it
@@ -154,7 +153,7 @@ namespace NetTopologySuite.Noding
         private static bool FindCollapseIndex(SegmentNode ei0, SegmentNode ei1, int[] collapsedVertexIndex)
         {
             // only looking for equal nodes
-            if (!ei0.Coordinate.Equals2D(ei1.Coordinate)) 
+            if (!ei0.Coord.Equals2D(ei1.Coord)) 
                 return false;
             var numVerticesBetween = ei1.SegmentIndex - ei0.SegmentIndex;
             if (!ei1.IsInterior)
@@ -193,14 +192,15 @@ namespace NetTopologySuite.Noding
                 edgeList.Add(newEdge);
                 eiPrev = ei;
             }
+            //CheckSplitEdgesCorrectness(testingSplitEdges);
         }
 
         /*
         /// <summary>
-        /// 
+        /// Checks the correctness of the set of split edges corresponding to this edge.
         /// </summary>
         /// <param name="splitEdges"></param>
-        private void CheckSplitEdgesCorrectness(IList splitEdges)
+        private void CheckSplitEdgesCorrectness(IList<ISegmentString> splitEdges)
         {
             var edgePts = _edge.Coordinates;
 
@@ -217,6 +217,7 @@ namespace NetTopologySuite.Noding
                 throw new Exception("bad split edge end point at " + ptn);
         }
         */
+
         /// <summary>
         ///  Create a new "split edge" with the section of points between
         /// (and including) the two intersections.
@@ -233,17 +234,17 @@ namespace NetTopologySuite.Noding
             // if the last intersection point is not equal to the its segment start pt, add it to the points list as well.
             // (This check is needed because the distance metric is not totally reliable!)
             // The check for point equality is 2D only - Z values are ignored
-            var useIntPt1 = ei1.IsInterior || !ei1.Coordinate.Equals2D(lastSegStartPt);
+            var useIntPt1 = ei1.IsInterior || !ei1.Coord.Equals2D(lastSegStartPt);
             if(!useIntPt1)
                 npts--;
 
             var pts = new Coordinate[npts];
             var ipt = 0;
-            pts[ipt++] = new Coordinate(ei0.Coordinate);
+            pts[ipt++] = new Coordinate(ei0.Coord);
             for (var i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
                 pts[ipt++] = _edge.GetCoordinate(i);            
             if (useIntPt1) 
-                pts[ipt] = ei1.Coordinate;
+                pts[ipt] = ei1.Coord;
 
             return new NodedSegmentString(pts, _edge.Context);
         }

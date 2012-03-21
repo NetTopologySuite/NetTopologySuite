@@ -20,7 +20,7 @@ namespace NetTopologySuite.Noding
     public class NodedSegmentString : INodableSegmentString
     {
         /// <summary>
-
+        /// Gets the <see cref="ISegmentString"/>s which result from splitting this string at node points.
         /// </summary>
         /// <param name="segStrings">A collection of NodedSegmentStrings</param>
         /// <returns>A collection of NodedSegmentStrings representing the substrings</returns>
@@ -32,7 +32,7 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
-
+        /// Adds the noded <see cref="ISegmentString"/>s which result from splitting this string at node points.
         /// </summary>
         /// <param name="segStrings">A collection of NodedSegmentStrings</param>
         /// <param name="resultEdgelist">A list which will collect the NodedSegmentStrings representing the substrings</param>

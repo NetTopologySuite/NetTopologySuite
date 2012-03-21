@@ -63,16 +63,16 @@ namespace NetTopologySuite.Shape.Fractal
                 AddSegment(p0, p1);
             else
             {
-                var baseV = Vector2D.create(p0, p1);
-                var midPt = baseV.multiply(0.5).translate(p0);
+                var baseV = Vector2D.Create(p0, p1);
+                var midPt = baseV.Multiply(0.5).Translate(p0);
 
-                var heightVec = baseV.multiply(ThirdHeight);
-                var offsetVec = heightVec.rotateByQuarterCircle(1);
-                var offsetPt = offsetVec.translate(midPt);
+                var heightVec = baseV.Multiply(ThirdHeight);
+                var offsetVec = heightVec.RotateByQuarterCircle(1);
+                var offsetPt = offsetVec.Translate(midPt);
 
                 var n2 = level - 1;
-                var thirdPt = baseV.multiply(OneThird).translate(p0);
-                var twoThirdPt = baseV.multiply(TwoThirds).translate(p0);
+                var thirdPt = baseV.Multiply(OneThird).Translate(p0);
+                var twoThirdPt = baseV.Multiply(TwoThirds).Translate(p0);
 
                 // construct sides recursively
                 AddSide(n2, p0, thirdPt);

@@ -32,7 +32,6 @@ namespace NetTopologySuite.Noding
         private readonly LineIntersector _li = new RobustLineIntersector();
 
         private readonly List<ISegmentString> _segStrings = new List<ISegmentString>();
-        private bool _findAllIntersections;
         private InteriorIntersectionFinder _segInt;
         private Boolean _isValid = true;
 
@@ -45,7 +44,19 @@ namespace NetTopologySuite.Noding
             _segStrings.AddRange(segStrings);
         }
 
-        public bool FindAllIntersections { get { return _findAllIntersections; } set { _findAllIntersections = value; } }
+        /// <summary>
+        /// Gets or sets whether all intersections should be found.
+        /// </summary>
+        public bool FindAllIntersections { get; set; }
+
+
+        /// <summary>
+        /// Gets the list of intersections
+        /// </summary>
+        public IList<Coordinate> Intersections
+        {
+            get { return _segInt.Intersections; }
+        }
 
         ///<summary>
         /// Checks for an intersection and reports if one is found.
@@ -102,7 +113,7 @@ namespace NetTopologySuite.Noding
              */
             _isValid = true;
             _segInt = new InteriorIntersectionFinder(_li);
-            _segInt.FindAllIntersections = _findAllIntersections;
+            _segInt.FindAllIntersections = FindAllIntersections;
             MCIndexNoder noder = new MCIndexNoder(_segInt);
             noder.ComputeNodes(_segStrings); //.ComputeNodes(segStrings);
             if (_segInt.HasIntersection)

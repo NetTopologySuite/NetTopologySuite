@@ -6,26 +6,31 @@ using NetTopologySuite.Utilities;
 namespace NetTopologySuite.Algorithm
 {
     /// <summary>
-    /// Computes the Minimum Bounding Circle (MBC) for the points in a <see cref="IGeometry"/>.
-    /// The MBC is the smallest circle which contains all the input points (this is sometimes known as the Smallest Enclosing Circle).
+    /// Computes the <b>Minimum Bounding Circle</b> (MBC) for the points in a <see cref="IGeometry"/>.
+    /// The MBC is the smallest circle which <tt>cover</tt>s all the input points 
+    /// (this is also sometimes known as the <b>Smallest Enclosing Circle</b>).
     /// This is equivalent to computing the Maximum Diameter of the input point set.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The geometric circle can be specified in two equivalent ways, 
+    /// The computed circle can be specified in two equivalent ways, 
     /// both of which are provide as output by this class:
     /// <list type="Bullet">
     /// <item>As a centre point and a radius</item>
     /// <item>By the set of points defining the circle.</item>
-    /// </list>
+    /// 
     /// Depending on the number of points in the input
     /// and their relative positions, this
     /// will be specified by anywhere from 0 to 3 points. 
-    /// 0 or 1 points indicate an empty or trivial input point arrangment.
-    /// 2 or 3 points define a circle which contains 
-    /// all the input points.
+    /// <list type="Bullet">
+    /// <item>0 or 1 points indicate an empty or trivial input point arrangment.</item>
+    /// <item>2 or 3 points define a circle which contains 
+    /// all the input points.</item>
+    /// </list>
+    /// </list>
     /// </para>
-    /// <para>The class also provides a Geometry which approximates the
+    /// <para>
+    /// The class can also output a <see cref="IGeometry"/> which approximates the
     /// shape of the MBC (although as an approximation it is <b>not</b>
     /// guaranteed to <tt>cover</tt> all the input points.)</para>
     /// </remarks>

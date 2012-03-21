@@ -143,16 +143,25 @@ namespace NetTopologySuite.Operation.Buffer
 
         private void ComputeNodedEdges(IList<ISegmentString> bufferSegStrList, IPrecisionModel precisionModel)
         {
-            INoder noder = GetNoder(precisionModel);
+            var noder = GetNoder(precisionModel);
             noder.ComputeNodes(bufferSegStrList);
             var nodedSegStrings = noder.GetNodedSubstrings();
             // DEBUGGING ONLY
             //BufferDebug.saveEdges(nodedEdges, "run" + BufferDebug.runCount + "_nodedEdges");
 
-            foreach (ISegmentString segStr in nodedSegStrings)
+            foreach (var segStr in nodedSegStrings)
             {
-                Label oldLabel = (Label)segStr.Context;
-                Edge edge = new Edge(segStr.Coordinates, new Label(oldLabel));
+                /**
+                 * Discard edges which have zero length, 
+                 * since they carry no information and cause problems with topology building
+                 */
+                var pts = segStr.Coordinates;
+                if (pts.Length == 2 && pts[0].Equals2D(pts[1]))
+                    continue;
+
+                var oldLabel = (Label)segStr.Context;
+                var edge = new Edge(segStr.Coordinates, new Label(oldLabel));
+
                 InsertUniqueEdge(edge);
             }
             //saveEdges(edgeList.getEdges(), "run" + runCount + "_collapsedEdges");

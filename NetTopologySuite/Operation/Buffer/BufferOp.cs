@@ -2,6 +2,7 @@ using System;
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Mathematics;
 using NetTopologySuite.Noding;
 using NetTopologySuite.Noding.Snapround;
 
@@ -78,9 +79,12 @@ namespace NetTopologySuite.Operation.Buffer
         /// <summary>
         /// Compute a scale factor to limit the precision of
         /// a given combination of Geometry and buffer distance.
-        /// The scale factor is determined by a combination of
+        /// The scale factor is determined by 
         /// the number of digits of precision in the (geometry + buffer distance),
-        /// limited by the supplied <code>maxPrecisionDigits</code> value.
+        /// limited by the supplied <paramref name="maxPrecisionDigits"/> value.
+        /// <para/>
+        /// The scale factor is based on the absolute magnitude of the (geometry + buffer distance).
+        /// since this determines the number of digits of precision which must be handled.
         /// </summary>
         /// <param name="g"> the Geometry being buffered</param>
         /// <param name="distance"> the buffer distance</param>
@@ -89,6 +93,27 @@ namespace NetTopologySuite.Operation.Buffer
         ///
         /// <returns> a scale factor for the buffer computation</returns>
         private static double PrecisionScaleFactor(IGeometry g,
+            double distance,
+          int maxPrecisionDigits)
+        {
+            var env = g.EnvelopeInternal;
+            var envMax = MathUtil.Max(
+                Math.Abs(env.MaxX), Math.Abs(env.MaxY),
+                Math.Abs(env.MinX), Math.Abs(env.MinY));
+
+            var expandByDistance = distance > 0.0 ? distance : 0.0;
+            var bufEnvMax = envMax + 2 * expandByDistance;
+
+            // the smallest power of 10 greater than the buffer envelope
+            var bufEnvPrecisionDigits = (int)(Math.Log(bufEnvMax) / Math.Log(10) + 1.0);
+            var minUnitLog10 = maxPrecisionDigits - bufEnvPrecisionDigits;
+
+            double scaleFactor = Math.Pow(10.0, minUnitLog10);
+            return scaleFactor;
+        }
+
+        /*
+        private static double OldPrecisionScaleFactor(Geometry g,
             double distance,
           int maxPrecisionDigits)
         {
@@ -104,6 +129,7 @@ namespace NetTopologySuite.Operation.Buffer
             var scaleFactor = Math.Pow(10.0, -minUnitLog10);
             return scaleFactor;
         }
+         */
 
         /// <summary>
         /// Computes the buffer of a geometry for a given buffer distance.

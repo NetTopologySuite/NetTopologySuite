@@ -24,7 +24,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
             {
                 var coordinates = new Coordinate[nrVertices + 1];
 
-                for (int i = 0; i <= nrVertices; i++)
+                for (var i = 0; i <= nrVertices; i++)
                 {
                     var vertex = new Coordinate(originX + (1d + Math.Sin( i/(double) nrVertices*2*Math.PI)),
                                                 originY + (1d + Math.Cos( i/(double) nrVertices*2*Math.PI)));
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
                 var g1 = new GeometryFactory().CreateLinearRing(coordinates);
                 var holes = new ILinearRing[] {};
                 var polygon = (Polygon) new GeometryFactory().CreatePolygon(g1, holes);
-                //System.out.println(polygon);
+                Console.WriteLine(polygon);
 
                 sw1.Start();
                 var area = polygon.Area;
@@ -53,11 +53,11 @@ namespace NetTopologySuite.Tests.NUnit.Performance
                 var eps2 = exactArea - area2;
                 var eps3 = exactArea - areaOld;
 
-                Console.WriteLine(nrVertices + "   now err: " + eps
-                                  + "    acc err: " + eps2 + "    old err: " + eps3);
+                Console.WriteLine("\n" + nrVertices + "   now err: " + eps
+                                  + "    acc err: " + eps2 + "    old err: " + eps3+"\n");
             }
             sw.Stop();
-            Console.WriteLine("Time: " + sw.Elapsed);
+            Console.WriteLine("\n\nTime: " + sw.Elapsed);
             Console.WriteLine("Time Now: " + sw1.ElapsedTicks);
             Console.WriteLine("Time Acc: " + sw2.ElapsedTicks);
             Console.WriteLine("Time Old: " + sw3.ElapsedTicks);

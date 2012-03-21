@@ -9,8 +9,6 @@ namespace NetTopologySuite.Noding
     ///</summary>
     public class InteriorIntersectionFinder : ISegmentIntersector
     {
-        private Boolean _findAllIntersections;
-        private Boolean _isCheckEndSegmentsOnly;
         private readonly LineIntersector _li;
         private Coordinate _interiorIntersection;
         private Coordinate[] _intSegments;
@@ -26,7 +24,10 @@ namespace NetTopologySuite.Noding
             _interiorIntersection = null;
         }
 
-        public bool FindAllIntersections { get { return _findAllIntersections; } set { _findAllIntersections = value; } }
+        /// <summary>
+        /// Gets or sets whether all intersections should be found
+        /// </summary>
+        public bool FindAllIntersections { get; set; }
 
         ///<summary>
         /// Gets/Sets whether only end segments should be tested for interior intersection.
@@ -35,11 +36,7 @@ namespace NetTopologySuite.Noding
         /// It may be known that any potential noding failures will occur only in
         /// end segments.
         ///</summary>
-        public Boolean CheckEndSegmentsOnly
-        {
-            get { return _isCheckEndSegmentsOnly; }
-            set { _isCheckEndSegmentsOnly = value; }
-        }
+        public bool CheckEndSegmentsOnly { get; set; }
 
         ///<summary>
         /// Tests whether an intersection was found.
@@ -52,6 +49,13 @@ namespace NetTopologySuite.Noding
             }
         }
 
+        /// <summary>
+        /// Gets the list of intersection points
+        /// </summary>
+        public IList<Coordinate> Intersections
+        {
+            get { return _intersections.AsReadOnly(); }
+        }
         ///<summary>
         /// Gets the computed location of the intersection.
         /// Due to round-off, the location may not be exact.
@@ -96,7 +100,7 @@ namespace NetTopologySuite.Noding
              * If enabled, only test end segments (on either segString).
              *
              */
-            if (_isCheckEndSegmentsOnly)
+            if (CheckEndSegmentsOnly)
             {
                 Boolean isEndSegPresent = IsEndSegment(e0, segIndex0) || IsEndSegment(e1, segIndex1);
                 if (!isEndSegPresent)
@@ -144,7 +148,7 @@ namespace NetTopologySuite.Noding
         {
             get
             {
-                if (_findAllIntersections) return false;
+                if (FindAllIntersections) return false;
                 return _interiorIntersection != null;
             }
         }

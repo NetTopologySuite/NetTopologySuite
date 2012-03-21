@@ -211,7 +211,7 @@ namespace NetTopologySuite.Index.Strtree
             var matches = new List<object>();
             if (_itemBoundables.Count == 0)
             {
-                Assert.IsTrue(_root.Bounds == null);
+                //Assert.IsTrue(_root.Bounds == null);
                 return matches;
             }
             if (IntersectsOp.Intersects(_root.Bounds, searchBounds))
@@ -225,7 +225,11 @@ namespace NetTopologySuite.Index.Strtree
                 Build();
 
             if (_itemBoundables.Count == 0)
-                Assert.IsTrue(_root.Bounds == null);
+            {
+                //nothing in tree, so return
+                //Assert.IsTrue(_root.Bounds == null);
+                return;
+            }
 
             if (IntersectsOp.Intersects(_root.Bounds, searchBounds))
                 Query(searchBounds, _root, visitor);

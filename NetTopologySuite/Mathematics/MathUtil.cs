@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NetTopologySuite.Mathematics
+﻿namespace NetTopologySuite.Mathematics
 {
     /// <summary>
     /// Various utility functions for mathematical and numerical operations.
@@ -40,7 +38,7 @@ namespace NetTopologySuite.Mathematics
 // ReSharper restore InconsistentNaming
 
         /// <summary>
-        /// Computes the base-10 logarithm of a <tt>double</tt> value.
+        /// Computes the base-10 logarithm of a <c>double</c> value.
         /// <para>
         /// <list type="Bullet">
         /// <item>If the argument is NaN or less than zero, then the result is NaN.</item>
@@ -53,10 +51,68 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The value log a, the base-10 logarithm of the input value</returns>
         public static double Log10(double x)
         {
-            double ln = System.Math.Log(x);
-            if (Double.IsInfinity(ln)) return ln;
-            if (Double.IsNaN(ln)) return ln;
+            var ln = System.Math.Log(x);
+            if (double.IsInfinity(ln)) return ln;
+            if (double.IsNaN(ln)) return ln;
             return ln / LOG10;
         }
+
+        /// <summary>
+        /// Computes an index which wraps around a given maximum value.
+        /// For values &ge 0, this is equals to <c>val % max</c>.
+        /// For values &lt; 0, this is equal to <c>max - (-val) % max</c> 
+        /// </summary>
+        /// <param name="index">The index to wrap</param>
+        /// <param name="max">The maximum value (or modulus)</param>
+        /// <returns>The wrapped index</returns>
+        public static int Wrap(int index, int max)
+        {
+            if (index < 0)
+            {
+                return max - ((-index) % max);
+            }
+            return index % max;
+        }
+
+        /// <summary>
+        /// Computes the average of two numbers.
+        /// </summary>
+        /// <param name="x1">A number</param>
+        /// <param name="x2">A number</param>
+        /// <returns>The average of the inputs</returns>
+        public static double Average(double x1, double x2)
+        {
+            return (x1 + x2) / 2.0;
+        }
+
+        /// <summary>
+        /// Computes the maximum fo three values
+        /// </summary>
+        /// <param name="v1">A number</param>
+        /// <param name="v2">A number</param>
+        /// <param name="v3">A number</param>
+        /// <returns>The maximum value of <paramref name="v1"/>, <paramref name="v2"/> and <paramref name="v3"/></returns>
+        public static double Max(double v1, double v2, double v3)
+        {
+            if (v1 > v2)
+            {
+                return v1 > v3 ? v1 : v3;
+            }
+            return v2 > v3 ? v2 : v3;
+        }
+
+        /// <summary>
+        /// Computes the maximum of four values
+        /// </summary>
+        /// <param name="v1">A number</param>
+        /// <param name="v2">A number</param>
+        /// <param name="v3">A number</param>
+        /// <param name="v4">A number</param>
+        /// <returns>The maximum value of <paramref name="v1"/>, <paramref name="v2"/> and <paramref name="v3"/></returns>
+        public static double Max(double v1, double v2, double v3, double v4)
+        {
+            return System.Math.Max(v1, Max(v2, v3, v4));
+        }
+
     }
 }
