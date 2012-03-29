@@ -226,18 +226,19 @@ namespace NetTopologySuite.IO
         /// <param name="length"></param>
         public void Write(string text, int length)
         {
-            // ensure string is not too big, multibyte encodings can cause more bytes to be written.
-            int byteCounter  = 0;
-            foreach (char c in _encoding.GetBytes(text))
+            // ensure string is not too big, multibyte encodings can cause more bytes to be written
+            byte[] bytes = _encoding.GetBytes(text);
+            int counter = 0;
+            foreach (char c in bytes)
             {
               _writer.Write(c);
-              byteCounter++;
-              if (byteCounter >= length)
+              counter++;
+              if (counter >= length)
                 break;
             }
 
             // pad the text after exact byte count is known
-            int padding = length - byteCounter;
+            int padding = length - counter;
             for (int i = 0; i < padding; i++)
                 _writer.Write((byte)0x20);
         }
