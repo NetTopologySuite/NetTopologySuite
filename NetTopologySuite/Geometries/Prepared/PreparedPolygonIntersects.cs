@@ -54,9 +54,13 @@ namespace NetTopologySuite.Geometries.Prepared
              * If any segments intersect, result is true
              */
             IList<ISegmentString> lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
-            bool segsIntersect = prepPoly.IntersectionFinder.Intersects(lineSegStr);
-            if (segsIntersect)
-                return true;
+            // only request intersection finder if there are segments (ie NOT for point inputs)
+            if (lineSegStr.Count > 0)
+            {
+                var segsIntersect = prepPoly.IntersectionFinder.Intersects(lineSegStr);
+                if (segsIntersect)
+                    return true;
+            }
 
             /*
              * If the test has dimension = 2 as well, it is necessary to

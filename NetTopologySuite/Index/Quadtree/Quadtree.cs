@@ -96,6 +96,19 @@ namespace NetTopologySuite.Index.Quadtree
             }
         }
 
+        /// <summary>
+        /// Tests whether the index contains any items.
+        /// </summary>
+        public bool IsEmpty
+        {
+            get
+            {
+                if (_root == null) return true;
+                return false;
+            }
+        }
+  
+
         /// <summary> 
         /// Returns the number of items in the tree.
         /// </summary>

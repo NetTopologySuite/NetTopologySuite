@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GeoAPI.Geometries;
@@ -198,7 +199,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// A GeometryEditorOperation which modifies the coordinate list of a <c>Geometry</c>.
+        /// A GeometryEditorOperation which edits the coordinate list of a <c>Geometry</c>.
         /// Operates on Geometry subclasses which contains a single coordinate list.
         /// </summary>
         public abstract class CoordinateOperation : IGeometryEditorOperation
@@ -234,5 +235,55 @@ namespace NetTopologySuite.Geometries.Utilities
             /// <returns>An edited coordinate array (which may be the same as the input).</returns>
             public abstract Coordinate[] Edit(Coordinate[] coordinates, IGeometry geometry);
         }
+
+        /// <summary>
+        /// A <see cref="IGeometryEditorOperation"/> which edits the <see cref="ICoordinateSequence"/> 
+        /// of a <see cref="IGeometry"/>.
+        /// <para/>
+        /// Operates on Geometry subclasses which contains a single coordinate list.
+        /// </summary>
+        public class CoordinateSequenceOperation : IGeometryEditorOperation
+        {
+            public CoordinateSequenceOperation(Func<ICoordinateSequence, IGeometry, ICoordinateSequence> editSequence)
+            {
+                EditSequence = editSequence;
+            }
+
+            public IGeometry Edit(IGeometry geometry, IGeometryFactory factory)
+            {
+                var linearRing = geometry as ILinearRing;
+                if (linearRing != null)
+                {
+                    return factory.CreateLinearRing(EditSequence(
+                        (linearRing).CoordinateSequence, geometry));
+                }
+
+                var lineString = geometry as ILineString;
+                if (lineString != null)
+                {
+                    return factory.CreateLineString(EditSequence(
+                        (lineString).CoordinateSequence,
+                        geometry));
+                }
+
+                var point = geometry as IPoint;
+                if (point != null)
+                {
+                    return factory.CreatePoint(EditSequence(
+                        (point).CoordinateSequence, geometry));
+                }
+
+                return geometry;
+            }
+
+            /// <summary>
+            /// Edits a <see cref="ICoordinateSequence"/> from a <see cref="IGeometry"/>.
+            /// </summary>
+            ///// <param name="coordSeq">The coordinate array to operate on</param>
+            ///// <param name="geometry">The geometry containing the coordinate list</param>
+            /// <returns>An edited coordinate sequence (which may be the same as the input)</returns>
+            private Func<ICoordinateSequence, IGeometry, ICoordinateSequence> EditSequence { get; set; }
+        }
+
     }
 }

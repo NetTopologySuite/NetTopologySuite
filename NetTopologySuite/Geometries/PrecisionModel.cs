@@ -41,11 +41,13 @@ namespace NetTopologySuite.Geometries
     /// of 1000. To specify -3 decimal places of precision (i.e. rounding to
     /// the nearest 1000), use a scale factor of 0.001.
     /// </para>
-    /// Coordinates are represented internally as double-precision values.
+    /// Coordinates are represented internally as Java double-precision values.
     /// Since .NET uses the IEEE-394 floating point standard, this
     /// provides 53 bits of precision. (Thus the maximum precisely representable
-    /// integer is 9,007,199,254,740,992).
-    /// NTS methods currently do not handle inputs with different precision models.
+    /// <i>integer</i> is 9,007,199,254,740,992 - or almost 16 decimal digits of precision).
+    /// <para/>
+    /// NTS binary methods currently do not handle inputs which have different precision models.
+    /// The precision model of any constructed geometric value is undefined.
     /// </remarks>
     //#if !SILVERLIGHT
     [Serializable]

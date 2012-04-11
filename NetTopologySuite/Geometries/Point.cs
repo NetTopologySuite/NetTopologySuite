@@ -257,6 +257,9 @@ namespace NetTopologySuite.Geometries
                 return false;            
             if (IsEmpty && other.IsEmpty) 
                 return true;
+            if (IsEmpty != other.IsEmpty)
+                return false;
+
             return Equal(other.Coordinate, Coordinate, tolerance);
         }
 

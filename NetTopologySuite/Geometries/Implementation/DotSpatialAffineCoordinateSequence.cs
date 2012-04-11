@@ -9,8 +9,8 @@ namespace NetTopologySuite.Geometries.Implementation
     /// </summary>
     [Serializable]
     public class DotSpatialAffineCoordinateSequence : 
-        //ICoordinateSequence
-        IMeasuredCoordinateSequence
+        ICoordinateSequence
+        //IMeasuredCoordinateSequence
     {
         private readonly double[] _xy;
         private readonly double[] _z;

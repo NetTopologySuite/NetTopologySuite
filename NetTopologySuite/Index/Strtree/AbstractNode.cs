@@ -5,9 +5,13 @@ using NetTopologySuite.Utilities;
 namespace NetTopologySuite.Index.Strtree
 {
     /// <summary> 
-    /// A node of the STR tree. The children of this node are either more nodes
-    /// (AbstractNodes) or real data (ItemBoundables). If this node contains real data
-    /// (rather than nodes), then we say that this node is a "leaf node".
+    /// A node of an <see cref="AbstractSTRtree"/>. A node is one of:
+    /// <list type="Bullet">
+    /// <item>empty</item>
+    /// <item>an <i>interior node</i> containing child <see cref="AbstractNode"/>s</item>
+    /// <item>a <i>leaf node</i> containing data items (<see cref="ItemBoundable"/>s).</item>
+    /// </list>
+    /// A node stores the bounds of its children, and its level within the index tree.
     /// </summary>
     [Serializable]
     public abstract class AbstractNode : IBoundable 
@@ -53,7 +57,7 @@ namespace NetTopologySuite.Index.Strtree
         protected abstract object ComputeBounds();
 
         /// <summary>
-        /// 
+        /// Gets the bounds of this node
         /// </summary>
         public object Bounds
         {
@@ -78,6 +82,23 @@ namespace NetTopologySuite.Index.Strtree
                 return _level;
             }
         }
+
+        /// <summary>
+        /// Gets the count of the <see cref="IBoundable"/>s at this node.
+        /// </summary>
+        public int Count
+        {
+            get {return _childBoundables.Count;}
+        }
+
+        /// <summary>
+        /// Tests whether there are any <see cref="IBoundable"/>s at this node.
+        /// </summary>
+        public bool IsEmpty
+        {
+            get { return _childBoundables.Count == 0; }
+    }
+  
 
         /// <summary>
         /// Adds either an AbstractNode, or if this is a leaf node, a data object

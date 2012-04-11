@@ -385,6 +385,47 @@ namespace NetTopologySuite.Geometries
             return new Polygon(shell, holes, this);
         }
 
+        /// <summary>
+        /// Constructs a <c>Polygon</c> with the given exterior boundary.
+        /// </summary>
+        /// <param name="coordinates">the outer boundary of the new <c>Polygon</c>, or
+        /// <c>null</c> or an empty <c>LinearRing</c> if
+        /// the empty geometry is to be created.</param>
+        /// <returns>The polygon</returns>
+        /// <exception cref="ArgumentException">If the boundary ring is invalid</exception>
+
+        public IPolygon CreatePolygon(ICoordinateSequence coordinates)
+        {
+            return CreatePolygon(CreateLinearRing(coordinates));
+        }
+
+        /// <summary>
+        /// Constructs a <c>Polygon</c> with the given exterior boundary.
+        /// </summary>
+        /// <param name="coordinates">the outer boundary of the new <c>Polygon</c>, or
+        /// <c>null</c> or an empty <c>LinearRing</c> if
+        /// the empty geometry is to be created.</param>
+        /// <returns>The polygon</returns>
+        /// <exception cref="ArgumentException">If the boundary ring is invalid</exception>
+        public IPolygon CreatePolygon(Coordinate[] coordinates)
+        {
+            return CreatePolygon(CreateLinearRing(coordinates));
+        }
+
+
+        /// <summary>
+        /// Constructs a <c>Polygon</c> with the given exterior boundary.
+        /// </summary>
+        /// <param name="shell">the outer boundary of the new <c>Polygon</c>, or
+        /// <c>null</c> or an empty <c>LinearRing</c> if
+        /// the empty geometry is to be created.</param>
+        /// <returns>The polygon</returns>
+        /// <exception cref="ArgumentException">If the boundary ring is invalid</exception>
+        public IPolygon CreatePolygon(ILinearRing shell)
+        {
+            return CreatePolygon(shell, null);
+        }
+
         /// <summary> 
         /// Creates a <see cref="IMultiPoint"/> using the given Points.
         /// A null or empty array will  create an empty MultiPoint.
@@ -531,15 +572,39 @@ namespace NetTopologySuite.Geometries
         }       
 
         /// <summary>
-        /// Returns a clone of g based on a CoordinateSequence created by this
-        /// GeometryFactory's CoordinateSequenceFactory.        
+        /// Creates a deep copy of the input <see cref="IGeometry"/>.
+        /// The <see cref="ICoordinateSequenceFactory"/> defined for this factory
+        /// is used to copy the <see cref="ICoordinateSequence"/>s
+        /// of the input geometry.
+        /// <para/>
+        /// This is a convenient way to change the <tt>CoordinateSequence</tt>
+        /// used to represent a geometry.
+        /// <para/>
+        /// <see cref="IGeometry.Clone()"/> can also be used to make a deep copy,
+        /// but it does not allow changing the CoordinateSequence type.
         /// </summary>
+        /// <param name="g">The geometry</param>
+        /// <returns>A deep copy of the input geometry, using the CoordinateSequence type of this factory</returns>
         public IGeometry CreateGeometry(IGeometry g)
+        {
+            var editor = new GeometryEditor(this);
+    //        return editor.Edit(g, new GeometryEditor.CoordinateSequenceOperation() {
+    //  public CoordinateSequence edit(CoordinateSequence coordSeq, Geometry geometry) {
+    //              return coordinateSequenceFactory.create(coordSeq);
+    //      }
+    //});
+            return editor.Edit(g, new GeometryEditor.CoordinateSequenceOperation(
+                                      (x, y) => coordinateSequenceFactory.Create(x)));
+        }
+
+        /*
+        public Geometry OLDcreateGeometry(Geometry g)
         {
             // could this be cached to make this more efficient? Or maybe it isn't enough overhead to bother
             GeometryEditor editor = new GeometryEditor(this);
             return editor.Edit(g, new AnonymousCoordinateOperationImpl());            
         }
+         */
 
         private static ICoordinateSequenceFactory GetDefaultCoordinateSequenceFactory()
         {

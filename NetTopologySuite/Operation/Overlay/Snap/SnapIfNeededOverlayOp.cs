@@ -56,6 +56,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             Exception savedException = null;
             try
             {
+                // try basic operation with input geometries
                 result = OverlayOp.Overlay(_geom[0], _geom[1], opCode);
                 var isValid = true;
                 // not needed if noding validation is used

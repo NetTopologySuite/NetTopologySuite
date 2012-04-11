@@ -100,7 +100,7 @@ namespace GeoAPI.Geometries.Test
             where T2 : DotSpatial.Topology.IGeometryCollection
         {
             Assert.AreEqual(g.NumGeometries, gDS.NumGeometries);
-            Assert.AreEqual(g.Area, gDS.Area);
+            Assert.AreEqual(g.Area, gDS.Area, 1e-9);
             for (var i = 0; i < g.NumGeometries; i++)
                 TestGeometry(g.GetGeometryN(i), gDS.GetGeometryN(i));
         }
@@ -139,7 +139,7 @@ namespace GeoAPI.Geometries.Test
                 var p = g as IPolygon;
                 Assert.AreEqual(g.NumGeometries, g2.NumGeometries);
                 Assert.AreEqual(p.NumInteriorRings, p.NumInteriorRings);
-                Assert.AreEqual(g.Area, g2.Area);
+                Assert.AreEqual(g.Area, g2.Area, 1e-9);
                 Assert.AreEqual(g.NumPoints, g2.NumPoints);
 
                 var p2 = g2 as IPolygon;
@@ -172,7 +172,7 @@ namespace GeoAPI.Geometries.Test
         {
             Assert.AreEqual(g.NumGeometries, gDS.NumGeometries);
             Assert.AreEqual(g.NumInteriorRings, gDS.NumHoles);
-            Assert.AreEqual(g.Area, gDS.Area);
+            Assert.AreEqual(g.Area, gDS.Area, 1e-9);
             Assert.AreEqual(g.NumPoints, gDS.NumPoints);
 
             for (var i = 0; i < g.NumInteriorRings; i++)

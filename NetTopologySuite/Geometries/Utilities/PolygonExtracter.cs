@@ -15,7 +15,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="geom">The geometry from which to extract</param>
         /// <param name="list">The list to add the extracted elements to</param>
         /// <returns></returns>
-        public static ICollection<IGeometry> GetPolygons(IGeometry geom, ICollection<IGeometry> list)
+        public static IList<IGeometry> GetPolygons(IGeometry geom, IList<IGeometry> list)
         {
             if (geom is IPolygon)
             {
@@ -34,18 +34,18 @@ namespace NetTopologySuite.Geometries.Utilities
         /// Extracts the <see cref="IPolygon"/> elements from a single <see cref="IGeometry"/> and returns them in a <see cref="IList{IPolygon}"/>.
         /// </summary>
         /// <param name="geom">The geometry from which to extract</param>
-        public static ICollection<IGeometry> GetPolygons(IGeometry geom)
+        public static IList<IGeometry> GetPolygons(IGeometry geom)
         {
             return GetPolygons(geom, new List<IGeometry>());
         }
 
-        private readonly ICollection<IGeometry> _comps;
+        private readonly IList<IGeometry> _comps;
 
         /// <summary> 
         /// Constructs a PolygonExtracterFilter with a list in which to store Polygons found.
         /// </summary>
         /// <param name="comps"></param>
-        public PolygonExtracter(ICollection<IGeometry> comps)
+        public PolygonExtracter(IList<IGeometry> comps)
         {
             _comps = comps;
         }

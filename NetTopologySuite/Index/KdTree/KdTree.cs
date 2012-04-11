@@ -44,6 +44,20 @@ namespace NetTopologySuite.Index.KdTree
         }
 
         /// <summary>
+        /// Tests whether the index contains any items.
+        /// </summary>
+        public bool IsEmpty
+        {
+            get
+            {
+                if (_root == null) return true;
+                return false;
+            }
+        }
+  
+
+
+        /// <summary>
         /// Inserts a new point in the kd-tree, with no data.
         /// </summary>
         /// <param name="p">The point to insert</param>

@@ -38,15 +38,19 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// Constructs a sequence based on the given array (the array is not copied).
+        /// Creates a new sequence based on a deep copy of the given <see cref="ICoordinateSequence"/>.
         /// </summary>
-        /// <param name="coordSeq">The coordinate array that will be referenced.</param>      
+        /// <param name="coordSeq">The coordinate sequence that will be copied</param>
         public CoordinateArraySequence(ICoordinateSequence coordSeq)
         {
             if (coordSeq != null)
                  Coordinates = new Coordinate[coordSeq.Count];
-            else Coordinates = new Coordinate[0];
-            for (int i = 0; i < Coordinates.Length; i++) 
+            else
+            {
+                Coordinates = new Coordinate[0];
+                return;
+            }
+            for (var i = 0; i < Coordinates.Length; i++) 
                 Coordinates[i] = coordSeq.GetCoordinateCopy(i);
         }
 

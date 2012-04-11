@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Noding;
@@ -63,7 +64,7 @@ namespace Open.Topology.TestRunner.Functions
             var res = nv.IsValid;
             var intPts = nv.Intersections;
             var pts = new IPoint[intPts.Count];
-            for (int i = 0; i < intPts.Count; i++)
+            for (var i = 0; i < intPts.Count; i++)
             {
                 var coord = intPts[i];
                 // use default factory in case intersections are not fixed
@@ -72,6 +73,17 @@ namespace Open.Topology.TestRunner.Functions
             return FunctionsUtil.getFactoryOrDefault(null).CreateMultiPoint(
                 pts);
         }
+
+        public static IGeometry MCIndexNoding(Geometry geom, double scaleFactor)
+        {
+            var segs = createNodedSegmentStrings(geom);
+            var fixedPM = new PrecisionModel(scaleFactor);
+            var noder = new MCIndexNoder(new IntersectionAdder(new RobustLineIntersector()));
+            noder.ComputeNodes(segs);
+            var nodedSegStrings = noder.GetNodedSubstrings();
+            return fromSegmentStrings(nodedSegStrings);
+        }
+
         /**
          * Runs a ScaledNoder on input.
          * Input vertices should be rounded to precision model.
@@ -101,6 +113,18 @@ namespace Open.Topology.TestRunner.Functions
             }
             return segs;
         }
+
+        private static List<ISegmentString> createNodedSegmentStrings(Geometry geom)
+        {
+            var segs = new List<ISegmentString>();
+            var lines = LinearComponentExtracter.GetLines(geom);
+            foreach (ILineString line in lines)
+            {
+                segs.Add(new NodedSegmentString(line.Coordinates, null));
+            }
+            return segs;
+        }
+  
 
         private static IGeometry fromSegmentStrings(IList<ISegmentString> segStrings)
         {

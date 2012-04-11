@@ -38,7 +38,9 @@ namespace NetTopologySuite.Algorithm
         {
             _rectEnv = rectEnv;
             /**
-             * Up and Down are relative to the Left side of the rectangle.
+             * Up and Down are the diagonal orientations
+             * relative to the Left side of the rectangle.
+             * Index 0 is the left side, 1 is the right side.
              */
             _diagUp0 = new Coordinate(rectEnv.MinX, rectEnv.MinY);
             _diagUp1 = new Coordinate(rectEnv.MaxX, rectEnv.MaxY);

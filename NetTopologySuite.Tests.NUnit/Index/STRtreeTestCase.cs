@@ -71,6 +71,27 @@ namespace NetTopologySuite.Tests.NUnit.Index
         }
 
         [Test]
+        public void TestEmptyTreeUsingListQuery()
+        {
+            var tree = new STRtree();
+            var list = tree.Query(new Envelope(0, 0, 1, 1));
+            Assert.IsTrue(list.Count == 0);
+        }
+
+        private class ItemVisitor : IItemVisitor<object>
+        {
+            public void VisitItem(object item) { Assert.IsTrue(true, "Should never reach here"); }
+        }
+
+        [Test]
+        public void TestEmptyTreeUsingItemVisitorQuery()
+        {
+            var tree = new STRtree();
+            tree.Query(new Envelope(0, 0, 1, 1), new ItemVisitor());
+        }
+
+
+        [Test]
         public void TestCreateParentsFromVerticalSlice()
         {
             DoTestCreateParentsFromVerticalSlice(3, 2, 2, 1);
@@ -130,26 +151,6 @@ namespace NetTopologySuite.Tests.NUnit.Index
                 Console.WriteLine(x.Message);
                 throw x;
             }
-        }
-
-        [Test]
-        public void TestEmptyTreeUsingListQuery()
-        {
-            var tree = new STRtree();
-            var list = tree.Query(new Envelope(0, 0, 1, 1));
-            Assert.IsTrue(list.Count == 0);
-        }
-
-        private class ItemVisitor : IItemVisitor<object>
-        {
-            public void VisitItem(object item) { Assert.IsTrue(true, "Should never reach here"); }
-        }
-
-        [Test]
-        public void TestEmptyTreeUsingItemVisitorQuery()
-        {
-            var tree = new STRtree();
-            tree.Query(new Envelope(0, 0, 1, 1), new ItemVisitor());
         }
 
 

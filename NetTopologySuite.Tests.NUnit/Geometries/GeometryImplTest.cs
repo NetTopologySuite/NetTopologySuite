@@ -267,9 +267,12 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 anotherSameClassButEmpty, collectionFactory);
         }
 
-        private void DoTestEqualsExact(IGeometry x, IGeometry somethingExactlyEqual,
-            IGeometry somethingNotEqualButSameClass, IGeometry sameClassButEmpty,
-            IGeometry anotherSameClassButEmpty, ICollectionFactory collectionFactory)
+        private void DoTestEqualsExact(IGeometry x, 
+            IGeometry somethingExactlyEqual,
+            IGeometry somethingNotEqualButSameClass,
+            IGeometry sameClassButEmpty,
+            IGeometry anotherSameClassButEmpty, 
+            ICollectionFactory collectionFactory)
         {
             IGeometry emptyDifferentClass;
 
@@ -288,6 +291,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             DoTestEqualsExact(sameClassButEmpty, anotherSameClassButEmpty,
                 emptyDifferentClass, x);
 
+
+            /**
+             * Test comparison of non-empty versus empty.
+             */
+            DoTestEqualsExact(x, somethingExactlyEqual,
+                sameClassButEmpty, sameClassButEmpty);
+        
+
             DoTestEqualsExact(collectionFactory.CreateCollection(
                     new IGeometry[] { x, x }, geometryFactory),
                 collectionFactory.CreateCollection(
@@ -297,7 +308,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                     new IGeometry[] { x, somethingNotEqualButSameClass }, geometryFactory));
         }
 
-        private void DoTestEqualsExact(IGeometry x, IGeometry somethingExactlyEqual,
+        private void DoTestEqualsExact(IGeometry x, 
+            IGeometry somethingExactlyEqual,
             IGeometry somethingEqualButNotExactly,
             IGeometry somethingNotEqualButSameClass)  {
             IGeometry differentClass;

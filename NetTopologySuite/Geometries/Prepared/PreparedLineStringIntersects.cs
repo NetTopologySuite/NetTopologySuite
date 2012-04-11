@@ -50,13 +50,17 @@ namespace NetTopologySuite.Geometries.Prepared
             /*
              * If any segments intersect, obviously intersects = true
              */
-            IList<ISegmentString> lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
-            bool segsIntersect = prepLine.IntersectionFinder.Intersects(lineSegStr);
-            // MD - performance testing
-            //		boolean segsIntersect = false;
-            if (segsIntersect)
-                return true;
-
+            var lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
+            // only request intersection finder if there are segments (ie NOT for point inputs)
+            if (lineSegStr.Count > 0)
+            {
+                var segsIntersect = prepLine.IntersectionFinder.Intersects(lineSegStr);
+                // MD - performance testing
+                //		boolean segsIntersect = false;
+                if (segsIntersect)
+                    return true;
+            }
+            
             /*
              * For L/L case we are done
              */

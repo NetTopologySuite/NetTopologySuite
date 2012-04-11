@@ -12,17 +12,16 @@ namespace NetTopologySuite.Noding.Snapround
     /// </summary>
     public class MCIndexPointSnapper
     {
-        private IList<MonotoneChain> _monoChains;
+        //private IList<MonotoneChain> _monoChains;
         private readonly STRtree _index;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MCIndexPointSnapper"/> class.
         /// </summary>
-        /// <param name="monoChains"></param>
         /// <param name="index"></param>
-        public MCIndexPointSnapper(IList<MonotoneChain> monoChains, ISpatialIndex index)
+        public MCIndexPointSnapper(ISpatialIndex index)
         {
-            _monoChains = monoChains;
+            //_monoChains = monoChains;
             _index = (STRtree) index;
         }
 

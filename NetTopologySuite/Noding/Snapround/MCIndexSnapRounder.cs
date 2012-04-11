@@ -60,7 +60,7 @@ namespace NetTopologySuite.Noding.Snapround
         {
             _nodedSegStrings = inputSegmentStrings;
             _noder = new MCIndexNoder();
-            _pointSnapper = new MCIndexPointSnapper(_noder.MonotoneChains, _noder.Index);
+            _pointSnapper = new MCIndexPointSnapper(_noder.Index);
             SnapRound(inputSegmentStrings, _li);
         }
 

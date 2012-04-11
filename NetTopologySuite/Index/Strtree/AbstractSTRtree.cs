@@ -7,12 +7,12 @@ namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
     /// Base class for STRtree and SIRtree. STR-packed R-trees are described in:
-    /// P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
-    /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
+    /// P. Rigaux, Michel Scholl and Agnes Voisard. <i>Spatial Databases With
+    /// Application To GIS</i>. Morgan Kaufmann, San Francisco, 2002.
     /// <para>
-    /// This implementation is based on Boundables rather than just AbstractNodes,
+    /// This implementation is based on <see cref="IBoundable"/>s rather than just <see cref="AbstractNode"/>s,
     /// because the STR algorithm operates on both nodes and
-    /// data, both of which are treated here as Boundables.
+    /// data, both of which are treated as <see cref="IBoundable"/>s.
     /// </para>
     /// </summary>
     [Serializable]
@@ -41,7 +41,10 @@ namespace NetTopologySuite.Index.Strtree
         private AbstractNode _root;
 
         private bool _built;
-        private readonly List<object> _itemBoundables = new List<object>();
+        /**
+         * Set to <tt>null</tt> when index is built, to avoid retaining memory.
+         */
+        private List<object> _itemBoundables = new List<object>();
         private readonly int _nodeCapacity;
 
         /// <summary> 
@@ -63,9 +66,15 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         public void Build()
         {
-            Assert.IsTrue(!_built);
-            _root = (_itemBoundables.Count == 0) ?
-                CreateNode(0) : CreateHigherLevels(_itemBoundables, -1);
+            if (_built)
+                return;
+
+            _root = (_itemBoundables.Count == 0) 
+                        ? CreateNode(0)
+                        : CreateHigherLevels(_itemBoundables, -1);
+
+            // the item list is no longer needed
+            _itemBoundables = null;
             _built = true;
         }
 
@@ -129,7 +138,7 @@ namespace NetTopologySuite.Index.Strtree
         {
             get
             {
-                if (!_built) Build();
+                Build();
                 return _root;
             }
             set { _root = value; }
@@ -141,6 +150,20 @@ namespace NetTopologySuite.Index.Strtree
         public int NodeCapacity
         {
             get { return _nodeCapacity; }
+        }
+
+        /// <summary>
+        /// Tests whether the index contains any items.
+        /// This method does not build the index,
+        /// so items can still be inserted after it has been called.
+        /// </summary>
+        public bool IsEmpty
+        {
+            get
+            {
+                if (!_built) return _itemBoundables.Count == 0;
+                return Root.IsEmpty;
+            }
         }
 
         public int Count
@@ -173,8 +196,12 @@ namespace NetTopologySuite.Index.Strtree
         {
             get
             {
-                if (!_built)
-                    Build();
+
+                if (IsEmpty)
+                {
+                    return 0;
+                }
+                Build();
                 return _itemBoundables.Count == 0 ? 0 : GetDepth(_root);
             }
         }
@@ -206,14 +233,18 @@ namespace NetTopologySuite.Index.Strtree
         /// <param name="searchBounds"></param>
         protected IList Query(object searchBounds)
         {
-            if (!_built)
-                Build();
+            Build();
+
             var matches = new List<object>();
-            if (_itemBoundables.Count == 0)
-            {
-                //Assert.IsTrue(_root.Bounds == null);
+            if (IsEmpty)
                 return matches;
-            }
+            
+            //if (_itemBoundables.Count == 0)
+            //{
+            //    //Assert.IsTrue(_root.Bounds == null);
+            //    return matches;
+            //}
+
             if (IntersectsOp.Intersects(_root.Bounds, searchBounds))
                 Query(searchBounds, _root, matches);
             return matches;
@@ -221,15 +252,17 @@ namespace NetTopologySuite.Index.Strtree
 
         protected void Query(Object searchBounds, IItemVisitor<object> visitor)
         {
-            if (!_built)
-                Build();
+            Build();
 
-            if (_itemBoundables.Count == 0)
-            {
-                //nothing in tree, so return
-                //Assert.IsTrue(_root.Bounds == null);
+            if (IsEmpty)
                 return;
-            }
+
+            //if (_itemBoundables.Count == 0)
+            //{
+            //    //nothing in tree, so return
+            //    //Assert.IsTrue(_root.Bounds == null);
+            //    return;
+            //}
 
             if (IntersectsOp.Intersects(_root.Bounds, searchBounds))
                 Query(searchBounds, _root, visitor);
@@ -277,7 +310,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <returns>a List of items and/or Lists</returns>
         public IList ItemsTree()
         {
-            if (!_built) { Build(); }
+            Build();
 
             var valuesTree = ItemsTree(_root);
             return valuesTree ?? new List<object>();
@@ -317,8 +350,7 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         protected bool Remove(object searchBounds, object item)
         {
-            if (!_built)
-                Build();
+            Build();
             if (_itemBoundables.Count == 0)
                 Assert.IsTrue(_root.Bounds == null);
             return IntersectsOp.Intersects(_root.Bounds, searchBounds) && Remove(searchBounds, _root, item);

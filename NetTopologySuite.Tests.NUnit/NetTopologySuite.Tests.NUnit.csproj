@@ -84,6 +84,7 @@
     <Compile Include="Geometries\CoordinateArraysTest.cs" />
     <Compile Include="Geometries\EnvelopeTest.cs" />
     <Compile Include="Geometries\GeometryCollectionImplTest.cs" />
+    <Compile Include="Geometries\GeometryFactoryTest.cs" />
     <Compile Include="Geometries\GeometryImplTest.cs" />
     <Compile Include="Geometries\Implementation\BasicCoordinateSequenceTest.cs" />
     <Compile Include="Geometries\Implementation\CoordinateArraySequenceTest.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="Operation\Valid\ValidSelfTouchingRingFormingHoleTest.cs" />
     <Compile Include="Performance\AreaPrecisionPerformanceTest.cs" />
     <Compile Include="Performance\ExamplePerformanceTest.cs" />
+    <Compile Include="Performance\Operation\Buffer\PolygonBufferStressTest.cs" />
     <Compile Include="Performance\PerformanceTestCase.cs" />
     <Compile Include="Performance\PerformanceTestRunner.cs" />
     <Compile Include="Precision\GeometryPrecisionReducerTest.cs" />
