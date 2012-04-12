@@ -19,7 +19,7 @@ using NUnit.Framework;
  * that cross-snapping works extremely well on this dataset.
  */
 
-namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
+namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
 {
     [TestFixture]
     public class OverlayNodingStressTest

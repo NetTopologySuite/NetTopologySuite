@@ -578,7 +578,8 @@ namespace NetTopologySuite.Geometries
         /// of the input geometry.
         /// <para/>
         /// This is a convenient way to change the <tt>CoordinateSequence</tt>
-        /// used to represent a geometry.
+        /// used to represent a geometry, or to change the 
+        /// factory used for a geometry.
         /// <para/>
         /// <see cref="IGeometry.Clone()"/> can also be used to make a deep copy,
         /// but it does not allow changing the CoordinateSequence type.

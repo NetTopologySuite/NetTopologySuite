@@ -4,7 +4,7 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
-namespace NetTopologySuite.Tests.NUnit.Algorithm
+namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 {
     [TestFixture]
     public class MinimumBoundingCircleStressTest

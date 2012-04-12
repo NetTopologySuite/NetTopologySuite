@@ -24,7 +24,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 OrientationIndexTest.GetCoordinates("LINESTRING ( 0 0, 0 1, 1 1)")));
         }
 
-        [Test, ExpectedException(typeof (AssertionException))]
+        [Test/*, ExpectedException(typeof(AssertionException))*/]
         public void TestBadCCW()
         {
             // this case fails because subtraction of small from large loses precision
@@ -36,10 +36,10 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             // this should succeed
             Assert.IsTrue(IsAllOrientationsEqualDD(pts));
             // this is expected to fail
-            Assert.IsTrue(OrientationIndexTest.IsAllOrientationsEqual(pts));
+            Assert.IsTrue(!OrientationIndexTest.IsAllOrientationsEqual(pts));
         }
 
-        [Test, ExpectedException(typeof(AssertionException))]
+        [Test/*, ExpectedException(typeof(AssertionException))*/]
         public void TestBadCCW2()
         {
             // this case fails because subtraction of small from large loses precision
@@ -51,10 +51,10 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             // this should succeed
             Assert.IsTrue(IsAllOrientationsEqualDD(pts));
             // this is expected to fail
-            Assert.IsTrue(OrientationIndexTest.IsAllOrientationsEqual(pts));
+            Assert.IsTrue(!OrientationIndexTest.IsAllOrientationsEqual(pts));
         }
 
-        [Test, ExpectedException(typeof(AssertionException))]
+        [Test/*, ExpectedException(typeof(AssertionException))*/]
         public void TestBadCCW3()
         {
             // this case fails because subtraction of small from large loses precision
@@ -66,7 +66,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             // this should succeed
             Assert.IsTrue(IsAllOrientationsEqualDD(pts));
             // this is expected to fail
-            Assert.IsTrue(OrientationIndexTest.IsAllOrientationsEqual(pts));
+            Assert.IsTrue(!OrientationIndexTest.IsAllOrientationsEqual(pts));
         }
 
         public static bool IsAllOrientationsEqual(

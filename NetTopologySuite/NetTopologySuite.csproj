@@ -78,6 +78,7 @@
     <Compile Include="Algorithm\CentroidArea.cs" />
     <Compile Include="Algorithm\CentroidLine.cs" />
     <Compile Include="Algorithm\CentroidPoint.cs" />
+    <Compile Include="Algorithm\CGAlgorithmsDD.cs" />
     <Compile Include="Algorithm\CGAlgorithms.cs" />
     <Compile Include="Algorithm\ConvexHull.cs" />
     <Compile Include="Algorithm\Distance\DistanceToPoint.cs" />

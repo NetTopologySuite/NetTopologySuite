@@ -34,6 +34,23 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
             });
         }
 
+        public void test3()
+        {
+            DoTest(new String[]{
+        "LINESTRING (0 0, 4 0)",
+        "LINESTRING (4 0, 5 3)",
+"LINESTRING (5 3, 4 6, 6 6, 5 3)",
+"LINESTRING (5 3, 6 0)",
+"LINESTRING (6 0, 10 0, 5 10, 0 0)",
+"LINESTRING (4 0, 6 0)"
+    },
+            new String[]{
+"POLYGON ((5 3, 4 0, 0 0, 5 10, 10 0, 6 0, 5 3), (5 3, 6 6, 4 6, 5 3))",
+"POLYGON ((5 3, 4 6, 6 6, 5 3))",
+"POLYGON ((4 0, 5 3, 6 0, 4 0))"
+    });
+        }
+
         /*
                 [Test]
                 public void Test2() {
@@ -64,11 +81,13 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
             ICollection<IGeometry> actualGeometries)
         {
             Assert.AreEqual(expectedGeometries.Count, actualGeometries.Count,
-                "Geometry count, " + actualGeometries);
+                "Geometry count - expected " + expectedGeometries.Count
+        + " but actual was " + actualGeometries.Count
+        + " in " + actualGeometries);
             foreach (var expectedGeometry in expectedGeometries)
             {
                 Assert.IsTrue(Contains(actualGeometries, expectedGeometry),
-                    "Not found: " + expectedGeometry + ", " + actualGeometries);
+                    "Expected to find: " + expectedGeometry + " in Actual result:" + actualGeometries);
             }
         }
 
@@ -76,7 +95,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
         {
             foreach (var element in geometries)
             {
-                if (element.EqualsExact(g))
+                if (element.EqualsNormalized(g))
                 {
                     return true;
                 }

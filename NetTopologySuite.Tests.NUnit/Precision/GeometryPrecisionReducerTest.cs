@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry g = reader.Read("POLYGON (( 0 0, 0 1.4, 1.4 1.4, 1.4 0, 0 0 ))");
             IGeometry g2 = reader.Read("POLYGON (( 0 0, 0 1, 1 1, 1 0, 0 0 ))");
             IGeometry gReduce = reducer.Reduce(g);
-            Assert.IsTrue(gReduce.EqualsExact(g2));
+            AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
 
         [Test]
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry g = reader.Read("POLYGON (( 0 0, 0 .4, .4 .4, .4 0, 0 0 ))");
             IGeometry g2 = reader.Read("POLYGON EMPTY");
             IGeometry gReduce = reducer.Reduce(g);
-            Assert.IsTrue(gReduce.EqualsExact(g2));
+            AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry g = reader.Read("POLYGON (( 0 0, 0 1.4, .4 .4, .4 0, 0 0 ))");
             IGeometry g2 = reader.Read("POLYGON EMPTY");
             IGeometry gReduce = reducer.Reduce(g);
-            Assert.IsTrue(gReduce.EqualsExact(g2));
+            AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry g = reader.Read("POLYGON (( 0 0, 0 1.4, .4 .4, .4 0, 0 0 ))");
             IGeometry g2 = reader.Read("POLYGON EMPTY");
             IGeometry gReduce = reducerKeepCollapse.Reduce(g);
-            Assert.IsTrue(gReduce.EqualsExact(g2));
+            AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry g = reader.Read("LINESTRING ( 0 0, 0 1.4 )");
             IGeometry g2 = reader.Read("LINESTRING (0 0, 0 1)");
             IGeometry gReduce = reducer.Reduce(g);
-            Assert.IsTrue(gReduce.EqualsExact(g2));
+            AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry g = reader.Read("LINESTRING ( 0 0, 0 .4 )");
             IGeometry g2 = reader.Read("LINESTRING EMPTY");
             IGeometry gReduce = reducer.Reduce(g);
-            Assert.IsTrue(gReduce.EqualsExact(g2));
+            AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
 
         [Test]
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry g = reader.Read("LINESTRING ( 0 0, 0 .4 )");
             IGeometry g2 = reader.Read("LINESTRING ( 0 0, 0 0 )");
             IGeometry gReduce = reducerKeepCollapse.Reduce(g);
-            Assert.IsTrue(gReduce.EqualsExact(g2));
+            AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry g = reader.Read("POLYGON ((10 10, 100 100, 200 10.1, 300 10, 10 10))");
             IGeometry g2 = reader.Read("POLYGON ((10 10, 100 100, 200 10, 10 10))");
             IGeometry gReduce = reducer.Reduce(g);
-            Assert.IsTrue(gReduce.EqualsExact(g2));
+            AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
 
         [Test]
@@ -108,7 +108,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry g = reader.Read("POLYGON ((10 10, 100 100, 200 10.1, 300 10, 10 10))");
             IGeometry g2 = reader.Read("POLYGON ((10 10, 100 100, 200 10,   300 10, 10 10))");
             IGeometry gReduce = GeometryPrecisionReducer.ReducePointwise(g, pmFixed1);
-            Assert.IsTrue(gReduce.EqualsExact(g2));
+            AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
 
         [Test]
@@ -117,7 +117,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry g = reader.Read("POLYGON ((10 10, 100 100, 200 10.1, 300 100, 400 10, 10 10))");
             IGeometry g2 = reader.Read("MULTIPOLYGON (((10 10, 100 100, 200 10, 10 10)), ((200 10, 300 100, 400 10, 200 10)))");
             IGeometry gReduce = reducer.Reduce(g);
-            Assert.IsTrue(gReduce.EqualsExact(g2));
+            AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
 
         [Test]
@@ -126,7 +126,14 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry g = reader.Read("POLYGON ((10 10, 100 100, 200 10.1, 300 100, 400 10, 10 10))");
             IGeometry g2 = reader.Read("POLYGON ((10 10, 100 100, 200 10,   300 100, 400 10, 10 10))");
             IGeometry gReduce = GeometryPrecisionReducer.ReducePointwise(g, pmFixed1);
-            Assert.IsTrue(gReduce.EqualsExact(g2));
+            AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
+
+        private static void AssertEqualsExactAndHasSameFactory(IGeometry a, IGeometry b)
+        {
+            Assert.IsTrue(a.EqualsExact(b));
+            Assert.IsTrue(a.Factory == b.Factory);
+        }
+
     }
 }

@@ -5,8 +5,9 @@ using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
+using NetTopologySuite.Tests.NUnit.Algorithm;
 
-namespace NetTopologySuite.Tests.NUnit.Algorithm
+namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 {
     [TestFixture]
     public class SimpleRayCrossingStressTest

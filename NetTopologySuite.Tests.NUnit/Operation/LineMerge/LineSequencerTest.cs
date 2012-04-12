@@ -176,13 +176,13 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
 
         //==========================================================
 
-        private void RunLineSequencer(String[] inputWKT, String expectedWKT)
+        private static void RunLineSequencer(String[] inputWKT, String expectedWKT)
         {
             var inputGeoms = FromWKT(inputWKT);
-            LineSequencer sequencer = new LineSequencer();
+            var sequencer = new LineSequencer();
             sequencer.Add(inputGeoms);
 
-            bool isCorrect = false;
+            var isCorrect = false;
             if (!sequencer.IsSequenceable())
             {
                 Assert.IsTrue(expectedWKT == null);
@@ -191,21 +191,25 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             {
                 IGeometry expected = rdr.Read(expectedWKT);
                 IGeometry result = sequencer.GetSequencedLineStrings();
-                Assert.IsTrue(expected.EqualsExact(result));
+                var isOK = expected.EqualsNormalized(result);
+                if (! isOK) {
+                    Console.WriteLine("ERROR - Expected: " + expected);
+                    Console.WriteLine("          Actual: " + result);
+                }
 
                 bool isSequenced = LineSequencer.IsSequenced(result);
                 Assert.IsTrue(isSequenced);
             }
         }
 
-        private void RunIsSequenced(String inputWKT, bool expected)
+        private static void RunIsSequenced(String inputWKT, bool expected)
         {
-            IGeometry g = rdr.Read(inputWKT);
-            bool isSequenced = LineSequencer.IsSequenced(g);
+            var g = rdr.Read(inputWKT);
+            var isSequenced = LineSequencer.IsSequenced(g);
             Assert.IsTrue(isSequenced == expected);
         }
 
-        IList<IGeometry> FromWKT(String[] wkts)
+        private static List<IGeometry> FromWKT(String[] wkts)
         {
             var geomList = new List<IGeometry>();
             foreach (var wkt in wkts)

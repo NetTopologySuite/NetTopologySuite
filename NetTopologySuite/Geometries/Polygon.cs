@@ -320,8 +320,6 @@ namespace NetTopologySuite.Geometries
                 return false;
             if (_holes.Length != otherPolygon.Holes.Length) 
                 return false;
-            if (_holes.Length != otherPolygon.Holes.Length) 
-                return false;
             for (int i = 0; i < _holes.Length; i++) 
                 if (!(_holes[i]).EqualsExact(otherPolygon.Holes[i], tolerance)) 
                     return false;
