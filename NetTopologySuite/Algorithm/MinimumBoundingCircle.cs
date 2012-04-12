@@ -154,7 +154,7 @@ namespace NetTopologySuite.Algorithm
         private void ComputeCirclePoints()
         {
             Coordinate[] pts;
-            // handle degenerate cases
+            // handle degenerate or trivial cases
             if (_input.IsEmpty)
             {
                 _extremalPts = new Coordinate[0];
@@ -163,18 +163,18 @@ namespace NetTopologySuite.Algorithm
             if (_input.NumPoints == 1)
             {
                 pts = _input.Coordinates;
-                _extremalPts = new Coordinate[] { new Coordinate(pts[0]) };
+                _extremalPts = new[] { new Coordinate(pts[0]) };
                 return;
             }
 
-            IGeometry convexHull = _input.ConvexHull();
-
             /**
-             * Computing the convex hull also have the effect of eliminating duplicate points
+		     * The problem is simplified by reducing to the convex hull.
+		     * Computing the convex hull also has the useful effect of eliminating duplicate points
              */
+            var convexHull = _input.ConvexHull();
 
             // check for degenerate or trivial cases
-            Coordinate[] hullPts = convexHull.Coordinates;
+            var hullPts = convexHull.Coordinates;
 
             // strip duplicate final point, if any
             pts = hullPts;
@@ -184,17 +184,20 @@ namespace NetTopologySuite.Algorithm
                 CoordinateArrays.CopyDeep(hullPts, 0, pts, 0, hullPts.Length - 1);
             }
 
-            if (pts.Length <= 3)
+            /**
+		     * Optimization for the trivial case where the CH has fewer than 3 points
+		     */
+		    if (pts.Length <= 2)
             {
                 _extremalPts = CoordinateArrays.CopyDeep(pts);
                 return;
             }
 
             // find a point P with minimum Y ordinate
-            Coordinate P = LowestPoint(pts);
+            var P = LowestPoint(pts);
 
             // find a point Q such that the angle that PQ makes with the x-axis is minimal
-            Coordinate Q = PointWitMinAngleWithX(pts, P);
+            var Q = PointWitMinAngleWithX(pts, P);
 
             /**
              * Iterate over the remaining points to find 
@@ -205,7 +208,7 @@ namespace NetTopologySuite.Algorithm
              */
             for (int i = 0; i < pts.Length; i++)
             {
-                Coordinate R = PointWithMinAngleWithSegment(pts, P, Q);
+                var R = PointWithMinAngleWithSegment(pts, P, Q);
 
                 // if PRQ is obtuse, then MBC is determined by P and Q
                 if (AngleUtility.IsObtuse(P, R, Q))
@@ -229,7 +232,7 @@ namespace NetTopologySuite.Algorithm
                 _extremalPts = new Coordinate[] { new Coordinate(P), new Coordinate(Q), new Coordinate(R) };
                 return;
             }
-            Assert.ShouldNeverReachHere("Logic failure in Minimum Bounding Circle algorithm");
+            Assert.ShouldNeverReachHere("Logic failure in Minimum Bounding Circle algorithm!");
         }
 
         private static Coordinate LowestPoint(Coordinate[] pts)

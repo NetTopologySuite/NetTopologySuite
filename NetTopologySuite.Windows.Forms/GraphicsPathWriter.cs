@@ -32,6 +32,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using GeoAPI.Geometries;
@@ -39,8 +40,28 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Windows.Forms
 {
     ///<summary>
-    /// Writes <see cref="IGeometry"/>s int DotNet <see cref="GraphicsPath"/>s.
-    ///</summary>
+    /// Writes <see cref="IGeometry"/>s int System.Drawing.Drawing2D's <see cref="System.Drawing.Drawing2D.GraphicsPath"/>s
+    /// of the appropriate type.
+    /// This supports rendering geometries using System.Drawing.
+    /// The GraphicsPathWriter allows supplying a <see cref="IPointTransformation"/>
+    /// class, to transform coordinates from model space into view space.
+    /// This is useful if a client is providing its own transformation
+    /// logic, rather than relying on <see cref="System.Drawing.Drawing2D.Matrix"/>.
+    /// <para/>
+    /// The writer supports removing duplicate consecutive points
+    /// (via the <see cref="RemoveDuplicatePoints"/> property) 
+    /// as well as true <b>decimation</b>
+    /// (via the <see cref="Decimation"/> property. 
+    /// Enabling one of these strategies can substantially improve 
+    /// rendering speed for large geometries.
+    /// It is only necessary to enable one strategy.
+    /// Using decimation is preferred, but this requires 
+    /// determining a distance below which input geometry vertices
+    /// can be considered unique (which may not always be feasible).
+    /// If neither strategy is enabled, all vertices
+    /// of the input <tt>Geometry</tt>
+    /// will be represented in the output <tt>GraphicsPath</tt>.
+    /// </summary>
     public class GraphicsPathWriter
     {
         /**
@@ -60,6 +81,13 @@ namespace NetTopologySuite.Windows.Forms
          * Cache a PointF object to use to transfer coordinates into shape
          */
         private PointF _transPoint;
+
+        /**
+         * If true, decimation will be used to reduce the number of vertices
+         * by removing consecutive duplicates.
+         * 
+         */
+
 
         ///<summary>
         /// Creates a new GraphicsPathWriter with a specified point transformation and point shape factory.
@@ -95,6 +123,33 @@ namespace NetTopologySuite.Windows.Forms
         {
         }
 
+        /// <summary>
+        /// Gets or sets whether duplicate consecutive points should be eliminated.
+        /// This can reduce the size of the generated Shapes
+        /// and improve rendering speed, especially in situations
+        /// where a transform reduces the extent of the geometry.
+        /// <para/>
+        /// The default is <tt>false</tt>.
+        /// </summary>
+        public bool RemoveDuplicatePoints { get; set; }
+
+        /// <summary>
+        /// Gets or sets the decimation distance used to determine
+        /// whether vertices of the input geometry are 
+        /// considered to be duplicate and thus removed.
+        /// The distance is axis distance, not Euclidean distance.
+        /// The distance is specified in the input geometry coordinate system
+        /// (NOT the transformed output coordinate system).
+        /// <para/>
+        /// When rendering to a screen image, a suitably small distance should be used
+        /// to avoid obvious rendering defects.  
+        /// A distance equivalent to 2 pixels or less is recommended
+        /// (and perhaps even smaller to avoid any chance of visible artifacts).
+        /// <para/>
+        /// The default distance is 0.0, which disables decimation.
+        /// </summary>
+        public double Decimation { get; set; }
+
         ///<summary>
         /// Creates a <see cref="GraphicsPath"/> representing a <see cref="IGeometry"/>, according to the specified PointTransformation and PointShapeFactory (if relevant).
         ///</summary>
@@ -126,54 +181,57 @@ namespace NetTopologySuite.Windows.Forms
         {
             var poly = new PolygonGraphicsPath();
 
-            Append(poly, p.ExteriorRing.Coordinates);
+            AppendRing(poly, p.ExteriorRing.Coordinates);
             for (int j = 0; j < p.NumInteriorRings; j++)
             {
-                Append(poly, p.GetInteriorRingN(j).Coordinates);
+                AppendRing(poly, p.GetInteriorRingN(j).Coordinates);
             }
 
             return poly.Path;
         }
 
-        private void Append(PolygonGraphicsPath poly, Coordinate[] coords)
+        private void AppendRing(PolygonGraphicsPath poly, Coordinate[] coords)
         {
             GraphicsPath ring = null;
-            for (var i = 0; i < coords.Length; i++)
+            
+            var prevx = Double.NaN;
+            var prevy = Double.NaN;
+            Coordinate prev = null;
+    
+            var n = coords.Length - 1;
+            /**
+             * Don't include closing point.
+             * Ring path will be closed explicitly, which provides a 
+             * more accurate path representation.
+             */
+            for (var i = 0; i <= n; i++) 
             {
-                _transPoint = TransformPoint(coords[i], _transPoint);
+                if (Decimation > 0.0)
+                {
+                    var isDecimated = prev != null 
+                        && Math.Abs(coords[i].X - prev.X) < Decimation
+                        && Math.Abs(coords[i].Y - prev.Y) < Decimation;
+                    if (isDecimated) 
+                        continue;
+                    prev = coords[i];
+                }
+		  
+                TransformPoint(coords[i], _transPoint);
+			
+                if (RemoveDuplicatePoints)
+                {
+                    // skip duplicate points (except the last point)
+                    var isDup = _transPoint.X == prevx && _transPoint.Y == prevy;
+                    if (isDup)
+                        continue;
+                    prevx = _transPoint.X;
+                    prevy = _transPoint.Y;
+                }
                 poly.AddToRing(_transPoint, ref ring);
             }
+            // handle closing point
             poly.EndRing(ring);
         }
-
-        /*
-         // Obsolete (slower code)
-        private Shape OLDtoShape(Polygon p)
-        {
-            ArrayList holeVertexCollection = new ArrayList();
-
-            for (int j = 0; j < p.getNumInteriorRing(); j++) {
-                holeVertexCollection.add(
-                    toViewCoordinates(p.getInteriorRingN(j).getCoordinates()));
-            }
-
-            return new PolygonShape(
-                toViewCoordinates(p.getExteriorRing().getCoordinates()),
-                holeVertexCollection);
-        }
-
-        private Coordinate[] toViewCoordinates(Coordinate[] modelCoordinates)
-        {
-            Coordinate[] viewCoordinates = new Coordinate[modelCoordinates.length];
-
-            for (int i = 0; i < modelCoordinates.length; i++) {
-                Point2D point2D = toPoint(modelCoordinates[i]);
-                viewCoordinates[i] = new Coordinate(point2D.getX(), point2D.getY());
-            }
-
-            return viewCoordinates;
-        }
-    */
 
         private GraphicsPath ToShape(IGeometryCollection gc)
         {
@@ -200,9 +258,33 @@ namespace NetTopologySuite.Windows.Forms
         private GraphicsPath ToShape(ILineString lineString)
         {
             var shape = new GraphicsPath();
+            
+            var points = new List<PointF>(lineString.NumPoints);
+            points.Add(TransformPoint(lineString.GetCoordinateN(0), _transPoint));
 
-            var points = _pointTransformer.Transform(lineString.Coordinates);
-            shape.AddLines(points);
+            var prevx = (double)_transPoint.X;
+            var prevy = (double)_transPoint.Y;
+
+            var n = lineString.NumPoints - 1;
+            //int count = 0;
+            for (var i = 1; i <= n; i++)
+            {
+                _transPoint = TransformPoint(lineString.GetCoordinateN(i), _transPoint);
+
+                if (RemoveDuplicatePoints)
+                {
+                    // skip duplicate points (except the last point)
+                    var isDup = _transPoint.X == prevx && _transPoint.Y == prevy;
+                    if (i < n && isDup)
+                        continue;
+                    prevx = _transPoint.X;
+                    prevy = _transPoint.Y;
+                    //count++;
+                }
+                points.Add(_transPoint);
+            }
+            //System.out.println(count);
+            shape.AddLines(points.ToArray());
             return shape;
         }
 
@@ -220,12 +302,7 @@ namespace NetTopologySuite.Windows.Forms
         private PointF TransformPoint(Coordinate model, PointF view)
         {
             _pointTransformer.Transform(model, ref view);
-            /**
-             * Do the rounding now instead of relying on Java 2D rounding. Java2D seems
-             * to do rounding differently for drawing and filling, resulting in the draw
-             * being a pixel off from the fill sometimes.
-             */
-            return new PointF((float)Math.Round(view.X, MidpointRounding.AwayFromZero), (float)Math.Round(view.Y, MidpointRounding.AwayFromZero));
+            return view;
         }
     }
 }

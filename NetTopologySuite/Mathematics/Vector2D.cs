@@ -242,11 +242,19 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
-        /// 
+        /// Computes the weighted sum of this vector
+        /// with another vector,
+        /// with this vector contributing a fraction
+        /// of <tt>frac</tt> to the total.
+        /// <para/>
+        /// In other words, 
+        /// <pre>
+        /// sum = frac * this + (1 - frac) * v
+        /// </pre>
         /// </summary>
-        /// <param name="v"></param>
-        /// <param name="frac"></param>
-        /// <returns></returns>
+        /// <param name="v">The vector to sum</param>
+        /// <param name="frac">The fraction of the total contributed by this vector</param>
+        /// <returns>The weighted sum of the two vectors</returns>
         public Vector2D WeightedSum(Vector2D v, double frac)
         {
             return Create(

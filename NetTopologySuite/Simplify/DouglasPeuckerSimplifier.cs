@@ -10,6 +10,9 @@ namespace NetTopologySuite.Simplify
     /// <remarks>
     /// Ensures that any polygonal geometries returned are valid.
     /// Simple lines are not guaranteed to remain simple after simplification.
+    /// All geometry types are handled. 
+    /// Empty and point geometries are returned unchanged.
+    /// <para/>
     /// Note that in general D-P does not preserve topology -
     /// e.g. polygons can be split, collapse to lines or disappear
     /// holes can be created or disappear,
@@ -90,6 +93,9 @@ namespace NetTopologySuite.Simplify
         /// <returns></returns>
         public IGeometry GetResultGeometry()
         {
+            // empty input produces an empty result
+            if (_inputGeom.IsEmpty) return (IGeometry)_inputGeom.Clone();
+
             return (new DPTransformer(this, EnsureValidTopology)).Transform(_inputGeom);
         }
 

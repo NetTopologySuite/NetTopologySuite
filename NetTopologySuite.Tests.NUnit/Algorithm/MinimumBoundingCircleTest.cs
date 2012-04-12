@@ -54,10 +54,17 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
 
         [Test]
+        public void TestObtuseTriangle() 
+        {
+            DoMinimumBoundingCircleTest("POLYGON ((100 100, 200 100, 150 90, 100 100))", "MULTIPOINT ((100 100), (200 100))",
+                new Coordinate(150, 100), 50);
+        }
+
+        [Test]
         public void TestTriangleWithMiddlePoint()
         {
             DoMinimumBoundingCircleTest("MULTIPOINT ((10 10), (20 20), (10 20), (15 19))", "MULTIPOINT ((10 10), (20 20), (10 20))",
-            new Coordinate(15, 15), 7.0710678118654755);
+                new Coordinate(15, 15), 7.0710678118654755);
         }
 
         static double TOLERANCE = 1.0e-5;
@@ -83,6 +90,10 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             // need this hack because apparently equals does not work for MULTIPOINT EMPTY
             if (actual.IsEmpty && expected.IsEmpty)
                 isEqual = true;
+  	        if (!isEqual)
+  	        {
+  	            Console.WriteLine("Actual = " + actual + ", Expected = " + expected);
+  	        }
             Assert.IsTrue(isEqual);
 
             if (expectedCentre != null)

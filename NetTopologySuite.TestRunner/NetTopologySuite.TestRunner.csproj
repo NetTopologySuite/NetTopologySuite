@@ -133,6 +133,7 @@
     <Compile Include="Functions\SimplificationFunctions.cs" />
     <Compile Include="Functions\StaticMethodGeometryFunction.cs" />
     <Compile Include="Functions\TestCaseGeometryFunctions.cs" />
+    <Compile Include="Functions\ValidationFunctions.cs" />
     <Compile Include="Operations\ArgumentConverter.cs" />
     <Compile Include="Operations\BufferValidatedGeometryOperation.cs" />
     <Compile Include="Operations\GeometryFunctionOperation.cs" />

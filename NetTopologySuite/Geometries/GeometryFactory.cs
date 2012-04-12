@@ -585,6 +585,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="g">The geometry</param>
         /// <returns>A deep copy of the input geometry, using the CoordinateSequence type of this factory</returns>
+        /// <seealso cref="IGeometry.Clone"/>
         public IGeometry CreateGeometry(IGeometry g)
         {
             var editor = new GeometryEditor(this);

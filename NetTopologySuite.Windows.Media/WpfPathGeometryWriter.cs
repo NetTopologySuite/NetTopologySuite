@@ -44,7 +44,27 @@ using WpfPoint = System.Windows.Point;
 namespace NetTopologySuite.Windows.Media
 {
     ///<summary>
-    /// Writes <see cref="IGeometry"/>s into  <see cref="WpfGeometry"/>s.
+    /// Writes <see cref="IGeometry"/>s into <see cref="WpfGeometry"/>s
+    /// of the appropriate type.
+    /// This supports rendering geometries using System.Windows.Media.
+    /// The GeometryWriter allows supplying a <see cref="IPointTransformation"/>
+    /// class, to transform coordinates from model space into view space.
+    /// This is useful if a client is providing its own transformation
+    /// logic, rather than relying on <see cref="Transform"/>.
+    /// <para/>
+    /// The writer supports removing duplicate consecutive points
+    /// (via the <see cref="RemoveDuplicatePoints"/> property) 
+    /// as well as true <b>decimation</b>
+    /// (via the <see cref="Decimation"/> property. 
+    /// Enabling one of these strategies can substantially improve 
+    /// rendering speed for large geometries.
+    /// It is only necessary to enable one strategy.
+    /// Using decimation is preferred, but this requires 
+    /// determining a distance below which input geometry vertices
+    /// can be considered unique (which may not always be feasible).
+    /// If neither strategy is enabled, all vertices
+    /// of the input <tt>Geometry</tt>
+    /// will be represented in the output <tt>WpfGeometry</tt>.
     ///</summary>
     public class WpfPathGeometryWriter
     {
@@ -94,6 +114,33 @@ namespace NetTopologySuite.Windows.Media
         public WpfPathGeometryWriter()
         {
         }
+
+        /// <summary>
+        /// Gets or sets whether duplicate consecutive points should be eliminated.
+        /// This can reduce the size of the generated Shapes
+        /// and improve rendering speed, especially in situations
+        /// where a transform reduces the extent of the geometry.
+        /// <para/>
+        /// The default is <tt>false</tt>.
+        /// </summary>
+        public bool RemoveDuplicatePoints { get; set; }
+
+        /// <summary>
+        /// Gets or sets the decimation distance used to determine
+        /// whether vertices of the input geometry are 
+        /// considered to be duplicate and thus removed.
+        /// The distance is axis distance, not Euclidean distance.
+        /// The distance is specified in the input geometry coordinate system
+        /// (NOT the transformed output coordinate system).
+        /// <para/>
+        /// When rendering to a screen image, a suitably small distance should be used
+        /// to avoid obvious rendering defects.  
+        /// A distance equivalent to 2 pixels or less is recommended
+        /// (and perhaps even smaller to avoid any chance of visible artifacts).
+        /// <para/>
+        /// The default distance is 0.0, which disables decimation.
+        /// </summary>
+        public double Decimation { get; set; }
 
         ///<summary>
         /// Creates a <see cref="WpfGeometry"/> representing a <see cref="IGeometry"/>, according to the specified PointTransformation and PointShapeFactory (if relevant).
@@ -162,15 +209,21 @@ namespace NetTopologySuite.Windows.Media
         private void AddShape(WpfPathGeometry pathGeometry, ILineString lineString, bool closed = false, bool filled = false)
         {
             var coords = lineString.Coordinates;
+
+            WpfPoint[] wpfPoints;
+            var startPoint = TransformSequence(coords, out wpfPoints);
             
             var polyLineSegment = new PolyLineSegment();
-            foreach (var coordinate in TransformPoints(coords, 1))
+
+            foreach (var coordinate in wpfPoints)
                 polyLineSegment.Points.Add(coordinate);
 
-            var figure = new PathFigure();
-            figure.StartPoint = TransformPoint(coords[0]);
-            figure.IsClosed = closed;
-            figure.IsFilled = filled;
+            var figure = new PathFigure
+                             {
+                                 StartPoint = startPoint, 
+                                 IsClosed = closed, 
+                                 IsFilled = filled
+                             };
             figure.Segments.Add(polyLineSegment);
             pathGeometry.Figures.Add(figure);
         }
@@ -186,12 +239,54 @@ namespace NetTopologySuite.Windows.Media
             _pointFactory.AddShape(viewPoint, pathGeometry);
         }
 
-        private IEnumerable<WpfPoint> TransformPoints(Coordinate[] model, int start)
+        //private IEnumerable<WpfPoint> TransformPoints(Coordinate[] model, int start)
+        //{
+        //    var ret = new List<WpfPoint>(model.Length - start);
+        //    for (var i = start; i < model.Length; i++)
+        //        ret.Add(TransformPoint(model[i], new WpfPoint()));
+        //    return ret;
+        //}
+
+        private WpfPoint TransformSequence(Coordinate[] coords, out WpfPoint[] points)
         {
-            var ret = new List<WpfPoint>(model.Length - start);
-            for (int i = 1; i < model.Length; i++)
-                ret.Add(TransformPoint(model[i], new WpfPoint()));
-            return ret;
+            var resPoint = TransformPoint(coords[0]);
+            var prev = coords[0];
+
+            var n = coords.Length - 1;
+            var pointList = new List<WpfPoint>(n);
+
+            var prevX = resPoint.X;
+            var prevY = resPoint.Y;
+
+            //int count = 0;
+            for (var i = 1; i <= n; i++)
+            {
+                if (Decimation > 0)
+                {
+                    var isDecimated = Math.Abs(coords[i].X - prev.X) < Decimation &&
+                                      Math.Abs(coords[i].Y - prev.Y) < Decimation;
+                    if (isDecimated)
+                        continue;
+                    prev = coords[i];
+                }
+
+                var tmpPoint = TransformPoint(coords[i]);
+                if (RemoveDuplicatePoints)
+                {
+                    // skip duplicate points (except the last point)
+                    var isDup = tmpPoint.X == prevX && 
+                                tmpPoint.Y == prevY;
+                    if (/*i < n && */isDup)
+                        continue;
+                    prevX = tmpPoint.X;
+                    prevY = tmpPoint.Y;
+                    //count++;
+                }
+                pointList.Add(tmpPoint);
+            }
+
+            points = pointList.ToArray();
+            return resPoint;
         }
 
         private WpfPoint TransformPoint(Coordinate model)
@@ -202,12 +297,7 @@ namespace NetTopologySuite.Windows.Media
         private WpfPoint TransformPoint(Coordinate model, WpfPoint view)
         {
             _pointTransformer.Transform(model, ref view);
-            /**
-             * Do the rounding now instead of relying on Java 2D rounding. Java2D seems
-             * to do rounding differently for drawing and filling, resulting in the draw
-             * being a pixel off from the fill sometimes.
-             */
-            return new WpfPoint(Math.Round(view.X), Math.Round(view.Y));
+            return view;
         }
     }
 }

@@ -112,7 +112,8 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// 
+        /// Computes the validity of the geometry,
+        /// and returns <tt>true</tt> if it is valid.
         /// </summary>
         public bool IsValid
         {
@@ -124,8 +125,12 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// 
+        /// Computes the validity of the geometry,
+        /// and if not valid returns the validation error for the geometry,
+        /// or null if the geometry is valid.
         /// </summary>
+        /// <returns>The validation error, if the geometry is invalid</returns>
+        /// <returns><c>null</c> if the geometry is valid</returns>
         public TopologyValidationError ValidationError
         {
             get

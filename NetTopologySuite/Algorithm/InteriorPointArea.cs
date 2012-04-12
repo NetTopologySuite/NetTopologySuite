@@ -5,15 +5,20 @@ namespace NetTopologySuite.Algorithm
 {
     /// <summary> 
     /// Computes a point in the interior of an area point.
-    /// Algorithm:
-    /// Find the intersections between the point
-    /// and the horizontal bisector of the area's envelope
-    /// Pick the midpoint of the largest intersection (the intersections
-    /// will be lines and points)
-    /// Note: If a fixed precision model is used,
-    /// in some cases this method may return a point
-    /// which does not lie in the interior.
     /// </summary>
+    /// <remarks>
+    /// <h2>Algorithm:</h2>
+    /// <list type="Bullet">
+    /// <item>Find the intersections between the point
+    /// and the horizontal bisector of the area's envelope</item>
+    /// <item>Pick the midpoint of the largest intersection (the intersections
+    /// will be lines and points)</item>
+    /// </list>
+    /// <h3>KNOWN BUGS</h3>
+    /// <list type="Bullet">
+    /// <item>If a fixed precision model is used,
+    /// in some cases this method may return a point
+    /// which does not lie in the interior.</item></list></remarks>
     public class InteriorPointArea
     {
         /// <summary>

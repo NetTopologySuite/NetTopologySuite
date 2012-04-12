@@ -5,19 +5,37 @@ using NetTopologySuite.Geometries.Utilities;
 namespace NetTopologySuite.Simplify
 {
     /// <summary>
-    /// Simplifies a point, ensuring that
+    /// Simplifies a point and ensures that
     /// the result is a valid point having the
-    /// same dimension and number of components as the input.
-    /// The simplification uses a maximum distance difference algorithm
-    /// similar to the one used in the Douglas-Peucker algorithm.
-    /// In particular, if the input is an areal point
-    /// ( <c>Polygon</c> or <c>MultiPolygon</c> ):
-    /// The result has the same number of shells and holes (rings) as the input,
-    /// in the same order
-    /// The result rings touch at no more than the number of touching point in the input
+    /// same dimension and number of components as the input,
+    /// and with the components having the same topological 
+    /// relationship.
+    /// <para/>
+    /// If the input is a polygonal geometry
+    /// (<see cref="IPolygon"/> or <see cref="IMultiPolygon"/>):
+    /// <list type="Bullet">
+    /// <item>The result has the same number of shells and holes as the input,
+    ///  with the same topological structure</item>
+    /// <item>The result rings touch at no more than the number of touching points in the input
     /// (although they may touch at fewer points).
-    /// (The key implication of this constraint is that the
-    /// output will be topologically valid if the input was.)
+    /// The key implication of this statement is that if the
+    /// input is topologically valid, so is the simplified output.</item>
+    /// </list>
+    /// For linear geometries, if the input does not contain
+    /// any intersecting line segments, this property
+    /// will be preserved in the output.
+    /// <para/>
+    /// For all geometry types, the result will contain 
+    /// enough vertices to ensure validity.  For polygons
+    /// and closed linear geometries, the result will have at
+    /// least 4 vertices; for open linestrings the result
+    /// will have at least 2 vertices.
+    /// <para/>
+    /// All geometry types are handled. 
+    /// Empty and point geometries are returned unchanged.
+    /// <para/>
+    /// The simplification uses a maximum-distance difference algorithm
+    /// similar to the Douglas-Peucker algorithm.
     /// </summary>
     /// <remarks>
     /// <h3>KNOWN BUGS</h3>
@@ -30,7 +48,7 @@ namespace NetTopologySuite.Simplify
     /// any invalid holes or polygons.</item>
     /// </list>
     /// </remarks>
-    /// <see cref="DouglasPeuckerSimplifier"/>
+    /// <seealso cref="DouglasPeuckerSimplifier"/>
     public class TopologyPreservingSimplifier
     {
         /// <summary>
@@ -48,7 +66,7 @@ namespace NetTopologySuite.Simplify
 
         private readonly IGeometry _inputGeom;
         private readonly TaggedLinesSimplifier _lineSimplifier = new TaggedLinesSimplifier();
-        private IDictionary<ILineString, TaggedLineString> _lineStringMap;
+        private Dictionary<ILineString, TaggedLineString> _lineStringMap;
 
         /// <summary>
         ///
@@ -80,10 +98,13 @@ namespace NetTopologySuite.Simplify
         /// <returns></returns>
         public IGeometry GetResultGeometry()
         {
+            // empty input produces an empty result
+            if (_inputGeom.IsEmpty) return (IGeometry)_inputGeom.Clone();
+
             _lineStringMap = new Dictionary<ILineString, TaggedLineString>();
             _inputGeom.Apply(new LineStringMapBuilderFilter(this));
             _lineSimplifier.Simplify(_lineStringMap.Values);
-            IGeometry result = (new LineStringTransformer(this)).Transform(_inputGeom);
+            var result = (new LineStringTransformer(this)).Transform(_inputGeom);
             return result;
         }
 
@@ -94,10 +115,6 @@ namespace NetTopologySuite.Simplify
         {
             private readonly TopologyPreservingSimplifier _container;
 
-            /// <summary>
-            ///
-            /// </summary>
-            /// <param name="container"></param>
             public LineStringTransformer(TopologyPreservingSimplifier container)
             {
                 _container = container;
@@ -123,36 +140,36 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        ///
+        /// A filter to add linear geometries to the linestring map 
+        /// with the appropriate minimum size constraint.
+        /// Closed <see cref="ILineString"/>s (including <see cref="ILinearRing"/>s
+        /// have a minimum output size constraint of 4, 
+        /// to ensure the output is valid.
+        /// For all other linestrings, the minimum size is 2 points.
         /// </summary>
+        /// <author>Martin Davis</author>
         private class LineStringMapBuilderFilter : IGeometryComponentFilter
         {
             private readonly TopologyPreservingSimplifier _container;
 
-            /// <summary>
-            ///
-            /// </summary>
-            /// <param name="container"></param>
             public LineStringMapBuilderFilter(TopologyPreservingSimplifier container)
             {
                 _container = container;
             }
 
             /// <summary>
-            ///
+            /// Filters linear geometries.
             /// </summary>
-            /// <param name="geom"></param>
+            /// <param name="geom">A geometry of any type</param>
             public void Filter(IGeometry geom)
             {
-                if (geom is ILinearRing)
+                var line = geom as ILineString;
+                if (line != null)
                 {
-                    TaggedLineString taggedLine = new TaggedLineString((ILineString)geom, 4);
-                    _container._lineStringMap.Add((ILineString)geom, taggedLine);
-                }
-                else if (geom is ILineString)
-                {
-                    TaggedLineString taggedLine = new TaggedLineString((ILineString)geom, 2);
-                    _container._lineStringMap.Add((ILineString)geom, taggedLine);
+                    var minSize = line.IsClosed ? 4 : 2;
+        
+                    var taggedLine = new TaggedLineString(line, minSize);
+                    _container._lineStringMap.Add(line, taggedLine);
                 }
             }
         }

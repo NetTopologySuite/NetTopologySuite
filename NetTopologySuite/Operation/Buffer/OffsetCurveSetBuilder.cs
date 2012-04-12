@@ -258,10 +258,10 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="triangleCoord"></param>
         /// <param name="bufferDistance"></param>
         /// <returns></returns>
-        private bool IsTriangleErodedCompletely(Coordinate[] triangleCoord, double bufferDistance)
+        private static bool IsTriangleErodedCompletely(Coordinate[] triangleCoord, double bufferDistance)
         {
             var tri = new Triangle(triangleCoord[0], triangleCoord[1], triangleCoord[2]);
-            var inCentre = tri.InCentre;
+            var inCentre = tri.InCentre();
             var distToCentre = CGAlgorithms.DistancePointLine(inCentre, tri.P0, tri.P1);
             return distToCentre < Math.Abs(bufferDistance);
         }

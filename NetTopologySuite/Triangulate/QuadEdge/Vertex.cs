@@ -343,7 +343,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /// <summary>
-        /// For this vertex enclosed in a triangle defined by three verticies v0, v1 and v2, interpolate
+        /// For this vertex enclosed in a triangle defined by three vertices v0, v1 and v2, interpolate
         /// a z value from the surrounding vertices.
         /// </summary>
         public double InterpolateZValue(Vertex v0, Vertex v1, Vertex v2)
@@ -364,8 +364,17 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /// <summary>
-        /// Interpolates the Z value of a point enclosed in a 3D triangle.
+        /// Interpolates the Z-value (height) of a point enclosed in a triangle
+        /// whose vertices all have Z values.
+        /// The containing triangle must not be degenerate
+        /// (in other words, the three vertices must enclose a 
+        /// non-zero area).
         /// </summary>
+        /// <param name="p">The point to interpolate the Z value of</param>
+        /// <param name="v0">A vertex of a triangle containing the <paramref name="p"/></param>
+        /// <param name="v1">A vertex of a triangle containing the <paramref name="p"/></param>
+        /// <param name="v2">A vertex of a triangle containing the <paramref name="p"/></param>
+        /// <returns>The interpolated Z-value (height) of the point</returns>
         public static double InterpolateZ(Coordinate p, Coordinate v0, Coordinate v1, Coordinate v2)
         {
             double x0 = v0.X;
@@ -386,10 +395,10 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <summary>
         /// Computes the interpolated Z-value for a point p lying on the segment p0-p1
         /// </summary>  
-        /// <param name="p" />
-        /// <param name="p0" />
-        /// <param name="p1" />
-        /// <returns />
+        /// <param name="p">The point to interpolate the Z value of</param>
+        /// <param name="p0">A vertex of the segment <paramref name="p"/> is lying on</param>
+        /// <param name="p1">A vertex of the segment <paramref name="p"/> is lying on</param>
+        /// <returns>The interpolated Z-value (height) of the point</returns>
         public static double InterpolateZ(Coordinate p, Coordinate p0, Coordinate p1)
         {
             double segLen = p0.Distance(p1);

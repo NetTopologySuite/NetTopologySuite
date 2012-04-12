@@ -42,16 +42,13 @@ namespace NetTopologySuite.Geometries
             set { _p2 = value; }
         }
 
-        ///<summary>
-        /// Tests whether a triangle is acute.
-        /// </summary>
-        /// <remarks>
-        /// <para>A triangle is acute iff all interior angles are acute.</para>
-        /// <para>This is a strict test - right triangles will return <c>false</c>
-        /// A triangle which is not acute is either right or obtuse.
-        /// </para>
+        /// <summary>
+        /// Tests whether a triangle is acute. A triangle is acute iff all interior
+        /// angles are acute. This is a strict test - right triangles will return
+        /// <tt>false</tt> A triangle which is not acute is either right or obtuse.
+        /// <para/>
         /// Note: this implementation is not robust for angles very close to 90 degrees.
-        ///</remarks>
+        /// </summary>
         /// <param name="a">A vertex of the triangle</param>
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
@@ -129,7 +126,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <returns>The point which is the incentre of the triangle</returns>
-        public static Coordinate InCentreFn(Coordinate a, Coordinate b, Coordinate c)
+        public static Coordinate InCentre(Coordinate a, Coordinate b, Coordinate c)
         {
             // the lengths of the sides, labelled by their opposite vertex
             double len0 = b.Distance(c);
@@ -293,6 +290,41 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Computes the Z-value (elevation) of an XY point 
+        /// on a three-dimensional plane defined by a triangle
+        /// whose vertices have Z-values.
+        /// The defining triangle must not be degenerate
+        /// (in other words, the triangle must enclose a 
+        /// non-zero area),
+        /// and must not be parallel to the Z-axis.
+        /// <para/>
+        /// This method can be used to interpolate
+        /// the Z-value of a point inside a triangle
+        /// (for example, of a TIN facet with elevations on the vertices).
+        /// </summary>
+        /// <param name="p">The point to compute the Z-value of</param>
+        /// <param name="v0">A vertex of a triangle, with a Z ordinate</param>
+        /// <param name="v1">A vertex of a triangle, with a Z ordinate</param>
+        /// <param name="v2">A vertex of a triangle, with a Z ordinate</param>
+        /// <returns>The computed Z-value (elevation) of the point</returns>
+        public static double InterpolateZ(Coordinate p, Coordinate v0, Coordinate v1, Coordinate v2)
+        {
+            double x0 = v0.X;
+            double y0 = v0.Y;
+            double a = v1.X - x0;
+            double b = v2.X - x0;
+            double c = v1.Y - y0;
+            double d = v2.Y - y0;
+            double det = a * d - b * c;
+            double dx = p.X - x0;
+            double dy = p.Y - y0;
+            double t = (d * dx - b * dy) / det;
+            double u = (-c * dx + a * dy) / det;
+            double z = v0.Z + t * (v1.Z - v0.Z) + u * (v2.Z - v0.Z);
+            return z;
+        }
+
+        /// <summary>
         /// Creates a new triangle with the given vertices.
         /// </summary>
         /// <param name="p0">A vertex</param>
@@ -306,7 +338,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Gets the <c>InCentre</c> of this triangle
+        /// Computes the <c>InCentre</c> of this triangle
         /// </summary>
         /// <remarks>The <c>InCentre</c> of a triangle is the point which is equidistant
         /// from the sides of the triangle.
@@ -317,9 +349,122 @@ namespace NetTopologySuite.Geometries
         /// <returns>
         /// The point which is the InCentre of the triangle.
         /// </returns>
-        public Coordinate InCentre
+        public Coordinate InCentre()
         {
-            get { return InCentreFn(P0, P1, P2); }
+            return InCentre(P0, P1, P2);
         }
+
+        /// <summary>
+        /// Tests whether this triangle is acute. A triangle is acute iff all interior
+        /// angles are acute. This is a strict test - right triangles will return
+        /// <tt>false</tt> A triangle which is not acute is either right or obtuse.
+        /// <para/>
+        /// Note: this implementation is not robust for angles very close to 90
+        /// degrees.
+        /// </summary>
+        /// <returns><c>true</c> if this triangle is acute</returns>
+        public bool IsAcute()
+        {
+            return IsAcute(_p0, _p1, _p2);
+        }
+
+        /// <summary>
+        /// Computes the circumcentre of this triangle. The circumcentre is the centre
+        /// of the circumcircle, the smallest circle which encloses the triangle. It is
+        /// also the common intersection point of the perpendicular bisectors of the
+        /// sides of the triangle, and is the only point which has equal distance to
+        /// all three vertices of the triangle.
+        /// <para/>
+        /// The circumcentre does not necessarily lie within the triangle.
+        /// <para/>
+        /// This method uses an algorithm due to J.R.Shewchuk which uses normalization
+        /// to the origin to improve the accuracy of computation. (See <i>Lecture Notes
+        /// on Geometric Robustness</i>, Jonathan Richard Shewchuk, 1999).
+        /// </summary>
+        /// <returns>The circumcentre of this triangle</returns>
+        public Coordinate Circumcentre()
+        {
+            return Circumcentre(_p0, _p1, _p2);
+        }
+
+        /// <summary>
+        /// Computes the centroid (centre of mass) of this triangle. This is also the
+        /// point at which the triangle's three medians intersect (a triangle median is
+        /// the segment from a vertex of the triangle to the midpoint of the opposite
+        /// side). The centroid divides each median in a ratio of 2:1.
+        /// <para/>
+        /// The centroid always lies within the triangle.
+        /// </summary>
+        /// <returns>The centroid of this triangle</returns>
+        public Coordinate Centroid()
+        {
+            return Centroid(_p0, _p1, _p2);
+        }
+
+        /// <summary>
+        /// Computes the length of the longest side of this triangle
+        /// </summary>
+        /// <returns>The length of the longest side of this triangle</returns>
+        public double LongestSideLength()
+        {
+            return LongestSideLength(_p0, _p1, _p2);
+        }
+
+        /// <summary>
+        /// Computes the 2D area of this triangle. The area value is always
+        /// non-negative.
+        /// </summary>
+        /// <returns>The area of this triangle</returns>
+        /// <seealso cref="SignedArea()"/>
+        public double Area()
+        {
+            return Area(_p0, _p1, _p2);
+        }
+
+        /// <summary>
+        /// Computes the signed 2D area of this triangle. The area value is positive if
+        /// the triangle is oriented CW, and negative if it is oriented CCW.
+        /// <para/>
+        /// The signed area value can be used to determine point orientation, but the
+        /// implementation in this method is susceptible to round-off errors. Use
+        /// <see cref="CGAlgorithms.OrientationIndex(Coordinate, Coordinate, Coordinate)"/>
+        /// for robust orientation calculation.
+        /// </summary>
+        /// <returns>The signed 2D area of this triangle</returns>
+        /// <seealso cref="CGAlgorithms.OrientationIndex(Coordinate, Coordinate, Coordinate)"/>
+        public double SignedArea()
+        {
+            return SignedArea(_p0, _p1, _p2);
+        }
+
+        /// <summary>
+        /// Computes the 3D area of this triangle. The value computed is alway
+        /// non-negative.
+        /// </summary>
+        /// <returns>The 3D area of this triangle</returns>
+        public double Area3D()
+        {
+            return Area3D(_p0, _p1, _p2);
+        }
+
+        /// <summary>
+        /// Computes the Z-value (elevation) of an XY point on a three-dimensional
+        /// plane defined by this triangle (whose vertices must have Z-values). This
+        /// triangle must not be degenerate (in other words, the triangle must enclose
+        /// a non-zero area), and must not be parallel to the Z-axis.
+        /// <para/>
+        /// This method can be used to interpolate the Z-value of a point inside this
+        /// triangle (for example, of a TIN facet with elevations on the vertices).
+        /// </summary>
+        /// <param name="p">The point to compute the Z-value of</param>
+        /// <returns>The computed Z-value (elevation) of the point</returns>
+        public double InterpolateZ(Coordinate p)
+        {
+            if (p == null)
+                throw new ArgumentNullException("p", "Supplied point is null.");
+            return InterpolateZ(p, _p0, _p1, _p2);
+        }
+
+
     }
 }

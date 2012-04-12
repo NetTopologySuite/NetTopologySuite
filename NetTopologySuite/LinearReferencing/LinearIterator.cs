@@ -97,10 +97,11 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Evaluate if the iterator could step over.
-        /// Does not perform the step at all.
+        /// Tests whether there are any vertices left to iterator over.
+        /// Specifically, <c>HasNext()</c> returns <tt>true</tt> if the
+        /// current state of the iterator represents a valid location
+        /// on the linear geometry. 
         /// </summary>
-        /// <returns></returns>
         /// <returns><c>true</c> if there are more vertices to scan.</returns>
         public bool HasNext()
         {

@@ -242,9 +242,9 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        /// Creates a new <c>Geometry</c> via the specified GeometryFactory.
         /// </summary>
-        /// <param name="factory"></param>
+        /// <param name="factory">The factory</param>
         protected Geometry(IGeometryFactory factory)
         {
             _factory = factory;
@@ -252,9 +252,9 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Returns the name of this object's interface.
+        /// Returns the name of this Geometry's actual class.
         /// </summary>
-        /// <returns>The name of this <c>Geometry</c>s most specific interface.</returns>
+        /// <returns>The name of this <c>Geometry</c>s actual class.</returns>
         public abstract string GeometryType { get; }
 
         /// <summary>
@@ -624,7 +624,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>    
         /// A Geometry representing the envelope of this Geometry
         /// </returns>
-        /// <see cref="IGeometryFactory.ToGeometry(GeoAPI.Geometries.Envelope)"/>
+        /// <seealso cref="IGeometryFactory.ToGeometry(GeoAPI.Geometries.Envelope)"/>
         public IGeometry Envelope
         {
             get
@@ -665,12 +665,13 @@ namespace NetTopologySuite.Geometries
         };
 
         /// <summary>
-        /// Notifies this Geometry that its Coordinates have been changed by an external
-        /// party (for example, via a <see cref="ICoordinateFilter"/>).
+        /// Notifies this geometry that its coordinates have been changed by an external
+        /// party (for example, via a <see cref="ICoordinateFilter"/>). 
         /// </summary>
         /// <remarks>
         /// When this method is called the geometry will flush
-        /// and/or update any derived information it has cached (such as its <see cref="Envelope"/> ).
+        /// and/or update any derived information it has cached (such as its <see cref="GeoAPI.Geometries.Envelope"/> ).
+        /// The operation is applied to all component Geometries.
         /// </remarks>
         public void GeometryChanged()
         {
@@ -1067,7 +1068,7 @@ namespace NetTopologySuite.Geometries
 
         /// <summary>
         /// Tests whether this geometry is topologically equal to the argument geometry
-        /// as defined by the SFS <tt>Equals</tt> predicate.
+        /// as defined by the SFS <c>Equals</c> predicate.
         /// </summary>
         /// <remarks>
         /// The SFS <code>equals</code> predicate has the following equivalent definitions:
@@ -1105,8 +1106,8 @@ namespace NetTopologySuite.Geometries
         /// to a given <tt>Object</tt>.
         /// </summary>
         /// <remarks>
-        /// If the argument <tt>Object</tt> is not a <tt>Geometry</tt>, 
-        /// the result is <tt>false</tt>.
+        /// If the argument <tt>Object</tt> is not a <c>Geometry</c>, 
+        /// the result is <c>false</c>.
         /// Otherwise, the result is computed using
         /// <seealso cref="EqualsExact(IGeometry)"/>.
         /// <para/>
@@ -1115,7 +1116,7 @@ namespace NetTopologySuite.Geometries
         /// In conjunction with <seealso cref="GetHashCode"/> 
         /// it provides semantics which are most useful 
         /// for using
-        /// <tt>Geometry</tt>s as keys and values in Java collections.
+        /// <c>Geometry</c>s as keys and values in Java collections.
         /// <para/>
         /// Note that to produce the expected result the input geometries
         /// should be in normal form.  It is the caller's 
@@ -1570,31 +1571,30 @@ namespace NetTopologySuite.Geometries
         public abstract IGeometry Reverse();
 
         /// <summary>
-        /// Returns a <c>Geometry</c> representing the points shared by this
-        /// <c>Geometry</c> and <c>other</c>.
-        /// </summary>
-        /// <remarks>
-        /// <see cref="IGeometryCollection"/>s support intersection with 
-        /// homogeneous collection types, with the semantics that
-        /// the result is a <see cref="IGeometryCollection"/> of the
-        /// intersection of each element of the target with the argument. 
+        /// Computes a <c>Geometry</c> representing the point-set which is
+        /// common to both this <c>Geometry</c> and the <c>other</c> Geometry.
         /// <para/>
         /// The intersection of two geometries of different dimension produces a result
-        /// geometry of dimension equal to the minimum dimension of the input
-        /// geometries. The result geometry is always a homogeneous
-        /// <see cref="IGeometryCollection"/>.
-        /// </remarks>
+        /// geometry of dimension less than or equal to the minimum dimension of the input
+        /// geometries. 
+        /// The result geometry may be a heterogenous <see cref="IGeometryCollection"/>.
+        /// If the result is empty, it is an atomic geometry
+        /// with the dimension of the lowest input dimension.
+        /// <para/>
+        /// Intersection of <see cref="IGeometryCollection"/>s is supported
+        /// only for homogeneous collection types. 
+        /// <para/>
+        /// Non-empty heterogeneous <see cref="IGeometryCollection"/> arguments are not supported.
+        /// </summary>
         /// <param name="other">The <c>Geometry</c> with which to compute the intersection.</param>
-        /// <returns>The point-set common to the two <c>Geometry</c>s.</returns>
+        /// <returns>A geometry representing the point-set common to the two <c>Geometry</c>s.</returns>
         /// <exception cref="TopologyException">if a robustness error occurs.</exception>
-        /// <exception cref="ArgumentException">if the argument is a non-empty heterogenous geometry collectiont</exception>
+        /// <exception cref="ArgumentException">if the argument is a non-empty heterogenous <c>GeometryCollection</c></exception>
         public IGeometry Intersection(IGeometry other) 
         {
             // Special case: if one input is empty ==> empty
-            if (IsEmpty) 
-                return Factory.CreateGeometryCollection(null);
-            if (other.IsEmpty) 
-                return Factory.CreateGeometryCollection(null);
+            if (IsEmpty || other.IsEmpty) 
+                return OverlayOp.CreateEmptyResult(SpatialFunction.Intersection, this, other, _factory);
 
             // compute for GCs
             if (IsGeometryCollection(this))
@@ -1611,8 +1611,9 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Computes a <c>Geometry</c> representing all the points in this
-        /// <c>Geometry</c> and <paramref name="other"/>.
+        /// Computes a <c>Geometry</c> representing  the point-set 
+        /// which is contained in both this
+        /// <c>Geometry</c> and the <c>other</c> Geometry.
         /// </summary>
         /// <remarks>
         /// The method may be used on arguments of different dimension, but it does not
@@ -1620,8 +1621,11 @@ namespace NetTopologySuite.Geometries
         /// <para/>
         /// The union of two geometries of different dimension produces a result
         /// geometry of dimension equal to the maximum dimension of the input
-        /// geometries. The result geometry may be a heterogenous
-        /// <see cref="IGeometryCollection"/>.
+        /// geometries. 
+        /// The result geometry may be a heterogenous
+        /// <see cref="IGeometryCollection"/>.  
+        /// If the result is empty, it is an atomic geometry
+        /// with the dimension of the highest input dimension.
         /// <para/>
         /// Unioning <see cref="ILineString"/>s has the effect of
         /// <b>noding</b> and <b>dissolving</b> the input linework. In this context
@@ -1630,7 +1634,9 @@ namespace NetTopologySuite.Geometries
         /// that any duplicate (i.e. coincident) line segments or portions of line
         /// segments will be reduced to a single line segment in the result. 
         /// If <b>merged</b> linework is required, the <see cref="LineMerger"/>
-        /// class can be used.</remarks>
+        /// class can be used.
+        /// <para/>
+        /// Non-empty <see cref="IGeometryCollection"/> arguments are not supported.</remarks>
         /// <param name="other">the <c>Geometry</c> with which to compute the union</param>
         /// <returns>A point-set combining the points of this <c>Geometry</c> and the
         /// points of <c>other</c></returns>
@@ -1639,32 +1645,38 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="LineMerger"/>
         public IGeometry Union(IGeometry other) 
         {
-            // Special case: if either input is empty ==> other input
-            if (IsEmpty) 
-                return (IGeometry) other.Clone();
-            if (other.IsEmpty) 
-                return (IGeometry) Clone();
+            // handle empty geometry cases
+            if (IsEmpty || (other == null ||other.IsEmpty))
+            {
+                if (IsEmpty && (other == null || other.IsEmpty))
+                    return OverlayOp.CreateEmptyResult(SpatialFunction.Union, this, other, _factory);
 
+                // Special case: if either input is empty ==> other input
+                if (other == null || other.IsEmpty) return (IGeometry)Clone();
+                if (IsEmpty) return (IGeometry)other.Clone();
+            }
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
             return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.Union);
         }
 
         /// <summary>
-        /// Returns a <c>Geometry</c> representing the points making up this
-        /// <c>Geometry</c> that do not make up <c>other</c>. This method
-        /// returns the closure of the resultant <c>Geometry</c>.
+        /// Computes a <c>Geometry</c> representing the closure of the point-set
+        /// of the points contained in this <c>Geometry</c> that are not contained in 
+        /// the <c>other</c> Geometry. 
+        /// <para/>
+        /// If the result is empty, it is an atomic geometry
+        /// with the dimension of the left-hand input.
+        /// <para/>
+        /// Non-empty <see cref="IGeometryCollection"/> arguments are not supported.
         /// </summary>
         /// <param name="other">The <c>Geometry</c> with which to compute the difference.</param>
-        /// <returns>The point set difference of this <c>Geometry</c> with <c>other</c>.</returns>
+        /// <returns>A Geometry representing the point-set difference of this <c>Geometry</c> with <c>other</c>.</returns>
         public IGeometry Difference(IGeometry other)
         {
-            // mod to handle empty cases better - return type of input
-            //if (IsEmpty) || other.isEmpty()) return (IGeometry) clone();
-
-            // Special case: if A.isEmpty ==> empty; if B.isEmpty ==> A
+            // special case: if A.isEmpty ==> empty; if B.isEmpty ==> A
             if (IsEmpty) 
-                return Factory.CreateGeometryCollection(null);
+                return OverlayOp.CreateEmptyResult(SpatialFunction.Difference, this, other, _factory);
             if (other == null || other.IsEmpty) 
                 return (IGeometry) Clone();
 
@@ -1674,30 +1686,42 @@ namespace NetTopologySuite.Geometries
          }
 
         /// <summary>
-        /// Returns a set combining the points in this <c>Geometry</c> not in
-        /// <c>other</c>, and the points in <c>other</c> not in this
-        /// <c>Geometry</c>. This method returns the closure of the resultant
-        /// <c>Geometry</c>.
+        /// Computes a <c>Geometry </c> representing the closure of the point-set 
+        /// which is the union of the points in this <c>Geometry</c> which are not 
+        /// contained in the <c>other</c> Geometry,
+        /// with the points in the <c>other</c> Geometry not contained in this
+        /// <c>Geometry</c>. 
+        /// If the result is empty, it is an atomic geometry
+        /// with the dimension of the highest input dimension.
+        /// <para/>
+        /// Non-empty <see cref="IGeometryCollection"/> arguments are not supported.
         /// </summary>
         /// <param name="other">The <c>Geometry</c> with which to compute the symmetric difference.</param>
-        /// <returns>The point set symmetric difference of this <c>Geometry</c> with <c>other</c>.</returns>
+        /// <returns>a Geometry representing the point-set symmetric difference of this <c>Geometry</c> with <c>other</c>.</returns>
         public IGeometry SymmetricDifference(IGeometry other) 
         {
-            // Special case: if either input is empty ==> other input
-            if (IsEmpty) 
-                return (IGeometry) other.Clone();
-            if (other.IsEmpty) 
-                return (IGeometry) Clone();
+            // handle empty geometry cases
+            if (IsEmpty || (other == null || other.IsEmpty))
+            {
+                // both empty - check dimensions
+                if (IsEmpty && (other == null || other.IsEmpty))
+                    return OverlayOp.CreateEmptyResult(SpatialFunction.SymDifference, this, other, _factory);
+
+                // special case: if either input is empty ==> result = other arg
+                if (other == null || other.IsEmpty) return (IGeometry)Clone();
+                if (IsEmpty) return (IGeometry)other.Clone();
+            }
 
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
             return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.SymDifference);
         }
 
-        ///<summary> 
+        /// <summary> 
         /// Computes the union of all the elements of this geometry.
-        ///</summary>
-        /// <remarks><c>Union</c> supports <see cref="IGeometryCollection"/>s (which the other overlay operations currently do not).</remarks>
+        /// </summary>
+        /// <remarks>
+        /// <c>Union</c> supports <see cref="IGeometryCollection"/>s (which the other overlay operations currently do not).</remarks>
         /// <remarks>
         /// The result obeys the following contract:
         /// <list type="Bullet">
@@ -1705,6 +1729,7 @@ namespace NetTopologySuite.Geometries
         /// <item>Unioning a set of <see cref="IPolygon"/>s will always return a <see cref="IPolygonal"/> geometry (unlike <see cref="Union(IGeometry)"/>), which may return geometrys of lower dimension if a topology collapse occurred.</item>
         /// </list>
         /// </remarks>
+        /// <exception cref="TopologyException">Thrown if a robustness error occurs</exception>
         public IGeometry Union()
         {
             return UnaryUnionOp.Union(this);
@@ -1721,8 +1746,8 @@ namespace NetTopologySuite.Geometries
         /// Coordinate lists, in exactly the same order.</item>
         /// </list>
         /// This method does <i>not</i>
-        /// test the values of the <tt>GeometryFactory</tt>, the <tt>SRID</tt>, 
-        /// or the <tt>UserData</tt> fields.
+        /// test the values of the <c>GeometryFactory</c>, the <c>SRID</c>, 
+        /// or the <c>UserData</c> fields.
         /// <para/>
         /// To properly test equality between different geometries,
         /// it is usually necessary to <see cref="Normalize"/> them first.
@@ -1753,8 +1778,8 @@ namespace NetTopologySuite.Geometries
         /// (such as using geometries as keys in collections).
         /// <para/>
         /// This method does <i>not</i>
-        /// test the values of the <tt>GeometryFactory</tt>, the <tt>SRID</tt>, 
-        /// or the <tt>userData</tt> fields.
+        /// test the values of the <c>GeometryFactory</c>, the <c>SRID</c>, 
+        /// or the <c>UserData</c> fields.
         /// <para/>
         /// To properly test equality between different geometries,
         /// it is usually necessary to <see cref="Normalize"/> them first.
@@ -1774,11 +1799,11 @@ namespace NetTopologySuite.Geometries
         /// <remarks>
         /// This is a convenience method which creates normalized
         /// versions of both geometries before computing
-        /// <seealso cref="EqualsExact(IGeometry)"/>.
+        /// <seealso cref="EqualsExact(IGeometry)"/>.<para/>
         /// This method is relatively expensive to compute.  
         /// For maximum performance, the client 
-        /// should instead perform normalization itself
-        /// at an appropriate point during execution.
+        /// should instead perform normalization  on the individual geometries
+        /// at an appropriate point during processing.
         /// </remarks>
         /// </summary>
         /// <param name="g">A geometry</param>

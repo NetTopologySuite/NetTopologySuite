@@ -109,7 +109,8 @@ namespace NetTopologySuite.Noding
             Coordinate[] roundPts = new Coordinate[pts.Length];
             for (int i = 0; i < pts.Length; i++)
                 roundPts[i] = new Coordinate(Math.Round((pts[i].X - _offsetX) * _scaleFactor),
-                                             Math.Round((pts[i].Y - _offsetY) * _scaleFactor));
+                                             Math.Round((pts[i].Y - _offsetY) * _scaleFactor),
+                                             pts[i].Z);
             Coordinate[] roundPtsNoDup = CoordinateArrays.RemoveRepeatedPoints(roundPts);
             return roundPtsNoDup;
         }      

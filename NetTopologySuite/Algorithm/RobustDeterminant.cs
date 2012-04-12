@@ -12,6 +12,10 @@ namespace NetTopologySuite.Algorithm
     /// Author : Olivier Devillers
     /// Olivier.Devillers@sophia.inria.fr
     /// http:/www.inria.fr:/prisme/personnel/devillers/anglais/determinant.html
+    /// 
+    /// Olivier Devillers has allowed the code to be distributed under
+    /// the LGPL (2012-02-16) saying "It is ok for LGPL distribution."
+    /// 
     /// *************************************************************************
     /// *************************************************************************
     /// Copyright (c) 1995  by  INRIA Prisme Project

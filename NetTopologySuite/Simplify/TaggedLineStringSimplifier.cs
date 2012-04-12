@@ -46,9 +46,10 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        /// 
+        /// Simplifies the given <see cref="TaggedLineString"/>
+        /// using the distance tolerance specified.
         /// </summary>
-        /// <param name="line"></param>
+        /// <param name="line">The linestring to simplify</param>
         public void Simplify(TaggedLineString line)
         {
             _line = line;

@@ -16,18 +16,40 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         private const double Tolerance = 1E-5;
 
         [Test]
-        public void TestArea3D()
+        public void TestInterpolateZ()
         {
-            CheckArea3D("POLYGON((0 0 10, 100 0 110, 100 100 110, 0 0 10))", 7071.067811865475);
-            CheckArea3D("POLYGON((0 0 10, 100 0 10, 50 100 110, 0 0 10))", 7071.067811865475);
+            CheckInterpolateZ("LINESTRING(1 1 0, 2 1 0, 1 2 10)", new Coordinate(1.5, 1.5), 5);
+            CheckInterpolateZ("LINESTRING(1 1 0, 2 1 0, 1 2 10)", new Coordinate(1.2, 1.2), 2);
+            CheckInterpolateZ("LINESTRING(1 1 0, 2 1 0, 1 2 10)", new Coordinate(0, 0), -10);
         }
 
-        public void CheckArea3D(String wkt, double expectedValue)
+        private static void CheckInterpolateZ(String wkt, Coordinate p, double expectedValue)
         {
-            IGeometry g = Reader.Read(wkt);
-            Coordinate[] pt = g.Coordinates;
-            double area3D = Triangle.Area3D((Coordinate)pt[0], (Coordinate)pt[1], (Coordinate)pt[2]);
-            //		System.out.println("area3D = " + area3D);
+            var g = Reader.Read(wkt);
+            var pt = g.Coordinates;
+
+            var t = new Triangle(pt[0], pt[1], pt[2]);
+            var z = t.InterpolateZ(p);
+            //Console.WriteLine("Z = " + z);
+            Assert.AreEqual(expectedValue, z, Tolerance);
+        }
+
+        [Test]
+        public void TestArea3D()
+        {
+            CheckArea3D("POLYGON((0 0 10, 100 0 110, 100 100 110, 0 0 10))",
+                        7071.067811865475);
+            CheckArea3D("POLYGON((0 0 10, 100 0 10, 50 100 110, 0 0 10))",
+                        7071.067811865475);
+        }
+
+        private static void CheckArea3D(String wkt, double expectedValue)
+        {
+            var g = Reader.Read(wkt);
+            var pt = g.Coordinates;
+            var t = new Triangle(pt[0], pt[1], pt[2]);
+            var area3D = t.Area3D();
+            // Console.WriteLine("area3D = " + area3D);
             Assert.AreEqual(expectedValue, area3D, Tolerance);
         }
 
@@ -44,18 +66,19 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             CheckArea("POLYGON((10 10, 20 10, 15 10, 10 10))", 0);
         }
 
-        public static void CheckArea(String wkt, double expectedValue)
+        private static void CheckArea(String wkt, double expectedValue)
         {
-            IGeometry g = Reader.Read(wkt);
-            Coordinate[] pt = g.Coordinates;
+            var g = Reader.Read(wkt);
+            var pt = g.Coordinates;
 
-            /*
-            double signedArea = Triangle.SignedArea(pt[0], pt[1], pt[2]);
-            Console.WriteLine("signed area = " + signedArea);
+            var t = new Triangle(pt[0], pt[1], pt[2]);
+            var signedArea = t.SignedArea();
+            //Console.WriteLine("signed area = " + signedArea);
             Assert.AreEqual(expectedValue, signedArea, Tolerance);
-            */
-            double area = Triangle.Area(pt[0], pt[1], pt[2]);
+
+            var area = t.Area();
             Assert.AreEqual(Math.Abs(expectedValue), area, Tolerance);
+
         }
 
         [Test]
@@ -69,13 +92,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             CheckAcute("POLYGON((10 10, 20 10, 15 20, 10 10))", true);
         }
 
-        private static void CheckAcute(String wkt, Boolean expectedValue)
+        private static void CheckAcute(String wkt, bool expectedValue)
         {
-            IGeometry g = Reader.Read(wkt);
-            Coordinate[] pt = g.Coordinates;
+            var g = Reader.Read(wkt);
+            var pt = g.Coordinates;
 
-            Boolean isAcute = Triangle.IsAcute(pt[0], pt[1], pt[2]);
-            Console.WriteLine("isAcute = " + isAcute);
+            var t = new Triangle(pt[0], pt[1], pt[2]);
+            var isAcute = t.IsAcute();
+            //Console.WriteLine("isAcute = " + isAcute);
             Assert.AreEqual(expectedValue, isAcute);
         }
     }

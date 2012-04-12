@@ -16,9 +16,13 @@ namespace Open.Topology.TestRunner.Functions
             return octEnv.ToGeometry(g.Factory);
         }
 
-        public static IGeometry minimumDiameter(IGeometry g) { return (new MinimumDiameter(g)).Diameter; }
+        public static IGeometry minimumDiameterLine(Geometry g) { return (new MinimumDiameter(g)).Diameter; }
+        public static double minimumDiameter(Geometry g) { return (new MinimumDiameter(g)).Diameter.Length; }
+        
         public static IGeometry minimumRectangle(IGeometry g) { return (new MinimumDiameter(g)).GetMinimumRectangle(); }
         public static IGeometry minimumBoundingCircle(Geometry g) { return (new MinimumBoundingCircle(g)).GetCircle(); }
+        public static IGeometry minimumBoundingCirclePoints(Geometry g) { return g.Factory.CreateLineString((new MinimumBoundingCircle(g)).GetExtremalPoints()); }
+        public static double maximumDiameter(Geometry g) { return 2 * (new MinimumBoundingCircle(g)).GetRadius(); }
 
         public static IGeometry boundary(Geometry g) { return g.Boundary; }
         public static IGeometry convexHull(Geometry g) { return g.ConvexHull(); }
