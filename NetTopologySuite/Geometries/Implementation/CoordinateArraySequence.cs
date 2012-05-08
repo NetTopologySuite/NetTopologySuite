@@ -5,37 +5,77 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Geometries.Implementation
 {
     /// <summary>
-    /// The <c>ICoordinateSequence</c> implementation that <c>Geometry</c>s use by default.
-    /// In this implementation, Coordinates returned by ToArray and Coordinate are live --
+    /// A <see cref="ICoordinateSequence"/> backed by an array of <see cref="Coordinate"/>s.
+    /// This is the implementation that <see cref="IGeometry"/>s use by default.
+    /// <para/>
+    /// Coordinates returned by <see cref="ToCoordinateArray"/>, <see cref="GetCoordinate(int)"/> and <see cref="GetCoordinate(int, Coordinate)"/> are live --
     /// modifications to them are actually changing the
     /// CoordinateSequence's underlying data.
+    /// A dimension may be specified for the coordinates in the sequence,
+    /// which may be 2 or 3.
+    /// The actual coordinates will always have 3 ordinates,
+    /// but the dimension is useful as metadata in some situations. 
     /// </summary>
     [Serializable]
     public class CoordinateArraySequence : ICoordinateSequence
     {    
         protected Coordinate[] Coordinates;
-       
+        /**
+         * The actual dimension of the coordinates in the sequence.
+         * Allowable values are 2 or 3.
+         */
+        private int _dimension = 3;
+  
         /// <summary>
-        /// Constructs a sequence based on the given array (the array is not copied).
+        /// Constructs a sequence based on the given array of <see cref="Coordinate"/>s.
+        /// The coordinate dimension is 3
         /// </summary>
+        /// <remarks>
+        /// The array is not copied.
+        /// </remarks>
         /// <param name="coordinates">The coordinate array that will be referenced.</param>
         public CoordinateArraySequence(Coordinate[] coordinates) 
+            :this(coordinates, 3)
+        {}
+
+        /// <summary>
+        /// Constructs a sequence based on the given array 
+        /// of <see cref="Coordinate"/>s.
+        /// </summary>
+        /// <remarks>The Array is not copied</remarks>
+        /// <param name="coordinates">The coordinate array that will be referenced.</param>
+        /// <param name="dimension">The dimension of the coordinates</param>
+        public CoordinateArraySequence(Coordinate[] coordinates, int dimension)
         {
-            this.Coordinates = coordinates;
+            Coordinates = coordinates;
+            _dimension = dimension;
             if (coordinates == null)
-                this.Coordinates = new Coordinate[0];
+                Coordinates = new Coordinate[0];
         }
         
         /// <summary>
         /// Constructs a sequence of a given size, populated with new Coordinates.
         /// </summary>
         /// <param name="size">The size of the sequence to create.</param>
-        public CoordinateArraySequence(int size) 
+        public CoordinateArraySequence(int size)
+            : this(size, 3)
+        {
+        }
+
+        /// <summary>
+        /// Constructs a sequence of a given <paramref name="size"/>, populated 
+        /// with new <see cref="Coordinate"/>s of the given <paramref name="dimension"/>.
+        /// </summary>
+        /// <param name="size">The size of the sequence to create.</param>
+        /// <param name="dimension">the dimension of the coordinates</param>
+        public CoordinateArraySequence(int size, int dimension)
         {
             Coordinates = new Coordinate[size];
-            for (int i = 0; i < size; i++) 
+            _dimension = dimension;
+            for (var i = 0; i < size; i++)
                 Coordinates[i] = new Coordinate();
         }
+
 
         /// <summary>
         /// Creates a new sequence based on a deep copy of the given <see cref="ICoordinateSequence"/>.
@@ -43,13 +83,15 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="coordSeq">The coordinate sequence that will be copied</param>
         public CoordinateArraySequence(ICoordinateSequence coordSeq)
         {
-            if (coordSeq != null)
-                 Coordinates = new Coordinate[coordSeq.Count];
-            else
+            if (coordSeq == null)
             {
                 Coordinates = new Coordinate[0];
                 return;
             }
+
+            _dimension = coordSeq.Dimension;
+            Coordinates = new Coordinate[coordSeq.Count];
+
             for (var i = 0; i < Coordinates.Length; i++) 
                 Coordinates[i] = coordSeq.GetCoordinateCopy(i);
         }
@@ -62,13 +104,18 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             get
             {
-                return 3;
+                return _dimension;
             }
         }
 
         public Ordinates Ordinates
         {
-            get { return Ordinates.XYZ; }
+            get
+            {
+                return _dimension == 3 
+                    ? Ordinates.XYZ 
+                    : Ordinates.XY;
+            }
         }
 
         /// <summary>

@@ -40,14 +40,18 @@ namespace NetTopologySuite.Geometries.Implementation
             return new CoordinateArraySequence(coordSeq);
         }
 
+        
         public ICoordinateSequence Create(int size, int dimension)
         {
-            return new CoordinateArraySequence(size);
+            if (dimension < 2 || dimension > 3)
+                throw new ArgumentOutOfRangeException("dimension must be 2 or 3");
+            return new CoordinateArraySequence(size, dimension);
         }
         public ICoordinateSequence Create(int size, Ordinates ordinates)
         {
             return new CoordinateArraySequence(size);
         }
+
         public Ordinates Ordinates
         {
             get { return Ordinates.XYZ; }
