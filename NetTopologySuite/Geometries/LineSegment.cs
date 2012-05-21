@@ -89,7 +89,7 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         public Coordinate GetCoordinate(int i)
         {
-            return i == 0 ? P0 : P1;
+            return i == 0 ? _p0 : _p1;
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="ls"></param>
         public void SetCoordinates(LineSegment ls)
         {
-            SetCoordinates(ls.P0, ls.P1);
+            SetCoordinates(ls._p0, ls._p1);
         }
 
         /// <summary>
@@ -108,10 +108,10 @@ namespace NetTopologySuite.Geometries
         /// <param name="p1"></param>
         public void SetCoordinates(Coordinate p0, Coordinate p1)
         {
-            P0.X = p0.X;
-            P0.Y = p0.Y;
-            P1.X = p1.X;
-            P1.Y = p1.Y;
+            _p0.X = p0.X;
+            _p0.Y = p0.Y;
+            _p1.X = p1.X;
+            _p1.Y = p1.Y;
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The length of the line segment.</returns>
         public double Length
         {
-            get { return P0.Distance(P1); }
+            get { return _p0.Distance(_p1); }
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace NetTopologySuite.Geometries
         /// <returns><c>true</c> if the segment is horizontal.</returns>
         public bool IsHorizontal
         {
-            get { return P0.Y == P1.Y; }
+            get { return _p0.Y == _p1.Y; }
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace NetTopologySuite.Geometries
         /// <returns><c>true</c> if the segment is vertical.</returns>
         public bool IsVertical
         {
-            get { return P0.X == P1.X; }
+            get { return _p0.X == _p1.X; }
         }
 
         /// <summary>
@@ -160,8 +160,8 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public int OrientationIndex(LineSegment seg)
         {
-            var orient0 = CGAlgorithms.OrientationIndex(P0, P1, seg.P0);
-            var orient1 = CGAlgorithms.OrientationIndex(P0, P1, seg.P1);
+            var orient0 = CGAlgorithms.OrientationIndex(_p0, _p1, seg._p0);
+            var orient1 = CGAlgorithms.OrientationIndex(_p0, _p1, seg._p1);
             // this handles the case where the points are Curve or collinear
             if (orient0 >= 0 && orient1 >= 0)
                 return Math.Max(orient0, orient1);
@@ -200,7 +200,7 @@ namespace NetTopologySuite.Geometries
         ///
         public int OrientationIndex(Coordinate p)
         {
-            return CGAlgorithms.OrientationIndex(P0, P1, p);
+            return CGAlgorithms.OrientationIndex(_p0, _p1, p);
         }
 
         /// <summary>
@@ -208,9 +208,9 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public void Reverse()
         {
-            var temp = P0;
-            P0 = P1;
-            P1 = temp;
+            var temp = _p0;
+            _p0 = _p1;
+            _p1 = temp;
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public void Normalize()
         {
-            if (P1.CompareTo(P0) < 0)
+            if (_p1.CompareTo(_p0) < 0)
                 Reverse();
         }
 
@@ -229,7 +229,7 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public double Angle
         {
-            get { return Math.Atan2(P1.Y - P0.Y, P1.X - P0.X); }
+            get { return Math.Atan2(_p1.Y - _p0.Y, _p1.X - _p0.X); }
         }
 
         ///<summary>The midpoint of the segment</summary>
@@ -249,7 +249,7 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         public double Distance(LineSegment ls)
         {
-            return CGAlgorithms.DistanceLineLine(P0, P1, ls.P0, ls.P1);
+            return CGAlgorithms.DistanceLineLine(_p0, _p1, ls._p0, ls._p1);
         }
 
         /// <summary>
@@ -257,7 +257,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public double Distance(Coordinate p)
         {
-            return CGAlgorithms.DistancePointLine(p, P0, P1);
+            return CGAlgorithms.DistancePointLine(p, _p0, _p1);
         }
 
         /// <summary>
@@ -268,7 +268,7 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         public double DistancePerpendicular(Coordinate p)
         {
-            return CGAlgorithms.DistancePointLinePerpendicular(p, P0, P1);
+            return CGAlgorithms.DistancePointLinePerpendicular(p, _p0, _p1);
         }
 
         /// <summary>
@@ -285,9 +285,9 @@ namespace NetTopologySuite.Geometries
         /// <returns> the point at that distance</returns>
         public Coordinate PointAlong(double segmentLengthFraction)
         {
-            Coordinate coord = new Coordinate();
-            coord.X = P0.X + segmentLengthFraction * (P1.X - P0.X);
-            coord.Y = P0.Y + segmentLengthFraction * (P1.Y - P0.Y);
+            var coord = new Coordinate();
+            coord.X = _p0.X + segmentLengthFraction * (_p1.X - _p0.X);
+            coord.Y = _p0.Y + segmentLengthFraction * (_p1.Y - _p0.Y);
             return coord;
         }
 
@@ -310,11 +310,11 @@ namespace NetTopologySuite.Geometries
         public Coordinate PointAlongOffset(double segmentLengthFraction, double offsetDistance)
         {
             // the point on the segment line
-            double segx = P0.X + segmentLengthFraction * (P1.X - P0.X);
-            double segy = P0.Y + segmentLengthFraction * (P1.Y - P0.Y);
+            double segx = _p0.X + segmentLengthFraction * (_p1.X - _p0.X);
+            double segy = _p0.Y + segmentLengthFraction * (_p1.Y - _p0.Y);
 
-            double dx = P1.X - P0.X;
-            double dy = P1.Y - P0.Y;
+            double dx = _p1.X - _p0.X;
+            double dy = _p1.Y - _p0.Y;
             double len = Math.Sqrt(dx * dx + dy * dy);
             double ux = 0.0;
             double uy = 0.0;
@@ -332,7 +332,7 @@ namespace NetTopologySuite.Geometries
             double offsetx = segx - uy;
             double offsety = segy + ux;
 
-            Coordinate coord = new Coordinate(offsetx, offsety);
+            var coord = new Coordinate(offsetx, offsety);
             return coord;
         }
 
@@ -346,8 +346,8 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         public double ProjectionFactor(Coordinate p)
         {
-            if (p.Equals(P0)) return 0.0;
-            if (p.Equals(P1)) return 1.0;
+            if (p.Equals(_p0)) return 0.0;
+            if (p.Equals(_p1)) return 1.0;
 
             // Otherwise, use comp.graphics.algorithms Frequently Asked Questions method
             /*     	          AC dot AB
@@ -360,10 +360,10 @@ namespace NetTopologySuite.Geometries
                         r>1 Point is on the forward extension of AB
                         0<r<1 Point is interior to AB
             */
-            var dx = P1.X - P0.X;
-            var dy = P1.Y - P0.Y;
+            var dx = _p1.X - _p0.X;
+            var dy = _p1.Y - _p0.Y;
             var len2 = dx * dx + dy * dy;
-            var r = ((p.X - P0.X) * dx + (p.Y - P0.Y) * dy) / len2;
+            var r = ((p.X - _p0.X) * dx + (p.Y - _p0.Y) * dy) / len2;
             return r;
         }
 
@@ -399,11 +399,11 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         public Coordinate Project(Coordinate p)
         {
-            if (p.Equals(P0) || p.Equals(P1))
+            if (p.Equals(_p0) || p.Equals(_p1))
                 return new Coordinate(p);
 
             var r = ProjectionFactor(p);
-            Coordinate coord = new Coordinate { X = P0.X + r * (P1.X - P0.X), Y = P0.Y + r * (P1.Y - P0.Y) };
+            var coord = new Coordinate { X = _p0.X + r * (_p1.X - _p0.X), Y = _p0.Y + r * (_p1.Y - _p0.Y) };
             return coord;
         }
 
@@ -419,19 +419,19 @@ namespace NetTopologySuite.Geometries
         /// <returns>The projected line segment, or <c>null</c> if there is no overlap.</returns>
         public LineSegment Project(LineSegment seg)
         {
-            var pf0 = ProjectionFactor(seg.P0);
-            var pf1 = ProjectionFactor(seg.P1);
+            var pf0 = ProjectionFactor(seg._p0);
+            var pf1 = ProjectionFactor(seg._p1);
             // check if segment projects at all
             if (pf0 >= 1.0 && pf1 >= 1.0) return null;
             if (pf0 <= 0.0 && pf1 <= 0.0) return null;
 
-            var newp0 = Project(seg.P0);
-            if (pf0 < 0.0) newp0 = P0;
-            if (pf0 > 1.0) newp0 = P1;
+            var newp0 = Project(seg._p0);
+            if (pf0 < 0.0) newp0 = _p0;
+            if (pf0 > 1.0) newp0 = _p1;
 
-            var newp1 = Project(seg.P1);
-            if (pf1 < 0.0) newp1 = P0;
-            if (pf1 > 1.0) newp1 = P1;
+            var newp1 = Project(seg._p1);
+            if (pf1 < 0.0) newp1 = _p0;
+            if (pf1 > 1.0) newp1 = _p1;
 
             return new LineSegment(newp0, newp1);
         }
@@ -448,9 +448,9 @@ namespace NetTopologySuite.Geometries
             var factor = ProjectionFactor(p);
             if (factor > 0 && factor < 1)
                 return Project(p);
-            var dist0 = P0.Distance(p);
-            var dist1 = P1.Distance(p);
-            return dist0 < dist1 ? P0 : P1;
+            var dist0 = _p0.Distance(p);
+            var dist1 = _p1.Distance(p);
+            return dist0 < dist1 ? _p0 : _p1;
         }
 
         /// <summary>
@@ -472,37 +472,36 @@ namespace NetTopologySuite.Geometries
             * Test each endpoint in turn.
             */
             var closestPt = new Coordinate[2];
-            var minDistance = Double.MaxValue;
 
-            var close00 = ClosestPoint(line.P0);
-            minDistance = close00.Distance(line.P0);
+            var close00 = ClosestPoint(line._p0);
+            double minDistance = close00.Distance(line._p0);
             closestPt[0] = close00;
-            closestPt[1] = line.P0;
+            closestPt[1] = line._p0;
 
-            var close01 = ClosestPoint(line.P1);
-            double dist = close01.Distance(line.P1);
+            var close01 = ClosestPoint(line._p1);
+            double dist = close01.Distance(line._p1);
             if (dist < minDistance)
             {
                 minDistance = dist;
                 closestPt[0] = close01;
-                closestPt[1] = line.P1;
+                closestPt[1] = line._p1;
             }
 
-            var close10 = line.ClosestPoint(P0);
-            dist = close10.Distance(P0);
+            var close10 = line.ClosestPoint(_p0);
+            dist = close10.Distance(_p0);
             if (dist < minDistance)
             {
                 minDistance = dist;
-                closestPt[0] = P0;
+                closestPt[0] = _p0;
                 closestPt[1] = close10;
             }
 
-            var close11 = line.ClosestPoint(P1);
-            dist = close11.Distance(P1);
+            var close11 = line.ClosestPoint(_p1);
+            dist = close11.Distance(_p1);
             if (dist < minDistance)
             {
                 minDistance = dist;
-                closestPt[0] = P1;
+                closestPt[0] = _p1;
                 closestPt[1] = close11;
             }
 
@@ -523,7 +522,7 @@ namespace NetTopologySuite.Geometries
         public Coordinate Intersection(LineSegment line)
         {
             LineIntersector li = new RobustLineIntersector();
-            li.ComputeIntersection(P0, P1, line.P0, line.P1);
+            li.ComputeIntersection(_p0, _p1, line._p0, line._p1);
             if (li.HasIntersection)
                 return li.GetIntersection(0);
             return null;
@@ -546,7 +545,7 @@ namespace NetTopologySuite.Geometries
         {
             try
             {
-                Coordinate intPt = HCoordinate.Intersection(_p0, _p1, line._p0, line._p1);
+                var intPt = HCoordinate.Intersection(_p0, _p1, line._p0, line._p1);
                 return intPt;
             }
             catch (NotRepresentableException ex)
@@ -621,8 +620,8 @@ namespace NetTopologySuite.Geometries
         public int CompareTo(object o)
         {
             var other = (LineSegment)o;
-            var comp0 = P0.CompareTo(other.P0);
-            return comp0 != 0 ? comp0 : P1.CompareTo(other.P1);
+            var comp0 = _p0.CompareTo(other._p0);
+            return comp0 != 0 ? comp0 : _p1.CompareTo(other._p1);
         }
 
         /// <summary>
@@ -639,8 +638,8 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public bool EqualsTopologically(LineSegment other)
         {
-            return P0.Equals(other.P0) && P1.Equals(other.P1) ||
-                   P0.Equals(other.P1) && P1.Equals(other.P0);
+            return _p0.Equals(other._p0) && _p1.Equals(other._p1) ||
+                   _p0.Equals(other._p1) && _p1.Equals(other._p0);
         }
 
         private static readonly System.Globalization.CultureInfo _cultureInfo =
@@ -654,10 +653,10 @@ namespace NetTopologySuite.Geometries
         public override string ToString()
         {
             var sb = new StringBuilder("LINESTRING( ");
-            sb.AppendFormat(_cultureInfo, "{0}", P0.X).Append(" ");
-            sb.AppendFormat(_cultureInfo, "{0}", P0.Y).Append(", ");
-            sb.AppendFormat(_cultureInfo, "{0}", P1.X).Append(" ");
-            sb.AppendFormat(_cultureInfo, "{0}", P1.Y).Append(")");
+            sb.AppendFormat(_cultureInfo, "{0}", _p0.X).Append(" ");
+            sb.AppendFormat(_cultureInfo, "{0}", _p0.Y).Append(", ");
+            sb.AppendFormat(_cultureInfo, "{0}", _p1.X).Append(" ");
+            sb.AppendFormat(_cultureInfo, "{0}", _p1.Y).Append(")");
             return sb.ToString();
         }
 

@@ -260,7 +260,8 @@ namespace NetTopologySuite.Windows.Forms
             var shape = new GraphicsPath();
             
             var points = new List<PointF>(lineString.NumPoints);
-            points.Add(TransformPoint(lineString.GetCoordinateN(0), _transPoint));
+            var prev = lineString.GetCoordinateN(0);
+            points.Add(TransformPoint(prev, _transPoint));
 
             var prevx = (double)_transPoint.X;
             var prevy = (double)_transPoint.Y;
@@ -269,6 +270,19 @@ namespace NetTopologySuite.Windows.Forms
             //int count = 0;
             for (var i = 1; i <= n; i++)
             {
+                var currentCoord = lineString.GetCoordinateN(i);
+                if (Decimation > 0.0)
+                {
+                    var isDecimated = prev != null
+                            && Math.Abs(currentCoord.X - prev.X) < Decimation
+                            && Math.Abs(currentCoord.Y - prev.Y) < Decimation;
+                    if (i < n && isDecimated)
+                    {
+                        continue;
+                    }
+                    prev = currentCoord;
+                }
+
                 _transPoint = TransformPoint(lineString.GetCoordinateN(i), _transPoint);
 
                 if (RemoveDuplicatePoints)

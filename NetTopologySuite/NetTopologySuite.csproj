@@ -373,6 +373,7 @@
     <Compile Include="Operation\Relate\RelateNodeFactory.cs" />
     <Compile Include="Operation\Relate\RelateNodeGraph.cs" />
     <Compile Include="Operation\Relate\RelateOp.cs" />
+    <Compile Include="Operation\Split\SplitOp.cs" />
     <Compile Include="Operation\Union\CascadedPolygonUnion.cs" />
     <Compile Include="Operation\Union\PointGeometryUnion.cs" />
     <Compile Include="Operation\Union\UnaryUnionOp.cs" />

@@ -35,26 +35,31 @@ namespace NetTopologySuite.Operation.Polygonize
             Envelope testEnv = teString.EnvelopeInternal;
 
             EdgeRing minShell = null;
-            Envelope minEnv = null;
-            foreach (EdgeRing tryShell in shellList)
+            Envelope minShellEnv = null;
+            foreach (var tryShell in shellList)
             {
-                ILinearRing tryRing = tryShell.Ring;
-                Envelope tryEnv = tryRing.EnvelopeInternal;
+                var tryShellRing = tryShell.Ring;
+                var tryShellEnv = tryShellRing.EnvelopeInternal;
                 if (minShell != null)
-                    minEnv = minShell.Ring.EnvelopeInternal;
-                bool isContained = false;
-                // the hole envelope cannot equal the shell envelope
-                if (tryEnv.Equals(testEnv)) continue;
+                    minShellEnv = minShell.Ring.EnvelopeInternal;
 
-                // Coordinate testPt = PointNotInList(teString.Coordinates, tryRing.Coordinates);
-                Coordinate testPt = CoordinateArrays.PointNotInList(teString.Coordinates, tryRing.Coordinates);
-                if (tryEnv.Contains(testEnv) && CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates))
-                    isContained = true;
+                // the hole envelope cannot equal the shell envelope
+                // (also guards against testing rings against themselves)
+                if (tryShellEnv.Equals(testEnv)) continue;
+                // hole must be contained in shell
+                if (!tryShellEnv.Contains(testEnv)) continue;
+
+                var testPt = CoordinateArrays.PointNotInList(teString.Coordinates, tryShellRing.Coordinates);
+                var isContained = CGAlgorithms.IsPointInRing(testPt, tryShellRing.Coordinates);
+                
                 // check if this new containing ring is smaller than the current minimum ring
                 if (isContained)
                 {
-                    if (minShell == null || minEnv.Contains(tryEnv))
+                    if (minShell == null || minShellEnv.Contains(tryShellEnv))
+                    {
                         minShell = tryShell;
+                        minShellEnv = minShell.Ring.EnvelopeInternal;
+                    }
                 }
             }
             return minShell;
@@ -67,6 +72,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <param name="pts">An array of <c>Coordinate</c>s to test the input points against.</param>
         /// <returns>A <c>Coordinate</c> from <c>testPts</c> which is not in <c>pts</c>, 
         /// or <c>null</c>.</returns>
+        [Obsolete("Use CoordinateArrays.PointNotInList instead")]
         public static Coordinate PointNotInList(Coordinate[] testPts, Coordinate[] pts)
         {
             foreach (Coordinate testPt in testPts)
@@ -82,6 +88,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <param name="pt">A <c>Coordinate</c> for the test point.</param>
         /// <param name="pts">An array of <c>Coordinate</c>s to test,</param>
         /// <returns><c>true</c> if the point is in the array.</returns>
+        [Obsolete]
         public static bool IsInList(Coordinate pt, Coordinate[] pts)
         {
             foreach (Coordinate p in pts)

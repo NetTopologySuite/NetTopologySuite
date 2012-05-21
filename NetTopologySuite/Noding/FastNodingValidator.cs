@@ -14,12 +14,14 @@ namespace NetTopologySuite.Noding
     /// <remarks>
     /// <para>
     /// In the most common use case, validation stops after a single
-    /// non-noded intersection is detected.
-    /// </para>
-    /// <para>Does NOT check a-b-a collapse situations.</para>
-    /// <para>
-    /// Also does not check for endpt-interior vertex intersections.
-    /// This should not be a problem, since the noders should be
+    /// non-noded intersection is detected,
+    /// but the class can be requested to detect all intersections
+    /// by using the <see cref="FindAllIntersections"/> property.
+    /// <para/>
+    /// The validator does not check for a-b-a topology collapse situations.
+    /// <para/> 
+    /// The validator does not check for endpoint-interior vertex intersections.
+    /// This should not be a problem, since the JTS noders should be
     /// able to compute intersections between vertices correctly.
     /// </para>
     /// <para>

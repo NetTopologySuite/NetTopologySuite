@@ -1,23 +1,30 @@
-﻿using NUnit.Framework;
+﻿using System;
+using DotSpatial.Projections;
+using GeoAPI.CoordinateSystems.Transformations;
+using NUnit.Framework;
+using NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projections;
 
 namespace NetTopologySuite.Tests.Various
 {
-    using Geometries;
-    using Samples.SimpleTests;
+	using Geometries;
+	using Samples.SimpleTests;
+	using NetTopologySuite.IO;
+	using GeoAPI.Geometries;
 
-    [TestFixture]
-    public class GoogleGroupTests : BaseSamples
-    {
-        public GoogleGroupTests() : base(GeometryFactory.Fixed) { }
 
-        /// <summary>
-        /// http://groups.google.com/group/nettopologysuite/browse_thread/thread/d423b51267b7a9fb?hl=en
-        /// </summary>
-        [Test]
-        public void DepthMismatchAndIndexOutOfRangeAtBuffer0()
-        {
-            const string text =
-            @"GEOMETRYCOLLECTION(POLYGON((515947.25631471083
+	[TestFixture]
+	public class GoogleGroupTests : BaseSamples
+	{
+		public GoogleGroupTests() : base(GeometryFactory.Fixed) { }
+
+		/// <summary>
+		/// http://groups.google.com/group/nettopologysuite/browse_thread/thread/d423b51267b7a9fb?hl=en
+		/// </summary>
+		[Test]
+		public void DepthMismatchAndIndexOutOfRangeAtBuffer0()
+		{
+			const string text =
+			@"GEOMETRYCOLLECTION(POLYGON((515947.25631471083
 7171484.5030738059,515947.25631471066
 7171484.5030738059,515947.30958362931
 7171484.5257367212,515947.36621354509
@@ -364,11 +371,63 @@ namespace NetTopologySuite.Tests.Various
 7171446.1202004757,515936.019249668
 7171446.175119142,515930.23924972612 7171468.7151191486)))";
 
-            var coll = Reader.Read(text);
-            Assert.IsNotNull(coll);
+			var coll = Reader.Read(text);
+			Assert.IsNotNull(coll);
 
-            var union = coll.Buffer(0.0);
-            Assert.IsNotNull(union);
-        }
-    }
+			var union = coll.Buffer(0.0);
+			Assert.IsNotNull(union);
+		}
+
+		/// <summary>
+		/// Xavier Fischer 16-04-2012
+		/// https://groups.google.com/forum/#!msg/nettopologysuite/6ymt34Ycfk8/dF5wTsEAsaIJ
+		/// </summary>
+		[Test]
+		public void GeometryTransformTest()
+		{
+
+			#region Init ICoordinateTransformation
+
+            // RGF93_Lambert_93
+		    const string coordSysRGF93_Lambert_93 = "PROJCS[\"RGF93_Lambert_93\",GEOGCS[\"GCS_RGF_1993\",DATUM[\"D_RGF_1993\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Lambert_Conformal_Conic\"],PARAMETER[\"False_Easting\",700000.0],PARAMETER[\"False_Northing\",6600000.0],PARAMETER[\"Central_Meridian\",3.0],PARAMETER[\"Standard_Parallel_1\",44.0],PARAMETER[\"Standard_Parallel_2\",49.0],PARAMETER[\"Latitude_Of_Origin\",46.5],UNIT[\"Meter\",1.0]]";
+
+			// SRID 4326
+			const string coordSys4326 = "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]]";
+
+			var csSource = ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.Parse(coordSysRGF93_Lambert_93) as GeoAPI.CoordinateSystems.ICoordinateSystem;
+			var csTarget = ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.Parse(coordSys4326) as GeoAPI.CoordinateSystems.ICoordinateSystem;
+
+			var transform = new ProjNet.CoordinateSystems.Transformations.CoordinateTransformationFactory().CreateFromCoordinateSystems(csSource, csTarget);
+
+            var piSource = ProjectionInfo.FromEsriString(coordSysRGF93_Lambert_93);
+            var piTarget = ProjectionInfo.FromEsriString(coordSys4326);
+		    var dsTransform = new DotSpatialMathTransform(piSource, piTarget);
+
+			#endregion Init ICoordinateTransformation
+
+			using (var shapeDataReader = new ShapefileDataReader(@"..\..\..\NetTopologySuite.Samples.Shapefiles\DEPARTEMENT.SHP", GeometryFactory.Default))
+			{
+				shapeDataReader.Read();
+
+                var outGeomDotSpatial = CoordinateSystems.Transformations.GeometryTransform.TransformGeometry(GeometryFactory.Default, shapeDataReader.Geometry, dsTransform);
+                Assert.IsFalse(outGeomDotSpatial.IsEmpty);
+                Console.WriteLine(outGeomDotSpatial.AsText());
+                var outGeomProjNet = CoordinateSystems.Transformations.GeometryTransform.TransformGeometry(GeometryFactory.Default, shapeDataReader.Geometry, transform.MathTransform);
+                Assert.IsFalse(outGeomProjNet.IsEmpty);
+                Console.WriteLine(outGeomProjNet.AsText());
+			    Console.WriteLine();
+			}
+
+		}
+
+		public override void Start()
+		{
+			this.GeometryTransformTest();
+		}
+
+
+
+
+
+	}
 }

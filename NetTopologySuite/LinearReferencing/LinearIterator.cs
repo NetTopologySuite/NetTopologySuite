@@ -29,7 +29,7 @@ namespace NetTopologySuite.LinearReferencing
         private readonly int _numLines;
 
         /// <summary>
-        /// Invariant: currentLine <> null if the iterator is pointing at a valid coordinate
+        /// Invariant: currentLine &lt;&gt; null if the iterator is pointing at a valid coordinate
         /// </summary>
         /// <exception cref="ArgumentException">Thrown if <see cref="_linearGeom"/> is not <see cref="ILineal"/></exception>
         private ILineString _currentLine;

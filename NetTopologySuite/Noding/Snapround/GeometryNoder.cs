@@ -57,6 +57,7 @@ namespace NetTopologySuite.Noding.Snapround
             sr.ComputeNodes(segStrings);
             var nodedLines = sr.GetNodedSubstrings();
 
+            //TODO: improve this to check for full snap-rounded correctness
             if (IsValidityChecked)
             {
                 NodingValidator nv = new NodingValidator(nodedLines);

@@ -13,29 +13,29 @@ namespace NetTopologySuite.Algorithm
         /// <summary> 
         /// A value that indicates an orientation of clockwise, or a right turn.
         /// </summary>
-        public const int Clockwise      = -1;
+        public const int Clockwise          = -1;
         /// <summary> 
         /// A value that indicates an orientation of clockwise, or a right turn.
         /// </summary>
-        public const int Right         = Clockwise;
+        public const int Right              = Clockwise;
 
         /// <summary>
         /// A value that indicates an orientation of counterclockwise, or a left turn.
         /// </summary>
-        public const int CounterClockwise  = 1;
+        public const int CounterClockwise   = 1;
         /// <summary>
         /// A value that indicates an orientation of counterclockwise, or a left turn.
         /// </summary>
-        public const int Left              = CounterClockwise;
+        public const int Left               = CounterClockwise;
 
         /// <summary>
         /// A value that indicates an orientation of collinear, or no turn (straight).
         /// </summary>
-        public const int Collinear         = 0;
+        public const int Collinear          = 0;
         /// <summary>
         /// A value that indicates an orientation of collinear, or no turn (straight).
         /// </summary>
-        public const int Straight = Collinear;
+        public const int Straight           = Collinear;
         
         /// <summary> 
         /// Returns the index of the direction of the point <c>q</c>

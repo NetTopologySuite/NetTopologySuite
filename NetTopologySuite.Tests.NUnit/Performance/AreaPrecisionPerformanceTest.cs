@@ -18,9 +18,11 @@ namespace NetTopologySuite.Tests.NUnit.Performance
             var sw1 = new Stopwatch();
             var sw2 = new Stopwatch();
             var sw3 = new Stopwatch();
+                                   
+            //-2,23057128323489E-11
 
             sw.Start();
-            for (var nrVertices = 4; nrVertices <= 50000000; nrVertices *= 2)
+            for (var nrVertices = 4; nrVertices <= 5000000; nrVertices *= 2)
             {
                 var coordinates = new Coordinate[nrVertices + 1];
 
@@ -36,7 +38,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
                 var g1 = new GeometryFactory().CreateLinearRing(coordinates);
                 var holes = new ILinearRing[] {};
                 var polygon = (Polygon) new GeometryFactory().CreatePolygon(g1, holes);
-                Console.WriteLine(polygon);
+                //Console.WriteLine(polygon);
 
                 sw1.Start();
                 var area = polygon.Area;
@@ -49,18 +51,23 @@ namespace NetTopologySuite.Tests.NUnit.Performance
                 sw3.Stop();
 
                 var exactArea = 0.5 * nrVertices * Math.Sin(2 * Math.PI / nrVertices);
-                var eps = exactArea - area;
+                var eps1 = exactArea - area;
                 var eps2 = exactArea - area2;
                 var eps3 = exactArea - areaOld;
+                
+                //Assert.IsTrue(Math.Abs(eps2) <= Math.Abs(eps3));
 
-                Console.WriteLine("\n" + nrVertices + "   now err: " + eps
-                                  + "    acc err: " + eps2 + "    old err: " + eps3+"\n");
+                Console.WriteLine(string.Format("{0,10},\tnow err: {1,23},\tacc err: {2,23},\told err: {3,23}", nrVertices ,eps1, eps2 ,eps3));
             }
+            
             sw.Stop();
+
             Console.WriteLine("\n\nTime: " + sw.Elapsed);
             Console.WriteLine("Time Now: " + sw1.ElapsedTicks);
             Console.WriteLine("Time Acc: " + sw2.ElapsedTicks);
             Console.WriteLine("Time Old: " + sw3.ElapsedTicks);
+            
+            Assert.IsTrue(true);
         }
 
         private static double OriginalSignedArea(Coordinate[] ring)

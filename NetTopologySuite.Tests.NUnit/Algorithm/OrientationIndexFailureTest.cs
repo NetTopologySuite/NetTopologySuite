@@ -33,10 +33,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                                    new Coordinate(23.131039116367354, -7.004368924503866),
                                    new Coordinate(1.4540766091865, -7.989685402102996)
                                };
-            // this should succeed
-            Assert.IsTrue(IsAllOrientationsEqualDD(pts));
-            // this is expected to fail
-            Assert.IsTrue(!OrientationIndexTest.IsAllOrientationsEqual(pts));
+            CheckOrientation(pts);
         }
 
         [Test/*, ExpectedException(typeof(AssertionException))*/]
@@ -48,10 +45,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                                    new Coordinate(168.9018919682399, -5.713787599646864),
                                    new Coordinate(186.80814046338352, 46.28973405831556)
                                };
-            // this should succeed
-            Assert.IsTrue(IsAllOrientationsEqualDD(pts));
-            // this is expected to fail
-            Assert.IsTrue(!OrientationIndexTest.IsAllOrientationsEqual(pts));
+            CheckOrientation(pts);
         }
 
         [Test/*, ExpectedException(typeof(AssertionException))*/]
@@ -63,11 +57,29 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                                    new Coordinate(-20.43142161511487, 13.620947743409914),
                                    new Coordinate(0, 0)
                                };
+            CheckOrientation(pts);
+        }
+
+        [Test]
+        public void TestBadCCW4()
+        {
+            // this case fails because subtraction of small from large loses precision
+            Coordinate[] pts = {
+                                   new Coordinate(-26.2, 188.7),
+                                   new Coordinate(37.0, 290.7),
+                                   new Coordinate(21.2, 265.2)
+                               };
+            CheckOrientation(pts);
+        }
+
+        private static void CheckOrientation(Coordinate[] pts)
+        {
             // this should succeed
-            Assert.IsTrue(IsAllOrientationsEqualDD(pts));
+            Assert.True(IsAllOrientationsEqualDD(pts));
             // this is expected to fail
             Assert.IsTrue(!OrientationIndexTest.IsAllOrientationsEqual(pts));
         }
+
 
         public static bool IsAllOrientationsEqual(
             double p0x, double p0y,

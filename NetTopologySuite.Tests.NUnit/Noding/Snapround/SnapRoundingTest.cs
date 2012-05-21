@@ -28,6 +28,17 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
         }
 
         [Test]
+        public void TestLineStringLongShort()
+        {
+            String[] geoms = {
+                                 "LINESTRING (0 0, 2 0)",
+                                 "LINESTRING (0 0, 10 -1)"
+                             };
+            RunRounding(geoms);
+        }
+
+
+        [Test]
         public void TestBadLines1() {
             string[] badLines1 = {
                 "LINESTRING ( 171 157, 175 154, 170 154, 170 155, 170 156, 170 157, 171 158, 171 159, 172 160, 176 156, 171 156, 171 159, 176 159, 172 155, 170 157, 174 161, 174 156, 173 156, 172 156 )"
@@ -78,16 +89,21 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             RunRounding(badNoding1ExtractShift);
         }
 
+
+        private const double SnapTolerance = 1.0;
+
         void RunRounding(string[] wkt)
         {
             var geoms = FromWKT(wkt);
-            PrecisionModel pm = new PrecisionModel(1.0);
+            PrecisionModel pm = new PrecisionModel(SnapTolerance);
             GeometryNoder noder = new GeometryNoder(pm);
+            noder.IsValidityChecked = true;
             var nodedLines = noder.Node(geoms);
             
             foreach ( var ls in nodedLines)
                 Console.WriteLine(ls);
-            
+
+            Assert.IsTrue(IsSnapped(nodedLines, SnapTolerance));
             
         }
 
@@ -104,6 +120,46 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                 }
             }
             return geomList;
+        }
+
+        private static bool IsSnapped(IList<ILineString> lines, double tol)
+        {
+            for (int i = 0; i < lines.Count; i++)
+            {
+                var line = lines[i];
+                for (var j = 0; j < line.NumPoints; j++)
+                {
+                    var v = line.GetCoordinateN(j);
+                    if (!IsSnapped(v, lines)) return false;
+
+                }
+            }
+            return true;
+        }
+
+        private static bool IsSnapped(Coordinate v, IList<ILineString> lines)
+        {
+            for (var i = 0; i < lines.Count ; i++)
+            {
+                var line = lines[i];
+                for (var j = 0; j < line.NumPoints - 1; j++)
+                {
+                    var p0 = line.GetCoordinateN(j);
+                    var p1 = line.GetCoordinateN(j);
+                    if (!IsSnapped(v, p0, p1)) return false;
+                }
+            }
+            return true;
+        }
+
+        private static bool IsSnapped(Coordinate v, Coordinate p0, Coordinate p1)
+        {
+            if (v.Equals2D(p0)) return true;
+            if (v.Equals2D(p1)) return true;
+            var seg = new LineSegment(p0, p1);
+            var dist = seg.Distance(v);
+            if (dist < SnapTolerance / 2.05) return false;
+            return true;
         }
     }
 }

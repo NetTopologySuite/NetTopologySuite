@@ -50,6 +50,10 @@ namespace NetTopologySuite.Noding.Snapround
             this.pt = pt;
             this.scaleFactor = scaleFactor;
             this.li = li;
+
+            if (scaleFactor <= 0d)
+                throw new ArgumentException("Scale factor must be non-zero");
+            
             if (scaleFactor != 1.0)
             {
                 this.pt = new Coordinate(Scale(pt.X), Scale(pt.Y));

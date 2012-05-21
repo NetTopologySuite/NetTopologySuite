@@ -613,6 +613,45 @@ namespace NetTopologySuite.Mathematics
             return new DD(zhi, zlo);
         }
 
+
+        #region Ordering Functions
+
+        /// <summary>
+        /// Computes the minimum of this and another DD number.
+        /// </summary>
+        /// <param name="x">A DD number</param>
+        /// <returns>The minimum of the two numbers</returns>
+        public DD min(DD x)
+        {
+            if (this.le(x))
+            {
+                return this;
+            }
+            else
+            {
+                return x;
+            }
+        }
+
+        /// <summary>
+        /// Computes the maximum of this and another DD number.
+        /// </summary>
+        /// <param name="x">A DD number</param>
+        /// <returns>The maximum of the two numbers</returns>
+        public DD max(DD x)
+        {
+            if (this.ge(x))
+            {
+                return this;
+            }
+            else
+            {
+                return x;
+            }
+        }
+        
+        #endregion
+
         /**
          * Returns the largest (closest to positive infinity) 
          * value that is not greater than the argument 
