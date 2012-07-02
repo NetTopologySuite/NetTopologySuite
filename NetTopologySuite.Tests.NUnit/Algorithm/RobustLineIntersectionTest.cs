@@ -12,6 +12,37 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     {
         private WKTReader reader = new WKTReader();
 
+  /**
+   * Test from Tomas Fa - JTS list 6/13/2012
+   * 
+   * Fails using original JTS DeVillers determine orientation test.
+   * Succeeds using DD and Shewchuk orientation
+   * 
+   * @throws ParseException
+   */
+  public void testTomasFa_1() 
+  {
+    ComputeIntersectionNone(
+        "LINESTRING (-42.0 163.2, 21.2 265.2)",
+        "LINESTRING (-26.2 188.7, 37.0 290.7)");
+  }
+  
+  /**
+   * Test from Tomas Fa - JTS list 6/13/2012
+   * 
+   * Fails using original JTS DeVillers determine orientation test.
+   * Succeeds using DD and Shewchuk orientation
+   * 
+   * @throws ParseException
+   */
+        [Test]
+  public void testTomasFa_2() 
+  {
+    ComputeIntersectionNone(
+        "LINESTRING (-5.9 163.1, 76.1 250.7)",
+        "LINESTRING (14.6 185.0, 96.6 272.6)");
+  }
+  
         /*
         * Test from strk which is bad in GEOS (2009-04-14).
         */
@@ -66,8 +97,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 "LINESTRING ( 1889281.8148903656 1997547.0560044837, 2259977.3672235999 483675.17050843034 )",
                 2,
                 new Coordinate[] {
-                    new Coordinate(2089426.5233462777, 1180182.3877339689),
-                    new Coordinate(2085646.6891757075, 1195618.7333999649)
+                    new Coordinate(2087536.6062609926, 1187900.560566967)
                 },
                 0);
         }
@@ -104,10 +134,22 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 },
                 1,
                 new Coordinate[] {
-                    new Coordinate(4348437.0557510145, 5552597.375203926),
+                    new Coordinate(4348440.8493874, 5552599.27202212),
                 },
                 0);
         }
+
+  void ComputeIntersectionNone(String wkt1, String wkt2)
+  {
+    var l1 = (LineString) reader.Read(wkt1);
+    var l2 = (LineString) reader.Read(wkt2);
+    Coordinate[] pt = new Coordinate[] {
+        l1.GetCoordinateN(0), l1.GetCoordinateN(1),
+        l2.GetCoordinateN(0), l2.GetCoordinateN(1)
+    };
+    ComputeIntersection(pt, 0, null, 0);
+  }
+  
 
         void ComputeIntersection(String wkt1, String wkt2,
                                  int expectedIntersectionNum, 
@@ -138,15 +180,15 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Coordinate[] intPt = g.Coordinates;
             ComputeIntersection(pt, expectedIntersectionNum, intPt, distanceTolerance);
         }
-	
+
         /*
         * @param pt
         * @param expectedIntersectionNum
-        * @param intPt the expected intersection points (maybe null if not tested)
+        * @param expectedintPt the expected intersection points (maybe null if not tested)
         */
         void ComputeIntersection(Coordinate[] pt, 
-                                 int expectedIntersectionNum, 
-                                 Coordinate[] intPt,
+                                 int expectedIntersectionNum,
+                                 Coordinate[] expectedIntPt,
                                  double distanceTolerance)
         {
             LineIntersector li = new RobustLineIntersector();
@@ -155,28 +197,28 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             int intNum = li.IntersectionNum;
             Assert.AreEqual(expectedIntersectionNum, intNum, "Number of intersections not as expected");
 		
-            if (intPt != null) {
-                Assert.AreEqual(intNum, intPt.Length, "Wrong number of expected int pts provided");
+            if (expectedIntPt != null) {
+                Assert.AreEqual(intNum, expectedIntPt.Length, "Wrong number of expected int pts provided");
                 // test that both points are represented here
                 bool isIntPointsCorrect = true;
                 if (intNum == 1) {
-                    TestIntPoints(intPt[0], li.GetIntersection(0), distanceTolerance);
+                    TestIntPoints(expectedIntPt[0], li.GetIntersection(0), distanceTolerance);
                 }
                 else if (intNum == 2) {
-                    TestIntPoints(intPt[1], li.GetIntersection(0), distanceTolerance);
-                    TestIntPoints(intPt[1], li.GetIntersection(0), distanceTolerance);
+                    TestIntPoints(expectedIntPt[1], li.GetIntersection(0), distanceTolerance);
+                    TestIntPoints(expectedIntPt[1], li.GetIntersection(0), distanceTolerance);
 
-                    if (!(equals(intPt[0], li.GetIntersection(0), distanceTolerance)
-                        || equals(intPt[0], li.GetIntersection(1), distanceTolerance)))
+                    if (!(equals(expectedIntPt[0], li.GetIntersection(0), distanceTolerance)
+                        || equals(expectedIntPt[0], li.GetIntersection(1), distanceTolerance)))
                     {
-                        TestIntPoints(intPt[0], li.GetIntersection(0), distanceTolerance);
-                        TestIntPoints(intPt[0], li.GetIntersection(1), distanceTolerance);
+                        TestIntPoints(expectedIntPt[0], li.GetIntersection(0), distanceTolerance);
+                        TestIntPoints(expectedIntPt[0], li.GetIntersection(1), distanceTolerance);
                     }
-                    else if (!(equals(intPt[1], li.GetIntersection(0), distanceTolerance)
-                    || equals(intPt[1], li.GetIntersection(1), distanceTolerance)))
+                    else if (!(equals(expectedIntPt[1], li.GetIntersection(0), distanceTolerance)
+                    || equals(expectedIntPt[1], li.GetIntersection(1), distanceTolerance)))
                     {
-                        TestIntPoints(intPt[1], li.GetIntersection(0), distanceTolerance);
-                        TestIntPoints(intPt[1], li.GetIntersection(1), distanceTolerance);
+                        TestIntPoints(expectedIntPt[1], li.GetIntersection(0), distanceTolerance);
+                        TestIntPoints(expectedIntPt[1], li.GetIntersection(1), distanceTolerance);
                     }
                 }
             //assertTrue("Int Pts not equal", isIntPointsCorrect);

@@ -30,7 +30,13 @@ namespace NetTopologySuite.Tests.NUnit.Performance
             _iter = 0;
         }
 
-        public void RunExample()
+        public void RunExample1()
+        {
+            Console.WriteLine("Iter # " + _iter++);
+            // do test work here
+        }
+
+        public void RunExample2()
         {
             Console.WriteLine("Iter # " + _iter++);
             // do test work here

@@ -407,15 +407,25 @@ namespace NetTopologySuite.Tests.Various
 
 			using (var shapeDataReader = new ShapefileDataReader(@"..\..\..\NetTopologySuite.Samples.Shapefiles\DEPARTEMENT.SHP", GeometryFactory.Default))
 			{
-				shapeDataReader.Read();
+                while (shapeDataReader.Read())
+                {
+                    var outGeomDotSpatial =
+                        CoordinateSystems.Transformations.GeometryTransform.TransformGeometry(GeometryFactory.Default,
+                                                                                              shapeDataReader.Geometry,
+                                                                                              dsTransform);
+                    Assert.IsFalse(outGeomDotSpatial.IsEmpty);
+                    Console.WriteLine(outGeomDotSpatial.AsText());
+                    var outGeomProjNet =
+                        CoordinateSystems.Transformations.GeometryTransform.TransformGeometry(GeometryFactory.Default,
+                                                                                              shapeDataReader.Geometry,
+                                                                                              transform.MathTransform);
+                    Assert.IsFalse(outGeomProjNet.IsEmpty);
+                    Console.WriteLine(outGeomProjNet.AsText());
 
-                var outGeomDotSpatial = CoordinateSystems.Transformations.GeometryTransform.TransformGeometry(GeometryFactory.Default, shapeDataReader.Geometry, dsTransform);
-                Assert.IsFalse(outGeomDotSpatial.IsEmpty);
-                Console.WriteLine(outGeomDotSpatial.AsText());
-                var outGeomProjNet = CoordinateSystems.Transformations.GeometryTransform.TransformGeometry(GeometryFactory.Default, shapeDataReader.Geometry, transform.MathTransform);
-                Assert.IsFalse(outGeomProjNet.IsEmpty);
-                Console.WriteLine(outGeomProjNet.AsText());
-			    Console.WriteLine();
+                    var hd = Algorithm.Distance.DiscreteHausdorffDistance.Distance(outGeomProjNet, outGeomDotSpatial);
+                    Console.WriteLine(string.Format("\nHaussdorffDistance: {0}", hd));
+                    Console.WriteLine();
+                }
 			}
 
 		}
@@ -425,6 +435,28 @@ namespace NetTopologySuite.Tests.Various
 			this.GeometryTransformTest();
 		}
 
+        /// <summary>
+        /// Asher 16-04-2012
+        /// https://groups.google.com/forum/#!msg/nettopologysuite/6ymt34Ycfk8/dF5wTsEAsaIJ
+        /// </summary>
+        [Test]
+        public void CanTransformPolygon()
+        {
+            ICoordinateTransformation transform = new ProjNet.CoordinateSystems.Transformations.CoordinateTransformationFactory()
+                .CreateFromCoordinateSystems(
+                    ProjNet.CoordinateSystems.GeographicCoordinateSystem.WGS84,
+                    ProjNet.CoordinateSystems.GeographicCoordinateSystem.WGS84);
+
+            IGeometry original = new Polygon(new LinearRing(new Coordinate[]{
+                new Coordinate(-77.5, 38.5),new Coordinate(-77.1, 38.5),new Coordinate(-77.1, 38.1),new Coordinate(-77.5, 38.5)}));
+
+            IGeometry transformed = NetTopologySuite.CoordinateSystems.Transformations.GeometryTransform.TransformGeometry(
+                    GeometryFactory.Default, original, transform.MathTransform);
+
+            Assert.NotNull(transformed);
+            Assert.IsTrue(transformed.IsValid);
+            Assert.AreEqual(original, transformed);
+        }
 
 
 

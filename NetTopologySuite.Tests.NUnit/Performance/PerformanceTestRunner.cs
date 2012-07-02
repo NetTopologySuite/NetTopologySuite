@@ -5,6 +5,10 @@ using System.Reflection;
 
 namespace NetTopologySuite.Tests.NUnit.Performance
 {
+    /// <summary>
+    /// Runs <see cref="PerformanceTestCase"/> classes which contain performance tests.
+    /// </summary>
+    /// <author>Martin Davis</author>
     public class PerformanceTestRunner
     {
         private const String RunPrefix = "Run";

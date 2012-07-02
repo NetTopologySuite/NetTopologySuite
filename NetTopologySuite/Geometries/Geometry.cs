@@ -475,16 +475,22 @@ namespace NetTopologySuite.Geometries
 
         /// <summary> 
         /// Computes the centroid of this <c>Geometry</c>.
-        /// The centroid is equal to the centroid of the set of component Geometries of highest
-        /// dimension (since the lower-dimension geometries contribute zero "weight" to the centroid).
+        /// The centroid 
+        /// is equal to the centroid of the set of component Geometries of highest
+        /// dimension (since the lower-dimension geometries contribute zero 
+        /// "weight" to the centroid).
+        /// <para/>
+        /// The centroid of an empty geometry is <c>POINT EMPTY</c>.
         /// </summary>
         /// <returns>A Point which is the centroid of this Geometry.</returns>
         public IPoint Centroid
         {
             get
             {
-                if (IsEmpty) 
-                    return null;
+                if (IsEmpty)
+                {
+                    return Factory.CreatePoint((Coordinate)null);
+                }
 
                 Coordinate centPt = null;
                 Dimension dim = Dimension;
@@ -517,6 +523,8 @@ namespace NetTopologySuite.Geometries
         /// An interior point is guaranteed to lie in the interior of the Geometry,
         /// if it possible to calculate such a point exactly. Otherwise,
         /// the point may lie on the boundary of the point.
+        /// <para/>
+        /// The interior point of an empty geometry is <c>POINT EMPTY</c>.
         /// </remarks>
         /// <returns>A <c>Point</c> which is in the interior of this Geometry.</returns>
         public IPoint InteriorPoint

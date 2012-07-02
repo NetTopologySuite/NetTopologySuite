@@ -63,11 +63,24 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         [Test]
         public void TestBadCCW4()
         {
-            // this case fails because subtraction of small from large loses precision
+            // from JTS list - 5/15/2012  strange case for the GeometryNoder
             Coordinate[] pts = {
                                    new Coordinate(-26.2, 188.7),
                                    new Coordinate(37.0, 290.7),
                                    new Coordinate(21.2, 265.2)
+                               };
+            CheckOrientation(pts);
+        }
+
+        [Test]
+        public void TestBadCCW5()
+        {
+            // from JTS list - 6/15/2012  another strange case from Tomas Fa
+            Coordinate[] pts = {
+                                   new Coordinate(-5.9, 163.1),
+                                   new Coordinate(76.1, 250.7),
+                                   new Coordinate(14.6, 185)
+                                   //new Coordinate(96.6, 272.6)
                                };
             CheckOrientation(pts);
         }
@@ -107,20 +120,20 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         private static int OrientationIndexDD(Coordinate p1, Coordinate p2, Coordinate q)
         {
-            DD dx1 = DD.valueOf(p2.X).selfSubtract(p1.X);
-            DD dy1 = DD.valueOf(p2.Y).selfSubtract(p1.Y);
-            DD dx2 = DD.valueOf(q.X).selfSubtract(p2.X);
-            DD dy2 = DD.valueOf(q.Y).selfSubtract(p2.Y);
+            DD dx1 = DD.ValueOf(p2.X).SelfSubtract(p1.X);
+            DD dy1 = DD.ValueOf(p2.Y).SelfSubtract(p1.Y);
+            DD dx2 = DD.ValueOf(q.X).SelfSubtract(p2.X);
+            DD dy2 = DD.ValueOf(q.Y).SelfSubtract(p2.Y);
 
             return SignOfDet2x2DD(dx1, dy1, dx2, dy2);
         }
 
         private static int SignOfDet2x2DD(DD x1, DD y1, DD x2, DD y2)
         {
-            DD det = x1.multiply(y2).subtract(y1.multiply(x2));
-            if (det.isZero())
+            DD det = x1.Multiply(y2).Subtract(y1.Multiply(x2));
+            if (det.IsZero())
                 return 0;
-            if (det.isNegative())
+            if (det.IsNegative())
                 return -1;
             return 1;
 

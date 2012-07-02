@@ -128,15 +128,31 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// 
+        /// Computes the orientation of a point q to the directed line segment p1-p2.
+        /// The orientation of a point relative to a directed line segment indicates
+        /// which way you turn to get to q after travelling from p1 to p2.
         /// </summary>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        /// <param name="q"></param>
-        /// <returns></returns>
-        public static int ComputeOrientation(Coordinate p1, Coordinate p2, Coordinate q) 
+        /// <returns>1 if q is counter-clockwise from p1-p2</returns>
+        /// <returns>-1 if q is clockwise from p1-p2</returns>
+        /// <returns>0 if q is collinear with p1-p2</returns>
+        public static int ComputeOrientation(Coordinate p1, Coordinate p2, Coordinate q)
         {
-                double dx1 = p2.X - p1.X;
+            return OrientationIndex(p1, p2, q);
+        }
+
+        /// <summary>
+        /// Returns the index of the direction of the point <c>q</c> relative to
+        /// a vector specified by <c>p1-p2</c>.
+        /// </summary>
+        /// <param name="p1">the origin point of the vector</param>
+        /// <param name="p2">the final point of the vector</param>
+        /// <param name="q">the point to compute the direction to</param>
+        /// <returns> 1 if q is counter-clockwise (left) from p1-p2</returns>
+        /// <returns>-1 if q is clockwise (right) from p1-p2</returns>
+        /// <returns>0 if q is collinear with p1-p2</returns>
+        public static int OrientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
+        {
+            double dx1 = p2.X - p1.X;
                 double dy1 = p2.Y - p1.Y;
                 double dx2 = q.X - p2.X;
                 double dy2 = q.Y - p2.Y;

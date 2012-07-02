@@ -64,6 +64,8 @@
     <Compile Include="Algorithm\IsCCWTest.cs" />
     <Compile Include="Algorithm\LocatePointInRingTest.cs" />
     <Compile Include="Algorithm\MCPointInRingTest.cs" />
+    <Compile Include="Mathematics\DDBasicTest.cs" />
+    <Compile Include="Mathematics\DDComputeTest.cs" />
     <Compile Include="Performance\Algorithm\MinimumBoundingCircleStressTest.cs" />
     <Compile Include="Algorithm\MinimumBoundingCircleTest.cs" />
     <Compile Include="Algorithm\MinimumDiameterTest.cs" />
@@ -141,6 +143,8 @@
     <Compile Include="Operation\LineMerge\LineMergerTest.cs" />
     <Compile Include="Operation\LineMerge\LineSequencerTest.cs" />
     <Compile Include="Operation\Overlay\FixedPrecisionSnappingTest.cs" />
+    <Compile Include="Performance\Mathematics\DDExpressionPerformance.cs" />
+    <Compile Include="Performance\Mathematics\InCirclePerformance.cs" />
     <Compile Include="Performance\Operation\Overlay\OverlayNodingStressTest.cs" />
     <Compile Include="Operation\Polygonize\PolygonizeTest.cs" />
     <Compile Include="Operation\Predicate\RectangleIntersectsPerformance.cs" />

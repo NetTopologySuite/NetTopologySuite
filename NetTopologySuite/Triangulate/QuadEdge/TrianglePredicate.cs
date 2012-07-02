@@ -28,7 +28,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// Tests if a point is inside the circle defined by 
         /// the triangle with vertices a, b, c (oriented counter-clockwise). 
         /// This test uses simple
-        /// double-precision arithmetic, and thus may not be robust.
+        /// double-precision arithmetic, and thus is not 100% robust.
         /// </summary>
         /// <param name="a">A vertex of the triangle</param>
         /// <param name="b">A vertex of the triangle</param>
@@ -138,26 +138,26 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             Coordinate a, Coordinate b, Coordinate c,
             Coordinate p)
         {
-            DD px = DD.valueOf(p.X);
-            DD py = DD.valueOf(p.Y);
-            DD ax = DD.valueOf(a.X);
-            DD ay = DD.valueOf(a.Y);
-            DD bx = DD.valueOf(b.X);
-            DD by = DD.valueOf(b.Y);
-            DD cx = DD.valueOf(c.X);
-            DD cy = DD.valueOf(c.Y);
+            DD px = DD.ValueOf(p.X);
+            DD py = DD.ValueOf(p.Y);
+            DD ax = DD.ValueOf(a.X);
+            DD ay = DD.ValueOf(a.Y);
+            DD bx = DD.ValueOf(b.X);
+            DD by = DD.ValueOf(b.Y);
+            DD cx = DD.ValueOf(c.X);
+            DD cy = DD.ValueOf(c.Y);
 
-            DD aTerm = (ax.multiply(ax).add(ay.multiply(ay)))
-                .multiply(TriAreaDDSlow(bx, by, cx, cy, px, py));
-            DD bTerm = (bx.multiply(bx).add(by.multiply(by)))
-                .multiply(TriAreaDDSlow(ax, ay, cx, cy, px, py));
-            DD cTerm = (cx.multiply(cx).add(cy.multiply(cy)))
-                .multiply(TriAreaDDSlow(ax, ay, bx, by, px, py));
-            DD pTerm = (px.multiply(px).add(py.multiply(py)))
-                .multiply(TriAreaDDSlow(ax, ay, bx, by, cx, cy));
+            DD aTerm = (ax.Multiply(ax).Add(ay.Multiply(ay)))
+                .Multiply(TriAreaDDSlow(bx, by, cx, cy, px, py));
+            DD bTerm = (bx.Multiply(bx).Add(by.Multiply(by)))
+                .Multiply(TriAreaDDSlow(ax, ay, cx, cy, px, py));
+            DD cTerm = (cx.Multiply(cx).Add(cy.Multiply(cy)))
+                .Multiply(TriAreaDDSlow(ax, ay, bx, by, px, py));
+            DD pTerm = (px.Multiply(px).Add(py.Multiply(py)))
+                .Multiply(TriAreaDDSlow(ax, ay, bx, by, cx, cy));
 
-            DD sum = aTerm.subtract(bTerm).add(cTerm).subtract(pTerm);
-            bool isInCircle = sum.doubleValue() > 0;
+            DD sum = aTerm.Subtract(bTerm).Add(cTerm).Subtract(pTerm);
+            bool isInCircle = sum.ToDoubleValue() > 0;
 
             return isInCircle;
         }
@@ -180,8 +180,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         private static DD TriAreaDDSlow(DD ax, DD ay,
                                        DD bx, DD by, DD cx, DD cy)
         {
-            return (bx.subtract(ax).multiply(cy.subtract(ay)).subtract(by.subtract(ay)
-                                                                           .multiply(cx.subtract(ax))));
+            return (bx.Subtract(ax).Multiply(cy.Subtract(ay)).Subtract(by.Subtract(ay)
+                                                                           .Multiply(cx.Subtract(ax))));
         }
 
         /// <summary>
@@ -200,17 +200,17 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             Coordinate a, Coordinate b, Coordinate c,
             Coordinate p)
         {
-            DD aTerm = (DD.sqr(a.X).selfAdd(DD.sqr(a.Y)))
-                .selfMultiply(TriAreaDDFast(b, c, p));
-            DD bTerm = (DD.sqr(b.X).selfAdd(DD.sqr(b.Y)))
-                .selfMultiply(TriAreaDDFast(a, c, p));
-            DD cTerm = (DD.sqr(c.X).selfAdd(DD.sqr(c.Y)))
-                .selfMultiply(TriAreaDDFast(a, b, p));
-            DD pTerm = (DD.sqr(p.X).selfAdd(DD.sqr(p.Y)))
-                .selfMultiply(TriAreaDDFast(a, b, c));
+            DD aTerm = (DD.Sqr(a.X).SelfAdd(DD.Sqr(a.Y)))
+                .SelfMultiply(TriAreaDDFast(b, c, p));
+            DD bTerm = (DD.Sqr(b.X).SelfAdd(DD.Sqr(b.Y)))
+                .SelfMultiply(TriAreaDDFast(a, c, p));
+            DD cTerm = (DD.Sqr(c.X).SelfAdd(DD.Sqr(c.Y)))
+                .SelfMultiply(TriAreaDDFast(a, b, p));
+            DD pTerm = (DD.Sqr(p.X).SelfAdd(DD.Sqr(p.Y)))
+                .SelfMultiply(TriAreaDDFast(a, b, c));
 
-            DD sum = aTerm.selfSubtract(bTerm).selfAdd(cTerm).selfSubtract(pTerm);
-            bool isInCircle = sum.doubleValue() > 0;
+            DD sum = aTerm.SelfSubtract(bTerm).SelfAdd(cTerm).SelfSubtract(pTerm);
+            bool isInCircle = sum.ToDoubleValue() > 0;
 
             return isInCircle;
         }
@@ -231,15 +231,15 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             Coordinate a, Coordinate b, Coordinate c)
         {
 
-            DD t1 = DD.valueOf(b.X).selfSubtract(a.X)
-                .selfMultiply(
-                    DD.valueOf(c.Y).selfSubtract(a.Y));
+            DD t1 = DD.ValueOf(b.X).SelfSubtract(a.X)
+                .SelfMultiply(
+                    DD.ValueOf(c.Y).SelfSubtract(a.Y));
 
-            DD t2 = DD.valueOf(b.Y).selfSubtract(a.Y)
-                .selfMultiply(
-                    DD.valueOf(c.X).selfSubtract(a.X));
+            DD t2 = DD.ValueOf(b.Y).SelfSubtract(a.Y)
+                .SelfMultiply(
+                    DD.ValueOf(c.X).SelfSubtract(a.X));
 
-            return t1.selfSubtract(t2);
+            return t1.SelfSubtract(t2);
         }
 
         /// <summary>
@@ -254,25 +254,25 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             Coordinate a, Coordinate b, Coordinate c,
             Coordinate p)
         {
-            DD adx = DD.valueOf(a.X).selfSubtract(p.X);
-            DD ady = DD.valueOf(a.Y).selfSubtract(p.Y);
-            DD bdx = DD.valueOf(b.X).selfSubtract(p.X);
-            DD bdy = DD.valueOf(b.Y).selfSubtract(p.Y);
-            DD cdx = DD.valueOf(c.X).selfSubtract(p.X);
-            DD cdy = DD.valueOf(c.Y).selfSubtract(p.Y);
+            DD adx = DD.ValueOf(a.X).SelfSubtract(p.X);
+            DD ady = DD.ValueOf(a.Y).SelfSubtract(p.Y);
+            DD bdx = DD.ValueOf(b.X).SelfSubtract(p.X);
+            DD bdy = DD.ValueOf(b.Y).SelfSubtract(p.Y);
+            DD cdx = DD.ValueOf(c.X).SelfSubtract(p.X);
+            DD cdy = DD.ValueOf(c.Y).SelfSubtract(p.Y);
 
-            DD abdet = adx.multiply(bdy).selfSubtract(bdx.multiply(ady));
-            DD bcdet = bdx.multiply(cdy).selfSubtract(cdx.multiply(bdy));
-            DD cadet = cdx.multiply(ady).selfSubtract(adx.multiply(cdy));
-            DD alift = adx.multiply(adx).selfAdd(ady.multiply(ady));
-            DD blift = bdx.multiply(bdx).selfAdd(bdy.multiply(bdy));
-            DD clift = cdx.multiply(cdx).selfAdd(cdy.multiply(cdy));
+            DD abdet = adx.Multiply(bdy).SelfSubtract(bdx.Multiply(ady));
+            DD bcdet = bdx.Multiply(cdy).SelfSubtract(cdx.Multiply(bdy));
+            DD cadet = cdx.Multiply(ady).SelfSubtract(adx.Multiply(cdy));
+            DD alift = adx.Multiply(adx).SelfAdd(ady.Multiply(ady));
+            DD blift = bdx.Multiply(bdx).SelfAdd(bdy.Multiply(bdy));
+            DD clift = cdx.Multiply(cdx).SelfAdd(cdy.Multiply(cdy));
 
-            DD sum = alift.selfMultiply(bcdet)
-                .selfAdd(blift.selfMultiply(cadet))
-                .selfAdd(clift.selfMultiply(abdet));
+            DD sum = alift.SelfMultiply(bcdet)
+                .SelfAdd(blift.SelfMultiply(cadet))
+                .SelfAdd(clift.SelfMultiply(abdet));
 
-            bool isInCircle = sum.doubleValue() > 0;
+            bool isInCircle = sum.ToDoubleValue() > 0;
 
             return isInCircle;
         }
