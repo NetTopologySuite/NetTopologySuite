@@ -1011,6 +1011,16 @@ namespace NetTopologySuite.Mathematics
             return _hi == y._hi && _lo == y._lo;
         }
 
+        public static bool operator == (DD lhs, DD rhs)
+        {
+            return lhs._hi == rhs._hi && lhs._lo == rhs._lo;
+        }
+
+        public static bool operator !=(DD rhs, DD lhs)
+        {
+            return !(rhs == lhs);
+        }
+
         /**
          * Tests whether this value is greater than another <tt>DoubleDouble</tt> value.
          * @param y a DoubleDouble value
@@ -1123,7 +1133,7 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The string representation in standard notation</returns>
         public String ToStandardNotation()
         {
-            String specialStr = getSpecialNumberString();
+            String specialStr = GetSpecialNumberString();
             if (specialStr != null)
                 return specialStr;
 
@@ -1165,7 +1175,7 @@ namespace NetTopologySuite.Mathematics
             if (IsZero)
                 return SCI_NOT_ZERO;
 
-            String specialStr = getSpecialNumberString();
+            String specialStr = GetSpecialNumberString();
             if (specialStr != null)
                 return specialStr;
 
@@ -1314,18 +1324,16 @@ namespace NetTopologySuite.Mathematics
             return buf.ToString();
         }
 
-        /**
-         * Returns the string for this value if it has a known representation.
-         * (E.g. NaN or 0.0)
-         * 
-         * @return the string for this special number
-         * @return null if the number is not a special number
-         */
 
-        private String getSpecialNumberString()
+        /// <summary>
+        /// Returns the string for this value if it has a known representation (e.g. NaN or 0.0).
+        /// </summary>
+        /// <returns>The string for this special number</returns>
+        /// <returns><c>null</c> if the number is not a special number</returns>
+        private String GetSpecialNumberString()
         {
-            if (IsZero()) return "0.0";
-            if (isNaN()) return "NaN ";
+            if (IsZero) return "0.0";
+            if (IsNaN(this)) return "NaN ";
             return null;
         }
 
