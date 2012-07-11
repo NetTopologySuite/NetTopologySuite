@@ -131,9 +131,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         private static int SignOfDet2x2DD(DD x1, DD y1, DD x2, DD y2)
         {
             DD det = x1.Multiply(y2).Subtract(y1.Multiply(x2));
-            if (det.IsZero())
+            if (det.IsZero)
                 return 0;
-            if (det.IsNegative())
+            if (det.IsNegative)
                 return -1;
             return 1;
 

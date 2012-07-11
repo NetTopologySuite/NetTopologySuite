@@ -14,8 +14,8 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         [Test]
         public void TestNaN()
         {
-            Assert.IsTrue(DD.ValueOf(1).Divide(DD.ValueOf(0)).isNaN());
-            Assert.IsTrue(DD.ValueOf(1).Multiply(DD.NaN).isNaN());
+            Assert.IsTrue(DD.IsNaN(DD.ValueOf(1).Divide(DD.ValueOf(0))));
+            Assert.IsTrue(DD.IsNaN(DD.ValueOf(1).Multiply(DD.NaN)));
         }
 
         [Test]
@@ -74,7 +74,9 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         private static void CheckTrunc(DD x, DD expected)
         {
             DD trunc = x.Truncate();
-            var isEqual = trunc.equals(expected);
+            var isEqual = trunc.Equals(expected);
+            Assert.True(isEqual);
+            isEqual = trunc == expected;
             Assert.True(isEqual);
         }
 
@@ -185,9 +187,9 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
                               + "   delta = " + delta);
             PrintBinomialSquareDouble(a, b);
 
-            var isSame = diff.equals(sum);
+            var isSame = diff.Equals(sum);
             Assert.IsTrue(isSame);
-            var isDeltaZero = delta.IsZero();
+            var isDeltaZero = delta.IsZero;
             Assert.IsTrue(isDeltaZero);
         }
 
@@ -246,9 +248,9 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
                               + "   delta = " + delta);
             //  	printBinomialSquareDouble(a,b);
 
-            var isSame = diff.equals(b2DD);
+            var isSame = diff.Equals(b2DD);
             Assert.IsTrue(isSame);
-            var isDeltaZero = delta.IsZero();
+            var isDeltaZero = delta.IsZero;
             Assert.IsTrue(isDeltaZero);
         }
 
