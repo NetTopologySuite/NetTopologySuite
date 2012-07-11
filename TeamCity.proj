@@ -1,0 +1,28 @@
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SolutionFile>NetTopologySuite.VS2010.sln</SolutionFile> 
+  </PropertyGroup>
+
+  <Target Name="CleanDebug">
+    <MSBuild Projects="$(SolutionFile)" Targets="Clean" Properties="Configuration=Debug" />
+  </Target>
+
+  <Target Name="CleanRelease">
+    <MSBuild Projects="$(SolutionFile)" Targets="Clean" Properties="Configuration=Release" />
+  </Target>
+
+  <Target Name="BuildDebug">
+    <MSBuild Projects="$(SolutionFile)" Targets="NetTopologySuite_VS2010" Properties="Configuration=Debug" />
+  </Target>
+
+  <Target Name="BuildRelease">
+    <MSBuild Projects="$(SolutionFile)" Targets="NetTopologySuite_VS2010" Properties="Configuration=Debug" />
+  </Target>
+
+  <!-- build only for now, test on build server -->
+  <Target Name="UnitTests">
+    <MSBuild Projects="$(SolutionFile)" Targets="NetTopologySuite_Tests_NUnit" Properties="Configuration=Release" />
+  </Target>
+
+  <!-- TODO: add targets here to build zip, NuGet, ... -->
+</Project>
