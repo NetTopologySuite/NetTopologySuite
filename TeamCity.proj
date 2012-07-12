@@ -12,11 +12,11 @@
   </Target>
 
   <Target Name="BuildDebug">
-    <MSBuild Projects="$(SolutionFile)" Targets="NetTopologySuite_VS2010" Properties="Configuration=Debug" />
+    <MSBuild Projects="$(SolutionFile)" Targets="NetTopologySuite" Properties="Configuration=Debug" />
   </Target>
 
   <Target Name="BuildRelease">
-    <MSBuild Projects="$(SolutionFile)" Targets="NetTopologySuite_VS2010" Properties="Configuration=Debug" />
+    <MSBuild Projects="$(SolutionFile)" Targets="NetTopologySuite" Properties="Configuration=Release" />
   </Target>
 
   <!-- build only for now, test on build server -->
