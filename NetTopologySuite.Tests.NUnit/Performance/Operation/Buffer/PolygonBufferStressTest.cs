@@ -32,6 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
         private bool _testFailed;
 
         [Test]
+        [Category("Stress")]
         public void Test()
         {
             //String geomStr;

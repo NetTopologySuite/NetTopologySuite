@@ -18,7 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 
         private int _numTargetPts = 1000;
 
-        public StressTestHarness()
+        protected StressTestHarness()
         {
         }
 

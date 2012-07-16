@@ -22,6 +22,7 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
 {
     [TestFixture]
+    [Category("Stress")]
     public class OverlayNodingStressTest
     {
         private static int ITER_LIMIT = 10000;

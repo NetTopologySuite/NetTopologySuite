@@ -18,6 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
      *
      */
 
+    [Category("Stress")]
     public class InCirclePerf
     {
 

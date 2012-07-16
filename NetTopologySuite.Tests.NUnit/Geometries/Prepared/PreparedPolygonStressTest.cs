@@ -15,6 +15,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
         bool testFailed = false;
 
         [Test]
+        [Category("Stress")]
         public void Test()
         {
             PredicateStressTester tester = new PredicateStressTester();

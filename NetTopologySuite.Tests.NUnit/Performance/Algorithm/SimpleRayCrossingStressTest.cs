@@ -15,6 +15,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         PrecisionModel pmFixed_1 = new PrecisionModel(1.0);
 
         [Test]
+        [Category("Stress")]
         public void TestGrid()
         {
             // Use fixed PM to try and get at least some points hitting the boundary

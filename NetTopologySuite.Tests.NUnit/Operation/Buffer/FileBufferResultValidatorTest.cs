@@ -10,6 +10,7 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 {
     [TestFixture]
+    [Category("Stress")]
     public class FileBufferResultValidatorTest
     {
         WKTReader rdr = new WKTReader();

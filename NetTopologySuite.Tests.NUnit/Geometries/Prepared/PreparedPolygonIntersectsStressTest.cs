@@ -23,7 +23,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
         static WKTWriter wktWriter = new WKTWriter();
 
         bool testFailed = false;
+
         [Test]
+        [Category("Stress")]
         public void Test()
         {
             Run(1000);

@@ -13,6 +13,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         private readonly Random random = new Random();
 
         [Test]
+        [Category("Stress")]
         public void TestStressRun()
         {
             var count = 100;

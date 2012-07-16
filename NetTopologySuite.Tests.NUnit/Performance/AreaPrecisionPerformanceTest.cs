@@ -9,6 +9,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
     public class AreaPrecisionPerfTest
     {
         [Test]
+        [Category("Stress")]
         public void TestAreaPrecisionPerformance()
         {
 
