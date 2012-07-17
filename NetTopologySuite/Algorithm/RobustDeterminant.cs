@@ -1,4 +1,5 @@
 using System;
+using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -401,5 +402,47 @@ namespace NetTopologySuite.Algorithm
             }
 
         }
+
+        /// <summary>
+        /// Returns the index of the direction of the point <c>q</c> relative to
+        /// a vector specified by <c>p1-p2</c>.
+        /// </summary>
+        /// <param name="p1">The origin point of the vector</param>
+        /// <param name="p2">The final point of the vector</param>
+        /// <param name="q">the point to compute the direction to</param>
+        /// <returns>
+        /// <list type="Bullet">
+        /// <item>1 if q is counter-clockwise (left) from p1-p2</item>
+        /// <item>-1 if q is clockwise (right) from p1-p2</item>
+        /// <item>0 if q is collinear with p1-p2</item></list>
+        /// </returns>
+        public static int OrientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
+        {
+            /**
+             * MD - 9 Aug 2010 It seems that the basic algorithm is slightly orientation
+             * dependent, when computing the orientation of a point very close to a
+             * line. This is possibly due to the arithmetic in the translation to the
+             * origin.
+             * 
+             * For instance, the following situation produces identical results in spite
+             * of the inverse orientation of the line segment:
+             * 
+             * Coordinate p0 = new Coordinate(219.3649559090992, 140.84159161824724);
+             * Coordinate p1 = new Coordinate(168.9018919682399, -5.713787599646864);
+             * 
+             * Coordinate p = new Coordinate(186.80814046338352, 46.28973405831556); int
+             * orient = orientationIndex(p0, p1, p); int orientInv =
+             * orientationIndex(p1, p0, p);
+             * 
+             * 
+             */
+
+            var dx1 = p2.X - p1.X;
+            var dy1 = p2.Y - p1.Y;
+            var dx2 = q.X - p2.X;
+            var dy2 = q.Y - p2.Y;
+            return SignOfDet2x2(dx1, dy1, dx2, dy2);
+        }
+
     }
 }

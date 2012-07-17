@@ -9,7 +9,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
     /// Tests the <see cref="LocationIndexedLine"/> class
     /// </summary>
     [TestFixture]
-    public class LocationIndexedLineTestCase : AbstractIndexedLineTestCase
+    public class LocationIndexedLineTest : AbstractIndexedLineTest
     {
         [Test]
         public override void TestOffsetStartPointRepeatedPoint()

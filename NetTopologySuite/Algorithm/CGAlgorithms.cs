@@ -80,11 +80,9 @@ namespace NetTopologySuite.Algorithm
                if (p2.x < p1.x || (p2.x == p1.x && p2.y < p1.y))
                     return -orientationIndex(p2, p1, q);
              */
-            double dx1 = p2.X - p1.X;
-            double dy1 = p2.Y - p1.Y;
-            double dx2 = q.X - p2.X;
-            double dy2 = q.Y - p2.Y;
-            return RobustDeterminant.SignOfDet2x2(dx1, dy1, dx2, dy2);
+            //return ShewchuksDeterminant.OrientationIndex(p1, p2, q);
+            return CGAlgorithmsDD.OrientationIndex(p1, p2, q);
+            //return RobustDeterminant.OrientationIndex(p1, p2, q);
         }        
 
         /// <summary> 

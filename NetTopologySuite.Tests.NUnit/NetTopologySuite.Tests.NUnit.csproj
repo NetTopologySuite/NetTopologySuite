@@ -64,6 +64,8 @@
     <Compile Include="Algorithm\IsCCWTest.cs" />
     <Compile Include="Algorithm\LocatePointInRingTest.cs" />
     <Compile Include="Algorithm\MCPointInRingTest.cs" />
+    <Compile Include="Algorithm\ShewchuksDeterminant.cs" />
+    <Compile Include="Index\KdTree\KdTreeTest.cs" />
     <Compile Include="Mathematics\DDBasicTest.cs" />
     <Compile Include="Mathematics\DDComputeTest.cs" />
     <Compile Include="Performance\Algorithm\MinimumBoundingCircleStressTest.cs" />
@@ -126,10 +128,10 @@
     <Compile Include="IO\WKTReaderParseErrorTest.cs" />
     <Compile Include="IO\WKTReaderTest.cs" />
     <Compile Include="IO\WKTWriterTest.cs" />
-    <Compile Include="LinearReferencing\AbstractIndexedLineTestCase.cs" />
-    <Compile Include="LinearReferencing\LengthIndexedLineTestCase.cs" />
+    <Compile Include="LinearReferencing\AbstractIndexedLineTest.cs" />
+    <Compile Include="LinearReferencing\LengthIndexedLineTest.cs" />
     <Compile Include="LinearReferencing\LinearLocationTest.cs" />
-    <Compile Include="LinearReferencing\LocationIndexedLineTestCase.cs" />
+    <Compile Include="LinearReferencing\LocationIndexedLineTest.cs" />
     <Compile Include="Noding\SegmentPointComparatorFullTest.cs" />
     <Compile Include="Noding\SegmentPointComparatorTest.cs" />
     <Compile Include="Noding\Snapround\SnapRoundingTest.cs" />
@@ -137,7 +139,7 @@
     <Compile Include="Operation\Buffer\BufferResultValidatorTest.cs" />
     <Compile Include="Operation\Buffer\BufferTest.cs" />
     <Compile Include="Operation\Buffer\BufferValidator.cs" />
-    <Compile Include="Operation\Buffer\FileBufferResultValidatorTest.cs" />
+    <Compile Include="Performance\Operation\Buffer\FileBufferResultValidatorTest.cs" />
     <Compile Include="Operation\Buffer\Test.cs" />
     <Compile Include="Operation\Distance\DistanceTest.cs" />
     <Compile Include="Operation\LineMerge\LineMergerTest.cs" />

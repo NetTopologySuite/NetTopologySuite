@@ -12,7 +12,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
     /// Tests the <see cref="LocationIndexedLine" /> class
     /// </summary>
     [TestFixture]
-    public abstract class AbstractIndexedLineTestCase
+    public abstract class AbstractIndexedLineTest
     {
         private WKTReader reader = new WKTReader();
 

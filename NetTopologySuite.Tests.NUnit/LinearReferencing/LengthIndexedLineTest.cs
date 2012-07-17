@@ -9,7 +9,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
     /// Tests the <see cref="LengthIndexedLine" /> class
     /// </summary>
     [TestFixture]
-    public class LengthIndexedLineTestCase : AbstractIndexedLineTestCase
+    public class LengthIndexedLineTest : AbstractIndexedLineTest
     {
         [Test]
         public void TestExtractLineBeyondRange()

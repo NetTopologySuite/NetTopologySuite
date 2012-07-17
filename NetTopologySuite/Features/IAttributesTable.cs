@@ -47,7 +47,7 @@ namespace NetTopologySuite.Features
         int Count { get; }
 
         /// <summary>
-        /// 
+        /// Gets the names
         /// </summary>
         /// <returns></returns>
         string[] GetNames();

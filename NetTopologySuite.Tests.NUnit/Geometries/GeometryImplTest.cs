@@ -36,14 +36,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestEmptyGeometryCentroid()
         {
-            Assert.IsNull(reader.Read("POINT EMPTY").Centroid);
-            Assert.IsNull(reader.Read("POLYGON EMPTY").Centroid);
-            Assert.IsNull(reader.Read("LINESTRING EMPTY").Centroid);
-            Assert.IsNull(reader.Read("GEOMETRYCOLLECTION EMPTY").Centroid);
-            Assert.IsNull(reader.Read("GEOMETRYCOLLECTION(GEOMETRYCOLLECTION EMPTY, GEOMETRYCOLLECTION EMPTY)").Centroid);
-            Assert.IsNull(reader.Read("MULTIPOLYGON EMPTY").Centroid);
-            Assert.IsNull(reader.Read("MULTILINESTRING EMPTY").Centroid);
-            Assert.IsNull(reader.Read("MULTIPOINT EMPTY").Centroid);
+            Assert.IsTrue(reader.Read("POINT EMPTY").IsEmpty);
+            Assert.IsTrue(reader.Read("POLYGON EMPTY").IsEmpty);
+            Assert.IsTrue(reader.Read("LINESTRING EMPTY").IsEmpty);
+            Assert.IsTrue(reader.Read("GEOMETRYCOLLECTION EMPTY").IsEmpty);
+            Assert.IsTrue(reader.Read("GEOMETRYCOLLECTION(GEOMETRYCOLLECTION EMPTY, GEOMETRYCOLLECTION EMPTY)").IsEmpty);
+            Assert.IsTrue(reader.Read("MULTIPOLYGON EMPTY").IsEmpty);
+            Assert.IsTrue(reader.Read("MULTILINESTRING EMPTY").IsEmpty);
+            Assert.IsTrue(reader.Read("MULTIPOINT EMPTY").IsEmpty);
         }
 
         [Test]
