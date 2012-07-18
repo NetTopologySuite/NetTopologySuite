@@ -9,6 +9,8 @@ namespace NetTopologySuite.IO.Tests
     using GeoAPI.Geometries;
     using NUnit.Framework;
 
+    [NUnit.Framework.TestFixture]
+    [NUnit.Framework.Category("Database.IO")]
     public class SpatiaLiteFixture : AbstractIOFixture
     {
         public override void OnFixtureSetUp()
@@ -110,6 +112,8 @@ namespace NetTopologySuite.IO.Tests
         }
     }
 
+    [NUnit.Framework.TestFixture]
+    [NUnit.Framework.Category("Database.IO")]
     public class SpatiaLiteFixtureCompressed : SpatiaLiteFixture
     {
         protected override string Name { get { return "SpatiaLiteCompressed.sqlite"; } }
@@ -121,6 +125,8 @@ namespace NetTopologySuite.IO.Tests
         }
     }
 
+    [NUnit.Framework.TestFixture]
+    [NUnit.Framework.Category("Database.IO")]
     public class SpatiaLiteFixture3D : SpatiaLiteFixture
     {
         protected override string Name { get { return "SpatiaLite3D.sqlite"; } }
@@ -132,6 +138,8 @@ namespace NetTopologySuite.IO.Tests
         }
     }
 
+    [NUnit.Framework.TestFixture]
+    [NUnit.Framework.Category("Database.IO")]
     public class SpatiaLiteFixture3DCompressed : SpatiaLiteFixture3D
     {
         protected override string Name { get { return "SpatiaLite3DCompressed.sqlite"; } }

@@ -25,7 +25,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// </summary>
         public void Insert(Envelope itemEnv, T item)
         {
-            int index = GetSubnodeIndex(itemEnv, Origin);
+            int index = GetSubnodeIndex(itemEnv, Origin.X, Origin.Y);
             // if index is -1, itemEnv must cross the X or Y axis.
             if (index == -1) 
             {

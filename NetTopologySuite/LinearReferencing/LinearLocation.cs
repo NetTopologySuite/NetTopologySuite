@@ -192,9 +192,9 @@ namespace NetTopologySuite.LinearReferencing
 
         /// <summary>
         /// Sets the value of this location to
-        /// refer the end of a linear geometry.
+        /// refer to the end of a linear geometry.
         /// </summary>
-        /// <param name="linear">The linear geometry to set.</param>
+        /// <param name="linear">The linear geometry to use to set the end.</param>
         public void SetToEnd(IGeometry linear)
         {
             _componentIndex = linear.NumGeometries - 1;
@@ -342,12 +342,16 @@ namespace NetTopologySuite.LinearReferencing
             // compare component indices
             if (_componentIndex < other.ComponentIndex) return -1;
             if (_componentIndex > other.ComponentIndex) return 1;
+            
             // compare segments
             if (_segmentIndex < other.SegmentIndex) return -1;
             if (_segmentIndex > other.SegmentIndex) return 1;
+            
             // same segment, so compare segment fraction
+            if (double.IsNaN(_segmentFraction) && double.IsNaN(other._segmentFraction)) return 0;
             if (_segmentFraction < other.SegmentFraction) return -1;
             if (_segmentFraction > other.SegmentFraction) return 1;
+
             // same location
             return 0;
         }

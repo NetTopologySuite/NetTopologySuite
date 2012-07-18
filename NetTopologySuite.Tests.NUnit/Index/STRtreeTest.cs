@@ -11,7 +11,7 @@ using NetTopologySuite.Tests.NUnit.Utilities;
 namespace NetTopologySuite.Tests.NUnit.Index
 {
     //Tests are exposed by SpatialIndexTestCase type
-    public class STRtreeTestCase //: SpatialIndexTestCase
+    public class STRtreeTest //: SpatialIndexTestCase
     {
         private class TestTree : SIRtree
         {

@@ -18,6 +18,18 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         private static double ROOT2 = Math.Sqrt(2);
 
         [Test]
+        public void TestProjectionFactor()
+        {
+            // zero-length line
+            var seg = new LineSegment(10, 0, 10, 0);
+            Assert.IsTrue(Double.IsNaN(seg.ProjectionFactor(new Coordinate(11, 0))));
+
+            var seg2 = new LineSegment(10, 0, 20, 0);
+            Assert.IsTrue(seg2.ProjectionFactor(new Coordinate(11, 0)) == 0.1);
+
+        }
+
+        [Test]
         public void TestOffset()
         {
             CheckOffset(0, 0, 10, 10, 0.0, ROOT2, -1, 1);

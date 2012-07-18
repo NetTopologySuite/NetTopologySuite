@@ -138,15 +138,15 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
                 double a = 9.0;
                 double factor = 10.0;
                 DD c = new DD(9.0);
-                c.SelfMultiply(factor);
+                c*=factor;
                 DD b = new DD(9.0);
-                b.SelfDivide(factor);
+                b/=factor;
 
                 DD a2 = new DD(a);
-                a2.SelfMultiply(a);
+                a2*=a;
                 DD b2 = new DD(b);
-                b2.SelfMultiply(c);
-                a2.SelfDivide(b2);
+                b2*=c;
+                a2/=b2;
                 DD det = a2;
                 //			Console.WriteLine(aDiv);
                 //			Console.WriteLine(det);

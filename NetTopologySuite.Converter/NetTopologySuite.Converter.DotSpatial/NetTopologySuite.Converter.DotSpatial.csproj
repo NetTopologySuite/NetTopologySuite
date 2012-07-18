@@ -50,10 +50,6 @@
     <Reference Include="DotSpatial.Topology">
       <HintPath>..\..\packages\DotSpatial.Topology.1.0.0.0\lib\net40-Client\DotSpatial.Topology.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DotSpatialEx.cs" />

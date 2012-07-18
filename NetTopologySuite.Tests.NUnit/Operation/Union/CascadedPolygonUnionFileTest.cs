@@ -10,12 +10,10 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
     /// using data from files.
     /// </summary>
     /// <author>mbdavis</author>
-    //[TestFixture(Ignore = true, IgnoreReason = "The CascadedPolygonUnionTester class uses classes in NetTopologySuite.Algorithm.Match which have not been migrated to NTS yet")]
     [Category("LongRunning")]
     public class CascadedPolygonUnionFileTest
     {
         [Test]
-        [Category("LongRunning")]
         public void TestAfrica()
         {
             var filePath = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile(

@@ -146,12 +146,12 @@ namespace NetTopologySuite.Mathematics
         /**
          * The high-order component of the double-double precision value.
          */
-        private double _hi;
+        private readonly double _hi;
 
         /**
          * The low-order component of the double-double precision value.
          */
-        private double _lo;
+        private readonly double _lo;
 
         /// <summary>
         /// Creates a new <see cref="DD"/> with value x.
@@ -255,7 +255,8 @@ namespace NetTopologySuite.Mathematics
         [Obsolete("Use operator +")]
         public DD Add(DD y)
         {
-            return Copy(this).SelfAdd(y);
+            return this + y;
+            //return Copy(this).SelfAdd(y);
         }
 
         /// <summary>
@@ -324,50 +325,50 @@ namespace NetTopologySuite.Mathematics
         [Obsolete("Use Operator +")]
         public DD Add(double y)
         {
-            return Copy(this).SelfAdd(y);
+            return this+y;
         }
 
 
-        public DD SelfAdd(DD y)
-        {
-            return SelfAdd(y._hi, y._lo);
-        }
+        //public DD SelfAdd(DD y)
+        //{
+        //    return SelfAdd(y._hi, y._lo);
+        //}
 
-        /// <summary>
-        /// Adds the argument to the value of <tt>this</tt>.
-        /// To prevent altering constants, 
-        /// this method <b>must only</b> be used on values known to 
-        /// be newly created. 
-        /// </summary>
-        /// <param name="y">The addend</param>
-        /// <returns>this object, increased by <paramref name="y"/></returns>
-        public DD SelfAdd(double y)
-        {
-            return SelfAdd(y, 0.0);
-        }
+        ///// <summary>
+        ///// Adds the argument to the value of <tt>this</tt>.
+        ///// To prevent altering constants, 
+        ///// this method <b>must only</b> be used on values known to 
+        ///// be newly created. 
+        ///// </summary>
+        ///// <param name="y">The addend</param>
+        ///// <returns>this object, increased by <paramref name="y"/></returns>
+        //public DD SelfAdd(double y)
+        //{
+        //    return SelfAdd(y, 0.0);
+        //}
 
-        private DD SelfAdd(double yhi, double ylo)
-        {
-            double H, h, T, t, S, s, e, f;
-            S = _hi + yhi;
-            T = _lo + ylo;
-            e = S - _hi;
-            f = T - _lo;
-            s = S - e;
-            t = T - f;
-            s = (yhi - e) + (_hi - s);
-            t = (ylo - f) + (_lo - t);
-            e = s + T;
-            H = S + e;
-            h = e + (S - H);
-            e = t + h;
+        //private DD SelfAdd(double yhi, double ylo)
+        //{
+        //    double H, h, T, t, S, s, e, f;
+        //    S = _hi + yhi;
+        //    T = _lo + ylo;
+        //    e = S - _hi;
+        //    f = T - _lo;
+        //    s = S - e;
+        //    t = T - f;
+        //    s = (yhi - e) + (_hi - s);
+        //    t = (ylo - f) + (_lo - t);
+        //    e = s + T;
+        //    H = S + e;
+        //    h = e + (S - H);
+        //    e = t + h;
 
-            double zhi = H + e;
-            double zlo = e + (H - zhi);
-            _hi = zhi;
-            _lo = zlo;
-            return this;
-        }
+        //    double zhi = H + e;
+        //    double zlo = e + (H - zhi);
+        //    _hi = zhi;
+        //    _lo = zlo;
+        //    return this;
+        //}
 
         /// <summary>
         /// Computes a new <see cref="DD"/> object whose value is <tt>(this - y)</tt>.
@@ -392,37 +393,37 @@ namespace NetTopologySuite.Mathematics
         }
 
 
-        /**
-         * Subtracts the argument from the value of <tt>this</tt>.
-         * To prevent altering constants, 
-         * this method <b>must only</b> be used on values known to 
-         * be newly created. 
-         * 
-         * @param y the addend
-         * @return this object, decreased by y
-         */
+        ///**
+        // * Subtracts the argument from the value of <tt>this</tt>.
+        // * To prevent altering constants, 
+        // * this method <b>must only</b> be used on values known to 
+        // * be newly created. 
+        // * 
+        // * @param y the addend
+        // * @return this object, decreased by y
+        // */
 
-        public DD SelfSubtract(DD y)
-        {
-            if (IsNaN(this)) return this;
-            return SelfAdd(-y._hi, -y._lo);
-        }
+        //public DD SelfSubtract(DD y)
+        //{
+        //    if (IsNaN(this)) return this;
+        //    return SelfAdd(-y._hi, -y._lo);
+        //}
 
-        /**
-         * Subtracts the argument from the value of <tt>this</tt>.
-         * To prevent altering constants, 
-         * this method <b>must only</b> be used on values known to 
-         * be newly created. 
-         * 
-         * @param y the addend
-         * @return this object, decreased by y
-         */
+        ///**
+        // * Subtracts the argument from the value of <tt>this</tt>.
+        // * To prevent altering constants, 
+        // * this method <b>must only</b> be used on values known to 
+        // * be newly created. 
+        // * 
+        // * @param y the addend
+        // * @return this object, decreased by y
+        // */
 
-        public DD SelfSubtract(double y)
-        {
-            if (IsNaN(this)) return this;
-            return SelfAdd(-y, 0.0);
-        }
+        //public DD SelfSubtract(double y)
+        //{
+        //    if (IsNaN(this)) return this;
+        //    return SelfAdd(-y, 0.0);
+        //}
 
         /// <summary>
         /// Returns a <see cref="DD"/> whose value is <c>-this</c>.
@@ -441,10 +442,11 @@ namespace NetTopologySuite.Mathematics
          * @return <tt>(this * y)</tt>
          */
 
+        [Obsolete("Use *-operator instead")]
         public DD Multiply(DD y)
         {
-            if (IsNaN(y)) return CreateNaN();
-            return Copy(this).SelfMultiply(y);
+            return this*y;
+            //return Copy(this).SelfMultiply(y);
         }
 
         /**
@@ -453,42 +455,42 @@ namespace NetTopologySuite.Mathematics
          * @param y the multiplicand
          * @return <tt>(this * y)</tt>
          */
-
+        [Obsolete("Use *-operator instead")]
         public DD Multiply(double y)
         {
-            if (Double.IsNaN(y)) return CreateNaN();
-            return Copy(this).SelfMultiply(y, 0.0);
+            return this*y;
+            //return Copy(this).SelfMultiply(y, 0.0);
         }
 
-        /**
-         * Multiplies this object by the argument, returning <tt>this</tt>.
-         * To prevent altering constants, 
-         * this method <b>must only</b> be used on values known to 
-         * be newly created. 
-         * 
-         * @param y the value to multiply by
-         * @return this object, multiplied by y
-         */
+        ///**
+        // * Multiplies this object by the argument, returning <tt>this</tt>.
+        // * To prevent altering constants, 
+        // * this method <b>must only</b> be used on values known to 
+        // * be newly created. 
+        // * 
+        // * @param y the value to multiply by
+        // * @return this object, multiplied by y
+        // */
 
-        public DD SelfMultiply(DD y)
-        {
-            return SelfMultiply(y._hi, y._lo);
-        }
+        //public DD SelfMultiply(DD y)
+        //{
+        //    return SelfMultiply(y._hi, y._lo);
+        //}
 
-        /**
-         * Multiplies this object by the argument, returning <tt>this</tt>.
-         * To prevent altering constants, 
-         * this method <b>must only</b> be used on values known to 
-         * be newly created. 
-         * 
-         * @param y the value to multiply by
-         * @return this object, multiplied by y
-         */
+        ///**
+        // * Multiplies this object by the argument, returning <tt>this</tt>.
+        // * To prevent altering constants, 
+        // * this method <b>must only</b> be used on values known to 
+        // * be newly created. 
+        // * 
+        // * @param y the value to multiply by
+        // * @return this object, multiplied by y
+        // */
 
-        public DD SelfMultiply(double y)
-        {
-            return SelfMultiply(y, 0.0);
-        }
+        //public DD SelfMultiply(double y)
+        //{
+        //    return SelfMultiply(y, 0.0);
+        //}
 
         public static DD operator *(DD lhs, Double rhs)
         {
@@ -497,6 +499,8 @@ namespace NetTopologySuite.Mathematics
 
         public static DD operator *(DD lhs, DD rhs)
         {
+            if (IsNaN(rhs)) return CreateNaN();
+
             double C = Split * lhs._hi;
             double hx = C - lhs._hi;
             double c = Split * rhs._hi;
@@ -514,6 +518,7 @@ namespace NetTopologySuite.Mathematics
             return new DD(zhi, zlo);
         }
 
+        /*
         private DD SelfMultiply(double yhi, double ylo)
         {
             double C = Split*_hi;
@@ -533,7 +538,7 @@ namespace NetTopologySuite.Mathematics
             _lo = zlo;
             return this;
         }
-
+        */
         /// <summary>
         /// Computes a new <see cref="DD"/> whose value is <tt>(this / y)</tt>.
         /// </summary>
@@ -566,43 +571,38 @@ namespace NetTopologySuite.Mathematics
         /// </summary>
         /// <param name="y">The divisor</param>
         /// <returns>A new <see cref="DD"/> with the value <c>(this / y)</c></returns>
+        [Obsolete("Use /-operator instead")]
         public DD Divide(double y)
         {
-            if (Double.IsNaN(y)) return CreateNaN();
-            return Copy(this).SelfDivide(y, 0.0);
+            return this/y;
         }
 
-        /**
-         *  
-         * 
-         * @param y the value to divide by
-         * @return this object, divided by y
-         */
-        /// <summary>
-        /// Divides this object by the argument, returning <tt>this</tt>.
-        /// To prevent altering constants, 
-        /// this method <b>must only</b> be used on values known to 
-        /// be newly created.
-        /// </summary>
-        public DD SelfDivide(DD y)
-        {
-            return SelfDivide(y._hi, y._lo);
-        }
+        ///// <summary>
+        ///// Divides this object by the argument, returning <tt>this</tt>.
+        ///// To prevent altering constants, 
+        ///// this method <b>must only</b> be used on values known to 
+        ///// be newly created.
+        ///// </summary>
+        ///// <param name="y">the value to divide by</param>
+        ///// <returns>this object, divided by y</returns>
+        //public DD SelfDivide(DD y)
+        //{
+        //    return SelfDivide(y._hi, y._lo);
+        //}
 
-        /**
-         * Divides this object by the argument, returning <tt>this</tt>.
-         * To prevent altering constants, 
-         * this method <b>must only</b> be used on values known to 
-         * be newly created. 
-         * 
-         * @param y the value to divide by
-         * @return this object, divided by y
-         */
-
-        public DD SelfDivide(double y)
-        {
-            return SelfDivide(y, 0.0);
-        }
+        ///**
+        // * Divides this object by the argument, returning <tt>this</tt>.
+        // * To prevent altering constants, 
+        // * this method <b>must only</b> be used on values known to 
+        // * be newly created. 
+        // * 
+        // * @param y the value to divide by
+        // * @return this object, divided by y
+        // */
+        ////public DD SelfDivide(double y)
+        //{
+        //    return SelfDivide(y, 0.0);
+        //}
 
         public static DD operator /(DD lhs, Double rhs)
         {
@@ -611,6 +611,8 @@ namespace NetTopologySuite.Mathematics
 
         public static DD operator /(DD lhs, DD rhs)
         {
+            if (IsNaN(rhs)) return CreateNaN();
+
             double hc, tc, hy, ty, C, c, U, u;
             C = lhs._hi / rhs._hi;
             c = Split * C;
@@ -629,27 +631,27 @@ namespace NetTopologySuite.Mathematics
             return new DD(u, (C - u) + c);
         }
 
-        private DD SelfDivide(double yhi, double ylo)
-        {
-            double hc, tc, hy, ty, C, c, U, u;
-            C = _hi/yhi;
-            c = Split*C;
-            hc = c - C;
-            u = Split*yhi;
-            hc = c - hc;
-            tc = C - hc;
-            hy = u - yhi;
-            U = C*yhi;
-            hy = u - hy;
-            ty = yhi - hy;
-            u = (((hc*hy - U) + hc*ty) + tc*hy) + tc*ty;
-            c = ((((_hi - U) - u) + _lo) - C*ylo)/yhi;
-            u = C + c;
+        //private DD SelfDivide(double yhi, double ylo)
+        //{
+        //    double hc, tc, hy, ty, C, c, U, u;
+        //    C = _hi/yhi;
+        //    c = Split*C;
+        //    hc = c - C;
+        //    u = Split*yhi;
+        //    hc = c - hc;
+        //    tc = C - hc;
+        //    hy = u - yhi;
+        //    U = C*yhi;
+        //    hy = u - hy;
+        //    ty = yhi - hy;
+        //    u = (((hc*hy - U) + hc*ty) + tc*hy) + tc*ty;
+        //    c = ((((_hi - U) - u) + _lo) - C*ylo)/yhi;
+        //    u = C + c;
 
-            _hi = u;
-            _lo = (C - u) + c;
-            return this;
-        }
+        //    _hi = u;
+        //    _lo = (C - u) + c;
+        //    return this;
+        //}
 
         /**
          * Returns a DoubleDouble whose value is  <tt>1 / this</tt>.
@@ -725,7 +727,7 @@ namespace NetTopologySuite.Mathematics
             // Hi is already integral.  Floor the low word
             if (fhi == _hi)
             {
-                flo = System.Math.Floor(_lo);
+                flo = Math.Floor(_lo);
             }
             // do we need to renormalize here?    
             return new DD(fhi, flo);
@@ -746,29 +748,29 @@ namespace NetTopologySuite.Mathematics
         public DD Ceiling()
         {
             if (IsNaN(this)) return NaN;
-            double fhi = System.Math.Ceiling(_hi);
+            double fhi = Math.Ceiling(_hi);
             double flo = 0.0;
             // Hi is already integral.  Ceil the low word
             if (fhi == _hi)
             {
-                flo = System.Math.Ceiling(_lo);
+                flo = Math.Ceiling(_lo);
                 // do we need to renormalize here?
             }
             return new DD(fhi, flo);
         }
 
-        /**
-         * Returns an integer indicating the sign of this value.
-         * <ul>
-         * <li>if this value is > 0, returns 1
-         * <li>if this value is < 0, returns -1
-         * <li>if this value is = 0, returns 0
-         * <li>if this value is NaN, returns 0
-         * </ul>
-         * 
-         * @return an integer indicating the sign of this value
-         */
-
+        /// <summary>
+        /// Returns an integer indicating the sign of this value.
+        /// <para>
+        /// <list type="Bullet">
+        /// <item>if this value is &gt; 0, returns 1</item>
+        /// <item>if this value is &lt; 0, returns -1</item>
+        /// <item>if this value is = 0, returns 0</item>
+        /// <item>if this value is NaN, returns 0</item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        /// <returns>An integer indicating the sign of this value</returns>
         public int Signum()
         {
             if (_hi > 0) return 1;
@@ -778,18 +780,16 @@ namespace NetTopologySuite.Mathematics
             return 0;
         }
 
-        /**
-         * Rounds this value to the nearest integer.
-         * The value is rounded to an integer by adding 1/2 and taking the floor of the result.
-         * Special cases:
-         * <ul>
-         * <li>If this value is NaN, returns NaN.
-         * </ul>
-         *
-         * @return this value rounded to the nearest integer
-         */
-
-        public DD rint()
+        /// <summary>
+        /// Rounds this value to the nearest integer.
+        /// The value is rounded to an integer by adding 1/2 and taking the floor of the result.
+        /// Special cases:
+        /// <list type="Bullet">
+        /// <item>If this value is NaN, returns NaN.</item>
+        /// </list>
+        /// </summary>
+        /// <returns>This value rounded to the nearest integer</returns>
+        public DD Rint()
         {
             if (IsNaN(this)) return this;
             // may not be 100% correct
@@ -797,59 +797,55 @@ namespace NetTopologySuite.Mathematics
             return plus5.Floor();
         }
 
-        /**
-         * Returns the integer which is largest in absolute value and not further
-         * from zero than this value.  
-         * Special cases:
-         * <ul>
-         * <li>If this value is NaN, returns NaN.
-         * </ul>
-         *  
-         * @return the integer which is largest in absolute value and not further from zero than this value
-         */
-
+        /// <summary>
+        /// Returns the integer which is largest in absolute value and not further
+        /// from zero than this value.  
+        /// <para/>
+        /// Special cases:
+        /// <list type="Bullet">
+        /// <item>If this value is NaN, returns NaN.</item>
+        /// </list>
+        /// </summary>
+        /// <returns>
+        /// The integer which is largest in absolute value and not further from zero than this value
+        /// </returns>
         public DD Truncate()
         {
             if (IsNaN(this)) return NaN;
             return IsPositive() ? Floor() : Ceiling();
         }
 
-        /**
-         * Returns the absolute value of this value.
-         * Special cases:
-         * <ul>
-         * <li>If this value is NaN, it is returned.
-         * </ul>
-         * 
-         * @return the absolute value of this value
-         */
-
+        /// <summary>
+        /// Returns the absolute value of this value.
+        /// <para/>
+        /// Special cases:
+        /// <list type="Bullet">
+        /// <item>if this value is NaN, it is returned.</item>
+        /// </list>
+        /// </summary>
+        /// <returns>The absolute value of this value</returns>
         public DD Abs()
         {
             if (IsNaN(this)) return NaN;
             return IsNegative ? Negate() : new DD(this);
         }
 
-        /**
-         * Computes the square of this value.
-         * 
-         * @return the square of this value.
-         */
-
+        /// <summary>
+        /// Computes the square of this value.
+        /// </summary>
+        /// <returns>The square of this value</returns>
         public DD Sqr()
         {
-            return this.Multiply(this);
+            return this * this;
         }
 
-        /**
-         * Computes the square of this value.
-         * 
-         * @return the square of this value.
-         */
-
+        /// <summary>
+        /// Computes the square of this value.
+        /// </summary>
+        /// <returns>The square of this value.</returns>
         public static DD Sqr(double x)
         {
-            return ValueOf(x).SelfMultiply(x);
+            return ValueOf(x) * x;
         }
 
         /**
@@ -883,11 +879,11 @@ namespace NetTopologySuite.Mathematics
             double x = 1.0/Math.Sqrt(_hi);
             double ax = _hi*x;
 
-            DD axdd = ValueOf(ax);
-            DD diffSq = this.Subtract(axdd.Sqr());
-            double d2 = diffSq._hi*(x*0.5);
+            var axdd = ValueOf(ax);
+            var diffSq = this - axdd.Sqr();
+            var d2 = diffSq._hi*(x*0.5);
 
-            return axdd.Add(d2);
+            return axdd + d2;
         }
 
         public static DD Sqrt(double x)
@@ -917,7 +913,7 @@ namespace NetTopologySuite.Mathematics
                 {
                     if (n%2 == 1)
                     {
-                        s.SelfMultiply(r);
+                        s *= r;
                     }
                     n /= 2;
                     if (n > 0)
@@ -1008,7 +1004,7 @@ namespace NetTopologySuite.Mathematics
 
         public bool Equals(DD y)
         {
-            return _hi == y._hi && _lo == y._lo;
+            return y._hi.Equals(_hi) && y._lo.Equals(_lo);
         }
 
         public static bool operator == (DD lhs, DD rhs)
@@ -1043,12 +1039,11 @@ namespace NetTopologySuite.Mathematics
             return (_hi > y._hi) || (_hi == y._hi && _lo >= y._lo);
         }
 
-        /**
-         * Tests whether this value is less than another <tt>DoubleDouble</tt> value.
-         * @param y a DoubleDouble value
-         * @return true if this value < y
-         */
-
+        /// <summary>
+        /// Tests whether this value is less than another <tt>DoubleDouble</tt> value.
+        /// </summary>
+        /// <param name="y">A DoubleDouble value</param>
+        /// <returns><c>true</c> if this value is &lt; <paramref name="y"/> </returns>
         public bool LessThan(DD y)
         {
             return (_hi < y._hi) || (_hi == y._hi && _lo < y._lo);
@@ -1099,8 +1094,8 @@ namespace NetTopologySuite.Mathematics
          */
 
         private const int MaxPrintDigits = 32;
-        private static readonly DD Ten = DD.ValueOf(10.0);
-        private static readonly DD One = DD.ValueOf(1.0);
+        private static readonly DD Ten = ValueOf(10.0);
+        private static readonly DD One = ValueOf(1.0);
         private static readonly String SCI_NOT_EXPONENT_CHAR = "E";
         private static readonly String SCI_NOT_ZERO = "0.0E0";
 
@@ -1121,7 +1116,7 @@ namespace NetTopologySuite.Mathematics
         /// <returns>A string representation of this number</returns>
         public override String ToString()
         {
-            int mag = magnitude(_hi);
+            var mag = Magnitude(_hi);
             if (mag >= -3 && mag <= 20)
                 return ToStandardNotation();
             return ToSciNotation();
@@ -1133,12 +1128,12 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The string representation in standard notation</returns>
         public String ToStandardNotation()
         {
-            String specialStr = GetSpecialNumberString();
+            var specialStr = GetSpecialNumberString();
             if (specialStr != null)
                 return specialStr;
 
-            int[] magnitude = new int[1];
-            String sigDigits = ExtractSignificantDigits(true, magnitude);
+            var magnitude = new int[1];
+            var sigDigits = ExtractSignificantDigits(true, magnitude);
             int decimalPointPos = magnitude[0] + 1;
 
             String num = sigDigits;
@@ -1149,14 +1144,14 @@ namespace NetTopologySuite.Mathematics
             }
             else if (decimalPointPos < 0)
             {
-                num = "0." + stringOfChar('0', -decimalPointPos) + sigDigits;
+                num = "0." + new string('0', -decimalPointPos) + sigDigits;
             }
             else if (sigDigits.IndexOf('.') == -1)
             {
                 // no point inserted - sig digits must be smaller than magnitude of number
                 // add zeroes to end to make number the correct size
                 int numZeroes = decimalPointPos - sigDigits.Length;
-                String zeroes = stringOfChar('0', numZeroes);
+                var zeroes = new string('0', numZeroes);
                 num = sigDigits + zeroes + ".0";
             }
 
@@ -1215,21 +1210,21 @@ namespace NetTopologySuite.Mathematics
 
         private String ExtractSignificantDigits(bool insertDecimalPoint, int[] magnitudes)
         {
-            DD y = this.Abs();
+            var y = this.Abs();
             // compute *correct* magnitude of y
-            int mag = magnitude(y._hi);
-            DD scale = Ten.Pow(mag);
-            y = y.Divide(scale);
+            var mag = Magnitude(y._hi);
+            var scale = Ten.Pow(mag);
+            y /= scale;
 
             // fix magnitude if off by one
             if (y.GreaterThan(Ten))
             {
-                y = y.Divide(Ten);
+                y /= Ten;
                 mag += 1;
             }
             else if (y.LessThan(One))
             {
-                y = y.Multiply(Ten);
+                y *= Ten;
                 mag -= 1;
             }
 
@@ -1278,10 +1273,9 @@ namespace NetTopologySuite.Mathematics
                     digitChar = (char) ('0' + digit);
                 }
                 buf.Append(digitChar);
-                y = (y.Subtract(DD.ValueOf(digit))
-                    .Multiply(Ten));
+                y = (y - ValueOf(digit)) * Ten;
                 if (rebiasBy10)
-                    y.SelfAdd(Ten);
+                    y += Ten;
 
                 bool continueExtractingDigits = true;
                 /**
@@ -1295,8 +1289,8 @@ namespace NetTopologySuite.Mathematics
                  * Check if remaining digits will be 0, and if so don't output them.
                  * Do this by comparing the magnitude of the remainder with the expected precision.
                  */
-                int remMag = magnitude(y._hi);
-                if (remMag < 0 && System.Math.Abs(remMag) >= (numDigits - i))
+                int remMag = Magnitude(y._hi);
+                if (remMag < 0 && Math.Abs(remMag) >= (numDigits - i))
                     continueExtractingDigits = false;
                 if (!continueExtractingDigits)
                     break;
@@ -1304,26 +1298,6 @@ namespace NetTopologySuite.Mathematics
             magnitudes[0] = mag;
             return buf.ToString();
         }
-
-
-        /**
-         * Creates a string of a given length containing the given character
-         * 
-         * @param ch the character to be repeated
-         * @param len the len of the desired string
-         * @return the string 
-         */
-
-        private static String stringOfChar(char ch, int len)
-        {
-            var buf = new StringBuilder();
-            for (int i = 0; i < len; i++)
-            {
-                buf.Append(ch);
-            }
-            return buf.ToString();
-        }
-
 
         /// <summary>
         /// Returns the string for this value if it has a known representation (e.g. NaN or 0.0).
@@ -1337,28 +1311,24 @@ namespace NetTopologySuite.Mathematics
             return null;
         }
 
-
-
-        /**
-         * Determines the decimal magnitude of a number.
-         * The magnitude is the exponent of the greatest power of 10 which is less than
-         * or equal to the number.
-         * 
-         * @param x the number to find the magnitude of
-         * @return the decimal magnitude of x
-         */
-
-        private static int magnitude(double x)
+        /// <summary>
+        /// Determines the decimal magnitude of a number.<para/>
+        /// The magnitude is the exponent of the greatest power of 10 which is less than
+        /// or equal to the number.
+        /// </summary>
+        /// <param name="x">The number to find the magnitude of</param>
+        /// <returns>The decimal magnitude of <paramref name="x"/></returns>
+        private static int Magnitude(double x)
         {
-            double xAbs = System.Math.Abs(x);
-            double xLog10 = System.Math.Log(xAbs)/System.Math.Log(10);
-            int xMag = (int) System.Math.Floor(xLog10);
+            var xAbs = Math.Abs(x);
+            var xLog10 = Math.Log(xAbs)/Math.Log(10);
+            var xMag = (int) Math.Floor(xLog10);
             /**
              * Since log computation is inexact, there may be an off-by-one error
              * in the computed magnitude. 
              * Following tests that magnitude is correct, and adjusts it if not
              */
-            double xApprox = System.Math.Pow(10, xMag);
+            var xApprox = Math.Pow(10, xMag);
             if (xApprox*10 <= xAbs)
                 xMag += 1;
 
@@ -1371,19 +1341,17 @@ namespace NetTopologySuite.Mathematics
          *------------------------------------------------------------
          */
 
-        /**
-         * Converts a string representation of a real number into a DoubleDouble value.
-         * The format accepted is similar to the standard Java real number syntax.  
-         * It is defined by the following regular expression:
-         * <pre>
-         * [<tt>+</tt>|<tt>-</tt>] {<i>digit</i>} [ <tt>.</tt> {<i>digit</i>} ] [ ( <tt>e</tt> | <tt>E</tt> ) [<tt>+</tt>|<tt>-</tt>] {<i>digit</i>}+
-         * <pre>
-         * 
-         * @param str the string to parse
-         * @return the value of the parsed number
-         * @throws NumberFormatException if <tt>str</tt> is not a valid representation of a number
-         */
-
+        /// <summary>
+        /// Converts a string representation of a real number into a DoubleDouble value.
+        /// The format accepted is similar to the standard Java real number syntax.  
+        /// It is defined by the following regular expression:
+        /// <pre>
+        /// [<tt>+</tt>|<tt>-</tt>] {<i>digit</i>} [ <tt>.</tt> {<i>digit</i>} ] [ ( <tt>e</tt> | <tt>E</tt> ) [<tt>+</tt>|<tt>-</tt>] {<i>digit</i>}+
+        /// </pre>
+        ///  </summary>
+        /// <param name="str">The string to parse</param>
+        /// <returns>The value of the parsed number</returns>
+        /// <exception cref="FormatException">Thrown if <tt>str</tt> is not a valid representation of a number</exception>
         public static DD Parse(String str)
         {
             int i = 0;
@@ -1421,9 +1389,9 @@ namespace NetTopologySuite.Mathematics
                 if (Char.IsDigit(ch))
                 {
                     double d = ch - '0';
-                    val.SelfMultiply(Ten);
+                    val *= Ten;
                     // MD: need to optimize this
-                    val.SelfAdd(d);
+                    val += d;
                     numDigits++;
                     continue;
                 }
@@ -1442,7 +1410,7 @@ namespace NetTopologySuite.Mathematics
                     }
                     catch (FormatException ex)
                     {
-                        throw new FormatException("Invalid exponent " + expStr + " in string " + str);
+                        throw new FormatException("Invalid exponent " + expStr + " in string " + str, ex);
                     }
                     break;
                 }
@@ -1460,7 +1428,7 @@ namespace NetTopologySuite.Mathematics
             }
             else if (numDecPlaces > 0)
             {
-                DD scale = Ten.Pow(numDecPlaces);
+                var scale = Ten.Pow(numDecPlaces);
                 val2 = val.Divide(scale);
             }
             else if (numDecPlaces < 0)
@@ -1475,6 +1443,21 @@ namespace NetTopologySuite.Mathematics
             }
             return val2;
 
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (obj.GetType() != typeof (DD)) return false;
+            return Equals((DD) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (_hi.GetHashCode()*397) ^ _lo.GetHashCode();
+            }
         }
     }
 }

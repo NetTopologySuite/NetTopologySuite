@@ -1,10 +1,11 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 using GeoAPI.Geometries;
-using Microsoft.SqlServer.Types;
 
 namespace NetTopologySuite.IO.Tests
 {
+    [NUnit.Framework.TestFixture]
+    [NUnit.Framework.Category("Database.IO")]
     public class SqlGeometryFixture : SqlServer2008Fixture
     {
         #region Overrides of AbstractIOFixture

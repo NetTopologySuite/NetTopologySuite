@@ -137,13 +137,13 @@ namespace NetTopologySuite.Tests.NUnit.IO
             RunWKBTest("GEOMETRYCOLLECTION EMPTY");
         }
 
-        private static void RunWKBTest(String wkt)
+        private void RunWKBTest(String wkt)
         {
             RunWKBTestCoordinateArray(wkt);
             RunWKBTestPackedCoordinate(wkt);
         }
 
-        private static void RunWKBTestPackedCoordinate(String wkt)
+        private void RunWKBTestPackedCoordinate(String wkt)
         {
             GeometryFactory factory = new GeometryFactory(
                 new PackedCoordinateSequenceFactory(PackedCoordinateSequenceFactory.PackedType.Double, 2));
@@ -155,7 +155,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             RunWKBTest(g, 2, false);
         }
 
-        private static void RunWKBTestCoordinateArray(String wkt)
+        private void RunWKBTestCoordinateArray(String wkt)
         {
             IGeometry g = Rdr.Read(wkt);
 
@@ -166,14 +166,14 @@ namespace NetTopologySuite.Tests.NUnit.IO
             RunWKBTest(g, 3, false);
         }
 
-        private static void RunWKBTest(IGeometry g, int dimension, bool toHex)
+        private void RunWKBTest(IGeometry g, int dimension, bool toHex)
         {
             SetZ(g);
             RunWKBTest(g, dimension, ByteOrder.LittleEndian, toHex);
             RunWKBTest(g, dimension, ByteOrder.BigEndian, toHex);
         }
 
-        private static void RunWKBTest(IGeometry g, int dimension, ByteOrder byteOrder, bool toHex)
+        private void RunWKBTest(IGeometry g, int dimension, ByteOrder byteOrder, bool toHex)
         {
             RunGeometry((Geometry)g, dimension, byteOrder, toHex, 100);
             RunGeometry((Geometry)g, dimension, byteOrder, toHex, 0);
@@ -191,8 +191,9 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
         static readonly CoordinateSequenceComparator Comp2 = new CoordinateSequenceComparator(2);
         static readonly CoordinateSequenceComparator Comp3 = new CoordinateSequenceComparator(3);
+        readonly WKBReader _wkbReader = new WKBReader(GeomFactory);
 
-        static void RunGeometry(Geometry g, int dimension, ByteOrder byteOrder, bool toHex, int srid)
+        void RunGeometry(Geometry g, int dimension, ByteOrder byteOrder, bool toHex, int srid)
         {
             bool includeSRID = false;
             if (srid >= 0)
@@ -207,10 +208,9 @@ namespace NetTopologySuite.Tests.NUnit.IO
             if (toHex)
                 wkbHex = WKBWriter.ToHex(wkb);
 
-            WKBReader wkbReader = new WKBReader(GeomFactory);
             if (toHex)
                 wkb = WKBReader.HexToBytes(wkbHex);
-            Geometry g2 = (Geometry)wkbReader.Read(wkb);
+            Geometry g2 = (Geometry)_wkbReader.Read(wkb);
 
             CoordinateSequenceComparator comp = (dimension == 2) ? Comp2 : Comp3;
             bool isEqual = (g.CompareTo(g2, comp) == 0);

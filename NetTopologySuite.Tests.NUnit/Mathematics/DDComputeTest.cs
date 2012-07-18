@@ -309,13 +309,10 @@ public class DDIOTest
 		}
 	}
 
-	/**
-	 * Tests that printing values with many decimal places works. 
-	 * This tests the correctness and robustness of both output and input.
-	 * 
-	 * @param x
-	 */
-    
+    /// <summary>
+    /// Tests that printing values with many decimal places works.
+    /// This tests the correctness and robustness of both output and input.
+    /// </summary>
 	static void WriteAndReadSqrt(double x) {
 		DD xdd = DD.ValueOf(x);
 		DD xSqrt = xdd.Sqrt();
@@ -323,7 +320,7 @@ public class DDIOTest
 //		System.out.println(s);
 
 		DD xSqrt2 = DD.Parse(s);
-		DD xx = xSqrt2.Multiply(xSqrt2);
+		DD xx = xSqrt2 * xSqrt2;
 		String xxStr = xx.ToString();
 //		System.out.println("==>  " + xxStr);
 

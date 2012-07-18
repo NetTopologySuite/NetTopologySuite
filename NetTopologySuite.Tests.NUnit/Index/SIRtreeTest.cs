@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Index
 {
     [TestFixture]
-    public class SIRtreeTestCase
+    public class SIRtreeTest
     {
         private class TestTree : SIRtree
         {

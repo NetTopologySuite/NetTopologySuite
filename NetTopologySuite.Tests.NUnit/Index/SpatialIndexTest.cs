@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Index
 {
     [TestFixture]
-    public abstract class SpatialIndexTestCase
+    public abstract class SpatialIndexTest
     {
         protected abstract ISpatialIndex<object> CreateSpatialIndex();
 

@@ -6,7 +6,7 @@ using NetTopologySuite.Tests.NUnit.Utilities;
 
 namespace NetTopologySuite.Tests.NUnit.Index
 {
-    public class QuadtreeTestCase //: SpatialIndexTestCase
+    public class QuadtreeTest //: SpatialIndexTestCase
     {
         /*
         protected override ISpatialIndex<object> CreateSpatialIndex()

@@ -43,7 +43,8 @@ namespace NetTopologySuite.Index.Quadtree
         }
 
         private readonly Envelope _env;
-        private readonly Coordinate _centre;
+        //private readonly Coordinate _centre;
+        private readonly double _centreX, _centreY;
         private readonly int _level;
 
         /// <summary>
@@ -55,9 +56,8 @@ namespace NetTopologySuite.Index.Quadtree
         {
             _env = env;
             _level = level;
-            _centre = new Coordinate();
-            _centre.X = (env.MinX + env.MaxX) / 2;
-            _centre.Y = (env.MinY + env.MaxY) / 2;
+            _centreX = (env.MinX + env.MaxX) / 2;
+            _centreY = (env.MinY + env.MaxY) / 2;
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <returns>The subquad containing the search envelope.</returns>
         public Node<T> GetNode(Envelope searchEnv)
         {
-            int subnodeIndex = GetSubnodeIndex(searchEnv, _centre);            
+            int subnodeIndex = GetSubnodeIndex(searchEnv, _centreX, _centreY);            
             // if subquadIndex is -1 searchEnv is not contained in a subquad
             if (subnodeIndex != -1) 
             {
@@ -109,7 +109,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <param name="searchEnv"></param>
         public NodeBase<T> Find(Envelope searchEnv)
         {
-            int subnodeIndex = GetSubnodeIndex(searchEnv, _centre);
+            int subnodeIndex = GetSubnodeIndex(searchEnv, _centreX, _centreY);
             if (subnodeIndex == -1)
                 return this;
             if (Subnode[subnodeIndex] != null) 
@@ -129,7 +129,7 @@ namespace NetTopologySuite.Index.Quadtree
         public void InsertNode(Node<T> node)
         {
             Assert.IsTrue(_env == null || _env.Contains(node.Envelope));        
-            int index = GetSubnodeIndex(node._env, _centre);        
+            int index = GetSubnodeIndex(node._env, _centreX, _centreY);        
             if (node._level == _level - 1)             
                 Subnode[index] = node;                    
             else 
@@ -171,29 +171,29 @@ namespace NetTopologySuite.Index.Quadtree
             {
                 case 0:
                     minx = _env.MinX;
-                    maxx = _centre.X;
+                    maxx = _centreX;
                     miny = _env.MinY;
-                    maxy = _centre.Y;
+                    maxy = _centreY;
                     break;
 
                 case 1:
-                    minx = _centre.X;
+                    minx = _centreX;
                     maxx = _env.MaxX;
                     miny = _env.MinY;
-                    maxy = _centre.Y;
+                    maxy = _centreY;
                     break;
 
                 case 2:
                     minx = _env.MinX;
-                    maxx = _centre.X;
-                    miny = _centre.Y;
+                    maxx = _centreX;
+                    miny = _centreY;
                     maxy = _env.MaxY;
                     break;
 
                 case 3:
-                    minx = _centre.X;
+                    minx = _centreX;
                     maxx = _env.MaxX;
-                    miny = _centre.Y;
+                    miny = _centreY;
                     maxy = _env.MaxY;
                     break;
 

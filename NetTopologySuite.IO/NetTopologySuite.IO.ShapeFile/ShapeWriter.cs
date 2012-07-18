@@ -23,10 +23,10 @@ namespace NetTopologySuite.IO
         public ShapeWriter() { }
 
         /// <summary>
-        /// 
+        /// Writes x- and y-ordinate of <paramref name="coordinate"/> to a stream using <paramref name="writer"/>
         /// </summary>
-        /// <param name="coordinate"></param>
-        /// <param name="writer"></param>
+        /// <param name="coordinate">The coordinate to write</param>
+        /// <param name="writer">The writer to use</param>
         public void Write(Coordinate coordinate, BinaryWriter writer)
         {
             writer.Write((double) coordinate.X);
@@ -34,28 +34,41 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// 
+        /// Writes x- and y-ordinates of <paramref name="coordinates"/> to a stream using <paramref name="writer"/>
         /// </summary>
-        /// <param name="point"></param>
-        /// <param name="writer"></param>
-        public void Write(IPoint point, BinaryWriter writer)
+        /// <param name="coordinates">The array of <see cref="Coordinate"/>s to write</param>
+        /// <param name="writer">The writer to use</param>
+        public void Write(Coordinate[] coordinates, BinaryWriter writer)
         {
-            writer.Write((int) ShapeGeometryType.Point);
-            writer.Write((double) point.X);
-            writer.Write((double) point.Y);
+            foreach (var coordinate in coordinates)
+            {
+                writer.Write(coordinate.X);
+                writer.Write(coordinate.Y);
+            }
         }
 
         /// <summary>
-        /// 
+        /// Writes <paramref name="point"/> to a stream using <paramref name="writer"/>
         /// </summary>
-        /// <param name="lineString"></param>
-        /// <param name="writer"></param>
+        /// <param name="point">The point to write</param>
+        /// <param name="writer">The writer to use</param>
+        public void Write(IPoint point, BinaryWriter writer)
+        {
+            writer.Write((int) ShapeGeometryType.Point);
+            Write(point.Coordinate, writer);
+        }
+
+        /// <summary>
+        /// Writes <paramref name="lineString"/> to a stream using <paramref name="writer"/>
+        /// </summary>
+        /// <param name="lineString">The linestring to write</param>
+        /// <param name="writer">The writer to use</param>
         public void Write(ILineString lineString, BinaryWriter writer)
         {
             writer.Write((int) ShapeGeometryType.LineString);
 
             // Write BoundingBox            
-            WriteBoundingBox(lineString, writer);
+            WriteBoundingBox(lineString.EnvelopeInternal, writer);
 
             // Write NumParts and NumPoints
             writer.Write((int) 1);
@@ -65,21 +78,20 @@ namespace NetTopologySuite.IO
             writer.Write((int) 0);
 
             // Write Coordinates
-            for (int i = 0; i < lineString.NumPoints; i++)
-                Write(lineString.Coordinates[i], writer);
+            Write(lineString.Coordinates, writer);
         }
 
         /// <summary>
-        /// 
+        /// Writes <paramref name="polygon"/> to a stream using <paramref name="writer"/>
         /// </summary>
-        /// <param name="polygon"></param>
-        /// <param name="writer"></param>
+        /// <param name="polygon">The polygon to write</param>
+        /// <param name="writer">The writer to use</param>
         public void Write(IPolygon polygon, BinaryWriter writer)
         {
             writer.Write((int) ShapeGeometryType.Polygon);
 
             // Write BoundingBox            
-            WriteBoundingBox(polygon, writer);
+            WriteBoundingBox(polygon.EnvelopeInternal, writer);
 
             // Write NumParts and NumPoints            
             writer.Write((int) (polygon.NumInteriorRings + 1));
@@ -102,41 +114,39 @@ namespace NetTopologySuite.IO
             }
 
             // Write Coordinates
-            for (int i = 0; i < polygon.NumPoints; i++)
-                Write(polygon.Coordinates[i], writer);
+            Write(polygon.Coordinates, writer);
         }
 
         /// <summary>
-        /// 
+        /// Writes <paramref name="multiPoint"/> to a stream using <paramref name="writer"/>
         /// </summary>
-        /// <param name="multiPoint"></param>
-        /// <param name="writer"></param>
+        /// <param name="multiPoint">The multi point to write</param>
+        /// <param name="writer">The writer to use</param>
         public void Write(IMultiPoint multiPoint, BinaryWriter writer)
         {
             writer.Write((int) ShapeGeometryType.MultiPoint);
 
             // Write BoundingBox            
-            WriteBoundingBox(multiPoint, writer);
+            WriteBoundingBox(multiPoint.EnvelopeInternal, writer);
 
             // Write NumPoints            
             writer.Write((int) multiPoint.NumPoints);
 
             // Write Coordinates
-            for (int i = 0; i < multiPoint.NumPoints; i++)
-                Write(multiPoint.Coordinates[i], writer);
+            Write(multiPoint.Coordinates,writer);
         }
 
         /// <summary>
-        /// 
+        /// Writes <paramref name="multiLineString"/> to a stream using <paramref name="writer"/>
         /// </summary>
-        /// <param name="multiLineString"></param>
-        /// <param name="writer"></param>
+        /// <param name="multiLineString">The multi linestring to write</param>
+        /// <param name="writer">The writer to use</param>
         public void Write(IMultiLineString multiLineString, BinaryWriter writer)
         {
             writer.Write((int) ShapeGeometryType.LineString);
 
             // Write BoundingBox            
-            WriteBoundingBox(multiLineString, writer);
+            WriteBoundingBox(multiLineString.EnvelopeInternal, writer);
 
             // Write NumParts and NumPoints
             writer.Write((int) multiLineString.NumGeometries);
@@ -157,21 +167,20 @@ namespace NetTopologySuite.IO
             }
 
             // Write Coordinates
-            for (int i = 0; i < multiLineString.NumPoints; i++)
-                Write(multiLineString.Coordinates[i], writer);
+            Write(multiLineString.Coordinates, writer);
         }
 
         /// <summary>
-        /// 
+        /// Writes <paramref name="multiPolygon"/> to a stream using <paramref name="writer"/>
         /// </summary>
-        /// <param name="multiPolygon"></param>
-        /// <param name="writer"></param>
+        /// <param name="multiPolygon">The multi polygon to write</param>
+        /// <param name="writer">The writer to use</param>
         public void Write(IMultiPolygon multiPolygon, BinaryWriter writer)
         {
             writer.Write((int) ShapeGeometryType.Polygon);
 
             // Write BoundingBox            
-            WriteBoundingBox(multiPolygon, writer);
+            WriteBoundingBox(multiPolygon.EnvelopeInternal, writer);
 
             // Write NumParts and NumPoints
             int numParts = multiPolygon.NumGeometries;              // Exterior rings count
@@ -204,18 +213,16 @@ namespace NetTopologySuite.IO
             }
 
             // Write Coordinates
-            for (int i = 0; i < multiPolygon.NumPoints; i++)
-                Write(multiPolygon.Coordinates[i], writer);
+            Write(multiPolygon.Coordinates, writer);
         }
 
         /// <summary>
-        /// 
+        /// Writes the 2D <paramref name="boundingBox"/> using <paramref name="writer"/>
         /// </summary>
-        /// <param name="geometry"></param>
-        /// <param name="writer"></param>
-        public void WriteBoundingBox(IGeometry geometry, BinaryWriter writer)
+        /// <param name="boundingBox">The bounding box to write</param>
+        /// <param name="writer">The writer</param>
+        public void WriteBoundingBox(Envelope boundingBox, BinaryWriter writer)
         {
-            IEnvelope boundingBox = geometry.EnvelopeInternal;
             writer.Write((double) boundingBox.MinX);
             writer.Write((double) boundingBox.MinY);
             writer.Write((double) boundingBox.MaxX);

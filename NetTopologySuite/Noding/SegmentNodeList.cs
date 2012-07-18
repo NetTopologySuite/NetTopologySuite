@@ -187,8 +187,12 @@ namespace NetTopologySuite.Noding
             var eiPrev = (SegmentNode) ie.Current;
             while (ie.MoveNext())
             {
-                var ei = (SegmentNode) ie.Current;
+                var ei = (SegmentNode)ie.Current;
                 var newEdge = CreateSplitEdge(eiPrev, ei);
+                /*
+                if (newEdge.Count < 2)
+                  throw new Exception("created single point edge: " + newEdge);
+                 */
                 edgeList.Add(newEdge);
                 eiPrev = ei;
             }

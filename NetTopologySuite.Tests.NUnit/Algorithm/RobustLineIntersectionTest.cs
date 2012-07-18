@@ -20,7 +20,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// Succeeds using DD and Shewchuk orientation
         /// </remarks>
         [Test]
-        [Category("KnownToFail")]
         public void TestTomasFa_1()
         {
             ComputeIntersectionNone(
@@ -36,7 +35,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// Succeeds using DD and Shewchuk orientation
         /// </remarks>
         [Test]
-        [Category("KnownToFail")]
         public void TestTomasFa_2()
         {
             ComputeIntersectionNone(

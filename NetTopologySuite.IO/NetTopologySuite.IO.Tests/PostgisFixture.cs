@@ -5,6 +5,8 @@
     using Npgsql;
     using NpgsqlTypes;
 
+    [NUnit.Framework.TestFixture]
+    [NUnit.Framework.Category("Database.IO")]
     public class PostgisFixture : AbstractIOFixture
     {
         protected override void AddAppConfigSpecificItems(KeyValueConfigurationCollection kvcc)

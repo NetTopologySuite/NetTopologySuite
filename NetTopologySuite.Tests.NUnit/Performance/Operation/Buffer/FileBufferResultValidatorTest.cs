@@ -7,7 +7,7 @@ using NetTopologySuite.Operation.Buffer.Validate;
 using NetTopologySuite.Tests.NUnit.TestData;
 using NUnit.Framework;
 
-namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
+namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 {
     [TestFixture]
     [Category("Stress")]

@@ -116,11 +116,11 @@
     <Compile Include="GeometryUtils.cs" />
     <Compile Include="Index\DoubleBitsTest.cs" />
     <Compile Include="Index\IntervalTest.cs" />
-    <Compile Include="Index\QuadtreeTestCase.cs" />
-    <Compile Include="Index\SIRtreeTestCase.cs" />
-    <Compile Include="Index\SpatialIndexTestCase.cs" />
+    <Compile Include="Index\QuadtreeTest.cs" />
+    <Compile Include="Index\SIRtreeTest.cs" />
+    <Compile Include="Index\SpatialIndexTest.cs" />
     <Compile Include="Index\SpatialIndexTester.cs" />
-    <Compile Include="Index\STRtreeTestCase.cs" />
+    <Compile Include="Index\STRtreeTest.cs" />
     <Compile Include="Index\STRtreeDemo.cs" />
     <Compile Include="IO\SerializabilityTest.cs" />
     <Compile Include="IO\WKBTest.cs" />

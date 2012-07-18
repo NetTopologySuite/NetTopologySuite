@@ -336,14 +336,17 @@ namespace NetTopologySuite.Geometries
             return coord;
         }
 
-        /// <summary>
-        /// Compute the projection factor for the projection of the point p
-        /// onto this <c>LineSegment</c>. The projection factor is the constant k
+        /// <summary>Computes the Projection Factor for the projection of the point p
+        /// onto this LineSegment.  The Projection Factor is the constant r
         /// by which the vector for this segment must be multiplied to
-        /// equal the vector for the projection of p.
+        /// equal the vector for the projection of <tt>p</tt> on the line
+        /// defined by this segment.
+        /// <para/>
+        /// The projection factor will lie in the range <tt>(-inf, +inf)</tt>,
+        /// or be <c>NaN</c> if the line segment has zero length.
         /// </summary>
-        /// <param name="p"></param>
-        /// <returns></returns>
+        /// <param name="p">The point to compute the factor for</param>
+        /// <returns>The projection factor for the point</returns>
         public double ProjectionFactor(Coordinate p)
         {
             if (p.Equals(_p0)) return 0.0;
@@ -362,8 +365,13 @@ namespace NetTopologySuite.Geometries
             */
             var dx = _p1.X - _p0.X;
             var dy = _p1.Y - _p0.Y;
-            var len2 = dx * dx + dy * dy;
-            var r = ((p.X - _p0.X) * dx + (p.Y - _p0.Y) * dy) / len2;
+            var len = dx * dx + dy * dy;
+
+            // handle zero-length segments
+            if (len <= 0.0) return Double.NaN;
+
+            double r = ((p.X - _p0.X) * dx + (p.Y - _p0.Y) * dy)
+                      / len;
             return r;
         }
 

@@ -6,6 +6,8 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.IO.Tests
 {
+    [NUnit.Framework.TestFixture]
+    [NUnit.Framework.Category("Database.IO")]
     public abstract class SqlServer2008Fixture : AbstractIOFixture
     {
         #region Overrides of AbstractIOFixture

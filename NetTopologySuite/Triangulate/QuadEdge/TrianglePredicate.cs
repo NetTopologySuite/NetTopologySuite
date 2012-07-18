@@ -200,16 +200,12 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             Coordinate a, Coordinate b, Coordinate c,
             Coordinate p)
         {
-            DD aTerm = (DD.Sqr(a.X).SelfAdd(DD.Sqr(a.Y)))
-                .SelfMultiply(TriAreaDDFast(b, c, p));
-            DD bTerm = (DD.Sqr(b.X).SelfAdd(DD.Sqr(b.Y)))
-                .SelfMultiply(TriAreaDDFast(a, c, p));
-            DD cTerm = (DD.Sqr(c.X).SelfAdd(DD.Sqr(c.Y)))
-                .SelfMultiply(TriAreaDDFast(a, b, p));
-            DD pTerm = (DD.Sqr(p.X).SelfAdd(DD.Sqr(p.Y)))
-                .SelfMultiply(TriAreaDDFast(a, b, c));
+            DD aTerm = (DD.Sqr(a.X) + DD.Sqr(a.Y)) * TriAreaDDFast(b, c, p);
+            DD bTerm = (DD.Sqr(b.X) + DD.Sqr(b.Y)) * TriAreaDDFast(a, c, p);
+            DD cTerm = (DD.Sqr(c.X) + DD.Sqr(c.Y)) * TriAreaDDFast(a, b, p);
+            DD pTerm = (DD.Sqr(p.X) + DD.Sqr(p.Y)) * TriAreaDDFast(a, b, c);
 
-            DD sum = aTerm.SelfSubtract(bTerm).SelfAdd(cTerm).SelfSubtract(pTerm);
+            DD sum = aTerm - bTerm + cTerm - pTerm;
             bool isInCircle = sum.ToDoubleValue() > 0;
 
             return isInCircle;
@@ -231,15 +227,10 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             Coordinate a, Coordinate b, Coordinate c)
         {
 
-            DD t1 = DD.ValueOf(b.X).SelfSubtract(a.X)
-                .SelfMultiply(
-                    DD.ValueOf(c.Y).SelfSubtract(a.Y));
+            DD t1 = (DD.ValueOf(b.X)-a.X) * (DD.ValueOf(c.Y)- a.Y);
+            DD t2 = (DD.ValueOf(b.Y)-a.Y) * (DD.ValueOf(c.X) -a.X);
 
-            DD t2 = DD.ValueOf(b.Y).SelfSubtract(a.Y)
-                .SelfMultiply(
-                    DD.ValueOf(c.X).SelfSubtract(a.X));
-
-            return t1.SelfSubtract(t2);
+            return t1 - t2;
         }
 
         /// <summary>
@@ -254,23 +245,21 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             Coordinate a, Coordinate b, Coordinate c,
             Coordinate p)
         {
-            DD adx = DD.ValueOf(a.X).SelfSubtract(p.X);
-            DD ady = DD.ValueOf(a.Y).SelfSubtract(p.Y);
-            DD bdx = DD.ValueOf(b.X).SelfSubtract(p.X);
-            DD bdy = DD.ValueOf(b.Y).SelfSubtract(p.Y);
-            DD cdx = DD.ValueOf(c.X).SelfSubtract(p.X);
-            DD cdy = DD.ValueOf(c.Y).SelfSubtract(p.Y);
+            DD adx = DD.ValueOf(a.X)-p.X;
+            DD ady = DD.ValueOf(a.Y)-p.Y;
+            DD bdx = DD.ValueOf(b.X)-p.X;
+            DD bdy = DD.ValueOf(b.Y)-p.Y;
+            DD cdx = DD.ValueOf(c.X)-p.X;
+            DD cdy = DD.ValueOf(c.Y)-p.Y;
 
-            DD abdet = adx.Multiply(bdy).SelfSubtract(bdx.Multiply(ady));
-            DD bcdet = bdx.Multiply(cdy).SelfSubtract(cdx.Multiply(bdy));
-            DD cadet = cdx.Multiply(ady).SelfSubtract(adx.Multiply(cdy));
-            DD alift = adx.Multiply(adx).SelfAdd(ady.Multiply(ady));
-            DD blift = bdx.Multiply(bdx).SelfAdd(bdy.Multiply(bdy));
-            DD clift = cdx.Multiply(cdx).SelfAdd(cdy.Multiply(cdy));
+            DD abdet = adx*bdy - bdx*ady;
+            DD bcdet = bdx*cdy - cdx*bdy;
+            DD cadet = cdx*ady - adx*cdy;
+            DD alift = adx*adx + ady*ady;
+            DD blift = bdx*bdx + bdy*bdy;
+            DD clift = cdx*cdx + cdy*cdy;
 
-            DD sum = alift.SelfMultiply(bcdet)
-                .SelfAdd(blift.SelfMultiply(cadet))
-                .SelfAdd(clift.SelfMultiply(abdet));
+            DD sum = alift * bcdet + blift* cadet + clift * abdet;
 
             bool isInCircle = sum.ToDoubleValue() > 0;
 

@@ -20,6 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
 
         [Test]
+        [Category("Stress")]
         public void TestPerformance()
         {
             var test = new RectangleLineIntersectorValidator();

@@ -30,10 +30,10 @@ namespace NetTopologySuite.Algorithm
             if (index <= 1) return index;
 
             // normalize coordinates
-            var dx1 = DD.ValueOf(p2.X).SelfSubtract(p1.X);
-            var dy1 = DD.ValueOf(p2.Y).SelfSubtract(p1.Y);
-            var dx2 = DD.ValueOf(q.X).SelfSubtract(p2.X);
-            var dy2 = DD.ValueOf(q.Y).SelfSubtract(p2.Y);
+            var dx1 = DD.ValueOf(p2.X) - p1.X;
+            var dy1 = DD.ValueOf(p2.Y) - p1.Y;
+            var dx2 = DD.ValueOf(q.X) - p2.X;
+            var dy2 = DD.ValueOf(q.Y) - p2.Y;
 
             return SignOfDet2x2(dx1, dy1, dx2, dy2);
         }
