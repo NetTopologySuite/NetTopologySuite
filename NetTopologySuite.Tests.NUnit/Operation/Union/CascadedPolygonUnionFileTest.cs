@@ -10,10 +10,9 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
     /// using data from files.
     /// </summary>
     /// <author>mbdavis</author>
-    [Category("LongRunning")]
     public class CascadedPolygonUnionFileTest
     {
-        [Test]
+        [Test, Category("LongRunning")]
         public void TestAfrica()
         {
             var filePath = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile(
@@ -25,7 +24,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
             EmbeddedResourceManager.CleanUpTempFile(filePath);
         }
 
-        [Test]
+        [Test, Category("LongRunning")]
         public void TestEurope()
         {
             var filePath = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile(
@@ -37,13 +36,13 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
             EmbeddedResourceManager.CleanUpTempFile(filePath);
         }
 
-        private static CascadedPolygonUnionTester tester = new CascadedPolygonUnionTester();
+        private static readonly CascadedPolygonUnionTester Tester = new CascadedPolygonUnionTester();
 
-        private void RunTest(String filename, double minimumMeasure)
+        private static void RunTest(String filename, double minimumMeasure)
         {
 
             var geoms = GeometryUtils.ReadWKTFile(filename);
-            Assert.IsTrue(tester.Test(geoms, minimumMeasure));
+            Assert.IsTrue(Tester.Test(geoms, minimumMeasure));
         }
     }
 }
