@@ -21,18 +21,19 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
      * and of course
      * http://sourceforge.net/mailarchive/forum.php?thread_name=CAK2ens3FY3qMT915_LoRiz6uqyww156swONSWRRaXc0anrxREg%40mail.gmail.com&forum_name=jts-topo-suite-user
      */
+
     public class SplitPolygonExample
     {
-	    internal static IGeometry Polygonize(IGeometry geometry)
-	    {
-	        var lines = LineStringExtracter.GetLines(geometry);
+        internal static IGeometry Polygonize(IGeometry geometry)
+        {
+            var lines = LineStringExtracter.GetLines(geometry);
             var polygonizer = new Polygonizer();
             polygonizer.Add(lines);
             var polys = polygonizer.GetPolygons();
             var polyArray = GeometryFactory.ToGeometryArray(polys);
             return geometry.Factory.CreateGeometryCollection(polyArray);
-	    }        
-        
+        }
+
         internal static IGeometry SplitPolygon(IGeometry polygon, IGeometry line)
         {
             var nodedLinework = polygon.Boundary.Union(line);
@@ -42,7 +43,7 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
             var output = new List<IGeometry>();
             for (var i = 0; i < polygons.NumGeometries; i++)
             {
-                var candpoly = (Polygon) polygons.GetGeometryN(i);
+                var candpoly = (IPolygon) polygons.GetGeometryN(i);
                 if (polygon.Contains(candpoly.InteriorPoint))
                     output.Add(candpoly);
             }
@@ -53,24 +54,57 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
             return polygon.Factory.BuildGeometry(output);
         }
 
-		[STAThread]
-		public static void Main(string[] args)
-		{
-			var test = new PolygonizeExample();
-			try
-			{
-				test.Run();
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine(ex.StackTrace);
-			}
-		}
-		
+        internal static IGeometry ClipPolygon(IGeometry polygon, IPolygonal clipPolygonal)
+        {
+            var clipPolygon = (IGeometry) clipPolygonal;
+            var nodedLinework = polygon.Boundary.Union(clipPolygon.Boundary);
+            var polygons = Polygonize(nodedLinework);
+
+            // Build a prepared clipPolygon
+            var prepClipPolygon = NetTopologySuite.Geometries.Prepared.PreparedGeometryFactory.Prepare(clipPolygon);
+
+            // only keep polygons which are inside the input
+            var output = new List<IGeometry>();
+            for (var i = 0; i < polygons.NumGeometries; i++)
+            {
+                var candpoly = (IPolygon) polygons.GetGeometryN(i);
+                if (polygon.Contains(candpoly.InteriorPoint) &&
+                    prepClipPolygon.Contains(candpoly))
+                    output.Add(candpoly);
+            }
+            /*
+            return polygon.Factory.CreateGeometryCollection(
+                GeometryFactory.ToGeometryArray(output));
+             */
+            return polygon.Factory.BuildGeometry(output);
+        }
+
+
+        [STAThread]
+        public static void Main(string[] args)
+        {
+            var test = new SplitPolygonExample();
+            try
+            {
+                test.Run();
+                test.RunClip();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+            }
+        }
+
         [Test]
-        public void Test()
+        public void TestSplit()
         {
             Run();
+        }
+
+        [Test]
+        public void TestClip()
+        {
+            RunClip();
         }
 
         internal void Run()
@@ -78,11 +112,13 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
             var reader = new WKTReader();
             var polygon = reader.Read("POLYGON((0 0, 0 100, 100 100, 100 0, 0 0), (10 10, 90 10, 90 90, 10 90, 10 10))");
 
-            var lineWkts = new[] {
-                "LINESTRING(50 -10, 50 110)", 
-                "LINESTRING(5 -10, 5 110)",
-                "LINESTRING(5 -10, 5 95, 110 95)", 
-                "LINESTRING(5 -10, 5 110, 110 50)" };
+            var lineWkts = new[]
+                               {
+                                   "LINESTRING(50 -10, 50 110)",
+                                   "LINESTRING(5 -10, 5 110)",
+                                   "LINESTRING(5 -10, 5 95, 110 95)",
+                                   "LINESTRING(5 -10, 5 110, 110 50)"
+                               };
 
             Console.WriteLine(string.Format("Splitting\n{0}", polygon));
             foreach (var lineWkt in lineWkts)
@@ -94,22 +130,24 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
             }
         }
 
-        /*
-	public static Geometry splitPolygon(Geometry poly, Geometry line)
-    {		
-        Geometry nodedLinework = poly.getBoundary().union(line);
-        Geometry polys = polygonize(nodedLinework);
-        
-        // only keep polygons which are inside the input
-        List output = new ArrayList();
-        for (int i = 0; i < polys.getNumGeometries(); i++)
+        internal void RunClip()
         {
-            Polygon candpoly = (Polygon) polys.getGeometryN(i);
-            if (poly.contains(candpoly.getInteriorPoint()))
+            var reader = new WKTReader();
+            var polygon = reader.Read("POLYGON((0 0, 0 100, 100 100, 100 0, 0 0), (10 10, 90 10, 90 90, 10 90, 10 10))");
+
+            var clipPolygonWkts = new[]
+                               {
+                                   "POLYGON((-10 45, 110 45, 110 55, -10 55, -10 45))",
+                               };
+
+            Console.WriteLine(string.Format("Clipping\n{0}", polygon));
+            foreach (var lineWkt in clipPolygonWkts)
             {
-                output.add(candpoly);
+                var polygonal = (IPolygonal)reader.Read(lineWkt);
+                Console.WriteLine(string.Format("\nwith\n{0}", lineWkt));
+                var clippedPolygons = ClipPolygon(polygon, polygonal);
+                Console.WriteLine(string.Format("results in:\n{0}", clippedPolygons));
             }
-        }	
-        return poly.getFactory().createGeometryCollection(GeometryFactory.toGeometryArray(output));	} */
+        }
     }
 }
