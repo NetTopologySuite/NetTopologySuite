@@ -60,8 +60,8 @@ namespace NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Executes a function on each item in a <see cref="ICollection" />
-        /// and returns the results in a new <see cref="IList" />.
+        /// Executes a function on each item in a <see cref="ICollection{TIn}" />
+        /// and returns the results in a new <see cref="IList{TOut}" />.
         /// </summary>
         /// <param name="coll"></param>
         /// <returns></returns>

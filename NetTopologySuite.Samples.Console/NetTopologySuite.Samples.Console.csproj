@@ -92,6 +92,7 @@
     <Compile Include="Geometries\precisionmodelexample.cs" />
     <Compile Include="Geometries\simplemethodsexample.cs" />
     <Compile Include="LinearReferencing\LinearReferencingExample.cs" />
+    <Compile Include="Operation\Poligonize\SplitPolygonExample.cs" />
     <Compile Include="Tests\GeometryServicesTest.cs" />
     <Compile Include="Tests\IO\GmlTest.cs" />
     <Compile Include="Tests\IO\PostGisTest.cs" />
