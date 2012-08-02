@@ -54,30 +54,34 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
             return polygon.Factory.BuildGeometry(output);
         }
 
-        internal static IGeometry ClipPolygon(IGeometry polygon, IPolygonal clipPolygonal)
-        {
-            var clipPolygon = (IGeometry) clipPolygonal;
-            var nodedLinework = polygon.Boundary.Union(clipPolygon.Boundary);
-            var polygons = Polygonize(nodedLinework);
-
-            // Build a prepared clipPolygon
-            var prepClipPolygon = NetTopologySuite.Geometries.Prepared.PreparedGeometryFactory.Prepare(clipPolygon);
-
-            // only keep polygons which are inside the input
-            var output = new List<IGeometry>();
-            for (var i = 0; i < polygons.NumGeometries; i++)
-            {
-                var candpoly = (IPolygon) polygons.GetGeometryN(i);
-                if (polygon.Contains(candpoly.InteriorPoint) &&
-                    prepClipPolygon.Contains(candpoly))
-                    output.Add(candpoly);
-            }
-            /*
-            return polygon.Factory.CreateGeometryCollection(
-                GeometryFactory.ToGeometryArray(output));
-             */
-            return polygon.Factory.BuildGeometry(output);
-        }
+internal static IGeometry ClipPolygon(IGeometry polygon, IPolygonal clipPolygonal)
+{
+    var clipPolygon = (IGeometry) clipPolygonal;
+    var nodedLinework = polygon.Boundary.Union(clipPolygon.Boundary);
+    var polygons = Polygonize(nodedLinework);
+            
+    /*
+    // Build a prepared clipPolygon
+    var prepClipPolygon = NetTopologySuite.Geometries.Prepared.PreparedGeometryFactory.Prepare(clipPolygon);
+        */
+            
+    // only keep polygons which are inside the input
+    var output = new List<IGeometry>();
+    for (var i = 0; i < polygons.NumGeometries; i++)
+    {
+        var candpoly = (IPolygon) polygons.GetGeometryN(i);
+        var interiorPoint = candpoly.InteriorPoint;
+        if (polygon.Contains(interiorPoint) &&
+            /*prepClipPolygon.Contains(candpoly)*/
+            clipPolygon.Contains(interiorPoint))
+            output.Add(candpoly);
+    }
+    /*
+    return polygon.Factory.CreateGeometryCollection(
+        GeometryFactory.ToGeometryArray(output));
+        */
+    return polygon.Factory.BuildGeometry(output);
+}
 
 
         [STAThread]
