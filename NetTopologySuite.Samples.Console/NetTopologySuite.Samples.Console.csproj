@@ -108,6 +108,7 @@
     <Compile Include="Tests\Various\Issue102Test.cs" />
     <Compile Include="Tests\Various\Issue103Tests.cs" />
     <Compile Include="Tests\Various\Issue117Tests.cs" />
+    <Compile Include="Tests\Various\Issue119Tests.cs" />
     <Compile Include="Tests\Various\Issue68Tests.cs" />
     <Compile Include="Tests\Various\CoversTest.cs" />
     <Compile Include="Tests\Various\DbfDateTest.cs" />
