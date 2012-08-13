@@ -38,7 +38,15 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\AttributesTableConverter.cs" />
     <Compile Include="Converters\EnvelopeConverter.cs" />
+    <Compile Include="Converters\FeatureConverter.cs" />
+    <Compile Include="CoordinateSystems\CRSBase.cs" />
+    <Compile Include="CoordinateSystems\CRSType.cs" />
+    <Compile Include="CoordinateSystems\ICRSObject.cs" />
+    <Compile Include="CoordinateSystems\LinkedCRS.cs" />
+    <Compile Include="CoordinateSystems\NamedCRS.cs" />
+    <Compile Include="Features\FeatureCollection.cs" />
     <Compile Include="GeoJsonObjectType.cs" />
     <Compile Include="GeoJsonSerializer.cs" />
     <Compile Include="Converters\CoordinateConverters.cs" />
