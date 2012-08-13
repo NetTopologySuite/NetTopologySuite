@@ -26,6 +26,14 @@
    </case>
 
    <case>
+      <desc>P - empty point</desc>
+      <a>
+    POINT EMPTY
+  </a>
+      <test>         <op name="isValid" arg1="A">    true  </op>      </test>
+   </case>
+
+   <case>
       <desc>P - point with invalid X ordinate</desc>
       <a>
     POINT(NaN 10)
@@ -94,6 +102,22 @@ LINESTRING (40 180, 120 120, 140 200, 140 200, 200 140, 240 200)
    <case>
       <desc>L - linestring with two identical points </desc>
       <a>LINESTRING(0 0, 0 0)</a>
+      <test>
+         <op name="isValid" arg1="A">      false      </op>
+      </test>
+   </case>
+   
+   <case>
+      <desc>mL - MultiLinestring with two identical points in first component</desc>
+      <a>MULTILINESTRING((1 1, 0 0), (0 0, 0 0))</a>
+      <test>
+         <op name="isValid" arg1="A">      false      </op>
+      </test>
+   </case>
+
+   <case>
+      <desc>mL - MultiLinestring with two identical points in second component</desc>
+      <a>MULTILINESTRING((1 1, 0 0), (0 0, 0 0))</a>
       <test>
          <op name="isValid" arg1="A">      false      </op>
       </test>
@@ -512,6 +536,28 @@ POLYGON ((190 190, 360 20, 20 20, 190 190),
 	</a>
       <test>
          <op name="isValid" arg1="A">      true      </op>
+      </test>
+   </case>
+
+   <case>
+      <desc>A - one holes touches another at all vertices </desc>
+      <a>
+POLYGON( (0 0, 0 5, 6 5, 6 0, 0 0), (2 1, 4 1, 3 2, 2 1), (2 1, 1 4, 5 4, 4 1, 4 3, 3 2, 2 3, 2 1) )
+</a>
+      <test>
+         <op name="isValid" arg1="A">      false      </op>
+      </test>
+   </case>
+
+   <case>
+      <desc>A - one holes touches another at several vertices </desc>
+      <a>
+POLYGON ((0 0, 0 5, 6 5, 6 0, 0 0), 
+  (2.5 1, 3.5 1, 3.5 2, 2.5 2, 2.5 1), 
+  (2.5 1.5, 1 4, 5 4, 3.5 1.5, 4 3, 3 2, 2 3, 2.5 1.5))
+  </a>
+      <test>
+         <op name="isValid" arg1="A">      false      </op>
       </test>
    </case>
 
