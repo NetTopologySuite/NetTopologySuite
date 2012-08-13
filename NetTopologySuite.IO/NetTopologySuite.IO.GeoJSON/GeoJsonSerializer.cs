@@ -10,7 +10,7 @@ using NetTopologySuite.Features;
 namespace NetTopologySuite.IO
 {
     /// <summary>
-    /// Serializer for GeoJson based classes.
+    /// Json Serializer with support for GeoJson object structure.
     /// </summary>
     public class GeoJsonSerializer : JsonSerializer
     {
@@ -25,6 +25,7 @@ namespace NetTopologySuite.IO
         /// Initializes a new instance of the <see cref="GeoJsonSerializer"/> class.
         /// </summary>
         /// <param name="geometryFactory">The geometry factory.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public GeoJsonSerializer(IGeometryFactory geometryFactory)
         {
             base.Converters.Add(new FeatureConverter());
@@ -49,6 +50,9 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         public string Write(IGeometry geometry)
         {
+            if (geometry == null) 
+                throw new ArgumentNullException("geometry");
+
             var g = new GeoJsonSerializer(geometry.Factory);
             var sb = new StringBuilder();
             
@@ -93,15 +97,15 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Writes any specified object.
         /// </summary>
-        /// <param name="anyObject">Any object.</param>
+        /// <param name="value">Any object.</param>
         /// <returns></returns>
-        public string Write(object anyObject)
+        public string Write(object value)
         {
             var g = new GeoJsonSerializer();
             var sb = new StringBuilder();
 
             using (var sw = new StringWriter(sb))
-                g.Serialize(sw, anyObject);
+                g.Serialize(sw, value);
 
             return sb.ToString();
         }
@@ -123,7 +127,10 @@ namespace NetTopologySuite.IO
             where TGeometry : class, IGeometry
         {
             var g = new GeoJsonSerializer();
-            return g.Deserialize<TGeometry>(new JsonTextReader(new StringReader(json)));
+            using (var sr = new StringReader(json))
+            {
+                return g.Deserialize<TGeometry>(new JsonTextReader(sr));
+            }
         }
 
         /// <summary>
@@ -131,9 +138,11 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="json">The json.</param>
         /// <returns></returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "TGeometry")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "json")]
         public IGeometry Read(string json)
         {
-            throw new NotSupportedException("You must call Read{TGeometry}(string json)");
+            throw new NotSupportedException("You must call Read<TGeometry>(string json)");
         }
     }
 }

@@ -17,6 +17,11 @@ namespace NetTopologySuite.IO.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
+            if (writer == null) 
+                throw new ArgumentNullException("writer");
+            if (serializer == null) 
+                throw new ArgumentNullException("serializer");
+
             var feature = value as Feature;
             if (feature == null)
                 return;

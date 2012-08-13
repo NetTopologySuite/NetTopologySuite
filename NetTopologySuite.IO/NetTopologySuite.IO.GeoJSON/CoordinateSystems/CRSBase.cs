@@ -14,8 +14,8 @@ namespace NetTopologySuite.CoordinateSystems
         /// Gets the type of the CRSBase object.
         /// </summary>
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public CRSType Type { get; internal set; }
+        [JsonConverter(typeof(CamelCaseStringEnumConverter))]
+        public CRSTypes Type { get; internal set; }
 
         /// <summary>
         /// Gets the properties.

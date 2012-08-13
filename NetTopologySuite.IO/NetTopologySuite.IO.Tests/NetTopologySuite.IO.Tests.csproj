@@ -76,6 +76,13 @@
     <Compile Include="AbstractIOFixture.cs" />
     <Compile Include="GeoJsonFixture.cs" />
     <Compile Include="GeoJsonTests.cs" />
+    <Compile Include="GeoJSON\AttributesTableConverterTest.cs" />
+    <Compile Include="GeoJSON\FeatureCollectionTest.cs" />
+    <Compile Include="GeoJSON\FeatureConverterTest.cs" />
+    <Compile Include="GeoJSON\GeoJsonSerializerTest.cs" />
+    <Compile Include="GeoJSON\GeoJsonWriterTest.cs" />
+    <Compile Include="GeoJSON\LinkedCRSTest.cs" />
+    <Compile Include="GeoJSON\NamedCRSTest.cs" />
     <Compile Include="PostgisFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomGeometryHelper.cs" />

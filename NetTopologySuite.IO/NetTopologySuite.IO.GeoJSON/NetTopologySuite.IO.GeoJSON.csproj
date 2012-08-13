@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\AttributesTableConverter.cs" />
+    <Compile Include="Converters\CamelCaseStringEnumConverter.cs" />
     <Compile Include="Converters\EnvelopeConverter.cs" />
     <Compile Include="Converters\FeatureConverter.cs" />
     <Compile Include="CoordinateSystems\CRSBase.cs" />

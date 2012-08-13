@@ -8,6 +8,6 @@
         /// <summary>
         /// Gets the CRS type.
         /// </summary>
-        CRSType Type { get; }
+        CRSTypes Type { get; }
     }
 }
