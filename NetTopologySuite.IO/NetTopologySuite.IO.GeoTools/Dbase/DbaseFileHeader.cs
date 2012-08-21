@@ -246,7 +246,7 @@ namespace NetTopologySuite.IO
         /// Read the header data from the DBF file.
         /// </summary>
         /// <param name="reader">BinaryReader containing the header.</param>
-        public void ReadHeader(BinaryReader reader)
+        public void ReadHeader(BinaryReader reader, string filename)
         {
             // type of reader.
             _fileType = reader.ReadByte();
@@ -272,7 +272,7 @@ namespace NetTopologySuite.IO
             //in.skipBytes(20);
             byte[] data = reader.ReadBytes(20);
             int lcid = data[29 - 12]; //get the 29th byte in the file... we've first to read into arry was no 12
-            _encoding = DetectEncodingFromMark(lcid);
+            _encoding = DetectEncodingFromMark(lcid, filename);
 
             //Replace reader with one with correct encoding..
             reader = new BinaryReader(reader.BaseStream, _encoding);
@@ -329,7 +329,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="lcid"></param>
         /// <returns></returns>
-        private Encoding DetectEncodingFromMark(int lcid)
+        private Encoding DetectEncodingFromMark(int lcid, string fileName)
         {
 #if !SILVERLIGHT
             var enc = Encoding.GetEncoding(1252);
@@ -362,6 +362,29 @@ namespace NetTopologySuite.IO
                     //Could not get encoding..
                 }
             }
+            else
+            {
+                if (!string.IsNullOrEmpty(fileName))
+                {
+                    fileName = Path.ChangeExtension(fileName, "cpg");
+                    if (!File.Exists(fileName))
+                        fileName = Path.ChangeExtension(fileName, "cst");
+                    if (File.Exists(fileName))
+                    {
+                        var encoding = File.ReadAllText(fileName).Trim();
+                        try
+                        {
+                            return Encoding.GetEncoding(encoding);
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    }
+                    enc = Encoding.UTF8;
+                }
+            }
+
+
             return enc;
         }
 
@@ -373,12 +396,15 @@ namespace NetTopologySuite.IO
             int lcid = enc.CodePage();
 #endif
             int cpId = 0x03;
-
             foreach (var cp in _dbfCodePages)
             {
                 if (cp[1] as string == "CP" + lcid)
+                {
                     cpId = (int)cp[0];
+                    break;
+                }
             }
+
 
             return cpId;
         }

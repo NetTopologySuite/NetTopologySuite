@@ -63,7 +63,7 @@ namespace NetTopologySuite.IO
 
                 _header = new DbaseFileHeader();
                 // read the header
-                _header.ReadHeader(dbfStream);
+                _header.ReadHeader(dbfStream, _filename);
 
                 dbfStream.Close();
                 stream.Close();
