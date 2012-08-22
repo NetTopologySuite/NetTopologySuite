@@ -1,14 +1,18 @@
-﻿using System;
-using System.Configuration;
-using System.IO;
-using GeoAPI.Geometries;
-using NUnit.Framework;
-using NetTopologySuite.Geometries;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
-namespace NetTopologySuite.IO.Tests
+﻿namespace NetTopologySuite.IO.Tests.GeoJSON
 {
+    using System;
+    using System.Configuration;
+    using System.IO;
+
+    using GeoAPI.Geometries;
+
+    using NUnit.Framework;
+
+    using NetTopologySuite.Geometries;
+
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+
     public class GeoJsonFixture : AbstractIOFixture
     {
         protected override void AddAppConfigSpecificItems(KeyValueConfigurationCollection kvcc)

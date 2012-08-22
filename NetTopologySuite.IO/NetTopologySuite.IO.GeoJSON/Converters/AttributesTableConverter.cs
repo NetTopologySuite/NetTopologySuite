@@ -1,9 +1,11 @@
-﻿using System;
-using NetTopologySuite.Features;
-using Newtonsoft.Json;
-
-namespace NetTopologySuite.IO.Converters
+﻿namespace NetTopologySuite.IO.Converters
 {
+    using System;
+
+    using NetTopologySuite.Features;
+
+    using Newtonsoft.Json;
+
     /// <summary>
     /// Converts IAttributesTable object to its JSON representation.
     /// </summary>
@@ -20,7 +22,7 @@ namespace NetTopologySuite.IO.Converters
             if (writer == null) 
                 throw new ArgumentNullException("writer");
             
-            var attributes = value as IAttributesTable;
+            IAttributesTable attributes = value as IAttributesTable;
             if (attributes == null)
                 return;
 
@@ -28,7 +30,7 @@ namespace NetTopologySuite.IO.Converters
 
             writer.WriteStartObject();
             string[] names = attributes.GetNames();
-            foreach (var name in names)
+            foreach (string name in names)
             {
                 writer.WritePropertyName(name);
                 writer.WriteValue(attributes[name]);

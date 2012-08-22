@@ -43,7 +43,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             JsonSerializer serializer = new JsonSerializer();
             target.WriteJson(writer, value, serializer);
             writer.Flush();
-            Assert.AreEqual("\"properties\":{\"test1\":\"value1\",\"test2\":\"value2\"}", sb.ToString());
+            Assert.AreEqual("\"properties\":{\"test2\":\"value2\",\"test1\":\"value1\"}", sb.ToString());
         }
     }
 }

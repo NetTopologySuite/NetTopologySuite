@@ -74,8 +74,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractIOFixture.cs" />
-    <Compile Include="GeoJsonFixture.cs" />
-    <Compile Include="GeoJsonTests.cs" />
+    <Compile Include="GeoJSON\GeoJsonFixture.cs" />
+    <Compile Include="GeoJSON\GeoJsonTests.cs" />
     <Compile Include="GeoJSON\AttributesTableConverterTest.cs" />
     <Compile Include="GeoJSON\FeatureCollectionTest.cs" />
     <Compile Include="GeoJSON\FeatureConverterTest.cs" />

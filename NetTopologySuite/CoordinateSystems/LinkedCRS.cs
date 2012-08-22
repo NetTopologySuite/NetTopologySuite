@@ -13,31 +13,24 @@
         /// </summary>
         /// <param name="href">The mandatory <see href="http://geojson.org/geojson-spec.html#linked-crs">href</see> member must be a dereferenceable URI.</param>
         /// <param name="type">The optional type member will be put in the properties Dictionary as specified in the <see href="http://geojson.org/geojson-spec.html#linked-crs">GeoJSON spec</see>.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
-        public LinkedCRS(string href, string type = "")
-            : this (new Uri(href), type)
-        {
-        }
+        public LinkedCRS(string href, string type = "") : this (new Uri(href), type) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LinkedCRS"/> class.
         /// </summary>
         /// <param name="href">The mandatory <see href="http://geojson.org/geojson-spec.html#linked-crs">href</see> member must be a dereferenceable URI.</param>
         /// <param name="type">The optional type member will be put in the properties Dictionary as specified in the <see href="http://geojson.org/geojson-spec.html#linked-crs">GeoJSON spec</see>.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public LinkedCRS(Uri href, string type = "")            
         {
             if (href == null)
                 throw new ArgumentNullException("href");
 
-            Properties = new Dictionary<string, object> { { "href", href.ToString() } };
+            this.Properties = new Dictionary<string, object> { { "href", href.ToString() } };
 
             if (!string.IsNullOrEmpty(type))
-            {
-                Properties.Add("type", type);
-            }
+                this.Properties.Add("type", type);
 
-            Type = CRSTypes.Link;
+            this.Type = CRSTypes.Link;
         }        
     }
 }

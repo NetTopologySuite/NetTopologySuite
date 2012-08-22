@@ -1,13 +1,17 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using GeoAPI.Geometries;
-using NUnit.Framework;
-using NetTopologySuite.Geometries;
-using Newtonsoft.Json;
-
-namespace NetTopologySuite.IO.Tests
+﻿namespace NetTopologySuite.IO.Tests.GeoJSON
 {
+    using System;
+    using System.IO;
+    using System.Text;
+
+    using GeoAPI.Geometries;
+
+    using NUnit.Framework;
+
+    using NetTopologySuite.Geometries;
+
+    using Newtonsoft.Json;
+
     [TestFixture]
     public class Test
     {
@@ -68,14 +72,14 @@ namespace NetTopologySuite.IO.Tests
         [Test]
         public void TestAllGeometries()
         {
-            PerformGeometryTest(_point);
-            PerformGeometryTest(_lineString);
-            PerformGeometryTest(_polygon1);
-            PerformGeometryTest(_polygon2);
-            PerformGeometryTest(_multiPoint);
-            PerformGeometryTest(_multiLineString);
-            PerformGeometryTest(_multiPolygon);
-            PerformGeometryTest(new GeometryCollection(new[] { (IGeometry)_point, _lineString, _polygon2 }));
+            this.PerformGeometryTest(this._point);
+            this.PerformGeometryTest(this._lineString);
+            this.PerformGeometryTest(this._polygon1);
+            this.PerformGeometryTest(this._polygon2);
+            this.PerformGeometryTest(this._multiPoint);
+            this.PerformGeometryTest(this._multiLineString);
+            this.PerformGeometryTest(this._multiPolygon);
+            this.PerformGeometryTest(new GeometryCollection(new[] { (IGeometry)this._point, this._lineString, this._polygon2 }));
         }
 
         public void PerformGeometryTest(IGeometry geom)

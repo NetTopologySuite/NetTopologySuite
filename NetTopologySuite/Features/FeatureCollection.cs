@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using NetTopologySuite.CoordinateSystems;
-using Newtonsoft.Json;
-
-namespace NetTopologySuite.Features
+﻿namespace NetTopologySuite.Features
 {
+    using System;
+    using System.Collections.ObjectModel;
+
+    using NetTopologySuite.CoordinateSystems;
+
     ///<summary>
     /// Represents a feature collection.
     ///</summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
     [Serializable]
     public class FeatureCollection
     {
-        #region Properties
-
         /// <summary>
         ///     Gets the features.
         /// </summary>
-        /// <value>The features.</value>
-        [JsonProperty(PropertyName = "features", Required = Required.Always)]
+        /// <value>The features.</value>        
         public Collection<Feature> Features { get; private set; }
 
         /// <summary>
@@ -26,9 +22,7 @@ namespace NetTopologySuite.Features
         /// </summary>
         /// <value>
         ///     The type of the object.
-        /// </value>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1721:PropertyNamesShouldNotMatchGetMethods")]
-        [JsonProperty(PropertyName = "type", Required = Required.Always)]
+        /// </value>        
         public string Type { get; private set; }
 
         /// <summary>
@@ -36,38 +30,26 @@ namespace NetTopologySuite.Features
         /// </summary>
         /// <value>
         /// The Coordinate Reference System Objects.
-        /// </value>
-        [JsonProperty(PropertyName = "crs", Required = Required.AllowNull)]
+        /// </value>        
         public ICRSObject CRS { get; set; }
 
         /// <summary>
         /// Returns the indexTh element in the collection.
         /// </summary>
         /// <returns></returns>
-        [JsonIgnore]
+        //[JsonIgnore]
         public Feature this[int index]
         {
-            get
-            {
-                return Features[index];
-            }
+            get { return this.Features[index]; }
         }
 
         /// <summary>
         /// Returns the number of features contained by this <see cref="FeatureCollection" />.
         /// </summary>
-        [JsonIgnore]
         public int Count
         {
-            get
-            {
-                return Features.Count;
-            }
+            get { return this.Features.Count; }
         }
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         ///     Initializes a new instance of the <see cref = "FeatureCollection" /> class.
@@ -75,20 +57,14 @@ namespace NetTopologySuite.Features
         /// <param name = "features">The features.</param>
         public FeatureCollection(Collection<Feature> features)
         {
-            Type = "FeatureCollection";
-            Features = features ?? new Collection<Feature>();
+            this.Type = "FeatureCollection";
+            this.Features = features ?? new Collection<Feature>();
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureCollection"/> class.
         /// </summary>
-        public FeatureCollection() : this(null)
-        {
-        }
-
-        #endregion
-
-        #region Methods
+        public FeatureCollection() : this(null) { }
 
         /// <summary>
         /// Adds the specified feature.
@@ -96,7 +72,7 @@ namespace NetTopologySuite.Features
         /// <param name="feature">The feature.</param>
         public void Add(Feature feature)
         {
-            Features.Add(feature);
+            this.Features.Add(feature);
         }
 
         /// <summary>
@@ -107,7 +83,7 @@ namespace NetTopologySuite.Features
         /// false if item was not found in the collection.</returns>
         public bool Remove(Feature feature)
         {
-            return Features.Remove(feature);
+            return this.Features.Remove(feature);
         }
 
         /// <summary>
@@ -116,9 +92,7 @@ namespace NetTopologySuite.Features
         /// <param name="index">The index.</param>
         public void RemoveAt(int index)
         {
-            Features.RemoveAt(index);
+            this.Features.RemoveAt(index);
         }
-
-        #endregion
     }
 }

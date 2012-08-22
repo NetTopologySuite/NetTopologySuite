@@ -1,9 +1,11 @@
-﻿using System;
-using NetTopologySuite.Features;
-using Newtonsoft.Json;
-
-namespace NetTopologySuite.IO.Converters
+﻿namespace NetTopologySuite.IO.Converters
 {
+    using System;
+
+    using NetTopologySuite.Features;
+
+    using Newtonsoft.Json;
+
     /// <summary>
     /// Converts Feature object to its JSON representation.
     /// </summary>
@@ -22,7 +24,7 @@ namespace NetTopologySuite.IO.Converters
             if (serializer == null) 
                 throw new ArgumentNullException("serializer");
 
-            var feature = value as Feature;
+            Feature feature = value as Feature;
             if (feature == null)
                 return;
 
@@ -32,7 +34,6 @@ namespace NetTopologySuite.IO.Converters
             writer.WritePropertyName("geometry");
             serializer.Serialize(writer, feature.Geometry);
             serializer.Serialize(writer, feature.Attributes);
-
             writer.WriteEndObject();
         }
 

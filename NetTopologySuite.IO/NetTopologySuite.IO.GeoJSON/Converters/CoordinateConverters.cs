@@ -1,38 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using GeoAPI.Geometries;
-
-namespace NetTopologySuite.IO.Converters
+﻿namespace NetTopologySuite.IO.Converters
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+
+    using GeoAPI.Geometries;
+
+    using Newtonsoft.Json;
+
     public class CoordinateConverter : JsonConverter
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             writer.WritePropertyName("coordinates");
 
-            var coordinatesss = value as List<List<Coordinate[]>>;
+            List<List<Coordinate[]>> coordinatesss = value as List<List<Coordinate[]>>;
             if (coordinatesss != null)
             {
                 WriteJsonCoordinatesEnumerable2(writer, coordinatesss, serializer);
                 return;
             }
 
-            var coordinatess = value as List<Coordinate[]>;
+            List<Coordinate[]> coordinatess = value as List<Coordinate[]>;
             if (coordinatess != null)
             {
                 WriteJsonCoordinatesEnumerable(writer, coordinatess, serializer);
                 return;
             }
 
-            var coordinates = value as IEnumerable<Coordinate>;
+            IEnumerable<Coordinate> coordinates = value as IEnumerable<Coordinate>;
             if (coordinates != null)
             {
                 WriteJsonCoordinates(writer, coordinates, serializer);
                 return;
             }
 
-            var coordinate = value as Coordinate;
+            Coordinate coordinate = value as Coordinate;
             if (coordinate != null)
             {
                 WriteJsonCoordinate(writer, coordinate, serializer);
@@ -56,7 +59,7 @@ namespace NetTopologySuite.IO.Converters
         private static void WriteJsonCoordinates(JsonWriter writer, IEnumerable<Coordinate> coordinates, JsonSerializer serializer)
         {
             writer.WriteStartArray();
-            foreach (var coordinate in coordinates)
+            foreach (Coordinate coordinate in coordinates)
                 WriteJsonCoordinate(writer, coordinate, serializer);
             writer.WriteEndArray();
         }
@@ -64,14 +67,14 @@ namespace NetTopologySuite.IO.Converters
         private static void WriteJsonCoordinatesEnumerable(JsonWriter writer, IEnumerable<Coordinate[]> coordinates, JsonSerializer serializer)
         {
             writer.WriteStartArray();
-            foreach (var coordinate in coordinates)
+            foreach (Coordinate[] coordinate in coordinates)
                 WriteJsonCoordinates(writer, coordinate, serializer);
             writer.WriteEndArray();
         }
         private static void WriteJsonCoordinatesEnumerable2(JsonWriter writer, List<List<Coordinate[]>> coordinates, JsonSerializer serializer)
         {
             writer.WriteStartArray();
-            foreach (var coordinate in coordinates)
+            foreach (List<Coordinate[]> coordinate in coordinates)
                 WriteJsonCoordinatesEnumerable(writer, coordinate, serializer);
             writer.WriteEndArray();
         }
@@ -80,8 +83,8 @@ namespace NetTopologySuite.IO.Converters
         {
             reader.Read();
             
-            System.Diagnostics.Debug.Assert(reader.TokenType == JsonToken.PropertyName);
-            System.Diagnostics.Debug.Assert((string)reader.Value == "coordinates");
+            Debug.Assert(reader.TokenType == JsonToken.PropertyName);
+            Debug.Assert((string)reader.Value == "coordinates");
 
             if (objectType == typeof(Coordinate))
             {
@@ -111,12 +114,12 @@ namespace NetTopologySuite.IO.Converters
             reader.Read();
             if (reader.TokenType != JsonToken.StartArray) return null;
 
-            var c = new Coordinate();
+            Coordinate c = new Coordinate();
             reader.Read();
-            System.Diagnostics.Debug.Assert(reader.TokenType == JsonToken.Float);
+            Debug.Assert(reader.TokenType == JsonToken.Float);
             c.X = (Double)reader.Value;
             reader.Read();
-            System.Diagnostics.Debug.Assert(reader.TokenType == JsonToken.Float);
+            Debug.Assert(reader.TokenType == JsonToken.Float);
             c.Y = (Double)reader.Value;
             reader.Read();
             if (reader.TokenType == JsonToken.Float)
@@ -124,7 +127,7 @@ namespace NetTopologySuite.IO.Converters
                 c.Z = (Double)reader.Value;
                 reader.Read();
             }
-            System.Diagnostics.Debug.Assert(reader.TokenType == JsonToken.EndArray);
+            Debug.Assert(reader.TokenType == JsonToken.EndArray);
 
             return c;
         }
@@ -134,14 +137,14 @@ namespace NetTopologySuite.IO.Converters
             reader.Read();
             if (reader.TokenType != JsonToken.StartArray) return null;
 
-            var coordinates = new List<Coordinate>();
+            List<Coordinate> coordinates = new List<Coordinate>();
             while (true)
             {
-                var c = ReadJsonCoordinate(reader);
+                Coordinate c = ReadJsonCoordinate(reader);
                 if (c == null) break;
                 coordinates.Add(c);
             }
-            System.Diagnostics.Debug.Assert(reader.TokenType == JsonToken.EndArray);
+            Debug.Assert(reader.TokenType == JsonToken.EndArray);
             return coordinates.ToArray();
         }
 
@@ -150,14 +153,14 @@ namespace NetTopologySuite.IO.Converters
             reader.Read();
             if (reader.TokenType != JsonToken.StartArray) return null;
 
-            var coordinates = new List<Coordinate[]>();
+            List<Coordinate[]> coordinates = new List<Coordinate[]>();
             while (true)
             {
-                var res = ReadJsonCoordinates(reader);
+                Coordinate[] res = ReadJsonCoordinates(reader);
                 if (res == null)break;
                 coordinates.Add(res);
             }
-            System.Diagnostics.Debug.Assert(reader.TokenType == JsonToken.EndArray);
+            Debug.Assert(reader.TokenType == JsonToken.EndArray);
             return coordinates;
         }
 
@@ -165,15 +168,15 @@ namespace NetTopologySuite.IO.Converters
         {
             reader.Read();
             if (reader.TokenType != JsonToken.StartArray) return null;
-            var coordinates = new List<List<Coordinate[]>>();
+            List<List<Coordinate[]>> coordinates = new List<List<Coordinate[]>>();
 
             while (true)
             {
-                var res = ReadJsonCoordinatesEnumerable(reader);
+                List<Coordinate[]> res = ReadJsonCoordinatesEnumerable(reader);
                 if (res == null) break;
                 coordinates.Add(res);
             }
-            System.Diagnostics.Debug.Assert(reader.TokenType == JsonToken.EndArray);
+            Debug.Assert(reader.TokenType == JsonToken.EndArray);
             return coordinates;
         }
 

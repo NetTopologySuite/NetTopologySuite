@@ -110,6 +110,12 @@
     <Compile Include="Algorithm\RobustLineIntersector.cs" />
     <Compile Include="Algorithm\SimplePointInRing.cs" />
     <Compile Include="Algorithm\SIRtreePointInRing.cs" />
+    <Compile Include="CoordinateSystems\CRSBase.cs" />
+    <Compile Include="CoordinateSystems\CRSType.cs" />
+    <Compile Include="CoordinateSystems\ICRSObject.cs" />
+    <Compile Include="CoordinateSystems\LinkedCRS.cs" />
+    <Compile Include="CoordinateSystems\NamedCRS.cs" />
+    <Compile Include="Features\FeatureCollection.cs" />
     <Compile Include="Geometries\Geometry.cs" />
     <Compile Include="Geometries\GeometryComponentFilter.cs" />
     <Compile Include="Geometries\Utilities\GeometryMapper.cs" />
