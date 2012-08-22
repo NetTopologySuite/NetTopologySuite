@@ -34,11 +34,11 @@ namespace NetTopologySuite.IO
         public static String ToPoint(Coordinate p0)
         {
 #if LikeJTS
-			return "POINT(" + p0.X + " " + p0.Y + ")";
+            return String.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", p0.X, p0.Y);
 #else
             if (double.IsNaN(p0.Z))
-				return "POINT(" + p0.X + " " + p0.Y + ")";
-            return "POINT(" + p0.X + " " + p0.Y + " " + p0.Z + ")";
+				return String.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", p0.X, p0.Y);
+            return String.Format(CultureInfo.InvariantCulture, "POINT({0} {1} {2})", p0.X, p0.Y, p0.Z);
 #endif
         }
 
@@ -60,7 +60,7 @@ namespace NetTopologySuite.IO
                 {
                     if (i > 0)
                         buf.Append(", ");
-                    buf.Append(seq.GetX(i) + " " + seq.GetY(i));
+                    buf.Append(String.Format(CultureInfo.InvariantCulture, "{0} {1}", seq.GetX(i), seq.GetY(i)));
               }
               buf.Append(")");
             }
@@ -76,11 +76,11 @@ namespace NetTopologySuite.IO
         public static String ToLineString(Coordinate p0, Coordinate p1)
         {
 #if LikeJTS
-			return "LINESTRING(" + p0.X + " " + p0.Y + ", " + p1.X + " " + p1.Y + ")";
+            return String.Format(CultureInfo.InvariantCulture, "LINESTRING({0} {1}, {2} {3})", p0.X, p0.Y, p1.X, p1.Y);
 #else
             if (double.IsNaN(p0.Z))
-				return "LINESTRING(" + p0.X + " " + p0.Y + ", " + p1.X + " " + p1.Y + ")";
-            return "LINESTRING(" + p0.X + " " + p0.Y + " " + p0.Z + ", " + p1.X + " " + p1.Y + " " + p1.Z + ")";
+				return String.Format(CultureInfo.InvariantCulture, "LINESTRING({0} {1}, {2} {3})", p0.X, p0.Y, p1.X, p1.Y);
+            return String.Format(CultureInfo.InvariantCulture, "LINESTRING({0} {1} {2}, {3} {4} {5})", p0.X, p0.Y, p0.Z, p1.X, p1.Y, p1.Z);
 #endif
         }
 
