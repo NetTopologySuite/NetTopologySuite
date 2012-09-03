@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Algorithm.Locate;
@@ -347,6 +348,15 @@ namespace NetTopologySuite.GeometriesGraph
         {
             foreach (EdgeEnd e in Edges)
                 e.Write(outstream);
+        }
+
+        public override string ToString()
+        {
+            var buf = new StringBuilder();
+            buf.AppendLine("EdgeEndStar:   " + Coordinate);
+            foreach (var e in this)
+                buf.AppendLine(e.ToString());
+            return buf.ToString();
         }
     }
 }

@@ -139,5 +139,11 @@ namespace NetTopologySuite.GeometriesGraph
             outstream.Write(" seg # = " + SegmentIndex);
             outstream.WriteLine(" dist = " + Distance);
         }
+
+        public override String ToString()
+        {
+            return _coordinate + " seg # = " + _segmentIndex + " dist = " + _distance;
+        }
+
     }
 }
