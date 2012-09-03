@@ -12,10 +12,9 @@ namespace NetTopologySuite.Noding
     ///</summary>
     public class MCIndexSegmentSetMutualIntersector : SegmentSetMutualIntersector
     {
-        private readonly IList<MonotoneChain> _monoChains = new List<MonotoneChain>();
        /*
         * The SpatialIndex used should be something that supports envelope
-        * (range) queries efficiently (such as a Quadtree or STRtree.
+        * (range) queries efficiently (such as a Quadtree or STRtree).
         */
         private readonly ISpatialIndex _index = new STRtree();
         private int _indexCounter;
@@ -23,11 +22,9 @@ namespace NetTopologySuite.Noding
         // statistics
         private int _nOverlaps;
 
-        public IList<MonotoneChain> MonotoneChains
-        {
-            get { return _monoChains; }
-        }
-
+        /// <summary>
+        /// Gets a reference to the underlying spatial index
+        /// </summary>
         public ISpatialIndex Index
         {
             get { return _index; }
@@ -56,21 +53,21 @@ namespace NetTopologySuite.Noding
         {
             _processCounter = _indexCounter + 1;
             _nOverlaps = 0;
-            _monoChains.Clear();
-            foreach (ISegmentString segStr in segStrings)
+            var monoChains = new List<MonotoneChain>();
+            foreach (var segStr in segStrings)
             {
-                AddToMonoChains(segStr);
+                AddToMonoChains(segStr, monoChains);
             }
-            IntersectChains();
+            IntersectChains(monoChains);
             //    System.out.println("MCIndexBichromaticIntersector: # chain overlaps = " + nOverlaps);
             //    System.out.println("MCIndexBichromaticIntersector: # oct chain overlaps = " + nOctOverlaps);
         }
 
-        private void IntersectChains()
+        private void IntersectChains(List<MonotoneChain> monotoneChains)
         {
             MonotoneChainOverlapAction overlapAction = new SegmentOverlapAction(SegmentIntersector);
 
-            foreach (MonotoneChain queryChain in MonotoneChains)
+            foreach (var queryChain in monotoneChains)
             {
                 var overlapChains = _index.Query(queryChain.Envelope);
                 foreach (MonotoneChain testChain in overlapChains)
@@ -82,20 +79,27 @@ namespace NetTopologySuite.Noding
             }
         }
 
-        private void AddToMonoChains(ISegmentString segStr)
+        private void AddToMonoChains(ISegmentString segStr, List<MonotoneChain> monotoneChains)
         {
             IList<MonotoneChain> segChains = MonotoneChainBuilder.GetChains(segStr.Coordinates, segStr);
             foreach (MonotoneChain mc in segChains)
             {
                 mc.Id = _processCounter++;
-                _monoChains.Add(mc);
+                monotoneChains.Add(mc);
             }
         }
 
+        /// <summary>
+        /// Segment overlap action class
+        /// </summary>
         public class SegmentOverlapAction : MonotoneChainOverlapAction
         {
             private readonly ISegmentIntersector _si;
 
+            /// <summary>
+            /// Creates an instance of this class using the provided <see cref="ISegmentIntersector"/>
+            /// </summary>
+            /// <param name="si">The segment intersector to use</param>
             public SegmentOverlapAction(ISegmentIntersector si)
             {
                 _si = si;
@@ -103,8 +107,8 @@ namespace NetTopologySuite.Noding
 
             public override void Overlap(MonotoneChain mc1, int start1, MonotoneChain mc2, int start2)
             {
-                ISegmentString ss1 = (ISegmentString)mc1.Context;
-                ISegmentString ss2 = (ISegmentString)mc2.Context;
+                var ss1 = (ISegmentString)mc1.Context;
+                var ss2 = (ISegmentString)mc2.Context;
                 _si.ProcessIntersections(ss1, start1, ss2, start2);
             }
 
