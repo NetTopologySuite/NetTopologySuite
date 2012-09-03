@@ -98,9 +98,6 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        ///// <summary>
-        ///// 
-        ///// </summary>
         //public override bool IsSimple
         //{
         //    get
@@ -109,23 +106,15 @@ namespace NetTopologySuite.Geometries
         //    }
         //}
 
-        /// <summary>  
-        /// A point is valid iff:
-        /// <list type="Bullet">
-        /// <item>the coordinate which defines it is a valid coordinate (i.e does not have an NaN X or Y ordinate)</item>
-        /// </list>
-        /// Subclasses provide their own definition of "valid".
-        /// </summary>
-        /// <returns><c>true</c> if this <c>Point</c> is valid.</returns>
-        public override bool IsValid
-        {
-            get
-            {
-                if (!IsValidOp.IsValidCoordinate(Coordinate))
-                    return false;
-                return true;
-            }
-        }
+        //public override bool IsValid
+        //{
+        //    get
+        //    {
+        //        if (!IsValidOp.IsValidCoordinate(Coordinate))
+        //            return false;
+        //        return true;
+        //    }
+        //}
 
         /// <summary>
         /// 
