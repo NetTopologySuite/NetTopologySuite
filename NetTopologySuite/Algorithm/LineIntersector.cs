@@ -7,13 +7,33 @@ namespace NetTopologySuite.Algorithm
     using Utilities;
 
     /// <summary> 
-    /// A LineIntersector is an algorithm that can both test whether
-    /// two line segments intersect and compute the intersection point
+    /// A <c>LineIntersector</c> is an algorithm that can both test whether
+    /// two line segments intersect and compute the intersection point(s)
     /// if they do.
-    /// The intersection point may be computed in a precise or non-precise manner.
-    /// Computing it precisely involves rounding it to an integer.  (This assumes
-    /// that the input coordinates have been made precise by scaling them to
-    /// an integer grid.)
+    /// <para>
+    /// There are three possible outcomes when determining whether two line segments intersect:
+    /// <list type="bullet">
+    /// <item><see cref="NoIntersection"/> - the segments do not intersect</item>
+    /// <item><see cref="PointIntersection"/> - the segments intersect in a single point</item>
+    /// <item><see cref="CollinearIntersection"/> - the segments are collinear and they intersect in a line segment</item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// For segments which intersect in a single point, the point may be either an endpoint
+    /// or in the interior of each segment.  
+    /// If the point lies in the interior of both segments, 
+    /// this is termed a <i>proper intersection</i>.
+    /// The property <see cref="IsProper"/> test for this situation.
+    /// </para><para>
+    /// The intersection point(s) may be computed in a precise or non-precise manner.
+    /// Computing an intersection point precisely involves rounding it 
+    /// via a supplied <see cref="PrecisionModel"/>.  
+    /// </para><para>
+    /// LineIntersectors do not perform an initial envelope intersection test 
+    /// to determine if the segments are disjoint.
+    /// This is because this class is likely to be used in a context where 
+    /// envelope overlap is already known to occur (or be likely).
+    /// </para>
     /// </summary>
     public abstract class LineIntersector 
     {
@@ -235,6 +255,7 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// Returns the number of intersection points found.  This will be either 0, 1 or 2.
         /// </summary>
+        /// <returns>The number of intersection points found (0, 1, or 2)</returns>
         public int IntersectionNum
         {
             get { return this.result; }
