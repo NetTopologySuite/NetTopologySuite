@@ -3,6 +3,10 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance
 {
+    /// <summary>
+    /// An example of the usage of the <see cref="PerformanceTestRunner"/>.
+    /// </summary>
+    /// <author>Martin Davis</author>
     public class ExamplePerformanceTest : PerformanceTestCase
     {
         private int _iter;

@@ -25,7 +25,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
 
         }
 
-        public void RunInternal(Type clz)
+        private void RunInternal(Type clz)
         {
             try
             {
