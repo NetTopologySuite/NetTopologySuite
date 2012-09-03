@@ -48,7 +48,6 @@ namespace NetTopologySuite.Operation.Valid
                 Coordinate[] innerRingPts = innerRing.Coordinates;
 
                 var results = _index.Query(innerRing.EnvelopeInternal);
-                //System.out.println(results.size());
                 for (int j = 0; j < results.Count; j++)
                 {
                     var searchRing = (ILinearRing)results[j];
@@ -61,8 +60,20 @@ namespace NetTopologySuite.Operation.Valid
                         continue;
 
                     Coordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, _graph);
-                    Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
-                    //Coordinate innerRingPt = innerRingPts[0];
+                    // Diego Guidi: removed => see Issue 121
+                    //Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
+                    /**
+                     * If no non-node pts can be found, this means
+                     * that the searchRing touches ALL of the innerRing vertices.
+                     * This indicates an invalid polygon, since either
+                     * the two holes create a disconnected interior, 
+                     * or they touch in an infinite number of points 
+                     * (i.e. along a line segment).
+                     * Both of these cases are caught by other tests,
+                     * so it is safe to simply skip this situation here.
+                     */
+                    if (innerRingPt == null)
+                        continue;
 
                     Boolean isInside = CGAlgorithms.IsPointInRing(innerRingPt, searchRingPts);
                     if (isInside)
