@@ -440,16 +440,16 @@ namespace NetTopologySuite.GeometriesGraph
 
         public override String ToString()
         {
-            StringBuffer buf = new StringBuffer();
-            buf.append("edge " + name + ": ");
-            buf.append("LINESTRING (");
-            for (int i = 0; i < pts.length; i++)
+            var buf = new StringBuilder();
+            buf.Append("edge " + _name + ": ");
+            buf.Append("LINESTRING (");
+            for (int i = 0; i < _pts.Length; i++)
             {
-                if (i > 0) buf.append(",");
-                buf.append(pts[i].x + " " + pts[i].y);
+                if (i > 0) buf.Append(",");
+                buf.Append(_pts[i].X + " " + _pts[i].Y);
             }
-            buf.append(")  " + label + " " + depthDelta);
-            return buf.toString();
+            buf.Append(")  " + Label + " " + _depthDelta);
+            return buf.ToString();
         }
 
         /// <summary>

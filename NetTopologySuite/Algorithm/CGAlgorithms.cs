@@ -269,12 +269,13 @@ namespace NetTopologySuite.Algorithm
 		                0<r<1 Point is interior to AB
 	        */
 
-            double r =  ( (p.X - A.X) * (B.X - A.X) + (p.Y - A.Y) * (B.Y - A.Y) )
-                        /
-                        ( (B.X - A.X) * (B.X - A.X) + (B.Y - A.Y) * (B.Y - A.Y) );
+            var len2 = ((B.X - A.X)*(B.X - A.X) + (B.Y - A.Y)*(B.Y - A.Y));
+            var r = ((p.X - A.X)*(B.X - A.X) + (p.Y - A.Y)*(B.Y - A.Y))/len2;
 
-            if (r <= 0.0) return p.Distance(A);
-            if (r >= 1.0) return p.Distance(B);
+            if (r <= 0.0) 
+                return p.Distance(A);
+            if (r >= 1.0) 
+                return p.Distance(B);
 
 
             /*(2)
@@ -283,13 +284,14 @@ namespace NetTopologySuite.Algorithm
 		             	                Curve^2
 
 		                Then the distance from C to Point = |s|*Curve.
+      
+                        This is the same calculation as {@link #distancePointLinePerpendicular}.
+                        Unrolled here for performance.
 	        */
 
-            double s =  ( (A.Y - p.Y) * (B.X - A.X) - (A.X - p.X) * (B.Y - A.Y) )
-                        /
-                        ( (B.X - A.X) * (B.X - A.X) + (B.Y - A.Y) * (B.Y - A.Y) );
+            var s = ((A.Y - p.Y)*(B.X - A.X) - (A.X - p.X)*(B.Y - A.Y))/len2;
 
-            return System.Math.Abs(s) * System.Math.Sqrt(((B.X - A.X) * (B.X - A.X) + (B.Y - A.Y) * (B.Y - A.Y)));
+            return Math.Abs(s) * Math.Sqrt(len2);
         }
 
         /// <summary> 
@@ -310,12 +312,11 @@ namespace NetTopologySuite.Algorithm
 
                         Then the distance from C to Point = |s|*Curve.
             */
+            var len2 = ((B.X - A.X)*(B.X - A.X) + (B.Y - A.Y)*(B.Y - A.Y));
+            var s = ((A.Y - p.Y)*(B.X - A.X) - (A.X - p.X)*(B.Y - A.Y))/len2;
 
-            double s =  ( (A.Y - p.Y) * (B.X - A.X) - (A.X - p.X) * (B.Y - A.Y) )
-                        /
-                        ( (B.X - A.X) * (B.X - A.X) + (B.Y - A.Y) * (B.Y - A.Y) );
 
-            return System.Math.Abs(s) * System.Math.Sqrt(((B.X - A.X) * (B.X - A.X) + (B.Y - A.Y) * (B.Y - A.Y)));
+            return Math.Abs(s)*Math.Sqrt(len2);
         }
 
         /// <summary>
