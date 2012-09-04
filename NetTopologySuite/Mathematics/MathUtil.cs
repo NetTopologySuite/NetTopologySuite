@@ -94,11 +94,10 @@
         /// <returns>The maximum value of <paramref name="v1"/>, <paramref name="v2"/> and <paramref name="v3"/></returns>
         public static double Max(double v1, double v2, double v3)
         {
-            if (v1 > v2)
-            {
-                return v1 > v3 ? v1 : v3;
-            }
-            return v2 > v3 ? v2 : v3;
+            var max = v1;
+            if (v2 > v1) max = v2;
+            if (v2 > v3) max = v3;
+            return max;
         }
 
         /// <summary>
@@ -108,10 +107,46 @@
         /// <param name="v2">A number</param>
         /// <param name="v3">A number</param>
         /// <param name="v4">A number</param>
-        /// <returns>The maximum value of <paramref name="v1"/>, <paramref name="v2"/> and <paramref name="v3"/></returns>
+        /// <returns>The maximum value of <paramref name="v1"/>, <paramref name="v2"/>, <paramref name="v3"/> and <paramref name="v4"/></returns>
         public static double Max(double v1, double v2, double v3, double v4)
         {
-            return System.Math.Max(v1, Max(v2, v3, v4));
+            var max = v1;
+            if (v2 > max) max = v2;
+            if (v3 > max) max = v3;
+            if (v4 > max) max = v4;
+            return max;
+        }
+
+        /// <summary>
+        /// Computes the minimum of four values
+        /// </summary>
+        /// <param name="v1">A number</param>
+        /// <param name="v2">A number</param>
+        /// <param name="v3">A number</param>
+        /// <returns>The minimum value of <paramref name="v1"/>, <paramref name="v2"/> and <paramref name="v3"/></returns>
+        public static double Min(double v1, double v2, double v3)
+        {
+            var min = v1;
+            if (v2 < min) min = v2;
+            if (v3 < min) min = v3;
+            return min;
+        }
+
+        /// <summary>
+        /// Computes the minimum of four values
+        /// </summary>
+        /// <param name="v1">A number</param>
+        /// <param name="v2">A number</param>
+        /// <param name="v3">A number</param>
+        /// <param name="v4">A number</param>
+        /// <returns>The minimum value of <paramref name="v1"/>, <paramref name="v2"/>, <paramref name="v3"/> and <paramref name="v4"/></returns>
+        public static double Min(double v1, double v2, double v3, double v4)
+        {
+            var min = v1;
+            if (v2 < min) min = v2;
+            if (v3 < min) min = v3;
+            if (v4 < min) min = v4;
+            return min;
         }
 
     }
