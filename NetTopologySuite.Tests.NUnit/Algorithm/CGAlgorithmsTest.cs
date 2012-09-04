@@ -29,5 +29,14 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 new Coordinate(2, 0), new Coordinate(0, 0), new Coordinate(1, 0)), 0.000001);
         }
 
+        [Test]
+        public void TestDistanceLineLineDisjointCollinear()
+        {
+            Assert.AreEqual(1.999699, CGAlgorithms.DistanceLineLine(
+                new Coordinate(0, 0), new Coordinate(9.9, 1.4),
+                new Coordinate(11.88, 1.68), new Coordinate(21.78, 3.08)), 0.000001);
+        }
+
+
     }
 }
