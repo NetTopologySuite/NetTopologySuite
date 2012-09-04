@@ -22,6 +22,15 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Distance
         }
 
         [Test]
+        public void TestDisjointCollinearSegments()
+        {
+            var g1 = _reader.Read("LINESTRING (0.0 0.0, 9.9 1.4)");
+            var g2 = _reader.Read("LINESTRING (11.88 1.68, 21.78 3.08)");
+            Assert.AreEqual(2.23606, g1.Distance(g2), 0.0001);
+        }
+
+
+        [Test]
         public void TestEverything()
         {
             IGeometry g1 = _reader.Read("POLYGON ((40 320, 200 380, 320 80, 40 40, 40 320),  (180 280, 80 280, 100 100, 220 140, 180 280))");

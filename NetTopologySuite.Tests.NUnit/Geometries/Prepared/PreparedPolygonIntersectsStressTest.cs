@@ -36,8 +36,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             //  	Geometry poly = createCircle(new Coordinate(0, 0), 100, nPts);
             IGeometry poly = CreateSineStar(new Coordinate(0, 0), 100, nPts);
             Console.WriteLine(poly);
-
-            Console.WriteLine(poly);
             //System.out.println("Running with " + nPts + " points");
             Test(poly);
         }

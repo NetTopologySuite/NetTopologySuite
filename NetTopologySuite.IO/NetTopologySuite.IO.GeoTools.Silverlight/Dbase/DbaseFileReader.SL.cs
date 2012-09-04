@@ -79,7 +79,7 @@ namespace NetTopologySuite.IO
 
                             _header = new DbaseFileHeader();
                             // read the header
-                            _header.ReadHeader(dbfStream);
+                            _header.ReadHeader(dbfStream, string.Empty);
 
                             dbfStream.Close();
                             stream.Close();

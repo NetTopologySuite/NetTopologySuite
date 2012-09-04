@@ -1,4 +1,4 @@
-﻿Beware: this code is in a working status, andf doesn't compile yet, so solution doesn't build the project by default)
+﻿Beware: this code is in a working status, and doesn't compile yet, so solution doesn't build the project by default)
 
 To get a valid NetTopologySuite.IO.Oracle project, you need a reference to Oracle.DataAccess.dll
 You can download the oracle reference (i.e. ODAC) from:

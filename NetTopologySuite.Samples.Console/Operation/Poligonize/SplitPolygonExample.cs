@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
+using GeoAPI.Geometries.Prepared;
 using NUnit.Framework;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
@@ -29,6 +30,22 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
             var lines = LineStringExtracter.GetLines(geometry);
             var polygonizer = new Polygonizer();
             polygonizer.Add(lines);
+            var polys = polygonizer.GetPolygons();
+            var polyArray = GeometryFactory.ToGeometryArray(polys);
+            return geometry.Factory.CreateGeometryCollection(polyArray);
+        }
+
+        internal static IGeometry PolygonizeForClip(IGeometry geometry, IPreparedGeometry clip)
+        {
+            var lines = LineStringExtracter.GetLines(geometry);
+            var clippedLines = new List<IGeometry>();
+            foreach (ILineString line in lines)
+            {
+                if (clip.Contains(line))
+                    clippedLines.Add(line);
+            }
+            var polygonizer = new Polygonizer();
+            polygonizer.Add(clippedLines);
             var polys = polygonizer.GetPolygons();
             var polyArray = GeometryFactory.ToGeometryArray(polys);
             return geometry.Factory.CreateGeometryCollection(polyArray);

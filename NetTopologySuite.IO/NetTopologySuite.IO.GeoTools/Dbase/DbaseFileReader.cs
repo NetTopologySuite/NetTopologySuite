@@ -155,8 +155,8 @@ namespace NetTopologySuite.IO
                                 }
                                 else
                                 {
-                                    byte[] buf = _dbfStream.ReadBytes(tempFieldLength);
-                                    tempObject = _header.Encoding.GetString(buf).Trim();
+                                    var buf = _dbfStream.ReadBytes(tempFieldLength);
+                                    tempObject = _header.Encoding.GetString(buf, 0, buf.Length).Trim();
                                 }                                
                                 break;
 

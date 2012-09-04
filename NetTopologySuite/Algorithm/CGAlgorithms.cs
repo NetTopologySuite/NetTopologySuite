@@ -1,6 +1,7 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Mathematics;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -364,51 +365,66 @@ namespace NetTopologySuite.Algorithm
 
             // AB and CD are line segments
             /* from comp.graphics.algo
+             *
+	         *  Solving the above for r and s yields
+             * 
+             *     (Ay-Cy)(Dx-Cx)-(Ax-Cx)(Dy-Cy) 
+             * r = ----------------------------- (eqn 1) 
+             *     (Bx-Ax)(Dy-Cy)-(By-Ay)(Dx-Cx)
+             * 
+             *     (Ay-Cy)(Bx-Ax)-(Ax-Cx)(By-Ay)  
+             * s = ----------------------------- (eqn 2)
+             *     (Bx-Ax)(Dy-Cy)-(By-Ay)(Dx-Cx) 
+             *     
+             * Let P be the position vector of the
+             * intersection point, then 
+             *   P=A+r(B-A) or 
+             *   Px=Ax+r(Bx-Ax) 
+             *   Py=Ay+r(By-Ay) 
+             * By examining the values of r & s, you can also determine some other limiting
+             * conditions: 
+             *   If 0<=r<=1 & 0<=s<=1, intersection exists 
+             *      r<0 or r>1 or s<0 or s>1 line segments do not intersect 
+             *   If the denominator in eqn 1 is zero, AB & CD are parallel 
+             *   If the numerator in eqn 1 is also zero, AB & CD are collinear.
+	         */
+            var noIntersection = false;
+            if (!Envelope.Intersects(A, B, C, D))
+            {
+                noIntersection = true;
+            }
+            else
+            {
+                var denom = (B.X - A.X) * (D.Y - C.Y) - (B.Y - A.Y) * (D.X - C.X);
 
-	            Solving the above for r and s yields
-				            (Ay-Cy)(Dx-Cx)-(Ax-Cx)(Dy-Cy)
-	                    r = ----------------------------- (eqn 1)
-				            (Bx-Ax)(Dy-Cy)-(By-Ay)(Dx-Cx)
+                if (denom == 0)
+                {
+                    noIntersection = true;
+                }
+                else
+                {
+                    var r_num = (A.Y - C.Y) * (D.X - C.X) - (A.X - C.X) * (D.Y - C.Y);
+                    var s_num = (A.Y - C.Y) * (B.X - A.X) - (A.X - C.X) * (B.Y - A.Y);
 
-		 	                (Ay-Cy)(Bx-Ax)-(Ax-Cx)(By-Ay)
-		                s = ----------------------------- (eqn 2)
-			                (Bx-Ax)(Dy-Cy)-(By-Ay)(Dx-Cx)
-	            Let Point be the position vector of the intersection point, then
-		            Point=A+r(B-A) or
-		            Px=Ax+r(Bx-Ax)
-		            Py=Ay+r(By-Ay)
-	            By examining the values of r & s, you can also determine some other
-                limiting conditions:
-		            If 0<=r<=1 & 0<=s<=1, intersection exists
-		            r<0 or r>1 or s<0 or s>1 line segments do not intersect
-		            If the denominator in eqn 1 is zero, AB & CD are parallel
-		            If the numerator in eqn 1 is also zero, AB & CD are collinear.
+                    var s = s_num / denom;
+                    var r = r_num / denom;
 
-	        */
-            double r_top = (A.Y - C.Y) * (D.X - C.X) - (A.X - C.X) * (D.Y - C.Y);
-            double r_bot = (B.X - A.X) * (D.Y - C.Y) - (B.Y - A.Y) * (D.X - C.X);
-
-            double s_top = (A.Y - C.Y) * (B.X - A.X) - (A.X - C.X) * (B.Y - A.Y);
-            double s_bot = (B.X - A.X) * (D.Y - C.Y) - (B.Y - A.Y) * (D.X - C.X);
-
-            if ((r_bot==0) || (s_bot == 0))             
-                return  Math.Min(DistancePointLine(A,C,D),
-	                    Math.Min(DistancePointLine(B,C,D),
-	                    Math.Min(DistancePointLine(C,A,B),
-	                    DistancePointLine(D,A,B) ) ) );
-
-            
-            double s = s_top/s_bot;
-            double r = r_top/r_bot;
-
-            if ((r < 0) || ( r > 1) || (s < 0) || (s > 1))	
-                //no intersection
-                return  Math.Min(DistancePointLine(A,C,D),
-	                    Math.Min(DistancePointLine(B,C,D),
-	                    Math.Min(DistancePointLine(C,A,B),
-	                    DistancePointLine(D,A,B) ) ) );
-            
-            return 0.0; //intersection exists
+                    if ((r < 0) || (r > 1) || (s < 0) || (s > 1))
+                    {
+                        noIntersection = true;
+                    }
+                }
+            }
+            if (noIntersection)
+            {
+                return MathUtil.Min(
+                      DistancePointLine(A, C, D),
+                      DistancePointLine(B, C, D),
+                      DistancePointLine(C, A, B),
+                      DistancePointLine(D, A, B));
+            }
+            // segments intersect
+            return 0.0;
         }
 
         /// <summary>

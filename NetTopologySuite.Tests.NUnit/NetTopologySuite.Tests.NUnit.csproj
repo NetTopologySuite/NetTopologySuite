@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Algorithm\AbstractPointInRingTest.cs" />
     <Compile Include="Algorithm\AngleTest.cs" />
+    <Compile Include="Algorithm\CGAlgorithmsTest.cs" />
     <Compile Include="Algorithm\ComputeOrientationTest.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -60,6 +61,9 @@
     <Compile Include="Index\KdTree\KdTreeTest.cs" />
     <Compile Include="Mathematics\DDBasicTest.cs" />
     <Compile Include="Mathematics\DDComputeTest.cs" />
+    <Compile Include="Operation\Relate\ContainsTest.cs" />
+    <Compile Include="Operation\Relate\RelateTest.cs" />
+    <Compile Include="Performance\Algorithm\DistanceLineLineStressTest.cs" />
     <Compile Include="Performance\Algorithm\MinimumBoundingCircleStressTest.cs" />
     <Compile Include="Algorithm\MinimumBoundingCircleTest.cs" />
     <Compile Include="Algorithm\MinimumDiameterTest.cs" />
@@ -131,6 +135,7 @@
     <Compile Include="Operation\Buffer\BufferResultValidatorTest.cs" />
     <Compile Include="Operation\Buffer\BufferTest.cs" />
     <Compile Include="Operation\Buffer\BufferValidator.cs" />
+    <Compile Include="Performance\Geometries\Prepared\PreparedGeometryThreadSafeTest.cs" />
     <Compile Include="Performance\Operation\Buffer\FileBufferResultValidatorTest.cs" />
     <Compile Include="Operation\Buffer\Test.cs" />
     <Compile Include="Operation\Distance\DistanceTest.cs" />
@@ -139,6 +144,7 @@
     <Compile Include="Operation\Overlay\FixedPrecisionSnappingTest.cs" />
     <Compile Include="Performance\Mathematics\DDExpressionPerformance.cs" />
     <Compile Include="Performance\Mathematics\InCirclePerformance.cs" />
+    <Compile Include="Performance\Operation\Distance\TestPerfDistanceLinePoints.cs" />
     <Compile Include="Performance\Operation\Overlay\OverlayNodingStressTest.cs" />
     <Compile Include="Operation\Polygonize\PolygonizeTest.cs" />
     <Compile Include="Operation\Predicate\RectangleIntersectsPerformance.cs" />
@@ -156,6 +162,8 @@
     <Compile Include="Performance\Operation\Buffer\PolygonBufferStressTest.cs" />
     <Compile Include="Performance\PerformanceTestCase.cs" />
     <Compile Include="Performance\PerformanceTestRunner.cs" />
+    <Compile Include="Performance\ThreadTestCase.cs" />
+    <Compile Include="Performance\ThreadTestRunner.cs" />
     <Compile Include="Precision\GeometryPrecisionReducerTest.cs" />
     <Compile Include="Precision\SimpleGeometryPrecisionReducerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -188,6 +196,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>echo "$(SolutionDir)BuildTools\nuget.exe" install "$(ProjectDir)packages.config -o "$(SolutionDir)Packages"

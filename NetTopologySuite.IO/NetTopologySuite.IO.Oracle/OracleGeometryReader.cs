@@ -125,8 +125,8 @@ namespace NetTopologySuite.IO
             if (geom == null)
                 return null;
             
-            Debug.Assert(geom.Sdo_Gtype.HasValue);
-            var gType = (int) geom.Sdo_Gtype;
+            Debug.Assert(geom.SdoGtype.HasValue);
+            var gType = (int) geom.SdoGtype;
             
             Debug.Assert(geom.Sdo_Srid.HasValue);
             var srid = (int)geom.Sdo_Srid;

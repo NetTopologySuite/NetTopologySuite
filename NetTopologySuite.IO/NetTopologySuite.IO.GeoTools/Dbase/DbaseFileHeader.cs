@@ -246,6 +246,7 @@ namespace NetTopologySuite.IO
         /// Read the header data from the DBF file.
         /// </summary>
         /// <param name="reader">BinaryReader containing the header.</param>
+        /// <param name="filename">Filename </param>
         public void ReadHeader(BinaryReader reader, string filename)
         {
             // type of reader.
@@ -327,9 +328,10 @@ namespace NetTopologySuite.IO
         /// code pages listed in the ArcGIS v9, ArcPad Reference Guide
         /// http://downloads.esri.com/support/documentation/pad_/ArcPad_RefGuide_1105.pdf
         /// </summary>
-        /// <param name="lcid"></param>
+        /// <param name="lcid">Language driver id</param>
+        /// <param name="cpgFileName">Filename of code page file</param>
         /// <returns></returns>
-        private Encoding DetectEncodingFromMark(int lcid, string fileName)
+        private Encoding DetectEncodingFromMark(int lcid, string cpgFileName)
         {
 #if !SILVERLIGHT
             var enc = Encoding.GetEncoding(1252);
@@ -364,14 +366,14 @@ namespace NetTopologySuite.IO
             }
             else
             {
-                if (!string.IsNullOrEmpty(fileName))
+                if (!string.IsNullOrEmpty(cpgFileName))
                 {
-                    fileName = Path.ChangeExtension(fileName, "cpg");
-                    if (!File.Exists(fileName))
-                        fileName = Path.ChangeExtension(fileName, "cst");
-                    if (File.Exists(fileName))
+                    cpgFileName = Path.ChangeExtension(cpgFileName, "cpg");
+                    if (!File.Exists(cpgFileName))
+                        cpgFileName = Path.ChangeExtension(cpgFileName, "cst");
+                    if (File.Exists(cpgFileName))
                     {
-                        var encoding = File.ReadAllText(fileName).Trim();
+                        var encoding = File.ReadAllText(cpgFileName).Trim();
                         try
                         {
                             return Encoding.GetEncoding(encoding);
