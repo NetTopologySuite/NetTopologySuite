@@ -10,6 +10,8 @@ using Open.Topology.TestRunner.Result;
 
 namespace Open.Topology.TestRunner
 {
+    using NetTopologySuite.Precision;
+
     #region Test Event Definitions
 
     public class XmlTestEventArgs : EventArgs
@@ -93,6 +95,10 @@ namespace Open.Topology.TestRunner
         CoveredBy               = 32,
         BufferMitredJoin        = 33,
         Densify                 = 34,
+        EqualsExact             = 35,
+        EqualsNorm              = 36,
+        MinClearance            = 37,
+        MinClearanceLine        = 38
     }
  
     #endregion
@@ -464,11 +470,22 @@ namespace Open.Topology.TestRunner
                 case XmlTestType.CoveredBy:
                     return TestCoveredBy();
 
-                default:
-                    break;
-            }
+                case XmlTestType.EqualsExact:
+                    return TestEqualsExact();
 
-            return false;
+                case XmlTestType.EqualsNorm:
+                    return TestEqualsNorm();
+
+                case XmlTestType.MinClearance:
+                    return TestMinClearance();
+
+                case XmlTestType.MinClearanceLine:
+                    return TestMinClearanceLine();
+
+                default:
+                    string format = String.Format("Test not implemented: {0}", this._enumTestType);
+                    throw new NotImplementedException(format);
+            }
         }
 
 	    private IResultMatcher CreateEqualityResultMatcher(Type returnType)
@@ -1714,6 +1731,96 @@ namespace Open.Topology.TestRunner
                 else return _objGeometryB.CoveredBy((Geometry)_objArgument1) == bResult;
             }
 
+            return false;
+        }
+
+        protected virtual bool TestEqualsExact()
+        {
+            bool bResult = (bool)_objResult;
+            if (_bIsDefaultTarget && _objGeometryA != null)
+            {
+                if (_objArgument1 == null)
+                {
+                    return _objGeometryA.EqualsExact(_objGeometryB) == bResult;
+                }
+                else
+                {
+                    return _objGeometryA.EqualsExact((Geometry)_objArgument1) == bResult;
+                }
+            }
+            else if (_objGeometryB != null)
+            {
+                if (_objArgument1 == null)
+                {
+                    return _objGeometryB.EqualsExact(_objGeometryA) == bResult;
+                }
+                else
+                {
+                    return _objGeometryB.EqualsExact((Geometry)_objArgument1) == bResult;
+                }
+            }
+
+            return false;
+        }
+
+        protected virtual bool TestEqualsNorm()
+        {
+            bool bResult = (bool)_objResult;
+            if (_bIsDefaultTarget && _objGeometryA != null)
+            {
+                _objGeometryA.Normalize();
+                if (_objArgument1 == null)
+                {
+                    _objGeometryB.Normalize();
+                    return _objGeometryA.EqualsExact(_objGeometryB) == bResult;
+                }
+                else
+                {
+                    Geometry g = (Geometry)_objArgument1;
+                    g.Normalize();
+                    return _objGeometryA.EqualsExact(g) == bResult;
+                }
+            }
+            else if (_objGeometryB != null)
+            {
+                _objGeometryB.Normalize();
+                if (_objArgument1 == null)
+                {
+                    _objGeometryA.Normalize();
+                    return _objGeometryB.EqualsExact(_objGeometryA) == bResult;
+                }
+                else
+                {
+                    Geometry g = (Geometry)_objArgument1;
+                    g.Normalize();
+                    return _objGeometryB.EqualsExact(g) == bResult;
+                }
+            }
+
+            return false;
+        }
+
+	    protected virtual bool TestMinClearance()
+        {
+            double dResult = (double)_objResult;
+            if (_bIsDefaultTarget && _objGeometryA != null)
+            {
+                MinimumClearance c = new MinimumClearance(_objGeometryA);
+                double dClearance = c.GetDistance();
+                return Math.Abs(dClearance - dResult) <= _dTolerance;
+            }
+            return false;
+        }
+
+        protected virtual bool TestMinClearanceLine()
+        {
+            IGeometry gResult = (IGeometry)_objResult;
+            if (_bIsDefaultTarget && _objGeometryA != null)
+            {
+                MinimumClearance c = new MinimumClearance(_objGeometryA);
+                IGeometry gClearance = c.GetLine();
+                return gResult.Equals(gClearance);
+            }
             return false;
         }
 
