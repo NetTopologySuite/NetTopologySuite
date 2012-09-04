@@ -261,7 +261,10 @@ namespace NetTopologySuite.Operation.Linemerge
 
             Node startNode = FindLowestDegreeNode(graph);
 
-            var list = (List<DirectedEdge>)startNode.OutEdges.Edges;            
+            // HACK: reversing linestring fixes some cases... see LineSequencerTest.SimpleBigLoop and others
+            var list = (List<DirectedEdge>)startNode.OutEdges.Edges;
+            list.Reverse();
+
             IEnumerator<DirectedEdge> ie = list.GetEnumerator();
             ie.MoveNext();
 
