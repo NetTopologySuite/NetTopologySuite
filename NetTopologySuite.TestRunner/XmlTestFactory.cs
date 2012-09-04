@@ -201,6 +201,18 @@ namespace Open.Topology.TestRunner
             else if (testType == "coveredby")
                 xmlTestItem.TestType = XmlTestType.CoveredBy;
             
+            else if (testType == "equalsexact")
+                xmlTestItem.TestType = XmlTestType.EqualsExact;
+
+            else if (testType == "equalsnorm")
+                xmlTestItem.TestType = XmlTestType.EqualsNorm;
+
+            else if (testType == "minclearance")
+                xmlTestItem.TestType = XmlTestType.MinClearance;
+
+            else if (testType == "minclearanceline")
+                xmlTestItem.TestType = XmlTestType.MinClearanceLine;
+            
             else throw new ArgumentException(String.Format("The operation type \"{0}\" is not valid: ", testType));
             
             return true;
@@ -214,6 +226,7 @@ namespace Open.Topology.TestRunner
                 case XmlTestType.Area:
                 case XmlTestType.Distance:
                 case XmlTestType.Length:
+                case XmlTestType.MinClearance:
                 {
                     try
                     {
@@ -258,6 +271,7 @@ namespace Open.Topology.TestRunner
                 case XmlTestType.Intersection:
                 case XmlTestType.SymmetricDifference:
                 case XmlTestType.Union:
+                case XmlTestType.MinClearanceLine:
                 {
                     try
                     {
@@ -287,6 +301,8 @@ namespace Open.Topology.TestRunner
                 case XmlTestType.Within:
                 case XmlTestType.Covers:
                 case XmlTestType.CoveredBy:
+                case XmlTestType.EqualsExact:
+                case XmlTestType.EqualsNorm:
                 {
                     try
                     {
@@ -300,10 +316,10 @@ namespace Open.Topology.TestRunner
                     }
                 }
 
-                //default:
-                //    break;
+                default:
+                    string format = String.Format("Test not implemented: {0}",  xmlTestItem.TestType);
+                    throw new NotImplementedException(format);
             }
-            return false;
         }
 
         protected bool ParseGeometry(Target targetType, string targetText, XmlTest xmlTestItem)

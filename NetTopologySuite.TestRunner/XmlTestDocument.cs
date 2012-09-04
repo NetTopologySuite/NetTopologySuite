@@ -253,7 +253,6 @@ namespace Open.Topology.TestRunner
             catch (Exception ex)
             {
                 XmlTestExceptionManager.Publish(ex);
-
                 return false;
             }
         }
