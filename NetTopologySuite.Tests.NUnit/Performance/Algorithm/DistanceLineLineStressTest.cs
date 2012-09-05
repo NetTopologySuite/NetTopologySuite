@@ -7,7 +7,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 {
     public class DistanceLineLineStressTest
     {
-        [Test, Category("Stess")]
+        [Test, Category("Stress")]
         public void TestRandomDisjointCollinearSegments()
         {
             int n = 1000000;

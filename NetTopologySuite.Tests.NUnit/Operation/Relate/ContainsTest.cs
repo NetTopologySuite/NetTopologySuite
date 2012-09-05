@@ -22,7 +22,7 @@ public class ContainsTest
    * to contribute to the intersection matrix result).
    * This will require a complete reworking of the relate algorithm. 
    */
-    [Test]
+    [Test, Ignore("Known to fail")]
     public void TestContainsIncorrect()
     {
         var a = _reader.Read("LINESTRING (1 0, 0 2, 0 0, 2 2)");

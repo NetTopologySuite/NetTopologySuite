@@ -189,16 +189,17 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             }
             else
             {
-                IGeometry expected = rdr.Read(expectedWKT);
-                IGeometry result = sequencer.GetSequencedLineStrings();
+                var expected = rdr.Read(expectedWKT);
+                var result = sequencer.GetSequencedLineStrings();
                 var isOK = expected.EqualsNormalized(result);
                 if (! isOK) {
                     Console.WriteLine("ERROR - Expected: " + expected);
                     Console.WriteLine("          Actual: " + result);
                 }
 
-                bool isSequenced = LineSequencer.IsSequenced(result);
-                Assert.IsTrue(isSequenced);
+                var isSequenced = LineSequencer.IsSequenced(result);
+                Assert.IsTrue(isOK, "Result does not match expected (using EqualsNormalized)!");
+                Assert.IsTrue(isSequenced, "Result geometry is not sequenced!");
             }
         }
 

@@ -68,7 +68,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
             Test(pts, target);
         }
 
-        public void xtest(int num)
+        private void xtest(int num)
         {
             var target = LoadData("C:\\proj\\JTS\\test\\g2e\\ffmwdec08.wkt");
             var bcEnv_Albers = new Envelope(-45838, 1882064, 255756, 1733287);
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
             Test(pts, target);
         }
 
-        public void Test(IGeometry[] pts, IGeometry target)
+        private void Test(IGeometry[] pts, IGeometry target)
         {
             if (verbose)
                 Console.WriteLine("Query points = " + pts.Length
