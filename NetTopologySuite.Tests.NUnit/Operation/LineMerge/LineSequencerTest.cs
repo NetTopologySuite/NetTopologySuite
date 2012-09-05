@@ -1,21 +1,19 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 using NetTopologySuite.Operation.Linemerge;
 
-/*
- * Test LineSequencer
- */
 namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
 {
+    /// <summary>
+    /// LineSequencer tests
+    /// </summary>
     [TestFixture]
     public class LineSequencerTest
     {
-        private static WKTReader rdr = new WKTReader();
+        private static readonly WKTReader Rdr = new WKTReader();
 
         [Test]
         public void TestSimple()
@@ -56,7 +54,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             RunLineSequencer(wkt, result);
         }
 
-        [Test]
+        [Test, Ignore("Degenerate loop")]
         public void Test2SimpleLoops()
         {
             String[] wkt = {
@@ -67,6 +65,20 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             };
             String result =
                 "MULTILINESTRING ((0 10, 0 0), (0 0, 0 20), (0 20, 0 0), (0 0, 0 10))";
+            RunLineSequencer(wkt, result);
+        }
+
+        [Test]
+        public void Test2SimpleLoops2()
+        {
+            String[] wkt = {
+                "LINESTRING ( 0 0, 0 10 )",
+                "LINESTRING ( 20 10, 20 0 )",
+                "LINESTRING ( 20 0, 0 0 )",
+                "LINESTRING ( 0 10, 20 10 )",
+            };
+            String result =
+                "MULTILINESTRING ((0 0, 0 10), (0 10, 20 10), (20 10, 20 0), (20 0, 0 0))";
             RunLineSequencer(wkt, result);
         }
 
@@ -189,7 +201,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             }
             else
             {
-                var expected = rdr.Read(expectedWKT);
+                var expected = Rdr.Read(expectedWKT);
                 var result = sequencer.GetSequencedLineStrings();
                 var isOK = expected.EqualsNormalized(result);
                 if (! isOK) {
@@ -205,7 +217,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
 
         private static void RunIsSequenced(String inputWKT, bool expected)
         {
-            var g = rdr.Read(inputWKT);
+            var g = Rdr.Read(inputWKT);
             var isSequenced = LineSequencer.IsSequenced(g);
             Assert.IsTrue(isSequenced == expected);
         }
@@ -217,7 +229,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             {
                 try
                 {
-                    geomList.Add(rdr.Read(wkt));
+                    geomList.Add(Rdr.Read(wkt));
                 }
                 catch (Exception ex)
                 {
