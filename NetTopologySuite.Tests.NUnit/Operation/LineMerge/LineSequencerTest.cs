@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 using NetTopologySuite.Operation.Linemerge;
@@ -13,7 +14,9 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
     [TestFixture]
     public class LineSequencerTest
     {
-        private static readonly WKTReader Rdr = new WKTReader();
+        private static readonly WKTReader Rdr = 
+            new WKTReader();
+            //new WKTReader(new GeometryFactory(new PrecisionModel(PrecisionModels.Fixed)));
 
         [Test]
         public void TestSimple()
@@ -54,7 +57,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             RunLineSequencer(wkt, result);
         }
 
-        [Test, Ignore("Degenerate loop")]
+        [Test /*, Ignore("Degenerate loop")*/]
         public void Test2SimpleLoops()
         {
             String[] wkt = {

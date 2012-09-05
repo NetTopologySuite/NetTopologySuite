@@ -4,7 +4,7 @@ using System.Xml;
 using NetTopologySuite.Tests.NUnit.TestData;
 using NUnit.Framework;
 
-namespace NetTopologySuite.Tests.Various
+namespace NetTopologySuite.Samples.Tests.Various
 {
     public class Issue103Tests
     {
@@ -50,10 +50,10 @@ namespace NetTopologySuite.Tests.Various
             ReadAndTest("cant-read-file4.gml");
         }
 
-        private void ReadAndTest(string file)
+        private static void ReadAndTest(string file)
         {
             Console.WriteLine(file);
-            var path = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile("NetTopologySuite.Tests.Various." + file);
+            var path = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile("NetTopologySuite.Samples.Tests.Various." + file);
             var gml = File.ReadAllText(path);
 
             var xmlDoc = new XmlDocument();
