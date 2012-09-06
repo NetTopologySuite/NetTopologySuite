@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
+using Wintellect.PowerCollections;
 
 namespace NetTopologySuite.Planargraph
 {
@@ -12,7 +13,7 @@ namespace NetTopologySuite.Planargraph
         /// <summary>
         /// The underlying list of outgoing DirectedEdges.
         /// </summary>
-        protected List<DirectedEdge> outEdges = new List<DirectedEdge>();
+        private readonly BigList<DirectedEdge> outEdges = new BigList<DirectedEdge>();
 
         private bool _sorted;
 

@@ -255,16 +255,13 @@ namespace NetTopologySuite.Operation.Linemerge
             return oddDegreeCount <= 2;
         }
 
-        private static IList<DirectedEdge> FindSequence(Subgraph graph)
+        private static IEnumerable<DirectedEdge> FindSequence(Subgraph graph)
         {            
             GraphComponent.SetVisited(graph.GetEdgeEnumerator(), false);
 
             Node startNode = FindLowestDegreeNode(graph);
 
-            // HACK: reversing linestring fixes some cases... see LineSequencerTest.SimpleBigLoop and others
-            var list = (List<DirectedEdge>)startNode.OutEdges.Edges;
-            list.Reverse();
-
+            IList<DirectedEdge> list = startNode.OutEdges.Edges;
             IEnumerator<DirectedEdge> ie = list.GetEnumerator();
             ie.MoveNext();
 
