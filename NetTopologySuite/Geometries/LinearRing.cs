@@ -7,7 +7,7 @@ namespace NetTopologySuite.Geometries
     /// Models an OGC SFS <c>LinearRing</c>.
     /// </summary>
     /// <remarks>
-    /// A LinearRing is a LineString which is both closed and simple.
+    /// A <c>LinearRing</c> is a <see cref="LineString"/> which is both closed and simple.
     /// In other words,
     /// the first and last coordinate in the ring must be equal,
     /// and the interior of the ring must not self-intersect.

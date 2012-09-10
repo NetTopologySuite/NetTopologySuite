@@ -6,13 +6,28 @@ using NetTopologySuite.Algorithm;
 namespace NetTopologySuite.Geometries
 {
     /// <summary> 
-    /// Represents a linear polygon, which may include holes.
-    /// The shell and holes of the polygon are represented by {LinearRing}s.
-    /// In a valid polygon, holes may touch the shell or other holes at a single point.
-    /// However, no sequence of touching holes may split the polygon into two pieces.
-    /// The orientation of the rings in the polygon does not matter.
-    /// The shell and holes must conform to the assertions specified in the
-    /// <see href="http://www.opengis.org/techno/specs.htm"/> OpenGIS Simple Features Specification for SQL.     
+    /// Represents a polygon with linear edges, which may include holes.
+    /// The outer boundary (shell) 
+    /// and inner boundaries (holes) of the polygon are represented by {@link LinearRing}s.
+    /// The boundary rings of the polygon may have any orientation.
+    /// Polygons are closed, simple geometries by definition.
+    /// <para/>
+    /// The polygon model conforms to the assertions specified in the 
+    /// <a href="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features
+    /// Specification for SQL</a>.
+    /// <para/>
+    /// A <c>Polygon</c> is topologically valid if and only if:
+    /// <list type="Bullet">
+    /// <item>the coordinates which define it are valid coordinates</item>
+    /// <item>the linear rings for the shell and holes are valid
+    /// (i.e. are closed and do not self-intersect)</item>
+    /// <item>holes touch the shell or another hole at at most one point
+    /// (which implies that the rings of the shell and holes must not cross)</item>
+    /// <item>the interior of the polygon is connected,  
+    /// or equivalently no sequence of touching holes 
+    /// makes the interior of the polygon disconnected
+    /// (i.e. effectively split the polygon into two pieces).</item>
+    /// </list>
     /// </summary>
 //#if !SILVERLIGHT
     [Serializable]

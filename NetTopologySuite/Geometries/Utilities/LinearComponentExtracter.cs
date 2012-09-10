@@ -5,7 +5,9 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary> 
-    /// Extracts all the 1-dimensional (<c>LineString</c>) components from a <c>Geometry</c>.
+    /// Extracts all the 1-dimensional (<see cref="ILineString"/>) components from a <see cref="IGeometry"/>.
+    /// For polygonal geometries, this will extract all the component <see cref="ILinearRing"/>s.
+    /// If desired, <c>LinearRing</c>s can be forced to be returned as <c>LineString</c>s.
     /// </summary>
     public class LinearComponentExtracter : IGeometryComponentFilter
     {

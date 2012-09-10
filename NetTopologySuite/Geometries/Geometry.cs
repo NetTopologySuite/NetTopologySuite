@@ -20,9 +20,6 @@ using NetTopologySuite.Operation.Relate;
 using NetTopologySuite.Operation.Union;
 using NetTopologySuite.Operation.Valid;
 using NetTopologySuite.Utilities;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace NetTopologySuite.Geometries
 {   
@@ -30,13 +27,12 @@ namespace NetTopologySuite.Geometries
     /// A representation of a planar, linear vector geometry.
     /// </summary>
     /// <remarks>
-    /// <c>Clone</c> returns a deep copy of the object.
     /// <para>
     /// <h3>Binary Predicates:</h3>
     /// Because it is not clear at this time what semantics for spatial
     /// analysis methods involving <c>GeometryCollection</c>s would be useful,
     /// <c>GeometryCollection</c>s are not supported as arguments to binary
-    /// predicates (other than <c>ConvexHull</c>) or the <c>Relate</c> method.
+    /// predicates or the <c>Relate</c> method.
     /// </para>
     /// <para>
     /// <h3>Overlay Methods:</h3> 
@@ -91,7 +87,7 @@ namespace NetTopologySuite.Geometries
     /// <para>
     /// 
     /// <h3>Geometry Equality</h3>
-    /// NTS provides two ways of comparing geometries for equality: 
+    /// There are two ways of comparing geometries for equality: 
     /// <b>structural equality</b> and <b>topological equality</b>.
     /// <h4>Structural Equality</h4>
     /// Structural Equality is provided by the 
@@ -114,17 +110,17 @@ namespace NetTopologySuite.Geometries
     /// allows using a tolerance value for point comparison.
     /// 
     /// <h4>Topological Equality</h4>
-    /// Topological Equality implements the SFS definition of point-set equality
-    /// defined in terms of the DE-9IM matrix.
-    /// It is is provided by the <see cref="EqualsTopologically(IGeometry)"/>
-    /// method.  
+    /// Topological Equality is provided by the 
+    /// <see cref="EqualsTopologically(IGeometry)"/> method. 
+    /// It implements the SFS definition of point-set equality
+    /// defined in terms of the DE-9IM matrix. 
     /// To support the SFS naming convention, the method
     /// <see cref="Equals(IGeometry)"/> is also provided as a synonym.  
     /// However, due to the potential for confusion with <see cref="Equals(object)"/>
     /// its use is discouraged.
     /// <para/>
     /// Since <see cref="Equals(object)"/> and <see cref="GetHashCode"/> are overridden, 
-    /// Geometries can be used effectively in collections.
+    /// Geometries can be used effectively in .Net collections.
     /// </para>
     /// </remarks>
 //#if !SILVERLIGHT
@@ -396,8 +392,9 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Tests the validity of this <c>Geometry</c>.
-        /// Subclasses provide their own definition of "valid".
+        /// Tests whether this <c>Geometry</c> is topologically 
+        /// valid, according to the OGC SFS specification.<para/>
+        /// For validity rules see the documentation for the specific geometry subclass.
         /// </summary>
         /// <returns><c>true</c> if this <c>Geometry</c> is valid.</returns>
         public virtual bool IsValid
@@ -409,14 +406,14 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary> 
-        /// Returns whether or not the set of points in this <c>Geometry</c> is empty.
+        /// Tests whether the set of points covered in this <c>Geometry</c> is empty.
         /// </summary>
-        /// <returns><c>true</c> if this <c>Geometry</c> equals the empty point.</returns>
+        /// <returns><c>true</c> if this <c>Geometry</c> does not cover any points.</returns>
         public abstract bool IsEmpty { get; }
 
         /// <summary>  
         /// Returns the minimum distance between this <c>Geometry</c>
-        /// and the <c>Geometry</c> g.
+        /// and another <c>Geometry</c> g.
         /// </summary>
         /// <param name="g">The <c>Geometry</c> from which to compute the distance.</param>
         /// <returns>The distance between the geometries</returns>
