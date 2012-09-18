@@ -187,6 +187,14 @@ namespace NetTopologySuite.Algorithm
             Coordinate intPt = IntersectionWithNormalization(p1, p2, q1, q2);
 
             /*
+            // TESTING ONLY
+            var intPtDD = CGAlgorithmsDD.Intersection(p1, p2, q1, q2);
+            var dist = intPt.Distance(intPtDD);
+            System.Console.WriteLine(intPt + " - " + intPtDD + " dist = " + dist);
+            //intPt = intPtDD;
+             */
+    
+            /*
              * Due to rounding it can happen that the computed intersection is
              * outside the envelopes of the input segments.  Clearly this
              * is inconsistent. 
