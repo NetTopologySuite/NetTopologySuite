@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 
@@ -7,26 +8,72 @@ namespace Open.Topology.TestRunner.Functions
     {
         public static IGeometry intersects(IGeometry a, IGeometry mask)
         {
+            return select(a, mask.Intersects);
+        }
+
+        public static IGeometry covers(IGeometry a, IGeometry mask)
+        {
+            return select(a, mask.Covers);
+        }
+
+        public static IGeometry coveredBy(IGeometry a, IGeometry mask)
+        {
+            return select(a, mask.CoveredBy);
+        }
+
+        public static IGeometry disjoint(IGeometry a, IGeometry mask)
+        {
+            return select(a, mask.Disjoint);
+        }
+
+        public static IGeometry valid(IGeometry a)
+        {
+            return select(a, g => g.IsValid);
+        }
+
+        public static IGeometry invalid(IGeometry a)
+        {
+            return select(a, g => !g.IsValid);
+        }
+
+        public static IGeometry areaGreater(IGeometry a, double minArea)
+        {
+            return select(a, g => g.Area > minArea);
+        }
+
+        public static IGeometry areaZero(IGeometry a)
+        {
+            return select(a, g => g.Area == 0d);
+        }
+
+        public static IGeometry within(IGeometry a, IGeometry mask)
+        {
+            return select(a, mask.Within);
+        }
+
+        private static IGeometry select(IGeometry geom, Func<IGeometry, bool> predicate)
+        {
             var selected = new List<IGeometry>();
-            for (int i = 0; i < a.NumGeometries; i++)
+            for (int i = 0; i < geom.NumGeometries; i++)
             {
-                var g = a.GetGeometryN(i);
-                if (mask.Intersects(g))
+                var g = geom.GetGeometryN(i);
+                if (predicate(g))
                 {
                     selected.Add(g);
                 }
             }
-            return a.Factory.BuildGeometry(selected);
+            return geom.Factory.BuildGeometry(selected);
         }
-    }
 
-    /**
-     * Geometry functions which
-     * augment the existing methods on {@link Geometry},
-     * for use in XML Test files.
-     * These should be named differently to the Geometry methods.
-     * 
-     * @author Martin Davis
-     *
-     */
+        public static IGeometry firstNComponents(IGeometry g, int n)
+        {
+            var comp = new List<IGeometry>();
+            for (int i = 0; i < g.NumGeometries && i < n; i++)
+            {
+                comp.Add(g.GetGeometryN(i));
+            }
+            return g.Factory.BuildGeometry(comp);
+        }
+
+    }
 }

@@ -61,6 +61,7 @@ public class CreateRandomGeometryFunctions {
 
     for (int i = 0; i < nPts; i++) {
       double rand = RND.NextDouble();
+        //use rand^2 to accentuate radial distribution
       double r = rMax * rand * rand;
       double ang = 2 * Math.PI * RND.NextDouble();
       double x = centreX + r * Math.Cos(ang);
@@ -69,6 +70,42 @@ public class CreateRandomGeometryFunctions {
     }
     return geomFact.BuildGeometry(pts.ToArray());
   }
+
+  public static IGeometry haltonPoints(IGeometry g, int nPts)
+  {
+    return haltonPointsWithBases(g, nPts, 2, 3);
+  }
+  
+  public static IGeometry haltonPoints57(IGeometry g, int nPts)
+  {
+    return haltonPointsWithBases(g, nPts, 5, 7);
+  }
+  
+  public static IGeometry haltonPointsWithBases(IGeometry g, int nPts, int basei, int basej)
+  {
+    Envelope env = FunctionsUtil.getEnvelopeOrDefault(g);
+    Coordinate[] pts = new Coordinate[nPts];
+    for (int i = 0; i < nPts; i++) {
+      double x = env.Width * haltonOrdinate(i + 1, basei);
+      double y = env.Height * haltonOrdinate(i + 1, basej);
+      pts[i] = new Coordinate(x, y);
+    }
+    return FunctionsUtil.getFactoryOrDefault(g).CreateMultiPoint(pts);
+  }
+  
+  private static double haltonOrdinate(int index, int basis)
+  {
+    double result = 0;
+    double f = 1.0 / basis;
+    int i = index;
+    while (i > 0) {
+        result = result + f * (i % basis);
+        i = (int)Math.Floor(i / (double)basis);
+        f = f / basis;
+    }
+    return result;
+  }
+  
 
   public static IGeometry randomSegments(IGeometry g, int nPts) {
     var env = FunctionsUtil.getEnvelopeOrDefault(g);
