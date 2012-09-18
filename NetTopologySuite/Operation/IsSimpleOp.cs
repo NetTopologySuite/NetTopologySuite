@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.GeometriesGraph.Index;
 using Wintellect.PowerCollections;
@@ -43,7 +44,7 @@ namespace NetTopologySuite.Operation
     /// </remarks>
     public class IsSimpleOp
     {
-        private IGeometry _geom;
+        private readonly IGeometry _inputGeom;
         private bool _isClosedEndpointsInInterior = true;
         private Coordinate _nonSimpleLocation;
 
@@ -61,7 +62,7 @@ namespace NetTopologySuite.Operation
         /// <param name="geom">The geometry to test</param>
         public IsSimpleOp(IGeometry geom)
         {
-            _geom = geom;
+            _inputGeom = geom;
         }
 
         ///<summary>
@@ -71,7 +72,7 @@ namespace NetTopologySuite.Operation
         /// <param name="boundaryNodeRule">The rule to use</param>
         public IsSimpleOp(IGeometry geom, IBoundaryNodeRule boundaryNodeRule)
         {
-            _geom = geom;
+            _inputGeom = geom;
             _isClosedEndpointsInInterior = !boundaryNodeRule.IsInBoundary(2);
         }
 
@@ -82,9 +83,17 @@ namespace NetTopologySuite.Operation
         public bool IsSimple()
         {
             _nonSimpleLocation = null;
-            if (_geom is ILineString) return IsSimpleLinearGeometry(_geom);
-            if (_geom is IMultiLineString) return IsSimpleLinearGeometry(_geom);
-            if (_geom is IMultiPoint) return IsSimpleMultiPoint((IMultiPoint) _geom);
+            return ComputeSimple(_inputGeom);
+        }
+
+        private bool ComputeSimple(IGeometry geom)
+        {
+            _nonSimpleLocation = null;
+            if (geom is ILineString) return IsSimpleLinearGeometry(geom);
+            if (geom is IMultiLineString) return IsSimpleLinearGeometry(geom);
+            if (geom is IMultiPoint) return IsSimpleMultiPoint((IMultiPoint) geom);
+            if (geom is IPolygonal) return IsSimplePolygonal(geom);
+            if (geom is IGeometryCollection) return IsSimpleGeometryCollection(geom);
             // all other geometry types are simple by definition
             return true;
         }
@@ -146,6 +155,39 @@ namespace NetTopologySuite.Operation
                     return false;
                 }
                 points.Add(p);
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Computes simplicity for polygonal geometries.
+        /// Polygonal geometries are simple if and only if
+        /// all of their component rings are simple.
+        /// </summary>
+        /// <param name="geom">A Polygonal geometry</param>
+        /// <returns><c>true</c> if the geometry is simple</returns>
+        private bool IsSimplePolygonal(IGeometry geom)
+        {
+            var rings = LinearComponentExtracter.GetLines(geom);
+            foreach (ILinearRing ring in rings)
+            {
+                if (!IsSimpleLinearGeometry(ring))
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>Semantics for GeometryCollection is 
+        /// simple iff all components are simple.</summary>
+        /// <param name="geom">A GeometryCollection</param>
+        /// <returns><c>true</c> if the geometry is simple</returns>
+        private bool IsSimpleGeometryCollection(IGeometry geom)
+        {
+            for (int i = 0; i < geom.NumGeometries; i++)
+            {
+                var comp = geom.GetGeometryN(i);
+                if (!ComputeSimple(comp))
+                    return false;
             }
             return true;
         }

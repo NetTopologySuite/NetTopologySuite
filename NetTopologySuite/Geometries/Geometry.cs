@@ -385,8 +385,7 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                CheckNotGeometryCollection(this);
-                IsSimpleOp isSimpleOp = new IsSimpleOp(this);
+                var isSimpleOp = new IsSimpleOp(this);
                 return isSimpleOp.IsSimple();
             }
         }
