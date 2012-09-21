@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
@@ -116,5 +117,62 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual(point1.Coordinate.X, point2.Coordinate.X, 1E-7);
             Assert.AreEqual(point1.Coordinate.Y, point2.Coordinate.Y, 1E-7);
         }
+
+        [Test]
+        public void TestThreading()
+        {
+            var wkts = new[]
+                {
+                    "POINT ( 10 20 )",
+                    "LINESTRING EMPTY",
+                    "LINESTRING(0 0, 10 10)",
+                    "MULTILINESTRING ((50 100, 100 200), (100 100, 150 200))",
+                    "POLYGON ((100 200, 200 200, 200 100, 100 100, 100 200))",
+                    "MULTIPOLYGON (((100 200, 200 200, 200 100, 100 100, 100 200)), ((300 200, 400 200, 400 100, 300 100, 300 200)))",
+                    "GEOMETRYCOLLECTION (POLYGON ((100 200, 200 200, 200 100, 100 100, 100 200)), LINESTRING (250 100, 350 200), POINT (350 150))"
+                    ,
+                };
+
+            var srids = new[] {4326, 31467, 3857};
+            
+            const int numJobs = 30;
+            var waitHandles = new WaitHandle[numJobs];
+            for (var i = 0; i < numJobs; i++)
+            {
+                waitHandles[i] = new AutoResetEvent(false);
+                ThreadPool.QueueUserWorkItem(TestReaderInThreadedContext, new object[] {wkts, waitHandles[i], srids, i});
+            }
+
+            WaitHandle.WaitAll(waitHandles);
+            Assert.AreEqual(1 + srids.Length, ((NtsGeometryServices)GeoAPI.GeometryServiceProvider.Instance).NumFactories); 
+        }
+
+        private static readonly Random Rnd = new Random();
+        private static void TestReaderInThreadedContext(object info)
+        {
+            var parameters = (object[]) info;
+            var wkts = (string[]) parameters[0];
+            var waitHandle = (AutoResetEvent) parameters[1];
+            var srids = (int[]) parameters[2];
+            var jobId = (int) parameters[3];
+
+            for (var i = 0; i < 1000; i++)
+            {
+                var wkt = wkts[Rnd.Next(0, wkts.Length)];
+                var reader = new WKTReader();
+                var geom = reader.Read(wkt);
+                Assert.NotNull(geom);
+                foreach (var srid in srids)
+                {
+                    geom.SRID = srid;
+                    Assert.AreEqual(geom.SRID, srid);
+                    Assert.AreEqual(geom.Factory.SRID, srid);
+                }
+            }
+
+            Console.WriteLine("ThreadId {0} finished Job {1}", Thread.CurrentThread.ManagedThreadId, jobId);
+            waitHandle.Set();
+        }
+
     }
 }

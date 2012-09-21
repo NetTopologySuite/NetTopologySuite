@@ -208,12 +208,15 @@ namespace NetTopologySuite
 
             var gfkey = new GeometryFactoryKey(precisionModel, coordinateSequenceFactory, srid);
             IGeometryFactory factory;
-            lock (_factoriesLock)
+            if (!_factories.TryGetValue(gfkey, out factory))
             {
-                if (!_factories.TryGetValue(gfkey, out factory))
+                lock (_factoriesLock)
                 {
-                    factory = new GeometryFactory(precisionModel, srid, coordinateSequenceFactory);
-                    _factories.Add(gfkey, factory);
+                    if (!_factories.TryGetValue(gfkey, out factory))
+                    {
+                        factory = new GeometryFactory(precisionModel, srid, coordinateSequenceFactory);
+                        _factories.Add(gfkey, factory);
+                    }
                 }
             }
             return factory;
