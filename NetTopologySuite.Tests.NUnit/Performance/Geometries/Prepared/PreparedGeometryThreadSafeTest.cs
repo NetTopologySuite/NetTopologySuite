@@ -8,12 +8,7 @@ using NetTopologySuite.Geometries.Prepared;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
 {
-/**
- * 
- * 
- * @author Martin Davis
- *
- */
+
     /// <summary>
     /// Tests for race conditons in the PreparedGeometry classes.
     /// </summary>
@@ -22,7 +17,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
     {
         private int nPts = 1000;
         private readonly IGeometryFactory _factory = new GeometryFactory(new PrecisionModel(1.0));
-        private int _numberOfTests = 100;
+        private int _numberOfTests = 20;
         private IPreparedGeometry _preparedGeometry;
         private IGeometry _geometry;
 
@@ -32,9 +27,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             _preparedGeometry = PreparedGeometryFactory.Prepare(sinePoly);
             _geometry = CreateSineStar(new Coordinate(10, 10), 100000.0, 100);
             
-            //This is mandatory for the test to be executed at all
-            //pg.Intersects will fail on thread by creating the IndexedPointInAreaLocator
-            var result = _preparedGeometry.Intersects(_geometry);
+            WaitHandles = new WaitHandle[ThreadTestRunner.DefaultThreadCount];
         }
 
         private IGeometry CreateSineStar(Coordinate origin, double size, int numberOfPoints)
@@ -47,26 +40,25 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
 
         public override object Argument
         {
-            get { return new[] {_preparedGeometry, _geometry.Clone() }; }
+            get { return _preparedGeometry; }
         }
 
-        private static readonly object LockWriteLine = new object();
+        private static readonly Random Rnd = new Random();
         public override ParameterizedThreadStart GetRunnable(int threadIndex)
         {
+            WaitHandles[threadIndex] = new AutoResetEvent(false);
             return delegate(object parameter)
                 {
-                    var pa = (object[]) parameter;
-                    var pg = (IPreparedGeometry) pa[0];
-                    var g = (IGeometry) pa[1];
+                    var pg = (IPreparedGeometry) parameter;
+                    var g = CreateSineStar(new Coordinate(Rnd.Next(-10, 10), Rnd.Next(-10, 10)), 100000.0, Rnd.Next(75, 110));
 
-                    while (_numberOfTests > 0)
+                    for (int i = 0; i < 20; i++)
                     {
-                        Interlocked.Decrement(ref _numberOfTests);
                         var intersects = pg.Intersects(g);
-                        //var intersects = _numberOfTests >= 0;
-                        lock (LockWriteLine)
-                            Console.WriteLine("{0} {1} {2}", _numberOfTests, threadIndex, intersects);
+                        Console.WriteLine("ThreadId {0} Test {1} Result {2}", threadIndex, i, intersects);
                     }
+
+                    ((AutoResetEvent) WaitHandles[threadIndex]).Set();
                 };
         }
 

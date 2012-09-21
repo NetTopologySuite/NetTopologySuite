@@ -15,6 +15,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
         }
 
         public abstract void Setup();
+        public WaitHandle[] WaitHandles { get; protected set; } 
         public abstract ParameterizedThreadStart GetRunnable(int threadIndex);
         public virtual object Argument { get { return null; } }
     }
