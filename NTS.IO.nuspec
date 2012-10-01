@@ -30,7 +30,7 @@
     <file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.GDB.dll" target="lib\net35\NetTopologySuite.IO.GDB.dll" />
     <file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.GeoTools.dll" target="lib\net35\NetTopologySuite.IO.GeoTools.dll" />
     <file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.MsSqlSpatial.dll" target="lib\net35\NetTopologySuite.IO.MsSqlSpatial.dll" />
-    <file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.Oracle.dll" target="lib\net35\NetTopologySuite.IO.Oracle.dll" />
+    <!--<file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.Oracle.dll" target="lib\net35\NetTopologySuite.IO.Oracle.dll" />-->
     <file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.PostGis.dll" target="lib\net35\NetTopologySuite.IO.PostGis.dll" />
     <file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.ShapeFile.dll" target="lib\net35\NetTopologySuite.IO.ShapeFile.dll" />
     <file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.SpatiaLite.dll" target="lib\net35\NetTopologySuite.IO.SpatiaLite.dll" />
