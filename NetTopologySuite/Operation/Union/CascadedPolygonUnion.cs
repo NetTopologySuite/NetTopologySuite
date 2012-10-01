@@ -119,17 +119,22 @@ namespace NetTopologySuite.Operation.Union
 
         private IGeometry BinaryUnion(IList<IGeometry> geoms, int start, int end)
         {
+            IGeometry g0, g1;
             if (end - start <= 1)
             {
-                var g0 = GetGeometry(geoms, start);
+                g0 = GetGeometry(geoms, start);
                 return UnionSafe(g0, null);
             }
             if (end - start == 2)
                 return UnionSafe(GetGeometry(geoms, start), GetGeometry(geoms, start + 1));
 
+#if !WithWorker
             // recurse on both halves of the list
             var mid = (end + start) / 2;
-
+            g0 = BinaryUnion(geoms, start, mid);
+            g1 = BinaryUnion(geoms, mid, end);
+            return UnionSafe(g0, g1);
+#else
             //IGeometry g0 = BinaryUnion(geoms, start, mid);
             var worker0 = new Worker(this, geoms, start, mid);
             var t0 = new Thread(worker0.Execute);
@@ -145,8 +150,10 @@ namespace NetTopologySuite.Operation.Union
 
             //return UnionSafe(g0, g1);
             return UnionSafe(worker0.Geometry, worker1.Geometry);
-        }
+#endif
+            }
 
+#if WithWorker
         class Worker
         {
             private readonly CascadedPolygonUnion _tool;
@@ -174,7 +181,7 @@ namespace NetTopologySuite.Operation.Union
                 get { return _ret; }
             }
         }
-
+#endif
 
         private static IGeometry GetGeometry(IList<IGeometry> list, int index)
         {
@@ -255,7 +262,7 @@ namespace NetTopologySuite.Operation.Union
             return _geomFactory.BuildGeometry(intersectingGeoms);
         }
 
-        private IGeometry UnionActual(IGeometry g0, IGeometry g1)
+        private static IGeometry UnionActual(IGeometry g0, IGeometry g1)
         {
            return g0.Union(g1);
         }

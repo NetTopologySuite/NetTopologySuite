@@ -60,7 +60,7 @@ namespace NetTopologySuite.IO
             if (!File.Exists(dbfFile))
                 throw new FileNotFoundException(dbfFile + " not found");
             DbaseFileHeader header = new DbaseFileHeader();
-            header.ReadHeader(new BinaryReader(new FileStream(dbfFile, FileMode.Open, FileAccess.Read, FileShare.Read)));
+            header.ReadHeader(new BinaryReader(new FileStream(dbfFile, FileMode.Open, FileAccess.Read, FileShare.Read)), dbfFile);
             return header;
         }
 

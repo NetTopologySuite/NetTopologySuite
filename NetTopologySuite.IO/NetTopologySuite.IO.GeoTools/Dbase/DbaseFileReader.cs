@@ -93,7 +93,7 @@ namespace NetTopologySuite.IO
             {
                 _header = new DbaseFileHeader();
                 // read the header
-                _header.ReadHeader(_dbfStream);
+                _header.ReadHeader(_dbfStream, _parent._filename);
 
                 // how many records remain
                 _readPosition = _header.HeaderLength;
@@ -147,13 +147,17 @@ namespace NetTopologySuite.IO
                                 break;
 
                             case 'C':   // character record.
-                                char[] sbuffer = new char[tempFieldLength];
-                                sbuffer = _dbfStream.ReadChars(tempFieldLength);
-                                // use an encoding to ensure all 8 bits are loaded
-                                // tempObject = new string(sbuffer, "ISO-8859-1").Trim();								
 
-                                //HACK: this can be made more efficient
-                                tempObject = new string(sbuffer).Trim().Replace("\0", String.Empty);   //.ToCharArray();
+                                if (_header.Encoding == null)
+                                {
+                                    char[] sbuffer = _dbfStream.ReadChars(tempFieldLength);
+                                    tempObject = new string(sbuffer).Trim().Replace("\0", String.Empty);   //.ToCharArray();
+                                }
+                                else
+                                {
+                                    var buf = _dbfStream.ReadBytes(tempFieldLength);
+                                    tempObject = _header.Encoding.GetString(buf, 0, buf.Length).Trim();
+                                }                                
                                 break;
 
                             case 'D':   // date data type.
@@ -217,9 +221,9 @@ namespace NetTopologySuite.IO
             }
 
             #endregion
-
-           
         }
+           
+        
 
         private DbaseFileHeader _header = null;
         private string _filename;
