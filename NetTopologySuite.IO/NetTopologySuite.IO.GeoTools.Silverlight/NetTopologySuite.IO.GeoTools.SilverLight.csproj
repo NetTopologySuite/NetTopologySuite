@@ -143,6 +143,10 @@
       <Project>{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}</Project>
       <Name>NetTopologySuite.Data.Silverlight</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Silverlight\NetTopologySuite.Encodings\NetTopologySuite.Encodings.Silverlight.csproj">
+      <Project>{C7FA023B-0259-47C4-8051-EE7EB639DD39}</Project>
+      <Name>NetTopologySuite.Encodings.Silverlight</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Silverlight\NetTopologySuite\NetTopologySuite.Silverlight.csproj">
       <Project>{71FAD7D8-11F5-444B-B9F9-D2EFF68C8F26}</Project>
       <Name>NetTopologySuite.Silverlight</Name>

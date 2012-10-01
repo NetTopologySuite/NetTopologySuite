@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NetTopologySuite.IO</id>
-    <version>1.12.0</version>
+    <version>1.12.1</version>
     <title>NTS - Topology Suite - IO Libraries</title>
     <authors>NetTopologySuite - Team</authors>
     <owners>NetTopologySuite - Team</owners>
@@ -21,8 +21,8 @@
       <frameworkAssembly assemblyName="System.Core" targetFramework="" />
     </frameworkAssemblies>
     <dependencies>
-      <dependency id="GeoAPI" version="1.6.0" />
-      <dependency id="NetTopologySuite" version="1.12.0" />
+      <dependency id="GeoAPI" version="1.6.1" />
+      <dependency id="NetTopologySuite" version="1.12.1" />
       <dependency id="Microsoft.SqlServer.Types" version="10.50.1600.1" />
     </dependencies>
   </metadata>
@@ -30,7 +30,7 @@
     <file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.GDB.dll" target="lib\net35\NetTopologySuite.IO.GDB.dll" />
     <file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.GeoTools.dll" target="lib\net35\NetTopologySuite.IO.GeoTools.dll" />
     <file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.MsSqlSpatial.dll" target="lib\net35\NetTopologySuite.IO.MsSqlSpatial.dll" />
-    <file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.Oracle.dll" target="lib\net35\NetTopologySuite.IO.Oracle.dll" />
+    <!--<file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.Oracle.dll" target="lib\net35\NetTopologySuite.IO.Oracle.dll" />-->
     <file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.PostGis.dll" target="lib\net35\NetTopologySuite.IO.PostGis.dll" />
     <file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.ShapeFile.dll" target="lib\net35\NetTopologySuite.IO.ShapeFile.dll" />
     <file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.SpatiaLite.dll" target="lib\net35\NetTopologySuite.IO.SpatiaLite.dll" />

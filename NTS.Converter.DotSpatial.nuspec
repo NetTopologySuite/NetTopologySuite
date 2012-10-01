@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NetTopologySuite.DotSpatial.Converter</id>
-    <version>1.12.0</version>
+    <version>1.12.1</version>
     <title>NTS-DotSpatial GeometryConverter</title>
     <authors>NetTopologySuite - Team</authors>
     <owners>NetTopologySuite - Team</owners>
@@ -17,7 +17,7 @@
     <copyright>Copyright 2012</copyright>
     <language>en-US</language>
     <dependencies>
-      <dependency id="NetTopologySuite" version="1.12.0" />
+      <dependency id="NetTopologySuite" version="1.12.1" />
       <dependency id="DotSpatial.Topology" />
       <dependency id="DotSpatial.Data" />
     </dependencies>
