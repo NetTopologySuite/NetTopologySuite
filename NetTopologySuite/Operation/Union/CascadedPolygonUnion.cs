@@ -158,9 +158,10 @@ namespace NetTopologySuite.Operation.Union
         /// <returns>The union of the list section</returns>
         private IGeometry BinaryUnion(IList<IGeometry> geoms, int start, int end)
         {
+            IGeometry g0, g1;
             if (end - start <= 1)
             {
-                var g0 = GetGeometry(geoms, start);
+                g0 = GetGeometry(geoms, start);
                 return UnionSafe(g0, null);
             }
             if (end - start == 2)
@@ -169,6 +170,11 @@ namespace NetTopologySuite.Operation.Union
             // recurse on both halves of the list
             var mid = (end + start) / 2;
 
+#if !UseWorker
+            g0 = BinaryUnion(geoms, start, mid);
+            g1 = BinaryUnion(geoms, mid, end);
+            return UnionSafe(g0, g1);
+#else
             //IGeometry g0 = BinaryUnion(geoms, start, mid);
             var worker0 = new Worker(this, geoms, start, mid);
             var t0 = new Thread(worker0.Execute);
@@ -184,8 +190,10 @@ namespace NetTopologySuite.Operation.Union
 
             //return UnionSafe(g0, g1);
             return UnionSafe(worker0.Geometry, worker1.Geometry);
+#endif
         }
 
+#if UseWorker
         class Worker
         {
             private readonly CascadedPolygonUnion _tool;
@@ -213,6 +221,7 @@ namespace NetTopologySuite.Operation.Union
                 get { return _ret; }
             }
         }
+#endif
 
         /// <summary>
         /// Gets the element at a given list index, or
@@ -309,7 +318,7 @@ namespace NetTopologySuite.Operation.Union
 
             var union = UnionActual(g0Int, g1Int);
 
-            disjointPolys.Add(union);
+            if (union != null) disjointPolys.Add(union);
             var overallUnion = GeometryCombiner.Combine(disjointPolys);
 
             return overallUnion;
@@ -332,7 +341,7 @@ namespace NetTopologySuite.Operation.Union
         /// <summary>
         /// Encapsulates the actual unioning of two polygonal geometries.
         /// </summary>
-        private static IGeometry UnionActual(IGeometry g0, IGeometry g1)
+        private IGeometry UnionActual(IGeometry g0, IGeometry g1)
         {
             /*
             System.out.println(g0.getNumGeometries() + ", " + g1.getNumGeometries());
@@ -358,15 +367,20 @@ namespace NetTopologySuite.Operation.Union
         /// </summary>
         /// <param name="g">The geometry to filter</param>
         /// <returns>A polygonal geometry</returns>
-        private static IGeometry RestrictToPolygons(IGeometry g)
+        private IGeometry RestrictToPolygons(IGeometry g)
         {
             if (g is IPolygonal)
                 return g;
 
             var polygons = PolygonExtracter.GetPolygons(g);
-            if (polygons.Count == 1) 
-                return /*(IPolygon)*/ polygons[0];
-            return g.Factory.CreateMultiPolygon(GeometryFactory.ToPolygonArray(polygons));
+            switch (polygons.Count)
+            {
+                case 1:
+                    return /*(IPolygon)*/ polygons[0];
+                case 0:
+                    return null;//_geomFactory.CreatePolygon(null, null);
+            }
+            return _geomFactory.CreateMultiPolygon(GeometryFactory.ToPolygonArray(polygons));
         }
     }
 }

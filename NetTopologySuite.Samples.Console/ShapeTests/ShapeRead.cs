@@ -104,7 +104,7 @@ namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
                     Console.WriteLine(i + " " + gc.Geometries[i].Envelope);
            
                 // IsValidOp.CheckShellsNotNested molto lento nell'analisi di J == 7 (Poligono con 11600 punti)
-                ShapefileWriter sfw = new ShapefileWriter();
+                var sfw = new ShapefileWriter();
                 string write = Path.Combine(Path.GetTempPath(), "copy_countryCopy");
                 sfw.Write(write, gc);
                 Console.WriteLine("Write Complete!");
@@ -115,33 +115,30 @@ namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
             }
         }
 
-        private IGeometryCollection ReadShape(string shapepath)
+        private static IGeometryCollection ReadShape(string shapepath)
         {
             if (!File.Exists(shapepath))
                 throw new ArgumentException("File " + shapepath + " not found!");
 
-            ShapefileReader reader = new ShapefileReader(shapepath);             
-            IGeometryCollection geometries = reader.ReadAll();                  
+            var reader = new ShapefileReader(shapepath);             
+            var geometries = reader.ReadAll();                  
             return geometries;            
         }
 
-        private void WriteShape(IGeometryCollection geometries, string shapepath)
+        private static void WriteShape(IGeometryCollection geometries, string shapepath)
         {
             if (File.Exists(shapepath))
                 File.Delete(shapepath);
-            
-            ShapefileWriter writer = new ShapefileWriter();            
+
+            var writer = new ShapefileWriter();
             writer.Write(Path.GetFileNameWithoutExtension(shapepath), geometries);                 
         }
 
-        private void TestShapeReadWrite(string shapepath, string outputpath)
+        private static void TestShapeReadWrite(string shapepath, string outputpath)
         {
-            IGeometryCollection collection = null;
-            IGeometryCollection testcollection = null;
-
-            collection = ReadShape(shapepath);
+            var collection = ReadShape(shapepath);
             WriteShape(collection, outputpath);
-            testcollection = ReadShape(outputpath);
+            var testcollection = ReadShape(outputpath);
 
             if(!collection.EqualsExact(testcollection))
                 throw new ArgumentException("Geometries are not equals");

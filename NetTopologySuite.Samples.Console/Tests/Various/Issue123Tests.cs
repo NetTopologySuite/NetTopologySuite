@@ -45,5 +45,18 @@
             IGeometry result = op.Union();
             Assert.IsNotNull(result);
         }
+
+        [Test]
+        public void CascadedUnionError2()
+        {
+            var sf = new ShapefileReader(@"..\..\..\NetTopologySuite.Samples.Shapefiles\error_union.shp");
+            var geoms = sf.ReadAll();
+            
+            var union = geoms.Union();
+
+            Assert.IsNotNull(union);
+            Assert.IsFalse(union.AsText().Contains("POLYGON EMPTY"));
+            Assert.IsFalse(union.AsText().Contains("EMPTY"));
+        }
     }
 }
