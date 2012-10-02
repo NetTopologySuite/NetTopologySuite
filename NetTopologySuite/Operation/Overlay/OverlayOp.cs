@@ -557,7 +557,7 @@ namespace NetTopologySuite.Operation.Overlay
             IGeometry result = null;
             switch (ResultDimension(opCode, a, b))
             {
-                case Dimension.Dontcare:
+                case Dimension.False:
                     result = geomFact.CreateGeometryCollection(new IGeometry[0]);
                     break;
                 case Dimension.Point:

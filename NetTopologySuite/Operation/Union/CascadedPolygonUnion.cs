@@ -1,3 +1,4 @@
+//#define UseWorker
 using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
 using System.Threading;
@@ -42,7 +43,9 @@ namespace NetTopologySuite.Operation.Union
     {
         private readonly ICollection<IGeometry> _inputPolys;
         private IGeometryFactory _geomFactory;
-
+#if UseWorker
+        private int _numThreadsStarted = 0;
+#endif
         public static IGeometry Union(ICollection<IGeometry> polys)
         {
             var op = new CascadedPolygonUnion(polys);
@@ -88,6 +91,10 @@ namespace NetTopologySuite.Operation.Union
 
             var itemTree = index.ItemsTree();
             var unionAll = UnionTree(itemTree);
+            
+//#if UseWorker
+//            System.Diagnostics.Debug.WriteLine(string.Format("CascadedPolygonUnion:\nItemsTree {0}, Threads {1}", itemTree.Count, _numThreadsStarted));
+//#endif
             return unionAll;
         }
 
@@ -156,7 +163,7 @@ namespace NetTopologySuite.Operation.Union
         /// <param name="start">The start index of the section</param>
         /// <param name="end">The index after the end of the section</param>
         /// <returns>The union of the list section</returns>
-        private IGeometry BinaryUnion(IList<IGeometry> geoms, int start, int end)
+        private IGeometry BinaryUnion(IList<IGeometry> geoms, int start, int end, bool multiple = false)
         {
             IGeometry g0, g1;
             if (end - start <= 1)
@@ -178,10 +185,11 @@ namespace NetTopologySuite.Operation.Union
             //IGeometry g0 = BinaryUnion(geoms, start, mid);
             var worker0 = new Worker(this, geoms, start, mid);
             var t0 = new Thread(worker0.Execute);
-
+            _numThreadsStarted++;
             //IGeometry g1 = BinaryUnion(geoms, mid, end);
             var worker1 = new Worker(this, geoms, mid, end);
             var t1 = new Thread(worker1.Execute);
+            _numThreadsStarted++;
 
             t0.Start();
             t1.Start();
@@ -247,13 +255,14 @@ namespace NetTopologySuite.Operation.Union
         private IList<IGeometry> ReduceToGeometries(IList geomTree)
         {
             IList<IGeometry> geoms = new List<IGeometry>();
+            
             foreach (var o in geomTree)
             {
                 IGeometry geom = null;
                 if (o is IList)
                     geom = UnionTree((IList) o);
                 else if (o is IGeometry)
-                    geom = (Geometry) o;
+                    geom = (IGeometry) o;
                 geoms.Add(geom);
             }
             return geoms;
@@ -318,7 +327,7 @@ namespace NetTopologySuite.Operation.Union
 
             var union = UnionActual(g0Int, g1Int);
 
-            if (union != null) disjointPolys.Add(union);
+            disjointPolys.Add(union);
             var overallUnion = GeometryCombiner.Combine(disjointPolys);
 
             return overallUnion;
@@ -341,7 +350,7 @@ namespace NetTopologySuite.Operation.Union
         /// <summary>
         /// Encapsulates the actual unioning of two polygonal geometries.
         /// </summary>
-        private IGeometry UnionActual(IGeometry g0, IGeometry g1)
+        private static IGeometry UnionActual(IGeometry g0, IGeometry g1)
         {
             /*
             System.out.println(g0.getNumGeometries() + ", " + g1.getNumGeometries());
@@ -367,20 +376,15 @@ namespace NetTopologySuite.Operation.Union
         /// </summary>
         /// <param name="g">The geometry to filter</param>
         /// <returns>A polygonal geometry</returns>
-        private IGeometry RestrictToPolygons(IGeometry g)
+        private static IGeometry RestrictToPolygons(IGeometry g)
         {
             if (g is IPolygonal)
                 return g;
 
             var polygons = PolygonExtracter.GetPolygons(g);
-            switch (polygons.Count)
-            {
-                case 1:
+            if (polygons.Count == 1)
                     return /*(IPolygon)*/ polygons[0];
-                case 0:
-                    return null;//_geomFactory.CreatePolygon(null, null);
-            }
-            return _geomFactory.CreateMultiPolygon(GeometryFactory.ToPolygonArray(polygons));
+            return g.Factory.CreateMultiPolygon(GeometryFactory.ToPolygonArray(polygons));
         }
     }
 }
