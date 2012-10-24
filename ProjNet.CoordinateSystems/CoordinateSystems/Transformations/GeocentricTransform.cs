@@ -117,8 +117,17 @@ namespace ProjNet.CoordinateSystems.Transformations
 			ab = semiMajor / semiMinor;
 		}
 
+        public override int DimSource
+        {
+            get { return 3; }
+        }
 
-		/// <summary>
+        public override int DimTarget
+        {
+            get { return 3; }
+        }
+
+        /// <summary>
 		/// Returns the inverse of this conversion.
 		/// </summary>
 		/// <returns>IMathTransform that is the reverse of the current conversion.</returns>

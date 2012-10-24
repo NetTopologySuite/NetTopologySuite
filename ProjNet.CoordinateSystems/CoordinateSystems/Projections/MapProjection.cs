@@ -51,21 +51,32 @@ namespace ProjNet.CoordinateSystems.Projections
 	/// </summary>
 	internal abstract class MapProjection : MathTransform, IProjection
 	{
-		protected bool _isInverse = false;
-		protected double _es;
+		protected bool _isInverse;
+		
+        protected double _es;
 		protected double _semiMajor;
 		protected double _semiMinor;
 		protected double _metersPerUnit;
-		
+
+        protected readonly double scale_factor;	/* scale factor				*/
+        protected double central_meridian;	/* Center longitude (projection center) */
+        protected readonly double lat_origin;	/* center latitude			*/
+        protected readonly double false_northing;	/* y offset in meters			*/
+        protected readonly double false_easting;	/* x offset in meters			*/
+
+	    protected readonly double en0, en1, en2, en3, en4;
+
+
 		protected List<ProjectionParameter> _Parameters;
 		protected MathTransform _inverse;
 
         /// <summary>
-        /// 
+        /// Creates an instance of this class
         /// </summary>
-        /// <param name="parameters"></param>
-        /// <param name="isInverse"></param>
-		protected MapProjection(List<ProjectionParameter> parameters, bool isInverse) : this(parameters)
+        /// <param name="parameters">A list of parameters</param>
+        /// <param name="isInverse">Indicator if this porjecteion is inverse</param>
+		protected MapProjection(List<ProjectionParameter> parameters, bool isInverse) 
+            : this(parameters)
 		{
 			_isInverse = isInverse;
 		}
@@ -77,19 +88,63 @@ namespace ProjNet.CoordinateSystems.Projections
 		protected MapProjection(List<ProjectionParameter> parameters)
 		{
 			_Parameters = parameters;
-			// TODO: Should really convert to the correct linear units??
-			ProjectionParameter semimajor = GetParameter("semi_major");
-			ProjectionParameter semiminor = GetParameter("semi_minor");
-			if(semimajor == null)
-				throw new ArgumentException("Missing projection parameter 'semi_major'");
-			if (semiminor == null)
-				throw new ArgumentException("Missing projection parameter 'semi_minor'");
-			this._semiMajor = semimajor.Value;
-			this._semiMinor = semiminor.Value;
-			ProjectionParameter unit = GetParameter("unit");
-			_metersPerUnit = unit.Value;
-		
-			this._es = 1.0 - (_semiMinor * _semiMinor ) / ( _semiMajor * _semiMajor);			
+
+            // TODO: Should really convert to the correct linear units??
+			var parSemiMajor = GetParameter("semi_major");
+			var parSemiMinor = GetParameter("semi_minor");
+            var parScaleFactor = GetParameter("scale_factor");
+            
+            var parCentralMeridian = GetParameter("central_meridian") ?? 
+                                     GetParameter("longitude_of_center");
+
+            var parLatitudeOfOrigin = GetParameter("latitude_of_origin") ??
+                                      GetParameter("latitude_of_center");
+
+            var parFalseEasting = GetParameter("false_easting");
+            var parFalseNorthing = GetParameter("false_northing");
+
+            //Check for missing parameters
+            if (parSemiMajor == null)
+                throw new ArgumentException("Missing projection parameter 'semi_major'");
+            if (parSemiMinor == null)
+                throw new ArgumentException("Missing projection parameter 'semi_minor'");
+            if (parCentralMeridian == null)
+                parCentralMeridian = new ProjectionParameter("central_meridian", 0d);
+            if (parLatitudeOfOrigin == null)
+                throw new ArgumentException("Missing projection parameter 'latitude_of_origin'");
+            
+            if (parScaleFactor == null)
+                parScaleFactor = new ProjectionParameter("scale_factor", 1d);
+            if (parFalseEasting == null)
+                parFalseEasting = new ProjectionParameter("False_Easting", 0d);
+            if (parFalseNorthing == null)
+                parFalseNorthing = new ProjectionParameter("False_Northing", 0d);
+
+            scale_factor = parScaleFactor.Value;
+            central_meridian = Degrees2Radians(parCentralMeridian.Value);
+            lat_origin = Degrees2Radians(parLatitudeOfOrigin.Value);
+
+            _semiMajor = parSemiMajor.Value;
+			_semiMinor = parSemiMinor.Value;
+			var unit = GetParameter("unit");
+			
+            _metersPerUnit = unit.Value;
+
+            _es = 1.0 - (_semiMinor*_semiMinor)/(_semiMajor*_semiMajor);
+            false_easting = parFalseEasting.Value * _metersPerUnit;
+            false_northing = parFalseNorthing.Value * _metersPerUnit;
+            
+            //  Compute constants for the mlfn
+            double t;
+            en0 = C00 - _es * (C02 + _es *
+                 (C04 + _es * (C06 + _es * C08)));
+            en1 = _es * (C22 - _es *
+                 (C04 + _es * (C06 + _es * C08)));
+            en2 = (t = _es * _es) *
+                 (C44 - _es * (C46 + _es * C48));
+            en3 = (t *= _es) * (C66 - _es * C68);
+            en4 = t * _es * C88;
+
 		}
 	
 		#region Implementation of IProjection
@@ -97,11 +152,11 @@ namespace ProjNet.CoordinateSystems.Projections
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="Index"></param>
+        /// <param name="index"></param>
         /// <returns></returns>
-		public ProjectionParameter GetParameter(int Index)
+		public ProjectionParameter GetParameter(int index)
 		{
-			return this._Parameters[Index];
+			return this._Parameters[index];
 		}
 
 		/// <summary>
@@ -112,8 +167,7 @@ namespace ProjNet.CoordinateSystems.Projections
 		/// <returns>parameter or null if not found</returns>
 		public ProjectionParameter GetParameter(string name)
 		{
-			return _Parameters.Find(delegate(ProjectionParameter par)
-				{ return par.Name.Equals(name, StringComparison.OrdinalIgnoreCase); });
+			return _Parameters.Find(par => par.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
 		}
 
         /// <summary>
@@ -121,7 +175,7 @@ namespace ProjNet.CoordinateSystems.Projections
         /// </summary>
 		public int NumParameters
 		{
-			get { return this._Parameters.Count; }
+			get { return _Parameters.Count; }
 		}		
 
         /// <summary>
@@ -132,29 +186,29 @@ namespace ProjNet.CoordinateSystems.Projections
 			get { return this.ClassName; }
 		}
 
-		private string _Abbreviation;
+		private string _abbreviation;
 
 		/// <summary>
 		/// Gets or sets the abbreviation of the object.
 		/// </summary>
 		public string Abbreviation
 		{
-			get { return _Abbreviation; }
-			set { _Abbreviation = value; }
+			get { return _abbreviation; }
+			set { _abbreviation = value; }
 		}
 
-		private string _Alias;
+		private string _alias;
 
 		/// <summary>
 		/// Gets or sets the alias of the object.
 		/// </summary>
 		public string Alias
 		{
-			get { return _Alias; }
-			set { _Alias = value; }
+			get { return _alias; }
+			set { _alias = value; }
 		}
 
-		private string _Authority;
+		private string _authority;
 
 		/// <summary>
 		/// Gets or sets the authority name for this object, e.g., "EPSG",
@@ -163,40 +217,40 @@ namespace ProjNet.CoordinateSystems.Projections
 		/// </summary>
 		public string Authority
 		{
-			get { return _Authority; }
-			set { _Authority = value; }
+			get { return _authority; }
+			set { _authority = value; }
 		}
 
-		private long _Code;
+		private long _code;
 
 		/// <summary>
 		/// Gets or sets the authority specific identification code of the object
 		/// </summary>
 		public long AuthorityCode
 		{
-			get { return _Code; }
-			set { _Code = value; }
+			get { return _code; }
+			set { _code = value; }
 		}
 
-		private string _Name;
+		private string _name;
 
 		/// <summary>
 		/// Gets or sets the name of the object.
 		/// </summary>
 		public string Name
 		{
-			get { return _Name; }
-			set { _Name = value; }
+			get { return _name; }
+			set { _name = value; }
 		}
-		private string _Remarks;
+		private string _remarks;
 
 		/// <summary>
 		/// Gets or sets the provider-supplied remarks for the object.
 		/// </summary>
 		public string Remarks
 		{
-			get { return _Remarks; }
-			set { _Remarks = value; }
+			get { return _remarks; }
+			set { _remarks = value; }
 		}
 
 
@@ -208,7 +262,7 @@ namespace ProjNet.CoordinateSystems.Projections
 		{
 			get
 			{
-				StringBuilder sb = new StringBuilder();
+				var sb = new StringBuilder();
 				if (_isInverse)
 					sb.Append("INVERSE_MT[");
 				sb.AppendFormat("PARAM_MT[\"{0}\"", this.Name);
@@ -251,6 +305,16 @@ namespace ProjNet.CoordinateSystems.Projections
 
 		#region IMathTransform
 
+        public override int DimSource
+        {
+            get { return 2; }
+        }
+
+        public override int DimTarget
+        {
+            get { return 2; }
+        }
+
         public abstract double[] MetersToDegrees(double[] p);
         public abstract double[] DegreesToMeters(double[] lonlat);
 
@@ -278,24 +342,24 @@ namespace ProjNet.CoordinateSystems.Projections
         /// <param name="cp">The cp.</param>
         /// <returns></returns>
         public override double[] Transform(double[] cp)
-		{
-            double[] projectedPoint = new double[] { 0, 0, 0, };
-			if (!_isInverse)
-				 return this.DegreesToMeters(cp);				
-			else return this.MetersToDegrees(cp);
-		}
+        {
+            //var projectedPoint = new double[] { 0, 0, 0, };
+            return !_isInverse 
+                ? DegreesToMeters(cp) 
+                : MetersToDegrees(cp);
+        }
 
-        /// <summary>
+	    /// <summary>
         /// 
         /// </summary>
         /// <param name="ord"></param>
         /// <returns></returns>
         public override IList<double[]> TransformList(IList<double[]> ord)
 		{
-            List<double[]> result = new List<double[]>(ord.Count);
-			for (int i=0; i< ord.Count; i++)
+            var result = new List<double[]>(ord.Count);
+			for (var i=0; i< ord.Count; i++)
 			{
-                double[] point = ord[i];
+                var point = ord[i];
 				result.Add(Transform(point));
 			}
 			return result;
@@ -328,20 +392,18 @@ namespace ProjNet.CoordinateSystems.Projections
 		{
 			if (!(obj is MapProjection))
 				return false;
-			MapProjection proj = obj as MapProjection;
-			if (proj.NumParameters != this.NumParameters)
+			var proj = obj as MapProjection;
+			if (proj.NumParameters != NumParameters)
 				return false;
-			for (int i = 0; i < _Parameters.Count; i++)
+			for (var i = 0; i < _Parameters.Count; i++)
 			{
-				ProjectionParameter param = _Parameters.Find(delegate(ProjectionParameter par) { return par.Name.Equals(proj.GetParameter(i).Name, StringComparison.OrdinalIgnoreCase); });
+				var param = _Parameters.Find(par => par.Name.Equals(proj.GetParameter(i).Name, StringComparison.OrdinalIgnoreCase));
 				if (param == null)
 					return false;
 				if (param.Value != proj.GetParameter(i).Value)
 					return false;
 			}
-			if (this.IsInverse != proj.IsInverse)
-				return false;
-			return true;			
+			return IsInverse == proj.IsInverse;
 		}
 
 		#endregion
@@ -633,44 +695,56 @@ namespace ProjNet.CoordinateSystems.Projections
 			throw new ArgumentException("Convergence error - phi2z-conv");
 		}
 
-		///<summary>
+	    private const double C00 = 1.0,
+	                         C02 = 0.25,
+	                         C04 = 0.046875,
+	                         C06 = 0.01953125,
+	                         C08 = 0.01068115234375,
+	                         C22 = 0.75,
+	                         C44 = 0.46875,
+	                         C46 = 0.01302083333333333333,
+	                         C48 = 0.00712076822916666666,
+	                         C66 = 0.36458333333333333333,
+	                         C68 = 0.00569661458333333333,
+	                         C88 = 0.3076171875;
+        ///<summary>
 		///Functions to compute the constants e0, e1, e2, and e3 which are used
 		///in a series for calculating the distance along a meridian.  The
 		///input x represents the eccentricity squared.
 		///</summary>
-		protected static double e0fn(double x)
+        protected static double e0fn(double x)
 		{
-			return(1.0-0.25*x*(1.0+x/16.0*(3.0+1.25*x)));
+            return(1.0-0.25*x*(1.0+x/16.0*(3.0+1.25*x)));
 		}
 
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="x"></param>
+        /// <param name="x"></param>
 		/// <returns></returns>
-		protected static double e1fn(double x)
+        protected static double e1fn(double x)
 		{
-			return(0.375*x*(1.0+0.25*x*(1.0+0.46875*x)));
+            return(0.375*x*(1.0+0.25*x*(1.0+0.46875*x)));
 		}
 
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="x"></param>
+        /// <param name="x"></param>
 		/// <returns></returns>
 		protected static double e2fn(double x)
 		{
-			return(0.05859375*x*x*(1.0+0.75*x));
+            return(0.05859375*x*x*(1.0+0.75*x));
 		}
 
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="x"></param>
+        /// <param name="x"></param>
 		/// <returns></returns>
-		protected static double e3fn(double x)
+        protected static double e3fn(double x)
 		{
-			return(x*x*x*(35.0/3072.0));
+            return (x * x * x * (35.0 / 3072.0));
 		}
 
 		/// <summary>
@@ -691,12 +765,62 @@ namespace ProjNet.CoordinateSystems.Projections
 		/// Function computes the value of M which is the distance along a meridian
 		/// from the Equator to latitude phi.
 		/// </summary>
-		protected static double mlfn(double e0,double e1,double e2,double e3,double phi) 
+		protected static double mlfn(double e0, double e1,double e2,double e3,double phi) 
 		{
 			return(e0*phi-e1*Math.Sin(2.0*phi)+e2*Math.Sin(4.0*phi)-e3*Math.Sin(6.0*phi));
 		}
+            
+        /// <summary>
+        /// Calculates the meridian distance. This is the distance along the central 
+        /// meridian from the equator to <paramref name="phi"/>. Accurate to &lt; 1e-5 meters 
+        /// when used in conjuction with typical major axis values.
+        /// </summary>
+        /// <param name="phi"></param>
+        /// <param name="sphi"></param>
+        /// <param name="cphi"></param>
+        /// <returns></returns>
+        protected double mlfn(double phi, double sphi, double cphi)
+	    {
+	        cphi *= sphi;
+	        sphi *= sphi;
+	        return en0*phi - cphi*
+               en1 + sphi *
+                (en2 + sphi *
+                 (en3 + sphi *
+                  (en4)));
+	    }
 
-		/// <summary>
+    /**
+     * Calculates the latitude ({@code phi}) from a meridian distance.
+     * Determines phi to TOL (1e-11) radians, about 1e-6 seconds.
+     * 
+     * @param arg meridian distance to calulate latitude for.
+     * @return the latitude of the meridian distance.
+     * @throws ProjectionException if the itteration does not converge.
+     */
+    protected double inv_mlfn(double arg)
+    {
+        const double MLFN_TOL = 1E-11;
+        const int MAXIMUM_ITERATIONS = 20;
+        double s, t, phi, k = 1.0 / (1.0 - _es);
+        int i;
+        phi = arg;
+        for (i=MAXIMUM_ITERATIONS; true;) { // rarely goes over 5 iterations
+            if (--i < 0) {
+                throw new InvalidOperationException("No convergence");
+            }
+            s = Math.Sin(phi);
+            t = 1.0 - _es * s * s;
+            t = (mlfn(phi, s, Math.Cos(phi)) - arg) * (t * Math.Sqrt(t)) * k;
+            phi -= t;
+            if (Math.Abs(t) < MLFN_TOL) {
+                return phi;
+            }
+        }
+    }
+
+
+	    /// <summary>
 		/// Function to calculate UTM zone number--NOTE Longitude entered in DEGREES!!!
 		/// </summary>
 		protected static long calc_utm_zone(double lon)

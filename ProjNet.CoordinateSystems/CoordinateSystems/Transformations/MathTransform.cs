@@ -35,27 +35,21 @@ namespace ProjNet.CoordinateSystems.Transformations
 	{
 		#region IMathTransform Members
 
-		/// <summary>
-		/// Gets the dimension of input points.
-		/// </summary>
-		public virtual int DimSource
-		{
-			get { throw new NotImplementedException(); }
-		}
+	    /// <summary>
+	    /// Gets the dimension of input points.
+	    /// </summary>
+	    public abstract int DimSource { get; }
 
-		/// <summary>
-		/// Gets the dimension of output points.
-		/// </summary>
-		public virtual int DimTarget
-		{
-			get { throw new NotImplementedException(); }
-		}
+	    /// <summary>
+	    /// Gets the dimension of output points.
+	    /// </summary>
+	    public abstract int DimTarget { get; }
 
 		/// <summary>
 		/// Tests whether this transform does not move any points.
 		/// </summary>
 		/// <returns></returns>
-		public virtual bool Identity()
+		public virtual bool Identity() 
 		{
 			throw new NotImplementedException();
 		}

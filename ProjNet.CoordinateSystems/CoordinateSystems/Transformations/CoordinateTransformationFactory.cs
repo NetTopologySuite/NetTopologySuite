@@ -241,14 +241,15 @@ namespace ProjNet.CoordinateSystems.Transformations
 		}
 		private static IMathTransform CreateCoordinateOperation(IProjection projection, IEllipsoid ellipsoid, ILinearUnit unit)
 		{
-			List<ProjectionParameter> parameterList = new List<ProjectionParameter>(projection.NumParameters);
-			for (int i = 0; i < projection.NumParameters; i++)
+			var parameterList = new List<ProjectionParameter>(projection.NumParameters);
+			for (var i = 0; i < projection.NumParameters; i++)
 				parameterList.Add(projection.GetParameter(i));
 
 			parameterList.Add(new ProjectionParameter("semi_major", ellipsoid.SemiMajorAxis));
 			parameterList.Add(new ProjectionParameter("semi_minor", ellipsoid.SemiMinorAxis));
 			parameterList.Add(new ProjectionParameter("unit", unit.MetersPerUnit));
-			IMathTransform transform = null;
+			
+            IMathTransform transform;
 			switch (projection.ClassName.ToLower(CultureInfo.InvariantCulture).Replace(' ', '_'))
 			{
 				case "mercator":
@@ -267,9 +268,9 @@ namespace ProjNet.CoordinateSystems.Transformations
 				case "krovak":
 					transform = new KrovakProjection(parameterList);
 					break;
-                //case "polyconic":
-                //    transform = new PolyconicProjection(parameterList);
-                //    break;
+                case "polyconic":
+                    transform = new PolyconicProjection(parameterList);
+                    break;
                 case "lambert_conformal_conic":
 				case "lambert_conformal_conic_2sp":
 				case "lambert_conic_conformal_(2sp)":

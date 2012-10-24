@@ -29,10 +29,10 @@ namespace ProjNet.CoordinateSystems.Transformations
 	internal class DatumTransform : MathTransform
 	{
 		protected IMathTransform _inverse;
-		private Wgs84ConversionInfo _ToWgs94;
+		private readonly Wgs84ConversionInfo _toWgs94;
 		double[] v;
 
-		private bool _isInverse = false;
+		private bool _isInverse;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DatumTransform"/> class.
@@ -44,8 +44,8 @@ namespace ProjNet.CoordinateSystems.Transformations
 
 		private DatumTransform(Wgs84ConversionInfo towgs84, bool isInverse)
 		{
-			_ToWgs94 = towgs84;
-			v = _ToWgs94.GetAffineTransform();
+			_toWgs94 = towgs84;
+			v = _toWgs94.GetAffineTransform();
 			_isInverse = isInverse;
 		}
         /// <summary>
@@ -66,6 +66,16 @@ namespace ProjNet.CoordinateSystems.Transformations
 			get { throw new NotImplementedException(); }
 		}
 
+        public override int DimSource
+        {
+            get {  return 3; }
+        }
+
+        public override int DimTarget
+        {
+            get { return 3; }
+        }
+
         /// <summary>
         /// Creates the inverse transform of this object.
         /// </summary>
@@ -74,7 +84,7 @@ namespace ProjNet.CoordinateSystems.Transformations
 		public override IMathTransform Inverse()
 		{
 			if (_inverse == null)
-				_inverse = new DatumTransform(_ToWgs94,!_isInverse);
+				_inverse = new DatumTransform(_toWgs94,!_isInverse);
 			return _inverse;
 		}
 

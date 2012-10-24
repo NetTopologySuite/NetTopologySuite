@@ -84,7 +84,17 @@ namespace ProjNet.CoordinateSystems.Transformations
 
 		#endregion
 
-		/// <summary>
+        public override int DimSource
+        {
+            get { return _SourceGCS.Dimension; }
+        }
+
+        public override int DimTarget
+        {
+            get { return _TargetGCS.Dimension; }
+        }
+        
+        /// <summary>
 		/// Creates the inverse transform of this object.
 		/// </summary>
 		/// <remarks>This method may fail if the transform is not one to one. However, all cartographic projections should succeed.</remarks>

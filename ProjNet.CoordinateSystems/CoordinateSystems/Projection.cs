@@ -69,11 +69,11 @@ namespace ProjNet.CoordinateSystems
 		/// <summary>
 		/// Gets an indexed parameter of the projection.
 		/// </summary>
-		/// <param name="n">Index of parameter</param>
+		/// <param name="index">Index of parameter</param>
 		/// <returns>n'th parameter</returns>
-		public ProjectionParameter GetParameter(int n)
+		public ProjectionParameter GetParameter(int index)
 		{
-			return _Parameters[n];
+			return _Parameters[index];
 		}
 
 		/// <summary>

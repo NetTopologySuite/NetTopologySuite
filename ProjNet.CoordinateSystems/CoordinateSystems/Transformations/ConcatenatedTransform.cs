@@ -61,7 +61,17 @@ namespace ProjNet.CoordinateSystems.Transformations
 				_inverse = null;
 			}
 		}
-		
+
+        public override int DimSource
+        {
+            get { return _CoordinateTransformationList[0].SourceCS.Dimension; }
+        }
+
+        public override int DimTarget
+        {
+            get { return _CoordinateTransformationList[_CoordinateTransformationList.Count-1].TargetCS.Dimension; }
+        }
+
         /// <summary>
         /// Transforms a point
         /// </summary>
