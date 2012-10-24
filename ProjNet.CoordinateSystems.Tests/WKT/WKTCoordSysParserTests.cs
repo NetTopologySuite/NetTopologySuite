@@ -1,6 +1,7 @@
 using System;
-using System.Globalization;
 using System.IO;
+using GeoAPI.CoordinateSystems;
+using GeoAPI.CoordinateSystems.Transformations;
 using NUnit.Framework;
 using ProjNet.Converters.WellKnownText;
 using ProjNet.CoordinateSystems;
@@ -123,9 +124,9 @@ namespace ProjNet.UnitTests.Converters.WKT
 		{
 			CoordinateSystemFactory fac = new CoordinateSystemFactory();
 			int parsecount = 0;
-            foreach (SRIDReader.WKTstring wkt in SRIDReader.GetSRIDs())
+            foreach (SRIDReader.WktString wkt in SRIDReader.GetSrids())
             {
-                ICoordinateSystem cs = CoordinateSystemWktReader.Parse(wkt.WKT) as ICoordinateSystem;
+                ICoordinateSystem cs = CoordinateSystemWktReader.Parse(wkt.Wkt) as ICoordinateSystem;
                 Assert.IsNotNull(cs, "Could not parse WKT: " + wkt);
                 parsecount++;
             }

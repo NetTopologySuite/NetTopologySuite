@@ -1,44 +1,47 @@
 using System.Collections.Generic;
 using System.IO;
+using GeoAPI.CoordinateSystems;
 using ProjNet.Converters.WellKnownText;
-using ProjNet.CoordinateSystems;
 
 namespace ProjNet.UnitTests
 {
     internal class SRIDReader
     {
-        private const string filename = @"..\..\SRID.csv";
+        private const string Filename = @"..\..\SRID.csv";
 
-        public struct WKTstring {
+        public struct WktString {
             /// <summary>
             /// Well-known ID
             /// </summary>
-            public int WKID;
+            public int WktId;
             /// <summary>
             /// Well-known Text
             /// </summary>
-            public string WKT;
+            public string Wkt;
         }
 
         /// <summary>
         /// Enumerates all SRID's in the SRID.csv file.
         /// </summary>
         /// <returns>Enumerator</returns>
-        public static IEnumerable<WKTstring> GetSRIDs()
+        public static IEnumerable<WktString> GetSrids()
         {
-            using (StreamReader sr = File.OpenText(filename))
+            using (var sr = File.OpenText(Filename))
             {
                 while (!sr.EndOfStream)
                 {
-                    string line = sr.ReadLine();
-                    int split = line.IndexOf(';');
-                    if (split > -1)
-                    {
-                        WKTstring wkt = new WKTstring();
-                        wkt.WKID = int.Parse(line.Substring(0, split));
-                        wkt.WKT = line.Substring(split + 1);
-                        yield return wkt;
-                    }
+                    var line = sr.ReadLine();
+                    if (string.IsNullOrEmpty(line)) continue;
+
+                    var split = line.IndexOf(';');
+                    if (split <= -1) continue;
+
+                    var wkt = new WktString
+                                  { 
+                                      WktId = int.Parse(line.Substring(0, split)), 
+                                      Wkt = line.Substring(split + 1)
+                                  };
+                    yield return wkt;
                 }
                 sr.Close();
             }
@@ -50,12 +53,11 @@ namespace ProjNet.UnitTests
         /// <returns>Coordinate system, or null if SRID was not found.</returns>
         public static ICoordinateSystem GetCSbyID(int id)
         {
-   			CoordinateSystemFactory fac = new CoordinateSystemFactory();
-            foreach (WKTstring wkt in GetSRIDs())
+            foreach (var wkt in GetSrids())
             {
-                if (wkt.WKID == id)
+                if (wkt.WktId == id)
                 {
-                    return CoordinateSystemWktReader.Parse(wkt.WKT) as ICoordinateSystem;
+                    return CoordinateSystemWktReader.Parse(wkt.Wkt) as ICoordinateSystem;
                 }
             }
             return null;
