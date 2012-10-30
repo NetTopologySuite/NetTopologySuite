@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+
+#if NTSREPORT
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
+#endif
 
 namespace NetTopologySuite.Index.IntervalRTree
 {
@@ -25,8 +27,9 @@ namespace NetTopologySuite.Index.IntervalRTree
     /// </remarks>
     public class SortedPackedIntervalRTree<T>
     {
+        private readonly object _leavesLock = new object();
         private readonly List<IntervalRTreeNode<T>> _leaves = new List<IntervalRTreeNode<T>>();
-        private IntervalRTreeNode<T>_root;
+        private volatile IntervalRTreeNode<T> _root;
 
         ///<summary>
         /// Adds an item to the index which is associated with the given interval
@@ -44,8 +47,16 @@ namespace NetTopologySuite.Index.IntervalRTree
 
         private void Init()
         {
+            //1st check
             if (_root != null) return;
-            _root = BuildTree();
+            lock (_leavesLock)
+            {
+                //2nd check
+                if (_root == null)
+                {
+                    _root = BuildTree();
+                }
+            }
         }
 
         private IntervalRTreeNode<T> BuildTree()
@@ -55,50 +66,50 @@ namespace NetTopologySuite.Index.IntervalRTree
 
             // now group nodes into blocks of two and build tree up recursively
             var src = _leaves;
-            List<IntervalRTreeNode<T>> temp;
-            List<IntervalRTreeNode<T>> dest = new List<IntervalRTreeNode<T>>();
+            var dest = new List<IntervalRTreeNode<T>>();
 
+            var level = 0;
             while (true)
             {
-                BuildLevel(src, dest);
+                BuildLevel(src, dest, ref level);
                 if (dest.Count == 1)
                     return dest[0];
 
-                temp = src;
+                var temp = src;
                 src = dest;
                 dest = temp;
             }
         }
 
-        private int _level;
-
-        private void BuildLevel(List<IntervalRTreeNode<T>> src, List<IntervalRTreeNode<T>> dest)
+        private static void BuildLevel(List<IntervalRTreeNode<T>> src, List<IntervalRTreeNode<T>> dest, ref int level)
         {
-            _level++;
+            level++;
             dest.Clear();
             for (int i = 0; i < src.Count; i += 2)
             {
-                IntervalRTreeNode<T> n1 = src[i];
-                IntervalRTreeNode<T> n2 = (i + 1 < src.Count) ? src[i] : null;
+                var n1 = src[i];
+                var n2 = (i + 1 < src.Count) ? src[i] : null;
                 if (n2 == null)
                 {
                     dest.Add(n1);
                 }
                 else
                 {
-                    IntervalRTreeNode<T> node =
-                        new IntervalRTreeBranchNode<T>(src[i], src[i + 1]);
-                    //        printNode(node);
-                    //				System.out.println(node);
+                    var node = new IntervalRTreeBranchNode<T>(src[i], src[i + 1]);
+#if NTSREPORT
+                    //PrintNode(node, level);
+#endif
                     dest.Add(node);
                 }
             }
         }
 
-        private void PrintNode(IntervalRTreeNode<T> node)
+#if NTSREPORT
+        private void PrintNode(IntervalRTreeNode<T> node, int level)
         {
-            Console.WriteLine(WKTWriter.ToLineString(new Coordinate(node.Min, _level), new Coordinate(node.Max, _level)));
+            Console.WriteLine(WKTWriter.ToLineString(new Coordinate(node.Min, level), new Coordinate(node.Max, level)));
         }
+#endif
 
         ///<summary>
         /// Search for intervals in the index which intersect the given closed interval
