@@ -63,6 +63,16 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
         }
 
         [Test]
+        public void TestCollapse2()
+        {
+            string[] collapse2 = {
+                "LINESTRING ( 393 175, 391 173, 390 175, 391 174, 391 173 )"
+                };
+            RunRounding(collapse2);
+        }
+  
+
+        [Test]
         public void TestBadNoding1() {
             string[] badNoding1 = {
                 "LINESTRING ( 76 47, 81 52, 81 53, 85 57, 88 62, 89 64, 57 80, 82 55, 101 74, 76 99, 92 67, 94 68, 99 71, 103 75, 139 111 )"

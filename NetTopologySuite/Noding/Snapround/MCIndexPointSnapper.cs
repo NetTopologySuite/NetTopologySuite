@@ -139,12 +139,11 @@ namespace NetTopologySuite.Noding.Snapround
                 {
                     if (ss == _parentEdge && 
                         (startIndex == _hotPixelVertexIndex 
-//                              || startIndex + 1 == _hotPixelVertexIndex
+                              || startIndex + 1 == _hotPixelVertexIndex
                               ))
                         return;
                 }
-                //_isNodeAdded = SimpleSnapRounder.addSnappedNode(hotPixel, ss, startIndex);
-                _isNodeAdded = _hotPixel.AddSnappedNode(ss, startIndex);
+                _isNodeAdded = _isNodeAdded || _hotPixel.AddSnappedNode(ss, startIndex);
             }
         }
     }
