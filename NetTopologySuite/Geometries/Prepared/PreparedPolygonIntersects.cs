@@ -21,7 +21,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if the polygon intersects the geometry</returns>
         public static bool Intersects(PreparedPolygon prep, IGeometry geom)
         {
-            PreparedPolygonIntersects polyInt = new PreparedPolygonIntersects(prep);
+            var polyInt = new PreparedPolygonIntersects(prep);
             return polyInt.Intersects(geom);
         }
 

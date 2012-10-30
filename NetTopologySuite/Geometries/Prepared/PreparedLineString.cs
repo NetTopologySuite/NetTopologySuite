@@ -5,11 +5,13 @@ namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
     /// A prepared version for <see cref="ILineal"/> geometries.
+    /// <para>Instances of this class are thread-safe</para>.
     ///</summary>
     /// <author>mbdavis</author>
     public class PreparedLineString : BasicPreparedGeometry
     {
-        private FastSegmentSetIntersectionFinder _segIntFinder;
+        private readonly object _lock = new object();
+        private volatile FastSegmentSetIntersectionFinder _segIntFinder;
 
         public PreparedLineString(ILineal line)
             : base((IGeometry)line)
@@ -21,14 +23,20 @@ namespace NetTopologySuite.Geometries.Prepared
             get
             {
                 /*
-                 * MD - Another option would be to use a simple scan for 
-                 * segment testing for small geometries.  
-                 * However, testing indicates that there is no particular advantage 
+                 * MD - Another option would be to use a simple scan for
+                 * segment testing for small geometries.
+                 * However, testing indicates that there is no particular advantage
                  * to this approach.
                  */
                 if (_segIntFinder == null)
-                    _segIntFinder =
-                        new FastSegmentSetIntersectionFinder(SegmentStringUtil.ExtractSegmentStrings(Geometry));
+                {
+                    lock (_lock)
+                    {
+                        if (_segIntFinder == null)
+                            _segIntFinder = new FastSegmentSetIntersectionFinder(SegmentStringUtil.ExtractSegmentStrings(Geometry));
+                    }
+                }
+
                 return _segIntFinder;
             }
         }

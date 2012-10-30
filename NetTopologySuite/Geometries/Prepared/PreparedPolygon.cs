@@ -17,8 +17,9 @@ namespace NetTopologySuite.Geometries.Prepared
     {
         private readonly bool _isRectangle;
         // create these lazily, since they are expensive
-        private FastSegmentSetIntersectionFinder _segIntFinder;
-        private IPointOnGeometryLocator _pia;
+        private readonly object _lockSif = new object(), _lockPia = new object();
+        private volatile FastSegmentSetIntersectionFinder _segIntFinder;
+        private volatile IPointOnGeometryLocator _pia;
 
         public PreparedPolygon(IPolygonal poly)
             : base((IGeometry)poly)
@@ -37,8 +38,14 @@ namespace NetTopologySuite.Geometries.Prepared
                  * to this approach.
                  */
                 if (_segIntFinder == null)
-                    _segIntFinder =
-                        new FastSegmentSetIntersectionFinder(SegmentStringUtil.ExtractSegmentStrings(Geometry));
+                {
+                    lock (_lockSif)
+                    {
+                        if (_segIntFinder == null)
+                            _segIntFinder = new FastSegmentSetIntersectionFinder(SegmentStringUtil.ExtractSegmentStrings(Geometry));
+                    }
+                }
+
                 return _segIntFinder;
             }
         }
@@ -48,7 +55,13 @@ namespace NetTopologySuite.Geometries.Prepared
             get
             {
                 if (_pia == null)
-                    _pia = new IndexedPointInAreaLocator(Geometry);
+                {
+                    lock (_lockPia)
+                    {
+                        if (_pia == null)
+                            _pia = new IndexedPointInAreaLocator(Geometry);
+                    }
+                }
 
                 return _pia;
             }

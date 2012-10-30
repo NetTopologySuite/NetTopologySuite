@@ -4,6 +4,7 @@ namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
     /// A prepared version for <see cref="IPuntal"/> geometries.
+    /// <para>Instances of this class are thread-safe.</para>
     ///</summary>
     /// <author>Martin Davis</author>
     public class PreparedPoint : BasicPreparedGeometry
