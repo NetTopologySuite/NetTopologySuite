@@ -137,10 +137,10 @@ namespace NetTopologySuite.Index.Chain
         }
 
         /// <summary>
-        /// Returns a part of the monotone chain as <see cref="LineSegment"/>
+        /// Gets the line segment starting at <paramref name="index"/>
         /// </summary>
-        /// <param name="index"></param>
-        /// <param name="ls"></param>
+        /// <param name="index">The index of the segment</param>
+        /// <param name="ls">The line segment to extract to</param>
         public void GetLineSegment(int index, ref LineSegment ls)
         {
             ls.P0 = _pts[index];

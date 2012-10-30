@@ -62,12 +62,12 @@ namespace NetTopologySuite.Noding.Snapround
         /// </summary>
         /// <param name="hotPixel">The hot pixel to snap to.</param>
         /// <param name="parentEdge">The edge containing the vertex, if applicable, or <c>null</c>.</param>
-        /// <param name="vertexIndex"></param>
+        /// <param name="hotPixelVertexIndex"></param>
         /// <returns><c>true</c> if a node was added for this pixel.</returns>
-        public bool Snap(HotPixel hotPixel, ISegmentString parentEdge, int vertexIndex)
+        public bool Snap(HotPixel hotPixel, ISegmentString parentEdge, int hotPixelVertexIndex)
         {
-            Envelope pixelEnv = hotPixel.GetSafeEnvelope();
-            HotPixelSnapAction hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, vertexIndex);
+            var pixelEnv = hotPixel.GetSafeEnvelope();
+            var hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, hotPixelVertexIndex);
             _index.Query(pixelEnv, new QueryVisitor(pixelEnv, hotPixelSnapAction));
             return hotPixelSnapAction.IsNodeAdded;
         }
@@ -89,7 +89,8 @@ namespace NetTopologySuite.Noding.Snapround
         {
             private readonly HotPixel _hotPixel;
             private readonly ISegmentString _parentEdge;
-            private readonly int _vertexIndex;
+            // is -1 if hotPixel is not a vertex
+            private readonly int _hotPixelVertexIndex;
             private bool _isNodeAdded;
 
             /// <summary>
@@ -97,12 +98,12 @@ namespace NetTopologySuite.Noding.Snapround
             /// </summary>
             /// <param name="hotPixel"></param>
             /// <param name="parentEdge"></param>
-            /// <param name="vertexIndex"></param>
-            public HotPixelSnapAction(HotPixel hotPixel, ISegmentString parentEdge, int vertexIndex)
+            /// <param name="hotPixelVertexIndex"></param>
+            public HotPixelSnapAction(HotPixel hotPixel, ISegmentString parentEdge, int hotPixelVertexIndex)
             {
                 _hotPixel = hotPixel;
                 _parentEdge = parentEdge;
-                _vertexIndex = vertexIndex;
+                _hotPixelVertexIndex = hotPixelVertexIndex;
             }
 
             /// <summary>
@@ -124,10 +125,24 @@ namespace NetTopologySuite.Noding.Snapround
             public override void Select(MonotoneChain mc, int startIndex)
             {
                 var ss = (INodableSegmentString) mc.Context;
-                // don't snap a vertex to itself
-                if (_parentEdge != null) 
-                    if (ss == _parentEdge && startIndex == _vertexIndex)
+                /**
+                 * Check to avoid snapping a hotPixel vertex to the same vertex.
+                 * This method is called for segments which intersects the 
+                 * hot pixel,
+                 * so need to check if either end of the segment is equal to the hot pixel
+                 * and if so, do not snap.
+                 * 
+                 * Sep 22 2012 - MD - currently do need to snap to every vertex,
+                 * since otherwise the testCollapse1 test in SnapRoundingTest fails.
+                 */
+                if (_parentEdge != null)
+                {
+                    if (ss == _parentEdge && 
+                        (startIndex == _hotPixelVertexIndex 
+//                              || startIndex + 1 == _hotPixelVertexIndex
+                              ))
                         return;
+                }
                 //_isNodeAdded = SimpleSnapRounder.addSnappedNode(hotPixel, ss, startIndex);
                 _isNodeAdded = _hotPixel.AddSnappedNode(ss, startIndex);
             }

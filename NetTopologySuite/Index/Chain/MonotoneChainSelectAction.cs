@@ -20,18 +20,20 @@ namespace NetTopologySuite.Index.Chain
         public LineSegment SelectedSegment = new LineSegment();
 
         /// <summary> 
-        /// This function can be overridden if the original chain is needed.
+        /// This method is overridden to process a segment 
+        /// in the context of the parent chain.
         /// </summary>
-        /// <param name="mc"></param>
-        /// <param name="start"></param>
-        public virtual void Select(MonotoneChain mc, int start)
+        /// <param name="mc">The parent chain</param>
+        /// <param name="startIndex">The index of the start vertex of the segment being processed</param>
+        public virtual void Select(MonotoneChain mc, int startIndex)
         {
-            mc.GetLineSegment(start, ref SelectedSegment);
+            mc.GetLineSegment(startIndex, ref SelectedSegment);
+            // call this routine in case select(segmenet) was overridden
             Select(SelectedSegment);
         }
 
         /// <summary>
-        /// This is a convenience function which can be overridden to obtain the actual
+        /// This is a convenience method which can be overridden to obtain the actual
         /// line segment which is selected.
         /// </summary>
         /// <param name="seg"></param>
