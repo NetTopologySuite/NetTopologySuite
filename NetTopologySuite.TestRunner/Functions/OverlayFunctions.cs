@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using GeoAPI.Geometries;
+using Open.Topology.TestRunner.Utility;
 
 namespace Open.Topology.TestRunner.Functions
 {
@@ -33,5 +35,25 @@ namespace Open.Topology.TestRunner.Functions
         {
             return a.Union();
         }
+
+        public static IGeometry unionUsingGeometryCollection(IGeometry a, IGeometry b)
+        {
+            var gc = a.Factory.CreateGeometryCollection(
+                new[] {a, b});
+            return gc.Union();
+        }
+
+        public static IGeometry clip(IGeometry a, IGeometry mask)
+        {
+            var geoms = new List<IGeometry>();
+            for (var i = 0; i < a.NumGeometries; i++)
+            {
+                var clip = a.GetGeometryN(i).Intersection(mask);
+                geoms.Add(clip);
+            }
+            return FunctionsUtil.BuildGeometry(geoms, a);
+        }
+
     }
+
 }
