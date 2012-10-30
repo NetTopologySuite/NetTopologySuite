@@ -367,226 +367,235 @@ namespace NetTopologySuite.Geometries
             return this;
         }
 
-        /// <summary> 
-        /// Returns false if the <c>Geometry</c> not simple.
-        /// Subclasses provide their own definition of "simple". If
-        /// this <c>Geometry</c> is empty, returns <c>true</c>. 
-        /// In general, the SFS specifications of simplicity seem to follow the
-        /// following rule:
-        ///  A Geometry is simple if the only self-intersections are at boundary points.
-        /// For all empty <c>Geometry</c>s, <c>IsSimple==true</c>.
-        /// </summary>
-        /// <returns>    
-        /// <c>true</c> if this <c>Geometry</c> has any points of
+        /// <summary>
+        /// Tests whether this <see cref="IGeometry"/> is simple.
+        /// <para/>
+        /// The SFS definition of simplicity
+        /// follows the general rule that a Geometry is simple if it has no points of
         /// self-tangency, self-intersection or other anomalous points.
-        /// </returns>
-        //public abstract bool IsSimple { get; }
-        public bool IsSimple
-        {
-            get
-            {
-                var isSimpleOp = new IsSimpleOp(this);
-                return isSimpleOp.IsSimple();
-            }
-        }
-
-        /// <summary>  
-        /// Tests whether this <c>Geometry</c> is topologically 
-        /// valid, according to the OGC SFS specification.<para/>
-        /// For validity rules see the documentation for the specific geometry subclass.
-        /// </summary>
-        /// <returns><c>true</c> if this <c>Geometry</c> is valid.</returns>
-        public virtual bool IsValid
-        {
-            get
-            {
-                return new IsValidOp(this).IsValid;
-            }
-        }
-
-        /// <summary> 
-        /// Tests whether the set of points covered in this <c>Geometry</c> is empty.
-        /// </summary>
-        /// <returns><c>true</c> if this <c>Geometry</c> does not cover any points.</returns>
-        public abstract bool IsEmpty { get; }
-
-        /// <summary>  
-        /// Returns the minimum distance between this <c>Geometry</c>
-        /// and another <c>Geometry</c> g.
-        /// </summary>
-        /// <param name="g">The <c>Geometry</c> from which to compute the distance.</param>
-        /// <returns>The distance between the geometries</returns>
-        /// <returns>0 if either input geometry is empty</returns>
-        /// <exception cref="ArgumentException">if g is null</exception>
-        public double Distance(IGeometry g)
-        {
-            return DistanceOp.Distance(this, g);
-        }
-
-        /// <summary> 
-        /// Tests whether the distance from this <c>Geometry</c>
-        /// to another is less than or equal to a specified value.
-        /// </summary>
-        /// <param name="geom">the Geometry to check the distance to.</param>
-        /// <param name="distance">the distance value to compare.</param>
-        /// <returns><c>true</c> if the geometries are less than <c>distance</c> apart.</returns>
-        public bool IsWithinDistance(IGeometry geom, double distance)
-        {
-            double envDist = EnvelopeInternal.Distance(geom.EnvelopeInternal);            
-            if (envDist > distance)
-                return false;
-            return DistanceOp.IsWithinDistance(this, geom, distance);            
-        }
-
-        /// <summary>  
-        /// Returns the area of this <c>Geometry</c>.
-        /// Areal Geometries have a non-zero area.
-        /// They override this function to compute the area.
-        /// Others return 0.0
-        /// </summary>
-        /// <returns>The area of the Geometry.</returns>
-        public virtual double Area
-        {
-            get
-            {
-                return 0.0;
-            }
-        }
-
-        /// <summary> 
-        /// Returns the length of this <c>Geometry</c>.
-        /// Linear geometries return their length.
-        /// Areal geometries return their perimeter.
-        /// They override this function to compute the length.
-        /// Others return 0.0
-        /// </summary>
-        /// <returns>The length of the Geometry.</returns>
-        public virtual double Length
-        {
-            get
-            {
-                return 0.0;
-            }
-        }
-
-        /// <summary> 
-        /// Computes the centroid of this <c>Geometry</c>.
-        /// The centroid 
-        /// is equal to the centroid of the set of component Geometries of highest
-        /// dimension (since the lower-dimension geometries contribute zero 
-        /// "weight" to the centroid).
         /// <para/>
-        /// The centroid of an empty geometry is <c>POINT EMPTY</c>.
+        /// Simplicity is defined for each <see cref="IGeometry"/> subclass as follows:
+        /// <list type="Bullet">
+        /// <item>Valid polygonal geometries are simple, since their rings
+        /// must not self-intersect. <c>IsSimple</c>
+        /// tests for this condition and reports <code>false</code> if it is not met.
+        /// (This is a looser test than checking for validity).</item>
+        /// <item>Linear rings have the same semantics.</item>
+        /// <item>Linear geometries are simple iff they do not self-intersect at points
+        /// other than boundary points.</item>
+        /// <item>Zero-dimensional geometries (points) are simple iff they have no
+        /// repeated points.</item>
+        /// <item>Empty <code>Geometry</code>s are always simple.</item>
+        /// </list>
         /// </summary>
-        /// <returns>A Point which is the centroid of this Geometry.</returns>
-        public IPoint Centroid
-        {
-            get
-            {
-                if (IsEmpty)
-                {
-                    return Factory.CreatePoint((Coordinate)null);
-                }
+        /// <returns><c>true</c> if this <code>Geometry</code> is simple</returns>
+        /// <seealso cref="IsValid"/>
+              public bool IsSimple
+              {
+                  get
+                  {
+                      var isSimpleOp = new IsSimpleOp(this);
+                      return isSimpleOp.IsSimple();
+                  }
+              }
 
-                Coordinate centPt = null;
-                Dimension dim = Dimension;
-                if (dim == Dimension.Point)
-                {
-                    CentroidPoint cent = new CentroidPoint();
-                    cent.Add(this);
-                    centPt = cent.Centroid;
-                }
-                else if (dim == Dimension.Curve)
-                {
-                    CentroidLine cent = new CentroidLine();
-                    cent.Add(this);
-                    centPt = cent.Centroid;
-                }
-                else
-                {
-                    CentroidArea cent = new CentroidArea();
-                    cent.Add(this);
-                    centPt = cent.Centroid;
-                }
-                return CreatePointFromInternalCoord(centPt, this);
-            }
-        }
+              /// <summary>  
+              /// Tests whether this <c>Geometry</c> is topologically 
+              /// valid, according to the OGC SFS specification.<para/>
+              /// For validity rules see the documentation for the specific geometry subclass.
+              /// </summary>
+              /// <returns><c>true</c> if this <c>Geometry</c> is valid.</returns>
+              public virtual bool IsValid
+              {
+                  get
+                  {
+                      return new IsValidOp(this).IsValid;
+                  }
+              }
 
-        /// <summary>
-        /// Computes an interior point of this <c>Geometry</c>.
-        /// </summary>
-        /// <remarks>
-        /// An interior point is guaranteed to lie in the interior of the Geometry,
-        /// if it possible to calculate such a point exactly. Otherwise,
-        /// the point may lie on the boundary of the point.
-        /// <para/>
-        /// The interior point of an empty geometry is <c>POINT EMPTY</c>.
-        /// </remarks>
-        /// <returns>A <c>Point</c> which is in the interior of this Geometry.</returns>
-        public IPoint InteriorPoint
-        {
-            get
-            {
-                Coordinate interiorPt = null;
-                Dimension dim = Dimension;
-                if (dim == Dimension.Point)
-                {
-                    InteriorPointPoint intPt = new InteriorPointPoint(this);
-                    interiorPt = intPt.InteriorPoint;
-                }
-                else if (dim == Dimension.Curve)
-                {
-                    InteriorPointLine intPt = new InteriorPointLine(this);
-                    interiorPt = intPt.InteriorPoint;
-                }
-                else
-                {
-                    InteriorPointArea intPt = new InteriorPointArea(this);
-                    interiorPt = intPt.InteriorPoint;
-                }
-                return CreatePointFromInternalCoord(interiorPt, this);
-            }
-        }
+              /// <summary> 
+              /// Tests whether the set of points covered in this <c>Geometry</c> is empty.
+              /// </summary>
+              /// <returns><c>true</c> if this <c>Geometry</c> does not cover any points.</returns>
+              public abstract bool IsEmpty { get; }
 
-        /// <summary>
-        /// <see cref="InteriorPoint" />
-        /// </summary>
-        public IPoint PointOnSurface
-        {
-            get
-            {
-                return InteriorPoint;
-            }
-        }
+              /// <summary>  
+              /// Returns the minimum distance between this <c>Geometry</c>
+              /// and another <c>Geometry</c> g.
+              /// </summary>
+              /// <param name="g">The <c>Geometry</c> from which to compute the distance.</param>
+              /// <returns>The distance between the geometries</returns>
+              /// <returns>0 if either input geometry is empty</returns>
+              /// <exception cref="ArgumentException">if g is null</exception>
+              public double Distance(IGeometry g)
+              {
+                  return DistanceOp.Distance(this, g);
+              }
 
-        private Dimension _dimension;
+              /// <summary> 
+              /// Tests whether the distance from this <c>Geometry</c>
+              /// to another is less than or equal to a specified value.
+              /// </summary>
+              /// <param name="geom">the Geometry to check the distance to.</param>
+              /// <param name="distance">the distance value to compare.</param>
+              /// <returns><c>true</c> if the geometries are less than <c>distance</c> apart.</returns>
+              public bool IsWithinDistance(IGeometry geom, double distance)
+              {
+                  double envDist = EnvelopeInternal.Distance(geom.EnvelopeInternal);            
+                  if (envDist > distance)
+                      return false;
+                  return DistanceOp.IsWithinDistance(this, geom, distance);            
+              }
 
-        /// <summary> 
-        /// Returns the dimension of this geometry.
-        /// </summary>
-        /// <remarks>
-        /// The dimension of a geometry is is the topological 
-        /// dimension of its embedding in the 2-D Euclidean plane.
-        /// In the NTS spatial model, dimension values are in the set {0,1,2}.
-        /// <para>
-        /// Note that this is a different concept to the dimension of 
-        /// the vertex <see cref="Coordinate"/>s.
-        /// The geometry dimension can never be greater than the coordinate dimension.
-        /// For example, a 0-dimensional geometry (e.g. a Point) 
-        /// may have a coordinate dimension of 3 (X,Y,Z). 
-        /// </para>
-        /// </remarks>
-        /// <returns>  
-        /// The topological dimensions of this geometry
-        /// </returns>
-        public virtual Dimension Dimension
-        {
-            get { return _dimension; }
-            set { _dimension = value; }
-        }
+              /// <summary>  
+              /// Returns the area of this <c>Geometry</c>.
+              /// Areal Geometries have a non-zero area.
+              /// They override this function to compute the area.
+              /// Others return 0.0
+              /// </summary>
+              /// <returns>The area of the Geometry.</returns>
+              public virtual double Area
+              {
+                  get
+                  {
+                      return 0.0;
+                  }
+              }
+
+              /// <summary> 
+              /// Returns the length of this <c>Geometry</c>.
+              /// Linear geometries return their length.
+              /// Areal geometries return their perimeter.
+              /// They override this function to compute the length.
+              /// Others return 0.0
+              /// </summary>
+              /// <returns>The length of the Geometry.</returns>
+              public virtual double Length
+              {
+                  get
+                  {
+                      return 0.0;
+                  }
+              }
+
+              /// <summary> 
+              /// Computes the centroid of this <c>Geometry</c>.
+              /// The centroid 
+              /// is equal to the centroid of the set of component Geometries of highest
+              /// dimension (since the lower-dimension geometries contribute zero 
+              /// "weight" to the centroid).
+              /// <para/>
+              /// The centroid of an empty geometry is <c>POINT EMPTY</c>.
+              /// </summary>
+              /// <returns>A Point which is the centroid of this Geometry.</returns>
+              public IPoint Centroid
+              {
+                  get
+                  {
+                      if (IsEmpty)
+                      {
+                          return Factory.CreatePoint((Coordinate)null);
+                      }
+
+                      Coordinate centPt = null;
+                      Dimension dim = Dimension;
+                      if (dim == Dimension.Point)
+                      {
+                          CentroidPoint cent = new CentroidPoint();
+                          cent.Add(this);
+                          centPt = cent.Centroid;
+                      }
+                      else if (dim == Dimension.Curve)
+                      {
+                          CentroidLine cent = new CentroidLine();
+                          cent.Add(this);
+                          centPt = cent.Centroid;
+                      }
+                      else
+                      {
+                          CentroidArea cent = new CentroidArea();
+                          cent.Add(this);
+                          centPt = cent.Centroid;
+                      }
+                      return CreatePointFromInternalCoord(centPt, this);
+                  }
+              }
+
+              /// <summary>
+              /// Computes an interior point of this <c>Geometry</c>.
+              /// </summary>
+              /// <remarks>
+              /// An interior point is guaranteed to lie in the interior of the Geometry,
+              /// if it possible to calculate such a point exactly. Otherwise,
+              /// the point may lie on the boundary of the point.
+              /// <para/>
+              /// The interior point of an empty geometry is <c>POINT EMPTY</c>.
+              /// </remarks>
+              /// <returns>A <c>Point</c> which is in the interior of this Geometry.</returns>
+              public IPoint InteriorPoint
+              {
+                  get
+                  {
+                      Coordinate interiorPt = null;
+                      Dimension dim = Dimension;
+                      if (dim == Dimension.Point)
+                      {
+                          InteriorPointPoint intPt = new InteriorPointPoint(this);
+                          interiorPt = intPt.InteriorPoint;
+                      }
+                      else if (dim == Dimension.Curve)
+                      {
+                          InteriorPointLine intPt = new InteriorPointLine(this);
+                          interiorPt = intPt.InteriorPoint;
+                      }
+                      else
+                      {
+                          InteriorPointArea intPt = new InteriorPointArea(this);
+                          interiorPt = intPt.InteriorPoint;
+                      }
+                      return CreatePointFromInternalCoord(interiorPt, this);
+                  }
+              }
+
+              /// <summary>
+              /// <see cref="InteriorPoint" />
+              /// </summary>
+              public IPoint PointOnSurface
+              {
+                  get
+                  {
+                      return InteriorPoint;
+                  }
+              }
+
+              private Dimension _dimension;
+
+              /// <summary> 
+              /// Returns the dimension of this geometry.
+              /// </summary>
+              /// <remarks>
+              /// The dimension of a geometry is is the topological 
+              /// dimension of its embedding in the 2-D Euclidean plane.
+              /// In the NTS spatial model, dimension values are in the set {0,1,2}.
+              /// <para>
+              /// Note that this is a different concept to the dimension of 
+              /// the vertex <see cref="Coordinate"/>s.
+              /// The geometry dimension can never be greater than the coordinate dimension.
+              /// For example, a 0-dimensional geometry (e.g. a Point) 
+              /// may have a coordinate dimension of 3 (X,Y,Z). 
+              /// </para>
+              /// </remarks>
+              /// <returns>  
+              /// The topological dimensions of this geometry
+              /// </returns>
+              public virtual Dimension Dimension
+              {
+                  get { return _dimension; }
+                  set { _dimension = value; }
+              }
 
 
-        /*private IGeometry boundary;*/
+              /*private IGeometry boundary;*/
 
         /// <summary>  
         /// Returns the boundary, or an empty geometry of appropriate dimension 

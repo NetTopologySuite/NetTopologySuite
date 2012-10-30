@@ -89,6 +89,7 @@ namespace NetTopologySuite.Operation
         private bool ComputeSimple(IGeometry geom)
         {
             _nonSimpleLocation = null;
+            if (geom.IsEmpty) return true;
             if (geom is ILineString) return IsSimpleLinearGeometry(geom);
             if (geom is IMultiLineString) return IsSimpleLinearGeometry(geom);
             if (geom is IMultiPoint) return IsSimpleMultiPoint((IMultiPoint) geom);
