@@ -1,11 +1,22 @@
 ﻿using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
 
 namespace Open.Topology.TestRunner.Functions
 {
     public class ConversionFunctions
     {
+        public static IGeometry toPoints(IGeometry g)
+        {
+            return g.Factory.CreateMultiPoint(g.Coordinates);
+        }
+
+        public static IGeometry toLines(IGeometry g)
+        {
+            return g.Factory.BuildGeometry(LinearComponentExtracter.GetLines(g));
+        }
+
         public static IGeometry toGeometryCollection(IGeometry g, IGeometry g2)
         {
 

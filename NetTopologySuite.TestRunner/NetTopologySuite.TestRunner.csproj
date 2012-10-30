@@ -114,6 +114,7 @@
     </Compile>
     <Compile Include="Functions\AffineTransformationFunctions.cs" />
     <Compile Include="Functions\BaseGeometryFunction.cs" />
+    <Compile Include="Functions\BufferByUnionFunctions.cs" />
     <Compile Include="Functions\BufferFunctions.cs" />
     <Compile Include="Functions\CGAlgorithmFunctions.cs" />
     <Compile Include="Functions\ConstructionFunctions.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Functions\GeometryFunctions.cs" />
     <Compile Include="Functions\IGeometryFunction.cs" />
     <Compile Include="Functions\LinearReferencingFunctions.cs" />
+    <Compile Include="Functions\LineHandlingFunctions.cs" />
     <Compile Include="Functions\NodingFunctions.cs" />
     <Compile Include="Functions\NTSFunctions.cs" />
     <Compile Include="Functions\OverlayFunctions.cs" />

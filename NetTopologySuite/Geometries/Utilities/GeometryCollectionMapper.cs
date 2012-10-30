@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
+using MapGeometryDelegate = System.Func<GeoAPI.Geometries.IGeometry, GeoAPI.Geometries.IGeometry>;
 
 namespace NetTopologySuite.Geometries.Utilities
 {
@@ -14,16 +16,10 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <summary>
         ///
         /// </summary>
-        /// <param name="geometry"></param>
-        public delegate IGeometry MapGeometryDelegate(IGeometry geometry);
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <param name="gc"></param>
         /// <param name="op"></param>
         /// <returns></returns>
-        public static IGeometryCollection Map(IGeometryCollection gc, MapGeometryDelegate op)
+        public static IGeometryCollection Map(IGeometryCollection gc, Func<IGeometry, IGeometry> op)
         {
             var mapper = new GeometryCollectionMapper(op);
             return mapper.Map(gc);
@@ -48,9 +44,9 @@ namespace NetTopologySuite.Geometries.Utilities
         public IGeometryCollection Map(IGeometryCollection gc)
         {
             IList<IGeometry> mapped = new List<IGeometry>();
-            for (int i = 0; i < gc.NumGeometries; i++)
+            for (var i = 0; i < gc.NumGeometries; i++)
             {
-                IGeometry g = _mapOp(gc.GetGeometryN(i));
+                var g = _mapOp(gc.GetGeometryN(i));
                 if (!g.IsEmpty)
                     mapped.Add(g);
             }
