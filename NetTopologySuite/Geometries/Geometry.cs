@@ -1610,7 +1610,7 @@ namespace NetTopologySuite.Geometries
                 return OverlayOp.CreateEmptyResult(SpatialFunction.Intersection, this, other, _factory);
 
             // compute for GCs
-            if (IsGeometryCollection(this))
+            if (IsGeometryCollection)
             {
                 IGeometry g2 = other;
                 return GeometryCollectionMapper.Map(
@@ -2096,9 +2096,9 @@ namespace NetTopologySuite.Geometries
         }
 
         
-        protected static bool IsGeometryCollection(IGeometry g)
+        protected bool IsGeometryCollection
         {
-            return IsNonHomogenousGeometryCollection(g);
+            get { return OgcGeometryType == OgcGeometryType.GeometryCollection; }
         }
         
 

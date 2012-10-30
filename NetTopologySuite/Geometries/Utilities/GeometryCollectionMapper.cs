@@ -25,7 +25,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns></returns>
         public static IGeometryCollection Map(IGeometryCollection gc, MapGeometryDelegate op)
         {
-            GeometryCollectionMapper mapper = new GeometryCollectionMapper(op);
+            var mapper = new GeometryCollectionMapper(op);
             return mapper.Map(gc);
         }
 
@@ -57,20 +57,5 @@ namespace NetTopologySuite.Geometries.Utilities
             return gc.Factory.CreateGeometryCollection(
                 GeometryFactory.ToGeometryArray(mapped));
         }
-
-        /*
-        /// <summary>
-        ///
-        /// </summary>
-        public interface IMapOp
-        {
-            /// <summary>
-            ///
-            /// </summary>
-            /// <param name="g"></param>
-            /// <returns></returns>
-            IGeometry Map(IGeometry g);
-        }
-         */
     }
 }
