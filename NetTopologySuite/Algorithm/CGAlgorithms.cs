@@ -226,6 +226,25 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
+        /// Computes whether a ring defined by a coordinate sequence is oriented counter-clockwise.
+        /// </summary>>
+        /// <remarks>
+        /// <list type="Bullet">
+        /// <item>The list of points is assumed to have the first and last points equal.</item>
+        /// <item>This will handle coordinate lists which contain repeated points.</item>
+        /// </list>
+        /// <para>This algorithm is only guaranteed to work with valid rings. If the ring is invalid (e.g. self-crosses or touches), the computed result may not be correct.</para>
+        /// </remarks>
+        /// <param name="ring">A coordinate sequence froming a ring</param>
+        /// <returns>true if the ring is oriented <see cref="Orientation.CounterClockwise"/></returns>
+        /// <exception cref="ArgumentException">If there are too few points to determine orientation (&lt;3)</exception>
+        public static bool IsCCW(ICoordinateSequence ring)
+        {
+            return IsCCW(ring.ToCoordinateArray());
+        }
+
+
+        /// <summary>
         /// Computes the orientation of a point q to the directed line segment p1-p2.
         /// The orientation of a point relative to a directed line segment indicates
         /// which way you turn to get to q after travelling from p1 to p2.
@@ -457,7 +476,7 @@ namespace NetTopologySuite.Algorithm
             {
                 var x = ring[i].X - x0;
                 var y1 = ring[i + 1].Y;
-                var y2 = ring[i == 0 ? ring.Length - 1 : i - 1].Y;
+                var y2 = ring[i - 1].Y;
                 sum += x * (y2 - y1);
             }
             return sum / 2.0;
