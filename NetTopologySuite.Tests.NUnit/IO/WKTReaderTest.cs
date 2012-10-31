@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
@@ -121,6 +120,10 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [Test]
         public void TestThreading()
         {
+            var gf = GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory();
+            var numFactories = ((NtsGeometryServices) GeoAPI.GeometryServiceProvider.Instance).NumFactories;
+            Console.WriteLine("{0} factories already created", numFactories);
+
             var wkts = new[]
                 {
                     "POINT ( 10 20 )",
@@ -144,7 +147,10 @@ namespace NetTopologySuite.Tests.NUnit.IO
             }
 
             WaitHandle.WaitAll(waitHandles);
-            Assert.AreEqual(1 + srids.Length, ((NtsGeometryServices)GeoAPI.GeometryServiceProvider.Instance).NumFactories); 
+
+            var numFactories2 = ((NtsGeometryServices)GeoAPI.GeometryServiceProvider.Instance).NumFactories; 
+            Console.WriteLine("Now {0} factories created", numFactories2);
+            Assert.LessOrEqual(numFactories + srids.Length, numFactories2); 
         }
 
         private static readonly Random Rnd = new Random();
