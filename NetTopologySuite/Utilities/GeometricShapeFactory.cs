@@ -12,7 +12,7 @@ namespace NetTopologySuite.Utilities
     public class GeometricShapeFactory
     {
         protected IGeometryFactory GeomFact;
-        protected IPrecisionModel precModel = null;
+        protected IPrecisionModel PrecModel = null;
         private readonly Dimensions _dim = new Dimensions();
         private int _nPts = 100;
 
@@ -28,7 +28,7 @@ namespace NetTopologySuite.Utilities
         public GeometricShapeFactory(IGeometryFactory geomFact)
         {
             GeomFact = geomFact;
-            precModel = geomFact.PrecisionModel;
+            PrecModel = geomFact.PrecisionModel;
         }
 
         /// <summary>
@@ -135,8 +135,8 @@ namespace NetTopologySuite.Utilities
 
         protected Coordinate CreateCoord(double x, double y)
         {
-            Coordinate p = new Coordinate(x, y);
-            precModel.MakePrecise(p);
+            var p = new Coordinate(x, y);
+            PrecModel.MakePrecise(p);
             return p;
         }
 
@@ -152,43 +152,43 @@ namespace NetTopologySuite.Utilities
         public IPolygon CreateRectangle()
         {
             int i;
-            int ipt = 0;
-            int nSide = _nPts / 4;
+            var ipt = 0;
+            var nSide = _nPts / 4;
             if (nSide < 1) nSide = 1;
-            double XsegLen = _dim.Envelope.Width / nSide;
-            double YsegLen = _dim.Envelope.Height / nSide;
+            var xSegLen = _dim.Envelope.Width / nSide;
+            var ySegLen = _dim.Envelope.Height / nSide;
 
-            Coordinate[] pts = new Coordinate[4 * nSide + 1];
-            Envelope env = _dim.Envelope;            
+            var pts = new Coordinate[4 * nSide + 1];
+            var env = _dim.Envelope;            
 
             for (i = 0; i < nSide; i++) 
             {
-                double x = env.MinX + i * XsegLen;
-                double y = env.MinY;
+                var x = env.MinX + i * xSegLen;
+                var y = env.MinY;
                 pts[ipt++] = CreateCoord(x, y);
             }
             for (i = 0; i < nSide; i++) 
             {
-                double x = env.MaxX;
-                double y = env.MinY + i * YsegLen;
+                var x = env.MaxX;
+                var y = env.MinY + i * ySegLen;
                 pts[ipt++] = CreateCoord(x, y);
             }
             for (i = 0; i < nSide; i++) 
             {
-                double x = env.MaxX - i * XsegLen;
-                double y = env.MaxY;
+                var x = env.MaxX - i * xSegLen;
+                var y = env.MaxY;
                 pts[ipt++] = CreateCoord(x, y);
             }
             for (i = 0; i < nSide; i++) 
             {
-                double x = env.MinX;
-                double y = env.MaxY - i * YsegLen;
+                var x = env.MinX;
+                var y = env.MaxY - i * ySegLen;
                 pts[ipt++] = CreateCoord(x, y);
             }
-            pts[ipt++] = new Coordinate(pts[0]);
+            pts[ipt+1] = new Coordinate(pts[0]);
 
-            ILinearRing ring = GeomFact.CreateLinearRing(pts);
-            IPolygon poly = GeomFact.CreatePolygon(ring, null);
+            var ring = GeomFact.CreateLinearRing(pts);
+            var poly = GeomFact.CreatePolygon(ring, null);
             return poly;
         }
 
@@ -198,27 +198,27 @@ namespace NetTopologySuite.Utilities
         /// <returns>A circular polygon.</returns>
         public IPolygon CreateCircle()
         {
-            Envelope env = _dim.Envelope;
-            double xRadius = env.Width / 2.0;
-            double yRadius = env.Height / 2.0;
+            var env = _dim.Envelope;
+            var xRadius = env.Width / 2.0;
+            var yRadius = env.Height / 2.0;
 
-            double centreX = env.MinX + xRadius;
-            double centreY = env.MinY + yRadius;
+            var centreX = env.MinX + xRadius;
+            var centreY = env.MinY + yRadius;
 
-            Coordinate[] pts = new Coordinate[_nPts + 1];
-            int iPt = 0;
-            for (int i = 0; i < _nPts; i++) 
+            var pts = new Coordinate[_nPts + 1];
+            var iPt = 0;
+            for (var i = 0; i < _nPts; i++) 
             {
-                double ang = i * (2 * Math.PI / _nPts);
-                double x = xRadius * Math.Cos(ang) + centreX;
-                double y = yRadius * Math.Sin(ang) + centreY;
-                Coordinate pt = CreateCoord(x, y);
+                var ang = i * (2 * Math.PI / _nPts);
+                var x = xRadius * Math.Cos(ang) + centreX;
+                var y = yRadius * Math.Sin(ang) + centreY;
+                var pt = CreateCoord(x, y);
                 pts[iPt++] = pt;
             }
             pts[iPt] = pts[0];
 
-            ILinearRing ring = GeomFact.CreateLinearRing(pts);
-            IPolygon poly = GeomFact.CreatePolygon(ring, null);
+            var ring = GeomFact.CreateLinearRing(pts);
+            var poly = GeomFact.CreatePolygon(ring, null);
             return poly;
         }
 
@@ -238,31 +238,31 @@ namespace NetTopologySuite.Utilities
         /// <returns>a supercircle</returns>
         public IPolygon CreateSupercircle(double power)
         {
-            double recipPow = 1.0 / power;
+            var recipPow = 1.0 / power;
 
-            Envelope env = _dim.Envelope;
+            //var env = _dim.Envelope;
 
-            double radius = _dim.Size / 2;
-            Coordinate centre = _dim.Centre;
+            var radius = _dim.Size / 2;
+            var centre = _dim.Centre;
 
-            double r4 = Math.Pow(radius, power);
-            double y0 = radius;
+            var r4 = Math.Pow(radius, power);
+            var y0 = radius;
 
-            double xyInt = Math.Pow(r4 / 2, recipPow);
+            var xyInt = Math.Pow(r4 / 2, recipPow);
 
-            int nSegsInOct = _nPts / 8;
-            int totPts = nSegsInOct * 8 + 1;
-            Coordinate[] pts = new Coordinate[totPts];
-            double xInc = xyInt / nSegsInOct;
+            var nSegsInOct = _nPts / 8;
+            var totPts = nSegsInOct * 8 + 1;
+            var pts = new Coordinate[totPts];
+            var xInc = xyInt / nSegsInOct;
 
-            for (int i = 0; i <= nSegsInOct; i++)
+            for (var i = 0; i <= nSegsInOct; i++)
             {
-                double x = 0.0;
-                double y = y0;
+                var x = 0.0;
+                var y = y0;
                 if (i != 0)
                 {
                     x = xInc * i;
-                    double x4 = Math.Pow(x, power);
+                    var x4 = Math.Pow(x, power);
                     y = Math.Pow(r4 - x4, recipPow);
                 }
                 pts[i] = CreateCoordTrans(x, y, centre);
@@ -294,29 +294,29 @@ namespace NetTopologySuite.Utilities
         /// <returns></returns>
         public ILineString CreateArc(double startAng, double angExtent)
         {
-            Envelope env = _dim.Envelope;
-            double xRadius = env.Width / 2.0;
-            double yRadius = env.Height / 2.0;
+            var env = _dim.Envelope;
+            var xRadius = env.Width / 2.0;
+            var yRadius = env.Height / 2.0;
 
-            double centreX = env.MinX + xRadius;
-            double centreY = env.MinY + yRadius;
+            var centreX = env.MinX + xRadius;
+            var centreY = env.MinY + yRadius;
 
-            double angSize = angExtent;
+            var angSize = angExtent;
             if (angSize <= 0.0 || angSize > 2 * Math.PI)
                 angSize = 2 * Math.PI;
-            double angInc = angSize / (_nPts - 1);
+            var angInc = angSize / (_nPts - 1);
 
-            Coordinate[] pts = new Coordinate[_nPts];
-            int iPt = 0;
+            var pts = new Coordinate[_nPts];
+            var iPt = 0;
             for (int i = 0; i < _nPts; i++) 
             {
-                double ang = startAng + i * angInc;
-                double x = xRadius * Math.Cos(ang) + centreX;
-                double y = yRadius * Math.Sin(ang) + centreY;
-                Coordinate pt = CreateCoord(x, y);
+                var ang = startAng + i * angInc;
+                var x = xRadius * Math.Cos(ang) + centreX;
+                var y = yRadius * Math.Sin(ang) + centreY;
+                var pt = CreateCoord(x, y);
                 pts[iPt++] = pt;
             }
-            ILineString line = GeomFact.CreateLineString(pts);
+            var line = GeomFact.CreateLineString(pts);
             return line;
         }
 
@@ -333,29 +333,29 @@ namespace NetTopologySuite.Utilities
         public IPolygon CreateArcPolygon(double startAng, double angExtent)
         {
             var env = _dim.Envelope;
-            double xRadius = env.Width / 2.0;
-            double yRadius = env.Height / 2.0;
+            var xRadius = env.Width / 2.0;
+            var yRadius = env.Height / 2.0;
 
-            double centreX = env.MinX + xRadius;
-            double centreY = env.MinY + yRadius;
+            var centreX = env.MinX + xRadius;
+            var centreY = env.MinY + yRadius;
 
-            double angSize = angExtent;
+            var angSize = angExtent;
             if (angSize <= 0.0 || angSize > 2 * Math.PI)
                 angSize = 2 * Math.PI;
-            double angInc = angSize / (_nPts - 1);
+            var angInc = angSize / (_nPts - 1);
             // double check = angInc * nPts;
             // double checkEndAng = startAng + check;
 
             var pts = new Coordinate[_nPts + 2];
 
-            int iPt = 0;
+            var iPt = 0;
             pts[iPt++] = CreateCoord(centreX, centreY);
-            for (int i = 0; i < _nPts; i++)
+            for (var i = 0; i < _nPts; i++)
             {
-                double ang = startAng + angInc * i;
+                var ang = startAng + angInc * i;
 
-                double x = xRadius * Math.Cos(ang) + centreX;
-                double y = yRadius * Math.Sin(ang) + centreY;
+                var x = xRadius * Math.Cos(ang) + centreX;
+                var y = yRadius * Math.Sin(ang) + centreY;
                 pts[iPt++] = CreateCoord(x, y);
             }
             pts[iPt] = CreateCoord(centreX, centreY);
@@ -369,48 +369,52 @@ namespace NetTopologySuite.Utilities
         /// </summary>
         protected class Dimensions
         {
-            private Coordinate _basecoord;
+            private Coordinate _base;
 
             /// <summary>
             /// 
             /// </summary>
             public Coordinate Base
             {
-                get { return _basecoord; }
-                set { _basecoord = value; }
+                get { return _base; }
+                set { _base = value; }
             }
 
-            private Coordinate centre;
+            private Coordinate _centre;
 
             /// <summary>
             /// 
             /// </summary>
             public Coordinate Centre
             {
-                get { return centre; }
-                set { centre = value; }
+                get
+                {
+                    return _centre ?? (_centre = new Coordinate(_base.X + _width * 0.5d, 
+                                                                _base.Y + _height * 0.5d));
+                }
+                set { _centre = value; }
             }
 
-            private double width;
+            private double _width;
 
             /// <summary>
             /// 
             /// </summary>
             public double Width
             {
-                get { return width; }
-                set { width = value; }
+                get { return _width; }
+                set { _width = value; }
             }
 
-            private double height;
+            private double _height;
 
             /// <summary>
             /// 
             /// </summary>
             public double Height
             {
-                get { return height; }
-                set { height = value; }
+                get { return _height; }
+                set { _height = value; }
             }                                  
 
             /// <summary>
@@ -445,10 +449,10 @@ namespace NetTopologySuite.Utilities
                 }
                 set
                 {
-    	            this.width = value.Width;
-                    this.height = value.Height;
-                    this.Base = new Coordinate(value.MinX, value.MinY);
-                    this.centre = new Coordinate(value.Centre);
+    	            _width = value.Width;
+                    _height = value.Height;
+                    _base = new Coordinate(value.MinX, value.MinY);
+                    _centre = new Coordinate(value.Centre);
                 }
             }
         }
