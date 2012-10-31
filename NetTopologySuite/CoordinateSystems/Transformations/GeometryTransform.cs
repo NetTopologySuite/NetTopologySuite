@@ -94,6 +94,8 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
                 return TransformMultiLineString(factory, g as IMultiLineString, transform);
 		    if (g is IMultiPolygon)
                 return TransformMultiPolygon(factory, g as IMultiPolygon, transform);
+		    if (g is IGeometryCollection)
+                return TransformGeometryCollection(factory, g as IGeometryCollection, transform);
 		    throw new ArgumentException(String.Format(
                 "Could not transform geometry type '{0}'", g.GetType()));
 		}
