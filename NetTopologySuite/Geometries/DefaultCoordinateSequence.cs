@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using GeoAPI.Geometries;
+using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Geometries
 {
@@ -16,7 +17,7 @@ namespace NetTopologySuite.Geometries
     [Obsolete("No longer used.")]
     public class DefaultCoordinateSequence : ICoordinateSequence
     {
-        private Coordinate[] coordinates = null;
+        private readonly Coordinate[] _coordinates;
 
         /// <summary>
         /// Constructs a DefaultCoordinateSequence based on the given array (the
@@ -25,9 +26,9 @@ namespace NetTopologySuite.Geometries
         /// <param name="coordinates">Coordinate array that will be assimilated.</param>
         public DefaultCoordinateSequence(Coordinate[] coordinates)
         {
-            if (Geometry.HasNullElements(coordinates))
+            if (Geometry.HasNullElements(CollectionUtil.Cast<Coordinate, object>(coordinates)))
                 throw new ArgumentException("Null coordinate");            
-            this.coordinates = coordinates;
+            _coordinates = coordinates;
         }
         
         /// <summary>
@@ -36,9 +37,9 @@ namespace NetTopologySuite.Geometries
         /// <param name="coordSeq">The coordinate sequence that will be copied</param>
         public DefaultCoordinateSequence(ICoordinateSequence coordSeq)
         {
-            coordinates = new Coordinate[coordSeq.Count];
-            for (int i = 0; i < coordinates.Length; i++)
-                coordinates[i] = coordSeq.GetCoordinateCopy(i);
+            _coordinates = new Coordinate[coordSeq.Count];
+            for (int i = 0; i < _coordinates.Length; i++)
+                _coordinates[i] = coordSeq.GetCoordinateCopy(i);
         }
 
         /// <summary>
@@ -47,9 +48,9 @@ namespace NetTopologySuite.Geometries
         /// <param name="size">The size of the sequence to create.</param>
         public DefaultCoordinateSequence(int size)
         {
-            coordinates = new Coordinate[size];
+            _coordinates = new Coordinate[size];
             for (int i = 0; i < size; i++)
-                coordinates[i] = new Coordinate();
+                _coordinates[i] = new Coordinate();
         }
 
         /// <summary>
@@ -76,7 +77,7 @@ namespace NetTopologySuite.Geometries
         /// <return>Coordinate specified.</return>
         public Coordinate GetCoordinate(int i)
         {
-            return coordinates[i];
+            return _coordinates[i];
         }
         /// <summary>
         /// Returns a copy of the coordinate at specified index.
@@ -85,7 +86,7 @@ namespace NetTopologySuite.Geometries
         /// <return>The copy of the coordinate specified.</return>
         public Coordinate GetCoordinateCopy(int i)
         {
-            return new Coordinate(coordinates[i]);
+            return new Coordinate(_coordinates[i]);
         }
 
         /// <summary>
@@ -96,8 +97,8 @@ namespace NetTopologySuite.Geometries
         /// <param name="coord">A Coordinate to receive the value.</param>
         public void GetCoordinate(int index, Coordinate coord)
         {
-            coord.X = coordinates[index].X;
-            coord.Y = coordinates[index].Y;
+            coord.X = _coordinates[index].X;
+            coord.Y = _coordinates[index].Y;
         }
 
         /// <summary>
@@ -109,7 +110,7 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public double GetX(int index)
         {
-            return coordinates[index].X;
+            return _coordinates[index].X;
         }
 
         /// <summary>
@@ -121,7 +122,7 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public double GetY(int index)
         {
-            return coordinates[index].Y;
+            return _coordinates[index].Y;
         }
 
         /// <summary>
@@ -138,11 +139,11 @@ namespace NetTopologySuite.Geometries
             switch (ordinate)
             {
                 case Ordinate.X: 
-                    return coordinates[index].X;
+                    return _coordinates[index].X;
                 case Ordinate.Y: 
-                    return coordinates[index].Y;
+                    return _coordinates[index].Y;
                 case Ordinate.Z: 
-                    return coordinates[index].Z;
+                    return _coordinates[index].Z;
                 default:
                     return Double.NaN;
             }            
@@ -159,14 +160,12 @@ namespace NetTopologySuite.Geometries
             switch (ordinate)
             {
                 case Ordinate.X: 
-                    coordinates[index].X = value;
+                    _coordinates[index].X = value;
                     break;
-                case Ordinate.Y: coordinates[index].Y = value;
+                case Ordinate.Y: _coordinates[index].Y = value;
                     break;
                 case Ordinate.Z: 
-                    coordinates[index].Z = value;
-                    break;
-                default:
+                    _coordinates[index].Z = value;
                     break;
             }
         }
@@ -180,7 +179,7 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                return coordinates[i];
+                return _coordinates[i];
             }
         }
 
@@ -192,9 +191,23 @@ namespace NetTopologySuite.Geometries
         /// <returns>A reference to the expanded envelope.</returns>
         public Envelope ExpandEnvelope(Envelope env)
         {
-            for (int i = 0; i < coordinates.Length; i++)
-                env.ExpandToInclude(coordinates[i]);
+            for (int i = 0; i < _coordinates.Length; i++)
+                env.ExpandToInclude(_coordinates[i]);
             return env;
+        }
+
+        /// <summary>
+        /// Creates a reversed version of this coordinate sequence with cloned <see cref="Coordinate"/>s
+        /// </summary>
+        /// <returns>A reversed version of this sequence</returns>
+        public ICoordinateSequence Reversed()
+        {
+            var coordinates = new Coordinate[_coordinates.Length];
+            var j = _coordinates.Length;
+            for (var i = 0; i < _coordinates.Length; i++)
+                coordinates[--j] = _coordinates[i];
+            
+            return new DefaultCoordinateSequence(coordinates);
         }
 
         /// <summary>
@@ -203,9 +216,9 @@ namespace NetTopologySuite.Geometries
         /// <returns>The copied object.</returns>
         public object Clone()
         {
-            Coordinate[] cloneCoordinates = new Coordinate[coordinates.Length];
-            for (int i = 0; i < coordinates.Length; i++)
-                cloneCoordinates[i] = (Coordinate) coordinates[i].Clone();            
+            var cloneCoordinates = new Coordinate[_coordinates.Length];
+            for (int i = 0; i < _coordinates.Length; i++)
+                cloneCoordinates[i] = (Coordinate) _coordinates[i].Clone();            
             return new DefaultCoordinateSequence(cloneCoordinates);
         }
 
@@ -217,7 +230,7 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                return coordinates.Length;
+                return _coordinates.Length;
             }
         }
 
@@ -229,7 +242,7 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                return coordinates.Length;
+                return _coordinates.Length;
             }
         }
 
@@ -239,7 +252,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>Coordinate[] array.</returns>
         public Coordinate[] ToCoordinateArray()
         {
-            return coordinates;
+            return _coordinates;
         }
 
         /// <summary>
@@ -248,20 +261,20 @@ namespace NetTopologySuite.Geometries
         /// <returns>A string.</returns>
         public override string ToString()
         {
-            if (coordinates.Length > 0)
+            if (_coordinates.Length > 0)
             {
-                StringBuilder sb = new StringBuilder(17 * coordinates.Length);
+                var sb = new StringBuilder(17 * _coordinates.Length);
                 sb.Append('(');
-                sb.Append(coordinates[0]);
-                for (int i = 1; i < coordinates.Length; i++)
+                sb.Append(_coordinates[0]);
+                for (int i = 1; i < _coordinates.Length; i++)
                 {
                     sb.Append(", ");
-                    sb.Append(coordinates[i].ToString());
+                    sb.Append(_coordinates[i]);
                 }
                 sb.Append(')');
                 return sb.ToString();
             }
-            else return "()";
+            return "()";
         }
     }
 }
