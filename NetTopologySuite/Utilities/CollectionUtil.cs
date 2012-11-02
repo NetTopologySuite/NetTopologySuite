@@ -163,5 +163,19 @@ namespace NetTopologySuite.Utilities
             return result;
         }
 
+        /// <summary>
+        /// Copies <typeparamref name="T"/>s in an array to an object array
+        /// </summary>
+        /// <typeparam name="TIn"></typeparam>
+        /// <typeparam name="TOut"></typeparam>
+        /// <param name="array">the source array</param>
+        /// <returns>An array of objects</returns>
+        public static TOut[] Cast<TIn,TOut>(TIn[] array)
+        {
+            var res = new TOut[array.Length];
+            System.Array.Copy(array, res, array.Length);
+            return res;
+        }
+
     }
 }
