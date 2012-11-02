@@ -12,27 +12,14 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 	/// </summary>
 	public class GeometryTransform
 	{	    
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="factory"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-		private static IPoint ToNTS(IGeometryFactory factory, double x, double y)
+		private static IPoint ToNtsPoint(IGeometryFactory factory, double x, double y)
         {
             return factory.CreatePoint(new Coordinate(x, y));
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
         private static double[] ToArray(double x, double y)
         {
-            return new[] { x, y, };
+            return new[] { x, y };
         }
 
 	    /// <summary>
@@ -58,14 +45,14 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		{
 			if (box == null) return null;
 
-            double[][] corners = new double[4][];
+            var corners = new double[4][];
             corners[0] = transform.Transform(ToArray(box.MinX, box.MinY)); //LL
             corners[1] = transform.Transform(ToArray(box.MaxX, box.MaxY)); //UR
             corners[2] = transform.Transform(ToArray(box.MinX, box.MaxY)); //UL
             corners[3] = transform.Transform(ToArray(box.MaxX, box.MinY)); //LR
 
-			Envelope result = new Envelope();
-            foreach (double[] p in corners)
+			var result = new Envelope();
+            foreach (var p in corners)
 				result.ExpandToInclude(p[0], p[1]);
 			return result;
 		}
@@ -113,7 +100,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 			try 
             { 
                 double[] point = transform.Transform(ToArray(p.X, p.Y));
-                return ToNTS(factory, point[0], point[1]);
+                return ToNtsPoint(factory, point[0], point[1]);
             }
 			catch { return null; }
 		}
@@ -164,14 +151,14 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
         public static IPolygon TransformPolygon(IGeometryFactory factory,
             IPolygon p, IMathTransform transform)
 		{
-			List<ILinearRing> holes = new List<ILinearRing>(p.InteriorRings.Length); 
-            for (int i = 0; i < p.InteriorRings.Length; i++)
+			var holes = new List<ILinearRing>(p.InteriorRings.Length); 
+            for (var i = 0; i < p.InteriorRings.Length; i++)
             {
-                ILinearRing hole = TransformLinearRing(factory, 
+                var hole = TransformLinearRing(factory, 
                     (ILinearRing) p.InteriorRings[i], transform);
                 holes.Add(hole);
             }
-	        ILinearRing shell = TransformLinearRing(factory, 
+	        var shell = TransformLinearRing(factory, 
                 (ILinearRing) p.ExteriorRing, transform);
 	        return factory.CreatePolygon(shell, holes.ToArray());
 		}
@@ -201,10 +188,11 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
         public static IMultiLineString TransformMultiLineString(IGeometryFactory factory,
             IMultiLineString lines, IMathTransform transform)
 		{
-			List<ILineString> strings = new List<ILineString>(lines.Geometries.Length);
-			foreach (ILineString ls in lines.Geometries)
+            var geometries = lines.Geometries;
+            var strings = new List<ILineString>(geometries.Length);
+			foreach (var ls in lines.Geometries)
 			{
-			    ILineString item = TransformLineString(factory, ls, transform);
+                var item = TransformLineString(factory, (ILineString)ls, transform);
 			    strings.Add(item);
 			}
 		    return factory.CreateMultiLineString(strings.ToArray());
@@ -220,10 +208,11 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
         public static IMultiPolygon TransformMultiPolygon(IGeometryFactory factory,
             IMultiPolygon polys, IMathTransform transform)
 		{
-			List<IPolygon> polygons = new List<IPolygon>(polys.Geometries.Length);
-			foreach (IPolygon p in polys.Geometries)
+            var geometries = polys.Geometries;
+            var polygons = new List<IPolygon>(geometries.Length);
+			foreach (var p in geometries)
 			{
-			    IPolygon item = TransformPolygon(factory, p, transform);
+			    var item = TransformPolygon(factory, (IPolygon)p, transform);
 			    polygons.Add(item);
 			}
 		    return factory.CreateMultiPolygon(polygons.ToArray());
@@ -237,12 +226,13 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		/// <param name="transform"></param>
 		/// <returns></returns>
         public static IGeometryCollection TransformGeometryCollection(IGeometryFactory factory, 
-            GeometryCollection geoms, IMathTransform transform)
+            IGeometryCollection geoms, IMathTransform transform)
 		{
-			List<IGeometry> coll = new List<IGeometry>(geoms.Geometries.Length);
-			foreach (IGeometry g in geoms.Geometries)
+		    var geometries = geoms.Geometries;
+            var coll = new List<IGeometry>(geometries.Length);
+			foreach (var g in geometries)
 			{
-			    IGeometry item = TransformGeometry(factory, g, transform);
+			    var item = TransformGeometry(factory, g, transform);
 			    coll.Add(item);
 			}
 		    return factory.CreateGeometryCollection(coll.ToArray());
