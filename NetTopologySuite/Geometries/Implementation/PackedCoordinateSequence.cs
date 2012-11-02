@@ -81,7 +81,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns></returns>
         public Coordinate GetCoordinate(int i) 
         {
-            Coordinate[] arr = GetCachedCoords();
+            var arr = GetCachedCoords();
             if(arr != null)
                  return arr[i];
             return GetCoordinateInternal(i);
@@ -146,7 +146,7 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             if (CoordRef != null) 
             {
-                Coordinate[] arr = (Coordinate[]) CoordRef.Target;
+                var arr = (Coordinate[]) CoordRef.Target;
                 if (arr != null) 
                     return arr;
                 
@@ -250,6 +250,8 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="env">The envelope to expand.</param>
         /// <returns>A reference to the expanded envelope.</returns>
         public abstract Envelope ExpandEnvelope(Envelope env);
+
+        public abstract ICoordinateSequence Reversed();
     }
 
     /// <summary>
@@ -416,9 +418,22 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>A reference to the expanded envelope.</returns>
         public override Envelope ExpandEnvelope(Envelope env)
         {
-            for (int i = 0; i < _coords.Length; i += Dimension)
+            var dim = Dimension;
+            for (int i = 0; i < _coords.Length; i += dim)
                 env.ExpandToInclude(_coords[i], _coords[i + 1]);        
             return env;
+        }
+
+        public override ICoordinateSequence Reversed()
+        {
+            var dim = Dimension;
+            var coords = new double[_coords.Length];
+            var j = Count;
+            for (var i = 0; i < Count; i++)
+            {
+                Buffer.BlockCopy(_coords, i * dim * sizeof(double), coords, --j * dim * sizeof(double), dim * sizeof(double));
+            }
+            return new PackedDoubleCoordinateSequence(coords, dim);
         }
     }
 
@@ -584,5 +599,18 @@ namespace NetTopologySuite.Geometries.Implementation
             env.ExpandToInclude(_coords[i], _coords[i + 1]);      
         return env;
         }
+
+        public override ICoordinateSequence Reversed()
+        {
+            var dim = Dimension;
+            var coords = new float[_coords.Length];
+            var j = Count;
+            for (var i = 0; i < Count; i++)
+            {
+                Buffer.BlockCopy(_coords, i * dim * sizeof(float), coords, --j * dim * sizeof(float), dim * sizeof(float));
+            }
+            return new PackedDoubleCoordinateSequence(coords, dim);
+        }
+
     }
 }

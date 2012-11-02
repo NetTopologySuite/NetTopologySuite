@@ -277,6 +277,16 @@ namespace NetTopologySuite.Geometries.Implementation
             return env;
         }
 
+        public ICoordinateSequence Reversed()
+        {
+            var coordinates = new Coordinate[Count];
+            for (var i = 0; i < Count; i++ )
+            {
+                coordinates[Count - i - 1] = new Coordinate(Coordinates[i]);
+            }
+            return new CoordinateArraySequence(coordinates);
+        }
+
         /// <summary>
         /// Returns the string representation of the coordinate array.
         /// </summary>

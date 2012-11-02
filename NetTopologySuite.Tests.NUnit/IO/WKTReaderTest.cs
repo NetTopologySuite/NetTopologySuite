@@ -13,38 +13,38 @@ namespace NetTopologySuite.Tests.NUnit.IO
     [TestFixture]
     public class WKTReaderTest
     {
-        WKTWriter writer = new WKTWriter();
-        private IPrecisionModel precisionModel;
-        private IGeometryFactory geometryFactory;
-        WKTReader reader;
+        readonly WKTWriter _writer = new WKTWriter();
+        private readonly IPrecisionModel _precisionModel;
+        private readonly IGeometryFactory _geometryFactory;
+        readonly WKTReader _reader;
 
         public WKTReaderTest()
         {
-            precisionModel = new PrecisionModel(1);
-            geometryFactory = new GeometryFactory(precisionModel, 0);
-            reader = new WKTReader(geometryFactory);
+            _precisionModel = new PrecisionModel(1);
+            _geometryFactory = new GeometryFactory(_precisionModel, 0);
+            _reader = new WKTReader(_geometryFactory);
         }
 
         [Test]
         public void TestReadNaN()
         {
-            Assert.AreEqual("POINT (10 10)", writer.Write(reader.Read("POINT (10 10 NaN)")));
-            Assert.AreEqual("POINT (10 10)", writer.Write(reader.Read("POINT (10 10 nan)")));
-            Assert.AreEqual("POINT (10 10)", writer.Write(reader.Read("POINT (10 10 NAN)")));
+            Assert.AreEqual("POINT (10 10)", _writer.Write(_reader.Read("POINT (10 10 NaN)")));
+            Assert.AreEqual("POINT (10 10)", _writer.Write(_reader.Read("POINT (10 10 nan)")));
+            Assert.AreEqual("POINT (10 10)", _writer.Write(_reader.Read("POINT (10 10 NAN)")));
         }
 
         [Test]
         public void TestReadPoint()
         {
-            Assert.AreEqual("POINT (10 10)", writer.Write(reader.Read("POINT (10 10)")));
-            Assert.AreEqual("POINT EMPTY", writer.Write(reader.Read("POINT EMPTY")));
+            Assert.AreEqual("POINT (10 10)", _writer.Write(_reader.Read("POINT (10 10)")));
+            Assert.AreEqual("POINT EMPTY", _writer.Write(_reader.Read("POINT EMPTY")));
         }
 
         [Test]
         public void TestReadLineString()
         {
-            Assert.AreEqual("LINESTRING (10 10, 20 20, 30 40)", writer.Write(reader.Read("LINESTRING (10 10, 20 20, 30 40)")));
-            Assert.AreEqual("LINESTRING EMPTY", writer.Write(reader.Read("LINESTRING EMPTY")));
+            Assert.AreEqual("LINESTRING (10 10, 20 20, 30 40)", _writer.Write(_reader.Read("LINESTRING (10 10, 20 20, 30 40)")));
+            Assert.AreEqual("LINESTRING EMPTY", _writer.Write(_reader.Read("LINESTRING EMPTY")));
         }
 
         [Test]
@@ -52,67 +52,67 @@ namespace NetTopologySuite.Tests.NUnit.IO
         {
             try
             {
-                reader.Read("LINEARRING (10 10, 20 20, 30 40, 10 99)");
+                _reader.Read("LINEARRING (10 10, 20 20, 30 40, 10 99)");
             }
             catch (ArgumentException e)
             {
-                Assert.IsTrue(e.Message.IndexOf("must form a closed linestring") > -1);
+                Assert.IsTrue(e.Message.IndexOf("must form a closed linestring", StringComparison.Ordinal) > -1);
             }
-            Assert.AreEqual("LINEARRING (10 10, 20 20, 30 40, 10 10)", writer.Write(reader.Read("LINEARRING (10 10, 20 20, 30 40, 10 10)")));
-            Assert.AreEqual("LINEARRING EMPTY", writer.Write(reader.Read("LINEARRING EMPTY")));
+            Assert.AreEqual("LINEARRING (10 10, 20 20, 30 40, 10 10)", _writer.Write(_reader.Read("LINEARRING (10 10, 20 20, 30 40, 10 10)")));
+            Assert.AreEqual("LINEARRING EMPTY", _writer.Write(_reader.Read("LINEARRING EMPTY")));
         }
 
         [Test]
         public void TestReadPolygon()
         {
-            Assert.AreEqual("POLYGON ((10 10, 10 20, 20 20, 20 15, 10 10))", writer.Write(reader.Read("POLYGON ((10 10, 10 20, 20 20, 20 15, 10 10))")));
-            Assert.AreEqual("POLYGON EMPTY", writer.Write(reader.Read("POLYGON EMPTY")));
+            Assert.AreEqual("POLYGON ((10 10, 10 20, 20 20, 20 15, 10 10))", _writer.Write(_reader.Read("POLYGON ((10 10, 10 20, 20 20, 20 15, 10 10))")));
+            Assert.AreEqual("POLYGON EMPTY", _writer.Write(_reader.Read("POLYGON EMPTY")));
         }
 
         [Test]
         public void TestReadMultiPoint()
         {
-            Assert.AreEqual("MULTIPOINT ((10 10), (20 20))", writer.Write(reader.Read("MULTIPOINT ((10 10), (20 20))")));
-            Assert.AreEqual("MULTIPOINT EMPTY", writer.Write(reader.Read("MULTIPOINT EMPTY")));
+            Assert.AreEqual("MULTIPOINT ((10 10), (20 20))", _writer.Write(_reader.Read("MULTIPOINT ((10 10), (20 20))")));
+            Assert.AreEqual("MULTIPOINT EMPTY", _writer.Write(_reader.Read("MULTIPOINT EMPTY")));
         }
 
         [Test]
         public void TestReadMultiLineString()
         {
-            Assert.AreEqual("MULTILINESTRING ((10 10, 20 20), (15 15, 30 15))", writer.Write(reader.Read("MULTILINESTRING ((10 10, 20 20), (15 15, 30 15))")));
-            Assert.AreEqual("MULTILINESTRING EMPTY", writer.Write(reader.Read("MULTILINESTRING EMPTY")));
+            Assert.AreEqual("MULTILINESTRING ((10 10, 20 20), (15 15, 30 15))", _writer.Write(_reader.Read("MULTILINESTRING ((10 10, 20 20), (15 15, 30 15))")));
+            Assert.AreEqual("MULTILINESTRING EMPTY", _writer.Write(_reader.Read("MULTILINESTRING EMPTY")));
         }
 
         [Test]
         public void TestReadMultiPolygon()
         {
-            Assert.AreEqual("MULTIPOLYGON (((10 10, 10 20, 20 20, 20 15, 10 10)), ((60 60, 70 70, 80 60, 60 60)))", writer.Write(reader.Read("MULTIPOLYGON (((10 10, 10 20, 20 20, 20 15, 10 10)), ((60 60, 70 70, 80 60, 60 60)))")));
-            Assert.AreEqual("MULTIPOLYGON EMPTY", writer.Write(reader.Read("MULTIPOLYGON EMPTY")));
+            Assert.AreEqual("MULTIPOLYGON (((10 10, 10 20, 20 20, 20 15, 10 10)), ((60 60, 70 70, 80 60, 60 60)))", _writer.Write(_reader.Read("MULTIPOLYGON (((10 10, 10 20, 20 20, 20 15, 10 10)), ((60 60, 70 70, 80 60, 60 60)))")));
+            Assert.AreEqual("MULTIPOLYGON EMPTY", _writer.Write(_reader.Read("MULTIPOLYGON EMPTY")));
         }
 
         [Test]
         public void TestReadGeometryCollection()
         {
-            Assert.AreEqual("GEOMETRYCOLLECTION (POINT (10 10), POINT (30 30), LINESTRING (15 15, 20 20))", writer.Write(reader.Read("GEOMETRYCOLLECTION (POINT (10 10), POINT (30 30), LINESTRING (15 15, 20 20))")));
-            Assert.AreEqual("GEOMETRYCOLLECTION (POINT (10 10), LINEARRING EMPTY, LINESTRING (15 15, 20 20))", writer.Write(reader.Read("GEOMETRYCOLLECTION (POINT (10 10), LINEARRING EMPTY, LINESTRING (15 15, 20 20))")));
-            Assert.AreEqual("GEOMETRYCOLLECTION (POINT (10 10), LINEARRING (10 10, 20 20, 30 40, 10 10), LINESTRING (15 15, 20 20))", writer.Write(reader.Read("GEOMETRYCOLLECTION (POINT (10 10), LINEARRING (10 10, 20 20, 30 40, 10 10), LINESTRING (15 15, 20 20))")));
-            Assert.AreEqual("GEOMETRYCOLLECTION EMPTY", writer.Write(reader.Read("GEOMETRYCOLLECTION EMPTY")));
+            Assert.AreEqual("GEOMETRYCOLLECTION (POINT (10 10), POINT (30 30), LINESTRING (15 15, 20 20))", _writer.Write(_reader.Read("GEOMETRYCOLLECTION (POINT (10 10), POINT (30 30), LINESTRING (15 15, 20 20))")));
+            Assert.AreEqual("GEOMETRYCOLLECTION (POINT (10 10), LINEARRING EMPTY, LINESTRING (15 15, 20 20))", _writer.Write(_reader.Read("GEOMETRYCOLLECTION (POINT (10 10), LINEARRING EMPTY, LINESTRING (15 15, 20 20))")));
+            Assert.AreEqual("GEOMETRYCOLLECTION (POINT (10 10), LINEARRING (10 10, 20 20, 30 40, 10 10), LINESTRING (15 15, 20 20))", _writer.Write(_reader.Read("GEOMETRYCOLLECTION (POINT (10 10), LINEARRING (10 10, 20 20, 30 40, 10 10), LINESTRING (15 15, 20 20))")));
+            Assert.AreEqual("GEOMETRYCOLLECTION EMPTY", _writer.Write(_reader.Read("GEOMETRYCOLLECTION EMPTY")));
         }
 
         [Test]
         public void TestReadZ()
         {
-            Assert.AreEqual(new Coordinate(1, 2, 3), reader.Read("POINT (1 2 3)").Coordinate);
+            Assert.AreEqual(new Coordinate(1, 2, 3), _reader.Read("POINT (1 2 3)").Coordinate);
         }
 
         [Test]
         public void TestReadLargeNumbers()
         {
-            PrecisionModel precisionModel = new PrecisionModel(1E9);
-            GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
-            WKTReader reader = new WKTReader(geometryFactory);
-            IGeometry point1 = reader.Read("POINT (123456789.01234567890 10)");
-            IPoint point2 = geometryFactory.CreatePoint(new Coordinate(123456789.01234567890, 10));
+            var precisionModel = new PrecisionModel(1E9);
+            var geometryFactory = new GeometryFactory(precisionModel, 0);
+            var reader = new WKTReader(geometryFactory);
+            var point1 = reader.Read("POINT (123456789.01234567890 10)");
+            var point2 = geometryFactory.CreatePoint(new Coordinate(123456789.01234567890, 10));
             Assert.AreEqual(point1.Coordinate.X, point2.Coordinate.X, 1E-7);
             Assert.AreEqual(point1.Coordinate.Y, point2.Coordinate.Y, 1E-7);
         }
@@ -150,7 +150,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
             var numFactories2 = ((NtsGeometryServices)GeoAPI.GeometryServiceProvider.Instance).NumFactories; 
             Console.WriteLine("Now {0} factories created", numFactories2);
-            Assert.LessOrEqual(numFactories + srids.Length, numFactories2); 
+            Assert.LessOrEqual(numFactories2, numFactories + srids.Length); 
         }
 
         private static readonly Random Rnd = new Random();

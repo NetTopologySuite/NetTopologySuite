@@ -283,6 +283,31 @@ namespace NetTopologySuite.Geometries.Implementation
             return env;
         }
 
+        /// <summary>
+        /// Creates a reversed version of this coordinate sequence with cloned <see cref="Coordinate"/>s
+        /// </summary>
+        /// <returns>A reversed version of this sequence</returns>
+        public ICoordinateSequence Reversed()
+        {
+            var xy = new double[_xy.Length];
+
+            double[] z = null, m = null;
+            if (_z != null) z = new double[_z.Length];
+            if (_m != null) m = new double[_m.Length];
+            
+            var j = 2* Count;
+            var k = Count;
+            for (var i = 0; i < Count; i++)
+            {
+                xy[--j] = _xy[2 * i + 1];
+                xy[--j] = _xy[2 * i];
+                k--;
+                if (_z != null) z[k] = _z[i];
+                if (_m != null) m[k] = _m[i];
+            }
+            return new DotSpatialAffineCoordinateSequence(xy, z, m);
+        }
+
         public int Dimension
         {
             get

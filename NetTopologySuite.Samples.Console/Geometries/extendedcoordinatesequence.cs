@@ -1,7 +1,6 @@
 using System;
 using System.Text;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Samples.Geometries
 {	
@@ -14,21 +13,31 @@ namespace NetTopologySuite.Samples.Geometries
 	/// </summary>	
 	public class ExtendedCoordinateSequence : ICoordinateSequence
 	{
-		public static ExtendedCoordinate[] Copy(Coordinate[] coordinates)
+		[Obsolete]
+        public static ExtendedCoordinate[] Copy(Coordinate[] coordinates)
 		{
-			ExtendedCoordinate[] copy = new ExtendedCoordinate[coordinates.Length];
-			for (int i = 0; i < coordinates.Length; i++)			
-				copy[i] = new ExtendedCoordinate(coordinates[i]);			
-			return copy;
+			var copy = new ExtendedCoordinate[coordinates.Length];
+            Array.Copy(CopyInternal(coordinates), copy, coordinates.Length);
+		    return copy;
 		}
 		
-		private ExtendedCoordinate[] coordinates;
+        private static Coordinate[] CopyInternal(Coordinate[] coordinates)
+        {
+            var copy = new Coordinate[coordinates.Length];
+            for (var i = 0; i < coordinates.Length; i++)
+                copy[i] = new ExtendedCoordinate(coordinates[i]);
+            return copy;
+            
+        }
+
+		private readonly Coordinate[] _coordinates;
 		
 		/// <summary> Copy constructor -- simply aliases the input array, for better performance.
 		/// </summary>
 		public ExtendedCoordinateSequence(ExtendedCoordinate[] coordinates)
 		{
-			this.coordinates = coordinates;
+			_coordinates = new Coordinate[coordinates.Length];
+            Array.Copy(coordinates, _coordinates, coordinates.Length);
 		}
 		
 		/// <summary> Constructor that makes a copy of an existing array of Coordinates.
@@ -37,7 +46,7 @@ namespace NetTopologySuite.Samples.Geometries
 		/// </summary>
 		public ExtendedCoordinateSequence(Coordinate[] copyCoords)
 		{
-			coordinates = Copy(copyCoords);
+			_coordinates = CopyInternal(copyCoords);
 		}
 
         /// <summary>
@@ -53,7 +62,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// <returns></returns>
 		public Coordinate GetCoordinate(int i)
 		{
-			return coordinates[i];
+			return _coordinates[i];
 		}
 
         /// <summary>
@@ -64,10 +73,10 @@ namespace NetTopologySuite.Samples.Geometries
         /// </returns>
 		public object Clone()
 		{
-			ExtendedCoordinate[] cloneCoordinates = new ExtendedCoordinate[this.Count];
-			for (int i = 0; i < coordinates.Length; i++)
+			var cloneCoordinates = new ExtendedCoordinate[Count];
+			for (var i = 0; i < _coordinates.Length; i++)
 			{
-				cloneCoordinates[i] = (ExtendedCoordinate) coordinates[i].Clone();
+				cloneCoordinates[i] = (ExtendedCoordinate) _coordinates[i].Clone();
 			}
 			
 			return new ExtendedCoordinateSequence(cloneCoordinates);
@@ -86,7 +95,7 @@ namespace NetTopologySuite.Samples.Geometries
 		{
             get
             {
-                return coordinates.Length;
+                return _coordinates.Length;
             }
 		}
 
@@ -101,7 +110,8 @@ namespace NetTopologySuite.Samples.Geometries
         /// <returns></returns>
 		public virtual Coordinate[] ToCoordinateArray()
 		{
-			return coordinates;
+			
+            return _coordinates;
 		}
 
         /// <summary>
@@ -114,11 +124,11 @@ namespace NetTopologySuite.Samples.Geometries
 		{
 			StringBuilder strBuf = new StringBuilder();
 			strBuf.Append("ExtendedCoordinateSequence [");
-			for (int i = 0; i < coordinates.Length; i++)
+			for (int i = 0; i < _coordinates.Length; i++)
 			{
 				if (i > 0)
 					strBuf.Append(", ");
-				strBuf.Append(coordinates[i]);
+				strBuf.Append(_coordinates[i]);
 			}
 			strBuf.Append("]");
 			return strBuf.ToString();
@@ -131,7 +141,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// <returns></returns>
         public Coordinate GetCoordinateCopy(int index)
         {
-            return new Coordinate(coordinates[index]);
+            return new Coordinate(_coordinates[index]);
         }
 
         /// <summary>
@@ -142,11 +152,14 @@ namespace NetTopologySuite.Samples.Geometries
         /// <param name="coord">A Coordinate to receive the value.</param>
         public void GetCoordinate(int index, Coordinate coord)
         {
-            coord.X = coordinates[index].X;
-            coord.Y = coordinates[index].Y;
-            coord.Z = coordinates[index].Z;
+            var exc = (ExtendedCoordinate) _coordinates[index];
+            coord.X = exc.X;
+            coord.Y = exc.Y;
+            coord.Z = exc.Z;
+            
             var exCoord = coord as ExtendedCoordinate;
-            if (exCoord != null) exCoord.M = coordinates[index].M;
+            if (exCoord != null) 
+                exCoord.M = exc.M;
         }
 
 
@@ -159,7 +172,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// </returns>
         public double GetX(int index)
         {
-            return coordinates[index].X;
+            return _coordinates[index].X;
         }
 
         /// <summary>
@@ -171,7 +184,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// </returns>
         public double GetY(int index)
         {
-            return coordinates[index].Y;
+            return _coordinates[index].Y;
         }
 
         /// <summary>
@@ -185,16 +198,17 @@ namespace NetTopologySuite.Samples.Geometries
         /// <returns></returns>
         public double GetOrdinate(int index, Ordinate ordinate)
         {
+            var exc = (ExtendedCoordinate) _coordinates[index];
             switch (ordinate)
             {
                 case Ordinate.X: 
-                    return coordinates[index].X;
-                case Ordinate.Y: 
-                        return coordinates[index].Y;
-                    case Ordinate.Z: 
-                    return coordinates[index].Z;
-                case Ordinate.M: 
-                        return coordinates[index].M;
+                    return exc.X;
+                case Ordinate.Y:
+                    return exc.Y;
+                case Ordinate.Z:
+                    return exc.Z;
+                case Ordinate.M:
+                    return exc.M;
                 default:
                     return Double.NaN;
             }            
@@ -208,21 +222,20 @@ namespace NetTopologySuite.Samples.Geometries
         /// <param name="value">The new ordinate value.</param>
         public void SetOrdinate(int index, Ordinate ordinate, double value)
         {
+            var exc = (ExtendedCoordinate)_coordinates[index];
             switch (ordinate)
             {
                 case Ordinate.X:
-                    coordinates[index].X = value;
+                    exc.X = value;
                     break;
-                case Ordinate.Y: 
-                    coordinates[index].Y = value;
+                case Ordinate.Y:
+                    exc.Y = value;
                     break;
-                case Ordinate.Z: 
-                    coordinates[index].Z = value;
+                case Ordinate.Z:
+                    exc.Z = value;
                     break;
-                case Ordinate.M: 
-                    coordinates[index].M = value;
-                    break;
-                default:
+                case Ordinate.M:
+                    exc.M = value;
                     break;
             }
         }
@@ -235,12 +248,26 @@ namespace NetTopologySuite.Samples.Geometries
         /// <returns>A reference to the expanded envelope.</returns>
         public Envelope ExpandEnvelope(Envelope env)
         {
-            for (int i = 0; i < coordinates.Length; i++)
-                env.ExpandToInclude(coordinates[i]);
+            for (int i = 0; i < _coordinates.Length; i++)
+                env.ExpandToInclude(_coordinates[i]);
             return env;
         }
 
-        /// <summary>
+	    /// <summary>
+	    /// Creates a reversed version of this coordinate sequence with cloned <see cref="Coordinate"/>s
+	    /// </summary>
+	    /// <returns>A reversed version of this sequence</returns>
+	    public ICoordinateSequence Reversed()
+	    {
+            var coordinates = new ExtendedCoordinate[Count];
+            for (var i = 0; i < Count; i++)
+            {
+                coordinates[Count - i - 1] = new ExtendedCoordinate(coordinates[i]);
+            }
+            return new ExtendedCoordinateSequence(coordinates);
+        }
+
+	    /// <summary>
         /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
         /// </summary>
         /// <value></value>
