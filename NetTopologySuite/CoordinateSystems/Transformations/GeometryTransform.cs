@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using GeoAPI.CoordinateSystems.Transformations;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
@@ -12,28 +11,11 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 	/// </summary>
 	public class GeometryTransform
 	{	    
-		private static IPoint ToNtsPoint(IGeometryFactory factory, double x, double y)
-        {
-            return factory.CreatePoint(new Coordinate(x, y));
-        }
-
         private static double[] ToArray(double x, double y)
         {
             return new[] { x, y };
         }
 
-	    /// <summary>
-	    /// 
-	    /// </summary>
-	    /// <param name="ls"></param>
-	    /// <param name="transform"></param>
-	    /// <returns></returns>
-	    private static Coordinate[] ExtractCoordinates(IGeometry ls, IMathTransform transform)
-	    {
-	        var points = ls.Coordinates;
-	        var transPoints = transform.TransformList(points);
-	        return transPoints.ToArray();
-	    }
 
 	    /// <summary>
 		/// Transforms a <see cref="Envelope" /> object.
@@ -99,8 +81,8 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		{
 			try 
             { 
-                double[] point = transform.Transform(ToArray(p.X, p.Y));
-                return ToNtsPoint(factory, point[0], point[1]);
+                var transformed = transform.Transform(p.CoordinateSequence);
+                return factory.CreatePoint(transformed);
             }
 			catch { return null; }
 		}
@@ -117,8 +99,8 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		{
 			try 
             {
-				Coordinate[] coords = ExtractCoordinates(l, transform);
-                return factory.CreateLineString(coords); 
+				var coordSequence = transform.Transform(l.CoordinateSequence);
+                return factory.CreateLineString(coordSequence); 
             }
 			catch { return null; }
 		}
@@ -135,8 +117,8 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		{
 			try 
             {
-                Coordinate[] coords = ExtractCoordinates(r, transform);
-                return factory.CreateLinearRing(coords);
+                var coordSequence = transform.Transform(r.CoordinateSequence);
+                return factory.CreateLinearRing(coordSequence);
             }
 			catch { return null; }
 		}
@@ -173,9 +155,19 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
         public static IMultiPoint TransformMultiPoint(IGeometryFactory factory, 
             IMultiPoint points, IMathTransform transform)
 		{
-		    var pts = points.Coordinates;
-            var transPoints = transform.TransformList(pts);
-		    return factory.CreateMultiPoint(transPoints.ToArray());
+		    //We assume the first point holds all the ordinates
+            var ordinateFlags = ((IPoint) points.GetGeometryN(0)).CoordinateSequence.Ordinates;
+		    var ordinates = OrdinatesUtility.ToOrdinateArray(ordinateFlags);
+            var coordSequence = factory.CoordinateSequenceFactory.Create(points.NumPoints, ordinateFlags);
+            
+            for (var i = 0; i < points.NumGeometries; i++)
+            {
+                var seq = ((IPoint) points.GetGeometryN(i)).CoordinateSequence;
+                foreach (var ordinate in ordinates)
+                    coordSequence.SetOrdinate(i, ordinate, seq.GetOrdinate(i, ordinate));
+            }
+            var transPoints = transform.Transform(coordSequence);
+		    return factory.CreateMultiPoint(transPoints);
 		}
 
 		/// <summary>
@@ -199,12 +191,12 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		}
 
 		/// <summary>
-		/// Transforms a <see cref="MultiPolygon" /> object.
+		/// Transforms a <see cref="IMultiPolygon" /> object.
 		/// </summary>
-		/// <param name="factory"></param>
-		/// <param name="polys"></param>
-		/// <param name="transform"></param>
-		/// <returns></returns>
+		/// <param name="factory">The factory to create the new <see cref="IMultiPolygon"/></param>
+		/// <param name="polys">The input <see cref="IMultiPolygon"/></param>
+		/// <param name="transform">The <see cref="IMathTransform"/></param>
+		/// <returns>A transformed <see cref="IMultiPolygon"/></returns>
         public static IMultiPolygon TransformMultiPolygon(IGeometryFactory factory,
             IMultiPolygon polys, IMathTransform transform)
 		{
@@ -219,12 +211,12 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		}
 
 		/// <summary>
-		/// Transforms a <see cref="GeometryCollection" /> object.
+		/// Transforms a <see cref="IGeometryCollection" /> object.
 		/// </summary>
-		/// <param name="factory"></param>
-		/// <param name="geoms"></param>
-		/// <param name="transform"></param>
-		/// <returns></returns>
+        /// <param name="factory">The factory to create the new <see cref="IGeometryCollection"/></param>
+        /// <param name="geoms">The input <see cref="IGeometryCollection"/></param>
+        /// <param name="transform">The <see cref="IMathTransform"/></param>
+        /// <returns>A transformed <see cref="IGeometryCollection"/></returns>
         public static IGeometryCollection TransformGeometryCollection(IGeometryFactory factory, 
             IGeometryCollection geoms, IMathTransform transform)
 		{
