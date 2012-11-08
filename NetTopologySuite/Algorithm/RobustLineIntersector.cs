@@ -25,11 +25,11 @@ namespace NetTopologySuite.Algorithm
                     IsProper = true;
                     if (p.Equals(p1) || p.Equals(p2))
                         IsProper = false;
-                    result = PointIntersection;
+                    Result = PointIntersection;
                     return;
                 }
             }
-            result = NoIntersection;
+            Result = NoIntersection;
         }
 
         public override int ComputeIntersect(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
@@ -95,22 +95,22 @@ namespace NetTopologySuite.Algorithm
                  * 
                  */
                 if (p1.Equals2D(q1) || p1.Equals2D(q2))
-                    intPt[0] = p1;
+                    IntersectionPoint[0] = p1;
                 else if (p2.Equals2D(q1) || p2.Equals2D(q2))
-                    intPt[0] = p2;
+                    IntersectionPoint[0] = p2;
                 else if (Pq1 == 0)
-                    intPt[0] = new Coordinate(q1);
+                    IntersectionPoint[0] = new Coordinate(q1);
                 else if (Pq2 == 0)
-                    intPt[0] = new Coordinate(q2);
+                    IntersectionPoint[0] = new Coordinate(q2);
                 else if (Qp1 == 0)
-                    intPt[0] = new Coordinate(p1);
+                    IntersectionPoint[0] = new Coordinate(p1);
                 else if (Qp2 == 0)
-                    intPt[0] = new Coordinate(p2);
+                    IntersectionPoint[0] = new Coordinate(p2);
             }
             else
             {
                 IsProper = true;
-                intPt[0] = Intersection(p1, p2, q1, q2);
+                IntersectionPoint[0] = Intersection(p1, p2, q1, q2);
             }
             return PointIntersection;
         }
@@ -132,38 +132,38 @@ namespace NetTopologySuite.Algorithm
 
             if (p1q1p2 && p1q2p2)
             {
-                intPt[0] = q1;
-                intPt[1] = q2;
+                IntersectionPoint[0] = q1;
+                IntersectionPoint[1] = q2;
                 return CollinearIntersection;
             }
             if (q1p1q2 && q1p2q2)
             {
-                intPt[0] = p1;
-                intPt[1] = p2;
+                IntersectionPoint[0] = p1;
+                IntersectionPoint[1] = p2;
                 return CollinearIntersection;
             }
             if (p1q1p2 && q1p1q2)
             {
-                intPt[0] = q1;
-                intPt[1] = p1;
+                IntersectionPoint[0] = q1;
+                IntersectionPoint[1] = p1;
                 return q1.Equals(p1) /* && !p1q2p2 && !q1p2q2 */ ? PointIntersection : CollinearIntersection;
             }
             if (p1q1p2 && q1p2q2)
             {
-                intPt[0] = q1;
-                intPt[1] = p2;
+                IntersectionPoint[0] = q1;
+                IntersectionPoint[1] = p2;
                 return q1.Equals(p2) /* && !p1q2p2 && !q1p1q2 */ ? PointIntersection : CollinearIntersection;
             }
             if (p1q2p2 && q1p1q2)
             {
-                intPt[0] = q2;
-                intPt[1] = p1;
+                IntersectionPoint[0] = q2;
+                IntersectionPoint[1] = p1;
                 return q2.Equals(p1) /* && !p1q1p2 && !q1p2q2 */? PointIntersection : CollinearIntersection;
             }
             if (p1q2p2 && q1p2q2)
             {
-                intPt[0] = q2;
-                intPt[1] = p2;
+                IntersectionPoint[0] = q2;
+                IntersectionPoint[1] = p2;
                 return q2.Equals(p2) /* && !p1q1p2 && !q1p1q2 */ ? PointIntersection : CollinearIntersection;
             }
             return NoIntersection;
@@ -298,8 +298,8 @@ namespace NetTopologySuite.Algorithm
         /// <returns><c>true</c> if the input point lies within both input segment envelopes.</returns>
         private bool IsInSegmentEnvelopes(Coordinate intPoint)
         {
-            Envelope env0 = new Envelope(inputLines[0][0], inputLines[0][1]);
-            Envelope env1 = new Envelope(inputLines[1][0], inputLines[1][1]);
+            Envelope env0 = new Envelope(InputLines[0][0], InputLines[0][1]);
+            Envelope env1 = new Envelope(InputLines[1][0], InputLines[1][1]);
             return env0.Contains(intPoint) && env1.Contains(intPoint);
         }
     }

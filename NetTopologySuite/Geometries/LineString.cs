@@ -244,18 +244,18 @@ namespace NetTopologySuite.Geometries
         /// <returns>A <see cref="LineString" /> with coordinates in the reverse order.</returns>
         public override IGeometry Reverse()
         {
-            ICoordinateSequence seq = (ICoordinateSequence)_points.Clone();
-
-            // Personalized implementation using Array.Reverse: maybe it's faster?
-            Coordinate[] array = seq.ToCoordinateArray();
-            Array.Reverse(array);
-            return Factory.CreateLineString(array);
+            /*
+            var seq = (ICoordinateSequence)_points.Clone();
+            CoordinateSequences.Reverse(seq);
+             */
+            var seq = _points.Reversed();
+            return Factory.CreateLineString(seq);
         }
 
-        ILineString ILineString.Reverse()
-        {
-            return (ILineString)Reverse();
-        }
+        //ILineString ILineString.Reverse()
+        //{
+        //    return (ILineString)Reverse();
+        //}
 
         /// <summary>
         /// Returns true if the given point is a vertex of this <c>LineString</c>.
@@ -297,12 +297,13 @@ namespace NetTopologySuite.Geometries
             return new Envelope(minx, maxx, miny, maxy);
         }
 
-        internal override int GetHashCodeInternal(int baseValue, Func<int, int> operation)
-        {
-            if (!IsEmpty)
-                baseValue = _points.GetHashCode(baseValue, operation);
-            return baseValue;
-        }
+        //[Obsolete]
+        //internal override int GetHashCodeInternal(int baseValue, Func<int, int> operation)
+        //{
+        //    if (!IsEmpty)
+        //        baseValue = _points.GetHashCode(baseValue, operation);
+        //    return baseValue;
+        //}
 
         /// <summary>
         ///

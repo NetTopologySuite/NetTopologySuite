@@ -24,22 +24,22 @@ namespace NetTopologySuite.Noding
         /// <returns></returns>
         public static bool IsAdjacentSegments(int i1, int i2)
         {
-            return System.Math.Abs(i1 - i2) == 1;
+            return Math.Abs(i1 - i2) == 1;
         }
 
         /**
          * These variables keep track of what types of intersections were
          * found during ALL edges that have been intersected.
          */
-        private bool hasIntersection = false;
-        private bool hasProper = false;
-        private bool hasProperInterior = false;
-        private bool hasInterior = false;
+        private bool _hasIntersection;
+        private bool _hasProper;
+        private bool _hasProperInterior;
+        private bool _hasInterior;
 
         // the proper intersection point found
-        private Coordinate properIntersectionPoint = null;
+        private readonly Coordinate _properIntersectionPoint = null;
 
-        private LineIntersector li = null;        
+        private readonly LineIntersector _li;        
         
         /// <summary>
         /// 
@@ -67,7 +67,7 @@ namespace NetTopologySuite.Noding
         /// <param name="li"></param>
         public IntersectionAdder(LineIntersector li)
         {
-            this.li = li;
+            _li = li;
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Noding
         {
             get
             {
-                return li;
+                return _li;
             }
         }
 
@@ -88,7 +88,7 @@ namespace NetTopologySuite.Noding
         {
             get
             {
-                return properIntersectionPoint;
+                return _properIntersectionPoint;
             }
         }
 
@@ -99,7 +99,7 @@ namespace NetTopologySuite.Noding
         {
             get
             {
-                return hasIntersection;
+                return _hasIntersection;
             }
         }
 
@@ -114,7 +114,7 @@ namespace NetTopologySuite.Noding
         {
             get
             {
-                return hasProper;
+                return _hasProper;
             }
         }
 
@@ -126,7 +126,7 @@ namespace NetTopologySuite.Noding
         {
             get
             {
-                return hasProperInterior;
+                return _hasProperInterior;
             }
         }
         
@@ -138,7 +138,7 @@ namespace NetTopologySuite.Noding
         {
             get
             {
-                return hasInterior;
+                return _hasInterior;
             }
         }
 
@@ -156,7 +156,7 @@ namespace NetTopologySuite.Noding
         {
             if(e0 == e1)
             {
-                if(li.IntersectionNum == 1)
+                if(_li.IntersectionNum == 1)
                 {
                     if(IsAdjacentSegments(segIndex0, segIndex1))
                         return true;
@@ -197,28 +197,28 @@ namespace NetTopologySuite.Noding
             Coordinate p10 = coordinates1[segIndex1];
             Coordinate p11 = coordinates1[segIndex1 + 1];
 
-            li.ComputeIntersection(p00, p01, p10, p11);            
-            if(li.HasIntersection)
+            _li.ComputeIntersection(p00, p01, p10, p11);            
+            if(_li.HasIntersection)
             {                
                 NumIntersections++;
-                if (li.IsInteriorIntersection())
+                if (_li.IsInteriorIntersection())
                 {
                     NumInteriorIntersections++;
-                    hasInterior = true;                    
+                    _hasInterior = true;                    
                 }
                 // if the segments are adjacent they have at least one trivial intersection,
                 // the shared endpoint.  Don't bother adding it if it is the
                 // only intersection.
                 if (!IsTrivialIntersection(e0, segIndex0, e1, segIndex1))
                 {
-                    hasIntersection = true;
-                    ((NodedSegmentString)e0).AddIntersections(li, segIndex0, 0);
-                    ((NodedSegmentString)e1).AddIntersections(li, segIndex1, 1);
-                    if (li.IsProper)
+                    _hasIntersection = true;
+                    ((NodedSegmentString)e0).AddIntersections(_li, segIndex0, 0);
+                    ((NodedSegmentString)e1).AddIntersections(_li, segIndex1, 1);
+                    if (_li.IsProper)
                     {
                         NumProperIntersections++;
-                        hasProper = true;
-                        hasProperInterior = true;
+                        _hasProper = true;
+                        _hasProperInterior = true;
                     }
                 }
             }

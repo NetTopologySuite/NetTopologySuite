@@ -260,7 +260,7 @@ namespace NetTopologySuite.Geometries
         /// <li>null returns an empty <see cref="IPoint"/></li>
         /// <li>a point returns a non-empty <see cref="IPoint"/></li>
         /// <li>a line returns a two-point <see cref="ILineString"/></li>
-        /// <li>a rectangle returns a <see cref="IPolygon"/> whose points are (minx, maxy), (maxx, maxy), (maxx, miny), (minx, miny).</li>
+        /// <li>a rectangle returns a <see cref="IPolygon"/> whose points are (minx, maxy), (minx, maxy), (maxx, maxy), (maxx, miny).</li>
         /// </ul>
         /// </para>
         /// </remarks>
@@ -268,7 +268,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>
         /// An empty <c>Point</c> (for null <c>Envelope</c>s), a <c>Point</c> (when min x = max x and min y = max y) or a <c>Polygon</c> (in all other cases)
         /// </returns>
-        public IGeometry ToGeometry(Envelope envelope) 
+        public virtual IGeometry ToGeometry(Envelope envelope) 
         {
             // null envelope - return empty point geometry
             if (envelope.IsNull) 
@@ -289,7 +289,7 @@ namespace NetTopologySuite.Geometries
                     });
             }
 
-
+            // return CW polygon
             var ring = CreateLinearRing(new[]
             {
                 new Coordinate(envelope.MinX, envelope.MinY),
@@ -380,7 +380,7 @@ namespace NetTopologySuite.Geometries
         /// the empty point is to be created.        
         /// </param>
         /// <returns></returns>
-        public IPolygon CreatePolygon(ILinearRing shell, ILinearRing[] holes)
+        public virtual IPolygon CreatePolygon(ILinearRing shell, ILinearRing[] holes)
         {
             return new Polygon(shell, holes, this);
         }
@@ -394,7 +394,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The polygon</returns>
         /// <exception cref="ArgumentException">If the boundary ring is invalid</exception>
 
-        public IPolygon CreatePolygon(ICoordinateSequence coordinates)
+        public virtual IPolygon CreatePolygon(ICoordinateSequence coordinates)
         {
             return CreatePolygon(CreateLinearRing(coordinates));
         }
@@ -407,7 +407,7 @@ namespace NetTopologySuite.Geometries
         /// the empty geometry is to be created.</param>
         /// <returns>The polygon</returns>
         /// <exception cref="ArgumentException">If the boundary ring is invalid</exception>
-        public IPolygon CreatePolygon(Coordinate[] coordinates)
+        public virtual IPolygon CreatePolygon(Coordinate[] coordinates)
         {
             return CreatePolygon(CreateLinearRing(coordinates));
         }
@@ -421,7 +421,7 @@ namespace NetTopologySuite.Geometries
         /// the empty geometry is to be created.</param>
         /// <returns>The polygon</returns>
         /// <exception cref="ArgumentException">If the boundary ring is invalid</exception>
-        public IPolygon CreatePolygon(ILinearRing shell)
+        public virtual IPolygon CreatePolygon(ILinearRing shell)
         {
             return CreatePolygon(shell, null);
         }

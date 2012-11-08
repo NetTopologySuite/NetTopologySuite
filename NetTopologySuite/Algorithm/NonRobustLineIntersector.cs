@@ -62,7 +62,7 @@ namespace NetTopologySuite.Algorithm
             // if r != 0 the point does not lie on the line
             if (r != 0) 
             {
-                result = NoIntersection;
+                Result = NoIntersection;
                 return;
             }
 
@@ -71,7 +71,7 @@ namespace NetTopologySuite.Algorithm
             double dist = RParameter(p1, p2, p);
             if (dist < 0.0 || dist > 1.0)
             {
-                result = NoIntersection;
+                Result = NoIntersection;
                 return;
             }
 
@@ -79,7 +79,7 @@ namespace NetTopologySuite.Algorithm
             if (p.Equals(p1) || p.Equals(p2))             
                 IsProper = false;
             
-            result = PointIntersection;
+            Result = PointIntersection;
         }
 
         /// <summary>
@@ -163,20 +163,20 @@ namespace NetTopologySuite.Algorithm
                 return ComputeCollinearIntersection(p1, p2, p3, p4);
             
             double numX = b1 * c2 - b2 * c1;
-            pa.X = numX / denom;
+            Pa.X = numX / denom;
 
             double numY = a2 * c1 - a1 * c2;
-            pa.Y = numY / denom;
+            Pa.Y = numY / denom;
 
             // check if this is a proper intersection BEFORE truncating values,
             // to avoid spurious equality comparisons with endpoints
             IsProper = true;
-            if (pa.Equals(p1) || pa.Equals(p2) || pa.Equals(p3) || pa.Equals(p4))             
+            if (Pa.Equals(p1) || Pa.Equals(p2) || Pa.Equals(p3) || Pa.Equals(p4))             
                 IsProper = false;            
 
             // truncate computed point to precision grid            
             if (PrecisionModel != null) 
-                PrecisionModel.MakePrecise(pa);
+                PrecisionModel.MakePrecise(Pa);
             
             return PointIntersection;
         }
@@ -230,21 +230,21 @@ namespace NetTopologySuite.Algorithm
             // check for single point intersection
             if (q4 == p1) 
             {
-                pa.CoordinateValue = p1;
+                Pa.CoordinateValue = p1;
                 return PointIntersection;
             }
             if (q3 == p2)
             {
-                pa.CoordinateValue = p2;
+                Pa.CoordinateValue = p2;
                 return PointIntersection;
             }
 
             // intersection MUST be a segment - compute endpoints
-            pa.CoordinateValue = p1;
-            if (t3 > r1) pa.CoordinateValue = q3;
+            Pa.CoordinateValue = p1;
+            if (t3 > r1) Pa.CoordinateValue = q3;
 
-            pb.CoordinateValue = p2;
-            if (t4 < r2) pb.CoordinateValue = q4;
+            Pb.CoordinateValue = p2;
+            if (t4 < r2) Pb.CoordinateValue = q4;
             
             return CollinearIntersection;
         }

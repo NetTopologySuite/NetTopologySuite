@@ -80,6 +80,8 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        public bool IsCCW { get { return Algorithm.CGAlgorithms.IsCCW(CoordinateSequence); } }
+
         /*
 
               /// <summary>

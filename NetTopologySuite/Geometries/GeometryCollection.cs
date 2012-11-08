@@ -55,7 +55,7 @@ namespace NetTopologySuite.Geometries
         {            
             if (geometries == null)             
                 geometries = new IGeometry[] { };            
-            if (HasNullElements(geometries))             
+            if (HasNullElements(CollectionUtil.Cast<IGeometry, object>(geometries)))             
                 throw new ArgumentException("geometries must not contain null elements");            
             _geometries = geometries;
         }
@@ -262,35 +262,35 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        internal override int GetHashCodeInternal(int baseValue, Func<int, int> operation)
-        {
-            if (!IsEmpty)
-            {
-                for (int i = 0; i < Count; i++)
-                {
-                    var g = GetGeometryN(i);
-                    if (g is Point)
-                    {
-                        baseValue = ((Point)g).GetHashCodeInternal(baseValue, operation);
-                        continue;
-                    }
-                    if (g is LineString)
-                    {
-                        baseValue = ((LineString)g).GetHashCodeInternal(baseValue, operation);
-                        continue;
-                    }
-                    if (g is Polygon)
-                    {
-                        baseValue = ((Polygon)g).GetHashCodeInternal(baseValue, operation);
-                        continue;
-                    }
+        //internal override int GetHashCodeInternal(int baseValue, Func<int, int> operation)
+        //{
+        //    if (!IsEmpty)
+        //    {
+        //        for (int i = 0; i < Count; i++)
+        //        {
+        //            var g = GetGeometryN(i);
+        //            if (g is Point)
+        //            {
+        //                baseValue = ((Point)g).GetHashCodeInternal(baseValue, operation);
+        //                continue;
+        //            }
+        //            if (g is LineString)
+        //            {
+        //                baseValue = ((LineString)g).GetHashCodeInternal(baseValue, operation);
+        //                continue;
+        //            }
+        //            if (g is Polygon)
+        //            {
+        //                baseValue = ((Polygon)g).GetHashCodeInternal(baseValue, operation);
+        //                continue;
+        //            }
 
-                    baseValue = ((GeometryCollection) g).GetHashCodeInternal(baseValue, operation);
+        //            baseValue = ((GeometryCollection) g).GetHashCodeInternal(baseValue, operation);
 
-                }
-            }
-            return baseValue;
-        }
+        //        }
+        //    }
+        //    return baseValue;
+        //}
 
         /// <summary>
         /// 

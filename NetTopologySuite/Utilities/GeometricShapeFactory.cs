@@ -185,7 +185,7 @@ namespace NetTopologySuite.Utilities
                 var y = env.MaxY - i * ySegLen;
                 pts[ipt++] = CreateCoord(x, y);
             }
-            pts[ipt+1] = new Coordinate(pts[0]);
+            pts[ipt] = new Coordinate(pts[0]);
 
             var ring = GeomFact.CreateLinearRing(pts);
             var poly = GeomFact.CreatePolygon(ring, null);
@@ -389,8 +389,13 @@ namespace NetTopologySuite.Utilities
             {
                 get
                 {
-                    return _centre ?? (_centre = new Coordinate(_base.X + _width * 0.5d, 
-                                                                _base.Y + _height * 0.5d));
+                    if (_centre != null)
+                    {
+                        _centre = (_base != null)
+                                      ? new Coordinate(_base.X + _width * 0.5d, _base.Y + _height * 0.5d)
+                                      : new Coordinate(0, 0);
+                    }
+                    return _centre;
                 }
                 set { _centre = value; }
             }

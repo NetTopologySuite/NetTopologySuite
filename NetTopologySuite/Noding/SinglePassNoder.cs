@@ -9,8 +9,6 @@ namespace NetTopologySuite.Noding
     /// </summary>
     public abstract class SinglePassNoder : INoder
     {
-        private ISegmentIntersector _segInt;
-       
         /// <summary>
         /// Initializes a new instance of the <see cref="SinglePassNoder"/> class.
         /// </summary>
@@ -22,7 +20,7 @@ namespace NetTopologySuite.Noding
         /// <param name="segInt">The <see cref="ISegmentIntersector" /> to use.</param>
         protected SinglePassNoder(ISegmentIntersector segInt)
         {
-            _segInt = segInt;
+            SegmentIntersector = segInt;
         }
 
         /// <summary>
@@ -32,17 +30,7 @@ namespace NetTopologySuite.Noding
         /// simply record the presence of intersections.
         /// However, some <see cref="INoder" />s may require that intersections be added.
         /// </summary>
-        public ISegmentIntersector SegmentIntersector
-        {
-            get 
-            { 
-                return _segInt; 
-            }
-            set 
-            { 
-                _segInt = value; 
-            }
-        }
+        public ISegmentIntersector SegmentIntersector { get; set; }
 
 
         /// <summary>

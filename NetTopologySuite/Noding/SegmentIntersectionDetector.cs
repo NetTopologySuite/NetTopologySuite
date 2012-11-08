@@ -97,11 +97,12 @@ namespace NetTopologySuite.Noding
             if (e0 == e1 && segIndex0 == segIndex1) return;
 
             var coords = e0.Coordinates;
-            Coordinate p00 = coords[segIndex0];
-            Coordinate p01 = coords[segIndex0 + 1];
+            var p00 = coords[segIndex0];
+            var p01 = coords[segIndex0 + 1];
+            
             coords = e1.Coordinates;
-            Coordinate p10 = coords[segIndex1];
-            Coordinate p11 = coords[segIndex1 + 1];
+            var p10 = coords[segIndex1];
+            var p11 = coords[segIndex1 + 1];
 
             _li.ComputeIntersection(p00, p01, p10, p11);
             //  if (li.hasIntersection() && li.isProper()) Debug.println(li);
@@ -113,7 +114,7 @@ namespace NetTopologySuite.Noding
                 // record intersection info
                 _hasIntersection = true;
 
-                bool isProper = _li.IsProper;
+                var isProper = _li.IsProper;
                 if (isProper)
                     _hasProperIntersection = true;
                 if (!isProper)
@@ -124,8 +125,11 @@ namespace NetTopologySuite.Noding
                  * OR no location has yet been recorded
                  * save the location data
                  */
+                var saveLocation = !(_findProper && !isProper);
+                /*
                 bool saveLocation = true;
                 if (_findProper && !isProper) saveLocation = false;
+                 */
 
                 if (_intPt == null || saveLocation)
                 {

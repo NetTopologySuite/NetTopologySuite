@@ -234,12 +234,12 @@ namespace NetTopologySuite.Geometries
             return new Envelope(Coordinate.X, Coordinate.X, Coordinate.Y, Coordinate.Y);
         }
 
-        internal override int  GetHashCodeInternal(int baseValue, Func<int,int> operation)
-        {
-            if (!IsEmpty)
-                baseValue = operation(baseValue) + _coordinates.GetX(0).GetHashCode();
-            return baseValue;
-        }
+        //internal override int  GetHashCodeInternal(int baseValue, Func<int,int> operation)
+        //{
+        //    if (!IsEmpty)
+        //        baseValue = operation(baseValue) + _coordinates.GetX(0).GetHashCode();
+        //    return baseValue;
+        //}
 
         /// <summary>
         /// 

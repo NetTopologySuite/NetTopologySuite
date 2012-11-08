@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define ReaderWriterLockSlim
+using System;
 using System.Collections.Generic;
 using GeoAPI;
 using GeoAPI.Geometries;
@@ -84,8 +85,112 @@ namespace NetTopologySuite
         }
         #endregion
 
+        #region SaveDictionary
+#if ReaderWriterLockSlim
+        private class SaveDictionary<TKey, TValue>
+        {
+            //private readonly object _lock = new object();
+            private readonly Dictionary<TKey, TValue> _dictionary = new Dictionary<TKey, TValue>();
+            private readonly System.Threading.ReaderWriterLockSlim _rwLockSlim = 
+                new System.Threading.ReaderWriterLockSlim(System.Threading.LockRecursionPolicy.NoRecursion);
+
+            public void Add(TKey key, ref TValue value)
+            {
+                _rwLockSlim.EnterUpgradeableReadLock();
+                try
+                {
+                    TValue tmp;
+                    if (_dictionary.TryGetValue(key, out tmp))
+                    {
+                        value = tmp;
+                        return;
+                    }
+
+                    _rwLockSlim.EnterWriteLock();
+                    try
+                    {
+                        _dictionary.Add(key, value);
+                    }
+                    finally 
+                    {
+                        _rwLockSlim.ExitWriteLock();
+                    }
+                }
+                finally { _rwLockSlim.ExitUpgradeableReadLock();}
+            }
+
+            public bool TryGetValue(TKey key, out TValue value)
+            {
+                var res = false;
+                _rwLockSlim.EnterReadLock();
+                try
+                {
+                    res = _dictionary.TryGetValue(key, out value);
+                }
+                catch (Exception)
+                {
+                    value = default(TValue);
+                }
+                finally
+                {
+                    _rwLockSlim.ExitReadLock();
+                }
+                return res;
+            }
+
+            public int Count
+            {
+                get
+                {
+                    var ret = 0;
+                    _rwLockSlim.EnterReadLock();
+                    try
+                    {
+                        ret = _dictionary.Count;
+                    }
+                    finally
+                    {
+                        _rwLockSlim.ExitReadLock();
+                    }
+                    return ret;
+                }
+            }
+        }
+#else
+        private class SaveDictionary<TKey, TValue>
+        {
+            private readonly object _lock = new object();
+            private readonly Dictionary<TKey, TValue> _dictionary = new Dictionary<TKey, TValue>();
+
+            public void Add(TKey key, ref TValue value)
+            {
+                lock (_lock)
+                {
+                    if (!_dictionary.ContainsKey(key))
+                        _dictionary.Add(key, value);
+                }
+            }
+
+            public bool TryGetValue(TKey key, out TValue value)
+            {
+                lock (_lock)
+                    return _dictionary.TryGetValue(key, out value);
+            }
+
+            public int Count
+            {
+                get
+                {
+                    lock(_lock)
+                        return _dictionary.Count;
+                }
+            }
+        }
+#endif
+        #endregion
+
         private readonly object _factoriesLock = new object();
-        private readonly Dictionary<GeometryFactoryKey, IGeometryFactory> _factories = new Dictionary<GeometryFactoryKey, IGeometryFactory>();
+        private readonly SaveDictionary<GeometryFactoryKey, IGeometryFactory> _factories = new SaveDictionary<GeometryFactoryKey, IGeometryFactory>();
 
         /// <summary>
         /// Creates an instance of this class, using the <see cref="CoordinateArraySequenceFactory"/> as default and a <see cref="PrecisionModels.Floating"/> precision model. No <see cref="DefaultSRID"/> is specified
@@ -210,13 +315,10 @@ namespace NetTopologySuite
             IGeometryFactory factory;
             if (!_factories.TryGetValue(gfkey, out factory))
             {
-                lock (_factoriesLock)
+                if (!_factories.TryGetValue(gfkey, out factory))
                 {
-                    if (!_factories.TryGetValue(gfkey, out factory))
-                    {
-                        factory = new GeometryFactory(precisionModel, srid, coordinateSequenceFactory);
-                        _factories.Add(gfkey, factory);
-                    }
+                    factory = new GeometryFactory(precisionModel, srid, coordinateSequenceFactory);
+                    _factories.Add(gfkey, ref factory);
                 }
             }
             return factory;

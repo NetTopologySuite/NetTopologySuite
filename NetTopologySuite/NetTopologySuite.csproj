@@ -118,6 +118,7 @@
     <Compile Include="Features\FeatureCollection.cs" />
     <Compile Include="Geometries\Geometry.cs" />
     <Compile Include="Geometries\GeometryComponentFilter.cs" />
+    <Compile Include="Geometries\OgcCompliantGeometryFactory.cs" />
     <Compile Include="Geometries\Utilities\GeometryMapper.cs" />
     <Compile Include="NtsGeometryServices.cs" />
     <Compile Include="Index\Strtree\BoundablePair.cs" />

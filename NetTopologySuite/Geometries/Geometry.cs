@@ -1216,8 +1216,9 @@ namespace NetTopologySuite.Geometries
             ////    result = 37 * result + coord.X.GetHashCode();                        
             ////
         }
-        [Obsolete]
-        internal abstract int GetHashCodeInternal(int baseValue, Func<int, int> operation);
+
+        //[Obsolete]
+        //internal abstract int GetHashCodeInternal(int baseValue, Func<int, int> operation);
 
 
         /// <summary>

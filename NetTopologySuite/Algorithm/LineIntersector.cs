@@ -3,7 +3,6 @@ namespace NetTopologySuite.Algorithm
     using System;
     using System.Text;
     using GeoAPI.Geometries;
-    using Geometries;
     using Utilities;
 
     /// <summary> 
@@ -79,10 +78,10 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         public static double ComputeEdgeDistance(Coordinate p, Coordinate p0, Coordinate p1)
         {
-            double dx = Math.Abs(p1.X - p0.X);
-            double dy = Math.Abs(p1.Y - p0.Y);
+            var dx = Math.Abs(p1.X - p0.X);
+            var dy = Math.Abs(p1.Y - p0.Y);
 
-            double dist = -1.0;   // sentinel value
+            var dist = -1.0;   // sentinel value
             if (p.Equals(p0)) 
                 dist = 0.0;            
             else if (p.Equals(p1)) 
@@ -96,7 +95,7 @@ namespace NetTopologySuite.Algorithm
                 dist = dx > dy ? pdx : pdy;
 
                 // <FIX>: hack to ensure that non-endpoints always have a non-zero distance
-                if (dist == 0.0 && ! p.Equals(p0))                
+                if (dist == 0.0 && ! p.Equals2D(p0))                
                     dist = Math.Max(pdx, pdy);
                 
             }
@@ -117,22 +116,29 @@ namespace NetTopologySuite.Algorithm
             return dist;
         }
 
-        protected int result;
+        protected int Result;
         
-        protected Coordinate[][] inputLines;
+        protected Coordinate[][] InputLines;
         
-        protected Coordinate[] intPt = new Coordinate[2];
+        protected Coordinate[] IntersectionPoint = new Coordinate[2];
 
         /// <summary> 
         /// The indexes of the endpoints of the intersection lines, in order along
         /// the corresponding line
         /// </summary>
-        protected int[] intLineIndex;
+        protected int[] IntersectionLineIndex;
 
         private bool _isProper;
         
-        protected Coordinate pa;        
-        protected Coordinate pb;
+        /// <summary>
+        /// Alias the <see cref="IntersectionPoint"/>[0] for ease of reference
+        /// </summary>
+        protected Coordinate Pa { get { return IntersectionPoint[0]; }}
+
+        /// <summary>
+        /// Alias the <see cref="IntersectionPoint"/>[1] for ease of reference
+        /// </summary>
+        protected Coordinate Pb { get { return IntersectionPoint[1]; } }
 
         /// <summary> 
         /// If MakePrecise is true, computed intersection coordinates will be made precise
@@ -142,16 +148,16 @@ namespace NetTopologySuite.Algorithm
 
         protected LineIntersector() 
         {
-            inputLines = new Coordinate[2][];
-            inputLines[0] = new Coordinate[2];
-            inputLines[1] = new Coordinate[2];
+            InputLines = new Coordinate[2][];
+            InputLines[0] = new Coordinate[2];
+            InputLines[1] = new Coordinate[2];
             
-            intPt[0] = new Coordinate();
-            intPt[1] = new Coordinate();
-            // alias the intersection points for ease of reference
-            this.pa = this.intPt[0];
-            this.pb = this.intPt[1];
-            this.result = 0;
+            IntersectionPoint[0] = new Coordinate();
+            IntersectionPoint[1] = new Coordinate();
+            //// alias the intersection points for ease of reference
+            //Pa = this.IntersectionPoint[0];
+            //Pb = this.IntersectionPoint[1];
+            Result = 0;
         }
 
         /// <summary>
@@ -173,13 +179,6 @@ namespace NetTopologySuite.Algorithm
             set { _precisionModel = value; }
         }
 
-        /**
-         * 
-         * 
-         * @param segmentIndex 
-         * @param ptIndex 
-         * @return 
-         */
         /// <summary>
         /// Gets an endpoint of an input segment.
         /// </summary>
@@ -188,7 +187,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The specified endpoint</returns>
         public Coordinate GetEndpoint(int segmentIndex, int ptIndex)
         {
-            return inputLines[segmentIndex][ptIndex];
+            return InputLines[segmentIndex][ptIndex];
         }
   
 
@@ -202,7 +201,7 @@ namespace NetTopologySuite.Algorithm
         
         protected bool IsCollinear 
         {
-            get { return result == CollinearIntersection; }
+            get { return Result == CollinearIntersection; }
         }
 
         /// <summary>
@@ -213,34 +212,34 @@ namespace NetTopologySuite.Algorithm
         public void ComputeIntersection(Coordinate p1, Coordinate p2, Coordinate p3, Coordinate p4)
         {
             //this.inputLines = new[] { p1, p2, p3, p4 };
-            inputLines[0][0] = p1;
-            inputLines[0][1] = p2;
-            inputLines[1][0] = p3;
-            inputLines[1][1] = p4;
+            InputLines[0][0] = p1;
+            InputLines[0][1] = p2;
+            InputLines[1][0] = p3;
+            InputLines[1][1] = p4;
 
-            this.result = this.ComputeIntersect(p1, p2, p3, p4);        
+            Result = ComputeIntersect(p1, p2, p3, p4);        
         }
 
         public abstract int ComputeIntersect(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2);
         
         public override string ToString() 
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(this.inputLines[0]).Append("-");
-            sb.Append(this.inputLines[1]).Append(" ");
-            sb.Append(this.inputLines[2]).Append("-");
-            sb.Append(this.inputLines[3]).Append(" : ");
+            var sb = new StringBuilder();
+            sb.Append(InputLines[0]).Append("-");
+            sb.Append(InputLines[1]).Append(" ");
+            sb.Append(InputLines[2]).Append("-");
+            sb.Append(InputLines[3]).Append(" : ");
 
-            if (this.IsEndPoint)  sb.Append(" endpoint");
+            if (IsEndPoint)  sb.Append(" endpoint");
             if (_isProper)   sb.Append(" proper");
-            if (this.IsCollinear) sb.Append(" collinear");
+            if (IsCollinear) sb.Append(" collinear");
 
             return sb.ToString();                        
         }
         
         protected bool IsEndPoint 
         {
-            get { return this.HasIntersection && !_isProper; }
+            get { return HasIntersection && !_isProper; }
         }
 
         /// <summary> 
@@ -249,7 +248,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns><c>true</c> if the input geometries intersect.</returns>
         public bool HasIntersection
         {
-            get { return this.result != NoIntersection; }
+            get { return Result != NoIntersection; }
         }
 
         /// <summary>
@@ -258,7 +257,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The number of intersection points found (0, 1, or 2)</returns>
         public int IntersectionNum
         {
-            get { return this.result; }
+            get { return Result; }
         }
 
         /// <summary> 
@@ -268,17 +267,17 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The intIndex'th intersection point.</returns>
         public Coordinate GetIntersection(int intIndex)  
         { 
-            return this.intPt[intIndex]; 
+            return IntersectionPoint[intIndex]; 
         }
 
         protected void ComputeIntLineIndex() 
         {
-            if (this.intLineIndex != null)
+            if (IntersectionLineIndex != null)
                 return;
 
-            this.intLineIndex = new int[4];
-            this.ComputeIntLineIndex(0);
-            this.ComputeIntLineIndex(1);
+            IntersectionLineIndex = new int[4];
+            ComputeIntLineIndex(0);
+            ComputeIntLineIndex(1);
         }
 
         /// <summary> 
@@ -290,8 +289,8 @@ namespace NetTopologySuite.Algorithm
         /// <returns><c>true</c> if the input point is one of the intersection points.</returns>
         public bool IsIntersection(Coordinate pt) 
         {
-            for (int i = 0; i < this.result; i++) 
-                if (this.intPt[i].Equals2D(pt)) 
+            for (var i = 0; i < Result; i++) 
+                if (IntersectionPoint[i].Equals2D(pt)) 
                     return true;                        
             return false;
         }
@@ -319,10 +318,10 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         public bool IsInteriorIntersection(int inputLineIndex)
         {
-            for (int i = 0; i < result; i++)
+            for (var i = 0; i < Result; i++)
             {
-                if (!(intPt[i].Equals2D(inputLines[inputLineIndex][0]) ||
-                      intPt[i].Equals2D(inputLines[inputLineIndex][1])))                                   
+                if (!(IntersectionPoint[i].Equals2D(InputLines[inputLineIndex][0]) ||
+                      IntersectionPoint[i].Equals2D(InputLines[inputLineIndex][1])))                                   
                     return true;
             }
             return false;
@@ -355,9 +354,9 @@ namespace NetTopologySuite.Algorithm
         public Coordinate GetIntersectionAlongSegment(int segmentIndex, int intIndex) 
         {
             // lazily compute int line array
-            this.ComputeIntLineIndex();
-            int index = segmentIndex == 0 ? 0 : 2;
-            return this.intPt[this.intLineIndex[index + intIndex]];
+            ComputeIntLineIndex();
+            var index = segmentIndex == 0 ? 0 : 2;
+            return IntersectionPoint[IntersectionLineIndex[index + intIndex]];
         }
 
         /// <summary>
@@ -372,25 +371,29 @@ namespace NetTopologySuite.Algorithm
         public int GetIndexAlongSegment(int segmentIndex, int intIndex) 
         {
             ComputeIntLineIndex();
-            int index = segmentIndex == 0 ? 0 : 2;
-            return intLineIndex[index + intIndex];
+            var index = segmentIndex == 0 ? 0 : 2;
+            return IntersectionLineIndex[index + intIndex];
         }
 
+        /// <summary>
+        /// Computes the intersection line index
+        /// </summary>
+        /// <param name="segmentIndex">The segment index</param>
         protected void ComputeIntLineIndex(int segmentIndex) 
         {
-            double dist0 = this.GetEdgeDistance(segmentIndex, 0);
-            double dist1 = this.GetEdgeDistance(segmentIndex, 1);
+            var dist0 = GetEdgeDistance(segmentIndex, 0);
+            var dist1 = GetEdgeDistance(segmentIndex, 1);
             if (dist0 > dist1) 
             {
-                int index = segmentIndex == 0 ? 0 : 2;
-                this.intLineIndex[index] = 0;
-                this.intLineIndex[index + 1] = 1;
+                var index = segmentIndex == 0 ? 0 : 2;
+                IntersectionLineIndex[index] = 0;
+                IntersectionLineIndex[index + 1] = 1;
             }
             else
             {
-                int index = segmentIndex == 0 ? 0 : 2;
-                this.intLineIndex[index] = 1;
-                this.intLineIndex[index + 1] = 0;
+                var index = segmentIndex == 0 ? 0 : 2;
+                IntersectionLineIndex[index] = 1;
+                IntersectionLineIndex[index + 1] = 0;
             }
         }
 
@@ -402,8 +405,8 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The edge distance of the intersection point.</returns>
         public double GetEdgeDistance(int segmentIndex, int intIndex) 
         {
-            double dist = ComputeEdgeDistance(intPt[intIndex], inputLines[segmentIndex][0],
-                inputLines[segmentIndex][1]);
+            double dist = ComputeEdgeDistance(IntersectionPoint[intIndex], InputLines[segmentIndex][0],
+                InputLines[segmentIndex][1]);
             return dist;
         }
     }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Geometries
 {
@@ -90,9 +91,9 @@ namespace NetTopologySuite.Geometries
                 shell = Factory.CreateLinearRing((ICoordinateSequence) null);            
             if (holes == null) 
                 holes = new ILinearRing[] { };
-            if (HasNullElements(holes)) 
+            if (HasNullElements(CollectionUtil.Cast<ILinearRing, object>(holes)))
                 throw new ArgumentException("holes must not contain null elements");
-            if (shell.IsEmpty && HasNonEmptyElements(holes)) 
+            if (shell.IsEmpty && HasNonEmptyElements(CollectionUtil.Cast<ILinearRing, IGeometry>(holes))) 
                 throw new ArgumentException("shell is empty but holes are not");
             _shell = shell;
             _holes = holes;
@@ -118,9 +119,9 @@ namespace NetTopologySuite.Geometries
             {
                 if (IsEmpty)
                     return new Coordinate[] { };
-                Coordinate[] coordinates = new Coordinate[NumPoints];
-                int k = -1;
-                Coordinate[] shellCoordinates = _shell.Coordinates;
+                var coordinates = new Coordinate[NumPoints];
+                var k = -1;
+                var shellCoordinates = _shell.Coordinates;
                 for (int x = 0; x < shellCoordinates.Length; x++)
                 {
                     k++;
@@ -146,7 +147,7 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                int numPoints = _shell.NumPoints;
+                var numPoints = _shell.NumPoints;
                 for (int i = 0; i < _holes.Length; i++)
                     numPoints += _holes[i].NumPoints;
                 return numPoints;
@@ -226,7 +227,7 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                return _holes;
+                return CollectionUtil.Cast<ILinearRing, ILineString>(_holes);
             }
         }
 
@@ -297,14 +298,14 @@ namespace NetTopologySuite.Geometries
             {
                 if (IsEmpty)
                     return Factory.CreateMultiLineString(null);
-                ILinearRing[] rings = new ILinearRing[_holes.Length + 1];
+                var rings = new ILinearRing[_holes.Length + 1];
                 rings[0] = _shell;
-                for (int i = 0; i < _holes.Length; i++)
+                for (var i = 0; i < _holes.Length; i++)
                     rings[i + 1] = _holes[i];
                 // create LineString or MultiLineString as appropriate
                 if (rings.Length <= 1)
                     return Factory.CreateLinearRing(rings[0].CoordinateSequence);
-                return Factory.CreateMultiLineString(rings);
+                return Factory.CreateMultiLineString(CollectionUtil.Cast<ILinearRing, ILineString>(rings));
             }
         }
 
@@ -328,7 +329,7 @@ namespace NetTopologySuite.Geometries
             if (!IsEquivalentClass(other)) 
                 return false;
 
-            IPolygon otherPolygon = (IPolygon) other;
+            var otherPolygon = (IPolygon) other;
             IGeometry thisShell = _shell;
             IGeometry otherPolygonShell = otherPolygon.Shell;
             if (!thisShell.EqualsExact(otherPolygonShell, tolerance)) 
@@ -395,24 +396,25 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         public override object Clone() 
         {
-            Polygon poly = (Polygon) base.Clone();
+            var poly = (Polygon) base.Clone();
             poly._shell = (LinearRing) _shell.Clone();
             poly._holes = new ILinearRing[_holes.Length];
-            for (int i = 0; i < _holes.Length; i++) 
+            for (var i = 0; i < _holes.Length; i++) 
                 poly._holes[i] = (LinearRing) _holes[i].Clone();            
             return poly; 
         }
 
-        internal override int GetHashCodeInternal(int baseValue, Func<int, int> operation)
-        {
-            if (!IsEmpty)
-            {
-                baseValue = _shell.CoordinateSequence.GetHashCode(baseValue, operation);
-                foreach(var ring in _holes)
-                    baseValue = ring.CoordinateSequence.GetHashCode(baseValue, operation);
-            }
-            return baseValue;
-        }
+        //[Obsolete]
+        //internal override int GetHashCodeInternal(int baseValue, Func<int, int> operation)
+        //{
+        //    if (!IsEmpty)
+        //    {
+        //        baseValue = _shell.CoordinateSequence.GetHashCode(baseValue, operation);
+        //        foreach(var ring in _holes)
+        //            baseValue = ring.CoordinateSequence.GetHashCode(baseValue, operation);
+        //    }
+        //    return baseValue;
+        //}
 
         /// <summary>
         /// 
@@ -454,10 +456,10 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         protected internal override int CompareToSameClass(object other, IComparer<ICoordinateSequence> comparer)
         {
-            IPolygon poly = (IPolygon)other;
+            var poly = (IPolygon)other;
 
-            LinearRing thisShell = (LinearRing)_shell;
-            LinearRing otherShell = (LinearRing)poly.Shell;
+            var thisShell = (LinearRing)_shell;
+            var otherShell = (LinearRing)poly.Shell;
             int shellComp = thisShell.CompareToSameClass(otherShell, comparer);
             if (shellComp != 0) return shellComp;
 
@@ -466,9 +468,9 @@ namespace NetTopologySuite.Geometries
             int i = 0;
             while (i < nHole1 && i < nHole2)
             {
-                LinearRing thisHole = (LinearRing)GetInteriorRingN(i);
-                LinearRing otherHole = (LinearRing)poly.GetInteriorRingN(i);
-                int holeComp = thisHole.CompareToSameClass(otherHole, comparer);
+                var thisHole = (LinearRing)GetInteriorRingN(i);
+                var otherHole = (LinearRing)poly.GetInteriorRingN(i);
+                var holeComp = thisHole.CompareToSameClass(otherHole, comparer);
                 if (holeComp != 0) return holeComp;
                 i++;
             }
@@ -482,13 +484,13 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="ring"></param>
         /// <param name="clockwise"></param>        
-        private void Normalize(ILinearRing ring, bool clockwise) 
+        private static void Normalize(ILinearRing ring, bool clockwise) 
         {
             if (ring.IsEmpty) 
                 return;            
-            Coordinate[] uniqueCoordinates = new Coordinate[ring.Coordinates.Length - 1];
+            var uniqueCoordinates = new Coordinate[ring.Coordinates.Length - 1];
             Array.Copy(ring.Coordinates, 0, uniqueCoordinates, 0, uniqueCoordinates.Length);
-            Coordinate minCoordinate = CoordinateArrays.MinCoordinate(ring.Coordinates);
+            var minCoordinate = CoordinateArrays.MinCoordinate(ring.Coordinates);
             CoordinateArrays.Scroll(uniqueCoordinates, minCoordinate);
             Array.Copy(uniqueCoordinates, 0, ring.Coordinates, 0, uniqueCoordinates.Length);
             ring.Coordinates[uniqueCoordinates.Length] = uniqueCoordinates[0];
@@ -509,9 +511,9 @@ namespace NetTopologySuite.Geometries
                 if (Shell.NumPoints != 5) return false;
 
                 // check vertices have correct values
-                ICoordinateSequence seq = Shell.CoordinateSequence;                
-                Envelope env = (Envelope) EnvelopeInternal;
-                for (int i = 0; i < 5; i++)
+                var seq = Shell.CoordinateSequence;                
+                var env = EnvelopeInternal;
+                for (var i = 0; i < 5; i++)
                 {
                     double x = seq.GetX(i);
                     if (!(x == env.MinX || x == env.MaxX)) 
@@ -523,15 +525,15 @@ namespace NetTopologySuite.Geometries
                 }
 
                 // check vertices are in right order
-                double prevX = seq.GetX(0);
-                double prevY = seq.GetY(0);
-                for (int i = 1; i <= 4; i++)
+                var prevX = seq.GetX(0);
+                var prevY = seq.GetY(0);
+                for (var i = 1; i <= 4; i++)
                 {
-                    double x = seq.GetX(i);
-                    double y = seq.GetY(i);
+                    var x = seq.GetX(i);
+                    var y = seq.GetY(i);
 
-                    bool xChanged = x != prevX;
-                    bool yChanged = y != prevY;
+                    var xChanged = x != prevX;
+                    var yChanged = y != prevY;
                     
                     if (xChanged == yChanged)
                         return false;
@@ -545,9 +547,9 @@ namespace NetTopologySuite.Geometries
 
         public override IGeometry Reverse()
         {
-            Polygon poly = (Polygon)Clone();
+            var poly = (Polygon)Clone();
             poly.Shell = (LinearRing)((LinearRing)_shell.Clone()).Reverse();
-            poly.Holes = new LinearRing[_holes.Length];
+            poly.Holes = CollectionUtil.Cast<LinearRing, ILinearRing>(new LinearRing[_holes.Length]);
             for (int i = 0; i < _holes.Length; i++)
             {
                 poly.Holes[i] = (LinearRing)((LinearRing)_holes[i].Clone()).Reverse();

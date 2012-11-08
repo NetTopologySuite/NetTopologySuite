@@ -38,9 +38,9 @@ namespace NetTopologySuite.Index.Strtree
         /// <summary>
         /// 
         /// </summary>
-        private AbstractNode _root;
-
-        private bool _built;
+        private readonly object _buildLock = new object();
+        private volatile AbstractNode _root;
+        private volatile bool _built, _building;
         /**
          * Set to <tt>null</tt> when index is built, to avoid retaining memory.
          */
@@ -69,13 +69,19 @@ namespace NetTopologySuite.Index.Strtree
             if (_built)
                 return;
 
-            _root = (_itemBoundables.Count == 0) 
-                        ? CreateNode(0)
-                        : CreateHigherLevels(_itemBoundables, -1);
+            lock (_buildLock)
+                if (!_built)
+                {
+                    _building = true;
+                    _root = (_itemBoundables.Count == 0)
+                                ? CreateNode(0)
+                                : CreateHigherLevels(_itemBoundables, -1);
 
-            // the item list is no longer needed
-            _itemBoundables = null;
-            _built = true;
+                    // the item list is no longer needed
+                    _itemBoundables = null;
+                    _built = true;
+                    _building = false;
+                }
         }
 
         /// <summary>
@@ -96,11 +102,10 @@ namespace NetTopologySuite.Index.Strtree
             Assert.IsTrue(childBoundables.Count != 0);
             var parentBoundables = new List<object>();
             parentBoundables.Add(CreateNode(newLevel));
-            var sortedChildBoundables = new List<object>(childBoundables.CastPlatform());
+            var sortedChildBoundables = new Wintellect.PowerCollections.BigList<object>(childBoundables.CastPlatform());
             sortedChildBoundables.Sort(GetComparer());
-            for (var i = sortedChildBoundables.GetEnumerator(); i.MoveNext(); )
+            foreach (IBoundable childBoundable in sortedChildBoundables)
             {
-                var childBoundable = (IBoundable)i.Current;
                 if (LastNode(parentBoundables).ChildBoundables.Count == NodeCapacity)
                     parentBoundables.Add(CreateNode(newLevel));
                 LastNode(parentBoundables).AddChildBoundable(childBoundable);
@@ -223,7 +228,7 @@ namespace NetTopologySuite.Index.Strtree
 
         protected void Insert(object bounds, object item)
         {
-            Assert.IsTrue(!_built, "Cannot insert items into an STR packed R-tree after it has been built.");
+            Assert.IsTrue(!(_built || _building), "Cannot insert items into an STR packed R-tree after it has been built.");
             _itemBoundables.Add(new ItemBoundable(bounds, item));
         }
 
