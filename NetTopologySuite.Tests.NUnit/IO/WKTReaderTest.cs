@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
@@ -118,7 +119,18 @@ namespace NetTopologySuite.Tests.NUnit.IO
         }
 
         [Test]
+        public void RepeatedTestThreading()
+        {
+            Parallel.For(0, 10, DoTestThreading);
+        }
+
+        [Test]
         public void TestThreading()
+        {
+            DoTestThreading(0);
+        }
+
+        public void DoTestThreading(int taskNr)
         {
             var gf = GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory();
             var numFactories = ((NtsGeometryServices) GeoAPI.GeometryServiceProvider.Instance).NumFactories;
@@ -146,7 +158,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 ThreadPool.QueueUserWorkItem(TestReaderInThreadedContext, new object[] {wkts, waitHandles[i], srids, i});
             }
 
-            WaitHandle.WaitAll(waitHandles);
+            WaitHandle.WaitAll(waitHandles, 10000);
 
             var numFactories2 = ((NtsGeometryServices)GeoAPI.GeometryServiceProvider.Instance).NumFactories; 
             Console.WriteLine("Now {0} factories created", numFactories2);

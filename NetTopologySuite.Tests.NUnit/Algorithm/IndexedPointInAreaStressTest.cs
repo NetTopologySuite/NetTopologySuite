@@ -14,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         public void TestGrid()
         {
             // Use fixed PM to try and get at least some points hitting the boundary
-            IGeometryFactory geomFactory = GeometryFactory.Fixed;
+            var geomFactory = GeometryFactory.Fixed;
             //		GeometryFactory geomFactory = new GeometryFactory();
 
             var gridBuilder = new PerturbedGridPolygonBuilder(geomFactory)
@@ -24,7 +24,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                                       Seed = 118507219
                                   };
             //gridBuilder.SetSeed(1185072199562);
-            IGeometry area = gridBuilder.Geometry;
+            var area = gridBuilder.Geometry;
 
             //    PointInAreaLocator pia = new IndexedPointInAreaLocator(area); 
             IPointOnGeometryLocator pia = new IndexedPointInAreaLocator(area);

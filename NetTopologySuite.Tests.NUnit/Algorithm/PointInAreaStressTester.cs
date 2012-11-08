@@ -75,7 +75,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                     // compute test point
                     double x = areaEnv.MinX + i * xStep;
                     double y = areaEnv.MinY + j * yStep;
-                    Coordinate pt = new Coordinate(x, y);
+                    var pt = new Coordinate(x, y);
                     _geomFactory.PrecisionModel.MakePrecise(pt);
 
                     Boolean isEqual = TestPointInArea(pt);

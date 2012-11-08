@@ -29,7 +29,7 @@ namespace NetTopologySuite.Samples.Tests.Various
                 new Coordinate(20, 20), 
                 new Coordinate(20, 30), 
             });            
-            ILineString reverse = lineString.Reverse();
+            var reverse = (ILineString)lineString.Reverse();
 
             Debug.WriteLine(lineString.ToString());
             Debug.WriteLine(reverse.ToString());
