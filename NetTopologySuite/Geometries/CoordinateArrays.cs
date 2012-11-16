@@ -224,6 +224,40 @@ namespace NetTopologySuite.Geometries
       	}
 
         /// <summary>
+        /// Collapses a coordinate array to remove all null elements.
+        /// </summary>
+        /// <param name="coord">The coordinate array to collapse</param>
+        /// <returns>An Array containing only non-null elements</returns>
+        public static Coordinate[] RemoveNull(Coordinate[] coord)
+        {
+            var coordinateList = new List<Coordinate>(coord.Length);
+            foreach (var coordinate in coord)
+            {
+                if (coordinate != null)
+                    coordinateList.Add(coordinate);
+            }
+            return coordinateList.ToArray();
+            /*
+            var nonNull = 0;
+            for (var i = 0; i < coord.Length; i++)
+            {
+                if (coord[i] != null) nonNull++;
+            }
+            var newCoord = new Coordinate[nonNull];
+            // empty case
+            if (nonNull == 0) return newCoord;
+
+            var j = 0;
+            for (int i = 0; i < coord.Length; i++)
+            {
+                if (coord[i] != null) newCoord[j++] = coord[i];
+            }
+            return newCoord;
+             */
+        }
+  
+
+        /// <summary>
         /// Reverses the coordinates in an array in-place.
         /// </summary>
         /// <param name="coord">Array of Coordinates.</param>
