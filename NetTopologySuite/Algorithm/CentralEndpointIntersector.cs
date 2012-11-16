@@ -55,7 +55,7 @@ namespace NetTopologySuite.Algorithm
         private void Compute()
         {
             var centroid = Average(_pts);
-            Intersection = FindNearestPoint(centroid, _pts);
+            Intersection = new Coordinate(FindNearestPoint(centroid, _pts));
         }
 
         /// <summary>
