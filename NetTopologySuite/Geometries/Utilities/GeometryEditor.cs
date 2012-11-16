@@ -7,7 +7,8 @@ using NetTopologySuite.Utilities;
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
-    /// A class which supports creating a new <c>Geometry</c> which are modifications of existing ones.
+    /// A class which supports creating new <see cref="IGeometry"/>s
+    /// which are modifications of existing ones.
     /// </summary>
     /// <remarks>
     /// Geometry objects are intended to be treated as immutable.
@@ -85,7 +86,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="geometry">The Geometry to edit.</param>
         /// <param name="operation">The edit operation to carry out.</param>
-        /// <returns>A new <c>Geometry</c> which is the result of the editing.</returns>
+        /// <returns>A new <c>Geometry</c> which is the result of the editing (which may be empty).</returns>
         public IGeometry Edit(IGeometry geometry, IGeometryEditorOperation operation)
         {
             // if client did not supply a GeometryFactory, use the one from the input Geometry
@@ -103,59 +104,54 @@ namespace NetTopologySuite.Geometries.Utilities
             return null;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="polygon"></param>
-        /// <param name="operation"></param>
-        /// <returns></returns>
         private IPolygon EditPolygon(IPolygon polygon, IGeometryEditorOperation operation)
         {
-            IPolygon newPolygon = (IPolygon)operation.Edit(polygon, _factory);
+            var newPolygon = (IPolygon)operation.Edit(polygon, _factory);
+            // create one if needed
+            if (newPolygon == null)
+                newPolygon = _factory.CreatePolygon((ICoordinateSequence)null);
             if (newPolygon.IsEmpty)
                 //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
                 return newPolygon;
 
-            ILinearRing shell = (ILinearRing)Edit(newPolygon.ExteriorRing, operation);
-            if (shell.IsEmpty)
+            var shell = (ILinearRing)Edit(newPolygon.ExteriorRing, operation);
+            if (shell == null || shell.IsEmpty)
                 //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
                 return _factory.CreatePolygon(null, null);
 
-            List<ILinearRing> holes = new List<ILinearRing>();
-            for (int i = 0; i < newPolygon.NumInteriorRings; i++)
+            var holes = new List<ILinearRing>();
+            for (var i = 0; i < newPolygon.NumInteriorRings; i++)
             {
-                ILinearRing hole = (ILinearRing)Edit(newPolygon.GetInteriorRingN(i), operation);
-                if (hole.IsEmpty) continue;
+                var hole = (ILinearRing)Edit(newPolygon.GetInteriorRingN(i), operation);
+                if (hole == null || hole.IsEmpty) continue;
                 holes.Add(hole);
             }
 
             return _factory.CreatePolygon(shell, holes.ToArray());
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="collection"></param>
-        /// <param name="operation"></param>
-        /// <returns></returns>
         private IGeometryCollection EditGeometryCollection(IGeometryCollection collection, IGeometryEditorOperation operation)
         {
-            IGeometryCollection newCollection = (IGeometryCollection)operation.Edit(collection, _factory);
+            // first edit the entire collection
+            // MD - not sure why this is done - could just check original collection?
+            var collectionForType = (IGeometryCollection)operation.Edit(collection, _factory);
+
+            // edit the component geometries
             IList<IGeometry> geometries = new List<IGeometry>();
-            for (int i = 0; i < newCollection.NumGeometries; i++)
+            for (var i = 0; i < collectionForType.NumGeometries; i++)
             {
-                IGeometry geometry = Edit(newCollection.GetGeometryN(i), operation);
-                if (geometry.IsEmpty) continue;
+                var geometry = Edit(collectionForType.GetGeometryN(i), operation);
+                if (geometry == null || geometry.IsEmpty) continue;
                 geometries.Add(geometry);
             }
 
-            if (newCollection is IMultiPoint)
+            if (collectionForType is IMultiPoint)
                 return _factory.CreateMultiPoint(geometries.Cast<IPoint>().ToArray());
 
-            if (newCollection is IMultiLineString)
+            if (collectionForType is IMultiLineString)
                 return _factory.CreateMultiLineString(geometries.Cast<ILineString>().ToArray());
 
-            if (newCollection is IMultiPolygon)
+            if (collectionForType is IMultiPolygon)
                 return _factory.CreateMultiPolygon(geometries.Cast<IPolygon>().ToArray());
 
             return _factory.CreateGeometryCollection(geometries.ToArray());
@@ -176,6 +172,7 @@ namespace NetTopologySuite.Geometries.Utilities
             /// (may be different to the factory of the input point).
             /// </param>
             /// <returns>A new Geometry which is a modification of the input Geometry.</returns>
+            /// <returns><value>null</value> if the Geometry is to be deleted completely</returns>
             IGeometry Edit(IGeometry geometry, IGeometryFactory factory);
         }
 
