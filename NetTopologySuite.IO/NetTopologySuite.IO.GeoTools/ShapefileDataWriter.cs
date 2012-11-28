@@ -88,14 +88,12 @@ namespace NetTopologySuite.IO
         private const int DateLength = 8;
         private const int DateDecimals = 0;
 
-        private string shpFile = String.Empty;
-        private string shxFile = String.Empty;
-        private string dbfFile = String.Empty;
+        private readonly string _shpFile = String.Empty;
+        private readonly string _dbfFile = String.Empty;
 
-        private ShapefileWriter shapeWriter = null;
-        private DbaseFileWriter dbaseWriter = null;
+        private readonly DbaseFileWriter _dbaseWriter;
 
-        private DbaseFileHeader header = null;
+        private DbaseFileHeader _header;
 
         /// <summary>
         /// Gets or sets the header of the shapefile.
@@ -103,11 +101,11 @@ namespace NetTopologySuite.IO
         /// <value>The header.</value>
         public DbaseFileHeader Header
         {
-            get { return header; }
-            set { header = value; }
+            get { return _header; }
+            set { _header = value; }
         }
 
-        private IGeometryFactory geometryFactory = null;
+        private IGeometryFactory _geometryFactory;
 
         /// <summary>
         /// Gets or sets the geometry factory.
@@ -115,8 +113,8 @@ namespace NetTopologySuite.IO
         /// <value>The geometry factory.</value>
         protected IGeometryFactory GeometryFactory
         {
-            get { return geometryFactory; }
-            set { geometryFactory = value; }
+            get { return _geometryFactory; }
+            set { _geometryFactory = value; }
         }
 
         /// <summary>
@@ -132,15 +130,14 @@ namespace NetTopologySuite.IO
         /// <param name="geometryFactory"></param>
         public ShapefileDataWriter(string fileName, IGeometryFactory geometryFactory)
         {
-            this.geometryFactory = geometryFactory;
+            _geometryFactory = geometryFactory;
 
             // Files            
-            shpFile = fileName;
-            dbfFile = fileName + ".dbf";
+            _shpFile = fileName;
+            _dbfFile = fileName + ".dbf";
 
             // Writers
-            shapeWriter = new ShapefileWriter(geometryFactory);
-            dbaseWriter = new DbaseFileWriter(dbfFile);
+            _dbaseWriter = new DbaseFileWriter(_dbfFile);
         }
 
         /// <summary>
@@ -163,27 +160,27 @@ namespace NetTopologySuite.IO
             try
             {
                 // Write shp and shx  
-                IGeometry[] geometries = new IGeometry[featureCollection.Count];
-                int index = 0;
+                var geometries = new IGeometry[featureCollection.Count];
+                var index = 0;
                 foreach (Feature feature in featureCollection)
                     geometries[index++] = feature.Geometry;
-                shapeWriter.Write(shpFile, new GeometryCollection(geometries, geometryFactory));
+                ShapefileWriter.WriteGeometryCollection(_shpFile, new GeometryCollection(geometries, _geometryFactory));
 
                 // Write dbf
-                dbaseWriter.Write(Header);
+                _dbaseWriter.Write(Header);
                 foreach (Feature feature in featureCollection)
                 {
-                    IAttributesTable attribs = feature.Attributes;
+                    var attribs = feature.Attributes;
                     ArrayList values = new ArrayList();
                     for (int i = 0; i < Header.NumFields; i++)
                         values.Add(attribs[Header.Fields[i].Name]);
-                    dbaseWriter.Write(values);
+                    _dbaseWriter.Write(values);
                 }
             }
             finally
             {
                 // Close dbf writer
-                dbaseWriter.Close();
+                _dbaseWriter.Close();
             }
         }
     }

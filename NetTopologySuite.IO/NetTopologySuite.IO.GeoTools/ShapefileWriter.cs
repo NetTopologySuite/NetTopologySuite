@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
@@ -10,15 +10,52 @@ namespace NetTopologySuite.IO
 	/// <summary>
 	/// This class writes ESRI Shapefiles.
 	/// </summary>
-	public class ShapefileWriter
+	public class ShapefileWriter : IDisposable
 	{
-        private IGeometryFactory geometryFactory = null;
-		
+	    public IGeometryFactory Factory { get; set; }
+
+        private FileStream _shpStream;
+        private BigEndianBinaryWriter _shpBinaryWriter;
+        private FileStream _shxStream;
+        private BigEndianBinaryWriter _shxBinaryWriter;
+        private Envelope _totalEnvelope;
+	    
+        private readonly ShapeHandler _shapeHandler;
+        private readonly ShapeGeometryType _geometryType;
+        
+        int _numFeaturesWritten;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="ShapefileWriter" /> class 
-        /// using <see cref="GeometryFactory.Default" /> with a <see cref="PrecisionModels.Floating" /> precision.
-		/// </summary>
-		public ShapefileWriter() : this(GeometryFactory.Default) { }
+        /// Initializes a buffered writer where you can write shapes individually to the file.
+        /// </summary>
+        /// <param name="filename">The filename</param>
+        /// <param name="geomType">The geometry type</param>
+        public ShapefileWriter(string filename, ShapeGeometryType geomType)
+            : this(GeometryFactory.Default, filename, geomType)
+        {}
+
+        public ShapefileWriter(IGeometryFactory geometryFactory, string filename, ShapeGeometryType geomType)
+            : this(geometryFactory)
+        {
+            var folder = Path.GetDirectoryName(filename) ?? ".";
+            var file = Path.GetFileNameWithoutExtension(filename);
+            if (string.IsNullOrEmpty(file))
+                throw new ArgumentException(string.Format("Filename '{0}' is not valid", filename), "filename");
+            filename = Path.Combine(folder, file);
+
+            _shpStream = new FileStream(filename + ".shp", FileMode.Create);
+            _shxStream = new FileStream(filename + ".shx", FileMode.Create);
+
+            _geometryType = geomType;
+
+            _shpBinaryWriter = new BigEndianBinaryWriter(_shpStream);
+            _shxBinaryWriter = new BigEndianBinaryWriter(_shxStream);
+
+            WriteShpHeader(_shpBinaryWriter, 0, new Envelope(0, 0, 0, 0), geomType);
+            WriteShxHeader(_shxBinaryWriter, 0, new Envelope(0, 0, 0, 0), geomType);
+
+            _shapeHandler = Shapefile.GetShapeHandler(geomType);
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShapefileWriter" /> class
@@ -27,11 +64,95 @@ namespace NetTopologySuite.IO
         /// <param name="geometryFactory"></param>
         public ShapefileWriter(IGeometryFactory geometryFactory) 
         {
-            this.geometryFactory = geometryFactory;
+            Factory = geometryFactory;
         }
+
+        public void Close()
+        {
+            if (_shpBinaryWriter != null)
+            {
+                /*Update header to reflect the data written*/
+                _shpStream.Seek(0, SeekOrigin.Begin);
+                _shxStream.Seek(0, SeekOrigin.Begin);
+
+                var shpLenWords = (int)_shpBinaryWriter.BaseStream.Length / 2;
+                var shxLenWords = (int)_shxBinaryWriter.BaseStream.Length / 2;
+
+                WriteShpHeader(_shpBinaryWriter, shpLenWords, _totalEnvelope, _geometryType);
+                WriteShxHeader(_shxBinaryWriter, shxLenWords, _totalEnvelope, _geometryType);
+
+                _shpStream.Seek(0, SeekOrigin.End);
+                _shxStream.Seek(0, SeekOrigin.End);
+            }
+
+            if (_shpBinaryWriter != null)
+            {
+                _shpBinaryWriter.Close();
+                _shpBinaryWriter = null;
+            }
+            if (_shxBinaryWriter != null)
+            {
+                _shxBinaryWriter.Close();
+                _shxBinaryWriter = null;
+            }
+            if (_shpStream != null)
+            {
+                _shpStream.Close();
+                _shpStream = null;
+            }
+
+            if (_shxStream != null)
+            {
+                _shxStream.Close();
+                _shxStream = null;
+            }
+        }
+
+        /// <summary>
+        /// Adds a shape to the shapefile. You must have used the constrcutor with a filename to use this method!
+        /// </summary>
+        /// <param name="geometry"></param>
+        public void Write(IGeometry geometry)
+        {
+            if (_shpBinaryWriter == null)
+                throw new NotSupportedException("Writing not started, use the Constructor with a filename!");
+
+            WriteRecordToFile(_shpBinaryWriter, _shxBinaryWriter, _shapeHandler, geometry, _numFeaturesWritten + 1);
+            _numFeaturesWritten++;
+
+            var env = geometry.EnvelopeInternal;
+            var bounds = ShapeHandler.GetEnvelopeExternal(geometry.PrecisionModel, env);
+            if (_totalEnvelope == null)
+            {
+                _totalEnvelope = bounds;
+            }
+            else
+            {
+                _totalEnvelope.ExpandToInclude(bounds);
+            }
+        }
+
+        /// <summary>
+        /// Method to write a collection of <see cref="IGeometry"/>s to a file named <paramref name="filename"/>
+        /// </summary>
+        /// <remarks>
+        /// Assumes the type given for the first geometry is the same for all subsequent geometries.
+        /// For example, is, if the first Geometry is a Multi-polygon/ Polygon, the subsequent geometies are
+        /// Muli-polygon/ polygon and not lines or points.
+        /// The dbase file for the corresponding shapefile contains one column called row. It contains 
+        /// the row number.
+        /// </remarks>
+        /// <param name="filename">The name of the file</param>
+        /// <param name="geometryCollection">The collection of geometries</param>
+        [Obsolete("use WriteGeometryCollection")]
+        public void Write(string filename, IGeometryCollection geometryCollection)
+        {
+            WriteGeometryCollection(filename, geometryCollection);
+        }
+
        		
 		/// <summary>
-		/// Writes a shapefile to disk.
+		/// Method to write a collection of geometries to a shapefile on disk.
 		/// </summary>
 		/// <remarks>
 		/// Assumes the type given for the first geometry is the same for all subsequent geometries.
@@ -42,76 +163,54 @@ namespace NetTopologySuite.IO
 		/// </remarks>
 		/// <param name="filename">The filename to write to (minus the .shp extension).</param>
 		/// <param name="geometryCollection">The GeometryCollection to write.</param>		
-		public void Write(string filename, IGeometryCollection geometryCollection)
+		public static void WriteGeometryCollection(string filename, IGeometryCollection geometryCollection)
 		{
-			FileStream shpStream = new FileStream(filename + ".shp", FileMode.Create);
-			FileStream shxStream = new FileStream(filename + ".shx", FileMode.Create);
-			BigEndianBinaryWriter shpBinaryWriter = new BigEndianBinaryWriter(shpStream);
-			BigEndianBinaryWriter shxBinaryWriter = new BigEndianBinaryWriter(shxStream);
-			
-			// assumes
-			ShapeHandler handler = Shapefile.GetShapeHandler(Shapefile.GetShapeType(geometryCollection.Geometries[0]));
+		    var shapeFileType = Shapefile.GetShapeType(geometryCollection.Geometries[0]);
 
-			IGeometry body;
-			int numShapes = geometryCollection.NumGeometries;
-			// calc the length of the shp file, so it can put in the header.
-			int shpLength = 50;
-			for (int i = 0; i < numShapes; i++) 
-			{
-				body = (IGeometry) geometryCollection.Geometries[i];
-				shpLength += 4; // length of header in WORDS
-				shpLength += handler.GetLength(body); // length of shape in WORDS
-			}
+		    var numShapes = geometryCollection.NumGeometries;
+		    using (var writer = new ShapefileWriter(filename, shapeFileType))
+		    {
+		        for (var i = 0; i < numShapes; i++)
+		        {
+		            writer.Write(geometryCollection[i]);
+		        }
+		    }
 
-			int shxLength = 50 + (4*numShapes);
+            WriteDummyDbf(filename + ".dbf", numShapes);
 
-			// write the .shp header
-			ShapefileHeader shpHeader = new ShapefileHeader();
-			shpHeader.FileLength = shpLength;
+		}
 
-			// get envelope in external coordinates
-            Envelope env = geometryCollection.EnvelopeInternal;
-			Envelope bounds = ShapeHandler.GetEnvelopeExternal(geometryFactory.PrecisionModel,  env);
-			shpHeader.Bounds = bounds;
+        private static /*int*/ void WriteRecordToFile(BigEndianBinaryWriter shpBinaryWriter, BigEndianBinaryWriter shxBinaryWriter, ShapeHandler handler, IGeometry body, int oid)
+        {
+            var recordLength = handler.GetLength(body);
+            var pos = shpBinaryWriter.BaseStream.Position;
+            var posWords = pos / 2;
+            shpBinaryWriter.WriteIntBE(oid);
+            shpBinaryWriter.WriteIntBE(recordLength);
 
-			// assumes Geometry type of the first item will the same for all other items
-			// in the collection.
-            shpHeader.ShapeType = Shapefile.GetShapeType(geometryCollection.Geometries[0]);
-			shpHeader.Write(shpBinaryWriter);
+            shxBinaryWriter.WriteIntBE((int)posWords);
+            shxBinaryWriter.WriteIntBE(recordLength);
+            handler.Write(body, shpBinaryWriter, body.Factory);
+            /*return recordLength;*/
+        }
 
-			// write the .shx header
-			ShapefileHeader shxHeader = new ShapefileHeader();
-			shxHeader.FileLength = shxLength;
-			shxHeader.Bounds = shpHeader.Bounds;
-			
-			// assumes Geometry type of the first item will the same for all other items in the collection.
-            shxHeader.ShapeType = Shapefile.GetShapeType(geometryCollection.Geometries[0]);
-			shxHeader.Write(shxBinaryWriter);
+        private static void WriteShxHeader(BigEndianBinaryWriter shxBinaryWriter, int shxLength, Envelope bounds, ShapeGeometryType shapeType)
+        {
+            // write the .shx header
+            var shxHeader = new ShapefileHeader {FileLength = shxLength, Bounds = bounds, ShapeType = shapeType};
 
-			// write the individual records.
-			int _pos = 50; // header length in WORDS
-			for (int i = 0; i < numShapes; i++) 
-			{
-                body = geometryCollection.Geometries[i];
-				int recordLength = handler.GetLength(body);				
-				shpBinaryWriter.WriteIntBE(i+1);
-				shpBinaryWriter.WriteIntBE(recordLength);
-								
-				shxBinaryWriter.WriteIntBE(_pos);
-				shxBinaryWriter.WriteIntBE(recordLength);
-				
-				_pos += 4; // length of header in WORDS
-				handler.Write(body, shpBinaryWriter,  geometryFactory);
-				_pos += recordLength; // length of shape in WORDS
-			}
+            // assumes Geometry type of the first item will the same for all other items in the collection.
+            shxHeader.Write(shxBinaryWriter);
+        }
 
-			shxBinaryWriter.Flush();
-			shxBinaryWriter.Close();
-			shpBinaryWriter.Flush();
-			shpBinaryWriter.Close();
-			
-			// WriteDummyDbf(filename + ".dbf", numShapes);	
-		}       
+        private static void WriteShpHeader(BigEndianBinaryWriter shpBinaryWriter, int shpLength, Envelope bounds, ShapeGeometryType shapeType)
+        {
+            var shpHeader = new ShapefileHeader {FileLength = shpLength, Bounds = bounds, ShapeType = shapeType};
+
+            // assumes Geometry type of the first item will the same for all other items
+            // in the collection.
+            shpHeader.Write(shpBinaryWriter);
+        }       
 
         /// <summary>
         /// 
@@ -120,21 +219,25 @@ namespace NetTopologySuite.IO
         /// <param name="recordCount"></param>
 		public static void WriteDummyDbf(string filename, int recordCount)
 		{
-			DbaseFileHeader dbfHeader = new DbaseFileHeader();
-            dbfHeader.NumRecords = recordCount;
+			var dbfHeader = new DbaseFileHeader {NumRecords = recordCount};
             dbfHeader.AddColumn("Description",'C', 20, 0);
 			
-			DbaseFileWriter dbfWriter = new DbaseFileWriter(filename);
+			var dbfWriter = new DbaseFileWriter(filename);
 			dbfWriter.Write(dbfHeader);
-			for (int i = 0; i < recordCount; i++)
+			for (var i = 0; i < recordCount; i++)
 			{
-				List<double>columnValues = new List<double>();
-				columnValues.Add((double) i);                
-				dbfWriter.Write(columnValues);
+				var columnValues = new List<double> {i};
+			    dbfWriter.Write(columnValues);
 			}
             // End of file flag (0x1A)
             dbfWriter.Write(0x1A);
 			dbfWriter.Close();
 		}
-	}
+
+        public void Dispose()
+        {
+            if (_shpBinaryWriter != null)
+                Close();
+        }
+    }
 }

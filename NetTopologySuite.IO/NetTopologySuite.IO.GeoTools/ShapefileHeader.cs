@@ -131,10 +131,10 @@ namespace NetTopologySuite.IO
 				throw new ArgumentNullException("file");
 			if (_fileLength==-1)
 				throw new InvalidOperationException("The header properties need to be set before writing the header record.");
-			int pos = 0;
+			var pos = 0;
 			file.WriteIntBE(_fileCode);
 			pos += 4;
-			for (int i = 0; i < 5; i++)
+			for (var i = 0; i < 5; i++)
 			{
 				file.WriteIntBE(0);//Skip unused part of header
 				pos += 4;

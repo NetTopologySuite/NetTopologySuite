@@ -13,7 +13,7 @@ namespace NetTopologySuite.IO.Handlers
         protected double[] bbox;
         protected ShapeGeometryType type;
         protected IGeometry geom;
-
+        
         /// <summary>
         /// Returns the ShapeType the handler handles.
         /// </summary>
@@ -50,20 +50,29 @@ namespace NetTopologySuite.IO.Handlers
         public static Envelope GetEnvelopeExternal(Envelope envelope)
         {
             // Get envelope in external coordinates
-            Coordinate min = new Coordinate(envelope.MinX, envelope.MinY);
-            Coordinate max = new Coordinate(envelope.MaxX, envelope.MaxY);
-            Envelope bounds = new Envelope(min.X, max.X, min.Y, max.Y);
+            var min = new Coordinate(envelope.MinX, envelope.MinY);
+            var max = new Coordinate(envelope.MaxX, envelope.MaxY);
+            var bounds = new Envelope(min.X, max.X, min.Y, max.Y);
             return bounds;
         }
 
         /// <summary>
         /// Get Envelope in external coordinates.
         /// </summary>
-        /// <param name="precisionModel"></param>
-        /// <param name="envelope"></param>
+        /// <param name="precisionModel">The precision model to use</param>
+        /// <param name="envelope">The envelope to get</param>
         /// <returns></returns>
         public static Envelope GetEnvelopeExternal(IPrecisionModel precisionModel, Envelope envelope)
         {
+            // Get envelope in external coordinates
+            var min = new Coordinate(envelope.MinX, envelope.MinY);
+            precisionModel.MakePrecise(min);
+            var max = new Coordinate(envelope.MaxX, envelope.MaxY);
+            precisionModel.MakePrecise(max);
+            var bounds = new Envelope(min.X, max.X, min.Y, max.Y);
+
+            return bounds;
+
             return GetEnvelopeExternal(envelope);
         }
 

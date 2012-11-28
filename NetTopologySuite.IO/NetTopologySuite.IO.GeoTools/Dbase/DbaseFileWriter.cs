@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Globalization;
 using System.IO;
 using System.Text;
 #if SILVERLIGHT
@@ -21,7 +22,7 @@ namespace NetTopologySuite.IO
         private bool _headerWritten;
         //private bool _recordsWritten;
         private DbaseFileHeader _header;
-        private Encoding _encoding;
+        private readonly Encoding _encoding;
 
         /// <summary>
         /// Initializes a new instance of the DbaseFileWriter class.
@@ -44,7 +45,7 @@ namespace NetTopologySuite.IO
             if (enc == null) 
                 throw new ArgumentNullException("enc");
 
-            FileStream filestream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.Write);
+            var filestream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.Write);
             _encoding = enc;
             _writer = new BinaryWriter(filestream, _encoding);
         }
@@ -148,14 +149,14 @@ namespace NetTopologySuite.IO
         /// <param name="decimalCount">The number of decimal places in the column.</param>
         public void Write(decimal number, int length, int decimalCount)
         {
-            string outString = string.Empty;
+            string outString;
 
-            int wholeLength = length;
+            var wholeLength = length;
             if (decimalCount > 0)
                 wholeLength -= (decimalCount + 1);
 
             // Force to use point as decimal separator
-            string strNum = Convert.ToString(number, Global.GetNfi());
+            var strNum = Convert.ToString(number, Global.GetNfi());
             int decimalIndex = strNum.IndexOf('.');
             if (decimalIndex < 0)
                  decimalIndex = strNum.Length;
@@ -165,7 +166,7 @@ namespace NetTopologySuite.IO
                 // Too many digits to the left of the decimal. Use the left
                 // most "wholeLength" number of digits. All values to the right
                 // of the decimal will be '0'.
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.Append(strNum.Substring(0, wholeLength));
                 if (decimalCount > 0)
                 {
@@ -178,7 +179,7 @@ namespace NetTopologySuite.IO
             else
             {
                 // Chop extra digits to the right of the decimal.
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.Append("{0:0");
                 if (decimalCount > 0)
                 {
@@ -227,9 +228,9 @@ namespace NetTopologySuite.IO
         public void Write(string text, int length)
         {
             // ensure string is not too big, multibyte encodings can cause more bytes to be written
-            byte[] bytes = _encoding.GetBytes(text);
-            int counter = 0;
-            foreach (char c in bytes)
+            var bytes = _encoding.GetBytes(text);
+            var counter = 0;
+            foreach (var c in bytes)
             {
               _writer.Write(c);
               counter++;
@@ -238,8 +239,8 @@ namespace NetTopologySuite.IO
             }
 
             // pad the text after exact byte count is known
-            int padding = length - counter;
-            for (int i = 0; i < padding; i++)
+            var padding = length - counter;
+            for (var i = 0; i < padding; i++)
                 _writer.Write((byte)0x20);
         }
 
@@ -249,17 +250,17 @@ namespace NetTopologySuite.IO
         /// <param name="date"></param>
         public void Write(DateTime date)
         {
-            foreach (char c in date.Year.ToString())
+            foreach (var c in date.Year.ToString(NumberFormatInfo.InvariantInfo))
                 _writer.Write(c);
 
             if (date.Month < 10)
                 _writer.Write('0');
-            foreach (char c in date.Month.ToString())
+            foreach (char c in date.Month.ToString(NumberFormatInfo.InvariantInfo))
                 _writer.Write(c);
 
             if (date.Day < 10)
                 _writer.Write('0');
-            foreach (char c in date.Day.ToString())
+            foreach (char c in date.Day.ToString(NumberFormatInfo.InvariantInfo))
                 _writer.Write(c);
         }
 
