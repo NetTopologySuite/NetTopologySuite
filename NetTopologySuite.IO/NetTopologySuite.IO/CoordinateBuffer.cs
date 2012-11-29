@@ -491,7 +491,10 @@ namespace NetTopologySuite.IO
             if (_doubleNoDataChecker.IsNoDataValue(z))
                 z = Coordinate.NullOrdinate;
             else
+            {
                 _definedOrdinates |= Ordinates.Z;
+                _zInterval = _zInterval.ExpandedByValue(z);
+            }
             _coordinates[index][2] = z;
         }
 
@@ -505,7 +508,10 @@ namespace NetTopologySuite.IO
             if (_doubleNoDataChecker.IsNoDataValue(m))
                 m = Coordinate.NullOrdinate;
             else
+            {
                 _definedOrdinates |= Ordinates.M;
+                _mInterval = _mInterval.ExpandedByValue(m);
+            }
             _coordinates[index][3] = m;
         }
 
