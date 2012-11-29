@@ -120,7 +120,8 @@ namespace NetTopologySuite.Index.Strtree
 
         protected static int CompareDoubles(double a, double b)
         {
-            return a > b ? 1 : a < b ? -1 : 0;
+            return a.CompareTo(b);
+            //return a > b ? 1 : a < b ? -1 : 0;
         }
 
         /// <summary>
