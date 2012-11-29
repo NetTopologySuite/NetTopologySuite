@@ -27,78 +27,77 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
     {
         private static int ITER_LIMIT = 10000;
         private static int BATCH_SIZE = 20;
+        private static double MAX_DISPLACEMENT = 60;
 
-        private Random rand = new Random((int)(Math.PI * 10e5));
-        private int failureCount = 0;
+        private IGeometry _baseAccum;
+        private int _geomCount;
 
-        private double getRand()
+        private readonly Random _rnd = new Random((int)(Math.PI * 10e5));
+        private int _failureCount;
+
+        private double GetRandomDouble()
         {
-            double r = rand.NextDouble();
+            var r = _rnd.NextDouble();
             return r;
         }
 
         [Test]
         public void TestNoding()
         {
-            int iterLimit = ITER_LIMIT;
+            var iterLimit = ITER_LIMIT;
             for (int i = 0; i < iterLimit; i++)
             {
                 Console.WriteLine("Iter: " + i
-                        + "  Noding failure count = " + failureCount);
-                double ang1 = getRand() * Math.PI;
-                double ang2 = getRand() * Math.PI;
+                        + "  Noding failure count = " + _failureCount);
+                double ang1 = GetRandomDouble() * Math.PI;
+                double ang2 = GetRandomDouble() * Math.PI;
                 //			Geometry[] geom = generateGeometryStar(ang1, ang2);
                 IGeometry[] geom = GenerateGeometryAccum(ang1, ang2);
                 CheckIntersection(geom[0], geom[1]);
             }
             Console.WriteLine(
                     "Test count = " + iterLimit
-                    + "  Noding failure count = " + failureCount
+                    + "  Noding failure count = " + _failureCount
                 );
         }
 
         public IGeometry[] GenerateGeometryStar(double angle1, double angle2)
         {
-            RotatedRectangleFactory rrFact = new RotatedRectangleFactory();
-            IPolygon rr1 = rrFact.CreateRectangle(100, 20, angle1);
-            IPolygon rr2 = rrFact.CreateRectangle(100, 20, angle2);
+            var rrFact = new RotatedRectangleFactory();
+            var rr1 = rrFact.CreateRectangle(100, 20, angle1);
+            var rr2 = rrFact.CreateRectangle(100, 20, angle2);
 
             // this line can be used to test for the presence of noding failures for
             // non-tricky cases
             // Geometry star = rr2;
-            IGeometry star = rr1.Union(rr2);
-            return new IGeometry[] { star, rr1 };
+            var star = rr1.Union(rr2);
+            return new[] { star, rr1 };
         }
-
-        private static double MAX_DISPLACEMENT = 60;
-
-        private IGeometry baseAccum = null;
-        private int geomCount = 0;
 
         public IGeometry[] GenerateGeometryAccum(double angle1, double angle2)
         {
-            RotatedRectangleFactory rrFact = new RotatedRectangleFactory();
-            double basex = angle2 * MAX_DISPLACEMENT - (MAX_DISPLACEMENT / 2);
-            Coordinate baseCoord = new Coordinate(basex, basex);
-            IPolygon rr1 = rrFact.CreateRectangle(100, 20, angle1, baseCoord);
+            var rrFact = new RotatedRectangleFactory();
+            var basex = angle2 * MAX_DISPLACEMENT - (MAX_DISPLACEMENT / 2);
+            var baseCoord = new Coordinate(basex, basex);
+            var rr1 = rrFact.CreateRectangle(100, 20, angle1, baseCoord);
 
             // limit size of accumulated star
-            geomCount++;
-            if (geomCount >= BATCH_SIZE)
-                geomCount = 0;
-            if (geomCount == 0)
-                baseAccum = null;
+            _geomCount++;
+            if (_geomCount >= BATCH_SIZE)
+                _geomCount = 0;
+            if (_geomCount == 0)
+                _baseAccum = null;
 
-            if (baseAccum == null)
-                baseAccum = rr1;
+            if (_baseAccum == null)
+                _baseAccum = rr1;
             else
             {
                 // this line can be used to test for the presence of noding failures for
                 // non-tricky cases
                 // Geometry star = rr2;
-                baseAccum = rr1.Union(baseAccum);
+                _baseAccum = rr1.Union(_baseAccum);
             }
-            return new IGeometry[] { baseAccum, rr1 };
+            return new[] { _baseAccum, rr1 };
         }
 
         public void CheckIntersection(IGeometry baseGeom, IGeometry testGeom)
@@ -114,16 +113,17 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
             // test to see whether the basic overlay code fails
             try
             {
-                IGeometry intTrial = baseGeom.Intersection(testGeom);
+                var intTrial = baseGeom.Intersection(testGeom);
+                NetTopologySuite.Utilities.Assert.IsTrue(intTrial != null);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                failureCount++;
+                _failureCount++;
             }
 
             // this will throw an intersection if a robustness error occurs,
             // stopping the run
-            IGeometry intersection = SnapIfNeededOverlayOp.Intersection(baseGeom, testGeom);
+            var intersection = SnapIfNeededOverlayOp.Intersection(baseGeom, testGeom);
             Console.WriteLine("Intersection:");
             Console.WriteLine(intersection);
         }
@@ -131,12 +131,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
 
     internal class RotatedRectangleFactory
     {
-        public RotatedRectangleFactory()
-        {
-        }
-
-        private static double PI_OVER_2 = Math.PI / 2;
-        private GeometryFactory fact = new GeometryFactory();
+        private const double PiOver2 = Math.PI/2;
+        private readonly IGeometryFactory _fact = new GeometryFactory();
 
         public IPolygon CreateRectangle(double length, double width, double angle)
         {
@@ -145,23 +141,23 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
 
         public IPolygon CreateRectangle(double length, double width, double angle, Coordinate baseCoord)
         {
-            double posx = length / 2 * Math.Cos(angle);
-            double posy = length / 2 * Math.Sin(angle);
-            double negx = -posx;
-            double negy = -posy;
-            double widthOffsetx = (width / 2) * Math.Cos(angle + PI_OVER_2);
-            double widthOffsety = (width / 2) * Math.Sin(angle + PI_OVER_2);
+            var posx = length / 2 * Math.Cos(angle);
+            var posy = length / 2 * Math.Sin(angle);
+            var negx = -posx;
+            var negy = -posy;
+            var widthOffsetx = (width / 2) * Math.Cos(angle + PiOver2);
+            var widthOffsety = (width / 2) * Math.Sin(angle + PiOver2);
 
-            Coordinate[] pts = new Coordinate[] {
+            var pts = new[] {
 			        new Coordinate(baseCoord.X + posx + widthOffsetx, baseCoord.Y + posy + widthOffsety),
 			        new Coordinate(baseCoord.X + posx - widthOffsetx, baseCoord.Y + posy - widthOffsety),
 			        new Coordinate(baseCoord.X + negx - widthOffsetx, baseCoord.Y + negy - widthOffsety),
 			        new Coordinate(baseCoord.X + negx + widthOffsetx, baseCoord.Y + negy + widthOffsety),
-			        new Coordinate(0,0),
-	        };
+			        new Coordinate(0,0)
+            };
             // close polygon
             pts[4] = new Coordinate(pts[0]);
-            IPolygon poly = fact.CreatePolygon(fact.CreateLinearRing(pts), null);
+            var poly = _fact.CreatePolygon(_fact.CreateLinearRing(pts), null);
             return poly;
         }
     }

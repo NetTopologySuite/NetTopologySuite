@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using GeoAPI.Geometries;
 using NUnit.Framework;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.IO.Tests
 {
@@ -10,6 +11,11 @@ namespace NetTopologySuite.IO.Tests
     [NUnit.Framework.Category("Database.IO")]
     public abstract class SqlServer2008Fixture : AbstractIOFixture
     {
+        protected SqlServer2008Fixture()
+            : base(new OgcCompliantGeometryFactory())
+        {
+        }
+        
         #region Overrides of AbstractIOFixture
 
         protected override void AddAppConfigSpecificItems(KeyValueConfigurationCollection kvcc)
@@ -35,7 +41,7 @@ namespace NetTopologySuite.IO.Tests
         #endregion
     }
 
-    [Ignore("Need to come up with some random valid geography objects!")]
+    //[Ignore("Need to come up with some random valid geography objects!")]
     public class SqlGeographyFixture : SqlServer2008Fixture
     {
         #region Overrides of AbstractIOFixture
@@ -75,6 +81,14 @@ namespace NetTopologySuite.IO.Tests
             return geoReader.Read(b);
         }
 
+        protected override void CheckEquality(IGeometry gIn, IGeometry gParsed)
+        {
+            if (gIn.OgcGeometryType == OgcGeometryType.GeometryCollection)
+                Assert.IsTrue(gIn.EqualsNormalized(gParsed));
+            else
+                Assert.IsTrue(gIn.EqualsTopologically(gParsed));
+        }
+
         protected override byte[] Write(IGeometry gIn)
         {
             var geoWriter = new MsSql2008GeographyWriter();
@@ -96,24 +110,6 @@ namespace NetTopologySuite.IO.Tests
             }
 
             return b2;
-        }
-
-        [Ignore("Polygons spoil this test")]
-        public override void TestGeometryCollection()
-        {
-            //base.TestGeometryCollection();
-        }
-
-        [Ignore("Polygons spoil this test")]
-        public override void  TestMultiPolygon()
-        {
- 	        //base.TestMultiPolygon();
-        }
-
-        [Ignore("Polygons spoil this test")]
-        public override void TestPolygon()
-        {
-            //base.TestMultiPolygon();
         }
 
         #endregion

@@ -83,6 +83,7 @@
     <Compile Include="GeoJSON\GeoJsonWriterTest.cs" />
     <Compile Include="GeoJSON\LinkedCRSTest.cs" />
     <Compile Include="GeoJSON\NamedCRSTest.cs" />
+    <Compile Include="Issues.cs" />
     <Compile Include="PostgisFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomGeometryHelper.cs" />

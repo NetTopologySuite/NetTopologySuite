@@ -2,32 +2,29 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
+using GeoAPI;
 using GeoAPI.Geometries;
-using GeoAPI.IO;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
+
 namespace NetTopologySuite.IO
 {
     /// <summary>
     /// Contains methods for reading a single <c>Geometry</c> in binary ESRI shapefile format.
     /// </summary>
-    public class ShapeReader 
+    public abstract class ShapeReader
     {
         /// <summary>
         /// Geometry creator.
         /// </summary>
-        private IGeometryFactory _factory = null;
+        private IGeometryFactory _factory;
 
         /// <summary>
         /// 
         /// </summary>
         public IGeometryFactory Factory
         {
-            get { return _factory; }
+            get { return _factory ?? (_factory = GeometryServiceProvider.Instance.CreateGeometryFactory()); }
             set
             {
                 if (value != null)
@@ -38,7 +35,8 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Initialize reader with a standard <c>GeometryFactory</c>.
         /// </summary>
-        public ShapeReader() : this(new GeometryFactory()) { }
+        public ShapeReader() 
+            : this(GeometryServiceProvider.Instance.CreateGeometryFactory()) { }
 
         /// <summary>
         /// Initialize reader with the given <c>GeometryFactory</c>.
@@ -46,7 +44,7 @@ namespace NetTopologySuite.IO
         /// <param name="factory"></param>
         public ShapeReader(IGeometryFactory factory)
         {
-            this._factory = factory;
+            _factory = factory;
         }
 
 
@@ -57,7 +55,7 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         public IGeometry ReadPoint(BinaryReader reader)
         {
-            Coordinate coordinate = ReadCoordinate(reader);
+            var coordinate = ReadCoordinate(reader);
             IGeometry point = CreatePoint(coordinate);
             return point;
         }
@@ -92,16 +90,16 @@ namespace NetTopologySuite.IO
         {
             ReadBoundingBox(reader);  // Jump boundingbox
 
-            int numParts = ReadNumParts(reader);
-            int numPoints = ReadNumPoints(reader);
+            var numParts = ReadNumParts(reader);
+            var numPoints = ReadNumPoints(reader);
 
-            int[] indexParts = ReadIndexParts(reader, numParts);
+            var indexParts = ReadIndexParts(reader, numParts);
 
-            Coordinate[] coords = ReadCoordinates(reader, numPoints);
+            var coords = ReadCoordinates(reader, numPoints);
 
-            if (numParts == 1)
-                 return CreateSimpleSinglePolygon(coords);
-            else return CreateSingleOrMultiPolygon(numPoints, indexParts, coords);
+            return numParts == 1 
+                ? CreateSimpleSinglePolygon(coords) 
+                : CreateSingleOrMultiPolygon(numPoints, indexParts, coords);
         }
 
         /// <summary>
@@ -114,8 +112,8 @@ namespace NetTopologySuite.IO
             ReadBoundingBox(reader);  // Jump boundingbox
 
             int numPoints = ReadNumPoints(reader);
-            Coordinate[] coords = new Coordinate[numPoints];
-            for (int i = 0; i < numPoints; i++)
+            var coords = new Coordinate[numPoints];
+            for (var i = 0; i < numPoints; i++)
                 coords[i] = ReadCoordinate(reader);
             return CreateMultiPoint(coords);
         }        

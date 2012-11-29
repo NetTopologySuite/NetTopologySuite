@@ -1,27 +1,28 @@
 using System;
 using System.IO;
 using GeoAPI.Geometries;
+using GeoAPI.IO;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.IO
 {    
     /// <summary>
     /// Read features stored as ESRI GeoDatabase binary format in a SqlServer database,
-    /// and converts this features to <coordinate>Geometry</coordinate> format.
+    /// and converts these features to <see cref="IGeometry"/> format.
     /// </summary>
-    public class GDBReader : ShapeReader
+    public class GDBReader : ShapeReader //, IBinaryGeometryReader
     {                
         /// <summary> 
         /// Creates a <coordinate>GDBReader</coordinate> that creates objects using a basic GeometryFactory.
         /// </summary>
-        public GDBReader() : base(new GeometryFactory()) { }
+        public GDBReader() : base(GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory()) { }
 
         /// <summary>  
         /// Creates a <coordinate>GDBReader</coordinate> that creates objects using the given
         /// <coordinate>GeometryFactory</coordinate>.
         /// </summary>
         /// <param name="factory">The factory used to create <coordinate>Geometry</coordinate>s.</param>
-        public GDBReader(GeometryFactory factory) : base(factory) { }        
+        public GDBReader(IGeometryFactory factory) : base(factory) { }        
 
         /// <summary>
         /// Read VeDEx geometries.
@@ -30,7 +31,7 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         public IGeometry Read(Stream data)
         {                                   
-            using(BinaryReader reader = new BinaryReader(data))
+            using(var reader = new BinaryReader(data))
                 return Read(reader);
         }
 
@@ -41,7 +42,7 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         public IGeometry Read(BinaryReader reader)
         {
-            ShapeGeometryType shapeType = (ShapeGeometryType)reader.ReadInt32();
+            var shapeType = (ShapeGeometryType)reader.ReadInt32();
 
             switch (shapeType)
             {

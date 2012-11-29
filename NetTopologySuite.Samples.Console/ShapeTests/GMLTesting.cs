@@ -121,7 +121,7 @@ namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
             document.Load(xmlreader);
             Write(document.InnerXml);
             result = reader.Read(document);
-            Debug.Assert(multiPolygon.Equals(result), "ERROR!");
+            Debug.Assert(multiPolygon.EqualsExact(result), "ERROR!");
             
             IGeometry[] geometries = new IGeometry[]  { point, line, polygon, multiPoint, multiLineString, multiPolygon, };
             IGeometryCollection geometryCollection = Factory.CreateGeometryCollection(geometries);
@@ -130,7 +130,7 @@ namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
             document.Load(xmlreader);
             Write(document.InnerXml);
             result = reader.Read(document);
-            Debug.Assert(geometryCollection.Equals(result), "ERROR!");            
+            Debug.Assert(geometryCollection.EqualsExact(result), "ERROR!");            
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace NetTopologySuite.Tests.Various
+﻿using System.IO;
+
+namespace NetTopologySuite.Tests.Various
 {
     using System;
     using System.Collections.Generic;
@@ -51,12 +53,27 @@
         {
             var sf = new ShapefileReader(@"..\..\..\NetTopologySuite.Samples.Shapefiles\error_union.shp");
             var geoms = sf.ReadAll();
-            
-            var union = geoms.Union();
+            //var i = 0;
+            //using (var f = new StreamWriter(new FileStream(@"..\..\..\NetTopologySuite.Samples.Shapefiles\error_union.txt", FileMode.Create)))
+            //{
+            //    foreach (var geom in geoms)
+            //    {
+            //        if (i++ == 0) continue;
+            //        f.WriteLine(geom.AsText());
+            //    }
+            //}
 
-            Assert.IsNotNull(union);
-            Assert.IsFalse(union.AsText().Contains("POLYGON EMPTY"));
-            Assert.IsFalse(union.AsText().Contains("EMPTY"));
+            var u1 = geoms.Union();
+            var sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+            var u2 = geoms.Union();
+            sw.Stop();
+
+            Console.WriteLine("Unioning {0} geometries in {1}ms", geoms.Count, sw.ElapsedMilliseconds);
+            Assert.IsNotNull(u2);
+            //These number are from JTS-TestBuilder
+            Assert.AreEqual(320, u2.NumGeometries);
+            Assert.AreEqual(37699, u2.NumPoints);
         }
     }
 }

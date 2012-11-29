@@ -28,13 +28,17 @@ namespace NetTopologySuite.IO
 	{
 		private IGeometry _geometry;
 		private int _srid;
-		private readonly Stack<OpenGisGeographyType> _types = new Stack<OpenGisGeographyType>();
-		private List<Coordinate> _coordinates = new List<Coordinate>();
-		private readonly List<Coordinate[]> _rings = new List<Coordinate[]>();
+		
+        private readonly Stack<OpenGisGeographyType> _types = new Stack<OpenGisGeographyType>();
+		private CoordinateBuffer _coordinateBuffer = new CoordinateBuffer();
+        //private List<Coordinate> _coordinates = new List<Coordinate>();
+		private readonly List<ICoordinateSequence> _rings = new List<ICoordinateSequence>();
+        //private readonly List<Coordinate[]> _rings = new List<Coordinate[]>();
 		//private readonly List<IGeometry> _geometries = new List<IGeometry>();
 		private bool _inFigure;
 
-	    private readonly IGeometryFactory _factory;
+        private readonly GeoAPI.IGeometryServices _geometryServices;
+	    private IGeometryFactory _factory;
 	    private List<IGeometry> _ccGeometries;
 	    private readonly Stack<List<IGeometry>> _ccGeometriesStack = new Stack<List<IGeometry>>();
 
@@ -42,9 +46,9 @@ namespace NetTopologySuite.IO
         //    :this(GeometryFactory.Default)
         //{}
 
-	    public NtsGeographySink(IGeometryFactory factory)
+	    public NtsGeographySink(GeoAPI.IGeometryServices geometryServices)
 	    {
-            _factory = factory;
+            _geometryServices = geometryServices;
 	    }
 
         public IGeometry ConstructedGeometry
@@ -54,7 +58,9 @@ namespace NetTopologySuite.IO
 
 		private void AddCoordinate(double x, double y, double? z, double? m)
 		{
-			Coordinate coordinate;
+			_coordinateBuffer.AddCoordinate(y, x, z, m);
+            /*
+            Coordinate coordinate;
 			if (z.HasValue)
 			{
 				coordinate = new Coordinate(y, x, z.Value);
@@ -64,6 +70,7 @@ namespace NetTopologySuite.IO
 				coordinate = new Coordinate(y, x);
 			}
 			_coordinates.Add(coordinate);
+             */
 		}
 
 		#region IGeometrySink Members
@@ -83,7 +90,8 @@ namespace NetTopologySuite.IO
 			{
 				throw new ApplicationException();
 			}
-			_coordinates = new List<Coordinate>();
+            _coordinateBuffer = new CoordinateBuffer();
+			//_coordinates = new List<Coordinate>();
 			AddCoordinate(x, y, z, m);
 			_inFigure = true;
 		}
@@ -109,7 +117,8 @@ namespace NetTopologySuite.IO
 			var type = _types.Peek();
 			if (type == OpenGisGeographyType.Polygon)
 			{
-				_rings.Add(_coordinates.ToArray());
+				_rings.Add(_coordinateBuffer.ToSequence(_factory.CoordinateSequenceFactory));
+                //_rings.Add(_coordinates.ToArray());
 			}
 			_inFigure = false;
 		}
@@ -168,12 +177,16 @@ namespace NetTopologySuite.IO
 
 		private IGeometry BuildPoint()
 		{
-			return _factory.CreatePoint(_coordinates[0]);
+            var seq = _coordinateBuffer.ToSequence(_factory.CoordinateSequenceFactory);
+		    return _factory.CreatePoint(seq);
+		    //return _factory.CreatePoint(_coordinates[0]);
 		}
 
 		private ILineString BuildLineString()
 		{
-            return _factory.CreateLineString(_coordinates.ToArray());
+		    var seq = _coordinateBuffer.ToSequence(_factory.CoordinateSequenceFactory);
+		    return _factory.CreateLineString(seq);
+            //return _factory.CreateLineString(_coordinates.ToArray());
 		}
 
 		private IGeometry BuildPolygon()
@@ -218,6 +231,7 @@ namespace NetTopologySuite.IO
 		public void SetSrid(int srid)
 		{
 			_srid = srid;
+		    _factory = _geometryServices.CreateGeometryFactory(_srid);
 		}
 
 		#endregion

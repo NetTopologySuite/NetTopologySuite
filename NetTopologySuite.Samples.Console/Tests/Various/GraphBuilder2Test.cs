@@ -63,7 +63,7 @@ namespace NetTopologySuite.Tests.Various
                                                       new Coordinate(150, 200),
                                                       new Coordinate(150, 300),
                                                   });
-            revresult = result.Reverse();
+            revresult = (ILineString)result.Reverse();
 
             start = a.StartPoint;
             end = d.EndPoint;

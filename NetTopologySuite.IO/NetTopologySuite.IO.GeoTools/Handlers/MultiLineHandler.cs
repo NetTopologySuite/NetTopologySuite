@@ -1,8 +1,6 @@
-using System;
+using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO.Handlers
 {
@@ -11,13 +9,13 @@ namespace NetTopologySuite.IO.Handlers
     /// </summary>
     public class MultiLineHandler : ShapeHandler
     {
-        /// <summary>
-        /// Returns the ShapeType the handler handles.
-        /// </summary>
-        public override ShapeGeometryType ShapeType
-        {
-            get { return ShapeGeometryType.LineString; }
+        public MultiLineHandler() : base(ShapeGeometryType.LineString)
+        {            
         }
+        public MultiLineHandler(ShapeGeometryType type) : base(type)
+        {
+        }
+
 
         /// <summary>
         /// Reads a stream and converts the shapefile record to an equilivent geometry object.
@@ -27,22 +25,20 @@ namespace NetTopologySuite.IO.Handlers
         /// <returns>The Geometry object that represents the shape file record.</returns>
         public override IGeometry Read(BigEndianBinaryReader file, IGeometryFactory geometryFactory)
         {
-            int shapeTypeNum = file.ReadInt32();
-            type = (ShapeGeometryType)EnumUtility.Parse(typeof(ShapeGeometryType), shapeTypeNum.ToString());
+            var type = (ShapeGeometryType)file.ReadInt32();
             if (type == ShapeGeometryType.NullShape)
                 return geometryFactory.CreateMultiLineString(null);
 
-            if (!(type == ShapeGeometryType.LineString || type == ShapeGeometryType.LineStringM ||
-                  type == ShapeGeometryType.LineStringZ || type == ShapeGeometryType.LineStringZM))
-                throw new ShapefileException("Attempting to load a non-arc as arc.");
+            if (type != ShapeType)
+                throw new ShapefileException(string.Format("Encountered a '{0}' instead of a  '{1}'", type, ShapeType));
 
             // Read and for now ignore bounds.
             int bblength = GetBoundingBoxLength();
-            bbox = new double[bblength];
-            for (; bbindex < 4; bbindex++)
+            boundingBox = new double[bblength];
+            for (; boundingBoxIndex < 4; boundingBoxIndex++)
             {
                 double d = file.ReadDouble();
-                bbox[bbindex] = d;
+                boundingBox[boundingBoxIndex] = d;
             }
 
             int numParts = file.ReadInt32();
@@ -51,27 +47,38 @@ namespace NetTopologySuite.IO.Handlers
             for (int i = 0; i < numParts; i++)
                 partOffsets[i] = file.ReadInt32();
 
-            ILineString[] lines = new ILineString[numParts];
-            var part2 = 0;
-            for (int part = 0; part < numParts; part++)
+            var lines = new List<ILineString>(numParts);
+            var buffer = new CoordinateBuffer(numPoints, NoDataBorderValue, true);
+            var pm = geometryFactory.PrecisionModel;
+
+            for (var part = 0; part < numParts; part++)
             {
-                int start, finish, length;
-                start = partOffsets[part];
-                finish = part == numParts - 1
-                    ? numPoints
-                    : partOffsets[part + 1];
-                length = finish - start;
-                var points = new CoordinateList();
-                points.Capacity = length;
+                var start = partOffsets[part];
+                var finish = part == numParts - 1
+                                 ? numPoints
+                                 : partOffsets[part + 1];
+                var length = finish - start;
+                
                 for (var i = 0; i < length; i++)
                 {
-                    var x = file.ReadDouble();
-                    var y = file.ReadDouble();
-                    var external = new Coordinate(x, y);
-                    geometryFactory.PrecisionModel.MakePrecise(external);
-                    points.Add(external);
+                    var x = pm.MakePrecise(file.ReadDouble());
+                    var y = pm.MakePrecise(file.ReadDouble());
+                    buffer.AddCoordinate(x, y);
                 }
+                buffer.AddMarker();
+            }
 
+            // Trond Benum: We have now read all the parts, let's read optional Z and M values
+            // and populate Z in the coordinate before we start manipulating the segments
+            // We have to track corresponding optional M values and set them up in the 
+            // Geometries via ICoordinateSequence further down.
+            GetZMValues(file, buffer);
+
+            var sequences = new List<ICoordinateSequence>(buffer.ToSequences(geometryFactory.CoordinateSequenceFactory));
+
+            for (var s = 0; s < sequences.Count; s++)
+            {
+                var points = sequences[s];
                 var createLineString = true;
                 if (points.Count == 1)
                 {
@@ -80,10 +87,12 @@ namespace NetTopologySuite.IO.Handlers
                         case GeometryInstantiationErrorHandlingOption.ThrowException:
                             break;
                         case GeometryInstantiationErrorHandlingOption.Empty:
-                            points.Clear();
+                            sequences[s] = geometryFactory.CoordinateSequenceFactory.Create(0, points.Ordinates);
                             break;
                         case GeometryInstantiationErrorHandlingOption.TryFix:
-                            points.Add((Coordinate)points[1].Clone());
+                            sequences[s] = AddCoordinateToSequence(points, geometryFactory.CoordinateSequenceFactory,
+                                points.GetOrdinate(0, Ordinate.X), points.GetOrdinate(0, Ordinate.Y),
+                                points.GetOrdinate(0, Ordinate.Z), points.GetOrdinate(0, Ordinate.M));
                             break;
                         case GeometryInstantiationErrorHandlingOption.Null:
                             createLineString = false;
@@ -93,19 +102,15 @@ namespace NetTopologySuite.IO.Handlers
 
                 if (createLineString)
                 {
-                    var line = geometryFactory.CreateLineString(points.ToArray());
-                    lines[part2++] = line;
+                    // Grabs m values if we have them
+                    var line = geometryFactory.CreateLineString(points);
+                    lines.Add(line);
                 }
             }
 
-            if (part2 != numParts)
-            {
-                var tmp = new ILineString[part2];
-                Array.Copy(lines, 0, tmp, 0, part2);
-                lines = tmp;
-            }
-            geom = geometryFactory.CreateMultiLineString(lines);
-            GrabZMValues(file);
+            geom = (lines.Count != 1)
+                ? (IGeometry)geometryFactory.CreateMultiLineString(lines.ToArray())
+                : lines[0];          
             return geom;
         }
 
@@ -124,7 +129,7 @@ namespace NetTopologySuite.IO.Handlers
             else
                 multi = geometryFactory.CreateMultiLineString(new[] { (ILineString)geometry });
 
-            file.Write(int.Parse(EnumUtility.Format(typeof(ShapeGeometryType), ShapeType, "d")));
+            file.Write((int)ShapeType);
 
             var box = multi.EnvelopeInternal;
             file.Write(box.MinX);
@@ -147,16 +152,17 @@ namespace NetTopologySuite.IO.Handlers
                 offset = offset + g.NumPoints;
             }
 
-            for (int part = 0; part < numParts; part++)
+            var zList = HasZValue() ? new List<double>() : null;
+            var mList = HasMValue() ? new List<double>() : null;
+
+            for (var part = 0; part < numParts; part++)
             {
-                CoordinateList points = new CoordinateList(multi.GetGeometryN(part).Coordinates);
-                for (int i = 0; i < points.Count; i++)
-                {
-                    Coordinate external = points[i];
-                    file.Write(external.X);
-                    file.Write(external.Y);
-                }
+                var geometryN = (ILineString)multi.GetGeometryN(part);
+                var points = geometryN.CoordinateSequence;
+                WriteCoords(points, file, zList, mList);
             }
+
+            WriteZM(file, numPoints, zList, mList);
         }
 
         /// <summary>

@@ -60,8 +60,10 @@
     <Compile Include="Algorithm\MCPointInRingTest.cs" />
     <Compile Include="Algorithm\ShewchuksDeterminant.cs" />
     <Compile Include="CoordinateSystems\Transformations\GeometryTransformTest.cs" />
+    <Compile Include="IO\CoordinateBufferTest.cs" />
     <Compile Include="Geometries\Implementation\CoordinateSequenceReversedTest.cs" />
     <Compile Include="Index\KdTree\KdTreeTest.cs" />
+    <Compile Include="Geometries\IntervalTest.cs" />
     <Compile Include="Mathematics\DDBasicTest.cs" />
     <Compile Include="Mathematics\DDComputeTest.cs" />
     <Compile Include="Operation\Relate\ContainsTest.cs" />
@@ -190,6 +192,10 @@
     <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">
       <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
       <Name>GeoAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO\NetTopologySuite.IO.csproj">
+      <Project>{E377580E-61C9-4943-B98B-085D51B32578}</Project>
+      <Name>NetTopologySuite.IO %28NetTopologySuite.IO\NetTopologySuite.IO%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>

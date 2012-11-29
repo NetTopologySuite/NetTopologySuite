@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.IO.Handlers
@@ -9,15 +11,37 @@ namespace NetTopologySuite.IO.Handlers
     /// </summary>
     public abstract class ShapeHandler
     {
-        protected int bbindex = 0;
-        protected double[] bbox;
-        protected ShapeGeometryType type;
+        /*
+            Floating point numbers must be numeric values. Positive infinity, negative infinity, and
+            Not-a-Number (NaN) values are not allowed in shapefiles. Nevertheless, shapefiles
+            support the concept of "no data" values, but they are currently used only for measures.
+            Any floating point number smaller than –10E38 is considered by a shapefile reader to
+            represent a "no data" value.
+            http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf (page 2, bottom)
+         */
+        protected const double NoDataBorderValue = -10e38;
+        protected const double NoDataValue = NoDataBorderValue - 1;
+
+        protected int boundingBoxIndex = 0;
+        protected double[] boundingBox;
+        private readonly ShapeGeometryType _type;
         protected IGeometry geom;
-        
+        //protected CoordinateBuffer Buffer;
+
+        protected ShapeHandler()
+            : this(ShapeGeometryType.NullShape)
+        {            
+        }
+
+        protected ShapeHandler(ShapeGeometryType type)
+        {
+            _type = type;
+        }
+
         /// <summary>
         /// Returns the ShapeType the handler handles.
         /// </summary>
-        public abstract ShapeGeometryType ShapeType { get; }
+        public ShapeGeometryType ShapeType { get { return _type; } }
 
         /// <summary>
         /// Reads a stream and converts the shapefile record to an equilivent geometry object.
@@ -73,7 +97,60 @@ namespace NetTopologySuite.IO.Handlers
 
             return bounds;
 
-            return GetEnvelopeExternal(envelope);
+            //return GetEnvelopeExternal(envelope);
+        }
+
+        protected static void WriteCoords(ICoordinateSequence points, BinaryWriter file, List<Double> zList, List<Double> mList)
+        {
+            for (var i = 0; i < points.Count; i++)
+            {
+                file.Write(points.GetOrdinate(i, Ordinate.X));
+                file.Write(points.GetOrdinate(i, Ordinate.Y));
+                if (zList != null)
+                {
+                    if ((points.Ordinates & Ordinates.Z) != Ordinates.Z)
+                        zList.Add(0d);
+                    else
+                        zList.Add(points.GetOrdinate(i, Ordinate.Z));
+                }
+
+                if (mList == null) 
+                    continue;
+                
+                if ((points.Ordinates & Ordinates.M) != Ordinates.M)
+                    mList.Add(NoDataValue);
+                else
+                {
+                    var val = points.GetOrdinate(i, Ordinate.M);
+                    if (val.Equals(Coordinate.NullOrdinate)) 
+                        val = NoDataValue;
+                    mList.Add(val);
+                }
+            }
+        }
+
+        protected static ICoordinateSequence AddCoordinateToSequence(ICoordinateSequence sequence,
+                                                                     ICoordinateSequenceFactory factory,
+                                                                     double x, double y, double? z, double? m)
+        {
+            // Create a new sequence 
+            var newSequence = factory.Create(sequence.Count + 1, sequence.Ordinates);
+            
+            // Copy old values
+            var ordinates = OrdinatesUtility.ToOrdinateArray(sequence.Ordinates);
+            for (var i = 0; i < sequence.Count; i++)
+            {
+                foreach (var ordinate in ordinates)
+                    newSequence.SetOrdinate(i, ordinate, sequence.GetOrdinate(i, ordinate));
+            }
+
+            // new coordinate
+            newSequence.SetOrdinate(sequence.Count, Ordinate.X, x);
+            newSequence.SetOrdinate(sequence.Count, Ordinate.Y, y);
+            if (z.HasValue) newSequence.SetOrdinate(sequence.Count, Ordinate.Z, z.Value);
+            if (m.HasValue) newSequence.SetOrdinate(sequence.Count, Ordinate.M, m.Value);
+            
+            return newSequence;
         }
 
         /// <summary>
@@ -82,7 +159,7 @@ namespace NetTopologySuite.IO.Handlers
         /// <returns></returns>
         protected bool HasZValue()
         {
-            return HasZValue(type);
+            return HasZValue(_type);
         }
 
         /// <summary>
@@ -90,7 +167,7 @@ namespace NetTopologySuite.IO.Handlers
         /// </summary>
         /// <param name="shapeType"></param>
         /// <returns></returns>
-        public static bool HasZValue(ShapeGeometryType shapeType)
+        private static bool HasZValue(ShapeGeometryType shapeType)
         {
             return shapeType == ShapeGeometryType.PointZ ||
                     shapeType == ShapeGeometryType.PointZM ||
@@ -106,7 +183,7 @@ namespace NetTopologySuite.IO.Handlers
         /// <returns></returns>
         protected bool HasMValue()
         {
-            return HasMValue(type);
+            return HasMValue(_type);
         }
 
         /// <summary>
@@ -130,7 +207,7 @@ namespace NetTopologySuite.IO.Handlers
         /// <returns></returns>
         protected bool IsPoint()
         {
-            return IsPoint(type);
+            return IsPoint(_type);
         }
 
         /// <summary>
@@ -152,7 +229,7 @@ namespace NetTopologySuite.IO.Handlers
         /// <returns></returns>
         protected bool IsMultiPoint()
         {
-            return IsMultiPoint(type);
+            return IsMultiPoint(_type);
         }
 
         /// <summary>
@@ -174,7 +251,7 @@ namespace NetTopologySuite.IO.Handlers
         /// <returns></returns>
         protected bool IsLineString()
         {
-            return IsLineString(type);
+            return IsLineString(_type);
         }
 
         /// <summary>
@@ -196,7 +273,7 @@ namespace NetTopologySuite.IO.Handlers
         /// <returns></returns>
         protected bool IsPolygon()
         {
-            return IsPolygon(type);
+            return IsPolygon(_type);
         }
 
         /// <summary>
@@ -212,75 +289,113 @@ namespace NetTopologySuite.IO.Handlers
                    shapeType == ShapeGeometryType.PolygonZM;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="file"></param>
-        /// <param name="data"></param>
-        protected void GetZValue(BigEndianBinaryReader file, IDictionary<ShapeGeometryType, double> data)
+        protected static double ReadDouble(BigEndianBinaryReader reader)
         {
-            double z = file.ReadDouble();
-            // data.Add(ShapeGeometryType.PointZ, z);
+            return reader.ReadDouble();           
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="file"></param>
-        /// <param name="data"></param>
-        protected void GetMValue(BigEndianBinaryReader file, IDictionary<ShapeGeometryType, double> data)
+        /*
+        protected static double[] ReadDoubles(BigEndianBinaryReader reader, int count)
         {
-            double m = file.ReadDouble();
-            // data.Add(ShapeGeometryType.PointM, m);
+            var result = new double[count];
+            for (var i = 0; i < count; i++)
+                result[i] = reader.ReadDouble();
+            return result;
+        }
+         */
+
+        [Obsolete("Use ReadDouble()")]
+        protected double GetZValue(BigEndianBinaryReader file)
+        {
+            return ReadDouble(file);
         }
 
-        protected void GrabZMValue(BigEndianBinaryReader file)
+        [Obsolete("Use ReadDouble()")]
+        protected double GetMValue(BigEndianBinaryReader file)
         {
-            if (HasZValue() || HasMValue())
+            return ReadDouble(file);
+        }
+
+
+        /// <summary>
+        /// Get the z values and populate each one of them in Coordinate.Z
+        /// If there are M values, return an array with those.
+        /// </summary>
+        /// <param name="file">The reader</param>
+        /// <param name="buffer">The coordinate buffer</param>
+        /// <param name="skippedList">A list of indices which have not been added to the buffer</param>
+        protected void GetZMValues(BigEndianBinaryReader file, CoordinateBuffer buffer, HashSet<int> skippedList = null)
+        {
+            if (skippedList == null)
+                skippedList = new HashSet<int>();
+
+            var numPoints = buffer.Capacity;
+            var numSkipped = 0;
+
+            if (HasZValue())
             {
-                IDictionary<ShapeGeometryType, double> data = new Dictionary<ShapeGeometryType, double>(2);
-                if (HasZValue())
-                    GetZValue(file, data);
-                if (HasMValue())
-                    GetMValue(file, data);
-                // geom.UserData = data;
+                boundingBox[boundingBoxIndex++] = file.ReadDouble();
+                boundingBox[boundingBoxIndex++] = file.ReadDouble();
+
+                for (var i = 0; i < numPoints; i++)
+                {
+                    var z = ReadDouble(file);
+                    if (!skippedList.Contains(i))
+                        buffer.SetZ(i-numSkipped, z);
+                    else
+                        numSkipped++;
+                }
+            }
+
+            if (HasMValue())
+            {
+                boundingBox[boundingBoxIndex++] = file.ReadDouble();
+                boundingBox[boundingBoxIndex++] = file.ReadDouble();
+
+                for (var i = 0; i < numPoints; i++)
+                {
+                    var m = ReadDouble(file);
+                    if (!skippedList.Contains(i))
+                        buffer.SetM(i - numSkipped, m);
+                    else
+                        numSkipped++;
+                }
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="file"></param>
-        protected void GrabZMValues(BigEndianBinaryReader file)
+        protected void WriteZM(BinaryWriter file, int count, List<double> zValues, List<double> mValues)
         {
-            if (HasZValue() || HasMValue())
+            // If we have M we also have to have Z - this is the shapefile defn
+            if ((HasZValue() || HasMValue()))
             {
-                IDictionary<ShapeGeometryType, double>[] datas =
-                    new Dictionary<ShapeGeometryType, double>[geom.NumPoints];
-                if (HasZValue())
+                if (zValues.Any())
                 {
-                    bbox[bbindex++] = file.ReadDouble();
-                    bbox[bbindex++] = file.ReadDouble();
-                    for (int i = 0; i < geom.NumPoints; i++)
+                    file.Write(zValues.Min());
+                    file.Write(zValues.Max());
+                    foreach (var z in zValues)
                     {
-                        if (datas[i] == null)
-                            datas[i] = new Dictionary<ShapeGeometryType, double>(2);
-                        GetZValue(file, datas[i]);
+                        file.Write(z);
                     }
                 }
+                else
+                    for (var i = 0; i < count + 2; i++)
+                        file.Write(0d);
+            }
 
-                if (HasMValue())
+            if (HasMValue() && mValues.Any())
+            {
+                if (mValues.Any())
                 {
-                    bbox[bbindex++] = file.ReadDouble();
-                    bbox[bbindex++] = file.ReadDouble();
-                    for (int i = 0; i < geom.NumPoints; i++)
+                    file.Write(mValues.Min());
+                    file.Write(mValues.Max());
+                    foreach (var m in mValues)
                     {
-                        if (datas[i] == null)
-                            datas[i] = new Dictionary<ShapeGeometryType, double>(2);
-                        GetMValue(file, datas[i]);
+                        file.Write(m);
                     }
                 }
-                // geom.UserData = datas;
+                else
+                    for (var i = 0; i < count + 2; i++)
+                        file.Write(NoDataBorderValue-1);
             }
         }
 
@@ -290,7 +405,7 @@ namespace NetTopologySuite.IO.Handlers
         /// <returns></returns>
         protected int GetBoundingBoxLength()
         {
-            bbindex = 0;
+            boundingBoxIndex = 0;
             int bblength = 4;
             if (HasZValue())
                 bblength += 2;

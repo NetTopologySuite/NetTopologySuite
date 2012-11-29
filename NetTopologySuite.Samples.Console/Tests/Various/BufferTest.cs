@@ -38,13 +38,13 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void TestWithFixedFactory()
         {
-            PerformTest(GeometryFactory.Fixed);
+            PerformTest(new GeometryFactory(new PrecisionModel(1000d)));
         }
 
         /// <summary>
         /// 
         /// </summary>
-        private void PerformTest(IGeometryFactory factory) 
+        private static void PerformTest(IGeometryFactory factory) 
         {
             IGeometry path = new WKTReader(factory).Read(GeomText);
             Assert.IsNotNull(path); 

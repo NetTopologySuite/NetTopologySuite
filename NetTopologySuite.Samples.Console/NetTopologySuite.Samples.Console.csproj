@@ -190,6 +190,10 @@
       <Project>{AB9096A7-89DD-4ABD-B535-A5258863F389}</Project>
       <Name>NetTopologySuite.IO.ShapeFile</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.SpatiaLite\NetTopologySuite.IO.SpatiaLite.csproj">
+      <Project>{AD33B357-E789-4102-8DC3-F18EEE507583}</Project>
+      <Name>NetTopologySuite.IO.SpatiaLite</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
       <Name>NetTopologySuite</Name>

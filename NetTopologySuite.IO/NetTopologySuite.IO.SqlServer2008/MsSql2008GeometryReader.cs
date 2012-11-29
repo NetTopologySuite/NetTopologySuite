@@ -16,6 +16,7 @@
 // along with NetTopologySuite.IO.SqlServer2008 if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
 
+using System;
 using GeoAPI.Geometries;
 using GeoAPI.IO;
 using Microsoft.SqlServer.Types;
@@ -25,6 +26,7 @@ namespace NetTopologySuite.IO
 {
     public class MsSql2008GeometryReader : IBinaryGeometryReader, IGeometryReader<SqlGeometry>
     {
+        [Obsolete]
         public IGeometryFactory Factory { get; set; }
 
         public IGeometry Read(byte[] bytes)
@@ -47,7 +49,7 @@ namespace NetTopologySuite.IO
 
         public IGeometry Read(SqlGeometry geometry)
         {
-            var builder = new NtsGeometrySink(Factory);
+            var builder = new NtsGeometrySink(GeoAPI.GeometryServiceProvider.Instance);
             geometry.Populate(builder);
             return builder.ConstructedGeometry;
         }

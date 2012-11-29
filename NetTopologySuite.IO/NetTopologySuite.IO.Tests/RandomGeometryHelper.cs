@@ -164,7 +164,10 @@ namespace NetTopologySuite.IO.Tests
                 var polys = new IPolygon[RND.Next(3, 8)];
                 for (var i = 0; i < polys.Length; i++)
                     polys[i] = Polygon;
-                return Factory.CreateMultiPolygon(polys);
+                var mp = Factory.CreateMultiPolygon(polys);
+                var mpUnion = mp.Union();
+                var multiPolygon = mpUnion as IMultiPolygon;
+                return multiPolygon ?? Factory.CreateMultiPolygon(new[] { (IPolygon)mpUnion} );
             }
         }
 

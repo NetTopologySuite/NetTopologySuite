@@ -11,11 +11,21 @@
     [TestFixture]
     public abstract class AbstractIOFixture
     {
-        protected readonly RandomGeometryHelper RandomGeometryHelper = new RandomGeometryHelper(new GeometryFactory());
+        protected readonly RandomGeometryHelper RandomGeometryHelper;
 
-        private int counter;
+        protected AbstractIOFixture()
+            : this(GeometryFactory.Default)
+        {
+        }
 
-        public int Counter { get { return ++this.counter; } }
+        protected AbstractIOFixture(IGeometryFactory factory)
+        {
+            RandomGeometryHelper = new RandomGeometryHelper(factory);
+        }
+
+        private int _counter;
+
+        public int Counter { get { return ++_counter; } }
 
         [TestFixtureSetUp]
         public virtual void OnFixtureSetUp()

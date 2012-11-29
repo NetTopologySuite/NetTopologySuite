@@ -128,6 +128,9 @@
     <Compile Include="..\NetTopologySuite.IO.GeoTools\GeoToolsStreamTokenizer.cs">
       <Link>GeoToolsStreamTokenizer.cs</Link>
     </Compile>
+    <Compile Include="..\NetTopologySuite.IO\CoordinateBuffer.cs">
+      <Link>CoordinateBuffer.cs</Link>
+    </Compile>
     <Compile Include="Dbase\DbaseFileReader.SL.cs" />
     <Compile Include="ShapefileDataReader.SL.cs" />
     <Compile Include="ShapefileReader.SL.cs" />

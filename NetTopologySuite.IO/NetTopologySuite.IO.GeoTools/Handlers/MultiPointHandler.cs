@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO.Handlers
@@ -10,16 +12,14 @@ namespace NetTopologySuite.IO.Handlers
     /// Converts a Shapefile point to a OGIS Polygon.
     /// </summary>
     public class MultiPointHandler : ShapeHandler
-    {        
-       
-
-        /// <summary>
-        /// The ShapeType this handler handles.
-        /// </summary>
-        public override ShapeGeometryType ShapeType
-        {
-            get { return ShapeGeometryType.MultiPoint; }
-        }		
+    {                       
+        public MultiPointHandler()
+            : base(ShapeGeometryType.MultiPoint)
+        {            
+        }
+        public MultiPointHandler(ShapeGeometryType type) : base(type)
+        {                    
+        }          
 
         /// <summary>
         /// Reads a stream and converts the shapefile record to an equilivant geometry object.
@@ -31,35 +31,45 @@ namespace NetTopologySuite.IO.Handlers
         {
             int shapeTypeNum = file.ReadInt32();
 
-            type = (ShapeGeometryType) EnumUtility.Parse(typeof(ShapeGeometryType), shapeTypeNum.ToString());
+            var type = (ShapeGeometryType) EnumUtility.Parse(typeof(ShapeGeometryType), shapeTypeNum.ToString());
             if (type == ShapeGeometryType.NullShape)
                 return geometryFactory.CreateMultiPoint(new IPoint[] { });
-            
-            if (!(type == ShapeGeometryType.MultiPoint  || type == ShapeGeometryType.MultiPointM ||
-                  type == ShapeGeometryType.MultiPointZ || type == ShapeGeometryType.MultiPointZM))	
-                throw new ShapefileException("Attempting to load a non-multipoint as multipoint.");
+
+            if (type != ShapeType)
+                throw new ShapefileException(string.Format("Encountered a '{0}' instead of a  '{1}'", type, ShapeType));
 
             // Read and for now ignore bounds.
             int bblength = GetBoundingBoxLength();
-            bbox = new double[bblength];
-            for (; bbindex < 4; bbindex++)
+            boundingBox = new double[bblength];
+            for (; boundingBoxIndex < 4; boundingBoxIndex++)
             {
                 double d = file.ReadDouble();
-                bbox[bbindex] = d;
+                boundingBox[boundingBoxIndex] = d;
             }
 
             // Read points
-            int numPoints = file.ReadInt32();
-            IPoint[] points = new IPoint[numPoints];
-            for (int i = 0; i < numPoints; i++)
+            var numPoints = file.ReadInt32();
+            var buffer = new CoordinateBuffer(numPoints, NoDataBorderValue, true);
+            var points = new IPoint[numPoints];
+            var pm = geometryFactory.PrecisionModel;
+
+            for (var i = 0; i < numPoints; i++)
             {
-                double x = file.ReadDouble();
-                double y = file.ReadDouble();
-                IPoint point = geometryFactory.CreatePoint(new Coordinate(x, y));                
-                points[i] = point;
+                var x = pm.MakePrecise(file.ReadDouble());
+                var y = pm.MakePrecise(file.ReadDouble());
+                buffer.AddCoordinate(x, y);
+                buffer.AddMarker();
             }
+
+            // Trond Benum: We have now read all the points, let's read optional Z and M values            
+            GetZMValues(file, buffer);
+
+            var sequences = buffer.ToSequences(geometryFactory.CoordinateSequenceFactory);
+            for (var i = 0; i < numPoints; i++)
+                points[i] = geometryFactory.CreatePoint(sequences[i]);
+         
             geom = geometryFactory.CreateMultiPoint(points);
-            GrabZMValues(file);
+          
             return geom;
         }        
 
@@ -90,15 +100,26 @@ namespace NetTopologySuite.IO.Handlers
             file.Write(bounds.MaxY);
 
             int numPoints = mpoint.NumPoints;
-            file.Write(numPoints);						
+            file.Write(numPoints);
+
+            var hasZ = HasZValue();
+            var zList = hasZ ? new List<double>() : null;
+
+            var hasM = HasMValue();
+            var mList = hasM ? new List<double>() : null;
 
             // write the points 
             for (int i = 0; i < numPoints; i++)
             {
-                IPoint point = (IPoint) mpoint.Geometries[i];
+                var point = (IPoint) mpoint.Geometries[i];
                 file.Write(point.X);
-                file.Write(point.Y);	
-            }            
+                file.Write(point.Y);
+
+                if (hasZ) zList.Add(point.Z);
+                if (hasM) mList.Add(point.M);
+            }
+
+            WriteZM(file, numPoints, zList, mList);
         }
 		
         /// <summary>

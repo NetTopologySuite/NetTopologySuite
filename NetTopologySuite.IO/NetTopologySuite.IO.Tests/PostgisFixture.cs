@@ -43,10 +43,14 @@
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = PostGisVersion().StartsWith("1.") 
-                        ? "DELETE FROM \"geometry_columns\" WHERE \"f_table_name\" = 'nts_io_postgis_2d'; "
-                        :""
-                        + "DROP TABLE IF EXISTS \"nts_io_postgis_2d\";";
+                    var version = PostGisVersion();
+                    if (version.StartsWith("1."))
+                    {
+                        cmd.CommandText = "DELETE FROM \"geometry_columns\" WHERE \"f_table_name\" = 'nts_io_postgis_2d'; ";
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    cmd.CommandText = "DROP TABLE IF EXISTS \"nts_io_postgis_2d\";";
                     cmd.ExecuteNonQuery();
 
                     cmd.CommandText = 

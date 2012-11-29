@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
@@ -16,9 +17,12 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
         public void SetUp()
         {
             // Set current dir to shapefiles dir
-            Environment.CurrentDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, string.Format("..{0}..{0}..{0}NetTopologySuite.Samples.Shapefiles", Path.DirectorySeparatorChar));
+            Environment.CurrentDirectory = 
+                Path.Combine(
+                    AppDomain.CurrentDomain.BaseDirectory, 
+                    string.Format("..{0}..{0}..{0}NetTopologySuite.Samples.Shapefiles", Path.DirectorySeparatorChar));
             
-        }
+        }   
 
         [Test]
         public void TestReadingCrustalTestShapeFile()
@@ -72,6 +76,39 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
                     var values = new object[5];
                     var result = reader.GetValues(values);
                     Assert.IsNotNull(values);
+                }
+            }
+        }
+        [Test, Ignore("with_M.shp not present")]
+        public void TestReadingShapeFileZ()
+        {
+            //Use a factory with a coordinate sequence factor that can handle measure values
+            var factory = new GeometryFactory(NetTopologySuite.Geometries.Implementation.DotSpatialAffineCoordinateSequenceFactory.Instance);
+             
+            const int distance = 500;
+            using (var reader = new ShapefileDataReader("with_M", factory))
+            { // ""
+                var index = 0;
+
+                reader.Read();
+                var geom = reader.Geometry;
+                var firstM = geom.GetOrdinates(Ordinate.M).First();
+                Assert.AreEqual(400, firstM);
+
+                while (reader.Read())
+                {
+                    geom = reader.Geometry;
+                    Assert.IsNotNull(geom);
+                    Assert.IsTrue(geom.IsValid);
+                    Debug.WriteLine(String.Format("Geom {0}: {1}", index++, geom));
+
+                    var buff = geom.Buffer(distance);
+                    Assert.IsNotNull(buff);
+                
+                    foreach (var m in geom.GetOrdinates(Ordinate.M))
+                    {                       
+                        Assert.IsFalse(Double.IsNaN(m));
+                    }
                 }
             }
         }
@@ -144,7 +181,10 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
             var expected = wktReader.Read(wktGeom9);
             expected.Normalize();
 
-            Assert.IsTrue(expected.Equals(polys[8]), string.Format("{0}\ndoes not match\n  {1}", expected, polys[8]));
+            var e1 = expected.EnvelopeInternal;
+            var e2 = polys[8].EnvelopeInternal;
+            Assert.IsTrue(e1.Equals(e2), string.Format("{0}\ndoes not match\n{1}", e1, e2));
+            Assert.IsTrue(expected.EqualsTopologically(polys[8]), string.Format("{0}\ndoes not match\n{1}", expected, polys[8]));
         }
     }
 }

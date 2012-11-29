@@ -112,10 +112,19 @@ namespace NetTopologySuite.IO
 			builder.BeginGeography(OpenGisGeographyType.Polygon);
 			var polygon = geometry as IPolygon;
 		    Debug.Assert(polygon != null, "polygon != null");
-            AddCoordinates(builder, polygon.ExteriorRing.CoordinateSequence);
-            Array.ForEach(polygon.InteriorRings, ring => AddCoordinates(builder, ring.CoordinateSequence));
+
+            AddCoordinates(builder, TryReverseRing((ILinearRing)polygon.ExteriorRing, true).CoordinateSequence);
+
+            Array.ForEach(polygon.InteriorRings, ring => AddCoordinates(builder, TryReverseRing((ILinearRing)polygon.ExteriorRing, false).CoordinateSequence));
 			builder.EndGeography();
 		}
+
+        private static ILinearRing TryReverseRing(ILinearRing ring, bool ccw)
+        {
+            if (ring.IsCCW == ccw)
+                return ring;
+            return (ILinearRing) ring.Reverse();
+        }
 
 		private void AddLineString(SqlGeographyBuilder builder, IGeometry geometry)
 		{
@@ -135,12 +144,11 @@ namespace NetTopologySuite.IO
 		{
 		    for (var i = 0; i < coordinates.Count; i++)
 		    {
-		        AddCoordinate(builder, coordinates, i);
+		        AddCoordinate(builder, coordinates, i, i);
 		    }
-
 		}
 
-        private void AddCoordinate(SqlGeographyBuilder builder, ICoordinateSequence coordinates, int index)
+        private void AddCoordinate(SqlGeographyBuilder builder, ICoordinateSequence coordinates, int index, int geographyIndex)
         {
             var x = coordinates.GetOrdinate(index, Ordinate.Y);
             var y = coordinates.GetOrdinate(index, Ordinate.X);
@@ -158,7 +166,7 @@ namespace NetTopologySuite.IO
                 if (Double.IsNaN(m.Value)) m = 0d;
             }
 
-            if (index == 0)
+            if (geographyIndex == 0)
             {
                 builder.BeginFigure(x, y, z, m);
             }
@@ -167,7 +175,7 @@ namespace NetTopologySuite.IO
                 builder.AddLine(x, y, z, m);
             }
 
-            if (index == coordinates.Count - 1)
+            if (geographyIndex == coordinates.Count - 1)
             {
                 builder.EndFigure();
             }

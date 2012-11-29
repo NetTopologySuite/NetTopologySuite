@@ -315,8 +315,10 @@ namespace NetTopologySuite.IO
             }
 
             // Last byte is a marker for the end of the field definitions.
-            if (reader.ReadBytes(1)[0] != 0x0d)
-                throw new ShapefileException("DBase Header is not terminated");
+            // Trond Benum: This fails for some presumeably valid test shapefiles, so I have commented it out. 
+            var lastByte = reader.ReadBytes(1)[0];
+            // if (lastByte != 0x0d)
+            //   throw new ShapefileException("DBase Header is not terminated");
 
             // Assure we are at the end of the header!
             if (reader.BaseStream.Position != _headerLength)

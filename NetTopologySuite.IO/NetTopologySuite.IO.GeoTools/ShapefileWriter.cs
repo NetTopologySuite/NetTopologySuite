@@ -218,8 +218,9 @@ namespace NetTopologySuite.IO
         /// <param name="filename"></param>
         /// <param name="recordCount"></param>
 		public static void WriteDummyDbf(string filename, int recordCount)
-		{
-			var dbfHeader = new DbaseFileHeader {NumRecords = recordCount};
+        {
+            filename = Path.ChangeExtension(filename, "dbf");
+            var dbfHeader = new DbaseFileHeader {NumRecords = recordCount};
             dbfHeader.AddColumn("Description",'C', 20, 0);
 			
 			var dbfWriter = new DbaseFileWriter(filename);

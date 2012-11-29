@@ -54,6 +54,10 @@
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
       <Name>NetTopologySuite</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.csproj">
+      <Project>{E377580E-61C9-4943-B98B-085D51B32578}</Project>
+      <Name>NetTopologySuite.IO %28NetTopologySuite.IO\NetTopologySuite.IO%29</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

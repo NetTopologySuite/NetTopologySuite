@@ -99,13 +99,12 @@ namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
                 ShapefileReader sfr = new ShapefileReader(file);
 
                 IGeometryCollection gc = sfr.ReadAll();
-
                 for (int i = 0; i < gc.NumGeometries; i++)
                     Console.WriteLine(i + " " + gc.Geometries[i].Envelope);
            
                 // IsValidOp.CheckShellsNotNested molto lento nell'analisi di J == 7 (Poligono con 11600 punti)
-                var sfw = new ShapefileWriter();
-                string write = Path.Combine(Path.GetTempPath(), "copy_countryCopy");
+                var write = Path.Combine(Path.GetTempPath(), "copy_countryCopy");
+                var sfw = new ShapefileWriter(gc.Factory);
                 sfw.Write(write, gc);
                 Console.WriteLine("Write Complete!");
             }
@@ -129,9 +128,8 @@ namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
         {
             if (File.Exists(shapepath))
                 File.Delete(shapepath);
-
-            var writer = new ShapefileWriter();
-            writer.Write(Path.GetFileNameWithoutExtension(shapepath), geometries);                 
+            var sfw = new ShapefileWriter(geometries.Factory);
+            sfw.Write(Path.GetFileNameWithoutExtension(shapepath), geometries);
         }
 
         private static void TestShapeReadWrite(string shapepath, string outputpath)

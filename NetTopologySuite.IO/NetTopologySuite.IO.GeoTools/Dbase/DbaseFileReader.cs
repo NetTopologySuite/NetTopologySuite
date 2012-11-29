@@ -179,7 +179,14 @@ namespace NetTopologySuite.IO
                                 if (!Int32.TryParse(tempString, NumberStyles.Integer, CultureInfo.InvariantCulture, out day))
                                     break;
 
-                                tempObject = new DateTime(year, month, day);
+                                try
+                                {
+                                    tempObject = new DateTime(year, month, day);
+                                }
+                                catch (Exception)
+                                {                                  
+                                }
+                                
                                 break;
 
                             case 'N': // number

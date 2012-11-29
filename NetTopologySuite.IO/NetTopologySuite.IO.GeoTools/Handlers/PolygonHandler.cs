@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.Utilities;
+
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
@@ -18,14 +17,14 @@ namespace NetTopologySuite.IO.Handlers
     {
         //Thanks to Bruno.Labrecque
         private static readonly ProbeLinearRing ProbeLinearRing = new ProbeLinearRing();
-        /// <summary>
-        /// The ShapeType this handler handles.
-        /// </summary>
-        public override ShapeGeometryType ShapeType
-        {
-            get { return ShapeGeometryType.Polygon; }
+      
+        public PolygonHandler() : base(ShapeGeometryType.Polygon)
+        {            
         }
-
+        public PolygonHandler(ShapeGeometryType type)
+            : base(type)
+        {
+        }
         /// <summary>
         /// Reads a stream and converts the shapefile record to an equilivent geometry object.
         /// </summary>
@@ -34,79 +33,84 @@ namespace NetTopologySuite.IO.Handlers
         /// <returns>The Geometry object that represents the shape file record.</returns>
         public override IGeometry Read(BigEndianBinaryReader file, IGeometryFactory geometryFactory)
         {
-            int shapeTypeNum = file.ReadInt32();
-            type = (ShapeGeometryType) EnumUtility.Parse(typeof(ShapeGeometryType), shapeTypeNum.ToString());
+            var type = (ShapeGeometryType)file.ReadInt32();
             if (type == ShapeGeometryType.NullShape)
                 return geometryFactory.CreatePolygon(null, null);
 
-            if (!(type == ShapeGeometryType.Polygon  || type == ShapeGeometryType.PolygonM ||
-                  type == ShapeGeometryType.PolygonZ || type == ShapeGeometryType.PolygonZM))	
-                throw new ShapefileException("Attempting to load a non-polygon as polygon.");
+            if (type != ShapeType)
+                throw new ShapefileException(string.Format("Encountered a '{0}' instead of a  '{1}'", type, ShapeType));
 
             // Read and for now ignore bounds.
-            int bblength = GetBoundingBoxLength();
-            bbox = new double[bblength];
-            for (; bbindex < 4; bbindex++)
-            {
-                double d = file.ReadDouble();
-                bbox[bbindex] = d;
-            }
+            var bblength = GetBoundingBoxLength();
+            boundingBox = new double[bblength];
+            for (; boundingBoxIndex < 4; boundingBoxIndex++)
+                boundingBox[boundingBoxIndex] = file.ReadDouble();
 
-            int numParts = file.ReadInt32();
-            int numPoints = file.ReadInt32();
-            int[] partOffsets = new int[numParts];
-            for (int i = 0; i < numParts; i++)
+            var numParts = file.ReadInt32();
+            var numPoints = file.ReadInt32();
+            var partOffsets = new int[numParts];
+            for (var i = 0; i < numParts; i++)
                 partOffsets[i] = file.ReadInt32();
 
-            var shells = new List<ILinearRing>();
-            var holes = new List<ILinearRing>();
+            var skippedList = new HashSet<int>();
 
-            for (int part = 0; part < numParts; part++)
+            //var allPoints = new List<Coordinate>();
+            var buffer = new CoordinateBuffer(numPoints, NoDataBorderValue, true);
+            var pm = geometryFactory.PrecisionModel;
+            for (var part = 0; part < numParts; part++)
             {
-                int start = partOffsets[part];
-                int finish;
-                if (part == numParts - 1)
-                    finish = numPoints;
-                else finish = partOffsets[part + 1];
-                int length = finish - start;
-                CoordinateList points = new CoordinateList();
-                points.Capacity = length;
-                for (int i = 0; i < length; i++)
+                var start = partOffsets[part];
+                var finish = (part == numParts - 1) 
+                    ? numPoints 
+                    : partOffsets[part + 1];
+                
+                var length = finish - start;
+                for (var i = 0; i < length; i++)
                 {
-                    Coordinate external = new Coordinate(file.ReadDouble(), file.ReadDouble() );					
-                    geometryFactory.PrecisionModel.MakePrecise( external);
-                    Coordinate internalCoord = external;
+                    var x = pm.MakePrecise(file.ReadDouble());
+                    var y = pm.MakePrecise(file.ReadDouble());
 
                     // Thanks to Abhay Menon!
-                    if (!Double.IsNaN(internalCoord.Y) && !Double.IsNaN(internalCoord.X))
-                        points.Add(internalCoord, false);
-                }
-
-                if (points.Count > 2) // Thanks to Abhay Menon!
-                {
-                    if (points[0].Distance(points[points.Count - 1]) > .00001)
-                        points.Add(new Coordinate(points[0]));
-                    else if (points[0].Distance(points[points.Count - 1]) > 0.0)
-                        points[points.Count - 1].CoordinateValue = points[0];
-
-                    ILinearRing ring = geometryFactory.CreateLinearRing(points.ToArray());
-
-                    // If shape have only a part, jump orientation check and add to shells
-                    if (numParts == 1)
-                        shells.Add(ring);
+                    if (!(Coordinate.NullOrdinate.Equals(x) || Coordinate.NullOrdinate.Equals(y)))
+                        buffer.AddCoordinate(x, y);
                     else
-                    {
-                        // Orientation check
-                        if (CGAlgorithms.IsCCW(points.ToArray()))
-                             holes.Add(ring);
-                        else shells.Add(ring);
-                    }                    
+                        skippedList.Add(start + i);
                 }
+                //Add a marker that we have finished one part of the geometry
+                buffer.AddMarker();
             }
 
-            // Now we have a list of all shells and all holes
+            // Trond Benum: We have now read all the parts, let's read optional Z and M values
+            // and populate Z in the coordinate before we start manipulating the segments
+            // We have to track corresponding optional M values and set them up in the 
+            // Geometries via ICoordinateSequence further down.
+            GetZMValues(file, buffer, skippedList);
+
+            // Get the resulting sequences
+            var sequences = buffer.ToSequences(geometryFactory.CoordinateSequenceFactory);
+            var shells = new List<ILinearRing>();
+            var holes = new List<ILinearRing>();
+            for (var i = 0; i < sequences.Length; i++)
+            {
+                var tmp = EnsureClosedSequence(sequences[i], geometryFactory.CoordinateSequenceFactory);
+                var ring = geometryFactory.CreateLinearRing(tmp);
+                if (ring.IsCCW)
+                    holes.Add(ring);
+                else
+                    shells.Add(ring);
+            }
+
+            // Ensure the ring is encoded right
+            if (shells.Count == 0 && holes.Count == 1)
+            {
+                shells.Add(geometryFactory.CreateLinearRing(holes[0].CoordinateSequence.Reversed()));
+                holes.Clear();
+            }
+
+
+            // Now we have lists of all shells and all holes
             var holesForShells = new List<List<ILinearRing>>(shells.Count);
-            for (int i = 0; i < shells.Count; i++)
+            for (var i = 0; i < shells.Count; i++)
                 holesForShells.Add(new List<ILinearRing>());
 
             //Thanks to Bruno.Labrecque
@@ -114,21 +118,17 @@ namespace NetTopologySuite.IO.Handlers
             shells.Sort(ProbeLinearRing);
 
             // Find holes
-            for (int i = 0; i < holes.Count; i++)
+            foreach (var testHole in holes)
             {
-                ILinearRing testRing = holes[i];
-                Envelope testEnv = testRing.EnvelopeInternal;
-                Coordinate testPt = testRing.GetCoordinateN(0);
-                ILinearRing tryRing;
-                for (int j = 0; j < shells.Count; j++)
+                var testEnv = testHole.EnvelopeInternal;
+                var testPt = testHole.GetCoordinateN(0);
+                
+                //We have the shells sorted
+                for (var j = 0; j < shells.Count; j++)
                 {
-                    tryRing = shells[j];
-                    Envelope tryEnv = tryRing.EnvelopeInternal;
-                    bool isContained = false;
-                    CoordinateList coordList = new CoordinateList(tryRing.Coordinates);
-                    if (tryEnv.Contains(testEnv) && 
-                       (CGAlgorithms.IsPointInRing(testPt, coordList.ToArray()) || (PointInList(testPt, coordList)))) 				
-                        isContained = true;
+                    var tryShell = shells[j];
+                    var tryEnv = tryShell.EnvelopeInternal;
+                    var isContained = tryEnv.Contains(testEnv) && CGAlgorithms.IsPointInRing(testPt, tryShell.Coordinates);
 
                     // Check if this new containing ring is smaller than the current minimum ring
                     if (isContained)
@@ -137,7 +137,7 @@ namespace NetTopologySuite.IO.Handlers
                         // holes were being found but never added to the holesForShells array
                         // so when converted to geometry by the factory, the inner rings were never created.
                         var holesForThisShell = holesForShells[j];
-                        holesForThisShell.Add(testRing);
+                        holesForThisShell.Add(testHole);
                         
                         //Suggested by Bruno.Labrecque
                         //A LinearRing should only be added to one outer shell
@@ -146,15 +146,15 @@ namespace NetTopologySuite.IO.Handlers
                 }
             }
 
-            IPolygon[] polygons = new IPolygon[shells.Count];
-            for (int i = 0; i < shells.Count; i++)
-                polygons[i] = (geometryFactory.CreatePolygon(shells[i], 
-                    holesForShells[i].ToArray()));
+            var polygons = new IPolygon[shells.Count];
+            for (var i = 0; i < shells.Count; i++)
+                polygons[i] = (geometryFactory.CreatePolygon(shells[i], holesForShells[i].ToArray()));
 
             if (polygons.Length == 1)
-                 geom = polygons[0];
-            else geom = geometryFactory.CreateMultiPolygon(polygons);
-            GrabZMValues(file);
+                geom = polygons[0];
+            else 
+                geom = geometryFactory.CreateMultiPolygon(polygons);
+      
             return geom;
         }
 
@@ -171,38 +171,40 @@ namespace NetTopologySuite.IO.Handlers
             // Trace.WriteLine("Invalid polygon being written.");
 
             IGeometryCollection multi;
-            if (geometry is IGeometryCollection)
-                multi = (IGeometryCollection) geometry;
+            var collection = geometry as IGeometryCollection;
+            if (collection != null)
+                multi = collection;
             else 
             {
-                GeometryFactory gf = new GeometryFactory(geometry.PrecisionModel);				
-                multi = gf.CreateMultiPolygon(new[] { (IPolygon) geometry, } );
+                var gf = geometry.Factory;				
+                multi = gf.CreateMultiPolygon(new[] { (IPolygon) geometry } );
             }
 
-            file.Write(int.Parse(EnumUtility.Format(typeof(ShapeGeometryType), ShapeType, "d")));
+            // Write the shape type
+            file.Write((int) ShapeType);
 
-            Envelope box = multi.EnvelopeInternal;
-            Envelope bounds = GetEnvelopeExternal(geometryFactory.PrecisionModel,  box);
+            var box = multi.EnvelopeInternal;
+            var bounds = GetEnvelopeExternal(geometryFactory.PrecisionModel,  box);
             file.Write(bounds.MinX);
             file.Write(bounds.MinY);
             file.Write(bounds.MaxX);
             file.Write(bounds.MaxY);
         
-            int numParts = GetNumParts(multi);
-            int numPoints = multi.NumPoints;
+            var numParts = GetNumParts(multi);
+            var numPoints = multi.NumPoints;
             file.Write(numParts);
             file.Write(numPoints);
         			
             // write the offsets to the points
-            int offset = 0;
-            for (int part = 0; part < multi.NumGeometries; part++)
+            var offset = 0;
+            for (var part = 0; part < multi.NumGeometries; part++)
             {
                 // offset to the shell points
-                IPolygon polygon = (IPolygon) multi.Geometries[part];
+                var polygon = (IPolygon) multi.Geometries[part];
                 file.Write(offset);
                 offset = offset + polygon.ExteriorRing.NumPoints;
 
-                // offstes to the holes
+                // offses to the holes
                 foreach (ILinearRing ring in polygon.InteriorRings)
                 {
                     file.Write(offset);
@@ -210,36 +212,33 @@ namespace NetTopologySuite.IO.Handlers
                 }	
             }
 
+            var zList = HasZValue() ? new List<double>() : null;
+            var mList = HasMValue() ? new List<double>() : null;
+
             // write the points 
-            for (int part = 0; part < multi.NumGeometries; part++)
+            for (var part = 0; part < multi.NumGeometries; part++)
             {
-                IPolygon poly = (IPolygon) multi.Geometries[part];
-                Coordinate[] points = poly.ExteriorRing.Coordinates;
-                WriteCoords(points, file, geometryFactory);
-                foreach(ILinearRing ring in poly.InteriorRings)
+                var poly = (IPolygon) multi.Geometries[part];
+                var shell = (ILinearRing)poly.ExteriorRing;
+                // shells in polygons are written clockwise
+                var points = !shell.IsCCW 
+                    ? shell.CoordinateSequence 
+                    : shell.CoordinateSequence.Reversed();
+                WriteCoords(points, file, zList, mList);
+                
+                foreach(ILinearRing hole in poly.InteriorRings)
                 {
-                    Coordinate[] points2 = ring.Coordinates;					
-                    WriteCoords(points2, file, geometryFactory);
+                    // holes in polygons are written counter-clockwise
+                    points = hole.IsCCW 
+                        ? hole.CoordinateSequence 
+                        : hole.CoordinateSequence.Reversed();
+
+                    WriteCoords(points, file, zList, mList);
                 }
             }
-        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="points"></param>
-        /// <param name="file"></param>
-        /// <param name="geometryFactory"></param>
-        private static void WriteCoords(IEnumerable<Coordinate> points, BinaryWriter file, IGeometryFactory geometryFactory)
-        {
-            Coordinate external;
-            foreach (Coordinate point in points)
-            {
-                // external = geometryFactory.PrecisionModel.ToExternal(point);
-                external = point;
-                file.Write(external.X);
-                file.Write(external.Y);
-            }
+            //Write the z-m-values
+            WriteZM(file, multi.NumPoints, zList, mList);
         }
 
         /// <summary>
@@ -254,37 +253,87 @@ namespace NetTopologySuite.IO.Handlers
         }
 		
         /// <summary>
-        /// 
+        /// Method to compute the number of parts to write
         /// </summary>
-        /// <param name="geometry"></param>
-        /// <returns></returns>
-        private int GetNumParts(IGeometry geometry)
+        /// <param name="geometry">The geometry to write</param>
+        /// <returns>The number of geometry parts</returns>
+        private static int GetNumParts(IGeometry geometry)
         {
             int numParts = 0;
             if (geometry is IMultiPolygon)
             {
-                IMultiPolygon mpoly = geometry as IMultiPolygon;
+                var mpoly = geometry as IMultiPolygon;
                 foreach (IPolygon poly in mpoly.Geometries)
                     numParts = numParts + poly.InteriorRings.Length + 1;
             }
             else if (geometry is IPolygon)
                 numParts = ((IPolygon) geometry).InteriorRings.Length + 1;
-            else throw new InvalidOperationException("Should not get here.");
+            else 
+                throw new InvalidOperationException("Should not get here.");
+            
             return numParts;
         }
 
+        /// <summary>
+        /// Function to return a coordinate sequence that is ensured to be closed.
+        /// </summary>
+        /// <param name="sequence">The base sequence</param>
+        /// <param name="factory">The factory to use in case we need to create a new sequence</param>
+        /// <returns>A closed coordinate sequence</returns>
+        private static ICoordinateSequence EnsureClosedSequence(ICoordinateSequence sequence,
+                                                                ICoordinateSequenceFactory factory)
+        {
+            //This sequence won't serve a valid linear ring
+            if (sequence.Count < 3)
+                return null;
+
+            //The sequence is closed
+            var start = sequence.GetCoordinate(0);
+            var lastIndex = sequence.Count - 1;
+            var end = sequence.GetCoordinate(lastIndex);
+            if (start.Equals2D(end))
+                return sequence;
+
+            // The sequence is not closed
+            // 1. Test for a little offset, in that case simply correct x- and y- ordinate values
+            const double eps = 1E-7;
+            if (start.Distance(end) < eps)
+            {
+                sequence.SetOrdinate(lastIndex, Ordinate.X, start.X);
+                sequence.SetOrdinate(lastIndex, Ordinate.Y, start.Y);
+                return sequence;
+            }
+
+            // 2. Close the sequence by adding a new point, this is heavier
+            var newSequence = factory.Create(sequence.Count + 1, sequence.Ordinates);
+            var ordinates = OrdinatesUtility.ToOrdinateArray(sequence.Ordinates);
+            for (var i = 0; i < sequence.Count; i++)
+            {
+                foreach (var ordinate in ordinates)
+                    newSequence.SetOrdinate(i, ordinate, sequence.GetOrdinate(i, ordinate));
+            }
+            foreach (var ordinate in ordinates)
+                newSequence.SetOrdinate(sequence.Count, ordinate, sequence.GetOrdinate(0, ordinate));
+            return newSequence;
+        }
+
+        /*
         /// <summary>
         /// Test if a point is in a list of coordinates.
         /// </summary>
         /// <param name="testPoint">TestPoint the point to test for.</param>
         /// <param name="pointList">PointList the list of points to look through.</param>
         /// <returns>true if testPoint is a point in the pointList list.</returns>
-        private bool PointInList(Coordinate testPoint, CoordinateList pointList) 
+        private static bool PointInSequence(Coordinate testPoint, ICoordinateSequence pointList) 
         {
-            foreach(Coordinate p in pointList)
+            for (var i = 0; i < pointList.Count; i++)
+            {
+                var p = pointList.GetCoordinate(i);
                 if (p.Equals2D(testPoint))
-                    return true;
+                        return true;
+            }
             return false;
         }
+         */
     }
 }

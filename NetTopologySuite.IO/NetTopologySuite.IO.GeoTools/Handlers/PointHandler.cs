@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO.Handlers
 {
@@ -12,12 +9,12 @@ namespace NetTopologySuite.IO.Handlers
     /// </summary>
     public class PointHandler : ShapeHandler
     {
-        /// <summary>
-        /// The shape type this handler handles (point).
-        /// </summary>
-        public override ShapeGeometryType ShapeType
+        public PointHandler() : base(ShapeGeometryType.Point)
+        {            
+        }
+        public PointHandler(ShapeGeometryType type)
+            : base(type)
         {
-            get { return ShapeGeometryType.Point; }
         }
 		
         /// <summary>
@@ -28,25 +25,31 @@ namespace NetTopologySuite.IO.Handlers
         /// <returns>The Geometry object that represents the shape file record.</returns>
         public override IGeometry Read(BigEndianBinaryReader file, IGeometryFactory geometryFactory)
         {
-            int shapeTypeNum = file.ReadInt32();
-            type = (ShapeGeometryType) EnumUtility.Parse(typeof (ShapeGeometryType), shapeTypeNum.ToString());
+            var type = (ShapeGeometryType)file.ReadInt32();
+            //type = (ShapeGeometryType) EnumUtility.Parse(typeof (ShapeGeometryType), shapeTypeNum.ToString());
             if (type == ShapeGeometryType.NullShape)
-            {
-                Coordinate emptyCoordinate = null;
-                return geometryFactory.CreatePoint(emptyCoordinate);
-            }
+                return geometryFactory.CreatePoint((Coordinate)null);
 
-            if (!(type == ShapeGeometryType.Point  || type == ShapeGeometryType.PointM ||
-                  type == ShapeGeometryType.PointZ || type == ShapeGeometryType.PointZM))
-                throw new ShapefileException("Attempting to load a point as point.");		    
+            if (type != ShapeType)
+                throw new ShapefileException(string.Format("Encountered a '{0}' instead of a  '{1}'", type, ShapeType));
 
-            double x = file.ReadDouble();
-            double y = file.ReadDouble();		    
-            Coordinate external = new Coordinate(x,y);			
-            geometryFactory.PrecisionModel.MakePrecise(external);
-            IPoint point = geometryFactory.CreatePoint(external);
-            GrabZMValue(file);
-            return point;
+            var buffer = new CoordinateBuffer(1, NoDataBorderValue, true);
+            var precisionModel = geometryFactory.PrecisionModel;
+
+            var x = precisionModel.MakePrecise(file.ReadDouble());
+            var y = precisionModel.MakePrecise(file.ReadDouble());
+
+            double? z = null, m = null;
+            
+            // Trond Benum: Let's read optional Z and M values                                
+            if (HasZValue())
+                z = file.ReadDouble();
+            
+            if (HasMValue())
+                m = file.ReadDouble();
+
+            buffer.AddCoordinate(x, y, z, m);
+            return geometryFactory.CreatePoint(buffer.ToSequence(geometryFactory.CoordinateSequenceFactory));
         }
 
         /// <summary>
@@ -57,10 +60,23 @@ namespace NetTopologySuite.IO.Handlers
         /// <param name="geometryFactory">The geometry factory to use.</param>
         public override void Write(IGeometry geometry, BinaryWriter file, IGeometryFactory geometryFactory)
         {
-            file.Write(int.Parse(EnumUtility.Format(typeof(ShapeGeometryType), this.ShapeType, "d")));
-            Coordinate external = geometry.Coordinates[0];
-            file.Write(external.X);
-            file.Write(external.Y);
+            file.Write((int)ShapeType);
+
+            var point = (IPoint) geometry;
+            var seq = point.CoordinateSequence;
+
+            file.Write(seq.GetOrdinate(0, Ordinate.X));
+            file.Write(seq.GetOrdinate(0, Ordinate.Y));
+
+            // If we have Z we also have M - this is the shapefile defn
+            if (HasZValue() || HasMValue())
+            {
+                file.Write(!HasZValue() ? 0d : seq.GetOrdinate(0, Ordinate.Z));
+            }
+            if (HasMValue())
+            {
+                file.Write(HasMValue() ? seq.GetOrdinate(0, Ordinate.M) : NoDataValue);
+            }
         }
 
         /// <summary>
