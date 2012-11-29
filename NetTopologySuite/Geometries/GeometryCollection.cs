@@ -99,6 +99,24 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        public override double[] GetOrdinates(Ordinate ordinate)
+        {
+            if (IsEmpty)
+                return new double[0];
+
+            var result = new double[NumPoints];
+            var offset = 0;
+            for (var i = 0; i < NumGeometries; i++)
+            {
+                var geom = GetGeometryN(i);
+                var ordinates = geom.GetOrdinates(ordinate);
+                Array.Copy(ordinates, 0, result, offset, ordinates.Length);
+                offset += ordinates.Length;
+            }
+            return result;
+        }
+
+
         /// <summary>
         /// 
         /// </summary>

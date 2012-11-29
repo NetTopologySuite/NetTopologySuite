@@ -336,6 +336,13 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="ICoordinateSequence.SetOrdinate"/>
         public abstract Coordinate[] Coordinates { get; }
 
+        /// <summary>
+        /// Gets an array of <see cref="System.Double"/> ordinate values
+        /// </summary>
+        /// <param name="ordinate">The ordinate index</param>
+        /// <returns>An array of ordinate values</returns>
+        public abstract double[] GetOrdinates(Ordinate ordinate);
+
         /// <summary>  
         /// Returns the count of this <c>Geometry</c>s vertices. The <c>Geometry</c>
         /// s contained by composite <c>Geometry</c>s must be
@@ -2260,5 +2267,22 @@ namespace NetTopologySuite.Geometries
         public static readonly IGeometryFactory DefaultFactory = GeometryFactory.Default;
         
         /* END ADDED BY MPAUL42: monoGIS team */
+
+        protected static double[] CreateArray(int size, double value)
+        {
+            var result = new double[size];
+            for (var i = 0; i < size; i++)
+                result[i] = value;
+            return result;
+        }
+
+        protected static double[] CreateArray(ICoordinateSequence sequence, Ordinate ordinate)
+        {
+            var result = new double[sequence.Count];
+            for (var i = 0; i < result.Length; i++)
+                result[i] = sequence.GetOrdinate(i, ordinate);
+            return result;
+        }
+    
     }
 }

@@ -83,6 +83,19 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        public override double[] GetOrdinates(Ordinate ordinate)
+        {
+
+            if (IsEmpty)
+                return new double[0];
+
+            var ordinateFlag = OrdinatesUtility.ToOrdinatesFlag(ordinate);
+            if ((_coordinates.Ordinates & ordinateFlag) != ordinateFlag)
+                return new[] {Coordinate.NullOrdinate};
+            
+            return new [] { _coordinates.GetOrdinate(0, ordinate)};
+        }
+
         /// <summary>
         /// 
         /// </summary>

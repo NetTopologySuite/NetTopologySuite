@@ -49,6 +49,18 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        public override double[] GetOrdinates(Ordinate ordinate)
+        {
+            if (IsEmpty)
+                return new double[0];
+
+            var ordinateFlag = OrdinatesUtility.ToOrdinatesFlag(ordinate);
+            if ((_points.Ordinates & ordinateFlag) != ordinateFlag)
+                return CreateArray(_points.Count, Coordinate.NullOrdinate);
+
+            return CreateArray(_points, ordinate);
+        }
+
         /// <summary>
         ///
         /// </summary>

@@ -140,6 +140,29 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        public override double[] GetOrdinates(Ordinate ordinate)
+        {
+            if (IsEmpty)
+                return new double[0];
+
+            var ordinateFlag = OrdinatesUtility.ToOrdinatesFlag(ordinate);
+            if ((_shell.CoordinateSequence.Ordinates & ordinateFlag) != ordinateFlag)
+                return CreateArray(NumPoints, Coordinate.NullOrdinate);
+
+            var result = new double[NumPoints];
+            var ordinates = _shell.GetOrdinates(ordinate);
+            Array.Copy(ordinates, 0, result, 0, ordinates.Length);
+            var offset = ordinates.Length;
+            foreach (var linearRing in _holes)
+            {
+                ordinates = linearRing.GetOrdinates(ordinate);
+                Array.Copy(ordinates, 0, result, offset, ordinates.Length);
+                offset += ordinates.Length;
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// 
         /// </summary>
