@@ -45,7 +45,7 @@ namespace NetTopologySuite.IO.Handlers
             if (HasZValue())
                 z = file.ReadDouble();
             
-            if (HasMValue())
+            if (HasMValue() || HasZValue())
                 m = file.ReadDouble();
 
             buffer.AddCoordinate(x, y, z, m);
@@ -68,12 +68,14 @@ namespace NetTopologySuite.IO.Handlers
             file.Write(seq.GetOrdinate(0, Ordinate.X));
             file.Write(seq.GetOrdinate(0, Ordinate.Y));
 
-            // If we have Z we also have M - this is the shapefile defn
-            if (HasZValue() || HasMValue())
+            // If we have Z, write it.
+            if (HasZValue())
             {
-                file.Write(!HasZValue() ? 0d : seq.GetOrdinate(0, Ordinate.Z));
+                file.Write(seq.GetOrdinate(0, Ordinate.Z));
             }
-            if (HasMValue())
+
+            // If we have a Z, we also have M, this is shapefile definition
+            if (HasMValue() || HasZValue())
             {
                 file.Write(HasMValue() ? seq.GetOrdinate(0, Ordinate.M) : NoDataValue);
             }

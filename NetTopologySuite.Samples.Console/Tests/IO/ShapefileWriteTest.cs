@@ -60,7 +60,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
             var features = new Feature[1];
             features[0] = feature;
 
-            var shpWriter = new ShapefileDataWriter("ZMtest")
+            var shpWriter = new ShapefileDataWriter("ZMtest", Factory)
             {
                 Header = ShapefileDataWriter.GetHeader(features[0], features.Length)
             };
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
                 for (var i = 0; i < 3; i++)
                 {
                     var c = geom.Coordinates[i];
-                    Assert.AreEqual(c.Z, i + 1);             
+                    Assert.AreEqual(i + 1, c.Z);             
                 }
 
                 if (testM)
@@ -111,47 +111,47 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
         public void TestReadWritePoint()
         {
             var geomsWrite = ShapeFileShapeFactory.CreateShapes(OgcGeometryType.Point, Ordinates.XY);
-            DoTest(geomsWrite);
+            DoTest(geomsWrite, Ordinates.XY);
             geomsWrite = ShapeFileShapeFactory.CreateShapes(OgcGeometryType.Point, Ordinates.XYM);
-            DoTest(geomsWrite);
+            DoTest(geomsWrite, Ordinates.XYM);
             geomsWrite = ShapeFileShapeFactory.CreateShapes(OgcGeometryType.Point, Ordinates.XYZM);
-            DoTest(geomsWrite);
+            DoTest(geomsWrite, Ordinates.XYZM);
         }
 
         [Test]
         public void TestReadWriteMultiPoint()
         {
             var geomsWrite = ShapeFileShapeFactory.CreateShapes(OgcGeometryType.MultiPoint, Ordinates.XY);
-            DoTest(geomsWrite);
+            DoTest(geomsWrite, Ordinates.XY);
             geomsWrite = ShapeFileShapeFactory.CreateShapes(OgcGeometryType.MultiPoint, Ordinates.XYM);
-            DoTest(geomsWrite);
+            DoTest(geomsWrite, Ordinates.XYM);
             geomsWrite = ShapeFileShapeFactory.CreateShapes(OgcGeometryType.MultiPoint, Ordinates.XYZM);
-            DoTest(geomsWrite);
+            DoTest(geomsWrite, Ordinates.XYZM);
         }
 
         [Test]
         public void TestReadWriteLineal()
         {
             var geomsWrite = ShapeFileShapeFactory.CreateShapes(OgcGeometryType.LineString, Ordinates.XY);
-            DoTest(geomsWrite);
+            DoTest(geomsWrite, Ordinates.XY);
             geomsWrite = ShapeFileShapeFactory.CreateShapes(OgcGeometryType.LineString, Ordinates.XYM);
-            DoTest(geomsWrite);
+            DoTest(geomsWrite, Ordinates.XYM);
             geomsWrite = ShapeFileShapeFactory.CreateShapes(OgcGeometryType.LineString, Ordinates.XYZM);
-            DoTest(geomsWrite);
+            DoTest(geomsWrite, Ordinates.XYZM);
         }
 
         [Test]
         public void TestReadWritePolygonal()
         {
             var geomsWrite = ShapeFileShapeFactory.CreateShapes(OgcGeometryType.Polygon, Ordinates.XY);
-            DoTest(geomsWrite);
+            DoTest(geomsWrite, Ordinates.XY);
             geomsWrite = ShapeFileShapeFactory.CreateShapes(OgcGeometryType.Polygon, Ordinates.XYM);
-            DoTest(geomsWrite);
+            DoTest(geomsWrite, Ordinates.XYM);
             geomsWrite = ShapeFileShapeFactory.CreateShapes(OgcGeometryType.Polygon, Ordinates.XYZM);
-            DoTest(geomsWrite);
+            DoTest(geomsWrite, Ordinates.XYZM, false);
         }
 
-        private static void DoTest(IGeometryCollection geomsWrite)
+        private static void DoTest(IGeometryCollection geomsWrite, Ordinates ordinates, bool testGetOrdinate = true)
         {
             var fileName = Path.GetTempFileName();
             fileName = Path.ChangeExtension(fileName, "shp");
@@ -159,9 +159,12 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
             var reader = new ShapefileReader(fileName, ShapeFileShapeFactory.FactoryRead);
             var geomsRead = reader.ReadAll();
 
+            // This tests x- and y- values
             if (!geomsWrite.EqualsExact(geomsRead))
             {
                 Assert.AreEqual(geomsWrite.NumGeometries, geomsRead.NumGeometries);
+                //
+                // This akward test is necessary since EqualsTopologically throws currently exceptions
                 var equal = true;
                 for (var i = 0; i < geomsRead.NumGeometries; i++)
                 {
@@ -182,10 +185,46 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
                         }
                     }
                 }
-                
+
+                //For polygons this has a tendency to fail, since the polygonhandler might rearrange the whole thing
+                if (testGetOrdinate)
+                {
+                    if ((ordinates & Ordinates.Z) == Ordinates.Z)
+                    {
+                        var writeZ = geomsWrite.GetOrdinates(Ordinate.Z);
+                        var readZ = geomsRead.GetOrdinates(Ordinate.Z);
+                        Assert.IsTrue(ArraysEqual(writeZ, readZ));
+                    }
+
+                    if ((ordinates & Ordinates.M) == Ordinates.M)
+                    {
+                        var writeM = geomsWrite.GetOrdinates(Ordinate.M);
+                        var readM = geomsRead.GetOrdinates(Ordinate.M);
+                        Assert.IsTrue(ArraysEqual(writeM, readM));
+                    }
+                }
+
             }
 
         }
+
+        private static bool ArraysEqual(double[] writeZ, double[] readZ)
+        {
+            if (writeZ == null ^ readZ == null)
+                return false;
+
+            if (writeZ == null)
+                return true;
+
+            if (writeZ.Length != readZ.Length)
+                return false;
+
+            for (var i = 0; i < writeZ.Length; i++)
+                if (Math.Abs(writeZ[i] - readZ[i]) > 1E-7) return false;
+            
+            return true;
+        }
+
         private class ShapeFileShapeFactory
         {
             public static IGeometryCollection CreateShapes(OgcGeometryType type, Ordinates ordinates, int number = 50)

@@ -168,7 +168,7 @@ namespace NetTopologySuite.IO
 		    var shapeFileType = Shapefile.GetShapeType(geometryCollection.Geometries[0]);
 
 		    var numShapes = geometryCollection.NumGeometries;
-		    using (var writer = new ShapefileWriter(filename, shapeFileType))
+            using (var writer = new ShapefileWriter(geometryCollection.Factory, filename, shapeFileType))
 		    {
 		        for (var i = 0; i < numShapes; i++)
 		        {

@@ -14,14 +14,86 @@ namespace NetTopologySuite.IO
         internal const int Version = 1000;
 
         /// <summary>
-        /// Given a geomtery object, returns the equilivent shape file type.
+        /// Given a geomtery object, returns the equivalent shape file type.
         /// </summary>
         /// <param name="geom">A Geometry object.</param>
-        /// <returns>The equilivent for the geometry object.</returns>
+        /// <returns>The equivalent for the geometry object.</returns>
         public static ShapeGeometryType GetShapeType(IGeometry geom)
         {
-            if (geom is IPoint)
-                return ShapeGeometryType.Point;
+            if (geom == null || geom.IsEmpty)
+                return ShapeGeometryType.NullShape;
+
+            switch (geom.OgcGeometryType)
+            {
+                case OgcGeometryType.Point:
+                    switch (((IPoint)geom).CoordinateSequence.Ordinates)
+                    {
+                        case Ordinates.XYZ:
+                            return ShapeGeometryType.PointZ;
+                        case Ordinates.XYM:
+                            return ShapeGeometryType.PointM;
+                        case Ordinates.XYZM:
+                            return ShapeGeometryType.PointZM;
+                        default:
+                            return ShapeGeometryType.Point;
+                    }
+                case OgcGeometryType.MultiPoint:
+                    switch (((IPoint)geom.GetGeometryN(0)).CoordinateSequence.Ordinates)
+                    {
+                        case Ordinates.XYZ:
+                            return ShapeGeometryType.MultiPointZ;
+                        case Ordinates.XYM:
+                            return ShapeGeometryType.MultiPointM;
+                        case Ordinates.XYZM:
+                            return ShapeGeometryType.MultiPointZM;
+                        default:
+                            return ShapeGeometryType.MultiPoint;
+                    }
+                case OgcGeometryType.LineString:
+                case OgcGeometryType.MultiLineString:
+                    switch (((ILineString)geom.GetGeometryN(0)).CoordinateSequence.Ordinates)
+                    {
+                        case Ordinates.XYZ:
+                            return ShapeGeometryType.LineStringZ;
+                        case Ordinates.XYM:
+                            return ShapeGeometryType.LineStringM;
+                        case Ordinates.XYZM:
+                            return ShapeGeometryType.LineStringZM;
+                        default:
+                            return ShapeGeometryType.LineString;
+                    }
+                case OgcGeometryType.Polygon:
+                case OgcGeometryType.MultiPolygon:
+                    switch (((IPolygon)geom.GetGeometryN(0)).Shell.CoordinateSequence.Ordinates)
+                    {
+                        case Ordinates.XYZ:
+                            return ShapeGeometryType.PolygonZ;
+                        case Ordinates.XYM:
+                            return ShapeGeometryType.PolygonM;
+                        case Ordinates.XYZM:
+                            return ShapeGeometryType.PolygonZM;
+                        default:
+                            return ShapeGeometryType.Polygon;
+                    }
+                default:
+                    throw new NotSupportedException();
+            }
+            /*
+            var pt = geom as IPoint;
+            if (pt != null)
+            {
+                switch (pt.CoordinateSequence.Ordinates)
+                {
+                    case Ordinates.XYZ:
+                        return ShapeGeometryType.PointZ;
+                    case Ordinates.XYM:
+                        return ShapeGeometryType.PointM;
+                    case Ordinates.XYZM:
+                        return ShapeGeometryType.PointZM;
+                    default:
+                        return ShapeGeometryType.Point;
+                }
+            }
             if (geom is IPolygon)
                 return ShapeGeometryType.Polygon;
             if (geom is IMultiPolygon)
@@ -33,6 +105,7 @@ namespace NetTopologySuite.IO
             if (geom is IMultiPoint)
                 return ShapeGeometryType.MultiPoint;
             return ShapeGeometryType.NullShape;
+             */
         }
 
         /// <summary>
@@ -48,25 +121,25 @@ namespace NetTopologySuite.IO
                 case ShapeGeometryType.PointM:
                 case ShapeGeometryType.PointZ:
                 case ShapeGeometryType.PointZM:
-                    return new PointHandler();
+                    return new PointHandler(type);
 
                 case ShapeGeometryType.Polygon:
                 case ShapeGeometryType.PolygonM:
                 case ShapeGeometryType.PolygonZ:
                 case ShapeGeometryType.PolygonZM:
-                    return new PolygonHandler();
+                    return new PolygonHandler(type);
 
                 case ShapeGeometryType.LineString:
                 case ShapeGeometryType.LineStringM:
                 case ShapeGeometryType.LineStringZ:
                 case ShapeGeometryType.LineStringZM:
-                    return new MultiLineHandler();
+                    return new MultiLineHandler(type);
 
                 case ShapeGeometryType.MultiPoint:
                 case ShapeGeometryType.MultiPointM:
                 case ShapeGeometryType.MultiPointZ:
                 case ShapeGeometryType.MultiPointZM:
-                    return new MultiPointHandler();
+                    return new MultiPointHandler(type);
 
                 default:
                     return null;

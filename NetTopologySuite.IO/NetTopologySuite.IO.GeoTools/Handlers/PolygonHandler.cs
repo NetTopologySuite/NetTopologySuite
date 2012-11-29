@@ -213,7 +213,7 @@ namespace NetTopologySuite.IO.Handlers
             }
 
             var zList = HasZValue() ? new List<double>() : null;
-            var mList = HasMValue() ? new List<double>() : null;
+            var mList = (HasMValue() || HasZValue()) ? new List<double>() : null;
 
             // write the points 
             for (var part = 0; part < multi.NumGeometries; part++)

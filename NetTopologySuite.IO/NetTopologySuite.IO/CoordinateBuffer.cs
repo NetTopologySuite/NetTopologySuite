@@ -506,7 +506,7 @@ namespace NetTopologySuite.IO
                 m = Coordinate.NullOrdinate;
             else
                 _definedOrdinates |= Ordinates.M;
-            _coordinates[index][2] = m;
+            _coordinates[index][3] = m;
         }
 
         /// <summary>

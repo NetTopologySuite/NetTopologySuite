@@ -330,13 +330,13 @@ namespace NetTopologySuite.IO.Handlers
                 skippedList = new HashSet<int>();
 
             var numPoints = buffer.Capacity;
-            var numSkipped = 0;
 
             if (HasZValue())
             {
                 boundingBox[boundingBoxIndex++] = file.ReadDouble();
                 boundingBox[boundingBoxIndex++] = file.ReadDouble();
 
+                var numSkipped = 0;
                 for (var i = 0; i < numPoints; i++)
                 {
                     var z = ReadDouble(file);
@@ -347,11 +347,12 @@ namespace NetTopologySuite.IO.Handlers
                 }
             }
 
-            if (HasMValue())
+            if (HasMValue()||HasZValue())
             {
                 boundingBox[boundingBoxIndex++] = file.ReadDouble();
                 boundingBox[boundingBoxIndex++] = file.ReadDouble();
 
+                var numSkipped = 0;
                 for (var i = 0; i < numPoints; i++)
                 {
                     var m = ReadDouble(file);
@@ -365,37 +366,30 @@ namespace NetTopologySuite.IO.Handlers
 
         protected void WriteZM(BinaryWriter file, int count, List<double> zValues, List<double> mValues)
         {
-            // If we have M we also have to have Z - this is the shapefile defn
-            if ((HasZValue() || HasMValue()))
+            // If we have Z, write it
+            if ((HasZValue()))
             {
-                if (zValues.Any())
-                {
-                    file.Write(zValues.Min());
-                    file.Write(zValues.Max());
-                    foreach (var z in zValues)
-                    {
-                        file.Write(z);
-                    }
-                }
-                else
-                    for (var i = 0; i < count + 2; i++)
-                        file.Write(0d);
+                file.Write(zValues.Min());
+                file.Write(zValues.Max());
+                for (var i = 0; i < count; i++)
+                    file.Write(zValues[i]);
             }
 
-            if (HasMValue() && mValues.Any())
+            // If we have Z, we also have M
+            if (HasMValue() || HasZValue())
             {
                 if (mValues.Any())
                 {
                     file.Write(mValues.Min());
                     file.Write(mValues.Max());
-                    foreach (var m in mValues)
-                    {
-                        file.Write(m);
-                    }
+                    for (var i = 0; i < count; i++)
+                        file.Write(mValues[i]);
                 }
                 else
+                {
                     for (var i = 0; i < count + 2; i++)
                         file.Write(NoDataBorderValue-1);
+                }
             }
         }
 
