@@ -35,14 +35,14 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Initialize reader with a standard <c>GeometryFactory</c>.
         /// </summary>
-        public ShapeReader() 
+        protected ShapeReader() 
             : this(GeometryServiceProvider.Instance.CreateGeometryFactory()) { }
 
         /// <summary>
         /// Initialize reader with the given <c>GeometryFactory</c>.
         /// </summary>
         /// <param name="factory"></param>
-        public ShapeReader(IGeometryFactory factory)
+        protected ShapeReader(IGeometryFactory factory)
         {
             _factory = factory;
         }
