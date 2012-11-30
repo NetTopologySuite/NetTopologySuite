@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<doc>
+  <assembly>
+    <name>NetTopologySuite</name>
+  </assembly>
+  <members>
+    <member name="N:NetTopologySuite.Distance">
+      <summary>
+        Classes to compute distance metrics between geonetries.
+      </summary>
+    </member>
+  </members>
+</doc>
+

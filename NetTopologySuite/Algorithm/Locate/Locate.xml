@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<doc>
+  <assembly>
+    <name>NetTopologySuite</name>
+  </assembly>
+  <members>
+    <member name="N:NetTopologySuite.Locate">
+      <summary>
+        Classes to determine the topological location of points in geometries.
+      </summary>
+    </member>
+  </members>
+</doc>
+
