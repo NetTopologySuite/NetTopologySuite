@@ -281,7 +281,8 @@ namespace NetTopologySuite.IO
         /// <param name="z">The (optional) z-Ordinate</param>
         /// <param name="m">The (optional) m-Ordinate</param>
         /// <param name="allowRepeated">Allows repated coordinates to be added</param>
-        public void AddCoordinate(double x, double y, double? z = null, double? m = null, bool allowRepeated = true)
+        /// <returns><value>true</value> if the coordinate was successfully added.</returns>
+        public bool AddCoordinate(double x, double y, double? z = null, double? m = null, bool allowRepeated = true)
         {
             // Assign NoDataValue if not provided
             if (!z.HasValue) z = _doubleNoDataChecker.NoDataValue;
@@ -295,8 +296,8 @@ namespace NetTopologySuite.IO
             var toAdd = new[] {x, y, tmpZ, tmpM};
             if (!allowRepeated && _coordinates.Count > 0)
             {
-                if (Equals(_coordinates[_coordinates.Count-1], toAdd))
-                    return;
+                if (Equals(_coordinates[_coordinates.Count - 1], toAdd))
+                    return false;
             }
 
             // Add new coordinate
@@ -308,6 +309,9 @@ namespace NetTopologySuite.IO
             // Update extents for z- and m-values
             _zInterval = _zInterval.ExpandedByValue(tmpZ);
             _mInterval = _mInterval.ExpandedByValue(tmpM);
+
+            // Signal that coordinate was inserted
+            return true;
         }
 
         /// <summary>
@@ -327,7 +331,8 @@ namespace NetTopologySuite.IO
         /// <param name="z">The (optional) z-Ordinate</param>
         /// <param name="m">The (optional) m-Ordinate</param>
         /// <param name="allowRepeated">Allows repated coordinates to be added</param>
-        public void InsertCoordinate(int index, double x, double y, double? z=null, double? m=null, bool allowRepeated = true)
+        /// <returns><value>true</value> if the coordinate was successfully inserted.</returns>
+        public bool InsertCoordinate(int index, double x, double y, double? z = null, double? m = null, bool allowRepeated = true)
         {
             // Assign NoDataValue if not provided
             if (!z.HasValue) z = _doubleNoDataChecker.NoDataValue;
@@ -345,13 +350,13 @@ namespace NetTopologySuite.IO
                 {
                     //Check before
                     if (Equals(_coordinates[index - 1], toAdd))
-                        return;
+                        return false;
                 }
                 if (index >= 0 && index < _coordinates.Count)
                 {
                     //Check after
                     if (Equals(_coordinates[index], toAdd))
-                        return;
+                        return false;
                 }
             }
             _coordinates.Insert(index, toAdd);
@@ -362,6 +367,9 @@ namespace NetTopologySuite.IO
             // Update extents for z- and m-values
             _zInterval = _zInterval.ExpandedByValue(tmpZ);
             _mInterval = _mInterval.ExpandedByValue(tmpM);
+
+            // Signal success
+            return true;
         }
 
         /// <summary>

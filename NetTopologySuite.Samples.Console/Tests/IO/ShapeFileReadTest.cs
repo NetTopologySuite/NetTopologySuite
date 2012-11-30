@@ -79,7 +79,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
                 }
             }
         }
-        [Test, Ignore("with_M.shp not present")]
+        [Test]
         public void TestReadingShapeFileZ()
         {
             //Use a factory with a coordinate sequence factor that can handle measure values

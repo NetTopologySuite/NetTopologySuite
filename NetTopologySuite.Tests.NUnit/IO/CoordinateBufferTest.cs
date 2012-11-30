@@ -18,7 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             var buf = new CoordinateBuffer();
             buf.AddCoordinate(0, 0);
-            buf.AddCoordinate(0, 0);
+            Assert.IsTrue(buf.AddCoordinate(0, 0));
 
             Assert.AreEqual(2, buf.Count);
             CheckDefinedFlags(buf, Ordinates.XY);
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             var buf = new CoordinateBuffer();
             buf.AddCoordinate(0, 0);
-            buf.AddCoordinate(0, 0, allowRepeated: false);
+            Assert.IsFalse(buf.AddCoordinate(0, 0, allowRepeated: false));
 
             Assert.AreEqual(1, buf.Count);
             CheckDefinedFlags(buf, Ordinates.XY);
@@ -39,17 +39,17 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         public void TestInsertCoordinates()
         {
             var buf = new CoordinateBuffer();
-            buf.AddCoordinate(0, 0);
-            buf.AddCoordinate(10, 10);
-
+            Assert.IsTrue(buf.AddCoordinate(0, 0));
+            
+            Assert.IsTrue(buf.AddCoordinate(10, 10));
             Assert.AreEqual(2, buf.Count);
             CheckDefinedFlags(buf, Ordinates.XY);
 
-            buf.InsertCoordinate(0, -10d, -10d);
+            Assert.IsTrue(buf.InsertCoordinate(0, -10d, -10d));
             Assert.AreEqual(3, buf.Count);
             CheckDefinedFlags(buf, Ordinates.XY);
             
-            buf.InsertCoordinate(0, -10d, -10d);
+            Assert.IsTrue(buf.InsertCoordinate(0, -10d, -10d));
             Assert.AreEqual(4, buf.Count);
             CheckDefinedFlags(buf, Ordinates.XY);
         }
@@ -58,16 +58,20 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         public void TestInsertCoordinatesDisallowRepeated()
         {
             var buf = new CoordinateBuffer();
-            buf.AddCoordinate(0, 0);
-            buf.AddCoordinate(10, 10);
-            buf.InsertCoordinate(0, -10d, -10d, allowRepeated: false);
+            Assert.IsTrue(buf.AddCoordinate(0, 0));
+            
+            Assert.IsTrue(buf.AddCoordinate(10, 10));
+            Assert.IsTrue(buf.InsertCoordinate(0, -10d, -10d, allowRepeated: false));
             Assert.AreEqual(3, buf.Count);
             CheckDefinedFlags(buf, Ordinates.XY);
 
-            buf.InsertCoordinate(0, -10d, -10d, allowRepeated: false);
+            Assert.IsFalse(buf.InsertCoordinate(0, -10d, -10d, allowRepeated: false));
             Assert.AreEqual(3, buf.Count);
-            buf.InsertCoordinate(1, -10d, -10d, allowRepeated: false);
+            CheckDefinedFlags(buf, Ordinates.XY);
+
+            Assert.IsFalse(buf.InsertCoordinate(1, -10d, -10d, allowRepeated: false));
             Assert.AreEqual(3, buf.Count);
+            CheckDefinedFlags(buf, Ordinates.XY);
         }
         
 
@@ -252,7 +256,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         private static void TestAddCoordinatesOptional(double noDataValue = double.NaN)
         {
-            Assert.IsFalse(1d.Equals(noDataValue), "noDataValue must not be 0");
+            Assert.IsFalse(0d.Equals(noDataValue), "noDataValue must not be 0");
             Assert.IsFalse(1d.Equals(noDataValue), "noDataValue must not be 1");
 
             var buf = new CoordinateBuffer(noDataValue);
