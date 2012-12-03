@@ -35,5 +35,23 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
                 Assert.IsTrue(p.Z == 0.0);
             }
         }
+
+        [Test]
+        public void TestMultiPointDim4()
+        {
+            var gf = new GeometryFactory(new PackedCoordinateSequenceFactory());
+            var mpSeq = gf.CoordinateSequenceFactory.Create(1, Ordinates.XYZM);
+            mpSeq.SetOrdinate(0, Ordinate.X, 50);
+            mpSeq.SetOrdinate(0, Ordinate.Y , -2);
+            mpSeq.SetOrdinate(0, Ordinate.Z, 10);
+            mpSeq.SetOrdinate(0, Ordinate.M, 20);
+
+            var mp = gf.CreateMultiPoint(mpSeq);
+            var pSeq = ((Point) mp.GetGeometryN(0)).CoordinateSequence;
+            Assert.AreEqual(4, pSeq.Dimension);
+            Assert.AreEqual(Ordinates.XYZM, pSeq.Ordinates);
+            for (int i = 0; i < 4; i++)
+                Assert.AreEqual(mpSeq.GetOrdinate(0, (Ordinate)i), pSeq.GetOrdinate(0, (Ordinate)i));
+        }
     }
 }

@@ -460,7 +460,11 @@ namespace NetTopologySuite.Geometries
 
             var points = new List<IPoint>();
             for (int i = 0; i < coordinates.Count; i++)
-                points.Add(CreatePoint(coordinates.GetCoordinate(i)));
+            {
+                var seq = CoordinateSequenceFactory.Create(1, coordinates.Ordinates);
+                CoordinateSequences.Copy(coordinates, i, seq, 0, 1);
+                points.Add(CreatePoint(seq));
+            }
             return CreateMultiPoint(points.ToArray());
         }
 
