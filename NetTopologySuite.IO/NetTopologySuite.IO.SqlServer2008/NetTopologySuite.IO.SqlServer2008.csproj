@@ -40,6 +40,9 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\NetTopologySuite.IO\Geometries\CoordinateBuffer.cs">
+      <Link>CoordinateBuffer.cs</Link>
+    </Compile>
     <Compile Include="MsSql2008GeographyReader.cs" />
     <Compile Include="MsSql2008GeographyWriter.cs" />
     <Compile Include="MsSql2008GeometryReader.cs" />
@@ -52,10 +55,6 @@
     <ProjectReference Include="..\..\GeoAPI\GeoAPI\GeoAPI.csproj">
       <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
       <Name>GeoAPI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.csproj">
-      <Project>{E377580E-61C9-4943-B98B-085D51B32578}</Project>
-      <Name>NetTopologySuite.IO %28NetTopologySuite.IO\NetTopologySuite.IO%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

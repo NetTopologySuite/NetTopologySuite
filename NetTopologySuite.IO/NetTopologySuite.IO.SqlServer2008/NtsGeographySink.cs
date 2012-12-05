@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using Microsoft.SqlServer.Types;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.IO
 {
