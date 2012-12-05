@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
@@ -253,7 +254,7 @@ namespace NetTopologySuite.IO.Handlers
             var numParts = GetNumParts(geometry);
             var numPoints = geometry.NumPoints;
 
-            return MultiLineHandler.ComputeRequiredLengthInWords(numParts, numPoints, HasMValue(), HasZValue());
+            return ComputeRequiredLengthInWords(numParts, numPoints, HasMValue(), HasZValue());
         }
 		
         /// <summary>

@@ -46,7 +46,7 @@
     <Compile Include="..\NetTopologySuite.IO.ShapeFile\ShapeGeometryType.cs">
       <Link>ShapeGeometryType.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite.IO\CoordinateBuffer.cs">
+    <Compile Include="..\NetTopologySuite.IO\Geometries\CoordinateBuffer.cs">
       <Link>CoordinateBuffer.cs</Link>
     </Compile>
     <Compile Include="BigEndianBinaryReader.cs" />

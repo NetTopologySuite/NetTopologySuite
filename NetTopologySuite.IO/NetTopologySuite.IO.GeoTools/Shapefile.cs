@@ -115,6 +115,7 @@ namespace NetTopologySuite.IO
             {
                 case ShapeGeometryType.Point:
                 case ShapeGeometryType.PointM:
+                case ShapeGeometryType.PointZM:
                     return new PointHandler(type);
 
                 case ShapeGeometryType.Polygon:

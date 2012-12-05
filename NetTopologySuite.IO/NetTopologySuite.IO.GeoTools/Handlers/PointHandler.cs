@@ -1,6 +1,7 @@
  
 using System.IO;
 using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.IO.Handlers
 {
