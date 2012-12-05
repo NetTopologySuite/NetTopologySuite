@@ -181,7 +181,8 @@ namespace NetTopologySuite.IO
 
                                 try
                                 {
-                                    tempObject = new DateTime(year, month, day);
+                                    if (day>0 && year>0 && month>0 && month<=12) // don't try to parse date when day is invalid - it will be useless and slow for large files
+                                        tempObject = new DateTime(year, month, day);
                                 }
                                 catch (Exception)
                                 {                                  

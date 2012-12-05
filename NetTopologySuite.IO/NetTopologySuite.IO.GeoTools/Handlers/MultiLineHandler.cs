@@ -21,11 +21,13 @@ namespace NetTopologySuite.IO.Handlers
         /// Reads a stream and converts the shapefile record to an equilivent geometry object.
         /// </summary>
         /// <param name="file">The stream to read.</param>
+        /// <param name="totalRecordLength">Total length of the record we are about to read</param>
         /// <param name="geometryFactory">The geometry factory to use when making the object.</param>
         /// <returns>The Geometry object that represents the shape file record.</returns>
-        public override IGeometry Read(BigEndianBinaryReader file, IGeometryFactory geometryFactory)
+        public override IGeometry Read(BigEndianBinaryReader file, int totalRecordLength, IGeometryFactory geometryFactory)
         {
-            var type = (ShapeGeometryType)file.ReadInt32();
+            int totalRead = 0;
+            var type = (ShapeGeometryType)ReadInt32(file, totalRecordLength, ref totalRead);
             if (type == ShapeGeometryType.NullShape)
                 return geometryFactory.CreateMultiLineString(null);
 
@@ -37,15 +39,15 @@ namespace NetTopologySuite.IO.Handlers
             boundingBox = new double[bblength];
             for (; boundingBoxIndex < 4; boundingBoxIndex++)
             {
-                double d = file.ReadDouble();
+                double d = ReadDouble(file, totalRecordLength, ref totalRead);
                 boundingBox[boundingBoxIndex] = d;
             }
 
-            int numParts = file.ReadInt32();
-            int numPoints = file.ReadInt32();
+            int numParts = ReadInt32(file, totalRecordLength, ref totalRead);
+            int numPoints = ReadInt32(file, totalRecordLength, ref totalRead);
             int[] partOffsets = new int[numParts];
             for (int i = 0; i < numParts; i++)
-                partOffsets[i] = file.ReadInt32();
+                partOffsets[i] = ReadInt32(file, totalRecordLength, ref totalRead);
 
             var lines = new List<ILineString>(numParts);
             var buffer = new CoordinateBuffer(numPoints, NoDataBorderValue, true);
@@ -61,8 +63,8 @@ namespace NetTopologySuite.IO.Handlers
                 
                 for (var i = 0; i < length; i++)
                 {
-                    var x = pm.MakePrecise(file.ReadDouble());
-                    var y = pm.MakePrecise(file.ReadDouble());
+                    var x = pm.MakePrecise(ReadDouble(file, totalRecordLength, ref totalRead));
+                    var y = pm.MakePrecise(ReadDouble(file, totalRecordLength, ref totalRead));
                     buffer.AddCoordinate(x, y);
                 }
                 buffer.AddMarker();
@@ -72,7 +74,7 @@ namespace NetTopologySuite.IO.Handlers
             // and populate Z in the coordinate before we start manipulating the segments
             // We have to track corresponding optional M values and set them up in the 
             // Geometries via ICoordinateSequence further down.
-            GetZMValues(file, buffer);
+            GetZMValues(file, totalRecordLength, ref totalRead, buffer);
 
             var sequences = new List<ICoordinateSequence>(buffer.ToSequences(geometryFactory.CoordinateSequenceFactory));
 
@@ -118,9 +120,9 @@ namespace NetTopologySuite.IO.Handlers
         /// Writes to the given stream the equilivent shape file record given a Geometry object.
         /// </summary>
         /// <param name="geometry">The geometry object to write.</param>
-        /// <param name="file">The stream to write to.</param>
+        /// <param name="writer">The stream to write to.</param>
         /// <param name="geometryFactory">The geometry factory to use.</param>
-        public override void Write(IGeometry geometry, BinaryWriter file, IGeometryFactory geometryFactory)
+        public override void Write(IGeometry geometry, BinaryWriter writer, IGeometryFactory geometryFactory)
         {
             // Force to use a MultiGeometry
             IMultiLineString multi;
@@ -129,26 +131,26 @@ namespace NetTopologySuite.IO.Handlers
             else
                 multi = geometryFactory.CreateMultiLineString(new[] { (ILineString)geometry });
 
-            file.Write((int)ShapeType);
+            writer.Write((int)ShapeType);
 
             var box = multi.EnvelopeInternal;
-            file.Write(box.MinX);
-            file.Write(box.MinY);
-            file.Write(box.MaxX);
-            file.Write(box.MaxY);
+            writer.Write(box.MinX);
+            writer.Write(box.MinY);
+            writer.Write(box.MaxX);
+            writer.Write(box.MaxY);
 
             var numParts = multi.NumGeometries;
             var numPoints = multi.NumPoints;
 
-            file.Write(numParts);
-            file.Write(numPoints);
+            writer.Write(numParts);
+            writer.Write(numPoints);
 
             // Write the offsets
             var offset = 0;
             for (var i = 0; i < numParts; i++)
             {
                 var g = multi.GetGeometryN(i);
-                file.Write(offset);
+                writer.Write(offset);
                 offset = offset + g.NumPoints;
             }
 
@@ -159,10 +161,10 @@ namespace NetTopologySuite.IO.Handlers
             {
                 var geometryN = (ILineString)multi.GetGeometryN(part);
                 var points = geometryN.CoordinateSequence;
-                WriteCoords(points, file, zList, mList);
+                WriteCoords(points, writer, zList, mList);
             }
 
-            WriteZM(file, numPoints, zList, mList);
+            WriteZM(writer, numPoints, zList, mList);
         }
 
         /// <summary>
@@ -170,20 +172,17 @@ namespace NetTopologySuite.IO.Handlers
         /// </summary>
         /// <param name="geometry">The Geometry object to use.</param>
         /// <returns>The length in bytes the Geometry will use when represented as a shape file record.</returns>
-        public override int GetLength(IGeometry geometry)
+        public override int ComputeRequiredLengthInWords(IGeometry geometry)
         {
             int numParts = GetNumParts(geometry);
-            return (22 + (2 * numParts) + geometry.NumPoints * 8); // 22 => shapetype(2) + bbox(4*4) + numparts(2) + numpoints(2)
+            int numPoints = geometry.NumPoints;
+
+            return ComputeRequiredLengthInWords(numParts, numPoints, HasMValue(), HasZValue());
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="geometry"></param>
-        /// <returns></returns>
-        private int GetNumParts(IGeometry geometry)
+        private static int GetNumParts(IGeometry geometry)
         {
-            int numParts = 1;
+            var numParts = 1;
             if (geometry is IMultiLineString)
                 numParts = ((IMultiLineString)geometry).Geometries.Length;
             return numParts;

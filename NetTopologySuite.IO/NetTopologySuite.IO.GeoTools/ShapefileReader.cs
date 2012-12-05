@@ -130,7 +130,7 @@ namespace NetTopologySuite.IO
                     {
                         int recordNumber = _shpBinaryReader.ReadInt32BE();
                         int contentLength = _shpBinaryReader.ReadInt32BE();
-                        _geometry = _handler.Read(_shpBinaryReader, _parent._geometryFactory);
+                        _geometry = _handler.Read(_shpBinaryReader, contentLength, _parent._geometryFactory);
                     }
                     catch (Exception)
                     {

@@ -28,10 +28,9 @@ namespace NetTopologySuite.IO
                 case OgcGeometryType.Point:
                     switch (((IPoint)geom).CoordinateSequence.Ordinates)
                     {
-                        case Ordinates.XYZ:
-                            return ShapeGeometryType.PointZ;
                         case Ordinates.XYM:
                             return ShapeGeometryType.PointM;
+                        case Ordinates.XYZ:
                         case Ordinates.XYZM:
                             return ShapeGeometryType.PointZM;
                         default:
@@ -40,10 +39,9 @@ namespace NetTopologySuite.IO
                 case OgcGeometryType.MultiPoint:
                     switch (((IPoint)geom.GetGeometryN(0)).CoordinateSequence.Ordinates)
                     {
-                        case Ordinates.XYZ:
-                            return ShapeGeometryType.MultiPointZ;
                         case Ordinates.XYM:
                             return ShapeGeometryType.MultiPointM;
+                        case Ordinates.XYZ:
                         case Ordinates.XYZM:
                             return ShapeGeometryType.MultiPointZM;
                         default:
@@ -53,10 +51,9 @@ namespace NetTopologySuite.IO
                 case OgcGeometryType.MultiLineString:
                     switch (((ILineString)geom.GetGeometryN(0)).CoordinateSequence.Ordinates)
                     {
-                        case Ordinates.XYZ:
-                            return ShapeGeometryType.LineStringZ;
                         case Ordinates.XYM:
                             return ShapeGeometryType.LineStringM;
+                        case Ordinates.XYZ:
                         case Ordinates.XYZM:
                             return ShapeGeometryType.LineStringZM;
                         default:
@@ -66,10 +63,9 @@ namespace NetTopologySuite.IO
                 case OgcGeometryType.MultiPolygon:
                     switch (((IPolygon)geom.GetGeometryN(0)).Shell.CoordinateSequence.Ordinates)
                     {
-                        case Ordinates.XYZ:
-                            return ShapeGeometryType.PolygonZ;
                         case Ordinates.XYM:
                             return ShapeGeometryType.PolygonM;
+                        case Ordinates.XYZ:
                         case Ordinates.XYZM:
                             return ShapeGeometryType.PolygonZM;
                         default:
@@ -119,25 +115,20 @@ namespace NetTopologySuite.IO
             {
                 case ShapeGeometryType.Point:
                 case ShapeGeometryType.PointM:
-                case ShapeGeometryType.PointZ:
-                case ShapeGeometryType.PointZM:
                     return new PointHandler(type);
 
                 case ShapeGeometryType.Polygon:
                 case ShapeGeometryType.PolygonM:
-                case ShapeGeometryType.PolygonZ:
                 case ShapeGeometryType.PolygonZM:
                     return new PolygonHandler(type);
 
                 case ShapeGeometryType.LineString:
                 case ShapeGeometryType.LineStringM:
-                case ShapeGeometryType.LineStringZ:
                 case ShapeGeometryType.LineStringZM:
                     return new MultiLineHandler(type);
 
                 case ShapeGeometryType.MultiPoint:
                 case ShapeGeometryType.MultiPointM:
-                case ShapeGeometryType.MultiPointZ:
                 case ShapeGeometryType.MultiPointZM:
                     return new MultiPointHandler(type);
 

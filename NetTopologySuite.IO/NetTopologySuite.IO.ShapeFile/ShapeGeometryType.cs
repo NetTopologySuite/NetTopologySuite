@@ -73,8 +73,13 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// MultiPatch
         /// </summary>
-        MultiPatch = 31,
+        MultiPatch = 31
 
+#if !GeoTools
+        // These values are not officially in the shapefile spec
+        // http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf
+            
+        ,
         /// <summary>
         /// PointZ
         /// </summary>
@@ -93,6 +98,7 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// MultiPointZ
         /// </summary>
-        MultiPointZ = 20,
+        MultiPointZ = 20
+#endif
     }        
 }

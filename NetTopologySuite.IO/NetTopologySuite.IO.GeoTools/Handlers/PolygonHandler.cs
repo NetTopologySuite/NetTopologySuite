@@ -29,11 +29,13 @@ namespace NetTopologySuite.IO.Handlers
         /// Reads a stream and converts the shapefile record to an equilivent geometry object.
         /// </summary>
         /// <param name="file">The stream to read.</param>
+        /// <param name="totalRecordLength">Total length of the record we are about to read</param>
         /// <param name="geometryFactory">The geometry factory to use when making the object.</param>
         /// <returns>The Geometry object that represents the shape file record.</returns>
-        public override IGeometry Read(BigEndianBinaryReader file, IGeometryFactory geometryFactory)
+        public override IGeometry Read(BigEndianBinaryReader file, int totalRecordLength, IGeometryFactory geometryFactory)
         {
-            var type = (ShapeGeometryType)file.ReadInt32();
+            int totalRead = 0;
+            var type = (ShapeGeometryType)ReadInt32(file, totalRecordLength, ref totalRead);
             if (type == ShapeGeometryType.NullShape)
                 return geometryFactory.CreatePolygon(null, null);
 
@@ -44,13 +46,13 @@ namespace NetTopologySuite.IO.Handlers
             var bblength = GetBoundingBoxLength();
             boundingBox = new double[bblength];
             for (; boundingBoxIndex < 4; boundingBoxIndex++)
-                boundingBox[boundingBoxIndex] = file.ReadDouble();
+                boundingBox[boundingBoxIndex] = ReadDouble(file, totalRecordLength, ref totalRead);
 
-            var numParts = file.ReadInt32();
-            var numPoints = file.ReadInt32();
+            var numParts = ReadInt32(file, totalRecordLength, ref totalRead);
+            var numPoints = ReadInt32(file, totalRecordLength, ref totalRead);
             var partOffsets = new int[numParts];
             for (var i = 0; i < numParts; i++)
-                partOffsets[i] = file.ReadInt32();
+                partOffsets[i] = ReadInt32(file, totalRecordLength, ref totalRead);
 
             var skippedList = new HashSet<int>();
 
@@ -67,8 +69,8 @@ namespace NetTopologySuite.IO.Handlers
                 var length = finish - start;
                 for (var i = 0; i < length; i++)
                 {
-                    var x = pm.MakePrecise(file.ReadDouble());
-                    var y = pm.MakePrecise(file.ReadDouble());
+                    var x = pm.MakePrecise(ReadDouble(file, totalRecordLength, ref totalRead));
+                    var y = pm.MakePrecise(ReadDouble(file, totalRecordLength, ref totalRead));
 
                     // Thanks to Abhay Menon!
                     if (!(Coordinate.NullOrdinate.Equals(x) || Coordinate.NullOrdinate.Equals(y)))
@@ -84,7 +86,7 @@ namespace NetTopologySuite.IO.Handlers
             // and populate Z in the coordinate before we start manipulating the segments
             // We have to track corresponding optional M values and set them up in the 
             // Geometries via ICoordinateSequence further down.
-            GetZMValues(file, buffer, skippedList);
+            GetZMValues(file, totalRecordLength, ref totalRead, buffer, skippedList);
 
             // Get the resulting sequences
             var sequences = buffer.ToSequences(geometryFactory.CoordinateSequenceFactory);
@@ -162,9 +164,9 @@ namespace NetTopologySuite.IO.Handlers
         /// Writes a Geometry to the given binary wirter.
         /// </summary>
         /// <param name="geometry">The geometry to write.</param>
-        /// <param name="file">The file stream to write to.</param>
+        /// <param name="writer">The file stream to write to.</param>
         /// <param name="geometryFactory">The geometry factory to use.</param>
-        public override void Write(IGeometry geometry, BinaryWriter file, IGeometryFactory geometryFactory)
+        public override void Write(IGeometry geometry, BinaryWriter writer, IGeometryFactory geometryFactory)
         {
             // This check seems to be not useful and slow the operations...
             // if (!geometry.IsValid)    
@@ -181,19 +183,19 @@ namespace NetTopologySuite.IO.Handlers
             }
 
             // Write the shape type
-            file.Write((int) ShapeType);
+            writer.Write((int) ShapeType);
 
             var box = multi.EnvelopeInternal;
             var bounds = GetEnvelopeExternal(geometryFactory.PrecisionModel,  box);
-            file.Write(bounds.MinX);
-            file.Write(bounds.MinY);
-            file.Write(bounds.MaxX);
-            file.Write(bounds.MaxY);
+            writer.Write(bounds.MinX);
+            writer.Write(bounds.MinY);
+            writer.Write(bounds.MaxX);
+            writer.Write(bounds.MaxY);
         
             var numParts = GetNumParts(multi);
             var numPoints = multi.NumPoints;
-            file.Write(numParts);
-            file.Write(numPoints);
+            writer.Write(numParts);
+            writer.Write(numPoints);
         			
             // write the offsets to the points
             var offset = 0;
@@ -201,13 +203,13 @@ namespace NetTopologySuite.IO.Handlers
             {
                 // offset to the shell points
                 var polygon = (IPolygon) multi.Geometries[part];
-                file.Write(offset);
+                writer.Write(offset);
                 offset = offset + polygon.ExteriorRing.NumPoints;
 
                 // offses to the holes
                 foreach (ILinearRing ring in polygon.InteriorRings)
                 {
-                    file.Write(offset);
+                    writer.Write(offset);
                     offset = offset + ring.NumPoints;
                 }	
             }
@@ -224,7 +226,7 @@ namespace NetTopologySuite.IO.Handlers
                 var points = !shell.IsCCW 
                     ? shell.CoordinateSequence 
                     : shell.CoordinateSequence.Reversed();
-                WriteCoords(points, file, zList, mList);
+                WriteCoords(points, writer, zList, mList);
                 
                 foreach(ILinearRing hole in poly.InteriorRings)
                 {
@@ -233,12 +235,12 @@ namespace NetTopologySuite.IO.Handlers
                         ? hole.CoordinateSequence 
                         : hole.CoordinateSequence.Reversed();
 
-                    WriteCoords(points, file, zList, mList);
+                    WriteCoords(points, writer, zList, mList);
                 }
             }
 
             //Write the z-m-values
-            WriteZM(file, multi.NumPoints, zList, mList);
+            WriteZM(writer, multi.NumPoints, zList, mList);
         }
 
         /// <summary>
@@ -246,10 +248,12 @@ namespace NetTopologySuite.IO.Handlers
         /// </summary>
         /// <param name="geometry">The geometry to get the length for.</param>
         /// <returns>The length in bytes this geometry is going to use when written out as a shapefile record.</returns>
-        public override int GetLength(IGeometry geometry)
+        public override int ComputeRequiredLengthInWords(IGeometry geometry)
         {
-            int numParts = GetNumParts(geometry);
-            return (22 + (2 * numParts) + geometry.NumPoints * 8); // 22 => shapetype(2) + bbox(4*4) + numparts(2) + numpoints(2)
+            var numParts = GetNumParts(geometry);
+            var numPoints = geometry.NumPoints;
+
+            return MultiLineHandler.ComputeRequiredLengthInWords(numParts, numPoints, HasMValue(), HasZValue());
         }
 		
         /// <summary>

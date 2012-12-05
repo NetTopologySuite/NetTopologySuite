@@ -182,14 +182,19 @@ namespace NetTopologySuite.IO
 
         private static /*int*/ void WriteRecordToFile(BigEndianBinaryWriter shpBinaryWriter, BigEndianBinaryWriter shxBinaryWriter, ShapeHandler handler, IGeometry body, int oid)
         {
-            var recordLength = handler.GetLength(body);
+            // Get the length of each record (in bytes)
+            var recordLength = handler.ComputeRequiredLengthInWords(body);
+            
+            // Get the position in the stream
             var pos = shpBinaryWriter.BaseStream.Position;
-            var posWords = pos / 2;
             shpBinaryWriter.WriteIntBE(oid);
             shpBinaryWriter.WriteIntBE(recordLength);
-
+            
+            // update shapefile index (position in words, 1 word = 2 bytes)
+            var posWords = pos / 2;
             shxBinaryWriter.WriteIntBE((int)posWords);
             shxBinaryWriter.WriteIntBE(recordLength);
+
             handler.Write(body, shpBinaryWriter, body.Factory);
             /*return recordLength;*/
         }
