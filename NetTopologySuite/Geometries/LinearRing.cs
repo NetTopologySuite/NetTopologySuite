@@ -80,6 +80,12 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        public override IGeometry Reverse()
+        {
+            var sequence = CoordinateSequence.Reversed();
+            return Factory.CreateLinearRing(sequence);
+        }
+
         public bool IsCCW { get { return Algorithm.CGAlgorithms.IsCCW(CoordinateSequence); } }
 
         /*
