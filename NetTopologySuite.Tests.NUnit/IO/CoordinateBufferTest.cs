@@ -203,7 +203,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             foreach (var rndBuffer in (_randomCoordinateBuffers ?? (_randomCoordinateBuffers = RandomCoordinateBuffers(NumTests))))
             {
 
-                sw.Restart();
+                sw.Stop();
+                sw.Start();
                 var seqWarm = rndBuffer.ToSequence(factory);
                 sw.Stop();
                 Assert.AreEqual(rndBuffer.Count, seqWarm.Count);
@@ -237,7 +238,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             long total = 0;
             foreach (var rndBuffer in (_randomCoordinateBuffers ?? (_randomCoordinateBuffers = RandomCoordinateBuffers(NumTests))))
             {
-                sw.Restart();
+                sw.Stop();
+                sw.Start();
                 var seqWarm = rndBuffer.ToSequence(converter);
                 sw.Stop();
                 Assert.AreEqual(rndBuffer.Count, seqWarm.Count);

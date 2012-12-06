@@ -1,6 +1,5 @@
 using System;
 using System.Threading;
-using System.Threading.Tasks;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
@@ -121,7 +120,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [Test]
         public void RepeatedTestThreading()
         {
-            Parallel.For(0, 10, DoTestThreading);
+            for (int i = 0; i < 10; i++)
+                ThreadPool.QueueUserWorkItem(o => DoTestThreading((int) o), i);
         }
 
         [Test]
