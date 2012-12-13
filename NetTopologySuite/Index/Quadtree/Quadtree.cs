@@ -7,22 +7,30 @@ namespace NetTopologySuite.Index.Quadtree
     //public class QuadTree : Quadtree<object>
     //{}
     /// <summary>
-    /// A Quadtree is a spatial index structure for efficient querying
-    /// of 2D rectangles.  If other kinds of spatial objects
-    /// need to be indexed they can be represented by their
-    /// envelopes    
-    /// The quadtree structure is used to provide a primary filter
-    /// for range rectangle queries.  The Query() method returns a list of
-    /// all objects which may intersect the query rectangle.  Note that
-    /// it may return objects which do not in fact intersect.
-    /// A secondary filter is required to test for exact intersection.
-    /// Of course, this secondary filter may consist of other tests besides
-    /// intersection, such as testing other kinds of spatial relationships.
+    /// A Quadtree is a spatial index structure for efficient range querying
+    /// of items bounded by 2D rectangles.<br/>
+    /// <see cref="IGeometry"/>s can be indexed by using their <see cref="Envelope"/>s.<br/>
+    /// Any type of object can also be indexed, as long as it has an extent that can be 
+    /// represented by an <see cref="Envelope"/>.
+    /// <para/>
+    /// This Quadtree index provides a <b>primary filter</b>
+    /// for range rectangle queries.  The various query methods return a list of
+    /// all items which <i>may</i> intersect the query rectangle.  Note that
+    /// it may thus return items which do <b>not</b> in fact intersect the query rectangle.
+    /// A secondary filter is required to test for actual intersection 
+    /// between the query rectangle and the envelope of each candidate item. 
+    /// The secondary filter may be performed explicitly, 
+    /// or it may be provided implicitly by subsequent operations executed on the items 
+    /// (for instance, if the index query is followed by computing a spatial predicate 
+    /// between the query geometry and tree items, 
+    /// the envelope intersection check is performed automatically.
+    /// <para/>
     /// This implementation does not require specifying the extent of the inserted
     /// items beforehand.  It will automatically expand to accomodate any extent
     /// of dataset.
+    /// <para/>
     /// This data structure is also known as an <c>MX-CIF quadtree</c>
-    /// following the usage of Samet and others.
+    /// following the terminology usage of Samet and others.
     /// </summary>
     [Serializable]
     public class Quadtree<T> : ISpatialIndex<T>
