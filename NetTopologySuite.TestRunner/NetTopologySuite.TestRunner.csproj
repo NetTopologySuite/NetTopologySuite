@@ -159,8 +159,9 @@
     <Compile Include="Utility\ClassUtility.cs" />
     <Compile Include="Utility\DoubleKeyMap.cs" />
     <Compile Include="Utility\FunctionsUtility.cs" />
+    <Compile Include="Utility\IOUtility.cs" />
     <Compile Include="Utility\StringUtility.cs" />
-    <Compile Include="Utility\WKTOrWKBReader.cs" />
+    <Compile Include="Utility\MultiFormatReader.cs" />
     <Compile Include="XmlTest.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -190,6 +191,10 @@
     <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">
       <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
       <Name>GeoAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\NetTopologySuite.IO.GeoTools.csproj">
+      <Project>{21805958-869E-49F5-A4ED-0AC8599D62F0}</Project>
+      <Name>NetTopologySuite.IO.GeoTools</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.Windows.Forms\NetTopologySuite.Windows.Forms.csproj">
       <Project>{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}</Project>

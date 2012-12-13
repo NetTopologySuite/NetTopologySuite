@@ -32,7 +32,7 @@ namespace Open.Topology.TestRunner
         }
 
         protected GeometryFactory ObjGeometryFactory;
-        private readonly WKTOrWKBReader _objReader;
+        private readonly MultiFormatReader _objReader;
 	    private readonly IGeometryOperation _geometryOperation;
 	    private readonly IResultMatcher _resultMatcher;
 
@@ -41,7 +41,7 @@ namespace Open.Topology.TestRunner
             ObjGeometryFactory = new GeometryFactory(pm);
             _geometryOperation = geometryOperation;
             _resultMatcher = resultMatcher;
-            _objReader = new WKTOrWKBReader(ObjGeometryFactory);
+            _objReader = new MultiFormatReader(ObjGeometryFactory);
         }
 
         public XmlTest Create(XmlTestInfo testInfo, double tolerance)

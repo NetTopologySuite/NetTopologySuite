@@ -8,7 +8,7 @@ namespace Open.Topology.TestRunner.Utility
     /// <summary>
     /// Reads a <seealso cref="IGeometry"/> from a string which is in either WKT or WKBHex format
     /// </summary>
-    public class WKTOrWKBReader
+    public class MultiFormatReader
     {
         private static Boolean IsHex(String str, int maxCharsToTest)
         {
@@ -34,16 +34,18 @@ namespace Open.Topology.TestRunner.Utility
         //private GeometryFactory _geomFactory;
         private readonly WKTReader _wktReader;
         private readonly WKBReader _wkbReader;
+        private readonly IGeometryFactory _factory;
 
-        public WKTOrWKBReader()
+        public MultiFormatReader()
             : this(new GeometryFactory())
         {
         }
 
-        public WKTOrWKBReader(GeometryFactory geomFactory)
+        public MultiFormatReader(GeometryFactory geomFactory)
         {
             _wktReader = new WKTReader(geomFactory);
             _wkbReader = new WKBReader(geomFactory);
+            _factory = geomFactory;
         }
 
         /// <summary>
@@ -54,9 +56,9 @@ namespace Open.Topology.TestRunner.Utility
         /// <exception cref="ParseException"></exception>
         public IGeometry Read(String geomStr)
         {
-            String trimStr = geomStr.Trim();
+            var trimStr = geomStr.Trim();
             if (IsHex(trimStr, MaxCharsToCheck))
-                return _wkbReader.Read(WKBReader.HexToBytes(trimStr));
+                return IOUtility.readGeometriesFromWKBHexString(trimStr, _factory);
             return _wktReader.Read(trimStr);
         }
     }
