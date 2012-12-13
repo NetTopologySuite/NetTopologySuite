@@ -18,29 +18,35 @@ namespace NetTopologySuite.Operation
     /// A Geometry is simple if and only if the only self-intersections are at boundary points.
     /// </item>  
     /// </list>
-    /// For <see cref="ILineal"/> geometries the evaluation of simplicity  
-    /// can be customized by supplying a <see cref="IBoundaryNodeRule"/>
-    /// to define how boundary points are determined.
-    /// The default is the SFS-standard <see cref="BoundaryNodeRules.Mod2BoundaryNodeRule"/>.
     /// </summary>
     /// <remarks>
     /// Simplicity is defined for each <see cref="IGeometry"/>} subclass as follows:
     /// <list type="Bullet">
     /// <item>Valid <see cref="IPolygonal"/> geometries are simple by definition, so
-    /// <c>IsSimple</c> trivially returns true.
-    /// (Note: this means that <tt>isSimple</tt> cannot be used to test 
+    /// <c>IsSimple</c> trivially returns true.<br/>
+    /// (Note: this means that <tt>IsSimple</tt> cannot be used to test 
     /// for (invalid) self-intersections in <tt>Polygon</tt>s.  
     /// In order to check if a <tt>Polygonal</tt> geometry has self-intersections,
     /// use <see cref="NetTopologySuite.Geometries.Geometry.IsValid()" />).</item>
-    /// <item><b><see cref="ILineal"/></b> geometries are simple if and only if they do not self-intersect at points
-    /// other than boundary points. 
-    /// (Note that under the <tt>Mod-2</tt> rule, closed <tt>LineString</tt>s
-    /// can never satisfy the SFS <tt>touches</tt> predicate at their endpoints, since these are
-    /// interior points, not boundary points).</item>
+    /// <item><b><see cref="ILineal"/></b> geometries are simple if and only if they do <i>not</i> self-intersect at interior points
+    /// (i.e. points other than boundary points). 
+    /// This is equivalent to saying that no two linear components satisfy the SFS <see cref="IGeometry.Touches(IGeometry)"/>
+    /// predicate.</item>
     /// <item><b>Zero-dimensional (<see cref="IPuntal"/>)</b> geometries are simple if and only if they have no
     /// repeated points.</item>
     ///<item><b>Empty</b> <see cref="IGeometry"/>s are <i>always</i> simple by definition.</item>
     ///</list>
+    /// For <see cref="ILineal"/> geometries the evaluation of simplicity  
+    /// can be customized by supplying a <see cref="IBoundaryNodeRule"/>
+    /// to define how boundary points are determined.
+    /// The default is the SFS-standard <see cref="BoundaryNodeRules.Mod2BoundaryNodeRule"/>.
+    /// Note that under the <tt>Mod-2</tt> rule, closed <tt>LineString</tt>s (rings)
+    /// will never satisfy the <tt>touches</tt> predicate at their endpoints, since these are
+    /// interior points, not boundary points. 
+    /// If it is required to test whether a set of <code>LineString</code>s touch
+    /// only at their endpoints, use <code>IsSimpleOp</code> with {@link BoundaryNodeRule#ENDPOINT_BOUNDARY_RULE}.
+    /// For example, this can be used to validate that a set of lines form a topologically valid
+    /// linear network.
     /// </remarks>
     public class IsSimpleOp
     {
