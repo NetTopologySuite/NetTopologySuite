@@ -60,12 +60,15 @@
     <Compile Include="Algorithm\MCPointInRingTest.cs" />
     <Compile Include="Algorithm\ShewchuksDeterminant.cs" />
     <Compile Include="CoordinateSystems\Transformations\GeometryTransformTest.cs" />
+    <Compile Include="Geometries\CoordinateTest.cs" />
     <Compile Include="IO\CoordinateBufferTest.cs" />
     <Compile Include="Geometries\Implementation\CoordinateSequenceReversedTest.cs" />
     <Compile Include="Index\KdTree\KdTreeTest.cs" />
     <Compile Include="Geometries\IntervalTest.cs" />
     <Compile Include="Mathematics\DDBasicTest.cs" />
     <Compile Include="Mathematics\DDComputeTest.cs" />
+    <Compile Include="MiscellaneousTest.cs" />
+    <Compile Include="MiscellaneousTest2.cs" />
     <Compile Include="Operation\Relate\ContainsTest.cs" />
     <Compile Include="Operation\Relate\RelateTest.cs" />
     <Compile Include="Performance\Algorithm\DistanceLineLineStressTest.cs" />

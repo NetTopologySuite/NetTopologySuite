@@ -2069,7 +2069,7 @@ namespace NetTopologySuite.Geometries
         /// <c>true</c> if the classes of the two <c>Geometry</c>
         /// s are considered to be equal by the <c>equalsExact</c> method.
         /// </returns>
-        protected bool IsEquivalentClass(IGeometry other) 
+        protected virtual bool IsEquivalentClass(IGeometry other) 
         {
             return GetType().FullName == other.GetType().FullName;
         }

@@ -34,11 +34,28 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
             return this;
         }
 
+        public bool IsAllTestsPassed()
+        {
+            try
+            {
+                Test();
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return true;
+        }
+
+
+        /// <summary>
+        /// Tests if the result is valid.
+        /// Throws an exception if result is not valid.
+        /// This allows chaining multiple tests together.
+        /// </summary>
+        /// <exception cref="Exception">Thrown if the result is not valid.</exception>
         public void Test()
         {
-            //    inputGeom = rdr.read(wkt);
-            //    simplifiedGeom = TopologyPreservingSimplifier.simplify(inputGeom, tolerance);
-            //    System.out.println(simplifiedGeom);
             TestSameStructure();
             TestValid();
             TestExpectedResult();

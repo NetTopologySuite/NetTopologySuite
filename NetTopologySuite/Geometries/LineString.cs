@@ -411,6 +411,11 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        protected override bool IsEquivalentClass(IGeometry other)
+        {
+            return other is ILineString;
+        }
+
         /// <summary>
         ///
         /// </summary>

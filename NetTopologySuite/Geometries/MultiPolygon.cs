@@ -109,13 +109,13 @@ namespace NetTopologySuite.Geometries
             get
             {
                 if (IsEmpty)    
-                    return Factory.CreateMultiPolygon(null);
+                    return Factory.CreateMultiLineString(null);
 
-                List<ILineString> allRings = new List<ILineString>();
-                for (int i = 0; i < Geometries.Length; i++)
+                var allRings = new List<ILineString>();
+                for (var i = 0; i < Geometries.Length; i++)
                 {
-                    IPolygon polygon = (IPolygon) Geometries[i];
-                    IGeometry rings = polygon.Boundary;
+                    var polygon = (IPolygon) Geometries[i];
+                    var rings = polygon.Boundary;
                     for (int j = 0; j < rings.NumGeometries; j++)
                         allRings.Add((ILineString) rings.GetGeometryN(j));
                 }                
