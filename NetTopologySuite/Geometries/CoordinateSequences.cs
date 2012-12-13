@@ -101,7 +101,8 @@ namespace NetTopologySuite.Geometries
         /// <returns>The original sequence, if it was a valid ring, or a new sequence which is valid.</returns>
         public static ICoordinateSequence EnsureValidRing(ICoordinateSequenceFactory fact, ICoordinateSequence seq)
         {
-            int n = seq.Count;
+            var n = seq.Count;
+            // empty sequence is valid
             if (n == 0) return seq;
             // too short - make a new one
             if (n <= 3)
