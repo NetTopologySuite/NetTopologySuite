@@ -142,7 +142,7 @@ public class DDIOTest
 		CheckStandardNotation(14, "14.0");
 	}
 
-	private void CheckStandardNotation(double x, String expectedStr) {
+	private static void CheckStandardNotation(double x, String expectedStr) {
 		CheckStandardNotation(DD.ValueOf(x), expectedStr);
 	}
 
@@ -289,8 +289,6 @@ public class DDIOTest
 		int count = 0;
 		while (xdd.ToDoubleValue() > 1e-300) {
 			count++;
-			if (count == 100)
-				count = count;
 			double x = xdd.ToDoubleValue();
 			DD xSqr = xdd.Sqr();
 			String s = xSqr.ToString();
