@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Chain;
@@ -49,7 +48,7 @@ namespace NetTopologySuite.Noding.Snapround
             /// <param name="item"></param>
             public void VisitItem(object item)
             {
-                MonotoneChain testChain = (MonotoneChain) item;
+                var testChain = (MonotoneChain) item;
                 testChain.Select(_env, _action);
             }
         }
@@ -73,10 +72,13 @@ namespace NetTopologySuite.Noding.Snapround
         }
 
         /// <summary>
-        /// 
+        /// Snaps (nodes) all interacting segments to this hot pixel.
+        /// The hot pixel may represent a vertex of an edge,
+        /// in which case this routine uses the optimization
+        /// of not noding the vertex itself
         /// </summary>
-        /// <param name="hotPixel"></param>
-        /// <returns></returns>
+        /// <param name="hotPixel">The hot pixel to snap to.</param>
+        /// <returns><c>true</c> if a node was added for this pixel.</returns>
         public bool Snap(HotPixel hotPixel)
         {
             return Snap(hotPixel, null, -1);
@@ -138,12 +140,11 @@ namespace NetTopologySuite.Noding.Snapround
                 if (_parentEdge != null)
                 {
                     if (ss == _parentEdge && 
-                        (startIndex == _hotPixelVertexIndex 
-                              || startIndex + 1 == _hotPixelVertexIndex
-                              ))
+                        (startIndex == _hotPixelVertexIndex)
+                        )
                         return;
                 }
-                _isNodeAdded = _isNodeAdded || _hotPixel.AddSnappedNode(ss, startIndex);
+                _isNodeAdded = _hotPixel.AddSnappedNode(ss, startIndex);
             }
         }
     }
