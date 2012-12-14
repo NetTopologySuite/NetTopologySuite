@@ -152,7 +152,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                         // 10/29/2003]
                         buffer = wktReader.Read("POINT EMPTY");
                     }
-                    catch (ParseException e)
+                    catch (GeoAPI.IO.ParseException e)
                     {
                         NetTopologySuite.Utilities.Assert.ShouldNeverReachHere();
                     }

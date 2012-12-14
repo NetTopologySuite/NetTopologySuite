@@ -7,6 +7,7 @@ using GeoAPI.IO;
 //using NetTopologySuite.Geometries;
 //using NetTopologySuite.Utilities;
 using RTools_NTS.Util;
+using ParseException = GeoAPI.IO.ParseException;
 
 namespace NetTopologySuite.IO
 {
@@ -146,7 +147,7 @@ namespace NetTopologySuite.IO
             }
             catch (IOException e)
             {
-                throw new ParseException(e.ToString());
+                throw new GeoAPI.IO.ParseException(e.ToString());
             }            
         }
 
@@ -272,9 +273,9 @@ namespace NetTopologySuite.IO
             if (token == null)
                 throw new ArgumentNullException("tokens", "Token list contains a null value");
             if (token is EofToken)
-                throw new ParseException("Expected number but encountered end of stream");
+                throw new GeoAPI.IO.ParseException("Expected number but encountered end of stream");
             if (token is EolToken)
-                throw new ParseException("Expected number but encountered end of line");
+                throw new GeoAPI.IO.ParseException("Expected number but encountered end of line");
             if (token is FloatToken || token is IntToken)
                 return (double) token.ConvertToType(typeof(double));
             if (token is WordToken)
@@ -283,16 +284,16 @@ namespace NetTopologySuite.IO
                 {
                     return Double.NaN;
                 }
-                throw new ParseException("Expected number but encountered word: " + token.StringValue);
+                throw new GeoAPI.IO.ParseException("Expected number but encountered word: " + token.StringValue);
             }
             if (token.StringValue == "(")
-                throw new ParseException("Expected number but encountered '('");
+                throw new GeoAPI.IO.ParseException("Expected number but encountered '('");
             if (token.StringValue == ")")
-                throw new ParseException("Expected number but encountered ')'");
+                throw new GeoAPI.IO.ParseException("Expected number but encountered ')'");
             if (token.StringValue == ",")
-                throw new ParseException("Expected number but encountered ','");
+                throw new GeoAPI.IO.ParseException("Expected number but encountered ','");
 
-            throw new ParseException("Expected number but encountered '" + token.StringValue + "'");
+            throw new GeoAPI.IO.ParseException("Expected number but encountered '" + token.StringValue + "'");
         }
 
         /// <summary>
@@ -308,8 +309,8 @@ namespace NetTopologySuite.IO
         {
             string nextWord = GetNextWord(tokens);
             if (nextWord.Equals("EMPTY") || nextWord.Equals("(")) 
-                return nextWord;            
-            throw new ParseException("Expected 'EMPTY' or '(' but encountered '" + nextWord + "'");
+                return nextWord;
+            throw new GeoAPI.IO.ParseException("Expected 'EMPTY' or '(' but encountered '" + nextWord + "'");
         }
 
         /// <summary>
@@ -326,8 +327,8 @@ namespace NetTopologySuite.IO
             string nextWord = GetNextWord(tokens);
             if (nextWord.Equals(",") || nextWord.Equals(")")) 
                 return nextWord;
-            
-            throw new ParseException("Expected ')' or ',' but encountered '" + nextWord
+
+            throw new GeoAPI.IO.ParseException("Expected ')' or ',' but encountered '" + nextWord
                 + "'");
         }
 
@@ -345,7 +346,7 @@ namespace NetTopologySuite.IO
             var nextWord = GetNextWord(tokens);    
             if (nextWord.Equals(")"))
                 return nextWord;
-            throw new ParseException("Expected ')' but encountered '" + nextWord + "'");         
+            throw new GeoAPI.IO.ParseException("Expected ')' but encountered '" + nextWord + "'");         
         }
 
         /// <summary>
@@ -366,11 +367,11 @@ namespace NetTopologySuite.IO
                 throw new InvalidOperationException("premature end of enumerator");
 
             if (token is EofToken)
-                throw new ParseException("Expected number but encountered end of stream");
+                throw new GeoAPI.IO.ParseException("Expected number but encountered end of stream");
             if (token is EolToken)
-                throw new ParseException("Expected number but encountered end of line");
+                throw new GeoAPI.IO.ParseException("Expected number but encountered end of line");
             if (token is FloatToken || token is IntToken)
-                throw new ParseException("Expected word but encountered number: " + token.StringValue);
+                throw new GeoAPI.IO.ParseException("Expected word but encountered number: " + token.StringValue);
             if (token is WordToken)
                 return token.StringValue.ToUpper();
             if (token.StringValue == "(")
@@ -440,7 +441,7 @@ namespace NetTopologySuite.IO
                 returned = ReadMultiPolygonText(tokens, factory);
             else if (type.Equals("GEOMETRYCOLLECTION"))
                 returned = ReadGeometryCollectionText(tokens, factory);
-            else throw new ParseException("Unknown type: " + type);
+            else throw new GeoAPI.IO.ParseException("Unknown type: " + type);
 
             if (returned == null)
                 throw new NullReferenceException("Error reading geometry");

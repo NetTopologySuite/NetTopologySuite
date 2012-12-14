@@ -37,12 +37,35 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The location of the point in the ring</returns>
         public static Location LocatePointInRing(Coordinate p, Coordinate[] ring)
         {
-            RayCrossingCounter counter = new RayCrossingCounter(p);
+            var counter = new RayCrossingCounter(p);
 
             for (int i = 1; i < ring.Length; i++)
             {
-                Coordinate p1 = ring[i];
-                Coordinate p2 = ring[i - 1];
+                var p1 = ring[i];
+                var p2 = ring[i - 1];
+                counter.CountSegment(p1, p2);
+                if (counter.IsOnSegment)
+                    return counter.Location;
+            }
+            return counter.Location;
+        }
+
+        /// <summary>
+        /// Determines the <see cref="Location"/> of a point in a ring.
+        /// </summary>
+        /// <param name="p">The point to test</param>
+        /// <param name="ring">A coordinate sequence forming a ring</param>
+        /// <returns>The location of the point in the ring</returns>
+        public static Location LocatePointInRing(Coordinate p, ICoordinateSequence ring)
+        {
+            var counter = new RayCrossingCounter(p);
+
+            var p1 = new Coordinate();
+            var p2 = new Coordinate();
+            for (var i = 1; i < ring.Count; i++)
+            {
+                ring.GetCoordinate(i, p1);
+                ring.GetCoordinate(i - 1, p2);
                 counter.CountSegment(p1, p2);
                 if (counter.IsOnSegment)
                     return counter.Location;

@@ -113,7 +113,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
                 {
                     geometries.Add(reader.Read(geomWkt));
                 }
-                catch (ParseException)
+                catch (GeoAPI.IO.ParseException)
                 {
                     NetTopologySuite.Utilities.Assert.ShouldNeverReachHere();
                 }

@@ -1251,7 +1251,7 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public string ToText() 
         {         
-            WKTWriter writer = new WKTWriter();
+            var writer = new WKTWriter(3);
             return writer.Write(this);
         }
 

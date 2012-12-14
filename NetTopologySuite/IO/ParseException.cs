@@ -1,14 +1,13 @@
 using System;
-#if SILVERLIGHT
-using ApplicationException = System.Exception;
-#endif
+
 
 namespace NetTopologySuite.IO
 {
     /// <summary>  
     /// Thrown by a <c>WKTReader</c> when a parsing problem occurs.
     /// </summary>
-    public class ParseException : ApplicationException 
+    [Obsolete("Use GeoAPI.IO.ParseException")]
+    public class ParseException : GeoAPI.IO.ParseException 
     {
         /// <summary>
         /// Creates a <c>ParseException</c> with the given detail message.

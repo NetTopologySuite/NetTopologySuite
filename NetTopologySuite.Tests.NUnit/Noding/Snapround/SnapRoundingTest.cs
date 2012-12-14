@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
@@ -99,6 +100,61 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             RunRounding(badNoding1ExtractShift);
         }
 
+        [Test, Description("Test from JTS-MailingList")]
+        public void TestML()
+        {
+            {
+                const double scale = 2.0E10;
+                IPrecisionModel precisionModel = new PrecisionModel(scale);
+                IGeometryFactory geometryFactory = new GeometryFactory(precisionModel);
+
+                var reader = new WKTReader(geometryFactory);
+                var lineStringA = (ILineString)
+                    reader.Read("LINESTRING (-93.40178610435 -235.5437531975, -401.24229900825 403.69365857925)");
+                var lineStringB = (ILineString)
+                    reader.Read("LINESTRING (-50.0134121926 -145.44686640725, -357.8539250965 493.7905453695)");
+                var lineStringC = (ILineString)
+                    reader.Read("LINESTRING (-193.8964147753 -30.64653554935, -186.68866383205 -34.1176054623)");
+
+                var middlePoint = (IPoint) reader.Read("POINT (-203.93366864454998 174.171839481125)");
+
+                var lineStrings = new List<ILineString>();
+                lineStrings.Add(lineStringA);
+                lineStrings.Add(lineStringB);
+                lineStrings.Add(lineStringC);
+
+                var noder = new GeometryNoder(geometryFactory.PrecisionModel);
+                var nodedLineStrings = noder.Node(lineStrings.ToArray());
+
+                var shortestDistanceToPointBeforeNoding = double.MaxValue;
+
+                foreach (var lineString in lineStrings)
+                {
+                    shortestDistanceToPointBeforeNoding = Math.Min(lineString.Distance(middlePoint),
+                                                                   shortestDistanceToPointBeforeNoding);
+                }
+
+                var shortestDistanceToPointAfterNoding = Double.MaxValue;
+
+                foreach (var lineString in nodedLineStrings)
+                {
+                    shortestDistanceToPointAfterNoding = Math.Min(lineString.Distance(middlePoint),
+                                                                  shortestDistanceToPointAfterNoding);
+                }
+
+                var difference = Math.Abs(shortestDistanceToPointAfterNoding - shortestDistanceToPointBeforeNoding);
+
+
+                Console.WriteLine("Scale: {0}", scale);
+                Console.WriteLine("Distance to point before noding: {0}", shortestDistanceToPointBeforeNoding);
+                Console.WriteLine("Distance to point after noding:  {0}", shortestDistanceToPointAfterNoding);
+                Console.WriteLine("Difference is {0} and should be lesser than {1}", difference, 1.0/scale);
+
+                const double roughTolerance = 10.0;
+                Assert.IsTrue(difference < roughTolerance, "this difference should should be lesser than " + 1.0/scale);
+
+            }
+        }
 
         private const double SnapTolerance = 1.0;
 
