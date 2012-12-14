@@ -37,7 +37,7 @@ namespace NetTopologySuite.Algorithm
         /// A value that indicates an orientation of collinear, or no turn (straight).
         /// </summary>
         public const int Straight           = Collinear;
-        
+
         /// <summary> 
         /// Returns the index of the direction of the point <c>q</c>
         /// relative to a vector specified by <c>p1-p2</c>.
@@ -50,7 +50,7 @@ namespace NetTopologySuite.Algorithm
         /// -1 if q is clockwise (right) from p1-p2,
         /// 0 if q is collinear with p1-p2.
         /// </returns>
-        public static int OrientationIndex(Coordinate p1, Coordinate p2, Coordinate q) 
+        public static int OrientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
         {
             /**
              * MD - 9 Aug 2010
@@ -75,16 +75,18 @@ namespace NetTopologySuite.Algorithm
              * an appropriate patch.
              * 
              */
-            /*
-            // Normalize orientation of vector to provide consistent results
-            // This produces repeatable results for single cases, but does not fully solve robustness issues
-               if (p2.x < p1.x || (p2.x == p1.x && p2.y < p1.y))
-                    return -orientationIndex(p2, p1, q);
-             */
-            //return ShewchuksDeterminant.OrientationIndex(p1, p2, q);
             return CGAlgorithmsDD.OrientationIndex(p1, p2, q);
-            //return RobustDeterminant.OrientationIndex(p1, p2, q);
-        }        
+
+            /*
+            //Testing only
+            return ShewchuksDeterminant.OrientationIndex(p1, p2, q);
+             */
+
+            /*
+            //previous implementation - not quite fully robust
+            return RobustDeterminant.OrientationIndex(p1, p2, q);
+             */
+        }
 
         /// <summary> 
         /// Tests whether a point lies inside or on a ring.
