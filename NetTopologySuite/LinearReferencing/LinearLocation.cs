@@ -96,6 +96,17 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
+        /// Creates a new location equal to a given one.
+        /// </summary>
+        /// <param name="loc">A linear location</param>
+        public LinearLocation(LinearLocation loc)
+        {
+            _componentIndex = loc._componentIndex;
+            _segmentIndex = loc._segmentIndex;
+            _segmentFraction = loc._segmentFraction;
+        }
+        
+        /// <summary>
         /// Ensures the individual values are locally valid.
         /// Does not ensure that the indexes are valid for
         /// a particular linear geometry.

@@ -10,25 +10,12 @@ namespace NetTopologySuite.LinearReferencing
     /// </summary>
     public class LengthIndexOfPoint
     {
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="linearGeom"></param>
-        /// <param name="inputPt"></param>
-        /// <returns></returns>
         public static double IndexOf(IGeometry linearGeom, Coordinate inputPt)
         {
             var locater = new LengthIndexOfPoint(linearGeom);
             return locater.IndexOf(inputPt);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="linearGeom"></param>
-        /// <param name="inputPt"></param>
-        /// <param name="minIndex"></param>
-        /// <returns></returns>
         public static double IndexOfAfter(IGeometry linearGeom, Coordinate inputPt, double minIndex)
         {
             var locater = new LengthIndexOfPoint(linearGeom);
@@ -47,7 +34,7 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Find the nearest location along a linear <see cref="Geometry" /> to a given point.
+        /// Find the nearest location along a linear <see cref="IGeometry"/> to a given point.
         /// </summary>
         /// <param name="inputPt">The coordinate to locate.</param>
         /// <returns>The location of the nearest point.</returns>
@@ -57,7 +44,7 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Finds the nearest index along the linear <see cref="Geometry" />
+        /// Finds the nearest index along the linear <see cref="IGeometry" />
         /// to a given <see cref="Coordinate"/> after the specified minimum index.
         /// If possible the location returned will be strictly
         /// greater than the <paramref name="minIndex" />.
@@ -82,9 +69,8 @@ namespace NetTopologySuite.LinearReferencing
 
             /*
              * Return the minDistanceLocation found.
-             * This will not be null, since it was initialized to minLocation
              */
-            Assert.IsTrue(closestAfter > minIndex, "computed index is before specified minimum index");
+            Assert.IsTrue(closestAfter >= minIndex, "computed index is before specified minimum index");
             return closestAfter;
         }
 

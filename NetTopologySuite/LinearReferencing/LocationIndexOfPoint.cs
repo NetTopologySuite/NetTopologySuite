@@ -83,12 +83,6 @@ namespace NetTopologySuite.LinearReferencing
             return closestAfter;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="inputPt"></param>
-        /// <param name="minIndex"></param>
-        /// <returns></returns>
         private LinearLocation IndexOfFromStart(Coordinate inputPt, LinearLocation minIndex)
         {
             var minDistance = Double.MaxValue;
@@ -125,7 +119,13 @@ namespace NetTopologySuite.LinearReferencing
                 }
             }
 
-            LinearLocation loc = new LinearLocation(minComponentIndex, minSegmentIndex, minFrac);
+            if (minDistance == Double.MaxValue)
+            {
+                // no minimum was found past minLocation, so return it
+                return new LinearLocation(minIndex);
+            }
+            // otherwise, return computed location
+            var loc = new LinearLocation(minComponentIndex, minSegmentIndex, minFrac);
             return loc;
         }
 
