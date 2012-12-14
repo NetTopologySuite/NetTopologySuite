@@ -10,6 +10,12 @@ namespace NetTopologySuite.IO
     /// <summary>
     /// Converts a Well-Known Binary byte data to a <c>Geometry</c>.
     /// </summary>
+    /// <remarks>
+    /// The reader repairs structurally-invalid input
+    /// (specifically, LineStrings and LinearRings which contain
+    /// too few points have vertices added,
+    /// and non-closed rings are closed).
+    /// s</remarks>
     public class WKBReader : IBinaryGeometryReader
     {
         ///<summary>
@@ -75,6 +81,11 @@ namespace NetTopologySuite.IO
         private readonly IPrecisionModel _precisionModel;
 
         private readonly IGeometryServices _geometryServices;
+        /**
+         * true if structurally invalid input should be reported rather than repaired.
+         * At some point this could be made client-controllable.
+         */
+        private bool _isStrict;
 
         /// <summary>
         /// <c>Geometry</c> builder.
@@ -398,10 +409,26 @@ namespace NetTopologySuite.IO
         protected ICoordinateSequence ReadCoordinateSequenceRing(BinaryReader reader, int size, CoordinateSystem cs)
         {
             var seqence = ReadCoordinateSequence(reader, size, cs);
-            if (!RepairRings) return seqence;
+            if (_isStrict) return seqence;
+            //if (!RepairRings) return seqence;
             if (CoordinateSequences.IsRing(seqence)) return seqence;
             return CoordinateSequences.EnsureValidRing(_sequenceFactory, seqence);
         }
+
+        /// <summary>
+        /// Function to read a coordinate sequence that is supposed to serve a line string.
+        /// </summary>
+        /// <param name="reader">The reader</param>
+        /// <param name="size">The number of ordinates</param>
+        /// <param name="cs">The coordinate system</param>
+        /// <returns>The read coordinate sequence.</returns>
+        protected ICoordinateSequence ReadCoordinateSequenceLineString(BinaryReader reader, int size, CoordinateSystem cs)
+        {
+            var seq = ReadCoordinateSequence(reader, size, cs);
+            if (_isStrict) return seq;
+            if (seq.Count== 0 || seq.Count >= 2) return seq;
+            return CoordinateSequences.Extend(_geometryServices.DefaultCoordinateSequenceFactory, seq, 2);
+  }
 
         /// <summary>
         /// Function to convert from <see cref="CoordinateSystem"/> to <see cref="Ordinates"/>
@@ -456,7 +483,7 @@ namespace NetTopologySuite.IO
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
             var numPoints = reader.ReadInt32();
-            var sequence = ReadCoordinateSequence(reader, numPoints, cs);
+            var sequence = ReadCoordinateSequenceLineString(reader, numPoints, cs);
             return factory.CreateLineString(sequence);
         }
 
@@ -661,7 +688,7 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Gets or sets whether invalid linear rings should be fixed
         /// </summary>
-        public bool RepairRings { get; set; }
+        public bool RepairRings { get { return _isStrict; } set { _isStrict = value; } }
 
         /// <summary>
         /// Function to determine whether an ordinate should be handled or not.

@@ -126,5 +126,20 @@ namespace NetTopologySuite.Geometries
             return newseq;
         }
 
+        public static ICoordinateSequence Extend(ICoordinateSequenceFactory fact, ICoordinateSequence seq, int size)
+        {
+            var newseq = fact.Create(size, seq.Ordinates);
+            var n = seq.Count;
+            Copy(seq, 0, newseq, 0, n);
+            // fill remaining coordinates with end point, if it exists
+            if (n > 0)
+            {
+                for (var i = n; i < size; i++)
+                    Copy(seq, n - 1, newseq, i, 1);
+            }
+            return newseq;
+        }
+  
+
     }
 }
