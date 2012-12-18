@@ -24,7 +24,7 @@ namespace NetTopologySuite.Geometries.Implementation
          * The actual dimension of the coordinates in the sequence.
          * Allowable values are 2 or 3.
          */
-        private int _dimension = 3;
+        private readonly int _dimension = 3;
   
         /// <summary>
         /// Constructs a sequence based on the given array of <see cref="Coordinate"/>s.
@@ -140,7 +140,6 @@ namespace NetTopologySuite.Geometries.Implementation
 
         /// <summary>
         /// Copies the i'th coordinate in the sequence to the supplied Coordinate.
-        /// Only the first two dimensions are copied.
         /// </summary>
         /// <param name="index">The index of the coordinate to copy.</param>
         /// <param name="coord">A Coordinate to receive the value.</param>
@@ -148,6 +147,7 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             coord.X = Coordinates[index].X;
             coord.Y = Coordinates[index].Y;
+            coord.Z = Coordinates[index].Z;
         }
 
         /// <summary>
