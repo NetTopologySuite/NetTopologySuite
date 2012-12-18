@@ -78,6 +78,7 @@
     <Compile Include="Algorithm\CentroidArea.cs" />
     <Compile Include="Algorithm\CentroidLine.cs" />
     <Compile Include="Algorithm\CentroidPoint.cs" />
+    <Compile Include="Algorithm\CGAlgorithms3D.cs" />
     <Compile Include="Algorithm\CGAlgorithmsDD.cs" />
     <Compile Include="Algorithm\CGAlgorithms.cs" />
     <Compile Include="Algorithm\ConvexHull.cs" />
@@ -120,6 +121,9 @@
     <Compile Include="Geometries\GeometryComponentFilter.cs" />
     <Compile Include="Geometries\OgcCompliantGeometryFactory.cs" />
     <Compile Include="Geometries\Utilities\GeometryMapper.cs" />
+    <Compile Include="IO\WKBHexFileReader.cs" />
+    <Compile Include="Mathematics\Plane3D.cs" />
+    <Compile Include="Mathematics\Vector3D.cs" />
     <Compile Include="NtsGeometryServices.cs" />
     <Compile Include="Index\Strtree\BoundablePair.cs" />
     <Compile Include="Index\Strtree\GeometryItemDistance.cs" />
@@ -487,12 +491,33 @@
     <Compile Include="Algorithm\Distance\DiscreteHausdorffDistance.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Algorithm\Algorithm.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Algorithm\Distance\Distance.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Algorithm\Locate\Locate.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Algorithm\Match\Match.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Densify\DensifySummary.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Geometries\Geometries.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="License.txt" />
     <None Include="Precision\DocFiles\minClearance.png" />
+    <Content Include="Precision\PrecisionSummary.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="ReadMe.txt" />
+    <Content Include="Simplify\SimplifySummary.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Triangulate\TriangulateSummary.xml">
       <SubType>Designer</SubType>
     </Content>
