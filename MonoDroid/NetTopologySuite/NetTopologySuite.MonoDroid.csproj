@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -65,6 +65,21 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\CGAlgorithms3D.cs">
+      <Link>Algorithm\CGAlgorithms3D.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\CGAlgorithmsDD.cs">
+      <Link>Algorithm\CGAlgorithmsDD.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\RectangleLineIntersector.cs">
+      <Link>Algorithm\RectangleLineIntersector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Mathematics\Plane3D.cs">
+      <Link>Mathematics\Plane3D.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Mathematics\Vector3D.cs">
+      <Link>Mathematics\Vector3D.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\NtsGeometryServices.cs">
       <Link>NtsGeometryServices.cs</Link>
     </Compile>
@@ -766,6 +781,15 @@
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Operation\BoundaryOp.cs">
       <Link>Operation\BoundaryOp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Distance3D\AxisPlaneCoordinateSequence.cs">
+      <Link>Operation\Distance3D\AxisPlaneCoordinateSequence.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Distance3D\Distance3DOp.cs">
+      <Link>Operation\Distance3D\Distance3DOp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Distance3D\PlanarPolygon3D.cs">
+      <Link>Operation\Distance3D\PlanarPolygon3D.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Operation\GeometryGraphOperation.cs">
       <Link>Operation\GeometryGraphOperation.cs</Link>
