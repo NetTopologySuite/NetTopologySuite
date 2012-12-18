@@ -334,6 +334,9 @@
     <Compile Include="Operation\Buffer\Validate\BufferResultValidator.cs" />
     <Compile Include="Operation\Buffer\Validate\DistanceToPointFinder.cs" />
     <Compile Include="Operation\Buffer\Validate\PointPairDistance.cs" />
+    <Compile Include="Operation\Distance3D\AxisPlaneCoordinateSequence.cs" />
+    <Compile Include="Operation\Distance3D\Distance3DOp.cs" />
+    <Compile Include="Operation\Distance3D\PlanarPolygon3D.cs" />
     <Compile Include="Operation\Distance\ConnectedElementLocationFilter.cs" />
     <Compile Include="Operation\Distance\ConnectedElementPointFilter.cs" />
     <Compile Include="Operation\Distance\DistanceOp.cs" />

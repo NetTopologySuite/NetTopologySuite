@@ -69,6 +69,8 @@
     <Compile Include="Mathematics\DDComputeTest.cs" />
     <Compile Include="MiscellaneousTest.cs" />
     <Compile Include="MiscellaneousTest2.cs" />
+    <Compile Include="Operation\Distance3D\Distance3DOpTest.cs" />
+    <Compile Include="Operation\Distance3D\WithinDistance3DTest.cs" />
     <Compile Include="Operation\Relate\ContainsTest.cs" />
     <Compile Include="Operation\Relate\RelateTest.cs" />
     <Compile Include="Performance\Algorithm\DistanceLineLineStressTest.cs" />
