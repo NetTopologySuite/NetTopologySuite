@@ -38,11 +38,11 @@ namespace NetTopologySuite.Triangulate
         /// Sets the sites (point or vertices) which will be diagrammed
         /// from a collection of <see cref="Coordinate"/>s.
         /// </summary>
-        /// <param name="geom">a collection of Coordinates.</param>
-        public void SetSites(ICollection<Coordinate> geom)
+        /// <param name="coords">a collection of Coordinates.</param>
+        public void SetSites(ICollection<Coordinate> coords)
         {
             // remove any duplicate points (they will cause the triangulation to fail)
-            _siteCoords = DelaunayTriangulationBuilder.Unique(CoordinateArrays.ToCoordinateArray(geom));
+            _siteCoords = DelaunayTriangulationBuilder.Unique(CoordinateArrays.ToCoordinateArray(coords));
         }
 
         /// <summary>

@@ -146,13 +146,13 @@ namespace NetTopologySuite.IO
             if ((HandleOrdinates & Ordinates.Z) == Ordinates.Z)
             {
                 intGeometryType += 1000;
-                intGeometryType |= 0x80000000;
+                if (!Strict) intGeometryType |= 0x80000000;
             }
 
             if ((HandleOrdinates & Ordinates.M) == Ordinates.M)
             {
                 intGeometryType += 2000;
-                intGeometryType |= 0x40000000;
+                if (!Strict) intGeometryType |= 0x40000000;
             }
 
             //Flag for SRID if needed
@@ -224,6 +224,9 @@ namespace NetTopologySuite.IO
         public WKBWriter(ByteOrder encodingType, bool handleSRID, bool emitZ, bool emitM)
         {
             EncodingType = encodingType;
+            
+            //Allow setting of HandleSRID
+            if (handleSRID)_strict = false;
             HandleSRID = handleSRID;
 
             var handleOrdinates = Ordinates.XY;
@@ -641,9 +644,36 @@ namespace NetTopologySuite.IO
             if ((HandleOrdinates & Ordinates.M) == Ordinates.M) _coordinateSize += 8;
         }
 
+        /// <summary>
+        /// Gets a value whether or not EWKB featues may be used.
+        /// <para/>EWKB features are
+        /// <list type="Bullet"><item>0x80000000 flag if geometry's z-ordinate values are written</item>
+        /// <item>0x40000000 flag if geometry's m-ordinate values are written</item>
+        /// <item>0x20000000 flag if geometry's SRID value is written</item></list>
+        /// </summary>
+        public bool Strict
+        {
+            get { return _strict; }
+            set
+            {
+                _strict = value;
+                if (_strict)
+                    HandleSRID = false;
+            }
+        }
+
         #region Implementation of IGeometryIOBase
 
-        public bool HandleSRID { get; set; }
+        public bool HandleSRID
+        {
+            get { return _handleSRID; }
+            set
+            {
+                if (_strict && value)
+                    throw new ArgumentException("Cannot set HandleSRID to true if Strict is set", "value");
+                _handleSRID = value;
+            }
+        }
 
         public Ordinates AllowedOrdinates
         {
@@ -651,6 +681,8 @@ namespace NetTopologySuite.IO
         }
 
         private Ordinates _handleOrdinates;
+        private bool _handleSRID;
+        private bool _strict = true;
 
         public Ordinates HandleOrdinates
         {

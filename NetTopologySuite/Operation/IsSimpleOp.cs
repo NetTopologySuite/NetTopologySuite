@@ -110,6 +110,8 @@ namespace NetTopologySuite.Operation
         /// (i.e. where it has a non-boundary self-intersection).
         /// <see cref="IsSimple()"/> must be called before this location is accessed
         ///</summary>
+        /// <returns> a coordinate for the location of the non-boundary self-intersection
+        /// or null if the geometry is simple</returns>
         public Coordinate NonSimpleLocation
         {
             get { return _nonSimpleLocation; }

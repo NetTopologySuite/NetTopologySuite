@@ -79,10 +79,6 @@ namespace NetTopologySuite.Algorithm
         /// Finds a reasonable point at which to label a Geometry.
         /// </summary>
         /// <param name="geometry">The point to analyze.</param>
-        /// <returns> 
-        /// The midpoint of the largest intersection between the point and
-        /// a line halfway down its envelope.
-        /// </returns>
         public void AddPolygon(IGeometry geometry)
         {
             ILineString bisector = HorizontalBisector(geometry);

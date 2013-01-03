@@ -16,7 +16,7 @@ namespace NetTopologySuite.Operation.Linemerge
 {
     /// <summary>
     /// <para>
-    /// Builds a sequence from a set of <see cref="LineString" />s,
+    /// Builds a sequence from a set of <see cref="ILineString" />s,
     /// so that they are ordered end to end.
     /// A sequence is a complete non-repeating list of the linear
     /// components of the input.  Each linestring is oriented
@@ -26,7 +26,7 @@ namespace NetTopologySuite.Operation.Linemerge
     /// The input linestrings may form one or more connected sets.
     /// The input linestrings should be correctly noded, or the results may
     /// not be what is expected.
-    /// The output of this method is a single <see cref="MultiLineString" />,
+    /// The output of this method is a single <see cref="IMultiLineString" />,
     /// containing the ordered linestrings in the sequence.
     /// </para>
     /// <para>
@@ -52,15 +52,15 @@ namespace NetTopologySuite.Operation.Linemerge
     public class LineSequencer
     {
         /// <summary>
-        /// Tests whether a <see cref="Geometry" /> is sequenced correctly.
-        /// <see cref="LineString" />s are trivially sequenced.
-        /// <see cref="MultiLineString" />s are checked for correct sequencing.
+        /// Tests whether a <see cref="IGeometry" /> is sequenced correctly.
+        /// <see cref="ILineString" />s are trivially sequenced.
+        /// <see cref="IMultiLineString" />s are checked for correct sequencing.
         /// Otherwise, <c>IsSequenced</c> is defined
         /// to be <c>true</c> for geometries that are not lineal.
         /// </summary>
-        /// <param name="geom">The <see cref="Geometry" /> to test.</param>
+        /// <param name="geom">The <see cref="IGeometry" /> to test.</param>
         /// <returns>
-        /// <c>true</c> if the <see cref="Geometry" /> is sequenced or is not lineal.
+        /// <value>true</value> if the <see cref="IGeometry" /> is sequenced or is not lineal.
         /// </returns>
         public static bool IsSequenced(IGeometry geom)
         {

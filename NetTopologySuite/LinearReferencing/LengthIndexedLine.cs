@@ -109,11 +109,12 @@ namespace NetTopologySuite.LinearReferencing
         /// The supplied point does not necessarily have to lie precisely
         /// on the line, but if it is far from the line the accuracy and
         /// performance of this function is not guaranteed.
-        /// Use <see cref="Project" /> to compute a guaranteed result for points
+        /// Use <see cref="Project(Coordinate)"/> to compute a guaranteed result for points
         /// which may be far from the line.
         /// </summary>
         /// <param name="pt">A point on the line.</param>
         /// <returns>The minimum index of the point.</returns>
+        /// <seealso cref="Project(Coordinate)"/>
         public double IndexOf(Coordinate pt)
         {
             return LengthIndexOfPoint.IndexOf(_linearGeom, pt);

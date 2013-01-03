@@ -176,7 +176,8 @@ namespace NetTopologySuite.Operation.Buffer
         /// Gets/Sets the join style for outside (reflex) corners between line segments.
         ///</summary>
         /// <remarks>
-        /// <para>Allowable values are <see cref="GeoAPI.Operations.Buffer.JoinStyle.Round"/> (which is the default), <see cref="GeoAPI.Operations.Buffer.JoinStyle.Mitre"/> and <see cref="GeoAPI.Operations.Buffer.JoinStyle.Bevel"/></para>
+        /// <para>Allowable values are <see cref="GeoAPI.Operations.Buffer.JoinStyle.Round"/> (which is the default), 
+        /// <see cref="GeoAPI.Operations.Buffer.JoinStyle.Mitre"/> and <see cref="GeoAPI.Operations.Buffer.JoinStyle.Bevel"/></para>
         /// </remarks>
         public JoinStyle JoinStyle
         {

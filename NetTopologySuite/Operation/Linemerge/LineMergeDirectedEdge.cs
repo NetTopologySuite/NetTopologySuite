@@ -12,8 +12,8 @@ namespace NetTopologySuite.Operation.Linemerge
         /// <summary>
         /// Constructs a LineMergeDirectedEdge connecting the <c>from</c> node to the <c>to</c> node.
         /// </summary>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
+        /// <param name="from"/>
+        /// <param name="to"/>
         /// <param name="directionPt">
         /// specifies this DirectedEdge's direction (given by an imaginary
         /// line from the <c>from</c> node to <c>directionPt</c>).

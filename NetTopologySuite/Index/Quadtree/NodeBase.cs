@@ -14,8 +14,8 @@ namespace NetTopologySuite.Index.Quadtree
         /// Gets the index of the subquad that wholly contains the given envelope.
         /// If none does, returns -1.
         /// </summary>
-        /// <returns>The index of the subquad that wholly contains the given envelope</returns>
-        /// <returns>-1 if no subquad wholly contains the envelope</returns>
+        /// <returns>The index of the subquad that wholly contains the given envelope or 
+        /// -1 if no subquad wholly contains the envelope</returns>
         public static int GetSubnodeIndex(Envelope env, double centreX, double centreY)
         {
             int subnodeIndex = -1;

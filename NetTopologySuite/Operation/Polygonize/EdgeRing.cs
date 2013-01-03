@@ -71,7 +71,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <param name="testPts">The <c>Coordinate</c>s to test.</param>
         /// <param name="pts">An array of <c>Coordinate</c>s to test the input points against.</param>
         /// <returns>A <c>Coordinate</c> from <c>testPts</c> which is not in <c>pts</c>, 
-        /// or <c>null</c>.</returns>
+        /// or <value>null</value>.</returns>
         [Obsolete("Use CoordinateArrays.PointNotInList instead")]
         public static Coordinate PointNotInList(Coordinate[] testPts, Coordinate[] pts)
         {

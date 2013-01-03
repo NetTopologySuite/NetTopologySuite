@@ -415,7 +415,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// In order to handle large recursion depths efficiently,
         /// an explicit recursion stack is used.
         /// </summary>
-        /// <returns>A List containing the LineStrings that formed dangles.</returns>
+        /// <returns>A List containing the <see cref="ILineString"/>s that formed dangles.</returns>
         public ICollection<ILineString> DeleteDangles()
         {
             var nodesToRemove = FindNodesOfDegree(1);

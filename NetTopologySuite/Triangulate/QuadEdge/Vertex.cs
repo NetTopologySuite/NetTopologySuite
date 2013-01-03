@@ -1,7 +1,6 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
@@ -16,7 +15,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
     /// It is common to want to attach user-defined data to 
     /// the vertices of a subdivision.  
     /// One way to do this is to subclass <tt>Vertex</tt>
-    /// to carry any desired information (see <see cref="ConstraintVertex"/>.
+    /// to carry any desired information.
     /// </summary>
     /// <author>David Skea</author>
     /// <author>Martin Davis</author>
@@ -153,8 +152,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <summary>
         /// Computes the inner or dot product
         /// </summary>
-        /// <param name="v">a vertex</param>
-        /// <returns>the dot product u.v</returns>
+        /// <param name="v">A vertex</param>
+        /// <returns>The dot product u.v</returns>
         private double Dot(Vertex v)
         {
             return (_p.X*v.X + _p.Y*v.Y);
@@ -163,8 +162,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <summary>
         /// Computes the scalar product c(v)
         /// </summary>
-        /// <param name="c">a vertex</param>
-        /// <returns>the scaled vector</returns>
+        /// <param name="c">A vertex</param>
+        /// <returns>The scaled vector</returns>
         private Vertex Times(double c)
         {
             return (new Vertex(c*_p.X, c*_p.Y));

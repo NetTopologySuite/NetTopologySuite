@@ -165,7 +165,7 @@ namespace NetTopologySuite.Operation.Buffer
             /// DS1 bigger  DS2   if   DS1.seg is right of DS2.seg.
             /// </summary>
             /// <param name="obj"></param>
-            /// <returns></returns>
+            /// <returns>The comparison value</returns>
             public int CompareTo(Object obj)
             {
                 var other = (DepthSegment)obj;

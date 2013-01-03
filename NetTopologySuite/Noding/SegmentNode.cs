@@ -20,7 +20,7 @@ namespace NetTopologySuite.Noding
         /// </summary>
         public readonly int SegmentIndex;   // the index of the containing line segment in the parent edge
 
-        private readonly INodableSegmentString segString;
+        private readonly INodableSegmentString _segString;
         private readonly Octants _segmentOctant = Octants.Null;
         private readonly bool _isInterior;
 
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Noding
         public SegmentNode(INodableSegmentString segString, Coordinate coord, int segmentIndex, Octants segmentOctant) 
         {
             Coord = null;
-            this.segString = segString;
+            this._segString = segString;
             Coord = new Coordinate(coord);
             SegmentIndex = segmentIndex;
             _segmentOctant = segmentOctant;

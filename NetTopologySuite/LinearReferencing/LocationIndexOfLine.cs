@@ -26,11 +26,11 @@ namespace NetTopologySuite.LinearReferencing
              * because it is intended to validate that the subline truly is a subline,
              * and also to use the internal vertex information to unambiguously locate the subline.
              */
-            LocationIndexOfLine locater = new LocationIndexOfLine(linearGeom);
+            var locater = new LocationIndexOfLine(linearGeom);
             return locater.IndicesOf(subLine);
         }
 
-        private IGeometry linearGeom;
+        private readonly IGeometry _linearGeom;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocationIndexOfLine"/> class.
@@ -38,7 +38,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="linearGeom">The linear geom.</param>
         public LocationIndexOfLine(IGeometry linearGeom)
         {
-            this.linearGeom = linearGeom;
+            _linearGeom = linearGeom;
         }
 
         /// <summary>
@@ -48,12 +48,12 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns></returns>
         public virtual LinearLocation[] IndicesOf(IGeometry subLine)
         {
-            Coordinate startPt = ((ILineString) subLine.GetGeometryN(0)).GetCoordinateN(0);
-            ILineString lastLine = (ILineString) subLine.GetGeometryN(subLine.NumGeometries - 1);
-            Coordinate endPt = lastLine.GetCoordinateN(lastLine.NumPoints - 1);
+            var startPt = ((ILineString) subLine.GetGeometryN(0)).GetCoordinateN(0);
+            var lastLine = (ILineString) subLine.GetGeometryN(subLine.NumGeometries - 1);
+            var endPt = lastLine.GetCoordinateN(lastLine.NumPoints - 1);
 
-            LocationIndexOfPoint locPt = new LocationIndexOfPoint(linearGeom);
-            LinearLocation[] subLineLoc = new LinearLocation[2];
+            var locPt = new LocationIndexOfPoint(_linearGeom);
+            var subLineLoc = new LinearLocation[2];
             subLineLoc[0] = locPt.IndexOf(startPt);
 
             // check for case where subline is zero length

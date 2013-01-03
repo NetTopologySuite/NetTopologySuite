@@ -1272,7 +1272,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The Well-known Binary representation of this <c>Geometry</c>.</returns>
         public byte[] ToBinary()
         {
-            WKBWriter writer = new WKBWriter();
+            var writer = new WKBWriter();
             return writer.Write(this);
         }
 
@@ -2284,5 +2284,24 @@ namespace NetTopologySuite.Geometries
             return result;
         }
     
+    }
+
+    /// <summary>
+    /// Extension Methods for geometries
+    /// </summary>
+    public static class GeometryEx
+    {
+        /// <summary>
+        /// Function to encode <paramref name="self"/> to an array of <see cref="byte"/>s. If assigned, <paramref name="writer"/> is used.
+        /// </summary>
+        /// <param name="self">The geometry to encode</param>
+        /// <param name="writer">The writer to use</param>
+        /// <returns>An array of <see cref="byte"/>s, that represent <paramref name="self"/></returns>
+        public static byte[] AsBinary(this IGeometry self, IBinaryGeometryWriter writer)
+        {
+            return writer == null 
+                ? self.AsBinary() 
+                : writer.Write(self);
+        }
     }
 }

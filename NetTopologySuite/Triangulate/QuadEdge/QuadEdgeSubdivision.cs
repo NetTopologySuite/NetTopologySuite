@@ -171,9 +171,9 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <summary>
         /// Creates a new quadedge, recording it in the edges list.
         /// </summary>
-        /// <param name="o" />
-        /// <param name="d" />
-        /// <returns />
+        /// <param name="o">The origin vertex</param>
+        /// <param name="d">The destination vertex</param>
+        /// <returns>A new quadedge</returns>
         public QuadEdge MakeEdge(Vertex o, Vertex d)
         {
             QuadEdge q = QuadEdge.MakeEdge(o, d);
@@ -186,9 +186,9 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// in such a way that all three have the same left face after the connection
         /// is complete. The quadedge is recorded in the edges list.
         /// </summary>
-        /// <param name="a" />
-        /// <param name="b" />
-        /// <returns />
+        /// <param name="a">A quadedge</param>
+        /// <param name="b">A quadedge</param>
+        /// <returns>A quadedge</returns>
         public QuadEdge Connect(QuadEdge a, QuadEdge b)
         {
             QuadEdge q = QuadEdge.Connect(a, b);

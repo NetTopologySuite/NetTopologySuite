@@ -1,3 +1,4 @@
+
 using System;
 using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
@@ -14,10 +15,16 @@ namespace NetTopologySuite.Index.Strtree
     {
         private class AnnonymousComparerImpl : IComparer<object>
         {    
-            public int Compare(object o1, object o2) 
+            public int Compare(object o1, object o2)
             {
+                var c1 = ((Interval) ((IBoundable) o1).Bounds).Centre;
+                var c2 = ((Interval) ((IBoundable) o2).Bounds).Centre;
+                return c1.CompareTo(c2);
+
+                /*
                 return CompareDoubles(((Interval)((IBoundable)o1).Bounds).Centre, 
                                       ((Interval)((IBoundable)o2).Bounds).Centre);
+                 */
             }
         }        
 
@@ -44,12 +51,15 @@ namespace NetTopologySuite.Index.Strtree
             protected override object ComputeBounds()
             {
                 Interval bounds = null;
+                //var bounds = Interval.Create();
                 foreach (object i in ChildBoundables)
                 {
-                    IBoundable childBoundable = (IBoundable)i;
+                    var childBoundable = (IBoundable)i;
                     if (bounds == null)
                          bounds = new Interval((Interval)childBoundable.Bounds);
-                    else bounds.ExpandToInclude((Interval)childBoundable.Bounds);
+                    else 
+                        bounds.ExpandToInclude((Interval)childBoundable.Bounds);
+                    //bounds = bounds.ExpandedByInterval((Interval) childBoundable.Bounds);
                 }
                 return bounds;
             }
@@ -89,6 +99,7 @@ namespace NetTopologySuite.Index.Strtree
         public void Insert(double x1, double x2, object item) 
         {
             Insert(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)), item);
+            //Insert(Interval.Create(x1, x2), item);
         }
 
         /// <summary>
@@ -108,6 +119,7 @@ namespace NetTopologySuite.Index.Strtree
         public IList Query(double x1, double x2) 
         {
             return Query(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)));
+            //return Query(Interval.Create(x1, x2));
         }
 
         /// <summary>

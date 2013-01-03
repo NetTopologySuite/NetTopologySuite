@@ -4,9 +4,6 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Utilities;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace NetTopologySuite.Operation.Overlay
 {
@@ -135,8 +132,8 @@ namespace NetTopologySuite.Operation.Overlay
         /// The other possibility is that they are a series of connected holes, in which case
         /// no shell is returned.
         /// </summary>
-        /// <returns>The shell EdgeRing, if there is one.</returns>
-        /// <returns><c>null</c>, if all the rings are holes.</returns>
+        /// <returns>The shell EdgeRing, if there is one or
+        /// <value>null</value>, if all the rings are holes.</returns>
         private static EdgeRing FindShell(IEnumerable<EdgeRing> minEdgeRings)
         {
             int shellCount = 0;
@@ -235,7 +232,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="testEr"></param>
         /// <param name="shellList"></param>
         /// <returns>Containing EdgeRing, if there is one, OR
-        /// null if no containing EdgeRing is found.</returns>
+        /// <value>null</value> if no containing EdgeRing is found.</returns>
         private static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IEnumerable<EdgeRing> shellList)
         {
             ILinearRing teString = testEr.LinearRing;

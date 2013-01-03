@@ -19,7 +19,7 @@ namespace NetTopologySuite.Index.KdTree
         where T : class
     {
         private KdNode<T> _root;
-        private KdNode<T> last;
+        private KdNode<T> _last;
         private long _numberOfNodes;
         private readonly double _tolerance;
 
@@ -85,17 +85,17 @@ namespace NetTopologySuite.Index.KdTree
                 return _root;
             }
 
-            KdNode<T> currentNode = _root;
-            KdNode<T> leafNode = _root;
-            bool isOddLevel = true;
-            bool isLessThan = true;
+            var currentNode = _root;
+            var leafNode = _root;
+            var isOddLevel = true;
+            var isLessThan = true;
 
             /**
              * Traverse the tree,
              * first cutting the plane left-right (by X ordinate)
              * then top-bottom (by Y ordinate)
              */
-            while (currentNode != last)
+            while (currentNode != _last)
             {
                 // test if point is already a node
                 if (currentNode != null)
@@ -109,32 +109,28 @@ namespace NetTopologySuite.Index.KdTree
                         currentNode.Increment();
                         return currentNode;
                     }
-                }
-                if (isOddLevel)
-                {
-                    isLessThan = p.X < currentNode.X;
-                }
-                else
-                {
-                    isLessThan = p.Y < currentNode.Y;
-                }
-                leafNode = currentNode;
-                if (isLessThan)
-                {
-                    currentNode = currentNode.Left;
-                }
-                else
-                {
-                    currentNode = currentNode.Right;
+
+                    if (isOddLevel)
+                    {
+                        isLessThan = p.X < currentNode.X;
+                    }
+                    else
+                    {
+                        isLessThan = p.Y < currentNode.Y;
+                    }
+                    leafNode = currentNode;
+                    currentNode = isLessThan 
+                        ? currentNode.Left 
+                        : currentNode.Right;
                 }
                 isOddLevel = !isOddLevel;
             }
 
             // no node found, add new leaf node to tree
             _numberOfNodes = _numberOfNodes + 1;
-            KdNode<T> node = new KdNode<T>(p, data);
-            node.Left = last;
-            node.Right = last;
+            var node = new KdNode<T>(p, data);
+            node.Left = _last;
+            node.Right = _last;
             if (isLessThan)
             {
                 leafNode.Left = node;
@@ -143,12 +139,15 @@ namespace NetTopologySuite.Index.KdTree
             {
                 leafNode.Right = node;
             }
+            _last = node;
             return node;
         }
 
-        private void QueryNode(KdNode<T> currentNode, KdNode<T> bottomNode,
+        private static void QueryNode(KdNode<T> currentNode, KdNode<T> bottomNode,
                 Envelope queryEnv, bool odd, ICollection<KdNode<T>> result)
         {
+            if (currentNode == null)
+                return;
             if (currentNode == bottomNode)
                 return;
 
@@ -193,7 +192,7 @@ namespace NetTopologySuite.Index.KdTree
         public ICollection<KdNode<T>> Query(Envelope queryEnv)
         {
             ICollection<KdNode<T>> result = new Collection<KdNode<T>>();
-            QueryNode(_root, last, queryEnv, true, result);
+            QueryNode(_root, _last, queryEnv, true, result);
             return result;
         }
 
@@ -204,7 +203,7 @@ namespace NetTopologySuite.Index.KdTree
         /// <param name="result">A collection to accumulate the result nodes into</param>
         public void Query(Envelope queryEnv, ICollection<KdNode<T>> result)
         {
-            QueryNode(_root, last, queryEnv, true, result);
+            QueryNode(_root, _last, queryEnv, true, result);
         }
     }
 }

@@ -38,11 +38,11 @@ namespace NetTopologySuite.Noding
             get { return _segSetMutInt; }
         }
 
-        private readonly LineIntersector li = new RobustLineIntersector();
+        private readonly LineIntersector _li = new RobustLineIntersector();
 
         public bool Intersects(IList<ISegmentString> segStrings)
         {            
-            SegmentIntersectionDetector intFinder = new SegmentIntersectionDetector(li);
+            var intFinder = new SegmentIntersectionDetector(_li);
             _segSetMutInt.SegmentIntersector = intFinder;
             _segSetMutInt.Process(segStrings);
             return intFinder.HasIntersection;

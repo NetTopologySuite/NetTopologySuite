@@ -15,7 +15,7 @@ namespace NetTopologySuite.Noding
     /// Nodes a set of <see cref="ISegmentString" />s using a index based
     /// on <see cref="MonotoneChain" />s and a <see cref="ISpatialIndex" />.
     /// The <see cref="ISpatialIndex" /> used should be something that supports
-    /// envelope (range) queries efficiently (such as a <see cref="Quadtree{T}" />
+    /// envelope (range) queries efficiently (such as a <c>Quadtree</c>"
     /// or <see cref="STRtree" />.
     /// </summary>
     public class MCIndexNoder : SinglePassNoder

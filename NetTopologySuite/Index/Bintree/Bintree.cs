@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
+//using GeoAPI.DataStructures;
 
 namespace NetTopologySuite.Index.Bintree
 {
@@ -38,8 +36,8 @@ namespace NetTopologySuite.Index.Bintree
         /// </summary>
         public static Interval EnsureExtent(Interval itemInterval, double minExtent)
         {
-            double min = itemInterval.Min;
-            double max = itemInterval.Max;
+            var min = itemInterval.Min;
+            var max = itemInterval.Max;
             // has a non-zero extent
             if (min != max) 
                 return itemInterval;
@@ -50,6 +48,7 @@ namespace NetTopologySuite.Index.Bintree
                 max = min + minExtent / 2.0;
             }
             return new Interval(min, max);
+            //return Interval.Create(min, max);
         }
 
         private readonly Root<T> _root;
@@ -121,7 +120,7 @@ namespace NetTopologySuite.Index.Bintree
         public void Insert(Interval itemInterval, T item)
         {
             CollectStats(itemInterval);
-            Interval insertInterval = EnsureExtent(itemInterval, _minExtent);            
+            var insertInterval = EnsureExtent(itemInterval, _minExtent);            
             _root.Insert(insertInterval, item);            
         }
 
@@ -156,6 +155,7 @@ namespace NetTopologySuite.Index.Bintree
         public IList<T> Query(double x)
         {
             return Query(new Interval(x, x));
+            //return Query(Interval.Create(x));
         }
 
         /// <summary>

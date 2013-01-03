@@ -9,7 +9,7 @@ namespace NetTopologySuite.Geometries
     /// points for all <c>Geometry</c>s.
     /// </summary>
     /// <remarks>
-    /// The <c>makePrecise</c> method allows rounding a coordinate to
+    /// The <c>MakePrecise</c> method allows rounding a coordinate to
     /// a "precise" value; that is, one whose
     /// precision is known exactly.
     /// Coordinates are assumed to be precise in geometries.
@@ -49,9 +49,7 @@ namespace NetTopologySuite.Geometries
     /// NTS binary methods currently do not handle inputs which have different precision models.
     /// The precision model of any constructed geometric value is undefined.
     /// </remarks>
-    //#if !SILVERLIGHT
     [Serializable]
-    //#endif
     public class PrecisionModel : IPrecisionModel
     {
         ///<summary>

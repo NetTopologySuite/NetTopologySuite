@@ -11,22 +11,22 @@ namespace NetTopologySuite.LinearReferencing
     /// </summary>
     public class LinearGeometryBuilder
     {
-        private IGeometryFactory geomFact = null;
-        private List<IGeometry> lines = new List<IGeometry>();
-        private CoordinateList coordList = null;
+        private readonly IGeometryFactory _geomFact;
+        private readonly List<IGeometry> _lines = new List<IGeometry>();
+        private CoordinateList _coordList;
 
-        private bool ignoreInvalidLines = false;
-        private bool fixInvalidLines = false;
+        private bool _ignoreInvalidLines;
+        private bool _fixInvalidLines;
 
-        private Coordinate lastPt = null;
+        private Coordinate _lastPt;
 
         /// <summary>
-        /// 
+        /// Creates an instance of this class.
         /// </summary>
-        /// <param name="geomFact"></param>
+        /// <param name="geomFact">The geometry factory to use.</param>
         public LinearGeometryBuilder(IGeometryFactory geomFact)
         {
-            this.geomFact = geomFact;
+            _geomFact = geomFact;
         }
 
         /// <summary>
@@ -37,11 +37,11 @@ namespace NetTopologySuite.LinearReferencing
         {
             get
             {
-                return fixInvalidLines;
+                return _fixInvalidLines;
             }
             set
             {
-                fixInvalidLines = value;
+                _fixInvalidLines = value;
             }
         }
 
@@ -53,11 +53,11 @@ namespace NetTopologySuite.LinearReferencing
         {
             get
             {
-                return ignoreInvalidLines;
+                return _ignoreInvalidLines;
             }
             set
             {
-                ignoreInvalidLines = value;
+                _ignoreInvalidLines = value;
             }
         }
 
@@ -77,10 +77,10 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="allowRepeatedPoints">If <c>true</c>, allows the insertions of repeated points.</param>
         public void Add(Coordinate pt, bool allowRepeatedPoints)
         {
-            if (coordList == null)
-                coordList = new CoordinateList();
-            coordList.Add(pt, allowRepeatedPoints);
-            lastPt = pt;
+            if (_coordList == null)
+                _coordList = new CoordinateList();
+            _coordList.Add(pt, allowRepeatedPoints);
+            _lastPt = pt;
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace NetTopologySuite.LinearReferencing
         {
             get
             {
-                return lastPt;
+                return _lastPt;
             }
         }
 
@@ -99,25 +99,25 @@ namespace NetTopologySuite.LinearReferencing
         /// </summary>
         public void EndLine()
         {
-            if (coordList == null)
+            if (_coordList == null)
                 return;
             
-            if (ignoreInvalidLines && coordList.Count < 2)
+            if (_ignoreInvalidLines && _coordList.Count < 2)
             {
-                coordList = null;
+                _coordList = null;
                 return;
             }
 
-            Coordinate[] rawPts = coordList.ToCoordinateArray();
+            Coordinate[] rawPts = _coordList.ToCoordinateArray();
             Coordinate[] pts = rawPts;
             if (FixInvalidLines)
                 pts = ValidCoordinateSequence(rawPts);
 
-            coordList = null;
+            _coordList = null;
             ILineString line = null;
             try
             {
-                line = geomFact.CreateLineString(pts);
+                line = _geomFact.CreateLineString(pts);
             }
             catch (ArgumentException ex)
             {
@@ -128,7 +128,7 @@ namespace NetTopologySuite.LinearReferencing
             }
 
             if (line != null) 
-                lines.Add(line);
+                _lines.Add(line);
         }
 
         /// <summary>
@@ -136,11 +136,11 @@ namespace NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="pts"></param>
         /// <returns></returns>
-        private Coordinate[] ValidCoordinateSequence(Coordinate[] pts)
+        private static Coordinate[] ValidCoordinateSequence(Coordinate[] pts)
         {
             if (pts.Length >= 2) 
                 return pts;
-            Coordinate[] validPts = new Coordinate[] { pts[0], pts[0] };
+            var validPts = new[] { pts[0], pts[0] };
             return validPts;
         }
 
@@ -152,7 +152,7 @@ namespace NetTopologySuite.LinearReferencing
         {
             // end last line in case it was not done by user
             EndLine();
-            return geomFact.BuildGeometry(lines);
+            return _geomFact.BuildGeometry(_lines);
         }
 
     }

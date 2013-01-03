@@ -1,3 +1,4 @@
+using System;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Index.Bintree
@@ -5,45 +6,52 @@ namespace NetTopologySuite.Index.Bintree
     /// <summary>
     /// A node of a <c>Bintree</c>.
     /// </summary>
+    [Serializable]
     public class Node<T> : NodeBase<T>
     {
         /// <summary>
-        /// 
+        /// Creates a node
         /// </summary>
-        /// <param name="itemInterval"></param>
-        /// <returns></returns>
+        /// <param name="itemInterval">The interval of the node item</param>
+        /// <returns>A new node</returns>
         public static Node<T> CreateNode(Interval itemInterval)
         {
-            Key key = new Key(itemInterval);
-        
-            Node<T> node = new Node<T>(key.Interval, key.Level);
+            var key = new Key(itemInterval);
+            var node = new Node<T>(key.Interval, key.Level);
             return node;
         }
 
         /// <summary>
-        /// 
+        /// Creates a larger node, that contains both <paramref name="node.Interval"/> and <paramref name="addInterval"/>
+        /// If <paramref name="node"/> is <c>null</c>, a node for <paramref name="addInterval"/> is created.
         /// </summary>
-        /// <param name="node"></param>
-        /// <param name="addInterval"></param>
-        /// <returns></returns>
+        /// <param name="node">The original node</param>
+        /// <param name="addInterval">The additional interval</param>
+        /// <returns>A new node</returns>
         public static Node<T> CreateExpanded(Node<T> node, Interval addInterval)
         {
-            Interval expandInt = new Interval(addInterval);
+            var expandInt = new Interval(addInterval);
             if (node != null) expandInt.ExpandToInclude(node._interval);
-            Node<T> largerNode = CreateNode(expandInt);
+            /*
+            var expandInt = node != null
+                            ? addInterval.ExpandedByInterval(node._interval)
+                            : addInterval;
+             */
+            var largerNode = CreateNode(expandInt);
             if (node != null) largerNode.Insert(node);
+            
             return largerNode;
         }
 
-        private readonly Interval _interval;
+        private readonly Interval _interval; //= Interval.Create();
         private readonly double _centre;
         private readonly int _level;
 
         /// <summary>
-        /// 
+        /// Creates a new node instance
         /// </summary>
-        /// <param name="interval"></param>
-        /// <param name="level"></param>
+        /// <param name="interval">The node's interval</param>
+        /// <param name="level">The node's level</param>
         public Node(Interval interval, int level)
         {
             _interval = interval;
@@ -52,7 +60,7 @@ namespace NetTopologySuite.Index.Bintree
         }
 
         /// <summary>
-        /// 
+        /// Gets the node's <see cref="Interval"/>
         /// </summary>
         public  Interval Interval
         {
@@ -164,11 +172,14 @@ namespace NetTopologySuite.Index.Bintree
                     min = _centre;
                     max = _interval.Max;
                     break;
+                    /*
                 default:
 			        break;
+                     */
             }
-            Interval subInt = new Interval(min, max);
-            Node<T> node = new Node<T>(subInt, _level - 1);
+            var subInt = new Interval(min, max);
+            //var subInt = Interval.Create(min, max);
+            var node = new Node<T>(subInt, _level - 1);
             return node;
         }
     }

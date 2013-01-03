@@ -1,10 +1,14 @@
 using System;
 //using System.Collections;
 using System.Collections.Generic;
+//using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
+//using NetTopologySuite.Index.Bintree;
 using NetTopologySuite.Index.Bintree;
 using NetTopologySuite.Index.Chain;
+//using Interval = GeoAPI.DataStructures.Interval;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -49,6 +53,7 @@ namespace NetTopologySuite.Algorithm
         private int _crossings;  // number of segment/ray crossings
 
         private readonly Interval _interval = new Interval();
+        //private Interval _interval = Interval.Create();
 
         /// <summary>
         /// 
@@ -72,9 +77,13 @@ namespace NetTopologySuite.Algorithm
 
             foreach (MonotoneChain mc in mcList)
             {
-                Envelope mcEnv = mc.Envelope;
+                var mcEnv = mc.Envelope;
                 _interval.Min = mcEnv.MinY;
                 _interval.Max = mcEnv.MaxY;
+                /*
+                _interval = _interval.ExpandedByInterval(
+                    Interval.Create(mcEnv.MinY, mcEnv.MaxY));
+                 */
                 _tree.Insert(_interval, mc);
             }
         }        
@@ -89,9 +98,10 @@ namespace NetTopologySuite.Algorithm
             _crossings = 0;
 
             // test all segments intersected by ray from pt in positive x direction
-            Envelope rayEnv = new Envelope(Double.NegativeInfinity, Double.PositiveInfinity, pt.Y, pt.Y);
+            var rayEnv = new Envelope(Double.NegativeInfinity, Double.PositiveInfinity, pt.Y, pt.Y);
             _interval.Min = pt.Y;
             _interval.Max = pt.Y;
+            //_interval = Interval.Create(pt.Y);
             IList<MonotoneChain> segs = _tree.Query(_interval);
 
             MCSelecter mcSelecter = new MCSelecter(this, pt);

@@ -102,7 +102,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// of the distance discrepancy.
         /// </para>
         /// </summary>
-        /// <returns>A geometric error indicator or null, if no error was found</returns>
+        /// <returns>A geometric error indicator or <value>null</value>, if no error was found</returns>
         public IGeometry ErrorIndicator
         {
             get { return _errorIndicator; }

@@ -19,19 +19,19 @@ namespace NetTopologySuite.Triangulate
         /// <returns>the point at which to split the encroached segment</returns>
         public Coordinate FindSplitPoint(Segment seg, Coordinate encroachPt)
         {
-            LineSegment lineSeg = seg.LineSegment;
-            double segLen = lineSeg.Length;
-            double midPtLen = segLen / 2;
-            SplitSegment splitSeg = new SplitSegment(lineSeg);
+            var lineSeg = seg.LineSegment;
+            var segLen = lineSeg.Length;
+            var midPtLen = segLen / 2;
+            var splitSeg = new SplitSegment(lineSeg);
 
-            Coordinate projPt = ProjectedSplitPoint(seg, encroachPt);
+            var projPt = ProjectedSplitPoint(seg, encroachPt);
             /*
              * Compute the largest diameter (length) that will produce a split segment which is not
              * still encroached upon by the encroaching point (The length is reduced slightly by a
              * safety factor)
              */
-            double nonEncroachDiam = projPt.Distance(encroachPt) * 2 * 0.8; // .99;
-            double maxSplitLen = nonEncroachDiam;
+            var nonEncroachDiam = projPt.Distance(encroachPt) * 2 * 0.8; // .99;
+            var maxSplitLen = nonEncroachDiam;
             if (maxSplitLen > midPtLen) {
                 maxSplitLen = midPtLen;
             }
@@ -45,9 +45,9 @@ namespace NetTopologySuite.Triangulate
         /// <summary>
         /// Computes a split point which is the projection of the encroaching point on the segment
         /// </summary>
-        /// <param name="seg" />
-        /// <param name="encroachPt" />
-        /// <returns />
+        /// <param name="seg">The segment</param>
+        /// <param name="encroachPt">The enchroaching point</param>
+        /// <returns>A split point on the segment</returns>
         public static Coordinate ProjectedSplitPoint(Segment seg, Coordinate encroachPt)
         {
             LineSegment lineSeg = seg.LineSegment;

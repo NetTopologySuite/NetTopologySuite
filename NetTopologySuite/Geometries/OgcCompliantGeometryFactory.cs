@@ -8,6 +8,41 @@ namespace NetTopologySuite.Geometries
     /// </summary>
     public class OgcCompliantGeometryFactory : GeometryFactory
     {
+        /// <summary>
+        /// Creates an instance of this class using the default 
+        /// values for <see cref="GeometryFactory.SRID"/>, 
+        /// <see cref="GeometryFactory.PrecisionModel"/> and
+        /// <see cref="GeometryFactory.CoordinateSequenceFactory"/>.
+        /// </summary>
+        public OgcCompliantGeometryFactory()
+        {}
+
+        /// <summary>
+        /// Creates an instance of this class using the default 
+        /// values for <see cref="GeometryFactory.SRID"/>, 
+        /// <see cref="GeometryFactory.PrecisionModel"/>, 
+        /// but the specified <paramref name="factory"/>.
+        /// </summary>
+        public OgcCompliantGeometryFactory(ICoordinateSequenceFactory factory)
+            : base(factory)
+        { }
+
+        /// Creates an instance of this class using the default 
+        /// values for <see cref="GeometryFactory.SRID"/>, 
+        /// <see cref="GeometryFactory.CoordinateSequenceFactory"/> but the
+        /// specified <paramref name="pm"/>.
+        public OgcCompliantGeometryFactory(IPrecisionModel pm)
+            :base(pm)
+        {}
+
+        public OgcCompliantGeometryFactory(IPrecisionModel pm, int srid)
+            : base(pm, srid)
+        { }
+
+        public OgcCompliantGeometryFactory(IPrecisionModel pm, int srid, ICoordinateSequenceFactory factory)
+            : base(pm, srid, factory)
+        { }
+
         #region Private utility functions
         private static ILinearRing ReverseRing(ILinearRing ring)
         {

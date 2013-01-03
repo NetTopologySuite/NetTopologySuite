@@ -1,13 +1,12 @@
+using System;
 using System.Collections.Generic;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace NetTopologySuite.Index.Bintree
 {
     /// <summary> 
     /// The base class for nodes in a <c>Bintree</c>.
     /// </summary>
+    [Serializable]
     public abstract class NodeBase<T>
     {
         /// <summary> 
@@ -98,6 +97,10 @@ namespace NetTopologySuite.Index.Bintree
         {
             if (interval != null && !IsSearchMatch(interval))
                 return;
+            /*
+            if (interval == default(Interval) && !IsSearchMatch(interval))
+                return;
+             */
 
             // some of these may not actually overlap - this is allowed by the bintree contract
             //resultItems.AddAll(items);

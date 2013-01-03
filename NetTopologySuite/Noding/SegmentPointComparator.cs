@@ -15,7 +15,7 @@ namespace NetTopologySuite.Noding
     {
 
         /// <summary>
-        ///  Compares two <see cref="Coordinate" />s for their relative position along a segment
+        /// Compares two <see cref="Coordinate" />s for their relative position along a segment
         /// lying in the specified <see cref="Octant" />.
         /// </summary>
         /// <param name="octant"></param>

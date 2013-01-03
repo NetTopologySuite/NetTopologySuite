@@ -111,7 +111,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// Finds the next index around the triangle. Index may be an edge or vertex index.
         /// </summary>
         /// <param name="index" />
-        /// <returns />
+        /// <returns>The next index</returns>
         public static int NextIndex(int index)
         {
             return index = (index + 1)%3;

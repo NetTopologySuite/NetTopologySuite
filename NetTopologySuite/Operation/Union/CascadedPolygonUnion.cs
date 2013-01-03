@@ -1,14 +1,13 @@
 //#define UseWorker
 using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
+#if UseWorker
 using System.Threading;
+#endif
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Index.Strtree;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace NetTopologySuite.Operation.Union
 {
@@ -46,12 +45,23 @@ namespace NetTopologySuite.Operation.Union
 #if UseWorker
         private int _numThreadsStarted = 0;
 #endif
+        /// <summary>
+        /// Computes the union of
+        /// a collection of <see cref="IGeometry"/>s.
+        /// </summary>
+        /// <param name="polys">A collection of <see cref="IPolygonal"/> <see cref="IGeometry"/>s.</param>
+        /// <returns></returns>
         public static IGeometry Union(ICollection<IGeometry> polys)
         {
             var op = new CascadedPolygonUnion(polys);
             return op.Union();
         }
 
+        /// <summary>
+        /// Creates a new instance to union
+        /// the given collection of <see cref="IGeometry"/>s.
+        /// </summary>
+        /// <param name="polys">A collection of <see cref="IPolygonal"/> <see cref="IGeometry"/>s</param>
         public CascadedPolygonUnion(ICollection<IGeometry> polys)
         {
             _inputPolys = polys;
@@ -73,6 +83,12 @@ namespace NetTopologySuite.Operation.Union
             return geomenumerator.Current.Factory;
         }
 
+        /// <summary>
+        /// Computes the union of the input geometries.
+        /// </summary>
+        /// <returns>
+        /// The union of the input geometries
+        /// or <value>null</value> if no input geometries were provided</returns>
         public IGeometry Union()
         {
             if (_inputPolys.Count == 0)
@@ -237,8 +253,8 @@ namespace NetTopologySuite.Operation.Union
         /// </summary>
         /// <param name="list">The list of geometries</param>
         /// <param name="index">The index</param>
-        /// <returns>The geometry at the given index</returns>
-        /// <returns>null if the index is out of range</returns>
+        /// <returns>The geometry at the given index or
+        /// <value>null</value> if the index is out of range</returns>
         private static IGeometry GetGeometry(IList<IGeometry> list, int index)
         {
             if (index >= list.Count)
@@ -274,8 +290,8 @@ namespace NetTopologySuite.Operation.Union
         /// </summary>
         /// <param name="g0">A Geometry</param>
         /// <param name="g1">A Geometry</param>
-        /// <returns>The union of the input(s)</returns>
-        /// <returns><c>null</c> if both inputs are null</returns>
+        /// <returns>The union of the input(s) or
+        /// <value>null</value> if both inputs are null</returns>
         private IGeometry UnionSafe(IGeometry g0, IGeometry g1)
         {
             if (g0 == null && g1 == null)

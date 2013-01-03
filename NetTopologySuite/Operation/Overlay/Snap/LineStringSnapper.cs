@@ -23,10 +23,10 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// Creates a new snapper using the points in the given <see cref="LineString"/>
         /// as target snap points.
         /// </summary>
-        /// <param name="line">A LineString to snap (may be empty)</param>
+        /// <param name="srcLine">A LineString to snap (may be empty)</param>
         /// <param name="snapTolerance">the snap tolerance to use</param>
-        public LineStringSnapper(ILineString line, double snapTolerance) :
-            this(line.Coordinates, snapTolerance) { }
+        public LineStringSnapper(ILineString srcLine, double snapTolerance) :
+            this(srcLine.Coordinates, snapTolerance) { }
 
         /// <summary>
         /// Creates a new snapper using the given points
@@ -165,8 +165,8 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// </summary>
         /// <param name="snapPt">The point to snap to</param>
         /// <param name="srcCoords">The source segment coordinates</param>
-        /// <returns>The index of the snapped segment</returns>
-        /// <returns>-1 if no segment snaps to the snap point.</returns>
+        /// <returns>The index of the snapped segment or 
+        /// -1 if no segment snaps to the snap point.</returns>
         private int FindSegmentIndexToSnap(Coordinate snapPt, CoordinateList srcCoords)
         {
             var minDist = Double.MaxValue;

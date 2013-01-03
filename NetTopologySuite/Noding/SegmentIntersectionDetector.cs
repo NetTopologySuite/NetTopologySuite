@@ -84,7 +84,7 @@ namespace NetTopologySuite.Noding
         /// intersections for two segments of the <see cref="ISegmentString"/>s being intersected.
         ///</summary>
         /// <remarks>
-        /// Note that some clients (such as <see cref="MonotoneChain"/>s) may optimize away
+        /// Note that some clients (such as <c>MonotoneChain</c>s) may optimize away
         /// this call for segment pairs which they have determined do not intersect
         /// (e.g. by an disjoint envelope test).
         /// </remarks>

@@ -15,6 +15,7 @@ namespace NetTopologySuite.Mathematics
         /// <summary>
         /// Computes the dot product of the 3D vectors AB and CD.
         /// </summary>
+        /// <returns>The dot product</returns>
         public static double Dot(Coordinate A, Coordinate B, Coordinate C, Coordinate D)
         {
             var ABx = B.X - A.X;
@@ -59,8 +60,8 @@ namespace NetTopologySuite.Mathematics
         /// <summary>
         /// Computes the 3D dot-product of two <see cref="Coordinate"/>s
         /// </summary>
-        /// <param name="v1">The 1st coordinate</param>
-        /// <param name="v2">The 2nd coordinate</param>
+        /// <param name="v1">The 1st vector</param>
+        /// <param name="v2">The 2nd vector</param>
         /// <returns>The dot product of the (coordinate) vectors</returns>
         public static double Dot(Coordinate v1, Coordinate v2)
         {

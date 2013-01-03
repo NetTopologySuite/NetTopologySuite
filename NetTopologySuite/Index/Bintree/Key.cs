@@ -1,4 +1,5 @@
 using System;
+//using GeoAPI.DataStructures;
 using NetTopologySuite.Index.Quadtree;
 
 namespace NetTopologySuite.Index.Bintree
@@ -76,10 +77,11 @@ namespace NetTopologySuite.Index.Bintree
         /// whose extent is a power of two and which is based at a power of 2.
         /// </summary>
         /// <param name="itemInterval"></param>
-        public  void ComputeKey(Interval itemInterval)
+        public void ComputeKey(Interval itemInterval)
         {
             _level = ComputeLevel(itemInterval);
             _interval = new Interval();
+            //_interval = Interval.Create();
             ComputeInterval(_level, itemInterval);
             // MD - would be nice to have a non-iterative form of this algorithm
             while (!_interval.Contains(itemInterval))
@@ -96,9 +98,10 @@ namespace NetTopologySuite.Index.Bintree
         /// <param name="itemInterval"></param>
         private void ComputeInterval(int level, Interval itemInterval)
         {
-            double size = DoubleBits.PowerOf2(level);            
+            var size = DoubleBits.PowerOf2(level);            
             _pt = Math.Floor(itemInterval.Min / size) * size;
             _interval.Init(_pt, _pt + size);
+            //_interval = Interval.Create(_pt, _pt + size);
         }
     }
 }

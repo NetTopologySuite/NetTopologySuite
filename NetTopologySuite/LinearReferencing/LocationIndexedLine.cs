@@ -5,7 +5,7 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.LinearReferencing
 {
     /// <summary>
-    /// Supports linear referencing along a linear <see cref="Geometry" />
+    /// Supports linear referencing along a linear <see cref="IGeometry" />
     /// using <see cref="LinearLocation" />s as the index.
     /// </summary>
     public class LocationIndexedLine
@@ -16,21 +16,18 @@ namespace NetTopologySuite.LinearReferencing
         /// Constructs an object which allows linear referencing along
         /// a given linear <see cref="Geometry" />.
         /// </summary>
-        /// <param name="linearGeom"></param>
+        /// <param name="linearGeom">The linear geometry to reference alo</param>
         public LocationIndexedLine(IGeometry linearGeom)
         {
+            if (!CheckGeometryType(linearGeom))
+                throw new ArgumentException("Input geometry must be linear", "linearGeom");
             _linearGeom = linearGeom;
-            CheckGeometryType();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private void CheckGeometryType()
-        {
-            if (!(_linearGeom is ILineString || _linearGeom is IMultiLineString))
-                throw new ArgumentException("Input geometry must be linear", "linearGeom");
-        }
+       private static bool CheckGeometryType(IGeometry linearGeometry)
+       {
+           return ((linearGeometry is ILineString || linearGeometry is IMultiLineString));
+       }
 
         /// <summary>
         /// Computes the <see cref="Coordinate" />for the point on the line at the given index.
@@ -38,11 +35,8 @@ namespace NetTopologySuite.LinearReferencing
         /// the first or last point on the line will be returned.
         /// </summary>
         /// <remarks>
-        /// <para></para>
-        /// <para>
         /// The Z-ordinate of the computed point will be interpolated from
         /// the Z-ordinates of the line segment containing it, if they exist.
-        /// </para>
         /// </remarks>
         /// <param name="index">The index of the desired point.</param>
         /// <returns>The <see cref="Coordinate" /> at the given index.</returns>
@@ -195,7 +189,7 @@ namespace NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="index">The index to test.</param>
         /// <returns><c>true</c> if the index is in the valid range.</returns>
-        public bool isValidIndex(LinearLocation index)
+        public bool IsValidIndex(LinearLocation index)
         {
             return index.IsValid(_linearGeom);
         }
@@ -208,7 +202,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>A valid index value.</returns>
         public LinearLocation ClampIndex(LinearLocation index)
         {
-            LinearLocation loc = (LinearLocation) index.Clone();
+            var loc = (LinearLocation) index.Clone();
             loc.Clamp(_linearGeom);
             return loc;
         }

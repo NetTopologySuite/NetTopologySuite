@@ -116,8 +116,8 @@ namespace NetTopologySuite.Operation.Buffer
              */
             int index = 1;
 
-            int midIndex = FindNextNodDeletedIndex(index);
-            int lastIndex = FindNextNodDeletedIndex(midIndex);
+            int midIndex = FindNextNonDeletedIndex(index);
+            int lastIndex = FindNextNonDeletedIndex(midIndex);
 
             bool isChanged = false;
             while (lastIndex < _inputLine.Length)
@@ -137,28 +137,20 @@ namespace NetTopologySuite.Operation.Buffer
                 else
                     index = midIndex;
 
-                midIndex = FindNextNodDeletedIndex(index);
-                lastIndex = FindNextNodDeletedIndex(midIndex);
+                midIndex = FindNextNonDeletedIndex(index);
+                lastIndex = FindNextNonDeletedIndex(midIndex);
             }
             return isChanged;
         }
-
-        /**
-         *
-         * @param index
-         * @return
-         * @return inputLine.length if there are no more non-deleted indices
-         */
 
         /// <summary>
         /// Finds the next non-deleted index, or the end of the point array if none
         /// </summary>
         /// <param name="index">The start index to search from</param>
-        /// <returns>The next non-deleted index, if any</returns>
-        /// <returns>
+        /// <returns>The next non-deleted index, if any or
         /// <see cref="_inputLine.Length"/> if there are no more non-deleted indices
         /// </returns>
-        private int FindNextNodDeletedIndex(int index)
+        private int FindNextNonDeletedIndex(int index)
         {
             int next = index + 1;
             while (next < _inputLine.Length - 1 && _isDeleted[next] == Delete)

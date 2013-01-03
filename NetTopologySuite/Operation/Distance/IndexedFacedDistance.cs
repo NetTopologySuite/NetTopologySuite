@@ -47,7 +47,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <returns>The distance between the two geometries</returns>
         public static double Distance(IGeometry g1, IGeometry g2)
         {
-            IndexedFacetDistance dist = new IndexedFacetDistance(g1);
+            var dist = new IndexedFacetDistance(g1);
             return dist.GetDistance(g2);
         }
 
@@ -62,10 +62,10 @@ namespace NetTopologySuite.Operation.Distance
         /// The facets of the geometry are the discrete segments and points 
         /// contained in its components.  </para>
         /// <para>
-        /// In the case of {@link Lineal} and {@link Puntal} inputs,
+        /// In the case of <see cref="ILineal"/> and <see cref="IPuntal"/> inputs,
         /// this is equivalent to computing the conventional distance.
         /// </para><para>
-        /// In the case of {@link Polygonal} inputs, this is equivalent 
+        /// In the case of <see cref="IPolygonal"/> inputs, this is equivalent 
         /// to computing the distance to the polygons boundaries. 
         /// </para>
         /// </remarks>
@@ -122,9 +122,9 @@ namespace NetTopologySuite.Operation.Distance
          * Tests whether the base geometry lies within
          * a specified distance of the given geometry.
          * 
-         * @param g the geomtry to test
-         * @param maximumDistance the maximum distance to test
-         * @return true if the geometry lies with the specified distance
+         //* @param g the geomtry to test
+         //* @param maximumDistance the maximum distance to test
+         //* @return true if the geometry lies with the specified distance
          */
         // TODO: implement this
         /*
@@ -142,8 +142,8 @@ namespace NetTopologySuite.Operation.Distance
         {
             public double Distance(ItemBoundable item1, ItemBoundable item2)
             {
-                FacetSequence fs1 = (FacetSequence) item1.Item;
-                FacetSequence fs2 = (FacetSequence) item2.Item;
+                var fs1 = (FacetSequence) item1.Item;
+                var fs2 = (FacetSequence) item2.Item;
                 return fs1.Distance(fs2);
             }
         }

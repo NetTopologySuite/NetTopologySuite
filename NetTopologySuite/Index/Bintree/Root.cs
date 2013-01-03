@@ -11,7 +11,7 @@ namespace NetTopologySuite.Index.Bintree
     public class Root<T> : NodeBase<T>
     {
         // the singleton root node is centred at the origin.
-        private const double origin = 0.0;
+        private const double Origin = 0.0;
 
         /*
         /// <summary>
@@ -26,7 +26,7 @@ namespace NetTopologySuite.Index.Bintree
         /// <param name="item"></param>
         public void Insert(Interval itemInterval, T item)
         {
-            int index = GetSubnodeIndex(itemInterval, origin);
+            int index = GetSubnodeIndex(itemInterval, Origin);
             // if index is -1, itemEnv must contain the origin.
             if (index == -1) 
             {

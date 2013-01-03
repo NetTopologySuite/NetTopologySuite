@@ -76,52 +76,52 @@ namespace NetTopologySuite.LinearReferencing
              */
         }
 
-        /// <summary>
-        /// Assumes input is valid
-        /// (e.g. <paramref name="start" /> minor or equals to <paramref name="end" />).
-        /// </summary>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
-        /// <returns></returns>
-        private ILineString ComputeLine(LinearLocation start, LinearLocation end)
-        {
-            var coordinates = _line.Coordinates;
-            var newCoordinates = new CoordinateList();
+        ///// <summary>
+        ///// Assumes input is valid
+        ///// (e.g. <paramref name="start" /> minor or equals to <paramref name="end" />).
+        ///// </summary>
+        ///// <param name="start"></param>
+        ///// <param name="end"></param>
+        ///// <returns></returns>
+        //private ILineString ComputeLine(LinearLocation start, LinearLocation end)
+        //{
+        //    var coordinates = _line.Coordinates;
+        //    var newCoordinates = new CoordinateList();
 
-            var startSegmentIndex = start.SegmentIndex;
-            if (start.SegmentFraction > 0.0)
-                startSegmentIndex += 1;
-            var lastSegmentIndex = end.SegmentIndex;
-            if (end.SegmentFraction == 1.0)
-                lastSegmentIndex += 1;
-            if (lastSegmentIndex >= coordinates.Length)
-                lastSegmentIndex = coordinates.Length - 1;
-            // not needed - LinearLocation values should always be correct
-            // Assert.IsTrue(end.SegmentFraction <= 1.0, "invalid segment fraction value");
+        //    var startSegmentIndex = start.SegmentIndex;
+        //    if (start.SegmentFraction > 0.0)
+        //        startSegmentIndex += 1;
+        //    var lastSegmentIndex = end.SegmentIndex;
+        //    if (end.SegmentFraction == 1.0)
+        //        lastSegmentIndex += 1;
+        //    if (lastSegmentIndex >= coordinates.Length)
+        //        lastSegmentIndex = coordinates.Length - 1;
+        //    // not needed - LinearLocation values should always be correct
+        //    // Assert.IsTrue(end.SegmentFraction <= 1.0, "invalid segment fraction value");
 
-            if (!start.IsVertex)
-                newCoordinates.Add(start.GetCoordinate(_line));
-            for (var i = startSegmentIndex; i <= lastSegmentIndex; i++)
-                newCoordinates.Add(coordinates[i]);
-            if (!end.IsVertex)
-                newCoordinates.Add(end.GetCoordinate(_line));
+        //    if (!start.IsVertex)
+        //        newCoordinates.Add(start.GetCoordinate(_line));
+        //    for (var i = startSegmentIndex; i <= lastSegmentIndex; i++)
+        //        newCoordinates.Add(coordinates[i]);
+        //    if (!end.IsVertex)
+        //        newCoordinates.Add(end.GetCoordinate(_line));
 
-            // ensure there is at least one coordinate in the result
-            if (newCoordinates.Count <= 0)
-                newCoordinates.Add(start.GetCoordinate(_line));
+        //    // ensure there is at least one coordinate in the result
+        //    if (newCoordinates.Count <= 0)
+        //        newCoordinates.Add(start.GetCoordinate(_line));
 
-            var newCoordinateArray = newCoordinates.ToCoordinateArray();
+        //    var newCoordinateArray = newCoordinates.ToCoordinateArray();
 
-            /*
-             * Ensure there is enough coordinates to build a valid line.
-             * Make a 2-point line with duplicate coordinates, if necessary.
-             * There will always be at least one coordinate in the coordList.
-             */
-            if (newCoordinateArray.Length <= 1)
-                newCoordinateArray = new[] { newCoordinateArray[0], newCoordinateArray[0] };
+        //    /*
+        //     * Ensure there is enough coordinates to build a valid line.
+        //     * Make a 2-point line with duplicate coordinates, if necessary.
+        //     * There will always be at least one coordinate in the coordList.
+        //     */
+        //    if (newCoordinateArray.Length <= 1)
+        //        newCoordinateArray = new[] { newCoordinateArray[0], newCoordinateArray[0] };
 
-            return _line.Factory.CreateLineString(newCoordinateArray);
-        }
+        //    return _line.Factory.CreateLineString(newCoordinateArray);
+        //}
 
         /// <summary>
         /// Assumes input is valid

@@ -6,7 +6,6 @@ namespace NetTopologySuite.Simplify
 {
     /// <summary>
     /// Represents a <see cref="ILineString"/> which can be modified to a simplified shape.
-    /// Every line segment in the parent LineString is represented as a <see cref="TaggedLineSegment"/>.
     /// This class provides an attribute which specifies the minimum allowable length
     /// for the modified result.
     /// </summary>

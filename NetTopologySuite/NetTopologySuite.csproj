@@ -42,7 +42,7 @@
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <BootstrapperEnabled>false</BootstrapperEnabled>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -66,6 +66,14 @@
     <DocumentationFile>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\NetTopologySuite.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GeoAPI, Version=1.7.0.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\GeoAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="PowerCollections, Version=1.0.0.0, Culture=neutral, PublicKeyToken=2573bf8a1bdddcd5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\PowerCollections.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -121,6 +129,8 @@
     <Compile Include="Geometries\GeometryComponentFilter.cs" />
     <Compile Include="Geometries\OgcCompliantGeometryFactory.cs" />
     <Compile Include="Geometries\Utilities\GeometryMapper.cs" />
+    <Compile Include="Index\Bintree\Interval.cs" />
+    <Compile Include="Index\Strtree\Interval.cs" />
     <Compile Include="IO\WKBHexFileReader.cs" />
     <Compile Include="Mathematics\Plane3D.cs" />
     <Compile Include="Mathematics\Vector3D.cs" />
@@ -228,7 +238,6 @@
     <Compile Include="GeometriesGraph\TopologyLocation.cs" />
     <Compile Include="Index\ArrayListVisitor.cs" />
     <Compile Include="Index\Bintree\Bintree.cs" />
-    <Compile Include="Index\Bintree\Interval.cs" />
     <Compile Include="Index\Bintree\Key.cs" />
     <Compile Include="Index\Bintree\Node.cs" />
     <Compile Include="Index\Bintree\NodeBase.cs" />
@@ -256,7 +265,6 @@
     <Compile Include="Index\Strtree\AbstractNode.cs" />
     <Compile Include="Index\Strtree\AbstractSTRtree.cs" />
     <Compile Include="Index\Strtree\IBoundable.cs" />
-    <Compile Include="Index\Strtree\Interval.cs" />
     <Compile Include="Index\Strtree\ItemBoundable.cs" />
     <Compile Include="Index\Strtree\SIRtree.cs" />
     <Compile Include="Index\Strtree\STRtree.cs" />
@@ -558,6 +566,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup />
+  <!--
   <ItemGroup>
     <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">
       <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
@@ -568,5 +577,17 @@
       <Name>PowerCollections</Name>
     </ProjectReference>
   </ItemGroup>
+-->
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.-->
+  <Target Name="BeforeBuild">
+    <Message Text="Building for '$(TargetFrameworkVersion)'" />
+  </Target>
+  <Target Name="AfterBuild">
+    <MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v3.5'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Client" RunEachTargetSeparately="true"  />  
+    <MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v3.5'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v4.0.3;TargetFrameworkProfile=Client" RunEachTargetSeparately="true"  />  
+  </Target>
+  <!-- -->
+  
 </Project>
