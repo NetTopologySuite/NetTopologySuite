@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
+#if NoLinq
 
+#else
+using Enumerable = System.Linq.Enumerable;
+#endif
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
@@ -144,13 +148,13 @@ namespace NetTopologySuite.Geometries.Utilities
             }
 
             if (collectionForType is IMultiPoint)
-                return _factory.CreateMultiPoint(Enumerable.ToArray<IPoint>(geometries));
+                return _factory.CreateMultiPoint(Enumerable.ToArray(Enumerable.Cast<IPoint>(geometries)));
 
             if (collectionForType is IMultiLineString)
-                return _factory.CreateMultiLineString(Enumerable.ToArray<ILineString>(geometries));
+                return _factory.CreateMultiLineString(Enumerable.ToArray(Enumerable.Cast<ILineString>(geometries)));
 
             if (collectionForType is IMultiPolygon)
-                return _factory.CreateMultiPolygon(Enumerable.ToArray<IPolygon>(geometries));
+                return _factory.CreateMultiPolygon(Enumerable.ToArray(Enumerable.Cast<IPolygon>(geometries)));
 
             return _factory.CreateGeometryCollection(Enumerable.ToArray(geometries));
         }

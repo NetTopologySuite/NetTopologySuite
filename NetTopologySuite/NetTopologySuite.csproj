@@ -5,7 +5,7 @@
     <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <NoLinq>NoLinq</NoLinq>
+    <NoLinq></NoLinq>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5770DAA9-84E5-4770-AF43-F6B815894368}</ProjectGuid>
@@ -28,7 +28,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -44,8 +44,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>false</BootstrapperEnabled>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -591,9 +590,9 @@
     <Message Text="Building for '$(TargetFrameworkVersion)'" />
   </Target>
   <Target Name="AfterBuild">
-    <MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v2.0'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v3.5;TargetFrameworkProfile=Client;NoLinq=" RunEachTargetSeparately="true" ContinueOnError="true" />
-    <MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v2.0'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Client;NoLinq=" RunEachTargetSeparately="true" ContinueOnError="true" />
-    <MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v2.0'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v4.0.3;TargetFrameworkProfile=Client;NoLinq=" RunEachTargetSeparately="true" ContinueOnError="true" />
+    <MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v3.5'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v2.0;NoLinq=NoLinq" RunEachTargetSeparately="true" ContinueOnError="true" />
+    <MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v3.5'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Client;NoLinq=" RunEachTargetSeparately="true" ContinueOnError="true" />
+    <MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v3.5'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v4.0.3;TargetFrameworkProfile=Client;NoLinq=" RunEachTargetSeparately="true" ContinueOnError="true" />
   </Target>
   <!-- -->
 </Project>
