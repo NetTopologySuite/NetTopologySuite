@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite", "NetTopologySuite\NetTopologySuite.csproj", "{5770DAA9-84E5-4770-AF43-F6B815894368}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A} = {FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}
+		{5821977D-AC2C-4912-BCD0-6E6B1A756167} = {5821977D-AC2C-4912-BCD0-6E6B1A756167}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Samples.Console", "NetTopologySuite.Samples.Console\NetTopologySuite.Samples.Console.csproj", "{39E8A390-5304-4447-99E2-3810941824AD}"
 EndProject
