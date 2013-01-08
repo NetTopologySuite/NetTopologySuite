@@ -124,9 +124,9 @@
     <Message Text="Building for '$(TargetFrameworkVersion)'" />
   </Target>
   <Target Name="AfterBuild">
-    <MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v2.0'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v3.5;TargetFrameworkProfile=Client" RunEachTargetSeparately="true"  />  
-    <MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v2.0'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Client" RunEachTargetSeparately="true"  />  
-    <MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v2.0'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v4.0.3;TargetFrameworkProfile=Client" RunEachTargetSeparately="true"  />
+    <MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v2.0'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v3.5;TargetFrameworkProfile=Client" ContinueOnError="true" RunEachTargetSeparately="true"  />  
+    <MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v2.0'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Client" ContinueOnError="true" RunEachTargetSeparately="true"  />  
+    <MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v2.0'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v4.0.3;TargetFrameworkProfile=Client" ContinueOnError="true" RunEachTargetSeparately="true"  />
     <!--<MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v2.0'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v4.5" RunEachTargetSeparately="true"  />-->
   </Target>
   <!-- -->
