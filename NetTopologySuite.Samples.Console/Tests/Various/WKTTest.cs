@@ -79,19 +79,33 @@ namespace NetTopologySuite.Samples.Tests.Various
 			Assert.IsTrue(mp1.EqualsExact(mp2));
 		}
 
+        private static void TestValid(IGeometry geom)
+        {
+            if (!geom.IsValid)
+            {
+                var ivop = new NetTopologySuite.Operation.Valid.IsValidOp(geom);
+                if (!ivop.IsValid)
+                {
+                    Console.WriteLine(geom.AsText());
+                    Console.Write(ivop.ValidationError);
+                }
+                Assert.True(false);
+            }
+        }
+
         [Test]
-        public void TestMaximimPrecisionDigitsFormatting()
+        public void TestMaximumPrecisionDigitsFormatting()
         {
             IGeometryFactory factory = GeometryFactory.Default;
 
             WKBReader wkbreader = new WKBReader(factory);
             IGeometry wkb1 = wkbreader.Read(test00_Geom0_WkbByteArray);            
             Assert.IsNotNull(wkb1);
-            Assert.IsTrue(wkb1.IsValid);
+            TestValid(wkb1);
 
             IGeometry wkb2 = wkbreader.Read(test00_Geom1_WkbByteArray);
             Assert.IsNotNull(wkb2);
-            Assert.IsTrue(wkb2.IsValid);
+            TestValid(wkb2);
 
             Exception ex = TryOverlay(wkb1, wkb2);
             Assert.IsNotNull(ex);

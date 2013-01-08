@@ -1,11 +1,9 @@
-using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using GeoAPI;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
-using NetTopologySuite.Utilities;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.IO
 {
@@ -47,97 +45,93 @@ namespace NetTopologySuite.IO
             _factory = factory;
         }
 
-
         /// <summary>
-        /// 
+        /// Function to read a <see cref="IPoint"/> from a ShapeFile stream using the specified <paramref name="reader"/>.
         /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
-        public IGeometry ReadPoint(BinaryReader reader)
+        /// <param name="reader">The reader to use</param>
+        /// <param name="ordinates">The ordinates to read</param>
+        /// <returns>The read point geometry</returns>
+        protected IGeometry ReadPoint(BinaryReader reader, Ordinates ordinates)
         {
-            var coordinate = ReadCoordinate(reader);
-            IGeometry point = CreatePoint(coordinate);
+            var buffer = new CoordinateBuffer(1, ShapeFileConstants.NoDataBorder, true);
+            ReadCoordinates(reader, 1, new[] {0}, ordinates, buffer);
+            IGeometry point = _factory.CreatePoint(buffer.ToSequence());
             return point;
         }
 
         /// <summary>
-        /// 
+        /// Function to read a <see cref="ILineString"/> or <see cref="IMultiLineString"/> from a ShapeFile stream using the specified <paramref name="reader"/>.
         /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
-        public IGeometry ReadLineString(BinaryReader reader)
+        /// <param name="reader">The reader to use</param>
+        /// <param name="ordinates">The ordinates to read</param>
+        /// <returns>The read lineal geometry</returns>
+        protected IGeometry ReadLineString(BinaryReader reader, Ordinates ordinates)
         {
-            ReadBoundingBox(reader);  // Jump boundingbox
-
-            int numParts = ReadNumParts(reader);
-            int numPoints = ReadNumPoints(reader);
-
-            int[] indexParts = ReadIndexParts(reader, numParts);
-
-            Coordinate[] coords = ReadCoordinates(reader, numPoints);
-
-            if (numParts == 1)
-                 return CreateLineString(coords);
-            else return CreateMultiLineString(numPoints, indexParts, coords);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
-        public IGeometry ReadPolygon(BinaryReader reader)
-        {
-            ReadBoundingBox(reader);  // Jump boundingbox
+            /*var bbox = */ReadBoundingBox(reader);
 
             var numParts = ReadNumParts(reader);
             var numPoints = ReadNumPoints(reader);
+            var indexParts = ReadIndexParts(reader, numParts, numPoints);
 
-            var indexParts = ReadIndexParts(reader, numParts);
+            var buffer = new CoordinateBuffer(numPoints, ShapeFileConstants.NoDataBorder, true);
+            ReadCoordinates(reader, numPoints, indexParts, ordinates, buffer);
 
-            var coords = ReadCoordinates(reader, numPoints);
-
-            return numParts == 1 
-                ? CreateSimpleSinglePolygon(coords) 
-                : CreateSingleOrMultiPolygon(numPoints, indexParts, coords);
+            if (numParts == 1)
+                 return _factory.CreateLineString(buffer.ToSequence());
+            return CreateMultiLineString(buffer.ToSequences());
         }
 
         /// <summary>
-        /// 
+        /// Function to read a either a <see cref="IPolygon"/> or an <see cref="IMultiPolygon"/> from a ShapeFile stream using the specified <paramref name="reader"/>.
         /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
-        public IGeometry ReadMultiPoint(BinaryReader reader)
+        /// <param name="reader">The reader to use</param>
+        /// <param name="ordinates">The ordinates to read</param>
+        /// <returns>The read polygonal geometry</returns>
+        protected IGeometry ReadPolygon(BinaryReader reader, Ordinates ordinates)
         {
-            ReadBoundingBox(reader);  // Jump boundingbox
+            /*var bbox = */ReadBoundingBox(reader);  // Jump boundingbox
 
-            int numPoints = ReadNumPoints(reader);
-            var coords = new Coordinate[numPoints];
-            for (var i = 0; i < numPoints; i++)
-                coords[i] = ReadCoordinate(reader);
-            return CreateMultiPoint(coords);
+            var numParts = ReadNumParts(reader);
+            var numPoints = ReadNumPoints(reader);
+            var indexParts = ReadIndexParts(reader, numParts, numPoints);
+
+            var buffer = new CoordinateBuffer(numPoints, ShapeFileConstants.NoDataBorder, true);
+            ReadCoordinates(reader, numPoints, indexParts, ordinates, buffer);
+
+            return numParts == 1 
+                ? _factory.CreatePolygon(_factory.CreateLinearRing(buffer.ToSequence()), null) 
+                : CreateSingleOrMultiPolygon(buffer);
+        }
+
+        /// <summary>
+        /// Function to read a <see cref="IMultiPoint"/> from a ShapeFile stream using the specified <paramref name="reader"/>.
+        /// </summary>
+        /// <param name="reader">The reader to use</param>
+        /// <param name="ordinates">The ordinates to read</param>
+        /// <returns>The read polygonal geometry</returns>
+        public IGeometry ReadMultiPoint(BinaryReader reader, Ordinates ordinates)
+        {
+            /*var bbox = */ReadBoundingBox(reader);  // Jump boundingbox
+
+            var numPoints = ReadNumPoints(reader);
+            var buffer = new CoordinateBuffer(numPoints, ShapeFileConstants.NoDataBorder, true);
+            ReadCoordinates(reader, numPoints, new [] {numPoints-1}, ordinates, buffer);
+            return _factory.CreateMultiPoint(buffer.ToSequence());
         }        
 
         /// <summary>
-        /// 
+        /// Creates a MultiLineString.
         /// </summary>
-        /// <param name="coordinate"></param>
         /// <returns></returns>
-        public IPoint CreatePoint(Coordinate coordinate)
+        private IGeometry CreateMultiLineString(ICoordinateSequence[] sequences)
         {
-            return Factory.CreatePoint(coordinate);
+            var ls = new ILineString[sequences.Length];
+            for (var i = 0; i < sequences.Length; i++)
+                ls[i] = _factory.CreateLineString(sequences[i]);
+            return _factory.CreateMultiLineString(ls);
         }
 
-        /// <summary>
-        /// Creates a single LineString.
-        /// </summary>
-        /// <param name="coords"></param>
-        /// <returns></returns>
-        public ILineString CreateLineString(Coordinate[] coords)
-        {
-            return Factory.CreateLineString(coords);
-        }
-
+        /*
         /// <summary>
         /// Creates a MultiLineString.
         /// </summary>
@@ -179,17 +173,52 @@ namespace NetTopologySuite.IO
             // Create geometryString
             return Factory.CreateMultiLineString(strings);
         }
-
+        */
+        
         /// <summary>
         /// Creates a single Polygon with holes.
         /// </summary>
-        /// <param name="numPoints"></param>
-        /// <param name="indexParts"></param>
-        /// <param name="coords"></param>
+        /// <param name="buffer"></param>
         /// <returns></returns>
-        public IGeometry CreateSingleOrMultiPolygon(int numPoints, int[] indexParts, Coordinate[] coords)
+        private IGeometry CreateSingleOrMultiPolygon(CoordinateBuffer buffer)
         {
             // Support vars
+            var cses = buffer.ToSequences();
+            var shellRings = new List<ILinearRing>();
+            var holeRings = new List<ILinearRing>();
+            var numHoleRings = new Queue<int>();
+
+            //Sort for shells and holes
+            foreach (var cs in cses)
+            {
+                var ring = _factory.CreateLinearRing(cs);
+                if (!ring.IsCCW)
+                {
+                    shellRings.Add(ring);
+                    numHoleRings.Enqueue(holeRings.Count);
+                }
+                else
+                    holeRings.Add(ring);
+            }
+            numHoleRings.Enqueue(holeRings.Count);
+
+            if (shellRings.Count == 1)
+                return _factory.CreatePolygon(shellRings[0], holeRings.ToArray());
+
+            var polygons = new IPolygon[shellRings.Count];
+            var offset = numHoleRings.Dequeue();
+            var i = 0;
+            foreach (var shellRing in shellRings)
+            {
+                var numRings = numHoleRings.Dequeue();
+                var holes = holeRings.GetRange(offset, numRings - offset).ToArray();
+                polygons[i] = _factory.CreatePolygon(shellRing, holes);
+                
+            }
+            return _factory.CreateMultiPolygon(polygons);
+
+            /*
+
             int i = 0;
             int index = 0;
             int shellLength = 0;
@@ -270,6 +299,7 @@ namespace NetTopologySuite.IO
                 // Create MultiPolygon point
                 return Factory.CreateMultiPolygon(polygons);
             }
+             */
         }
 
         /// <summary>
@@ -283,23 +313,23 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Creates a MultiPoint.
+        /// Read the x-y Envelope
         /// </summary>
-        /// <param name="coords"></param>
-        /// <returns></returns>
-        public IMultiPoint CreateMultiPoint(Coordinate[] coords)
+        /// <param name="reader">The reader to use</param>
+        protected static Envelope ReadBoundingBox(BinaryReader reader)
         {
-            return Factory.CreateMultiPoint(coords);
-        }        
+            return new Envelope(
+                new Coordinate(reader.ReadDouble(), reader.ReadDouble()),
+                new Coordinate(reader.ReadDouble(), reader.ReadDouble()));
+        }
 
         /// <summary>
-        /// Jump values for VeDEx BoundingBox
+        /// Read the ordinate range Envelope
         /// </summary>
-        /// <param name="reader"></param>
-        public void ReadBoundingBox(BinaryReader reader)
+        /// <param name="reader">The reader to use</param>
+        protected static Interval ReadInterval(BinaryReader reader)
         {
-            for (int i = 0; i < 4; i++)
-                reader.ReadDouble();
+            return Interval.Create(reader.ReadDouble(), reader.ReadDouble());
         }
 
         /// <summary>
@@ -317,58 +347,76 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public int ReadNumPoints(BinaryReader reader)
+        protected int ReadNumPoints(BinaryReader reader)
         {
             return reader.ReadInt32();
         }
 
         /// <summary>
-        /// 
+        /// Read the index parts of the shape header
         /// </summary>
-        /// <param name="reader"></param>
-        /// <param name="numParts"></param>
-        /// <returns></returns>
-        public int[] ReadIndexParts(BinaryReader reader, int numParts)
+        /// <param name="reader">The reader</param>
+        /// <param name="numParts">The number of parts</param>
+        /// <param name="numPoints">The total number of points</param>
+        /// <returns>An array of integer values</returns>
+        protected int[] ReadIndexParts(BinaryReader reader, int numParts, int numPoints)
         {
-            int[] indexParts = new int[numParts];
-            for (int i = 0; i < numParts; i++)
-                indexParts[i] = reader.ReadInt32();
+            var indexParts = new int[numParts];
+            //The first one is 0, we already know that
+            reader.ReadInt32();
+            for (var i = 1; i < numParts; i++)
+                indexParts[i-1] = reader.ReadInt32() - 1;
+            
+            //The last one is numPoints
+            indexParts[numParts - 1] = numPoints - 1;
+            
             return indexParts;
         }
 
         /// <summary>
-        /// 
+        /// Method to read the coordinates block
         /// </summary>
-        /// <param name="reader"></param>
-        /// <param name="numPoints"></param>
-        /// <returns></returns>
-        public Coordinate[] ReadCoordinates(BinaryReader reader, int numPoints)
+        /// <param name="reader">The reader</param>
+        /// <param name="numPoints">The total number of points to read</param>
+        /// <param name="markers">The markers</param>
+        /// <param name="ordinates">The ordinates to read</param>
+        /// <param name="buffer">The buffer to add the coordinates to.</param>
+        private static void ReadCoordinates(BinaryReader reader, int numPoints, int[] markers, Ordinates ordinates, CoordinateBuffer buffer)
         {
-            Coordinate[] coords = new Coordinate[numPoints];
-            for (int i = 0; i < numPoints; i++)
-                coords[i] = ReadCoordinate(reader);
-            return coords;
-        }
+            var offset = buffer.Count;
+            var j = 0;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
-        public Coordinate ReadCoordinate(BinaryReader reader)
-        {
-            return new Coordinate(reader.ReadDouble(), reader.ReadDouble());
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="list"></param>
-        /// <returns></returns>
-        public IGeometryCollection CreateGeometryCollection(IList list)
-        {            
-            IGeometry[] geometries = (IGeometry[]) (new ArrayList(list.CastPlatform()).Cast<IGeometry>().ToArray());
-            return Factory.CreateGeometryCollection(geometries);
+            // Add x- and y-ordinates
+            for (var i = 0; i < numPoints; i++)
+            {
+                //Read x- and y- ordinates
+                buffer.AddCoordinate(reader.ReadDouble(), reader.ReadDouble());
+                
+                //Check if we have reached a marker
+                if (i != markers[j]) continue;
+                
+                //Add a marker
+                buffer.AddMarker();
+                j++;
+            }
+            
+            // are there any z-ordinates
+            if ((ordinates & Ordinates.Z) == Ordinates.Z)
+            {
+                //Read zInterval
+                /*var zInterval = */ReadInterval(reader);
+                //Set the z-values
+                for (var i = 0; i < numPoints; i++)
+                    buffer.SetZ(offset + i, reader.ReadDouble());
+            }
+            if ((ordinates & Ordinates.M) == Ordinates.M)
+            {
+                //Read m-interval
+                /*var mInterval = */ReadInterval(reader);
+                //Set the m-values
+                for (var i = 0; i < numPoints; i++)
+                    buffer.SetZ(offset + i, reader.ReadDouble());
+            }
         }
     }
 }

@@ -19,12 +19,12 @@ namespace NetTopologySuite.Tests.NUnit.Index
             {
             }
 
-            public AbstractNode Root()
+            public new AbstractNode Root()
             {
                 return base.Root;
             }
 
-            public IList<object> BoundablesAtLevel(int level)
+            public new IList<object> BoundablesAtLevel(int level)
             {
                 return base.BoundablesAtLevel(level);
             }

@@ -72,6 +72,9 @@
     <Compile Include="..\..\NetTopologySuite\Algorithm\CGAlgorithms.cs">
       <Link>Algorithm\CGAlgorithms.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\CGAlgorithms3D.cs">
+      <Link>Algorithm\CGAlgorithms3D.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\Algorithm\CGAlgorithmsDD.cs">
       <Link>Algorithm\CGAlgorithmsDD.cs</Link>
     </Compile>
@@ -254,6 +257,9 @@
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Geometries\OctogonalEnvelope.cs">
       <Link>Geometries\OctogonalEnvelope.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\OgcCompliantGeometryFactory.cs">
+      <Link>Geometries\OgcCompliantGeometryFactory.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Geometries\Point.cs">
       <Link>Geometries\Point.cs</Link>
@@ -597,6 +603,9 @@
     <Compile Include="..\..\NetTopologySuite\IO\WKBGeometryTypes.cs">
       <Link>IO\WKBGeometryTypes.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite\IO\WKBHexFileReader.cs">
+      <Link>IO\WKBHexFileReader.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\IO\WKBReader.cs">
       <Link>IO\WKBReader.cs</Link>
     </Compile>
@@ -651,8 +660,14 @@
     <Compile Include="..\..\NetTopologySuite\Mathematics\Matrix.cs">
       <Link>Mathematics\Matrix.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite\Mathematics\Plane3D.cs">
+      <Link>Mathematics\Plane3D.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\Mathematics\Vector2D.cs">
       <Link>Mathematics\Vector2D.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Mathematics\Vector3D.cs">
+      <Link>Mathematics\Vector3D.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Mathematics\VectorMath.cs">
       <Link>Mathematics\VectorMath.cs</Link>
@@ -812,6 +827,15 @@
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Operation\Buffer\Validate\PointPairDistance.cs">
       <Link>Operation\Buffer\Validate\PointPairDistance.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Distance3D\AxisPlaneCoordinateSequence.cs">
+      <Link>Operation\Distance3D\AxisPlaneCoordinateSequence.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Distance3D\Distance3DOp.cs">
+      <Link>Operation\Distance3D\Distance3DOp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Distance3D\PlanarPolygon3D.cs">
+      <Link>Operation\Distance3D\PlanarPolygon3D.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Operation\Distance\ConnectedElementLocationFilter.cs">
       <Link>Operation\Distance\ConnectedElementLocationFilter.cs</Link>
@@ -1176,6 +1200,9 @@
     <Compile Include="..\..\NetTopologySuite\Utilities\BitConverter.cs">
       <Link>Utilities\BitConverter.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\Caster.cs">
+      <Link>Utilities\Caster.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\Utilities\CollectionUtil.cs">
       <Link>Utilities\CollectionUtil.cs</Link>
     </Compile>
@@ -1267,8 +1294,14 @@
     <Resource Include="..\..\NetTopologySuite\Precision\DocFiles\minClearance.png">
       <Link>Precision\DocFiles\minClearance.png</Link>
     </Resource>
+    <Content Include="..\..\NetTopologySuite\Precision\PrecisionSummary.xml">
+      <Link>Precision\PrecisionSummary.xml</Link>
+    </Content>
     <Content Include="..\..\NetTopologySuite\ReadMe.txt">
       <Link>ReadMe.txt</Link>
+    </Content>
+    <Content Include="..\..\NetTopologySuite\Simplify\SimplifySummary.xml">
+      <Link>Simplify\SimplifySummary.xml</Link>
     </Content>
     <Content Include="..\..\NetTopologySuite\Utilities\RToolsUtil\Rtools.Util.License.txt">
       <Link>Utilities\RToolsUtil\Rtools.Util.License.txt</Link>

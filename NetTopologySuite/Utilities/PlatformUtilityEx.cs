@@ -5,6 +5,7 @@ using System.Text;
 
 #if SILVERLIGHT && !WINDOWS_PHONE
 using NetTopologySuite.Encodings;
+using System.Linq;
 #endif
 
 #if NoLinq

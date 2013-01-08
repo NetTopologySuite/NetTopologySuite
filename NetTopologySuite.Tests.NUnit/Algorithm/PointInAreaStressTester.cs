@@ -54,8 +54,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// <returns> true if all point locations were computed correctly</returns>
         public Boolean Run()
         {
-            Stopwatch sw = new Stopwatch();
-
+            var sw = new Stopwatch();
+            sw.Start();
             // default is to use the simple, non-indexed tester
             if (_pia2 == null)
                 _pia2 = new SimplePointInAreaLocator(_area);
@@ -83,7 +83,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                         return false;
                 }
             }
-            Console.WriteLine("Test completed in " + sw.Elapsed);
+            sw.Stop();
+            Console.WriteLine("Test completed in " + sw.ElapsedMilliseconds);
             PrintStats();
             return true;
         }

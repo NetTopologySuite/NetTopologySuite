@@ -16,22 +16,21 @@ namespace NetTopologySuite.Tests.XUnit
 
         protected override string TestLocation { get { return testLocation; } }
 
-        [Fact]
-        public void TestAllXml()
+        public override void TestAll()
         {
             foreach (string file in Directory.GetFiles(TestLocation))
             {
-                string ext = Path.GetExtension(file);
+                var ext = Path.GetExtension(file);
                 if (string.IsNullOrEmpty(ext))
                     continue;
                 
                 if (ext.ToLowerInvariant() != ".xml")
                     continue;
 
-                this.TestFile = Path.GetFileName(file);
+                TestFile = Path.GetFileName(file);
                 Console.WriteLine(string.Format("Processing '{0}'", TestFile));
-                this.LoadTests();
-                this.TestAll();
+                LoadTests();
+                base.TestAll();
             }
         }
 

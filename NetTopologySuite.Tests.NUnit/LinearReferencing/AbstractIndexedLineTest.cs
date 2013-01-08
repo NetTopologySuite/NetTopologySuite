@@ -130,7 +130,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             {
                 return reader.Read(wkt);
             }
-            catch (ParseException ex)
+            catch (GeoAPI.IO.ParseException ex)
             {
                 throw new ApplicationException("An exception occured while reading the wkt", ex);
             }

@@ -46,10 +46,10 @@
       <HintPath>..\..\packages\DotSpatial.Projections.1.2\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Serialization, Version=0.11.9.6, Culture=neutral, PublicKeyToken=441f200f827611e7, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DotSpatial.Serialization.1.2\lib\net40-Client\DotSpatial.Serialization.dll</HintPath>
+      <HintPath>..\..\packages\DotSpatial.Serialization.1.4.13\lib\net40-Client\DotSpatial.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Topology, Version=0.11.9.6, Culture=neutral, PublicKeyToken=a66b5e9434ca3671, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DotSpatial.Topology.1.2\lib\net40-Client\DotSpatial.Topology.dll</HintPath>
+      <HintPath>..\..\packages\DotSpatial.Topology.1.4.13\lib\net40-Client\DotSpatial.Topology.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

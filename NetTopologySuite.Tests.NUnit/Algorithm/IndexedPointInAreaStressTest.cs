@@ -21,7 +21,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                                   {
                                       NumLines = 20,
                                       LineWidth = 10.0,
-                                      Seed = 118507219
+                                      Seed = 1185072199
+                                      , Verbose =  false
                                   };
             //gridBuilder.SetSeed(1185072199562);
             var area = gridBuilder.Geometry;

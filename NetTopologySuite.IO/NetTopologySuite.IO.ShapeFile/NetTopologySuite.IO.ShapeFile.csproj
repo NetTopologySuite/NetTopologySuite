@@ -40,7 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\NetTopologySuite.IO\Geometries\CoordinateBuffer.cs">
+      <Link>CoordinateBuffer.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShapeFileConstants.cs" />
     <Compile Include="ShapeGeometryType.cs" />
     <Compile Include="ShapeReader.cs" />
     <Compile Include="ShapeWriter.cs" />

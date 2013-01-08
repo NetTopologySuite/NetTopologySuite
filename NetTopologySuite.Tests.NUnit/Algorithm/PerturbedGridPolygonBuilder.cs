@@ -23,6 +23,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         private IGeometry _grid;
 
+        public bool Verbose { get; set; }
+
         public PerturbedGridPolygonBuilder(IGeometryFactory geomFactory)
         {
             _geomFactory = geomFactory;
@@ -82,7 +84,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             IMultiLineString ml = _geomFactory.CreateMultiLineString(lines);
             _grid = ml.Buffer(_lineWidth);
             var wktWriter = new WKTWriter(2) {Formatted = true, MaxCoordinatesPerLine = 6};
-            Console.WriteLine(wktWriter.Write(_grid));
+            if (Verbose)
+                Console.WriteLine(wktWriter.Write(_grid));
             return _grid;
 
         }

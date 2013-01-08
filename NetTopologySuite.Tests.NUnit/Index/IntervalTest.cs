@@ -1,11 +1,10 @@
-using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Index.Bintree;
-using NetTopologySuite.IO;
+/*
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Index
 {
+    using Interval = GeoAPI.Geometries.Interval;
+
     [TestFixture]
     public class IntervalTest
     {
@@ -38,10 +37,10 @@ namespace NetTopologySuite.Tests.NUnit.Index
             Assert.IsTrue(IntervalsAreEqual(new Interval(3, 4), new Interval(new Interval(3, 4))));
         }
 
-        [Ignore("There is no GetCentre method on an interval in NTS")]
-        public void TestGetCentre()
+        [Test]
+        public void TestCentre()
         {
-            //Assert.AreEqual(6.5, new Interval(4, 9).GetCentre(), 1E-10);
+            Assert.AreEqual(6.5, new Interval(4, 9).Centre, 1E-10);
         }
 
         [Test]
@@ -70,9 +69,10 @@ namespace NetTopologySuite.Tests.NUnit.Index
         }
 
         // Added a method for comparing intervals, because the Equals method had not been overriden on Interval
-        private bool IntervalsAreEqual(Interval expected, Interval actual)
+        private static bool IntervalsAreEqual(Interval expected, Interval actual)
         {
             return expected.Min == actual.Min && expected.Max == actual.Max && expected.Width == actual.Width;
         }
     }
 }
+*/

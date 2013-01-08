@@ -65,6 +65,7 @@
     <Compile Include="Geometries\Implementation\CoordinateSequenceReversedTest.cs" />
     <Compile Include="Index\KdTree\KdTreeTest.cs" />
     <Compile Include="Geometries\IntervalTest.cs" />
+    <Compile Include="IO\WKBReaderTest.cs" />
     <Compile Include="Mathematics\DDBasicTest.cs" />
     <Compile Include="Mathematics\DDComputeTest.cs" />
     <Compile Include="MiscellaneousTest.cs" />

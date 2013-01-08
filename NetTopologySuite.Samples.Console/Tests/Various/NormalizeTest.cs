@@ -46,13 +46,15 @@ namespace NetTopologySuite.Samples.Tests.Various
         /// 
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void NotNormalizedGDBOperation()
         {                        
 	        byte[] bytes = new GDBWriter().Write(polygon);
             IGeometry test = new GDBReader().Read(bytes);
 
-            Assert.IsNull(test);    
+            //This is no longer true
+            //Assert.IsNull(test);    
+            Assert.IsTrue(test.IsEmpty);
+            Assert.IsTrue(test is IPolygonal);
         }
 
         /// <summary>

@@ -180,7 +180,7 @@
         }
 
         [Fact]
-        public void TestAll()
+        public virtual void TestAll()
         {            
             bool success = true;
             for (int i = 0; i < this.Count; i++)

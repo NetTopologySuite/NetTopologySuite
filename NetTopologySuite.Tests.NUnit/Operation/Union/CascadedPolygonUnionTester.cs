@@ -18,7 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
 
         public bool Test(IList<IGeometry> geoms, double minimumMeasure)
         {
-            Console.WriteLine("Computing Iterated union");
+            Console.Write("Computing Iterated union ");
             IGeometry union1 = UnionIterated(geoms);
             Console.WriteLine("Computing Cascaded union");
             IGeometry union2 = UnionCascaded(geoms);
@@ -59,7 +59,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
         public IGeometry UnionIterated(IList<IGeometry> geoms)
         {
             IGeometry unionAll = null;
-            int count = 0;
+            var count = 0;
             foreach (var geom in geoms)
             {
                 if (unionAll == null)
@@ -77,7 +77,8 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
                     Console.Write(".");
                     //        System.out.println("Adding geom #" + count);
                 }
-            }
+            } 
+            Console.Write("\n");
             return unionAll;
         }
 

@@ -153,58 +153,77 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
 
         private static void DoTest(IGeometryCollection geomsWrite, Ordinates ordinates, bool testGetOrdinate = true)
         {
-            var fileName = Path.GetTempFileName();
-            fileName = Path.ChangeExtension(fileName, "shp");
-            ShapefileWriter.WriteGeometryCollection(fileName, geomsWrite);
-            var reader = new ShapefileReader(fileName, ShapeFileShapeFactory.FactoryRead);
-            var geomsRead = reader.ReadAll();
+            string fileName = string.Empty;
 
-            // This tests x- and y- values
-            if (!geomsWrite.EqualsExact(geomsRead))
+            try
             {
-                Assert.AreEqual(geomsWrite.NumGeometries, geomsRead.NumGeometries);
-                //
-                // This akward test is necessary since EqualsTopologically throws currently exceptions
-                var equal = true;
-                for (var i = 0; i < geomsRead.NumGeometries; i++)
+
+                fileName = Path.GetTempFileName();
+                fileName = Path.ChangeExtension(fileName, "shp");
+                ShapefileWriter.WriteGeometryCollection(fileName, geomsWrite);
+                var reader = new ShapefileReader(fileName, ShapeFileShapeFactory.FactoryRead);
+                var geomsRead = reader.ReadAll();
+
+                // This tests x- and y- values
+                if (!geomsWrite.EqualsExact(geomsRead))
                 {
-                    var gw = geomsWrite.GetGeometryN(i);
-                    var gr = geomsRead.GetGeometryN(i);
-                    if (!gw.EqualsExact(gr))
+                    Assert.AreEqual(geomsWrite.NumGeometries, geomsRead.NumGeometries);
+                    //
+                    // This akward test is necessary since EqualsTopologically throws currently exceptions
+                    var equal = true;
+                    for (var i = 0; i < geomsRead.NumGeometries; i++)
                     {
-                        var hsm = new Algorithm.Match.HausdorffSimilarityMeasure().Measure(gw, gr);
-                        var asm = new Algorithm.Match.AreaSimilarityMeasure().Measure(gw, gr);
-                        var smc = Algorithm.Match.SimilarityMeasureCombiner.Combine(hsm, asm);
-                        if (!gw.EqualsNormalized(gr) || (1d - smc) > 1e-7)
+                        var gw = geomsWrite.GetGeometryN(i);
+                        var gr = geomsRead.GetGeometryN(i);
+                        if (!gw.EqualsExact(gr))
                         {
-                            Console.WriteLine(string.Format("Geometries don't match at index {0}", i));
-                            Console.WriteLine(string.Format("  written: {0}", gw.AsText()));
-                            Console.WriteLine(string.Format("  read   : {0}", gr.AsText()));
-                            equal = false;
-                            Assert.IsTrue(equal, "Differenced found in geometries written and read!");
+                            var hsm = new Algorithm.Match.HausdorffSimilarityMeasure().Measure(gw, gr);
+                            var asm = new Algorithm.Match.AreaSimilarityMeasure().Measure(gw, gr);
+                            var smc = Algorithm.Match.SimilarityMeasureCombiner.Combine(hsm, asm);
+                            if (!gw.EqualsNormalized(gr) || (1d - smc) > 1e-7)
+                            {
+                                Console.WriteLine(string.Format("Geometries don't match at index {0}", i));
+                                Console.WriteLine(string.Format("  written: {0}", gw.AsText()));
+                                Console.WriteLine(string.Format("  read   : {0}", gr.AsText()));
+                                equal = false;
+                                Assert.IsTrue(equal, "Differenced found in geometries written and read!");
+                            }
                         }
                     }
-                }
 
-                //For polygons this has a tendency to fail, since the polygonhandler might rearrange the whole thing
-                if (testGetOrdinate)
-                {
-                    if ((ordinates & Ordinates.Z) == Ordinates.Z)
+                    //For polygons this has a tendency to fail, since the polygonhandler might rearrange the whole thing
+                    if (testGetOrdinate)
                     {
-                        var writeZ = geomsWrite.GetOrdinates(Ordinate.Z);
-                        var readZ = geomsRead.GetOrdinates(Ordinate.Z);
-                        Assert.IsTrue(ArraysEqual(writeZ, readZ));
+                        if ((ordinates & Ordinates.Z) == Ordinates.Z)
+                        {
+                            var writeZ = geomsWrite.GetOrdinates(Ordinate.Z);
+                            var readZ = geomsRead.GetOrdinates(Ordinate.Z);
+                            Assert.IsTrue(ArraysEqual(writeZ, readZ));
+                        }
+
+                        if ((ordinates & Ordinates.M) == Ordinates.M)
+                        {
+                            var writeM = geomsWrite.GetOrdinates(Ordinate.M);
+                            var readM = geomsRead.GetOrdinates(Ordinate.M);
+                            Assert.IsTrue(ArraysEqual(writeM, readM));
+                        }
                     }
 
-                    if ((ordinates & Ordinates.M) == Ordinates.M)
-                    {
-                        var writeM = geomsWrite.GetOrdinates(Ordinate.M);
-                        var readM = geomsRead.GetOrdinates(Ordinate.M);
-                        Assert.IsTrue(ArraysEqual(writeM, readM));
-                    }
                 }
 
+                // delete sample files
+                File.Delete(fileName);
+                File.Delete(Path.ChangeExtension(fileName, "shx"));
+                File.Delete(Path.ChangeExtension(fileName, "dbf"));
             }
+            catch (AssertionException ex)
+            {
+                Console.WriteLine("Failed test with {0}", ordinates);
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("  Testfile '{0}' not deleted!", fileName);
+                throw;
+            }
+
 
         }
 

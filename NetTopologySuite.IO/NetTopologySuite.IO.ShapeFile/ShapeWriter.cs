@@ -1,6 +1,9 @@
 using System;
 using System.IO;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO
 {
@@ -27,6 +30,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="coordinate">The coordinate to write</param>
         /// <param name="writer">The writer to use</param>
+        [Obsolete]
         public void Write(Coordinate coordinate, BinaryWriter writer)
         {
             writer.Write((double) coordinate.X);
@@ -38,6 +42,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="coordinates">The array of <see cref="Coordinate"/>s to write</param>
         /// <param name="writer">The writer to use</param>
+        [Obsolete]
         public void Write(Coordinate[] coordinates, BinaryWriter writer)
         {
             foreach (var coordinate in coordinates)
@@ -47,6 +52,47 @@ namespace NetTopologySuite.IO
             }
         }
 
+        protected void WriteCoordinates(ICoordinateSequence sequence, BinaryWriter writer, Ordinates ordinates)
+        {
+            for (var i = 0; i < sequence.Count; i++)
+            {
+                writer.Write(sequence.GetX(i));
+                writer.Write(sequence.GetY(i));
+            }
+
+            if ((ordinates & Ordinates.Z) == Ordinates.Z)
+            {
+                WriteInterval(sequence, Ordinate.Z, writer);                
+                for (var i = 0; i < sequence.Count; i++)
+                    writer.Write(GetOrdinate(sequence, Ordinate.Z, i));
+            }
+
+            if ((ordinates & Ordinates.M) == Ordinates.M)
+            {
+                WriteInterval(sequence, Ordinate.M, writer);
+                for (var i = 0; i < sequence.Count; i++)
+                    writer.Write(GetOrdinate(sequence, Ordinate.M, i));
+            }
+        }
+
+        protected void WriteInterval(ICoordinateSequence sequence, Ordinate ordinate, BinaryWriter writer)
+        {
+            var val = GetOrdinate(sequence, ordinate, 0);
+            var interval = Interval.Create(val);
+            for (var i = 1; i < sequence.Count; i++)
+                interval = interval.ExpandedByValue(GetOrdinate(sequence, ordinate, i));
+
+            writer.Write(interval.Min);
+            writer.Write(interval.Max);
+        }
+
+        private static double GetOrdinate(ICoordinateSequence sequence, Ordinate ordinate, int index)
+        {
+            var val = sequence.GetOrdinate(index, ordinate);
+            if (ordinate == Ordinate.M && double.IsNaN(val)) 
+                val = ShapeFileConstants.NoDataValue;
+            return val;
+        }
         /// <summary>
         /// Writes <paramref name="point"/> to a stream using <paramref name="writer"/>
         /// </summary>
@@ -55,7 +101,7 @@ namespace NetTopologySuite.IO
         public void Write(IPoint point, BinaryWriter writer)
         {
             writer.Write((int) ShapeGeometryType.Point);
-            Write(point.Coordinate, writer);
+            WriteCoordinates(point.CoordinateSequence, writer, Ordinates.XY);
         }
 
         /// <summary>
@@ -78,7 +124,7 @@ namespace NetTopologySuite.IO
             writer.Write((int) 0);
 
             // Write Coordinates
-            Write(lineString.Coordinates, writer);
+            WriteCoordinates(lineString.CoordinateSequence, writer, Ordinates.XY);
         }
 
         /// <summary>
@@ -100,21 +146,27 @@ namespace NetTopologySuite.IO
             // Write IndexParts
             int count = 0;
             writer.Write((int) count);
+            var seq = polygon.Factory.CoordinateSequenceFactory.Create(polygon.NumPoints,
+                                                                       polygon.ExteriorRing.CoordinateSequence.Ordinates);
             if (polygon.NumInteriorRings != 0)
             {
                 // Write external shell index
-                count += polygon.ExteriorRing.NumPoints;
+                var ring = polygon.ExteriorRing.CoordinateSequence;
+                CoordinateSequences.Copy(ring, 0, seq, count, ring.Count);
+                count += ring.Count;
                 writer.Write((int) count);
                 for (int i = 1; i < polygon.NumInteriorRings; i++)
                 {
                     // Write internal holes index
-                    count += polygon.GetInteriorRingN(i - 1).NumPoints;
+                    ring = polygon.GetInteriorRingN(i - 1).CoordinateSequence;
+                    count += ring.Count;
+                    CoordinateSequences.Copy(ring, 0, seq, count, ring.Count);
                     writer.Write((int) count);
                 }
             }
 
             // Write Coordinates
-            Write(polygon.Coordinates, writer);
+            WriteCoordinates(seq, writer, Ordinates.XY);
         }
 
         /// <summary>
@@ -137,6 +189,137 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="collection"></param>
+        /// <returns></returns>
+        private static ICoordinateSequence BuildSequence(IGeometryCollection collection)
+        {
+            var seq = collection.Factory.CoordinateSequenceFactory.Create(collection.NumPoints,
+                                                                          DetectOrdinates(collection));
+            var count = 0;
+            for (var i = 0; i < collection.Count; i++)
+            {
+                var tmp = collection.GetGeometryN(i);
+                ICoordinateSequence tmpSeq = null;
+                switch (tmp.OgcGeometryType)
+                {
+                    
+                    case OgcGeometryType.Point:
+                        tmpSeq = ((IPoint) tmp).CoordinateSequence;
+                        break;
+                    case OgcGeometryType.LineString:
+                        tmpSeq = ((ILineString)tmp).CoordinateSequence;
+                        break;
+
+                    case OgcGeometryType.Polygon:
+                        var poly = (IPolygon) tmp;
+                        tmpSeq = poly.ExteriorRing.CoordinateSequence;
+                        if (poly.NumInteriorRings > 0)
+                        {
+                            CoordinateSequences.Copy(tmpSeq, 0, seq, count, tmpSeq.Count);
+                            int j;
+                            for (j = 0; j < poly.NumInteriorRings - 1; j++)
+                            {
+                                tmpSeq = poly.GetInteriorRingN(j).CoordinateSequence;
+                                CoordinateSequences.Copy(tmpSeq, 0, seq, count, tmpSeq.Count);
+                                count += tmpSeq.Count;
+                            }
+                            tmpSeq = poly.GetInteriorRingN(j).CoordinateSequence;
+                        }
+                        break;
+
+                    default:
+                        throw new ArgumentException("Invalid geometry type");
+                }
+
+                if (tmpSeq != null)
+                {
+                    CoordinateSequences.Copy(tmpSeq, 0, seq, count, tmpSeq.Count);
+                    count += tmpSeq.Count;
+                }
+            }
+            return seq;
+        }
+
+        /// <summary>
+        /// Function to determine the shape geometry type for the <paramref name="geometry"/>
+        /// </summary>
+        /// <param name="geometry">The geometry</param>
+        /// <returns>The shape geometry type</returns>
+        private static ShapeGeometryType DetectShapeType(IGeometry geometry)
+        {
+            var ordinates = DetectOrdinates(geometry);
+            switch (geometry.OgcGeometryType)
+            {
+                case OgcGeometryType.Point:
+                    if (ordinates == Ordinates.XYM)
+                        return ShapeGeometryType.PointM;
+                    if (ordinates == Ordinates.XYZ)
+                        return ShapeGeometryType.PointZ;
+                    if (ordinates == Ordinates.XYZM)
+                        return ShapeGeometryType.PointZM;
+                    return ShapeGeometryType.Point;
+
+                case OgcGeometryType.MultiPoint:
+                    if (ordinates == Ordinates.XYM)
+                        return ShapeGeometryType.MultiPointM;
+                    if (ordinates == Ordinates.XYZ)
+                        return ShapeGeometryType.MultiPointZ;
+                    if (ordinates == Ordinates.XYZM)
+                        return ShapeGeometryType.MultiPointZM;
+                    return ShapeGeometryType.MultiPoint;
+
+                case OgcGeometryType.LineString:
+                case OgcGeometryType.MultiLineString:
+                    if (ordinates == Ordinates.XYM)
+                        return ShapeGeometryType.LineStringM;
+                    if (ordinates == Ordinates.XYZ)
+                        return ShapeGeometryType.LineStringZ;
+                    if (ordinates == Ordinates.XYZM)
+                        return ShapeGeometryType.LineStringZM;
+                    return ShapeGeometryType.LineString;
+
+                case OgcGeometryType.Polygon:
+                case OgcGeometryType.MultiPolygon:
+                    if (ordinates == Ordinates.XYM)
+                        return ShapeGeometryType.PolygonM;
+                    if (ordinates == Ordinates.XYZ)
+                        return ShapeGeometryType.PolygonZ;
+                    if (ordinates == Ordinates.XYZM)
+                        return ShapeGeometryType.PolygonZM;
+                    return ShapeGeometryType.Polygon;
+                
+                default:
+                    throw new ArgumentException("Invalid geometry type", "geometry");
+            }
+        }
+
+        /// <summary>
+        /// Function to determine which ordinates are set in the <paramref name="geometry"/>.
+        /// To do that, this function looks for the first geometry that has a <see cref="ICoordinateSequence"/> property.
+        /// Assuming all other geometries have the same ordinates at hand.
+        /// </summary>
+        /// <param name="geometry">The geometry</param>
+        /// <returns>The ordinates flag</returns>
+        private static Ordinates DetectOrdinates(IGeometry geometry)
+        {
+            if (geometry is IPoint)
+                return ((IPoint) geometry).CoordinateSequence.Ordinates;
+            if (geometry is ILineString)
+                return ((ILineString)geometry).CoordinateSequence.Ordinates;
+            if (geometry is IPolygon)
+                return ((IPolygon)geometry).ExteriorRing.CoordinateSequence.Ordinates;
+
+            for (var i = 0; i < geometry.NumGeometries; i++)
+            {
+                return DetectOrdinates(geometry.GetGeometryN(i));
+            }
+            Assert.ShouldNeverReachHere("No geometry found to detect ordinates");
+            return Ordinates.None;
+        }
+
+        /// <summary>
         /// Writes <paramref name="multiLineString"/> to a stream using <paramref name="writer"/>
         /// </summary>
         /// <param name="multiLineString">The multi linestring to write</param>
@@ -156,11 +339,15 @@ namespace NetTopologySuite.IO
             int count = 0;
             writer.Write((int) count);
 
+            var seq = multiLineString.Factory.CoordinateSequenceFactory.Create(multiLineString.NumPoints,
+                                                ((ILineString) multiLineString[0]).CoordinateSequence.Ordinates);
             // Write linestrings index                                
             for (int i = 0; i < multiLineString.NumGeometries; i++)
             {
                 // Write internal holes index
-                count += multiLineString.GetGeometryN(i).NumPoints;
+                var ls = ((ILineString) multiLineString.GetGeometryN(i)).CoordinateSequence;
+                CoordinateSequences.Copy(ls, 0, seq, count, ls.Count);
+                count += ls.Count;
                 if (count == multiLineString.NumPoints)
                     break;
                 writer.Write((int) count);
