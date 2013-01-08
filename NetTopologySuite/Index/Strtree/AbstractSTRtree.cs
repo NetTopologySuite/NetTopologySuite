@@ -102,7 +102,9 @@ namespace NetTopologySuite.Index.Strtree
             Assert.IsTrue(childBoundables.Count != 0);
             var parentBoundables = new List<object>();
             parentBoundables.Add(CreateNode(newLevel));
-            var sortedChildBoundables = new Wintellect.PowerCollections.BigList<object>(childBoundables.CastPlatform());
+            var castedChildBoundables = PlatformUtilityEx.CastPlatform(childBoundables);
+            var sortedChildBoundables = 
+                new Wintellect.PowerCollections.BigList<object>(castedChildBoundables);
             sortedChildBoundables.Sort(GetComparer());
             foreach (IBoundable childBoundable in sortedChildBoundables)
             {

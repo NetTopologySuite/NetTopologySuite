@@ -33,7 +33,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
@@ -1583,19 +1582,16 @@ namespace RTools_NTS.Util
 		/// <returns>A Token[] with all tokens.</returns>
 		public Token[] TokenizeFile(string fileName)
 		{
-			IList<Token> list = new List<Token>();
+			var list = new List<Token>();
 			if (!TokenizeFile(fileName, list))
 			{
 				return(null);
 			}
-			else
-			{
-				if (list.Count > 0)
-				{
-					return((Token[])list.ToArray());
-				}
-				else return(null);
-			}
+		    if (list.Count > 0)
+		    {
+		        return list.ToArray();
+		    }
+		    return(null);
 		}
 		#endregion
 

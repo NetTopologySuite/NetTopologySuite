@@ -1,4 +1,5 @@
 using System;
+using GeoAPI.Operation.Buffer;
 using GeoAPI.Operations.Buffer;
 
 namespace NetTopologySuite.Operation.Buffer

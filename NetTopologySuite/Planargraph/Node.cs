@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using GeoAPI.Geometries;
 using Wintellect.PowerCollections;
 
@@ -23,9 +22,9 @@ namespace NetTopologySuite.Planargraph
         public static IList<DirectedEdge> GetEdgesBetween(Node node0, Node node1)
         {
             IList<Edge> edges0 = DirectedEdge.ToEdges(node0.OutEdges.Edges);
-            Set<DirectedEdge> commonEdges = new Set<DirectedEdge>(edges0.Cast<DirectedEdge>());
+            var commonEdges = new Set<DirectedEdge>(Utilities.Caster.Cast<DirectedEdge>(edges0));
             IList<Edge> edges1 = DirectedEdge.ToEdges(node1.OutEdges.Edges);
-            commonEdges.RemoveMany(edges1.Cast<DirectedEdge>());
+            commonEdges.RemoveMany(Utilities.Caster.Cast<DirectedEdge>(edges1));
             return new List<DirectedEdge>(commonEdges);
         }
 

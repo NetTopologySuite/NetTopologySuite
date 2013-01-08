@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Operation.Union;
@@ -50,7 +49,11 @@ namespace NetTopologySuite.Noding.Snapround
         public IList<ILineString> Node(ICollection<IGeometry> geoms)
         {
             // get geometry factory
-            _geomFact = geoms.First().Factory;
+            foreach (var g in geoms)
+            {
+                _geomFact = g.Factory;
+                break;
+            }
 
             var segStrings = ToSegmentStrings(ExtractLines(geoms));
             //Noder sr = new SimpleSnapRounder(pm);

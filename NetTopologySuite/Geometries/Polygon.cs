@@ -632,6 +632,7 @@ namespace NetTopologySuite.Geometries
 
     }
 
+#if NET35
     public static class CoordinateSequenceEx
     {
         public static int GetHashCode(this ICoordinateSequence sequence, int baseValue, Func<int, int> operation)
@@ -645,4 +646,5 @@ namespace NetTopologySuite.Geometries
         }
         
     }
+#endif
 }

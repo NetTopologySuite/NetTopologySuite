@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using GeoAPI.Geometries;
-using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Geometries.Utilities
 {
@@ -100,7 +98,7 @@ namespace NetTopologySuite.Geometries.Utilities
                 return operation.Edit(geometry, _factory);
             if (geometry is ILineString)
                 return operation.Edit(geometry, _factory);
-            Assert.ShouldNeverReachHere("Unsupported Geometry classes should be caught in the GeometryEditorOperation.");
+            NetTopologySuite.Utilities.Assert.ShouldNeverReachHere("Unsupported Geometry classes should be caught in the GeometryEditorOperation.");
             return null;
         }
 
@@ -146,15 +144,15 @@ namespace NetTopologySuite.Geometries.Utilities
             }
 
             if (collectionForType is IMultiPoint)
-                return _factory.CreateMultiPoint(geometries.Cast<IPoint>().ToArray());
+                return _factory.CreateMultiPoint(Enumerable.ToArray<IPoint>(geometries));
 
             if (collectionForType is IMultiLineString)
-                return _factory.CreateMultiLineString(geometries.Cast<ILineString>().ToArray());
+                return _factory.CreateMultiLineString(Enumerable.ToArray<ILineString>(geometries));
 
             if (collectionForType is IMultiPolygon)
-                return _factory.CreateMultiPolygon(geometries.Cast<IPolygon>().ToArray());
+                return _factory.CreateMultiPolygon(Enumerable.ToArray<IPolygon>(geometries));
 
-            return _factory.CreateGeometryCollection(geometries.ToArray());
+            return _factory.CreateGeometryCollection(Enumerable.ToArray(geometries));
         }
 
         /// <summary>

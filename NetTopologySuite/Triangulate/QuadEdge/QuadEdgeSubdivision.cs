@@ -494,12 +494,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <see cref="GetVertexUniqueEdges"/>
         public IEnumerable<Vertex> GetVertices(bool includeFrame)
         {
-            var vertices =
-#if !WINDOWS_PHONE
-                new HashSet<Vertex>();
-#else
- new Set<Vertex>();
-#endif
+            var vertices = new Set<Vertex>();
 
             foreach (var qe in _quadEdges)
             {
@@ -541,12 +536,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public IList<QuadEdge> GetVertexUniqueEdges(bool includeFrame)
         {
             var edges = new List<QuadEdge>();
-            var visitedVertices =
-#if !WINDOWS_PHONE
-                new HashSet<Vertex>();
-#else
- new Set<Vertex>();
-#endif
+            var visitedVertices = new Set<Vertex>();
+
             foreach (var qe in _quadEdges)
             {
                 Vertex v = qe.Orig;
@@ -596,12 +587,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             var edgeStack = new Stack<QuadEdge>();
             edgeStack.Push(_startingEdge);
 
-            var visitedEdges =
-#if !WINDOWS_PHONE
-                new HashSet<QuadEdge>();
-#else
- new Set<QuadEdge>();
-#endif
+            var visitedEdges = new Set<QuadEdge>();
 
             while (edgeStack.Count > 0)
             {
@@ -663,11 +649,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             edgeStack.Push(_startingEdge);
 
             var visitedEdges =
-#if !WINDOWS_PHONE
-                new HashSet<QuadEdge>();
-#else
- new Set<QuadEdge>();
-#endif
+                new Set<QuadEdge>();
 
             while (edgeStack.Count > 0)
             {
@@ -702,11 +684,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         ///         outer)
         /// </returns>
         private QuadEdge[] FetchTriangleToVisit(QuadEdge edge, Stack<QuadEdge> edgeStack, bool includeFrame,
-#if !WINDOWS_PHONE
-            HashSet<QuadEdge> visitedEdges)
-#else
- Set<QuadEdge> visitedEdges)
-#endif
+            Set<QuadEdge> visitedEdges)
         {
             QuadEdge curr = edge;
             int edgeCount = 0;

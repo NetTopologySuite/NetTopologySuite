@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Xml;
 using GeoAPI.Geometries;
 using GeoAPI.IO;
+using GeoAPI.Operation.Buffer;
 using GeoAPI.Operations.Buffer;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries.Utilities;
@@ -2286,6 +2287,7 @@ namespace NetTopologySuite.Geometries
     
     }
 
+#if NET35
     /// <summary>
     /// Extension Methods for geometries
     /// </summary>
@@ -2304,4 +2306,5 @@ namespace NetTopologySuite.Geometries
                 : writer.Write(self);
         }
     }
+#endif
 }
