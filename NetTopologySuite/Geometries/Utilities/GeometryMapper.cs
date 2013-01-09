@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
 using GeoAPI.Geometries;
+#if !NET35
+using MapGeometryDelegate = GeoAPI.Func<GeoAPI.Geometries.IGeometry, GeoAPI.Geometries.IGeometry>;
+#else
 using MapGeometryDelegate = System.Func<GeoAPI.Geometries.IGeometry, GeoAPI.Geometries.IGeometry>;
+#endif
 
 namespace NetTopologySuite.Geometries.Utilities
 {

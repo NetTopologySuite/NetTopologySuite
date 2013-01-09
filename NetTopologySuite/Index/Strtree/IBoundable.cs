@@ -1,8 +1,12 @@
+using System;
+using GeoAPI.Geometries;
+
 namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
     /// A spatial object in an AbstractSTRtree.
     /// </summary>
+    [Obsolete]
     public interface IBoundable
     {
         /// <summary> 

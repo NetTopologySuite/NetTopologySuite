@@ -1,4 +1,6 @@
-﻿namespace NetTopologySuite.IO.Tests
+﻿using NetTopologySuite.Geometries.Implementation;
+
+namespace NetTopologySuite.IO.Tests
 {
     using System;
     using System.Configuration;
@@ -82,7 +84,11 @@
         {
             AppSettingsReader asr = new AppSettingsReader();
             this.SRID = (int)asr.GetValue("Srid", typeof(int));
-            this.PrecisionModel = new PrecisionModel((PrecisionModels)Enum.Parse(typeof(PrecisionModels), (string)asr.GetValue("PrecisionModel", typeof(string))));
+            var pm = (string) asr.GetValue("PrecisionModel", typeof (string));
+            int scale;
+            this.PrecisionModel = int.TryParse(pm, out scale) 
+                ? new PrecisionModel(scale) 
+                : new PrecisionModel((PrecisionModels)Enum.Parse(typeof(PrecisionModels), pm));
             this.MinX = (double)asr.GetValue("MinX", typeof(double));
             this.MaxX = (double)asr.GetValue("MaxX", typeof(double));
             this.MinY = (double)asr.GetValue("MinY", typeof(double));
@@ -105,11 +111,14 @@
             }
             protected set
             {
-                PrecisionModel oldPM = new PrecisionModel();
+                var oldPM = new PrecisionModel();
                 if (this.RandomGeometryHelper != null)
                     oldPM = (PrecisionModel)this.RandomGeometryHelper.Factory.PrecisionModel;
                 Debug.Assert(this.RandomGeometryHelper != null, "RandomGeometryHelper != null");
-                this.RandomGeometryHelper.Factory = new GeometryFactory(oldPM, value);
+                if (RandomGeometryHelper.Factory is OgcCompliantGeometryFactory)
+                    this.RandomGeometryHelper.Factory = new OgcCompliantGeometryFactory(oldPM, value);
+                else
+                    this.RandomGeometryHelper.Factory = new GeometryFactory(oldPM, value);
             }
         }
 
@@ -117,17 +126,26 @@
         {
             get
             {
-                return (PrecisionModel)this.RandomGeometryHelper.Factory.PrecisionModel;
+                return (PrecisionModel)RandomGeometryHelper.Factory.PrecisionModel;
             }
             protected set
             {
                 if (value == null)
                     return;
 
-                if (value == this.PrecisionModel)
+                if (value == PrecisionModel)
                     return;
 
-                this.RandomGeometryHelper.Factory = new GeometryFactory(value);
+                var factory = RandomGeometryHelper.Factory;
+                var oldSrid = factory != null ? factory.SRID : 0;
+                var oldFactory = factory != null
+                                     ? factory.CoordinateSequenceFactory
+                                     : CoordinateArraySequenceFactory.Instance;
+                
+                if (RandomGeometryHelper.Factory is OgcCompliantGeometryFactory)
+                    RandomGeometryHelper.Factory = new OgcCompliantGeometryFactory(value, oldSrid, oldFactory);
+                else
+                    RandomGeometryHelper.Factory = new GeometryFactory(value, oldSrid, oldFactory);
             }
         }
 
@@ -172,16 +190,20 @@
 
         public void PerformTest(IGeometry gIn)
         {
-            byte[] b = this.Write(gIn);
-            IGeometry gParsed = this.Read(b);
+            var writer = new WKTWriter(2) {EmitSRID = true, MaxCoordinatesPerLine = 3,};
+            byte[] b = null;
+            Assert.DoesNotThrow(() => b = Write(gIn), "Threw exception during write:\n{0}", writer.WriteFormatted(gIn));
 
-            Assert.IsNotNull(gParsed);
-            CheckEquality(gIn, gParsed);
+            IGeometry gParsed = null;
+            Assert.DoesNotThrow(() => gParsed = Read(b), "Threw exception during read:\n{0}", writer.WriteFormatted(gIn));
+
+            Assert.IsNotNull(gParsed, "Could not be parsed\n{0}", gIn);
+            CheckEquality(gIn, gParsed, writer);
         }
 
-        protected virtual void CheckEquality(IGeometry gIn, IGeometry gParsed)
+        protected virtual void CheckEquality(IGeometry gIn, IGeometry gParsed, WKTWriter writer)
         {
-            Assert.IsTrue(gIn.EqualsExact(gParsed));
+            Assert.IsTrue(gIn.EqualsExact(gParsed), "Instances are not equal\n{0}\n\n{1}", gIn, gParsed);
         }
 
         protected abstract IGeometry Read(byte[] b);

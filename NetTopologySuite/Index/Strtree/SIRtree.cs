@@ -1,5 +1,6 @@
 
 using System;
+using GeoAPI.Geometries;
 using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
 
@@ -11,14 +12,14 @@ namespace NetTopologySuite.Index.Strtree
     /// P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
     /// </summary>
-    public class SIRtree : AbstractSTRtree 
+    public class SIRtree<TItem> : AbstractSTRtree<Interval, TItem> 
     {
-        private class AnnonymousComparerImpl : IComparer<object>
-        {    
-            public int Compare(object o1, object o2)
+        private class AnnonymousComparerImpl : IComparer<IBoundable<Interval, TItem>>
+        {
+            public int Compare(IBoundable<Interval, TItem> o1, IBoundable<Interval, TItem> o2)
             {
-                var c1 = ((Interval) ((IBoundable) o1).Bounds).Centre;
-                var c2 = ((Interval) ((IBoundable) o2).Bounds).Centre;
+                var c1 = o1.Bounds.Centre;
+                var c2 = o2.Bounds.Centre;
                 return c1.CompareTo(c2);
 
                 /*
@@ -30,13 +31,13 @@ namespace NetTopologySuite.Index.Strtree
 
         private class AnonymousIntersectsOpImpl : IIntersectsOp
         {
-            public bool Intersects(object aBounds, object bBounds) 
+            public bool Intersects(Interval aBounds, Interval bBounds) 
             {
-                return ((Interval)aBounds).Intersects((Interval)bBounds);
+                return aBounds.Intersects(bBounds);
             }
         }
 
-        private class AnonymousAbstractNodeImpl : AbstractNode
+        private class AnonymousAbstractNodeImpl : AbstractNode<Interval, TItem>
         {
             /// <summary>
             /// 
@@ -48,24 +49,23 @@ namespace NetTopologySuite.Index.Strtree
             /// 
             /// </summary>
             /// <returns></returns>
-            protected override object ComputeBounds()
+            protected override Interval ComputeBounds()
             {
                 Interval bounds = null;
                 //var bounds = Interval.Create();
-                foreach (object i in ChildBoundables)
+                foreach (var childBoundable in ChildBoundables)
                 {
-                    var childBoundable = (IBoundable)i;
                     if (bounds == null)
-                         bounds = new Interval((Interval)childBoundable.Bounds);
+                         bounds = new Interval(childBoundable.Bounds);
                     else 
-                        bounds.ExpandToInclude((Interval)childBoundable.Bounds);
+                        bounds.ExpandToInclude(childBoundable.Bounds);
                     //bounds = bounds.ExpandedByInterval((Interval) childBoundable.Bounds);
                 }
                 return bounds;
             }
-        }       
+        }
 
-        private static readonly IComparer<object> Comparator = new AnnonymousComparerImpl(); 
+        private static readonly IComparer<IBoundable<Interval, TItem>> Comparator = new AnnonymousComparerImpl(); 
 
         private static readonly IIntersectsOp IntersectsOperation = new AnonymousIntersectsOpImpl();
 
@@ -85,7 +85,7 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
-        protected override AbstractNode CreateNode(int level) 
+        protected override AbstractNode<Interval, TItem> CreateNode(int level) 
         {                
             return new AnonymousAbstractNodeImpl(level);
         }
@@ -96,7 +96,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <param name="x1"></param>
         /// <param name="x2"></param>
         /// <param name="item"></param>
-        public void Insert(double x1, double x2, object item) 
+        public void Insert(double x1, double x2, TItem item) 
         {
             Insert(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)), item);
             //Insert(Interval.Create(x1, x2), item);
@@ -106,7 +106,7 @@ namespace NetTopologySuite.Index.Strtree
         /// Returns items whose bounds intersect the given value.
         /// </summary>
         /// <param name="x"></param>
-        public IList Query(double x) 
+        public IList<TItem> Query(double x) 
         {
             return Query(x, x);
         }
@@ -116,7 +116,7 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="x1">Possibly equal to x2.</param>
         /// <param name="x2">Possibly equal to x1.</param>
-        public IList Query(double x1, double x2) 
+        public IList<TItem> Query(double x1, double x2) 
         {
             return Query(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)));
             //return Query(Interval.Create(x1, x2));
@@ -137,7 +137,7 @@ namespace NetTopologySuite.Index.Strtree
         /// 
         /// </summary>
         /// <returns></returns>
-        protected override IComparer<object> GetComparer() 
+        protected override IComparer<IBoundable<Interval, TItem>> GetComparer() 
         {
             return Comparator;
         }

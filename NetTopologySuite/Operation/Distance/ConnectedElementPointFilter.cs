@@ -19,7 +19,7 @@ namespace NetTopologySuite.Operation.Distance
         /// </summary>
         public static IList<Coordinate> GetCoordinates(Geometry geom)
         {
-            IList<Coordinate> pts = new List<Coordinate>();
+            var pts = new List<Coordinate>();
             geom.Apply(new ConnectedElementPointFilter(pts));
             return pts;
         }

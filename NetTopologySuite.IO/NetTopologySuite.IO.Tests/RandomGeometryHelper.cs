@@ -12,7 +12,7 @@ namespace NetTopologySuite.IO.Tests
         public RandomGeometryHelper(IGeometryFactory factory)
         {
             Factory = factory;
-            _geometricShapeFactory = new SineStarFactory(factory);
+            //_geometricShapeFactory = new SineStarFactory(factory);
             CreateCoordinate = () => new Coordinate();
             Ordinates = Ordinates.XY;
             MinX = -180;
@@ -58,7 +58,11 @@ namespace NetTopologySuite.IO.Tests
             {
                 var pts = new Coordinate[RND.Next(4, 15)];
                 for (var i = 0; i < pts.Length; i++)
+                {
                     pts[i] = RandomCoordinate;
+                    _factory.PrecisionModel.MakePrecise(pts[i]);
+                }
+
                 return pts;
             }
         }

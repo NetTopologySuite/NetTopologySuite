@@ -16,8 +16,8 @@ namespace NetTopologySuite.Operation.Overlay
         private readonly IGeometryFactory _geometryFactory;
         private readonly PointLocator _ptLocator;
 
-        private readonly IList<Edge> _lineEdgesList = new List<Edge>();
-        private readonly IList<IGeometry> _resultLineList = new List<IGeometry>();
+        private readonly List<Edge> _lineEdgesList = new List<Edge>();
+        private readonly List<IGeometry> _resultLineList = new List<IGeometry>();
 
         /// <summary>
         /// 

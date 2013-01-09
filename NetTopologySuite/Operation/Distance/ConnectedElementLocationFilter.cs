@@ -20,7 +20,7 @@ namespace NetTopologySuite.Operation.Distance
         /// </summary>
         public static IList<GeometryLocation> GetLocations(IGeometry geom)
         {
-            IList<GeometryLocation> locations = new List<GeometryLocation>();
+            var locations = new List<GeometryLocation>();
             geom.Apply(new ConnectedElementLocationFilter(locations));
             return locations;
         }

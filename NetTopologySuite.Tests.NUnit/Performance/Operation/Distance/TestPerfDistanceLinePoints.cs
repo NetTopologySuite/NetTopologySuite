@@ -45,9 +45,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
 
             //test(50);
             Test(100);
-            Test(200);
-            Test(500);
-            Test(1000);
+            //Test(200);
+            //Test(500);
+            //Test(1000);
             //test(5000);
             //test(10000);
             //test(50000);

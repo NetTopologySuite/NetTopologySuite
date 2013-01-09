@@ -11,7 +11,7 @@ namespace NetTopologySuite.Algorithm
     public class SIRtreePointInRing : IPointInRing 
     {
         private readonly ILinearRing _ring;
-        private SIRtree _sirTree;
+        private SIRtree<LineSegment> _sirTree;
         private int _crossings;  // number of segment/ray crossings
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         private void BuildIndex()
         {
-            _sirTree = new SIRtree();
+            _sirTree = new SIRtree<LineSegment>();
             Coordinate[] pts = _ring.Coordinates;
             for (int i = 1; i < pts.Length; i++) 
             {
@@ -51,10 +51,9 @@ namespace NetTopologySuite.Algorithm
             _crossings = 0;
 
             // test all segments intersected by vertical ray at pt
-            IList segs = _sirTree.Query(pt.Y);
-            foreach (object i in segs)
+            var segs = _sirTree.Query(pt.Y);
+            foreach (var seg in segs)
             {
-                LineSegment seg = (LineSegment) i;
                 TestLineSegment(pt, seg);
             }
 

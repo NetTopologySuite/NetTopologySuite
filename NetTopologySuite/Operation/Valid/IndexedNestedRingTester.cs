@@ -22,7 +22,7 @@ namespace NetTopologySuite.Operation.Valid
         private readonly GeometryGraph _graph;  // used to find non-node vertices
         private readonly IList<ILineString> _rings = new List<ILineString>();
         private readonly Envelope _totalEnv = new Envelope();
-        private ISpatialIndex _index;
+        private ISpatialIndex<ILineString> _index;
         private Coordinate _nestedPt;
 
         public IndexedNestedRingTester(GeometryGraph graph)
@@ -88,7 +88,7 @@ namespace NetTopologySuite.Operation.Valid
 
         private void BuildIndex()
         {
-            _index = new STRtree();
+            _index = new STRtree<ILineString>();
 
             for (int i = 0; i < _rings.Count; i++)
             {

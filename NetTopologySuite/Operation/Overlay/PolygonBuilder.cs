@@ -14,7 +14,7 @@ namespace NetTopologySuite.Operation.Overlay
     public class PolygonBuilder
     {
         private readonly IGeometryFactory _geometryFactory;        
-        private readonly IList<EdgeRing> _shellList = new List<EdgeRing>();
+        private readonly List<EdgeRing> _shellList = new List<EdgeRing>();
 
         /// <summary>
         /// 
@@ -46,9 +46,9 @@ namespace NetTopologySuite.Operation.Overlay
         public void Add(IList<EdgeEnd> dirEdges, IList<Node> nodes)
         {
             PlanarGraph.LinkResultDirectedEdges(nodes);
-            IList<EdgeRing> maxEdgeRings = BuildMaximalEdgeRings(dirEdges);
-            IList<EdgeRing> freeHoleList = new List<EdgeRing>();
-            IList<EdgeRing> edgeRings = BuildMinimalEdgeRings(maxEdgeRings, _shellList, freeHoleList);
+            var maxEdgeRings = BuildMaximalEdgeRings(dirEdges);
+            var freeHoleList = new List<EdgeRing>();
+            var edgeRings = BuildMinimalEdgeRings(maxEdgeRings, _shellList, freeHoleList);
             SortShellsAndHoles(edgeRings, _shellList, freeHoleList);
             PlaceFreeHoles(_shellList, freeHoleList);
             //Assert: every hole on freeHoleList has a shell assigned to it
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Operation.Overlay
         {
             get
             {
-                IList<IGeometry> resultPolyList = ComputePolygons(_shellList);
+                var resultPolyList = ComputePolygons(_shellList);
                 return resultPolyList;
             }
         }
@@ -71,9 +71,9 @@ namespace NetTopologySuite.Operation.Overlay
         /// </summary>
         /// <param name="dirEdges"></param>
         /// <returns></returns>
-        private IList<EdgeRing> BuildMaximalEdgeRings(IEnumerable<EdgeEnd> dirEdges)
+        private List<EdgeRing> BuildMaximalEdgeRings(IEnumerable<EdgeEnd> dirEdges)
         {
-            IList<EdgeRing> maxEdgeRings = new List<EdgeRing>();
+            var maxEdgeRings = new List<EdgeRing>();
             foreach (DirectedEdge de in dirEdges)
             {
                 if (de.IsInResult && de.Label.IsArea())
@@ -81,7 +81,7 @@ namespace NetTopologySuite.Operation.Overlay
                     // if this edge has not yet been processed
                     if (de.EdgeRing == null)
                     {
-                        MaximalEdgeRing er = new MaximalEdgeRing(de, _geometryFactory);
+                        var er = new MaximalEdgeRing(de, _geometryFactory);
                         maxEdgeRings.Add(er);
                         er.SetInResult();
                     }
@@ -97,17 +97,17 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="shellList"></param>
         /// <param name="freeHoleList"></param>
         /// <returns></returns>
-        private IList<EdgeRing> BuildMinimalEdgeRings(IList<EdgeRing> maxEdgeRings, IList<EdgeRing> shellList, IList<EdgeRing> freeHoleList)
+        private List<EdgeRing> BuildMinimalEdgeRings(List<EdgeRing> maxEdgeRings, IList<EdgeRing> shellList, IList<EdgeRing> freeHoleList)
         {
-            IList<EdgeRing> edgeRings = new List<EdgeRing>();
+            var edgeRings = new List<EdgeRing>();
             foreach (MaximalEdgeRing er in maxEdgeRings)
             {
                 if (er.MaxNodeDegree > 2)
                 {
                     er.LinkDirectedEdgesForMinimalEdgeRings();
-                    IList<EdgeRing> minEdgeRings = er.BuildMinimalRings();
+                    var minEdgeRings = er.BuildMinimalRings();
                     // at this point we can go ahead and attempt to place holes, if this EdgeRing is a polygon
-                    EdgeRing shell = FindShell(minEdgeRings);
+                    var shell = FindShell(minEdgeRings);
                     if (shell != null)
                     {
                         PlacePolygonHoles(shell, minEdgeRings);

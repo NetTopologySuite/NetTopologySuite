@@ -6,7 +6,8 @@ using NetTopologySuite.Geometries;
 //using NetTopologySuite.IO;
 using NetTopologySuite.Index.Strtree;
 using NUnit.Framework;
-
+using SIRtree = NetTopologySuite.Index.Strtree.SIRtree<object>;
+using AbstractNode = NetTopologySuite.Index.Strtree.AbstractNode<NetTopologySuite.Index.Strtree.Interval, object>;
 namespace NetTopologySuite.Tests.NUnit.Index
 {
     [TestFixture]
@@ -24,7 +25,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
                 return base.Root;
             }
 
-            public new IList<object> BoundablesAtLevel(int level)
+            public new IList<IBoundable<NetTopologySuite.Index.Strtree.Interval, object>> BoundablesAtLevel(int level)
             {
                 return base.BoundablesAtLevel(level);
             }

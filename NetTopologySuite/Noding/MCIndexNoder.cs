@@ -21,7 +21,7 @@ namespace NetTopologySuite.Noding
     public class MCIndexNoder : SinglePassNoder
     {
         private readonly List<MonotoneChain> _monoChains = new List<MonotoneChain>();
-        private readonly ISpatialIndex _index = new STRtree();
+        private readonly ISpatialIndex<MonotoneChain> _index = new STRtree<MonotoneChain>();
         private int _idCounter;
         private IList<ISegmentString> nodedSegStrings;
         private int _nOverlaps; // statistics
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// 
         /// </summary>
-        public ISpatialIndex Index
+        public ISpatialIndex<MonotoneChain> Index
         {
             get { return _index; }
         }
@@ -86,11 +86,10 @@ namespace NetTopologySuite.Noding
             MonotoneChainOverlapAction overlapAction = new SegmentOverlapAction(SegmentIntersector);
             foreach(var obj in _monoChains) 
             {
-                var queryChain = (MonotoneChain)obj;
+                var queryChain = obj;
                 var overlapChains = _index.Query(queryChain.Envelope);
-                foreach(var j in overlapChains)
+                foreach(var testChain in overlapChains)
                 {
-                    var testChain = (MonotoneChain)j;
                     /*
                      * following test makes sure we only compare each pair of chains once
                      * and that we don't compare a chain to itself
@@ -128,7 +127,7 @@ namespace NetTopologySuite.Noding
         /// </summary>
         public class SegmentOverlapAction : MonotoneChainOverlapAction
         {
-            private readonly ISegmentIntersector si;
+            private readonly ISegmentIntersector _si;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="SegmentOverlapAction"/> class.
@@ -136,7 +135,7 @@ namespace NetTopologySuite.Noding
             /// <param name="si">The <see cref="ISegmentIntersector" /></param>
             public SegmentOverlapAction(ISegmentIntersector si)
             {   
-                this.si = si;
+                _si = si;
             }
 
             /// <summary>
@@ -150,7 +149,7 @@ namespace NetTopologySuite.Noding
             {
                 var ss1 = (ISegmentString) mc1.Context;
                 var ss2 = (ISegmentString) mc2.Context;
-                si.ProcessIntersections(ss1, start1, ss2, start2);
+                _si.ProcessIntersections(ss1, start1, ss2, start2);
             }
 
         }

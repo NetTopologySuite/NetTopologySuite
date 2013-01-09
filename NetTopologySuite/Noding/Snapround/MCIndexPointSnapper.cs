@@ -12,22 +12,22 @@ namespace NetTopologySuite.Noding.Snapround
     public class MCIndexPointSnapper
     {
         //private IList<MonotoneChain> _monoChains;
-        private readonly STRtree _index;
+        private readonly STRtree<MonotoneChain> _index;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MCIndexPointSnapper"/> class.
         /// </summary>
         /// <param name="index"></param>
-        public MCIndexPointSnapper(ISpatialIndex index)
+        public MCIndexPointSnapper(ISpatialIndex<MonotoneChain> index)
         {
             //_monoChains = monoChains;
-            _index = (STRtree) index;
+            _index = (STRtree<MonotoneChain>)index;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        private class QueryVisitor : IItemVisitor<object>
+        private class QueryVisitor : IItemVisitor<MonotoneChain>
         {
             readonly Envelope _env;
             readonly HotPixelSnapAction _action;
@@ -46,9 +46,9 @@ namespace NetTopologySuite.Noding.Snapround
             /// <summary>
             /// </summary>
             /// <param name="item"></param>
-            public void VisitItem(object item)
+            public void VisitItem(MonotoneChain item)
             {
-                var testChain = (MonotoneChain) item;
+                var testChain = item;
                 testChain.Select(_env, _action);
             }
         }

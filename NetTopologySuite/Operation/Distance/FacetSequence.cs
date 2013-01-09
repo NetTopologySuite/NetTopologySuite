@@ -2,7 +2,6 @@
 using System.Text;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Distance
 {
@@ -53,8 +52,8 @@ namespace NetTopologySuite.Operation.Distance
         {
             get
             {
-                Envelope env = new Envelope();
-                for (int i = _start; i < _end; i++)
+                var env = new Envelope();
+                for (var i = _start; i < _end; i++)
                 {
                     env.ExpandToInclude(_pts.GetX(i), _pts.GetY(i));
                 }
@@ -122,27 +121,32 @@ namespace NetTopologySuite.Operation.Distance
 
         }
 
-        // temporary Coordinates to materialize points from the CoordinateSequence
-        private readonly Coordinate _p0 = new Coordinate();
-        private readonly Coordinate _p1 = new Coordinate();
-        private readonly Coordinate _q0 = new Coordinate();
-        private readonly Coordinate _q1 = new Coordinate();
+        //// temporary Coordinates to materialize points from the CoordinateSequence
+        //private readonly Coordinate _p0 = new Coordinate();
+        //private readonly Coordinate _p1 = new Coordinate();
+        //private readonly Coordinate _q0 = new Coordinate();
+        //private readonly Coordinate _q1 = new Coordinate();
 
         private double ComputeLineLineDistance(FacetSequence facetSeq)
         {
             // both linear - compute minimum segment-segment distance
-            double minDistance = Double.MaxValue;
+            var minDistance = Double.MaxValue;
+
+            var p0 = new Coordinate();
+            var p1 = new Coordinate();
+            var q0 = new Coordinate();
+            var q1 = new Coordinate();
 
             for (int i = _start; i < _end - 1; i++)
             {
                 for (int j = facetSeq._start; j < facetSeq._end - 1; j++)
                 {
-                    _pts.GetCoordinate(i, _p0);
-                    _pts.GetCoordinate(i + 1, _p1);
-                    facetSeq._pts.GetCoordinate(j, _q0);
-                    facetSeq._pts.GetCoordinate(j + 1, _q1);
+                    _pts.GetCoordinate(i, p0);
+                    _pts.GetCoordinate(i + 1, p1);
+                    facetSeq._pts.GetCoordinate(j, q0);
+                    facetSeq._pts.GetCoordinate(j + 1, q1);
 
-                    double dist = CGAlgorithms.DistanceLineLine(_p0, _p1, _q0, _q1);
+                    double dist = CGAlgorithms.DistanceLineLine(p0, p1, q0, q1);
                     if (dist == 0.0)
                         return 0.0;
                     if (dist < minDistance)
@@ -154,15 +158,17 @@ namespace NetTopologySuite.Operation.Distance
             return minDistance;
         }
 
-        private double ComputePointLineDistance(Coordinate pt, FacetSequence facetSeq)
+        private static double ComputePointLineDistance(Coordinate pt, FacetSequence facetSeq)
         {
-            double minDistance = Double.MaxValue;
+            var minDistance = Double.MaxValue;
 
-            for (int i = facetSeq._start; i < facetSeq._end - 1; i++)
+            var q0 = new Coordinate();
+            var q1 = new Coordinate();
+            for (var i = facetSeq._start; i < facetSeq._end - 1; i++)
             {
-                facetSeq._pts.GetCoordinate(i, _q0);
-                facetSeq._pts.GetCoordinate(i + 1, _q1);
-                double dist = CGAlgorithms.DistancePointLine(pt, _q0, _q1);
+                facetSeq._pts.GetCoordinate(i, q0);
+                facetSeq._pts.GetCoordinate(i + 1, q1);
+                var dist = CGAlgorithms.DistancePointLine(pt, q0, q1);
                 if (dist == 0.0) return 0.0;
                 if (dist < minDistance)
                 {

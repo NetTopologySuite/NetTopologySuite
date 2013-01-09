@@ -61,7 +61,7 @@ namespace NetTopologySuite.IO.Tests
             }
         }
 
-        protected override void CheckEquality(IGeometry gIn, IGeometry gParsed)
+        protected override void CheckEquality(IGeometry gIn, IGeometry gParsed, WKTWriter writer)
         {
             var res = gIn.EqualsExact(gParsed);
             if (res) return;

@@ -14,7 +14,7 @@ namespace NetTopologySuite.Operation.Overlay
     public class EdgeSetNoder
     {
         private readonly LineIntersector _li;
-        private readonly IList<Edge> _inputEdges = new List<Edge>();
+        private readonly List<Edge> _inputEdges = new List<Edge>();
 
         /// <summary>
         /// 

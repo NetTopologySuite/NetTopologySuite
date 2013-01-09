@@ -18,47 +18,46 @@ namespace NetTopologySuite.Index.Strtree
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
     /// </summary>
     [Serializable]
-    public class STRtree : AbstractSTRtree, ISpatialIndex
+    public class STRtree<TItem> : AbstractSTRtree<Envelope, TItem>, ISpatialIndex<TItem>
     {
         private static readonly AnonymousXComparerImpl XComparer = new AnonymousXComparerImpl();
         private static readonly AnonymousYComparerImpl YComparer = new AnonymousYComparerImpl();
         
-        private class AnonymousXComparerImpl : Comparer<object>
+        private class AnonymousXComparerImpl : Comparer<IBoundable<Envelope, TItem>>
         {
-            public override int Compare(object o1, object o2)
+            public override int Compare(IBoundable<Envelope, TItem> o1, IBoundable<Envelope, TItem> o2)
             {
-                return CompareDoubles(CentreX((Envelope) ((IBoundable) o1).Bounds),
-                                      CentreX((Envelope) ((IBoundable) o2).Bounds));
+                return CompareDoubles(CentreX(o1.Bounds),
+                                      CentreX(o2.Bounds));
             }
         }
 
-        private class AnonymousYComparerImpl : Comparer<object>
+        private class AnonymousYComparerImpl : Comparer<IBoundable<Envelope, TItem>>
         {
-            public override int Compare(object o1, object o2)
+            public override int Compare(IBoundable<Envelope, TItem> o1, IBoundable<Envelope, TItem> o2)
             {
-                return CompareDoubles(CentreY((Envelope) ((IBoundable) o1).Bounds),
-                                      CentreY((Envelope) ((IBoundable) o2).Bounds));
+                return CompareDoubles(CentreY(o1.Bounds),
+                                      CentreY(o2.Bounds));
             }
         }
 
         [Serializable]
-        private class AnonymousAbstractNodeImpl : AbstractNode
+        private class AnonymousAbstractNodeImpl : AbstractNode<Envelope, TItem>
         {
             public AnonymousAbstractNodeImpl(int nodeCapacity) :
                 base(nodeCapacity)
             {
             }
 
-            protected override object ComputeBounds()
+            protected override Envelope ComputeBounds()
             {
                 Envelope bounds = null;
-                foreach (var i in ChildBoundables)
+                foreach (var childBoundable in ChildBoundables)
                 {
-                    var childBoundable = (IBoundable) i;
                     if (bounds == null)
-                        bounds = new Envelope((Envelope) childBoundable.Bounds);
+                        bounds = new Envelope(childBoundable.Bounds);
                     else 
-                        bounds.ExpandToInclude((Envelope) childBoundable.Bounds);
+                        bounds.ExpandToInclude(childBoundable.Bounds);
                 }
                 return bounds;
             }
@@ -67,9 +66,9 @@ namespace NetTopologySuite.Index.Strtree
         private static readonly IIntersectsOp IntersectsOperation = new AnonymousIntersectsOpImpl();
         private class AnonymousIntersectsOpImpl : IIntersectsOp
         {
-            public bool Intersects(object aBounds, object bBounds)
+            public bool Intersects(Envelope aBounds, Envelope bBounds)
             {
-                return ((Envelope) aBounds).Intersects((Envelope) bBounds);
+                return aBounds.Intersects(bBounds);
             }
         }
 
@@ -132,11 +131,11 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="childBoundables"></param>
         /// <param name="newLevel"></param>
-        protected override IList CreateParentBoundables(IList childBoundables, int newLevel)
+        protected override IList<IBoundable<Envelope, TItem>> CreateParentBoundables(IList<IBoundable<Envelope, TItem>> childBoundables, int newLevel)
         {
             Assert.IsTrue(childBoundables.Count != 0);
             var minLeafCount = (int) Math.Ceiling((childBoundables.Count/(double) NodeCapacity));
-            var sortedChildBoundables = new List<object>(childBoundables);
+            var sortedChildBoundables = new List<IBoundable<Envelope, TItem>>(childBoundables);
             sortedChildBoundables.Sort(XComparer);
             var verticalSlices = VerticalSlices(sortedChildBoundables,
                                                     (int) Math.Ceiling(Math.Sqrt(minLeafCount)));
@@ -150,14 +149,14 @@ namespace NetTopologySuite.Index.Strtree
         /// <param name="verticalSlices"></param>
         /// <param name="newLevel"></param>
         /// <returns></returns>
-        private IList CreateParentBoundablesFromVerticalSlices(IList[] verticalSlices, int newLevel)
+        private List<IBoundable<Envelope, TItem>> CreateParentBoundablesFromVerticalSlices(IList<IBoundable<Envelope, TItem>>[] verticalSlices, int newLevel)
         {
             Assert.IsTrue(verticalSlices.Length > 0);
-            var parentBoundables = new List<object>();
+            var parentBoundables = new List<IBoundable<Envelope, TItem>>();
             for (int i = 0; i < verticalSlices.Length; i++)
             {
                 var tempList = CreateParentBoundablesFromVerticalSlice(verticalSlices[i], newLevel);
-                foreach (object o in tempList)
+                foreach (var o in tempList)
                     parentBoundables.Add(o);
             }
             return parentBoundables;
@@ -169,7 +168,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <param name="childBoundables"></param>
         /// <param name="newLevel"></param>
         /// <returns></returns>
-        protected IList CreateParentBoundablesFromVerticalSlice(IList childBoundables, int newLevel)
+        protected IList<IBoundable<Envelope, TItem>> CreateParentBoundablesFromVerticalSlice(IList<IBoundable<Envelope, TItem>> childBoundables, int newLevel)
         {
             return base.CreateParentBoundables(childBoundables, newLevel);
         }
@@ -179,14 +178,14 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="childBoundables">Must be sorted by the x-value of the envelope midpoints.</param>
         /// <param name="sliceCount"></param>
-        protected IList[] VerticalSlices(IList childBoundables, int sliceCount)
+        protected IList<IBoundable<Envelope, TItem>>[] VerticalSlices(IList<IBoundable<Envelope, TItem>> childBoundables, int sliceCount)
         {
             var sliceCapacity = (int) Math.Ceiling(childBoundables.Count/(double) sliceCount);
-            var slices = new IList[sliceCount];
+            var slices = new IList<IBoundable<Envelope, TItem>>[sliceCount];
             var i = childBoundables.GetEnumerator();
             for (var j = 0; j < sliceCount; j++)
             {
-                slices[j] = new List<object>();
+                slices[j] = new List<IBoundable<Envelope, TItem>>();
                 var boundablesAddedToSlice = 0;
                 /* 
                  *          Diego Guidi says:
@@ -197,7 +196,7 @@ namespace NetTopologySuite.Index.Strtree
                 // while (i.MoveNext() && boundablesAddedToSlice < sliceCapacity)
                 while (boundablesAddedToSlice < sliceCapacity && i.MoveNext())
                 {
-                    var childBoundable = (IBoundable) i.Current;
+                    var childBoundable = i.Current;
                     slices[j].Add(childBoundable);
                     boundablesAddedToSlice++;
                 }
@@ -210,7 +209,7 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
-        protected override AbstractNode CreateNode(int level)
+        protected override AbstractNode<Envelope, TItem> CreateNode(int level)
         {
             return new AnonymousAbstractNodeImpl(level);
         }
@@ -228,7 +227,7 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="itemEnv"></param>
         /// <param name="item"></param>
-        public void Insert(Envelope itemEnv, object item)
+        public void Insert(Envelope itemEnv, TItem item)
         {
             if (itemEnv.IsNull)
                 return;
@@ -239,7 +238,7 @@ namespace NetTopologySuite.Index.Strtree
         /// Returns items whose bounds intersect the given envelope.
         /// </summary>
         /// <param name="searchEnv"></param>
-        public IList<object> Query(Envelope searchEnv)
+        public IList<TItem> Query(Envelope searchEnv)
         {
             //Yes this method does something. It specifies that the bounds is an
             //Envelope. super.query takes an object, not an Envelope. [Jon Aquino 10/24/2003]
@@ -251,7 +250,7 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
-        public void Query(Envelope searchEnv, IItemVisitor<object> visitor)
+        public void Query(Envelope searchEnv, IItemVisitor<TItem> visitor)
         {
             //Yes this method does something. It specifies that the bounds is an
             //Envelope. super.query takes an Object, not an Envelope. [Jon Aquino 10/24/2003]
@@ -264,7 +263,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <param name="itemEnv">The Envelope of the item to remove.</param>
         /// <param name="item">The item to remove.</param>
         /// <returns><c>true</c> if the item was found.</returns>
-        public bool Remove(Envelope itemEnv, object item)
+        public bool Remove(Envelope itemEnv, TItem item)
         {
             return base.Remove(itemEnv, item);
         }
@@ -273,7 +272,7 @@ namespace NetTopologySuite.Index.Strtree
         /// 
         /// </summary>
         /// <returns></returns>
-        protected override IComparer<object> GetComparer()
+        protected override IComparer<IBoundable<Envelope, TItem>> GetComparer()
         {
             return YComparer;
         }
@@ -286,9 +285,9 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="itemDist">A distance metric applicable to the items in this tree</param>
         /// <returns>The pair of the nearest items</returns>
-        public Object[] NearestNeighbour(IItemDistance itemDist)
+        public TItem[] NearestNeighbour(IItemDistance<Envelope, TItem> itemDist)
         {
-            var bp = new BoundablePair(Root, Root, itemDist);
+            var bp = new BoundablePair<TItem>(Root, Root, itemDist);
             return NearestNeighbour(bp);
         }
 
@@ -307,17 +306,17 @@ namespace NetTopologySuite.Index.Strtree
         /// <param name="item">The item to find the nearest neighbour of</param>
         /// <param name="itemDist">A distance metric applicable to the items in this tree and the query item</param>
         /// <returns>The nearest item in this tree</returns>
-        public Object NearestNeighbour(Envelope env, Object item, IItemDistance itemDist)
+        public TItem NearestNeighbour(Envelope env, TItem item, IItemDistance<Envelope, TItem> itemDist)
         {
-            IBoundable bnd = new ItemBoundable(env, item);
-            var bp = new BoundablePair(Root, bnd, itemDist);
+            var bnd = new ItemBoundable<Envelope, TItem>(env, item);
+            var bp = new BoundablePair<TItem>(Root, bnd, itemDist);
             return NearestNeighbour(bp)[0];
         }
 
         /// <summary>
         /// Finds the two nearest items from this tree 
         /// and another tree,
-        /// using <see cref="IItemDistance"/> as the distance metric.
+        /// using <see cref="IItemDistance{Envelope, TItem}"/> as the distance metric.
         /// A Branch-and-Bound tree traversal algorithm is used
         /// to provide an efficient search.
         /// The result value is a pair of items, 
@@ -327,25 +326,25 @@ namespace NetTopologySuite.Index.Strtree
         /// <param name="tree">Another tree</param>
         /// <param name="itemDist">A distance metric applicable to the items in the trees</param>
         /// <returns>The pair of the nearest items, one from each tree</returns>
-        public Object[] NearestNeighbour(STRtree tree, IItemDistance itemDist)
+        public TItem[] NearestNeighbour(STRtree<TItem> tree, IItemDistance<Envelope, TItem> itemDist)
         {
-            var bp = new BoundablePair(Root, tree.Root, itemDist);
+            var bp = new BoundablePair<TItem>(Root, tree.Root, itemDist);
             return NearestNeighbour(bp);
         }
 
 
-        private static Object[] NearestNeighbour(BoundablePair initBndPair)
+        private static TItem[] NearestNeighbour(BoundablePair<TItem> initBndPair)
         {
             return NearestNeighbour(initBndPair, Double.PositiveInfinity);
         }
 
-        private static Object[] NearestNeighbour(BoundablePair initBndPair, double maxDistance)
+        private static TItem[] NearestNeighbour(BoundablePair<TItem> initBndPair, double maxDistance)
         {
             var distanceLowerBound = maxDistance;
-            BoundablePair minPair = null;
+            BoundablePair<TItem> minPair = null;
 
             // initialize internal structures
-            var priQ = new PriorityQueue<BoundablePair>();
+            var priQ = new PriorityQueue<BoundablePair<TItem>>();
 
             // initialize queue
             priQ.Add(initBndPair);
@@ -401,8 +400,8 @@ namespace NetTopologySuite.Index.Strtree
             // done - return items with min distance
             return new[]
                        {
-                           ((ItemBoundable) minPair.GetBoundable(0)).Item,
-                           ((ItemBoundable) minPair.GetBoundable(1)).Item
+                           ((ItemBoundable<Envelope, TItem>) minPair.GetBoundable(0)).Item,
+                           ((ItemBoundable<Envelope, TItem>) minPair.GetBoundable(1)).Item
                        };
             return null;
         }

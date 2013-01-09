@@ -7,13 +7,14 @@ using NetTopologySuite.Index.Strtree;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 using NetTopologySuite.Tests.NUnit.Utilities;
-
+using STRtree = NetTopologySuite.Index.Strtree.STRtree<object>;
+using AbstractNode = NetTopologySuite.Index.Strtree.AbstractNode<GeoAPI.Geometries.Envelope, object>;
 namespace NetTopologySuite.Tests.NUnit.Index
 {
     //Tests are exposed by SpatialIndexTestCase type
     public class STRtreeTest //: SpatialIndexTestCase
     {
-        private class TestTree : SIRtree
+        private class TestTree : STRtree
         {
             public TestTree(int nodeCapacity)
                 : base(nodeCapacity)
@@ -25,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
                 return base.Root;
             }
 
-            public IList<object> BoundablesAtLevel(int level)
+            public IList<IBoundable<Envelope, object>> BoundablesAtLevel(int level)
             {
                 return base.BoundablesAtLevel(level);
             }
@@ -166,16 +167,16 @@ namespace NetTopologySuite.Tests.NUnit.Index
                                                           int nodeCapacity, int expectedChildrenPerParentBoundable,
                                                           int expectedChildrenOfLastParent)
         {
-            STRtreeDemo.TestTree t = new STRtreeDemo.TestTree(nodeCapacity);
-            IList<object> parentBoundables
+            var t = new STRtreeDemo.TestTree(nodeCapacity);
+            var parentBoundables
                 = t.CreateParentBoundablesFromVerticalSlice(ItemWrappers(childCount), 0);
             for (int i = 0; i < parentBoundables.Count - 1; i++)
             {
 //-1
-                AbstractNode parentBoundable = (AbstractNode) parentBoundables[i];
+                var parentBoundable = (AbstractNode) parentBoundables[i];
                 Assert.AreEqual(expectedChildrenPerParentBoundable, parentBoundable.ChildBoundables.Count);
             }
-            AbstractNode lastParent = (AbstractNode) parentBoundables[parentBoundables.Count - 1];
+            var lastParent = (AbstractNode) parentBoundables[parentBoundables.Count - 1];
             Assert.AreEqual(expectedChildrenOfLastParent, lastParent.ChildBoundables.Count);
         }
 
@@ -193,12 +194,12 @@ namespace NetTopologySuite.Tests.NUnit.Index
             Assert.AreEqual(expectedBoundablesOnLastSlice, slices[sliceCount - 1].Count);
         }
 
-        private static IList<object> ItemWrappers(int size)
+        private static IList<IBoundable<Envelope, object>> ItemWrappers(int size)
         {
-            var itemWrappers = new List<object>();
+            var itemWrappers = new List<IBoundable<Envelope, object>>();
             for (var i = 0; i < size; i++)
             {
-                itemWrappers.Add(new ItemBoundable(new Envelope(0, 0, 0, 0), new Object()));
+                itemWrappers.Add(new ItemBoundable<Envelope, object>(new Envelope(0, 0, 0, 0), new Object()));
             }
             return itemWrappers;
         }

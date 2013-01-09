@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GeoAPI.Geometries;
+#if !NET35
+using MapGeometryDelegate = GeoAPI.Func<GeoAPI.Geometries.IGeometry, GeoAPI.Geometries.IGeometry>;
+#else
 using MapGeometryDelegate = System.Func<GeoAPI.Geometries.IGeometry, GeoAPI.Geometries.IGeometry>;
-
+#endif
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
@@ -19,7 +21,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="gc"></param>
         /// <param name="op"></param>
         /// <returns></returns>
-        public static IGeometryCollection Map(IGeometryCollection gc, Func<IGeometry, IGeometry> op)
+        public static IGeometryCollection Map(IGeometryCollection gc, MapGeometryDelegate op)
         {
             var mapper = new GeometryCollectionMapper(op);
             return mapper.Map(gc);

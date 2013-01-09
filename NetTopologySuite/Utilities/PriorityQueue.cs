@@ -12,7 +12,7 @@ namespace NetTopologySuite.Utilities
         where T: IComparable<T>
     {
         private int _size; // Number of elements in queue
-        private readonly IList<T> _items; // The queue binary heap array
+        private readonly List<T> _items; // The queue binary heap array
 
         ///<summary>
         /// Creates a new empty priority queue

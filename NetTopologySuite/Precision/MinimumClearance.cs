@@ -191,7 +191,7 @@ namespace NetTopologySuite.Precision
         /// Also computes the values of the nearest points, if any.
         /// </summary>
         /// <author>Martin Davis</author>
-        private class MinClearanceDistance : IItemDistance
+        private class MinClearanceDistance : IItemDistance<Envelope, FacetSequence>
         {
             private double _minDist = Double.MaxValue;
             private readonly Coordinate[] _minPts = new Coordinate[2];
@@ -201,10 +201,10 @@ namespace NetTopologySuite.Precision
                 get { return _minPts; }
             }
 
-            public double Distance(ItemBoundable b1, ItemBoundable b2)
+            public double Distance(IBoundable<Envelope, FacetSequence> b1, IBoundable<Envelope, FacetSequence> b2)
             {
-                var fs1 = (FacetSequence)b1.Item;
-                var fs2 = (FacetSequence)b2.Item;
+                var fs1 = b1.Item;
+                var fs2 = b2.Item;
                 _minDist = Double.MaxValue;
                 return Distance(fs1, fs2);
             }

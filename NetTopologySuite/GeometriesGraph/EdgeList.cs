@@ -18,7 +18,7 @@ namespace NetTopologySuite.GeometriesGraph
     /// </summary>
     public class EdgeList
     {
-        private readonly IList<Edge> _edges = new List<Edge>();
+        private readonly List<Edge> _edges = new List<Edge>();
 
         /// <summary>
         /// An index of the edges, for fast lookup.
@@ -28,7 +28,7 @@ namespace NetTopologySuite.GeometriesGraph
         ///// of the edge coordinates.
         /// </summary>
         ////private readonly ISpatialIndex<Edge> _index = new Quadtree<Edge>();
-        private readonly IDictionary<OrientedCoordinateArray, Edge> _ocaMap = new OrderedDictionary<OrientedCoordinateArray, Edge>();
+        private readonly OrderedDictionary<OrientedCoordinateArray, Edge> _ocaMap = new OrderedDictionary<OrientedCoordinateArray, Edge>();
 
 
         /// <summary>

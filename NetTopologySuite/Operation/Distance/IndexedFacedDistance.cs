@@ -51,7 +51,7 @@ namespace NetTopologySuite.Operation.Distance
             return dist.GetDistance(g2);
         }
 
-        private readonly STRtree _cachedTree;
+        private readonly STRtree<FacetSequence> _cachedTree;
 
         /// <summary>
         /// Creates a new distance-finding instance for a given target <see cref="IGeometry"/>.
@@ -82,7 +82,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <returns>The computed distance</returns>
         public double GetDistance(IGeometry g)
         {
-            STRtree tree2 = FacetSequenceTreeBuilder.BuildSTRtree(g);
+            STRtree<FacetSequence> tree2 = FacetSequenceTreeBuilder.BuildSTRtree(g);
             Object[] obj = _cachedTree.NearestNeighbour(tree2,
                                                         new FacetSequenceDistance());
             return FacetDistance(obj);
@@ -138,13 +138,11 @@ namespace NetTopologySuite.Operation.Distance
         }
         */
 
-        private class FacetSequenceDistance : IItemDistance
+        private class FacetSequenceDistance : IItemDistance<Envelope, FacetSequence>
         {
-            public double Distance(ItemBoundable item1, ItemBoundable item2)
+            public double Distance(IBoundable<Envelope, FacetSequence> item1, IBoundable<Envelope, FacetSequence> item2)
             {
-                var fs1 = (FacetSequence) item1.Item;
-                var fs2 = (FacetSequence) item2.Item;
-                return fs1.Distance(fs2);
+                return item1.Item.Distance(item2.Item);
             }
         }
     }

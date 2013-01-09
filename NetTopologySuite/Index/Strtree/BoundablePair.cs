@@ -5,7 +5,7 @@ using NetTopologySuite.Utilities;
 namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
-    /// A pair of {@link Boundable}s, whose leaf items 
+    /// A pair of <see cref="IBoundable{Envelope, TItem}"/>s, whose leaf items 
     /// support a distance metric between them.
     /// Used to compute the distance between the members,
     /// and to expand a member relative to the other
@@ -15,21 +15,21 @@ namespace NetTopologySuite.Index.Strtree
     /// which allows building a priority queue by minimum distance.
     /// </summary>
     /// <author>Martin Davis</author>
-    internal class BoundablePair : IComparable<BoundablePair>
+    internal class BoundablePair<TItem> : IComparable<BoundablePair<TItem>>
     {
-        private readonly IBoundable _boundable1;
-        private readonly IBoundable _boundable2;
+        private readonly IBoundable<Envelope, TItem> _boundable1;
+        private readonly IBoundable<Envelope, TItem> _boundable2;
         private readonly double _distance;
-        private readonly IItemDistance _itemDistance;
+        private readonly IItemDistance<Envelope, TItem> _itemDistance;
         //private double _maxDistance = -1.0;
 
         /// <summary>
-        /// Creates an instance of this class with the given <see cref="IBoundable"/>s and the <see cref="IItemDistance"/> function.
+        /// Creates an instance of this class with the given <see cref="IBoundable{Envelope, TItem}"/>s and the <see cref="IItemDistance{Envelope, TItem}"/> function.
         /// </summary>
         /// <param name="boundable1">The first boundable</param>
         /// <param name="boundable2">The second boundable</param>
         /// <param name="itemDistance">The item distance function</param>
-        public BoundablePair(IBoundable boundable1, IBoundable boundable2, IItemDistance itemDistance)
+        public BoundablePair(IBoundable<Envelope, TItem> boundable1, IBoundable<Envelope, TItem> boundable2, IItemDistance<Envelope, TItem> itemDistance)
         {
             _boundable1 = boundable1;
             _boundable2 = boundable2;
@@ -38,34 +38,34 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// Gets one of the member <see cref="IBoundable"/>s in the pair 
+        /// Gets one of the member <see cref="IBoundable{Envelope, TItem}"/>s in the pair 
         /// (indexed by [0, 1]).
         /// </summary>
         /// <param name="i">The index of the member to return (0 or 1)</param>
         /// <returns>The chosen member</returns>
-        public IBoundable GetBoundable(int i)
+        public IBoundable<Envelope, TItem> GetBoundable(int i)
         {
             return i == 0 ? _boundable1 : _boundable2;
         }
 
         /// <summary>
-        /// Computes the distance between the <see cref="IBoundable"/>s in this pair.
+        /// Computes the distance between the <see cref="IBoundable{Envelope, TItem}"/>s in this pair.
         /// The boundables are either composites or leaves.
         /// If either is composite, the distance is computed as the minimum distance
         /// between the bounds.  
-        /// If both are leaves, the distance is computed by <see cref="IItemDistance.Distance(ItemBoundable, ItemBoundable)"/>.
+        /// If both are leaves, the distance is computed by <see cref="IItemDistance{Envelope, TItem}.Distance(ItemBoundable{Envelope, TItem}, ItemBoundable{Envelope, TItem})"/>.
         /// </summary>
-        /// <returns>The distance between the <see cref="IBoundable"/>s in this pair.</returns>
+        /// <returns>The distance between the <see cref="IBoundable{Envelope, TItem}"/>s in this pair.</returns>
         private double GetDistance()
         {
             // if items, compute exact distance
             if (IsLeaves)
             {
-                return _itemDistance.Distance((ItemBoundable) _boundable1,
-                                              (ItemBoundable) _boundable2);
+                return _itemDistance.Distance((ItemBoundable<Envelope, TItem>)_boundable1,
+                                              (ItemBoundable<Envelope, TItem>)_boundable2);
             }
             // otherwise compute distance between bounds of boundables
-            return ((Envelope) _boundable1.Bounds).Distance(((Envelope) _boundable2.Bounds));
+            return _boundable1.Bounds.Distance(_boundable2.Bounds);
         }
 
 
@@ -130,9 +130,9 @@ namespace NetTopologySuite.Index.Strtree
         /// <summary>
         /// Compares two pairs based on their minimum distances
         /// </summary>
-        public int CompareTo(BoundablePair o)
+        public int CompareTo(BoundablePair<TItem> o)
         {
-            BoundablePair nd = o;
+            BoundablePair<TItem> nd = o;
             if (Distance < nd.GetDistance()) return -1;
             if (Distance > nd.Distance) return 1;
             return 0;
@@ -146,14 +146,14 @@ namespace NetTopologySuite.Index.Strtree
             get { return !(IsComposite(_boundable1) || IsComposite(_boundable2)); }
         }
 
-        public static bool IsComposite(Object item)
+        public static bool IsComposite(IBoundable<Envelope, TItem> item)
         {
-            return (item is AbstractNode);
+            return (item is AbstractNode<Envelope, TItem>);
         }
 
-        private static double Area(IBoundable b)
+        private static double Area(IBoundable<Envelope, TItem> b)
         {
-            return ((Envelope) b.Bounds).Area;
+            return b.Bounds.Area;
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace NetTopologySuite.Index.Strtree
         /// computes a list of new pairs 
         /// from the expansion of the larger boundable.
         /// </summary>
-        public void ExpandToQueue(PriorityQueue<BoundablePair> priQ, double minDistance)
+        public void ExpandToQueue(PriorityQueue<BoundablePair<TItem>> priQ, double minDistance)
         {
             bool isComp1 = IsComposite(_boundable1);
             bool isComp2 = IsComposite(_boundable2);
@@ -196,13 +196,13 @@ namespace NetTopologySuite.Index.Strtree
             throw new ArgumentException("neither boundable is composite");
         }
 
-        private void Expand(IBoundable bndComposite, IBoundable bndOther,
-                            PriorityQueue<BoundablePair> priQ, double minDistance)
+        private void Expand(IBoundable<Envelope, TItem> bndComposite, IBoundable<Envelope, TItem> bndOther,
+                            PriorityQueue<BoundablePair<TItem>> priQ, double minDistance)
         {
-            var children = ((AbstractNode) bndComposite).ChildBoundables;
-            foreach (IBoundable child in children)
+            var children = ((AbstractNode<Envelope, TItem>)bndComposite).ChildBoundables;
+            foreach (var child in children)
             {
-                var bp = new BoundablePair(child, bndOther, _itemDistance);
+                var bp = new BoundablePair<TItem>(child, bndOther, _itemDistance);
                 // only add to queue if this pair might contain the closest points
                 // MD - it's actually faster to construct the object rather than called distance(child, bndOther)!
                 if (bp.GetDistance() < minDistance)

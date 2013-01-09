@@ -16,7 +16,7 @@ namespace NetTopologySuite.Noding
         * The SpatialIndex used should be something that supports envelope
         * (range) queries efficiently (such as a Quadtree or STRtree).
         */
-        private readonly ISpatialIndex _index = new STRtree();
+        private readonly ISpatialIndex<MonotoneChain> _index = new STRtree<MonotoneChain>();
         private int _indexCounter;
         private int _processCounter;
         // statistics
@@ -25,7 +25,7 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// Gets a reference to the underlying spatial index
         /// </summary>
-        public ISpatialIndex Index
+        public ISpatialIndex<MonotoneChain> Index
         {
             get { return _index; }
         }
@@ -70,7 +70,7 @@ namespace NetTopologySuite.Noding
             foreach (var queryChain in monotoneChains)
             {
                 var overlapChains = _index.Query(queryChain.Envelope);
-                foreach (MonotoneChain testChain in overlapChains)
+                foreach (var testChain in overlapChains)
                 {
                     queryChain.ComputeOverlaps(testChain, overlapAction);
                     _nOverlaps++;

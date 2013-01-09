@@ -23,10 +23,10 @@ namespace NetTopologySuite.Operation.Distance
         /// </summary>
         /// <param name="g"></param>
         /// <returns></returns>
-        public static STRtree BuildSTRtree(IGeometry g)
+        public static STRtree<FacetSequence> BuildSTRtree(IGeometry g)
 // ReSharper restore InconsistentNaming
         {
-            STRtree tree = new STRtree(STRtreeNodeCapacity);
+            var tree = new STRtree<FacetSequence>(STRtreeNodeCapacity);
             var sections = ComputeFacetSequences(g);
             foreach (var section in sections)
             {

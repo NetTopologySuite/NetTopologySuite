@@ -1,4 +1,5 @@
 using System;
+using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Index.Strtree
 {
@@ -7,17 +8,17 @@ namespace NetTopologySuite.Index.Strtree
     /// AbstractSTRtree.
     /// </summary>
     [Serializable]
-    public class ItemBoundable : IBoundable 
+    public class ItemBoundable<T, TItem> : IBoundable<T, TItem> where T : IIntersectable<T>, IExpandable<T>
     {
-        private readonly object _bounds;
-        private readonly object _item;
+        private readonly T _bounds;
+        private readonly TItem _item;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="bounds"></param>
         /// <param name="item"></param>
-        public ItemBoundable(object bounds, object item) 
+        public ItemBoundable(T bounds, TItem item) 
         {
             _bounds = bounds;
             _item = item;
@@ -26,7 +27,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <summary>
         /// The bounds
         /// </summary>
-        public object Bounds 
+        public T Bounds 
         {
             get
             {
@@ -37,7 +38,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <summary>
         /// The item
         /// </summary>
-        public object Item
+        public TItem Item
         {
             get
             {

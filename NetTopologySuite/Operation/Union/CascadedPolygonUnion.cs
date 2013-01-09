@@ -101,7 +101,7 @@ namespace NetTopologySuite.Operation.Union
              * This makes unioning more efficient, since vertices are more likely 
              * to be eliminated on each round.
              */
-            var index = new STRtree(StrtreeNodeCapacity);
+            var index = new STRtree<object>(StrtreeNodeCapacity);
             foreach (IGeometry item in _inputPolys)
                 index.Insert(item.EnvelopeInternal, item);
 
@@ -275,7 +275,7 @@ namespace NetTopologySuite.Operation.Union
             foreach (var o in geomTree)
             {
                 IGeometry geom = null;
-                if (o is IList)
+                if (o is IList<IGeometry>)
                     geom = UnionTree((IList) o);
                 else if (o is IGeometry)
                     geom = (IGeometry) o;

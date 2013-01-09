@@ -1,4 +1,5 @@
 using System;
+using GeoAPI.Geometries;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Index.Strtree
@@ -6,7 +7,7 @@ namespace NetTopologySuite.Index.Strtree
     /// <summary> 
     /// A contiguous portion of 1D-space. Used internally by SIRtree.
     /// </summary>
-    public class Interval
+    public class Interval : IIntersectable<Interval>, IExpandable<Interval>
     {
         /// <summary>
         /// 
@@ -45,7 +46,18 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="other"></param>
         /// <returns><c>this</c></returns>
-        public Interval ExpandToInclude(Interval other)
+        public void ExpandToInclude(Interval other)
+        {
+            _max = Math.Max(_max, other._max);
+            _min = Math.Min(_min, other._min);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns><c>this</c></returns>
+        public Interval ExpandedBy(Interval other)
         {
             _max = Math.Max(_max, other._max);
             _min = Math.Min(_min, other._min);

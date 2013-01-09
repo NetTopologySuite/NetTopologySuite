@@ -1,23 +1,24 @@
 using System;
 using System.Collections.Generic;
+using GeoAPI.Geometries;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Index.Strtree
 {
     /// <summary> 
-    /// A node of an <see cref="AbstractSTRtree"/>. A node is one of:
+    /// A node of an <see cref="AbstractSTRtree{T, TItem}"/>. A node is one of:
     /// <list type="Bullet">
     /// <item>empty</item>
-    /// <item>an <i>interior node</i> containing child <see cref="AbstractNode"/>s</item>
-    /// <item>a <i>leaf node</i> containing data items (<see cref="ItemBoundable"/>s).</item>
+    /// <item>an <i>interior node</i> containing child <see cref="AbstractNode{T, TItem}"/>s</item>
+    /// <item>a <i>leaf node</i> containing data items (<see cref="ItemBoundable{T, TItem}"/>s).</item>
     /// </list>
     /// A node stores the bounds of its children, and its level within the index tree.
     /// </summary>
     [Serializable]
-    public abstract class AbstractNode : IBoundable 
+    public abstract class AbstractNode<T, TItem> : IBoundable<T, TItem> where T : IIntersectable<T>, IExpandable<T>
     {
-        private readonly List<object> _childBoundables = new List<object>();
-        private object _bounds;
+        private readonly List<IBoundable<T, TItem>> _childBoundables = new List<IBoundable<T, TItem>>();
+        private T _bounds;
         private readonly int _level;
 
         /// <summary> 
@@ -33,10 +34,10 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary> 
-        /// Returns either child <see cref="AbstractNode"/>s, or if this is a leaf node, real data (wrapped
-        /// in <see cref="ItemBoundable"/>s).
+        /// Returns either child <see cref="AbstractNode{T, TItem}"/>s, or if this is a leaf node, real data (wrapped
+        /// in <see cref="ItemBoundable{T, TItem}"/>s).
         /// </summary>
-        public IList<object> ChildBoundables
+        public IList<IBoundable<T, TItem>> ChildBoundables
         {
             get
             {
@@ -54,12 +55,12 @@ namespace NetTopologySuite.Index.Strtree
         /// An Envelope (for STRtrees), an Interval (for SIRtrees), or other
         /// object (for other subclasses of AbstractSTRtree).
         /// </returns>        
-        protected abstract object ComputeBounds();
+        protected abstract T ComputeBounds();
 
         /// <summary>
         /// Gets the bounds of this node
         /// </summary>
-        public object Bounds
+        public T Bounds
         {
             get
             {
@@ -70,6 +71,8 @@ namespace NetTopologySuite.Index.Strtree
                 return _bounds;
             }
         }
+
+        public TItem Item { get { return default(TItem); } }
 
         /// <summary>
         /// Returns 0 if this node is a leaf, 1 if a parent of a leaf, and so on; the
@@ -84,7 +87,7 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// Gets the count of the <see cref="IBoundable"/>s at this node.
+        /// Gets the count of the <see cref="IBoundable{T, TItem}"/>s at this node.
         /// </summary>
         public int Count
         {
@@ -92,7 +95,7 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// Tests whether there are any <see cref="IBoundable"/>s at this node.
+        /// Tests whether there are any <see cref="IBoundable{T, TItem}"/>s at this node.
         /// </summary>
         public bool IsEmpty
         {
@@ -105,7 +108,7 @@ namespace NetTopologySuite.Index.Strtree
         /// (wrapped in an ItemBoundable).
         /// </summary>
         /// <param name="childBoundable"></param>
-        public void AddChildBoundable(IBoundable childBoundable) 
+        public void AddChildBoundable(IBoundable<T, TItem> childBoundable) 
         {
             Assert.IsTrue(_bounds == null);
             _childBoundables.Add(childBoundable);

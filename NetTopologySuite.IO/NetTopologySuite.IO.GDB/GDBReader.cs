@@ -1,8 +1,6 @@
 using System;
 using System.IO;
 using GeoAPI.Geometries;
-using GeoAPI.IO;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.IO
 {    
@@ -35,6 +33,41 @@ namespace NetTopologySuite.IO
                 return Read(reader);
         }
 
+        private static Ordinates GetOrdinatesFromShapeGeometryType(ShapeGeometryType sgt)
+        {
+            switch (sgt)
+            {
+                case ShapeGeometryType.Point:
+                case ShapeGeometryType.MultiPoint:
+                case ShapeGeometryType.LineString:
+                case ShapeGeometryType.Polygon:
+                    return Ordinates.XY;
+
+                case ShapeGeometryType.PointZ:
+                case ShapeGeometryType.MultiPointZ:
+                case ShapeGeometryType.LineStringZ:
+                case ShapeGeometryType.PolygonZ:
+                    return Ordinates.XYZ;
+
+                case ShapeGeometryType.PointM:
+                case ShapeGeometryType.MultiPointM:
+                case ShapeGeometryType.LineStringM:
+                case ShapeGeometryType.PolygonM:
+                    return Ordinates.XYM;
+
+                case ShapeGeometryType.PointZM:
+                case ShapeGeometryType.MultiPointZM:
+                case ShapeGeometryType.LineStringZM:
+                case ShapeGeometryType.PolygonZM:
+                    return Ordinates.XYZM;
+
+                case ShapeGeometryType.MultiPatch:
+                    throw new NotSupportedException("FeatureType " + sgt + " not supported.");
+
+                default:
+                    throw new ArgumentOutOfRangeException("FeatureType " + sgt + " not recognized by the system");
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -43,6 +76,7 @@ namespace NetTopologySuite.IO
         public IGeometry Read(BinaryReader reader)
         {
             var shapeType = (ShapeGeometryType)reader.ReadInt32();
+            var ordinates = GetOrdinatesFromShapeGeometryType(shapeType);
 
             switch (shapeType)
             {
@@ -50,28 +84,28 @@ namespace NetTopologySuite.IO
                 case ShapeGeometryType.PointM:
                 case ShapeGeometryType.PointZ:
                 case ShapeGeometryType.PointZM:
-                    return ReadPoint(reader);
+                    return ReadPoint(reader, ordinates);
 
                 case ShapeGeometryType.LineString:
                 case ShapeGeometryType.LineStringM:
                 case ShapeGeometryType.LineStringZ:
                 case ShapeGeometryType.LineStringZM:
-                    return ReadLineString(reader);
+                    return ReadLineString(reader, ordinates);
 
                 case ShapeGeometryType.Polygon:
                 case ShapeGeometryType.PolygonM:
                 case ShapeGeometryType.PolygonZ:
                 case ShapeGeometryType.PolygonZM:
-                    return ReadPolygon(reader);
+                    return ReadPolygon(reader, ordinates);
 
                 case ShapeGeometryType.MultiPoint:
                 case ShapeGeometryType.MultiPointM:
                 case ShapeGeometryType.MultiPointZ:
                 case ShapeGeometryType.MultiPointZM:
-                    return ReadMultiPoint(reader);
+                    return ReadMultiPoint(reader, ordinates);
 
                 case ShapeGeometryType.MultiPatch:
-                    throw new NotImplementedException("FeatureType " + shapeType + " not supported.");
+                    throw new NotSupportedException("FeatureType " + shapeType + " not supported.");
 
                 default:
                     throw new ArgumentOutOfRangeException("FeatureType " + shapeType + " not recognized by the system");

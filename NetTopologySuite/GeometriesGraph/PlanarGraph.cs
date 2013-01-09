@@ -35,7 +35,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        private readonly IList<Edge> _edges = new List<Edge>();
+        private readonly List<Edge> _edges = new List<Edge>();
 
         /// <summary>
         /// 

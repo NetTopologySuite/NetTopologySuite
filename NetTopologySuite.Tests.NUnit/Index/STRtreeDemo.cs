@@ -27,26 +27,26 @@ namespace NetTopologySuite.Tests.NUnit.Index
             PrintLevels(t);
         }
 
-        public class TestTree : STRtree
+        public class TestTree : STRtree<object>
         {
             public TestTree(int nodeCapacity)
                 : base(nodeCapacity)
             {
             }
 
-            public IList<object> BoundablesAtLevel(int level) { return base.BoundablesAtLevel(level); }
+            public IList<IBoundable<Envelope, object>> BoundablesAtLevel(int level) { return base.BoundablesAtLevel(level); }
 
-            public AbstractNode Root { get { return base.Root; } }
+            public AbstractNode<Envelope, object> Root { get { return base.Root; } }
 
-            public IList<object> CreateParentBoundables(IList<object> verticalSlice, int newLevel)
+            public IList<IBoundable<Envelope, object>> CreateParentBoundables(IList<IBoundable<Envelope, object>> verticalSlice, int newLevel)
             {
                 return base.CreateParentBoundables(verticalSlice, newLevel);
             }
-            public IList<object>[] VerticalSlices(IList<object> childBoundables, int size)
+            public IList<IBoundable<Envelope, object>>[] VerticalSlices(IList<IBoundable<Envelope, object>> childBoundables, int size)
             {
                 return base.VerticalSlices(childBoundables, size);
             }
-            public IList<object> CreateParentBoundablesFromVerticalSlice(IList<object> childBoundables, int newLevel)
+            public IList<IBoundable<Envelope, object>> CreateParentBoundablesFromVerticalSlice(IList<IBoundable<Envelope, object>> childBoundables, int newLevel)
             {
                 return base.CreateParentBoundablesFromVerticalSlice(childBoundables, newLevel);
             }
@@ -119,12 +119,12 @@ namespace NetTopologySuite.Tests.NUnit.Index
             }
         }
 
-        public static void PrintBoundables(IList<object> boundables, string title)
+        public static void PrintBoundables(IList<IBoundable<Envelope, object>> boundables, string title)
         {
             Console.WriteLine("============ " + title + " ============\n");
             Console.Write("GEOMETRYCOLLECTION(");
             bool first = true;
-            foreach (IBoundable boundable in boundables)
+            foreach (IBoundable<Envelope, object> boundable in boundables)
             {
                 if (first)
                 {
@@ -139,7 +139,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             Console.WriteLine(")\n");
         }
 
-        private static String ToString(IBoundable b)
+        private static String ToString(IBoundable<Envelope, object> b)
         {
             return "POLYGON(("
                     + Envelope(b).MinX + " "
@@ -154,7 +154,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
                     + Envelope(b).MinY + "))";
         }
 
-        private static Envelope Envelope(IBoundable b)
+        private static Envelope Envelope(IBoundable<Envelope, object> b)
         {
             return (Envelope)b.Bounds;
         }

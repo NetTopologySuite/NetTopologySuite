@@ -1,9 +1,10 @@
-using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-#if NoLinq
-
+#if !NET35
+using GeoAPI;
+using Enumerable = GeoAPI.Linq.Enumerable;
 #else
+using System;
 using Enumerable = System.Linq.Enumerable;
 #endif
 namespace NetTopologySuite.Geometries.Utilities

@@ -5,7 +5,6 @@
     <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <NoLinq></NoLinq>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5770DAA9-84E5-4770-AF43-F6B815894368}</ProjectGuid>
@@ -28,7 +27,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -44,14 +43,15 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>false</BootstrapperEnabled>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;$(NoLinq)</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;NET20</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunFxCop>false</RunFxCop>
@@ -62,10 +62,12 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
-    <DefineConstants>TRACE;$(NoLinq)</DefineConstants>
+    <DefineConstants>TRACE;NET20</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\NetTopologySuite.XML</DocumentationFile>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <NoWarn>659,168</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GeoAPI, Version=1.7.0.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
@@ -76,6 +78,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\PowerCollections.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -572,7 +576,7 @@
   </ItemGroup>
   <ItemGroup />
   <!--
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkVersion)' == 'v2.0'">
     <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">
       <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
       <Name>GeoAPI</Name>
@@ -582,7 +586,7 @@
       <Name>PowerCollections</Name>
     </ProjectReference>
   </ItemGroup>
--->
+  -->
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.-->
@@ -590,9 +594,9 @@
     <Message Text="Building for '$(TargetFrameworkVersion)'" />
   </Target>
   <Target Name="AfterBuild">
-    <MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v3.5'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v2.0;NoLinq=NoLinq" RunEachTargetSeparately="true" ContinueOnError="true" />
-    <MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v3.5'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Client;NoLinq=" RunEachTargetSeparately="true" ContinueOnError="true" />
-    <MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v3.5'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v4.0.3;TargetFrameworkProfile=Client;NoLinq=" RunEachTargetSeparately="true" ContinueOnError="true" />
+    <MSBuild Condition=" '$(Configuration)' == 'Release' AND '$(TargetFrameworkVersion)' == 'v2.0'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v3.5;TargetFrameworkProfile=Client;DefineConstants=TRACE;NET20;NET35" RunEachTargetSeparately="true" ContinueOnError="true" />
+    <MSBuild Condition=" '$(Configuration)' == 'Release' AND '$(TargetFrameworkVersion)' == 'v2.0'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Client;DefineConstants=TRACE;NET20;NET35;NET40" RunEachTargetSeparately="true" ContinueOnError="true" />
+    <MSBuild Condition=" '$(Configuration)' == 'Release' AND '$(TargetFrameworkVersion)' == 'v2.0'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v4.0.3;TargetFrameworkProfile=Client;DefineConstants=TRACE;NET20;NET35;NET40" RunEachTargetSeparately="true" ContinueOnError="true" />
   </Target>
   <!-- -->
 </Project>
