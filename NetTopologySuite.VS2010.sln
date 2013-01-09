@@ -31,6 +31,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.NetTopologySuite.Windows.Forms", "NetTopologySuite.Windows.Forms\Test\Test.NetTopologySuite.Windows.Forms.csproj", "{AF47B26F-5EB8-4514-AEBF-FDD22244F5B1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Tests.NUnit", "NetTopologySuite.Tests.NUnit\NetTopologySuite.Tests.NUnit.csproj", "{A1525C90-FA00-449D-B3C4-CBA45D5E916C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E377580E-61C9-4943-B98B-085D51B32578} = {E377580E-61C9-4943-B98B-085D51B32578}
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A} = {FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}
+		{5821977D-AC2C-4912-BCD0-6E6B1A756167} = {5821977D-AC2C-4912-BCD0-6E6B1A756167}
+		{5770DAA9-84E5-4770-AF43-F6B815894368} = {5770DAA9-84E5-4770-AF43-F6B815894368}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI", "GeoAPI\GeoAPI\GeoAPI.csproj", "{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}"
 EndProject
@@ -115,6 +121,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjNET.Tests", "ProjNet.Tests\ProjNET.Tests.csproj", "{67E8C952-1F48-4DFB-9507-BD44DB6784FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO", "NetTopologySuite.IO\NetTopologySuite.IO\NetTopologySuite.IO.csproj", "{E377580E-61C9-4943-B98B-085D51B32578}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A} = {FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution

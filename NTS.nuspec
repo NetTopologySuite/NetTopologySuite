@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NetTopologySuite</id>
-    <version>1.12.0</version>
+    <version>$version$</version>
     <title>NTS - Topology Suite</title>
     <authors>NetTopologySuite - Team</authors>
     <owners>NetTopologySuite - Team</owners>
@@ -19,16 +19,22 @@
     <language>en-US</language>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System" targetFramework="" />
-      <frameworkAssembly assemblyName="System.Core" targetFramework="" />
+      <frameworkAssembly assemblyName="System.Core" targetFramework="net35-client,net40-client,net403-client" />
       <frameworkAssembly assemblyName="System.Xml" targetFramework="sl4" />
     </frameworkAssemblies>
     <dependencies>
-      <dependency id="GeoAPI" version="1.6.0" />
+      <dependency id="GeoAPI" version="1.7.0" />
     </dependencies>
   </metadata>
   <files>
-    <file src="Release\v3.5\AnyCPU\NetTopologySuite.dll" target="lib\net35\NetTopologySuite.dll" />
-    <file src="Release\v3.5\AnyCPU\PowerCollections.dll" target="lib\net35\PowerCollections.dll" />
+    <file src="Release\v2.0\AnyCPU\NetTopologySuite.dll" target="lib\net20\NetTopologySuite.dll" />
+    <file src="Release\v2.0\AnyCPU\PowerCollections.dll" target="lib\net20\PowerCollections.dll" />
+    <file src="Release\v3.5\AnyCPU\NetTopologySuite.dll" target="lib\net35-client\NetTopologySuite.dll" />
+    <file src="Release\v3.5\AnyCPU\PowerCollections.dll" target="lib\net35-client\PowerCollections.dll" />
+    <file src="Release\v4.0\AnyCPU\NetTopologySuite.dll" target="lib\net40-client\NetTopologySuite.dll" />
+    <file src="Release\v4.0\AnyCPU\PowerCollections.dll" target="lib\net40-client\PowerCollections.dll" />
+    <file src="Release\v4.0.3\AnyCPU\NetTopologySuite.dll" target="lib\net403-client\NetTopologySuite.dll" />
+    <file src="Release\v4.0.3\AnyCPU\PowerCollections.dll" target="lib\net403-client\PowerCollections.dll" />
     <file src="Release\Silverlightv4.0\AnyCPU\NetTopologySuite.Data.Silverlight.dll" target="lib\sl40" />
     <file src="Release\Silverlightv4.0\AnyCPU\NetTopologySuite.Encodings.Silverlight.dll" target="lib\sl40" />
     <file src="Release\Silverlightv4.0\AnyCPU\NetTopologySuite.Silverlight.dll" target="lib\sl40" />

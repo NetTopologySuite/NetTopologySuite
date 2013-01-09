@@ -98,7 +98,8 @@ namespace Open.Topology.TestRunner
         EqualsExact             = 35,
         EqualsNorm              = 36,
         MinClearance            = 37,
-        MinClearanceLine        = 38
+        MinClearanceLine        = 38,
+        EqualsTopo              = 39,
     }
  
     #endregion
@@ -481,6 +482,9 @@ namespace Open.Topology.TestRunner
 
                 case XmlTestType.MinClearanceLine:
                     return TestMinClearanceLine();
+                
+                case XmlTestType.EqualsTopo:
+                    return TestEqualsTopo();
 
                 default:
                     string format = String.Format("Test not implemented: {0}", this._enumTestType);
@@ -1768,33 +1772,19 @@ namespace Open.Topology.TestRunner
             bool bResult = (bool)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
             {
-                _objGeometryA.Normalize();
                 if (_objArgument1 == null)
                 {
-                    _objGeometryB.Normalize();
-                    return _objGeometryA.EqualsExact(_objGeometryB) == bResult;
+                    return _objGeometryA.EqualsNormalized(_objGeometryB);
                 }
-                else
-                {
-                    Geometry g = (Geometry)_objArgument1;
-                    g.Normalize();
-                    return _objGeometryA.EqualsExact(g) == bResult;
-                }
+                var g = (IGeometry)_objArgument1;
+                return _objGeometryA.EqualsNormalized(g) == bResult;
             }
-            else if (_objGeometryB != null)
+            if (_objGeometryB != null)
             {
-                _objGeometryB.Normalize();
                 if (_objArgument1 == null)
-                {
-                    _objGeometryA.Normalize();
-                    return _objGeometryB.EqualsExact(_objGeometryA) == bResult;
-                }
-                else
-                {
-                    Geometry g = (Geometry)_objArgument1;
-                    g.Normalize();
-                    return _objGeometryB.EqualsExact(g) == bResult;
-                }
+                    return _objGeometryB.EqualsNormalized(_objGeometryA) == bResult;
+                var g = (Geometry)_objArgument1;
+                return _objGeometryB.EqualsNormalized(g) == bResult;
             }
 
             return false;
@@ -1821,6 +1811,27 @@ namespace Open.Topology.TestRunner
                 IGeometry gClearance = c.GetLine();
                 return gResult.Equals(gClearance);
             }
+            return false;
+        }
+
+        protected virtual bool TestEqualsTopo()
+        {
+            bool bResult = (bool)_objResult;
+            if (_bIsDefaultTarget && _objGeometryA != null)
+            {
+                if (_objArgument1 == null)
+                    return _objGeometryA.EqualsTopologically(_objGeometryB) == bResult;
+                var g = (Geometry)_objArgument1;
+                return _objGeometryA.EqualsTopologically(g) == bResult;
+            }
+            if (_objGeometryB != null)
+            {
+                if (_objArgument1 == null)
+                    return _objGeometryB.EqualsTopologically(_objGeometryA) == bResult;
+                var g = (Geometry)_objArgument1;
+                return _objGeometryB.EqualsTopologically(g) == bResult;
+            }
+
             return false;
         }
 

@@ -458,7 +458,20 @@ namespace NetTopologySuite.Tests.Various
             Assert.AreEqual(original, transformed);
         }
 
+        [Test]
+        public void TestMultipolygonDifference()
+        {
+            var mp1 = Reader.Read(@"MULTIPOLYGON (((30 20, 10 40, 45 40, 30 20)),((15 5, 40 10, 10 20, 5 10, 15 5)))");
+            var mp2 = Reader.Read(@"MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)),((20 35, 45 20, 30 5, 10 10, 10 30, 20 35),(30 20, 20 25, 20 15, 30 20)))");
 
+            IGeometry diff = null;
+            Assert.DoesNotThrow(() => diff = mp1.Difference(mp2));
+            Assert.IsNotNull(diff);
+            Console.WriteLine("1-2:\n{0}", diff.AsText());
+            Assert.DoesNotThrow(() => diff = mp2.Difference(mp1));
+            Assert.IsNotNull(diff);
+            Console.WriteLine("2-1:\n{0}", diff.AsText());
+        }
 
 
 	}

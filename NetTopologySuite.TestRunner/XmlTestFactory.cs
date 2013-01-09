@@ -213,7 +213,14 @@ namespace Open.Topology.TestRunner
             else if (testType == "minclearanceline")
                 xmlTestItem.TestType = XmlTestType.MinClearanceLine;
             
-            else throw new ArgumentException(String.Format("The operation type \"{0}\" is not valid: ", testType));
+            else if (testType == "equalstopo")
+                xmlTestItem.TestType = XmlTestType.EqualsTopo;
+
+            else
+            {
+                System.Diagnostics.Debug.Assert(false);
+                throw new ArgumentException(String.Format("The operation type \"{0}\" is not valid: ", testType));
+            }
             
             return true;
         }
@@ -303,6 +310,7 @@ namespace Open.Topology.TestRunner
                 case XmlTestType.CoveredBy:
                 case XmlTestType.EqualsExact:
                 case XmlTestType.EqualsNorm:
+                case XmlTestType.EqualsTopo:
                 {
                     try
                     {

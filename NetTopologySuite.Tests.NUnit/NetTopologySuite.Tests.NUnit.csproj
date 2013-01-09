@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
+    <!-- Define SolutionDir if not already set -->
+    <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
@@ -36,6 +38,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GeoAPI, Version=1.7.0.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\GeoAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite, Version=1.13.0.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\NetTopologySuite.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite.IO, Version=1.12.1.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\NetTopologySuite.IO.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NUnit.2.5.10.11092\lib\nunit.framework.dll</HintPath>
@@ -193,20 +207,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestData\europe.wkt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">
-      <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
-      <Name>GeoAPI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO\NetTopologySuite.IO.csproj">
-      <Project>{E377580E-61C9-4943-B98B-085D51B32578}</Project>
-      <Name>NetTopologySuite.IO %28NetTopologySuite.IO\NetTopologySuite.IO%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
-      <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
-      <Name>NetTopologySuite</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
