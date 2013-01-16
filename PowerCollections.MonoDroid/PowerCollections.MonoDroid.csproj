@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -8,7 +8,7 @@
     <ProjectGuid>{72D7CE87-70A8-41DD-810F-BF959F31DB61}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>PowerCollections.MonoDroid</RootNamespace>
+    <RootNamespace>Wintellect.PowerCollections.MonoDroid</RootNamespace>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <AssemblyName>PowerCollections.MonoDroid</AssemblyName>
@@ -28,7 +28,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -46,6 +46,9 @@
   <ItemGroup>
     <Compile Include="..\PowerCollections\Algorithms.cs">
       <Link>Algorithms.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="..\PowerCollections\Bag.cs">
       <Link>Bag.cs</Link>
