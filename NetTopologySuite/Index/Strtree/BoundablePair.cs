@@ -53,7 +53,7 @@ namespace NetTopologySuite.Index.Strtree
         /// The boundables are either composites or leaves.
         /// If either is composite, the distance is computed as the minimum distance
         /// between the bounds.  
-        /// If both are leaves, the distance is computed by <see cref="IItemDistance{Envelope, TItem}.Distance(ItemBoundable{Envelope, TItem}, ItemBoundable{Envelope, TItem})"/>.
+        /// If both are leaves, the distance is computed by <see cref="IItemDistance{Envelope, TItem}.Distance(IBoundable{Envelope, TItem}, IBoundable{Envelope, TItem})"/>.
         /// </summary>
         /// <returns>The distance between the <see cref="IBoundable{Envelope, TItem}"/>s in this pair.</returns>
         private double GetDistance()
@@ -61,8 +61,7 @@ namespace NetTopologySuite.Index.Strtree
             // if items, compute exact distance
             if (IsLeaves)
             {
-                return _itemDistance.Distance((ItemBoundable<Envelope, TItem>)_boundable1,
-                                              (ItemBoundable<Envelope, TItem>)_boundable2);
+                return _itemDistance.Distance(_boundable1, _boundable2);
             }
             // otherwise compute distance between bounds of boundables
             return _boundable1.Bounds.Distance(_boundable2.Bounds);
@@ -98,17 +97,6 @@ namespace NetTopologySuite.Index.Strtree
         }
         */
 
-        /**
-         * Gets the minimum possible distance between the Boundables in
-         * this pair. 
-         * If the members are both items, this will be the
-         * exact distance between them.
-         * Otherwise, this distance will be a lower bound on 
-         * the distances between the items in the members.
-         * 
-         * @return the exact or lower bound distance for this pair
-         */
-
         /// <summary>
         /// Gets the minimum possible distance between the Boundables in
         /// this pair. 
@@ -123,18 +111,13 @@ namespace NetTopologySuite.Index.Strtree
             get { return _distance; }
         }
 
-        /**
-         * Compares two pairs based on their minimum distances
-         */
-
         /// <summary>
         /// Compares two pairs based on their minimum distances
         /// </summary>
         public int CompareTo(BoundablePair<TItem> o)
         {
-            BoundablePair<TItem> nd = o;
-            if (Distance < nd.GetDistance()) return -1;
-            if (Distance > nd.Distance) return 1;
+            if (_distance < o._distance) return -1;
+            if (_distance > o._distance) return 1;
             return 0;
         }
 
@@ -151,10 +134,12 @@ namespace NetTopologySuite.Index.Strtree
             return (item is AbstractNode<Envelope, TItem>);
         }
 
+        /*
         private static double Area(IBoundable<Envelope, TItem> b)
         {
             return b.Bounds.Area;
         }
+         */
 
         /// <summary>
         /// For a pair which is not a leaf 
@@ -174,7 +159,7 @@ namespace NetTopologySuite.Index.Strtree
              */
             if (isComp1 && isComp2)
             {
-                if (Area(_boundable1) > Area(_boundable2))
+                if (_boundable1.Bounds.Area > _boundable2.Bounds.Area)
                 {
                     Expand(_boundable1, _boundable2, priQ, minDistance);
                     return;
@@ -205,7 +190,7 @@ namespace NetTopologySuite.Index.Strtree
                 var bp = new BoundablePair<TItem>(child, bndOther, _itemDistance);
                 // only add to queue if this pair might contain the closest points
                 // MD - it's actually faster to construct the object rather than called distance(child, bndOther)!
-                if (bp.GetDistance() < minDistance)
+                if (bp.Distance < minDistance)
                 {
                     priQ.Add(bp);
                 }

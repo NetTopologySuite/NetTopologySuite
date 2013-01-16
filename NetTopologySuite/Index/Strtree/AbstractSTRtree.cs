@@ -362,7 +362,7 @@ namespace NetTopologySuite.Index.Strtree
             return IntersectsOp.Intersects(_root.Bounds, searchBounds) && Remove(searchBounds, _root, item);
         }
 
-        private bool RemoveItem(AbstractNode<T, TItem> node, TItem item)
+        private static bool RemoveItem(AbstractNode<T, TItem> node, TItem item)
         {
             IBoundable<T, TItem> childToRemove = null;
             for (var i = node.ChildBoundables.GetEnumerator(); i.MoveNext(); )

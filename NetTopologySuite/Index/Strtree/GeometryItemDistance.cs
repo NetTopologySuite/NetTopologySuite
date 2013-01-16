@@ -4,7 +4,7 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
-    /// An <see cref="IItemDistance{IGeometry}"/> function for
+    /// An <see cref="IItemDistance{Envelope, IGeometry}"/> function for
     /// items which are <see cref="IGeometry"/> using the <see cref="IGeometry.Distance(IGeometry)"/> method.
     /// </summary>
     /// <author>Martin Davis</author>

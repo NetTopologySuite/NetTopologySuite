@@ -82,17 +82,14 @@ namespace NetTopologySuite.Operation.Distance
         /// <returns>The computed distance</returns>
         public double GetDistance(IGeometry g)
         {
-            STRtree<FacetSequence> tree2 = FacetSequenceTreeBuilder.BuildSTRtree(g);
-            Object[] obj = _cachedTree.NearestNeighbour(tree2,
-                                                        new FacetSequenceDistance());
+            var tree2 = FacetSequenceTreeBuilder.BuildSTRtree(g);
+            var obj = _cachedTree.NearestNeighbour(tree2, new FacetSequenceDistance());
             return FacetDistance(obj);
         }
 
-        private static double FacetDistance(Object[] obj)
+        private static double FacetDistance(FacetSequence[] obj)
         {
-            Object o1 = obj[0];
-            Object o2 = obj[1];
-            return ((FacetSequence) o1).Distance((FacetSequence) o2);
+            return obj[0].Distance(obj[1]);
         }
 
         /**

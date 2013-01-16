@@ -51,15 +51,17 @@ namespace NetTopologySuite.Index.Strtree
 
             protected override Envelope ComputeBounds()
             {
-                Envelope bounds = null;
+                /*Envelope*/var bounds = new Envelope() /*= null*/;
                 foreach (var childBoundable in ChildBoundables)
                 {
+                    /*
                     if (bounds == null)
                         bounds = new Envelope(childBoundable.Bounds);
-                    else 
+                    else */
                         bounds.ExpandToInclude(childBoundable.Bounds);
                 }
-                return bounds;
+                //return bounds;
+                return bounds.IsNull ? null : bounds;
             }
         }
 
@@ -227,7 +229,7 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="itemEnv"></param>
         /// <param name="item"></param>
-        public void Insert(Envelope itemEnv, TItem item)
+        public new void Insert(Envelope itemEnv, TItem item)
         {
             if (itemEnv.IsNull)
                 return;
@@ -238,7 +240,7 @@ namespace NetTopologySuite.Index.Strtree
         /// Returns items whose bounds intersect the given envelope.
         /// </summary>
         /// <param name="searchEnv"></param>
-        public IList<TItem> Query(Envelope searchEnv)
+        public new IList<TItem> Query(Envelope searchEnv)
         {
             //Yes this method does something. It specifies that the bounds is an
             //Envelope. super.query takes an object, not an Envelope. [Jon Aquino 10/24/2003]
@@ -250,7 +252,7 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
-        public void Query(Envelope searchEnv, IItemVisitor<TItem> visitor)
+        public new void Query(Envelope searchEnv, IItemVisitor<TItem> visitor)
         {
             //Yes this method does something. It specifies that the bounds is an
             //Envelope. super.query takes an Object, not an Envelope. [Jon Aquino 10/24/2003]
@@ -263,7 +265,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <param name="itemEnv">The Envelope of the item to remove.</param>
         /// <param name="item">The item to remove.</param>
         /// <returns><c>true</c> if the item was found.</returns>
-        public bool Remove(Envelope itemEnv, TItem item)
+        public new bool Remove(Envelope itemEnv, TItem item)
         {
             return base.Remove(itemEnv, item);
         }
@@ -279,7 +281,7 @@ namespace NetTopologySuite.Index.Strtree
 
         /// <summary>
         /// Finds the two nearest items in the tree, 
-        /// using <see cref="IItemDistance"/> as the distance metric.
+        /// using <see cref="IItemDistance{Envelope, TItem}"/> as the distance metric.
         /// A Branch-and-Bound tree traversal algorithm is used
         /// to provide an efficient search.
         /// </summary>
@@ -293,7 +295,7 @@ namespace NetTopologySuite.Index.Strtree
 
         /// <summary>
         /// Finds the item in this tree which is nearest to the given <paramref name="item"/>, 
-        /// using <see cref="IItemDistance"/> as the distance metric.
+        /// using <see cref="IItemDistance{Envelope,TItem}"/> as the distance metric.
         /// A Branch-and-Bound tree traversal algorithm is used
         /// to provide an efficient search.
         /// <para/>
