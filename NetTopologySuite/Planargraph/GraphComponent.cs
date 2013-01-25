@@ -71,21 +71,6 @@ namespace NetTopologySuite.Planargraph
         #endregion
 
         /// <summary>
-        /// 
-        /// </summary>
-        private bool _isMarked;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private bool _isVisited;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GraphComponent"/> class.
-        /// </summary>
-        protected GraphComponent() { }
-
-        /// <summary>
         /// Tests if a component has been visited during the course of a graph algorithm.
         /// </summary>              
         public bool IsVisited
@@ -96,11 +81,7 @@ namespace NetTopologySuite.Planargraph
         /// <summary> 
         /// Gets/Sets the visited flag for this component.
         /// </summary>
-        public bool Visited
-        {
-            get { return _isVisited; }
-            set { _isVisited = value; }
-        }
+        public bool Visited { get; set; }
 
         /// <summary>
         /// Tests if a component has been marked at some point during the processing
@@ -114,11 +95,7 @@ namespace NetTopologySuite.Planargraph
         /// <summary>
         /// Gets/Sets the marked flag for this component.
         /// </summary>
-        public bool Marked
-        {
-            get { return _isMarked; }
-            set { _isMarked = value; }
-        }
+        public bool Marked { get; set; }
 
         /// <summary>
         /// Tests whether this component has been removed from its containing graph.

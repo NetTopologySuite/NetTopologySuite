@@ -39,7 +39,6 @@ namespace NetTopologySuite.Operation.Buffer
         private EndCapStyle _endCapStyle = EndCapStyle.Round;
         private JoinStyle _joinStyle = JoinStyle.Round;
         private double _mitreLimit = DefaultMitreLimit;
-        private bool _isSingleSided;
 
         ///<summary>
         /// Creates a default set of parameters
@@ -222,6 +221,6 @@ namespace NetTopologySuite.Operation.Buffer
         /// and forced to the equivalent of <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Flat"/>.
         /// </para>
         /// </summary>
-        public bool IsSingleSided { get { return _isSingleSided; } set { _isSingleSided = value; } }
+        public bool IsSingleSided { get; set; }
     }
 }

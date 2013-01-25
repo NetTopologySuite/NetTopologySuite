@@ -19,8 +19,10 @@
     <HtmlHelpName>NetTopologySuite</HtmlHelpName>
     <Language>en-US</Language>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\NetTopologySuite\Densify\DensifySummary.xml" />
+      <DocumentationSource sourceFile="..\NetTopologySuite\Algorithm\Algorithm.xml" />
+<DocumentationSource sourceFile="..\NetTopologySuite\Densify\DensifySummary.xml" />
 <DocumentationSource sourceFile="..\GeoAPI\GeoAPI\GeoAPI.csproj" configuration="Release" platform="AnyCPU" />
+<DocumentationSource sourceFile="..\NetTopologySuite\Geometries\Geometries.xml" />
 <DocumentationSource sourceFile="..\NetTopologySuite\NetTopologySuite.csproj" configuration="Release" platform="AnyCPU" />
 <DocumentationSource sourceFile="..\PowerCollections\PowerCollections\PowerCollections.csproj" configuration="Release" platform="AnyCPU" />
 <DocumentationSource sourceFile="..\NetTopologySuite\Triangulate\QuadEdge\QuadEdgeSummary.xml" />
@@ -125,7 +127,7 @@ OpenGIS Simple Features Specification for SQL</NamespaceSummaryItem>
     <RootNamespaceContainer>False</RootNamespaceContainer>
     <RootNamespaceTitle>NetTopologySuite</RootNamespaceTitle>
     <SdkLinkTarget>Self</SdkLinkTarget>
-    <FrameworkVersion>.NET 3.5</FrameworkVersion>
+    <FrameworkVersion>.NET 4.0.30319</FrameworkVersion>
     <SolutionDir>..\..\</SolutionDir>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in

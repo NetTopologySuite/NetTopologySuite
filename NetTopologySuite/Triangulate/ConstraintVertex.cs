@@ -14,7 +14,7 @@ namespace NetTopologySuite.Triangulate
     public class ConstraintVertex : Vertex
     {
         private bool isOnConstraint;
-        private object constraint = null;
+        private object constraint;
 
         /// <summary>
         /// Creates a new constraint vertex

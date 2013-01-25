@@ -171,8 +171,8 @@ namespace NetTopologySuite.Precision
             var nearest = geomTree.NearestNeighbour(new MinClearanceDistance());
             var mcd = new MinClearanceDistance();
             _minClearance = mcd.Distance(
-                (FacetSequence)nearest[0],
-                (FacetSequence)nearest[1]);
+                nearest[0],
+                nearest[1]);
             _minClearancePts = mcd.Coordinates;
         }
 

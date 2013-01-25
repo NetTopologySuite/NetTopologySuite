@@ -32,10 +32,6 @@ namespace NetTopologySuite.GeometriesGraph
         private bool _isVisited;
 
         private DirectedEdge _sym; // the symmetric edge
-        private DirectedEdge _next;  // the next edge in the edge ring for the polygon containing this edge
-        private DirectedEdge _nextMin;  // the next edge in the MinimalEdgeRing that contains this edge
-        private EdgeRing _edgeRing;  // the EdgeRing that this edge is part of
-        private EdgeRing _minEdgeRing;  // the MinimalEdgeRing that this edge is part of
 
         /// <summary> 
         /// The depth of each side (position) of this edge.
@@ -112,36 +108,16 @@ namespace NetTopologySuite.GeometriesGraph
                 return _isVisited;
             }
         }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        public EdgeRing EdgeRing
-        {
-            get
-            {
-                return _edgeRing;
-            }
-            set
-            {
-                _edgeRing = value;
-            }
-        }
 
         /// <summary>
         /// 
         /// </summary>
-        public EdgeRing MinEdgeRing
-        {
-            get
-            {
-                return _minEdgeRing;
-            }
-            set
-            {
-                _minEdgeRing = value; 
-            }
-        }
+        public EdgeRing EdgeRing { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public EdgeRing MinEdgeRing { get; set; }
 
         /// <summary>
         /// 
@@ -230,32 +206,12 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public DirectedEdge Next
-        {
-            get
-            {
-                return _next;
-            }
-            set
-            {
-                _next = value;
-            }
-        }
+        public DirectedEdge Next { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public DirectedEdge NextMin
-        {
-            get
-            {
-                return _nextMin;
-            }
-            set
-            {
-                _nextMin = value;
-            }
-        }
+        public DirectedEdge NextMin { get; set; }
 
         /// <summary>
         /// This edge is a line edge if

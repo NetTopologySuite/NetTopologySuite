@@ -21,16 +21,6 @@ namespace NetTopologySuite.Features
         private readonly Hashtable _attributes = new Hashtable();
 
         /// <summary>
-        /// Initialize a new attribute table.
-        /// </summary>
-        public AttributesTable() 
-        {                       
-            // Add ID with fixed value of 0
-            // AddAttribute(IndexField, typeof(Int32));
-            // this[IndexField] = IndexValue;
-        }
-
-        /// <summary>
         /// 
         /// </summary>
         public int Count

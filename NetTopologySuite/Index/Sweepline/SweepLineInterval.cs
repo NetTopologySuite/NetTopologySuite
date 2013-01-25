@@ -5,8 +5,9 @@ namespace NetTopologySuite.Index.Sweepline
     /// </summary>
     public class SweepLineInterval
     {
-        private double min, max;
-        private object item;
+        private readonly double min;
+        private readonly double max;
+        private readonly object item;
 
         /// <summary>
         /// 

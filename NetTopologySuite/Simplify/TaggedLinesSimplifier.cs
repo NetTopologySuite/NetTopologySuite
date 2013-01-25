@@ -15,11 +15,6 @@ namespace NetTopologySuite.Simplify
         private double _distanceTolerance;
 
         /// <summary>
-        /// 
-        /// </summary>
-        public TaggedLinesSimplifier() { }
-
-        /// <summary>
         /// Gets/Sets the distance tolerance for the simplification.
         /// Points closer than this tolerance to a simplified segment may
         /// be removed.

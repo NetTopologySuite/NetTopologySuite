@@ -1,0 +1,81 @@
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SolutionFile>NetTopologySuite.VS2010.sln</SolutionFile>
+    <SolutionDir>$(MSBuildProjectDirectory)</SolutionDir>
+  </PropertyGroup>
+
+  <Target Name="CleanDebug">
+    <MSBuild Projects="$(SolutionFile)" Targets="Clean" Properties="Configuration=Debug" />
+  </Target>
+
+  <Target Name="CleanRelease">
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\obj"/>
+    <MakeDir Directories="$(MSBuildProjectDirectory)\obj"/>
+    <MakeDir Directories="$(MSBuildProjectDirectory)\obj\v2.0"/>
+    <MakeDir Directories="$(MSBuildProjectDirectory)\obj\v3.5"/>
+    <MakeDir Directories="$(MSBuildProjectDirectory)\obj\v4.0"/>
+    <MakeDir Directories="$(MSBuildProjectDirectory)\obj\v4.0.3"/>
+  </Target>
+
+  <Target Name="BuildDebug">
+    <MSBuild Projects="$(SolutionFile)" Targets="NetTopologySuite" Properties="Configuration=Debug" />
+  </Target>
+
+  <Target Name="Information">
+    <Message Text ="
+             
+  Hallo Welt!
+  Working in $(MSBuildProjectDirectory)
+  
+"/>
+  </Target>
+
+  <Target Name="BuildRelease" DependsOnTargets="Information">
+    <!--<MSBuild Projects="$(SolutionFile)" Targets="NetTopologySuite" Properties="Configuration=Release;" />-->
+    <MSBuild Projects="$(SolutionFile)" 
+             Targets="PowerCollections;GeoAPI;NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008" 
+             Properties="Configuration=Release;TargetFrameworkVersion=v2.0;TargetFrameworkProfile=;DefineConstants=TRACE;NET20;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v2.0\" 
+             RunEachTargetSeparately="true" 
+             />
+    <MSBuild Projects="$(SolutionFile)" 
+             Targets="PowerCollections;GeoAPI;NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008" 
+             Properties="Configuration=Release;TargetFrameworkVersion=v3.5;TargetFrameworkProfile=Client;DefineConstants=TRACE;NET20;NET35;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v3.5\" 
+             RunEachTargetSeparately="true" 
+             ContinueOnError="true" 
+             />
+    <MSBuild Projects="$(SolutionFile)" 
+             Targets="PowerCollections;GeoAPI;NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008" 
+             Properties="Configuration=Release;TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Client;DefineConstants=TRACE;NET20;NET35;NET40;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v4.0\" 
+             RunEachTargetSeparately="true" 
+             ContinueOnError="true" 
+             />
+    <MSBuild Projects="$(SolutionFile)" 
+             Targets="PowerCollections;GeoAPI;NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008" 
+             Properties="Configuration=Release;TargetFrameworkVersion=v4.0.3;TargetFrameworkProfile=Client;DefineConstants=TRACE;NET20;NET35;NET40;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v4.0.3\" 
+             RunEachTargetSeparately="true" 
+             ContinueOnError="true" 
+             />
+    <!--<MSBuild Projects="$(SolutionFile)" Targets="PowerCollections;GeoAPI;NetTopologySuite" Properties="Configuration=Release;TargetFrameworkVersion=v3.5;DefineConstants=TRACE;NET20;NET35;BaseIntermediateOutputPath=$(SolutionDir)$(TargetFrameworkVersion)\obj\" RunEachTargetSeparately="true" ContinueOnError="true" />
+    <MSBuild Projects="$(SolutionFile)" Targets="PowerCollections;GeoAPI;NetTopologySuite" Properties="Configuration=Release;TargetFrameworkVersion=v4.0;DefineConstants=TRACE;NET20;NET35;NET40;BaseIntermediateOutputPath=$(SolutionDir)$(TargetFrameworkVersion)\obj\" RunEachTargetSeparately="true" ContinueOnError="true" />
+    <MSBuild Projects="$(SolutionFile)" Targets="PowerCollections;GeoAPI;NetTopologySuite" Properties="Configuration=Release;TargetFrameworkVersion=v4.0.3;DefineConstants=TRACE;NET20;NET35;NET40;BaseIntermediateOutputPath=$(SolutionDir)$(TargetFrameworkVersion)\obj\" RunEachTargetSeparately="true" ContinueOnError="true" />-->
+  </Target>
+  <Target Name="RebuildRelease" DependsOnTargets="CleanRelease;BuildRelease"/>
+
+  <!-- build only for now, test on build server -->
+  <Target Name="UnitTests" DependsOnTargets="BuildRelease">
+    <MSBuild Projects="$(SolutionFile)" 
+             Targets="NetTopologySuite_IO\NetTopologySuite_IO;NetTopologySuite_Tests\NetTopologySuite_Tests_NUnit"
+             Properties="Configuration=Release;TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Client;DefineConstants=TRACE;UseCoordinateBufferPublicly;NET20;NET35;NET40;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v4.0\" 
+             />
+  </Target>
+
+  <!-- 
+  
+  
+  TODO: add targets here to build zip, NuGet, ... 
+  
+  
+  -->
+  
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets"/>
+</Project>

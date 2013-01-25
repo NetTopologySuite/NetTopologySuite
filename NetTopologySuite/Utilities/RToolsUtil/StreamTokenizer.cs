@@ -259,7 +259,7 @@ namespace RTools_NTS.Util
 						charTypes[i] |= (byte)CharTypeBits.HexDigit;
 					for (int i = 'a'; i <= 'f'; i++) 
 						charTypes[i] |= (byte)CharTypeBits.HexDigit;
-					charTypes[(int)'x'] |= (byte)CharTypeBits.HexDigit;
+					charTypes['x'] |= (byte)CharTypeBits.HexDigit;
 				}
 				else
 				{
@@ -273,7 +273,7 @@ namespace RTools_NTS.Util
 					{
 						charTypes[i] &= (byte)(~digit); // not digit
 					}
-					charTypes[(int)'x'] &= (byte)(~digit);
+					charTypes['x'] &= (byte)(~digit);
 				}
 			}
 		}
@@ -1202,7 +1202,7 @@ namespace RTools_NTS.Util
 							// pull char from backString
 							thisChar = backString[0];
 							backString.Remove(0, 1);
-							state = PickNextState(settings.CharTypes[thisChar], (int)thisChar, 
+							state = PickNextState(settings.CharTypes[thisChar], thisChar, 
 								NextTokenState.MaybeHex);
 							#if DEBUG
 							log.Debug("HexGot0x: Next state on '{0}' is {1}", (char)thisChar,
@@ -1225,7 +1225,7 @@ namespace RTools_NTS.Util
 							// pull char from backString
 							thisChar = backString[0];
 							backString.Remove(0, 1);
-							state = PickNextState(settings.CharTypes[thisChar], (int)thisChar, 
+							state = PickNextState(settings.CharTypes[thisChar], thisChar, 
 								NextTokenState.MaybeHex);
 							#if DEBUG
 							log.Debug("HexGot0x: Next state on '{0}' is {1}", (char)thisChar,
@@ -1340,7 +1340,7 @@ namespace RTools_NTS.Util
 								// pull char from backString
 								thisChar = backString[0];
 								backString.Remove(0, 1);
-								state = PickNextState(settings.CharTypes[thisChar], (int)thisChar, 
+								state = PickNextState(settings.CharTypes[thisChar], thisChar, 
 									NextTokenState.MaybeNumber);
 								#if DEBUG
 								log.Debug("MaybeNumber: Next state on '{0}' is {1}", (char)thisChar,

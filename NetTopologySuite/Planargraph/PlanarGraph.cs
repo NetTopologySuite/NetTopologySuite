@@ -32,11 +32,6 @@ namespace NetTopologySuite.Planargraph
         protected NodeMap nodeMap = new NodeMap();
 
         /// <summary>
-        /// Constructs a PlanarGraph without any Edges, DirectedEdges, or Nodes.
-        /// </summary>
-        public PlanarGraph() { }
-
-        /// <summary>
         /// Returns the <see cref="Node"/> at the given <paramref name="pt">location</paramref>, or <value>null</value> if no <see cref="Node"/> was there.
         /// </summary>
         /// <param name="pt">The location</param>

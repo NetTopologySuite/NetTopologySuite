@@ -24,7 +24,6 @@ namespace NetTopologySuite.Simplify
 
         private readonly Coordinate[] _pts;
         private bool[] _usePt;
-        private double _distanceTolerance;       
 
         /// <summary>
         /// 
@@ -38,17 +37,7 @@ namespace NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public double DistanceTolerance
-        {
-            get
-            {
-                return _distanceTolerance;
-            }
-            set
-            {
-                _distanceTolerance = value;
-            }
-        }
+        public double DistanceTolerance { get; set; }
 
         /// <summary>
         /// 
@@ -68,7 +57,7 @@ namespace NetTopologySuite.Simplify
             return coordList.ToCoordinateArray();
         }
 
-        private LineSegment seg = new LineSegment();
+        private readonly LineSegment seg = new LineSegment();
 
         /// <summary>
         /// 

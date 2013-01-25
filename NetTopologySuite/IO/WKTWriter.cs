@@ -137,7 +137,7 @@ namespace NetTopologySuite.IO
         private NumberFormatInfo _formatter;
         private string _format;
         private bool _isFormatted;
-        private bool _useFormating = false;
+        private bool _useFormating;
         private bool _useMaxPrecision;
         private int _level;
         private int _coordsPerLine = -1;
@@ -636,7 +636,7 @@ namespace NetTopologySuite.IO
                         IndentCoords(i, level + 1, writer);
                     }
                     writer.Write("(");
-                    AppendCoordinate(((IPoint)multiPoint.GetGeometryN(i)).Coordinate, writer, multiPoint.PrecisionModel);
+                    AppendCoordinate((multiPoint.GetGeometryN(i)).Coordinate, writer, multiPoint.PrecisionModel);
                     writer.Write(")");
                 }
                 writer.Write(")");

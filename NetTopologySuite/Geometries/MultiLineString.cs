@@ -162,7 +162,7 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         public override bool EqualsExact(IGeometry other, double tolerance) 
         {
-            if (!IsEquivalentClass((IGeometry) other)) 
+            if (!IsEquivalentClass(other)) 
                 return false;            
             return base.EqualsExact(other, tolerance);
         }

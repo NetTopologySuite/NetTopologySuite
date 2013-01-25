@@ -16,7 +16,6 @@ namespace NetTopologySuite.Triangulate
     public class Segment
     {
         private readonly LineSegment _ls;
-        private Object _data;
 
         /// <summary> 
         /// Creates a new instance for the given ordinates.
@@ -43,7 +42,7 @@ namespace NetTopologySuite.Triangulate
         public Segment(Coordinate p0, Coordinate p1, Object data)
         {
             _ls = new LineSegment(p0, p1);
-            _data = data;
+            this.Data = data;
         }
 
         /// <summary> 
@@ -165,14 +164,7 @@ namespace NetTopologySuite.Triangulate
         /// Gets or sets the external data associated with this segment
         /// </summary>
         /// <remarks>a data object</remarks>
-        public Object Data
-        {
-            get {return _data;}
-            set
-            {
-                _data = value;
-            }
-        }
+        public Object Data { get; set; }
 
         /// <summary>
         /// Determines whether two segments are topologically equal.

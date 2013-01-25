@@ -107,7 +107,7 @@ namespace NetTopologySuite.Simplify
 // ReSharper restore InconsistentNaming
         {
             private readonly DouglasPeuckerSimplifier _container;
-            private bool _ensureValidTopology;
+            private readonly bool _ensureValidTopology;
 
             /// <summary>
             /// 

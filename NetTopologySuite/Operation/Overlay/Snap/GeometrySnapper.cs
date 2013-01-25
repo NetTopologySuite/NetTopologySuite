@@ -200,7 +200,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
     {
         private readonly double _snapTolerance;
         private readonly Coordinate[] _snapPts;
-        private bool _isSelfSnap;
+        private readonly bool _isSelfSnap;
 
         /// <summary>
         ///

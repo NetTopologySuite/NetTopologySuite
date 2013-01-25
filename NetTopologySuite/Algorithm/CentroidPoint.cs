@@ -10,13 +10,8 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public class CentroidPoint
     {
-        private int ptCount = 0;
-        private Coordinate centSum = new Coordinate();
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public CentroidPoint() { }
+        private int ptCount;
+        private readonly Coordinate centSum = new Coordinate();
 
         /// <summary> 
         /// Adds the point(s) defined by a Geometry to the centroid total.

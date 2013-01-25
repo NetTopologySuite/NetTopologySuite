@@ -25,7 +25,7 @@ namespace NetTopologySuite.Operation.Predicate
         }
 
         private IPolygon rectangle;
-        private Envelope rectEnv;
+        private readonly Envelope rectEnv;
 
         /// <summary>
         /// Create a new contains computer for two geometries.

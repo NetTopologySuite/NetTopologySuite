@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 #endif
 [assembly: AssemblyCompany("NetTopologySuite - Team")]
 [assembly: AssemblyProduct("NetTopologySuite.IO.GDB")]
-[assembly: AssemblyCopyright("Copyright © 2007 - 2012")]
+[assembly: AssemblyCopyright("Copyright © 2007 - 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -27,4 +27,4 @@ using System.Runtime.InteropServices;
 [assembly: Guid("c4673b71-80df-455c-9208-03c4a01f70ba")]
 
 // Versionsinformationen für eine Assembly bestehen aus den folgenden vier Werten:
-[assembly: AssemblyVersion("1.12.1.0")]
+[assembly: AssemblyVersion("1.13.0.0")]

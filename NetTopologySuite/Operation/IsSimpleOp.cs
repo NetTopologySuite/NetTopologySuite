@@ -51,7 +51,7 @@ namespace NetTopologySuite.Operation
     public class IsSimpleOp
     {
         private readonly IGeometry _inputGeom;
-        private bool _isClosedEndpointsInInterior = true;
+        private readonly bool _isClosedEndpointsInInterior = true;
         private Coordinate _nonSimpleLocation;
 
         /// <summary>
@@ -251,7 +251,7 @@ namespace NetTopologySuite.Operation
         /// </summary>
         private class EndpointInfo
         {
-            public Coordinate Point;
+            public readonly Coordinate Point;
             public bool IsClosed; /*{ get; private set; }*/
             public int Degree; /* { get; private set; } */
 

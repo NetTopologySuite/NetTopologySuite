@@ -16,7 +16,6 @@ namespace NetTopologySuite.GeometriesGraph
         private Label _label;
 
         // isInResult indicates if this component has already been included in the result
-        private bool _isInResult;
 
         private bool _isCovered;
         private bool _isCoveredSet;
@@ -49,22 +48,12 @@ namespace NetTopologySuite.GeometriesGraph
             {
                 _label = value;
             }
-        }     
-                
+        }
+
         /// <summary>
         /// 
         /// </summary>
-        public bool InResult
-        { 
-            get
-            {
-                return _isInResult;
-            }
-            set
-            {
-                _isInResult = value;
-            }           
-        }
+        public bool InResult { get; set; }
 
         /// <summary> 
         /// IsInResult indicates if this component has already been included in the result.

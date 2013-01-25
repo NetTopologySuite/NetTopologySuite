@@ -20,7 +20,6 @@ namespace NetTopologySuite.Noding
     {
 
         private readonly Coordinate[] _pts;
-        private Object _data;
 
         ///<summary>
         /// Creates a new segment string from a list of vertices.
@@ -30,16 +29,12 @@ namespace NetTopologySuite.Noding
         public BasicSegmentString(Coordinate[] pts, Object data)
         {
             _pts = pts;
-            _data = data;
+            this.Context = data;
         }
 
         ///<summary>Gets the user-defined data for this segment string.
         ///</summary>
-        public Object Context
-        {
-            get { return _data; }
-            set { _data = value; }
-        }
+        public Object Context { get; set; }
 
         public Coordinate[] Coordinates { get { return _pts; } }
 

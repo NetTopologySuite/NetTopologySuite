@@ -16,8 +16,8 @@ namespace NetTopologySuite.Operation.Valid
     /// </summary>
     public class SimpleNestedRingTester
     {        
-        private GeometryGraph graph;  // used to find non-node vertices
-        private IList rings = new ArrayList();
+        private readonly GeometryGraph graph;  // used to find non-node vertices
+        private readonly IList rings = new ArrayList();
         private Coordinate nestedPt;
 
         /// <summary>

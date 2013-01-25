@@ -427,7 +427,7 @@ namespace NetTopologySuite.Operation.Polygonize
             
             while (nodeStack.Count != 0) 
             {
-                Node node = (Node) nodeStack.Pop();
+                Node node = nodeStack.Pop();
 
                 DeleteAllEdges(node);
                 IList<DirectedEdge> nodeOutEdges = node.OutEdges.Edges;

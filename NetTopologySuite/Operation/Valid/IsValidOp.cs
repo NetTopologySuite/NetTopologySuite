@@ -57,14 +57,13 @@ namespace NetTopologySuite.Operation.Valid
             return null;
         }
 
-        private IGeometry parentGeometry = null;  // the base Geometry to be validated
+        private readonly IGeometry parentGeometry;  // the base Geometry to be validated
 
         /**
          * If the following condition is TRUE JTS will validate inverted shells and exverted holes (the ESRI SDE model).
          */
-        private bool isSelfTouchingRingFormingHoleValid = false;
         private bool isChecked = false;
-        private TopologyValidationError validErr = null;
+        private TopologyValidationError validErr;
 
         /// <summary>
         /// 
@@ -99,17 +98,7 @@ namespace NetTopologySuite.Operation.Valid
         /// </para>
         /// </summary>
         /// <value>States whether geometry with this condition is valid.</value>
-        public bool IsSelfTouchingRingFormingHoleValid
-        {
-            get
-            {
-                return isSelfTouchingRingFormingHoleValid;
-            }
-            set
-            {
-                isSelfTouchingRingFormingHoleValid = value;
-            }
-        }
+        public bool IsSelfTouchingRingFormingHoleValid { get; set; }
 
         /// <summary>
         /// Computes the validity of the geometry,

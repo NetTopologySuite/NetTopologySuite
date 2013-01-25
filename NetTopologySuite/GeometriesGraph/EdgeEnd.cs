@@ -23,16 +23,10 @@ namespace NetTopologySuite.GeometriesGraph
     public class EdgeEnd : IComparable<EdgeEnd>
     {
         /// <summary>
-        /// The parent edge of this edge end.
-        /// </summary>
-        private Edge _edge;        
-
-        /// <summary>
         /// 
         /// </summary>
         private Label _label;
 
-        private Node _node;          // the node this edge end originates at
         private Coordinate _p0, _p1;  // points of initial line segment
         private double _dx, _dy;      // the direction vector for this edge from its starting point
         private int _quadrant;
@@ -43,7 +37,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="edge"></param>
         protected EdgeEnd(Edge edge)
         {
-            _edge = edge;
+            this.Edge = edge;
         }
 
         /// <summary>
@@ -87,14 +81,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public Edge Edge
-        {
-            get
-            {
-                return _edge;
-            }
-            protected set { _edge = value; }
-        }
+        public Edge Edge { get; protected set; }
 
         /// <summary>
         /// 
@@ -166,17 +153,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public Node Node
-        {
-            get
-            {
-                return _node;
-            }
-            set
-            {
-                _node = value;
-            }
-        }
+        public Node Node { get; set; }
 
         /// <summary>
         /// 

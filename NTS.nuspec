@@ -15,7 +15,7 @@
     </description>
     <summary>NTS Topology Suite is a direct-port of all the functionalities offered by JTS Topology Suite</summary>
     <tags>NTS Topology OGC SFS</tags>
-    <copyright>Copyright 2007-2012</copyright>
+    <copyright>Copyright 2007-2013</copyright>
     <language>en-US</language>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System" targetFramework="" />

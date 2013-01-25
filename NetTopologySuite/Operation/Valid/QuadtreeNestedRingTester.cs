@@ -102,7 +102,7 @@ namespace NetTopologySuite.Operation.Valid
             for (int i = 0; i < _rings.Count; i++)
             {
                 ILinearRing ring = _rings[i];
-                Envelope env = (Envelope) ring.EnvelopeInternal;
+                Envelope env = ring.EnvelopeInternal;
                 _quadtree.Insert(env, ring);
             }
         }

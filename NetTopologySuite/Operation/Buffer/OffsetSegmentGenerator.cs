@@ -44,7 +44,7 @@ namespace NetTopologySuite.Operation.Buffer
         /**
          * the max error of approximation (distance) between a quad segment and the true fillet curve
          */
-        private double _maxCurveSegmentError = 0.0;
+        private double _maxCurveSegmentError;
 
         /**
          * The angle quantum with which to approximate a fillet curve

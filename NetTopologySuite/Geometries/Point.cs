@@ -69,7 +69,7 @@ namespace NetTopologySuite.Geometries
             if (coordinates == null) 
                 coordinates = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
             NetTopologySuite.Utilities.Assert.IsTrue(coordinates.Count <= 1);
-            this._coordinates = (ICoordinateSequence) coordinates;
+            this._coordinates = coordinates;
         }        
 
         /// <summary>

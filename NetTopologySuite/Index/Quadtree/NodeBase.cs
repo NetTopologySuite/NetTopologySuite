@@ -52,11 +52,6 @@ namespace NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        protected NodeBase() { }
-
-        /// <summary>
-        /// 
-        /// </summary>
         public IList<T> Items
         {
             get

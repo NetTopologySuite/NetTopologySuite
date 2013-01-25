@@ -245,7 +245,7 @@ namespace NetTopologySuite.Operation.Overlay
         {
             for (var it = _edgeList.GetEnumerator(); it.MoveNext(); ) 
             {
-                var e = (Edge) it.Current;
+                var e = it.Current;
                 var lbl = e.Label;
                 var depth = e.Depth;
                 /*
@@ -297,7 +297,7 @@ namespace NetTopologySuite.Operation.Overlay
             var it = _edgeList.GetEnumerator();
             while (it.MoveNext()) 
             {
-                var e = (Edge) it.Current;
+                var e = it.Current;
                 if (!e.IsCollapsed) 
                     continue;
                 // edgeList.Remove(it.Current as Edge); 
@@ -311,7 +311,7 @@ namespace NetTopologySuite.Operation.Overlay
             foreach (Edge obj in edgesToRemove)
                 _edgeList.Remove(obj);            
             foreach (var obj in newEdges)
-                _edgeList.Add((Edge) obj);
+                _edgeList.Add(obj);
         }
 
         /// <summary>
@@ -329,7 +329,7 @@ namespace NetTopologySuite.Operation.Overlay
             var i = arg[argIndex].GetNodeEnumerator();
             while (i.MoveNext()) 
             {
-                var graphNode = (Node) i.Current;
+                var graphNode = i.Current;
                 var newNode = _graph.AddNode(graphNode.Coordinate);
                 newNode.SetLabel(argIndex, graphNode.Label.GetLocation(argIndex));
             }
@@ -347,7 +347,7 @@ namespace NetTopologySuite.Operation.Overlay
             var nodeit = _graph.Nodes.GetEnumerator();
             while (nodeit.MoveNext()) 
             {
-                var node = (Node) nodeit.Current;
+                var node = nodeit.Current;
                 node.Edges.ComputeLabelling(arg);
             }
             MergeSymLabels();
@@ -365,7 +365,7 @@ namespace NetTopologySuite.Operation.Overlay
             var nodeit = _graph.Nodes.GetEnumerator();
             while (nodeit.MoveNext()) 
             {
-                var node = (Node) nodeit.Current;
+                var node = nodeit.Current;
                 ((DirectedEdgeStar) node.Edges).MergeSymLabels();
             }
         }
@@ -379,7 +379,7 @@ namespace NetTopologySuite.Operation.Overlay
             var nodeit = _graph.Nodes.GetEnumerator();
             while (nodeit.MoveNext()) 
             {
-                var node = (Node) nodeit.Current;
+                var node = nodeit.Current;
                 var lbl = ((DirectedEdgeStar) node.Edges).Label;
                 node.Label.Merge(lbl);
             }
@@ -404,7 +404,7 @@ namespace NetTopologySuite.Operation.Overlay
             var ni = _graph.Nodes.GetEnumerator();
             while (ni.MoveNext()) 
             {
-                var n = (Node) ni.Current;
+                var n = ni.Current;
                 var label = n.Label;
                 if (n.IsIsolated) 
                 {

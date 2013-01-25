@@ -8,7 +8,7 @@ namespace NetTopologySuite.Operation.Polygonize
     /// </summary>
     public class PolygonizeEdge : Edge
     {
-        private ILineString line;
+        private readonly ILineString line;
 
         /// <summary>
         /// 

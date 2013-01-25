@@ -140,7 +140,7 @@ namespace NetTopologySuite.IO.GML2
                 Write(geometry as IMultiPolygon, writer);
             else if (geometry is IGeometryCollection)
                 Write(geometry as IGeometryCollection, writer);
-            else throw new ArgumentException("Geometry not recognized: " + geometry.ToString());
+            else throw new ArgumentException("Geometry not recognized: " + geometry);
         }
 
         /// <summary>
@@ -261,7 +261,7 @@ namespace NetTopologySuite.IO.GML2
             for (int i = 0; i < geometryCollection.NumGeometries; i++)
             {
                 writer.WriteStartElement("geometryMember", GMLElements.gmlNS);
-                Write(geometryCollection.Geometries[i] as IGeometry, writer);
+                Write(geometryCollection.Geometries[i], writer);
                 writer.WriteEndElement();
             }
             writer.WriteEndElement();

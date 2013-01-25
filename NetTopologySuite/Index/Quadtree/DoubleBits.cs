@@ -97,7 +97,7 @@ namespace NetTopologySuite.Index.Quadtree
             return db1.Double;
         }
 
-        private double x;
+        private readonly double x;
         private long _xBits;
 
         /// <summary>

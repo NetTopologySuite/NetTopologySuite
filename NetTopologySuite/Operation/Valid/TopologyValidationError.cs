@@ -112,8 +112,8 @@ namespace NetTopologySuite.Operation.Valid
             "Invalid Coordinate"
         };
 
-        private TopologyValidationErrors errorType;
-        private Coordinate pt;
+        private readonly TopologyValidationErrors errorType;
+        private readonly Coordinate pt;
 
         /// <summary>
         /// 

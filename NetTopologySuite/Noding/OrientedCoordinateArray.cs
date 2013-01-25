@@ -9,8 +9,8 @@ namespace NetTopologySuite.Noding
     /// </summary>
     public class OrientedCoordinateArray : IComparable
     {
-        private Coordinate[] pts = null;
-        private bool orientation = false;
+        private readonly Coordinate[] pts;
+        private readonly bool orientation;
 
         /// <summary>
         /// Creates a new <see cref="OrientedCoordinateArray" />}

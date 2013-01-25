@@ -71,7 +71,7 @@ namespace NetTopologySuite.Triangulate
 	    private IncrementalDelaunayTriangulator _incDel;
 	    private IGeometry _convexHull;
 	    private IConstraintSplitPointFinder _splitFinder = new NonEncroachingSplitPointFinder();
-	    private KdTree<Vertex> kdt;
+	    private readonly KdTree<Vertex> kdt;
 	    private ConstraintVertexFactory _vertexFactory;
 
 	    // allPointsEnv expanded by a small buffer

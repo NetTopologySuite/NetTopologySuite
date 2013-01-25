@@ -13,9 +13,9 @@ namespace NetTopologySuite.Operation.Linemerge
     /// </summary>
     public class EdgeString
     {
-        private IGeometryFactory factory;
-        private IList directedEdges = new ArrayList();
-        private Coordinate[] coordinates = null;
+        private readonly IGeometryFactory factory;
+        private readonly IList directedEdges = new ArrayList();
+        private Coordinate[] coordinates;
 
         /// <summary>
         /// Constructs an EdgeString with the given factory used to convert this EdgeString

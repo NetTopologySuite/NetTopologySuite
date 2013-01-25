@@ -122,7 +122,7 @@ namespace NetTopologySuite.GeometriesGraph
             IEnumerator<EdgeEnd> it = GetEnumerator();
             while(it.MoveNext()) 
             {
-                EdgeEnd ee = (EdgeEnd)it.Current;
+                EdgeEnd ee = it.Current;
                 Edge e = ee.Edge;
                 Label eLabel = e.Label;
                 for (int i = 0; i < 2; i++) 
@@ -254,7 +254,7 @@ namespace NetTopologySuite.GeometriesGraph
             // link edges in CW order
             for (int i = _resultAreaEdgeList.Count - 1; i >= 0; i--) 
             {
-                DirectedEdge nextOut = (DirectedEdge)_resultAreaEdgeList[i];
+                DirectedEdge nextOut = this._resultAreaEdgeList[i];
                 DirectedEdge nextIn = nextOut.Sym;
 
                 // record first outgoing edge, in order to link the last incoming edge

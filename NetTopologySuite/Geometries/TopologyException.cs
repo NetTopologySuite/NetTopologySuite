@@ -25,7 +25,7 @@ namespace NetTopologySuite.Geometries
             return msg;
         }
 
-        private Coordinate pt = null;
+        private readonly Coordinate pt;
 
         /// <summary>
         /// 

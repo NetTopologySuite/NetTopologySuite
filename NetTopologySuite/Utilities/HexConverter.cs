@@ -67,7 +67,7 @@ namespace NetTopologySuite.Utilities
                                          return result;
 
                               posizione--;
-                              valore += valPos * Math.Pow((double) baseIn, (double) posizione);
+                              valore += valPos * Math.Pow(baseIn, posizione);
                         }
                   }
               

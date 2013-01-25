@@ -23,12 +23,11 @@ namespace NetTopologySuite.Index.Sweepline
     /// </summary>
     public class SweepLineEvent : IComparable
     {
-        private double xValue;
-        private SweepLineEvents eventType;
-        private SweepLineEvent insertEvent = null; // null if this is an Insert event
-        private int deleteEventIndex;
+        private readonly double xValue;
+        private readonly SweepLineEvents eventType;
+        private readonly SweepLineEvent insertEvent; // null if this is an Insert event
 
-        private SweepLineInterval sweepInt;
+        private readonly SweepLineInterval sweepInt;
 
         /// <summary>
         /// 
@@ -82,17 +81,7 @@ namespace NetTopologySuite.Index.Sweepline
         /// <summary>
         /// 
         /// </summary>
-        public int DeleteEventIndex
-        {
-            get
-            {
-                return deleteEventIndex;
-            }
-            set
-            {
-                this.deleteEventIndex = value;
-            }
-        }
+        public int DeleteEventIndex { get; set; }
 
         /// <summary>
         /// 

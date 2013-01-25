@@ -12,8 +12,6 @@ namespace NetTopologySuite.Noding
     ///</summary>
     public abstract class SegmentSetMutualIntersector
     {
-        private ISegmentIntersector _segInt;
-
         ///<summary>
         /// Gets/Sets the <see cref="ISegmentIntersector"/> to use with this intersector.
         ///</summary>
@@ -21,11 +19,7 @@ namespace NetTopologySuite.Noding
         /// The SegmentIntersector will either rocord or add intersection nodes
         /// for the input segment strings.
         /// </remarks>
-        public ISegmentIntersector SegmentIntersector
-        { 
-            get { return _segInt; }
-            protected internal set { _segInt = value; }
-        }
+        public ISegmentIntersector SegmentIntersector { get; protected internal set; }
 
         ///<summary>
         ///</summary>

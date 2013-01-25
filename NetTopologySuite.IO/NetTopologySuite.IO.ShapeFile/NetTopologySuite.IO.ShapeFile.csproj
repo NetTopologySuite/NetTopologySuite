@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NetTopologySuite.IO</RootNamespace>
     <AssemblyName>NetTopologySuite.IO.ShapeFile</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
@@ -34,10 +34,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkVersion)'!='v2.0'">
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\NetTopologySuite.IO\Geometries\CoordinateBuffer.cs">
@@ -57,10 +55,6 @@
     <ProjectReference Include="..\..\NetTopologySuite\NetTopologySuite.csproj">
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
       <Name>NetTopologySuite</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.csproj">
-      <Project>{E377580E-61C9-4943-B98B-085D51B32578}</Project>
-      <Name>NetTopologySuite.IO %28NetTopologySuite.IO\NetTopologySuite.IO%29</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

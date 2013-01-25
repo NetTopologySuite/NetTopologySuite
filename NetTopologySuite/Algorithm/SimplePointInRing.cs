@@ -11,7 +11,7 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        private Coordinate[] pts;
+        private readonly Coordinate[] pts;
 
         /// <summary>
         /// 

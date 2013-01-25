@@ -4,9 +4,10 @@ using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
-
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
+#if !NET35 && !SILVERLIGHT
+using HS = Wintellect.PowerCollections.Set<int>;
+#else
+using HS = System.Collections.Generic.HashSet<int>;
 #endif
 
 namespace NetTopologySuite.IO.Handlers
@@ -55,7 +56,7 @@ namespace NetTopologySuite.IO.Handlers
             for (var i = 0; i < numParts; i++)
                 partOffsets[i] = ReadInt32(file, totalRecordLength, ref totalRead);
 
-            var skippedList = new HashSet<int>();
+            var skippedList = new HS();
 
             //var allPoints = new List<Coordinate>();
             var buffer = new CoordinateBuffer(numPoints, NoDataBorderValue, true);

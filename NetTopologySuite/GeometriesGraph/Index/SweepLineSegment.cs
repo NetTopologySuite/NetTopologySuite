@@ -7,9 +7,9 @@ namespace NetTopologySuite.GeometriesGraph.Index
     /// </summary>
     public class SweepLineSegment
     {
-        private Edge edge;
-        private Coordinate[] pts;
-        int ptIndex;
+        private readonly Edge edge;
+        private readonly Coordinate[] pts;
+        readonly int ptIndex;
 
         /// <summary>
         /// 

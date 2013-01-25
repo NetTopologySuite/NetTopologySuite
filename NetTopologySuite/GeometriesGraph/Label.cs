@@ -38,7 +38,7 @@ namespace NetTopologySuite.GeometriesGraph
             return lineLabel;
         }
 
-        private TopologyLocation[] elt = new TopologyLocation[2];
+        private readonly TopologyLocation[] elt = new TopologyLocation[2];
 
         /// <summary>
         /// Construct a Label with a single location for both Geometries.
@@ -323,12 +323,12 @@ namespace NetTopologySuite.GeometriesGraph
             if (elt[0] != null) 
             {
                 sb.Append("A:");
-                sb.Append(elt[0].ToString());
+                sb.Append(this.elt[0]);
             }
             if (elt[1] != null) 
             {
                 sb.Append(" B:");
-                sb.Append(elt[1].ToString());
+                sb.Append(this.elt[1]);
             }
             return sb.ToString();
         }

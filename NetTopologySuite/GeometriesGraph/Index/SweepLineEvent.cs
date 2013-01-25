@@ -17,12 +17,10 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         public const int Delete = 2;
 
-        private object edgeSet;    // used for red-blue intersection detection
-        private double xValue;
-        private int eventType;
-        private SweepLineEvent insertEvent; // null if this is an Insert event
-        private int deleteEventIndex;
-        private object obj;
+        private readonly double xValue;
+        private readonly int eventType;
+        private readonly SweepLineEvent insertEvent; // null if this is an Insert event
+        private readonly object obj;
 
         /// <summary>
         /// 
@@ -33,7 +31,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="obj"></param>
         public SweepLineEvent(object edgeSet, double x, SweepLineEvent insertEvent, object obj)
         {
-            this.edgeSet = edgeSet;
+            this.EdgeSet = edgeSet;
             xValue = x;
             this.insertEvent = insertEvent;
             this.eventType = Insert;
@@ -45,17 +43,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <summary>
         /// 
         /// </summary>
-        public  object EdgeSet
-        {
-            get
-            {
-                return this.edgeSet;
-            }
-            set
-            {
-                this.edgeSet = value;
-            }
-        }
+        public object EdgeSet { get; set; }
 
         /// <summary>
         /// 
@@ -93,17 +81,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <summary>
         /// 
         /// </summary>
-        public  int DeleteEventIndex
-        {
-            get
-            {
-                return deleteEventIndex;
-            }
-            set
-            {
-                this.deleteEventIndex = value;
-            }
-        }
+        public int DeleteEventIndex { get; set; }
 
         /// <summary>
         /// 

@@ -16,7 +16,6 @@ namespace NetTopologySuite.LinearReferencing
         private CoordinateList _coordList;
 
         private bool _ignoreInvalidLines;
-        private bool _fixInvalidLines;
 
         private Coordinate _lastPt;
 
@@ -33,17 +32,7 @@ namespace NetTopologySuite.LinearReferencing
         /// Allows invalid lines to be fixed rather than causing Exceptions.
         /// An invalid line is one which has only one unique point.
         /// </summary>
-        public bool FixInvalidLines
-        {
-            get
-            {
-                return _fixInvalidLines;
-            }
-            set
-            {
-                _fixInvalidLines = value;
-            }
-        }
+        public bool FixInvalidLines { get; set; }
 
         /// <summary>
         /// Allows invalid lines to be ignored rather than causing Exceptions.

@@ -477,7 +477,7 @@ namespace RTools_NTS.Util
 		/// <summary>Override, see base <see cref="Token"/></summary>
 		public override bool Equals(object other)
 		{
-			if ((object)other == null) return(false);
+			if (other == null) return(false);
 			if (!GetType().Equals(other.GetType())) return(false);
 			if ((obj == null) || (((CharToken)other).obj == null)) return(false);
 			if (((Char)obj).Equals((Char)((CharToken)other).Object)) return(true);
@@ -496,7 +496,7 @@ namespace RTools_NTS.Util
 	{
         // NOTE: modified for "safe" assembly in Sql 2005
         // Static field now is an instance field!
-        private NumberFormatInfo numberFormatInfo = null;
+        private NumberFormatInfo numberFormatInfo;
 
         // Static method now is an instance method!
         private NumberFormatInfo GetNumberFormatInfo()
@@ -564,7 +564,7 @@ namespace RTools_NTS.Util
 		{
 			try
 			{
-				obj = (double) f;
+				obj = f;
 			}
             catch (Exception) { obj = null; }
 		}
@@ -616,7 +616,7 @@ namespace RTools_NTS.Util
         /// </summary>
 		public override bool Equals(object other)
 		{
-			if ((object)other == null) 
+			if (other == null) 
                 return false;
 			if (!GetType().Equals(other.GetType())) 
                 return false;
@@ -798,7 +798,7 @@ namespace RTools_NTS.Util
 		/// <summary>Override, see base <see cref="Token"/></summary>
 		public override bool Equals(object other)
 		{
-			if ((object)other == null) return(false);
+			if (other == null) return(false);
 			if (!GetType().Equals(other.GetType())) return(false);
 			if ((obj == null) || (((IntToken)other).obj == null)) return(false);
 			if (!obj.GetType().Equals(((IntToken)other).obj.GetType())) return(false);

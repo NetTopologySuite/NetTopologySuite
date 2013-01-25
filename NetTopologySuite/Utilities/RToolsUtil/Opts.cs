@@ -182,9 +182,9 @@ namespace RTools_NTS.Util
 
 				for (int i = 0; i < tokens.Count; i++)
 				{
-					Token t = (Token)tokens[i];
+					Token t = tokens[i];
 					Token nextToken = null;
-					if (i + 1 < tokens.Count) nextToken = (Token)tokens[i + 1];
+					if (i + 1 < tokens.Count) nextToken = tokens[i + 1];
 
 					if ((t is WordToken) && (IsSwitch(t.StringValue)))
 					{
@@ -199,7 +199,7 @@ namespace RTools_NTS.Util
 						}
 						else if ((nextToken == '[') && (i + 2 < tokens.Count))
 						{
-							Token twoAhead = (Token)tokens[i + 2];
+							Token twoAhead = tokens[i + 2];
 							if ((twoAhead is WordToken) && (!IsSwitch(twoAhead.StringValue)))
 							{
 								// optional

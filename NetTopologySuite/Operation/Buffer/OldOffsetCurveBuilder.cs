@@ -74,7 +74,7 @@ namespace NetTopologySuite.Operation.Buffer
          * and quadrantSegs >= 8)
          *
          */
-        private int closingSegFactor = 1;
+        private readonly int closingSegFactor = 1;
 
         private OffsetCurveVertexList _vertexList;
         private readonly LineIntersector _li;

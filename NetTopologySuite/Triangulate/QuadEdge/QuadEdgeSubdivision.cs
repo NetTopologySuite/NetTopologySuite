@@ -452,7 +452,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return false;
         }
 
-        private LineSegment seg = new LineSegment();
+        private readonly LineSegment seg = new LineSegment();
 
         /// <summary>
         /// Tests whether a {@link Coordinate} lies on a {@link QuadEdge}, up to a

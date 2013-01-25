@@ -18,11 +18,11 @@ namespace NetTopologySuite.Operation.Valid
     /// </summary>
     public class SweeplineNestedRingTester
     {
-        private GeometryGraph graph;  // used to find non-node vertices
-        private IList rings = new ArrayList();
+        private readonly GeometryGraph graph;  // used to find non-node vertices
+        private readonly IList rings = new ArrayList();
         private Envelope totalEnv = new Envelope();
         private SweepLineIndex sweepLine;
-        private Coordinate nestedPt = null;
+        private Coordinate nestedPt;
 
         /// <summary>
         /// 
@@ -74,7 +74,7 @@ namespace NetTopologySuite.Operation.Valid
             for (int i = 0; i < rings.Count; i++) 
             {
                 ILinearRing ring = (ILinearRing) rings[i];
-                Envelope env = (Envelope) ring.EnvelopeInternal;
+                Envelope env = ring.EnvelopeInternal;
                 SweepLineInterval sweepInt = new SweepLineInterval(env.MinX, env.MaxX, ring);
                 sweepLine.Add(sweepInt);
             }
@@ -108,7 +108,7 @@ namespace NetTopologySuite.Operation.Valid
         /// </summary>
         public class OverlapAction : ISweepLineOverlapAction
         {
-            private SweeplineNestedRingTester container = null;
+            private readonly SweeplineNestedRingTester container;
             bool isNonNested = true;
 
             /// <summary>

@@ -7,13 +7,8 @@ namespace NetTopologySuite.Utilities
 	/// 
 	/// </summary>
 	internal class ReverseOrder :IComparer
-	{		
-        /// <summary>
-        /// 
-        /// </summary>
-		public ReverseOrder() { }
-
-        /// <summary>
+	{
+	    /// <summary>
         /// 
         /// </summary>
         /// <param name="x"></param>

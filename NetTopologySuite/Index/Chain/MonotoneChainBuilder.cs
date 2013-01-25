@@ -27,7 +27,7 @@ namespace NetTopologySuite.Index.Chain
         {
             int[] array = new int[list.Count];
             for (int i = 0; i < array.Length; i++)            
-                array[i] = (int)list[i];            
+                array[i] = list[i];            
             return array;
         }
 

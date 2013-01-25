@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+#if !NET35 && !SILVERLIGHT
+using HS = Wintellect.PowerCollections.Set<int>;
+#else
 using System.Linq;
+using HS = System.Collections.Generic.HashSet<int>;
+#endif
 using GeoAPI.Geometries;
-using GeoAPI.IO;
 
 namespace NetTopologySuite.IO.Handlers
 {
@@ -441,10 +445,10 @@ namespace NetTopologySuite.IO.Handlers
         /// <param name="currentlyReadBytes">How many bytes are read from this record</param>
         /// <param name="buffer">The coordinate buffer</param>
         /// <param name="skippedList">A list of indices which have not been added to the buffer</param>     
-        protected void GetZMValues(BigEndianBinaryReader file, int totalRecordLength, ref int currentlyReadBytes, ICoordinateBuffer buffer, HashSet<int> skippedList = null)
+        protected void GetZMValues(BigEndianBinaryReader file, int totalRecordLength, ref int currentlyReadBytes, ICoordinateBuffer buffer, HS skippedList = null)
         {
             if (skippedList == null)
-                skippedList = new HashSet<int>();
+                skippedList = new HS();
 
             var numPoints = buffer.Capacity;
 
@@ -489,19 +493,20 @@ namespace NetTopologySuite.IO.Handlers
             // If we have Z, write it
             if ((HasZValue()))
             {
-                file.Write(zValues.Min());
-                file.Write(zValues.Max());
+                //Do not change this as it breaks NET20 Build
+                file.Write(Enumerable.Min(zValues));
+                file.Write(Enumerable.Max(zValues));
                 for (var i = 0; i < count; i++)
                     file.Write(zValues[i]);
             }
 
             // If we have Z, we might also optionally have M
-            if (HasMValue() || (HasZValue() && mValues!=null && mValues.Any()))
+            if (HasMValue() || (HasZValue() && mValues!=null && Enumerable.Any(mValues)))
             {
-                if (mValues!=null && mValues.Any())
+                if (mValues!=null && Enumerable.Any(mValues))
                 {
-                    file.Write(mValues.Min());
-                    file.Write(mValues.Max());
+                    file.Write(Enumerable.Min(mValues));
+                    file.Write(Enumerable.Max(mValues));
                     for (var i = 0; i < count; i++)
                         file.Write(mValues[i]);
                 }
@@ -529,5 +534,33 @@ namespace NetTopologySuite.IO.Handlers
         }
 
         public GeometryInstantiationErrorHandlingOption GeometryInstantiationErrorHandling { get; set; }
+
     }
+#if !NET35 && !SILVERLIGHT
+        internal static class Enumerable
+        {
+        internal static bool Any(IEnumerable<double> self)
+        {
+            foreach(var d in self)
+                return true;
+            return false;
+        }
+        internal static double Min(IEnumerable<double> self)
+        {
+            var res = Double.MaxValue;
+            foreach(var d in self)
+                res = d < res ? d : res;
+            
+            return (res == double.MaxValue) ? 0d : res;
+        }
+        internal static double Max(IEnumerable<double> self)
+        {
+            var res = double.MinValue;
+            foreach(var d in self)
+                res = d > res ? d : res;
+
+            return (res == double.MinValue) ? 0d : res;
+        }
+        }
+#endif
 }

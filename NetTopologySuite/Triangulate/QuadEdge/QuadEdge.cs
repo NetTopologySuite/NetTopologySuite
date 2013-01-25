@@ -116,7 +116,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         // the dual of this edge, directed from right to left
         private Vertex _vertex; // The vertex that this edge represents
         private QuadEdge _next; // A reference to a connected edge
-        private Object _data;
 //    private int      visitedKey = 0;
 
         /// <summary>
@@ -148,11 +147,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <remarks>
         /// an object containing external data
         /// </remarks>
-        public object Data
-        {
-            set { _data = value; }
-            get { return _data; }
-        }
+        public object Data { set; get; }
 
         /// <summary>
         /// Marks this quadedge as being deleted.

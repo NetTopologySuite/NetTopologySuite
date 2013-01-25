@@ -135,16 +135,11 @@ namespace NetTopologySuite.Operation.Buffer
         private class DepthSegment : IComparable
         {
             private readonly LineSegment _upwardSeg;
-            private int _leftDepth;
 
             /// <summary>
             ///
             /// </summary>
-            public int LeftDepth
-            {
-                get { return _leftDepth; }
-                set { _leftDepth = value; }
-            }
+            public int LeftDepth { get; set; }
 
             /// <summary>
             ///
@@ -155,7 +150,7 @@ namespace NetTopologySuite.Operation.Buffer
             {
                 // input seg is assumed to be normalized
                 _upwardSeg = new LineSegment(seg);
-                _leftDepth = depth;
+                this.LeftDepth = depth;
             }
 
             /// <summary>

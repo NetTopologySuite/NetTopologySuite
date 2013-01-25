@@ -13,15 +13,9 @@ namespace NetTopologySuite.Operation.Buffer
     public class RightmostEdgeFinder
     {        
         private int minIndex = -1;
-        private Coordinate minCoord = null;
-        private DirectedEdge minDe = null;
-        private DirectedEdge orientedDe = null;
-
-        /// <summary>
-        /// A RightmostEdgeFinder finds the DirectedEdge with the rightmost coordinate.
-        /// The DirectedEdge returned is guaranteed to have the R of the world on its RHS.
-        /// </summary>
-        public RightmostEdgeFinder() { }
+        private Coordinate minCoord;
+        private DirectedEdge minDe;
+        private DirectedEdge orientedDe;
 
         /// <summary>
         /// 

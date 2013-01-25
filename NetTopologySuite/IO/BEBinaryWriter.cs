@@ -22,7 +22,7 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Initializes a new instance of the <see cref="BEBinaryWriter"/> class.
         /// </summary>
-        public BEBinaryWriter() : base() { }
+        public BEBinaryWriter() { }
 
 
         /// <summary>

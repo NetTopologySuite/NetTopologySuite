@@ -19,8 +19,8 @@ namespace NetTopologySuite.Operation.Valid
     public class ConsistentAreaTester 
     {
         private readonly LineIntersector li = new RobustLineIntersector();
-        private GeometryGraph geomGraph;
-        private RelateNodeGraph nodeGraph = new RelateNodeGraph();
+        private readonly GeometryGraph geomGraph;
+        private readonly RelateNodeGraph nodeGraph = new RelateNodeGraph();
 
         // the intersection point found (if any)
         private Coordinate invalidPoint;

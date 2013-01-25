@@ -39,8 +39,7 @@ namespace NetTopologySuite.Planargraph
         protected Coordinate p1;
 
         private DirectedEdge _sym;  // optional
-        
-        private bool _edgeDirection;
+
         private readonly int _quadrant;
         private readonly double _angle;
 
@@ -62,7 +61,7 @@ namespace NetTopologySuite.Planargraph
         {
             this.from = from;
             this.to = to;
-            _edgeDirection = edgeDirection;
+            this.EdgeDirection = edgeDirection;
             p0 = from.Coordinate;
             p1 = directionPt;
             double dx = p1.X - p0.X;
@@ -105,11 +104,7 @@ namespace NetTopologySuite.Planargraph
         /// Returns whether the direction of the parent Edge (if any) is the same as that
         /// of this Directed Edge.
         /// </summary>
-        public bool EdgeDirection
-        {
-            get { return _edgeDirection; }
-            protected set { _edgeDirection = value; }
-        }
+        public bool EdgeDirection { get; protected set; }
 
         /// <summary>
         /// Returns the node from which this DirectedEdge leaves.

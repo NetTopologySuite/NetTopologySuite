@@ -54,7 +54,6 @@ namespace NetTopologySuite.Index.Chain
         private readonly int _end;
         private Envelope _env;
         private readonly object _context;  // user-defined information
-        private int _id;                   // useful for optimizing chain comparisons
 
         /// <summary>
         /// 
@@ -74,17 +73,7 @@ namespace NetTopologySuite.Index.Chain
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
-        public int Id
-        {
-            get
-            {
-                return _id;
-            }
-            set
-            {
-                _id = value;
-            }
-        }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets the chain's context

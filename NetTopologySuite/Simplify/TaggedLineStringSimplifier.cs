@@ -17,7 +17,6 @@ namespace NetTopologySuite.Simplify
         private readonly LineSegmentIndex _outputIndex = new LineSegmentIndex();
         private TaggedLineString _line;
         private Coordinate[] _linePts;
-        private double _distanceTolerance;        
 
         /// <summary>
         /// 
@@ -33,17 +32,7 @@ namespace NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public double DistanceTolerance
-        {
-            get 
-            {
-                return _distanceTolerance; 
-            }
-            set
-            {
-                _distanceTolerance = value; 
-            }
-        }
+        public double DistanceTolerance { get; set; }
 
         /// <summary>
         /// Simplifies the given <see cref="TaggedLineString"/>

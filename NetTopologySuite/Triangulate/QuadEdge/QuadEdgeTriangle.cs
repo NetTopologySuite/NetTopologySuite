@@ -118,7 +118,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
          */
         private QuadEdge[] _edge;
-        private Object _data;
 
         /// <summary>
         /// Creates a new triangle from the given edges.
@@ -137,11 +136,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <summary>
         /// Gets or sets the external data value for this triangle.
         /// </summary>
-        public object Data
-        {
-            get { return _data; }
-            set { _data = value; }
-        }
+        public object Data { get; set; }
 
         public void Kill()
         {

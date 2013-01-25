@@ -23,8 +23,8 @@ namespace NetTopologySuite.Noding
     {
         private readonly INoder _noder;
         private readonly double _scaleFactor;
-        private double _offsetX;
-        private double _offsetY;
+        private readonly double _offsetX;
+        private readonly double _offsetY;
         private readonly bool _isScaled;
 
         /// <summary>

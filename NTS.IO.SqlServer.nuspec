@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>NetTopologySuite.IO.SqlServer</id>
+    <version>$version$</version>
+    <title>NTS - Topology Suite - IO Library for SqlServer 2008</title>
+    <authors>NetTopologySuite - Team</authors>
+    <owners>NetTopologySuite - Team</owners>
+    <licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
+    <projectUrl>http://code.google.com/p/nettopologysuite</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+      This package contains the SqlServer2008 IO library.
+    </description>
+    <summary>SqlServer 2008 IO library for NetTopologySuite</summary>
+    <tags>NTS SqlServer2008</tags>
+    <language>en-US</language>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System" targetFramework="" />
+      <frameworkAssembly assemblyName="System.Core" targetFramework="" />
+    </frameworkAssemblies>
+    <dependencies>
+      <dependency id="GeoAPI" version="1.7.0" />
+      <dependency id="NetTopologySuite" version="$version$" />
+      <dependency id="Microsoft.SqlServer.Types" version="10.50.1600.1" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.SqlServer2008.dll" target="lib\net35-client\NetTopologySuite.IO.SqlServer2008.dll" />
+    <file src="Release\v4.0\AnyCPU\NetTopologySuite.IO.SqlServer2008.dll" target="lib\net40-client\NetTopologySuite.IO.SqlServer2008.dll" />
+    <file src="Release\v4.0.3\AnyCPU\NetTopologySuite.IO.SqlServer2008.dll" target="lib\net403-client\NetTopologySuite.IO.SqlServer2008.dll" />
+  </files>
+</package>

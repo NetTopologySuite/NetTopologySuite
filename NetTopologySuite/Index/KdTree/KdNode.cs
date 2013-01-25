@@ -14,8 +14,6 @@ namespace NetTopologySuite.Index.KdTree
 
         private readonly Coordinate _p;
         private readonly T _data;
-        private KdNode<T> _left;
-        private KdNode<T> _right;
         private int _count;
 
         /// <summary>
@@ -27,8 +25,8 @@ namespace NetTopologySuite.Index.KdTree
         public KdNode(double x, double y, T data)
         {
             _p = new Coordinate(x, y);
-            _left = null;
-            _right = null;
+            this.Left = null;
+            this.Right = null;
             _count = 1;
             _data = data;
         }
@@ -41,8 +39,8 @@ namespace NetTopologySuite.Index.KdTree
         public KdNode(Coordinate p, T data)
         {
             _p = new Coordinate(p);
-            _left = null;
-            _right = null;
+            this.Left = null;
+            this.Right = null;
             _count = 1;
             _data = data;
         }
@@ -82,20 +80,12 @@ namespace NetTopologySuite.Index.KdTree
         /// <summary>
         /// Gets or sets the left node of the tree
         /// </summary>
-        public KdNode<T> Left
-        {
-            get { return _left; }
-            set { _left = value; }
-        }
+        public KdNode<T> Left { get; set; }
 
         /// <summary>
         /// Gets or sets the right node of the tree
         /// </summary>
-        public KdNode<T> Right
-        {
-            get {return _right;}
-            set { _right = value; }
-        }
+        public KdNode<T> Right { get; set; }
 
         // Increments counts of points at this location
         internal void Increment()

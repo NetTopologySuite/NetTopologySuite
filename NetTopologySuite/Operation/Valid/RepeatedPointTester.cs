@@ -17,11 +17,6 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public RepeatedPointTester() { }
-
-        /// <summary>
-        /// 
-        /// </summary>
         public Coordinate Coordinate
         {
             get
@@ -42,7 +37,7 @@ namespace NetTopologySuite.Operation.Valid
             else if (g is IMultiPoint) return false;
             // LineString also handles LinearRings
             else if (g is ILineString) 
-                return HasRepeatedPoint(((ILineString) g).Coordinates);
+                return HasRepeatedPoint((g).Coordinates);
             else if (g is IPolygon)
                 return HasRepeatedPoint((IPolygon) g);
             else if (g is IGeometryCollection) 

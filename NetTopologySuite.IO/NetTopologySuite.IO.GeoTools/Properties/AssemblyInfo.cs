@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 #endif
 [assembly: AssemblyCompany("NetTopologySuite - Team")]
 [assembly: AssemblyProduct("NetTopologySuite.IO.GeoTools")]
-[assembly: AssemblyCopyright("Copyright © 2007 - 2012")]
+[assembly: AssemblyCopyright("Copyright © 2007 - 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
