@@ -1,8 +1,5 @@
-using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
@@ -10,6 +7,12 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
     [TestFixture]
     public class BufferTest
     {
+        [Test, Ignore]
+        public void Test0()
+        {
+            TestMultiLineStringSeparateBuffersFloatingSingle();
+        }
+
         [Test]
         public void TestMultiLineStringDepthFailure()
         {
@@ -57,38 +60,43 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
         public void TestMultiLineString4ReallyBigDistanceFloating()
         {
             new BufferValidator(
-              1E10,
-              "MULTILINESTRING (( 635074.5418406526 6184832.4888257105, 635074.5681951842 6184832.571842485, 635074.6472587794 6184832.575795664 ), ( 635074.6657069515 6184832.53889932, 635074.6933792098 6184832.451929366, 635074.5642420045 6184832.474330718 ))")
-              .TestBufferHolesExpected(false)
-              .TestEmptyBufferExpected(false)
-              .TestContains();
+                1E10,
+                "MULTILINESTRING (( 635074.5418406526 6184832.4888257105, 635074.5681951842 6184832.571842485, 635074.6472587794 6184832.575795664 ), ( 635074.6657069515 6184832.53889932, 635074.6933792098 6184832.451929366, 635074.5642420045 6184832.474330718 ))")
+                .TestContains()
+                .TestBufferHolesExpected(false)
+                .TestEmptyBufferExpected(false)
+                .TestContains().Test();
+
         }
         
-        [Ignore("This test needs to be investigated in JTS to see why the result is failing.  The expectation is that the buffer is empty, but it isn't")]
+        [Test, Ignore("This test needs to be investigated in JTS to see why the result is failing.  The expectation is that the buffer is empty, but it isn't")]
         public void TestMultiLineStringSeparateBuffersFloatingSingle()
         {
             new BufferValidator(
-              0.01,
-              "MULTILINESTRING (( 635074.5418406526 6184832.4888257105, 635074.5681951842 6184832.571842485, 635074.6472587794 6184832.575795664 ), ( 635074.6657069515 6184832.53889932, 635074.6933792098 6184832.451929366, 635074.5642420045 6184832.474330718 ))")
-              .TestBufferHolesExpected(false)
-              .TestEmptyBufferExpected(true)
-              .SetPrecisionModel(new PrecisionModel(PrecisionModels.FloatingSingle))
-              .TestContains();
+                0.01,
+                "MULTILINESTRING (( 635074.5418406526 6184832.4888257105, 635074.5681951842 6184832.571842485, 635074.6472587794 6184832.575795664 ), ( 635074.6657069515 6184832.53889932, 635074.6933792098 6184832.451929366, 635074.5642420045 6184832.474330718 ))",
+                true)
+            .TestBufferHolesExpected(false)
+            .TestEmptyBufferExpected(true)
+            .SetPrecisionModel(new PrecisionModel(PrecisionModels.FloatingSingle))
+            .Test();
+            
         }
 
-        [Ignore("This test needs to be investigated in JTS to see why the result is failing.  The expectation is that there are no holes in the buffer, but there are")]
-        public void TestMultiLineString2_buffersTouchToMakeHole_floatingSingle()
+        [Test, Ignore("This test needs to be investigated in JTS to see why the result is failing.  The expectation is that there are no holes in the buffer, but there are")]
+        public void TestMultiLineString2BuffersTouchToMakeHoleFloatingSingle()
         {
             new BufferValidator(
               0.037,
-              "MULTILINESTRING (( 635074.5418406526 6184832.4888257105, 635074.5681951842 6184832.571842485, 635074.6472587794 6184832.575795664 ), ( 635074.6657069515 6184832.53889932, 635074.6933792098 6184832.451929366, 635074.5642420045 6184832.474330718 ))")
-              .TestBufferHolesExpected(false)
-              .TestEmptyBufferExpected(true)
-              .SetPrecisionModel(new PrecisionModel(PrecisionModels.FloatingSingle))
-              .TestContains();
+              "MULTILINESTRING (( 635074.5418406526 6184832.4888257105, 635074.5681951842 6184832.571842485, 635074.6472587794 6184832.575795664 ), ( 635074.6657069515 6184832.53889932, 635074.6933792098 6184832.451929366, 635074.5642420045 6184832.474330718 ))", true)
+            .TestBufferHolesExpected(false)
+            .TestEmptyBufferExpected(true)
+            .SetPrecisionModel(new PrecisionModel(PrecisionModels.FloatingSingle))
+            .TestContains()
+            .Test();
         }
 
-        [Ignore("This test needs to be investigated in JTS to see why the result is failing.  The expectation is that the buffer is empty, but it isn't")]
+        [Test, Ignore("This test needs to be investigated in JTS to see why the result is failing.  The expectation is that the buffer is empty, but it isn't")]
         public void TestMultiLineString3HoleVanishesFloatingSingle()
         {
             new BufferValidator(

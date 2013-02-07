@@ -1,53 +1,105 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
+using NetTopologySuite.Operation.Buffer.Validate;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 {
     public class BufferValidator
     {
-        private IGeometry original;
-        private double bufferDistance;
-        private Dictionary<string, Test> nameToTestMap = new Dictionary<string, Test>();
-        private IGeometry buffer;
-        private static int QUADRANT_SEGMENTS_1 = 100;
-        private static int QUADRANT_SEGMENTS_2 = 50;
-        private String wkt;
-        private GeometryFactory geomFact = new GeometryFactory();
-        private WKTWriter wktWriter = new WKTWriter();
-        private WKTReader wktReader;
+        private delegate void TestMethod();
 
-        public BufferValidator()
+        private class TestCase : IComparable<TestCase>
         {
-            IGeometry g =
-                new WKTReader().Read(
-                "MULTILINESTRING (( 635074.5418406526 6184832.4888257105, 635074.5681951842 6184832.571842485, 635074.6472587794 6184832.575795664 ), ( 635074.6657069515 6184832.53889932, 635074.6933792098 6184832.451929366, 635074.5642420045 6184832.474330718 ))");
-            Console.WriteLine(g);
-            Console.WriteLine(g.Buffer(0.01, 100));
-            Console.WriteLine("END");
+            private readonly string _name;
+            private readonly int _priority;
+
+            public TestCase(string name)
+                : this(name, 2)
+            {
+            }
+
+            public TestCase(string name, int priority)
+            {
+                _name = name;
+                _priority = priority;
+            }
+
+            public string Name
+            {
+                get { return _name; }
+            }
+
+            public int Priority
+            {
+                get { return _priority; }
+            }
+
+            public TestMethod TestMethod { get; set; }
+
+            public override string ToString()
+            {
+                return Name;
+            }
+
+            public int CompareTo(TestCase other)
+            {
+                return _priority - other.Priority;
+            }
         }
 
+
+        private IGeometry _original;
+        private readonly double _bufferDistance;
+        private readonly Dictionary<string, TestCase> _nameToTestMap = new Dictionary<string, TestCase>();
+        private IGeometry _buffer;
+        private const int QuadrantSegments1 = 100;
+        private const int QuadrantSegments2 = 50;
+        private readonly String _wkt;
+        private readonly WKTWriter _wktWriter = new WKTWriter();
+        private WKTReader _wktReader;
+
+        //public BufferValidator()
+        //{
+        //    IGeometry g =
+        //        new WKTReader().Read(
+        //        "MULTILINESTRING (( 635074.5418406526 6184832.4888257105, 635074.5681951842 6184832.571842485, 635074.6472587794 6184832.575795664 ), ( 635074.6657069515 6184832.53889932, 635074.6933792098 6184832.451929366, 635074.5642420045 6184832.474330718 ))");
+        //    Console.WriteLine(g);
+        //    Console.WriteLine(g.Buffer(0.01, 100));
+        //    Console.WriteLine("END");
+        //}
+
         public BufferValidator(double bufferDistance, String wkt)
-            : this()
+            : this(bufferDistance, wkt, true)
+        {
+        }
+
+        public BufferValidator(double bufferDistance, String wkt, bool addContainsTest)
         {
             // SRID = 888 is to test that SRID is preserved in computed buffers
             SetFactory(new PrecisionModel(), 888);
-            this.bufferDistance = bufferDistance;
-            this.wkt = wkt;
-            //    addBufferResultValidatorTest();
+            _bufferDistance = bufferDistance;
+            _wkt = wkt;
+            if (addContainsTest) AddTestContains();
+            //addBufferResultValidatorTest();
         }
 
         private String Supplement(String message)
         {
             String newMessage = "\n" + message + "\n";
-            newMessage += "Original: " + wktWriter.WriteFormatted(GetOriginal()) + "\n";
-            newMessage += "Buffer Distance: " + bufferDistance + "\n";
-            newMessage += "Buffer: " + wktWriter.WriteFormatted(GetBuffer()) + "\n";
+            newMessage += "Original: " + _wktWriter.WriteFormatted(GetOriginal()) + "\n";
+            newMessage += "Buffer Distance: " + _bufferDistance + "\n";
+            newMessage += "Buffer: " + _wktWriter.WriteFormatted(GetBuffer()) + "\n";
             return newMessage.Substring(0, newMessage.Length - 1);
+        }
+
+        private BufferValidator AddTest(TestCase test)
+        {
+            _nameToTestMap.Add(test.Name, test);
+            return this;
         }
 
         public BufferValidator TestExpectedArea(double expectedArea)
@@ -58,17 +110,17 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                     Math.Abs(
                         GetBuffer().Area
                         - GetOriginal()
-                        .Buffer(
-                            bufferDistance,
-                            QUADRANT_SEGMENTS_1 - QUADRANT_SEGMENTS_2)
-                        .Area);
+                              .Buffer(
+                                  _bufferDistance,
+                                  QuadrantSegments1 - QuadrantSegments2)
+                              .Area);
 
                 Assert.AreEqual(expectedArea, GetBuffer().Area, tolerance, "Area Test");
             }
             catch (Exception e)
             {
                 throw new Exception(
-                Supplement(e.ToString()) + e.StackTrace);
+                    Supplement(e.ToString()) + e.StackTrace);
             }
 
             return this;
@@ -84,7 +136,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                     + "to be empty")
                 );
 
-             return this;
+            return this;
         }
 
         public BufferValidator TestBufferHolesExpected(bool bufferHolesExpected)
@@ -92,23 +144,25 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             Assert.IsTrue(
                 HasHoles(GetBuffer()) == bufferHolesExpected,
                 Supplement(
-                        "Expected buffer "
-                            + (bufferHolesExpected ? "" : "not ")
-                            + "to have holes")
+                    "Expected buffer "
+                    + (bufferHolesExpected ? "" : "not ")
+                    + "to have holes")
                 );
 
             return this;
         }
 
-        private bool HasHoles(IGeometry buffer)
+        private static bool HasHoles(IGeometry buffer)
         {
-            if (buffer.IsEmpty) {
+            if (buffer.IsEmpty)
+            {
                 return false;
             }
-            if (buffer is Polygon) {
-                return ((Polygon) buffer).NumInteriorRings > 0;
-            }
-            MultiPolygon multiPolygon = (MultiPolygon) buffer;
+            var polygon = buffer as IPolygon;
+            if (polygon != null)
+                return polygon.NumInteriorRings > 0;
+
+            var multiPolygon = (IMultiPolygon) buffer;
             for (int i = 0; i < multiPolygon.NumGeometries; i++)
             {
                 if (HasHoles(multiPolygon.GetGeometryN(i)))
@@ -121,36 +175,34 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 
         private IGeometry GetOriginal()
         {
-            if (original == null) {
-                original = wktReader.Read(wkt);
-            }
-            return original;
+            return _original ?? (_original = _wktReader.Read(_wkt));
         }
 
 
         public BufferValidator SetPrecisionModel(PrecisionModel precisionModel)
         {
-            wktReader = new WKTReader(new GeometryFactory(precisionModel));
+            _wktReader = new WKTReader(new GeometryFactory(precisionModel));
             return this;
         }
 
         public BufferValidator SetFactory(PrecisionModel precisionModel, int srid)
         {
-            wktReader = new WKTReader(new GeometryFactory(precisionModel, srid));
+            _wktReader = new WKTReader(new GeometryFactory(precisionModel, srid));
             return this;
         }
 
         private IGeometry GetBuffer()
         {
-            if (buffer == null) {
-                buffer = GetOriginal().Buffer(bufferDistance, QUADRANT_SEGMENTS_1);
+            if (_buffer == null)
+            {
+                _buffer = GetOriginal().Buffer(_bufferDistance, QuadrantSegments1);
                 if (GetBuffer() is GeometryCollection && GetBuffer().IsEmpty)
                 {
                     try
                     {
                         //#contains doesn't work with GeometryCollections [Jon Aquino
                         // 10/29/2003]
-                        buffer = wktReader.Read("POINT EMPTY");
+                        _buffer = _wktReader.Read("POINT EMPTY");
                     }
                     catch (GeoAPI.IO.ParseException e)
                     {
@@ -158,16 +210,45 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                     }
                 }
             }
-            return buffer;
+            return _buffer;
         }
 
-        public void TestContains()
+        private void AddTestContains()
         {
-            if (GetOriginal() is GeometryCollection) {
-                return;
+            AddTest(
+                new TestCase("Contains", 10)
+                    {
+                        TestMethod = () =>
+                            {
+                                if (GetOriginal() is GeometryCollection)
+                                    return;
+
+                                Assert.IsTrue(GetOriginal().IsValid);
+                                if (_bufferDistance > 0)
+                                {
+                                    Assert.IsTrue(
+                                        Contains(GetBuffer(), GetOriginal()),
+                                        Supplement("Expected buffer to contain original"));
+                                }
+                                else
+                                {
+                                    Assert.IsTrue(
+                                        Contains(GetOriginal(), GetBuffer()),
+                                        Supplement("Expected original to contain buffer"));
+                                }
+                            }
+                    });
+
+        }
+
+        public BufferValidator TestContains()
+        {
+            if (GetOriginal() is GeometryCollection)
+            {
+                return this;
             }
             Assert.IsTrue(GetOriginal().IsValid);
-            if (bufferDistance > 0)
+            if (_bufferDistance > 0)
             {
                 Assert.IsTrue(
                     Contains(GetBuffer(), GetOriginal()),
@@ -179,29 +260,47 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                     Contains(GetOriginal(), GetBuffer()),
                     Supplement("Expected original to contain buffer"));
             }
-
+            return this;
         }
 
-        private bool Contains(IGeometry a, IGeometry b)
+        private static bool Contains(IGeometry a, IGeometry b)
         {
             //JTS doesn't currently handle empty geometries correctly [Jon Aquino
             // 10/29/2003]
-            if (b.IsEmpty) {
+            if (b.IsEmpty)
+            {
                 return true;
             }
             bool isContained = a.Contains(b);
             return isContained;
         }
 
-        //private void AddBufferResultValidatorTest()
-        //{
-        //    if (GetOriginal() is GeometryCollection) {
-        //        return;
-        //    }
-        //        Assert.Assert.IsTrue(
-        //            BufferResultValidator.IsValid(GetOriginal(), bufferDistance, GetBuffer()),
-        //            Supplement("BufferResultValidator failure"));
-        //    }
-        //}
+        private void AddBufferResultValidatorTest()
+        {
+            AddTest(new TestCase("Buffer result validator", 20)
+                {
+                    TestMethod = () =>
+                        {
+                            if (GetOriginal() is GeometryCollection)
+                            {
+                                return;
+                            }
+                            Assert.IsTrue(
+                                BufferResultValidator.IsValid(GetOriginal(), _bufferDistance, GetBuffer()),
+                                Supplement("BufferResultValidator failure"));
+                        }
+                });
+        }
+
+        /// <summary>
+        /// Method to perform all registered Tests
+        /// </summary>
+        public void Test()
+        {
+            foreach (var testCase in _nameToTestMap.Values)
+            {
+                testCase.TestMethod();
+            }
+        }
     }
 }
