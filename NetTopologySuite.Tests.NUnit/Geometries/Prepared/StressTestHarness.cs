@@ -100,9 +100,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
                 count++;
                 IGeometry test = CreateRandomTestGeometry(target.EnvelopeInternal, 10, 20);
 
-                //      System.out.println("Test # " + count);
-                //  		System.out.println(line);
-                Console.WriteLine("Test[" + count + "] " + target.GetType().Name + "/" + test.GetType().Name);
+                //Console.WriteLine("Test # " + count);
+                //Console.WriteLine(line);
+                //Console.WriteLine("Test[" + count + "] " + target.GetType().Name + "/" + test.GetType().Name);
                 bool isResultCorrect = CheckResult(target, test);
                 if (!isResultCorrect)
                 {
