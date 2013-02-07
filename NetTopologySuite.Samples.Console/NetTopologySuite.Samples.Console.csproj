@@ -102,6 +102,7 @@
     <Compile Include="Tests\IO\ShapefileWriteTest.cs" />
     <Compile Include="Tests\Performances\NodingValidatorFixture.cs" />
     <Compile Include="Tests\Performances\SortedListsFixture.cs" />
+    <Compile Include="Tests\Various\AffineTransformBuilderUsage.cs" />
     <Compile Include="Tests\Various\BufferTest.cs" />
     <Compile Include="Tests\Various\CoordinateArraysTest.cs" />
     <Compile Include="Tests\Various\CascadedPolygonUnionFixture.cs" />

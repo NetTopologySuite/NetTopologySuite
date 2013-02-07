@@ -4,9 +4,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Planargraph;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace NetTopologySuite.Operation.Polygonize
 {
@@ -27,8 +24,8 @@ namespace NetTopologySuite.Operation.Polygonize
         /// </summary>
         /// <param name="shellList"></param>
         /// <param name="testEr"></param>
-        /// <returns>Containing EdgeRing, if there is one, OR
-        /// null if no containing EdgeRing is found.</returns>
+        /// <returns>Containing EdgeRing, if there is one <br/>
+        /// or <value>null</value> if no containing EdgeRing is found.</returns>
         public static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IList<EdgeRing> shellList)
         {
             ILinearRing teString = testEr.Ring;
@@ -70,7 +67,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// </summary>
         /// <param name="testPts">The <c>Coordinate</c>s to test.</param>
         /// <param name="pts">An array of <c>Coordinate</c>s to test the input points against.</param>
-        /// <returns>A <c>Coordinate</c> from <c>testPts</c> which is not in <c>pts</c>, 
+        /// <returns>A <c>Coordinate</c> from <c>testPts</c> which is not in <c>pts</c>, <br/>
         /// or <value>null</value>.</returns>
         [Obsolete("Use CoordinateArrays.PointNotInList instead")]
         public static Coordinate PointNotInList(Coordinate[] testPts, Coordinate[] pts)

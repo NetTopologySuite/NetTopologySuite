@@ -75,7 +75,7 @@ namespace NetTopologySuite.Noding
 
         ///<summary>
         /// This method is called by clients of the <see cref="ISegmentIntersector"/> class to process
-        /// intersections for two segments of the <see cref="ISegmentString"/>s being intersected.
+        /// intersections for two segments of the <see cref="ISegmentString"/>s being intersected.<br/>
         /// Note that some clients (such as <c>MonotoneChain</c>s) may optimize away
         /// this call for segment pairs which they have determined do not intersect
         /// (e.g. by an disjoint envelope test).

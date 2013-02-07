@@ -186,7 +186,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// Gets the index for the given edge of this triangle
         /// </summary>
         /// <param name="e">a QuadEdge</param>
-        /// <returns>the index of the edge in this triangle,
+        /// <returns>the index of the edge in this triangle,<br/>
         /// or -1 if the edge is not an edge of this triangle
         /// </returns>
         public int GetEdgeIndex(QuadEdge e)
@@ -203,7 +203,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// Gets the index for the edge that starts at vertex v.
         /// </summary>
         /// <param name="v">the vertex to find the edge for</param>
-        /// <returns>the index of the edge starting at the vertex, 
+        /// <returns>the index of the edge starting at the vertex, <br/>
         /// or -1 if the vertex is not in the triangle
         /// </returns>
         public int GetEdgeIndex(Vertex v)

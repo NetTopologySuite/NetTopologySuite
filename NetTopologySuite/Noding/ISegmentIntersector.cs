@@ -9,8 +9,9 @@ namespace NetTopologySuite.Noding
     /// <para>
     /// The <see cref="ISegmentIntersector" /> is passed to a <see cref="INoder" />.
     /// </para>
-    /// The <see cref="ISegmentIntersector.ProcessIntersections" />  method is called whenever the <see cref="INoder" />
-    /// detects that two <see cref="ISegmentString" />s might intersect.
+    /// The <see cref="ISegmentIntersector.ProcessIntersections(ISegmentString, int, ISegmentString, int)"/> 
+    /// method is called whenever the <see cref="INoder" />
+    ///  detects that two <see cref="ISegmentString" />s might intersect.
     /// <para>
     /// This class may be used either to find all intersections, or
     /// to detect the presence of an intersection.  In the latter case,
@@ -19,7 +20,7 @@ namespace NetTopologySuite.Noding
     /// </para>
     /// <para>
     /// </para>
-    /// This class is an example of the Strategy pattern.
+    /// This class is an example of the <i>Strategy</i> pattern.
     /// <para>
     /// This class may be used either to find all intersections, or
     /// to detect the presence of an intersection.  In the latter case,

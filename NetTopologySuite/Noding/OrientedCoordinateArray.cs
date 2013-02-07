@@ -9,8 +9,8 @@ namespace NetTopologySuite.Noding
     /// </summary>
     public class OrientedCoordinateArray : IComparable
     {
-        private readonly Coordinate[] pts;
-        private readonly bool orientation;
+        private readonly Coordinate[] _pts;
+        private readonly bool _orientation;
 
         /// <summary>
         /// Creates a new <see cref="OrientedCoordinateArray" />}
@@ -19,8 +19,8 @@ namespace NetTopologySuite.Noding
         /// <param name="pts"></param>
         public OrientedCoordinateArray(Coordinate[] pts)
         {
-            this.pts = pts;
-            orientation = Orientation(pts);
+            _pts = pts;
+            _orientation = Orientation(pts);
         }
 
         /// <summary>
@@ -28,8 +28,8 @@ namespace NetTopologySuite.Noding
         /// </summary>
         /// <param name="pts"></param>
         /// <returns>
-        /// <c>true</c> if the points are oriented forwards, or
-        /// <c>false</c>if the points are oriented in reverse.
+        /// <c>true</c> if the points are oriented forwards <br/>
+        /// or <c>false</c>if the points are oriented in reverse.
         /// </returns>
         private static bool Orientation(Coordinate[] pts)
         {
@@ -41,14 +41,14 @@ namespace NetTopologySuite.Noding
         /// </summary>
         /// <param name="o1"></param>
         /// <returns>
-        /// -1 this one is smaller, or
-        ///  0 the two objects are equal, or
+        /// -1 this one is smaller;<br/>
+        ///  0 the two objects are equal;<br/>
         ///  1 this one is greater.
         /// </returns>
         public int CompareTo(object o1)
         {
             OrientedCoordinateArray oca = (OrientedCoordinateArray) o1;
-            return CompareOriented(pts, orientation, oca.pts, oca.orientation);            
+            return CompareOriented(_pts, _orientation, oca._pts, oca._orientation);            
         }
 
         /// <summary>

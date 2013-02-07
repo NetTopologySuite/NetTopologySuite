@@ -1,22 +1,20 @@
 ﻿using System;
 using GeoAPI.Geometries;
+using GeoAPI.Geometries.Prepared;
 using NetTopologySuite.Geometries.Prepared;
 using Open.Topology.TestRunner.Result;
 
 namespace Open.Topology.TestRunner.Operations
 {
-/**
- * A {@link GeometryOperation} which uses {@link PreparedGeometry}s
- * for applicable operations.
- * This allows testing correctness of the <tt>PreparedGeometry</tt> implementation.
- * <p>
- * This class can be used via the <tt>-geomop</tt> command-line option
- * or by the <tt>&lt;geometryOperation&gt;</tt> XML test file setting.
- *
- * @author mbdavis
- *
- */
 
+    /// <summary>
+    /// A <see cref="IGeometryOperation"/> which uses <see cref="IPreparedGeometry"/>s
+    /// for applicable operations.
+    /// This allows testing correctness of the <tt>PreparedGeometry</tt> implementation.
+    /// <para/>
+    /// This class can be used via the <tt>-geomop</tt> command-line option
+    /// or by the <tt>&lt;geometryOperation&gt;</tt> XML test file setting.
+    /// </summary>
     public class PreparedGeometryOperation : IGeometryOperation
     {
         private readonly GeometryMethodOperation _chainOp;
@@ -39,13 +37,11 @@ namespace Open.Topology.TestRunner.Operations
             return _chainOp.GetReturnType(opName);
         }
 
-        /**
-   * Creates a new operation which chains to the given {@link GeometryMethodOperation}
-   * for non-intercepted methods.
-   * 
-   * @param chainOp the operation to chain to
-   */
-
+        /// <summary>
+        /// Creates a new operation which chains to the given {@link GeometryMethodOperation}
+        /// for non-intercepted methods.
+        /// </summary>
+        /// <param name="chainOp">The operation to chain to</param>
         public PreparedGeometryOperation(GeometryMethodOperation chainOp)
         {
             _chainOp = chainOp;
@@ -60,16 +56,15 @@ namespace Open.Topology.TestRunner.Operations
             return false;
         }
 
-        /**
-   * Invokes the named operation
-   * 
-   * @param opName
-   * @param geometry
-   * @param args
-   * @return
-   * @throws Exception
-   * @see GeometryOperation#invoke
-   */
+        /// <summary>
+        /// Invokes the named operation
+        /// </summary>
+        /// <param name="opName"></param>
+        /// <param name="geometry"></param>
+        /// <param name="args"></param>
+        /// <returns>The result</returns>
+        /// <exception cref="Exception"></exception>
+        /// <seealso cref="IGeometryOperation.Invoke"/>
         public IResult Invoke(XmlTestType opName, IGeometry geometry, Object[] args)
         {
             return Invoke(opName.ToString(), geometry, args);

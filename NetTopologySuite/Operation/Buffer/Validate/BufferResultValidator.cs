@@ -39,11 +39,12 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// <param name="g"></param>
         /// <param name="distance"></param>
         /// <param name="result"></param>
-        /// <returns><c>null</c>if the buffer is valid, an appropriate error message if not</returns>
+        /// <returns>An appropriate error message<br/>
+        /// or <c>null</c>if the buffer is valid</returns>
         ///
         public static String IsValidMessage(IGeometry g, double distance, IGeometry result)
         {
-            BufferResultValidator validator = new BufferResultValidator(g, distance, result);
+            var validator = new BufferResultValidator(g, distance, result);
             if (!validator.IsValid())
                 return validator.ErrorMessage;
             return null;
@@ -102,7 +103,8 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// of the discrepancy.
         /// </para>
         /// </summary>
-        /// <returns>A geometric error indicator or <value>null</value>, if no error was found</returns>
+        /// <returns>A geometric error indicator<br/>
+        /// or <value>null</value>, if no error was found</returns>
         public IGeometry ErrorIndicator
         {
             get { return _errorIndicator; }

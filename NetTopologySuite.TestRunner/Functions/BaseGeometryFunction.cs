@@ -56,7 +56,9 @@ namespace Open.Topology.TestRunner.Functions
             get { return parameterNames; }
         }
 
-
+        /// <summary>
+        /// Gets the types of the other function arguments
+        /// </summary>
         public Type[] ParameterTypes
         {
             get { return parameterTypes; }

@@ -147,8 +147,8 @@ namespace NetTopologySuite.Operation.Buffer
         /// Finds the next non-deleted index, or the end of the point array if none
         /// </summary>
         /// <param name="index">The start index to search from</param>
-        /// <returns>The next non-deleted index, if any or
-        /// <see cref="_inputLine.Length"/> if there are no more non-deleted indices
+        /// <returns>The next non-deleted index, if any <br/>
+        /// or <c>_inputLine.Length</c> if there are no more non-deleted indices
         /// </returns>
         private int FindNextNonDeletedIndex(int index)
         {

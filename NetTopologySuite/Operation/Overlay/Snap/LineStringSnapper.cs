@@ -165,8 +165,8 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// </summary>
         /// <param name="snapPt">The point to snap to</param>
         /// <param name="srcCoords">The source segment coordinates</param>
-        /// <returns>The index of the snapped segment or 
-        /// -1 if no segment snaps to the snap point.</returns>
+        /// <returns>The index of the snapped segment <br/>
+        /// or -1 if no segment snaps to the snap point.</returns>
         private int FindSegmentIndexToSnap(Coordinate snapPt, CoordinateList srcCoords)
         {
             var minDist = Double.MaxValue;

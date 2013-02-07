@@ -118,8 +118,8 @@ namespace NetTopologySuite.Operation.Valid
         /// and if not valid returns the validation error for the geometry,
         /// or null if the geometry is valid.
         /// </summary>
-        /// <returns>The validation error, if the geometry is invalid or
-        /// <value>null</value> if the geometry is valid</returns>
+        /// <returns>The validation error, if the geometry is invalid <br/>
+        /// or <value>null</value> if the geometry is valid</returns>
         public TopologyValidationError ValidationError
         {
             get

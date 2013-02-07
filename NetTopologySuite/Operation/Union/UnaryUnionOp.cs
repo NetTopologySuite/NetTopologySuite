@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Operation.Linemerge;
 using NetTopologySuite.Operation.Overlay;
 
 namespace NetTopologySuite.Operation.Union
@@ -29,7 +30,7 @@ namespace NetTopologySuite.Operation.Union
     /// of line segments will be reduced to a single line segment in the output.  
     /// This is consistent with the semantics of the 
     /// <see cref="IGeometry.Union(IGeometry)"/> operation.
-    /// If <b>merged</b> linework is required, the {@link LineMerger} class can be used.</item>
+    /// If <b>merged</b> linework is required, the <see cref="LineMerger"/> class can be used.</item>
     /// <item>Unioning a set of <see cref="IPoint"/>s has the effect of merging all identical points (producing a set with no duplicates).</item> </list>
     /// </para>
     /// <para>
@@ -109,10 +110,8 @@ namespace NetTopologySuite.Operation.Union
 	    /// If no input geometries were provided, a POINT EMPTY is returned.
         ///</summary>
         /// <returns>
-        /// <list>
-        /// <item>a Geometry containing the union</item>
-        /// <item>An empty <see cref="IGeometryCollection"/> if no geometries were provided in the input</item>
-        /// </list>
+        /// A Geometry containing the union 
+        /// or an empty <see cref="IGeometryCollection"/> if no geometries were provided in the input
         /// </returns>
         public IGeometry Union()
         {
@@ -181,10 +180,8 @@ namespace NetTopologySuite.Operation.Union
         /// <param name="g0"></param>
         /// <param name="g1"></param>
         /// <returns>
-        /// <list type="Bullet">
-        /// <item>The union of the input(s)</item>
-        /// <item>If both inputs are null</item>
-        /// </list>
+        /// The union of the input(s)
+        /// or <value>null</value> if both inputs are <value>null</value>
         /// </returns>
         private static IGeometry UnionWithNull(IGeometry g0, IGeometry g1)
         {

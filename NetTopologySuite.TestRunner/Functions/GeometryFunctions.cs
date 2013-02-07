@@ -4,12 +4,10 @@ using NetTopologySuite.Operation.Overlay.Snap;
 
 namespace Open.Topology.TestRunner.Functions
 {
-    /**
-     * Implementations for various geometry functions.
-     * 
-     * @author Martin Davis
-     * 
-     */
+    /// <summary>
+    /// Implementations for various geometry functions.
+    /// </summary>
+    /// <author>Martin Davis</author>
     public class GeometryFunctions
     {
         public static double length(IGeometry g) { return g.Length; }

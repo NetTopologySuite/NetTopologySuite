@@ -13,12 +13,12 @@ namespace NetTopologySuite.Noding.Snapround
     /// The input coordinates are expected to be rounded
     /// to the given precision model.
     /// This class does not perform that function.
-    /// <see cref="GeometryPrecisionReducer"/> may be used to do this.
+    /// <c>GeometryPrecisionReducer"</c> may be used to do this.
     /// </para><para>
     /// This class does <b>not</b> dissolve the output linework,
     /// so there may be duplicate linestrings in the output.
     /// Subsequent processing (e.g. polygonization) may require
-    /// the linework to be unique.  Using <see cref="UnaryUnionOp"/> is one way
+    /// the linework to be unique.  Using <c>UnaryUnion</c> is one way
     /// to do this (although this is an inefficient approach).
     /// </para></summary>
     public class GeometryNoder

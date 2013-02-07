@@ -26,14 +26,13 @@ namespace Open.Topology.TestRunner.Functions
             return ComponentBuffers(g, distance).Union();
         }
 
-        /**
-         * Buffer polygons by buffering the individual boundary segments and
-         * either unioning or differencing them.
-         * 
-         * @param g
-         * @param distance
-         * @return
-         */
+        /// <summary>
+        /// Buffer polygons by buffering the individual boundary segments and
+        /// either unioning or differencing them.
+        /// </summary>
+        /// <param name="g"></param>
+        /// <param name="distance"></param>
+        /// <returns>The buffer geometry</returns>
         public static IGeometry BufferBySegments(IGeometry g, double distance)
         {
             var segs = LineHandlingFunctions.ExtractSegments(g);

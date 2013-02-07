@@ -1,5 +1,4 @@
 using System;
-//using System.Collections;
 using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
@@ -8,9 +7,6 @@ using NetTopologySuite.Planargraph;
 using NetTopologySuite.Planargraph.Algorithm;
 using NetTopologySuite.Utilities;
 using Wintellect.PowerCollections;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace NetTopologySuite.Operation.Linemerge
 {

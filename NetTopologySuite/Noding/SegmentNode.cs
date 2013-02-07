@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Noding
 {
@@ -34,8 +33,8 @@ namespace NetTopologySuite.Noding
         public SegmentNode(INodableSegmentString segString, Coordinate coord, int segmentIndex, Octants segmentOctant) 
         {
             Coord = null;
-            this._segString = segString;
-            Coord = new Coordinate(coord);
+            _segString = segString;
+            Coord = new Coordinate(coord.X, coord.Y, coord.Z);
             SegmentIndex = segmentIndex;
             _segmentOctant = segmentOctant;
             _isInterior = !coord.Equals2D(segString.Coordinates[segmentIndex]);
@@ -77,8 +76,8 @@ namespace NetTopologySuite.Noding
         /// </summary>
         /// <param name="obj"></param>
         /// <returns>
-        /// -1 this SegmentNode is located before the argument location, or
-        ///  0 this SegmentNode is at the argument location, or
+        /// -1 this SegmentNode is located before the argument location;<br/>
+        ///  0 this SegmentNode is at the argument location;<br/>
         ///  1 this SegmentNode is located after the argument location.   
         /// </returns>
         public int CompareTo(object obj)

@@ -15,8 +15,6 @@ namespace NetTopologySuite.LinearReferencing
         private readonly List<IGeometry> _lines = new List<IGeometry>();
         private CoordinateList _coordList;
 
-        private bool _ignoreInvalidLines;
-
         private Coordinate _lastPt;
 
         /// <summary>
@@ -38,17 +36,7 @@ namespace NetTopologySuite.LinearReferencing
         /// Allows invalid lines to be ignored rather than causing Exceptions.
         /// An invalid line is one which has only one unique point.
         /// </summary>
-        public bool IgnoreInvalidLines
-        {
-            get
-            {
-                return _ignoreInvalidLines;
-            }
-            set
-            {
-                _ignoreInvalidLines = value;
-            }
-        }
+        public bool IgnoreInvalidLines { get; set; }
 
         /// <summary>
         /// Adds a point to the current line.
@@ -91,7 +79,7 @@ namespace NetTopologySuite.LinearReferencing
             if (_coordList == null)
                 return;
             
-            if (_ignoreInvalidLines && _coordList.Count < 2)
+            if (IgnoreInvalidLines && _coordList.Count < 2)
             {
                 _coordList = null;
                 return;

@@ -162,7 +162,9 @@ namespace NetTopologySuite.Operation.Buffer
         ///</summary>
         /// <remarks>
         /// <para>
-        /// The styles supported are <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Round"/>, <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Flat"/>, and <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Square"/>.
+        /// The styles supported are <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Round"/>, 
+        /// <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Flat"/>, and 
+        /// <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Square"/>.
         /// </para>
         /// <para>The default is <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Round"/>.</para>
         /// </remarks>

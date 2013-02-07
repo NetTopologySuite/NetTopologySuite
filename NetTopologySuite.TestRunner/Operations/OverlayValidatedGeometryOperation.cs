@@ -7,22 +7,19 @@ using Open.Topology.TestRunner.Result;
 
 namespace Open.Topology.TestRunner.Operations
 {
-    /**
-     * A {@link GeometryOperation} which validates the result of overlay operations.
-     * If an invalid result is found, an exception is thrown (this is the most
-     * convenient and noticeable way of flagging the problem when using the TestRunner).
-     * All other Geometry methods are executed normally.
-     * <p>
-     * In order to eliminate the need to specify the precise result of an overlay, 
-     * this class forces the final return value to be <tt>GEOMETRYCOLLECTION EMPTY</tt>.
-     * <p>
-     * This class can be used via the <tt>-geomop</tt> command-line option
-     * or by the <tt>&lt;geometryOperation&gt;</tt> XML test file setting.
-     * 
-     * @author Martin Davis
-     *
-     */
-
+    /// <summary>
+    /// A <see cref="IGeometryOperation"/> which validates the result of overlay operations.
+    /// If an invalid result is found, an exception is thrown (this is the most
+    /// convenient and noticeable way of flagging the problem when using the TestRunner).
+    /// All other Geometry methods are executed normally.
+    /// <para/>
+    /// In order to eliminate the need to specify the precise result of an overlay, 
+    /// this class forces the final return value to be <tt>GEOMETRYCOLLECTION EMPTY</tt>.
+    /// <para/>
+    /// This class can be used via the <tt>-geomop</tt> command-line option
+    /// or by the <tt>&lt;geometryOperation&gt;</tt> XML test file setting.
+    /// </summary>
+    /// <author>Martin Davis</author>
     public class OverlayValidatedGeometryOperation : IGeometryOperation
     {
         public static SpatialFunction OverlayOpCode(String methodName)
@@ -69,6 +66,7 @@ namespace Open.Topology.TestRunner.Operations
         /// <param name="opName">The name of the operation</param>
         /// <param name="geometry">The geometry to process</param>
         /// <param name="args">The arguments to the operation (which may be typed as Strings)</param>
+        /// <returns>The result</returns>
         /// <exception cref="Exception">If some error was encountered trying to find or process the operation</exception>
         public IResult Invoke(XmlTestType opName, IGeometry geometry, Object[] args)
         {

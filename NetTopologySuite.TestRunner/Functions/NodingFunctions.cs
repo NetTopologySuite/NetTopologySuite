@@ -29,18 +29,15 @@ namespace Open.Topology.TestRunner.Functions
 
             return FunctionsUtil.getFactoryOrDefault(geom).BuildGeometry(CollectionUtil.Cast<IGeometry>((ICollection)lines));
         }
-
-        /**
-         * Reduces precision pointwise, then snap-rounds.
-         * Note that output set may not contain non-unique linework
-         * (and thus cannot be used as input to Polygonizer directly).
-         * UnaryUnion is one way to make the linework unique.
-         * 
-         * 
-         * @param geom a geometry containing linework to node
-         * @param scaleFactor the precision model scale factor to use
-         * @return the noded, snap-rounded linework
-         */
+        /// <summary>
+        /// Reduces precision pointwise, then snap-rounds.
+        /// Note that output set may not contain non-unique linework
+        /// (and thus cannot be used as input to Polygonizer directly).
+        /// UnaryUnion is one way to make the linework unique.
+        /// </summary>
+        /// <param name="geom">A geometry containing linework to node</param>
+        /// <param name="scaleFactor">the precision model scale factor to use</param>
+        /// <returns>The noded, snap-rounded linework</returns>
         public static IGeometry snapRoundWithPointwisePrecisionReduction(IGeometry geom, double scaleFactor)
         {
             var pm = new PrecisionModel(scaleFactor);
@@ -84,14 +81,13 @@ namespace Open.Topology.TestRunner.Functions
             return fromSegmentStrings(nodedSegStrings);
         }
 
-        /**
-         * Runs a ScaledNoder on input.
-         * Input vertices should be rounded to precision model.
-         * 
-         * @param geom
-         * @param scaleFactor
-         * @return
-         */
+        /// <summary>
+        /// Runs a ScaledNoder on input.
+        /// Input vertices should be rounded to precision model.
+        /// </summary>
+        /// <param name="geom"></param>
+        /// <param name="scaleFactor"></param>
+        /// <returns>The noded geometry</returns>
         public static IGeometry scaledNoding(Geometry geom, double scaleFactor)
         {
             var segs = createSegmentStrings(geom);

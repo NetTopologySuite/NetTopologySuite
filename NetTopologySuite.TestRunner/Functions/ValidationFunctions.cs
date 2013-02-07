@@ -10,6 +10,8 @@ namespace Open.Topology.TestRunner.Functions
         /// Validates all geometries in a collection independently.
         /// Errors are returned as points at the invalid location
         /// </summary>
+        /// <param name="g"></param>
+        /// <returns>the invalid locations, if any</returns>
         public static IGeometry invalidLocations(IGeometry g)
         {
             var invalidLoc = new List<IPoint>();

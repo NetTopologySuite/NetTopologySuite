@@ -110,8 +110,8 @@ namespace NetTopologySuite.Operation.Predicate
         /// Reports whether it can be concluded that an intersection occurs, 
         /// or whether further testing is required.
         /// </summary>
-        /// <returns><c>true</c> if an intersection must occur </returns>
-        /// <returns><c>false</c> if no conclusion about intersection can be made</returns>
+        /// <returns><c>true</c> if an intersection must occur <br/> 
+        /// or <c>false</c> if no conclusion about intersection can be made</returns>
         public bool Intersects { get; private set; }
 
         /// <summary>

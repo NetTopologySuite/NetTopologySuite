@@ -35,8 +35,8 @@ namespace NetTopologySuite.Planargraph
         /// Returns the <see cref="Node"/> at the given <paramref name="pt">location</paramref>, or <value>null</value> if no <see cref="Node"/> was there.
         /// </summary>
         /// <param name="pt">The location</param>
-        /// <returns> the node found
-        /// or <code>null</code> if this graph contains no node at the location
+        /// <returns>The node found<br/>
+        /// or <c>null</c> if this graph contains no node at the location
         /// </returns>
         public Node FindNode(Coordinate pt)
         {

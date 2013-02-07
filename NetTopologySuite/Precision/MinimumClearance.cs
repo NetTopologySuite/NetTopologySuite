@@ -99,7 +99,8 @@ namespace NetTopologySuite.Precision
         /// for the given Geometry.
         /// </summary>
         /// <param name="g">The input geometry</param>
-        /// <returns>The value of the minimum clearance distance, <c>LINESTRING EMPTY</c> if no minimum clearance distance exists.</returns>
+        /// <returns>The value of the minimum clearance distance<br/> 
+        /// or <c>LINESTRING EMPTY</c> if no minimum clearance distance exists.</returns>
         public static IGeometry GetLine(IGeometry g)
         {
             var rp = new MinimumClearance(g);
@@ -126,7 +127,8 @@ namespace NetTopologySuite.Precision
         /// <see cref="double.MaxValue"/> is returned.</para>
         /// </summary>
         /// <returns>
-        /// The value of the minimum clearance distance, <see cref="double.MaxValue"/> if no Minimum Clearance distance exists
+        /// The value of the minimum clearance distance<br/>
+        /// or <see cref="double.MaxValue"/> if no Minimum Clearance distance exists
         /// </returns>
         public double GetDistance()
         {
@@ -141,7 +143,8 @@ namespace NetTopologySuite.Precision
         /// (e.g. in the case of two identical points)
         /// <c>LINESTRING EMPTY</c> is returned.
         /// </summary>
-        /// <returns>The value of the minimum clearance distance, <c>LINESTRING EMPTY</c> if no minimum clearance distance exists.</returns>
+        /// <returns>The value of the minimum clearance distance, <br/>
+        /// or <c>LINESTRING EMPTY</c> if no minimum clearance distance exists.</returns>
         public ILineString GetLine()
         {
             Compute();

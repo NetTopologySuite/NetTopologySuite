@@ -5,7 +5,7 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.LinearReferencing
 {
     /// <summary>
-    /// Represents a location along a <see cref="LineString" /> or <see cref="MultiLineString" />.
+    /// Represents a location along a <see cref="ILineString" /> or <see cref="IMultiLineString" />.<br/>
     /// The referenced geometry is not maintained within this location,
     /// but must be provided for operations which require it.
     /// Various methods are provided to manipulate the location value

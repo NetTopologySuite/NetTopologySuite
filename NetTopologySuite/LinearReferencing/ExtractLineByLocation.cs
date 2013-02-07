@@ -11,8 +11,8 @@ namespace NetTopologySuite.LinearReferencing
     public class ExtractLineByLocation
     {
         /// <summary>
-        /// Computes the subline of a <see cref="LineString" /> between
-        /// two LineStringLocations on the line.
+        /// Computes the subline of a <see cref="ILineString" /> between
+        /// two <see cref="LinearLocation"/>s on the line.
         /// If the start location is after the end location,
         /// the computed geometry is reversed.
         /// </summary>

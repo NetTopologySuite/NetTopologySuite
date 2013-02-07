@@ -1,12 +1,7 @@
-//using System.Collections;
 using System.Collections.Generic;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Chain;
-using NetTopologySuite.Index.Quadtree;
 using NetTopologySuite.Index.Strtree;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace NetTopologySuite.Noding
 {
@@ -16,14 +11,14 @@ namespace NetTopologySuite.Noding
     /// on <see cref="MonotoneChain" />s and a <see cref="ISpatialIndex" />.
     /// The <see cref="ISpatialIndex" /> used should be something that supports
     /// envelope (range) queries efficiently (such as a <c>Quadtree</c>"
-    /// or <see cref="STRtree" />.
+    /// or <see cref="STRtree{MonotoneChain}" />.
     /// </summary>
     public class MCIndexNoder : SinglePassNoder
     {
         private readonly List<MonotoneChain> _monoChains = new List<MonotoneChain>();
         private readonly ISpatialIndex<MonotoneChain> _index = new STRtree<MonotoneChain>();
         private int _idCounter;
-        private IList<ISegmentString> nodedSegStrings;
+        private IList<ISegmentString> _nodedSegStrings;
         private int _nOverlaps; // statistics
 
         /// <summary>
@@ -61,7 +56,7 @@ namespace NetTopologySuite.Noding
         /// <returns></returns>
         public override IList<ISegmentString> GetNodedSubstrings()
         {
-            return NodedSegmentString.GetNodedSubstrings(nodedSegStrings);
+            return NodedSegmentString.GetNodedSubstrings(_nodedSegStrings);
         }
 
         /// <summary>
@@ -72,7 +67,7 @@ namespace NetTopologySuite.Noding
         /// <param name="inputSegStrings"></param>
         public override void ComputeNodes(IList<ISegmentString> inputSegStrings)
         {
-            nodedSegStrings = inputSegStrings;
+            _nodedSegStrings = inputSegStrings;
             foreach(var obj in inputSegStrings)
                 Add(obj);            
             IntersectChains();            

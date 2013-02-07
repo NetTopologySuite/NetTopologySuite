@@ -301,7 +301,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// specified by a <see cref="Vertex"/>, if one exists.
         /// </summary>
         /// <param name="v">the vertex to locate</param>
-        /// <returns>a quadedge on the edge of a triangle which touches or contains the location,
+        /// <returns>a quadedge on the edge of a triangle which touches or contains the location<br/>
         /// or null if no such triangle exists
         /// </returns>
         public QuadEdge Locate(Vertex v)
@@ -679,9 +679,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="edgeStack" />
         /// <param name="includeFrame" />
         /// <param name="visitedEdges"></param>
-        /// <returns>the visited triangle edges,
-        /// or null if the triangle should not be visited (for instance, if it is
-        ///         outer)
+        /// <returns>the visited triangle edges,<br/>
+        /// or <value>null</value> if the triangle should not be visited (for instance, if it is outer)
         /// </returns>
         private QuadEdge[] FetchTriangleToVisit(QuadEdge edge, Stack<QuadEdge> edgeStack, bool includeFrame,
             Set<QuadEdge> visitedEdges)
@@ -872,7 +871,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
         /// <summary>
         /// Gets the cells in the Voronoi diagram for this triangulation.
-        /// The cells are returned as a <see cref="IGeometryCollection" /> of <see cref="Polygon" />s
+        /// The cells are returned as a <see cref="IGeometryCollection" /> of <see cref="IPolygon"/>s
         /// </summary>
         /// <remarks>
         /// The userData of each polygon is set to be the <see cref="Coordinate" />
@@ -892,7 +891,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// of this triangulation.
         /// </summary>
         /// <remarks>
-        /// The UserData of each polygon is set to be the <see cref="Coordinate" />
+        /// The UserData of each polygon is set to be the <see cref="Coordinate"/>
         /// of the cell site.  This allows easily associating external
         /// data associated with the sites to the cells.
         /// </remarks>

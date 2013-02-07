@@ -1,7 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
@@ -9,12 +7,12 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
 {
 
     /// <summary>
-    /// Tests the <see cref="LocationIndexedLine" /> class
+    /// Base class for linear referencing class unit tests
     /// </summary>
     [TestFixture]
     public abstract class AbstractIndexedLineTest
     {
-        private WKTReader reader = new WKTReader();
+        private readonly WKTReader _reader = new WKTReader();
 
         [Test]
         public void TestML()
@@ -128,7 +126,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         {
             try
             {
-                return reader.Read(wkt);
+                return _reader.Read(wkt);
             }
             catch (GeoAPI.IO.ParseException ex)
             {

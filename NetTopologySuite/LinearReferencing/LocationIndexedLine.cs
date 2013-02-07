@@ -103,6 +103,7 @@ namespace NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="pt">A point on the line.</param>
         /// <returns>The index of the point.</returns>
+        /// <seealso cref="Project(Coordinate)"/>
         public LinearLocation IndexOf(Coordinate pt)
         {
             return LocationIndexOfPoint.IndexOf(_linearGeom, pt);
@@ -144,7 +145,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="pt">A point on the line</param>
         /// <param name="minIndex">The value the returned index must be greater than</param>
         /// <returns>The index of the point greater than the given minimum index</returns>
-        /// <see cref="Project"/>
+        /// <seealso cref="Project(Coordinate)"/>
         public LinearLocation IndexOfAfter(Coordinate pt, LinearLocation minIndex)
         {
             return LocationIndexOfPoint.IndexOfAfter(_linearGeom, pt, minIndex);

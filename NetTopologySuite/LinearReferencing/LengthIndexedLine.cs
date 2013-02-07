@@ -138,6 +138,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="pt">A point on the line.</param>
         /// <param name="minIndex">The value the returned index must be greater than.</param>
         /// <returns>The index of the point greater than the given minimum index.</returns>
+        /// <seealso cref="Project(Coordinate)"/>
         public double IndexOfAfter(Coordinate pt, double minIndex)
         {
             return LengthIndexOfPoint.IndexOfAfter(_linearGeom, pt, minIndex);
@@ -153,8 +154,8 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>A pair of indices for the start and end of the subline..</returns>
         public double[] IndicesOf(IGeometry subLine)
         {
-            LinearLocation[] locIndex = LocationIndexOfLine.IndicesOf(_linearGeom, subLine);
-            double[] index = new double[]
+            var locIndex = LocationIndexOfLine.IndicesOf(_linearGeom, subLine);
+            var index = new[]
             {
                 LengthLocationMap.GetLength(_linearGeom, locIndex[0]),
                 LengthLocationMap.GetLength(_linearGeom, locIndex[1]),

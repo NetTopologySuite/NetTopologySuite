@@ -47,7 +47,8 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <param name="inputPts">The vertices of the line to offset</param>
         /// <param name="distance">The offset distance</param>
-        /// <returns>A Coordinate array representing the curve, <c>null</c> if the curve is empty
+        /// <returns>A Coordinate array representing the curve <br/>
+        /// or <c>null</c> if the curve is empty
         /// </returns>
         public Coordinate[] GetLineCurve(Coordinate[] inputPts, double distance)
         {
@@ -82,7 +83,8 @@ namespace NetTopologySuite.Operation.Buffer
         /// This method handles the degenerate cases of single points and lines,
         /// as well as rings.
         /// </summary>
-        /// <returns>A Coordinate array representing the curve, <c>null</c> if the curve is empty</returns>
+        /// <returns>A Coordinate array representing the curve<br/>
+        /// or <c>null</c> if the curve is empty</returns>
         public Coordinate[] GetRingCurve(Coordinate[] inputPts, Positions side, double distance)
         {
             _distance = distance;

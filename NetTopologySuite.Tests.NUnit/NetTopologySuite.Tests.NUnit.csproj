@@ -75,6 +75,7 @@
     <Compile Include="Algorithm\ShewchuksDeterminant.cs" />
     <Compile Include="CoordinateSystems\Transformations\GeometryTransformTest.cs" />
     <Compile Include="Geometries\CoordinateTest.cs" />
+    <Compile Include="Geometries\GeometryTestFactory.cs" />
     <Compile Include="IO\CoordinateBufferTest.cs" />
     <Compile Include="Geometries\Implementation\CoordinateSequenceReversedTest.cs" />
     <Compile Include="Index\KdTree\KdTreeTest.cs" />
@@ -161,6 +162,10 @@
     <Compile Include="Operation\Buffer\BufferTest.cs" />
     <Compile Include="Operation\Buffer\BufferValidator.cs" />
     <Compile Include="Performance\Geometries\Prepared\PreparedGeometryThreadSafeTest.cs" />
+    <Compile Include="Performance\Geometries\Prepared\PreparedLineIntersectsPerformanceTest.cs" />
+    <Compile Include="Performance\Geometries\Prepared\PreparedPolygonIntersectsPerformanceTest.cs" />
+    <Compile Include="Performance\Geometries\Prepared\TestDataBuilder.cs" />
+    <Compile Include="Performance\Mathematics\TriPredicate.cs" />
     <Compile Include="Performance\Operation\Buffer\FileBufferResultValidatorTest.cs" />
     <Compile Include="Operation\Buffer\Test.cs" />
     <Compile Include="Operation\Distance\DistanceTest.cs" />

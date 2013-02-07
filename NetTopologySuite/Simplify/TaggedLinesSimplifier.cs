@@ -12,24 +12,13 @@ namespace NetTopologySuite.Simplify
     {
         private readonly LineSegmentIndex _inputIndex = new LineSegmentIndex();
         private readonly LineSegmentIndex _outputIndex = new LineSegmentIndex();
-        private double _distanceTolerance;
 
         /// <summary>
-        /// Gets/Sets the distance tolerance for the simplification.
+        /// Gets or sets the distance tolerance for the simplification.<br/>
         /// Points closer than this tolerance to a simplified segment may
         /// be removed.
         /// </summary>        
-        public double DistanceTolerance
-        {
-            get
-            {
-                return _distanceTolerance;
-            }
-            set
-            {
-                _distanceTolerance = value;
-            }
-        }
+        public double DistanceTolerance { get; set; }
 
         /// <summary>
         /// Simplifies a collection of <c>TaggedLineString</c>s.
@@ -37,14 +26,13 @@ namespace NetTopologySuite.Simplify
         /// <param name="taggedLines">The collection of lines to simplify.</param>
         public void Simplify(ICollection<TaggedLineString> taggedLines)
         {
-            foreach (TaggedLineString taggedLineString in taggedLines)
+            foreach (var taggedLineString in taggedLines)
                 _inputIndex.Add(taggedLineString);
 
-            foreach (TaggedLineString taggedLineString in taggedLines)
+            foreach (var taggedLineString in taggedLines)
             {
-                TaggedLineStringSimplifier tlss
-                              = new TaggedLineStringSimplifier(_inputIndex, _outputIndex);
-                tlss.DistanceTolerance = _distanceTolerance;
+                var tlss = new TaggedLineStringSimplifier(_inputIndex, _outputIndex);
+                tlss.DistanceTolerance = DistanceTolerance;
                 tlss.Simplify(taggedLineString);
             }
 

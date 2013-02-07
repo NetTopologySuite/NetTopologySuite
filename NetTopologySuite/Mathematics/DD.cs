@@ -1302,7 +1302,8 @@ namespace NetTopologySuite.Mathematics
         /// <summary>
         /// Returns the string for this value if it has a known representation (e.g. NaN or 0.0).
         /// </summary>
-        /// <returns>The string for this special number or <c>null</c> if the number is not a special number</returns>
+        /// <returns>The string for this special number <br/>
+        /// or <c>null</c> if the number is not a special number</returns>
         private String GetSpecialNumberString()
         {
             if (IsZero) return "0.0";

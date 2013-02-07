@@ -6,13 +6,10 @@ using Open.Topology.TestRunner.Utility;
 
 namespace Open.Topology.TestRunner.Functions
 {
-    /**
-     * A registry to manage a collection of {@link GeometryFunction}s.
-     * 
-     * @author Martin Davis
-     *
-     */
-
+    /// <summary>
+    /// A registry to manage a collection of <see cref="IGeometryFunction"/>s.
+    /// </summary>
+    /// <author>Martin Davis</author>
     public class GeometryFunctionRegistry
     {
         private readonly List<IGeometryFunction> _functions = new List<IGeometryFunction>();
@@ -67,12 +64,8 @@ namespace Open.Topology.TestRunner.Functions
             return scalarFun;
         }
 
-        /**
-         * Adds functions for all the static methods in the given class.
-         * 
-         * @param geomFuncClass
-         */
-
+        /// <summary>Adds functions for all the static methods in the given class.</summary>
+        /// <param name="geomFuncClass"></param>
         public void Add(Type geomFuncClass)
         {
             var funcs = CreateFunctions(geomFuncClass);
@@ -98,14 +91,12 @@ namespace Open.Topology.TestRunner.Functions
             foreach (var f in funcs) Add(f);
         }
 
-        /**
-         * Create {@link GeometryFunction}s for all the static 
-         * methods in the given class
-         * 
-         * @param functionClass
-         * @return a list of the functions created
-         */
-
+        /// <summary>
+        /// Create <see cref="IGeometryFunction"/>s for all the static 
+        /// methods in the given class
+        /// </summary>
+        /// <param name="functionClass"></param>
+        /// <returns>A list of the functions created</returns>
         public List<IGeometryFunction> CreateFunctions(Type functionClass)
         {
             var funcs = new List<IGeometryFunction>();
@@ -121,14 +112,12 @@ namespace Open.Topology.TestRunner.Functions
         }
 
 
-        /**
-         * Adds a function if it does not currently
-       * exist in the registry, or replaces the existing one
-         * with the same signature.
-         * 
-         * @param func a function
-         */
-
+        /// <summary>
+        /// Adds a function if it does not currently
+        /// exist in the registry, or replaces the existing one
+        /// with the same signature.
+        /// </summary>
+        /// <param name="func">A function</param>
         public void Add(IGeometryFunction func)
         {
             _functions.Add(func);
@@ -164,29 +153,23 @@ namespace Open.Topology.TestRunner.Functions
         }
         */
 
-
-        /**
-         * Finds the first function which matches the given signature.
-         * 
-         * @param name
-         * @param paramTypes
-         * @return a matching function
-         * @return null if no matching function was found
-         */
-
+        /// <summary>
+        /// Finds the first function which matches the given signature.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="paramTypes"></param>
+        /// <returns>A matching function<br/>or <value>null</value> if no matching function was found</returns>
         public IGeometryFunction Find(String name, Type[] paramTypes)
         {
             return null;
         }
 
-        /**
-         * Finds the first function which matches the given name and argument count.
-         * 
-         * @param name
-         * @return a matching function
-         * @return null if no matching function was found
-         */
-
+        /// <summary>
+        /// Finds the first function which matches the given signature.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="argCount"></param>
+        /// <returns>A matching function<br/>or <value>null</value> if no matching function was found</returns>
         public IGeometryFunction Find(String name, int argCount)
         {
             foreach (var func in _functions)
@@ -199,14 +182,11 @@ namespace Open.Topology.TestRunner.Functions
             return null;
         }
 
-        /**
-         * Finds the first function which matches the given name.
-         * 
-         * @param name
-         * @return a matching function
-         * @return null if no matching function was found
-         */
-
+        /// <summary>
+        /// Finds the first function which matches the given name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>A matching function<br/>or <value>null</value> if no matching function was found</returns>
         public IGeometryFunction Find(String name)
         {
             foreach (var func in _functions)

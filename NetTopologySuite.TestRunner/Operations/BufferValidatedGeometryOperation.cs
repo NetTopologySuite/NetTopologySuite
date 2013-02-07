@@ -63,9 +63,10 @@ namespace Open.Topology.TestRunner.Operations
         /// <summary>
         /// Invokes the named operation
         /// </summary>
-        /// <param name="opName">The name of the operation</param>
+        /// <param name="op">The name of the operation</param>
         /// <param name="geometry">The geometry to process</param>
         /// <param name="args">The arguments to the operation (which may be typed as Strings)</param>
+        /// <returns>The result</returns>
         /// <exception cref="Exception">If some error was encountered trying to find or process the operation</exception>
         public IResult Invoke(XmlTestType op, IGeometry geometry, Object[] args)
         {

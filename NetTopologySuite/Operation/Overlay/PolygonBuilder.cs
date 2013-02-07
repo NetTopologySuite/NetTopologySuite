@@ -132,7 +132,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// The other possibility is that they are a series of connected holes, in which case
         /// no shell is returned.
         /// </summary>
-        /// <returns>The shell EdgeRing, if there is one or
+        /// <returns>The shell EdgeRing, if there is one<br/> or
         /// <value>null</value>, if all the rings are holes.</returns>
         private static EdgeRing FindShell(IEnumerable<EdgeRing> minEdgeRings)
         {
@@ -231,7 +231,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// </summary>
         /// <param name="testEr"></param>
         /// <param name="shellList"></param>
-        /// <returns>Containing EdgeRing, if there is one, OR
+        /// <returns>Containing EdgeRing, if there is one <br/> or
         /// <value>null</value> if no containing EdgeRing is found.</returns>
         private static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IEnumerable<EdgeRing> shellList)
         {

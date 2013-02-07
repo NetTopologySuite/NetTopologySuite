@@ -137,8 +137,8 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// of the source geometry
         /// to the vertices of the given snap geometry.
         /// </summary>
-        /// <param name="snapTolerance">the snapping tolerance</param>
-        /// <param name = "cleanResult"> whether the result should be made valid</param>
+        /// <param name="snapTolerance">The snapping tolerance</param>
+        /// <param name="cleanResult">Whether the result should be made valid</param>
         /// <returns>The geometry snapped to itself</returns>
         public IGeometry SnapToSelf(double snapTolerance, bool cleanResult)
         {

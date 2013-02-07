@@ -35,7 +35,7 @@ namespace NetTopologySuite.Mathematics
         /// </summary>
         /// <param name="a">An nxn matrix in row/column order )modified by this method)</param>
         /// <param name="b">A vector of length n</param>
-        /// <returns>a vector containing the solution (if any), otherwise, if the system has no or no unique solution, null
+        /// <returns>A vector containing the solution (if any)<br/>or <value>null</value> if the system has no or no unique solution
         /// </returns>
         /// <exception cref="ArgumentException">If the matrix has the wrong size</exception>
         public static double[] Solve(double[][] a, double[] b)

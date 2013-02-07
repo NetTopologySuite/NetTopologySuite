@@ -22,8 +22,8 @@ namespace NetTopologySuite.Noding
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <returns>
-        /// -1 if node0 occurs first, or
-        ///  0 if the two nodes are equal, or
+        /// -1 if node0 occurs first, or<br/>
+        ///  0 if the two nodes are equal, or <br/>
         ///  1 if node1 occurs first.
         /// </returns>
         public static int Compare(Octants octant, Coordinate p0, Coordinate p1)

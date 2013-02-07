@@ -11,8 +11,8 @@ namespace NetTopologySuite.Noding
     /// and adds them to each string.
     /// The <see cref="ISegmentIntersector" /> is passed to a <see cref="INoder" />.
     /// The <see cref="ISegmentIntersector.ProcessIntersections"/> method is called whenever the <see cref="INoder" />
-    /// detects that two <see cref="ISegmentString" />s might intersect.
-    /// This class is an example of the Strategy pattern.
+    /// detects that two <see cref="ISegmentString" />s <i>might</i> intersect.
+    /// This class is an example of the <i>Strategy</i> pattern.
     /// </summary>
     public class IntersectionAdder : ISegmentIntersector
     {
@@ -175,7 +175,7 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// This method is called by clients
         /// of the <see cref="ISegmentIntersector" /> class to process
-        /// intersections for two segments of the <see cref="ISegmentString" /> being intersected.
+        /// intersections for two segments of the <see cref="ISegmentString" /> being intersected.<br/>
         /// Note that some clients (such as <c>MonotoneChain</c>") may optimize away
         /// this call for segment pairs which they have determined do not intersect
         /// (e.g. by an disjoint envelope test).
