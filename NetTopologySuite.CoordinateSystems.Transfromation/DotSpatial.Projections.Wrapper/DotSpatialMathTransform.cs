@@ -215,7 +215,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projectio
             for (var i = 0; i < coordinateSequence.Count; i++)
             {
                 xy[j++] = coordinateSequence.GetOrdinate(i, Ordinate.X);
-                xy[j++] = coordinateSequence.GetOrdinate(i, Ordinate.Z);
+                xy[j++] = coordinateSequence.GetOrdinate(i, Ordinate.Y);
                 if (z != null) z[i] = coordinateSequence.GetOrdinate(i, Ordinate.Z);
             }
 

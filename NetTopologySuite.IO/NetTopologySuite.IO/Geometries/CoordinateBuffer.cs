@@ -47,6 +47,7 @@ namespace NetTopologySuite.Geometries
                 LessThan,
             }
 
+            private readonly double _noDataCheckValue;
             private readonly double _noDataValue;
             private readonly IsNoDataCheck _isNoDataCheck;
             
@@ -57,7 +58,7 @@ namespace NetTopologySuite.Geometries
             /// <param name="lessThan">This optional parameter controls whether a value has to be less than <see cref="noDataValue"/> to be considered <c>null</c></param>
             public DoubleNoDataChecker(double noDataValue, bool lessThan = false)
             {
-                _noDataValue = noDataValue;
+                _noDataValue = _noDataCheckValue = noDataValue;
                 if (double.IsNaN(noDataValue))
                     _isNoDataCheck = IsNoDataCheck.NaN;
                 else if (double.IsPositiveInfinity(noDataValue))
@@ -67,14 +68,24 @@ namespace NetTopologySuite.Geometries
                 else if (double.IsInfinity(noDataValue))
                     _isNoDataCheck = IsNoDataCheck.Inf;
                 else
-                    _isNoDataCheck = lessThan ? IsNoDataCheck.LessThan : IsNoDataCheck.Equal;
+                {
+                    if (lessThan)
+                    {
+                        _isNoDataCheck = IsNoDataCheck.LessThan;
+                        _noDataValue = _noDataCheckValue * 1.01d;
+                    }
+                    else
+                    {
+                        _isNoDataCheck = IsNoDataCheck.Equal;
+                    }
+                }
             }
 
             /// <summary>
             /// Checks if <paramref name="value"/> doesn't satisfy null-check
             /// </summary>
             /// <param name="value">The value to check</param>
-            /// <returns><c>true</c> if <paramref name="value"/> is not equal to <see cref="_noDataValue"/></returns>
+            /// <returns><c>true</c> if <paramref name="value"/> is not equal to <see cref="_noDataCheckValue"/></returns>
             public bool IsNotNoDataValue(double value)
             {
                 switch (_isNoDataCheck)
@@ -88,9 +99,9 @@ namespace NetTopologySuite.Geometries
                     case IsNoDataCheck.Inf:
                         return !double.IsInfinity(value);
                     case IsNoDataCheck.LessThan:
-                        return value>=_noDataValue;
+                        return value>=_noDataCheckValue;
                     default:
-                        return _noDataValue != value;
+                        return _noDataCheckValue != value;
                 }
             }
 
@@ -98,7 +109,7 @@ namespace NetTopologySuite.Geometries
             /// Checks if <paramref name="value"/> does satisfy null-check
             /// </summary>
             /// <param name="value">The value to check</param>
-            /// <returns><c>true</c> if <paramref name="value"/> is equal to <see cref="_noDataValue"/></returns>
+            /// <returns><c>true</c> if <paramref name="value"/> is equal to <see cref="_noDataCheckValue"/></returns>
             public bool IsNoDataValue(double value)
             {
                 switch (_isNoDataCheck)
@@ -112,9 +123,9 @@ namespace NetTopologySuite.Geometries
                     case IsNoDataCheck.Inf:
                         return double.IsInfinity(value);
                     case IsNoDataCheck.LessThan:
-                        return value < _noDataValue;
+                        return value < _noDataCheckValue;
                     default:
-                        return _noDataValue == value;
+                        return _noDataCheckValue == value;
                 }
             }
 
@@ -125,9 +136,14 @@ namespace NetTopologySuite.Geometries
 
             public override string ToString()
             {
-                if (_isNoDataCheck == IsNoDataCheck.Equal)
-                    return string.Format("IsNullCheck: {0} {1}", _isNoDataCheck, _noDataValue);
-                return string.Format("IsNullCheck: {0}", _isNoDataCheck);
+                switch (_isNoDataCheck)
+                {
+                    case IsNoDataCheck.Equal:
+                    case IsNoDataCheck.LessThan:
+                        return string.Format("IsNullCheck: {0} {1}", _isNoDataCheck, _noDataCheckValue);
+                    default:
+                        return string.Format("IsNullCheck: {0}", _isNoDataCheck);
+                }
             }
 
             

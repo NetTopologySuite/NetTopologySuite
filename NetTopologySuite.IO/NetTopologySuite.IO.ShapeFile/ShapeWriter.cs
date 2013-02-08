@@ -148,20 +148,29 @@ namespace NetTopologySuite.IO
             writer.Write((int) count);
             var seq = polygon.Factory.CoordinateSequenceFactory.Create(polygon.NumPoints,
                                                                        polygon.ExteriorRing.CoordinateSequence.Ordinates);
-            if (polygon.NumInteriorRings != 0)
+            
+            // Gather coordinate information
+            var ring = polygon.ExteriorRing.CoordinateSequence;
+            CoordinateSequences.Copy(ring, 0, seq, count, ring.Count);
+
+            // If we have interior rings write the index parts and gather coordinate information
+            if (polygon.NumInteriorRings > 0)
             {
-                // Write external shell index
-                var ring = polygon.ExteriorRing.CoordinateSequence;
-                CoordinateSequences.Copy(ring, 0, seq, count, ring.Count);
+                // Write exterior shell index
                 count += ring.Count;
                 writer.Write((int) count);
-                for (int i = 1; i < polygon.NumInteriorRings; i++)
+
+                // Gather coordinates and write interior shell index
+                for (int i = 0; i < polygon.NumInteriorRings; i++)
                 {
                     // Write internal holes index
-                    ring = polygon.GetInteriorRingN(i - 1).CoordinateSequence;
-                    count += ring.Count;
+                    ring = polygon.GetInteriorRingN(i).CoordinateSequence;
                     CoordinateSequences.Copy(ring, 0, seq, count, ring.Count);
-                    writer.Write((int) count);
+                    if (i < polygon.NumInteriorRings - 1)
+                    {
+                        count += ring.Count;
+                        writer.Write((int) count);
+                    }
                 }
             }
 

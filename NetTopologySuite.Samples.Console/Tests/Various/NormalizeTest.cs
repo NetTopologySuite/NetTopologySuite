@@ -13,9 +13,9 @@ namespace NetTopologySuite.Samples.Tests.Various
     [TestFixture]
     public class NormalizeTest : BaseSamples
     {
-        private IPolygon polygon = null;
-        private ILinearRing shell = null;
-        private ILinearRing hole = null;
+        private IPolygon _polygon = null;
+        private ILinearRing _shell = null;
+        private ILinearRing _hole = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NormalizeTest"/> class.
@@ -23,23 +23,23 @@ namespace NetTopologySuite.Samples.Tests.Various
         public NormalizeTest() : base() { }
 
         /// <summary>
-        /// 
+        /// Method called prior to every test in this fixture
         /// </summary>
         [SetUp]
         public void Init()
         {
-            shell = Factory.CreateLinearRing(new Coordinate[] {    new Coordinate(100,100),
+            _shell = Factory.CreateLinearRing(new Coordinate[] {    new Coordinate(100,100),
                                                                     new Coordinate(200,100),
                                                                     new Coordinate(200,200),                
                                                                     new Coordinate(100,200),
                                                                     new Coordinate(100,100), });
             // NOTE: Hole is created with not correct order for holes
-            hole = Factory.CreateLinearRing(new Coordinate[] {      new Coordinate(120,120),
+            _hole = Factory.CreateLinearRing(new Coordinate[] {      new Coordinate(120,120),
                                                                     new Coordinate(180,120),
                                                                     new Coordinate(180,180),                                                                                
                                                                     new Coordinate(120,180),                                                                
                                                                     new Coordinate(120,120), });
-            polygon = Factory.CreatePolygon(shell, new ILinearRing[] { hole, });
+            _polygon = Factory.CreatePolygon(_shell, new ILinearRing[] { _hole, });
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void NotNormalizedGDBOperation()
         {                        
-	        byte[] bytes = new GDBWriter().Write(polygon);
+	        byte[] bytes = new GDBWriter().Write(_polygon);
             IGeometry test = new GDBReader().Read(bytes);
 
             //This is no longer true
@@ -63,12 +63,13 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]        
         public void NormalizedGDBOperation()
         {
-            polygon.Normalize();
+            _polygon.Normalize();
 
-            byte[] bytes = new GDBWriter().Write(polygon);
+            byte[] bytes = new GDBWriter().Write(_polygon);
             IGeometry test = new GDBReader().Read(bytes);
 
-            Assert.IsNotNull(test);            
+            Assert.IsNotNull(test);
+            Assert.IsTrue(_polygon.EqualsExact(test));
         }
     }
 }

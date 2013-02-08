@@ -25,7 +25,7 @@ namespace NetTopologySuite.IO.Handlers
             http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf (page 2, bottom)
          */
         protected const double NoDataBorderValue = -10e38;
-        protected const double NoDataValue = NoDataBorderValue - 1;
+        protected const double NoDataValue = -101e37;//NoDataBorderValue - 1;
 
         protected int boundingBoxIndex = 0;
         protected double[] boundingBox;
