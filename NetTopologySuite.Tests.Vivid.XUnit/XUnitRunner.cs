@@ -3,17 +3,19 @@
     using System;
     using System.IO;
     using Open.Topology.TestRunner;
-    using Xunit;
+    //using Xunit;
+    using NUnit.Framework;
 
     /// <summary>
     /// A class designed to allow debugging of individual tests from within the vivid set
     /// mainly to aid debugging v2 side by side with v1.7.x
     /// </summary>
+    [TestFixture]
     public abstract class XUnitRunner
     {
         protected abstract string TestLocation { get; }
 
-        private readonly XmlTestController controller = new XmlTestController();
+        private readonly XmlTestController _controller = new XmlTestController();
         private XmlTestCollection _tests;
 
         protected XUnitRunner(string testFile)
@@ -22,6 +24,11 @@
         }
 
         protected string TestFile { get; set; }
+
+        [TestFixtureSetUp]
+        public void FixtureSetUp()
+        {
+        }
 
         protected XmlTestCollection Tests
         {
@@ -39,132 +46,138 @@
 
         protected XmlTestCollection LoadTests()
         {
-            return this.controller.Load(Path.Combine(this.TestLocation, this.TestFile));
+            return this._controller.Load(Path.Combine(this.TestLocation, this.TestFile));
         }
 
-        //[Fact]
-        public void TestCountOk()
+        [Test]
+        public virtual void TestCountOk()
         {
             if (this.Count > 20)
                 this.TestAll();
         }
 
-        //[Fact]
-        public void Test1()
+        [Test]
+        public virtual void Test00()
+        {
+            this.ExecuteTest(0);
+        }
+
+        [Test]
+        public virtual void Test01()
         {
             this.ExecuteTest(1);
         }
 
-        //[Fact]
-        public void Test2()
+        [Test]
+        public virtual void Test02()
         {
             this.ExecuteTest(2);
         }
 
-        //[Fact]
-        public void Test3()
+        [Test]
+        public virtual void Test03()
         {
             this.ExecuteTest(3);
         }
 
-        //[Fact]
-        public void Test4()
+        [Test]
+        public virtual void Test04()
         {
             this.ExecuteTest(4);
         }
 
-        //[Fact]
-        public void Test5()
+        [Test]
+        public virtual void Test05()
         {
             this.ExecuteTest(5);
         }
 
-        //[Fact]
-        public void Test6()
+        [Test]
+        public virtual void Test06()
         {
             this.ExecuteTest(6);
         }
 
-        //[Fact]
-        public void Test7()
+        [Test]
+        public virtual void Test07()
         {
             this.ExecuteTest(7);
         }
 
-        //[Fact]
-        public void Test8()
+        [Test]
+        public virtual void Test08()
         {
             this.ExecuteTest(8);
         }
 
-        //[Fact]
-        public void Test9()
+        [Test]
+        public virtual void Test09()
         {
             this.ExecuteTest(9);
         }
 
-        //[Fact]
-        public void Test10()
+        [Test]
+        public virtual void Test10()
         {
             this.ExecuteTest(10);
         }
 
-        //[Fact]
-        public void Test11()
+        [Test]
+        public virtual void Test11()
         {
             this.ExecuteTest(11);
         }
 
-        //[Fact]
-        public void Test12()
+        [Test]
+        public virtual void Test12()
         {
             this.ExecuteTest(12);
         }
 
-        //[Fact]
-        public void Test13()
+        [Test]
+        public virtual void Test13()
         {
             this.ExecuteTest(13);
         }
 
-        //[Fact]
-        public void Test14()
+        [Test]
+        public virtual void Test14()
         {
             this.ExecuteTest(14);
         }
 
-        //[Fact]
-        public void Test15()
+        [Test]
+        public virtual void Test15()
         {
             this.ExecuteTest(15);
         }
 
-        //[Fact]
-        public void Test16()
+        [Test]
+        public virtual void Test16()
         {
             this.ExecuteTest(16);
         }
 
-        //[Fact]
-        public void Test17()
+        [Test]
+        public virtual void Test17()
         {
             this.ExecuteTest(17);
         }
 
-        //[Fact]
-        public void Test18()
+        [Test]
+        public virtual void Test18()
         {
             this.ExecuteTest(18);
         }
 
-        //[Fact]
-        public void Test19()
+        [Test]
+        public virtual void Test19()
         {
             this.ExecuteTest(19);
         }
 
-        //[Fact]
-        public void Test20()
+        [Test]
+        public virtual void Test20()
         {
             this.ExecuteTest(20);
         }
@@ -172,15 +185,14 @@
         private TestResults ExecuteTest(int i)
         {
             if (i >= this.Count)
-                throw new ArgumentException("i > Count");
+                return new TestResults("i > Count", true);
 
             XmlTest test = this.Tests[i];
             var b = test.RunTest();
             return new TestResults(test.Description, b);
         }
 
-        [Fact]
-        public virtual void TestAll()
+        protected virtual void TestAll()
         {            
             bool success = true;
             for (int i = 0; i < this.Count; i++)
