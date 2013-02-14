@@ -158,14 +158,24 @@ namespace ProjNet.CoordinateSystems.Transformations
 		/// </remarks>
 		/// <param name="points"></param>
 		/// <returns></returns>
-        public abstract IList<double[]> TransformList(IList<double[]> points);
+		public virtual IList<double[]> TransformList(IList<double[]> points)
+		{
+            var result = new List<double[]>(points.Count);
 
-	    public abstract IList<Coordinate> TransformList(IList<Coordinate> points);
+            foreach (var c in points)
+                result.Add(Transform(c));
+            
+            return result;
+        }
 
-	    /// <summary>
-		/// Reverses the transformation
-		/// </summary>
-		public abstract void Invert();
+	    public virtual IList<Coordinate> TransformList(IList<Coordinate> points)
+	    {
+            var result = new List<Coordinate>(points.Count);
+
+            foreach (var c in points)
+                result.Add(Transform(c));
+            return result;
+        }
 
         [Obsolete]
 	    public ICoordinate Transform(ICoordinate coordinate)
@@ -185,18 +195,16 @@ namespace ProjNet.CoordinateSystems.Transformations
                                      ? new[] {coordinate.X, coordinate.Y}
                                      : new[] {coordinate.X, coordinate.Y, coordinate.Z};
 
-            var ret = Transform(ordinates);
-            coordinate.X = ret[0];
-            coordinate.Y = ret[1];
-            if (DimTarget > 2) 
-                coordinate.Z = ret[2];
+                var ret = Transform(ordinates);
 
-            return coordinate;
+            return (DimTarget == 2)
+                ? new Coordinate(ret[0], ret[1])
+                : new Coordinate(ret[0], ret[1], ret[2]);
         }
 
-	    public ICoordinateSequence Transform(ICoordinateSequence coordinateSequence)
+	    public virtual ICoordinateSequence Transform(ICoordinateSequence coordinateSequence)
 	    {
-	        var clone = new Coordinate();
+            var clone = new Coordinate();
             for (var i = 0; i < coordinateSequence.Count; i++)
             {
                 clone.CoordinateValue = coordinateSequence.GetCoordinate(i);
@@ -209,6 +217,10 @@ namespace ProjNet.CoordinateSystems.Transformations
 	        return coordinateSequence;
 	    }
 
+        /// <summary>
+        /// Reverses the transformation
+        /// </summary>
+        public abstract void Invert();
 
 	    /// <summary>
 		/// To convert degrees to radians, multiply degrees by pi/180. 

@@ -40,23 +40,21 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using GeoAPI.CoordinateSystems;
-using GeoAPI.Geometries;
-using ProjNet.CoordinateSystems;
 using ProjNet.CoordinateSystems.Transformations;
 
 namespace ProjNet.CoordinateSystems.Projections
 {
-	/// <summary>
+    /// <summary>
 	/// Projections inherit from this abstract class to get access to useful mathematical functions.
 	/// </summary>
-	internal abstract class MapProjection : MathTransform, IProjection
+	public abstract class MapProjection : MathTransform, IProjection
 	{
-		protected bool _isInverse;
-		
-        protected double _es;
-		protected double _semiMajor;
-		protected double _semiMinor;
-		protected double _metersPerUnit;
+// ReSharper disable InconsistentNaming
+        protected readonly double _e;
+        protected readonly double _es;
+        protected readonly double _semiMajor;
+        protected readonly double _semiMinor;
+        protected readonly double _metersPerUnit;
 
         protected readonly double scale_factor;	/* scale factor				*/
         protected double central_meridian;	/* Center longitude (projection center) */
@@ -67,72 +65,54 @@ namespace ProjNet.CoordinateSystems.Projections
 	    protected readonly double en0, en1, en2, en3, en4;
 
 
-		protected List<ProjectionParameter> _Parameters;
-		protected MathTransform _inverse;
+		protected ProjectionParameterSet _Parameters;
+		
+        protected MathTransform _inverse;
+        private bool _isInverse;
+
+        // ReSharper restore InconsistentNaming
 
         /// <summary>
         /// Creates an instance of this class
         /// </summary>
-        /// <param name="parameters">A list of parameters</param>
-        /// <param name="isInverse">Indicator if this porjecteion is inverse</param>
-		protected MapProjection(List<ProjectionParameter> parameters, bool isInverse) 
+        /// <param name="parameters">An enumeration of projection parameters</param>
+        /// <param name="inverse">Indicator if this projection is inverse</param>
+		protected MapProjection(IEnumerable<ProjectionParameter> parameters, MapProjection inverse) 
             : this(parameters)
-		{
-			_isInverse = isInverse;
-		}
+        {
+            _inverse = inverse;
+            if (_inverse != null)
+            {
+                inverse._inverse = this;
+                _isInverse = !inverse._isInverse;
+            }
+        }
 
         /// <summary>
-        /// 
+        /// Creates an instance of this class
         /// </summary>
-        /// <param name="parameters"></param>
-		protected MapProjection(List<ProjectionParameter> parameters)
+        /// <param name="parameters">An enumeration of projection parameters</param>
+		protected MapProjection(IEnumerable<ProjectionParameter> parameters)
 		{
-			_Parameters = parameters;
+			_Parameters = new ProjectionParameterSet(parameters);
+
+            _semiMajor = _Parameters.GetParameterValue("semi_major");
+            _semiMinor = _Parameters.GetParameterValue("semi_minor");
+            
+            _es = 1.0 - (_semiMinor * _semiMinor) / (_semiMajor * _semiMajor);
+            _e = Math.Sqrt(_es);
+
+            scale_factor = _Parameters.GetOptionalParameterValue("scale_factor", 1);
+
+            central_meridian = Degrees2Radians(_Parameters.GetParameterValue("central_meridian", "longitude_of_center"));
+            lat_origin = Degrees2Radians(_Parameters.GetParameterValue("latitude_of_origin", "latitude_of_center"));
+
+            _metersPerUnit = _Parameters.GetParameterValue("unit");
+
+            false_easting = _Parameters.GetOptionalParameterValue("false_easting", 0) * _metersPerUnit;
+            false_northing = _Parameters.GetOptionalParameterValue("false_northing", 0) * _metersPerUnit;
 
             // TODO: Should really convert to the correct linear units??
-			var parSemiMajor = GetParameter("semi_major");
-			var parSemiMinor = GetParameter("semi_minor");
-            var parScaleFactor = GetParameter("scale_factor");
-            
-            var parCentralMeridian = GetParameter("central_meridian") ?? 
-                                     GetParameter("longitude_of_center");
-
-            var parLatitudeOfOrigin = GetParameter("latitude_of_origin") ??
-                                      GetParameter("latitude_of_center");
-
-            var parFalseEasting = GetParameter("false_easting");
-            var parFalseNorthing = GetParameter("false_northing");
-
-            //Check for missing parameters
-            if (parSemiMajor == null)
-                throw new ArgumentException("Missing projection parameter 'semi_major'");
-            if (parSemiMinor == null)
-                throw new ArgumentException("Missing projection parameter 'semi_minor'");
-            if (parCentralMeridian == null)
-                parCentralMeridian = new ProjectionParameter("central_meridian", 0d);
-            if (parLatitudeOfOrigin == null)
-                throw new ArgumentException("Missing projection parameter 'latitude_of_origin'");
-            
-            if (parScaleFactor == null)
-                parScaleFactor = new ProjectionParameter("scale_factor", 1d);
-            if (parFalseEasting == null)
-                parFalseEasting = new ProjectionParameter("False_Easting", 0d);
-            if (parFalseNorthing == null)
-                parFalseNorthing = new ProjectionParameter("False_Northing", 0d);
-
-            scale_factor = parScaleFactor.Value;
-            central_meridian = Degrees2Radians(parCentralMeridian.Value);
-            lat_origin = Degrees2Radians(parLatitudeOfOrigin.Value);
-
-            _semiMajor = parSemiMajor.Value;
-			_semiMinor = parSemiMinor.Value;
-			var unit = GetParameter("unit");
-			
-            _metersPerUnit = unit.Value;
-
-            _es = 1.0 - (_semiMinor*_semiMinor)/(_semiMajor*_semiMajor);
-            false_easting = parFalseEasting.Value * _metersPerUnit;
-            false_northing = parFalseNorthing.Value * _metersPerUnit;
             
             //  Compute constants for the mlfn
             double t;
@@ -146,6 +126,19 @@ namespace ProjNet.CoordinateSystems.Projections
             en4 = t * _es * C88;
 
 		}
+
+        /// <summary>
+        /// Returns a list of projection "cloned" projection parameters
+        /// </summary>
+        /// <returns></returns>
+        protected internal static List<ProjectionParameter> CloneParametersList(IEnumerable<ProjectionParameter> projectionParameters)
+        {
+            var res = new List<ProjectionParameter>();
+            foreach (var pp in projectionParameters)
+                res.Add(new ProjectionParameter(pp.Name, pp.Value));
+            return res;
+        }
+
 	
 		#region Implementation of IProjection
 
@@ -156,7 +149,7 @@ namespace ProjNet.CoordinateSystems.Projections
         /// <returns></returns>
 		public ProjectionParameter GetParameter(int index)
 		{
-			return this._Parameters[index];
+			return _Parameters.GetAtIndex(index);
 		}
 
 		/// <summary>
@@ -167,7 +160,7 @@ namespace ProjNet.CoordinateSystems.Projections
 		/// <returns>parameter or null if not found</returns>
 		public ProjectionParameter GetParameter(string name)
 		{
-			return _Parameters.Find(par => par.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+			return _Parameters.Find(name);
 		}
 
         /// <summary>
@@ -186,75 +179,40 @@ namespace ProjNet.CoordinateSystems.Projections
 			get { return this.ClassName; }
 		}
 
-		private string _abbreviation;
+        /// <summary>
+        /// Gets or sets the abbreviation of the object.
+        /// </summary>
+        public string Abbreviation { get; set; }
 
-		/// <summary>
-		/// Gets or sets the abbreviation of the object.
-		/// </summary>
-		public string Abbreviation
-		{
-			get { return _abbreviation; }
-			set { _abbreviation = value; }
-		}
+        /// <summary>
+        /// Gets or sets the alias of the object.
+        /// </summary>
+        public string Alias { get; set; }
 
-		private string _alias;
+        /// <summary>
+        /// Gets or sets the authority name for this object, e.g., "EPSG",
+        /// is this is a standard object with an authority specific
+        /// identity code. Returns "CUSTOM" if this is a custom object.
+        /// </summary>
+        public string Authority { get; set; }
 
-		/// <summary>
-		/// Gets or sets the alias of the object.
-		/// </summary>
-		public string Alias
-		{
-			get { return _alias; }
-			set { _alias = value; }
-		}
+        /// <summary>
+        /// Gets or sets the authority specific identification code of the object
+        /// </summary>
+        public long AuthorityCode { get; set; }
 
-		private string _authority;
+        /// <summary>
+        /// Gets or sets the name of the object.
+        /// </summary>
+        public string Name { get; set; }
 
-		/// <summary>
-		/// Gets or sets the authority name for this object, e.g., "EPSG",
-		/// is this is a standard object with an authority specific
-		/// identity code. Returns "CUSTOM" if this is a custom object.
-		/// </summary>
-		public string Authority
-		{
-			get { return _authority; }
-			set { _authority = value; }
-		}
-
-		private long _code;
-
-		/// <summary>
-		/// Gets or sets the authority specific identification code of the object
-		/// </summary>
-		public long AuthorityCode
-		{
-			get { return _code; }
-			set { _code = value; }
-		}
-
-		private string _name;
-
-		/// <summary>
-		/// Gets or sets the name of the object.
-		/// </summary>
-		public string Name
-		{
-			get { return _name; }
-			set { _name = value; }
-		}
-		private string _remarks;
-
-		/// <summary>
-		/// Gets or sets the provider-supplied remarks for the object.
-		/// </summary>
-		public string Remarks
-		{
-			get { return _remarks; }
-			set { _remarks = value; }
-		}
+        /// <summary>
+        /// Gets or sets the provider-supplied remarks for the object.
+        /// </summary>
+        public string Remarks { get; set; }
 
 
-		/// <summary>
+        /// <summary>
 		/// Returns the Well-known text for this object
 		/// as defined in the simple features specification.
 		/// </summary>
@@ -265,9 +223,9 @@ namespace ProjNet.CoordinateSystems.Projections
 				var sb = new StringBuilder();
 				if (_isInverse)
 					sb.Append("INVERSE_MT[");
-				sb.AppendFormat("PARAM_MT[\"{0}\"", this.Name);
-				for (int i = 0; i < this.NumParameters; i++)
-					sb.AppendFormat(", {0}", this.GetParameter(i).WKT);
+				sb.AppendFormat("PARAM_MT[\"{0}\"", Name);
+				for (int i = 0; i < NumParameters; i++)
+					sb.AppendFormat(", {0}", GetParameter(i).WKT);
 				//if (!String.IsNullOrEmpty(Authority) && AuthorityCode > 0)
 				//	sb.AppendFormat(", AUTHORITY[\"{0}\", \"{1}\"]", Authority, AuthorityCode);
 				sb.Append("]");
@@ -284,19 +242,15 @@ namespace ProjNet.CoordinateSystems.Projections
 		{
 			get
 			{
-				StringBuilder sb = new StringBuilder();
+				var sb = new StringBuilder();
 				sb.Append("<CT_MathTransform>");
-				if (_isInverse)
-					sb.AppendFormat("<CT_InverseTransform Name=\"{0}\">", ClassName);
-				else
-					sb.AppendFormat("<CT_ParameterizedMathTransform Name=\"{0}\">", ClassName);
-				for (int i = 0; i < this.NumParameters; i++)
-					sb.AppendFormat(this.GetParameter(i).XML);
-				if (_isInverse)
-					sb.Append("</CT_InverseTransform>");
-				else
-					sb.Append("</CT_ParameterizedMathTransform>");
-				sb.Append("</CT_MathTransform>");
+			    sb.AppendFormat(
+			        _isInverse ? "<CT_InverseTransform Name=\"{0}\">" 
+                               : "<CT_ParameterizedMathTransform Name=\"{0}\">", ClassName);
+			    for (int i = 0; i < NumParameters; i++)
+					sb.AppendFormat(GetParameter(i).XML);
+			    sb.Append(_isInverse ? "</CT_InverseTransform>" : "</CT_ParameterizedMathTransform>");
+			    sb.Append("</CT_MathTransform>");
 				return sb.ToString();
 			}
 		}
@@ -315,8 +269,51 @@ namespace ProjNet.CoordinateSystems.Projections
             get { return 2; }
         }
 
-        public abstract double[] MetersToDegrees(double[] p);
-        public abstract double[] DegreesToMeters(double[] lonlat);
+        /// <summary>
+        /// Function to transform from meters to degrees
+        /// </summary>
+        /// <param name="p">The ordinates of the point</param>
+        /// <returns>The transformed ordinates</returns>
+        public double[] MetersToDegrees(double[] p)
+        {
+            var tmp = p.Length == 2
+                          ? new[] { p[0] * _metersPerUnit - false_easting, p[1] * _metersPerUnit - false_northing }
+                          : new[] { p[0] * _metersPerUnit - false_easting, p[1] * _metersPerUnit - false_northing, p[2] * _metersPerUnit };
+
+            var res = MetersToRadians(tmp);
+
+            res[0] = Radians2Degrees(res[0]);
+            res[1] = Radians2Degrees(res[1]);
+            if (DimTarget == 3) res[2] = Radians2Degrees(res[2]);
+
+            return res;
+        }
+
+        /// <summary>
+        /// Function to transform from degrees to meters
+        /// </summary>
+        /// <param name="lonlat">The ordinates of the point</param>
+        /// <returns>The transformed ordinates</returns>
+        public double[] DegreesToMeters(double[] lonlat)
+        {
+            // Convert to radians
+            var tmp = lonlat.Length == 2
+                          ? new[] {Degrees2Radians(lonlat[0]), Degrees2Radians(lonlat[1])}
+                          : new[] {Degrees2Radians(lonlat[0]), Degrees2Radians(lonlat[1]), Degrees2Radians(lonlat[2])};
+
+            // Convert to meters
+            var res = RadiansToMeters(tmp);
+
+            // Add false easting and northing, convert to unit
+            res[0] = (res[0] + false_easting) / _metersPerUnit;
+            res[1] = (res[1] + false_northing) / _metersPerUnit;
+            if (res.Length == 3) res[2] = res[2]/_metersPerUnit;
+
+            return res;
+        }
+
+        protected abstract double[] RadiansToMeters(double[] lonlat);
+        protected abstract double[] MetersToRadians(double[] p);
 
 		/// <summary>
 		/// Reverses the transformation
@@ -324,14 +321,21 @@ namespace ProjNet.CoordinateSystems.Projections
 		public override void Invert()
 		{
 			_isInverse = !_isInverse;
+            if (_inverse != null) ((MapProjection)_inverse).Invert(false);
 		}
+
+        protected void Invert(bool invertInverse)
+        {
+            _isInverse = !_isInverse;
+            if (invertInverse && _inverse != null) ((MapProjection)_inverse).Invert(false); 
+        }
 
 		/// <summary>
 		/// Returns true if this projection is inverted.
 		/// Most map projections define forward projection as "from geographic to projection", and backwards
 		/// as "from projection to geographic". If this projection is inverted, this will be the other way around.
 		/// </summary>
-		internal bool IsInverse
+		protected internal bool IsInverse
 		{
 			get { return _isInverse; }
 		}
@@ -349,38 +353,6 @@ namespace ProjNet.CoordinateSystems.Projections
                 : MetersToDegrees(cp);
         }
 
-	    /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ord"></param>
-        /// <returns></returns>
-        public override IList<double[]> TransformList(IList<double[]> ord)
-		{
-            var result = new List<double[]>(ord.Count);
-			for (var i=0; i< ord.Count; i++)
-			{
-                var point = ord[i];
-				result.Add(Transform(point));
-			}
-			return result;
-		}
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ord"></param>
-        /// <returns></returns>
-        public override IList<Coordinate> TransformList(IList<Coordinate> ord)
-        {
-            var result = new List<Coordinate>(ord.Count);
-            
-            foreach(var c in ord)
-            {
-                result.Add(Transform(c));
-            }
-            return result;
-        }
-
         /// <summary>
 		/// Checks whether the values of this instance is equal to the values of another instance.
 		/// Only parameters used for coordinate system are used for comparison.
@@ -393,9 +365,14 @@ namespace ProjNet.CoordinateSystems.Projections
 			if (!(obj is MapProjection))
 				return false;
 			var proj = obj as MapProjection;
-			if (proj.NumParameters != NumParameters)
+
+            if (!_Parameters.Equals(proj._Parameters))
+                return false;
+            /*
+            if (proj.NumParameters != NumParameters)
 				return false;
-			for (var i = 0; i < _Parameters.Count; i++)
+			
+            for (var i = 0; i < _Parameters.Count; i++)
 			{
 				var param = _Parameters.Find(par => par.Name.Equals(proj.GetParameter(i).Name, StringComparison.OrdinalIgnoreCase));
 				if (param == null)
@@ -403,6 +380,7 @@ namespace ProjNet.CoordinateSystems.Projections
 				if (param.Value != proj.GetParameter(i).Value)
 					return false;
 			}
+             */
 			return IsInverse == proj.IsInverse;
 		}
 

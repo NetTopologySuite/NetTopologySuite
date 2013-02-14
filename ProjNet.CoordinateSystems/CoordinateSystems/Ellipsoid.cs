@@ -50,16 +50,16 @@ namespace ProjNet.CoordinateSystems
 			string abbreviation, string remarks)
 			: base(name, authority, code, alias, abbreviation, remarks)
 		{
-			_SemiMajorAxis = semiMajorAxis;
-			_InverseFlattening = inverseFlattening;
-			_AxisUnit = axisUnit;
-			_IsIvfDefinitive = isIvfDefinitive;
+			SemiMajorAxis = semiMajorAxis;
+			InverseFlattening = inverseFlattening;
+			AxisUnit = axisUnit;
+			IsIvfDefinitive = isIvfDefinitive;
 			if (isIvfDefinitive && (inverseFlattening == 0 || double.IsInfinity(inverseFlattening)))
-				_SemiMinorAxis = semiMajorAxis;
+				SemiMinorAxis = semiMajorAxis;
 			else if (isIvfDefinitive)
-				_SemiMinorAxis = (1.0 - (1.0 / _InverseFlattening)) * semiMajorAxis;
+				SemiMinorAxis = (1.0 - (1.0 / InverseFlattening)) * semiMajorAxis;
 			else
-				_SemiMinorAxis = semiMinorAxis;
+				SemiMinorAxis = semiMinorAxis;
 		}
 
 		#region Predefined ellipsoids
@@ -177,65 +177,35 @@ namespace ProjNet.CoordinateSystems
 
 		#region IEllipsoid Members
 
-		private double _SemiMajorAxis;
+	    /// <summary>
+	    /// Gets or sets the value of the semi-major axis.
+	    /// </summary>
+	    public double SemiMajorAxis { get; set; }
 
-		/// <summary>
-		/// Gets or sets the value of the semi-major axis.
-		/// </summary>
-		public double SemiMajorAxis
-		{
-			get { return _SemiMajorAxis; }
-			set { _SemiMajorAxis = value; }
-		}
+	    /// <summary>
+	    /// Gets or sets the value of the semi-minor axis.
+	    /// </summary>
+	    public double SemiMinorAxis { get; set; }
 
-		private double _SemiMinorAxis;
+	    /// <summary>
+	    /// Gets or sets the value of the inverse of the flattening constant of the ellipsoid.
+	    /// </summary>
+	    public double InverseFlattening { get; set; }
 
-		/// <summary>
-		/// Gets or sets the value of the semi-minor axis.
-		/// </summary>
-		public double SemiMinorAxis
-		{
-			get { return _SemiMinorAxis; }
-			set { _SemiMinorAxis = value; }
-		}
+	    /// <summary>
+	    /// Gets or sets the value of the axis unit.
+	    /// </summary>
+	    public ILinearUnit AxisUnit { get; set; }
 
-		private double _InverseFlattening;
+	    /// <summary>
+	    /// Tells if the Inverse Flattening is definitive for this ellipsoid. Some ellipsoids use 
+	    /// the IVF as the defining value, and calculate the polar radius whenever asked. Other
+	    /// ellipsoids use the polar radius to calculate the IVF whenever asked. This 
+	    /// distinction can be important to avoid floating-point rounding errors.
+	    /// </summary>
+	    public bool IsIvfDefinitive { get; set; }
 
-		/// <summary>
-		/// Gets or sets the value of the inverse of the flattening constant of the ellipsoid.
-		/// </summary>
-		public double InverseFlattening
-		{
-			get { return _InverseFlattening; }
-			set { _InverseFlattening = value; }
-		}
-
-		private ILinearUnit _AxisUnit;
-
-		/// <summary>
-		/// Gets or sets the value of the axis unit.
-		/// </summary>
-		public ILinearUnit AxisUnit
-		{
-			get { return _AxisUnit; }
-			set { _AxisUnit = value; }
-		}
-
-		private bool _IsIvfDefinitive;
-
-		/// <summary>
-		/// Tells if the Inverse Flattening is definitive for this ellipsoid. Some ellipsoids use 
-		/// the IVF as the defining value, and calculate the polar radius whenever asked. Other
-		/// ellipsoids use the polar radius to calculate the IVF whenever asked. This 
-		/// distinction can be important to avoid floating-point rounding errors.
-		/// </summary>
-		public bool IsIvfDefinitive
-		{
-			get { return _IsIvfDefinitive; }
-			set { _IsIvfDefinitive = value; }
-		}
-
-		/// <summary>
+	    /// <summary>
 		/// Returns the Well-known text for this object
 		/// as defined in the simple features specification.
 		/// </summary>
@@ -243,7 +213,7 @@ namespace ProjNet.CoordinateSystems
 		{
 			get
 			{
-				StringBuilder sb = new StringBuilder();
+				var sb = new StringBuilder();
 				sb.AppendFormat(CultureInfo.InvariantCulture.NumberFormat, "SPHEROID[\"{0}\", {1}, {2}", Name, SemiMajorAxis, InverseFlattening);
 				if (!String.IsNullOrEmpty(Authority) && AuthorityCode > 0)
 					sb.AppendFormat(", AUTHORITY[\"{0}\", \"{1}\"]", Authority, AuthorityCode);

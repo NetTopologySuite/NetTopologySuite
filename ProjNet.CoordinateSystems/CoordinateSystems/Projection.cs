@@ -38,7 +38,7 @@ namespace ProjNet.CoordinateSystems
 			string remarks, string abbreviation)
 			: base(name, authority, code, alias, abbreviation, remarks)
 		{
-			_Parameters = parameters;
+			_parameters = parameters;
 			_ClassName = className;
 		}
 
@@ -52,18 +52,18 @@ namespace ProjNet.CoordinateSystems
 		/// </summary>
 		public int NumParameters
 		{
-			get { return _Parameters.Count; }
+			get { return _parameters.Count; }
 		}
 
-		private List<ProjectionParameter> _Parameters;
+		private List<ProjectionParameter> _parameters;
 
 		/// <summary>
 		/// Gets or sets the parameters of the projection
 		/// </summary>
 		internal List<ProjectionParameter> Parameters
 		{
-			get { return _Parameters; }
-			set { _Parameters = value; }
+			get { return _parameters; }
+			set { _parameters = value; }
 		}
 
 		/// <summary>
@@ -73,7 +73,7 @@ namespace ProjNet.CoordinateSystems
 		/// <returns>n'th parameter</returns>
 		public ProjectionParameter GetParameter(int index)
 		{
-			return _Parameters[index];
+			return _parameters[index];
 		}
 
 		/// <summary>
@@ -84,7 +84,7 @@ namespace ProjNet.CoordinateSystems
 		/// <returns>parameter or null if not found</returns>
 		public ProjectionParameter GetParameter(string name)
 		{
-			foreach (ProjectionParameter par in _Parameters)
+			foreach (ProjectionParameter par in _parameters)
 				if (par.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
 					return par;
 			return null;
@@ -147,7 +147,7 @@ namespace ProjNet.CoordinateSystems
 			Projection proj = obj as Projection;
 			if (proj.NumParameters != this.NumParameters)
 				return false;
-			for (int i = 0; i < _Parameters.Count; i++)
+			for (int i = 0; i < _parameters.Count; i++)
 			{
 				ProjectionParameter param = GetParameter(proj.GetParameter(i).Name);
 				if (param == null)

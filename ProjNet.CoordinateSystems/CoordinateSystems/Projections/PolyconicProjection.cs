@@ -39,26 +39,26 @@ namespace ProjNet.CoordinateSystems.Projections
         /// Constructs a new map projection from the supplied parameters.
         ///</summary>
         /// <param name="parameters">The parameter values in standard units</param>
-        public PolyconicProjection(List<ProjectionParameter> parameters)
-            : this(parameters, false)
+        public PolyconicProjection(IEnumerable<ProjectionParameter> parameters)
+            : this(parameters, null)
         { }
 
         /// <summary>
         /// Constructs a new map projection from the supplied parameters.
         /// </summary>
         /// <param name="parameters">The parameter values in standard units</param>
-        /// <param name="isInverse">Defines if Projection is inverse</param>
-        public PolyconicProjection(List<ProjectionParameter> parameters, bool isInverse)
-            : base(parameters, isInverse)
+        /// <param name="inverse">Defines if Projection is inverse</param>
+        protected PolyconicProjection(IEnumerable<ProjectionParameter> parameters, PolyconicProjection inverse)
+            : base(parameters, inverse)
         {
             _ml0 = mlfn(lat_origin, Math.Sin(lat_origin), Math.Cos(lat_origin));
         }
 
-        public override double[] DegreesToMeters(double[] lonlat)
+        protected override double[] RadiansToMeters(double[] lonlat)
         {
 
-            var lam = Degrees2Radians(lonlat[0]);
-            var phi = Degrees2Radians(lonlat[1]);
+            var lam = lonlat[0];
+            var phi = lonlat[1];
 
             var delta_lam = adjust_lon(lam - central_meridian);
 
@@ -79,17 +79,17 @@ namespace ProjNet.CoordinateSystems.Projections
                 y = (mlfn(phi, sp, cp) - _ml0) + ms * (1.0 - Math.Cos(/*lam*/delta_lam));
             }
 
-            x = scale_factor * _semiMajor * x + false_easting;
-            y = scale_factor * _semiMajor * y + false_northing;
+            x = scale_factor*_semiMajor*x; // + false_easting;
+            y = scale_factor*_semiMajor*y;// +false_northing;
 
-            return new[] { x / _metersPerUnit, y / _metersPerUnit };
+            return new[] { x, y };
         }
 
-        public override double[] MetersToDegrees(double[] p)
+        protected override double[] MetersToRadians(double[] p)
         {
             
-            var x = (p[0] * _metersPerUnit - false_easting)  / (_semiMajor * scale_factor);
-            var y = (p[1] * _metersPerUnit - false_northing) / (_semiMajor * scale_factor);
+            var x = (p[0]) / (_semiMajor * scale_factor);
+            var y = (p[1]) / (_semiMajor * scale_factor);
 
             double lam, phi;
 
@@ -131,7 +131,7 @@ namespace ProjNet.CoordinateSystems.Projections
                 lam = Math.Asin(x * Math.Tan(phi) * Math.Sqrt(1.0 - _es * c2 * c2)) / Math.Sin(phi);
             }
 
-            return new[] { Radians2Degrees(adjust_lon(lam+central_meridian)), Radians2Degrees(phi) };
+            return new[] { adjust_lon(lam+central_meridian), phi };
         }
         /// <summary>
         /// Returns the inverse of this projection.
@@ -140,7 +140,7 @@ namespace ProjNet.CoordinateSystems.Projections
         public override IMathTransform Inverse()
         {
             if (_inverse == null)
-                _inverse = new PolyconicProjection(_Parameters, !_isInverse);
+                _inverse = new PolyconicProjection(_Parameters.ToProjectionParameter(), this);
             return _inverse;
         }
 

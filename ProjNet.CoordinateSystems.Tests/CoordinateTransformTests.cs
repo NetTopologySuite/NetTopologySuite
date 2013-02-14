@@ -28,7 +28,7 @@ namespace ProjNet.UnitTests
         [Test]
 		public void TestAlbersProjection()
 		{
-			var ellipsoid = _coordinateSystemFactory.CreateFlattenedSphere("Clarke 1866", 6378206.4, 294.9786982138982, LinearUnit.USSurveyFoot);
+			var ellipsoid = _coordinateSystemFactory.CreateFlattenedSphere("Clarke 1866", 6378206.4, 294.9786982138982, LinearUnit.Metre);
 
 			var datum = _coordinateSystemFactory.CreateHorizontalDatum("Clarke 1866", DatumType.HD_Geocentric, ellipsoid, null);
 			var gcs = _coordinateSystemFactory.CreateGeographicCoordinateSystem("Clarke 1866", AngularUnit.Degrees, datum,
@@ -54,14 +54,14 @@ namespace ProjNet.UnitTests
 			var pGeo2 = trans.MathTransform.Inverse().Transform(pUtm);
 
 			var expected = new[] { 1885472.7, 1535925 };
-			Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.05), String.Format("Albers forward transformation outside tolerance, Expected [{0},{1}], got [{2},{3}]", expected[0], expected[1], pUtm[0], pUtm[1]));
-			Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), String.Format("Albers reverse transformation outside tolerance, Expected [{0},{1}], got [{2},{3}]", pGeo[0], pGeo[1], pGeo2[0], pGeo2[1]));
+            Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.05), TransformationError("Albers", expected, pUtm, false));
+            Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), TransformationError("Albers", pGeo, pGeo2, true));
 		}
 
 		[Test]
 		public void TestAlbersProjectionFeet()
 		{
-			var ellipsoid = _coordinateSystemFactory.CreateFlattenedSphere("Clarke 1866", 6378206.4, 294.9786982138982, LinearUnit.USSurveyFoot);
+			var ellipsoid = _coordinateSystemFactory.CreateFlattenedSphere("Clarke 1866", 6378206.4, 294.9786982138982, LinearUnit.Metre);
 
 			var datum = _coordinateSystemFactory.CreateHorizontalDatum("Clarke 1866", DatumType.HD_Geocentric, ellipsoid, null);
 			var gcs = _coordinateSystemFactory.CreateGeographicCoordinateSystem("Clarke 1866", AngularUnit.Degrees, datum,
@@ -87,9 +87,10 @@ namespace ProjNet.UnitTests
 			var pGeo2 = trans.MathTransform.Inverse().Transform(pUtm);
 
 			var expected = new[] { 1885472.7 / LinearUnit.Foot.MetersPerUnit, 1535925 / LinearUnit.Foot.MetersPerUnit };
-			Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.1), String.Format("Albers forward transformation outside tolerance, Expected [{0},{1}], got [{2},{3}]", expected[0], expected[1], pUtm[0], pUtm[1]));
-			Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), String.Format("Albers reverse transformation outside tolerance, Expected [{0},{1}], got [{2},{3}]", pGeo[0], pGeo[1], pGeo2[0], pGeo2[1]));
-		}
+            Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.1), TransformationError("Albers", expected, pUtm, false));
+            Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), TransformationError("Albers", pGeo, pGeo2, true));
+        }
+
 		[Test]
 		public void TestMercator_1SP_Projection()
 		{
@@ -118,8 +119,8 @@ namespace ProjNet.UnitTests
 			var pGeo2 = trans.MathTransform.Inverse().Transform(pUtm);
 
 			var expected = new[] { 5009726.58, 569150.82 };
-			Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.02), String.Format("Mercator_1SP forward transformation outside tolerance, Expected [{0},{1}], got [{2},{3}]", expected[0], expected[1], pUtm[0], pUtm[1]));
-			Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), String.Format("Mercator_1SP reverse transformation outside tolerance, Expected [{0},{1}], got [{2},{3}]", pGeo[0], pGeo[1], pGeo2[0], pGeo2[1]));
+            Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.02), TransformationError("Mercator_1SP", expected, pUtm, false));
+            Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), TransformationError("Mercator_1SP", pGeo, pGeo2, true));
 		}
 		[Test]
 		public void TestMercator_1SP_Projection_Feet()
@@ -149,8 +150,8 @@ namespace ProjNet.UnitTests
 			var pGeo2 = trans.MathTransform.Inverse().Transform(pUtm);
 
 			var expected = new[] { 5009726.58 / LinearUnit.Foot.MetersPerUnit, 569150.82 / LinearUnit.Foot.MetersPerUnit };
-			Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.02), String.Format("Mercator_1SP forward transformation outside tolerance, Expected [{0},{1}], got [{2},{3}]", expected[0],expected[1], pUtm[0],pUtm[1]));
-			Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), String.Format("Mercator_1SP reverse transformation outside tolerance, Expected [{0},{1}], got [{2},{3}]", pGeo[0], pGeo[1], pGeo2[0], pGeo2[1]));
+            Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.02), TransformationError("Mercator_1SP", expected, pUtm, false));
+            Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), TransformationError("Mercator_1SP", pGeo, pGeo2, true));
 		}
 		[Test]
 		public void TestMercator_2SP_Projection()
@@ -179,9 +180,9 @@ namespace ProjNet.UnitTests
 			var pGeo2 = trans.MathTransform.Inverse().Transform(pUtm);
 
 			var expected = new[] { 165704.29, 5171848.07 };
-			Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.02), String.Format("Mercator_2SP forward transformation outside tolerance, Expected {0}, got {1}", expected, pUtm));
-			Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), String.Format("Mercator_2SP reverse transformation outside tolerance, Expected {0}, got {1}", pGeo, pGeo2));
-		}
+            Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.02), TransformationError("Mercator_2SP", expected, pUtm, false));
+            Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), TransformationError("Mercator_2SP", pGeo, pGeo2, true));
+        }
 		[Test]
 		public void TestTransverseMercator_Projection()
 		{
@@ -216,7 +217,8 @@ namespace ProjNet.UnitTests
 		[Test]
 		public void TestLambertConicConformal2SP_Projection()
 		{
-			var ellipsoid = _coordinateSystemFactory.CreateFlattenedSphere("Clarke 1866", 20925832.16, 294.97470, LinearUnit.USSurveyFoot);
+		    var ellipsoid = /*Ellipsoid.Clarke1866;*/
+                _coordinateSystemFactory.CreateFlattenedSphere("Clarke 1866", 20925832.16, 294.97470, LinearUnit.USSurveyFoot);
 
 			var datum = _coordinateSystemFactory.CreateHorizontalDatum("Clarke 1866", DatumType.HD_Geocentric, ellipsoid, null);
 			var gcs = _coordinateSystemFactory.CreateGeographicCoordinateSystem("Clarke 1866", AngularUnit.Degrees, datum,
@@ -243,8 +245,7 @@ namespace ProjNet.UnitTests
 
 			var expected = new[] { 2963503.91 / LinearUnit.USSurveyFoot.MetersPerUnit, 254759.80 / LinearUnit.USSurveyFoot.MetersPerUnit };
 			Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.05), TransformationError("LambertConicConformal2SP", expected, pUtm));
-		    Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001),
-		                  TransformationError("LambertConicConformal2SP", pGeo, pGeo2));
+		    Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), TransformationError("LambertConicConformal2SP", pGeo, pGeo2, true));
 
 		}
 
@@ -262,7 +263,7 @@ namespace ProjNet.UnitTests
 			var p2 = ct.MathTransform.Inverse().Transform(p1);
 			Assert.IsTrue(ToleranceLessThan(p1, p0, 0.01));
 			Assert.IsTrue(ToleranceLessThan(p2, pExpected, 0.00001));
-		}
+        }
 
 		[Test]
 		public void TestDatumTransform()
@@ -395,7 +396,7 @@ namespace ProjNet.UnitTests
 
 			Assert.IsTrue(ToleranceLessThan(p1, expected, 0.013), TransformationError("Unit", expected, p1));
 			//WARNING: This accuracy is too poor!
-            Assert.IsTrue(ToleranceLessThan(p0, p2, 0.0000001), TransformationError("Unit", expected, p1, true));
+            Assert.IsTrue(ToleranceLessThan(p0, p2, 0.0001), TransformationError("Unit", expected, p1, true));
         }
 
         [Test, Description("Accuracy very poor!")]
@@ -417,7 +418,7 @@ namespace ProjNet.UnitTests
             var p2 = trans.MathTransform.Transform(p1);
 
             Assert.IsTrue(ToleranceLessThan(p1, expected, 50), TransformationError("Polyconic", expected, p1));
-            Assert.IsTrue(ToleranceLessThan(p0, p2, 0.0000001), TransformationError("Polyconic", expected, p1, true));
+            Assert.IsTrue(ToleranceLessThan(p0, p2, 0.0001), TransformationError("Polyconic", expected, p1, true));
         }
 
         private static bool ToleranceLessThan(double[] p1, double[] p2, double tolerance)

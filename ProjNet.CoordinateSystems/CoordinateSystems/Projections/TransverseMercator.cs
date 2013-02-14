@@ -117,8 +117,8 @@ namespace ProjNet.CoordinateSystems.Projections
 		/// Creates an instance of an TransverseMercatorProjection projection object.
 		/// </summary>
 		/// <param name="parameters">List of parameters to initialize the projection.</param>
-		public TransverseMercator(List<ProjectionParameter> parameters)
-			: this(parameters, false)
+		public TransverseMercator(IEnumerable<ProjectionParameter> parameters)
+			: this(parameters, null)
 		{
 			
 		}
@@ -139,12 +139,12 @@ namespace ProjNet.CoordinateSystems.Projections
 		/// <item><term>false_northing</term><description></description></item>
 		/// </list>
 		/// </remarks>
-		public TransverseMercator(List<ProjectionParameter> parameters, bool inverse)
+		protected TransverseMercator(IEnumerable<ProjectionParameter> parameters, TransverseMercator inverse)
 			: base(parameters, inverse)
 		{
-			this.Name = "Transverse_Mercator";
-			this.Authority = "EPSG";
-			this.AuthorityCode = 9807;
+			Name = "Transverse_Mercator";
+			Authority = "EPSG";
+			AuthorityCode = 9807;
 
             _esp = _es / (1.0 - _es);
             _ml0 = mlfn(lat_origin, Math.Sin(lat_origin), Math.Cos(lat_origin));
@@ -161,12 +161,12 @@ namespace ProjNet.CoordinateSystems.Projections
 		/// </summary>
 		/// <param name="lonlat">The point in decimal degrees.</param>
 		/// <returns>Point in projected meters</returns>
-        public override double[] DegreesToMeters(double[] lonlat)
+        protected override double[] RadiansToMeters(double[] lonlat)
 		{
-		    var x = Degrees2Radians(lonlat[0]);
+		    var x = lonlat[0];
 		    x = adjust_lon(x - central_meridian);
 
-            var y = Degrees2Radians(lonlat[1]);
+            var y = lonlat[1];
             var sinphi = Math.Sin(y);
             var cosphi = Math.Cos(y);
 
@@ -189,10 +189,12 @@ namespace ProjNet.CoordinateSystems.Projections
                 FC5 * als * (5.0 + t * (t - 18.0) + n * (14.0 - 58.0 * t) +
                 FC7 * als * (61.0 + t * (t * (179.0 - t) - 479.0)))));
 
-		    x = scale_factor*_semiMajor*x + false_easting;
-		    y = scale_factor*_semiMajor*y + false_northing;
+		    x = scale_factor*_semiMajor*x;
+		    y = scale_factor*_semiMajor*y;
 
-            return new[] {x/_metersPerUnit, y/_metersPerUnit};
+            return lonlat.Length == 2 
+                ? new [] { x, y }
+                : new [] { x, y, lonlat[2] };
 
 
 		    //double lon = Degrees2Radians(lonlat[0]);
@@ -235,10 +237,10 @@ namespace ProjNet.CoordinateSystems.Projections
 		/// </summary>
 		/// <param name="p">Point in meters</param>
 		/// <returns>Transformed point in decimal degrees</returns>
-        public override double[] MetersToDegrees(double[] p)
+        protected override double[] MetersToRadians(double[] p)
 		{
-		    var x = (p[0] * _metersPerUnit - false_easting) / (scale_factor*_semiMajor);
-            var y = (p[1] * _metersPerUnit - false_northing) / (scale_factor*_semiMajor);
+		    var x = p[0] / (scale_factor*_semiMajor);
+            var y = p[1] / (scale_factor*_semiMajor);
 
             var phi = inv_mlfn(_ml0 + y);
 
@@ -270,7 +272,9 @@ namespace ProjNet.CoordinateSystems.Projections
                     ds * FC7 * (61.0 + t * (662.0 + t * (1320.0 + 720.0 * t)))))) / cosphi);
             }
 
-            return new []{ Radians2Degrees(x), Radians2Degrees(y) };
+            return p.Length == 2 
+                ? new [] { x, y }
+                : new [] { x, y, p[2] };
 
             //double con,phi;		/* temporary angles				*/
             //double delta_phi;	/* difference between longitudes		*/
@@ -340,7 +344,7 @@ namespace ProjNet.CoordinateSystems.Projections
 		public override IMathTransform Inverse()
 		{
 			if (_inverse==null)
-				_inverse = new TransverseMercator(this._Parameters, ! _isInverse);
+				_inverse = new TransverseMercator(_Parameters.ToProjectionParameter(), this);
 			return _inverse;
 		}
 	}

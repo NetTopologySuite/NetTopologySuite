@@ -123,7 +123,8 @@ namespace ProjNet.CoordinateSystems.Transformations
         {
 	        if (source.EqualParams(target.GeographicCoordinateSystem))
 	        {
-				IMathTransform mathTransform = CreateCoordinateOperation(target.Projection, target.GeographicCoordinateSystem.HorizontalDatum.Ellipsoid, target.LinearUnit);
+				IMathTransform mathTransform = CreateCoordinateOperation(target.Projection, 
+                    target.GeographicCoordinateSystem.HorizontalDatum.Ellipsoid, target.LinearUnit);
 		        return new CoordinateTransformation(source, target, TransformType.Transformation, mathTransform,
 			        String.Empty, String.Empty, -1, String.Empty, String.Empty);
 	        }
@@ -167,7 +168,7 @@ namespace ProjNet.CoordinateSystems.Transformations
 		/// <param name="source"></param>
 		/// <param name="target"></param>
 		/// <returns></returns>
-		private ICoordinateTransformation CreateGeog2Geog(IGeographicCoordinateSystem source, IGeographicCoordinateSystem target)
+		private static ICoordinateTransformation CreateGeog2Geog(IGeographicCoordinateSystem source, IGeographicCoordinateSystem target)
 		{
 			if (source.HorizontalDatum.EqualParams(target.HorizontalDatum))
 			{
@@ -234,10 +235,14 @@ namespace ProjNet.CoordinateSystems.Transformations
 
 		private static IMathTransform CreateCoordinateOperation(IGeocentricCoordinateSystem geo)
 		{
-			List<ProjectionParameter> parameterList = new List<ProjectionParameter>(2);
-			parameterList.Add(new ProjectionParameter("semi_major", geo.HorizontalDatum.Ellipsoid.SemiMajorAxis));
-			parameterList.Add(new ProjectionParameter("semi_minor", geo.HorizontalDatum.Ellipsoid.SemiMinorAxis));
-			return new GeocentricTransform(parameterList);
+			var parameterList = new List<ProjectionParameter>(2);
+
+		    var ellipsoid = geo.HorizontalDatum.Ellipsoid;
+            var toMeter = ellipsoid.AxisUnit.MetersPerUnit;
+            parameterList.Add(new ProjectionParameter("semi_major", /*toMeter * */ellipsoid.SemiMajorAxis));
+            parameterList.Add(new ProjectionParameter("semi_minor", /*toMeter * */ellipsoid.SemiMinorAxis));
+
+            return new GeocentricTransform(parameterList);
 		}
 		private static IMathTransform CreateCoordinateOperation(IProjection projection, IEllipsoid ellipsoid, ILinearUnit unit)
 		{
@@ -245,8 +250,9 @@ namespace ProjNet.CoordinateSystems.Transformations
 			for (var i = 0; i < projection.NumParameters; i++)
 				parameterList.Add(projection.GetParameter(i));
 
-			parameterList.Add(new ProjectionParameter("semi_major", ellipsoid.SemiMajorAxis));
-			parameterList.Add(new ProjectionParameter("semi_minor", ellipsoid.SemiMinorAxis));
+		    var toMeter = 1d/ellipsoid.AxisUnit.MetersPerUnit;
+			parameterList.Add(new ProjectionParameter("semi_major", /*toMeter * */ellipsoid.SemiMajorAxis));
+            parameterList.Add(new ProjectionParameter("semi_minor", /*toMeter * */ellipsoid.SemiMinorAxis));
 			parameterList.Add(new ProjectionParameter("unit", unit.MetersPerUnit));
 			
             IMathTransform transform;

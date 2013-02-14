@@ -87,6 +87,7 @@
     <Compile Include="CoordinateSystems\Projections\LambertConformalConic.cs" />
     <Compile Include="CoordinateSystems\Projections\MapProjection.cs" />
     <Compile Include="CoordinateSystems\Projections\Mercator.cs" />
+    <Compile Include="CoordinateSystems\Projections\ProjectionParameterSet.cs" />
     <Compile Include="CoordinateSystems\Projections\TransverseMercator.cs" />
     <Compile Include="CoordinateSystems\Transformations\ConcatenatedTransform.cs" />
     <Compile Include="CoordinateSystems\Transformations\CoordinateTransformation.cs" />
