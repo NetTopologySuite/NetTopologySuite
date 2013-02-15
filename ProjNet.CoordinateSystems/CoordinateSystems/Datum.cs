@@ -15,6 +15,7 @@
 // along with ProjNet; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
 
+using System;
 using GeoAPI.CoordinateSystems;
 
 namespace ProjNet.CoordinateSystems
@@ -32,6 +33,7 @@ namespace ProjNet.CoordinateSystems
 	/// of the datum may also include the temporal behavior (such as the rate of change of
 	/// the orientation of the coordinate axes).
 	/// </remarks>
+	[Serializable]
 	public abstract class Datum : Info, IDatum
 	{
 		/// <summary>

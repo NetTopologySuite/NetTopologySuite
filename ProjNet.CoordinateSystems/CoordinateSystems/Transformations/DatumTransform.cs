@@ -26,6 +26,7 @@ namespace ProjNet.CoordinateSystems.Transformations
 	/// <summary>
 	/// Transformation for applying 
 	/// </summary>
+	[Serializable]
 	internal class DatumTransform : MathTransform
 	{
 		protected IMathTransform _inverse;

@@ -24,6 +24,7 @@ namespace ProjNet.CoordinateSystems
 	/// <summary>
 	/// A named parameter value.
 	/// </summary>
+	[Serializable]
 	public class Parameter
 	{
 		/// <summary>

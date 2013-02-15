@@ -56,6 +56,7 @@ namespace ProjNet.CoordinateSystems.Projections
 	/// greater than that of the continent of South America; in actual area, Greenland is smaller than the Arabian Peninsula.
 	/// </para>
 	/// </remarks>
+	[Serializable]
 	internal class Mercator : MapProjection
 	{
 		//double lon_center;		//Center longitude (projection center)

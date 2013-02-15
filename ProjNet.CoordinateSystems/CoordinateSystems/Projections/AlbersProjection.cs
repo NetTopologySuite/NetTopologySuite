@@ -57,6 +57,7 @@ namespace ProjNet.CoordinateSystems.Projections
 	///		the projection preserves the correct area of the earth though distorts
 	///		direction, distance and shape somewhat.</para>
 	/// </remarks>
+	[Serializable]
 	internal class AlbersProjection : MapProjection
 	{
 	    private readonly double _c;		//constant c 

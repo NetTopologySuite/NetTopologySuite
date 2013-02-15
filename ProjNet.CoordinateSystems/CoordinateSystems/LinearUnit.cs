@@ -25,6 +25,7 @@ namespace ProjNet.CoordinateSystems
 	/// <summary>
 	/// Definition of linear units.
 	/// </summary>
+	[Serializable]
 	public class LinearUnit : Info, ILinearUnit
 	{
 		/// <summary>

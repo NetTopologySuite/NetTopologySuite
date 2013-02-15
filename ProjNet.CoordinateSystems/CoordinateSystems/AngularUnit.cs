@@ -25,6 +25,7 @@ namespace ProjNet.CoordinateSystems
 	/// <summary>
 	/// Definition of angular units.
 	/// </summary>
+	[Serializable]
 	public class AngularUnit : Info, IAngularUnit
 	{
 		/// <summary>

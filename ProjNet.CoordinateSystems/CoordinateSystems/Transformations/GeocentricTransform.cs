@@ -41,6 +41,7 @@ namespace ProjNet.CoordinateSystems.Transformations
 	/// if the ellipsoid axis dimensions are given in another linear unit they should first be converted
 	/// to metres.</para>
 	/// </remarks>
+	[Serializable]
 	internal class GeocentricTransform : MathTransform
 	{
 		private const double COS_67P5 = 0.38268343236508977;    /* cosine of 67.5 degrees */

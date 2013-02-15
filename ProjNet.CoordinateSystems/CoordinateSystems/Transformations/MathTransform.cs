@@ -31,6 +31,7 @@ namespace ProjNet.CoordinateSystems.Transformations
 	/// <see cref="ICoordinateTransformation"/> interface, and use the contained 
 	/// math transform object whenever it wishes to perform a transform.
 	/// </remarks>
+	[Serializable]
 	public abstract class MathTransform : IMathTransform
 	{
 		#region IMathTransform Members

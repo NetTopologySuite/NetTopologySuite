@@ -76,9 +76,6 @@
     <Compile Include="CoordinateSystems\Projections\PolyconicProjection.cs" />
     <Compile Include="CoordinateSystems\Info.cs" />
     <Compile Include="CoordinateSystems\LinearUnit.cs" />
-    <Compile Include="CoordinateSystems\Parameter.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="CoordinateSystems\PrimeMeridian.cs" />
     <Compile Include="CoordinateSystems\ProjectedCoordinateSystem.cs" />
     <Compile Include="CoordinateSystems\Projection.cs" />

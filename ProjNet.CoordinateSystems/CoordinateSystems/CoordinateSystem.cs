@@ -38,7 +38,8 @@ namespace ProjNet.CoordinateSystems
 	/// locations in the real world. So in a Lat/Lon coordinate system, the mathematical 
 	/// position (lat, long) corresponds to a location on the surface of the Earth. This 
 	/// mapping from the mathematical space into real-world locations is called a Datum.</para>
-	/// </remarks>		
+	/// </remarks>
+	[Serializable]		
 	public abstract class CoordinateSystem : Info, ICoordinateSystem
 	{
 		/// <summary>

@@ -8,6 +8,7 @@ namespace ProjNet.CoordinateSystems.Projections
     /// <summary>
     /// A set of projection parameters
     /// </summary>
+    [Serializable]
     public class ProjectionParameterSet : Dictionary<string, double>, IEquatable<ProjectionParameterSet>
     {
         private readonly Dictionary<string, string> _originalNames = new Dictionary<string, string>();

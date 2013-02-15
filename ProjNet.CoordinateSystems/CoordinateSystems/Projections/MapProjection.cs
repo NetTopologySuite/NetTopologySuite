@@ -47,6 +47,7 @@ namespace ProjNet.CoordinateSystems.Projections
     /// <summary>
 	/// Projections inherit from this abstract class to get access to useful mathematical functions.
 	/// </summary>
+	[Serializable]
 	public abstract class MapProjection : MathTransform, IProjection
 	{
 // ReSharper disable InconsistentNaming

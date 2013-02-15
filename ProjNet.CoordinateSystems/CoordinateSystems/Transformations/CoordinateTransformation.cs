@@ -15,6 +15,7 @@
 // along with ProjNet; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
 
+using System;
 using GeoAPI.CoordinateSystems;
 using GeoAPI.CoordinateSystems.Transformations;
 
@@ -25,6 +26,7 @@ namespace ProjNet.CoordinateSystems.Transformations
 	/// coordinate transformation, it does not actually perform the transform 
 	/// operation on points. To transform points you must use a <see cref="MathTransform"/>.
 	/// </summary>
+	[Serializable]
 	public class CoordinateTransformation : ICoordinateTransformation
 	{
 		/// <summary>

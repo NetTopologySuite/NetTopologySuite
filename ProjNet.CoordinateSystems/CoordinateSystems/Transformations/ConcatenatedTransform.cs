@@ -25,6 +25,7 @@ namespace ProjNet.CoordinateSystems.Transformations
     /// <summary>
     /// 
     /// </summary>
+    [Serializable]
 	internal class ConcatenatedTransform : MathTransform
 	{
         /// <summary>

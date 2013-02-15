@@ -25,6 +25,7 @@ namespace ProjNet.CoordinateSystems
 	/// The Info object defines the standard information
 	/// stored with spatial reference objects
 	/// </summary>
+	[Serializable]
 	public abstract class Info : IInfo
 	{
 		/// <summary>
