@@ -254,9 +254,11 @@ namespace ProjNet.CoordinateSystems.Transformations
 			parameterList.Add(new ProjectionParameter("semi_major", /*toMeter * */ellipsoid.SemiMajorAxis));
             parameterList.Add(new ProjectionParameter("semi_minor", /*toMeter * */ellipsoid.SemiMinorAxis));
 			parameterList.Add(new ProjectionParameter("unit", unit.MetersPerUnit));
-			
-            IMathTransform transform;
-			switch (projection.ClassName.ToLower(CultureInfo.InvariantCulture).Replace(' ', '_'))
+
+		    return ProjectionsRegistry.CreateProjection(projection.ClassName, parameterList);
+            
+            /*
+            switch (projection.ClassName.ToLower(CultureInfo.InvariantCulture).Replace(' ', '_'))
 			{
 				case "mercator":
 				case "mercator_1sp":
@@ -286,6 +288,7 @@ namespace ProjNet.CoordinateSystems.Transformations
 					throw new NotSupportedException(String.Format("Projection {0} is not supported.", projection.ClassName));
 			}
 			return transform;
+             */
 		}
 	}
 }

@@ -62,9 +62,9 @@ namespace ProjNet.CoordinateSystems
 		/// <param name="Zone">UTM zone</param>
 		/// <param name="ZoneIsNorth">true of Northern hemisphere, false if southern</param>
 		/// <returns>UTM/WGS84 coordsys</returns>
-		public static ProjectedCoordinateSystem WGS84_UTM(int Zone, bool ZoneIsNorth)
+		public static IProjectedCoordinateSystem WGS84_UTM(int Zone, bool ZoneIsNorth)
 		{
-			List<ProjectionParameter> pInfo = new List<ProjectionParameter>();
+			var pInfo = new List<ProjectionParameter>();
 			pInfo.Add(new ProjectionParameter("latitude_of_origin", 0));
 			pInfo.Add(new ProjectionParameter("central_meridian", Zone * 6 - 183));
 			pInfo.Add(new ProjectionParameter("scale_factor", 0.9996));

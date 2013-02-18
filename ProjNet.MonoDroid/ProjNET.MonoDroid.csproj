@@ -105,6 +105,9 @@
     <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\ProjectionParameterSet.cs">
       <Link>CoordinateSystems\Projections\ProjectionParameterSet.cs</Link>
     </Compile>
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\ProjectionsRegistry.cs">
+      <Link>CoordinateSystems\Projections\ProjectionsRegistry.cs</Link>
+    </Compile>
     <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\TransverseMercator.cs">
       <Link>CoordinateSystems\Projections\TransverseMercator.cs</Link>
     </Compile>

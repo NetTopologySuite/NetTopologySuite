@@ -62,10 +62,10 @@ namespace ProjNet.CoordinateSystems
 		/// <summary>
 		/// Creates a decimal degrees geographic coordinate system based on the WGS84 ellipsoid, suitable for GPS measurements
 		/// </summary>
-		public static GeographicCoordinateSystem WGS84
+		public static IGeographicCoordinateSystem WGS84
 		{
 			get {
-				List<AxisInfo> axes = new List<AxisInfo>(2);
+				var axes = new List<AxisInfo>(2);
 				axes.Add(new AxisInfo("Lon", AxisOrientationEnum.East));
 				axes.Add(new AxisInfo("Lat", AxisOrientationEnum.North));
 				return new GeographicCoordinateSystem(CoordinateSystems.AngularUnit.Degrees,

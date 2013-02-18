@@ -93,6 +93,7 @@
     <Compile Include="CoordinateSystems\Transformations\GeocentricTransform.cs" />
     <Compile Include="CoordinateSystems\Transformations\GeographicTransform.cs" />
     <Compile Include="CoordinateSystems\Transformations\MathTransform.cs" />
+    <Compile Include="CoordinateSystems\Projections\ProjectionsRegistry.cs" />
     <Compile Include="CoordinateSystems\Unit.cs" />
     <Compile Include="IO\CoordinateSystems\CoordinateSystemWktReader.cs" />
     <Compile Include="IO\CoordinateSystems\StreamTokenizer.cs" />

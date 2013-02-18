@@ -102,6 +102,9 @@
     <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\ProjectionParameterSet.cs">
       <Link>CoordinateSystems\Projections\ProjectionParameterSet.cs</Link>
     </Compile>
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\ProjectionsRegistry.cs">
+      <Link>CoordinateSystems\Projections\ProjectionsRegistry.cs</Link>
+    </Compile>
     <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\TransverseMercator.cs">
       <Link>CoordinateSystems\Projections\TransverseMercator.cs</Link>
     </Compile>
@@ -157,7 +160,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="ffb69466-79de-466a-ada7-5c47c5c5ca3a" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="ffb69466-79de-466a-ada7-5c47c5c5ca3a" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
