@@ -23,8 +23,8 @@ namespace ProjNet.CoordinateSystems.Projections
             foreach (var pp in parameters)
             {
                 var key = pp.Name.ToLowerInvariant();
-                _originalIndex.Add(_originalIndex.Count, key);
                 _originalNames.Add(key, pp.Name);
+                _originalIndex.Add(_originalIndex.Count, key);
                 Add(key, pp.Value);
             }
         }
@@ -134,6 +134,22 @@ namespace ProjNet.CoordinateSystems.Projections
                     return false;
             }
             return true;
+        }
+
+        internal void SetParameterValue(string name, double value)
+        {
+            var key = name.ToLowerInvariant();
+            if (!ContainsKey(key))
+            {
+                _originalIndex.Add(_originalIndex.Count, key);
+                _originalNames.Add(key, name);
+                Add(key, value);
+            }
+            else
+            {
+                Remove(key);
+                Add(key, value);
+            }
         }
     }
 }

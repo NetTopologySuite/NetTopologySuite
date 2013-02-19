@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using GeoAPI.CoordinateSystems;
+using ProjNet.CoordinateSystems.Transformations;
 
 namespace ProjNet.CoordinateSystems
 {
@@ -59,30 +60,70 @@ namespace ProjNet.CoordinateSystems
 		/// <summary>
 		/// Universal Transverse Mercator - WGS84
 		/// </summary>
-		/// <param name="Zone">UTM zone</param>
-		/// <param name="ZoneIsNorth">true of Northern hemisphere, false if southern</param>
+		/// <param name="zone">UTM zone</param>
+		/// <param name="zoneIsNorth">true of Northern hemisphere, false if southern</param>
 		/// <returns>UTM/WGS84 coordsys</returns>
-		public static IProjectedCoordinateSystem WGS84_UTM(int Zone, bool ZoneIsNorth)
+		public static IProjectedCoordinateSystem WGS84_UTM(int zone, bool zoneIsNorth)
 		{
 			var pInfo = new List<ProjectionParameter>();
 			pInfo.Add(new ProjectionParameter("latitude_of_origin", 0));
-			pInfo.Add(new ProjectionParameter("central_meridian", Zone * 6 - 183));
+			pInfo.Add(new ProjectionParameter("central_meridian", zone * 6 - 183));
 			pInfo.Add(new ProjectionParameter("scale_factor", 0.9996));
 			pInfo.Add(new ProjectionParameter("false_easting", 500000));
-			pInfo.Add(new ProjectionParameter("false_northing", ZoneIsNorth ? 0 : 10000000));
+			pInfo.Add(new ProjectionParameter("false_northing", zoneIsNorth ? 0 : 10000000));
 			//IProjection projection = cFac.CreateProjection("UTM" + Zone.ToString() + (ZoneIsNorth ? "N" : "S"), "Transverse_Mercator", parameters);
-			Projection proj = new Projection("Transverse_Mercator", pInfo, "UTM" + Zone.ToString(System.Globalization.CultureInfo.InvariantCulture) + (ZoneIsNorth ? "N" : "S"),
-				"EPSG", 32600 + Zone + (ZoneIsNorth ? 0 : 100), String.Empty, String.Empty, String.Empty);
-			System.Collections.Generic.List<AxisInfo> axes = new List<AxisInfo>();
-			axes.Add(new AxisInfo("East", AxisOrientationEnum.East));
-			axes.Add(new AxisInfo("North", AxisOrientationEnum.North));
-			return new ProjectedCoordinateSystem(ProjNet.CoordinateSystems.HorizontalDatum.WGS84,
-				ProjNet.CoordinateSystems.GeographicCoordinateSystem.WGS84, ProjNet.CoordinateSystems.LinearUnit.Metre, proj, axes,
-				"WGS 84 / UTM zone " + Zone.ToString(System.Globalization.CultureInfo.InvariantCulture) + (ZoneIsNorth ? "N" : "S"), "EPSG", 32600 + Zone + (ZoneIsNorth ? 0 : 100),
+			var proj = new Projection("Transverse_Mercator", pInfo, "UTM" + zone.ToString(CultureInfo.InvariantCulture) + (zoneIsNorth ? "N" : "S"),
+				"EPSG", 32600 + zone + (zoneIsNorth ? 0 : 100), String.Empty, String.Empty, String.Empty);
+			var axes = new List<AxisInfo>
+			    {
+			        new AxisInfo("East", AxisOrientationEnum.East),
+			        new AxisInfo("North", AxisOrientationEnum.North)
+			    };
+		    return new ProjectedCoordinateSystem(CoordinateSystems.HorizontalDatum.WGS84,
+				CoordinateSystems.GeographicCoordinateSystem.WGS84, CoordinateSystems.LinearUnit.Metre, proj, axes,
+				"WGS 84 / UTM zone " + zone.ToString(CultureInfo.InvariantCulture) + (zoneIsNorth ? "N" : "S"), "EPSG", 32600 + zone + (zoneIsNorth ? 0 : 100),
 				String.Empty, "Large and medium scale topographic mapping and engineering survey.", string.Empty);
 		}
 
-		#endregion
+	    /// <summary>
+	    /// Gets a WebMercator coordinate reference system
+	    /// </summary>
+	    public static IProjectedCoordinateSystem WebMercator
+	    {
+	        get
+	        {
+                var pInfo = new List<ProjectionParameter>
+                    {
+                        /*
+                        new ProjectionParameter("semi_major", 6378137.0),
+                        new ProjectionParameter("semi_minor", 6378137.0),
+                        new ProjectionParameter("scale_factor", 1.0),
+                         */
+                        new ProjectionParameter("latitude_of_origin", 0.0),
+                        new ProjectionParameter("central_meridian", 0.0),
+                        new ProjectionParameter("false_easting", 0.0),
+                        new ProjectionParameter("false_northing", 0.0)
+                    };
+
+                var proj = new Projection("Popular Visualisation Pseudo-Mercator", pInfo, "Popular Visualisation Pseudo-Mercator", "EPSG", 3856,
+                    "Pseudo-Mercator", String.Empty, String.Empty);
+                
+                var axes = new List<AxisInfo>
+			    {
+			        new AxisInfo("East", AxisOrientationEnum.East),
+			        new AxisInfo("North", AxisOrientationEnum.North)
+			    };
+                
+                return new ProjectedCoordinateSystem(CoordinateSystems.HorizontalDatum.WGS84,
+                    CoordinateSystems.GeographicCoordinateSystem.WGS84, CoordinateSystems.LinearUnit.Metre, proj, axes,
+                    "WGS 84 / Pseudo-Mercator", "EPSG", 3857, "WGS 84 / Popular Visualisation Pseudo-Mercator", 
+                    "Certain Web mapping and visualisation applications." +
+                    "Uses spherical development of ellipsoidal coordinates. Relative to an ellipsoidal development errors of up to 800 metres in position and 0.7 percent in scale may arise. It is not a recognised geodetic system: see WGS 84 / World Mercator (CRS code 3395).",
+                    "WebMercator") { };
+            }
+	    }
+
+	    #endregion
 
 		#region IProjectedCoordinateSystem Members
 

@@ -65,10 +65,10 @@ namespace ProjNet.CoordinateSystems
 		{
 			get
 			{
-				return new HorizontalDatum(CoordinateSystems.Ellipsoid.WGS84,
-					null, DatumType.HD_Geocentric, "World Geodetic System 1984", "EPSG", 6326, String.Empty,
-					"EPSG's WGS 84 datum has been the then current realisation. No distinction is made between the original WGS 84 frame, WGS 84 (G730), WGS 84 (G873) and WGS 84 (G1150). Since 1997, WGS 84 has been maintained within 10cm of the then current ITRF.", String.Empty);
-			}
+                return new HorizontalDatum(CoordinateSystems.Ellipsoid.WGS84,
+                    null, DatumType.HD_Geocentric, "World Geodetic System 1984", "EPSG", 6326, String.Empty,
+                    "EPSG's WGS 84 datum has been the then current realisation. No distinction is made between the original WGS 84 frame, WGS 84 (G730), WGS 84 (G873) and WGS 84 (G1150). Since 1997, WGS 84 has been maintained within 10cm of the then current ITRF.", String.Empty);
+            }
 		}
 
 		/// <summary>

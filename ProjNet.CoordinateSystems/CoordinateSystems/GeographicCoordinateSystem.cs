@@ -74,7 +74,24 @@ namespace ProjNet.CoordinateSystems
 			}
 		}
 
-		#endregion
+        /// <summary>
+        /// Creates a decimal degrees geographic coordinate system based on the WGS84 ellipsoid, suitable for GPS measurements
+        /// </summary>
+        public static IGeographicCoordinateSystem PopularVisualisation
+        {
+            get
+            {
+                var axes = new List<AxisInfo>(2);
+                axes.Add(new AxisInfo("Lon", AxisOrientationEnum.East));
+                axes.Add(new AxisInfo("Lat", AxisOrientationEnum.North));
+                
+                return new GeographicCoordinateSystem(CoordinateSystems.AngularUnit.Degrees,
+                    CoordinateSystems.HorizontalDatum.WGS84, CoordinateSystems.PrimeMeridian.Greenwich, axes,
+                    "Popular Visualisation CRS", "EPSG", 4055, String.Empty, string.Empty, string.Empty);
+            }
+        }
+        
+        #endregion
 
 		#region IGeographicCoordinateSystem Members
 		
@@ -176,7 +193,7 @@ namespace ProjNet.CoordinateSystems
 			}
 		}
 
-		/// <summary>
+	    /// <summary>
 		/// Checks whether the values of this instance is equal to the values of another instance.
 		/// Only parameters used for coordinate system are used for comparison.
 		/// Name, abbreviation, authority, alias and remarks are ignored in the comparison.

@@ -105,12 +105,15 @@ namespace ProjNet.CoordinateSystems.Transformations
 		
 		private static ICoordinateTransformation Proj2Proj(IProjectedCoordinateSystem source, IProjectedCoordinateSystem target)
 		{
-			ConcatenatedTransform ct = new ConcatenatedTransform();
-			CoordinateTransformationFactory ctFac = new CoordinateTransformationFactory();
+			var ct = new ConcatenatedTransform();
+			var ctFac = new CoordinateTransformationFactory();
 			//First transform from projection to geographic
 			ct.CoordinateTransformationList.Add(ctFac.CreateFromCoordinateSystems(source, source.GeographicCoordinateSystem));
 			//Transform geographic to geographic:
-			ct.CoordinateTransformationList.Add(ctFac.CreateFromCoordinateSystems(source.GeographicCoordinateSystem, target.GeographicCoordinateSystem));
+		    var geogToGeog = ctFac.CreateFromCoordinateSystems(source.GeographicCoordinateSystem,
+		                                                      target.GeographicCoordinateSystem);
+            if (geogToGeog != null)
+                ct.CoordinateTransformationList.Add(geogToGeog);
 			//Transform to new projection
 			ct.CoordinateTransformationList.Add(ctFac.CreateFromCoordinateSystems(target.GeographicCoordinateSystem, target));
 
@@ -187,16 +190,23 @@ namespace ProjNet.CoordinateSystems.Transformations
 					source.HorizontalDatum, LinearUnit.Metre, source.PrimeMeridian);
 				IGeocentricCoordinateSystem targetCentric = cFac.CreateGeocentricCoordinateSystem(target.HorizontalDatum.Name + " Geocentric", 
 					target.HorizontalDatum, LinearUnit.Metre, source.PrimeMeridian);
-				ConcatenatedTransform ct = new ConcatenatedTransform();
-				ct.CoordinateTransformationList.Add(ctFac.CreateFromCoordinateSystems(source, sourceCentric));
-				ct.CoordinateTransformationList.Add(ctFac.CreateFromCoordinateSystems(sourceCentric, targetCentric));
-				ct.CoordinateTransformationList.Add(ctFac.CreateFromCoordinateSystems(targetCentric, target));
-				return new CoordinateTransformation(source,
+				var ct = new ConcatenatedTransform();
+				AddIfNotNull(ct, ctFac.CreateFromCoordinateSystems(source, sourceCentric));
+                AddIfNotNull(ct, ctFac.CreateFromCoordinateSystems(sourceCentric, targetCentric));
+                AddIfNotNull(ct, ctFac.CreateFromCoordinateSystems(targetCentric, target));
+				
+                
+                return new CoordinateTransformation(source,
 					target, TransformType.Transformation, ct,
 					String.Empty, String.Empty, -1, String.Empty, String.Empty);
 			}
 		}
 
+        private static void AddIfNotNull(ConcatenatedTransform concatTrans, ICoordinateTransformation trans)
+        {
+            if (trans != null)
+                concatTrans.CoordinateTransformationList.Add(trans);
+        }
 		/// <summary>
 		/// Geocentric to Geocentric transformation
 		/// </summary>
@@ -205,7 +215,7 @@ namespace ProjNet.CoordinateSystems.Transformations
 		/// <returns></returns>
 		private static ICoordinateTransformation CreateGeoc2Geoc(IGeocentricCoordinateSystem source, IGeocentricCoordinateSystem target)
 		{
-			ConcatenatedTransform ct = new ConcatenatedTransform();
+			var ct = new ConcatenatedTransform();
 
 			//Does source has a datum different from WGS84 and is there a shift specified?
 			if (source.HorizontalDatum.Wgs84Parameters != null && !source.HorizontalDatum.Wgs84Parameters.HasZeroValuesOnly)
@@ -226,6 +236,8 @@ namespace ProjNet.CoordinateSystems.Transformations
 						new DatumTransform(target.HorizontalDatum.Wgs84Parameters).Inverse()
 						, "", "", -1, "", ""));
 
+		    if (ct.CoordinateTransformationList.Count == 0)
+		        return null;
 			if (ct.CoordinateTransformationList.Count == 1) //Since we only have one shift, lets just return the datumshift from/to wgs84
 				return new CoordinateTransformation(source, target, TransformType.ConversionAndTransformation, ct.CoordinateTransformationList[0].MathTransform, "", "", -1, "", "");
 			else
@@ -238,9 +250,11 @@ namespace ProjNet.CoordinateSystems.Transformations
 			var parameterList = new List<ProjectionParameter>(2);
 
 		    var ellipsoid = geo.HorizontalDatum.Ellipsoid;
-            var toMeter = ellipsoid.AxisUnit.MetersPerUnit;
-            parameterList.Add(new ProjectionParameter("semi_major", /*toMeter * */ellipsoid.SemiMajorAxis));
-            parameterList.Add(new ProjectionParameter("semi_minor", /*toMeter * */ellipsoid.SemiMinorAxis));
+            //var toMeter = ellipsoid.AxisUnit.MetersPerUnit;
+            if (parameterList.Find((p) => p.Name.ToLowerInvariant().Replace(' ', '_').Equals("semi_major")) == null)
+                parameterList.Add(new ProjectionParameter("semi_major", /*toMeter * */ellipsoid.SemiMajorAxis));
+            if (parameterList.Find((p) => p.Name.ToLowerInvariant().Replace(' ', '_').Equals("semi_minor")) == null)
+                parameterList.Add(new ProjectionParameter("semi_minor", /*toMeter * */ellipsoid.SemiMinorAxis));
 
             return new GeocentricTransform(parameterList);
 		}
@@ -250,10 +264,13 @@ namespace ProjNet.CoordinateSystems.Transformations
 			for (var i = 0; i < projection.NumParameters; i++)
 				parameterList.Add(projection.GetParameter(i));
 
-		    var toMeter = 1d/ellipsoid.AxisUnit.MetersPerUnit;
-			parameterList.Add(new ProjectionParameter("semi_major", /*toMeter * */ellipsoid.SemiMajorAxis));
-            parameterList.Add(new ProjectionParameter("semi_minor", /*toMeter * */ellipsoid.SemiMinorAxis));
-			parameterList.Add(new ProjectionParameter("unit", unit.MetersPerUnit));
+		    //var toMeter = 1d/ellipsoid.AxisUnit.MetersPerUnit;
+            if (parameterList.Find((p) => p.Name.ToLowerInvariant().Replace(' ', '_').Equals("semi_major")) == null)
+			    parameterList.Add(new ProjectionParameter("semi_major", /*toMeter * */ellipsoid.SemiMajorAxis));
+            if (parameterList.Find((p) => p.Name.ToLowerInvariant().Replace(' ', '_').Equals("semi_minor")) == null)
+                parameterList.Add(new ProjectionParameter("semi_minor", /*toMeter * */ellipsoid.SemiMinorAxis));
+            if (parameterList.Find((p) => p.Name.ToLowerInvariant().Replace(' ', '_').Equals("unit")) == null)
+                parameterList.Add(new ProjectionParameter("unit", unit.MetersPerUnit));
 
 		    return ProjectionsRegistry.CreateProjection(projection.ClassName, parameterList);
             

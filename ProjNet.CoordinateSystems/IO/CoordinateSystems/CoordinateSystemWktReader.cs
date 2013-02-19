@@ -350,11 +350,20 @@ namespace ProjNet.Converters.WellKnownText
 			if (tokenizer.GetStringValue() != "PROJECTION")
                 tokenizer.ReadToken("PROJECTION");
 			tokenizer.ReadToken("[");//[
-			string projectionName = tokenizer.ReadDoubleQuotedWord();
-			tokenizer.ReadToken("]");//]
-			tokenizer.ReadToken(",");//,
+			var projectionName = tokenizer.ReadDoubleQuotedWord();
+		    var authority = string.Empty;
+            var authorityCode = -1L;
+
+            tokenizer.NextToken(true);
+            if (tokenizer.GetStringValue() == ",")
+            {
+                tokenizer.ReadAuthority(ref authority, ref authorityCode);
+                tokenizer.ReadToken("]");
+            }
+
+            tokenizer.ReadToken(",");//,
 			tokenizer.ReadToken("PARAMETER");
-			List<ProjectionParameter> paramList = new List<ProjectionParameter>();
+			var paramList = new List<ProjectionParameter>();
 			while (tokenizer.GetStringValue() == "PARAMETER")
 			{
 				tokenizer.ReadToken("[");
@@ -367,8 +376,6 @@ namespace ProjNet.Converters.WellKnownText
 				paramList.Add(new ProjectionParameter(paramName, paramValue));
 				tokenizer.NextToken();
 			}
-			string authority = String.Empty;
-			long authorityCode = -1;
 			IProjection projection = new Projection(projectionName, paramList, projectionName, authority, authorityCode, String.Empty, String.Empty, string.Empty);
 			return projection;
 		}

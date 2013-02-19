@@ -83,7 +83,7 @@ namespace ProjNet.CoordinateSystems
 			}
 		}
 
-		/// <summary>
+        /// <summary>
 		/// WGS 72 Ellipsoid
 		/// </summary>
 		public static Ellipsoid WGS72

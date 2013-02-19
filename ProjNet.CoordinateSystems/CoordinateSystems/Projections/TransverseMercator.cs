@@ -240,10 +240,10 @@ namespace ProjNet.CoordinateSystems.Projections
 		/// <returns>Transformed point in decimal degrees</returns>
         protected override double[] MetersToRadians(double[] p)
 		{
-		    var x = p[0] / (scale_factor*_semiMajor);
-            var y = p[1] / (scale_factor*_semiMajor);
+		    var x = p[0] / (/*scale_factor* */_semiMajor);
+            var y = p[1] / (/*scale_factor* */_semiMajor);
 
-            var phi = inv_mlfn(_ml0 + y);
+            var phi = inv_mlfn(_ml0 + y / scale_factor);
 
             if (Math.Abs(phi) >= PI / 2)
             {
@@ -257,7 +257,7 @@ namespace ProjNet.CoordinateSystems.Projections
                 var t = (Math.Abs(cosphi) > EPSILON) ? sinphi / cosphi : 0.0;
                 var n = _esp * cosphi * cosphi;
                 var con = 1.0 - _es * sinphi * sinphi;
-                var d = x * Math.Sqrt(con);
+                var d = x * Math.Sqrt(con) / scale_factor;
                 con *= t;
                 t *= t;
                 var ds = d * d;

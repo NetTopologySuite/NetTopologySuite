@@ -73,6 +73,7 @@
     <Compile Include="CoordinateSystems\GeographicTransform.cs" />
     <Compile Include="CoordinateSystems\HorizontalCoordinateSystem.cs" />
     <Compile Include="CoordinateSystems\HorizontalDatum.cs" />
+    <Compile Include="CoordinateSystems\Projections\CassiniSoldnerProjection.cs" />
     <Compile Include="CoordinateSystems\Projections\PolyconicProjection.cs" />
     <Compile Include="CoordinateSystems\Info.cs" />
     <Compile Include="CoordinateSystems\LinearUnit.cs" />
