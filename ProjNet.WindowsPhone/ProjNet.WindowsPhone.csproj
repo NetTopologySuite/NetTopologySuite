@@ -84,6 +84,9 @@
     <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\AlbersProjection.cs">
       <Link>CoordinateSystems\Projections\AlbersProjection.cs</Link>
     </Compile>
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\CassiniSoldnerProjection.cs">
+      <Link>CoordinateSystems\Projections\CassiniSoldnerProjection.cs</Link>
+    </Compile>
     <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\KrovakProjection.cs">
       <Link>CoordinateSystems\Projections\KrovakProjection.cs</Link>
     </Compile>
@@ -160,7 +163,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="ffb69466-79de-466a-ada7-5c47c5c5ca3a" />
+      <UserProperties ProjectLinkReference="ffb69466-79de-466a-ada7-5c47c5c5ca3a" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

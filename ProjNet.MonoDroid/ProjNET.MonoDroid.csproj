@@ -87,6 +87,9 @@
     <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\AlbersProjection.cs">
       <Link>CoordinateSystems\Projections\AlbersProjection.cs</Link>
     </Compile>
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\CassiniSoldnerProjection.cs">
+      <Link>CoordinateSystems\Projections\CassiniSoldnerProjection.cs</Link>
+    </Compile>
     <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\KrovakProjection.cs">
       <Link>CoordinateSystems\Projections\KrovakProjection.cs</Link>
     </Compile>
@@ -161,6 +164,11 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties ProjectLinkReference="e028bdd2-55e1-4e5f-be31-35faec8d6428" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
