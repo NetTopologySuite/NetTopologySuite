@@ -31,8 +31,8 @@ namespace ProjNet.CoordinateSystems.Projections
             Name = "Cassini_Soldner";
 
             _cFactor = _es/(1 - _es);
-            _m0 = mlfn(central_meridian, Math.Sin(central_meridian), Math.Cos(central_meridian));
-            _reciprocalSemiMajor = 1d/_es;
+            _m0 = mlfn(lat_origin, Math.Sin(lat_origin), Math.Cos(lat_origin));
+            _reciprocalSemiMajor = 1d/_semiMajor;
         }
 
         public override IMathTransform Inverse()
@@ -70,7 +70,7 @@ namespace ProjNet.CoordinateSystems.Projections
         {
             
             var x = p[0] * _reciprocalSemiMajor;
-            var y = p[0] * _reciprocalSemiMajor;
+            var y = p[1] * _reciprocalSemiMajor;
             var phi1 = Phi1(_m0 + y);
 
             var tn = Math.Tan(phi1);

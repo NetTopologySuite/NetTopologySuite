@@ -422,5 +422,24 @@ namespace ProjNet.UnitTests
             Assert.IsTrue(ToleranceLessThan(p1, expected, 50), TransformationError("Polyconic", expected, p1));
             Assert.IsTrue(ToleranceLessThan(p0, p2, 0.0001), TransformationError("Polyconic", expected, p1, true));
         }
+
+        [Test]
+        public void TestCassiniSoldner()
+        {
+            var csSource = GeographicCoordinateSystem.WGS84;
+            var csTarget = CoordinateSystemFactory.CreateFromWkt(
+                "PROJCS[\"DHDN / Soldner Berlin\",GEOGCS[\"DHDN\",DATUM[\"Deutsches_Hauptdreiecksnetz\",SPHEROID[\"Bessel 1841\",6377397.155,299.1528128,AUTHORITY[\"EPSG\",\"7004\"]],TOWGS84[598.1,73.7,418.2,0.202,0.045,-2.455,6.7],AUTHORITY[\"EPSG\",\"6314\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4314\"]],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],PROJECTION[\"Cassini_Soldner\"],PARAMETER[\"latitude_of_origin\",52.41864827777778],PARAMETER[\"central_meridian\",13.62720366666667],PARAMETER[\"false_easting\",40000],PARAMETER[\"false_northing\",10000],AUTHORITY[\"EPSG\",\"3068\"],AXIS[\"x\",NORTH],AXIS[\"y\",EAST]]");
+
+            var ct = CoordinateTransformationFactory.CreateFromCoordinateSystems(csSource, csTarget);
+            var pgeo = new[] {13.408055555556, 52.518611111111};
+            var pcs = ct.MathTransform.Transform(pgeo);
+            
+            //Evaluated using DotSpatial.Projections
+            var pcsExpected = new[] {25244.540, 21300.969};
+
+            Assert.IsTrue(ToleranceLessThan(pcsExpected, pcs, 0.3), TransformationError("CassiniSoldner", pcsExpected, pcs));
+            var pgeo2 = ct.MathTransform.Inverse().Transform(pcs);
+            Assert.IsTrue(ToleranceLessThan(pgeo, pgeo2, 1.0E-5), TransformationError("CassiniSoldner", pgeo, pgeo2));
+        }
     }
 }

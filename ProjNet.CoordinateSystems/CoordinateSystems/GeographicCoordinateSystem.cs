@@ -73,23 +73,6 @@ namespace ProjNet.CoordinateSystems
 					"WGS 84", "EPSG", 4326, String.Empty, string.Empty, string.Empty);
 			}
 		}
-
-        /// <summary>
-        /// Creates a decimal degrees geographic coordinate system based on the WGS84 ellipsoid, suitable for GPS measurements
-        /// </summary>
-        public static IGeographicCoordinateSystem PopularVisualisation
-        {
-            get
-            {
-                var axes = new List<AxisInfo>(2);
-                axes.Add(new AxisInfo("Lon", AxisOrientationEnum.East));
-                axes.Add(new AxisInfo("Lat", AxisOrientationEnum.North));
-                
-                return new GeographicCoordinateSystem(CoordinateSystems.AngularUnit.Degrees,
-                    CoordinateSystems.HorizontalDatum.WGS84, CoordinateSystems.PrimeMeridian.Greenwich, axes,
-                    "Popular Visualisation CRS", "EPSG", 4055, String.Empty, string.Empty, string.Empty);
-            }
-        }
         
         #endregion
 

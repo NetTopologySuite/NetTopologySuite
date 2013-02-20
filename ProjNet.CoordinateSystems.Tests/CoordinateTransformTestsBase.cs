@@ -20,12 +20,12 @@ namespace ProjNet.UnitTests
             {
                 var d2 = Math.Abs(p1[2] - p2[2]);
                 if (Verbose)
-                    Console.WriteLine("Tolerance {3} dx: {0}, dy: {1}, dz {2}", d0, d1, d2, tolerance);
+                    Console.WriteLine("Allowed Tolerance {3}; got dx: {0}, dy: {1}, dz {2}", d0, d1, d2, tolerance);
                 return d0 < tolerance && d1 < tolerance && d2 < tolerance;
             }
             Console.WriteLine();
             if (Verbose)
-                Console.WriteLine("Tolerance {2} dx: {0}, dy: {1}", d0, d1, tolerance);
+                Console.WriteLine("Allowed tolerance {2}; got dx: {0}, dy: {1}", d0, d1, tolerance);
             return d0 < tolerance && d1 < tolerance;
         }
 
