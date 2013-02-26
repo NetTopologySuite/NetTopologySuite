@@ -422,6 +422,27 @@ namespace NetTopologySuite.IO
             else
                 srid = DefaultSRID;
 
+            /*Test of Z, M or ZM suffix*/
+            var suffix = tokens.Current;
+
+            if (suffix is WordToken)
+            {
+                if (suffix == "Z")
+                {
+                    tokens.MoveNext();
+                }
+                else if (suffix == "ZM")
+                {
+                    tokens.MoveNext();
+                    Logger.Log.Debug("M-Values not supported");
+                }
+                else if (suffix == "M")
+                {
+                    tokens.MoveNext();
+                    Logger.Log.Debug("M-Values not supported");
+                }
+            }
+
             var factory = GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(_precisionModel, srid,
                                                                                         _coordinateSequencefactory);
 
