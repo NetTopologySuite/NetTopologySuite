@@ -34,6 +34,17 @@ namespace NetTopologySuite.Tests.NUnit.IO
         }
 
         [Test]
+        public void TestReadPointZ()
+        {
+            var pt = _reader.Read("POINT Z(10 10 10)");
+            Assert.IsNotNull(pt);
+            Assert.IsInstanceOf(typeof(Point), pt);
+            Assert.AreEqual(10, pt.Coordinate.X);
+            Assert.AreEqual(10, pt.Coordinate.Y);
+            Assert.AreEqual(10, pt.Coordinate.Z);
+        }
+
+        [Test]
         public void TestReadPoint()
         {
             Assert.AreEqual("POINT (10 10)", _writer.Write(_reader.Read("POINT (10 10)")));
