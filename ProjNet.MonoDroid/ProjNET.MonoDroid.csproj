@@ -90,6 +90,9 @@
     <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\CassiniSoldnerProjection.cs">
       <Link>CoordinateSystems\Projections\CassiniSoldnerProjection.cs</Link>
     </Compile>
+    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\HotineObliqueMercatorProjection.cs">
+      <Link>CoordinateSystems\Projections\HotineObliqueMercatorProjection.cs</Link>
+    </Compile>
     <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\KrovakProjection.cs">
       <Link>CoordinateSystems\Projections\KrovakProjection.cs</Link>
     </Compile>

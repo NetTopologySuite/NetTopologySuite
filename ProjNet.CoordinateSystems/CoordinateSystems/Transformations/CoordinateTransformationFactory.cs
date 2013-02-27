@@ -236,12 +236,14 @@ namespace ProjNet.CoordinateSystems.Transformations
 						new DatumTransform(target.HorizontalDatum.Wgs84Parameters).Inverse()
 						, "", "", -1, "", ""));
 
+            //If we don't have a transformation in this list, return null
 		    if (ct.CoordinateTransformationList.Count == 0)
 		        return null;
-			if (ct.CoordinateTransformationList.Count == 1) //Since we only have one shift, lets just return the datumshift from/to wgs84
+            //If we only have one shift, lets just return the datumshift from/to wgs84
+            if (ct.CoordinateTransformationList.Count == 1)
 				return new CoordinateTransformation(source, target, TransformType.ConversionAndTransformation, ct.CoordinateTransformationList[0].MathTransform, "", "", -1, "", "");
-			else
-				return new CoordinateTransformation(source, target, TransformType.ConversionAndTransformation, ct, "", "", -1, "", "");
+		    
+            return new CoordinateTransformation(source, target, TransformType.ConversionAndTransformation, ct, "", "", -1, "", "");
 		}
 		#endregion
 
@@ -251,9 +253,9 @@ namespace ProjNet.CoordinateSystems.Transformations
 
 		    var ellipsoid = geo.HorizontalDatum.Ellipsoid;
             //var toMeter = ellipsoid.AxisUnit.MetersPerUnit;
-            if (parameterList.Find((p) => p.Name.ToLowerInvariant().Replace(' ', '_').Equals("semi_major")) == null)
+            if (parameterList.Find((p) => p.Name.ToLower(CultureInfo.InvariantCulture).Replace(' ', '_').Equals("semi_major")) == null)
                 parameterList.Add(new ProjectionParameter("semi_major", /*toMeter * */ellipsoid.SemiMajorAxis));
-            if (parameterList.Find((p) => p.Name.ToLowerInvariant().Replace(' ', '_').Equals("semi_minor")) == null)
+            if (parameterList.Find((p) => p.Name.ToLower(CultureInfo.InvariantCulture).Replace(' ', '_').Equals("semi_minor")) == null)
                 parameterList.Add(new ProjectionParameter("semi_minor", /*toMeter * */ellipsoid.SemiMinorAxis));
 
             return new GeocentricTransform(parameterList);
@@ -265,16 +267,25 @@ namespace ProjNet.CoordinateSystems.Transformations
 				parameterList.Add(projection.GetParameter(i));
 
 		    //var toMeter = 1d/ellipsoid.AxisUnit.MetersPerUnit;
-            if (parameterList.Find((p) => p.Name.ToLowerInvariant().Replace(' ', '_').Equals("semi_major")) == null)
+            if (parameterList.Find((p) => p.Name.ToLower(CultureInfo.InvariantCulture).Replace(' ', '_').Equals("semi_major")) == null)
 			    parameterList.Add(new ProjectionParameter("semi_major", /*toMeter * */ellipsoid.SemiMajorAxis));
-            if (parameterList.Find((p) => p.Name.ToLowerInvariant().Replace(' ', '_').Equals("semi_minor")) == null)
+            if (parameterList.Find((p) => p.Name.ToLower(CultureInfo.InvariantCulture).Replace(' ', '_').Equals("semi_minor")) == null)
                 parameterList.Add(new ProjectionParameter("semi_minor", /*toMeter * */ellipsoid.SemiMinorAxis));
-            if (parameterList.Find((p) => p.Name.ToLowerInvariant().Replace(' ', '_').Equals("unit")) == null)
+            if (parameterList.Find((p) => p.Name.ToLower(CultureInfo.InvariantCulture).Replace(' ', '_').Equals("unit")) == null)
                 parameterList.Add(new ProjectionParameter("unit", unit.MetersPerUnit));
 
-		    return ProjectionsRegistry.CreateProjection(projection.ClassName, parameterList);
-            
-            /*
+            var operation = ProjectionsRegistry.CreateProjection(projection.ClassName, parameterList);
+		    /*
+            var mpOperation = operation as MapProjection;
+            if (mpOperation != null && projection.AuthorityCode !=-1)
+            {
+                mpOperation.Authority = projection.Authority;
+                mpOperation.AuthorityCode = projection.AuthorityCode;
+            }
+             */
+
+		    return operation;
+		    /*
             switch (projection.ClassName.ToLower(CultureInfo.InvariantCulture).Replace(' ', '_'))
 			{
 				case "mercator":

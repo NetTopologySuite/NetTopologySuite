@@ -25,7 +25,7 @@ namespace ProjNet.CoordinateSystems.Projections
             Register("mercator_1sp", typeof (Mercator));
             Register("mercator_2sp", typeof (Mercator));
             Register("pseudo-mercator", typeof(PseudoMercator));
-            Register("popular visualisation pseudo-mercator", typeof(PseudoMercator));
+            Register("popular_visualisation pseudo-mercator", typeof(PseudoMercator));
             Register("google_mercator", typeof(PseudoMercator));
 			
             Register("transverse_mercator", typeof(TransverseMercator));
@@ -42,6 +42,9 @@ namespace ProjNet.CoordinateSystems.Projections
 			Register("lambert_conic_conformal_(2sp)", typeof(LambertConformalConic2SP));
 
             Register("cassini_soldner", typeof(CassiniSoldnerProjection));
+            Register("hotine_oblique_mercator", typeof(HotineObliqueMercatorProjection));
+            Register("oblique_mercator", typeof(ObliqueMercatorProjection));
+
         }
 
         /// <summary>

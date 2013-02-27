@@ -59,6 +59,7 @@ namespace ProjNet.CoordinateSystems.Projections
 
         protected readonly double scale_factor; /* scale factor				*/
         protected double central_meridian; /* Center longitude (projection center) */
+        protected double lon_origin { get { return central_meridian; } set { central_meridian = value; } }
         protected readonly double lat_origin; /* center latitude			*/
         protected readonly double false_northing; /* y offset in meters			*/
         protected readonly double false_easting; /* x offset in meters			*/

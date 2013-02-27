@@ -1,5 +1,7 @@
 using System;
 using System.Globalization;
+using GeoAPI.CoordinateSystems;
+using NUnit.Framework;
 using ProjNet.CoordinateSystems;
 using ProjNet.CoordinateSystems.Transformations;
 
@@ -37,6 +39,32 @@ namespace ProjNet.UnitTests
                                  pResult[0], pResult[1], 
                                  pExpected[0]-pResult[0], pExpected[1]-pResult[1],
                                  projection, reverse ? "reverse" : "forward");
+        }
+
+        public void Test(string title, ICoordinateSystem source, ICoordinateSystem target, 
+                         double[] testPoint, double[] expectedPoint,
+                         double tolerance, double reverseTolerance = double.NaN)
+        {
+            var ct = CoordinateTransformationFactory.CreateFromCoordinateSystems(source, target);
+
+            var forwardResult = ct.MathTransform.Transform(testPoint);
+            var reverseResult = Double.IsNaN(reverseTolerance)
+                                    ? testPoint
+                                    : ct.MathTransform.Inverse().Transform(forwardResult);
+
+            var forward = ToleranceLessThan(forwardResult, expectedPoint, tolerance);
+
+            var reverse = Double.IsNaN(reverseTolerance) || 
+                          ToleranceLessThan(reverseResult, testPoint, reverseTolerance);
+
+            if (!forward)
+                TransformationError(title, expectedPoint, forwardResult);
+            if (!reverse)
+                TransformationError(title, testPoint, reverseResult, true);
+
+            Assert.IsTrue(forward && reverse);
+
+
         }
     }
 }

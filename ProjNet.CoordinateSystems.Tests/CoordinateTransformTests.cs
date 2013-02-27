@@ -430,6 +430,11 @@ namespace ProjNet.UnitTests
             var csTarget = CoordinateSystemFactory.CreateFromWkt(
                 "PROJCS[\"DHDN / Soldner Berlin\",GEOGCS[\"DHDN\",DATUM[\"Deutsches_Hauptdreiecksnetz\",SPHEROID[\"Bessel 1841\",6377397.155,299.1528128,AUTHORITY[\"EPSG\",\"7004\"]],TOWGS84[598.1,73.7,418.2,0.202,0.045,-2.455,6.7],AUTHORITY[\"EPSG\",\"6314\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4314\"]],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],PROJECTION[\"Cassini_Soldner\"],PARAMETER[\"latitude_of_origin\",52.41864827777778],PARAMETER[\"central_meridian\",13.62720366666667],PARAMETER[\"false_easting\",40000],PARAMETER[\"false_northing\",10000],AUTHORITY[\"EPSG\",\"3068\"],AXIS[\"x\",NORTH],AXIS[\"y\",EAST]]");
 
+            Test("CassiniSoldner", csSource, csTarget, 
+                 new[] { 13.408055555556, 52.518611111111 }, 
+                 new[] { 25244.540, 21300.969 }, 0.3, 1.0E-5);
+
+            /*
             var ct = CoordinateTransformationFactory.CreateFromCoordinateSystems(csSource, csTarget);
             var pgeo = new[] {13.408055555556, 52.518611111111};
             var pcs = ct.MathTransform.Transform(pgeo);
@@ -440,6 +445,21 @@ namespace ProjNet.UnitTests
             Assert.IsTrue(ToleranceLessThan(pcsExpected, pcs, 0.3), TransformationError("CassiniSoldner", pcsExpected, pcs));
             var pgeo2 = ct.MathTransform.Inverse().Transform(pcs);
             Assert.IsTrue(ToleranceLessThan(pgeo, pgeo2, 1.0E-5), TransformationError("CassiniSoldner", pgeo, pgeo2));
+             */
+        }
+
+        [Test]
+        public void TestHotineObliqueMercator()
+        {
+            var csSource = GeographicCoordinateSystem.WGS84;
+            var csTarget = CoordinateSystemFactory.CreateFromWkt(
+               "PROJCS[\"NAD83(NSRS2007) / Alaska zone 1\",GEOGCS[\"NAD83(NSRS2007)\",DATUM[\"NAD83_National_Spatial_Reference_System_2007\",SPHEROID[\"GRS 1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY[\"EPSG\",\"6759\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4759\"]],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],PROJECTION[\"Hotine_Oblique_Mercator\"],PARAMETER[\"latitude_of_center\",57],PARAMETER[\"longitude_of_center\",-133.6666666666667],PARAMETER[\"azimuth\",323.1301023611111],PARAMETER[\"rectified_grid_angle\",323.1301023611111],PARAMETER[\"scale_factor\",0.9999],PARAMETER[\"false_easting\",5000000],PARAMETER[\"false_northing\",-5000000],AUTHORITY[\"EPSG\",\"3468\"],AXIS[\"X\",EAST],AXIS[\"Y\",NORTH]]");
+            //61.216667°, -149.883333°
+            //"POINT(4136805.82642057 -4424019.78560519)"
+            Test("HotineObliqueMercator", csSource, csTarget,
+                 new[] { -149.883333, 61.216667 },
+                 new[] { 4136805.826, -4424019.786 }, 0.01, 1.0E-5);
+
         }
     }
 }
