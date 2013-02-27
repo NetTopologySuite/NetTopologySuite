@@ -186,7 +186,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projectio
         {
             var xy = new[] { coordinate.X, coordinate.Y };
             double[] z = null;
-            if (coordinate.Z != coordinate.Z)
+            if (coordinate.Z.Equals(Coordinate.NullOrdinate))
                 z = new[] { coordinate.Z };
 
             Reproject.ReprojectPoints(xy, z, Source, Target, 0, 1);
@@ -226,11 +226,11 @@ namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projectio
             for (var i = 0; i < coordinateSequence.Count; i++)
             {
                 ret.SetOrdinate(i, Ordinate.X, xy[j]);
-                ret.SetOrdinate(i, Ordinate.X, xy[j]);
+                ret.SetOrdinate(i, Ordinate.Y, xy[j]);
                 if (z != null && DimTarget>2) 
                     ret.SetOrdinate(i, Ordinate.Z, z[j]);
                 else 
-                    ret.SetOrdinate(i,Ordinate.Z, coordinateSequence.GetOrdinate(i, Ordinate.Z));
+                    ret.SetOrdinate(i, Ordinate.Z, coordinateSequence.GetOrdinate(i, Ordinate.Z));
             }
 
             return ret;
