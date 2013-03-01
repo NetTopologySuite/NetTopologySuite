@@ -1,0 +1,74 @@
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SolutionFile>ProjNet4GeoAPI.sln</SolutionFile>
+    <SolutionDir>$(MSBuildProjectDirectory)</SolutionDir>
+  </PropertyGroup>
+
+  <Target Name="CleanRelease">
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\obj"/>
+    <MakeDir Directories="$(MSBuildProjectDirectory)\obj"/>
+    <MakeDir Directories="$(MSBuildProjectDirectory)\obj\v2.0"/>
+    <MakeDir Directories="$(MSBuildProjectDirectory)\obj\v3.5"/>
+    <MakeDir Directories="$(MSBuildProjectDirectory)\obj\v4.0"/>
+    <MakeDir Directories="$(MSBuildProjectDirectory)\obj\v4.0.3"/>
+  </Target>
+
+  <Target Name="Information">
+    <Message Text ="
+             
+  Hallo World!
+  Working in $(MSBuildProjectDirectory)
+  
+"/>
+  </Target>
+
+  <Target Name="BuildRelease" DependsOnTargets="Information">
+    <MSBuild Projects="$(SolutionFile)" 
+             Targets="GeoAPI;ProjNET" 
+             Properties="Configuration=Release;TargetFrameworkVersion=v2.0;TargetFrameworkProfile=;DefineConstants=TRACE;NET20;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v2.0\" 
+             RunEachTargetSeparately="true" 
+             />
+    <MSBuild Projects="$(SolutionFile)" 
+             Targets="GeoAPI;ProjNET" 
+             Properties="Configuration=Release;TargetFrameworkVersion=v3.5;TargetFrameworkProfile=Client;DefineConstants=TRACE;NET20;NET35;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v3.5\" 
+             RunEachTargetSeparately="true" 
+             ContinueOnError="true" 
+             />
+    <MSBuild Projects="$(SolutionFile)" 
+             Targets="GeoAPI;ProjNET" 
+             Properties="Configuration=Release;TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Client;DefineConstants=TRACE;NET20;NET35;NET40;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v4.0\" 
+             RunEachTargetSeparately="true" 
+             ContinueOnError="true" 
+             />
+  </Target>
+
+  <Target Name="BuildRelease403" DependsOnTargets="BuildRelease">
+    <MSBuild Projects="$(SolutionFile)" 
+             Targets="GeoAPI;ProjNET" 
+             Properties="Configuration=Release;TargetFrameworkVersion=v4.0.3;TargetFrameworkProfile=Client;DefineConstants=TRACE;NET20;NET35;NET40;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v4.0.3\" 
+             RunEachTargetSeparately="true" 
+             ContinueOnError="true" 
+             />
+  </Target>
+  
+  <Target Name="RebuildRelease" DependsOnTargets="CleanRelease;BuildRelease"/>
+  <Target Name="RebuildRelease403" DependsOnTargets="CleanRelease;BuildRelease403"/>
+
+  <!-- build only for now, test on build server -->
+  <Target Name="UnitTests" DependsOnTargets="BuildRelease">
+    <MSBuild Projects="$(SolutionFile)" 
+             Targets="ProjNET_Tests"
+             Properties="Configuration=Release;TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Client;DefineConstants=TRACE;UseCoordinateBufferPublicly;NET20;NET35;NET40;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v4.0\" 
+             />
+  </Target>
+
+  <!-- 
+  
+  
+  TODO: add targets here to build zip, NuGet, ... 
+  
+  
+  -->
+  
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets"/>
+</Project>

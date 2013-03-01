@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>ProjNET4GeoAPI</id>
+    <version>$version$</version>
+    <authors>Morton Nielsen, NetTopologySuite - Team</authors>
+    <owners>NetTopologySuite - Team</owners>
+    <licenseUrl>http://projnet.codeplex.com/license</licenseUrl>
+    <projectUrl>http://projnet.codeplex.com</projectUrl>
+    <!--<iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>-->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>.NET Spatial Reference and Projection Engine.
+Proj.NET performs point-to-point coordinate conversions between geodetic coordinate systems for use in fx. Geographic Information Systems (GIS) or GPS applications. The spatial reference model used adheres to the Simple Features specification.
+    </description>
+    <copyright>Copyright 2006-2013</copyright>
+    <tags>OGC SFS Projection</tags>
+    <dependencies>
+      <dependency id="GeoAPI" version="1.7.1" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Release\v2.0\AnyCPU\ProjNET.dll" target="lib\net20" />
+    <file src="Release\v3.5\AnyCPU\ProjNET.dll" target="lib\net35-client" />
+    <file src="Release\v4.0\AnyCPU\ProjNET.dll" target="lib\net40-client" />
+    <file src="Release\v4.0.3\AnyCPU\ProjNET.dll" target="lib\net403-client" />
+    <file src="Release\SilverLightv4.0\AnyCPU\ProjNET.SilverLight.dll" target="lib\sl40" />
+    <file src="Release\WP\AnyCPU\ProjNET.WindowsPhone.dll" target="lib\sl40-wp" />
+  </files>
+</package>

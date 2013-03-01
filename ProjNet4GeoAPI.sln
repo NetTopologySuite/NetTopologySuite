@@ -24,6 +24,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjNET.MonoDroid", "ProjNet.MonoDroid\ProjNET.MonoDroid.csproj", "{6779C156-3DE0-4890-AFCB-5C6D9BB3D2E2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AC62B826-FD1B-43B9-9E20-696588E560E7}"
+	ProjectSection(SolutionItems) = preProject
+		ProjNET.nuspec = ProjNET.nuspec
+		TeamCity.targets = TeamCity.targets
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjNET.Tests", "ProjNet.CoordinateSystems.Tests\ProjNET.Tests.csproj", "{67E8C952-1F48-4DFB-9507-BD44DB6784FD}"
 EndProject
