@@ -106,5 +106,51 @@ namespace ProjNet.UnitTests
                 TransformationError("EPSG 4326 -> EPSG 3857", pg1, pg2, true));
         }
 
+        [Test, Description("Concerned about the accuracy, Discussion http://projnet.codeplex.com/discussions/361248")]
+        public void TestDiscussion361248_1()
+        {
+            var csSource = CoordinateSystemFactory.CreateFromWkt(
+@"GEOGCS[""WGS 84"",
+    DATUM[""WGS_1984"",
+        SPHEROID[""WGS 84"",6378137,298.257223563,
+            AUTHORITY[""EPSG"",""7030""]],
+        AUTHORITY[""EPSG"",""6326""]],
+    PRIMEM[""Greenwich"",0,
+        AUTHORITY[""EPSG"",""8901""]],
+    UNIT[""degree"",0.01745329251994328,
+        AUTHORITY[""EPSG"",""9122""]],
+    AUTHORITY[""EPSG"",""4326""]]");
+
+            var csTarget = CoordinateSystemFactory.CreateFromWkt(
+                "PROJCS[\"GDA94 / MGA zone 50\",GEOGCS[\"GDA94\",DATUM[\"Geocentric_Datum_of_Australia_1994\",SPHEROID[\"GRS 1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY[\"EPSG\",\"6283\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4283\"]],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",117],PARAMETER[\"scale_factor\",0.9996],PARAMETER[\"false_easting\",500000],PARAMETER[\"false_northing\",10000000],AUTHORITY[\"EPSG\",\"28350\"],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]]");
+
+            var ct = CoordinateTransformationFactory.CreateFromCoordinateSystems(csSource, csTarget);
+
+            //Chose PostGis values
+            Test("WGS 84 -> GDA94 / MGA zone 50", csSource, csTarget, new[] { 136d, -30d }, new[] { 2349315.05731837, 6524249.91789138}, 0.05, 1.0e-4);
+        }
+
+        [Test, Description("Concerned about the accuracy, Discussion http://projnet.codeplex.com/discussions/361248")]
+        public void TestDiscussion361248_2()
+        {
+            var csSource = ProjNet.CoordinateSystems.ProjectedCoordinateSystem.WGS84_UTM(18, true);
+
+            var csTarget = CoordinateSystemFactory.CreateFromWkt(
+@"GEOGCS[""WGS 84"",
+    DATUM[""WGS_1984"",
+        SPHEROID[""WGS 84"",6378137,298.257223563,
+            AUTHORITY[""EPSG"",""7030""]],
+        AUTHORITY[""EPSG"",""6326""]],
+    PRIMEM[""Greenwich"",0,
+        AUTHORITY[""EPSG"",""8901""]],
+    UNIT[""degree"",0.01745329251994328,
+        AUTHORITY[""EPSG"",""9122""]],
+    AUTHORITY[""EPSG"",""4326""]]");
+
+            var ct = CoordinateTransformationFactory.CreateFromCoordinateSystems(csSource, csTarget);
+
+            Test("WGS84_UTM(18,N) -> WGS84", csSource, csTarget, new[] { 307821.867, 4219306.387 }, new[] { -77.191769, 38.101147 }, 1e-6);
+        }
+
     }
 }
