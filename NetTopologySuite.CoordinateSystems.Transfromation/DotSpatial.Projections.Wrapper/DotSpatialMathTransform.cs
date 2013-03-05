@@ -1,29 +1,34 @@
-﻿using System;
+﻿// Copyright 2011 - 2013 - Felix Obermaier (www.ivv-aachen.de)
+//
+// This file is part of DotSpatial.Projections.Wrapper.
+// DotSpatial.Projections.Wrapper is free software; you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+// 
+// DotSpatial.Projections.Wrapper is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with SharpMap; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+
+using System;
 using System.Collections.Generic;
 using DotSpatial.Projections;
 using GeoAPI.CoordinateSystems.Transformations;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 
 namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projections
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class DotSpatialMathTransform : IMathTransform
     {
-        //#region static helpers
-
-        //internal static void ExtractCoordinates(double[] point, out double[] xy, out double[] z)
-        //{
-            
-        //}
-
-        //internal static void ExtractCoordinates(List<double[]> points, out double[] xy, out double[] z)
-        //{
-
-        //}
-
-        //#endregion
-
         #region Fields
         public ProjectionInfo Source;
         public ProjectionInfo Target;
@@ -186,7 +191,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projectio
         {
             var xy = new[] { coordinate.X, coordinate.Y };
             double[] z = null;
-            if (coordinate.Z != coordinate.Z)
+            if (!coordinate.Z.Equals(Coordinate.NullOrdinate))
                 z = new[] { coordinate.Z };
 
             Reproject.ReprojectPoints(xy, z, Source, Target, 0, 1);
@@ -203,8 +208,9 @@ namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projectio
         public ICoordinateSequence Transform(ICoordinateSequence coordinateSequence)
         {
             //use shortcut if possible
-            if (coordinateSequence is DotSpatialAffineCoordinateSequence)
-                return TransformDotSpatialAffine((DotSpatialAffineCoordinateSequence) coordinateSequence);
+            var sequence = coordinateSequence as DotSpatialAffineCoordinateSequence;
+            if (sequence != null)
+                return TransformDotSpatialAffine(sequence);
 
             var xy = new double[2*coordinateSequence.Count];
             double[] z = null;
@@ -225,10 +231,10 @@ namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projectio
             j = 0;
             for (var i = 0; i < coordinateSequence.Count; i++)
             {
-                ret.SetOrdinate(i, Ordinate.X, xy[j]);
-                ret.SetOrdinate(i, Ordinate.X, xy[j]);
+                ret.SetOrdinate(i, Ordinate.X, xy[j++]);
+                ret.SetOrdinate(i, Ordinate.X, xy[j++]);
                 if (z != null && DimTarget>2) 
-                    ret.SetOrdinate(i, Ordinate.Z, z[j]);
+                    ret.SetOrdinate(i, Ordinate.Z, z[i]);
                 else 
                     ret.SetOrdinate(i,Ordinate.Z, coordinateSequence.GetOrdinate(i, Ordinate.Z));
             }
