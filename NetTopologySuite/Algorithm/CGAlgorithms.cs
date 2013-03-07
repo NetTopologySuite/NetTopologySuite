@@ -156,7 +156,7 @@ namespace NetTopologySuite.Algorithm
         /// </remarks>
         /// <param name="ring">An array of <see cref="Coordinate"/>s froming a ring</param>
         /// <returns>true if the ring is oriented <see cref="Orientation.CounterClockwise"/></returns>
-        /// <exception cref="ArgumentException">If there are too few points to determine orientation (&lt;3)</exception>
+        /// <exception cref="ArgumentException">If there are too few points to determine orientation (&lt;4)</exception>
         public static bool IsCCW(Coordinate[] ring) 
         {
             // # of points without closing endpoint
@@ -164,7 +164,7 @@ namespace NetTopologySuite.Algorithm
             
             // sanity check
             if (nPts < 3)
-                throw new ArgumentException("Ring has fewer than 3 points, so orientation cannot be determined");
+                throw new ArgumentException("Ring has fewer than 4 points, so orientation cannot be determined");
 
             // find highest point
             Coordinate hiPt = ring[0];
@@ -239,7 +239,7 @@ namespace NetTopologySuite.Algorithm
         /// </remarks>
         /// <param name="ring">A coordinate sequence froming a ring</param>
         /// <returns>true if the ring is oriented <see cref="Orientation.CounterClockwise"/></returns>
-        /// <exception cref="ArgumentException">If there are too few points to determine orientation (&lt;3)</exception>
+        /// <exception cref="ArgumentException">If there are too few points to determine orientation (&lt;4)</exception>
         public static bool IsCCW(ICoordinateSequence ring)
         {
             return IsCCW(ring.ToCoordinateArray());
