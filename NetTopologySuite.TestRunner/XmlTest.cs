@@ -1809,7 +1809,7 @@ namespace Open.Topology.TestRunner
             {
                 MinimumClearance c = new MinimumClearance(_objGeometryA);
                 IGeometry gClearance = c.GetLine();
-                return gResult.Equals(gClearance);
+                //return gResult.EqualsNormalized(gClearance);
             }
             return false;
         }
