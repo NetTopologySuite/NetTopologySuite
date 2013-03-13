@@ -544,6 +544,9 @@ namespace NetTopologySuite.Geometries
               {
                   get
                   {
+                      if (IsEmpty)
+                          return Factory.CreatePoint((Coordinate)null);
+
                       Coordinate interiorPt = null;
                       Dimension dim = Dimension;
                       if (dim == Dimension.Point)
