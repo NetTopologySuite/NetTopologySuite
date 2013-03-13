@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 using GeoAPI.CoordinateSystems;
 
@@ -13,12 +14,19 @@ namespace ProjNet.CoordinateSystems.Projections
     {
         private readonly Dictionary<string, string> _originalNames = new Dictionary<string, string>();
         private readonly Dictionary<int, string>  _originalIndex = new Dictionary<int, string>();
-
+#if !SILVERLIGHT
+        /// <summary>
+        /// Needed for serialzation
+        /// </summary>
+        public ProjectionParameterSet(SerializationInfo info,  StreamingContext context)
+            :base(info, context)
+        {}
+#endif
         /// <summary>
         /// Creates an instance of this class
         /// </summary>
         /// <param name="parameters">An enumeration of paramters</param>
-        protected internal ProjectionParameterSet(IEnumerable<ProjectionParameter> parameters)
+        public ProjectionParameterSet(IEnumerable<ProjectionParameter> parameters)
         {
             foreach (var pp in parameters)
             {

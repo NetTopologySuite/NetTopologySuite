@@ -84,6 +84,9 @@
     <Compile Include="CoordinateTransformTestsBase.cs" />
     <Compile Include="ProjNetIssues.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\BaseSerializationTest.cs" />
+    <Compile Include="Serialization\CoordinateSystemsProjectionsTest.cs" />
+    <Compile Include="SharpMapIssues.cs" />
     <Compile Include="SRIDReader.cs">
       <SubType>Code</SubType>
     </Compile>
