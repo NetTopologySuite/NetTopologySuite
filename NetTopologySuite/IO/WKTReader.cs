@@ -7,7 +7,6 @@ using GeoAPI.IO;
 //using NetTopologySuite.Geometries;
 //using NetTopologySuite.Utilities;
 using RTools_NTS.Util;
-using ParseException = GeoAPI.IO.ParseException;
 
 namespace NetTopologySuite.IO
 {
@@ -66,6 +65,9 @@ namespace NetTopologySuite.IO
             DefaultSRID = geometryFactory.SRID;
         }
 
+        /// <summary>
+        /// Gets or sets the factory to create geometries
+        /// </summary>
         public IGeometryFactory Factory
         {
             get { return GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(_precisionModel, DefaultSRID, _coordinateSequencefactory); }
@@ -187,7 +189,7 @@ namespace NetTopologySuite.IO
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
                 return new Coordinate[]{};
-            List<Coordinate> coordinates = new List<Coordinate>();
+            var coordinates = new List<Coordinate>();
 			coordinates.Add(GetPreciseCoordinate(tokens, skipExtraParenthesis));
             nextToken = GetNextCloserOrComma(tokens);
             while (nextToken.Equals(",")) 
@@ -234,7 +236,7 @@ namespace NetTopologySuite.IO
             return coord;
         }
 
-        private Boolean IsStringValueNext(IEnumerator<Token> tokens, String stringValue)
+        private static Boolean IsStringValueNext(IEnumerator<Token> tokens, String stringValue)
 		{
 			var token = tokens.Current /*as Token*/;
             if (token == null)
@@ -247,7 +249,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="tokens"></param>
         /// <returns></returns>
-        private bool IsNumberNext(IEnumerator<Token> tokens) 
+        private static bool IsNumberNext(IEnumerator<Token> tokens) 
         {
             var token = tokens.Current /*as Token*/;
             return token is FloatToken ||
@@ -263,8 +265,8 @@ namespace NetTopologySuite.IO
         /// format. The next token must be a number.
         /// </param>
         /// <returns>The next number in the stream.</returns>
-        /// <exception cref="ParseException">if the next token is not a valid number</exception>
-		private double GetNextNumber(IEnumerator<Token> tokens)
+        /// <exception cref="GeoAPI.IO.ParseException">if the next token is not a valid number</exception>
+		private static double GetNextNumber(IEnumerator<Token> tokens)
         {
             var token = tokens.Current /*as Token*/;
             if (!tokens.MoveNext())
@@ -305,7 +307,7 @@ namespace NetTopologySuite.IO
         /// </param>
         /// <returns>
         /// The next "EMPTY" or "(" in the stream as uppercase text.</returns>
-        private string GetNextEmptyOrOpener(IEnumerator<Token> tokens) 
+        private static string GetNextEmptyOrOpener(IEnumerator<Token> tokens) 
         {
             string nextWord = GetNextWord(tokens);
             if (nextWord.Equals("EMPTY") || nextWord.Equals("(")) 
@@ -322,7 +324,7 @@ namespace NetTopologySuite.IO
         /// </param>
         /// <returns>
         /// The next ")" or "," in the stream.</returns>
-        private string GetNextCloserOrComma(IEnumerator<Token> tokens) 
+        private static string GetNextCloserOrComma(IEnumerator<Token> tokens) 
         {
             string nextWord = GetNextWord(tokens);
             if (nextWord.Equals(",") || nextWord.Equals(")")) 
@@ -341,7 +343,7 @@ namespace NetTopologySuite.IO
         /// </param>
         /// <returns>
         /// The next ")" in the stream.</returns>
-        private string GetNextCloser(IEnumerator<Token> tokens) 
+        private static string GetNextCloser(IEnumerator<Token> tokens) 
         {
             var nextWord = GetNextWord(tokens);    
             if (nextWord.Equals(")"))
@@ -357,7 +359,7 @@ namespace NetTopologySuite.IO
         /// format. The next token must be a word.
         /// </param>
         /// <returns>The next word in the stream as uppercase text.</returns>
-        private string GetNextWord(IEnumerator<Token> tokens)
+        private static string GetNextWord(IEnumerator<Token> tokens)
         {
             var token = tokens.Current /*as Token*/;
             if (token == null)
@@ -482,11 +484,11 @@ namespace NetTopologySuite.IO
         /// the stream.</returns>
         private IPoint ReadPointText(IEnumerator<Token> tokens, IGeometryFactory factory) 
         {
-            string nextToken = GetNextEmptyOrOpener(tokens);
+            var nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
                 return factory.CreatePoint((Coordinate) null);
-            IPoint point = factory.CreatePoint(GetPreciseCoordinate(tokens, false));
-            GetNextCloser(tokens);
+            var point = factory.CreatePoint(GetPreciseCoordinate(tokens, false));
+            var closer = GetNextCloser(tokens);
             return point;
         }
 
@@ -543,16 +545,17 @@ namespace NetTopologySuite.IO
         /// <param name="coordinates">
         /// The <c>Coordinate</c>s with which to create the <c>Point</c>s
         /// </param>
+        /// <param name="factory">The factory to create the points</param>
         /// <returns>
         /// <c>Point</c>s created using this <c>WKTReader</c>
         /// s <c>GeometryFactory</c>.
         /// </returns>
-        private IPoint[] ToPoints(Coordinate[] coordinates, IGeometryFactory factory) 
+        private static IPoint[] ToPoints(Coordinate[] coordinates, IGeometryFactory factory) 
         {
-            var points = new List<IPoint>();
+            var points = new IPoint[coordinates.Length];
             for (var i = 0; i < coordinates.Length; i++)
-                points.Add(factory.CreatePoint(coordinates[i]));            
-            return points.ToArray();
+                points[i] = factory.CreatePoint(coordinates[i]);
+            return points;
         }
 
         /// <summary>  
@@ -603,8 +606,8 @@ namespace NetTopologySuite.IO
             if (nextToken.Equals("EMPTY")) 
                 return factory.CreateMultiLineString( new ILineString[] { } );
 
-            List<ILineString> lineStrings = new List<ILineString>();
-            ILineString lineString = ReadLineStringText(tokens, factory);
+            var lineStrings = new List<ILineString>();
+            var lineString = ReadLineStringText(tokens, factory);
             lineStrings.Add(lineString);
             nextToken = GetNextCloserOrComma(tokens);
             while (nextToken.Equals(",")) {
