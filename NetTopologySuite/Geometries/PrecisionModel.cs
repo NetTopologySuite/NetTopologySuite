@@ -352,13 +352,22 @@ namespace NetTopologySuite.Geometries
 
             if (_modelType == PrecisionModels.FloatingSingle)
             {
-                float floatSingleVal = (float)val;
+                var floatSingleVal = (float)val;
                 return floatSingleVal;
             }
+            
             if (_modelType == PrecisionModels.Fixed)
-                // return Math.Round(val * scale) / scale;          // Diego Guidi say's: i use the Java Round algorithm (used in JTS 1.6)
+                // return Math.Round(val * scale) / scale;          
+                
+                // Diego Guidi say's: i use the Java Round algorithm (used in JTS 1.6)
                 // Java Rint method, used in JTS 1.5, was consistend with .NET Round algorithm
-                return Math.Floor(((val * _scale) + 0.5d)) / _scale;
+                // return Math.Floor(((val * _scale) + 0.5d)) / _scale;
+                
+                // FObermaier: This is how I learned it in school.
+                // Note: This is inconsistant with JTS. JTS rounds 
+                // e.g. -9.5 to -9 with a fixed precision model and a scale factor of 1d
+                return Math.Round(val * _scale, MidpointRounding.AwayFromZero) / _scale;
+
             return val;     // modelType == FLOATING - no rounding necessary
         }
 
