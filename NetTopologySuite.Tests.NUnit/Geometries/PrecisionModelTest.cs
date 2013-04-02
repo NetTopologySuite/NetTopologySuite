@@ -13,7 +13,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestParameterlessConstructor()
         {
-            PrecisionModel p = new PrecisionModel();
+            var p = new PrecisionModel();
             //Implicit precision model has scale 0
             Assert.AreEqual(0, p.Scale, 1E-10);
         }
@@ -31,24 +31,26 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestMakePrecise()
         {
-            PrecisionModel pm_10 = new PrecisionModel(0.1);
+            var pm10 = new PrecisionModel(0.1);
 
-            PreciseCoordinateTester(pm_10, 1200.4, 1240.4, 1200, 1240);
-            PreciseCoordinateTester(pm_10, 1209.4, 1240.4, 1210, 1240);
+            PreciseCoordinateTester(pm10, 1200.4, 1240.4, 1200, 1240);
+            PreciseCoordinateTester(pm10, 1209.4, 1240.4, 1210, 1240);
         }
 
 
         [Test]
         public void TestMakePreciseNegative()
         {
-            var pm_1 = new PrecisionModel(1);
+            var pm1 = new PrecisionModel(1);
 
-            PreciseCoordinateTester(pm_1, -10, -10, -10, -10);
-            PreciseCoordinateTester(pm_1, -9.9, -9.9, -10, -10);
-            PreciseCoordinateTester(pm_1, -9.5, -9.5, -10, -10);
+            PreciseCoordinateTester(pm1, -10, -10, -10, -10);
+            PreciseCoordinateTester(pm1, -9.9, -9.9, -10, -10);
+            
+            //We use "Asymmetric Arithmetic Rounding", that's is why this is true:
+            PreciseCoordinateTester(pm1, -9.5, -9.5, -9, -9);
         }
 
-        private static void PreciseCoordinateTester(PrecisionModel pm,
+        private static void PreciseCoordinateTester(IPrecisionModel pm,
             double x1, double y1,
             double x2, double y2)
         {

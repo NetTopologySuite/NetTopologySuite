@@ -84,7 +84,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// The scale factor which determines the number of decimal places in fixed precision.
         /// </summary>
-        private double _scale;
+        private readonly double _scale;
 
         /// <summary>
         /// Creates a <c>PrecisionModel</c> with a default precision
@@ -124,7 +124,9 @@ namespace NetTopologySuite.Geometries
         /// <param name="offsetX">Not used.</param>
         /// <param name="offsetY">Not used.</param>
         [Obsolete("Offsets are no longer supported, since internal representation is rounded floating point")]
+// ReSharper disable UnusedParameter.Local
         public PrecisionModel(double scale, double offsetX, double offsetY)
+// ReSharper restore UnusedParameter.Local
         {
             _modelType = PrecisionModels.Fixed;
             Scale = scale;
@@ -218,7 +220,7 @@ namespace NetTopologySuite.Geometries
         public double Scale
         {
             get { return _scale; }
-            set { _scale = Math.Abs(value); }
+            set { throw new NotSupportedException(); }
         }
 
         ///// <summary>
@@ -300,7 +302,7 @@ namespace NetTopologySuite.Geometries
         [Obsolete("Use MakePrecise instead")]
         public Coordinate ToInternal(Coordinate cexternal)
         {
-            Coordinate cinternal = new Coordinate(cexternal);
+            var cinternal = new Coordinate(cexternal);
             MakePrecise(cinternal);
             return cinternal;
         }
@@ -316,7 +318,7 @@ namespace NetTopologySuite.Geometries
         [Obsolete("No longer needed, since internal representation is same as external representation")]
         public Coordinate ToExternal(Coordinate cinternal)
         {
-            Coordinate cexternal = new Coordinate(cinternal);
+            var cexternal = new Coordinate(cinternal);
             return cexternal;
         }
 
@@ -355,19 +357,17 @@ namespace NetTopologySuite.Geometries
                 var floatSingleVal = (float)val;
                 return floatSingleVal;
             }
-            
-            if (_modelType == PrecisionModels.Fixed)
-                // return Math.Round(val * scale) / scale;          
-                
-                // Diego Guidi say's: i use the Java Round algorithm (used in JTS 1.6)
-                // Java Rint method, used in JTS 1.5, was consistend with .NET Round algorithm
-                // return Math.Floor(((val * _scale) + 0.5d)) / _scale;
-                
-                // FObermaier: This is how I learned it in school.
-                // Note: This is inconsistant with JTS. JTS rounds 
-                // e.g. -9.5 to -9 with a fixed precision model and a scale factor of 1d
-                return Math.Round(val * _scale, MidpointRounding.AwayFromZero) / _scale;
 
+            if (_modelType == PrecisionModels.Fixed)
+            {
+                /*.Net's default rounding algorithm is "Bankers Rounding" which turned
+                 * out to be no good for JTS/NTS geometry operations */
+                // return Math.Round(val * scale) / scale;          
+
+                // This is "Asymmetric Arithmetic Rounding"
+                // http://en.wikipedia.org/wiki/Rounding#Round_half_up
+                return Math.Floor(val * _scale + 0.5d) / _scale;
+            }
             return val;     // modelType == FLOATING - no rounding necessary
         }
 
