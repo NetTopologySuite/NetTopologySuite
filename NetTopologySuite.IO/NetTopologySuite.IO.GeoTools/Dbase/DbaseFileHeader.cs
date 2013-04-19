@@ -13,6 +13,8 @@ namespace NetTopologySuite.IO
     /// </summary>
     public class DbaseFileHeader
     {
+        public const int FieldNameMaxLength = 11;
+
         // Constant for the size of a record
         private int FileDescriptorSize = 32;
 
@@ -139,10 +141,10 @@ namespace NetTopologySuite.IO
             // set the field name
             string tempFieldName = fieldName;
             if (tempFieldName == null) tempFieldName = "NoName";
-            if (tempFieldName.Length > 11)
+            if (tempFieldName.Length > FieldNameMaxLength)
             {
-                tempFieldName = tempFieldName.Substring(0, 11);
-                Trace.WriteLine("FieldName " + fieldName + " is longer than 11 characters, truncating to " + tempFieldName);
+                string s = String.Format("FieldName {0} is longer than {1} characters", fieldName, FieldNameMaxLength);
+                throw new ArgumentException(s);
             }
             tempFieldDescriptors[_fieldDescriptions.Length].Name = tempFieldName;
 
@@ -520,7 +522,7 @@ namespace NetTopologySuite.IO
             for (int i = 0; i < _fieldDescriptions.Length; i++)
             {
                 // write the field name
-                for (int j = 0; j < 11; j++)
+                for (int j = 0; j < FieldNameMaxLength; j++)
                 {
                     if (_fieldDescriptions[i].Name.Length > j)
                         writer.Write((byte)_fieldDescriptions[i].Name[j]);

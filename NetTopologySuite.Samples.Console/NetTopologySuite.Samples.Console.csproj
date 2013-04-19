@@ -95,6 +95,7 @@
     <Compile Include="Operation\Poligonize\SplitPolygonExample.cs" />
     <Compile Include="Tests\GeometryServicesTest.cs" />
     <Compile Include="Tests\IO\GmlTest.cs" />
+    <Compile Include="Tests\IO\Issue146Fixtures.cs" />
     <Compile Include="Tests\IO\PostGisTest.cs" />
     <Compile Include="Tests\IO\ShapeFileEncodingTest.cs" />
     <Compile Include="Tests\IO\ShapeFileInvalidHeaderTest.cs" />
