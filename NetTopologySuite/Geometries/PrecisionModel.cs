@@ -109,7 +109,7 @@ namespace NetTopologySuite.Geometries
             _modelType = modelType;
 
             if (modelType == PrecisionModels.Fixed)
-                Scale = 1.0;
+                _scale = 1.0;
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace NetTopologySuite.Geometries
 // ReSharper restore UnusedParameter.Local
         {
             _modelType = PrecisionModels.Fixed;
-            Scale = scale;
+            _scale = scale;
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace NetTopologySuite.Geometries
         public PrecisionModel(double scale)
         {
             _modelType = PrecisionModels.Fixed;
-            Scale = scale;
+            _scale = scale;
         }
 
         /// <summary>
