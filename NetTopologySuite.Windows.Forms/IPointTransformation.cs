@@ -31,6 +31,7 @@
  *     www.vividsolutions.com
  */
 
+using System;
 using System.Drawing;
 using GeoAPI.Geometries;
 
@@ -48,15 +49,30 @@ namespace NetTopologySuite.Windows.Forms
         ///<summary>
         /// Transforms a <see cref="Coordinate"/> into a <see cref="PointF"/>.
         ///</summary>
-        ///<param name="src">The source coordinate</param>
-        ///<param name="dest">The destination point</param>
-        void Transform(Coordinate src, ref PointF dest);
+        ///<param name="model">The model coordinate</param>
+        /// <returns>A point for the view</returns>
+        PointF Transform(Coordinate model);
+
+        ///<summary>
+        /// Transforms a <see cref="Coordinate"/> into a <see cref="PointF"/>.
+        ///</summary>
+        ///<param name="model">The model coordinate</param>
+        ///<param name="view">The view point</param>
+        [Obsolete]
+        void Transform(Coordinate model, ref PointF view);
 
         /// <summary>
         /// Transforms an array of <see cref="Coordinate"/>s into an array of <see cref="PointF"/>s.
         /// </summary>
-        /// <param name="src">An array of <see cref="Coordinate"/>s</param>
+        /// <param name="modelCoordinates">An array of <see cref="Coordinate"/>s</param>
         /// <returns>An array of <see cref="PointF"/>s</returns>
-        PointF[] Transform(Coordinate[] src);
+        PointF[] Transform(Coordinate[] modelCoordinates);
+
+        /// <summary>
+        /// Transforms an array of <see cref="Coordinate"/>s into an array of <see cref="PointF"/>s.
+        /// </summary>
+        /// <param name="modelSequence">A sequence of coordinates</param>
+        /// <returns>An array of <see cref="PointF"/>s</returns>
+        PointF[] Transform(ICoordinateSequence modelSequence);
     }
 }

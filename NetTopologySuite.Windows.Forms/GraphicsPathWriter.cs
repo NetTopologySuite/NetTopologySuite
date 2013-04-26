@@ -64,30 +64,18 @@ namespace NetTopologySuite.Windows.Forms
     /// </summary>
     public class GraphicsPathWriter
     {
-        /**
-         * The point transformation used by default.
-         */
+        /// <summary>
+        /// The point transformation used by default.
+        /// </summary>
         public static readonly IPointTransformation DefaultPointTransformation = new IdentityPointTransformation();
 
-        /**
-         * The point shape factory used by default.
-         */
+        /// <summary>
+        /// The point shape factory used by default.
+        /// </summary>
         public static readonly IPointShapeFactory DefaultPointFactory = new Square(3.0);
 
         private readonly IPointTransformation _pointTransformer = DefaultPointTransformation;
         private readonly IPointShapeFactory _pointFactory = DefaultPointFactory;
-
-        /**
-         * Cache a PointF object to use to transfer coordinates into shape
-         */
-        private PointF _transPoint;
-
-        /**
-         * If true, decimation will be used to reduce the number of vertices
-         * by removing consecutive duplicates.
-         * 
-         */
-
 
         ///<summary>
         /// Creates a new GraphicsPathWriter with a specified point transformation and point shape factory.
@@ -110,11 +98,6 @@ namespace NetTopologySuite.Windows.Forms
             : this(pointTransformer, null)
         {
         }
-
-        /**
-         *
-         *
-         */
 
         ///<summary>
         /// Creates a new GraphicsPathWriter with the default (identity) point transformation.
@@ -161,17 +144,39 @@ namespace NetTopologySuite.Windows.Forms
         public GraphicsPath ToShape(IGeometry geometry)
         {
             if (geometry.IsEmpty)
+            {
                 return new GraphicsPath();
-            if (geometry is IPolygon)
-                return ToShape((IPolygon)geometry);
-            if (geometry is ILineString)
-                return ToShape((ILineString)geometry);
-            if (geometry is IMultiLineString)
-                return ToShape((IMultiLineString)geometry);
-            if (geometry is IPoint)
-                return ToShape((IPoint)geometry);
-            if (geometry is IGeometryCollection)
-                return ToShape((IGeometryCollection)geometry);
+            }
+            
+            var polygon = geometry as IPolygon;
+            if (polygon != null)
+            {
+                return ToShape(polygon);
+            }
+            
+            var lineString = geometry as ILineString;
+            if (lineString != null)
+            {
+                return ToShape(lineString);
+            }
+
+            var multiLineString = geometry as IMultiLineString;
+            if (multiLineString != null)
+            {
+                return ToShape(multiLineString);
+            }
+            
+            var point = geometry as IPoint;
+            if (point != null)
+            {
+                return ToShape(point);
+            }
+
+            var geometryCollection = geometry as IGeometryCollection;
+            if (geometryCollection != null)
+            {
+                return ToShape(geometryCollection);
+            }
 
             throw new ArgumentException(
                 "Unrecognized Geometry class: " + geometry.GetType());
@@ -193,9 +198,10 @@ namespace NetTopologySuite.Windows.Forms
         private void AppendRing(PolygonGraphicsPath poly, Coordinate[] coords)
         {
             GraphicsPath ring = null;
+
+            var prevX = Single.NaN;
+            var prevY = Single.NaN;
             
-            var prevx = Double.NaN;
-            var prevy = Double.NaN;
             Coordinate prev = null;
     
             var n = coords.Length - 1;
@@ -216,18 +222,20 @@ namespace NetTopologySuite.Windows.Forms
                     prev = coords[i];
                 }
 		  
-                TransformPoint(coords[i], _transPoint);
+                var transPoint = TransformPoint(coords[i]);
 			
                 if (RemoveDuplicatePoints)
                 {
                     // skip duplicate points (except the last point)
-                    var isDup = _transPoint.X == prevx && _transPoint.Y == prevy;
+                    var isDup = transPoint.X == prevX && transPoint.Y == prevY;
                     if (isDup)
+                    {
                         continue;
-                    prevx = _transPoint.X;
-                    prevy = _transPoint.Y;
+                    }
+                    prevX = transPoint.X;
+                    prevY = transPoint.Y;
                 }
-                poly.AddToRing(_transPoint, ref ring);
+                poly.AddToRing(transPoint, ref ring);
             }
             // handle closing point
             poly.EndRing(ring);
@@ -248,9 +256,10 @@ namespace NetTopologySuite.Windows.Forms
         private GraphicsPath ToShape(IMultiLineString mls)
         {
             var path = new GraphicsPath();
-
-            foreach (ILineString ml in mls)
-                path.AddPath(ToShape(ml), false);
+            for (var i = 0; i < mls.NumGeometries; i++)
+            {
+                path.AddPath(ToShape((ILineString)mls.GetGeometryN(i)), false);
+            }
 
             return path;
         }
@@ -261,12 +270,14 @@ namespace NetTopologySuite.Windows.Forms
             
             var points = new List<PointF>(lineString.NumPoints);
             var prev = lineString.GetCoordinateN(0);
-            points.Add(TransformPoint(prev, _transPoint));
+            var transPoint = TransformPoint(prev);
+            points.Add(transPoint);
 
-            var prevx = (double)_transPoint.X;
-            var prevy = (double)_transPoint.Y;
+            var prevX = transPoint.X;
+            var prevY = transPoint.Y;
 
             var n = lineString.NumPoints - 1;
+            
             //int count = 0;
             for (var i = 1; i <= n; i++)
             {
@@ -276,6 +287,7 @@ namespace NetTopologySuite.Windows.Forms
                     var isDecimated = prev != null
                             && Math.Abs(currentCoord.X - prev.X) < Decimation
                             && Math.Abs(currentCoord.Y - prev.Y) < Decimation;
+                    
                     if (i < n && isDecimated)
                     {
                         continue;
@@ -283,19 +295,19 @@ namespace NetTopologySuite.Windows.Forms
                     prev = currentCoord;
                 }
 
-                _transPoint = TransformPoint(lineString.GetCoordinateN(i), _transPoint);
+                transPoint = TransformPoint(lineString.GetCoordinateN(i));
 
                 if (RemoveDuplicatePoints)
                 {
                     // skip duplicate points (except the last point)
-                    var isDup = _transPoint.X == prevx && _transPoint.Y == prevy;
+                    var isDup = transPoint.X == prevX && transPoint.Y == prevY;
                     if (i < n && isDup)
                         continue;
-                    prevx = _transPoint.X;
-                    prevy = _transPoint.Y;
+                    prevX = transPoint.X;
+                    prevY = transPoint.Y;
                     //count++;
                 }
-                points.Add(_transPoint);
+                points.Add(transPoint);
             }
             //System.out.println(count);
             shape.AddLines(points.ToArray());
@@ -310,13 +322,7 @@ namespace NetTopologySuite.Windows.Forms
 
         private PointF TransformPoint(Coordinate model)
         {
-            return TransformPoint(model, new PointF());
-        }
-
-        private PointF TransformPoint(Coordinate model, PointF view)
-        {
-            _pointTransformer.Transform(model, ref view);
-            return view;
+            return _pointTransformer.Transform(model);
         }
     }
 }

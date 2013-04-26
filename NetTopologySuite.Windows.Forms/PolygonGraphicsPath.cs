@@ -15,8 +15,8 @@ public class PolygonGraphicsPath
     ///</summary>
     /// <param name="shellVertices">The vertices of the shell</param>
     /// <param name="holeVerticesCollection">A collection of ICoordinate[] for each hole</param>
-    public PolygonGraphicsPath(ICoordinate[] shellVertices,
-        IEnumerable<ICoordinate[]> holeVerticesCollection) 
+    public PolygonGraphicsPath(Coordinate[] shellVertices,
+        IEnumerable<Coordinate[]> holeVerticesCollection) 
     {
         Path = ToPath(shellVertices);
 
@@ -64,7 +64,7 @@ public class PolygonGraphicsPath
     /// </remarks>
     /// <param name="coordinates">A coordinate sequence</param>
     /// <returns>The path for the coordinate sequence</returns>
-    private static GraphicsPath ToPath(ICoordinate[] coordinates)
+    private static GraphicsPath ToPath(Coordinate[] coordinates)
     {
         var path = new GraphicsPath(FillMode.Alternate);
 
@@ -76,7 +76,7 @@ public class PolygonGraphicsPath
         return path;
     }
 
-    private static PointF[] ToPointF(ICoordinate[] coordinates)
+    private static PointF[] ToPointF(Coordinate[] coordinates)
     {
         var ret = new PointF[coordinates.Length];
         for( var i = 0; i < coordinates.Length; i++)

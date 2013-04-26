@@ -31,32 +31,64 @@
  *     www.vividsolutions.com
  */
 
-/**
- * Copies point ordinates with no transformation.
- *
- * @author Martin Davis
- *
- */
-
 using System.Drawing;
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Windows.Forms
 {
+    /// <summary>
+    /// Point transformation class, copies ordinates with no transformation
+    /// </summary>
     public class IdentityPointTransformation : IPointTransformation
     {
+        ///<summary>
+        /// Transforms a <see cref="Coordinate"/> into a <see cref="PointF"/>.
+        ///</summary>
+        ///<param name="model">The model coordinate</param>
+        ///<param name="view">The view point</param>
         public void Transform(Coordinate model, ref PointF view)
         {
             view.X = (float)model.X;
             view.Y = (float)model.Y;
         }
 
+        ///<summary>
+        /// Transforms a <see cref="Coordinate"/> into a <see cref="PointF"/>.
+        ///</summary>
+        ///<param name="model">The model coordinate</param>
+        /// <returns>A point for the view</returns>
+        public PointF Transform(Coordinate model)
+        {
+            return new PointF((float)model.X, (float)model.Y);
+        }
+
+        /// <summary>
+        /// Transforms an array of <see cref="Coordinate"/>s into an array of <see cref="PointF"/>s.
+        /// </summary>
+        /// <param name="model">An array of <see cref="Coordinate"/>s</param>
+        /// <returns>An array of <see cref="PointF"/>s</returns>
         public PointF[] Transform(Coordinate[] model)
         {
             var ret = new PointF[model.Length];
             for (var i = 0; i < model.Length; i++)
                 ret[i] = new PointF((float)model[i].X, (float)model[i].Y);
             return ret;
+        }
+
+        private static PointF Transform(double modelX, double modelY)
+        {
+            return new PointF((float)modelX, (float)modelY);
+        }
+
+        public PointF[] Transform(ICoordinateSequence modelSequence)
+        {
+            var res = new PointF[modelSequence.Count];
+            for (var i = 0; i < modelSequence.Count; i++)
+            {
+                res[i] = Transform(modelSequence.GetOrdinate(0, Ordinate.X), 
+                                   modelSequence.GetOrdinate(0, Ordinate.Y));
+            }
+            return res;
         }
     }
 
@@ -75,12 +107,33 @@ namespace NetTopologySuite.Windows.Forms
             view.Y = _yOffset - (float)model.Y;
         }
 
+        public PointF Transform(Coordinate model)
+        {
+            return new PointF((float) model.X, _yOffset - (float) model.Y);
+        }
+
+        private PointF Transform(double modelX, double modelY)
+        {
+            return new PointF((float) modelX, _yOffset - (float) modelY);
+        }
+
         public PointF[] Transform(Coordinate[] model)
         {
             var ret = new PointF[model.Length];
             for (var i = 0; i < model.Length; i++)
                 ret[i] = new PointF((float)model[i].X, _yOffset - (float)model[i].Y);
             return ret;
+        }
+
+        public PointF[] Transform(ICoordinateSequence modelSequence)
+        {
+            var res = new PointF[modelSequence.Count];
+            for (var i = 0; i < modelSequence.Count; i++)
+            {
+                res[i] = Transform(modelSequence.GetOrdinate(0, Ordinate.X), 
+                                   modelSequence.GetOrdinate(0, Ordinate.Y));
+            }
+            return res;
         }
     }
 }
