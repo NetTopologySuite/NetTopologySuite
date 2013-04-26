@@ -31,26 +31,27 @@
  *     www.vividsolutions.com
  */
 
-/**
- * Copies point ordinates with no transformation.
- * 
- * @author Martin Davis
- *
- */
-
 using GeoAPI.Geometries;
 using WpfPoint = System.Windows.Point;
 
 namespace NetTopologySuite.Windows.Media
 {
+    /// <summary>
+    /// Copies point ordinates with no transformtaion
+    /// </summary>
+    /// <author>Martin Davis</author>
     public class IdentityPointTransformation : IPointTransformation
     {
 	    public void Transform(Coordinate model, ref WpfPoint view)
 	    {
 	        view.X = model.X;
 	        view.Y = model.Y;
-
 	    }
+
+        public WpfPoint Transform(Coordinate model)
+        {
+            return new WpfPoint(model.X, model.Y);
+        }
 
         public WpfPoint[] Transform (Coordinate[] model)
         {
@@ -58,33 +59,74 @@ namespace NetTopologySuite.Windows.Media
             for (var i = 0; i < model.Length; i++ )
                 ret[i] = new WpfPoint(model[i].X, model[i].Y);
                 return ret;
-            
+        }
+
+        private static WpfPoint Transform(double x, double y)
+        {
+            return new WpfPoint(x, y);
+        }
+
+        public WpfPoint[] Transform(ICoordinateSequence modelSequence)
+        {
+            var res = new WpfPoint[modelSequence.Count];
+            for (var i = 0; i < modelSequence.Count; i++)
+            {
+                res[i] = Transform(modelSequence.GetOrdinate(i, Ordinate.X),
+                                   modelSequence.GetOrdinate(i, Ordinate.Y));
+            }
+            return res;
         }
     }
+
+    /// <summary>
+    /// Transforms coordinates by inverting the y ordinate and adding an offset
+    /// </summary>
+    /// <author>Martin Davis</author>
     public class InvertYPointTransformation : IPointTransformation
     {
-        private readonly float _yOffset;
+        private readonly double _yOffset;
 
-        public InvertYPointTransformation(float yOffset)
+        public InvertYPointTransformation(double yOffset)
         {
             _yOffset = yOffset;
         }
         
         public void Transform(Coordinate model, ref WpfPoint view)
         {
-            view.X = (float)model.X;
-            view.Y = _yOffset-(float)model.Y;
+            view.X = model.X;
+            view.Y = _yOffset-model.Y;
+        }
 
+        public WpfPoint Transform(Coordinate model)
+        {
+            return new WpfPoint(model.X, _yOffset - model.Y);
         }
 
         public WpfPoint[] Transform(Coordinate[] model)
         {
             var ret = new WpfPoint[model.Length];
             for (var i = 0; i < model.Length; i++)
-                ret[i] = new WpfPoint((float)model[i].X, _yOffset-(float)model[i].Y);
+                ret[i] = new WpfPoint(model[i].X, _yOffset-model[i].Y);
             return ret;
 
         }
+
+        private WpfPoint Transform(double x, double y)
+        {
+            return new WpfPoint(x, _yOffset - y);
+        }
+
+        public WpfPoint[] Transform(ICoordinateSequence modelSequence)
+        {
+            var res = new WpfPoint[modelSequence.Count];
+            for (var i = 0; i < modelSequence.Count; i++)
+            {
+                res[i] = Transform(modelSequence.GetOrdinate(i, Ordinate.X),
+                                   modelSequence.GetOrdinate(i, Ordinate.Y));
+            }
+            return res;
+        }
+
     }
 }
 

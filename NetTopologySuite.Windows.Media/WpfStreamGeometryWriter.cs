@@ -286,13 +286,7 @@ namespace NetTopologySuite.Windows.Media
 
         private WpfPoint TransformPoint(Coordinate model)
         {
-            return TransformPoint(model, new WpfPoint());
-        }
-
-        private WpfPoint TransformPoint(Coordinate model, WpfPoint view)
-        {
-            _pointTransformer.Transform(model, ref view);
-            return view;
+            return _pointTransformer.Transform(model);
         }
     }
 }
