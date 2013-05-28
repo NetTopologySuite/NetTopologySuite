@@ -82,6 +82,7 @@
     <Compile Include="GeoJSON\FeatureConverterTest.cs" />
     <Compile Include="GeoJSON\GeoJsonSerializerTest.cs" />
     <Compile Include="GeoJSON\GeoJsonWriterTest.cs" />
+    <Compile Include="GeoJSON\Issue148.cs" />
     <Compile Include="GeoJSON\LinkedCRSTest.cs" />
     <Compile Include="GeoJSON\NamedCRSTest.cs" />
     <Compile Include="Issues.cs" />

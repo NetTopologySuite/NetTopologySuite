@@ -187,6 +187,7 @@ namespace NetTopologySuite.IO.Converters
             :this(GeometryFactory.Default)
         {
         }
+
         public GeometryArrayConverter(IGeometryFactory factory)
         {
             this._factory = factory;
