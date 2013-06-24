@@ -1,8 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using GeoAPI.Geometries;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
@@ -175,7 +173,23 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
                     {
                         var gw = geomsWrite.GetGeometryN(i);
                         var gr = geomsRead.GetGeometryN(i);
-                        if (!gw.EqualsExact(gr))
+                        if (gw.IsEmpty && gr.IsEmpty)
+                        {
+                            if ((gw is ILineal && gr is ILineal) ||
+                                (gw is IPolygonal && gr is IPolygonal))
+                            {
+                                // suppose these are equal
+                            }
+                            else
+                            {
+                                Console.WriteLine(string.Format("Geometries don't match at index {0}", i));
+                                Console.WriteLine(string.Format("  written: {0}", gw.AsText()));
+                                Console.WriteLine(string.Format("  read   : {0}", gr.AsText()));
+                                equal = false;
+                                Assert.IsTrue(equal, "Differenced found in geometries written and read!");
+                            }
+                        }
+                        else if (!gw.EqualsExact(gr))
                         {
                             var hsm = new Algorithm.Match.HausdorffSimilarityMeasure().Measure(gw, gr);
                             var asm = new Algorithm.Match.AreaSimilarityMeasure().Measure(gw, gr);
@@ -244,34 +258,43 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
             return true;
         }
 
-        private class ShapeFileShapeFactory
+        private static class ShapeFileShapeFactory
         {
             public static IGeometryCollection CreateShapes(OgcGeometryType type, Ordinates ordinates, int number = 50)
             {
+                var empty = new bool[number];
+                empty[Rnd.Next(2, number/2)] = true;
+                empty[Rnd.Next(number/2, number)] = true;
+
                 var result = new IGeometry[number];
                 for (var i = 0; i < number; i++)
                 {
                     switch (type)
                     {
                         case OgcGeometryType.Point:
-                            result[i] = CreatePoint(ordinates);
+                            result[i] = CreatePoint(ordinates, empty[i]);
                             break;
                         case OgcGeometryType.MultiPoint:
-                            result[i] = CreateMultiPoint(ordinates);
+                            result[i] = CreateMultiPoint(ordinates, empty[i]);
                             break;
 
                         case OgcGeometryType.LineString:
                         case OgcGeometryType.MultiLineString:
-                            result[i] = CreateLineal(ordinates);
+                            result[i] = CreateLineal(ordinates, empty[i]);
                             break;
                         case OgcGeometryType.Polygon:
                         case OgcGeometryType.MultiPolygon:
-                            result[i] = CreatePolygonal(ordinates);
+                            result[i] = CreatePolygonal(ordinates, empty[i]);
                             break;
                     }
 
+                    /*
                     // Ensure no empty elements
-                    if (result[i] == null || result[i].IsEmpty)
+                    if (result[i] == null || (result[i].IsEmpty && result[i].OgcGeometryType == OgcGeometryType.GeometryCollection))
+                        i--;
+                    */
+                    // Ensure not null and not geometry collection
+                    if (result[i] == null || result[i].OgcGeometryType == OgcGeometryType.GeometryCollection)
                         i--;
                 }
 
@@ -287,16 +310,25 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
             
             public static readonly IGeometryFactory Factory = new GeometryFactory(new PrecisionModel(1000), 4326, CsFactory);
 
-            private static IGeometry CreatePoint(Ordinates ordinates)
+            private static IGeometry CreatePoint(Ordinates ordinates, bool empty)
             {
+                if (empty)
+                {
+                    return Factory.CreatePoint((ICoordinateSequence)null);
+                }
+
                 var seq = CsFactory.Create(1, ordinates);
                 foreach (var o in OrdinatesUtility.ToOrdinateArray(ordinates))
                     seq.SetOrdinate(0, o, RandomOrdinate(o, Factory.PrecisionModel));
                 return Factory.CreatePoint(seq);
             }
 
-            private static IGeometry CreateMultiPoint(Ordinates ordinates)
+            private static IGeometry CreateMultiPoint(Ordinates ordinates, bool empty)
             {
+                if (empty)
+                {
+                    return Factory.CreateMultiPoint((ICoordinateSequence)null);
+                }
                 var numPoints = Rnd.Next(75, 101);
                 var seq = CsFactory.Create(numPoints, ordinates);
                 for (var i = 0; i < numPoints; i++)
@@ -306,15 +338,24 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
                 return Factory.CreateMultiPoint(seq);
             }
 
-            private static IGeometry CreateLineal(Ordinates ordinates)
+            private static IGeometry CreateLineal(Ordinates ordinates, bool empty)
             {
-                if (Rnd.Next(2) == 0)
-                    return CreateLineString(ordinates);
-                return CreateMultiLineString(ordinates);
+                switch (Rnd.Next(2))
+                {
+                    case 0:
+                        return CreateLineString(ordinates, empty);
+                    default:
+                        return CreateMultiLineString(ordinates, empty);
+                }
             }
 
-            private static IGeometry CreateLineString(Ordinates ordinates)
+            private static IGeometry CreateLineString(Ordinates ordinates, bool empty)
             {
+                if (empty)
+                {
+                    return Factory.CreateLineString((ICoordinateSequence)null);
+                }
+
                 var numPoints = Rnd.Next(75, 101);
                 var seq = CsFactory.Create(numPoints, ordinates);
                 for (var i = 0; i < numPoints; i++)
@@ -324,25 +365,37 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
                 return Factory.CreateLineString(seq);
             }
 
-            private static IGeometry CreateMultiLineString(Ordinates ordinates)
+            private static IGeometry CreateMultiLineString(Ordinates ordinates, bool empty)
             {
-                var numLineStrings = Rnd.Next(3, 11);
+                if (empty)
+                {
+                    Factory.CreateMultiLineString(null);
+                }
+                
+                var numLineStrings = Rnd.Next(0, 11);
+                if (numLineStrings <= 2)
+                    numLineStrings = 0;
+
                 var lineString = new ILineString[numLineStrings];
                 for (var i = 0; i < numLineStrings; i++)
-                    lineString[i] = (ILineString)CreateLineString(ordinates);
+                    lineString[i] = (ILineString)CreateLineString(ordinates, false);
 
                 return Factory.CreateMultiLineString(lineString);
             }
 
-            private static IGeometry CreatePolygonal(Ordinates ordinates)
+            private static IGeometry CreatePolygonal(Ordinates ordinates, bool empty)
             {
                 if (Rnd.Next(2) == 0)
-                    return CreatePolygon(ordinates);
-                return CreateMultiPolygon(ordinates);
+                    return CreatePolygon(ordinates, empty);
+                return CreateMultiPolygon(ordinates, empty);
             }
 
-            private static IGeometry CreatePolygon(Ordinates ordinates, int nextKind = -1)
+            private static IGeometry CreatePolygon(Ordinates ordinates, bool empty, int nextKind = -1)
             {
+                if (empty)
+                {
+                    Factory.CreatePolygon((ICoordinateSequence)null);
+                }
                 if (nextKind == -1) nextKind = Rnd.Next(0, 5);
 
                 var x = RandomOrdinate(Ordinate.X, Factory.PrecisionModel);
@@ -447,15 +500,20 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
                 return Factory.CreateLinearRing(reverse ? seq.Reversed() : seq);
             }
             
-            private static IGeometry CreateMultiPolygon(Ordinates ordinates)
+            private static IGeometry CreateMultiPolygon(Ordinates ordinates, bool empty)
             {
+                if (empty)
+                {
+                    Factory.CreateMultiPolygon(null);
+                }
+                
                 switch (Rnd.Next(2))
                 {
                     case 0:
                         var numPolygons = Rnd.Next(4);
                         var polygons = new IPolygon[numPolygons];
                         for (var i = 0; i < numPolygons; i++)
-                            polygons[i] = (IPolygon)CreatePolygon(ordinates);
+                            polygons[i] = (IPolygon)CreatePolygon(ordinates, false);
                         return Factory.BuildGeometry(new Collection<IGeometry>(polygons)).Union();
                     
                     case 1:

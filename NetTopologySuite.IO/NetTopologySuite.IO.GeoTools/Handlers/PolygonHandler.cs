@@ -96,6 +96,9 @@ namespace NetTopologySuite.IO.Handlers
             var holes = new List<ILinearRing>();
             for (var i = 0; i < sequences.Length; i++)
             {
+                //Skip garbage input data with 0 points
+                if (sequences[i].Count < 1) continue;
+
                 var tmp = EnsureClosedSequence(sequences[i], geometryFactory.CoordinateSequenceFactory);
                 var ring = geometryFactory.CreateLinearRing(tmp);
                 if (ring.IsCCW)

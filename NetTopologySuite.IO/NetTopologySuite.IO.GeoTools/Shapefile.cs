@@ -20,7 +20,9 @@ namespace NetTopologySuite.IO
         /// <returns>The equivalent for the geometry object.</returns>
         public static ShapeGeometryType GetShapeType(IGeometry geom)
         {
-            if (geom == null || geom.IsEmpty)
+            geom = GetNonEmptyGeometry(geom);
+
+            if (geom == null)
                 return ShapeGeometryType.NullShape;
 
             switch (geom.OgcGeometryType)
@@ -71,6 +73,20 @@ namespace NetTopologySuite.IO
                         default:
                             return ShapeGeometryType.Polygon;
                     }
+                /*
+                case OgcGeometryType.GeometryCollection:
+                    if (geom.NumGeometries > 1)
+                    {
+                        for (var i = 0; i < geom.NumGeometries; i++)
+                        {
+                            var sgt = GetShapeType(geom.GetGeometryN(i));
+                            if (sgt != ShapeGeometryType.NullShape)
+                                return sgt;
+                        }
+                        return ShapeGeometryType.NullShape;
+                    }
+                    throw new NotSupportedException();
+                 */
                 default:
                     throw new NotSupportedException();
             }
@@ -102,6 +118,20 @@ namespace NetTopologySuite.IO
                 return ShapeGeometryType.MultiPoint;
             return ShapeGeometryType.NullShape;
              */
+        }
+
+        private static IGeometry GetNonEmptyGeometry(IGeometry geom)
+        {
+            if (geom == null || geom.IsEmpty)
+                return null;
+
+            for (var i = 0; i < geom.NumGeometries; i++)
+            {
+                var testGeom = geom.GetGeometryN(i);
+                if (testGeom != null && !testGeom.IsEmpty)
+                    return testGeom;
+            }
+            return null;
         }
 
         /// <summary>

@@ -82,6 +82,10 @@ namespace NetTopologySuite.IO.Handlers
             for (var s = 0; s < sequences.Count; s++)
             {
                 var points = sequences[s];
+
+                //Skip garbage input data with 0 points
+                if (points.Count < 1) continue;
+
                 var createLineString = true;
                 if (points.Count == 1)
                 {

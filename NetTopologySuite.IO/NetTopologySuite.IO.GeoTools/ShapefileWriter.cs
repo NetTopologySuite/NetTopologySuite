@@ -165,7 +165,7 @@ namespace NetTopologySuite.IO
 		/// <param name="geometryCollection">The GeometryCollection to write.</param>		
 		public static void WriteGeometryCollection(string filename, IGeometryCollection geometryCollection)
 		{
-		    var shapeFileType = Shapefile.GetShapeType(geometryCollection.Geometries[0]);
+		    var shapeFileType = Shapefile.GetShapeType(geometryCollection);
 
 		    var numShapes = geometryCollection.NumGeometries;
             using (var writer = new ShapefileWriter(geometryCollection.Factory, filename, shapeFileType))
@@ -180,8 +180,31 @@ namespace NetTopologySuite.IO
 
 		}
 
+        private static void WriteNullShapeRecord(BigEndianBinaryWriter shpBinaryWriter, BigEndianBinaryWriter shxBinaryWriter, int oid)
+        {
+            const int recordLength = 12;
+
+            // Add shape
+            shpBinaryWriter.WriteIntBE(oid);
+            shpBinaryWriter.WriteIntBE(recordLength);
+            shpBinaryWriter.Write((int)ShapeGeometryType.NullShape);
+
+            // Update shapefile index (position in words, 1 word = 2 bytes)
+            var posWords = shpBinaryWriter.BaseStream.Position / 2;
+            shxBinaryWriter.WriteIntBE((int)posWords);
+            shxBinaryWriter.WriteIntBE(recordLength);
+
+        }
+
+
         private static /*int*/ void WriteRecordToFile(BigEndianBinaryWriter shpBinaryWriter, BigEndianBinaryWriter shxBinaryWriter, ShapeHandler handler, IGeometry body, int oid)
         {
+            if (body == null || body.IsEmpty)
+            {
+                WriteNullShapeRecord(shpBinaryWriter, shxBinaryWriter, oid);
+                return;
+            }
+
             // Get the length of each record (in bytes)
             var recordLength = handler.ComputeRequiredLengthInWords(body);
             
