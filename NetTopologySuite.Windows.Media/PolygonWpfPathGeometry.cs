@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+#if SILVERLIGHT
+using System.Linq;
+#endif
 using System.Windows;
 using System.Windows.Media;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Windows.Media
 {
     public class PolygonWpfPathGeometry

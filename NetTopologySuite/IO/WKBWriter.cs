@@ -601,9 +601,9 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         protected int SetByteStream(IPolygon geometry)
         {
-            int pointSize = _coordinateSize; //Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
-            int count = InitCount;
-            count += 4 + 4;                                 // NumRings + NumPoints
+            var pointSize = _coordinateSize; //Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
+            var count = InitCount;
+            count += 4 /*+ 4*/;                                 // NumRings /*+ NumPoints */
             count += 4 * (geometry.NumInteriorRings + 1);   // Index parts
             count += geometry.NumPoints * pointSize;        // Points in exterior and interior rings
             return count;
