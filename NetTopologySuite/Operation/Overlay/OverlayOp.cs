@@ -14,14 +14,26 @@ namespace NetTopologySuite.Operation.Overlay
     /// </summary>
     public enum SpatialFunction
     {
+        /// <summary>
+        /// The code for the Intersection overlay operation
+        /// </summary>
         Intersection  = 1,
-        Union         = 2,
-        Difference    = 3,
+        /// <summary>
+        /// The code for the Union overlay operation
+        /// </summary>
+        Union = 2,
+        /// <summary>
+        /// The code for the Difference overlay operation
+        /// </summary>
+        Difference = 3,
+        /// <summary>
+        /// The code for the Symmetric Difference overlay operation
+        /// </summary>
         SymDifference = 4,
     }
 
     /// <summary>
-    /// Computes the overlay of two <c>Geometry</c>s.  The overlay
+    /// Computes the geometric overlay of two <see cref="IGeometry"/>s.  The overlay
     /// can be used to determine any bool combination of the geometries.
     /// </summary>
     public class OverlayOp : GeometryGraphOperation
@@ -36,6 +48,15 @@ namespace NetTopologySuite.Operation.Overlay
         /// </remarks>        
         public static bool NodingValidatorDisabled { get; set; }
 
+        /// <summary>
+        /// Computes an overlay operation 
+        /// for the given geometry arguments.
+        /// </summary>
+        /// <param name="geom0">The first geometry argument</param>
+        /// <param name="geom1">The second geometry argument</param>
+        /// <param name="opCode">The code for the desired overlay operation</param>
+        /// <returns>The result of the overlay operation</returns>
+        /// <exception cref="TopologyException">Thrown if a robustness problem is encountered.</exception>
         public static IGeometry Overlay(IGeometry geom0, IGeometry geom1, SpatialFunction opCode)
         {
             var gov = new OverlayOp(geom0, geom1);
@@ -43,25 +64,44 @@ namespace NetTopologySuite.Operation.Overlay
             return geomOv;
         }
 
-        public static bool IsResultOfOp(Label label, SpatialFunction opCode)
+        /// <summary>
+        /// Tests whether a point with a given topological <see cref="Label"/>
+        /// relative to two geometries is contained in 
+        /// the result of overlaying the geometries using
+        /// a given overlay operation.
+        /// <para/>
+        /// The method handles arguments of <see cref="Location.Null"/> correctly
+        /// </summary>
+        /// <param name="label">The topological label of the point</param>
+        /// <param name="overlayOpCode">The code for the overlay operation to test</param>
+        /// <returns><c>true</c> if the label locations correspond to the overlayOpCode</returns>
+        public static bool IsResultOfOp(Label label, SpatialFunction overlayOpCode)
         {
             var loc0 = label.GetLocation(0);
             var loc1 = label.GetLocation(1);
-            return IsResultOfOp(loc0, loc1, opCode);
+            return IsResultOfOp(loc0, loc1, overlayOpCode);
         }
 
         /// <summary>
-        /// This method will handle arguments of Location.NULL correctly.
+        /// Tests whether a point with given <see cref="Location"/>s
+        /// relative to two geometries is contained in 
+        /// the result of overlaying the geometries using
+        /// a given overlay operation.
+        /// <para/>
+        /// The method handles arguments of <see cref="Location.Null"/> correctly
         /// </summary>
-        /// <returns><c>true</c> if the locations correspond to the opCode.</returns>
-        public static bool IsResultOfOp(Location loc0, Location loc1, SpatialFunction opCode)
+        /// <param name="loc0">the code for the location in the first geometry </param>
+        /// <param name="loc1">the code for the location in the second geometry</param>
+        /// <param name="overlayOpCode">the code for the overlay operation to test</param>
+        /// <returns><c>true</c> if the locations correspond to the overlayOpCode.</returns>
+        public static bool IsResultOfOp(Location loc0, Location loc1, SpatialFunction overlayOpCode)
         {
             if (loc0 == Location.Boundary) 
                 loc0 = Location.Interior;
             if (loc1 == Location.Boundary) 
                 loc1 = Location.Interior;
-            
-            switch (opCode) 
+
+            switch (overlayOpCode) 
             {
                 case SpatialFunction.Intersection:
                     return loc0 == Location.Interior && loc1 == Location.Interior;
@@ -89,11 +129,13 @@ namespace NetTopologySuite.Operation.Overlay
         private IList<IGeometry> _resultPointList = new List<IGeometry>();
 
         /// <summary>
-        /// 
+        /// Constructs an instance to compute a single overlay operation
+        /// for the given geometries.
         /// </summary>
-        /// <param name="g0"></param>
-        /// <param name="g1"></param>
-        public OverlayOp(IGeometry g0, IGeometry g1) : base(g0, g1)
+        /// <param name="g0">The first geometry argument</param>
+        /// <param name="g1">The second geometry argument</param>
+        public OverlayOp(IGeometry g0, IGeometry g1)
+            : base(g0, g1)
         {            
             _graph = new PlanarGraph(new OverlayNodeFactory());
 
@@ -105,12 +147,23 @@ namespace NetTopologySuite.Operation.Overlay
             _geomFact = g0.Factory;
         }
 
-        public IGeometry GetResultGeometry(SpatialFunction funcCode)
+        /// <summary>
+        /// Gets the result of the overlay for a given overlay operation.
+        /// <para/>
+        /// Note: this method can be called once only.
+        /// </summary>
+        /// <param name="overlayOpCode">The code of the overlay operation to perform</param>
+        /// <returns>The computed result geometry</returns>
+        /// <exception cref="TopologyException">Thrown if a robustness problem is encountered</exception>
+        public IGeometry GetResultGeometry(SpatialFunction overlayOpCode)
         {
-            ComputeOverlay(funcCode);
+            ComputeOverlay(overlayOpCode);
             return _resultGeom;
         }
 
+        /// <summary>
+        /// Gets the graph constructed to compute the overlay.
+        /// </summary>
         public PlanarGraph Graph
         {
             get { return _graph; }
@@ -481,9 +534,10 @@ namespace NetTopologySuite.Operation.Overlay
         }
 
         /// <summary>
-        /// This method is used to decide if a point node should be included in the result or not.
+        /// Tests if a point node should be included in the result or not.
         /// </summary>
-        /// <returns><c>true</c> if the coord point is covered by a result Line or Area point.</returns>
+        /// <param name="coord">The point coordinate</param>
+        /// <returns><c>true</c> if the coordinate point is covered by a result Line or Area geometry.</returns>
         public bool IsCoveredByLA(Coordinate coord)
         {
             if (IsCovered(coord, _resultLineList)) 
@@ -491,9 +545,10 @@ namespace NetTopologySuite.Operation.Overlay
             return IsCovered(coord, _resultPolyList);
         }
         /// <summary>
-        /// This method is used to decide if an L edge should be included in the result or not.
+        /// Tests if an L edge should be included in the result or not.
         /// </summary>
-        /// <returns><c>true</c> if the coord point is covered by a result Area point.</returns>
+        /// <param name="coord">The point coordinate</param>
+        /// <returns><c>true</c> if the coordinate point is covered by a result Area geometry.</returns>
         public bool IsCoveredByA(Coordinate coord)
         {
             return IsCovered(coord, _resultPolyList);
@@ -534,28 +589,28 @@ namespace NetTopologySuite.Operation.Overlay
 
         /// <summary>
         /// Creates an empty result geometry of the appropriate dimension,
-        /// based on the dimensions of the inputs.
+        /// based on the given overlay operation and the dimensions of the inputs.
         /// The created geometry is always an atomic geometry, 
         /// not a collection.
         /// <para/>
-        /// Implements the following rules:
+        /// The empty result is constructed using the following rules:
         /// <list type="Bullet">
-        /// <item><c>intersection</c> - result has the dimension of the lowest input dimension</item>
-        /// <item><c>union</c> - result has the dimension of the highest input dimension</item>
-        /// <item><c>difference</c> - result has the dimension of the left-hand input</item>
-        /// <item><c>symDifference</c> - result has the dimension of the highest input dimension
+        /// <item><see cref="SpatialFunction.Intersection"/> - result has the dimension of the lowest input dimension</item>
+        /// <item><see cref="SpatialFunction.Union"/> - result has the dimension of the highest input dimension</item>
+        /// <item><see cref="SpatialFunction.Difference"/> - result has the dimension of the left-hand input</item>
+        /// <item><see cref="SpatialFunction.SymDifference"/> - result has the dimension of the highest input dimension
         /// (since symDifference is the union of the differences).</item>
         /// </list>
         /// </summary>
-        /// <param name="opCode">The overlay operation being performed</param>
+        /// <param name="overlayOpCode">The overlay operation being performed</param>
         /// <param name="a">An input geometry</param>
         /// <param name="b">An input geometry</param>
         /// <param name="geomFact">The geometry factory being used for the operation</param>
         /// <returns>An empty atomic geometry of the appropriate dimension</returns>
-        public static IGeometry CreateEmptyResult(SpatialFunction opCode, IGeometry a, IGeometry b, IGeometryFactory geomFact)
+        public static IGeometry CreateEmptyResult(SpatialFunction overlayOpCode, IGeometry a, IGeometry b, IGeometryFactory geomFact)
         {
             IGeometry result = null;
-            switch (ResultDimension(opCode, a, b))
+            switch (ResultDimension(overlayOpCode, a, b))
             {
                 case Dimension.False:
                     result = geomFact.CreateGeometryCollection(new IGeometry[0]);

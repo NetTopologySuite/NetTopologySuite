@@ -48,7 +48,8 @@ namespace NetTopologySuite.Operation.Union
         /// Computes the geometric union of a <see cref="IList{IGeometry}"/>
         /// </summary>
         /// <param name="geoms">A collection of geometries</param>
-        /// <returns>The union of the geometries</returns>
+        /// <returns>The union of the geometries, 
+        /// or <c>null</c> if the input is empty</returns>
         public static IGeometry Union(IList<IGeometry> geoms)
         {
             var op = new UnaryUnionOp(geoms);
@@ -59,11 +60,11 @@ namespace NetTopologySuite.Operation.Union
         /// Computes the geometric union of a <see cref="IList{IGeometry}"/><para/>
         /// If no input geometries were provided but a <see cref="IGeometryFactory"/> was provided, 
         /// an empty <see cref="IGeometryCollection"/> is returned.
-        /// Otherwise, the return value is <c>null</c>.
         /// </summary>
         /// <param name="geoms">A collection of geometries</param>
         /// <param name="geomFact">The geometry factory to use if the collection is empty</param>
-        /// <returns>The union of the geometries</returns>
+        /// <returns>The union of the geometries
+        /// or an empty GEOMETRYCOLLECTION</returns>
         public static IGeometry Union(IList<IGeometry> geoms, IGeometryFactory geomFact)
         {
             var op = new UnaryUnionOp(geoms, geomFact);
@@ -74,7 +75,8 @@ namespace NetTopologySuite.Operation.Union
         /// (which may be a <see cref="IGeometryCollection"/>).
         /// </summary>
         /// <param name="geom">A geometry to union</param>
-        /// <returns>The union of the elements of the geometry</returns>
+        /// <returns>The union of the elements of the geometry
+        /// or an empty GEOMETRYCOLLECTION</returns>
         public static IGeometry Union(IGeometry geom)
         {
             var op = new UnaryUnionOp(geom);
