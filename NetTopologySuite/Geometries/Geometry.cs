@@ -1746,12 +1746,14 @@ namespace NetTopologySuite.Geometries
         /// Computes the union of all the elements of this geometry.
         /// </summary>
         /// <remarks>
-        /// <c>Union</c> supports <see cref="IGeometryCollection"/>s (which the other overlay operations currently do not).</remarks>
+        /// This method supports <see cref="IGeometryCollection"/>s (which the other overlay operations currently do not).</remarks>
         /// <remarks>
         /// The result obeys the following contract:
         /// <list type="Bullet">
         /// <item>Unioning a set of <see cref="ILineString"/>s has the effect of fully noding and dissolving the linework.</item>
-        /// <item>Unioning a set of <see cref="IPolygon"/>s will always return a <see cref="IPolygonal"/> geometry (unlike <see cref="Union(IGeometry)"/>), which may return geometrys of lower dimension if a topology collapse occurred.</item>
+        /// <item>Unioning a set of <see cref="IPolygon"/>s always returns a <see cref="IPolygonal"/> geometry 
+        /// (unlike <see cref="Union(IGeometry)"/>), which may return geometries of lower dimension if a topology 
+        /// collapse occurred).</item>
         /// </list>
         /// </remarks>
         /// <exception cref="TopologyException">Thrown if a robustness error occurs</exception>
