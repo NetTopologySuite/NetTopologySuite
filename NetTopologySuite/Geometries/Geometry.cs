@@ -509,19 +509,19 @@ namespace NetTopologySuite.Geometries
                       Dimension dim = Dimension;
                       if (dim == Dimension.Point)
                       {
-                          CentroidPoint cent = new CentroidPoint();
+                          var cent = new CentroidPoint();
                           cent.Add(this);
                           centPt = cent.Centroid;
                       }
                       else if (dim == Dimension.Curve)
                       {
-                          CentroidLine cent = new CentroidLine();
+                          var cent = new CentroidLine();
                           cent.Add(this);
                           centPt = cent.Centroid;
                       }
                       else
                       {
-                          CentroidArea cent = new CentroidArea();
+                          var cent = new CentroidArea();
                           cent.Add(this);
                           centPt = cent.Centroid;
                       }
