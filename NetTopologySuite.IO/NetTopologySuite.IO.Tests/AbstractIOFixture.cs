@@ -32,9 +32,15 @@ namespace NetTopologySuite.IO.Tests
         [TestFixtureSetUp]
         public virtual void OnFixtureSetUp()
         {
-            this.CheckAppConfigPresent();
-            
-            this.CreateTestStore();
+            try
+            {
+                this.CheckAppConfigPresent();
+                this.CreateTestStore();
+            }
+            catch (Exception ex)
+            {
+                throw new IgnoreException("Fixture setup failed", ex);
+            }
         }
 
         [TestFixtureTearDown]

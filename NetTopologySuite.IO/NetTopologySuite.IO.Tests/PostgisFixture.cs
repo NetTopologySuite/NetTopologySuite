@@ -13,7 +13,7 @@
         {
             // NOTE: insert a valid connection string to a postgis db
             if (kvcc["PostGisConnectionString"] == null)
-                kvcc.Add("PostGisConnectionString", "Server=127.0.0.1;Port=5432;Database=obe;User Id=postgres;Password=1.Kennwort;");            
+                kvcc.Add("PostGisConnectionString", "Server=ivv-sqlt3.ivv-aachen.de;Port=5432;Database=obe;Integrated Security=SSPI;");            
         }
 
         protected override void ReadAppConfigInternal(AppSettingsReader asr)
@@ -34,7 +34,6 @@
                 }
             }
         }
-
 
         protected override void CreateTestStore()
         {
