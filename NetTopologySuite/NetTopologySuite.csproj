@@ -131,6 +131,7 @@
     <Compile Include="IO\WKBHexFileReader.cs" />
     <Compile Include="Mathematics\Plane3D.cs" />
     <Compile Include="Mathematics\Vector3D.cs" />
+    <Compile Include="Noding\SimpleSegmentSetMutualIntersector.cs" />
     <Compile Include="NtsGeometryServices.cs" />
     <Compile Include="Index\Strtree\BoundablePair.cs" />
     <Compile Include="Index\Strtree\GeometryItemDistance.cs" />

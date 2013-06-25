@@ -49,11 +49,11 @@ namespace NetTopologySuite.Index.Chain
         /// <param name="context"></param>
         public static IList<MonotoneChain> GetChains(Coordinate[] pts, object context)
         {
-            IList<MonotoneChain> mcList = new List<MonotoneChain>();
-            int[] startIndex = GetChainStartIndices(pts);
-            for (int i = 0; i < startIndex.Length - 1; i++)
+            var mcList = new List<MonotoneChain>();
+            var startIndex = GetChainStartIndices(pts);
+            for (var i = 0; i < startIndex.Length - 1; i++)
             {
-                MonotoneChain mc = new MonotoneChain(pts, startIndex[i], startIndex[i + 1], context);                
+                var mc = new MonotoneChain(pts, startIndex[i], startIndex[i + 1], context);                
                 mcList.Add(mc);
             }
             return mcList;

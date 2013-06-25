@@ -190,8 +190,7 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             IList<ISegmentString> lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
 
-            LineIntersector li = new RobustLineIntersector();
-            SegmentIntersectionDetector intDetector = new SegmentIntersectionDetector(li);
+            var intDetector = new SegmentIntersectionDetector();
             intDetector.FindAllIntersectionTypes = true;
             prepPoly.IntersectionFinder.Intersects(lineSegStr, intDetector);
 

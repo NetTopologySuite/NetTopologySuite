@@ -17,19 +17,19 @@ namespace NetTopologySuite.Geometries.Utilities
         ///</summary>
         /// <param name="geom">The Geometry from which to extract</param>
         /// <returns>A list of Coordinates</returns>
-        public static IList<Coordinate> GetCoordinates(IGeometry geom)
+        public static List<Coordinate> GetCoordinates(IGeometry geom)
         {
-            IList<Coordinate> coords = new List<Coordinate>();
+            var coords = new List<Coordinate>();
             geom.Apply(new ComponentCoordinateExtracter(coords));
             return coords;
         }
 
-        private readonly IList<Coordinate> _coords;
+        private readonly List<Coordinate> _coords;
 
         ///<summary>
         /// Constructs a LineExtracterFilter with a list in which to store LineStrings found.
         ///</summary>
-        public ComponentCoordinateExtracter(IList<Coordinate> coords)
+        public ComponentCoordinateExtracter(List<Coordinate> coords)
         {
             _coords = coords;
         }

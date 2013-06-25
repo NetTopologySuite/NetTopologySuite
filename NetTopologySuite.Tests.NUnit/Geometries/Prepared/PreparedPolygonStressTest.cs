@@ -7,9 +7,10 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 {
     /// <summary>
-    /// Stress tests <see cref="PreparedPolygon"> for contains operation.
+    /// Stress tests <see cref="PreparedPolygon"/> for correctness of <see cref="PreparedPolygon.Contains(IGeometry)"/> and
+    /// <see cref="PreparedPolygon.Intersects(IGeometry)"/> operation.
     /// </summary>
-    /// <author>Owner</author>
+    /// <author>Martin Davis</author>
     public class PreparedPolygonPredicateStressTest
     {
         bool testFailed = false;

@@ -11,6 +11,8 @@ namespace NetTopologySuite.Geometries.Prepared
     /// <para>This class does <b>not</b> support MultiPolygons which are non-valid
     /// (e.g. with overlapping elements).
     /// </para>
+    /// <para/>
+    /// Instances of this class are thread-safe and immutable.
     /// </summary>
     /// <author>mbdavis</author>
     public class PreparedPolygon : BasicPreparedGeometry

@@ -12,12 +12,13 @@ namespace NetTopologySuite.Algorithm.Locate
     /// a <see cref="IPolygonal"/> geometry, using indexing for efficiency.
     /// This algorithm is suitable for use in cases where
     /// many points will be tested against a given area.
+    /// <para/>
+    /// Thread-safe and immutable.
     ///</summary>
     /// <author>Martin Davis</author>
     public class IndexedPointInAreaLocator : IPointOnGeometryLocator
     {
-        private IGeometry _areaGeom;
-        private IntervalIndexedGeometry _index;
+        private readonly IntervalIndexedGeometry _index;
 
         ///<summary>
         /// Creates a new locator for a given <see cref="IGeometry"/>.
@@ -25,14 +26,8 @@ namespace NetTopologySuite.Algorithm.Locate
         /// <param name="g">the Geometry to locate in</param>
         public IndexedPointInAreaLocator(IGeometry g)
         {
-            _areaGeom = g;
             if (!(g is IPolygonal))
                 throw new ArgumentException("Argument must be Polygonal");
-            BuildIndex(g);
-        }
-
-        private void BuildIndex(IGeometry g)
-        {
             _index = new IntervalIndexedGeometry(g);
         }
 

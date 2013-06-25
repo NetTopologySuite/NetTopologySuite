@@ -15,8 +15,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
         private const int MaxIter = 1;
 
         private static readonly int NumAoiPts = 2000;
-        private const int NumLines = 5000;
-        private const int NumLinePts = 1000;
+        private const int NumLines = 500;
+        private const int NumLinePts = 100;
 
         private static readonly IPrecisionModel Pm = new PrecisionModel();
         private static readonly IGeometryFactory Fact = new GeometryFactory(Pm, 0);

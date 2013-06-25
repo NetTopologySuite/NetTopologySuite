@@ -9,16 +9,14 @@ namespace NetTopologySuite.Noding
     /// if one exists.  Only a single intersection is recorded.
     ///</summary>
     /// <remarks>
-    /// This strategy can be configured to search for proper intersections.
-    /// In this case, the presence of any intersection will still be recorded,
+    /// This strategy can be configured to search for <b>proper</b> intersections.
+    /// In this case, the presence of <i>any</i> intersection will still be recorded,
     /// but searching will continue until either a proper intersection has been found
     /// or no intersections are detected.
     /// </remarks>
     public class SegmentIntersectionDetector : ISegmentIntersector
     {
         private readonly LineIntersector _li;
-        private bool _findProper;
-        private bool _findAllTypes;
 
         private bool _hasIntersection;
         private bool _hasProperIntersection;
@@ -28,7 +26,15 @@ namespace NetTopologySuite.Noding
         private Coordinate[] _intSegments;
 
         ///<summary>
-        /// Creates an intersection finder 
+        /// Creates an intersection finder using a <see cref="RobustLineIntersector"/>
+        ///</summary>
+        public SegmentIntersectionDetector()
+            :this(new RobustLineIntersector())
+        {
+        }
+
+        ///<summary>
+        /// Creates an intersection finder using a given <see cref="LineIntersector"/>
         ///</summary>
         /// <param name="li">The LineIntersector to use</param>
         public SegmentIntersectionDetector(LineIntersector li)
@@ -36,8 +42,15 @@ namespace NetTopologySuite.Noding
             _li = li;
         }
 
-        public bool FindProper { get { return _findProper; } set { _findProper = value; } }
-        public bool FindAllIntersectionTypes { get { return _findAllTypes; } set { _findAllTypes = value; } }
+        /// <summary>
+        /// Gets or sets whether processing must continue until a proper intersection is found
+        /// </summary>
+        public bool FindProper { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether processing can terminate once any intersection is found.
+        /// </summary>
+        public bool FindAllIntersectionTypes { get; set; }
 
         ///<summary>
         /// Tests whether an intersection was found.
@@ -125,7 +138,7 @@ namespace NetTopologySuite.Noding
                  * OR no location has yet been recorded
                  * save the location data
                  */
-                var saveLocation = !(_findProper && !isProper);
+                var saveLocation = !(FindProper && !isProper);
                 /*
                 bool saveLocation = true;
                 if (_findProper && !isProper) saveLocation = false;
@@ -147,6 +160,11 @@ namespace NetTopologySuite.Noding
             }
         }
 
+        /// <summary>
+        /// Tests whether processing can terminate,
+        /// because all required information has been obtained
+        /// (e.g. an intersection of the desired type has been detected).
+        /// </summary>
         public bool IsDone
         {
             get
@@ -155,7 +173,7 @@ namespace NetTopologySuite.Noding
                * If finding all types, we can stop
                * when both possible types have been found.
                */
-                if (_findAllTypes)
+                if (FindAllIntersectionTypes)
                 {
                     return _hasProperIntersection && _hasNonProperIntersection;
                 }
@@ -163,7 +181,7 @@ namespace NetTopologySuite.Noding
                 /*
                  * If searching for a proper intersection, only stop if one is found
                  */
-                if (_findProper)
+                if (FindProper)
                 {
                     return _hasProperIntersection;
                 }

@@ -17,7 +17,7 @@ namespace NetTopologySuite.Geometries.Prepared
     public class BasicPreparedGeometry : IPreparedGeometry
     {
         private readonly IGeometry _baseGeom;
-        private readonly IList<Coordinate> _representativePts;  // List<Coordinate>
+        private readonly List<Coordinate> _representativePts;  // List<Coordinate>
 
         public BasicPreparedGeometry(IGeometry geom)
         {
@@ -30,11 +30,13 @@ namespace NetTopologySuite.Geometries.Prepared
         ///<summary>
         /// Gets the list of representative points for this geometry. 
         /// One vertex is included for every component of the geometry
-        /// (i.e. including one for every ring of polygonal geometries)
-        ///</summary>
+        /// (i.e. including one for every ring of polygonal geometries).
+        /// <para/>
+        /// Do not modify the returned list!
+        /// </summary>
         public IList<Coordinate> RepresentativePoints
         {
-            get { return _representativePts; }
+            get { return _representativePts.AsReadOnly(); }
         }
 
         ///<summary>

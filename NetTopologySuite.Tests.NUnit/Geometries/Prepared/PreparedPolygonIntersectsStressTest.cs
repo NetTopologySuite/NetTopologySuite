@@ -11,8 +11,10 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 {
     ///<summary>
-    /// Stress tests fast intersector to confirm it find intersections correctly.
+    /// Stress tests <see cref="PreparedPolygon.Intersects(IGeometry)"/>
+    /// to confirm it finds intersections correctly.
     ///</summary>
+    /// <author>Martin Davis</author>
     public class PreparedPolygonIntersectsStressTest
     {
         const int MAX_ITER = 10000;

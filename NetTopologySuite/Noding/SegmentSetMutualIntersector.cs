@@ -5,30 +5,31 @@ namespace NetTopologySuite.Noding
     ///<summary>
     /// An intersector for the red-blue intersection problem.
     /// In this class of line arrangement problem,
-    /// two disjoint sets of linestrings are provided.
-    /// It is assumed that within
-    /// each set, no two linestrings intersect except possibly at their endpoints.
-    /// Implementations can take advantage of this fact to optimize processing.
+    /// two disjoint sets of linestrings are intersected.
+    /// <para/>
+    /// Implementing classes must provide a way
+    /// of supplying the base set of segment strings to 
+    /// test against (e.g. in the constructor, 
+    /// for straightforward thread-safety).
+    /// <para/>
+    /// In order to allow optimizing processing, 
+    /// the following condition is assumed to hold for each set:
+    /// <list Type="Bullet">
+    /// <item>the only intersection between any two linestrings occurs at their endpoints.</item>
+    /// </list>
+    /// Implementations can take advantage of this fact to optimize processing
+    /// (i.e by avoiding testing for intersections between linestrings
+    /// belonging to the same set).
     ///</summary>
-    public abstract class SegmentSetMutualIntersector
+    public interface ISegmentSetMutualIntersector
     {
-        ///<summary>
-        /// Gets/Sets the <see cref="ISegmentIntersector"/> to use with this intersector.
-        ///</summary>
-        /// <remarks>
-        /// The SegmentIntersector will either rocord or add intersection nodes
-        /// for the input segment strings.
-        /// </remarks>
-        public ISegmentIntersector SegmentIntersector { get; protected internal set; }
-
-        ///<summary>
-        ///</summary>
-        /// <param name="segStrings">A collection of <see cref="ISegmentString" />s to node</param>
-        public abstract void SetBaseSegments(IList<ISegmentString> segStrings);
-
-        ///<summary>
-        /// Computes the intersections for two collections of <see cref="ISegmentString"/>s.
-        ///</summary>
-        public abstract void Process(IList<ISegmentString> segStrings);
+        /// <summary>
+        /// Computes the intersections with a given set of <see cref="ISegmentString"/>s,
+        /// using the supplied <see cref="ISegmentIntersector"/>.
+        /// </summary>
+        /// <param name="segmentStrings">A collection of <see cref="ISegmentString"/>s to node</param>
+        /// <param name="segmentIntersector">The intersection detector to either record intersection occurences
+        /// or add intersection nodes to the input segment strings.</param>
+        void Process(ICollection<ISegmentString> segmentStrings, ISegmentIntersector segmentIntersector);
     }
 }
