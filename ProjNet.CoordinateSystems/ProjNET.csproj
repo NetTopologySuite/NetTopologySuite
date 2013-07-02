@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ProjNet</RootNamespace>
     <AssemblyName>ProjNet</AssemblyName>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>scskey.snk</AssemblyOriginatorKeyFile>
     <SccProjectName>
     </SccProjectName>
