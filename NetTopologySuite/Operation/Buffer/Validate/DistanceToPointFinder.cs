@@ -9,9 +9,6 @@ namespace NetTopologySuite.Operation.Buffer.Validate
     ///</summary>
     public static class DistanceToPointFinder
     {
-        // used for point-line distance calculation
-        private static readonly LineSegment TempSegment = new LineSegment();
-
         public static void ComputeDistance(IGeometry geom, Coordinate pt, PointPairDistance ptDist)
         {
             if (geom is ILineString)
@@ -41,11 +38,12 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         public static void ComputeDistance(ILineString line, Coordinate pt, PointPairDistance ptDist)
         {
             var coords = line.Coordinates;
+            var tempSegment = new LineSegment();
             for (int i = 0; i < coords.Length - 1; i++)
             {
-                TempSegment.SetCoordinates(coords[i], coords[i + 1]);
+                tempSegment.SetCoordinates(coords[i], coords[i + 1]);
                 // this is somewhat inefficient - could do better
-                var closestPt = TempSegment.ClosestPoint(pt);
+                var closestPt = tempSegment.ClosestPoint(pt);
                 ptDist.SetMinimum(closestPt, pt);
             }
         }

@@ -6,16 +6,15 @@ using NUnit.Framework;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Prepared;
 using NetTopologySuite.Geometries.Utilities;
-using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
 {
     public class PreparedPolygonIntersectsPerformanceTest
     {
-        private const int MaxIter = 1;
+        private const int MaxIter = 10;
 
         private static readonly int NumAoiPts = 2000;
-        private const int NumLines = 500;
+        private const int NumLines = 10000;
         private const int NumLinePts = 100;
 
         private static readonly IPrecisionModel Pm = new PrecisionModel();
@@ -29,10 +28,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             Test(500);
             Test(1000);
             Test(2000);
+            Test(4000);
             /*
-            Test(100);
-            Test(1000);
-            Test(2000);
             Test(4000);
             Test(8000);
             */
@@ -69,7 +66,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             gsf.Size = size;
             gsf.NumPoints = nPts;
             gsf.ArmLengthRatio = 0.1;
-            gsf.NumArms = 20;
+            gsf.NumArms = 50;
             var poly = gsf.CreateSineStar();
             return poly;
         }
@@ -107,7 +104,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             return circle.Boundary;
         }
 
-        private static void Test(IGeometry g, IList<IGeometry> lines)
+        private static void Test(IGeometry g, ICollection<IGeometry> lines)
         {
             Console.WriteLine("AOI # pts: " + g.NumPoints
                               + "      # lines: " + lines.Count
@@ -121,6 +118,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             var time3 = 0L;
             for (int i = 0; i < MaxIter; i++)
             {
+                Console.WriteLine(string.Format("\nIteration {0}", i));
                 sw.Start();
                 var count1 = TestPrepGeomNotCached(g, lines);
                 sw.Stop();

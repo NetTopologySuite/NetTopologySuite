@@ -84,15 +84,28 @@ namespace NetTopologySuite.Algorithm
         /// <param name="geometry">The geometry to analyze.</param>
         private void AddPolygon(IGeometry geometry)
         {
-            ILineString bisector = HorizontalBisector(geometry);
+            if (geometry.IsEmpty)
+                return;
 
-            IGeometry intersections = bisector.Intersection(geometry);
-            IGeometry widestIntersection = WidestGeometry(intersections);
+            Coordinate intPt;
+            double width;
 
-            double width = widestIntersection.EnvelopeInternal.Width;
+            var bisector = HorizontalBisector(geometry);
+            if (bisector.Length == 0.0)
+            {
+                width = 0;
+                intPt = bisector.Coordinate;
+            }
+            else
+            {
+                var intersections = bisector.Intersection(geometry);
+                var widestIntersection = WidestGeometry(intersections);
+                width = widestIntersection.EnvelopeInternal.Width;
+                intPt = Centre(widestIntersection.EnvelopeInternal);
+            }
             if (_interiorPoint == null || width > _maxWidth)
             {
-                _interiorPoint = Centre(widestIntersection.EnvelopeInternal);
+                _interiorPoint = intPt;
                 _maxWidth = width;
             }
         }
@@ -152,17 +165,14 @@ namespace NetTopologySuite.Algorithm
             return new Coordinate(Avg(envelope.MinX, envelope.MaxX), Avg(envelope.MinY, envelope.MaxY));
         }
 
-        /**
-         * Finds a safe bisector Y ordinate
-         * by projecting to the Y axis
-         * and finding the Y-ordinate interval
-         * which contains the centre of the Y extent.
-         * The centre of this interval is returned as the bisector Y-ordinate.
-         * 
-         * @author mdavis
-         *
-         */
-
+        /// <summary>
+        /// Finds a safe bisector Y ordinate
+        /// by projecting to the Y axis
+        /// and finding the Y-ordinate interval
+        /// which contains the centre of the Y extent.
+        /// The centre of this interval is returned as the bisector Y-ordinate.
+        /// </summary>
+        /// <author>Martin Davis</author>
         private class SafeBisectorFinder
         {
             public static double GetBisectorY(IPolygon poly)
@@ -174,14 +184,18 @@ namespace NetTopologySuite.Algorithm
             private readonly IPolygon _poly;
 
             private readonly double _centreY;
-            private double _hiY = double.MaxValue;
-            private double _loY = -double.MaxValue;
+            private double _hiY;// = double.MaxValue;
+            private double _loY;// = -double.MaxValue;
 
             private SafeBisectorFinder(IPolygon poly)
             {
                 _poly = poly;
 
-                _centreY = Avg(poly.EnvelopeInternal.MinY, poly.EnvelopeInternal.MaxY);
+                // initialize using extremal values
+                var env = poly.EnvelopeInternal;
+                _hiY = env.MaxY;
+                _loY = env.MinY;
+                _centreY = Avg(_loY, _hiY);
             }
 
             private double GetBisectorY()

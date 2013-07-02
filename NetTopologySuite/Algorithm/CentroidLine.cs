@@ -1,5 +1,5 @@
+using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -9,6 +9,7 @@ namespace NetTopologySuite.Algorithm
     /// Compute the average of the midpoints
     /// of all line segments weighted by the segment length.
     /// </summary>
+    [Obsolete("Use Centroid instead")]
     public class CentroidLine
     {
         private readonly Coordinate _centSum = new Coordinate();

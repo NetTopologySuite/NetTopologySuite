@@ -18,7 +18,7 @@ namespace NetTopologySuite.Noding
         * The SpatialIndex used should be something that supports envelope
         * (range) queries efficiently (such as a Quadtree or STRtree).
         */
-        private readonly ISpatialIndex<MonotoneChain> _index = new STRtree<MonotoneChain>();
+        private readonly STRtree<MonotoneChain> _index = new STRtree<MonotoneChain>();
 
         /// <summary>
         /// Constructs a new intersector for a given set of <see cref="ISegmentString"/>s.
@@ -44,6 +44,9 @@ namespace NetTopologySuite.Noding
             {
                 AddToIndex(segmentString);
             }
+            // build index to ensure thread-safety
+            _index.Build();
+
         }
 
         private void AddToIndex(ISegmentString segStr)

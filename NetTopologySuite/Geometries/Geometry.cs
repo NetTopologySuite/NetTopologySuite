@@ -53,8 +53,8 @@ namespace NetTopologySuite.Geometries
     /// sometimes many ways of representing a point set as a <c>Geometry</c>.
     /// The SFS does not specify an unambiguous representation of a given point set
     /// returned from a spatial analysis method. One goal of NTS is to make this
-    /// specification precise and unambiguous. NTS will use a canonical form for
-    /// <c>Geometry</c>s returned from spatial analysis methods. The canonical
+    /// specification precise and unambiguous. NTS uses a canonical form for
+    /// <c>Geometry</c>s returned from overlay methods. The canonical
     /// form is a <c>Geometry</c> which is simple and noded:
     /// Simple means that the Geometry returned will be simple according to
     /// the NTS definition of <c>IsSimple</c>.
@@ -132,17 +132,18 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        private static Type[] _sortedClasses;/* = new[] 
-        {
-            typeof(Point),
-            typeof(MultiPoint),
-            typeof(LineString),
-            typeof(LinearRing),
-            typeof(MultiLineString),
-            typeof(Polygon),
-            typeof(MultiPolygon),
-            typeof(GeometryCollection),    
-        };                    */
+        private static readonly Type[] _sortedClasses = new []
+                                 {
+                                     typeof (Point),
+                                     typeof (MultiPoint),
+                                     typeof (LineString),
+                                     typeof (LinearRing),
+                                     typeof (MultiLineString),
+                                     typeof (Polygon),
+                                     typeof (MultiPolygon),
+                                     typeof (GeometryCollection),
+                                 };
+
 
         //FObermaier: not *readonly* due to SRID property in geometryfactory
         private /*readonly*/ IGeometryFactory _factory;
@@ -505,26 +506,7 @@ namespace NetTopologySuite.Geometries
                           return Factory.CreatePoint((Coordinate)null);
                       }
 
-                      Coordinate centPt = null;
-                      Dimension dim = Dimension;
-                      if (dim == Dimension.Point)
-                      {
-                          var cent = new CentroidPoint();
-                          cent.Add(this);
-                          centPt = cent.Centroid;
-                      }
-                      else if (dim == Dimension.Curve)
-                      {
-                          var cent = new CentroidLine();
-                          cent.Add(this);
-                          centPt = cent.Centroid;
-                      }
-                      else
-                      {
-                          var cent = new CentroidArea();
-                          cent.Add(this);
-                          centPt = cent.Centroid;
-                      }
+                      var centPt = Algorithm.Centroid.GetCentroid(this);
                       return CreatePointFromInternalCoord(centPt, this);
                   }
               }
@@ -739,7 +721,8 @@ namespace NetTopologySuite.Geometries
         /// <remarks>
         /// The <c>Touches</c> predicate has the following equivalent definitions:
         /// <list type="Bullet">
-        /// <item>The geometries have at least one point in common, but their interiors do not intersect</item>
+        /// <item>The geometries have at least one point in common, 
+        /// but their interiors do not intersect</item>
         /// <item>The DE-9IM Intersection Matrix for the two geometries matches  
         /// at least one of the following patterns
         /// <list type="Bullet">
@@ -748,7 +731,9 @@ namespace NetTopologySuite.Geometries
         /// <item><c>F***T****</c>.</item>
         /// </list></item>
         /// </list>
-        /// If both geometries have dimension 0, this predicate returns <c>false</c>
+        /// If both geometries have dimension 0, the predicate returns <c>false</c>, 
+        /// since points have only interiors.
+        /// This predicate is symmetric.
         /// </remarks>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
         /// <returns>
@@ -2212,31 +2197,13 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                if (_sortedClasses == null)
-                    InitSortedClasses();
-                for (int i = 0; i < _sortedClasses.Length; i++)                
-                    if (GetType().Equals(_sortedClasses[i]))                                        
+                for (var i = 0; i < _sortedClasses.Length; i++)                
+                    if (GetType() == _sortedClasses[i])                                        
                         return i;                                    
                 Assert.ShouldNeverReachHere(String.Format("Class not supported: {0}", GetType().FullName));
                 return -1;
             }
         }
-
-        private static void InitSortedClasses()
-        {
-            _sortedClasses = new []
-                                 {
-                                     typeof (Point),
-                                     typeof (MultiPoint),
-                                     typeof (LineString),
-                                     typeof (LinearRing),
-                                     typeof (MultiLineString),
-                                     typeof (Polygon),
-                                     typeof (MultiPolygon),
-                                     typeof (GeometryCollection),
-                                 };
-        }
-
 
         /// <summary>
         /// 

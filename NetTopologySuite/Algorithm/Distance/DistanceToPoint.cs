@@ -4,16 +4,13 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Algorithm.Distance
 {
     ///<summary>
-    /// Computes the Euclidean distance (L2 metric) from a Point to a Geometry.
+    /// Computes the Euclidean distance (L2 metric) from a <see cref="Coordinate"/> to a <see cref="IGeometry"/>.
     ///</summary>
     /// <remarks>
-    /// Also computes two points which are separated by the distance.
+    /// Also computes two points on the geometry which are separated by the distance found.
     /// </remarks>
     public static class DistanceToPoint
     {
-        // used for point-line distance calculation
-        private static readonly LineSegment TempSegment = new LineSegment();
-
         public static void ComputeDistance(IGeometry geom, Coordinate pt, PointPairDistance ptDist)
         {
             if (geom is ILineString)
@@ -43,11 +40,12 @@ namespace NetTopologySuite.Algorithm.Distance
         public static void ComputeDistance(ILineString line, Coordinate pt, PointPairDistance ptDist)
         {
             var coords = line.Coordinates;
+            var tempSegment = new LineSegment();
             for (var i = 0; i < coords.Length - 1; i++)
             {
-                TempSegment.SetCoordinates(coords[i], coords[i + 1]);
+                tempSegment.SetCoordinates(coords[i], coords[i + 1]);
                 // this is somewhat inefficient - could do better
-                var closestPt = TempSegment.ClosestPoint(pt);
+                var closestPt = tempSegment.ClosestPoint(pt);
                 ptDist.SetMinimum(closestPt, pt);
             }
         }

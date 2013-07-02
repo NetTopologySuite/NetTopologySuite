@@ -251,13 +251,13 @@ namespace NetTopologySuite.Algorithm
         /// The orientation of a point relative to a directed line segment indicates
         /// which way you turn to get to q after travelling from p1 to p2.
         /// </summary>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        /// <param name="q"></param>
+        /// <param name="p1">The first vertex of the line segment</param>
+        /// <param name="p2">The second vertex of the line segment</param>
+        /// <param name="q">The point to compute the relative orientation of</param>
         /// <returns> 
         /// 1 if q is counter-clockwise from p1-p2,
-        /// -1 if q is clockwise from p1-p2,
-        /// 0 if q is collinear with p1-p2-
+        /// or -1 if q is clockwise from p1-p2,
+        /// or 0 if q is collinear with p1-p2
         /// </returns>
         public static int ComputeOrientation(Coordinate p1, Coordinate p2, Coordinate q) 
         {

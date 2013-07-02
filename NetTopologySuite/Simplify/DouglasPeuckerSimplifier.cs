@@ -12,6 +12,7 @@ namespace NetTopologySuite.Simplify
     /// Simple lines are not guaranteed to remain simple after simplification.
     /// All geometry types are handled. 
     /// Empty and point geometries are returned unchanged.
+    /// Empty geometry components are deleted.
     /// <para/>
     /// Note that in general D-P does not preserve topology -
     /// e.g. polygons can be split, collapse to lines or disappear
@@ -20,6 +21,7 @@ namespace NetTopologySuite.Simplify
     /// To simplify point while preserving topology use TopologySafeSimplifier.
     /// (However, using D-P is significantly faster).
     /// </remarks>
+    /// <seealso cref="TopologyPreservingSimplifier"/>
     public class DouglasPeuckerSimplifier
     {
         /// <summary>
@@ -128,8 +130,11 @@ namespace NetTopologySuite.Simplify
             /// <returns></returns>
             protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
             {
-                Coordinate[] inputPts = coords.ToCoordinateArray();
-                Coordinate[] newPts = DouglasPeuckerLineSimplifier.Simplify(inputPts, _container.DistanceTolerance);
+                var inputPts = coords.ToCoordinateArray();
+                var newPts = inputPts.Length == 0 
+                    ? new Coordinate[0] 
+                    : DouglasPeuckerLineSimplifier.Simplify(inputPts, _container.DistanceTolerance);
+                    
                 return Factory.CoordinateSequenceFactory.Create(newPts);
             }
 
@@ -141,7 +146,11 @@ namespace NetTopologySuite.Simplify
             /// <returns></returns>
             protected override IGeometry TransformPolygon(IPolygon geom, IGeometry parent)
             {
-                IGeometry rawGeom = base.TransformPolygon(geom, parent);
+                // empty geometries are simply removed
+                if (geom.IsEmpty)
+                    return null;
+
+                var rawGeom = base.TransformPolygon(geom, parent);
                 // don't try and correct if the parent is going to do this
                 if (parent is IMultiPolygon) 
                     return rawGeom;

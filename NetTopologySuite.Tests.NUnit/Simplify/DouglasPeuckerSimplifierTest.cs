@@ -152,6 +152,26 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
         }
 
         [Test]
+        public void TestMultiLineStringWithEmpty()
+        {
+            new GeometryOperationValidator(
+                DPSimplifierResult.GetResult(
+                    "MULTILINESTRING( EMPTY, (0 0, 50 0, 70 0, 80 0, 100 0), (0 0, 50 1, 60 1, 100 0) )",
+                    10.0))
+                .Test();
+        }
+
+        [Test]
+        public void TestMultiPolygonWithEmpty()
+        {
+            new GeometryOperationValidator(
+                DPSimplifierResult.GetResult(
+                    "MULTIPOLYGON (EMPTY, ((-36 91.5, 4.5 91.5, 4.5 57.5, -36 57.5, -36 91.5)), ((25.5 57.5, 61.5 57.5, 61.5 23.5, 25.5 23.5, 25.5 57.5)))",
+                    10.0))
+                .Test();
+        }
+
+        [Test]
         public void TestGeometryCollection()
         {
             const string geomStr = "GEOMETRYCOLLECTION ("

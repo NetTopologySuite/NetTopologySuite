@@ -82,7 +82,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns> a transformation for the reflection</returns>
         public static AffineTransformation ReflectionInstance(double x0, double y0, double x1, double y1)
         {
-            AffineTransformation trans = new AffineTransformation();
+            var trans = new AffineTransformation();
             trans.SetToReflection(x0, y0, x1, y1);
             return trans;
         }
@@ -96,7 +96,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns> a transformation for the reflection</returns>
         public static AffineTransformation ReflectionInstance(double x, double y)
         {
-            AffineTransformation trans = new AffineTransformation();
+            var trans = new AffineTransformation();
             trans.SetToReflection(x, y);
             return trans;
         }
@@ -114,7 +114,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns> a transformation for the rotation</returns>
         public static AffineTransformation RotationInstance(double theta)
         {
-            return RotationInstance(System.Math.Sin(theta), System.Math.Cos(theta));
+            return RotationInstance(Math.Sin(theta), Math.Cos(theta));
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns> a transformation for the rotation</returns>
         public static AffineTransformation RotationInstance(double sinTheta, double cosTheta)
         {
-            AffineTransformation trans = new AffineTransformation();
+            var trans = new AffineTransformation();
             trans.SetToRotation(sinTheta, cosTheta);
             return trans;
         }
@@ -150,7 +150,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns> a transformation for the rotation</returns>
         public static AffineTransformation RotationInstance(double theta, double x, double y)
         {
-            return RotationInstance(System.Math.Sin(theta), System.Math.Cos(theta), x, y);
+            return RotationInstance(Math.Sin(theta), Math.Cos(theta), x, y);
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns> a transformation for the rotation</returns>
         public static AffineTransformation RotationInstance(double sinTheta, double cosTheta, double x, double y)
         {
-            AffineTransformation trans = new AffineTransformation();
+            var trans = new AffineTransformation();
             trans.SetToRotation(sinTheta, cosTheta, x, y);
             return trans;
         }
@@ -182,7 +182,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns> a transformation for the scaling</returns>
         public static AffineTransformation ScaleInstance(double xScale, double yScale)
         {
-            AffineTransformation trans = new AffineTransformation();
+            var trans = new AffineTransformation();
             trans.SetToScale(xScale, yScale);
             return trans;
         }
@@ -197,7 +197,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>A transformation for the scaling</returns>
         public static AffineTransformation ScaleInstance(double xScale, double yScale, double x, double y)
         {
-            AffineTransformation trans = new AffineTransformation();
+            var trans = new AffineTransformation();
             trans.Translate(-x, -y);
             trans.Scale(xScale, yScale);
             trans.Translate(x, y);
@@ -212,7 +212,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns> a tranformation for the shear</returns>
         public static AffineTransformation ShearInstance(double xShear, double yShear)
         {
-            AffineTransformation trans = new AffineTransformation();
+            var trans = new AffineTransformation();
             trans.SetToShear(xShear, yShear);
             return trans;
         }
@@ -225,7 +225,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns> a tranformation for the translation</returns>
         public static AffineTransformation TranslationInstance(double x, double y)
         {
-            AffineTransformation trans = new AffineTransformation();
+            var trans = new AffineTransformation();
             trans.SetToTranslation(x, y);
             return trans;
         }

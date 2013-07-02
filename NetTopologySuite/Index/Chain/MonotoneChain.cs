@@ -40,11 +40,12 @@ namespace NetTopologySuite.Index.Chain
     /// </para>
     /// <para>
     /// This implementation of MonotoneChains uses the concept of internal iterators
+    /// (<see cref="MonotoneChainSelectAction"/> and <see cref="MonotoneChainOverlapAction"/>)
     /// to return the resultsets for the above queries.
     /// This has time and space advantages, since it
     /// is not necessary to build lists of instantiated objects to represent the segments
     /// returned by the query.
-    /// However, it does mean that the queries are not thread-safe.
+    /// Queries made in this manner are thread-safe.
     /// </para>
     ///</remarks>
     public class MonotoneChain

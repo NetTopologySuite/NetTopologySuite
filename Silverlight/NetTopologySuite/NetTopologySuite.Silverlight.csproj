@@ -60,6 +60,9 @@
     <Compile Include="..\..\NetTopologySuite\Algorithm\CentralEndpointIntersector.cs">
       <Link>Algorithm\CentralEndpointIntersector.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Centroid.cs">
+      <Link>Algorithm\Centroid.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\Algorithm\CentroidArea.cs">
       <Link>Algorithm\CentroidArea.cs</Link>
     </Compile>
@@ -1366,7 +1369,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkReference="5770daa9-84e5-4770-af43-f6b815894368" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="5770daa9-84e5-4770-af43-f6b815894368" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

@@ -33,6 +33,7 @@ namespace NetTopologySuite.Simplify
     /// <para/>
     /// All geometry types are handled. 
     /// Empty and point geometries are returned unchanged.
+    /// Empty geometry components are deleted.
     /// <para/>
     /// The simplification uses a maximum-distance difference algorithm
     /// similar to the Douglas-Peucker algorithm.
@@ -59,7 +60,7 @@ namespace NetTopologySuite.Simplify
         /// <returns></returns>
         public static IGeometry Simplify(IGeometry geom, double distanceTolerance)
         {
-            TopologyPreservingSimplifier tss = new TopologyPreservingSimplifier(geom);
+            var tss = new TopologyPreservingSimplifier(geom);
             tss.DistanceTolerance = distanceTolerance;
             return tss.GetResultGeometry();
         }
@@ -129,9 +130,10 @@ namespace NetTopologySuite.Simplify
             protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
             {
                 // for linear components (including rings), simplify the linestring
-                if (parent is ILineString)
+                var s = parent as ILineString;
+                if (s != null)
                 {
-                    TaggedLineString taggedLine = _container._lineStringMap[(ILineString)parent];
+                    var taggedLine = _container._lineStringMap[s];
                     return CreateCoordinateSequence(taggedLine.ResultCoordinates);
                 }
                 // for anything else (e.g. points) just copy the coordinates
@@ -166,6 +168,7 @@ namespace NetTopologySuite.Simplify
                 var line = geom as ILineString;
                 if (line != null)
                 {
+                    if (line.IsEmpty) return;
                     var minSize = line.IsClosed ? 4 : 2;
         
                     var taggedLine = new TaggedLineString(line, minSize);

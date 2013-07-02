@@ -1,5 +1,5 @@
+using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -8,10 +8,11 @@ namespace NetTopologySuite.Algorithm
     /// Algorithm:
     /// Compute the average of all points.
     /// </summary>
+    [Obsolete("Use Centroid instead")]
     public class CentroidPoint
     {
-        private int ptCount;
-        private readonly Coordinate centSum = new Coordinate();
+        private int _ptCount;
+        private readonly Coordinate _centSum = new Coordinate();
 
         /// <summary> 
         /// Adds the point(s) defined by a Geometry to the centroid total.
@@ -25,9 +26,11 @@ namespace NetTopologySuite.Algorithm
 
             else if(geom is IGeometryCollection) 
             {
-                IGeometryCollection gc = (IGeometryCollection) geom;
-                foreach (IGeometry geometry in gc.Geometries)
+                var gc = (IGeometryCollection) geom;
+                foreach (var geometry in gc.Geometries)
+                {
                     Add(geometry);
+                }
             }
         }
 
@@ -37,9 +40,9 @@ namespace NetTopologySuite.Algorithm
         /// <param name="pt">A coordinate.</param>
         public void Add(Coordinate pt)
         {
-            ptCount += 1;
-            centSum.X += pt.X;
-            centSum.Y += pt.Y;
+            _ptCount += 1;
+            _centSum.X += pt.X;
+            _centSum.Y += pt.Y;
         }
 
         /// <summary>
@@ -50,8 +53,8 @@ namespace NetTopologySuite.Algorithm
             get
             {
                 Coordinate cent = new Coordinate();
-                cent.X = centSum.X / ptCount;
-                cent.Y = centSum.Y / ptCount;
+                cent.X = _centSum.X / _ptCount;
+                cent.Y = _centSum.Y / _ptCount;
                 return cent;
             }
         }

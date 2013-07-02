@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -24,7 +23,7 @@ namespace NetTopologySuite.Algorithm
     /// will be returned.
     /// </para>
     ///</remarks>
-    /// 
+    [Obsolete("Use Centroid instead")]
     public class CentroidArea
     {
         private Coordinate _basePt;                            // the point all triangles are based at
@@ -45,15 +44,17 @@ namespace NetTopologySuite.Algorithm
         {
             if (geom is IPolygon) 
             {
-                IPolygon poly = (IPolygon) geom;
+                var poly = (IPolygon) geom;
                 BasePoint = poly.ExteriorRing.GetCoordinateN(0);
                 Add(poly);
             }
             else if (geom is IGeometryCollection) 
             {
-                IGeometryCollection gc = (IGeometryCollection) geom;
-                foreach (IGeometry geometry in gc.Geometries)
-                    Add(geometry);
+                var gc = (IGeometryCollection) geom;
+                for (var i = 0; i < gc.NumGeometries; i++)
+                {
+                    Add(gc.GetGeometryN(i));
+                }
             }
         }
 
@@ -76,8 +77,8 @@ namespace NetTopologySuite.Algorithm
         {
             get
             {
-                Coordinate cent = new Coordinate();
-                if (System.Math.Abs(_areasum2) > 0.0)
+                var cent = new Coordinate();
+                if (Math.Abs(_areasum2) > 0.0)
                 {
                     cent.X = _cg3.X / 3 / _areasum2;
                     cent.Y = _cg3.Y / 3 / _areasum2;
@@ -169,7 +170,6 @@ namespace NetTopologySuite.Algorithm
         {
             c.X = p1.X + p2.X + p3.X;
             c.Y = p1.Y + p2.Y + p3.Y;
-            return;
         }
 
         /// <summary>

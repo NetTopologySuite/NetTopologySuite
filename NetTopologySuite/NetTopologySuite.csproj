@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="Algorithm\BoundaryNodeRule.cs" />
     <Compile Include="Algorithm\CentralEndpointIntersector.cs" />
+    <Compile Include="Algorithm\Centroid.cs" />
     <Compile Include="Algorithm\CentroidArea.cs" />
     <Compile Include="Algorithm\CentroidLine.cs" />
     <Compile Include="Algorithm\CentroidPoint.cs" />

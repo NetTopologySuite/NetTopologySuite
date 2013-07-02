@@ -57,6 +57,7 @@
     <Compile Include="Algorithm\ConvexHullTest.cs" />
     <Compile Include="Algorithm\Distance\DiscreteHausdorffDistanceTest.cs" />
     <Compile Include="Algorithm\IndexedPointInAreaStressTest.cs" />
+    <Compile Include="Algorithm\InteriorPointTest.cs" />
     <Compile Include="Algorithm\IsCCWTest.cs" />
     <Compile Include="Algorithm\LocatePointInRingTest.cs" />
     <Compile Include="Algorithm\MCPointInRingTest.cs" />
