@@ -51,6 +51,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\SharedAssemblyVersion.cs">
+      <Link>Properties\SharedAssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="CustomConverterBase.cs" />
     <Compile Include="ICustomConverter.cs" />
     <Compile Include="InternalImpl\DecimalPropertyInfo.cs" />

@@ -50,6 +50,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\SharedAssemblyVersion.cs">
+      <Link>Properties\SharedAssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="ASCIIEncoding.cs" />
     <Compile Include="CP10029.cs" />
     <Compile Include="CP1250.cs" />

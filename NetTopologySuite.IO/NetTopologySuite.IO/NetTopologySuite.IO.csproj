@@ -45,6 +45,9 @@
   <ItemGroup>
     <Compile Include="Geometries\CoordinateBuffer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\SharedAssemblyVersion.cs">
+      <Link>Properties\SharedAssemblyVersion.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\NetTopologySuite\nts.snk">

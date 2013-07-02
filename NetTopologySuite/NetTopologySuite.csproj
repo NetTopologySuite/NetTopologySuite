@@ -78,6 +78,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyVersion.cs">
+      <Link>Properties\SharedAssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="Algorithm\BoundaryNodeRule.cs" />
     <Compile Include="Algorithm\CentralEndpointIntersector.cs" />
     <Compile Include="Algorithm\Centroid.cs" />

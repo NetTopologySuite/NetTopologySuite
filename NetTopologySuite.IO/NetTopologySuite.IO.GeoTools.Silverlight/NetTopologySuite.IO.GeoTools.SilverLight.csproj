@@ -53,6 +53,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\SharedAssemblyVersion.cs">
+      <Link>Properties\SharedAssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="..\NetTopologySuite.IO.GeoTools\BigEndianBinaryReader.cs">
       <Link>BigEndianBinaryReader.cs</Link>
     </Compile>

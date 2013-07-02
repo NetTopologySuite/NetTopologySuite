@@ -14,7 +14,6 @@ using System.Runtime.InteropServices;
 #endif
 [assembly: AssemblyCompany("NetTopologySuite - Team")]
 [assembly: AssemblyProduct("NetTopologySuite.IO.GeoTools")]
-[assembly: AssemblyCopyright("Copyright © 2007 - 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -25,15 +24,3 @@ using System.Runtime.InteropServices;
 
 // Die folgende GUID bestimmt die ID der Typbibliothek, wenn dieses Projekt für COM verfügbar gemacht wird
 [assembly: Guid("4a7d4557-c72c-4dc9-8e21-d319c8d0d180")]
-
-// Versionsinformationen für eine Assembly bestehen aus den folgenden vier Werten:
-//
-//      Hauptversion
-//      Nebenversion 
-//      Buildnummer
-//      Revision
-//
-// Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern 
-// übernehmen, indem Sie "*" eingeben:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.13.0.0")]

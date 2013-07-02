@@ -39,6 +39,9 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyVersion.cs">
+      <Link>Properties\SharedAssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="FontGlyphReader.cs" />
     <Compile Include="GeometryCollectionGraphicsPath.cs" />
     <Compile Include="IdentityPointTransformation.cs" />

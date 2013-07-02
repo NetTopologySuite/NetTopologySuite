@@ -46,6 +46,9 @@
     <Compile Include="ShapeGeometryType.cs" />
     <Compile Include="ShapeReader.cs" />
     <Compile Include="ShapeWriter.cs" />
+    <Compile Include="..\..\SharedAssemblyVersion.cs">
+      <Link>Properties\SharedAssemblyVersion.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\GeoAPI\GeoAPI\GeoAPI.csproj">

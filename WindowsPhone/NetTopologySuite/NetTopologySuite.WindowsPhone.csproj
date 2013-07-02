@@ -1286,6 +1286,9 @@
     <Compile Include="..\..\NetTopologySuite\Utilities\UniqueCoordinateArrayFilter.cs">
       <Link>Utilities\UniqueCoordinateArrayFilter.cs</Link>
     </Compile>
+    <Compile Include="..\..\SharedAssemblyVersion.cs">
+      <Link>SharedAssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="FrameworkReplacements\ApplicationException.cs" />
     <Compile Include="FrameworkReplacements\ICloneable.cs" />
     <Compile Include="Extension\ICoordinateEx.cs" />
@@ -1362,7 +1365,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="5770daa9-84e5-4770-af43-f6b815894368" />
+      <UserProperties ProjectLinkReference="5770daa9-84e5-4770-af43-f6b815894368" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

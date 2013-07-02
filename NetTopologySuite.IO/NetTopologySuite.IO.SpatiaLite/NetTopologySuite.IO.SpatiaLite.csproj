@@ -35,6 +35,9 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\SharedAssemblyVersion.cs">
+      <Link>Properties\SharedAssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="GaiaGeoEnums.cs" />
     <Compile Include="GaiaGeoIO.cs" />
     <Compile Include="GaiaGeoReader.cs" />
