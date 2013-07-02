@@ -12,7 +12,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NetTopologySuite</RootNamespace>
     <AssemblyName>NetTopologySuite</AssemblyName>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <SccProjectName>
     </SccProjectName>
     <SccLocalPath>
