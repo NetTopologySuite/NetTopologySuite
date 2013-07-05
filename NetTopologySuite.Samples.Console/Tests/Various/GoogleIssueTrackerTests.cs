@@ -11,7 +11,7 @@ namespace NetTopologySuite.Tests.Various
                 GeoAPI.GeometryServiceProvider.Instance = NtsGeometryServices.Instance;
         }
 
-        [Test]
+        [Test(Description = "WKBWriter added 4 extra bytes which caused picky SqlServer to reject polygons")]
         public void TestIssue147()
         {
             var wkt = "POLYGON ((-94.16 42.25, -94.15 42.26, -94.14 42.25, -94.16 42.25))";

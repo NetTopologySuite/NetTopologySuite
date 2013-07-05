@@ -129,6 +129,9 @@ namespace NetTopologySuite.Simplify
             /// <returns></returns>
             protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
             {
+                // for empty coordinate sequences return null
+                if (coords.Count == 0) return null;
+
                 // for linear components (including rings), simplify the linestring
                 var s = parent as ILineString;
                 if (s != null)
