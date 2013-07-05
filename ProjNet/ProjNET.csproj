@@ -42,7 +42,16 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <GeoAPILocation>
+    </GeoAPILocation>
   </PropertyGroup>
+  <Choose>
+    <When Condition=" '$(SolutionName)'=='ProjNet4GeoAPI'">
+      <PropertyGroup>
+        <GeoAPILocation>..\</GeoAPILocation>
+      </PropertyGroup>
+    </When>
+  </Choose>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>

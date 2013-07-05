@@ -12,7 +12,7 @@
     <RootNamespace>ProjNet</RootNamespace>
     <AssemblyName>ProjNet.Silverlight</AssemblyName>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\ProjNet.CoordinateSystems\scskey.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\ProjNet\scskey.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
@@ -34,118 +34,118 @@
     <Reference Include="System.Windows" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\AngularUnit.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\AngularUnit.cs">
       <Link>CoordinateSystems\AngularUnit.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\CoordinateSystem.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\CoordinateSystem.cs">
       <Link>CoordinateSystems\CoordinateSystem.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\CoordinateSystemFactory.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\CoordinateSystemFactory.cs">
       <Link>CoordinateSystems\CoordinateSystemFactory.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Datum.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Datum.cs">
       <Link>CoordinateSystems\Datum.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Ellipsoid.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Ellipsoid.cs">
       <Link>CoordinateSystems\Ellipsoid.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\GeocentricCoordinateSystem.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\GeocentricCoordinateSystem.cs">
       <Link>CoordinateSystems\GeocentricCoordinateSystem.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\GeographicCoordinateSystem.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\GeographicCoordinateSystem.cs">
       <Link>CoordinateSystems\GeographicCoordinateSystem.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\GeographicTransform.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\GeographicTransform.cs">
       <Link>CoordinateSystems\GeographicTransform.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\HorizontalCoordinateSystem.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\HorizontalCoordinateSystem.cs">
       <Link>CoordinateSystems\HorizontalCoordinateSystem.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\HorizontalDatum.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\HorizontalDatum.cs">
       <Link>CoordinateSystems\HorizontalDatum.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Info.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Info.cs">
       <Link>CoordinateSystems\Info.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\LinearUnit.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\LinearUnit.cs">
       <Link>CoordinateSystems\LinearUnit.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\PrimeMeridian.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\PrimeMeridian.cs">
       <Link>CoordinateSystems\PrimeMeridian.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\ProjectedCoordinateSystem.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\ProjectedCoordinateSystem.cs">
       <Link>CoordinateSystems\ProjectedCoordinateSystem.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projection.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Projection.cs">
       <Link>CoordinateSystems\Projection.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\AlbersProjection.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Projections\AlbersProjection.cs">
       <Link>CoordinateSystems\Projections\AlbersProjection.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\CassiniSoldnerProjection.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Projections\CassiniSoldnerProjection.cs">
       <Link>CoordinateSystems\Projections\CassiniSoldnerProjection.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\HotineObliqueMercatorProjection.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Projections\HotineObliqueMercatorProjection.cs">
       <Link>CoordinateSystems\Projections\HotineObliqueMercatorProjection.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\KrovakProjection.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Projections\KrovakProjection.cs">
       <Link>CoordinateSystems\Projections\KrovakProjection.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\LambertConformalConic.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Projections\LambertConformalConic.cs">
       <Link>CoordinateSystems\Projections\LambertConformalConic.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\MapProjection.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Projections\MapProjection.cs">
       <Link>CoordinateSystems\Projections\MapProjection.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\Mercator.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Projections\Mercator.cs">
       <Link>CoordinateSystems\Projections\Mercator.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\PolyconicProjection.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Projections\PolyconicProjection.cs">
       <Link>CoordinateSystems\Projections\PolyconicProjection.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\ProjectionParameterSet.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Projections\ProjectionParameterSet.cs">
       <Link>CoordinateSystems\Projections\ProjectionParameterSet.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\ProjectionsRegistry.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Projections\ProjectionsRegistry.cs">
       <Link>CoordinateSystems\Projections\ProjectionsRegistry.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Projections\TransverseMercator.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Projections\TransverseMercator.cs">
       <Link>CoordinateSystems\Projections\TransverseMercator.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Transformations\ConcatenatedTransform.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Transformations\ConcatenatedTransform.cs">
       <Link>CoordinateSystems\Transformations\ConcatenatedTransform.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Transformations\CoordinateTransformation.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Transformations\CoordinateTransformation.cs">
       <Link>CoordinateSystems\Transformations\CoordinateTransformation.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Transformations\CoordinateTransformationFactory.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Transformations\CoordinateTransformationFactory.cs">
       <Link>CoordinateSystems\Transformations\CoordinateTransformationFactory.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Transformations\DatumTransform.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Transformations\DatumTransform.cs">
       <Link>CoordinateSystems\Transformations\DatumTransform.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Transformations\GeocentricTransform.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Transformations\GeocentricTransform.cs">
       <Link>CoordinateSystems\Transformations\GeocentricTransform.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Transformations\GeographicTransform.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Transformations\GeographicTransform.cs">
       <Link>CoordinateSystems\Transformations\GeographicTransform.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Transformations\MathTransform.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Transformations\MathTransform.cs">
       <Link>CoordinateSystems\Transformations\MathTransform.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\CoordinateSystems\Unit.cs">
+    <Compile Include="..\ProjNet\CoordinateSystems\Unit.cs">
       <Link>CoordinateSystems\Unit.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\IO\CoordinateSystems\CoordinateSystemWktReader.cs">
+    <Compile Include="..\ProjNet\IO\CoordinateSystems\CoordinateSystemWktReader.cs">
       <Link>IO\CoordinateSystems\CoordinateSystemWktReader.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\IO\CoordinateSystems\StreamTokenizer.cs">
+    <Compile Include="..\ProjNet\IO\CoordinateSystems\StreamTokenizer.cs">
       <Link>IO\CoordinateSystems\StreamTokenizer.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\IO\CoordinateSystems\TokenType.cs">
+    <Compile Include="..\ProjNet\IO\CoordinateSystems\TokenType.cs">
       <Link>IO\CoordinateSystems\TokenType.cs</Link>
     </Compile>
-    <Compile Include="..\ProjNet.CoordinateSystems\IO\CoordinateSystems\WKTStreamTokenizer.cs">
+    <Compile Include="..\ProjNet\IO\CoordinateSystems\WKTStreamTokenizer.cs">
       <Link>IO\CoordinateSystems\WKTStreamTokenizer.cs</Link>
     </Compile>
     <Compile Include="Extensions.cs" />
