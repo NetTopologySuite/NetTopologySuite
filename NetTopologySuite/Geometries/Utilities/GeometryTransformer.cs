@@ -195,8 +195,10 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns></returns>
         protected virtual IGeometry TransformLinearRing(ILinearRing geom, IGeometry parent)
         {
-            ICoordinateSequence seq = TransformCoordinates(geom.CoordinateSequence, geom);
-            int seqSize = seq.Count;
+            var seq = TransformCoordinates(geom.CoordinateSequence, geom);
+            if (seq == null) return null;
+            
+            var seqSize = seq.Count;
             // ensure a valid LinearRing
             if (seqSize > 0 && seqSize < 4 && !_preserveType)
                 return Factory.CreateLineString(seq);
