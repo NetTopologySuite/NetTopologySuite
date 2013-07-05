@@ -204,7 +204,7 @@
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
       <Name>NetTopologySuite</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ProjNet\ProjNET.csproj">
+    <ProjectReference Include="..\ProjNet\ProjNet\ProjNET.csproj">
       <Project>{E028BDD2-55E1-4E5F-BE31-35FAEC8D6428}</Project>
       <Name>ProjNET</Name>
     </ProjectReference>
