@@ -1,7 +1,13 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <SolutionFile>NetTopologySuite.VS2010.sln</SolutionFile>
+    <SolutionFile>NetTopologySuite.sln</SolutionFile>
     <SolutionDir>$(MSBuildProjectDirectory)</SolutionDir>
+    <AsmVersion>1.13.1</AsmVersion>
+    <AsmFileVersion>$(AsmVersion)</AsmFileVersion>
+    <NuGetOutDir>"$(MSBuildProjectDirectory)\Release"</NuGetOutDir>
+    <GeoAPIVersion>1.7.1.1</GeoAPIVersion>
+    <ProjNetVersion>1.3.0.2</ProjNetVersion>
+    <NuGetCommand>"$(MSBuildProjectDirectory)\.nuget\nuget.exe" pack</NuGetCommand>
   </PropertyGroup>
 
   <Target Name="CleanDebug">
@@ -31,8 +37,30 @@
 "/>
   </Target>
 
-  <Target Name="BuildRelease" DependsOnTargets="Information">
-    <MSBuild Projects="$(SolutionFile)" 
+  <Target Name="SetVersion" DependsOnTargets="Information">
+    <ItemGroup>
+      <AssemblyAttributes Include="AssemblyVersion">
+        <_Parameter1>$(AsmVersion)</_Parameter1>
+      </AssemblyAttributes>
+      <AssemblyAttributes Include="AssemblyFileVersion">
+        <_Parameter1>$(AsmFileVersion)</_Parameter1>
+      </AssemblyAttributes>
+    </ItemGroup>
+    <WriteCodeFragment Language="C#" OutputFile="SharedAssemblyVersion.cs" AssemblyAttributes="@(AssemblyAttributes)" />
+  </Target>
+  
+  <Target Name="BuildRelease" DependsOnTargets="SetVersion">
+    <MSBuild Projects="$(SolutionFile)"
+	         Targets="Silverlight\PowerCollections_Silverlight;Silverlight\GeoAPI_Silverlight;Silverlight\NetTopologySuite_Silverlight;Silverlight\ProjNET_Silverlight"
+			 Properties="Configuration=Release"
+             RunEachTargetSeparately="true" 
+			 />
+    <MSBuild Projects="$(SolutionFile)"
+	         Targets="WindowsPhone\PowerCollections_WindowsPhone;WindowsPhone\GeoAPI_WindowsPhone;WindowsPhone\NetTopologySuite_WindowsPhone;WindowsPhone\ProjNET_WindowsPhone"
+			 Properties="Configuration=Release"
+             RunEachTargetSeparately="true" 
+			 />
+	<MSBuild Projects="$(SolutionFile)" 
              Targets="PowerCollections;GeoAPI;ProjNET;NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008" 
              Properties="Configuration=Release;TargetFrameworkVersion=v2.0;TargetFrameworkProfile=;DefineConstants=TRACE;NET20;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v2.0\" 
              RunEachTargetSeparately="true" 
@@ -59,7 +87,15 @@
              ContinueOnError="true" 
              />
   </Target>
-  
+
+  <Target Name="BuildSolution" DependsOnTargets="Information">
+    <MSBuild Projects="$(SolutionFile)"
+             Properties="Configuration=Release;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\sln\"
+             RunEachTargetSeparately="true"
+             ContinueOnError="true"
+             />
+  </Target>
+
   <Target Name="RebuildRelease" DependsOnTargets="CleanRelease;BuildRelease"/>
   <Target Name="RebuildRelease403" DependsOnTargets="RebuildRelease"/>
 
@@ -71,6 +107,15 @@
              />
   </Target>
 
+  <Target Name="NuGetPack" DependsOnTargets="BuildSolution;BuildRelease;BuildRelease403">
+    <Exec Command="$(NuGetCommand) GeoAPI\GeoAPI.nuspec -Version $(GeoAPIVersion) -outputdirectory $(NuGetOutDir)"/>
+    <Exec Command="$(NuGetCommand) NTS.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
+    <Exec Command="$(NuGetCommand) NTS.IO.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
+    <Exec Command="$(NuGetCommand) NTS.IO.SpatiaLite.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
+    <Exec Command="$(NuGetCommand) NTS.IO.SqlServer.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
+    <Exec Command="$(NuGetCommand) ProjNet\ProjNet.nuspec -Version $(ProjNetVersion) -outputdirectory $(NuGetOutDir)"/>
+  </Target>
+  
   <!-- 
   
   
