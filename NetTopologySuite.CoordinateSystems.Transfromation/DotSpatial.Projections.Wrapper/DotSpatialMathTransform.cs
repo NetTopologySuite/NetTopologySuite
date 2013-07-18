@@ -232,7 +232,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projectio
             for (var i = 0; i < coordinateSequence.Count; i++)
             {
                 ret.SetOrdinate(i, Ordinate.X, xy[j++]);
-                ret.SetOrdinate(i, Ordinate.X, xy[j++]);
+                ret.SetOrdinate(i, Ordinate.Y, xy[j++]);
                 if (z != null && DimTarget>2) 
                     ret.SetOrdinate(i, Ordinate.Z, z[i]);
                 else 
