@@ -214,7 +214,7 @@ namespace NetTopologySuite.Algorithm
                 var seq = line.CoordinateSequence;
                 for (var i = 0; i < seq.Count; i++)
                 {
-                    double y = seq.Count;
+                    double y = seq.GetY(i);
                     UpdateInterval(y);
                 }
             }
