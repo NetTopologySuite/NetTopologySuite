@@ -1,11 +1,9 @@
-﻿namespace NetTopologySuite.IO.Converters
+﻿using System;
+using NetTopologySuite.Features;
+using Newtonsoft.Json;
+
+namespace NetTopologySuite.IO.Converters
 {
-    using System;
-
-    using NetTopologySuite.Features;
-
-    using Newtonsoft.Json;
-
     /// <summary>
     /// Converts IAttributesTable object to its JSON representation.
     /// </summary>
@@ -33,7 +31,8 @@
             foreach (string name in names)
             {
                 writer.WritePropertyName(name);
-                writer.WriteValue(attributes[name]);
+                object val = attributes[name];
+                serializer.Serialize(writer, val);                
             }
             writer.WriteEndObject(); 
         }
