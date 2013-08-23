@@ -1,10 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
-using NUnit.Framework;
 using NetTopologySuite.CoordinateSystems;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
+using NUnit.Framework;
 
 namespace NetTopologySuite.IO.Tests.GeoJSON
 {
@@ -22,11 +22,11 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         public void GeoJsonSerializerFeatureCollectionTest()
         {
             StringBuilder sb = new StringBuilder();
-            var writer = new StringWriter(sb);
-            var attributes = new AttributesTable();
+            StringWriter writer = new StringWriter(sb);
+            AttributesTable attributes = new AttributesTable();
             attributes.AddAttribute("test1", "value1");
-            var feature = new Feature(new Point(23, 56), attributes);
-            var featureCollection = new FeatureCollection(new Collection<Feature> {feature})
+            Feature feature = new Feature(new Point(23, 56), attributes);
+            FeatureCollection featureCollection = new FeatureCollection(new Collection<Feature> {feature})
                                         {CRS = new NamedCRS("name1")};
             GeoJsonSerializer serializer = new GeoJsonSerializer();
             serializer.Serialize(writer, featureCollection);
@@ -41,10 +41,10 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         public void GeoJsonSerializerFeatureTest()
         {
             StringBuilder sb = new StringBuilder();
-            var writer = new StringWriter(sb);
-            var attributes = new AttributesTable();
+            StringWriter writer = new StringWriter(sb);
+            AttributesTable attributes = new AttributesTable();
             attributes.AddAttribute("test1", "value1");
-            var feature = new Feature(new Point(23, 56), attributes);
+            Feature feature = new Feature(new Point(23, 56), attributes);
             GeoJsonSerializer serializer = new GeoJsonSerializer();
             serializer.Serialize(writer, feature);
             writer.Flush();
@@ -58,7 +58,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         public void GeoJsonSerializerGeometryTest()
         {
             StringBuilder sb = new StringBuilder();
-            var writer = new StringWriter(sb);
+            StringWriter writer = new StringWriter(sb);
             GeoJsonSerializer serializer = new GeoJsonSerializer();
             serializer.Serialize(writer, new Point(23, 56));
             writer.Flush();
@@ -72,8 +72,8 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         public void GeoJsonSerializerAttributesTest()
         {
             StringBuilder sb = new StringBuilder();
-            var writer = new StringWriter(sb);
-            var attributes = new AttributesTable();
+            StringWriter writer = new StringWriter(sb);
+            AttributesTable attributes = new AttributesTable();
             attributes.AddAttribute("test1", "value1");
             GeoJsonSerializer serializer = new GeoJsonSerializer();
             serializer.Serialize(writer, attributes);

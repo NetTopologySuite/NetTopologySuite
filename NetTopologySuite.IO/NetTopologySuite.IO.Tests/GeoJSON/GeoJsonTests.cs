@@ -1,17 +1,13 @@
-﻿namespace NetTopologySuite.IO.Tests.GeoJSON
+﻿using System;
+using System.IO;
+using System.Text;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
+using Newtonsoft.Json;
+using NUnit.Framework;
+
+namespace NetTopologySuite.IO.Tests.GeoJSON
 {
-    using System;
-    using System.IO;
-    using System.Text;
-
-    using GeoAPI.Geometries;
-
-    using NUnit.Framework;
-
-    using NetTopologySuite.Geometries;
-
-    using Newtonsoft.Json;
-
     [TestFixture]
     public class Test
     {
@@ -72,22 +68,22 @@
         [Test]
         public void TestAllGeometries()
         {
-            this.PerformGeometryTest(this._point);
-            this.PerformGeometryTest(this._lineString);
-            this.PerformGeometryTest(this._polygon1);
-            this.PerformGeometryTest(this._polygon2);
-            this.PerformGeometryTest(this._multiPoint);
-            this.PerformGeometryTest(this._multiLineString);
-            this.PerformGeometryTest(this._multiPolygon);
-            this.PerformGeometryTest(new GeometryCollection(new[] { (IGeometry)this._point, this._lineString, this._polygon2 }));
+            PerformGeometryTest(_point);
+            PerformGeometryTest(_lineString);
+            PerformGeometryTest(_polygon1);
+            PerformGeometryTest(_polygon2);
+            PerformGeometryTest(_multiPoint);
+            PerformGeometryTest(_multiLineString);
+            PerformGeometryTest(_multiPolygon);
+            PerformGeometryTest(new GeometryCollection(new[] { (IGeometry)_point, _lineString, _polygon2 }));
         }
 
         public void PerformGeometryTest(IGeometry geom)
         {
-            var s = new GeoJsonSerializer();
-            var sb = new StringBuilder();
+            GeoJsonSerializer s = new GeoJsonSerializer();
+            StringBuilder sb = new StringBuilder();
             s.Serialize(new JsonTextWriter(new StringWriter(sb)), geom);
-            var result = sb.ToString();
+            string result = sb.ToString();
             Console.WriteLine(result);
 
             Deserialize(result, geom);
@@ -95,8 +91,8 @@
 
         private static void Deserialize(string result, IGeometry geom)
         {
-            var s = new GeoJsonSerializer();
-            var r = new JsonTextReader(new StringReader(result));
+            GeoJsonSerializer s = new GeoJsonSerializer();
+            JsonTextReader r = new JsonTextReader(new StringReader(result));
 
             IGeometry des;
 
@@ -124,36 +120,36 @@
         [Test]
         public void TestCoordinateSerialize()
         {
-            var coordinate = new Coordinate(1, 1);
-            var g = new GeoJsonSerializer();
-            var sb = new StringBuilder();
+            Coordinate coordinate = new Coordinate(1, 1);
+            GeoJsonSerializer g = new GeoJsonSerializer();
+            StringBuilder sb = new StringBuilder();
             g.Serialize(new JsonTextWriter(new StringWriter(sb)), coordinate);
 
-            System.Console.WriteLine(sb.ToString());
+            Console.WriteLine(sb.ToString());
         }
 
         [Test]
         public void TestCoordinatesSerialize()
         {
-            var coordinates = new Coordinate[4];
-            for (var i = 0; i < coordinates.Length; i++)
+            Coordinate[] coordinates = new Coordinate[4];
+            for (int i = 0; i < coordinates.Length; i++)
             {
                 coordinates[i] = new Coordinate(i, i, i);
             }
-            var sb = new StringBuilder();
-            var g = new GeoJsonSerializer();
+            StringBuilder sb = new StringBuilder();
+            GeoJsonSerializer g = new GeoJsonSerializer();
             g.Serialize(new JsonTextWriter(new StringWriter(sb)), coordinates);
 
-            System.Console.WriteLine(sb.ToString());
+            Console.WriteLine(sb.ToString());
         }
 
         [Test]
         public void TestCoordinateDeserialize()
         {
             string json = "{coordinates:[1.0, 1.0]}";
-            var s = new GeoJsonSerializer();
-            var c = s.Deserialize<Coordinate>(new JsonTextReader(new StringReader(json)));
-            System.Console.WriteLine(c.ToString());
+            GeoJsonSerializer s = new GeoJsonSerializer();
+            Coordinate c = s.Deserialize<Coordinate>(new JsonTextReader(new StringReader(json)));
+            Console.WriteLine(c.ToString());
 
         }
     }

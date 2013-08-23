@@ -82,30 +82,22 @@
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             reader.Read();
-            
+
             Debug.Assert(reader.TokenType == JsonToken.PropertyName);
             Debug.Assert((string)reader.Value == "coordinates");
 
-            if (objectType == typeof(Coordinate))
-            {
-                return ReadJsonCoordinate(reader);
-            }
-
-            if (typeof(IEnumerable<Coordinate>).IsAssignableFrom(objectType))
-            {
-                return ReadJsonCoordinates(reader);
-            }
-
-            if (typeof(List<Coordinate[]>).IsAssignableFrom(objectType))
-            {
-                return ReadJsonCoordinatesEnumerable(reader);
-            }
-            if (typeof(List<List<Coordinate[]>>).IsAssignableFrom(objectType))
-            {
-                return ReadJsonCoordinatesEnumerable2(reader);
-            }
-
-            throw new Exception();
+            object result;
+            if (objectType == typeof (Coordinate))
+                result = ReadJsonCoordinate(reader);
+            else if (typeof (IEnumerable<Coordinate>).IsAssignableFrom(objectType))
+                result = ReadJsonCoordinates(reader);
+            else if (typeof (List<Coordinate[]>).IsAssignableFrom(objectType))
+                result = ReadJsonCoordinatesEnumerable(reader);
+            else if (typeof (List<List<Coordinate[]>>).IsAssignableFrom(objectType))
+                result = ReadJsonCoordinatesEnumerable2(reader);
+            else throw new ArgumentException("unmanaged type: " + objectType);
+            reader.Read();
+            return result;
 
         }
 

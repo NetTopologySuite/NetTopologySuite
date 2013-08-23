@@ -1,29 +1,22 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 namespace NetTopologySuite.IO.Converters
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-
-    using GeoAPI.Geometries;
-
-    using NetTopologySuite.Geometries;
-
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
-
     public class GeometryConverter : JsonConverter
     {
         private readonly IGeometryFactory _factory;
-        
-        public GeometryConverter()
-            :this(GeometryFactory.Default)
-        {
-            
-        }
+
+        public GeometryConverter() : this(GeometryFactory.Default) { }
 
         public GeometryConverter(IGeometryFactory geometryFactory)
         {
-            this._factory = geometryFactory;
+            _factory = geometryFactory;
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
@@ -34,10 +27,10 @@ namespace NetTopologySuite.IO.Converters
 
             writer.WriteStartObject();
 
-            GeoJsonObjectType geomType = this.ToGeoJsonObject(geom);
+            GeoJsonObjectType geomType = ToGeoJsonObject(geom);
             writer.WritePropertyName("type");
             writer.WriteValue(Enum.GetName(typeof(GeoJsonObjectType), geomType));
-            
+
             switch (geomType)
             {
                 case GeoJsonObjectType.Point:
@@ -96,62 +89,54 @@ namespace NetTopologySuite.IO.Converters
                 return GeoJsonObjectType.MultiPolygon;
             if (geom is IGeometryCollection)
                 return GeoJsonObjectType.GeometryCollection;
-
             throw new ArgumentException("geom");
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             reader.Read();
-            if (!(reader.TokenType == JsonToken.PropertyName && (string)reader.Value == "type"))
-            {
-                throw new Exception();
-            }
+            if (!(reader.TokenType == JsonToken.PropertyName && (string) reader.Value == "type"))
+                throw new ArgumentException("invalid tpkentype: " + reader.TokenType);
             reader.Read();
             if (reader.TokenType != JsonToken.String)
-            {
-                throw new Exception();
-            }
-
-            GeoJsonObjectType geometryType = (GeoJsonObjectType)Enum.Parse(typeof (GeoJsonObjectType), (string) reader.Value);
+                throw new ArgumentException("invalid tpkentype: " + reader.TokenType);
+            GeoJsonObjectType geometryType = (GeoJsonObjectType)Enum.Parse(typeof(GeoJsonObjectType), (string)reader.Value);
             switch (geometryType)
             {
                 case GeoJsonObjectType.Point:
                     Coordinate coordinate = serializer.Deserialize<Coordinate>(reader);
-                    return this._factory.CreatePoint(coordinate);
-                
+                    return _factory.CreatePoint(coordinate);
+
                 case GeoJsonObjectType.LineString:
                     Coordinate[] coordinates = serializer.Deserialize<Coordinate[]>(reader);
-                    return this._factory.CreateLineString(coordinates);
-                
+                    return _factory.CreateLineString(coordinates);
+
                 case GeoJsonObjectType.Polygon:
                     List<Coordinate[]> coordinatess = serializer.Deserialize<List<Coordinate[]>>(reader);
-                    return this.CreatePolygon(coordinatess);
+                    return CreatePolygon(coordinatess);
 
                 case GeoJsonObjectType.MultiPoint:
                     coordinates = serializer.Deserialize<Coordinate[]>(reader);
-                    return this._factory.CreateMultiPoint(coordinates);
+                    return _factory.CreateMultiPoint(coordinates);
 
                 case GeoJsonObjectType.MultiLineString:
                     coordinatess = serializer.Deserialize<List<Coordinate[]>>(reader);
                     List<ILineString> strings = new List<ILineString>();
                     for (int i = 0; i < coordinatess.Count; i++)
-                        strings.Add(this._factory.CreateLineString(coordinatess[i]));
-                    return this._factory.CreateMultiLineString(strings.ToArray());
-                
+                        strings.Add(_factory.CreateLineString(coordinatess[i]));
+                    return _factory.CreateMultiLineString(strings.ToArray());
+
                 case GeoJsonObjectType.MultiPolygon:
                     List<List<Coordinate[]>> coordinatesss = serializer.Deserialize<List<List<Coordinate[]>>>(reader);
                     List<IPolygon> polygons = new List<IPolygon>();
                     foreach (List<Coordinate[]> coordinateses in coordinatesss)
-                        polygons.Add(this.CreatePolygon(coordinateses));
-                    return this._factory.CreateMultiPolygon(polygons.ToArray());
+                        polygons.Add(CreatePolygon(coordinateses));
+                    return _factory.CreateMultiPolygon(polygons.ToArray());
 
                 case GeoJsonObjectType.GeometryCollection:
                     List<IGeometry> geoms = serializer.Deserialize<List<IGeometry>>(reader);
-                    return this._factory.CreateGeometryCollection(geoms.ToArray());
-                    //ReadJson(reader,)
+                    return _factory.CreateGeometryCollection(geoms.ToArray());                
             }
-
             return null;
         }
 
@@ -166,16 +151,16 @@ namespace NetTopologySuite.IO.Converters
 
         private IPolygon CreatePolygon(IList<Coordinate[]> coordinatess)
         {
-            ILinearRing shell = this._factory.CreateLinearRing(coordinatess[0]);
+            ILinearRing shell = _factory.CreateLinearRing(coordinatess[0]);
             List<ILinearRing> rings = new List<ILinearRing>();
             for (int i = 1; i < coordinatess.Count; i++)
-                rings.Add(this._factory.CreateLinearRing(coordinatess[i]));
-            return this._factory.CreatePolygon(shell, rings.ToArray());
+                rings.Add(_factory.CreateLinearRing(coordinatess[i]));
+            return _factory.CreatePolygon(shell, rings.ToArray());
         }
 
         public override bool CanConvert(Type objectType)
         {
-            return typeof(IGeometry).IsAssignableFrom(objectType) && !objectType.IsAbstract;
+            return typeof(IGeometry).IsAssignableFrom(objectType);
         }
     }
 
@@ -183,16 +168,13 @@ namespace NetTopologySuite.IO.Converters
     {
         private readonly IGeometryFactory _factory;
 
-        public GeometryArrayConverter()
-            :this(GeometryFactory.Default)
-        {
-        }
+        public GeometryArrayConverter() : this(GeometryFactory.Default) { }
 
         public GeometryArrayConverter(IGeometryFactory factory)
         {
-            this._factory = factory;
+            _factory = factory;
         }
-        
+
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             writer.WritePropertyName("geometries");
@@ -228,22 +210,22 @@ namespace NetTopologySuite.IO.Converters
                 switch (geometryType)
                 {
                     case GeoJsonObjectType.Point:
-                        geoms.Add(this._factory.CreatePoint(ToCoordinate(obj.Value<JArray>("coordinates"))));
+                        geoms.Add(_factory.CreatePoint(ToCoordinate(obj.Value<JArray>("coordinates"))));
                         break;
                     case GeoJsonObjectType.LineString:
-                        geoms.Add(this._factory.CreateLineString(ToCoordinates(obj.Value<JArray>("coordinates"))));
+                        geoms.Add(_factory.CreateLineString(ToCoordinates(obj.Value<JArray>("coordinates"))));
                         break;
                     case GeoJsonObjectType.Polygon:
-                        geoms.Add(this.CreatePolygon(ToListOfCoordinates(obj.Value<JArray>("coordinates"))));
+                        geoms.Add(CreatePolygon(ToListOfCoordinates(obj.Value<JArray>("coordinates"))));
                         break;
                     case GeoJsonObjectType.MultiPoint:
-                        geoms.Add(this._factory.CreateMultiPoint(ToCoordinates(obj.Value<JArray>("coordinates"))));
+                        geoms.Add(_factory.CreateMultiPoint(ToCoordinates(obj.Value<JArray>("coordinates"))));
                         break;
                     case GeoJsonObjectType.MultiLineString:
-                        geoms.Add(this.CreateMultiLineString(ToListOfCoordinates(obj.Value<JArray>("coordinates"))));
+                        geoms.Add(CreateMultiLineString(ToListOfCoordinates(obj.Value<JArray>("coordinates"))));
                         break;
                     case GeoJsonObjectType.MultiPolygon:
-                        geoms.Add(this.CreateMultiPolygon(ToListOfListOfCoordinates(obj.Value<JArray>("coordinates"))));
+                        geoms.Add(CreateMultiPolygon(ToListOfListOfCoordinates(obj.Value<JArray>("coordinates"))));
                         break;
                     case GeoJsonObjectType.GeometryCollection:
                         throw new NotSupportedException();
@@ -263,57 +245,57 @@ namespace NetTopologySuite.IO.Converters
         {
             ILineString[] strings = new ILineString[coordinates.Count];
             for (int i = 0; i < coordinates.Count; i++)
-                strings[i] = this._factory.CreateLineString(coordinates[i]);
-            return this._factory.CreateMultiLineString(strings);
+                strings[i] = _factory.CreateLineString(coordinates[i]);
+            return _factory.CreateMultiLineString(strings);
         }
 
         private IPolygon CreatePolygon(List<Coordinate[]> coordinates)
         {
-            ILinearRing shell = this._factory.CreateLinearRing(coordinates[0]);
+            ILinearRing shell = _factory.CreateLinearRing(coordinates[0]);
             ILinearRing[] rings = new ILinearRing[coordinates.Count - 1];
             for (int i = 1; i < coordinates.Count; i++)
-                rings[i - 1] = this._factory.CreateLinearRing(coordinates[i]);
-            return this._factory.CreatePolygon(shell, rings);
+                rings[i - 1] = _factory.CreateLinearRing(coordinates[i]);
+            return _factory.CreatePolygon(shell, rings);
         }
 
         private IMultiPolygon CreateMultiPolygon(List<List<Coordinate[]>> coordinates)
         {
             IPolygon[] polygons = new IPolygon[coordinates.Count];
             for (int i = 0; i < coordinates.Count; i++)
-                polygons[i] = this.CreatePolygon(coordinates[i]);
-            return this._factory.CreateMultiPolygon(polygons);
+                polygons[i] = CreatePolygon(coordinates[i]);
+            return _factory.CreateMultiPolygon(polygons);
         }
-        
-        private static Coordinate ToCoordinate(JArray array)
-            {
-                Coordinate c = new Coordinate {X = (Double) array[0], Y = (Double) array[1]};
-                if (array.Count > 2)
-                    c.Z = (Double)array[2];
-                return c;
-            }
 
-            public static Coordinate[] ToCoordinates(JArray array)
+        private static Coordinate ToCoordinate(JArray array)
+        {
+            Coordinate c = new Coordinate { X = (Double)array[0], Y = (Double)array[1] };
+            if (array.Count > 2)
+                c.Z = (Double)array[2];
+            return c;
+        }
+
+        public static Coordinate[] ToCoordinates(JArray array)
+        {
+            Coordinate[] c = new Coordinate[array.Count];
+            for (int i = 0; i < array.Count; i++)
             {
-                Coordinate[] c = new Coordinate[array.Count];
-                for (int i = 0; i < array.Count; i++)
-                {
-                    c[i] = ToCoordinate((JArray) array[i]);
-                }
-                return c;
+                c[i] = ToCoordinate((JArray)array[i]);
             }
-            public static List<Coordinate[]> ToListOfCoordinates(JArray array)
-            {
-                List<Coordinate[]> c = new List<Coordinate[]>();
-                for (int i = 0; i < array.Count; i++)
-                    c.Add(ToCoordinates((JArray)array[i]));
-                return c;
-            }
-            public static List<List<Coordinate[]>> ToListOfListOfCoordinates(JArray array)
-            {
-                List<List<Coordinate[]>> c = new List<List<Coordinate[]>>();
-                for (int i = 0; i < array.Count; i++)
-                    c.Add(ToListOfCoordinates((JArray)array[i]));
-                return c;
-            }
+            return c;
+        }
+        public static List<Coordinate[]> ToListOfCoordinates(JArray array)
+        {
+            List<Coordinate[]> c = new List<Coordinate[]>();
+            for (int i = 0; i < array.Count; i++)
+                c.Add(ToCoordinates((JArray)array[i]));
+            return c;
+        }
+        public static List<List<Coordinate[]>> ToListOfListOfCoordinates(JArray array)
+        {
+            List<List<Coordinate[]>> c = new List<List<Coordinate[]>>();
+            for (int i = 0; i < array.Count; i++)
+                c.Add(ToListOfCoordinates((JArray)array[i]));
+            return c;
+        }
     }
 }

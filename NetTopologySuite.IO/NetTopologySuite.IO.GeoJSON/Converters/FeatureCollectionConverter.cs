@@ -1,11 +1,10 @@
+using System;
+using NetTopologySuite.CoordinateSystems;
+using NetTopologySuite.Features;
+using Newtonsoft.Json;
+
 namespace NetTopologySuite.IO.Converters
 {
-    using System;
-
-    using NetTopologySuite.Features;
-
-    using Newtonsoft.Json;
-
     /// <summary>
     /// Converts FeatureCollection object to its JSON representation.
     /// </summary>
@@ -37,7 +36,32 @@ namespace NetTopologySuite.IO.Converters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
+            reader.Read();
+            if (!(reader.TokenType == JsonToken.PropertyName && (string) reader.Value == "features"))
+                throw new ArgumentException("Expected token 'features' not found.");            
+            reader.Read();
+            if (reader.TokenType != JsonToken.StartArray)
+                throw new ArgumentException("Expected token '[' not found.");
+            FeatureCollection featureCollection = new FeatureCollection();
+            reader.Read();
+            while (reader.TokenType != JsonToken.EndArray)
+                featureCollection.Add(serializer.Deserialize<Feature>(reader));
+            reader.Read();
+            if (!(reader.TokenType == JsonToken.PropertyName && (string) reader.Value == "type"))
+                throw new ArgumentException("Expected token 'type' not found.");
+            reader.Read();
+            if (reader.TokenType != JsonToken.String && (string) reader.Value != "FeatureCollection")
+                throw new ArgumentException("Expected value 'FeatureCollection' not found.");
+            reader.Read();
+            if (reader.TokenType == JsonToken.PropertyName && (string)reader.Value == "crs")
+            {
+                reader.Read();
+                featureCollection.CRS = serializer.Deserialize<ICRSObject>(reader);
+            }
+            if (reader.TokenType != JsonToken.EndObject)
+                throw new ArgumentException("Expected token '}' not found.");
+            reader.Read();
+            return featureCollection;
         }
 
         public override bool CanConvert(Type objectType)

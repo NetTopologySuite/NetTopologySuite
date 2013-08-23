@@ -1,11 +1,10 @@
+using System;
+using System.Collections.Generic;
+using NetTopologySuite.CoordinateSystems;
+using Newtonsoft.Json;
+
 namespace NetTopologySuite.IO.Converters
 {
-    using System;
-
-    using NetTopologySuite.CoordinateSystems;
-
-    using Newtonsoft.Json;
-
     /// <summary>
     /// Converts ICRSObject object to its JSON representation.
     /// </summary>
@@ -37,7 +36,42 @@ namespace NetTopologySuite.IO.Converters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
+            if (reader.TokenType != JsonToken.StartObject)
+                throw new ArgumentException("Expected token '{' not found.");
+            reader.Read();
+            if (!(reader.TokenType == JsonToken.PropertyName && (string) reader.Value == "type"))
+                throw new ArgumentException("Expected token 'type' not found.");
+            reader.Read();
+            if (reader.TokenType != JsonToken.String)
+                throw new ArgumentException("Expected string value not found.");
+            string crsType = (string)reader.Value;
+            reader.Read();
+            if (!(reader.TokenType == JsonToken.PropertyName && (string) reader.Value == "properties"))
+                throw new ArgumentException("Expected token 'properties' not found.");
+            reader.Read();
+            if (reader.TokenType != JsonToken.StartObject)
+                throw new ArgumentException("Expected token '{' not found.");
+            Dictionary<string, object> dictionary = serializer.Deserialize<Dictionary<string, object>>(reader);
+            CRSBase result = null;
+            switch (crsType)
+            {
+                case "link":
+                    object href = dictionary["href"];
+                    object type = dictionary["type"];
+                    result = new LinkedCRS((string)href, type != null ? (string)type : "");
+                    break;
+                case "name":
+                    object name = dictionary["name"];
+                    result = new NamedCRS((string)name);
+                    break;
+            }
+            if (reader.TokenType != JsonToken.EndObject)
+                throw new ArgumentException("Expected token '}' not found.");
+            reader.Read();
+            if (reader.TokenType != JsonToken.EndObject)
+                throw new ArgumentException("Expected token '}' not found.");
+            reader.Read();
+            return result;
         }
 
         public override bool CanConvert(Type objectType)

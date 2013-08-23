@@ -49,7 +49,24 @@ namespace NetTopologySuite.IO.Converters
         /// </returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
+            if (!(reader.TokenType == JsonToken.PropertyName && (string)reader.Value == "properties"))
+                throw new ArgumentException("Expected token 'properties' not found.");
+            reader.Read();
+            if (reader.TokenType != JsonToken.StartObject)
+                throw new ArgumentException("Expected token '{' not found.");
+            reader.Read();
+            AttributesTable attributesTable = new AttributesTable();
+            while (reader.TokenType == JsonToken.PropertyName)
+            {
+                string attributeName = (string)reader.Value;
+                reader.Read();
+                string attributeValue = (string)reader.Value;
+                reader.Read();
+                attributesTable.AddAttribute(attributeName, attributeValue);
+            }
+
+            reader.Read();
+            return attributesTable;
         }
 
         /// <summary>

@@ -1,11 +1,10 @@
-﻿namespace NetTopologySuite.IO.Converters
+﻿using System;
+using NetTopologySuite.Features;
+using NetTopologySuite.Geometries;
+using Newtonsoft.Json;
+
+namespace NetTopologySuite.IO.Converters
 {
-    using System;
-
-    using NetTopologySuite.Features;
-
-    using Newtonsoft.Json;
-
     /// <summary>
     /// Converts Feature object to its JSON representation.
     /// </summary>
@@ -49,7 +48,28 @@
         /// </returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
+            reader.Read();
+            if (!(reader.TokenType == JsonToken.PropertyName && (string) reader.Value == "type"))
+                throw new ArgumentException("Expected token 'type' not found.");
+            reader.Read();
+            if (reader.TokenType != JsonToken.String && (string) reader.Value != "Feature")
+                throw new ArgumentException("Expected value 'Feature' not found.");
+            reader.Read();
+            if (!(reader.TokenType == JsonToken.PropertyName && (string) reader.Value == "geometry"))
+                throw new ArgumentException("Expected token 'geometry' not found.");
+            reader.Read();
+            if (reader.TokenType != JsonToken.StartObject)
+                throw new ArgumentException("Expected token '{' not found.");
+            Feature feature = new Feature {Geometry = serializer.Deserialize<Geometry>(reader)};
+            if (reader.TokenType != JsonToken.EndObject)
+                throw new ArgumentException("Expected token '}' not found.");
+            reader.Read();
+            if (reader.TokenType == JsonToken.PropertyName && (string) reader.Value == "properties")
+                feature.Attributes = serializer.Deserialize<AttributesTable>(reader);
+            if (reader.TokenType != JsonToken.EndObject)
+                throw new ArgumentException("Expected token '}' not found.");
+            reader.Read();
+            return feature;
         }
 
         /// <summary>

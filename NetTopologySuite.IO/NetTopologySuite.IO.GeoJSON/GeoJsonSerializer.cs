@@ -1,17 +1,14 @@
-﻿namespace NetTopologySuite.IO
+﻿using System;
+using System.IO;
+using System.Text;
+using GeoAPI.Geometries;
+using NetTopologySuite.Features;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO.Converters;
+using Newtonsoft.Json;
+
+namespace NetTopologySuite.IO
 {
-    using System;
-    using System.IO;
-    using System.Text;
-
-    using GeoAPI.Geometries;
-
-    using NetTopologySuite.Features;
-    using NetTopologySuite.Geometries;
-    using NetTopologySuite.IO.Converters;
-
-    using Newtonsoft.Json;
-
     /// <summary>
     /// Json Serializer with support for GeoJson object structure.
     /// </summary>
@@ -114,25 +111,17 @@
         /// <summary>
         /// Reads the specified json.
         /// </summary>
-        /// <typeparam name="TGeometry">The type of the geometry.</typeparam>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="json">The json.</param>
         /// <returns></returns>
-        public TGeometry Read<TGeometry> (string json)
-            where TGeometry : class, IGeometry
+        public TObject Read<TObject>(string json)
+            where TObject : class
         {
             GeoJsonSerializer g = new GeoJsonSerializer();
             using (StringReader sr = new StringReader(json))
-                return g.Deserialize<TGeometry>(new JsonTextReader(sr));
-        }
-
-        /// <summary>
-        /// Reads the specified json.
-        /// </summary>
-        /// <param name="json">The json.</param>
-        /// <returns></returns>
-        public IGeometry Read(string json)
-        {
-            throw new NotSupportedException("You must call Read<TGeometry>(string json)");
+            {
+                return g.Deserialize<TObject>(new JsonTextReader(sr));
+            }
         }
     }
 }
