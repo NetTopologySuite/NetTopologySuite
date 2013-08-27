@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using NUnit.Framework;
 using NetTopologySuite.Features;
 using NetTopologySuite.IO.Converters;
 using Newtonsoft.Json;
+using NUnit.Framework;
 
 namespace NetTopologySuite.IO.Tests.GeoJSON
 {
@@ -14,7 +14,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
     ///</summary>
     [TestFixture]
     public class AttributesTableConverterTest
-    {       
+    {
         ///<summary>
         ///    A test for CanConvert
         ///</summary>
@@ -22,8 +22,8 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         public void CanConvertTest()
         {
             AttributesTableConverter target = new AttributesTableConverter();
-            Type objectType = typeof(AttributesTable); 
-            const bool expected = true; 
+            Type objectType = typeof(AttributesTable);
+            const bool expected = true;
             bool actual = target.CanConvert(objectType);
             Assert.AreEqual(expected, actual);
         }
@@ -31,19 +31,45 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         ///<summary>
         ///    A test for WriteJson
         ///</summary>
-        [Test, Ignore("Properties are ordered differently")]
+        [Test]
         public void WriteJsonTest()
         {
             AttributesTableConverter target = new AttributesTableConverter();
             StringBuilder sb = new StringBuilder();
             JsonTextWriter writer = new JsonTextWriter(new StringWriter(sb));
-            var value = new AttributesTable();
+            AttributesTable value = new AttributesTable();
             value.AddAttribute("test1", "value1");
             value.AddAttribute("test2", "value2");
             JsonSerializer serializer = new JsonSerializer();
             target.WriteJson(writer, value, serializer);
             writer.Flush();
-            Assert.AreEqual("\"properties\":{\"test2\":\"value2\",\"test1\":\"value1\"}", sb.ToString());
+            Assert.AreEqual("\"properties\":{\"test1\":\"value1\",\"test2\":\"value2\"}", sb.ToString());
+        }
+
+        ///<summary>
+        ///    A test for ReadJson
+        ///</summary>
+        [Test]
+        public void ReadJsonTest()
+        {
+            const string json = "{\"properties\":{\"test1\":\"value1\",\"test2\":\"value2\"}}";
+            AttributesTableConverter target = new AttributesTableConverter();
+            using (JsonTextReader reader = new JsonTextReader(new StringReader(json)))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+
+                // read start object token and prepare the next token
+                reader.Read();
+                reader.Read();
+                AttributesTable result =
+                    (AttributesTable)
+                    target.ReadJson(reader, typeof(AttributesTable), new AttributesTable(), serializer);
+                Assert.IsFalse(reader.Read());  // read the end of object and ensure there are no more tokens available
+                Assert.IsNotNull(result);
+                Assert.AreEqual(2, result.GetNames().Length);
+                Assert.AreEqual("value1", result["test1"]);
+                Assert.AreEqual("value2", result["test2"]);
+            }
         }
     }
 }
