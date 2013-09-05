@@ -156,15 +156,20 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
             IMultiPoint points, IMathTransform transform)
 		{
 		    //We assume the first point holds all the ordinates
-            var ordinateFlags = ((IPoint) points.GetGeometryN(0)).CoordinateSequence.Ordinates;
+		    var firstPoint = (IPoint) points.GetGeometryN(0);
+		    var ordinateFlags = firstPoint.CoordinateSequence.Ordinates;
 		    var ordinates = OrdinatesUtility.ToOrdinateArray(ordinateFlags);
             var coordSequence = factory.CoordinateSequenceFactory.Create(points.NumPoints, ordinateFlags);
             
             for (var i = 0; i < points.NumGeometries; i++)
             {
-                var seq = ((IPoint) points.GetGeometryN(i)).CoordinateSequence;
+                var currPoint = (IPoint) points.GetGeometryN(i);
+                var seq = currPoint.CoordinateSequence;
                 foreach (var ordinate in ordinates)
-                    coordSequence.SetOrdinate(i, ordinate, seq.GetOrdinate(i, ordinate));
+                {
+                    double d = seq.GetOrdinate(0, ordinate);
+                    coordSequence.SetOrdinate(i, ordinate, d);
+                }
             }
             var transPoints = transform.Transform(coordSequence);
 		    return factory.CreateMultiPoint(transPoints);

@@ -7,9 +7,10 @@ namespace NetTopologySuite.Tests.Various
     using System.Linq;
     using System.Threading;
     using GeoAPI.Geometries;
-    using NetTopologySuite.Geometries;
-    using NetTopologySuite.Simplify;
+    using Geometries;
+    using Simplify;
 
+    [TestFixture]
     public class Issue102Test
     {
         /// <summary>

@@ -6,6 +6,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Tests.Various
 {
+    [TestFixture]
     public class Issue103Tests
     {
         [Test, Ignore("Handled in seperate tests")]

@@ -5,6 +5,7 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Tests.Various
 {
+    [TestFixture]
     public class Issue86Test
     {
         [Test]

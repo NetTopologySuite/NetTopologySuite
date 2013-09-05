@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.Various
 {
@@ -7,11 +7,9 @@ namespace NetTopologySuite.Tests.Various
 
     using GeoAPI.Geometries;
 
-    using NetTopologySuite.Geometries;
+    using Geometries;
     using NetTopologySuite.IO;
-    using NetTopologySuite.Operation.Union;
-
-    using global::NUnit.Framework;
+    using Operation.Union;    
 
     [TestFixture]
     public class Issue123Test
