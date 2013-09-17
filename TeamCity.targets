@@ -1,6 +1,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <SolutionFile>NetTopologySuite.Net.sln</SolutionFile>
+    <SolutionFile>NetTopologySuite.sln</SolutionFile>
     <SolutionDir>$(MSBuildProjectDirectory)</SolutionDir>
     <AsmVersion>1.13.1</AsmVersion>
     <AsmFileVersion>$(AsmVersion)</AsmFileVersion>
