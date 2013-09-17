@@ -9,6 +9,7 @@ using NetTopologySuite.Geometries.Utilities;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
 {
+    [TestFixture]
     public class PreparedPolygonIntersectsPerformanceTest
     {
         private const int MaxIter = 10;
@@ -20,7 +21,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
         private static readonly IPrecisionModel Pm = new PrecisionModel();
         private static readonly IGeometryFactory Fact = new GeometryFactory(Pm, 0);
 
-        [Test]
+        [Test, Explicit("takes too long to complete")]
         public void Test()
         {
             Test(5);
