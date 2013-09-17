@@ -1,6 +1,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <SolutionFile>NetTopologySuite.VS2010.sln</SolutionFile> 
+    <SolutionFile>NetTopologySuite.Net.sln</SolutionFile> 
   </PropertyGroup>
 
   <Target Name="CleanDebug">
