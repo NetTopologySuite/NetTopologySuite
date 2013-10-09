@@ -497,11 +497,16 @@ namespace NetTopologySuite.IO
         protected IGeometry ReadPolygon(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
+            ILinearRing exteriorRing = null;
+            ILinearRing[] interiorRings = null;
             var numRings = reader.ReadInt32();
-            var exteriorRing = ReadLinearRing(reader, cs, srid);
-            var interiorRings = new ILinearRing[numRings - 1];
-            for (var i = 0; i < numRings - 1; i++)
-                interiorRings[i] = ReadLinearRing(reader, cs, srid);
+            if (numRings > 0)
+            {
+                exteriorRing = ReadLinearRing(reader, cs, srid);
+                interiorRings = new ILinearRing[numRings - 1];
+                for (var i = 0; i < numRings - 1; i++)
+                    interiorRings[i] = ReadLinearRing(reader, cs, srid);
+            }
             return factory.CreatePolygon(exteriorRing, interiorRings);
         }
 

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
+using System.Text;
+using GeoAPI.Geometries;
 using NUnit.Framework;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Tests.NUnit.IO
@@ -13,6 +15,13 @@ namespace NetTopologySuite.Tests.NUnit.IO
     public class WKBReaderTest
     {
         private static readonly WKTReader Rdr = new WKTReader();
+
+        [Test]
+        public void TestPolygonEmpty()
+        {
+            var geom = Rdr.Read("POLYGON EMPTY");
+            CheckWkbGeometry(geom.AsBinary(), "POLYGON EMPTY");
+        }
 
         [Test]
         public void TestShortPolygons()
@@ -45,8 +54,12 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
         private static void CheckWkbGeometry(String wkbHex, String expectedWKT)
         {
+            CheckWkbGeometry(WKBReader.HexToBytes(wkbHex), expectedWKT);
+        }
+
+        private static void CheckWkbGeometry(byte[] wkb, String expectedWKT)
+        {
             var wkbReader = new WKBReader();
-            var wkb = WKBReader.HexToBytes(wkbHex);
             var g2 = wkbReader.Read(wkb);
 
             var expected = Rdr.Read(expectedWKT);
@@ -54,6 +67,39 @@ namespace NetTopologySuite.Tests.NUnit.IO
             var isEqual = (expected.CompareTo(g2 /*, Comp2*/) == 0);
             Assert.IsTrue(isEqual);
 
+        }
+
+        [Test]
+        public void TestBase64TextFiles()
+        {
+            TestBase64TextFile(@"D:\Development\Codeplex.TFS\SharpMap\Branches\1.0\UnitTests\TestData\Base 64.txt");
+        }
+        
+        private static void TestBase64TextFile(string file)
+        {
+            if (!File.Exists(file))
+            {
+                Assert.Ignore(string.Format("File not present ({0})", file));
+                return;
+            }
+
+            var wkb = ConvertBase64(file);
+            var wkbReader = new WKBReader();
+            IGeometry geom = null;
+            Assert.DoesNotThrow(() => geom =  wkbReader.Read(wkb));
+        }
+
+        private static byte[] ConvertBase64(string file)
+        {
+            byte[] res = null;
+            using (var sr = new StreamReader(file))
+            {
+                var sb = new StringBuilder(sr.ReadLine());
+                while (!sr.EndOfStream)
+                    sb.AppendLine(sr.ReadLine());
+                res = System.Convert.FromBase64String(sb.ToString());
+            }
+            return res;
         }
     }
 }
