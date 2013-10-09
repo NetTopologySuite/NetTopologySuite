@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using GeoAPI.Geometries;
 
@@ -19,7 +20,8 @@ namespace NetTopologySuite.Index.KdTree
         where T : class
     {
         private KdNode<T> _root;
-        private KdNode<T> _last;
+// ReSharper disable once UnusedField.Compiler
+        private KdNode<T> _last = null;
         private long _numberOfNodes;
         private readonly double _tolerance;
 
@@ -28,7 +30,7 @@ namespace NetTopologySuite.Index.KdTree
         /// (I.e. distinct points will <i>not</i> be snapped)
         /// </summary>
         public KdTree()
-            :this(0.0)
+            : this(0.0)
         {
         }
 
@@ -54,7 +56,7 @@ namespace NetTopologySuite.Index.KdTree
                 return false;
             }
         }
-  
+
 
 
         /// <summary>
@@ -109,28 +111,31 @@ namespace NetTopologySuite.Index.KdTree
                         currentNode.Increment();
                         return currentNode;
                     }
-
-                    if (isOddLevel)
-                    {
-                        isLessThan = p.X < currentNode.X;
-                    }
-                    else
-                    {
-                        isLessThan = p.Y < currentNode.Y;
-                    }
-                    leafNode = currentNode;
-                    currentNode = isLessThan 
-                        ? currentNode.Left 
-                        : currentNode.Right;
                 }
+
+                if (isOddLevel)
+                {
+// ReSharper disable once PossibleNullReferenceException
+                    isLessThan = p.X < currentNode.X;
+                }
+                else
+                {
+                    // ReSharper disable once PossibleNullReferenceException
+                    isLessThan = p.Y < currentNode.Y;
+                }
+                leafNode = currentNode;
+                currentNode = isLessThan
+                    ? currentNode.Left
+                    : currentNode.Right;
+
                 isOddLevel = !isOddLevel;
             }
 
             // no node found, add new leaf node to tree
             _numberOfNodes = _numberOfNodes + 1;
             var node = new KdNode<T>(p, data);
-            node.Left = _last;
-            node.Right = _last;
+            node.Left = null;
+            node.Right = null;
             if (isLessThan)
             {
                 leafNode.Left = node;
@@ -139,12 +144,11 @@ namespace NetTopologySuite.Index.KdTree
             {
                 leafNode.Right = node;
             }
-            _last = node;
             return node;
         }
 
         private static void QueryNode(KdNode<T> currentNode, KdNode<T> bottomNode,
-                Envelope queryEnv, bool odd, ICollection<KdNode<T>> result)
+            Envelope queryEnv, bool odd, ICollection<KdNode<T>> result)
         {
             if (currentNode == null)
                 return;
@@ -191,6 +195,7 @@ namespace NetTopologySuite.Index.KdTree
         /// <returns>A collection of the KdNodes found</returns>
         public ICollection<KdNode<T>> Query(Envelope queryEnv)
         {
+            KdNode<T> last = null;
             ICollection<KdNode<T>> result = new Collection<KdNode<T>>();
             QueryNode(_root, _last, queryEnv, true, result);
             return result;
@@ -205,5 +210,64 @@ namespace NetTopologySuite.Index.KdTree
         {
             QueryNode(_root, _last, queryEnv, true, result);
         }
+
+        private static void NearestNeighbor(KdNode<T> currentNode, KdNode<T> bottomNode,
+            Coordinate queryCoordinate, ref KdNode<T> closestNode, ref double closestDistanceSq)
+        {
+            while (true)
+            {
+                if (currentNode == null)
+                    return;
+                if (currentNode == bottomNode)
+                    return;
+
+
+                var distSq = Math.Pow(currentNode.X - queryCoordinate.X, 2) +
+                             Math.Pow(currentNode.Y - queryCoordinate.Y, 2);
+
+                if (distSq < closestDistanceSq)
+                {
+                    closestNode = currentNode;
+                    closestDistanceSq = distSq;
+                }
+
+
+                var searchLeft = false;
+                var searchRight = false;
+                if (currentNode.Left != null)
+                    searchLeft = (Math.Pow(currentNode.Left.X - queryCoordinate.X, 2) +
+                                  Math.Pow(currentNode.Left.Y - queryCoordinate.Y, 2)) < closestDistanceSq;
+
+                if (currentNode.Right != null)
+                    searchRight = (Math.Pow(currentNode.Right.X - queryCoordinate.X, 2) +
+                                   Math.Pow(currentNode.Right.Y - queryCoordinate.Y, 2)) < closestDistanceSq;
+
+                if (searchLeft)
+                {
+                    NearestNeighbor(currentNode.Left, bottomNode, queryCoordinate, ref closestNode,
+                        ref closestDistanceSq);
+                }
+
+                if (searchRight)
+                {
+                    currentNode = currentNode.Right;
+                    continue;
+                }
+                break;
+            }
+        }
+
+        /// <summary>
+        /// Performs a nearest neighbor search of the points in the index.
+        /// </summary>
+        /// <param name="coord">The point to search the nearset neighbor for</param>
+        public KdNode<T> NearestNeighbor(Coordinate coord)
+        {
+            KdNode<T> result = null;
+            var closestDistSq = double.MaxValue;
+            NearestNeighbor(_root, _last, coord, ref result, ref closestDistSq);
+            return result;
+        }
+
     }
 }
