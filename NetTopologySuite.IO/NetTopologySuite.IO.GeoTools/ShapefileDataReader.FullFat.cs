@@ -26,7 +26,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         internal class ShapefileDataReaderEnumerator : IEnumerator
         {
-            private ShapefileDataReader _parent;
+            private readonly ShapefileDataReader _parent;
 
             /// <summary>
             /// 

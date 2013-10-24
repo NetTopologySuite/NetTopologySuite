@@ -123,7 +123,7 @@ namespace NetTopologySuite.IO
             /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
             public bool MoveNext()
             {
-                if (_shpBinaryReader.PeekChar() != -1)
+                if (_shpBinaryReader.BaseStream.Position < _shpBinaryReader.BaseStream.Length)
                 {
                     // Mark Jacquin: add a try catch when some shapefile have extra char at the end but no record
                     try
