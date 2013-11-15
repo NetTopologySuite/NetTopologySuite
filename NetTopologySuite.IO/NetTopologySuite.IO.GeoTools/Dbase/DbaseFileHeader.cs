@@ -289,9 +289,9 @@ namespace NetTopologySuite.IO
                 _fieldDescriptions[i] = new DbaseFieldDescriptor();
 
                 // read the field name				
-                char[] buffer = new char[11];
-                buffer = reader.ReadChars(11);
-                string name = new string(buffer);
+                byte[] buffer = new byte[11];
+                buffer = reader.ReadBytes(11);
+                String name = _encoding.GetString(buffer);
                 int nullPoint = name.IndexOf((char)0);
                 if (nullPoint != -1)
                     name = name.Substring(0, nullPoint);
