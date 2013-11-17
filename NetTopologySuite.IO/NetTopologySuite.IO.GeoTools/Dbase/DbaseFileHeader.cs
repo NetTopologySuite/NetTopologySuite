@@ -291,7 +291,8 @@ namespace NetTopologySuite.IO
                 // read the field name				
                 byte[] buffer = new byte[11];
                 buffer = reader.ReadBytes(11);
-                String name = _encoding.GetString(buffer);
+                // NOTE: only this _encoding.GetString method is available in Silverlight
+                String name = _encoding.GetString(buffer, 0, buffer.Length);
                 int nullPoint = name.IndexOf((char)0);
                 if (nullPoint != -1)
                     name = name.Substring(0, nullPoint);
