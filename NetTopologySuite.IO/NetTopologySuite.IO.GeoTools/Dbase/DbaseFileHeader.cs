@@ -522,12 +522,15 @@ namespace NetTopologySuite.IO
             for (int i = 0; i < _fieldDescriptions.Length; i++)
             {
                 // write the field name
-                for (int j = 0; j < FieldNameMaxLength; j++)
+                DbaseFieldDescriptor descriptor = _fieldDescriptions[i];
+                byte[] buffer = _encoding.GetBytes(descriptor.Name);
+                if (buffer.Length < FieldNameMaxLength)
                 {
-                    if (_fieldDescriptions[i].Name.Length > j)
-                        writer.Write((byte)_fieldDescriptions[i].Name[j]);
-                    else writer.Write((byte)0);
+                    byte[] temp = new byte[FieldNameMaxLength];
+                    Array.Copy(buffer, temp, buffer.Length);    
+                    writer.Write(temp);
                 }
+                else writer.Write(buffer);                
 
                 // write the field type
                 writer.Write((char)_fieldDescriptions[i].DbaseType);
