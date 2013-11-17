@@ -528,7 +528,8 @@ namespace NetTopologySuite.IO
                 if (buffer.Length != FieldNameMaxLength)
                 {
                     byte[] temp = new byte[FieldNameMaxLength];
-                    Array.Copy(buffer, temp, buffer.Length);    
+                    int length = Math.Min(buffer.Length, FieldNameMaxLength);
+                    Array.Copy(buffer, temp, length);    
                     writer.Write(temp);
                 }
                 else writer.Write(buffer);                
