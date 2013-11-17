@@ -525,7 +525,7 @@ namespace NetTopologySuite.IO
                 // write the field name
                 DbaseFieldDescriptor descriptor = _fieldDescriptions[i];
                 byte[] buffer = _encoding.GetBytes(descriptor.Name);
-                if (buffer.Length < FieldNameMaxLength)
+                if (buffer.Length != FieldNameMaxLength)
                 {
                     byte[] temp = new byte[FieldNameMaxLength];
                     Array.Copy(buffer, temp, buffer.Length);    
