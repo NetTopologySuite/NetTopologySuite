@@ -523,16 +523,16 @@ namespace NetTopologySuite.IO
             for (int i = 0; i < _fieldDescriptions.Length; i++)
             {
                 // write the field name
-                DbaseFieldDescriptor descriptor = _fieldDescriptions[i];
-                byte[] buffer = _encoding.GetBytes(descriptor.Name);
-                if (buffer.Length != FieldNameMaxLength)
-                {
-                    byte[] temp = new byte[FieldNameMaxLength];
-                    int length = Math.Min(buffer.Length, FieldNameMaxLength);
-                    Array.Copy(buffer, temp, length);    
-                    writer.Write(temp);
-                }
-                else writer.Write(buffer);                
+                string fieldName = _fieldDescriptions[i].Name;
+
+                // make sure the field name data length is not bigger than FieldNameMaxLength (11)
+                while (_encoding.GetByteCount(fieldName) > FieldNameMaxLength)
+                    fieldName = fieldName.Substring(0, fieldName.Length - 1);
+
+                byte[] buffer = new byte[FieldNameMaxLength];
+                byte[] bytes = _encoding.GetBytes(fieldName);
+                Array.Copy(bytes, buffer, bytes.Length);
+                writer.Write(buffer);  
 
                 // write the field type
                 writer.Write((char)_fieldDescriptions[i].DbaseType);
