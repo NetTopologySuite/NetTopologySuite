@@ -463,8 +463,7 @@ namespace NetTopologySuite.IO.Handlers
                     var z = ReadDouble(file, totalRecordLength, ref currentlyReadBytes);
                     if (!skippedList.Contains(i))
                         buffer.SetZ(i-numSkipped, z);
-                    else
-                        numSkipped++;
+                    else numSkipped++;
                 }
             }
 
@@ -482,9 +481,14 @@ namespace NetTopologySuite.IO.Handlers
                     var m = ReadDouble(file, totalRecordLength, ref currentlyReadBytes);
                     if (!skippedList.Contains(i))
                         buffer.SetM(i - numSkipped, m);
-                    else
-                        numSkipped++;
+                    else numSkipped++;
                 }
+            }
+
+            if (currentlyReadBytes < totalRecordLength)
+            {
+                int remaining = totalRecordLength - currentlyReadBytes;
+                file.ReadBytes(remaining * 2);
             }
         }
 

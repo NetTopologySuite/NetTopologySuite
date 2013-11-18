@@ -13,7 +13,8 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
 {
     [TestFixture]
     public class ShapeFileDataReaderTest : BaseSamples
-    {   [SetUp]
+    {  
+        [SetUp]
         public void SetUp()
         {
             // Set current dir to shapefiles dir
@@ -185,6 +186,20 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
             var e2 = polys[8].EnvelopeInternal;
             Assert.IsTrue(e1.Equals(e2), string.Format("{0}\ndoes not match\n{1}", e1, e2));
             Assert.IsTrue(expected.EqualsTopologically(polys[8]), string.Format("{0}\ndoes not match\n{1}", expected, polys[8]));
+        }
+        
+        [Test]
+        // see https://code.google.com/p/nettopologysuite/issues/detail?id=167
+        public void Issue167_EnsureAllBinaryContentIsReaded()
+        {
+            int i = 0;
+            ShapefileReader reader = new ShapefileReader("Issue167.shp");
+            foreach (IGeometry geom in reader)
+            {
+                Assert.That(geom, Is.Not.Null, "geom null");
+                Console.WriteLine("geom {0}: {1}", ++i, geom);
+            }
+            Assert.That(i, Is.EqualTo(201));
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
@@ -132,18 +133,18 @@ namespace NetTopologySuite.IO
                         int contentLength = _shpBinaryReader.ReadInt32BE();
                         _geometry = _handler.Read(_shpBinaryReader, contentLength, _parent._geometryFactory);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        // actually we should remove this crap...
+                        Trace.WriteLine(ex);
                         return false;
                     }
                     return true;
                 }
-                else
-                {
-                    // Reached end of file, so close the reader.
-                    //_shpBinaryReader.Close();
-                    return false;
-                }
+                
+                // Reached end of file, so close the reader.
+                //_shpBinaryReader.Close();
+                return false;
             }
 
             /// <summary>

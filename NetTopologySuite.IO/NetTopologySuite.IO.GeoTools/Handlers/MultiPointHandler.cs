@@ -63,7 +63,7 @@ namespace NetTopologySuite.IO.Handlers
             }
 
             // Trond Benum: We have now read all the points, let's read optional Z and M values            
-            GetZMValues(file, totalRecordLength, ref totalRead, buffer);
+            GetZMValues(file, totalRecordLength, ref totalRead, buffer);            
 
             var sequences = buffer.ToSequences(geometryFactory.CoordinateSequenceFactory);
             for (var i = 0; i < numPoints; i++)
