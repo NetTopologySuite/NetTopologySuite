@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A11130E8-4942-432A-97B7-ADEEFB34A977}"
 	ProjectSection(SolutionItems) = preProject
 		GeoAPI\GeoAPI.nuspec = GeoAPI\GeoAPI.nuspec
@@ -73,10 +73,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO", "NetTopologySuite.IO\NetTopologySuite.IO\NetTopologySuite.IO.csproj", "{E377580E-61C9-4943-B98B-085D51B32578}"
 EndProject
 Global
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
-	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = NetTopologySuite.vsmdi
 	EndGlobalSection
@@ -201,5 +197,9 @@ Global
 		{1583F1F7-7E7D-42EE-99F9-E072453BCE34} = {54E50C1C-BB10-4DDC-86BD-CA29FB91A89E}
 		{E377580E-61C9-4943-B98B-085D51B32578} = {54E50C1C-BB10-4DDC-86BD-CA29FB91A89E}
 		{08759323-B999-405B-8688-80008A4190B0} = {489ED983-F8DE-4879-B118-F94C55DA335F}
+	EndGlobalSection
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 EndGlobal
