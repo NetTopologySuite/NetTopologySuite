@@ -24,11 +24,14 @@ namespace Wintellect.PowerCollections
     /// The Hash manages items of type T, and uses a IComparer&lt;ItemTYpe&gt; that
     /// hashes compares items to hash items into the table.  
     ///</remarks>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
+
     internal class Hash<T> : IEnumerable<T>
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || PCL)
     , ISerializable, IDeserializationCallback
 #endif
     {
@@ -54,7 +57,7 @@ namespace Wintellect.PowerCollections
 
         private const int MINSIZE = 16;       // minimum number of slots.
 
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || PCL)
         private SerializationInfo serializationInfo;       // Info used during deserialization.
 #endif
 
@@ -609,7 +612,7 @@ namespace Wintellect.PowerCollections
 
         #region Serialization
 
-        #if !SILVERLIGHT
+        #if !(SILVERLIGHT || PCL)
 
         /// <summary>
         /// Serialize the hash table. Called from the serialization infrastructure.
@@ -676,7 +679,7 @@ namespace Wintellect.PowerCollections
             Console.WriteLine("count={0}  usedSlots={1}  totalSlots={2}", count, usedSlots, totalSlots);
             Console.WriteLine("loadFactor={0}  thresholdGrow={1}  thresholdShrink={2}", loadFactor, thresholdGrow, thresholdShrink);
             Console.WriteLine("hashMask={0:X}  secondaryShift={1}", hashMask, secondaryShift);
-            Console.WriteLine();
+            Console.WriteLine("");
         }
 
         /// <summary>
@@ -689,10 +692,10 @@ namespace Wintellect.PowerCollections
         internal void Print()
         {
             PrintStats();
-            for (int i = 0; i < totalSlots; ++i) 
+            for (int i = 0; i < totalSlots; ++i)
                 Console.WriteLine("Slot {0,4:X}: {1} {2,8:X} {3}", i, table[i].Collision ? "C" : " ", 
                     table[i].HashValue, table[i].Empty ? "<empty>" : table[i].item.ToString());
-            Console.WriteLine();
+            Console.WriteLine("");
         }
 
         /// <summary>

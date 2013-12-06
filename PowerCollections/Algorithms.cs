@@ -9,6 +9,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 #pragma warning disable 419  // Ambigious cref in XML comment
 
@@ -50,10 +51,11 @@ namespace Wintellect.PowerCollections
         /// cause the count to change also; insertions and deletions directly on
         /// the wrapped list do not.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
-
         private class ListRange<T> : ListBase<T>, ICollection<T>
         {
             private IList<T> wrappedList;
@@ -184,10 +186,11 @@ namespace Wintellect.PowerCollections
         /// cause the count to change up to the size of the underlying array. Elements
         /// fall off the end of the underlying array.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
-
         private class ArrayRange<T> : ListBase<T>
         {
             private T[] wrappedArray;
@@ -307,10 +310,11 @@ namespace Wintellect.PowerCollections
         /// Methods that modify the collection throw a NotSupportedException, methods that don't
         /// modify are fowarded through to the wrapped collection.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
-
         private class ReadOnlyCollection<T> : ICollection<T>
         {
             private ICollection<T> wrappedCollection;  // The collection we are wrapping (never null).
@@ -388,10 +392,11 @@ namespace Wintellect.PowerCollections
         /// Methods that modify the list throw a NotSupportedException, methods that don't
         /// modify are fowarded through to the wrapped list.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
-
         private class ReadOnlyList<T> : IList<T>
         {
             private IList<T> wrappedList;  // The list we are wrapping (never null).
@@ -487,10 +492,11 @@ namespace Wintellect.PowerCollections
         /// The private class that implements a read-only wrapped for
         /// IDictionary &lt;TKey,TValue&gt;.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
-
         private class ReadOnlyDictionary<TKey, TValue> : IDictionary<TKey, TValue>
         {
             // The dictionary that is wrapped
@@ -604,10 +610,11 @@ namespace Wintellect.PowerCollections
         ///  The class that provides a typed IEnumerator&lt;T&gt;
         /// view onto an untyped IEnumerator interface.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
-
         private class TypedEnumerator<T> : IEnumerator<T>
         {
             private IEnumerator wrappedEnumerator;
@@ -653,10 +660,11 @@ namespace Wintellect.PowerCollections
         /// The class that provides a typed IEnumerable&lt;T&gt; view
         /// onto an untyped IEnumerable interface.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
-
         private class TypedEnumerable<T> : IEnumerable<T>
         {
             private IEnumerable wrappedEnumerable;
@@ -713,10 +721,11 @@ namespace Wintellect.PowerCollections
         /// onto an untyped ICollection interface. The ICollection&lt;T&gt;
         /// is read-only.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
-
         private class TypedCollection<T> : ICollection<T>
         {
             private ICollection wrappedCollection;
@@ -812,10 +821,11 @@ namespace Wintellect.PowerCollections
         /// The class used to create a typed IList&lt;T&gt; view onto
         /// an untype IList interface.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
-
         private class TypedList<T> : IList<T>
         {
             private IList wrappedList;
@@ -917,10 +927,11 @@ namespace Wintellect.PowerCollections
         /// The class that is used to provide an untyped ICollection
         /// view onto a typed ICollection&lt;T&gt; interface.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
-
         private class UntypedCollection<T> : ICollection
         {
             private ICollection<T> wrappedCollection;
@@ -1007,10 +1018,11 @@ namespace Wintellect.PowerCollections
         /// The class that implements a non-generic IList wrapper
         /// around a generic IList&lt;T&gt; interface.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
-
         private class UntypedList<T> : IList
         {
             private IList<T> wrappedList;
@@ -1168,10 +1180,11 @@ namespace Wintellect.PowerCollections
         /// in a read-write way. Insertions cause the last item in the array
         /// to fall off, deletions replace the last item with the default value.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
-
         private class ArrayWrapper<T> : ListBase<T>, IList
         {
             private T[] wrappedArray;
@@ -4521,10 +4534,11 @@ namespace Wintellect.PowerCollections
         /// A private class used by the LexicographicalComparer method to compare sequences
         /// (IEnumerable) of T by there Lexicographical ordering.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
-
         private class LexicographicalComparerClass<T> : IComparer<IEnumerable<T>>
         {
             IComparer<T> itemComparer;
@@ -4611,10 +4625,11 @@ namespace Wintellect.PowerCollections
         /// An IComparer instance that can be used to reverse the sense of
         /// a wrapped IComparer instance.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
-
         private class ReverseComparerClass<T> : IComparer<T>
         {
             IComparer<T> comparer;
@@ -4669,10 +4684,11 @@ namespace Wintellect.PowerCollections
         /// for object identity only. Only Equals and GetHashCode can be used;
         /// this implementation is not appropriate for ordering.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
-
         private class IdentityComparer<T> : IEqualityComparer<T>
             where T : class
         {
@@ -4762,10 +4778,11 @@ namespace Wintellect.PowerCollections
         /// class implements IEqualityComparer&lt;IEnumerable&lt;T&gt;gt; to compare
         /// two enumerables for equality, where order is significant.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
-
         private class CollectionEqualityComparer<T> : IEqualityComparer<IEnumerable<T>>
         {
             private IEqualityComparer<T> equalityComparer;
@@ -4848,10 +4865,11 @@ namespace Wintellect.PowerCollections
         /// class implements IEqualityComparer&lt;IEnumerable&lt;T&gt;gt; to compare
         /// two enumerables for equality, where order is not significant.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
-
         private class SetEqualityComparer<T> : IEqualityComparer<IEnumerable<T>>
         {
             private IEqualityComparer<T> equalityComparer;
@@ -6032,4 +6050,56 @@ namespace Wintellect.PowerCollections
 
         #endregion Miscellaneous operations on IList
     }
+
+    
 }
+
+#if PCL
+
+namespace System
+{
+    public delegate TOutput Converter<in TInput, out TOutput>(TInput input);
+
+    public static class Console
+    {
+        public delegate void WriteActionDelegate(string text);
+
+        public delegate void WriteLineActionDelegate(string format, params object[] parmas);
+
+        private static WriteActionDelegate _write;
+        private static WriteLineActionDelegate _writeLine;
+        private static readonly object _lock = new object();
+
+        public static void Set(WriteActionDelegate wa, WriteLineActionDelegate wla)
+        {
+            lock (_lock)
+            {
+                _write = wa;
+                _writeLine = wla;
+            }
+        }
+
+        public static void Write(string format, params object[] arguments)
+        {
+            lock (_lock)
+            {
+                if (_write != null) _write(format);
+            }
+        }
+
+        public static void WriteLine(string format, params object[] arguments)
+        {
+            lock (_lock)
+            {
+                if (_write != null) _writeLine(string.Format(format, arguments));
+            }
+        }
+
+        public static void WriteLine()
+        {
+            WriteLine("");
+        }
+    }
+}
+
+#endif

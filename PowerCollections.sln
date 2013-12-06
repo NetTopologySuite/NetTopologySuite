@@ -1,11 +1,13 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections", "PowerCollections\PowerCollections.csproj", "{5821977D-AC2C-4912-BCD0-6E6B1A756167}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{490AAA0B-4A46-48B0-B986-25C89A3E8258}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections.SL", "PowerCollections.SL\PowerCollections.SL.csproj", "{48808C52-FE5E-43BB-8ADD-197748552773}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections.Silverlight", "PowerCollections.SL\PowerCollections.Silverlight.csproj", "{48808C52-FE5E-43BB-8ADD-197748552773}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections.Pcl", "PowerCollections.Pcl\PowerCollections.Pcl.csproj", "{4FE07049-9F3A-42A4-8105-B1A72FE15C67}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +27,10 @@ Global
 		{48808C52-FE5E-43BB-8ADD-197748552773}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48808C52-FE5E-43BB-8ADD-197748552773}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48808C52-FE5E-43BB-8ADD-197748552773}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FE07049-9F3A-42A4-8105-B1A72FE15C67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FE07049-9F3A-42A4-8105-B1A72FE15C67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FE07049-9F3A-42A4-8105-B1A72FE15C67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FE07049-9F3A-42A4-8105-B1A72FE15C67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

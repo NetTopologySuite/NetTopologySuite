@@ -43,11 +43,13 @@ namespace Wintellect.PowerCollections
     /// In almost all cases, BigList is more efficient and easier to use than LinkedList.</para>
     /// </remarks>
     /// <typeparam name="T">The type of items to store in the BigList.</typeparam>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
     public class BigList<T>: ListBase<T>
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || PCL)
         , ICloneable
 #endif
     {
@@ -633,7 +635,7 @@ namespace Wintellect.PowerCollections
             }
         }
         
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || PCL)
 
         /// <summary>
         /// Creates a new BigList that is a copy of this list.
@@ -1358,7 +1360,9 @@ namespace Wintellect.PowerCollections
         /// The base class for the two kinds of nodes in the tree: Concat nodes
         /// and Leaf nodes.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
         private abstract class Node
@@ -1653,7 +1657,9 @@ namespace Wintellect.PowerCollections
         /// items in the items array. The number of items stored is found in "count", which may
         /// be less than "items.Length".
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
         private sealed class LeafNode : Node
@@ -2218,7 +2224,9 @@ namespace Wintellect.PowerCollections
         /// A ConcatNode is an interior (non-leaf) node that represents the concatination of
         /// the left and right child nodes. Both children must always be non-null.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
         private sealed class ConcatNode : Node
@@ -2719,7 +2727,9 @@ namespace Wintellect.PowerCollections
         /// </summary>
         /// <remarks>This is different from Algorithms.Range in a very few respects:
         /// it is specialized to only wrap BigList, and it is a lot more efficient in enumeration.</remarks>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
         private class BigListRange : ListBase<T>

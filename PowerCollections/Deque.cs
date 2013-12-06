@@ -9,9 +9,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections;
-
 // CONSIDER: always create a small initial buffer, so that the checks in Add for a null buffer aren't needed. This 
 // would improve performance slightly, but make empty Deque's take more memory. 
+using System.Diagnostics;
 
 namespace Wintellect.PowerCollections
 {
@@ -36,11 +36,13 @@ namespace Wintellect.PowerCollections
     /// elements.</para>
     /// </remarks>
     /// <typeparam name="T">The type of items stored in the Deque.</typeparam>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
     public class Deque<T> : ListBase<T>
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || PCL)
         , ICloneable
 #endif
     {
@@ -885,7 +887,7 @@ namespace Wintellect.PowerCollections
             return new Deque<T>(this);
         }
         
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || PCL)
 
         /// <summary>
         /// Creates a new Deque that is a copy of this one.

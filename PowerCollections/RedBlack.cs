@@ -36,7 +36,9 @@ namespace Wintellect.PowerCollections
 	/// in the tree. Insert, Delete, and Find operations are provided in their full generality;
 	/// all operations allow dealing with either the first or last of items that compare equal. 
     ///</remarks>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
     internal class RedBlackTree<T>: IEnumerable<T> {
@@ -76,7 +78,9 @@ namespace Wintellect.PowerCollections
         /// <summary>
 		/// The class that is each node in the red-black tree.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
         private class Node {
@@ -1158,7 +1162,7 @@ namespace Wintellect.PowerCollections
 		/// </summary>
 		public void Print() {
 			PrintSubTree(root, "", "");
-			Console.WriteLine();
+            Console.WriteLine("");
 		}
 
 		/// <summary>
@@ -1167,7 +1171,7 @@ namespace Wintellect.PowerCollections
 		/// <param name="node">Node to print from</param>
 		/// <param name="prefixNode">Prefix for the node</param>
 		/// <param name="prefixChildren">Prefix for the node's children</param>
-		private void PrintSubTree(Node node, string prefixNode, string prefixChildren) {
+		private static void PrintSubTree(Node node, string prefixNode, string prefixChildren) {
 			if (node == null)
 				return;
 

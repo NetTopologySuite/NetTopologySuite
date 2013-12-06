@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4FE07049-9F3A-42A4-8105-B1A72FE15C67}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Wintellect.PowerCollections</RootNamespace>
+    <AssemblyName>PowerCollections</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile4</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;PCL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;PCL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\PowerCollections\Algorithms.cs">
+      <Link>Algorithms.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\Bag.cs">
+      <Link>Bag.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\BigList.cs">
+      <Link>BigList.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\CollectionBase.cs">
+      <Link>CollectionBase.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\Comparers.cs">
+      <Link>Comparers.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\Deque.cs">
+      <Link>Deque.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\DictionaryBase.cs">
+      <Link>DictionaryBase.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\Hash.cs">
+      <Link>Hash.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\ListBase.cs">
+      <Link>ListBase.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\MultiDictionary.cs">
+      <Link>MultiDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\MultiDictionaryBase.cs">
+      <Link>MultiDictionaryBase.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\OrderedBag.cs">
+      <Link>OrderedBag.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\OrderedDictionary.cs">
+      <Link>OrderedDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\OrderedMultiDictionary.cs">
+      <Link>OrderedMultiDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\OrderedSet.cs">
+      <Link>OrderedSet.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\Pair.cs">
+      <Link>Pair.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\ReadOnlyCollectionBase.cs">
+      <Link>ReadOnlyCollectionBase.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\ReadOnlyDictionaryBase.cs">
+      <Link>ReadOnlyDictionaryBase.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\ReadOnlyListBase.cs">
+      <Link>ReadOnlyListBase.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\ReadOnlyMultiDictionaryBase.cs">
+      <Link>ReadOnlyMultiDictionaryBase.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\RedBlack.cs">
+      <Link>RedBlack.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\Set.cs">
+      <Link>Set.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\Strings.cs">
+      <Link>Strings.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\Triple.cs">
+      <Link>Triple.cs</Link>
+    </Compile>
+    <Compile Include="..\PowerCollections\Util.cs">
+      <Link>Util.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

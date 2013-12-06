@@ -19,9 +19,12 @@ namespace Wintellect.PowerCollections
     /// of all the other methods in IList&lt;T&gt; and IList are handled by ListBase.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
+
     public abstract class ReadOnlyListBase<T> : ReadOnlyCollectionBase<T>, IList<T>, IList
     {
         /// <summary>

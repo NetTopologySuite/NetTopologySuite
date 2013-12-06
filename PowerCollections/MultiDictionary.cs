@@ -23,11 +23,13 @@ namespace Wintellect.PowerCollections
     /// <typeparam name="TValue">The of values associated with the keys.</typeparam>
     ///<seealso cref="Dictionary&lt;TKey,TValue&gt;"/>
     ///<seealso cref="OrderedMultiDictionary&lt;TKey,TValue&gt;"/>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
     public class MultiDictionary<TKey, TValue> : MultiDictionaryBase<TKey, TValue>
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || PCL)
         , ICloneable
 #endif
     {
@@ -51,7 +53,9 @@ namespace Wintellect.PowerCollections
         /// The number of values must always be 1 or greater in a version that is stored, but 
         /// can be zero in a dummy version used only for lookups.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
         private struct KeyAndValues
@@ -107,7 +111,9 @@ namespace Wintellect.PowerCollections
         /// This class implements IEqualityComparer for KeysAndValues, allowing them to be
         /// compared by their keys. An IEqualityComparer on keys is required.
         /// </summary>
-#if !SILVERLIGHT
+#if SILVERLIGHT || PCL
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
 #endif
         private class KeyAndValuesEqualityComparer : IEqualityComparer<KeyAndValues>
@@ -511,7 +517,7 @@ namespace Wintellect.PowerCollections
 
         #region Cloning
         
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || PCL)
 
         /// <summary>
         /// Makes a shallow clone of this dictionary; i.e., if keys or values of the
