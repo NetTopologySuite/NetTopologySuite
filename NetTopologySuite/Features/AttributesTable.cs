@@ -1,5 +1,5 @@
 using System;
-#if SILVERLIGHT
+#if SILVERLIGHT || PCL
 using Hashtable = System.Collections.Generic.Dictionary<object, object>;
 #else
 using System.Collections;

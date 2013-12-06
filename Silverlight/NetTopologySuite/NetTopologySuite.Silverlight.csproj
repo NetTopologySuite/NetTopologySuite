@@ -1329,13 +1329,13 @@
       <Project>{9B913337-1114-4D05-8F24-D05A5FD588AD}</Project>
       <Name>GeoAPI.Silverlight</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\PowerCollections\PowerCollections.Pcl\PowerCollections.Pcl.csproj">
+      <Project>{4fe07049-9f3a-42a4-8105-b1a72fe15c67}</Project>
+      <Name>PowerCollections.Pcl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.Encodings\NetTopologySuite.Encodings.Silverlight.csproj">
       <Project>{C7FA023B-0259-47C4-8051-EE7EB639DD39}</Project>
       <Name>NetTopologySuite.Encodings.Silverlight</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\PowerCollections\PowerCollections.SL\PowerCollections.Silverlight.csproj">
-      <Project>{48808C52-FE5E-43BB-8ADD-197748552773}</Project>
-      <Name>PowerCollections.Silverlight</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
@@ -1372,7 +1372,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkReference="5770daa9-84e5-4770-af43-f6b815894368" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="5770daa9-84e5-4770-af43-f6b815894368" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
