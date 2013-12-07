@@ -1,0 +1,1317 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C6F14605-0DA6-420A-8DE7-18B57E9A9C99}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NetTopologySuite</RootNamespace>
+    <AssemblyName>NetTopologySuite</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile4</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;PCL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\..\GeoAPI\GeoAPI.Pcl\GeoAPI.Pcl.csproj">
+      <Project>{92b3b84b-50f1-4147-8b97-d93b90fa5514}</Project>
+      <Name>GeoAPI.Pcl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PowerCollections\PowerCollections.Pcl\PowerCollections.Pcl.csproj">
+      <Project>{4fe07049-9f3a-42a4-8105-b1a72fe15c67}</Project>
+      <Name>PowerCollections.Pcl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\SharedAssemblyVersion.cs">
+      <Link>Properties\SharedAssemblyVersion.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Angle.cs">
+      <Link>Algorithm\Angle.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\BoundaryNodeRule.cs">
+      <Link>Algorithm\BoundaryNodeRule.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\CentralEndpointIntersector.cs">
+      <Link>Algorithm\CentralEndpointIntersector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Centroid.cs">
+      <Link>Algorithm\Centroid.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\CentroidArea.cs">
+      <Link>Algorithm\CentroidArea.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\CentroidLine.cs">
+      <Link>Algorithm\CentroidLine.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\CentroidPoint.cs">
+      <Link>Algorithm\CentroidPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\CGAlgorithms.cs">
+      <Link>Algorithm\CGAlgorithms.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\CGAlgorithms3D.cs">
+      <Link>Algorithm\CGAlgorithms3D.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\CGAlgorithmsDD.cs">
+      <Link>Algorithm\CGAlgorithmsDD.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\ConvexHull.cs">
+      <Link>Algorithm\ConvexHull.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Distance\DiscreteHausdorffDistance.cs">
+      <Link>Algorithm\Distance\DiscreteHausdorffDistance.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Distance\DistanceToPoint.cs">
+      <Link>Algorithm\Distance\DistanceToPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Distance\PointPairDistance.cs">
+      <Link>Algorithm\Distance\PointPairDistance.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\HCoordinate.cs">
+      <Link>Algorithm\HCoordinate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\InteriorPointArea.cs">
+      <Link>Algorithm\InteriorPointArea.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\InteriorPointLine.cs">
+      <Link>Algorithm\InteriorPointLine.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\InteriorPointPoint.cs">
+      <Link>Algorithm\InteriorPointPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\IPointInAreaLocator.cs">
+      <Link>Algorithm\IPointInAreaLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\IPointInRing.cs">
+      <Link>Algorithm\IPointInRing.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\LineIntersector.cs">
+      <Link>Algorithm\LineIntersector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Locate\IndexedPointInAreaLocator.cs">
+      <Link>Algorithm\Locate\IndexedPointInAreaLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Locate\IPointOnGeometryLocator.cs">
+      <Link>Algorithm\Locate\IPointOnGeometryLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Locate\SimplePointInAreaLocator.cs">
+      <Link>Algorithm\Locate\SimplePointInAreaLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Match\AreaSimilarityMeasure.cs">
+      <Link>Algorithm\Match\AreaSimilarityMeasure.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Match\HausdorffSimilarityMeasure.cs">
+      <Link>Algorithm\Match\HausdorffSimilarityMeasure.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Match\ISimilarityMeasure.cs">
+      <Link>Algorithm\Match\ISimilarityMeasure.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\Match\SimilarityMeasureCombiner.cs">
+      <Link>Algorithm\Match\SimilarityMeasureCombiner.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\MCPointInRing.cs">
+      <Link>Algorithm\MCPointInRing.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\MinimumBoundingCircle.cs">
+      <Link>Algorithm\MinimumBoundingCircle.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\MinimumDiameter.cs">
+      <Link>Algorithm\MinimumDiameter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\NonRobustCGAlgorithms.cs">
+      <Link>Algorithm\NonRobustCGAlgorithms.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\NonRobustLineIntersector.cs">
+      <Link>Algorithm\NonRobustLineIntersector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\NotRepresentableException.cs">
+      <Link>Algorithm\NotRepresentableException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\PointLocator.cs">
+      <Link>Algorithm\PointLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\RayCrossingCounter.cs">
+      <Link>Algorithm\RayCrossingCounter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\RectangleLineIntersector.cs">
+      <Link>Algorithm\RectangleLineIntersector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\RobustDeterminant.cs">
+      <Link>Algorithm\RobustDeterminant.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\RobustLineIntersector.cs">
+      <Link>Algorithm\RobustLineIntersector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\SimplePointInRing.cs">
+      <Link>Algorithm\SimplePointInRing.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Algorithm\SIRtreePointInRing.cs">
+      <Link>Algorithm\SIRtreePointInRing.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\CoordinateSystems\Transformations\GeometryTransform.cs">
+      <Link>CoordinateSystems\Transformations\GeometryTransform.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Densify\Densifier.cs">
+      <Link>Densify\Densifier.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Features\AttributesTable.cs">
+      <Link>Features\AttributesTable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Features\Feature.cs">
+      <Link>Features\Feature.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Features\IAttributesTable.cs">
+      <Link>Features\IAttributesTable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\CoordinateArrays.cs">
+      <Link>Geometries\CoordinateArrays.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\CoordinateList.cs">
+      <Link>Geometries\CoordinateList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\CoordinateSequenceComparator.cs">
+      <Link>Geometries\CoordinateSequenceComparator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\CoordinateSequences.cs">
+      <Link>Geometries\CoordinateSequences.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\DefaultCoordinateSequence.cs">
+      <Link>Geometries\DefaultCoordinateSequence.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\DefaultCoordinateSequenceFactory.cs">
+      <Link>Geometries\DefaultCoordinateSequenceFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Geometry.cs">
+      <Link>Geometries\Geometry.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\GeometryCollection.cs">
+      <Link>Geometries\GeometryCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\GeometryCollectionEnumerator.cs">
+      <Link>Geometries\GeometryCollectionEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\GeometryComponentFilter.cs">
+      <Link>Geometries\GeometryComponentFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\GeometryFactory.cs">
+      <Link>Geometries\GeometryFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Implementation\CoordinateArraySequence.cs">
+      <Link>Geometries\Implementation\CoordinateArraySequence.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Implementation\CoordinateArraySequenceFactory.cs">
+      <Link>Geometries\Implementation\CoordinateArraySequenceFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Implementation\DotSpatialAffineCoordinateSequence.cs">
+      <Link>Geometries\Implementation\DotSpatialAffineCoordinateSequence.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Implementation\DotSpatialAffineCoordinateSequenceFactory.cs">
+      <Link>Geometries\Implementation\DotSpatialAffineCoordinateSequenceFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Implementation\PackedCoordinateSequence.cs">
+      <Link>Geometries\Implementation\PackedCoordinateSequence.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Implementation\PackedCoordinateSequenceFactory.cs">
+      <Link>Geometries\Implementation\PackedCoordinateSequenceFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\LinearRing.cs">
+      <Link>Geometries\LinearRing.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\LineSegment.cs">
+      <Link>Geometries\LineSegment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\LineString.cs">
+      <Link>Geometries\LineString.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\MultiLineString.cs">
+      <Link>Geometries\MultiLineString.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\MultiPoint.cs">
+      <Link>Geometries\MultiPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\MultiPolygon.cs">
+      <Link>Geometries\MultiPolygon.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\OctogonalEnvelope.cs">
+      <Link>Geometries\OctogonalEnvelope.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\OgcCompliantGeometryFactory.cs">
+      <Link>Geometries\OgcCompliantGeometryFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Point.cs">
+      <Link>Geometries\Point.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Polygon.cs">
+      <Link>Geometries\Polygon.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\PrecisionModel.cs">
+      <Link>Geometries\PrecisionModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Prepared\AbstractPreparedPolygonContains.cs">
+      <Link>Geometries\Prepared\AbstractPreparedPolygonContains.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Prepared\BasicPreparedGeometry.cs">
+      <Link>Geometries\Prepared\BasicPreparedGeometry.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Prepared\PreparedGeometryFactory.cs">
+      <Link>Geometries\Prepared\PreparedGeometryFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Prepared\PreparedLineString.cs">
+      <Link>Geometries\Prepared\PreparedLineString.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Prepared\PreparedLineStringIntersects.cs">
+      <Link>Geometries\Prepared\PreparedLineStringIntersects.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Prepared\PreparedPoint.cs">
+      <Link>Geometries\Prepared\PreparedPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Prepared\PreparedPolygon.cs">
+      <Link>Geometries\Prepared\PreparedPolygon.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Prepared\PreparedPolygonContains.cs">
+      <Link>Geometries\Prepared\PreparedPolygonContains.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Prepared\PreparedPolygonContainsProperly.cs">
+      <Link>Geometries\Prepared\PreparedPolygonContainsProperly.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Prepared\PreparedPolygonCovers.cs">
+      <Link>Geometries\Prepared\PreparedPolygonCovers.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Prepared\PreparedPolygonIntersects.cs">
+      <Link>Geometries\Prepared\PreparedPolygonIntersects.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Prepared\PreparedPolygonPredicate.cs">
+      <Link>Geometries\Prepared\PreparedPolygonPredicate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\TopologyException.cs">
+      <Link>Geometries\TopologyException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Triangle.cs">
+      <Link>Geometries\Triangle.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Utilities\AffineTransformation.cs">
+      <Link>Geometries\Utilities\AffineTransformation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Utilities\AffineTransformationBuilder.cs">
+      <Link>Geometries\Utilities\AffineTransformationBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Utilities\AffineTransformationFactory.cs">
+      <Link>Geometries\Utilities\AffineTransformationFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Utilities\ComponentGeometryExtractor.cs">
+      <Link>Geometries\Utilities\ComponentGeometryExtractor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Utilities\GeometryCollectionMapper.cs">
+      <Link>Geometries\Utilities\GeometryCollectionMapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Utilities\GeometryCombiner.cs">
+      <Link>Geometries\Utilities\GeometryCombiner.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Utilities\GeometryEditor.cs">
+      <Link>Geometries\Utilities\GeometryEditor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Utilities\GeometryExtracter.cs">
+      <Link>Geometries\Utilities\GeometryExtracter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Utilities\GeometryMapper.cs">
+      <Link>Geometries\Utilities\GeometryMapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Utilities\GeometryTransformer.cs">
+      <Link>Geometries\Utilities\GeometryTransformer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Utilities\LinearComponentExtracter.cs">
+      <Link>Geometries\Utilities\LinearComponentExtracter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Utilities\LineStringExtracter.cs">
+      <Link>Geometries\Utilities\LineStringExtracter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Utilities\Matrix.cs">
+      <Link>Geometries\Utilities\Matrix.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Utilities\NoninvertibleTransformationException.cs">
+      <Link>Geometries\Utilities\NoninvertibleTransformationException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Utilities\PointExtracter.cs">
+      <Link>Geometries\Utilities\PointExtracter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Utilities\PolygonExtracter.cs">
+      <Link>Geometries\Utilities\PolygonExtracter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Utilities\ShortCircuitedGeometryVisitor.cs">
+      <Link>Geometries\Utilities\ShortCircuitedGeometryVisitor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Geometries\Utilities\SineStarFactory.cs">
+      <Link>Geometries\Utilities\SineStarFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Depth.cs">
+      <Link>GeometriesGraph\Depth.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\DirectedEdge.cs">
+      <Link>GeometriesGraph\DirectedEdge.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\DirectedEdgeStar.cs">
+      <Link>GeometriesGraph\DirectedEdgeStar.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Edge.cs">
+      <Link>GeometriesGraph\Edge.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\EdgeEnd.cs">
+      <Link>GeometriesGraph\EdgeEnd.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\EdgeEndStar.cs">
+      <Link>GeometriesGraph\EdgeEndStar.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\EdgeIntersection.cs">
+      <Link>GeometriesGraph\EdgeIntersection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\EdgeIntersectionList.cs">
+      <Link>GeometriesGraph\EdgeIntersectionList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\EdgeList.cs">
+      <Link>GeometriesGraph\EdgeList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\EdgeNodingValidator.cs">
+      <Link>GeometriesGraph\EdgeNodingValidator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\EdgeRing.cs">
+      <Link>GeometriesGraph\EdgeRing.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\GeometryGraph.cs">
+      <Link>GeometriesGraph\GeometryGraph.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\GraphComponent.cs">
+      <Link>GeometriesGraph\GraphComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Index\EdgeSetIntersector.cs">
+      <Link>GeometriesGraph\Index\EdgeSetIntersector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Index\MonotoneChain.cs">
+      <Link>GeometriesGraph\Index\MonotoneChain.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Index\MonotoneChainEdge.cs">
+      <Link>GeometriesGraph\Index\MonotoneChainEdge.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Index\MonotoneChainIndexer.cs">
+      <Link>GeometriesGraph\Index\MonotoneChainIndexer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Index\SegmentIntersector.cs">
+      <Link>GeometriesGraph\Index\SegmentIntersector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Index\SimpleEdgeSetIntersector.cs">
+      <Link>GeometriesGraph\Index\SimpleEdgeSetIntersector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Index\SimpleMCSweepLineIntersector.cs">
+      <Link>GeometriesGraph\Index\SimpleMCSweepLineIntersector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Index\SimpleSweepLineIntersector.cs">
+      <Link>GeometriesGraph\Index\SimpleSweepLineIntersector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Index\SweepLineEvent.cs">
+      <Link>GeometriesGraph\Index\SweepLineEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Index\SweepLineSegment.cs">
+      <Link>GeometriesGraph\Index\SweepLineSegment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Label.cs">
+      <Link>GeometriesGraph\Label.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Node.cs">
+      <Link>GeometriesGraph\Node.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\NodeFactory.cs">
+      <Link>GeometriesGraph\NodeFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\NodeMap.cs">
+      <Link>GeometriesGraph\NodeMap.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\PlanarGraph.cs">
+      <Link>GeometriesGraph\PlanarGraph.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\Position.cs">
+      <Link>GeometriesGraph\Position.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\QuadrantOp.cs">
+      <Link>GeometriesGraph\QuadrantOp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\GeometriesGraph\TopologyLocation.cs">
+      <Link>GeometriesGraph\TopologyLocation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\ArrayListVisitor.cs">
+      <Link>Index\ArrayListVisitor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Bintree\Bintree.cs">
+      <Link>Index\Bintree\Bintree.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Bintree\Interval.cs">
+      <Link>Index\Bintree\Interval.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Bintree\Key.cs">
+      <Link>Index\Bintree\Key.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Bintree\Node.cs">
+      <Link>Index\Bintree\Node.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Bintree\NodeBase.cs">
+      <Link>Index\Bintree\NodeBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Bintree\Root.cs">
+      <Link>Index\Bintree\Root.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Chain\MonotoneChain.cs">
+      <Link>Index\Chain\MonotoneChain.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Chain\MonotoneChainBuilder.cs">
+      <Link>Index\Chain\MonotoneChainBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Chain\MonotoneChainOverlapAction.cs">
+      <Link>Index\Chain\MonotoneChainOverlapAction.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Chain\MonotoneChainSelectAction.cs">
+      <Link>Index\Chain\MonotoneChainSelectAction.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\IIndexVisitor.cs">
+      <Link>Index\IIndexVisitor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\IItemVisitor.cs">
+      <Link>Index\IItemVisitor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\IntervalRTree\IntervalRTreeBranchNode.cs">
+      <Link>Index\IntervalRTree\IntervalRTreeBranchNode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\IntervalRTree\IntervalRTreeLeafNode.cs">
+      <Link>Index\IntervalRTree\IntervalRTreeLeafNode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\IntervalRTree\IntervalRTreeNode.cs">
+      <Link>Index\IntervalRTree\IntervalRTreeNode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\IntervalRTree\SortedPackedIntervalRTree.cs">
+      <Link>Index\IntervalRTree\SortedPackedIntervalRTree.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\ISpatialIndex.cs">
+      <Link>Index\ISpatialIndex.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\KdTree\KdNode.cs">
+      <Link>Index\KdTree\KdNode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\KdTree\KdTree.cs">
+      <Link>Index\KdTree\KdTree.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Quadtree\DoubleBits.cs">
+      <Link>Index\Quadtree\DoubleBits.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Quadtree\IntervalSize.cs">
+      <Link>Index\Quadtree\IntervalSize.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Quadtree\Key.cs">
+      <Link>Index\Quadtree\Key.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Quadtree\Node.cs">
+      <Link>Index\Quadtree\Node.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Quadtree\NodeBase.cs">
+      <Link>Index\Quadtree\NodeBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Quadtree\Quadtree.cs">
+      <Link>Index\Quadtree\Quadtree.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Quadtree\Root.cs">
+      <Link>Index\Quadtree\Root.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Strtree\AbstractNode.cs">
+      <Link>Index\Strtree\AbstractNode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Strtree\AbstractSTRtree.cs">
+      <Link>Index\Strtree\AbstractSTRtree.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Strtree\BoundablePair.cs">
+      <Link>Index\Strtree\BoundablePair.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Strtree\GeometryItemDistance.cs">
+      <Link>Index\Strtree\GeometryItemDistance.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Strtree\IBoundable.cs">
+      <Link>Index\Strtree\IBoundable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Strtree\IItemDistance.cs">
+      <Link>Index\Strtree\IItemDistance.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Strtree\Interval.cs">
+      <Link>Index\Strtree\Interval.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Strtree\ItemBoundable.cs">
+      <Link>Index\Strtree\ItemBoundable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Strtree\SIRtree.cs">
+      <Link>Index\Strtree\SIRtree.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Strtree\STRtree.cs">
+      <Link>Index\Strtree\STRtree.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Sweepline\ISweepLineOverlapAction.cs">
+      <Link>Index\Sweepline\ISweepLineOverlapAction.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Sweepline\SweepLineEvent.cs">
+      <Link>Index\Sweepline\SweepLineEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Sweepline\SweepLineIndex.cs">
+      <Link>Index\Sweepline\SweepLineIndex.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\Sweepline\SweepLineInterval.cs">
+      <Link>Index\Sweepline\SweepLineInterval.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\IO\BEBinaryReader.cs">
+      <Link>IO\BEBinaryReader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\IO\BEBinaryWriter.cs">
+      <Link>IO\BEBinaryWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\IO\GML2\GMLElements.cs">
+      <Link>IO\GML2\GMLElements.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\IO\GML2\GMLReader.cs">
+      <Link>IO\GML2\GMLReader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\IO\GML2\GMLWriter.cs">
+      <Link>IO\GML2\GMLWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\IO\ParseException.cs">
+      <Link>IO\ParseException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\IO\WKBGeometryTypes.cs">
+      <Link>IO\WKBGeometryTypes.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\IO\WKBHexFileReader.cs">
+      <Link>IO\WKBHexFileReader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\IO\WKBReader.cs">
+      <Link>IO\WKBReader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\IO\WKBWriter.cs">
+      <Link>IO\WKBWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\IO\WKTFileReader.cs">
+      <Link>IO\WKTFileReader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\IO\WKTReader.cs">
+      <Link>IO\WKTReader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\IO\WKTWriter.cs">
+      <Link>IO\WKTWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\LinearReferencing\ExtractLineByLocation.cs">
+      <Link>LinearReferencing\ExtractLineByLocation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\LinearReferencing\LengthIndexedLine.cs">
+      <Link>LinearReferencing\LengthIndexedLine.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\LinearReferencing\LengthIndexOfPoint.cs">
+      <Link>LinearReferencing\LengthIndexOfPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\LinearReferencing\LengthLocationMap.cs">
+      <Link>LinearReferencing\LengthLocationMap.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\LinearReferencing\LinearGeometryBuilder.cs">
+      <Link>LinearReferencing\LinearGeometryBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\LinearReferencing\LinearIterator.cs">
+      <Link>LinearReferencing\LinearIterator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\LinearReferencing\LinearLocation.cs">
+      <Link>LinearReferencing\LinearLocation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\LinearReferencing\LocationIndexedLine.cs">
+      <Link>LinearReferencing\LocationIndexedLine.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\LinearReferencing\LocationIndexOfLine.cs">
+      <Link>LinearReferencing\LocationIndexOfLine.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\LinearReferencing\LocationIndexOfPoint.cs">
+      <Link>LinearReferencing\LocationIndexOfPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Mathematics\DD.cs">
+      <Link>Mathematics\DD.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Mathematics\MathUtil.cs">
+      <Link>Mathematics\MathUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Mathematics\Matrix.cs">
+      <Link>Mathematics\Matrix.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Mathematics\Plane3D.cs">
+      <Link>Mathematics\Plane3D.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Mathematics\Vector2D.cs">
+      <Link>Mathematics\Vector2D.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Mathematics\Vector3D.cs">
+      <Link>Mathematics\Vector3D.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Mathematics\VectorMath.cs">
+      <Link>Mathematics\VectorMath.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\BasicSegmentString.cs">
+      <Link>Noding\BasicSegmentString.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\FastNodingValidator.cs">
+      <Link>Noding\FastNodingValidator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\FastSegmentSetIntersectionFinder.cs">
+      <Link>Noding\FastSegmentSetIntersectionFinder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\INodableSegmentString.cs">
+      <Link>Noding\INodableSegmentString.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\INoder.cs">
+      <Link>Noding\INoder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\InteriorIntersectionFinder.cs">
+      <Link>Noding\InteriorIntersectionFinder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\IntersectionAdder.cs">
+      <Link>Noding\IntersectionAdder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\IntersectionFinderAdder.cs">
+      <Link>Noding\IntersectionFinderAdder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\ISegmentIntersector.cs">
+      <Link>Noding\ISegmentIntersector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\ISegmentString.cs">
+      <Link>Noding\ISegmentString.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\IteratedNoder.cs">
+      <Link>Noding\IteratedNoder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\MCIndexNoder.cs">
+      <Link>Noding\MCIndexNoder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\MCIndexSegmentSetMutualIntersector.cs">
+      <Link>Noding\MCIndexSegmentSetMutualIntersector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\NodingValidator.cs">
+      <Link>Noding\NodingValidator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\Octant.cs">
+      <Link>Noding\Octant.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\OrientedCoordinateArray.cs">
+      <Link>Noding\OrientedCoordinateArray.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\ScaledNoder.cs">
+      <Link>Noding\ScaledNoder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\SegmentIntersectionDetector.cs">
+      <Link>Noding\SegmentIntersectionDetector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\SegmentNode.cs">
+      <Link>Noding\SegmentNode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\SegmentNodeList.cs">
+      <Link>Noding\SegmentNodeList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\SegmentPointComparator.cs">
+      <Link>Noding\SegmentPointComparator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\SegmentSetMutualIntersector.cs">
+      <Link>Noding\SegmentSetMutualIntersector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\SegmentString.cs">
+      <Link>Noding\SegmentString.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\SegmentStringDissolver.cs">
+      <Link>Noding\SegmentStringDissolver.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\SegmentStringUtil.cs">
+      <Link>Noding\SegmentStringUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\SimpleNoder.cs">
+      <Link>Noding\SimpleNoder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\SimpleSegmentSetMutualIntersector.cs">
+      <Link>Noding\SimpleSegmentSetMutualIntersector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\SinglePassNoder.cs">
+      <Link>Noding\SinglePassNoder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\Snapround\GeometryNoder.cs">
+      <Link>Noding\Snapround\GeometryNoder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\Snapround\HotPixel.cs">
+      <Link>Noding\Snapround\HotPixel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\Snapround\MCIndexPointSnapper.cs">
+      <Link>Noding\Snapround\MCIndexPointSnapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\Snapround\MCIndexSnapRounder.cs">
+      <Link>Noding\Snapround\MCIndexSnapRounder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\Snapround\SimpleSnapRounder.cs">
+      <Link>Noding\Snapround\SimpleSnapRounder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\NtsGeometryServices.cs">
+      <Link>NtsGeometryServices.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\BoundaryOp.cs">
+      <Link>Operation\BoundaryOp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Buffer\BufferBuilder.cs">
+      <Link>Operation\Buffer\BufferBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Buffer\BufferInputLineSimplifier.cs">
+      <Link>Operation\Buffer\BufferInputLineSimplifier.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Buffer\BufferOp.cs">
+      <Link>Operation\Buffer\BufferOp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Buffer\BufferParameters.cs">
+      <Link>Operation\Buffer\BufferParameters.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Buffer\BufferSubgraph.cs">
+      <Link>Operation\Buffer\BufferSubgraph.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Buffer\OffsetCurveBuilder.cs">
+      <Link>Operation\Buffer\OffsetCurveBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Buffer\OffsetCurveSetBuilder.cs">
+      <Link>Operation\Buffer\OffsetCurveSetBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Buffer\OffsetCurveVertexList.cs">
+      <Link>Operation\Buffer\OffsetCurveVertexList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Buffer\OffsetSegmentGenerator.cs">
+      <Link>Operation\Buffer\OffsetSegmentGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Buffer\OffsetSegmentString.cs">
+      <Link>Operation\Buffer\OffsetSegmentString.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Buffer\OldOffsetCurveBuilder.cs">
+      <Link>Operation\Buffer\OldOffsetCurveBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Buffer\RightmostEdgeFinder.cs">
+      <Link>Operation\Buffer\RightmostEdgeFinder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Buffer\SubgraphDepthLocater.cs">
+      <Link>Operation\Buffer\SubgraphDepthLocater.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Buffer\Validate\BufferCurveMaximumDistanceFinder.cs">
+      <Link>Operation\Buffer\Validate\BufferCurveMaximumDistanceFinder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Buffer\Validate\BufferDistanceValidator.cs">
+      <Link>Operation\Buffer\Validate\BufferDistanceValidator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Buffer\Validate\BufferResultValidator.cs">
+      <Link>Operation\Buffer\Validate\BufferResultValidator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Buffer\Validate\DistanceToPointFinder.cs">
+      <Link>Operation\Buffer\Validate\DistanceToPointFinder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Buffer\Validate\PointPairDistance.cs">
+      <Link>Operation\Buffer\Validate\PointPairDistance.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Distance3D\AxisPlaneCoordinateSequence.cs">
+      <Link>Operation\Distance3D\AxisPlaneCoordinateSequence.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Distance3D\Distance3DOp.cs">
+      <Link>Operation\Distance3D\Distance3DOp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Distance3D\PlanarPolygon3D.cs">
+      <Link>Operation\Distance3D\PlanarPolygon3D.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Distance\ConnectedElementLocationFilter.cs">
+      <Link>Operation\Distance\ConnectedElementLocationFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Distance\ConnectedElementPointFilter.cs">
+      <Link>Operation\Distance\ConnectedElementPointFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Distance\DistanceOp.cs">
+      <Link>Operation\Distance\DistanceOp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Distance\FacetSequence.cs">
+      <Link>Operation\Distance\FacetSequence.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Distance\FacetSequenceTreeBuilder.cs">
+      <Link>Operation\Distance\FacetSequenceTreeBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Distance\GeometryLocation.cs">
+      <Link>Operation\Distance\GeometryLocation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Distance\IndexedFacedDistance.cs">
+      <Link>Operation\Distance\IndexedFacedDistance.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\GeometryGraphOperation.cs">
+      <Link>Operation\GeometryGraphOperation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\IsSimpleOp.cs">
+      <Link>Operation\IsSimpleOp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Linemerge\EdgeString.cs">
+      <Link>Operation\Linemerge\EdgeString.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Linemerge\LineMergeDirectedEdge.cs">
+      <Link>Operation\Linemerge\LineMergeDirectedEdge.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Linemerge\LineMergeEdge.cs">
+      <Link>Operation\Linemerge\LineMergeEdge.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Linemerge\LineMergeGraph.cs">
+      <Link>Operation\Linemerge\LineMergeGraph.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Linemerge\LineMerger.cs">
+      <Link>Operation\Linemerge\LineMerger.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Linemerge\LineSequencer.cs">
+      <Link>Operation\Linemerge\LineSequencer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Overlay\EdgeSetNoder.cs">
+      <Link>Operation\Overlay\EdgeSetNoder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Overlay\LineBuilder.cs">
+      <Link>Operation\Overlay\LineBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Overlay\MaximalEdgeRing.cs">
+      <Link>Operation\Overlay\MaximalEdgeRing.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Overlay\MinimalEdgeRing.cs">
+      <Link>Operation\Overlay\MinimalEdgeRing.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Overlay\OverlayNodeFactory.cs">
+      <Link>Operation\Overlay\OverlayNodeFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Overlay\OverlayOp.cs">
+      <Link>Operation\Overlay\OverlayOp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Overlay\PointBuilder.cs">
+      <Link>Operation\Overlay\PointBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Overlay\PolygonBuilder.cs">
+      <Link>Operation\Overlay\PolygonBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Overlay\Snap\GeometrySnapper.cs">
+      <Link>Operation\Overlay\Snap\GeometrySnapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Overlay\Snap\LineStringSnapper.cs">
+      <Link>Operation\Overlay\Snap\LineStringSnapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Overlay\Snap\SnapIfNeededOverlayOp.cs">
+      <Link>Operation\Overlay\Snap\SnapIfNeededOverlayOp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Overlay\Snap\SnapOverlayOp.cs">
+      <Link>Operation\Overlay\Snap\SnapOverlayOp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Overlay\Validate\FuzzyPointLocator.cs">
+      <Link>Operation\Overlay\Validate\FuzzyPointLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Overlay\Validate\OffsetPointGenerator.cs">
+      <Link>Operation\Overlay\Validate\OffsetPointGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Overlay\Validate\OverlayResultValidator.cs">
+      <Link>Operation\Overlay\Validate\OverlayResultValidator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Polygonize\EdgeRing.cs">
+      <Link>Operation\Polygonize\EdgeRing.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Polygonize\PolygonizeDirectedEdge.cs">
+      <Link>Operation\Polygonize\PolygonizeDirectedEdge.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Polygonize\PolygonizeEdge.cs">
+      <Link>Operation\Polygonize\PolygonizeEdge.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Polygonize\PolygonizeGraph.cs">
+      <Link>Operation\Polygonize\PolygonizeGraph.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Polygonize\Polygonizer.cs">
+      <Link>Operation\Polygonize\Polygonizer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Predicate\RectangleContains.cs">
+      <Link>Operation\Predicate\RectangleContains.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Predicate\RectangleIntersects.cs">
+      <Link>Operation\Predicate\RectangleIntersects.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Predicate\SegmentIntersectionTester.cs">
+      <Link>Operation\Predicate\SegmentIntersectionTester.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Relate\EdgeEndBuilder.cs">
+      <Link>Operation\Relate\EdgeEndBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Relate\EdgeEndBundle.cs">
+      <Link>Operation\Relate\EdgeEndBundle.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Relate\EdgeEndBundleStar.cs">
+      <Link>Operation\Relate\EdgeEndBundleStar.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Relate\RelateComputer.cs">
+      <Link>Operation\Relate\RelateComputer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Relate\RelateNode.cs">
+      <Link>Operation\Relate\RelateNode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Relate\RelateNodeFactory.cs">
+      <Link>Operation\Relate\RelateNodeFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Relate\RelateNodeGraph.cs">
+      <Link>Operation\Relate\RelateNodeGraph.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Relate\RelateOp.cs">
+      <Link>Operation\Relate\RelateOp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Union\CascadedPolygonUnion.cs">
+      <Link>Operation\Union\CascadedPolygonUnion.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Union\PointGeometryUnion.cs">
+      <Link>Operation\Union\PointGeometryUnion.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Union\UnaryUnionOp.cs">
+      <Link>Operation\Union\UnaryUnionOp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Union\UnionInteracting.cs">
+      <Link>Operation\Union\UnionInteracting.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Valid\ConnectedInteriorTester.cs">
+      <Link>Operation\Valid\ConnectedInteriorTester.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Valid\ConsistentAreaTester.cs">
+      <Link>Operation\Valid\ConsistentAreaTester.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Valid\IndexedNestedRingTester.cs">
+      <Link>Operation\Valid\IndexedNestedRingTester.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Valid\IsValidOp.cs">
+      <Link>Operation\Valid\IsValidOp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Valid\QuadtreeNestedRingTester.cs">
+      <Link>Operation\Valid\QuadtreeNestedRingTester.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Valid\RepeatedPointTester.cs">
+      <Link>Operation\Valid\RepeatedPointTester.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Valid\SimpleNestedRingTester.cs">
+      <Link>Operation\Valid\SimpleNestedRingTester.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Valid\SweeplineNestedRingTester.cs">
+      <Link>Operation\Valid\SweeplineNestedRingTester.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Valid\TopologyValidationError.cs">
+      <Link>Operation\Valid\TopologyValidationError.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Planargraph\Algorithm\ConnectedSubgraphFinder.cs">
+      <Link>Planargraph\Algorithm\ConnectedSubgraphFinder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Planargraph\DirectedEdge.cs">
+      <Link>Planargraph\DirectedEdge.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Planargraph\DirectedEdgeStar.cs">
+      <Link>Planargraph\DirectedEdgeStar.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Planargraph\Edge.cs">
+      <Link>Planargraph\Edge.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Planargraph\GraphComponent.cs">
+      <Link>Planargraph\GraphComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Planargraph\Node.cs">
+      <Link>Planargraph\Node.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Planargraph\NodeMap.cs">
+      <Link>Planargraph\NodeMap.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Planargraph\PlanarGraph.cs">
+      <Link>Planargraph\PlanarGraph.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Planargraph\Subgraph.cs">
+      <Link>Planargraph\Subgraph.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Precision\CommonBits.cs">
+      <Link>Precision\CommonBits.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Precision\CommonBitsOp.cs">
+      <Link>Precision\CommonBitsOp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Precision\CommonBitsRemover.cs">
+      <Link>Precision\CommonBitsRemover.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Precision\CoordinatePrecisionReducerFilter.cs">
+      <Link>Precision\CoordinatePrecisionReducerFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Precision\EnhancedPrecisionOp.cs">
+      <Link>Precision\EnhancedPrecisionOp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Precision\GeometryPrecisionReducer.cs">
+      <Link>Precision\GeometryPrecisionReducer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Precision\MinimumClearance.cs">
+      <Link>Precision\MinimumClearance.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Precision\PrecisionReducerCoordinateOperation.cs">
+      <Link>Precision\PrecisionReducerCoordinateOperation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Precision\SimpleGeometryPrecisionReducer.cs">
+      <Link>Precision\SimpleGeometryPrecisionReducer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Precision\SimpleMinimumClearance.cs">
+      <Link>Precision\SimpleMinimumClearance.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Shape\Fractal\KochSnowflakeBuilder.cs">
+      <Link>Shape\Fractal\KochSnowflakeBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Shape\Fractal\SierpinskiCarpetBuilder.cs">
+      <Link>Shape\Fractal\SierpinskiCarpetBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Shape\GeometricShapeBuilder.cs">
+      <Link>Shape\GeometricShapeBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Shape\Random\RandomPointsBuilder.cs">
+      <Link>Shape\Random\RandomPointsBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Shape\Random\RandomPointsInGridBuilder.cs">
+      <Link>Shape\Random\RandomPointsInGridBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Simplify\DouglasPeuckerLineSimplifier.cs">
+      <Link>Simplify\DouglasPeuckerLineSimplifier.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Simplify\DouglasPeuckerSimplifier.cs">
+      <Link>Simplify\DouglasPeuckerSimplifier.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Simplify\LineSegmentIndex.cs">
+      <Link>Simplify\LineSegmentIndex.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Simplify\TaggedLineSegment.cs">
+      <Link>Simplify\TaggedLineSegment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Simplify\TaggedLinesSimplifier.cs">
+      <Link>Simplify\TaggedLinesSimplifier.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Simplify\TaggedLineString.cs">
+      <Link>Simplify\TaggedLineString.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Simplify\TaggedLineStringSimplifier.cs">
+      <Link>Simplify\TaggedLineStringSimplifier.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Simplify\TopologyPreservingSimplifier.cs">
+      <Link>Simplify\TopologyPreservingSimplifier.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\ConformingDelaunayTriangulationBuilder.cs">
+      <Link>Triangulate\ConformingDelaunayTriangulationBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\ConformingDelaunayTriangulator.cs">
+      <Link>Triangulate\ConformingDelaunayTriangulator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\ConstraintEnforcementException.cs">
+      <Link>Triangulate\ConstraintEnforcementException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\ConstraintVertex.cs">
+      <Link>Triangulate\ConstraintVertex.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\ConstraintVertexFactory.cs">
+      <Link>Triangulate\ConstraintVertexFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\DelaunayTriangulationBuilder.cs">
+      <Link>Triangulate\DelaunayTriangulationBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\IConstraintSplitPointFinder.cs">
+      <Link>Triangulate\IConstraintSplitPointFinder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\IncrementalDelaunayTriangulator.cs">
+      <Link>Triangulate\IncrementalDelaunayTriangulator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\MidpointSplitPointFinder.cs">
+      <Link>Triangulate\MidpointSplitPointFinder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\NonEncroachingSplitPointFinder.cs">
+      <Link>Triangulate\NonEncroachingSplitPointFinder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\QuadEdge\EdgeConnectedTriangleTraversal.cs">
+      <Link>Triangulate\QuadEdge\EdgeConnectedTriangleTraversal.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\QuadEdge\IQuadEdgeLocator.cs">
+      <Link>Triangulate\QuadEdge\IQuadEdgeLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\QuadEdge\ITraversalVisitor.cs">
+      <Link>Triangulate\QuadEdge\ITraversalVisitor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\QuadEdge\ITriangleVisitor.cs">
+      <Link>Triangulate\QuadEdge\ITriangleVisitor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\QuadEdge\LastFoundQuadEdgeLocator.cs">
+      <Link>Triangulate\QuadEdge\LastFoundQuadEdgeLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\QuadEdge\LocateFailureException.cs">
+      <Link>Triangulate\QuadEdge\LocateFailureException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\QuadEdge\QuadEdge.cs">
+      <Link>Triangulate\QuadEdge\QuadEdge.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\QuadEdge\QuadEdgeSubdivision.cs">
+      <Link>Triangulate\QuadEdge\QuadEdgeSubdivision.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\QuadEdge\QuadEdgeTriangle.cs">
+      <Link>Triangulate\QuadEdge\QuadEdgeTriangle.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\QuadEdge\QuadEdgeUtil.cs">
+      <Link>Triangulate\QuadEdge\QuadEdgeUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\QuadEdge\TrianglePredicate.cs">
+      <Link>Triangulate\QuadEdge\TrianglePredicate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\QuadEdge\Vertex.cs">
+      <Link>Triangulate\QuadEdge\Vertex.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\Segment.cs">
+      <Link>Triangulate\Segment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\SplitSegment.cs">
+      <Link>Triangulate\SplitSegment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\VertexTaggedGeometryDataMapper.cs">
+      <Link>Triangulate\VertexTaggedGeometryDataMapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Triangulate\VoronoiDiagramBuilder.cs">
+      <Link>Triangulate\VoronoiDiagramBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\Assert.cs">
+      <Link>Utilities\Assert.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\AssertionFailedException.cs">
+      <Link>Utilities\AssertionFailedException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\BitConverter.cs">
+      <Link>Utilities\BitConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\Caster.cs">
+      <Link>Utilities\Caster.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\CollectionUtil.cs">
+      <Link>Utilities\CollectionUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\CoordinateArrayFilter.cs">
+      <Link>Utilities\CoordinateArrayFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\CoordinateCompare.cs">
+      <Link>Utilities\CoordinateCompare.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\CoordinateCountFilter.cs">
+      <Link>Utilities\CoordinateCountFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\Degrees.cs">
+      <Link>Utilities\Degrees.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\EnumUtility.cs">
+      <Link>Utilities\EnumUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\GeometricShapeFactory.cs">
+      <Link>Utilities\GeometricShapeFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\Global.cs">
+      <Link>Utilities\Global.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\Guard.cs">
+      <Link>Utilities\Guard.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\HexConverter.cs">
+      <Link>Utilities\HexConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\Memory.cs">
+      <Link>Utilities\Memory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\PlatformUtilityEx.cs">
+      <Link>Utilities\PlatformUtilityEx.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\PriorityQueue.cs">
+      <Link>Utilities\PriorityQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\Radians.cs">
+      <Link>Utilities\Radians.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\ReverseOrder.cs">
+      <Link>Utilities\ReverseOrder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\RToolsUtil\BufferedTextReader.cs">
+      <Link>Utilities\RToolsUtil\BufferedTextReader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\RToolsUtil\CharBuffer.cs">
+      <Link>Utilities\RToolsUtil\CharBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\RToolsUtil\Logger.cs">
+      <Link>Utilities\RToolsUtil\Logger.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\RToolsUtil\Opts.cs">
+      <Link>Utilities\RToolsUtil\Opts.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\RToolsUtil\ParseUtil.cs">
+      <Link>Utilities\RToolsUtil\ParseUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\RToolsUtil\SoftwarePackage.cs">
+      <Link>Utilities\RToolsUtil\SoftwarePackage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\RToolsUtil\StreamTokenizer.cs">
+      <Link>Utilities\RToolsUtil\StreamTokenizer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\RToolsUtil\Token.cs">
+      <Link>Utilities\RToolsUtil\Token.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\RToolsUtil\VerbosityLevel.cs">
+      <Link>Utilities\RToolsUtil\VerbosityLevel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\StreamTokenizer.cs">
+      <Link>Utilities\StreamTokenizer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\UniqueCoordinateArrayFilter.cs">
+      <Link>Utilities\UniqueCoordinateArrayFilter.cs</Link>
+    </Compile>
+    <Compile Include="Extension\ICoordinateEx.cs" />
+    <Compile Include="Extension\IEnvelopeEx.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\NetTopologySuite\License.txt">
+      <Link>License.txt</Link>
+    </Content>
+    <Resource Include="..\..\NetTopologySuite\Precision\DocFiles\minClearance.png">
+      <Link>Precision\DocFiles\minClearance.png</Link>
+    </Resource>
+    <Content Include="..\..\NetTopologySuite\Precision\PrecisionSummary.xml">
+      <Link>Precision\PrecisionSummary.xml</Link>
+    </Content>
+    <Content Include="..\..\NetTopologySuite\ReadMe.txt">
+      <Link>ReadMe.txt</Link>
+    </Content>
+    <Content Include="..\..\NetTopologySuite\Simplify\SimplifySummary.xml">
+      <Link>Simplify\SimplifySummary.xml</Link>
+    </Content>
+    <Content Include="..\..\NetTopologySuite\Utilities\RToolsUtil\Rtools.Util.License.txt">
+      <Link>Utilities\RToolsUtil\Rtools.Util.License.txt</Link>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
