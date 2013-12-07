@@ -602,17 +602,11 @@
     <Compile Include="..\..\NetTopologySuite\IO\WKBGeometryTypes.cs">
       <Link>IO\WKBGeometryTypes.cs</Link>
     </Compile>
-    <Compile Include="..\..\NetTopologySuite\IO\WKBHexFileReader.cs">
-      <Link>IO\WKBHexFileReader.cs</Link>
-    </Compile>
     <Compile Include="..\..\NetTopologySuite\IO\WKBReader.cs">
       <Link>IO\WKBReader.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\IO\WKBWriter.cs">
       <Link>IO\WKBWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite\IO\WKTFileReader.cs">
-      <Link>IO\WKTFileReader.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\IO\WKTReader.cs">
       <Link>IO\WKTReader.cs</Link>

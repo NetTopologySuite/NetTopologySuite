@@ -9,7 +9,7 @@ namespace NetTopologySuite.Utilities
    /// <summary>
    /// 
    /// </summary>
-    public class AssertionFailedException : ApplicationException 
+    public class AssertionFailedException : Exception 
     {
         /// <summary>
         /// 

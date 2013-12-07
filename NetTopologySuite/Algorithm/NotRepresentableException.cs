@@ -9,7 +9,7 @@ namespace NetTopologySuite.Algorithm
     /// <summary>
     /// 
     /// </summary>
-    public class NotRepresentableException : ApplicationException
+    public class NotRepresentableException : Exception
     {
         /// <summary>
         /// 

@@ -10,7 +10,7 @@ namespace NetTopologySuite.Geometries
     /// <summary> 
     /// Indicates an invalid or inconsistent topological situation encountered during processing
     /// </summary>
-    public class TopologyException : ApplicationException
+    public class TopologyException : Exception
     {
         /// <summary>
         /// 

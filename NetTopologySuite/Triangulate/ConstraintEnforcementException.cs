@@ -14,7 +14,7 @@ namespace NetTopologySuite.Triangulate
     /// </summary>
     /// <author>Martin Davis</author>
     /// <version>1.0</version>
-    public class ConstraintEnforcementException : ApplicationException
+    public class ConstraintEnforcementException : Exception
     {
 
         //private long serialVersionUID = 386496846550080140L;
