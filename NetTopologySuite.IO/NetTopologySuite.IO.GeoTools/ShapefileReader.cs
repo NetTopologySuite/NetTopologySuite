@@ -136,7 +136,7 @@ namespace NetTopologySuite.IO
                     catch (Exception ex)
                     {
                         // actually we should remove this crap...
-                        Trace.WriteLine(ex);
+                        Trace.WriteLine(ex.Message);
                         return false;
                     }
                     return true;

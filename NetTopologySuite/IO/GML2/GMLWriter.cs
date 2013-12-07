@@ -76,7 +76,7 @@ namespace NetTopologySuite.IO.GML2
 #endif
             Write(geometry, writer);
             writer.WriteEndElement();
-            writer.Dispose();
+            ((IDisposable)writer).Dispose();
         }
 
         /// <summary>
