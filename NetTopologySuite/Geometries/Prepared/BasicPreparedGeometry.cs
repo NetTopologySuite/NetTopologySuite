@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using GeoAPI.Geometries;
 using GeoAPI.Geometries.Prepared;
 using NetTopologySuite.Algorithm;
@@ -36,7 +37,10 @@ namespace NetTopologySuite.Geometries.Prepared
         /// </summary>
         public IList<Coordinate> RepresentativePoints
         {
-            get { return _representativePts.AsReadOnly(); }
+            get
+            {
+                return new ReadOnlyCollection<Coordinate>(_representativePts);
+            }
         }
 
         ///<summary>

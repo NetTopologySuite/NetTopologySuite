@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 
@@ -54,7 +55,10 @@ namespace NetTopologySuite.Noding
         /// </summary>
         public IList<Coordinate> Intersections
         {
-            get { return _intersections.AsReadOnly(); }
+            get
+            {
+                return new ReadOnlyCollection<Coordinate>(_intersections);
+            }
         }
 
         ///<summary>
