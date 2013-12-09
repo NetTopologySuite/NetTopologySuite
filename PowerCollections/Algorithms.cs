@@ -6056,7 +6056,7 @@ namespace Wintellect.PowerCollections
 
 #if PCL
 
-namespace System
+namespace Wintellect
 {
     public delegate TOutput Converter<in TInput, out TOutput>(TInput input);
 
