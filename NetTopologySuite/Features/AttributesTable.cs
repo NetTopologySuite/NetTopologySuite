@@ -10,9 +10,11 @@ namespace NetTopologySuite.Features
     /// <summary>
     /// Stores all attributes associated with a single <c>Geometry</c> feature.
     /// </summary>
-//#if !SILVERLIGHT
+#if !(PCL || SILVERLIGHT)
     [Serializable]
-//#endif
+#else
+    [System.Runtime.Serialization.DataContract]
+#endif
     public class AttributesTable : IAttributesTable
     {        
         private const string IndexField = "_NTS_ID_";

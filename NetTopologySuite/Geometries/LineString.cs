@@ -23,9 +23,11 @@ namespace NetTopologySuite.Geometries
     /// If these conditions are not met, the constructors throw an <see cref="ArgumentException"/>.
     /// </para>
     /// </remarks>
-    //#if !SILVERLIGHT
+#if !(PCL || SILVERLIGHT)
     [Serializable]
-    //#endif
+#else
+    [System.Runtime.Serialization.DataContract]
+#endif
     public class LineString : Geometry, ILineString
     {
         /// <summary>

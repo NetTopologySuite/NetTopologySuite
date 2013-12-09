@@ -3,10 +3,11 @@ using System.Text;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 
-#if !WINDOWS_PHONE
+#if !(WINDOWS_PHONE || PCL)
 using BitConverter = System.BitConverter;
 #else
 
+using ApplicationException = System.Exception;
 using BitConverter = GeoAPI.BitConverterEx;
 
 #endif
@@ -23,9 +24,11 @@ namespace NetTopologySuite.Geometries
     /// object as a way of computing segment properties on the
     /// segments defined by arrays or lists of <c>Coordinate</c>s.
     /// </summary>
-    //#if !SILVERLIGHT
+#if !(PCL || SILVERLIGHT)
     [Serializable]
-    //#endif
+#else
+    [System.Runtime.Serialization.DataContract]
+#endif
     public class LineSegment : IComparable
     {
         private Coordinate _p0, _p1;

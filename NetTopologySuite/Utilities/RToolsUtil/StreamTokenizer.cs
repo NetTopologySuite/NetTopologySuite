@@ -34,7 +34,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-#if SILVERLIGHT
+#if SILVERLIGHT || PCL
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
@@ -115,9 +115,11 @@ namespace RTools_NTS.Util
 	/// This is separated from the StreamTokenizer so that common settings
 	/// are easy to package and keep together.
 	/// </summary>
-//#if !SILVERLIGHT
+#if !(PCL || SILVERLIGHT)
     [Serializable]
-//#endif
+#else
+    [System.Runtime.Serialization.DataContract]
+#endif
     public class StreamTokenizerSettings
 	{
 		// ---------------------------------------------------------------------
@@ -1508,6 +1510,7 @@ namespace RTools_NTS.Util
 			return(Tokenize(tokens));
 		}
 
+#if !(PCL)
 		/// <summary>
 		/// Parse all tokens from the specified file, put
 		/// them into the input ArrayList.
@@ -1550,6 +1553,26 @@ namespace RTools_NTS.Util
 		}
 
 		/// <summary>
+		/// Tokenize a file completely and return the tokens in a Token[].
+		/// </summary>
+		/// <param name="fileName">The file to tokenize.</param>
+		/// <returns>A Token[] with all tokens.</returns>
+		public Token[] TokenizeFile(string fileName)
+		{
+			var list = new List<Token>();
+			if (!TokenizeFile(fileName, list))
+			{
+				return(null);
+			}
+		    if (list.Count > 0)
+		    {
+		        return list.ToArray();
+		    }
+		    return(null);
+		}
+#endif
+
+        /// <summary>
 		/// Parse all tokens from the specified string, put
 		/// them into the input ArrayList.
 		/// </summary>
@@ -1575,24 +1598,6 @@ namespace RTools_NTS.Util
 			return(Tokenize(tokens));
 		}
 
-		/// <summary>
-		/// Tokenize a file completely and return the tokens in a Token[].
-		/// </summary>
-		/// <param name="fileName">The file to tokenize.</param>
-		/// <returns>A Token[] with all tokens.</returns>
-		public Token[] TokenizeFile(string fileName)
-		{
-			var list = new List<Token>();
-			if (!TokenizeFile(fileName, list))
-			{
-				return(null);
-			}
-		    if (list.Count > 0)
-		    {
-		        return list.ToArray();
-		    }
-		    return(null);
-		}
 		#endregion
 
 	    #region Implementation of IEnumerable

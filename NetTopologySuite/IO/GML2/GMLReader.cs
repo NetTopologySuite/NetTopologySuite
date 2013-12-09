@@ -5,12 +5,13 @@ using System.Xml;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
-using System.Xml.Linq;
+//using System.Xml.Linq;
 
-#if SILVERLIGHT
+#if (SILVERLIGHT || PCL)
 using XmlTextWriter = System.Xml.XmlWriter;
 using XmlTextReader = System.Xml.XmlReader;
 using System.Xml.Linq;
+using ApplicationException = System.Exception;
 #endif
 
 namespace NetTopologySuite.IO.GML2
@@ -45,13 +46,13 @@ namespace NetTopologySuite.IO.GML2
             _factory = factory;
         }
 
-#if !SILVERLIGHT && !PCL
+#if !(SILVERLIGHT || PCL)
         /// <summary>
         /// Read a GML document and returns relative <c>Geometry</c>.
         /// </summary>
         /// <param name="document"></param>
         /// <returns></returns>
-        public IGeometry Read(XDocument document)
+        public IGeometry Read(XmlDocument document)
         {
             var reader = XmlReader.Create(new StringReader(document.ToString()));
             return Read(reader);

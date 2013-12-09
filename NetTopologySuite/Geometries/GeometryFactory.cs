@@ -17,9 +17,11 @@ namespace NetTopologySuite.Geometries
      /// In particular, they are not rounded to the supplied <c>PrecisionModel</c>.
      /// It is assumed that input Coordinates meet the given precision.
     /// </remarks>
-//#if !SILVERLIGHT
+#if !(PCL || SILVERLIGHT)
     [Serializable]
-//#endif
+#else
+    [System.Runtime.Serialization.DataContract]
+#endif
     public class GeometryFactory : IGeometryFactory
     {
         /// <summary>

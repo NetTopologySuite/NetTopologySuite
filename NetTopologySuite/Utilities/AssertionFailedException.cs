@@ -1,4 +1,4 @@
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || PCL)
 using System;
 #else
 using ApplicationException = System.Exception;
@@ -9,7 +9,7 @@ namespace NetTopologySuite.Utilities
    /// <summary>
    /// 
    /// </summary>
-    public class AssertionFailedException : Exception 
+    public class AssertionFailedException : ApplicationException 
     {
         /// <summary>
         /// 

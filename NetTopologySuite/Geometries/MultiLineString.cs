@@ -9,9 +9,11 @@ namespace NetTopologySuite.Geometries
     /// <summary>
     /// Basic implementation of <c>MultiLineString</c>.
     /// </summary>    
-//#if !SILVERLIGHT
+#if !(PCL || SILVERLIGHT)
     [Serializable]
-//#endif
+#else
+    [System.Runtime.Serialization.DataContract]
+#endif
     public class MultiLineString : GeometryCollection, IMultiLineString
     {
         /// <summary>

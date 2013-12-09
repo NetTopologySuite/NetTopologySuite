@@ -1,4 +1,4 @@
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || PCL)
 using System;
 #else
 using ApplicationException = System.Exception;
@@ -10,7 +10,7 @@ namespace NetTopologySuite.Geometries
     /// <summary> 
     /// Indicates an invalid or inconsistent topological situation encountered during processing
     /// </summary>
-    public class TopologyException : Exception
+    public class TopologyException : ApplicationException
     {
         /// <summary>
         /// 

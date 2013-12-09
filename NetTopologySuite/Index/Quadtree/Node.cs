@@ -9,7 +9,11 @@ namespace NetTopologySuite.Index.Quadtree
     /// items which have a spatial extent corresponding to the node's position
     /// in the quadtree.
     /// </summary>
+#if !(PCL || SILVERLIGHT)
     [Serializable]
+#else
+    [System.Runtime.Serialization.DataContract]
+#endif
     public class Node<T> : NodeBase<T>
     {
         /// <summary>

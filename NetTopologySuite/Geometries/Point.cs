@@ -16,9 +16,11 @@ namespace NetTopologySuite.Geometries
     /// </list>
     /// </summary>
     /// 
-//#if !SILVERLIGHT
+#if !(PCL || SILVERLIGHT)
     [Serializable]
-//#endif
+#else
+    [System.Runtime.Serialization.DataContract]
+#endif
     public class Point : Geometry, IPoint
     {
         private static readonly Coordinate EmptyCoordinate = null;

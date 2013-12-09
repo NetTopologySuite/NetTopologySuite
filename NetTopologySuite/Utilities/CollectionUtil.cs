@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-#if SILVERLIGHT
+#if SILVERLIGHT || PCL
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 

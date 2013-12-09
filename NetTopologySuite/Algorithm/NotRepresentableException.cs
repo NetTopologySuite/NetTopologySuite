@@ -1,4 +1,4 @@
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || PCL)
 using System;
 #else
 using ApplicationException = System.Exception;
@@ -9,7 +9,7 @@ namespace NetTopologySuite.Algorithm
     /// <summary>
     /// 
     /// </summary>
-    public class NotRepresentableException : Exception
+    public class NotRepresentableException : ApplicationException
     {
         /// <summary>
         /// 

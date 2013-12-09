@@ -263,7 +263,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
             if (isAllValidLinearRings)
             {
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || PCL)
                 var holesAsLinearRing = holes.ConvertAll<ILinearRing>(ls => (ILinearRing)ls).ToArray();
 #else
 

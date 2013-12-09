@@ -1,7 +1,7 @@
 using System.Collections;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-#if SILVERLIGHT
+#if SILVERLIGHT || PCL
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 

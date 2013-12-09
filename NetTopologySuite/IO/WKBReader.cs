@@ -173,7 +173,7 @@ namespace NetTopologySuite.IO
             finally
             {
                 if (reader != null)
-                    reader.Close();
+                    ((IDisposable)reader).Dispose();
             }
         }
 

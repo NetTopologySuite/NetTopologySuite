@@ -2,13 +2,19 @@
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Utilities;
 
+#if PCL
+using ICloneable = GeoAPI.ICloneable;
+#else
+using ICloneable = System.ICloneable;
+#endif
+
 namespace NetTopologySuite.Mathematics
 {
     /// <summary>
     /// A 2-dimensional mathematical vector represented by double-precision X and Y components.
     /// </summary>
     /// <author>mbdavis</author>
-    public class Vector2D : System.ICloneable
+    public class Vector2D : ICloneable
     {
         /// <summary>
         /// Creates a new vector with given X and Y components.
