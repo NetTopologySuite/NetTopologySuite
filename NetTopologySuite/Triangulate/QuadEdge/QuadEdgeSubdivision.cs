@@ -950,7 +950,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
             if (coordList.Count < 4)
             {
-                Console.WriteLine(coordList);
+                System.Diagnostics.Debug.WriteLine(coordList);
                 coordList.Add(coordList[coordList.Count - 1], true);
             }
 

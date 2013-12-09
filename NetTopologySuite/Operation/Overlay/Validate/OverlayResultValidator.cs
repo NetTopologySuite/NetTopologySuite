@@ -145,7 +145,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
 
         private static void ReportResult(SpatialFunction overlayOp, Location[] location, bool expectedInterior)
         {
-            Console.WriteLine(overlayOp + ":"
+            System.Diagnostics.Debug.WriteLine(overlayOp + ":"
                     + " A:" + LocationUtility.ToLocationSymbol(location[0])
                     + " B:" + LocationUtility.ToLocationSymbol(location[1])
                     + " expected:" + (expectedInterior ? 'i' : 'e')

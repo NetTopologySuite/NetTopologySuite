@@ -124,7 +124,7 @@ namespace NetTopologySuite.GeometriesGraph
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                System.Diagnostics.Debug.WriteLine(ex);
                 throw ex;
             }
         }

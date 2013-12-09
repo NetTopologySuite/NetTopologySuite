@@ -56,6 +56,7 @@ namespace NetTopologySuite.Noding
         {
             get { return _intersections.AsReadOnly(); }
         }
+
         ///<summary>
         /// Gets the computed location of the intersection.
         /// Due to round-off, the location may not be exact.

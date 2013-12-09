@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Precision;
 
@@ -170,7 +169,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         private void CheckValid(IGeometry g)
         {
             if (!g.IsValid)
-                Trace.WriteLine("Snapped geometry is invalid");
+                System.Diagnostics.Debug.WriteLine("Snapped geometry is invalid");
         }
     }
 }
