@@ -98,7 +98,7 @@ namespace NetTopologySuite.Utilities
             return self;
         }
 
-#if !WINDOWS_PHONE
+#if !(WINDOWS_PHONE || PCL)
 
         [Obsolete("Not used anywhere within NTS")]
         public static Encoding GetDefaultEncoding()

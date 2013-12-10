@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 
+#if PCL
+using ICloneable = GeoAPI.ICloneable;
+#endif
+
 namespace NetTopologySuite.Geometries
 {       
     /// <summary>

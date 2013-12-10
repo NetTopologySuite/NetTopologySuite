@@ -270,7 +270,7 @@ namespace NetTopologySuite.IO
             finally
             {
                 if (writer != null)
-                    writer.Close();
+                    ((IDisposable)writer).Dispose();
             }
         }
 

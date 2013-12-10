@@ -4,6 +4,7 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
 using NetTopologySuite.Mathematics;
+using Wintellect;
 
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
@@ -329,27 +330,27 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             bool isInCircleCC = IsInCircleCC(a, b, c, p);
 
             Coordinate circumCentre = Triangle.Circumcentre(a, b, c);
-            Console.WriteLine("p radius diff a = "
+            System.Diagnostics.Debug.WriteLine("p radius diff a = "
                               + Math.Abs(p.Distance(circumCentre) - a.Distance(circumCentre))
                               /a.Distance(circumCentre));
 
             if (nonRobustInCircle != isInCircleDD || nonRobustInCircle != isInCircleCC)
             {
-                Console.WriteLine("inCircle robustness failure (double result = "
+                System.Diagnostics.Debug.WriteLine("inCircle robustness failure (double result = "
                                   + nonRobustInCircle
                                   + ", DD result = " + isInCircleDD
                                   + ", CC result = " + isInCircleCC + ")");
-                Console.WriteLine(WKTWriter.ToLineString(new CoordinateArraySequence(new[] {a, b, c, p})));
+                System.Diagnostics.Debug.WriteLine(WKTWriter.ToLineString(new CoordinateArraySequence(new[] { a, b, c, p })));
 
-                Console.WriteLine("Circumcentre = " + WKTWriter.ToPoint(circumCentre)
+                System.Diagnostics.Debug.WriteLine("Circumcentre = " + WKTWriter.ToPoint(circumCentre)
                                   + " radius = " + a.Distance(circumCentre));
-                Console.WriteLine("p radius diff a = "
+                System.Diagnostics.Debug.WriteLine("p radius diff a = "
                                   + Math.Abs(p.Distance(circumCentre)/a.Distance(circumCentre) - 1));
-                Console.WriteLine("p radius diff b = "
+                System.Diagnostics.Debug.WriteLine("p radius diff b = "
                                   + Math.Abs(p.Distance(circumCentre)/b.Distance(circumCentre) - 1));
-                Console.WriteLine("p radius diff c = "
+                System.Diagnostics.Debug.WriteLine("p radius diff c = "
                                   + Math.Abs(p.Distance(circumCentre)/c.Distance(circumCentre) - 1));
-                Console.WriteLine();
+                System.Diagnostics.Debug.WriteLine("");
             }
         }
 

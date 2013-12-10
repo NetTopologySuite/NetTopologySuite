@@ -6,9 +6,11 @@ namespace NetTopologySuite.Geometries
     /// <summary>  
     /// Models a collection of <c>Point</c>s.
     /// </summary>
-//#if !SILVERLIGHT
+#if !(PCL || SILVERLIGHT)
     [Serializable]
-//#endif
+#else
+    [System.Runtime.Serialization.DataContract]
+#endif
     public class MultiPoint : GeometryCollection, IMultiPoint
     {
         /// <summary>

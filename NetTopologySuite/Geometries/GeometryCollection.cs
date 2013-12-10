@@ -11,9 +11,11 @@ namespace NetTopologySuite.Geometries
     /// <summary>
     /// Basic implementation of <c>GeometryCollection</c>.
     /// </summary>
-//#if !SILVERLIGHT
+#if !(PCL || SILVERLIGHT)
     [Serializable]
-//#endif
+#else
+    [System.Runtime.Serialization.DataContract]
+#endif
     public class GeometryCollection : Geometry, IGeometryCollection
     {
         /// <summary>

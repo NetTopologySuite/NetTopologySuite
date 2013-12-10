@@ -8,9 +8,11 @@ namespace NetTopologySuite.Geometries.Implementation
     /// <summary>
     /// Creates CoordinateSequences represented as an array of Coordinates.
     /// </summary>
-//#if !SILVERLIGHT
+#if !(PCL || SILVERLIGHT)
     [Serializable]
-//#endif
+#else
+    [System.Runtime.Serialization.DataContract]
+#endif
     public sealed class CoordinateArraySequenceFactory : ICoordinateSequenceFactory
     {
         private static readonly CoordinateArraySequenceFactory instance = new CoordinateArraySequenceFactory();

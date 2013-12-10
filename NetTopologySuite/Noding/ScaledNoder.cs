@@ -148,8 +148,8 @@ namespace NetTopologySuite.Noding
 
             if (pts.Length == 2 && pts[0].Equals2D(pts[1]))
             {
-                Console.WriteLine(pts[0]);
-                Console.WriteLine(pts[1]);
+                System.Diagnostics.Debug.WriteLine(pts[0]);
+                System.Diagnostics.Debug.WriteLine(pts[1]);
             }
 
         }

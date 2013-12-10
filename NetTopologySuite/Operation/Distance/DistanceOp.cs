@@ -4,6 +4,9 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
+#if SILVERLIGHT || PCL
+using ApplicationException = System.Exception;
+#endif
 
 namespace NetTopologySuite.Operation.Distance
 {

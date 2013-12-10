@@ -75,7 +75,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             }
             if (Verbose)
             {
-                Console.WriteLine("Min Dist= " + _minDistanceFound + "  err= "
+                System.Diagnostics.Debug.WriteLine("Min Dist= " + _minDistanceFound + "  err= "
                   + (1.0 - _minDistanceFound / _bufDistance)
                   + "  Max Dist= " + _maxDistanceFound + "  err= "
                   + (_maxDistanceFound / _bufDistance - 1.0)

@@ -16,7 +16,11 @@ namespace NetTopologySuite.Index.Strtree
     /// data, both of which are treated as <see cref="IBoundable{T, TItem}"/>s.
     /// </para>
     /// </summary>
+#if !(PCL || SILVERLIGHT)
     [Serializable]
+#else
+    [System.Runtime.Serialization.DataContract]
+#endif
     public abstract class AbstractSTRtree<T, TItem>
         where T: IIntersectable<T>, IExpandable<T>
     {

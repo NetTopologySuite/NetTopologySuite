@@ -6,7 +6,11 @@ namespace NetTopologySuite.Index.Bintree
     /// <summary>
     /// A node of a <c>Bintree</c>.
     /// </summary>
+#if (SILVERLIGHT || PCL)
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
+#endif
     public class Node<T> : NodeBase<T>
     {
         /// <summary>
@@ -43,8 +47,17 @@ namespace NetTopologySuite.Index.Bintree
             return largerNode;
         }
 
+#if (SILVERLIGHT || PCL)
+        [System.Runtime.Serialization.DataMember(Name="Interval")]
+#endif
         private readonly Interval _interval; //= Interval.Create();
+#if (SILVERLIGHT || PCL)
+        [System.Runtime.Serialization.DataMember(Name = "Centre")]
+#endif
         private readonly double _centre;
+#if (SILVERLIGHT || PCL)
+        [System.Runtime.Serialization.DataMember(Name = "Level")]
+#endif
         private readonly int _level;
 
         /// <summary>

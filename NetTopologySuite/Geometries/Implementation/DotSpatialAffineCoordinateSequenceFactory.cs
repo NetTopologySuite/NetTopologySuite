@@ -6,7 +6,11 @@
     /// <summary>
     /// A coordinate sequence factory class that creates DotSpatial's Shape/ShapeRange like coordinate sequences.
     /// </summary>
+#if (SILVERLIGHT || PCL)
+    [System.Runtime.Serialization.DataContract]
+#else
     [Serializable]
+#endif
     public class DotSpatialAffineCoordinateSequenceFactory : ICoordinateSequenceFactory
     {
         private static DotSpatialAffineCoordinateSequenceFactory _instance;

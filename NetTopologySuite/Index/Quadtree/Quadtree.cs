@@ -32,7 +32,11 @@ namespace NetTopologySuite.Index.Quadtree
     /// This data structure is also known as an <c>MX-CIF quadtree</c>
     /// following the terminology usage of Samet and others.
     /// </summary>
+#if !(PCL || SILVERLIGHT)
     [Serializable]
+#else
+    [System.Runtime.Serialization.DataContract]
+#endif
     public class Quadtree<T> : ISpatialIndex<T>
     {
         /// <summary>

@@ -50,7 +50,7 @@ namespace NetTopologySuite.Operation.Union
 
             if (int0.IsEmpty || int1.IsEmpty)
             {
-                Console.WriteLine("found empty!");
+                System.Diagnostics.Debug.WriteLine("found empty!");
                 //			computeInteracting();
             }
             //		if (! int0.isValid()) {

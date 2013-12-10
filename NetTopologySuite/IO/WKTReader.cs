@@ -254,7 +254,7 @@ namespace NetTopologySuite.IO
             var token = tokens.Current /*as Token*/;
             return token is FloatToken ||
                    token is IntToken ||
-                   (token is WordToken && string.Compare(token.Object.ToString(), NaNString, StringComparison.InvariantCultureIgnoreCase) == 0);        
+                   (token is WordToken && string.Compare(token.Object.ToString(), NaNString, StringComparison.OrdinalIgnoreCase) == 0);        
         }
 
         /// <summary>
@@ -282,7 +282,7 @@ namespace NetTopologySuite.IO
                 return (double) token.ConvertToType(typeof(double));
             if (token is WordToken)
             {
-                if (string.Compare(token.Object.ToString(), NaNString, StringComparison.InvariantCultureIgnoreCase) == 0)
+                if (string.Compare(token.Object.ToString(), NaNString, StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     return Double.NaN;
                 }
@@ -488,7 +488,7 @@ namespace NetTopologySuite.IO
             if (nextToken.Equals("EMPTY")) 
                 return factory.CreatePoint((Coordinate) null);
             var point = factory.CreatePoint(GetPreciseCoordinate(tokens, false));
-            var closer = GetNextCloser(tokens);
+            /*var closer = */GetNextCloser(tokens);
             return point;
         }
 

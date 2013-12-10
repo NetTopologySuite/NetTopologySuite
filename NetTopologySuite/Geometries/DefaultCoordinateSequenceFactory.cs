@@ -7,9 +7,11 @@ namespace NetTopologySuite.Geometries
     /// Creates CoordinateSequences internally represented
     /// as an array of x's and an array of y's.
     /// </summary>
-//#if !SILVERLIGHT
+#if !(PCL || SILVERLIGHT)
     [Serializable]
-//#endif
+#else
+    [System.Runtime.Serialization.DataContract]
+#endif
     [Obsolete("No longer used")]
     public class DefaultCoordinateSequenceFactory : ICoordinateSequenceFactory
     {

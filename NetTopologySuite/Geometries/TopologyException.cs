@@ -1,4 +1,4 @@
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || PCL)
 using System;
 #else
 using ApplicationException = System.Exception;

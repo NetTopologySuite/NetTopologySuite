@@ -64,7 +64,11 @@ namespace NetTopologySuite.Mathematics
     /// </list>
     /// </summary>
     /// <author>Martin Davis</author>
+#if !(PCL || SILVERLIGHT)
     [Serializable]
+#else
+    [System.Runtime.Serialization.DataContract]
+#endif
     public struct DD : IComparable, IComparable<DD> /*, IFormattable*/
     {
 

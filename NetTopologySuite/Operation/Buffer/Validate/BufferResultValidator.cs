@@ -113,7 +113,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         private void Report(String checkName)
         {
             if (!Verbose) return;
-            Console.WriteLine("Check " + checkName + ": "
+            System.Diagnostics.Debug.WriteLine("Check " + checkName + ": "
                 + (_isValid ? "passed" : "FAILED"));
         }
 

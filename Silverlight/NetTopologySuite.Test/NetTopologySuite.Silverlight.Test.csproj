@@ -108,7 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\GeoAPI\GeoAPI.Silverlight\GeoAPI.Silverlight.csproj">
-      <Project>{9B913337-1114-4D05-8F24-D05A5FD588AD}</Project>
+      <Project>{9b913337-1114-4d05-8f24-d05a5fd588ad}</Project>
       <Name>GeoAPI.Silverlight</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools.Silverlight\NetTopologySuite.IO.GeoTools.SilverLight.csproj">

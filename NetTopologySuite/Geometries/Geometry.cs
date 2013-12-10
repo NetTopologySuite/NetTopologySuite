@@ -124,9 +124,11 @@ namespace NetTopologySuite.Geometries
     /// Geometries can be used effectively in .Net collections.
     /// </para>
     /// </remarks>
-//#if !SILVERLIGHT
+#if !(PCL || SILVERLIGHT)
     [Serializable]
-//#endif
+#else
+    [System.Runtime.Serialization.DataContract]
+#endif
     public abstract class Geometry : IGeometry
     {        
         /// <summary>

@@ -49,7 +49,11 @@ namespace NetTopologySuite.Geometries
     /// NTS binary methods currently do not handle inputs which have different precision models.
     /// The precision model of any constructed geometric value is undefined.
     /// </remarks>
+#if !(PCL || SILVERLIGHT)
     [Serializable]
+#else
+    [System.Runtime.Serialization.DataContract]
+#endif
     public class PrecisionModel : IPrecisionModel
     {
         ///<summary>

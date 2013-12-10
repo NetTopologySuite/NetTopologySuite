@@ -7,18 +7,36 @@ namespace NetTopologySuite.Geometries.Implementation
     /// <summary>
     /// A coordinate sequence that follows the dotspatial shape range
     /// </summary>
-    [Serializable]
+#if !(PCL || SILVERLIGHT)
+    [System.Serializable]
+#else
+    [System.Runtime.Serialization.DataContract]
+#endif
     public class DotSpatialAffineCoordinateSequence : 
         ICoordinateSequence
         //IMeasuredCoordinateSequence
     {
+        
+#if (PCL || SILVERLIGHT)
+        [System.Runtime.Serialization.DataMember(IsRequired = true, Name="XY")]
+#endif
         private readonly double[] _xy;
+#if (PCL || SILVERLIGHT)
+        [System.Runtime.Serialization.DataMember(Name = "Z")]
+#endif
         private readonly double[] _z;
+#if (PCL || SILVERLIGHT)
+        [System.Runtime.Serialization.DataMember(Name = "M")]
+#endif
         private readonly double[] _m;
         
         private readonly Ordinates _ordinates;
         
-        [NonSerialized]
+#if !(PCL || SILVERLIGHT)
+        [System.NonSerialized]
+#else
+        [System.Runtime.Serialization.IgnoreDataMember]
+#endif
         private WeakReference _coordinateArrayRef;
 
         /// <summary>

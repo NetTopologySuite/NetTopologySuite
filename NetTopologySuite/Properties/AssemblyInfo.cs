@@ -17,6 +17,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyDelaySign(false)]
 [assembly: CLSCompliant(true)]
+#if !PCL
 [assembly: ComVisible(false)]
 [assembly: Guid("6B7EB658-792E-4178-B853-8AEB851513A9")]
+#endif
 //[assembly: InternalsVisibleTo("NetTopologySuite.Silverlight.Test", AllInternalsVisible = true)]

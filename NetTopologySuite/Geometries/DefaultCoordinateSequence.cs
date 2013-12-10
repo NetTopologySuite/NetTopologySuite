@@ -11,9 +11,11 @@ namespace NetTopologySuite.Geometries
     /// parties that change them are actually changing the
     /// DefaultCoordinateSequence's underlying data.
     /// </summary>
-//#if !SILVERLIGHT
+#if !(PCL || SILVERLIGHT)
     [Serializable]
-//#endif
+#else
+    [System.Runtime.Serialization.DataContract]
+#endif
     [Obsolete("No longer used.")]
     public class DefaultCoordinateSequence : ICoordinateSequence
     {
