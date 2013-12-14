@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A11130E8-4942-432A-97B7-ADEEFB34A977}"
 	ProjectSection(SolutionItems) = preProject
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
@@ -46,6 +46,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.GeoTools.SilverLight", "NetTopologySuite.IO\NetTopologySuite.IO.GeoTools.Silverlight\NetTopologySuite.IO.GeoTools.SilverLight.csproj", "{D1262B8E-2200-4E89-8ED5-1BF2BA0FDE7A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Windows.Forms", "NetTopologySuite.Windows.Forms\NetTopologySuite.Windows.Forms.csproj", "{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.GeoTools", "NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\NetTopologySuite.IO.GeoTools.csproj", "{21805958-869E-49F5-A4ED-0AC8599D62F0}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -153,6 +155,12 @@ Global
 		{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21805958-869E-49F5-A4ED-0AC8599D62F0}.Bug|Any CPU.ActiveCfg = Release|Any CPU
+		{21805958-869E-49F5-A4ED-0AC8599D62F0}.Bug|Any CPU.Build.0 = Release|Any CPU
+		{21805958-869E-49F5-A4ED-0AC8599D62F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21805958-869E-49F5-A4ED-0AC8599D62F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21805958-869E-49F5-A4ED-0AC8599D62F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21805958-869E-49F5-A4ED-0AC8599D62F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -166,6 +174,7 @@ Global
 		{5821977D-AC2C-4912-BCD0-6E6B1A756167} = {7404154C-D788-443D-BD16-AC16F7858250}
 		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A} = {7404154C-D788-443D-BD16-AC16F7858250}
 		{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1} = {7404154C-D788-443D-BD16-AC16F7858250}
+		{21805958-869E-49F5-A4ED-0AC8599D62F0} = {7404154C-D788-443D-BD16-AC16F7858250}
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
