@@ -17,8 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite", "NetTopologySuite\NetTopologySuite.csproj", "{5770DAA9-84E5-4770-AF43-F6B815894368}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Silverlight", "Silverlight", "{0D0E64CD-73D1-4C5F-AADA-965464C91A39}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetTopologySuite.IO", "NetTopologySuite.IO", "{54E50C1C-BB10-4DDC-86BD-CA29FB91A89E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DotSpatial", "DotSpatial", "{489ED983-F8DE-4879-B118-F94C55DA335F}"
@@ -28,8 +26,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5AF10590
 		NetTopologySuite.TestRunner.Tests\Default.xml = NetTopologySuite.TestRunner.Tests\Default.xml
 		NetTopologySuite.TestRunner.Tests\Other.xml = NetTopologySuite.TestRunner.Tests\Other.xml
 	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IO", "IO", "{976E7A90-291A-4F7D-BED9-B015F13DA474}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetTopologySuite.Tests", "NetTopologySuite.Tests", "{AAD516A6-0F6D-4FFE-881C-37D15A4702C5}"
 EndProject
@@ -56,18 +52,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Tests.NUni
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI", "GeoAPI\GeoAPI\GeoAPI.csproj", "{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Silverlight", "Silverlight\NetTopologySuite\NetTopologySuite.Silverlight.csproj", "{71FAD7D8-11F5-444B-B9F9-D2EFF68C8F26}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Data.Silverlight", "Silverlight\NetTopologySuite.Data\NetTopologySuite.Data.Silverlight.csproj", "{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Encodings.Silverlight", "Silverlight\NetTopologySuite.Encodings\NetTopologySuite.Encodings.Silverlight.csproj", "{C7FA023B-0259-47C4-8051-EE7EB639DD39}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Silverlight.Test", "Silverlight\NetTopologySuite.Test\NetTopologySuite.Silverlight.Test.csproj", "{0A5A2807-4D6A-4C1D-B492-9278D9C942C2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Silverlight.Test.Web", "Silverlight\NetTopologySuite.Test.Web\NetTopologySuite.Silverlight.Test.Web.csproj", "{D7E5589E-E767-47D7-B614-06CC020ED4AC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Shapefile.Silverlight", "Silverlight\NetTopologySuite.IO.Shapefile\NetTopologySuite.Shapefile.Silverlight.csproj", "{A1CD501C-D498-41C7-91E3-276E2BEEA867}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.PostGis", "NetTopologySuite.IO\NetTopologySuite.IO.PostGis\NetTopologySuite.IO.PostGis.csproj", "{7505264F-7E3E-4F8D-A9D5-885B4F313C26}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.Oracle", "NetTopologySuite.IO\NetTopologySuite.IO.Oracle\NetTopologySuite.IO.Oracle.csproj", "{05EF5AD0-ABF0-4F97-9C33-C69F0AF8DB51}"
@@ -86,8 +70,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections", "PowerCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Windows.Media", "NetTopologySuite.Windows.Media\NetTopologySuite.Windows.Media.csproj", "{AB09858E-BD48-498C-BB65-B90A5E5F9F26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.GeoTools.SilverLight", "NetTopologySuite.IO\NetTopologySuite.IO.GeoTools.Silverlight\NetTopologySuite.IO.GeoTools.SilverLight.csproj", "{D1262B8E-2200-4E89-8ED5-1BF2BA0FDE7A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.SqlServer2008", "NetTopologySuite.IO\NetTopologySuite.IO.SqlServer2008\NetTopologySuite.IO.SqlServer2008.csproj", "{8E6A486B-5418-4FE1-A14F-CF2F3B74D4E0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.SpatiaLite", "NetTopologySuite.IO\NetTopologySuite.IO.SpatiaLite\NetTopologySuite.IO.SpatiaLite.csproj", "{AD33B357-E789-4102-8DC3-F18EEE507583}"
@@ -101,8 +83,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Converter.DotSpatial", "NetTopologySuite.Converter\NetTopologySuite.Converter.DotSpatial\NetTopologySuite.Converter.DotSpatial.csproj", "{3792E197-F5CD-46F9-811D-6EB6C3B10DEE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Converter.Test", "NetTopologySuite.Converter\NetTopologySuite.Converter.Test\NetTopologySuite.Converter.Test.csproj", "{4F3B0BD4-9527-404A-AFF9-1E7356DC5FBF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Windows.Media.Silverlight", "Silverlight\NetTopologySuite.Windows.Media\NetTopologySuite.Windows.Media.Silverlight.csproj", "{3200B789-34A9-42F7-8FCF-0908D09E1BBE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjNET.Tests", "ProjNet\ProjNET.Tests\ProjNET.Tests.csproj", "{67E8C952-1F48-4DFB-9507-BD44DB6784FD}"
 EndProject
@@ -118,8 +98,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6F9E62
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjNet.Silverlight", "ProjNet\ProjNet.Silverlight\ProjNet.Silverlight.csproj", "{01B70884-C425-405F-B914-938E9122FC27}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PCL", "PCL", "{3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections.Pcl", "PowerCollections\PowerCollections.Pcl\PowerCollections.Pcl.csproj", "{4FE07049-9F3A-42A4-8105-B1A72FE15C67}"
@@ -127,10 +105,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI.Pcl", "GeoAPI\GeoAPI.Pcl\GeoAPI.Pcl.csproj", "{92B3B84B-50F1-4147-8B97-D93B90FA5514}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Pcl", "PortableClassLibrary\NetTopologySuite.Pcl\NetTopologySuite.Pcl.csproj", "{C6F14605-0DA6-420A-8DE7-18B57E9A9C99}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI.Silverlight", "GeoAPI\GeoAPI.Silverlight\GeoAPI.Silverlight.csproj", "{9B913337-1114-4D05-8F24-D05A5FD588AD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections.Silverlight", "PowerCollections\PowerCollections.SL\PowerCollections.Silverlight.csproj", "{48808C52-FE5E-43BB-8ADD-197748552773}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -177,30 +151,6 @@ Global
 		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{71FAD7D8-11F5-444B-B9F9-D2EFF68C8F26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{71FAD7D8-11F5-444B-B9F9-D2EFF68C8F26}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71FAD7D8-11F5-444B-B9F9-D2EFF68C8F26}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{71FAD7D8-11F5-444B-B9F9-D2EFF68C8F26}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C7FA023B-0259-47C4-8051-EE7EB639DD39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C7FA023B-0259-47C4-8051-EE7EB639DD39}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C7FA023B-0259-47C4-8051-EE7EB639DD39}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C7FA023B-0259-47C4-8051-EE7EB639DD39}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0A5A2807-4D6A-4C1D-B492-9278D9C942C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0A5A2807-4D6A-4C1D-B492-9278D9C942C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0A5A2807-4D6A-4C1D-B492-9278D9C942C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0A5A2807-4D6A-4C1D-B492-9278D9C942C2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D7E5589E-E767-47D7-B614-06CC020ED4AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7E5589E-E767-47D7-B614-06CC020ED4AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7E5589E-E767-47D7-B614-06CC020ED4AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7E5589E-E767-47D7-B614-06CC020ED4AC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A1CD501C-D498-41C7-91E3-276E2BEEA867}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A1CD501C-D498-41C7-91E3-276E2BEEA867}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A1CD501C-D498-41C7-91E3-276E2BEEA867}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A1CD501C-D498-41C7-91E3-276E2BEEA867}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7505264F-7E3E-4F8D-A9D5-885B4F313C26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7505264F-7E3E-4F8D-A9D5-885B4F313C26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7505264F-7E3E-4F8D-A9D5-885B4F313C26}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -235,10 +185,6 @@ Global
 		{AB09858E-BD48-498C-BB65-B90A5E5F9F26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB09858E-BD48-498C-BB65-B90A5E5F9F26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB09858E-BD48-498C-BB65-B90A5E5F9F26}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D1262B8E-2200-4E89-8ED5-1BF2BA0FDE7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D1262B8E-2200-4E89-8ED5-1BF2BA0FDE7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D1262B8E-2200-4E89-8ED5-1BF2BA0FDE7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D1262B8E-2200-4E89-8ED5-1BF2BA0FDE7A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8E6A486B-5418-4FE1-A14F-CF2F3B74D4E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8E6A486B-5418-4FE1-A14F-CF2F3B74D4E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E6A486B-5418-4FE1-A14F-CF2F3B74D4E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -267,10 +213,6 @@ Global
 		{4F3B0BD4-9527-404A-AFF9-1E7356DC5FBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F3B0BD4-9527-404A-AFF9-1E7356DC5FBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F3B0BD4-9527-404A-AFF9-1E7356DC5FBF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3200B789-34A9-42F7-8FCF-0908D09E1BBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3200B789-34A9-42F7-8FCF-0908D09E1BBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3200B789-34A9-42F7-8FCF-0908D09E1BBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3200B789-34A9-42F7-8FCF-0908D09E1BBE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{67E8C952-1F48-4DFB-9507-BD44DB6784FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{67E8C952-1F48-4DFB-9507-BD44DB6784FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67E8C952-1F48-4DFB-9507-BD44DB6784FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -279,10 +221,6 @@ Global
 		{E377580E-61C9-4943-B98B-085D51B32578}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E377580E-61C9-4943-B98B-085D51B32578}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E377580E-61C9-4943-B98B-085D51B32578}.Release|Any CPU.Build.0 = Release|Any CPU
-		{01B70884-C425-405F-B914-938E9122FC27}.Debug|Any CPU.ActiveCfg = Release|Any CPU
-		{01B70884-C425-405F-B914-938E9122FC27}.Debug|Any CPU.Build.0 = Release|Any CPU
-		{01B70884-C425-405F-B914-938E9122FC27}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{01B70884-C425-405F-B914-938E9122FC27}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4FE07049-9F3A-42A4-8105-B1A72FE15C67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4FE07049-9F3A-42A4-8105-B1A72FE15C67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FE07049-9F3A-42A4-8105-B1A72FE15C67}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -293,29 +231,11 @@ Global
 		{92B3B84B-50F1-4147-8B97-D93B90FA5514}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C6F14605-0DA6-420A-8DE7-18B57E9A9C99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C6F14605-0DA6-420A-8DE7-18B57E9A9C99}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9B913337-1114-4D05-8F24-D05A5FD588AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9B913337-1114-4D05-8F24-D05A5FD588AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9B913337-1114-4D05-8F24-D05A5FD588AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9B913337-1114-4D05-8F24-D05A5FD588AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{48808C52-FE5E-43BB-8ADD-197748552773}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{48808C52-FE5E-43BB-8ADD-197748552773}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{48808C52-FE5E-43BB-8ADD-197748552773}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{48808C52-FE5E-43BB-8ADD-197748552773}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{976E7A90-291A-4F7D-BED9-B015F13DA474} = {0D0E64CD-73D1-4C5F-AADA-965464C91A39}
-		{71FAD7D8-11F5-444B-B9F9-D2EFF68C8F26} = {0D0E64CD-73D1-4C5F-AADA-965464C91A39}
-		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E} = {0D0E64CD-73D1-4C5F-AADA-965464C91A39}
-		{C7FA023B-0259-47C4-8051-EE7EB639DD39} = {0D0E64CD-73D1-4C5F-AADA-965464C91A39}
-		{0A5A2807-4D6A-4C1D-B492-9278D9C942C2} = {0D0E64CD-73D1-4C5F-AADA-965464C91A39}
-		{D7E5589E-E767-47D7-B614-06CC020ED4AC} = {0D0E64CD-73D1-4C5F-AADA-965464C91A39}
-		{3200B789-34A9-42F7-8FCF-0908D09E1BBE} = {0D0E64CD-73D1-4C5F-AADA-965464C91A39}
-		{01B70884-C425-405F-B914-938E9122FC27} = {0D0E64CD-73D1-4C5F-AADA-965464C91A39}
-		{9B913337-1114-4D05-8F24-D05A5FD588AD} = {0D0E64CD-73D1-4C5F-AADA-965464C91A39}
-		{48808C52-FE5E-43BB-8ADD-197748552773} = {0D0E64CD-73D1-4C5F-AADA-965464C91A39}
 		{7505264F-7E3E-4F8D-A9D5-885B4F313C26} = {54E50C1C-BB10-4DDC-86BD-CA29FB91A89E}
 		{05EF5AD0-ABF0-4F97-9C33-C69F0AF8DB51} = {54E50C1C-BB10-4DDC-86BD-CA29FB91A89E}
 		{75BDB70A-AEB9-4592-9B5E-677D3D346A54} = {54E50C1C-BB10-4DDC-86BD-CA29FB91A89E}
@@ -337,8 +257,6 @@ Global
 		{B9C93F98-1667-40A2-B02F-90D5CE14121F} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
 		{4F3B0BD4-9527-404A-AFF9-1E7356DC5FBF} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
 		{67E8C952-1F48-4DFB-9507-BD44DB6784FD} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
-		{A1CD501C-D498-41C7-91E3-276E2BEEA867} = {976E7A90-291A-4F7D-BED9-B015F13DA474}
-		{D1262B8E-2200-4E89-8ED5-1BF2BA0FDE7A} = {976E7A90-291A-4F7D-BED9-B015F13DA474}
 		{3792E197-F5CD-46F9-811D-6EB6C3B10DEE} = {7C3204B9-50E4-4322-B0DF-DCB241875FF4}
 		{4FE07049-9F3A-42A4-8105-B1A72FE15C67} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
 		{92B3B84B-50F1-4147-8B97-D93B90FA5514} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
