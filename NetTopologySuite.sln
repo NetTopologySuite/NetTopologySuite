@@ -130,11 +130,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Pcl", "Por
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI.Silverlight", "GeoAPI\GeoAPI.Silverlight\GeoAPI.Silverlight.csproj", "{9B913337-1114-4D05-8F24-D05A5FD588AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections.Silverlight", "PowerCollections\PowerCollections.SL\PowerCollections.Silverlight.csproj", "{48808C52-FE5E-43BB-8ADD-197748552773}"
+EndProject
 Global
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
-	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = NetTopologySuite.vsmdi
 	EndGlobalSection
@@ -299,6 +297,10 @@ Global
 		{9B913337-1114-4D05-8F24-D05A5FD588AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B913337-1114-4D05-8F24-D05A5FD588AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B913337-1114-4D05-8F24-D05A5FD588AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48808C52-FE5E-43BB-8ADD-197748552773}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48808C52-FE5E-43BB-8ADD-197748552773}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48808C52-FE5E-43BB-8ADD-197748552773}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48808C52-FE5E-43BB-8ADD-197748552773}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -313,6 +315,7 @@ Global
 		{3200B789-34A9-42F7-8FCF-0908D09E1BBE} = {0D0E64CD-73D1-4C5F-AADA-965464C91A39}
 		{01B70884-C425-405F-B914-938E9122FC27} = {0D0E64CD-73D1-4C5F-AADA-965464C91A39}
 		{9B913337-1114-4D05-8F24-D05A5FD588AD} = {0D0E64CD-73D1-4C5F-AADA-965464C91A39}
+		{48808C52-FE5E-43BB-8ADD-197748552773} = {0D0E64CD-73D1-4C5F-AADA-965464C91A39}
 		{7505264F-7E3E-4F8D-A9D5-885B4F313C26} = {54E50C1C-BB10-4DDC-86BD-CA29FB91A89E}
 		{05EF5AD0-ABF0-4F97-9C33-C69F0AF8DB51} = {54E50C1C-BB10-4DDC-86BD-CA29FB91A89E}
 		{75BDB70A-AEB9-4592-9B5E-677D3D346A54} = {54E50C1C-BB10-4DDC-86BD-CA29FB91A89E}
@@ -340,5 +343,9 @@ Global
 		{4FE07049-9F3A-42A4-8105-B1A72FE15C67} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
 		{92B3B84B-50F1-4147-8B97-D93B90FA5514} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
 		{C6F14605-0DA6-420A-8DE7-18B57E9A9C99} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
+	EndGlobalSection
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 EndGlobal
