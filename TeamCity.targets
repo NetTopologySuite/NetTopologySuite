@@ -4,7 +4,7 @@
 	<SolutionFile_WP>NetTopologySuite.WindowsPhone.sln</SolutionFile_WP>
 	<SolutionFile_SL>NetTopologySuite.Silverlight.sln</SolutionFile_SL>
     <SolutionDir>$(MSBuildProjectDirectory)</SolutionDir>
-    <AsmVersion>1.13.1</AsmVersion>
+    <AsmVersion>1.13.2</AsmVersion>
     <AsmFileVersion>$(AsmVersion)</AsmFileVersion>
     <NuGetOutDir>"$(MSBuildProjectDirectory)\Release"</NuGetOutDir>
     <GeoAPIVersion>1.7.1.1</GeoAPIVersion>
