@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010 Express for Windows Phone
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections.WindowsPhone", "PowerCollections\PowerCollections.WP\PowerCollections.WindowsPhone.csproj", "{D4C28EC9-4FAB-43AA-B063-96DCBAF44A30}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI.WindowsPhone", "GeoAPI\GeoAPI.WindowsPhone\GeoAPI.WindowsPhone.csproj", "{9924F9BF-24A6-4C73-AB60-FAEE784F4327}"
@@ -27,8 +27,8 @@ Global
 		{56C111DE-CDB3-4228-8322-DFC9121175E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56C111DE-CDB3-4228-8322-DFC9121175E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56C111DE-CDB3-4228-8322-DFC9121175E6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FF4C3028-5848-4053-A5DF-82EDC9E4C0CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FF4C3028-5848-4053-A5DF-82EDC9E4C0CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF4C3028-5848-4053-A5DF-82EDC9E4C0CE}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{FF4C3028-5848-4053-A5DF-82EDC9E4C0CE}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{FF4C3028-5848-4053-A5DF-82EDC9E4C0CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF4C3028-5848-4053-A5DF-82EDC9E4C0CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
