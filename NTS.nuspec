@@ -41,5 +41,7 @@
     <file src="Release\Silverlightv4.0\AnyCPU\PowerCollections.SilverLight.dll" target="lib\sl40" />
     <file src="Release\WP\AnyCPU\NetTopologySuite.WindowsPhone.dll" target="lib\sl40-wp" />
     <file src="Release\WP\AnyCPU\PowerCollections.WindowsPhone.dll" target="lib\sl40-wp" />
+    <file src="Release\PCL\PowerCollections.dll" target="lib\portable-net403+sl4+win8+wp8\" />
+    <file src="Release\PCL\NetTopologySuite.dll" target="lib\portable-net403+sl4+win8+wp8\" />
   </files>
 </package>
