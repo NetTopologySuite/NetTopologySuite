@@ -35,7 +35,6 @@
     <file src="Release\v4.0\AnyCPU\PowerCollections.dll" target="lib\net40-client\PowerCollections.dll" />
     <file src="Release\v4.0.3\AnyCPU\NetTopologySuite.dll" target="lib\net403-client\NetTopologySuite.dll" />
     <file src="Release\v4.0.3\AnyCPU\PowerCollections.dll" target="lib\net403-client\PowerCollections.dll" />
-    <file src="Release\Silverlightv4.0\AnyCPU\NetTopologySuite.Data.Silverlight.dll" target="lib\sl40" />
     <file src="Release\Silverlightv4.0\AnyCPU\NetTopologySuite.Encodings.Silverlight.dll" target="lib\sl40" />
     <file src="Release\Silverlightv4.0\AnyCPU\NetTopologySuite.Silverlight.dll" target="lib\sl40" />
     <file src="Release\Silverlightv4.0\AnyCPU\PowerCollections.SilverLight.dll" target="lib\sl40" />
