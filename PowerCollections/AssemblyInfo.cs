@@ -39,4 +39,4 @@ using System.Runtime.CompilerServices;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: InternalsVisibleTo("UnitTests")]
+//[assembly: InternalsVisibleTo("UnitTests")]
