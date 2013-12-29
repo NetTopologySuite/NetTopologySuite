@@ -21,7 +21,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
         private static readonly IPrecisionModel Pm = new PrecisionModel();
         private static readonly IGeometryFactory Fact = new GeometryFactory(Pm, 0);
 
-        [Test, Explicit("takes too long to complete")]
+        [Test, Category("LongRunning"), Explicit("takes ages to complete")]
         public void Test()
         {
             Test(5);

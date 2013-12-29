@@ -613,18 +613,5 @@ namespace Open.Topology.TestRunner.Utility
             }
         }
 
-    }
-
-    public class GeometryDataUtil
-    {
-        public static void setComponentDataToIndex(IGeometry geom)
-        {
-            for (int i = 0; i < geom.NumGeometries; i++)
-            {
-                var comp = geom.GetGeometryN(i);
-                comp.UserData = "Component # " + i;
-            }
-        }
-    }
-
+    }    
 }

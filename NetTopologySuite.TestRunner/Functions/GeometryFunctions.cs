@@ -8,36 +8,36 @@ namespace Open.Topology.TestRunner.Functions
     /// Implementations for various geometry functions.
     /// </summary>
     /// <author>Martin Davis</author>
-    public class GeometryFunctions
+    public static class GeometryFunctions
     {
-        public static double length(IGeometry g) { return g.Length; }
-        public static double area(IGeometry g) { return g.Area; }
+        public static double Length(IGeometry g) { return g.Length; }
+        public static double Area(IGeometry g) { return g.Area; }
 
-        public static bool isSimple(IGeometry g) { return g.IsSimple; }
-        public static bool isValid(IGeometry g) { return g.IsValid; }
-        public static bool isRectangle(IGeometry g) { return g.IsRectangle; }
+        public static bool IsSimple(IGeometry g) { return g.IsSimple; }
+        public static bool IsValid(IGeometry g) { return g.IsValid; }
+        public static bool IsRectangle(IGeometry g) { return g.IsRectangle; }
 
-        public static IGeometry envelope(IGeometry g) { return g.Envelope; }
-        public static IGeometry reverse(IGeometry g) { return g.Reverse(); }
-        public static IGeometry normalize(IGeometry g)
+        public static IGeometry Envelope(IGeometry g) { return g.Envelope; }
+        public static IGeometry Reverse(IGeometry g) { return g.Reverse(); }
+        public static IGeometry Normalize(IGeometry g)
         {
             IGeometry gNorm = (IGeometry)g.Clone();
             gNorm.Normalize();
             return gNorm;
         }
 
-        public static IGeometry snap(IGeometry g, IGeometry g2, double distance)
+        public static IGeometry Snap(IGeometry g, IGeometry g2, double distance)
         {
             IGeometry[] snapped = GeometrySnapper.Snap(g, g2, distance);
             return snapped[0];
         }
 
-        public static IGeometry getGeometryN(IGeometry g, int i)
+        public static IGeometry GetGeometryN(IGeometry g, int i)
         {
             return g.GetGeometryN(i);
         }
 
-        public static IGeometry getCoordinates(IGeometry g)
+        public static IGeometry GetCoordinates(IGeometry g)
         {
             var pts = g.Coordinates;
             return g.Factory.CreateMultiPoint(pts);

@@ -10,7 +10,7 @@ using NetTopologySuite.Operation.Buffer.Validate;
 
 namespace Open.Topology.TestRunner.Functions
 {
-    public class BufferFunctions
+    public static class BufferFunctions
     {
         public static IGeometry Buffer(IGeometry g, double distance)
         {
@@ -26,8 +26,8 @@ namespace Open.Topology.TestRunner.Functions
 
             var bufParams = new BufferParameters();
             if (quadrantSegments != null) bufParams.QuadrantSegments = quadrantSegments.Value;
-            if (capStyle != null) bufParams.EndCapStyle = (EndCapStyle) capStyle.Value;
-            if (joinStyle != null) bufParams.JoinStyle = (JoinStyle) joinStyle.Value;
+            if (capStyle != null) bufParams.EndCapStyle = (EndCapStyle)capStyle.Value;
+            if (joinStyle != null) bufParams.JoinStyle = (JoinStyle)joinStyle.Value;
             if (mitreLimit != null) bufParams.MitreLimit = mitreLimit.Value;
 
             return BufferOp.Buffer(g, dist, bufParams);
@@ -47,8 +47,8 @@ namespace Open.Topology.TestRunner.Functions
 
             var bufParams = new BufferParameters();
             if (quadrantSegments != null) bufParams.QuadrantSegments = quadrantSegments.Value;
-            if (capStyle != null) bufParams.EndCapStyle = (EndCapStyle) capStyle.Value;
-            if (joinStyle != null) bufParams.JoinStyle = (JoinStyle) joinStyle.Value;
+            if (capStyle != null) bufParams.EndCapStyle = (EndCapStyle)capStyle.Value;
+            if (joinStyle != null) bufParams.JoinStyle = (JoinStyle)joinStyle.Value;
             if (mitreLimit != null) bufParams.MitreLimit = mitreLimit.Value;
 
             return BuildCurveSet(g, dist, bufParams);
@@ -100,7 +100,7 @@ namespace Open.Topology.TestRunner.Functions
             return buf;
         }
 
-        public static IGeometry bufferValidatedGeom(IGeometry g, double distance)
+        public static IGeometry BufferValidatedGeom(IGeometry g, double distance)
         {
             var buf = g.Buffer(distance);
             var validator = new BufferResultValidator(g, distance, buf);
@@ -108,7 +108,7 @@ namespace Open.Topology.TestRunner.Functions
             return validator.ErrorIndicator;
         }
 
-        public static IGeometry singleSidedBufferCurve(IGeometry geom, double distance)
+        public static IGeometry SingleSidedBufferCurve(IGeometry geom, double distance)
         {
             var bufParam = new BufferParameters();
             bufParam.IsSingleSided = true;
@@ -120,16 +120,15 @@ namespace Open.Topology.TestRunner.Functions
             return curve;
         }
 
-        public static IGeometry singleSidedBuffer(IGeometry geom, double distance)
+        public static IGeometry SingleSidedBuffer(IGeometry geom, double distance)
         {
-            var bufParams = new BufferParameters {IsSingleSided = true};
+            var bufParams = new BufferParameters { IsSingleSided = true };
             return BufferOp.Buffer(geom, distance, bufParams);
         }
 
-        public static IGeometry bufferEach(IGeometry g, double distance)
+        public static IGeometry BufferEach(IGeometry g, double distance)
         {
             return GeometryMapper.Map(g, gin => gin.Buffer(distance));
         }
-
     }
 }

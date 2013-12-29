@@ -12,10 +12,9 @@ using Open.Topology.TestRunner.Utility;
 
 namespace Open.Topology.TestRunner.Functions
 {
-    public class NodingFunctions
+    public static class NodingFunctions
     {
-
-        public static IGeometry nodeWithPointwisePrecision(IGeometry geom, double scaleFactor)
+        public static IGeometry NodeWithPointwisePrecision(IGeometry geom, double scaleFactor)
         {
             var pm = new PrecisionModel(scaleFactor);
 
@@ -27,8 +26,9 @@ namespace Open.Topology.TestRunner.Functions
             var noder = new GeometryNoder(pm);
             var lines = noder.Node(geomList);
 
-            return FunctionsUtil.getFactoryOrDefault(geom).BuildGeometry(CollectionUtil.Cast<IGeometry>((ICollection)lines));
+            return FunctionsUtil.GetFactoryOrDefault(geom).BuildGeometry(CollectionUtil.Cast<IGeometry>((ICollection)lines));
         }
+
         /// <summary>
         /// Reduces precision pointwise, then snap-rounds.
         /// Note that output set may not contain non-unique linework
@@ -38,7 +38,7 @@ namespace Open.Topology.TestRunner.Functions
         /// <param name="geom">A geometry containing linework to node</param>
         /// <param name="scaleFactor">the precision model scale factor to use</param>
         /// <returns>The noded, snap-rounded linework</returns>
-        public static IGeometry snapRoundWithPointwisePrecisionReduction(IGeometry geom, double scaleFactor)
+        public static IGeometry SnapRoundWithPointwisePrecisionReduction(IGeometry geom, double scaleFactor)
         {
             var pm = new PrecisionModel(scaleFactor);
 
@@ -50,12 +50,12 @@ namespace Open.Topology.TestRunner.Functions
             var noder = new GeometryNoder(pm);
             var lines = noder.Node(geomList);
 
-            return FunctionsUtil.getFactoryOrDefault(geom).BuildGeometry(CollectionUtil.Cast<IGeometry>((ICollection)lines));
+            return FunctionsUtil.GetFactoryOrDefault(geom).BuildGeometry(CollectionUtil.Cast<IGeometry>((ICollection)lines));
         }
 
-        public static IGeometry checkNoding(Geometry geom)
+        public static IGeometry CheckNoding(Geometry geom)
         {
-            var segs = createSegmentStrings(geom);
+            var segs = CreateSegmentStrings(geom);
             var nv = new FastNodingValidator(segs);
             nv.FindAllIntersections = true;
             var res = nv.IsValid;
@@ -65,20 +65,31 @@ namespace Open.Topology.TestRunner.Functions
             {
                 var coord = intPts[i];
                 // use default factory in case intersections are not fixed
-                pts[i] = FunctionsUtil.getFactoryOrDefault(null).CreatePoint(coord);
+                pts[i] = FunctionsUtil.GetFactoryOrDefault(null).CreatePoint(coord);
             }
-            return FunctionsUtil.getFactoryOrDefault(null).CreateMultiPoint(
+            return FunctionsUtil.GetFactoryOrDefault(null).CreateMultiPoint(
                 pts);
         }
 
-        public static IGeometry MCIndexNoding(Geometry geom, double scaleFactor)
+        public static IGeometry MCIndexNodingWithPrecision(Geometry geom, double scaleFactor)
         {
-            var segs = createNodedSegmentStrings(geom);
-            var fixedPM = new PrecisionModel(scaleFactor);
-            var noder = new MCIndexNoder(new IntersectionAdder(new RobustLineIntersector()));
+            List<ISegmentString> segs = CreateNodedSegmentStrings(geom);
+
+            LineIntersector li = new RobustLineIntersector();
+            li.PrecisionModel = new PrecisionModel(scaleFactor);
+            INoder noder = new MCIndexNoder(new IntersectionAdder(li));
             noder.ComputeNodes(segs);
-            var nodedSegStrings = noder.GetNodedSubstrings();
-            return fromSegmentStrings(nodedSegStrings);
+            IList<ISegmentString> nodedSegStrings = noder.GetNodedSubstrings();
+            return FromSegmentStrings(nodedSegStrings);
+        }
+
+        public static IGeometry MCIndexNoding(Geometry geom)
+        {
+            IList<ISegmentString> segs = CreateNodedSegmentStrings(geom);
+            INoder noder = new MCIndexNoder(new IntersectionAdder(new RobustLineIntersector()));
+            noder.ComputeNodes(segs);
+            IList<ISegmentString> nodedSegStrings = noder.GetNodedSubstrings();
+            return FromSegmentStrings(nodedSegStrings);
         }
 
         /// <summary>
@@ -88,18 +99,18 @@ namespace Open.Topology.TestRunner.Functions
         /// <param name="geom"></param>
         /// <param name="scaleFactor"></param>
         /// <returns>The noded geometry</returns>
-        public static IGeometry scaledNoding(Geometry geom, double scaleFactor)
+        public static IGeometry ScaledNoding(Geometry geom, double scaleFactor)
         {
-            var segs = createSegmentStrings(geom);
+            var segs = CreateSegmentStrings(geom);
             var fixedPM = new PrecisionModel(scaleFactor);
             var noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)),
                 fixedPM.Scale);
             noder.ComputeNodes(segs);
             var nodedSegStrings = noder.GetNodedSubstrings();
-            return fromSegmentStrings(nodedSegStrings);
+            return FromSegmentStrings(nodedSegStrings);
         }
 
-        private static List<ISegmentString> createSegmentStrings(Geometry geom)
+        private static List<ISegmentString> CreateSegmentStrings(Geometry geom)
         {
             var segs = new List<ISegmentString>();
             var lines = LinearComponentExtracter.GetLines(geom);
@@ -110,7 +121,7 @@ namespace Open.Topology.TestRunner.Functions
             return segs;
         }
 
-        private static List<ISegmentString> createNodedSegmentStrings(Geometry geom)
+        private static List<ISegmentString> CreateNodedSegmentStrings(Geometry geom)
         {
             var segs = new List<ISegmentString>();
             var lines = LinearComponentExtracter.GetLines(geom);
@@ -120,20 +131,17 @@ namespace Open.Topology.TestRunner.Functions
             }
             return segs;
         }
-  
 
-        private static IGeometry fromSegmentStrings(IList<ISegmentString> segStrings)
+        private static IGeometry FromSegmentStrings(IList<ISegmentString> segStrings)
         {
             var lines = new ILineString[segStrings.Count];
             int index = 0;
             foreach (var ss in segStrings)
             {
-                var line = FunctionsUtil.getFactoryOrDefault(null).CreateLineString(ss.Coordinates);
+                var line = FunctionsUtil.GetFactoryOrDefault(null).CreateLineString(ss.Coordinates);
                 lines[index++] = line;
             }
-            return FunctionsUtil.getFactoryOrDefault(null).CreateMultiLineString(lines);
+            return FunctionsUtil.GetFactoryOrDefault(null).CreateMultiLineString(lines);
         }
-  
-
     }
 }

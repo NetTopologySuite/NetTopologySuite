@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Simplify
 {
-    /// <summary
+    /// <summary>
     /// Runs various validation tests on a the results of a geometry operation
     /// </summary>
     public class GeometryOperationValidator

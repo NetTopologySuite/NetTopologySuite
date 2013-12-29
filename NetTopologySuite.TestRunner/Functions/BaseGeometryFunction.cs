@@ -18,7 +18,7 @@ namespace Open.Topology.TestRunner.Functions
         public static bool IsBinaryGeomFunction(IGeometryFunction func)
         {
             return func.ParameterTypes.Length >= 1
-                   && func.ParameterTypes[0] == typeof (IGeometry);
+                   && func.ParameterTypes[0] == typeof(IGeometry);
         }
 
         protected String category;
@@ -90,14 +90,14 @@ namespace Open.Topology.TestRunner.Functions
         {
             if (args.Length <= index) return null;
             if (args[index] == null) return null;
-            return (Double) args[index];
+            return (Double)args[index];
         }
 
         protected static int? GetIntegerOrNull(Object[] args, int index)
         {
             if (args.Length <= index) return null;
             if (args[index] == null) return null;
-            return (int) args[index];
+            return (int)args[index];
         }
 
         public abstract Object Invoke(IGeometry geom, Object[] args);
@@ -119,7 +119,7 @@ namespace Open.Topology.TestRunner.Functions
         public override bool Equals(Object obj)
         {
             if (!(obj is IGeometryFunction)) return false;
-            var func = (IGeometryFunction) obj;
+            var func = (IGeometryFunction)obj;
             if (!name.Equals(func.Name)) return false;
             if (!returnType.Equals(func.ReturnType)) return false;
 

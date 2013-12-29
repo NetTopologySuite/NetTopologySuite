@@ -4,46 +4,46 @@ using Open.Topology.TestRunner.Utility;
 
 namespace Open.Topology.TestRunner.Functions
 {
-    public class OverlayFunctions
+    public static class OverlayFunctions
     {
-        public static IGeometry intersection(IGeometry a, IGeometry b)
+        public static IGeometry Intersection(IGeometry a, IGeometry b)
         {
             return a.Intersection(b);
         }
 
-        public static IGeometry union(IGeometry a, IGeometry b)
+        public static IGeometry Union(IGeometry a, IGeometry b)
         {
             return a.Union(b);
         }
 
-        public static IGeometry symDifference(IGeometry a, IGeometry b)
+        public static IGeometry SymDifference(IGeometry a, IGeometry b)
         {
             return a.SymmetricDifference(b);
         }
 
-        public static IGeometry difference(IGeometry a, IGeometry b)
+        public static IGeometry Difference(IGeometry a, IGeometry b)
         {
             return a.Difference(b);
         }
 
-        public static IGeometry differenceBA(IGeometry a, IGeometry b)
+        public static IGeometry DifferenceBa(IGeometry a, IGeometry b)
         {
             return b.Difference(a);
         }
 
-        public static IGeometry unaryUnion(IGeometry a)
+        public static IGeometry UnaryUnion(IGeometry a)
         {
             return a.Union();
         }
 
-        public static IGeometry unionUsingGeometryCollection(IGeometry a, IGeometry b)
+        public static IGeometry UnionUsingGeometryCollection(IGeometry a, IGeometry b)
         {
             var gc = a.Factory.CreateGeometryCollection(
-                new[] {a, b});
+                new[] { a, b });
             return gc.Union();
         }
 
-        public static IGeometry clip(IGeometry a, IGeometry mask)
+        public static IGeometry Clip(IGeometry a, IGeometry mask)
         {
             var geoms = new List<IGeometry>();
             for (var i = 0; i < a.NumGeometries; i++)
@@ -53,7 +53,5 @@ namespace Open.Topology.TestRunner.Functions
             }
             return FunctionsUtil.BuildGeometry(geoms, a);
         }
-
     }
-
 }

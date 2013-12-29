@@ -10,13 +10,12 @@ namespace Open.Topology.TestRunner.Functions
     /// A <see cref="IGeometryFunction"/> which calls a static <see cref="MethodInfo"/>.
     /// </summary>
     /// <author>Martin Davis</author>
-    public class StaticMethodGeometryFunction
-        : BaseGeometryFunction
+    public class StaticMethodGeometryFunction : BaseGeometryFunction
     {
         public static StaticMethodGeometryFunction CreateFunction(MethodInfo method)
         {
             var pi = method.GetParameters();
-            Debug.Assert(typeof (IGeometry).IsAssignableFrom(pi[0].GetType()));
+            Debug.Assert(typeof(IGeometry).IsAssignableFrom(pi[0].GetType()));
 
             Type clz = method.DeclaringType;
 
@@ -72,14 +71,12 @@ namespace Open.Topology.TestRunner.Functions
             return Invoke(method, null, CreateFullArgs(g, arg));
         }
 
-        /**
-         * Creates an arg array which includes the target geometry as the first argument
-         * 
-         * @param g
-         * @param arg
-         * @return
-         */
-
+        /// <summary>
+        /// Creates an arg array which includes the target geometry as the first argument
+        /// </summary>
+        /// <param name="g"></param>
+        /// <param name="arg"></param>
+        /// <returns></returns>
         private static Object[] CreateFullArgs(IGeometry g, Object[] arg)
         {
             var fullArgLen = 1;
@@ -114,7 +111,7 @@ namespace Open.Topology.TestRunner.Functions
             return result;
         }
 
-        public static String GetClassname(Type javaClass)
+        public static String GetClassName(Type javaClass)
         {
             String jClassName = javaClass.Name;
             int lastDotPos = jClassName.LastIndexOf(".");

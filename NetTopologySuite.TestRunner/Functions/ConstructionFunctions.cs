@@ -8,31 +8,31 @@ using NetTopologySuite.Operation.Linemerge;
 
 namespace Open.Topology.TestRunner.Functions
 {
-    public class ConstructionFunctions
+    public static class ConstructionFunctions
     {
-        public static IGeometry octagonalEnvelope(IGeometry g)
+        public static IGeometry OctagonalEnvelope(IGeometry g)
         {
             var octEnv = new OctagonalEnvelope(g);
             return octEnv.ToGeometry(g.Factory);
         }
 
-        public static IGeometry minimumDiameterLine(Geometry g) { return (new MinimumDiameter(g)).Diameter; }
-        public static double minimumDiameter(Geometry g) { return (new MinimumDiameter(g)).Diameter.Length; }
+        public static IGeometry MinimumDiameterLine(Geometry g) { return (new MinimumDiameter(g)).Diameter; }
+        public static double MinimumDiameter(Geometry g) { return (new MinimumDiameter(g)).Diameter.Length; }
         
-        public static IGeometry minimumRectangle(IGeometry g) { return (new MinimumDiameter(g)).GetMinimumRectangle(); }
-        public static IGeometry minimumBoundingCircle(Geometry g) { return (new MinimumBoundingCircle(g)).GetCircle(); }
-        public static IGeometry minimumBoundingCirclePoints(Geometry g) { return g.Factory.CreateLineString((new MinimumBoundingCircle(g)).GetExtremalPoints()); }
-        public static double maximumDiameter(Geometry g) { return 2 * (new MinimumBoundingCircle(g)).GetRadius(); }
+        public static IGeometry MinimumRectangle(IGeometry g) { return (new MinimumDiameter(g)).GetMinimumRectangle(); }
+        public static IGeometry MinimumBoundingCircle(Geometry g) { return (new MinimumBoundingCircle(g)).GetCircle(); }
+        public static IGeometry MinimumBoundingCirclePoints(Geometry g) { return g.Factory.CreateLineString((new MinimumBoundingCircle(g)).GetExtremalPoints()); }
+        public static double MaximumDiameter(Geometry g) { return 2 * (new MinimumBoundingCircle(g)).GetRadius(); }
 
-        public static IGeometry boundary(Geometry g) { return g.Boundary; }
-        public static IGeometry convexHull(Geometry g) { return g.ConvexHull(); }
-        public static IGeometry centroid(Geometry g) { return g.Centroid; }
-        public static IGeometry interiorPoint(Geometry g) { return g.InteriorPoint; }
+        public static IGeometry Boundary(Geometry g) { return g.Boundary; }
+        public static IGeometry ConvexHull(Geometry g) { return g.ConvexHull(); }
+        public static IGeometry Centroid(Geometry g) { return g.Centroid; }
+        public static IGeometry InteriorPoint(Geometry g) { return g.InteriorPoint; }
 
-        public static IGeometry densify(Geometry g, double distance) { return Densifier.Densify(g, distance); }
+        public static IGeometry Densify(Geometry g, double distance) { return Densifier.Densify(g, distance); }
 
 
-        public static IGeometry mergeLines(Geometry g)
+        public static IGeometry MergeLines(Geometry g)
         {
             var merger = new LineMerger();
             merger.Add(g);
@@ -40,7 +40,7 @@ namespace Open.Topology.TestRunner.Functions
             return g.Factory.BuildGeometry(lines);
         }
 
-        public static IGeometry extractLines(IGeometry g)
+        public static IGeometry ExtractLines(IGeometry g)
         {
             var lines = LinearComponentExtracter.GetLines(g);
             return g.Factory.BuildGeometry(NetTopologySuite.Utilities.CollectionUtil.Cast<IGeometry>((ICollection)lines));

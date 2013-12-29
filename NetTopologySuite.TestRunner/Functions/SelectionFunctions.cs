@@ -4,54 +4,54 @@ using GeoAPI.Geometries;
 
 namespace Open.Topology.TestRunner.Functions
 {
-    public class SelectionFunctions
+    public static class SelectionFunctions
     {
-        public static IGeometry intersects(IGeometry a, IGeometry mask)
+        public static IGeometry Intersects(IGeometry a, IGeometry mask)
         {
-            return select(a, mask.Intersects);
+            return Select(a, mask.Intersects);
         }
 
-        public static IGeometry covers(IGeometry a, IGeometry mask)
+        public static IGeometry Covers(IGeometry a, IGeometry mask)
         {
-            return select(a, mask.Covers);
+            return Select(a, mask.Covers);
         }
 
-        public static IGeometry coveredBy(IGeometry a, IGeometry mask)
+        public static IGeometry CoveredBy(IGeometry a, IGeometry mask)
         {
-            return select(a, mask.CoveredBy);
+            return Select(a, mask.CoveredBy);
         }
 
-        public static IGeometry disjoint(IGeometry a, IGeometry mask)
+        public static IGeometry Disjoint(IGeometry a, IGeometry mask)
         {
-            return select(a, mask.Disjoint);
+            return Select(a, mask.Disjoint);
         }
 
-        public static IGeometry valid(IGeometry a)
+        public static IGeometry Valid(IGeometry a)
         {
-            return select(a, g => g.IsValid);
+            return Select(a, g => g.IsValid);
         }
 
-        public static IGeometry invalid(IGeometry a)
+        public static IGeometry Invalid(IGeometry a)
         {
-            return select(a, g => !g.IsValid);
+            return Select(a, g => !g.IsValid);
         }
 
-        public static IGeometry areaGreater(IGeometry a, double minArea)
+        public static IGeometry AreaGreater(IGeometry a, double minArea)
         {
-            return select(a, g => g.Area > minArea);
+            return Select(a, g => g.Area > minArea);
         }
 
-        public static IGeometry areaZero(IGeometry a)
+        public static IGeometry AreaZero(IGeometry a)
         {
-            return select(a, g => g.Area == 0d);
+            return Select(a, g => g.Area == 0d);
         }
 
-        public static IGeometry within(IGeometry a, IGeometry mask)
+        public static IGeometry Within(IGeometry a, IGeometry mask)
         {
-            return select(a, mask.Within);
+            return Select(a, mask.Within);
         }
 
-        private static IGeometry select(IGeometry geom, Func<IGeometry, bool> predicate)
+        private static IGeometry Select(IGeometry geom, Func<IGeometry, bool> predicate)
         {
             var selected = new List<IGeometry>();
             for (int i = 0; i < geom.NumGeometries; i++)
@@ -65,7 +65,7 @@ namespace Open.Topology.TestRunner.Functions
             return geom.Factory.BuildGeometry(selected);
         }
 
-        public static IGeometry firstNComponents(IGeometry g, int n)
+        public static IGeometry FirstNComponents(IGeometry g, int n)
         {
             var comp = new List<IGeometry>();
             for (int i = 0; i < g.NumGeometries && i < n; i++)
@@ -74,6 +74,5 @@ namespace Open.Topology.TestRunner.Functions
             }
             return g.Factory.BuildGeometry(comp);
         }
-
     }
 }

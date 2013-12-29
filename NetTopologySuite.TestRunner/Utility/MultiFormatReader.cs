@@ -58,7 +58,7 @@ namespace Open.Topology.TestRunner.Utility
         {
             var trimStr = geomStr.Trim();
             if (IsHex(trimStr, MaxCharsToCheck))
-                return IOUtility.readGeometriesFromWKBHexString(trimStr, _factory);
+                return IOUtility.ReadGeometriesFromWkbHexString(trimStr, _factory);
             return _wktReader.Read(trimStr);
         }
     }

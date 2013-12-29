@@ -16,6 +16,7 @@ namespace NetTopologySuite.Tests.XUnit
         public TestBigNastyBuffer() : base("TestBigNastyBuffer.xml") { }
     }
 
+    // 1 expected exception thrown
     public class TestOverlayFailure : FailureXUnitRunner
     {
         public TestOverlayFailure() : base("TestOverlay.xml") { }

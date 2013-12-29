@@ -11,13 +11,13 @@
         protected override string TestLocation { get { return testLocation; } }
     }
 
-    // Same as JTS: 2 passed, 4 failed, 1 threw exceptions
+    // 1 expected exception thrown
     public class ExternalRobustness : RobustXUnitRunner
     {
         public ExternalRobustness() : base("ExternalRobustness.xml") { }
     }
 
-    // Same as JTS: 0 passed, 0 failed, 1 threw exceptions
+    // 1 expected exception thrown
     public class TestRobustOverlayError : RobustXUnitRunner
     {
         public TestRobustOverlayError() : base("TestRobustOverlayError.xml") { }

@@ -134,6 +134,15 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(polygon1.Equals(polygon2));
         }
 
+        [Test]
+        public void TestEqualsWithNull()
+        {
+            IGeometry polygon = reader.Read("POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
+            Assert.IsTrue(!polygon.Equals(null));
+            Object g = null;
+            Assert.IsTrue(!polygon.Equals(g));
+        }
+
         [Ignore("This was commented out in JTS - not sure why")]
         public void TestEquals2()
         {
@@ -143,7 +152,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             //                                                                 + "LINESTRING(50 50, 50 0 ), "
             //                                                                 + "LINESTRING(50 0 , 0  0 ) )");
             //    Assert.IsTrue(lineString.equals(geometryCollection));
-        }
+        }        
 
         [Test]
         public void TestEqualsExactForLinearRings()

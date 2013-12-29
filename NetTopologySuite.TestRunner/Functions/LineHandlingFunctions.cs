@@ -5,9 +5,8 @@ using NetTopologySuite.Operation.Linemerge;
 
 namespace Open.Topology.TestRunner.Functions
 {
-    public class LineHandlingFunctions
+    public static class LineHandlingFunctions
     {
-
         public static IGeometry MergeLines(IGeometry g)
         {
             var merger = new LineMerger();
@@ -28,7 +27,7 @@ namespace Open.Topology.TestRunner.Functions
             var lines = LinearComponentExtracter.GetLines(g);
             return g.Factory.BuildGeometry(lines);
         }
-        
+
         public static IGeometry ExtractSegments(IGeometry g)
         {
             var lines = LinearComponentExtracter.GetLines(g);

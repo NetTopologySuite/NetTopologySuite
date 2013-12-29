@@ -216,16 +216,21 @@ namespace NetTopologySuite.Geometries.Implementation
 
         /// <summary>
         /// Sets the ordinate of a coordinate in this sequence.
-        /// </summary>
-        /// <remarks>
-        /// Warning: for performance reasons the ordinate index is not checked:
-        /// if it is over dimensions you may not get an exception but a meaningless value.
-        /// </remarks>        
+        /// </summary>              
         /// <param name="index">The coordinate index.</param>
         /// <param name="ordinate">The ordinate index in the coordinate, 0 based, 
         /// smaller than the number of dimensions.</param>
         /// <param name="value">The new ordinate value.</param>
+        /// <remarks>
+        /// Warning: for performance reasons the ordinate index is not checked.
+        /// If it is larger than the dimension a meaningless value may be returned.
+        /// </remarks> 
         public abstract void SetOrdinate(int index, Ordinate ordinate, double value);
+
+        public override string ToString()
+        {
+            return CoordinateSequences.ToString(this);
+        }
 
         /// <summary>
         /// Returns a Coordinate representation of the specified coordinate, by always
@@ -401,9 +406,9 @@ namespace NetTopologySuite.Geometries.Implementation
         /// smaller than the number of dimensions.</param>
         /// <param name="value">The new ordinate value.</param>
         /// <remarks>
-        /// Warning: for performance reasons the ordinate index is not checked:
-        /// if it is over dimensions you may not get an exception but a meaningless value.
-        /// </remarks>
+        /// Warning: for performance reasons the ordinate index is not checked.
+        /// If it is larger than the dimension a meaningless value may be returned.
+        /// </remarks> 
         public override void SetOrdinate(int index, Ordinate ordinate, double value) 
         {
             CoordRef = null;

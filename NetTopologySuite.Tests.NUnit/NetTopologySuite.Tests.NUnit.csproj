@@ -64,6 +64,7 @@
     <Compile Include="Algorithm\MCPointInRingTest.cs" />
     <Compile Include="Algorithm\ShewchuksDeterminant.cs" />
     <Compile Include="CoordinateSystems\Transformations\GeometryTransformTest.cs" />
+    <Compile Include="Geometries\CoordinateSequencesTest.cs" />
     <Compile Include="Geometries\CoordinateTest.cs" />
     <Compile Include="Geometries\GeometryTestFactory.cs" />
     <Compile Include="IO\CoordinateBufferTest.cs" />

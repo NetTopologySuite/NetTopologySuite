@@ -112,6 +112,7 @@
     <Compile Include="..\SharedAssemblyVersion.cs">
       <Link>Properties\SharedAssemblyVersion.cs</Link>
     </Compile>
+    <Compile Include="Functions\DissolveFunctions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -162,6 +163,7 @@
     <Compile Include="Utility\ClassUtility.cs" />
     <Compile Include="Utility\DoubleKeyMap.cs" />
     <Compile Include="Utility\FunctionsUtility.cs" />
+    <Compile Include="Utility\GeometryDataUtil.cs" />
     <Compile Include="Utility\IOUtility.cs" />
     <Compile Include="Utility\StringUtility.cs" />
     <Compile Include="Utility\MultiFormatReader.cs" />

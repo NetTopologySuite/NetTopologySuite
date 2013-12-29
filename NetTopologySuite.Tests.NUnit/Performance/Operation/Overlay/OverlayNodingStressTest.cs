@@ -41,7 +41,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
             return r;
         }
 
-        [Test]
+        [Test, Explicit("takes ages to complete")]
         public void TestNoding()
         {
             var iterLimit = ITER_LIMIT;

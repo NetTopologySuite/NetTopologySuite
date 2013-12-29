@@ -1074,6 +1074,8 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="EqualsTopologically"/>
         public bool Equals(IGeometry g)
         {
+            if (g == null)
+                return false;            
             return EqualsTopologically(g);
         }
 
@@ -1101,10 +1103,6 @@ namespace NetTopologySuite.Geometries
         /// <returns><c>true</c> if the two <code>Geometry</code>s are topologically equal</returns>
         public bool EqualsTopologically(IGeometry g)
         {
-            // short-circuit test
-            if (g == null)
-                return false;
-
             // short-circuit test
             if (!EnvelopeInternal.Equals(g.EnvelopeInternal))
                 return false;

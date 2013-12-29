@@ -1,7 +1,6 @@
 ﻿using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
@@ -29,6 +28,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             IGeometry geom = reader.Read(wkt);
             return geom.Coordinates;
-            }
         }
+    }
 }

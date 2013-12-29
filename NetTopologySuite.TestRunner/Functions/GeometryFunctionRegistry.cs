@@ -23,9 +23,7 @@ namespace Open.Topology.TestRunner.Functions
         private readonly DoubleKeyMap<string, string, IGeometryFunction> _categorizedGeometryFunctions =
             new DoubleKeyMap<string, string, IGeometryFunction>();
 
-        public GeometryFunctionRegistry()
-        {
-        }
+        public GeometryFunctionRegistry() { }
 
         public GeometryFunctionRegistry(Type clz)
         {
@@ -39,56 +37,42 @@ namespace Open.Topology.TestRunner.Functions
 
         public IList<IGeometryFunction> GetGeometryFunctions()
         {
-            var funList = new List<IGeometryFunction>();
-            foreach (var fun in _sortedFunctions.Values)
-            {
+            List<IGeometryFunction> funList = new List<IGeometryFunction>();
+            foreach (IGeometryFunction fun in _sortedFunctions.Values)
                 if (HasGeometryResult(fun))
                     funList.Add(fun);
-            }
             return funList;
         }
 
         public static bool HasGeometryResult(IGeometryFunction func)
         {
-            return typeof (IGeometry).IsAssignableFrom(func.ReturnType);
+            return typeof(IGeometry).IsAssignableFrom(func.ReturnType);
         }
 
         public IList<IGeometryFunction> GetScalarFunctions()
         {
-            var scalarFun = new List<IGeometryFunction>();
+            List<IGeometryFunction> scalarFun = new List<IGeometryFunction>();
             foreach (IGeometryFunction fun in _sortedFunctions.Values)
-            {
                 if (!HasGeometryResult(fun))
                     scalarFun.Add(fun);
-            }
             return scalarFun;
         }
 
-        /// <summary>Adds functions for all the static methods in the given class.</summary>
+        /// <summary>
+        /// Adds functions for all the static methods in the given class.
+        /// </summary>
         /// <param name="geomFuncClass"></param>
         public void Add(Type geomFuncClass)
         {
-            var funcs = CreateFunctions(geomFuncClass);
+            List<IGeometryFunction> funcs = CreateFunctions(geomFuncClass);
             // sort list of functions so they appear nicely in the UI list
             funcs.Sort();
             Add(funcs);
         }
 
-        /**
-         * Adds functions for all the static methods in the given class.
-         * 
-         * @param geomFuncClassname the name of the class to load and extract functions from
-         */
-        //public void Add(String geomFuncClassname)
-        //{
-        //    Type geomFuncClass = LoadClass(geomFuncClassname);
-        //    Add(geomFuncClass);
-        //}
-
-
         public void Add(IEnumerable<IGeometryFunction> funcs)
         {
-            foreach (var f in funcs) Add(f);
+            foreach (IGeometryFunction f in funcs) Add(f);
         }
 
         /// <summary>
@@ -99,7 +83,7 @@ namespace Open.Topology.TestRunner.Functions
         /// <returns>A list of the functions created</returns>
         public List<IGeometryFunction> CreateFunctions(Type functionClass)
         {
-            var funcs = new List<IGeometryFunction>();
+            List<IGeometryFunction> funcs = new List<IGeometryFunction>();
             MethodInfo[] method = functionClass.GetMethods();
             for (int i = 0; i < method.Length; i++)
             {
@@ -110,7 +94,6 @@ namespace Open.Topology.TestRunner.Functions
             }
             return funcs;
         }
-
 
         /// <summary>
         /// Adds a function if it does not currently
@@ -142,17 +125,6 @@ namespace Open.Topology.TestRunner.Functions
             return _categorizedFunctions.Values(category);
         }
 
-        /*
-            int index = functions.indexOf(func);
-            if (index == -1) {
-                sortedFunctions.put(func.getName(), func);
-            }
-            else {
-                functions.set(index, func);
-            }	
-        }
-        */
-
         /// <summary>
         /// Finds the first function which matches the given signature.
         /// </summary>
@@ -172,7 +144,7 @@ namespace Open.Topology.TestRunner.Functions
         /// <returns>A matching function<br/>or <value>null</value> if no matching function was found</returns>
         public IGeometryFunction Find(String name, int argCount)
         {
-            foreach (var func in _functions)
+            foreach (IGeometryFunction func in _functions)
             {
                 String funcName = func.Name;
                 if (funcName.Equals(name, StringComparison.InvariantCultureIgnoreCase)
@@ -189,9 +161,9 @@ namespace Open.Topology.TestRunner.Functions
         /// <returns>A matching function<br/>or <value>null</value> if no matching function was found</returns>
         public IGeometryFunction Find(String name)
         {
-            foreach (var func in _functions)
+            foreach (IGeometryFunction func in _functions)
             {
-                var funcName = func.Name;
+                string funcName = func.Name;
                 if (funcName.Equals(name, StringComparison.InvariantCultureIgnoreCase))
                     return func;
             }

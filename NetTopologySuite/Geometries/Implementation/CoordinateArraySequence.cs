@@ -24,6 +24,7 @@ namespace NetTopologySuite.Geometries.Implementation
     public class CoordinateArraySequence : ICoordinateSequence
     {    
         protected Coordinate[] Coordinates;
+
         /**
          * The actual dimension of the coordinates in the sequence.
          * Allowable values are 2 or 3.
@@ -39,8 +40,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </remarks>
         /// <param name="coordinates">The coordinate array that will be referenced.</param>
         public CoordinateArraySequence(Coordinate[] coordinates) 
-            :this(coordinates, 3)
-        {}
+            : this(coordinates, 3) { }
 
         /// <summary>
         /// Constructs a sequence based on the given array 
@@ -62,9 +62,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="size">The size of the sequence to create.</param>
         public CoordinateArraySequence(int size)
-            : this(size, 3)
-        {
-        }
+            : this(size, 3) { }
 
         /// <summary>
         /// Constructs a sequence of a given <paramref name="size"/>, populated 

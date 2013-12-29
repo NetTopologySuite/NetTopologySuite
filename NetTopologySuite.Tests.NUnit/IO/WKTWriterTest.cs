@@ -12,10 +12,10 @@ namespace NetTopologySuite.Tests.NUnit.IO
     /// <version>1.7</version>
     public class WKTWriterTest
     {
-        private static PrecisionModel precisionModel = new PrecisionModel(1);
-        GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
-        WKTWriter writer = new WKTWriter();
-        WKTWriter writer3D = new WKTWriter(3);
+        private static readonly PrecisionModel precisionModel = new PrecisionModel(1);
+        readonly GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
+        readonly WKTWriter writer = new WKTWriter();
+        readonly WKTWriter writer3D = new WKTWriter(3);
 
         [Test]
         public void TestWritePoint()
@@ -23,6 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             IPoint point = geometryFactory.CreatePoint(new Coordinate(10, 10));
             Assert.AreEqual("POINT (10 10)", writer.Write(point));
         }
+
         [Test]
         public void TestWriteLineString()
         {
@@ -32,6 +33,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             ILineString lineString = geometryFactory.CreateLineString(coordinates);
             Assert.AreEqual("LINESTRING (10 10, 20 20, 30 40)", writer.Write(lineString));
         }
+
         [Test]
         public void TestWritePolygon()
         {
@@ -44,6 +46,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             IPolygon polygon = geometryFactory.CreatePolygon(linearRing, new LinearRing[] { });
             Assert.AreEqual("POLYGON ((10 10, 10 20, 20 20, 20 15, 10 10))", writer.Write(polygon));
         }
+
         [Test]
         public void TestWriteMultiPoint()
         {
@@ -85,13 +88,10 @@ namespace NetTopologySuite.Tests.NUnit.IO
             IPolygon polygon2 = geometryFactory.CreatePolygon(linearRing2, new LinearRing[] { });
             IPolygon[] polygons = { polygon1, polygon2 };
             IMultiPolygon multiPolygon = geometryFactory.CreateMultiPolygon(polygons);
-            //    System.out.println("MULTIPOLYGON (((10 10, 10 20, 20 20, 20 15, 10 10)), ((60 60, 70 70, 80 60, 60 60)))");
-            //    System.out.println(writer.Write(multiPolygon));
             Assert.AreEqual("MULTIPOLYGON (((10 10, 10 20, 20 20, 20 15, 10 10)), ((60 60, 70 70, 80 60, 60 60)))", writer.Write(multiPolygon));
         }
 
         [Test]
-
         public void TestWriteGeometryCollection()
         {
             IPoint point1 = geometryFactory.CreatePoint(new Coordinate(10, 10));
@@ -103,8 +103,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
             IGeometryCollection geometryCollection = geometryFactory.CreateGeometryCollection(geometries);
             Assert.AreEqual("GEOMETRYCOLLECTION (POINT (10 10), POINT (30 30), LINESTRING (15 15, 20 20))", writer.Write(geometryCollection));
         }
-        [Test]
-        [Ignore("Check if this test does not fail for JTS")]
+
+        [Test, Ignore("Check if this test does not fail for JTS")]
         public void TestWriteLargeNumbers1()
         {
             PrecisionModel precisionModel = new PrecisionModel(1E9);
@@ -121,8 +121,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
             IPoint point1 = geometryFactory.CreatePoint(new Coordinate(1234d, 10E9));
             Assert.AreEqual("POINT (1234 10000000000)", point1.AsText());
         }
-        [Test]
-        [Ignore("Check if this test does not fail for JTS")]
+
+        [Test, Ignore("Check if this test does not fail for JTS")]
         public void TestWriteLargeNumbers3()
         {
             PrecisionModel precisionModel = new PrecisionModel(1E9);
@@ -149,6 +149,5 @@ namespace NetTopologySuite.Tests.NUnit.IO
             String wkt = writer3D.Write(line);
             Assert.AreEqual("LINESTRING (1 1, 2 2 2)", wkt);
         }
-
     }
 }

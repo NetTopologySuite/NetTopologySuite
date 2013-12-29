@@ -66,6 +66,19 @@ namespace NetTopologySuite.Operation.Polygonize
         private IList<EdgeRing> _shellList;
         private ICollection<IGeometry> _polyList;
 
+        private bool _isCheckingRingsValid = true;
+
+        /// <summary>
+        /// Allows disabling the valid ring checking, 
+        /// to optimize situations where invalid rings are not expected.
+        /// </summary>
+        /// <remarks>The default is <c>true</c></remarks>
+        public bool IsCheckingRingsValid
+        {          
+            get { return _isCheckingRingsValid;  }
+            set { _isCheckingRingsValid = value; }
+        }
+
         /// <summary>
         /// Create a polygonizer with the same {GeometryFactory}
         /// as the input <c>Geometry</c>s.
@@ -167,9 +180,11 @@ namespace NetTopologySuite.Operation.Polygonize
             _cutEdges = _graph.DeleteCutEdges();
             var edgeRingList = _graph.GetEdgeRings();
 
-            var validEdgeRingList = new List<EdgeRing>();
+            IList<EdgeRing> validEdgeRingList = new List<EdgeRing>();
             _invalidRingLines = new List<IGeometry>();
-            FindValidRings(edgeRingList, validEdgeRingList, _invalidRingLines);
+            if (IsCheckingRingsValid)
+                 FindValidRings(edgeRingList, validEdgeRingList, _invalidRingLines);
+            else validEdgeRingList = edgeRingList;
 
             FindShellsAndHoles(validEdgeRingList);
             AssignHolesToShells(_holeList, _shellList);

@@ -28,10 +28,8 @@ public class ContainsTest
   [Test, Ignore("Known to fail")]
     public void TestContainsIncorrect()
     {
-        var a = _reader.Read("LINESTRING (1 0, 0 2, 0 0, 2 2)");
-        var b = _reader.Read("LINESTRING (0 0, 2 2)");
-
-        // for now assert this as false, although it should be true
-        Assert.IsTrue(!a.Contains(b));
+        IGeometry a = _reader.Read("LINESTRING (1 0, 0 2, 0 0, 2 2)");
+        IGeometry b = _reader.Read("LINESTRING (0 0, 2 2)");
+        Assert.IsTrue(a.Contains(b));
     }
 }}

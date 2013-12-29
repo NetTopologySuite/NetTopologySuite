@@ -11,7 +11,6 @@ namespace Open.Topology.TestRunner.Functions
     /// <author>Martin Davis</author>
     public interface IGeometryFunction
     {
-
         /// <summary>
         /// Gets the category name of this function
         /// </summary>
@@ -49,15 +48,6 @@ namespace Open.Topology.TestRunner.Functions
         /// <param name="geom">The target geometry</param>
         /// <param name="args">The other arguments to the function</param>
         /// <returns>The value computed by the function</returns>
-        Object Invoke(IGeometry geom, Object[] args);
-
-        ///**
-        // * Two functions are the same if they have the 
-        // * same name, parameter types and return type.
-        // * 
-        // * @param obj
-        // * @return true if this object is the same as the <tt>obj</tt> argument
-        // */
-        //bool equals(Object obj);
+        Object Invoke(IGeometry geom, Object[] args);        
     }
 }

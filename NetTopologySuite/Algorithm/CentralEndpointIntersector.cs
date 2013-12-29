@@ -18,6 +18,11 @@ namespace NetTopologySuite.Algorithm
     /// computing ill-conditioned intersection situations which 
     /// cause other methods to fail.
     /// </summary>
+    /// <remarks>
+    /// WARNING: in some cases this algorithm makes a poor choice of endpoint.
+    /// It has been replaced by a better heuristic in <see cref="RobustLineIntersector" />.
+    /// </remarks>
+    [Obsolete("In some cases this algorithm makes a poor choice of endpoint. Replaced by a better heuristic in RobustLineIntersector")]
     public class CentralEndpointIntersector
     {
         /// <summary>
@@ -52,7 +57,7 @@ namespace NetTopologySuite.Algorithm
             Compute();
         }
 
-        private void Compute()
+        private void OldCompute()
         {
             var centroid = Average(_pts);
             Intersection = new Coordinate(FindNearestPoint(centroid, _pts));
@@ -98,6 +103,27 @@ namespace NetTopologySuite.Algorithm
                 }
             }
             return result;
+        }
+
+        private double _minDist = Double.MaxValue;
+
+        // Finds point with smallest distance to other segment
+        private void Compute()
+        {
+            TryDist(_pts[0], _pts[2], _pts[3]);
+            TryDist(_pts[1], _pts[2], _pts[3]);
+            TryDist(_pts[2], _pts[0], _pts[1]);
+            TryDist(_pts[3], _pts[0], _pts[1]);
+        }
+
+        private void TryDist(Coordinate p, Coordinate p0, Coordinate p1)
+        {
+            double dist = CGAlgorithms.DistancePointLine(p, p0, p1);
+            if (dist < _minDist)
+            {
+                _minDist = dist;
+                Intersection = p;
+            }
         }
     }
 }

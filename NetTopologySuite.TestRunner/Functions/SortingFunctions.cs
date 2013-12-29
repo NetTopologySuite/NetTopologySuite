@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GeoAPI.Geometries;
 
 namespace Open.Topology.TestRunner.Functions
 {
-    public class SortingFunctions
+    public static class SortingFunctions
     {
-        public static IGeometry sortByLength(IGeometry g)
+        public static IGeometry SortByLength(IGeometry g)
         {
-            var geoms = components(g);
+            var geoms = Components(g);
             geoms.Sort(new GeometryLengthComparator());
             return g.Factory.BuildGeometry(geoms);
         }
@@ -21,9 +20,9 @@ namespace Open.Topology.TestRunner.Functions
             }
         }
 
-        public static IGeometry sortByArea(IGeometry g)
+        public static IGeometry SortByArea(IGeometry g)
         {
-            var geoms = components(g);
+            var geoms = Components(g);
             geoms.Sort(new GeometryAreaComparator());
             return g.Factory.BuildGeometry(geoms);
         }
@@ -36,7 +35,7 @@ namespace Open.Topology.TestRunner.Functions
             }
         }
 
-        private static List<IGeometry> components(IGeometry g)
+        private static List<IGeometry> Components(IGeometry g)
         {
             var comp = new List<IGeometry>();
             for (int i = 0; i < g.NumGeometries; i++)

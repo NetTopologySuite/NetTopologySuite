@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Algorithm
@@ -193,7 +194,7 @@ namespace NetTopologySuite.Algorithm
             System.Console.WriteLine(intPt + " - " + intPtDD + " dist = " + dist);
             //intPt = intPtDD;
              */
-    
+
             /*
              * Due to rounding it can happen that the computed intersection is
              * outside the envelopes of the input segments.  Clearly this
@@ -211,13 +212,28 @@ namespace NetTopologySuite.Algorithm
             if (!IsInSegmentEnvelopes(intPt))
             {
                 // compute a safer result
-                intPt = CentralEndpointIntersector.GetIntersection(p1, p2, q1, q2);
+                // copy the coordinate, since it may be rounded later
+                intPt = new Coordinate(NearestEndpoint(p1, p2, q1, q2));
+                // intPt = CentralEndpointIntersector.GetIntersection(p1, p2, q1, q2);
+                // CheckDD(p1, p2, q1, q2, intPt);
             }
 
             if (PrecisionModel != null)
                 PrecisionModel.MakePrecise(intPt);
             return intPt;
         }
+
+        private void CheckDD(Coordinate p1, Coordinate p2, Coordinate q1,
+            Coordinate q2, Coordinate intPt)
+        {
+            Coordinate intPtDD = CGAlgorithmsDD.Intersection(p1, p2, q1, q2);
+            bool isIn = IsInSegmentEnvelopes(intPtDD);
+            Trace.WriteLine("DD in env = " + isIn + "  --------------------- " + intPtDD);
+            double distance = intPt.Distance(intPtDD);
+            if (distance > 0.0001)
+                Trace.WriteLine("Distance = " + distance);
+        }
+
 
         private Coordinate IntersectionWithNormalization(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
@@ -249,13 +265,15 @@ namespace NetTopologySuite.Algorithm
             }
             catch (NotRepresentableException e)
             {
-                intPt = CentralEndpointIntersector.GetIntersection(p1, p2, q1, q2);
+                // compute an approximate result      
+                // intPt = CentralEndpointIntersector.GetIntersection(p1, p2, q1, q2);
+                intPt = NearestEndpoint(p1, p2, q1, q2);
             }
             return intPt;
         }
 
         /// <summary>
-        ///  Normalize the supplied coordinates to
+        /// Normalize the supplied coordinates to
         /// so that the midpoint of their intersection envelope
         /// lies at the origin.
         /// </summary>
@@ -288,7 +306,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary> 
-        /// Test whether a point lies in the envelopes of both input segments.
+        /// Tests whether a point lies in the envelopes of both input segments.
         /// A correctly computed intersection point should return <c>true</c>
         /// for this test.
         /// Since this test is for debugging purposes only, no attempt is
@@ -301,6 +319,52 @@ namespace NetTopologySuite.Algorithm
             Envelope env0 = new Envelope(InputLines[0][0], InputLines[0][1]);
             Envelope env1 = new Envelope(InputLines[1][0], InputLines[1][1]);
             return env0.Contains(intPoint) && env1.Contains(intPoint);
+        }
+
+        /// <summary>
+        /// Finds the endpoint of the segments P and Q which 
+        /// is closest to the other segment.
+        /// This is a reasonable surrogate for the true 
+        /// intersection points in ill-conditioned cases
+        /// (e.g. where two segments are nearly coincident,
+        /// or where the endpoint of one segment lies almost on the other segment).
+        /// </summary>
+        /// <remarks>
+        /// This replaces the older CentralEndpoint heuristic,
+        /// which chose the wrong endpoint in some cases
+        /// where the segments had very distinct slopes 
+        /// and one endpoint lay almost on the other segment.
+        /// </remarks>
+        /// <param name="p1">an endpoint of segment P</param>
+        /// <param name="p2">an endpoint of segment P</param>
+        /// <param name="q1">an endpoint of segment Q</param>
+        /// <param name="q2">an endpoint of segment Q</param>
+        /// <returns>the nearest endpoint to the other segment</returns>
+        private static Coordinate NearestEndpoint(Coordinate p1, Coordinate p2,
+            Coordinate q1, Coordinate q2)
+        {
+            Coordinate nearestPt = p1;
+            double minDist = CGAlgorithms.DistancePointLine(p1, q1, q2);
+
+            double dist = CGAlgorithms.DistancePointLine(p2, q1, q2);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                nearestPt = p2;
+            }
+            dist = CGAlgorithms.DistancePointLine(q1, p1, p2);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                nearestPt = q1;
+            }
+            dist = CGAlgorithms.DistancePointLine(q2, p1, p2);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                nearestPt = q2;
+            }
+            return nearestPt;
         }
     }
 }

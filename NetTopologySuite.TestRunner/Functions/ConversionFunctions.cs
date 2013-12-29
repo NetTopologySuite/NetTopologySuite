@@ -5,7 +5,7 @@ using NetTopologySuite.Geometries.Utilities;
 
 namespace Open.Topology.TestRunner.Functions
 {
-    public class ConversionFunctions
+    public static class ConversionFunctions
     {
         public static IGeometry toPoints(IGeometry g)
         {

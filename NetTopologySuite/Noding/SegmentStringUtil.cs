@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Text;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 
@@ -28,5 +30,12 @@ namespace NetTopologySuite.Noding
             return segStr;
         }
 
+        public static string ToString(IEnumerable<ISegmentString> segStrings)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (ISegmentString segStr in segStrings)
+                sb.AppendFormat("{0}\n", segStr);
+            return sb.ToString();
+        }
     }
 }

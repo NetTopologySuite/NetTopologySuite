@@ -24,7 +24,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
             EmbeddedResourceManager.CleanUpTempFile(filePath);
         }
 
-        [Test, Category("LongRunning")]
+        [Test, Category("LongRunning"), Explicit("takes ages to complete")]
         public void TestEurope()
         {
             var filePath = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile(

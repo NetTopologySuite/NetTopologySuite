@@ -172,7 +172,7 @@ namespace NetTopologySuite.Algorithm
             var numy = numy1 - numy2;
             var fracQ = numy / denom;
 
-            var y = (DD.ValueOf(p1.Y) + (DD.ValueOf(p2.Y) - DD.ValueOf(p1.Y)) * fracQ).ToDoubleValue();
+            var y = (DD.ValueOf(q1.Y) + (DD.ValueOf(q2.Y) - DD.ValueOf(q1.Y)) * fracQ).ToDoubleValue();
 
             return new Coordinate(x, y);
         }

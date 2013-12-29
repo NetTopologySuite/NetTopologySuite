@@ -4,9 +4,9 @@ using NetTopologySuite.Algorithm;
 
 namespace Open.Topology.TestRunner.Functions
 {
-    public class CGAlgorithmFunctions
+    public static class CGAlgorithmFunctions
     {
-        public static int orientationIndex(IGeometry segment, IGeometry ptGeom)
+        public static int OrientationIndex(IGeometry segment, IGeometry ptGeom)
         {
             if (segment.NumPoints != 2 || ptGeom.NumPoints != 1)
             {
@@ -19,7 +19,7 @@ namespace Open.Topology.TestRunner.Functions
             return index;
         }
 
-        public static int orientationIndexDD(IGeometry segment, IGeometry ptGeom)
+        public static int OrientationIndexDd(IGeometry segment, IGeometry ptGeom)
         {
             if (segment.NumPoints != 2 || ptGeom.NumPoints != 1)
             {
@@ -32,7 +32,7 @@ namespace Open.Topology.TestRunner.Functions
             return index;
         }
 
-        public static bool segmentIntersects(IGeometry g1, IGeometry g2)
+        public static bool SegmentIntersects(IGeometry g1, IGeometry g2)
         {
             Coordinate[] pt1 = g1.Coordinates;
             Coordinate[] pt2 = g2.Coordinates;
@@ -41,7 +41,7 @@ namespace Open.Topology.TestRunner.Functions
             return ri.HasIntersection;
         }
 
-        public static IGeometry segmentIntersection(IGeometry g1, IGeometry g2)
+        public static IGeometry SegmentIntersection(IGeometry g1, IGeometry g2)
         {
             Coordinate[] pt1 = g1.Coordinates;
             Coordinate[] pt2 = g2.Coordinates;
@@ -59,14 +59,14 @@ namespace Open.Topology.TestRunner.Functions
                     // return line
                     return g1.Factory.CreateLineString(
                         new Coordinate[] {
-              ri.GetIntersection(0),
-              ri.GetIntersection(1)
-          });
+                            ri.GetIntersection(0),
+                            ri.GetIntersection(1)
+                        });
             }
             return null;
         }
 
-        public static IGeometry segmentIntersectionDD(IGeometry g1, IGeometry g2)
+        public static IGeometry SegmentIntersectionDd(IGeometry g1, IGeometry g2)
         {
             Coordinate[] pt1 = g1.Coordinates;
             Coordinate[] pt2 = g2.Coordinates;
@@ -83,7 +83,5 @@ namespace Open.Topology.TestRunner.Functions
             Coordinate intPt = CGAlgorithmsDD.Intersection(pt1[0], pt1[1], pt2[0], pt2[1]);
             return g1.Factory.CreatePoint(intPt);
         }
-
-
     }
 }

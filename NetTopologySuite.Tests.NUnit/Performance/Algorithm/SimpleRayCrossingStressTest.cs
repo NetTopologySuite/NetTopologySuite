@@ -1,9 +1,7 @@
-using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 using NUnit.Framework;
 using NetTopologySuite.Tests.NUnit.Algorithm;
 

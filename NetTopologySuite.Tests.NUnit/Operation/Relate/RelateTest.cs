@@ -30,13 +30,9 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
         [Test, Ignore("Known to fail")]
         public void TestContainsIncorrectIntersectionMatrix()
         {
-            var a = "LINESTRING (1 0, 0 2, 0 0, 2 2)";
-            var b = "LINESTRING (0 0, 2 2)";
-
-            // actual matrix is 001F001F2
-            // true matrix should be 101F00FF2
-            RunRelateTest(a, b, "001F001F2");
-            //RunRelateTest(a, b, "101F00FF2");
+            string a = "LINESTRING (1 0, 0 2, 0 0, 2 2)";
+            string b = "LINESTRING (0 0, 2 2)";
+            RunRelateTest(a, b, "101F00FF2");
         }
 
         private static void RunRelateTest(String wkt1, String wkt2, String expectedIM)

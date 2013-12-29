@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using GeoAPI;
 using GeoAPI.CoordinateSystems;
@@ -111,19 +112,6 @@ namespace NetTopologySuite.Tests.NUnit
         }
 
         #region ProjNet
-
-        //ToDo: Move this to some other test
-        [Test, Ignore]
-        public void TestProjNetCoordinateSystemProvider()
-        {
-            //var csp = new ProjNetCoordinateSystemServices();
-            //var ids = new List<int> { 4326, 31466, };
-
-            //foreach (var id in ids)
-            //{
-            //    RunTestWkt(csp, id);
-            //}
-        }
 
         private static void RunTestWkt(ICoordinateSystemServices<ICoordinateSystem> csp, int srid)
         {

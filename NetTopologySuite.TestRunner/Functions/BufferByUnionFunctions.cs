@@ -6,18 +6,17 @@ using Open.Topology.TestRunner.Utility;
 
 namespace Open.Topology.TestRunner.Functions
 {
-    public class BufferByUnionFunctions
+    public static class BufferByUnionFunctions
     {
-
-        public static IGeometry ComponentBuffers(IGeometry g, double distance)	
-        {		
+        public static IGeometry ComponentBuffers(IGeometry g, double distance)
+        {
             var bufs = new List<IGeometry>();
             foreach (var comp in new GeometryCollectionEnumerator((IGeometryCollection)g))
             {
                 if (comp is IGeometryCollection) continue;
                 bufs.Add(comp.Buffer(distance));
             }
-            return FunctionsUtil.getFactoryOrDefault(g)
+            return FunctionsUtil.GetFactoryOrDefault(g)
                 .CreateGeometryCollection(GeometryFactory.ToGeometryArray(bufs));
         }
 

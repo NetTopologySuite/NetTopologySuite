@@ -1,17 +1,12 @@
 ﻿using System;
 using GeoAPI.Geometries;
+using NetTopologySuite.Geometries.Implementation;
 using NUnit.Framework;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-/**
- * Tests for {@link GeometryFactory}.
- *
- * @version 1.13
- */
-
     [TestFixture]
     public class GeometryFactoryTest
     {
@@ -37,10 +32,32 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestDeepCopy()
         {
-            var g = (IPoint) Read("POINT ( 10 10) ");
+            var g = (IPoint)Read("POINT ( 10 10) ");
             var g2 = Factory.CreateGeometry(g);
             g.CoordinateSequence.SetOrdinate(0, 0, 99);
             Assert.IsTrue(!g.EqualsExact(g2));
+        }
+
+        /// <summary>
+        /// CoordinateArraySequences default their dimension to 3 unless explicitly told otherwise.
+        /// This test ensures that GeometryFactory.CreateGeometry() recreates the input dimension properly.
+        /// </summary>
+        [Test]
+        public void TestCopyGeometryWithNonDefaultDimension()
+        {
+            GeometryFactory gf = new GeometryFactory(CoordinateArraySequenceFactory.Instance);
+            ICoordinateSequence mpSeq = gf.CoordinateSequenceFactory.Create(1, 2);
+            mpSeq.SetOrdinate(0, Ordinate.X, 50);
+            mpSeq.SetOrdinate(0, Ordinate.Y, -2);
+
+            IPoint g = gf.CreatePoint(mpSeq);
+            IPoint geometryN = (IPoint)g.GetGeometryN(0);
+            ICoordinateSequence gSeq = geometryN.CoordinateSequence;
+            Assert.AreEqual(2, gSeq.Dimension);
+
+            IPoint g2 = (IPoint)Factory.CreateGeometry(g);
+            ICoordinateSequence g2Seq = g2.CoordinateSequence;
+            Assert.AreEqual(2, g2Seq.Dimension);
         }
 
         private void CheckCreateGeometryExact(String wkt)
