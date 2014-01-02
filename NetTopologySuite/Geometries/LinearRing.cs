@@ -82,6 +82,15 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        /// <summary>
+        /// Returns the name of this object's interface.
+        /// </summary>
+        /// <returns>"LinearRing"</returns>
+        public override string GeometryType
+        {
+            get { return "LinearRing"; }
+        }
+
         public override IGeometry Reverse()
         {
             var sequence = CoordinateSequence.Reversed();
@@ -89,43 +98,8 @@ namespace NetTopologySuite.Geometries
         }
 
         public bool IsCCW { get { return Algorithm.CGAlgorithms.IsCCW(CoordinateSequence); } }
-
-        /*
-
-              /// <summary>
-              ///
-              /// </summary>
-              public override bool IsSimple
-              {
-                  get
-                  {
-                      return true;
-                  }
-              }
-
-              /// <summary>
-              ///
-              /// </summary>
-              public override string GeometryType
-              {
-                  get
-                  {
-                      return "LinearRing";
-                  }
-              }
-
-              /// <summary>
-              ///
-              /// </summary>
-              public override bool IsClosed
-              {
-                  get
-                  {
-                      return true;
-                  }
-              }
-
-              /* BEGIN ADDED BY MPAUL42: monoGIS team */
+        
+        /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearRing"/> class.
