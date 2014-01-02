@@ -44,6 +44,27 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\NetTopologySuite\Dissolve\DissolveEdgeGraph.cs">
+      <Link>Dissolve\DissolveEdgeGraph.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Dissolve\DissolveHalfEdge.cs">
+      <Link>Dissolve\DissolveHalfEdge.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Dissolve\LineDissolver.cs">
+      <Link>Dissolve\LineDissolver.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\EdgeGraph\EdgeGraph.cs">
+      <Link>EdgeGraph\EdgeGraph.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\EdgeGraph\EdgeGraphBuilder.cs">
+      <Link>EdgeGraph\EdgeGraphBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\EdgeGraph\HalfEdge.cs">
+      <Link>EdgeGraph\HalfEdge.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\EdgeGraph\MarkHalfEdge.cs">
+      <Link>EdgeGraph\MarkHalfEdge.cs</Link>
+    </Compile>
     <Compile Include="..\..\SharedAssemblyVersion.cs">
       <Link>Properties\SharedAssemblyVersion.cs</Link>
     </Compile>

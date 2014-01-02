@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Geometries;
 using NUnit.Framework;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.Triangulate;
 using NetTopologySuite.Utilities;
 

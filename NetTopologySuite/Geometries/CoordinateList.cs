@@ -7,7 +7,7 @@ using ICloneable = GeoAPI.ICloneable;
 #endif
 
 namespace NetTopologySuite.Geometries
-{       
+{
     /// <summary>
     /// A list of Coordinates, which may
     /// be set to prevent repeated coordinates from occuring in the list.
@@ -17,8 +17,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Constructs a new list without any coordinates
         /// </summary>
-        public CoordinateList()
-        {}
+        public CoordinateList() { }
 
         /// <summary>
         /// Constructs a new list from an array of Coordinates, allowing repeated points.
@@ -27,7 +26,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coord">Initial coordinates</param>
         public CoordinateList(Coordinate[] coord)
-            :base(coord.Length)
+            : base(coord.Length)
         {
             //EnsureCapacity(coord.Length);
             Add(coord, true);
@@ -39,7 +38,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordList">Collection of coordinates to load into the list.</param>
         public CoordinateList(IList<Coordinate> coordList)
-            :base(coordList.Count)
+            : base(coordList.Count)
         {
             //EnsureCapacity(coordList.Count);
             AddAll(coordList, true);
@@ -65,7 +64,7 @@ namespace NetTopologySuite.Geometries
         public CoordinateList(Coordinate[] coord, bool allowRepeated)
         {
             Add(coord, allowRepeated);
-        }        
+        }
 
         /// <summary>
         /// Returns the coordinate at specified index.
@@ -135,7 +134,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>Return true.</returns>
         public bool Add(object obj, bool allowRepeated)
         {
-            return Add((Coordinate) obj, allowRepeated);
+            return Add((Coordinate)obj, allowRepeated);
         }
 
         /// <summary>
@@ -152,7 +151,7 @@ namespace NetTopologySuite.Geometries
                 if (Count >= 1)
                 {
                     Coordinate last = this[Count - 1];
-                    if (last.Equals2D(coord)) 
+                    if (last.Equals2D(coord))
                         return false;
                 }
             }
@@ -229,11 +228,11 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <returns>The copied object.</returns>
         public object Clone()
-        {         
+        {
             CoordinateList copy = new CoordinateList();
             foreach (Coordinate c in this)
-                copy.Add((Coordinate) c.Clone());
+                copy.Add((Coordinate)c.Clone());
             return copy;
-        }        
-    } 
-} 
+        }
+    }
+}

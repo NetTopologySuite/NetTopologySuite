@@ -64,6 +64,8 @@
     <Compile Include="Algorithm\MCPointInRingTest.cs" />
     <Compile Include="Algorithm\ShewchuksDeterminant.cs" />
     <Compile Include="CoordinateSystems\Transformations\GeometryTransformTest.cs" />
+    <Compile Include="Dissolve\LineDissolverTest.cs" />
+    <Compile Include="EdgeGraph\EdgeGraphTest.cs" />
     <Compile Include="Geometries\CoordinateSequencesTest.cs" />
     <Compile Include="Geometries\CoordinateTest.cs" />
     <Compile Include="Geometries\GeometryTestFactory.cs" />
@@ -152,6 +154,7 @@
     <Compile Include="Operation\Buffer\BufferResultValidatorTest.cs" />
     <Compile Include="Operation\Buffer\BufferTest.cs" />
     <Compile Include="Operation\Buffer\BufferValidator.cs" />
+    <Compile Include="Performance\Dissolve\LineDissolveStressTest.cs" />
     <Compile Include="Performance\Geometries\Prepared\PreparedGeometryThreadSafeTest.cs" />
     <Compile Include="Performance\Geometries\Prepared\PreparedLineIntersectsPerformanceTest.cs" />
     <Compile Include="Performance\Geometries\Prepared\PreparedPolygonIntersectsPerformanceTest.cs" />
@@ -206,6 +209,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <EmbeddedResource Include="TestData\bc-250k.wkt" />
+    <EmbeddedResource Include="TestData\bc_20K.wkt" />
+    <EmbeddedResource Include="TestData\papua.wkt" />
+    <EmbeddedResource Include="TestData\plane.wkt" />
+    <EmbeddedResource Include="TestData\polygon.wkb" />
+    <EmbeddedResource Include="TestData\uk-arrows.wkt" />
+    <EmbeddedResource Include="TestData\uk.wkt" />
+    <EmbeddedResource Include="TestData\world.wkt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">

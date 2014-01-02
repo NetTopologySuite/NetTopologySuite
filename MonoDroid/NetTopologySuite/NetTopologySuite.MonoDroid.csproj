@@ -189,6 +189,27 @@
     <Compile Include="..\..\NetTopologySuite\Densify\Densifier.cs">
       <Link>Densify\Densifier.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite\Dissolve\DissolveEdgeGraph.cs">
+      <Link>Dissolve\DissolveEdgeGraph.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Dissolve\DissolveHalfEdge.cs">
+      <Link>Dissolve\DissolveHalfEdge.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Dissolve\LineDissolver.cs">
+      <Link>Dissolve\LineDissolver.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\EdgeGraph\EdgeGraph.cs">
+      <Link>EdgeGraph\EdgeGraph.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\EdgeGraph\EdgeGraphBuilder.cs">
+      <Link>EdgeGraph\EdgeGraphBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\EdgeGraph\HalfEdge.cs">
+      <Link>EdgeGraph\HalfEdge.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\EdgeGraph\MarkHalfEdge.cs">
+      <Link>EdgeGraph\MarkHalfEdge.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\Features\AttributesTable.cs">
       <Link>Features\AttributesTable.cs</Link>
     </Compile>
@@ -1360,7 +1381,7 @@
   <ItemGroup />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="5770daa9-84e5-4770-af43-f6b815894368" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="5770daa9-84e5-4770-af43-f6b815894368" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

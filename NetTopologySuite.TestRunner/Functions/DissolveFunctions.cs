@@ -1,5 +1,6 @@
 ﻿using System;
 using GeoAPI.Geometries;
+using NetTopologySuite.Dissolve;
 
 namespace Open.Topology.TestRunner.Functions
 {
@@ -7,7 +8,7 @@ namespace Open.Topology.TestRunner.Functions
     {
         public static IGeometry Dissolve(IGeometry geom)
         {
-            throw new NotImplementedException("TODO");
+            return LineDissolver.Dissolve(geom);
         }
     }
 }

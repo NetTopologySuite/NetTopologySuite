@@ -4,8 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A11130E8-4942-432A-97B7-ADEEFB34A977}"
 	ProjectSection(SolutionItems) = preProject
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
-		NetTopologySuite.vsmdi = NetTopologySuite.vsmdi
-		NetTopologySuite3.vsmdi = NetTopologySuite3.vsmdi
 		NTS.Converter.DotSpatial.nuspec = NTS.Converter.DotSpatial.nuspec
 		NTS.IO.nuspec = NTS.IO.nuspec
 		NTS.IO.SpatiaLite.nuspec = NTS.IO.SpatiaLite.nuspec
@@ -108,9 +106,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Pcl", "PortableClassLibrary\NetTopologySuite.Pcl\NetTopologySuite.Pcl.csproj", "{C6F14605-0DA6-420A-8DE7-18B57E9A9C99}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = NetTopologySuite.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

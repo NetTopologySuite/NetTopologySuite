@@ -12,9 +12,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
         private int _iter;
 
         public ExamplePerformanceTest()
-            : this("ExamplePerformanceTest")
-        {
-        }
+            : this("ExamplePerformanceTest") { }
 
         public ExamplePerformanceTest(String name)
             : base(name)

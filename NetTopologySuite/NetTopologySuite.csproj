@@ -125,6 +125,13 @@
     <Compile Include="CoordinateSystems\ICRSObject.cs" />
     <Compile Include="CoordinateSystems\LinkedCRS.cs" />
     <Compile Include="CoordinateSystems\NamedCRS.cs" />
+    <Compile Include="Dissolve\DissolveEdgeGraph.cs" />
+    <Compile Include="Dissolve\DissolveHalfEdge.cs" />
+    <Compile Include="Dissolve\LineDissolver.cs" />
+    <Compile Include="EdgeGraph\EdgeGraph.cs" />
+    <Compile Include="EdgeGraph\EdgeGraphBuilder.cs" />
+    <Compile Include="EdgeGraph\HalfEdge.cs" />
+    <Compile Include="EdgeGraph\MarkHalfEdge.cs" />
     <Compile Include="Features\FeatureCollection.cs" />
     <Compile Include="Geometries\Geometry.cs" />
     <Compile Include="Geometries\GeometryComponentFilter.cs" />
