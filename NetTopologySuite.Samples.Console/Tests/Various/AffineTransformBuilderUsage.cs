@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Tests.Various
 {
-    [TestFixture    ]
+    [TestFixture, Explicit("missing input files in folder 'VAM\\VAM_ikk'")]
     public class AffineTransformBuilderUsage
     {
         /// <summary>

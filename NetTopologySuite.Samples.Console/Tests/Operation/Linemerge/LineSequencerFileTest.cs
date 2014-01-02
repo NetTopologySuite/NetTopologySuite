@@ -13,7 +13,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
     {
         private readonly IGeometryFactory factory = new GeometryFactory(new PrecisionModel(10000));
 
-        [Test]
+        [Test, Explicit("missing input file 'd:\\temp\\linestosequence.wkt'")]
         public void TestFiles()
         {
             var allPass = true;
