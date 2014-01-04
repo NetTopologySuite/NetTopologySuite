@@ -107,8 +107,8 @@
   <!-- build only for now, test on build server -->
   <Target Name="UnitTests" DependsOnTargets="BuildRelease">
     <MSBuild Projects="$(SolutionFile)" 
-             Targets="NetTopologySuite_IO\NetTopologySuite_IO;NetTopologySuite_Tests\NetTopologySuite_Tests_NUnit;NetTopologySuite_Tests\ProjNET_Tests;"			 
-             Properties="Configuration=Release;TargetFrameworkVersion=v4.0.3;TargetFrameworkProfile=Client;DefineConstants=TRACE;UseCoordinateBufferPublicly;NET20;NET35;NET40;" 
+             Targets="NetTopologySuite_IO\NetTopologySuite_IO;NetTopologySuite_Tests\NetTopologySuite_Tests_NUnit;NetTopologySuite_Tests\NetTopologySuite_IO_Tests;NetTopologySuite_Tests\ProjNET_Tests;"			 
+             Properties="Configuration=Release;TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Client;DefineConstants=TRACE;UseCoordinateBufferPublicly;NET20;NET35;NET40;" 
              />
   </Target>
 
