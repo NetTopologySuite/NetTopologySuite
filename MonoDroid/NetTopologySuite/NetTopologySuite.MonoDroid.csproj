@@ -633,6 +633,9 @@
     <Compile Include="..\..\NetTopologySuite\IO\GML2\GMLWriter.cs">
       <Link>IO\GML2\GMLWriter.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite\IO\KML\KMLWriter.cs">
+      <Link>IO\KML\KMLWriter.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\IO\ParseException.cs">
       <Link>IO\ParseException.cs</Link>
     </Compile>
@@ -1381,7 +1384,7 @@
   <ItemGroup />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="5770daa9-84e5-4770-af43-f6b815894368" />
+      <UserProperties ProjectLinkReference="5770daa9-84e5-4770-af43-f6b815894368" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

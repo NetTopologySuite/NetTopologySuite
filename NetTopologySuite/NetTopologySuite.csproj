@@ -139,6 +139,7 @@
     <Compile Include="Geometries\Utilities\GeometryMapper.cs" />
     <Compile Include="Index\Bintree\Interval.cs" />
     <Compile Include="Index\Strtree\Interval.cs" />
+    <Compile Include="IO\KML\KMLWriter.cs" />
     <Compile Include="IO\WKBHexFileReader.cs" />
     <Compile Include="Mathematics\Plane3D.cs" />
     <Compile Include="Mathematics\Vector3D.cs" />

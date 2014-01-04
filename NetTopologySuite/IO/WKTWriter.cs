@@ -133,7 +133,7 @@ namespace NetTopologySuite.IO
 
         private readonly int _outputDimension = 2;
 
-        private readonly string MaxPrecisionFormat = "{0:R}";
+        private const string MaxPrecisionFormat = "{0:R}";
         private NumberFormatInfo _formatter;
         private string _format;
         private bool _isFormatted;

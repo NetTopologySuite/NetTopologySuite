@@ -17,13 +17,15 @@ namespace  NetTopologySuite.Samples.Tests.Various
         public CascadedPolygonUnionFixture()
         {
             // Set current dir to shapefiles dir
-			Environment.CurrentDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, string.Format("..{0}..{0}..{0}NetTopologySuite.Samples.Shapefiles", Path.DirectorySeparatorChar));
+            string format = String.Format("..{0}..{0}..{0}NetTopologySuite.Samples.Shapefiles", Path.DirectorySeparatorChar);
+            Environment.CurrentDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, format);
         }
+
         [Test]
-        public void PErformCascadedPolygonUnion()
+        public void PerformCascadedPolygonUnion()
         {
             var reader = new ShapefileReader("tnp_pol.shp");
-            var collection = reader.ReadAll().Cast<IGeometry>().Where(e => e is IPolygon).ToList();
+            var collection = reader.ReadAll().Where(e => e is IPolygon).ToList();
             var u1 = collection[0];
             for (var i = 1; i < collection.Count; i++)
                 u1 = SnapIfNeededOverlayOp.Overlay(u1, collection[i], SpatialFunction.Union);

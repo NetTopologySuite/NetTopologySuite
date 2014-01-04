@@ -151,8 +151,8 @@ namespace NetTopologySuite.IO.GML2
         /// <returns></returns>
         protected Coordinate ReadPosAsCoordinate(string[] value)
         {
-            var ordinates = new double[Math.Min(3, value.Length)];
-            for (var i = 0; i < ordinates.Length; i++)
+            double[] ordinates = new double[Math.Min(3, value.Length)];
+            for (int i = 0; i < ordinates.Length; i++)
             {
                 ordinates[i] = XmlConvert.ToDouble(value[i]);
             }
@@ -167,11 +167,11 @@ namespace NetTopologySuite.IO.GML2
         protected IEnumerable<Coordinate> ReadPosListAsCoordinates(int numOrdinates, string[] value)
         {
             Assert.IsTrue(value.Length % numOrdinates == 0);
-            var coordinates = new Coordinate[value.Length / numOrdinates];
-            var offset = 0;
-            for (var i = 0; i < coordinates.Length; i++)
+            Coordinate[] coordinates = new Coordinate[value.Length / numOrdinates];
+            int offset = 0;
+            for (int i = 0; i < coordinates.Length; i++)
             {
-                var ords = new string[numOrdinates];
+                string[] ords = new string[numOrdinates];
                 Array.Copy(value, offset, ords, 0, numOrdinates);
                 offset += numOrdinates;
                 coordinates[i] = ReadPosAsCoordinate(ords);
@@ -182,7 +182,7 @@ namespace NetTopologySuite.IO.GML2
 
         protected IPoint ReadPoint(XmlReader reader)
         {
-            var numOrdinatesText = reader.GetAttribute("srsDimension");
+            string numOrdinatesText = reader.GetAttribute("srsDimension");
             while (reader.Read())
             {
                 switch (reader.NodeType)
@@ -196,7 +196,7 @@ namespace NetTopologySuite.IO.GML2
                             string[] coords = reader.Value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                             if (!string.IsNullOrEmpty(numOrdinatesText))
                             {
-                                var numOrdinates = XmlConvert.ToInt32(numOrdinatesText);
+                                int numOrdinates = XmlConvert.ToInt32(numOrdinatesText);
                                 Assert.IsTrue(coords.Length == numOrdinates, "srsDimension doen't match number of provided ordinates");
                             }
                             return Factory.CreatePoint(ReadPosAsCoordinate(coords));
@@ -207,7 +207,7 @@ namespace NetTopologySuite.IO.GML2
                             string[] coords = reader.Value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                             if (coords.Length != 1)
                                 throw new ApplicationException("Should never reach here!");
-                            var c = ReadCoordinates(coords[0]);
+                            Coordinate c = ReadCoordinates(coords[0]);
                             return Factory.CreatePoint(c);
                         }
                         break;
@@ -218,7 +218,7 @@ namespace NetTopologySuite.IO.GML2
 
         protected ILineString ReadLineString(XmlReader reader)
         {
-            var coordinates = new List<Coordinate>();
+            List<Coordinate> coordinates = new List<Coordinate>();
             while (reader.Read())
             {
                 switch (reader.NodeType)
@@ -231,25 +231,27 @@ namespace NetTopologySuite.IO.GML2
                         else if (IsStartElement(reader, "pos"))
                         {
                             reader.Read();
-                            var ordinates = reader.ReadContentAsString();
+                            string ordinates = reader.ReadContentAsString();
                             coordinates.Add(ReadPosAsCoordinate(ordinates.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)));
                         }
                         else if (IsStartElement(reader, "coordinates"))
                         {
                             reader.Read(); // Jump to values
-                            string[] coords = reader.Value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                            string value = reader.Value;
+                            string cleaned = value.Replace("\n", " ").Replace("\t", " ");
+                            string[] coords = cleaned.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                             foreach (string coord in coords)
                             {
                                 if (String.IsNullOrEmpty(coord))
                                     continue;
-                                var c = ReadCoordinates(coord);
+                                Coordinate c = ReadCoordinates(coord);
                                 coordinates.Add(c);
                             }
                             return Factory.CreateLineString(coordinates.ToArray());
                         }
                         else if (IsStartElement(reader, "posList"))
                         {
-                            var tmp = reader.GetAttribute("srsDimension");
+                            string tmp = reader.GetAttribute("srsDimension");
                             if (string.IsNullOrEmpty(tmp)) tmp = "2";
                             reader.Read();
                             coordinates.AddRange(ReadPosListAsCoordinates(XmlConvert.ToInt32(tmp), reader.ReadContentAsString().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)));
@@ -273,7 +275,7 @@ namespace NetTopologySuite.IO.GML2
         protected IPolygon ReadPolygon(XmlReader reader)
         {
             ILinearRing exterior = null;
-            var interiors = new List<ILinearRing>();
+            List<ILinearRing> interiors = new List<ILinearRing>();
             while (reader.Read())
             {
                 switch (reader.NodeType)
@@ -288,7 +290,9 @@ namespace NetTopologySuite.IO.GML2
                         break;
 
                     case XmlNodeType.EndElement:
-                        if (reader.Name == GMLElements.gmlPrefix + ":Polygon")
+                        string name = reader.Name;
+                        if (name == "Polygon" ||
+                            name == GMLElements.gmlPrefix + ":Polygon")
                             return Factory.CreatePolygon(exterior, interiors.ToArray());
                         break;
                 }
@@ -298,7 +302,7 @@ namespace NetTopologySuite.IO.GML2
 
         protected IMultiPoint ReadMultiPoint(XmlReader reader)
         {
-            var points = new List<IPoint>();
+            List<IPoint> points = new List<IPoint>();
             while (reader.Read())
             {
                 switch (reader.NodeType)
@@ -309,7 +313,9 @@ namespace NetTopologySuite.IO.GML2
                         break;
 
                     case XmlNodeType.EndElement:
-                        if (reader.Name == GMLElements.gmlPrefix + ":MultiPoint")
+                        string name = reader.Name;
+                        if (name == "MultiPoint" ||
+                            name == GMLElements.gmlPrefix + ":MultiPoint")
                             return Factory.CreateMultiPoint(points.ToArray());
                         break;
                 }
@@ -319,7 +325,7 @@ namespace NetTopologySuite.IO.GML2
 
         protected IMultiLineString ReadMultiLineString(XmlReader reader)
         {
-            var lines = new List<ILineString>();
+            List<ILineString> lines = new List<ILineString>();
             while (reader.Read())
             {
                 switch (reader.NodeType)
@@ -330,7 +336,9 @@ namespace NetTopologySuite.IO.GML2
                         break;
 
                     case XmlNodeType.EndElement:
-                        if (reader.Name == GMLElements.gmlPrefix + ":MultiLineString")
+                        string name = reader.Name;
+                        if (name == "MultiLineString" || 
+                            name == GMLElements.gmlPrefix + ":MultiLineString")
                             return Factory.CreateMultiLineString(lines.ToArray());
                         break;
                 }
@@ -340,7 +348,7 @@ namespace NetTopologySuite.IO.GML2
 
         protected IMultiPolygon ReadMultiPolygon(XmlReader reader)
         {
-            var polygons = new List<IPolygon>();
+            List<IPolygon> polygons = new List<IPolygon>();
             while (reader.Read())
             {
                 switch (reader.NodeType)
@@ -351,7 +359,9 @@ namespace NetTopologySuite.IO.GML2
                         break;
 
                     case XmlNodeType.EndElement:
-                        if (reader.Name == GMLElements.gmlPrefix + ":MultiPolygon")
+                        string name = reader.Name;
+                        if (name == "MultiPolygon" || 
+                            name == GMLElements.gmlPrefix + ":MultiPolygon")
                             return Factory.CreateMultiPolygon(polygons.ToArray());
                         break;
                 }
@@ -361,7 +371,7 @@ namespace NetTopologySuite.IO.GML2
 
         protected IGeometryCollection ReadGeometryCollection(XmlReader reader)
         {
-            var collection = new List<IGeometry>();
+            List<IGeometry> collection = new List<IGeometry>();
             while (reader.Read())
             {
                 switch (reader.NodeType)
@@ -384,7 +394,9 @@ namespace NetTopologySuite.IO.GML2
                         break;
 
                     case XmlNodeType.EndElement:
-                        if (reader.Name == GMLElements.gmlPrefix + ":MultiGeometry")
+                        string name = reader.Name;
+                        if (name == "MultiGeometry" ||
+                            name == GMLElements.gmlPrefix + ":MultiGeometry")
                             return Factory.CreateGeometryCollection(collection.ToArray());
                         break;
                 }
@@ -394,8 +406,9 @@ namespace NetTopologySuite.IO.GML2
 
         private static bool IsStartElement(XmlReader reader, string name)
         {
-            return reader.IsStartElement(name, GMLElements.gmlNS) ||
-                    reader.IsStartElement(GMLElements.gmlPrefix + ":" + name);
+            return reader.IsStartElement(name) ||
+                   reader.IsStartElement(name, GMLElements.gmlNS) ||
+                   reader.IsStartElement(GMLElements.gmlPrefix + ":" + name);
         }
     }
 }

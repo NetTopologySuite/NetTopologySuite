@@ -47,6 +47,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithm\AbstractPointInRingTest.cs" />
@@ -73,6 +74,8 @@
     <Compile Include="Geometries\Implementation\CoordinateSequenceReversedTest.cs" />
     <Compile Include="Index\KdTree\KdTreeTest.cs" />
     <Compile Include="Geometries\IntervalTest.cs" />
+    <Compile Include="IO\GML2\GMLReaderTest.cs" />
+    <Compile Include="IO\KML\KMLWriterTest.cs" />
     <Compile Include="IO\WKBReaderTest.cs" />
     <Compile Include="Mathematics\DDBasicTest.cs" />
     <Compile Include="Mathematics\DDComputeTest.cs" />
@@ -231,6 +234,14 @@
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
       <Name>NetTopologySuite</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestData\linestrings.xml" />
+    <EmbeddedResource Include="TestData\multilinestrings.xml" />
+    <EmbeddedResource Include="TestData\multipoints.xml" />
+    <EmbeddedResource Include="TestData\multipolygons.xml" />
+    <EmbeddedResource Include="TestData\points.xml" />
+    <EmbeddedResource Include="TestData\polygons.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -14,5 +14,5 @@ using System.Reflection;
 [assembly: AssemblyVersion("1.13.2")]
 [assembly: AssemblyFileVersion("1.13.2")]
 
-// Generato dalla classe MSBuild WriteCodeFragment in 02/01/2014 10.22.42.
+// Generato dalla classe MSBuild WriteCodeFragment in 04/01/2014 16.22.56.
 
