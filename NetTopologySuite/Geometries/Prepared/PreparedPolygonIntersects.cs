@@ -29,10 +29,8 @@ namespace NetTopologySuite.Geometries.Prepared
         /// Creates an instance of this operation.
         ///</summary>
         /// <param name="prepPoly">The prepared polygon</param>
-        public PreparedPolygonIntersects(PreparedPolygon prepPoly)
-            : base(prepPoly)
-        {
-        }
+        public PreparedPolygonIntersects(PreparedPolygon prepPoly) :
+            base(prepPoly) { }
 
         ///<summary>
         /// Tests whether this PreparedPolygon intersects a given geometry.
@@ -48,8 +46,14 @@ namespace NetTopologySuite.Geometries.Prepared
              * If a point of any test components lie in target, result is true
              */
             bool isInPrepGeomArea = IsAnyTestComponentInTarget(geom);
-            if (isInPrepGeomArea) return true;
-
+            if (isInPrepGeomArea)
+                return true;
+            /**
+             * If input contains only points, then at
+             * this point it is known that none of them are contained in the target
+             */
+            if (geom.Dimension == Dimension.Point)
+                return false;
             /*
              * If any segments intersect, result is true
              */

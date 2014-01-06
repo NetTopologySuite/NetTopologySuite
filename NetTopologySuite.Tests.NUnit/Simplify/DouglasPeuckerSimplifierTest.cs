@@ -26,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
         {
             const string geomStr = "POINT (10 10)";
             new GeometryOperationValidator(
-                TPSimplifierResult.GetResult(
+                DPSimplifierResult.GetResult(
                     geomStr,
                     1))
                 .SetExpectedResult(geomStr)
@@ -187,7 +187,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
         }
     }
 
-    class DPSimplifierResult
+    static class DPSimplifierResult
     {
         private static readonly WKTReader Rdr = new WKTReader();
 

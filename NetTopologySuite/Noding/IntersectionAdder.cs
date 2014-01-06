@@ -2,17 +2,13 @@ using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Index.Chain;
 
 namespace NetTopologySuite.Noding
 {
     /// <summary>
-    /// Computes the intersections between two line segments in <see cref="ISegmentString" />s
-    /// and adds them to each string.
-    /// The <see cref="ISegmentIntersector" /> is passed to a <see cref="INoder" />.
-    /// The <see cref="ISegmentIntersector.ProcessIntersections"/> method is called whenever the <see cref="INoder" />
-    /// detects that two <see cref="ISegmentString" />s <i>might</i> intersect.
-    /// This class is an example of the <i>Strategy</i> pattern.
+    /// Computes the possible intersections between two line segments in <see cref="ISegmentString" />s
+    /// and adds them to each string
+    /// using <see cref="NodedSegmentString.AddIntersection(NetTopologySuite.Algorithm.LineIntersector,int,int,int)"/>.
     /// </summary>
     public class IntersectionAdder : ISegmentIntersector
     {

@@ -32,7 +32,8 @@ namespace NetTopologySuite.Algorithm
         /// <param name="geomFactory"></param>   
         public ConvexHull(Coordinate[] pts, IGeometryFactory geomFactory)
         {
-            _inputPts = pts;
+            // _inputPts = pts;
+            _inputPts = UniqueCoordinateArrayFilter.FilterCoordinates(pts);
             _geomFactory = geomFactory;
         }
 

@@ -1,7 +1,6 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Noding.Snapround
 {
@@ -53,7 +52,7 @@ namespace NetTopologySuite.Noding.Snapround
 
             if (scaleFactor <= 0d)
                 throw new ArgumentException("Scale factor must be non-zero");
-            
+
             if (scaleFactor != 1.0)
             {
                 _pt = new Coordinate(Scale(pt.X), Scale(pt.Y));
@@ -167,7 +166,7 @@ namespace NetTopologySuite.Noding.Snapround
             if (isOutsidePixelEnv)
                 return false;
             var intersects = IntersectsToleranceSquare(p0, p1);
-            
+
             //Assert.IsTrue(!(isOutsidePixelEnv && intersects), "Found bad envelope test");
             return intersects;
         }
@@ -176,12 +175,13 @@ namespace NetTopologySuite.Noding.Snapround
         /// Tests whether the segment p0-p1 intersects the hot pixel tolerance square.
         /// Because the tolerance square point set is partially open (along the
         /// top and right) the test needs to be more sophisticated than
-        /// simply checking for any intersection.  However, it
-        /// can take advantage of the fact that because the hot pixel edges
-        /// do not lie on the coordinate grid.  It is sufficient to check
-        /// if there is at least one of:
-        ///  - a proper intersection with the segment and any hot pixel edge.
-        ///  - an intersection between the segment and both the left and bottom edges.
+        /// simply checking for any intersection.  
+        /// However, it can take advantage of the fact that the hot pixel edges
+        /// do not lie on the coordinate grid. 
+        /// It is sufficient to check if any of the following occur:
+        ///  - a proper intersection between the segment and any hot pixel edge.
+        ///  - an intersection between the segment and BOTH the left and bottom hot pixel edges
+        /// (which detects the case where the segment intersects the bottom left hot pixel corner).
         ///  - an intersection between a segment endpoint and the hot pixel coordinate.
         /// </summary>
         /// <param name="p0"></param>

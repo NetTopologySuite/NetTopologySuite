@@ -100,11 +100,12 @@ namespace NetTopologySuite.IO
         /// A <c>NumberFormatInfo</c> that write <c>double</c>
         /// s without scientific notation.
         /// </returns>
-        private static NumberFormatInfo CreateFormatter(IPrecisionModel precisionModel) 
+        internal static NumberFormatInfo CreateFormatter(IPrecisionModel precisionModel) 
         {
             // the default number of decimal places is 16, which is sufficient
             // to accomodate the maximum precision of a double.
-            var decimalPlaces = precisionModel.MaximumSignificantDigits;
+            var digits = precisionModel.MaximumSignificantDigits;
+            var decimalPlaces = Math.Max(0, digits); // negative values not allowed
 
             // specify decimal separator explicitly to avoid problems in other locales
             var nfi = new NumberFormatInfo
@@ -143,9 +144,7 @@ namespace NetTopologySuite.IO
         private int _coordsPerLine = -1;
         private String _indentTabStr = "  ";
 
-        public WKTWriter()
-        {
-        }
+        public WKTWriter() { }
 
         public WKTWriter(int outputDimension)
         {

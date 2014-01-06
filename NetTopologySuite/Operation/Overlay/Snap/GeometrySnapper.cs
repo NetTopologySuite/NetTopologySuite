@@ -13,6 +13,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
     /// robustness for overlay operations by eliminating
     /// nearly-coincident edges
     /// (which cause problems during noding and intersection calculation).
+    /// It can also be used to eliminate artifacts such as narrow slivers, spikes and gores.
     /// Too much snapping can result in invalid topology
     /// beging created, so the number and location of snapped vertices
     /// is decided using heuristics to determine when it
@@ -99,9 +100,19 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             return snapGeom;
         }
 
-        public static IGeometry SnapToSelf(IGeometry g0, double snapTolerance, bool cleanResult)
+        /// <summary>
+        /// Snaps a geometry to itself.
+        /// Allows optionally cleaning the result to ensure it is topologically valid
+        /// (which fixes issues such as topology collapses in polygonal inputs).
+        /// Snapping a geometry to itself can remove artifacts such as very narrow slivers, gores and spikes.
+        /// </summary>
+        /// <param name="geom">the geometry to snap</param>
+        /// <param name="snapTolerance">the snapping tolerance</param>
+        /// <param name="cleanResult">whether the result should be made valid</param>
+        /// <returns>a new snapped <see cref="IGeometry"/></returns>
+        public static IGeometry SnapToSelf(IGeometry geom, double snapTolerance, bool cleanResult)
         {
-            var snapper0 = new GeometrySnapper(g0);
+            var snapper0 = new GeometrySnapper(geom);
             return snapper0.SnapToSelf(snapTolerance, cleanResult);
         }
 
@@ -118,8 +129,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
 
         /// <summary>
         ///  Snaps the vertices in the component <see cref="ILineString" />s
-        ///  of the source geometry
-        ///  to the vertices of the given snap geometry.
+        ///  of the source geometry to the vertices of the given snap geometry.
         /// </summary>
         /// <param name="g">a geometry to snap the source to</param>
         /// <param name="tolerance"></param>
@@ -132,11 +142,10 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             return snapTrans.Transform(_srcGeom);
         }
 
-        /// <summary>
-        /// Snaps the vertices in the component <see cref="ILineString"/>s
-        /// of the source geometry
-        /// to the vertices of the given snap geometry.
-        /// </summary>
+        /// Snaps the vertices in the component <see cref="ILineString" />s
+        /// of the source geometry to the vertices of the same geometry.
+        /// Allows optionally cleaning the result to ensure it is topologically valid
+        /// (which fixes issues such as topology collapses in polygonal inputs).
         /// <param name="snapTolerance">The snapping tolerance</param>
         /// <param name="cleanResult">Whether the result should be made valid</param>
         /// <returns>The geometry snapped to itself</returns>
@@ -160,7 +169,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// </summary>
         /// <param name="g"></param>
         /// <returns></returns>
-        public Coordinate[] ExtractTargetCoordinates(IGeometry g)
+        private Coordinate[] ExtractTargetCoordinates(IGeometry g)
         {
             // TODO: should do this more efficiently.  Use CoordSeq filter to get points, KDTree for uniqueness & queries
             Set<Coordinate> ptSet = new Set<Coordinate>(g.Coordinates);

@@ -1,4 +1,6 @@
 //#define UseWorker
+
+using System;
 using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
 #if UseWorker
@@ -40,7 +42,7 @@ namespace NetTopologySuite.Operation.Union
     /// <seealso href="http://code.google.com/p/nettopologysuite/issues/detail?id=44"/>
     public class CascadedPolygonUnion
     {
-        private readonly ICollection<IGeometry> _inputPolys;
+        private ICollection<IGeometry> _inputPolys;
         private IGeometryFactory _geomFactory;
 #if UseWorker
         private int _numThreadsStarted = 0;
@@ -64,7 +66,8 @@ namespace NetTopologySuite.Operation.Union
         /// <param name="polys">A collection of <see cref="IPolygonal"/> <see cref="IGeometry"/>s</param>
         public CascadedPolygonUnion(ICollection<IGeometry> polys)
         {
-            _inputPolys = polys;
+            // guard against null input
+            _inputPolys = polys ?? new List<IGeometry>();
         }
 
         /**
@@ -87,10 +90,22 @@ namespace NetTopologySuite.Operation.Union
         /// Computes the union of the input geometries.
         /// </summary>
         /// <returns>
-        /// The union of the input geometries
-        /// or <value>null</value> if no input geometries were provided</returns>
+        /// <remarks>
+        /// This method discards the input geometries as they are processed.
+        /// In many input cases this reduces the memory retained
+        /// as the operation proceeds. 
+        /// Optimal memory usage is achieved 
+        /// by disposing of the original input collection 
+        /// before calling this method.
+        /// </remarks>
+        /// The union of the input geometries,
+        /// or <c>null</c> if no input geometries were provided
+        /// </returns>
+        /// <exception cref="InvalidOperationException">if this method is called more than once</exception>
         public IGeometry Union()
         {
+            if (_inputPolys == null)
+                throw new InvalidOperationException("Union() method cannot be called twice");
             if (_inputPolys.Count == 0)
                 return null;
             _geomFactory = Factory();
@@ -105,12 +120,11 @@ namespace NetTopologySuite.Operation.Union
             foreach (IGeometry item in _inputPolys)
                 index.Insert(item.EnvelopeInternal, item);
 
+            // To avoiding holding memory remove references to the input geometries,
+            _inputPolys = null;
+
             var itemTree = index.ItemsTree();
             var unionAll = UnionTree(itemTree);
-            
-//#if UseWorker
-//            System.Diagnostics.Debug.WriteLine(string.Format("CascadedPolygonUnion:\nItemsTree {0}, Threads {1}", itemTree.Count, _numThreadsStarted));
-//#endif
             return unionAll;
         }
 
@@ -122,20 +136,19 @@ namespace NetTopologySuite.Operation.Union
              */
             var geoms = ReduceToGeometries(geomTree);
             var union = BinaryUnion(geoms);
-
             return union;
         }
 
         //========================================================
         // The following methods are for experimentation only
-         
+
         private IGeometry RepeatedUnion(IEnumerable<IGeometry> geoms)
         {
             IGeometry union = null;
-            foreach (Geometry g in geoms)
+            foreach (IGeometry g in geoms)
             {
                 if (union == null)
-                     union = (IGeometry) g.Clone();
+                    union = (IGeometry)g.Clone();
                 else union = union.Union(g);
             }
             return union;
@@ -271,14 +284,13 @@ namespace NetTopologySuite.Operation.Union
         private IList<IGeometry> ReduceToGeometries(IList geomTree)
         {
             IList<IGeometry> geoms = new List<IGeometry>();
-            
             foreach (var o in geomTree)
             {
                 IGeometry geom = null;
                 if (o is IList<IGeometry>)
-                    geom = UnionTree((IList) o);
+                    geom = UnionTree((IList)o);
                 else if (o is IGeometry)
-                    geom = (IGeometry) o;
+                    geom = (IGeometry)o;
                 geoms.Add(geom);
             }
             return geoms;
@@ -296,7 +308,6 @@ namespace NetTopologySuite.Operation.Union
         {
             if (g0 == null && g1 == null)
                 return null;
-
             if (g0 == null)
                 return (IGeometry)g1.Clone();
             if (g1 == null)
@@ -337,15 +348,11 @@ namespace NetTopologySuite.Operation.Union
         private IGeometry UnionUsingEnvelopeIntersection(IGeometry g0, IGeometry g1, Envelope common)
         {
             var disjointPolys = new List<IGeometry>();
-
             var g0Int = ExtractByEnvelope(common, g0, disjointPolys);
             var g1Int = ExtractByEnvelope(common, g1, disjointPolys);
-
             var union = UnionActual(g0Int, g1Int);
-
             disjointPolys.Add(union);
             var overallUnion = GeometryCombiner.Combine(disjointPolys);
-
             return overallUnion;
         }
 
@@ -357,8 +364,7 @@ namespace NetTopologySuite.Operation.Union
                 var elem = geom.GetGeometryN(i);
                 if (elem.EnvelopeInternal.Intersects(env))
                     intersectingGeoms.Add(elem);
-                else
-                    disjointGeoms.Add(elem);
+                else disjointGeoms.Add(elem);
             }
             return _geomFactory.BuildGeometry(intersectingGeoms);
         }
@@ -368,16 +374,6 @@ namespace NetTopologySuite.Operation.Union
         /// </summary>
         private static IGeometry UnionActual(IGeometry g0, IGeometry g1)
         {
-            /*
-            System.out.println(g0.getNumGeometries() + ", " + g1.getNumGeometries());
- 	
-            if (g0.getNumGeometries() > 5) {
-                System.out.println(g0);
-                System.out.println(g1);
-            }
-            */
-
-            //return bufferUnion(g0, g1);
             return RestrictToPolygons(g0.Union(g1));
         }
 
@@ -399,8 +395,9 @@ namespace NetTopologySuite.Operation.Union
 
             var polygons = PolygonExtracter.GetPolygons(g);
             if (polygons.Count == 1)
-                    return /*(IPolygon)*/ polygons[0];
-            return g.Factory.CreateMultiPolygon(GeometryFactory.ToPolygonArray(polygons));
+                return polygons[0];
+            var array = GeometryFactory.ToPolygonArray(polygons);
+            return g.Factory.CreateMultiPolygon(array);
         }
     }
 }

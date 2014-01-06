@@ -24,7 +24,7 @@ namespace NetTopologySuite.Simplify
         /// <param name="inputIndex"></param>
         /// <param name="outputIndex"></param>
         public TaggedLineStringSimplifier(LineSegmentIndex inputIndex, LineSegmentIndex outputIndex)
-        {            
+        {
             _inputIndex = inputIndex;
             _outputIndex = outputIndex;
         }
@@ -56,7 +56,7 @@ namespace NetTopologySuite.Simplify
         {
             depth += 1;
             int[] sectionIndex = new int[2];
-            if((i+1) == j)
+            if ((i + 1) == j)
             {
                 LineSegment newSeg = _line.GetSegment(i);
                 _line.AddToResult(newSeg);
@@ -69,7 +69,7 @@ namespace NetTopologySuite.Simplify
             bool isValidToFlatten = true;
 
             // must have enough points in the output line
-            if (_line.ResultSize < _line.MinimumSize && depth < 2)  
+            if (_line.ResultSize < _line.MinimumSize && depth < 2)
                 isValidToFlatten = false;
             // flattening must be less than distanceTolerance
             if (distance[0] > DistanceTolerance)
@@ -107,11 +107,11 @@ namespace NetTopologySuite.Simplify
             seg.P1 = pts[j];
             double maxDist = -1.0;
             int maxIndex = i;
-            for (int k = i + 1; k < j; k++) 
+            for (int k = i + 1; k < j; k++)
             {
                 Coordinate midPt = pts[k];
                 double distance = seg.Distance(midPt);
-                if (distance > maxDist) 
+                if (distance > maxDist)
                 {
                     maxDist = distance;
                     maxIndex = k;
@@ -122,11 +122,15 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        /// 
+        /// Flattens a section of the line between
+        /// indexes <paramref name="start"/> and <paramref name="end"/>,
+        /// replacing them with a line between the endpoints.
+        /// The input and output indexes are updated
+        /// to reflect this.
         /// </summary>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
-        /// <returns></returns>
+        /// <param name="start">the start index of the flattened section</param>
+        /// <param name="end">the end index of the flattened section</param>
+        /// <returns>the new segment created</returns>
         private LineSegment Flatten(int start, int end)
         {
             // make a new segment for the simplified point
@@ -139,11 +143,6 @@ namespace NetTopologySuite.Simplify
             return newSeg;
         }
 
-        // /*
-        //  * Index of section to be tested for flattening - reusable
-        //  */
-        //  private int[] validSectionIndex = new int[2];
-
         /// <summary>
         /// 
         /// </summary>
@@ -153,9 +152,9 @@ namespace NetTopologySuite.Simplify
         /// <returns></returns>
         private bool HasBadIntersection(TaggedLineString parentLine, int[] sectionIndex, LineSegment candidateSeg)
         {
-            if (HasBadOutputIntersection(candidateSeg)) 
+            if (HasBadOutputIntersection(candidateSeg))
                 return true;
-            if (HasBadInputIntersection(parentLine, sectionIndex, candidateSeg)) 
+            if (HasBadInputIntersection(parentLine, sectionIndex, candidateSeg))
                 return true;
             return false;
         }
@@ -170,8 +169,8 @@ namespace NetTopologySuite.Simplify
             IList<LineSegment> querySegs = _outputIndex.Query(candidateSeg);
             foreach (LineSegment querySeg in querySegs)
             {
-                if (HasInteriorIntersection(querySeg, candidateSeg)) 
-                    return true;                
+                if (HasInteriorIntersection(querySeg, candidateSeg))
+                    return true;
             }
             return false;
         }
@@ -188,7 +187,7 @@ namespace NetTopologySuite.Simplify
             IList<LineSegment> querySegs = _inputIndex.Query(candidateSeg);
             foreach (TaggedLineSegment querySeg in querySegs)
             {
-                if (HasInteriorIntersection(querySeg, candidateSeg)) 
+                if (HasInteriorIntersection(querySeg, candidateSeg))
                 {
                     if (IsInLineSection(parentLine, sectionIndex, querySeg))
                         continue;
@@ -222,7 +221,7 @@ namespace NetTopologySuite.Simplify
         /// <param name="seg1"></param>
         /// <returns></returns>
         private bool HasInteriorIntersection(LineSegment seg0, LineSegment seg1)
-        {            
+        {
             _li.ComputeIntersection(seg0.P0, seg0.P1, seg1.P0, seg1.P1);
             return _li.IsInteriorIntersection();
         }

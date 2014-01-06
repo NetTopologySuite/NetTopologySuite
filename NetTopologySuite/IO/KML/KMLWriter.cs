@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.IO.KML
 {
@@ -54,6 +55,16 @@ namespace NetTopologySuite.IO.KML
             return writer.Write(geometry);
         }
 
+        public KMLWriter()
+        {
+            CreateDefaultFormatter();
+        }
+
+        private void CreateDefaultFormatter()
+        {
+            CreateFormatter(-1);
+        }
+
         /// <summary>
         /// Writes a Geometry as KML to a string, using
         /// a specified Z value, precision, extrude flag,
@@ -88,7 +99,8 @@ namespace NetTopologySuite.IO.KML
         private bool _extrude;
         private bool _tesselate;
         private string _altitudeMode;
-        private int _precision;
+        private NumberFormatInfo _formatter;
+        private string _format;
 
         /// <summary>
         /// A tag string which is prefixed to every emitted text line.
@@ -150,10 +162,24 @@ namespace NetTopologySuite.IO.KML
         /// The maximum number of decimal places to output in ordinate values.
         /// Useful for limiting output size.
         /// </summary>
+        /// <remarks>
+        /// negative values set the precision to <see cref="PrecisionModels.Floating"/>,
+        /// like standard behavior.
+        /// </remarks>
         public int Precision
         {
-            get { return _precision; }
-            set { _precision = Math.Max(0, value); }
+            get { return _formatter.NumberDecimalDigits; }
+            set { CreateFormatter(value); }
+        }
+
+        private void CreateFormatter(int precision)
+        {
+            IPrecisionModel precisionModel = precision < 0
+                ? new PrecisionModel(PrecisionModels.Floating)
+                : new PrecisionModel(precision);
+            _formatter = WKTWriter.CreateFormatter(precisionModel);
+            string digits = WKTWriter.StringOfChar('#', _formatter.NumberDecimalDigits);
+            _format = String.Format("0.{0}", digits);
         }
 
         /// <summary>
@@ -208,12 +234,12 @@ namespace NetTopologySuite.IO.KML
         {
             if (LinePrefix != null)
                 sb.Append(LinePrefix);
-            sb.Append(Spaces(IndentSize * level));
+            sb.Append(WKTWriter.StringOfChar(' ', IndentSize * level));
             sb.Append(text);
         }
 
         private string GeometryTag(string geometryName)
-        {            
+        {
             StringBuilder sb = new StringBuilder();
             sb.Append("<");
             sb.Append(geometryName);
@@ -254,7 +280,7 @@ namespace NetTopologySuite.IO.KML
             StartLine("</LineString>\n", level, sb);
         }
 
-        private void WriteLinearRing(ILinearRing lr, int level, 
+        private void WriteLinearRing(ILinearRing lr, int level,
             StringBuilder sb, bool writeModifiers)
         {
             // <LinearRing><coordinates>...</coordinates></LinearRing>
@@ -285,7 +311,7 @@ namespace NetTopologySuite.IO.KML
             StartLine("</Polygon>\n", level, sb);
         }
 
-        private void WriteGeometryCollection(IGeometryCollection gc, int level, 
+        private void WriteGeometryCollection(IGeometryCollection gc, int level,
             StringBuilder sb)
         {
             StartLine("<MultiGeometry>\n", level, sb);
@@ -300,7 +326,7 @@ namespace NetTopologySuite.IO.KML
         /// <remarks>
         /// 2D and 3D aware. Terminates the coordinate output with a newline.
         /// </remarks>
-        private void Write(Coordinate[] coords, int level, 
+        private void Write(Coordinate[] coords, int level,
             StringBuilder sb)
         {
             StartLine("<coordinates>", level, sb);
@@ -351,24 +377,8 @@ namespace NetTopologySuite.IO.KML
 
         private void Write(double d, StringBuilder sb)
         {
-            NumberFormatInfo nfi = NumberFormatInfo.InvariantInfo;
-            string format = String.Format("0.{0}", Chars(Precision, '#'));
-            string tos = d.ToString(format, nfi);
+            string tos = d.ToString(_format, _formatter);
             sb.Append(tos);
-        }
-
-
-        private string Spaces(int n)
-        {
-            return Chars(n, ' ');
-        }
-
-        private static string Chars(int n, char c)
-        {
-            char[] ch = new char[n];
-            for (int i = 0; i < n; i++)
-                ch[i] = c;
-            return new String(ch);
         }
     }
 }

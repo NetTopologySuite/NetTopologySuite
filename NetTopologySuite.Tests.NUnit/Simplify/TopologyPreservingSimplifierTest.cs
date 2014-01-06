@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Simplify;
 using NUnit.Framework;
@@ -27,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
         {
             const string geomStr = "POINT (10 10)";
             new GeometryOperationValidator(
-                DPSimplifierResult.GetResult(
+                TPSimplifierResult.GetResult(
                     geomStr,
                     1))
                 .SetExpectedResult(geomStr)
@@ -51,7 +50,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 geomStr,
                 0.0057);
             GeometryOperationValidator validator = new GeometryOperationValidator(geometry);
-            bool isPassed = validator.IsAllTestsPassed();            
+            bool isPassed = validator.IsAllTestsPassed();
             Assert.IsFalse(isPassed);
         }
 
@@ -145,7 +144,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-  
+
         public void TestTinyClosedLineString()
         {
             const string geomStr = "LINESTRING (0 0, 5 0, 5 5, 0 0)";
@@ -155,7 +154,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     10))
                 .SetExpectedResult(geomStr)
                 .Test();
-  }
+        }
 
 
         [Test]
@@ -199,7 +198,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     10.0))
                 .Test();
         }
-        
+
         [Test]
         public void TestGeometryCollection()
         {
@@ -210,18 +209,18 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     + "POLYGON ((80 200, 240 200, 240 60, 80 60, 80 200)),"
                     + "LINESTRING (80 200, 240 200, 240 60, 80 60, 80 200, 140 199, 120 120)"
                     + ")"
-                    ,10.0))
+                    , 10.0))
                 .Test();
         }
     }
 
-    class TPSimplifierResult
+    static class TPSimplifierResult
     {
         private static readonly WKTReader Rdr = new WKTReader();
 
         public static IGeometry[] GetResult(String wkt, double tolerance)
         {
-            var ioGeom = new IGeometry[2];
+            IGeometry[] ioGeom = new IGeometry[2];
             ioGeom[0] = Rdr.Read(wkt);
             ioGeom[1] = TopologyPreservingSimplifier.Simplify(ioGeom[0], tolerance);
             Console.WriteLine(ioGeom[1]);

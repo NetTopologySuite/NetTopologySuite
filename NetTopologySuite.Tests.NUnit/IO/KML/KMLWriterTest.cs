@@ -112,6 +112,22 @@ namespace NetTopologySuite.Tests.NUnit.IO.KML
                 " <LineString><coordinates>1,1.1 2.6,3</coordinates></LineString>");
         }
 
+        [Test]
+        public void precision_zero_means_only_integers_allowed()
+        {
+            KMLWriter writer = new KMLWriter { Precision = 0 };
+            CheckEqual(writer, "LINESTRING (1.0001 1.1234, 2.5555 2.99999)",
+                " <LineString><coordinates>1,1 3,3</coordinates></LineString>");
+        }
+
+        [Test]
+        public void negative_precision_means_floating_precision()
+        {
+            KMLWriter writer = new KMLWriter { Precision = -1 };
+            CheckEqual(writer, "LINESTRING (1.0001 1.1234, 2.5555 2.99999)",
+                " <LineString><coordinates>1.0001,1.1234 2.5555,2.99999</coordinates></LineString>");
+        }
+
         private void CheckEqual(string wkt, string expectedKML)
         {
             KMLWriter writer = new KMLWriter();
