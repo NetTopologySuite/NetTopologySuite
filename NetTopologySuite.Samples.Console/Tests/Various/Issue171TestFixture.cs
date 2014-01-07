@@ -25,6 +25,19 @@ namespace NetTopologySuite.Samples.Tests.Various
         }
 
         [Test]
+        public void large_decimals_are_formatted_properly()
+        {
+            const string expected = "123456789012345680";
+            const decimal l = 123456789012345680;
+
+            IPrecisionModel precisionModel = new PrecisionModel(1E9);
+            NumberFormatInfo formatter = CreateFormatter(precisionModel);
+            string format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);
+            string actual = l.ToString(format, formatter);
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+
+        [Test]
         public void large_doubles_should_be_formatted_properly()
         {
             const string expected = "123456789012345680";
