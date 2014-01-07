@@ -109,6 +109,7 @@
     <Compile Include="Tests\Various\BufferTest.cs" />
     <Compile Include="Tests\Various\CoordinateArraysTest.cs" />
     <Compile Include="Tests\Various\CascadedPolygonUnionFixture.cs" />
+    <Compile Include="Tests\Various\DoubleConverter.cs" />
     <Compile Include="Tests\Various\GeometriesFixture.cs" />
     <Compile Include="Tests\Various\GoogleIssueTrackerTests.cs" />
     <Compile Include="Tests\Various\Issue102Test.cs" />
