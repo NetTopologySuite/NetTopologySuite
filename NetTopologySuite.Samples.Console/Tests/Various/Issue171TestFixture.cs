@@ -65,6 +65,15 @@ namespace NetTopologySuite.Samples.Tests.Various
             Assert.That(actual, Is.EqualTo(expected));
         }
 
+        [Test]
+        public void small_doubles_are_formatted_properly_using_doubleconverter()
+        {
+            const string expected = "123456";
+            const double d = 123456;
+            string actual = DoubleConverter.ToExactString(d);
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+
         // same code used in WKTWriter
         private static NumberFormatInfo CreateFormatter(IPrecisionModel precisionModel)
         {
