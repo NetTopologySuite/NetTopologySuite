@@ -133,7 +133,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 _writer.Write(geometryCollection));
         }
 
-        [Test]
+        [Test, Ignore("See issue 171")]
         public void TestWriteLargeNumbers1()
         {
             IPrecisionModel precisionModel = new PrecisionModel(1E9);
@@ -157,7 +157,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual("POINT (1234 10000000000)", point1.AsText());
         }
 
-        [Test]
+        [Test, Ignore("See issue 171")]
         public void TestWriteLargeNumbers3()
         {
             IPrecisionModel precisionModel = new PrecisionModel(1E9);
