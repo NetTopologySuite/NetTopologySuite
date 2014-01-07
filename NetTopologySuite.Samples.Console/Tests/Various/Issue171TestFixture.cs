@@ -3,7 +3,6 @@ using System.Globalization;
 using System.Text;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Tests.Various
@@ -13,14 +12,27 @@ namespace NetTopologySuite.Samples.Tests.Various
     public class Issue171TestFixture
     {
         [Test]
-        public void large_numbers_should_be_formatted_properly()
+        public void large_integers_are_formatted_properly()
         {
             const string expected = "123456789012345680";
-            const double d = 123456789012345680d;
+            const long l = 123456789012345680;
 
             IPrecisionModel precisionModel = new PrecisionModel(1E9);
             NumberFormatInfo formatter = CreateFormatter(precisionModel);
             string format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);
+            string actual = l.ToString(format, formatter);
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void large_doubles_should_be_formatted_properly()
+        {
+            const string expected = "123456789012345680";
+            const double d = 123456789012345680;
+
+            IPrecisionModel precisionModel = new PrecisionModel(1E9);
+            NumberFormatInfo formatter = CreateFormatter(precisionModel);
+            string format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);            
             string actual = d.ToString(format, formatter);
             Assert.That(actual, Is.EqualTo(expected));
         }
