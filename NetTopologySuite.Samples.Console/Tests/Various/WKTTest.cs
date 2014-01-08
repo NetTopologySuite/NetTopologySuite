@@ -29,9 +29,6 @@ namespace NetTopologySuite.Samples.Tests.Various
             writer = new WKTWriter();
         }
 
-         /// <summary>
-        /// 
-        /// </summary>
         [Test]
         public void WriteZeroBasedCoordinateWithDifferentFactories()
         {            

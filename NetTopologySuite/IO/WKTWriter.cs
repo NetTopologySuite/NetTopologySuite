@@ -84,10 +84,6 @@ namespace NetTopologySuite.IO
 #endif
         }
 
-        // NOTE: modified for "safe" assembly in Sql 2005
-        // const added!
-        private const int WKTWriterIndent = 2;
-
         /// <summary>  
         /// Creates the <c>NumberFormatInfo</c> used to write <c>double</c>s
         /// with a sufficient number of decimal places.
@@ -97,9 +93,9 @@ namespace NetTopologySuite.IO
         /// the number of decimal places to write.
         /// </param>
         /// <returns>
-        /// A <c>NumberFormatInfo</c> that write <c>double</c>
-        /// s without scientific notation.
-        /// </returns>
+        /// A <c>NumberFormatInfo</c> that write <c>double</c>s 
+        /// without scientific notation.
+        /// </returns>        
         internal static NumberFormatInfo CreateFormatter(IPrecisionModel precisionModel) 
         {
             // the default number of decimal places is 16, which is sufficient
@@ -268,20 +264,21 @@ namespace NetTopologySuite.IO
         /// Converts a <c>Geometry</c> to its Well-known Text representation.
         /// </summary>
         /// <param name="geometry">A <c>Geometry</c> to process</param>
-        /// <param name="useFormating"></param>
+        /// <param name="useFormatting"></param>
         /// <param name="writer"></param>
         /// <returns>
         /// A "Geometry Tagged Text" string (see the OpenGIS Simple
         /// Features Specification).
         /// </returns>
-        private void WriteFormatted(IGeometry geometry, bool useFormating, TextWriter writer)
+        private void WriteFormatted(IGeometry geometry, bool useFormatting, TextWriter writer)
         {
             if (geometry == null)
                 throw new ArgumentNullException("geometry");
 
-            _useFormating = useFormating;
+            _useFormating = useFormatting;
             // Enable maxPrecision (via {0:R} formatter) in WriteNumber method
-            _useMaxPrecision = geometry.Factory.PrecisionModel.PrecisionModelType == PrecisionModels.Floating;
+            IPrecisionModel precisionModel = geometry.Factory.PrecisionModel;
+            _useMaxPrecision = precisionModel.PrecisionModelType == PrecisionModels.Floating;
 
             _formatter = CreateFormatter(geometry.PrecisionModel);           
             _format = "0." + StringOfChar('#', _formatter.NumberDecimalDigits);
@@ -494,32 +491,29 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Converts a <see cref="double" /> to a <see cref="string" />, 
-        /// not in scientific notation.
+        /// Converts a <see cref="double" /> to a <see cref="string" />.
         /// </summary>
         /// <param name="d">The <see cref="double" /> to convert.</param>
         /// <returns>
-        /// The <see cref="double" /> as a <see cref="string" />, 
-        /// not in scientific notation.
-        /// </returns>
+        /// The <see cref="double" /> as a <see cref="string" />.
+        /// </returns>        
         private string WriteNumber(double d)
         {            
             var standard = d.ToString(_format, _formatter);
-            if (!_useMaxPrecision)
+            if (!_useMaxPrecision) { 
                 return standard;
-
+}
             try
-            {
+            {                
                 var converted = Convert.ToDouble(standard, _formatter);
-                // Check if some precision is lost during text conversion: if so, use {0:R} formatter
-                if (converted != d)
-                    return String.Format(_formatter, MaxPrecisionFormat, d);
-                return standard;
+                // check if some precision is lost during text conversion: if so, use {0:R} formatter
+                if (converted == d) 
+                    return standard;
+                return String.Format(_formatter, MaxPrecisionFormat, d);
             }
             catch (OverflowException ex)
             {
-                // http://groups.google.com/group/microsoft.public.dotnet.framework/browse_thread/thread/ed77db2f3fcb5a4a
-                // Use MaxPrecisionFormat
+                // Use MaxPrecisionFormat anyway
                 return String.Format(_formatter, MaxPrecisionFormat, d);
             }
         }
@@ -743,7 +737,7 @@ namespace NetTopologySuite.IO
             if (_coordsPerLine <= 0 || coordIndex % _coordsPerLine != 0)
                 return;
             Indent(level, writer);
-  }
+    }
 
         /// <summary>
         /// 

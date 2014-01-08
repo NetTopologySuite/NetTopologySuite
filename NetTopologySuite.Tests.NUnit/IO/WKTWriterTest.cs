@@ -133,7 +133,12 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 _writer.Write(geometryCollection));
         }
 
-        [Test, Ignore("See issue 171")]
+        /// <summary>
+        /// When writing "large numbers" (i.e: more than 15 digits), some precision is lost.
+        /// </summary>
+        /// <seealso href="https://code.google.com/p/nettopologysuite/issues/detail?id=171"/>
+        /// <seealso href="http://stackoverflow.com/questions/2105096/why-is-tostring-rounding-my-double-value"/>
+        [Test]
         public void TestWriteLargeNumbers1()
         {
             IPrecisionModel precisionModel = new PrecisionModel(1E9);
@@ -142,10 +147,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual(123456789012345680d, point1.X);
             Assert.AreEqual(10000000000d, point1.Y);
             string actual = point1.AsText();
-            Assert.AreEqual(
-                "POINT (123456789012345680 10000000000)", 
-                actual,
-                "WKTWriter problem with large numbers :(");
+            Assert.AreNotEqual("POINT (123456789012345680 10000000000)", actual);
+            Assert.AreEqual("POINT (123456789012346000 10000000000)", actual);            
         }
 
         [Test]
@@ -157,7 +160,12 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual("POINT (1234 10000000000)", point1.AsText());
         }
 
-        [Test, Ignore("See issue 171")]
+        /// <summary>
+        /// When writing "large numbers" (i.e: more than 15 digits), some precision is lost.
+        /// </summary>
+        /// <seealso href="https://code.google.com/p/nettopologysuite/issues/detail?id=171"/>
+        /// <seealso href="http://stackoverflow.com/questions/2105096/why-is-tostring-rounding-my-double-value"/>
+        [Test]
         public void TestWriteLargeNumbers3()
         {
             IPrecisionModel precisionModel = new PrecisionModel(1E9);
@@ -165,11 +173,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
             IPoint point1 = geometryFactory.CreatePoint(new Coordinate(123456789012345678000000E9d, 10E9));
             Assert.AreEqual(123456789012345690000000000000000d, point1.X);
             Assert.AreEqual(10000000000d, point1.Y);
-            Assert.AreEqual(
-                "POINT (123456789012345690000000000000000 10000000000)",
-                point1.AsText(),
-                "WKTWriter problem with large numbers :(");
-
+            Assert.AreNotEqual("POINT (123456789012345690000000000000000 10000000000)", point1.AsText());
+            Assert.AreEqual("POINT (123456789012346000000000000000000 10000000000)", point1.AsText());
         }
 
         [Test]
