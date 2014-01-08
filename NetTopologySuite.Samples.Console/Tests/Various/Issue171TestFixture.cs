@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using GeoAPI.Geometries;
@@ -72,6 +73,47 @@ namespace NetTopologySuite.Samples.Tests.Various
             const double d = 123456;
             string actual = DoubleConverter.ToExactString(d);
             Assert.That(actual, Is.EqualTo(expected));
+        }
+
+        [Test, Category("Stress")]
+        public void performances_are_valid_using_doubleconverter()
+        {
+            DoPerformancesTest(1000);
+            DoPerformancesTest(10000);
+            DoPerformancesTest(100000);
+            DoPerformancesTest(1000000);
+            DoPerformancesTest(10000000);
+            
+        }
+
+        private static void DoPerformancesTest(int times)
+        {
+            const double d = 123456789;
+            Stopwatch w = Stopwatch.StartNew();
+            for (int i = 0; i < times; i++)
+            {
+                string s = DoubleConverter.ToExactString(d + i);
+                Assert.IsNotNull(s);
+            }
+            w.Stop();
+            TimeSpan usingDc = w.Elapsed;
+            
+            IPrecisionModel precisionModel = new PrecisionModel(1E9);
+            NumberFormatInfo formatter = CreateFormatter(precisionModel);
+            string format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);
+            w = Stopwatch.StartNew();
+            for (int i = 0; i < times; i++)
+            {
+                string s = d.ToString(format, formatter);
+                Assert.IsNotNull(s);
+            }
+            w.Stop();
+            TimeSpan usingDef = w.Elapsed;
+
+            if (usingDc <= usingDef) 
+                return;
+            TimeSpan diff = usingDc - usingDef;
+            Console.WriteLine("slower for {0}: {1} seconds", times, diff.TotalSeconds);
         }
 
         // same code used in WKTWriter
