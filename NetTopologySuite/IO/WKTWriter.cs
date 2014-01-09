@@ -11,7 +11,6 @@ using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO
 {
-
     /// <summary> 
     /// Outputs the textual representation of a <see cref="Geometry" />.
     /// The <see cref="WKTWriter" /> outputs coordinates rounded to the precision
@@ -136,7 +135,6 @@ namespace NetTopologySuite.IO
         private bool _isFormatted;
         private bool _useFormating;
         private bool _useMaxPrecision;
-        private int _level;
         private int _coordsPerLine = -1;
         private String _indentTabStr = "  ";
 
@@ -194,8 +192,26 @@ namespace NetTopologySuite.IO
         /// <returns>A Geometry Tagged Text string (see the OpenGIS Simple Features Specification).</returns>
         public virtual string Write(IGeometry geometry)
         {
-            TextWriter sw = new StringWriter();
-            try 
+            StringBuilder sb = new StringBuilder();
+            TextWriter sw = new StringWriter(sb);
+            TryWrite(geometry, sw);
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Converts a <c>Geometry</c> to its Well-known Text representation.
+        /// </summary>
+        /// <param name="geometry">A <c>Geometry</c> to process.</param>
+        /// <param name="stream">A <c>Stream</c> to write into</param>
+        public void Write(IGeometry geometry, Stream stream)
+        {
+            TextWriter sw = new StreamWriter(stream);
+            TryWrite(geometry, sw);
+        }
+
+        private void TryWrite(IGeometry geometry, TextWriter sw)
+        {
+            try
             {
                 WriteFormatted(geometry, _isFormatted, sw);
             }
@@ -203,12 +219,6 @@ namespace NetTopologySuite.IO
             {
                 Assert.ShouldNeverReachHere();
             }
-            return sw.ToString();
-        }
-
-        public void Write(IGeometry geometry, Stream stream)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>

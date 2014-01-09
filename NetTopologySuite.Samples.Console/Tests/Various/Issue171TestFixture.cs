@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using GeoAPI.Geometries;
+using MiscUtil.Conversion;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
@@ -34,7 +35,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             IPrecisionModel precisionModel = new PrecisionModel(1E9);
             NumberFormatInfo formatter = CreateFormatter(precisionModel);
             string format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);
-            string actual = m.ToString(format, formatter);            
+            string actual = m.ToString(format, formatter);
             Assert.That(actual, Is.EqualTo(expected));
         }
 
@@ -51,8 +52,8 @@ namespace NetTopologySuite.Samples.Tests.Various
 
             IPrecisionModel precisionModel = new PrecisionModel(1E9);
             NumberFormatInfo formatter = CreateFormatter(precisionModel);
-            string format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);            
-            string actual = d.ToString(format, formatter);            
+            string format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);
+            string actual = d.ToString(format, formatter);
             Assert.That(actual, Is.Not.EqualTo(expected));
         }
 
@@ -67,6 +68,16 @@ namespace NetTopologySuite.Samples.Tests.Various
         }
 
         [Test]
+        public void very_large_doubles_arent_formatted_properly_using_doubleconverter()
+        {
+            // some problems still remains :(
+            const string expected = "123456789012345690000000000000000";
+            const double d = 123456789012345678000000E9d;
+            string actual = DoubleConverter.ToExactString(d);
+            Assert.That(actual, Is.Not.EqualTo(expected));
+        }
+
+        [Test]
         public void small_doubles_are_formatted_properly_using_doubleconverter()
         {
             const string expected = "123456";
@@ -75,7 +86,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             Assert.That(actual, Is.EqualTo(expected));
         }
 
-        [Test, Category("Stress")]
+        [Test, Category("Stress"), Explicit]
         public void performances_are_valid_using_doubleconverter()
         {
             DoPerformancesTest(1000);
@@ -83,7 +94,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             DoPerformancesTest(100000);
             DoPerformancesTest(1000000);
             DoPerformancesTest(10000000);
-            
+
         }
 
         private static void DoPerformancesTest(int times)
@@ -97,7 +108,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             }
             w.Stop();
             TimeSpan usingDc = w.Elapsed;
-            
+
             IPrecisionModel precisionModel = new PrecisionModel(1E9);
             NumberFormatInfo formatter = CreateFormatter(precisionModel);
             string format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);
@@ -110,7 +121,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             w.Stop();
             TimeSpan usingDef = w.Elapsed;
 
-            if (usingDc <= usingDef) 
+            if (usingDc <= usingDef)
                 return;
             TimeSpan diff = usingDc - usingDef;
             Console.WriteLine("slower for {0}: {1} seconds", times, diff.TotalSeconds);
