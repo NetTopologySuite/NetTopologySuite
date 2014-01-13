@@ -44,14 +44,14 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         public static Coordinate GetCentroid(IGeometry geom)
         {
-            var cent = new Centroid(geom);
+            Centroid cent = new Centroid(geom);
             return cent.GetCentroid();
         }
 
         /// <summary>
         /// the point all triangles are based at
         /// </summary>
-        private Coordinate _areaBasePt; 
+        private Coordinate _areaBasePt;
 
         /// <summary>
         /// temporary variable to hold centroid of triangle
@@ -65,7 +65,7 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// partial centroid sum
         /// </summary>
-        private readonly Coordinate _cg3 = new Coordinate(); 
+        private readonly Coordinate _cg3 = new Coordinate();
 
         // data for linear centroid computation, if needed
         private readonly Coordinate _lineCentSum = new Coordinate();
@@ -83,12 +83,10 @@ namespace NetTopologySuite.Algorithm
             Add(geom);
         }
 
-        /**
-         * Adds a Geometry to the centroid total.
-         *
-         * @param geom the geometry to add
-         */
-
+        /// <summary>
+        /// Adds a <see cref="IGeometry"/> to the centroid total.
+        /// </summary>
+        /// <param name="geom">>The <see cref="IGeometry"/> to add.</param>
         private void Add(IGeometry geom)
         {
             if (geom.IsEmpty)
@@ -103,13 +101,13 @@ namespace NetTopologySuite.Algorithm
             }
             else if (geom is IPolygon)
             {
-                var poly = (IPolygon) geom;
+                IPolygon poly = (IPolygon)geom;
                 Add(poly);
             }
             else if (geom is IGeometryCollection)
             {
-                var gc = (IGeometryCollection) geom;
-                for (var i = 0; i < gc.NumGeometries; i++)
+                IGeometryCollection gc = (IGeometryCollection)geom;
+                for (int i = 0; i < gc.NumGeometries; i++)
                 {
                     Add(gc.GetGeometryN(i));
                 }
@@ -122,28 +120,36 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The computed centroid, or null if the input is empty</returns>
         public Coordinate GetCentroid()
         {
-                var cent = new Coordinate();
-                if (Math.Abs(_areasum2) > 0.0)
-                {
-                    cent.X = _cg3.X/3/_areasum2;
-                    cent.Y = _cg3.Y/3/_areasum2;
-                }
-                else if (_totalLength > 0.0)
-                {
-                    // if polygon was degenerate, compute linear centroid instead
-                    cent.X = _lineCentSum.X/_totalLength;
-                    cent.Y = _lineCentSum.Y/_totalLength;
-                }
-                else if (_ptCount > 0)
-                {
-                    cent.X = _ptCentSum.X/_ptCount;
-                    cent.Y = _ptCentSum.Y/_ptCount;
-                }
-                else
-                {
-                    return null;
-                }
-                return cent;
+            /**
+             * The centroid is computed from the highest dimension components present in the input.
+             * I.e. areas dominate lineal geometry, which dominates points.
+             * Degenerate geometry are computed using their effective dimension
+             * (e.g. areas may degenerate to lines or points)
+             */
+            Coordinate cent = new Coordinate();
+            if (Math.Abs(_areasum2) > 0.0)
+            {
+                // Input contains areal geometry
+                cent.X = _cg3.X / 3 / _areasum2;
+                cent.Y = _cg3.Y / 3 / _areasum2;
+            }
+            else if (_totalLength > 0.0)
+            {
+                // Input contains lineal geometry
+                cent.X = _lineCentSum.X / _totalLength;
+                cent.Y = _lineCentSum.Y / _totalLength;
+            }
+            else if (_ptCount > 0)
+            {
+                // Input contains puntal geometry only
+                cent.X = _ptCentSum.X / _ptCount;
+                cent.Y = _ptCentSum.Y / _ptCount;
+            }
+            else
+            {
+                return null;
+            }
+            return cent;
         }
 
         private void SetBasePoint(Coordinate basePt)
@@ -157,7 +163,7 @@ namespace NetTopologySuite.Algorithm
         private void Add(IPolygon poly)
         {
             AddShell(poly.ExteriorRing.Coordinates);
-            for (var i = 0; i < poly.NumInteriorRings; i++)
+            for (int i = 0; i < poly.NumInteriorRings; i++)
             {
                 AddHole(poly.GetInteriorRingN(i).Coordinates);
             }
@@ -167,8 +173,8 @@ namespace NetTopologySuite.Algorithm
         {
             if (pts.Length > 0)
                 SetBasePoint(pts[0]);
-            var isPositiveArea = !CGAlgorithms.IsCCW(pts);
-            for (var i = 0; i < pts.Length - 1; i++)
+            bool isPositiveArea = !CGAlgorithms.IsCCW(pts);
+            for (int i = 0; i < pts.Length - 1; i++)
             {
                 AddTriangle(_areaBasePt, pts[i], pts[i + 1], isPositiveArea);
             }
@@ -177,8 +183,8 @@ namespace NetTopologySuite.Algorithm
 
         private void AddHole(Coordinate[] pts)
         {
-            var isPositiveArea = CGAlgorithms.IsCCW(pts);
-            for (var i = 0; i < pts.Length - 1; i++)
+            bool isPositiveArea = CGAlgorithms.IsCCW(pts);
+            for (int i = 0; i < pts.Length - 1; i++)
             {
                 AddTriangle(_areaBasePt, pts[i], pts[i + 1], isPositiveArea);
             }
@@ -187,12 +193,12 @@ namespace NetTopologySuite.Algorithm
 
         private void AddTriangle(Coordinate p0, Coordinate p1, Coordinate p2, bool isPositiveArea)
         {
-            var sign = (isPositiveArea) ? 1.0 : -1.0;
+            double sign = (isPositiveArea) ? 1.0 : -1.0;
             Centroid3(p0, p1, p2, _triangleCent3);
-            var area2 = Area2(p0, p1, p2);
-            _cg3.X += sign*area2*_triangleCent3.X;
-            _cg3.Y += sign*area2*_triangleCent3.Y;
-            _areasum2 += sign*area2;
+            double area2 = Area2(p0, p1, p2);
+            _cg3.X += sign * area2 * _triangleCent3.X;
+            _cg3.Y += sign * area2 * _triangleCent3.Y;
+            _areasum2 += sign * area2;
         }
 
         /// <summary>
@@ -213,8 +219,8 @@ namespace NetTopologySuite.Algorithm
         private static double Area2(Coordinate p1, Coordinate p2, Coordinate p3)
         {
             return
-                (p2.X - p1.X)*(p3.Y - p1.Y) -
-                (p3.X - p1.X)*(p2.Y - p1.Y);
+                (p2.X - p1.X) * (p3.Y - p1.Y) -
+                (p3.X - p1.X) * (p2.Y - p1.Y);
         }
 
         /// <summary>
@@ -224,19 +230,19 @@ namespace NetTopologySuite.Algorithm
         /// <param name="pts">An array of <see cref="Coordinate"/>s</param>
         private void AddLineSegments(Coordinate[] pts)
         {
-            var lineLen = 0.0d;
-            for (var i = 0; i < pts.Length - 1; i++)
+            double lineLen = 0.0d;
+            for (int i = 0; i < pts.Length - 1; i++)
             {
-                var segmentLen = pts[i].Distance(pts[i + 1]);
+                double segmentLen = pts[i].Distance(pts[i + 1]);
                 if (segmentLen == 0.0)
                     continue;
 
                 lineLen += segmentLen;
 
-                var midx = (pts[i].X + pts[i + 1].X)/2;
-                _lineCentSum.X += segmentLen*midx;
-                var midy = (pts[i].Y + pts[i + 1].Y)/2;
-                _lineCentSum.Y += segmentLen*midy;
+                double midx = (pts[i].X + pts[i + 1].X) / 2;
+                _lineCentSum.X += segmentLen * midx;
+                double midy = (pts[i].Y + pts[i + 1].Y) / 2;
+                _lineCentSum.Y += segmentLen * midy;
             }
             _totalLength += lineLen;
             if (lineLen == 0.0 && pts.Length > 0)

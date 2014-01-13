@@ -8,7 +8,7 @@ namespace NetTopologySuite.Simplify
     /// <summary>
     /// Simplifies a TaggedLineString, preserving topology
     /// (in the sense that no new intersections are introduced).
-    /// Uses the recursive D-P algorithm.
+    /// Uses the recursive Douglas-Peucker  algorithm.
     /// </summary>
     public class TaggedLineStringSimplifier
     {
@@ -17,12 +17,8 @@ namespace NetTopologySuite.Simplify
         private readonly LineSegmentIndex _outputIndex = new LineSegmentIndex();
         private TaggedLineString _line;
         private Coordinate[] _linePts;
+        private double _distanceTolerance;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="inputIndex"></param>
-        /// <param name="outputIndex"></param>
         public TaggedLineStringSimplifier(LineSegmentIndex inputIndex, LineSegmentIndex outputIndex)
         {
             _inputIndex = inputIndex;
@@ -30,15 +26,21 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        /// 
+        /// Sets the distance tolerance for the simplification.
+        /// All vertices in the simplified geometry will be within this
+        /// distance of the original geometry.
         /// </summary>
-        public double DistanceTolerance { get; set; }
+        public double DistanceTolerance
+        {
+            get { return _distanceTolerance; }
+            set { _distanceTolerance = value; }
+        }
 
         /// <summary>
         /// Simplifies the given <see cref="TaggedLineString"/>
         /// using the distance tolerance specified.
         /// </summary>
-        /// <param name="line">The linestring to simplify</param>
+        /// <param name="line">The linestring to simplify.</param>
         public void Simplify(TaggedLineString line)
         {
             _line = line;
@@ -46,12 +48,6 @@ namespace NetTopologySuite.Simplify
             SimplifySection(0, _linePts.Length - 1, 0);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="i"></param>
-        /// <param name="j"></param>
-        /// <param name="depth"></param>
         private void SimplifySection(int i, int j, int depth)
         {
             depth += 1;
@@ -64,25 +60,36 @@ namespace NetTopologySuite.Simplify
                 return;
             }
 
+            bool isValidToSimplify = true;
+
+            /**
+             * Following logic ensures that there is enough points in the output line.
+             * If there is already more points than the minimum, there's nothing to check.
+             * Otherwise, if in the worst case there wouldn't be enough points,
+             * don't flatten this segment (which avoids the worst case scenario)
+             */
+            if (_line.ResultSize < _line.MinimumSize)
+            {
+                int worstCaseSize = depth + 1;
+                if (worstCaseSize < _line.MinimumSize)
+                    isValidToSimplify = false;
+            }
+
             double[] distance = new double[1];
             int furthestPtIndex = FindFurthestPoint(_linePts, i, j, distance);
-            bool isValidToFlatten = true;
-
-            // must have enough points in the output line
-            if (_line.ResultSize < _line.MinimumSize && depth < 2)
-                isValidToFlatten = false;
             // flattening must be less than distanceTolerance
-            if (distance[0] > DistanceTolerance)
-                isValidToFlatten = false;
+            if (distance[0] > _distanceTolerance)
+                isValidToSimplify = false;
             // test if flattened section would cause intersection
             LineSegment candidateSeg = new LineSegment();
             candidateSeg.P0 = _linePts[i];
             candidateSeg.P1 = _linePts[j];
             sectionIndex[0] = i;
             sectionIndex[1] = j;
-            if (HasBadIntersection(_line, sectionIndex, candidateSeg)) isValidToFlatten = false;
+            if (HasBadIntersection(_line, sectionIndex, candidateSeg))
+                isValidToSimplify = false;
 
-            if (isValidToFlatten)
+            if (isValidToSimplify)
             {
                 LineSegment newSeg = Flatten(i, j);
                 _line.AddToResult(newSeg);
@@ -92,14 +99,6 @@ namespace NetTopologySuite.Simplify
             SimplifySection(furthestPtIndex, j, depth);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pts"></param>
-        /// <param name="i"></param>
-        /// <param name="j"></param>
-        /// <param name="maxDistance"></param>
-        /// <returns></returns>
         private int FindFurthestPoint(Coordinate[] pts, int i, int j, double[] maxDistance)
         {
             LineSegment seg = new LineSegment();
@@ -128,12 +127,12 @@ namespace NetTopologySuite.Simplify
         /// The input and output indexes are updated
         /// to reflect this.
         /// </summary>
-        /// <param name="start">the start index of the flattened section</param>
-        /// <param name="end">the end index of the flattened section</param>
-        /// <returns>the new segment created</returns>
+        /// <param name="start">The start index of the flattened section.</param>
+        /// <param name="end">The end index of the flattened section.</param>
+        /// <returns>The new segment created.</returns>
         private LineSegment Flatten(int start, int end)
         {
-            // make a new segment for the simplified point
+            // make a new segment for the simplified geometry
             Coordinate p0 = _linePts[start];
             Coordinate p1 = _linePts[end];
             LineSegment newSeg = new LineSegment(p0, p1);
@@ -143,53 +142,41 @@ namespace NetTopologySuite.Simplify
             return newSeg;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="parentLine"></param>
-        /// <param name="sectionIndex"></param>
-        /// <param name="candidateSeg"></param>
-        /// <returns></returns>
-        private bool HasBadIntersection(TaggedLineString parentLine, int[] sectionIndex, LineSegment candidateSeg)
+        private bool HasBadIntersection(TaggedLineString parentLine,
+            int[] sectionIndex, LineSegment candidateSeg)
         {
-            if (HasBadOutputIntersection(candidateSeg))
+            bool badOutput = HasBadOutputIntersection(candidateSeg);
+            if (badOutput)
                 return true;
-            if (HasBadInputIntersection(parentLine, sectionIndex, candidateSeg))
+            bool badInput = HasBadInputIntersection(parentLine, sectionIndex, candidateSeg);
+            if (badInput)
                 return true;
             return false;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="candidateSeg"></param>
-        /// <returns></returns>
         private bool HasBadOutputIntersection(LineSegment candidateSeg)
         {
             IList<LineSegment> querySegs = _outputIndex.Query(candidateSeg);
             foreach (LineSegment querySeg in querySegs)
             {
-                if (HasInteriorIntersection(querySeg, candidateSeg))
+                bool interior = HasInteriorIntersection(querySeg, candidateSeg);
+                if (interior)
                     return true;
             }
             return false;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="parentLine"></param>
-        /// <param name="sectionIndex"></param>
-        /// <param name="candidateSeg"></param>
-        /// <returns></returns>
-        private bool HasBadInputIntersection(TaggedLineString parentLine, int[] sectionIndex, LineSegment candidateSeg)
+        private bool HasBadInputIntersection(TaggedLineString parentLine,
+            int[] sectionIndex, LineSegment candidateSeg)
         {
             IList<LineSegment> querySegs = _inputIndex.Query(candidateSeg);
             foreach (TaggedLineSegment querySeg in querySegs)
             {
-                if (HasInteriorIntersection(querySeg, candidateSeg))
+                bool interior = HasInteriorIntersection(querySeg, candidateSeg);
+                if (interior)
                 {
-                    if (IsInLineSection(parentLine, sectionIndex, querySeg))
+                    bool inline = IsInLineSection(parentLine, sectionIndex, querySeg);
+                    if (inline)
                         continue;
                     return true;
                 }
@@ -198,28 +185,25 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        /// Tests whether a segment is in a section of a TaggedLineString-
+        /// Tests whether a segment is in a section of a <see cref="TaggedLineString"/>.
         /// </summary>
         /// <param name="line"></param>
         /// <param name="sectionIndex"></param>
         /// <param name="seg"></param>
         /// <returns></returns>
-        private static bool IsInLineSection(TaggedLineString line, int[] sectionIndex, TaggedLineSegment seg)
+        private static bool IsInLineSection(TaggedLineString line,
+            int[] sectionIndex, TaggedLineSegment seg)
         {
             // not in this line
-            if (seg.Parent != line.Parent) return false;
+            if (seg.Parent != line.Parent)
+                return false;
             int segIndex = seg.Index;
-            if (segIndex >= sectionIndex[0] && segIndex < sectionIndex[1])
+            if (segIndex >= sectionIndex[0] &&
+                segIndex < sectionIndex[1])
                 return true;
             return false;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="seg0"></param>
-        /// <param name="seg1"></param>
-        /// <returns></returns>
         private bool HasInteriorIntersection(LineSegment seg0, LineSegment seg1)
         {
             _li.ComputeIntersection(seg0.P0, seg0.P1, seg1.P0, seg1.P1);

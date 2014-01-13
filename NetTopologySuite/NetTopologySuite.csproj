@@ -143,6 +143,7 @@
     <Compile Include="IO\WKBHexFileReader.cs" />
     <Compile Include="Mathematics\Plane3D.cs" />
     <Compile Include="Mathematics\Vector3D.cs" />
+    <Compile Include="Noding\InteriorIntersectionFinderAdder.cs" />
     <Compile Include="Noding\SimpleSegmentSetMutualIntersector.cs" />
     <Compile Include="NtsGeometryServices.cs" />
     <Compile Include="Index\Strtree\BoundablePair.cs" />
@@ -451,6 +452,8 @@
     <Compile Include="Simplify\TaggedLineString.cs" />
     <Compile Include="Simplify\TaggedLineStringSimplifier.cs" />
     <Compile Include="Simplify\TopologyPreservingSimplifier.cs" />
+    <Compile Include="Simplify\VWLineSimplifier.cs" />
+    <Compile Include="Simplify\VWSimplifier.cs" />
     <Compile Include="Triangulate\ConformingDelaunayTriangulationBuilder.cs" />
     <Compile Include="Triangulate\ConformingDelaunayTriangulator.cs" />
     <Compile Include="Triangulate\ConstraintEnforcementException.cs" />

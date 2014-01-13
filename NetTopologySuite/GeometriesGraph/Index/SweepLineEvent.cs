@@ -7,64 +7,56 @@ namespace NetTopologySuite.GeometriesGraph.Index
     /// </summary>
     public class SweepLineEvent : IComparable
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        public const int Insert = 1;
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        public const int Delete = 2;
+        private const int Insert = 1;
+        private const int Delete = 2;
 
-        private readonly double xValue;
-        private readonly int eventType;
-        private readonly SweepLineEvent insertEvent; // null if this is an Insert event
-        private readonly object obj;
+        private readonly object _label; // used for red-blue intersection detection
+        private readonly double _xValue;
+        private readonly int _eventType;
+        private readonly SweepLineEvent _insertEvent; // null if this is an Insert event
+        private int _deleteEventIndex;
+        private readonly object _obj;
 
         /// <summary>
-        /// 
+        /// Creates an INSERT event.
         /// </summary>
-        /// <param name="edgeSet"></param>
-        /// <param name="x"></param>
-        /// <param name="insertEvent"></param>
-        /// <param name="obj"></param>
-        public SweepLineEvent(object edgeSet, double x, SweepLineEvent insertEvent, object obj)
+        /// <param name="label">The edge set label for this object.</param>
+        /// <param name="x">The event location</param>
+        /// <param name="obj">the object being inserted</param>
+        public SweepLineEvent(object label, double x, object obj)
         {
-            this.EdgeSet = edgeSet;
-            xValue = x;
-            this.insertEvent = insertEvent;
-            this.eventType = Insert;
-            if (insertEvent != null)
-                eventType = Delete;
-            this.obj = obj;
+            _eventType = Insert;
+            _label = label;
+            _xValue = x;
+            _obj = obj;
+        }
+
+        /// <summary>
+        /// Creates a DELETE event.
+        /// </summary>
+        /// <param name="x">The event location</param>
+        /// <param name="insertEvent">The corresponding INSERT event</param>
+        public SweepLineEvent(double x, SweepLineEvent insertEvent)
+        {
+            _eventType = Delete;
+            _xValue = x;
+            _insertEvent = insertEvent;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public object EdgeSet { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public  bool IsInsert 
+        public bool IsInsert
         {
-            get
-            {
-                return insertEvent == null; 
-            }
+            get { return _eventType == Insert; }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public  bool IsDelete
+        public bool IsDelete
         {
-            get
-            {
-                return insertEvent != null;
-            }
+            get { return _eventType == Delete; }
         }
 
         /// <summary>
@@ -72,45 +64,51 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         public SweepLineEvent InsertEvent
         {
-            get
-            {
-                return insertEvent;
-            }
+            get { return _insertEvent; }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public int DeleteEventIndex { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public  object Object
+        public int DeleteEventIndex
         {
-            get
-            {
-                return obj;
-            }
+            get { return _deleteEventIndex; }
+            set { _deleteEventIndex = value; }
         }
 
         /// <summary>
-        /// ProjectionEvents are ordered first by their x-value, and then by their eventType.
-        /// It is important that Insert events are sorted before Delete events, so that
+        /// 
+        /// </summary>
+        public object Object
+        {
+            get { return _obj; }
+        }
+
+        public bool IsSameLabel(SweepLineEvent ev)
+        {
+            // no label set indicates single group
+            if (_label == null)
+                return false;
+            return _label == ev._label;
+        }
+
+        /// <summary>
+        /// Events are ordered first by their x-value, and then by their eventType.
+        /// Insert events are sorted before Delete events, so that
         /// items whose Insert and Delete events occur at the same x-value will be
         /// correctly handled.
         /// </summary>
         /// <param name="o"></param>
-        public  int CompareTo(object o)
+        public int CompareTo(object o)
         {
             SweepLineEvent pe = (SweepLineEvent)o;
-            if (xValue < pe.xValue)
+            if (_xValue < pe._xValue)
                 return -1;
-            if (xValue > pe.xValue)
+            if (_xValue > pe._xValue)
                 return 1;
-            if (eventType < pe.eventType)
+            if (_eventType < pe._eventType)
                 return -1;
-            if (eventType > pe.eventType)
+            if (_eventType > pe._eventType)
                 return 1;
             return 0;
         }

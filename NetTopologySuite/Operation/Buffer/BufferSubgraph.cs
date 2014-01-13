@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
-using NetTopologySuite.Utilities;
 using Wintellect.PowerCollections;
+
 namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
@@ -14,7 +14,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// a single polygon in the complete buffer, with zero or more holes, or
     /// one or more connected holes.
     /// </summary>
-    public class BufferSubgraph : IComparable
+    internal class BufferSubgraph : IComparable
     {
         private readonly RightmostEdgeFinder _finder;
         private readonly List<DirectedEdge> _dirEdgeList  = new List<DirectedEdge>();

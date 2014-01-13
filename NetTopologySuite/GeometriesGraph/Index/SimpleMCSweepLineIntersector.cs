@@ -18,12 +18,6 @@ namespace NetTopologySuite.GeometriesGraph.Index
         int _nOverlaps;
 
 
-        ///// <summary>
-        ///// A SimpleMCSweepLineIntersector creates monotone chains from the edges
-        ///// and compares them using a simple sweep-line along the x-axis.
-        ///// </summary>
-        /*public SimpleMCSweepLineIntersector() { }*/
-
         /// <summary>
         /// 
         /// </summary>
@@ -89,9 +83,9 @@ namespace NetTopologySuite.GeometriesGraph.Index
             for (int i = 0; i < startIndex.Length - 1; i++) 
             {
                 MonotoneChain mc = new MonotoneChain(mce, i);
-                SweepLineEvent insertEvent = new SweepLineEvent(edgeSet, mce.GetMinX(i), null, mc);
+                SweepLineEvent insertEvent = new SweepLineEvent(edgeSet, mce.GetMinX(i), mc);
                 _events.Add(insertEvent);
-                _events.Add(new SweepLineEvent(edgeSet, mce.GetMaxX(i), insertEvent, mc));
+                _events.Add(new SweepLineEvent(mce.GetMaxX(i), insertEvent));
             }
         }
 
@@ -103,6 +97,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         private void PrepareEvents()
         {
             _events.Sort();
+            // set DELETE event indexes
             for (int i = 0; i < _events.Count; i++ )
             {
                 SweepLineEvent ev = _events[i];
@@ -144,7 +139,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
 
             /*
             * Since we might need to test for self-intersections,
-            * include current insert event object in list of event objects to test.
+            * include current INSERT event object in list of event objects to test.
             * Last index can be skipped, because it must be a Delete event.
             */
             for (int i = start; i < end; i++ ) 
@@ -153,9 +148,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
                 if (ev1.IsInsert) 
                 {
                     MonotoneChain mc1 = (MonotoneChain)ev1.Object;
-                    // don't compare edges in same group
-                    // null group indicates that edges should be compared
-                    if (ev0.EdgeSet == null || (ev0.EdgeSet != ev1.EdgeSet)) 
+                    // don't compare edges in same group, if labels are present
+                    if (!ev0.IsSameLabel(ev1)) 
                     {
                         mc0.ComputeIntersections(mc1, si);
                         _nOverlaps++;

@@ -41,7 +41,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>The <see cref="Coordinate" /> at the given index.</returns>
         public Coordinate ExtractPoint(double index)
         {
-            var loc = LengthLocationMap.GetLocation(_linearGeom, index);
+            LinearLocation loc = LengthLocationMap.GetLocation(_linearGeom, index);
             return loc.GetCoordinate(_linearGeom);
         }
 
@@ -59,8 +59,9 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>The Coordinate at the given index</returns>
         public Coordinate ExtractPoint(double index, double offsetDistance)
         {
-            var loc = LengthLocationMap.GetLocation(_linearGeom, index);
-            return loc.GetSegment(_linearGeom).PointAlongOffset(loc.SegmentFraction, offsetDistance);
+            LinearLocation loc = LengthLocationMap.GetLocation(_linearGeom, index);
+            LinearLocation locLow = loc.ToLowest(_linearGeom);
+            return locLow.GetSegment(_linearGeom).PointAlongOffset(locLow.SegmentFraction, offsetDistance);
         }
 
         /// <summary>
@@ -74,15 +75,15 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns></returns>
         public IGeometry ExtractLine(double startIndex, double endIndex)
         {
-            var lil = new LocationIndexedLine(_linearGeom);
-            var startIndex2 = ClampIndex(startIndex);
-            var endIndex2 = ClampIndex(endIndex);
+            LocationIndexedLine lil = new LocationIndexedLine(_linearGeom);
+            double startIndex2 = ClampIndex(startIndex);
+            double endIndex2 = ClampIndex(endIndex);
             // if extracted line is zero-length, resolve start lower as well to ensure they are equal
-            var resolveStartLower = startIndex2 == endIndex2;
-            var startLoc = LocationOf(startIndex2, resolveStartLower);
+            bool resolveStartLower = startIndex2 == endIndex2;
+            LinearLocation startLoc = LocationOf(startIndex2, resolveStartLower);
             //    LinearLocation endLoc = locationOf(endIndex2, true);
             //    LinearLocation startLoc = locationOf(startIndex2);
-            var endLoc = LocationOf(endIndex2);
+            LinearLocation endLoc = LocationOf(endIndex2);
             return ExtractLineByLocation.Extract(_linearGeom, startLoc, endLoc);
         }
 
@@ -154,11 +155,11 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>A pair of indices for the start and end of the subline..</returns>
         public double[] IndicesOf(IGeometry subLine)
         {
-            var locIndex = LocationIndexOfLine.IndicesOf(_linearGeom, subLine);
-            var index = new[]
+            LinearLocation[] locIndex = LocationIndexOfLine.IndicesOf(_linearGeom, subLine);
+            double[] index =
             {
                 LengthLocationMap.GetLength(_linearGeom, locIndex[0]),
-                LengthLocationMap.GetLength(_linearGeom, locIndex[1]),
+                LengthLocationMap.GetLength(_linearGeom, locIndex[1])
             };
             return index;
         }
@@ -214,11 +215,11 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>A valid index value</returns>
         public double ClampIndex(double index)
         {
-            var posIndex = PositiveIndex(index);
-            var startIndex = StartIndex;
+            double posIndex = PositiveIndex(index);
+            double startIndex = StartIndex;
             if (posIndex < startIndex) return startIndex;
 
-            var endIndex = EndIndex;
+            double endIndex = EndIndex;
             if (posIndex > endIndex) return endIndex;
 
             return posIndex;

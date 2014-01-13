@@ -729,6 +729,9 @@
     <Compile Include="..\..\NetTopologySuite\Noding\InteriorIntersectionFinder.cs">
       <Link>Noding\InteriorIntersectionFinder.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\InteriorIntersectionFinderAdder.cs">
+      <Link>Noding\InteriorIntersectionFinderAdder.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\Noding\IntersectionAdder.cs">
       <Link>Noding\IntersectionAdder.cs</Link>
     </Compile>
@@ -1148,6 +1151,12 @@
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Simplify\TopologyPreservingSimplifier.cs">
       <Link>Simplify\TopologyPreservingSimplifier.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Simplify\VWLineSimplifier.cs">
+      <Link>Simplify\VWLineSimplifier.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Simplify\VWSimplifier.cs">
+      <Link>Simplify\VWSimplifier.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Triangulate\ConformingDelaunayTriangulationBuilder.cs">
       <Link>Triangulate\ConformingDelaunayTriangulationBuilder.cs</Link>

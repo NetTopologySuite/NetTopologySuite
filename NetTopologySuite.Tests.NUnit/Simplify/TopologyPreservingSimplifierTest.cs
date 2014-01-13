@@ -144,7 +144,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-
+        [Test]
         public void TestTinyClosedLineString()
         {
             const string geomStr = "LINESTRING (0 0, 5 0, 5 5, 0 0)";

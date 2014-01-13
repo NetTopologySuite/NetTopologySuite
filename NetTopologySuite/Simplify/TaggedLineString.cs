@@ -39,10 +39,7 @@ namespace NetTopologySuite.Simplify
         /// </summary>
         public int MinimumSize
         {
-            get
-            {
-                return _minimumSize;
-            }
+            get { return _minimumSize; }
         }
 
         /// <summary>
@@ -50,10 +47,7 @@ namespace NetTopologySuite.Simplify
         /// </summary>
         public ILineString Parent
         {
-            get
-            {
-                return _parentLine;
-            }
+            get { return _parentLine; }
         }
 
         /// <summary>
@@ -61,10 +55,7 @@ namespace NetTopologySuite.Simplify
         /// </summary>
         public Coordinate[] ParentCoordinates
         {
-            get
-            {
-                return _parentLine.Coordinates;
-            }
+            get { return _parentLine.Coordinates; }
         }
 
         /// <summary>
@@ -72,10 +63,7 @@ namespace NetTopologySuite.Simplify
         /// </summary>
         public Coordinate[] ResultCoordinates
         {
-            get
-            {
-                return ExtractCoordinates(_resultSegs);
-            }
+            get { return ExtractCoordinates(_resultSegs); }
         }
 
         /// <summary>
@@ -97,7 +85,7 @@ namespace NetTopologySuite.Simplify
         /// <returns></returns>
         public TaggedLineSegment GetSegment(int i)
         {
-            return _segs[i]; 
+            return _segs[i];
         }
 
         /// <summary>
@@ -119,10 +107,7 @@ namespace NetTopologySuite.Simplify
         /// </summary>
         public TaggedLineSegment[] Segments
         {
-            get
-            {
-                return _segs;
-            }
+            get { return _segs; }
         }
 
         /// <summary>
@@ -140,7 +125,8 @@ namespace NetTopologySuite.Simplify
         /// <returns></returns>
         public ILineString AsLineString()
         {
-            return _parentLine.Factory.CreateLineString(ExtractCoordinates(_resultSegs));        
+            Coordinate[] coordinates = ExtractCoordinates(_resultSegs);
+            return _parentLine.Factory.CreateLineString(coordinates);
         }
 
         /// <summary>
@@ -149,7 +135,8 @@ namespace NetTopologySuite.Simplify
         /// <returns></returns>
         public ILinearRing AsLinearRing()
         {
-            return _parentLine.Factory.CreateLinearRing(ExtractCoordinates(_resultSegs));
+            Coordinate[] coordinates = ExtractCoordinates(_resultSegs);
+            return _parentLine.Factory.CreateLinearRing(coordinates);
         }
 
         /// <summary>

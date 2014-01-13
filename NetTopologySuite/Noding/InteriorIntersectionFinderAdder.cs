@@ -1,5 +1,4 @@
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 
@@ -13,14 +12,8 @@ namespace NetTopologySuite.Noding
     /// This class is used primarily for Snap-Rounding.  
     /// For general-purpose noding, use <see cref="IntersectionAdder"/>.
     /// </summary>
-    /// <remarks>
-    /// This class is obsolete. 
-    /// Use <see cref="InteriorIntersectionFinderAdder"/> instead.
-    /// </remarks>
     /// <seealso cref="IntersectionAdder"/>
-    /// <seealso cref="InteriorIntersectionFinderAdder"/>
-    [Obsolete("see InteriorIntersectionFinderAdder")]
-    public class IntersectionFinderAdder : ISegmentIntersector
+    public class InteriorIntersectionFinderAdder : ISegmentIntersector
     {
         private readonly LineIntersector _li;
         private readonly IList<Coordinate> _interiorIntersections;
@@ -29,7 +22,7 @@ namespace NetTopologySuite.Noding
         /// Creates an intersection finder which finds all proper intersections.
         /// </summary>
         /// <param name="li">The <see cref="LineIntersector" /> to use.</param>
-        public IntersectionFinderAdder(LineIntersector li)
+        public InteriorIntersectionFinderAdder(LineIntersector li)
         {
             _li = li;
             _interiorIntersections = new List<Coordinate>();

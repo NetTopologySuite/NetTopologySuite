@@ -14,5 +14,10 @@ namespace Open.Topology.TestRunner.Functions
         {
             return TopologyPreservingSimplifier.Simplify(g, distance);
         }
+
+        public static IGeometry SimplifyVW(IGeometry g, double distance)
+        {
+            return VWSimplifier.Simplify(g, distance);
+        }
     }
 }

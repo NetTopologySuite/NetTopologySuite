@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Triangulate.QuadEdge;
 using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Triangulate.QuadEdge;
 using Wintellect.PowerCollections;
 
 namespace NetTopologySuite.Triangulate
@@ -41,15 +41,11 @@ namespace NetTopologySuite.Triangulate
         /// All linear components in the input will be used as constraints.
         /// The constraint vertices do not have to be disjoint from 
         /// the site vertices.
-        /// </summary>
-        /// <remarks>The lines to constraint to</remarks>
-        ///
+        /// The constraints must not contain duplicate segments (up to orientation).
+        /// </summary>        
         public IGeometry Constraints
         {
-            set
-            {
-                _constraintLines = value;
-            }
+            set { _constraintLines = value; }
         }
 
         /// <summary>
@@ -57,25 +53,18 @@ namespace NetTopologySuite.Triangulate
         /// to improved the robustness of the triangulation computation.
         /// A tolerance of 0.0 specifies that no snapping will take place.
         /// </summary>
-        /// <remarks>The tolerance distance to use</remarks>
         public double Tolerance
         {
-            get
-            {
-                return _tolerance;
-            }
-            set
-            {
-                _tolerance = value;
-            }
+            get { return _tolerance; }
+            set { _tolerance = value; }
         }
 
         private void Create()
         {
-            if (_subdiv != null) return;
+            if (_subdiv != null)
+                return;
 
-            var siteEnv = DelaunayTriangulationBuilder.Envelope(_siteCoords);
-
+            Envelope siteEnv = DelaunayTriangulationBuilder.Envelope(_siteCoords);
             IList<Segment> segments = new List<Segment>();
             if (_constraintLines != null)
             {
@@ -84,13 +73,10 @@ namespace NetTopologySuite.Triangulate
                 segments = CreateConstraintSegments(_constraintLines);
             }
 
-            var sites = CreateSiteVertices(_siteCoords);
+            IEnumerable<Vertex> sites = CreateSiteVertices(_siteCoords);
 
-
-            var cdt = new ConformingDelaunayTriangulator(sites, _tolerance);
-
+            ConformingDelaunayTriangulator cdt = new ConformingDelaunayTriangulator(sites, _tolerance);
             cdt.SetConstraints(segments, new List<Vertex>(_constraintVertexMap.Values));
-
             cdt.FormInitialDelaunay();
             cdt.EnforceConstraints();
             _subdiv = cdt.Subdivision;
@@ -98,8 +84,8 @@ namespace NetTopologySuite.Triangulate
 
         private IEnumerable<Vertex> CreateSiteVertices(IEnumerable<Coordinate> coords)
         {
-            var verts = new List<Vertex>();
-            foreach (var coord in coords)
+            List<Vertex> verts = new List<Vertex>();
+            foreach (Coordinate coord in coords)
             {
                 if (_constraintVertexMap.ContainsKey(coord))
                     continue;
@@ -110,7 +96,7 @@ namespace NetTopologySuite.Triangulate
 
         private void CreateVertices(IGeometry geom)
         {
-            var coords = geom.Coordinates;
+            Coordinate[] coords = geom.Coordinates;
             for (int i = 0; i < coords.Length; i++)
             {
                 Vertex v = new ConstraintVertex(coords[i]);
@@ -120,22 +106,18 @@ namespace NetTopologySuite.Triangulate
 
         private static IList<Segment> CreateConstraintSegments(IGeometry geom)
         {
-            var lines = LinearComponentExtracter.GetLines(geom);
-            var constraintSegs = new List<Segment>();
-            foreach (var line in lines)
-            {
-                CreateConstraintSegments((ILineString)line, constraintSegs);
-            }
+            ICollection<IGeometry> lines = LinearComponentExtracter.GetLines(geom);
+            List<Segment> constraintSegs = new List<Segment>();
+            foreach (IGeometry line in lines)
+                CreateConstraintSegments((ILineString) line, constraintSegs);
             return constraintSegs;
         }
 
         private static void CreateConstraintSegments(ILineString line, IList<Segment> constraintSegs)
         {
-            var coords = line.Coordinates;
+            Coordinate[] coords = line.Coordinates;
             for (int i = 1; i < coords.Length; i++)
-            {
                 constraintSegs.Add(new Segment(coords[i - 1], coords[i]));
-            }
         }
 
         /// <summary>
@@ -170,7 +152,6 @@ namespace NetTopologySuite.Triangulate
             Create();
             return _subdiv.GetTriangles(geomFact);
         }
-
     }
 }
 

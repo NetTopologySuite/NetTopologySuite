@@ -1,9 +1,5 @@
-using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
-using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Simplify
 {
@@ -19,13 +15,13 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
             if (g1.GetType() != g2.GetType())
                 return false;
             if (g1 is GeometryCollection)
-                return IsSameStructureCollection((GeometryCollection) g1, (GeometryCollection) g2);
-            else if (g1 is Polygon)
-                return IsSameStructurePolygon((Polygon) g1, (Polygon) g2);
-            else if (g1 is LineString)
-                return IsSameStructureLineString((LineString) g1, (LineString) g2);
-            else if (g1 is Point)
-                return IsSameStructurePoint((Point) g1, (Point) g2);
+                return IsSameStructureCollection((GeometryCollection)g1, (GeometryCollection)g2);
+            if (g1 is Polygon)
+                return IsSameStructurePolygon((Polygon)g1, (Polygon)g2);
+            if (g1 is LineString)
+                return IsSameStructureLineString((LineString)g1, (LineString)g2);
+            if (g1 is Point)
+                return IsSameStructurePoint((Point)g1, (Point)g2);
 
             NetTopologySuite.Utilities.Assert.ShouldNeverReachHere("Unsupported Geometry class: " + g1.GetType().FullName);
             return false;

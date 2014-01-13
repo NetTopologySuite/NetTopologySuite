@@ -76,6 +76,15 @@
     <Compile Include="..\..\NetTopologySuite\IO\KML\KMLWriter.cs">
       <Link>IO\KML\KMLWriter.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite\Noding\InteriorIntersectionFinderAdder.cs">
+      <Link>Noding\InteriorIntersectionFinderAdder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Simplify\VWLineSimplifier.cs">
+      <Link>Simplify\VWLineSimplifier.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Simplify\VWSimplifier.cs">
+      <Link>Simplify\VWSimplifier.cs</Link>
+    </Compile>
     <Compile Include="..\..\SharedAssemblyVersion.cs">
       <Link>Properties\SharedAssemblyVersion.cs</Link>
     </Compile>

@@ -48,16 +48,16 @@ namespace NetTopologySuite.Simplify
             _usePt = new bool[_pts.Length];
             for (int i = 0; i < _pts.Length; i++)
                 _usePt[i] = true;
-            
+
             SimplifySection(0, _pts.Length - 1);
             CoordinateList coordList = new CoordinateList();
-            for (int i = 0; i < _pts.Length; i++)            
+            for (int i = 0; i < _pts.Length; i++)
                 if (_usePt[i])
-                    coordList.Add(new Coordinate(_pts[i]));            
+                    coordList.Add(new Coordinate(_pts[i]));
             return coordList.ToCoordinateArray();
         }
 
-        private readonly LineSegment seg = new LineSegment();
+        private readonly LineSegment _seg = new LineSegment();
 
         /// <summary>
         /// 
@@ -67,14 +67,14 @@ namespace NetTopologySuite.Simplify
         private void SimplifySection(int i, int j)
         {
             if ((i + 1) == j)
-                return;            
-            seg.P0 = _pts[i];
-            seg.P1 = _pts[j];
+                return;
+            _seg.P0 = _pts[i];
+            _seg.P1 = _pts[j];
             double maxDistance = -1.0;
             int maxIndex = i;
             for (int k = i + 1; k < j; k++)
             {
-                double distance = seg.Distance(_pts[k]);
+                double distance = _seg.Distance(_pts[k]);
                 if (distance > maxDistance)
                 {
                     maxDistance = distance;
@@ -82,8 +82,8 @@ namespace NetTopologySuite.Simplify
                 }
             }
             if (maxDistance <= DistanceTolerance)
-                for (int k = i + 1; k < j; k++)                
-                    _usePt[k] = false;                            
+                for (int k = i + 1; k < j; k++)
+                    _usePt[k] = false;
             else
             {
                 SimplifySection(i, maxIndex);

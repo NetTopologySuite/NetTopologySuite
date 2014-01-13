@@ -60,7 +60,7 @@ namespace NetTopologySuite.Simplify
         /// <returns></returns>
         public static IGeometry Simplify(IGeometry geom, double distanceTolerance)
         {
-            var tss = new TopologyPreservingSimplifier(geom);
+            TopologyPreservingSimplifier tss = new TopologyPreservingSimplifier(geom);
             tss.DistanceTolerance = distanceTolerance;
             return tss.GetResultGeometry();
         }
@@ -83,14 +83,8 @@ namespace NetTopologySuite.Simplify
         /// </summary>
         public double DistanceTolerance
         {
-            get
-            {
-                return _lineSimplifier.DistanceTolerance;
-            }
-            set
-            {
-                _lineSimplifier.DistanceTolerance = value;
-            }
+            get { return _lineSimplifier.DistanceTolerance; }
+            set { _lineSimplifier.DistanceTolerance = value; }
         }
 
         /// <summary>
@@ -100,12 +94,15 @@ namespace NetTopologySuite.Simplify
         public IGeometry GetResultGeometry()
         {
             // empty input produces an empty result
-            if (_inputGeom.IsEmpty) return (IGeometry)_inputGeom.Clone();
+            if (_inputGeom.IsEmpty)
+                return (IGeometry)_inputGeom.Clone();
 
             _lineStringMap = new Dictionary<ILineString, TaggedLineString>();
-            _inputGeom.Apply(new LineStringMapBuilderFilter(this));
+            LineStringMapBuilderFilter filter = new LineStringMapBuilderFilter(this);
+            _inputGeom.Apply(filter);
             _lineSimplifier.Simplify(_lineStringMap.Values);
-            var result = (new LineStringTransformer(this)).Transform(_inputGeom);
+            LineStringTransformer transformer = new LineStringTransformer(this);
+            IGeometry result = transformer.Transform(_inputGeom);
             return result;
         }
 
@@ -130,13 +127,14 @@ namespace NetTopologySuite.Simplify
             protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
             {
                 // for empty coordinate sequences return null
-                if (coords.Count == 0) return null;
+                if (coords.Count == 0)
+                    return null;
 
                 // for linear components (including rings), simplify the linestring
-                var s = parent as ILineString;
+                ILineString s = parent as ILineString;
                 if (s != null)
                 {
-                    var taggedLine = _container._lineStringMap[s];
+                    TaggedLineString taggedLine = _container._lineStringMap[s];
                     return CreateCoordinateSequence(taggedLine.ResultCoordinates);
                 }
                 // for anything else (e.g. points) just copy the coordinates
@@ -168,15 +166,14 @@ namespace NetTopologySuite.Simplify
             /// <param name="geom">A geometry of any type</param>
             public void Filter(IGeometry geom)
             {
-                var line = geom as ILineString;
-                if (line != null)
-                {
-                    if (line.IsEmpty) return;
-                    var minSize = line.IsClosed ? 4 : 2;
-        
-                    var taggedLine = new TaggedLineString(line, minSize);
-                    _container._lineStringMap.Add(line, taggedLine);
-                }
+                ILineString line = geom as ILineString;
+                if (line == null)
+                    return;
+                if (line.IsEmpty)
+                    return;
+                int minSize = line.IsClosed ? 4 : 2;
+                TaggedLineString taggedLine = new TaggedLineString(line, minSize);
+                _container._lineStringMap.Add(line, taggedLine);
             }
         }
     }

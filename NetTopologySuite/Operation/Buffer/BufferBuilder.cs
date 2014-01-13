@@ -22,7 +22,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// Retrying the computation in a fixed precision
     /// can produce more robust results.
     /// </remarks>
-    public class BufferBuilder
+    internal class BufferBuilder
     {
         ///<summary>Compute the change in depth as an edge is crossed from R to L</summary>
         private static int DepthDelta(Label label)

@@ -104,7 +104,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <returns>A list of Coordinates for the intersections.</returns>
         private IList<Coordinate> FindInteriorIntersections(IList<ISegmentString> segStrings, LineIntersector li)
         {
-            IntersectionFinderAdder intFinderAdder = new IntersectionFinderAdder(li);
+            InteriorIntersectionFinderAdder intFinderAdder = new InteriorIntersectionFinderAdder(li);
             _noder.SegmentIntersector = intFinderAdder;
             _noder.ComputeNodes(segStrings);
             return intFinderAdder.InteriorIntersections;

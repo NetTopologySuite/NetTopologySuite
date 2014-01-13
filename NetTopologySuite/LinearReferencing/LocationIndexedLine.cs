@@ -24,10 +24,10 @@ namespace NetTopologySuite.LinearReferencing
             _linearGeom = linearGeom;
         }
 
-       private static bool CheckGeometryType(IGeometry linearGeometry)
-       {
-           return ((linearGeometry is ILineString || linearGeometry is IMultiLineString));
-       }
+        private static bool CheckGeometryType(IGeometry linearGeometry)
+        {
+            return ((linearGeometry is ILineString || linearGeometry is IMultiLineString));
+        }
 
         /// <summary>
         /// Computes the <see cref="Coordinate" />for the point on the line at the given index.
@@ -61,7 +61,8 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>The Coordinate at the given index</returns>
         public Coordinate ExtractPoint(LinearLocation index, double offsetDistance)
         {
-            return index.GetSegment(_linearGeom).PointAlongOffset(index.SegmentFraction, offsetDistance);
+            LinearLocation indexLow = index.ToLowest(_linearGeom);
+            return indexLow.GetSegment(_linearGeom).PointAlongOffset(indexLow.SegmentFraction, offsetDistance);
         }
 
         ///<summary>
@@ -203,7 +204,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>A valid index value.</returns>
         public LinearLocation ClampIndex(LinearLocation index)
         {
-            var loc = (LinearLocation) index.Clone();
+            LinearLocation loc = (LinearLocation)index.Clone();
             loc.Clamp(_linearGeom);
             return loc;
         }

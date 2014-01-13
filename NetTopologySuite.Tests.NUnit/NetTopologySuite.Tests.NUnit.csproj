@@ -194,6 +194,7 @@
     <Compile Include="Precision\GeometryPrecisionReducerTest.cs" />
     <Compile Include="Precision\SimpleGeometryPrecisionReducerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Simplify\VWSimplifierTest.cs" />
     <Compile Include="Simplify\DouglasPeuckerSimplifierTest.cs" />
     <Compile Include="Simplify\GeometryOperationValidator.cs" />
     <Compile Include="Simplify\SameStructureTester.cs" />

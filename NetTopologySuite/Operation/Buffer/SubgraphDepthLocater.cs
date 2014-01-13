@@ -13,7 +13,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// The input subgraphs are assumed to have had depths
     /// already calculated for their edges.
     /// </summary>
-    public class SubgraphDepthLocater
+    internal class SubgraphDepthLocater
     {
         private readonly IList<BufferSubgraph> _subgraphs;
         private readonly LineSegment _seg = new LineSegment();

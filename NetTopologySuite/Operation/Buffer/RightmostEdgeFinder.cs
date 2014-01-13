@@ -10,7 +10,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// A RightmostEdgeFinder find the DirectedEdge in a list which has the highest coordinate,
     /// and which is oriented L to R at that point. (I.e. the right side is on the RHS of the edge.)
     /// </summary>
-    public class RightmostEdgeFinder
+    internal class RightmostEdgeFinder
     {        
         private int minIndex = -1;
         private Coordinate minCoord;

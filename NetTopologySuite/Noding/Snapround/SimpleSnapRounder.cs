@@ -99,7 +99,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <returns>A list of <see cref="Coordinate" />s for the intersections.</returns>
         private static IList<Coordinate> FindInteriorIntersections(IList<ISegmentString> segStrings, LineIntersector li)
         {
-            IntersectionFinderAdder intFinderAdder = new IntersectionFinderAdder(li);
+            InteriorIntersectionFinderAdder intFinderAdder = new InteriorIntersectionFinderAdder(li);
             SinglePassNoder noder = new MCIndexNoder(intFinderAdder);
             noder.ComputeNodes(segStrings);
             return intFinderAdder.InteriorIntersections;

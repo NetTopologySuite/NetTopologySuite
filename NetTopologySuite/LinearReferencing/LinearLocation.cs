@@ -1,5 +1,6 @@
 using System;
 using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 
 #if PCL
@@ -91,12 +92,24 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="componentIndex">Index of the component.</param>
         /// <param name="segmentIndex">Index of the segment.</param>
         /// <param name="segmentFraction">The segment fraction.</param>
-        public LinearLocation(int componentIndex, int segmentIndex, double segmentFraction)
+        public LinearLocation(int componentIndex, int segmentIndex, double segmentFraction) :
+            this(componentIndex, segmentIndex, segmentFraction, true) { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LinearLocation"/> class:
+        /// creates a location referring to the start of a linear geometry.
+        /// </summary>
+        /// <param name="componentIndex">Index of the component.</param>
+        /// <param name="segmentIndex">Index of the segment.</param>
+        /// <param name="segmentFraction">The segment fraction.</param>
+        /// <param name="normalize">If <c>true</c>, ensures the individual values are locally valid.</param>
+        private LinearLocation(int componentIndex, int segmentIndex, double segmentFraction, bool normalize)
         {
             _componentIndex = componentIndex;
             _segmentIndex = segmentIndex;
             _segmentFraction = segmentFraction;
-            Normalize();
+            if (normalize)
+                Normalize();
         }
 
         /// <summary>
@@ -109,7 +122,7 @@ namespace NetTopologySuite.LinearReferencing
             _segmentIndex = loc._segmentIndex;
             _segmentFraction = loc._segmentFraction;
         }
-        
+
         /// <summary>
         /// Ensures the individual values are locally valid.
         /// Does not ensure that the indexes are valid for
@@ -223,10 +236,7 @@ namespace NetTopologySuite.LinearReferencing
         /// </summary>
         public int ComponentIndex
         {
-            get
-            {
-                return _componentIndex;
-            }
+            get { return _componentIndex; }
         }
 
         /// <summary>
@@ -234,10 +244,7 @@ namespace NetTopologySuite.LinearReferencing
         /// </summary>
         public int SegmentIndex
         {
-            get
-            {
-                return _segmentIndex;
-            }
+            get { return _segmentIndex; }
         }
 
         /// <summary>
@@ -245,10 +252,7 @@ namespace NetTopologySuite.LinearReferencing
         /// </summary>
         public double SegmentFraction
         {
-            get
-            {
-                return _segmentFraction;
-            }
+            get { return _segmentFraction; }
         }
 
         /// <summary>
@@ -257,10 +261,7 @@ namespace NetTopologySuite.LinearReferencing
         /// </summary>
         public bool IsVertex
         {
-            get
-            {
-                return _segmentFraction <= 0.0 || _segmentFraction >= 1.0;
-            }
+            get { return _segmentFraction <= 0.0 || _segmentFraction >= 1.0; }
         }
 
         /// <summary>
@@ -355,17 +356,24 @@ namespace NetTopologySuite.LinearReferencing
         public int CompareTo(LinearLocation other)
         {
             // compare component indices
-            if (_componentIndex < other.ComponentIndex) return -1;
-            if (_componentIndex > other.ComponentIndex) return 1;
-            
+            if (_componentIndex < other.ComponentIndex)
+                return -1;
+            if (_componentIndex > other.ComponentIndex)
+                return 1;
+
             // compare segments
-            if (_segmentIndex < other.SegmentIndex) return -1;
-            if (_segmentIndex > other.SegmentIndex) return 1;
-            
+            if (_segmentIndex < other.SegmentIndex)
+                return -1;
+            if (_segmentIndex > other.SegmentIndex)
+                return 1;
+
             // same segment, so compare segment fraction
-            if (double.IsNaN(_segmentFraction) && double.IsNaN(other._segmentFraction)) return 0;
-            if (_segmentFraction < other.SegmentFraction) return -1;
-            if (_segmentFraction > other.SegmentFraction) return 1;
+            if (double.IsNaN(_segmentFraction) && double.IsNaN(other._segmentFraction))
+                return 0;
+            if (_segmentFraction < other.SegmentFraction)
+                return -1;
+            if (_segmentFraction > other.SegmentFraction)
+                return 1;
 
             // same location
             return 0;
@@ -384,14 +392,20 @@ namespace NetTopologySuite.LinearReferencing
         public int CompareLocationValues(int componentIndex1, int segmentIndex1, double segmentFraction1)
         {
             // compare component indices
-            if (_componentIndex < componentIndex1) return -1;
-            if (_componentIndex > componentIndex1) return 1;
+            if (_componentIndex < componentIndex1)
+                return -1;
+            if (_componentIndex > componentIndex1)
+                return 1;
             // compare segments
-            if (_segmentIndex < segmentIndex1) return -1;
-            if (_segmentIndex > segmentIndex1) return 1;
+            if (_segmentIndex < segmentIndex1)
+                return -1;
+            if (_segmentIndex > segmentIndex1)
+                return 1;
             // same segment, so compare segment fraction
-            if (_segmentFraction < segmentFraction1) return -1;
-            if (_segmentFraction > segmentFraction1) return 1;
+            if (_segmentFraction < segmentFraction1)
+                return -1;
+            if (_segmentFraction > segmentFraction1)
+                return 1;
             // same location
             return 0;
         }
@@ -415,14 +429,20 @@ namespace NetTopologySuite.LinearReferencing
             int componentIndex1, int segmentIndex1, double segmentFraction1)
         {
             // compare component indices
-            if (componentIndex0 < componentIndex1) return -1;
-            if (componentIndex0 > componentIndex1) return 1;
+            if (componentIndex0 < componentIndex1)
+                return -1;
+            if (componentIndex0 > componentIndex1)
+                return 1;
             // compare segments
-            if (segmentIndex0 < segmentIndex1) return -1;
-            if (segmentIndex0 > segmentIndex1) return 1;
+            if (segmentIndex0 < segmentIndex1)
+                return -1;
+            if (segmentIndex0 > segmentIndex1)
+                return 1;
             // same segment, so compare segment fraction
-            if (segmentFraction0 < segmentFraction1) return -1;
-            if (segmentFraction0 > segmentFraction1) return 1;
+            if (segmentFraction0 < segmentFraction1)
+                return -1;
+            if (segmentFraction0 > segmentFraction1)
+                return 1;
             // same location
             return 0;
         }
@@ -434,13 +454,15 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns><c>true</c> if the locations are on the same segment of the parent geometry</returns>
         public bool IsOnSameSegment(LinearLocation loc)
         {
-            if (_componentIndex != loc._componentIndex) return false;
-            if (_segmentIndex == loc._segmentIndex) return true;
-            if (loc._segmentIndex - _segmentIndex == 1
-                    && loc._segmentFraction == 0.0)
+            if (_componentIndex != loc._componentIndex)
+                return false;
+            if (_segmentIndex == loc._segmentIndex)
                 return true;
-            if (_segmentIndex - loc._segmentIndex == 1
-                    && _segmentFraction == 0.0)
+            if (loc._segmentIndex - _segmentIndex == 1 &&
+                loc._segmentFraction == 0.0)
+                return true;
+            if (_segmentIndex - loc._segmentIndex == 1 &&
+                _segmentFraction == 0.0)
                 return true;
             return false;
         }
@@ -453,11 +475,32 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>True if the location is a component endpoint</returns>
         public bool IsEndpoint(IGeometry linearGeom)
         {
-            var lineComp = (ILineString)linearGeom.GetGeometryN(_componentIndex);
+            ILineString lineComp = (ILineString)linearGeom.GetGeometryN(_componentIndex);
             // check for endpoint
-            var nseg = lineComp.NumPoints - 1;
-            return _segmentIndex >= nseg
-                || (_segmentIndex == nseg && _segmentFraction >= 1.0);
+            int nseg = lineComp.NumPoints - 1;
+            return _segmentIndex >= nseg ||
+                (_segmentIndex == nseg && _segmentFraction >= 1.0);
+        }
+
+        /// <summary>
+        /// Converts a linear location to the lowest equivalent location index.
+        /// The lowest index has the lowest possible component and segment indices.
+        /// Specifically:
+        /// * if the location point is an endpoint, a location value is returned as (nseg-1, 1.0)
+        /// * if the location point is ambiguous (i.e. an endpoint and a startpoint), the lowest endpoint location is returned
+        /// If the location index is already the lowest possible value, the original location is returned.
+        /// </summary>
+        /// <param name="linearGeom">The linear geometry referenced by this location.</param>
+        /// <returns>The lowest equivalent location.</returns>
+        public LinearLocation ToLowest(IGeometry linearGeom)
+        {
+            // TODO: compute lowest component index
+            IGeometry lineComp = linearGeom.GetGeometryN(_componentIndex);
+            int nseg = lineComp.NumPoints - 1;
+            // if not an endpoint can be returned directly
+            if (_segmentIndex < nseg)
+                return this;
+            return new LinearLocation(_componentIndex, nseg, 1.0, false);
         }
 
         /// <summary>
