@@ -118,7 +118,7 @@
     <Exec Command="$(NuGetCommand) NTS.IO.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
     <Exec Command="$(NuGetCommand) NTS.IO.SpatiaLite.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
     <Exec Command="$(NuGetCommand) NTS.IO.SqlServer.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
-    <!--Exec Command="$(NuGetCommand) NTS.IO.GeoJSON.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/-->
+    <Exec Command="$(NuGetCommand) NTS.IO.GeoJSON.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
     <Exec Command="$(NuGetCommand) ProjNet\ProjNet.nuspec -Version $(ProjNetVersion) -outputdirectory $(NuGetOutDir)"/>
   </Target>
   
