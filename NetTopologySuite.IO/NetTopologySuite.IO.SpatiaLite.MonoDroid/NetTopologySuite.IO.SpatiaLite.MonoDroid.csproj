@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D74E29D7-6F93-4A24-AF81-3C05C7AD8A2F}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NetTopologySuite.IO.SpatiaLite.MonoDroid</RootNamespace>
+    <AssemblyName>NetTopologySuite.IO.SpatiaLite.MonoDroid</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Debug\MonoDroid\AnyCPU\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Release\MonoDroid\AnyCPU\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\NetTopologySuite.IO.SpatiaLite\GaiaGeoEnums.cs">
+      <Link>GaiaGeoEnums.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.SpatiaLite\GaiaGeoIO.cs">
+      <Link>GaiaGeoIO.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.SpatiaLite\GaiaGeoReader.cs">
+      <Link>GaiaGeoReader.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.SpatiaLite\GaiaGeoWriter.cs">
+      <Link>GaiaGeoWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.SpatiaLite\Properties\AssemblyInfo.cs" >
+<Link>Properties\AssemblyInfo.cs</Link></Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\GeoAPI\GeoAPI.MonoDroid\GeoAPI.MonoDroid.csproj">
+      <Project>{897a3d5b-501c-49bb-9037-793b957c06a0}</Project>
+      <Name>GeoAPI.MonoDroid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MonoDroid\NetTopologySuite\NetTopologySuite.MonoDroid.csproj">
+      <Project>{11a3e3c2-ca59-4b5a-82a5-6bdf267540f9}</Project>
+      <Name>NetTopologySuite.MonoDroid</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties ProjectLinkReference="ad33b357-e789-4102-8dc3-f18eee507583" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
