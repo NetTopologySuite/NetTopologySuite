@@ -20,16 +20,15 @@
       <frameworkAssembly assemblyName="System.Core" targetFramework="" />
     </frameworkAssemblies>
     <dependencies>
-      <dependency id="GeoAPI" version="1.7.1" />
       <dependency id="NetTopologySuite" version="$version$" />
       <dependency id="Newtonsoft.Json" version="4.03" />
     </dependencies>
   </metadata>
   <files>
     <!--file src="Release\v2.0\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net20\NetTopologySuite.IO.GeoJSON.dll" /-->
-    <!--file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net35-client\NetTopologySuite.IO.GeoJSON.dll" /-->
+    file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net35-client\NetTopologySuite.IO.GeoJSON.dll" /-->
     <file src="Release\v4.0\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net40-client\NetTopologySuite.IO.GeoJSON.dll" />
     <file src="Release\v4.0.3\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net403-client\NetTopologySuite.IO.GeoJSON.dll" />
-	<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net45-client\NetTopologySuite.IO.GeoJSON.dll" />
+    <!--file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net45-client\NetTopologySuite.IO.GeoJSON.dll" /-->
   </files>
 </package>

@@ -17,7 +17,7 @@
     <copyright>Copyright 2013</copyright>
     <language>en-US</language>
     <dependencies>
-      <dependency id="NetTopologySuite" version="1.13.0" />
+      <dependency id="NetTopologySuite" version="$version$" />
       <dependency id="DotSpatial.Topology" />
       <dependency id="DotSpatial.Data" />
     </dependencies>

@@ -20,7 +20,6 @@
       <frameworkAssembly assemblyName="System.Core" targetFramework="" />
     </frameworkAssemblies>
     <dependencies>
-      <dependency id="GeoAPI" version="1.7.0" />
       <dependency id="NetTopologySuite" version="$version$" />
       <dependency id="Microsoft.SqlServer.Types" version="10.50.1600.1" />
     </dependencies>

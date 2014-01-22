@@ -23,7 +23,7 @@
       <frameworkAssembly assemblyName="System.Xml" targetFramework="sl4" />
     </frameworkAssemblies>
     <dependencies>
-      <dependency id="GeoAPI" version="1.7.0" />
+      <dependency id="GeoAPI" version="[1.7.2,1.8)" />
     </dependencies>
   </metadata>
   <files>
