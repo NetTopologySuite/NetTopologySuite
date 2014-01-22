@@ -121,6 +121,7 @@
     <Compile Include="Tests\Various\Issue156Tests.cs" />
     <Compile Include="Tests\Various\Issue171TestFixture.cs" />
     <Compile Include="Tests\Various\Issue172TestFixture.cs" />
+    <Compile Include="Tests\Various\Issue173Fixture.cs" />
     <Compile Include="Tests\Various\Issue68Tests.cs" />
     <Compile Include="Tests\Various\CoversTest.cs" />
     <Compile Include="Tests\Various\DbfDateTest.cs" />
