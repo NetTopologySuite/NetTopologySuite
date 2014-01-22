@@ -1,3 +1,4 @@
+using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
@@ -5,9 +6,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
     //Tests are exposed by CoordinateSequenceTestBase type
     public class CoordinateArraySequenceTest : CoordinateSequenceTestBase
     {
-        public CoordinateArraySequenceTest()
+        protected override ICoordinateSequenceFactory CsFactory
         {
-            base.csFactory = CoordinateArraySequenceFactory.Instance;
+            get { return CoordinateArraySequenceFactory.Instance; }
         }
     }
 }

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Geometries;
-using NUnit.Framework;
 using NetTopologySuite.Triangulate;
 using NetTopologySuite.Utilities;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Triangulate
 {
@@ -46,11 +46,11 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
 
         public void Run(int nPts)
         {
-            var pts = RandomPoints(nPts);
+            ICollection<Coordinate> pts = RandomPoints(nPts);
             Console.WriteLine("# pts: " + pts.Count);
-            var sw = new Stopwatch();
+            Stopwatch sw = new Stopwatch();
             sw.Start();
-            var builder = new DelaunayTriangulationBuilder();
+            DelaunayTriangulationBuilder builder = new DelaunayTriangulationBuilder();
             builder.SetSites(pts);
 
             // don't actually form output geometry, to save time and memory
@@ -66,16 +66,16 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
 
         private static ICollection<Coordinate> RandomPointsInGrid(int nPts)
         {
-            var pts = new List<Coordinate>();
+            List<Coordinate> pts = new List<Coordinate>();
 
-            int nSide = (int) Math.Sqrt(nPts) + 1;
+            int nSide = (int)Math.Sqrt(nPts) + 1;
 
             for (int i = 0; i < nSide; i++)
             {
                 for (int j = 0; j < nSide; j++)
                 {
-                    double x = i*SideLen + SideLen*RND.NextDouble();
-                    double y = j*SideLen + SideLen*RND.NextDouble();
+                    double x = i * SideLen + SideLen * RND.NextDouble();
+                    double y = j * SideLen + SideLen * RND.NextDouble();
                     pts.Add(new Coordinate(x, y));
                 }
             }
@@ -84,12 +84,12 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
 
         private static ICollection<Coordinate> RandomPoints(int nPts)
         {
-            var pts = new List<Coordinate>();
+            List<Coordinate> pts = new List<Coordinate>();
 
             for (int i = 0; i < nPts; i++)
             {
-                double x = SideLen*RND.NextDouble();
-                double y = SideLen*RND.NextDouble();
+                double x = SideLen * RND.NextDouble();
+                double y = SideLen * RND.NextDouble();
                 pts.Add(new Coordinate(x, y));
             }
             return pts;

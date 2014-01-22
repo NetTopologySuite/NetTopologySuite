@@ -1,39 +1,36 @@
 using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 using NUnit.Framework;
 
-/*
- * General test cases for CoordinateSequences.
- * Subclasses can set the factory to test different kinds of CoordinateSequences.
- */
 namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 {
+    /// <summary>
+    /// General test cases for CoordinateSequences.
+    /// Subclasses can set the factory to test different kinds of CoordinateSequences.
+    /// </summary>
     [TestFixture]
     public abstract class CoordinateSequenceTestBase
     {
-        public static int SIZE = 100;
+        protected const int Size = 100;
 
-        protected ICoordinateSequenceFactory csFactory;
+        protected abstract ICoordinateSequenceFactory CsFactory { get; }
 
         [Test]
         public void TestZeroLength()
         {
-            ICoordinateSequence seq = csFactory.Create(0, 3);
+            ICoordinateSequence seq = CsFactory.Create(0, 3);
             Assert.IsTrue(seq.Count == 0);
 
-            ICoordinateSequence seq2 = csFactory.Create((Coordinate[])null);
+            ICoordinateSequence seq2 = CsFactory.Create((Coordinate[])null);
             Assert.IsTrue(seq2.Count == 0);
         }
 
         [Test]
         public void TestCreateBySizeAndModify()
         {
-            Coordinate[] coords = CreateArray(SIZE);
+            Coordinate[] coords = CreateArray(Size);
 
-            ICoordinateSequence seq = csFactory.Create(SIZE, 3);
+            ICoordinateSequence seq = CsFactory.Create(Size, 3);
             for (int i = 0; i < seq.Count; i++)
             {
                 seq.SetOrdinate(i, Ordinate.X, coords[i].X);
@@ -49,9 +46,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         [Test]
         public virtual void Test2DZOrdinate()
         {
-            Coordinate[] coords = CreateArray(SIZE);
+            Coordinate[] coords = CreateArray(Size);
 
-            ICoordinateSequence seq = csFactory.Create(SIZE, 2);
+            ICoordinateSequence seq = CsFactory.Create(Size, 2);
             for (int i = 0; i < seq.Count; i++)
             {
                 seq.SetOrdinate(i, Ordinate.X, coords[i].X);
@@ -68,17 +65,17 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         [Test]
         public void TestCreateByInit()
         {
-            Coordinate[] coords = CreateArray(SIZE);
-            ICoordinateSequence seq = csFactory.Create(coords);
+            Coordinate[] coords = CreateArray(Size);
+            ICoordinateSequence seq = CsFactory.Create(coords);
             Assert.IsTrue(IsEqual(seq, coords));
         }
 
         [Test]
         public void TestCreateByInitAndCopy()
         {
-            Coordinate[] coords = CreateArray(SIZE);
-            ICoordinateSequence seq = csFactory.Create(coords);
-            ICoordinateSequence seq2 = csFactory.Create(seq);
+            Coordinate[] coords = CreateArray(Size);
+            ICoordinateSequence seq = CsFactory.Create(coords);
+            ICoordinateSequence seq2 = CsFactory.Create(seq);
             Assert.IsTrue(IsEqual(seq2, coords));
         }
 
@@ -87,7 +84,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         protected Coordinate[] CreateArray(int size)
         {
             Coordinate[] coords = new Coordinate[size];
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i < size; i++)
+            {
                 double baseUnits = 2 * 1;
                 coords[i] = new Coordinate(baseUnits, baseUnits + 1, baseUnits + 2);
             }
@@ -98,46 +96,58 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         {
             for (int i = 0; i < seq.Count; i++)
             {
-                if (!coord.Equals(seq.GetCoordinate(i))) return false;
+                if (!coord.Equals(seq.GetCoordinate(i)))
+                    return false;
 
-                if (coord.X != seq.GetOrdinate(i, Ordinate.X)) return false;
-                if (coord.Y != seq.GetOrdinate(i, Ordinate.Y)) return false;
-                if (coord.Z != seq.GetOrdinate(i, Ordinate.Z)) return false;
+                if (coord.X != seq.GetOrdinate(i, Ordinate.X))
+                    return false;
+                if (coord.Y != seq.GetOrdinate(i, Ordinate.Y))
+                    return false;
+                if (coord.Z != seq.GetOrdinate(i, Ordinate.Z))
+                    return false;
             }
             return true;
         }
 
-        /*
-        * Tests for equality using all supported accessors,
-        * to provides test coverage for them.
-        *
-        * @param seq
-        * @param coords
-        * @return
-        */
+        /// <summary>
+        /// Tests for equality using all supported accessors,
+        /// to provides test coverage for them.
+        /// </summary>
+        /// <param name="seq"></param>
+        /// <param name="coords"></param>
+        /// <returns></returns>
         bool IsEqual(ICoordinateSequence seq, Coordinate[] coords)
         {
-            if (seq.Count != coords.Length) return false;
+            if (seq.Count != coords.Length)
+                return false;
 
             Coordinate p = new Coordinate();
 
             for (int i = 0; i < seq.Count; i++)
             {
-                if (!coords[i].Equals(seq.GetCoordinate(i))) return false;
+                if (!coords[i].Equals(seq.GetCoordinate(i)))
+                    return false;
 
                 // Ordinate named getters
-                if (coords[i].X != seq.GetX(i)) return false;
-                if (coords[i].Y != seq.GetY(i)) return false;
+                if (coords[i].X != seq.GetX(i))
+                    return false;
+                if (coords[i].Y != seq.GetY(i))
+                    return false;
 
                 // Ordinate indexed getters
-                if (coords[i].X != seq.GetOrdinate(i, Ordinate.X)) return false;
-                if (coords[i].Y != seq.GetOrdinate(i, Ordinate.Y)) return false;
-                if (coords[i].Z != seq.GetOrdinate(i, Ordinate.Z)) return false;
+                if (coords[i].X != seq.GetOrdinate(i, Ordinate.X))
+                    return false;
+                if (coords[i].Y != seq.GetOrdinate(i, Ordinate.Y))
+                    return false;
+                if (coords[i].Z != seq.GetOrdinate(i, Ordinate.Z))
+                    return false;
 
                 // Coordinate getter
                 seq.GetCoordinate(i, p);
-                if (coords[i].X != p.X) return false;
-                if (coords[i].Y != p.Y) return false;
+                if (coords[i].X != p.X)
+                    return false;
+                if (coords[i].Y != p.Y)
+                    return false;
                 //TODO: Remove commented line below when NTS supports Z ordinates in CoordinateArraySequence.GetCoordinate and PackedCoordinateSequence.GetCoordinate
                 //if (coords[i].Z != p.Z) return false;
 

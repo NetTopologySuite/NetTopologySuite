@@ -201,7 +201,10 @@
     <Compile Include="Simplify\TopologyPreservingSimplifierTest.cs" />
     <Compile Include="TestData\EmbeddedResourceManager.cs" />
     <Compile Include="Triangulate\BasicFunctionalityTest.cs" />
+    <Compile Include="Triangulate\ConformingDelaunayTest.cs" />
     <Compile Include="Triangulate\DelaunayPerformanceTest.cs" />
+    <Compile Include="Triangulate\DelaunayTest.cs" />
+    <Compile Include="Triangulate\VoronoiTest.cs" />
     <Compile Include="Utilities\PriorityQueueTest.cs" />
     <Compile Include="Utilities\SerializationUtility.cs" />
   </ItemGroup>

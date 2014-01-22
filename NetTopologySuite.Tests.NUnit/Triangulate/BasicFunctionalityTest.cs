@@ -1,20 +1,19 @@
-    using System;
-    using GeoAPI.Geometries;
-    using NUnit.Framework;
-    using NetTopologySuite.Geometries;
-    using NetTopologySuite.Geometries.Utilities;
-    using NetTopologySuite.IO;
-    using NetTopologySuite.Triangulate;
+using System;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.IO;
+using NetTopologySuite.Triangulate;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Triangulate
 {
     public class BasicFunctionalityTest
     {
-        private const string NTS = "POLYGON ((0 0, 0 140, 220 140, 220 0, 0 0), "+
-            "(10 120, 10.722892984206778 123.73299952016072, "+
-            "12.78705708350404 126.92628720768715, 15.894058348765082 129.11818200940593, "+
-            "19.594690896674148 129.99178285046074, 23.353922466029093 129.42078574705238, "+
-            "26.628248631330855 127.48774465919216, 28.94427190999916 124.47213595499957, "+
+        private const string NTS = "POLYGON ((0 0, 0 140, 220 140, 220 0, 0 0), " +
+            "(10 120, 10.722892984206778 123.73299952016072, " +
+            "12.78705708350404 126.92628720768715, 15.894058348765082 129.11818200940593, " +
+            "19.594690896674148 129.99178285046074, 23.353922466029093 129.42078574705238, " +
+            "26.628248631330855 127.48774465919216, 28.94427190999916 124.47213595499957, " +
             "60 62.36067977499789, 60 120, 60.76120467488713 123.8268343236509, " +
             "62.928932188134524 127.07106781186548, 66.1731656763491 129.23879532511287, " +
             "70 130, 73.8268343236509 129.23879532511287, 75 128.45491108143625, " +
@@ -77,31 +76,31 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
         [Test]
         public void Test1()
         {
-            var geom = _wktReader.Read("POLYGON ((0 0, 0 10, 4 10, 4 8, 6 8, 6 10, 10 10, 10 0, 0 0))");
-            var dtb = new DelaunayTriangulationBuilder();
+            IGeometry geom = _wktReader.Read("POLYGON ((0 0, 0 10, 4 10, 4 8, 6 8, 6 10, 10 10, 10 0, 0 0))");
+            DelaunayTriangulationBuilder dtb = new DelaunayTriangulationBuilder();
             dtb.SetSites(geom);
-            var resultEdges = dtb.GetEdges(geom.Factory);
+            IMultiLineString resultEdges = dtb.GetEdges(geom.Factory);
             Console.WriteLine(resultEdges.AsText());
-            var resultTriangles = dtb.GetTriangles(geom.Factory);
+            IGeometryCollection resultTriangles = dtb.GetTriangles(geom.Factory);
             Console.WriteLine(resultTriangles.AsText());
         }
         [Test]
         public void Test2()
         {
-            var geom = _wktReader.Read("POLYGON ((0 0, 0 10, 4 10, 4 8, 6 8, 6 10, 10 10, 10 0, 0 0))");
-            var dtb = new ConformingDelaunayTriangulationBuilder();
+            IGeometry geom = _wktReader.Read("POLYGON ((0 0, 0 10, 4 10, 4 8, 6 8, 6 10, 10 10, 10 0, 0 0))");
+            ConformingDelaunayTriangulationBuilder dtb = new ConformingDelaunayTriangulationBuilder();
             dtb.SetSites(geom);
-            var resultEdges = dtb.GetEdges(geom.Factory);
+            IMultiLineString resultEdges = dtb.GetEdges(geom.Factory);
             Console.WriteLine(resultEdges.AsText());
-            var resultTriangles = dtb.GetTriangles(geom.Factory);
+            IGeometryCollection resultTriangles = dtb.GetTriangles(geom.Factory);
             Console.WriteLine(resultTriangles.AsText());
         }
 
-        
+
         [Test /*, ExpectedException() */]
         public void TestInvertedItalicNTS()
         {
-            var atb = new AffineTransformationBuilder(
+            AffineTransformationBuilder atb = new AffineTransformationBuilder(
                 new Coordinate(0, 0),
                 new Coordinate(50, 0),
                 new Coordinate(0, 100),
@@ -109,29 +108,29 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
                 new Coordinate(50, 0),
                 new Coordinate(20, 100));
 
-            var geom = _wktReader.Read(NTS);
+            IGeometry geom = _wktReader.Read(NTS);
 
             //Apply italic effect
             geom = atb.GetTransformation().Transform(geom);
             Console.WriteLine(geom.AsText());
 
             //Setup 
-            var dtb = new DelaunayTriangulationBuilder();
+            DelaunayTriangulationBuilder dtb = new DelaunayTriangulationBuilder();
             dtb.SetSites(geom);
-            var result = dtb.GetEdges(geom.Factory);
+            IMultiLineString result = dtb.GetEdges(geom.Factory);
             Console.WriteLine(result.AsText());
         }
 
         [Test]
         public void TestInvertedNTSConforming()
         {
-            var geom = _wktReader.Read(NTS);
+            IGeometry geom = _wktReader.Read(NTS);
             Console.WriteLine(geom.AsText());
 
-            var constraint = (IGeometry)((IPolygon)geom).GetInteriorRingN(0);
+            IGeometry constraint = ((IPolygon)geom).GetInteriorRingN(0);
             constraint = geom.Factory.CreatePolygon((ILinearRing)constraint, null);
             constraint = ((IPolygon)constraint.Buffer(-1)).Shell;
-            var coordinates = constraint.Coordinates;
+            Coordinate[] coordinates = constraint.Coordinates;
             coordinates[coordinates.Length - 1].X -= 1e-7;
             coordinates[coordinates.Length - 1].Y -= 1e-7;
 
@@ -139,9 +138,9 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             Console.WriteLine(constraint.AsText());
 
             //Setup 
-            var dtb = new ConformingDelaunayTriangulationBuilder { Constraints = constraint };
+            ConformingDelaunayTriangulationBuilder dtb = new ConformingDelaunayTriangulationBuilder { Constraints = constraint };
             dtb.SetSites(geom);
-            var result = dtb.GetEdges(geom.Factory);
+            IMultiLineString result = dtb.GetEdges(geom.Factory);
             Console.WriteLine(result.AsText());
 
 
@@ -150,20 +149,20 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
         [Test]
         public void TestInvertedItalicNTSConforming()
         {
-            var atb = new AffineTransformationBuilder(
+            AffineTransformationBuilder atb = new AffineTransformationBuilder(
                 new Coordinate(0, 0), new Coordinate(50, 0), new Coordinate(0, 100),
                 new Coordinate(0, 0), new Coordinate(50, 0), new Coordinate(20, 100));
 
-            var geom = _wktReader.Read(NTS);
-            
+            IGeometry geom = _wktReader.Read(NTS);
+
             //Apply italic effect
             geom = atb.GetTransformation().Transform(geom);
             Console.WriteLine(geom.AsText());
 
-            var constraint = (IGeometry)((IPolygon)geom).GetInteriorRingN(0);
+            IGeometry constraint = ((IPolygon)geom).GetInteriorRingN(0);
             constraint = geom.Factory.CreatePolygon((ILinearRing)constraint, null);
             constraint = ((IPolygon)constraint.Buffer(-1)).Shell;
-            var coordinates = constraint.Coordinates;
+            Coordinate[] coordinates = constraint.Coordinates;
             coordinates[coordinates.Length - 1].X -= 1e-7;
             coordinates[coordinates.Length - 1].Y -= 1e-7;
 
@@ -171,9 +170,9 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             Console.WriteLine(constraint.AsText());
 
             //Setup 
-            var dtb = new ConformingDelaunayTriangulationBuilder { Constraints = constraint };
+            ConformingDelaunayTriangulationBuilder dtb = new ConformingDelaunayTriangulationBuilder { Constraints = constraint };
             dtb.SetSites(geom);
-            var result = dtb.GetEdges(geom.Factory);
+            IMultiLineString result = dtb.GetEdges(geom.Factory);
             Console.WriteLine(result.AsText());
 
 
