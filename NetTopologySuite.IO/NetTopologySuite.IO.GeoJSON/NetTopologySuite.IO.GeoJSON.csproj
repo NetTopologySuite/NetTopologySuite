@@ -15,6 +15,13 @@
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <JSON Condition=" '$(JSON)' == '' ">net40</JSON>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFrameworkVersion)' == 'v2.0' ">
+    <JSON>net20</JSON>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFrameworkVersion)' == 'v3.5' ">
+    <JSON>net35</JSON>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,7 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=4.0.3.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.4.0.3\lib\net35\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.4.0.3\lib\$(JSON)\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
