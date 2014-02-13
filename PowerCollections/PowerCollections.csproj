@@ -12,7 +12,7 @@
     <RootNamespace>Wintellect.PowerCollections</RootNamespace>
     <AssemblyName>PowerCollections</AssemblyName>
     <WarningLevel>4</WarningLevel>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
