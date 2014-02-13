@@ -9,19 +9,19 @@ namespace NetTopologySuite.Tests.Various
     [TestFixture]
     public class Issue58Tests
     {
-        [Test]
+        [Test, Category("Issue58")]
         public void IsValidTest1()
         {
             Execute(GeometryFactory.Floating);
         }
 
-        [Test]
+        [Test, Category("Issue58")]
         public void IsValidTest2()
         {
             Execute(GeometryFactory.FloatingSingle);
         }
 
-        [Test]
+        [Test, Category("Issue58")]
         public void IsValidTest3()
         {
             Execute(GeometryFactory.Fixed);

@@ -20,7 +20,7 @@ namespace NetTopologySuite.Tests.Various
             reader = new WKTReader(factory);
         }
 
-        [Test] 
+        [Test, Category("Issue26")]
         public void TestBufferInvalid1()
         {
             var geom = reader.Read(
@@ -74,7 +74,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsTrue(geom.IsValid, "Buffer shouldn't produce invalid polygons.");
         }
 
-        [Test] 
+        [Test, Category("Issue26")]
         public void TestBufferInvalid2()
         {
             var geom = reader.Read(
@@ -89,7 +89,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsTrue(geom.IsValid, "Buffer shouldn't produce invalid polygons.");
 		}
 
-        [Test] 
+        [Test, Category("Issue26")]
         public void TestBufferInvalid3()
         {
             var geom = reader.Read(
@@ -102,7 +102,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsTrue(geom.IsValid, "Buffer shouldn't produce invalid polygons.");
 		}
 
-        [Test] 
+        [Test, Category("Issue26")]
         public void TestBufferInvalid4()
         {
             var geom = reader.Read(
@@ -119,7 +119,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsTrue(geom.IsValid, "Buffer shouldn't produce invalid polygons.");
 		}
 
-        [Test] 
+        [Test, Category("Issue26")]
         public void TestBufferInvalid5()
         {
             var geom = reader.Read(
@@ -134,7 +134,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsTrue(geom.IsValid, "Buffer shouldn't produce invalid polygons.");
 		}
 
-        [Test] 
+        [Test, Category("Issue26")]
         public void TestBufferInvalid6()
         {
             var geom = reader.Read(
@@ -148,7 +148,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsTrue(geom.IsValid, "Buffer shouldn't produce invalid polygons.");
 		}
 
-        [Test] 
+        [Test, Category("Issue26")]
         public void TestBufferInvalid7()
         {
             var geom = reader.Read(
@@ -161,7 +161,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsTrue(geom.IsValid, "Buffer shouldn't produce invalid polygons.");
 		}
 
-        [Test] 
+        [Test, Category("Issue26")]
         public void TestBufferInvalid8()
         {
             var geom = reader.Read(
@@ -175,7 +175,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsTrue(geom.IsValid, "Buffer shouldn't produce invalid polygons.");
 		}
 
-        [Test] 
+        [Test, Category("Issue26")]
         public void TestBufferInvalid9()
         {
             var geom = reader.Read(
@@ -189,7 +189,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsTrue(geom.IsValid, "Buffer shouldn't produce invalid polygons.");
 		}
 
-        [Test] 
+        [Test, Category("Issue26")]
         public void TestBufferInvalid10()
         {
             var geom = reader.Read(
@@ -203,7 +203,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsTrue(geom.IsValid, "Buffer shouldn't produce invalid polygons.");
 		}
 
-        [Test] 
+        [Test, Category("Issue26")]
         public void TestBufferInvalid11()
         {
             var geom = reader.Read(

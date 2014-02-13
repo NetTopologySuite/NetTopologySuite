@@ -6,7 +6,7 @@ namespace NetTopologySuite.Tests.Various
     [TestFixture]
     public class Issue68Tests
     {
-        [Test]
+        [Test, Category("Issue68")]
         public void EqualsNullThrowsBugFix()
         {
             var polygon = new Polygon(null);

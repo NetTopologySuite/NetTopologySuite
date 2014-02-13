@@ -9,7 +9,7 @@ namespace NetTopologySuite.Samples.Tests.Various
 {
     public class Issue173Fixture
     {
-        [Test, Description("The NetTopologySuite.IO.GeoTools class method ShapeFile.GetGeometryType(IGeometry geom) will always returns ShapeGeometryType.PointZM making all shapefile geometry GeometryZM.")]
+        [Test, Category("Issue173"), Description("The NetTopologySuite.IO.GeoTools class method ShapeFile.GetGeometryType(IGeometry geom) will always returns ShapeGeometryType.PointZM making all shapefile geometry GeometryZM.")]
         public void Test()
         {
             var features = new List<Features.Feature>();

@@ -19,7 +19,7 @@ namespace NetTopologySuite.Tests.Various
             reader = new WKTReader(factory);
         }
 
-        [Test, ExpectedException(typeof(TopologyException))]
+        [Test, ExpectedException(typeof(TopologyException)), Category("Issue37")]
         [Ignore("What does JTS do with these geometries?")]
         public void Difference()
         {

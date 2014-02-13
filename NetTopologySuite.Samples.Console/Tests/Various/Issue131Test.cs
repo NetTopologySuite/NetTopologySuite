@@ -5,7 +5,7 @@ namespace NetTopologySuite.Tests.Various
     [TestFixture]
     public class Issue131Test
     {
-        [Test]
+        [Test, Category("Issue131")]
         public void TestNaNComparison()
         {
             const double d1 = double.NaN, d2 = double.NaN, d3 = 1;

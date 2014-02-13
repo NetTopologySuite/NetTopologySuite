@@ -14,7 +14,7 @@ namespace NetTopologySuite.Tests.Various
     [TestFixture]
     public class Issue123Test
     {
-        [Test]
+        [Test, Category("Issue123")]
         public void CascadedUnionError()
         {
             String[] wkt =
@@ -46,7 +46,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsNotNull(result);
         }
 
-        [Test]
+        [Test, Category("Issue123")]
         public void CascadedUnionError2()
         {
             var sf = new ShapefileReader(@"..\..\..\NetTopologySuite.Samples.Shapefiles\error_union.shp");

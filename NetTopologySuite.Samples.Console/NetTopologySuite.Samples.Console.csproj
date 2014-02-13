@@ -66,6 +66,10 @@
     <Reference Include="DotSpatial.Projections">
       <HintPath>..\packages\DotSpatial.Projections.1.2\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.0.3.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.4.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NUnit.2.5.10.11092\lib\nunit.framework.dll</HintPath>
@@ -122,6 +126,7 @@
     <Compile Include="Tests\Various\Issue171TestFixture.cs" />
     <Compile Include="Tests\Various\Issue172TestFixture.cs" />
     <Compile Include="Tests\Various\Issue173Fixture.cs" />
+    <Compile Include="Tests\Various\Issue174TestFixture.cs" />
     <Compile Include="Tests\Various\Issue68Tests.cs" />
     <Compile Include="Tests\Various\CoversTest.cs" />
     <Compile Include="Tests\Various\DbfDateTest.cs" />
@@ -189,6 +194,10 @@
       <Project>{548166D9-DF64-46FB-9EEC-212C7B7E7D85}</Project>
       <Name>NetTopologySuite.IO.GDB</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoJSON\NetTopologySuite.IO.GeoJSON.csproj">
+      <Project>{1583f1f7-7e7d-42ee-99f9-e072453bce34}</Project>
+      <Name>NetTopologySuite.IO.GeoJSON</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\NetTopologySuite.IO.GeoTools.csproj">
       <Project>{21805958-869E-49F5-A4ED-0AC8599D62F0}</Project>
       <Name>NetTopologySuite.IO.GeoTools</Name>
@@ -209,9 +218,17 @@
       <Project>{AD33B357-E789-4102-8DC3-F18EEE507583}</Project>
       <Name>NetTopologySuite.IO.SpatiaLite</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.SqlServer2008\NetTopologySuite.IO.SqlServer2008.csproj">
+      <Project>{8e6a486b-5418-4fe1-a14f-cf2f3b74d4e0}</Project>
+      <Name>NetTopologySuite.IO.SqlServer2008</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
       <Name>NetTopologySuite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PowerCollections\PowerCollections\PowerCollections.csproj">
+      <Project>{5821977d-ac2c-4912-bcd0-6e6b1a756167}</Project>
+      <Name>PowerCollections</Name>
     </ProjectReference>
     <ProjectReference Include="..\ProjNet\ProjNet\ProjNET.csproj">
       <Project>{E028BDD2-55E1-4E5F-BE31-35FAEC8D6428}</Project>

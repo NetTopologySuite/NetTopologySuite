@@ -21,31 +21,31 @@ namespace NetTopologySuite.Samples.Tests.Various
             //ReadAndTest("cant-read-file4.gml");
         }
 
-        [Test]
+        [Test, Category("Issue103")]
         public void TestFileOk()
         {
             ReadAndTest("read-ok-file.gml");
         }
 
-        [Test]
+        [Test, Category("Issue103")]
         public void TestFile1()
         {
             ReadAndTest("cant-read-file1.gml");
         }
 
-        [Test]
+        [Test, Category("Issue103")]
         public void TestFile2()
         {
             ReadAndTest("cant-read-file2.gml");
         }
 
-        [Test]
+        [Test, Category("Issue103")]
         public void TestFile3()
         {
             ReadAndTest("cant-read-file3.gml");
         }
 
-        [Test, Ignore("Surface / PolygonPatch not supported")]
+        [Test, Category("Issue103"), Ignore("Surface / PolygonPatch not supported")]
         public void TestFile4()
         {
             ReadAndTest("cant-read-file4.gml");

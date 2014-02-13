@@ -20,7 +20,7 @@ namespace NetTopologySuite.Tests.Various
             reader = new WKTReader(factory);
         }
 
-        [Test] 
+        [Test, Category("Issue35")]
         public void TestIsValid()
         {
             var geom1 = reader.Read(
@@ -70,7 +70,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsTrue(expected.EqualsExact(actual));
         }
 
-        [Test]
+        [Test, Category("Issue35")]
         public void TestIsValid2()
         {
             var geom1 = reader.Read(
@@ -97,7 +97,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.AreEqual(result.SRID, 4326);
         }
 
-        [Test(Description="Simplification always returns a geometry of the same type as the input geometry, and by default it attempts to ensure valid topology (by applying  a buffer(0) - which is a bit of a hack, I admit). This is why it returns an empty polygon.")]
+        [Test(Description = "Simplification always returns a geometry of the same type as the input geometry, and by default it attempts to ensure valid topology (by applying  a buffer(0) - which is a bit of a hack, I admit). This is why it returns an empty polygon."), Category("Issue35")]
         [Ignore("The result is the same as in JTS 1.10")]
         public void TestSimplifyBadPoly()
         {

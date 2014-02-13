@@ -25,38 +25,38 @@ arithmetic.  This would be awkward and slow.
 If this represents a real use case some other approach will need to be
 taken to solve it.";
 
-        [Test]
+        [Test, Category("Issue94")]
         public void IntersectionWithLineCreatedWithSmallCoordinates()
         {
             PerformTest(100d);
         }
 
-        [Test]
+        [Test, Category("Issue94")]
         public void IntersectionWithLineCreatedWithNotSoSmallCoordinates()
         {
             PerformTest(999999999d);
         }
 
-        [Test]
+        [Test, Category("Issue94")]
         public void IntersectionWithLineCreatedWithBigCoordinates()
         {
             PerformTest(99999999999999d);
         }
 
-        [Test, Ignore(IgnoreString)]
+        [Test, Category("Issue94"), Ignore(IgnoreString)]
         public void IntersectionWithLineCreatedWithBiggerCoordinates()
         {
             PerformTest(999999999999999d);
         }
 
-        [Test, Ignore(IgnoreString)]
+        [Test, Category("Issue94"), Ignore(IgnoreString)]
         public void IntersectionWithLineCreatedWithLargeCoordinates()
         {
             // returns POINT (10 10.000000000000002) => Same as JTS
             PerformTest(99999999999999982650000000000d);
         }
 
-        [Test, Ignore(IgnoreString)]
+        [Test, Category("Issue94"), Ignore(IgnoreString)]
         public void IntersectionWithLineCreatedWithLargestCoordinates()
         {
             // returns POINT (0 0) => Same as JTS

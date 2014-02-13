@@ -13,7 +13,7 @@ namespace NetTopologySuite.Samples.Tests.Various
     [TestFixture]
     public class Issue171TestFixture
     {
-        [Test]
+        [Test, Category("Issue171")]
         public void large_integers_are_formatted_properly()
         {
             const string expected = "123456789012345680";
@@ -26,7 +26,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             Assert.That(actual, Is.EqualTo(expected));
         }
 
-        [Test]
+        [Test, Category("Issue171")]
         public void large_decimals_are_formatted_properly()
         {
             const string expected = "123456789012345680";
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             Assert.That(actual, Is.EqualTo(expected));
         }
 
-        [Test]
+        [Test, Category("Issue171")]
         public void large_doubles_arent_formatted_properly()
         {
             /*
@@ -57,7 +57,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             Assert.That(actual, Is.Not.EqualTo(expected));
         }
 
-        [Test]
+        [Test, Category("Issue171")]
         public void large_doubles_are_formatted_properly_using_doubleconverter()
         {
             // see http://www.yoda.arachsys.com/csharp/DoubleConverter.cs
@@ -67,7 +67,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             Assert.That(actual, Is.EqualTo(expected));
         }
 
-        [Test]
+        [Test, Category("Issue171")]
         public void very_large_doubles_arent_formatted_properly_using_doubleconverter()
         {
             // some problems still remains :(
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             Assert.That(actual, Is.Not.EqualTo(expected));
         }
 
-        [Test]
+        [Test, Category("Issue171")]
         public void small_doubles_are_formatted_properly_using_doubleconverter()
         {
             const string expected = "123456";
@@ -86,7 +86,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             Assert.That(actual, Is.EqualTo(expected));
         }
 
-        [Test, Category("Stress"), Explicit]
+        [Test, Category("Issue171"), Category("Stress"), Explicit]
         public void performances_are_valid_using_doubleconverter()
         {
             DoPerformancesTest(1000);

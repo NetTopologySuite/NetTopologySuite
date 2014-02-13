@@ -26,7 +26,7 @@ namespace NetTopologySuite.Tests.Various
         /// 1) Removes files from directory
         /// 2) Run n simplify function in parallel and writes each result
         /// </summary>
-        [Test]
+        [Test, Category("Issue102")]
         public void TestRun()
         {
             const double Tolerance = 0.0005;

@@ -30,7 +30,7 @@ namespace NetTopologySuite.Tests.Various
         }
 
 
-        [Test]
+        [Test, Category("Issue152")]
         public void ConvertAPointUsingNetTopologySuiteTransformGeometry()
         {
             //SETUP
