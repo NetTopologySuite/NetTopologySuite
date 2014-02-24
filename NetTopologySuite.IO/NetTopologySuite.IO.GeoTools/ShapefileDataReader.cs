@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.IO;
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.IO
@@ -30,17 +31,16 @@ namespace NetTopologySuite.IO
         ///<param name="geometryFactory">The GeometryFactory to use.</param>
         public ShapefileDataReader(string filename, IGeometryFactory geometryFactory)
         {
-            if (filename == null)
+            if (String.IsNullOrEmpty(filename))
                 throw new ArgumentNullException("filename");
             if (geometryFactory == null)
                 throw new ArgumentNullException("geometryFactory");
             _open = true;
 
-            if (filename.ToLower().EndsWith(".shp"))
-                filename = filename.ToLower().Replace(".shp", String.Empty);
-
-            _dbfReader = new DbaseFileReader(filename + ".dbf");
-            _shpReader = new ShapefileReader(filename + ".shp", geometryFactory);
+            string dbfFile = Path.ChangeExtension(filename, "dbf");
+            _dbfReader = new DbaseFileReader(dbfFile);
+            string shpFile = Path.ChangeExtension(filename, "shp");
+            _shpReader = new ShapefileReader(shpFile, geometryFactory);
 
             _dbfHeader = _dbfReader.GetHeader();
             _recordCount = _dbfHeader.NumRecords;
