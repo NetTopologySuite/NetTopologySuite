@@ -94,7 +94,7 @@
     <Compile Include="WKT\WKTCoordSysParserTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">
+    <ProjectReference Include="..\..\GeoAPI\GeoAPI\GeoAPI.csproj">
       <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
       <Name>GeoAPI</Name>
     </ProjectReference>
