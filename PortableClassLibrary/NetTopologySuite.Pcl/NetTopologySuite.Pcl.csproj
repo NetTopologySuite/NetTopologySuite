@@ -36,10 +36,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <ProjectReference Include="..\..\GeoAPI\GeoAPI.Pcl\GeoAPI.Pcl.csproj">
-      <Project>{92b3b84b-50f1-4147-8b97-d93b90fa5514}</Project>
-      <Name>GeoAPI.Pcl</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\PowerCollections\PowerCollections.Pcl\PowerCollections.Pcl.csproj">
       <Project>{4fe07049-9f3a-42a4-8105-b1a72fe15c67}</Project>
       <Name>PowerCollections.Pcl</Name>
