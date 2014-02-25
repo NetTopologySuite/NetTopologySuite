@@ -184,9 +184,7 @@ namespace NetTopologySuite.IO
                                     if (day>0 && year>0 && month>0 && month<=12) // don't try to parse date when day is invalid - it will be useless and slow for large files
                                         tempObject = new DateTime(year, month, day);
                                 }
-                                catch (Exception)
-                                {                                  
-                                }
+                                catch (Exception) { }
                                 
                                 break;
 
@@ -195,11 +193,12 @@ namespace NetTopologySuite.IO
                                 char[] fbuffer = new char[tempFieldLength];
                                 fbuffer = _dbfStream.ReadChars(tempFieldLength);
                                 tempString = new string(fbuffer);
-                                try
+                                double val;
+                                if (Double.TryParse(tempString.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out val))
                                 {
-                                    tempObject = Double.Parse(tempString.Trim(), CultureInfo.InvariantCulture);
+                                    tempObject = val;
                                 }
-                                catch (FormatException)
+                                else
                                 {
                                     // if we can't format the number, just save it as a string
                                     tempObject = tempString;
