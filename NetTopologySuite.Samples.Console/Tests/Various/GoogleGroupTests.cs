@@ -482,10 +482,14 @@ namespace NetTopologySuite.Tests.Various
             IGeometry geom = reader.Read(wkt);
             Assert.That(geom, Is.Not.Null);
             Assert.That(geom.IsValid, Is.False);
-
-            IGeometry fixedGeom = geom.Buffer(0);
+            
+            IGeometry normalizedGeom = geom.Normalized();
+            Assert.That(normalizedGeom, Is.Not.Null);
+            Assert.That(normalizedGeom.IsValid, Is.False);
+            
+            IGeometry fixedGeom = normalizedGeom.Buffer(0);
             Assert.That(fixedGeom, Is.Not.Null);
-            Assert.That(fixedGeom.IsValid, Is.True);
+            Assert.That(fixedGeom.IsValid, Is.True);            
             Console.WriteLine(fixedGeom);
         }
     }
