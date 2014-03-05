@@ -1,8 +1,8 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <SolutionFile>NetTopologySuite.Net.sln</SolutionFile>
-	<SolutionFile_WP>NetTopologySuite.WindowsPhone.sln</SolutionFile_WP>
-	<SolutionFile_SL>NetTopologySuite.Silverlight.sln</SolutionFile_SL>
+    <SolutionFile>NetTopologySuite.sln</SolutionFile>
+	<!--SolutionFile_WP>NetTopologySuite.WindowsPhone.sln</SolutionFile_WP-->
+	<!--SolutionFile_SL>NetTopologySuite.Silverlight.sln</SolutionFile_SL-->
     <SolutionDir>$(MSBuildProjectDirectory)</SolutionDir>
     <AsmVersion>1.13.2</AsmVersion>
     <AsmFileVersion>$(AsmVersion)</AsmFileVersion>
@@ -28,7 +28,7 @@
   <Target Name="Information">
     <Message Text ="
              
-  Hallo World!
+  Hello World!
   Working in $(MSBuildProjectDirectory)
   
 "/>
@@ -47,12 +47,12 @@
   </Target>
   
   <Target Name="BuildRelease" DependsOnTargets="CleanRelease;SetVersion">
-    <MSBuild Projects="$(SolutionFile_SL)"
+    <!--MSBuild Projects="$(SolutionFile_SL)"
 	         Targets="PowerCollections_Silverlight;GeoAPI_Silverlight;NetTopologySuite_Silverlight;ProjNET_Silverlight"
 			 Properties="Configuration=Release"
              RunEachTargetSeparately="true" 
 			 ContinueOnError="true" 
-			 />    
+			 /-->
 	<MSBuild Projects="$(SolutionFile)" 
              Targets="PowerCollections;GeoAPI;NetTopologySuite;ProjNET;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008" 
              Properties="Configuration=Release;TargetFrameworkVersion=v2.0;TargetFrameworkProfile=;DefineConstants=TRACE;NET20;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v2.0\;" 
@@ -85,14 +85,14 @@
              />
   </Target>
   
-  <Target Name="BuildReleaseWP" DependsOnTargets="BuildRelease">
+  <!--Target Name="BuildReleaseWP" DependsOnTargets="BuildRelease">
     <MSBuild Projects="$(SolutionFile_WP)"
 	         Targets="PowerCollections_WindowsPhone;GeoAPI_WindowsPhone;NetTopologySuite_WindowsPhone;ProjNET_WindowsPhone"
 			 Properties="Configuration=Release"
              RunEachTargetSeparately="true" 
 			 ContinueOnError="true" 
 			 />
-  </Target>  
+  </Target-->
 
   <Target Name="BuildSolution" DependsOnTargets="CleanRelease;Information">
     <MSBuild Projects="$(SolutionFile)"
@@ -112,7 +112,7 @@
              />
   </Target>
 
-  <Target Name="NuGetPack" DependsOnTargets="BuildSolution;BuildRelease;BuildReleaseWP">
+  <Target Name="NuGetPack" DependsOnTargets="BuildSolution;BuildRelease">
     <Exec Command="$(NuGetCommand) GeoAPI\GeoAPI.nuspec -Version $(GeoAPIVersion) -outputdirectory $(NuGetOutDir)"/>
     <Exec Command="$(NuGetCommand) NTS.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
     <Exec Command="$(NuGetCommand) NTS.IO.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>

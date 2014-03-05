@@ -228,10 +228,10 @@ namespace NetTopologySuite.Algorithm
         {
             Coordinate intPtDD = CGAlgorithmsDD.Intersection(p1, p2, q1, q2);
             bool isIn = IsInSegmentEnvelopes(intPtDD);
-            Trace.WriteLine("DD in env = " + isIn + "  --------------------- " + intPtDD);
+            Debug.WriteLine("DD in env = " + isIn + "  --------------------- " + intPtDD);
             double distance = intPt.Distance(intPtDD);
             if (distance > 0.0001)
-                Trace.WriteLine("Distance = " + distance);
+                Debug.WriteLine("Distance = " + distance);
         }
 
 

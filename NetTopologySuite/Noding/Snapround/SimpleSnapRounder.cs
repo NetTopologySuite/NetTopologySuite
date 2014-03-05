@@ -60,23 +60,6 @@ namespace NetTopologySuite.Noding.Snapround
             SnapRound(inputSegmentStrings, _li);
         }
 
-        /*
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="inputSegmentStrings"></param>
-        private void CheckCorrectness(IList inputSegmentStrings)
-        {
-            IList resultSegStrings = NodedSegmentString.GetNodedSubstrings(inputSegmentStrings);
-            NodingValidator nv = new NodingValidator(resultSegStrings);
-            try
-            {
-                nv.CheckValid();
-            }
-            catch (Exception ex) { Trace.WriteLine(ex.ToString()); }
-        }
-        */
-
         /// <summary>
         ///
         /// </summary>

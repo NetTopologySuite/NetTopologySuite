@@ -32,6 +32,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\NetTopologySuite\nts.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
     <ProjectReference Include="..\..\GeoAPI\GeoAPI.Pcl\GeoAPI.Pcl.csproj">
@@ -1329,6 +1335,11 @@
     <Content Include="..\..\NetTopologySuite\Utilities\RToolsUtil\Rtools.Util.License.txt">
       <Link>Utilities\RToolsUtil\Rtools.Util.License.txt</Link>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\NetTopologySuite\nts.snk">
+      <Link>nts.snk</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
