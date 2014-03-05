@@ -6,7 +6,7 @@ namespace NetTopologySuite.Index.Bintree
     /// <summary> 
     /// The base class for nodes in a <c>Bintree</c>.
     /// </summary>
-#if (SILVERLIGHT || PCL)
+#if PCL
     [System.Runtime.Serialization.DataContract]
 #else
     [Serializable]
@@ -32,7 +32,7 @@ namespace NetTopologySuite.Index.Bintree
         /// <summary>
         /// 
         /// </summary>
-#if (SILVERLIGHT || PCL)
+#if PCL
         [System.Runtime.Serialization.DataMember]
 #endif
         private IList<T> _items = new List<T>();
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Index.Bintree
         /// 0 | 1        
         /// .
         /// </summary>
-#if (SILVERLIGHT || PCL)
+#if PCL
         [System.Runtime.Serialization.DataMember]
 #endif
         protected Node<T>[] Subnode = new Node<T>[2];

@@ -3,7 +3,7 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Utilities;
-#if SILVERLIGHT || PCL
+#if PCL
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 

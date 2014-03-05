@@ -371,7 +371,6 @@ namespace NetTopologySuite.IO
             return value;
         }
 
-#if !SILVERLIGHT
         /// <summary>
         /// 
         /// </summary>
@@ -386,7 +385,6 @@ namespace NetTopologySuite.IO
             */
             throw new NotSupportedException("GetData not supported.");
         }
-#endif
 
         /// <summary>
         /// 

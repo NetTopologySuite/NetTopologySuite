@@ -4,7 +4,7 @@ using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
-#if !NET35 && !SILVERLIGHT
+#if !NET35
 using HS = Wintellect.PowerCollections.Set<int>;
 #else
 using HS = System.Collections.Generic.HashSet<int>;

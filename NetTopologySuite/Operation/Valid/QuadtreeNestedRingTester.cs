@@ -1,14 +1,10 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Quadtree;
 using NetTopologySuite.Utilities;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace NetTopologySuite.Operation.Valid
 {

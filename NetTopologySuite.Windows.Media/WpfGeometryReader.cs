@@ -49,11 +49,7 @@ namespace NetTopologySuite.Windows.Media
         /// <returns>A Geometry representing the shape</returns>
         public static IGeometry Read(WpfGeometry shp, double tolerance, IGeometryFactory geomFact)
         {
-#if !SILVERLIGHT
             var path = shp.GetFlattenedPathGeometry(tolerance, ToleranceType.Relative);
-#else
-            var path = shp;
-#endif
             return Read(path, geomFact);
         }
 
@@ -112,10 +108,8 @@ namespace NetTopologySuite.Windows.Media
         /// <exception cref="ArgumentException">If a non-linear segment type is encountered</exception>
         private static IList<Coordinate[]> ToCoordinates(PathGeometry pathGeometry)
         {
-#if !SILVERLIGHT
             if (pathGeometry.MayHaveCurves())
                 throw new ArgumentException("WPF geometry must not have non-linear segments");
-#endif
 
             var coordArrays = new List<Coordinate[]>();
 
@@ -131,11 +125,7 @@ namespace NetTopologySuite.Windows.Media
 
         private static IList<Coordinate[]> ToCoordinates(WpfGeometry wpfGeometry)
         {
-#if !SILVERLIGHT
             return ToCoordinates(PathGeometry.CreateFromGeometry(wpfGeometry));
-#else
-            return ToCoordinates((PathGeometry)wpfGeometry);
-#endif
         }
 
         private static Coordinate[] NextCoordinateArray(PathFigure pathFigure)

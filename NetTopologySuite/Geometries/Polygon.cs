@@ -30,7 +30,7 @@ namespace NetTopologySuite.Geometries
     /// (i.e. effectively split the polygon into two pieces).</item>
     /// </list>
     /// </summary>
-#if !(PCL || SILVERLIGHT)
+#if !PCL
     [Serializable]
 #else
     [System.Runtime.Serialization.DataContract]

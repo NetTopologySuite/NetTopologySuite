@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-#if !NET35
+#if !NET35 && !PCL
 using GeoAPI;
 using Enumerable = GeoAPI.Linq.Enumerable;
 #else

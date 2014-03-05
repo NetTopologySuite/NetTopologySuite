@@ -7,11 +7,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph.Index;
 using NetTopologySuite.Utilities;
 
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-using Hashtable = System.Collections.Generic.Dictionary<object, object>;
-#endif
-
 namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>

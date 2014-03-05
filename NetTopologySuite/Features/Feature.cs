@@ -6,7 +6,7 @@ namespace NetTopologySuite.Features
     ///<summary>
     /// Feature class
     ///</summary>
-#if (SILVERLIGHT || PCL)
+#if PCL
     [System.Runtime.Serialization.DataContract]
 #else
     [Serializable]
@@ -14,7 +14,7 @@ namespace NetTopologySuite.Features
     public class Feature
     {
         
-#if (SILVERLIGHT || PCL)
+#if PCL
     [System.Runtime.Serialization.DataMember(Name="Geometry")]
 #endif
         private IGeometry _geometry;
@@ -28,7 +28,7 @@ namespace NetTopologySuite.Features
             set { _geometry = value; }
         }
 
-#if (SILVERLIGHT || PCL)
+#if PCL
         [System.Runtime.Serialization.DataMember(Name = "Attributes")]
 #endif
         private IAttributesTable _attributes;

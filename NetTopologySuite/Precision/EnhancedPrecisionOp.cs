@@ -1,6 +1,6 @@
 using System;
 using GeoAPI.Geometries;
-#if SILVERLIGHT || PCL
+#if PCL
 using ApplicationException = System.Exception;
 #endif
 namespace NetTopologySuite.Precision

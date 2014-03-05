@@ -19,14 +19,13 @@ namespace NetTopologySuite.IO
 		/// <param name="message">A message that describes the error. </param>
 		public ShapefileException(string message) : base(message) { }
 
-#if !SILVERLIGHT
 		/// <summary>
 		/// Initializes a new instance of the ApplicationException class with serialized data.
 		/// </summary>
 		/// <param name="info">The object that holds the serialized object data. </param>
 		/// <param name="context">The contextual information about the source or destination.</param>
 		public ShapefileException(SerializationInfo info,StreamingContext context) : base(info, context) { }
-#endif
+
 		/// <summary>
 		/// Initializes a new instance of the ApplicationException class with a specified error message and a reference to the inner exception that is the cause of this exception.
 		/// </summary>

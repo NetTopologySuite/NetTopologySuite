@@ -1,7 +1,7 @@
 using System;
 using NetTopologySuite.Utilities;
 
-#if !(WINDOWS_PHONE || MONODROID || PCL)
+#if !(MONODROID || PCL)
 using BitConverter = System.BitConverter;
 #else
 

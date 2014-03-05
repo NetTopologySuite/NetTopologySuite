@@ -27,7 +27,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-#if SILVERLIGHT || PCL
+#if PCL
 using ArrayList = System.Collections.Generic.List<object>;
 using Hashtable = System.Collections.Generic.Dictionary<object, object>;
 using DictionaryEntry = System.Collections.Generic.KeyValuePair<object, object>;

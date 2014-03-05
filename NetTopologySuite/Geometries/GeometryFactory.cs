@@ -17,7 +17,7 @@ namespace NetTopologySuite.Geometries
     /// In particular, they are not rounded to the supplied <c>PrecisionModel</c>.
     /// It is assumed that input Coordinates meet the given precision.
     /// </remarks>
-#if !(PCL || SILVERLIGHT)
+#if !PCL
     [Serializable]
 #else
     [System.Runtime.Serialization.DataContract]

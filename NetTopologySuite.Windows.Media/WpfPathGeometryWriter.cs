@@ -31,7 +31,7 @@
  *     www.vividsolutions.com
  */
 
-#if SILVERLIGHT || PATH_GEOMETRY
+#if PATH_GEOMETRY
 
 using System;
 using System.Collections.Generic;
@@ -153,9 +153,7 @@ namespace NetTopologySuite.Windows.Media
             var p = new WpfPathGeometry();
             AddShape(p, geometry);
 
-#if !SILVERLIGHT
             p.Freeze();
-#endif
             return p;
         }
 

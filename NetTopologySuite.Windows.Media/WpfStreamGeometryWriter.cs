@@ -30,7 +30,7 @@
  *     (250)385-6040
  *     www.vividsolutions.com
  */
-#if (STREAM_GEOMETRY) && !(SILVERLIGHT)
+#if STREAM_GEOMETRY
 
 using System;
 using System.Collections.Generic;

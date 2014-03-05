@@ -2,9 +2,6 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-#if SILVERLIGHT
-using NetTopologySuite.Encodings;
-#endif
 
 namespace NetTopologySuite.IO
 {
@@ -45,11 +42,7 @@ namespace NetTopologySuite.IO
         /// Initializes a new instance of the DbaseFileHeader class.
         /// </summary>
         public DbaseFileHeader() 
-#if !SILVERLIGHT
             : this(Encoding.GetEncoding(1252)) { }
-#else
-            : this(CP1252.Instance) { }
-#endif
 
         /// <summary>
         /// Initializes a new instance of the DbaseFileHeader class.
@@ -338,11 +331,7 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         private Encoding DetectEncodingFromMark(int lcid, string cpgFileName)
         {
-#if !SILVERLIGHT
             var enc = Encoding.GetEncoding(1252);
-#else
-            var enc = CP1252.Instance;
-#endif
             string lc = "";
             foreach (var it in _dbfCodePages)
             {
@@ -358,11 +347,7 @@ namespace NetTopologySuite.IO
                 try
                 {
                     var winCodePage = int.Parse(lc.Replace("CP", ""));
-#if !SILVERLIGHT
                     enc = Encoding.GetEncoding("windows-" + winCodePage);
-#else
-                    enc = new EncodingRegistry().GetEncoding(winCodePage);
-#endif
                 }
                 catch (Exception ee)
                 {
@@ -397,11 +382,7 @@ namespace NetTopologySuite.IO
 
         private int GetLCIDFromEncoding(Encoding enc)
         {
-#if !SILVERLIGHT
             int lcid = enc.WindowsCodePage;
-#else
-            int lcid = enc.CodePage();
-#endif
             int cpId = 0x03;
             foreach (var cp in _dbfCodePages)
             {

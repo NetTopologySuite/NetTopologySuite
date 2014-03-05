@@ -1,11 +1,6 @@
 using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
-
-#if SILVERLIGHT
-using ApplicationException = System.Exception;
-#endif
 
 namespace NetTopologySuite.Triangulate
 {
@@ -16,9 +11,6 @@ namespace NetTopologySuite.Triangulate
     /// <version>1.0</version>
     public class ConstraintEnforcementException : Exception
     {
-
-        //private long serialVersionUID = 386496846550080140L;
-
         private static String MsgWithCoord(String msg, Coordinate pt) {
             if (pt != null)
                 return msg + " [ " + WKTWriter.ToPoint(pt) + " ]";

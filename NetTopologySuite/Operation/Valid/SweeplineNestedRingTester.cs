@@ -5,7 +5,7 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Index.Sweepline;
 using NetTopologySuite.Utilities;
-#if SILVERLIGHT || PCL
+#if PCL
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 

@@ -3,7 +3,7 @@ using System.Text;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 
-#if !(WINDOWS_PHONE || PCL)
+#if !PCL
 using BitConverter = System.BitConverter;
 #else
 
@@ -24,7 +24,7 @@ namespace NetTopologySuite.Geometries
     /// object as a way of computing segment properties on the
     /// segments defined by arrays or lists of <c>Coordinate</c>s.
     /// </summary>
-#if !(PCL || SILVERLIGHT)
+#if !PCL
     [Serializable]
 #else
     [System.Runtime.Serialization.DataContract]

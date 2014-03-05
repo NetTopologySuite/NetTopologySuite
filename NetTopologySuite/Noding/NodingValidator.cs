@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 
-#if SILVERLIGHT || PCL
+#if PCL
 using ApplicationException = System.Exception;
 #endif
 namespace NetTopologySuite.Noding

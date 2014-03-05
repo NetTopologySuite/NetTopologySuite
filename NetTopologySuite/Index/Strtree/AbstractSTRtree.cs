@@ -16,7 +16,7 @@ namespace NetTopologySuite.Index.Strtree
     /// data, both of which are treated as <see cref="IBoundable{T, TItem}"/>s.
     /// </para>
     /// </summary>
-#if !(PCL || SILVERLIGHT)
+#if !PCL
     [Serializable]
 #else
     [System.Runtime.Serialization.DataContract]

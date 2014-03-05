@@ -9,7 +9,7 @@ namespace NetTopologySuite.Index.Quadtree
     /// It is centred at the origin,
     /// and does not have a defined extent.
     /// </summary>
-#if !(PCL || SILVERLIGHT)
+#if !PCL
     [Serializable]
 #else
     [System.Runtime.Serialization.DataContract]

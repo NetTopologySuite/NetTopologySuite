@@ -124,7 +124,7 @@ namespace NetTopologySuite.Geometries
     /// Geometries can be used effectively in .Net collections.
     /// </para>
     /// </remarks>
-#if !(PCL || SILVERLIGHT)
+#if !PCL
     [Serializable]
 #else
     [System.Runtime.Serialization.DataContract]

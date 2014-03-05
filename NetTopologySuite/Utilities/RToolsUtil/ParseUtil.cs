@@ -19,9 +19,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace RTools_NTS.Util
 {

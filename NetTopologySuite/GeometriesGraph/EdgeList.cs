@@ -1,14 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
-using GeoAPI.Geometries;
-using NetTopologySuite.Index;
-using NetTopologySuite.Index.Quadtree;
 using NetTopologySuite.Noding;
 using Wintellect.PowerCollections;
-
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace NetTopologySuite.GeometriesGraph
 {

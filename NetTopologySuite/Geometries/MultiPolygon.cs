@@ -7,7 +7,7 @@ namespace NetTopologySuite.Geometries
     /// <summary>
     /// Basic implementation of <c>MultiPolygon</c>.
     /// </summary>
-#if !(PCL || SILVERLIGHT)
+#if !PCL
     [Serializable]
 #else
     [System.Runtime.Serialization.DataContract]

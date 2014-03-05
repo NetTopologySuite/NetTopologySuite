@@ -1,6 +1,6 @@
 using NetTopologySuite.Utilities;
 
-#if !(WINDOWS_PHONE || PCL)
+#if !PCL
 using BitConverter = System.BitConverter;
 #else
 

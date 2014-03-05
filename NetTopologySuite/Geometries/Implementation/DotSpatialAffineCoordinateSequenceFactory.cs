@@ -6,7 +6,7 @@
     /// <summary>
     /// A coordinate sequence factory class that creates DotSpatial's Shape/ShapeRange like coordinate sequences.
     /// </summary>
-#if (SILVERLIGHT || PCL)
+#if PCL
     [System.Runtime.Serialization.DataContract]
 #else
     [Serializable]

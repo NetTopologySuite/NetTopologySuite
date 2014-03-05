@@ -66,7 +66,7 @@ namespace NetTopologySuite.Noding
             {
                 if (index < 0 || index >= Count)
                 {
-#if SILVERLIGHT || PCL
+#if PCL
                     throw new ArgumentOutOfRangeException("index", "Parameter must be greater than or equal to 0 and less than TotalItemCount.");
 #else
                     throw new ArgumentOutOfRangeException("index", index,

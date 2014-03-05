@@ -14,7 +14,7 @@ namespace NetTopologySuite.Index.Strtree
     /// </list>
     /// A node stores the bounds of its children, and its level within the index tree.
     /// </summary>
-#if !(PCL || SILVERLIGHT)
+#if !PCL
     [Serializable]
 #else
     [System.Runtime.Serialization.DataContract]

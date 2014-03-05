@@ -1,8 +1,5 @@
 using System.Collections.Generic;
-#if SILVERLIGHT
-using Stack = System.Collections.Generic.Stack<object>;
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
+
 namespace NetTopologySuite.Planargraph.Algorithm
 {
     /// <summary>

@@ -1,4 +1,4 @@
-#if (STREAM_GEOMETRY) && (!SILVERLIGHT)
+#if STREAM_GEOMETRY
 using System.Collections.Generic;
 using System.Windows.Media;
 using GeoAPI.Geometries;

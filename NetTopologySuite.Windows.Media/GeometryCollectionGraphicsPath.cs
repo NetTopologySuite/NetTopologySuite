@@ -1,4 +1,4 @@
-#if (STREAM_GEOMETRY) && (!SILVERLIGHT)
+#if STREAM_GEOMETRY
 /*
  * The JTS Topology Suite is a collection of Java classes that
  * implement the fundamental operations required to validate a given

@@ -2,11 +2,6 @@ using System;
 using System.Collections;
 using System.Globalization;
 using System.IO;
-using System.Text;
-using NetTopologySuite.Utilities;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace NetTopologySuite.IO
 {

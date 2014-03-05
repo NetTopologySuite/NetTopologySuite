@@ -34,7 +34,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-#if SILVERLIGHT || PCL
+#if PCL
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
 
@@ -115,7 +115,7 @@ namespace RTools_NTS.Util
 	/// This is separated from the StreamTokenizer so that common settings
 	/// are easy to package and keep together.
 	/// </summary>
-#if !(PCL || SILVERLIGHT)
+#if !PCL
     [Serializable]
 #else
     [System.Runtime.Serialization.DataContract]
@@ -1510,7 +1510,7 @@ namespace RTools_NTS.Util
 			return(Tokenize(tokens));
 		}
 
-#if !(PCL)
+#if !PCL
 		/// <summary>
 		/// Parse all tokens from the specified file, put
 		/// them into the input ArrayList.

@@ -1,9 +1,5 @@
-//using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace NetTopologySuite.Operation.Polygonize
 {

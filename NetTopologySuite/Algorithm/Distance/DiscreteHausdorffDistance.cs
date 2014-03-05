@@ -183,7 +183,7 @@ namespace NetTopologySuite.Algorithm.Distance
             public MaxDensifiedByFractionDistanceFilter(IGeometry geom, double fraction)
             {
                 _geom = geom;
-#if !(SILVERLIGHT || PCL)
+#if !PCL
                 _numSubSegs = (int)Math.Round(1.0 / fraction, MidpointRounding.ToEven); //see Java's Math.rint
 #else
                 _numSubSegs = (int)Math.Round(1.0 / fraction); //see Java's Math.rint

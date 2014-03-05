@@ -4,11 +4,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Planargraph;
 using NetTopologySuite.Utilities;
 using Wintellect.PowerCollections;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-using Stack = System.Collections.Generic.Stack<object>;
-#endif
-
 
 namespace NetTopologySuite.Operation.Polygonize
 {

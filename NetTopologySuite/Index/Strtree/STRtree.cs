@@ -17,7 +17,7 @@ namespace NetTopologySuite.Index.Strtree
     /// Described in: P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
     /// </summary>
-#if !(PCL || SILVERLIGHT)
+#if !PCL
     [Serializable]
 #else
     [System.Runtime.Serialization.DataContract]
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Index.Strtree
             }
         }
 
-#if !(PCL || SILVERLIGHT)
+#if !PCL
     [Serializable]
 #else
         [System.Runtime.Serialization.DataContract]

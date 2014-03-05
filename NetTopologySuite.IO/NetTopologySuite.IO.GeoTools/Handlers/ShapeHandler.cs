@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-#if !NET35 && !SILVERLIGHT
+#if !NET35
 using HS = Wintellect.PowerCollections.Set<int>;
 #else
 using System.Linq;
@@ -540,7 +540,7 @@ namespace NetTopologySuite.IO.Handlers
         public GeometryInstantiationErrorHandlingOption GeometryInstantiationErrorHandling { get; set; }
 
     }
-#if !NET35 && !SILVERLIGHT
+#if !NET35
         internal static class Enumerable
         {
         internal static bool Any(IEnumerable<double> self)

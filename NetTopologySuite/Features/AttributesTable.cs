@@ -1,5 +1,5 @@
 using System;
-#if SILVERLIGHT || PCL
+#if PCL
 using Hashtable = System.Collections.Generic.Dictionary<object, object>;
 #else
 using System.Collections;
@@ -10,7 +10,7 @@ namespace NetTopologySuite.Features
     /// <summary>
     /// Stores all attributes associated with a single <c>Geometry</c> feature.
     /// </summary>
-#if !(PCL || SILVERLIGHT)
+#if !PCL
     [Serializable]
 #else
     [System.Runtime.Serialization.DataContract]

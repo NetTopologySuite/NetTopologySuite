@@ -7,7 +7,7 @@ namespace NetTopologySuite.Index.Quadtree
     /// <summary>
     /// The base class for nodes in a <c>Quadtree</c>.
     /// </summary>
-#if !(PCL || SILVERLIGHT)
+#if !PCL
     [Serializable]
 #else
     [System.Runtime.Serialization.DataContract]

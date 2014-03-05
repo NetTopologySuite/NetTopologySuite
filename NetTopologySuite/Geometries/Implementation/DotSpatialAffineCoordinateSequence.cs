@@ -7,7 +7,7 @@ namespace NetTopologySuite.Geometries.Implementation
     /// <summary>
     /// A coordinate sequence that follows the dotspatial shape range
     /// </summary>
-#if !(PCL || SILVERLIGHT)
+#if !PCL
     [System.Serializable]
 #else
     [System.Runtime.Serialization.DataContract]
@@ -17,22 +17,22 @@ namespace NetTopologySuite.Geometries.Implementation
         //IMeasuredCoordinateSequence
     {
         
-#if (PCL || SILVERLIGHT)
+#if PCL
         [System.Runtime.Serialization.DataMember(IsRequired = true, Name="XY")]
 #endif
         private readonly double[] _xy;
-#if (PCL || SILVERLIGHT)
+#if PCL
         [System.Runtime.Serialization.DataMember(Name = "Z")]
 #endif
         private readonly double[] _z;
-#if (PCL || SILVERLIGHT)
+#if PCL
         [System.Runtime.Serialization.DataMember(Name = "M")]
 #endif
         private readonly double[] _m;
         
         private readonly Ordinates _ordinates;
         
-#if !(PCL || SILVERLIGHT)
+#if !PCL
         [System.NonSerialized]
 #else
         [System.Runtime.Serialization.IgnoreDataMember]
@@ -383,183 +383,4 @@ namespace NetTopologySuite.Geometries.Implementation
             _coordinateArrayRef = null;
         }
     }
-
-    /*
-#if !SILVERLIGHT
-    [Serializable]
-#endif
-    public class DotSpatialAffineCoordinate : Coordinate
-    {
-        private readonly DotSpatialAffineCoordinateSequence _sequence;
-        private readonly Int32 _index;
-
-        internal DotSpatialAffineCoordinate(DotSpatialAffineCoordinateSequence sequence, int index)
-        {
-            _sequence = sequence;
-            _index = index;
-        }
-
-        public object Clone()
-        {
-            return new DotSpatialAffineCoordinate((DotSpatialAffineCoordinateSequence) _sequence.Clone(), _index);
-        }
-
-        /// <summary>
-        /// Compares this object with the specified object for order.
-        /// Since Coordinates are 2.5D, this routine ignores the z value when making the comparison.
-        /// Returns
-        ///   -1  : this.x lowerthan other.x || ((this.x == other.x) AND (this.y lowerthan other.y))
-        ///    0  : this.x == other.x AND this.y = other.y
-        ///    1  : this.x greaterthan other.x || ((this.x == other.x) AND (this.y greaterthan other.y))
-        /// </summary>
-        /// <param name="o"><c>Coordinate</c> with which this <c>Coordinate</c> is being compared.</param>
-        /// <returns>
-        /// A negative integer, zero, or a positive integer as this <c>Coordinate</c>
-        ///         is less than, equal to, or greater than the specified <c>Coordinate</c>.
-        /// </returns>
-        public int CompareTo(object o)
-        {
-            var other = (Coordinate)o;
-            return CompareTo(other);
-        }
-
-        /// <summary>
-        /// Compares this object with the specified object for order.
-        /// Since Coordinates are 2.5D, this routine ignores the z value when making the comparison.
-        /// Returns
-        ///   -1  : this.x lowerthan other.x || ((this.x == other.x) AND (this.y lowerthan other.y))
-        ///    0  : this.x == other.x AND this.y = other.y
-        ///    1  : this.x greaterthan other.x || ((this.x == other.x) AND (this.y greaterthan other.y))
-        /// </summary>
-        /// <param name="other"><c>Coordinate</c> with which this <c>Coordinate</c> is being compared.</param>
-        /// <returns>
-        /// A negative integer, zero, or a positive integer as this <c>Coordinate</c>
-        ///         is less than, equal to, or greater than the specified <c>Coordinate</c>.
-        /// </returns>
-        public int CompareTo(Coordinate other)
-        {
-            if (X < other.X)
-                return -1;
-            if (X > other.X)
-                return 1;
-            if (Y < other.Y)
-                return -1;
-            if (Y > other.Y)
-                return 1;
-            return 0;
-        }
-
-        public double Distance(Coordinate p)
-        {
-            var dx = X - p.X;
-            var dy = Y - p.Y;
-            return Math.Sqrt(dx * dx + dy * dy);
-        }
-
-        /// <summary>
-        /// Returns whether the planar projections of the two <c>Coordinate</c>s are equal.
-        ///</summary>
-        /// <param name="other"><c>Coordinate</c> with which to do the 2D comparison.</param>
-        /// <returns>
-        /// <c>true</c> if the x- and y-coordinates are equal;
-        /// the Z coordinates do not have to be equal.
-        /// </returns>
-        public bool Equals2D(Coordinate other)
-        {
-            return X == other.X && Y == other.Y;
-        }
-
-        /// <summary>
-        /// Returns <c>true</c> if <c>other</c> has the same values for the x and y ordinates.
-        /// Since Coordinates are 2.5D, this routine ignores the z value when making the comparison.
-        /// </summary>
-        /// <param name="other"><c>Coordinate</c> with which to do the comparison.</param>
-        /// <returns><c>true</c> if <c>other</c> is a <c>Coordinate</c> with the same values for the x and y ordinates.</returns>
-        public override bool Equals(object other)
-        {
-            if (other == null)
-                return false;
-            if (!(other is Coordinate))
-                return false;
-            return Equals((Coordinate)other);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override int GetHashCode()
-        {
-            var result = 17;
-            result = 37 * result + GetHashCode(X);
-            result = 37 * result + GetHashCode(Y);
-            return result;
-        }
-
-        /// <summary>
-        /// Return HashCode.
-        /// </summary>
-        /// <param name="value">Value from HashCode computation.</param>
-        private static int GetHashCode(double value)
-        {
-            var f = BitConverter.DoubleToInt64Bits(value);
-            return (int)(f ^ (f >> 32));
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="other"></param>
-        /// <returns></returns>
-        public Boolean Equals(Coordinate other)
-        {
-            return Equals2D(other);
-        }
-
-        public bool Equals3D(Coordinate other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public double X
-        {
-            get { return _sequence.GetX(_index); }
-            set { _sequence.SetOrdinate(_index, Ordinate.X, value); }
-        }
-
-        public double Y
-        {
-            get { return _sequence.GetY(_index); }
-            set { _sequence.SetOrdinate(_index, Ordinate.Y, value); }
-        }
-
-        public double Z
-        {
-            get { return _sequence.GetOrdinate(_index, Ordinate.Z); }
-            set { _sequence.SetOrdinate(_index, Ordinate.Z, value); }
-        }
-
-        public double M
-        {
-            get { return _sequence.GetOrdinate(_index, Ordinate.M); }
-            set { _sequence.SetOrdinate(_index, Ordinate.Z, value); }
-        }
-
-        public Coordinate CoordinateValue
-        {
-            get { return this; }
-            set
-            {
-                X = value.X;
-                Y = value.Y;
-                Z = value.Z;
-            }
-        }
-
-        public double this[Ordinate index]
-        {
-            get { return _sequence.GetOrdinate(_index, index); }
-            set { _sequence.SetOrdinate(_index, index, value); }
-        }
-    }
-     */
 }

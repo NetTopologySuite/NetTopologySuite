@@ -64,7 +64,7 @@ namespace NetTopologySuite.Mathematics
     /// </list>
     /// </summary>
     /// <author>Martin Davis</author>
-#if !(PCL || SILVERLIGHT)
+#if !PCL
     [Serializable]
 #else
     [System.Runtime.Serialization.DataContract]

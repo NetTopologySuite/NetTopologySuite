@@ -16,7 +16,7 @@ namespace NetTopologySuite.Geometries
     /// </list>
     /// </summary>
     /// 
-#if !(PCL || SILVERLIGHT)
+#if !PCL
     [Serializable]
 #else
     [System.Runtime.Serialization.DataContract]

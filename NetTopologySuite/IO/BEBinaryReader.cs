@@ -211,7 +211,7 @@ namespace NetTopologySuite.IO
         {
             throw new NotImplementedException();
         }
-#if !(SILVERLIGHT || PCL)
+#if !PCL
         /// <summary>
         /// Reads a decimal value from the current stream 
         /// and advances the current position of the stream by sixteen bytes.

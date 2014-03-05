@@ -7,10 +7,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO.Handlers;
 
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
-
 namespace NetTopologySuite.IO
 {
     /// <summary>

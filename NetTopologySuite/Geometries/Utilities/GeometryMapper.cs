@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using GeoAPI.Geometries;
-#if !NET35
+#if !NET35 && !PCL
 using MapGeometryDelegate = GeoAPI.Func<GeoAPI.Geometries.IGeometry, GeoAPI.Geometries.IGeometry>;
 #else
 using MapGeometryDelegate = System.Func<GeoAPI.Geometries.IGeometry, GeoAPI.Geometries.IGeometry>;
