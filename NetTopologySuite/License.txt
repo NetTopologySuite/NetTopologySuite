@@ -21,13 +21,7 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-For more information, contact:
-
-    Diego Guidi
-    via Po 15
-	61031 Cuccurano di Fano (PU)
-    diegoguidi@libero.it
-    http://blogs.ugidotnet.org/gissharpblog
+For more information, please visit: http://code.google.com/p/nettopologysuite/
 
 
 
