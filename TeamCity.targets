@@ -45,12 +45,12 @@
   </Target>
   
   <Target Name="BuildRelease" DependsOnTargets="CleanRelease;SetVersion">
-    <!--MSBuild Projects="$(SolutionFile)" 
+    <MSBuild Projects="$(SolutionFile)" 
              Targets="PowerCollections;GeoAPI;NetTopologySuite;ProjNET;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008" 
              Properties="Configuration=Release;TargetFrameworkVersion=v2.0;TargetFrameworkProfile=;DefineConstants=TRACE;NET20;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v2.0\;" 
              RunEachTargetSeparately="true" 
 			 ContinueOnError="true" 
-             /-->
+             />
     <MSBuild Projects="$(SolutionFile)" 
              Targets="PowerCollections;GeoAPI;NetTopologySuite;ProjNET;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008" 
              Properties="Configuration=Release;TargetFrameworkVersion=v3.5;TargetFrameworkProfile=Client;DefineConstants=TRACE;NET20;NET35;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v3.5\;" 

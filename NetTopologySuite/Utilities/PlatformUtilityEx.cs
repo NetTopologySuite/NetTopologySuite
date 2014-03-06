@@ -32,7 +32,7 @@ namespace GeoAPI
 
             public static IEnumerable<T> Cast<T>(IEnumerable inputs)
             {
-                return Caster.Cast<T>(inputs);
+                return NetTopologySuite.Utilities.Caster.Cast<T>(inputs);
             }
         }
     }
@@ -57,7 +57,6 @@ namespace NetTopologySuite.Utilities
         {
             return self;
         }
-
 #if !PCL
 
         [Obsolete("Not used anywhere within NTS")]
