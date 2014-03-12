@@ -1,34 +1,38 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-  <metadata>
-    <id>NetTopologySuite.IO.GeoJSON</id>
-    <version>$version$</version>
-    <title>NTS - Topology Suite - IO Library for GeoJSON</title>
-    <authors>NetTopologySuite - Team</authors>
-    <owners>NetTopologySuite - Team</owners>
-    <licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
-    <projectUrl>http://code.google.com/p/nettopologysuite</projectUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>
+	<metadata>
+		<id>NetTopologySuite.IO.GeoJSON</id>
+		<version>$version$</version>
+		<title>NTS - Topology Suite - IO Library for GeoJSON</title>
+		<authors>NetTopologySuite - Team</authors>
+		<owners>NetTopologySuite - Team</owners>
+		<licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
+		<projectUrl>http://code.google.com/p/nettopologysuite</projectUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>
       This package contains the GeoJSON IO library.
-    </description>
-    <summary>GeoJSON IO library for NetTopologySuite</summary>
-    <tags>NTS GeoJSON</tags>
-    <language>en-US</language>
-    <frameworkAssemblies>
-      <frameworkAssembly assemblyName="System" targetFramework="" />
-      <frameworkAssembly assemblyName="System.Core" targetFramework="" />
-    </frameworkAssemblies>
-    <dependencies>
-      <dependency id="NetTopologySuite" version="$version$" />
-      <dependency id="Newtonsoft.Json" version="4.03" />
-    </dependencies>
-  </metadata>
-  <files>
-    <file src="Release\v2.0\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net20\NetTopologySuite.IO.GeoJSON.dll" />
-    <file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net35-client\NetTopologySuite.IO.GeoJSON.dll" />
-    <file src="Release\v4.0\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net40-client\NetTopologySuite.IO.GeoJSON.dll" />
-    <file src="Release\v4.0.3\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net403-client\NetTopologySuite.IO.GeoJSON.dll" />
-    <!--file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net45-client\NetTopologySuite.IO.GeoJSON.dll" /-->
-  </files>
+		</description>
+		<summary>GeoJSON IO library for NetTopologySuite</summary>
+		<tags>NTS GeoJSON</tags>
+		<language>en-US</language>
+		<frameworkAssemblies>
+			<frameworkAssembly assemblyName="System" targetFramework="" />
+			<frameworkAssembly assemblyName="System.Core" targetFramework="" />
+		</frameworkAssemblies>
+		<dependencies>
+			<dependency id="NetTopologySuite" version="$version$" />
+			<dependency id="Newtonsoft.Json" version="4.03" />
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="Release\v2.0\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net20\NetTopologySuite.IO.GeoJSON.dll" />
+		
+		<file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net35-client\NetTopologySuite.IO.GeoJSON.dll" />
+		
+		<file src="Release\v4.0\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net40-client\NetTopologySuite.IO.GeoJSON.dll" />
+		
+		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net403-client\NetTopologySuite.IO.GeoJSON.dll" />
+		
+		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net45-client\NetTopologySuite.IO.GeoJSON.dll" />
+	</files>
 </package>

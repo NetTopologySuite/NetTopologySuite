@@ -1,30 +1,30 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-  <metadata>
-    <id>NetTopologySuite.DotSpatial.Converter</id>
-    <version>$version$</version>
-    <title>NTS-DotSpatial GeometryConverter</title>
-    <authors>NetTopologySuite - Team</authors>
-    <owners>NetTopologySuite - Team</owners>
-    <licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
-    <projectUrl>http://code.google.com/p/nettopologysuite</projectUrl>
-    <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <description>
+	<metadata>
+		<id>NetTopologySuite.DotSpatial.Converter</id>
+		<version>$version$</version>
+		<title>NTS-DotSpatial GeometryConverter</title>
+		<authors>NetTopologySuite - Team</authors>
+		<owners>NetTopologySuite - Team</owners>
+		<licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
+		<projectUrl>http://code.google.com/p/nettopologysuite</projectUrl>
+		<requireLicenseAcceptance>true</requireLicenseAcceptance>
+		<description>
 	This package provides C# conversion classes for the use of NetTopologySuite within DotSpatial.
-    </description>
-    <summary>NTS Topology Suite is a direct-port of all the functionalities offered by JTS Topology Suite</summary>
-    <tags>NTS DotSpatial Topology</tags>
-    <copyright>Copyright 2013</copyright>
-    <language>en-US</language>
-    <dependencies>
-      <dependency id="NetTopologySuite" version="$version$" />
-      <dependency id="DotSpatial.Topology" />
-      <dependency id="DotSpatial.Data" />
-    </dependencies>
-  </metadata>
-  <files>
-    <file src="NetTopologySuite.Converter\NetTopologySuite.Converter.DotSpatial\DotSpatialEx.cs" target="content\Utility" />
-    <file src="NetTopologySuite.Converter\NetTopologySuite.Converter.DotSpatial\GeometryConverterToDotSpatial.cs" target="content\Utility" />
-    <file src="NetTopologySuite.Converter\NetTopologySuite.Converter.DotSpatial\GeometryConverterToGeoAPI.cs" target="content\Utility" />
-  </files>
+		</description>
+		<summary>NTS Topology Suite is a direct-port of all the functionalities offered by JTS Topology Suite</summary>
+		<tags>NTS DotSpatial Topology</tags>
+		<copyright>Copyright 2013</copyright>
+		<language>en-US</language>
+		<dependencies>
+			<dependency id="NetTopologySuite" version="$version$" />
+			<dependency id="DotSpatial.Topology" />
+			<dependency id="DotSpatial.Data" />
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="NetTopologySuite.Converter\NetTopologySuite.Converter.DotSpatial\DotSpatialEx.cs" target="content\Utility" />
+		<file src="NetTopologySuite.Converter\NetTopologySuite.Converter.DotSpatial\GeometryConverterToDotSpatial.cs" target="content\Utility" />
+		<file src="NetTopologySuite.Converter\NetTopologySuite.Converter.DotSpatial\GeometryConverterToGeoAPI.cs" target="content\Utility" />
+	</files>
 </package>
