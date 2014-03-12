@@ -79,7 +79,7 @@
   
   <Target Name="BuildSolution" DependsOnTargets="CleanRelease;Information">
     <MSBuild Projects="$(SolutionFile)"
-             Properties="Configuration=Release;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\sln\;"
+             Properties="Configuration=Release;"
              RunEachTargetSeparately="true"
              ContinueOnError="true"
              />
