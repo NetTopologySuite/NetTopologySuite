@@ -95,7 +95,7 @@
              />
   </Target>
 
-  <Target Name="NuGetPack" DependsOnTargets="BuildSolution;BuildRelease">
+  <Target Name="NuGetPack" DependsOnTargets="BuildRelease">
     <Exec Command="$(NuGetCommand) GeoAPI\GeoAPI.nuspec -Version $(GeoAPIVersion) -outputdirectory $(NuGetOutDir)"/>
     <Exec Command="$(NuGetCommand) NTS.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
     <Exec Command="$(NuGetCommand) NTS.IO.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
