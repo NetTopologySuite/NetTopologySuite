@@ -2,11 +2,11 @@
   <PropertyGroup>
     <SolutionFile>NetTopologySuite.sln</SolutionFile>
 	<SolutionDir>$(MSBuildProjectDirectory)</SolutionDir>
-    <AsmVersion>1.13.2</AsmVersion>
+    <AsmVersion>1.13.3</AsmVersion>
     <AsmFileVersion>$(AsmVersion)</AsmFileVersion>
     <NuGetOutDir>"$(MSBuildProjectDirectory)\Release"</NuGetOutDir>
     <GeoAPIVersion>1.7.2</GeoAPIVersion>
-    <ProjNetVersion>1.3.0.3</ProjNetVersion>
+    <ProjNetVersion>1.3.1</ProjNetVersion>
     <NuGetCommand>"$(MSBuildProjectDirectory)\.nuget\nuget.exe" pack</NuGetCommand>
   </PropertyGroup>
 
