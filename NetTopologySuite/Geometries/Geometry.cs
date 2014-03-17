@@ -2273,7 +2273,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="self">The geometry to encode</param>
         /// <param name="writer">The writer to use</param>
         /// <returns>An array of <see cref="byte"/>s, that represent <paramref name="self"/></returns>
-        public static byte[] AsBinary(this IGeometry self, IBinaryGeometryWriter writer)
+        public static byte[] AsBinary(this IGeometry self, GeoAPI.IO.IBinaryGeometryWriter writer)
         {
             return writer == null 
                 ? self.AsBinary() 
