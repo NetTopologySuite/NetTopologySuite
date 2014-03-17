@@ -27,9 +27,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
   
         // MD - deliberately disabled
-#if !PCL
-        [Ignore("This case fails because subtraction of small from large loses precision")]
-#endif
+        [TestAttribute]
+        [IgnoreAttribute("This case fails because subtraction of small from large loses precision")]
         public void TestBadCCW()
         {
             // this case fails because subtraction of small from large loses precision

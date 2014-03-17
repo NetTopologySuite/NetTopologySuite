@@ -130,9 +130,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         }
 
         [TestAttribute]
-#if !PCL
         [Explicit("doesn't works on my machine")]
-#endif
         public void RepeatedTestThreading()
         {
             for (int i = 0; i < 10; i++)
@@ -140,9 +138,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         }
 
         [TestAttribute]
-#if !PCL
         [Explicit("doesn't works on my machine")]
-#endif
         public void TestThreading()
         {
             DoTestThreading();

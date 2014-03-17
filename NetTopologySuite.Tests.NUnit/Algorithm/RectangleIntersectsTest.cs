@@ -20,9 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
 
         [TestAttribute]
-#if !PCL
         [CategoryAttribute("Stress")]
-#endif
         public void TestPerformance()
         {
             var test = new RectangleLineIntersectorValidator();

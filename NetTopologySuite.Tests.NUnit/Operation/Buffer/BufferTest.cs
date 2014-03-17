@@ -8,9 +8,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
     public class BufferTest
     {
         [TestAttribute]
-#if !PCL
         [Ignore]
-#endif
         public void Test0()
         {
             TestMultiLineStringSeparateBuffersFloatingSingle();

@@ -22,7 +22,6 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             Run(30000);
         }
 
-#if !PCL
         [TestAttribute]
         [CategoryAttribute("LongRunning")]
         public void RunLongerTests()
@@ -31,7 +30,6 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             Run(200000);
             Run(300000);
         }
-#endif
 
         [TestAttribute, Ignore("These take very long ... If you have time, go ahead!")]
         public void RunVeryLongTests()

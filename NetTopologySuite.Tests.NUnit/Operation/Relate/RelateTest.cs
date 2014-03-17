@@ -28,9 +28,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
          */
 
         [TestAttribute]
-#if !PCL
         [Ignore("Known to fail")]
-#endif
         public void TestContainsIncorrectIntersectionMatrix()
         {
             string a = "LINESTRING (1 0, 0 2, 0 0, 2 2)";

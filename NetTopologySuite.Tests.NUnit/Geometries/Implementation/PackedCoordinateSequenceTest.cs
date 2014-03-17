@@ -17,9 +17,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         ///but in NTS/JTS 1.9 the result of PackedCoordinateSequence.GetCoordinate method is 0.0
         // This should be removed once the new Coordinate.NULL_ORDINATE result is migrated from JTS
         [TestAttribute]
-#if !PCL
         [Ignore("test fail")]
-#endif
         public override void Test2DZOrdinate()
         {
             Coordinate[] coords = CreateArray(Size);

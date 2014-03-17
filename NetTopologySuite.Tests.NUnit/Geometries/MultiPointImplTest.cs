@@ -22,9 +22,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         // TODO: Enable when #isSimple implemented
-#if !PCL
-        [Ignore("Enable when IsSimple implemented")]
-#endif
+        [TestAttribute]
+        [IgnoreAttribute("Enable when IsSimple implemented")]
         public void TestIsSimple1()
         {
             //    MultiPoint m = (MultiPoint) reader.read("MULTIPOINT(1.111 2.222, 3.333 4.444, 5.555 6.666)");
@@ -32,9 +31,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         // TODO: Enable when #isSimple implemented
-#if !PCL
-        [Ignore("Enable when IsSimple implemented")]
-#endif
+        [TestAttribute]
+        [IgnoreAttribute("Enable when IsSimple implemented")]
         public void TestIsSimple2()
         {
             //    MultiPoint m = (MultiPoint) reader.read("MULTIPOINT(1.111 2.222, 3.333 4.444, 3.333 4.444)");
