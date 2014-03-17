@@ -9,12 +9,12 @@ using NetTopologySuite.Operation.Linemerge;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class LineMergerTest
     {
         private static WKTReader reader = new WKTReader();
 
-        [Test]
+        [TestAttribute]
         public void Test1()
         {
             DoTest(new String[] {
@@ -23,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
               }, new String[] { "LINESTRING (120 120, 180 140, 200 180, 240 180)" });
         }
 
-        [Test]
+        [TestAttribute]
         public void Test2()
         {
             DoTest(new String[]{"LINESTRING (120 300, 80 340)",
@@ -39,21 +39,21 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
               "LINESTRING (40 320, 60 320, 80 340, 120 300, 140 320, 160 320)"});
         }
 
-        [Test]
+        [TestAttribute]
         public void Test3()
         {
             DoTest(new String[] { "LINESTRING (0 0, 100 100)", "LINESTRING (0 100, 100 0)" },
               new String[] { "LINESTRING (0 0, 100 100)", "LINESTRING (0 100, 100 0)" });
         }
 
-        [Test]
+        [TestAttribute]
         public void Test4()
         {
             DoTest(new String[] { "LINESTRING EMPTY", "LINESTRING EMPTY" },
               new String[] { });
         }
 
-        [Test]
+        [TestAttribute]
         public void Test5()
         {
             DoTest(new String[] { },

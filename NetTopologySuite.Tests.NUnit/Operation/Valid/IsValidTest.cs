@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Valid
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class IsValidTest
     {
         private PrecisionModel precisionModel;
@@ -22,7 +22,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             reader = new WKTReader(geometryFactory);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestInvalidCoordinate()
         {
             Coordinate badCoord = new Coordinate(1.0, Double.NaN);

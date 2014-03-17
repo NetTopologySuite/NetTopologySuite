@@ -8,12 +8,12 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Index
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public abstract class SpatialIndexTest
     {
         protected abstract ISpatialIndex<object> CreateSpatialIndex();
 
-        [Test]
+        [TestAttribute]
         public void TestSpatialIndex()
         {
             Console.WriteLine("===============================");

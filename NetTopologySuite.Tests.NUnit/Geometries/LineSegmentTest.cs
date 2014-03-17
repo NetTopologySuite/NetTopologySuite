@@ -10,14 +10,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     /*
      * Test named predicate short-circuits
      */
-    [TestFixture]
+    [TestFixtureAttribute]
     public class LineSegmentTest
     {
         WKTReader rdr = new WKTReader();
 
         private static double ROOT2 = Math.Sqrt(2);
 
-        [Test]
+        [TestAttribute]
         public void TestProjectionFactor()
         {
             // zero-length line
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         }
 
-        [Test]
+        [TestAttribute]
         public void TestOffset()
         {
             CheckOffset(0, 0, 10, 10, 0.0, ROOT2, -1, 1);
@@ -65,7 +65,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             return true;
         }
 
-        [Test]
+        [TestAttribute]
         public void TestOrientationIndexCoordinate()
         {
             LineSegment seg = new LineSegment(0, 0, 10, 10);
@@ -81,7 +81,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             CheckOrientationIndex(seg, -2, -2.0000001, -1);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestOrientationIndexSegment()
         {
             LineSegment seg = new LineSegment(100, 100, 110, 110);

@@ -11,10 +11,10 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Dissolve
 {
-    [TestFixture, Category("Stress")]
+    [TestFixtureAttribute, CategoryAttribute("Stress")]
     public class LineDissolveStressTest
     {
-        [Test, Ignore("takes ages to complete")]
+        [TestAttribute, Ignore("takes ages to complete")]
         public void Test()
         {
             Trace.WriteLine("Loading data...");

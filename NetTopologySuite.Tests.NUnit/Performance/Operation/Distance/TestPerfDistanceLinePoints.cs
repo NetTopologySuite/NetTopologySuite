@@ -33,7 +33,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
 
         private bool verbose = true;
 
-        [Test, Category("Stress")]
+        [TestAttribute, CategoryAttribute("Stress")]
         public void Test()
         {
 

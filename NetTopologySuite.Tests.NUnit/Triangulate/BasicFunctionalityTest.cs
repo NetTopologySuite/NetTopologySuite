@@ -67,13 +67,13 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
 
         private WKTReader _wktReader;
 
-        [SetUp]
+        [SetUpAttribute]
         public void SetUp()
         {
             _wktReader = new WKTReader();
         }
 
-        [Test]
+        [TestAttribute]
         public void Test1()
         {
             IGeometry geom = _wktReader.Read("POLYGON ((0 0, 0 10, 4 10, 4 8, 6 8, 6 10, 10 10, 10 0, 0 0))");
@@ -84,7 +84,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             IGeometryCollection resultTriangles = dtb.GetTriangles(geom.Factory);
             Console.WriteLine(resultTriangles.AsText());
         }
-        [Test]
+        [TestAttribute]
         public void Test2()
         {
             IGeometry geom = _wktReader.Read("POLYGON ((0 0, 0 10, 4 10, 4 8, 6 8, 6 10, 10 10, 10 0, 0 0))");
@@ -97,7 +97,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
         }
 
 
-        [Test /*, ExpectedException() */]
+        [TestAttribute /*, ExpectedException() */]
         public void TestInvertedItalicNTS()
         {
             AffineTransformationBuilder atb = new AffineTransformationBuilder(
@@ -121,7 +121,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             Console.WriteLine(result.AsText());
         }
 
-        [Test]
+        [TestAttribute]
         public void TestInvertedNTSConforming()
         {
             IGeometry geom = _wktReader.Read(NTS);
@@ -146,7 +146,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
 
         }
 
-        [Test]
+        [TestAttribute]
         public void TestInvertedItalicNTSConforming()
         {
             AffineTransformationBuilder atb = new AffineTransformationBuilder(

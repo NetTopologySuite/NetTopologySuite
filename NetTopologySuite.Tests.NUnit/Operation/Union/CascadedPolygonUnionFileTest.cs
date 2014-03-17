@@ -12,7 +12,10 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
     /// <author>mbdavis</author>
     public class CascadedPolygonUnionFileTest
     {
-        [Test, Category("LongRunning")]
+        [TestAttribute]
+#if !PCL
+        [CategoryAttribute("LongRunning")]
+#endif
         public void TestAfrica()
         {
             var filePath = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile(
@@ -24,7 +27,11 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
             EmbeddedResourceManager.CleanUpTempFile(filePath);
         }
 
-        [Test, Category("LongRunning"), Explicit("takes ages to complete")]
+        [TestAttribute]
+#if !PCL
+        [CategoryAttribute("LongRunning")]
+        [Explicit("takes ages to complete")]
+#endif
         public void TestEurope()
         {
             var filePath = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile(

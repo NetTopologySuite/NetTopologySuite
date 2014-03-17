@@ -16,14 +16,14 @@ namespace NetTopologySuite.Tests.NUnit.IO
         private readonly WKTWriter _writer = new WKTWriter();
         private readonly WKTWriter _writer3D = new WKTWriter(3);
 
-        [Test]
+        [TestAttribute]
         public void TestWritePoint()
         {
             IPoint point = _factory.CreatePoint(new Coordinate(10, 10));
             Assert.AreEqual("POINT (10 10)", _writer.Write(point));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestWriteLineString()
         {
             Coordinate[] coordinates = 
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual("LINESTRING (10 10, 20 20, 30 40)", _writer.Write(lineString));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestWritePolygon()
         {
             Coordinate[] coordinates =
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual("POLYGON ((10 10, 10 20, 20 20, 20 15, 10 10))", _writer.Write(polygon));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestWriteMultiPoint()
         {
             IPoint[] points = 
@@ -64,7 +64,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual("MULTIPOINT ((10 10), (20 20))", _writer.Write(multiPoint));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestWriteMultiLineString()
         {
             Coordinate[] coordinates1 = 
@@ -86,7 +86,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 _writer.Write(multiLineString));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestWriteMultiPolygon()
         {
             Coordinate[] coordinates1 = 
@@ -115,7 +115,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 _writer.Write(multiPolygon));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestWriteGeometryCollection()
         {
             IPoint point1 = _factory.CreatePoint(new Coordinate(10, 10));
@@ -138,7 +138,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         /// </summary>
         /// <seealso href="https://code.google.com/p/nettopologysuite/issues/detail?id=171"/>
         /// <seealso href="http://stackoverflow.com/questions/2105096/why-is-tostring-rounding-my-double-value"/>
-        [Test]
+        [TestAttribute]
         public void TestWriteLargeNumbers1()
         {
             IPrecisionModel precisionModel = new PrecisionModel(1E9);
@@ -151,7 +151,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual("POINT (123456789012346000 10000000000)", actual);            
         }
 
-        [Test]
+        [TestAttribute]
         public void TestWriteLargeNumbers2()
         {
             IPrecisionModel precisionModel = new PrecisionModel(1E9);
@@ -165,7 +165,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         /// </summary>
         /// <seealso href="https://code.google.com/p/nettopologysuite/issues/detail?id=171"/>
         /// <seealso href="http://stackoverflow.com/questions/2105096/why-is-tostring-rounding-my-double-value"/>
-        [Test]
+        [TestAttribute]
         public void TestWriteLargeNumbers3()
         {
             IPrecisionModel precisionModel = new PrecisionModel(1E9);
@@ -177,7 +177,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual("POINT (123456789012346000000000000000000 10000000000)", point1.AsText());
         }
 
-        [Test]
+        [TestAttribute]
         public void TestWrite3D()
         {
             IGeometryFactory geometryFactory = new GeometryFactory();
@@ -185,7 +185,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             String wkt = _writer3D.Write(point);
             Assert.AreEqual("POINT (1 1 1)", wkt);
         }
-        [Test]
+        [TestAttribute]
         public void testWrite3D_withNaN()
         {
             IGeometryFactory geometryFactory = new GeometryFactory();

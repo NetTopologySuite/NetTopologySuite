@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Precision
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class GeometryPrecisionReducerTest
     {
         private PrecisionModel pmFloat;
@@ -30,7 +30,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             reducerKeepCollapse.RemoveCollapsedComponents = false;
         }
 
-        [Test]
+        [TestAttribute]
         public void TestSquare()
         {
             IGeometry g = reader.Read("POLYGON (( 0 0, 0 1.4, 1.4 1.4, 1.4 0, 0 0 ))");
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestTinySquareCollapse()
         {
             IGeometry g = reader.Read("POLYGON (( 0 0, 0 .4, .4 .4, .4 0, 0 0 ))");
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestSquareCollapse()
         {
             IGeometry g = reader.Read("POLYGON (( 0 0, 0 1.4, .4 .4, .4 0, 0 0 ))");
@@ -57,7 +57,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestSquareKeepCollapse()
         {
             IGeometry g = reader.Read("POLYGON (( 0 0, 0 1.4, .4 .4, .4 0, 0 0 ))");
@@ -66,7 +66,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestLine()
         {
             IGeometry g = reader.Read("LINESTRING ( 0 0, 0 1.4 )");
@@ -75,7 +75,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestLineRemoveCollapse()
         {
             IGeometry g = reader.Read("LINESTRING ( 0 0, 0 .4 )");
@@ -84,7 +84,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestLineKeepCollapse()
         {
             IGeometry g = reader.Read("LINESTRING ( 0 0, 0 .4 )");
@@ -93,7 +93,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPolgonWithCollapsedLine()
         {
             IGeometry g = reader.Read("POLYGON ((10 10, 100 100, 200 10.1, 300 10, 10 10))");
@@ -102,7 +102,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPolgonWithCollapsedLinePointwise()
         {
             IGeometry g = reader.Read("POLYGON ((10 10, 100 100, 200 10.1, 300 10, 10 10))");
@@ -111,7 +111,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPolgonWithCollapsedPoint()
         {
             IGeometry g = reader.Read("POLYGON ((10 10, 100 100, 200 10.1, 300 100, 400 10, 10 10))");
@@ -120,7 +120,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPolgonWithCollapsedPointPointwise()
         {
             IGeometry g = reader.Read("POLYGON ((10 10, 100 100, 200 10.1, 300 100, 400 10, 10 10))");

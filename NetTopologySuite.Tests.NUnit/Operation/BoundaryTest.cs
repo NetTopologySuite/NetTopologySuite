@@ -22,7 +22,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
         /// For testing only.
         /// </summary>
         /// <exception cref="Exception" />
-        [Test]
+        [TestAttribute]
         public void Test1()
         {
             String a = "MULTILINESTRING ((0 0, 10 10), (10 10, 20 20))";
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
                             "POINT (10 10)");
         }
 
-        [Test]
+        [TestAttribute]
         public void Test2LinesTouchAtEndpoint2()
         {
             String a = "MULTILINESTRING ((0 0, 10 10), (10 10, 20 20))";
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
             RunBoundaryTest(a, BoundaryNodeRules.MultivalentEndpointBoundaryRule,
                             "POINT (10 10)");
         }
-        [Test]
+        [TestAttribute]
         public void Test3LinesTouchAtEndpoint2()
         {
             String a = "MULTILINESTRING ((0 0, 10 10), (10 10, 20 20), (10 10, 10 20))";
@@ -67,7 +67,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
             RunBoundaryTest(a, BoundaryNodeRules.MultivalentEndpointBoundaryRule,
                             "POINT (10 10)");
         }
-        [Test]
+        [TestAttribute]
         public void TestMultiLineStringWithRingTouchAtEndpoint()
         {
             String a = "MULTILINESTRING ((100 100, 20 20, 200 20, 100 100), (100 200, 100 100))";
@@ -79,7 +79,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
             RunBoundaryTest(a, BoundaryNodeRules.EndpointBoundaryRule,
                             "MULTIPOINT ((100 100), (100 200))");
         }
-        [Test]
+        [TestAttribute]
         public void TestRing()
         {
             String a = "LINESTRING (100 100, 20 20, 200 20, 100 100)";

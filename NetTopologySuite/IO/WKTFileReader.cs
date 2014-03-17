@@ -15,13 +15,16 @@ namespace NetTopologySuite.IO
     /// </author>
     public class WKTFileReader
     {
+#if !PCL
         private const int MaxLookahead = 2048;
-        
         private readonly FileInfo _file;
+#endif
+
         private TextReader _reader;
         private readonly WKTReader _wktReader;
         private int _count;
 
+#if !PCL
         ///<summary>
         /// Creates a new <see cref="WKTFileReader" /> given the <paramref name="file" /> to read from and a <see cref="WKTReader" /> to use to parse the geometries.
         ///</summary>
@@ -43,9 +46,22 @@ namespace NetTopologySuite.IO
             : this(new FileInfo(filename), wktReader)
         {
         }
+#endif
+
+#if PCL
+        ///<summary>
+        /// Creates a new <see cref="WKTFileReader" />, given a <see cref="Stream"/> to read from.
+        ///</summary>
+        /// <param name="stream">The stream to read from</param>
+        /// <param name="wktReader">The geometry reader to use</param>
+        public WKTFileReader(Stream stream, WKTReader wktReader)
+            : this(new StreamReader(stream), wktReader)
+        {
+        }
+#endif
 
         ///<summary>
-        /// Creates a new <see cref="WKTFileReader" />, given a <see cref="StreamReader"/> of the file to read from.
+        /// Creates a new <see cref="WKTFileReader" />, given a <see cref="TextReader"/> to read with.
         ///</summary>
         /// <param name="reader">The stream reader of the file to read from</param>
         /// <param name="wktReader">The geometry reader to use</param>
@@ -78,16 +94,19 @@ namespace NetTopologySuite.IO
         {
             _count = 0;
 
+#if !PCL
             if (_file != null)
                 _reader =  new StreamReader(new BufferedStream(_file.OpenRead(), MaxLookahead)); 
-
+#endif
             try
             {
                 return Read(_reader);                
             }
             finally
             {
+#if !PCL
                 _reader.Close();
+#endif
             }
         }
 
@@ -128,7 +147,7 @@ namespace NetTopologySuite.IO
         //    return !(_wktReader.Index < tokens.Count);
         //}
 
-        private bool IsAtEndOfTokens(Token token)
+        private static bool IsAtEndOfTokens(Token token)
         {
             return token is EofToken;
         }
@@ -136,7 +155,7 @@ namespace NetTopologySuite.IO
         ///<summary>
         /// Tests if reader is at EOF.
         ///</summary>
-        private bool IsAtEndOfFile(/*BufferedReader*/StreamReader bufferedReader)
+        private bool IsAtEndOfFile(StreamReader bufferedReader)
         {
             return bufferedReader.EndOfStream;
             /*

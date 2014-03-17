@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class TriangleTest
     {
         private static readonly PrecisionModel PrecisionModel = new PrecisionModel();
@@ -15,7 +15,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         private const double Tolerance = 1E-5;
 
-        [Test]
+        [TestAttribute]
         public void TestInterpolateZ()
         {
             CheckInterpolateZ("LINESTRING(1 1 0, 2 1 0, 1 2 10)", new Coordinate(1.5, 1.5), 5);
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(expectedValue, z, Tolerance);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestArea3D()
         {
             CheckArea3D("POLYGON((0 0 10, 100 0 110, 100 100 110, 0 0 10))",
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(expectedValue, area3D, Tolerance);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestArea()
         {
             // CW
@@ -81,7 +81,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         }
 
-        [Test]
+        [TestAttribute]
         public void TestAcute()
         {
             // right triangle

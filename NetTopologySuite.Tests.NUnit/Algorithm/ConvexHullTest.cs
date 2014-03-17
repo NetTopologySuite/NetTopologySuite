@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class ConvexHullTest
     {
         private readonly IGeometryFactory _geometryFactory;
@@ -19,7 +19,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             _reader = new WKTReader(_geometryFactory);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestManyIdenticalPoints()
         {
             Coordinate[] pts = new Coordinate[100];
@@ -32,7 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(actualGeometry.EqualsExact(expectedGeometry));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestAllIdenticalPoints()
         {
             Coordinate[] pts = new Coordinate[100];
@@ -44,7 +44,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(expectedGeometry.EqualsExact(actualGeometry));
         }
 
-        [Test]
+        [TestAttribute]
         public void Test1()
         {
             WKTReader reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(convexHull.EqualsExact(lineString.ConvexHull()));
         }
 
-        [Test]
+        [TestAttribute]
         public void Test2()
         {
             WKTReader reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
@@ -62,7 +62,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(convexHull.EqualsExact(geometry.ConvexHull()));
         }
 
-        [Test]
+        [TestAttribute]
         public void Test3()
         {
             WKTReader reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
@@ -71,7 +71,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(convexHull.EqualsExact(geometry.ConvexHull()));
         }
 
-        [Test]
+        [TestAttribute]
         public void Test4()
         {
             WKTReader reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
@@ -80,7 +80,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(convexHull.EqualsExact(geometry.ConvexHull()));
         }
 
-        [Test]
+        [TestAttribute]
         public void Test5()
         {
             WKTReader reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
@@ -89,7 +89,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(convexHull.EqualsExact(geometry.ConvexHull()));
         }
 
-        [Test]
+        [TestAttribute]
         public void Test6()
         {
             WKTReader reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
@@ -122,7 +122,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         //    }
         //}
 
-        [Test]
+        [TestAttribute]
         public void Test7()
         {
             WKTReader reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));

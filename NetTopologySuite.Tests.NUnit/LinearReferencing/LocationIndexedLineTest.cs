@@ -8,10 +8,10 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
     /// <summary>
     /// Tests the <see cref="LocationIndexedLine"/> class
     /// </summary>
-    [TestFixture]
+    [TestFixtureAttribute]
     public class LocationIndexedLineTest : AbstractIndexedLineTest
     {
-        [Test]
+        [TestAttribute]
         public override void TestOffsetStartPointRepeatedPoint()
         {
             RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(0 0)", 1.0, "POINT (-0.7071067811865475 0.7071067811865475)");
@@ -24,7 +24,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         }
         
         
-        [Test]
+        [TestAttribute]
         public void TestMultiLineStringSimple()
         {
             RunExtractLine("MULTILINESTRING ((0 0, 10 10), (20 20, 30 30))",
@@ -33,7 +33,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
                             "MULTILINESTRING ((5 5, 10 10), (20 20, 25 25))");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestMultiLineString2()
         {
             RunExtractLine("MULTILINESTRING ((0 0, 10 10), (20 20, 30 30))",

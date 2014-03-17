@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class GeometryImplTest
     {
         private IPrecisionModel precisionModel;
@@ -23,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             readerFloat = new WKTReader();
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPolygonRelate()
         {
             IGeometry bigPolygon = reader.Read(
@@ -33,7 +33,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(bigPolygon.Contains(smallPolygon));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEmptyGeometryCentroid()
         {
             Assert.IsTrue(reader.Read("POINT EMPTY").IsEmpty);
@@ -46,13 +46,13 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(reader.Read("MULTIPOINT EMPTY").IsEmpty);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestNoOutgoingDirEdgeFound()
         {
             doTestFromCommcast2003AtYahooDotCa(reader);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestOutOfMemoryError()
         {
             doTestFromCommcast2003AtYahooDotCa(new WKTReader());
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
 
 
-        [Test]
+        [TestAttribute]
         public void TestDepthMismatchAssertionFailedException()
         {
             //register@robmeek.com reported an assertion failure
@@ -105,7 +105,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(equalsHash, a.GetHashCode() == b.GetHashCode());
         }
 
-        [Test]
+        [TestAttribute]
         public void TestInvalidateEnvelope()
         {
             IGeometry g = reader.Read("POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
@@ -124,7 +124,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             }
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEquals1()
         {
             IGeometry polygon1 = reader.Read(
@@ -134,7 +134,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(polygon1.Equals(polygon2));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEqualsWithNull()
         {
             IGeometry polygon = reader.Read("POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
@@ -154,7 +154,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             //    Assert.IsTrue(lineString.equals(geometryCollection));
         }        
 
-        [Test]
+        [TestAttribute]
         public void TestEqualsExactForLinearRings()
         {
             ILinearRing x = geometryFactory.CreateLinearRing(new Coordinate[] {
@@ -185,7 +185,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         //          somethingNotEqualButSameClass);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEqualsExactForLineStrings()
         {
             ILineString x = geometryFactory.CreateLineString(new Coordinate[] {
@@ -215,7 +215,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 anotherSameClassButEmpty, collectionFactory2);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEqualsExactForPoints()
         {
             IPoint x = geometryFactory.CreatePoint(new Coordinate(100, 100));
@@ -232,7 +232,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 anotherSameClassButEmpty, collectionFactory);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEqualsExactForPolygons()
         {
             Polygon x = (Polygon) reader.Read(
@@ -251,7 +251,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 anotherSameClassButEmpty, collectionFactory);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEqualsExactForGeometryCollections()
         {
             IGeometry polygon1 = (Polygon) reader.Read(

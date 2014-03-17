@@ -14,12 +14,12 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
     /// </summary>
     /// <author>Martin Davis</author>
     /// <version>1.7</version
-    [TestFixture]
+    [TestFixtureAttribute]
     public class ValidClosedRingTest   
     {
         private static WKTReader rdr = new WKTReader();
 
-        [Test]
+        [TestAttribute]
         public void TestBadLinearRing()
         {
             LinearRing ring = (LinearRing) FromWKT("LINEARRING (0 0, 0 10, 10 10, 10 0, 0 0)");
@@ -27,14 +27,14 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             CheckIsValid(ring, false);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestGoodLinearRing()
         {
             LinearRing ring = (LinearRing) FromWKT("LINEARRING (0 0, 0 10, 10 10, 10 0, 0 0)");
             CheckIsValid(ring, true);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestBadPolygonShell()
         {
             Polygon poly = (Polygon) FromWKT("POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))");
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             CheckIsValid(poly, false);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestBadPolygonHole()
         {
             Polygon poly = (Polygon) FromWKT("POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0), (1 1, 2 1, 2 2, 1 2, 1 1) ))");
@@ -50,14 +50,14 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             CheckIsValid(poly, false);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestGoodPolygon()
         {
             Polygon poly = (Polygon) FromWKT("POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))");
             CheckIsValid(poly, true);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestBadGeometryCollection()
         {
             GeometryCollection gc = (GeometryCollection) FromWKT("GEOMETRYCOLLECTION ( POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0), (1 1, 2 1, 2 2, 1 2, 1 1) )), POINT(0 0) )");

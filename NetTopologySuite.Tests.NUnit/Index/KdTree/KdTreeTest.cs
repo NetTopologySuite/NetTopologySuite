@@ -7,7 +7,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
 {
     public class KdTreeTest
     {
-        [Test]
+        [TestAttribute]
         public void TestSinglePoint()
         {
             var index = new KdTree<object>(.001);
@@ -28,7 +28,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
             Assert.IsTrue(node.IsRepeated);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEndlessLoop()
         {
             var kd = new KdTree<string>();

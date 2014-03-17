@@ -10,13 +10,13 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     /*
      * Test spatial predicate optimizations for rectangles.
      */
-    [TestFixture]
+    [TestFixtureAttribute]
     public class RectanglePredicateTest
     {
         private WKTReader rdr = new WKTReader();
         private GeometryFactory fact = new GeometryFactory();
 
-        [Test]
+        [TestAttribute]
         public void TestShortAngleOnBoundary()
         {
             String[] onBoundary =
@@ -25,7 +25,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             RunRectanglePred(onBoundary);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestAngleOnBoundary()
         {
             String[] onBoundary =

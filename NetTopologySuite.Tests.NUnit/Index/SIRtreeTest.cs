@@ -10,7 +10,7 @@ using SIRtree = NetTopologySuite.Index.Strtree.SIRtree<object>;
 using AbstractNode = NetTopologySuite.Index.Strtree.AbstractNode<NetTopologySuite.Index.Strtree.Interval, object>;
 namespace NetTopologySuite.Tests.NUnit.Index
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class SIRtreeTest
     {
         private class TestTree : SIRtree
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             }
         }
 
-        [Test]
+        [TestAttribute]
         public void Test()
         {
             TestTree t = new TestTree(2);
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             Assert.AreEqual(2, t.Query(4.5, 5.5).Count);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEmptyTree()
         {
             TestTree t = new TestTree(2);

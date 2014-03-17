@@ -9,7 +9,7 @@ using NetTopologySuite.Precision;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class RectangleIntersectsPerformanceTest
     {
         private const int MaxIter = 10;
@@ -17,7 +17,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
         private static readonly PrecisionModel Pm = new PrecisionModel();
         private static readonly IGeometryFactory Fact = new GeometryFactory(Pm, 0);
 
-        [Test]
+        [TestAttribute]
         public void Test()
         {
             Test(500);

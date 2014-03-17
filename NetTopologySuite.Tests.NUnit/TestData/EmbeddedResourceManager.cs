@@ -6,6 +6,12 @@ namespace NetTopologySuite.Tests.NUnit.TestData
 {
     internal class EmbeddedResourceManager
     {
+        public static Stream GetResourceStream(string resourceName)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            return assembly.GetManifestResourceStream(resourceName);
+        }
+        
         public static string SaveEmbeddedResourceToTempFile(string resourceName)
         {
             string directoryPath = Path.Combine(

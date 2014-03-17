@@ -105,7 +105,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI.Pcl", "GeoAPI\GeoAPI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Pcl", "PortableClassLibrary\NetTopologySuite.Pcl\NetTopologySuite.Pcl.csproj", "{C6F14605-0DA6-420A-8DE7-18B57E9A9C99}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI.BootStrapper.NetTopologySuite", "PortableClassLibrary\GeoAPI.Bootstrapper.NetTopologySuite\P\GeoAPI.BootStrapper.NetTopologySuite.csproj", "{8353362C-192B-4EDF-A50D-C36B21470D76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Tests.NUnit.Pcl", "PortableClassLibrary\NetTopologySuite.Tests.NUnit.Pcl\NetTopologySuite.Tests.NUnit.Pcl.csproj", "{ED064DF8-14B5-471B-896D-BBFEB21A5AA6}"
+EndProject
 Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -229,6 +237,14 @@ Global
 		{C6F14605-0DA6-420A-8DE7-18B57E9A9C99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6F14605-0DA6-420A-8DE7-18B57E9A9C99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6F14605-0DA6-420A-8DE7-18B57E9A9C99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8353362C-192B-4EDF-A50D-C36B21470D76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8353362C-192B-4EDF-A50D-C36B21470D76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8353362C-192B-4EDF-A50D-C36B21470D76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8353362C-192B-4EDF-A50D-C36B21470D76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED064DF8-14B5-471B-896D-BBFEB21A5AA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED064DF8-14B5-471B-896D-BBFEB21A5AA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED064DF8-14B5-471B-896D-BBFEB21A5AA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED064DF8-14B5-471B-896D-BBFEB21A5AA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -259,9 +275,7 @@ Global
 		{4FE07049-9F3A-42A4-8105-B1A72FE15C67} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
 		{92B3B84B-50F1-4147-8B97-D93B90FA5514} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
 		{C6F14605-0DA6-420A-8DE7-18B57E9A9C99} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
-	EndGlobalSection
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
+		{8353362C-192B-4EDF-A50D-C36B21470D76} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
+		{ED064DF8-14B5-471B-896D-BBFEB21A5AA6} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
 	EndGlobalSection
 EndGlobal

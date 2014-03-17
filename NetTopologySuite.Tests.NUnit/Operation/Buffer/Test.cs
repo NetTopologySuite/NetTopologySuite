@@ -7,7 +7,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 {
     public class Test
     {
-        [Test]
+        [TestAttribute]
         public void Buffer()
         {
             var geom =

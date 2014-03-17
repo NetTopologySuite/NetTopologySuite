@@ -5,10 +5,10 @@ using Assert = NUnit.Framework.Assert;
 
 namespace NetTopologySuite.Tests.NUnit.Utilities
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class PriorityQueueTest
     {
-        [Test]
+        [TestAttribute]
         public void TestOrder1()
         {
             PriorityQueue<int> q = new PriorityQueue<int>();
@@ -20,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
             CheckOrder(q);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestOrderRandom1()
         {
             PriorityQueue<int> q = new PriorityQueue<int>();

@@ -9,7 +9,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
 {
     public class AffineTransformationTest
     {
-        [Test]
+        [TestAttribute]
         public void TestRotate1()
         {
             AffineTransformation t = AffineTransformation.RotationInstance(Math.PI / 2);
@@ -18,7 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             CheckTransformation(-10, -10, t, 10, -10);
         }
 
-        //  [Test]
+        //  [TestAttribute]
         //public void testRotateAroundPoint1()
         //{
         //  AffineTransformation t = AffineTransformation.RotationInstance(Math.PI/2, 1, 1);
@@ -27,7 +27,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
         //  checkTransformation(0, 10, t, -8, 0);
         //  checkTransformation(-10, -10, t, 12, -10);
         //}
-        [Test]
+        [TestAttribute]
 
         public void TestReflectXy1()
         {
@@ -38,7 +38,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             CheckTransformation(-3, -4, t, -4, -3);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestReflectXy2()
         {
             AffineTransformation t = AffineTransformation.ReflectionInstance(1, -1);
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             CheckTransformation(-3, -4, t, 4, 3);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestReflectXyxy1()
         {
             AffineTransformation t = AffineTransformation.ReflectionInstance(0, 5, 5, 0);
@@ -56,7 +56,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             CheckTransformation(0, 0, t, 5, 5);
             CheckTransformation(-10, -10, t, 15, 15);
         }
-        [Test]
+        [TestAttribute]
 
         public void TestScale1()
         {
@@ -65,7 +65,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             CheckTransformation(0, 10, t, 0, 30);
             CheckTransformation(-10, -10, t, -20, -30);
         }
-        [Test]
+        [TestAttribute]
 
         public void TestShear1()
         {
@@ -73,7 +73,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             CheckTransformation(10, 0, t, 10, 30);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestTranslate1()
         {
             AffineTransformation t = AffineTransformation.TranslationInstance(2, 3);
@@ -81,7 +81,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             CheckTransformation(0, 0, t, 2, 3);
             CheckTransformation(-10, -5, t, -8, -2);
         }
-        [Test]
+        [TestAttribute]
 
         public void TestTranslateRotate1()
         {
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             CheckTransformation(10, 0, t, -3, 13);
             CheckTransformation(-10, -10, t, 7, -7);
         }
-        [Test]
+        [TestAttribute]
 
         public void TestCompose1()
         {
@@ -104,7 +104,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             CheckTransformation(t0, t1);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestCompose2()
         {
             AffineTransformation t0 = AffineTransformation.ReflectionInstance(0, 0, 1, 0);
@@ -115,7 +115,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             CheckTransformation(t0, t1);
         }
 
-        //[Test]
+        //[TestAttribute]
         //public void TestComposeRotation1()
         //{
         //    AffineTransformation t0 = AffineTransformation.RotationInstance(1, 10, 10);
@@ -127,51 +127,51 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
         //    checkTransformation(t0, t1);
         //}
 
-        [Test]
+        [TestAttribute]
         public void TestLineString()
         {
             CheckTransformation("LINESTRING (1 2, 10 20, 100 200)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPolygon()
         {
             CheckTransformation("POLYGON ((0 0, 100 0, 100 100, 0 100, 0 0))");
         }
-        [Test]
+        [TestAttribute]
         public void TestPolygonWithHole()
         {
             CheckTransformation("POLYGON ((0 0, 100 0, 100 100, 0 100, 0 0), (1 1, 1 10, 10 10, 10 1, 1 1) )");
         }
-        [Test]
+        [TestAttribute]
         public void TestMultiPoint()
         {
             CheckTransformation("MULTIPOINT (0 0, 1 4, 100 200)");
         }
-        [Test]
+        [TestAttribute]
         public void TestMultiLineString()
         {
             CheckTransformation("MULTILINESTRING ((0 0, 1 10), (10 10, 20 30), (123 123, 456 789))");
         }
-        [Test]
+        [TestAttribute]
         public void TestMultiPolygon()
         {
             CheckTransformation("MULTIPOLYGON ( ((0 0, 100 0, 100 100, 0 100, 0 0), (1 1, 1 10, 10 10, 10 1, 1 1) ), ((200 200, 200 250, 250 250, 250 200, 200 200)) )");
         }
-        [Test]
+        [TestAttribute]
 
         public void TestGeometryCollection()
         {
             CheckTransformation("GEOMETRYCOLLECTION ( POINT ( 1 1), LINESTRING (0 0, 10 10), POLYGON ((0 0, 100 0, 100 100, 0 100, 0 0)) )");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestNestedGeometryCollection()
         {
             CheckTransformation("GEOMETRYCOLLECTION ( POINT (20 20), GEOMETRYCOLLECTION ( POINT ( 1 1), LINESTRING (0 0, 10 10), POLYGON ((0 0, 100 0, 100 100, 0 100, 0 0)) ) )");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestCompose3()
         {
             AffineTransformation t0 = AffineTransformation.ReflectionInstance(0, 10, 10, 0);

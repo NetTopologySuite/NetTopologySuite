@@ -12,12 +12,12 @@ namespace NetTopologySuite.Tests.NUnit.Noding
     /// Test IntersectionSegment#compareNodePosition using an exhaustive set
     /// of test cases
     /// </summary>
-    [TestFixture]
+    [TestFixtureAttribute]
     public class SegmentPointComparatorFullTest
     {
         private PrecisionModel pm = new PrecisionModel(1.0);
 
-        [Test]
+        [TestAttribute]
         public void TestQuadrant0()
         {
             CheckSegment(100, 0);
@@ -27,7 +27,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding
             CheckSegment(0, 100);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestQuadrant4()
         {
             CheckSegment(100, -50);
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding
             CheckSegment(0, -100);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestQuadrant1()
         {
             CheckSegment(-100, 0);
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding
             CheckSegment(-100, 150);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestQuadrant2()
         {
             CheckSegment(-100, 0);

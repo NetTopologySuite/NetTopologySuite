@@ -12,7 +12,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
      * Test spatial predicate optimizations for rectangles by
      * synthesizing an exhaustive set of test cases.
      */
-    [TestFixture]
+    [TestFixtureAttribute]
     public class RectanglePredicateSyntheticTest
     {
         private WKTReader rdr = new WKTReader();
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             rect = fact.ToGeometry(rectEnv);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestLines()
         {
             Console.WriteLine(rect);
@@ -46,7 +46,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             }
         }
 
-        [Test]
+        [TestAttribute]
         public void TestDenseLines()
         {
             Console.WriteLine(rect);
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             }
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPolygons()
         {
             var testGeoms = getTestGeometries();

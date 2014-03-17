@@ -5,10 +5,10 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
 
-    [TestFixture]
+    [TestFixtureAttribute]
     public class CGAlgorithmsTest
     {
-        [Test]
+        [TestAttribute]
         public void TestDistancePointLinePerpendicular()
         {
             Assert.AreEqual(0.5, CGAlgorithms.DistancePointLinePerpendicular(
@@ -19,7 +19,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 new Coordinate(1, 0), new Coordinate(0, 0), new Coordinate(1, 1)), 0.000001);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestDistancePointLine()
         {
             Assert.AreEqual(0.5, CGAlgorithms.DistancePointLine(
@@ -28,7 +28,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 new Coordinate(2, 0), new Coordinate(0, 0), new Coordinate(1, 0)), 0.000001);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestDistanceLineLineDisjointCollinear()
         {
             Assert.AreEqual(1.999699, CGAlgorithms.DistanceLineLine(

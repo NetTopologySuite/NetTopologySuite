@@ -12,7 +12,7 @@ using NUnit.Framework;
  /// <author>Martin Davis</author>
 namespace NetTopologySuite.Tests.NUnit.Operation.Relate
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class RelateBoundaryNodeRuleTest
     {
         private GeometryFactory fact;
@@ -24,7 +24,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             rdr = new WKTReader(fact);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestMultiLineStringSelfIntTouchAtEndpoint()
         {
             String a = "MULTILINESTRING ((20 20, 100 100, 100 20, 20 100), (60 60, 60 140))";
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             RunRelateTest(a, b, BoundaryNodeRules.EndpointBoundaryRule, "FF1F00102");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestLineStringSelfIntTouchAtEndpoint()
         {
             String a = "LINESTRING (20 20, 100 100, 100 20, 20 100)";
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             RunRelateTest(a, b, BoundaryNodeRules.EndpointBoundaryRule, "F01FF0102");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestMultiLineStringTouchAtEndpoint()
         {
             String a = "MULTILINESTRING ((0 0, 10 10), (10 10, 20 20))";
@@ -59,7 +59,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             //    runRelateTest(a, b,  BoundaryNodeRule.MULTIVALENT_ENDPOINT_BOUNDARY_RULE,  "0F1FFF1F2"    );
         }
 
-        [Test]
+        [TestAttribute]
         public void TestLineRingTouchAtEndpoints()
         {
             String a = "LINESTRING (20 100, 20 220, 120 100, 20 100)";
@@ -73,7 +73,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             RunRelateTest(a, b, BoundaryNodeRules.MultivalentEndpointBoundaryRule, "0F1FFF1F2");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestLineRingTouchAtEndpointAndInterior()
         {
             String a = "LINESTRING (20 100, 20 220, 120 100, 20 100)";

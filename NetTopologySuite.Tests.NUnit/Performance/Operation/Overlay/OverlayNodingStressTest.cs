@@ -21,8 +21,8 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
 {
-    [TestFixture]
-    [Category("Stress")]
+    [TestFixtureAttribute]
+    [CategoryAttribute("Stress")]
     public class OverlayNodingStressTest
     {
         private static int ITER_LIMIT = 10000;
@@ -41,7 +41,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
             return r;
         }
 
-        [Test, Explicit("takes ages to complete")]
+        [TestAttribute, Explicit("takes ages to complete")]
         public void TestNoding()
         {
             var iterLimit = ITER_LIMIT;

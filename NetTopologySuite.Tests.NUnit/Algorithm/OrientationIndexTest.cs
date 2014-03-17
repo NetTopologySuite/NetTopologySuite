@@ -11,18 +11,18 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
  * Tests CGAlgorithms.computeOrientation
  * @version 1.7
  */
-    [TestFixture]
+    [TestFixtureAttribute]
     public class OrientationIndexTest
 {
 
   private static WKTReader reader = new WKTReader();
   //private CGAlgorithms rcga = new CGAlgorithms();
-        [Test]
+        [TestAttribute]
   public void TestCCW()
   {
     Assert.IsTrue(IsAllOrientationsEqual(GetCoordinates("LINESTRING ( 0 0, 0 1, 1 1)")));
   }
-  [Test]
+  [TestAttribute]
   public void TestCCW2()
   {
     // experimental case - can't make it fail

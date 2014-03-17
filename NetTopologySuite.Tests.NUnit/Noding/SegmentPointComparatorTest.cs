@@ -11,10 +11,10 @@ namespace NetTopologySuite.Tests.NUnit.Noding
     /// <summary>
     /// Test IntersectionSegment#compareNodePosition
     /// </summary>
-    [TestFixture]
+    [TestFixtureAttribute]
     public class SegmentPointComparatorTest
     {
-        [Test]
+        [TestAttribute]
         public void TestOctant0()
         {
             checkNodePosition(Octants.Zero, 1, 1, 2, 2, -1);

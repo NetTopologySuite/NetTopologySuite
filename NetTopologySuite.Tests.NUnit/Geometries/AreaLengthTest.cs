@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class AreaLengthTest
     {
         private IPrecisionModel precisionModel;
@@ -23,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         private static double TOLERANCE = 1E-5;
 
-        [Test]
+        [TestAttribute]
         public void TestLength()
         {
             checkLength("MULTIPOINT (220 140, 180 280)", 0.0);
@@ -33,7 +33,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             checkLength("POLYGON ((20 20, 40 20, 40 40, 20 40, 20 20), (25 35, 35 35, 35 25, 25 25, 25 35))", 120.0);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestArea()
         {
             checkArea("MULTIPOINT (220 140, 180 280)", 0.0);

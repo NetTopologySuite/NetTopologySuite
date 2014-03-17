@@ -1,0 +1,529 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{ED064DF8-14B5-471B-896D-BBFEB21A5AA6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NetTopologySuite.Tests.NUnit</RootNamespace>
+    <AssemblyName>NetTopologySuite.Tests.NUnit.Pcl</AssemblyName>
+    <TargetFrameworkVersion>v4.0.3</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;PCL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;PCL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\AbstractPointInRingTest.cs">
+      <Link>Algorithm\AbstractPointInRingTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\AngleTest.cs">
+      <Link>Algorithm\AngleTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\CGAlgorithmsTest.cs">
+      <Link>Algorithm\CGAlgorithmsTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\ComputeOrientationTest.cs">
+      <Link>Algorithm\ComputeOrientationTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\ConvexHullTest.cs">
+      <Link>Algorithm\ConvexHullTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\Distance\DiscreteHausdorffDistanceTest.cs">
+      <Link>Distance\DiscreteHausdorffDistanceTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\IndexedPointInAreaStressTest.cs">
+      <Link>Algorithm\IndexedPointInAreaStressTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\InteriorPointTest.cs">
+      <Link>Algorithm\InteriorPointTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\IsCCWTest.cs">
+      <Link>Algorithm\IsCCWTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\LocatePointInRingTest.cs">
+      <Link>Algorithm\LocatePointInRingTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\MCPointInRingTest.cs">
+      <Link>Algorithm\MCPointInRingTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\MinimumBoundingCircleTest.cs">
+      <Link>Algorithm\MinimumBoundingCircleTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\MinimumDiameterTest.cs">
+      <Link>Algorithm\MinimumDiameterTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\NonRobustLineIntersectorTest.cs">
+      <Link>Algorithm\NonRobustLineIntersectorTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\OrientationIndexFailureTest.cs">
+      <Link>Algorithm\OrientationIndexFailureTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\OrientationIndexTest.cs">
+      <Link>Algorithm\OrientationIndexTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\PerturbedGridPolygonBuilder.cs">
+      <Link>Algorithm\PerturbedGridPolygonBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\PointInAreaStressTester.cs">
+      <Link>Algorithm\PointInAreaStressTester.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\PointInRingTest.cs">
+      <Link>Algorithm\PointInRingTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\PointLocatorTest.cs">
+      <Link>Algorithm\PointLocatorTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\RayCrossingCounterTest.cs">
+      <Link>Algorithm\RayCrossingCounterTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\RectangleIntersectsTest.cs">
+      <Link>Algorithm\RectangleIntersectsTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\RobustLineIntersectionTest.cs">
+      <Link>Algorithm\RobustLineIntersectionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\RobustLineIntersectorTest.cs">
+      <Link>Algorithm\RobustLineIntersectorTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Algorithm\ShewchuksDeterminant.cs">
+      <Link>Algorithm\ShewchuksDeterminant.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\CoordinateSystems\Transformations\GeometryTransformTest.cs">
+      <Link>CoordinateSystems\Transformations\GeometryTransformTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Dissolve\LineDissolverTest.cs">
+      <Link>Dissolve\LineDissolverTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\EdgeGraph\EdgeGraphTest.cs">
+      <Link>EdgeGraph\EdgeGraphTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\AreaLengthTest.cs">
+      <Link>Geometries\AreaLengthTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\BidirectionalComparatorTest.cs">
+      <Link>Geometries\BidirectionalComparatorTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\CoordinateArraysTest.cs">
+      <Link>Geometries\CoordinateArraysTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\CoordinateSequencesTest.cs">
+      <Link>Geometries\CoordinateSequencesTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\CoordinateTest.cs">
+      <Link>Geometries\CoordinateTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\EnvelopeTest.cs">
+      <Link>Geometries\EnvelopeTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\GeometryCollectionImplTest.cs">
+      <Link>Geometries\GeometryCollectionImplTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\GeometryFactoryTest.cs">
+      <Link>Geometries\GeometryFactoryTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\GeometryImplTest.cs">
+      <Link>Geometries\GeometryImplTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\GeometryTestFactory.cs">
+      <Link>Geometries\GeometryTestFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\Implementation\BasicCoordinateSequenceTest.cs">
+      <Link>Geometries\Implementation\BasicCoordinateSequenceTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\Implementation\CoordinateArraySequenceTest.cs">
+      <Link>Geometries\Implementation\CoordinateArraySequenceTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\Implementation\CoordinateSequenceReversedTest.cs">
+      <Link>Geometries\Implementation\CoordinateSequenceReversedTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\Implementation\CoordinateSequenceTestBase.cs">
+      <Link>Geometries\Implementation\CoordinateSequenceTestBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\Implementation\PackedCoordinateSequenceTest.cs">
+      <Link>Geometries\Implementation\PackedCoordinateSequenceTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\IntersectionMatrixTest.cs">
+      <Link>Geometries\IntersectionMatrixTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\IntervalTest.cs">
+      <Link>Geometries\IntervalTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\IsRectangleTest.cs">
+      <Link>Geometries\IsRectangleTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\LineSegmentTest.cs">
+      <Link>Geometries\LineSegmentTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\LineStringImplTest.cs">
+      <Link>Geometries\LineStringImplTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\MultiPointImplTest.cs">
+      <Link>Geometries\MultiPointImplTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\NormalizeTest.cs">
+      <Link>Geometries\NormalizeTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\PointImplTest.cs">
+      <Link>Geometries\PointImplTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\PrecisionModelTest.cs">
+      <Link>Geometries\PrecisionModelTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\PredicateShortCircuitTest.cs">
+      <Link>Geometries\PredicateShortCircuitTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\Prepared\PreparedPolygonIntersectsStressTest.cs">
+      <Link>Geometries\Prepared\PreparedPolygonIntersectsStressTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\Prepared\PreparedPolygonStressTest.cs">
+      <Link>Geometries\Prepared\PreparedPolygonStressTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\Prepared\StressTestHarness.cs">
+      <Link>Geometries\Prepared\StressTestHarness.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\RectanglePredicateSyntheticTest.cs">
+      <Link>Geometries\RectanglePredicateSyntheticTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\RectanglePredicateTest.cs">
+      <Link>Geometries\RectanglePredicateTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\SegmentDensifier.cs">
+      <Link>Geometries\SegmentDensifier.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\TriangleTest.cs">
+      <Link>Geometries\TriangleTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\Utility\AffineTransformationBuilderTest.cs">
+      <Link>Geometries\Utility\AffineTransformationBuilderTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\Utility\AffineTransformationTest.cs">
+      <Link>Geometries\Utility\AffineTransformationTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\GeometryServiceProviderTest.cs">
+      <Link>GeometryServiceProviderTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\GeometryUtils.cs">
+      <Link>GeometryUtils.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Index\DoubleBitsTest.cs">
+      <Link>Index\DoubleBitsTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Index\IntervalTest.cs">
+      <Link>Index\IntervalTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Index\KdTree\KdTreeTest.cs">
+      <Link>Index\KdTree\KdTreeTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Index\QuadtreeTest.cs">
+      <Link>Index\QuadtreeTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Index\SIRtreeTest.cs">
+      <Link>Index\SIRtreeTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Index\SpatialIndexTest.cs">
+      <Link>Index\SpatialIndexTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Index\SpatialIndexTester.cs">
+      <Link>Index\SpatialIndexTester.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Index\STRtreeDemo.cs">
+      <Link>Index\STRtreeDemo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Index\STRtreeTest.cs">
+      <Link>Index\STRtreeTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\IO\CoordinateBufferTest.cs">
+      <Link>IO\CoordinateBufferTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\IO\GML2\GMLReaderTest.cs">
+      <Link>IO\GML2\GMLReaderTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\IO\KML\KMLWriterTest.cs">
+      <Link>IO\KML\KMLWriterTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\IO\SerializabilityTest.cs">
+      <Link>IO\SerializabilityTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\IO\WKBReaderTest.cs">
+      <Link>IO\WKBReaderTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\IO\WKBTest.cs">
+      <Link>IO\WKBTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\IO\WKTReaderExpTest.cs">
+      <Link>IO\WKTReaderExpTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\IO\WKTReaderParseErrorTest.cs">
+      <Link>IO\WKTReaderParseErrorTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\IO\WKTReaderTest.cs">
+      <Link>IO\WKTReaderTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\IO\WKTWriterTest.cs">
+      <Link>IO\WKTWriterTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\LinearReferencing\AbstractIndexedLineTest.cs">
+      <Link>LinearReferencing\AbstractIndexedLineTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\LinearReferencing\LengthIndexedLineTest.cs">
+      <Link>LinearReferencing\LengthIndexedLineTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\LinearReferencing\LinearLocationTest.cs">
+      <Link>LinearReferencing\LinearLocationTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\LinearReferencing\LocationIndexedLineTest.cs">
+      <Link>LinearReferencing\LocationIndexedLineTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Mathematics\DDBasicTest.cs">
+      <Link>Mathematics\DDBasicTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Mathematics\DDComputeTest.cs">
+      <Link>Mathematics\DDComputeTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\MiscellaneousTest.cs">
+      <Link>MiscellaneousTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\MiscellaneousTest2.cs">
+      <Link>MiscellaneousTest2.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Noding\SegmentPointComparatorFullTest.cs">
+      <Link>Noding\SegmentPointComparatorFullTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Noding\SegmentPointComparatorTest.cs">
+      <Link>Noding\SegmentPointComparatorTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Noding\Snapround\SnapRoundingTest.cs">
+      <Link>Noding\Snapround\SnapRoundingTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\BoundaryTest.cs">
+      <Link>Operation\BoundaryTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Buffer\BufferResultValidatorTest.cs">
+      <Link>Operation\Buffer\BufferResultValidatorTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Buffer\BufferTest.cs">
+      <Link>Operation\Buffer\BufferTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Buffer\BufferValidator.cs">
+      <Link>Operation\Buffer\BufferValidator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Buffer\Test.cs">
+      <Link>Operation\Buffer\Test.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Distance3D\Distance3DOpTest.cs">
+      <Link>Operation\Distance3D\Distance3DOpTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Distance3D\WithinDistance3DTest.cs">
+      <Link>Operation\Distance3D\WithinDistance3DTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Distance\DistanceTest.cs">
+      <Link>Operation\Distance\DistanceTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\LineMerge\LineMergerTest.cs">
+      <Link>Operation\LineMerge\LineMergerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\LineMerge\LineSequencerTest.cs">
+      <Link>Operation\LineMerge\LineSequencerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Overlay\FixedPrecisionSnappingTest.cs">
+      <Link>Operation\Overlay\FixedPrecisionSnappingTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Polygonize\PolygonizeTest.cs">
+      <Link>Operation\Polygonize\PolygonizeTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Predicate\RectangleIntersectsPerformance.cs">
+      <Link>Operation\Predicate\RectangleIntersectsPerformance.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Relate\ContainsTest.cs">
+      <Link>Operation\Relate\ContainsTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Relate\RelateBoundaryNodeRuleTest.cs">
+      <Link>Operation\Relate\RelateBoundaryNodeRuleTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Relate\RelateTest.cs">
+      <Link>Operation\Relate\RelateTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\SimpleTest.cs">
+      <Link>Operation\SimpleTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Union\CascadedPolygonUnionFileTest.cs">
+      <Link>Operation\Union\CascadedPolygonUnionFileTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Union\CascadedPolygonUnionTest.cs">
+      <Link>Operation\Union\CascadedPolygonUnionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Union\CascadedPolygonUnionTester.cs">
+      <Link>Operation\Union\CascadedPolygonUnionTester.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Union\UnaryUnionTest.cs">
+      <Link>Operation\Union\UnaryUnionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Valid\IsValidTest.cs">
+      <Link>Operation\Valid\IsValidTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Valid\ValidClosedRingTest.cs">
+      <Link>Operation\Valid\ValidClosedRingTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Valid\ValidSelfTouchingRingFormingHoleTest.cs">
+      <Link>Operation\Valid\ValidSelfTouchingRingFormingHoleTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Precision\GeometryPrecisionReducerTest.cs">
+      <Link>Precision\GeometryPrecisionReducerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Precision\SimpleGeometryPrecisionReducerTest.cs">
+      <Link>Precision\SimpleGeometryPrecisionReducerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Simplify\DouglasPeuckerSimplifierTest.cs">
+      <Link>Simplify\DouglasPeuckerSimplifierTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Simplify\GeometryOperationValidator.cs">
+      <Link>Simplify\GeometryOperationValidator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Simplify\SameStructureTester.cs">
+      <Link>Simplify\SameStructureTester.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Simplify\TopologyPreservingSimplifierTest.cs">
+      <Link>Simplify\TopologyPreservingSimplifierTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Simplify\VWSimplifierTest.cs">
+      <Link>Simplify\VWSimplifierTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\TestData\EmbeddedResourceManager.cs">
+      <Link>TestData\EmbeddedResourceManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Triangulate\BasicFunctionalityTest.cs">
+      <Link>Triangulate\BasicFunctionalityTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Triangulate\ConformingDelaunayTest.cs">
+      <Link>Triangulate\ConformingDelaunayTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Triangulate\DelaunayPerformanceTest.cs">
+      <Link>Triangulate\DelaunayPerformanceTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Triangulate\DelaunayTest.cs">
+      <Link>Triangulate\DelaunayTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Triangulate\VoronoiTest.cs">
+      <Link>Triangulate\VoronoiTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Utilities\PriorityQueueTest.cs">
+      <Link>Utilities\PriorityQueueTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Utilities\SerializationUtility.cs">
+      <Link>Utilities\SerializationUtility.cs</Link>
+    </Compile>
+    <Compile Include="PclSetup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\GeoAPI\GeoAPI.Pcl\GeoAPI.Pcl.csproj">
+      <Project>{92b3b84b-50f1-4147-8b97-d93b90fa5514}</Project>
+      <Name>GeoAPI.Pcl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GeoAPI.Bootstrapper.NetTopologySuite\P\GeoAPI.BootStrapper.NetTopologySuite.csproj">
+      <Project>{8353362c-192b-4edf-a50d-c36b21470d76}</Project>
+      <Name>GeoAPI.BootStrapper.NetTopologySuite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.Pcl\NetTopologySuite.Pcl.csproj">
+      <Project>{c6f14605-0da6-420a-8de7-18b57e9a9c99}</Project>
+      <Name>NetTopologySuite.Pcl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\NetTopologySuite.Tests.NUnit\TestData\africa.wkt">
+      <Link>TestData\africa.wkt</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\NetTopologySuite.Tests.NUnit\TestData\bc-250k.wkt">
+      <Link>TestData\bc-250k.wkt</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\NetTopologySuite.Tests.NUnit\TestData\bc_20K.wkt">
+      <Link>TestData\bc_20K.wkt</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\NetTopologySuite.Tests.NUnit\TestData\europe.wkt">
+      <Link>TestData\europe.wkt</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\NetTopologySuite.Tests.NUnit\TestData\papua.wkt">
+      <Link>TestData\papua.wkt</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\NetTopologySuite.Tests.NUnit\TestData\plane.wkt">
+      <Link>TestData\plane.wkt</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\NetTopologySuite.Tests.NUnit\TestData\polygon.wkb">
+      <Link>TestData\polygon.wkb</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\NetTopologySuite.Tests.NUnit\TestData\uk-arrows.wkt">
+      <Link>TestData\uk-arrows.wkt</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\NetTopologySuite.Tests.NUnit\TestData\uk.wkt">
+      <Link>TestData\uk.wkt</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\NetTopologySuite.Tests.NUnit\TestData\world.wkt">
+      <Link>TestData\world.wkt</Link>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\NetTopologySuite.Tests.NUnit\TestData\linestrings.xml">
+      <Link>TestData\linestrings.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\NetTopologySuite.Tests.NUnit\TestData\multilinestrings.xml">
+      <Link>TestData\multilinestrings.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\NetTopologySuite.Tests.NUnit\TestData\multipoints.xml">
+      <Link>TestData\multipoints.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\NetTopologySuite.Tests.NUnit\TestData\multipolygons.xml">
+      <Link>TestData\multipolygons.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\NetTopologySuite.Tests.NUnit\TestData\points.xml">
+      <Link>TestData\points.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\NetTopologySuite.Tests.NUnit\TestData\polygons.xml">
+      <Link>TestData\polygons.xml</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Aktivieren Sie die Wiederherstellung von NuGet-Paketen, um die fehlende Datei herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

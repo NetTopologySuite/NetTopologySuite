@@ -10,7 +10,7 @@ using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Tests.NUnit.CoordinateSystems.Transformations
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class GeometryTransformTest
     {
         private class AffineTransform : IMathTransform
@@ -263,7 +263,7 @@ namespace NetTopologySuite.Tests.NUnit.CoordinateSystems.Transformations
         private IGeometryFactory _factory;
         private WKTReader _reader;
 
-        [SetUp]
+        [SetUpAttribute]
         public void SetUp()
         {
             var a = new AffineTransformation();
@@ -284,7 +284,7 @@ namespace NetTopologySuite.Tests.NUnit.CoordinateSystems.Transformations
                     "GEOMETRYCOLLECTION (POLYGON ((100 200, 200 200, 200 100, 100 100, 100 200)), LINESTRING (250 100, 350 200), POINT (350 150))"
          */
 
-        [Test]
+        [TestAttribute]
         public void TestPoint()
         {
             const string wkt = "POINT ( 10 20 )";
@@ -295,7 +295,7 @@ namespace NetTopologySuite.Tests.NUnit.CoordinateSystems.Transformations
             TestGeometry(g1, g2);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestLineString()
         {
             const string wkt = "LINESTRING(0 0, 10 10)";
@@ -306,7 +306,7 @@ namespace NetTopologySuite.Tests.NUnit.CoordinateSystems.Transformations
             TestGeometry(g1, g2);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPolygon()
         {
             const string wkt = "POLYGON ((100 200, 200 200, 200 100, 100 100, 100 200))";
@@ -317,7 +317,7 @@ namespace NetTopologySuite.Tests.NUnit.CoordinateSystems.Transformations
             TestGeometry(g1, g2);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestGeometryCollection()
         {
             const string wkt = "GEOMETRYCOLLECTION (POLYGON ((100 200, 200 200, 200 100, 100 100, 100 200)), LINESTRING (250 100, 350 200), POINT (350 150))";

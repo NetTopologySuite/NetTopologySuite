@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Xml;
+#if PCL
+using System.Xml.Linq;
+#endif
 using GeoAPI.Geometries;
 using NetTopologySuite.IO.GML2;
 using NetTopologySuite.Tests.NUnit.TestData;
@@ -7,40 +10,40 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.IO.GML2
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class GMLReaderTest
     {
-        [Test]
+        [TestAttribute]
         public void TestPointRead()
         {
             DoTest(typeof(IPoint));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestLineStringRead()
         {
             DoTest(typeof(ILineString));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPolygonRead()
         {
             DoTest(typeof(IPolygon));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestMultiPointRead()
         {
             DoTest(typeof(IMultiPoint));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestMultiLineStringRead()
         {
             DoTest(typeof(IMultiLineString));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestMultiPolygonRead()
         {
             DoTest(typeof(IMultiPolygon));
@@ -52,8 +55,14 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML2
             string file = String.Format("{0}s", name.ToLowerInvariant().Substring(1));
             string resname = String.Format("NetTopologySuite.Tests.NUnit.TestData.{0}.xml", file);
             string path = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile(resname);
-            XmlDocument doc = new XmlDocument();
+
+            var doc = 
+#if !PCL
+                new XmlDocument();
             doc.Load(path);
+#else
+            XDocument.Load(path);
+#endif
 
             GMLReader gr = new GMLReader();
             IGeometryCollection gc = (IGeometryCollection) gr.Read(doc);

@@ -8,21 +8,21 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     /// <summary>
     /// Tests failure cases of CGAlgorithms.computeOrientation
     /// </summary>
-    [TestFixture]
+    [TestFixtureAttribute]
     public class OrientationIndexFailureTest
     {
 
         /// <summary>
         /// This is included to confirm this test is operating correctly
         /// </summary>
-        [Test]
+        [TestAttribute]
         public void TestSanity()
         {
             Assert.IsTrue(OrientationIndexTest.IsAllOrientationsEqual(
                 OrientationIndexTest.GetCoordinates("LINESTRING ( 0 0, 0 1, 1 1)")));
         }
 
-        [Test/*, ExpectedException(typeof(AssertionException))*/]
+        [TestAttribute/*, ExpectedException(typeof(AssertionException))*/]
         public void TestBadCCW()
         {
             // this case fails because subtraction of small from large loses precision
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             CheckOrientation(pts);
         }
 
-        [Test/*, ExpectedException(typeof(AssertionException))*/]
+        [TestAttribute/*, ExpectedException(typeof(AssertionException))*/]
         public void TestBadCCW2()
         {
             // this case fails because subtraction of small from large loses precision
@@ -46,7 +46,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             CheckOrientation(pts);
         }
 
-        [Test/*, ExpectedException(typeof(AssertionException))*/]
+        [TestAttribute/*, ExpectedException(typeof(AssertionException))*/]
         public void TestBadCCW3()
         {
             // this case fails because subtraction of small from large loses precision
@@ -58,7 +58,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             CheckOrientation(pts);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestBadCCW4()
         {
             // from JTS list - 5/15/2012  strange case for the GeometryNoder
@@ -70,7 +70,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             CheckOrientation(pts);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestBadCCW5()
         {
             // from JTS list - 6/15/2012  another case from Tomas Fa
@@ -82,7 +82,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                                };
             CheckOrientation(pts);
         }
-        [Test]
+        [TestAttribute]
         public void TestBadCCW7()
   {
     // from JTS list - 6/26/2012  another case from Tomas Fa
@@ -96,7 +96,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     CheckOriginalJTS(pts, false);
   }
 
-  [Test]
+  [TestAttribute]
         public void TestBadCCW7_2()
   {
     // from JTS list - 6/26/2012  another case from Tomas Fa

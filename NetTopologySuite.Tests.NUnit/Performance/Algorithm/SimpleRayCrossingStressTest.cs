@@ -7,13 +7,13 @@ using NetTopologySuite.Tests.NUnit.Algorithm;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class SimpleRayCrossingStressTest
     {
         PrecisionModel pmFixed_1 = new PrecisionModel(1.0);
 
-        [Test]
-        [Category("Stress")]
+        [TestAttribute]
+        [CategoryAttribute("Stress")]
         public void TestGrid()
         {
             // Use fixed PM to try and get at least some points hitting the boundary

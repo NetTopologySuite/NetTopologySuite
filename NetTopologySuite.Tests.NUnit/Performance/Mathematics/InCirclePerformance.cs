@@ -14,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
      *
      */
 
-    [Category("Stress")]
+    [CategoryAttribute("Stress")]
     public class InCirclePerf
     {
 
@@ -24,7 +24,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
         private readonly Coordinate _pc = new Coordinate(687957.58, 7460721);
         private readonly Coordinate _pp = new Coordinate(687958.13, 7460720.99);
 
-        [Test]
+        [TestAttribute]
         public void Test()
         {
             Console.WriteLine("InCircle perf");

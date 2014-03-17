@@ -8,14 +8,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
     /// General test cases for CoordinateSequences.
     /// Subclasses can set the factory to test different kinds of CoordinateSequences.
     /// </summary>
-    [TestFixture]
+    [TestFixtureAttribute]
     public abstract class CoordinateSequenceTestBase
     {
         protected const int Size = 100;
 
         protected abstract ICoordinateSequenceFactory CsFactory { get; }
 
-        [Test]
+        [TestAttribute]
         public void TestZeroLength()
         {
             ICoordinateSequence seq = CsFactory.Create(0, 3);
@@ -25,7 +25,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.IsTrue(seq2.Count == 0);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestCreateBySizeAndModify()
         {
             Coordinate[] coords = CreateArray(Size);
@@ -43,7 +43,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 
         // TODO: This test was marked as virtual to allow PackedCoordinateSequenceTest to override the assert value
         // The method should not be marked as virtual, and should be altered when the correct PackedCoordinateSequence.GetCoordinate result is migrated to NTS
-        [Test]
+        [TestAttribute]
         public virtual void Test2DZOrdinate()
         {
             Coordinate[] coords = CreateArray(Size);
@@ -62,7 +62,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             }
         }
 
-        [Test]
+        [TestAttribute]
         public void TestCreateByInit()
         {
             Coordinate[] coords = CreateArray(Size);
@@ -70,7 +70,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.IsTrue(IsEqual(seq, coords));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestCreateByInitAndCopy()
         {
             Coordinate[] coords = CreateArray(Size);

@@ -15,7 +15,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
         }
          */
 
-        [Test]
+        [TestAttribute]
         public void TestSpatialIndex()
         {
             var tester = new SpatialIndexTester {SpatialIndex = new Quadtree<object>()};
@@ -24,7 +24,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             Assert.IsTrue(tester.IsSuccess);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestSerialization()
         {
             var tester = new SpatialIndexTester { SpatialIndex = new Quadtree<object>() };
@@ -34,7 +34,11 @@ namespace NetTopologySuite.Tests.NUnit.Index
             tester.Run();
             var tree1 = (Quadtree<object>)tester.SpatialIndex;
             var data = SerializationUtility.Serialize(tree1);
+#if !PCL
             var tree2 = (Quadtree<object>)SerializationUtility.Deserialize(data);
+#else
+            var tree2 = SerializationUtility.Deserialize<Quadtree<object>>(data);
+#endif
             tester.SpatialIndex = tree2;
 
             Console.WriteLine("\n\nTest with deserialized data\n");

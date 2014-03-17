@@ -16,7 +16,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         // TODO: This test was overriden because the base class implementation asserts that the Z ordinate is NaN, 
         ///but in NTS/JTS 1.9 the result of PackedCoordinateSequence.GetCoordinate method is 0.0
         // This should be removed once the new Coordinate.NULL_ORDINATE result is migrated from JTS
-        [Test, Ignore("test fail")]
+        [TestAttribute]
+#if !PCL
+        [Ignore("test fail")]
+#endif
         public override void Test2DZOrdinate()
         {
             Coordinate[] coords = CreateArray(Size);
@@ -35,7 +38,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             }
         }
 
-        [Test]
+        [TestAttribute]
         public void TestMultiPointDim4()
         {
             GeometryFactory gf = new GeometryFactory(new PackedCoordinateSequenceFactory());

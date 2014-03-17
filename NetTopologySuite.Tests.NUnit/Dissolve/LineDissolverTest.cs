@@ -6,17 +6,17 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Dissolve
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class LineDissolverTest
     {
-        [Test]
+        [TestAttribute]
         public void TestDebug()
         {
             //TestSingleLine();
             TestIsolatedRing();
         }
 
-        [Test]
+        [TestAttribute]
         public void TestSingleSegmentLine()
         {
             CheckDissolve(
@@ -24,7 +24,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "LINESTRING (0 0, 1 1)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestTwoSegmentLine()
         {
             CheckDissolve(
@@ -32,7 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "LINESTRING (0 0, 1 1, 2 2)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestOverlappingTwoSegmentLines()
         {
             CheckDissolve(
@@ -40,7 +40,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "LINESTRING (0 0, 1 1, 2 2, 3 3)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestOverlappingLines3()
         {
             CheckDissolve(
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "MULTILINESTRING ((0 0, 1 1, 2 2), (2 0, 2 2), (2 2, 3 3))");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestDivergingLines()
         {
             CheckDissolve(
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "MULTILINESTRING ((0 0, 1 0), (1 0, 2 0), (1 0, 2 1, 2 0), (2 0, 3 0))");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestLollipop()
         {
             CheckDissolve(
@@ -69,7 +69,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "MULTILINESTRING ((0 0, 1 0), (1 0, 2 0, 2 1, 1 0))");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestDisjointLines()
         {
             CheckDissolve(
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "MULTILINESTRING ((0 0, 1 0, 2 1), (10 0, 11 0, 12 0))");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestSingleLine()
         {
             CheckDissolve(
@@ -85,7 +85,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "LINESTRING (0 0, 1 0, 2 1)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestOneSegmentY()
         {
             CheckDissolve(
@@ -93,7 +93,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "MULTILINESTRING ((0 0, 1 1), (1 1, 2 2), (1 1, 1 2))");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestTwoSegmentY()
         {
             CheckDissolve(
@@ -101,7 +101,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "MULTILINESTRING ((10 20, 10 10), (10 10, 9 9, 0 0), (10 10, 11 11, 20 20))");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestIsolatedRing()
         {
             CheckDissolve(
@@ -109,7 +109,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "LINESTRING (0 0, 1 1, 1 0, 0 0)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestIsolateRingFromMultipleLineStrings()
         {
             CheckDissolve(
@@ -118,7 +118,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
         }
 
         // Shows that rings with incident lines are created with the correct node point.
-        [Test]
+        [TestAttribute]
         public void TestRingWithTail()
         {
             CheckDissolve(

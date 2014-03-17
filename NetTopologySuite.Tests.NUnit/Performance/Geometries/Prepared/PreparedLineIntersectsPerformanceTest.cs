@@ -24,7 +24,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             _builder = new TestDataBuilder(_fact);
         }
 
-        [Test]
+        [TestAttribute]
         public void Test()
         {
             Test(5);

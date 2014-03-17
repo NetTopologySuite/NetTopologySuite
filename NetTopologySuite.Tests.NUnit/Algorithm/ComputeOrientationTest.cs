@@ -7,12 +7,12 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class ComputeOrientationTest
     {
         private readonly WKTReader _reader = new WKTReader();
 
-        [Test]
+        [TestAttribute]
         public void TestCCW()
         {
             Assert.IsTrue(IsAllOrientationsEqual(GetCoordinates("LINESTRING ( 0 0, 0 1, 1 1)")));
@@ -27,7 +27,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
   
         // MD - deliberately disabled
+#if !PCL
         [Ignore("This case fails because subtraction of small from large loses precision")]
+#endif
         public void TestBadCCW()
         {
             // this case fails because subtraction of small from large loses precision

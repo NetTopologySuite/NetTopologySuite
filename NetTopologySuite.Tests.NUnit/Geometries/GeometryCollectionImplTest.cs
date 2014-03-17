@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class GeometryCollectionImplTest
     {
         private IPrecisionModel precisionModel;
@@ -21,14 +21,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             reader = new WKTReader(geometryFactory);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestGetDimension()
         {
             GeometryCollection g = (GeometryCollection)reader.Read("GEOMETRYCOLLECTION (POINT (10 10), POINT (30 30), LINESTRING (15 15, 20 20))");
             Assert.AreEqual(1, (int)g.Dimension);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestGetCoordinates()
         {
             GeometryCollection g = (GeometryCollection)reader.Read("GEOMETRYCOLLECTION (POINT (10 10), POINT (30 30), LINESTRING (15 15, 20 20))");
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(new Coordinate(20, 20), coordinates[3]);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestGeometryCollectionIterator()
         {
             GeometryCollection g = (GeometryCollection)reader.Read(
@@ -58,7 +58,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(i.Current is Point);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestGetLength()
         {
             GeometryCollection g = (GeometryCollection)new WKTReader().Read(

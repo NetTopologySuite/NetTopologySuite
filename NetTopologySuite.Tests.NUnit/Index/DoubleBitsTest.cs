@@ -6,10 +6,10 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Index
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class DoubleBitsTest
     {
-        [Test]
+        [TestAttribute]
         public void TestExponent()
         {
             Assert.IsTrue(DoubleBits.GetExponent(-1) == 0);

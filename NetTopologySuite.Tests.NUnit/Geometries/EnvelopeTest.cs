@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class EnvelopeTest
     {
         private IPrecisionModel precisionModel;
@@ -21,7 +21,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             reader = new WKTReader(geometryFactory);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEverything()
         {
             Envelope e1 = new Envelope();
@@ -62,7 +62,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(e1.Intersects(e4));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestIntersectsEmpty()
         {
             Assert.IsTrue(!new Envelope(-5, 5, -5, 5).Intersects(new Envelope()));
@@ -71,7 +71,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(!new Envelope(100, 101, 100, 101).Intersects(new Envelope()));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestContainsEmpty()
         {
             Assert.IsTrue(!new Envelope(-5, 5, -5, 5).Contains(new Envelope()));
@@ -80,7 +80,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(!new Envelope(100, 101, 100, 101).Contains(new Envelope()));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestExpandToIncludeEmpty()
         {
             Assert.AreEqual(new Envelope(-5, 5, -5, 5), expandToInclude(new Envelope(-5,
@@ -99,7 +99,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             return a;
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEmpty()
         {
             Assert.AreEqual(0, new Envelope().Height, 0);
@@ -110,7 +110,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(new Envelope(), e);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestAsGeometry()
         {
             Assert.IsTrue(geometryFactory.CreatePoint((Coordinate)null).Envelope
@@ -145,7 +145,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                     4));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestSetToNull()
         {
             Envelope e1 = new Envelope();
@@ -156,7 +156,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(e1.IsNull);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEquals()
         {
             Envelope e1 = new Envelope(1, 2, 3, 4);
@@ -175,7 +175,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(e1.GetHashCode(), e2.GetHashCode());
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEquals2()
         {
             Assert.IsTrue(new Envelope().Equals(new Envelope()));
@@ -183,7 +183,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(!new Envelope(1, 2, 1.5, 2).Equals(new Envelope(1, 2, 1, 2)));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestCopyConstructor()
         {
             Envelope e1 = new Envelope(1, 2, 3, 4);
@@ -194,7 +194,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(4, e2.MaxY, 1E-5);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestGeometryFactoryCreateEnvelope()
         {
             checkExpectedEnvelopeGeometry("POINT (0 0)");

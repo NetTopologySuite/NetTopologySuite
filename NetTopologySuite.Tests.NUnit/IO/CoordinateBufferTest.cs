@@ -8,13 +8,13 @@ using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class CoordinateBufferTest
     {
         const int NumCoordinates = 70000;
         private const int NumTests = 1000;
 
-        [Test]
+        [TestAttribute]
         public void TestAddCoordinates()
         {
             var buf = new CoordinateBuffer();
@@ -25,7 +25,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             CheckDefinedFlags(buf, Ordinates.XY);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestAddCoordinatesDisallowRepeated()
         {
             var buf = new CoordinateBuffer();
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             CheckDefinedFlags(buf, Ordinates.XY);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestInsertCoordinates()
         {
             var buf = new CoordinateBuffer();
@@ -55,7 +55,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             CheckDefinedFlags(buf, Ordinates.XY);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestInsertCoordinatesDisallowRepeated()
         {
             var buf = new CoordinateBuffer();
@@ -76,31 +76,31 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
         
 
-        [Test]
+        [TestAttribute]
         public void TestAddCoordinatesOptionalNaN()
         {
             TestAddCoordinatesOptional();
         }
 
-        [Test]
+        [TestAttribute]
         public void TestAddCoordinatesOptionalPosInf()
         {
             TestAddCoordinatesOptional(double.PositiveInfinity);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestAddCoordinatesOptionalNegInf()
         {
             TestAddCoordinatesOptional(double.NegativeInfinity);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestAddCoordinatesOptionalValue()
         {
             TestAddCoordinatesOptional(32000d);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestAddMarkers()
         {
             var cb = new CoordinateBuffer(10);
@@ -119,7 +119,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
 
-        [Test]
+        [TestAttribute]
         public void TestToSequenceMethod()
         {
             //TestToSequenceMethod((ICoordinateSequence)null);
@@ -137,7 +137,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
 
-        [Test]
+        [TestAttribute]
         public void TestToSequenceMethodUsingFactory()
         {
             //TestToSequenceMethod((ICoordinateSequence)null);
@@ -147,7 +147,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             TestToSequenceMethod(CoordinateArraySequenceFactory.Instance);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestToSequenceMethodUsingConverter()
         {
             TestToSequenceMethod(ToPackedDoubleArray);

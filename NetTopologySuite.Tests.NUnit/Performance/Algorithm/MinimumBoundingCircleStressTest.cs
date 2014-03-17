@@ -12,8 +12,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         private readonly GeometryFactory _geomFact = new GeometryFactory();
         private readonly Random random = new Random();
 
-        [Test]
-        [Category("Stress")]
+        [TestAttribute]
+        [CategoryAttribute("Stress")]
         public void TestStressRun()
         {
             var count = 100;

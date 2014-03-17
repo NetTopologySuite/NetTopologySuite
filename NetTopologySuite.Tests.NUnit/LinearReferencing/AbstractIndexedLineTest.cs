@@ -8,32 +8,32 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
     /// <summary>
     /// Base class for linear referencing class unit tests
     /// </summary>
-    [TestFixture]
+    [TestFixtureAttribute]
     public abstract class AbstractIndexedLineTest
     {
         private readonly WKTReader _reader = new WKTReader();
 
-        [Test]
+        [TestAttribute]
         public void TestFirst()
         {
             RunOffsetTest("LINESTRING (0 0, 20 20)", "POINT(20 20)", 0.0, "POINT (20 20)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestML()
         {
             RunIndicesOfThenExtract("MULTILINESTRING ((0 0, 10 10), (20 20, 30 30))",
                 "MULTILINESTRING ((1 1, 10 10), (20 20, 25 25))");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPartOfSegmentNoVertex()
         {
             RunIndicesOfThenExtract("LINESTRING (0 0, 10 10, 20 20)",
                 "LINESTRING (1 1, 9 9)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPartOfSegmentContainingVertex()
         {
             RunIndicesOfThenExtract("LINESTRING (0 0, 10 10, 20 20)",
@@ -43,7 +43,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         /// <summary>
         /// Tests that duplicate coordinates are handled correctly.
         /// </summary>
-        [Test]
+        [TestAttribute]
         public void TestPartOfSegmentContainingDuplicateCoords()
         {
             RunIndicesOfThenExtract("LINESTRING (0 0, 10 10, 10 10, 20 20)",
@@ -54,14 +54,14 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         /// Following tests check that correct portion of loop is identified.
         /// This requires that the correct vertex for (0,0) is selected.
         /// </summary>
-        [Test]
+        [TestAttribute]
         public void TestLoopWithStartSubLine()
         {
             RunIndicesOfThenExtract("LINESTRING (0 0, 0 10, 10 10, 10 0, 0 0)",
                 "LINESTRING (0 0, 0 10, 10 10)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestLoopWithEndingSubLine()
         {
             RunIndicesOfThenExtract("LINESTRING (0 0, 0 10, 10 10, 10 0, 0 0)",
@@ -69,7 +69,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         }
 
         // test a subline equal to the parent loop
-        [Test]
+        [TestAttribute]
         public void TestLoopWithIdenticalSubLine()
         {
             RunIndicesOfThenExtract("LINESTRING (0 0, 0 10, 10 10, 10 0, 0 0)",
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         }
 
         // test a zero-length subline equal to the start point
-        [Test]
+        [TestAttribute]
         public void TestZeroLenSubLineAtStart()
         {
             RunIndicesOfThenExtract("LINESTRING (0 0, 0 10, 10 10, 10 0, 0 0)",
@@ -85,28 +85,28 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         }
 
         // test a zero-length subline equal to a mid point
-        [Test]
+        [TestAttribute]
         public void TestZeroLenSubLineAtMidVertex()
         {
             RunIndicesOfThenExtract("LINESTRING (0 0, 0 10, 10 10, 10 0, 0 0)",
                 "LINESTRING (10 10, 10 10)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestIndexOfAfterSquare()
         {
             RunIndexOfAfterTest("LINESTRING (0 0, 0 10, 10 10, 10 0, 0 0)",
                 "POINT (0 0)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestIndexOfAfterRibbon()
         {
             RunIndexOfAfterTest("LINESTRING (0 0, 0 60, 50 60, 50 20, -20 20)",
                 "POINT (0 20)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestOffsetStartPoint()
         {
             RunOffsetTest("LINESTRING (0 0, 10 10, 20 20)", "POINT(0 0)", 1.0, "POINT (-0.7071067811865475 0.7071067811865475)");
@@ -115,7 +115,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             RunOffsetTest("LINESTRING (0 0, 10 10, 20 20)", "POINT(10 10)", -5.0, "POINT (13.535533905932738 6.464466094067262)");
         }
 
-        [Test]
+        [TestAttribute]
         public virtual void TestOffsetStartPointRepeatedPoint()
         {
             RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(0 0)", 1.0, "POINT (-0.7071067811865475 0.7071067811865475)");
@@ -126,7 +126,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             //RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(10 10)", -5.0, "POINT (13.535533905932738 6.464466094067262)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestOffsetEndPoint()
         {
             RunOffsetTest("LINESTRING (0 0, 20 20)", "POINT(20 20)", 0.0, "POINT (20 20)");

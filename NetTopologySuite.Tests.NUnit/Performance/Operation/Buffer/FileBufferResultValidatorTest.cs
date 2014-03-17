@@ -9,13 +9,13 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 {
-    [TestFixture]
-    [Category("Stress")]
+    [TestFixtureAttribute]
+    [CategoryAttribute("Stress")]
     public class FileBufferResultValidatorTest
     {
         WKTReader rdr = new WKTReader();
 
-        [Test]
+        [TestAttribute]
         public void TestAfrica()
         {
             var filePath = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile("NetTopologySuite.Tests.NUnit.TestData.africa.wkt");
@@ -26,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             EmbeddedResourceManager.CleanUpTempFile(filePath);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPerformanceAfrica()
         {
             var filePath = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile("NetTopologySuite.Tests.NUnit.TestData.africa.wkt");

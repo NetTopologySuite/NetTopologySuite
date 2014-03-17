@@ -26,8 +26,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 
         bool testFailed = false;
 
-        [Test]
-        [Category("Stress")]
+        [TestAttribute]
+#if !PCL
+        [CategoryAttribute("Stress")]
+#endif
         public void Test()
         {
             Run(1000);

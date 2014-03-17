@@ -6,12 +6,12 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class AngleTest
     {
         private const double Tolerance = 1E-5;
 
-        [Test]
+        [TestAttribute]
         public void TestAngle()
         {
             Assert.AreEqual(AngleUtility.Angle(new Coordinate(10, 0)), 0.0, Tolerance);
@@ -22,7 +22,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.AreEqual(AngleUtility.Angle(new Coordinate(-10, -0.1)), -3.131592986903128, Tolerance);
             Assert.AreEqual(AngleUtility.Angle(new Coordinate(-10, -10)), -0.75 * Math.PI, Tolerance);
         }
-        [Test]
+        [TestAttribute]
         public void TestIsAcute()
         {
             Assert.AreEqual(AngleUtility.IsAcute(new Coordinate(10, 0), new Coordinate(0, 0), new Coordinate(5, 10)), true);
@@ -35,7 +35,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
 
         }
-        [Test]
+        [TestAttribute]
         public void TestNormalizePositive()
         {
             Assert.AreEqual(AngleUtility.NormalizePositive(0.0), 0.0, Tolerance);
@@ -58,7 +58,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         }
 
-        [Test]
+        [TestAttribute]
         public void TestNormalize()
         {
             Assert.AreEqual(AngleUtility.Normalize(0.0), 0.0, Tolerance);

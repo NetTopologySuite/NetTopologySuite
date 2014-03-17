@@ -10,10 +10,10 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
     /// <summary>
     /// Tests Voronoi diagram generation
     /// </summary>
-    [TestFixture]
+    [TestFixtureAttribute]
     public class VoronoiTest
     {
-        [Test]
+        [TestAttribute]
         public void TestSimple()
         {
             const string wkt = "MULTIPOINT ((10 10), (20 70), (60 30), (80 70))";

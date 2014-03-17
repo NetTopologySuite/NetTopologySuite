@@ -9,10 +9,10 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
     /// <summary>
     /// Tests Delaunay Triangulatin classes
     /// </summary>
-    [TestFixture]
+    [TestFixtureAttribute]
     public class DelaunayTest
     {
-        [Test]
+        [TestAttribute]
         public void TestTriangle()
         {
             const string wkt = "MULTIPOINT ((10 10 1), (10 20 2), (20 20 3))";
@@ -22,7 +22,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             RunDelaunay(wkt, true, expectedTri);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestRandom()
         {
             const string wkt = "MULTIPOINT ((50 40), (140 70), (80 100), (130 140), (30 150), (70 180), (190 110), (120 20))";
@@ -32,7 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             RunDelaunay(wkt, true, expectedTri);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestGrid()
         {
             const string wkt = "MULTIPOINT ((10 10), (10 20), (20 20), (20 10), (20 0), (10 0), (0 0), (0 10), (0 20))";
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             RunDelaunay(wkt, true, expectedTri);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestCircle()
         {
             const string wkt = "POLYGON ((42 30, 41.96 29.61, 41.85 29.23, 41.66 28.89, 41.41 28.59, 41.11 28.34, 40.77 28.15, 40.39 28.04, 40 28, 39.61 28.04, 39.23 28.15, 38.89 28.34, 38.59 28.59, 38.34 28.89, 38.15 29.23, 38.04 29.61, 38 30, 38.04 30.39, 38.15 30.77, 38.34 31.11, 38.59 31.41, 38.89 31.66, 39.23 31.85, 39.61 31.96, 40 32, 40.39 31.96, 40.77 31.85, 41.11 31.66, 41.41 31.41, 41.66 31.11, 41.85 30.77, 41.96 30.39, 42 30))";
@@ -50,7 +50,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             RunDelaunayEdges(wkt, expected);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPolygonWithChevronHoles()
         {
             const string wkt = "POLYGON ((0 0, 0 200, 180 200, 180 0, 0 0), (20 180, 160 180, 160 20, 152.625 146.75, 20 180), (30 160, 150 30, 70 90, 30 160))";

@@ -17,7 +17,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
     /// The time to run the method is printed for each one.
     /// </summary>
     /// <author>Martin Davis</author>
-    [TestFixture]
+    [TestFixtureAttribute]
     public abstract class PerformanceTestCase
     {
         private readonly String _name;
@@ -46,7 +46,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
         /// Sets up any fixtures needed for the test runs
         /// </summary>
         /// <exception cref="Exception"></exception>
-        [TestFixtureSetUp]
+        [TestFixtureSetUpAttribute]
         public virtual void SetUp()
         {
 
@@ -72,7 +72,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
         /// Tear down any fixtures made fot the testing
         /// </summary>
         /// <exception cref="Exception"></exception>
-        [TestFixtureTearDown]
+        [TestFixtureTearDownAttribute]
         public virtual void TearDown()
         {
 

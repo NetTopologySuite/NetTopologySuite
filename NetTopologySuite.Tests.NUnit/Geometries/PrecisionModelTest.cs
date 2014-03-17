@@ -7,10 +7,10 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class PrecisionModelTest
     {
-        [Test]
+        [TestAttribute]
         public void TestParameterlessConstructor()
         {
             var p = new PrecisionModel();
@@ -18,7 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(0, p.Scale, 1E-10);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestGetMaximumSignificantDigits()
         {
             Assert.AreEqual(16, new PrecisionModel(PrecisionModels.Floating).MaximumSignificantDigits);
@@ -28,7 +28,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
 
-        [Test]
+        [TestAttribute]
         public void TestMakePrecise()
         {
             var pm10 = new PrecisionModel(0.1);
@@ -38,7 +38,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
 
-        [Test]
+        [TestAttribute]
         public void TestMakePreciseNegative()
         {
             var pm1 = new PrecisionModel(1);

@@ -8,41 +8,41 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
     /// <summary>
     /// Tests the <see cref="LengthIndexedLine" /> class
     /// </summary>
-    [TestFixture]
+    [TestFixtureAttribute]
     public class LengthIndexedLineTest : AbstractIndexedLineTest
     {
-        [Test]
+        [TestAttribute]
         public void TestExtractLineBeyondRange()
         {
             CheckExtractLine("LINESTRING (0 0, 10 10)", -100, 100, "LINESTRING (0 0, 10 10)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestExtractLineReverse()
         {
             CheckExtractLine("LINESTRING (0 0, 10 0)", 9, 1, "LINESTRING (9 0, 1 0)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestExtractLineReverseMulti()
         {
             CheckExtractLine("MULTILINESTRING ((0 0, 10 0), (20 0, 25 0, 30 0))",
                                 19, 1, "MULTILINESTRING ((29 0, 25 0, 20 0), (10 0, 1 0))");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestExtractLineNegative()
         {
             CheckExtractLine("LINESTRING (0 0, 10 0)", -9, -1, "LINESTRING (1 0, 9 0)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestExtractLineNegativeReverse()
         {
             CheckExtractLine("LINESTRING (0 0, 10 0)", -1, -9, "LINESTRING (9 0, 1 0)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestExtractLineIndexAtEndpoint()
         {
             CheckExtractLine("MULTILINESTRING ((0 0, 10 0), (20 0, 25 0, 30 0))",
@@ -54,7 +54,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
          * and that zero-length extracts return the lowest extracted zero-length line
          */
 
-        [Test]
+        [TestAttribute]
         public void TestExtractLineIndexAtEndpointWithZeroLenComponents()
         {
             CheckExtractLine("MULTILINESTRING ((0 0, 10 0), (10 0, 10 0), (20 0, 25 0, 30 0))",
@@ -67,14 +67,14 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
                 10, -10, "LINESTRING (10 0, 10 0)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestExtractLineBothIndicesAtEndpoint()
         {
             CheckExtractLine("MULTILINESTRING ((0 0, 10 0), (20 0, 25 0, 30 0))",
                                 10, 10, "LINESTRING (10 0, 10 0)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestExtractLineBothIndicesAtEndpointNegative()
         {
             CheckExtractLine("MULTILINESTRING ((0 0, 10 0), (20 0, 25 0, 30 0))",
@@ -84,7 +84,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         /**
          * From GEOS Ticket #323
          */
-        [Test]
+        [TestAttribute]
         public void TestProjectExtractPoint()
         {
             IGeometry linearGeom = Read("MULTILINESTRING ((0 2, 0 0), (-1 1, 1 1))");
@@ -94,7 +94,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             Assert.IsTrue(pt.Equals(new Coordinate(0, 0)));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestExtractPointBeyondRange()
         {
             IGeometry linearGeom = Read("LINESTRING (0 0, 10 10)");
@@ -106,7 +106,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             Assert.IsTrue(pt2.Equals(new Coordinate(0, 0)));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestProjectPointWithDuplicateCoords()
         {
             IGeometry linearGeom = Read("LINESTRING (0 0, 10 0, 10 0, 20 0)");
@@ -118,7 +118,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         /// <summary>
         /// These tests work for LengthIndexedLine, but not LocationIndexedLine
         /// </summary>
-        [Test]
+        [TestAttribute]
         public void TestOffsetStartPointRepeatedPoint()
         {
             RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(0 0)", 1.0, "POINT (-0.7071067811865475 0.7071067811865475)");
@@ -130,7 +130,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         /// <summary>
         /// Tests that z values are interpolated
         /// </summary>
-        [Test]
+        [TestAttribute]
         public void TestComputeZ()
         {
             IGeometry linearGeom = Read("LINESTRING (0 0 0, 10 10 10)");
@@ -144,7 +144,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         /// <summary>
         /// Tests that if the input does not have Z ordinates, neither does the output.
         /// </summary>
-        [Test]
+        [TestAttribute]
         public void TestComputeZNaN()
         {
             IGeometry linearGeom = Read("LINESTRING (0 0, 10 10 10)");

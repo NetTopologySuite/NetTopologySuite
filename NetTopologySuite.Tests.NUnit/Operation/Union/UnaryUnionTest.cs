@@ -6,30 +6,30 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Union
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class UnaryUnionTest
     {
         GeometryFactory geomFact = new GeometryFactory();
 
-        [Test]
+        [TestAttribute]
         public void TestEmptyCollection()
         {
             DoTest(new String[] { }, "GEOMETRYCOLLECTION EMPTY");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPoints()
         {
             DoTest(new [] { "POINT (1 1)", "POINT (2 2)" }, "MULTIPOINT ((1 1), (2 2))");
         }
-        [Test]
+        [TestAttribute]
         public void TestLineNoding()
         {
             DoTest(new []{ "LINESTRING (0 0, 10 0, 5 -5, 5 5)"}, 
                            "MULTILINESTRING ((0 0, 5 0), (5 0, 10 0, 5 -5, 5 0), (5 0, 5 5))");
   }
 
-        [Test]
+        [TestAttribute]
         public void TestAll()
         {
             DoTest(new[] { "GEOMETRYCOLLECTION (POLYGON ((0 0, 0 90, 90 90, 90 0, 0 0)),   POLYGON ((120 0, 120 90, 210 90, 210 0, 120 0)),  LINESTRING (40 50, 40 140),  LINESTRING (160 50, 160 140),  POINT (60 50),  POINT (60 140),  POINT (40 140))" },

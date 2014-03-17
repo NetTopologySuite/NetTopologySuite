@@ -10,7 +10,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     /*
      * Test named predicate short-circuits
      */
-    [TestFixture]
+    [TestFixtureAttribute]
     public class PredicateShortCircuitTest
     {
         WKTReader rdr = new WKTReader();
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         { "POLYGON (( 40 40, 40 60, 60 60, 60 40, 40 40 ))",
           "POLYGON (( 0 0, 100 0, 100 100, 0 100, 0 0), ( 10 10, 90 10, 90 90, 10 90, 10 10))" };
 
-        [Test]
+        [TestAttribute]
         public void TestAll()
         {
             DoPredicates(polyInsidePoly);

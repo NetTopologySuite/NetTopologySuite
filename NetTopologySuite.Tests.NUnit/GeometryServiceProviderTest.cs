@@ -9,10 +9,10 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class GeometryServiceProviderTest
     {
-        [Test]
+        [TestAttribute]
         public void TestUninitialized()
         {
             var nts = new NtsGeometryServices();
@@ -26,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.IsTrue(nts.DefaultPrecisionModel.Equals(ntsFromGeoApi.DefaultPrecisionModel));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestInitialized()
         {
             var nts =
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Tests.NUnit
             GeometryServiceProvider.Instance = new NtsGeometryServices();
         }
 
-        [Test]
+        [TestAttribute]
         public void TestThreading()
         {
             try

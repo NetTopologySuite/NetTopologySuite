@@ -10,7 +10,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
     /// <summary>
     /// Tests the <see cref="WKTReader" /> with exponential notation.
     /// </summary>
-    [TestFixture]
+    [TestFixtureAttribute]
     public class WKTReaderExpTest
     {
         private IGeometryFactory fact;
@@ -22,31 +22,31 @@ namespace NetTopologySuite.Tests.NUnit.IO
             rdr = new WKTReader(fact);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestGoodBasicExp()
         {
             ReadGoodCheckCoordinate("POINT ( 1e01 -1E02)", 1E01, -1E02);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestGoodWithExpSign()
         {
             ReadGoodCheckCoordinate("POINT ( 1e-04 1E-05)", 1e-04, 1e-05);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestBadExpFormat()
         {
             ReadBad("POINT (1e0a1 1X02)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestBadExpPlusSign()
         {
             ReadBad("POINT (1e+01 1X02)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestBadPlusSign()
         {
             ReadBad("POINT ( +1e+01 1X02)");

@@ -5,10 +5,10 @@ namespace NetTopologySuite.Tests.NUnit.Index
 {
     using Interval = GeoAPI.Geometries.Interval;
 
-    [TestFixture]
+    [TestAttribute]
     public class IntervalTest
     {
-        [Test]
+        [TestAttribute]
         public void TestIntersectsBasic()
         {
             Assert.IsTrue(new Interval(5, 10).Overlaps(new Interval(7, 12)));
@@ -19,7 +19,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             Assert.IsTrue(new Interval(10, 12).Overlaps(new Interval(5, 10)));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestIntersectsZeroWidthInterval()
         {
             Assert.IsTrue(new Interval(10, 10).Overlaps(new Interval(7, 12)));
@@ -30,20 +30,20 @@ namespace NetTopologySuite.Tests.NUnit.Index
             Assert.IsTrue(new Interval(10, 12).Overlaps(new Interval(10, 10)));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestCopyConstructor()
         {
             Assert.IsTrue(IntervalsAreEqual(new Interval(3, 4), new Interval(3, 4)));
             Assert.IsTrue(IntervalsAreEqual(new Interval(3, 4), new Interval(new Interval(3, 4))));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestCentre()
         {
             Assert.AreEqual(6.5, new Interval(4, 9).Centre, 1E-10);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestExpandToInclude()
         {
             var expected = new Interval(3, 8);

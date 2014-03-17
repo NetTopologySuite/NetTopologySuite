@@ -8,12 +8,12 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.IO
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class SerializabilityTest
     {
         private GeometryFactory fact = new GeometryFactory();
 
-        [Test]
+        [TestAttribute]
         public void TestSerializable()
         {
             var serializer = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();

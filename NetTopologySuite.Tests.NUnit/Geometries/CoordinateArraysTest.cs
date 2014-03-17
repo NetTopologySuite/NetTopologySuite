@@ -4,10 +4,10 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class CoordinateArraysTest
     {
-        [Test]
+        [TestAttribute]
         public void TestPtNotInList1()
         {
             Coordinate list = CoordinateArrays.PointNotInList(
@@ -17,7 +17,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(list.Equals2D(new Coordinate(2, 2)));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPtNotInList2()
         {
             Coordinate list = CoordinateArrays.PointNotInList(

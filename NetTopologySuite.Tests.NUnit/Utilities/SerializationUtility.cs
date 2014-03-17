@@ -1,11 +1,15 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.Serialization;
+#if !PCL
 using System.Runtime.Serialization.Formatters.Binary;
+#endif
 
 namespace NetTopologySuite.Tests.NUnit.Utilities
 {
     public static class SerializationUtility
     {
+#if !PCL
         public static byte[] Serialize(Object obj)
         {
             using (var bos = new MemoryStream())
@@ -24,5 +28,21 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
                 return bf.Deserialize(ms);
             }
         }
+#else
+        public static Stream Serialize(object obj, Func<Stream> streamCreator = null)
+        {
+            var s = new DataContractSerializer(obj.GetType());
+            var stream = streamCreator != null ? streamCreator() : new MemoryStream();
+            s.WriteObject(stream, obj);
+            return stream;
+        }
+
+        public static T Deserialize<T>(Stream stream)
+        {
+            var s = new DataContractSerializer(typeof(T));
+            return (T)s.ReadObject(stream);
+        }
+
+#endif
     }
 }

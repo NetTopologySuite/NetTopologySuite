@@ -19,7 +19,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
     ///</summary>
     ///<author>Martin Davis</author>
     ///<version>1.7</version>
-    [TestFixture]
+    [TestFixtureAttribute]
     public class ValidSelfTouchingRingFormingHoleTest
     {
         private static WKTReader rdr = new WKTReader();
@@ -28,7 +28,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         ///Tests a geometry with both a shell self-touch and a hole self=touch.
         ///This is valid if STR is allowed, but invalid in OGC
         ///</summary>
-        [Test]
+        [TestAttribute]
         public void TestShellAndHoleSelfTouch()
         {
             String wkt = "POLYGON ((0 0, 0 340, 320 340, 320 0, 120 0, 180 100, 60 100, 120 0, 0 0),   (80 300, 80 180, 200 180, 200 240, 280 200, 280 280, 200 240, 200 300, 80 300))";
@@ -41,7 +41,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         ///but using a shell-hole touch and a hole-hole touch.
         ///This is valid in OGC.
         ///</summary>
-        [Test]
+        [TestAttribute]
         public void TestShellHoleAndHoleHoleTouch()
         {
             String wkt = "POLYGON ((0 0, 0 340, 320 340, 320 0, 120 0, 0 0),   (120 0, 180 100, 60 100, 120 0),   (80 300, 80 180, 200 180, 200 240, 200 300, 80 300),  (200 240, 280 200, 280 280, 200 240))";
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         ///Tests an overlapping hole condition, where one of the holes is created by a shell self-touch.
         ///This is never vallid.
         ///</summary>
-        [Test]
+        [TestAttribute]
         public void TestShellSelfTouchHoleOverlappingHole()
         {
             String wkt = "POLYGON ((0 0, 220 0, 220 200, 120 200, 140 100, 80 100, 120 200, 0 200, 0 0),   (200 80, 20 80, 120 200, 200 80))";
@@ -64,7 +64,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         ///<summary>
         ///Ensure that the Disconnected Interior condition is not validated
         ///</summary>
-        [Test]
+        [TestAttribute]
         public void TestDisconnectedInteriorShellSelfTouchAtNonVertex()
         {
             String wkt = "POLYGON ((40 180, 40 60, 240 60, 240 180, 140 60, 40 180))";
@@ -75,7 +75,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         ///<summary>
         ///Ensure that the Disconnected Interior condition is not validated
         ///</summary>
-        [Test]
+        [TestAttribute]
         public void TestDisconnectedInteriorShellSelfTouchAtVertex()
         {
             String wkt = "POLYGON ((20 20, 20 100, 140 100, 140 180, 260 180, 260 100, 140 100, 140 20, 20 20))";
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             CheckIsValidDefault(wkt, false);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestShellCross()
         {
             String wkt = "POLYGON ((20 20, 120 20, 120 220, 240 220, 240 120, 20 120, 20 20))";
@@ -91,7 +91,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             CheckIsValidDefault(wkt, false);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestShellCrossAndSTR()
         {
             String wkt = "POLYGON ((20 20, 120 20, 120 220, 180 220, 140 160, 200 160, 180 220, 240 220, 240 120, 20 120,  20 20))";

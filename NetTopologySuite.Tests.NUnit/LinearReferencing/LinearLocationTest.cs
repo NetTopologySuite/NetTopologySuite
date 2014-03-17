@@ -12,12 +12,12 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
     /// Tests methods involving only <see cref="LinearLocation" />s
     /// </summary>
     /// <author>Martin Davis</author>
-    [TestFixture]
+    [TestFixtureAttribute]
     public class LinearLocationTest
     {
         private WKTReader reader = new WKTReader();
 
-        [Test]
+        [TestAttribute]
         public void TestZeroLengthLineString()
         {
             var line = reader.Read("LINESTRING (10 0, 10 0)");
@@ -26,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             Assert.IsTrue(loc0.CompareTo(new LinearLocation(0, Double.NaN)) == 0);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestRepeatedCoordsLineString()
         {
             var line = reader.Read("LINESTRING (10 0, 10 0, 20 0)");
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         }
 
 
-        [Test]
+        [TestAttribute]
         public void TestSameSegmentLineString()
         {
             IGeometry line = reader.Read("LINESTRING (0 0, 10 0, 20 0, 30 0)");
@@ -74,7 +74,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             Assert.IsTrue(loc3.IsOnSameSegment(loc3));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestSameSegmentMultiLineString()
         {
             IGeometry line = reader.Read("MULTILINESTRING ((0 0, 10 0, 20 0), (20 0, 30 0))");
@@ -116,7 +116,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             Assert.IsTrue(loc3.IsOnSameSegment(loc3));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestGetSegmentMultiLineString()
         {
             IGeometry line = reader.Read("MULTILINESTRING ((0 0, 10 0, 20 0), (20 0, 30 0))");

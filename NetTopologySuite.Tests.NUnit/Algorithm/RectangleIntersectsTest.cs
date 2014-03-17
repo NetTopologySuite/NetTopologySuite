@@ -7,11 +7,11 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class RectangleLineIntersectorTest
     {
 
-        [Test]
+        [TestAttribute]
         public void Test300Points()
         {
             var test = new RectangleLineIntersectorValidator();
@@ -19,8 +19,10 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(test.Validate());
         }
 
-        [Test]
-        [Category("Stress")]
+        [TestAttribute]
+#if !PCL
+        [CategoryAttribute("Stress")]
+#endif
         public void TestPerformance()
         {
             var test = new RectangleLineIntersectorValidator();

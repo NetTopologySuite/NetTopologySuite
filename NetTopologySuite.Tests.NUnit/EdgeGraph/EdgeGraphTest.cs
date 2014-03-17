@@ -6,10 +6,10 @@ using EGraph = NetTopologySuite.EdgeGraph.EdgeGraph;
 
 namespace NetTopologySuite.Tests.NUnit.EdgeGraph
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class EdgeGraphTest
     {
-        [Test]
+        [TestAttribute]
         public void TestNode()
         {
             EGraph graph = Build("MULTILINESTRING((0 0, 1 0), (0 0, 0 1), (0 0, -1 0))");

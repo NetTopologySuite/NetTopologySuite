@@ -5,7 +5,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 {
     public class CoordinateSequenceReversedTest
     {
-        [Test]
+        [TestAttribute]
         public void TestCoordinateArraySequence()
         {
             var csf = new NetTopologySuite.Geometries.Implementation.CoordinateArraySequence(
@@ -14,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             DoTest(csf, csr);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestDotSpatialAffineCoordinateSequence()
         {
             var csf = new NetTopologySuite.Geometries.Implementation.DotSpatialAffineCoordinateSequence(
@@ -23,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             DoTest(csf, csr);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPackedDoubleCoordinateSequence()
         {
             var csf = new NetTopologySuite.Geometries.Implementation.PackedDoubleCoordinateSequence(
@@ -32,7 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             DoTest(csf, csr);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPackedFloatCoordinateSequence()
         {
             var csf = new NetTopologySuite.Geometries.Implementation.PackedFloatCoordinateSequence(

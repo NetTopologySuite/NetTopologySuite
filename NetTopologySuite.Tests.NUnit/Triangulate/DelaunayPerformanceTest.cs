@@ -10,7 +10,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
 {
     public class DelaunayPerformanceTest
     {
-        [Test]
+        [TestAttribute]
         public void RunShortTests()
         {
             Run(10);
@@ -22,16 +22,18 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             Run(30000);
         }
 
-        [Test]
-        [Category("LongRunning")]
+#if !PCL
+        [TestAttribute]
+        [CategoryAttribute("LongRunning")]
         public void RunLongerTests()
         {
             Run(100000);
             Run(200000);
             Run(300000);
         }
+#endif
 
-        [Test, Ignore("These take very long ... If you have time, go ahead!")]
+        [TestAttribute, Ignore("These take very long ... If you have time, go ahead!")]
         public void RunVeryLongTests()
         {
             Run(1000000);

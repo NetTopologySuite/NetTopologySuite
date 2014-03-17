@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class NormalizeTest
     {
         private IPrecisionModel precisionModel;
@@ -21,7 +21,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             reader = new WKTReader(geometryFactory);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestNormalizePoint()
         {
             Point point = (Point)reader.Read("POINT (30 30)");
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(new Coordinate(30, 30), point.Coordinate);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestNormalizeEmptyPoint()
         {
             Point point = (Point)reader.Read("POINT EMPTY");
@@ -37,7 +37,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(null, point.Coordinate);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestComparePoint()
         {
             Point p1 = (Point)reader.Read("POINT (30 30)");
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(p1.CompareTo(p2) < 0);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestCompareEmptyPoint()
         {
             Point p1 = (Point)reader.Read("POINT (30 30)");
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(p1.CompareTo(p2) > 0);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestNormalizeMultiPoint()
         {
             MultiPoint m = (MultiPoint)reader.Read(
@@ -67,7 +67,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(!m.EqualsExact(unexpectedValue));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestNormalizeLineString1()
         {
             LineString l = (LineString)reader.Read(
@@ -78,7 +78,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, l);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestNormalizeLineString2()
         {
             LineString l = (LineString)reader.Read(
@@ -89,7 +89,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, l);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestNormalizeLineString3()
         {
             LineString l = (LineString)reader.Read(
@@ -100,7 +100,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, l);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestNormalizeLineString4()
         {
             LineString l = (LineString)reader.Read(
@@ -111,7 +111,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, l);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestNormalizeLineString5()
         {
             LineString l = (LineString)reader.Read(
@@ -122,7 +122,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, l);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestNormalizeEmptyLineString()
         {
             LineString l = (LineString)reader.Read("LINESTRING EMPTY");
@@ -131,7 +131,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, l);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestNormalizeEmptyPolygon()
         {
             Polygon actualValue = (Polygon)reader.Read("POLYGON EMPTY");
@@ -140,7 +140,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, actualValue);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestNormalizePolygon1()
         {
             Polygon actualValue = (Polygon)reader.Read(
@@ -151,7 +151,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, actualValue);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestNormalizeMultiLineString()
         {
             MultiLineString actualValue = (MultiLineString)reader.Read(
@@ -162,7 +162,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, actualValue);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestNormalizeMultiPolygon()
         {
             MultiPolygon actualValue = (MultiPolygon)reader.Read(
@@ -173,7 +173,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, actualValue);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestNormalizeGeometryCollection()
         {
             GeometryCollection actualValue = (GeometryCollection)reader.Read(

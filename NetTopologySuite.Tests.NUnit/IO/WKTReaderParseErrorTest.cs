@@ -10,7 +10,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
     /// <summary>
     /// Tests the <see cref="WKTReader"/> with various errors
     /// </summary>
-    [TestFixture]
+    [TestFixtureAttribute]
     public class WKTReaderParseErrorTest   
     {   
         private IGeometryFactory fact;
@@ -22,37 +22,37 @@ namespace NetTopologySuite.Tests.NUnit.IO
             rdr = new WKTReader(fact);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestExtraLParen()
         {
             ReadBad("POINT (( 1e01 -1E02)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestMissingOrdinate()
         {
             ReadBad("POINT ( 1e01 )");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestBadChar()
         {
             ReadBad("POINT ( # 1e-04 1E-05)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestBadExpFormat()
         {
             ReadBad("POINT (1e0a1 1X02)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestBadExpPlusSign()
         {
             ReadBad("POINT (1e+01 1X02)");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestBadPlusSign()
         {
             ReadBad("POINT ( +1e+01 1X02)");

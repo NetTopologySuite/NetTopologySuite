@@ -6,10 +6,11 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Tests.NUnit.Performance
 {
+#if !PCL
     public class AreaPrecisionPerfTest
     {
-        [Test]
-        [Category("Stress")]
+        [TestAttribute]
+        [CategoryAttribute("Stress")]
         public void TestAreaPrecisionPerformance()
         {
 
@@ -104,4 +105,5 @@ namespace NetTopologySuite.Tests.NUnit.Performance
             return sum/2.0;
         }
     }
+#endif
 }

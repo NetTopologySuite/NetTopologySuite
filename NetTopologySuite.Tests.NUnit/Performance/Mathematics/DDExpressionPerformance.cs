@@ -12,7 +12,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
     /// <author>Martin Davis</author>
     public class DDExpressionPerformance
     {
-        [Test]
+        [TestAttribute]
         public void Test()
         {
             Run(1000000);

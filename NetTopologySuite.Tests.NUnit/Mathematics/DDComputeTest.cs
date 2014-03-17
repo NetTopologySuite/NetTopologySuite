@@ -11,7 +11,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
     /// <author>Martin Davis</author>
     public class DDComputeTest
     {
-        [Test]
+        [TestAttribute]
         public void TestEByTaylorSeries()
         {
             Console.WriteLine("--------------------------------");
@@ -46,7 +46,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             return s;
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPiByMachin()
         {
             Console.WriteLine("--------------------------------");
@@ -114,7 +114,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
 public class DDIOTest 
 {
 
-    [Test]
+    [TestAttribute]
 	public void TestStandardNotation() 
 	{	
 		// standard cases
@@ -152,7 +152,7 @@ public class DDIOTest
 		Assert.AreEqual(expectedStr, xStr);
 	}
 
-    [Test]
+    [TestAttribute]
 	public void TestSciNotation() {
 		CheckSciNotation(0.0, "0.0E0");
 		CheckSciNotation(1.05e10, "1.05E10");
@@ -172,7 +172,7 @@ public class DDIOTest
 		Assert.AreEqual(xStr, expectedStr);
 	}
 
-    [Test]
+    [TestAttribute]
 	public void TestParse() {
 		CheckParse("1.05e10", 1.05E10, 1e-32);
 		CheckParse("-1.05e10", -1.05E10, 1e-32);
@@ -213,7 +213,7 @@ public class DDIOTest
 		Assert.IsTrue(err <= relErrBound);
 	}
 
-    [Test]
+    [TestAttribute]
 	public void TestParseError() {
 		CheckParseError("-1.05E2w");
 		CheckParseError("%-1.05E2w");
@@ -230,7 +230,7 @@ public class DDIOTest
 		Assert.IsTrue(foundParseError);
 	}
 
-    [Test]
+    [TestAttribute]
 	public void TestRepeatedSqrt()
 	{
 		WriteRepeatedSqrt(DD.ValueOf(1.0));
@@ -300,7 +300,7 @@ public class DDIOTest
 		}
 	}
 	
-    [Test]
+    [TestAttribute]
 	public void TestIOSquaresStress() {
 		for (int i = 1; i < 10000; i++) {
 			WriteAndReadSqrt(i);

@@ -10,42 +10,42 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
     /// <author>Martin Davis</author>
     public class AffineTransformationBuilderTest
     {
-        [Test]
+        [TestAttribute]
         public void TestRotate1()
         {
             Run(0, 0, 1, 0, 0, 1,
                 0, 0, 0, 1, -1, 0);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestRotate2()
         {
             Run(0, 0, 1, 0, 0, 1,
                 0, 0, 1, 1, -1, 1);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestScale1()
         {
             Run(0, 0, 1, 0, 0, 1,
                 0, 0, 2, 0, 0, 2);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestTranslate1()
         {
             Run(0, 0, 1, 0, 0, 1,
                 5, 6, 6, 6, 5, 7);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestLinear1()
         {
             Run(0, 0, 1, 0, 0, 1,
                 0, 0, 0, 0, 5, 7);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestSingular2()
         {
             // points on a line mapping to collinear points - not uniquely specified
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
                         0, 0, 10, 10, 30, 30);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestSingular3()
         {
             // points on a line mapping to collinear points - not uniquely specified
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
                         0, 0, 10, 10, 20, 20);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestSingular1()
         {
             // points on a line mapping to non-collinear points - no solution
@@ -69,21 +69,21 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
                         0, 0, 1, 2, 1, 3);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestSingleControl1()
         {
             Run(0, 0,
                 5, 6);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestDualControlTranslation()
         {
             Run(0, 0, 1, 1,
                     5, 5, 6, 6);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestDualControlGeneral()
         {
             Run(0, 0, 1, 1,
@@ -181,7 +181,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
         private Coordinate ctl1 = new Coordinate(10, 20);
         private Coordinate ctl2 = new Coordinate(10, -20);
 
-        [Test]
+        [TestAttribute]
         public void TestTransform1()
         {
             AffineTransformation trans = new AffineTransformation();
@@ -191,7 +191,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             RunTransform(trans, ctl0, ctl1, ctl2);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestTransform2()
         {
             AffineTransformation trans = new AffineTransformation();

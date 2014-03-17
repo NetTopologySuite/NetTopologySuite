@@ -6,10 +6,10 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Simplify
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class DouglasPeuckerSimplifierTest
     {
-        [Test]
+        [TestAttribute]
         public void TestEmptyPolygon()
         {
             const string geomStr = "POLYGON(EMPTY)";
@@ -21,7 +21,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPoint()
         {
             const string geomStr = "POINT (10 10)";
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
         }
 
 
-        [Test]
+        [TestAttribute]
         public void TestPolygonNoReduction()
         {
             const string geomStr =
@@ -46,7 +46,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPolygonReductionWithSplit()
         {
             const string geomStr = "POLYGON ((40 240, 160 241, 280 240, 280 160, 160 240, 40 140, 40 240))";
@@ -57,7 +57,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPolygonReduction()
         {
             const string geomStr = "POLYGON ((120 120, 121 121, 122 122, 220 120, 180 199, 160 200, 140 199, 120 120))";
@@ -68,7 +68,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPolygonWithTouchingHole()
         {
             const string geomStr =
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-        [Test]
+        [TestAttribute]
         public void TestFlattishPolygon()
         {
             const string geomStr = "POLYGON ((0 0, 50 0, 53 0, 55 0, 100 0, 70 1,  60 1, 50 1, 40 1, 0 0))";
@@ -94,7 +94,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-        [Test]
+        [TestAttribute]
         public void TestTinySquare()
         {
             const string geomStr = "POLYGON ((0 5, 5 5, 5 0, 0 0, 0 1, 0 5))";
@@ -105,7 +105,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
             .Test();
         }
 
-        [Test]
+        [TestAttribute]
         public void TestTinyHole()
         {
             const string geomStr =
@@ -117,7 +117,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
             .TestEmpty(false);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestTinyLineString()
         {
             const string geomStr = "LINESTRING (0 5, 1 5, 2 5, 5 5)";
@@ -128,7 +128,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-        [Test]
+        [TestAttribute]
         public void TestMultiPoint()
         {
             const string geomStr = "MULTIPOINT(80 200, 240 200, 240 60, 80 60, 80 200, 140 199, 120 120)";
@@ -140,7 +140,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-        [Test]
+        [TestAttribute]
         public void TestMultiLineString()
         {
             const string geomStr = "MULTILINESTRING( (0 0, 50 0, 70 0, 80 0, 100 0), (0 0, 50 1, 60 1, 100 0) )";
@@ -151,7 +151,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-        [Test]
+        [TestAttribute]
         public void TestMultiLineStringWithEmpty()
         {
             new GeometryOperationValidator(
@@ -161,7 +161,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-        [Test]
+        [TestAttribute]
         public void TestMultiPolygonWithEmpty()
         {
             new GeometryOperationValidator(
@@ -171,7 +171,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-        [Test]
+        [TestAttribute]
         public void TestGeometryCollection()
         {
             const string geomStr = "GEOMETRYCOLLECTION ("

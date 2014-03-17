@@ -21,46 +21,46 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             reader = new WKTReader(geometryFactory);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEmptyPoint()
         {
             DoMinimumBoundingCircleTest("POINT EMPTY", "MULTIPOINT EMPTY");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPoint()
         {
             DoMinimumBoundingCircleTest("POINT (10 10)", "MULTIPOINT ((10 10))", new Coordinate(10, 10), 0);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPoints2()
         {
             DoMinimumBoundingCircleTest("MULTIPOINT ((10 10), (20 20))", "MULTIPOINT ((10 10), (20 20))", new Coordinate(15, 15), 7.0710678118654755);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPointsInLine()
         {
             DoMinimumBoundingCircleTest("MULTIPOINT ((10 10), (20 20), (30 30))", "MULTIPOINT ((10 10), (30 30))",
             new Coordinate(20, 20), 14.142135623730951);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestPoints3()
         {
             DoMinimumBoundingCircleTest("MULTIPOINT ((10 10), (20 20), (10 20))", "MULTIPOINT ((10 10), (20 20), (10 20))",
             new Coordinate(15, 15), 7.0710678118654755);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestObtuseTriangle() 
         {
             DoMinimumBoundingCircleTest("POLYGON ((100 100, 200 100, 150 90, 100 100))", "MULTIPOINT ((100 100), (200 100))",
                 new Coordinate(150, 100), 50);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestTriangleWithMiddlePoint()
         {
             DoMinimumBoundingCircleTest("MULTIPOINT ((10 10), (20 20), (10 20), (15 19))", "MULTIPOINT ((10 10), (20 20), (10 20))",

@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class PointImplTest
     {
         private IPrecisionModel precisionModel;
@@ -21,7 +21,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             reader = new WKTReader(geometryFactory);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEquals1()
         {
             Point p1 = (Point)reader.Read("POINT(1.234 5.678)");
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(p1.Equals(p2));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEquals2()
         {
             Point p1 = (Point)reader.Read("POINT(1.23 5.67)");
@@ -37,7 +37,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(p1.Equals(p2));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEquals3()
         {
             Point p1 = (Point)reader.Read("POINT(1.235 5.678)");
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(!p1.Equals(p2));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEquals4()
         {
             Point p1 = (Point)reader.Read("POINT(1.2334 5.678)");
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(p1.Equals(p2));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEquals5()
         {
             Point p1 = (Point)reader.Read("POINT(1.2334 5.678)");
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(!p1.Equals(p2));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEquals6()
         {
             Point p1 = (Point)reader.Read("POINT(1.2324 5.678)");
@@ -69,7 +69,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(!p1.Equals(p2));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestNegRounding1()
         {
             Point pLo = (Point)reader.Read("POINT(-1.233 5.678)");
@@ -87,7 +87,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(p3.Equals(pHi));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestIsSimple()
         {
             Point p1 = (Point)reader.Read("POINT(1.2324 5.678)");

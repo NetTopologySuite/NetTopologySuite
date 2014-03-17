@@ -11,10 +11,10 @@ namespace NetTopologySuite.Tests.NUnit.IO
     /// Tests for reading WKB.
     /// </summary>
     /// <author>Martin Davis</author>
-    [TestFixture]
+    [TestFixtureAttribute]
     public class WKBReaderTest
     {
-        [Test]
+        [TestAttribute]
         public void TestPolygonEmpty()
         {
             WKTReader reader = new WKTReader();
@@ -22,7 +22,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             CheckWkbGeometry(geom.AsBinary(), "POLYGON EMPTY");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestShortPolygons()
         {
             // one point
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 "POLYGON ((100 200, 100 200, 100 200, 100 200))");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestSinglePointLineString()
         {
             CheckWkbGeometry("00000000020000000140590000000000004069000000000000",
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         /// geometry in a multi-geometry, it has a start marker of 0x69.
         /// Endianness is determined by the endian value of the multigeometry.
         /// </summary>
-        [Test]
+        [TestAttribute]
         public void TestSpatialiteMultiGeometry()
         {
             //multipolygon
@@ -72,7 +72,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 "GEOMETRYCOLLECTION(POINT(4 6),LINESTRING(4 6,7 10))");
         }
 
-        [Test, Ignore("Not yet implemented satisfactorily.")]
+        [TestAttribute, Ignore("Not yet implemented satisfactorily.")]
         public void TestIllFormedWKB()
         {
             // WKB is missing LinearRing entry
@@ -98,7 +98,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
         }
 
-        [Test]
+        [TestAttribute]
         public void TestBase64TextFiles()
         {
             TestBase64TextFile(@"D:\Development\Codeplex.TFS\SharpMap\Branches\1.0\UnitTests\TestData\Base 64.txt");

@@ -7,10 +7,10 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class CoordinateSequencesTest
     {
-        [Test]
+        [TestAttribute]
         public void TestCopyToLargerDim()
         {
             PackedCoordinateSequenceFactory csFactory = new PackedCoordinateSequenceFactory();
@@ -20,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(CoordinateSequences.IsEqual(cs2D, cs3D));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestCopyToSmallerDim()
         {
             PackedCoordinateSequenceFactory csFactory = new PackedCoordinateSequenceFactory();

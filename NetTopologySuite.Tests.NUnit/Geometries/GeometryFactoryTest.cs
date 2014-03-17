@@ -7,14 +7,14 @@ using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class GeometryFactoryTest
     {
         private readonly static IPrecisionModel PrecModel = new PrecisionModel();
         private readonly static IGeometryFactory Factory = new GeometryFactory(PrecModel, 0);
         private readonly WKTReader _reader = new WKTReader(Factory);
 
-        [Test]
+        [TestAttribute]
         public void TestCreateGeometry()
         {
             CheckCreateGeometryExact("POINT EMPTY");
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 "GEOMETRYCOLLECTION (POLYGON ((100 200, 200 200, 200 100, 100 100, 100 200)), LINESTRING (250 100, 350 200), POINT (350 150))");
         }
 
-        [Test]
+        [TestAttribute]
         public void TestDeepCopy()
         {
             var g = (IPoint)Read("POINT ( 10 10) ");
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         /// CoordinateArraySequences default their dimension to 3 unless explicitly told otherwise.
         /// This test ensures that GeometryFactory.CreateGeometry() recreates the input dimension properly.
         /// </summary>
-        [Test]
+        [TestAttribute]
         public void TestCopyGeometryWithNonDefaultDimension()
         {
             GeometryFactory gf = new GeometryFactory(CoordinateArraySequenceFactory.Instance);

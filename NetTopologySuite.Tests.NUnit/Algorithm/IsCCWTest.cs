@@ -6,12 +6,12 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class IsCCWTest
     {
         private WKTReader reader = new WKTReader();
 
-        [Test]
+        [TestAttribute]
         public void TestCCW()
         {
             Coordinate[] pts = GetCoordinates("POLYGON ((60 180, 140 240, 140 240, 140 240, 200 180, 120 120, 60 180))");

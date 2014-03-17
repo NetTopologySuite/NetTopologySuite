@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
@@ -28,7 +29,11 @@ namespace NetTopologySuite.Tests.NUnit
 
         public static IList<IGeometry> ReadWKTFile(String filename) 
         {
-            WKTFileReader fileRdr = new WKTFileReader(filename, reader);
+#if !PCL
+            var fileRdr = new WKTFileReader(filename, reader);
+#else
+            var fileRdr = new WKTFileReader(new BufferedStream(new FileStream(filename, FileMode.Open),2048) , reader);
+#endif
             var geoms = fileRdr.Read();
             return geoms;
         }

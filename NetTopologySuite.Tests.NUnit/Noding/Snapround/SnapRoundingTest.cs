@@ -19,7 +19,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
     {
         WKTReader rdr = new WKTReader();
 
-        [Test]
+        [TestAttribute]
         public void TestPolyWithCloseNode()
         {
             string[] polyWithCloseNode = {
@@ -28,7 +28,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             RunRounding(polyWithCloseNode);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestLineStringLongShort()
         {
             String[] geoms = {
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
         }
 
 
-        [Test]
+        [TestAttribute]
         public void TestBadLines1() {
             string[] badLines1 = {
                 "LINESTRING ( 171 157, 175 154, 170 154, 170 155, 170 156, 170 157, 171 158, 171 159, 172 160, 176 156, 171 156, 171 159, 176 159, 172 155, 170 157, 174 161, 174 156, 173 156, 172 156 )"
@@ -47,7 +47,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             RunRounding(badLines1);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestBadLines2() {
             string[] badLines2 = {
                 "LINESTRING ( 175 222, 176 222, 176 219, 174 221, 175 222, 177 220, 174 220, 174 222, 177 222, 175 220, 174 221 )"
@@ -55,7 +55,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             RunRounding(badLines2);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestCollapse1() {
             string[] collapse1 = {
                 "LINESTRING ( 362 177, 375 164, 374 164, 372 161, 373 163, 372 165, 373 164, 442 58 )"
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             RunRounding(collapse1);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestCollapse2()
         {
             string[] collapse2 = {
@@ -73,7 +73,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
         }
   
 
-        [Test]
+        [TestAttribute]
         public void TestBadNoding1() {
             string[] badNoding1 = {
                 "LINESTRING ( 76 47, 81 52, 81 53, 85 57, 88 62, 89 64, 57 80, 82 55, 101 74, 76 99, 92 67, 94 68, 99 71, 103 75, 139 111 )"
@@ -81,7 +81,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             RunRounding(badNoding1);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestBadNoding1Extract() {
             string[] badNoding1Extract = {
                 "LINESTRING ( 82 55, 101 74 )",
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                 };
             RunRounding(badNoding1Extract);
         }
-        [Test]
+        [TestAttribute]
         public void TestBadNoding1ExtractShift() {
             string[] badNoding1ExtractShift = {
                 "LINESTRING ( 0 0, 19 19 )",
@@ -100,7 +100,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             RunRounding(badNoding1ExtractShift);
         }
 
-        [Test, Description("Test from JTS-MailingList")]
+        [TestAttribute, Description("Test from JTS-MailingList")]
         public void TestML()
         {
             {

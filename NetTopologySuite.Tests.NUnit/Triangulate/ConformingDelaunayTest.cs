@@ -9,10 +9,10 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
     /// <summary>
     /// Tests Delaunay Triangulatin classes
     /// </summary>
-    [TestFixture]
+    [TestFixtureAttribute]
     public class ConformingDelaunayTest
     {
-        [Test]
+        [TestAttribute]
         public void TestRandom()
         {
             const string wkt = "MULTIPOINT ((90 290), (120 250), (280 250), (200 200), (220 290), (170 320), (110 180), (70 140), (180 110), (210 80), (250 120))";

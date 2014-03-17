@@ -11,21 +11,21 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
     public class DDBasicTest
     {
 
-        [Test]
+        [TestAttribute]
         public void TestNaN()
         {
             Assert.IsTrue(DD.IsNaN(DD.ValueOf(1).Divide(DD.ValueOf(0))));
             Assert.IsTrue(DD.IsNaN(DD.ValueOf(1).Multiply(DD.NaN)));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestAddMult2()
         {
             CheckAddMult2(new DD(3));
             CheckAddMult2(DD.PI);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestMultiplyDivide()
         {
             CheckMultiplyDivide(DD.PI, DD.E, 1e-30);
@@ -34,14 +34,14 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             CheckMultiplyDivide(new DD(39.4), new DD(10), 1e-30);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestDivideMultiply()
         {
             CheckDivideMultiply(DD.PI, DD.E, 1e-30);
             CheckDivideMultiply(new DD(39.4), new DD(10), 1e-30);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestSqrt()
         {
             // the appropriate error bound is determined empirically
@@ -57,7 +57,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             CheckErrorBound("Sqrt", x, x2, errBound);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestTrunc()
         {
             CheckTrunc(DD.ValueOf(1e16).Subtract(DD.ValueOf(1)),
@@ -201,7 +201,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
                               + "   delta= " + (sum - diff));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestBinomial2()
         {
             CheckBinomial2(100.0, 1.0);

@@ -9,19 +9,19 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class PolygonizeTest
     {
         private WKTReader reader = new WKTReader();
 
-        [Test]
+        [TestAttribute]
         public void Test1()
         {
             DoTest(new String[] { "LINESTRING EMPTY", "LINESTRING EMPTY" },
               new String[] { });
         }
 
-        [Test]
+        [TestAttribute]
         public void Test2()
         {
             DoTest(new String[]{
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
         }
 
         /*
-                [Test]
+                [TestAttribute]
                 public void Test2() {
             doTest(new String[]{
 

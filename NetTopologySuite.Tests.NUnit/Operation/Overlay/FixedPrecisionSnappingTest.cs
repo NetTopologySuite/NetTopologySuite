@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
 {
-    [TestFixture]
+    [TestFixtureAttribute]
     public class FixedPrecisionSnappingTest
     {
         PrecisionModel pm;
@@ -21,7 +21,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
             rdr = new WKTReader(fact);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestTriangles()
         {
             IGeometry a = rdr.Read("POLYGON ((545 317, 617 379, 581 321, 545 317))");

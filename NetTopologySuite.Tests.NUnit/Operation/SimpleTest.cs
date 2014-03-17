@@ -22,7 +22,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
         ///<summary>
         /// 2 LineStrings touching at an endpoint
         ///</summary>
-        [Test]
+        [TestAttribute]
         public void Test2TouchAtEndpoint()
         {
             String a = "MULTILINESTRING((0 1, 1 1, 2 1), (0 0, 1 0, 2 1))";
@@ -33,7 +33,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
         }
 
         ///<summary>3 LineStrings touching at an endpoint.</summary>
-        [Test]
+        [TestAttribute]
         public void Test3TouchAtEndpoint()
         {
             String a = "MULTILINESTRING ((0 1, 1 1, 2 1),   (0 0, 1 0, 2 1),  (0 2, 1 2, 2 1))";
@@ -44,7 +44,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
             RunIsSimpleTest(a, BoundaryNodeRules.EndpointBoundaryRule, true,
                     new Coordinate(2, 1));
         }
-        [Test]
+        [TestAttribute]
         public void TestCross()
         {
             String a = "MULTILINESTRING ((20 120, 120 20), (20 20, 120 120))";
@@ -54,7 +54,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
                     new Coordinate(70, 70));
         }
 
-        [Test]
+        [TestAttribute]
         public void TestMultiLineStringWithRingTouchAtEndpoint()
         {
             String a = "MULTILINESTRING ((100 100, 20 20, 200 20, 100 100), (100 200, 100 100))";
@@ -64,7 +64,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
             // under Endpoint, the ring has a boundary point, so the line does NOT intersect the interior ==> simple
             RunIsSimpleTest(a, BoundaryNodeRules.EndpointBoundaryRule, true);
         }
-        [Test]
+        [TestAttribute]
         public void TestRing()
         {
             String a = "LINESTRING (100 100, 20 20, 200 20, 100 100)";

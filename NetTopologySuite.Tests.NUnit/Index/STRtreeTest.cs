@@ -41,7 +41,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
         }
         */
 
-        [Test]
+        [TestAttribute]
         public void TestSpatialIndex()
         {
             var tester = new SpatialIndexTester {SpatialIndex = new STRtree(4)};
@@ -50,7 +50,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             Assert.IsTrue(tester.IsSuccess);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestSerialization()
         {
             var tester = new SpatialIndexTester {SpatialIndex = new STRtree(4)};
@@ -62,7 +62,11 @@ namespace NetTopologySuite.Tests.NUnit.Index
             // create the index before serialization
             tree1.Query(new Envelope());
             var data = SerializationUtility.Serialize(tree1);
+#if !PCL
             var tree2 = (STRtree) SerializationUtility.Deserialize(data);
+#else
+            var tree2 = SerializationUtility.Deserialize<STRtree>(data);
+#endif
             tester.SpatialIndex = tree2;
 
             Console.WriteLine("\n\nTest with deserialized data\n");
@@ -71,7 +75,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             Assert.IsTrue(tester.IsSuccess);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEmptyTreeUsingListQuery()
         {
             var tree = new STRtree();
@@ -84,7 +88,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             public void VisitItem(object item) { Assert.IsTrue(true, "Should never reach here"); }
         }
 
-        [Test]
+        [TestAttribute]
         public void TestEmptyTreeUsingItemVisitorQuery()
         {
             var tree = new STRtree();
@@ -92,7 +96,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
         }
 
 
-        [Test]
+        [TestAttribute]
         public void TestCreateParentsFromVerticalSlice()
         {
             DoTestCreateParentsFromVerticalSlice(3, 2, 2, 1);
@@ -100,7 +104,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             DoTestCreateParentsFromVerticalSlice(5, 2, 2, 1);
         }
 
-        [Test]
+        [TestAttribute]
         public void TestDisallowedInserts()
         {
             STRtree t = new STRtree(5);
@@ -118,7 +122,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             }
         }
 
-        [Test]
+        [TestAttribute]
         public void TestQuery()
         {
             var geometries = new List<IGeometry>();
@@ -155,7 +159,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
         }
 
 
-        [Test]
+        [TestAttribute]
         public void TestVerticalSlices()
         {
             DoTestVerticalSlices(3, 2, 2, 1);

@@ -60,7 +60,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
                 };
         }
 
-        [Test]
+        [TestAttribute]
         public void TestIntersectsThreadSafe()
         {
             ThreadTestRunner.Run(new PreparedGeometryThreadSafeTest());
