@@ -226,12 +226,8 @@ namespace NetTopologySuite.Geometries
                 _srid = value;
 
                 // Adjust the geometry factory
-#if PCL
-                _factory = new GeometryFactory(_factory.PrecisionModel, value, _factory.CoordinateSequenceFactory);
-#else
                 _factory = GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(
                     _factory.PrecisionModel, value, _factory.CoordinateSequenceFactory);
-#endif
 
 				var collection = this as IGeometryCollection;
                 if (collection == null) return;
