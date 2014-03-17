@@ -5,6 +5,7 @@ using GeoAPI.Geometries;
 using GeoAPI.IO;
 using NetTopologySuite.Geometries;
 
+#if !PCL
 namespace NetTopologySuite.IO
 {
     /// <summary>
@@ -661,3 +662,4 @@ namespace NetTopologySuite.IO
         }
     }
 }
+#endif

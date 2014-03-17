@@ -1,11 +1,9 @@
 using System;
-//using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 using GeoAPI.IO;
-//using NetTopologySuite.Geometries;
-//using NetTopologySuite.Utilities;
+using NetTopologySuite.Geometries;
 using RTools_NTS.Util;
 
 namespace NetTopologySuite.IO
@@ -42,8 +40,6 @@ namespace NetTopologySuite.IO
         private ICoordinateSequenceFactory _coordinateSequencefactory;
         private IPrecisionModel _precisionModel;
 
-        //int _index;
-
         private static readonly System.Globalization.CultureInfo InvariantCulture =
             System.Globalization.CultureInfo.InvariantCulture;
         private static readonly string NaNString = double.NaN.ToString(InvariantCulture); /*"NaN"*/
@@ -51,7 +47,7 @@ namespace NetTopologySuite.IO
         /// <summary> 
         /// Creates a <c>WKTReader</c> that creates objects using a basic GeometryFactory.
         /// </summary>
-        public WKTReader() : this(GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory()) { }
+        public WKTReader() : this(GeometryFactory.Default) { }
 
         /// <summary>  
         /// Creates a <c>WKTReader</c> that creates objects using the given
@@ -70,7 +66,16 @@ namespace NetTopologySuite.IO
         /// </summary>
         public IGeometryFactory Factory
         {
-            get { return GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(_precisionModel, DefaultSRID, _coordinateSequencefactory); }
+            get
+            {
+                IGeometryFactory factory;
+#if PCL
+                factory = new GeometryFactory(_precisionModel, DefaultSRID, _coordinateSequencefactory);
+#else
+                factory = GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(_precisionModel, DefaultSRID, _coordinateSequencefactory);
+#endif                                
+                return factory;
+            }
             set
             {
                 if (value != null)
@@ -445,8 +450,13 @@ namespace NetTopologySuite.IO
                 }
             }
 
-            var factory = GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(_precisionModel, srid,
-                                                                                        _coordinateSequencefactory);
+            IGeometryFactory factory;
+#if PCL
+            factory = new GeometryFactory(_precisionModel, srid, _coordinateSequencefactory);
+#else
+            factory = GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(_precisionModel, srid,
+                _coordinateSequencefactory);
+#endif
 
             if (type.Equals("POINT"))
                 returned = ReadPointText(tokens, factory);

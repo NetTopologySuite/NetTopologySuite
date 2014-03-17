@@ -1,9 +1,7 @@
 using System;
-//using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 using GeoAPI.Geometries;
-using GeoAPI.IO;
 using GeoAPI.Operation.Buffer;
 using GeoAPI.Operations.Buffer;
 using NetTopologySuite.Algorithm;
@@ -227,9 +225,13 @@ namespace NetTopologySuite.Geometries
                 
                 _srid = value;
 
-                //Adjust the geometry factory
+                // Adjust the geometry factory
+#if PCL
+                _factory = new GeometryFactory(_factory.PrecisionModel, value, _factory.CoordinateSequenceFactory);
+#else
                 _factory = GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(
                     _factory.PrecisionModel, value, _factory.CoordinateSequenceFactory);
+#endif
 
 				var collection = this as IGeometryCollection;
                 if (collection == null) return;
