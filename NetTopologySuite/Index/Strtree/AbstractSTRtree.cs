@@ -41,16 +41,32 @@ namespace NetTopologySuite.Index.Strtree
             bool Intersects(T aBounds, T bBounds);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+#if PCL
+        [System.Runtime.Serialization.DataMember]
+#endif
         private readonly object _buildLock = new object();
+
+#if PCL
+        [System.Runtime.Serialization.DataMember]
+#endif
         private volatile AbstractNode<T, TItem> _root;
+
+#if PCL
+        [System.Runtime.Serialization.DataMember]
+#endif
         private volatile bool _built, _building;
+
         /**
          * Set to <tt>null</tt> when index is built, to avoid retaining memory.
          */
+#if PCL
+        [System.Runtime.Serialization.DataMember]
+#endif
         private List<IBoundable<T, TItem>> _itemBoundables = new List<IBoundable<T,TItem>>();
+
+#if PCL
+        [System.Runtime.Serialization.DataMember]
+#endif
         private readonly int _nodeCapacity;
 
         /// <summary> 

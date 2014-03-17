@@ -4,22 +4,17 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Strtree;
-using NetTopologySuite.IO;
 using NUnit.Framework;
 using NetTopologySuite.Tests.NUnit.Utilities;
 using STRtree = NetTopologySuite.Index.Strtree.STRtree<object>;
 using AbstractNode = NetTopologySuite.Index.Strtree.AbstractNode<GeoAPI.Geometries.Envelope, object>;
 namespace NetTopologySuite.Tests.NUnit.Index
 {
-    //Tests are exposed by SpatialIndexTestCase type
-    public class STRtreeTest //: SpatialIndexTestCase
+    public class STRtreeTest
     {
         private class TestTree : STRtree
         {
-            public TestTree(int nodeCapacity)
-                : base(nodeCapacity)
-            {
-            }
+            public TestTree(int nodeCapacity) : base(nodeCapacity) { }
 
             public AbstractNode Root()
             {
@@ -34,17 +29,10 @@ namespace NetTopologySuite.Tests.NUnit.Index
 
         private readonly GeometryFactory _factory = new GeometryFactory();
 
-        /*
-        protected override ISpatialIndex<object> CreateSpatialIndex()
-        {
-            return (ISpatialIndex)new STRtree(4);
-        }
-        */
-
         [TestAttribute]
         public void TestSpatialIndex()
         {
-            var tester = new SpatialIndexTester {SpatialIndex = new STRtree(4)};
+            var tester = new SpatialIndexTester { SpatialIndex = new STRtree(4) };
             tester.Init();
             tester.Run();
             Assert.IsTrue(tester.IsSuccess);
@@ -53,20 +41,16 @@ namespace NetTopologySuite.Tests.NUnit.Index
         [TestAttribute]
         public void TestSerialization()
         {
-            var tester = new SpatialIndexTester {SpatialIndex = new STRtree(4)};
+            var tester = new SpatialIndexTester { SpatialIndex = new STRtree(4) };
             tester.Init();
 
             Console.WriteLine("\n\nTest with original data\n");
             tester.Run();
-            var tree1 = (STRtree) tester.SpatialIndex;
+            var tree1 = (STRtree)tester.SpatialIndex;
             // create the index before serialization
             tree1.Query(new Envelope());
             var data = SerializationUtility.Serialize(tree1);
-#if !PCL
-            var tree2 = (STRtree) SerializationUtility.Deserialize(data);
-#else
             var tree2 = SerializationUtility.Deserialize<STRtree>(data);
-#endif
             tester.SpatialIndex = tree2;
 
             Console.WriteLine("\n\nTest with deserialized data\n");
@@ -176,11 +160,11 @@ namespace NetTopologySuite.Tests.NUnit.Index
                 = t.CreateParentBoundablesFromVerticalSlice(ItemWrappers(childCount), 0);
             for (int i = 0; i < parentBoundables.Count - 1; i++)
             {
-//-1
-                var parentBoundable = (AbstractNode) parentBoundables[i];
+                //-1
+                var parentBoundable = (AbstractNode)parentBoundables[i];
                 Assert.AreEqual(expectedChildrenPerParentBoundable, parentBoundable.ChildBoundables.Count);
             }
-            var lastParent = (AbstractNode) parentBoundables[parentBoundables.Count - 1];
+            var lastParent = (AbstractNode)parentBoundables[parentBoundables.Count - 1];
             Assert.AreEqual(expectedChildrenOfLastParent, lastParent.ChildBoundables.Count);
         }
 
@@ -192,7 +176,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             Assert.AreEqual(sliceCount, slices.Length);
             for (int i = 0; i < sliceCount - 1; i++)
             {
-//-1
+                //-1
                 Assert.AreEqual(expectedBoundablesPerSlice, slices[i].Count);
             }
             Assert.AreEqual(expectedBoundablesOnLastSlice, slices[sliceCount - 1].Count);

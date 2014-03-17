@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Index.Quadtree
 {
-    //public class QuadTree : Quadtree<object>
-    //{}
     /// <summary>
     /// A Quadtree is a spatial index structure for efficient range querying
     /// of items bounded by 2D rectangles.<br/>
@@ -33,7 +30,7 @@ namespace NetTopologySuite.Index.Quadtree
     /// following the terminology usage of Samet and others.
     /// </summary>
 #if !PCL
-    [Serializable]
+    [System.Serializable]
 #else
     [System.Runtime.Serialization.DataContract]
 #endif
@@ -72,6 +69,9 @@ namespace NetTopologySuite.Index.Quadtree
             return new Envelope(minx, maxx, miny, maxy);
         }
 
+#if PCL
+        [System.Runtime.Serialization.DataMember]
+#endif
         private readonly Root<T> _root;
 
         /// <summary>
@@ -82,6 +82,9 @@ namespace NetTopologySuite.Index.Quadtree
         /// a zero extent in both directions.  This value may be non-optimal, but
         /// only one feature will be inserted with this value.
         /// </summary>
+#if PCL
+        [System.Runtime.Serialization.DataMember]
+#endif
         private double _minExtent = 1.0;
 
         /// <summary>

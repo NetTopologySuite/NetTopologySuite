@@ -1,48 +1,37 @@
-﻿using System;
-using System.IO;
-using System.Runtime.Serialization;
-#if !PCL
-using System.Runtime.Serialization.Formatters.Binary;
-#endif
+﻿using System.IO;
 
 namespace NetTopologySuite.Tests.NUnit.Utilities
 {
     public static class SerializationUtility
     {
+
+        public static byte[] Serialize<T>(T obj)
+        {
+            using (var ms = new MemoryStream())
+            {
 #if !PCL
-        public static byte[] Serialize(Object obj)
-        {
-            using (var bos = new MemoryStream())
-            {
-                var bf = new BinaryFormatter();
-                bf.Serialize(bos, obj);
-                return bos.ToArray();
-            }
-        }
-
-        public static Object Deserialize(byte[] data)
-        {
-            using (var ms = new MemoryStream(data))
-            {
-                var bf = new BinaryFormatter();
-                return bf.Deserialize(ms);
-            }
-        }
+                var serializer = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                serializer.Serialize(ms, obj);
 #else
-        public static Stream Serialize(object obj, Func<Stream> streamCreator = null)
-        {
-            var s = new DataContractSerializer(obj.GetType());
-            var stream = streamCreator != null ? streamCreator() : new MemoryStream();
-            s.WriteObject(stream, obj);
-            return stream;
-        }
-
-        public static T Deserialize<T>(Stream stream)
-        {
-            var s = new DataContractSerializer(typeof(T));
-            return (T)s.ReadObject(stream);
-        }
-
+                var serializer = new System.Runtime.Serialization.DataContractSerializer(typeof(T));
+                serializer.WriteObject(ms, obj);
 #endif
+                return ms.ToArray();
+            }
+        }
+
+        public static T Deserialize<T>(byte[] buffer)
+        {
+            using (var ms = new MemoryStream(buffer))
+            {
+#if !PCL
+                var serializer = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                return (T)serializer.Deserialize(ms);
+#else
+                var serializer = new System.Runtime.Serialization.DataContractSerializer(typeof(T));
+                return (T)serializer.ReadObject(ms);
+#endif
+            }
+        }
     }
 }
