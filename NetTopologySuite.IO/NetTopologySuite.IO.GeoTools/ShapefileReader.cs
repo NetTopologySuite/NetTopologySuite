@@ -25,9 +25,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="filename">The filename of the shape file to read (with .shp).</param>        
         public ShapefileReader(string filename) :
-            this(filename, new GeometryFactory())
-        {
-        }
+            this(filename, new GeometryFactory()) { }
 
 
         /// <summary>

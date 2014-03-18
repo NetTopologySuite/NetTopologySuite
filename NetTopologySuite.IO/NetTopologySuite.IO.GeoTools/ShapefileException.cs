@@ -6,7 +6,7 @@ namespace NetTopologySuite.IO
 	/// <summary>
 	/// The exception that is thrown when a non-fatal application error occurs related to Topology functionality.
 	/// </summary>
-	internal class ShapefileException : ApplicationException
+	public class ShapefileException : ApplicationException
 	{
 		/// <summary>
 		/// Initializes a new instance of the ShapefileException class.

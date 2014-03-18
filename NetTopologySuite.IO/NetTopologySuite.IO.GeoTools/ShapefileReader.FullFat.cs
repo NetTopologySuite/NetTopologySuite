@@ -24,10 +24,13 @@ namespace NetTopologySuite.IO
             // read header information. note, we open the file, read the header information and then
             // close the file. This means the file is not opened again until GetEnumerator() is requested.
             // For each call to GetEnumerator() a new BinaryReader is created.
-            var stream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read);
-            var shpBinaryReader = new BigEndianBinaryReader(stream);
-            _mainHeader = new ShapefileHeader(shpBinaryReader);
-            shpBinaryReader.Close();
+            using (var stream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                using (var shpBinaryReader = new BigEndianBinaryReader(stream))
+                {
+                    _mainHeader = new ShapefileHeader(shpBinaryReader);
+                }
+            }
         }
 
         #region Nested type: ShapefileEnumerator

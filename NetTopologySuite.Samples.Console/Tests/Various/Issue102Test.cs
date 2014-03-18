@@ -1,15 +1,14 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Simplify;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.Various
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading;
-    using GeoAPI.Geometries;
-    using Geometries;
-    using Simplify;
-
     [TestFixture]
     public class Issue102Test
     {
@@ -38,12 +37,12 @@ namespace NetTopologySuite.Tests.Various
             {
                 LineString line = Helper.GetLine(Encoded);
                 ILineString res = (ILineString)TopologyPreservingSimplifier.Simplify(line, Tolerance);
-                this.Simplify(line, Tolerance, res, 0);
+                Simplify(line, Tolerance, res, 0);
 
                 for (int i = 1; i <= Max; i++)
                 {
                     int index = i;
-                    WaitCallback callback = delegate { this.Simplify(line, Tolerance, res, index); };
+                    WaitCallback callback = delegate { Simplify(line, Tolerance, res, index); };
                     ThreadPool.QueueUserWorkItem(callback);
                 }
 
