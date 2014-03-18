@@ -21,8 +21,17 @@ namespace NetTopologySuite.Index.Strtree
 #endif
     public abstract class AbstractNode<T, TItem> : IBoundable<T, TItem> where T : IIntersectable<T>, IExpandable<T>
     {
+#if PCL
+        [System.Runtime.Serialization.DataMember]
+#endif
         private readonly List<IBoundable<T, TItem>> _childBoundables = new List<IBoundable<T, TItem>>();
+#if PCL
+        [System.Runtime.Serialization.DataMember]
+#endif
         private T _bounds;
+#if PCL
+        [System.Runtime.Serialization.DataMember]
+#endif
         private readonly int _level;
 
         /// <summary> 

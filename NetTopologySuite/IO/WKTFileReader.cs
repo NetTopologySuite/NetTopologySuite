@@ -24,6 +24,12 @@ namespace NetTopologySuite.IO
         private readonly WKTReader _wktReader;
         private int _count;
 
+        private WKTFileReader(WKTReader wktReader)
+        {
+            _wktReader = wktReader;
+            Limit = -1;
+        }
+
 #if !PCL
         ///<summary>
         /// Creates a new <see cref="WKTFileReader" /> given the <paramref name="file" /> to read from and a <see cref="WKTReader" /> to use to parse the geometries.
@@ -31,10 +37,9 @@ namespace NetTopologySuite.IO
         /// <param name="file"> the <see cref="FileInfo" /> to read from</param>
         /// <param name="wktReader">the geometry reader to use</param>
         public WKTFileReader(FileInfo file, WKTReader wktReader)
+            :this(wktReader)
         {
             _file = file;
-            _wktReader = wktReader;
-            Limit = -1;
         }
 
         ///<summary>
@@ -66,9 +71,9 @@ namespace NetTopologySuite.IO
         /// <param name="reader">The stream reader of the file to read from</param>
         /// <param name="wktReader">The geometry reader to use</param>
         public WKTFileReader(TextReader reader, WKTReader wktReader)
+            :this(wktReader)
         {
             _reader = reader;
-            _wktReader = wktReader;
         }
 
         ///<summary>

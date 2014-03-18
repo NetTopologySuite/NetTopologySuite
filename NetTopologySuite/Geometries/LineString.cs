@@ -27,9 +27,24 @@ namespace NetTopologySuite.Geometries
     [Serializable]
 #else
     [System.Runtime.Serialization.DataContract]
+    [System.Runtime.Serialization.KnownType("GetKnownCoordinateSequenceTypes")]
 #endif
     public class LineString : Geometry, ILineString
     {
+
+#if PCL
+        protected static Type[] GetKnownCoordinateSequenceTypes()
+        {
+            return new[]
+            {
+                typeof(Implementation.CoordinateArraySequence), 
+                //typeof(Implementation.PackedDoubleCoordinateSequence), 
+                //typeof(Implementation.PackedFloatCoordinateSequence), 
+                //typeof(Implementation.DotSpatialAffineCoordinateSequence), 
+            };
+        }
+#endif
+
         /// <summary>
         /// Represents an empty <c>LineString</c>.
         /// </summary>
@@ -38,6 +53,9 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// The points of this <c>LineString</c>.
         /// </summary>
+#if PCL
+        [System.Runtime.Serialization.DataMember]
+#endif
         private ICoordinateSequence _points;
 
         /// <summary>

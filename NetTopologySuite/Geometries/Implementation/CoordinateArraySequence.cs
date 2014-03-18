@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 using System.Text;
 using GeoAPI.Geometries;
 
@@ -20,15 +21,22 @@ namespace NetTopologySuite.Geometries.Implementation
     [Serializable]
 #else
     [System.Runtime.Serialization.DataContract]
+    [System.Runtime.Serialization.KnownType(typeof(Coordinate[]))]
 #endif
     public class CoordinateArraySequence : ICoordinateSequence
     {    
+#if PCL
+        [DataMember]
+#endif
         protected Coordinate[] Coordinates;
 
         /**
          * The actual dimension of the coordinates in the sequence.
          * Allowable values are 2 or 3.
          */
+#if PCL
+        [DataMember(Name = "Dimension")]
+#endif
         private readonly int _dimension = 3;
   
         /// <summary>

@@ -23,6 +23,9 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Internal representation of this <c>GeometryCollection</c>.        
         /// </summary>
+#if PCL
+        [System.Runtime.Serialization.DataMember]
+#endif
         private IGeometry[] _geometries;
 
         /// <summary>

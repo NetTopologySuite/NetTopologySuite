@@ -37,6 +37,15 @@ namespace NetTopologySuite.Tests.NUnit
             var geoms = fileRdr.Read();
             return geoms;
         }
+
+#if PCL
+        public static IList<IGeometry> ReadWKTFile(Stream stream)
+        {
+            var fileRdr = new WKTFileReader(stream, new WKTReader());
+            var geoms = fileRdr.Read();
+            return geoms;
+        }
+#endif
   
         public static bool IsEqual(IGeometry a, IGeometry b)
         {

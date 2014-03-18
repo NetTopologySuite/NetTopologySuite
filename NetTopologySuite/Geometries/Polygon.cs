@@ -46,13 +46,19 @@ namespace NetTopologySuite.Geometries
         /// The exterior boundary, or <c>null</c> if this <c>Polygon</c>
         /// is the empty point.
         /// </summary>
+#if PCL
+        [System.Runtime.Serialization.DataMember]
+#endif
         private ILinearRing _shell;
 
         /// <summary>
         /// The interior boundaries, if any.
         /// </summary>
-        private ILinearRing[] _holes; 
-        
+#if PCL
+        [System.Runtime.Serialization.DataMember]
+#endif
+        private ILinearRing[] _holes;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Polygon"/> class.
         /// </summary>
@@ -97,13 +103,21 @@ namespace NetTopologySuite.Geometries
                 throw new ArgumentException("holes must not contain null elements");
             if (shell.IsEmpty && HasNonEmptyElements(CollectionUtil.Cast<ILinearRing, IGeometry>(holes))) 
                 throw new ArgumentException("shell is empty but holes are not");
+
             _shell = shell;
             _holes = holes;
         }
 
-        /// <summary>
-        /// 
+        /// <summary>  
+        /// Returns a vertex of this <c>Geometry</c>
+        /// (usually, but not necessarily, the first one).
         /// </summary>
+        /// <remarks>
+        /// The returned coordinate should not be assumed to be an actual Coordinate object used in the internal representation. 
+        /// </remarks>
+        /// <returns>a Coordinate which is a vertex of this <c>Geometry</c>.</returns>
+        /// <returns><c>null</c> if this Geometry is empty.
+        /// </returns>
         public override Coordinate Coordinate
         {
             get
@@ -113,8 +127,25 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        /// Returns an array containing the values of all the vertices for 
+        /// this geometry.
         /// </summary>
+        /// <remarks>
+        /// If the geometry is a composite, the array will contain all the vertices
+        /// for the components, in the order in which the components occur in the geometry.
+        /// <para>
+        /// In general, the array cannot be assumed to be the actual internal 
+        /// storage for the vertices.  Thus modifying the array
+        /// may not modify the geometry itself. 
+        /// Use the <see cref="ICoordinateSequence.SetOrdinate"/> method
+        /// (possibly on the components) to modify the underlying data.
+        /// If the coordinates are modified, 
+        /// <see cref="IGeometry.GeometryChanged"/> must be called afterwards.
+        /// </para> 
+        /// </remarks>
+        /// <returns>The vertices of this <c>Geometry</c>.</returns>
+        /// <seealso cref="IGeometry.GeometryChanged"/>
+        /// <seealso cref="ICoordinateSequence.SetOrdinate"/>
         public override Coordinate[] Coordinates
         {
             get
@@ -142,6 +173,11 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        /// <summary>
+        /// Gets an array of <see cref="System.Double"/> ordinate values
+        /// </summary>
+        /// <param name="ordinate">The ordinate index</param>
+        /// <returns>An array of ordinate values</returns>
         public override double[] GetOrdinates(Ordinate ordinate)
         {
             if (IsEmpty)
@@ -165,9 +201,12 @@ namespace NetTopologySuite.Geometries
             return result;
         }
 
-        /// <summary>
-        /// 
+        /// <summary>  
+        /// Returns the count of this <c>Geometry</c>s vertices. The <c>Geometry</c>
+        /// s contained by composite <c>Geometry</c>s must be
+        /// Geometry's; that is, they must implement <c>NumPoints</c>.
         /// </summary>
+        /// <returns>The number of vertices in this <c>Geometry</c>.</returns>
         public override int NumPoints
         {
             get
@@ -179,9 +218,24 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        /// 
+        /// <summary> 
+        /// Returns the dimension of this geometry.
         /// </summary>
+        /// <remarks>
+        /// The dimension of a geometry is is the topological 
+        /// dimension of its embedding in the 2-D Euclidean plane.
+        /// In the NTS spatial model, dimension values are in the set {0,1,2}.
+        /// <para>
+        /// Note that this is a different concept to the dimension of 
+        /// the vertex <see cref="Coordinate"/>s.
+        /// The geometry dimension can never be greater than the coordinate dimension.
+        /// For example, a 0-dimensional geometry (e.g. a Point) 
+        /// may have a coordinate dimension of 3 (X,Y,Z). 
+        /// </para>
+        /// </remarks>
+        /// <returns>  
+        /// The topological dimensions of this geometry
+        /// </returns>
         public override Dimension Dimension
         {
             get
@@ -190,9 +244,15 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        /// 
+        /// <summary> 
+        /// Returns the dimension of this <c>Geometry</c>s inherent boundary.
         /// </summary>
+        /// <returns>    
+        /// The dimension of the boundary of the class implementing this
+        /// interface, whether or not this object is the empty point. Returns
+        /// <c>Dimension.False</c> if the boundary is the empty point.
+        /// </returns>
+        /// NOTE: make abstract, remove setter and change geoapi
         public override Dimension BoundaryDimension
         {
             get
@@ -423,7 +483,11 @@ namespace NetTopologySuite.Geometries
         {
             var poly = (Polygon) base.Clone();
             poly._shell = (LinearRing) _shell.Clone();
+#if !PCL
             poly._holes = new ILinearRing[_holes.Length];
+#else
+            poly._holes = new LinearRing[_holes.Length];
+#endif
             for (var i = 0; i < _holes.Length; i++) 
                 poly._holes[i] = (LinearRing) _holes[i].Clone();            
             return poly; 
@@ -627,7 +691,10 @@ namespace NetTopologySuite.Geometries
             {
                 return _holes;
             }
-            private set { _holes = value; }
+            private set
+            {
+                _holes = value;
+            }
         }
 
         /*END ADDED BY MPAUL42 */

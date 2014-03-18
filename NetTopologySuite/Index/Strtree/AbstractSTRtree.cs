@@ -20,6 +20,7 @@ namespace NetTopologySuite.Index.Strtree
     [Serializable]
 #else
     [System.Runtime.Serialization.DataContract]
+    [System.Runtime.Serialization.KnownType("GetKnownTypes")]
 #endif
     public abstract class AbstractSTRtree<T, TItem>
         where T: IIntersectable<T>, IExpandable<T>
@@ -40,6 +41,14 @@ namespace NetTopologySuite.Index.Strtree
             /// <returns>Whether the two bounds intersect.</returns>
             bool Intersects(T aBounds, T bBounds);
         }
+
+#if PCL
+        private static Type[] GetKnownTypes()
+        {
+            return new [] { typeof(T), typeof(TItem), typeof(AbstractNode<T, TItem>), typeof(ItemBoundable<T, TItem>)};
+        }
+#endif
+
 
 #if PCL
         [System.Runtime.Serialization.DataMember]

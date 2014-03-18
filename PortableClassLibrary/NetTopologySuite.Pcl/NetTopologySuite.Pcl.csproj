@@ -1321,6 +1321,7 @@
     </Compile>
     <Compile Include="Extension\ICoordinateEx.cs" />
     <Compile Include="Extension\IEnvelopeEx.cs" />
+    <Compile Include="IO\NtsDataContractSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\NetTopologySuite\License.txt">

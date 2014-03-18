@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
@@ -21,6 +22,7 @@ namespace NetTopologySuite.Index.Strtree
     [Serializable]
 #else
     [System.Runtime.Serialization.DataContract]
+    [System.Runtime.Serialization.KnownType("GetKnownTypes")]
 #endif
     public class STRtree<TItem> : AbstractSTRtree<Envelope, TItem>, ISpatialIndex<TItem>
     {
@@ -46,7 +48,7 @@ namespace NetTopologySuite.Index.Strtree
         }
 
 #if !PCL
-    [Serializable]
+        [Serializable]
 #else
         [System.Runtime.Serialization.DataContract]
 #endif
@@ -81,6 +83,13 @@ namespace NetTopologySuite.Index.Strtree
                 return aBounds.Intersects(bBounds);
             }
         }
+
+#if PCL
+        private static Type[] GetKnownTypes()
+        {
+            return new[] {typeof (AnonymousAbstractNodeImpl)};
+        }
+#endif
 
         private const int DefaultNodeCapacity = 10;
 

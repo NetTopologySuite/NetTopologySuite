@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace NetTopologySuite.Tests.NUnit.Utilities
 {
@@ -13,9 +14,15 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
                 var serializer = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                 serializer.Serialize(ms, obj);
 #else
-                var serializer = new System.Runtime.Serialization.DataContractSerializer(typeof(T));
+                NetTopologySuite.IO.SerializerUtility.AddType(typeof(T));
+                var serializer = NetTopologySuite.IO.SerializerUtility.CreateDataContractSerializer<T>();
                 serializer.WriteObject(ms, obj);
 #endif
+
+                ms.Seek(0, SeekOrigin.Begin);
+                var reader = new StreamReader(ms);
+                Console.WriteLine(reader.ReadToEnd());
+
                 return ms.ToArray();
             }
         }
@@ -28,7 +35,8 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
                 var serializer = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                 return (T)serializer.Deserialize(ms);
 #else
-                var serializer = new System.Runtime.Serialization.DataContractSerializer(typeof(T));
+                NetTopologySuite.IO.SerializerUtility.AddType(typeof(T));
+                var serializer = NetTopologySuite.IO.SerializerUtility.CreateDataContractSerializer<T>();
                 return (T)serializer.ReadObject(ms);
 #endif
             }

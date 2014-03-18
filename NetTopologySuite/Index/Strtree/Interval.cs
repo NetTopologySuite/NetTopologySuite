@@ -7,6 +7,9 @@ namespace NetTopologySuite.Index.Strtree
     /// <summary> 
     /// A contiguous portion of 1D-space. Used internally by SIRtree.
     /// </summary>
+#if PCL
+        [System.Runtime.Serialization.DataContract]
+#endif
     public class Interval : IIntersectable<Interval>, IExpandable<Interval>
     {
         /// <summary>
@@ -27,9 +30,14 @@ namespace NetTopologySuite.Index.Strtree
             _max = max;
         }
 
+#if PCL
+        [System.Runtime.Serialization.DataMember(Name = "min")]
+#endif
         private double _min;
+#if PCL
+        [System.Runtime.Serialization.DataMember(Name = "max")]
+#endif
         private double _max;
-
         /// <summary>
         /// 
         /// </summary>

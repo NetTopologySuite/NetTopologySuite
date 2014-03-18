@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Xml;
 using GeoAPI.Geometries;
 using GeoAPI.Operation.Buffer;
@@ -126,6 +127,7 @@ namespace NetTopologySuite.Geometries
     [Serializable]
 #else
     [System.Runtime.Serialization.DataContract]
+    [System.Runtime.Serialization.KnownType("GetKnownTypes")]
 #endif
     public abstract class Geometry : IGeometry
     {        
@@ -144,8 +146,25 @@ namespace NetTopologySuite.Geometries
                                      typeof (GeometryCollection),
                                  };
 
+#if PCL
+        private static Type[] GetKnownTypes()
+        {
+            return _sortedClasses;
+        }
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
+        {
+            _factory = GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(_srid);
+
+        }
+#endif
+
 
         //FObermaier: not *readonly* due to SRID property in geometryfactory
+#if PCL
+        [IgnoreDataMember]
+#endif
         private /*readonly*/ IGeometryFactory _factory;
 
         /// <summary> 
@@ -164,6 +183,9 @@ namespace NetTopologySuite.Geometries
          * An object reference which can be used to carry ancillary data defined
          * by the client.
          */
+#if PCL
+        [DataMember]
+#endif
         private object _userData;
         
         /// <summary> 
@@ -174,6 +196,9 @@ namespace NetTopologySuite.Geometries
         /// An example use might be to add an object representing a Coordinate Reference System.
         /// Note that user data objects are not present in geometries created by
         /// construction methods.
+#if PCL
+        /// This data is not serialized!
+#endif
         /// </remarks>
         public object UserData
         {
@@ -190,11 +215,16 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// The bounding box of this <c>Geometry</c>.
         /// </summary>
+#if PCL
+        [DataMember]
+#endif
         private Envelope _envelope;
        
         // The ID of the Spatial Reference System used by this <c>Geometry</c>
+#if PCL
+        [DataMember]
+#endif
         private int _srid;
-
         /// <summary>  
         /// Sets the ID of the Spatial Reference System used by the <c>Geometry</c>.
         /// </summary>
@@ -296,6 +326,9 @@ namespace NetTopologySuite.Geometries
         /// the specification of the grid of allowable points, for this
         /// <c>Geometry</c> and all other <c>Geometry</c>s.
         /// </returns>
+#if PCL
+        [IgnoreDataMember]
+#endif
         public IPrecisionModel PrecisionModel
         {
             get
@@ -561,6 +594,9 @@ namespace NetTopologySuite.Geometries
                   }
               }
 
+#if PCL
+              [DataMember]
+#endif
               private Dimension _dimension;
 
               /// <summary> 
