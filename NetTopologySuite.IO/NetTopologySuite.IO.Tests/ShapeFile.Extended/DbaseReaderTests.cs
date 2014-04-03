@@ -3,10 +3,9 @@ using System.IO;
 using System.Linq;
 using NetTopologySuite.Features;
 using NetTopologySuite.IO.ShapeFile.Extended;
-using NetTopologySuite.IO.Tests.ShapeFile.Extended;
 using NUnit.Framework;
 
-namespace NetTopologySuite.ShapefileExtensions.Tests
+namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
 {
     /// <summary>
     /// Summary description for DbfFileReaderTests

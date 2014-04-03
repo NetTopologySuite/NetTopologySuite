@@ -9,10 +9,9 @@ using NetTopologySuite.Index.Strtree;
 using NetTopologySuite.IO.Handlers;
 using NetTopologySuite.IO.ShapeFile.Extended;
 using NetTopologySuite.IO.ShapeFile.Extended.Entities;
-using NetTopologySuite.IO.Tests.ShapeFile.Extended;
 using NUnit.Framework;
 
-namespace NetTopologySuite.ShapefileExtensions.Tests
+namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
 {
     [TestFixture]
     public class ShapeDataReaderTests
