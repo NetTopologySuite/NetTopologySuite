@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.TestData
 {
@@ -27,11 +28,11 @@ namespace NetTopologySuite.Tests.NUnit.TestData
                 }
                 catch (Exception ex)
                 {
-                    throw new ApplicationException("Unable to create directory - " + directoryPath, ex);
+                    throw new IgnoreException("Unable to create directory - " + directoryPath, ex);
                 }
             }
 
-            var resourceNameComponents = resourceName.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
+            var resourceNameComponents = resourceName.Split(new [] { "." }, StringSplitOptions.RemoveEmptyEntries);
 
             string fileName = resourceNameComponents[resourceNameComponents.Length - 2] + "." + resourceNameComponents[resourceNameComponents.Length - 1];
 
@@ -45,13 +46,11 @@ namespace NetTopologySuite.Tests.NUnit.TestData
                 }
                 catch (Exception ex)
                 {
-                    throw new ApplicationException("Unable to delete existing file - " + filePath, ex);
+                    throw new IgnoreException("Unable to delete existing file - " + filePath, ex);
                 }
             }
 
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            Stream resourceStream = assembly.GetManifestResourceStream(resourceName);
-            using (resourceStream)
+            using (var resourceStream = GetResourceStream(resourceName))
             {
                 try
                 {
@@ -61,7 +60,7 @@ namespace NetTopologySuite.Tests.NUnit.TestData
                 }
                 catch (Exception ex)
                 {
-                    throw new ApplicationException("Unable to save resouce contents to file - " + filePath, ex);
+                    throw new IgnoreException("Unable to save resouce contents to file - " + filePath, ex);
                 }
             }
 
@@ -78,7 +77,7 @@ namespace NetTopologySuite.Tests.NUnit.TestData
                 }
                 catch (Exception ex)
                 {
-                    throw new ApplicationException("Unable to delete file - " + filePath, ex);
+                    throw new IgnoreException("Unable to delete file - " + filePath, ex);
                 }
             }
         }
