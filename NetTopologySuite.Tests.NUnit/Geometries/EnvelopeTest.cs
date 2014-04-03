@@ -83,17 +83,17 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestExpandToIncludeEmpty()
         {
-            Assert.AreEqual(new Envelope(-5, 5, -5, 5), expandToInclude(new Envelope(-5,
+            Assert.AreEqual(new Envelope(-5, 5, -5, 5), ExpandToInclude(new Envelope(-5,
                     5, -5, 5), new Envelope()));
-            Assert.AreEqual(new Envelope(-5, 5, -5, 5), expandToInclude(new Envelope(),
+            Assert.AreEqual(new Envelope(-5, 5, -5, 5), ExpandToInclude(new Envelope(),
                     new Envelope(-5, 5, -5, 5)));
-            Assert.AreEqual(new Envelope(100, 101, 100, 101), expandToInclude(
+            Assert.AreEqual(new Envelope(100, 101, 100, 101), ExpandToInclude(
                     new Envelope(), new Envelope(100, 101, 100, 101)));
-            Assert.AreEqual(new Envelope(100, 101, 100, 101), expandToInclude(
+            Assert.AreEqual(new Envelope(100, 101, 100, 101), ExpandToInclude(
                     new Envelope(100, 101, 100, 101), new Envelope()));
         }
 
-        private Envelope expandToInclude(Envelope a, Envelope b)
+        private static Envelope ExpandToInclude(Envelope a, Envelope b)
         {
             a.ExpandToInclude(b);
             return a;
@@ -225,6 +225,39 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             IGeometry envGeomActual = geometryFactory.ToGeometry(env);
             bool isEqual = envGeomActual.Equals(envGeomExpected);
             Assert.IsTrue(isEqual);
+        }
+
+        [Test]
+        public void TestToString()
+        {
+            TestToString(new Envelope(), "Env[Null]");
+            TestToString(new Envelope(new Coordinate(10, 10)), "Env[10 : 10, 10 : 10]");
+            TestToString(new Envelope(new Coordinate(10.1, 10.1)), "Env[10.1 : 10.1, 10.1 : 10.1]");
+            TestToString(new Envelope(new Coordinate(10.1, 19.9), new Coordinate(19.9, 10.1)), "Env[10.1 : 19.9, 10.1 : 19.9]");
+        }
+
+        private static void TestToString(Envelope env, string envString)
+        {
+            var toString = env.ToString();
+            Assert.AreEqual(envString, toString);
+        }
+
+        [Test]
+        public void TestParse()
+        {
+            TestParse("Env[Null]", new Envelope());
+            TestParse("Env[10 : 10, 10 : 10]", new Envelope(new Coordinate(10, 10)));
+            TestParse("Env[10.1 : 10.1, 10.1 : 10.1]", new Envelope(new Coordinate(10.1, 10.1)));
+            TestParse("Env[10.1 : 19.9, 10.1 : 19.9]", new Envelope(new Coordinate(10.1, 19.9), new Coordinate(19.9, 10.1)));
+            Assert.Throws<ArgumentNullException>(() => TestParse(null, new Envelope()));
+            Assert.Throws<ArgumentException>(() => TestParse("no envelope", new Envelope()));
+            Assert.Throws<ArgumentException>(() => TestParse("Env[10.1 : 19.9, 10.1 : 19/9]", new Envelope()));
+        }
+
+        private static void TestParse(string envString, Envelope env)
+        {
+            var envFromString = Envelope.Parse(envString);
+            Assert.IsTrue(env.Equals(envFromString));
         }
     }
 }
