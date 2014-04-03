@@ -539,6 +539,10 @@ namespace NetTopologySuite.IO.Handlers
 
         public GeometryInstantiationErrorHandlingOption GeometryInstantiationErrorHandling { get; set; }
 
+        public virtual IEnumerable<MBRInfo> ReadMBRs(BigEndianBinaryReader reader)
+        {
+            return new ShapeMBREnumerator(reader);
+        }
     }
 #if !NET35
         internal static class Enumerable

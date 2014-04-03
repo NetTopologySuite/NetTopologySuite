@@ -1,4 +1,5 @@
  
+using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
@@ -100,6 +101,11 @@ namespace NetTopologySuite.IO.Handlers
             
             // 10 => shapetype(2)+ xy(2*4)
             return 10;
-        }		
+        }
+
+        public override IEnumerable<MBRInfo> ReadMBRs(BigEndianBinaryReader reader)
+        {
+            return new PointMBREnumerator(reader);
+        }
     }
 }

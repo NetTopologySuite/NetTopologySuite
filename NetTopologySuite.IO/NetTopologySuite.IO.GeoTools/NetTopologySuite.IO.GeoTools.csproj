@@ -46,9 +46,6 @@
     <Compile Include="..\..\SharedAssemblyVersion.cs">
       <Link>Properties\SharedAssemblyVersion.cs</Link>
     </Compile>
-    <Compile Include="..\NetTopologySuite.IO.ShapeFile\ShapeGeometryType.cs">
-      <Link>ShapeGeometryType.cs</Link>
-    </Compile>
     <Compile Include="..\NetTopologySuite.IO\Geometries\CoordinateBuffer.cs">
       <Link>CoordinateBuffer.cs</Link>
     </Compile>
@@ -63,12 +60,18 @@
     <Compile Include="Dbase\RowStructure.cs" />
     <Compile Include="GeoToolsStreamTokenizer.cs" />
     <Compile Include="Handlers\GeometryInstantiationErrorHandling.cs" />
+    <Compile Include="Handlers\MBRInfo.cs" />
     <Compile Include="Handlers\MultiLineHandler.cs" />
     <Compile Include="Handlers\MultiPointHandler.cs" />
     <Compile Include="Handlers\PointHandler.cs" />
+    <Compile Include="Handlers\PointMBREnumerator.cs" />
+    <Compile Include="Handlers\PointMBRIterator.cs" />
     <Compile Include="Handlers\PolygonHandler.cs" />
     <Compile Include="Handlers\ProbeLinearRing.cs" />
     <Compile Include="Handlers\ShapeHandler.cs" />
+    <Compile Include="Handlers\ShapeLocationInFileInfo.cs" />
+    <Compile Include="Handlers\ShapeMBREnumerator.cs" />
+    <Compile Include="Handlers\ShapeMBRIterator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shapefile.cs" />
     <Compile Include="Shapefile.FullFat.cs" />
@@ -95,6 +98,10 @@
     <ProjectReference Include="..\..\PowerCollections\PowerCollections\PowerCollections.csproj">
       <Project>{5821977D-AC2C-4912-BCD0-6E6B1A756167}</Project>
       <Name>PowerCollections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO.ShapeFile\NetTopologySuite.IO.ShapeFile.csproj">
+      <Project>{ab9096a7-89dd-4abd-b535-a5258863f389}</Project>
+      <Name>NetTopologySuite.IO.ShapeFile</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

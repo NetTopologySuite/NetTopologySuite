@@ -22,7 +22,7 @@ namespace NetTopologySuite.Features
         /// <summary>
         /// Geometry representation of the feature.
         /// </summary>
-        public IGeometry Geometry
+        public virtual IGeometry Geometry
         {
             get { return _geometry; }
             set { _geometry = value; }
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Features
         /// <summary>
         /// Attributes table of the feature.
         /// </summary>
-        public IAttributesTable Attributes
+        public virtual IAttributesTable Attributes
         {
             get { return _attributes; }
             set { _attributes = value; }
