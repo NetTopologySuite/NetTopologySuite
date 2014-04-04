@@ -21,7 +21,7 @@ namespace NetTopologySuite.IO
         /// <param name="feature">The feature.</param>
         /// <param name="count">The count.</param>
         /// <returns></returns>
-        public static DbaseFileHeader GetHeader(Feature feature, int count)
+        public static DbaseFileHeader GetHeader(IFeature feature, int count)
         {
             IAttributesTable attribs = feature.Attributes;
             string[] names = attribs.GetNames();
@@ -150,8 +150,8 @@ namespace NetTopologySuite.IO
 #if DEBUG
             // Test if all elements of the collections are features
             foreach (object obj in featureCollection)
-                if (obj.GetType() != typeof(Feature))
-                    throw new ArgumentException("All the elements in the given collection must be " + typeof(Feature).Name);
+                if (obj.GetType().IsAssignableFrom(typeof(IFeature)))
+                    throw new ArgumentException("All the elements in the given collection must be " + typeof(IFeature).Name);
 #endif
 
             try
@@ -159,13 +159,13 @@ namespace NetTopologySuite.IO
                 // Write shp and shx  
                 var geometries = new IGeometry[featureCollection.Count];
                 var index = 0;
-                foreach (Feature feature in featureCollection)
+                foreach (IFeature feature in featureCollection)
                     geometries[index++] = feature.Geometry;
                 ShapefileWriter.WriteGeometryCollection(_shpFile, new GeometryCollection(geometries, _geometryFactory));
 
                 // Write dbf
                 _dbaseWriter.Write(Header);
-                foreach (Feature feature in featureCollection)
+                foreach (IFeature feature in featureCollection)
                 {
                     var attribs = feature.Attributes;
                     ArrayList values = new ArrayList();

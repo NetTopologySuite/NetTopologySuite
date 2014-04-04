@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="DbaseEnumerator.cs" />
     <Compile Include="DbaseReader.cs" />
+    <Compile Include="Entities\IShapefileFeature.cs" />
     <Compile Include="Entities\ShapefileFeature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShapeDataReader.cs" />

@@ -197,13 +197,13 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_shapeDataReader = new ShapeDataReader(m_TempFiles[0].Path);
 
             // Act.
-            IEnumerable<Feature> results = m_shapeDataReader.ReadByMBRFilter(m_shapeDataReader.ShapefileBounds);
+            IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(m_shapeDataReader.ShapefileBounds);
 
             // Assert.
             Assert.IsNotNull(results);
 
             int currIndex = 0;
-            foreach (Feature result in results)
+            foreach (IShapefileFeature result in results)
             {
                 Assert.IsNotNull(result);
                 Assert.IsInstanceOf<ShapefileFeature>(result);
@@ -245,12 +245,12 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_shapeDataReader = new ShapeDataReader(m_TempFiles[0].Path);
 
             // Act.
-            IEnumerable<Feature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle);
+            IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle);
 
             // Assert.
             Assert.IsNotNull(results);
 
-            Feature result = results.Single();
+            IShapefileFeature result = results.Single();
 
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<ShapefileFeature>(result);
@@ -291,12 +291,12 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_shapeDataReader = new ShapeDataReader(m_TempFiles[0].Path);
 
             // Act.
-            IEnumerable<Feature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle);
+            IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle);
 
             // Assert.
             Assert.IsNotNull(results);
 
-            Feature result = results.Single();
+            IShapefileFeature result = results.Single();
 
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<ShapefileFeature>(result);
@@ -337,12 +337,12 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_shapeDataReader = new ShapeDataReader(m_TempFiles[0].Path);
 
             // Act.
-            IEnumerable<Feature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle, true);
+            IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle, true);
 
             // Assert.
             Assert.IsNotNull(results);
 
-            Feature result = results.Single();
+            IShapefileFeature result = results.Single();
 
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<ShapefileFeature>(result);
@@ -383,12 +383,12 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_shapeDataReader = new ShapeDataReader(m_TempFiles[0].Path);
 
             // Act.
-            IEnumerable<Feature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle);
+            IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle);
 
             // Assert.
             Assert.IsNotNull(results);
 
-            Feature result = results.Single();
+            IShapefileFeature result = results.Single();
 
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<ShapefileFeature>(result);
@@ -429,12 +429,12 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_shapeDataReader = new ShapeDataReader(m_TempFiles[0].Path);
 
             // Act.
-            IEnumerable<Feature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle, true);
+            IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle, true);
 
             // Assert.
             Assert.IsNotNull(results);
 
-            Feature result = results.Single();
+            IShapefileFeature result = results.Single();
 
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<ShapefileFeature>(result);
@@ -464,7 +464,7 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_shapeDataReader = new ShapeDataReader(m_TempFiles[0].Path);
 
             // Act.
-            IEnumerable<Feature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle, true);
+            IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle, true);
 
             // Assert.
             Assert.IsNotNull(results);
@@ -501,12 +501,12 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_shapeDataReader = new ShapeDataReader(m_TempFiles[0].Path);
 
             // Act.
-            IEnumerable<Feature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle);
+            IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle);
 
             // Assert.
             Assert.IsNotNull(results);
 
-            Feature result = results.Single();
+            IShapefileFeature result = results.Single();
 
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<ShapefileFeature>(result);
@@ -536,7 +536,7 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_shapeDataReader = new ShapeDataReader(m_TempFiles[0].Path);
 
             // Act.
-            IEnumerable<Feature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle);
+            IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle);
 
             // Assert.
             Assert.IsNotNull(results);
@@ -558,7 +558,7 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_shapeDataReader = new ShapeDataReader(m_TempFiles[0].Path);
 
             // Act.
-            IEnumerable<Feature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle, true);
+            IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle, true);
 
             // Assert.
             Assert.IsNotNull(results);
@@ -581,11 +581,11 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_shapeDataReader = new ShapeDataReader(m_TempFiles[0].Path);
 
             // Act.
-            IEnumerable<Feature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle);
+            IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle);
 
             // Assert.
             Assert.IsNotNull(results);
-            Feature result = results.Single();
+            IShapefileFeature result = results.Single();
 
             // Dispose of the reader object.
             m_shapeDataReader.Dispose();
@@ -610,11 +610,11 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_shapeDataReader = new ShapeDataReader(m_TempFiles[0].Path);
 
             // Act.
-            IEnumerable<Feature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle);
+            IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle);
 
             // Assert.
             Assert.IsNotNull(results);
-            Feature result = results.Single();
+            IShapefileFeature result = results.Single();
 
             // Dispose of the reader object.
             m_shapeDataReader.Dispose();

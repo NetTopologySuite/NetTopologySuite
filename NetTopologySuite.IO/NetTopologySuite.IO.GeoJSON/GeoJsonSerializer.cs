@@ -64,7 +64,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="feature">The feature.</param>
         /// <returns></returns>
-        public string Write(Feature feature)
+        public string Write(IFeature feature)
         {
             GeoJsonSerializer g = new GeoJsonSerializer();
             StringBuilder sb = new StringBuilder();

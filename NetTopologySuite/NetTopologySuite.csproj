@@ -134,6 +134,7 @@
     <Compile Include="EdgeGraph\HalfEdge.cs" />
     <Compile Include="EdgeGraph\MarkHalfEdge.cs" />
     <Compile Include="Features\FeatureCollection.cs" />
+    <Compile Include="Features\IFeature.cs" />
     <Compile Include="Geometries\Geometry.cs" />
     <Compile Include="Geometries\GeometryComponentFilter.cs" />
     <Compile Include="Geometries\OgcCompliantGeometryFactory.cs" />

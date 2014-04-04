@@ -37,7 +37,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsTrue(File.Exists(path));
             
             var reader = new ShapefileDataReader(path, factory);
-            var features = new List<Feature>(reader.RecordCount);
+            var features = new List<IFeature>(reader.RecordCount);
             while (reader.Read())
             {
                 var feature = new Feature(reader.Geometry, new AttributesTable());
@@ -114,7 +114,7 @@ namespace NetTopologySuite.Tests.Various
             header.AddColumn(field1, 'N', 5, 0);
             
             var writer = new ShapefileDataWriter(shapepath, factory) {Header = header};
-            writer.Write(new List<Feature>(new[] { feature, }));
+            writer.Write(new List<IFeature>(new[] { feature, }));
 
             Assert.IsTrue(File.Exists(shapepath + shp));
             Assert.IsTrue(File.Exists(shapepath + shx));

@@ -7,7 +7,7 @@ using NetTopologySuite.IO.Handlers;
 namespace NetTopologySuite.IO.ShapeFile.Extended.Entities
 {
 	[Serializable]
-	public class ShapefileFeature : Feature
+	internal class ShapefileFeature : IShapefileFeature
 	{
 	    private readonly Lazy<IGeometry> m_LazyGeometry;
 		private readonly Lazy<IAttributesTable> m_LazyAttributeTable;
@@ -29,7 +29,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended.Entities
 			m_LazyAttributeTable = new Lazy<IAttributesTable>(() => m_DbaseReader.ReadEntry(m_ShapeLocationInfo.ShapeIndex), LazyThreadSafetyMode.ExecutionAndPublication);
 		}
 
-	    public override IGeometry Geometry
+	    public IGeometry Geometry
 		{
 			get
 			{
@@ -37,7 +37,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended.Entities
 			}
 		}
 
-		public override IAttributesTable Attributes
+		public IAttributesTable Attributes
 		{
 			get
 			{

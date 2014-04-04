@@ -21,7 +21,7 @@ namespace NetTopologySuite.Tests.IO
             h.NumRecords = 1;
             sfdr.Header = h;
 
-            List<Feature> feats = new List<Feature>();
+            List<IFeature> feats = new List<IFeature>();
             AttributesTable at = new AttributesTable();
             at.AddAttribute("id", "0");
             at.AddAttribute("Test", "Testar");

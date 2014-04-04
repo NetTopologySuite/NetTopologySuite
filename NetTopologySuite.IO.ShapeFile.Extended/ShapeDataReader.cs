@@ -104,7 +104,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 		/// **********
 		/// </param>
 		/// <returns></returns>
-		public IEnumerable<Feature> ReadByMBRFilter(Envelope envelope, bool testGeometriesActuallyInMBR = false)
+        public IEnumerable<IShapefileFeature> ReadByMBRFilter(Envelope envelope, bool testGeometriesActuallyInMBR = false)
 		{
 			if (envelope == null)
 			{
@@ -121,10 +121,10 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 
 			if (shapesInRegion.Count == 0)
 			{
-				return Enumerable.Empty<Feature>();
+                return Enumerable.Empty<IShapefileFeature>();
 			}
 
-			IEnumerable<Feature> results = shapesInRegion.Select(ReadFeature);
+            IEnumerable<IShapefileFeature> results = shapesInRegion.Select(ReadFeature);
 
 			if (!testGeometriesActuallyInMBR)
 			{
@@ -141,7 +141,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 			}
 		}
 
-		private Feature ReadFeature(ShapeLocationInFileInfo shapeLocationInfo)
+		private IShapefileFeature ReadFeature(ShapeLocationInFileInfo shapeLocationInfo)
 		{
 			return new ShapefileFeature(m_ShapeReader, m_DbfReader, shapeLocationInfo, m_GeoFactory);
 		}

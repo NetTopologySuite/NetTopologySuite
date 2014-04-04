@@ -23,7 +23,7 @@ namespace NetTopologySuite.IO.Converters
             if (serializer == null) 
                 throw new ArgumentNullException("serializer");
 
-            Feature feature = value as Feature;
+            IFeature feature = value as Feature;
             if (feature == null)
                 return;
 

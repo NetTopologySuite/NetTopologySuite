@@ -40,7 +40,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             JsonTextWriter writer = new JsonTextWriter(new StringWriter(sb));
             AttributesTable attributes = new AttributesTable();
             attributes.AddAttribute("test1", "value1");
-            Feature value = new Feature(new Point(23, 56), attributes);
+            IFeature value = new Feature(new Point(23, 56), attributes);
             GeoJsonSerializer serializer = new GeoJsonSerializer();
             target.WriteJson(writer, value, serializer);
             writer.Flush();
@@ -58,7 +58,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             JsonTextWriter writer = new JsonTextWriter(new StringWriter(sb));
             AttributesTable attributes = new AttributesTable();
             attributes.AddAttribute("test1", new [] { "value1", "value2" });
-            Feature value = new Feature(new Point(23, 56), attributes);
+            IFeature value = new Feature(new Point(23, 56), attributes);
             GeoJsonSerializer serializer = new GeoJsonSerializer();
             target.WriteJson(writer, value, serializer);
             writer.Flush();

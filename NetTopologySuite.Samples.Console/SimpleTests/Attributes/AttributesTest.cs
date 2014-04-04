@@ -107,7 +107,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Attributes
 
             var index = 0;
             Console.WriteLine("Elements = " + featureCollection.Count);
-            foreach (Feature feature in featureCollection)
+            foreach (IFeature feature in featureCollection)
             {
                 Console.WriteLine("Feature " + index++);                
                 var table = feature.Attributes as AttributesTable;
@@ -126,7 +126,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Attributes
             if (File.Exists(file + ".dbf")) File.Delete(file + ".dbf");
 
             var dataWriter = new ShapefileDataWriter(file);
-            dataWriter.Header = ShapefileDataWriter.GetHeader(featureCollection[0] as Feature, featureCollection.Count);
+            dataWriter.Header = ShapefileDataWriter.GetHeader(featureCollection[0] as IFeature, featureCollection.Count);
             dataWriter.Write(featureCollection);
 
             // Test write with header from a existing shapefile

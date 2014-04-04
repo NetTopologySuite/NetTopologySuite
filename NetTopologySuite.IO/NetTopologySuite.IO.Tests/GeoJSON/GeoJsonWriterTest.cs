@@ -4,6 +4,8 @@ using NetTopologySuite.CoordinateSystems;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
+using System.Text;
+using System.IO;
 
 namespace NetTopologySuite.IO.Tests.GeoJSON
 {
@@ -22,8 +24,8 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         {
             AttributesTable attributes = new AttributesTable();
             attributes.AddAttribute("test1", "value1");
-            Feature feature = new Feature(new Point(23, 56), attributes);
-            FeatureCollection featureCollection = new FeatureCollection(new Collection<Feature> { feature }) { CRS = new NamedCRS("name1") };
+            IFeature feature = new Feature(new Point(23, 56), attributes);
+            FeatureCollection featureCollection = new FeatureCollection(new Collection<IFeature> { feature }) { CRS = new NamedCRS("name1") };
             string actual = new GeoJsonWriter().Write(featureCollection);
             Assert.AreEqual("{\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[23.0,56.0]},\"properties\":{\"test1\":\"value1\"}}],\"type\":\"FeatureCollection\",\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"name1\"}}}", actual);
         }
@@ -36,7 +38,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         {
             AttributesTable attributes = new AttributesTable();
             attributes.AddAttribute("test1", "value1");
-            Feature feature = new Feature(new Point(23, 56), attributes);
+            IFeature feature = new Feature(new Point(23, 56), attributes);
             string actual = new GeoJsonWriter().Write(feature);
             Assert.AreEqual("{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[23.0,56.0]},\"properties\":{\"test1\":\"value1\"}}", actual);
         }
@@ -70,11 +72,21 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         public void GeoJsonWriterWriteAnyObjectTest()
         {
             AttributesTable attributes = new AttributesTable();
+            DateTime Date = new DateTime(2012, 8, 8).Date;
+
+            GeoJsonSerializer g = new GeoJsonSerializer();
+            StringBuilder sb = new StringBuilder();
+            using (StringWriter sw = new StringWriter(sb))
+                g.Serialize(sw, Date);
+            string expectedDateString = sb.ToString();
+
+            string expectedResult = "{\"featureCollection\":{\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[23.0,56.0]},\"properties\":{\"test1\":\"value1\"}}],\"type\":\"FeatureCollection\",\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"name1\"}}},\"Date\":" + expectedDateString + "}";
             attributes.AddAttribute("test1", "value1");
-            Feature feature = new Feature(new Point(23, 56), attributes);
-            FeatureCollection featureCollection = new FeatureCollection(new Collection<Feature> { feature }) { CRS = new NamedCRS("name1") };
-            string actual = new GeoJsonWriter().Write(new { featureCollection, new DateTime(2012, 8, 8).Date });
-            Assert.AreEqual("{\"featureCollection\":{\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[23.0,56.0]},\"properties\":{\"test1\":\"value1\"}}],\"type\":\"FeatureCollection\",\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"name1\"}}},\"Date\":\"\\/Date(1344376800000+0200)\\/\"}", actual);
+            IFeature feature = new Feature(new Point(23, 56), attributes);
+
+            FeatureCollection featureCollection = new FeatureCollection(new Collection<IFeature> { feature }) { CRS = new NamedCRS("name1") };
+            string actual = new GeoJsonWriter().Write(new { featureCollection, Date = Date });
+            Assert.AreEqual(expectedResult, actual);
         }
     }
 }

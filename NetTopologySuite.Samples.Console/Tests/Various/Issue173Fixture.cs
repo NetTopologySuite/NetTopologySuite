@@ -12,7 +12,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test, Category("Issue173"), Description("The NetTopologySuite.IO.GeoTools class method ShapeFile.GetGeometryType(IGeometry geom) will always returns ShapeGeometryType.PointZM making all shapefile geometry GeometryZM.")]
         public void Test()
         {
-            var features = new List<Features.Feature>();
+            var features = new List<Features.IFeature>();
             var seq = DotSpatialAffineCoordinateSequenceFactory.Instance.Create(1, Ordinates.XY);
             seq.SetOrdinate(0, Ordinate.X, -91.0454);
             seq.SetOrdinate(0, Ordinate.Y, 32.5907);

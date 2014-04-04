@@ -11,7 +11,7 @@ namespace NetTopologySuite.Features
 #else
     [Serializable]
 #endif
-    public class Feature
+    public class Feature : IFeature
     {
         
 #if PCL
