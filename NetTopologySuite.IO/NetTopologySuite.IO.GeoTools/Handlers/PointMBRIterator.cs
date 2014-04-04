@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
@@ -15,13 +16,22 @@ namespace NetTopologySuite.IO.Handlers
             Reset();
         }
 
+        ~PointMBRIterator()
+        {
+            m_Reader.Close();
+        }
+
         public MBRInfo Current
         {
             get;
             set;
         }
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+            m_Reader.Close();
+            GC.SuppressFinalize(this);
+        }
 
         object IEnumerator.Current
         {

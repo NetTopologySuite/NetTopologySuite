@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using GeoAPI.Geometries;
 using NetTopologySuite.Features;
@@ -20,9 +21,10 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 	    private readonly ISpatialIndex<ShapeLocationInFileInfo> m_SpatialIndex;
 		private readonly Task m_IndexCreationTask;
 		private bool m_IsIndexingComplete;
+        private readonly CancellationTokenSource m_CancellationTokenSrc;
 		private readonly DbaseReader m_DbfReader;
 		private readonly IGeometryFactory m_GeoFactory;
-		private readonly ShapeReader m_ShapeReader;		
+		private readonly ShapeReader m_ShapeReader;
 
 	    public ShapeDataReader(string shapeFilePath, ISpatialIndex<ShapeLocationInFileInfo> index, IGeometryFactory geoFactory, bool buildIndexAsync)
 		{
@@ -35,7 +37,8 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 
 			if (buildIndexAsync)
 			{
-				m_IndexCreationTask = Task.Factory.StartNew(FillSpatialIndex);
+                m_CancellationTokenSrc = new CancellationTokenSource();
+                m_IndexCreationTask = Task.Factory.StartNew(FillSpatialIndex, m_CancellationTokenSrc.Token);
 			}
 			else
 			{
@@ -177,8 +180,15 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 
 		private void FillSpatialIndex()
 		{
+            bool isAsync = m_CancellationTokenSrc != null;
+
 			foreach (MBRInfo mbrInfo in m_ShapeReader.ReadMBRs())
 			{
+                if (isAsync && m_CancellationTokenSrc.IsCancellationRequested)
+                {
+                    break;
+                }
+
 				m_SpatialIndex.Insert(mbrInfo.ShapeMBR, mbrInfo.ShapeFileDetails);
 			}
 
@@ -187,6 +197,11 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 
 		private void Dispose(bool disposing)
 		{
+            if (m_CancellationTokenSrc != null)
+            {
+                m_CancellationTokenSrc.Cancel();
+            }
+
 			if (m_DbfReader != null)
 			{
 				m_DbfReader.Dispose();

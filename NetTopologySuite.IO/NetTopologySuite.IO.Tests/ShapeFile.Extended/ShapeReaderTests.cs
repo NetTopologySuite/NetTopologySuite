@@ -225,7 +225,7 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         {
             // Arrange.
             IGeometryFactory factory = new GeometryFactory();
-            m_TmpFile = new TempFileWriter("shape.shp", ShpFiles.Read("polygon_intersecting_line"));
+            m_TmpFile = new TempFileWriter("polygon_intersecting_line.shp", ShpFiles.Read("polygon intersecting line"));
             m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
 
             // Act.
@@ -238,11 +238,11 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         {
             // Arrange.
             IGeometryFactory factory = new GeometryFactory();
-            m_TmpFile = new TempFileWriter("shape.shp", ShpFiles.Read("polygon_intersecting_line"));
+            m_TmpFile = new TempFileWriter("polygon_intersecting_line.shp", ShpFiles.Read("polygon intersecting line"));
             m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
 
             // Act.
-            m_Reader.ReadShapeAtOffset(ShpFiles.Read("polygon_intersecting_line").Length, factory);
+            m_Reader.ReadShapeAtOffset(ShpFiles.Read("polygon intersecting line").Length, factory);
         }
 
         [Test]
@@ -250,7 +250,7 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         {
             // Arrange.
             IGeometryFactory factory = new GeometryFactory();
-            m_TmpFile = new TempFileWriter("shape.shp", ShpFiles.Read("polygon_intersecting_line"));
+            m_TmpFile = new TempFileWriter("polygon_intersecting_line.shp", ShpFiles.Read("polygon intersecting line"));
             m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
 
             long[] shapeOffsets = { 100, 236 };
@@ -450,7 +450,7 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         {
             // Arrange.
             IGeometryFactory factory = new GeometryFactory();
-            m_TmpFile = new TempFileWriter("shape.shp", ShpFiles.Read("shape_PointZM"));
+            m_TmpFile = new TempFileWriter("shape_PointZM.shp", ShpFiles.Read("shape_PointZM"));
             m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
             double errorMargin = Math.Pow(10, -6);
 
@@ -473,7 +473,39 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
                 HelperMethods.AssertDoubleValuesEqual(currPoint.X, expectedValues[i, 0], errorMargin);
                 HelperMethods.AssertDoubleValuesEqual(currPoint.Y, expectedValues[i, 1], errorMargin);
                 HelperMethods.AssertDoubleValuesEqual(currPoint.Z, 0);
-                HelperMethods.AssertDoubleValuesEqual(currPoint.M, 0);
+                HelperMethods.AssertDoubleValuesEqual(currPoint.M, Double.NaN);
+            }
+        }
+
+        [Test]
+        public void ReadAllShapes_ReadPointZMWithMissingMValues_ShouldReturnCorrectValues()
+        {
+            // Arrange.
+            IGeometryFactory factory = new GeometryFactory();
+            m_TmpFile = new TempFileWriter("shape_PointZMWithMissingMValue.shp", ShpFiles.Read("shape_pointZM_MissingM values"));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
+            double errorMargin = Math.Pow(10, -6);
+
+            double[,] expectedValues = {{-11348202.6085706, 4503476.68482375},
+									    {-601708.888562033, 3537065.37906758},
+										{-7366588.02885523, -637831.461799072}};
+
+            // Act.
+            IEnumerable<IGeometry> shapes = m_Reader.ReadAllShapes(factory);
+
+            // Assert.
+            Assert.IsNotNull(shapes);
+            IGeometry[] shapesArr = shapes.ToArray();
+            Assert.AreEqual(shapesArr.Length, 3);
+
+            for (int i = 0; i < shapesArr.Length; i++)
+            {
+                Assert.IsInstanceOf<IPoint>(shapesArr[i]);
+                IPoint currPoint = shapesArr[i] as IPoint;
+                HelperMethods.AssertDoubleValuesEqual(currPoint.X, expectedValues[i, 0], errorMargin);
+                HelperMethods.AssertDoubleValuesEqual(currPoint.Y, expectedValues[i, 1], errorMargin);
+                HelperMethods.AssertDoubleValuesEqual(currPoint.Z, 0);
+                HelperMethods.AssertDoubleValuesEqual(currPoint.M, Double.NaN);
             }
         }
 
@@ -482,7 +514,7 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         {
             // Arrange.
             IGeometryFactory factory = new GeometryFactory();
-            m_TmpFile = new TempFileWriter("shape.shp", ShpFiles.Read("shape_pointM"));
+            m_TmpFile = new TempFileWriter("shape_pointM.shp", ShpFiles.Read("shape_pointM"));
             m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
 
             double[,] expectedValues = {{-133.606621226874, 66.8997078870497},
@@ -504,8 +536,8 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
                 IPoint currPoint = shapesArr[i] as IPoint;
                 HelperMethods.AssertDoubleValuesEqual(currPoint.X, expectedValues[i, 0]);
                 HelperMethods.AssertDoubleValuesEqual(currPoint.Y, expectedValues[i, 1]);
-                HelperMethods.AssertDoubleValuesEqual(currPoint.Z, 0);
-                HelperMethods.AssertDoubleValuesEqual(currPoint.M, 0);
+                HelperMethods.AssertDoubleValuesEqual(currPoint.Z, Double.NaN);
+                HelperMethods.AssertDoubleValuesEqual(currPoint.M, Double.NaN);
             }
         }
 
@@ -513,7 +545,7 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         public void ReadAllShapes_ReadUnifiedChecksMaterial_ShouldRead2ShapesAndCorrectValues()
         {
             // Arrange.
-            m_TmpFile = new TempFileWriter("shape.shp", ShpFiles.Read("UnifiedChecksMaterial"));
+            m_TmpFile = new TempFileWriter("UnifiedChecksMaterial.shp", ShpFiles.Read("UnifiedChecksMaterial"));
             m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
             IGeometryFactory factory = new GeometryFactory();
 
@@ -690,7 +722,7 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             String folder = Path.Combine(basedir, format);
             String file = Path.ChangeExtension(filename, "shp");
             String path = Path.Combine(folder, file);
-            Assert.That(File.Exists(path), Is.True);
+            Assert.That(File.Exists(path), Is.True, "file not found: " + filename);
             return File.ReadAllBytes(path);
         }
     }

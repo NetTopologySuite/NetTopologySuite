@@ -29,7 +29,7 @@ namespace NetTopologySuite.IO.Handlers
         public override IGeometry Read(BigEndianBinaryReader file, int totalRecordLength, IGeometryFactory geometryFactory)
         {
             int totalRead = 0;
-            var type = (ShapeGeometryType)ReadInt32(file, totalRecordLength, ref totalRead);
+            ShapeGeometryType type = (ShapeGeometryType)ReadInt32(file, totalRecordLength, ref totalRead);
             //type = (ShapeGeometryType) EnumUtility.Parse(typeof (ShapeGeometryType), shapeTypeNum.ToString());
             if (type == ShapeGeometryType.NullShape)
                 return geometryFactory.CreatePoint((Coordinate)null);
@@ -37,19 +37,20 @@ namespace NetTopologySuite.IO.Handlers
             if (type != ShapeType)
                 throw new ShapefileException(string.Format("Encountered a '{0}' instead of a  '{1}'", type, ShapeType));
 
-            var buffer = new CoordinateBuffer(1, NoDataBorderValue, true);
-            var precisionModel = geometryFactory.PrecisionModel;
+            CoordinateBuffer buffer = new CoordinateBuffer(1, NoDataBorderValue, true);
+            IPrecisionModel precisionModel = geometryFactory.PrecisionModel;
 
-            var x = precisionModel.MakePrecise(ReadDouble(file, totalRecordLength, ref totalRead));
-            var y = precisionModel.MakePrecise(ReadDouble(file, totalRecordLength, ref totalRead));
+            double x = precisionModel.MakePrecise(ReadDouble(file, totalRecordLength, ref totalRead));
+            double y = precisionModel.MakePrecise(ReadDouble(file, totalRecordLength, ref totalRead));
 
             double? z = null, m = null;
             
             // Trond Benum: Let's read optional Z and M values                                
-            if (HasZValue())
+            if (HasZValue() && totalRead < totalRecordLength)
                 z = ReadDouble(file, totalRecordLength, ref totalRead);
 
-            if (HasMValue() || HasZValue())
+            if ((HasMValue() || HasZValue()) &&
+                (totalRead < totalRecordLength))
                 m = ReadDouble(file, totalRecordLength, ref totalRead);
 
             buffer.AddCoordinate(x, y, z, m);
@@ -66,8 +67,8 @@ namespace NetTopologySuite.IO.Handlers
         {
             writer.Write((int)ShapeType);
 
-            var point = (IPoint) geometry;
-            var seq = point.CoordinateSequence;
+            IPoint point = (IPoint) geometry;
+            ICoordinateSequence seq = point.CoordinateSequence;
 
             writer.Write(seq.GetOrdinate(0, Ordinate.X));
             writer.Write(seq.GetOrdinate(0, Ordinate.Y));

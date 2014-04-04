@@ -87,7 +87,9 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 		{
 			ThrowIfDisposed();
 
-			return m_ShapeHandler.ReadMBRs(ShapeReaderStream);
+            FileStream stream = new FileStream(m_ShapeFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            BigEndianBinaryReader NewReader = new BigEndianBinaryReader(stream);
+            return m_ShapeHandler.ReadMBRs(NewReader);
 		}
 
 		public IEnumerable<IGeometry> ReadAllShapes(IGeometryFactory geoFactory)
@@ -127,6 +129,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 		/// <returns></returns>
 		public IGeometry ReadShapeAtOffset(long shapeOffset, IGeometryFactory geoFactory)
 		{
+            IGeometry currGeomtry = null;
 			ThrowIfDisposed();
 
 			if (shapeOffset < HEADER_LENGTH || shapeOffset >= ShapeReaderStream.BaseStream.Length)
@@ -134,12 +137,15 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 				throw new IndexOutOfRangeException("Shape offset cannot be lower than header length (100) or higher than shape file size");
 			}
 
-			// Skip to shape size location in file.
-			ShapeReaderStream.BaseStream.Seek(shapeOffset + 4, SeekOrigin.Begin);
+            lock (ShapeReaderStream)
+            {
+                // Skip to shape size location in file.
+                ShapeReaderStream.BaseStream.Seek(shapeOffset + 4, SeekOrigin.Begin);
 
-			int currShapeLengthInWords = ShapeReaderStream.ReadInt32BE();
+                int currShapeLengthInWords = ShapeReaderStream.ReadInt32BE();
 
-			IGeometry currGeomtry = m_ShapeHandler.Read(ShapeReaderStream, currShapeLengthInWords, geoFactory);
+                currGeomtry = m_ShapeHandler.Read(ShapeReaderStream, currShapeLengthInWords, geoFactory); 
+            }
 
 			return currGeomtry;
 		}

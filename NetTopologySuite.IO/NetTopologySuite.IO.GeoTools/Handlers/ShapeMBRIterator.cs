@@ -16,13 +16,22 @@ namespace NetTopologySuite.IO.Handlers
             Reset();
         }
 
+        ~ShapeMBRIterator()
+        {
+            m_Reader.Close();
+        }
+
         public MBRInfo Current
         {
             get;
             set;
         }
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+            m_Reader.Close();
+            GC.SuppressFinalize(this);
+        }
 
         object IEnumerator.Current
         {
