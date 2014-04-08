@@ -22,11 +22,11 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             objects = new
             {
                 aruba = new
-                        {
-                            type = "",
-                            arcs = new int[0][],
-                            id = ""
-                        }
+                {
+                    type = "",
+                    arcs = new int[0][],
+                    id = ""
+                }
             },
             arcs = new int[0][][]
         };
@@ -91,6 +91,7 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             Assert.That(geom, Is.Not.Null);            
             Assert.That(geom, Is.InstanceOf<IPolygon>());
             Assert.That(geom.IsValid, Is.True);
+            // tested here: http://www.openlayers.org/dev/examples/vector-formats.html
             Console.WriteLine(geom);
         }
     }

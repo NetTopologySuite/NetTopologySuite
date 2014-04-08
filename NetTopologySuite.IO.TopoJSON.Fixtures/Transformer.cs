@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
@@ -50,6 +51,19 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             return new Coordinate(x, y);
         }
 
+        public IGeometry Create(string type, int[] arcs)
+        {
+            switch (type)
+            {
+                case "LineString":
+                    return CreateLineString(arcs);
+
+                default:
+                    string s = string.Format("type unsupported: {0}", type);
+                    throw new NotSupportedException(s);
+            }
+        }
+
         public IGeometry Create(string type, int[][] arcs)
         {
             switch (type)
@@ -63,39 +77,51 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             }
         }
 
+        private IGeometry CreateLineString(int[] arcs)
+        {
+            Coordinate[] coords = InternalCreateLineString(arcs);
+            return _factory.CreateLineString(coords);
+            
+        }
+
         private IGeometry CreatePolygon(int[][] arcs)
         {
-            Coordinate[][] parts = InternalCreateLineString(arcs[0]);
-            if (parts.Length > 1)
-                throw new ArgumentException("only a single shell compoient expected");
-
-            ILinearRing shell = _factory.CreateLinearRing(parts[0]);
+            Coordinate[] cshell = InternalCreateLineString(arcs[0]);
+            ILinearRing shell = _factory.CreateLinearRing(cshell);
             ILinearRing[] holes = new ILinearRing[arcs.Length - 1];
             for (int i = 1; i < arcs.Length; i++)
             {
-                parts = InternalCreateLineString(arcs[i]);
-                if (parts.Length > 1)
-                    throw new ArgumentException("only a single hole component expected");
-                holes[i - 1] = _factory.CreateLinearRing(parts[0]);
+                Coordinate[] chole = InternalCreateLineString(arcs[i]);
+                holes[i - 1] = _factory.CreateLinearRing(chole);
             }
             return _factory.CreatePolygon(shell, holes);
         }
 
-        private Coordinate[][] InternalCreateLineString(int[] arcs)
+        private Coordinate[] InternalCreateLineString(int[] arcs)
         {
-            Coordinate[][] list = new Coordinate[arcs.Length][];
+            List<Coordinate> list = new List<Coordinate>();
             for (int i = 0; i < arcs.Length; i++)
             {
                 int el = arcs[i];
-                Coordinate[] arr = _arcs[Math.Abs(el)];
+                Coordinate[] coords = _arcs[Math.Abs(el)];
                 if (el < 0)
-                    arr = Reversed(arr);
-                list[i] = arr;
+                {
+                    /*
+                     * https://github.com/topojson/topojson-specification#214-arc-indexes
+                     * A negative arc index indicates that the arc 
+                     * at the ones’ complement of the index must be reversed 
+                     * to reconstruct the geometry: 
+                     *   -1 refers to the reversed first arc, 
+                     *   -2 refers to the reversed second arc, and so on.
+                     */
+                    coords = ReverseToCopy(coords);
+                }                
+                list.AddRange(coords);
             }
-            return list;
+            return list.ToArray();
         }
 
-        private static Coordinate[] Reversed(Coordinate[] arr)
+        private static Coordinate[] ReverseToCopy(Coordinate[] arr)
         {
             int len = arr.Length;
             Coordinate[] clone = new Coordinate[len];
