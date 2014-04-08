@@ -86,16 +86,22 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             Coordinate[][] list = new Coordinate[arcs.Length][];
             for (int i = 0; i < arcs.Length; i++)
             {
-                if (arcs[i] < 0)
-                    throw new NotImplementedException("TODO: reverse");
-                list[i] = _arcs[arcs[i]];
+                int el = arcs[i];
+                Coordinate[] arr = _arcs[Math.Abs(el)];
+                if (el < 0)
+                    arr = Reversed(arr);
+                list[i] = arr;
             }
             return list;
         }
 
-        private ILinearRing Ring(Coordinate[] coords)
+        private static Coordinate[] Reversed(Coordinate[] arr)
         {
-            return _factory.CreateLinearRing(coords);
+            int len = arr.Length;
+            Coordinate[] clone = new Coordinate[len];
+            for (int j = 0; j < len - 1; j++)
+                clone[len - j - 1] = arr[j];
+            return clone;
         }
     }
 }
