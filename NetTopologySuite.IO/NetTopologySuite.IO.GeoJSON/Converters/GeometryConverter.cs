@@ -96,10 +96,10 @@ namespace NetTopologySuite.IO.Converters
         {
             reader.Read();
             if (!(reader.TokenType == JsonToken.PropertyName && (string) reader.Value == "type"))
-                throw new ArgumentException("invalid tpkentype: " + reader.TokenType);
+                throw new ArgumentException("invalid tokentype: " + reader.TokenType);
             reader.Read();
             if (reader.TokenType != JsonToken.String)
-                throw new ArgumentException("invalid tpkentype: " + reader.TokenType);
+                throw new ArgumentException("invalid tokentype: " + reader.TokenType);
             GeoJsonObjectType geometryType = (GeoJsonObjectType)Enum.Parse(typeof(GeoJsonObjectType), (string)reader.Value);
             switch (geometryType)
             {
