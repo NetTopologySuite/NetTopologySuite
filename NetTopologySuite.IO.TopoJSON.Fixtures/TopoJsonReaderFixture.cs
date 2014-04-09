@@ -1,5 +1,6 @@
 ﻿using System;
 using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -11,87 +12,78 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
     [TestFixture]
     public class TopoJsonReaderFixture
     {
-        private static readonly dynamic TopoDef = new
-        {
-            type = "",
-            transform = new
-            {
-                scale = new double[] { },
-                translate = new double[] { }
-            },
-            objects = new
-            {
-                aruba = new
-                {
-                    type = "",
-                    arcs = new int[0][],
-                    id = ""
-                }
-            },
-            arcs = new int[0][][]
-        };
+        private static readonly IGeometryFactory Factory = GeometryFactory.Fixed;
 
-        // topoJson sample from https://github.com/mbostock/topojson/wiki/Introduction
-        private const string TopoSample = @"
-{
-  ""type"": ""Topology"",
-  ""transform"": {
-    ""scale"": [0.036003600360036005, 0.017361589674592462],
-    ""translate"": [-180, -89.99892578124998]
-  },
-  ""objects"": {
-    ""aruba"": {
-      ""type"": ""Polygon"",
-      ""arcs"": [[0]],
-      ""id"": 533
-    }
-  },
-  ""arcs"": [
-    [[3058, 5901], [0, -2], [-2, 1], [-1, 3], [-2, 3], [0, 3], [1, 1], [1, -3], [2, -5], [1, -1]]
-  ]
-}
-";
-
-        private static dynamic TryCreateReferenceObject()
+        [Test]
+        public void read_reference_data()
         {
-            dynamic obj = JsonConvert.DeserializeAnonymousType(TopoSample, TopoDef);
+            dynamic obj = JsonConvert.DeserializeAnonymousType(TopoData.ReferenceData, TopoData.ReferenceDef);
             Assert.That(obj, Is.Not.Null);
-            Assert.That(obj.type, Is.Not.Null);
-            Assert.That(obj.type, Is.EqualTo("Topology"));
-            Assert.That(obj.transform, Is.Not.Null);
-            Assert.That(obj.transform.scale, Is.Not.Null);
-            Assert.That(obj.transform.scale.Length, Is.EqualTo(2));
-            Assert.That(obj.transform.translate, Is.Not.Null);
-            Assert.That(obj.transform.translate.Length, Is.EqualTo(2));
-            Assert.That(obj.objects, Is.Not.Null);
-            Assert.That(obj.objects.aruba, Is.Not.Null);
-            Assert.That(obj.objects.aruba.type, Is.Not.Null);
-            Assert.That(obj.objects.aruba.type, Is.EqualTo("Polygon"));
-            Assert.That(obj.objects.aruba.arcs, Is.Not.Null);
-            Assert.That(obj.objects.aruba.arcs.Length, Is.EqualTo(1));
-            Assert.That(obj.objects.aruba.id, Is.Not.Null);
-            Assert.That(obj.objects.aruba.id, Is.EqualTo("533"));
-            Assert.That(obj.arcs, Is.Not.Null);
-            Assert.That(obj.arcs.Length, Is.EqualTo(1));
-            Assert.That(obj.arcs[0].Length, Is.EqualTo(10));
-            return obj;
+
+            Transformer transformer = new Transformer(obj.arcs, Factory);
+
+            dynamic example = obj.objects.example;
+            IGeometry geom = transformer.Create(example.type, example.geometries);
+            Assert.That(geom, Is.Not.Null);
+            Assert.That(geom, Is.InstanceOf<IGeometryCollection>());
+
+            IGeometryCollection coll = (IGeometryCollection)geom;
+            const string expected = "GEOMETRYCOLLECTION (POINT (102 0.5), LINESTRING (102 0, 103 1, 104 0, 105 1), POLYGON ((100 0, 100 1, 101 1, 101 0, 100 0)))";
+            Assert.That(coll.ToString(), Is.EqualTo(expected));
+
+            IGeometry g0 = coll.GetGeometryN(0);
+            Assert.That(g0, Is.Not.Null);
+            Assert.That(g0, Is.InstanceOf<IPoint>());
+
+            IGeometry g1 = coll.GetGeometryN(1);
+            Assert.That(g1, Is.Not.Null);
+            Assert.That(g1, Is.InstanceOf<ILineString>());
+
+            IGeometry g2 = coll.GetGeometryN(2);
+            Assert.That(g2, Is.Not.Null);
+            Assert.That(g2, Is.InstanceOf<IPolygon>());
         }
 
         [Test]
-        public void try_read_object()
+        public void read_quantized_data()
         {
-            dynamic refobj = TryCreateReferenceObject();
-            Assert.That(refobj, Is.Not.Null);
+            dynamic obj = JsonConvert.DeserializeAnonymousType(TopoData.QuantizedData, TopoData.QuantizedDef);
+            Assert.That(obj, Is.Not.Null);
+            Assert.That(obj.transform, Is.Not.Null);
+            Assert.That(obj.transform.scale, Is.Not.Null);
+            Assert.That(obj.transform.translate, Is.Not.Null);
 
-            Transform transform = new Transform(refobj.transform.scale, refobj.transform.translate);
-            Transformer transformer = new Transformer(transform, refobj.arcs);
+            Transform transform = new Transform(obj.transform.scale, obj.transform.translate);
+            Transformer transformer = new Transformer(transform, obj.arcs, Factory);
 
-            dynamic aruba = refobj.objects.aruba;
+            dynamic example = obj.objects.example;
+            IGeometry geom = transformer.Create(example.type, example.geometries);
+            Assert.That(geom, Is.Not.Null);
+            Assert.That(geom, Is.InstanceOf<IGeometryCollection>());
+
+            IGeometryCollection coll = (IGeometryCollection)geom;
+            const string expected = "GEOMETRYCOLLECTION (POINT (102 0.5), LINESTRING (102 0, 103 1, 104 0, 105 1), POLYGON ((100 0, 100 1, 101 1, 101 0, 100 0)))";
+            Assert.That(coll.ToString(), Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void read_aruba_polygon()
+        {
+            dynamic obj = JsonConvert.DeserializeAnonymousType(TopoData.ArubaData, TopoData.ArubaDef);
+            Assert.That(obj, Is.Not.Null);
+            Assert.That(obj.transform, Is.Not.Null);
+            Assert.That(obj.transform.scale, Is.Not.Null);
+            Assert.That(obj.transform.translate, Is.Not.Null);
+
+            Transform transform = new Transform(obj.transform.scale, obj.transform.translate);
+            Transformer transformer = new Transformer(transform, obj.arcs, Factory);
+
+            dynamic aruba = obj.objects.aruba;
             IGeometry geom = transformer.Create(aruba.type, aruba.arcs);
-            Assert.That(geom, Is.Not.Null);            
+            Assert.That(geom, Is.Not.Null);
             Assert.That(geom, Is.InstanceOf<IPolygon>());
             Assert.That(geom.IsValid, Is.True);
-            // tested here: http://www.openlayers.org/dev/examples/vector-formats.html
+            // test here: http://www.openlayers.org/dev/examples/vector-formats.html
             Console.WriteLine(geom);
         }
     }

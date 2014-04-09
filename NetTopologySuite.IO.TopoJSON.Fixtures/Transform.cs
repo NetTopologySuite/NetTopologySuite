@@ -1,14 +1,31 @@
-﻿namespace NetTopologySuite.IO.TopoJSON.Fixtures
+﻿using System;
+
+namespace NetTopologySuite.IO.TopoJSON.Fixtures
 {
     public class Transform
     {
+        private static readonly double[] NoScale = { 1, 1 };
+        private static readonly double[] NoTranslate = { 0, 0 };
+
         private readonly double[] _scale;
         private readonly double[] _translate;
 
+        public Transform() : this(NoScale, NoTranslate) { }
+
         public Transform(double[] scale, double[] translate)
         {
-            this._scale = scale;
-            this._translate = translate;
+            if (scale == null)
+                throw new ArgumentNullException("scale");
+            if (translate == null)
+                throw new ArgumentNullException("translate");
+
+            _scale = scale;
+            _translate = translate;
+        }
+
+        public bool Quantized
+        {
+            get { return Scale != NoScale && Translate != NoTranslate; }
         }
 
         public double[] Scale
