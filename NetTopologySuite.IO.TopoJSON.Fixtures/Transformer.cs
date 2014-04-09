@@ -12,7 +12,7 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
 
         private readonly IGeometryFactory _factory;
         private readonly Transform _transform;
-        private readonly Coordinate[][] _arcs;        
+        private readonly Coordinate[][] _arcs;
 
         public Transformer(int[][][] arcs) :
             this(arcs, DefaultFactory) { }
@@ -57,7 +57,7 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
                         prev[1] += pt[1];
                         conv[j] = ConvertPoint(prev);
                     }
-                    else conv[j] = ConvertPoint(pt);                    
+                    else conv[j] = ConvertPoint(pt);
                 }
                 list[i] = conv;
             }
@@ -97,13 +97,30 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
                     data = FixedData<double>(data);
                     return CreatePoint((double[])data);
 
+                case "MultiPoint":
+                    if (_transform.Quantized)
+                    {
+                        data = FixedData<int[]>(data);
+                        return CreateMultiPoint((int[][])data);
+                    }
+                    data = FixedData<double[]>(data);
+                    return CreateMultiPoint((double[][])data);
+
                 case "LineString":
                     data = FixedData<int>(data);
                     return CreateLineString((int[])data);
 
+                case "MultiLineString":
+                    data = FixedData<int[]>(data);
+                    return CreateMultiLineString((int[][])data);
+
                 case "Polygon":
                     data = FixedData<int[]>(data);
                     return CreatePolygon((int[][])data);
+
+                case "MultiPolygon":
+                    data = FixedData<int[][]>(data);
+                    return CreateMultiPolygon((int[][][])data);
 
                 case "GeometryCollection":
                     data = FixedData<object>(data);
@@ -127,9 +144,28 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             {
                 if (jitem is JArray)
                 {
-                    // NOTE: nested arrays are in fact always integers!
-                    arr[i++] = (T)FixedData<int>(jitem);
-                    continue;
+                    // WARNING: shitty code here!
+                    Type type = typeof(T).GetElementType();
+                    if (type == typeof (int))
+                    {
+                        // default arcs
+                        arr[i++] = (T) FixedData<int>(jitem);
+                        continue;
+                    }
+                    if (type == typeof (int[]))
+                    {
+                        // multipolygon inner arcs
+                        arr[i++] = (T) FixedData<int[]>(jitem);
+                        continue;
+                    }
+                    if (type == typeof (double))
+                    {
+
+                        // points/multipoints without translate
+                        arr[i++] = (T) FixedData<double>(jitem);
+                        continue;
+                    }
+                    throw new ArgumentOutOfRangeException("unhandled type: " + type);                    
                 }
 
                 T value = jitem.Value<T>();
@@ -138,18 +174,93 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             return arr;
         }
 
-        private IGeometry CreatePoint(double[] pt)
+        // points as integers WITH transform
+        private IGeometry CreatePoint(int[] data)
         {
-            Coordinate coordinate = ConvertPoint(pt);
+            Coordinate coordinate = ConvertPoint(data);
             return _factory.CreatePoint(coordinate);
         }
 
-        private Coordinate[] InternalCreateLineString(int[] arcs)
+        // points as doubles WITHOUT transform
+        private IGeometry CreatePoint(double[] data)
+        {
+            Coordinate coordinate = ConvertPoint(data);
+            return _factory.CreatePoint(coordinate);
+        }
+
+        // multipoints as integers WITH transform
+        private IGeometry CreateMultiPoint(int[][] data)
+        {
+            IPoint[] list = new IPoint[data.Length];
+            for (int i = 0; i < data.Length; i++)
+                list[i] = (IPoint)CreatePoint(data[i]);
+            return _factory.CreateMultiPoint(list);
+        }
+
+        // multipoints as doubles WITHOUT transform
+        private IGeometry CreateMultiPoint(double[][] data)
+        {
+            IPoint[] list = new IPoint[data.Length];
+            for (int i = 0; i < data.Length; i++)
+                list[i] = (IPoint)CreatePoint(data[i]);
+            return _factory.CreateMultiPoint(list);
+        }
+
+        private IGeometry CreateLineString(int[] data)
+        {
+            Coordinate[] coords = InternalCreateLineString(data);
+            return _factory.CreateLineString(coords);
+        }
+
+        private IGeometry CreateMultiLineString(int[][] data)
+        {
+            ILineString[] list = new ILineString[data.Length];
+            for (int i = 0; i < data.Length; i++)
+                list[i] = (ILineString)CreateLineString(data[i]);
+            return _factory.CreateMultiLineString(list);
+        }
+
+        private IGeometry CreatePolygon(int[][] data)
+        {
+            Coordinate[] cshell = InternalCreateLineString(data[0]);
+            ILinearRing shell = _factory.CreateLinearRing(cshell);
+            ILinearRing[] holes = new ILinearRing[data.Length - 1];
+            for (int i = 1; i < data.Length; i++)
+            {
+                Coordinate[] chole = InternalCreateLineString(data[i]);
+                holes[i - 1] = _factory.CreateLinearRing(chole);
+            }
+            return _factory.CreatePolygon(shell, holes);
+        }
+
+        private IGeometry CreateMultiPolygon(int[][][] data)
+        {
+            IPolygon[] list = new IPolygon[data.Length];
+            for (int i = 0; i < data.Length; i++)
+                list[i] = (IPolygon)CreatePolygon(data[i]);
+            return _factory.CreateMultiPolygon(list);
+        }
+
+        private IGeometry CreateGeometryCollection(object[] data)
+        {
+            IGeometry[] geometries = new IGeometry[data.Length];
+            for (int i = 0; i < data.Length; i++)
+            {
+                dynamic component = data[i];
+                string componentType = component.type;
+                bool asPoint = String.Equals(componentType, "Point") || String.Equals(componentType, "MultiPoint");
+                dynamic val = asPoint ? component.coordinates : component.arcs;
+                geometries[i] = Create(componentType, val);
+            }
+            return _factory.CreateGeometryCollection(geometries);
+        }
+
+        private Coordinate[] InternalCreateLineString(int[] data)
         {
             List<Coordinate> list = new List<Coordinate>();
-            for (int i = 0; i < arcs.Length; i++)
+            for (int i = 0; i < data.Length; i++)
             {
-                int el = arcs[i];
+                int el = data[i];
                 Coordinate[] coords;
                 if (el < 0)
                 {
@@ -169,39 +280,6 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
                 list.AddRange(coords);
             }
             return list.ToArray();
-        }
-
-        private IGeometry CreateLineString(int[] arcs)
-        {
-            Coordinate[] coords = InternalCreateLineString(arcs);
-            return _factory.CreateLineString(coords);
-        }
-
-        private IGeometry CreatePolygon(int[][] arcs)
-        {
-            Coordinate[] cshell = InternalCreateLineString(arcs[0]);
-            ILinearRing shell = _factory.CreateLinearRing(cshell);
-            ILinearRing[] holes = new ILinearRing[arcs.Length - 1];
-            for (int i = 1; i < arcs.Length; i++)
-            {
-                Coordinate[] chole = InternalCreateLineString(arcs[i]);
-                holes[i - 1] = _factory.CreateLinearRing(chole);
-            }
-            return _factory.CreatePolygon(shell, holes);
-        }
-
-        private IGeometry CreateGeometryCollection(object[] data)
-        {
-            IGeometry[] geometries = new IGeometry[data.Length];
-            for (int i = 0; i < data.Length; i++)
-            {
-                dynamic component = data[i];
-                string componentType = component.type;
-                bool isPoint = String.Equals(componentType, "Point");
-                dynamic val = isPoint ? component.coordinates : component.arcs;
-                geometries[i] = Create(componentType, val);
-            }
-            return _factory.CreateGeometryCollection(geometries);
         }
 
         private static Coordinate[] MakeCopyReversed(Coordinate[] arr)
