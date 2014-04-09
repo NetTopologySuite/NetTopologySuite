@@ -20,11 +20,11 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             dynamic obj = JsonConvert.DeserializeAnonymousType(TopoData.ReferenceData, TopoData.ReferenceDef);
             Assert.That(obj, Is.Not.Null);
 
-            Transformer transformer = new Transformer(obj.arcs, Factory);
+            ITransformer transformer = new Transformer(obj.arcs, Factory);
 
             dynamic data = obj.objects.example;
             Assert.That(data, Is.Not.Null);
-            IGeometry geom = transformer.Create(data.type, data.geometries);
+            IGeometry geom = transformer.Create(data);
             Assert.That(geom, Is.Not.Null);
             Assert.That(geom, Is.InstanceOf<IGeometryCollection>());
 
@@ -51,11 +51,11 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             dynamic obj = JsonConvert.DeserializeAnonymousType(TopoData.MultiReferenceData, TopoData.MultiReferenceDef);
             Assert.That(obj, Is.Not.Null);
 
-            Transformer transformer = new Transformer(obj.arcs, Factory);
+            ITransformer transformer = new Transformer(obj.arcs, Factory);
 
             dynamic data = obj.objects.example;
             Assert.That(data, Is.Not.Null);
-            IGeometry geom = transformer.Create(data.type, data.geometries);
+            IGeometry geom = transformer.Create(data);
             Assert.That(geom, Is.Not.Null);
             Assert.That(geom, Is.InstanceOf<IGeometryCollection>());
 
@@ -85,12 +85,12 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             Assert.That(obj.transform.scale, Is.Not.Null);
             Assert.That(obj.transform.translate, Is.Not.Null);
 
-            Transform transform = new Transform(obj.transform.scale, obj.transform.translate);
-            Transformer transformer = new Transformer(transform, obj.arcs, Factory);
+            ITransform transform = new Transform(obj.transform.scale, obj.transform.translate);
+            ITransformer transformer = new Transformer(transform, obj.arcs, Factory);
 
             dynamic data = obj.objects.example;
             Assert.That(data, Is.Not.Null);
-            IGeometry geom = transformer.Create(data.type, data.geometries);
+            IGeometry geom = transformer.Create(data);
             Assert.That(geom, Is.Not.Null);
             Assert.That(geom, Is.InstanceOf<IGeometryCollection>());
 
@@ -120,12 +120,12 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             Assert.That(obj.transform.scale, Is.Not.Null);
             Assert.That(obj.transform.translate, Is.Not.Null);
 
-            Transform transform = new Transform(obj.transform.scale, obj.transform.translate);
-            Transformer transformer = new Transformer(transform, obj.arcs, Factory);
+            ITransform transform = new Transform(obj.transform.scale, obj.transform.translate);
+            ITransformer transformer = new Transformer(transform, obj.arcs, Factory);
 
             dynamic data = obj.objects.example;
             Assert.That(data, Is.Not.Null);
-            IGeometry geom = transformer.Create(data.type, data.geometries);
+            IGeometry geom = transformer.Create(data);
             Assert.That(geom, Is.Not.Null);
             Assert.That(geom, Is.InstanceOf<IGeometryCollection>());
 
@@ -155,12 +155,12 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             Assert.That(obj.transform.scale, Is.Not.Null);
             Assert.That(obj.transform.translate, Is.Not.Null);
 
-            Transform transform = new Transform(obj.transform.scale, obj.transform.translate);
-            Transformer transformer = new Transformer(transform, obj.arcs, Factory);
+            ITransform transform = new Transform(obj.transform.scale, obj.transform.translate);
+            ITransformer transformer = new Transformer(transform, obj.arcs, Factory);
 
             dynamic data = obj.objects.aruba;
             Assert.That(data, Is.Not.Null);
-            IGeometry geom = transformer.Create(data.type, data.arcs);
+            IGeometry geom = transformer.Create(data);
             Assert.That(geom, Is.Not.Null);
             Assert.That(geom, Is.InstanceOf<IPolygon>());
             Assert.That(geom.IsValid, Is.True);
@@ -177,12 +177,12 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             Assert.That(obj.transform.scale, Is.Not.Null);
             Assert.That(obj.transform.translate, Is.Not.Null);
 
-            Transform transform = new Transform(obj.transform.scale, obj.transform.translate);
-            Transformer transformer = new Transformer(transform, obj.arcs, Factory);
+            ITransform transform = new Transform(obj.transform.scale, obj.transform.translate);
+            ITransformer transformer = new Transformer(transform, obj.arcs, Factory);
 
             dynamic data = obj.objects.airports;
             Assert.That(data, Is.Not.Null);
-            IGeometry geom = transformer.Create(data.type, data.coordinates);
+            IGeometry geom = transformer.Create(data);
             Assert.That(geom, Is.Not.Null);
             Assert.That(geom, Is.InstanceOf<IMultiPoint>());
             // test here: http://www.openlayers.org/dev/examples/vector-formats.html
@@ -199,12 +199,12 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             Assert.That(obj.transform.scale, Is.Not.Null);
             Assert.That(obj.transform.translate, Is.Not.Null);
 
-            Transform transform = new Transform(obj.transform.scale, obj.transform.translate);
-            Transformer transformer = new Transformer(transform, obj.arcs, Factory);
+            ITransform transform = new Transform(obj.transform.scale, obj.transform.translate);
+            ITransformer transformer = new Transformer(transform, obj.arcs, Factory);
 
             dynamic data = obj.objects.counties;
             Assert.That(data, Is.Not.Null);
-            IGeometry geom = transformer.Create(data.type, data.geometries);
+            IGeometry geom = transformer.Create(data);
             Assert.That(geom, Is.Not.Null);
             Assert.That(geom, Is.InstanceOf<IGeometryCollection>());
             // test here: http://www.openlayers.org/dev/examples/vector-formats.html

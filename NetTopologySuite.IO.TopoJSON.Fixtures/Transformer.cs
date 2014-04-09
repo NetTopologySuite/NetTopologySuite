@@ -6,12 +6,17 @@ using Newtonsoft.Json.Linq;
 
 namespace NetTopologySuite.IO.TopoJSON.Fixtures
 {
-    public class Transformer
+    public interface ITransformer
+    {
+        IGeometry Create(dynamic data);
+    }
+
+    public class Transformer : ITransformer
     {
         private static readonly IGeometryFactory DefaultFactory = GeometryFactory.Default;
 
         private readonly IGeometryFactory _factory;
-        private readonly Transform _transform;
+        private readonly ITransform _transform;
         private readonly Coordinate[][] _arcs;
 
         public Transformer(int[][][] arcs) :
@@ -20,17 +25,16 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
         public Transformer(int[][][] arcs, IGeometryFactory factory) :
             this(new Transform(), arcs, factory) { }
 
-        public Transformer(Transform transform, int[][][] arcs) :
+        public Transformer(ITransform transform, int[][][] arcs) :
             this(transform, arcs, DefaultFactory) { }
 
-        public Transformer(Transform transform, int[][][] arcs, IGeometryFactory factory)
+        public Transformer(ITransform transform, int[][][] arcs, IGeometryFactory factory)
         {
             if (transform == null)
                 throw new ArgumentNullException("transform");
 
             _transform = transform;
             _arcs = BuildArcs(arcs);
-
             _factory = factory;
         }
 
@@ -84,7 +88,36 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             return c;
         }
 
-        public IGeometry Create(string type, object data)
+        public IGeometry Create(dynamic data)
+        {            
+            if (data == null)
+                throw new ArgumentNullException("data");
+            string type = data.type;
+            if (String.IsNullOrEmpty(type))
+                throw new ArgumentException("type undefined", "data");
+
+            switch (type)
+            {
+                case "Point":
+                case "MultiPoint":
+                    return Create(type, data.coordinates);
+
+                case "LineString":                    
+                case "MultiLineString":                    
+                case "Polygon":                    
+                case "MultiPolygon":
+                    return Create(type, data.arcs);
+
+                case "GeometryCollection":
+                    return Create(type, data.geometries);
+
+                default:
+                    string s = string.Format("type unsupported: {0}", type);
+                    throw new NotSupportedException(s);
+            }
+        }
+
+        private IGeometry Create(string type, object data)
         {
             if (String.IsNullOrEmpty(type))
                 throw new ArgumentNullException("type");

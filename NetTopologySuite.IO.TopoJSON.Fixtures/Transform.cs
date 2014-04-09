@@ -2,7 +2,14 @@
 
 namespace NetTopologySuite.IO.TopoJSON.Fixtures
 {
-    public class Transform
+    public interface ITransform
+    {
+        bool Quantized { get; }
+        double[] Scale { get; }
+        double[] Translate { get; }
+    }
+
+    public class Transform : ITransform
     {
         private static readonly double[] NoScale = { 1, 1 };
         private static readonly double[] NoTranslate = { 0, 0 };
