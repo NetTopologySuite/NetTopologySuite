@@ -19,16 +19,16 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
         private readonly ITransform _transform;
         private readonly Coordinate[][] _arcs;
 
-        public Transformer(int[][][] arcs) :
+        public Transformer(double[][][] arcs) :
             this(arcs, DefaultFactory) { }
 
-        public Transformer(int[][][] arcs, IGeometryFactory factory) :
+        public Transformer(double[][][] arcs, IGeometryFactory factory) :
             this(new Transform(), arcs, factory) { }
 
-        public Transformer(ITransform transform, int[][][] arcs) :
+        public Transformer(ITransform transform, double[][][] arcs) :
             this(transform, arcs, DefaultFactory) { }
 
-        public Transformer(ITransform transform, int[][][] arcs, IGeometryFactory factory)
+        public Transformer(ITransform transform, double[][][] arcs, IGeometryFactory factory)
         {
             if (transform == null)
                 throw new ArgumentNullException("transform");
@@ -38,7 +38,7 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             _factory = factory;
         }
 
-        private Coordinate[][] BuildArcs(int[][][] arcs)
+        private Coordinate[][] BuildArcs(double[][][] arcs)
         {
             Coordinate[][] list = new Coordinate[arcs.Length][];
             for (int i = 0; i < arcs.Length; i++)
@@ -48,12 +48,12 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
                  * If a topology is quantized, the positions of each arc 
                  * in the topology which are quantized must be delta-encoded. 
                  */
-                int[] prev = { 0, 0 };
-                int[][] arc = arcs[i];
+                double[] prev = { 0, 0 };
+                double[][] arc = arcs[i];
                 Coordinate[] conv = new Coordinate[arc.Length];
                 for (int j = 0; j < arc.Length; j++)
                 {
-                    int[] pt = arc[j];
+                    double[] pt = arc[j];
                     bool quantized = _transform.Quantized;
                     if (quantized)
                     {
@@ -75,16 +75,6 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             double x = pt[0] * scale[0] + translate[0];
             double y = pt[1] * scale[1] + translate[1];
             Coordinate c = new Coordinate(x, y);
-            return c;
-        }
-
-        private Coordinate ConvertPoint(int[] pt)
-        {
-            int len = pt.Length;
-            double[] conv = new double[len];
-            for (int i = 0; i < len; i++)
-                conv[i] = pt[i];
-            Coordinate c = ConvertPoint(conv);
             return c;
         }
 
@@ -131,11 +121,6 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
                     return CreatePoint((double[])data);
 
                 case "MultiPoint":
-                    if (_transform.Quantized)
-                    {
-                        data = FixedData<int[]>(data);
-                        return CreateMultiPoint((int[][])data);
-                    }
                     data = FixedData<double[]>(data);
                     return CreateMultiPoint((double[][])data);
 
@@ -193,7 +178,6 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
                     }
                     if (type == typeof (double))
                     {
-
                         // points/multipoints without translate
                         arr[i++] = (T) FixedData<double>(jitem);
                         continue;
@@ -207,30 +191,12 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             return arr;
         }
 
-        // points as integers WITH transform
-        private IGeometry CreatePoint(int[] data)
-        {
-            Coordinate coordinate = ConvertPoint(data);
-            return _factory.CreatePoint(coordinate);
-        }
-
-        // points as doubles WITHOUT transform
         private IGeometry CreatePoint(double[] data)
         {
             Coordinate coordinate = ConvertPoint(data);
             return _factory.CreatePoint(coordinate);
         }
 
-        // multipoints as integers WITH transform
-        private IGeometry CreateMultiPoint(int[][] data)
-        {
-            IPoint[] list = new IPoint[data.Length];
-            for (int i = 0; i < data.Length; i++)
-                list[i] = (IPoint)CreatePoint(data[i]);
-            return _factory.CreateMultiPoint(list);
-        }
-
-        // multipoints as doubles WITHOUT transform
         private IGeometry CreateMultiPoint(double[][] data)
         {
             IPoint[] list = new IPoint[data.Length];

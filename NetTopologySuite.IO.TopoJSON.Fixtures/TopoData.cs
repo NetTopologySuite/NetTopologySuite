@@ -78,7 +78,7 @@
                     }
                 }
             },
-            arcs = new int[0][][]
+            arcs = new double[0][][]
         };
 
         internal const string MultiReferenceData = @"{
@@ -150,7 +150,7 @@
                     }
                 }
             },
-            arcs = new int[0][][]
+            arcs = new double[0][][]
         };
 
         internal const string QuantizedData = @"{
@@ -242,7 +242,7 @@
                     }
                 }
             },
-            arcs = new int[0][][]
+            arcs = new double[0][][]
         };
 
         internal const string MultiQuantizedData = @"{
@@ -334,7 +334,7 @@
                     }
                 }
             },
-            arcs = new int[0][][]
+            arcs = new double[0][][]
         };
 
         internal const string ArubaData = @"{
@@ -372,7 +372,7 @@
                     id = ""
                 }
             },
-            arcs = new int[0][][]
+            arcs = new double[0][][]
         };
 
         internal const string AirportsData = @"{
@@ -403,10 +403,10 @@
                 airports = new
                 {
                     type = "",
-                    coordinates = new int[0][]
+                    coordinates = new double[0][]
                 }
             },
-            arcs = new int[0][][]
+            arcs = new double[0][][]
         };
 
         internal const string CountiesData = @"{
@@ -475,7 +475,7 @@
                     }
                 }
             },
-            arcs = new int[0][][]
+            arcs = new double[0][][]
         };
     }
 }
