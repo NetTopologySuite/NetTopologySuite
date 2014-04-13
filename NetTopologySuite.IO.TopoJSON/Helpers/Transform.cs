@@ -1,14 +1,7 @@
 ﻿using System;
 
-namespace NetTopologySuite.IO.TopoJSON.Fixtures
+namespace NetTopologySuite.IO.TopoJSON.Helpers
 {
-    public interface ITransform
-    {
-        bool Quantized { get; }
-        double[] Scale { get; }
-        double[] Translate { get; }
-    }
-
     public class Transform : ITransform
     {
         private static readonly double[] NoScale = { 1, 1 };

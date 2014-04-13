@@ -23,9 +23,7 @@
                         ""type"": ""Polygon"",
                         ""properties"": {
                             ""prop0"": ""value0"",
-                            ""prop1"": {
-                                ""this"": ""that""
-                            }
+                            ""prop1"": ""value1""
                         },
                         ""arcs"": [[-2]]
                     },

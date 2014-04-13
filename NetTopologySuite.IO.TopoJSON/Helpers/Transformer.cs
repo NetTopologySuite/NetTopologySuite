@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
+using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
-using Newtonsoft.Json.Linq;
+using NetTopologySuite.IO.TopoJSON.Geometries;
 
-namespace NetTopologySuite.IO.TopoJSON.Fixtures
+namespace NetTopologySuite.IO.TopoJSON.Helpers
 {
-    public interface ITransformer
-    {
-        IGeometry Create(dynamic data);
-    }
-
     public class Transformer : ITransformer
     {
         private static readonly IGeometryFactory DefaultFactory = GeometryFactory.Default;
@@ -78,33 +74,47 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             return c;
         }
 
-        public IGeometry Create(dynamic data)
-        {            
+        public FeatureCollection Create(TopoObject data)
+        {
             if (data == null)
                 throw new ArgumentNullException("data");
-            string type = data.type;
+            string type = data.Type;
             if (String.IsNullOrEmpty(type))
                 throw new ArgumentException("type undefined", "data");
 
+            IGeometry geometry;
             switch (type)
             {
                 case "Point":
+                    geometry = Create(type, ((TopoPoint)data).Coordinates);
+                    break;
                 case "MultiPoint":
-                    return Create(type, data.coordinates);
-
-                case "LineString":                    
-                case "MultiLineString":                    
-                case "Polygon":                    
+                    geometry = Create(type, ((TopoMultiPoint)data).Coordinates);
+                    break;
+                case "LineString":
+                    geometry = Create(type, ((TopoLineString)data).Arcs);
+                    break;
+                case "MultiLineString":
+                    geometry = Create(type, ((TopoMultiLineString)data).Arcs);
+                    break;
+                case "Polygon":
+                    geometry = Create(type, ((TopoPolygon)data).Arcs);
+                    break;
                 case "MultiPolygon":
-                    return Create(type, data.arcs);
-
+                    geometry = Create(type, ((TopoMultiPolygon)data).Arcs);
+                    break;
                 case "GeometryCollection":
-                    return Create(type, data.geometries);
+                    return CreateGeometryCollection(((TopoGeometryCollection)data).Geometries);
 
                 default:
                     string s = string.Format("type unsupported: {0}", type);
                     throw new NotSupportedException(s);
             }
+
+            Feature feature = new Feature(geometry, data.Properties);
+            FeatureCollection collection = new FeatureCollection();
+            collection.Add(feature);
+            return collection;
         }
 
         private IGeometry Create(string type, object data)
@@ -117,78 +127,27 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             switch (type)
             {
                 case "Point":
-                    data = FixedData<double>(data);
                     return CreatePoint((double[])data);
 
                 case "MultiPoint":
-                    data = FixedData<double[]>(data);
                     return CreateMultiPoint((double[][])data);
 
                 case "LineString":
-                    data = FixedData<int>(data);
                     return CreateLineString((int[])data);
 
                 case "MultiLineString":
-                    data = FixedData<int[]>(data);
                     return CreateMultiLineString((int[][])data);
 
                 case "Polygon":
-                    data = FixedData<int[]>(data);
                     return CreatePolygon((int[][])data);
 
                 case "MultiPolygon":
-                    data = FixedData<int[][]>(data);
                     return CreateMultiPolygon((int[][][])data);
-
-                case "GeometryCollection":
-                    data = FixedData<object>(data);
-                    return CreateGeometryCollection((object[])data);
 
                 default:
                     string s = string.Format("type unsupported: {0}", type);
                     throw new NotSupportedException(s);
             }
-        }
-
-        private static object FixedData<T>(object data)
-        {
-            if (!(data is JArray))
-                return data;
-
-            JArray jarr = (JArray)data;
-            T[] arr = new T[jarr.Count];
-            int i = 0;
-            foreach (JToken jitem in jarr)
-            {
-                if (jitem is JArray)
-                {
-                    // WARNING: shitty code here!
-                    Type type = typeof(T).GetElementType();
-                    if (type == typeof (int))
-                    {
-                        // default arcs
-                        arr[i++] = (T) FixedData<int>(jitem);
-                        continue;
-                    }
-                    if (type == typeof (int[]))
-                    {
-                        // multipolygon inner arcs
-                        arr[i++] = (T) FixedData<int[]>(jitem);
-                        continue;
-                    }
-                    if (type == typeof (double))
-                    {
-                        // points/multipoints without translate
-                        arr[i++] = (T) FixedData<double>(jitem);
-                        continue;
-                    }
-                    throw new ArgumentOutOfRangeException("unhandled type: " + type);                    
-                }
-
-                T value = jitem.Value<T>();
-                arr[i++] = value;
-            }
-            return arr;
         }
 
         private IGeometry CreatePoint(double[] data)
@@ -240,18 +199,19 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             return _factory.CreateMultiPolygon(list);
         }
 
-        private IGeometry CreateGeometryCollection(object[] data)
+        private FeatureCollection CreateGeometryCollection(TopoObject[] data)
         {
-            IGeometry[] geometries = new IGeometry[data.Length];
+            IFeature[] features = new IFeature[data.Length];
             for (int i = 0; i < data.Length; i++)
             {
-                dynamic component = data[i];
-                string componentType = component.type;
-                bool asPoint = String.Equals(componentType, "Point") || String.Equals(componentType, "MultiPoint");
-                dynamic val = asPoint ? component.coordinates : component.arcs;
-                geometries[i] = Create(componentType, val);
+                TopoObject component = data[i];
+                FeatureCollection coll = Create(component);
+                features[i] = coll[0];
             }
-            return _factory.CreateGeometryCollection(geometries);
+            FeatureCollection collection = new FeatureCollection();
+            foreach (IFeature feature in features)
+                collection.Add(feature);
+            return collection;
         }
 
         private Coordinate[] InternalCreateLineString(int[] data)

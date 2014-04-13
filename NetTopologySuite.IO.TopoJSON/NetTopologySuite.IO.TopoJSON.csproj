@@ -7,7 +7,7 @@
     <ProjectGuid>{0E4430FB-E15B-447B-A21C-6481BC708DDE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetTopologySuite.IO</RootNamespace>
+    <RootNamespace>NetTopologySuite.IO.TopoJSON</RootNamespace>
     <AssemblyName>NetTopologySuite.IO.TopoJSON</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -42,9 +42,29 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters\TopoGeometryConverter.cs" />
+    <Compile Include="Builders\ITopoBuilder.cs" />
+    <Compile Include="Converters\ArcsConverter.cs" />
+    <Compile Include="Converters\FeatureCollectionConverter.cs" />
+    <Compile Include="Converters\ObjectsConverter.cs" />
+    <Compile Include="Converters\TopoObjectConverter.cs" />
+    <Compile Include="Converters\TransformConverter.cs" />
+    <Compile Include="Geometries\TopoCurve.cs" />
+    <Compile Include="Geometries\TopoGeometryCollection.cs" />
+    <Compile Include="Geometries\TopoMultiLineString.cs" />
+    <Compile Include="Geometries\TopoMultiPoint.cs" />
+    <Compile Include="Geometries\TopoMultiPolygon.cs" />
+    <Compile Include="Geometries\TopoObject.cs" />
+    <Compile Include="Geometries\TopoLineString.cs" />
+    <Compile Include="Geometries\TopoPoint.cs" />
+    <Compile Include="Geometries\TopoPolygon.cs" />
+    <Compile Include="Helpers\ITransform.cs" />
+    <Compile Include="Helpers\ITransformer.cs" />
+    <Compile Include="Helpers\Transformer.cs" />
+    <Compile Include="Helpers\Transform.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TopoJsonReader.cs" />
     <Compile Include="TopoJsonSerializer.cs" />
+    <Compile Include="Builders\TopoBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -53,6 +73,10 @@
     <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">
       <Project>{ffb69466-79de-466a-ada7-5c47c5c5ca3a}</Project>
       <Name>GeoAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoJSON\NetTopologySuite.IO.GeoJSON.csproj">
+      <Project>{1583f1f7-7e7d-42ee-99f9-e072453bce34}</Project>
+      <Name>NetTopologySuite.IO.GeoJSON</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
       <Project>{5770daa9-84e5-4770-af43-f6b815894368}</Project>
