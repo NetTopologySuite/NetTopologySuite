@@ -17,9 +17,9 @@ namespace NetTopologySuite.IO.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            if (writer == null) 
+            if (writer == null)
                 throw new ArgumentNullException("writer");
-            
+
             IAttributesTable attributes = value as IAttributesTable;
             if (attributes == null)
                 return;
@@ -32,9 +32,9 @@ namespace NetTopologySuite.IO.Converters
             {
                 writer.WritePropertyName(name);
                 object val = attributes[name];
-                serializer.Serialize(writer, val);                
+                serializer.Serialize(writer, val);
             }
-            writer.WriteEndObject(); 
+            writer.WriteEndObject();
         }
 
         /// <summary>
@@ -52,20 +52,34 @@ namespace NetTopologySuite.IO.Converters
             if (!(reader.TokenType == JsonToken.PropertyName && (string)reader.Value == "properties"))
                 throw new ArgumentException("Expected token 'properties' not found.");
             reader.Read();
+            object attributesTable = InternalReadJson(reader, serializer);
+            reader.Read();
+            return attributesTable;
+        }
+
+        private static object InternalReadJson(JsonReader reader, JsonSerializer serializer)
+        {
             if (reader.TokenType != JsonToken.StartObject)
                 throw new ArgumentException("Expected token '{' not found.");
             reader.Read();
             AttributesTable attributesTable = new AttributesTable();
             while (reader.TokenType == JsonToken.PropertyName)
             {
-                string attributeName = (string)reader.Value;
+                string attributeName = (string) reader.Value;
                 reader.Read();
-                string attributeValue = (string)reader.Value;
+                object attributeValue;
+                if (reader.TokenType == JsonToken.StartObject)
+                {
+                    // inner object
+                    attributeValue = InternalReadJson(reader, serializer);
+                }
+                else
+                {
+                    attributeValue = reader.Value;
+                }
                 reader.Read();
                 attributesTable.AddAttribute(attributeName, attributeValue);
-            }
-
-            reader.Read();
+            }            
             return attributesTable;
         }
 
@@ -76,7 +90,7 @@ namespace NetTopologySuite.IO.Converters
         /// <returns>
         ///   <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
         /// </returns>
-       public override bool CanConvert(Type objectType)
+        public override bool CanConvert(Type objectType)
         {
             return typeof(IAttributesTable).IsAssignableFrom(objectType);
         }

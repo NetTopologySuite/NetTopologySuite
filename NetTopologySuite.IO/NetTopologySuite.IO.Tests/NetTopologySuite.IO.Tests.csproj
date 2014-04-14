@@ -104,6 +104,8 @@
     <Compile Include="SpatiaLiteFixture.cs" />
     <Compile Include="SqlGeographyFixture.cs" />
     <Compile Include="SqlGeometryFixture.cs" />
+    <Compile Include="TopoJSON\TopoData.cs" />
+    <Compile Include="TopoJSON\TopoJsonReaderFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -152,6 +154,10 @@
     <ProjectReference Include="..\NetTopologySuite.IO.SqlServer2008\NetTopologySuite.IO.SqlServer2008.csproj">
       <Project>{8E6A486B-5418-4FE1-A14F-CF2F3B74D4E0}</Project>
       <Name>NetTopologySuite.IO.SqlServer2008</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO.TopoJSON\NetTopologySuite.IO.TopoJSON.csproj">
+      <Project>{0e4430fb-e15b-447b-a21c-6481bc708dde}</Project>
+      <Name>NetTopologySuite.IO.TopoJSON</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

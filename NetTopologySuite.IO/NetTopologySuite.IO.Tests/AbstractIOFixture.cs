@@ -1,15 +1,14 @@
-﻿using NetTopologySuite.Geometries.Implementation;
+﻿using System;
+using System.Configuration;
+using System.Diagnostics;
+using System.IO;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
+using NUnit.Framework;
 
 namespace NetTopologySuite.IO.Tests
 {
-    using System;
-    using System.Configuration;
-    using System.Diagnostics;
-    using System.IO;
-    using GeoAPI.Geometries;
-    using Geometries;
-    using NUnit.Framework;
-
     [TestFixture]
     public abstract class AbstractIOFixture
     {
@@ -34,8 +33,8 @@ namespace NetTopologySuite.IO.Tests
         {
             try
             {
-                this.CheckAppConfigPresent();
-                this.CreateTestStore();
+                CheckAppConfigPresent();
+                CreateTestStore();
             }
             catch (Exception ex)
             {
@@ -50,16 +49,16 @@ namespace NetTopologySuite.IO.Tests
         {
             string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "NetTopologySuite.IO.Tests.dll.config");
             if (!File.Exists(path))
-                this.CreateAppConfig();
-            this.UpdateAppConfig();
-            this.ReadAppConfig();
+                CreateAppConfig();
+            UpdateAppConfig();
+            ReadAppConfig();
         }
 
         private void UpdateAppConfig()
         {
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
-            var appSettings = config.AppSettings.Settings;
+            KeyValueConfigurationCollection appSettings = config.AppSettings.Settings;
             AddAppConfigSpecificItems(appSettings);
             config.Save(ConfigurationSaveMode.Full);
             ConfigurationManager.RefreshSection("appSettings");
@@ -89,20 +88,20 @@ namespace NetTopologySuite.IO.Tests
         private void ReadAppConfig()
         {
             AppSettingsReader asr = new AppSettingsReader();
-            this.SRID = (int)asr.GetValue("Srid", typeof(int));
-            var pm = (string) asr.GetValue("PrecisionModel", typeof (string));
+            SRID = (int)asr.GetValue("Srid", typeof(int));
+            string pm = (string) asr.GetValue("PrecisionModel", typeof (string));
             int scale;
-            this.PrecisionModel = int.TryParse(pm, out scale) 
+            PrecisionModel = int.TryParse(pm, out scale) 
                 ? new PrecisionModel(scale) 
                 : new PrecisionModel((PrecisionModels)Enum.Parse(typeof(PrecisionModels), pm));
-            this.MinX = (double)asr.GetValue("MinX", typeof(double));
-            this.MaxX = (double)asr.GetValue("MaxX", typeof(double));
-            this.MinY = (double)asr.GetValue("MinY", typeof(double));
-            this.MaxY = (double)asr.GetValue("MaxY", typeof(double));
+            MinX = (double)asr.GetValue("MinX", typeof(double));
+            MaxX = (double)asr.GetValue("MaxX", typeof(double));
+            MinY = (double)asr.GetValue("MinY", typeof(double));
+            MaxY = (double)asr.GetValue("MaxY", typeof(double));
             string ordinatesString = (string)asr.GetValue("Ordinates", typeof(string));
             Ordinates ordinates = (Ordinates)Enum.Parse(typeof(Ordinates), ordinatesString);
-            this.RandomGeometryHelper.Ordinates = ordinates;
-            this.ReadAppConfigInternal(asr);
+            RandomGeometryHelper.Ordinates = ordinates;
+            ReadAppConfigInternal(asr);
         }
 
         protected virtual void ReadAppConfigInternal(AppSettingsReader asr) { }
@@ -113,18 +112,18 @@ namespace NetTopologySuite.IO.Tests
         {
             get
             {
-                return this.RandomGeometryHelper.Factory.SRID;
+                return RandomGeometryHelper.Factory.SRID;
             }
             protected set
             {
-                var oldPM = new PrecisionModel();
-                if (this.RandomGeometryHelper != null)
-                    oldPM = (PrecisionModel)this.RandomGeometryHelper.Factory.PrecisionModel;
-                Debug.Assert(this.RandomGeometryHelper != null, "RandomGeometryHelper != null");
+                PrecisionModel oldPM = new PrecisionModel();
+                if (RandomGeometryHelper != null)
+                    oldPM = (PrecisionModel)RandomGeometryHelper.Factory.PrecisionModel;
+                Debug.Assert(RandomGeometryHelper != null, "RandomGeometryHelper != null");
                 if (RandomGeometryHelper.Factory is OgcCompliantGeometryFactory)
-                    this.RandomGeometryHelper.Factory = new OgcCompliantGeometryFactory(oldPM, value);
+                    RandomGeometryHelper.Factory = new OgcCompliantGeometryFactory(oldPM, value);
                 else
-                    this.RandomGeometryHelper.Factory = new GeometryFactory(oldPM, value);
+                    RandomGeometryHelper.Factory = new GeometryFactory(oldPM, value);
             }
         }
 
@@ -142,9 +141,9 @@ namespace NetTopologySuite.IO.Tests
                 if (value == PrecisionModel)
                     return;
 
-                var factory = RandomGeometryHelper.Factory;
-                var oldSrid = factory != null ? factory.SRID : 0;
-                var oldFactory = factory != null
+                IGeometryFactory factory = RandomGeometryHelper.Factory;
+                int oldSrid = factory != null ? factory.SRID : 0;
+                ICoordinateSequenceFactory oldFactory = factory != null
                                      ? factory.CoordinateSequenceFactory
                                      : CoordinateArraySequenceFactory.Instance;
                 
@@ -157,35 +156,35 @@ namespace NetTopologySuite.IO.Tests
 
         public double MinX
         {
-            get { return this.RandomGeometryHelper.MinX; }
-            protected set { this.RandomGeometryHelper.MinX = value; }
+            get { return RandomGeometryHelper.MinX; }
+            protected set { RandomGeometryHelper.MinX = value; }
         }
 
         public double MaxX
         {
-            get { return this.RandomGeometryHelper.MaxX; }
-            protected set { this.RandomGeometryHelper.MaxX = value; }
+            get { return RandomGeometryHelper.MaxX; }
+            protected set { RandomGeometryHelper.MaxX = value; }
         }
 
         public double MinY
         {
-            get { return this.RandomGeometryHelper.MinY; }
-            protected set { this.RandomGeometryHelper.MinY = value; }
+            get { return RandomGeometryHelper.MinY; }
+            protected set { RandomGeometryHelper.MinY = value; }
         }
 
         public double MaxY
         {
-            get { return this.RandomGeometryHelper.MaxY; }
-            protected set { this.RandomGeometryHelper.MaxY = value; }
+            get { return RandomGeometryHelper.MaxY; }
+            protected set { RandomGeometryHelper.MaxY = value; }
         }
 
         public Ordinates Ordinates
         {
-            get { return this.RandomGeometryHelper.Ordinates; }
+            get { return RandomGeometryHelper.Ordinates; }
             set
             {
                 Debug.Assert((value & Ordinates.XY) == Ordinates.XY);
-                this.RandomGeometryHelper.Ordinates = value;
+                RandomGeometryHelper.Ordinates = value;
             }
         }
 
@@ -196,7 +195,7 @@ namespace NetTopologySuite.IO.Tests
 
         public void PerformTest(IGeometry gIn)
         {
-            var writer = new WKTWriter(2) {EmitSRID = true, MaxCoordinatesPerLine = 3,};
+            WKTWriter writer = new WKTWriter(2) {EmitSRID = true, MaxCoordinatesPerLine = 3,};
             byte[] b = null;
             Assert.DoesNotThrow(() => b = Write(gIn), "Threw exception during write:\n{0}", writer.WriteFormatted(gIn));
 
@@ -220,38 +219,38 @@ namespace NetTopologySuite.IO.Tests
         public virtual void TestPoint()
         {
             for (int i = 0; i < 5; i++)
-                this.PerformTest(this.RandomGeometryHelper.Point);
+                PerformTest(RandomGeometryHelper.Point);
         }
         [Test]
         public virtual void TestLineString()
         {
             for (int i = 0; i < 5; i++)
-                this.PerformTest(this.RandomGeometryHelper.LineString);
+                PerformTest(RandomGeometryHelper.LineString);
         }
         [Test]
         public virtual void TestPolygon()
         {
             for (int i = 0; i < 5; i++)
-                this.PerformTest(this.RandomGeometryHelper.Polygon);
+                PerformTest(RandomGeometryHelper.Polygon);
         }
         [Test]
         public virtual void TestMultiPoint()
         {
             for (int i = 0; i < 5; i++)
-                this.PerformTest(this.RandomGeometryHelper.MultiPoint);
+                PerformTest(RandomGeometryHelper.MultiPoint);
         }
         [Test]
         public virtual void TestMultiLineString()
         {
             for (int i = 0; i < 5; i++)
-                this.PerformTest(this.RandomGeometryHelper.MultiLineString);
+                PerformTest(RandomGeometryHelper.MultiLineString);
         }
 
         [Test]
         public virtual void TestMultiPolygon()
         {
             for (int i = 0; i < 5; i++)
-                this.PerformTest(this.RandomGeometryHelper.MultiPolygon);
+                PerformTest(RandomGeometryHelper.MultiPolygon);
         }
 
         [Test]
@@ -259,7 +258,7 @@ namespace NetTopologySuite.IO.Tests
         public virtual void TestGeometryCollection()
         {
             for (int i = 0; i < 5; i++)
-                this.PerformTest(this.RandomGeometryHelper.GeometryCollection);
+                PerformTest(RandomGeometryHelper.GeometryCollection);
         }        
     }
 }
