@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>NetTopologySuite.PCL</id>
+		<version>$version$</version>
+		<title>NTS - Topology Suite (PCL Version)</title>
+		<authors>NetTopologySuite - Team</authors>
+		<owners>NetTopologySuite - Team</owners>
+		<licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
+		<projectUrl>http://code.google.com/p/nettopologysuite</projectUrl>
+		<requireLicenseAcceptance>true</requireLicenseAcceptance>
+		<description>
+      The NTS Topology Suite is an API for modelling and manipulating 2-dimensional linear geometry. It provides numerous geometric predicates and functions. NTS conforms to the Simple Features Specification.
+      This package contains Wintellect's PowerCollections and references GeoAPI.
+		</description>
+		<summary>NTS Topology Suite is a direct-port of all the functionalities offered by JTS Topology Suite</summary>
+		<tags>NTS Topology OGC SFS</tags>
+		<copyright>Copyright 2007-2013</copyright>
+		<language>en-US</language>
+		<dependencies>
+			<dependency id="GeoAPI.PCL" version="[1.7.2,1.8)" />
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="Release\PCL\AnyCPU\NetTopologySuite.dll" target="lib\portable-net403+sl5+win8+wp8\NetTopologySuite.dll" />
+		<file src="Release\PCL\AnyCPU\PowerCollections.dll" target="lib\portable-net403+sl5+win8+wp8\PowerCollections.dll" />
+	</files>
+</package>

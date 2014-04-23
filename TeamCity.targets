@@ -76,7 +76,7 @@
              ContinueOnError="true" 
              />	
 	</Target>
-	<Target Name="BuildReleasePCL" DependsOnTargets="BuildRelease">
+	<Target Name="BuildReleasePCL" DependsOnTargets="CleanRelease;SetVersion">
 		<MSBuild Projects="$(SolutionFile)" 
              Targets="PCL\PowerCollections_PCL;PCL\GeoAPI_PCL;PCL\NetTopologySuite_PCL;PCL\ProjNET_PCL;PCL\GeoAPI_BootStrapper_NetTopologySuite" 
              Properties="Configuration=Release;TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Profile147;DefineConstants=TRACE;PCL;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\PCL\" 
@@ -101,7 +101,7 @@
              Properties="Configuration=Release;TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Client;DefineConstants=TRACE;UseCoordinateBufferPublicly;NET20;NET35;NET40;" 
              />
 	</Target>
-	<Target Name="UnitTestsPCL" DependsOnTargets="UnitTests">
+	<Target Name="UnitTestsPCL" DependsOnTargets="BuildReleasePCL">
 		<MSBuild Projects="$(SolutionFile)" 
              Targets="NetTopologySuite_Tests\PCL\NetTopologySuite_Tests_NUnit_PCL;"			 
              Properties="Configuration=Release;TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Profile147;DefineConstants=TRACE;PCL;UseCoordinateBufferPublicly;" 
@@ -118,8 +118,9 @@
 		<Exec Command="$(NuGetCommand) ProjNet\ProjNet.nuspec -Version $(ProjNetVersion) -outputdirectory $(NuGetOutDir)"/>
 		<!--Exec Command="$(NuGetCommand) NTS.Converter.DotSpatial.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/-->
 	</Target>
-	<Target Name="NuGetPackPCL" DependsOnTargets="NuGetPack">
+	<Target Name="NuGetPackPCL" DependsOnTargets="BuildReleasePCL">
 		<Exec Command="$(NuGetCommand) GeoAPI\GeoAPI.PCL.nuspec -Version $(GeoAPIVersion) -outputdirectory $(NuGetOutDir)"/>    
+		<Exec Command="$(NuGetCommand) NTS.PCL.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
 	</Target>
 
 	<!-- 
