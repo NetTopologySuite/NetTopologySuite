@@ -65,7 +65,7 @@
     <DefineConstants>TRACE;NET20;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\NetTopologySuite.XML</DocumentationFile>
+    <DocumentationFile>..\Release\v4.0\AnyCPU\NetTopologySuite.XML</DocumentationFile>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <NoWarn>659,168</NoWarn>
   </PropertyGroup>
