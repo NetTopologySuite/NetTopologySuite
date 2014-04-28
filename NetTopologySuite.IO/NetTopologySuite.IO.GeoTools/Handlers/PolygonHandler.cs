@@ -32,14 +32,14 @@ namespace NetTopologySuite.IO.Handlers
         /// </summary>
         /// <param name="file">The stream to read.</param>
         /// <param name="totalRecordLength">Total length of the record we are about to read</param>
-        /// <param name="geometryFactory">The geometry factory to use when making the object.</param>
+        /// <param name="factory">The geometry factory to use when making the object.</param>
         /// <returns>The Geometry object that represents the shape file record.</returns>
-        public override IGeometry Read(BigEndianBinaryReader file, int totalRecordLength, IGeometryFactory geometryFactory)
+        public override IGeometry Read(BigEndianBinaryReader file, int totalRecordLength, IGeometryFactory factory)
         {
             int totalRead = 0;
             var type = (ShapeGeometryType)ReadInt32(file, totalRecordLength, ref totalRead);
             if (type == ShapeGeometryType.NullShape)
-                return geometryFactory.CreatePolygon(null, null);
+                return factory.CreatePolygon(null, null);
 
             if (type != ShapeType)
                 throw new ShapefileException(string.Format("Encountered a '{0}' instead of a  '{1}'", type, ShapeType));
@@ -60,7 +60,7 @@ namespace NetTopologySuite.IO.Handlers
 
             //var allPoints = new List<Coordinate>();
             var buffer = new CoordinateBuffer(numPoints, NoDataBorderValue, true);
-            var pm = geometryFactory.PrecisionModel;
+            var pm = factory.PrecisionModel;
             for (var part = 0; part < numParts; part++)
             {
                 var start = partOffsets[part];
@@ -91,7 +91,7 @@ namespace NetTopologySuite.IO.Handlers
             GetZMValues(file, totalRecordLength, ref totalRead, buffer, skippedList);
 
             // Get the resulting sequences
-            var sequences = buffer.ToSequences(geometryFactory.CoordinateSequenceFactory);
+            var sequences = buffer.ToSequences(factory.CoordinateSequenceFactory);
             var shells = new List<ILinearRing>();
             var holes = new List<ILinearRing>();
             for (var i = 0; i < sequences.Length; i++)
@@ -99,8 +99,8 @@ namespace NetTopologySuite.IO.Handlers
                 //Skip garbage input data with 0 points
                 if (sequences[i].Count < 1) continue;
 
-                var tmp = EnsureClosedSequence(sequences[i], geometryFactory.CoordinateSequenceFactory);
-                var ring = geometryFactory.CreateLinearRing(tmp);
+                var tmp = EnsureClosedSequence(sequences[i], factory.CoordinateSequenceFactory);
+                var ring = factory.CreateLinearRing(tmp);
                 if (ring.IsCCW)
                     holes.Add(ring);
                 else
@@ -110,7 +110,7 @@ namespace NetTopologySuite.IO.Handlers
             // Ensure the ring is encoded right
             if (shells.Count == 0 && holes.Count == 1)
             {
-                shells.Add(geometryFactory.CreateLinearRing(holes[0].CoordinateSequence.Reversed()));
+                shells.Add(factory.CreateLinearRing(holes[0].CoordinateSequence.Reversed()));
                 holes.Clear();
             }
 
@@ -155,12 +155,12 @@ namespace NetTopologySuite.IO.Handlers
 
             var polygons = new IPolygon[shells.Count];
             for (var i = 0; i < shells.Count; i++)
-                polygons[i] = (geometryFactory.CreatePolygon(shells[i], holesForShells[i].ToArray()));
+                polygons[i] = (factory.CreatePolygon(shells[i], holesForShells[i].ToArray()));
 
             if (polygons.Length == 1)
                 geom = polygons[0];
             else 
-                geom = geometryFactory.CreateMultiPolygon(polygons);
+                geom = factory.CreateMultiPolygon(polygons);
       
             return geom;
         }
@@ -170,8 +170,8 @@ namespace NetTopologySuite.IO.Handlers
         /// </summary>
         /// <param name="geometry">The geometry to write.</param>
         /// <param name="writer">The file stream to write to.</param>
-        /// <param name="geometryFactory">The geometry factory to use.</param>
-        public override void Write(IGeometry geometry, BinaryWriter writer, IGeometryFactory geometryFactory)
+        /// <param name="factory">The geometry factory to use.</param>
+        public override void Write(IGeometry geometry, BinaryWriter writer, IGeometryFactory factory)
         {
             // This check seems to be not useful and slow the operations...
             // if (!geometry.IsValid)    
@@ -191,7 +191,7 @@ namespace NetTopologySuite.IO.Handlers
             writer.Write((int) ShapeType);
 
             var box = multi.EnvelopeInternal;
-            var bounds = GetEnvelopeExternal(geometryFactory.PrecisionModel,  box);
+            var bounds = GetEnvelopeExternal(factory.PrecisionModel,  box);
             writer.Write(bounds.MinX);
             writer.Write(bounds.MinY);
             writer.Write(bounds.MaxX);

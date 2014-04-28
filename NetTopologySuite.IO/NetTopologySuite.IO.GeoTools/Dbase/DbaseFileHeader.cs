@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -13,7 +14,10 @@ namespace NetTopologySuite.IO
         public const int FieldNameMaxLength = 11;
 
         // Constant for the size of a record
-        private int FileDescriptorSize = 32;
+        private const int FileDescriptorSize = 32;
+
+        private static readonly IDictionary<byte, Encoding> LdidToEncoding;
+        private static readonly IDictionary<Encoding, byte> EncodingToLdid;
 
         // type of the file, must be 03h
         private int _fileType = 0x03;
@@ -22,7 +26,7 @@ namespace NetTopologySuite.IO
         private DateTime _updateDate;
 
         // Number of records in the datafile
-        private int _numRecords = 0;
+        private int _numRecords;
 
         // Length of the header structure
         private int _headerLength;
@@ -38,10 +42,87 @@ namespace NetTopologySuite.IO
         // collection of header records.
         private DbaseFieldDescriptor[] _fieldDescriptions;
 
+        static DbaseFileHeader()
+        {
+            object[][] dbfCodePages =
+            {
+                new object[] {0x01 , 437}, // U.S. MSDOS
+                new object[] { 0x02 , 850﻿  }, // International MSDOS
+                new object[] { 0x08 , 865﻿  }, // Danish OEM
+                new object[] { 0x09 , 437﻿  }, // Dutch OEM
+                new object[] { 0x0A , 850﻿  }, // Dutch OEM*
+                new object[] { 0x0B , 437﻿  }, // Finnish OEM
+                new object[] { 0x0D , 437﻿  }, // French OEM
+                new object[] { 0x0E , 850﻿  }, // French OEM*
+                new object[] { 0x0F , 437﻿  }, // German OEM
+                new object[] { 0x10 , 850﻿  }, // German OEM*
+                new object[] { 0x11 , 437﻿  }, // Italian OEM
+                new object[] { 0x12 , 850﻿  }, // Italian OEM*
+                new object[] { 0x13 , 932﻿  }, // Japanese Shift-JIS
+                new object[] { 0x14 , 850﻿  }, // Spanish OEM*
+                new object[] { 0x15 , 437﻿  }, // Swedish OEM
+                new object[] { 0x16 , 850﻿  }, // Swedish OEM*
+                new object[] { 0x17 , 865﻿  }, // Norwegian OEM
+                new object[] { 0x18 , 437﻿  }, // Spanish OEM
+                new object[] { 0x19 , 437﻿  }, // English OEM (Britain)
+                new object[] { 0x1A , 850﻿  }, // English OEM (Britain)*
+                new object[] { 0x1B , 437﻿  }, // English OEM (U.S.)
+                new object[] { 0x1C , 863﻿  }, // French OEM (Canada)
+                new object[] { 0x1D , 850﻿  }, // French OEM*
+                new object[] { 0x1F , 852﻿  }, // Czech OEM
+                new object[] { 0x22 , 852﻿  }, // Hungarian OEM
+                new object[] { 0x23 , 852﻿  }, // Polish OEM
+                new object[] { 0x24 , 860﻿  }, // Portuguese OEM
+                new object[] { 0x25 , 850﻿  }, // Portuguese OEM*
+                new object[] { 0x26 , 866﻿  }, // Russian OEM
+                new object[] { 0x37 , 850﻿  }, // English OEM (U.S.)*
+                new object[] { 0x40 , 852﻿  }, // Romanian OEM
+                new object[] { 0x4D , 936﻿  }, // Chinese GBK (PRC)
+                new object[] { 0x4E , 949﻿  }, // Korean (ANSI/OEM)
+                new object[] { 0x4F , 950﻿  }, // Chinese Big5 (Taiwan)
+                new object[] { 0x50 , 874﻿  }, // Thai (ANSI/OEM)
+                new object[] { 0x58 , 1252﻿  }, // Western European ANSI
+                new object[] { 0x59 , 1252﻿  }, // Spanish ANSI
+                new object[] { 0x64 , 852﻿  }, // Eastern European MSDOS
+                new object[] { 0x65 , 866﻿  }, // Russian MSDOS
+                new object[] { 0x66 , 865﻿  }, // Nordic MSDOS
+                new object[] { 0x67 , 861﻿  }, // Icelandic MSDOS
+                new object[] { 0x6A , 737﻿  }, // Greek MSDOS (437G)
+                new object[] { 0x6B , 857﻿  }, // Turkish MSDOS
+                new object[] { 0x6C , 863﻿  }, // FrenchCanadian MSDOS
+                new object[] { 0x78 , 950﻿  }, // Taiwan Big 5
+                new object[] { 0x79 , 949﻿  }, // Hangul (Wansung)
+                new object[] { 0x7A , 936﻿  }, // PRC GBK
+                new object[] { 0x7B , 932﻿  }, // Japanese Shift-JIS
+                new object[] { 0x7C , 874﻿  }, // Thai Windows/MSDOS
+                new object[] { 0x86 , 737﻿  }, // Greek OEM
+                new object[] { 0x87 , 852﻿  }, // Slovenian OEM
+                new object[] { 0x88 , 857﻿  }, // Turkish OEM
+                new object[] { 0xC8 , 1250﻿  }, // Eastern European Windows
+                new object[] { 0xC9 , 1251﻿  }, // Russian Windows
+                new object[] { 0xCA , 1254﻿  }, // Turkish Windows
+                new object[] { 0xCB , 1253﻿  }, // Greek Windows
+                new object[] { 0xCC , 1257﻿  } // Baltic Windows
+            };
+
+            LdidToEncoding = new Dictionary<byte, Encoding>();
+            EncodingToLdid = new Dictionary<Encoding, byte>();
+
+            foreach (object[] pair in dbfCodePages)
+            {
+                AddLdidEncodingPair(Convert.ToByte(pair[0]), Convert.ToInt32(pair[1]));
+            }
+
+            // Add ANSI values 3 and 0x57 as system's default encoding, and 0 which means no encoding.
+            AddLdidEncodingPair(0, Encoding.UTF8);
+            AddLdidEncodingPair(0x03, Encoding.Default);
+            AddLdidEncodingPair(0x57, Encoding.Default);
+        }
+
         /// <summary>
         /// Initializes a new instance of the DbaseFileHeader class.
         /// </summary>
-        public DbaseFileHeader() 
+        public DbaseFileHeader()
             : this(Encoding.GetEncoding(1252)) { }
 
         /// <summary>
@@ -250,9 +331,9 @@ namespace NetTopologySuite.IO
                 throw new NotSupportedException("Unsupported DBF reader Type " + _fileType);
 
             // parse the update date information.
-            int year = (int)reader.ReadByte();
-            int month = (int)reader.ReadByte();
-            int day = (int)reader.ReadByte();
+            int year = reader.ReadByte();
+            int month = reader.ReadByte();
+            int day = reader.ReadByte();
             _updateDate = new DateTime(year + 1900, month, day);
 
             // read the number of records.
@@ -267,7 +348,7 @@ namespace NetTopologySuite.IO
             // skip the reserved bytes in the header.
             //in.skipBytes(20);
             byte[] data = reader.ReadBytes(20);
-            int lcid = data[29 - 12]; //get the 29th byte in the file... we've first to read into arry was no 12
+            byte lcid = data[29 - 12]; //get the 29th byte in the file... we've first to read into arry was no 12
             _encoding = DetectEncodingFromMark(lcid, filename);
 
             //Replace reader with one with correct encoding..
@@ -282,8 +363,7 @@ namespace NetTopologySuite.IO
                 _fieldDescriptions[i] = new DbaseFieldDescriptor();
 
                 // read the field name				
-                byte[] buffer = new byte[11];
-                buffer = reader.ReadBytes(11);
+                byte[] buffer = reader.ReadBytes(11);
                 // NOTE: only this _encoding.GetString method is available in Silverlight
                 String name = _encoding.GetString(buffer, 0, buffer.Length);
                 int nullPoint = name.IndexOf((char)0);
@@ -298,12 +378,12 @@ namespace NetTopologySuite.IO
                 _fieldDescriptions[i].DataAddress = reader.ReadInt32();
 
                 // read the field length in bytes
-                int tempLength = (int)reader.ReadByte();
+                int tempLength = reader.ReadByte();
                 if (tempLength < 0) tempLength = tempLength + 256;
                 _fieldDescriptions[i].Length = tempLength;
 
                 // read the field decimal count in bytes
-                _fieldDescriptions[i].DecimalCount = (int)reader.ReadByte();
+                _fieldDescriptions[i].DecimalCount = reader.ReadByte();
 
                 // read the reserved bytes.
                 //reader.skipBytes(14);
@@ -312,7 +392,7 @@ namespace NetTopologySuite.IO
 
             // Last byte is a marker for the end of the field definitions.
             // Trond Benum: This fails for some presumeably valid test shapefiles, so I have commented it out. 
-            var lastByte = reader.ReadBytes(1)[0];
+            byte lastByte = reader.ReadBytes(1)[0];
             // if (lastByte != 0x0d)
             //   throw new ShapefileException("DBase Header is not terminated");
 
@@ -329,136 +409,33 @@ namespace NetTopologySuite.IO
         /// <param name="lcid">Language driver id</param>
         /// <param name="cpgFileName">Filename of code page file</param>
         /// <returns></returns>
-        private Encoding DetectEncodingFromMark(int lcid, string cpgFileName)
+        private Encoding DetectEncodingFromMark(byte lcid, string cpgFileName)
         {
-            var enc = Encoding.GetEncoding(1252);
-            string lc = "";
-            foreach (var it in _dbfCodePages)
-            {
-                if ((int)it[0] == lcid)
-                {
-                    lc = it[1] as string;
-                    break;
-                }
-            }
-
-            if (!string.IsNullOrEmpty(lc))
-            {
-                try
-                {
-                    var winCodePage = int.Parse(lc.Replace("CP", ""));
-                    enc = Encoding.GetEncoding("windows-" + winCodePage);
-                }
-                catch (Exception ee)
-                {
-                    //Could not get encoding..
-                }
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(cpgFileName))
-                {
-                    cpgFileName = Path.ChangeExtension(cpgFileName, "cpg");
-                    if (!File.Exists(cpgFileName))
-                        cpgFileName = Path.ChangeExtension(cpgFileName, "cst");
-                    if (File.Exists(cpgFileName))
-                    {
-                        var encoding = File.ReadAllText(cpgFileName).Trim();
-                        try
-                        {
-                            return Encoding.GetEncoding(encoding);
-                        }
-                        catch (Exception)
-                        {
-                        }
-                    }
-                    enc = Encoding.UTF8;
-                }
-            }
-
-
+            Encoding enc;
+            if (LdidToEncoding.TryGetValue(lcid, out enc))
+                return enc;
+            enc = Encoding.UTF8;
+            if (String.IsNullOrEmpty(cpgFileName))
+                return enc;
+            cpgFileName = Path.ChangeExtension(cpgFileName, "cpg");
+            if (!File.Exists(cpgFileName))
+                cpgFileName = Path.ChangeExtension(cpgFileName, "cst");
+            if (!File.Exists(cpgFileName))
+                return enc;
+            string encodingText = File.ReadAllText(cpgFileName).Trim();
+            try { return Encoding.GetEncoding(encodingText); }
+            catch { }
             return enc;
         }
 
-        private int GetLCIDFromEncoding(Encoding enc)
+        private byte GetLCIDFromEncoding(Encoding enc)
         {
-            int lcid = enc.WindowsCodePage;
-            int cpId = 0x03;
-            foreach (var cp in _dbfCodePages)
-            {
-                if (cp[1] as string == "CP" + lcid)
-                {
-                    cpId = (int)cp[0];
-                    break;
-                }
-            }
-
-
+            byte cpId;
+            if (!EncodingToLdid.TryGetValue(enc, out cpId))
+                cpId = 0x03;
             return cpId;
         }
 
-        private readonly object[][] _dbfCodePages = new[]
-                                                        {
-        new object[] {0x01 , "CP437",	}, // U.S. MS�DOS
-		new object[] { 0x02 , "CP850"	}, // International MS�DOS
-		new object[] { 0x03 , "CP1252"	}, // Windows ANSI
-		new object[] { 0x08 , "CP865"	}, // Danish OEM
-		new object[] { 0x09 , "CP437"	}, // Dutch OEM
-		new object[] { 0x0A , "CP850"	}, // Dutch OEM*
-		new object[] { 0x0B , "CP437"	}, // Finnish OEM
-		new object[] { 0x0D , "CP437"	}, // French OEM
-		new object[] { 0x0E , "CP850"	}, // French OEM*
-		new object[] { 0x0F , "CP437"	}, // German OEM
-		new object[] { 0x10 , "CP850"	}, // German OEM*
-		new object[] { 0x11 , "CP437"	}, // Italian OEM
-		new object[] { 0x12 , "CP850"	}, // Italian OEM*
-		new object[] { 0x13 , "CP932"	}, // Japanese Shift-JIS
-		new object[] { 0x14 , "CP850"	}, // Spanish OEM*
-		new object[] { 0x15 , "CP437"	}, // Swedish OEM
-		new object[] { 0x16 , "CP850"	}, // Swedish OEM*
-		new object[] { 0x17 , "CP865"	}, // Norwegian OEM
-		new object[] { 0x18 , "CP437"	}, // Spanish OEM
-		new object[] { 0x19 , "CP437"	}, // English OEM (Britain)
-		new object[] { 0x1A , "CP850"	}, // English OEM (Britain)*
-		new object[] { 0x1B , "CP437"	}, // English OEM (U.S.)
-		new object[] { 0x1C , "CP863"	}, // French OEM (Canada)
-		new object[] { 0x1D , "CP850"	}, // French OEM*
-		new object[] { 0x1F , "CP852"	}, // Czech OEM
-		new object[] { 0x22 , "CP852"	}, // Hungarian OEM
-		new object[] { 0x23 , "CP852"	}, // Polish OEM
-		new object[] { 0x24 , "CP860"	}, // Portuguese OEM
-		new object[] { 0x25 , "CP850"	}, // Portuguese OEM*
-		new object[] { 0x26 , "CP866"	}, // Russian OEM
-		new object[] { 0x37 , "CP850"	}, // English OEM (U.S.)*
-		new object[] { 0x40 , "CP852"	}, // Romanian OEM
-		new object[] { 0x4D , "CP936"	}, // Chinese GBK (PRC)
-		new object[] { 0x4E , "CP949"	}, // Korean (ANSI/OEM)
-		new object[] { 0x4F , "CP950"	}, // Chinese Big5 (Taiwan)
-		new object[] { 0x50 , "CP874"	}, // Thai (ANSI/OEM)
-		new object[] { 0x57 , "CP1252"	}, // ANSI
-		new object[] { 0x58 , "CP1252"	}, // Western European ANSI
-		new object[] { 0x59 , "CP1252"	}, // Spanish ANSI
-		new object[] { 0x64 , "CP852"	}, // Eastern European MS�DOS
-		new object[] { 0x65 , "CP866"	}, // Russian MS�DOS
-		new object[] { 0x66 , "CP865"	}, // Nordic MS�DOS
-		new object[] { 0x67 , "CP861"	}, // Icelandic MS�DOS
-		new object[] { 0x6A , "CP737"	}, // Greek MS�DOS (437G)
-		new object[] { 0x6B , "CP857"	}, // Turkish MS�DOS
-		new object[] { 0x6C , "CP863"	}, // French�Canadian MS�DOS
-		new object[] { 0x78 , "CP950"	}, // Taiwan Big 5
-		new object[] { 0x79 , "CP949"	}, // Hangul (Wansung)
-		new object[] { 0x7A , "CP936"	}, // PRC GBK
-		new object[] { 0x7B , "CP932"	}, // Japanese Shift-JIS
-		new object[] { 0x7C , "CP874"	}, // Thai Windows/MS�DOS
-		new object[] { 0x86 , "CP737"	}, // Greek OEM
-		new object[] { 0x87 , "CP852"	}, // Slovenian OEM
-		new object[] { 0x88 , "CP857"	}, // Turkish OEM
-		new object[] { 0xC8 , "CP1250"	}, // Eastern European Windows
-		new object[] { 0xC9 , "CP1251"	}, // Russian Windows
-		new object[] { 0xCA , "CP1254"	}, // Turkish Windows
-		new object[] { 0xCB , "CP1253"	}, // Greek Windows
-		new object[] { 0xCC , "CP1257"	}, // Baltic Windows
-        };
         /// <summary>
         /// Set the number of records in the file
         /// </summary>
@@ -493,10 +470,8 @@ namespace NetTopologySuite.IO
             // write the reserved bytes in the header
             byte[] data = new byte[20];
             for (int i = 0; i < 20; i++)
-            {
-                data[i] = (byte)0;
-            }
-            data[29 - 12] = (byte)GetLCIDFromEncoding(_encoding);
+                data[i] = 0;
+            data[29 - 12] = GetLCIDFromEncoding(_encoding);
             writer.Write(data);
 
             // write all of the header records
@@ -513,10 +488,10 @@ namespace NetTopologySuite.IO
                 byte[] buffer = new byte[FieldNameMaxLength];
                 byte[] bytes = _encoding.GetBytes(fieldName);
                 Array.Copy(bytes, buffer, bytes.Length);
-                writer.Write(buffer);  
+                writer.Write(buffer);
 
                 // write the field type
-                writer.Write((char)_fieldDescriptions[i].DbaseType);
+                writer.Write(_fieldDescriptions[i].DbaseType);
 
                 // write the field data address, offset from the start of the record.
                 writer.Write(0);
@@ -541,10 +516,45 @@ namespace NetTopologySuite.IO
         /// </summary>
         public DbaseFieldDescriptor[] Fields
         {
-            get
+            get { return _fieldDescriptions; }
+        }
+
+        private static void AddLdidEncodingPair(byte ldid, int codePage)
+        {
+            Encoding encToAdd;
+            if (!TryGetEncoding("windows-" + codePage, out encToAdd) &&
+                !TryGetEncoding(codePage, out encToAdd))
+                return;
+            AddLdidEncodingPair(ldid, encToAdd);
+        }
+
+        private static void AddLdidEncodingPair(byte ldid, Encoding encToAdd)
+        {
+            LdidToEncoding.Add(ldid, encToAdd);
+            if (!EncodingToLdid.ContainsKey(encToAdd))
+                EncodingToLdid.Add(encToAdd, ldid);
+        }
+
+        private static bool TryGetEncoding(int codePage, out Encoding encToAdd)
+        {
+            encToAdd = null;
+            try
             {
-                return _fieldDescriptions;
+                encToAdd = Encoding.GetEncoding(codePage);
+                return true;
             }
+            catch { return false; }
+        }
+
+        private static bool TryGetEncoding(string codePageName, out Encoding encToAdd)
+        {
+            encToAdd = null;
+            try
+            {
+                encToAdd = Encoding.GetEncoding(codePageName);
+                return true;
+            }
+            catch { return false; }
         }
     }
 }

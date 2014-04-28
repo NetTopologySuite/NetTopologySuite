@@ -53,9 +53,9 @@ namespace NetTopologySuite.IO.Handlers
         /// </summary>
         /// <param name="file">The stream to read.</param>
         /// <param name="totalRecordLength">Total number of total bytes in the record to read.</param>
-        /// <param name="geometryFactory">The geometry factory to use when making the object.</param>
+        /// <param name="factory">The geometry factory to use when making the object.</param>
         /// <returns>The Geometry object that represents the shape file record.</returns>
-        public abstract IGeometry Read(BigEndianBinaryReader file, int totalRecordLength, IGeometryFactory geometryFactory);
+        public abstract IGeometry Read(BigEndianBinaryReader file, int totalRecordLength, IGeometryFactory factory);
 
         /// <summary>
         /// Read an int from the stream.<br/>Tracks how many words (1 word = 2 bytes) we have read and that we do not over read.
@@ -98,8 +98,8 @@ namespace NetTopologySuite.IO.Handlers
         /// </summary>
         /// <param name="geometry">The geometry object to write.</param>
         /// <param name="writer">The writer to use.</param>
-        /// <param name="geometryFactory">The geometry factory to use.</param>
-        public abstract void Write(IGeometry geometry, BinaryWriter writer, IGeometryFactory geometryFactory);
+        /// <param name="factory">The geometry factory to use.</param>
+        public abstract void Write(IGeometry geometry, BinaryWriter writer, IGeometryFactory factory);
 
         /// <summary>
         /// Gets the length in words (1 word = 2 bytes) the Geometry will need when written as a shape file record.

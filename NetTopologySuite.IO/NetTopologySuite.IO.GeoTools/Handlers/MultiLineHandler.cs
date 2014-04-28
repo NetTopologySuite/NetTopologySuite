@@ -23,14 +23,14 @@ namespace NetTopologySuite.IO.Handlers
         /// </summary>
         /// <param name="file">The stream to read.</param>
         /// <param name="totalRecordLength">Total length of the record we are about to read</param>
-        /// <param name="geometryFactory">The geometry factory to use when making the object.</param>
+        /// <param name="factory">The geometry factory to use when making the object.</param>
         /// <returns>The Geometry object that represents the shape file record.</returns>
-        public override IGeometry Read(BigEndianBinaryReader file, int totalRecordLength, IGeometryFactory geometryFactory)
+        public override IGeometry Read(BigEndianBinaryReader file, int totalRecordLength, IGeometryFactory factory)
         {
             int totalRead = 0;
             var type = (ShapeGeometryType)ReadInt32(file, totalRecordLength, ref totalRead);
             if (type == ShapeGeometryType.NullShape)
-                return geometryFactory.CreateMultiLineString(null);
+                return factory.CreateMultiLineString(null);
 
             if (type != ShapeType)
                 throw new ShapefileException(string.Format("Encountered a '{0}' instead of a  '{1}'", type, ShapeType));
@@ -52,7 +52,7 @@ namespace NetTopologySuite.IO.Handlers
 
             var lines = new List<ILineString>(numParts);
             var buffer = new CoordinateBuffer(numPoints, NoDataBorderValue, true);
-            var pm = geometryFactory.PrecisionModel;
+            var pm = factory.PrecisionModel;
 
             for (var part = 0; part < numParts; part++)
             {
@@ -77,7 +77,7 @@ namespace NetTopologySuite.IO.Handlers
             // Geometries via ICoordinateSequence further down.
             GetZMValues(file, totalRecordLength, ref totalRead, buffer);
 
-            var sequences = new List<ICoordinateSequence>(buffer.ToSequences(geometryFactory.CoordinateSequenceFactory));
+            var sequences = new List<ICoordinateSequence>(buffer.ToSequences(factory.CoordinateSequenceFactory));
 
             for (var s = 0; s < sequences.Count; s++)
             {
@@ -94,10 +94,10 @@ namespace NetTopologySuite.IO.Handlers
                         case GeometryInstantiationErrorHandlingOption.ThrowException:
                             break;
                         case GeometryInstantiationErrorHandlingOption.Empty:
-                            sequences[s] = geometryFactory.CoordinateSequenceFactory.Create(0, points.Ordinates);
+                            sequences[s] = factory.CoordinateSequenceFactory.Create(0, points.Ordinates);
                             break;
                         case GeometryInstantiationErrorHandlingOption.TryFix:
-                            sequences[s] = AddCoordinateToSequence(points, geometryFactory.CoordinateSequenceFactory,
+                            sequences[s] = AddCoordinateToSequence(points, factory.CoordinateSequenceFactory,
                                 points.GetOrdinate(0, Ordinate.X), points.GetOrdinate(0, Ordinate.Y),
                                 points.GetOrdinate(0, Ordinate.Z), points.GetOrdinate(0, Ordinate.M));
                             break;
@@ -110,13 +110,13 @@ namespace NetTopologySuite.IO.Handlers
                 if (createLineString)
                 {
                     // Grabs m values if we have them
-                    var line = geometryFactory.CreateLineString(points);
+                    var line = factory.CreateLineString(points);
                     lines.Add(line);
                 }
             }
 
             geom = (lines.Count != 1)
-                ? (IGeometry)geometryFactory.CreateMultiLineString(lines.ToArray())
+                ? (IGeometry)factory.CreateMultiLineString(lines.ToArray())
                 : lines[0];          
             return geom;
         }
@@ -126,15 +126,15 @@ namespace NetTopologySuite.IO.Handlers
         /// </summary>
         /// <param name="geometry">The geometry object to write.</param>
         /// <param name="writer">The stream to write to.</param>
-        /// <param name="geometryFactory">The geometry factory to use.</param>
-        public override void Write(IGeometry geometry, BinaryWriter writer, IGeometryFactory geometryFactory)
+        /// <param name="factory">The geometry factory to use.</param>
+        public override void Write(IGeometry geometry, BinaryWriter writer, IGeometryFactory factory)
         {
             // Force to use a MultiGeometry
             IMultiLineString multi;
             if (geometry is IGeometryCollection)
                 multi = (IMultiLineString)geometry;
             else
-                multi = geometryFactory.CreateMultiLineString(new[] { (ILineString)geometry });
+                multi = factory.CreateMultiLineString(new[] { (ILineString)geometry });
 
             writer.Write((int)ShapeType);
 

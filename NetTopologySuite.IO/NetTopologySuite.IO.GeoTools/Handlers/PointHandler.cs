@@ -24,21 +24,21 @@ namespace NetTopologySuite.IO.Handlers
         /// </summary>
         /// <param name="file">The stream to read.</param>
         /// <param name="totalRecordLength">Total length of the record we are about to read</param>
-        /// <param name="geometryFactory">The geometry factory to use when making the object.</param>
+        /// <param name="factory">The geometry factory to use when making the object.</param>
         /// <returns>The Geometry object that represents the shape file record.</returns>
-        public override IGeometry Read(BigEndianBinaryReader file, int totalRecordLength, IGeometryFactory geometryFactory)
+        public override IGeometry Read(BigEndianBinaryReader file, int totalRecordLength, IGeometryFactory factory)
         {
             int totalRead = 0;
             ShapeGeometryType type = (ShapeGeometryType)ReadInt32(file, totalRecordLength, ref totalRead);
             //type = (ShapeGeometryType) EnumUtility.Parse(typeof (ShapeGeometryType), shapeTypeNum.ToString());
             if (type == ShapeGeometryType.NullShape)
-                return geometryFactory.CreatePoint((Coordinate)null);
+                return factory.CreatePoint((Coordinate)null);
 
             if (type != ShapeType)
                 throw new ShapefileException(string.Format("Encountered a '{0}' instead of a  '{1}'", type, ShapeType));
 
             CoordinateBuffer buffer = new CoordinateBuffer(1, NoDataBorderValue, true);
-            IPrecisionModel precisionModel = geometryFactory.PrecisionModel;
+            IPrecisionModel precisionModel = factory.PrecisionModel;
 
             double x = precisionModel.MakePrecise(ReadDouble(file, totalRecordLength, ref totalRead));
             double y = precisionModel.MakePrecise(ReadDouble(file, totalRecordLength, ref totalRead));
@@ -54,7 +54,7 @@ namespace NetTopologySuite.IO.Handlers
                 m = ReadDouble(file, totalRecordLength, ref totalRead);
 
             buffer.AddCoordinate(x, y, z, m);
-            return geometryFactory.CreatePoint(buffer.ToSequence(geometryFactory.CoordinateSequenceFactory));
+            return factory.CreatePoint(buffer.ToSequence(factory.CoordinateSequenceFactory));
         }
 
         /// <summary>
@@ -62,8 +62,8 @@ namespace NetTopologySuite.IO.Handlers
         /// </summary>
         /// <param name="geometry">The geometry object to write.</param>
         /// <param name="writer">The stream to write to.</param>
-        /// <param name="geometryFactory">The geometry factory to use.</param>
-        public override void Write(IGeometry geometry, BinaryWriter writer, IGeometryFactory geometryFactory)
+        /// <param name="factory">The geometry factory to use.</param>
+        public override void Write(IGeometry geometry, BinaryWriter writer, IGeometryFactory factory)
         {
             writer.Write((int)ShapeType);
 

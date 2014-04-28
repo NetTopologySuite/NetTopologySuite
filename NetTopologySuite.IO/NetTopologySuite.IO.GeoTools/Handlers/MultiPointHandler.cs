@@ -25,16 +25,16 @@ namespace NetTopologySuite.IO.Handlers
         /// </summary>
         /// <param name="file">The stream to read.</param>
         /// <param name="totalRecordLength">Total length of the record we are about to read</param>
-        /// <param name="geometryFactory">The geometry factory to use when making the object.</param>
+        /// <param name="factory">The geometry factory to use when making the object.</param>
         /// <returns>The Geometry object that represents the shape file record.</returns>
-        public override IGeometry Read(BigEndianBinaryReader file, int totalRecordLength, IGeometryFactory geometryFactory)
+        public override IGeometry Read(BigEndianBinaryReader file, int totalRecordLength, IGeometryFactory factory)
         {
             int totalRead = 0;
             int shapeTypeNum = ReadInt32(file, totalRecordLength, ref totalRead);
 
             var type = (ShapeGeometryType) EnumUtility.Parse(typeof(ShapeGeometryType), shapeTypeNum.ToString());
             if (type == ShapeGeometryType.NullShape)
-                return geometryFactory.CreateMultiPoint(new IPoint[] { });
+                return factory.CreateMultiPoint(new IPoint[] { });
 
             if (type != ShapeType)
                 throw new ShapefileException(string.Format("Encountered a '{0}' instead of a  '{1}'", type, ShapeType));
@@ -52,7 +52,7 @@ namespace NetTopologySuite.IO.Handlers
             var numPoints = ReadInt32(file, totalRecordLength, ref totalRead);
             var buffer = new CoordinateBuffer(numPoints, NoDataBorderValue, true);
             var points = new IPoint[numPoints];
-            var pm = geometryFactory.PrecisionModel;
+            var pm = factory.PrecisionModel;
 
             for (var i = 0; i < numPoints; i++)
             {
@@ -65,11 +65,11 @@ namespace NetTopologySuite.IO.Handlers
             // Trond Benum: We have now read all the points, let's read optional Z and M values            
             GetZMValues(file, totalRecordLength, ref totalRead, buffer);            
 
-            var sequences = buffer.ToSequences(geometryFactory.CoordinateSequenceFactory);
+            var sequences = buffer.ToSequences(factory.CoordinateSequenceFactory);
             for (var i = 0; i < numPoints; i++)
-                points[i] = geometryFactory.CreatePoint(sequences[i]);
+                points[i] = factory.CreatePoint(sequences[i]);
          
-            geom = geometryFactory.CreateMultiPoint(points);
+            geom = factory.CreateMultiPoint(points);
           
             return geom;
         }        
@@ -79,8 +79,8 @@ namespace NetTopologySuite.IO.Handlers
         /// </summary>
         /// <param name="geometry">The geometry to write.</param>
         /// <param name="writer">The writer to use.</param>
-        /// <param name="geometryFactory">The geometry factory to use.</param>
-        public override void Write(IGeometry geometry, BinaryWriter writer, IGeometryFactory geometryFactory)
+        /// <param name="factory">The geometry factory to use.</param>
+        public override void Write(IGeometry geometry, BinaryWriter writer, IGeometryFactory factory)
         {
             var mpoint = geometry as IMultiPoint;
             if (mpoint == null)
@@ -91,7 +91,7 @@ namespace NetTopologySuite.IO.Handlers
             // Trace.WriteLine("Invalid multipoint being written.");
             
             writer.Write((int)ShapeType);
-            WriteEnvelope(writer, geometryFactory.PrecisionModel, geometry.EnvelopeInternal);
+            WriteEnvelope(writer, factory.PrecisionModel, geometry.EnvelopeInternal);
 
             var numPoints = mpoint.NumPoints;
             writer.Write(numPoints);

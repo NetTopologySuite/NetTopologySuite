@@ -152,6 +152,108 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         }
 
         [Test]
+        public void ReadMBRs_ReadUnifiedWithNullAtStart_ShouldReturnCorrectValues()
+        {
+            // Arrange.
+            MBRInfo[] infos = null;
+
+            MBRInfo[] expectedInfos = new[]
+				{
+					new MBRInfo(new Envelope(-1.151515151515152, -0.353535353535354, -0.929292929292929, -0.419191919191919),
+							    112,
+								1),
+					new MBRInfo(new Envelope(-0.457070707070707, 0.421717171717172, 0.070707070707071, 0.578282828282829),
+							    248,
+								2),
+				};
+
+            m_TmpFile = new TempFileWriter("shape.shp", ShpFiles.Read("UnifiedChecksMaterialNullAtStart"));
+
+            // Act.
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
+            infos = m_Reader.ReadMBRs().ToArray();
+
+            // Assert.
+            Assert.IsNotNull(infos);
+            Assert.AreEqual(expectedInfos.Length, infos.Length);
+
+            int currIndex = 0;
+
+            foreach (MBRInfo expectedInfo in expectedInfos)
+            {
+                HelperMethods.AssertMBRInfoEqual(expectedInfo, infos[currIndex++]);
+            }
+        }
+
+        [Test]
+        public void ReadMBRs_ReadUnifiedWithNullInMiddle_ShouldReturnCorrectValues()
+        {
+            // Arrange.
+            MBRInfo[] infos = null;
+
+            MBRInfo[] expectedInfos = new[]
+				{
+					new MBRInfo(new Envelope(-1.151515151515152, -0.353535353535354, -0.929292929292929, -0.419191919191919),
+							    100,
+								0),
+					new MBRInfo(new Envelope(-0.457070707070707, 0.421717171717172, 0.070707070707071, 0.578282828282829),
+							    248,
+								2),
+				};
+
+            m_TmpFile = new TempFileWriter("shape.shp", ShpFiles.Read("UnifiedChecksMaterialNullInMiddle"));
+
+            // Act.
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
+            infos = m_Reader.ReadMBRs().ToArray();
+
+            // Assert.
+            Assert.IsNotNull(infos);
+            Assert.AreEqual(expectedInfos.Length, infos.Length);
+
+            int currIndex = 0;
+
+            foreach (MBRInfo expectedInfo in expectedInfos)
+            {
+                HelperMethods.AssertMBRInfoEqual(expectedInfo, infos[currIndex++]);
+            }
+        }
+
+        [Test]
+        public void ReadMBRs_ReadUnifiedWithNullAtEnd_ShouldReturnCorrectValues()
+        {
+            // Arrange.
+            MBRInfo[] infos = null;
+
+            MBRInfo[] expectedInfos = new[]
+				{
+					new MBRInfo(new Envelope(-1.151515151515152, -0.353535353535354, -0.929292929292929, -0.419191919191919),
+							    100,
+								0),
+					new MBRInfo(new Envelope(-0.457070707070707, 0.421717171717172, 0.070707070707071, 0.578282828282829),
+							    236,
+								1),
+				};
+
+            m_TmpFile = new TempFileWriter("shape.shp", ShpFiles.Read("UnifiedChecksMaterialNullAtEnd"));
+
+            // Act.
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
+            infos = m_Reader.ReadMBRs().ToArray();
+
+            // Assert.
+            Assert.IsNotNull(infos);
+            Assert.AreEqual(expectedInfos.Length, infos.Length);
+
+            int currIndex = 0;
+
+            foreach (MBRInfo expectedInfo in expectedInfos)
+            {
+                HelperMethods.AssertMBRInfoEqual(expectedInfo, infos[currIndex++]);
+            }
+        }
+
+        [Test]
         public void ReadMBRs_ReadLine_ShouldReturnCorrectValues()
         {
             // Arrange.
@@ -405,6 +507,171 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         }
 
         [Test]
+        public void ReadShapeAtOffset_ReadAllPolygonsFromUnifiedWithNullAtStart_ShouldReturnCorrectValues()
+        {
+            // Arrange.
+            IGeometryFactory factory = new GeometryFactory();
+            m_TmpFile = new TempFileWriter("shape.shp", ShpFiles.Read("UnifiedChecksMaterialNullAtStart"));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
+
+            Coordinate[][] expectedResult = new Coordinate[][]
+			{
+                new Coordinate[]
+				{
+					new Coordinate(-0.815656565656566, -0.439393939393939),
+					new Coordinate(-0.353535353535354, -0.795454545454545),
+					new Coordinate(-0.888888888888889,-0.929292929292929),
+					new Coordinate(-1.151515151515152, -0.419191919191919),
+					new Coordinate(-0.815656565656566,-0.439393939393939),
+				},
+                new Coordinate[]
+				{
+					new Coordinate(0.068181818181818,0.578282828282829),
+					new Coordinate(0.421717171717172,0.070707070707071),
+					new Coordinate(-0.457070707070707,0.080808080808081),
+					new Coordinate(0.068181818181818,0.578282828282829),
+				}
+			};
+            long[] offsets = { 112, 248 };
+
+            // Act.
+            for (int i = 0; i < offsets.Length; i++)
+            {
+                IGeometry geo = m_Reader.ReadShapeAtOffset(offsets[i], factory);
+
+                // Assert.
+                Assert.IsNotNull(geo);
+                Assert.IsTrue(geo.IsValid);
+                Assert.IsInstanceOf<IPolygon>(geo);
+                IPolygon givenPoly = geo as IPolygon;
+
+                Assert.IsNotNull(givenPoly.ExteriorRing);
+                Assert.AreSame(givenPoly.ExteriorRing, givenPoly.Shell);
+                Assert.AreEqual(givenPoly.Shell.Coordinates.Length, expectedResult[i].Length);
+
+                ILineString givenLine = givenPoly.Shell;
+
+                for (int j = 0; j < givenLine.Coordinates.Length; j++)
+                {
+                    Coordinate currPoint = givenLine.Coordinates[j];
+
+                    HelperMethods.AssertDoubleValuesEqual(currPoint.X, expectedResult[i][j].X);
+                    HelperMethods.AssertDoubleValuesEqual(currPoint.Y, expectedResult[i][j].Y);
+                }
+            }
+        }
+
+        [Test]
+        public void ReadShapeAtOffset_ReadAllPolygonsFromUnifiedWithNullInMiddle_ShouldReturnCorrectValues()
+        {
+            // Arrange.
+            IGeometryFactory factory = new GeometryFactory();
+            m_TmpFile = new TempFileWriter("shape.shp", ShpFiles.Read("UnifiedChecksMaterialNullInMiddle"));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
+
+            Coordinate[][] expectedResult = new Coordinate[][]
+			{
+                new Coordinate[]
+				{
+					new Coordinate(-0.815656565656566, -0.439393939393939),
+					new Coordinate(-0.353535353535354, -0.795454545454545),
+					new Coordinate(-0.888888888888889,-0.929292929292929),
+					new Coordinate(-1.151515151515152, -0.419191919191919),
+					new Coordinate(-0.815656565656566,-0.439393939393939),
+				},
+                new Coordinate[]
+				{
+					new Coordinate(0.068181818181818,0.578282828282829),
+					new Coordinate(0.421717171717172,0.070707070707071),
+					new Coordinate(-0.457070707070707,0.080808080808081),
+					new Coordinate(0.068181818181818,0.578282828282829),
+				}
+			};
+            long[] offsets = { 100, 248 };
+
+            // Act.
+            for (int i = 0; i < offsets.Length; i++)
+            {
+                IGeometry geo = m_Reader.ReadShapeAtOffset(offsets[i], factory);
+
+                // Assert.
+                Assert.IsNotNull(geo);
+                Assert.IsTrue(geo.IsValid);
+                Assert.IsInstanceOf<IPolygon>(geo);
+                IPolygon givenPoly = geo as IPolygon;
+
+                Assert.IsNotNull(givenPoly.ExteriorRing);
+                Assert.AreSame(givenPoly.ExteriorRing, givenPoly.Shell);
+                Assert.AreEqual(givenPoly.Shell.Coordinates.Length, expectedResult[i].Length);
+
+                ILineString givenLine = givenPoly.Shell;
+
+                for (int j = 0; j < givenLine.Coordinates.Length; j++)
+                {
+                    Coordinate currPoint = givenLine.Coordinates[j];
+
+                    HelperMethods.AssertDoubleValuesEqual(currPoint.X, expectedResult[i][j].X);
+                    HelperMethods.AssertDoubleValuesEqual(currPoint.Y, expectedResult[i][j].Y);
+                }
+            }
+        }
+
+        [Test]
+        public void ReadShapeAtOffset_ReadAllPolygonsFromUnifiedWithNullAtEnd_ShouldReturnCorrectValues()
+        {
+            // Arrange.
+            IGeometryFactory factory = new GeometryFactory();
+            m_TmpFile = new TempFileWriter("shape.shp", ShpFiles.Read("UnifiedChecksMaterialNullAtEnd"));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
+
+            Coordinate[][] expectedResult = new Coordinate[][]
+			{
+                new Coordinate[]
+				{
+					new Coordinate(-0.815656565656566, -0.439393939393939),
+					new Coordinate(-0.353535353535354, -0.795454545454545),
+					new Coordinate(-0.888888888888889,-0.929292929292929),
+					new Coordinate(-1.151515151515152, -0.419191919191919),
+					new Coordinate(-0.815656565656566,-0.439393939393939),
+				},
+                new Coordinate[]
+				{
+					new Coordinate(0.068181818181818,0.578282828282829),
+					new Coordinate(0.421717171717172,0.070707070707071),
+					new Coordinate(-0.457070707070707,0.080808080808081),
+					new Coordinate(0.068181818181818,0.578282828282829),
+				}
+			};
+            long[] offsets = { 100, 236 };
+
+            // Act.
+            for (int i = 0; i < offsets.Length; i++)
+            {
+                IGeometry geo = m_Reader.ReadShapeAtOffset(offsets[i], factory);
+
+                // Assert.
+                Assert.IsNotNull(geo);
+                Assert.IsTrue(geo.IsValid);
+                Assert.IsInstanceOf<IPolygon>(geo);
+                IPolygon givenPoly = geo as IPolygon;
+
+                Assert.IsNotNull(givenPoly.ExteriorRing);
+                Assert.AreSame(givenPoly.ExteriorRing, givenPoly.Shell);
+                Assert.AreEqual(givenPoly.Shell.Coordinates.Length, expectedResult[i].Length);
+
+                ILineString givenLine = givenPoly.Shell;
+
+                for (int j = 0; j < givenLine.Coordinates.Length; j++)
+                {
+                    Coordinate currPoint = givenLine.Coordinates[j];
+
+                    HelperMethods.AssertDoubleValuesEqual(currPoint.X, expectedResult[i][j].X);
+                    HelperMethods.AssertDoubleValuesEqual(currPoint.Y, expectedResult[i][j].Y);
+                }
+            }
+        }
+
+        [Test]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ReadShapeAtOffset_TryReadAfterDisposed_shouldThrowException()
         {
@@ -582,6 +849,126 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         }
 
         [Test]
+        public void ReadAllShapes_ReadAllPolygonsFromUnifiedWithNullAtStart_ShouldReturnCorrectValues()
+        {
+            // Arrange.
+            m_TmpFile = new TempFileWriter("UnifiedChecksMaterial.shp", ShpFiles.Read("UnifiedChecksMaterialNullAtStart"));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
+            IGeometryFactory factory = new GeometryFactory();
+
+            IPolygon[] expectedResult = new Polygon[]
+			{
+				new Polygon(new LinearRing(new Coordinate[]
+					{
+						new Coordinate(-0.815656565656566, -0.439393939393939),
+						new Coordinate(-0.353535353535354, -0.795454545454545),
+						new Coordinate(-0.888888888888889,-0.929292929292929),
+						new Coordinate(-1.151515151515152, -0.419191919191919),
+						new Coordinate(-0.815656565656566,-0.439393939393939),
+					})),
+				new Polygon(new LinearRing(new Coordinate[]
+					{
+						new Coordinate(0.068181818181818,0.578282828282829),
+						new Coordinate(0.421717171717172,0.070707070707071),
+						new Coordinate(-0.457070707070707,0.080808080808081),
+						new Coordinate(0.068181818181818,0.578282828282829),
+					}))
+			};
+
+            // Act.
+            IGeometry[] shapes = m_Reader.ReadAllShapes(factory).ToArray();
+
+            Assert.IsNotNull(shapes);
+            Assert.AreEqual(shapes.Length, 2);
+
+            for (int i = 0; i < shapes.Length; i++)
+            {
+                Assert.IsInstanceOf<IPolygon>(shapes[i]);
+                HelperMethods.AssertPolygonsEqual(shapes[i] as IPolygon, expectedResult[i]);
+            }
+        }
+
+        [Test]
+        public void ReadAllShapes_ReadAllPolygonsFromUnifiedWithNullInMiddle_ShouldReturnCorrectValues()
+        {
+            // Arrange.
+            m_TmpFile = new TempFileWriter("UnifiedChecksMaterial.shp", ShpFiles.Read("UnifiedChecksMaterialNullInMiddle"));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
+            IGeometryFactory factory = new GeometryFactory();
+
+            IPolygon[] expectedResult = new Polygon[]
+			{
+				new Polygon(new LinearRing(new Coordinate[]
+					{
+						new Coordinate(-0.815656565656566, -0.439393939393939),
+						new Coordinate(-0.353535353535354, -0.795454545454545),
+						new Coordinate(-0.888888888888889,-0.929292929292929),
+						new Coordinate(-1.151515151515152, -0.419191919191919),
+						new Coordinate(-0.815656565656566,-0.439393939393939),
+					})),
+				new Polygon(new LinearRing(new Coordinate[]
+					{
+						new Coordinate(0.068181818181818,0.578282828282829),
+						new Coordinate(0.421717171717172,0.070707070707071),
+						new Coordinate(-0.457070707070707,0.080808080808081),
+						new Coordinate(0.068181818181818,0.578282828282829),
+					}))
+			};
+
+            // Act.
+            IGeometry[] shapes = m_Reader.ReadAllShapes(factory).ToArray();
+
+            Assert.IsNotNull(shapes);
+            Assert.AreEqual(shapes.Length, 2);
+
+            for (int i = 0; i < shapes.Length; i++)
+            {
+                Assert.IsInstanceOf<IPolygon>(shapes[i]);
+                HelperMethods.AssertPolygonsEqual(shapes[i] as IPolygon, expectedResult[i]);
+            }
+        }
+
+        [Test]
+        public void ReadAllShapes_ReadAllPolygonsFromUnifiedWithNullAtEnd_ShouldReturnCorrectValues()
+        {
+            // Arrange.
+            m_TmpFile = new TempFileWriter("UnifiedChecksMaterial.shp", ShpFiles.Read("UnifiedChecksMaterialNullAtEnd"));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
+            IGeometryFactory factory = new GeometryFactory();
+
+            IPolygon[] expectedResult = new Polygon[]
+			{
+				new Polygon(new LinearRing(new Coordinate[]
+					{
+						new Coordinate(-0.815656565656566, -0.439393939393939),
+						new Coordinate(-0.353535353535354, -0.795454545454545),
+						new Coordinate(-0.888888888888889,-0.929292929292929),
+						new Coordinate(-1.151515151515152, -0.419191919191919),
+						new Coordinate(-0.815656565656566,-0.439393939393939),
+					})),
+				new Polygon(new LinearRing(new Coordinate[]
+					{
+						new Coordinate(0.068181818181818,0.578282828282829),
+						new Coordinate(0.421717171717172,0.070707070707071),
+						new Coordinate(-0.457070707070707,0.080808080808081),
+						new Coordinate(0.068181818181818,0.578282828282829),
+					}))
+			};
+
+            // Act.
+            IGeometry[] shapes = m_Reader.ReadAllShapes(factory).ToArray();
+
+            Assert.IsNotNull(shapes);
+            Assert.AreEqual(shapes.Length, 2);
+
+            for (int i = 0; i < shapes.Length; i++)
+            {
+                Assert.IsInstanceOf<IPolygon>(shapes[i]);
+                HelperMethods.AssertPolygonsEqual(shapes[i] as IPolygon, expectedResult[i]);
+            }
+        }
+
+        [Test]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ReadAllShapes_TryReadAfterDisposed_ShouldThrowException()
         {
@@ -680,6 +1067,123 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             Assert.IsNotNull(polygon);
             Assert.IsInstanceOf<IPolygon>(polygon);
             HelperMethods.AssertPolygonsEqual(polygon as IPolygon, expectedPolygon);
+        }
+
+        [Test]
+        public void ReadShapeAtIndex_ReadUnifiedCheckMaterialWithNullAtStart_ShouldReturnBothShapesCorrectly()
+        {
+            // Arrange.
+            m_TmpFile = new TempFileWriter("shape.shp", ShpFiles.Read("UnifiedChecksMaterialNullAtStart"));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
+            IGeometryFactory factory = new GeometryFactory();
+
+            IPolygon[] expectedResult = new Polygon[]
+			{
+				new Polygon(new LinearRing(new Coordinate[]
+					{
+						new Coordinate(-0.815656565656566, -0.439393939393939),
+						new Coordinate(-0.353535353535354, -0.795454545454545),
+						new Coordinate(-0.888888888888889,-0.929292929292929),
+						new Coordinate(-1.151515151515152, -0.419191919191919),
+						new Coordinate(-0.815656565656566,-0.439393939393939),
+					})),
+				new Polygon(new LinearRing(new Coordinate[]
+					{
+						new Coordinate(0.068181818181818,0.578282828282829),
+						new Coordinate(0.421717171717172,0.070707070707071),
+						new Coordinate(-0.457070707070707,0.080808080808081),
+						new Coordinate(0.068181818181818,0.578282828282829),
+					}))
+			};
+
+            // Act.
+            for (int i = 0; i < expectedResult.Length; i++)
+            {
+                IGeometry result = m_Reader.ReadShapeAtIndex(i, factory);
+
+                Assert.IsNotNull(result);
+                Assert.IsInstanceOf<IPolygon>(result);
+
+                HelperMethods.AssertPolygonsEqual(expectedResult[i], result as IPolygon);
+            }
+        }
+
+        [Test]
+        public void ReadShapeAtIndex_ReadUnifiedCheckMaterialWithNullAtEnd_ShouldReturnBothShapesCorrectly()
+        {
+            // Arrange.
+            m_TmpFile = new TempFileWriter("shape.shp", ShpFiles.Read("UnifiedChecksMaterialNullAtEnd"));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
+            IGeometryFactory factory = new GeometryFactory();
+
+            IPolygon[] expectedResult = new Polygon[]
+			{
+				new Polygon(new LinearRing(new Coordinate[]
+					{
+						new Coordinate(-0.815656565656566, -0.439393939393939),
+						new Coordinate(-0.353535353535354, -0.795454545454545),
+						new Coordinate(-0.888888888888889,-0.929292929292929),
+						new Coordinate(-1.151515151515152, -0.419191919191919),
+						new Coordinate(-0.815656565656566,-0.439393939393939),
+					})),
+				new Polygon(new LinearRing(new Coordinate[]
+					{
+						new Coordinate(0.068181818181818,0.578282828282829),
+						new Coordinate(0.421717171717172,0.070707070707071),
+						new Coordinate(-0.457070707070707,0.080808080808081),
+						new Coordinate(0.068181818181818,0.578282828282829),
+					}))
+			};
+
+            // Act.
+            for (int i = 0; i < expectedResult.Length; i++)
+            {
+                IGeometry result = m_Reader.ReadShapeAtIndex(i, factory);
+
+                Assert.IsNotNull(result);
+                Assert.IsInstanceOf<IPolygon>(result);
+
+                HelperMethods.AssertPolygonsEqual(expectedResult[i], result as IPolygon);
+            }
+        }
+
+        [Test]
+        public void ReadShapeAtIndex_ReadUnifiedCheckMaterialWithNulLInMiddle_ShouldReturnBothShapesCorrectly()
+        {
+            // Arrange.
+            m_TmpFile = new TempFileWriter("shape.shp", ShpFiles.Read("UnifiedChecksMaterialNullInMiddle"));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
+            IGeometryFactory factory = new GeometryFactory();
+
+            IPolygon[] expectedResult = new Polygon[]
+			{
+				new Polygon(new LinearRing(new Coordinate[]
+					{
+						new Coordinate(-0.815656565656566, -0.439393939393939),
+						new Coordinate(-0.353535353535354, -0.795454545454545),
+						new Coordinate(-0.888888888888889,-0.929292929292929),
+						new Coordinate(-1.151515151515152, -0.419191919191919),
+						new Coordinate(-0.815656565656566,-0.439393939393939),
+					})),
+				new Polygon(new LinearRing(new Coordinate[]
+					{
+						new Coordinate(0.068181818181818,0.578282828282829),
+						new Coordinate(0.421717171717172,0.070707070707071),
+						new Coordinate(-0.457070707070707,0.080808080808081),
+						new Coordinate(0.068181818181818,0.578282828282829),
+					}))
+			};
+
+            // Act.
+            for (int i = 0; i < expectedResult.Length; i++)
+            {
+                IGeometry result = m_Reader.ReadShapeAtIndex(i, factory);
+
+                Assert.IsNotNull(result);
+                Assert.IsInstanceOf<IPolygon>(result);
+
+                HelperMethods.AssertPolygonsEqual(expectedResult[i], result as IPolygon);
+            }
         }
 
         [Test]

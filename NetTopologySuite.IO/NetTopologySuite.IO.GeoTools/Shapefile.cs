@@ -163,6 +163,9 @@ namespace NetTopologySuite.IO
                 case ShapeGeometryType.MultiPointZM:
                     return new MultiPointHandler(type);
 
+                case ShapeGeometryType.NullShape:
+                    return new NullShapeHandler();
+
                 default:
                     return null;
             }
