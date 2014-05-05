@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using NetTopologySuite.Features;
 using NetTopologySuite.IO.Builders;
 using NetTopologySuite.IO.Geometries;
@@ -36,8 +35,8 @@ namespace NetTopologySuite.IO.Converters
                 string propertyName = (string)reader.Value;
                 switch (propertyName)
                 {
-                    case "id":                        
-                        id = ReadId(reader);                        
+                    case "id":
+                        id = ReadId(reader);
                         break;
                     case "type":
                         type = ReadType(reader);
@@ -60,11 +59,11 @@ namespace NetTopologySuite.IO.Converters
             }
 
             reader.Read();
-            TopoBuilder builder = new TopoBuilder(type, 
-                id, 
+            TopoBuilder builder = new TopoBuilder(type,
+                id,
                 properties,
-                coordinates, 
-                arcs, 
+                coordinates,
+                arcs,
                 geometries);
             return builder.Build();
         }
@@ -148,9 +147,6 @@ namespace NetTopologySuite.IO.Converters
         /// * a int[][] => MultiLineString/Polygon
         /// * a int[][][] => MultiPolygon
         /// </summary>
-        /// <param name="reader"></param>
-        /// <param name="serializer"></param>
-        /// <returns></returns>
         private int[][][] ReadArcs(JsonReader reader, JsonSerializer serializer)
         {
             reader.Read();
@@ -166,12 +162,7 @@ namespace NetTopologySuite.IO.Converters
                     // LineString
                     d_arcs = new int[1][][];
                     int[][] d_arc = new int[1][];
-                    d_arc[0] = new int[s_arcs.Count];
-                    for (int i = 0; i < s_arcs.Count; i++)
-                    {
-                        int val = s_arcs[i].Value<int>();
-                        d_arc[0][i] = val;
-                    }
+                    d_arc[0] = ConvertArr(s_arcs);
                     d_arcs[0] = d_arc;
                     return d_arcs;
                 }
@@ -186,13 +177,8 @@ namespace NetTopologySuite.IO.Converters
                         int[][] d_arc = new int[s_arc.Count][];
                         for (int j = 0; j < s_arc.Count; j++)
                         {
-                            JArray s_inner = (JArray) s_arc[j];
-                            int[] d_inner = new int[s_inner.Count];
-                            for (int k = 0; k < s_inner.Count; k++)
-                            {
-                                int val = s_inner[k].Value<int>();
-                                d_inner[k] = val;
-                            }
+                            JArray s_inner = (JArray)s_arc[j];
+                            int[] d_inner = ConvertArr(s_inner);
                             d_arc[i] = d_inner;
                         }
                         d_arcs[i] = d_arc;
@@ -201,12 +187,7 @@ namespace NetTopologySuite.IO.Converters
                     {
                         // LineString/Polygon                        
                         int[][] d_arc = new int[1][];
-                        d_arc[0] = new int[s_arc.Count];
-                        for (int j = 0; j < s_arc.Count; j++)
-                        {
-                            int val = s_arc[j].Value<int>();
-                            d_arc[0][j] = val;
-                        }
+                        d_arc[0] = ConvertArr(s_arc); ;
                         d_arcs[i] = d_arc;
                     }
                 }
@@ -218,6 +199,11 @@ namespace NetTopologySuite.IO.Converters
                     throw new ArgumentException("Expected EndArray but was " + reader.TokenType);
                 reader.Read();
             }
+        }
+
+        public override bool CanConvert(Type objectType)
+        {
+            return typeof(TopoObject).IsAssignableFrom(objectType);
         }
 
         private static TopoObject[] ReadGeometries(JsonReader reader, JsonSerializer serializer)
@@ -236,9 +222,12 @@ namespace NetTopologySuite.IO.Converters
             return list.ToArray();
         }
 
-        public override bool CanConvert(Type objectType)
+        private static int[] ConvertArr(JArray arr)
         {
-            return typeof(TopoObject).IsAssignableFrom(objectType);
+            int[] res = new int[arr.Count];
+            for (int i = 0; i < arr.Count; i++)
+                res[i] = arr[i].Value<int>();
+            return res;
         }
     }
 }
