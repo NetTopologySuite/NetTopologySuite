@@ -216,6 +216,25 @@ namespace NetTopologySuite.IO.Helpers
                     coords = MakeCopyReversed(temp);
                 }
                 else coords = _arcs[el];
+
+                if (i > 0)
+                {
+                    /*
+                     * https://github.com/topojson/topojson-specification#214-arc-indexes
+                     * If more than one arc is referenced to construct a LineString or LinearRing, 
+                     * the first position of a subsequent arc must be equal to the last position of the previous arc.
+                     * Then, when reconstructing the geometry, the first position of each arc except the first 
+                     * may be dropped; equivalently, the last position of each arc except the last may be dropped.
+                     */
+                    Coordinate last = list[list.Count - 1];
+                    if (!coords[0].Equals(last))
+                        throw new ArgumentException("invalid arc continuation");
+                    /* no need to fix anything: NTS can handle stuff like this easily
+                    Coordinate[] temp = new Coordinate[coords.Length - 1];
+                    Array.Copy(coords, 1, temp, 0, temp.Length);
+                    coords = temp;
+                    */
+                }
                 list.AddRange(coords);
             }
             return list.ToArray();
