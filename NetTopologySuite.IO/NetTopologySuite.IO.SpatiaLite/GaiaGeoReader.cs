@@ -292,6 +292,9 @@ namespace NetTopologySuite.IO
                 if (ToBaseGeometryType((GaiaGeoGeometry)gt) != GaiaGeoGeometry.GAIA_LINESTRING)
                     throw new Exception();
 
+                //Since Uncompressed MultiGeom can contain compressed we need to set it here also
+                readCoordinates = SetReadCoordinatesFunction(gaiaImport, (GaiaGeoGeometry)gt);
+
                 lineStrings[i] = ParseWkbLineString(blob, ref offset, factory, factory.CreateLineString, readCoordinates, gaiaImport);
             }
             return factory.CreateMultiLineString(lineStrings);
@@ -320,6 +323,10 @@ namespace NetTopologySuite.IO
                 var gt = gaiaImport.GetInt32(blob, ref offset);
                 if (ToBaseGeometryType((GaiaGeoGeometry)gt) != GaiaGeoGeometry.GAIA_POLYGON)
                     throw new Exception();
+
+                //Since Uncompressed MultiGeom can contain compressed we need to set it here also
+                readCoordinates = SetReadCoordinatesFunction(gaiaImport, (GaiaGeoGeometry)gt);
+
 
                 polygons[i] = ParseWkbPolygon(blob, ref offset, factory, readCoordinates, gaiaImport);
             }
