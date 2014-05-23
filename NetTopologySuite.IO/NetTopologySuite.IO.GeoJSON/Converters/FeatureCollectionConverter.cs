@@ -69,7 +69,10 @@ namespace NetTopologySuite.IO.Converters
                     fc.CRS = serializer.Deserialize<ICRSObject>(reader);                    
                     continue;    
                 }
-                throw new ArgumentException("Invalid property name: " + val);
+
+                // additional members are ignored: see https://code.google.com/p/nettopologysuite/issues/detail?id=186
+                reader.Read(); // read property value
+                reader.Read(); // move next                
             }
             return fc;
         }
