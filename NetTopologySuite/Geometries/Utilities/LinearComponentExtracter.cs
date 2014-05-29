@@ -7,7 +7,7 @@ namespace NetTopologySuite.Geometries.Utilities
     /// <summary> 
     /// Extracts all the 1-dimensional (<see cref="ILineString"/>) components from a <see cref="IGeometry"/>.
     /// For polygonal geometries, this will extract all the component <see cref="ILinearRing"/>s.
-    /// If desired, <c>LinearRing</c>s can be forced to be returned as <c>LineString</c>s.
+    /// If desired, <see cref="ILinearRing"/>s can be forced to be returned as <see cref="ILineString"/>s.
     /// </summary>
     public class LinearComponentExtracter : IGeometryComponentFilter
     {

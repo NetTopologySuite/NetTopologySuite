@@ -4,7 +4,8 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Geometries.Utilities
 {
     ///<summary>
-    /// Extracts all the <see cref="ILineString"/> elements from a <see cref="IGeometry"/>.</summary>
+    /// Extracts all the <see cref="ILineString"/> elements from a <see cref="IGeometry"/>.
+    /// </summary>
     ///<see cref="GeometryExtracter"/>
     public class LineStringExtracter : IGeometryFilter
     {
