@@ -11,7 +11,8 @@ namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
     /// A class which supports creating new <see cref="IGeometry"/>s
-    /// which are modifications of existing ones.
+    /// which are modifications of existing ones,
+    /// maintaining the same type structure.
     /// </summary>
     /// <remarks>
     /// Geometry objects are intended to be treated as immutable.
@@ -28,7 +29,7 @@ namespace NetTopologySuite.Geometries.Utilities
     /// The editor does not check whether changing coordinate values makes the result Geometry invalid
     /// </item>
     /// <item>
-    /// The coordinate lists may be changed (e.g. by adding or deleting coordinates).
+    /// The coordinate lists may be changed (e.g. by adding, deleting or modifying coordinates).
     /// The modifed coordinate lists must be consistent with their original parent component
     /// (e.g. a <tt>LinearRing</tt> must always have at least 4 coordinates, and the first and last
     /// coordinate must be equal).
@@ -167,7 +168,8 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             /// <summary>
             /// Edits a Geometry by returning a new Geometry with a modification.
-            /// The returned Geometry might be the same as the Geometry passed in.
+            /// The returned Geometry may be the input geometry itself.
+            /// It may be <code>null</code> if the geometry is to be deleted.
             /// </summary>
             /// <param name="geometry">The Geometry to modify.</param>
             /// <param name="factory">
