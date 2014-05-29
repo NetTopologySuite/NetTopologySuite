@@ -9,11 +9,12 @@ namespace NetTopologySuite.Geometries.Utilities
     public class LineStringExtracter : IGeometryFilter
     {
         ///<summary>
-        /// Extracts the <see cref="ILineString"/> elements from a single <see cref="IGeometry"/> and adds them to the<see cref="List{ILineString}"/>.
+        /// Extracts the <see cref="ILineString"/> elements from a single <see cref="IGeometry"/> 
+        /// and adds them to the<see cref="List{ILineString}"/>.
         ///</summary>
         /// <param name="geom">The geometry from which to extract</param>
         /// <param name="lines">The list to add the extracted elements to</param>
-        /// <returns>The <see cref="List{ILineString}"/></returns>
+        /// <returns>The <paramref name="lines"/> list argument</returns>
         public static ICollection<IGeometry> GetLines(IGeometry geom, ICollection<IGeometry> lines)
         {
             if (geom is ILineString)
@@ -25,18 +26,30 @@ namespace NetTopologySuite.Geometries.Utilities
                 geom.Apply(new LineStringExtracter(lines));
             }
             // skip non-LineString elemental geometries
-
             return lines;
         }
 
         ///<summary>
-        /// Extracts the <see cref="ILineString"/> elements from a single <see cref="IGeometry"/> and returns them in a <see cref="ICollection{ILineString}"/>.
+        /// Extracts the <see cref="ILineString"/> elements from a single <see cref="IGeometry"/> 
+        /// and returns them in a <see cref="ICollection{ILineString}"/>.
         ///</summary>
-        /// <param name="geom"></param>
-        /// <returns>The <see cref="ICollection{ILineString}"/></returns>
+        /// <param name="geom">The geometry from which to extract</param>
+        /// <returns>A list containing the linear elements</returns>
         public static ICollection<IGeometry> GetLines(IGeometry geom)
         {
             return GetLines(geom, new List<IGeometry>());
+        }
+
+        /// <summary>
+        /// Extracts the <see cref="ILineString"/> elements from a single <see cref="IGeometry"/>
+        /// and returns them as either a <see cref="ILineString"/> or <see cref="IMultiLineString"/>.
+        /// </summary>
+        /// <param name="geom">The geometry from which to extract</param>
+        /// <returns>A linear geometry</returns>         
+        public static IGeometry GetGeometry(IGeometry geom)
+        {
+            ICollection<IGeometry> list = GetLines(geom);
+            return geom.Factory.BuildGeometry(list);
         }
 
         private readonly ICollection<IGeometry> _comps;
