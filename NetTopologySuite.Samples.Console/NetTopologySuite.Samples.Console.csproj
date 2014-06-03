@@ -227,6 +227,10 @@
       <Project>{8e6a486b-5418-4fe1-a14f-cf2f3b74d4e0}</Project>
       <Name>NetTopologySuite.IO.SqlServer2008</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.Tests.NUnit\NetTopologySuite.Tests.NUnit.csproj">
+      <Project>{a1525c90-fa00-449d-b3c4-cba45d5e916c}</Project>
+      <Name>NetTopologySuite.Tests.NUnit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
       <Name>NetTopologySuite</Name>

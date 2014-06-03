@@ -70,6 +70,7 @@
     <Compile Include="Geometries\CoordinateSequencesTest.cs" />
     <Compile Include="Geometries\CoordinateTest.cs" />
     <Compile Include="Geometries\GeometryTestFactory.cs" />
+    <Compile Include="GeometryTestCase.cs" />
     <Compile Include="IO\CoordinateBufferTest.cs" />
     <Compile Include="Geometries\Implementation\CoordinateSequenceReversedTest.cs" />
     <Compile Include="Index\KdTree\KdTreeTest.cs" />

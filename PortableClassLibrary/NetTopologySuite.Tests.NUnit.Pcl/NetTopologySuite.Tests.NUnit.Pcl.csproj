@@ -223,6 +223,9 @@
     <Compile Include="..\..\NetTopologySuite.Tests.NUnit\GeometryServiceProviderTest.cs">
       <Link>GeometryServiceProviderTest.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\GeometryTestCase.cs">
+      <Link>GeometryTestCase.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite.Tests.NUnit\GeometryUtils.cs">
       <Link>GeometryUtils.cs</Link>
     </Compile>

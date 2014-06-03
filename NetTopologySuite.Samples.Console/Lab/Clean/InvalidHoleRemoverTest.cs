@@ -1,12 +1,12 @@
-﻿using System;
-using GeoAPI.Geometries;
+﻿using GeoAPI.Geometries;
 using NetTopologySuite.IO;
+using NetTopologySuite.Tests.NUnit;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Lab.Clean
 {
-    [TestFixture]
-    public class InvalidHoleRemoverTest
+    [TestFixture, Category("Lab")]
+    public class InvalidHoleRemoverTest : GeometryTestCase
     {
         [Test]
         public void NoHole()
@@ -65,19 +65,6 @@ namespace NetTopologySuite.Samples.Lab.Clean
 
             IGeometry actual = InvalidHoleRemover.Clean(input);
             CheckEqual(expected, actual);
-        }
-
-        [Test]
-        private void CheckEqual(IGeometry expected, IGeometry actual)
-        {
-            IGeometry actualNorm = actual.Normalized();
-            bool equal = actualNorm.EqualsExact(expected.Normalized());
-            if (!equal)
-            {
-                Console.WriteLine("FAIL - Expected = " + expected
-                    + " actual = " + actual.Normalized());
-            }
-            Assert.That(equal, Is.True);
         }
 
         private IGeometry read(string wkt)
