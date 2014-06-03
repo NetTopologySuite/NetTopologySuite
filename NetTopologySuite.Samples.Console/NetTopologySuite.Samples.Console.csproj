@@ -97,6 +97,8 @@
     <Compile Include="Geometries\extendedcoordinatesequencefactory.cs" />
     <Compile Include="Geometries\precisionmodelexample.cs" />
     <Compile Include="Geometries\simplemethodsexample.cs" />
+    <Compile Include="Lab\Clean\InvalidHoleRemover.cs" />
+    <Compile Include="Lab\Clean\InvalidHoleRemoverTest.cs" />
     <Compile Include="LinearReferencing\LinearReferencingExample.cs" />
     <Compile Include="Operation\Poligonize\SplitPolygonExample.cs" />
     <Compile Include="Technique\ExtractLinestringByMeasure.cs" />
