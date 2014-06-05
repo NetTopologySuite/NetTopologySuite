@@ -136,6 +136,9 @@
     <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\EnvelopeTest.cs">
       <Link>Geometries\EnvelopeTest.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\GeometryCollectionEnumeratorTest.cs">
+      <Link>GeometryCollectionEnumeratorTest.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Geometries\GeometryCollectionImplTest.cs">
       <Link>Geometries\GeometryCollectionImplTest.cs</Link>
     </Compile>
