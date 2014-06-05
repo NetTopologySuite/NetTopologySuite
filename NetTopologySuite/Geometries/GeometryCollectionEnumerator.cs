@@ -17,7 +17,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// The <c>GeometryCollection</c> being iterated over.
         /// </summary>
-        private readonly IGeometryCollection _parent;
+        private readonly IGeometry _parent;
 
         /// <summary>
         /// Indicates whether or not the first element (the <c>GeometryCollection</c>)
@@ -50,7 +50,7 @@ namespace NetTopologySuite.Geometries
         /// The collection over which to iterate; also, the first
         /// element returned by the iterator.
         /// </param>
-        public GeometryCollectionEnumerator(IGeometryCollection parent) 
+        public GeometryCollectionEnumerator(IGeometry parent) 
         {
             _parent = parent;
             _atStart = true;
@@ -103,6 +103,8 @@ namespace NetTopologySuite.Geometries
                 if (_atStart)
                 {
                     _atStart = false;
+                    if (IsAtomic(_parent))
+                        _index++;
                     return _parent;
                 }
                 if (_subcollectionEnumerator != null)
@@ -123,6 +125,11 @@ namespace NetTopologySuite.Geometries
                 }
                 return obj;
             }
+        }
+
+        private static bool IsAtomic(IGeometry geom)
+        {
+            return !(geom is GeometryCollection);
         }
 
         public void Dispose()
