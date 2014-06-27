@@ -10,11 +10,17 @@
 		<NuGetCommand>"$(MSBuildProjectDirectory)\.nuget\nuget.exe" pack</NuGetCommand>
 	</PropertyGroup>
 
-	<Target Name="CleanDebug">
-		<MSBuild Projects="$(SolutionFile)" Targets="Clean" Properties="Configuration=Debug" />
+	<Target Name="Clean">
+		<RemoveDir Directories="$(MSBuildProjectDirectory)\bin"/>
+		<RemoveDir Directories="$(MSBuildProjectDirectory)\obj"/>
+	</Target>	
+	<Target Name="CleanDebug" DependsOnTargets="Clean">
+		<MSBuild Projects="$(SolutionFile)" Targets="Clean" Properties="Configuration=Debug" />		
+		<RemoveDir Directories="$(MSBuildProjectDirectory)\Debug"/>
 	</Target>
-
-	<Target Name="CleanRelease">
+	<Target Name="CleanRelease" DependsOnTargets="Clean">
+	<MSBuild Projects="$(SolutionFile)" Targets="Clean" Properties="Configuration=Release" />
+		<RemoveDir Directories="$(MSBuildProjectDirectory)\bin"/>
 		<RemoveDir Directories="$(MSBuildProjectDirectory)\obj"/>
 		<RemoveDir Directories="$(MSBuildProjectDirectory)\Release"/>
 	</Target>
