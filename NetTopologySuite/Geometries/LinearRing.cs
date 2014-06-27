@@ -20,8 +20,6 @@ namespace NetTopologySuite.Geometries
     /// </remarks>
 #if !PCL
     [Serializable]
-#else
-    [System.Runtime.Serialization.DataContract]
 #endif
     public class LinearRing : LineString, ILinearRing
     {

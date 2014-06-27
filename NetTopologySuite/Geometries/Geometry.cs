@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.Xml;
 using GeoAPI.Geometries;
 using GeoAPI.Operation.Buffer;
@@ -22,7 +21,7 @@ using NetTopologySuite.Operation.Valid;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Geometries
-{   
+{
     /// <summary>  
     /// A representation of a planar, linear vector geometry.
     /// </summary>
@@ -125,16 +124,13 @@ namespace NetTopologySuite.Geometries
     /// </remarks>
 #if !PCL
     [Serializable]
-#else
-    [System.Runtime.Serialization.DataContract]
-    [System.Runtime.Serialization.KnownType("GetKnownTypes")]
 #endif
     public abstract class Geometry : IGeometry
-    {        
+    {
         /// <summary>
         /// 
         /// </summary>
-        private static readonly Type[] _sortedClasses = new []
+        private static readonly Type[] _sortedClasses = new[]
                                  {
                                      typeof (Point),
                                      typeof (MultiPoint),
@@ -146,25 +142,7 @@ namespace NetTopologySuite.Geometries
                                      typeof (GeometryCollection),
                                  };
 
-#if PCL
-        private static Type[] GetKnownTypes()
-        {
-            return _sortedClasses;
-        }
-
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context)
-        {
-            _factory = GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(_srid);
-
-        }
-#endif
-
-
         //FObermaier: not *readonly* due to SRID property in geometryfactory
-#if PCL
-        [IgnoreDataMember]
-#endif
         private /*readonly*/ IGeometryFactory _factory;
 
         /// <summary> 
@@ -173,8 +151,8 @@ namespace NetTopologySuite.Geometries
         /// <returns>The factory for this point.</returns>
         public IGeometryFactory Factory
         {
-            get 
-            { 
+            get
+            {
                 return _factory;
             }
         }
@@ -183,11 +161,8 @@ namespace NetTopologySuite.Geometries
          * An object reference which can be used to carry ancillary data defined
          * by the client.
          */
-#if PCL
-        [DataMember]
-#endif
         private object _userData;
-        
+
         /// <summary> 
         /// Gets/Sets the user data object for this point, if any.
         /// </summary>
@@ -196,14 +171,11 @@ namespace NetTopologySuite.Geometries
         /// An example use might be to add an object representing a Coordinate Reference System.
         /// Note that user data objects are not present in geometries created by
         /// construction methods.
-#if PCL
-        /// This data is not serialized!
-#endif
         /// </remarks>
         public object UserData
         {
             get
-            {                
+            {
                 return _userData;
             }
             set
@@ -211,19 +183,13 @@ namespace NetTopologySuite.Geometries
                 _userData = value;
             }
         }
-           
+
         /// <summary>
         /// The bounding box of this <c>Geometry</c>.
         /// </summary>
-#if PCL
-        [DataMember]
-#endif
         private Envelope _envelope;
-       
+
         // The ID of the Spatial Reference System used by this <c>Geometry</c>
-#if PCL
-        [DataMember]
-#endif
         private int _srid;
         /// <summary>  
         /// Sets the ID of the Spatial Reference System used by the <c>Geometry</c>.
@@ -246,20 +212,20 @@ namespace NetTopologySuite.Geometries
          */
         public int SRID
         {
-            get 
-            { 
-                return _srid; 
-            }
-            set 
+            get
             {
-                
+                return _srid;
+            }
+            set
+            {
+
                 _srid = value;
 
                 // Adjust the geometry factory
                 _factory = GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(
                     _factory.PrecisionModel, value, _factory.CoordinateSequenceFactory);
 
-				var collection = this as IGeometryCollection;
+                var collection = this as IGeometryCollection;
                 if (collection == null) return;
 
                 foreach (var geometry in collection.Geometries)
@@ -301,8 +267,8 @@ namespace NetTopologySuite.Geometries
         protected static bool HasNonEmptyElements(IGeometry[] geometries)
         {
             foreach (IGeometry g in geometries)
-                if(!g.IsEmpty)
-                    return true;                                        
+                if (!g.IsEmpty)
+                    return true;
             return false;
         }
 
@@ -316,7 +282,7 @@ namespace NetTopologySuite.Geometries
             foreach (object o in array)
                 if (o == null)
                     return true;
-            return false;            
+            return false;
         }
 
         /// <summary>  
@@ -326,9 +292,6 @@ namespace NetTopologySuite.Geometries
         /// the specification of the grid of allowable points, for this
         /// <c>Geometry</c> and all other <c>Geometry</c>s.
         /// </returns>
-#if PCL
-        [IgnoreDataMember]
-#endif
         public IPrecisionModel PrecisionModel
         {
             get
@@ -397,7 +360,7 @@ namespace NetTopologySuite.Geometries
                 return 1;
             }
         }
-        
+
         /// <summary>
         /// Returns an element Geometry from a GeometryCollection,
         /// or <code>this</code>, if the geometry is not a collection.
@@ -432,199 +395,196 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <returns><c>true</c> if this <code>Geometry</code> is simple</returns>
         /// <seealso cref="IsValid"/>
-              public bool IsSimple
-              {
-                  get
-                  {
-                      var isSimpleOp = new IsSimpleOp(this);
-                      return isSimpleOp.IsSimple();
-                  }
-              }
+        public bool IsSimple
+        {
+            get
+            {
+                var isSimpleOp = new IsSimpleOp(this);
+                return isSimpleOp.IsSimple();
+            }
+        }
 
-              /// <summary>  
-              /// Tests whether this <c>Geometry</c> is topologically 
-              /// valid, according to the OGC SFS specification.<para/>
-              /// For validity rules see the documentation for the specific geometry subclass.
-              /// </summary>
-              /// <returns><c>true</c> if this <c>Geometry</c> is valid.</returns>
-              public virtual bool IsValid
-              {
-                  get
-                  {
-                      return new IsValidOp(this).IsValid;
-                  }
-              }
+        /// <summary>  
+        /// Tests whether this <c>Geometry</c> is topologically 
+        /// valid, according to the OGC SFS specification.<para/>
+        /// For validity rules see the documentation for the specific geometry subclass.
+        /// </summary>
+        /// <returns><c>true</c> if this <c>Geometry</c> is valid.</returns>
+        public virtual bool IsValid
+        {
+            get
+            {
+                return new IsValidOp(this).IsValid;
+            }
+        }
 
-              /// <summary> 
-              /// Tests whether the set of points covered in this <c>Geometry</c> is empty.
-              /// </summary>
-              /// <returns><c>true</c> if this <c>Geometry</c> does not cover any points.</returns>
-              public abstract bool IsEmpty { get; }
+        /// <summary> 
+        /// Tests whether the set of points covered in this <c>Geometry</c> is empty.
+        /// </summary>
+        /// <returns><c>true</c> if this <c>Geometry</c> does not cover any points.</returns>
+        public abstract bool IsEmpty { get; }
 
-              /// <summary>  
-              /// Returns the minimum distance between this <c>Geometry</c>
-              /// and another <c>Geometry</c> g.
-              /// </summary>
-              /// <param name="g">The <c>Geometry</c> from which to compute the distance.</param>
-              /// <returns>The distance between the geometries</returns>
-              /// <returns>0 if either input geometry is empty</returns>
-              /// <exception cref="ArgumentException">if g is null</exception>
-              public double Distance(IGeometry g)
-              {
-                  return DistanceOp.Distance(this, g);
-              }
+        /// <summary>  
+        /// Returns the minimum distance between this <c>Geometry</c>
+        /// and another <c>Geometry</c> g.
+        /// </summary>
+        /// <param name="g">The <c>Geometry</c> from which to compute the distance.</param>
+        /// <returns>The distance between the geometries</returns>
+        /// <returns>0 if either input geometry is empty</returns>
+        /// <exception cref="ArgumentException">if g is null</exception>
+        public double Distance(IGeometry g)
+        {
+            return DistanceOp.Distance(this, g);
+        }
 
-              /// <summary> 
-              /// Tests whether the distance from this <c>Geometry</c>
-              /// to another is less than or equal to a specified value.
-              /// </summary>
-              /// <param name="geom">the Geometry to check the distance to.</param>
-              /// <param name="distance">the distance value to compare.</param>
-              /// <returns><c>true</c> if the geometries are less than <c>distance</c> apart.</returns>
-              public bool IsWithinDistance(IGeometry geom, double distance)
-              {
-                  double envDist = EnvelopeInternal.Distance(geom.EnvelopeInternal);            
-                  if (envDist > distance)
-                      return false;
-                  return DistanceOp.IsWithinDistance(this, geom, distance);            
-              }
+        /// <summary> 
+        /// Tests whether the distance from this <c>Geometry</c>
+        /// to another is less than or equal to a specified value.
+        /// </summary>
+        /// <param name="geom">the Geometry to check the distance to.</param>
+        /// <param name="distance">the distance value to compare.</param>
+        /// <returns><c>true</c> if the geometries are less than <c>distance</c> apart.</returns>
+        public bool IsWithinDistance(IGeometry geom, double distance)
+        {
+            double envDist = EnvelopeInternal.Distance(geom.EnvelopeInternal);
+            if (envDist > distance)
+                return false;
+            return DistanceOp.IsWithinDistance(this, geom, distance);
+        }
 
-              /// <summary>  
-              /// Returns the area of this <c>Geometry</c>.
-              /// Areal Geometries have a non-zero area.
-              /// They override this function to compute the area.
-              /// Others return 0.0
-              /// </summary>
-              /// <returns>The area of the Geometry.</returns>
-              public virtual double Area
-              {
-                  get
-                  {
-                      return 0.0;
-                  }
-              }
+        /// <summary>  
+        /// Returns the area of this <c>Geometry</c>.
+        /// Areal Geometries have a non-zero area.
+        /// They override this function to compute the area.
+        /// Others return 0.0
+        /// </summary>
+        /// <returns>The area of the Geometry.</returns>
+        public virtual double Area
+        {
+            get
+            {
+                return 0.0;
+            }
+        }
 
-              /// <summary> 
-              /// Returns the length of this <c>Geometry</c>.
-              /// Linear geometries return their length.
-              /// Areal geometries return their perimeter.
-              /// They override this function to compute the length.
-              /// Others return 0.0
-              /// </summary>
-              /// <returns>The length of the Geometry.</returns>
-              public virtual double Length
-              {
-                  get
-                  {
-                      return 0.0;
-                  }
-              }
+        /// <summary> 
+        /// Returns the length of this <c>Geometry</c>.
+        /// Linear geometries return their length.
+        /// Areal geometries return their perimeter.
+        /// They override this function to compute the length.
+        /// Others return 0.0
+        /// </summary>
+        /// <returns>The length of the Geometry.</returns>
+        public virtual double Length
+        {
+            get
+            {
+                return 0.0;
+            }
+        }
 
-              /// <summary> 
-              /// Computes the centroid of this <c>Geometry</c>.
-              /// The centroid 
-              /// is equal to the centroid of the set of component Geometries of highest
-              /// dimension (since the lower-dimension geometries contribute zero 
-              /// "weight" to the centroid).
-              /// <para/>
-              /// The centroid of an empty geometry is <c>POINT EMPTY</c>.
-              /// </summary>
-              /// <returns>A Point which is the centroid of this Geometry.</returns>
-              public IPoint Centroid
-              {
-                  get
-                  {
-                      if (IsEmpty)
-                      {
-                          return Factory.CreatePoint((Coordinate)null);
-                      }
+        /// <summary> 
+        /// Computes the centroid of this <c>Geometry</c>.
+        /// The centroid 
+        /// is equal to the centroid of the set of component Geometries of highest
+        /// dimension (since the lower-dimension geometries contribute zero 
+        /// "weight" to the centroid).
+        /// <para/>
+        /// The centroid of an empty geometry is <c>POINT EMPTY</c>.
+        /// </summary>
+        /// <returns>A Point which is the centroid of this Geometry.</returns>
+        public IPoint Centroid
+        {
+            get
+            {
+                if (IsEmpty)
+                {
+                    return Factory.CreatePoint((Coordinate)null);
+                }
 
-                      var centPt = Algorithm.Centroid.GetCentroid(this);
-                      return CreatePointFromInternalCoord(centPt, this);
-                  }
-              }
+                var centPt = Algorithm.Centroid.GetCentroid(this);
+                return CreatePointFromInternalCoord(centPt, this);
+            }
+        }
 
-              /// <summary>
-              /// Computes an interior point of this <c>Geometry</c>.
-              /// </summary>
-              /// <remarks>
-              /// An interior point is guaranteed to lie in the interior of the Geometry,
-              /// if it possible to calculate such a point exactly. Otherwise,
-              /// the point may lie on the boundary of the point.
-              /// <para/>
-              /// The interior point of an empty geometry is <c>POINT EMPTY</c>.
-              /// </remarks>
-              /// <returns>A <c>Point</c> which is in the interior of this Geometry.</returns>
-              public IPoint InteriorPoint
-              {
-                  get
-                  {
-                      if (IsEmpty)
-                          return Factory.CreatePoint((Coordinate)null);
+        /// <summary>
+        /// Computes an interior point of this <c>Geometry</c>.
+        /// </summary>
+        /// <remarks>
+        /// An interior point is guaranteed to lie in the interior of the Geometry,
+        /// if it possible to calculate such a point exactly. Otherwise,
+        /// the point may lie on the boundary of the point.
+        /// <para/>
+        /// The interior point of an empty geometry is <c>POINT EMPTY</c>.
+        /// </remarks>
+        /// <returns>A <c>Point</c> which is in the interior of this Geometry.</returns>
+        public IPoint InteriorPoint
+        {
+            get
+            {
+                if (IsEmpty)
+                    return Factory.CreatePoint((Coordinate)null);
 
-                      Coordinate interiorPt = null;
-                      Dimension dim = Dimension;
-                      if (dim == Dimension.Point)
-                      {
-                          InteriorPointPoint intPt = new InteriorPointPoint(this);
-                          interiorPt = intPt.InteriorPoint;
-                      }
-                      else if (dim == Dimension.Curve)
-                      {
-                          InteriorPointLine intPt = new InteriorPointLine(this);
-                          interiorPt = intPt.InteriorPoint;
-                      }
-                      else
-                      {
-                          InteriorPointArea intPt = new InteriorPointArea(this);
-                          interiorPt = intPt.InteriorPoint;
-                      }
-                      return CreatePointFromInternalCoord(interiorPt, this);
-                  }
-              }
+                Coordinate interiorPt = null;
+                Dimension dim = Dimension;
+                if (dim == Dimension.Point)
+                {
+                    InteriorPointPoint intPt = new InteriorPointPoint(this);
+                    interiorPt = intPt.InteriorPoint;
+                }
+                else if (dim == Dimension.Curve)
+                {
+                    InteriorPointLine intPt = new InteriorPointLine(this);
+                    interiorPt = intPt.InteriorPoint;
+                }
+                else
+                {
+                    InteriorPointArea intPt = new InteriorPointArea(this);
+                    interiorPt = intPt.InteriorPoint;
+                }
+                return CreatePointFromInternalCoord(interiorPt, this);
+            }
+        }
 
-              /// <summary>
-              /// <see cref="InteriorPoint" />
-              /// </summary>
-              public IPoint PointOnSurface
-              {
-                  get
-                  {
-                      return InteriorPoint;
-                  }
-              }
+        /// <summary>
+        /// <see cref="InteriorPoint" />
+        /// </summary>
+        public IPoint PointOnSurface
+        {
+            get
+            {
+                return InteriorPoint;
+            }
+        }
 
-#if PCL
-              [DataMember]
-#endif
-              private Dimension _dimension;
+        private Dimension _dimension;
 
-              /// <summary> 
-              /// Returns the dimension of this geometry.
-              /// </summary>
-              /// <remarks>
-              /// The dimension of a geometry is is the topological 
-              /// dimension of its embedding in the 2-D Euclidean plane.
-              /// In the NTS spatial model, dimension values are in the set {0,1,2}.
-              /// <para>
-              /// Note that this is a different concept to the dimension of 
-              /// the vertex <see cref="Coordinate"/>s.
-              /// The geometry dimension can never be greater than the coordinate dimension.
-              /// For example, a 0-dimensional geometry (e.g. a Point) 
-              /// may have a coordinate dimension of 3 (X,Y,Z). 
-              /// </para>
-              /// </remarks>
-              /// <returns>  
-              /// The topological dimensions of this geometry
-              /// </returns>
-              public virtual Dimension Dimension
-              {
-                  get { return _dimension; }
-                  set { _dimension = value; }
-              }
+        /// <summary> 
+        /// Returns the dimension of this geometry.
+        /// </summary>
+        /// <remarks>
+        /// The dimension of a geometry is is the topological 
+        /// dimension of its embedding in the 2-D Euclidean plane.
+        /// In the NTS spatial model, dimension values are in the set {0,1,2}.
+        /// <para>
+        /// Note that this is a different concept to the dimension of 
+        /// the vertex <see cref="Coordinate"/>s.
+        /// The geometry dimension can never be greater than the coordinate dimension.
+        /// For example, a 0-dimensional geometry (e.g. a Point) 
+        /// may have a coordinate dimension of 3 (X,Y,Z). 
+        /// </para>
+        /// </remarks>
+        /// <returns>  
+        /// The topological dimensions of this geometry
+        /// </returns>
+        public virtual Dimension Dimension
+        {
+            get { return _dimension; }
+            set { _dimension = value; }
+        }
 
 
-              /*private IGeometry boundary;*/
+        /*private IGeometry boundary;*/
 
         /// <summary>  
         /// Returns the boundary, or an empty geometry of appropriate dimension 
@@ -746,7 +706,7 @@ namespace NetTopologySuite.Geometries
         public bool Disjoint(IGeometry g)
         {
             // short-circuit test
-            if (! EnvelopeInternal.Intersects(g.EnvelopeInternal))
+            if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
                 return true;
             return Relate(g).IsDisjoint();
         }
@@ -776,10 +736,10 @@ namespace NetTopologySuite.Geometries
         /// <c>true</c> if the two <c>Geometry</c>s touch;
         /// Returns false if both <c>Geometry</c>s are points.
         /// </returns>
-        public bool Touches(IGeometry g) 
+        public bool Touches(IGeometry g)
         {
             // short-circuit test
-            if (! EnvelopeInternal.Intersects(g.EnvelopeInternal))
+            if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
                 return false;
             return Relate(g).IsTouches(Dimension, g.Dimension);
         }
@@ -802,32 +762,32 @@ namespace NetTopologySuite.Geometries
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
         /// <returns><c>true</c> if the two <c>Geometry</c>s intersect.</returns>
         /// <see cref="Disjoint"/>
-        public bool Intersects(IGeometry g) 
+        public bool Intersects(IGeometry g)
         {
             // short-circuit test
             if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
                 return false;
-           /*
-            * TODO: (MD) Add optimizations:
-            *
-            * - for P-A case:
-            * If P is in env(A), test for point-in-poly
-            *
-            * - for A-A case:
-            * If env(A1).overlaps(env(A2))
-            * test for overlaps via point-in-poly first (both ways)
-            * Possibly optimize selection of point to test by finding point of A1
-            * closest to centre of env(A2).
-            * (Is there a test where we shouldn't bother - e.g. if env A
-            * is much smaller than env B, maybe there's no point in testing
-            * pt(B) in env(A)?
-            */
+            /*
+             * TODO: (MD) Add optimizations:
+             *
+             * - for P-A case:
+             * If P is in env(A), test for point-in-poly
+             *
+             * - for A-A case:
+             * If env(A1).overlaps(env(A2))
+             * test for overlaps via point-in-poly first (both ways)
+             * Possibly optimize selection of point to test by finding point of A1
+             * closest to centre of env(A2).
+             * (Is there a test where we shouldn't bother - e.g. if env A
+             * is much smaller than env B, maybe there's no point in testing
+             * pt(B) in env(A)?
+             */
 
             // optimizations for rectangle arguments
             if (IsRectangle)
-                return RectangleIntersects.Intersects((IPolygon) this, g);
+                return RectangleIntersects.Intersects((IPolygon)this, g);
             if (g.IsRectangle)
-                return RectangleIntersects.Intersects((IPolygon) g, this);
+                return RectangleIntersects.Intersects((IPolygon)g, this);
             return Relate(g).IsIntersects();
         }
 
@@ -857,10 +817,10 @@ namespace NetTopologySuite.Geometries
         /// </remarks>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c></param>
         /// <returns><c>true</c> if the two <c>Geometry</c>s cross.</returns>
-        public bool Crosses(IGeometry g) 
+        public bool Crosses(IGeometry g)
         {
             // short-circuit test
-            if (! EnvelopeInternal.Intersects(g.EnvelopeInternal))
+            if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
                 return false;
             return Relate(g).IsCrosses(Dimension, g.Dimension);
         }
@@ -922,14 +882,14 @@ namespace NetTopologySuite.Geometries
         /// <returns><c>true</c> if this <c>Geometry</c> contains <c>g</c></returns>
         /// <see cref="Within"/>
         /// <see cref="Covers"/>
-        public bool Contains(IGeometry g) 
+        public bool Contains(IGeometry g)
         {
             // short-circuit test
             if (!EnvelopeInternal.Contains(g.EnvelopeInternal))
                 return false;
             // optimizations for rectangle arguments
             if (IsRectangle)
-                return RectangleContains.Contains((IPolygon) this, g);
+                return RectangleContains.Contains((IPolygon)this, g);
             // general case
             return Relate(g).IsContains();
         }
@@ -960,10 +920,10 @@ namespace NetTopologySuite.Geometries
         /// For this function to return <c>true</c>, the <c>Geometry</c>
         /// s must be two points, two curves or two surfaces.
         /// </returns>
-        public bool Overlaps(IGeometry g) 
+        public bool Overlaps(IGeometry g)
         {
             // short-circuit test
-            if (! EnvelopeInternal.Intersects(g.EnvelopeInternal))
+            if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
                 return false;
             return Relate(g).IsOverlaps(Dimension, g.Dimension);
         }
@@ -1007,12 +967,12 @@ namespace NetTopologySuite.Geometries
             // short-circuit test
             if (!EnvelopeInternal.Covers(g.EnvelopeInternal))
                 return false;
-            
+
             // optimization for rectangle arguments
             if (IsRectangle)
                 // since we have already tested that the test envelope is covered
                 return true;
-            
+
             return Relate(g).IsCovers();
         }
 
@@ -1083,7 +1043,7 @@ namespace NetTopologySuite.Geometries
         /// A matrix describing the intersections of the interiors,
         /// boundaries and exteriors of the two <c>Geometry</c>s.
         /// </returns>
-        public IntersectionMatrix Relate(IGeometry g) 
+        public IntersectionMatrix Relate(IGeometry g)
         {
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(g);
@@ -1109,7 +1069,7 @@ namespace NetTopologySuite.Geometries
         public bool Equals(IGeometry g)
         {
             if (g == null)
-                return false;            
+                return false;
             return EqualsTopologically(g);
         }
 
@@ -1140,7 +1100,7 @@ namespace NetTopologySuite.Geometries
             // short-circuit test
             if (!EnvelopeInternal.Equals(g.EnvelopeInternal))
                 return false;
-            
+
             return Relate(g).IsEquals(Dimension, g.Dimension);
         }
 
@@ -1215,8 +1175,8 @@ namespace NetTopologySuite.Geometries
         /// <param name="obj2"></param>
         /// <returns></returns>
         public static bool operator ==(Geometry obj1, IGeometry obj2)
-        {            
-            return Equals(obj1, obj2); 
+        {
+            return Equals(obj1, obj2);
         }
 
         /// <summary>
@@ -1259,7 +1219,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>
         /// The Well-known Text representation of this <c>Geometry</c>.
         /// </returns>
-        public override string ToString() 
+        public override string ToString()
         {
             return ToText();
         }
@@ -1272,8 +1232,8 @@ namespace NetTopologySuite.Geometries
         /// <returns>
         /// The Well-known Text representation of this <c>Geometry</c>.
         /// </returns>
-        public string ToText() 
-        {         
+        public string ToText()
+        {
             var writer = new WKTWriter(3);
             return writer.Write(this);
         }
@@ -1314,7 +1274,7 @@ namespace NetTopologySuite.Geometries
         /// NO features or XLink are implemented here!
         /// </summary>        
         public XmlReader ToGMLFeature()
-        {            
+        {
             GMLWriter writer = new GMLWriter();
             return writer.Write(this);
         }
@@ -1454,7 +1414,7 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="Buffer(double, EndCapStyle)"/>
         /// <seealso cref="Buffer(double, IBufferParameters)"/>
         /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
-        public IGeometry Buffer(double distance, int quadrantSegments) 
+        public IGeometry Buffer(double distance, int quadrantSegments)
         {
             return BufferOp.Buffer(this, distance, quadrantSegments);
         }
@@ -1603,8 +1563,8 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <returns>the minimum-area convex polygon containing this <c>Geometry</c>'s points.</returns>
         public virtual IGeometry ConvexHull()
-        {            
-            return (new ConvexHull(this)).GetConvexHull();         
+        {
+            return (new ConvexHull(this)).GetConvexHull();
         }
 
         ///<summary>
@@ -1634,10 +1594,10 @@ namespace NetTopologySuite.Geometries
         /// <returns>A geometry representing the point-set common to the two <c>Geometry</c>s.</returns>
         /// <exception cref="TopologyException">if a robustness error occurs.</exception>
         /// <exception cref="ArgumentException">if the argument is a non-empty heterogenous <c>GeometryCollection</c></exception>
-        public IGeometry Intersection(IGeometry other) 
+        public IGeometry Intersection(IGeometry other)
         {
             // Special case: if one input is empty ==> empty
-            if (IsEmpty || other.IsEmpty) 
+            if (IsEmpty || other.IsEmpty)
                 return OverlayOp.CreateEmptyResult(SpatialFunction.Intersection, this, other, _factory);
 
             // compute for GCs
@@ -1645,12 +1605,12 @@ namespace NetTopologySuite.Geometries
             {
                 IGeometry g2 = other;
                 return GeometryCollectionMapper.Map(
-                    (IGeometryCollection) this, g => g.Intersection(g2));
+                    (IGeometryCollection)this, g => g.Intersection(g2));
             }
-        //    if (isGeometryCollection(other))
-        //      return other.intersection(this);
+            //    if (isGeometryCollection(other))
+            //      return other.intersection(this);
             CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection(other);        
+            CheckNotGeometryCollection(other);
             return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.Intersection);
         }
 
@@ -1687,10 +1647,10 @@ namespace NetTopologySuite.Geometries
         /// <exception cref="TopologyException">Thrown if a robustness error occurs</exception>
         /// <exception cref="ArgumentException">Thrown if either input is a non-empty GeometryCollection</exception>
         /// <seealso cref="LineMerger"/>
-        public IGeometry Union(IGeometry other) 
+        public IGeometry Union(IGeometry other)
         {
             // handle empty geometry cases
-            if (IsEmpty || (other == null ||other.IsEmpty))
+            if (IsEmpty || (other == null || other.IsEmpty))
             {
                 if (IsEmpty && (other == null || other.IsEmpty))
                     return OverlayOp.CreateEmptyResult(SpatialFunction.Union, this, other, _factory);
@@ -1719,15 +1679,15 @@ namespace NetTopologySuite.Geometries
         public IGeometry Difference(IGeometry other)
         {
             // special case: if A.isEmpty ==> empty; if B.isEmpty ==> A
-            if (IsEmpty) 
+            if (IsEmpty)
                 return OverlayOp.CreateEmptyResult(SpatialFunction.Difference, this, other, _factory);
-            if (other == null || other.IsEmpty) 
-                return (IGeometry) Clone();
+            if (other == null || other.IsEmpty)
+                return (IGeometry)Clone();
 
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
             return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.Difference);
-         }
+        }
 
         /// <summary>
         /// Computes a <c>Geometry </c> representing the closure of the point-set 
@@ -1742,7 +1702,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other">The <c>Geometry</c> with which to compute the symmetric difference.</param>
         /// <returns>a Geometry representing the point-set symmetric difference of this <c>Geometry</c> with <c>other</c>.</returns>
-        public IGeometry SymmetricDifference(IGeometry other) 
+        public IGeometry SymmetricDifference(IGeometry other)
         {
             // handle empty geometry cases
             if (IsEmpty || (other == null || other.IsEmpty))
@@ -1834,9 +1794,9 @@ namespace NetTopologySuite.Geometries
         /// <returns>
         /// <c>true</c> if this and the other <c>Geometry</c> have identical structure and point values.
         /// </returns>
-        public bool EqualsExact(IGeometry other) 
-        { 
-            return EqualsExact(other, 0); 
+        public bool EqualsExact(IGeometry other)
+        {
+            return EqualsExact(other, 0);
         }
 
         /// <summary>
@@ -1911,12 +1871,12 @@ namespace NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual object Clone() 
-        {            
-            Geometry clone = (Geometry) MemberwiseClone();
-            if (clone._envelope != null) 
-                clone._envelope = new Envelope(clone._envelope);                 
-            return clone;         
+        public virtual object Clone()
+        {
+            Geometry clone = (Geometry)MemberwiseClone();
+            if (clone._envelope != null)
+                clone._envelope = new Envelope(clone._envelope);
+            return clone;
         }
 
         /// <summary>
@@ -1983,7 +1943,7 @@ namespace NetTopologySuite.Geometries
         /// defined in "Normal Form For Geometry" in the NTS Technical
         /// Specifications.
         /// </returns>
-        public int CompareTo(object o) 
+        public int CompareTo(object o)
         {
             return CompareTo(o as IGeometry);
         }
@@ -2017,7 +1977,7 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public int CompareTo(IGeometry geom)
         {
-            Geometry other =  geom as Geometry;
+            Geometry other = geom as Geometry;
             if (other == null)
                 return -1;
 
@@ -2094,7 +2054,7 @@ namespace NetTopologySuite.Geometries
         /// <c>true</c> if the classes of the two <c>Geometry</c>
         /// s are considered to be equal by the <c>equalsExact</c> method.
         /// </returns>
-        protected virtual bool IsEquivalentClass(IGeometry other) 
+        protected virtual bool IsEquivalentClass(IGeometry other)
         {
             return GetType().FullName == other.GetType().FullName;
         }
@@ -2107,10 +2067,10 @@ namespace NetTopologySuite.Geometries
         /// <exception cref="ArgumentException">
         /// if <c>g</c> is a <c>GeometryCollection</c>, but not one of its subclasses.
         /// </exception>
-        protected void CheckNotGeometryCollection(IGeometry g) 
+        protected void CheckNotGeometryCollection(IGeometry g)
         {
-            if (IsNonHomogenousGeometryCollection(g)) 
-                throw new ArgumentException("This method does not support GeometryCollection arguments");                            
+            if (IsNonHomogenousGeometryCollection(g))
+                throw new ArgumentException("This method does not support GeometryCollection arguments");
         }
 
         /// <summary>
@@ -2123,17 +2083,17 @@ namespace NetTopologySuite.Geometries
         /// </exception>        
         private static bool IsNonHomogenousGeometryCollection(IGeometry g)
         {
-            return 
+            return
                 g is IGeometryCollection &&
                 g.GeometryType == "GeometryCollection"; ; /*g.GetType().Name == "GeometryCollection" && g.GetType().Namespace == GetType().Namespace;*/
         }
 
-        
+
         protected bool IsGeometryCollection
         {
             get { return OgcGeometryType == OgcGeometryType.GeometryCollection; }
         }
-        
+
 
         /// <summary>
         /// Returns the minimum and maximum x and y values in this <c>Geometry</c>,
@@ -2186,25 +2146,25 @@ namespace NetTopologySuite.Geometries
         /// <param name="a">A <c>Collection</c> of <c>IComparable</c>s.</param>
         /// <param name="b">A <c>Collection</c> of <c>IComparable</c>s.</param>
         /// <returns>The first non-zero <c>compareTo</c> result, if any; otherwise, zero.</returns>
-        protected static int Compare(List<IGeometry> a, List<IGeometry> b) 
+        protected static int Compare(List<IGeometry> a, List<IGeometry> b)
         {
             IEnumerator<IGeometry> i = a.GetEnumerator();
             IEnumerator<IGeometry> j = b.GetEnumerator();
 
-            while (i.MoveNext() && j.MoveNext()) 
+            while (i.MoveNext() && j.MoveNext())
             {
                 IComparable aElement = i.Current;
                 IComparable bElement = j.Current;
-                int comparison = aElement.CompareTo(bElement);            
-                if (comparison != 0)                 
-                    return comparison;                
+                int comparison = aElement.CompareTo(bElement);
+                if (comparison != 0)
+                    return comparison;
             }
 
-            if (i.MoveNext())             
-                return 1;            
+            if (i.MoveNext())
+                return 1;
 
-            if (j.MoveNext())             
-                return -1;            
+            if (j.MoveNext())
+                return -1;
 
             return 0;
         }
@@ -2216,10 +2176,10 @@ namespace NetTopologySuite.Geometries
         /// <param name="b"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        protected static bool Equal(Coordinate a, Coordinate b, double tolerance) 
+        protected static bool Equal(Coordinate a, Coordinate b, double tolerance)
         {
-            if (tolerance == 0)             
-                return a.Equals(b);             
+            if (tolerance == 0)
+                return a.Equals(b);
 
             return a.Distance(b) <= tolerance;
         }
@@ -2227,13 +2187,13 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        private int ClassSortIndex 
+        private int ClassSortIndex
         {
             get
             {
-                for (var i = 0; i < _sortedClasses.Length; i++)                
-                    if (GetType() == _sortedClasses[i])                                        
-                        return i;                                    
+                for (var i = 0; i < _sortedClasses.Length; i++)
+                    if (GetType() == _sortedClasses[i])
+                        return i;
                 Assert.ShouldNeverReachHere(String.Format("Class not supported: {0}", GetType().FullName));
                 return -1;
             }
@@ -2249,7 +2209,7 @@ namespace NetTopologySuite.Geometries
         {
             exemplar.PrecisionModel.MakePrecise(coord);
             return exemplar.Factory.CreatePoint(coord);
-        }        
+        }
 
         /// <summary>
         /// 
@@ -2272,7 +2232,7 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="GeometryFactory.Default" />
         /// <seealso cref="GeometryFactory.Fixed"/>
         public static readonly IGeometryFactory DefaultFactory = GeometryFactory.Default;
-        
+
         /* END ADDED BY MPAUL42: monoGIS team */
 
         protected static double[] CreateArray(int size, double value)
@@ -2290,7 +2250,7 @@ namespace NetTopologySuite.Geometries
                 result[i] = sequence.GetOrdinate(i, ordinate);
             return result;
         }
-    
+
     }
 
 #if NET35
@@ -2307,8 +2267,8 @@ namespace NetTopologySuite.Geometries
         /// <returns>An array of <see cref="byte"/>s, that represent <paramref name="self"/></returns>
         public static byte[] AsBinary(this IGeometry self, GeoAPI.IO.IBinaryGeometryWriter writer)
         {
-            return writer == null 
-                ? self.AsBinary() 
+            return writer == null
+                ? self.AsBinary()
                 : writer.Write(self);
         }
     }

@@ -117,8 +117,6 @@ namespace RTools_NTS.Util
 	/// </summary>
 #if !PCL
     [Serializable]
-#else
-    [System.Runtime.Serialization.DataContract]
 #endif
     public class StreamTokenizerSettings
 	{

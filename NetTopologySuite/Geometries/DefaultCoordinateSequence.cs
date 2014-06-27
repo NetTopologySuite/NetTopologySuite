@@ -13,8 +13,6 @@ namespace NetTopologySuite.Geometries
     /// </summary>
 #if !PCL
     [Serializable]
-#else
-    [System.Runtime.Serialization.DataContract]
 #endif
     [Obsolete("No longer used.")]
     public class DefaultCoordinateSequence : ICoordinateSequence

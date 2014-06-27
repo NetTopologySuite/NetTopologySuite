@@ -8,8 +8,6 @@ namespace NetTopologySuite.Geometries.Implementation
     /// </summary>
 #if !PCL
     [Serializable]
-#else
-    [System.Runtime.Serialization.DataContract]
 #endif
     public sealed class CoordinateArraySequenceFactory : ICoordinateSequenceFactory
     {

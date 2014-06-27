@@ -6,9 +6,7 @@ namespace NetTopologySuite.Index.Bintree
     /// <summary>
     /// A node of a <c>Bintree</c>.
     /// </summary>
-#if PCL
-    [System.Runtime.Serialization.DataContract]
-#else
+#if !PCL    
     [Serializable]
 #endif
     public class Node<T> : NodeBase<T>
@@ -47,17 +45,8 @@ namespace NetTopologySuite.Index.Bintree
             return largerNode;
         }
 
-#if PCL
-        [System.Runtime.Serialization.DataMember(Name="Interval")]
-#endif
         private readonly Interval _interval; //= Interval.Create();
-#if PCL
-        [System.Runtime.Serialization.DataMember(Name = "Centre")]
-#endif
         private readonly double _centre;
-#if PCL
-        [System.Runtime.Serialization.DataMember(Name = "Level")]
-#endif
         private readonly int _level;
 
         /// <summary>

@@ -11,8 +11,6 @@ namespace NetTopologySuite.Index.Quadtree
     /// </summary>
 #if !PCL
     [Serializable]
-#else
-    [System.Runtime.Serialization.DataContract]
 #endif
     public class Root<T> : NodeBase<T>
     {

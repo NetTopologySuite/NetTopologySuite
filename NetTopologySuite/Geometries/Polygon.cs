@@ -32,8 +32,6 @@ namespace NetTopologySuite.Geometries
     /// </summary>
 #if !PCL
     [Serializable]
-#else
-    [System.Runtime.Serialization.DataContract]
 #endif
     public class Polygon : Geometry, IPolygon
     {
@@ -46,17 +44,11 @@ namespace NetTopologySuite.Geometries
         /// The exterior boundary, or <c>null</c> if this <c>Polygon</c>
         /// is the empty point.
         /// </summary>
-#if PCL
-        [System.Runtime.Serialization.DataMember]
-#endif
         private ILinearRing _shell;
 
         /// <summary>
         /// The interior boundaries, if any.
         /// </summary>
-#if PCL
-        [System.Runtime.Serialization.DataMember]
-#endif
         private ILinearRing[] _holes;
 
         /// <summary>

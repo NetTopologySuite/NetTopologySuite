@@ -31,8 +31,6 @@ namespace NetTopologySuite.Index.Quadtree
     /// </summary>
 #if !PCL
     [System.Serializable]
-#else
-    [System.Runtime.Serialization.DataContract]
 #endif
     public class Quadtree<T> : ISpatialIndex<T>
     {
@@ -69,9 +67,6 @@ namespace NetTopologySuite.Index.Quadtree
             return new Envelope(minx, maxx, miny, maxy);
         }
 
-#if PCL
-        [System.Runtime.Serialization.DataMember]
-#endif
         private readonly Root<T> _root;
 
         /// <summary>
@@ -82,9 +77,6 @@ namespace NetTopologySuite.Index.Quadtree
         /// a zero extent in both directions.  This value may be non-optimal, but
         /// only one feature will be inserted with this value.
         /// </summary>
-#if PCL
-        [System.Runtime.Serialization.DataMember]
-#endif
         private double _minExtent = 1.0;
 
         /// <summary>
@@ -122,7 +114,6 @@ namespace NetTopologySuite.Index.Quadtree
                 return false;
             }
         }
-  
 
         /// <summary> 
         /// Returns the number of items in the tree.

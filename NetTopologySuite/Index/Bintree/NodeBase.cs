@@ -6,9 +6,7 @@ namespace NetTopologySuite.Index.Bintree
     /// <summary> 
     /// The base class for nodes in a <c>Bintree</c>.
     /// </summary>
-#if PCL
-    [System.Runtime.Serialization.DataContract]
-#else
+#if !PCL    
     [Serializable]
 #endif
     public abstract class NodeBase<T>
@@ -32,9 +30,6 @@ namespace NetTopologySuite.Index.Bintree
         /// <summary>
         /// 
         /// </summary>
-#if PCL
-        [System.Runtime.Serialization.DataMember]
-#endif
         private IList<T> _items = new List<T>();
 
         /// <summary>
@@ -42,16 +37,15 @@ namespace NetTopologySuite.Index.Bintree
         /// 0 | 1        
         /// .
         /// </summary>
-#if PCL
-        [System.Runtime.Serialization.DataMember]
-#endif
         protected Node<T>[] Subnode = new Node<T>[2];
+
         /*
         /// <summary>
         /// 
         /// </summary>
         protected NodeBase() { }
         */
+
         /// <summary>
         /// 
         /// </summary>

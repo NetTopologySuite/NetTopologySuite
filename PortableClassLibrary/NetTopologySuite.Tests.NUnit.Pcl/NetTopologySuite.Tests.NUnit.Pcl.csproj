@@ -268,9 +268,6 @@
     <Compile Include="..\..\NetTopologySuite.Tests.NUnit\IO\KML\KMLWriterTest.cs">
       <Link>IO\KML\KMLWriterTest.cs</Link>
     </Compile>
-    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\IO\SerializabilityTest.cs">
-      <Link>IO\SerializabilityTest.cs</Link>
-    </Compile>
     <Compile Include="..\..\NetTopologySuite.Tests.NUnit\IO\WKBReaderTest.cs">
       <Link>IO\WKBReaderTest.cs</Link>
     </Compile>
@@ -435,9 +432,6 @@
     </Compile>
     <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Utilities\PriorityQueueTest.cs">
       <Link>Utilities\PriorityQueueTest.cs</Link>
-    </Compile>
-    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Utilities\SerializationUtility.cs">
-      <Link>Utilities\SerializationUtility.cs</Link>
     </Compile>
     <Compile Include="PclSetup.cs" />
   </ItemGroup>

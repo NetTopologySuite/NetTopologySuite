@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using GeoAPI.Geometries;
-using NetTopologySuite.Operation.Valid;
 
 namespace NetTopologySuite.Geometries
 {
@@ -18,8 +16,7 @@ namespace NetTopologySuite.Geometries
     /// 
 #if !PCL
     [Serializable]
-#else
-    [System.Runtime.Serialization.DataContract]
+
 #endif
     public class Point : Geometry, IPoint
     {
@@ -33,9 +30,6 @@ namespace NetTopologySuite.Geometries
         /// <summary>  
         /// The <c>Coordinate</c> wrapped by this <c>Point</c>.
         /// </summary>
-#if PCL
-        [System.Runtime.Serialization.DataMember]
-#endif
         private ICoordinateSequence _coordinates;        
 
         /// <summary>

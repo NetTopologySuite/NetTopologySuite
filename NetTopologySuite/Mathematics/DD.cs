@@ -66,8 +66,6 @@ namespace NetTopologySuite.Mathematics
     /// <author>Martin Davis</author>
 #if !PCL
     [Serializable]
-#else
-    [System.Runtime.Serialization.DataContract]
 #endif
     public struct DD : IComparable, IComparable<DD> /*, IFormattable*/
     {

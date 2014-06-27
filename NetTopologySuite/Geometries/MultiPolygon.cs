@@ -9,8 +9,6 @@ namespace NetTopologySuite.Geometries
     /// </summary>
 #if !PCL
     [Serializable]
-#else
-    [System.Runtime.Serialization.DataContract]
 #endif
     public class MultiPolygon : GeometryCollection, IMultiPolygon 
     {

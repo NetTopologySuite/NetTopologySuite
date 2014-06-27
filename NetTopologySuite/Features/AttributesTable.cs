@@ -12,8 +12,6 @@ namespace NetTopologySuite.Features
     /// </summary>
 #if !PCL
     [Serializable]
-#else
-    [System.Runtime.Serialization.DataContract]
 #endif
     public class AttributesTable : IAttributesTable
     {        

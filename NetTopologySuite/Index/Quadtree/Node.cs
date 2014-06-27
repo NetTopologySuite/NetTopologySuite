@@ -11,8 +11,6 @@ namespace NetTopologySuite.Index.Quadtree
     /// </summary>
 #if !PCL
     [Serializable]
-#else
-    [System.Runtime.Serialization.DataContract]
 #endif
     public class Node<T> : NodeBase<T>
     {
@@ -46,18 +44,9 @@ namespace NetTopologySuite.Index.Quadtree
             return largerNode;
         }
 
-#if PCL
-        [System.Runtime.Serialization.DataMember]
-#endif
         private readonly Envelope _env;
         //private readonly Coordinate _centre;
-#if PCL
-        [System.Runtime.Serialization.DataMember]
-#endif
         private readonly double _centreX, _centreY;
-#if PCL
-        [System.Runtime.Serialization.DataMember]
-#endif
         private readonly int _level;
 
         /// <summary>

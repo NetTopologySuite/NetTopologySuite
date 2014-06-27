@@ -8,8 +8,6 @@ namespace NetTopologySuite.Geometries
     /// </summary>
 #if !PCL
     [Serializable]
-#else
-    [System.Runtime.Serialization.DataContract]
 #endif
     public class MultiPoint : GeometryCollection, IMultiPoint
     {

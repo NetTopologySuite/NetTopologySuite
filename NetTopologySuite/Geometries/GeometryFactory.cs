@@ -1,4 +1,3 @@
-//using System.Collections;
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
@@ -19,8 +18,6 @@ namespace NetTopologySuite.Geometries
     /// </remarks>
 #if !PCL
     [Serializable]
-#else
-    [System.Runtime.Serialization.DataContract]
 #endif
     public class GeometryFactory : IGeometryFactory
     {

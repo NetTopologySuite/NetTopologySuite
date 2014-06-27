@@ -5,21 +5,13 @@ namespace NetTopologySuite.Index.Bintree
     /// <summary> 
     /// Represents an (1-dimensional) closed interval on the Real number line.
     /// </summary>
-#if PCL
-    [System.Runtime.Serialization.DataContract]
-#else
+#if !PCL   
     [Serializable]
 #endif
     public class Interval
     {
-#if PCL
-    [System.Runtime.Serialization.DataMember]
-#endif
         private double _min;
-#if PCL
-    [System.Runtime.Serialization.DataMember]
-#endif
-    private double _max;
+        private double _max;
 
         /// <summary>
         /// Gets or sets a value indicating the minimum value of the closed interval.
