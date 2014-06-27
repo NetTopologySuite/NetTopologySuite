@@ -395,7 +395,7 @@ namespace NetTopologySuite.Utilities
             {
                 get
                 {
-                     if (_centre != null)
+                    if (_centre == null)
                     {
                         _centre = (Base != null)
                                       ? new Coordinate(Base.X + Width * 0.5d, Base.Y + Height * 0.5d)
