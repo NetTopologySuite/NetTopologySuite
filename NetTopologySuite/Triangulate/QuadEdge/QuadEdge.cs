@@ -97,7 +97,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             beta.SetNext(t4);
         }
 
-        /// <summary
+        /// <summary>
         /// Turns an edge counterclockwise inside its enclosing quadrilateral.
         /// </summary>
         /// <param name="e">the quadedge to turn</param>
@@ -131,7 +131,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// Gets the primary edge of this quadedge and its <tt>sym</tt>.
         /// The primary edge is the one for which the origin
         /// and destination coordinates are ordered
-        /// according to the standard <see cref="Coordinate"/> ordering
+        /// according to the standard <see cref="GeoAPI.Geometries.Coordinate"/> ordering
         /// </summary>
         /// <returns>the primary quadedge</returns>
         public QuadEdge GetPrimary()
@@ -242,7 +242,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// Gets the next CCW edge around (into) the destination of this edge.
         /// </summary>
         /// <remarks>Get the next destination edge.</remarks>
-        private QuadEdge DNext
+        internal QuadEdge DNext
         {
             get
             {
@@ -270,7 +270,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             get
             {
-                return this.InvRot.ONext.Rot;
+                return InvRot.ONext.Rot;
             }
         }
 
@@ -290,7 +290,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// Gets the edge around the right face ccw following this edge.
         /// </summary>
         /// <remarks>Gets the next right face edge.</remarks>
-        private QuadEdge RNext
+        internal QuadEdge RNext
         {
             get
             {
@@ -302,11 +302,11 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// Gets the edge around the right face ccw before this edge.
         /// </summary>
         /// <remarks>Gets the previous right face edge.</remarks>
-        private QuadEdge RPrev
+        internal QuadEdge RPrev
         {
             get
             {
-                return this.Sym.ONext;
+                return Sym.ONext;
             }
         }
 

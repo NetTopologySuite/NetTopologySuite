@@ -21,13 +21,13 @@ namespace NetTopologySuite.Triangulate.QuadEdge
     /// <author>Martin Davis</author>
     public class Vertex : IEquatable<Vertex>
     {
-        private int LEFT = 0;
-        private int RIGHT = 1;
-        private int BEYOND = 2;
-        private int BEHIND = 3;
-        private int BETWEEN = 4;
-        private int ORIGIN = 5;
-        private int DESTINATION = 6;
+        private const int LEFT = 0;
+        private const int RIGHT = 1;
+        private const int BEYOND = 2;
+        private const int BEHIND = 3;
+        private const int BETWEEN = 4;
+        private const int ORIGIN = 5;
+        private const int DESTINATION = 6;
 
         private readonly Coordinate _p;
         // private int edgeNumber = -1;
@@ -120,10 +120,11 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
         public int Classify(Vertex p0, Vertex p1)
         {
-            Vertex p2 = this;
-            Vertex a = p1.Sub(p0);
-            Vertex b = p2.Sub(p0);
-            double sa = a.CrossProduct(b);
+            var p2 = this;
+            var a = p1.Sub(p0);
+            var b = p2.Sub(p0);
+
+            var sa = a.CrossProduct(b);
             if (sa > 0.0)
                 return LEFT;
             if (sa < 0.0)
@@ -267,10 +268,10 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return new HCoordinate(l1, l2);
         }
 
-        private double Distance(Vertex v1, Vertex v2)
+        private static double Distance(Vertex v1, Vertex v2)
         {
             return Math.Sqrt(Math.Pow(v2.X - v1.X, 2.0)
-                             + Math.Pow(v2.Y - v1.Y, 2.0));
+                           + Math.Pow(v2.Y - v1.Y, 2.0));
         }
 
         /// <summary>
@@ -284,10 +285,10 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>ratio of circumradius to shortest edge.</returns>
         public double CircumRadiusRatio(Vertex b, Vertex c)
         {
-            Vertex x = this.CircleCenter(b, c);
-            double radius = Distance(x, b);
-            double edgeLength = Distance(this, b);
-            double el = Distance(b, c);
+            var x = CircleCenter(b, c);
+            var radius = Distance(x, b);
+            var edgeLength = Distance(this, b);
+            var el = Distance(b, c);
             if (el < edgeLength)
             {
                 edgeLength = el;
@@ -321,13 +322,13 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>the Coordinate which is the circumcircle of the 3 points.</returns>
         public Vertex CircleCenter(Vertex b, Vertex c)
         {
-            Vertex a = new Vertex(this.X, this.Y);
+            var a = new Vertex(X, Y);
             // compute the perpendicular bisector of cord ab
-            HCoordinate cab = Bisector(a, b);
+            var cab = Bisector(a, b);
             // compute the perpendicular bisector of cord bc
-            HCoordinate cbc = Bisector(b, c);
+            var cbc = Bisector(b, c);
             // compute the intersection of the bisectors (circle radii)
-            HCoordinate hcc = new HCoordinate(cab, cbc);
+            var hcc = new HCoordinate(cab, cbc);
             Vertex cc = null;
             try
             {
@@ -337,7 +338,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             {
                 System.Diagnostics.Debug.WriteLine("a: " + a + "  b: " + b + "  c: " + c);
                 System.Diagnostics.Debug.WriteLine(nre);
-                throw;
+                //throw;
             }
             return cc;
         }
@@ -355,8 +356,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             double c = v1.Y - y0;
             double d = v2.Y - y0;
             double det = a*d - b*c;
-            double dx = this.X - x0;
-            double dy = this.Y - y0;
+            double dx = X - x0;
+            double dy = Y - y0;
             double t = (d*dx - b*dy)/det;
             double u = (-c*dx + a*dy)/det;
             double z = v0.Z + t*(v1.Z - v0.Z) + u*(v2.Z - v0.Z);

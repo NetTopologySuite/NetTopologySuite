@@ -18,7 +18,7 @@ namespace NetTopologySuite.Utilities
         private int _nPts = 100;
 
         // default is no rotation.
-        private double _rotationAngle = 0.0;
+        private double _rotationAngle;
 
         /// <summary>
         /// Create a shape factory which will create shapes using the default GeometryFactory.

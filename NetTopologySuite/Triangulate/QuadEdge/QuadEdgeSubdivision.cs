@@ -51,7 +51,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 throw new ArgumentException("Edges do not form a triangle");
         }
 
-        private readonly static double EDGE_COINCIDENCE_TOL_FACTOR = 1000;
+        private const double EdgeCoincidenceToleranceFactor = 1000;
 
         // debugging only - preserve current subdiv statically
         // private static QuadEdgeSubdivision currentSubdiv;
@@ -59,7 +59,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         // used for edge extraction to ensure edge uniqueness
         private int _visitedKey;
         //private Set quadEdges = new HashSet();
-        private readonly IList<QuadEdge> _quadEdges = new List<QuadEdge>();
+        private readonly List<QuadEdge> _quadEdges = new List<QuadEdge>();
         private readonly QuadEdge _startingEdge;
         private readonly double _tolerance;
         private readonly double _edgeCoincidenceTolerance;
@@ -78,7 +78,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             // currentSubdiv = this;
             _tolerance = tolerance;
-            _edgeCoincidenceTolerance = tolerance / EDGE_COINCIDENCE_TOL_FACTOR;
+            _edgeCoincidenceTolerance = tolerance / EdgeCoincidenceToleranceFactor;
 
             CreateFrame(env);
 
@@ -100,14 +100,11 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 offset = deltaY * 10.0;
             }
 
-            _frameVertex[0] = new Vertex((env.MaxX + env.MinX) / 2.0, env
-                    .MaxY
-                    + offset);
+            _frameVertex[0] = new Vertex((env.MaxX + env.MinX) / 2.0, env.MaxY + offset);
             _frameVertex[1] = new Vertex(env.MinX - offset, env.MinY - offset);
             _frameVertex[2] = new Vertex(env.MaxX + offset, env.MinY - offset);
 
-            _frameEnv = new Envelope(_frameVertex[0].Coordinate, _frameVertex[1]
-                    .Coordinate);
+            _frameEnv = new Envelope(_frameVertex[0].Coordinate, _frameVertex[1].Coordinate);
             _frameEnv.ExpandToInclude(_frameVertex[2].Coordinate);
         }
 
@@ -494,7 +491,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <see cref="GetVertexUniqueEdges"/>
         public IEnumerable<Vertex> GetVertices(bool includeFrame)
         {
-            var vertices = new Set<Vertex>();
+            var vertices = new HashSet<Vertex>();
 
             foreach (var qe in _quadEdges)
             {
@@ -536,7 +533,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public IList<QuadEdge> GetVertexUniqueEdges(bool includeFrame)
         {
             var edges = new List<QuadEdge>();
-            var visitedVertices = new Set<Vertex>();
+            var visitedVertices = new HashSet<Vertex>();
 
             foreach (var qe in _quadEdges)
             {
@@ -587,7 +584,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             var edgeStack = new Stack<QuadEdge>();
             edgeStack.Push(_startingEdge);
 
-            var visitedEdges = new Set<QuadEdge>();
+            var visitedEdges = new HashSet<QuadEdge>();
 
             while (edgeStack.Count > 0)
             {
@@ -619,15 +616,15 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             public void Visit(QuadEdge[] triEdges)
             {
-                Coordinate a = triEdges[0].Orig.Coordinate;
-                Coordinate b = triEdges[1].Orig.Coordinate;
-                Coordinate c = triEdges[2].Orig.Coordinate;
+                var a = triEdges[0].Orig.Coordinate;
+                var b = triEdges[1].Orig.Coordinate;
+                var c = triEdges[2].Orig.Coordinate;
 
                 // TODO: choose the most accurate circumcentre based on the edges
-                Coordinate cc = Triangle.Circumcentre(a, b, c);
-                Vertex ccVertex = new Vertex(cc);
+                var cc = Triangle.Circumcentre(a, b, c);
+                var ccVertex = new Vertex(cc);
                 // save the circumcentre as the origin for the dual edges originating in this triangle
-                for (int i = 0; i < 3; i++)
+                for (var i = 0; i < 3; i++)
                 {
                     triEdges[i].Rot.Orig = ccVertex;
                 }
@@ -648,16 +645,16 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             var edgeStack = new Stack<QuadEdge>();
             edgeStack.Push(_startingEdge);
 
-            var visitedEdges =
-                new Set<QuadEdge>();
+            var visitedEdges = new HashSet<QuadEdge>();
 
             while (edgeStack.Count > 0)
             {
                 var edge = edgeStack.Pop();
                 if (!visitedEdges.Contains(edge))
                 {
-                    QuadEdge[] triEdges = FetchTriangleToVisit(edge, edgeStack,
-                                                                includeFrame, visitedEdges);
+                    QuadEdge[] triEdges = 
+                        FetchTriangleToVisit(edge, edgeStack, includeFrame, visitedEdges);
+
                     if (triEdges != null)
                         triVisitor.Visit(triEdges);
                 }
@@ -683,7 +680,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// or <value>null</value> if the triangle should not be visited (for instance, if it is outer)
         /// </returns>
         private QuadEdge[] FetchTriangleToVisit(QuadEdge edge, Stack<QuadEdge> edgeStack, bool includeFrame,
-            Set<QuadEdge> visitedEdges)
+            ISet<QuadEdge> visitedEdges)
         {
             QuadEdge curr = edge;
             int edgeCount = 0;
@@ -786,20 +783,20 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             private readonly CoordinateList _coordList = new CoordinateList();
 
-            private readonly IList<Coordinate[]> _triCoords = new List<Coordinate[]>();
+            private readonly List<Coordinate[]> _triCoords = new List<Coordinate[]>();
 
             public void Visit(QuadEdge[] triEdges)
             {
                 _coordList.Clear();
                 for (int i = 0; i < 3; i++)
                 {
-                    Vertex v = triEdges[i].Orig;
+                    var v = triEdges[i].Orig;
                     _coordList.Add(v.Coordinate);
                 }
                 if (_coordList.Count > 0)
                 {
                     _coordList.CloseRing();
-                    Coordinate[] pts = _coordList.ToCoordinateArray();
+                    var pts = _coordList.ToCoordinateArray();
                     if (pts.Length != 4)
                     {
                         //CheckTriangleSize(pts);

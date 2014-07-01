@@ -75,7 +75,7 @@ namespace NetTopologySuite.IO
         public static String ToLineString(Coordinate p0, Coordinate p1)
         {
 #if LikeJTS
-            return String.Format(CultureInfo.InvariantCulture, "LINESTRING({0} {1}, {2} {3})", p0.X, p0.Y, p1.X, p1.Y);
+            return String.Format(CultureInfo.InvariantCulture, "LINESTRING({0:R} {1:R}, {2:R} {3:R})", p0.X, p0.Y, p1.X, p1.Y);
 #else
             if (double.IsNaN(p0.Z))
 				return String.Format(CultureInfo.InvariantCulture, "LINESTRING({0} {1}, {2} {3})", p0.X, p0.Y, p1.X, p1.Y);

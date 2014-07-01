@@ -41,7 +41,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             Coordinate p)
         {
             bool isInCircle =
-                (a.X*a.X + a.Y*a.Y)*TriArea(b, c, p)
+                  (a.X*a.X + a.Y*a.Y)*TriArea(b, c, p)
                 - (b.X*b.X + b.Y*b.Y)*TriArea(a, c, p)
                 + (c.X*c.X + c.Y*c.Y)*TriArea(a, b, p)
                 - (p.X*p.X + p.Y*p.Y)*TriArea(a, b, c)
@@ -55,7 +55,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// </summary>
         /// <remarks>
         /// <para> This test uses simple
-        /// double-precision arithmetic, and thus is not 10% robust.
+        /// double-precision arithmetic, and thus is not 100% robust.
         /// However, by using normalization to the origin
         /// it provides improved robustness and increased performance.</para>
         /// <para>Based on code by J.R.Shewchuk.</para>
@@ -98,7 +98,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         private static double TriArea(Coordinate a, Coordinate b, Coordinate c)
         {
             return (b.X - a.X)*(c.Y - a.Y)
-                   - (b.Y - a.Y)*(c.X - a.X);
+                 - (b.Y - a.Y)*(c.X - a.X);
         }
 
         /// <summary>
@@ -266,25 +266,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
             return isInCircle;
         }
-
-        /**
-         * <p>
-         * In general this doesn't
-         * appear to be any more robust than the standard calculation. However, there
-         * is at least one case where the test point is far enough from the
-         * circumcircle that this test gives the correct answer. 
-         * <pre>
-         * LINESTRING
-         * (1507029.9878 518325.7547, 1507022.1120341457 518332.8225183258,
-         * 1507029.9833 518325.7458, 1507029.9896965567 518325.744909031)
-         * </pre>
-         * 
-         * @param a a vertex of the triangle
-         * @param b a vertex of the triangle
-         * @param c a vertex of the triangle
-         * @param p the point to test
-         * @return true if this point is inside the circle defined by the points a, b, c
-         */
 
         /// <summary>
         /// Computes the inCircle test using distance from the circumcentre. 

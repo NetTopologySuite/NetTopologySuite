@@ -1,6 +1,8 @@
 ﻿using System;
 using DotSpatial.Projections;
 using GeoAPI.CoordinateSystems.Transformations;
+using NetTopologySuite.Triangulate;
+using NetTopologySuite.Triangulate.QuadEdge;
 using NUnit.Framework;
 using NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projections;
 
@@ -491,6 +493,51 @@ namespace NetTopologySuite.Tests.Various
             Assert.That(fixedGeom, Is.Not.Null);
             Assert.That(fixedGeom.IsValid, Is.True);            
             Console.WriteLine(fixedGeom);
+        }
+
+        // see: https://groups.google.com/forum/#!topic/nettopologysuite/zBH57XK5vD0
+        [Test(Description = "Non-noded intersection using VoronoiDiagramBuilder")]
+        public void TestVoronoiDiagramBuilder()
+        {
+            const string wkt =
+                @"POLYGON ((561758.3399999999 4815264.26, 561758.2199999997 4815264.24, 561758.0899999999 4815264.25, 561757.9699999997 4815264.279999999, 561757.8499999996 4815264.34, 561757.7599999999 4815264.42, 561757.6799999997 4815264.52, 561757.6299999999 4815264.640000001, 561757.5999999996 4815264.76, 561757.5999999996 4815264.890000001, 561757.6299999999 4815265.02, 561757.6799999997 4815265.130000001, 561757.7599999999 4815265.230000001, 561757.8600000005 4815265.310000001, 561758.6100000005 4815265.724000001, 561759.3600000005 4815266.138000001, 561760.1100000005 4815266.552000001, 561760.8600000005 4815266.966000001, 561761.6100000005 4815267.380000001, 561761.75 4815267.41, 561761.9000000004 4815267.4, 561762.04 4815267.359999999, 561762.1699999999 4815267.289999999, 561762.2699999996 4815267.1899999995, 561762.3600000005 4815267.07, 561762.4100000003 4815266.930000001, 561762.4299999997 4815266.789999999, 561762.4199999999 4815266.65, 561762.3799999999 4815266.51, 561762.2999999998 4815266.380000001, 561761.5319999999 4815265.966000001, 561760.764 4815265.552000001, 561759.9959999999 4815265.138000001, 561759.228 4815264.724000001, 561758.4600000001 4815264.310000001, 561758.3399999999 4815264.26))";
+
+            var reader = new WKTReader(GeometryFactory.Default);
+            var geom = reader.Read(wkt);
+
+            Assert.IsTrue(geom.IsValid);
+            Assert.IsTrue(geom.IsSimple);
+
+            //var dtb = new DelaunayTriangulationBuilder();
+            //dtb.SetSites(geom);
+            QuadEdgeSubdivision qes = null;
+            //Assert.DoesNotThrow( () => qes = dtb.GetSubdivision());
+            //Assert.IsNotNull(qes);
+
+            //foreach (var t in qes.GetVoronoiCellPolygons(GeometryFactory.Default))
+            //    Console.WriteLine(t.AsText());
+
+            //Console.WriteLine();
+
+            IGeometryCollection diag = null;
+            //Assert.DoesNotThrow(() => diag = qes.GetVoronoiDiagram(GeometryFactory.Default));
+            //Assert.IsNotNull(diag);
+
+            var vdb = new VoronoiDiagramBuilder();
+            vdb.SetSites(geom);
+            qes = null;
+            Assert.DoesNotThrow(() => qes = vdb.GetSubdivision());
+            Assert.IsNotNull(qes);
+
+            foreach (var t in qes.GetVoronoiCellPolygons(GeometryFactory.Default))
+                Console.WriteLine(t.AsText());
+
+            Console.WriteLine();
+
+            diag = null;
+            Assert.DoesNotThrow(() => diag = vdb.GetDiagram(GeometryFactory.Default));
+            Assert.IsNotNull(diag);
+
         }
     }
 }

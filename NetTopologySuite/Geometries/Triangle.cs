@@ -85,6 +85,14 @@ namespace NetTopologySuite.Geometries
         /// perpendicular bisectors of the sides of the triangle,
         /// and is the only point which has equal distance to all three
         /// vertices of the triangle.
+        /// <para>
+        /// The circumcentre does not necessarily lie within the triangle. For example,
+        /// the circumcentre of an obtuse isoceles triangle lies outside the triangle.
+        /// </para>
+        /// <para>This method uses an algorithm due to J.R.Shewchuk which uses normalization
+        /// to the origin to improve the accuracy of computation. (See <i>Lecture Notes
+        /// on Geometric Robustness</i>, Jonathan Richard Shewchuk, 1999).
+        /// </para>
         /// </remarks>
         /// <param name="a">A vertex of the triangle</param>
         /// <param name="b">A vertex of the triangle</param>
@@ -92,24 +100,35 @@ namespace NetTopologySuite.Geometries
         /// <returns>The circumcentre of the triangle</returns>
         public static Coordinate Circumcentre(Coordinate a, Coordinate b, Coordinate c)
         {
-            // compute the perpendicular bisector of chord ab
-            HCoordinate cab = PerpendicularBisector(a, b);
-            // compute the perpendicular bisector of chord bc
-            HCoordinate cbc = PerpendicularBisector(b, c);
-            // compute the intersection of the bisectors (circle radii)
-            HCoordinate hcc = new HCoordinate(cab, cbc);
-            Coordinate cc;
-            try
-            {
-                cc = new Coordinate(hcc.GetX(), hcc.GetY());
-            }
-            catch (NotRepresentableException ex)
-            {
-                // MD - not sure what we can do to prevent this (robustness problem)
-                // Idea - can we condition which edges we choose?
-                throw new InvalidOperationException(ex.Message);
-            }
-            return cc;
+            double cx = c.X;
+            double cy = c.Y;
+            double ax = a.X - cx;
+            double ay = a.Y - cy;
+            double bx = b.X - cx;
+            double by = b.Y - cy;
+
+            double denom = 2 * Det(ax, ay, bx, by);
+            double numx = Det(ay, ax * ax + ay * ay, by, bx * bx + by * by);
+            double numy = Det(ax, ax * ax + ay * ay, bx, bx * bx + by * by);
+
+            double ccx = cx - numx / denom;
+            double ccy = cy + numy / denom;
+
+            return new Coordinate(ccx, ccy);
+        }
+
+        /// <summary>
+        /// Computes the determinant of a 2x2 matrix. Uses standard double-precision
+        /// arithmetic, so is susceptible to round-off error.
+        /// </summary>
+        /// <param name="m00">the [0,0] entry of the matrix</param>
+        /// <param name="m01">the [0,1] entry of the matrix</param>
+        /// <param name="m10">the [1,0] entry of the matrix</param>
+        /// <param name="m11">the [1,1] entry of the matrix</param>
+        /// <returns>The determinant</returns>
+        private static double Det(double m00, double m01, double m10, double m11)
+        {
+            return m00 * m11 - m01 * m10;
         }
 
         ///<summary>

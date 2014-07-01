@@ -101,8 +101,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                                   e[0].Orig.Coordinate
                               };
             var fact = new GeometryFactory();
-            ILinearRing ring = fact.CreateLinearRing(ringPts);
-            IPolygon tri = fact.CreatePolygon(ring, null);
+            var ring = fact.CreateLinearRing(ringPts);
+            var tri = fact.CreatePolygon(ring, null);
             return tri;
         }
 
@@ -242,8 +242,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
         public IGeometry GetGeometry(GeometryFactory fact)
         {
-            ILinearRing ring = fact.CreateLinearRing(GetCoordinates());
-            IPolygon tri = fact.CreatePolygon(ring, null);
+            var ring = fact.CreateLinearRing(GetCoordinates());
+            var tri = fact.CreatePolygon(ring, null);
             return tri;
         }
 
