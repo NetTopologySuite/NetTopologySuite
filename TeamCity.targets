@@ -5,8 +5,8 @@
 		<AsmVersion>1.13.3</AsmVersion>
 		<AsmFileVersion>$(AsmVersion)</AsmFileVersion>
 		<NuGetOutDir>"$(MSBuildProjectDirectory)\Release"</NuGetOutDir>
-		<GeoAPIVersion>1.7.2</GeoAPIVersion>
-		<ProjNetVersion>1.3.1</ProjNetVersion>
+		<GeoAPIVersion>1.7.3</GeoAPIVersion>
+		<ProjNetVersion>1.3.2</ProjNetVersion>
 		<NuGetCommand>"$(MSBuildProjectDirectory)\.nuget\nuget.exe" pack</NuGetCommand>
 	</PropertyGroup>
 
@@ -84,7 +84,7 @@
 	</Target>
 	<Target Name="BuildReleasePCL" DependsOnTargets="CleanRelease;SetVersion">
 		<MSBuild Projects="$(SolutionFile)" 
-             Targets="PCL\PowerCollections_PCL;PCL\GeoAPI_PCL;PCL\NetTopologySuite_PCL;PCL\ProjNET_PCL;PCL\GeoAPI_BootStrapper_NetTopologySuite" 
+             Targets="PCL\PowerCollections_PCL;PCL\GeoAPI_PCL;PCL\NetTopologySuite_PCL;PCL\ProjNET_PCL;PCL\GeoAPI_BootStrapper_NetTopologySuite;PCL\NetTopologySuite_IO_SpatiaLite_Pcl" 
              Properties="Configuration=Release;TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Profile147;DefineConstants=TRACE;PCL;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\PCL\" 
              RunEachTargetSeparately="true" 
              ContinueOnError="true" 
@@ -114,7 +114,7 @@
              />			 
 	</Target>
 
-	<Target Name="NuGetPack" DependsOnTargets="BuildRelease">
+	<Target Name="NuGetPack" DependsOnTargets="BuildRelease;BuildReleasePCL">
 		<Exec Command="$(NuGetCommand) GeoAPI\GeoAPI.nuspec -Version $(GeoAPIVersion) -outputdirectory $(NuGetOutDir)"/>
 		<Exec Command="$(NuGetCommand) NTS.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
 		<Exec Command="$(NuGetCommand) NTS.IO.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
@@ -124,11 +124,13 @@
 		<Exec Command="$(NuGetCommand) ProjNet\ProjNet.nuspec -Version $(ProjNetVersion) -outputdirectory $(NuGetOutDir)"/>
 		<!--Exec Command="$(NuGetCommand) NTS.Converter.DotSpatial.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/-->
 	</Target>
-	<Target Name="NuGetPackPCL" DependsOnTargets="BuildReleasePCL">
+<!--
+  <Target Name="NuGetPackPCL" DependsOnTargets="BuildReleasePCL">
 		<Exec Command="$(NuGetCommand) GeoAPI\GeoAPI.PCL.nuspec -Version $(GeoAPIVersion) -outputdirectory $(NuGetOutDir)"/>    
 		<Exec Command="$(NuGetCommand) NTS.PCL.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
+		<Exec Command="$(NuGetCommand) ProjNet\ProjNet.PCL.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
 	</Target>
-
+-->
 	<!-- 
   TODO: add targets here to build zip, NuGet, ...    
   -->

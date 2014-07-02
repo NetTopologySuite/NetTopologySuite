@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A11130E8-4942-432A-97B7-ADEEFB34A977}"
 	ProjectSection(SolutionItems) = preProject
+		GeoAPI\GeoAPI.nuspec = GeoAPI\GeoAPI.nuspec
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 		NTS.Converter.DotSpatial.nuspec = NTS.Converter.DotSpatial.nuspec
 		NTS.IO.nuspec = NTS.IO.nuspec
 		NTS.IO.SpatiaLite.nuspec = NTS.IO.SpatiaLite.nuspec
 		NTS.IO.SqlServer.nuspec = NTS.IO.SqlServer.nuspec
 		NTS.nuspec = NTS.nuspec
-		ProjNet\ProjNET\ProjNET.nuspec = ProjNet\ProjNET\ProjNET.nuspec
+		NTS.PCL.nuspec = NTS.PCL.nuspec
+		ProjNet\ProjNET.nuspec = ProjNet\ProjNET.nuspec
 		SharedAssemblyVersion.cs = SharedAssemblyVersion.cs
 		TeamCity.targets = TeamCity.targets
 	EndProjectSection
@@ -105,8 +107,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI.Pcl", "GeoAPI\GeoAPI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Pcl", "PortableClassLibrary\NetTopologySuite.Pcl\NetTopologySuite.Pcl.csproj", "{C6F14605-0DA6-420A-8DE7-18B57E9A9C99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI.BootStrapper.NetTopologySuite", "PortableClassLibrary\GeoAPI.Bootstrapper.NetTopologySuite\P\GeoAPI.BootStrapper.NetTopologySuite.csproj", "{8353362C-192B-4EDF-A50D-C36B21470D76}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Tests.NUnit.Pcl", "PortableClassLibrary\NetTopologySuite.Tests.NUnit.Pcl\NetTopologySuite.Tests.NUnit.Pcl.csproj", "{ED064DF8-14B5-471B-896D-BBFEB21A5AA6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PCL", "PCL", "{B21A27C1-F3D6-42A1-9C43-0516DB8E9CA8}"
@@ -117,7 +117,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.ShapeFi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.TopoJSON", "NetTopologySuite.IO\NetTopologySuite.IO.TopoJSON\NetTopologySuite.IO.TopoJSON.csproj", "{0E4430FB-E15B-447B-A21C-6481BC708DDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.SpatiaLite.Pcl", "NetTopologySuite.IO\NetTopologySuite.IO.SpatiaLite.Pcl\NetTopologySuite.IO.SpatiaLite.Pcl.csproj", "{E0E42664-2803-45F0-AC53-686CA7A926AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI.BootStrapper.NetTopologySuite", "PortableClassLibrary\GeoAPI.Bootstrapper.NetTopologySuite\GeoAPI.BootStrapper.NetTopologySuite.csproj", "{8353362C-192B-4EDF-A50D-C36B21470D76}"
+EndProject
 Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -241,10 +249,6 @@ Global
 		{C6F14605-0DA6-420A-8DE7-18B57E9A9C99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6F14605-0DA6-420A-8DE7-18B57E9A9C99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6F14605-0DA6-420A-8DE7-18B57E9A9C99}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8353362C-192B-4EDF-A50D-C36B21470D76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8353362C-192B-4EDF-A50D-C36B21470D76}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8353362C-192B-4EDF-A50D-C36B21470D76}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8353362C-192B-4EDF-A50D-C36B21470D76}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ED064DF8-14B5-471B-896D-BBFEB21A5AA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ED064DF8-14B5-471B-896D-BBFEB21A5AA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED064DF8-14B5-471B-896D-BBFEB21A5AA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -261,6 +265,14 @@ Global
 		{0E4430FB-E15B-447B-A21C-6481BC708DDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E4430FB-E15B-447B-A21C-6481BC708DDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E4430FB-E15B-447B-A21C-6481BC708DDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0E42664-2803-45F0-AC53-686CA7A926AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0E42664-2803-45F0-AC53-686CA7A926AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0E42664-2803-45F0-AC53-686CA7A926AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0E42664-2803-45F0-AC53-686CA7A926AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8353362C-192B-4EDF-A50D-C36B21470D76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8353362C-192B-4EDF-A50D-C36B21470D76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8353362C-192B-4EDF-A50D-C36B21470D76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8353362C-192B-4EDF-A50D-C36B21470D76}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -294,12 +306,9 @@ Global
 		{4FE07049-9F3A-42A4-8105-B1A72FE15C67} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
 		{92B3B84B-50F1-4147-8B97-D93B90FA5514} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
 		{C6F14605-0DA6-420A-8DE7-18B57E9A9C99} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
-		{8353362C-192B-4EDF-A50D-C36B21470D76} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
 		{1A851740-12C4-4A2A-9C78-AD69FD1420F5} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
+		{E0E42664-2803-45F0-AC53-686CA7A926AD} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
+		{8353362C-192B-4EDF-A50D-C36B21470D76} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
 		{ED064DF8-14B5-471B-896D-BBFEB21A5AA6} = {B21A27C1-F3D6-42A1-9C43-0516DB8E9CA8}
-	EndGlobalSection
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 EndGlobal

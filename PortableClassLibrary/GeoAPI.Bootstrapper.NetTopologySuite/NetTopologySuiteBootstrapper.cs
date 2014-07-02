@@ -1,11 +1,12 @@
 ﻿namespace GeoAPI
 {
+    /// <summary>
+    /// A utility class to register NTS as GeoAPI implementation to use
+    /// </summary>
     public class NetTopologySuiteBootstrapper
     {
         /// <summary>
-        /// ToDo: 
-        /// - Rethink method name (maybe Configure?)
-        /// - Some sort of configuration?
+        /// Method to register NTS as GeoAPI implementation to use.
         /// </summary>
         public static void Bootstrap()
         {

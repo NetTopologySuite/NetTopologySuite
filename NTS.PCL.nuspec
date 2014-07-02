@@ -18,11 +18,12 @@
 		<copyright>Copyright 2007-2013</copyright>
 		<language>en-US</language>
 		<dependencies>
-			<dependency id="GeoAPI.PCL" version="[1.7.2,1.8)" />
+			<dependency id="GeoAPI.PCL" version="[1.7.3,1.8)" />
 		</dependencies>
 	</metadata>
 	<files>
 		<file src="Release\PCL\AnyCPU\NetTopologySuite.dll" target="lib\portable-net403+sl5+win8+wp8\NetTopologySuite.dll" />
-		<file src="Release\PCL\AnyCPU\PowerCollections.dll" target="lib\portable-net403+sl5+win8+wp8\PowerCollections.dll" />
+    <file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.dll" target="lib\portable-net403+sl5+win8+wp8\GeoAPI.Bootstrapper.NetTopologySuite.dll" />
+    <file src="Release\PCL\AnyCPU\PowerCollections.dll" target="lib\portable-net403+sl5+win8+wp8\PowerCollections.dll" />
 	</files>
 </package>

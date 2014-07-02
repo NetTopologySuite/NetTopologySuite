@@ -19,7 +19,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Debug\PCL\AnyCPU\</OutputPath>
+    <OutputPath>..\..\Debug\PCL\AnyCPU\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,19 +27,25 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\Release\PCL\AnyCPU\</OutputPath>
+    <OutputPath>..\..\Release\PCL\AnyCPU\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\..\Release\PCL\AnyCPU\GeoAPI.BootStrapper.NetTopologySuite.XML</DocumentationFile>
+    <DocumentationFile>..\..\Release\PCL\AnyCPU\GeoAPI.BootStrapper.NetTopologySuite.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\NetTopologySuite\nts.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <ProjectReference Include="..\..\..\GeoAPI\GeoAPI.Pcl\GeoAPI.Pcl.csproj">
+    <ProjectReference Include="..\..\GeoAPI\GeoAPI.Pcl\GeoAPI.Pcl.csproj">
       <Project>{92b3b84b-50f1-4147-8b97-d93b90fa5514}</Project>
       <Name>GeoAPI.Pcl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\NetTopologySuite.Pcl\NetTopologySuite.Pcl.csproj">
+    <ProjectReference Include="..\NetTopologySuite.Pcl\NetTopologySuite.Pcl.csproj">
       <Project>{c6f14605-0da6-420a-8de7-18b57e9a9c99}</Project>
       <Name>NetTopologySuite.Pcl</Name>
     </ProjectReference>
@@ -47,6 +53,9 @@
   <ItemGroup>
     <Compile Include="NetTopologySuiteBootstrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\SharedAssemblyVersion.cs">
+      <Link>Properties\SharedAssemblyVersion.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
