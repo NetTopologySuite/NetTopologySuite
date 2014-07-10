@@ -107,16 +107,19 @@
             if (reader.TokenType != JsonToken.StartArray) return null;
 
             Coordinate c = new Coordinate();
+
             reader.Read();
-            Debug.Assert(reader.TokenType == JsonToken.Float);
-            c.X = (Double)reader.Value;
+            Debug.Assert(reader.TokenType == JsonToken.Float || reader.TokenType == JsonToken.Integer);
+            c.X = Convert.ToDouble(reader.Value);
+
             reader.Read();
-            Debug.Assert(reader.TokenType == JsonToken.Float);
-            c.Y = (Double)reader.Value;
+            Debug.Assert(reader.TokenType == JsonToken.Float || reader.TokenType == JsonToken.Integer);
+            c.Y = Convert.ToDouble(reader.Value);
+            
             reader.Read();
-            if (reader.TokenType == JsonToken.Float)
+            if (reader.TokenType == JsonToken.Float || reader.TokenType == JsonToken.Integer)
             {
-                c.Z = (Double)reader.Value;
+                c.Z = Convert.ToDouble(reader.Value);
                 reader.Read();
             }
             Debug.Assert(reader.TokenType == JsonToken.EndArray);
