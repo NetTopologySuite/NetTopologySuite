@@ -42,9 +42,9 @@
 		<file src="Release\v4.5\AnyCPU\NetTopologySuite.dll" target="lib\net45-client\NetTopologySuite.dll" />
 		<file src="Release\v4.5\AnyCPU\PowerCollections.dll" target="lib\net45-client\PowerCollections.dll" />
 
-    <file src="Release\PCL\AnyCPU\NetTopologySuite.dll" target="lib\portable-net403+sl5+win8+wp8\NetTopologySuite.dll" />
-    <file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.dll" target="lib\portable-net403+sl5+win8+wp8\GeoAPI.Bootstrapper.NetTopologySuite.dll" />
-    <file src="Release\PCL\AnyCPU\PowerCollections.dll" target="lib\portable-net403+sl5+win8+wp8\PowerCollections.dll" />
+    <file src="Release\PCL\AnyCPU\NetTopologySuite.dll" target="lib\portable-net403+sl5+win8+wp8+MonoAndroid+MonoTouch\NetTopologySuite.dll" />
+    <file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.dll" target="lib\portable-net403+sl5+win8+wp8+MonoAndroid+MonoTouch\GeoAPI.Bootstrapper.NetTopologySuite.dll" />
+    <file src="Release\PCL\AnyCPU\PowerCollections.dll" target="lib\portable-net403+sl5+win8+wp8+MonoAndroid+MonoTouch\PowerCollections.dll" />
 
   </files>
 </package>

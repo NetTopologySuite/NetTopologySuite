@@ -6,6 +6,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		GeoAPI\GeoAPI.nuspec = GeoAPI\GeoAPI.nuspec
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 		NTS.Converter.DotSpatial.nuspec = NTS.Converter.DotSpatial.nuspec
+		NTS.IO.GeoJSON.nuspec = NTS.IO.GeoJSON.nuspec
 		NTS.IO.nuspec = NTS.IO.nuspec
 		NTS.IO.SpatiaLite.nuspec = NTS.IO.SpatiaLite.nuspec
 		NTS.IO.SqlServer.nuspec = NTS.IO.SqlServer.nuspec
@@ -120,6 +121,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.SpatiaLite.Pcl", "NetTopologySuite.IO\NetTopologySuite.IO.SpatiaLite.Pcl\NetTopologySuite.IO.SpatiaLite.Pcl.csproj", "{E0E42664-2803-45F0-AC53-686CA7A926AD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI.BootStrapper.NetTopologySuite", "PortableClassLibrary\GeoAPI.Bootstrapper.NetTopologySuite\GeoAPI.BootStrapper.NetTopologySuite.csproj", "{8353362C-192B-4EDF-A50D-C36B21470D76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.GeoJSON.Pcl", "NetTopologySuite.IO\NetTopologySuite.IO.GeoJSON.Pcl\NetTopologySuite.IO.GeoJSON.Pcl.csproj", "{EDCD0BD3-164D-4D8F-935B-CE2ECB7DAE4F}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -273,6 +276,10 @@ Global
 		{8353362C-192B-4EDF-A50D-C36B21470D76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8353362C-192B-4EDF-A50D-C36B21470D76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8353362C-192B-4EDF-A50D-C36B21470D76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDCD0BD3-164D-4D8F-935B-CE2ECB7DAE4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDCD0BD3-164D-4D8F-935B-CE2ECB7DAE4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDCD0BD3-164D-4D8F-935B-CE2ECB7DAE4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDCD0BD3-164D-4D8F-935B-CE2ECB7DAE4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -309,6 +316,7 @@ Global
 		{1A851740-12C4-4A2A-9C78-AD69FD1420F5} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
 		{E0E42664-2803-45F0-AC53-686CA7A926AD} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
 		{8353362C-192B-4EDF-A50D-C36B21470D76} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
+		{EDCD0BD3-164D-4D8F-935B-CE2ECB7DAE4F} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
 		{ED064DF8-14B5-471B-896D-BBFEB21A5AA6} = {B21A27C1-F3D6-42A1-9C43-0516DB8E9CA8}
 	EndGlobalSection
 EndGlobal

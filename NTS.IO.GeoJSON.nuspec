@@ -20,8 +20,8 @@
 			<frameworkAssembly assemblyName="System.Core" targetFramework="" />
 		</frameworkAssemblies>
 		<dependencies>
-			<dependency id="NetTopologySuite" version="$version$" />
-			<dependency id="Newtonsoft.Json" version="4.03" />
+			<dependency id="NetTopologySuite" version="[$version$]" />
+			<dependency id="Newtonsoft.Json" version="[6.03]" />
 		</dependencies>
 	</metadata>
 	<files>
@@ -34,5 +34,7 @@
 		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net403-client\NetTopologySuite.IO.GeoJSON.dll" />
 		
 		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net45-client\NetTopologySuite.IO.GeoJSON.dll" />
-	</files>
+
+    <file src="Release\PCL\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\portable-net403+win8\NetTopologySuite.IO.GeoJSON.dll" />
+  </files>
 </package>

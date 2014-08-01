@@ -34,7 +34,7 @@
 		
 		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.SpatiaLite.dll" target="lib\net45-client\NetTopologySuite.IO.SpatiaLite.dll" />
 
-    <file src="Release\PCL\AnyCPU\NetTopologySuite.IO.SpatiaLite.dll" target="lib\portable-net403+sl5+win8+wp8\NetTopologySuite.IO.SpatiaLite.dll" />
+    <file src="Release\PCL\AnyCPU\NetTopologySuite.IO.SpatiaLite.dll" target="lib\portable-net403+sl5+win8+wp8+MonoAndroid+MonoTouch\NetTopologySuite.IO.SpatiaLite.dll" />
 
   </files>
 </package>

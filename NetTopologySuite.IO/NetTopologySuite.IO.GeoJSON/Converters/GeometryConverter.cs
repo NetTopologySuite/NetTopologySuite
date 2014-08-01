@@ -100,7 +100,7 @@ namespace NetTopologySuite.IO.Converters
             reader.Read();
             if (reader.TokenType != JsonToken.String)
                 throw new ArgumentException("invalid tokentype: " + reader.TokenType);
-            GeoJsonObjectType geometryType = (GeoJsonObjectType)Enum.Parse(typeof(GeoJsonObjectType), (string)reader.Value);
+            GeoJsonObjectType geometryType = (GeoJsonObjectType)Enum.Parse(typeof(GeoJsonObjectType), (string)reader.Value, true);
             switch (geometryType)
             {
                 case GeoJsonObjectType.Point:
@@ -205,7 +205,7 @@ namespace NetTopologySuite.IO.Converters
             while (reader.TokenType != JsonToken.EndArray)
             {
                 JObject obj = (JObject)serializer.Deserialize(reader);
-                GeoJsonObjectType geometryType = (GeoJsonObjectType)Enum.Parse(typeof(GeoJsonObjectType), obj.Value<string>("type"));
+                GeoJsonObjectType geometryType = (GeoJsonObjectType)Enum.Parse(typeof(GeoJsonObjectType), obj.Value<string>("type"), true);
 
                 switch (geometryType)
                 {

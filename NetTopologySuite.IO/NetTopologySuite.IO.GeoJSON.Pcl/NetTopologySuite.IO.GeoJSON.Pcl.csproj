@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <!-- Define SolutionDir if not already set -->
+    <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\..\</SolutionDir>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EDCD0BD3-164D-4D8F-935B-CE2ECB7DAE4F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NetTopologySuite.IO.GeoJSON</RootNamespace>
+    <AssemblyName>NetTopologySuite.IO.GeoJSON</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile147</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>$(SolutionDir)Debug\PCL\AnyCPU\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(SolutionDir)Release\PCL\AnyCPU\</OutputPath>
+    <DefineConstants>TRACE;PCL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>$(SolutionDir)Release\PCL\AnyCPU\NetTopologySuite.IO.GeoJSON.Pcl.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <Compile Include="..\..\SharedAssemblyVersion.cs">
+      <Link>Properties\SharedAssemblyVersion.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoJSON\Converters\AttributesTableConverter.cs">
+      <Link>Converters\AttributesTableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoJSON\Converters\CoordinateConverters.cs">
+      <Link>Converters\CoordinateConverters.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoJSON\Converters\EnvelopeConverter.cs">
+      <Link>Converters\EnvelopeConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoJSON\Converters\FeatureCollectionConverter.cs">
+      <Link>Converters\FeatureCollectionConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoJSON\Converters\FeatureConverter.cs">
+      <Link>Converters\FeatureConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoJSON\Converters\GeometryConverter.cs">
+      <Link>Converters\GeometryConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoJSON\Converters\ICRSObjectConverter.cs">
+      <Link>Converters\ICRSObjectConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoJSON\GeoJsonObjectType.cs">
+      <Link>GeoJsonObjectType.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoJSON\GeoJsonSerializer.cs">
+      <Link>GeoJsonSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoJSON\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\GeoAPI\GeoAPI.Pcl\GeoAPI.Pcl.csproj">
+      <Project>{92b3b84b-50f1-4147-8b97-d93b90fa5514}</Project>
+      <Name>GeoAPI.Pcl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PortableClassLibrary\NetTopologySuite.Pcl\NetTopologySuite.Pcl.csproj">
+      <Project>{c6f14605-0da6-420a-8de7-18b57e9a9c99}</Project>
+      <Name>NetTopologySuite.Pcl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.3\lib\portable-net40+sl4+wp7+win8\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Aktivieren Sie die Wiederherstellung von NuGet-Paketen, um die fehlende Datei herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

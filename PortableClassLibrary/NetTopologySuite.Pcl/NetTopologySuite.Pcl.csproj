@@ -54,6 +54,21 @@
     <Compile Include="..\..\NetTopologySuite.IO\NetTopologySuite.IO\Geometries\CoordinateBuffer.cs">
       <Link>Geometries\CoordinateBuffer.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite\CoordinateSystems\CRSBase.cs">
+      <Link>CoordinateSystems\CRSBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\CoordinateSystems\CRSType.cs">
+      <Link>CoordinateSystems\CRSType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\CoordinateSystems\ICRSObject.cs">
+      <Link>CoordinateSystems\ICRSObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\CoordinateSystems\LinkedCRS.cs">
+      <Link>CoordinateSystems\LinkedCRS.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\CoordinateSystems\NamedCRS.cs">
+      <Link>CoordinateSystems\NamedCRS.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\Dissolve\DissolveEdgeGraph.cs">
       <Link>Dissolve\DissolveEdgeGraph.cs</Link>
     </Compile>
@@ -74,6 +89,9 @@
     </Compile>
     <Compile Include="..\..\NetTopologySuite\EdgeGraph\MarkHalfEdge.cs">
       <Link>EdgeGraph\MarkHalfEdge.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Features\FeatureCollection.cs">
+      <Link>Features\FeatureCollection.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Features\IFeature.cs">
       <Link>Features\IFeature.cs</Link>
