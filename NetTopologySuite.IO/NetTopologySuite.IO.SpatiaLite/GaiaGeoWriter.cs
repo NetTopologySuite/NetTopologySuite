@@ -270,7 +270,7 @@ namespace NetTopologySuite.IO
             for (var i = 0; i < coordinateSequence.Count; i++)
             {
                 var c = coordinateSequence.GetCoordinate(i);
-                wd(bw, c.X, c.Y, 0d);
+                wd(bw, c.X, c.Y, coordinateSequence.GetOrdinate(i, Ordinate.M));
             }
         }
 
@@ -280,7 +280,7 @@ namespace NetTopologySuite.IO
             for (var i = 0; i < coordinateSequence.Count; i++)
             {
                 var c = coordinateSequence.GetCoordinate(i);
-                wd(bw, c.X, c.Y, c.Z, 0d);
+                wd(bw, c.X, c.Y, c.Z, coordinateSequence.GetOrdinate(i, Ordinate.M));
             }
         }
 
@@ -341,7 +341,8 @@ namespace NetTopologySuite.IO
 
             // Write initial coordinate
             var cprev = coordinateSequence.GetCoordinate(0);
-            wd(bw, cprev.X, cprev.Y, 0d/*cprev.M*/);
+            var mprev = coordinateSequence.GetOrdinate(0, Ordinate.M);
+            wd(bw, cprev.X, cprev.Y, mprev);
 
             var maxIndex = coordinateSequence.Count - 1;
             if (maxIndex <= 0) return;
@@ -352,12 +353,13 @@ namespace NetTopologySuite.IO
                 var c = coordinateSequence.GetCoordinate(i);
                 var fx = (float)(c.X - cprev.X);
                 var fy = (float)(c.Y - cprev.Y);
-                var fm = 0f;// (float)(c.M - cprev.M);
+                var fm = (float)(coordinateSequence.GetOrdinate(i, Ordinate.M) - mprev);
                 ws(bw, fx, fy, fm);
                 cprev = c;
             }
             cprev = coordinateSequence.GetCoordinate(maxIndex);
-            wd(bw, cprev.X, cprev.Y, 0d/*cprev.M*/);
+            mprev = coordinateSequence.GetOrdinate(maxIndex, Ordinate.M);
+            wd(bw, cprev.X, cprev.Y, mprev);
         }
 
         private static void WriteCompressedXYZM(ICoordinateSequence coordinateSequence, GaiaExport export, BinaryWriter bw)
@@ -366,7 +368,8 @@ namespace NetTopologySuite.IO
 
             // Write initial coordinate
             var cprev = coordinateSequence.GetCoordinate(0);
-            wd(bw, cprev.X, cprev.Y, cprev.Z, 0d/*cprev.M*/);
+            var mprev = coordinateSequence.GetOrdinate(0, Ordinate.M);
+            wd(bw, cprev.X, cprev.Y, cprev.Z, mprev);
 
             var maxIndex = coordinateSequence.Count - 1;
             if (maxIndex <= 0) return;
@@ -378,12 +381,13 @@ namespace NetTopologySuite.IO
                 var fx = (float)(c.X - cprev.X);
                 var fy = (float)(c.Y - cprev.Y);
                 var fz = (float)(c.Z - cprev.Z);
-                var fm = 0f;// (float)(c.M - cprev.M);
+                var fm = (float)(coordinateSequence.GetOrdinate(i, Ordinate.M) - mprev);
                 ws(bw, fx, fy, fz, fm);
                 cprev = c;
             }
             cprev = coordinateSequence.GetCoordinate(maxIndex);
-            wd(bw, cprev.X, cprev.Y, cprev.Z, 0d/*cprev.M*/);
+            mprev = coordinateSequence.GetOrdinate(maxIndex, Ordinate.M);
+            wd(bw, cprev.X, cprev.Y, cprev.Z, mprev);
         }
 
         public bool HandleSRID
