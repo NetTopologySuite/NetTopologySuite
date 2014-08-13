@@ -440,9 +440,9 @@
       <Project>{92b3b84b-50f1-4147-8b97-d93b90fa5514}</Project>
       <Name>GeoAPI.Pcl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GeoAPI.Bootstrapper.NetTopologySuite\GeoAPI.BootStrapper.NetTopologySuite.csproj">
+    <ProjectReference Include="..\GeoAPI.Bootstrapper.NetTopologySuite\GeoAPI.Bootstrapper.NetTopologySuite.csproj">
       <Project>{8353362c-192b-4edf-a50d-c36b21470d76}</Project>
-      <Name>GeoAPI.BootStrapper.NetTopologySuite</Name>
+      <Name>GeoAPI.Bootstrapper.NetTopologySuite</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.Pcl\NetTopologySuite.Pcl.csproj">
       <Project>{c6f14605-0da6-420a-8de7-18b57e9a9c99}</Project>

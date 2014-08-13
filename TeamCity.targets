@@ -84,7 +84,7 @@
 	</Target>
 	<Target Name="BuildReleasePCL">
 		<MSBuild Projects="$(SolutionFile)" 
-             Targets="PCL\PowerCollections_PCL;PCL\GeoAPI_PCL;PCL\NetTopologySuite_PCL;PCL\ProjNET_PCL;PCL\GeoAPI_BootStrapper_NetTopologySuite;PCL\NetTopologySuite_IO_SpatiaLite_Pcl;PCL\NetTopologySuite_IO_GeoJSON_Pcl" 
+             Targets="PCL\PowerCollections_PCL;PCL\GeoAPI_PCL;PCL\NetTopologySuite_PCL;PCL\ProjNET_PCL;PCL\GeoAPI_Bootstrapper_NetTopologySuite;PCL\NetTopologySuite_IO_SpatiaLite_Pcl;PCL\NetTopologySuite_IO_GeoJSON_Pcl" 
              Properties="Configuration=Release;TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Profile147;DefineConstants=TRACE;PCL;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\PCL\" 
              RunEachTargetSeparately="true" 
              ContinueOnError="true" 

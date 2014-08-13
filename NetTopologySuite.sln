@@ -11,7 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		NTS.IO.SpatiaLite.nuspec = NTS.IO.SpatiaLite.nuspec
 		NTS.IO.SqlServer.nuspec = NTS.IO.SqlServer.nuspec
 		NTS.nuspec = NTS.nuspec
-		NTS.PCL.nuspec = NTS.PCL.nuspec
 		ProjNet\ProjNET.nuspec = ProjNet\ProjNET.nuspec
 		SharedAssemblyVersion.cs = SharedAssemblyVersion.cs
 		TeamCity.targets = TeamCity.targets
@@ -120,15 +119,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.TopoJSO
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.SpatiaLite.Pcl", "NetTopologySuite.IO\NetTopologySuite.IO.SpatiaLite.Pcl\NetTopologySuite.IO.SpatiaLite.Pcl.csproj", "{E0E42664-2803-45F0-AC53-686CA7A926AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI.BootStrapper.NetTopologySuite", "PortableClassLibrary\GeoAPI.Bootstrapper.NetTopologySuite\GeoAPI.BootStrapper.NetTopologySuite.csproj", "{8353362C-192B-4EDF-A50D-C36B21470D76}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI.Bootstrapper.NetTopologySuite", "PortableClassLibrary\GeoAPI.Bootstrapper.NetTopologySuite\GeoAPI.Bootstrapper.NetTopologySuite.csproj", "{8353362C-192B-4EDF-A50D-C36B21470D76}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.GeoJSON.Pcl", "NetTopologySuite.IO\NetTopologySuite.IO.GeoJSON.Pcl\NetTopologySuite.IO.GeoJSON.Pcl.csproj", "{EDCD0BD3-164D-4D8F-935B-CE2ECB7DAE4F}"
 EndProject
 Global
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -318,5 +313,9 @@ Global
 		{8353362C-192B-4EDF-A50D-C36B21470D76} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
 		{EDCD0BD3-164D-4D8F-935B-CE2ECB7DAE4F} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
 		{ED064DF8-14B5-471B-896D-BBFEB21A5AA6} = {B21A27C1-F3D6-42A1-9C43-0516DB8E9CA8}
+	EndGlobalSection
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 EndGlobal

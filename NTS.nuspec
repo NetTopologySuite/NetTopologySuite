@@ -27,24 +27,37 @@
 		</dependencies>
 	</metadata>
 	<files>
-		<file src="Release\v2.0\AnyCPU\NetTopologySuite.dll" target="lib\net20\NetTopologySuite.dll" />
-		<file src="Release\v2.0\AnyCPU\PowerCollections.dll" target="lib\net20\PowerCollections.dll" />
+		<file src="Release\v2.0\AnyCPU\NetTopologySuite.dll" target="lib\net20" />
+    <file src="Release\v2.0\AnyCPU\NetTopologySuite.pdb" target="lib\net20" />
+		<file src="Release\v2.0\AnyCPU\PowerCollections.dll" target="lib\net20" />
+    <file src="Release\v2.0\AnyCPU\PowerCollections.pdb" target="lib\net20" />
 		
-		<file src="Release\v3.5\AnyCPU\NetTopologySuite.dll" target="lib\net35-client\NetTopologySuite.dll" />
-		<file src="Release\v3.5\AnyCPU\PowerCollections.dll" target="lib\net35-client\PowerCollections.dll" />
+		<file src="Release\v3.5\AnyCPU\NetTopologySuite.dll" target="lib\net35-client" />
+    <file src="Release\v3.5\AnyCPU\NetTopologySuite.pdb" target="lib\net35-client" />
+		<file src="Release\v3.5\AnyCPU\PowerCollections.dll" target="lib\net35-client" />
+    <file src="Release\v3.5\AnyCPU\PowerCollections.pdb" target="lib\net35-client" />
 		
-		<file src="Release\v4.0\AnyCPU\NetTopologySuite.dll" target="lib\net40-client\NetTopologySuite.dll" />
-		<file src="Release\v4.0\AnyCPU\PowerCollections.dll" target="lib\net40-client\PowerCollections.dll" />
+		<file src="Release\v4.0\AnyCPU\NetTopologySuite.dll" target="lib\net40-client" />
+    <file src="Release\v4.0\AnyCPU\NetTopologySuite.pdb" target="lib\net40-client" />
+		<file src="Release\v4.0\AnyCPU\PowerCollections.dll" target="lib\net40-client" />
+    <file src="Release\v4.0\AnyCPU\PowerCollections.pdb" target="lib\net40-client" />
 		
-		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.dll" target="lib\net403-client\NetTopologySuite.dll" />
-		<file src="Release\v4.0.3\AnyCPU\PowerCollections.dll" target="lib\net403-client\PowerCollections.dll" />
+		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.dll" target="lib\net403-client" />
+    <file src="Release\v4.0.3\AnyCPU\NetTopologySuite.pdb" target="lib\net403-client" />
+		<file src="Release\v4.0.3\AnyCPU\PowerCollections.dll" target="lib\net403-client" />
+    <file src="Release\v4.0.3\AnyCPU\PowerCollections.pdb" target="lib\net403-client" />
 		
-		<file src="Release\v4.5\AnyCPU\NetTopologySuite.dll" target="lib\net45-client\NetTopologySuite.dll" />
-		<file src="Release\v4.5\AnyCPU\PowerCollections.dll" target="lib\net45-client\PowerCollections.dll" />
+		<file src="Release\v4.5\AnyCPU\NetTopologySuite.dll" target="lib\net45-client" />
+    <file src="Release\v4.5\AnyCPU\NetTopologySuite.pdb" target="lib\net45-client" />
+		<file src="Release\v4.5\AnyCPU\PowerCollections.dll" target="lib\net45-client" />
+    <file src="Release\v4.5\AnyCPU\PowerCollections.pdb" target="lib\net45-client" />
 
-    <file src="Release\PCL\AnyCPU\NetTopologySuite.dll" target="lib\portable-net403+sl5+win8+wp8+MonoAndroid+MonoTouch\NetTopologySuite.dll" />
-    <file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.dll" target="lib\portable-net403+sl5+win8+wp8+MonoAndroid+MonoTouch\GeoAPI.Bootstrapper.NetTopologySuite.dll" />
-    <file src="Release\PCL\AnyCPU\PowerCollections.dll" target="lib\portable-net403+sl5+win8+wp8+MonoAndroid+MonoTouch\PowerCollections.dll" />
+    <file src="Release\PCL\AnyCPU\NetTopologySuite.dll" target="lib\portable-net403+sl5+netcore45+wp8+MonoAndroid1+MonoTouch1" />
+    <file src="Release\PCL\AnyCPU\NetTopologySuite.pdb" target="lib\portable-net403+sl5+netcore45+wp8+MonoAndroid1+MonoTouch1" />
+    <file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.dll" target="lib\portable-net403+sl5+netcore45+wp8+MonoAndroid1+MonoTouch1" />
+    <file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.pdb" target="lib\portable-net403+sl5+netcore45+wp8+MonoAndroid1+MonoTouch1" />
+    <file src="Release\PCL\AnyCPU\PowerCollections.dll" target="lib\portable-net403+sl5+netcore45+wp8+MonoAndroid1+MonoTouch1" />
+    <file src="Release\PCL\AnyCPU\PowerCollections.pdb" target="lib\portable-net403+sl5+netcore45+wp8+MonoAndroid1+MonoTouch1" />
 
   </files>
 </package>
