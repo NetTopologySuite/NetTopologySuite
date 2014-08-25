@@ -70,6 +70,13 @@
     <NoWarn>659,168</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GeoAPI">
+      <HintPath>..\packages\GeoAPI.1.7.3\lib\net40-client\GeoAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="ProjNet, Version=1.3.0.3, Culture=neutral, PublicKeyToken=a1f5bdcd9c6f5740, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ProjNET4GeoAPI.1.3.2\lib\net40-client\ProjNet.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -534,6 +541,8 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="License.txt" />
+    <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Precision\DocFiles\minClearance.png" />
     <Content Include="Precision\PrecisionSummary.xml">
       <SubType>Designer</SubType>
@@ -582,12 +591,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">
-      <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
-      <Name>GeoAPI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PowerCollections\PowerCollections\PowerCollections.csproj">
-      <Project>{5821977D-AC2C-4912-BCD0-6E6B1A756167}</Project>
+    <ProjectReference Include="..\PowerCollections\Source\PowerCollections\PowerCollections.csproj">
+      <Project>{5821977d-ac2c-4912-bcd0-6e6b1a756167}</Project>
       <Name>PowerCollections</Name>
     </ProjectReference>
   </ItemGroup>
