@@ -19,7 +19,7 @@
 		<RemoveDir Directories="$(MSBuildProjectDirectory)\Debug"/>
 	</Target>
 	<Target Name="CleanRelease" DependsOnTargets="Clean">
-	<MSBuild Projects="$(SolutionFile)" Targets="Clean" Properties="Configuration=Release" />
+		<MSBuild Projects="$(SolutionFile)" Targets="Clean" Properties="Configuration=Release" />
 		<RemoveDir Directories="$(MSBuildProjectDirectory)\bin"/>
 		<RemoveDir Directories="$(MSBuildProjectDirectory)\obj"/>
 		<RemoveDir Directories="$(MSBuildProjectDirectory)\Release"/>
@@ -50,21 +50,28 @@
 		<WriteCodeFragment Language="C#" OutputFile="SharedAssemblyVersion.cs" AssemblyAttributes="@(AssemblyAttributes)" />
 	</Target>
 
-	<Target Name="BuildRelease">
-		<!-->
+	<Target Name="BuildRelease20" DependsOnTargets="CleanRelease">
+		<PropertyGroup>
+			<fwVersion>net20</fwVersion>
+		</PropertyGroup>
 		<MSBuild Projects="$(SolutionFile)" 
              Targets="PowerCollections;NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008" 
-             Properties="Configuration=Release;TargetFrameworkVersion=v2.0;TargetFrameworkProfile=;DefineConstants=TRACE;NET20;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v2.0\;" 
+             Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v2.0;TargetFrameworkProfile=;DefineConstants=TRACE;NET20;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v2.0\;" 
              RunEachTargetSeparately="true" 
 			 ContinueOnError="true" 
              />		
+	</Target>
+	<Target Name="BuildRelease35" DependsOnTargets="CleanRelease">
+		<PropertyGroup>
+			<fwVersion>net35-client</fwVersion>
+		</PropertyGroup>
 		<MSBuild Projects="$(SolutionFile)" 
              Targets="PowerCollections;NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008" 
-             Properties="Configuration=Release;TargetFrameworkVersion=v3.5;TargetFrameworkProfile=Client;DefineConstants=TRACE;NET20;NET35;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v3.5\;" 
+             Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v3.5;TargetFrameworkProfile=Client;DefineConstants=TRACE;NET20;NET35;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v3.5\;" 
              RunEachTargetSeparately="true" 
-             ContinueOnError="true" 
-             />
-		<!-->
+             ContinueOnError="true" />
+	</Target>
+	<Target Name="BuildRelease" DependsOnTargets="CleanRelease">
 		<MSBuild Projects="$(SolutionFile)" 
              Targets="PowerCollections;NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile_Extended;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008" 
              Properties="Configuration=Release;TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Client;DefineConstants=TRACE;NET20;NET35;NET40;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v4.0\;" 
@@ -84,7 +91,7 @@
              ContinueOnError="true" 
              />
 	</Target>
-	<Target Name="BuildReleasePCL">
+	<Target Name="BuildReleasePCL" DependsOnTargets="CleanRelease">
 		<MSBuild Projects="$(SolutionFile)" 
              Targets="PCL\PowerCollections_PCL;PCL\NetTopologySuite_PCL;PCL\GeoAPI_Bootstrapper_NetTopologySuite;PCL\NetTopologySuite_IO_SpatiaLite_Pcl;PCL\NetTopologySuite_IO_GeoJSON_Pcl" 
              Properties="Configuration=Release;TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Profile147;DefineConstants=TRACE;PCL;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\PCL\" 
@@ -99,7 +106,7 @@
              ContinueOnError="true"
              />
 	</Target>
-	<Target Name="RebuildRelease" DependsOnTargets="CleanRelease;BuildRelease"/>
+	<Target Name="RebuildRelease" DependsOnTargets="BuildRelease20;BuildRelease35;BuildRelease"/>	
 
 	<!-- build only for now, test on build server -->
 	<Target Name="UnitTests" DependsOnTargets="BuildRelease">
@@ -125,7 +132,7 @@
 		<Exec Command="$(NuGetCommand) ProjNet\ProjNet.nuspec -Version $(ProjNetVersion) -outputdirectory $(NuGetOutDir)"/>
 		<!--Exec Command="$(NuGetCommand) NTS.Converter.DotSpatial.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/-->
 	</Target>
-<!--
+	<!--
   <Target Name="NuGetPackPCL" DependsOnTargets="BuildReleasePCL">
 		<Exec Command="$(NuGetCommand) GeoAPI\GeoAPI.PCL.nuspec -Version $(GeoAPIVersion) -outputdirectory $(NuGetOutDir)"/>    
 		<Exec Command="$(NuGetCommand) NTS.PCL.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
