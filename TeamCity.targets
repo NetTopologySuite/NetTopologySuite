@@ -123,25 +123,23 @@
 	</Target>
 
 	<Target Name="NuGetPack" DependsOnTargets="RebuildRelease;BuildReleasePCL">
-		<Exec Command="$(NuGetCommand) GeoAPI\GeoAPI.nuspec -Version $(GeoAPIVersion) -outputdirectory $(NuGetOutDir)"/>
+		<!--Exec Command="$(NuGetCommand) GeoAPI\GeoAPI.nuspec -Version $(GeoAPIVersion) -outputdirectory $(NuGetOutDir)"/-->
+		<!--Exec Command="$(NuGetCommand) ProjNet\ProjNet.nuspec -Version $(ProjNetVersion) -outputdirectory $(NuGetOutDir)"/-->		
 		<Exec Command="$(NuGetCommand) NTS.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
 		<Exec Command="$(NuGetCommand) NTS.IO.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
 		<Exec Command="$(NuGetCommand) NTS.IO.SpatiaLite.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
 		<Exec Command="$(NuGetCommand) NTS.IO.SqlServer.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
-		<Exec Command="$(NuGetCommand) NTS.IO.GeoJSON.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
-		<Exec Command="$(NuGetCommand) ProjNet\ProjNet.nuspec -Version $(ProjNetVersion) -outputdirectory $(NuGetOutDir)"/>
+		<Exec Command="$(NuGetCommand) NTS.IO.GeoJSON.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>		
 		<!--Exec Command="$(NuGetCommand) NTS.Converter.DotSpatial.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/-->
 	</Target>
-	<!--
-  <Target Name="NuGetPackPCL" DependsOnTargets="BuildReleasePCL">
+	<!--Target Name="NuGetPackPCL" DependsOnTargets="BuildReleasePCL">
 		<Exec Command="$(NuGetCommand) GeoAPI\GeoAPI.PCL.nuspec -Version $(GeoAPIVersion) -outputdirectory $(NuGetOutDir)"/>    
 		<Exec Command="$(NuGetCommand) NTS.PCL.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
 		<Exec Command="$(NuGetCommand) ProjNet\ProjNet.PCL.nuspec -Version $(AsmFileVersion) -outputdirectory $(NuGetOutDir)"/>
-	</Target>
--->
+	</Target-->
 	<!-- 
-  TODO: add targets here to build zip, NuGet, ...    
-  -->
+	TODO: add targets here to build zip, NuGet, ...    
+	-->
 
 	<Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets"/>
 </Project>
