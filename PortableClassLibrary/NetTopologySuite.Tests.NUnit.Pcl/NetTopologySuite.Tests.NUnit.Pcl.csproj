@@ -436,14 +436,6 @@
     <Compile Include="PclSetup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NetTopologySuite.TestRunner\NetTopologySuite.TestRunner.csproj">
-      <Project>{13669184-2446-404f-8894-5e20b6c3fcc6}</Project>
-      <Name>NetTopologySuite.TestRunner</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\NetTopologySuite.Windows.Media\NetTopologySuite.Windows.Media.csproj">
-      <Project>{ab09858e-bd48-498c-bb65-b90a5e5f9f26}</Project>
-      <Name>NetTopologySuite.Windows.Media</Name>
-    </ProjectReference>
     <ProjectReference Include="..\GeoAPI.Bootstrapper.NetTopologySuite\GeoAPI.Bootstrapper.NetTopologySuite.csproj">
       <Project>{8353362c-192b-4edf-a50d-c36b21470d76}</Project>
       <Name>GeoAPI.Bootstrapper.NetTopologySuite</Name>
