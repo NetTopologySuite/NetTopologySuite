@@ -36,8 +36,8 @@
 		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.IO.SpatiaLite.dll" target="lib\net403-client" />
     <file src="Release\v4.0.3\AnyCPU\NetTopologySuite.IO.SpatiaLite.pdb" target="lib\net403-client" />
 		
-		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.SpatiaLite.dll" target="lib\net45-client" />
-    <file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.SpatiaLite.pdb" target="lib\net45-client" />
+		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.SpatiaLite.dll" target="lib\net45" />
+    <file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.SpatiaLite.pdb" target="lib\net45" />
 
     <file src="Release\PCL\AnyCPU\NetTopologySuite.IO.SpatiaLite.dll" target="lib\portable-net403+sl5+netcore45+wp8+MonoAndroid1+MonoTouch1" />
     <file src="Release\PCL\AnyCPU\NetTopologySuite.IO.SpatiaLite.pdb" target="lib\portable-net403+sl5+netcore45+wp8+MonoAndroid1+MonoTouch1" />
