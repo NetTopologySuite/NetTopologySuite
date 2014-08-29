@@ -2,6 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+	<fwVersion Condition=" '$(fwVersion)' == '' ">net40-client</fwVersion>	
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0E4430FB-E15B-447B-A21C-6481BC708DDE}</ProjectGuid>
@@ -33,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GeoAPI">
+      <HintPath>..\packages\GeoAPI.1.7.3\lib\$(fwVersion)\GeoAPI.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -66,10 +70,6 @@
     <Compile Include="Builders\TopoBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\GeoAPI\GeoAPI\GeoAPI.csproj">
-      <Project>{ffb69466-79de-466a-ada7-5c47c5c5ca3a}</Project>
-      <Name>GeoAPI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.IO.GeoJSON\NetTopologySuite.IO.GeoJSON.csproj">
       <Project>{1583f1f7-7e7d-42ee-99f9-e072453bce34}</Project>
       <Name>NetTopologySuite.IO.GeoJSON</Name>

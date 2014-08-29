@@ -1,0 +1,3 @@
+[submodule "PowerCollections"]
+	path = PowerCollections
+	url = https://github.com/NetTopologySuite/PowerCollections
