@@ -52,7 +52,7 @@ namespace NetTopologySuite.Geometries.Implementation
 
         public ICoordinateSequence Create(int size, Ordinates ordinates)
         {
-            return new CoordinateArraySequence(size);
+            return new CoordinateArraySequence(size, OrdinatesUtility.OrdinatesToDimension(ordinates));
         }
 
         public Ordinates Ordinates
