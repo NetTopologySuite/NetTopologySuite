@@ -51,8 +51,8 @@ namespace NetTopologySuite.IO
             _shpBinaryWriter = new BigEndianBinaryWriter(_shpStream);
             _shxBinaryWriter = new BigEndianBinaryWriter(_shxStream);
 
-            WriteShpHeader(_shpBinaryWriter, 0, new Envelope(0, 0, 0, 0), geomType);
-            WriteShxHeader(_shxBinaryWriter, 0, new Envelope(0, 0, 0, 0), geomType);
+            WriteShpHeader(_shpBinaryWriter, 0, new Envelope(0, 0, 0, 0));
+            WriteShxHeader(_shxBinaryWriter, 0, new Envelope(0, 0, 0, 0));
 
             _shapeHandler = Shapefile.GetShapeHandler(geomType);
         }
@@ -78,8 +78,8 @@ namespace NetTopologySuite.IO
                 var shpLenWords = (int)_shpBinaryWriter.BaseStream.Length / 2;
                 var shxLenWords = (int)_shxBinaryWriter.BaseStream.Length / 2;
 
-                WriteShpHeader(_shpBinaryWriter, shpLenWords, _totalEnvelope, _geometryType);
-                WriteShxHeader(_shxBinaryWriter, shxLenWords, _totalEnvelope, _geometryType);
+                WriteShpHeader(_shpBinaryWriter, shpLenWords, _totalEnvelope);
+                WriteShxHeader(_shxBinaryWriter, shxLenWords, _totalEnvelope);
 
                 _shpStream.Seek(0, SeekOrigin.End);
                 _shxStream.Seek(0, SeekOrigin.End);
@@ -222,18 +222,18 @@ namespace NetTopologySuite.IO
             /*return recordLength;*/
         }
 
-        private static void WriteShxHeader(BigEndianBinaryWriter shxBinaryWriter, int shxLength, Envelope bounds, ShapeGeometryType shapeType)
+        private void WriteShxHeader(BigEndianBinaryWriter shxBinaryWriter, int shxLength, Envelope bounds)
         {
             // write the .shx header
-            var shxHeader = new ShapefileHeader {FileLength = shxLength, Bounds = bounds, ShapeType = shapeType};
+            var shxHeader = new ShapefileHeader { FileLength = shxLength, Bounds = bounds, ShapeType = _geometryType };
 
             // assumes Geometry type of the first item will the same for all other items in the collection.
             shxHeader.Write(shxBinaryWriter);
         }
 
-        private static void WriteShpHeader(BigEndianBinaryWriter shpBinaryWriter, int shpLength, Envelope bounds, ShapeGeometryType shapeType)
+        private void WriteShpHeader(BigEndianBinaryWriter shpBinaryWriter, int shpLength, Envelope bounds)
         {
-            var shpHeader = new ShapefileHeader {FileLength = shpLength, Bounds = bounds, ShapeType = shapeType};
+            var shpHeader = new ShapefileHeader {FileLength = shpLength, Bounds = bounds, ShapeType = _geometryType};
 
             // assumes Geometry type of the first item will the same for all other items
             // in the collection.

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Features;
@@ -81,7 +82,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Attributes
 
         private void ReadFromShapeFile()
         {
-            var featureCollection = new ArrayList();
+            var featureCollection = new List<IFeature>();
             const string filename = @"country";
             if (!File.Exists(filename + ".dbf"))
                 throw new FileNotFoundException(filename + " not found at " + Environment.CurrentDirectory);

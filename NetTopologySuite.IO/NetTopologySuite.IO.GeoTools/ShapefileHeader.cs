@@ -144,7 +144,8 @@ namespace NetTopologySuite.IO
 			file.Write(_version);
 			pos += 4;
 
-            file.Write(int.Parse(EnumUtility.Format(typeof(ShapeGeometryType), _shapeType, "d")));
+		    var format = EnumUtility.Format(typeof(ShapeGeometryType), _shapeType, "d");
+		    file.Write(int.Parse(format));
 			
             pos += 4;
 			// Write the bounding box
