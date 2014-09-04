@@ -37,7 +37,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         [Test]
         public void GeoJsonReaderReadFeatureTest()
         {
-            const string json = "{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[23.0,56.0]},\"properties\":{\"test1\":\"value1\"}}";
+            const string json = "{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[23.0,56]},\"properties\":{\"test1\":\"value1\"}}";
             IFeature result = new GeoJsonReader().Read<Feature>(json);
 
             Assert.IsNotNull(result);

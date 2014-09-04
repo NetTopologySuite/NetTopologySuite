@@ -136,8 +136,8 @@ namespace NetTopologySuite.IO.Converters
         private static Coordinate GetPointCoordinate(IList list)
         {
             var c = new Coordinate();
-            c.X = (double) list[0];
-            c.Y = (double) list[1];
+            c.X = Convert.ToDouble(list[0]);
+            c.Y = Convert.ToDouble(list[1]); ;
             return c;
         }
 
