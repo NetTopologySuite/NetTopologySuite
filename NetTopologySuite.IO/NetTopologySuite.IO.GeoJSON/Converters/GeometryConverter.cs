@@ -137,7 +137,7 @@ namespace NetTopologySuite.IO.Converters
         {
             var c = new Coordinate();
             c.X = Convert.ToDouble(list[0]);
-            c.Y = Convert.ToDouble(list[1]); ;
+            c.Y = Convert.ToDouble(list[1]);
             return c;
         }
 
