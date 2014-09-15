@@ -57,6 +57,9 @@
     <Compile Include="..\NetTopologySuite.IO.GeoJSON\Converters\FeatureConverter.cs">
       <Link>Converters\FeatureConverter.cs</Link>
     </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoJSON\Converters\GeometryArrayConverter.cs">
+      <Link>Converters\GeometryArrayConverter.cs</Link>
+    </Compile>
     <Compile Include="..\NetTopologySuite.IO.GeoJSON\Converters\GeometryConverter.cs">
       <Link>Converters\GeometryConverter.cs</Link>
     </Compile>
