@@ -133,6 +133,7 @@ namespace NetTopologySuite.IO
             if (enc == null)
                 throw new ArgumentNullException("enc");
             _encoding = enc;
+            _fieldDescriptions = new DbaseFieldDescriptor[0];
         }
 
         /// <summary>
@@ -197,8 +198,8 @@ namespace NetTopologySuite.IO
         /// <param name="decimalCount">The decimal count only applies to numbers(N), and floating point values (F), and refers to the number of characters to reserve after the decimal point.</param>
         public void AddColumn(string fieldName, char fieldType, int fieldLength, int decimalCount)
         {
-            if (fieldLength <= 0) fieldLength = 1;
-            if (_fieldDescriptions == null) _fieldDescriptions = new DbaseFieldDescriptor[0];
+            if (fieldLength <= 0) 
+                fieldLength = 1;
             int tempLength = 1;  // the length is used for the offset, and there is a * for deleted as the first byte
             DbaseFieldDescriptor[] tempFieldDescriptors = new DbaseFieldDescriptor[_fieldDescriptions.Length + 1];
             for (int i = 0; i < _fieldDescriptions.Length; i++)

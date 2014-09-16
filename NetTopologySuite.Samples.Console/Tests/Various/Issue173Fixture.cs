@@ -3,6 +3,7 @@ using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
+using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Tests.Various
@@ -24,14 +25,14 @@ namespace NetTopologySuite.Samples.Tests.Various
 
             var fileName = Path.GetTempFileName();
             fileName = fileName.Substring(0, fileName.Length - 4);
-            var shpWriter = new IO.ShapefileDataWriter(fileName, features[0].Geometry.Factory)
+            var shpWriter = new ShapefileDataWriter(fileName, features[0].Geometry.Factory)
             {
-                Header = IO.ShapefileDataWriter.GetHeader(features[0], features.Count)
+                Header = ShapefileDataWriter.GetHeader(features[0], features.Count)
             };
             shpWriter.Write(features);
 
             bool isTrue;
-            using (var reader = new IO.ShapefileDataReader(fileName, pt.Factory))
+            using (var reader = new ShapefileDataReader(fileName, pt.Factory))
                 @isTrue = reader.ShapeHeader.ShapeType.ToString() == "Point";
            
             foreach (var file in Directory.GetFiles(Path.GetTempPath(), Path.GetFileName(fileName) + ".*" ))

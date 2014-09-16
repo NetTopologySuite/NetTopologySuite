@@ -66,6 +66,12 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
                                     });
 
         [Test]
+        public void TestMultiPoly()
+        {
+            PerformGeometryTest(_multiPolygon);
+        }
+
+        [Test]
         public void TestAllGeometries()
         {
             PerformGeometryTest(_point);

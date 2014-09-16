@@ -45,9 +45,9 @@
 		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.IO.MsSqlSpatial.dll" target="lib\net403-client\NetTopologySuite.IO.MsSqlSpatial.dll" />
 		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.IO.PostGis.dll" target="lib\net403-client\NetTopologySuite.IO.PostGis.dll" />
 
-		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.ShapeFile.dll" target="lib\net45-client\NetTopologySuite.IO.ShapeFile.dll" />
-		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.GeoTools.dll" target="lib\net45-client\NetTopologySuite.IO.GeoTools.dll" />
-		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.MsSqlSpatial.dll" target="lib\net45-client\NetTopologySuite.IO.MsSqlSpatial.dll" />
-		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.PostGis.dll" target="lib\net45-client\NetTopologySuite.IO.PostGis.dll" />
+		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.ShapeFile.dll" target="lib\net45\NetTopologySuite.IO.ShapeFile.dll" />
+		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.GeoTools.dll" target="lib\net45\NetTopologySuite.IO.GeoTools.dll" />
+		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.MsSqlSpatial.dll" target="lib\net45\NetTopologySuite.IO.MsSqlSpatial.dll" />
+		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.PostGis.dll" target="lib\net45\NetTopologySuite.IO.PostGis.dll" />
 	</files>
 </package>

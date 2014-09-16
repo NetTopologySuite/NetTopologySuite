@@ -33,6 +33,6 @@
 		
 		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.IO.SqlServer2008.dll" target="lib\net403-client\NetTopologySuite.IO.SqlServer2008.dll" />
 		
-		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.SqlServer2008.dll" target="lib\net45-client\NetTopologySuite.IO.SqlServer2008.dll" />
+		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.SqlServer2008.dll" target="lib\net45\NetTopologySuite.IO.SqlServer2008.dll" />
 	</files>
 </package>

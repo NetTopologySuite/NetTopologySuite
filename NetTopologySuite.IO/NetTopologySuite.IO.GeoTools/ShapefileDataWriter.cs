@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Features;
@@ -141,7 +142,7 @@ namespace NetTopologySuite.IO
         /// Writes the specified feature collection.
         /// </summary>
         /// <param name="featureCollection">The feature collection.</param>
-        public void Write(IList featureCollection)
+        public void Write(IList<IFeature> featureCollection)
         {
             // Test if the Header is initialized
             if (Header == null)
