@@ -7,7 +7,7 @@
 		<authors>NetTopologySuite - Team</authors>
 		<owners>NetTopologySuite - Team</owners>
 		<licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
-		<projectUrl>http://code.google.com/p/nettopologysuite</projectUrl>
+		<projectUrl>https://github.com/NetTopologySuite/NetTopologySuite</projectUrl>
 		<requireLicenseAcceptance>true</requireLicenseAcceptance>
 		<description>
       The NTS Topology Suite is an API for modelling and manipulating 2-dimensional linear geometry. It provides numerous geometric predicates and functions. NTS conforms to the Simple Features Specification.

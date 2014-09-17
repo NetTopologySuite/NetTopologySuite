@@ -7,7 +7,7 @@
 		<authors>NetTopologySuite - Team</authors>
 		<owners>NetTopologySuite - Team</owners>
 		<licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
-		<projectUrl>http://code.google.com/p/nettopologysuite</projectUrl>
+		<projectUrl>https://github.com/NetTopologySuite/NetTopologySuite</projectUrl>
 		<requireLicenseAcceptance>true</requireLicenseAcceptance>
 		<description>
 	This package provides C# conversion classes for the use of NetTopologySuite within DotSpatial.
