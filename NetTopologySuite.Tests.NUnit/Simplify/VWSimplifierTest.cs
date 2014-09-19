@@ -8,10 +8,10 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
 {
     // Taken some tests from DPSimplifierTest class.
     // JTS doesn't have any specific test for VWSimplifier
-    [TestFixtureAttribute]
+    [TestFixture]
     public class VWSimplifierTest
     {
-        [TestAttribute]
+        [Test]
         public void TestEmptyPolygon()
         {
             const string geomStr = "POLYGON(EMPTY)";
@@ -23,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestPolygonNoReduction()
         {
             const string geomStr =
@@ -34,8 +34,34 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                         10.0))
                 .Test();
         }
+        
+        [Test]
+        public void TestPolygonSpikeInShell()
+        {
+            const string geomStr = "POLYGON ((1721355.3 693015.146, 1721318.687 693046.251, 1721306.747 693063.038, 1721367.025 692978.29, 1721355.3 693015.146))";
+            const string result = "POLYGON ((1721355.3 693015.146, 1721367.025 692978.29, 1721318.687 693046.251, 1721355.3 693015.146))";
+            new GeometryOperationValidator(
+                VWSimplifierResult.GetResult(
+                    geomStr,
+                    10.0))
+                .SetExpectedResult(result)
+                .Test();
+        }
 
-        [TestAttribute]
+        [Test]
+        public void TestPolygonSpikeInHole()
+        {
+            const string geomStr = "POLYGON ((1721270 693090, 1721400 693090, 1721400 692960, 1721270 692960, 1721270 693090), (1721355.3 693015.146, 1721318.687 693046.251, 1721306.747 693063.038, 1721367.025 692978.29, 1721355.3 693015.146))";
+            const string result = "POLYGON ((1721270 693090, 1721400 693090, 1721400 692960, 1721270 692960, 1721270 693090), (1721355.3 693015.146, 1721318.687 693046.251, 1721367.025 692978.29, 1721355.3 693015.146))";
+            new GeometryOperationValidator(
+                VWSimplifierResult.GetResult(
+                    geomStr,
+                    10.0))
+                .SetExpectedResult(result)
+                .Test();
+        }
+
+        [Test]
         public void TestPolygonReductionWithSplit()
         {
             const string geomStr = "POLYGON ((40 240, 160 241, 280 240, 280 160, 160 240, 40 140, 40 240))";
@@ -46,7 +72,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestPolygonReduction()
         {
             const string geomStr = "POLYGON ((120 120, 121 121, 122 122, 220 120, 180 199, 160 200, 140 199, 120 120))";
@@ -57,7 +83,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestFlattishPolygon()
         {
             const string geomStr = "POLYGON ((0 0, 50 0, 53 0, 55 0, 100 0, 70 1,  60 1, 50 1, 40 1, 0 0))";
@@ -68,7 +94,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestTinySquare()
         {
             const string geomStr = "POLYGON ((0 5, 5 5, 5 0, 0 0, 0 1, 0 5))";
@@ -79,7 +105,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
             .Test();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestTinyHole()
         {
             const string geomStr =
@@ -91,7 +117,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
             .TestEmpty(false);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestTinyLineString()
         {
             const string geomStr = "LINESTRING (0 5, 1 5, 2 5, 5 5)";
@@ -102,7 +128,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiLineString()
         {
             const string geomStr = "MULTILINESTRING( (0 0, 50 0, 70 0, 80 0, 100 0), (0 0, 50 1, 60 1, 100 0) )";
@@ -113,7 +139,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiLineStringWithEmpty()
         {
             new GeometryOperationValidator(
@@ -123,7 +149,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiPolygonWithEmpty()
         {
             new GeometryOperationValidator(
@@ -131,7 +157,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     "MULTIPOLYGON (EMPTY, ((-36 91.5, 4.5 91.5, 4.5 57.5, -36 57.5, -36 91.5)), ((25.5 57.5, 61.5 57.5, 61.5 23.5, 25.5 23.5, 25.5 57.5)))",
                     10.0))
                 .Test();
-        }       
+        }
     }
 
     static class VWSimplifierResult
