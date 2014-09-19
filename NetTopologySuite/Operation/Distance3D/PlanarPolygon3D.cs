@@ -6,7 +6,7 @@ namespace NetTopologySuite.Operation.Distance3D
 {
     /// <summary>
     /// Models a polygon lying in a plane in 3-dimensional Cartesian space.
-    /// The polyogn representation is supplied
+    /// The polygon representation is supplied
     /// by a <see cref="IPolygon"/>,
     /// containing coordinates with XYZ ordinates.
     /// 3D polygons are assumed to lie in a single plane.
