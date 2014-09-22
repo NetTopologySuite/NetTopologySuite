@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using GeoAPI.Geometries;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
@@ -127,6 +128,12 @@ namespace NetTopologySuite.IO
         /// <param name="fileName">File path without any extension</param>
         /// <param name="geometryFactory"></param>
         public ShapefileDataWriter(string fileName, IGeometryFactory geometryFactory)
+            : this(fileName, geometryFactory, Encoding.GetEncoding(1252))
+        {
+
+        }
+
+        public ShapefileDataWriter(string fileName, IGeometryFactory geometryFactory, Encoding encoding)
         {
             _geometryFactory = geometryFactory;
 
@@ -135,7 +142,7 @@ namespace NetTopologySuite.IO
             _dbfFile = fileName + ".dbf";
 
             // Writers
-            _dbaseWriter = new DbaseFileWriter(_dbfFile);
+            _dbaseWriter = new DbaseFileWriter(_dbfFile, encoding);
         }
 
         /// <summary>

@@ -80,29 +80,47 @@ namespace NetTopologySuite.IO
             {
                 DbaseFieldDescriptor headerField = _header.Fields[i];
 
-                if (columnValue == null)
+                if (columnValue == null || columnValue == DBNull.Value)
+                {
                     // Don't corrupt the file by not writing if the value is null.
                     // Instead, treat it like an empty string.
                     Write(string.Empty, headerField.Length);
-                else if (headerField.Type == typeof(string))
+                }
+                else if (headerField.Type == typeof (string))
+                {
                     // If the column is a character column, the values in that
                     // column should be treated as text, even if the column value
                     // is not a string.
                     Write(columnValue.ToString(), headerField.Length);
+                }
                 else if (IsRealType(columnValue.GetType()))
+                {
                     Write(Convert.ToDecimal(columnValue), headerField.Length, headerField.DecimalCount);
+                }
                 else if (IsIntegerType(columnValue.GetType()))
+                {
                     Write(Convert.ToDecimal(columnValue), headerField.Length, headerField.DecimalCount);
+                }
                 else if (columnValue is Decimal)
-                    Write((decimal)columnValue, headerField.Length, headerField.DecimalCount);
+                {
+                    Write((decimal) columnValue, headerField.Length, headerField.DecimalCount);
+                }
                 else if (columnValue is Boolean)
-                    Write((bool)columnValue);
+                {
+                    Write((bool) columnValue);
+                }
                 else if (columnValue is string)
-                    Write((string)columnValue, headerField.Length);
+                {
+                    Write((string) columnValue, headerField.Length);
+                }
                 else if (columnValue is DateTime)
-                    Write((DateTime)columnValue);
+                {
+                    Write((DateTime) columnValue);
+                }
                 else if (columnValue is Char)
-                    Write((Char)columnValue, headerField.Length);
+                {
+                    Write((Char) columnValue, headerField.Length);
+                }
 
                 i++;
             }
@@ -258,10 +276,7 @@ namespace NetTopologySuite.IO
         /// <param name="flag"></param>
         public void Write(bool flag)
         {
-            if (flag)
-                _writer.Write('T');
-            else
-                _writer.Write('F');
+            _writer.Write(flag ? 'T' : 'F');
         }
 
         /// <summary>
