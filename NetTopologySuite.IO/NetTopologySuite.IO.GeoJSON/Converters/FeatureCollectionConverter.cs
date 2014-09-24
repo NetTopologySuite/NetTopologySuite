@@ -36,6 +36,8 @@ namespace NetTopologySuite.IO.Converters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
+            if (reader.TokenType == JsonToken.Null) return null;
+
             reader.Read();
             FeatureCollection fc = new FeatureCollection();
             while (reader.TokenType != JsonToken.EndObject)
