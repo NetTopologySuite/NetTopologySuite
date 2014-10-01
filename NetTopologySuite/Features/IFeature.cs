@@ -4,8 +4,8 @@ namespace NetTopologySuite.Features
 {
     public interface IFeature
     {
-        IAttributesTable Attributes { get; }
+        IAttributesTable Attributes { get; set; }
 
-        IGeometry Geometry { get; }
+        IGeometry Geometry { get; set; }
     }
 }

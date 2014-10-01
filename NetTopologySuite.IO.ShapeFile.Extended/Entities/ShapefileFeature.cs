@@ -35,6 +35,10 @@ namespace NetTopologySuite.IO.ShapeFile.Extended.Entities
 			{
 				return m_LazyGeometry.Value;
 			}
+            set
+            {
+                throw new NotSupportedException("Setting geometry on a shapefile reader is not supported!");
+            }
 		}
 
 		public IAttributesTable Attributes
@@ -43,6 +47,10 @@ namespace NetTopologySuite.IO.ShapeFile.Extended.Entities
 			{
 				return m_LazyAttributeTable.Value;
 			}
+            set
+            {
+                throw new NotSupportedException("Setting attributes on a shapefile reader is not supported!");
+            }
 		}
 
 		public long FeatureId
