@@ -4,6 +4,7 @@ using System.Text;
 using NetTopologySuite.CoordinateSystems;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace NetTopologySuite.IO.Tests.GeoJSON
@@ -79,6 +80,6 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             serializer.Serialize(writer, attributes);
             writer.Flush();
             Assert.AreEqual("\"properties\":{\"test1\":\"value1\"}", sb.ToString());
-        }
+        }        
     }
 }

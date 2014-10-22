@@ -28,18 +28,20 @@
         {
             Debug.Assert(reader.TokenType == JsonToken.PropertyName);
             Debug.Assert((string)reader.Value == "bbox");
+            reader.Read(); // move to array start
 
             JArray envelope = serializer.Deserialize<JArray>(reader);
             Debug.Assert(envelope.Count == 4);
 
-            double minX = Double.Parse((string)envelope[0]);
-            double minY = Double.Parse((string)envelope[1]);
-            double maxX = Double.Parse((string)envelope[2]);
-            double maxY = Double.Parse((string)envelope[3]);
+            double minX = Double.Parse((string) envelope[0]);
+            double minY = Double.Parse((string) envelope[1]);
+            double maxX = Double.Parse((string) envelope[2]);
+            double maxY = Double.Parse((string) envelope[3]);
 
             Debug.Assert(minX <= maxX);
             Debug.Assert(minY <= maxY);
 
+            reader.Read(); // move away from array end
             return new Envelope(minX, minY, maxX, maxY);
         }
 

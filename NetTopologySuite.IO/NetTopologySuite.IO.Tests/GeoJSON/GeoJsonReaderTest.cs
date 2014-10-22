@@ -54,6 +54,25 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         ///   A test for GeoJsonReader Read method
         ///</summary>
         [Test]
+        public void GeoJsonReaderReadFeatureWithBboxTest()
+        {
+            const string json = "{\"type\":\"Feature\",\"bbox\": [-180.0, -90.0, 180.0, 90.0],\"geometry\":{\"type\":\"Point\",\"coordinates\":[23.0,56]},\"properties\":{\"test1\":\"value1\"}}";
+            IFeature result = new GeoJsonReader().Read<Feature>(json);
+
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf(typeof(Point), result.Geometry);
+            Point p = (Point)result.Geometry;
+            Assert.AreEqual(23, p.X);
+            Assert.AreEqual(56, p.Y);
+            Assert.IsNotNull(result.Attributes);
+            Assert.AreEqual(1, result.Attributes.Count);
+            Assert.AreEqual("value1", result.Attributes["test1"]);
+        }
+
+        ///<summary>
+        ///   A test for GeoJsonReader Read method
+        ///</summary>
+        [Test]
         public void GeoJsonReaderReadFeatureWithCoordinatesBeforeTypeTest()
         {
             const string json = "{\"type\":\"Feature\",\"geometry\":{\"coordinates\":[23.0,56.0], \"type\":\"Point\"},\"properties\":{\"test1\":\"value1\"}}";
@@ -310,6 +329,6 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             Assert.AreEqual(0, lineString.Coordinates[0].Y);
             Assert.AreEqual(102, lineString.Coordinates[1].X);
             Assert.AreEqual(1, lineString.Coordinates[1].Y);
-        }
+        }        
     }
 }

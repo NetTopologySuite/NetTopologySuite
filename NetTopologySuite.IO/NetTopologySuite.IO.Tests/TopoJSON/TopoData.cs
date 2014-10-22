@@ -7,6 +7,7 @@
             ""objects"": {
                 ""example"": {
                     ""type"": ""GeometryCollection"",
+                    ""bbox"": [-180.0, -90.0, 180.0, 90.0],
                     ""geometries"": [
                     {
                         ""type"": ""Point"",
@@ -46,6 +47,7 @@
           ""objects"": {
             ""example"": {
               ""type"": ""GeometryCollection"",
+              ""bbox"": [-180.0, -90.0, 180.0, 90.0],
               ""geometries"": [
                 {
                   ""type"": ""Point"",
@@ -82,6 +84,7 @@
             ""objects"": {
                 ""example"": {
                     ""type"": ""GeometryCollection"",
+                    ""bbox"": [-180.0, -90.0, 180.0, 90.0],
                     ""geometries"": [
                     {
                         ""type"": ""MultiPoint"",
@@ -115,6 +118,7 @@
           ""objects"": {
             ""example"": {
               ""type"": ""GeometryCollection"",
+              ""bbox"": [-180.0, -90.0, 180.0, 90.0],
               ""geometries"": [
                 {
                   ""type"": ""MultiPoint"",
@@ -146,6 +150,7 @@
             ""objects"": {
                 ""aruba"": {
                     ""type"": ""Polygon"",
+                    ""bbox"": [-180.0, -90.0, 180.0, 90.0],
                     ""arcs"": [[0]],
                     ""id"": 533
                 }
@@ -164,6 +169,7 @@
             ""objects"":{
                 ""airports"":{
                     ""type"":""MultiPoint"",
+                    ""bbox"": [-180.0, -90.0, 180.0, 90.0],
                     ""coordinates"":[[2712,3846],[2532,3647],[2236,4939],[3059,5533],[2939,3648]]
                 }
             },
@@ -179,6 +185,7 @@
 	        ""objects"": {
 		        ""counties"": {
 			        ""type"":""GeometryCollection"",
+                    ""bbox"": [-180.0, -90.0, 180.0, 90.0],
 			        ""geometries"":[
 				        {
 					        ""type"":""MultiPolygon"",

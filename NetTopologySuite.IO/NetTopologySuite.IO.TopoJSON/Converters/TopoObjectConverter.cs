@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using GeoAPI.Geometries;
 using NetTopologySuite.Features;
 using NetTopologySuite.IO.Builders;
 using NetTopologySuite.IO.Geometries;
@@ -52,6 +54,10 @@ namespace NetTopologySuite.IO.Converters
                         break;
                     case "geometries":
                         geometries = ReadGeometries(reader, serializer);
+                        break;
+                    case "bbox":
+                        Envelope bbox = serializer.Deserialize<Envelope>(reader);
+                        Debug.WriteLine("TODO: " + bbox);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException("unhandled property: " + propertyName);

@@ -23,7 +23,7 @@ namespace NetTopologySuite.IO
             base.Converters.Add(new TopoObjectConverter());
             base.Converters.Add(new AttributesTableConverter());
             base.Converters.Add(new DataConverter(factory));
-            // TODO: envelope
+            base.Converters.Add(new EnvelopeConverter());
         }
     }
 }

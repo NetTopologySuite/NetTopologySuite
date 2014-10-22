@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using GeoAPI.Geometries;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using Newtonsoft.Json;
@@ -55,6 +57,12 @@ namespace NetTopologySuite.IO.Converters
             if (reader.TokenType != JsonToken.String && (string) reader.Value != "Feature")
                 throw new ArgumentException("Expected value 'Feature' not found.");
             reader.Read();
+            if (reader.TokenType == JsonToken.PropertyName && (string)reader.Value == "bbox")
+            {
+                Envelope bbox = serializer.Deserialize<Envelope>(reader);
+                Debug.WriteLine("TODO: " + bbox);
+            }
+
             if (!(reader.TokenType == JsonToken.PropertyName && (string) reader.Value == "geometry"))
                 throw new ArgumentException("Expected token 'geometry' not found.");
             reader.Read();
