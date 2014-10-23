@@ -29,7 +29,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             IFeature feature = new Feature(new Point(23, 56), attributes);
             FeatureCollection featureCollection = new FeatureCollection(new Collection<IFeature> {feature})
                                         {CRS = new NamedCRS("name1")};
-            GeoJsonSerializer serializer = new GeoJsonSerializer();
+            JsonSerializer serializer = new GeoJsonSerializer();
             serializer.Serialize(writer, featureCollection);
             writer.Flush();
             Assert.AreEqual("{\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[23.0,56.0]},\"properties\":{\"test1\":\"value1\"}}],\"type\":\"FeatureCollection\",\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"name1\"}}}", sb.ToString());
@@ -46,7 +46,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             AttributesTable attributes = new AttributesTable();
             attributes.AddAttribute("test1", "value1");
             IFeature feature = new Feature(new Point(23, 56), attributes);
-            GeoJsonSerializer serializer = new GeoJsonSerializer();
+            JsonSerializer serializer = new GeoJsonSerializer();
             serializer.Serialize(writer, feature);
             writer.Flush();
             Assert.AreEqual("{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[23.0,56.0]},\"properties\":{\"test1\":\"value1\"}}", sb.ToString());
@@ -60,7 +60,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         {
             StringBuilder sb = new StringBuilder();
             StringWriter writer = new StringWriter(sb);
-            GeoJsonSerializer serializer = new GeoJsonSerializer();
+            JsonSerializer serializer = new GeoJsonSerializer();
             serializer.Serialize(writer, new Point(23, 56));
             writer.Flush();
             Assert.AreEqual("{\"type\":\"Point\",\"coordinates\":[23.0,56.0]}", sb.ToString());
@@ -76,7 +76,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             StringWriter writer = new StringWriter(sb);
             AttributesTable attributes = new AttributesTable();
             attributes.AddAttribute("test1", "value1");
-            GeoJsonSerializer serializer = new GeoJsonSerializer();
+            JsonSerializer serializer = new GeoJsonSerializer();
             serializer.Serialize(writer, attributes);
             writer.Flush();
             Assert.AreEqual("\"properties\":{\"test1\":\"value1\"}", sb.ToString());

@@ -15,7 +15,7 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
         [Test]
         public void read_reference_data()
         {
-            const string data = TopoData.Reference;
+            const string data = TopoReaderData.Reference;
             TopoJsonReader reader = new TopoJsonReader(Factory);
             IDictionary<string, FeatureCollection> coll = reader.
                 Read<IDictionary<string, FeatureCollection>>(data);
@@ -25,7 +25,7 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
         [Test]
         public void read_quantized_data()
         {
-            const string data = TopoData.Quantized;
+            const string data = TopoReaderData.Quantized;
             TopoJsonReader reader = new TopoJsonReader(Factory);
             IDictionary<string, FeatureCollection> coll = reader.
                 Read<IDictionary<string, FeatureCollection>>(data);
@@ -85,7 +85,7 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
         [Test]
         public void read_multi_reference_data()
         {
-            const string data = TopoData.MultiReference;
+            const string data = TopoReaderData.MultiReference;
             TopoJsonReader reader = new TopoJsonReader(Factory);
             IDictionary<string, FeatureCollection> coll = reader.
                 Read<IDictionary<string, FeatureCollection>>(data);
@@ -95,7 +95,7 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
         [Test]
         public void read_multi_quantized_data()
         {
-            const string data = TopoData.MultiQuantized;
+            const string data = TopoReaderData.MultiQuantized;
             TopoJsonReader reader = new TopoJsonReader(Factory);
             IDictionary<string, FeatureCollection> coll = reader.
                 Read<IDictionary<string, FeatureCollection>>(data);
@@ -143,7 +143,7 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
         [Test]
         public void read_aruba_data()
         {
-            const string data = TopoData.Aruba;
+            const string data = TopoReaderData.Aruba;
             TopoJsonReader reader = new TopoJsonReader(Factory);
             IDictionary<string, FeatureCollection> coll = reader.
                 Read<IDictionary<string, FeatureCollection>>(data);
@@ -156,7 +156,7 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
         [Test]
         public void read_airports_data()
         {
-            const string data = TopoData.Airports;
+            const string data = TopoReaderData.Airports;
             TopoJsonReader reader = new TopoJsonReader(Factory);
             IDictionary<string, FeatureCollection> coll = reader.
                 Read<IDictionary<string, FeatureCollection>>(data);
@@ -169,7 +169,7 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
         [Test]
         public void read_counties_data()
         {
-            const string data = TopoData.Counties;
+            const string data = TopoReaderData.Counties;
             TopoJsonReader reader = new TopoJsonReader(Factory);
             IDictionary<string, FeatureCollection> coll = reader.
                 Read<IDictionary<string, FeatureCollection>>(data);

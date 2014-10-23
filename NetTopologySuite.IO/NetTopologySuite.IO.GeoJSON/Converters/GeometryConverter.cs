@@ -73,7 +73,7 @@ namespace NetTopologySuite.IO.Converters
 
         private GeoJsonObjectType ToGeoJsonObject(IGeometry geom)
         {
-            if (geom     is IPoint)
+            if (geom is IPoint)
                 return GeoJsonObjectType.Point;
             if (geom is ILineString)
                 return GeoJsonObjectType.LineString;
@@ -92,7 +92,7 @@ namespace NetTopologySuite.IO.Converters
 
         private static GeoJsonObjectType GetType(JsonReader reader)
         {
-            
+
             return (GeoJsonObjectType)Enum.Parse(typeof(GeoJsonObjectType), (string)reader.Value, true);
         }
 
@@ -100,7 +100,7 @@ namespace NetTopologySuite.IO.Converters
         {
             List<object> coords = new List<object>();
             while (reader.Read())
-            {               
+            {
                 if (reader.TokenType == JsonToken.StartArray)
                 {
                     coords.Add(ReadCoordinates(reader));
@@ -108,8 +108,9 @@ namespace NetTopologySuite.IO.Converters
                 else if (reader.TokenType == JsonToken.EndArray)
                 {
                     break;
-                }                
-                if (reader.Value != null) {
+                }
+                if (reader.Value != null)
+                {
                     coords.Add(reader.Value);
                 }
             }
@@ -125,7 +126,7 @@ namespace NetTopologySuite.IO.Converters
                 {
                     geometries.Add(ParseGeometry(reader));
                 }
-            }           
+            }
             return geometries;
         }
 
@@ -170,7 +171,7 @@ namespace NetTopologySuite.IO.Converters
         }
 
         private static IGeometry[] GetGeometries(IEnumerable list)
-        {           
+        {
             List<IGeometry> geometries = new List<IGeometry>();
             foreach (IGeometry geom in list)
             {
@@ -180,11 +181,11 @@ namespace NetTopologySuite.IO.Converters
         }
 
         private IGeometry ParseGeometry(JsonReader reader)
-        {            
+        {
             GeoJsonObjectType? geometryType = null;
             List<object> coords = null;
             while (reader.Read())
-            {         
+            {
                 if (reader.TokenType == JsonToken.EndObject)
                 {
                     //we are at the end of the geometry block, do not read further
@@ -201,15 +202,15 @@ namespace NetTopologySuite.IO.Converters
                         geometryType = GetType(reader);
                     }
                     else if ((String)reader.Value == "geometries")
-                    {                      
+                    {
                         //only geom collection has "geometries"
                         reader.Read();  //read past start array tag                        
-                        coords = ParseGeomCollection(reader);                     
+                        coords = ParseGeomCollection(reader);
                     }
                     else if ((String)reader.Value == "coordinates")
                     {
                         reader.Read(); //read past start array tag
-                        coords = ReadCoordinates(reader);                        
+                        coords = ReadCoordinates(reader);
                     }
                 }
             }
@@ -217,7 +218,7 @@ namespace NetTopologySuite.IO.Converters
             {
                 return null;
             }
-            
+
             switch (geometryType)
             {
                 case GeoJsonObjectType.Point:
@@ -228,14 +229,14 @@ namespace NetTopologySuite.IO.Converters
                     return CreatePolygon(GetPolygonCoordinates(coords));
                 case GeoJsonObjectType.MultiPoint:
                     return _factory.CreateMultiPoint(GetLineStringCoordinates(coords));
-                case GeoJsonObjectType.MultiLineString:                    
+                case GeoJsonObjectType.MultiLineString:
                     List<ILineString> strings = new List<ILineString>();
                     foreach (Coordinate[] multiLineStringCoordinate in GetPolygonCoordinates(coords))
                     {
                         strings.Add(_factory.CreateLineString(multiLineStringCoordinate));
                     }
                     return _factory.CreateMultiLineString(strings.ToArray());
-                case GeoJsonObjectType.MultiPolygon:                    
+                case GeoJsonObjectType.MultiPolygon:
                     List<IPolygon> polygons = new List<IPolygon>();
                     foreach (List<Coordinate[]> multiPolygonCoordinate in GetMultiPolygonCoordinates(coords))
                     {
@@ -275,5 +276,5 @@ namespace NetTopologySuite.IO.Converters
         {
             return typeof(IGeometry).IsAssignableFrom(objectType);
         }
-    }   
+    }
 }

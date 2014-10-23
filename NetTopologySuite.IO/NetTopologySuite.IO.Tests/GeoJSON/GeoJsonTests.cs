@@ -86,7 +86,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
 
         public void PerformGeometryTest(IGeometry geom)
         {
-            GeoJsonSerializer s = new GeoJsonSerializer();
+            JsonSerializer s = new GeoJsonSerializer();
             StringBuilder sb = new StringBuilder();
             s.Serialize(new JsonTextWriter(new StringWriter(sb)), geom);
             string result = sb.ToString();
@@ -97,7 +97,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
 
         private static void Deserialize(string result, IGeometry geom)
         {
-            GeoJsonSerializer s = new GeoJsonSerializer();
+            JsonSerializer s = new GeoJsonSerializer();
             JsonTextReader r = new JsonTextReader(new StringReader(result));
 
             IGeometry des;
@@ -127,7 +127,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         public void TestCoordinateSerialize()
         {
             Coordinate coordinate = new Coordinate(1, 1);
-            GeoJsonSerializer g = new GeoJsonSerializer();
+            JsonSerializer g = new GeoJsonSerializer();
             StringBuilder sb = new StringBuilder();
             g.Serialize(new JsonTextWriter(new StringWriter(sb)), coordinate);
 
@@ -143,7 +143,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
                 coordinates[i] = new Coordinate(i, i, i);
             }
             StringBuilder sb = new StringBuilder();
-            GeoJsonSerializer g = new GeoJsonSerializer();
+            JsonSerializer g = new GeoJsonSerializer();
             g.Serialize(new JsonTextWriter(new StringWriter(sb)), coordinates);
 
             Console.WriteLine(sb.ToString());
@@ -153,7 +153,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         public void TestCoordinateDeserialize()
         {
             string json = "{coordinates:[1.0, 1.0]}";
-            GeoJsonSerializer s = new GeoJsonSerializer();
+            JsonSerializer s = new GeoJsonSerializer();
             Coordinate c = s.Deserialize<Coordinate>(new JsonTextReader(new StringReader(json)));
             Console.WriteLine(c.ToString());
 

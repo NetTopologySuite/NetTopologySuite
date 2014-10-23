@@ -71,9 +71,11 @@
     <Compile Include="Converters\FeatureCollectionConverter.cs" />
     <Compile Include="Converters\FeatureConverter.cs" />
     <Compile Include="GeoJsonObjectType.cs" />
+    <Compile Include="GeoJsonReader.cs" />
     <Compile Include="GeoJsonSerializer.cs" />
     <Compile Include="Converters\CoordinateConverters.cs" />
     <Compile Include="Converters\GeometryConverter.cs" />
+    <Compile Include="GeoJsonWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

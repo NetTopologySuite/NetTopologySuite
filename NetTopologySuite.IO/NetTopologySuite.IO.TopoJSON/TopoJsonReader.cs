@@ -6,8 +6,7 @@ using Newtonsoft.Json;
 namespace NetTopologySuite.IO
 {
     /// <summary>
-    /// Represents a TopoJSON Reader allowing for deserialization of various TopoJSON elements 
-    /// or any object containing TopoJSON elements.
+    /// Represents a TopoJSON Reader, used to deserialize TopoJSON elements 
     /// </summary>
     public class TopoJsonReader
     {
@@ -26,14 +25,12 @@ namespace NetTopologySuite.IO
         /// Reads the specified json.
         /// </summary>
         /// <param name="json">The json.</param>
-        /// <returns>A <see cref="FeatureCollection"/> with all data contained</returns>
+        /// <returns>A <see cref="FeatureCollection"/> with all data contained.</returns>
         public T Read<T>(string json)
         {
             TopoJsonSerializer g = new TopoJsonSerializer(_factory);
             using (StringReader sr = new StringReader(json))
-            {
                 return g.Deserialize<T>(new JsonTextReader(sr));
-            }
         }
     }
 }

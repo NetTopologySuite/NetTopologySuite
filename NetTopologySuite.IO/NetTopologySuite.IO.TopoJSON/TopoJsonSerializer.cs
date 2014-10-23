@@ -17,13 +17,21 @@ namespace NetTopologySuite.IO
         /// <param name="factory">The <see cref="IGeometryFactory"/> to use.</param>
         public TopoJsonSerializer(IGeometryFactory factory)
         {
+            // used in serialization/deserialization
             base.Converters.Add(new ArcsConverter());
             base.Converters.Add(new TransformConverter());
-            base.Converters.Add(new ObjectsConverter());
-            base.Converters.Add(new TopoObjectConverter());
             base.Converters.Add(new AttributesTableConverter());
             base.Converters.Add(new DataConverter(factory));
             base.Converters.Add(new EnvelopeConverter());
+            base.Converters.Add(new ObjectsConverter());
+            base.Converters.Add(new TopoObjectConverter());
+
+            // used only in serialization
+            base.Converters.Add(new TopoDatasetConverter());
+            base.Converters.Add(new TopoFeaturesCollConverter());
+            base.Converters.Add(new TopoFeatureConverter());
+            base.Converters.Add(new TopoGeometryConverter());
+            base.Converters.Add(new AttributesTableConverter());            
         }
     }
 }

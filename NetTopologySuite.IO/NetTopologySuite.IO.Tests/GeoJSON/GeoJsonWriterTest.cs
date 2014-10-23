@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using NetTopologySuite.CoordinateSystems;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Text;
 using System.IO;
@@ -74,7 +75,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             AttributesTable attributes = new AttributesTable();
             DateTime Date = new DateTime(2012, 8, 8).Date;
 
-            GeoJsonSerializer g = new GeoJsonSerializer();
+            JsonSerializer g = new GeoJsonSerializer();
             StringBuilder sb = new StringBuilder();
             using (StringWriter sw = new StringWriter(sb))
                 g.Serialize(sw, Date);
