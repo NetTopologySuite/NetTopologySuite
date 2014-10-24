@@ -317,17 +317,17 @@ namespace NetTopologySuite.Index.Strtree
         /// Builds the tree if necessary.
         /// </summary>
         /// <returns>a List of items and/or Lists</returns>
-        public IList<TItem> ItemsTree()
+        public IList ItemsTree()
         {
             Build();
 
             var valuesTree = ItemsTree(_root);
-            return valuesTree ?? new List<TItem>();
+            return valuesTree ?? new List<object>();
         }
 
-        private static IList<TItem> ItemsTree(AbstractNode<T, TItem> node)
+        private static IList ItemsTree(AbstractNode<T, TItem> node)
         {
-            var valuesTreeForNode = new List<TItem>();
+            var valuesTreeForNode = new List<object>();
 
             foreach (var childBoundable in node.ChildBoundables)
             {
@@ -336,7 +336,7 @@ namespace NetTopologySuite.Index.Strtree
                     var valuesTreeForChild = ItemsTree((AbstractNode<T, TItem>)childBoundable);
                     // only add if not null (which indicates an item somewhere in this tree
                     if (valuesTreeForChild != null)
-                        valuesTreeForNode.AddRange(valuesTreeForChild);
+                        valuesTreeForNode.Add(valuesTreeForChild);
                 }
                 else if (childBoundable is ItemBoundable<T, TItem>)
                     valuesTreeForNode.Add(((ItemBoundable<T, TItem>)childBoundable).Item);
