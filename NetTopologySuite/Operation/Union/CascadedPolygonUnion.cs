@@ -287,7 +287,7 @@ namespace NetTopologySuite.Operation.Union
             foreach (var o in geomTree)
             {
                 IGeometry geom = null;
-                if (o is IList<IGeometry>)
+                if (o is IList)
                     geom = UnionTree((IList)o);
                 else if (o is IGeometry)
                     geom = (IGeometry)o;
