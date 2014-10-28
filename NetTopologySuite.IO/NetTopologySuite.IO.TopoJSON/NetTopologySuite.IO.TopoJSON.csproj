@@ -49,9 +49,6 @@
     <Compile Include="Converters\ArcsConverter.cs" />
     <Compile Include="Converters\DataConverter.cs" />
     <Compile Include="Converters\ObjectsConverter.cs" />
-    <Compile Include="Converters\TopoFeatureConverter.cs" />
-    <Compile Include="Converters\TopoFeaturesCollConverter.cs" />
-    <Compile Include="Converters\TopoGeometryConverter.cs" />
     <Compile Include="Converters\TopoObjectConverter.cs" />
     <Compile Include="Converters\TransformConverter.cs" />
     <Compile Include="Geometries\TopoCurve.cs" />
@@ -68,7 +65,7 @@
     <Compile Include="Helpers\Transformer.cs" />
     <Compile Include="Helpers\Transform.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Converters\TopoDatasetConverter.cs" />
+    <Compile Include="Converters\TopoFeatureConverter.cs" />
     <Compile Include="TopoJsonReader.cs" />
     <Compile Include="TopoJsonSerializer.cs" />
     <Compile Include="Builders\TopoBuilder.cs" />

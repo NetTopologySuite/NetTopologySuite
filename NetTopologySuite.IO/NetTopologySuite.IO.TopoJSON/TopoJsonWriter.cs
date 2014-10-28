@@ -16,18 +16,18 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Writes the specified feature.
         /// </summary>
-        /// <param name="features">The feature.</param>
+        /// <param name="feature">The feature.</param>
         /// <returns></returns>
-        public string Write(FeatureCollection features)
+        public string Write(IFeature feature)
         {
-            if (features == null)
-                throw new ArgumentNullException("features");
+            if (feature == null)
+                throw new ArgumentNullException("feature");
 
             IGeometryFactory factory = GeometryFactory.Default;
             JsonSerializer g = new TopoJsonSerializer(factory);
             StringBuilder sb = new StringBuilder();
             using (StringWriter sw = new StringWriter(sb))
-                g.Serialize(sw, features);
+                g.Serialize(sw, feature);
             return sb.ToString();
         }
     }

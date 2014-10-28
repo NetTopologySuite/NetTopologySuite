@@ -44,7 +44,7 @@
 
         }
 
-        private static void WriteJsonCoordinate(JsonWriter writer, Coordinate coordinate, JsonSerializer serializer)
+        protected void WriteJsonCoordinate(JsonWriter writer, Coordinate coordinate, JsonSerializer serializer)
         {
             writer.WriteStartArray();
 
@@ -56,7 +56,7 @@
             writer.WriteEndArray();
         }
 
-        private static void WriteJsonCoordinates(JsonWriter writer, IEnumerable<Coordinate> coordinates, JsonSerializer serializer)
+        protected void WriteJsonCoordinates(JsonWriter writer, IEnumerable<Coordinate> coordinates, JsonSerializer serializer)
         {
             writer.WriteStartArray();
             foreach (Coordinate coordinate in coordinates)
@@ -64,14 +64,15 @@
             writer.WriteEndArray();
         }
 
-        private static void WriteJsonCoordinatesEnumerable(JsonWriter writer, IEnumerable<Coordinate[]> coordinates, JsonSerializer serializer)
+        protected void WriteJsonCoordinatesEnumerable(JsonWriter writer, IEnumerable<Coordinate[]> coordinates, JsonSerializer serializer)
         {
             writer.WriteStartArray();
             foreach (Coordinate[] coordinate in coordinates)
                 WriteJsonCoordinates(writer, coordinate, serializer);
             writer.WriteEndArray();
         }
-        private static void WriteJsonCoordinatesEnumerable2(JsonWriter writer, List<List<Coordinate[]>> coordinates, JsonSerializer serializer)
+
+        private void WriteJsonCoordinatesEnumerable2(JsonWriter writer, List<List<Coordinate[]>> coordinates, JsonSerializer serializer)
         {
             writer.WriteStartArray();
             foreach (List<Coordinate[]> coordinate in coordinates)
@@ -123,7 +124,6 @@
                 reader.Read();
             }
             Debug.Assert(reader.TokenType == JsonToken.EndArray);
-
             return c;
         }
 

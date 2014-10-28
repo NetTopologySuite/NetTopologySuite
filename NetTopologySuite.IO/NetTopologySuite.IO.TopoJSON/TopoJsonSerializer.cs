@@ -27,11 +27,8 @@ namespace NetTopologySuite.IO
             base.Converters.Add(new TopoObjectConverter());
 
             // used only in serialization
-            base.Converters.Add(new TopoDatasetConverter());
-            base.Converters.Add(new TopoFeaturesCollConverter());
             base.Converters.Add(new TopoFeatureConverter());
-            base.Converters.Add(new TopoGeometryConverter());
-            base.Converters.Add(new AttributesTableConverter());            
+            base.Converters.Add(new AttributesTableConverter());
         }
     }
 }
