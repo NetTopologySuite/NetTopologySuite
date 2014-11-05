@@ -184,3 +184,8 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+
+# Data generated from unit tests
+NetTopologySuite.Samples.Shapefiles/ZMtest.shp
+NetTopologySuite.Samples.Shapefiles/ZMtest.shx
+NetTopologySuite.Samples.Shapefiles/ZMtest.dbf
