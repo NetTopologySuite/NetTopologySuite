@@ -61,6 +61,7 @@ namespace NetTopologySuite.IO.Converters
         {
             if (reader.TokenType != JsonToken.StartObject)
                 throw new ArgumentException("Expected token '{' not found.");
+
             reader.Read();
             AttributesTable attributesTable = new AttributesTable();
             while (reader.TokenType == JsonToken.PropertyName)
@@ -73,12 +74,9 @@ namespace NetTopologySuite.IO.Converters
                     // inner object
                     attributeValue = InternalReadJson(reader, serializer);
                 }
-                else
-                {
-                    attributeValue = reader.Value;
-                }
-                reader.Read();
+                else attributeValue = reader.Value;                
                 attributesTable.AddAttribute(attributeName, attributeValue);
+                reader.Read();
             }            
             return attributesTable;
         }

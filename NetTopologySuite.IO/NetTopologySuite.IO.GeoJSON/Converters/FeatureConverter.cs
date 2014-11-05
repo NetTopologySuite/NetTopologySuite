@@ -20,9 +20,9 @@ namespace NetTopologySuite.IO.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            if (writer == null) 
+            if (writer == null)
                 throw new ArgumentNullException("writer");
-            if (serializer == null) 
+            if (serializer == null)
                 throw new ArgumentNullException("serializer");
 
             IFeature feature = value as Feature;
@@ -51,32 +51,47 @@ namespace NetTopologySuite.IO.Converters
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             reader.Read();
-            if (!(reader.TokenType == JsonToken.PropertyName && (string) reader.Value == "type"))
+            if (!(reader.TokenType == JsonToken.PropertyName && (string)reader.Value == "type"))
                 throw new ArgumentException("Expected token 'type' not found.");
             reader.Read();
-            if (reader.TokenType != JsonToken.String && (string) reader.Value != "Feature")
+            if (reader.TokenType != JsonToken.String && (string)reader.Value != "Feature")
                 throw new ArgumentException("Expected value 'Feature' not found.");
             reader.Read();
-            if (reader.TokenType == JsonToken.PropertyName && (string)reader.Value == "bbox")
+
+            Feature feature = new Feature();
+            while (reader.TokenType == JsonToken.PropertyName)
             {
-                Envelope bbox = serializer.Deserialize<Envelope>(reader);
-                Debug.WriteLine("TODO: " + bbox);
+                string prop = (string)reader.Value;
+                switch (prop)
+                {
+                    case "bbox":
+                        Envelope bbox = serializer.Deserialize<Envelope>(reader);
+                        Debug.WriteLine("TODO: " + bbox);
+                        break;
+                    case "geometry":
+                        reader.Read();
+                        if (reader.TokenType != JsonToken.StartObject)
+                            throw new ArgumentException("Expected token '{' not found.");
+                        IGeometry geometry = serializer.Deserialize<IGeometry>(reader);
+                        feature.Geometry = geometry;
+                        if (reader.TokenType != JsonToken.EndObject)
+                            throw new ArgumentException("Expected token '}' not found.");
+                        reader.Read();
+                        break;
+                    case "properties":
+                        feature.Attributes = serializer.Deserialize<AttributesTable>(reader);
+                        break;
+                    default:
+                    {
+                        string err = String.Format("token unhandled: {0}.", prop);
+                        throw new ArgumentException(err);
+                    }
+                }
             }
 
-            if (!(reader.TokenType == JsonToken.PropertyName && (string) reader.Value == "geometry"))
-                throw new ArgumentException("Expected token 'geometry' not found.");
-            reader.Read();
-            if (reader.TokenType != JsonToken.StartObject)
-                throw new ArgumentException("Expected token '{' not found.");
-            Feature feature = new Feature {Geometry = serializer.Deserialize<Geometry>(reader)};
             if (reader.TokenType != JsonToken.EndObject)
                 throw new ArgumentException("Expected token '}' not found.");
-            reader.Read();
-            if (reader.TokenType == JsonToken.PropertyName && (string) reader.Value == "properties")
-                feature.Attributes = serializer.Deserialize<AttributesTable>(reader);
-            if (reader.TokenType != JsonToken.EndObject)
-                throw new ArgumentException("Expected token '}' not found.");
-            reader.Read();
+            reader.Read(); // move next
             return feature;
         }
 
