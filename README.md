@@ -9,7 +9,7 @@ _"The JTS Topology Suite is an API for modelling and manipulating 2-dimensional 
 
 Enjoy using them!
 
-## Install
+## Install with NuGet package manager [![NuGet Status](http://img.shields.io/nuget/v/NetTopologySuite.svg?style=flat)](http://www.nuget.org/packages/NetTopologySuite/)
 
 `PM> Install-Package NetTopologySuite`
 
