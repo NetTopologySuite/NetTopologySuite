@@ -18,6 +18,9 @@
 // The conversion code for GeoAPI to DotSpatial.Data.Shape was taken and enhanced
 // from DotSpatial.Data.Shape.
 
+// If you are using this code with DS 1.7 you need to comment the following line:
+//#define DS16
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -417,9 +420,11 @@ namespace GeoAPI.Geometries
         private static DSShapeRange ShapeRangeFromGeometry(IGeometry geometry, double[] vertices, int offset)
         {
             var featureType = geometry.OgcGeometryType.ToDotSpatial();
-            var shx = new DSShapeRange(featureType) { Extent = geometry.EnvelopeInternal.ToDotSpatial() };
+            var shx = new DSShapeRange(featureType) { Extent = geometry.EnvelopeInternal.ToDotSpatial(), };
             var vIndex = offset / 2;
+#if DS16
             shx.Parts = new List<DSPartRange>();
+#endif
             var shapeStart = vIndex;
 
             for (var part = 0; part < geometry.NumGeometries; part++)

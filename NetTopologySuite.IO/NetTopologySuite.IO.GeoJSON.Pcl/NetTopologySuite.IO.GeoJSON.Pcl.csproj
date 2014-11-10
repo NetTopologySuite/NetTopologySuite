@@ -35,7 +35,7 @@
     <DefineConstants>TRACE;PCL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>$(SolutionDir)Release\PCL\AnyCPU\NetTopologySuite.IO.GeoJSON.Pcl.XML</DocumentationFile>
+    <DocumentationFile>C:\Users\obe.IVV-AACHEN\Documents\GitHub\NetTopologySuite\Release\PCL\AnyCPU\NetTopologySuite.IO.GeoJSON.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
