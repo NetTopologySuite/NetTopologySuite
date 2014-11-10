@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="GeoAPI">
-      <HintPath>..\..\packages\GeoAPI.1.7.3\lib\portable-net403+sl5+win8+wp8+MonoAndroid+MonoTouch\GeoAPI.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\GeoAPI.1.7.3.1\lib\portable-net403+sl5+win8+wp8+MonoAndroid+MonoTouch\GeoAPI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

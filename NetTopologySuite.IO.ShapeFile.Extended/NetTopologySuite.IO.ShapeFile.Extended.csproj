@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-	<fwVersion Condition=" '$(fwVersion)' == '' ">net40-client</fwVersion>	
+    <fwVersion Condition=" '$(fwVersion)' == '' ">net40-client</fwVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{4F36DD38-3CCE-4A19-93C2-A9F8B27EA430}</ProjectGuid>
@@ -34,8 +34,9 @@
     <DocumentationFile>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\NetTopologySuite.IO.ShapeFile.Extended.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GeoAPI">
-      <HintPath>..\packages\GeoAPI.1.7.3.1\lib\$(fwVersion)\GeoAPI.dll</HintPath>
+    <Reference Include="GeoAPI, Version=1.7.3.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(SolutionDir)packages\GeoAPI.1.7.3.1\lib\net40-client\GeoAPI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

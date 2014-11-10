@@ -42,11 +42,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GeoAPI">
-      <HintPath>..\packages\GeoAPI.1.7.3.1\lib\$(fwVersion)\GeoAPI.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\GeoAPI.1.7.3.1\lib\$(fwVersion)\GeoAPI.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.SqlServer.Types, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\..\packages\Microsoft.SqlServer.Types.10.50.1600.1\lib\Net20\Microsoft.SqlServer.Types.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Microsoft.SqlServer.Types.10.50.1600.1\lib\Net20\Microsoft.SqlServer.Types.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

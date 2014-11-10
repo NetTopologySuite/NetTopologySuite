@@ -19,7 +19,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Debug\PCL\AnyCPU\</OutputPath>
+    <OutputPath>$(SolutionDir)Debug\PCL\AnyCPU\</OutputPath>
     <DefineConstants>TRACE;DEBUG;PCL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Release\PCL\AnyCPU\</OutputPath>
+    <OutputPath>$(SolutionDir)Release\PCL\AnyCPU\</OutputPath>
     <DefineConstants>TRACE;PCL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -448,10 +448,10 @@
   <ItemGroup>
     <Reference Include="GeoAPI, Version=1.7.3.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\GeoAPI.1.7.3\lib\portable-net403+sl5+win8+wp8+MonoAndroid+MonoTouch\GeoAPI.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\GeoAPI.1.7.3.1\lib\portable-net403+sl5+win8+wp8+MonoAndroid+MonoTouch\GeoAPI.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Runtime.Serialization" />

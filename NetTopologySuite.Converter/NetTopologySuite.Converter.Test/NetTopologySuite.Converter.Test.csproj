@@ -36,28 +36,28 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.Data">
-      <HintPath>..\..\packages\DotSpatial.Data.1.7\lib\net40-Client\DotSpatial.Data.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\DotSpatial.Data.1.7\lib\net40-Client\DotSpatial.Data.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Mono">
-      <HintPath>..\..\packages\DotSpatial.Mono.1.7\lib\net40-Client\DotSpatial.Mono.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\DotSpatial.Mono.1.7\lib\net40-Client\DotSpatial.Mono.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Projections, Version=1.6.0.0, Culture=neutral, PublicKeyToken=272632bddd08a38b, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Projections.1.7\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\DotSpatial.Projections.1.7\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Serialization">
-      <HintPath>..\..\packages\DotSpatial.Serialization.1.7\lib\net40-Client\DotSpatial.Serialization.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\DotSpatial.Serialization.1.7\lib\net40-Client\DotSpatial.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Topology">
-      <HintPath>..\..\packages\DotSpatial.Topology.1.7\lib\net40-Client\DotSpatial.Topology.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\DotSpatial.Topology.1.7\lib\net40-Client\DotSpatial.Topology.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="GeoAPI">
-      <HintPath>..\..\packages\GeoAPI.1.7.3\lib\$(fwVersion)\GeoAPI.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\GeoAPI.1.7.3.1\lib\$(fwVersion)\GeoAPI.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NUnit.2.5.10.11092\lib\nunit.framework.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\NUnit.2.5.10.11092\lib\nunit.framework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
