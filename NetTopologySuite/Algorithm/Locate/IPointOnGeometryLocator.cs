@@ -19,7 +19,7 @@ namespace NetTopologySuite.Algorithm.Locate
     }
 
     /// <summary>
-    /// Extension methods for <see cref="IPointOnGeometryLocator"/> classes
+    /// Static methods for <see cref="IPointOnGeometryLocator"/> classes
     /// </summary>
     public static class PointOnGeometryLocatorExtensions
     {
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Algorithm.Locate
         /// <param name="locator">The locator to use.</param>
         /// <param name="coordinate">The coordinate to test.</param>
         /// <returns><c>true</c> if the point is in the interior or boundary of the geometry.</returns>
-        public static bool Intersects(this IPointOnGeometryLocator locator, Coordinate coordinate)
+        public static bool Intersects(IPointOnGeometryLocator locator, Coordinate coordinate)
         {
             if (locator == null)
                 throw new ArgumentNullException("locator");
