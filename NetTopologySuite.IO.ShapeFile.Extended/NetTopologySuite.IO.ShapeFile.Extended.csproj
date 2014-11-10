@@ -31,8 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>..\Release\v4.0\AnyCPU\NetTopologySuite.IO.ShapeFile.Extended.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GeoAPI, Version=1.7.3.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">

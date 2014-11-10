@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-	<fwVersion Condition=" '$(fwVersion)' == '' ">net40-client</fwVersion>	
+    <fwVersion Condition=" '$(fwVersion)' == '' ">net40-client</fwVersion>
     <!-- Define SolutionDir if not already set -->
     <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\..\</SolutionDir>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -34,6 +34,7 @@
     <DefineConstants>TRACE;UseCoordinateBufferPublicly</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Release\v4.0\AnyCPU\NetTopologySuite.IO.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>

@@ -32,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Release\v4.0\AnyCPU\NetTopologySuite.IO.TopoJSON.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GeoAPI">
