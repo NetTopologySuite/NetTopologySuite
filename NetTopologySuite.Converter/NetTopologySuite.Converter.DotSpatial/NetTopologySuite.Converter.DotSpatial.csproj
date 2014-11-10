@@ -33,7 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\NetTopologySuite.Converter.DotSpatial.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\NetTopologySuite.Converter.DotSpatial.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>

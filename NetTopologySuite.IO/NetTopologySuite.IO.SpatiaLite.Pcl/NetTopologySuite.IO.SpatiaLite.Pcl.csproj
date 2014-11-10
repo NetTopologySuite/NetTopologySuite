@@ -40,7 +40,7 @@
     <DefineConstants>TRACE;PCL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Release\PCL\AnyCPU\NetTopologySuite.IO.SpatiaLite.XML</DocumentationFile>
+    <DocumentationFile>..\..\Release\PCL\AnyCPU\NetTopologySuite.IO.SpatiaLite.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->

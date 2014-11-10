@@ -33,7 +33,7 @@
     <DefineConstants>TRACE;PCL;UseCoordinateBufferPublicly</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Release\PCL\AnyCPU\NetTopologySuite.XML</DocumentationFile>
+    <DocumentationFile>..\..\Release\PCL\AnyCPU\NetTopologySuite.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>

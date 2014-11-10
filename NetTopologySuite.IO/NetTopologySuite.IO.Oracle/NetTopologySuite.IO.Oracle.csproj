@@ -33,7 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Release\v4.0\AnyCPU\NetTopologySuite.IO.Oracle.XML</DocumentationFile>
+    <DocumentationFile>..\..\Release\v4.0\AnyCPU\NetTopologySuite.IO.Oracle.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
