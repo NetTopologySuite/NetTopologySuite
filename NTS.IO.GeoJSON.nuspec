@@ -7,7 +7,7 @@
 		<authors>NetTopologySuite - Team</authors>
 		<owners>NetTopologySuite - Team</owners>
 		<licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
-    <projectUrl>https://github.com/NetTopologySuite/NetTopologySuite</projectUrl>
+		<projectUrl>https://github.com/NetTopologySuite/NetTopologySuite</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>
       This package contains the GeoJSON IO library.
@@ -25,16 +25,28 @@
 		</dependencies>
 	</metadata>
 	<files>
-		<file src="Release\v2.0\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net20\NetTopologySuite.IO.GeoJSON.dll" />
-		
-		<file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net35-client\NetTopologySuite.IO.GeoJSON.dll" />
-		
-		<file src="Release\v4.0\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net40-client\NetTopologySuite.IO.GeoJSON.dll" />
-		
-		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net403-client\NetTopologySuite.IO.GeoJSON.dll" />
-		
-		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net45\NetTopologySuite.IO.GeoJSON.dll" />
+		<file src="Release\v2.0\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net20" />
+		<file src="Release\v2.0\AnyCPU\NetTopologySuite.IO.GeoJSON.pdb" target="lib\net20" />
+		<file src="Release\v2.0\AnyCPU\NetTopologySuite.IO.GeoJSON.xml" target="lib\net20" />
 
-    <file src="Release\PCL\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\portable-net403+win8\NetTopologySuite.IO.GeoJSON.dll" />
-  </files>
+		<file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net35-client" />
+		<file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.GeoJSON.pdb" target="lib\net35-client" />
+		<file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.GeoJSON.xml" target="lib\net35-client" />
+
+		<file src="Release\v4.0\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net40-client" />
+		<file src="Release\v4.0\AnyCPU\NetTopologySuite.IO.GeoJSON.pdb" target="lib\net40-client" />
+		<file src="Release\v4.0\AnyCPU\NetTopologySuite.IO.GeoJSON.xml" target="lib\net40-client" />
+
+		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net403-client" />
+		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.IO.GeoJSON.pdb" target="lib\net403-client" />
+		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.IO.GeoJSON.xml" target="lib\net403-client" />
+
+		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net45" />
+		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.GeoJSON.pdb" target="lib\net45" />
+		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.GeoJSON.xml" target="lib\net45" />
+
+		<file src="Release\PCL\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\portable-net403+win8" />
+		<file src="Release\PCL\AnyCPU\NetTopologySuite.IO.GeoJSON.pdb" target="lib\portable-net403+win8" />
+		<file src="Release\PCL\AnyCPU\NetTopologySuite.IO.GeoJSON.xml" target="lib\portable-net403+win8" />
+	</files>
 </package>

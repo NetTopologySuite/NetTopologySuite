@@ -139,7 +139,7 @@
              Properties="Configuration=Release;TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Profile147;DefineConstants=TRACE;PCL;UseCoordinateBufferPublicly;" 
              />			 
 	</Target>
-	
+
 	<Target Name="NuGetPack" DependsOnTargets="RebuildRelease;BuildReleasePCL">
 		<Exec Command="$(NuGetCommand) update -self"/>
 		<Exec Command="$(NuGetCommand) pack NTS.nuspec -Version $(NuGetVersion) -outputdirectory $(NuGetOutDir) -symbols"/>
