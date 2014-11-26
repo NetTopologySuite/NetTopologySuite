@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
-    <fwVersion Condition=" '$(fwVersion)' == '' ">net40-client</fwVersion>	
-	<!-- Define SolutionDir if not already set -->
+    <fwVersion Condition=" '$(fwVersion)' == '' ">net40-client</fwVersion>
+    <!-- Define SolutionDir if not already set -->
     <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -548,7 +548,6 @@
     <Content Include="Precision\PrecisionSummary.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="ReadMe.txt" />
     <Content Include="Simplify\SimplifySummary.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -596,7 +595,7 @@
       <Project>{5821977d-ac2c-4912-bcd0-6e6b1a756167}</Project>
       <Name>PowerCollections</Name>
     </ProjectReference>
-  </ItemGroup>  
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.-->

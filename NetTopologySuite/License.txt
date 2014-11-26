@@ -5,7 +5,7 @@ geo-spatial data set to a known topological specification.
 This collection of classes is a porting (with some additions and modifications) of 
 JTS Topology Suite (see next license for more informations).
 
-Copyright (C) 2005 Diego Guidi
+Copyright (C) 2005-2014 NetTopologySuite team
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -21,12 +21,12 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-For more information, please visit: http://code.google.com/p/nettopologysuite/
+For more information, please visit: https://github.com/NetTopologySuite/NetTopologySuite
 
 
 
 
-Copy of JTS license:
+**Copy of JTS license**
 
 The JTS Topology Suite is a collection of Java classes that
 implement the fundamental operations required to validate a given
@@ -43,42 +43,32 @@ Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-For more information, contact:
-
-    Vivid Solutions
-    Suite #1A
-    2328 Government Street
-    Victoria BC  V8T 5G5
-    Canada
-    (250)385-6040
-    www.vividsolutions.com
-
+For more information, please visit: http://sourceforge.net/projects/jts-topo-suite/
 
 
     
-Copy of SharpMap license:
 
-Copyright 2005, 2006 - Morten Nielsen (www.iter.dk)
+**Copy of SharpMap license**
 
-This file is part of SharpMap.
+Copyright 2005, 2014 - SharpMap team
+
 SharpMap is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
-
 SharpMap is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Lesser General Public License for more details.
-
 You should have received a copy of the GNU Lesser General Public License
 along with SharpMap; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
-
+For more information, please visit: https://sharpmap.codeplex.com
     
 
 
-Copy of GeoTools.Net license:
+
+**Copy of GeoTools.Net license**
 
 Copyright (C) 2002 Urban Science Applications, Inc. (translated from Java Topology Suite, 
 Copyright 2001 Vivid Solutions)
@@ -97,7 +87,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 
-Copy of RTools.Util license:
+**Copy of RTools.Util license**
 
 Copyright (C) 2003 Ryan Seghers
 This software is provided AS IS. No warranty is granted, 
@@ -114,7 +104,7 @@ author.
 
 
 
-Copy of PowerCollections license:
+**Copy of PowerCollections license**
 
 Shared Source License for Wintellect Power Collections
 

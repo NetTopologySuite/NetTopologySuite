@@ -3,7 +3,6 @@ using System.Reflection;
 using GeoAPI.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Triangulate;
-using NetTopologySuite.Utilities;
 using NUnit.Framework;
 using ProjNet.CoordinateSystems;
 using Wintellect.PowerCollections;
@@ -61,7 +60,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test, Category("Issue174")]
         public void ensure_NetTopologySuite_IO_GeoTools_assembly_is_strongly_named()
         {
-            AssertStronglyNamedAssembly(typeof(GeoToolsStreamTokenizer));
+            AssertStronglyNamedAssembly(typeof(ShapefileDataReader));
         }
 
         [Test, Category("Issue174")]
