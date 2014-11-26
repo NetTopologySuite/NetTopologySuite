@@ -1,34 +1,3 @@
-// StreamTokenizer.cs
-// 
-// Copyright (C) 2002-2004 Ryan Seghers
-//
-// This software is provided AS IS. No warranty is granted, 
-// neither expressed nor implied. USE THIS SOFTWARE AT YOUR OWN RISK.
-// NO REPRESENTATION OF MERCHANTABILITY or FITNESS FOR ANY 
-// PURPOSE is given.
-//
-// License to use this software is limited by the following terms:
-// 1) This code may be used in any program, including programs developed
-//    for commercial purposes, provided that this notice is included verbatim.
-//    
-// Also, in return for using this code, please attempt to make your fixes and
-// updates available in some way, such as by sending your updates to the
-// author.
-//
-// To-do:
-//		make type exclusivity explict, and enforce:
-//			digit can be word
-//			word can't be whitespace
-//			etc.
-//      large-integer handling is imprecise, fix it
-//          (most 19 digit decimal numbers can be Int64's but I'm 
-//           using float anyway)
-//		add more mangled float test cases
-//
-// Later:
-//		reconfigurable vs Unicode support
-//		add NUnit wrap of built-in tests
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -664,9 +633,6 @@ namespace RTools_NTS.Util
 		#region Private Fields
 		// ----------------------------------------------------------------
 
-		// A class for verbosity/message handling
-		private Logger log;
-
 		// The TextReader we're reading from
 		private TextReader textReader;
 
@@ -709,15 +675,6 @@ namespace RTools_NTS.Util
 		/// </summary>
 		public StreamTokenizerSettings Settings { get { return(settings); } }
 
-		/// <summary>
-		/// The verbosity level for this object's Logger.
-		/// </summary>
-		public VerbosityLevel Verbosity 
-		{ 
-			get { return(log.Verbosity); } 
-			set { log.Verbosity = value; } 
-		}
-
 		#endregion
 
 		// ---------------------------------------------------------------------
@@ -757,8 +714,6 @@ namespace RTools_NTS.Util
 		/// </summary>
 		void Initialize()
 		{
-			log = new Logger("StreamTokenizer");
-			log.Verbosity = VerbosityLevel.Warn;
 			backString = new CharBuffer(32);
 			nextTokenSb = new CharBuffer(1024);
 
@@ -799,10 +754,6 @@ namespace RTools_NTS.Util
 		/// <param name="prefix">The pre-line prefix.</param>
 		public void Display(string prefix)
 		{
-			log.WriteLine(prefix + "StreamTokenizer display:");
-			log.WriteLine(prefix + "    textReader: {0}", (textReader == null ? "null" : "non-null"));
-			log.WriteLine(prefix + "    backString: {0}", backString);
-
 			if (settings != null) settings.Display(prefix + "    ");
 		}
 
@@ -895,9 +846,6 @@ namespace RTools_NTS.Util
 			{
 				c = backString[0];
 				backString.Remove(0, 1);
-				#if DEBUG
-				log.Debug("Backup char '{0}'", (char)c);
-				#endif
 				return(c);
 			}
 
@@ -914,19 +862,13 @@ namespace RTools_NTS.Util
 
 			if (c == 10) 
 			{
-				lineNumber++;
-				#if DEBUG
-				log.Debug("Line number incremented to {0}", lineNumber);
-				#endif
+				lineNumber++;				
 			}
 			else if (c < 0) 
 			{
 				c = Eof;
 			}
 
-			#if DEBUG
-			log.Debug("Read char '{0}' ({1})", (char)c, c);
-			#endif
 			return(c);
 		}
 
@@ -985,10 +927,6 @@ namespace RTools_NTS.Util
 					ctype = (byte)CharTypeBits.Word;
 				}
 				else ctype = settings.CharTypes[thisChar];
-
-				#if DEBUG
-				log.Debug("Before switch: state = {0}, thisChar = '{1}'", state, (char)thisChar);
-				#endif
 
 				// see if we need to change states, or emit a token
 				switch(state)
@@ -1204,10 +1142,6 @@ namespace RTools_NTS.Util
 							backString.Remove(0, 1);
 							state = PickNextState(settings.CharTypes[thisChar], thisChar, 
 								NextTokenState.MaybeHex);
-							#if DEBUG
-							log.Debug("HexGot0x: Next state on '{0}' is {1}", (char)thisChar,
-								state);
-							#endif
 						}
 						else state = NextTokenState.HexGot0x;
 						break;
@@ -1226,11 +1160,7 @@ namespace RTools_NTS.Util
 							thisChar = backString[0];
 							backString.Remove(0, 1);
 							state = PickNextState(settings.CharTypes[thisChar], thisChar, 
-								NextTokenState.MaybeHex);
-							#if DEBUG
-							log.Debug("HexGot0x: Next state on '{0}' is {1}", (char)thisChar,
-								state);
-							#endif
+								NextTokenState.MaybeHex);							
 						}
 						else state = NextTokenState.HexNumber;
 						break;
@@ -1239,9 +1169,6 @@ namespace RTools_NTS.Util
 						if (!settings.IsCharType(ctype, CharTypeBits.HexDigit))
 						{
 							// emit the hex number we've collected
-							#if DEBUG
-							log.Debug("Emit hex IntToken from string '{0}'", nextTokenSb);
-							#endif
 							token = IntToken.ParseHex(nextTokenSb.ToString(), tokenLineNumber);
 							done = true;
 							nextTokenSb.Length = 0;
@@ -1311,16 +1238,10 @@ namespace RTools_NTS.Util
 									|| (nextTokenSb.Length >= 19) // probably too large for Int64, use float
 									)
 								{
-									token = new FloatToken(nextTokenSb.ToString(), tokenLineNumber);
-									#if DEBUG
-									log.Debug("Emit FloatToken from string '{0}'", nextTokenSb);
-									#endif
+									token = new FloatToken(nextTokenSb.ToString(), tokenLineNumber);									
 								}
 								else 
 								{
-									#if DEBUG
-									log.Debug("Emit IntToken from string '{0}'", nextTokenSb);
-									#endif
 									token = new IntToken(nextTokenSb.ToString(), tokenLineNumber);
 								}
 								done = true;
@@ -1342,10 +1263,6 @@ namespace RTools_NTS.Util
 								backString.Remove(0, 1);
 								state = PickNextState(settings.CharTypes[thisChar], thisChar, 
 									NextTokenState.MaybeNumber);
-								#if DEBUG
-								log.Debug("MaybeNumber: Next state on '{0}' is {1}", (char)thisChar,
-									state);
-								#endif
 							}
 						}
 						break;
@@ -1366,21 +1283,13 @@ namespace RTools_NTS.Util
 					case NextTokenState.Invalid:
 					default:
 						// not a good sign, some unrepresented state?
-						log.Error("NextToken: Hit unrepresented state {0}", state);
 						return(false);
 				}
 
 				// use a StringBuilder to accumulate characters which are part of this token
-				if (thisChar != Eof) nextTokenSb.Append((char)thisChar);
-				#if DEBUG
-				log.Debug("After switch: state = {0}, nextTokenSb = '{1}', backString = '{2}'", 
-					state, nextTokenSb, backString);
-				#endif
+				if (thisChar != Eof) nextTokenSb.Append((char)thisChar);				
 			}
 
-			#if DEBUG
-			log.Debug("Got token {0}", token.ToDebugString());
-			#endif
 			return(true);
 		}
 
@@ -1452,9 +1361,6 @@ namespace RTools_NTS.Util
 			if (gotInt) 
 			{
 				sb.Append(tmpSb);
-				#if DEBUG
-				log.Debug("Grabbed int {0}, sb = {1}", tmpSb, sb);
-				#endif
 				return(true);
 			}
 			else 
@@ -1532,7 +1438,6 @@ namespace RTools_NTS.Util
 			{
 				if (!Tokenize(tokens))
 				{
-					log.Error("Unable to parse tokens from file {0}", fileName);
 					textReader.Close();
 					if (fr != null) fr.Close();
 					return(false);

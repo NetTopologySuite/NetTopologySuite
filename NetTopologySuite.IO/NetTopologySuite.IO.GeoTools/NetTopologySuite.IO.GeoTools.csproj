@@ -65,7 +65,6 @@
     <Compile Include="Dbase\DbaseFileReader.FullFat.cs" />
     <Compile Include="Dbase\DbaseFileWriter.cs" />
     <Compile Include="Dbase\RowStructure.cs" />
-    <Compile Include="GeoToolsStreamTokenizer.cs" />
     <Compile Include="Handlers\GeometryInstantiationErrorHandling.cs" />
     <Compile Include="Handlers\MBRInfo.cs" />
     <Compile Include="Handlers\MultiLineHandler.cs" />
@@ -92,8 +91,6 @@
     <Compile Include="ShapefileReader.cs" />
     <Compile Include="ShapefileReader.FullFat.cs" />
     <Compile Include="ShapefileWriter.cs" />
-    <Compile Include="TokenType.cs" />
-    <Compile Include="WktStreamTokenizer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NetTopologySuite\NetTopologySuite.csproj">

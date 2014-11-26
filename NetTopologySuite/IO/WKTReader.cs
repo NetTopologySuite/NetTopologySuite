@@ -430,13 +430,11 @@ namespace NetTopologySuite.IO
                 }
                 else if (suffix == "ZM")
                 {
-                    tokens.MoveNext();
-                    Logger.Log.Debug("M-Values not supported");
+                    tokens.MoveNext();                    
                 }
                 else if (suffix == "M")
                 {
-                    tokens.MoveNext();
-                    Logger.Log.Debug("M-Values not supported");
+                    tokens.MoveNext();                    
                 }
             }
 
