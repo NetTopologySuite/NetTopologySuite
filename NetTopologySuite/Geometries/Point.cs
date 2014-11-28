@@ -113,27 +113,9 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                return this.Coordinate == null;
+                return _coordinates.Count == 0;
             }
         }
-
-        //public override bool IsSimple
-        //{
-        //    get
-        //    {
-        //        return true;
-        //    }
-        //}
-
-        //public override bool IsValid
-        //{
-        //    get
-        //    {
-        //        if (!IsValidOp.IsValidCoordinate(Coordinate))
-        //            return false;
-        //        return true;
-        //    }
-        //}
 
         /// <summary>
         /// 
