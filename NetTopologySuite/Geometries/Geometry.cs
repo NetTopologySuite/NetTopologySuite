@@ -1796,7 +1796,10 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public bool EqualsExact(IGeometry other)
         {
-            return EqualsExact(other, 0);
+            // this is the exact meaning of jts r929: http://sourceforge.net/p/jts-topo-suite/code/929
+            // be aware of == operator overload!
+            bool sameref = ReferenceEquals(this, other);
+            return sameref || EqualsExact(other, 0);
         }
 
         /// <summary>
