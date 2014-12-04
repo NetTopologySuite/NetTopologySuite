@@ -67,11 +67,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             catch (Exception ex)
             {
                 savedException = ex;
-                //// Ignore this exception, since the operation will be rerun
-                //Debug.WriteLine(ex);
-                //Console.WriteLine(ex.Message));
-                //Console.WriteLine("Geom 0: " + geom[0]);
-                //Console.WriteLine("Geom 1: " + geom[1]);
+                // Ignore this exception, since the operation will be rerun                                
             }
             if (!isSuccess)
             {

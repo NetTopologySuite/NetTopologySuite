@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Operation.Buffer.Validate
@@ -113,8 +114,10 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         private void Report(String checkName)
         {
             if (!Verbose) return;
-            System.Diagnostics.Debug.WriteLine("Check " + checkName + ": "
+#if !PCL
+            Debug.WriteLine("Check " + checkName + ": "
                 + (_isValid ? "passed" : "FAILED"));
+#endif
         }
 
         private void CheckPolygonal()

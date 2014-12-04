@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Threading;
 using GeoAPI;
 using GeoAPI.Geometries;
@@ -146,11 +147,11 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
         public void DoTestThreading()
         {
-            IGeometryServices services = GeoAPI.GeometryServiceProvider.Instance;
+            IGeometryServices services = GeometryServiceProvider.Instance;
             services.CreateGeometryFactory();
             int before = ((NtsGeometryServices) services).NumFactories;
 
-            System.Diagnostics.Debug.WriteLine("{0} factories already created", before);
+            Debug.WriteLine("{0} factories already created", before);
 
             var wkts = new[]
                 {

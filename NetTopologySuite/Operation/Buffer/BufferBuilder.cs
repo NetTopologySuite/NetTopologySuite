@@ -95,16 +95,6 @@ namespace NetTopologySuite.Operation.Buffer
                 return CreateEmptyResultGeometry();
             }
 
-            //BufferDebug.runCount++;
-            //String filename = "run" + BufferDebug.runCount + "_curves";
-            //System.out.println("saving " + filename);
-            //BufferDebug.saveEdges(bufferEdgeList, filename);
-            // DEBUGGING ONLY
-            //WKTWriter wktWriter = new WKTWriter();
-            //Debug.println("Rings: " + wktWriter.write(convertSegStrings(bufferSegStrList.iterator())));
-            //wktWriter.setMaxCoordinatesPerLine(10);
-            //System.out.println(wktWriter.writeFormatted(convertSegStrings(bufferSegStrList.iterator())));
-
             ComputeNodedEdges(bufferSegStrList, precisionModel);
             _graph = new PlanarGraph(new OverlayNodeFactory());
             _graph.AddEdges(_edgeList.Edges);

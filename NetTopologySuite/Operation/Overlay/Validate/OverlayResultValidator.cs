@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Operation.Overlay.Snap;
 
@@ -145,12 +146,16 @@ namespace NetTopologySuite.Operation.Overlay.Validate
 
         private static void ReportResult(SpatialFunction overlayOp, Location[] location, bool expectedInterior)
         {
-            System.Diagnostics.Debug.WriteLine(overlayOp + ":"
-                    + " A:" + LocationUtility.ToLocationSymbol(location[0])
-                    + " B:" + LocationUtility.ToLocationSymbol(location[1])
-                    + " expected:" + (expectedInterior ? 'i' : 'e')
-                    + " actual:" + LocationUtility.ToLocationSymbol(location[2])
-                    );
+#if !PCL
+// ReSharper disable RedundantStringFormatCall
+            // String.Format needed to build 2.0 release!
+            Debug.WriteLine(String.Format("{0}:" + " A:{1} B:{2} expected:{3} actual:{4}", 
+                overlayOp,
+                LocationUtility.ToLocationSymbol(location[0]), 
+                LocationUtility.ToLocationSymbol(location[1]), expectedInterior ? 'i' : 'e', 
+                LocationUtility.ToLocationSymbol(location[2])));
+// ReSharper restore RedundantStringFormatCall
+#endif
         }
     }
 }

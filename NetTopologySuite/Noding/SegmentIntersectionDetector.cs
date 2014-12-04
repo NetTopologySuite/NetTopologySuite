@@ -1,6 +1,5 @@
 ﻿using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Index.Chain;
 
 namespace NetTopologySuite.Noding
 {
@@ -118,12 +117,8 @@ namespace NetTopologySuite.Noding
             var p11 = coords[segIndex1 + 1];
 
             _li.ComputeIntersection(p00, p01, p10, p11);
-            //  if (li.hasIntersection() && li.isProper()) Debug.println(li);
-
             if (_li.HasIntersection)
             {
-                // System.out.println(li);
-
                 // record intersection info
                 _hasIntersection = true;
 

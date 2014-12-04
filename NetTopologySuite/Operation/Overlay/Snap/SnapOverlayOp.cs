@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Precision;
 
@@ -168,8 +169,10 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <param name="g"></param>
         private void CheckValid(IGeometry g)
         {
+#if !PCL
             if (!g.IsValid)
-                System.Diagnostics.Debug.WriteLine("Snapped geometry is invalid");
+                Debug.WriteLine("Snapped geometry is invalid");
+#endif
         }
     }
 }

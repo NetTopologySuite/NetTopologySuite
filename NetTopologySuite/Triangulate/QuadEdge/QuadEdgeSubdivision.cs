@@ -1,6 +1,7 @@
 //#define NET40
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
@@ -829,7 +830,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 }
 
                 Assert.IsTrue(pts.Length == 4, "Too few points for visited triangle at " + loc);
-                ////com.vividsolutions.jts.util.Debug.println("too few points for triangle at " + loc);
             }
 
             public IList<Coordinate[]> GetTriangles()
@@ -957,7 +957,9 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
             if (coordList.Count < 4)
             {
-                System.Diagnostics.Debug.WriteLine(coordList);
+#if !PCL
+                Debug.WriteLine(coordList);
+#endif
                 coordList.Add(coordList[coordList.Count - 1], true);
             }
 

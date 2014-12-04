@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Distance;
 using NetTopologySuite.Geometries.Utilities;
@@ -75,11 +76,17 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             }
             if (Verbose)
             {
-                System.Diagnostics.Debug.WriteLine("Min Dist= " + _minDistanceFound + "  err= "
-                  + (1.0 - _minDistanceFound / _bufDistance)
-                  + "  Max Dist= " + _maxDistanceFound + "  err= "
-                  + (_maxDistanceFound / _bufDistance - 1.0)
+
+#if !PCL
+// ReSharper disable once RedundantStringFormatCall
+                // String.Format needed to build 2.0 release!
+                Debug.WriteLine(String.Format("Min Dist= {0}  err= {1}  Max Dist= {2}  err= {3}", 
+                    _minDistanceFound, 
+                    1.0 - _minDistanceFound / _bufDistance, 
+                    _maxDistanceFound,
+                    _maxDistanceFound / _bufDistance - 1.0)
                   );
+#endif
             }
             return _isValid;
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
@@ -311,28 +312,22 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             bool isInCircleCC = IsInCircleCC(a, b, c, p);
 
             Coordinate circumCentre = Triangle.Circumcentre(a, b, c);
-            System.Diagnostics.Debug.WriteLine("p radius diff a = "
-                              + Math.Abs(p.Distance(circumCentre) - a.Distance(circumCentre))
-                              /a.Distance(circumCentre));
-
+#if !PCL
+// ReSharper disable RedundantStringFormatCall
+            // String.Format needed to build 2.0 release!
+            Debug.WriteLine(String.Format("p radius diff a = {0}", Math.Abs(p.Distance(circumCentre) - a.Distance(circumCentre))/a.Distance(circumCentre)));
             if (nonRobustInCircle != isInCircleDD || nonRobustInCircle != isInCircleCC)
             {
-                System.Diagnostics.Debug.WriteLine("inCircle robustness failure (double result = "
-                                  + nonRobustInCircle
-                                  + ", DD result = " + isInCircleDD
-                                  + ", CC result = " + isInCircleCC + ")");
-                System.Diagnostics.Debug.WriteLine(WKTWriter.ToLineString(new CoordinateArraySequence(new[] { a, b, c, p })));
-
-                System.Diagnostics.Debug.WriteLine("Circumcentre = " + WKTWriter.ToPoint(circumCentre)
-                                  + " radius = " + a.Distance(circumCentre));
-                System.Diagnostics.Debug.WriteLine("p radius diff a = "
-                                  + Math.Abs(p.Distance(circumCentre)/a.Distance(circumCentre) - 1));
-                System.Diagnostics.Debug.WriteLine("p radius diff b = "
-                                  + Math.Abs(p.Distance(circumCentre)/b.Distance(circumCentre) - 1));
-                System.Diagnostics.Debug.WriteLine("p radius diff c = "
-                                  + Math.Abs(p.Distance(circumCentre)/c.Distance(circumCentre) - 1));
-                System.Diagnostics.Debug.WriteLine("");
+                Debug.WriteLine(String.Format("inCircle robustness failure (double result = {0}, DD result = {1}, CC result = {2})", nonRobustInCircle, isInCircleDD, isInCircleCC));
+                Debug.WriteLine(WKTWriter.ToLineString(new CoordinateArraySequence(new[] { a, b, c, p })));
+                Debug.WriteLine(String.Format("Circumcentre = {0} radius = {1}", WKTWriter.ToPoint(circumCentre), a.Distance(circumCentre)));
+                Debug.WriteLine(String.Format("p radius diff a = {0}", Math.Abs(p.Distance(circumCentre)/a.Distance(circumCentre) - 1)));
+                Debug.WriteLine(String.Format("p radius diff b = {0}", Math.Abs(p.Distance(circumCentre)/b.Distance(circumCentre) - 1)));
+                Debug.WriteLine(String.Format("p radius diff c = {0}", Math.Abs(p.Distance(circumCentre)/c.Distance(circumCentre) - 1)));
+                Debug.WriteLine("");
             }
+// ReSharper restore RedundantStringFormatCall
+#endif
         }
 
 

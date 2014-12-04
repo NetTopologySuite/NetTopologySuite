@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 
@@ -336,8 +337,10 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             }
             catch (NotRepresentableException nre)
             {
-                System.Diagnostics.Debug.WriteLine("a: " + a + "  b: " + b + "  c: " + c);
-                System.Diagnostics.Debug.WriteLine(nre);
+#if !PCL
+                Debug.WriteLine("a: " + a + "  b: " + b + "  c: " + c);
+                Debug.WriteLine(nre);
+#endif
                 //throw;
             }
             return cc;

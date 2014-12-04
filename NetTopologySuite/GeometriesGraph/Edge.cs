@@ -3,7 +3,6 @@ using System.IO;
 using System.Text;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph.Index;
 
 namespace NetTopologySuite.GeometriesGraph
@@ -124,7 +123,6 @@ namespace NetTopologySuite.GeometriesGraph
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex);
                 throw ex;
             }
         }

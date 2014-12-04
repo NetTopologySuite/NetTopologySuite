@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
@@ -148,8 +149,10 @@ namespace NetTopologySuite.Noding
 
             if (pts.Length == 2 && pts[0].Equals2D(pts[1]))
             {
-                System.Diagnostics.Debug.WriteLine(pts[0]);
-                System.Diagnostics.Debug.WriteLine(pts[1]);
+#if !PCL
+                Debug.WriteLine(pts[0]);
+                Debug.WriteLine(pts[1]);
+#endif
             }
 
         }

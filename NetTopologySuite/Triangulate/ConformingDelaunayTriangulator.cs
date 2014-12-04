@@ -264,8 +264,9 @@ namespace NetTopologySuite.Triangulate
         /// <param name="vertices">a collection of ConstraintVertex</param>
         private void InsertSites(ICollection<Vertex> vertices)
         {
-
+#if !PCL
             Debug.WriteLine("Adding sites: " + vertices.Count);
+#endif
             foreach (Vertex v in vertices)
             {
                 InsertSite((ConstraintVertex)v);
@@ -339,18 +340,17 @@ namespace NetTopologySuite.Triangulate
                 splits = EnforceGabriel(_segments);
 
                 count++;
-                // Debug.WriteLine("Iter: " + count + "   Splits: " + splits
-                //        + "   Current # segments = " + _segments.Count);
-
                 //Debug FObermaier
-                ////for(var i = oldSegmentCount; i < _segments.Count; i++)
-                ////    Debug.WriteLine("Segments added: #" + i + ": " + _segments[i].LineSegment);
-                ////oldSegmentCount = _segments.Count;
+                //for(var i = oldSegmentCount; i < _segments.Count; i++)
+                //    Console.WriteLine("Segments added: #" + i + ": " + _segments[i].LineSegment);
+                //oldSegmentCount = _segments.Count;
             } while (splits > 0 && count < MaxSplitIteration);
 
             if (count == MaxSplitIteration)
             {
+#if !PCL
                 Debug.WriteLine("ABORTED! Too many iterations while enforcing constraints");
+#endif
                 if (!Debugger.IsAttached)
                     throw new ConstraintEnforcementException(
                         "Too many splitting iterations while enforcing constraints.  Last split point was at: ",
@@ -397,9 +397,6 @@ namespace NetTopologySuite.Triangulate
                 _splitPt = _splitFinder.FindSplitPoint(seg, encroachPt);
                 ConstraintVertex splitVertex = CreateVertex(_splitPt, seg);
 
-                // DebugFeature.addLineSegment(DEBUG_SEG_SPLIT, encroachPt, splitPt, "");
-                // Debug.println(WKTWriter.toLineString(encroachPt, splitPt));
-
                 /*
                  * Check whether the inserted point still equals the split pt. This will
                  * not be the case if the split pt was too close to an existing site. If
@@ -417,7 +414,7 @@ namespace NetTopologySuite.Triangulate
                  */
                 ConstraintVertex insertedVertex = InsertSite(splitVertex);
                 //Debugging FObermaier
-                ////Debug.WriteLine("inserted vertex: " + insertedVertex.ToString());
+                //Console.WriteLine("inserted vertex: " + insertedVertex.ToString());
 
                 if (!insertedVertex.Coordinate.Equals2D(_splitPt))
                 {
@@ -437,7 +434,7 @@ namespace NetTopologySuite.Triangulate
                                      seg.Data);
 
                 //Debugging FObermaier
-                ////Debug.WriteLine("Segment " + seg.ToString() + " splitted to \n\t" + s1.ToString() + "\n\t"+ s2.ToString());
+                //Console.WriteLine("Segment " + seg.ToString() + " splitted to \n\t" + s1.ToString() + "\n\t"+ s2.ToString());
                 newSegments.Add(s1);
                 newSegments.Add(s2);
                 segsToRemove.Add(seg);

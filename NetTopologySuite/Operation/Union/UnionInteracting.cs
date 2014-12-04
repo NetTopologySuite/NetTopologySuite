@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 
@@ -41,31 +42,16 @@ namespace NetTopologySuite.Operation.Union
             ComputeInteracting();
 
             // check for all interacting or none interacting!
-
             IGeometry int0 = ExtractElements(_g0, _interacts0, true);
             IGeometry int1 = ExtractElements(_g1, _interacts1, true);
-
-            //		System.out.println(int0);
-            //		System.out.println(int1);
-
+#if !PCL
             if (int0.IsEmpty || int1.IsEmpty)
-            {
-                System.Diagnostics.Debug.WriteLine("found empty!");
-                //			computeInteracting();
-            }
-            //		if (! int0.isValid()) {
-            //System.out.println(int0);
-            //throw new RuntimeException("invalid geom!");
-            //		}
-
+                Debug.WriteLine("found empty!");
+#endif
             IGeometry union = int0.Union(int1);
-            //Geometry union = BufferUnion(int0, int1);
-
             IGeometry disjoint0 = ExtractElements(_g0, _interacts0, false);
             IGeometry disjoint1 = ExtractElements(_g1, _interacts1, false);
-
             IGeometry overallUnion = GeometryCombiner.Combine(union, disjoint0, disjoint1);
-
             return overallUnion;
 
         }
