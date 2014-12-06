@@ -350,8 +350,8 @@ namespace NetTopologySuite.Triangulate
             {
 #if !PCL
                 Debug.WriteLine("ABORTED! Too many iterations while enforcing constraints");
-#endif
                 if (!Debugger.IsAttached)
+#endif
                     throw new ConstraintEnforcementException(
                         "Too many splitting iterations while enforcing constraints.  Last split point was at: ",
                         _splitPt);
