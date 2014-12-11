@@ -3,13 +3,10 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
-namespace NetTopologySuite.Samples.Tests.IO
+namespace NetTopologySuite.Samples.Tests.Github
 {
-    /// <summary>
-    /// https://github.com/NetTopologySuite/NetTopologySuite/issues/12
-    /// </summary>
     [TestFixture]
-    public class GitIssue12Fixture
+    public class Issue12Fixture
     {
         [Test]
         public void check_difference_results_with_fixed_precision()

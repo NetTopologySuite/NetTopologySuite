@@ -9,13 +9,10 @@ using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
-namespace NetTopologySuite.Samples.Tests.IO
+namespace NetTopologySuite.Samples.Tests.Github
 {
-    /// <summary>
-    /// https://github.com/NetTopologySuite/NetTopologySuite/issues/4
-    /// </summary>
     [TestFixture]
-    public class GitIssue4Fixture
+    public class Issue4Fixture
     {
         private static string CreateShapefilePath()
         {

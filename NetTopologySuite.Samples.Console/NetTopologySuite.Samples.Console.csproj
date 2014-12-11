@@ -114,8 +114,9 @@
     <Compile Include="Operation\Poligonize\SplitPolygonExample.cs" />
     <Compile Include="Technique\ExtractLinestringByMeasure.cs" />
     <Compile Include="Tests\GeometryServicesTest.cs" />
-    <Compile Include="Tests\IO\GitIssue12Fixture.cs" />
-    <Compile Include="Tests\IO\GitIssue4Fixture.cs" />
+    <Compile Include="Tests\Github\Issue12Fixture.cs" />
+    <Compile Include="Tests\Github\Issue27Fixture.cs" />
+    <Compile Include="Tests\Github\Issue4Fixture.cs" />
     <Compile Include="Tests\IO\GmlTest.cs" />
     <Compile Include="Tests\IO\PostGisTest.cs" />
     <Compile Include="Tests\IO\ShapeFileEncodingTest.cs" />
