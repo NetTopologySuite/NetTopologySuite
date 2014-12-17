@@ -23,7 +23,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
     /// <author>Martin Davis</author>
     public class GeometrySnapper
     {
-        private const double SnapPrexisionFactor = 10E-9;
+        private const double SnapPrexisionFactor = 1E-9;
 
         /// <summary>
         /// Estimates the snap tolerance for a Geometry, taking into account its precision model.
