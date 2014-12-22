@@ -189,3 +189,6 @@ FakesAssemblies/
 NetTopologySuite.Samples.Shapefiles/ZMtest.shp
 NetTopologySuite.Samples.Shapefiles/ZMtest.shx
 NetTopologySuite.Samples.Shapefiles/ZMtest.dbf
+NetTopologySuite.Samples.Shapefiles/__empty.dbf
+NetTopologySuite.Samples.Shapefiles/__empty.shp
+NetTopologySuite.Samples.Shapefiles/__empty.shx

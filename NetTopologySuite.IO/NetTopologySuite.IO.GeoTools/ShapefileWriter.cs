@@ -222,18 +222,23 @@ namespace NetTopologySuite.IO
             /*return recordLength;*/
         }
 
+        private Envelope NotNull(Envelope bounds)
+        {
+            return bounds ?? new Envelope();
+        }
+
         private void WriteShxHeader(BigEndianBinaryWriter shxBinaryWriter, int shxLength, Envelope bounds)
         {
             // write the .shx header
-            var shxHeader = new ShapefileHeader { FileLength = shxLength, Bounds = bounds, ShapeType = _geometryType };
+            var shxHeader = new ShapefileHeader { FileLength = shxLength, Bounds = NotNull(bounds), ShapeType = _geometryType };
 
             // assumes Geometry type of the first item will the same for all other items in the collection.
             shxHeader.Write(shxBinaryWriter);
         }
 
-        private void WriteShpHeader(BigEndianBinaryWriter shpBinaryWriter, int shpLength, Envelope bounds)
+	    private void WriteShpHeader(BigEndianBinaryWriter shpBinaryWriter, int shpLength, Envelope bounds)
         {
-            var shpHeader = new ShapefileHeader {FileLength = shpLength, Bounds = bounds, ShapeType = _geometryType};
+            var shpHeader = new ShapefileHeader { FileLength = shpLength, Bounds = NotNull(bounds), ShapeType = _geometryType };
 
             // assumes Geometry type of the first item will the same for all other items
             // in the collection.

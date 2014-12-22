@@ -2,8 +2,10 @@ using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm.Match;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
 using NetTopologySuite.Samples.SimpleTests;
 using NUnit.Framework;
@@ -16,9 +18,32 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
         public ShapeFileDataWriterTest()
         {
             // Set current dir to shapefiles dir
-			Environment.CurrentDirectory = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory, 
+            Environment.CurrentDirectory = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
                 string.Format("..{0}..{0}..{0}NetTopologySuite.Samples.Shapefiles", Path.DirectorySeparatorChar));
+        }
+
+        [Test]
+        public void TestCreateEmptyShapefile()
+        {
+            const string filename = "__empty";
+            const string emptyShp = filename + ".shp";
+            const string emptyShx = filename + ".shx";
+            const string emptyDbf = filename + ".dbf";
+            if (File.Exists(emptyShp))
+                File.Delete(emptyShp);
+            if (File.Exists(emptyShx))
+                File.Delete(emptyShx);
+            if (File.Exists(emptyDbf))
+                File.Delete(emptyDbf);
+
+            ShapefileDataWriter writer = new ShapefileDataWriter(filename, Factory);
+            writer.Header = new DbaseFileHeader();
+            writer.Write(new IFeature[0]);
+
+            Assert.That(File.Exists(emptyShp), Is.True);
+            Assert.That(File.Exists(emptyShx), Is.True);
+            Assert.That(File.Exists(emptyDbf), Is.True);
         }
 
         [Test]
@@ -39,14 +64,14 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
             points[1] = new Coordinate(1, 0);
             points[2] = new Coordinate(1, 1);
 
-            var csFactory = NetTopologySuite.Geometries.Implementation.DotSpatialAffineCoordinateSequenceFactory.Instance;
+            var csFactory = DotSpatialAffineCoordinateSequenceFactory.Instance;
             var sequence = csFactory.Create(3, Ordinates.XYZM);
-            for (var i = 0; i < 3; i ++)
+            for (var i = 0; i < 3; i++)
             {
                 sequence.SetOrdinate(i, Ordinate.X, points[i].X);
                 sequence.SetOrdinate(i, Ordinate.Y, points[i].Y);
                 sequence.SetOrdinate(i, Ordinate.Z, 1 + i);
-                if (testM) 
+                if (testM)
                     sequence.SetOrdinate(i, Ordinate.M, 11 + i);
             }
             var lineString = Factory.CreateLineString(sequence);
@@ -65,7 +90,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
             shpWriter.Write(features);
 
             // Now let's read the file and verify that we got Z and M back
-            var factory = new GeometryFactory(NetTopologySuite.Geometries.Implementation.DotSpatialAffineCoordinateSequenceFactory.Instance);
+            var factory = new GeometryFactory(DotSpatialAffineCoordinateSequenceFactory.Instance);
 
             using (var reader = new ShapefileDataReader("ZMtest", factory))
             {
@@ -75,12 +100,12 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
                 for (var i = 0; i < 3; i++)
                 {
                     var c = geom.Coordinates[i];
-                    Assert.AreEqual(i + 1, c.Z);             
+                    Assert.AreEqual(i + 1, c.Z);
                 }
 
                 if (testM)
                 {
-                    sequence = ((ILineString) geom).CoordinateSequence;
+                    sequence = ((ILineString)geom).CoordinateSequence;
                     for (var i = 0; i < 3; i++)
                     {
                         Assert.AreEqual(sequence.GetOrdinate(i, Ordinate.M), 11 + i);
@@ -91,7 +116,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
                 var v = reader.GetString(0);
                 Assert.AreEqual(v, "Trond");
             }
-        }   
+        }
 
         [Test]
         public void TestWriteSimpleShapeFile()
@@ -101,7 +126,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
 
             var coll = new GeometryCollection(new IGeometry[] { p1, p2, });
             ShapefileWriter.WriteGeometryCollection(@"test_arcview", coll);
-            
+
             // Not read by ArcView!!!
         }
 
@@ -191,9 +216,9 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
                         }
                         else if (!gw.EqualsExact(gr))
                         {
-                            var hsm = new Algorithm.Match.HausdorffSimilarityMeasure().Measure(gw, gr);
-                            var asm = new Algorithm.Match.AreaSimilarityMeasure().Measure(gw, gr);
-                            var smc = Algorithm.Match.SimilarityMeasureCombiner.Combine(hsm, asm);
+                            var hsm = new HausdorffSimilarityMeasure().Measure(gw, gr);
+                            var asm = new AreaSimilarityMeasure().Measure(gw, gr);
+                            var smc = SimilarityMeasureCombiner.Combine(hsm, asm);
                             if (!gw.EqualsNormalized(gr) || (1d - smc) > 1e-7)
                             {
                                 Console.WriteLine(string.Format("Geometries don't match at index {0}", i));
@@ -254,7 +279,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
 
             for (var i = 0; i < writeZ.Length; i++)
                 if (Math.Abs(writeZ[i] - readZ[i]) > 1E-7) return false;
-            
+
             return true;
         }
 
@@ -263,8 +288,8 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
             public static IGeometryCollection CreateShapes(OgcGeometryType type, Ordinates ordinates, int number = 50)
             {
                 var empty = new bool[number];
-                empty[Rnd.Next(2, number/2)] = true;
-                empty[Rnd.Next(number/2, number)] = true;
+                empty[Rnd.Next(2, number / 2)] = true;
+                empty[Rnd.Next(number / 2, number)] = true;
 
                 var result = new IGeometry[number];
                 for (var i = 0; i < number; i++)
@@ -300,14 +325,14 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
 
                 return Factory.CreateGeometryCollection(result);
             }
-            
+
             private static readonly Random Rnd = new Random(9936528);
 
             private static readonly ICoordinateSequenceFactory CsFactory =
-                NetTopologySuite.Geometries.Implementation.DotSpatialAffineCoordinateSequenceFactory.Instance;
+                DotSpatialAffineCoordinateSequenceFactory.Instance;
 
             public static readonly IGeometryFactory FactoryRead = new GeometryFactory(new PrecisionModel(PrecisionModels.Floating), 4326, CsFactory);
-            
+
             public static readonly IGeometryFactory Factory = new GeometryFactory(new PrecisionModel(1000), 4326, CsFactory);
 
             private static IGeometry CreatePoint(Ordinates ordinates, bool empty)
@@ -334,7 +359,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
                 for (var i = 0; i < numPoints; i++)
                     foreach (var o in OrdinatesUtility.ToOrdinateArray(ordinates))
                         seq.SetOrdinate(i, o, RandomOrdinate(o, Factory.PrecisionModel));
-                
+
                 return Factory.CreateMultiPoint(seq);
             }
 
@@ -371,7 +396,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
                 {
                     Factory.CreateMultiLineString(null);
                 }
-                
+
                 var numLineStrings = Rnd.Next(0, 11);
                 if (numLineStrings <= 2)
                     numLineStrings = 0;
@@ -407,25 +432,25 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
                         var ring = CreateCircleRing(ordinates, x, y, 3 * Rnd.NextDouble());
                         return Factory.CreatePolygon(ring, null);
                     case 1: // rectangle
-                        ring = CreateRectangleRing(ordinates, x, y, 6*Rnd.NextDouble(), 3*Rnd.NextDouble());
+                        ring = CreateRectangleRing(ordinates, x, y, 6 * Rnd.NextDouble(), 3 * Rnd.NextDouble());
                         return Factory.CreatePolygon(ring, null);
                     case 2: // cirle with hole
-                        var radius = 3*Rnd.NextDouble();
+                        var radius = 3 * Rnd.NextDouble();
                         var shell = CreateCircleRing(ordinates, x, y, radius);
                         var hole = CreateCircleRing(ordinates, x, y, 0.66 * radius, true);
-                        return Factory.CreatePolygon(shell, new [] { hole });
+                        return Factory.CreatePolygon(shell, new[] { hole });
                     case 3: // rectanglee with hole
-                        var width = 6*Rnd.NextDouble();
-                        var height = 3*Rnd.NextDouble();
+                        var width = 6 * Rnd.NextDouble();
+                        var height = 3 * Rnd.NextDouble();
                         shell = CreateRectangleRing(ordinates, x, y, width, height);
                         hole = CreateRectangleRing(ordinates, x, y, 0.66 * width, 0.66 * height, true);
-                        return Factory.CreatePolygon(shell, new [] { hole });
+                        return Factory.CreatePolygon(shell, new[] { hole });
                     case 4: // rectanglee with hole
-                        width = 6*Rnd.NextDouble();
-                        height = 3*Rnd.NextDouble();
+                        width = 6 * Rnd.NextDouble();
+                        height = 3 * Rnd.NextDouble();
                         shell = CreateRectangleRing(ordinates, x, y, width, height);
                         hole = CreateCircleRing(ordinates, x, y, 0.33 * Math.Min(width, height), true);
-                        return Factory.CreatePolygon(shell, new [] { hole });
+                        return Factory.CreatePolygon(shell, new[] { hole });
                     default:
                         throw new NotSupportedException();
                 }
@@ -433,19 +458,19 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
 
             private static ILinearRing CreateCircleRing(Ordinates ordinates, double x, double y, double radius, bool reverse = false)
             {
-                var seq = CsFactory.Create(4*12 + 1, ordinates);
+                var seq = CsFactory.Create(4 * 12 + 1, ordinates);
                 var angle = Math.PI * 2;
-                const double quandrantStep = Math.PI/2d/12d;
+                const double quandrantStep = Math.PI / 2d / 12d;
                 var k = 0;
                 for (var i = 0; i < 4; i++)
                 {
                     for (var j = 0; j < 12; j++)
                     {
-                        var dx = radius*Math.Cos(angle);
-                        var dy = radius*Math.Sin(angle);
+                        var dx = radius * Math.Cos(angle);
+                        var dy = radius * Math.Sin(angle);
                         seq.SetOrdinate(k, Ordinate.X, Factory.PrecisionModel.MakePrecise(x + dx));
                         seq.SetOrdinate(k, Ordinate.Y, Factory.PrecisionModel.MakePrecise(y + dy));
-                        if ((ordinates & Ordinates.Z)==Ordinates.Z)
+                        if ((ordinates & Ordinates.Z) == Ordinates.Z)
                             seq.SetOrdinate(k, Ordinate.Z, RandomOrdinate(Ordinate.Z, Factory.PrecisionModel));
                         if ((ordinates & Ordinates.Z) == Ordinates.Z)
                             seq.SetOrdinate(k, Ordinate.M, RandomOrdinate(Ordinate.M, Factory.PrecisionModel));
@@ -465,8 +490,8 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
 
             private static ILinearRing CreateRectangleRing(Ordinates ordinates, double x, double y, double width, double height, bool reverse = false)
             {
-                var dx = Factory.PrecisionModel.MakePrecise(width /2);
-                var dy = Factory.PrecisionModel.MakePrecise(height /2);
+                var dx = Factory.PrecisionModel.MakePrecise(width / 2);
+                var dy = Factory.PrecisionModel.MakePrecise(height / 2);
 
                 var seq = CsFactory.Create(5, ordinates);
 
@@ -499,14 +524,14 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
 
                 return Factory.CreateLinearRing(reverse ? seq.Reversed() : seq);
             }
-            
+
             private static IGeometry CreateMultiPolygon(Ordinates ordinates, bool empty)
             {
                 if (empty)
                 {
                     Factory.CreateMultiPolygon(null);
                 }
-                
+
                 switch (Rnd.Next(2))
                 {
                     case 0:
@@ -515,15 +540,15 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
                         for (var i = 0; i < numPolygons; i++)
                             polygons[i] = (IPolygon)CreatePolygon(ordinates, false);
                         return Factory.BuildGeometry(new Collection<IGeometry>(polygons)).Union();
-                    
+
                     case 1:
                         polygons = new IPolygon[2];
-                        var radius = 5*Rnd.NextDouble();
+                        var radius = 5 * Rnd.NextDouble();
                         var x = RandomOrdinate(Ordinate.X, Factory.PrecisionModel);
                         var y = RandomOrdinate(Ordinate.Y, Factory.PrecisionModel);
                         var shell = CreateCircleRing(ordinates, x, y, radius);
                         var hole = CreateCircleRing(ordinates, x, y, 0.66 * radius, true);
-                        polygons[0] = Factory.CreatePolygon(shell, new [] { hole });
+                        polygons[0] = Factory.CreatePolygon(shell, new[] { hole });
                         shell = CreateCircleRing(ordinates, x, y, 0.5 * radius);
                         hole = CreateCircleRing(ordinates, x, y, 0.15 * radius, true);
                         polygons[1] = Factory.CreatePolygon(shell, new[] { hole });
@@ -539,7 +564,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
                 switch (o)
                 {
                     case Ordinate.X:
-                        return pm.MakePrecise(-180 + 360*Rnd.NextDouble());
+                        return pm.MakePrecise(-180 + 360 * Rnd.NextDouble());
                     case Ordinate.Y:
                         return pm.MakePrecise(-90 + 180 * Rnd.NextDouble());
                     case Ordinate.Z:
@@ -551,7 +576,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
                 }
             }
         }
-        
+
         [Test, ExpectedException(typeof(ArgumentException))]
         // see https://code.google.com/p/nettopologysuite/issues/detail?id=146
         public void Issue146_ShapeCreationWithInvalidAttributeName()
