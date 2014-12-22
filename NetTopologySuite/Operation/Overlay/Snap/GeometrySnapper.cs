@@ -172,7 +172,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         private Coordinate[] ExtractTargetCoordinates(IGeometry g)
         {
             // TODO: should do this more efficiently.  Use CoordSeq filter to get points, KDTree for uniqueness & queries
-            Set<Coordinate> ptSet = new Set<Coordinate>(g.Coordinates);
+            OrderedSet<Coordinate> ptSet = new OrderedSet<Coordinate>(g.Coordinates);
             Coordinate[] result = new Coordinate[ptSet.Count];
             ptSet.CopyTo(result, 0);
             return result;
