@@ -3,6 +3,7 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Distance;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
+using NetTopologySuite.Planargraph;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Tests.Github
@@ -27,9 +28,13 @@ namespace NetTopologySuite.Samples.Tests.Github
 
             try
             {
+                Assert.AreEqual(wkb, WKBWriter.ToHex(wktGeom.AsBinary()), "wkb's don't match");
                 Assert.IsTrue(DiscreteHausdorffDistance.Distance(wktGeom, wkbGeom) < 1e-9, number + ": DiscreteHausdorffDistance.Distance(wktGeom, wkbGeom) < 1e-9");
                 if (!wktGeom.EqualsExact(wkbGeom))
                 {
+                    Assert.AreEqual(wkt, wktGeom.AsText(), number + ": wkt.Equals(wktGeom.AsText())");
+                    var wktGeom2 = s.Read(wktGeom.AsBinary());
+                    Assert.AreEqual(wkt, wktGeom2.AsText(), number + ": wkt.Equals(wktGeom2.AsText())");
                     var diff = wkbGeom.Difference(wktGeom);
                     Assert.IsTrue(false, number + ": wktGeom.EqualsExact(wkbGeom)\n" + diff.AsText());
                 }
@@ -41,5 +46,22 @@ namespace NetTopologySuite.Samples.Tests.Github
                 return true;
             }
         }
+
+        [Test]
+        public void TestNumber()
+        {
+            const string theNumberString = "6232756.00054126";
+            const double theNumber = 6232756.00054126; //6232756.0005412595;
+            var theBytes = BitConverter.GetBytes(theNumber);
+            Console.WriteLine("{0:R} -> 0x{1}", theNumber, WKBWriter.ToHex(theBytes));
+            var theWkbedNumber = BitConverter.ToDouble(theBytes,0);
+            Console.WriteLine("0x{1} -> {0:R}", theWkbedNumber, WKBWriter.ToHex(theBytes));
+            //The result of JTS
+            theBytes[0] = (byte)(theBytes[0] + 1);
+            Console.WriteLine("0x{1} -> {0:R}", theWkbedNumber, WKBWriter.ToHex(theBytes));
+
+            Assert.AreEqual(theNumber, theWkbedNumber);
+        }
+
     }
 }
