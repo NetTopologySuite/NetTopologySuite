@@ -5,7 +5,7 @@ using NetTopologySuite.Geometries.Utilities;
 namespace NetTopologySuite.Simplify
 {
     /// <summary>
-    /// Simplifies a <c>Geometry</c> using the Douglas-Peucker algorithm.
+    /// Simplifies a <see cref="IGeometry"/> using the Douglas-Peucker algorithm.
     /// </summary>
     /// <remarks>
     /// Ensures that any polygonal geometries returned are valid.
@@ -20,6 +20,10 @@ namespace NetTopologySuite.Simplify
     /// and lines can cross.
     /// To simplify point while preserving topology use TopologySafeSimplifier.
     /// (However, using D-P is significantly faster).
+    /// <para/>
+    /// KNOWN BUGS:
+    /// In some cases the approach used to clean invalid simplified polygons
+    /// can distort the output geometry severely.  
     /// </remarks>
     /// <seealso cref="TopologyPreservingSimplifier"/>
     public class DouglasPeuckerSimplifier
