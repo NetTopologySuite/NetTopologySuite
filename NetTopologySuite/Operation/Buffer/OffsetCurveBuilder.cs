@@ -151,7 +151,7 @@ namespace NetTopologySuite.Operation.Buffer
        {
            // TODO: remove cast to implementation
            BufferParameters @params = (BufferParameters) _bufParams;
-           return bufDistance / @params.SimplifyFactor;
+           return bufDistance * @params.SimplifyFactor;
        }
 
         private void ComputePointCurve(Coordinate pt, OffsetSegmentGenerator segGen)
