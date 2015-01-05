@@ -141,25 +141,18 @@ namespace NetTopologySuite.Operation.Buffer
             return new OffsetSegmentGenerator(_precisionModel, _bufParams, distance);
         }
 
-        /**
-         * Use a value which results in a potential distance error which is
-         * significantly less than the error due to
-         * the quadrant segment discretization.
-         * For QS = 8 a value of 100 is reasonable.
-         * This should produce a maximum of 1% distance error.
-         */
-        private const double SimplifyFactor = 100.0;
-
-        /// <summary>
+       /// <summary>
         /// Computes the distance tolerance to use during input
         /// line simplification.
         /// </summary>
         /// <param name="bufDistance">The buffer distance</param>
         /// <returns>The simplification tolerance</returns>
-        private static double SimplifyTolerance(double bufDistance)
-        {
-            return bufDistance / SimplifyFactor;
-        }
+        private double SimplifyTolerance(double bufDistance)
+       {
+           // TODO: remove cast to implementation
+           BufferParameters @params = (BufferParameters) _bufParams;
+           return bufDistance / @params.SimplifyFactor;
+       }
 
         private void ComputePointCurve(Coordinate pt, OffsetSegmentGenerator segGen)
         {
