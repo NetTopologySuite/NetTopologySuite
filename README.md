@@ -2,6 +2,8 @@
 NetTopologySuite
 ================
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/NetTopologySuite/NetTopologySuite?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 A .NET GIS solution that is fast and reliable for the .NET platform.  
 **NetTopologySuite** is a direct-port of all the functionalities offered by JTS Topology Suite: _NTS expose JTS in a '.NET way'_, as example using Properties, Indexers etc...
 

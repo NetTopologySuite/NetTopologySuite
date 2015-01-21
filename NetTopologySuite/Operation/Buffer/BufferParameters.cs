@@ -35,10 +35,18 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         public const double DefaultMitreLimit = 5.0;
 
+        /// <summary>
+        /// The default simplify factor.
+        /// Provides an accuracy of about 1%, which matches
+        /// the accuracy of the <see cref="DefaultQuadrantSegments"/> parameter.
+        /// </summary>
+        public const double DefaultSimplifyFactor = 0.01;
+
         private int _quadrantSegments = DefaultQuadrantSegments;
         private EndCapStyle _endCapStyle = EndCapStyle.Round;
         private JoinStyle _joinStyle = JoinStyle.Round;
         private double _mitreLimit = DefaultMitreLimit;
+        private double _simplifyFactor = DefaultSimplifyFactor;
 
         ///<summary>
         /// Creates a default set of parameters
@@ -127,7 +135,7 @@ namespace NetTopologySuite.Operation.Buffer
                 if (_quadrantSegments < 0)
                 {
                     _joinStyle = JoinStyle.Mitre;
-                    _mitreLimit = System.Math.Abs(_quadrantSegments);
+                    _mitreLimit = Math.Abs(_quadrantSegments);
                 }
 
                 if (value <= 0)
@@ -153,8 +161,8 @@ namespace NetTopologySuite.Operation.Buffer
         /// <returns>The error of approximation</returns>
         public static double BufferDistanceError(int quadSegs)
         {
-            double alpha = System.Math.PI / 2.0 / quadSegs;
-            return 1 - System.Math.Cos(alpha / 2.0);
+            double alpha = Math.PI / 2.0 / quadSegs;
+            return 1 - Math.Cos(alpha / 2.0);
         }
 
         ///<summary>
@@ -224,5 +232,19 @@ namespace NetTopologySuite.Operation.Buffer
         /// </para>
         /// </summary>
         public bool IsSingleSided { get; set; }
+
+        /// <summary>
+        /// Factor used to determine the simplify distance tolerance
+        /// for input simplification.
+        /// Simplifying can increase the performance of computing buffers.
+        /// Generally the simplify factor should be greater than 0.
+        /// Values between 0.01 and .1 produce relatively good accuracy for the generate buffer.
+        /// Larger values sacrifice accuracy in return for performance.
+        /// </summary>
+        public double SimplifyFactor
+        {
+            get { return _simplifyFactor; }
+            set { _simplifyFactor = value < 0 ? 0 : value; }
+        }
     }
 }

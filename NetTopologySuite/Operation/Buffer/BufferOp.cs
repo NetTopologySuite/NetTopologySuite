@@ -19,7 +19,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// with a circle of radius equal to the absolute value of the buffer distance.
     /// In the CAD/CAM world buffers are known as <i>offset curves</i>.
     /// In morphological analysis the
-    /// operation of postive and negative buffering
+    /// operation of positive and negative buffering
     /// is referred to as <i>erosion</i> and <i>dilation</i>
     /// </para>
     /// <para>
@@ -28,46 +28,42 @@ namespace NetTopologySuite.Operation.Buffer
     /// </para>
     /// <para>
     /// Since true buffer curves may contain circular arcs,
-    /// computed buffer polygons can only be approximations to the true geometry.
-    /// The user can control the accuracy of the curve approximation by specifying
-    /// the number of linear segments used to approximate curves.
+    /// computed buffer polygons are only approximations to the true geometry.
+    /// The user can control the accuracy of the approximation by specifying
+    /// the number of linear segments used to approximate arcs.
+    /// This is specified via <see cref="IBufferParameters.QuadrantSegments"/> 
+    /// or <see cref="QuadrantSegments"/>.
     /// </para>
     /// <para>
-    /// The <b>end cap style</b> of a linear buffer may be specified. The
-    /// following end cap styles are supported:
+    /// The <see cref="IBufferParameters.EndCapStyle"/> of a linear buffer may be specified. 
+    /// The following end cap styles are supported:
     /// <ul>
     /// <li><see cref="EndCapStyle.Round" /> - the usual round end caps</li>
     /// <li><see cref="EndCapStyle.Flat" /> - end caps are truncated flat at the line ends</li>
     /// <li><see cref="EndCapStyle.Square" /> - end caps are squared off at the buffer distance beyond the line ends</li>
     /// </ul>
     /// </para>
-    ///
-    /// @version 1.7
+    /// <para>
+    /// The <see cref="IBufferParameters.JoinStyle"/> of the corners in a buffer may be specified. 
+    /// The following join styles are supported:
+    /// <ul>
+    /// <li><see cref="JoinStyle.Round" /> - the usual round join</li>
+    /// <li><see cref="JoinStyle.Mitre" /> - corners are "sharp" (up to a <see cref="IBufferParameters.MitreLimit"/> distance limit})</li>
+    /// <li><see cref="JoinStyle.Bevel" /> - corners are beveled (clipped off)</li>
+    /// </ul>
+    /// </para>
+    /// <para>
+    /// The buffer algorithm can perform simplification on the input to increase performance.
+    /// The simplification is performed a way that always increases the buffer area 
+    /// (so that the simplified input covers the original input).
+    /// The degree of simplification can be specified with <see cref="IBufferParameters.SimplifyFactor"/>,
+    /// with a <see cref="BufferParameters.DefaultSimplifyFactor"/> used otherwise.
+    /// Note that if the buffer distance is zero then so is the computed simplify tolerance, 
+    /// no matter what the simplify factor.
+    /// </para>
     /// </remarks>
     public class BufferOp
     {
-        // /**
-        //  * Specifies a round line buffer end cap style.
-        //  * @deprecated use BufferParameters
-        //  */
-        // public static final int CAP_ROUND = BufferParameters.CAP_ROUND;
-        // /**
-        //  * Specifies a butt (or flat) line buffer end cap style.
-        //  * @deprecated use BufferParameters
-        //  */
-        // public static final int CAP_BUTT = BufferParameters.CAP_FLAT;
-
-        // /**
-        //  * Specifies a butt (or flat) line buffer end cap style.
-        //  * @deprecated use BufferParameters
-        //  */
-        // public static final int CAP_FLAT = BufferParameters.CAP_FLAT;
-        // /**
-        //  * Specifies a square line buffer end cap style.
-        //  * @deprecated use BufferParameters
-        //  */
-        // public static final int CAP_SQUARE = BufferParameters.CAP_SQUARE;
-
         /// <summary>
         /// A number of digits of precision which leaves some computational "headroom"
         /// for floating point operations.
