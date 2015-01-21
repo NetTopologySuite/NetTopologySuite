@@ -179,14 +179,17 @@ namespace NetTopologySuite.Index.Strtree
             }
         }
 
+        /// <summary>
+        /// Gets the number of elements in the tree
+        /// </summary>
         public int Count
         {
             get
             {
-                if (!_built)
-                    Build();
-                if (_itemBoundables.Count == 0)
+                if (IsEmpty)
                     return 0;
+
+                Build();
                 return GetSize(_root);
             }
         }
@@ -360,8 +363,8 @@ namespace NetTopologySuite.Index.Strtree
         protected bool Remove(T searchBounds, TItem item)
         {
             Build();
-            if (_itemBoundables.Count == 0)
-                Assert.IsTrue(_root.Bounds == null);
+            //if (_itemBoundables.Count == 0)
+            //    Assert.IsTrue(_root.Bounds == null);
             return IntersectsOp.Intersects(_root.Bounds, searchBounds) && Remove(searchBounds, _root, item);
         }
 
