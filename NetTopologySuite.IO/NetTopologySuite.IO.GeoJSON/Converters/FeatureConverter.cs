@@ -58,21 +58,33 @@ namespace NetTopologySuite.IO.Converters
                 throw new ArgumentException("Expected value 'Feature' not found.");
             reader.Read();
 
+            object featureId = null;
             Feature feature = new Feature();
             while (reader.TokenType == JsonToken.PropertyName)
             {
                 string prop = (string)reader.Value;
                 switch (prop)
                 {
+                    case "id":                        
+                        reader.Read(); 
+                        featureId = reader.Value;
+                        reader.Read(); 
+                        break;                        
                     case "bbox":
                         Envelope bbox = serializer.Deserialize<Envelope>(reader);
-                        Debug.WriteLine("TODO: " + bbox);
+                        Debug.WriteLine("BBOX: {0}", bbox);
                         break;
                     case "geometry":
                         reader.Read();
+                        if (reader.TokenType == JsonToken.Null)
+                        {
+                            reader.Read();
+                            break;
+                        }
+                            
                         if (reader.TokenType != JsonToken.StartObject)
                             throw new ArgumentException("Expected token '{' not found.");
-                        IGeometry geometry = serializer.Deserialize<IGeometry>(reader);
+                        var geometry = serializer.Deserialize<IGeometry>(reader);
                         feature.Geometry = geometry;
                         if (reader.TokenType != JsonToken.EndObject)
                             throw new ArgumentException("Expected token '}' not found.");
@@ -92,6 +104,13 @@ namespace NetTopologySuite.IO.Converters
             if (reader.TokenType != JsonToken.EndObject)
                 throw new ArgumentException("Expected token '}' not found.");
             reader.Read(); // move next
+
+            IAttributesTable attributes = feature.Attributes;
+            if (attributes != null)
+            {
+                if (featureId != null && !attributes.Exists("id"))
+                    attributes.AddAttribute("id", featureId);
+            }
             return feature;
         }
 

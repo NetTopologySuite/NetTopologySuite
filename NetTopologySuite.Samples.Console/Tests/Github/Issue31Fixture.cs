@@ -7,7 +7,7 @@ namespace NetTopologySuite.Samples.Tests.Github
     public class Issue31Fixture
     {
         [Test]
-    public void TestRemoveSTRtree()
+        public void TestRemoveSTRtree()
         {
             var tree = new STRtree<string>();
             tree.Insert(new Envelope(0, 10, 0, 10), "1");
@@ -30,7 +30,6 @@ namespace NetTopologySuite.Samples.Tests.Github
             Assert.DoesNotThrow(() => tree.Remove(new Index.Strtree.Interval(10, 20), "4"));
             Assert.AreEqual(3, tree.Count);
         }
-         */
-
+        */
     }
 }
