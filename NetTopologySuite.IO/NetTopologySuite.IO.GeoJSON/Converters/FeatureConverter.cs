@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Features;
-using NetTopologySuite.Geometries;
 using Newtonsoft.Json;
 
 namespace NetTopologySuite.IO.Converters
@@ -94,9 +93,14 @@ namespace NetTopologySuite.IO.Converters
                         feature.Attributes = serializer.Deserialize<AttributesTable>(reader);
                         break;
                     default:
-                    {
-                        string err = String.Format("token unhandled: {0}.", prop);
-                        throw new ArgumentException(err);
+                    {                        
+                        reader.Read(); // move next                        
+                        // jump to next property
+                        while (reader.TokenType != JsonToken.PropertyName)
+                            reader.Read();                         
+                        break;
+                        //string err = String.Format("token unhandled: {0}.", prop);
+                        //throw new ArgumentException(err);
                     }
                 }
             }
