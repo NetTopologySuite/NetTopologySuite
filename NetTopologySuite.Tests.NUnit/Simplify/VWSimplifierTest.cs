@@ -1,7 +1,13 @@
 using System;
+using System.Linq;
+
 using GeoAPI.Geometries;
+
+using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
 using NetTopologySuite.Simplify;
+using NetTopologySuite.Tests.NUnit.TestData;
+
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Simplify
@@ -157,6 +163,31 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     "MULTIPOLYGON (EMPTY, ((-36 91.5, 4.5 91.5, 4.5 57.5, -36 57.5, -36 91.5)), ((25.5 57.5, 61.5 57.5, 61.5 23.5, 25.5 23.5, 25.5 57.5)))",
                     10.0))
                 .Test();
+        }
+
+        [Test]
+        public void TestNewResultsIdenticalToOldResults()
+        {
+            // For world.wkt, this tolerance makes Simplify delete a little more than 50% of the points.
+            const double DistanceTolerance = 0.02;
+
+            int pointsRemoved = 0;
+            int totalPointCount = 0;
+
+            string filePath = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile("NetTopologySuite.Tests.NUnit.TestData.world.wkt");
+            foreach (ILineString line in GeometryUtils.ReadWKTFile(filePath).SelectMany(LinearComponentExtracter.GetLines))
+            {
+                Coordinate[] coordinates = line.Coordinates;
+
+                Coordinate[] oldResults = OldVWLineSimplifier.Simplify(coordinates, DistanceTolerance);
+                Coordinate[] newResults = VWLineSimplifier.Simplify(coordinates, DistanceTolerance);
+                CollectionAssert.AreEqual(oldResults, newResults);
+
+                pointsRemoved += coordinates.Length - newResults.Length;
+                totalPointCount += coordinates.Length;
+            }
+
+            Console.WriteLine("Total: Removed {0} of {1} points (reduction: {2:P0}).", pointsRemoved, totalPointCount, pointsRemoved / (double)totalPointCount);
         }
     }
 

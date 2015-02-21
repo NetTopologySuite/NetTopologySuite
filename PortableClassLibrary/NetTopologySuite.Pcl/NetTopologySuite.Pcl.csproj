@@ -93,11 +93,20 @@
     <Compile Include="..\..\NetTopologySuite\Noding\InteriorIntersectionFinderAdder.cs">
       <Link>Noding\InteriorIntersectionFinderAdder.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite\Simplify\OldVWLineSimplifier.cs">
+      <Link>Simplify\OldVWLineSimplifier.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\Simplify\VWLineSimplifier.cs">
       <Link>Simplify\VWLineSimplifier.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Simplify\VWSimplifier.cs">
       <Link>Simplify\VWSimplifier.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\AlternativePriorityQueue.cs">
+      <Link>Utilities\AlternativePriorityQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\PriorityQueueNode.cs">
+      <Link>Utilities\PriorityQueueNode.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Utilities\RToolsUtil\Token.cs">
       <Link>Utilities\RToolsUtil\Token.cs</Link>

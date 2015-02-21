@@ -1,6 +1,8 @@
 ﻿using System;
+
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Simplify
 {
@@ -30,145 +32,123 @@ namespace NetTopologySuite.Simplify
 
         public Coordinate[] Simplify()
         {
-            VWVertex vwLine = VWVertex.BuildLine(_pts);
-            double minArea = _tolerance;
-            do
+            // Put every coordinate index into an AlternativePriorityQueueNode.
+            // this array doubles as a way to check which coordinates are excluded.
+            var nodes = new PriorityQueueNode<IndexWithArea, int>[_pts.Length];
+
+            // Store the coordinates, with their effective areas, in a min heap.
+            // Visvalingam-Whyatt repeatedly deletes the coordinate with the min
+            // effective area so a structure with efficient delete-min is ideal.
+            var queue = new AlternativePriorityQueue<IndexWithArea, int>(_pts.Length);
+
+            // First and last coordinates are included automatically.
+            for (int i = 1; i < _pts.Length - 1; i++)
             {
-                minArea = SimplifyVertex(vwLine);
+                double area = Triangle.Area(_pts[i - 1], _pts[i], _pts[i + 1]);
+
+                nodes[i] = new PriorityQueueNode<IndexWithArea, int>(i);
+                queue.Enqueue(nodes[i], new IndexWithArea(i, area));
             }
-            while (minArea < _tolerance);
-            Coordinate[] simp = vwLine.GetCoordinates();
-            // ensure computed value is a valid line
-            if (simp.Length >= 2)
-                return simp;
-            return new[] { simp[0], new Coordinate(simp[0]) };
+
+            // First = the coord that contributes the minimum effective area.
+            while (queue.Head != null &&
+                   queue.Head.Priority.Area <= _tolerance)
+            {
+                var node = queue.Dequeue();
+
+                // Signal that this node has been deleted.
+                nodes[node.Data] = null;
+
+                // Find index of the not-yet-deleted coord before the deleted
+                // one.  This could be the first coord in the sequence.
+                int prev = node.Data - 1;
+                while (prev > 0 && nodes[prev] == null) { --prev; }
+
+                // Find index of the not-yet-deleted coord after the deleted
+                // one.  This could be the last coord in the sequence.
+                int next = node.Data + 1;
+                while (next < _pts.Length - 1 && nodes[next] == null) { ++next; }
+
+                // If the previous coord is not the first one, then its
+                // effective area has changed.  For example:
+                // 0  1  2  3  4
+                //       ^--------- delete this
+                // 0  1     3  4
+                // 1's effective area was based on the "0 1 2" triangle.
+                // Now, it should be based on the "0 1 3" triangle.
+                // This means we take the triangle of curr-2, curr-1, curr+1.
+                if (prev > 0 &&
+                    queue.Contains(nodes[prev]))
+                {
+                    int prev2 = prev - 1;
+                    while (prev2 > 0 && nodes[prev2] == null) { --prev2; }
+
+                    double area = Triangle.Area(_pts[prev2], _pts[prev], _pts[next]);
+                    queue.UpdatePriority(nodes[prev], new IndexWithArea(prev, area));
+                }
+
+                // Same idea as what we did above for prev.
+                // 3's effective area was based on the "2 3 4" triangle.
+                // Now, it should be based on the "1 3 4" triangle.
+                // This means we take the triangle of curr-1, curr+1, curr+2.
+                if (next < _pts.Length - 1 &&
+                    queue.Contains(nodes[next]))
+                {
+                    int next2 = next + 1;
+                    while (next2 < _pts.Length - 1 && nodes[next2] == null) { ++next2; }
+
+                    double area = Triangle.Area(_pts[prev], _pts[next], _pts[next2]);
+                    queue.UpdatePriority(nodes[next], new IndexWithArea(next, area));
+                }
+            }
+
+            // Consolidate the results.  For consistency, and because it's a
+            // good idea anyway, we want to make sure we don't output the same
+            // coord multiple times in a row, so we pass "false" for the second
+            // parameter to "Add".
+            CoordinateList list = new CoordinateList();
+
+            list.Add(_pts[0], false);
+            for (int i = 0; i < nodes.Length; i++)
+            {
+                if (nodes[i] == null)
+                {
+                    // This was one we deleted.
+                    continue;
+                }
+
+                list.Add(_pts[i], false);
+            }
+
+            // Special-case: we want to make sure that we don't return a 1-
+            // element array, as the outputs of this are typically used to build
+            // an ILineString.  So if there's just one coordinate, we output it
+            // twice, mainly just to ensure parity with JTS / old NTS.
+            list.Add(_pts[_pts.Length - 1], list.Count == 1);
+
+            return list.ToArray();
         }
 
-        private double SimplifyVertex(VWVertex vwLine)
+        private struct IndexWithArea : IComparable<IndexWithArea>
         {
-            // Scan vertices in line and remove the one with smallest effective area.
-            // TODO: use an appropriate data structure to optimize finding the smallest area vertex
-            VWVertex curr = vwLine;
-            double minArea = curr.GetArea();
-            VWVertex minVertex = null;
-            while (curr != null)
-            {
-                double area = curr.GetArea();
-                if (area < minArea)
-                {
-                    minArea = area;
-                    minVertex = curr;
-                }
-                curr = curr.Next;
-            }
-            if (minVertex != null && minArea < _tolerance)
-                minVertex.Remove();
-            if (!vwLine.IsLive)
-                return -1;
-            return minArea;
-        }
+            private int index;
+            private double area;
 
-        internal class VWVertex
-        {
-            public static VWVertex BuildLine(Coordinate[] pts)
+            public IndexWithArea(int index, double area)
             {
-                VWVertex first = null;
-                VWVertex prev = null;
-                foreach (Coordinate c in pts)
-                {
-                    VWVertex v = new VWVertex(c);
-                    if (first == null)
-                        first = v;
-                    v.Prev = prev;
-                    if (prev != null)
-                    {
-                        prev.Next = v;
-                        prev.UpdateArea();
-                    }
-                    prev = v;
-                }
-                return first;
+                this.index = index;
+                this.area = area;
             }
 
-            private const double MaxArea = Double.MaxValue;
+            ////public int Index { get { return this.index; } }
+            public double Area { get { return this.area; } }
 
-            private readonly Coordinate _pt;
-            private VWVertex _prev;
-            private VWVertex _next;
-            private double _area = MaxArea;
-            private bool _isLive = true;
-
-            public VWVertex(Coordinate pt)
+            public int CompareTo(IndexWithArea other)
             {
-                this._pt = pt;
-            }
-
-            public VWVertex Prev
-            {
-                get { return _prev; }
-                set { _prev = value; }
-            }
-
-            public VWVertex Next
-            {
-                get { return _next; }
-                set { _next = value; }
-            }
-
-            public void UpdateArea()
-            {
-                if (Prev == null || Next == null)
-                {
-                    _area = MaxArea;
-                    return;
-                }
-                double d = Triangle.Area(Prev._pt, _pt, Next._pt);
-                _area = Math.Abs(d);
-            }
-
-            public double GetArea()
-            {
-                return _area;
-            }
-
-            public bool IsLive
-            {
-                get { return _isLive; }
-            }
-
-            public VWVertex Remove()
-            {
-                VWVertex tmpPrev = Prev;
-                var tmpNext = Next;
-                VWVertex result = null;
-                if (Prev != null)
-                {
-                    Prev.Next = tmpNext;
-                    Prev.UpdateArea();
-                    result = Prev;
-                }
-                if (Next != null)
-                {
-                    Next.Prev = tmpPrev;
-                    Next.UpdateArea();
-                    if (result == null)
-                        result = Next;
-                }
-                _isLive = false;
-                return result;
-            }
-
-            public Coordinate[] GetCoordinates()
-            {
-                CoordinateList coords = new CoordinateList();
-                VWVertex curr = this;
-                do
-                {
-                    coords.Add(curr._pt, false);
-                    curr = curr.Next;
-                }
-                while (curr != null);
-                return coords.ToCoordinateArray();
+                int areaComparison = this.area.CompareTo(other.area);
+                return areaComparison == 0
+                           ? this.index.CompareTo(other.index)
+                           : areaComparison;
             }
         }
     }
