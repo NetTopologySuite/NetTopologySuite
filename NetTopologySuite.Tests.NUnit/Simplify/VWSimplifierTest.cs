@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 using GeoAPI.Geometries;
@@ -168,19 +169,33 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
         [Test]
         public void TestNewResultsIdenticalToOldResults()
         {
-            // For world.wkt, this tolerance makes Simplify delete a little more than 50% of the points.
+            // at 0.02, Simplify deletes about 50% of world.wkt points
             const double DistanceTolerance = 0.02;
 
             int pointsRemoved = 0;
             int totalPointCount = 0;
+
+            // track how long the new takes compared to the old
+            long oldTicks = 0;
+            long newTicks = 0;
 
             string filePath = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile("NetTopologySuite.Tests.NUnit.TestData.world.wkt");
             foreach (ILineString line in GeometryUtils.ReadWKTFile(filePath).SelectMany(LinearComponentExtracter.GetLines))
             {
                 Coordinate[] coordinates = line.Coordinates;
 
+                Stopwatch sw = Stopwatch.StartNew();
                 Coordinate[] oldResults = OldVWLineSimplifier.Simplify(coordinates, DistanceTolerance);
+                sw.Stop();
+
+                oldTicks += sw.ElapsedTicks;
+
+                sw.Restart();
                 Coordinate[] newResults = VWLineSimplifier.Simplify(coordinates, DistanceTolerance);
+                sw.Stop();
+
+                newTicks += sw.ElapsedTicks;
+
                 CollectionAssert.AreEqual(oldResults, newResults);
 
                 pointsRemoved += coordinates.Length - newResults.Length;
@@ -188,6 +203,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
             }
 
             Console.WriteLine("Total: Removed {0} of {1} points (reduction: {2:P0}).", pointsRemoved, totalPointCount, pointsRemoved / (double)totalPointCount);
+            Console.WriteLine("Old: {0:N3} seconds.  New: {1:N3} seconds (reduction: {2:P0}).", oldTicks / (double)Stopwatch.Frequency, newTicks / (double)Stopwatch.Frequency, (oldTicks - newTicks) / (double)oldTicks);
         }
     }
 
