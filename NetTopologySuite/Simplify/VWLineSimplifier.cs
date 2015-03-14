@@ -33,12 +33,14 @@ namespace NetTopologySuite.Simplify
         public Coordinate[] Simplify()
         {
             // Put every coordinate index into an AlternativePriorityQueueNode.
-            // this array doubles as a way to check which coordinates are excluded.
+            // this array doubles as a way to check which coordinates are
+            // excluded.
             var nodes = new PriorityQueueNode<IndexWithArea, int>[_pts.Length];
 
             // Store the coordinates, with their effective areas, in a min heap.
-            // Visvalingam-Whyatt repeatedly deletes the coordinate with the min
-            // effective area so a structure with efficient delete-min is ideal.
+            // Visvalingam-Whyatt repeatedly deletes the coordinate with the
+            // min effective area so a structure with efficient delete-min is
+            // ideal.
             var queue = new AlternativePriorityQueue<IndexWithArea, int>(_pts.Length);
 
             // First and last coordinates are included automatically.
@@ -84,7 +86,7 @@ namespace NetTopologySuite.Simplify
                     while (prev2 > 0 && nodes[prev2] == null) { --prev2; }
 
                     double area = Triangle.Area(_pts[prev2], _pts[prev], _pts[next]);
-                    queue.UpdatePriority(nodes[prev], new IndexWithArea(prev, area));
+                    queue.ChangePriority(nodes[prev], new IndexWithArea(prev, area));
                 }
 
                 // Same idea as what we did above for prev.
@@ -98,7 +100,7 @@ namespace NetTopologySuite.Simplify
                     while (next2 < _pts.Length - 1 && nodes[next2] == null) { ++next2; }
 
                     double area = Triangle.Area(_pts[prev], _pts[next], _pts[next2]);
-                    queue.UpdatePriority(nodes[next], new IndexWithArea(next, area));
+                    queue.ChangePriority(nodes[next], new IndexWithArea(next, area));
                 }
             }
 
@@ -121,9 +123,10 @@ namespace NetTopologySuite.Simplify
             }
 
             // Special-case: we want to make sure that we don't return a 1-
-            // element array, as the outputs of this are typically used to build
-            // an ILineString.  So if there's just one coordinate, we output it
-            // twice, mainly just to ensure parity with JTS / old NTS.
+            // element array, as the outputs of this are typically used to
+            // build an ILineString.  So if there's just one coordinate, we
+            // output it twice, mainly just to ensure equivalence to JTS / old
+            // NTS.
             list.Add(_pts[_pts.Length - 1], list.Count == 1);
 
             return list.ToArray();
@@ -146,6 +149,9 @@ namespace NetTopologySuite.Simplify
             public int CompareTo(IndexWithArea other)
             {
                 int areaComparison = this.area.CompareTo(other.area);
+
+                // Do the index comparison if areas are equal, to ensure
+                // equivalence with JTS / old NTS.
                 return areaComparison == 0
                            ? this.index.CompareTo(other.index)
                            : areaComparison;
