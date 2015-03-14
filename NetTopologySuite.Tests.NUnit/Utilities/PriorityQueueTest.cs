@@ -23,18 +23,21 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
         [Test]
         public void TestOrderRandom1()
         {
-            PriorityQueue<double> q = new PriorityQueue<double>();
+            PriorityQueue<int> q = new PriorityQueue<int>();
             addRandomItems(q, 100);
             CheckOrder(q);
         }
 
-        private void addRandomItems(PriorityQueue<double> q, int num)
+        private void addRandomItems(PriorityQueue<int> q, int num)
         {
             var random = new Random();
 
             for (int i = 0; i < num; i++)
             {
-                q.Add(random.NextDouble());
+                // This usually inserts lots of duplicate values in an order
+                // that *tends* to be increasing, but usually has some values
+                // that should bubble up near the top of the heap.
+                q.Add((int)(num * random.NextDouble()));
             }
         }
 

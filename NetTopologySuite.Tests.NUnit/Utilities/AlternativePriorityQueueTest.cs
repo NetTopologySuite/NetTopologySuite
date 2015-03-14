@@ -30,25 +30,25 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
         [Test]
         public void TestLongSequenceOfOperations()
         {
-            AlternativePriorityQueue<double, int> q = new AlternativePriorityQueue<double, int>();
+            AlternativePriorityQueue<int, int> q = new AlternativePriorityQueue<int, int>();
             addRandomItems(q, 15);
             CheckOrder(q, nodesToKeep: 3);
             addRandomItems(q, 33);
             CheckOrder(q);
             q.Clear();
             addRandomItems(q, 13);
-            q.ChangePriority(q.Head, 1.1);
-            q.ChangePriority(q.Head, 1.2);
-            q.ChangePriority(q.Head, 1.3);
+            q.ChangePriority(q.Head, 6);
+            q.ChangePriority(q.Head, 7);
+            q.ChangePriority(q.Head, 8);
             CheckOrder(q, nodesToKeep: 0);
         }
 
         [Test]
         public void TestCopiedQueue()
         {
-            AlternativePriorityQueue<double, int> q1 = new AlternativePriorityQueue<double, int>();
+            AlternativePriorityQueue<int, int> q1 = new AlternativePriorityQueue<int, int>();
             addRandomItems(q1, 178);
-            AlternativePriorityQueue<double, int> q2 = new AlternativePriorityQueue<double, int>(q1);
+            AlternativePriorityQueue<int, int> q2 = new AlternativePriorityQueue<int, int>(q1);
             addRandomItems(q2, 28);
             CheckOrder(q1, nodesToKeep: 42);
             addRandomItems(q1, 39);
@@ -62,8 +62,8 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
         [Test]
         public void TestDifferentComparer()
         {
-            IComparer<double> comparer = new BackwardsDoubleComparer();
-            AlternativePriorityQueue<double, int> q = new AlternativePriorityQueue<double, int>(comparer);
+            IComparer<int> comparer = new BackwardsInt32Comparer();
+            AlternativePriorityQueue<int, int> q = new AlternativePriorityQueue<int, int>(comparer);
             addRandomItems(q, 15);
             CheckOrder(q, reversed: true);
         }
@@ -71,12 +71,12 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
         [Test]
         public void TestContainsConsistency()
         {
-            AlternativePriorityQueue<double, int> q = new AlternativePriorityQueue<double, int>();
+            AlternativePriorityQueue<int, int> q = new AlternativePriorityQueue<int, int>();
             addRandomItems(q, 150);
 
-            PriorityQueueNode<double, int> missingNode = new PriorityQueueNode<double, int>(14);
-            PriorityQueueNode<double, int> presentNode = new PriorityQueueNode<double, int>(14);
-            q.Enqueue(presentNode, 0.5);
+            PriorityQueueNode<int, int> missingNode = new PriorityQueueNode<int, int>(14);
+            PriorityQueueNode<int, int> presentNode = new PriorityQueueNode<int, int>(14);
+            q.Enqueue(presentNode, 75);
 
             Assert.True(q.Contains(presentNode));
             Assert.False(q.Contains(missingNode));
@@ -90,13 +90,13 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
         [Test]
         public void TestOrder1()
         {
-            AlternativePriorityQueue<double, double> q = new AlternativePriorityQueue<double, double>();
+            AlternativePriorityQueue<int, int> q = new AlternativePriorityQueue<int, int>();
 
-            q.Enqueue(new PriorityQueueNode<double, double>(1), 1);
-            q.Enqueue(new PriorityQueueNode<double, double>(10), 10);
-            q.Enqueue(new PriorityQueueNode<double, double>(5), 5);
-            q.Enqueue(new PriorityQueueNode<double, double>(8), 8);
-            q.Enqueue(new PriorityQueueNode<double, double>(-1), -1);
+            q.Enqueue(new PriorityQueueNode<int, int>(1), 1);
+            q.Enqueue(new PriorityQueueNode<int, int>(10), 10);
+            q.Enqueue(new PriorityQueueNode<int, int>(5), 5);
+            q.Enqueue(new PriorityQueueNode<int, int>(8), 8);
+            q.Enqueue(new PriorityQueueNode<int, int>(-1), -1);
             CheckOrder(q);
         }
 
@@ -104,32 +104,36 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
         [Test]
         public void TestOrderRandom1()
         {
-            AlternativePriorityQueue<double, int> q = new AlternativePriorityQueue<double, int>();
+            AlternativePriorityQueue<int, int> q = new AlternativePriorityQueue<int, int>();
             addRandomItems(q, 100);
             CheckOrder(q);
         }
 
         // Copied from PriorityQueueTest, to ensure consistency.
-        private void addRandomItems<TData>(AlternativePriorityQueue<double, TData> q, int num)
+        private void addRandomItems<TData>(AlternativePriorityQueue<int, TData> q, int num)
         {
             var random = new Random();
 
             for (int i = 0; i < num; i++)
             {
-                double priority = random.NextDouble();
-                q.Enqueue(new PriorityQueueNode<double, TData>(default(TData)), priority);
+                // This usually inserts lots of duplicate values in an order
+                // that *tends* to be increasing, but usually has some values
+                // that should bubble up near the top of the heap.
+                int priority = (int) (num * random.NextDouble());
+
+                q.Enqueue(new PriorityQueueNode<int, TData>(default(TData)), priority);
             }
         }
 
         // Copied from PriorityQueueTest, to ensure consistency.
-        private void CheckOrder<TData>(AlternativePriorityQueue<double, TData> q, int nodesToKeep = 0, bool reversed = false)
+        private void CheckOrder<TData>(AlternativePriorityQueue<int, TData> q, int nodesToKeep = 0, bool reversed = false)
         {
-            double curr = 0;
+            int curr = 0;
             bool first = true;
 
             while (q.Count > nodesToKeep)
             {
-                double next = q.Dequeue().Priority;
+                int next = q.Dequeue().Priority;
                 Console.WriteLine(next);
                 if (!first)
                 {
@@ -149,9 +153,9 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
             }
         }
 
-        private class BackwardsDoubleComparer : Comparer<double>
+        private class BackwardsInt32Comparer : Comparer<int>
         {
-            public override int Compare(double x, double y)
+            public override int Compare(int x, int y)
             {
                 return y.CompareTo(x);
             }
