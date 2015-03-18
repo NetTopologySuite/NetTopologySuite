@@ -5,10 +5,10 @@ using Assert = NUnit.Framework.Assert;
 
 namespace NetTopologySuite.Tests.NUnit.Utilities
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class PriorityQueueTest
     {
-        [TestAttribute]
+        [Test]
         public void TestOrder1()
         {
             PriorityQueue<int> q = new PriorityQueue<int>();
@@ -20,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
             CheckOrder(q);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestOrderRandom1()
         {
             PriorityQueue<int> q = new PriorityQueue<int>();
@@ -34,23 +34,30 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
 
             for (int i = 0; i < num; i++)
             {
+                // This usually inserts lots of duplicate values in an order
+                // that *tends* to be increasing, but usually has some values
+                // that should bubble up near the top of the heap.
                 q.Add((int)(num * random.NextDouble()));
             }
         }
 
         private void CheckOrder<T>(PriorityQueue<T> q)
-            where T: IComparable<T>
+            where T: struct, IComparable<T>
         {
-            IComparable<T> curr = null;
+            T curr = default(T);
+            bool first = true;
 
             while (!q.IsEmpty())
             {
-                IComparable<T> next = (IComparable<T>)q.Poll();
+                T next = q.Poll();
                 Console.WriteLine(next);
-                if (curr == null)
-                    curr = next;
-                else
-                    Assert.IsTrue(next.CompareTo((T)curr) >= 0);
+                if (!first)
+                {
+                    Assert.IsTrue(next.CompareTo(curr) >= 0);
+                }
+
+                first = false;
+                curr = next;
             }
         }
     }
