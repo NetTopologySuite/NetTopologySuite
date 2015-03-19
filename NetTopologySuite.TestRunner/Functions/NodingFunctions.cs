@@ -92,6 +92,17 @@ namespace Open.Topology.TestRunner.Functions
             return FromSegmentStrings(nodedSegStrings);
         }
 
+        public static int NodeCount(Geometry geom)
+        {
+            IList<ISegmentString> segs = CreateNodedSegmentStrings(geom);
+            InteriorIntersectionFinder intCounter = new InteriorIntersectionFinder(new RobustLineIntersector());
+            intCounter.FindAllIntersections = true;
+            intCounter.KeepIntersections = false;
+            INoder noder = new MCIndexNoder(intCounter);
+            noder.ComputeNodes(segs);
+            return intCounter.Count;
+        }
+
         /// <summary>
         /// Runs a ScaledNoder on input.
         /// Input vertices should be rounded to precision model.
