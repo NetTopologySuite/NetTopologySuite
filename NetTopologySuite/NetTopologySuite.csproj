@@ -457,6 +457,7 @@
     <Compile Include="Simplify\DouglasPeuckerLineSimplifier.cs" />
     <Compile Include="Simplify\DouglasPeuckerSimplifier.cs" />
     <Compile Include="Simplify\LineSegmentIndex.cs" />
+    <Compile Include="Simplify\OldVWLineSimplifier.cs" />
     <Compile Include="Simplify\TaggedLineSegment.cs" />
     <Compile Include="Simplify\TaggedLinesSimplifier.cs" />
     <Compile Include="Simplify\TaggedLineString.cs" />
@@ -490,6 +491,8 @@
     <Compile Include="Triangulate\SplitSegment.cs" />
     <Compile Include="Triangulate\VertexTaggedGeometryDataMapper.cs" />
     <Compile Include="Triangulate\VoronoiDiagramBuilder.cs" />
+    <Compile Include="Utilities\AlternativePriorityQueue.cs" />
+    <Compile Include="Utilities\PriorityQueueNode.cs" />
     <Compile Include="Utilities\Assert.cs" />
     <Compile Include="Utilities\AssertionFailedException.cs" />
     <Compile Include="Utilities\BitConverter.cs" />

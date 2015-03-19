@@ -210,6 +210,7 @@
     <Compile Include="Triangulate\DelaunayPerformanceTest.cs" />
     <Compile Include="Triangulate\DelaunayTest.cs" />
     <Compile Include="Triangulate\VoronoiTest.cs" />
+    <Compile Include="Utilities\AlternativePriorityQueueTest.cs" />
     <Compile Include="Utilities\PriorityQueueTest.cs" />
     <Compile Include="Utilities\SerializationUtility.cs" />
   </ItemGroup>
