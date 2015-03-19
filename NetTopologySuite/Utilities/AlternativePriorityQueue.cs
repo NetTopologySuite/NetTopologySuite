@@ -27,7 +27,9 @@ THE SOFTWARE.
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if NET35
 using System.Linq;
+#endif
 
 namespace NetTopologySuite.Utilities
 {
@@ -314,10 +316,15 @@ namespace NetTopologySuite.Utilities
         /// <inheritdoc />
         public IEnumerator<PriorityQueueNode<TPriority, TData>> GetEnumerator()
         {
+#if NET35
             return this.nodes
                        .Skip(1)
                        .Take(this.Count)
                        .GetEnumerator();
+#else
+            for(int i = 1; i <= this.Count; i++)
+                yield return this.nodes[i];
+#endif
         }
 
         /// <inheritdoc />

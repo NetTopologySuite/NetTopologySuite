@@ -70,8 +70,9 @@ namespace NetTopologySuite.IO.Converters
                         reader.Read(); 
                         break;                        
                     case "bbox":
-                        Envelope bbox = serializer.Deserialize<Envelope>(reader);
-                        Debug.WriteLine("BBOX: {0}", bbox);
+                        // Read, but can't do anything with it, assigning Envelopes is impossible without reflection
+                        var bbox = serializer.Deserialize<Envelope>(reader);
+                        //Debug.WriteLine("BBOX: {0}", bbox.ToString());
                         break;
                     case "geometry":
                         reader.Read();
