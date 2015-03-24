@@ -61,7 +61,11 @@ namespace NetTopologySuite.Noding
 
 
         /// <summary>
-        /// Gets the list of intersections
+        /// Gets a list of all intersections found.
+        /// <remarks>
+        /// Intersections are represented as <see cref="Coordinate"/>s.
+        /// List is empty if none were found.
+        /// </remarks>
         /// </summary>
         public IList<Coordinate> Intersections
         {

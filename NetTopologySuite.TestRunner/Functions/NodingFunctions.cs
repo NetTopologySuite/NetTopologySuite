@@ -58,18 +58,20 @@ namespace Open.Topology.TestRunner.Functions
             FastNodingValidator nv = new FastNodingValidator(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
             return nv.IsValid;
         }
+
+        public static IGeometry FindSingleNode(IGeometry geom)
+        {
+            FastNodingValidator nv = new FastNodingValidator(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
+            bool temp = nv.IsValid;
+            var intPts = nv.Intersections;
+            if (intPts.Count == 0) return null;
+            return FunctionsUtil.GetFactoryOrDefault(null).CreatePoint((Coordinate)intPts[0]);
+        }
+
         public static IGeometry FindNodes(IGeometry geom)
         {
             IList<Coordinate> intPts = FastNodingValidator.ComputeIntersections(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
-            var pts = new IPoint[intPts.Count];
-            for (var i = 0; i < intPts.Count; i++)
-            {
-                var coord = intPts[i];
-                // use default factory in case intersections are not fixed
-                pts[i] = FunctionsUtil.GetFactoryOrDefault(null).CreatePoint(coord);
-            }
-            return FunctionsUtil.GetFactoryOrDefault(null).CreateMultiPoint(
-                pts);
+            return FunctionsUtil.GetFactoryOrDefault(null).CreateMultiPoint(CoordinateArrays.ToCoordinateArray(intPts));
         }
 
         public static int NodeCount(IGeometry geom)
@@ -84,7 +86,7 @@ namespace Open.Topology.TestRunner.Functions
         {
             IPrecisionModel fixedPM = new PrecisionModel(scaleFactor);
 
-            LineIntersector li = new RobustLineIntersector();            
+            LineIntersector li = new RobustLineIntersector();
             li.PrecisionModel = fixedPM;
 
             INoder noder = new MCIndexNoder(new IntersectionAdder(li));
@@ -93,7 +95,7 @@ namespace Open.Topology.TestRunner.Functions
         }
 
         public static IGeometry MCIndexNoding(IGeometry geom)
-        {            
+        {
             INoder noder = new MCIndexNoder(new IntersectionAdder(new RobustLineIntersector()));
             noder.ComputeNodes(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
             return FromSegmentStrings(noder.GetNodedSubstrings());
