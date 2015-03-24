@@ -53,13 +53,14 @@ namespace Open.Topology.TestRunner.Functions
             return FunctionsUtil.GetFactoryOrDefault(geom).BuildGeometry(CollectionUtil.Cast<IGeometry>((ICollection)lines));
         }
 
-        public static IGeometry CheckNoding(Geometry geom)
+        public static bool IsNoded(IGeometry geom)
         {
-            var segs = CreateSegmentStrings(geom);
-            var nv = new FastNodingValidator(segs);
-            nv.FindAllIntersections = true;
-            var res = nv.IsValid;
-            var intPts = nv.Intersections;
+            FastNodingValidator nv = new FastNodingValidator(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
+            return nv.IsValid;
+        }
+        public static IGeometry FindNodes(IGeometry geom)
+        {
+            IList<Coordinate> intPts = FastNodingValidator.ComputeIntersections(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
             var pts = new IPoint[intPts.Count];
             for (var i = 0; i < intPts.Count; i++)
             {
@@ -71,36 +72,31 @@ namespace Open.Topology.TestRunner.Functions
                 pts);
         }
 
-        public static IGeometry MCIndexNodingWithPrecision(Geometry geom, double scaleFactor)
+        public static int NodeCount(IGeometry geom)
         {
-            List<ISegmentString> segs = CreateNodedSegmentStrings(geom);
-
-            LineIntersector li = new RobustLineIntersector();
-            li.PrecisionModel = new PrecisionModel(scaleFactor);
-            INoder noder = new MCIndexNoder(new IntersectionAdder(li));
-            noder.ComputeNodes(segs);
-            IList<ISegmentString> nodedSegStrings = noder.GetNodedSubstrings();
-            return FromSegmentStrings(nodedSegStrings);
-        }
-
-        public static IGeometry MCIndexNoding(Geometry geom)
-        {
-            IList<ISegmentString> segs = CreateNodedSegmentStrings(geom);
-            INoder noder = new MCIndexNoder(new IntersectionAdder(new RobustLineIntersector()));
-            noder.ComputeNodes(segs);
-            IList<ISegmentString> nodedSegStrings = noder.GetNodedSubstrings();
-            return FromSegmentStrings(nodedSegStrings);
-        }
-
-        public static int NodeCount(Geometry geom)
-        {
-            IList<ISegmentString> segs = CreateNodedSegmentStrings(geom);
-            InteriorIntersectionFinder intCounter = new InteriorIntersectionFinder(new RobustLineIntersector());
-            intCounter.FindAllIntersections = true;
-            intCounter.KeepIntersections = false;
+            InteriorIntersectionFinder intCounter = InteriorIntersectionFinder.CreateIntersectionCounter(new RobustLineIntersector());
             INoder noder = new MCIndexNoder(intCounter);
-            noder.ComputeNodes(segs);
+            noder.ComputeNodes(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
             return intCounter.Count;
+        }
+
+        public static IGeometry MCIndexNodingWithPrecision(IGeometry geom, double scaleFactor)
+        {
+            IPrecisionModel fixedPM = new PrecisionModel(scaleFactor);
+
+            LineIntersector li = new RobustLineIntersector();            
+            li.PrecisionModel = fixedPM;
+
+            INoder noder = new MCIndexNoder(new IntersectionAdder(li));
+            noder.ComputeNodes(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
+            return FromSegmentStrings(noder.GetNodedSubstrings());
+        }
+
+        public static IGeometry MCIndexNoding(IGeometry geom)
+        {            
+            INoder noder = new MCIndexNoder(new IntersectionAdder(new RobustLineIntersector()));
+            noder.ComputeNodes(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
+            return FromSegmentStrings(noder.GetNodedSubstrings());
         }
 
         /// <summary>
@@ -110,7 +106,7 @@ namespace Open.Topology.TestRunner.Functions
         /// <param name="geom"></param>
         /// <param name="scaleFactor"></param>
         /// <returns>The noded geometry</returns>
-        public static IGeometry ScaledNoding(Geometry geom, double scaleFactor)
+        public static IGeometry ScaledNoding(IGeometry geom, double scaleFactor)
         {
             var segs = CreateSegmentStrings(geom);
             var fixedPM = new PrecisionModel(scaleFactor);
@@ -121,24 +117,13 @@ namespace Open.Topology.TestRunner.Functions
             return FromSegmentStrings(nodedSegStrings);
         }
 
-        private static List<ISegmentString> CreateSegmentStrings(Geometry geom)
+        private static List<ISegmentString> CreateSegmentStrings(IGeometry geom)
         {
             var segs = new List<ISegmentString>();
             var lines = LinearComponentExtracter.GetLines(geom);
             foreach (ILineString line in lines)
             {
                 segs.Add(new BasicSegmentString(line.Coordinates, null));
-            }
-            return segs;
-        }
-
-        private static List<ISegmentString> CreateNodedSegmentStrings(Geometry geom)
-        {
-            var segs = new List<ISegmentString>();
-            var lines = LinearComponentExtracter.GetLines(geom);
-            foreach (ILineString line in lines)
-            {
-                segs.Add(new NodedSegmentString(line.Coordinates, null));
             }
             return segs;
         }
