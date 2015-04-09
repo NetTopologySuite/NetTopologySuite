@@ -10,7 +10,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
     public class Issue16Fixture
     {
         [Test]
-        public void valid_feature_collection_geojson_should_be_serialized()
+        public void valid_geojson_feature_collection_should_be_serialized()
         {
             const string json = @"
 {
@@ -31,7 +31,8 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
 			}
 		}
 	]
-}";
+}
+";
             GeoJsonReader reader = new GeoJsonReader();            
             FeatureCollection coll = reader.Read<FeatureCollection>(json);
             Assert.That(coll, Is.Not.Null);

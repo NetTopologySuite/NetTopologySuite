@@ -12,7 +12,7 @@ namespace NetTopologySuite.Utilities
 		/// <returns>The angle in degrees.</returns>
 		public static double ToDegrees(double radians)
 		{
-			return radians * 57.29577951308232;;
+			return radians * 57.29577951308232;
 		}
 	}
 }

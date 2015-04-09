@@ -430,6 +430,9 @@
     <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Triangulate\VoronoiTest.cs">
       <Link>Triangulate\VoronoiTest.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Utilities\AlternativePriorityQueueTest.cs">
+      <Link>Utilities\AlternativePriorityQueueTest.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Utilities\PriorityQueueTest.cs">
       <Link>Utilities\PriorityQueueTest.cs</Link>
     </Compile>

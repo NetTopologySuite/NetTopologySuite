@@ -36,6 +36,12 @@ namespace NetTopologySuite.IO.Converters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
+            if (reader.TokenType == JsonToken.Null)
+            {
+                reader.Read();
+                return null;
+            }
+
             if (reader.TokenType != JsonToken.StartObject)
                 throw new ArgumentException("Expected token '{' not found.");
             reader.Read();

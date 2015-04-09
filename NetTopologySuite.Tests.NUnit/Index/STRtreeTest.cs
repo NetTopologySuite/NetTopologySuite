@@ -152,7 +152,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             DoTestVerticalSlices(5, 3, 2, 1);
         }
 
-        private void DoTestCreateParentsFromVerticalSlice(int childCount,
+        private static void DoTestCreateParentsFromVerticalSlice(int childCount,
                                                           int nodeCapacity, int expectedChildrenPerParentBoundable,
                                                           int expectedChildrenOfLastParent)
         {
@@ -169,7 +169,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             Assert.AreEqual(expectedChildrenOfLastParent, lastParent.ChildBoundables.Count);
         }
 
-        private void DoTestVerticalSlices(int itemCount, int sliceCount,
+        private static void DoTestVerticalSlices(int itemCount, int sliceCount,
                                           int expectedBoundablesPerSlice, int expectedBoundablesOnLastSlice)
         {
             var t = new STRtreeDemo.TestTree(2);
