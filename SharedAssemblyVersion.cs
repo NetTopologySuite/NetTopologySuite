@@ -11,8 +11,8 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyVersion("1.13.3")]
-[assembly: AssemblyFileVersion("1.13.3.2")]
+[assembly: AssemblyVersion("1.14")]
+[assembly: AssemblyFileVersion("1.14")]
 
 // Von der MSBuild WriteCodeFragment-Klasse für 17.09.2014 11:06:58 generiert.
 

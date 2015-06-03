@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using GeoAPI.Geometries;
-using GeoAPI.Operations.Buffer;
+using GeoAPI.Operation.Buffer;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Noding;
