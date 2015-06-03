@@ -31,6 +31,14 @@ namespace NetTopologySuite.Noding
     /// </remarks>
     public class FastNodingValidator
     {
+        public static IList<Coordinate> ComputeIntersections(IEnumerable<ISegmentString> segStrings)
+        {
+            FastNodingValidator nv = new FastNodingValidator(segStrings);
+            nv.FindAllIntersections = true;
+            bool temp = nv.IsValid;
+            return nv.Intersections;
+        }
+
         private readonly LineIntersector _li = new RobustLineIntersector();
 
         private readonly List<ISegmentString> _segStrings = new List<ISegmentString>();
@@ -53,7 +61,11 @@ namespace NetTopologySuite.Noding
 
 
         /// <summary>
-        /// Gets the list of intersections
+        /// Gets a list of all intersections found.
+        /// <remarks>
+        /// Intersections are represented as <see cref="Coordinate"/>s.
+        /// List is empty if none were found.
+        /// </remarks>
         /// </summary>
         public IList<Coordinate> Intersections
         {

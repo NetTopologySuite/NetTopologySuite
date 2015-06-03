@@ -10,6 +10,45 @@ namespace NetTopologySuite.Noding
     ///</summary>
     public class InteriorIntersectionFinder : ISegmentIntersector
     {
+        ///<summary>
+        /// Creates an intersection finder which tests if there is at least one interior intersection.
+        /// Uses short-circuiting for efficient performance.
+        /// The intersection found is recorded.
+        ///</summary>
+        /// <param name="li">A line intersector.</param>
+        /// <returns>A intersection finder which tests if there is at least one interior intersection.</returns>
+        public static InteriorIntersectionFinder CreateAnyIntersectionFinder(LineIntersector li)
+        {
+            return new InteriorIntersectionFinder(li);
+        }
+
+        ///<summary>
+        /// Creates an intersection finder which finds all interior intersections.
+        /// The intersections are recorded for later inspection.
+        ///</summary>
+        /// <param name="li">A line intersector.</param>
+        /// <returns>a intersection finder which finds all interior intersections.</returns>
+        public static InteriorIntersectionFinder CreateAllIntersectionsFinder(LineIntersector li)
+        {
+            InteriorIntersectionFinder finder = new InteriorIntersectionFinder(li);
+            finder.FindAllIntersections = true;
+            return finder;
+        }
+
+        ///<summary>
+        /// Creates an intersection finder which counts all interior intersections.
+        /// The intersections are note recorded to reduce memory usage.
+        ///</summary>
+        /// <param name="li">A line intersector.</param>
+        /// <returns>a intersection finder which counts all interior intersections.</returns>
+        public static InteriorIntersectionFinder CreateIntersectionCounter(LineIntersector li)
+        {
+            InteriorIntersectionFinder finder = new InteriorIntersectionFinder(li);
+            finder.FindAllIntersections = true;
+            finder.KeepIntersections = false;
+            return finder;
+        }
+
         private readonly LineIntersector _li;
         private Coordinate _interiorIntersection;
         private Coordinate[] _intSegments;
