@@ -67,7 +67,7 @@ namespace NetTopologySuite.Planargraph
             }
             return null;
         }
-        
+
         #endregion
 
         /// <summary>
@@ -101,5 +101,10 @@ namespace NetTopologySuite.Planargraph
         /// Tests whether this component has been removed from its containing graph.
         /// </summary>
         public abstract bool IsRemoved { get; }
+
+        /// <summary>
+        /// Gets or sets user defined data for this component
+        /// </summary>
+        public object Data { get; set; }
     }
 }
