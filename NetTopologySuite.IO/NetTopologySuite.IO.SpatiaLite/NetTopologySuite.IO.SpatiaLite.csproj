@@ -42,9 +42,8 @@
     <AssemblyOriginatorKeyFile>..\..\NetTopologySuite\nts.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\GeoAPI.1.7.4-pre2\lib\net40-client\GeoAPI.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="GeoAPI">
+      <HintPath>$(SolutionDir)packages\GeoAPI.1.7.4-pre\lib\$(fwVersion)\GeoAPI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -65,7 +64,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -38,8 +38,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GeoAPI">
-      <HintPath>..\..\packages\GeoAPI.1.7.4-pre2\lib\net40-client\GeoAPI.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>$(SolutionDir)packages\GeoAPI.1.7.4-pre\lib\$(fwVersion)\GeoAPI.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.SqlServer.Types, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -117,7 +116,6 @@
     <Compile Include="TopoJSON\TopoWriterData.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

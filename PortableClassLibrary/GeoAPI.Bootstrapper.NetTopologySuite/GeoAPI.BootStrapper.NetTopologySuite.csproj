@@ -56,7 +56,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <Reference Include="GeoAPI">
+      <HintPath>$(SolutionDir)packages\GeoAPI.1.7.4-pre\lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\GeoAPI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
