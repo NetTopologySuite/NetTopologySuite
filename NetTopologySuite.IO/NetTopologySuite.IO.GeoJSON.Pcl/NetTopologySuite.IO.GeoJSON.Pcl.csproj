@@ -84,7 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\GeoAPI.1.7.4-pre\lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\GeoAPI.dll</HintPath>
+      <HintPath>..\..\packages\GeoAPI.1.7.4-pre2\lib\portable-net4+sl5+netcore45+wpa81+wp8\GeoAPI.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
