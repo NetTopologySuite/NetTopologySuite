@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Xml;
 using GeoAPI.Geometries;
 using GeoAPI.Operation.Buffer;
-using GeoAPI.Operations.Buffer;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;

@@ -13,7 +13,7 @@
     <RootNamespace>NetTopologySuite.IO</RootNamespace>
     <AssemblyName>NetTopologySuite.IO.SpatiaLite</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile147</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Profile336</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <RestorePackages>true</RestorePackages>
@@ -71,7 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="GeoAPI">
-      <HintPath>$(SolutionDir)packages\GeoAPI.1.7.3.1\lib\portable-net403+sl5+win8+wp8+MonoAndroid+MonoTouch\GeoAPI.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\GeoAPI.1.7.4-pre\lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\GeoAPI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

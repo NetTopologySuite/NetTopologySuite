@@ -151,8 +151,9 @@ namespace NetTopologySuite.Planargraph
         }
 
         /// <summary>
-        /// Returns the DirectedEdge on the left-hand side of the given DirectedEdge (which
-        /// must be a member of this DirectedEdgeStar). 
+        /// Returns the <see cref="DirectedEdge"/> on the left-hand 
+        /// side of the given <see cref="DirectedEdge"/> 
+        /// (which  must be a member of this DirectedEdgeStar). 
         /// </summary>
         /// <param name="dirEdge"></param>
         /// <returns></returns>
@@ -161,5 +162,17 @@ namespace NetTopologySuite.Planargraph
             int i = GetIndex(dirEdge);
             return _outEdges[GetIndex(i + 1)];
         }
+
+        ///<summary>
+        /// Returns the <see cref="DirectedEdge"/> on the right-hand (CW) 
+        /// side of the given <see cref="DirectedEdge"/>
+        /// (which must be a member of this DirectedEdgeStar).
+        /// </summary>
+        public DirectedEdge GetNextCWEdge(DirectedEdge dirEdge)
+        {
+            int i = GetIndex(dirEdge);
+            return _outEdges[GetIndex(i - 1)];
+        }
+
     }
 }

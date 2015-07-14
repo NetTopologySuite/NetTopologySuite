@@ -1,6 +1,6 @@
 using System;
 using GeoAPI.Geometries;
-using GeoAPI.Operations.Buffer;
+using GeoAPI.Operation.Buffer;
 using NetTopologySuite.Densify;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Buffer;

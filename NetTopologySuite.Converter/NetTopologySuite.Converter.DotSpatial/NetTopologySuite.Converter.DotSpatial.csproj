@@ -58,7 +58,7 @@
       <HintPath>$(SolutionDir)packages\DotSpatial.Topology.1.7\lib\net40-Client\DotSpatial.Topology.dll</HintPath>
     </Reference>
     <Reference Include="GeoAPI">
-      <HintPath>$(SolutionDir)packages\GeoAPI.1.7.3.1\lib\$(fwVersion)\GeoAPI.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\GeoAPI.1.7.4-pre\lib\$(fwVersion)\GeoAPI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

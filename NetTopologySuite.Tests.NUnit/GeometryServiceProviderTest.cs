@@ -113,16 +113,16 @@ namespace NetTopologySuite.Tests.NUnit
 
         #region ProjNet
 
-        private static void RunTestWkt(ICoordinateSystemServices<ICoordinateSystem> csp, int srid)
-        {
-            var wkt = csp.GetCoordinateSystemInitializationString("EPSG", srid);
-            wkt = wkt.Replace(",", ", ");
-            Console.WriteLine(wkt);
+        //private static void RunTestWkt(ICoordinateSystemServices<ICoordinateSystem> csp, int srid)
+        //{
+        //    var wkt = csp.GetCoordinateSystemInitializationString("EPSG", srid);
+        //    wkt = wkt.Replace(",", ", ");
+        //    Console.WriteLine(wkt);
 
-            var cs = csp.GetCoordinateSytem(wkt);
-            Assert.IsNotNull(cs);
-            Console.WriteLine(cs.WKT);
-        }
+        //    var cs = csp.GetCoordinateSytem(wkt);
+        //    Assert.IsNotNull(cs);
+        //    Console.WriteLine(cs.WKT);
+        //}
 
         #endregion ProjNet
     }
