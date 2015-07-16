@@ -330,6 +330,8 @@ namespace NetTopologySuite.Tests.NUnit.CoordinateSystems.Transformations
 
         private static void TestGeometry(IGeometry g1, IGeometry g2)
         {
+            Assert.IsNotNull(g1, "g1 null");
+            Assert.IsNotNull(g2, "g2 null");
             if (g1 is IPoint)
             {
                 TestCoordinateSequences(((IPoint)g1).CoordinateSequence, ((IPoint)g2).CoordinateSequence);
