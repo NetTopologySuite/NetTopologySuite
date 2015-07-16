@@ -8,7 +8,6 @@ using NetTopologySuite.Noding;
 using NetTopologySuite.Noding.Snapround;
 using NetTopologySuite.Precision;
 using NetTopologySuite.Utilities;
-using Open.Topology.TestRunner.Utility;
 
 namespace Open.Topology.TestRunner.Functions
 {
@@ -91,14 +90,14 @@ namespace Open.Topology.TestRunner.Functions
 
             INoder noder = new MCIndexNoder(new IntersectionAdder(li));
             noder.ComputeNodes(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
-            return FromSegmentStrings(noder.GetNodedSubstrings());
+            return SegmentStringUtil.ToGeometry(noder.GetNodedSubstrings());
         }
 
         public static IGeometry MCIndexNoding(IGeometry geom)
         {
             INoder noder = new MCIndexNoder(new IntersectionAdder(new RobustLineIntersector()));
             noder.ComputeNodes(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
-            return FromSegmentStrings(noder.GetNodedSubstrings());
+            return SegmentStringUtil.ToGeometry(noder.GetNodedSubstrings());
         }
 
         /// <summary>
@@ -116,7 +115,7 @@ namespace Open.Topology.TestRunner.Functions
                 fixedPM.Scale);
             noder.ComputeNodes(segs);
             var nodedSegStrings = noder.GetNodedSubstrings();
-            return FromSegmentStrings(nodedSegStrings);
+            return SegmentStringUtil.ToGeometry(nodedSegStrings);
         }
 
         private static List<ISegmentString> CreateSegmentStrings(IGeometry geom)
@@ -128,18 +127,6 @@ namespace Open.Topology.TestRunner.Functions
                 segs.Add(new BasicSegmentString(line.Coordinates, null));
             }
             return segs;
-        }
-
-        private static IGeometry FromSegmentStrings(IList<ISegmentString> segStrings)
-        {
-            var lines = new ILineString[segStrings.Count];
-            int index = 0;
-            foreach (var ss in segStrings)
-            {
-                var line = FunctionsUtil.GetFactoryOrDefault(null).CreateLineString(ss.Coordinates);
-                lines[index++] = line;
-            }
-            return FunctionsUtil.GetFactoryOrDefault(null).CreateMultiLineString(lines);
         }
     }
 }

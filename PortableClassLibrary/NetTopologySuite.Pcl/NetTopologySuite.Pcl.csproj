@@ -105,6 +105,9 @@
     <Compile Include="..\..\NetTopologySuite\Utilities\AlternativePriorityQueue.cs">
       <Link>Utilities\AlternativePriorityQueue.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\FunctionsUtility.cs">
+      <Link>Utilities\FunctionsUtility.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\Utilities\PriorityQueueNode.cs">
       <Link>Utilities\PriorityQueueNode.cs</Link>
     </Compile>

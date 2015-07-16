@@ -492,6 +492,7 @@
     <Compile Include="Triangulate\VertexTaggedGeometryDataMapper.cs" />
     <Compile Include="Triangulate\VoronoiDiagramBuilder.cs" />
     <Compile Include="Utilities\AlternativePriorityQueue.cs" />
+    <Compile Include="Utilities\FunctionsUtility.cs" />
     <Compile Include="Utilities\PriorityQueueNode.cs" />
     <Compile Include="Utilities\Assert.cs" />
     <Compile Include="Utilities\AssertionFailedException.cs" />

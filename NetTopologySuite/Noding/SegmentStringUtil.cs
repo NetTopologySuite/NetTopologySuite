@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Noding
 {
@@ -11,6 +12,28 @@ namespace NetTopologySuite.Noding
     /// <author>Martin Davis</author>
     public class SegmentStringUtil
     {
+        /// <summary>
+        /// Converts a collection of SegmentStrings into a <see cref="IGeometry"/>.
+        /// The geometry will be either a <see cref="ILineString"/> 
+        /// or a <see cref="IMultiLineString"/> (possibly empty).
+        /// </summary>
+        /// <param name="segStrings">A collection of <see cref="ISegmentString"/>.</param>
+        /// <returns>A <see cref="ILineString"/> or a <see cref="IMultiLineString"/>.</returns>
+        public static IGeometry ToGeometry(IList<ISegmentString> segStrings)
+        {
+            ILineString[] lines = new ILineString[segStrings.Count];
+            int index = 0;
+            IGeometryFactory factory = FunctionsUtil.GetFactoryOrDefault(null);
+            foreach (ISegmentString ss in segStrings)
+            {
+                ILineString line = factory.CreateLineString(ss.Coordinates);
+                lines[index++] = line;
+            }
+            if (lines.Length == 1) 
+                return lines[0];
+            return factory.CreateMultiLineString(lines);
+        }
+
         public static string ToString(IEnumerable<ISegmentString> segStrings)
         {
             StringBuilder sb = new StringBuilder();
@@ -18,7 +41,7 @@ namespace NetTopologySuite.Noding
                 sb.AppendFormat("{0}\n", segStr);
             return sb.ToString();
         }
-        
+
         ///<summary>
         /// Extracts all linear components from a given <see cref="IGeometry"/>
         /// to <see cref="ISegmentString"/>s.           
