@@ -492,7 +492,6 @@
     <EmbeddedResource Include="..\..\NetTopologySuite.Tests.NUnit\TestData\world.wkt">
       <Link>TestData\world.wkt</Link>
     </EmbeddedResource>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

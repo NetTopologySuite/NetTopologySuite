@@ -541,7 +541,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="License.txt" />
-    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Precision\DocFiles\minClearance.png" />
     <Content Include="Precision\PrecisionSummary.xml">
