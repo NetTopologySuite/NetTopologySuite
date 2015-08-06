@@ -62,14 +62,14 @@
 		<file src="Release\v4.5\AnyCPU\PowerCollections.pdb" target="lib\net45" />
 		<file src="Release\v4.5\AnyCPU\PowerCollections.xml" target="lib\net45" />
 
-		<file src="Release\PCL\AnyCPU\NetTopologySuite.dll" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+Xamarin.iOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\NetTopologySuite.pdb" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+Xamarin.iOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\NetTopologySuite.xml" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+Xamarin.iOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.dll" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+Xamarin.iOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.pdb" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+Xamarin.iOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.xml" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+Xamarin.iOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\PowerCollections.dll" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+Xamarin.iOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\PowerCollections.pdb" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+Xamarin.iOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\PowerCollections.xml" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+Xamarin.iOS10+MonoTouch10" />
+		<file src="Release\PCL\AnyCPU\NetTopologySuite.dll" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+		<file src="Release\PCL\AnyCPU\NetTopologySuite.pdb" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+		<file src="Release\PCL\AnyCPU\NetTopologySuite.xml" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+		<file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.dll" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+		<file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.pdb" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+		<file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.xml" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+		<file src="Release\PCL\AnyCPU\PowerCollections.dll" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+		<file src="Release\PCL\AnyCPU\PowerCollections.pdb" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+		<file src="Release\PCL\AnyCPU\PowerCollections.xml" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
 	</files>
 </package>

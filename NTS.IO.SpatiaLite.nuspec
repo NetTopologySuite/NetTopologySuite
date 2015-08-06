@@ -44,8 +44,8 @@
 		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.SpatiaLite.pdb" target="lib\net45" />
 		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.SpatiaLite.xml" target="lib\net45" />
 
-		<file src="Release\PCL\AnyCPU\NetTopologySuite.IO.SpatiaLite.dll" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+Xamarin.iOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\NetTopologySuite.IO.SpatiaLite.pdb" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+Xamarin.iOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\NetTopologySuite.IO.SpatiaLite.xml" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+Xamarin.iOS10+MonoTouch10" />
+		<file src="Release\PCL\AnyCPU\NetTopologySuite.IO.SpatiaLite.dll" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+		<file src="Release\PCL\AnyCPU\NetTopologySuite.IO.SpatiaLite.pdb" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+		<file src="Release\PCL\AnyCPU\NetTopologySuite.IO.SpatiaLite.xml" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
 	</files>
 </package>

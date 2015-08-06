@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+  You Need to install Community Tasks for MSBuild to run any of this build script:
+  https://github.com/loresoft/msbuildtasks/releases
+  -->
+  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
+
+  <PropertyGroup>
+	    <!--<geoAPIVersion Condition=" '$(geoApiVersion)' == '' ">1.7.4-pre</geoAPIVersion>-->
+	    <fwVersion Condition=" '$(fwVersion)' == '' ">net40-client</fwVersion>
+	</PropertyGroup>
+  
+  <!-- MOVED to GeoAPI.Reference.targets
+  <ItemGroup>
+	    <Reference Include="GeoAPI">
+	      <HintPath>$(MSBuildProjectDirectory)\..\packages\GeoAPI.$(geoAPIVersion)\lib\$(fwVersion)\GeoAPI.dll</HintPath>
+	    </Reference>
+	</ItemGroup>
+  -->
+  
+	<ItemGroup>
+		<File Include="$(MSBuildProjectDirectory)\GeoAPI.version" />
+	</ItemGroup>
+
+	<Target Name="ReadVersion">
+		
+		<ReadLinesFromFile File="$(MSBuildProjectDirectory)\GeoAPI.version">
+			<Output TaskParameter="Lines" ItemName="VersionInfo" />
+		</ReadLinesFromFile>
+		<Message Text="File: $(MSBuildProjectDirectory)\GeoAPI.version
+Version: @(VersionInfo)"/>
+	</Target>
+
+
+	<PropertyGroup>
+		<n1>$([System.String]::Concat("$(","MSBuildProjectDirectory",")"))</n1>
+		<n2>$([System.String]::Concat("$(","fwVersion",")"))</n2>
+	</PropertyGroup>
+
+	<Target Name="WriteVersion" Condition=" '$(geoAPIVersion)' != '' ">
+		<ItemGroup>
+			<gr Include="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;" />
+			<gr Include="&lt;Project ToolsVersion=&quot;4.0&quot; xmlns=&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot;&gt;"/>
+			<gr Include="&lt;PropertyGroup&gt;"/>
+			<gr Include="&lt;fwVersion Condition=&quot; '$(n2)' == '' &quot;&gt;net40-client&lt;/fwVersion&gt;"/>
+			<gr Include="&lt;/PropertyGroup&gt;"/>
+			<gr Include="&lt;ItemGroup&gt;"/>
+			<gr Include="&lt;Reference Include=&quot;GeoAPI&quot;&gt;"/>
+			<gr Include="&lt;HintPath&gt;$(n1)\..\packages\GeoAPI.$(geoAPIVersion)\lib\$(n2)\GeoAPI.dll&lt;/HintPath&gt;"/>
+			<gr Include="&lt;/Reference&gt;"/>
+			<gr Include="&lt;/ItemGroup&gt;"/>
+			<gr Include="&lt;/Project&gt;"/>
+			<!--
+			<gr Include=""/>
+			-->
+		</ItemGroup>
+	    <WriteLinesToFile File="$(MSBuildProjectDirectory)\GeoAPI.version" Lines="$(geoAPIVersion)" Overwrite="true" />
+	    <WriteLinesToFile File="$(MSBuildProjectDirectory)\GeoAPI.Reference.targets" Lines="@(gr)" Overwrite="true" />
+	</Target>
+
+  <Target Name="FindPC">
+    <ItemGroup>
+      <pc Include="$(MSBuildProjectDirectory)\..\**\packages.config"/>
+    </ItemGroup>
+    
+    <Message Text="@(pc)"/>
+  </Target>
+</Project>
