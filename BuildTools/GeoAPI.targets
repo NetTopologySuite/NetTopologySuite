@@ -31,7 +31,7 @@
 			<Output TaskParameter="Lines" PropertyName="currentVersion" />
 		</ReadLinesFromFile>
 		<Message Text="File: $(MSBuildProjectDirectory)\GeoAPI.version
-Version: @(currentVersion)"/>
+Version: $(currentVersion)"/>
 	</Target>
 
 
@@ -78,7 +78,7 @@ Version: @(currentVersion)"/>
       <newver>$(geoAPIVersion)</newver>
     </PropertyGroup>
     <Message Text="Trying to install GeoAPI v$(newver)"/>
-    <Exec Command="$(MSBuildProjectDirectory)\..\.nuget\nuget install GeoAPI.$(newver) -prerelease -o $(MSBuildProjectDirectory)\..\packages"/>
+    <Exec Command="$(MSBuildProjectDirectory)\..\.nuget\nuget install GeoAPI -version $(newver) -prerelease -o $(MSBuildProjectDirectory)\..\packages"/>
   </Target>
 
   <Target Name="UpdatePC" DependsOnTargets="ReadVersion;Nuget">
