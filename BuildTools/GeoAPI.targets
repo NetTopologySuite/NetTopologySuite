@@ -8,7 +8,9 @@
 
   <PropertyGroup>
 	    <!--<geoAPIVersion Condition=" '$(geoApiVersion)' == '' ">1.7.4-pre</geoAPIVersion>-->
-	    <fwVersion Condition=" '$(fwVersion)' == '' ">net40-client</fwVersion>
+	    <fwVersion Condition=" '$(fwVersion)' == '' ">net40-Client</fwVersion>
+      <fwVersionPcl Condition=" '$(fwVersionPcl)' == '' "> </fwVersionPcl>
+    <currentVersion/>
 	</PropertyGroup>
   
   <!-- MOVED to GeoAPI.Reference.targets
@@ -26,28 +28,28 @@
 	<Target Name="ReadVersion">
 		
 		<ReadLinesFromFile File="$(MSBuildProjectDirectory)\GeoAPI.version">
-			<Output TaskParameter="Lines" ItemName="VersionInfo" />
+			<Output TaskParameter="Lines" PropertyName="currentVersion" />
 		</ReadLinesFromFile>
 		<Message Text="File: $(MSBuildProjectDirectory)\GeoAPI.version
-Version: @(VersionInfo)"/>
+Version: @(currentVersion)"/>
 	</Target>
 
 
-	<PropertyGroup>
-		<n1>$([System.String]::Concat("$(","MSBuildProjectDirectory",")"))</n1>
-		<n2>$([System.String]::Concat("$(","fwVersion",")"))</n2>
-	</PropertyGroup>
-
 	<Target Name="WriteVersion" Condition=" '$(geoAPIVersion)' != '' ">
-		<ItemGroup>
+    <PropertyGroup>
+      <n1>$([System.String]::Concat("$(","SolutionDir",")"))</n1>
+      <n2>$([System.String]::Concat("$(","fwVersion",")"))</n2>
+    </PropertyGroup>
+    <ItemGroup>
 			<gr Include="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;" />
 			<gr Include="&lt;Project ToolsVersion=&quot;4.0&quot; xmlns=&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot;&gt;"/>
 			<gr Include="&lt;PropertyGroup&gt;"/>
-			<gr Include="&lt;fwVersion Condition=&quot; '$(n2)' == '' &quot;&gt;net40-client&lt;/fwVersion&gt;"/>
-			<gr Include="&lt;/PropertyGroup&gt;"/>
+			<gr Include="&lt;fwVersion Condition=&quot; '$(n2)' == '' &quot;&gt;$(fwVersion)&lt;/fwVersion&gt;"/>
+      <gr Include="&lt;fwVersionPcl Condition=&quot; '$(n2)' == '' &quot;&gt;$(fwVersionPcl)&lt;/fwVersionPcl&gt;"/>
+      <gr Include="&lt;/PropertyGroup&gt;"/>
 			<gr Include="&lt;ItemGroup&gt;"/>
 			<gr Include="&lt;Reference Include=&quot;GeoAPI&quot;&gt;"/>
-			<gr Include="&lt;HintPath&gt;$(n1)\..\packages\GeoAPI.$(geoAPIVersion)\lib\$(n2)\GeoAPI.dll&lt;/HintPath&gt;"/>
+			<gr Include="&lt;HintPath&gt;$(n1)packages\GeoAPI.$(geoAPIVersion)\lib\$(n2)\GeoAPI.dll&lt;/HintPath&gt;"/>
 			<gr Include="&lt;/Reference&gt;"/>
 			<gr Include="&lt;/ItemGroup&gt;"/>
 			<gr Include="&lt;/Project&gt;"/>
@@ -59,11 +61,52 @@ Version: @(VersionInfo)"/>
 	    <WriteLinesToFile File="$(MSBuildProjectDirectory)\GeoAPI.Reference.targets" Lines="@(gr)" Overwrite="true" />
 	</Target>
 
+  <!--Task to iterate over all packages.config files in this solution-->
   <Target Name="FindPC">
     <ItemGroup>
       <pc Include="$(MSBuildProjectDirectory)\..\**\packages.config"/>
     </ItemGroup>
     
     <Message Text="@(pc)"/>
+  </Target>
+
+  <Target Name="UpdateGeoAPIVersion" DependsOnTargets="UpdatePC;WriteVersion">
+  </Target>
+
+  <Target Name="Nuget" Condition=" 'geoAPIVersion' != '' ">
+    <PropertyGroup>
+      <newver>$(geoAPIVersion)</newver>
+    </PropertyGroup>
+    <Message Text="Trying to install GeoAPI v$(newver)"/>
+    <Exec Command="$(MSBuildProjectDirectory)\..\.nuget\nuget install GeoAPI.$(newver) -prerelease -o $(MSBuildProjectDirectory)\..\packages"/>
+  </Target>
+
+  <Target Name="UpdatePC" DependsOnTargets="ReadVersion;Nuget">
+    <PropertyGroup>
+      <!--
+        <oldver>$([System.String]::Copy($(currentVersion)).Replace(".", "\\."))</oldver>
+        <newver>$([System.String]::Copy($(geoAPIVersion)).Replace(".", "\\."))</newver>
+      -->
+      <oldver>$(currentVersion)</oldver>
+      <newver>$(geoAPIVersion)</newver>
+    </PropertyGroup>
+    <PropertyGroup>
+      <find>package id=&quot;GeoAPI&quot; version=&quot;$(oldver)&quot;</find>
+      <repl>package id=&quot;GeoAPI&quot; version=&quot;$(newver)&quot;</repl>
+    </PropertyGroup>
+
+    
+    <Message Text="Old: $(oldver)"/>
+    <Message Text="New: $(newver)"/>
+    <Message Text="find: $(find)"/>
+    <Message Text="repl: $(repl)"/>
+
+    <ItemGroup>
+      <pc Include="$(MSBuildProjectDirectory)\..\**\packages.config"/>
+    </ItemGroup>
+
+    <Message Text="Updating version"/>
+    <FileUpdate Regex="$(find)" ReplacementText="$(repl)" Files="@(pc)"/>
+    <!--<WriteVersion/>-->
   </Target>
 </Project>

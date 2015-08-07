@@ -117,6 +117,7 @@
              />
 	</Target>
 	<Target Name="BuildReleasePCL">
+    <fwVersionPcl>portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10</fwVersionPcl>
 		<RemoveDir Directories="$(MSBuildProjectDirectory)\obj\PCL" ContinueOnError="true"/>
 		<MSBuild Projects="$(SolutionFile)" 
              Targets="PCL\PowerCollections_PCL;PCL\NetTopologySuite_PCL;PCL\GeoAPI_Bootstrapper_NetTopologySuite;PCL\NetTopologySuite_IO_SpatiaLite_Pcl;PCL\NetTopologySuite_IO_GeoJSON_Pcl" 
