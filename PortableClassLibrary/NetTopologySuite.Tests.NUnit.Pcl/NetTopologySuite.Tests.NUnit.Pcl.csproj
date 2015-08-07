@@ -439,6 +439,12 @@
     <Compile Include="PclSetup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\GeoAPI.1.7.4-pre\lib\portable-net403+sl5+win8+wp8+MonoAndroid+MonoTouch\GeoAPI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\GeoAPI.Bootstrapper.NetTopologySuite\GeoAPI.Bootstrapper.NetTopologySuite.csproj">
       <Project>{8353362c-192b-4edf-a50d-c36b21470d76}</Project>
       <Name>GeoAPI.Bootstrapper.NetTopologySuite</Name>
@@ -449,10 +455,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\GeoAPI.1.7.4-pre\lib\net403-client\GeoAPI.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>$(SolutionDir)packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
