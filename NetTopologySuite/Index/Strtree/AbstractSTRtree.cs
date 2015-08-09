@@ -363,8 +363,6 @@ namespace NetTopologySuite.Index.Strtree
         protected bool Remove(T searchBounds, TItem item)
         {
             Build();
-            //if (_itemBoundables.Count == 0)
-            //    Assert.IsTrue(_root.Bounds == null);
             return IntersectsOp.Intersects(_root.Bounds, searchBounds) && Remove(searchBounds, _root, item);
         }
 
