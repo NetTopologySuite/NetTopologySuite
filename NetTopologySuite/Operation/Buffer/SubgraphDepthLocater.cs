@@ -129,7 +129,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// A segment from a directed edge which has been assigned a depth value
         /// for its sides.
         /// </summary>
-        private class DepthSegment : IComparable
+        private class DepthSegment : IComparable<DepthSegment>
         {
             private readonly LineSegment _upwardSeg;
 
@@ -152,38 +152,44 @@ namespace NetTopologySuite.Operation.Buffer
 
             /// <summary>
             /// Defines a comparison operation on DepthSegments
-            /// which orders them left to right:
-            /// DS1 smaller DS2   if   DS1.seg is left of DS2.seg.
-            /// DS1 bigger  DS2   if   DS1.seg is right of DS2.seg.
+            /// which orders them left to right.
+            /// Assumes the segments are normalized.
+            /// DS1 &lt; DS2   if   DS1.seg is left of DS2.seg.
+            /// DS1 &gt; DS2   if   DS1.seg is right of DS2.seg.
             /// </summary>
-            /// <param name="obj"></param>
+            /// <remarks>
+            /// Known Bugs:
+            /// <list type="Bullet">
+            /// <item>Does not obey the <see cref="IComparable.CompareTo"/> contract</item>
+            /// </list>
+            /// </remarks>
+            /// <param name="other">A DepthSegment</param>
             /// <returns>The comparison value</returns>
-            public int CompareTo(Object obj)
+            public int CompareTo(DepthSegment other)
             {
-                var other = (DepthSegment)obj;
+                // fast check if segments are trivially ordered along X
+                if (_upwardSeg.MinX >= other._upwardSeg.MaxX) return 1;
+                if (_upwardSeg.MaxX <= other._upwardSeg.MinX) return -1;
 
                 /*
                 * try and compute a determinate orientation for the segments.
                 * Test returns 1 if other is left of this (i.e. this > other)
                 */
-                int orientIndex = _upwardSeg.OrientationIndex(other._upwardSeg);
+                var orientIndex = _upwardSeg.OrientationIndex(other._upwardSeg);
+                if (orientIndex != 0) return orientIndex;
 
                 /*
                 * If comparison between this and other is indeterminate,
                 * try the opposite call order.
-                * orientationIndex value is 1 if this is left of other,
-                * so have to flip sign to get proper comparison value of
-                * -1 if this is leftmost
+                * The sign of the result needs to be flipped
                 */
-                if (orientIndex == 0)
-                    orientIndex = -1 * other._upwardSeg.OrientationIndex(_upwardSeg);
+                orientIndex = -1 * other._upwardSeg.OrientationIndex(_upwardSeg);
 
                 // if orientation is determinate, return it
-                if (orientIndex != 0)
-                    return orientIndex;
+                if (orientIndex != 0) return orientIndex;
 
-                // otherwise, segs must be collinear - sort based on minimum X value
-                return CompareX(_upwardSeg, other._upwardSeg);
+                // otherwise, use standard segment ordering
+                return _upwardSeg.CompareTo(other._upwardSeg);
             }
 
             /// <summary>

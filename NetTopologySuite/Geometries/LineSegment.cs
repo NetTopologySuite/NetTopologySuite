@@ -116,6 +116,26 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Gets the minimum X ordinate
+        /// </summary>
+        public double MinX { get { return Math.Min(P0.X, P1.X); } }
+
+        /// <summary>
+        /// Gets the maximum X ordinate
+        /// </summary>
+        public double MaxX { get { return Math.Max(P0.X, P1.X); } }
+
+        /// <summary>
+        /// Gets the minimum Y ordinate
+        /// </summary>
+        public double MinY { get { return Math.Min(P0.Y, P1.Y); } }
+
+        /// <summary>
+        /// Gets the maximum Y ordinate
+        /// </summary>
+        public double MaxY { get { return Math.Max(P0.Y, P1.Y); } }
+
+        /// <summary>
         /// Computes the length of the line segment.
         /// </summary>
         /// <returns>The length of the line segment.</returns>
@@ -157,7 +177,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>
         /// 1 if <c>seg</c> is to the left of this segment,
         /// -1 if <c>seg</c> is to the right of this segment,
-        /// 0 if <c>seg</c> has indeterminate orientation relative to this segment.
+        /// 0 if <c>seg</c> is collinear to or crosses this segment.
         /// </returns>
         public int OrientationIndex(LineSegment seg)
         {
