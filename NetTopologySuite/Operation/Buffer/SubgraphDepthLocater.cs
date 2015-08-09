@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
@@ -150,7 +151,7 @@ namespace NetTopologySuite.Operation.Buffer
             }
 
             /// <summary>
-            /// Defines a comparision operation on DepthSegments
+            /// Defines a comparison operation on DepthSegments
             /// which orders them left to right:
             /// DS1 smaller DS2   if   DS1.seg is left of DS2.seg.
             /// DS1 bigger  DS2   if   DS1.seg is right of DS2.seg.
@@ -195,11 +196,16 @@ namespace NetTopologySuite.Operation.Buffer
             /// <param name="seg0">A segment to compare.</param>
             /// <param name="seg1">A segment to compare.</param>
             /// <returns></returns>
-            private int CompareX(LineSegment seg0, LineSegment seg1)
+            private static int CompareX(LineSegment seg0, LineSegment seg1)
             {
                 var compare0 = seg0.P0.CompareTo(seg1.P0);
                 if (compare0 != 0) return compare0;
                 return seg0.P1.CompareTo(seg1.P1);
+            }
+
+            public override string ToString()
+            {
+                return _upwardSeg.ToString();
             }
         }
     }
