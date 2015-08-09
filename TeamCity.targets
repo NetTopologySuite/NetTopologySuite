@@ -135,7 +135,7 @@
              ContinueOnError="true"
              />
 	</Target>
-	<Target Name="RebuildRelease" DependsOnTargets="CleanRelease;BuildRelease20;BuildRelease35;BuildRelease40;BuildRelease403;BuildRelease45"/>	
+	<Target Name="RebuildRelease" DependsOnTargets="CleanRelease;BuildRelease20;BuildRelease35;BuildRelease403;BuildRelease45;BuildRelease40"/>	
 
 	<!-- build only for now, test on build server -->
 	<Target Name="UnitTests" DependsOnTargets="CleanRelease;BuildRelease40">
