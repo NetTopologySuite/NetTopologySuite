@@ -154,13 +154,20 @@ namespace NetTopologySuite.Operation.Buffer
             /// Defines a comparison operation on DepthSegments
             /// which orders them left to right.
             /// Assumes the segments are normalized.
-            /// DS1 &lt; DS2   if   DS1.seg is left of DS2.seg.
-            /// DS1 &gt; DS2   if   DS1.seg is right of DS2.seg.
+            /// <para/>
+            /// The definition of ordering is:
+            /// <list type="Bullet">
+            /// <item>-1 : if DS1.seg is left of or below DS2.seg (DS1 &lt; DS2).</item>
+            /// <item>1 : if DS1.seg is right of or above DS2.seg (DS1 &gt; DS2).</item>
+            /// <item>0 : if the segments are identical</item>
+            /// </list>
             /// </summary>
             /// <remarks>
             /// Known Bugs:
             /// <list type="Bullet">
-            /// <item>Does not obey the <see cref="IComparable.CompareTo"/> contract</item>
+            /// <item>The logic does not obey the <see cref="IComparable.CompareTo"/> contract. 
+            /// This is acceptable for the intended usage, but may cause problems if used with some
+            /// utilities in the .Net standard library (e.g. <see cref="T:System.Collections.List.Sort()"/>.</item>
             /// </list>
             /// </remarks>
             /// <param name="other">A DepthSegment</param>
@@ -184,11 +191,9 @@ namespace NetTopologySuite.Operation.Buffer
                 * The sign of the result needs to be flipped
                 */
                 orientIndex = -1 * other._upwardSeg.OrientationIndex(_upwardSeg);
-
-                // if orientation is determinate, return it
                 if (orientIndex != 0) return orientIndex;
 
-                // otherwise, use standard segment ordering
+                // otherwise, use standard lexicographic segment ordering
                 return _upwardSeg.CompareTo(other._upwardSeg);
             }
 
