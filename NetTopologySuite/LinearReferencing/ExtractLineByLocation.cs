@@ -14,7 +14,7 @@ namespace NetTopologySuite.LinearReferencing
         /// Computes the subline of a <see cref="ILineString" /> between
         /// two <see cref="LinearLocation"/>s on the line.
         /// If the start location is after the end location,
-        /// the computed geometry is reversed.
+        /// the computed linear geometry has reverse orientation to the input line.
         /// </summary>
         /// <param name="line">The line to use as the baseline.</param>
         /// <param name="start">The start location.</param>

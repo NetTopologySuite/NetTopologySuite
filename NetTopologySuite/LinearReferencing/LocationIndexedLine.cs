@@ -83,8 +83,10 @@ namespace NetTopologySuite.LinearReferencing
             return loc.GetSegment(_linearGeom).PointAlongOffset(loc.SegmentFraction, offsetDistance);
         }
         /// <summary>
-        /// Computes the <see cref="LineString" /> for the interval
+        /// Computes the <see cref="ILineString" /> for the interval
         /// on the line between the given indices.
+        /// If the start location is after the end location,
+        /// the computed linear geometry has reverse orientation to the input line.
         /// </summary>
         /// <param name="startIndex">The index of the start of the interval.</param>
         /// <param name="endIndex">The index of the end of the interval.</param>
