@@ -4,18 +4,29 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
-    /// A Bounding Container which is in the shape of an octagon.
+    /// A bounding container for a <see cref="IGeometry"/> which is in the shape of a general octagon.
     /// </summary>
     /// <remarks>
     /// The OctagonalEnvelope of a geometric object
-    /// is tight along the four extremal rectilineal parallels
-    /// and along the four extremal diagonal parallels.
+    /// is a geometry which is tight bound along the (up to) four extremal rectilineal parallels
+    /// and along the (up to) four extremal diagonal parallels.
     /// Depending on the shape of the contained
     /// geometry, the octagon may be degenerate to any extreme
     /// (e.g. it may be a rectangle, a line, or a point).
     /// </remarks>
     public class OctagonalEnvelope
     {
+        /// <summary>
+        /// Gets the octagonal envelope of a geometry
+        /// </summary>
+        /// <param name="geom">The geometry</param>
+        /// <returns>The octagonal envelope of the geometry</returns>
+        public static IGeometry GetOctagonalEnvelope(IGeometry geom)
+        {
+            return (new OctagonalEnvelope(geom)).ToGeometry(geom.Factory);
+        }
+
+        
         private static double ComputeA(double x, double y)
         {
             return x + y;
@@ -49,6 +60,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Creates a new null bounding octagon bounding a <see cref="Coordinate" />
         /// </summary>
+        /// <param name="p">The coordinate to bound</param>
         public OctagonalEnvelope(Coordinate p)
         {
             ExpandToInclude(p);
@@ -57,6 +69,8 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Creates a new null bounding octagon bounding a pair of <see cref="Coordinate" />s
         /// </summary>
+        /// <param name="p0">A coordinate to bound</param>
+        /// <param name="p1">A coordinate to bound</param>
         public OctagonalEnvelope(Coordinate p0, Coordinate p1)
         {
             ExpandToInclude(p0);

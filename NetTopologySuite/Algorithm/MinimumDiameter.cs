@@ -33,6 +33,27 @@ namespace NetTopologySuite.Algorithm
     /// <seealso cref="ConvexHull"/>
     public class MinimumDiameter
     {
+        ///<summary>
+        /// Gets the minimum rectangle enclosing a geometry.
+        /// </summary>
+        /// <param name="geom">The geometry</param>
+        /// <returns>The minimum rectangle enclosing the geometry</returns>
+        public static IGeometry GetMinimumRectangle(IGeometry geom)
+        {
+            return (new MinimumDiameter(geom)).GetMinimumRectangle();
+        }
+
+        ///<summary>
+        /// Gets the minimum diameter enclosing a geometry.
+        /// </summary>
+        /// <param name="geom">The geometry</param>
+        /// <returns>The length of the minimum diameter of the geometry</returns>
+        public static IGeometry GetMinimumDiameter(Geometry geom)
+        {
+            return (new MinimumDiameter(geom)).Diameter;
+        }
+
+        
         private readonly IGeometry _inputGeom;
         private readonly bool _isConvex;
 
