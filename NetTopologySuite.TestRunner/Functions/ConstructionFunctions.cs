@@ -12,8 +12,7 @@ namespace Open.Topology.TestRunner.Functions
     {
         public static IGeometry OctagonalEnvelope(IGeometry g)
         {
-            var octEnv = new OctagonalEnvelope(g);
-            return octEnv.ToGeometry(g.Factory);
+            return NetTopologySuite.Geometries.OctagonalEnvelope.GetOctagonalEnvelope(g);
         }
 
         public static IGeometry MinimumDiameter(IGeometry g) { return (new MinimumDiameter(g)).Diameter; }
