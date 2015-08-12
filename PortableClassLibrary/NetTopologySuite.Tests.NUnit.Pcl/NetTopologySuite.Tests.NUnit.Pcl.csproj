@@ -434,12 +434,14 @@
     <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Utilities\AlternativePriorityQueueTest.cs">
       <Link>Utilities\AlternativePriorityQueueTest.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Utilities\IOUtil.cs">
+      <Link>Utilities\IOUtil.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Utilities\PriorityQueueTest.cs">
       <Link>Utilities\PriorityQueueTest.cs</Link>
     </Compile>
     <Compile Include="PclSetup.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\GeoAPI.Bootstrapper.NetTopologySuite\GeoAPI.Bootstrapper.NetTopologySuite.csproj">
       <Project>{8353362c-192b-4edf-a50d-c36b21470d76}</Project>

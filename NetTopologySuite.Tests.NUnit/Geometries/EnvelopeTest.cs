@@ -240,8 +240,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         private static void CheckCompareTo(int expected, Envelope env1, Envelope env2)
         {
-            Assert.IsTrue(expected == env1.CompareTo(env2));
-            Assert.IsTrue(-expected == env2.CompareTo(env1));
+            Assert.IsTrue(expected == env1.CompareTo(env2), "expected == env1.CompareTo(env2)");
+            Assert.IsTrue(-expected == env2.CompareTo(env1), "-expected == env2.CompareTo(env1)" );
         }
 
 
