@@ -228,6 +228,24 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         [Test]
+        public void TestCompareTo()
+        {
+            CheckCompareTo(0, new Envelope(), new Envelope());
+            CheckCompareTo(0, new Envelope(1, 2, 1, 2), new Envelope(1, 2, 1, 2));
+            CheckCompareTo(1, new Envelope(2, 3, 1, 2), new Envelope(1, 2, 1, 2));
+            CheckCompareTo(-1, new Envelope(1, 2, 1, 2), new Envelope(2, 3, 1, 2));
+            CheckCompareTo(1, new Envelope(1, 2, 1, 3), new Envelope(1, 2, 1, 2));
+            CheckCompareTo(1, new Envelope(2, 3, 1, 3), new Envelope(1, 3, 1, 2));
+        }
+
+        private static void CheckCompareTo(int expected, Envelope env1, Envelope env2)
+        {
+            Assert.IsTrue(expected == env1.CompareTo(env2));
+            Assert.IsTrue(-expected == env2.CompareTo(env1));
+        }
+
+
+        [Test]
         public void TestToString()
         {
             TestToString(new Envelope(), "Env[Null]");
