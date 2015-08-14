@@ -12,36 +12,6 @@ namespace NetTopologySuite.Noding
     /// <author>Martin Davis</author>
     public class SegmentStringUtil
     {
-        /// <summary>
-        /// Converts a collection of SegmentStrings into a <see cref="IGeometry"/>.
-        /// The geometry will be either a <see cref="ILineString"/> 
-        /// or a <see cref="IMultiLineString"/> (possibly empty).
-        /// </summary>
-        /// <param name="segStrings">A collection of <see cref="ISegmentString"/>.</param>
-        /// <returns>A <see cref="ILineString"/> or a <see cref="IMultiLineString"/>.</returns>
-        public static IGeometry ToGeometry(IList<ISegmentString> segStrings)
-        {
-            ILineString[] lines = new ILineString[segStrings.Count];
-            int index = 0;
-            IGeometryFactory factory = FunctionsUtil.GetFactoryOrDefault(null);
-            foreach (ISegmentString ss in segStrings)
-            {
-                ILineString line = factory.CreateLineString(ss.Coordinates);
-                lines[index++] = line;
-            }
-            if (lines.Length == 1) 
-                return lines[0];
-            return factory.CreateMultiLineString(lines);
-        }
-
-        public static string ToString(IEnumerable<ISegmentString> segStrings)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (ISegmentString segStr in segStrings)
-                sb.AppendFormat("{0}\n", segStr);
-            return sb.ToString();
-        }
-
         ///<summary>
         /// Extracts all linear components from a given <see cref="IGeometry"/>
         /// to <see cref="ISegmentString"/>s.           
@@ -63,14 +33,45 @@ namespace NetTopologySuite.Noding
         /// <returns>a list of <see cref="ISegmentString"/>s.</returns>
         public static IList<ISegmentString> ExtractNodedSegmentStrings(IGeometry geom)
         {
-            IList<ISegmentString> segStr = new List<ISegmentString>();
-            IEnumerable<IGeometry> lines = LinearComponentExtracter.GetLines(geom);
+            var segStr = new List<ISegmentString>();
+            var lines = LinearComponentExtracter.GetLines(geom);
             foreach (IGeometry line in lines)
             {
                 Coordinate[] pts = line.Coordinates;
                 segStr.Add(new NodedSegmentString(pts, geom));
             }
             return segStr;
+        }
+
+        /// <summary>
+        /// Converts a collection of <see cref="ISegmentString"/>s into a <see cref="IGeometry"/>.
+        /// The geometry will be either a <see cref="ILineString"/> 
+        /// or a <see cref="IMultiLineString"/> (possibly empty).
+        /// </summary>
+        /// <param name="segStrings">A collection of <see cref="ISegmentString"/>.</param>
+        /// <param name="geomFact">A geometry factory</param>
+        /// <returns>A <see cref="ILineString"/> or a <see cref="IMultiLineString"/>.</returns>
+        public static IGeometry ToGeometry(IList<ISegmentString> segStrings, IGeometryFactory geomFact)
+        {
+            ILineString[] lines = new ILineString[segStrings.Count];
+            int index = 0;
+
+            foreach (ISegmentString ss in segStrings)
+            {
+                ILineString line = geomFact.CreateLineString(ss.Coordinates);
+                lines[index++] = line;
+            }
+            if (lines.Length == 1) 
+                return lines[0];
+            return geomFact.CreateMultiLineString(lines);
+        }
+
+        public static string ToString(IEnumerable<ISegmentString> segStrings)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (ISegmentString segStr in segStrings)
+                sb.AppendFormat("{0}\n", segStr);
+            return sb.ToString();
         }
     }
 }
