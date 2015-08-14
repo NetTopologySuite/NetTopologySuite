@@ -65,12 +65,30 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
             Assert.IsTrue(node.Coordinate.Equals2D(new Coordinate(2, 2)));
         }
 
-        private static KdTree<object> Build(string wkt)
+        public void testDistance()
+        {
+            var index = Build("MULTIPOINT ((0 0), (-.1 1), (.1 1))", 1.0);
+
+            var queryEnv = new Envelope(.1, 1.0, .1, 1.0);
+
+            var result = index.Query(queryEnv);
+            Assert.IsTrue(result.Count == 1);
+            var node = result.First();
+            Assert.IsTrue(node.Coordinate.Equals2D(new Coordinate(.1, 1)));
+        }
+
+        private static KdTree<object> Build(string wkt, double tolerance)
         {
             var geom = IOUtil.Read(wkt);
-            var index = new KdTree<object>(.001);
+            var index = new KdTree<object>(tolerance);
             geom.Apply(new TestCoordinateFilter<object>(index));
             return index;
+        }
+
+
+        private KdTree<object> Build(string wkt)
+        {
+            return Build(wkt, 0.001);
         }
 
         private class TestCoordinateFilter<T> : ICoordinateFilter where T : class
