@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 using NetTopologySuite.Index.KdTree;
 using NetTopologySuite.Tests.NUnit.Utilities;
@@ -74,18 +76,14 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
             Coordinate[] expectedCoord)
         {
             var index = Build(input, tolerance);
-            var result = index.Query(queryEnv);
+            var result = KdTree<object>.ExtractCoordinates(index.Query(queryEnv));
 
-            Assert.IsTrue(result.Count == expectedCoord.Length);
-            // TODO: make this order-independent by sorting first
-            
-            for (var i = 0; i < result.Count; i++)
-            {
-                var isFound = (result[i].Coordinate.Equals2D(expectedCoord[i]));
-                Assert.IsTrue(isFound, "Expected to find result point " + expectedCoord[i], isFound);
-            }
+            Array.Sort(result);
+            Array.Sort(expectedCoord);
+
+            var isMatch = CoordinateArrays.Equals(result, expectedCoord);
+            Assert.IsTrue(isMatch, "Expected results not found");
         }
-
 
         [Test]
         public void TestTolerance()

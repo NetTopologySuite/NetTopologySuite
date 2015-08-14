@@ -12,17 +12,8 @@ namespace Open.Topology.TestRunner.Functions
         {
             var index = Build(pts, tolerance);
             var result = index.Query(query.EnvelopeInternal);
-            var resultCoords = NodeCoords(result);
+            var resultCoords = KdTree<object>.ExtractCoordinates(result);
             return pts.Factory.CreateMultiPoint(resultCoords);
-        }
-
-        private static Coordinate[] NodeCoords(ICollection<KdNode<object>> result)
-        {
-            var coord = new Coordinate[result.Count];
-            var i = 0;
-            foreach (var kdNode in result)
-                coord[i++] = kdNode.Coordinate;
-            return coord;
         }
 
         private static KdTree<object> Build(IGeometry geom, double tolerance)

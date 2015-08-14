@@ -19,6 +19,23 @@ namespace NetTopologySuite.Index.KdTree
     public class KdTree<T>
         where T : class
     {
+        ///<summary>
+        /// Converts a collection of<see cref= "KdNode{T}" /> s to an array of { @link Coordinate}s.
+        /// </summary>
+        /// <param name="kdnodes">A collection of nodes<</param>
+        /// <returns>An array of the coordinates represented by the nodes</returns>
+        public static Coordinate[] ExtractCoordinates(ICollection<KdNode<T>> kdnodes)
+        {
+            var coord = new Coordinate[kdnodes.Count];
+            int i = 0;
+            foreach (var kdNode in kdnodes)
+            {
+                coord[i++] = kdNode.Coordinate;
+            }
+            return coord;
+        }
+
+
         private KdNode<T> _root;
 // ReSharper disable once UnusedField.Compiler
         private KdNode<T> _last = null;
@@ -193,10 +210,10 @@ namespace NetTopologySuite.Index.KdTree
         /// </summary>
         /// <param name="queryEnv">The range rectangle to query</param>
         /// <returns>A collection of the KdNodes found</returns>
-        public IList<KdNode<T>> Query(Envelope queryEnv)
+        public ICollection<KdNode<T>> Query(Envelope queryEnv)
         {
             KdNode<T> last = null;
-            var result = new List<KdNode<T>>();
+            var result = new Collection<KdNode<T>>();
             QueryNode(_root, _last, queryEnv, true, result);
             return result;
         }
