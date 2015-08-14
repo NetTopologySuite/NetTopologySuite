@@ -84,6 +84,32 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
+        /// Gets a geometry representing the diameter of the computed Minimum Bounding Circle.
+        /// </summary>
+        /// <returns>
+        /// <list type="Bullet">
+        /// <item>the diameter line of the Minimum Bounding Circle</item>
+        /// <item>an empty line if the input is empty</item>
+        /// <item>a Point if the input is a point</item>
+        /// </list>
+        /// </returns>
+        public IGeometry GetDiameter()
+        {
+            Compute();
+            switch (_extremalPts.Length)
+            {
+                case 0:
+                    return _input.Factory.CreateLineString((ICoordinateSequence)null);
+                case 1:
+                    return _input.Factory.CreatePoint(_centre);
+            }
+            //TODO: handle case of 3 extremal points, by computing a line from one of them through the centre point with len = 2*radius
+            Coordinate p0 = _extremalPts[0];
+            Coordinate p1 = _extremalPts[1];
+            return _input.Factory.CreateLineString(new Coordinate[] { p0, p1 });
+        }
+
+        /// <summary>
         /// Gets the extremal points which define the computed Minimum Bounding Circle.
         /// </summary>
         /// <remarks>
