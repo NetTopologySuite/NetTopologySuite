@@ -8,7 +8,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
 {
     public class KdTreeTest
     {
-        [TestAttribute]
+        [Test]
         public void TestSinglePoint()
         {
             var index = new KdTree<object>(.001);
@@ -65,14 +65,15 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
             Assert.IsTrue(node.Coordinate.Equals2D(new Coordinate(2, 2)));
         }
 
-        public void testDistance()
+        [Test]
+        public void TestTolerance()
         {
             var index = Build("MULTIPOINT ((0 0), (-.1 1), (.1 1))", 1.0);
 
-            var queryEnv = new Envelope(.1, 1.0, .1, 1.0);
+            var queryEnv = new Envelope(-9, 9, -9, 9);
 
             var result = index.Query(queryEnv);
-            Assert.IsTrue(result.Count == 1);
+            Assert.IsTrue(result.Count == 2);
             var node = result.First();
             Assert.IsTrue(node.Coordinate.Equals2D(new Coordinate(.1, 1)));
         }

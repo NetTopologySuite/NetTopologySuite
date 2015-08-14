@@ -117,6 +117,7 @@
       <Link>Properties\SharedAssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="Functions\DissolveFunctions.cs" />
+    <Compile Include="Functions\IndexFunctions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
