@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Polygonize;
 using NUnit.Framework;
@@ -10,21 +8,19 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
 {
     [TestFixtureAttribute]
-    public class PolygonizeTest
+    public class PolygonizeTest : GeometryTestCase
     {
-        private WKTReader reader = new WKTReader();
-
         [TestAttribute]
         public void Test1()
         {
-            DoTest(new String[] { "LINESTRING EMPTY", "LINESTRING EMPTY" },
+            CheckPolygonize(new String[] { "LINESTRING EMPTY", "LINESTRING EMPTY" },
               new String[] { });
         }
 
         [TestAttribute]
         public void Test2()
         {
-            DoTest(new String[]{
+            CheckPolygonize(new String[]{
                 "LINESTRING (100 180, 20 20, 160 20, 100 180)",
                 "LINESTRING (100 180, 80 60, 120 60, 100 180)",
             },
@@ -34,9 +30,10 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
             });
         }
 
-        public void test3()
+        [Test]
+        public void Test3()
         {
-            DoTest(new String[]{
+            CheckPolygonize(new String[]{
         "LINESTRING (0 0, 4 0)",
         "LINESTRING (4 0, 5 3)",
 "LINESTRING (5 3, 4 6, 6 6, 5 3)",
@@ -50,76 +47,113 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
 "POLYGON ((4 0, 5 3, 6 0, 4 0))"
     });
         }
-
-        /*
-                [TestAttribute]
-                public void Test2() {
-            doTest(new String[]{
-
-        "LINESTRING(20 20, 20 100)",
-        "LINESTRING  (20 100, 20 180, 100 180)",
-        "LINESTRING  (100 180, 180 180, 180 100)",
-        "LINESTRING  (180 100, 180 20, 100 20)",
-        "LINESTRING  (100 20, 20 20)",
-        "LINESTRING  (100 20, 20 100)",
-        "LINESTRING  (20 100, 100 180)",
-        "LINESTRING  (100 180, 180 100)",
-        "LINESTRING  (180 100, 100 20)"
-            },
-              new String[]{});
-          }
-        */
-
-        private void DoTest(String[] inputWKT, String[] expectedOutputWKT)
+        [Test]
+        public void TestPolygonal1()
         {
-            var polygonizer = new Polygonizer();
-            polygonizer.Add(ToGeometries(inputWKT));
-            Compare(ToGeometries(expectedOutputWKT), polygonizer.GetPolygons());
+            CheckPolygonize(true, new String[]{
+        "LINESTRING (100 100, 100 300, 300 300, 300 100, 100 100)",
+        "LINESTRING (150 150, 150 250, 250 250, 250 150, 150 150)"
+    },
+            new String[]{
+"POLYGON ((100 100, 100 300, 300 300, 300 100, 100 100), (150 150, 150 250, 250 250, 250 150, 150 150))"
+    });
+        }
+        [Test]
+        public void TestPolygonal2()
+        {
+            CheckPolygonize(true, new String[]{
+        "LINESTRING (100 100, 100 0, 0 0, 0 100, 100 100)" 
+            ,"LINESTRING (10 10, 10 30, 20 30)"
+            ,"LINESTRING (20 30, 30 30, 30 20)"
+            ,"LINESTRING (30 20, 30 10, 10 10)"
+            ,"LINESTRING (40 40, 40 20, 30 20)" 
+            ,"LINESTRING (30 20, 20 20, 20 30)" 
+            ,"LINESTRING (20 30, 20 40, 40 40))"
+    },
+            new String[]{
+"POLYGON ((0 0, 0 100, 100 100, 100 0, 0 0), (10 10, 30 10, 30 20, 40 20, 40 40, 20 40, 20 30, 10 30, 10 10))", 
+"POLYGON ((20 20, 20 30, 30 30, 30 20, 20 20))"
+    });
+        }
+        [Test]
+        public void TestPolygonalOuterOnly1()
+        {
+            CheckPolygonize(true, new String[] {
+        "LINESTRING (10 10, 10 20, 20 20)" 
+            ,"LINESTRING (20 20, 20 10)"
+            ,"LINESTRING (20 10, 10 10)"
+            ,"LINESTRING (20 20, 30 20, 30 10, 20 10)"
+    },
+            new String[]{
+"POLYGON ((20 20, 20 10, 10 10, 10 20, 20 20))"
+    });
+        }
+        [Test]
+        public void TestPolygonalOuterOnly2()
+        {
+            CheckPolygonize(true, new String[] {
+        "LINESTRING (100 400, 200 400, 200 300)" 
+            ,"LINESTRING (200 300, 150 300)"
+            ,"LINESTRING (150 300, 100 300, 100 400)"
+            ,"LINESTRING (200 300, 250 300, 250 200)"
+            ,"LINESTRING (250 200, 200 200)"
+            ,"LINESTRING (200 200, 150 200, 150 300)"
+            ,"LINESTRING (250 200, 300 200, 300 100, 200 100, 200 200)"
+    },
+            new String[]{
+        "POLYGON ((150 300, 100 300, 100 400, 200 400, 200 300, 150 300))"
+       ,"POLYGON ((200 200, 250 200, 300 200, 300 100, 200 100, 200 200))"
+    });
         }
 
-        private void Compare(ICollection<IGeometry> expectedGeometries,
-            ICollection<IGeometry> actualGeometries)
+        readonly String[] LINES_CHECKERBOARD = new String[] {
+      "LINESTRING (10 20, 20 20)", 
+      "LINESTRING (10 20, 10 30)",
+      "LINESTRING (20 10, 10 10, 10 20)", 
+      "LINESTRING (10 30, 20 30)", 
+      "LINESTRING (10 30, 10 40, 20 40)", 
+      "LINESTRING (30 10, 20 10)", 
+      "LINESTRING (20 20, 20 10)", 
+      "LINESTRING (20 20, 30 20)", 
+      "LINESTRING (20 30, 20 20)", 
+      "LINESTRING (20 30, 30 30)", 
+      "LINESTRING (20 40, 20 30)", 
+      "LINESTRING (20 40, 30 40)", 
+      "LINESTRING (40 20, 40 10, 30 10)", 
+      "LINESTRING (30 20, 30 10)", 
+      "LINESTRING (30 20, 40 20)", 
+      "LINESTRING (30 30, 30 20)", 
+      "LINESTRING (30 30, 40 30)", 
+      "LINESTRING (30 40, 30 30)", 
+      "LINESTRING (30 40, 40 40, 40 30)", 
+      "LINESTRING (40 30, 40 20)"
+  };
+
+        [Test]
+        public void TestPolygonalOuterOnlyCheckerboard()
         {
-            Assert.AreEqual(expectedGeometries.Count, actualGeometries.Count,
-                "Geometry count - expected " + expectedGeometries.Count
-        + " but actual was " + actualGeometries.Count
-        + " in " + actualGeometries);
-            foreach (var expectedGeometry in expectedGeometries)
-            {
-                Assert.IsTrue(Contains(actualGeometries, expectedGeometry),
-                    "Expected to find: " + expectedGeometry + " in Actual result:" + actualGeometries);
-            }
+            CheckPolygonize(true, LINES_CHECKERBOARD,
+            new String[]{
+        "POLYGON ((10 20, 20 20, 20 10, 10 10, 10 20))"
+        ,"POLYGON ((20 30, 10 30, 10 40, 20 40, 20 30))"
+        ,"POLYGON ((30 20, 20 20, 20 30, 30 30, 30 20))"
+        ,"POLYGON ((30 10, 30 20, 40 20, 40 10, 30 10))"
+        ,"POLYGON ((30 40, 40 40, 40 30, 30 30, 30 40))"
+    });
         }
 
-        private static bool Contains(IEnumerable<IGeometry> geometries, IGeometry g)
+        private void CheckPolygonize(String[] inputWKT, String[] expectedOutputWKT)
         {
-            foreach (var element in geometries)
-            {
-                if (element.EqualsNormalized(g))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            CheckPolygonize(false, inputWKT, expectedOutputWKT);
         }
 
-        private IList<IGeometry> ToGeometries(String[] inputWKT)
+        private void CheckPolygonize(bool extractOnlyPolygonal, String[] inputWKT, String[] expectedWKT)
         {
-            var geometries = new List<IGeometry>();
-            foreach (var geomWkt in inputWKT)
-            {
-                try
-                {
-                    geometries.Add(reader.Read(geomWkt));
-                }
-                catch (GeoAPI.IO.ParseException)
-                {
-                    NetTopologySuite.Utilities.Assert.ShouldNeverReachHere();
-                }
-            }
-
-            return geometries;
+            var polygonizer = new Polygonizer(extractOnlyPolygonal);
+            polygonizer.Add(ReadList(inputWKT));
+            var expected = ReadList(expectedWKT);
+            var actual = polygonizer.GetPolygons();
+            CheckEqual(expected, actual);
         }
     }
 }

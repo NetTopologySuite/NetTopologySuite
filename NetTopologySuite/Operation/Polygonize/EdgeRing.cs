@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
+using NetTopologySuite.IO;
 using NetTopologySuite.Planargraph;
 
 namespace NetTopologySuite.Operation.Polygonize
@@ -48,7 +50,7 @@ namespace NetTopologySuite.Operation.Polygonize
 
                 var testPt = CoordinateArrays.PointNotInList(teString.Coordinates, tryShellRing.Coordinates);
                 var isContained = CGAlgorithms.IsPointInRing(testPt, tryShellRing.Coordinates);
-                
+
                 // check if this new containing ring is smaller than the current minimum ring
                 if (isContained)
                 {
@@ -93,15 +95,46 @@ namespace NetTopologySuite.Operation.Polygonize
                     return true;
             return true;
         }
-        
+
+
+        /**
+         * Traverses a ring of DirectedEdges, accumulating them into a list.
+         * This assumes that all dangling directed edges have been removed
+         * from the graph, so that there is always a next dirEdge.
+         *
+         * @param startDE the DirectedEdge to start traversing at
+         * @return a List of DirectedEdges that form a ring
+         */
+
+        public static List<DirectedEdge> FindDirEdgesInRing(PolygonizeDirectedEdge startDE)
+        {
+            var de = startDE;
+            var edges = new List<DirectedEdge>();
+            do
+            {
+                edges.Add(de);
+                de = de.Next;
+                Utilities.Assert.IsTrue(de != null, "found null DE in ring");
+                Utilities.Assert.IsTrue(de == startDE || !de.IsInRing, "found DE already in ring");
+            } while (de != startDE);
+            return edges;
+        }
+
+
         private readonly IGeometryFactory _factory;
-        private readonly IList<DirectedEdge> _deList = new List<DirectedEdge>();
+        private readonly List<DirectedEdge> _deList = new List<DirectedEdge>();
+        private DirectedEdge lowestEdge = null;
 
         // cache the following data for efficiency
         private ILinearRing _ring;
 
         private Coordinate[] _ringPts;
         private List<ILinearRing> _holes;
+        private EdgeRing _shell;
+        private bool _isHole;
+        private bool _isProcessed;
+        private bool _isIncludedSet;
+        private bool _isIncluded = false;
 
         /// <summary>
         /// 
@@ -112,11 +145,25 @@ namespace NetTopologySuite.Operation.Polygonize
             _factory = factory;
         }
 
+        public void Build(PolygonizeDirectedEdge startDE)
+        {
+            PolygonizeDirectedEdge de = startDE;
+            do
+            {
+                Add(de);
+                de.Ring = this;
+                de = de.Next;
+                Utilities.Assert.IsTrue(de != null, "found null DE in ring");
+                Utilities.Assert.IsTrue(de == startDE || !de.IsInRing, "found DE already in ring");
+            } while (de != startDE);
+        }
+
+
         /// <summary>
         /// Adds a DirectedEdge which is known to form part of this ring.
         /// </summary>
         /// <param name="de">The DirectedEdge to add.</param>
-        public void Add(DirectedEdge de)
+        private void Add(DirectedEdge de)
         {
             _deList.Add(de);
         }
@@ -129,10 +176,18 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <returns><c>true</c> if this ring is a hole.</returns>
         public bool IsHole
         {
-            get
-            {
-                return CGAlgorithms.IsCCW(Ring.Coordinates);
-            }
+            get { return _isHole; }
+        }
+
+        ///<summary>
+        /// Computes whether this ring is a hole.
+        /// Due to the way the edges in the polyongization graph are linked,
+        /// a ring is a hole if it is oriented counter-clockwise.
+        /// </summary>
+        public void ComputeHole()
+        {
+            var ring = Ring;
+            _isHole = CGAlgorithms.IsCCW(ring.Coordinates);
         }
 
         /// <summary>
@@ -141,6 +196,19 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <param name="hole">The LinearRing forming the hole.</param>
         public void AddHole(ILinearRing hole)
         {
+            if (_holes == null)
+                _holes = new List<ILinearRing>();
+            _holes.Add(hole);
+        }
+
+        /// <summary>
+        /// Adds a hole to the polygon formed by this ring.
+        /// </summary>
+        /// <param name="holeER">the <see cref="ILinearRing"/> forming the hole.</param>
+        public void AddHole(EdgeRing holeER)
+        {
+            holeER.Shell = (this);
+            var hole = holeER.Ring;
             if (_holes == null)
                 _holes = new List<ILinearRing>();
             _holes.Add(hole);
@@ -158,7 +226,7 @@ namespace NetTopologySuite.Operation.Polygonize
                 {
                     holeLR = new ILinearRing[_holes.Count];
                     for (int i = 0; i < _holes.Count; i++)
-                        holeLR[i] = _holes[i];                    
+                        holeLR[i] = _holes[i];
                 }
                 IPolygon poly = _factory.CreatePolygon(_ring, holeLR);
                 return poly;
@@ -175,11 +243,26 @@ namespace NetTopologySuite.Operation.Polygonize
             {
                 Coordinate[] tempcoords = Coordinates;
                 tempcoords = null;
-                if (_ringPts.Length <= 3) 
+                if (_ringPts.Length <= 3)
                     return false;
                 ILinearRing tempring = Ring;
                 tempring = null;
                 return _ring.IsValid;
+            }
+        }
+
+        public bool IsIncludedSet
+        {
+            get { return _isIncludedSet; }
+        }
+
+        public bool IsIncluded
+        {
+            get { return _isIncluded; }
+            set
+            {
+                _isIncluded = value;
+                _isIncludedSet = true;
             }
         }
 
@@ -196,7 +279,7 @@ namespace NetTopologySuite.Operation.Polygonize
                     CoordinateList coordList = new CoordinateList();
                     foreach (DirectedEdge de in _deList)
                     {
-                        PolygonizeEdge edge = (PolygonizeEdge)de.Edge;
+                        PolygonizeEdge edge = (PolygonizeEdge) de.Edge;
                         AddEdge(edge.Line.Coordinates, de.EdgeDirection, coordList);
                     }
                     _ringPts = coordList.ToCoordinateArray();
@@ -230,14 +313,16 @@ namespace NetTopologySuite.Operation.Polygonize
         {
             get
             {
-                if (_ring != null) 
+                if (_ring != null)
                     return _ring;
                 Coordinate[] tempcoords = Coordinates;
                 try
                 {
                     _ring = _factory.CreateLinearRing(_ringPts);
                 }
-                catch (Exception) { }
+                catch (Exception)
+                {
+                }
                 return _ring;
             }
         }
@@ -253,13 +338,131 @@ namespace NetTopologySuite.Operation.Polygonize
             if (isForward)
             {
                 for (int i = 0; i < coords.Length; i++)
-                    coordList.Add(coords[i], false);                
+                    coordList.Add(coords[i], false);
             }
             else
             {
-                for (int i = coords.Length - 1; i >= 0; i--)                
-                    coordList.Add(coords[i], false);                
+                for (int i = coords.Length - 1; i >= 0; i--)
+                    coordList.Add(coords[i], false);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating the containing shell ring of a ring that has been determined to be a hole.
+        /// </summary>
+        public EdgeRing Shell
+        {
+            get { return IsHole ? _shell : this; }
+            private set { _shell = value; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this ring has a shell assigned to it.</summary>
+        public bool HasShell
+        {
+            get { return _shell != null; }
+        }
+
+
+        /**
+   * Tests whether this ring is an outer hole.
+   * A hole is an outer hole if it is not contained by a shell.
+   * 
+   * @return true if the ring is an outer hole.
+   */
+
+        public bool IsOuterHole
+        {
+            get
+            {
+                if (!_isHole) return false;
+                return !HasShell;
+            }
+        }
+
+        /**
+   * Tests whether this ring is an outer shell.
+   * 
+   * @return true if the ring is an outer shell.
+   */
+
+        public bool IsOuterShell
+        {
+            get { return OuterHole != null; }
+        }
+
+        public EdgeRing OuterHole
+        {
+            get
+            {
+                if (IsHole) return null;
+                /*
+           * A shell is an outer shell if any edge is also in an outer hole.
+           * A hole is an outer hole if it is not contained by a shell.
+           */
+                for (int i = 0; i < _deList.Count; i++)
+                {
+                    PolygonizeDirectedEdge de = (PolygonizeDirectedEdge) _deList[i];
+                    EdgeRing adjRing = ((PolygonizeDirectedEdge) de.Sym).Ring;
+                    if (adjRing.IsOuterHole) return adjRing;
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Updates the included status for currently non-included shells
+        /// based on whether they are adjacent to an included shell.
+        /// </summary>
+        public void updateIncluded()
+        {
+            if (IsHole) return;
+            for (int i = 0; i < _deList.Count; i++)
+            {
+                PolygonizeDirectedEdge de = (PolygonizeDirectedEdge) _deList[i];
+                EdgeRing adjShell = ((PolygonizeDirectedEdge) de.Sym).Ring.Shell;
+
+                if (adjShell != null && adjShell.IsIncludedSet)
+                {
+                    // adjacent ring has been processed, so set included to inverse of adjacent included
+                    IsIncluded = !adjShell.IsIncluded;
+                    return;
+                }
+            }
+        }
+
+        /**
+   * Gets a string representation of this object.
+   * 
+   * @return a string representing the object 
+   */
+
+        public override String ToString()
+        {
+            return WKTWriter.ToLineString(new CoordinateArraySequence(Coordinates));
+        }
+
+        ///Gets or sets a value indicating whether this ring has been processed
+        public bool IsProcessed
+        {
+            get { return _isProcessed; }
+            set { _isProcessed = true; }
+        }
+
+        /// <summary>
+        /// Compares EdgeRings based on their envelope,
+        /// using the standard lexicographic ordering.
+        /// This ordering is sufficient to make edge ring sorting deterministic.
+        /// </summary>
+        /// <author>mbdavis</author>
+        public class EnvelopeComparator : IComparer<EdgeRing>
+        {
+            public int Compare(EdgeRing r0, EdgeRing r1)
+            {
+                return r0.Ring.Envelope.CompareTo(r1.Ring.Envelope);
+
             }
         }
     }
 }
+
