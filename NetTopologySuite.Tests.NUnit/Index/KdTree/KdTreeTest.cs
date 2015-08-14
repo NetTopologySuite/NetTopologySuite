@@ -68,8 +68,8 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
                 "MULTIPOINT ( (2 2), (3 3) )");
         }
 
-        [Test, Ignore("Known to fail")]
-        public void TestToleranceFailure()
+        [Test]
+        public void TestTolerance()
         {
             TestQuery("MULTIPOINT ( (0 0), (-.1 1), (.1 1) )",
                 1,

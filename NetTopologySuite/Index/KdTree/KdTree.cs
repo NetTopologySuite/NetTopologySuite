@@ -103,6 +103,31 @@ namespace NetTopologySuite.Index.KdTree
                 return _root;
             }
 
+
+            var matchNode = FindBestMatchNode(p);
+            if (matchNode != null)
+            {
+                // point already in index - increment counter
+                matchNode.Increment();
+                return matchNode;
+            }
+
+            return InsertNew(p, data);
+        }
+
+        private KdNode<T> FindBestMatchNode(Coordinate p)
+        {
+            var queryEnv = new Envelope(p);
+            queryEnv.ExpandBy(_tolerance / 2);
+
+            var visitor = new BestMatchVisitor<T>(p, _tolerance);
+
+            Query(queryEnv, visitor);
+            return visitor.Node;
+
+        }
+        public KdNode<T> InsertNew(Coordinate p, T data)
+        {
             var currentNode = _root;
             var leafNode = _root;
             var isOddLevel = true;
@@ -303,5 +328,44 @@ namespace NetTopologySuite.Index.KdTree
                 _result.Add(node);
             }
         }
+
+        private class BestMatchVisitor<T> : IKdNodeVisitor<T> where T:class
+        {
+
+            private double tolerance;
+        private KdNode<T> matchNode = null;
+        private double matchDist = 0.0;
+        private Coordinate p;
+
+        public BestMatchVisitor(Coordinate p, double tolerance)
+        {
+            this.p = p;
+            this.tolerance = tolerance;
+        }
+
+        public KdNode<T> Node
+        {
+            get { return matchNode; }
+        }
+
+        public void Visit(KdNode<T> node)
+        {
+            var dist = p.Distance(node.Coordinate);
+            var isInTolerance = dist <= tolerance;
+            if (!isInTolerance) return;
+            var update = matchNode == null;
+            if (dist < matchDist) update = true;
+            // if distances are the same, record the lesser coordinate
+            if (matchNode != null && dist == matchDist
+                && node.Coordinate.CompareTo(matchNode.Coordinate) < 1)
+                update = true;
+
+            if (update)
+            {
+                matchNode = node;
+                matchDist = dist;
+            }
+        }
     }
+}
 }
