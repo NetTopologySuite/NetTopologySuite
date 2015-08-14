@@ -69,7 +69,9 @@ namespace NetTopologySuite.Operation.Polygonize
         private ICollection<IGeometry> _polyList;
 
         private bool _isCheckingRingsValid = true;
-        private readonly bool extractOnlyPolygonal;
+        private readonly bool _extractOnlyPolygonal;
+
+        private IGeometryFactory _geomFactory;
 
         /// <summary>
         /// Allows disabling the valid ring checking, 
@@ -101,7 +103,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <param name="extractOnlyPolygonal"><value>true</value> if only polygons which form a valid polygonal geometry are to be extracted</param>
         public Polygonizer(bool extractOnlyPolygonal)
         {
-            this.extractOnlyPolygonal = extractOnlyPolygonal;
+            this._extractOnlyPolygonal = extractOnlyPolygonal;
             _lineStringAdder = new LineStringAdder(this);
         }
 
@@ -136,6 +138,8 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <param name="line">The <see cref="ILineString"/> to add.</param>
         private void Add(ILineString line)
         {
+            // record the geometry factory for later use
+            _geomFactory = line.Factory;
             // create a new graph using the factory from the input Geometry
             if (_graph == null)
 				_graph = new PolygonizeGraph(line.Factory);
@@ -149,6 +153,24 @@ namespace NetTopologySuite.Operation.Polygonize
         {
             Polygonize();
             return _polyList;
+        }
+
+        /**
+          * Gets a geometry representing the polygons formed by the polygonization.
+          * If a valid polygonal geometry was extracted the result is a {@linkl Polygonal} geometry. 
+          * 
+          * @return a geometry containing the polygons
+          */
+        public IGeometry getGeometry()
+        {
+            if (_geomFactory == null) _geomFactory = new Geometries.GeometryFactory();
+            Polygonize();
+            if (_extractOnlyPolygonal)
+            {
+                return _geomFactory.BuildGeometry(_polyList);
+            }
+            // result may not be valid Polygonal, so return as a GeometryCollection
+            return _geomFactory.CreateGeometryCollection(Geometries.GeometryFactory.ToGeometryArray(_polyList));
         }
 
         /// <summary> 
@@ -209,7 +231,7 @@ namespace NetTopologySuite.Operation.Polygonize
             _shellList.Sort(new EdgeRing.EnvelopeComparator());
 
             var includeAll = true;
-            if (extractOnlyPolygonal)
+            if (_extractOnlyPolygonal)
             {
                 FindDisjointShells(_shellList);
                 includeAll = false;
