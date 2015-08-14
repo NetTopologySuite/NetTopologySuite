@@ -193,10 +193,10 @@ namespace NetTopologySuite.Index.KdTree
         /// </summary>
         /// <param name="queryEnv">The range rectangle to query</param>
         /// <returns>A collection of the KdNodes found</returns>
-        public ICollection<KdNode<T>> Query(Envelope queryEnv)
+        public IList<KdNode<T>> Query(Envelope queryEnv)
         {
             KdNode<T> last = null;
-            ICollection<KdNode<T>> result = new Collection<KdNode<T>>();
+            var result = new List<KdNode<T>>();
             QueryNode(_root, _last, queryEnv, true, result);
             return result;
         }

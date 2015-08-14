@@ -53,17 +53,39 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
         [Test]
         public void TestMultiplePoint()
         {
-            var index = Build("MULTIPOINT ((1 1), (2 2))");
-
-            var queryEnv = new Envelope(0, 10, 0, 10);
-
-            var result = index.Query(queryEnv);
-            Assert.AreEqual(2, result.Count, "2 != result.Count");
-            var node = result.First();
-            Assert.IsTrue(node.Coordinate.Equals2D(new Coordinate(1, 1)));
-            node = result.Last();
-            Assert.IsTrue(node.Coordinate.Equals2D(new Coordinate(2, 2)));
+            TestQuery(
+                ReadCoords(new [] { new[] { 1.0, 1.0 }, new[] { 2.0, 2.0 } }),
+                0,
+                new Envelope(0, 10, 0, 10),
+                ReadCoords(new [] { new[] { 1.0, 1.0 }, new[] { 2.0, 2.0 } }));
         }
+
+        [Test]
+        public void TestSubset()
+        {
+            TestQuery(
+                ReadCoords(new [] { new []{ 1.0, 1.0 }, new[] { 2.0, 2.0 }, new[] { 3.0, 3.0 }, new[] { 4.0, 4.0 } }),
+                0,
+                new Envelope(1.5, 3.4, 1.5, 3.5),
+                ReadCoords(new [] { new[] { 2.0, 2.0 }, new[] { 3.0, 3.0 } }));
+        }
+
+        private void TestQuery(Coordinate[] input, double tolerance, Envelope queryEnv,
+            Coordinate[] expectedCoord)
+        {
+            var index = Build(input, tolerance);
+            var result = index.Query(queryEnv);
+
+            Assert.IsTrue(result.Count == expectedCoord.Length);
+            // TODO: make this order-independent by sorting first
+            
+            for (var i = 0; i < result.Count; i++)
+            {
+                var isFound = (result[i].Coordinate.Equals2D(expectedCoord[i]));
+                Assert.IsTrue(isFound, "Expected to find result point " + expectedCoord[i], isFound);
+            }
+        }
+
 
         [Test]
         public void TestTolerance()
@@ -78,6 +100,15 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
             Assert.IsTrue(node.Coordinate.Equals2D(new Coordinate(.1, 1)));
         }
 
+        private KdTree<object> Build(Coordinate[] coords, double tolerance)
+        {
+            var index = new KdTree<object>(tolerance);
+            for (var i = 0; i < coords.Length; i++)
+                index.Insert(coords[i]);
+            return index;
+        }
+
+
         private static KdTree<object> Build(string wkt, double tolerance)
         {
             var geom = IOUtil.Read(wkt);
@@ -86,6 +117,16 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
             return index;
         }
 
+        private Coordinate[] ReadCoords(double[][] ords)
+        {
+            var coords = new Coordinate[ords.Length];
+            for (var i = 0; i < ords.Length; i++)
+            {
+                var c = new Coordinate(ords[i][0], ords[i][1]);
+                coords[i] = c;
+            }
+            return coords;
+        }
 
         private KdTree<object> Build(string wkt)
         {
