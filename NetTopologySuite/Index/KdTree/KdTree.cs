@@ -9,9 +9,10 @@ namespace NetTopologySuite.Index.KdTree
     /// An implementation of a 2-D KD-Tree. KD-trees provide fast range searching on point data.
     /// </summary>
     /// <remarks>
-    /// This implementation supports detecting and snapping points which are closer than a given
-    /// tolerance value. If the same point (up to tolerance) is inserted more than once a new node is
-    /// not created but the count of the existing node is incremented.
+    /// This implementation supports detecting and snapping points which are closer
+    /// than a given tolerance value. If the same point (up to tolerance) is inserted
+    /// more than once a new node isnot created but the count of the existing node
+    /// is incremented.
     /// </remarks>
     /// <typeparam name="T">The type of the user data object</typeparam>
     /// <author>David Skea</author>
@@ -52,8 +53,8 @@ namespace NetTopologySuite.Index.KdTree
         }
 
         /// <summary>
-        /// Creates a new instance of a KdTree, specifying a snapping distance tolerance.
-        /// Points which lie closer than the tolerance to a point already 
+        /// Creates a new instance of a KdTree with a snapping distance 
+        /// tolerance. Points which lie closer than the tolerance to a point already 
         /// in the tree will be treated as identical to the existing point.
         /// </summary>
         /// <param name="tolerance">The tolerance distance for considering two points equal</param>
@@ -110,8 +111,7 @@ namespace NetTopologySuite.Index.KdTree
             var isLessThan = true;
 
             /**
-             * Traverse the tree,
-             * first cutting the plane left-right (by X ordinate)
+             * Traverse the tree, first cutting the plane left-right (by X ordinate)
              * then top-bottom (by Y ordinate)
              */
             while (currentNode != _last)
