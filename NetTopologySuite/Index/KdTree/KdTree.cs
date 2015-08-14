@@ -163,7 +163,7 @@ namespace NetTopologySuite.Index.KdTree
         }
 
         private static void QueryNode(KdNode<T> currentNode,
-            Envelope queryEnv, bool odd, ICollection<KdNode<T>> result)
+            Envelope queryEnv, bool odd, IKdNodeVisitor<T> visitor)
         {
             if (currentNode == null)
                 return;
@@ -186,17 +186,18 @@ namespace NetTopologySuite.Index.KdTree
             bool searchLeft = min < discriminant;
             bool searchRight = discriminant <= max;
 
+            // search is computed via in-order traversal
             if (searchLeft)
             {
-                QueryNode(currentNode.Left, queryEnv, !odd, result);
+                QueryNode(currentNode.Left, queryEnv, !odd, visitor);
             }
             if (queryEnv.Contains(currentNode.Coordinate))
             {
-                result.Add(currentNode);
+                visitor.Visit(currentNode);
             }
             if (searchRight)
             {
-                QueryNode(currentNode.Right, queryEnv, !odd, result);
+                QueryNode(currentNode.Right, queryEnv, !odd, visitor);
             }
 
         }
@@ -205,12 +206,21 @@ namespace NetTopologySuite.Index.KdTree
         /// Performs a range search of the points in the index. 
         /// </summary>
         /// <param name="queryEnv">The range rectangle to query</param>
-        /// <returns>A collection of the KdNodes found</returns>
-        public ICollection<KdNode<T>> Query(Envelope queryEnv)
+        /// <param name="visitor"></param>
+        public void Query(Envelope queryEnv, IKdNodeVisitor<T> visitor)
         {
-            KdNode<T> last = null;
-            var result = new Collection<KdNode<T>>();
-            QueryNode(_root, queryEnv, true, result);
+            QueryNode(_root, queryEnv, true, visitor);
+        }
+
+        /// <summary>
+        /// Performs a range search of the points in the index. 
+        /// </summary>
+        /// <param name="queryEnv">The range rectangle to query</param>
+        /// <returns>A collection of the KdNodes found</returns>
+        public IList<KdNode<T>> Query(Envelope queryEnv)
+        {
+            var result = new List<KdNode<T>>();
+            QueryNode(_root, queryEnv, true, new KdNodeVisitor<T>(result));
             return result;
         }
 
@@ -219,9 +229,9 @@ namespace NetTopologySuite.Index.KdTree
         /// </summary>
         /// <param name="queryEnv">The range rectangle to query</param>
         /// <param name="result">A collection to accumulate the result nodes into</param>
-        public void Query(Envelope queryEnv, ICollection<KdNode<T>> result)
+        public void Query(Envelope queryEnv, IList<KdNode<T>> result)
         {
-            QueryNode(_root, queryEnv, true, result);
+            QueryNode(_root, queryEnv, true, new KdNodeVisitor<T>(result));
         }
 
         private static void NearestNeighbor(KdNode<T> currentNode,
@@ -280,5 +290,18 @@ namespace NetTopologySuite.Index.KdTree
             return result;
         }
 
+        private class KdNodeVisitor<T> : IKdNodeVisitor<T> where T:class
+        {
+            private readonly IList<KdNode<T>> _result;
+
+            public KdNodeVisitor(IList<KdNode<T>> result)
+            {
+                _result = result;
+            }
+            public void Visit(KdNode<T> node)
+            {
+                _result.Add(node);
+            }
+        }
     }
 }

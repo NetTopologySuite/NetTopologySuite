@@ -77,6 +77,25 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
                 "MULTIPOINT ( (0 0), (-.1 1) )");
         }
 
+        [Test]
+        public void TestTolerance2()
+        {
+            TestQuery("MULTIPOINT ((10 60), (20 60), (30 60), (30 63))",
+                9,
+                new Envelope(0, 99, 0, 99),
+                "MULTIPOINT ((10 60), (20 60), (30 60))");
+        }
+
+        [Test]
+        public void TestTolerance2_perturbedY()
+        {
+            // tree build is incorrect - node within tolerance of point is not found on insert
+            TestQuery("MULTIPOINT ((10 60), (20 61), (30 60), (30 63))",
+                9,
+                new Envelope(0, 99, 0, 99),
+                "MULTIPOINT ((10 60), (20 60), (30 60))");
+        }
+
         private void TestQuery(string wktInput, double tolerance,
             Envelope queryEnv, string wktExpected)
         {

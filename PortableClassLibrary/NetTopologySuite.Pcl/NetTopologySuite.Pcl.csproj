@@ -89,6 +89,9 @@
     <Compile Include="..\..\NetTopologySuite\Features\IFeature.cs">
       <Link>Features\IFeature.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\KdTree\IKdNodeVisitor.cs">
+      <Link>Index\KdTree\IKdNodeVisitor.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\IO\WKTFileReader.cs">
       <Link>IO\WKTFileReader.cs</Link>
     </Compile>
