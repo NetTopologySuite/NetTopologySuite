@@ -18,9 +18,14 @@ namespace Open.Topology.TestRunner.Functions
             return FontGlyph(g, text, new Font(FontGlyphReader.FontSerif, DEFAULT_POINTSIZE, FontStyle.Regular));
         }
 
-        public static IGeometry fontGlyphSerifPointSize(IGeometry g, String text, int pointSize)
+        public static IGeometry FontGlyphSerifPointSize(IGeometry g, String text, int pointSize)
         {
             return FontGlyph(g, text, new Font(FontGlyphReader.FontSerif, pointSize, FontStyle.Regular));
+        }
+
+        public static IGeometry FontGlyph(IGeometry g, String text, String fontName)
+        {
+            return FontGlyph(g, text, new Font(fontName, DEFAULT_POINTSIZE, FontStyle.Regular));
         }
 
         public static IGeometry FontGlyphSansSerif(IGeometry g, String text)
