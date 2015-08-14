@@ -69,14 +69,9 @@ namespace Open.Topology.TestRunner.Functions
             get { return returnType; }
         }
 
-        public bool HasGeometryParameter
+        public bool IsBinary
         {
             get { return parameterTypes.Length > 0 && parameterTypes[0] is IGeometry; }
-        }
-
-        public int AttributeParamOffset
-        {
-            get { return HasGeometryParameter ? 1 : 0; }
         }
 
         public String Signature

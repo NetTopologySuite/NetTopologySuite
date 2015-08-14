@@ -39,12 +39,7 @@ namespace Open.Topology.TestRunner.Functions
         /// <summary>
         /// Gets a value indicating that a parameter is a geometry
         /// </summary>
-        bool HasGeometryParameter { get; }
-
-        /// <summary>
-        /// Gets the offset to the non-geometry parameters
-        /// </summary>
-        int AttributeParamOffset { get; }
+        bool IsBinary { get; }
 
         /// <summary>
         /// Gets a string representing the signature of this function.
