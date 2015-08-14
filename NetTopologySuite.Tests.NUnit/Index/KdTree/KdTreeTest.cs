@@ -55,21 +55,17 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
         [Test]
         public void TestMultiplePoint()
         {
-            TestQuery(
-                ReadCoords(new [] { new[] { 1.0, 1.0 }, new[] { 2.0, 2.0 } }),
-                0,
+            TestQuery("MULTIPOINT ( (1 1), (2 2) )", 0,
                 new Envelope(0, 10, 0, 10),
-                ReadCoords(new [] { new[] { 1.0, 1.0 }, new[] { 2.0, 2.0 } }));
+                "MULTIPOINT ( (1 1), (2 2) )");
         }
 
         [Test]
         public void TestSubset()
         {
-            TestQuery(
-                ReadCoords(new [] { new []{ 1.0, 1.0 }, new[] { 2.0, 2.0 }, new[] { 3.0, 3.0 }, new[] { 4.0, 4.0 } }),
-                0,
+            TestQuery("MULTIPOINT ( (1 1), (2 2), (3 3), (4 4) )", 0,
                 new Envelope(1.5, 3.4, 1.5, 3.5),
-                ReadCoords(new [] { new[] { 2.0, 2.0 }, new[] { 3.0, 3.0 } }));
+                "MULTIPOINT ( (2 2), (3 3) )");
         }
 
         [Test, Ignore("Known to fail")]
@@ -81,10 +77,19 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
                 "MULTIPOINT ( (0 0), (-.1 1) )");
         }
 
-        private void TestQuery(Coordinate[] input, double tolerance, Envelope queryEnv,
+        private void TestQuery(string wktInput, double tolerance,
+            Envelope queryEnv, string wktExpected)
+        {
+            var index = Build(wktInput, tolerance);
+            TestQuery(
+                index,
+                queryEnv,
+                IOUtil.Read(wktExpected).Coordinates);
+        }
+
+        private void TestQuery(KdTree<object> index, Envelope queryEnv,
             Coordinate[] expectedCoord)
         {
-            var index = Build(input, tolerance);
             var result = KdTree<object>.ToCoordinates(index.Query(queryEnv));
 
             Array.Sort(result);
@@ -98,33 +103,13 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
             Assert.IsTrue(isMatch, "Expected result coordinates not found");
         }
 
-        private void TestQuery(string wktInput, double tolerance,
-            Envelope queryEnv, string wktExpected)
-        {
-            TestQuery(
-                IOUtil.Read(wktInput).Coordinates,
-                tolerance,
-                queryEnv,
-                IOUtil.Read(wktExpected).Coordinates);
-        }
-
-        private KdTree<object> Build(Coordinate[] coords, double tolerance)
+        private KdTree<object> Build(string wktInput, double tolerance)
         {
             var index = new KdTree<object>(tolerance);
+            var coords = IOUtil.Read(wktInput).Coordinates;
             for (var i = 0; i < coords.Length; i++)
                 index.Insert(coords[i]);
             return index;
-        }
-
-        private Coordinate[] ReadCoords(double[][] ords)
-        {
-            var coords = new Coordinate[ords.Length];
-            for (var i = 0; i < ords.Length; i++)
-            {
-                var c = new Coordinate(ords[i][0], ords[i][1]);
-                coords[i] = c;
-            }
-            return coords;
         }
 
         private class TestCoordinateFilter<T> : ICoordinateFilter where T : class

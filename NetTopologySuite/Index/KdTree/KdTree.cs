@@ -38,8 +38,6 @@ namespace NetTopologySuite.Index.KdTree
 
 
         private KdNode<T> _root;
-// ReSharper disable once UnusedField.Compiler
-        private KdNode<T> _last = null;
         private long _numberOfNodes;
         private readonly double _tolerance;
 
@@ -114,7 +112,7 @@ namespace NetTopologySuite.Index.KdTree
              * Traverse the tree, first cutting the plane left-right (by X ordinate)
              * then top-bottom (by Y ordinate)
              */
-            while (currentNode != _last)
+            while (currentNode != null)
             {
                 // test if point is already a node
                 if (currentNode != null)
@@ -164,12 +162,10 @@ namespace NetTopologySuite.Index.KdTree
             return node;
         }
 
-        private static void QueryNode(KdNode<T> currentNode, KdNode<T> bottomNode,
+        private static void QueryNode(KdNode<T> currentNode,
             Envelope queryEnv, bool odd, ICollection<KdNode<T>> result)
         {
             if (currentNode == null)
-                return;
-            if (currentNode == bottomNode)
                 return;
 
             double min;
@@ -192,7 +188,7 @@ namespace NetTopologySuite.Index.KdTree
 
             if (searchLeft)
             {
-                QueryNode(currentNode.Left, bottomNode, queryEnv, !odd, result);
+                QueryNode(currentNode.Left, queryEnv, !odd, result);
             }
             if (queryEnv.Contains(currentNode.Coordinate))
             {
@@ -200,7 +196,7 @@ namespace NetTopologySuite.Index.KdTree
             }
             if (searchRight)
             {
-                QueryNode(currentNode.Right, bottomNode, queryEnv, !odd, result);
+                QueryNode(currentNode.Right, queryEnv, !odd, result);
             }
 
         }
@@ -214,7 +210,7 @@ namespace NetTopologySuite.Index.KdTree
         {
             KdNode<T> last = null;
             var result = new Collection<KdNode<T>>();
-            QueryNode(_root, _last, queryEnv, true, result);
+            QueryNode(_root, queryEnv, true, result);
             return result;
         }
 
@@ -225,17 +221,15 @@ namespace NetTopologySuite.Index.KdTree
         /// <param name="result">A collection to accumulate the result nodes into</param>
         public void Query(Envelope queryEnv, ICollection<KdNode<T>> result)
         {
-            QueryNode(_root, _last, queryEnv, true, result);
+            QueryNode(_root, queryEnv, true, result);
         }
 
-        private static void NearestNeighbor(KdNode<T> currentNode, KdNode<T> bottomNode,
+        private static void NearestNeighbor(KdNode<T> currentNode,
             Coordinate queryCoordinate, ref KdNode<T> closestNode, ref double closestDistanceSq)
         {
             while (true)
             {
                 if (currentNode == null)
-                    return;
-                if (currentNode == bottomNode)
                     return;
 
 
@@ -261,7 +255,7 @@ namespace NetTopologySuite.Index.KdTree
 
                 if (searchLeft)
                 {
-                    NearestNeighbor(currentNode.Left, bottomNode, queryCoordinate, ref closestNode,
+                    NearestNeighbor(currentNode.Left, queryCoordinate, ref closestNode,
                         ref closestDistanceSq);
                 }
 
@@ -282,7 +276,7 @@ namespace NetTopologySuite.Index.KdTree
         {
             KdNode<T> result = null;
             var closestDistSq = double.MaxValue;
-            NearestNeighbor(_root, _last, coord, ref result, ref closestDistSq);
+            NearestNeighbor(_root, coord, ref result, ref closestDistSq);
             return result;
         }
 
