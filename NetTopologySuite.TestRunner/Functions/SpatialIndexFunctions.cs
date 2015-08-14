@@ -3,7 +3,7 @@ using NetTopologySuite.Index.KdTree;
 
 namespace Open.Topology.TestRunner.Functions
 {
-    public class IndexFunctions
+    public class SpatialIndexFunctions
     {
         public static IGeometry KdTree(IGeometry pts, IGeometry query, double tolerance)
         {
