@@ -76,7 +76,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
             Coordinate[] expectedCoord)
         {
             var index = Build(input, tolerance);
-            var result = KdTree<object>.ExtractCoordinates(index.Query(queryEnv));
+            var result = KdTree<object>.ToCoordinates(index.Query(queryEnv));
 
             Array.Sort(result);
             Array.Sort(expectedCoord);

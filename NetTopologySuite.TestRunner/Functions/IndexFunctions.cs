@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
+﻿using GeoAPI.Geometries;
 using NetTopologySuite.Index.KdTree;
 
 namespace Open.Topology.TestRunner.Functions
@@ -12,7 +9,7 @@ namespace Open.Topology.TestRunner.Functions
         {
             var index = Build(pts, tolerance);
             var result = index.Query(query.EnvelopeInternal);
-            var resultCoords = KdTree<object>.ExtractCoordinates(result);
+            var resultCoords = KdTree<object>.ToCoordinates(result);
             return pts.Factory.CreateMultiPoint(resultCoords);
         }
 

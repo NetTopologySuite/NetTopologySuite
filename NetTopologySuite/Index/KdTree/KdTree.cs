@@ -20,11 +20,11 @@ namespace NetTopologySuite.Index.KdTree
         where T : class
     {
         ///<summary>
-        /// Converts a collection of<see cref= "KdNode{T}" /> s to an array of { @link Coordinate}s.
+        /// Converts a collection of<see cref= "KdNode{T}" /> s to an array of <see cref="Coordinate"/>s.
         /// </summary>
-        /// <param name="kdnodes">A collection of nodes<</param>
+        /// <param name="kdnodes">A collection of nodes</param>
         /// <returns>An array of the coordinates represented by the nodes</returns>
-        public static Coordinate[] ExtractCoordinates(ICollection<KdNode<T>> kdnodes)
+        public static Coordinate[] ToCoordinates(ICollection<KdNode<T>> kdnodes)
         {
             var coord = new Coordinate[kdnodes.Count];
             int i = 0;
