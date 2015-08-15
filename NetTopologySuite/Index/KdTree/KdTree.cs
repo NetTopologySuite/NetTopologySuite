@@ -143,12 +143,9 @@ namespace NetTopologySuite.Index.KdTree
         /// </returns>
         private KdNode<T> FindBestMatchNode(Coordinate p)
         {
-            var queryEnv = new Envelope(p);
-            queryEnv.ExpandBy(_tolerance / 2);
-
             var visitor = new BestMatchVisitor<T>(p, _tolerance);
 
-            Query(queryEnv, visitor);
+            Query(visitor.QueryEnvelope(), visitor);
             return visitor.Node;
 
         }
@@ -371,7 +368,7 @@ namespace NetTopologySuite.Index.KdTree
         private class BestMatchVisitor<T> : IKdNodeVisitor<T> where T:class
         {
 
-            private double tolerance;
+            private readonly double tolerance;
         private KdNode<T> matchNode = null;
         private double matchDist = 0.0;
         private Coordinate p;
@@ -387,7 +384,14 @@ namespace NetTopologySuite.Index.KdTree
             get { return matchNode; }
         }
 
-        public void Visit(KdNode<T> node)
+            public Envelope QueryEnvelope()
+            {
+                var queryEnv = new Envelope(p);
+                queryEnv.ExpandBy(tolerance / 2);
+                return queryEnv;
+            }
+
+            public void Visit(KdNode<T> node)
         {
             var dist = p.Distance(node.Coordinate);
             var isInTolerance = dist <= tolerance;
