@@ -110,17 +110,20 @@ namespace NetTopologySuite.Index.KdTree
             }
 
             /**
-             * Check if the point is already in the tree up to tolerance
+             * Check if the point is already in the tree, up to tolerance
              */
-            var matchNode = FindBestMatchNode(p);
-            if (matchNode != null)
+            if (_tolerance > 0)
             {
-                // point already in index - increment counter
-                matchNode.Increment();
-                return matchNode;
+                var matchNode = FindBestMatchNode(p);
+                if (matchNode != null)
+                {
+                    // point already in index - increment counter
+                    matchNode.Increment();
+                    return matchNode;
+                }
             }
 
-            return InsertNew(p, data);
+            return InsertExact(p, data);
         }
 
         /// <summary>
@@ -162,7 +165,7 @@ namespace NetTopologySuite.Index.KdTree
         /// <item>The created node</item>
         /// </list>
         /// </returns>
-        public KdNode<T> InsertNew(Coordinate p, T data)
+        public KdNode<T> InsertExact(Coordinate p, T data)
         {
             var currentNode = _root;
             var leafNode = _root;
@@ -389,12 +392,15 @@ namespace NetTopologySuite.Index.KdTree
             var dist = p.Distance(node.Coordinate);
             var isInTolerance = dist <= tolerance;
             if (!isInTolerance) return;
-            var update = matchNode == null;
-            if (dist < matchDist) update = true;
-            // if distances are the same, record the lesser coordinate
-            if (matchNode != null && dist == matchDist
-                && node.Coordinate.CompareTo(matchNode.Coordinate) < 1)
+            var update = false;
+            if (matchNode == null
+                || dist < matchDist
+                // if distances are the same, record the lesser coordinate
+                || (matchNode != null && dist == matchDist
+                    && node.Coordinate.CompareTo(matchNode.Coordinate) < 1))
+            {
                 update = true;
+            }
 
             if (update)
             {
