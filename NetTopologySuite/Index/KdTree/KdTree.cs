@@ -37,17 +37,6 @@ namespace NetTopologySuite.Index.KdTree
             return ToCoordinates(kdnodes, false);
         }
 
-        /**
-         * Converts a collection of {@link KdNode}s 
-         * to an array of {@link Coordinate}s,
-         * specifying whether repeated nodes should be represented
-         * by multiple coordinates.
-         * 
-         * @param kdnodes a collection of nodes
-         * @param includeRepeated true if repeated nodes should 
-         *   be included multiple times
-         * @return an array of the coordinates represented by the nodes
-         */
         ///<summary>
         /// Converts a collection of <see cref="KdNode{T}"/>{@link KdNode}s 
         /// to an array of <see cref="Coordinate"/>s,
@@ -140,7 +129,8 @@ namespace NetTopologySuite.Index.KdTree
             }
 
             /**
-             * Check if the point is already in the tree, up to tolerance
+             * Check if the point is already in the tree, up to tolerance.
+             * If tolerance is zero, this phase of the insertion can be skipped.
              */
             if (_tolerance > 0)
             {
