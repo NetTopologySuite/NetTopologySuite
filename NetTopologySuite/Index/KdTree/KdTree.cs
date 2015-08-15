@@ -407,7 +407,7 @@ namespace NetTopologySuite.Index.KdTree
             public Envelope QueryEnvelope()
             {
                 var queryEnv = new Envelope(p);
-                queryEnv.ExpandBy(tolerance / 2);
+                queryEnv.ExpandBy(tolerance);
                 return queryEnv;
             }
 
