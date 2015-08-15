@@ -2,6 +2,7 @@ using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
@@ -184,9 +185,22 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, actualValue);
         }
 
-        private void AssertAreEqualExact(Geometry expectedValue, Geometry actualValue)
+        private void AssertAreEqualExact(IGeometry expectedValue, IGeometry actualValue)
         {
             Assert.IsTrue(actualValue.EqualsExact(expectedValue), "Expected " + expectedValue + " but encountered " + actualValue);
         }
+
+        [TestAttribute]
+        public void TestNormalizePackedCoordinateSequence()
+        {
+            var pcsFactory = new GeometryFactory(PackedCoordinateSequenceFactory.DoubleFactory);
+            var pcsReader = new WKTReader(pcsFactory);
+            var geom = pcsReader.Read("LINESTRING (100 100, 0 0)");
+            geom.Normalize();
+            // force PackedCoordinateSequence to be copied with empty coordinate cache
+            var clone = (IGeometry) geom.Clone();
+            AssertAreEqualExact(geom, clone);
+        }
+
     }
 }

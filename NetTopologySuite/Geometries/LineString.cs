@@ -406,7 +406,7 @@ namespace NetTopologySuite.Geometries
                 if (!_points.GetCoordinate(i).Equals(_points.GetCoordinate(j)))
                 {
                     if (_points.GetCoordinate(i).CompareTo(_points.GetCoordinate(j)) > 0)
-                        CoordinateArrays.Reverse(Coordinates);
+                        CoordinateSequences.Reverse(_points);
                     return;
                 }
             }
