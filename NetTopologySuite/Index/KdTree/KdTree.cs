@@ -37,6 +37,27 @@ namespace NetTopologySuite.Index.KdTree
             return ToCoordinates(kdnodes, false);
         }
 
+        /**
+         * Converts a collection of {@link KdNode}s 
+         * to an array of {@link Coordinate}s,
+         * specifying whether repeated nodes should be represented
+         * by multiple coordinates.
+         * 
+         * @param kdnodes a collection of nodes
+         * @param includeRepeated true if repeated nodes should 
+         *   be included multiple times
+         * @return an array of the coordinates represented by the nodes
+         */
+        ///<summary>
+        /// Converts a collection of <see cref="KdNode{T}"/>{@link KdNode}s 
+        /// to an array of <see cref="Coordinate"/>s,
+        /// specifying whether repeated nodes should be represented
+        /// by multiple coordinates.
+        /// </summary>
+        /// <param name="kdnodes">a collection of nodes</param>
+        /// <param name="includeRepeated">true if repeated nodes should 
+        /// be included multiple times</param>
+        /// <returns>An array of the coordinates represented by the nodes</returns>
         public static Coordinate[] ToCoordinates(ICollection<KdNode<T>>  kdnodes, bool includeRepeated)
         {
             var coord = new CoordinateList();
