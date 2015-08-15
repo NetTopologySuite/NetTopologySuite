@@ -147,7 +147,7 @@ namespace NetTopologySuite.Index.Strtree
             return CreateHigherLevels(parentBoundables, level + 1);
         }
 
-        protected AbstractNode<T, TItem> Root
+        public AbstractNode<T, TItem> Root
         {
             get
             {

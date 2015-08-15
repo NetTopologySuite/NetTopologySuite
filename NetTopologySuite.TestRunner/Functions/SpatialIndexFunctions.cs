@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Index.KdTree;
 using NetTopologySuite.Index.Quadtree;
@@ -42,6 +43,32 @@ namespace Open.Topology.TestRunner.Functions
             public void Filter(IGeometry geom)
             {
                 DoFilter(geom);
+            }
+        }
+
+        public static IGeometry STRtreeBounds(IGeometry geoms)
+        {
+            var index = BuildSTRtree(geoms);
+            var bounds = new List<IGeometry>();
+            addBounds(index.Root, bounds, geoms.Factory);
+            return geoms.Factory.BuildGeometry(bounds);
+        }
+
+        private static void addBounds(IBoundable<Envelope, IGeometry> bnd, List<IGeometry>  bounds,
+            IGeometryFactory factory)
+        {
+            // don't include bounds of leaf nodes
+            if (!(bnd is AbstractNode<Envelope, IGeometry>)) return;
+
+            var env = (Envelope)bnd.Bounds;
+            bounds.Add(factory.ToGeometry(env));
+            if (bnd is AbstractNode<Envelope, IGeometry>) {
+                var node = (AbstractNode<Envelope, IGeometry>)bnd;
+                var children = node.ChildBoundables;
+                foreach (var child in children)
+                {
+                    addBounds(child, bounds, factory);
+                }
             }
         }
 
