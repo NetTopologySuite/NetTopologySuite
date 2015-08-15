@@ -109,7 +109,9 @@ namespace NetTopologySuite.Index.KdTree
                 return _root;
             }
 
-
+            /**
+             * Check if the point is already in the tree up to tolerance
+             */
             var matchNode = FindBestMatchNode(p);
             if (matchNode != null)
             {
@@ -121,6 +123,21 @@ namespace NetTopologySuite.Index.KdTree
             return InsertNew(p, data);
         }
 
+        /// <summary>
+        /// Finds the node in the tree which is the best match for a point
+        /// being inserted.
+        /// The match is made deterministic by returning the lowest of any nodes which
+        /// lie the same distance from the point.
+        /// There may be no match if the point is not within the distance tolerance of any
+        /// existing node.
+        /// </summary>
+        /// <param name="p">The point being inserted</param>
+        /// <returns>
+        /// <list type="Bullet">
+        /// <item>the best matching node</item>
+        /// <item>null if no match was found</item>
+        /// </list>
+        /// </returns>
         private KdNode<T> FindBestMatchNode(Coordinate p)
         {
             var queryEnv = new Envelope(p);
@@ -132,6 +149,19 @@ namespace NetTopologySuite.Index.KdTree
             return visitor.Node;
 
         }
+
+        /// <summary>
+        /// Inserts a point known to be beyond the distance tolerance of any existing node.
+        /// The point is inserted at the bottom of the exact splitting path, 
+        /// so that tree shape is deterministic.
+        /// </summary>
+        /// <param name="p">The point to insert</param>
+        /// <returns>
+        /// <list type="Bullet">
+        /// <item>The data for the point</item>
+        /// <item>The created node</item>
+        /// </list>
+        /// </returns>
         public KdNode<T> InsertNew(Coordinate p, T data)
         {
             var currentNode = _root;
@@ -145,7 +175,7 @@ namespace NetTopologySuite.Index.KdTree
              */
             while (currentNode != null)
             {
-                // test if point is already a node
+                // test if point is already a node (not strictly necessary)
                 if (currentNode != null)
                 {
                     var isInTolerance = p.Distance(currentNode.Coordinate) <= _tolerance;
