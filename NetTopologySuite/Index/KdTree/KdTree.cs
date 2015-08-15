@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Index.KdTree
 {
@@ -33,13 +34,21 @@ namespace NetTopologySuite.Index.KdTree
         /// <returns>An array of the coordinates represented by the nodes</returns>
         public static Coordinate[] ToCoordinates(ICollection<KdNode<T>> kdnodes)
         {
-            var coord = new Coordinate[kdnodes.Count];
-            int i = 0;
-            foreach (var kdNode in kdnodes)
+            return ToCoordinates(kdnodes, false);
+        }
+
+        public static Coordinate[] ToCoordinates(ICollection<KdNode<T>>  kdnodes, bool includeRepeated)
+        {
+            var coord = new CoordinateList();
+            foreach (var node in kdnodes)
             {
-                coord[i++] = kdNode.Coordinate;
+                var count = includeRepeated ? node.Count : 1;
+                for (var i = 0; i < count; i++)
+                {
+                    coord.Add(node.Coordinate, true);
+                }
             }
-            return coord;
+            return coord.ToCoordinateArray();
         }
 
 

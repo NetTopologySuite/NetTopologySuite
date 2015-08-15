@@ -89,12 +89,21 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
         [Test]
         public void TestTolerance2_perturbedY()
         {
-            // tree build is incorrect - node within tolerance of point is not found on insert
             TestQuery("MULTIPOINT ((10 60), (20 61), (30 60), (30 63))",
                 9,
                 new Envelope(0, 99, 0, 99),
                 "MULTIPOINT ((10 60), (20 61), (30 60))");
         }
+
+        [Test]
+        public void TestSnapToNearest()
+        {
+            TestQueryRepeated("MULTIPOINT ( (10 60), (20 60), (16 60))",
+                5,
+                new Envelope(0, 99, 0, 99),
+                "MULTIPOINT ( (10 60), (20 60), (20 60))");
+        }
+
 
         private void TestQuery(string wktInput, double tolerance,
             Envelope queryEnv, string wktExpected)
@@ -102,7 +111,17 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
             var index = Build(wktInput, tolerance);
             TestQuery(
                 index,
-                queryEnv,
+                queryEnv, false,
+                IOUtil.Read(wktExpected).Coordinates);
+        }
+
+        private void TestQueryRepeated(String wktInput, double tolerance,
+            Envelope queryEnv, String wktExpected)
+        {
+            var index = Build(wktInput, tolerance);
+            TestQuery(
+                index,
+                queryEnv, true,
                 IOUtil.Read(wktExpected).Coordinates);
         }
 
@@ -116,6 +135,22 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
 
             Assert.IsTrue(result.Length == expectedCoord.Length, 
                           "Result count = {0}, expected count = {1}", 
+                          result.Length, expectedCoord.Length);
+
+            var isMatch = CoordinateArrays.Equals(result, expectedCoord);
+            Assert.IsTrue(isMatch, "Expected result coordinates not found");
+        }
+
+        private void TestQuery(KdTree<object> index, Envelope queryEnv, 
+            bool includeRepeated, Coordinate[] expectedCoord)
+        {
+            var result = KdTree<object>.ToCoordinates(index.Query(queryEnv), includeRepeated);
+
+            Array.Sort(result);
+            Array.Sort(expectedCoord);
+
+            Assert.IsTrue(result.Length == expectedCoord.Length,
+                          "Result count = {0}, expected count = {1}",
                           result.Length, expectedCoord.Length);
 
             var isMatch = CoordinateArrays.Equals(result, expectedCoord);
