@@ -10,9 +10,15 @@ namespace NetTopologySuite.Index.KdTree
     /// </summary>
     /// <remarks>
     /// This implementation supports detecting and snapping points which are closer
-    /// than a given tolerance value. If the same point (up to tolerance) is inserted
-    /// more than once a new node isnot created but the count of the existing node
+    /// than a given distance tolerance. 
+    /// If the same point (up to tolerance) is inserted
+    /// more than once , it is snapped to the existing node.
+    /// In other words, if a point is inserted which lies within the tolerance of a node already in the index,
+    /// it is snapped to that node.
+    /// When a point is snapped to a node then a new node is not created but the count of the existing node
     /// is incremented.
+    /// If more than one node in the tree is within tolerance of an inserted point, 
+    /// the closest and then lowest node is snapped to.
     /// </remarks>
     /// <typeparam name="T">The type of the user data object</typeparam>
     /// <author>David Skea</author>

@@ -31,7 +31,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
             Assert.IsTrue(node.IsRepeated);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestEndlessLoop()
         {
             var kd = new KdTree<string>();
@@ -93,7 +93,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
             TestQuery("MULTIPOINT ((10 60), (20 61), (30 60), (30 63))",
                 9,
                 new Envelope(0, 99, 0, 99),
-                "MULTIPOINT ((10 60), (20 60), (30 60))");
+                "MULTIPOINT ((10 60), (20 61), (30 60))");
         }
 
         private void TestQuery(string wktInput, double tolerance,
