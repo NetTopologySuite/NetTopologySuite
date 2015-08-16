@@ -17,8 +17,13 @@ namespace NetTopologySuite.Tests.NUnit.Performance
         public ExamplePerformanceTest(string name)
             : base(name)
         {
-            RunSize = new[] {10, 20};
+            RunSize = new[] {5, 10, 20};
             RunIterations = 10;
+        }
+
+        public override void TestInternal()
+        {
+            PerformanceTestRunner.Run(typeof(ExamplePerformanceTest));
         }
 
         public override void SetUp()
@@ -32,15 +37,15 @@ namespace NetTopologySuite.Tests.NUnit.Performance
             _iter = 0;
         }
 
-        public void RunExample1()
+        public void RunTest1()
         {
-            Console.WriteLine("Iter # " + _iter++);
+            Console.WriteLine("Test 1 : Iter # " + _iter++);
             // do test work here
         }
 
-        public void RunExample2()
+        public void RunTest2()
         {
-            Console.WriteLine("Iter # " + _iter++);
+            Console.WriteLine("Test 2 : Iter # " + _iter++);
             // do test work here
         }
 

@@ -40,7 +40,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
                 test.SetUp();
                 for (var runNum = 0; runNum < runSize.Length; runNum++)
                 {
-                    int size = runSize[runNum];
+                    var size = runSize[runNum];
                     test.StartRun(size);
                     for (var i = 0; i < runMethod.Length; i++)
                     {
@@ -50,6 +50,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance
                         {
                             runMethod[i].Invoke(test, new object[0]);
                         }
+                        sw.Stop();
+                        test.SetTime(i, sw.ElapsedMilliseconds);
                         Console.WriteLine(runMethod[i].Name + " : " + sw.Elapsed);
                     }
                     test.EndRun();

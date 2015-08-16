@@ -7,17 +7,12 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 {
-    /**
-     * Stress tests {@link DepthSegment} to determine if the compare contract is maintained.
-     * 
-     * @author Martin Davis
-     *
-     */
-
+    ///<summary>
+    /// Stress tests <see cref="DepthSegment"/> to determine if the compare contract is maintained.
+    /// </summary>
+    /// <author>Martin Davis</author>
     public class DepthSegmentStressTest : PerformanceTestCase
     {
-
-
         public DepthSegmentStressTest()
             :base("DepthSegmentStressTest")
         {
@@ -25,8 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             RunIterations = 100;
         }
 
-        [Test]
-        public void Test()
+        public override void TestInternal()
         {
             PerformanceTestRunner.Run(typeof(DepthSegmentStressTest));
         }
