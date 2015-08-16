@@ -173,6 +173,7 @@
     <Compile Include="Performance\Geometries\Prepared\PreparedPolygonIntersectsPerformanceTest.cs" />
     <Compile Include="Performance\Geometries\Prepared\TestDataBuilder.cs" />
     <Compile Include="Performance\Mathematics\TriPredicate.cs" />
+    <Compile Include="Performance\Operation\Buffer\DepthSegmentStressTest.cs" />
     <Compile Include="Performance\Operation\Buffer\FileBufferResultValidatorTest.cs" />
     <Compile Include="Operation\Buffer\Test.cs" />
     <Compile Include="Operation\Distance\DistanceTest.cs" />

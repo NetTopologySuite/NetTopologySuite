@@ -11,8 +11,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance
     /// <author>Martin Davis</author>
     public class PerformanceTestRunner
     {
-        private const String RunPrefix = "Run";
-        private const String InitMethod = "Init";
+        private const string RunPrefix = "Run";
+        private const string InitMethod = "Init";
 
         public static void Run(Type clz)
         {

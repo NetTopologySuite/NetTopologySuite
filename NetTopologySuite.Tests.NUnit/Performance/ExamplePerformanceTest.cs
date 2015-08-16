@@ -14,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
         public ExamplePerformanceTest()
             : this("ExamplePerformanceTest") { }
 
-        public ExamplePerformanceTest(String name)
+        public ExamplePerformanceTest(string name)
             : base(name)
         {
             RunSize = new[] {10, 20};
