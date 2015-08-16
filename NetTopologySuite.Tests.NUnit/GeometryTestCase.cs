@@ -34,12 +34,38 @@ namespace NetTopologySuite.Tests.NUnit
             return _geomFactory.CreateGeometryCollection(GeometryFactory.ToGeometryArray(geoms));
         }
 
-        protected IGeometry Read(String wkt)
+        /// <summary>
+        /// Reads a <see cref="IGeometry"/> from a WKT string using a custom <see cref="IGeometryFactory"/>.
+        /// </summary>
+        /// <param name="geomFactory">The custom factory to use</param>
+        /// <param name="wkt">The WKT string</param>
+        /// <returns>The geometry read</returns>
+        protected IGeometry Read(IGeometryFactory geomFactory, string wkt)
         {
-            return _reader.Read(wkt);
+            var reader = new WKTReader(geomFactory);
+            try
+            {
+                return reader.Read(wkt);
+            }
+            catch (GeoAPI.IO.ParseException e)
+            {
+                throw new AssertionException(e.Message, e);
+            }
         }
 
-        protected List<IGeometry> ReadList(String[] wkt)
+        protected IGeometry Read(String wkt)
+        {
+            try
+            {
+                return _reader.Read(wkt);
+            }
+            catch (GeoAPI.IO.ParseException e)
+            {
+                throw new AssertionException(e.Message, e);
+            }
+        }
+
+        protected List<IGeometry> ReadList(string[] wkt)
         {
             var geometries = new List<IGeometry>(wkt.Length);
             for (int i = 0; i < wkt.Length; i++)

@@ -392,6 +392,9 @@
     <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Valid\ValidSelfTouchingRingFormingHoleTest.cs">
       <Link>Operation\Valid\ValidSelfTouchingRingFormingHoleTest.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Precision\CommonBitsOpTest.cs">
+      <Link>Precision\CommonBitsOpTest.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Precision\GeometryPrecisionReducerTest.cs">
       <Link>Precision\GeometryPrecisionReducerTest.cs</Link>
     </Compile>

@@ -126,7 +126,7 @@ namespace NetTopologySuite.Precision
         /// <summary>
         ///
         /// </summary>
-        private class Translater : ICoordinateFilter
+        private class Translater : ICoordinateSequenceFilter
         {
             private readonly Coordinate _trans;
 
@@ -142,12 +142,18 @@ namespace NetTopologySuite.Precision
             /// <summary>
             ///
             /// </summary>
-            /// <param name="coord"></param>
-            public void Filter(Coordinate coord)
+            /// <param name="seq">The coordinate sequence</param>
+            public void Filter(ICoordinateSequence seq, int i)
             {
-                coord.X += _trans.X;
-                coord.Y += _trans.Y;
+                var xp = seq.GetOrdinate(i, Ordinate.X) + _trans.X;
+                var yp = seq.GetOrdinate(i, Ordinate.Y) + _trans.Y;
+                seq.SetOrdinate(i, Ordinate.X, xp);
+                seq.SetOrdinate(i, Ordinate.Y, yp);
             }
+
+            public bool Done {  get { return false; } }
+
+            public bool GeometryChanged {  get { return true; } }
         }
     }
 }

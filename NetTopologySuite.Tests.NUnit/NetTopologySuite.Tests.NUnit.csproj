@@ -195,6 +195,7 @@
     <Compile Include="Performance\PerformanceTestRunner.cs" />
     <Compile Include="Performance\ThreadTestCase.cs" />
     <Compile Include="Performance\ThreadTestRunner.cs" />
+    <Compile Include="Precision\CommonBitsOpTest.cs" />
     <Compile Include="Precision\GeometryPrecisionReducerTest.cs" />
     <Compile Include="Precision\SimpleGeometryPrecisionReducerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
