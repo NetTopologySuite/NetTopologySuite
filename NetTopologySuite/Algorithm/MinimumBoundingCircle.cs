@@ -83,6 +83,29 @@ namespace NetTopologySuite.Algorithm
             return centrePoint.Buffer(_radius);
         }
 
+        ///<summary>
+        /// Gets a geometry representing a line between the two farthest points
+        /// in the input.
+        /// These points will be two of the extremal points of the Minimum Bounding Circle.
+        /// They also lie on the convex hull of the input.
+        /// </summary>
+        /// <returns>A LineString between the two farthest points of the input</returns>
+        /// <returns>An empty LineString if the input is empty</returns>
+        /// <returns>A Point if the input is a point</returns>
+        public IGeometry GetFarthestPoints()
+        {
+            Compute();
+            switch (_extremalPts.Length)
+            {
+                case 0:
+                    return _input.Factory.CreateLineString((ICoordinateSequence)null);
+                case 1:
+                    return _input.Factory.CreatePoint(_centre);
+            }
+            var p0 = _extremalPts[0];
+            var p1 = _extremalPts[_extremalPts.Length - 1];
+            return _input.Factory.CreateLineString(new Coordinate[] { p0, p1 });
+        }
         /// <summary>
         /// Gets a geometry representing the diameter of the computed Minimum Bounding Circle.
         /// </summary>
