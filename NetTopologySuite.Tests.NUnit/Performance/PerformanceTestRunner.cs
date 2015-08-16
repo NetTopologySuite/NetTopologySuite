@@ -51,7 +51,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
                             runMethod[i].Invoke(test, new object[0]);
                         }
                         sw.Stop();
-                        test.SetTime(i, sw.ElapsedMilliseconds);
+                        test.SetTime(runNum, sw.ElapsedMilliseconds);
                         Console.WriteLine(runMethod[i].Name + " : " + sw.Elapsed);
                     }
                     test.EndRun();

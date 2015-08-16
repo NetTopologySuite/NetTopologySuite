@@ -198,6 +198,7 @@
     <Compile Include="Performance\AreaPrecisionPerformanceTest.cs" />
     <Compile Include="Performance\ExamplePerformanceTest.cs" />
     <Compile Include="Performance\Operation\Buffer\PolygonBufferStressTest.cs" />
+    <Compile Include="Performance\Operation\Relate\RelateMonotoneLinesPerfTest.cs" />
     <Compile Include="Performance\Operation\Union\UnionPerfTester.cs" />
     <Compile Include="Performance\PerformanceTestCase.cs" />
     <Compile Include="Performance\PerformanceTestRunner.cs" />
