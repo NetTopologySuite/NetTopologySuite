@@ -20,10 +20,9 @@ namespace Open.Topology.TestRunner.Functions
         
         public static IGeometry MinimumRectangle(IGeometry g) { return (new MinimumDiameter(g)).GetMinimumRectangle(); }
         public static IGeometry MinimumBoundingCircle(Geometry g) { return (new MinimumBoundingCircle(g)).GetCircle(); }
-        public static IGeometry MaximumDiameter(IGeometry g)
-        {
-            return g.Factory.CreateLineString((new MinimumBoundingCircle(g)).GetExtremalPoints());
-        }
+        public static IGeometry MaximumDiameter(IGeometry g) { return g.Factory.CreateLineString((new MinimumBoundingCircle(g)).GetExtremalPoints()); }
+        public static IGeometry FarthestPoints(IGeometry g) { return ((new MinimumBoundingCircle(g)).GetFarthestPoints()); }
+
         public static double MaximumDiameterLength(IGeometry g) { return 2 * (new MinimumBoundingCircle(g)).GetRadius(); }
 
         public static IGeometry Boundary(Geometry g) { return g.Boundary; }
