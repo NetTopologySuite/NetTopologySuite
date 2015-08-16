@@ -56,9 +56,12 @@ namespace NetTopologySuite.Tests.NUnit.Performance
                 }
                 test.TearDown();
             }
+            catch (TargetInvocationException e)
+            {
+                Console.WriteLine(e.StackTrace);
+            }
             catch (Exception e)
             {
-                // TODO Auto-generated catch block
                 Console.WriteLine(e.StackTrace);
             }
         }
