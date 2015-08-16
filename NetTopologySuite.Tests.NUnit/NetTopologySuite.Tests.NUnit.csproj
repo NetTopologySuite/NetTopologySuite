@@ -79,6 +79,7 @@
     <Compile Include="Geometries\GeometryCollectionEnumeratorTest.cs" />
     <Compile Include="Geometries\GeometryTestFactory.cs" />
     <Compile Include="GeometryTestCase.cs" />
+    <Compile Include="Hull\ConcaveHullTest.cs" />
     <Compile Include="IO\CoordinateBufferTest.cs" />
     <Compile Include="Geometries\Implementation\CoordinateSequenceReversedTest.cs" />
     <Compile Include="Index\KdTree\KdTreeTest.cs" />
@@ -246,6 +247,10 @@
     <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO\NetTopologySuite.IO.csproj">
       <Project>{E377580E-61C9-4943-B98B-085D51B32578}</Project>
       <Name>NetTopologySuite.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.Lab\NetTopologySuite.Lab.csproj">
+      <Project>{d446fba3-b6ea-4feb-9615-d5fd5aeb3d23}</Project>
+      <Name>NetTopologySuite.Lab</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
