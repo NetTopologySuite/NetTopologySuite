@@ -40,6 +40,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>nts.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
@@ -84,6 +90,7 @@
     <Compile Include="Mathematics\DDComputeTest.cs" />
     <Compile Include="MiscellaneousTest.cs" />
     <Compile Include="MiscellaneousTest2.cs" />
+    <Compile Include="Operation\Buffer\DepthSegmentTest.cs" />
     <Compile Include="Operation\Distance3D\Distance3DOpTest.cs" />
     <Compile Include="Operation\Distance3D\WithinDistance3DTest.cs" />
     <Compile Include="Operation\Relate\ContainsTest.cs" />
@@ -222,6 +229,7 @@
     <EmbeddedResource Include="TestData\europe.wkt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="nts.snk" />
     <None Include="packages.config" />
     <EmbeddedResource Include="TestData\bc-250k.wkt" />
     <EmbeddedResource Include="TestData\bc_20K.wkt" />
