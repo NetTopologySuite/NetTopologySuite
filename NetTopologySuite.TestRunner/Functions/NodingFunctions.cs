@@ -90,14 +90,14 @@ namespace Open.Topology.TestRunner.Functions
 
             INoder noder = new MCIndexNoder(new IntersectionAdder(li));
             noder.ComputeNodes(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
-            return SegmentStringUtil.ToGeometry(noder.GetNodedSubstrings());
+            return SegmentStringUtil.ToGeometry(noder.GetNodedSubstrings(), geom.Factory);
         }
 
         public static IGeometry MCIndexNoding(IGeometry geom)
         {
             INoder noder = new MCIndexNoder(new IntersectionAdder(new RobustLineIntersector()));
             noder.ComputeNodes(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
-            return SegmentStringUtil.ToGeometry(noder.GetNodedSubstrings());
+            return SegmentStringUtil.ToGeometry(noder.GetNodedSubstrings(), geom.Factory);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Open.Topology.TestRunner.Functions
                 fixedPM.Scale);
             noder.ComputeNodes(segs);
             var nodedSegStrings = noder.GetNodedSubstrings();
-            return SegmentStringUtil.ToGeometry(nodedSegStrings);
+            return SegmentStringUtil.ToGeometry(nodedSegStrings, geom.Factory);
         }
 
         private static List<ISegmentString> CreateSegmentStrings(IGeometry geom)
