@@ -30,8 +30,9 @@ namespace NetTopologySuite.Operation.Polygonize
         /// or <value>null</value> if no containing EdgeRing is found.</returns>
         public static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IList<EdgeRing> shellList)
         {
-            ILinearRing teString = testEr.Ring;
-            Envelope testEnv = teString.EnvelopeInternal;
+            var testRing = testEr.Ring;
+            var testEnv = testRing.EnvelopeInternal;
+            //var testPt = testRing.GetCoordinateN(0);
 
             EdgeRing minShell = null;
             Envelope minShellEnv = null;
@@ -48,7 +49,7 @@ namespace NetTopologySuite.Operation.Polygonize
                 // hole must be contained in shell
                 if (!tryShellEnv.Contains(testEnv)) continue;
 
-                var testPt = CoordinateArrays.PointNotInList(teString.Coordinates, tryShellRing.Coordinates);
+                var testPt = CoordinateArrays.PointNotInList(testRing.Coordinates, tryShellRing.Coordinates);
                 var isContained = CGAlgorithms.IsPointInRing(testPt, tryShellRing.Coordinates);
 
                 // check if this new containing ring is smaller than the current minimum ring

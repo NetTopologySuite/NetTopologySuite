@@ -289,9 +289,10 @@ namespace NetTopologySuite.Operation.Polygonize
         {
             FindOuterShells(shellList);
 
-            var isMoreToScan = false;
+            bool isMoreToScan;
             do
             {
+                isMoreToScan = false;
                 foreach(var er in shellList)
                 {
                     if (er.IsIncludedSet)
