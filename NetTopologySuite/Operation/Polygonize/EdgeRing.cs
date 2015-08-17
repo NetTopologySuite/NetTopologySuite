@@ -208,7 +208,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <param name="holeER">the <see cref="ILinearRing"/> forming the hole.</param>
         public void AddHole(EdgeRing holeER)
         {
-            holeER.Shell = (this);
+            holeER.Shell = this;
             var hole = holeER.Ring;
             if (_holes == null)
                 _holes = new List<ILinearRing>();
@@ -358,20 +358,17 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// Gets a value indicating whether this ring has a shell assigned to it.</summary>
+        /// Gets a value indicating whether this ring has a shell assigned to it.
+        /// </summary>
         public bool HasShell
         {
             get { return _shell != null; }
         }
 
-
-        /**
-   * Tests whether this ring is an outer hole.
-   * A hole is an outer hole if it is not contained by a shell.
-   * 
-   * @return true if the ring is an outer hole.
-   */
-
+        /// <summary>
+        /// Tests whether this ring is an outer hole.
+        /// A hole is an outer hole if it is not contained by a shell.
+        /// </summary>
         public bool IsOuterHole
         {
             get
@@ -381,12 +378,9 @@ namespace NetTopologySuite.Operation.Polygonize
             }
         }
 
-        /**
-   * Tests whether this ring is an outer shell.
-   * 
-   * @return true if the ring is an outer shell.
-   */
-
+        /// <summary>
+        /// Tests whether this ring is an outer shell.
+        /// </summary>
         public bool IsOuterShell
         {
             get { return OuterHole != null; }
@@ -398,9 +392,9 @@ namespace NetTopologySuite.Operation.Polygonize
             {
                 if (IsHole) return null;
                 /*
-           * A shell is an outer shell if any edge is also in an outer hole.
-           * A hole is an outer hole if it is not contained by a shell.
-           */
+                 * A shell is an outer shell if any edge is also in an outer hole.
+                 * A hole is an outer hole if it is not contained by a shell.
+                 */
                 for (int i = 0; i < _deList.Count; i++)
                 {
                     PolygonizeDirectedEdge de = (PolygonizeDirectedEdge) _deList[i];
@@ -415,7 +409,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// Updates the included status for currently non-included shells
         /// based on whether they are adjacent to an included shell.
         /// </summary>
-        public void updateIncluded()
+        internal void UpdateIncluded()
         {
             if (IsHole) return;
             for (int i = 0; i < _deList.Count; i++)
@@ -432,18 +426,17 @@ namespace NetTopologySuite.Operation.Polygonize
             }
         }
 
-        /**
-   * Gets a string representation of this object.
-   * 
-   * @return a string representing the object 
-   */
-
+        /// <summary>
+        /// Gets a string representation of this object.
+        /// </summary>
         public override String ToString()
         {
             return WKTWriter.ToLineString(new CoordinateArraySequence(Coordinates));
         }
 
-        ///Gets or sets a value indicating whether this ring has been processed
+        /// <summary>
+        /// Gets or sets a value indicating whether this ring has been processed.
+        /// </summary>
         public bool IsProcessed
         {
             get { return _isProcessed; }

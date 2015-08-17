@@ -30,6 +30,11 @@ namespace NetTopologySuite.Operation.Polygonize
     public class Polygonizer
     {
         /// <summary>
+        /// The default polygonizer output behavior
+        /// </summary>
+        public const bool AllPolys = true;
+        
+        /// <summary>
         /// Adds every linear element in a <see cref="IGeometry"/> into the polygonizer graph.
         /// </summary>
         private class LineStringAdder : IGeometryComponentFilter
@@ -91,7 +96,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// </summary>
         /// 
         public Polygonizer() 
-            :this(false)
+            :this(AllPolys)
         {
             
             _lineStringAdder = new LineStringAdder(this);
@@ -103,7 +108,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <param name="extractOnlyPolygonal"><value>true</value> if only polygons which form a valid polygonal geometry are to be extracted</param>
         public Polygonizer(bool extractOnlyPolygonal)
         {
-            this._extractOnlyPolygonal = extractOnlyPolygonal;
+            _extractOnlyPolygonal = extractOnlyPolygonal;
             _lineStringAdder = new LineStringAdder(this);
         }
 
@@ -155,13 +160,12 @@ namespace NetTopologySuite.Operation.Polygonize
             return _polyList;
         }
 
-        /**
-          * Gets a geometry representing the polygons formed by the polygonization.
-          * If a valid polygonal geometry was extracted the result is a {@linkl Polygonal} geometry. 
-          * 
-          * @return a geometry containing the polygons
-          */
-        public IGeometry getGeometry()
+        /// <summary>
+        /// Gets a geometry representing the polygons formed by the polygonization.
+        /// If a valid polygonal geometry was extracted the result is a <see cref="IPolygonal"/> geometry. 
+        /// </summary>
+        /// <returns>A geometry containing the polygons</returns>
+        public IGeometry GetGeometry()
         {
             if (_geomFactory == null) _geomFactory = new Geometries.GeometryFactory();
             Polygonize();
@@ -281,7 +285,7 @@ namespace NetTopologySuite.Operation.Polygonize
         {
             var shell = EdgeRing.FindEdgeRingContaining(holeEdgeRing, shellList);
             if (shell != null) {
-                shell.AddHole(holeEdgeRing.Ring);
+                shell.AddHole(holeEdgeRing);
             }
         }
 
@@ -297,7 +301,7 @@ namespace NetTopologySuite.Operation.Polygonize
                 {
                     if (er.IsIncludedSet)
                         continue;
-                    er.updateIncluded();
+                    er.UpdateIncluded();
                     if (!er.IsIncludedSet)
                     {
                         isMoreToScan = true;
@@ -306,18 +310,18 @@ namespace NetTopologySuite.Operation.Polygonize
             } while (isMoreToScan);
         }
 
-        /**
-         * For each outer hole finds and includes a single outer shell.
-         * This seeds the travesal algorithm for finding only polygonal shells.
-         *  
-         * @param shellList the list of shell EdgeRings
-         */
+
+        /// <summary>
+        /// For each outer hole finds and includes a single outer shell.
+        /// This seeds the travesal algorithm for finding only polygonal shells.
+        /// </summary>
+        /// <param name="shellList">The list of shell EdgeRings</param>
         private static void FindOuterShells(List<EdgeRing> shellList)
         {
 
             foreach (var er in shellList)
             {
-                EdgeRing outerHoleER = er.OuterHole;
+                var outerHoleER = er.OuterHole;
                 if (outerHoleER != null && !outerHoleER.IsProcessed)
                 {
                     er.IsIncluded = true;

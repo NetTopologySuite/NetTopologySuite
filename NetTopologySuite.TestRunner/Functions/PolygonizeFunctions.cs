@@ -14,7 +14,7 @@ namespace Open.Topology.TestRunner.Functions
             var lines = LineStringExtracter.GetLines(g);
             var polygonizer = new Polygonizer(extractOnlyPolygonal);
             polygonizer.Add(lines);
-            return polygonizer.getGeometry();
+            return polygonizer.GetGeometry();
             /*
             Collection polys = polygonizer.getPolygons();
             Polygon[] polyArray = GeometryFactory.toPolygonArray(polys);
