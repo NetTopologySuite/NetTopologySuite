@@ -98,6 +98,9 @@
     <Compile Include="..\..\NetTopologySuite\Noding\InteriorIntersectionFinderAdder.cs">
       <Link>Noding\InteriorIntersectionFinderAdder.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite\Operation\Buffer\VariableWidthLineBuffer.cs">
+      <Link>Operation\Buffer\VariableWidthLineBuffer.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\Simplify\OldVWLineSimplifier.cs">
       <Link>Simplify\OldVWLineSimplifier.cs</Link>
     </Compile>
