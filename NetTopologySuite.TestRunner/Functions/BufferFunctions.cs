@@ -23,7 +23,7 @@ namespace Open.Topology.TestRunner.Functions
             double dist = 0;
             if (distance != null) dist = distance.Value;
 
-            var bufParams = new BufferParameters();
+            IBufferParameters bufParams = new BufferParameters();
             if (quadrantSegments != null) bufParams.QuadrantSegments = quadrantSegments.Value;
             if (capStyle != null) bufParams.EndCapStyle = (EndCapStyle)capStyle.Value;
             if (joinStyle != null) bufParams.JoinStyle = (JoinStyle)joinStyle.Value;
@@ -32,14 +32,15 @@ namespace Open.Topology.TestRunner.Functions
             return BufferOp.Buffer(g, dist, bufParams);
         }
 
-        public static IGeometry bufferWithSimplify(IGeometry g, double? distance,
+        public static IGeometry BufferWithSimplify(IGeometry g, double? distance,
             double? simplifyFactor)
         {
             double dist = 0;
             if (distance != null) dist = distance.Value;
 
-            BufferParameters bufParams = new BufferParameters();
-            if (simplifyFactor != null) bufParams.SimplifyFactor = simplifyFactor.Value;
+            IBufferParameters bufParams = new BufferParameters();
+            if (simplifyFactor != null)
+                bufParams.SimplifyFactor = simplifyFactor.Value;
             return BufferOp.Buffer(g, dist, bufParams);
         }
 
@@ -55,7 +56,7 @@ namespace Open.Topology.TestRunner.Functions
             double dist = 0;
             if (distance != null) dist = distance.Value;
 
-            var bufParams = new BufferParameters();
+            IBufferParameters bufParams = new BufferParameters();
             if (quadrantSegments != null) bufParams.QuadrantSegments = quadrantSegments.Value;
             if (capStyle != null) bufParams.EndCapStyle = (EndCapStyle)capStyle.Value;
             if (joinStyle != null) bufParams.JoinStyle = (JoinStyle)joinStyle.Value;
@@ -120,7 +121,7 @@ namespace Open.Topology.TestRunner.Functions
 
         public static IGeometry SingleSidedBufferCurve(IGeometry geom, double distance)
         {
-            var bufParam = new BufferParameters();
+            IBufferParameters bufParam = new BufferParameters();
             bufParam.IsSingleSided = true;
             var ocb = new OffsetCurveBuilder(
                 geom.Factory.PrecisionModel, bufParam
@@ -132,7 +133,7 @@ namespace Open.Topology.TestRunner.Functions
 
         public static IGeometry SingleSidedBuffer(IGeometry geom, double distance)
         {
-            var bufParams = new BufferParameters { IsSingleSided = true };
+            IBufferParameters bufParams = new BufferParameters { IsSingleSided = true };
             return BufferOp.Buffer(geom, distance, bufParams);
         }
 
