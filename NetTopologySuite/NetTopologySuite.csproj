@@ -362,7 +362,6 @@
     <Compile Include="Operation\Buffer\Validate\BufferResultValidator.cs" />
     <Compile Include="Operation\Buffer\Validate\DistanceToPointFinder.cs" />
     <Compile Include="Operation\Buffer\Validate\PointPairDistance.cs" />
-    <Compile Include="Operation\Buffer\VariableWidthLineBuffer.cs" />
     <Compile Include="Operation\Distance3D\AxisPlaneCoordinateSequence.cs" />
     <Compile Include="Operation\Distance3D\Distance3DOp.cs" />
     <Compile Include="Operation\Distance3D\PlanarPolygon3D.cs" />

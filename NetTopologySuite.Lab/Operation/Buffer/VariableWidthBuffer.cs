@@ -13,7 +13,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// generally need to be specified specifically for each line.
     /// </summary>
     /// <author>Marting Davis</author>
-    public class VariableWidthLineBuffer
+    public class VariableWidthBuffer
     {
         /// <summary>
         /// </summary>
@@ -25,7 +25,7 @@ namespace NetTopologySuite.Operation.Buffer
             double endWidth)
         {
             var width = Interpolate(line, startWidth, endWidth);
-            var vb = new VariableWidthLineBuffer(line, width);
+            var vb = new VariableWidthBuffer(line, width);
             return vb.GetResult();
         }
 
@@ -82,7 +82,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <param name="line">The line to buffer</param>
         /// <param name="width">An array of witdth values</param>
-        public VariableWidthLineBuffer(ILineString line, double[] width)
+        public VariableWidthBuffer(ILineString line, double[] width)
         {
             _line = line;
             _width = Abs(width);

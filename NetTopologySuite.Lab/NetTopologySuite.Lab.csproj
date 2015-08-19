@@ -57,6 +57,7 @@
       <Link>Properties\SharedAssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="Hull\ConcaveHull.cs" />
+    <Compile Include="Operation\Buffer\VariableWidthBuffer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
