@@ -66,16 +66,16 @@ namespace NetTopologySuite.IO.GML2
             settings =new XmlWriterSettings(){NamespaceHandling = NamespaceHandling.OmitDuplicates,Indent=true};
             writer = (XmlTextWriter)XmlWriter.Create(stream, settings);
 #else
-            writer = new XmlTextWriter(stream, null) {Namespaces = true};
+            writer = new XmlTextWriter(stream, null) { Namespaces = true };
 #endif
 
-            writer.WriteStartElement(GMLElements.gmlPrefix, "GML", GMLElements.gmlNS);
+            //writer.WriteStartElement(GMLElements.gmlPrefix, "GML", GMLElements.gmlNS);
 
 #if !PCL
             //writer.Formatting = Formatting.Indented;
 #endif
             Write(geometry, writer);
-            writer.WriteEndElement();
+            //writer.WriteEndElement();
             ((IDisposable)writer).Dispose();
         }
 
@@ -124,7 +124,7 @@ namespace NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="writer"></param>
-        protected void Write(IGeometry geometry, XmlTextWriter writer)
+        public void Write(IGeometry geometry, XmlTextWriter writer)
         {
             if (geometry is IPoint)
                 Write(geometry as IPoint, writer);
@@ -150,7 +150,7 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void Write(IPoint point, XmlTextWriter writer)
         {
-            writer.WriteStartElement("Point", GMLElements.gmlNS);
+            writer.WriteStartElement(GMLElements.gmlPrefix, "Point", GMLElements.gmlNS);
             Write(point.Coordinate, writer);
             writer.WriteEndElement();
         }
@@ -162,7 +162,7 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void Write(ILineString lineString, XmlTextWriter writer)
         {
-            writer.WriteStartElement("LineString", GMLElements.gmlNS);
+            writer.WriteStartElement(GMLElements.gmlPrefix, "LineString", GMLElements.gmlNS);
             WriteCoordinates(lineString.Coordinates, writer);
             writer.WriteEndElement();
         }
@@ -174,7 +174,7 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void Write(ILinearRing linearRing, XmlTextWriter writer)
         {
-            writer.WriteStartElement("LinearRing", GMLElements.gmlNS);
+            writer.WriteStartElement(GMLElements.gmlPrefix, "LinearRing", GMLElements.gmlNS);
             WriteCoordinates(linearRing.Coordinates, writer);
             writer.WriteEndElement();
         }
@@ -186,7 +186,7 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void Write(IPolygon polygon, XmlTextWriter writer)
         {
-            writer.WriteStartElement("Polygon", GMLElements.gmlNS);
+            writer.WriteStartElement(GMLElements.gmlPrefix, "Polygon", GMLElements.gmlNS);
             writer.WriteStartElement("outerBoundaryIs", GMLElements.gmlNS);
             Write(polygon.ExteriorRing as ILinearRing, writer);
             writer.WriteEndElement();
@@ -206,7 +206,7 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void Write(IMultiPoint multiPoint, XmlTextWriter writer)
         {
-            writer.WriteStartElement("MultiPoint", GMLElements.gmlNS);
+            writer.WriteStartElement(GMLElements.gmlPrefix, "MultiPoint", GMLElements.gmlNS);
             for (int i = 0; i < multiPoint.NumGeometries; i++)
             {
                 writer.WriteStartElement("pointMember", GMLElements.gmlNS);
@@ -223,7 +223,7 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void Write(IMultiLineString multiLineString, XmlTextWriter writer)
         {
-            writer.WriteStartElement("MultiLineString", GMLElements.gmlNS);
+            writer.WriteStartElement(GMLElements.gmlPrefix, "MultiLineString", GMLElements.gmlNS);
             for (int i = 0; i < multiLineString.NumGeometries; i++)
             {
                 writer.WriteStartElement("lineStringMember", GMLElements.gmlNS);
@@ -240,7 +240,7 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void Write(IMultiPolygon multiPolygon, XmlTextWriter writer)
         {
-            writer.WriteStartElement("MultiPolygon", GMLElements.gmlNS);
+            writer.WriteStartElement(GMLElements.gmlPrefix, "MultiPolygon", GMLElements.gmlNS);
             for (int i = 0; i < multiPolygon.NumGeometries; i++)
             {
                 writer.WriteStartElement("polygonMember", GMLElements.gmlNS);
@@ -257,7 +257,7 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void Write(IGeometryCollection geometryCollection, XmlTextWriter writer)
         {
-            writer.WriteStartElement("MultiGeometry", GMLElements.gmlNS);
+            writer.WriteStartElement(GMLElements.gmlPrefix, "MultiGeometry", GMLElements.gmlNS);
             for (int i = 0; i < geometryCollection.NumGeometries; i++)
             {
                 writer.WriteStartElement("geometryMember", GMLElements.gmlNS);
@@ -277,19 +277,19 @@ namespace NetTopologySuite.IO.GML2
         {
             if (geometry is IPoint)
                 return new byte[SetByteStreamLength(geometry as IPoint)];
-            else if (geometry is ILineString)
+            if (geometry is ILineString)
                 return new byte[SetByteStreamLength(geometry as ILineString)];
-            else if (geometry is IPolygon)
+            if (geometry is IPolygon)
                 return new byte[SetByteStreamLength(geometry as IPolygon)];
-            else if (geometry is IMultiPoint)
+            if (geometry is IMultiPoint)
                 return new byte[SetByteStreamLength(geometry as IMultiPoint)];
-            else if (geometry is IMultiLineString)
+            if (geometry is IMultiLineString)
                 return new byte[SetByteStreamLength(geometry as IMultiLineString)];
-            else if (geometry is IMultiPolygon)
+            if (geometry is IMultiPolygon)
                 return new byte[SetByteStreamLength(geometry as IMultiPolygon)];
-            else if (geometry is IGeometryCollection)
+            if (geometry is IGeometryCollection)
                 return new byte[SetByteStreamLength(geometry as IGeometryCollection)];
-            else throw new ArgumentException("ShouldNeverReachHere");
+            throw new ArgumentException("ShouldNeverReachHere");
         }
 
         /// <summary>
@@ -301,19 +301,19 @@ namespace NetTopologySuite.IO.GML2
         {
             if (geometry is IPoint)
                 return SetByteStreamLength(geometry as IPoint);
-            else if (geometry is ILineString)
+            if (geometry is ILineString)
                 return SetByteStreamLength(geometry as ILineString);
-            else if (geometry is IPolygon)
+            if (geometry is IPolygon)
                 return SetByteStreamLength(geometry as IPolygon);
-            else if (geometry is IMultiPoint)
+            if (geometry is IMultiPoint)
                 return SetByteStreamLength(geometry as IMultiPoint);
-            else if (geometry is IMultiLineString)
+            if (geometry is IMultiLineString)
                 return SetByteStreamLength(geometry as IMultiLineString);
-            else if (geometry is IMultiPolygon)
+            if (geometry is IMultiPolygon)
                 return SetByteStreamLength(geometry as IMultiPolygon);
-            else if (geometry is IGeometryCollection)
+            if (geometry is IGeometryCollection)
                 return SetByteStreamLength(geometry as IGeometryCollection);
-            else throw new ArgumentException("ShouldNeverReachHere");
+            throw new ArgumentException("ShouldNeverReachHere");
         }
 
         /// <summary>
