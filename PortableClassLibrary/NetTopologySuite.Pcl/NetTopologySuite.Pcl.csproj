@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="$(SolutionDir)BuildTools\GeoAPI.Pcl.Reference.targets" Condition="Exists('$(SolutionDir)BuildTools\GeoAPI.Pcl.Reference.targets')" />
   <PropertyGroup>
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,10 +12,11 @@
     <RootNamespace>NetTopologySuite</RootNamespace>
     <AssemblyName>NetTopologySuite</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile147</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Profile336</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <fwVersion Condition=" '$(fwVersion)' == '' ">portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10</fwVersion>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -87,6 +89,9 @@
     <Compile Include="..\..\NetTopologySuite\Features\IFeature.cs">
       <Link>Features\IFeature.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite\Index\KdTree\IKdNodeVisitor.cs">
+      <Link>Index\KdTree\IKdNodeVisitor.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\IO\WKTFileReader.cs">
       <Link>IO\WKTFileReader.cs</Link>
     </Compile>
@@ -104,6 +109,9 @@
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Utilities\AlternativePriorityQueue.cs">
       <Link>Utilities\AlternativePriorityQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\FunctionsUtility.cs">
+      <Link>Utilities\FunctionsUtility.cs</Link>
     </Compile>
     <Compile Include="..\..\NetTopologySuite\Utilities\PriorityQueueNode.cs">
       <Link>Utilities\PriorityQueueNode.cs</Link>
@@ -1347,14 +1355,6 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="GeoAPI">
-      <HintPath>$(SolutionDir)packages\GeoAPI.1.7.3.1\lib\portable-net403+sl5+win8+wp8+MonoAndroid+MonoTouch\GeoAPI.dll</HintPath>
-    </Reference>
-    <Reference Include="ProjNET">
-      <HintPath>$(SolutionDir)packages\ProjNET4GeoAPI.1.3.2\lib\portable-net403+sl5+win8+wp8+MonoAndroid+MonoTouch\ProjNET.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PowerCollections\Source\PowerCollections.Pcl\PowerCollections.Pcl.csproj">

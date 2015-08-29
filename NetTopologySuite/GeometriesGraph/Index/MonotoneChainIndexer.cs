@@ -23,6 +23,10 @@ namespace NetTopologySuite.GeometriesGraph.Index
     /// For many types of real-world data, these properties eliminate a large number of
     /// segment comparisons, producing substantial speed gains.
     /// </para>
+    /// <para>
+    /// Note that due to the efficient intersection test, there is no need to limit the size
+    /// of chains to obtain fast performance.
+    /// </para>
     /// </summary>
     public class MonotoneChainIndexer
     {
@@ -81,6 +85,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
             int last = start + 1;
             while (last < pts.Length)
             {
+                //if (last - start > 100) break;
                 // compute quadrant for next possible segment in chain
                 int quad = QuadrantOp.Quadrant(pts[last - 1], pts[last]);
                 if (quad != chainQuad)

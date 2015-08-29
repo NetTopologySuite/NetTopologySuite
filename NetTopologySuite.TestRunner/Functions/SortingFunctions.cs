@@ -9,6 +9,12 @@ namespace Open.Topology.TestRunner.Functions
         {
             var geoms = Components(g);
             geoms.Sort(new GeometryLengthComparator());
+
+            // annotate geometries with length
+            foreach (var geom in geoms)
+            {
+                geom.UserData = geom.Length;
+            }
             return g.Factory.BuildGeometry(geoms);
         }
 
@@ -24,6 +30,12 @@ namespace Open.Topology.TestRunner.Functions
         {
             var geoms = Components(g);
             geoms.Sort(new GeometryAreaComparator());
+
+            // annotate geometries with area
+            foreach (var geom in geoms)
+            {
+                geom.UserData = geom.Area;
+            }
             return g.Factory.BuildGeometry(geoms);
         }
 

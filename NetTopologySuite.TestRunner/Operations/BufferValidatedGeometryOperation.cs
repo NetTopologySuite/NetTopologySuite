@@ -1,6 +1,6 @@
 ﻿using System;
 using GeoAPI.Geometries;
-using GeoAPI.Operations.Buffer;
+using GeoAPI.Operation.Buffer;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Buffer.Validate;
 using NetTopologySuite.Utilities;

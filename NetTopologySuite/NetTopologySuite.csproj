@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(SolutionDir)BuildTools\GeoAPI.Reference.targets" Condition="Exists('$(SolutionDir)BuildTools\GeoAPI.Reference.targets')" />
   <PropertyGroup>
     <fwVersion Condition=" '$(fwVersion)' == '' ">net40-client</fwVersion>
     <!-- Define SolutionDir if not already set -->
@@ -71,13 +72,6 @@
     <NoWarn>659,168</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GeoAPI">
-      <HintPath>$(SolutionDir)packages\GeoAPI.1.7.3.1\lib\$(fwVersion)\GeoAPI.dll</HintPath>
-    </Reference>
-    <Reference Include="ProjNet, Version=1.3.0.3, Culture=neutral, PublicKeyToken=a1f5bdcd9c6f5740, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SolutionDir)packages\ProjNET4GeoAPI.1.3.2\lib\$(fwVersion)\ProjNet.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -148,6 +142,7 @@
     <Compile Include="Geometries\OgcCompliantGeometryFactory.cs" />
     <Compile Include="Geometries\Utilities\GeometryMapper.cs" />
     <Compile Include="Index\Bintree\Interval.cs" />
+    <Compile Include="Index\KdTree\IKdNodeVisitor.cs" />
     <Compile Include="Index\Strtree\Interval.cs" />
     <Compile Include="IO\KML\KMLWriter.cs" />
     <Compile Include="IO\WKBHexFileReader.cs" />
@@ -492,6 +487,7 @@
     <Compile Include="Triangulate\VertexTaggedGeometryDataMapper.cs" />
     <Compile Include="Triangulate\VoronoiDiagramBuilder.cs" />
     <Compile Include="Utilities\AlternativePriorityQueue.cs" />
+    <Compile Include="Utilities\FunctionsUtility.cs" />
     <Compile Include="Utilities\PriorityQueueNode.cs" />
     <Compile Include="Utilities\Assert.cs" />
     <Compile Include="Utilities\AssertionFailedException.cs" />
@@ -540,7 +536,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="License.txt" />
-    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Precision\DocFiles\minClearance.png" />
     <Content Include="Precision\PrecisionSummary.xml">

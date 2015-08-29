@@ -20,14 +20,24 @@ namespace NetTopologySuite.Tests.NUnit.Performance
     [TestFixtureAttribute]
     public abstract class PerformanceTestCase
     {
-        private readonly String _name;
+        private readonly string _name;
+        private long[] _runTime;
+        private int[] _runSize;
 
-        protected PerformanceTestCase(String name)
+        protected PerformanceTestCase(string name)
         {
             _name = name;
         }
 
-        public String Name
+        [TestAttribute]
+        public void Test()
+        {
+            TestInternal();
+        }
+
+        public abstract void TestInternal();
+
+        public string Name
         {
             get { return _name; }
         }
@@ -35,7 +45,19 @@ namespace NetTopologySuite.Tests.NUnit.Performance
         /// <summary>
         /// Gets or sets the size(s) for the runs or the test
         /// </summary>
-        public int[] RunSize { get; set; }
+        public int[] RunSize    
+        {
+            get { return _runSize; }
+            set
+            {
+                if (value == null) throw new ArgumentNullException("value");
+                _runSize = value;
+                _runTime = new long[_runSize.Length];
+
+            }
+        }
+
+        public long[] RunTime {  get { return _runTime;  } }
 
         /// <summary>
         /// Gets or sets the number of iterations to execute te test methods in each run
@@ -77,5 +99,11 @@ namespace NetTopologySuite.Tests.NUnit.Performance
         {
 
         }
+
+        internal void SetTime(int runNum, long time)
+        {
+            _runTime[runNum] = time;
+        }
+
     }
 }

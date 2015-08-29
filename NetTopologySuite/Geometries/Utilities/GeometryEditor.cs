@@ -46,14 +46,20 @@ namespace NetTopologySuite.Geometries.Utilities
     /// If changing the structure is required, use a <see cref="GeometryTransformer"/>.
     /// </para>
     /// <para>
-    /// This class supports the case where an edited Geometry needs to
-    /// be created under a new GeometryFactory, via the <see cref="GeometryEditor(IGeometryFactory)"/>
+    /// This class supports creating an edited Geometry 
+    /// using a different <see cref="IGeometryFactory"/> via the <see cref="GeometryEditor(IGeometryFactory)"/>
     /// constructor.
     /// Examples of situations where this is required is if the geometry is
     /// transformed to a new SRID and/or a new PrecisionModel.</para>
     /// <para>
-    /// The resulting Geometry is not checked for validity.
-    /// If validity needs to be enforced, the new Geometry's <see cref="IGeometry.IsValid"/> method should be called.</para>
+    /// Usage notes
+    /// <list type="Bullet">
+    /// <item>The resulting Geometry is not checked for validity.
+    /// If validity needs to be enforced, the new Geometry's 
+    /// <see cref="IGeometry.IsValid"/> method should be called.</item>
+    /// <item>By default the UserData of the input geometry is not copied to the result. </item>
+    /// </list>
+    /// </para>
     /// </remarks>
     /// <seealso cref="GeometryTransformer"/>
     /// <seealso cref="IGeometry.IsValid"/>
@@ -66,6 +72,8 @@ namespace NetTopologySuite.Geometries.Utilities
         /// If <tt>null</tt> the GeometryFactory of the input is used.
         /// </remarks>
         private IGeometryFactory _factory;
+
+        private bool _isUserDataCopied;
 
         /// <summary>
         /// Creates a new GeometryEditor object which will create
@@ -84,6 +92,17 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
+        /// Gets or sets a value indicating if the User Data is copied to the edit result.
+        /// If so, only the object reference is copied.
+        /// </summary>
+        public bool CopyUserData
+        {
+            get { return _isUserDataCopied; }
+            set { _isUserDataCopied = value; }
+        }
+
+
+        /// <summary>
         /// Edit the input <c>Geometry</c> with the given edit operation.
         /// Clients can create subclasses of GeometryEditorOperation or
         /// CoordinateOperation to perform required modifications.
@@ -96,6 +115,17 @@ namespace NetTopologySuite.Geometries.Utilities
             // if client did not supply a GeometryFactory, use the one from the input Geometry
             if (_factory == null)
                 _factory = geometry.Factory;
+
+            var result = EditInternal(geometry, operation);
+            if (_isUserDataCopied)
+            {
+                result.UserData = geometry.UserData;
+            }
+            return result;
+        }
+
+        private IGeometry EditInternal(IGeometry geometry, IGeometryEditorOperation operation)
+        {
             if (geometry is IGeometryCollection)
                 return EditGeometryCollection((IGeometryCollection)geometry, operation);
             if (geometry is IPolygon)

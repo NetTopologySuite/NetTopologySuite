@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(SolutionDir)BuildTools\GeoAPI.Reference.targets" Condition="Exists('$(SolutionDir)BuildTools\GeoAPI.Reference.targets')" />
   <PropertyGroup>
     <fwVersion Condition=" '$(fwVersion)' == '' ">net40-client</fwVersion>
     <ProjectType>Local</ProjectType>
@@ -100,9 +101,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GeoAPI">
-      <HintPath>$(SolutionDir)GeoAPI.1.7.3.1\lib\$(fwVersion)\GeoAPI.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -119,6 +117,7 @@
       <Link>Properties\SharedAssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="Functions\DissolveFunctions.cs" />
+    <Compile Include="Functions\SpatialIndexFunctions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -168,7 +167,6 @@
     <Compile Include="Result\IResultMatcher.cs" />
     <Compile Include="Utility\ClassUtility.cs" />
     <Compile Include="Utility\DoubleKeyMap.cs" />
-    <Compile Include="Utility\FunctionsUtility.cs" />
     <Compile Include="Utility\GeometryDataUtil.cs" />
     <Compile Include="Utility\IOUtility.cs" />
     <Compile Include="Utility\StringUtility.cs" />
@@ -238,9 +236,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

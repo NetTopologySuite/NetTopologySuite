@@ -8,7 +8,6 @@ using NetTopologySuite.Noding;
 using NetTopologySuite.Noding.Snapround;
 using NetTopologySuite.Precision;
 using NetTopologySuite.Utilities;
-using Open.Topology.TestRunner.Utility;
 
 namespace Open.Topology.TestRunner.Functions
 {
@@ -53,13 +52,13 @@ namespace Open.Topology.TestRunner.Functions
             return FunctionsUtil.GetFactoryOrDefault(geom).BuildGeometry(CollectionUtil.Cast<IGeometry>((ICollection)lines));
         }
 
-        public static bool IsNoded(IGeometry geom)
+        public static bool IsNodingValid(IGeometry geom)
         {
             FastNodingValidator nv = new FastNodingValidator(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
             return nv.IsValid;
         }
 
-        public static IGeometry FindSingleNode(IGeometry geom)
+        public static IGeometry FindSingleNodePoint(IGeometry geom)
         {
             FastNodingValidator nv = new FastNodingValidator(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
             bool temp = nv.IsValid;
@@ -68,13 +67,13 @@ namespace Open.Topology.TestRunner.Functions
             return FunctionsUtil.GetFactoryOrDefault(null).CreatePoint((Coordinate)intPts[0]);
         }
 
-        public static IGeometry FindNodes(IGeometry geom)
+        public static IGeometry FindNodePoints(IGeometry geom)
         {
             IList<Coordinate> intPts = FastNodingValidator.ComputeIntersections(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
             return FunctionsUtil.GetFactoryOrDefault(null).CreateMultiPoint(CoordinateArrays.ToCoordinateArray(intPts));
         }
 
-        public static int NodeCount(IGeometry geom)
+        public static int InteriorIntersectionCount(IGeometry geom)
         {
             InteriorIntersectionFinder intCounter = InteriorIntersectionFinder.CreateIntersectionCounter(new RobustLineIntersector());
             INoder noder = new MCIndexNoder(intCounter);
@@ -91,14 +90,14 @@ namespace Open.Topology.TestRunner.Functions
 
             INoder noder = new MCIndexNoder(new IntersectionAdder(li));
             noder.ComputeNodes(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
-            return FromSegmentStrings(noder.GetNodedSubstrings());
+            return SegmentStringUtil.ToGeometry(noder.GetNodedSubstrings(), geom.Factory);
         }
 
         public static IGeometry MCIndexNoding(IGeometry geom)
         {
             INoder noder = new MCIndexNoder(new IntersectionAdder(new RobustLineIntersector()));
             noder.ComputeNodes(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
-            return FromSegmentStrings(noder.GetNodedSubstrings());
+            return SegmentStringUtil.ToGeometry(noder.GetNodedSubstrings(), geom.Factory);
         }
 
         /// <summary>
@@ -116,7 +115,7 @@ namespace Open.Topology.TestRunner.Functions
                 fixedPM.Scale);
             noder.ComputeNodes(segs);
             var nodedSegStrings = noder.GetNodedSubstrings();
-            return FromSegmentStrings(nodedSegStrings);
+            return SegmentStringUtil.ToGeometry(nodedSegStrings, geom.Factory);
         }
 
         private static List<ISegmentString> CreateSegmentStrings(IGeometry geom)
@@ -128,18 +127,6 @@ namespace Open.Topology.TestRunner.Functions
                 segs.Add(new BasicSegmentString(line.Coordinates, null));
             }
             return segs;
-        }
-
-        private static IGeometry FromSegmentStrings(IList<ISegmentString> segStrings)
-        {
-            var lines = new ILineString[segStrings.Count];
-            int index = 0;
-            foreach (var ss in segStrings)
-            {
-                var line = FunctionsUtil.GetFactoryOrDefault(null).CreateLineString(ss.Coordinates);
-                lines[index++] = line;
-            }
-            return FunctionsUtil.GetFactoryOrDefault(null).CreateMultiLineString(lines);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using GeoAPI.Geometries;
 using GeoAPI.Operation.Buffer;
-using GeoAPI.Operations.Buffer;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 
@@ -141,18 +140,16 @@ namespace NetTopologySuite.Operation.Buffer
             return new OffsetSegmentGenerator(_precisionModel, _bufParams, distance);
         }
 
-       /// <summary>
+        /// <summary>
         /// Computes the distance tolerance to use during input
         /// line simplification.
         /// </summary>
         /// <param name="bufDistance">The buffer distance</param>
         /// <returns>The simplification tolerance</returns>
         private double SimplifyTolerance(double bufDistance)
-       {
-           // TODO: remove cast to implementation
-           BufferParameters @params = (BufferParameters) _bufParams;
-           return bufDistance * @params.SimplifyFactor;
-       }
+        {
+            return bufDistance * _bufParams.SimplifyFactor;
+        }
 
         private void ComputePointCurve(Coordinate pt, OffsetSegmentGenerator segGen)
         {
@@ -164,7 +161,7 @@ namespace NetTopologySuite.Operation.Buffer
                 case EndCapStyle.Square:
                     segGen.CreateSquare(pt);
                     break;
-                // otherwise curve is empty (e.g. for a butt cap);
+                    // otherwise curve is empty (e.g. for a butt cap);
             }
         }
 

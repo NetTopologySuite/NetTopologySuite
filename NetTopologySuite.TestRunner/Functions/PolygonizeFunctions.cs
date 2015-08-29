@@ -9,6 +9,18 @@ namespace Open.Topology.TestRunner.Functions
 {
     public static class PolygonizeFunctions
     {
+        private static IGeometry Polygonize(IGeometry g, bool extractOnlyPolygonal)
+        {
+            var lines = LineStringExtracter.GetLines(g);
+            var polygonizer = new Polygonizer(extractOnlyPolygonal);
+            polygonizer.Add(lines);
+            return polygonizer.GetGeometry();
+            /*
+            Collection polys = polygonizer.getPolygons();
+            Polygon[] polyArray = GeometryFactory.toPolygonArray(polys);
+            return g.getFactory().createGeometryCollection(polyArray);
+            */
+        }
         public static IGeometry Polygonize(IGeometry g)
         {
             var lines = LineStringExtracter.GetLines(g);

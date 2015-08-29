@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(SolutionDir)BuildTools\GeoAPI.Pcl.Reference.targets" Condition="Exists('$(SolutionDir)BuildTools\GeoAPI.Pcl.Reference.targets')" />
   <PropertyGroup>
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -391,6 +392,9 @@
     <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Operation\Valid\ValidSelfTouchingRingFormingHoleTest.cs">
       <Link>Operation\Valid\ValidSelfTouchingRingFormingHoleTest.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Precision\CommonBitsOpTest.cs">
+      <Link>Precision\CommonBitsOpTest.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Precision\GeometryPrecisionReducerTest.cs">
       <Link>Precision\GeometryPrecisionReducerTest.cs</Link>
     </Compile>
@@ -433,6 +437,9 @@
     <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Utilities\AlternativePriorityQueueTest.cs">
       <Link>Utilities\AlternativePriorityQueueTest.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Utilities\IOUtil.cs">
+      <Link>Utilities\IOUtil.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite.Tests.NUnit\Utilities\PriorityQueueTest.cs">
       <Link>Utilities\PriorityQueueTest.cs</Link>
     </Compile>
@@ -449,12 +456,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="GeoAPI, Version=1.7.3.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SolutionDir)packages\GeoAPI.1.7.3.1\lib\portable-net403+sl5+win8+wp8+MonoAndroid+MonoTouch\GeoAPI.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>$(SolutionDir)packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Runtime.Serialization" />

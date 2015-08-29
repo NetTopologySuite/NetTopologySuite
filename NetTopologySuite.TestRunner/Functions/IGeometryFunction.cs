@@ -37,6 +37,11 @@ namespace Open.Topology.TestRunner.Functions
         Type ReturnType { get; }
 
         /// <summary>
+        /// Gets a value indicating that a parameter is a geometry
+        /// </summary>
+        bool IsBinary { get; }
+
+        /// <summary>
         /// Gets a string representing the signature of this function.
         /// </summary>
         String Signature { get; }

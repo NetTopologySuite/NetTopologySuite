@@ -21,7 +21,7 @@
 		</frameworkAssemblies>
 		<dependencies>
 			<dependency id="NetTopologySuite" version="[$version$]" />
-			<dependency id="Newtonsoft.Json" version="[6.0,7.0)" />
+			<dependency id="Newtonsoft.Json" />
 		</dependencies>
 	</metadata>
 	<files>
@@ -37,16 +37,12 @@
 		<file src="Release\v4.0\AnyCPU\NetTopologySuite.IO.GeoJSON.pdb" target="lib\net40-client" />
 		<file src="Release\v4.0\AnyCPU\NetTopologySuite.IO.GeoJSON.xml" target="lib\net40-client" />
 
-		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net403-client" />
-		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.IO.GeoJSON.pdb" target="lib\net403-client" />
-		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.IO.GeoJSON.xml" target="lib\net403-client" />
-
 		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net45" />
 		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.GeoJSON.pdb" target="lib\net45" />
 		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.GeoJSON.xml" target="lib\net45" />
 
-		<file src="Release\PCL\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\portable-net403+win8" />
-		<file src="Release\PCL\AnyCPU\NetTopologySuite.IO.GeoJSON.pdb" target="lib\portable-net403+win8" />
-		<file src="Release\PCL\AnyCPU\NetTopologySuite.IO.GeoJSON.xml" target="lib\portable-net403+win8" />
+		<file src="Release\PCL\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\portable-net403+sl5+netcore45+wpa81+wp8" />
+		<file src="Release\PCL\AnyCPU\NetTopologySuite.IO.GeoJSON.pdb" target="lib\portable-net403+sl5+netcore45+wpa81+wp8" />
+		<file src="Release\PCL\AnyCPU\NetTopologySuite.IO.GeoJSON.xml" target="lib\portable-net403+sl5+netcore45+wpa81+wp8" />
 	</files>
 </package>

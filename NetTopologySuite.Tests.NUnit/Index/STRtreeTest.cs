@@ -152,6 +152,18 @@ namespace NetTopologySuite.Tests.NUnit.Index
             DoTestVerticalSlices(5, 3, 2, 1);
         }
 
+        [TestAttribute]
+        public void TestRemove()
+        {
+            var tree = new STRtree();
+            tree.Insert(new Envelope(0, 10, 0, 10), "1");
+            tree.Insert(new Envelope(5, 15, 5, 15), "2");
+            tree.Insert(new Envelope(10, 20, 10, 20), "3");
+            tree.Insert(new Envelope(15, 25, 15, 25), "4");
+            tree.Remove(new Envelope(10, 20, 10, 20), "4");
+            Assert.AreEqual(3, tree.Count);
+        }
+
         private static void DoTestCreateParentsFromVerticalSlice(int childCount,
                                                           int nodeCapacity, int expectedChildrenPerParentBoundable,
                                                           int expectedChildrenOfLastParent)

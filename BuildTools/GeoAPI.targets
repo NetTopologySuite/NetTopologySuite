@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!--
+  You Need to install Community Tasks for MSBuild to run any of this build script:
+  https://github.com/loresoft/msbuildtasks/releases
+  -->
+	<Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
+
+	<PropertyGroup>
+		<fwVersionNet>net40-Client</fwVersionNet>
+		<fwVersionPcl>portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10</fwVersionPcl>
+		<fwVersion/>
+		<geoAPIRefFileNet>GeoAPI.Reference.targets</geoAPIRefFileNet>
+		<geoAPIRefFilePcl>GeoAPI.Pcl.Reference.targets</geoAPIRefFilePcl>
+		<geoAPIRefFile/>
+		<currentVersion/>
+	</PropertyGroup>
+
+	<!-- MOVED to GeoAPI.Reference.targets
+  <ItemGroup>
+	    <Reference Include="GeoAPI">
+	      <HintPath>$(MSBuildProjectDirectory)\..\packages\GeoAPI.$(geoAPIVersion)\lib\$(fwVersion)\GeoAPI.dll</HintPath>
+	    </Reference>
+	</ItemGroup>
+  -->
+
+	<ItemGroup>
+		<File Include="$(MSBuildProjectDirectory)\GeoAPI.version" />
+	</ItemGroup>
+
+	<Target Name="ReadVersion">
+
+		<ReadLinesFromFile File="$(MSBuildProjectDirectory)\GeoAPI.version">
+			<Output TaskParameter="Lines" PropertyName="currentVersion" />
+		</ReadLinesFromFile>
+		<Message Text="File: $(MSBuildProjectDirectory)\GeoAPI.version
+Version: $(currentVersion)"/>
+	</Target>
+
+
+	<Target Name="WriteVersion" Condition=" '$(geoAPIVersion)' != '' " >
+		<WriteLinesToFile File="$(MSBuildProjectDirectory)\GeoAPI.version" Lines="$(geoAPIVersion)" Overwrite="true" />
+		<MSBuild Projects="$(MSBuildProjectFile)" Targets="WriteGeoAPIReferenceNet" Properties="geoAPIVersion=$(geoAPIVersion);Dummy=1" />
+		<MSBuild Projects="$(MSBuildProjectFile)" Targets="WriteGeoAPIReferencePcl" Properties="geoAPIVersion=$(geoAPIVersion);Dummy=2" />
+	</Target>
+
+	<Target Name="WriteGeoAPIReferenceNet" DependsOnTargets="SetNet">
+		<CallTarget Targets="WriteGeoAPIReference"/>
+	</Target>
+
+	<Target Name="SetNet">
+		<CreateProperty Value="$(fwVersionNet)">
+			<Output TaskParameter="Value" PropertyName="fwVersion"/>
+		</CreateProperty>
+		<CreateProperty Value="$(geoAPIRefFileNet)">
+			<Output TaskParameter="Value" PropertyName="geoAPIRefFile"/>
+		</CreateProperty>
+	</Target>
+
+	<Target Name="WriteGeoAPIReferencePcl" DependsOnTargets="SetPcl">
+		<CallTarget Targets="WriteGeoAPIReference"/>
+	</Target>
+
+	<Target Name="SetPcl">
+		<CreateProperty Value="$(fwVersionPcl)">
+			<Output TaskParameter="Value" PropertyName="fwVersion"/>
+		</CreateProperty>
+		<CreateProperty Value="$(geoAPIRefFilePcl)">
+			<Output TaskParameter="Value" PropertyName="geoAPIRefFile"/>
+		</CreateProperty>
+	</Target>
+
+	<Target Name="WriteGeoAPIReference" KeepDuplicateOutputs="true">
+		<Message Text="Writing '$(geoAPIRefFile)' with fwVersion set to '$(fwVersion)'" Importance="high"/>
+		<PropertyGroup>
+			<n1>$([System.String]::Concat("$(","SolutionDir",")"))</n1>
+			<n2>$([System.String]::Concat("$(","fwVersion",")"))</n2>
+		</PropertyGroup>
+		<ItemGroup>
+			<gr Include="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;" />
+			<gr Include="&lt;Project ToolsVersion=&quot;4.0&quot; xmlns=&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot;&gt;"/>
+			<gr Include="&lt;PropertyGroup&gt;"/>
+			<gr Include="&lt;fwVersion Condition=&quot; '$(n2)' == '' &quot;&gt;$(fwVersion)&lt;/fwVersion&gt;"/>
+			<gr Include="&lt;/PropertyGroup&gt;"/>
+			<gr Include="&lt;ItemGroup&gt;"/>
+			<gr Include="&lt;Reference Include=&quot;GeoAPI&quot;&gt;"/>
+			<gr Include="&lt;HintPath&gt;$(n1)packages\GeoAPI.$(geoAPIVersion)\lib\$(n2)\GeoAPI.dll&lt;/HintPath&gt;"/>
+			<gr Include="&lt;/Reference&gt;"/>
+			<gr Include="&lt;/ItemGroup&gt;"/>
+			<gr Include="&lt;/Project&gt;"/>
+			<!--
+			<gr Include=""/>
+			-->
+		</ItemGroup>
+		<WriteLinesToFile File="$(MSBuildProjectDirectory)\$(geoAPIRefFile)" Lines="@(gr)" Overwrite="true" />
+
+	</Target>
+	
+	<!--Task to iterate over all packages.config files in this solution-->
+	<Target Name="FindPC">
+		<ItemGroup>
+			<pc Include="$(MSBuildProjectDirectory)\..\**\packages.config"/>
+		</ItemGroup>
+
+		<Message Text="@(pc)"/>
+	</Target>
+
+	<Target Name="UpdateGeoAPIVersion" DependsOnTargets="UpdatePC;WriteVersion">
+	</Target>
+
+	<Target Name="Nuget" Condition=" 'geoAPIVersion' != '' ">
+		<PropertyGroup>
+			<newver>$(geoAPIVersion)</newver>
+		</PropertyGroup>
+		<Message Text="Trying to install GeoAPI v$(newver)"/>
+		<Exec Command="$(MSBuildProjectDirectory)\..\.nuget\nuget install GeoAPI -version $(newver) -prerelease -o $(MSBuildProjectDirectory)\..\packages"/>
+	</Target>
+
+	<Target Name="UpdatePC" DependsOnTargets="ReadVersion;Nuget">
+		<PropertyGroup>
+			<!--
+        <oldver>$([System.String]::Copy($(currentVersion)).Replace(".", "\\."))</oldver>
+        <newver>$([System.String]::Copy($(geoAPIVersion)).Replace(".", "\\."))</newver>
+      -->
+			<oldver>$(currentVersion)</oldver>
+			<newver>$(geoAPIVersion)</newver>
+		</PropertyGroup>
+		<PropertyGroup>
+			<find>package id=&quot;GeoAPI&quot; version=&quot;$(oldver)&quot;</find>
+			<repl>package id=&quot;GeoAPI&quot; version=&quot;$(newver)&quot;</repl>
+		</PropertyGroup>
+
+
+		<Message Text="Old: $(oldver)"/>
+		<Message Text="New: $(newver)"/>
+		<Message Text="find: $(find)"/>
+		<Message Text="repl: $(repl)"/>
+
+		<ItemGroup>
+			<pc Include="$(MSBuildProjectDirectory)\..\**\packages.config"/>
+		</ItemGroup>
+
+		<Message Text="Updating version"/>
+		<FileUpdate Regex="$(find)" ReplacementText="$(repl)" Files="@(pc)"/>
+		<!--<WriteVersion/>-->
+	</Target>
+</Project>

@@ -34,7 +34,7 @@ namespace NetTopologySuite.Planargraph
         /// <returns></returns>
         public Node Remove(Coordinate pt)
         {
-            if (_nodeMap.ContainsKey(pt))
+            if (!_nodeMap.ContainsKey(pt))
                 return null;
             Node node = _nodeMap[pt];
             _nodeMap.Remove(pt);

@@ -11,8 +11,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance
     /// <author>Martin Davis</author>
     public class PerformanceTestRunner
     {
-        private const String RunPrefix = "Run";
-        private const String InitMethod = "Init";
+        private const string RunPrefix = "Run";
+        private const string InitMethod = "Init";
 
         public static void Run(Type clz)
         {
@@ -40,7 +40,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
                 test.SetUp();
                 for (var runNum = 0; runNum < runSize.Length; runNum++)
                 {
-                    int size = runSize[runNum];
+                    var size = runSize[runNum];
                     test.StartRun(size);
                     for (var i = 0; i < runMethod.Length; i++)
                     {
@@ -50,15 +50,20 @@ namespace NetTopologySuite.Tests.NUnit.Performance
                         {
                             runMethod[i].Invoke(test, new object[0]);
                         }
+                        sw.Stop();
+                        test.SetTime(runNum, sw.ElapsedMilliseconds);
                         Console.WriteLine(runMethod[i].Name + " : " + sw.Elapsed);
                     }
                     test.EndRun();
                 }
                 test.TearDown();
             }
+            catch (TargetInvocationException e)
+            {
+                Console.WriteLine(e.StackTrace);
+            }
             catch (Exception e)
             {
-                // TODO Auto-generated catch block
                 Console.WriteLine(e.StackTrace);
             }
         }

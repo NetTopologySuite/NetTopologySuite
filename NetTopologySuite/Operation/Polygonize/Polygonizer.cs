@@ -11,18 +11,29 @@ namespace NetTopologySuite.Operation.Polygonize
     /// <para>All types of Geometry are accepted as input;
     /// the constituent linework is extracted as the edges to be polygonized.
     /// The processed edges must be correctly noded; that is, they must only meet
-    /// at their endpoints.  The Polygonizer will run on incorrectly noded input
+    /// at their endpoints. Polygonization will accept incorrectly noded input
     /// but will not form polygons from non-noded edges, 
-    /// and will report them as errors.
+    /// and reports them as errors.
     /// </para><para>
     /// The Polygonizer reports the follow kinds of errors:
     /// Dangles - edges which have one or both ends which are not incident on another edge endpoint
     /// Cut Edges - edges which are connected at both ends but which do not form part of polygon
     /// Invalid Ring Lines - edges which form rings which are invalid
     /// (e.g. the component lines contain a self-intersection).</para>
+    /// <para>
+    /// Polygonization supports extracting only polygons which form a valid polygonal geometry.
+    /// The set of extracted polygons is guaranteed to be edge-disjoint.
+    /// This is useful for situations where it is known that the input lines form a
+    /// valid polygonal geometry.</para>
     /// </remarks>
+    /// 
     public class Polygonizer
     {
+        /// <summary>
+        /// The default polygonizer output behavior
+        /// </summary>
+        public const bool AllPolys = true;
+        
         /// <summary>
         /// Adds every linear element in a <see cref="IGeometry"/> into the polygonizer graph.
         /// </summary>
@@ -58,11 +69,14 @@ namespace NetTopologySuite.Operation.Polygonize
         private ICollection<ILineString> _dangles = new List<ILineString>();
         private ICollection<ILineString> _cutEdges = new List<ILineString>();
         private IList<IGeometry> _invalidRingLines = new List<IGeometry>();
-        private IList<EdgeRing> _holeList;
-        private IList<EdgeRing> _shellList;
+        private List<EdgeRing> _holeList;
+        private List<EdgeRing> _shellList;
         private ICollection<IGeometry> _polyList;
 
         private bool _isCheckingRingsValid = true;
+        private readonly bool _extractOnlyPolygonal;
+
+        private IGeometryFactory _geomFactory;
 
         /// <summary>
         /// Allows disabling the valid ring checking, 
@@ -76,11 +90,25 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// Create a polygonizer with the same {GeometryFactory}
+        /// Creates a polygonizer with the same <see cref="IGeometryFactory"/>
         /// as the input <c>Geometry</c>s.
+        /// The output mask is <see cref="AllPolys"/>
         /// </summary>
+        /// 
         public Polygonizer() 
+            :this(AllPolys)
         {
+            
+            _lineStringAdder = new LineStringAdder(this);
+        }
+
+        /// <summary>
+        /// Creates a polygonizer and allow specifyng if only polygons which form a valid polygonal geometry are to be extracted.
+        /// </summary>
+        /// <param name="extractOnlyPolygonal"><value>true</value> if only polygons which form a valid polygonal geometry are to be extracted</param>
+        public Polygonizer(bool extractOnlyPolygonal)
+        {
+            _extractOnlyPolygonal = extractOnlyPolygonal;
             _lineStringAdder = new LineStringAdder(this);
         }
 
@@ -115,6 +143,8 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <param name="line">The <see cref="ILineString"/> to add.</param>
         private void Add(ILineString line)
         {
+            // record the geometry factory for later use
+            _geomFactory = line.Factory;
             // create a new graph using the factory from the input Geometry
             if (_graph == null)
 				_graph = new PolygonizeGraph(line.Factory);
@@ -128,6 +158,23 @@ namespace NetTopologySuite.Operation.Polygonize
         {
             Polygonize();
             return _polyList;
+        }
+
+        /// <summary>
+        /// Gets a geometry representing the polygons formed by the polygonization.
+        /// If a valid polygonal geometry was extracted the result is a <see cref="IPolygonal"/> geometry. 
+        /// </summary>
+        /// <returns>A geometry containing the polygons</returns>
+        public IGeometry GetGeometry()
+        {
+            if (_geomFactory == null) _geomFactory = new Geometries.GeometryFactory();
+            Polygonize();
+            if (_extractOnlyPolygonal)
+            {
+                return _geomFactory.BuildGeometry(_polyList);
+            }
+            // result may not be valid Polygonal, so return as a GeometryCollection
+            return _geomFactory.CreateGeometryCollection(Geometries.GeometryFactory.ToGeometryArray(_polyList));
         }
 
         /// <summary> 
@@ -184,10 +231,17 @@ namespace NetTopologySuite.Operation.Polygonize
 
             FindShellsAndHoles(validEdgeRingList);
             AssignHolesToShells(_holeList, _shellList);
+            // order the shells to make any subsequent processing deterministic
+            _shellList.Sort(new EdgeRing.EnvelopeComparator());
 
-            _polyList = new List<IGeometry>();
-            foreach (EdgeRing er in _shellList)
-                _polyList.Add(er.Polygon);
+            var includeAll = true;
+            if (_extractOnlyPolygonal)
+            {
+                FindDisjointShells(_shellList);
+                includeAll = false;
+            }
+            _polyList = ExtractPolygons(_shellList, includeAll);
+
         }
 
         private static void FindValidRings(IEnumerable<EdgeRing> edgeRingList, ICollection<EdgeRing> validEdgeRingList, ICollection<IGeometry> invalidRingList)
@@ -206,6 +260,7 @@ namespace NetTopologySuite.Operation.Polygonize
             _shellList = new List<EdgeRing>();
             foreach (var er in edgeRingList)
             {
+                er.ComputeHole();
                 if (er.IsHole)
                      _holeList.Add(er);
                 else _shellList.Add(er);
@@ -213,17 +268,80 @@ namespace NetTopologySuite.Operation.Polygonize
             }
         }
 
-        private static void AssignHolesToShells(IEnumerable<EdgeRing> holeList, IList<EdgeRing> shellList)
+        private static void AssignHolesToShells(IEnumerable<EdgeRing> holeList, List<EdgeRing> shellList)
         {
             foreach (EdgeRing holeEdgeRing in holeList)
+            {
                 AssignHoleToShell(holeEdgeRing, shellList);
+                /*
+                if (!holeER.hasShell()) {
+                    System.out.println("DEBUG: Outer hole: " + holeER);
+                }
+                */
+            }
         }
 
         private static void AssignHoleToShell(EdgeRing holeEdgeRing, IList<EdgeRing> shellList)
         {
             var shell = EdgeRing.FindEdgeRingContaining(holeEdgeRing, shellList);
-            if (shell != null)
-                shell.AddHole(holeEdgeRing.Ring);
+            if (shell != null) {
+                shell.AddHole(holeEdgeRing);
+            }
         }
+
+        private static void FindDisjointShells(List<EdgeRing> shellList)
+        {
+            FindOuterShells(shellList);
+
+            bool isMoreToScan;
+            do
+            {
+                isMoreToScan = false;
+                foreach(var er in shellList)
+                {
+                    if (er.IsIncludedSet)
+                        continue;
+                    er.UpdateIncluded();
+                    if (!er.IsIncludedSet)
+                    {
+                        isMoreToScan = true;
+                    }
+                }
+            } while (isMoreToScan);
+        }
+
+
+        /// <summary>
+        /// For each outer hole finds and includes a single outer shell.
+        /// This seeds the travesal algorithm for finding only polygonal shells.
+        /// </summary>
+        /// <param name="shellList">The list of shell EdgeRings</param>
+        private static void FindOuterShells(List<EdgeRing> shellList)
+        {
+
+            foreach (var er in shellList)
+            {
+                var outerHoleER = er.OuterHole;
+                if (outerHoleER != null && !outerHoleER.IsProcessed)
+                {
+                    er.IsIncluded = true;
+                    outerHoleER.IsProcessed = true;
+                }
+            }
+        }
+
+        private static List<IGeometry> ExtractPolygons(List<EdgeRing> shellList, bool includeAll)
+        {
+            var polyList = new List<IGeometry>();
+            foreach (var er in shellList)
+            {
+                if (includeAll || er.IsIncluded)
+                {
+                    polyList.Add(er.Polygon);
+                }
+            }
+            return polyList;
+        }
+
     }
 }

@@ -13,14 +13,32 @@ namespace NetTopologySuite.Windows.Forms
     /// <remarks>
     /// <para>
     /// It is suggested to use larger point sizes to render fonts glyphs, to reduce the effects of scale-dependent hints.</para>
-    /// <para>The resulting geometry are in the base coordinate system of the font.</para>
+    /// <para>The result geometry is in the base coordinate system of that font.</para>
     /// <para>The geometry can be further transformed as necessary using <see cref="AffineTransformation"/>s</para>
     /// </remarks>
     /// <author>Martin Davis</author>
     public class FontGlyphReader
     {
+        /**
+         * The font name of the Java logical font Serif.
+         */
+        /// <summary>
+        /// The font name of the Java logical font Serif.
+        /// </summary>
         public const string FontSerif = "Serif";
-        public const string FontSanserif = "SanSerif";
+        /// <summary>
+        /// The font name of the Java logical font SansSerif.
+        /// </summary>
+        [System.Obsolete("Use SansSerif")]
+        public const string FontSanserif = "SansSerif";
+        /// <summary>
+        /// The font name of the Java logical font SansSerif.
+        /// </summary>
+        public const string FontSansSerif = "SansSerif";
+
+        /// <summary>
+        /// The font name of the Java logical font Monospaced.
+        /// </summary>
         public const string FontMonospaced = "Monospaced";
 
         // a flatness factor empirically determined to provide good results

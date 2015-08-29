@@ -1,10 +1,11 @@
 using System;
 using GeoAPI.Geometries;
-using GeoAPI.Operations.Buffer;
+using GeoAPI.Operation.Buffer;
 using NetTopologySuite.Densify;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Buffer;
 using NetTopologySuite.Triangulate;
+using NetTopologySuite.Utilities;
 using Open.Topology.TestRunner.Utility;
 
 namespace Open.Topology.TestRunner.Functions

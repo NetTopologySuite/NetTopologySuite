@@ -21,7 +21,9 @@ namespace NetTopologySuite.Windows.Media
     public class FontGlyphReader
     {
         public const string FontSerif = "Serif";
-        public const string FontSanserif = "SanSerif";
+        [System.Obsolete("Use SansSerif")]
+        public const string FontSanserif = "SansSerif";
+        public const string FontSansSerif = "SansSerif";
         public const string FontMonospaced = "Monospaced";
 
         // a flatness factor empirically determined to provide good results
