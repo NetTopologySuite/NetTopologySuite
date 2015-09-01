@@ -49,9 +49,15 @@
     <Compile Include="DbaseReader.cs" />
     <Compile Include="Entities\IShapefileFeature.cs" />
     <Compile Include="Entities\ShapefileFeature.cs" />
+    <Compile Include="Streams\FileStreamProvider.cs" />
+    <Compile Include="Streams\ICombinedStreamProvider.cs" />
+    <Compile Include="Streams\IDataStreamProvider.cs" />
+    <Compile Include="Streams\IShapeStreamProvider.cs" />
+    <Compile Include="Streams\IStreamProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShapeDataReader.cs" />
     <Compile Include="ShapeReader.cs" />
+    <Compile Include="Streams\ShapefileStreamProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\NetTopologySuite.IO.GeoTools.csproj">

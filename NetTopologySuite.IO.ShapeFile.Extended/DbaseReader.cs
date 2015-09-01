@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using NetTopologySuite.Features;
+using NetTopologySuite.IO.ShapeFile.Extended.Streams;
 
 namespace NetTopologySuite.IO.ShapeFile.Extended
 {
     public class DbaseReader : IEnumerable<IAttributesTable>, IDisposable
 	{
 		private DbaseFileHeader m_Header = null;
-		private readonly string m_Filename;
+		//private readonly string m_Filename;
+        private readonly IDataStreamProvider m_dataStreamProvider;
 		private BinaryReader m_FileReader;
         private bool m_IsDisposed;
 
@@ -18,26 +20,18 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 		/// Initializes a new instance of the DbaseFileReader class.
 		/// </summary>
 		/// <param name="filename"></param>
-		public DbaseReader(string filename)
+		public DbaseReader(string filename):this(new ShapefileStreamProvider(null, new FileStreamProvider(filename, true)))
 		{
-			if (string.IsNullOrWhiteSpace(filename))
-			{
-				throw new ArgumentNullException(filename);
-			}
 
-			// check for the file existing here, otherwise we will not get an error
-			// until we read the first record or read the header.
-			if (!File.Exists(filename))
-			{
-				throw new FileNotFoundException(String.Format("Could not find file \"{0}\"", filename));
-			}
-
-			m_Filename = filename;
-
-			ReadHeader();
 		}
 
-		~DbaseReader()
+        public DbaseReader(IDataStreamProvider  dataStreamProvider)
+        {
+            m_dataStreamProvider = dataStreamProvider;
+            ReadHeader();
+        }
+
+        ~DbaseReader()
 		{
 			Dispose(false);
 		}
@@ -100,7 +94,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 
 		internal DbaseReader Clone()
 		{
-			return new DbaseReader(m_Filename);
+			return new DbaseReader(m_dataStreamProvider);
 		}
 
 		/// <summary>
@@ -111,13 +105,12 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 		{
 			if (m_Header == null)
 			{
-				FileStream stream = new FileStream(m_Filename, FileMode.Open, FileAccess.Read, FileShare.Read);
-				m_FileReader = new BinaryReader(stream);
+				m_FileReader = new BinaryReader(m_dataStreamProvider.DataStream.OpenRead());
 
 				m_Header = new DbaseFileHeader();
 
 				// read the header
-				m_Header.ReadHeader(m_FileReader, m_Filename);
+				m_Header.ReadHeader(m_FileReader, null);//todo:jd re-enable codepage sniffing
 			}
 
 			return m_Header;

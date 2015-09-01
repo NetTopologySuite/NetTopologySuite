@@ -20,11 +20,11 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         public void Ctor_SendNullPath_ShouldThrowException()
         {
             // Act.
-            new IO.ShapeFile.Extended.ShapeReader(null);
+            new IO.ShapeFile.Extended.ShapeReader((string)null);
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_SendEmptyPath_ShouldThrowException()
         {
             // Act.
@@ -32,7 +32,7 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_SendWhitespacePath_ShouldThrowException()
         {
             // Act.

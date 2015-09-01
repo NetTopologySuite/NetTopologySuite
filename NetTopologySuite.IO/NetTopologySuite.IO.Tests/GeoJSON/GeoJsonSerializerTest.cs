@@ -5,6 +5,7 @@ using NetTopologySuite.CoordinateSystems;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 namespace NetTopologySuite.IO.Tests.GeoJSON
@@ -80,6 +81,21 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             serializer.Serialize(writer, attributes);
             writer.Flush();
             Assert.AreEqual("\"properties\":{\"test1\":\"value1\"}", sb.ToString());
-        }        
+        }
+
+        /// <summary>
+        /// test for a real life failure
+        /// </summary>
+        [Test]
+        public void GeoJsonDeserializePolygonTest()
+        {
+            StringBuilder sb = new StringBuilder();
+            JsonSerializer serializer = new GeoJsonSerializer();
+
+            var s = "{\"type\": \"Polygon\",\"coordinates\": [[[-180,-67.8710140098964],[-180,87.270282879440586],[180,87.270282879440586],[180,-67.8710140098964],[-180,-67.8710140098964]]],\"rect\": {\"min\": [-180,-67.8710140098964],\"max\": [180,87.270282879440586]}}";
+            var poly = serializer.Deserialize<Polygon>(JObject.Parse(s).CreateReader());
+
+
+        }
     }
 }

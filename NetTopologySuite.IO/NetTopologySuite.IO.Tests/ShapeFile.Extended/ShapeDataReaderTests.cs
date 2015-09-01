@@ -24,7 +24,7 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         public void Ctor_SendNullPath_ShouldThrowException()
         {
             // Act.
-            m_shapeDataReader = new ShapeDataReader(null);
+            m_shapeDataReader = new ShapeDataReader((string)null);
         }
 
         [Test]
