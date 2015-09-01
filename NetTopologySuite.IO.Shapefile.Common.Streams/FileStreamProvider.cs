@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace NetTopologySuite.IO.ShapeFile.Extended.Streams
+namespace NetTopologySuite.IO.Common.Streams
 {
     public class FileStreamProvider : IStreamProvider
     {
@@ -37,7 +37,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended.Streams
             {
                 return File.Open(Path, FileMode.Create, FileAccess.Write, FileShare.None);
             }
-            return File.Open(Path, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
+            return File.Open(Path, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite); //jd: I would like to use FileShare.None however the GeoTools shapefilewriter writes a dummy file while holding an existing handle
         }
     }
 }

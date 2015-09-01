@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using GeoAPI.Geometries;
+using NetTopologySuite.IO.Common.Streams;
 using NetTopologySuite.IO.Handlers;
-using NetTopologySuite.IO.ShapeFile.Extended.Streams;
 
 namespace NetTopologySuite.IO.ShapeFile.Extended
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.WindowsAzure.Storage.Blob;
-using NetTopologySuite.IO.ShapeFile.Extended.Streams;
+using NetTopologySuite.IO.Common.Streams;
 
 namespace NetTopologySuite.IO.Shapefile.Extended.CloudStorage
 {

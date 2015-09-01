@@ -70,13 +70,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetTopologySuite.IO.ShapeFile.Extended\NetTopologySuite.IO.ShapeFile.Extended.csproj">
-      <Project>{4F36DD38-3CCE-4A19-93C2-A9F8B27EA430}</Project>
-      <Name>NetTopologySuite.IO.ShapeFile.Extended</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\NetTopologySuite.IO.Shapefile.Common.Streams\NetTopologySuite.IO.Common.Streams.csproj">
+      <Project>{852e38a5-39b6-41fb-90e6-ba41a20b9f1b}</Project>
+      <Name>NetTopologySuite.IO.Common.Streams</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

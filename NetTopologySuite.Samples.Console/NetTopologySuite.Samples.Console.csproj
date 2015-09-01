@@ -209,6 +209,10 @@
       <Project>{08759323-B999-405B-8688-80008A4190B0}</Project>
       <Name>DotSpatial.Projections.Wrapper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO.Shapefile.Common.Streams\NetTopologySuite.IO.Common.Streams.csproj">
+      <Project>{852e38a5-39b6-41fb-90e6-ba41a20b9f1b}</Project>
+      <Name>NetTopologySuite.IO.Common.Streams</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GDB\NetTopologySuite.IO.GDB.csproj">
       <Project>{548166D9-DF64-46FB-9EEC-212C7B7E7D85}</Project>
       <Name>NetTopologySuite.IO.GDB</Name>

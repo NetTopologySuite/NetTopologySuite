@@ -1,30 +1,37 @@
 ﻿using System;
 using System.IO;
 using GeoAPI.Geometries;
+using NetTopologySuite.IO.Common.Streams;
 
 namespace NetTopologySuite.IO
 {
     public partial class ShapefileReader
     {
         /// <summary>
-        /// Initializes a new instance of the Shapefile class with the given parameters.
+        ///     Initializes a new instance of the Shapefile class with the given parameters.
         /// </summary>
         /// <param name="filename">The filename of the shape file to read (with .shp).</param>
         /// <param name="geometryFactory">The GeometryFactory to use when creating Geometry objects.</param>
         public ShapefileReader(string filename, IGeometryFactory geometryFactory)
+            : this(
+                new ShapefileStreamProvider(new FileStreamProvider(filename, true), null, true, false), geometryFactory)
         {
-            if (filename == null)
-                throw new ArgumentNullException("filename");
-            if (geometryFactory == null)
-                throw new ArgumentNullException("geometryFactory");
+        }
 
-            _filename = filename;
+        public ShapefileReader(IShapeStreamProvider shapeStreamProvider, IGeometryFactory geometryFactory)
+        {
+            if (shapeStreamProvider == null)
+                throw new ArgumentNullException(nameof(shapeStreamProvider));
+            if (geometryFactory == null)
+                throw new ArgumentNullException(nameof(geometryFactory));
+
+            _shapeStreamProvider = shapeStreamProvider;
             _geometryFactory = geometryFactory;
 
             // read header information. note, we open the file, read the header information and then
             // close the file. This means the file is not opened again until GetEnumerator() is requested.
             // For each call to GetEnumerator() a new BinaryReader is created.
-            using (var stream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var stream = shapeStreamProvider.ShapeStream.OpenRead())
             {
                 using (var shpBinaryReader = new BigEndianBinaryReader(stream))
                 {
@@ -36,12 +43,12 @@ namespace NetTopologySuite.IO
         #region Nested type: ShapefileEnumerator
 
         /// <summary>
-        /// Summary description for ShapefileEnumerator.
+        ///     Summary description for ShapefileEnumerator.
         /// </summary>
         private partial class ShapefileEnumerator
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="ShapefileEnumerator"/> class.
+            ///     Initializes a new instance of the <see cref="ShapefileEnumerator" /> class.
             /// </summary>
             /// <param name="shapefile"></param>
             public ShapefileEnumerator(ShapefileReader shapefile)
@@ -51,12 +58,12 @@ namespace NetTopologySuite.IO
                 // create a file stream for each enumerator that is given out. This allows the same file
                 // to have one or more enumerator. If we used the parents stream - than only one IEnumerator 
                 // could be given out.
-                var stream = new FileStream(_parent._filename, FileMode.Open, FileAccess.Read, FileShare.Read);
+                var stream = shapefile._shapeStreamProvider.ShapeStream.OpenRead();
                 _shpBinaryReader = new BigEndianBinaryReader(stream);
 
                 // skip header - since parent has already read this.
                 _shpBinaryReader.ReadBytes(100);
-                ShapeGeometryType type = _parent._mainHeader.ShapeType;
+                var type = _parent._mainHeader.ShapeType;
                 _handler = Shapefile.GetShapeHandler(type);
                 if (_handler == null)
                     throw new NotSupportedException("Unsuported shape type:" + type);
@@ -64,8 +71,8 @@ namespace NetTopologySuite.IO
 
 
             /// <summary>
-            /// Performs application-defined tasks associated with freeing, 
-            /// releasing, or resetting unmanaged resources.
+            ///     Performs application-defined tasks associated with freeing,
+            ///     releasing, or resetting unmanaged resources.
             /// </summary>
             public void Dispose()
             {

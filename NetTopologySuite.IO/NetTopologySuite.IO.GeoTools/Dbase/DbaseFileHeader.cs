@@ -224,53 +224,54 @@ namespace NetTopologySuite.IO
             tempFieldDescriptors[_fieldDescriptions.Length].Name = tempFieldName;
 
             // the field type
-            if ((fieldType == 'C') || (fieldType == 'c'))
+            switch (fieldType)
             {
-                tempFieldDescriptors[_fieldDescriptions.Length].DbaseType = 'C';
-                if (fieldLength > 254) Trace.WriteLine("Field Length for " + fieldName + " set to " + fieldLength + " Which is longer than 254, not consistent with dbase III");
-            }
-            else if ((fieldType == 'S') || (fieldType == 's'))
-            {
-                tempFieldDescriptors[_fieldDescriptions.Length].DbaseType = 'C';
-                Trace.WriteLine("Field type for " + fieldName + " set to S which is flat out wrong people!, I am setting this to C, in the hopes you meant character.");
-                if (fieldLength > 254) Trace.WriteLine("Field Length for " + fieldName + " set to " + fieldLength + " Which is longer than 254, not consistent with dbase III");
-                tempFieldDescriptors[_fieldDescriptions.Length].Length = 8;
-            }
-            else if ((fieldType == 'D') || (fieldType == 'd'))
-            {
-                tempFieldDescriptors[_fieldDescriptions.Length].DbaseType = 'D';
-                if (fieldLength != 8) Trace.WriteLine("Field Length for " + fieldName + " set to " + fieldLength + " Setting to 8 digets YYYYMMDD");
-                tempFieldDescriptors[_fieldDescriptions.Length].Length = 8;
-            }
-            else if ((fieldType == 'F') || (fieldType == 'f'))
-            {
-                tempFieldDescriptors[_fieldDescriptions.Length].DbaseType = 'F';
-                if (fieldLength > 20) Trace.WriteLine("Field Length for " + fieldName + " set to " + fieldLength + " Preserving length, but should be set to Max of 20 not valid for dbase IV, and UP specification, not present in dbaseIII.");
-            }
-            else if ((fieldType == 'N') || (fieldType == 'n'))
-            {
-                tempFieldDescriptors[_fieldDescriptions.Length].DbaseType = 'N';
-                if (fieldLength > 18) Trace.WriteLine("Field Length for " + fieldName + " set to " + fieldLength + " Preserving length, but should be set to Max of 18 for dbase III specification.");
-                if (decimalCount < 0)
-                {
-                    Trace.WriteLine("Field Decimal Position for " + fieldName + " set to " + decimalCount + " Setting to 0 no decimal data will be saved.");
-                    tempFieldDescriptors[_fieldDescriptions.Length].DecimalCount = 0;
-                }
-                if (decimalCount > fieldLength - 1)
-                {
-                    Trace.WriteLine("Field Decimal Position for " + fieldName + " set to " + decimalCount + " Setting to " + (fieldLength - 1) + " no non decimal data will be saved.");
-                    tempFieldDescriptors[_fieldDescriptions.Length].DecimalCount = fieldLength - 1;
-                }
-            }
-            else if ((fieldType == 'L') || (fieldType == 'l'))
-            {
-                tempFieldDescriptors[_fieldDescriptions.Length].DbaseType = 'L';
-                if (fieldLength != 1) Trace.WriteLine("Field Length for " + fieldName + " set to " + fieldLength + " Setting to length of 1 for logical fields.");
-                tempFieldDescriptors[_fieldDescriptions.Length].Length = 1;
-            }
-            else
-            {
-                throw new NotSupportedException("Unsupported field type " + fieldType + " For column " + fieldName);
+                case 'C':
+                case 'c':
+                    tempFieldDescriptors[_fieldDescriptions.Length].DbaseType = 'C';
+                    if (fieldLength > 254) Trace.WriteLine("Field Length for " + fieldName + " set to " + fieldLength + " Which is longer than 254, not consistent with dbase III");
+                    break;
+                case 'S':
+                case 's':
+                    tempFieldDescriptors[_fieldDescriptions.Length].DbaseType = 'C';
+                    Trace.WriteLine("Field type for " + fieldName + " set to S which is flat out wrong people!, I am setting this to C, in the hopes you meant character.");
+                    if (fieldLength > 254) Trace.WriteLine("Field Length for " + fieldName + " set to " + fieldLength + " Which is longer than 254, not consistent with dbase III");
+                    tempFieldDescriptors[_fieldDescriptions.Length].Length = 8;
+                    break;
+                case 'D':
+                case 'd':
+                    tempFieldDescriptors[_fieldDescriptions.Length].DbaseType = 'D';
+                    if (fieldLength != 8) Trace.WriteLine("Field Length for " + fieldName + " set to " + fieldLength + " Setting to 8 digets YYYYMMDD");
+                    tempFieldDescriptors[_fieldDescriptions.Length].Length = 8;
+                    break;
+                case 'F':
+                case 'f':
+                    tempFieldDescriptors[_fieldDescriptions.Length].DbaseType = 'F';
+                    if (fieldLength > 20) Trace.WriteLine("Field Length for " + fieldName + " set to " + fieldLength + " Preserving length, but should be set to Max of 20 not valid for dbase IV, and UP specification, not present in dbaseIII.");
+                    break;
+                case 'N':
+                case 'n':
+                    tempFieldDescriptors[_fieldDescriptions.Length].DbaseType = 'N';
+                    if (fieldLength > 18) Trace.WriteLine("Field Length for " + fieldName + " set to " + fieldLength + " Preserving length, but should be set to Max of 18 for dbase III specification.");
+                    if (decimalCount < 0)
+                    {
+                        Trace.WriteLine("Field Decimal Position for " + fieldName + " set to " + decimalCount + " Setting to 0 no decimal data will be saved.");
+                        tempFieldDescriptors[_fieldDescriptions.Length].DecimalCount = 0;
+                    }
+                    if (decimalCount > fieldLength - 1)
+                    {
+                        Trace.WriteLine("Field Decimal Position for " + fieldName + " set to " + decimalCount + " Setting to " + (fieldLength - 1) + " no non decimal data will be saved.");
+                        tempFieldDescriptors[_fieldDescriptions.Length].DecimalCount = fieldLength - 1;
+                    }
+                    break;
+                case 'L':
+                case 'l':
+                    tempFieldDescriptors[_fieldDescriptions.Length].DbaseType = 'L';
+                    if (fieldLength != 1) Trace.WriteLine("Field Length for " + fieldName + " set to " + fieldLength + " Setting to length of 1 for logical fields.");
+                    tempFieldDescriptors[_fieldDescriptions.Length].Length = 1;
+                    break;
+                default:
+                    throw new NotSupportedException("Unsupported field type " + fieldType + " For column " + fieldName);
             }
             // the length of a record
             tempLength = tempLength + tempFieldDescriptors[_fieldDescriptions.Length].Length;

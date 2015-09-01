@@ -88,6 +88,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NetTopologySuite.IO.Shapefile.Common.Streams\NetTopologySuite.IO.Common.Streams.csproj">
+      <Project>{852e38a5-39b6-41fb-90e6-ba41a20b9f1b}</Project>
+      <Name>NetTopologySuite.IO.Common.Streams</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.IO.Shapefile.Extended.CloudStorage\NetTopologySuite.IO.Shapefile.Extended.CloudStorage.csproj">
       <Project>{ce217a88-7f50-4de6-bc79-4ac863347a10}</Project>
       <Name>NetTopologySuite.IO.Shapefile.Extended.CloudStorage</Name>
@@ -97,7 +101,7 @@
       <Name>NetTopologySuite.IO.ShapeFile.Extended</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\NetTopologySuite.IO.GeoTools.csproj">
-      <Project>{21805958-869E-49F5-A4ED-0AC8599D62F0}</Project>
+      <Project>{21805958-869e-49f5-a4ed-0ac8599d62f0}</Project>
       <Name>NetTopologySuite.IO.GeoTools</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile\NetTopologySuite.IO.ShapeFile.csproj">

@@ -3,8 +3,8 @@ using System.IO;
 using System.Linq;
 using Microsoft.WindowsAzure.Storage;
 using NetTopologySuite.Features;
+using NetTopologySuite.IO.Common.Streams;
 using NetTopologySuite.IO.ShapeFile.Extended;
-using NetTopologySuite.IO.ShapeFile.Extended.Streams;
 using NUnit.Framework;
 
 namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test

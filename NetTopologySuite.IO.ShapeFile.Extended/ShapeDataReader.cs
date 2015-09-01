@@ -8,9 +8,9 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Strtree;
+using NetTopologySuite.IO.Common.Streams;
 using NetTopologySuite.IO.Handlers;
 using NetTopologySuite.IO.ShapeFile.Extended.Entities;
-using NetTopologySuite.IO.ShapeFile.Extended.Streams;
 
 namespace NetTopologySuite.IO.ShapeFile.Extended
 {

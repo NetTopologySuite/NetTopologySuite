@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using GeoAPI.Geometries;
+using NetTopologySuite.IO.Common.Streams;
 
 namespace NetTopologySuite.IO
 {
@@ -56,6 +57,33 @@ namespace NetTopologySuite.IO
             _shpEnumerator = _shpReader.GetEnumerator();
             _moreRecords = true;
         }
+
+        public ShapefileDataReader(ICombinedStreamProvider combinedStreamProvider, IGeometryFactory geometryFactory)
+        {
+            if (combinedStreamProvider==null)
+                throw new ArgumentNullException(nameof(combinedStreamProvider));
+            if (geometryFactory == null)
+                throw new ArgumentNullException(nameof(geometryFactory));
+            _open = true;
+
+            _dbfReader = new DbaseFileReader(combinedStreamProvider);
+            _shpReader = new ShapefileReader(combinedStreamProvider, geometryFactory);
+
+            _dbfHeader = _dbfReader.GetHeader();
+            _recordCount = _dbfHeader.NumRecords;
+
+            // copy dbase fields to our own array. Insert into the first position, the shape column
+            _dbaseFields = new DbaseFieldDescriptor[_dbfHeader.Fields.Length + 1];
+            _dbaseFields[0] = DbaseFieldDescriptor.ShapeField();
+            for (int i = 0; i < _dbfHeader.Fields.Length; i++)
+                _dbaseFields[i + 1] = _dbfHeader.Fields[i];
+
+            _shpHeader = _shpReader.Header;
+            _dbfEnumerator = _dbfReader.GetEnumerator();
+            _shpEnumerator = _shpReader.GetEnumerator();
+            _moreRecords = true;
+        }
+
         bool _moreRecords = false;
 
         IGeometry geometry = null;

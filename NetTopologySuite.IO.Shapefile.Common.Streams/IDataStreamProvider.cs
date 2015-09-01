@@ -1,4 +1,4 @@
-﻿namespace NetTopologySuite.IO.ShapeFile.Extended.Streams
+﻿namespace NetTopologySuite.IO.Common.Streams
 {
     public interface IDataStreamProvider
     {

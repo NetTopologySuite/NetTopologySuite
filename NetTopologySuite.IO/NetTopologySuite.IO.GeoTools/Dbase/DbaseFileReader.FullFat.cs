@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NetTopologySuite.IO.Common.Streams;
+using System;
 using System.IO;
 
 namespace NetTopologySuite.IO
@@ -14,7 +15,7 @@ namespace NetTopologySuite.IO
             public DbaseFileEnumerator(DbaseFileReader parent)
             {
                 _parent = parent;
-                FileStream stream = new FileStream(parent._filename, FileMode.Open, FileAccess.Read, FileShare.Read);
+                Stream stream = parent._dataStreamProvider.DataStream.OpenRead();
                 _dbfStream = new BinaryReader(stream, parent._header.Encoding);
                 ReadHeader();
             }
@@ -33,19 +34,20 @@ namespace NetTopologySuite.IO
         /// Initializes a new instance of the DbaseFileReader class.
         /// </summary>
         /// <param name="filename"></param>
-        public DbaseFileReader(string filename)
+        public DbaseFileReader(string filename) : this(new ShapefileStreamProvider(null, new FileStreamProvider(filename, true), false, true))
         {
-            if (filename == null)
+
+
+        }
+
+
+        public DbaseFileReader(IDataStreamProvider dataStreamProvider)
+        {
+            if (dataStreamProvider == null)
             {
-                throw new ArgumentNullException(filename);
+                throw new ArgumentNullException(nameof(dataStreamProvider));
             }
-            // check for the file existing here, otherwise we will not get an error
-            //until we read the first record or read the header.
-            if (!File.Exists(filename))
-            {
-                throw new FileNotFoundException(String.Format("Could not find file \"{0}\"", filename));
-            }
-            _filename = filename;
+            _dataStreamProvider = dataStreamProvider;
 
         }
 
@@ -58,16 +60,13 @@ namespace NetTopologySuite.IO
         {
             if (_header == null)
             {
-                FileStream stream = new FileStream(_filename, FileMode.Open, FileAccess.Read);
-                BinaryReader dbfStream = new BinaryReader(stream);
-
-                _header = new DbaseFileHeader();
-                // read the header
-                _header.ReadHeader(dbfStream, _filename);
-
-                dbfStream.Close();
-                stream.Close();
-
+                using (var stream = _dataStreamProvider.DataStream.OpenRead())
+                using (var dbfStream = new BinaryReader(stream))
+                {
+                    _header = new DbaseFileHeader();
+                    // read the header
+                    _header.ReadHeader(dbfStream, _dataStreamProvider.DataStream is FileStreamProvider ? ((FileStreamProvider)_dataStreamProvider.DataStream).Path : null);
+                }
             }
             return _header;
         }

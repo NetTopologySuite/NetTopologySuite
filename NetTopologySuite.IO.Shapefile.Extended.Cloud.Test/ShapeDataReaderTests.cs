@@ -7,10 +7,10 @@ using Microsoft.WindowsAzure.Storage;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.Strtree;
+using NetTopologySuite.IO.Common.Streams;
 using NetTopologySuite.IO.Handlers;
 using NetTopologySuite.IO.ShapeFile.Extended;
 using NetTopologySuite.IO.ShapeFile.Extended.Entities;
-using NetTopologySuite.IO.ShapeFile.Extended.Streams;
 using NetTopologySuite.IO.Tests.ShapeFile.Extended;
 using NUnit.Framework;
 
