@@ -1,6 +1,4 @@
 ﻿using System.IO;
-using System.Security.Cryptography.X509Certificates;
-
 namespace NetTopologySuite.IO.ShapeFile.Extended.Streams
 {
     public interface IStreamProvider
