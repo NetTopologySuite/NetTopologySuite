@@ -150,6 +150,7 @@
     <Compile Include="Tests\Various\Issue178Fixture.cs" />
     <Compile Include="Tests\Various\Issue179Fixture.cs" />
     <Compile Include="Tests\Various\Issue186TestFixture.cs" />
+    <Compile Include="Tests\Github\Issue47Tests.cs" />
     <Compile Include="Tests\Various\Issue68Tests.cs" />
     <Compile Include="Tests\Various\CoversTest.cs" />
     <Compile Include="Tests\Various\DbfDateTest.cs" />
@@ -240,6 +241,10 @@
     <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.SqlServer2008\NetTopologySuite.IO.SqlServer2008.csproj">
       <Project>{8e6a486b-5418-4fe1-a14f-cf2f3b74d4e0}</Project>
       <Name>NetTopologySuite.IO.SqlServer2008</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO\NetTopologySuite.IO.csproj">
+      <Project>{e377580e-61c9-4943-b98b-085d51b32578}</Project>
+      <Name>NetTopologySuite.IO</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.Tests.NUnit\NetTopologySuite.Tests.NUnit.csproj">
       <Project>{a1525c90-fa00-449d-b3c4-cba45d5e916c}</Project>

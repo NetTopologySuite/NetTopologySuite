@@ -9,17 +9,17 @@ namespace NetTopologySuite.IO.Streams
         {
             //if (path == null)
             //{
-            //    throw new ArgumentNullException(nameof(path));
+            //    throw new ArgumentNullException("path");
             //}
 
             if (string.IsNullOrWhiteSpace(path))
             {
-                throw new ArgumentNullException(nameof(path), "Path to shapefile can't be null, empty or whitespace");
+                throw new ArgumentNullException("path", "Path to shapefile can't be null, empty or whitespace");
             }
 
-            ShapeStream = new FileStreamProvider(Path.ChangeExtension(path, ".shp"), validateShapePath);
-            DataStream = new FileStreamProvider(Path.ChangeExtension(path, ".dbf"), validateDataPath);
-            IndexStream = new FileStreamProvider(Path.ChangeExtension(path, ".shx"), validateIndexPath);
+            ShapeStream = new FileStreamProvider(StreamTypes.Shape, Path.ChangeExtension(path, ".shp"), validateShapePath);
+            DataStream = new FileStreamProvider(StreamTypes.Data, Path.ChangeExtension(path, ".dbf"), validateDataPath);
+            IndexStream = new FileStreamProvider(StreamTypes.Index, Path.ChangeExtension(path, ".shx"), validateIndexPath);
         }
 
         public ShapefileStreamProviderRegistry(IStreamProvider shapeStream, IStreamProvider dataStream,
@@ -33,22 +33,22 @@ namespace NetTopologySuite.IO.Streams
             bool validateShapeProvider = false, bool validateDataProvider = false, bool validateIndexProvider = false)
         {
             if (validateShapeProvider && shapeStream == null)
-                throw new ArgumentNullException(nameof(shapeStream));
+                throw new ArgumentNullException("shapeStream");
             if (validateDataProvider && dataStream == null)
-                throw new ArgumentNullException(nameof(dataStream));
+                throw new ArgumentNullException("dataStream");
             if (validateIndexProvider && indexStream == null)
-                throw new ArgumentNullException(nameof(indexStream));
+                throw new ArgumentNullException("indexStream");
 
             ShapeStream = shapeStream;
             DataStream = dataStream;
             IndexStream = indexStream;
         }
 
-        private IStreamProvider DataStream { get; }
+        private IStreamProvider DataStream { get; set; }
 
-        private IStreamProvider ShapeStream { get; }
+        private IStreamProvider ShapeStream { get; set; }
 
-        private IStreamProvider IndexStream { get; }
+        private IStreamProvider IndexStream { get; set; }
 
         public IStreamProvider this[string streamType]
         {
@@ -63,7 +63,9 @@ namespace NetTopologySuite.IO.Streams
                     case StreamTypes.Shape:
                         return ShapeStream;
                     default:
-                        throw new NotImplementedException();
+                        throw new ArgumentException(
+                            string.Format("Unknown stream type: '{0}'", streamType),
+                            "streamType");
                 }
             }
         }

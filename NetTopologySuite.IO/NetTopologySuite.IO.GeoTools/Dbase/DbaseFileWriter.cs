@@ -43,9 +43,9 @@ namespace NetTopologySuite.IO
         public DbaseFileWriter(IStreamProviderRegistry streamProviderRegistry, Encoding enc)
         {
             if (streamProviderRegistry == null)
-                throw new ArgumentNullException(nameof(streamProviderRegistry));
+                throw new ArgumentNullException("streamProviderRegistry");
             if (enc == null)
-                throw new ArgumentNullException(nameof(enc));
+                throw new ArgumentNullException("enc");
 
             _encoding = enc;
             _writer = new BinaryWriter(streamProviderRegistry[StreamTypes.Data].OpenWrite(false), _encoding);
@@ -62,7 +62,7 @@ namespace NetTopologySuite.IO
         public void Write(DbaseFileHeader header)
         {
             if (header == null)
-                throw new ArgumentNullException(nameof(header));
+                throw new ArgumentNullException("header");
             //if (_recordsWritten)
             //    throw new InvalidOperationException("Records have already been written. Header file needs to be written first.");
             _headerWritten = true;
@@ -82,7 +82,7 @@ namespace NetTopologySuite.IO
         public void Write(IList columnValues)
         {
             if (columnValues == null)
-                throw new ArgumentNullException(nameof(columnValues));
+                throw new ArgumentNullException("columnValues");
             if (!_headerWritten)
                 throw new InvalidOperationException("Header records need to be written first.");
             var i = 0;

@@ -29,7 +29,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
         public ShapeReader(IStreamProviderRegistry streamProviderRegistry)
         {
             if (streamProviderRegistry == null)
-                throw new ArgumentNullException(nameof(streamProviderRegistry));
+                throw new ArgumentNullException("streamProviderRegistry");
 
             m_StreamProviderRegistry = streamProviderRegistry;
 

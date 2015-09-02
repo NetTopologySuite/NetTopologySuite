@@ -52,6 +52,10 @@
     <Compile Include="..\..\SharedAssemblyVersion.cs">
       <Link>Properties\SharedAssemblyVersion.cs</Link>
     </Compile>
+    <Compile Include="IO\Streams\FileStreamProvider.cs" />
+    <Compile Include="IO\Streams\IStreamProvider.cs" />
+    <Compile Include="IO\Streams\IStreamProviderRegistry.cs" />
+    <Compile Include="IO\Streams\ShapefileStreamProviderRegistry.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NetTopologySuite\NetTopologySuite.csproj">

@@ -11,7 +11,7 @@ namespace NetTopologySuite.IO
     /// </summary>
     public partial class DbaseFileReader : IEnumerable
     {
-        private readonly IStreamProviderRegistry _streamProviderRegistry;
+        private readonly IStreamProvider _streamProvider;
 
 
         private DbaseFileHeader _header;
@@ -99,8 +99,8 @@ namespace NetTopologySuite.IO
                 _header = new DbaseFileHeader();
                 // read the header
                 _header.ReadHeader(_dbfStream,
-                    _parent._streamProviderRegistry[StreamTypes.Data] is FileStreamProvider
-                        ? ((FileStreamProvider) _parent._streamProviderRegistry[StreamTypes.Data]).Path
+                    _parent._streamProvider is FileStreamProvider
+                        ? ((FileStreamProvider)_parent._streamProvider).Path
                         : null);
 
                 // how many records remain
