@@ -61,9 +61,9 @@ namespace NetTopologySuite.IO
         public ShapefileDataReader(IStreamProviderRegistry streamProviderRegistry, IGeometryFactory geometryFactory)
         {
             if (streamProviderRegistry==null)
-                throw new ArgumentNullException(nameof(streamProviderRegistry));
+                throw new ArgumentNullException("streamProviderRegistry");
             if (geometryFactory == null)
-                throw new ArgumentNullException(nameof(geometryFactory));
+                throw new ArgumentNullException("geometryFactory");
             _open = true;
 
             _dbfReader = new DbaseFileReader(streamProviderRegistry);

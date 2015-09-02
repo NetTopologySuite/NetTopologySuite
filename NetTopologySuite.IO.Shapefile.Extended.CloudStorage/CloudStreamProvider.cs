@@ -1,24 +1,24 @@
 ﻿using System;
 using System.IO;
 using Microsoft.WindowsAzure.Storage.Blob;
-using NetTopologySuite.IO.Streams;
 
-namespace NetTopologySuite.IO.Shapefile.Extended.CloudStorage
+namespace NetTopologySuite.IO.Streams
 {
     public class CloudStreamProvider : IStreamProvider
     {
-        public CloudStreamProvider(CloudBlobContainer container, string path)
+        public CloudStreamProvider(CloudBlobContainer container, string kind,  string path)
         {
             if(path == null) 
-                throw new ArgumentNullException(nameof(path));
+                throw new ArgumentNullException("path");
 
             if (string.IsNullOrWhiteSpace(path))
-                throw new ArgumentException(nameof(path));
+                throw new ArgumentException("path");
 
             if (container == null)
-                throw new ArgumentNullException(nameof(container));
+                throw new ArgumentNullException("container");
 
             Container = container;
+            Kind = kind;
             Path = path;
 
             if (!Container.GetBlobReference(Path).Exists())
@@ -27,11 +27,11 @@ namespace NetTopologySuite.IO.Shapefile.Extended.CloudStorage
             BlobType = container.GetBlobReference(path).BlobType;
         }
 
-        private BlobType BlobType { get; }
+        private BlobType BlobType { get; set; }
 
-        private string Path { get; }
+        private string Path { get; set; }
 
-        private CloudBlobContainer Container { get; }
+        private CloudBlobContainer Container { get; set; }
 
 
         public bool UnderlyingStreamIsReadonly
@@ -53,9 +53,6 @@ namespace NetTopologySuite.IO.Shapefile.Extended.CloudStorage
             //todo:jd writable streams are possible for page blobs - however they need to be initialized with a size. 
         }
 
-        public string Kind
-        {
-            get { return "CloudStream"; }
-        }
+        public string Kind { get; private set; }
     }
 }

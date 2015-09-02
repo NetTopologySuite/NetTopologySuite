@@ -5,17 +5,18 @@ namespace NetTopologySuite.IO.Streams
 {
     public class FileStreamProvider : IStreamProvider
     {
-        public FileStreamProvider(string path, bool validatePath = false)
+        public FileStreamProvider(string kind, string path, bool validatePath = false)
         {
             if (path == null)
-                throw new ArgumentNullException(nameof(path));
+                throw new ArgumentNullException("path");
 
             if (string.IsNullOrWhiteSpace(path))
-                throw new ArgumentException("Invalid Path", nameof(path));
+                throw new ArgumentException("Invalid Path", "path");
 
             if (validatePath && !File.Exists(path))
                 throw new FileNotFoundException(path);
 
+            Kind = kind;
             Path = path;
         }
 
@@ -40,9 +41,6 @@ namespace NetTopologySuite.IO.Streams
             return File.Open(Path, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite); //jd: I would like to use FileShare.None however the GeoTools shapefilewriter writes a dummy file while holding an existing handle
         }
 
-        public string Kind
-        {
-            get { return "FileStream"; }
-        }
+        public string Kind { get; private set; }
     }
 }

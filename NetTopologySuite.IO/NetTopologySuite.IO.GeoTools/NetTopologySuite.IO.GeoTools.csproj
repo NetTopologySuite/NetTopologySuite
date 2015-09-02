@@ -103,6 +103,10 @@
       <Project>{ab9096a7-89dd-4abd-b535-a5258863f389}</Project>
       <Name>NetTopologySuite.IO.ShapeFile</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.csproj">
+      <Project>{e377580e-61c9-4943-b98b-085d51b32578}</Project>
+      <Name>NetTopologySuite.IO</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

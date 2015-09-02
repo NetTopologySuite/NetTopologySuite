@@ -36,12 +36,11 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         private DbaseReader m_Reader;
         private TempFileCloudUploader m_TmpFile;
 
-        private static IStreamProviderRegistry GetProvider(string name)
+        private static IStreamProvider GetProvider(string name)
         {
-            return new ShapefileStreamProviderRegistry(null,
-                new CloudStorage.CloudStreamProvider(
+            return new CloudStreamProvider(
                     CloudStorageAccount.DevelopmentStorageAccount.CreateCloudBlobClient()
-                        .GetContainerReference(TempFileCloudUploader.TestingContainerName), name), false, true);
+                        .GetContainerReference(TempFileCloudUploader.TestingContainerName), StreamTypes.Data, name);
         }
 
         [Test]

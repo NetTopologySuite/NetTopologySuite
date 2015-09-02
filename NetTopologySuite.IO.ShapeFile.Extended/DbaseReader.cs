@@ -12,7 +12,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
     {
         private DbaseFileHeader m_Header = null;
         //private readonly string m_Filename;
-        private readonly IStreamProviderRegistry m_StreamProviderRegistry;
+        private readonly IStreamProvider m_StreamProvider;
         private BinaryReader m_FileReader;
         private bool m_IsDisposed;
 
@@ -20,14 +20,14 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
         /// Initializes a new instance of the DbaseFileReader class.
         /// </summary>
         /// <param name="filename"></param>
-        public DbaseReader(string filename) : this(new ShapefileStreamProviderRegistry(null, new FileStreamProvider(filename, true)))
+        public DbaseReader(string filename) 
+            : this(new FileStreamProvider(StreamTypes.Data, filename, true))
         {
-
         }
 
-        public DbaseReader(IStreamProviderRegistry streamProviderRegistry)
+        public DbaseReader(IStreamProvider streamProvider)
         {
-            m_StreamProviderRegistry = streamProviderRegistry;
+            m_StreamProvider = streamProvider;
             ReadHeader();
         }
 
@@ -94,7 +94,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 
         internal DbaseReader Clone()
         {
-            return new DbaseReader(m_StreamProviderRegistry);
+            return new DbaseReader(m_StreamProvider);
         }
 
         /// <summary>
@@ -105,12 +105,12 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
         {
             if (m_Header == null)
             {
-                m_FileReader = new BinaryReader(m_StreamProviderRegistry[StreamTypes.Data].OpenRead());
+                m_FileReader = new BinaryReader(m_StreamProvider.OpenRead());
 
                 m_Header = new DbaseFileHeader();
 
                 // read the header
-                m_Header.ReadHeader(m_FileReader, m_StreamProviderRegistry[StreamTypes.Data] is FileStreamProvider ? ((FileStreamProvider)m_StreamProviderRegistry[StreamTypes.Data]).Path : null);
+                m_Header.ReadHeader(m_FileReader, m_StreamProvider is FileStreamProvider ? ((FileStreamProvider)m_StreamProvider).Path : null);
             }
 
             return m_Header;

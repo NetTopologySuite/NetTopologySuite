@@ -53,7 +53,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
                 FillSpatialIndex();
             }
 
-            m_DbfReader = new DbaseReader(streamProviderRegistry);
+            m_DbfReader = new DbaseReader(streamProviderRegistry[StreamTypes.Data]);
         }
 
         public ShapeDataReader(string shapeFilePath, ISpatialIndex<ShapeLocationInFileInfo> index, IGeometryFactory geoFactory)

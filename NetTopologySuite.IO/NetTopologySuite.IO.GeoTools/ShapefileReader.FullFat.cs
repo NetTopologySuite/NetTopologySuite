@@ -14,16 +14,16 @@ namespace NetTopologySuite.IO
         /// <param name="geometryFactory">The GeometryFactory to use when creating Geometry objects.</param>
         public ShapefileReader(string filename, IGeometryFactory geometryFactory)
             : this(
-                new ShapefileStreamProviderRegistry(new FileStreamProvider(filename, true), null, true, false), geometryFactory)
+                new ShapefileStreamProviderRegistry(new FileStreamProvider(StreamTypes.Shape, filename, true), null, true, false), geometryFactory)
         {
         }
 
         public ShapefileReader(IStreamProviderRegistry shapeStreamProviderRegistry, IGeometryFactory geometryFactory)
         {
             if (shapeStreamProviderRegistry == null)
-                throw new ArgumentNullException(nameof(shapeStreamProviderRegistry));
+                throw new ArgumentNullException("shapeStreamProviderRegistry");
             if (geometryFactory == null)
-                throw new ArgumentNullException(nameof(geometryFactory));
+                throw new ArgumentNullException("geometryFactory");
 
             _shapeStreamProviderRegistry = shapeStreamProviderRegistry;
             _geometryFactory = geometryFactory;

@@ -23,9 +23,9 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         private static IStreamProvider GetProvider(string name)
         {
             return
-                new CloudStorage.CloudStreamProvider(
+                new CloudStreamProvider(
                     CloudStorageAccount.DevelopmentStorageAccount.CreateCloudBlobClient()
-                        .GetContainerReference(TempFileCloudUploader.TestingContainerName), name);
+                        .GetContainerReference(TempFileCloudUploader.TestingContainerName), StreamTypes.Shape ,name);
         }
 
         [Test]

@@ -62,6 +62,10 @@
       <Project>{ab9096a7-89dd-4abd-b535-a5258863f389}</Project>
       <Name>NetTopologySuite.IO.ShapeFile</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO\NetTopologySuite.IO.csproj">
+      <Project>{e377580e-61c9-4943-b98b-085d51b32578}</Project>
+      <Name>NetTopologySuite.IO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
       <Project>{5770daa9-84e5-4770-af43-f6b815894368}</Project>
       <Name>NetTopologySuite</Name>

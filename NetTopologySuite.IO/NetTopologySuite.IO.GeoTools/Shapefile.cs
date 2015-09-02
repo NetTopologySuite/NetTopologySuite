@@ -181,21 +181,21 @@ namespace NetTopologySuite.IO
         public static ShapefileDataReader CreateDataReader(string filename, GeometryFactory geometryFactory)
         {
             if (filename == null)
-                throw new ArgumentNullException(nameof(filename));
+                throw new ArgumentNullException("filename");
 
             return
                 CreateDataReader(
-                    new ShapefileStreamProviderRegistry(new FileStreamProvider(filename + ".shp", true),
-                        new FileStreamProvider(filename + ".dbf", true), true, true), geometryFactory);
+                    new ShapefileStreamProviderRegistry(new FileStreamProvider(StreamTypes.Shape, filename + ".shp", true),
+                        new FileStreamProvider(StreamTypes.Data, filename + ".dbf", true), true, true), geometryFactory);
         }
 
         public static ShapefileDataReader CreateDataReader(IStreamProviderRegistry streamProviderRegistry,
             GeometryFactory geometryFactory)
         {
             if (streamProviderRegistry == null)
-                throw new ArgumentNullException(nameof(streamProviderRegistry));
+                throw new ArgumentNullException("streamProviderRegistry");
             if (geometryFactory == null)
-                throw new ArgumentNullException(nameof(geometryFactory));
+                throw new ArgumentNullException("geometryFactory");
             var shpDataReader = new ShapefileDataReader(streamProviderRegistry, geometryFactory);
             return shpDataReader;
         }
