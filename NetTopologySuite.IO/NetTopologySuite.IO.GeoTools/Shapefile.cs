@@ -1,8 +1,8 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.IO.Common.Streams;
 using NetTopologySuite.IO.Handlers;
+using NetTopologySuite.IO.Streams;
 
 namespace NetTopologySuite.IO
 {
@@ -185,18 +185,18 @@ namespace NetTopologySuite.IO
 
             return
                 CreateDataReader(
-                    new ShapefileStreamProvider(new FileStreamProvider(filename + ".shp", true),
+                    new ShapefileStreamProviderRegistry(new FileStreamProvider(filename + ".shp", true),
                         new FileStreamProvider(filename + ".dbf", true), true, true), geometryFactory);
         }
 
-        public static ShapefileDataReader CreateDataReader(ICombinedStreamProvider combinedStreamProvider,
+        public static ShapefileDataReader CreateDataReader(IStreamProviderRegistry streamProviderRegistry,
             GeometryFactory geometryFactory)
         {
-            if (combinedStreamProvider == null)
-                throw new ArgumentNullException(nameof(combinedStreamProvider));
+            if (streamProviderRegistry == null)
+                throw new ArgumentNullException(nameof(streamProviderRegistry));
             if (geometryFactory == null)
                 throw new ArgumentNullException(nameof(geometryFactory));
-            var shpDataReader = new ShapefileDataReader(combinedStreamProvider, geometryFactory);
+            var shpDataReader = new ShapefileDataReader(streamProviderRegistry, geometryFactory);
             return shpDataReader;
         }
     }

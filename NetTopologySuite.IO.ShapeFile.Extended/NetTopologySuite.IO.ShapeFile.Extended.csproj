@@ -54,10 +54,6 @@
     <Compile Include="ShapeReader.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetTopologySuite.IO.Shapefile.Common.Streams\NetTopologySuite.IO.Common.Streams.csproj">
-      <Project>{852e38a5-39b6-41fb-90e6-ba41a20b9f1b}</Project>
-      <Name>NetTopologySuite.IO.Common.Streams</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\NetTopologySuite.IO.GeoTools.csproj">
       <Project>{21805958-869E-49F5-A4ED-0AC8599D62F0}</Project>
       <Name>NetTopologySuite.IO.GeoTools</Name>

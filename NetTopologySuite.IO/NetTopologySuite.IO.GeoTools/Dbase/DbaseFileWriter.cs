@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using NetTopologySuite.IO.Common.Streams;
+using NetTopologySuite.IO.Streams;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO
@@ -36,23 +36,23 @@ namespace NetTopologySuite.IO
         ///     Initializes a new instance of the DbaseFileWriter class.
         /// </summary>
         public DbaseFileWriter(string filename, Encoding enc)
-            : this(new ShapefileStreamProvider(filename, false, true, false), enc)
+            : this(new ShapefileStreamProviderRegistry(filename, false, true, false), enc)
         {
         }
 
-        public DbaseFileWriter(IDataStreamProvider dataStreamProvider, Encoding enc)
+        public DbaseFileWriter(IStreamProviderRegistry streamProviderRegistry, Encoding enc)
         {
-            if (dataStreamProvider == null)
-                throw new ArgumentNullException(nameof(dataStreamProvider));
+            if (streamProviderRegistry == null)
+                throw new ArgumentNullException(nameof(streamProviderRegistry));
             if (enc == null)
                 throw new ArgumentNullException(nameof(enc));
 
             _encoding = enc;
-            _writer = new BinaryWriter(dataStreamProvider.DataStream.OpenWrite(false), _encoding);
+            _writer = new BinaryWriter(streamProviderRegistry[StreamTypes.Data].OpenWrite(false), _encoding);
         }
 
-        public DbaseFileWriter(IDataStreamProvider dataStreamProvider)
-            : this(dataStreamProvider, Encoding.GetEncoding(1252))
+        public DbaseFileWriter(IStreamProviderRegistry streamProviderRegistry)
+            : this(streamProviderRegistry, Encoding.GetEncoding(1252))
         {
         }
 

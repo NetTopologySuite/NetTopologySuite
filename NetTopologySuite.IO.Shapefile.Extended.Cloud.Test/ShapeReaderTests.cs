@@ -5,8 +5,8 @@ using System.Linq;
 using GeoAPI.Geometries;
 using Microsoft.WindowsAzure.Storage;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.IO.Common.Streams;
 using NetTopologySuite.IO.Handlers;
+using NetTopologySuite.IO.Streams;
 using NetTopologySuite.IO.Tests.ShapeFile.Extended;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
@@ -33,7 +33,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         public void Ctor_SendNullPath_ShouldThrowException()
         {
             // Act.
-            new IO.ShapeFile.Extended.ShapeReader((IShapeStreamProvider)null);
+            new IO.ShapeFile.Extended.ShapeReader((IStreamProviderRegistry)null);
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         public void Ctor_SendEmptyPath_ShouldThrowException()
         {
             // Act.
-            new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(string.Empty), null, true, false));
+            new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(string.Empty), null, true, false));
         }
 
         [Test]
@@ -49,7 +49,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         public void Ctor_SendWhitespacePath_ShouldThrowException()
         {
             // Act.
-            new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider("   \t   "), null, true, false));
+            new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider("   \t   "), null, true, false));
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         public void Ctor_SendNonExistantFilePath_ShouldThrowException()
         {
             // Act.
-            new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(@"C:\this\is\sheker\path\should\never\exist\on\ur\pc"), null, true, false));
+            new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(@"C:\this\is\sheker\path\should\never\exist\on\ur\pc"), null, true, false));
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("line_ed50_geo"));
 
             // Act.
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
 
             // Assert.
             Assert.IsNotNull(m_Reader);
@@ -82,7 +82,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("point_ed50_geo"));
 
             // Act.
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null , true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null , true, false));
 
             // Assert.
             Assert.IsNotNull(m_Reader);
@@ -100,7 +100,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("line_ed50_utm36"));
 
             // Act.
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
 
             // Assert.
             Assert.IsNotNull(m_Reader);
@@ -118,7 +118,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("polygon_wgs84_geo"));
 
             // Act.
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
 
             // Assert.
             Assert.IsNotNull(m_Reader);
@@ -149,7 +149,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("point_ed50_geo"));
 
             // Act.
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
             infos = m_Reader.ReadMBRs().ToArray();
 
             // Assert.
@@ -183,7 +183,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("UnifiedChecksMaterialNullAtStart"));
 
             // Act.
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
             infos = m_Reader.ReadMBRs().ToArray();
 
             // Assert.
@@ -217,7 +217,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("UnifiedChecksMaterialNullInMiddle"));
 
             // Act.
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true,false)) ;
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true,false)) ;
             infos = m_Reader.ReadMBRs().ToArray();
 
             // Assert.
@@ -251,7 +251,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("UnifiedChecksMaterialNullAtEnd"));
 
             // Act.
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
             infos = m_Reader.ReadMBRs().ToArray();
 
             // Assert.
@@ -285,7 +285,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("line_wgs84_geo"));
 
             // Act.
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
             infos = m_Reader.ReadMBRs().ToArray();
 
             // Assert.
@@ -319,7 +319,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("polygon_ed50_geo"));
 
             // Act.
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
             infos = m_Reader.ReadMBRs().ToArray();
 
             // Assert.
@@ -341,7 +341,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             // Arrange.
             IGeometryFactory factory = new GeometryFactory();
             m_TmpFile = new TempFileCloudUploader("polygon_intersecting_line.shp", ShpFiles.Read("polygon intersecting line"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
 
             // Act.
             m_Reader.ReadShapeAtOffset(-1, factory);
@@ -354,7 +354,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             // Arrange.
             IGeometryFactory factory = new GeometryFactory();
             m_TmpFile = new TempFileCloudUploader("polygon_intersecting_line.shp", ShpFiles.Read("polygon intersecting line"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
 
             // Act.
             m_Reader.ReadShapeAtOffset(ShpFiles.Read("polygon intersecting line").Length, factory);
@@ -366,7 +366,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             // Arrange.
             IGeometryFactory factory = new GeometryFactory();
             m_TmpFile = new TempFileCloudUploader("polygon_intersecting_line.shp", ShpFiles.Read("polygon intersecting line"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
 
             long[] shapeOffsets = { 100, 236 };
 
@@ -389,7 +389,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             // Arrange.
             IGeometryFactory factory = new GeometryFactory();
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("point_ed50_geo"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
 
             long[] shapeOffsets = { 100, 128, 156 };
 
@@ -419,7 +419,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             // Arrange.
             IGeometryFactory factory = new GeometryFactory();
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("line_wgs84_geo"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
 
             long[] shapeOffsets = { 100, 236 };
 
@@ -468,7 +468,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             // Arrange.
             IGeometryFactory factory = new GeometryFactory();
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("polygon_ed50_geo"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
 
             long[] shapeOffsets = { 100, 252 };
 
@@ -525,7 +525,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             // Arrange.
             IGeometryFactory factory = new GeometryFactory();
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("UnifiedChecksMaterialNullAtStart"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
 
             Coordinate[][] expectedResult = new Coordinate[][]
             {
@@ -580,7 +580,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             // Arrange.
             IGeometryFactory factory = new GeometryFactory();
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("UnifiedChecksMaterialNullInMiddle"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
 
             Coordinate[][] expectedResult = new Coordinate[][]
             {
@@ -635,7 +635,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             // Arrange.
             IGeometryFactory factory = new GeometryFactory();
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("UnifiedChecksMaterialNullAtEnd"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
 
             Coordinate[][] expectedResult = new Coordinate[][]
             {
@@ -691,7 +691,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             // Arrange.
             IGeometryFactory factory = new GeometryFactory();
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("line_wgs84_geo"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
 
             m_Reader.Dispose();
             m_Reader.ReadShapeAtOffset(108, factory);
@@ -703,7 +703,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         {
             // Arrange.
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("UnifiedChecksMaterial"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
 
             // Act.
             m_Reader.ReadAllShapes(null);
@@ -714,7 +714,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         {
             // Arrange.
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("EmptyShapeFile"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
             IGeometryFactory factory = new GeometryFactory();
 
             // Act.
@@ -731,7 +731,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             // Arrange.
             IGeometryFactory factory = new GeometryFactory();
             m_TmpFile = new TempFileCloudUploader("shape_PointZM.shp", ShpFiles.Read("shape_PointZM"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
             double errorMargin = Math.Pow(10, -6);
 
             double[,] expectedValues = {{-11348202.6085706, 4503476.68482375},
@@ -763,7 +763,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             // Arrange.
             IGeometryFactory factory = new GeometryFactory();
             m_TmpFile = new TempFileCloudUploader("shape_PointZMWithMissingMValue.shp", ShpFiles.Read("shape_pointZM_MissingM values"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
             double errorMargin = Math.Pow(10, -6);
 
             double[,] expectedValues = {{-11348202.6085706, 4503476.68482375},
@@ -795,7 +795,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             // Arrange.
             IGeometryFactory factory = new GeometryFactory();
             m_TmpFile = new TempFileCloudUploader("shape_pointM.shp", ShpFiles.Read("shape_pointM"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
 
             double[,] expectedValues = {{-133.606621226874, 66.8997078870497},
                                         {-68.0564751703992, 56.4888023369036},
@@ -826,7 +826,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         {
             // Arrange.
             m_TmpFile = new TempFileCloudUploader("UnifiedChecksMaterial.shp", ShpFiles.Read("UnifiedChecksMaterial"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
             IGeometryFactory factory = new GeometryFactory();
 
             IPolygon[] expectedResult = new Polygon[]
@@ -866,7 +866,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         {
             // Arrange.
             m_TmpFile = new TempFileCloudUploader("UnifiedChecksMaterial.shp", ShpFiles.Read("UnifiedChecksMaterialNullAtStart"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
             IGeometryFactory factory = new GeometryFactory();
 
             IPolygon[] expectedResult = new Polygon[]
@@ -906,7 +906,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         {
             // Arrange.
             m_TmpFile = new TempFileCloudUploader("UnifiedChecksMaterial.shp", ShpFiles.Read("UnifiedChecksMaterialNullInMiddle"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
             IGeometryFactory factory = new GeometryFactory();
 
             IPolygon[] expectedResult = new Polygon[]
@@ -946,7 +946,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         {
             // Arrange.
             m_TmpFile = new TempFileCloudUploader("UnifiedChecksMaterial.shp", ShpFiles.Read("UnifiedChecksMaterialNullAtEnd"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
             IGeometryFactory factory = new GeometryFactory();
 
             IPolygon[] expectedResult = new Polygon[]
@@ -987,7 +987,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         {
             // Arrange.
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("UnifiedChecksMaterial"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
             IGeometryFactory factory = new GeometryFactory();
 
             // Act.
@@ -1001,7 +1001,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         {
             // Arrange.
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("UnifiedChecksMaterial"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
 
             // Act.
             m_Reader.ReadShapeAtIndex(0, null);
@@ -1013,7 +1013,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         {
             // Arrange.
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("UnifiedChecksMaterial"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
             IGeometryFactory factory = new GeometryFactory();
 
             // Act.
@@ -1026,7 +1026,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         {
             // Arrange.
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("UnifiedChecksMaterial"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
             IGeometryFactory factory = new GeometryFactory();
 
             // Act.
@@ -1038,7 +1038,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         {
             // Arrange.
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("UnifiedChecksMaterial"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
             IGeometryFactory factory = new GeometryFactory();
 
             Polygon expectedPolygon = new Polygon(new LinearRing(new Coordinate[]
@@ -1063,7 +1063,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         {
             // Arrange.
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("UnifiedChecksMaterial"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
             IGeometryFactory factory = new GeometryFactory();
 
             Polygon expectedPolygon = new Polygon(new LinearRing(new Coordinate[]
@@ -1087,7 +1087,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         {
             // Arrange.
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("UnifiedChecksMaterialNullAtStart"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
             IGeometryFactory factory = new GeometryFactory();
 
             IPolygon[] expectedResult = new Polygon[]
@@ -1126,7 +1126,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         {
             // Arrange.
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("UnifiedChecksMaterialNullAtEnd"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
             IGeometryFactory factory = new GeometryFactory();
 
             IPolygon[] expectedResult = new Polygon[]
@@ -1165,7 +1165,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         {
             // Arrange.
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("UnifiedChecksMaterialNullInMiddle"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
             IGeometryFactory factory = new GeometryFactory();
 
             IPolygon[] expectedResult = new Polygon[]
@@ -1205,7 +1205,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         {
             // Arrange.
             m_TmpFile = new TempFileCloudUploader("shape.shp", ShpFiles.Read("UnifiedChecksMaterial"));
-            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProvider(GetProvider(m_TmpFile.Path), null, true, false));
+            m_Reader = new IO.ShapeFile.Extended.ShapeReader(new ShapefileStreamProviderRegistry(GetProvider(m_TmpFile.Path), null, true, false));
             IGeometryFactory factory = new GeometryFactory();
 
             // Act.

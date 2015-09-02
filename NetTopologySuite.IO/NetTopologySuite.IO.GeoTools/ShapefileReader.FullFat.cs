@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using GeoAPI.Geometries;
-using NetTopologySuite.IO.Common.Streams;
+using NetTopologySuite.IO.Streams;
 
 namespace NetTopologySuite.IO
 {
@@ -14,24 +14,24 @@ namespace NetTopologySuite.IO
         /// <param name="geometryFactory">The GeometryFactory to use when creating Geometry objects.</param>
         public ShapefileReader(string filename, IGeometryFactory geometryFactory)
             : this(
-                new ShapefileStreamProvider(new FileStreamProvider(filename, true), null, true, false), geometryFactory)
+                new ShapefileStreamProviderRegistry(new FileStreamProvider(filename, true), null, true, false), geometryFactory)
         {
         }
 
-        public ShapefileReader(IShapeStreamProvider shapeStreamProvider, IGeometryFactory geometryFactory)
+        public ShapefileReader(IStreamProviderRegistry shapeStreamProviderRegistry, IGeometryFactory geometryFactory)
         {
-            if (shapeStreamProvider == null)
-                throw new ArgumentNullException(nameof(shapeStreamProvider));
+            if (shapeStreamProviderRegistry == null)
+                throw new ArgumentNullException(nameof(shapeStreamProviderRegistry));
             if (geometryFactory == null)
                 throw new ArgumentNullException(nameof(geometryFactory));
 
-            _shapeStreamProvider = shapeStreamProvider;
+            _shapeStreamProviderRegistry = shapeStreamProviderRegistry;
             _geometryFactory = geometryFactory;
 
             // read header information. note, we open the file, read the header information and then
             // close the file. This means the file is not opened again until GetEnumerator() is requested.
             // For each call to GetEnumerator() a new BinaryReader is created.
-            using (var stream = shapeStreamProvider.ShapeStream.OpenRead())
+            using (var stream = shapeStreamProviderRegistry[StreamTypes.Shape].OpenRead())
             {
                 using (var shpBinaryReader = new BigEndianBinaryReader(stream))
                 {
@@ -58,7 +58,7 @@ namespace NetTopologySuite.IO
                 // create a file stream for each enumerator that is given out. This allows the same file
                 // to have one or more enumerator. If we used the parents stream - than only one IEnumerator 
                 // could be given out.
-                var stream = shapefile._shapeStreamProvider.ShapeStream.OpenRead();
+                var stream = shapefile._shapeStreamProviderRegistry[StreamTypes.Shape].OpenRead();
                 _shpBinaryReader = new BigEndianBinaryReader(stream);
 
                 // skip header - since parent has already read this.

@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Globalization;
 using System.IO;
-using NetTopologySuite.IO.Common.Streams;
+using NetTopologySuite.IO.Streams;
 
 namespace NetTopologySuite.IO
 {
@@ -11,7 +11,7 @@ namespace NetTopologySuite.IO
     /// </summary>
     public partial class DbaseFileReader : IEnumerable
     {
-        private readonly IDataStreamProvider _dataStreamProvider;
+        private readonly IStreamProviderRegistry _streamProviderRegistry;
 
 
         private DbaseFileHeader _header;
@@ -99,8 +99,8 @@ namespace NetTopologySuite.IO
                 _header = new DbaseFileHeader();
                 // read the header
                 _header.ReadHeader(_dbfStream,
-                    _parent._dataStreamProvider.DataStream is FileStreamProvider
-                        ? ((FileStreamProvider) _parent._dataStreamProvider.DataStream).Path
+                    _parent._streamProviderRegistry[StreamTypes.Data] is FileStreamProvider
+                        ? ((FileStreamProvider) _parent._streamProviderRegistry[StreamTypes.Data]).Path
                         : null);
 
                 // how many records remain

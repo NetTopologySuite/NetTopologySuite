@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using GeoAPI.Geometries;
-using NetTopologySuite.IO.Common.Streams;
 using NetTopologySuite.IO.Handlers;
+using NetTopologySuite.IO.Streams;
 
 namespace NetTopologySuite.IO.ShapeFile.Extended
 {
@@ -16,22 +16,22 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
         private BigEndianBinaryReader m_ShapeFileReader;
         private readonly ShapefileHeader m_ShapeFileHeader;
         //private readonly string m_ShapeFilePath;
-        private readonly IShapeStreamProvider m_shapeStreamProvider;
+        private readonly IStreamProviderRegistry m_StreamProviderRegistry;
         private readonly ShapeHandler m_ShapeHandler;
         private readonly Lazy<long[]> m_ShapeOffsetCache;
         private bool m_IsDisposed;
 
-        public ShapeReader(string shapeFilePath) : this(new ShapefileStreamProvider(shapeFilePath, true))
+        public ShapeReader(string shapeFilePath) : this(new ShapefileStreamProviderRegistry(shapeFilePath, true))
         {
 
         }
 
-        public ShapeReader(IShapeStreamProvider shapeStreamProvider)
+        public ShapeReader(IStreamProviderRegistry streamProviderRegistry)
         {
-            if (shapeStreamProvider == null)
-                throw new ArgumentNullException(nameof(shapeStreamProvider));
+            if (streamProviderRegistry == null)
+                throw new ArgumentNullException(nameof(streamProviderRegistry));
 
-            m_shapeStreamProvider = shapeStreamProvider;
+            m_StreamProviderRegistry = streamProviderRegistry;
 
             m_ShapeFileHeader = new ShapefileHeader(ShapeReaderStream);
             m_ShapeHandler = Shapefile.GetShapeHandler(ShapefileHeader.ShapeType);
@@ -59,11 +59,11 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
             {
                 if (m_ShapeFileReader == null)
                 {
-                    lock (m_shapeStreamProvider)
+                    lock (m_StreamProviderRegistry)
                     {
                         if (m_ShapeFileReader == null)
                         {
-                            m_ShapeFileReader = new BigEndianBinaryReader(m_shapeStreamProvider.ShapeStream.OpenRead());
+                            m_ShapeFileReader = new BigEndianBinaryReader(m_StreamProviderRegistry[StreamTypes.Shape].OpenRead());
                         }
                     }
                 }
@@ -82,7 +82,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
         {
             ThrowIfDisposed();
 
-            BigEndianBinaryReader NewReader = new BigEndianBinaryReader(m_shapeStreamProvider.ShapeStream.OpenRead());
+            BigEndianBinaryReader NewReader = new BigEndianBinaryReader(m_StreamProviderRegistry[StreamTypes.Shape].OpenRead());
             return m_ShapeHandler.ReadMBRs(NewReader);
         }
 
@@ -146,7 +146,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 
         private long[] BuildOffsetCache()
         {
-            using (BigEndianBinaryReader shapeFileReader = new BigEndianBinaryReader(m_shapeStreamProvider.ShapeStream.OpenRead()))
+            using (BigEndianBinaryReader shapeFileReader = new BigEndianBinaryReader(m_StreamProviderRegistry[StreamTypes.Shape].OpenRead()))
             {
                 return m_ShapeHandler.ReadMBRs(shapeFileReader)
                                      .Select(mbrInfo => mbrInfo.ShapeFileDetails.OffsetFromStartOfFile)

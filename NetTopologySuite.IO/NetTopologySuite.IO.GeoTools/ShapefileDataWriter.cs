@@ -6,7 +6,7 @@ using System.Text;
 using GeoAPI.Geometries;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.IO.Common.Streams;
+using NetTopologySuite.IO.Streams;
 
 namespace NetTopologySuite.IO
 {
@@ -57,17 +57,17 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         public static DbaseFileHeader GetHeader(string dbfFile)
         {
-            return GetHeader(new ShapefileStreamProvider(dbfFile, false, true, false));
+            return GetHeader(new ShapefileStreamProviderRegistry(dbfFile, false, true, false));
         }
 
-        public static DbaseFileHeader GetHeader(IDataStreamProvider dataStreamProvider)
+        public static DbaseFileHeader GetHeader(IStreamProviderRegistry streamProviderRegistry)
         {
 
             DbaseFileHeader header = new DbaseFileHeader();
 
-            using (var stream = dataStreamProvider.DataStream.OpenRead())
+            using (var stream = streamProviderRegistry[StreamTypes.Data].OpenRead())
             using (var reader = new BinaryReader(stream))
-                header.ReadHeader(reader, dataStreamProvider.DataStream is FileStreamProvider ? ((FileStreamProvider)dataStreamProvider.DataStream).Path : null);
+                header.ReadHeader(reader, streamProviderRegistry[StreamTypes.Data] is FileStreamProvider ? ((FileStreamProvider)streamProviderRegistry[StreamTypes.Data]).Path : null);
             return header;
         }
 
@@ -98,7 +98,7 @@ namespace NetTopologySuite.IO
         //private readonly string _shpFile = String.Empty;
         //private readonly string _dbfFile = String.Empty;
 
-        private ICombinedStreamProvider _combinedStreamProvider;
+        private IStreamProviderRegistry _streamProviderRegistry;
 
         private readonly DbaseFileWriter _dbaseWriter;
 
@@ -144,19 +144,19 @@ namespace NetTopologySuite.IO
         }
 
         public ShapefileDataWriter(string fileName, IGeometryFactory geometryFactory, Encoding encoding)
-            : this(new ShapefileStreamProvider(fileName, false, false, false), geometryFactory, encoding)
+            : this(new ShapefileStreamProviderRegistry(fileName, false, false, false), geometryFactory, encoding)
         {
 
         }
 
-        public ShapefileDataWriter(ICombinedStreamProvider combinedStreamProvider, IGeometryFactory geometryFactory, Encoding encoding)
+        public ShapefileDataWriter(IStreamProviderRegistry streamProviderRegistry, IGeometryFactory geometryFactory, Encoding encoding)
         {
             _geometryFactory = geometryFactory;
 
-            _combinedStreamProvider = combinedStreamProvider;
+            _streamProviderRegistry = streamProviderRegistry;
 
             // Writers
-            _dbaseWriter = new DbaseFileWriter(combinedStreamProvider, encoding);
+            _dbaseWriter = new DbaseFileWriter(streamProviderRegistry, encoding);
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace NetTopologySuite.IO
                 var index = 0;
                 foreach (IFeature feature in featureCollection)
                     geometries[index++] = feature.Geometry;
-                ShapefileWriter.WriteGeometryCollection(_combinedStreamProvider, new GeometryCollection(geometries, _geometryFactory));
+                ShapefileWriter.WriteGeometryCollection(_streamProviderRegistry, new GeometryCollection(geometries, _geometryFactory));
 
                 // Write dbf
                 _dbaseWriter.Write(Header);

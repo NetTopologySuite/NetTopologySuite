@@ -8,9 +8,9 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Strtree;
-using NetTopologySuite.IO.Common.Streams;
 using NetTopologySuite.IO.Handlers;
 using NetTopologySuite.IO.ShapeFile.Extended.Entities;
+using NetTopologySuite.IO.Streams;
 
 namespace NetTopologySuite.IO.ShapeFile.Extended
 {
@@ -27,11 +27,11 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 		private readonly ShapeReader m_ShapeReader;
 
 	    public ShapeDataReader(string shapeFilePath, ISpatialIndex<ShapeLocationInFileInfo> index, IGeometryFactory geoFactory, bool buildIndexAsync)
-            :this(new ShapefileStreamProvider(shapeFilePath, true, true), index, geoFactory, buildIndexAsync)
+            :this(new ShapefileStreamProviderRegistry(shapeFilePath, true, true), index, geoFactory, buildIndexAsync)
 		{	
 		}
 
-        public ShapeDataReader(ICombinedStreamProvider streamProvider , ISpatialIndex<ShapeLocationInFileInfo> index, IGeometryFactory geoFactory, bool buildIndexAsync)
+        public ShapeDataReader(IStreamProviderRegistry streamProviderRegistry , ISpatialIndex<ShapeLocationInFileInfo> index, IGeometryFactory geoFactory, bool buildIndexAsync)
         {
 
 
@@ -41,7 +41,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
             ValidateParameters();
 
 
-            m_ShapeReader = new ShapeReader(streamProvider);
+            m_ShapeReader = new ShapeReader(streamProviderRegistry);
 
             if (buildIndexAsync)
             {
@@ -53,7 +53,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
                 FillSpatialIndex();
             }
 
-            m_DbfReader = new DbaseReader(streamProvider);
+            m_DbfReader = new DbaseReader(streamProviderRegistry);
         }
 
         public ShapeDataReader(string shapeFilePath, ISpatialIndex<ShapeLocationInFileInfo> index, IGeometryFactory geoFactory)
@@ -69,16 +69,16 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 		{ }
 
 
-        public ShapeDataReader(ICombinedStreamProvider streamProvider, ISpatialIndex<ShapeLocationInFileInfo> index, IGeometryFactory geoFactory)
-    : this(streamProvider, index, geoFactory, true)
+        public ShapeDataReader(IStreamProviderRegistry streamProviderRegistry, ISpatialIndex<ShapeLocationInFileInfo> index, IGeometryFactory geoFactory)
+    : this(streamProviderRegistry, index, geoFactory, true)
         { }
 
-        public ShapeDataReader(ICombinedStreamProvider streamProvider, ISpatialIndex<ShapeLocationInFileInfo> index)
-            : this(streamProvider, index, new GeometryFactory())
+        public ShapeDataReader(IStreamProviderRegistry streamProviderRegistry, ISpatialIndex<ShapeLocationInFileInfo> index)
+            : this(streamProviderRegistry, index, new GeometryFactory())
         { }
 
-        public ShapeDataReader(ICombinedStreamProvider streamProvider)
-            : this(streamProvider, new STRtree<ShapeLocationInFileInfo>())
+        public ShapeDataReader(IStreamProviderRegistry streamProviderRegistry)
+            : this(streamProviderRegistry, new STRtree<ShapeLocationInFileInfo>())
         { }
 
         ~ShapeDataReader()

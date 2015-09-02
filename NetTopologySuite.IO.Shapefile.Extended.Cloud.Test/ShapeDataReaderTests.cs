@@ -7,10 +7,10 @@ using Microsoft.WindowsAzure.Storage;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.Strtree;
-using NetTopologySuite.IO.Common.Streams;
 using NetTopologySuite.IO.Handlers;
 using NetTopologySuite.IO.ShapeFile.Extended;
 using NetTopologySuite.IO.ShapeFile.Extended.Entities;
+using NetTopologySuite.IO.Streams;
 using NetTopologySuite.IO.Tests.ShapeFile.Extended;
 using NUnit.Framework;
 
@@ -36,7 +36,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         public void Ctor_SendNullPath_ShouldThrowException()
         {
             // Act.
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(null), null));
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(null), null));
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         public void Ctor_SendEmptyPath_ShouldThrowException()
         {
             // Act.
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(string.Empty), null));
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(string.Empty), null));
         }
 
         [Test]
@@ -52,7 +52,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         public void Ctor_SendWhitespacePath_ShouldThrowException()
         {
             // Act.
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider("   \t   "), null));
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider("   \t   "), null));
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         public void Ctor_SendNonExistantFilePath_ShouldThrowException()
         {
             // Act.
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(@"/this/is/sheker/path/should/never/exist/on/ur/pc"),null));
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(@"/this/is/sheker/path/should/never/exist/on/ur/pc"),null));
         }
 
         //[Test]
@@ -74,7 +74,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         //    };
 
         //    // Act.
-        //    m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(m_TempFiles[0].Path), null, true, true));
+        //    m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), null, true, true));
         //}
 
         [Test]
@@ -89,7 +89,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             };
 
             // Act.
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)), null);
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)), null);
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             };
 
             // Act.
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)), new STRtree<ShapeLocationInFileInfo>(), null);
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)), new STRtree<ShapeLocationInFileInfo>(), null);
         }
 
         [Test]
@@ -118,7 +118,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             };
 
             // Act.
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
             Assert.IsNotNull(m_shapeDataReader);
         }
 
@@ -133,7 +133,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             };
 
             // Act.
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)), new STRtree<ShapeLocationInFileInfo>(), new GeometryFactory(), true);
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)), new STRtree<ShapeLocationInFileInfo>(), new GeometryFactory(), true);
 
             // Assert.
             Assert.IsNotNull(m_shapeDataReader);
@@ -150,7 +150,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             };
 
             // Act.
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)), new STRtree<ShapeLocationInFileInfo>(), new GeometryFactory(), false);
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)), new STRtree<ShapeLocationInFileInfo>(), new GeometryFactory(), false);
 
             // Assert.
             Assert.IsNotNull(m_shapeDataReader);
@@ -169,7 +169,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             };
 
             // Act.
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
 
             // Assert.
             HelperMethods.AssertEnvelopesEqual(expectedMBR, m_shapeDataReader.ShapefileBounds);
@@ -206,7 +206,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
 
             string[] expectedShapeMetadata = new string[] { "Rectangle", "Triangle" };
 
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
 
             // Act.
             IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(m_shapeDataReader.ShapefileBounds);
@@ -254,7 +254,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
 
             string expectedShapeMetadata = "Triangle";
 
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
 
             // Act.
             IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle);
@@ -300,7 +300,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
 
             string expectedShapeMetadata = "Rectangle";
 
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
 
             // Act.
             IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle);
@@ -346,7 +346,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
 
             string expectedShapeMetadata = "Rectangle";
 
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
 
             // Act.
             IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle, true);
@@ -392,7 +392,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
 
             string expectedShapeMetadata = "Rectangle";
 
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
 
             // Act.
             IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle);
@@ -438,7 +438,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
 
             string expectedShapeMetadata = "Rectangle";
 
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
 
             // Act.
             IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle, true);
@@ -473,7 +473,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
                 new TempFileCloudUploader("test.dbf", DbfFiles.Read("UnifiedChecksMaterial")),
             };
 
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
 
             // Act.
             IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle, true);
@@ -510,7 +510,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
 
             string expectedShapeMetadata = "Rectangle";
 
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
 
             // Act.
             IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle);
@@ -545,7 +545,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
                 new TempFileCloudUploader("test.dbf", DbfFiles.Read("UnifiedChecksMaterial")),
             };
 
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
 
             // Act.
             IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle);
@@ -567,7 +567,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
                 new TempFileCloudUploader("test.dbf", DbfFiles.Read("UnifiedChecksMaterial")),
             };
 
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
 
             // Act.
             IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle, true);
@@ -590,7 +590,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
                 new TempFileCloudUploader("test.dbf", DbfFiles.Read("UnifiedChecksMaterial")),
             };
 
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
 
             // Act.
             IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle);
@@ -619,7 +619,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
                 new TempFileCloudUploader("test.dbf", DbfFiles.Read("UnifiedChecksMaterial")),
             };
 
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProvider(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
+            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)));
 
             // Act.
             IEnumerable<IShapefileFeature> results = m_shapeDataReader.ReadByMBRFilter(boundsWithWholeTriangle);

@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace NetTopologySuite.IO.Common.Streams
+namespace NetTopologySuite.IO.Streams
 {
     public interface IStreamProvider
     {
@@ -8,5 +8,7 @@ namespace NetTopologySuite.IO.Common.Streams
 
         Stream OpenRead();
         Stream OpenWrite(bool truncate);
+
+        string Kind { get; }
     }
 }

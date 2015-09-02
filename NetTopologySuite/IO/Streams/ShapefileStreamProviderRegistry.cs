@@ -1,11 +1,11 @@
 using System;
 using System.IO;
 
-namespace NetTopologySuite.IO.Common.Streams
+namespace NetTopologySuite.IO.Streams
 {
-    public class ShapefileStreamProvider : ICombinedStreamProvider
+    public class ShapefileStreamProviderRegistry : IStreamProviderRegistry
     {
-        public ShapefileStreamProvider(string path, bool validateShapePath = false, bool validateDataPath = false, bool validateIndexPath = false)
+        public ShapefileStreamProviderRegistry(string path, bool validateShapePath = false, bool validateDataPath = false, bool validateIndexPath = false)
         {
             //if (path == null)
             //{
@@ -22,13 +22,13 @@ namespace NetTopologySuite.IO.Common.Streams
             IndexStream = new FileStreamProvider(Path.ChangeExtension(path, ".shx"), validateIndexPath);
         }
 
-        public ShapefileStreamProvider(IStreamProvider shapeStream, IStreamProvider dataStream,
+        public ShapefileStreamProviderRegistry(IStreamProvider shapeStream, IStreamProvider dataStream,
             bool validateShapeProvider = false, bool validateDataProvider = false, bool validateIndexPath = false) :
                 this(shapeStream, dataStream, null, validateShapeProvider, validateDataProvider, false)
         {
         }
 
-        public ShapefileStreamProvider(IStreamProvider shapeStream, IStreamProvider dataStream,
+        public ShapefileStreamProviderRegistry(IStreamProvider shapeStream, IStreamProvider dataStream,
             IStreamProvider indexStream,
             bool validateShapeProvider = false, bool validateDataProvider = false, bool validateIndexProvider = false)
         {
@@ -44,10 +44,28 @@ namespace NetTopologySuite.IO.Common.Streams
             IndexStream = indexStream;
         }
 
-        public IStreamProvider DataStream { get; }
+        private IStreamProvider DataStream { get; }
 
-        public IStreamProvider ShapeStream { get; }
+        private IStreamProvider ShapeStream { get; }
 
-        public IStreamProvider IndexStream { get; }
+        private IStreamProvider IndexStream { get; }
+
+        public IStreamProvider this[string streamType]
+        {
+            get
+            {
+                switch (streamType)
+                {
+                    case StreamTypes.Data:
+                        return DataStream;
+                    case StreamTypes.Index:
+                        return IndexStream;
+                    case StreamTypes.Shape:
+                        return ShapeStream;
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+        }
     }
 }
