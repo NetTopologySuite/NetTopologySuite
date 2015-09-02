@@ -10,11 +10,10 @@ using NetTopologySuite.Index.Strtree;
 using NetTopologySuite.IO.Handlers;
 using NetTopologySuite.IO.ShapeFile.Extended;
 using NetTopologySuite.IO.ShapeFile.Extended.Entities;
-using NetTopologySuite.IO.Streams;
 using NetTopologySuite.IO.Tests.ShapeFile.Extended;
 using NUnit.Framework;
 
-namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
+namespace NetTopologySuite.IO.Streams.CloudStorage.Test
 {
     [TestFixture]
     public class ShapeDataReaderTests

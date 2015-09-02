@@ -3,7 +3,7 @@ using GeoAPI.Geometries;
 using NetTopologySuite.IO.Handlers;
 using NUnit.Framework;
 
-//namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
+//namespace NetTopologySuite.IO.Streams.CloudStorage.Test
 //{
 //    public static class HelperMethods
 //    {

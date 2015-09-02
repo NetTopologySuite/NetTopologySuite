@@ -9,9 +9,8 @@ using NetTopologySuite.IO.Handlers;
 using NetTopologySuite.IO.Streams;
 using NetTopologySuite.IO.Tests.ShapeFile.Extended;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 
-namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
+namespace NetTopologySuite.IO.Streams.CloudStorage.Test
 {
     [TestFixture]
     public class ShapeReaderTests

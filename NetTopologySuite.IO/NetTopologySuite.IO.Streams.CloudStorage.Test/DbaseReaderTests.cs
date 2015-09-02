@@ -4,10 +4,9 @@ using System.Linq;
 using Microsoft.WindowsAzure.Storage;
 using NetTopologySuite.Features;
 using NetTopologySuite.IO.ShapeFile.Extended;
-using NetTopologySuite.IO.Streams;
 using NUnit.Framework;
 
-namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
+namespace NetTopologySuite.IO.Streams.CloudStorage.Test
 {
     /// <summary>
     ///     Summary description for DbfFileReaderTests
