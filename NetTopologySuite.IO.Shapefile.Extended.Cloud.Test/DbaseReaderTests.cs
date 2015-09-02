@@ -3,8 +3,8 @@ using System.IO;
 using System.Linq;
 using Microsoft.WindowsAzure.Storage;
 using NetTopologySuite.Features;
-using NetTopologySuite.IO.Common.Streams;
 using NetTopologySuite.IO.ShapeFile.Extended;
+using NetTopologySuite.IO.Streams;
 using NUnit.Framework;
 
 namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
@@ -36,9 +36,9 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
         private DbaseReader m_Reader;
         private TempFileCloudUploader m_TmpFile;
 
-        private static IDataStreamProvider GetProvider(string name)
+        private static IStreamProviderRegistry GetProvider(string name)
         {
-            return new ShapefileStreamProvider(null,
+            return new ShapefileStreamProviderRegistry(null,
                 new CloudStorage.CloudStreamProvider(
                     CloudStorageAccount.DevelopmentStorageAccount.CreateCloudBlobClient()
                         .GetContainerReference(TempFileCloudUploader.TestingContainerName), name), false, true);

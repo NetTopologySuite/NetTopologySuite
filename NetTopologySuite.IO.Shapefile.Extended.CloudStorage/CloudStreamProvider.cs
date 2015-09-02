@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.WindowsAzure.Storage.Blob;
-using NetTopologySuite.IO.Common.Streams;
+using NetTopologySuite.IO.Streams;
 
 namespace NetTopologySuite.IO.Shapefile.Extended.CloudStorage
 {
@@ -51,6 +51,11 @@ namespace NetTopologySuite.IO.Shapefile.Extended.CloudStorage
             throw new NotImplementedException();
 
             //todo:jd writable streams are possible for page blobs - however they need to be initialized with a size. 
+        }
+
+        public string Kind
+        {
+            get { return "CloudStream"; }
         }
     }
 }

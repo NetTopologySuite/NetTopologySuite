@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using NetTopologySuite.Features;
-using NetTopologySuite.IO.Common.Streams;
+using NetTopologySuite.IO.Streams;
 
 namespace NetTopologySuite.IO.ShapeFile.Extended
 {
@@ -12,7 +12,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
     {
         private DbaseFileHeader m_Header = null;
         //private readonly string m_Filename;
-        private readonly IDataStreamProvider m_dataStreamProvider;
+        private readonly IStreamProviderRegistry m_StreamProviderRegistry;
         private BinaryReader m_FileReader;
         private bool m_IsDisposed;
 
@@ -20,14 +20,14 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
         /// Initializes a new instance of the DbaseFileReader class.
         /// </summary>
         /// <param name="filename"></param>
-        public DbaseReader(string filename) : this(new ShapefileStreamProvider(null, new FileStreamProvider(filename, true)))
+        public DbaseReader(string filename) : this(new ShapefileStreamProviderRegistry(null, new FileStreamProvider(filename, true)))
         {
 
         }
 
-        public DbaseReader(IDataStreamProvider dataStreamProvider)
+        public DbaseReader(IStreamProviderRegistry streamProviderRegistry)
         {
-            m_dataStreamProvider = dataStreamProvider;
+            m_StreamProviderRegistry = streamProviderRegistry;
             ReadHeader();
         }
 
@@ -94,7 +94,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 
         internal DbaseReader Clone()
         {
-            return new DbaseReader(m_dataStreamProvider);
+            return new DbaseReader(m_StreamProviderRegistry);
         }
 
         /// <summary>
@@ -105,12 +105,12 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
         {
             if (m_Header == null)
             {
-                m_FileReader = new BinaryReader(m_dataStreamProvider.DataStream.OpenRead());
+                m_FileReader = new BinaryReader(m_StreamProviderRegistry[StreamTypes.Data].OpenRead());
 
                 m_Header = new DbaseFileHeader();
 
                 // read the header
-                m_Header.ReadHeader(m_FileReader, m_dataStreamProvider.DataStream is FileStreamProvider ? ((FileStreamProvider)m_dataStreamProvider.DataStream).Path : null);
+                m_Header.ReadHeader(m_FileReader, m_StreamProviderRegistry[StreamTypes.Data] is FileStreamProvider ? ((FileStreamProvider)m_StreamProviderRegistry[StreamTypes.Data]).Path : null);
             }
 
             return m_Header;

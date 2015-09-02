@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using GeoAPI.Geometries;
-using NetTopologySuite.IO.Common.Streams;
+using NetTopologySuite.IO.Streams;
 
 namespace NetTopologySuite.IO
 {
@@ -58,16 +58,16 @@ namespace NetTopologySuite.IO
             _moreRecords = true;
         }
 
-        public ShapefileDataReader(ICombinedStreamProvider combinedStreamProvider, IGeometryFactory geometryFactory)
+        public ShapefileDataReader(IStreamProviderRegistry streamProviderRegistry, IGeometryFactory geometryFactory)
         {
-            if (combinedStreamProvider==null)
-                throw new ArgumentNullException(nameof(combinedStreamProvider));
+            if (streamProviderRegistry==null)
+                throw new ArgumentNullException(nameof(streamProviderRegistry));
             if (geometryFactory == null)
                 throw new ArgumentNullException(nameof(geometryFactory));
             _open = true;
 
-            _dbfReader = new DbaseFileReader(combinedStreamProvider);
-            _shpReader = new ShapefileReader(combinedStreamProvider, geometryFactory);
+            _dbfReader = new DbaseFileReader(streamProviderRegistry);
+            _shpReader = new ShapefileReader(streamProviderRegistry, geometryFactory);
 
             _dbfHeader = _dbfReader.GetHeader();
             _recordCount = _dbfHeader.NumRecords;

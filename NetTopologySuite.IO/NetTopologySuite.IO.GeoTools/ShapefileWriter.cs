@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.IO.Common.Streams;
 using NetTopologySuite.IO.Handlers;
+using NetTopologySuite.IO.Streams;
 
 namespace NetTopologySuite.IO
 {
@@ -36,18 +36,18 @@ namespace NetTopologySuite.IO
         { }
 
         public ShapefileWriter(IGeometryFactory geometryFactory, string filename, ShapeGeometryType geomType)
-            : this(geometryFactory, new ShapefileStreamProvider(filename, false, false, false), geomType)
+            : this(geometryFactory, new ShapefileStreamProviderRegistry(filename, false, false, false), geomType)
         {
 
         }
 
-        public ShapefileWriter(IGeometryFactory geometryFactory, ICombinedStreamProvider combinedStreamProvider, ShapeGeometryType geomType)
+        public ShapefileWriter(IGeometryFactory geometryFactory, IStreamProviderRegistry streamProviderRegistry, ShapeGeometryType geomType)
     : this(geometryFactory)
         {
 
 
-            _shpStream = combinedStreamProvider.ShapeStream.OpenWrite(true);
-            _shxStream = combinedStreamProvider.IndexStream.OpenWrite(true);
+            _shpStream = streamProviderRegistry[StreamTypes.Shape].OpenWrite(true);
+            _shxStream = streamProviderRegistry[StreamTypes.Index].OpenWrite(true);
 
             _geometryType = geomType;
 
@@ -168,16 +168,16 @@ namespace NetTopologySuite.IO
         /// <param name="geometryCollection">The GeometryCollection to write.</param>		
         public static void WriteGeometryCollection(string filename, IGeometryCollection geometryCollection)
         {
-            WriteGeometryCollection(new ShapefileStreamProvider(filename, false, false, false), geometryCollection);
+            WriteGeometryCollection(new ShapefileStreamProviderRegistry(filename, false, false, false), geometryCollection);
 
         }
 
-        public static void WriteGeometryCollection(ICombinedStreamProvider combinedStreamProvider, IGeometryCollection geometryCollection)
+        public static void WriteGeometryCollection(IStreamProviderRegistry streamProviderRegistry, IGeometryCollection geometryCollection)
         {
             var shapeFileType = Shapefile.GetShapeType(geometryCollection);
 
             var numShapes = geometryCollection.NumGeometries;
-            using (var writer = new ShapefileWriter(geometryCollection.Factory, combinedStreamProvider, shapeFileType))
+            using (var writer = new ShapefileWriter(geometryCollection.Factory, streamProviderRegistry, shapeFileType))
             {
                 for (var i = 0; i < numShapes; i++)
                 {
@@ -185,7 +185,7 @@ namespace NetTopologySuite.IO
                 }
             }
 
-            WriteDummyDbf(combinedStreamProvider, numShapes);
+            WriteDummyDbf(streamProviderRegistry, numShapes);
 
         }
 
@@ -293,9 +293,9 @@ namespace NetTopologySuite.IO
             dbfWriter.Close();
         }
 
-        public static void WriteDummyDbf(IDataStreamProvider dataStreamProvider, int recordCount)
+        public static void WriteDummyDbf(IStreamProviderRegistry streamProviderRegistry, int recordCount)
         {
-            using (var dbfWriter = new DbaseFileWriter(dataStreamProvider))
+            using (var dbfWriter = new DbaseFileWriter(streamProviderRegistry))
             {
                 WriteDummyDbf(dbfWriter, recordCount);
             }
