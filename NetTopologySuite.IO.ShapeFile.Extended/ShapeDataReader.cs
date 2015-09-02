@@ -8,6 +8,7 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Strtree;
+using NetTopologySuite.IO.Common.Streams;
 using NetTopologySuite.IO.Handlers;
 using NetTopologySuite.IO.ShapeFile.Extended.Entities;
 
@@ -26,28 +27,36 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 		private readonly ShapeReader m_ShapeReader;
 
 	    public ShapeDataReader(string shapeFilePath, ISpatialIndex<ShapeLocationInFileInfo> index, IGeometryFactory geoFactory, bool buildIndexAsync)
-		{
-			m_SpatialIndex = index;
-			m_GeoFactory = geoFactory;
-
-			ValidateParameters(shapeFilePath);
-
-			m_ShapeReader = new ShapeReader(shapeFilePath);
-
-			if (buildIndexAsync)
-			{
-                m_CancellationTokenSrc = new CancellationTokenSource();
-                m_IndexCreationTask = Task.Factory.StartNew(FillSpatialIndex, m_CancellationTokenSrc.Token);
-			}
-			else
-			{
-				FillSpatialIndex();
-			}
-
-			m_DbfReader = new DbaseReader(Path.ChangeExtension(shapeFilePath, DBF_EXT));			
+            :this(new ShapefileStreamProvider(shapeFilePath, true, true), index, geoFactory, buildIndexAsync)
+		{	
 		}
 
-		public ShapeDataReader(string shapeFilePath, ISpatialIndex<ShapeLocationInFileInfo> index, IGeometryFactory geoFactory)
+        public ShapeDataReader(ICombinedStreamProvider streamProvider , ISpatialIndex<ShapeLocationInFileInfo> index, IGeometryFactory geoFactory, bool buildIndexAsync)
+        {
+
+
+            m_SpatialIndex = index;
+            m_GeoFactory = geoFactory;
+
+            ValidateParameters();
+
+
+            m_ShapeReader = new ShapeReader(streamProvider);
+
+            if (buildIndexAsync)
+            {
+                m_CancellationTokenSrc = new CancellationTokenSource();
+                m_IndexCreationTask = Task.Factory.StartNew(FillSpatialIndex, m_CancellationTokenSrc.Token);
+            }
+            else
+            {
+                FillSpatialIndex();
+            }
+
+            m_DbfReader = new DbaseReader(streamProvider);
+        }
+
+        public ShapeDataReader(string shapeFilePath, ISpatialIndex<ShapeLocationInFileInfo> index, IGeometryFactory geoFactory)
 			: this(shapeFilePath, index, geoFactory, true)
 		{ }
 
@@ -59,7 +68,20 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 			: this(shapeFilePath, new STRtree<ShapeLocationInFileInfo>())
 		{ }
 
-		~ShapeDataReader()
+
+        public ShapeDataReader(ICombinedStreamProvider streamProvider, ISpatialIndex<ShapeLocationInFileInfo> index, IGeometryFactory geoFactory)
+    : this(streamProvider, index, geoFactory, true)
+        { }
+
+        public ShapeDataReader(ICombinedStreamProvider streamProvider, ISpatialIndex<ShapeLocationInFileInfo> index)
+            : this(streamProvider, index, new GeometryFactory())
+        { }
+
+        public ShapeDataReader(ICombinedStreamProvider streamProvider)
+            : this(streamProvider, new STRtree<ShapeLocationInFileInfo>())
+        { }
+
+        ~ShapeDataReader()
 		{
 			Dispose(false);
 		}
@@ -148,32 +170,15 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 		/// <summary>
 		/// Check validity of parameters - null values and that all file needed to read shapes exist.
 		/// </summary>
-		private void ValidateParameters(string shpFilePath)
+		private void ValidateParameters()
 		{
 			if (m_SpatialIndex == null)
 			{
 				throw new ArgumentNullException("index");
 			}
-
-			if (string.IsNullOrWhiteSpace(shpFilePath))
-			{
-				throw new ArgumentNullException("ShapeFilePath");
-			}
-
 			if (m_GeoFactory == null)
 			{
 				throw new ArgumentNullException("GeoFactory");
-			}
-
-			if (!File.Exists(shpFilePath))
-			{
-				throw new FileNotFoundException("Shape file needed for shape reader", shpFilePath);
-			}
-
-			string dbfFile = Path.ChangeExtension(shpFilePath, DBF_EXT);
-			if (!File.Exists(dbfFile))
-			{
-				throw new FileNotFoundException("DBF file needed for shape reader", dbfFile);
 			}
 		}
 

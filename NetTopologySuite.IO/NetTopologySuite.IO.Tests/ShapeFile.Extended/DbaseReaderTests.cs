@@ -23,11 +23,11 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         public void Ctor_SendNullPath_ShouldThrowException()
         {
             // Act.
-            m_Reader = new DbaseReader(null);
+            m_Reader = new DbaseReader((string)null);
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void Ctor_SendEmptyString_ShouldThrowException()
         {
             // Act.
@@ -35,7 +35,7 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void Ctor_SendWhitespaceString_ShouldThrowException()
         {
             // Act.

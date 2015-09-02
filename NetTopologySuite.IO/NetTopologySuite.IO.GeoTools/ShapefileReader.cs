@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.IO.Common.Streams;
 using NetTopologySuite.IO.Handlers;
 
 namespace NetTopologySuite.IO
@@ -14,7 +15,7 @@ namespace NetTopologySuite.IO
     /// </summary>
     public partial class ShapefileReader : IEnumerable
     {
-        private readonly string _filename;
+        private IShapeStreamProvider _shapeStreamProvider;
         private readonly IGeometryFactory _geometryFactory;
         private readonly ShapefileHeader _mainHeader;
 

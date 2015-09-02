@@ -4,138 +4,132 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using GeoAPI.Geometries;
+using NetTopologySuite.IO.Common.Streams;
 using NetTopologySuite.IO.Handlers;
 
 namespace NetTopologySuite.IO.ShapeFile.Extended
 {
-	public class ShapeReader : IDisposable
-	{
-	    const long HEADER_LENGTH = 100;
+    public class ShapeReader : IDisposable
+    {
+        const long HEADER_LENGTH = 100;
 
-	    private BigEndianBinaryReader m_ShapeFileReader;
-		private readonly ShapefileHeader m_ShapeFileHeader;
-		private readonly string m_ShapeFilePath;
-		private readonly ShapeHandler m_ShapeHandler;
-		private readonly Lazy<long[]> m_ShapeOffsetCache;
-		private bool m_IsDisposed;
+        private BigEndianBinaryReader m_ShapeFileReader;
+        private readonly ShapefileHeader m_ShapeFileHeader;
+        //private readonly string m_ShapeFilePath;
+        private readonly IShapeStreamProvider m_shapeStreamProvider;
+        private readonly ShapeHandler m_ShapeHandler;
+        private readonly Lazy<long[]> m_ShapeOffsetCache;
+        private bool m_IsDisposed;
 
-	    public ShapeReader(string shapeFilePath)
-		{
-			if (shapeFilePath == null)
-			{
-				throw new ArgumentNullException("shapeFilePath");
-			}
+        public ShapeReader(string shapeFilePath) : this(new ShapefileStreamProvider(shapeFilePath, true))
+        {
 
-			if (string.IsNullOrWhiteSpace(shapeFilePath))
-			{
-				throw new ArgumentException("shapeFilePath", "Path to shapefile can't be empty");
-			}
+        }
 
-			if (!File.Exists(shapeFilePath))
-			{
-				throw new FileNotFoundException("Given shapefile doesn't exist", shapeFilePath);
-			}
+        public ShapeReader(IShapeStreamProvider shapeStreamProvider)
+        {
+            if (shapeStreamProvider == null)
+                throw new ArgumentNullException(nameof(shapeStreamProvider));
 
-			m_ShapeFilePath = shapeFilePath;
+            m_shapeStreamProvider = shapeStreamProvider;
 
-			m_ShapeFileHeader = new ShapefileHeader(ShapeReaderStream);
-			m_ShapeHandler = Shapefile.GetShapeHandler(ShapefileHeader.ShapeType);
+            m_ShapeFileHeader = new ShapefileHeader(ShapeReaderStream);
+            m_ShapeHandler = Shapefile.GetShapeHandler(ShapefileHeader.ShapeType);
 
-			m_ShapeOffsetCache = new Lazy<long[]>(BuildOffsetCache, LazyThreadSafetyMode.ExecutionAndPublication);
-		}
+            m_ShapeOffsetCache = new Lazy<long[]>(BuildOffsetCache, LazyThreadSafetyMode.ExecutionAndPublication);
 
-		~ShapeReader()
-		{
-			Dispose(false);
-		}
+        }
 
-	    public ShapefileHeader ShapefileHeader
-		{
-			get
-			{
-				return m_ShapeFileHeader;
-			}
-		}
+        ~ShapeReader()
+        {
+            Dispose(false);
+        }
 
-		private BigEndianBinaryReader ShapeReaderStream
-		{
-			get
-			{
-				if (m_ShapeFileReader == null)
-				{
-					lock (m_ShapeFilePath)
-					{
-						if (m_ShapeFileReader == null)
-						{
-							FileStream stream = new FileStream(m_ShapeFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-							m_ShapeFileReader = new BigEndianBinaryReader(stream);
-						}
-					}
-				}
+        public ShapefileHeader ShapefileHeader
+        {
+            get
+            {
+                return m_ShapeFileHeader;
+            }
+        }
 
-				return m_ShapeFileReader;
-			}
-		}
+        private BigEndianBinaryReader ShapeReaderStream
+        {
+            get
+            {
+                if (m_ShapeFileReader == null)
+                {
+                    lock (m_shapeStreamProvider)
+                    {
+                        if (m_ShapeFileReader == null)
+                        {
+                            m_ShapeFileReader = new BigEndianBinaryReader(m_shapeStreamProvider.ShapeStream.OpenRead());
+                        }
+                    }
+                }
 
-	    public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
+                return m_ShapeFileReader;
+            }
+        }
 
-		public IEnumerable<MBRInfo> ReadMBRs()
-		{
-			ThrowIfDisposed();
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-            FileStream stream = new FileStream(m_ShapeFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            BigEndianBinaryReader NewReader = new BigEndianBinaryReader(stream);
+        public IEnumerable<MBRInfo> ReadMBRs()
+        {
+            ThrowIfDisposed();
+
+            BigEndianBinaryReader NewReader = new BigEndianBinaryReader(m_shapeStreamProvider.ShapeStream.OpenRead());
             return m_ShapeHandler.ReadMBRs(NewReader);
-		}
+        }
 
-		public IEnumerable<IGeometry> ReadAllShapes(IGeometryFactory geoFactory)
-		{
-			ThrowIfDisposed();
+        public IEnumerable<IGeometry> ReadAllShapes(IGeometryFactory geoFactory)
+        {
+            ThrowIfDisposed();
 
-			if (geoFactory == null)
-			{
-				throw new ArgumentNullException("geoFactory");
-			}
+            if (geoFactory == null)
+            {
+                throw new ArgumentNullException("geoFactory");
+            }
 
-			return m_ShapeOffsetCache.Value.Select(offset => ReadShapeAtOffset(offset, geoFactory));
-		}
+            return m_ShapeOffsetCache.Value.Select(offset => ReadShapeAtOffset(offset, geoFactory));
+        }
 
-		public IGeometry ReadShapeAtIndex(int index, IGeometryFactory geoFactory)
-		{
-			ThrowIfDisposed();
+        public IGeometry ReadShapeAtIndex(int index, IGeometryFactory geoFactory)
+        {
+            ThrowIfDisposed();
 
-			if (geoFactory == null)
-			{
-				throw new ArgumentNullException("geoFactory");
-			}
+            if (geoFactory == null)
+            {
+                throw new ArgumentNullException("geoFactory");
+            }
 
-			if (index < 0 || index >= m_ShapeOffsetCache.Value.Length)
-			{
-				throw new ArgumentOutOfRangeException("index");
-			}
+            if (index < 0 || index >= m_ShapeOffsetCache.Value.Length)
+            {
+                throw new ArgumentOutOfRangeException("index");
+            }
 
-			return ReadShapeAtOffset(m_ShapeOffsetCache.Value[index], geoFactory);
-		}
+            return ReadShapeAtOffset(m_ShapeOffsetCache.Value[index], geoFactory);
+        }
 
-		/// <summary>
-		/// Read shape at a given offset.
-		/// </summary>
-		/// <param name="shapeOffset"> The offset at which the requested shape metadata begins.</param>
-		/// <param name="geoFactory"></param>
-		/// <returns></returns>
-		public IGeometry ReadShapeAtOffset(long shapeOffset, IGeometryFactory geoFactory)
-		{
+        /// <summary>
+        /// Read shape at a given offset.
+        /// </summary>
+        /// <param name="shapeOffset"> The offset at which the requested shape metadata begins.</param>
+        /// <param name="geoFactory"></param>
+        /// <returns></returns>
+        public IGeometry ReadShapeAtOffset(long shapeOffset, IGeometryFactory geoFactory)
+        {
             IGeometry currGeomtry = null;
-			ThrowIfDisposed();
+            ThrowIfDisposed();
 
-			if (shapeOffset < HEADER_LENGTH || shapeOffset >= ShapeReaderStream.BaseStream.Length)
-			{
-				throw new IndexOutOfRangeException("Shape offset cannot be lower than header length (100) or higher than shape file size");
-			}
+            if (shapeOffset < HEADER_LENGTH || shapeOffset >= ShapeReaderStream.BaseStream.Length)
+            {
+                throw new IndexOutOfRangeException("Shape offset cannot be lower than header length (100) or higher than shape file size");
+            }
 
             lock (ShapeReaderStream)
             {
@@ -144,51 +138,49 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 
                 int currShapeLengthInWords = ShapeReaderStream.ReadInt32BE();
 
-                currGeomtry = m_ShapeHandler.Read(ShapeReaderStream, currShapeLengthInWords, geoFactory); 
+                currGeomtry = m_ShapeHandler.Read(ShapeReaderStream, currShapeLengthInWords, geoFactory);
             }
 
-			return currGeomtry;
-		}
+            return currGeomtry;
+        }
 
-		private long[] BuildOffsetCache()
-		{
-			FileStream stream = new FileStream(m_ShapeFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+        private long[] BuildOffsetCache()
+        {
+            using (BigEndianBinaryReader shapeFileReader = new BigEndianBinaryReader(m_shapeStreamProvider.ShapeStream.OpenRead()))
+            {
+                return m_ShapeHandler.ReadMBRs(shapeFileReader)
+                                     .Select(mbrInfo => mbrInfo.ShapeFileDetails.OffsetFromStartOfFile)
+                                     .ToArray();
+            }
 
-			using (BigEndianBinaryReader shapeFileReader = new BigEndianBinaryReader(stream))
-			{
-				return m_ShapeHandler.ReadMBRs(shapeFileReader)
-									 .Select(mbrInfo => mbrInfo.ShapeFileDetails.OffsetFromStartOfFile)
-									 .ToArray(); 
-			}
+        }
 
-		}
+        private void ThrowIfDisposed()
+        {
+            if (m_IsDisposed)
+            {
+                throw new InvalidOperationException("Cannot use a disposed ShapeReader");
+            }
+        }
 
-		private void ThrowIfDisposed()
-		{
-			if (m_IsDisposed)
-			{
-				throw new InvalidOperationException("Cannot use a disposed ShapeReader");
-			}
-		}
+        private void CloseShapeFileHandle()
+        {
+            if (m_ShapeFileReader != null)
+            {
+                m_ShapeFileReader.Close();
+                m_ShapeFileReader = null;
+            }
+        }
 
-		private void CloseShapeFileHandle()
-		{
-			if (m_ShapeFileReader != null)
-			{
-				m_ShapeFileReader.Close();
-				m_ShapeFileReader = null;
-			}
-		}
+        private void Dispose(bool disposing)
+        {
+            if (m_IsDisposed)
+            {
+                return;
+            }
 
-		private void Dispose(bool disposing)
-		{
-			if (m_IsDisposed)
-			{
-				return;
-			}
-
-			m_IsDisposed = true;
-			CloseShapeFileHandle();
-		}
-	}
+            m_IsDisposed = true;
+            CloseShapeFileHandle();
+        }
+    }
 }
