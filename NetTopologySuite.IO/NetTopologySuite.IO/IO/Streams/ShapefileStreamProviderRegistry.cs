@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO.Streams
 {
@@ -12,7 +13,7 @@ namespace NetTopologySuite.IO.Streams
             //    throw new ArgumentNullException("path");
             //}
 
-            if (string.IsNullOrWhiteSpace(path))
+            if (path.IsNullOrWhitespaceNTS())
             {
                 throw new ArgumentNullException("path", "Path to shapefile can't be null, empty or whitespace");
             }

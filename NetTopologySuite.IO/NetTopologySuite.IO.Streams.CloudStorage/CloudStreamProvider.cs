@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.WindowsAzure.Storage.Blob;
+using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO.Streams
 {
@@ -11,7 +12,7 @@ namespace NetTopologySuite.IO.Streams
             if(path == null) 
                 throw new ArgumentNullException("path");
 
-            if (string.IsNullOrWhiteSpace(path))
+            if (path.IsNullOrWhitespaceNTS())
                 throw new ArgumentException("path");
 
             if (container == null)

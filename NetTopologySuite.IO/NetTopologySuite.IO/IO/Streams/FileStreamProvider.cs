@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO.Streams
 {
@@ -10,7 +11,7 @@ namespace NetTopologySuite.IO.Streams
             if (path == null)
                 throw new ArgumentNullException("path");
 
-            if (string.IsNullOrWhiteSpace(path))
+            if (path.IsNullOrWhitespaceNTS())
                 throw new ArgumentException("Invalid Path", "path");
 
             if (validatePath && !File.Exists(path))
