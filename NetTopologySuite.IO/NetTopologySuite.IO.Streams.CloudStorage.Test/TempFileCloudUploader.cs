@@ -1,9 +1,8 @@
 ﻿using System;
-using System.IO;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 
-namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
+namespace NetTopologySuite.IO.Streams.CloudStorage.Test
 {
     public class TempFileCloudUploader : IDisposable
     {
@@ -15,7 +14,7 @@ namespace NetTopologySuite.IO.Shapefile.Extended.Cloud.Test
             GetBlobReference(fileName).UploadFromByteArray(data, 0, data.Length);
         }
 
-        private CloudBlockBlob GetBlobReference(string name)
+        private static CloudBlockBlob GetBlobReference(string name)
         {
             var dir = CloudStorageAccount.DevelopmentStorageAccount.CreateCloudBlobClient()
                .GetContainerReference(TestingContainerName);

@@ -110,7 +110,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NetTopologySuite.IO.ShapeFile.Extended\NetTopologySuite.IO.ShapeFile.Extended.csproj">
+    <ProjectReference Include="..\NetTopologySuite.IO.ShapeFile.Extended\NetTopologySuite.IO.ShapeFile.Extended.csproj">
       <Project>{4f36dd38-3cce-4a19-93c2-a9f8b27ea430}</Project>
       <Name>NetTopologySuite.IO.ShapeFile.Extended</Name>
     </ProjectReference>

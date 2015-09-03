@@ -94,7 +94,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Tests.NUni
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PCL", "PCL", "{B21A27C1-F3D6-42A1-9C43-0516DB8E9CA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.ShapeFile.Extended", "NetTopologySuite.IO.ShapeFile.Extended\NetTopologySuite.IO.ShapeFile.Extended.csproj", "{4F36DD38-3CCE-4A19-93C2-A9F8B27EA430}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.ShapeFile.Extended", "NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile.Extended\NetTopologySuite.IO.ShapeFile.Extended.csproj", "{4F36DD38-3CCE-4A19-93C2-A9F8B27EA430}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.TopoJSON", "NetTopologySuite.IO\NetTopologySuite.IO.TopoJSON\NetTopologySuite.IO.TopoJSON.csproj", "{0E4430FB-E15B-447B-A21C-6481BC708DDE}"
 EndProject
@@ -118,9 +118,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GeoAPI", "GeoAPI", "{47BCD4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Lab", "NetTopologySuite.Lab\NetTopologySuite.Lab.csproj", "{D446FBA3-B6EA-4FEB-9615-D5FD5AEB3D23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.Shapefile.Extended.CloudStorage", "NetTopologySuite.IO.Shapefile.Extended.CloudStorage\NetTopologySuite.IO.Shapefile.Extended.CloudStorage.csproj", "{CE217A88-7F50-4DE6-BC79-4AC863347A10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.Streams.CloudStorage", "NetTopologySuite.IO\NetTopologySuite.IO.Streams.CloudStorage\NetTopologySuite.IO.Streams.CloudStorage.csproj", "{CE217A88-7F50-4DE6-BC79-4AC863347A10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.Shapefile.Extended.Cloud.Test", "NetTopologySuite.IO.Shapefile.Extended.Cloud.Test\NetTopologySuite.IO.Shapefile.Extended.Cloud.Test.csproj", "{A9CE2741-A5B9-4D43-91CF-ECA6BC344A1B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.Streams.CloudStorage.Test", "NetTopologySuite.IO\NetTopologySuite.IO.Streams.CloudStorage.Test\NetTopologySuite.IO.Streams.CloudStorage.Test.csproj", "{A9CE2741-A5B9-4D43-91CF-ECA6BC344A1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
