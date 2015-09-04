@@ -1234,7 +1234,7 @@ namespace NetTopologySuite.IO.Streams.CloudStorage.Test
         public static byte[] Read(string filename)
         {
             string basedir = AppDomain.CurrentDomain.BaseDirectory;
-            string format = String.Format("..{0}..{0}..{0}NetTopologySuite.Samples.Shapefiles", Path.DirectorySeparatorChar);
+            string format = String.Format("..{0}..{0}..{0}..{0}NetTopologySuite.Samples.Shapefiles", Path.DirectorySeparatorChar);
             String folder = Path.Combine(basedir, format);
             String file = Path.ChangeExtension(filename, "shp");
             String path = Path.Combine(folder, file);

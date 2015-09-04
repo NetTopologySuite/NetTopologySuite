@@ -11,7 +11,7 @@ namespace NetTopologySuite.Utilities
     {
         public static bool IsNullOrWhitespaceNTS(this string s)
         {
-            return s == null || Regex.IsMatch(s, @"^[\s]+$");
+            return string.IsNullOrEmpty(s) || Regex.IsMatch(s, @"^[\s]+$");
         }
     }
 }
