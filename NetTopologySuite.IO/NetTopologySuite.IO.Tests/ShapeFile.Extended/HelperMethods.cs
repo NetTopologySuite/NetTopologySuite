@@ -1,7 +1,8 @@
 ﻿using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.IO.Handlers;
-using NUnit.Framework;
+using NetTopologySuite.Utilities;
+using Assert = NUnit.Framework.Assert;
 
 namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
 {
@@ -51,7 +52,7 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
 
         public static void AssertDoubleValuesEqual(double num1, double num2, double requiredPrecision, string errorMessage = "")
         {
-            if (string.IsNullOrWhiteSpace(errorMessage))
+            if (errorMessage.IsNullOrWhitespaceNTS())
             {
                 Assert.AreEqual(num1, num2, requiredPrecision);
             }

@@ -276,7 +276,7 @@ namespace NetTopologySuite.IO.Streams.CloudStorage.Test
         public static byte[] Read(string filename)
         {
             var basedir = AppDomain.CurrentDomain.BaseDirectory;
-            var format = string.Format("..{0}..{0}..{0}NetTopologySuite.Samples.Shapefiles", Path.DirectorySeparatorChar);
+            var format = string.Format("..{0}..{0}..{0}..{0}NetTopologySuite.Samples.Shapefiles", Path.DirectorySeparatorChar);
             var folder = Path.Combine(basedir, format);
             var file = Path.ChangeExtension(filename, ".dbf");
             var path = Path.Combine(folder, file);
