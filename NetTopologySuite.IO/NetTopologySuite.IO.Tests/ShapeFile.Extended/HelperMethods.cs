@@ -52,7 +52,7 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
 
         public static void AssertDoubleValuesEqual(double num1, double num2, double requiredPrecision, string errorMessage = "")
         {
-            if (errorMessage.IsNullOrWhitespaceNTS())
+            if (StringEx.IsNullOrWhitespaceNTS(errorMessage))
             {
                 Assert.AreEqual(num1, num2, requiredPrecision);
             }

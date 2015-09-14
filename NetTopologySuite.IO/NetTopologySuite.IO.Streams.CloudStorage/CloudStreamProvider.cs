@@ -12,7 +12,7 @@ namespace NetTopologySuite.IO.Streams
             if(path == null) 
                 throw new ArgumentNullException("path");
 
-            if (path.IsNullOrWhitespaceNTS())
+            if (StringEx.IsNullOrWhitespaceNTS(path))
                 throw new ArgumentException("path");
 
             if (container == null)

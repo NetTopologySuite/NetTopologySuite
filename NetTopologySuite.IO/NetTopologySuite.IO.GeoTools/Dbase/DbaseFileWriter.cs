@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -338,7 +337,6 @@ namespace NetTopologySuite.IO
         ~DbaseFileWriter()
         {
             Dispose(false);
-            Debug.WriteLine("Finalizer Called on {0}", GetType());
         }
 
         public bool IsDisposed { get; private set; }

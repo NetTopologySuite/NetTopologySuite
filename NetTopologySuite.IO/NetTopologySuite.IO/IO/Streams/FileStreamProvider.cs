@@ -11,7 +11,7 @@ namespace NetTopologySuite.IO.Streams
             if (path == null)
                 throw new ArgumentNullException("path");
 
-            if (path.IsNullOrWhitespaceNTS())
+            if (StringEx.IsNullOrWhitespaceNTS(path))
                 throw new ArgumentException("Invalid Path", "path");
 
             if (validatePath && !File.Exists(path))

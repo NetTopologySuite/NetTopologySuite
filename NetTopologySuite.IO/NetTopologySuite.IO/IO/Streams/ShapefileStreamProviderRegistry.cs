@@ -13,7 +13,7 @@ namespace NetTopologySuite.IO.Streams
             //    throw new ArgumentNullException("path");
             //}
 
-            if (path.IsNullOrWhitespaceNTS())
+            if (StringEx.IsNullOrWhitespaceNTS(path))
             {
                 throw new ArgumentNullException("path", "Path to shapefile can't be null, empty or whitespace");
             }
