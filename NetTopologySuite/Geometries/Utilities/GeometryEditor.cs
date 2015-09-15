@@ -18,7 +18,7 @@ namespace NetTopologySuite.Geometries.Utilities
     /// Geometry objects are intended to be treated as immutable.
     /// This class allows you to "modifies" a Geometrys
     /// by traversing them, applying a user-defined
-    /// <see cref="IGeometryEditorOperation"/> or <see cref="CoordinateOperation"/>
+    /// <see cref="IGeometryEditorOperation"/>, <see cref="CoordinateSequenceOperation"/> or <see cref="CoordinateOperation"/>
     /// and creating a new Geometrys with the same structure but
     /// (possibly) modified components.
     /// <para>
