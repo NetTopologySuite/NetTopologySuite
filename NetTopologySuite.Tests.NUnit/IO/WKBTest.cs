@@ -110,7 +110,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [TestAttribute]
         public void TestPolygonEmpty()
         {
-            RunWKBTest("LINESTRING EMPTY");
+            RunWKBTest("POLYGON EMPTY");
         }
 
         [TestAttribute]
