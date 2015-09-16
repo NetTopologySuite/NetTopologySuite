@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 using Wintellect.PowerCollections;
 
@@ -73,7 +74,7 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// Adds nodes for the first and last points of the edge.
         /// </summary>
-        private void AddEndPoints()
+        private void AddEndpoints()
         {
             var maxSegIndex = _edge.Count - 1;
             Add(_edge.GetCoordinate(0), 0);
@@ -178,7 +179,7 @@ namespace NetTopologySuite.Noding
         public void AddSplitEdges(IList<ISegmentString> edgeList)
         {
             // ensure that the list has entries for the first and last point of the edge
-            AddEndPoints();
+            AddEndpoints();
             AddCollapsedNodes();
 
             // there should always be at least two entries in the list, since the endpoints are nodes
@@ -248,9 +249,62 @@ namespace NetTopologySuite.Noding
             for (var i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
                 pts[ipt++] = _edge.GetCoordinate(i);            
             if (useIntPt1) 
-                pts[ipt] = ei1.Coord;
+                pts[ipt] = new Coordinate(ei1.Coord);
 
             return new NodedSegmentString(pts, _edge.Context);
+        }
+
+        /// <summary>Gets the list of coordinates for the fully noded segment string,
+        /// including all original segment string vertices and vertices
+        /// introduced by nodes in this list.
+        /// Repeated coordinates are collapsed.
+        /// </summary>
+        /// <returns>An array of <see cref="Coordinate"/>s</returns>
+        public Coordinate[] GetSplitCoordinates()
+        {
+            var coordList = new CoordinateList();
+            // ensure that the list has entries for the first and last point of the edge
+            AddEndpoints();
+
+            var it = GetEnumerator();
+            it.MoveNext();
+            // there should always be at least two entries in the list, since the endpoints are nodes
+            var eiPrev = (SegmentNode)it.Current;
+            while (it.MoveNext())
+            {
+                var ei = (SegmentNode)it.Current;
+                AddEdgeCoordinates(eiPrev, ei, coordList);
+                eiPrev = ei;
+            }
+            return coordList.ToCoordinateArray();
+        }
+
+        private void AddEdgeCoordinates(SegmentNode ei0, SegmentNode ei1,
+            CoordinateList coordList)
+        {
+            var npts = ei1.SegmentIndex - ei0.SegmentIndex + 2;
+
+            var lastSegStartPt = _edge.GetCoordinate(ei1.SegmentIndex);
+            // if the last intersection point is not equal to the its segment start pt,
+            // add it to the points list as well.
+            // (This check is needed because the distance metric is not totally reliable!)
+            // The check for point equality is 2D only - Z values are ignored
+            var useIntPt1 = ei1.IsInterior || !ei1.Coord.Equals2D(lastSegStartPt);
+            if (!useIntPt1)
+            {
+                npts--;
+            }
+
+            var ipt = 0;
+            coordList.Add(new Coordinate(ei0.Coord), false);
+            for (var i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
+            {
+                coordList.Add(_edge.GetCoordinate(i));
+            }
+            if (useIntPt1)
+            {
+                coordList.Add(new Coordinate(ei1.Coord));
+            }
         }
 
         /// <summary>
