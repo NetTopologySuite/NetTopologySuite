@@ -21,6 +21,16 @@ namespace NetTopologySuite.Utilities
             return g == null ? Factory : g.Factory;
         }
 
+        public static IGeometryFactory GetFactoryOrDefault(IEnumerable<IGeometry> gs)
+        {
+            foreach (var g in gs)
+            {
+                if (g != null)
+                    return g.Factory ?? Factory;
+            }
+            return Factory;
+        }
+
         public static IGeometry BuildGeometry(List<IGeometry> geoms, IGeometry parentGeom)
         {
             if (geoms.Count <= 0)

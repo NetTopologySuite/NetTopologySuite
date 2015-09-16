@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using GeoAPI.Geometries;
 #if !NET35 && !PCL
 using GeoAPI;
@@ -276,6 +277,11 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         public class CoordinateSequenceOperation : IGeometryEditorOperation
         {
+            public CoordinateSequenceOperation()
+                :this((s, g) => s)
+            {
+            }
+
             public CoordinateSequenceOperation(Func<ICoordinateSequence, IGeometry, ICoordinateSequence> editSequence)
             {
                 EditSequence = editSequence;
@@ -314,7 +320,7 @@ namespace NetTopologySuite.Geometries.Utilities
             ///// <param name="coordSeq">The coordinate array to operate on</param>
             ///// <param name="geometry">The geometry containing the coordinate list</param>
             /// <returns>An edited coordinate sequence (which may be the same as the input)</returns>
-            private Func<ICoordinateSequence, IGeometry, ICoordinateSequence> EditSequence { get; set; }
+            protected Func<ICoordinateSequence, IGeometry, ICoordinateSequence> EditSequence { get; set; }
         }
 
     }

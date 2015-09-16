@@ -59,6 +59,8 @@
     <Compile Include="Hull\ConcaveHull.cs" />
     <Compile Include="Operation\Buffer\VariableWidthBuffer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SnapRound\GeometrySnapRounder.cs" />
+    <Compile Include="SnapRound\SnapRoundFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">

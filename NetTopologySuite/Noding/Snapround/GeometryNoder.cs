@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Utilities;
-using NetTopologySuite.Operation.Union;
-using NetTopologySuite.Precision;
 
 namespace NetTopologySuite.Noding.Snapround
 {
