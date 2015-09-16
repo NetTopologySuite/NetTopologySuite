@@ -44,6 +44,31 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual(10, pt.Coordinate.X);
             Assert.AreEqual(10, pt.Coordinate.Y);
             Assert.AreEqual(10, pt.Coordinate.Z);
+            Assert.IsTrue(((IPoint)pt).CoordinateSequence.Ordinates == Ordinates.XYZ);
+            pt = _reader.Read("POINT(10 10)");
+            Assert.IsTrue(((IPoint)pt).CoordinateSequence.Ordinates == Ordinates.XY);
+        }
+
+        [Test]
+        public void TestReaderOrdinateSequenceDimension()
+        {
+            var pt = (IPoint)_reader.Read("POINT(10 10)");
+            Assert.IsTrue(pt.CoordinateSequence.Ordinates == Ordinates.XY);
+
+            pt = (IPoint)_reader.Read("POINT(10 10 NAN)");
+            Assert.IsTrue(pt.CoordinateSequence.Ordinates == Ordinates.XY);
+
+            pt = (IPoint)_reader.Read("POINT(10 10 5)");
+            Assert.IsTrue(pt.CoordinateSequence.Ordinates == Ordinates.XYZ);
+
+            var ls = (ILineString)_reader.Read("LINESTRING(10 10, 10 20)");
+            Assert.IsTrue(ls.CoordinateSequence.Ordinates == Ordinates.XY);
+
+            ls = (ILineString)_reader.Read("LINESTRING(10 10 NAN, 10 20 NAN)");
+            Assert.IsTrue(ls.CoordinateSequence.Ordinates == Ordinates.XY);
+
+            ls = (ILineString)_reader.Read("LINESTRING(10 10 1, 10 20 2)");
+            Assert.IsTrue(ls.CoordinateSequence.Ordinates == Ordinates.XYZ);
         }
 
         [TestAttribute]
