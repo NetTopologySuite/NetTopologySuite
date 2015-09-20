@@ -126,6 +126,15 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "MULTILINESTRING ((1 0, 0 0, 0 1, 1 1, 1 0), (1 0, 2 0))");
         }
 
+        [TestAttribute]
+        public void TestZeroLengthStartSegment()
+        {
+            CheckDissolve(
+        "MULTILINESTRING ((0 0, 0 0, 2 1))",  
+        "LINESTRING (0 0, 2 1)");
+        }
+
+
         private void CheckDissolve(string wkt, string expectedWkt)
         {
             CheckDissolve(new[] { wkt }, expectedWkt);

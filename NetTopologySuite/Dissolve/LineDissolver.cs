@@ -83,16 +83,22 @@ namespace NetTopologySuite.Dissolve
         {
             if (_factory == null)
                 _factory = lineString.Factory;
-            ICoordinateSequence seq = lineString.CoordinateSequence;
+            var doneStart = false;
+            var seq = lineString.CoordinateSequence;
             for (int i = 1; i < seq.Count; i++)
             {
-                Coordinate prev = seq.GetCoordinate(i - 1);
-                Coordinate curr = seq.GetCoordinate(i);
-                DissolveHalfEdge e = (DissolveHalfEdge)_graph.AddEdge(prev, curr);
+                var prev = seq.GetCoordinate(i - 1);
+                var curr = seq.GetCoordinate(i);
+                var e = (DissolveHalfEdge)_graph.AddEdge(prev, curr);
+                //skip zero-length edges
+                if (e==null) continue;
                 // Record source initial segments, so that they can be reflected in output when needed
                 // (i.e. during formation of isolated rings)
-                if (i == 1)
+                if (!doneStart)
+                {
                     e.SetStart();
+                    doneStart = true;
+                }
             }
         }
 
