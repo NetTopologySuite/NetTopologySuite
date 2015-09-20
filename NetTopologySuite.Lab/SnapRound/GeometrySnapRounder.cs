@@ -81,7 +81,7 @@ namespace NetTopologySuite.SnapRound
         {
             var segStrings = new List<ISegmentString>();
             var filter = new GeometryComponentFilter(
-                g => { if (g.Dimension == Dimension.Curve) segStrings.Add(new NodedSegmentString(g.Coordinates, g)); });
+                g => { if (g is ILineString) segStrings.Add(new NodedSegmentString(g.Coordinates, g)); });
 
             foreach (var geom in geoms)
                 geom.Apply(filter);
