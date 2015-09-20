@@ -2,19 +2,24 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Utilities;
 
 namespace Open.Topology.TestRunner.Functions
 {
     public static class ConversionFunctions
     {
-        public static IGeometry toPoints(IGeometry g)
+        public static IGeometry toPoints(IGeometry g1, IGeometry g2)
         {
-            return g.Factory.CreateMultiPoint(g.Coordinates);
+            var geoms = FunctionsUtil.BuildGeometry(g1, g2);
+            return FunctionsUtil.GetFactoryOrDefault(g1, g2)
+                .CreateMultiPoint(geoms.Coordinates);
         }
 
-        public static IGeometry toLines(IGeometry g)
+        public static IGeometry toLines(IGeometry g1, IGeometry g2)
         {
-            return g.Factory.BuildGeometry(LinearComponentExtracter.GetLines(g));
+            var geoms = FunctionsUtil.BuildGeometry(g1, g2);
+            return FunctionsUtil.GetFactoryOrDefault(g1, g2)
+                .BuildGeometry(LinearComponentExtracter.GetLines(geoms));
         }
 
         public static IGeometry toGeometryCollection(IGeometry g, IGeometry g2)
