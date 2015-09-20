@@ -17,6 +17,19 @@ namespace NetTopologySuite.Operation
     /// <author>Martin Davis</author>
     public class BoundaryOp
     {
+
+        public static IGeometry GetBoundary(IGeometry g)
+        {
+            var bop = new BoundaryOp(g);    
+            return bop.GetBoundary();
+        }
+
+        public static IGeometry GetBoundary(IGeometry g, IBoundaryNodeRule bnRule)
+        {
+            var bop = new BoundaryOp(g, bnRule);
+            return bop.GetBoundary();
+        }
+
         private readonly IGeometry _geom;
         private readonly IGeometryFactory _geomFact;
         private readonly IBoundaryNodeRule _bnRule;

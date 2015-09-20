@@ -116,6 +116,7 @@
     <Compile Include="..\SharedAssemblyVersion.cs">
       <Link>Properties\SharedAssemblyVersion.cs</Link>
     </Compile>
+    <Compile Include="Functions\BoundaryFunctions.cs" />
     <Compile Include="Functions\DissolveFunctions.cs" />
     <Compile Include="Functions\SpatialIndexFunctions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
