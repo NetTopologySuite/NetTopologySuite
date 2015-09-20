@@ -45,9 +45,14 @@ namespace NetTopologySuite.EdgeGraph
         /// Adds an edge between the coordinates orig and dest
         /// to this graph.
         /// </summary>
+        /// <remarks>
+        /// Only valid edges can be added (in particular, zero-length segments cannot be added)
+        /// </remarks>
         /// <param name="orig">the edge origin location</param>
         /// <param name="dest">the edge destination location</param>
-        /// <returns>the created edge</returns>
+        /// <returns>The created edge</returns>
+        /// <returns><value>null</value> if the edge was invalid and not added</returns>
+        /// <seealso cref="IsValidEdge(Coordinate,Coordinate)"/>
         public virtual HalfEdge AddEdge(Coordinate orig, Coordinate dest)
         {
             if (!IsValidEdge(orig, dest)) return null;
