@@ -1,6 +1,7 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+//using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Noding.Snapround
 {
@@ -191,6 +192,8 @@ namespace NetTopologySuite.Noding.Snapround
         {
             var intersectsLeft = false;
             var intersectsBottom = false;
+            //Console.WriteLine("Hot Pixel: " + WKTWriter.ToLineString(corner));
+            //Console.WriteLine("Line: " + WKTWriter.ToLineString(p0, p1));
 
             _li.ComputeIntersection(p0, p1, _corner[0], _corner[1]);
             if (_li.IsProper) return true;

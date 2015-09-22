@@ -251,14 +251,13 @@ namespace NetTopologySuite.Operation.Overlay
         /// If so, the edge is not inserted, but its label is merged
         /// with the existing edge.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The edge to insert</param>
         protected void InsertUniqueEdge(Edge e)
         {
-            var foundIndex = _edgeList.FindEdgeIndex(e);
+            var existingEdge = _edgeList.FindEqualEdge(e);
             // If an identical edge already exists, simply update its label
-            if (foundIndex >= 0)
+            if (existingEdge != null)
             {
-                var existingEdge = _edgeList[foundIndex];
                 var existingLabel = existingEdge.Label;
 
                 var labelToMerge = e.Label;
@@ -345,8 +344,8 @@ namespace NetTopologySuite.Operation.Overlay
         /// </summary>
         private void ReplaceCollapsedEdges()
         {
-            IList<Edge> newEdges = new List<Edge>();
-            IList<Edge> edgesToRemove = new List<Edge>();
+            var newEdges = new List<Edge>();
+            var edgesToRemove = new List<Edge>();
             var it = _edgeList.GetEnumerator();
             while (it.MoveNext()) 
             {

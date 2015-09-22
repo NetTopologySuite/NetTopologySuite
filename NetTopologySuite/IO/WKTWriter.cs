@@ -66,6 +66,34 @@ namespace NetTopologySuite.IO
             return buf.ToString();
         }
 
+        /**
+         * Generates the WKT for a <tt>LINESTRING</tt>
+         * specified by a {@link CoordinateSequence}.
+         *
+         * @param seq the sequence to write
+         *
+         * @return the WKT string
+         */
+        public static string ToLineString(Coordinate[] coord)
+        {
+            var buf = new StringBuilder();
+            buf.Append("LINESTRING ");
+            if (coord.Length == 0)
+                buf.Append(" EMPTY");
+            else
+            {
+                buf.Append("(");
+                for (int i = 0; i < coord.Length; i++)
+                {
+                    if (i > 0)
+                        buf.Append(", ");
+                    buf.Append(coord[i].X + " " + coord[i].Y);
+                }
+                buf.Append(")");
+            }
+            return buf.ToString();
+        }
+
         /// <summary>
         /// Generates the WKT for a <c>LineString</c> specified by two <see cref="Coordinate"/>s.
         /// </summary>
