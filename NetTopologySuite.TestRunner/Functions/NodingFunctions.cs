@@ -64,13 +64,13 @@ namespace Open.Topology.TestRunner.Functions
             bool temp = nv.IsValid;
             var intPts = nv.Intersections;
             if (intPts.Count == 0) return null;
-            return FunctionsUtil.GetFactoryOrDefault(null).CreatePoint((Coordinate)intPts[0]);
+            return FunctionsUtil.GetFactoryOrDefault((IGeometry)null).CreatePoint((Coordinate)intPts[0]);
         }
 
         public static IGeometry FindNodePoints(IGeometry geom)
         {
             IList<Coordinate> intPts = FastNodingValidator.ComputeIntersections(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
-            return FunctionsUtil.GetFactoryOrDefault(null).CreateMultiPoint(CoordinateArrays.ToCoordinateArray(intPts));
+            return FunctionsUtil.GetFactoryOrDefault((IGeometry)null).CreateMultiPoint(CoordinateArrays.ToCoordinateArray(intPts));
         }
 
         public static int InteriorIntersectionCount(IGeometry geom)

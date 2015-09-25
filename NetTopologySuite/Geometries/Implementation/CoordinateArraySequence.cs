@@ -205,7 +205,7 @@ namespace NetTopologySuite.Geometries.Implementation
         public virtual object Clone()
         {
             Coordinate[] cloneCoordinates = GetClonedCoordinates();
-            return new CoordinateArraySequence(cloneCoordinates);
+            return new CoordinateArraySequence(cloneCoordinates, Dimension);
         }
 
         /// <summary>

@@ -21,8 +21,11 @@ namespace NetTopologySuite.Utilities
             return g == null ? Factory : g.Factory;
         }
 
-        public static IGeometryFactory GetFactoryOrDefault(params IGeometry[] gs)
+
+        public static IGeometryFactory GetFactoryOrDefault(IEnumerable<IGeometry> gs)
         {
+            if (gs == null)
+                return Factory;
             foreach (var g in gs)
             {
                 if (g != null)
@@ -41,7 +44,7 @@ namespace NetTopologySuite.Utilities
             if (parentGeom != null && parentGeom.OgcGeometryType == OgcGeometryType.GeometryCollection)
                 return parentGeom.Factory.CreateGeometryCollection(GeometryFactory.ToGeometryArray(geoms));
             // otherwise return MultiGeom
-            return GetFactoryOrDefault(geoms.ToArray()).BuildGeometry(geoms);
+            return GetFactoryOrDefault(geoms).BuildGeometry(geoms);
         }
 
         public static IGeometry BuildGeometry(params IGeometry[] geoms)
@@ -61,6 +64,5 @@ namespace NetTopologySuite.Utilities
             if (b != null) geoms[size] = b;
             return GetFactoryOrDefault(geoms).CreateGeometryCollection(geoms);
         }
-
     }
 }
