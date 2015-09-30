@@ -35,7 +35,7 @@ namespace NetTopologySuite.IO
         ///     Initializes a new instance of the DbaseFileWriter class.
         /// </summary>
         public DbaseFileWriter(string filename, Encoding enc)
-            : this(new ShapefileStreamProviderRegistry(filename, false, true, false), enc)
+            : this(new ShapefileStreamProviderRegistry(filename), enc)
         {
         }
 
