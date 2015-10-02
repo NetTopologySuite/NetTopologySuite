@@ -147,10 +147,11 @@ namespace NetTopologySuite.IO
         /// </remarks>
         /// <param name="filename">The name of the file</param>
         /// <param name="geometryCollection">The collection of geometries</param>
+        /// <param name="writeDummyPdf">Set to true to create a dummy dbf along with the shp file</param>
         [Obsolete("use WriteGeometryCollection")]
-        public void Write(string filename, IGeometryCollection geometryCollection)
+        public void Write(string filename, IGeometryCollection geometryCollection, bool writeDummyPdf = true)
         {
-            WriteGeometryCollection(filename, geometryCollection);
+            WriteGeometryCollection(filename, geometryCollection, writeDummyPdf);
         }
 
 
@@ -165,43 +166,38 @@ namespace NetTopologySuite.IO
         /// the row number.
         /// </remarks>
         /// <param name="filename">The filename to write to (minus the .shp extension).</param>
-        /// <param name="geometryCollection">The GeometryCollection to write.</param>		
-        public static void WriteGeometryCollection(string filename, IGeometryCollection geometryCollection)
+        /// <param name="geometryCollection">The GeometryCollection to write.</param>
+        /// <param name="createDummyDbf">Set to true to create an empty DBF-file along with the shp-file</param>		
+        public static void WriteGeometryCollection(string filename, IGeometryCollection geometryCollection, bool createDummyDbf = true)
         {
-            WriteGeometryCollection(new ShapefileStreamProviderRegistry(filename, false, false, false), geometryCollection);
+            WriteGeometryCollection(new ShapefileStreamProviderRegistry(filename, false, false, false), geometryCollection, createDummyDbf);
 
         }
 
-        public static void WriteGeometryCollection(IStreamProviderRegistry streamProviderRegistry, IGeometryCollection geometryCollection)
+        public static void WriteGeometryCollection(IStreamProviderRegistry streamProviderRegistry, IGeometryCollection geometryCollection, bool createDummyDbf = true)
         {
             var shapeFileType = Shapefile.GetShapeType(geometryCollection);
-
-            var numShapes = geometryCollection.NumGeometries;
             using (var writer = new ShapefileWriter(geometryCollection.Factory, streamProviderRegistry, shapeFileType))
             {
-                for (var i = 0; i < numShapes; i++)
-                {
-                    writer.Write(geometryCollection[i]);
-                }
+                var dbfWriter = createDummyDbf ? new DbaseFileWriter(streamProviderRegistry) : null;
+                WriteGeometryCollection(writer, dbfWriter, geometryCollection, createDummyDbf);
+                if (dbfWriter != null)
+                    dbfWriter.Dispose();
             }
-
-            WriteDummyDbf(streamProviderRegistry, numShapes);
-
         }
 
-        public static void WriteGeometryCollection(ShapefileWriter shapefileWriter, DbaseFileWriter dbfWriter, IGeometryCollection geometryCollection)
+        public static void WriteGeometryCollection(ShapefileWriter shapefileWriter, DbaseFileWriter dbfWriter, IGeometryCollection geometryCollection, bool createDummyDbf = true)
         {
-            var shapeFileType = Shapefile.GetShapeType(geometryCollection);
-
             var numShapes = geometryCollection.NumGeometries;
-
             for (var i = 0; i < numShapes; i++)
             {
                 shapefileWriter.Write(geometryCollection[i]);
             }
 
-
-            WriteDummyDbf(dbfWriter, numShapes);
+            if (createDummyDbf)
+            {
+                WriteDummyDbf(dbfWriter, numShapes);
+            }
 
         }
 
