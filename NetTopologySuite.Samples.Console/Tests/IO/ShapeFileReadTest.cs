@@ -159,9 +159,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
             Assert.IsNotNull(multiBuffer);            
             Assert.IsTrue(multiBuffer.IsValid);
 
-            ShapefileWriter writer = new ShapefileWriter(factory); 
-            writer.Write(@"test_buffer", multiBuffer); 
-            ShapefileWriter.WriteDummyDbf(@"test_buffer.dbf", multiBuffer.NumGeometries);        
+            ShapefileWriter.WriteGeometryCollection(@"test_buffer", multiBuffer); 
         }
 
         [Test]
