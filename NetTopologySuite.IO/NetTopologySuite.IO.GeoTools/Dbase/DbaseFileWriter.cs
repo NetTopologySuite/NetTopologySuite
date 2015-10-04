@@ -43,6 +43,15 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
+        /// Initializes a new instance of the DbaseFileWriter class using the provided <paramref name="streamProviderRegistry"/> and the default encoding
+        /// </summary>
+        /// <param name="streamProviderRegistry">The stream provider registry</param>
+        public DbaseFileWriter(IStreamProviderRegistry streamProviderRegistry)
+            : this(streamProviderRegistry, Encoding.GetEncoding(1252))
+        {
+        }
+
+        /// <summary>
         /// Initializes a new instance of the DbaseFileWriter class using the provided <paramref name="streamProviderRegistry"/> and the given <paramref name="encoding"/>.
         /// </summary>
         /// <param name="streamProviderRegistry">The stream provider registry</param>
@@ -58,21 +67,31 @@ namespace NetTopologySuite.IO
             _writer = new BinaryWriter(streamProviderRegistry[StreamTypes.Data].OpenWrite(false), _encoding);
         }
 
-        public DbaseFileWriter(IStreamProviderRegistry streamProviderRegistry)
-            : this(streamProviderRegistry, Encoding.GetEncoding(1252))
-        {
-        }
-
         /// <summary>
         /// Method to write <paramref name="header"/> to the dbase stream
         /// </summary>
         /// <param name="header">The header to write</param>
         public void Write(DbaseFileHeader header)
         {
+            //if (header == null)
+            //    throw new ArgumentNullException("header");
+            ////if (_recordsWritten)
+            ////    throw new InvalidOperationException("Records have already been written. Header file needs to be written first.");
+            //_headerWritten = true;
+
+            //if (header.Encoding.WindowsCodePage != _encoding.WindowsCodePage)
+            //{
+            //    header.Encoding = _encoding;
+            //}
+
+            //header.WriteHeader(_writer);
+            //_header = header;
+
             if (header == null)
                 throw new ArgumentNullException("header");
             //if (_recordsWritten)
             //    throw new InvalidOperationException("Records have already been written. Header file needs to be written first.");
+
             _headerWritten = true;
 
             if (header.Encoding.WindowsCodePage != _encoding.WindowsCodePage)
@@ -80,9 +99,28 @@ namespace NetTopologySuite.IO
                 header.Encoding = _encoding;
             }
 
+            // Get the current position
+            var currentPosition = (int)_writer.BaseStream.Position;
+
+            //Header should always be written first in the file
+            if (_writer.BaseStream.Position != 0)
+                _writer.Seek(0, SeekOrigin.Begin);
+
+            // actually write the header
             header.WriteHeader(_writer);
+
+            // reposition the stream
+            if (currentPosition != 0)
+                _writer.Seek(currentPosition, SeekOrigin.Begin);
+
             _header = header;
+
         }
+
+        /// <summary>
+        /// Gets a value indicating if the header has been written or not
+        /// </summary>
+        public bool HeaderWritten { get { return _headerWritten; } }
 
         /// <summary>
         /// Method to write the column values for a dbase record

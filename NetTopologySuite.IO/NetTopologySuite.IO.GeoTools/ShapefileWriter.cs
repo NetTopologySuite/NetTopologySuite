@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using GeoAPI.Geometries;
+using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO.Handlers;
 using NetTopologySuite.IO.Streams;
@@ -334,17 +336,70 @@ namespace NetTopologySuite.IO
                 var columnValues = new List<double> {i};
                 dbfWriter.Write(columnValues);
             }
+
             // End of file flag (0x1A)
             dbfWriter.WriteEndOfDbf();
 
             dbfWriter.Close();
-
         }
 
         public void Dispose()
         {
             //if (_shpBinaryWriter != null)
             Close();
+        }
+
+        /// <summary>
+        /// Write the enumeration of features to shapefile (shp, shx and dbf)
+        /// </summary>
+        /// <param name="filename">Filename to create</param>
+        /// <param name="features">Enumeration of features to write, features will be enumerated once</param>
+        /// <param name="fields">Fields that should be written, only those attributes specified here will be mapped from the feature attributetable while writing</param>
+        /// <param name="shapeGeometryType">Type of geometries shapefile</param>
+        /// <param name="dbfEncoding">Optional Encoding to be used when writing the DBF-file (default Windows-1252)</param>
+        public static void WriteFeatures(string filename, IEnumerable<IFeature> features, DbaseFieldDescriptor[] fields, ShapeGeometryType shapeGeometryType,
+            Encoding dbfEncoding = null)
+        {
+
+            // Set default encoding if not specified
+            if (dbfEncoding == null)
+                dbfEncoding = Encoding.GetEncoding(1252);
+
+            // Open shapefile and dbase stream writers
+            using (var shpWriter = new ShapefileWriter(Path.ChangeExtension(filename, ".shp"), shapeGeometryType))
+            {
+                using (var dbfWriter = new DbaseFileWriter(Path.ChangeExtension(filename, ".dbf"), dbfEncoding))
+                {
+                    var dbfHeader = new DbaseFileHeader(dbfEncoding);
+                    foreach (var field in fields)
+                    {
+                        dbfHeader.AddColumn(field.Name, field.DbaseType, field.Length, field.DecimalCount);
+                    }
+                    dbfWriter.Write(dbfHeader);
+
+                    var numFeatures = 0;
+                    foreach (var feature in features)
+                    {
+                        shpWriter.Write(feature.Geometry);
+                        var values = new object[fields.Length];
+                        for (var i = 0; i < fields.Length; i++)
+                        {
+                            values[i] = feature.Attributes[fields[i].Name];
+                        }
+                        dbfWriter.Write(values);
+                        numFeatures++;
+                    }
+
+                    // set the number of records
+                    dbfHeader.NumRecords = numFeatures;
+                    // Update the header
+                    dbfWriter.Write(dbfHeader);
+                    // write the end of dbase file marker
+                    dbfWriter.WriteEndOfDbf();
+                    // close the dbase stream
+                    dbfWriter.Close();
+                }
+            }
         }
     }
 }
