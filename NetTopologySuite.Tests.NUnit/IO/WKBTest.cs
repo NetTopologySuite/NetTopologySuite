@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GeoAPI.IO;
 using NetTopologySuite.Geometries;
@@ -160,10 +161,68 @@ namespace NetTopologySuite.Tests.NUnit.IO
             IGeometry g = Rdr.Read(wkt);
 
             // CoordinateArrays support dimension 3, so test both dimensions
+            g = SetDimension(g, 2);
             RunWKBTest(g, 2, true);
             RunWKBTest(g, 2, false);
+            g = SetDimension(g, 3);
             RunWKBTest(g, 3, true);
             RunWKBTest(g, 3, false);
+        }
+
+        private static IGeometry SetDimension(IGeometry p0, int dimension)
+        {
+            if (p0 is IGeometryCollection)
+            {
+                var tmp = new List<IGeometry>();
+                for (var i = 0; i < p0.NumGeometries; i++)
+                    tmp.Add(SetDimension(p0.GetGeometryN(i), dimension));
+                return p0.Factory.BuildGeometry(tmp);
+            }
+            var fact = p0.Factory.CoordinateSequenceFactory;
+            if (p0 is IPoint)
+            {
+                return p0.Factory.CreatePoint(SetDimension(fact, ((IPoint) p0).CoordinateSequence, dimension));
+            }
+            if (p0 is ILineString)
+            {
+                return p0.Factory.CreateLineString(SetDimension(fact, ((ILineString) p0).CoordinateSequence, dimension));
+            }
+            if (p0 is IPolygon)
+            {
+                var p = (IPolygon) p0;
+                var er =
+                    p0.Factory.CreateLinearRing(SetDimension(fact, ((ILinearRing) p.ExteriorRing).CoordinateSequence,
+                        dimension));
+                ILinearRing[] ir = null;
+                if (p.NumInteriorRings > 0)
+                {
+                    ir = new ILinearRing[p.NumInteriorRings];
+                    for (var i = 0; i < p.NumInteriorRings; i++)
+                        ir[i] =
+                            p0.Factory.CreateLinearRing(SetDimension(fact,
+                                ((ILinearRing) p.GetInteriorRingN(i)).CoordinateSequence,
+                                dimension));
+                }
+                return p.Factory.CreatePolygon(er, ir);
+            }
+            NetTopologySuite.Utilities.Assert.ShouldNeverReachHere();
+            return null;
+        }
+
+        private static ICoordinateSequence SetDimension(ICoordinateSequenceFactory fact, ICoordinateSequence seq,
+            int dimension)
+        {
+            if (seq.Dimension == dimension)
+                return seq;
+
+            var res = fact.Create(seq.Count, dimension);
+            dimension = Math.Min(dimension, seq.Dimension);
+            for (var i = 0; i < seq.Count; i++)
+            {
+                for (var j = 0; j < dimension; j++)
+                    res.SetOrdinate(i, (Ordinate)j, seq.GetOrdinate(i, (Ordinate)j));
+            }
+            return res;
         }
 
         private void RunWKBTest(IGeometry g, int dimension, bool toHex)

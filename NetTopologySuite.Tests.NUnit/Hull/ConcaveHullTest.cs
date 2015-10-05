@@ -8,7 +8,7 @@ namespace NetTopologySuite.Tests.NUnit.Hull
     public class ConcaveHullTest : GeometryTestCase
     {
 
-        [Test]
+        [Test, Ignore("Incomplete")]
         public void TestSimple() {
             CheckHull(
                 "POLYGON ((100 200, 200 180, 300 200, 200 190, 100 200))",

@@ -15,7 +15,9 @@ namespace NetTopologySuite.Samples.Tests.Github
     [TestFixture]
     public class Issue36Tests : BaseSamples
     {
-        [SetUp]
+        private int _numPassed;
+
+        [TestFixtureSetUp]
         public void SetUp()
         {
             // Set current dir to shapefiles dir
@@ -23,7 +25,10 @@ namespace NetTopologySuite.Samples.Tests.Github
                 Path.Combine(
                     AppDomain.CurrentDomain.BaseDirectory,
                     String.Format("..{0}..{0}..{0}NetTopologySuite.Samples.Shapefiles", Path.DirectorySeparatorChar));
+
+            _numPassed = 0;
         }
+
         [Test]
         public void ok_when_writing_shapefile_with_features()
         {
@@ -37,7 +42,10 @@ namespace NetTopologySuite.Samples.Tests.Github
 
             IList<IFeature> features = new List<IFeature>();            
             features.Add(feature);
-            writer.Write(features);
+
+            Assert.DoesNotThrow(() => writer.Write(features));
+
+            _numPassed++;
         }
 
         [Test]
@@ -48,7 +56,20 @@ namespace NetTopologySuite.Samples.Tests.Github
             ShapefileDataWriter writer = new ShapefileDataWriter(@"issue36") { Header = header };
 
             IList<IFeature> features = new List<IFeature>();
-            writer.Write(features);            
+            Assert.DoesNotThrow(() => writer.Write(features));
+
+            _numPassed++;
+        }
+
+        [TestFixtureTearDown]
+        public void TearDown()
+        {
+            if (_numPassed < 2) return;
+
+            // Clean up!
+            File.Delete("issue36.dbf");
+            File.Delete("issue36.shp");
+            File.Delete("issue36.shx");
         }
     }
 }

@@ -40,7 +40,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
         void RunTest(String filename)
         {
             WKTFileReader fileRdr = new WKTFileReader(filename, rdr);
-            IList<IGeometry> polys = fileRdr.Read();
+            var polys = fileRdr.Read();
 
             RunAll(polys, 0.01);
             RunAll(polys, 0.1);
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             //RunAll(polys, 1000.0);
         }
 
-        void RunAll(IList<IGeometry> geoms, double dist)
+        void RunAll(ICollection<IGeometry> geoms, double dist)
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -78,10 +78,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             Console.WriteLine("  " + sw.Elapsed.TotalMilliseconds + " milliseconds");
         }
 
-        void RunBuffer(IGeometry g, double dist)
+        static void RunBuffer(IGeometry g, double dist)
         {
-            IGeometry buf = g.Buffer(dist);
-            BufferResultValidator validator = new BufferResultValidator(g, dist, buf);
+            var buf = g.Buffer(dist);
+            var validator = new BufferResultValidator(g, dist, buf);
 
             if (!validator.IsValid())
             {
