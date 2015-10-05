@@ -134,6 +134,13 @@ namespace NetTopologySuite.IO
                 throw new InvalidOperationException("Header records need to be written first.");
             var i = 0;
 
+            // Check integrety of data
+            if (columnValues.Count != _header.NumFields)
+                throw new ArgumentException("The number of provided values does not match the number of fields defined", "columnValues");
+
+            // Get the current position
+            var initialPosition = _writer.BaseStream.Position;
+
             // the deleted flag
             _writer.Write((byte)0x20); 
             foreach (var columnValue in columnValues)
@@ -181,9 +188,25 @@ namespace NetTopologySuite.IO
                 {
                     Write((char)columnValue, headerField.Length);
                 }
-
+                else
+                {
+                    throw new ArgumentException(
+                        string.Format("Invalid argument for column '{0}': {1}", 
+                                      headerField.Name, columnValue),
+                        "columnValues");
+                }
                 i++;
             }
+
+            // Get the number of bytes written
+            var bytesWritten = _writer.BaseStream.Position - initialPosition;
+
+            // Get the record length (at least one byte for the deleted marker)
+            var recordLength = Math.Max(1, _header.RecordLength);
+
+            // Check if the correct amount of bytes was written
+            if (bytesWritten != recordLength)
+                throw new ShapefileException("Error writing Dbase record");
         }
 
         /// <summary>
@@ -415,7 +438,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         public void WriteEndOfDbf()
         {
-            Write(0x1A);
+            Write((byte)0x1A);
         }
     }
 }
