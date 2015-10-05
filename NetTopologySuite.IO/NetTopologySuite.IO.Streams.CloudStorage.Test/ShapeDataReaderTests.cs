@@ -21,6 +21,21 @@ namespace NetTopologySuite.IO.Streams.CloudStorage.Test
         private TempFileCloudUploader[] m_TempFiles;
         private ShapeDataReader m_shapeDataReader;
 
+        [TestFixtureSetUp]
+        public void TestSetUp()
+        {
+            try
+            {
+                var p = GetProvider(@"this/is/sheker/path/should/never/exist/on/ur/pc");
+                p = null;
+            }
+            catch (StorageException e)
+            {
+
+                throw new IgnoreException("Cloud stream");
+            }
+        }
+
         private static IStreamProvider GetProvider(string name)
         {
             return

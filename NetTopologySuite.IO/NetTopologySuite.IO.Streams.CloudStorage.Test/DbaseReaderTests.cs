@@ -14,6 +14,21 @@ namespace NetTopologySuite.IO.Streams.CloudStorage.Test
     [TestFixture]
     public class DbaseReaderTests
     {
+        [TestFixtureSetUp]
+        public void TestSetUp()
+        {
+            try
+            {
+                var p = GetProvider(@"this/is/sheker/path/should/never/exist/on/ur/pc");
+                p = null;
+            }
+            catch (StorageException e)
+            {
+                
+                throw new IgnoreException("Cloud stream");
+            }
+        }
+
         [TearDown]
         public void TestCleanup()
         {
