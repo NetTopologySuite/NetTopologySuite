@@ -116,7 +116,10 @@ namespace NetTopologySuite.Tests.NUnit
             for (int i = 1; i < lineStrings.Count; i++) {
                 nodedLineStrings = nodedLineStrings.Union(lineStrings[i]);
             }
-            Assert.AreEqual("MULTILINESTRING ((0 0, 50 50), (50 50, 100 100), (0 100, 50 50), (50 50, 100 0))", nodedLineStrings.AsText());
+            var expected =
+                reader.Read("MULTILINESTRING ((0 0, 50 50), (50 50, 100 100), (0 100, 50 50), (50 50, 100 0))")
+                    .Normalized();
+            Assert.IsTrue(expected.Equals(nodedLineStrings.Normalized()));
         }
         [TestAttribute]
         public void testQuickPolygonUnion()  {

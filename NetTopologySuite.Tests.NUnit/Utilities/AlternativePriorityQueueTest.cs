@@ -20,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
 
             for (int i = 0; i < NodeCount; i++)
             {
-                nodes[i] = new PriorityQueueNode<double, object>(null);
+                nodes[i] = new PriorityQueueNode<double, object>((object)null);
                 q.Enqueue(nodes[i], random.NextDouble());
             }
 
