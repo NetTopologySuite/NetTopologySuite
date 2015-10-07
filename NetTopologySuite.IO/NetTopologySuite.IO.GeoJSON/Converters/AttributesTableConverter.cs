@@ -24,7 +24,8 @@ namespace NetTopologySuite.IO.Converters
             if (attributes == null)
                 return;
 
-            writer.WritePropertyName("properties");
+            if (!writer.Path.Contains("properties"))
+                writer.WritePropertyName("properties");
 
             writer.WriteStartObject();
             string[] names = attributes.GetNames();

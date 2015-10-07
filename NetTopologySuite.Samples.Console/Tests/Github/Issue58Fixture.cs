@@ -40,6 +40,9 @@ namespace NetTopologySuite.Samples.Tests.Github
 
             Assert.IsNotNull(feature);
             Assert.AreEqual(1, feature.Attributes.Count);
+
+            var gjs = new GeoJsonWriter();
+            gjs.Write(coll);
         }
     }
 }
