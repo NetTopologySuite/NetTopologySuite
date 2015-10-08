@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using NetTopologySuite.Features;
 using NetTopologySuite.IO.Converters;
@@ -59,7 +61,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
                 JsonSerializer serializer = new JsonSerializer();
 
                 // read start object token and prepare the next token
-                reader.Read();                
+                reader.Read();
                 AttributesTable result =
                     (AttributesTable)
                     target.ReadJson(reader, typeof(AttributesTable), new AttributesTable(), serializer);
@@ -80,7 +82,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
                 JsonSerializer serializer = new JsonSerializer();
 
                 // read start object token and prepare the next token
-                reader.Read();                
+                reader.Read();
                 AttributesTable result =
                     (AttributesTable)
                     target.ReadJson(reader, typeof(AttributesTable), new AttributesTable(), serializer);
@@ -92,6 +94,104 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
                 IAttributesTable inner = (IAttributesTable)result["test2"];
                 Assert.AreEqual(1, inner.Count);
                 Assert.AreEqual("innervalue1", inner["innertest1"]);
+            }
+        }
+
+        [Test]
+        public void ReadJsonWithArrayTest()
+        {
+            const string json = "{\"test1\":\"value1\",\"test2\": [{ \"innertest1\":\"innervalue1\" }]}}";
+            AttributesTableConverter target = new AttributesTableConverter();
+            using (JsonTextReader reader = new JsonTextReader(new StringReader(json)))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+
+                // read start object token and prepare the next token
+                reader.Read();
+                AttributesTable result =
+                    (AttributesTable)
+                    target.ReadJson(reader, typeof(AttributesTable), new AttributesTable(), serializer);
+                Assert.IsNotNull(result);
+                Assert.AreEqual(2, result.Count);
+                Assert.AreEqual("value1", result["test1"]);
+                Assert.IsNotNull(result["test2"]);
+                Assert.IsInstanceOf<IList<object>>(result["test2"]);
+                IList<object> list = (IList<object>)result["test2"];
+                Assert.IsNotEmpty(list);
+                Assert.AreEqual(1, list.Count);
+                Assert.IsInstanceOf<IAttributesTable>(list[0]);
+                IAttributesTable inner = (IAttributesTable)list[0];
+                Assert.AreEqual(1, inner.Count);
+                Assert.AreEqual("innervalue1", inner["innertest1"]);
+            }
+        }
+
+        [Test]
+        public void ReadJsonWithArrayWithTwoObjectsTest()
+        {
+            const string json = "{\"test1\":\"value1\",\"test2\": [{ \"innertest1\":\"innervalue1\" }, { \"innertest2\":\"innervalue2\", \"innertest3\":\"innervalue3\"}]}}";
+            AttributesTableConverter target = new AttributesTableConverter();
+            using (JsonTextReader reader = new JsonTextReader(new StringReader(json)))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+
+                // read start object token and prepare the next token
+                reader.Read();
+                AttributesTable result =
+                    (AttributesTable)
+                    target.ReadJson(reader, typeof(AttributesTable), new AttributesTable(), serializer);
+                Assert.IsNotNull(result);
+                Assert.AreEqual(2, result.Count);
+                Assert.AreEqual("value1", result["test1"]);
+                Assert.IsNotNull(result["test2"]);
+                Assert.IsInstanceOf<IList<object>>(result["test2"]);
+                IList<object> list = (IList<object>)result["test2"];
+                Assert.IsNotEmpty(list);
+                Assert.AreEqual(2, list.Count);
+                Assert.IsInstanceOf<IAttributesTable>(list[0]);
+                Assert.IsInstanceOf<IAttributesTable>(list[1]);
+                IAttributesTable first = (IAttributesTable)list[0];
+                Assert.AreEqual(1, first.Count);
+                Assert.AreEqual("innervalue1", first["innertest1"]);
+                IAttributesTable second = (IAttributesTable)list[1];
+                Assert.AreEqual(2, second.Count);
+                Assert.AreEqual("innervalue2", second["innertest2"]);
+                Assert.AreEqual("innervalue3", second["innertest3"]);
+            }
+        }
+
+        [Test]
+        public void ReadJsonWithArrayWithNestedArrayTest()
+        {
+            const string json = "{\"test1\":\"value1\",\"test2\": [{ \"innertest1\":\"innervalue1\" }, [{ \"innertest2\":\"innervalue2\", \"innertest3\":\"innervalue3\"}]]}}";
+            AttributesTableConverter target = new AttributesTableConverter();
+            using (JsonTextReader reader = new JsonTextReader(new StringReader(json)))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+
+                // read start object token and prepare the next token
+                reader.Read();
+                AttributesTable result =
+                    (AttributesTable)
+                        target.ReadJson(reader, typeof (AttributesTable), new AttributesTable(), serializer);
+                Assert.IsNotNull(result);
+                Assert.AreEqual(2, result.Count);
+                Assert.AreEqual("value1", result["test1"]);
+                Assert.IsNotNull(result["test2"]);
+                Assert.IsInstanceOf<IList<object>>(result["test2"]);
+                IList<object> list = (IList<object>) result["test2"];
+                Assert.IsNotEmpty(list);
+                Assert.AreEqual(2, list.Count);
+                Assert.IsInstanceOf<IAttributesTable>(list[0]);
+                Assert.IsInstanceOf<IList<object>>(list[1]);
+                IAttributesTable first = (IAttributesTable) list[0];
+                Assert.AreEqual(1, first.Count);
+                Assert.AreEqual("innervalue1", first["innertest1"]);
+                IList<object> innerList = (IList<object>) list[1];
+                Assert.IsNotNull(innerList);
+                Assert.IsNotEmpty(innerList);
+                Assert.AreEqual(2, innerList.Count);
+                Assert.IsTrue(innerList.All(i => i is IAttributesTable));
             }
         }
     }
