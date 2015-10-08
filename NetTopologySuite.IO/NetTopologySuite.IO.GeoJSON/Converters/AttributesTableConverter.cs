@@ -24,8 +24,6 @@ namespace NetTopologySuite.IO.Converters
             if (attributes == null)
                 return;
 
-            writer.WritePropertyName("properties");
-
             writer.WriteStartObject();
             string[] names = attributes.GetNames();
             foreach (string name in names)
@@ -49,16 +47,12 @@ namespace NetTopologySuite.IO.Converters
         /// </returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            if (!(reader.TokenType == JsonToken.PropertyName && (string)reader.Value == "properties"))
-                throw new ArgumentException("Expected token 'properties' not found.");
-            reader.Read();
-            object attributesTable = InternalReadJson(reader, serializer);
-            reader.Read();
-            return attributesTable;
+            return InternalReadJson(reader, serializer);
         }
 
         private static object InternalReadJson(JsonReader reader, JsonSerializer serializer)
         {
+            // TODO: refactor to remove check when reading TopoJSON
             if (reader.TokenType != JsonToken.StartObject)
                 throw new ArgumentException("Expected token '{' not found.");
 
@@ -77,7 +71,10 @@ namespace NetTopologySuite.IO.Converters
                 else attributeValue = reader.Value;                
                 attributesTable.AddAttribute(attributeName, attributeValue);
                 reader.Read();
-            }            
+            }
+            // TODO: refactor to remove check when reading TopoJSON
+            if (reader.TokenType != JsonToken.EndObject)
+                throw new ArgumentException("Expected token '}' not found.");
             return attributesTable;
         }
 

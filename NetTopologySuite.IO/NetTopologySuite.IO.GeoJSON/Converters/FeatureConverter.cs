@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Features;
 using Newtonsoft.Json;
@@ -33,6 +32,7 @@ namespace NetTopologySuite.IO.Converters
             writer.WriteValue("Feature");
             writer.WritePropertyName("geometry");
             serializer.Serialize(writer, feature.Geometry);
+            writer.WritePropertyName("properties");
             serializer.Serialize(writer, feature.Attributes);
             writer.WriteEndObject();
         }
@@ -91,7 +91,13 @@ namespace NetTopologySuite.IO.Converters
                         reader.Read();
                         break;
                     case "properties":
+                        reader.Read();
+                        if (reader.TokenType != JsonToken.StartObject)
+                            throw new ArgumentException("Expected token '{' not found.");
                         feature.Attributes = serializer.Deserialize<AttributesTable>(reader);
+                        if (reader.TokenType != JsonToken.EndObject)
+                            throw new ArgumentException("Expected token '}' not found.");
+                        reader.Read();
                         break;
                     default:
                     {                        

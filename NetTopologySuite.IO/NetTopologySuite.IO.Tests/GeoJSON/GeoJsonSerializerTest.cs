@@ -33,7 +33,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             JsonSerializer serializer = new GeoJsonSerializer();
             serializer.Serialize(writer, featureCollection);
             writer.Flush();
-            Assert.AreEqual("{\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[23.0,56.0]},\"properties\":{\"test1\":\"value1\"}}],\"type\":\"FeatureCollection\",\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"name1\"}}}", sb.ToString());
+            Assert.AreEqual("{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[23.0,56.0]},\"properties\":{\"test1\":\"value1\"}}],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"name1\"}}}", sb.ToString());
         }
 
         ///<summary>
@@ -80,7 +80,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             JsonSerializer serializer = new GeoJsonSerializer();
             serializer.Serialize(writer, attributes);
             writer.Flush();
-            Assert.AreEqual("\"properties\":{\"test1\":\"value1\"}", sb.ToString());
+            Assert.AreEqual("{\"test1\":\"value1\"}", sb.ToString());
         }
 
         /// <summary>

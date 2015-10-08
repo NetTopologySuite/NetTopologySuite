@@ -217,6 +217,7 @@ namespace NetTopologySuite.IO.Converters
             reader.Read();
             if (reader.TokenType != JsonToken.StartArray)
                 throw new ArgumentException("Expected StartArray but was " + reader.TokenType);
+
             reader.Read();
             List<TopoObject> list = new List<TopoObject>();
             while (reader.TokenType != JsonToken.EndArray)

@@ -43,7 +43,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             JsonSerializer serializer = new JsonSerializer();
             target.WriteJson(writer, value, serializer);
             writer.Flush();
-            Assert.AreEqual("\"properties\":{\"test1\":\"value1\",\"test2\":\"value2\"}", sb.ToString());
+            Assert.AreEqual("{\"test1\":\"value1\",\"test2\":\"value2\"}", sb.ToString());
         }
 
         ///<summary>
@@ -52,19 +52,17 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         [Test]
         public void ReadJsonTest()
         {
-            const string json = "{\"properties\":{\"test1\":\"value1\",\"test2\":\"value2\"}}";
+            const string json = "{\"test1\":\"value1\",\"test2\":\"value2\"}}";
             AttributesTableConverter target = new AttributesTableConverter();
             using (JsonTextReader reader = new JsonTextReader(new StringReader(json)))
             {
                 JsonSerializer serializer = new JsonSerializer();
 
                 // read start object token and prepare the next token
-                reader.Read();
-                reader.Read();
+                reader.Read();                
                 AttributesTable result =
                     (AttributesTable)
                     target.ReadJson(reader, typeof(AttributesTable), new AttributesTable(), serializer);
-                Assert.IsFalse(reader.Read());  // read the end of object and ensure there are no more tokens available
                 Assert.IsNotNull(result);
                 Assert.AreEqual(2, result.Count);
                 Assert.AreEqual("value1", result["test1"]);
@@ -75,19 +73,17 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         [Test]
         public void ReadJsonWithInnerObjectTest()
         {
-            const string json = "{\"properties\":{\"test1\":\"value1\",\"test2\": { \"innertest1\":\"innervalue1\" }}}";
+            const string json = "{\"test1\":\"value1\",\"test2\": { \"innertest1\":\"innervalue1\" }}}";
             AttributesTableConverter target = new AttributesTableConverter();
             using (JsonTextReader reader = new JsonTextReader(new StringReader(json)))
             {
                 JsonSerializer serializer = new JsonSerializer();
 
                 // read start object token and prepare the next token
-                reader.Read();
-                reader.Read();
+                reader.Read();                
                 AttributesTable result =
                     (AttributesTable)
                     target.ReadJson(reader, typeof(AttributesTable), new AttributesTable(), serializer);
-                Assert.IsFalse(reader.Read()); // read the end of object and ensure there are no more tokens available
                 Assert.IsNotNull(result);
                 Assert.AreEqual(2, result.Count);
                 Assert.AreEqual("value1", result["test1"]);

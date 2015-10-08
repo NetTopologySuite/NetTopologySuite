@@ -21,11 +21,11 @@ namespace NetTopologySuite.IO.Converters
             if (coll == null)
                 return;
 
-            writer.WriteStartObject();
-            writer.WritePropertyName("features");
-            serializer.Serialize(writer, coll.Features);
+            writer.WriteStartObject();            
             writer.WritePropertyName("type");
             writer.WriteValue(coll.Type);
+            writer.WritePropertyName("features");
+            serializer.Serialize(writer, coll.Features);
             if (coll.CRS != null)
             {
                 writer.WritePropertyName("crs");
@@ -36,7 +36,8 @@ namespace NetTopologySuite.IO.Converters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            if (reader.TokenType == JsonToken.Null) return null;
+            if (reader.TokenType == JsonToken.Null)
+                return null;
 
             reader.Read();
             FeatureCollection fc = new FeatureCollection();

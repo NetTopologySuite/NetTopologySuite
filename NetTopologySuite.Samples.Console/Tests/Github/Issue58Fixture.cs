@@ -35,11 +35,10 @@ namespace NetTopologySuite.Samples.Tests.Github
             GeoJsonReader reader = new GeoJsonReader();
             FeatureCollection coll = reader.Read<FeatureCollection>(json);
             Assert.IsNotNull(coll);
-            Assert.AreEqual(1, coll.Count);
-            IFeature feature = coll[0];
 
-            Assert.IsNotNull(feature);
-            Assert.AreEqual(1, feature.Attributes.Count);
+            GeoJsonWriter writer = new GeoJsonWriter();
+            string s = writer.Write(coll);
+            Assert.IsNotNull(s);
         }
     }
 }
