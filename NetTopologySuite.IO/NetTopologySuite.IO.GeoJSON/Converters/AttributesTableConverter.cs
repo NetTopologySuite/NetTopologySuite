@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NetTopologySuite.Features;
 using Newtonsoft.Json;
 
@@ -60,7 +61,7 @@ namespace NetTopologySuite.IO.Converters
             AttributesTable attributesTable = new AttributesTable();
             while (reader.TokenType == JsonToken.PropertyName)
             {
-                string attributeName = (string) reader.Value;
+                string attributeName = (string)reader.Value;
                 reader.Read();
                 object attributeValue;
                 if (reader.TokenType == JsonToken.StartObject)
@@ -68,7 +69,20 @@ namespace NetTopologySuite.IO.Converters
                     // inner object
                     attributeValue = InternalReadJson(reader, serializer);
                 }
-                else attributeValue = reader.Value;                
+                else if (reader.TokenType == JsonToken.StartArray)
+                {
+                    reader.Read(); // move to first item
+                    IList<object> array = new List<object>();
+                    do
+                    {
+                        object inner = InternalReadJson(reader, serializer);
+                        array.Add(inner);
+                        reader.Read(); // move to next item
+                    }
+                    while (reader.TokenType != JsonToken.EndArray);
+                    attributeValue = array;
+                }
+                else attributeValue = reader.Value;
                 attributesTable.AddAttribute(attributeName, attributeValue);
                 reader.Read();
             }

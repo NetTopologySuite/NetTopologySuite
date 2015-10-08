@@ -8,7 +8,7 @@ namespace NetTopologySuite.Samples.Tests.Github
     public class Issue58Fixture
     {
         [Test]
-        public void GeoJsonDeserializeFeatureCollectionTest()
+        public void geojson_should_serialize_nested_objects()
         {
             const string json = @"
 {
