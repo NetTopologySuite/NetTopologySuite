@@ -29,32 +29,31 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
 		public static char GetDbaseType(Type type)
 		{
-			DbaseFieldDescriptor dbaseColumn = new DbaseFieldDescriptor();
             if (type == typeof(Char))
                 return 'C';
             if (type == typeof(string))
                 return 'C';
-            else if (type == typeof(Double))
+            if (type == typeof(Double))
                 return 'N';
-            else if (type == typeof(Single))
+            if (type == typeof(Single))
                 return 'N';
-            else if (type == typeof(Int16))
+            if (type == typeof(Int16))
                 return 'N';
-            else if (type == typeof(Int32))
+            if (type == typeof(Int32))
                 return 'N';
-            else if (type == typeof(Int64))
+            if (type == typeof(Int64))
                 return 'N';
-            else if (type == typeof(UInt16))
+            if (type == typeof(UInt16))
                 return 'N';
-            else if (type == typeof(UInt32))
+            if (type == typeof(UInt32))
                 return 'N';
-            else if (type == typeof(UInt64))
+            if (type == typeof(UInt64))
                 return 'N';
-            else if (type == typeof(Decimal))
+            if (type == typeof(Decimal))
                 return 'N';
-            else if (type == typeof(Boolean))
+            if (type == typeof(Boolean))
                 return 'L';
-            else if (type == typeof(DateTime))
+            if (type == typeof(DateTime))
                 return 'D';
 
 			throw new NotSupportedException(String.Format("{0} does not have a corresponding dbase type.", type.Name));
@@ -166,31 +165,32 @@ namespace NetTopologySuite.IO
 		{
 			get
 			{
-				Type type;
 				switch (_type)
 				{
 					case 'L': // logical data type, one character (T,t,F,f,Y,y,N,n)
-						type = typeof(bool);
-						break;
+						return typeof(bool);
 					case 'C': // char or string
-						type = typeof(string);
-						break;
+						return typeof(string);
 					case 'D': // date
-						type = typeof(DateTime);
-						break;
+						return typeof(DateTime);
 					case 'N': // numeric
-						type = typeof(double);
-						break;
+				        if (DecimalCount == 0)
+				        {
+				            if (Length < 10)
+				                return typeof (int);
+				            return typeof (long);
+				        }
+
+						return typeof(double);
 					case 'F': // double
-						type = typeof(float);
-						break;
+						return typeof(float);
+                    case 'I':
+				        return typeof (int);
 					case 'B': // BLOB - not a dbase but this will hold the WKB for a geometry object.
-						type = typeof(byte[]);
-							break;
+						return typeof(byte[]);
 					default:
 						throw new NotSupportedException("Do not know how to parse Field type "+_type);
 				}
-				return type;
 			}	
 		}
 	}

@@ -108,10 +108,11 @@ namespace NetTopologySuite.IO
             LdidToEncoding = new Dictionary<byte, Encoding>();
             EncodingToLdid = new Dictionary<Encoding, byte>();
 
-            foreach (object[] pair in dbfCodePages)
-            {
-                AddLdidEncodingPair(Convert.ToByte(pair[0]), Convert.ToInt32(pair[1]));
-            }
+            RegisterEncodings(dbfCodePages);
+            //foreach (object[] pair in dbfCodePages)
+            //{
+            //    AddLdidEncodingPair(Convert.ToByte(pair[0]), Convert.ToInt32(pair[1]));
+            //}
 
             // Add ANSI values 3 and 0x57 as system's default encoding, and 0 which means no encoding.
             AddLdidEncodingPair(0, Encoding.UTF8);
@@ -411,7 +412,7 @@ namespace NetTopologySuite.IO
         /// <param name="lcid">Language driver id</param>
         /// <param name="cpgFileName">Filename of code page file</param>
         /// <returns></returns>
-        private Encoding DetectEncodingFromMark(byte lcid, string cpgFileName)
+        private static Encoding DetectEncodingFromMark(byte lcid, string cpgFileName)
         {
             Encoding enc;
             if (LdidToEncoding.TryGetValue(lcid, out enc))
@@ -430,7 +431,7 @@ namespace NetTopologySuite.IO
             return enc;
         }
 
-        private byte GetLCIDFromEncoding(Encoding enc)
+        private static byte GetLCIDFromEncoding(Encoding enc)
         {
             byte cpId;
             if (!EncodingToLdid.TryGetValue(enc, out cpId))
@@ -543,7 +544,7 @@ namespace NetTopologySuite.IO
             try
             {
                 encToAdd = Encoding.GetEncoding(codePage);
-                return true;
+                return encToAdd != Encoding.ASCII;
             }
             catch { return false; }
         }
@@ -557,6 +558,27 @@ namespace NetTopologySuite.IO
                 return true;
             }
             catch { return false; }
+        }
+
+        private static void RegisterEncodings(object[][] ldidCodePagePairs)
+        {
+            var tmp = new Dictionary<int, EncodingInfo>();
+            foreach (EncodingInfo ei in Encoding.GetEncodings())
+                tmp.Add(ei.CodePage, ei);
+
+            foreach (var ldidCodePagePair in ldidCodePagePairs)
+            {
+                EncodingInfo ei;
+                if (tmp.TryGetValue((int) ldidCodePagePair[1], out ei))
+                {
+                    var enc = ei.GetEncoding();
+                    AddLdidEncodingPair(Convert.ToByte(ldidCodePagePair[0]), enc);
+                }
+                else
+                {
+                    Debug.WriteLine("Failed to get codepage for language driver {0}", ldidCodePagePair[0]);
+                }
+            }
         }
     }
 }
