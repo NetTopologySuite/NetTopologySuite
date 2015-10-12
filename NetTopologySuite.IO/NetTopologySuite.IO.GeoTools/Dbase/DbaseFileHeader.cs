@@ -576,7 +576,8 @@ namespace NetTopologySuite.IO
                 }
                 else
                 {
-                    Debug.WriteLine("Failed to get codepage for language driver {0}", ldidCodePagePair[0]);
+                    var message = string.Format("Failed to get codepage for language driver {0}", ldidCodePagePair[0]);
+                    Debug.WriteLine(message);
                 }
             }
         }
