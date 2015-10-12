@@ -122,6 +122,10 @@ namespace NetTopologySuite.IO.Converters
             List<object> geometries = new List<object>();
             while (reader.Read())
             {
+                // Exit if we are at the end
+                if (reader.TokenType == JsonToken.EndArray)
+                    break;
+
                 if (reader.TokenType == JsonToken.StartObject)
                 {
                     geometries.Add(ParseGeometry(reader));
