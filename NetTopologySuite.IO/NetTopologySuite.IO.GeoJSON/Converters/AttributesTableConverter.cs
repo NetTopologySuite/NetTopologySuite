@@ -54,6 +54,19 @@ namespace NetTopologySuite.IO.Converters
         private static object InternalReadJson(JsonReader reader, JsonSerializer serializer)
         {
             // TODO: refactor to remove check when reading TopoJSON
+            if (reader.TokenType == JsonToken.StartArray)
+            {
+                reader.Read(); // move to first item
+                IList<object> array = new List<object>();
+                do
+                {
+                    object inner = InternalReadJson(reader, serializer);
+                    array.Add(inner);
+                    reader.Read(); // move to next item
+                } while (reader.TokenType != JsonToken.EndArray);
+                return array;
+            }
+
             if (reader.TokenType != JsonToken.StartObject)
                 throw new ArgumentException("Expected token '{' not found.");
 
@@ -78,11 +91,13 @@ namespace NetTopologySuite.IO.Converters
                         object inner = InternalReadJson(reader, serializer);
                         array.Add(inner);
                         reader.Read(); // move to next item
-                    }
-                    while (reader.TokenType != JsonToken.EndArray);
+                    } while (reader.TokenType != JsonToken.EndArray);
                     attributeValue = array;
                 }
-                else attributeValue = reader.Value;
+                else
+                {
+                    attributeValue = reader.Value;
+                }
                 attributesTable.AddAttribute(attributeName, attributeValue);
                 reader.Read();
             }
