@@ -69,7 +69,7 @@ namespace NetTopologySuite.SnapRound
             }
 
             var geomSnapped = ReplaceLines(geom, segStrings);
-            var geomClean = Clean(geomSnapped);
+            var geomClean = EnsureValid(geomSnapped);
             return geomClean;
         }
 
@@ -160,11 +160,16 @@ namespace NetTopologySuite.SnapRound
             return coords;
         }
 
-        private static IGeometry Clean(IGeometry geom)
+        private static IGeometry EnsureValid(IGeometry geom)
         {
             if (!(geom is IPolygonal)) return geom;
             if (geom.IsValid) return geom;
 
+            return CleanPolygonal(geom);
+        }
+
+        private static IGeometry CleanPolygonal(IGeometry geom)
+        {
             // TODO: use a better method of removing collapsed topology 
             return geom.Buffer(0);
         }
@@ -181,12 +186,57 @@ namespace NetTopologySuite.SnapRound
             EditSequence = DoEditSequence;
         }
 
+        /// <summary>
+        /// Gets the snapped coordinate array for an atomic geometry,
+        /// or null if it has collapsed.
+        /// </summary>
+        /// <param name="coordSeq">The sequence to edit</param>
+        /// <param name="geometry">The geometry, the sequence belongs to.</param>
+        /// <returns>The snapped coordinate array for this geometry</returns>
+        /// <returns><value>null</value> if the snapped coordinates have collapsed, or are missing</returns>
         private ICoordinateSequence DoEditSequence(ICoordinateSequence coordSeq, IGeometry geometry)
         {
-            Coordinate[] res;
-            if (_geometryPtsMap.TryGetValue(geometry, out res))
-                return geometry.Factory.CoordinateSequenceFactory.Create(res);
+            Coordinate[] pts;
+
+            if (_geometryPtsMap.TryGetValue(geometry, out pts))
+            {
+                // Assert: pts should always have length > 0
+                var isValidPts = IsValidSize(pts, geometry);
+                if (!isValidPts) return null;
+
+                return geometry.Factory.CoordinateSequenceFactory.Create(pts);
+            }
+
+            // TODO: should this return null if no matching snapped line is found
+            // probably should never reach here?
             return coordSeq;
+        }
+
+        /// <summary>
+        /// Tests if a coordinate array has a size which is 
+        /// valid for the containing geometry.
+        /// </summary>
+        /// <param name="pts">The point list to validate</param>
+        /// <param name="geom">The atomic geometry containing the point list</param>
+        /// <returns><value>true</value> if the coordinate array is a valid size</returns>
+        private static bool IsValidSize(Coordinate[] pts, IGeometry geom)
+        {
+            if (pts.Length == 0) return true;
+            int minSize = MinimumNonEmptyCoordinatesSize(geom);
+            if (pts.Length < minSize)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private static int MinimumNonEmptyCoordinatesSize(IGeometry geom)
+        {
+            if (geom is ILinearRing)
+                return 4;
+            if (geom is ILineString)
+                return 2;
+            return 0;
         }
 
     }
