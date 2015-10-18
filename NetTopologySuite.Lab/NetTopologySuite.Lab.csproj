@@ -61,6 +61,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SnapRound\GeometrySnapRounder.cs" />
     <Compile Include="SnapRound\SnapRoundFunctions.cs" />
+    <Compile Include="SnapRound\SnapRoundOverlayFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">

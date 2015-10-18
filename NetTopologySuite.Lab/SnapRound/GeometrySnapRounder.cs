@@ -9,27 +9,27 @@ using NetTopologySuite.Utilities;
 namespace NetTopologySuite.SnapRound
 {
     /// <summary>
-    /// Nodes the linework in a list of <see cref="IGeometry"/>s using Snap-Rounding
+    /// Nodes a <see cref="IGeometry"/>s using Snap-Rounding
     /// to a given <see cref="IPrecisionModel"/>.
-    /// <para/>
-    /// The input coordinates are expected to be rounded
+    /// <list type="Bullet">
+    /// <item>Point geometries are not handled.They are skipped if present in the input.
+    /// <item>Linestrings which collapse to a point due to snapping are removed.
+    /// <item>Polygonal output may not be valid.  
+    /// </list>
+    /// Invalid output is due to the introduction of topology collapses.
+    /// This should be straightforward to clean using standard heuristics(e.g.buffer(0) ).
+    /// The geometryinput coordinates are expected to be rounded
     /// to the given precision model.
     /// This class does not perform that function.
     /// <c>GeometryPrecisionReducer</c> may be used to do this.
-    /// <para/>
-    /// This class does <b>not</b> dissolve the output linework,
-    /// so there may be duplicate linestrings in the output.  
-    /// Subsequent processing (e.g. polygonization) may require
-    /// the linework to be unique.  Using <c>UnaryUnion</c> is one way
-    /// to do this (although this is an inefficient approach).
     /// </summary>
     public class GeometrySnapRounder
     {
-        private IGeometryFactory _geomFact;
         private readonly IPrecisionModel _pm;
+        private bool _isLineworkOnly = false;
 
         /// <summary>
-        /// Creates a new noder which snap-rounds to a grid specified
+        /// Creates a new snap-rounder which snap-rounds to a grid specified
         /// by the given <see cref="IPrecisionModel"/>.
         /// </summary>
         /// <param name="pm">The precision model for the grid to snap-round to</param>
@@ -38,57 +38,42 @@ namespace NetTopologySuite.SnapRound
             _pm = pm;
         }
 
-        /// <summary> 
-        /// Nodes the linework of a set of Geometrys using SnapRounding.
+        /// <summary>
+        /// Gets or sets a value indicating if only the linework should be treated.
         /// </summary>
-        /// <param name="geoms">A collection of geometries</param>
-        /// <returns>A collection of LineString geometries representing the noded linework of the input</returns>
-        public ICollection<IGeometry> Node(ICollection<IGeometry> geoms)
+        public bool LineworkOnly
         {
-            // get geometry factory
-            _geomFact = FunctionsUtil.GetFactoryOrDefault(geoms);
-
-            var segStrings = ExtractSegmentStrings(geoms);
-            //Noder sr = new SimpleSnapRounder(pm);
-            var sr = new MCIndexSnapRounder(_pm);
-            sr.ComputeNodes(segStrings);
-
-            var nodedLines = GetNodedLines(segStrings);
-            return nodedLines;
-
+            get { return _isLineworkOnly; }
+            set { _isLineworkOnly = value; }
         }
 
-        public IGeometry Node(IGeometry geom)
+
+        /// <summary>
+        /// Snap-rounds the given geometry.
+        /// </summary>
+        /// <param name="geom"></param>
+        /// <returns></returns>
+        public IGeometry Execute(IGeometry geom)
         {
 
-            var geomList = new List<IGeometry>();
-            geomList.Add(geom);
-            var segStrings = ExtractSegmentStrings(geomList);
-            //Noder sr = new SimpleSnapRounder(pm);
-            var sr = new MCIndexSnapRounder(_pm);
-            sr.ComputeNodes(segStrings);
+            // TODO: reduce precision of input automatically
+            // TODO: add switch to GeometryPrecisionReducer to NOT check & clean invalid polygonal geometry (not needed here)
+            // TODO: OR just do precision reduction with custom code here 
 
+            var segStrings = ExtractTaggedSegmentStrings(geom, _pm);
+            snapRound(segStrings);
 
-            var nodedPtsMap = GetNodedPtsMap(segStrings);
-            var lineReplacer = new GeometryLineReplacer(nodedPtsMap);
-            var geomEditor = new GeometryEditor();
-            var snapped = geomEditor.Edit(geom, lineReplacer);
-            return snapped;
+            if (_isLineworkOnly)
+            {
+                return ToNodedLines(segStrings, geom.Factory);
+            }
 
+            var geomSnapped = ReplaceLines(geom, segStrings);
+            var geomClean = Clean(geomSnapped);
+            return geomClean;
         }
 
-        private static IList<ISegmentString> ExtractSegmentStrings(IEnumerable<IGeometry> geoms)
-        {
-            var segStrings = new List<ISegmentString>();
-            var filter = new GeometryComponentFilter(
-                g => { if (g is ILineString) segStrings.Add(new NodedSegmentString(g.Coordinates, g)); });
-
-            foreach (var geom in geoms)
-                geom.Apply(filter);
-            return segStrings;
-        }
-
-        private List<IGeometry> GetNodedLines(IEnumerable<ISegmentString> segStrings)
+        private IGeometry ToNodedLines(ICollection<ISegmentString> segStrings, IGeometryFactory geomFact)
         {
             var lines = new List<IGeometry>();
             foreach (NodedSegmentString nss in segStrings)
@@ -99,12 +84,29 @@ namespace NetTopologySuite.SnapRound
                 //Coordinate[] pts = getCoords(nss);
                 var pts = nss.NodeList.GetSplitCoordinates();
 
-                lines.Add(_geomFact.CreateLineString(pts));
+                lines.Add(geomFact.CreateLineString(pts));
             }
-            return lines;
+            return geomFact.BuildGeometry(lines);
         }
 
-        private static IDictionary<IGeometry, Coordinate[]> GetNodedPtsMap(IEnumerable<ISegmentString> segStrings)
+
+        private IGeometry ReplaceLines(IGeometry geom, IList<ISegmentString> segStrings)
+        {
+            var nodedLinesMap = NodedLinesMap(segStrings);
+            var lineReplacer = new GeometryCoordinateReplacer(nodedLinesMap);
+            var geomEditor = new GeometryEditor();
+            var snapped = geomEditor.Edit(geom, lineReplacer);
+            return snapped;
+        }
+
+        private void snapRound(IList<ISegmentString> segStrings)
+        {
+            //Noder sr = new SimpleSnapRounder(pm);
+            var sr = new MCIndexSnapRounder(_pm);
+            sr.ComputeNodes(segStrings);
+        }
+
+        private Dictionary<IGeometry, Coordinate[]> NodedLinesMap(ICollection<ISegmentString> segStrings)
         {
             var ptsMap = new Dictionary<IGeometry, Coordinate[]>();
             foreach (NodedSegmentString nss in segStrings)
@@ -120,29 +122,60 @@ namespace NetTopologySuite.SnapRound
             return ptsMap;
         }
 
-        /*
-  private Coordinate[] getCoords(NodedSegmentString nss) {
-    List edges = new ArrayList();
-    nss.getNodeList().addSplitEdges(edges);
-    CoordinateList coordList = new CoordinateList();
-    for (Iterator it = edges.iterator(); it.hasNext(); ) {
-      SegmentString ss = (SegmentString) it.next();
-      Coordinate[] coords = ss.getCoordinates();
-      coordList.add(coords, false);
-    }    
-    
-    Coordinate[] pts = coordList.toCoordinateArray();
-    return pts;
-  }
-*/
+        static IList<ISegmentString> ExtractTaggedSegmentStrings(IGeometry geom, IPrecisionModel pm)
+        {
+            var segStrings = new List<ISegmentString>();
+            var filter = new GeometryComponentFilter(
+                delegate (IGeometry fgeom)
+                {
+                    // Extract linework for lineal components only
+                    if (!(fgeom is ILineString)) return;
+                    // skip empty lines
+                    if (geom.NumPoints <= 0) return;
+                    var roundPts = Round(((ILineString)geom).CoordinateSequence, pm);
+                    segStrings.Add(new NodedSegmentString(roundPts, geom));
+                });
+
+            geom.Apply(filter);
+            return segStrings;
+        }
+
+        static Coordinate[] Round(ICoordinateSequence seq, IPrecisionModel pm)
+        {
+            if (seq.Count == 0) return new Coordinate[0];
+
+            CoordinateList coordList = new CoordinateList();
+            // copy coordinates and reduce
+            for (int i = 0; i < seq.Count; i++)
+            {
+                var coord = new Coordinate(
+                    seq.GetOrdinate(i, Ordinate.X),
+                    seq.GetOrdinate(i, Ordinate.Y));
+                pm.MakePrecise(coord);
+                coordList.Add(coord, false);
+            }
+            Coordinate[] coords = coordList.ToCoordinateArray();
+
+            //TODO: what if seq is too short?
+            return coords;
+        }
+
+        private static IGeometry Clean(IGeometry geom)
+        {
+            if (!(geom is IPolygonal)) return geom;
+            if (geom.IsValid) return geom;
+
+            // TODO: use a better method of removing collapsed topology 
+            return geom.Buffer(0);
+        }
 
     }
 
-    internal class GeometryLineReplacer : GeometryEditor.CoordinateSequenceOperation
+    internal class GeometryCoordinateReplacer : GeometryEditor.CoordinateSequenceOperation
     {
         private readonly IDictionary<IGeometry, Coordinate[]> _geometryPtsMap;
 
-        public GeometryLineReplacer(IDictionary<IGeometry, Coordinate[]> geometryPtsMap)
+        public GeometryCoordinateReplacer(IDictionary<IGeometry, Coordinate[]> geometryPtsMap)
         {
             _geometryPtsMap = geometryPtsMap;
             EditSequence = DoEditSequence;
