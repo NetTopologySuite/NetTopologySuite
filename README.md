@@ -1,4 +1,5 @@
 [![Stories in Ready](https://badge.waffle.io/nettopologysuite/nettopologysuite.png?label=ready&title=Ready)](https://waffle.io/nettopologysuite/nettopologysuite)
+[![Build Status](https://travis-ci.org/NetTopologySuite/NetTopologySuite.svg?branch=master)](https://travis-ci.org/NetTopologySuite/NetTopologySuite)
 NetTopologySuite
 ================
 
