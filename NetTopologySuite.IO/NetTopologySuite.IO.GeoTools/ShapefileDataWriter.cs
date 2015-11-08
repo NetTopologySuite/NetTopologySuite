@@ -88,7 +88,7 @@ namespace NetTopologySuite.IO
         private const int DoubleLength = 18;
         private const int DoubleDecimals = 8;
         private const int IntLength = 10;
-        private const int LongLength = 20;
+        private const int LongLength = 18;
         private const int IntDecimals = 0;
         private const int StringLength = 254;
         private const int StringDecimals = 0;

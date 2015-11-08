@@ -96,6 +96,7 @@
     <Compile Include="ShapeFile.Extended\ShapeDataReaderTests.cs" />
     <Compile Include="ShapeFile.Extended\DbaseReaderTests.cs" />
     <Compile Include="ShapeFile.Extended\HelperMethods.cs" />
+    <Compile Include="ShapeFile.Extended\ShapefileDataWriterTests.cs" />
     <Compile Include="ShapeFile.Extended\ShapeReaderTests.cs" />
     <Compile Include="ShapeFile.Extended\TempFileWriter.cs" />
     <Compile Include="SpatiaLiteFixture.cs" />
