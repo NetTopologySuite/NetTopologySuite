@@ -71,8 +71,14 @@
     <Compile Include="..\NetTopologySuite.IO.GeoJSON\GeoJsonObjectType.cs">
       <Link>GeoJsonObjectType.cs</Link>
     </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoJSON\GeoJsonReader.cs">
+      <Link>GeoJsonReader.cs</Link>
+    </Compile>
     <Compile Include="..\NetTopologySuite.IO.GeoJSON\GeoJsonSerializer.cs">
       <Link>GeoJsonSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite.IO.GeoJSON\GeoJsonWriter.cs">
+      <Link>GeoJsonWriter.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite.IO.GeoJSON\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
