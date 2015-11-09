@@ -186,12 +186,19 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
                 Assert.IsInstanceOf<IList<object>>(list[1]);
                 IAttributesTable first = (IAttributesTable) list[0];
                 Assert.AreEqual(1, first.Count);
+                Assert.IsTrue(first.Exists("innertest1"));
                 Assert.AreEqual("innervalue1", first["innertest1"]);
                 IList<object> innerList = (IList<object>) list[1];
                 Assert.IsNotNull(innerList);
                 Assert.IsNotEmpty(innerList);
-                Assert.AreEqual(2, innerList.Count);
-                Assert.IsTrue(innerList.All(i => i is IAttributesTable));
+                Assert.AreEqual(1, innerList.Count);
+                Assert.IsInstanceOf<IAttributesTable>(innerList[0]);
+                IAttributesTable inner = (IAttributesTable) innerList[0];
+                Assert.AreEqual(2, inner.Count);
+                Assert.IsTrue(inner.Exists("innertest2"));
+                Assert.AreEqual("innervalue2", inner["innertest2"]);
+                Assert.IsTrue(inner.Exists("innertest3"));
+                Assert.AreEqual("innervalue3", inner["innertest3"]);
             }
         }
     }

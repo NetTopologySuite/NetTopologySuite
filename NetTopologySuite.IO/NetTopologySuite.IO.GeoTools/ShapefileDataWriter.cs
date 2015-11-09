@@ -36,9 +36,10 @@ namespace NetTopologySuite.IO
                 if (type == typeof(double) || type == typeof(float))
                     header.AddColumn(name, 'N', DoubleLength, DoubleDecimals);
                 else if (type == typeof(short) || type == typeof(ushort) ||
-                         type == typeof(int) || type == typeof(uint) ||
-                         type == typeof(long) || type == typeof(ulong))
+                         type == typeof(int) || type == typeof(uint))
                     header.AddColumn(name, 'N', IntLength, IntDecimals);
+                else if (type == typeof(long) || type == typeof(ulong))
+                    header.AddColumn(name, 'N', LongLength, IntDecimals);
                 else if (type == typeof(string))
                     header.AddColumn(name, 'C', StringLength, StringDecimals);
                 else if (type == typeof(bool))
@@ -87,6 +88,7 @@ namespace NetTopologySuite.IO
         private const int DoubleLength = 18;
         private const int DoubleDecimals = 8;
         private const int IntLength = 10;
+        private const int LongLength = 18;
         private const int IntDecimals = 0;
         private const int StringLength = 254;
         private const int StringDecimals = 0;

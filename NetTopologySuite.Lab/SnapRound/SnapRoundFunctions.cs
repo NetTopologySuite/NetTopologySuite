@@ -21,17 +21,11 @@ namespace NetTopologySuite.SnapRound
         public static IGeometry SnapRoundLines(
             IGeometry geom, double scaleFactor)
         {
-            IPrecisionModel pm = new PrecisionModel(scaleFactor);
-
-            var roundedGeom = GeometryPrecisionReducer.ReducePointwise(geom, pm);
-
-            var geomList = new List<IGeometry>();
-            geomList.Add(roundedGeom);
-
-            var noder = new GeometrySnapRounder(pm);
-            var lines = noder.Node(geomList);
-
-            return FunctionsUtil.GetFactoryOrDefault(geom).BuildGeometry(lines);
+            var pm = new PrecisionModel(scaleFactor);
+            var gsr = new GeometrySnapRounder(pm);
+            gsr.LineworkOnly =true;
+            var snapped = gsr.Execute(geom);
+            return snapped;
         }
 
         public static IGeometry SnapRound(
@@ -40,18 +34,15 @@ namespace NetTopologySuite.SnapRound
         {
             var pm = new PrecisionModel(scaleFactor);
 
-            var roundedGeomA = GeometryPrecisionReducer.ReducePointwise(geomA, pm);
-            var geomRound = roundedGeomA;
+            var geom = geomA;
 
             if (geomB != null)
             {
-                var roundedGeomB = GeometryPrecisionReducer.ReducePointwise(geomB, pm);
-                geomRound = geomA.Factory.CreateGeometryCollection(new [] { roundedGeomA, roundedGeomB });
+                geom = geomA.Factory.CreateGeometryCollection(new IGeometry[] { geomA, geomB });
             }
 
-            var noder = new GeometrySnapRounder(pm);
-            IGeometry snapped = noder.Node(geomRound);
-
+            GeometrySnapRounder gsr = new GeometrySnapRounder(pm);
+            var snapped = gsr.Execute(geom);
             return snapped;
         }
 

@@ -96,6 +96,7 @@
     <Compile Include="ShapeFile.Extended\ShapeDataReaderTests.cs" />
     <Compile Include="ShapeFile.Extended\DbaseReaderTests.cs" />
     <Compile Include="ShapeFile.Extended\HelperMethods.cs" />
+    <Compile Include="ShapeFile.Extended\ShapefileDataWriterTests.cs" />
     <Compile Include="ShapeFile.Extended\ShapeReaderTests.cs" />
     <Compile Include="ShapeFile.Extended\TempFileWriter.cs" />
     <Compile Include="SpatiaLiteFixture.cs" />
@@ -164,7 +165,7 @@
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="$(SolutionDir).nuget\nuget.targets" Condition="Exists('$(SolutionDir).nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
