@@ -10,8 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NetTopologySuite.Tests.NUnit</RootNamespace>
     <AssemblyName>NetTopologySuite.Tests.NUnit.Pcl</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -446,24 +445,23 @@
     <Compile Include="PclSetup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GeoAPI.Bootstrapper.NetTopologySuite\GeoAPI.Bootstrapper.NetTopologySuite.csproj">
-      <Project>{8353362c-192b-4edf-a50d-c36b21470d76}</Project>
-      <Name>GeoAPI.Bootstrapper.NetTopologySuite</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.Pcl\NetTopologySuite.Pcl.csproj">
-      <Project>{c6f14605-0da6-420a-8de7-18b57e9a9c99}</Project>
+      <Project>{C6F14605-0DA6-420A-8DE7-18B57E9A9C99}</Project>
       <Name>NetTopologySuite.Pcl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GeoAPI.Bootstrapper.NetTopologySuite\GeoAPI.BootStrapper.NetTopologySuite.csproj">
+      <Project>{8353362C-192B-4EDF-A50D-C36B21470D76}</Project>
+      <Name>GeoAPI.BootStrapper.NetTopologySuite</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
+      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\..\NetTopologySuite.Tests.NUnit\TestData\africa.wkt">
