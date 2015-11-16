@@ -32,7 +32,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
-    <DefineConstants>TRACE;UseCoordinateBufferPublicly</DefineConstants>
+    <DefineConstants>TRACE;UseCoordinateBufferPublicly,NET20,NET35,NET40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\Release\v4.0\AnyCPU\NetTopologySuite.IO.xml</DocumentationFile>

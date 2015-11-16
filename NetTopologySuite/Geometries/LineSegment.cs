@@ -2,14 +2,10 @@ using System;
 using System.Text;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-
-#if !PCL
 using BitConverter = System.BitConverter;
-#else
 
+#if PCL
 using ApplicationException = System.Exception;
-using BitConverter = GeoAPI.BitConverterEx;
-
 #endif
 
 namespace NetTopologySuite.Geometries

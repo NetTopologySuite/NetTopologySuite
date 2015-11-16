@@ -1,13 +1,6 @@
 using System;
 using NetTopologySuite.Utilities;
-
-#if !(MONODROID || PCL)
 using BitConverter = System.BitConverter;
-#else
-
-using BitConverter = GeoAPI.BitConverterEx;
-
-#endif
 
 namespace NetTopologySuite.Index.Quadtree
 {

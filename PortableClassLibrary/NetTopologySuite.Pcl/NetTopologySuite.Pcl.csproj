@@ -119,9 +119,6 @@
     <Compile Include="..\..\NetTopologySuite\Utilities\RToolsUtil\Token.cs">
       <Link>Utilities\RToolsUtil\Token.cs</Link>
     </Compile>
-    <Compile Include="..\..\NetTopologySuite\Utilities\StringEx.cs">
-      <Link>Utilities\StringEx.cs</Link>
-    </Compile>
     <Compile Include="..\..\SharedAssemblyVersion.cs">
       <Link>Properties\SharedAssemblyVersion.cs</Link>
     </Compile>

@@ -14,7 +14,7 @@
 		</description>
 		<summary>NTS Topology Suite is a direct-port of all the functionalities offered by JTS Topology Suite</summary>
 		<tags>NTS DotSpatial Topology</tags>
-		<copyright>Copyright 2013</copyright>
+		<copyright>Copyright 2013-2015</copyright>
 		<language>en-US</language>
 		<dependencies>
 			<dependency id="NetTopologySuite" version="$version$" />

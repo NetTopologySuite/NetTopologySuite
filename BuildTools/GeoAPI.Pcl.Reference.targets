@@ -5,7 +5,7 @@
 </PropertyGroup>
 <ItemGroup>
 <Reference Include="GeoAPI">
-<HintPath>$(SolutionDir)packages\GeoAPI.1.7.4-pre3\lib\$(fwVersion)\GeoAPI.dll</HintPath>
+<HintPath>$(SolutionDir)packages\GeoAPI.1.7.4\lib\$(fwVersion)\GeoAPI.dll</HintPath>
 </Reference>
 </ItemGroup>
 </Project>

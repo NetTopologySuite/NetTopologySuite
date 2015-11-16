@@ -1,12 +1,7 @@
 using NetTopologySuite.Utilities;
 
-#if !PCL
 using BitConverter = System.BitConverter;
-#else
 
-using BitConverter = GeoAPI.BitConverterEx;
-
-#endif
 
 namespace NetTopologySuite.Precision
 {
