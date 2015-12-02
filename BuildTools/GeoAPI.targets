@@ -7,7 +7,7 @@
 	<Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
 
 	<PropertyGroup>
-		<fwVersionNet>net40-Client</fwVersionNet>
+		<fwVersionNet>net40-client</fwVersionNet>
 		<fwVersionPcl>portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10</fwVersionPcl>
 		<fwVersion/>
 		<geoAPIRefFileNet>GeoAPI.Reference.targets</geoAPIRefFileNet>
