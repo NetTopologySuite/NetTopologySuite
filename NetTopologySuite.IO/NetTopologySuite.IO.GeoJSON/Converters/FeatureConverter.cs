@@ -49,14 +49,8 @@ namespace NetTopologySuite.IO.Converters
         /// </returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            reader.Read();
-            if (!(reader.TokenType == JsonToken.PropertyName && (string)reader.Value == "type"))
-                throw new ArgumentException("Expected token 'type' not found.");
-            reader.Read();
-            if (reader.TokenType != JsonToken.String && (string)reader.Value != "Feature")
-                throw new ArgumentException("Expected value 'Feature' not found.");
-            reader.Read();
 
+            reader.Read();
             object featureId = null;
             Feature feature = new Feature();
             while (reader.TokenType == JsonToken.PropertyName)
@@ -64,6 +58,12 @@ namespace NetTopologySuite.IO.Converters
                 string prop = (string)reader.Value;
                 switch (prop)
                 {
+                    case "type":
+                        reader.Read();
+                        if ((string)reader.Value != "Feature")
+                            throw new ArgumentException("Expected value 'Feature' not found.");
+                        reader.Read();
+                        break;
                     case "id":                        
                         reader.Read(); 
                         featureId = reader.Value;
