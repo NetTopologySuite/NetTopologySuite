@@ -1271,6 +1271,9 @@
     <Compile Include="..\..\NetTopologySuite\Utilities\BitConverter.cs">
       <Link>Utilities\BitConverter.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite\Utilities\BitTweaks.cs">
+      <Link>Utilities\BitTweaks.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\Utilities\Caster.cs">
       <Link>Utilities\Caster.cs</Link>
     </Compile>

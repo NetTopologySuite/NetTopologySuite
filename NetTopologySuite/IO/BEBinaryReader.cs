@@ -1,8 +1,8 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Text;
 using GeoAPI.IO;
+using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO
 {
@@ -46,12 +46,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
         public override short ReadInt16()
         {
-            byte[] byteArray = new byte[2];
-            int iBytesRead = Read(byteArray, 0, 2);
-            Debug.Assert(iBytesRead == 2);
-
-            Array.Reverse(byteArray);
-            return BitConverter.ToInt16(byteArray, 0);
+            return BitTweaks.ReverseByteOrder(base.ReadInt16());
         }
 
         /// <summary>
@@ -67,12 +62,7 @@ namespace NetTopologySuite.IO
         [CLSCompliant(false)]
         public override ushort ReadUInt16()
         {
-            byte[] byteArray = new byte[2];
-            int iBytesRead = Read(byteArray, 0, 2);
-            Debug.Assert(iBytesRead == 2);
-
-            Array.Reverse(byteArray);
-            return BitConverter.ToUInt16(byteArray, 0);
+            return BitTweaks.ReverseByteOrder(base.ReadUInt16());
         }
 
         /// <summary>
@@ -86,13 +76,8 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
         public override int ReadInt32()
-        {            
-            byte[] byteArray = new byte[4];
-            int iBytesRead = Read(byteArray, 0, 4);
-            Debug.Assert(iBytesRead == 4);
-
-            Array.Reverse(byteArray);
-            return BitConverter.ToInt32(byteArray, 0);
+        {
+            return BitTweaks.ReverseByteOrder(base.ReadInt32());
         }
 
         /// <summary>
@@ -108,12 +93,7 @@ namespace NetTopologySuite.IO
         [CLSCompliant(false)]
         public override uint ReadUInt32()
         {
-            byte[] byteArray = new byte[4];
-            int iBytesRead = Read(byteArray, 0, 4);
-            Debug.Assert(iBytesRead == 4);
-
-            Array.Reverse(byteArray);                        
-            return BitConverter.ToUInt32(byteArray, 0);
+            return BitTweaks.ReverseByteOrder(base.ReadUInt32());
         }
 
         /// <summary>
@@ -128,12 +108,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
         public override long ReadInt64()
         {
-            byte[] byteArray = new byte[8];
-            int iBytesRead = Read(byteArray, 0, 8);
-            Debug.Assert(iBytesRead == 8);
-
-            Array.Reverse(byteArray);
-            return BitConverter.ToInt64(byteArray, 0);
+            return BitTweaks.ReverseByteOrder(base.ReadInt64());
         }
 
 
@@ -150,12 +125,7 @@ namespace NetTopologySuite.IO
         [CLSCompliant(false)]
         public override ulong ReadUInt64()
         {
-            byte[] byteArray = new byte[8];
-            int iBytesRead = Read(byteArray, 0, 8);
-            Debug.Assert(iBytesRead == 8);
-
-            Array.Reverse(byteArray);
-            return BitConverter.ToUInt64(byteArray, 0);
+            return BitTweaks.ReverseByteOrder(base.ReadUInt64());
         }
 
         /// <summary>
@@ -170,12 +140,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
         public override float ReadSingle()
         {
-            byte[] byteArray = new byte[4];
-            int iBytesRead = Read(byteArray, 0, 4);
-            Debug.Assert(iBytesRead == 4);
-
-            Array.Reverse(byteArray);
-            return BitConverter.ToSingle(byteArray, 0);   
+            return BitTweaks.ReverseByteOrder(base.ReadSingle());
         }
 
         /// <summary>
@@ -189,13 +154,8 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
         public override double ReadDouble()
-        {            
-            byte[] byteArray = new byte[8];
-            int iBytesRead = Read(byteArray, 0, 8);
-            Debug.Assert(iBytesRead == 8);
-
-            Array.Reverse(byteArray);
-            return BitConverter.ToDouble(byteArray, 0);
+        {
+            return BitTweaks.ReverseByteOrder(base.ReadDouble());
         }
 
         /// <summary>

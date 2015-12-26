@@ -491,6 +491,7 @@
     <Compile Include="Utilities\Assert.cs" />
     <Compile Include="Utilities\AssertionFailedException.cs" />
     <Compile Include="Utilities\BitConverter.cs" />
+    <Compile Include="Utilities\BitTweaks.cs" />
     <Compile Include="Utilities\Caster.cs" />
     <Compile Include="Utilities\CollectionUtil.cs" />
     <Compile Include="Utilities\CoordinateArrayFilter.cs" />
