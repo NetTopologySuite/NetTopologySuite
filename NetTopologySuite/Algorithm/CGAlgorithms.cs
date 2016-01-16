@@ -106,6 +106,24 @@ namespace NetTopologySuite.Algorithm
             return LocatePointInRing(p, ring) != Location.Exterior;
         }
 
+        /// <summary> 
+        /// Tests whether a point lies inside or on a ring.
+        /// </summary>
+        /// <remarks>
+        /// <para>The ring may be oriented in either direction.</para>
+        /// <para>A point lying exactly on the ring boundary is considered to be inside the ring.</para>
+        /// <para>This method does <i>not</i> first check the point against the envelope
+        /// of the ring.</para>
+        /// </remarks>
+        /// <param name="p">Point to check for ring inclusion.</param>
+        /// <param name="ring">A sequence of <see cref="Coordinate"/>s representing the ring (which must have first point identical to last point)</param>
+        /// <returns>true if p is inside ring.</returns>
+        /// <see cref="IPointInRing"/>
+        public static bool IsPointInRing(Coordinate p, ICoordinateSequence ring)
+        {
+            return LocatePointInRing(p, ring) != Location.Exterior;
+        }
+
         ///<summary>
         /// Determines whether a point lies in the interior, on the boundary, or in the exterior of a ring.
         ///</summary>
@@ -117,6 +135,21 @@ namespace NetTopologySuite.Algorithm
         /// <param name="ring">An array of coordinates representing the ring (which must have first point identical to last point)</param>
         /// <returns>The <see cref="Location"/> of p relative to the ring</returns>
         public static Location LocatePointInRing(Coordinate p, Coordinate[] ring)
+        {
+            return RayCrossingCounter.LocatePointInRing(p, ring);
+        }
+
+        ///<summary>
+        /// Determines whether a point lies in the interior, on the boundary, or in the exterior of a ring.
+        ///</summary>
+        /// <remarks>
+        /// <para>The ring may be oriented in either direction.</para>
+        /// <para>This method does <i>not</i> first check the point against the envelope of the ring.</para>
+        /// </remarks>
+        /// <param name="p">Point to check for ring inclusion</param>
+        /// <param name="ring">A sequence of coordinates representing the ring (which must have first point identical to last point)</param>
+        /// <returns>The <see cref="Location"/> of p relative to the ring</returns>
+        public static Location LocatePointInRing(Coordinate p, ICoordinateSequence ring)
         {
             return RayCrossingCounter.LocatePointInRing(p, ring);
         }

@@ -16,7 +16,11 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             IGeometry geom = reader.Read(wkt);
             Assert.AreEqual(expectedLoc, CGAlgorithms.LocatePointInRing(pt, geom.Coordinates));
+            IPolygon poly = geom as IPolygon;
+            if (poly == null)
+                return;
 
+            Assert.AreEqual(expectedLoc, CGAlgorithms.LocatePointInRing(pt, poly.ExteriorRing.CoordinateSequence));
         }
 
     }
