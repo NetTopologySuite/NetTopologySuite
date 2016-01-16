@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Utilities;
@@ -124,9 +125,10 @@ namespace NetTopologySuite.Operation.Overlay
         private readonly PlanarGraph _graph;
         private readonly EdgeList _edgeList      = new EdgeList();
 
-        private IList<IGeometry> _resultPolyList = new List<IGeometry>();
+        private IPolygon[] _resultPolyArray = new IPolygon[0];
         private IList<IGeometry> _resultLineList = new List<IGeometry>();
         private IList<IGeometry> _resultPointList = new List<IGeometry>();
+        private IndexedPointInAreaLocator _resultPolyIndexedLocator;
 
         /// <summary>
         /// Constructs an instance to compute a single overlay operation
@@ -223,7 +225,19 @@ namespace NetTopologySuite.Operation.Overlay
             CancelDuplicateResultEdges();
             var polyBuilder = new PolygonBuilder(_geomFact);
             polyBuilder.Add(_graph);
-            _resultPolyList = polyBuilder.Polygons;
+            var resultPolyList = polyBuilder.Polygons;
+
+            // by this point, the areas should all be disjoint, so we're OK to
+            // stuff them all into an indexed IMultiPolygon for faster locating.
+            // this can have a non-trivial impact on the memory usage, so make
+            // sure we release it as soon as we're done.
+            _resultPolyArray = new IPolygon[resultPolyList.Count];
+            resultPolyList.CopyTo(_resultPolyArray, 0);
+
+            // http://sourceforge.net/p/jts-topo-suite/bugs/51/
+            // we'd infinite loop if the input is empty without this check
+            if (_resultPolyArray.Length > 0)
+                _resultPolyIndexedLocator = new IndexedPointInAreaLocator(_geomFact.CreateMultiPolygon(_resultPolyArray));
 
             var lineBuilder = new LineBuilder(this, _geomFact, _ptLocator);
             _resultLineList = lineBuilder.Build(opCode);
@@ -231,8 +245,12 @@ namespace NetTopologySuite.Operation.Overlay
             var pointBuilder = new PointBuilder(this, _geomFact, _ptLocator);
             _resultPointList = pointBuilder.Build(opCode);
 
+            // nothing else beyond this point should need the indexed locator.
+            // allow the GC to free it at this point.
+            _resultPolyIndexedLocator = null;
+
             // gather the results from all calculations into a single Geometry for the result set
-            _resultGeom = ComputeGeometry(_resultPointList, _resultLineList, _resultPolyList, opCode);
+            _resultGeom = ComputeGeometry(_resultPointList, _resultLineList, _resultPolyArray, opCode);
         }        
 
         private void InsertUniqueEdges(IEnumerable<Edge> edges)
@@ -541,7 +559,7 @@ namespace NetTopologySuite.Operation.Overlay
         {
             if (IsCovered(coord, _resultLineList)) 
                 return true;
-            return IsCovered(coord, _resultPolyList);
+            return IsCoveredByA(coord);
         }
         /// <summary>
         /// Tests if an L edge should be included in the result or not.
@@ -550,7 +568,11 @@ namespace NetTopologySuite.Operation.Overlay
         /// <returns><c>true</c> if the coordinate point is covered by a result Area geometry.</returns>
         public bool IsCoveredByA(Coordinate coord)
         {
-            return IsCovered(coord, _resultPolyList);
+            // use the fast indexed locator if it's available; fall back to the
+            // slower PointLocator check if we're called from an unusual spot.
+            return _resultPolyIndexedLocator == null
+                ? IsCovered(coord, _resultPolyArray)
+                : _resultPolyIndexedLocator.Locate(coord) != Location.Exterior;
         }
 
         /// <returns>
