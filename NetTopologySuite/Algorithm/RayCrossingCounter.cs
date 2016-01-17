@@ -62,7 +62,8 @@ namespace NetTopologySuite.Algorithm
 
             var p1 = new Coordinate();
             var p2 = new Coordinate();
-            for (var i = 1; i < ring.Count; i++)
+            int count = ring.Count;
+            for (var i = 1; i < count; i++)
             {
                 ring.GetCoordinate(i, p1);
                 ring.GetCoordinate(i - 1, p2);
