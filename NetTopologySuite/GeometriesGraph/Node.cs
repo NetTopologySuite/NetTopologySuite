@@ -55,6 +55,24 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
+        /// Tests whether any incident edge is flagged as
+        /// being in the result.
+        /// This test can be used to determine if the node is in the result,
+        /// since if any incident edge is in the result, the node must be in the result as well.
+        /// </summary>
+        /// <returns><value>true</value> if any indicident edge in the in the result
+        /// </returns>
+        public bool IsIncidentEdgeInResult()
+        {
+            foreach (var de in Edges.Edges)
+            {
+                if (de.Edge.IsInResult)
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         public override bool IsIsolated
