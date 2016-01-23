@@ -1,9 +1,9 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Planargraph;
 using NetTopologySuite.Utilities;
-using Wintellect.PowerCollections;
 
 namespace NetTopologySuite.Operation.Polygonize
 {
@@ -383,7 +383,11 @@ namespace NetTopologySuite.Operation.Polygonize
         public ICollection<ILineString> DeleteDangles()
         {
             var nodesToRemove = FindNodesOfDegree(1);
-            Set<ILineString> dangleLines = new Set<ILineString>();
+#if NET35
+            HashSet<ILineString> dangleLines = new HashSet<ILineString>();
+#else
+            Wintellect.PowerCollections.Set<ILineString> dangleLines = new Wintellect.PowerCollections.Set<ILineString>();
+#endif
 
             Stack<Node> nodeStack = new Stack<Node>();
             foreach (Node node in nodesToRemove)
@@ -412,7 +416,10 @@ namespace NetTopologySuite.Operation.Polygonize
                         nodeStack.Push(toNode);
                 }
             }
-            return dangleLines.AsReadOnly();
+
+            var dangleArray = new ILineString[dangleLines.Count];
+            dangleLines.CopyTo(dangleArray, 0);
+            return new ReadOnlyCollection<ILineString>(dangleArray);
                 //new ArrayList(dangleLines.CastPlatform());
         }
 

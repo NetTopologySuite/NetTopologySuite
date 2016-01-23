@@ -4,7 +4,6 @@ using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
-using Wintellect.PowerCollections;
 
 namespace NetTopologySuite.Noding
 {
@@ -13,7 +12,11 @@ namespace NetTopologySuite.Noding
     /// </summary>
     public class SegmentNodeList : IEnumerable<object>
     {
-        private readonly IDictionary<SegmentNode, Object> _nodeMap = new OrderedDictionary<SegmentNode, Object>();
+#if NET20
+        private readonly IDictionary<SegmentNode, Object> _nodeMap = new SortedDictionary<SegmentNode, Object>();
+#else
+        private readonly IDictionary<SegmentNode, Object> _nodeMap = new Wintellect.PowerCollections.OrderedDictionary<SegmentNode, Object>();
+#endif
         private readonly NodedSegmentString _edge;  // the parent edge
 
         /// <summary>

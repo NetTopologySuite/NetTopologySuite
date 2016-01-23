@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Utilities;
-using Wintellect.PowerCollections;
 
 namespace NetTopologySuite.Operation.Overlay.Snap
 {
@@ -172,7 +172,11 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         private Coordinate[] ExtractTargetCoordinates(IGeometry g)
         {
             // TODO: should do this more efficiently.  Use CoordSeq filter to get points, KDTree for uniqueness & queries
-            OrderedSet<Coordinate> ptSet = new OrderedSet<Coordinate>(g.Coordinates);
+#if NET20
+            SortedSet<Coordinate> ptSet = new SortedSet<Coordinate>(g.Coordinates);
+#else
+            Wintellect.PowerCollections.OrderedSet<Coordinate> ptSet = new Wintellect.PowerCollections.OrderedSet<Coordinate>(g.Coordinates);
+#endif
             Coordinate[] result = new Coordinate[ptSet.Count];
             ptSet.CopyTo(result, 0);
             return result;
