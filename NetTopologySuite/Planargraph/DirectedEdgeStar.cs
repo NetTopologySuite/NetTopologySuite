@@ -1,5 +1,9 @@
 using System.Collections.Generic;
+#if NET35
+using System.Linq;
+#endif
 using GeoAPI.Geometries;
+using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Planargraph
 {
@@ -93,7 +97,14 @@ namespace NetTopologySuite.Planargraph
         {
             if (!_sorted)
             {
-                _outEdges.Sort();
+                // JTS does a stable sort here.  List<T>.Sort is not stable.
+#if NET35
+                var inSortedOrder = new List<DirectedEdge>(_outEdges.OrderBy(x => x));
+#else
+                var inSortedOrder = Wintellect.PowerCollections.Algorithms.StableSort(_outEdges, Comparer<DirectedEdge>.Default);
+#endif
+                _outEdges.Clear();
+                _outEdges.AddRange(inSortedOrder);
                 _sorted = true;                
             }
         }
