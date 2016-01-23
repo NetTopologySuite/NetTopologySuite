@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
+#if NET40
+using SortedSetC = System.Collections.Generic.SortedSet<GeoAPI.Geometries.Coordinate>;
+#elif NET20
+using SortedSetC = NetTopologySuite.Utilities.SortedSet<GeoAPI.Geometries.Coordinate>;
+#else
+using SortedSetC = Wintellect.PowerCollections.OrderedSet<GeoAPI.Geometries.Coordinate>;
+#endif
 
 namespace NetTopologySuite.Algorithm
 {
@@ -116,11 +123,7 @@ namespace NetTopologySuite.Algorithm
                 return pts;
 
             // add points defining polygon
-#if NET20
-            var reducedSet = new SortedSet<Coordinate>();
-#else
-            var reducedSet = new Wintellect.PowerCollections.OrderedSet<Coordinate>();
-#endif
+            var reducedSet = new SortedSetC();
             for (int i = 0; i < polyPts.Length; i++)
                 reducedSet.Add(polyPts[i]);
             

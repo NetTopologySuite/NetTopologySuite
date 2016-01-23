@@ -6,6 +6,13 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Planargraph;
 using NetTopologySuite.Planargraph.Algorithm;
 using NetTopologySuite.Utilities;
+#if NET40
+using SortedSetC = System.Collections.Generic.SortedSet<GeoAPI.Geometries.Coordinate>;
+#elif NET20
+using SortedSetC = NetTopologySuite.Utilities.SortedSet<GeoAPI.Geometries.Coordinate>;
+#else
+using SortedSetC = Wintellect.PowerCollections.OrderedSet<GeoAPI.Geometries.Coordinate>;
+#endif
 
 namespace NetTopologySuite.Operation.Linemerge
 {
@@ -65,11 +72,7 @@ namespace NetTopologySuite.Operation.Linemerge
             IMultiLineString mls = geom as IMultiLineString;
 
             // The nodes in all subgraphs which have been completely scanned
-#if NET20
-            SortedSet<Coordinate> prevSubgraphNodes = new SortedSet<Coordinate>();
-#else
-            Wintellect.PowerCollections.OrderedSet<Coordinate> prevSubgraphNodes = new Wintellect.PowerCollections.OrderedSet<Coordinate>();
-#endif
+            SortedSetC prevSubgraphNodes = new SortedSetC();
 
             Coordinate lastNode = null;
             IList<Coordinate> currNodes = new List<Coordinate>();
@@ -90,11 +93,7 @@ namespace NetTopologySuite.Operation.Linemerge
                 if (lastNode != null && !startNode.Equals(lastNode)) 
                 {
                     // start new connected sequence
-#if NET20
-                    prevSubgraphNodes.UnionWith(currNodes);
-#else
                     prevSubgraphNodes.AddMany(currNodes);
-#endif
                     currNodes.Clear();
                 }                
 

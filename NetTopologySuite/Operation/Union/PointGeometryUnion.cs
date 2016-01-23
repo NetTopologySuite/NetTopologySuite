@@ -2,6 +2,13 @@ using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries.Utilities;
+#if NET40
+using SortedSetC = System.Collections.Generic.SortedSet<GeoAPI.Geometries.Coordinate>;
+#elif NET20
+using SortedSetC = NetTopologySuite.Utilities.SortedSet<GeoAPI.Geometries.Coordinate>;
+#else
+using SortedSetC = Wintellect.PowerCollections.OrderedSet<GeoAPI.Geometries.Coordinate>;
+#endif
 
 namespace NetTopologySuite.Operation.Union
 {
@@ -36,11 +43,7 @@ namespace NetTopologySuite.Operation.Union
         {
             PointLocator locater = new PointLocator();
             // use a set to eliminate duplicates, as required for union
-#if NET20
-            var exteriorCoords = new SortedSet<Coordinate>();
-#else
-            var exteriorCoords = new Wintellect.PowerCollections.OrderedSet<Coordinate>();
-#endif
+            var exteriorCoords = new SortedSetC();
 
             foreach (IPoint point in PointExtracter.GetPoints(_pointGeom))
             {

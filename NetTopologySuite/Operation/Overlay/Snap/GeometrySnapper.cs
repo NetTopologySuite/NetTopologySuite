@@ -2,6 +2,13 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Utilities;
+#if NET40
+using SortedSetC = System.Collections.Generic.SortedSet<GeoAPI.Geometries.Coordinate>;
+#elif NET20
+using SortedSetC = NetTopologySuite.Utilities.SortedSet<GeoAPI.Geometries.Coordinate>;
+#else
+using SortedSetC = Wintellect.PowerCollections.OrderedSet<GeoAPI.Geometries.Coordinate>;
+#endif
 
 namespace NetTopologySuite.Operation.Overlay.Snap
 {
@@ -172,11 +179,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         private Coordinate[] ExtractTargetCoordinates(IGeometry g)
         {
             // TODO: should do this more efficiently.  Use CoordSeq filter to get points, KDTree for uniqueness & queries
-#if NET20
-            SortedSet<Coordinate> ptSet = new SortedSet<Coordinate>(g.Coordinates);
-#else
-            Wintellect.PowerCollections.OrderedSet<Coordinate> ptSet = new Wintellect.PowerCollections.OrderedSet<Coordinate>(g.Coordinates);
-#endif
+            SortedSetC ptSet = new SortedSetC(g.Coordinates);
             Coordinate[] result = new Coordinate[ptSet.Count];
             ptSet.CopyTo(result, 0);
             return result;
