@@ -6,7 +6,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Planargraph;
 using NetTopologySuite.Planargraph.Algorithm;
 using NetTopologySuite.Utilities;
-using Wintellect.PowerCollections;
 
 namespace NetTopologySuite.Operation.Linemerge
 {
@@ -60,17 +59,21 @@ namespace NetTopologySuite.Operation.Linemerge
         /// </returns>
         public static bool IsSequenced(IGeometry geom)
         {
-            if (!(geom is IMultiLineString)) 
+            if (!(geom is IMultiLineString))
                 return true;
-        
+
             IMultiLineString mls = geom as IMultiLineString;
 
             // The nodes in all subgraphs which have been completely scanned
-            OrderedSet<Coordinate> prevSubgraphNodes = new OrderedSet<Coordinate>();
+#if NET35
+            var prevSubgraphNodes = new HashSet<Coordinate>();
+#else
+            var prevSubgraphNodes = new Wintellect.PowerCollections.Set<Coordinate>();
+#endif
 
             Coordinate lastNode = null;
             IList<Coordinate> currNodes = new List<Coordinate>();
-            for (int i = 0; i < mls.NumGeometries; i++) 
+            for (int i = 0; i < mls.NumGeometries; i++)
             {
                 ILineString line = (ILineString) mls.GetGeometryN(i);
                 Coordinate startNode = line.GetCoordinateN(0);
@@ -79,17 +82,21 @@ namespace NetTopologySuite.Operation.Linemerge
                 /*
                  * If this linestring is connected to a previous subgraph, geom is not sequenced
                  */
-                if (prevSubgraphNodes.Contains(startNode)) 
+                if (prevSubgraphNodes.Contains(startNode))
                     return false;
-                if (prevSubgraphNodes.Contains(endNode)) 
+                if (prevSubgraphNodes.Contains(endNode))
                     return false;
 
-                if (lastNode != null && !startNode.Equals(lastNode)) 
+                if (lastNode != null && !startNode.Equals(lastNode))
                 {
                     // start new connected sequence
+#if NET35
+                    prevSubgraphNodes.UnionWith(currNodes);
+#else
                     prevSubgraphNodes.AddMany(currNodes);
+#endif
                     currNodes.Clear();
-                }                
+                }
 
                 currNodes.Add(startNode);
                 currNodes.Add(endNode);
@@ -104,7 +111,7 @@ namespace NetTopologySuite.Operation.Linemerge
         private IGeometryFactory _factory = GeometryFactory.Default;
 
         private IGeometry _sequencedGeometry;
-        
+
         private int _lineCount;
         private bool _isRun;
         private bool _isSequenceable;
@@ -118,7 +125,7 @@ namespace NetTopologySuite.Operation.Linemerge
         public void Add(IEnumerable<IGeometry> geometries)
         {
             foreach(IGeometry geometry in geometries)
-                Add(geometry);            
+                Add(geometry);
         }
 
         /// <summary>
@@ -128,9 +135,9 @@ namespace NetTopologySuite.Operation.Linemerge
         /// the constituent linework will be extracted.
         /// </summary>
         /// <param name="geometry"></param>
-        public void Add(IGeometry geometry) 
+        public void Add(IGeometry geometry)
         {
-            geometry.Apply(new GeometryComponentFilterImpl(this));             
+            geometry.Apply(new GeometryComponentFilterImpl(this));
         }
 
         /// <summary>
@@ -158,15 +165,15 @@ namespace NetTopologySuite.Operation.Linemerge
             public void Filter(IGeometry component)
             {
                 if (component is ILineString)
-                    _sequencer.AddLine(component as ILineString);                    
-            }         
+                    _sequencer.AddLine(component as ILineString);
+            }
         }
 
         internal void AddLine(ILineString lineString)
         {
             if (_factory == null)
                 _factory = lineString.Factory;
-            
+
             _graph.AddEdge(lineString);
             _lineCount++;
         }
@@ -176,9 +183,9 @@ namespace NetTopologySuite.Operation.Linemerge
         /// </summary>
         /// <returns><c>true</c> if a valid sequence exists.</returns>
         public bool IsSequenceable()
-        {            
+        {
             ComputeSequence();
-            return _isSequenceable;         
+            return _isSequenceable;
         }
 
         /// <summary>
@@ -193,9 +200,9 @@ namespace NetTopologySuite.Operation.Linemerge
             return _sequencedGeometry;
         }
 
-        private void ComputeSequence() 
+        private void ComputeSequence()
         {
-            if (_isRun) 
+            if (_isRun)
                 return;
             _isRun = true;
 
@@ -217,7 +224,7 @@ namespace NetTopologySuite.Operation.Linemerge
             ConnectedSubgraphFinder csFinder = new ConnectedSubgraphFinder(_graph);
             var subgraphs = csFinder.GetConnectedSubgraphs();
             foreach(Subgraph subgraph in subgraphs)
-            {                
+            {
                 if (HasSequence(subgraph))
                 {
                     IEnumerable<DirectedEdge> seq = FindSequence(subgraph);
@@ -252,21 +259,21 @@ namespace NetTopologySuite.Operation.Linemerge
         }
 
         private static IEnumerable<DirectedEdge> FindSequence(Subgraph graph)
-        {            
+        {
             GraphComponent.SetVisited(graph.GetEdgeEnumerator(), false);
 
             var startNode = FindLowestDegreeNode(graph);
 
             var list = startNode.OutEdges.Edges;
-            
+
             var ie = list.GetEnumerator();
             ie.MoveNext();
 
-            var startDE = ie.Current;            
+            var startDE = ie.Current;
             var startDESym = startDE.Sym;
-            
+
             var seq = new LinkedList<DirectedEdge>();
-            var pos = AddReverseSubpath(startDESym, null, seq, false);            
+            var pos = AddReverseSubpath(startDESym, null, seq, false);
             while (pos != null)
             {
                 DirectedEdge prev = pos.Value;
@@ -276,8 +283,8 @@ namespace NetTopologySuite.Operation.Linemerge
                     DirectedEdge toInsert = unvisitedOutDE.Sym;
                     pos = AddReverseSubpath(toInsert, pos, seq, true);
                 }
-                else pos = pos.Previous;                
-            }                       
+                else pos = pos.Previous;
+            }
 
             /*
              * At this point, we have a valid sequence of graph DirectedEdges, but it
@@ -298,7 +305,7 @@ namespace NetTopologySuite.Operation.Linemerge
         private static DirectedEdge FindUnvisitedBestOrientedDE(Node node)
         {
             DirectedEdge wellOrientedDE = null;
-            DirectedEdge unvisitedDE = null;            
+            DirectedEdge unvisitedDE = null;
             foreach(object obj in node.OutEdges)
             {
                 DirectedEdge de = (DirectedEdge) obj;
@@ -314,9 +321,9 @@ namespace NetTopologySuite.Operation.Linemerge
             return unvisitedDE;
         }
 
-       private static LinkedListNode<DirectedEdge> AddReverseSubpath(
-            DirectedEdge de, LinkedListNode<DirectedEdge> pos,
-            LinkedList<DirectedEdge> list,  bool expectedClosed)
+        private static LinkedListNode<DirectedEdge> AddReverseSubpath(
+             DirectedEdge de, LinkedListNode<DirectedEdge> pos,
+             LinkedList<DirectedEdge> list,  bool expectedClosed)
         {
             // trace an unvisited path *backwards* from this de
             Node endNode = de.ToNode;
@@ -324,7 +331,7 @@ namespace NetTopologySuite.Operation.Linemerge
             while (true)
             {
                 if (pos == null)
-                     pos = list.AddLast(de.Sym);
+                    pos = list.AddLast(de.Sym);
                 else pos = list.AddAfter(pos, de.Sym);
                 de.Edge.Visited = true;
                 fromNode = de.FromNode;
@@ -355,10 +362,10 @@ namespace NetTopologySuite.Operation.Linemerge
                     minDegree = node.Degree;
                     minDegreeNode = node;
                 }
-            }            
+            }
             return minDegreeNode;
         }
-        
+
         /// <summary>
         /// Computes a version of the sequence which is optimally
         /// oriented relative to the underlying geometry.
@@ -483,11 +490,11 @@ namespace NetTopologySuite.Operation.Linemerge
 
         private static ILineString Reverse(ILineString line)
         {
-            Coordinate[] pts = line.Coordinates;                     
+            Coordinate[] pts = line.Coordinates;
             Array.Reverse(pts);
             ILineString rev = line.Factory.CreateLineString(pts);
             rev.UserData = line.UserData; // Maintain UserData in reverse process
             return rev;
         }
-    }    
+    }
 }

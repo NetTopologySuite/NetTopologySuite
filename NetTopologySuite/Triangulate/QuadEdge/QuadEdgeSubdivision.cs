@@ -1,4 +1,3 @@
-//#define NET40
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,12 +6,10 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Utilities;
 
-#if NET40
-using ISet = System.Collections.Generic.ISet<NetTopologySuite.Triangulate.QuadEdge.QuadEdge>;
+#if NET35
 using HashSetQ = System.Collections.Generic.HashSet<NetTopologySuite.Triangulate.QuadEdge.QuadEdge>;
 using HashSetV = System.Collections.Generic.HashSet<NetTopologySuite.Triangulate.QuadEdge.Vertex>;
 #else
-using ISet = Wintellect.PowerCollections.Set<NetTopologySuite.Triangulate.QuadEdge.QuadEdge>;
 using HashSetQ = Wintellect.PowerCollections.Set<NetTopologySuite.Triangulate.QuadEdge.QuadEdge>;
 using HashSetV = Wintellect.PowerCollections.Set<NetTopologySuite.Triangulate.QuadEdge.Vertex>;
 #endif
@@ -691,7 +688,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// or <value>null</value> if the triangle should not be visited (for instance, if it is outer)
         /// </returns>
         private QuadEdge[] FetchTriangleToVisit(QuadEdge edge, Stack<QuadEdge> edgeStack, bool includeFrame,
-            ISet visitedEdges)
+            HashSetQ visitedEdges)
         {
             QuadEdge curr = edge;
             int edgeCount = 0;

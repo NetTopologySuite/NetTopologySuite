@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
-using Wintellect.PowerCollections;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -115,9 +114,13 @@ namespace NetTopologySuite.Algorithm
             // unable to compute interior polygon for some reason
             if(polyPts == null)
                 return pts;
-            
+
             // add points defining polygon
-            var reducedSet = new OrderedSet<Coordinate>();
+#if NET35
+            var reducedSet = new HashSet<Coordinate>();
+#else
+            var reducedSet = new Wintellect.PowerCollections.Set<Coordinate>();
+#endif
             for (int i = 0; i < polyPts.Length; i++)
                 reducedSet.Add(polyPts[i]);
             
@@ -132,6 +135,7 @@ namespace NetTopologySuite.Algorithm
                     reducedSet.Add(pts[i]);
 
             var reducedPts = CoordinateArrays.ToCoordinateArray((ICollection<Coordinate>)reducedSet);// new Coordinate[reducedSet.Count];
+            Array.Sort(reducedPts);
 
             // ensure that computed array has at least 3 points (not necessarily unique)  
             if (reducedPts.Length < 3)

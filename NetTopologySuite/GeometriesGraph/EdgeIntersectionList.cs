@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-using Wintellect.PowerCollections;
 
 namespace NetTopologySuite.GeometriesGraph
 {
@@ -12,7 +11,11 @@ namespace NetTopologySuite.GeometriesGraph
     public class EdgeIntersectionList
     {
         // a list of EdgeIntersections      
-        private readonly IDictionary<EdgeIntersection, EdgeIntersection> nodeMap = new OrderedDictionary<EdgeIntersection, EdgeIntersection>();
+#if NET20
+        private readonly IDictionary<EdgeIntersection, EdgeIntersection> nodeMap = new SortedDictionary<EdgeIntersection, EdgeIntersection>();
+#else
+        private readonly IDictionary<EdgeIntersection, EdgeIntersection> nodeMap = new Wintellect.PowerCollections.OrderedDictionary<EdgeIntersection, EdgeIntersection>();
+#endif
         private readonly Edge edge;  // the parent edge
 
         /// <summary>
