@@ -46,6 +46,7 @@
     <BootstrapperEnabled>false</BootstrapperEnabled>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <RestorePackages>true</RestorePackages>
+    <NeedsPowerCollections Condition=" '$(NeedsPowerCollections)' == '' ">False</NeedsPowerCollections>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -584,7 +585,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PowerCollections\Source\PowerCollections\PowerCollections.csproj">
+    <ProjectReference Condition=" '$(NeedsPowerCollections)' != 'False' " Include="..\PowerCollections\Source\PowerCollections\PowerCollections.csproj">
       <Project>{5821977d-ac2c-4912-bcd0-6e6b1a756167}</Project>
       <Name>PowerCollections</Name>
     </ProjectReference>
