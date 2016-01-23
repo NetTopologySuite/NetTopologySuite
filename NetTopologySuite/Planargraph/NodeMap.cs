@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Wintellect.PowerCollections;
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Planargraph
@@ -9,7 +8,11 @@ namespace NetTopologySuite.Planargraph
     /// </summary>   
     public class NodeMap
     {
-        private readonly IDictionary<Coordinate, Node> _nodeMap = new OrderedDictionary<Coordinate, Node>();
+#if NET20
+        private readonly IDictionary<Coordinate, Node> _nodeMap = new SortedDictionary<Coordinate, Node>();
+#else
+        private readonly IDictionary<Coordinate, Node> _nodeMap = new Wintellect.PowerCollections.OrderedDictionary<Coordinate, Node>();
+#endif
         /*
         /// <summary>
         /// Constructs a NodeMap without any Nodes.

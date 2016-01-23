@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-using Wintellect.PowerCollections;
 
 namespace NetTopologySuite.Triangulate
 {
@@ -20,7 +19,11 @@ namespace NetTopologySuite.Triangulate
     /// <see cref="VoronoiDiagramBuilder"/>
     public class VertexTaggedGeometryDataMapper
     {
-        private readonly IDictionary<Coordinate, object> _coordDataMap = new OrderedDictionary<Coordinate, object>();
+#if NET20
+        private readonly IDictionary<Coordinate, object> _coordDataMap = new SortedDictionary<Coordinate, object>();
+#else
+        private readonly IDictionary<Coordinate, object> _coordDataMap = new Wintellect.PowerCollections.OrderedDictionary<Coordinate, object>();
+#endif
 
         public void LoadSourceGeometries(IGeometry geoms)
         {
