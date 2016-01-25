@@ -1,7 +1,8 @@
+using System;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries.Utilities;
-using Wintellect.PowerCollections;
 
 namespace NetTopologySuite.Operation.Union
 {
@@ -36,7 +37,11 @@ namespace NetTopologySuite.Operation.Union
         {
             PointLocator locater = new PointLocator();
             // use a set to eliminate duplicates, as required for union
-            var exteriorCoords = new OrderedSet<Coordinate>();
+#if NET35
+            var exteriorCoords = new HashSet<Coordinate>();
+#else
+            var exteriorCoords = new Wintellect.PowerCollections.Set<Coordinate>();
+#endif
 
             foreach (IPoint point in PointExtracter.GetPoints(_pointGeom))
             {
@@ -56,7 +61,10 @@ namespace NetTopologySuite.Operation.Union
             }
 
             // make a puntal geometry of appropriate size
-            ICoordinateSequence coords = _geomFact.CoordinateSequenceFactory.Create(exteriorCoords.ToArray());
+            var exteriorCoordsArray = new Coordinate[exteriorCoords.Count];
+            exteriorCoords.CopyTo(exteriorCoordsArray, 0);
+            Array.Sort(exteriorCoordsArray);
+            ICoordinateSequence coords = _geomFact.CoordinateSequenceFactory.Create(exteriorCoordsArray);
             IGeometry ptComp = coords.Count == 1 ? (IGeometry)_geomFact.CreatePoint(coords.GetCoordinate(0)) : _geomFact.CreateMultiPoint(coords);
 
             // add point component to the other geometry

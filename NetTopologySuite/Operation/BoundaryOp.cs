@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
-using Wintellect.PowerCollections;
 
 namespace NetTopologySuite.Operation
 {
@@ -95,7 +94,11 @@ namespace NetTopologySuite.Operation
         private Coordinate[] ComputeBoundaryCoordinates(IMultiLineString mLine)
         {
             IList<Coordinate> bdyPts = new List<Coordinate>();
-            _endpointMap = new OrderedDictionary<Coordinate, Counter>();
+#if NET20
+            _endpointMap = new SortedDictionary<Coordinate, Counter>();
+#else
+            _endpointMap = new Wintellect.PowerCollections.OrderedDictionary<Coordinate, Counter>();
+#endif
             for (int i = 0; i < mLine.NumGeometries; i++)
             {
                 ILineString line = (ILineString)mLine.GetGeometryN(i);

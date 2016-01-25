@@ -2,6 +2,9 @@ using System;
 using GeoAPI.Geometries;
 using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
+#if NET35
+using System.Linq;
+#endif
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Index.Strtree
@@ -107,10 +110,14 @@ namespace NetTopologySuite.Index.Strtree
             Assert.IsTrue(childBoundables.Count != 0);
             var parentBoundables = new List<IBoundable<T, TItem>>();
             parentBoundables.Add(CreateNode(newLevel));
-            var castedChildBoundables = PlatformUtilityEx.CastPlatform(childBoundables);
-            var sortedChildBoundables =
-                new Wintellect.PowerCollections.BigList<IBoundable<T, TItem>>(castedChildBoundables);
-            sortedChildBoundables.Sort(GetComparer());
+
+            // JTS does a stable sort here.  List<T>.Sort is not stable.
+#if NET35
+            var sortedChildBoundables = childBoundables.OrderBy(x => x, GetComparer());
+#else
+            var sortedChildBoundables = Wintellect.PowerCollections.Algorithms.StableSort(childBoundables, GetComparer());
+#endif
+
             foreach (IBoundable<T, TItem> childBoundable in sortedChildBoundables)
             {
                 if (LastNode(parentBoundables).ChildBoundables.Count == NodeCapacity)

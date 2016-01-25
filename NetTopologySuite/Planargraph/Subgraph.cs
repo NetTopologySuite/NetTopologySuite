@@ -1,6 +1,5 @@
 //using System.Collections;
 using System.Collections.Generic;
-using Wintellect.PowerCollections;
 
 namespace NetTopologySuite.Planargraph
 {
@@ -24,8 +23,12 @@ namespace NetTopologySuite.Planargraph
         /// <summary>
         /// 
         /// </summary>
-        protected Set<Edge> edges = new Set<Edge>();
-        
+#if NET35
+        protected HashSet<Edge> edges = new HashSet<Edge>();
+#else
+        protected Wintellect.PowerCollections.Set<Edge> edges = new Wintellect.PowerCollections.Set<Edge>();
+#endif
+
         /// <summary>
         /// 
         /// </summary>

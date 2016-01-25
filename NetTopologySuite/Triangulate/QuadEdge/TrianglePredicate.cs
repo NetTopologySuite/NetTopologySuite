@@ -5,7 +5,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
 using NetTopologySuite.Mathematics;
-using Wintellect;
 
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
