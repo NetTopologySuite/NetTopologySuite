@@ -89,7 +89,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NetTopologySuite.IO.Streams.CloudStorage\NetTopologySuite.IO.Streams.CloudStorage.csproj">
       <Project>{ce217a88-7f50-4de6-bc79-4ac863347a10}</Project>
-      <Name>NetTopologySuite.IO.Shapefile.Extended.CloudStorage</Name>
+      <Name>NetTopologySuite.IO.Streams.CloudStorage</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.IO.ShapeFile.Extended\NetTopologySuite.IO.ShapeFile.Extended.csproj">
       <Project>{4F36DD38-3CCE-4A19-93C2-A9F8B27EA430}</Project>

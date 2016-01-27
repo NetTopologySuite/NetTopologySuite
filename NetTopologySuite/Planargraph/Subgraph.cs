@@ -14,7 +14,6 @@ namespace NetTopologySuite.Planargraph
     /// </summary>
     public class Subgraph
     {
-
         /// <summary>
         /// 
         /// </summary>
@@ -23,11 +22,7 @@ namespace NetTopologySuite.Planargraph
         /// <summary>
         /// 
         /// </summary>
-#if NET35
         protected HashSet<Edge> edges = new HashSet<Edge>();
-#else
-        protected Wintellect.PowerCollections.Set<Edge> edges = new Wintellect.PowerCollections.Set<Edge>();
-#endif
 
         /// <summary>
         /// 

@@ -101,7 +101,8 @@ namespace NetTopologySuite.Planargraph
 #if NET35
                 var inSortedOrder = new List<DirectedEdge>(_outEdges.OrderBy(x => x));
 #else
-                var inSortedOrder = Wintellect.PowerCollections.Algorithms.StableSort(_outEdges, Comparer<DirectedEdge>.Default);
+                var inSortedOrder = new List<DirectedEdge>(_outEdges);
+                inSortedOrder.Sort(Comparer<DirectedEdge>.Default);
 #endif
                 _outEdges.Clear();
                 _outEdges.AddRange(inSortedOrder);

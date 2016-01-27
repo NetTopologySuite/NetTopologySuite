@@ -19,11 +19,7 @@ namespace NetTopologySuite.Triangulate
         private double _tolerance;
         private QuadEdgeSubdivision _subdiv;
 
-#if NET20
         private readonly IDictionary<Coordinate, Vertex> _constraintVertexMap = new SortedDictionary<Coordinate, Vertex>();
-#else
-        private readonly IDictionary<Coordinate, Vertex> _constraintVertexMap = new Wintellect.PowerCollections.OrderedDictionary<Coordinate, Vertex>();
-#endif
 
         /// <summary>
         /// Sets the sites (point or vertices) which will be triangulated.

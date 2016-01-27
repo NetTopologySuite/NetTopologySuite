@@ -8,11 +8,8 @@ namespace NetTopologySuite.Planargraph
     /// </summary>   
     public class NodeMap
     {
-#if NET20
         private readonly IDictionary<Coordinate, Node> _nodeMap = new SortedDictionary<Coordinate, Node>();
-#else
-        private readonly IDictionary<Coordinate, Node> _nodeMap = new Wintellect.PowerCollections.OrderedDictionary<Coordinate, Node>();
-#endif
+
         /*
         /// <summary>
         /// Constructs a NodeMap without any Nodes.

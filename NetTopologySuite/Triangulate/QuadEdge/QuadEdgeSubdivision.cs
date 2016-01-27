@@ -6,13 +6,8 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Utilities;
 
-#if NET35
 using HashSetQ = System.Collections.Generic.HashSet<NetTopologySuite.Triangulate.QuadEdge.QuadEdge>;
 using HashSetV = System.Collections.Generic.HashSet<NetTopologySuite.Triangulate.QuadEdge.Vertex>;
-#else
-using HashSetQ = Wintellect.PowerCollections.Set<NetTopologySuite.Triangulate.QuadEdge.QuadEdge>;
-using HashSetV = Wintellect.PowerCollections.Set<NetTopologySuite.Triangulate.QuadEdge.Vertex>;
-#endif
 
 namespace NetTopologySuite.Triangulate.QuadEdge
 {

@@ -115,7 +115,8 @@ namespace NetTopologySuite.Index.Strtree
 #if NET35
             var sortedChildBoundables = childBoundables.OrderBy(x => x, GetComparer());
 #else
-            var sortedChildBoundables = Wintellect.PowerCollections.Algorithms.StableSort(childBoundables, GetComparer());
+            var sortedChildBoundables = new List<IBoundable<T, TItem>>(childBoundables);
+            sortedChildBoundables.Sort(GetComparer());
 #endif
 
             foreach (IBoundable<T, TItem> childBoundable in sortedChildBoundables)

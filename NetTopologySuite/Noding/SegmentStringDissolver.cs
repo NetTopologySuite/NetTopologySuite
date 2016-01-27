@@ -45,11 +45,7 @@ namespace NetTopologySuite.Noding
 
         private readonly ISegmentStringMerger _merger;
         private readonly IDictionary<OrientedCoordinateArray, ISegmentString> _ocaMap =
-#if NET20
             new SortedDictionary<OrientedCoordinateArray, ISegmentString>();
-#else
-            new Wintellect.PowerCollections.OrderedDictionary<OrientedCoordinateArray, ISegmentString>();
-#endif
 
         /// <summary>
         /// Creates a dissolver with a user-defined merge strategy.

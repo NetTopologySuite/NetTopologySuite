@@ -63,7 +63,7 @@
 		</PropertyGroup>
 		<RemoveDir Directories="$(MSBuildProjectDirectory)\obj\v2.0" ContinueOnError="true"/>
 		<MSBuild Projects="$(SolutionFile)" 
-             Targets="PowerCollections;NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008" 
+             Targets="System.Core.Replacements;NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008" 
              Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v2.0;TargetFrameworkProfile=;DefineConstants=TRACE,NET20;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v2.0\;NeedsPowerCollections=True;" 
              RunEachTargetSeparately="true" 
 			 ContinueOnError="true" 
@@ -122,7 +122,7 @@
     </PropertyGroup>
 		<RemoveDir Directories="$(MSBuildProjectDirectory)\obj\PCL" ContinueOnError="true"/>
 		<MSBuild Projects="$(SolutionFile)" 
-             Targets="PCL\PowerCollections_PCL;PCL\NetTopologySuite_PCL;PCL\GeoAPI_Bootstrapper_NetTopologySuite;PCL\NetTopologySuite_IO_SpatiaLite_Pcl;PCL\NetTopologySuite_IO_GeoJSON_Pcl" 
+             Targets="PCL\NetTopologySuite_PCL;PCL\GeoAPI_Bootstrapper_NetTopologySuite;PCL\NetTopologySuite_IO_SpatiaLite_Pcl;PCL\NetTopologySuite_IO_GeoJSON_Pcl" 
              Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Profile336;DefineConstants=TRACE,PCL;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\PCL\" 
              RunEachTargetSeparately="true" 
              ContinueOnError="true" 

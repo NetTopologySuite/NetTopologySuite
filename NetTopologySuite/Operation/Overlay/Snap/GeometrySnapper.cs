@@ -172,12 +172,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         private Coordinate[] ExtractTargetCoordinates(IGeometry g)
         {
             // TODO: should do this more efficiently.  Use CoordSeq filter to get points, KDTree for uniqueness & queries
-#if NET35
             var ptSet = new HashSet<Coordinate>(g.Coordinates);
-#else
-            var ptSet = new Wintellect.PowerCollections.Set<Coordinate>(g.Coordinates);
-#endif
-
             Coordinate[] result = new Coordinate[ptSet.Count];
             ptSet.CopyTo(result, 0);
             Array.Sort(result);

@@ -584,12 +584,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Condition=" '$(NeedsPowerCollections)' != 'False' " Include="..\PowerCollections\Source\PowerCollections\PowerCollections.csproj">
-      <Project>{5821977d-ac2c-4912-bcd0-6e6b1a756167}</Project>
-      <Name>PowerCollections</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.-->

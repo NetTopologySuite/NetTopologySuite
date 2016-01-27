@@ -20,11 +20,7 @@ namespace NetTopologySuite.GeometriesGraph
         ///// of the edge coordinates.
         /// </summary>
         ////private readonly ISpatialIndex<Edge> _index = new Quadtree<Edge>();
-#if NET20
         private readonly IDictionary<OrientedCoordinateArray, Edge> _ocaMap = new SortedDictionary<OrientedCoordinateArray, Edge>();
-#else
-        private readonly IDictionary<OrientedCoordinateArray, Edge> _ocaMap = new Wintellect.PowerCollections.OrderedDictionary<OrientedCoordinateArray, Edge>();
-#endif
 
 
         /// <summary>

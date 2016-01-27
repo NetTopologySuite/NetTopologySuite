@@ -105,10 +105,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI.BootStrapper.NetTopo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.GeoJSON.Pcl", "NetTopologySuite.IO\NetTopologySuite.IO.GeoJSON.Pcl\NetTopologySuite.IO.GeoJSON.Pcl.csproj", "{EDCD0BD3-164D-4D8F-935B-CE2ECB7DAE4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections", "PowerCollections\Source\PowerCollections\PowerCollections.csproj", "{5821977D-AC2C-4912-BCD0-6E6B1A756167}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerCollections.Pcl", "PowerCollections\Source\PowerCollections.Pcl\PowerCollections.Pcl.csproj", "{4FE07049-9F3A-42A4-8105-B1A72FE15C67}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GeoAPI", "GeoAPI", "{47BCD40A-C4CF-4E5D-BC90-0491DAC12778}"
 	ProjectSection(SolutionItems) = preProject
 		BuildTools\GeoAPI.Pcl.Reference.targets = BuildTools\GeoAPI.Pcl.Reference.targets
@@ -122,6 +118,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.Streams.CloudStorage", "NetTopologySuite.IO\NetTopologySuite.IO.Streams.CloudStorage\NetTopologySuite.IO.Streams.CloudStorage.csproj", "{CE217A88-7F50-4DE6-BC79-4AC863347A10}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.Streams.CloudStorage.Test", "NetTopologySuite.IO\NetTopologySuite.IO.Streams.CloudStorage.Test\NetTopologySuite.IO.Streams.CloudStorage.Test.csproj", "{A9CE2741-A5B9-4D43-91CF-ECA6BC344A1B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Replacements", "Replacements", "{F553ECEC-D8F7-464B-A07E-298E5F5CBD42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Core.Replacements", "Replacements\System.Core.Replacements\System.Core.Replacements.csproj", "{96B2AEDB-68DF-442B-BEE0-BBD87F3C343E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Core.Replacements.Pcl", "Replacements\System.Core.Replacements.Pcl\System.Core.Replacements.Pcl.csproj", "{38106E0D-BCBD-4D80-818B-D02C5E299049}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -305,18 +307,6 @@ Global
 		{EDCD0BD3-164D-4D8F-935B-CE2ECB7DAE4F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EDCD0BD3-164D-4D8F-935B-CE2ECB7DAE4F}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
 		{EDCD0BD3-164D-4D8F-935B-CE2ECB7DAE4F}.ReleaseLinux|Any CPU.Build.0 = Release|Any CPU
-		{5821977D-AC2C-4912-BCD0-6E6B1A756167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5821977D-AC2C-4912-BCD0-6E6B1A756167}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5821977D-AC2C-4912-BCD0-6E6B1A756167}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5821977D-AC2C-4912-BCD0-6E6B1A756167}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5821977D-AC2C-4912-BCD0-6E6B1A756167}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
-		{5821977D-AC2C-4912-BCD0-6E6B1A756167}.ReleaseLinux|Any CPU.Build.0 = Release|Any CPU
-		{4FE07049-9F3A-42A4-8105-B1A72FE15C67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4FE07049-9F3A-42A4-8105-B1A72FE15C67}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4FE07049-9F3A-42A4-8105-B1A72FE15C67}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4FE07049-9F3A-42A4-8105-B1A72FE15C67}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4FE07049-9F3A-42A4-8105-B1A72FE15C67}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
-		{4FE07049-9F3A-42A4-8105-B1A72FE15C67}.ReleaseLinux|Any CPU.Build.0 = Release|Any CPU
 		{D446FBA3-B6EA-4FEB-9615-D5FD5AEB3D23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D446FBA3-B6EA-4FEB-9615-D5FD5AEB3D23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D446FBA3-B6EA-4FEB-9615-D5FD5AEB3D23}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -335,6 +325,18 @@ Global
 		{A9CE2741-A5B9-4D43-91CF-ECA6BC344A1B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A9CE2741-A5B9-4D43-91CF-ECA6BC344A1B}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
 		{A9CE2741-A5B9-4D43-91CF-ECA6BC344A1B}.ReleaseLinux|Any CPU.Build.0 = Release|Any CPU
+		{96B2AEDB-68DF-442B-BEE0-BBD87F3C343E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96B2AEDB-68DF-442B-BEE0-BBD87F3C343E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96B2AEDB-68DF-442B-BEE0-BBD87F3C343E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96B2AEDB-68DF-442B-BEE0-BBD87F3C343E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96B2AEDB-68DF-442B-BEE0-BBD87F3C343E}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
+		{96B2AEDB-68DF-442B-BEE0-BBD87F3C343E}.ReleaseLinux|Any CPU.Build.0 = Release|Any CPU
+		{38106E0D-BCBD-4D80-818B-D02C5E299049}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38106E0D-BCBD-4D80-818B-D02C5E299049}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38106E0D-BCBD-4D80-818B-D02C5E299049}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38106E0D-BCBD-4D80-818B-D02C5E299049}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38106E0D-BCBD-4D80-818B-D02C5E299049}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
+		{38106E0D-BCBD-4D80-818B-D02C5E299049}.ReleaseLinux|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -369,9 +371,10 @@ Global
 		{E0E42664-2803-45F0-AC53-686CA7A926AD} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
 		{8353362C-192B-4EDF-A50D-C36B21470D76} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
 		{EDCD0BD3-164D-4D8F-935B-CE2ECB7DAE4F} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
-		{4FE07049-9F3A-42A4-8105-B1A72FE15C67} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
 		{47BCD40A-C4CF-4E5D-BC90-0491DAC12778} = {A11130E8-4942-432A-97B7-ADEEFB34A977}
 		{CE217A88-7F50-4DE6-BC79-4AC863347A10} = {54E50C1C-BB10-4DDC-86BD-CA29FB91A89E}
 		{A9CE2741-A5B9-4D43-91CF-ECA6BC344A1B} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
+		{96B2AEDB-68DF-442B-BEE0-BBD87F3C343E} = {F553ECEC-D8F7-464B-A07E-298E5F5CBD42}
+		{38106E0D-BCBD-4D80-818B-D02C5E299049} = {F553ECEC-D8F7-464B-A07E-298E5F5CBD42}
 	EndGlobalSection
 EndGlobal

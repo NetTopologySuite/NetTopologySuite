@@ -1360,9 +1360,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\PowerCollections\Source\PowerCollections.Pcl\PowerCollections.Pcl.csproj">
-      <Project>{4fe07049-9f3a-42a4-8105-b1a72fe15c67}</Project>
-      <Name>PowerCollections.Pcl</Name>
+    <ProjectReference Include="..\..\Replacements\System.Core.Replacements.Pcl\System.Core.Replacements.Pcl.csproj">
+      <Project>{38106e0d-bcbd-4d80-818b-d02c5e299049}</Project>
+      <Name>System.Core.Replacements.Pcl</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

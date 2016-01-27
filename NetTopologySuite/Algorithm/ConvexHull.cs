@@ -116,11 +116,7 @@ namespace NetTopologySuite.Algorithm
                 return pts;
             
             // add points defining polygon
-#if NET35
             var reducedSet = new HashSet<Coordinate>();
-#else
-            var reducedSet = new Wintellect.PowerCollections.Set<Coordinate>();
-#endif
             for (int i = 0; i < polyPts.Length; i++)
                 reducedSet.Add(polyPts[i]);
             
