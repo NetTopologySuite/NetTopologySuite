@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-#if !NET35
-using HS = Wintellect.PowerCollections.Set<int>;
-#else
+#if NET35
 using System.Linq;
-using HS = System.Collections.Generic.HashSet<int>;
 #endif
+using HS = System.Collections.Generic.HashSet<int>;
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.IO.Handlers

@@ -48,6 +48,9 @@
     <RestorePackages>true</RestorePackages>
     <NeedsPowerCollections Condition=" '$(NeedsPowerCollections)' == '' ">False</NeedsPowerCollections>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFrameworkVersion)' == 'v2.0' ">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -57,7 +60,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunFxCop>false</RunFxCop>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <NoWarn>659,168</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -68,7 +70,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\Release\v4.0\AnyCPU\NetTopologySuite.xml</DocumentationFile>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <NoWarn>659,168</NoWarn>
   </PropertyGroup>
   <ItemGroup>
@@ -79,6 +80,35 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFrameworkVersion)' == 'v2.0' ">
+    <Compile Include="..\Replacements\System.Core.Replacements\Collections\Generic\BitHelper.cs">
+      <Link>Utilities\FrameworkReplacements\Collections\Generic\BitHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Replacements\System.Core.Replacements\Collections\Generic\EnumerableHelpers.cs">
+      <Link>Utilities\FrameworkReplacements\Collections\Generic\EnumerableHelpers.cs</Link>
+    </Compile>
+    <Compile Include="..\Replacements\System.Core.Replacements\Collections\Generic\HashSet.cs">
+      <Link>Utilities\FrameworkReplacements\Collections\Generic\HashSet.cs</Link>
+    </Compile>
+    <Compile Include="..\Replacements\System.Core.Replacements\Collections\Generic\IReadOnlyCollection.cs">
+      <Link>Utilities\FrameworkReplacements\Collections\Generic\IReadOnlyCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Replacements\System.Core.Replacements\Collections\Generic\IReadOnlyDictionary.cs">
+      <Link>Utilities\FrameworkReplacements\Collections\Generic\IReadOnlyDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\Replacements\System.Core.Replacements\Collections\Generic\ISet.cs">
+      <Link>Utilities\FrameworkReplacements\Collections\Generic\ISet.cs</Link>
+    </Compile>
+    <Compile Include="..\Replacements\System.Core.Replacements\Collections\Generic\SortedDictionary.cs">
+      <Link>Utilities\FrameworkReplacements\Collections\Generic\SortedDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\Replacements\System.Core.Replacements\Collections\Generic\SortedSet.cs">
+      <Link>Utilities\FrameworkReplacements\Collections\Generic\SortedSet.cs</Link>
+    </Compile>
+    <Compile Include="..\Replacements\System.Core.Replacements\Collections\HashHelpers.cs">
+      <Link>Utilities\FrameworkReplacements\Collections\HashHelpers.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyVersion.cs">
@@ -597,7 +627,9 @@
       <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Aktivieren Sie die Wiederherstellung von NuGet-Paketen, um die fehlende Datei herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir).nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir).nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!--
   <Target Name="AfterBuild">
     <MSBuild Condition=" '$(Configuration)' == 'Release' AND '$(TargetFrameworkVersion)' == 'v3.5'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v2.0;DefineConstants=TRACE;NET20" RunEachTargetSeparately="true" ContinueOnError="true" />

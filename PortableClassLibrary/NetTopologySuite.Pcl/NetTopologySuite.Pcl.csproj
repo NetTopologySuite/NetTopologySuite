@@ -119,6 +119,33 @@
     <Compile Include="..\..\NetTopologySuite\Utilities\RToolsUtil\Token.cs">
       <Link>Utilities\RToolsUtil\Token.cs</Link>
     </Compile>
+    <Compile Include="..\..\Replacements\System.Core.Replacements\Collections\Generic\BitHelper.cs">
+      <Link>Utilities\FrameworkReplacements\Collections\Generic\BitHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Replacements\System.Core.Replacements\Collections\Generic\EnumerableHelpers.cs">
+      <Link>Utilities\FrameworkReplacements\Collections\Generic\EnumerableHelpers.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Replacements\System.Core.Replacements\Collections\Generic\HashSet.cs">
+      <Link>Utilities\FrameworkReplacements\Collections\Generic\HashSet.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Replacements\System.Core.Replacements\Collections\Generic\IReadOnlyCollection.cs">
+      <Link>Utilities\FrameworkReplacements\Collections\Generic\IReadOnlyCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Replacements\System.Core.Replacements\Collections\Generic\IReadOnlyDictionary.cs">
+      <Link>Utilities\FrameworkReplacements\Collections\Generic\IReadOnlyDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Replacements\System.Core.Replacements\Collections\Generic\ISet.cs">
+      <Link>Utilities\FrameworkReplacements\Collections\Generic\ISet.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Replacements\System.Core.Replacements\Collections\Generic\SortedDictionary.cs">
+      <Link>Utilities\FrameworkReplacements\Collections\Generic\SortedDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Replacements\System.Core.Replacements\Collections\Generic\SortedSet.cs">
+      <Link>Utilities\FrameworkReplacements\Collections\Generic\SortedSet.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Replacements\System.Core.Replacements\Collections\HashHelpers.cs">
+      <Link>Utilities\FrameworkReplacements\Collections\HashHelpers.cs</Link>
+    </Compile>
     <Compile Include="..\..\SharedAssemblyVersion.cs">
       <Link>Properties\SharedAssemblyVersion.cs</Link>
     </Compile>
@@ -1359,12 +1386,6 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Replacements\System.Core.Replacements.Pcl\System.Core.Replacements.Pcl.csproj">
-      <Project>{38106e0d-bcbd-4d80-818b-d02c5e299049}</Project>
-      <Name>System.Core.Replacements.Pcl</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(SolutionDir).nuget\NuGet.targets" Condition="Exists('$(SolutionDir).nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -1372,7 +1393,9 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir).nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir).nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

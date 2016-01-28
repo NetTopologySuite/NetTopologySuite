@@ -4,11 +4,14 @@ using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+/*
 #if !NET35
 using HS = Wintellect.PowerCollections.Set<int>;
 #else
 using HS = System.Collections.Generic.HashSet<int>;
 #endif
+*/
+using HS = System.Collections.Generic.HashSet<int>;
 
 namespace NetTopologySuite.IO.Handlers
 {
