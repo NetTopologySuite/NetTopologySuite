@@ -98,12 +98,7 @@ namespace NetTopologySuite.Planargraph
             if (!_sorted)
             {
                 // JTS does a stable sort here.  List<T>.Sort is not stable.
-#if NET35
-                var inSortedOrder = new List<DirectedEdge>(_outEdges.OrderBy(x => x));
-#else
-                var inSortedOrder = new List<DirectedEdge>(_outEdges);
-                inSortedOrder.Sort(Comparer<DirectedEdge>.Default);
-#endif
+                var inSortedOrder = new List<DirectedEdge>(CollectionUtil.StableSort(_outEdges));
                 _outEdges.Clear();
                 _outEdges.AddRange(inSortedOrder);
                 _sorted = true;                
