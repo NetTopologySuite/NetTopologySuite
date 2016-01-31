@@ -32,14 +32,6 @@ namespace NetTopologySuite.Samples.Tests.Various
             AssertStronglyNamedAssembly(typeof(Datum));
         }
 
-#if !NET35
-        [Test, Category("Issue174")]
-        public void ensure_PowerCollections_assembly_is_strongly_named()
-        {
-            AssertStronglyNamedAssembly(typeof(Wintellect.PowerCollections.OrderedSet<object>));
-        }
-#endif
-
         [Test, Category("Issue174")]
         public void ensure_NetTopologySuite_assembly_is_strongly_named()
         {

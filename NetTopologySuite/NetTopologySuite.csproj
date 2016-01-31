@@ -46,7 +46,6 @@
     <BootstrapperEnabled>false</BootstrapperEnabled>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <RestorePackages>true</RestorePackages>
-    <NeedsPowerCollections Condition=" '$(NeedsPowerCollections)' == '' ">False</NeedsPowerCollections>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(TargetFrameworkVersion)' == 'v2.0' ">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
