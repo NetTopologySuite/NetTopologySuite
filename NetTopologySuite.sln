@@ -80,13 +80,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Converter.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO", "NetTopologySuite.IO\NetTopologySuite.IO\NetTopologySuite.IO.csproj", "{E377580E-61C9-4943-B98B-085D51B32578}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6F9E6225-D390-4C9E-BEED-9B5487F477FD}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PCL", "PCL", "{3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Pcl", "PortableClassLibrary\NetTopologySuite.Pcl\NetTopologySuite.Pcl.csproj", "{C6F14605-0DA6-420A-8DE7-18B57E9A9C99}"
