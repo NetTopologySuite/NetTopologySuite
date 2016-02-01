@@ -24,7 +24,6 @@
       <DocumentationSource sourceFile="..\GeoAPI\GeoAPI\GeoAPI.csproj" configuration="Release" platform="AnyCPU" />
       <DocumentationSource sourceFile="..\NetTopologySuite\Geometries\Geometries.xml" />
       <DocumentationSource sourceFile="..\NetTopologySuite\NetTopologySuite.csproj" configuration="Release" platform="AnyCPU" />
-      <DocumentationSource sourceFile="..\PowerCollections\PowerCollections\PowerCollections.csproj" configuration="Release" platform="AnyCPU" />
       <DocumentationSource sourceFile="..\NetTopologySuite\Triangulate\QuadEdge\QuadEdgeSummary.xml" />
       <DocumentationSource sourceFile="..\NetTopologySuite\Triangulate\TriangulateSummary.xml" />
     </DocumentationSources>

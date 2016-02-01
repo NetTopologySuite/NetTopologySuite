@@ -45,7 +45,6 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>false</BootstrapperEnabled>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-    <NeedsPowerCollections Condition=" '$(NeedsPowerCollections)' == '' ">False</NeedsPowerCollections>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(TargetFrameworkVersion)' == 'v2.0' ">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

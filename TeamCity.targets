@@ -70,7 +70,7 @@
 		<RemoveDir Directories="$(MSBuildProjectDirectory)\obj\v2.0" ContinueOnError="true"/>
 		<MSBuild Projects="$(SolutionFile)" 
              Targets="NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008" 
-             Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v2.0;TargetFrameworkProfile=;DefineConstants=TRACE,NET20;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v2.0\;NeedsPowerCollections=True;" 
+             Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v2.0;TargetFrameworkProfile=;DefineConstants=TRACE,NET20;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v2.0\;" 
              RunEachTargetSeparately="true" 
 			 ContinueOnError="true" 
              />		
@@ -82,7 +82,7 @@
 		<RemoveDir Directories="$(MSBuildProjectDirectory)\obj\v3.5" ContinueOnError="true"/>
 		<MSBuild Projects="$(SolutionFile)" 
              Targets="NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008" 
-             Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v3.5;TargetFrameworkProfile=Client;DefineConstants=TRACE,NET20,NET35;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v3.5\;NeedsPowerCollections=False;" 
+             Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v3.5;TargetFrameworkProfile=Client;DefineConstants=TRACE,NET20,NET35;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v3.5\;" 
              RunEachTargetSeparately="true" 
              ContinueOnError="true" />
 	</Target>
@@ -93,7 +93,7 @@
 		<RemoveDir Directories="$(MSBuildProjectDirectory)\obj\v4.0" ContinueOnError="true"/>
 		<MSBuild Projects="$(SolutionFile)" 
              Targets="NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile_Extended;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008" 
-             Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Client;DefineConstants=TRACE,NET20,NET35,NET40;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v4.0\;NeedsPowerCollections=False;" 
+             Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Client;DefineConstants=TRACE,NET20,NET35,NET40;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v4.0\;" 
              RunEachTargetSeparately="true" 
              ContinueOnError="true" 
              />
@@ -105,7 +105,7 @@
 		<RemoveDir Directories="$(MSBuildProjectDirectory)\obj\v4.0.3" ContinueOnError="true"/>
 		<MSBuild Projects="$(SolutionFile)" 
              Targets="NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile_Extended;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008" 
-             Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v4.0.3;TargetFrameworkProfile=Client;DefineConstants=TRACE,NET20,NET35,NET40;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v4.0.3\;NeedsPowerCollections=False;" 
+             Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v4.0.3;TargetFrameworkProfile=Client;DefineConstants=TRACE,NET20,NET35,NET40;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v4.0.3\;" 
              RunEachTargetSeparately="true" 
              ContinueOnError="true" 
              />		
@@ -117,7 +117,7 @@
 		<RemoveDir Directories="$(MSBuildProjectDirectory)\obj\v4.5" ContinueOnError="true"/>
 		<MSBuild Projects="$(SolutionFile)" 
              Targets="NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile_Extended;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008" 
-             Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v4.5;TargetFrameworkProfile=;DefineConstants=TRACE,NET20,NET35,NET40;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v4.5\;NeedsPowerCollections=False;" 
+             Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v4.5;TargetFrameworkProfile=;DefineConstants=TRACE,NET20,NET35,NET40;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v4.5\;" 
              RunEachTargetSeparately="true" 
              ContinueOnError="true" 
              />
