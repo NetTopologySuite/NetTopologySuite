@@ -11,7 +11,7 @@
 		<requireLicenseAcceptance>true</requireLicenseAcceptance>
 		<description>
       The NTS Topology Suite is an API for modelling and manipulating 2-dimensional linear geometry. It provides numerous geometric predicates and functions. NTS conforms to the Simple Features Specification.
-      This package contains Wintellect's PowerCollections and references GeoAPI.
+      This package references GeoAPI.
 		</description>
 		<summary>NTS Topology Suite is a direct-port of all the functionalities offered by JTS Topology Suite</summary>
 		<tags>NTS Topology OGC SFS</tags>
@@ -30,37 +30,22 @@
 		<file src="Release\v2.0\AnyCPU\NetTopologySuite.dll" target="lib\net20" />
 		<file src="Release\v2.0\AnyCPU\NetTopologySuite.pdb" target="lib\net20" />
 		<file src="Release\v2.0\AnyCPU\NetTopologySuite.xml" target="lib\net20" />
-		<file src="Release\v2.0\AnyCPU\PowerCollections.dll" target="lib\net20" />
-		<file src="Release\v2.0\AnyCPU\PowerCollections.pdb" target="lib\net20" />
-		<file src="Release\v2.0\AnyCPU\PowerCollections.xml" target="lib\net20" />
 
 		<file src="Release\v3.5\AnyCPU\NetTopologySuite.dll" target="lib\net35-client" />
 		<file src="Release\v3.5\AnyCPU\NetTopologySuite.pdb" target="lib\net35-client" />
 		<file src="Release\v3.5\AnyCPU\NetTopologySuite.xml" target="lib\net35-client" />
-		<file src="Release\v3.5\AnyCPU\PowerCollections.dll" target="lib\net35-client" />
-		<file src="Release\v3.5\AnyCPU\PowerCollections.pdb" target="lib\net35-client" />
-		<file src="Release\v3.5\AnyCPU\PowerCollections.xml" target="lib\net35-client" />
 
 		<file src="Release\v4.0\AnyCPU\NetTopologySuite.dll" target="lib\net40-client" />
 		<file src="Release\v4.0\AnyCPU\NetTopologySuite.pdb" target="lib\net40-client" />
 		<file src="Release\v4.0\AnyCPU\NetTopologySuite.xml" target="lib\net40-client" />
-		<file src="Release\v4.0\AnyCPU\PowerCollections.dll" target="lib\net40-client" />
-		<file src="Release\v4.0\AnyCPU\PowerCollections.pdb" target="lib\net40-client" />
-		<file src="Release\v4.0\AnyCPU\PowerCollections.xml" target="lib\net40-client" />
 
 		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.dll" target="lib\net403-client" />
 		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.pdb" target="lib\net403-client" />
 		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.xml" target="lib\net403-client" />
-		<file src="Release\v4.0.3\AnyCPU\PowerCollections.dll" target="lib\net403-client" />
-		<file src="Release\v4.0.3\AnyCPU\PowerCollections.pdb" target="lib\net403-client" />
-		<file src="Release\v4.0.3\AnyCPU\PowerCollections.xml" target="lib\net403-client" />
 
 		<file src="Release\v4.5\AnyCPU\NetTopologySuite.dll" target="lib\net45" />
 		<file src="Release\v4.5\AnyCPU\NetTopologySuite.pdb" target="lib\net45" />
 		<file src="Release\v4.5\AnyCPU\NetTopologySuite.xml" target="lib\net45" />
-		<file src="Release\v4.5\AnyCPU\PowerCollections.dll" target="lib\net45" />
-		<file src="Release\v4.5\AnyCPU\PowerCollections.pdb" target="lib\net45" />
-		<file src="Release\v4.5\AnyCPU\PowerCollections.xml" target="lib\net45" />
 
 		<file src="Release\PCL\AnyCPU\NetTopologySuite.dll" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
 		<file src="Release\PCL\AnyCPU\NetTopologySuite.pdb" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
@@ -68,8 +53,5 @@
 		<file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.dll" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
 		<file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.pdb" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
 		<file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.xml" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\PowerCollections.dll" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\PowerCollections.pdb" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\PowerCollections.xml" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
 	</files>
 </package>
