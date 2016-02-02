@@ -19,11 +19,7 @@ namespace NetTopologySuite.Triangulate
     /// <see cref="VoronoiDiagramBuilder"/>
     public class VertexTaggedGeometryDataMapper
     {
-#if NET20
         private readonly IDictionary<Coordinate, object> _coordDataMap = new SortedDictionary<Coordinate, object>();
-#else
-        private readonly IDictionary<Coordinate, object> _coordDataMap = new Wintellect.PowerCollections.OrderedDictionary<Coordinate, object>();
-#endif
 
         public void LoadSourceGeometries(IGeometry geoms)
         {

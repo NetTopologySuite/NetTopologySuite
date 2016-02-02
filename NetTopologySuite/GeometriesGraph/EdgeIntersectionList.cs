@@ -11,11 +11,7 @@ namespace NetTopologySuite.GeometriesGraph
     public class EdgeIntersectionList
     {
         // a list of EdgeIntersections      
-#if NET20
         private readonly IDictionary<EdgeIntersection, EdgeIntersection> nodeMap = new SortedDictionary<EdgeIntersection, EdgeIntersection>();
-#else
-        private readonly IDictionary<EdgeIntersection, EdgeIntersection> nodeMap = new Wintellect.PowerCollections.OrderedDictionary<EdgeIntersection, EdgeIntersection>();
-#endif
         private readonly Edge edge;  // the parent edge
 
         /// <summary>

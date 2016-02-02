@@ -403,11 +403,7 @@ namespace NetTopologySuite.Operation.Valid
         /// </summary>
         private void CheckNoSelfIntersectingRing(EdgeIntersectionList eiList)
         {
-#if NET35
             HashSet<Coordinate> nodeSet = new HashSet<Coordinate>();
-#else
-            Wintellect.PowerCollections.Set<Coordinate> nodeSet = new Wintellect.PowerCollections.Set<Coordinate>();
-#endif
             bool isFirst = true;
             foreach(EdgeIntersection ei in eiList)
             {                

@@ -37,11 +37,7 @@ namespace NetTopologySuite.Operation.Union
         {
             PointLocator locater = new PointLocator();
             // use a set to eliminate duplicates, as required for union
-#if NET35
             var exteriorCoords = new HashSet<Coordinate>();
-#else
-            var exteriorCoords = new Wintellect.PowerCollections.Set<Coordinate>();
-#endif
 
             foreach (IPoint point in PointExtracter.GetPoints(_pointGeom))
             {

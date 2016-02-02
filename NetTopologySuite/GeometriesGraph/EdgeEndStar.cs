@@ -19,11 +19,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// A map which maintains the edges in sorted order around the node.
         /// </summary>
-#if NET20
         protected IDictionary<EdgeEnd, EdgeEnd> edgeMap = new SortedDictionary<EdgeEnd, EdgeEnd>();
-#else
-        protected IDictionary<EdgeEnd, EdgeEnd> edgeMap = new Wintellect.PowerCollections.OrderedDictionary<EdgeEnd, EdgeEnd>();
-#endif
 
         /// <summary> 
         /// A list of all outgoing edges in the result, in CCW order.

@@ -6,14 +6,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Utilities;
 
-#if NET35
-using HashSetQ = System.Collections.Generic.HashSet<NetTopologySuite.Triangulate.QuadEdge.QuadEdge>;
-using HashSetV = System.Collections.Generic.HashSet<NetTopologySuite.Triangulate.QuadEdge.Vertex>;
-#else
-using HashSetQ = Wintellect.PowerCollections.Set<NetTopologySuite.Triangulate.QuadEdge.QuadEdge>;
-using HashSetV = Wintellect.PowerCollections.Set<NetTopologySuite.Triangulate.QuadEdge.Vertex>;
-#endif
-
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
     /// <summary>
@@ -499,7 +491,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <see cref="GetVertexUniqueEdges"/>
         public IEnumerable<Vertex> GetVertices(bool includeFrame)
         {
-            var vertices = new HashSetV();
+            var vertices = new HashSet<Vertex>();
 
             foreach (var qe in _quadEdges)
             {
@@ -541,7 +533,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public IList<QuadEdge> GetVertexUniqueEdges(bool includeFrame)
         {
             var edges = new List<QuadEdge>();
-            var visitedVertices = new HashSetV();
+            var visitedVertices = new HashSet<Vertex>();
 
             foreach (var qe in _quadEdges)
             {
@@ -592,7 +584,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             var edgeStack = new Stack<QuadEdge>();
             edgeStack.Push(_startingEdge);
 
-            var visitedEdges = new HashSetQ();
+            var visitedEdges = new HashSet<QuadEdge>();
 
             while (edgeStack.Count > 0)
             {
@@ -653,7 +645,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             var edgeStack = new Stack<QuadEdge>();
             edgeStack.Push(_startingEdge);
 
-            var visitedEdges = new HashSetQ();
+            var visitedEdges = new HashSet<QuadEdge>();
 
             while (edgeStack.Count > 0)
             {
@@ -688,7 +680,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// or <value>null</value> if the triangle should not be visited (for instance, if it is outer)
         /// </returns>
         private QuadEdge[] FetchTriangleToVisit(QuadEdge edge, Stack<QuadEdge> edgeStack, bool includeFrame,
-            HashSetQ visitedEdges)
+            HashSet<QuadEdge> visitedEdges)
         {
             QuadEdge curr = edge;
             int edgeCount = 0;

@@ -383,12 +383,7 @@ namespace NetTopologySuite.Operation.Polygonize
         public ICollection<ILineString> DeleteDangles()
         {
             var nodesToRemove = FindNodesOfDegree(1);
-#if NET35
             HashSet<ILineString> dangleLines = new HashSet<ILineString>();
-#else
-            Wintellect.PowerCollections.Set<ILineString> dangleLines = new Wintellect.PowerCollections.Set<ILineString>();
-#endif
-
             Stack<Node> nodeStack = new Stack<Node>();
             foreach (Node node in nodesToRemove)
                 nodeStack.Push(node);

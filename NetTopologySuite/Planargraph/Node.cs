@@ -21,18 +21,9 @@ namespace NetTopologySuite.Planargraph
         public static IList<DirectedEdge> GetEdgesBetween(Node node0, Node node1)
         {
             IList<Edge> edges0 = DirectedEdge.ToEdges(node0.OutEdges.Edges);
-#if NET35
             var commonEdges = new HashSet<DirectedEdge>(Utilities.Caster.Cast<DirectedEdge>(edges0));
-#else
-            var commonEdges = new Wintellect.PowerCollections.Set<DirectedEdge>(Utilities.Caster.Cast<DirectedEdge>(edges0));
-#endif
             IList<Edge> edges1 = DirectedEdge.ToEdges(node1.OutEdges.Edges);
-
-#if NET35
             commonEdges.ExceptWith(Utilities.Caster.Cast<DirectedEdge>(edges1));
-#else
-            commonEdges.RemoveMany(Utilities.Caster.Cast<DirectedEdge>(edges1));
-#endif
             return new List<DirectedEdge>(commonEdges);
         }
 

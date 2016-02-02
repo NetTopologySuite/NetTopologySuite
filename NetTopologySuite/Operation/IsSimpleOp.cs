@@ -152,11 +152,7 @@ namespace NetTopologySuite.Operation
             if (mp.IsEmpty) 
                 return true;
 
-#if NET35
             HashSet<Coordinate> points = new HashSet<Coordinate>();
-#else
-            Wintellect.PowerCollections.Set<Coordinate> points = new Wintellect.PowerCollections.Set<Coordinate>();
-#endif
             for (int i = 0; i < mp.NumGeometries; i++)
             {
                 IPoint pt = (IPoint)mp.GetGeometryN(i);
@@ -286,11 +282,7 @@ namespace NetTopologySuite.Operation
         /// </summary>
         private bool HasClosedEndpointIntersection(GeometryGraph graph)
         {
-#if NET20
             IDictionary<Coordinate, EndpointInfo> endPoints = new SortedDictionary<Coordinate, EndpointInfo>();
-#else
-            IDictionary<Coordinate, EndpointInfo> endPoints = new Wintellect.PowerCollections.OrderedDictionary<Coordinate, EndpointInfo>();
-#endif
             foreach (Edge e in graph.Edges)
             {
                 //int maxSegmentIndex = e.MaximumSegmentIndex;

@@ -1,5 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+#if NET35
+using System.Linq;
+#endif
 #if PCL
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
@@ -12,7 +15,7 @@ namespace NetTopologySuite.Utilities
     /// </summary>
     public class CollectionUtil
     {
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -40,7 +43,7 @@ namespace NetTopologySuite.Utilities
         public static IList Transform(ICollection coll, FunctionDelegate<object> func)
         {
             IList result = new ArrayList();
-            foreach(object obj in coll)           
+            foreach(object obj in coll)
                 result.Add(func(obj));
             return result;
         }
@@ -140,10 +143,10 @@ namespace NetTopologySuite.Utilities
         /// <returns></returns>
         public static IList Select(ICollection coll, FunctionDelegate<object, bool> func)
         {
-            IList result = new ArrayList();            
+            IList result = new ArrayList();
             foreach (object obj in coll)
                 if (func(obj))
-                    result.Add(obj);                            
+                    result.Add(obj);
             return result;
         }
 
@@ -177,5 +180,74 @@ namespace NetTopologySuite.Utilities
             return res;
         }
 
+        internal static IEnumerable<T> StableSort<T>(IEnumerable<T> items)
+        {
+            return StableSort(items, Comparer<T>.Default);
+        }
+
+        internal static IEnumerable<T> StableSort<T>(IEnumerable<T> items, IComparer<T> comparer)
+        {
+#if NET35
+            // LINQ's OrderBy is guaranteed to be a stable sort.
+            return items.OrderBy(x => x, comparer);
+#else
+
+            // otherwise, tag each item with the index and sort the wrappers.
+            // if we're given a collection (and we always are), use its count
+            // to prevent unnecessary array copies.
+            var itemCollection = items as ICollection<T>;
+            var taggedItems = itemCollection == null
+                ? new List<IndexTaggedItem<T>>()
+                : new List<IndexTaggedItem<T>>(itemCollection.Count);
+
+            int index = 0;
+            foreach (var item in items)
+            {
+                taggedItems.Add(new IndexTaggedItem<T>(item, index++));
+            }
+
+            taggedItems.Sort(new IndexAwareComparer<T>(comparer));
+
+            var sorted = new List<T>(taggedItems.Count);
+            foreach (var taggedItem in taggedItems)
+            {
+                sorted.Add(taggedItem.Item);
+            }
+
+            return sorted;
+#endif
+        }
+
+#if !NET35
+        private sealed class IndexTaggedItem<T>
+        {
+            internal readonly T Item;
+            internal readonly int Index;
+
+            internal IndexTaggedItem(T item, int index)
+            {
+                this.Item = item;
+                this.Index = index;
+            }
+        }
+
+        private sealed class IndexAwareComparer<T> : Comparer<IndexTaggedItem<T>>
+        {
+            private readonly IComparer<T> primaryComparer;
+
+            internal IndexAwareComparer(IComparer<T> primaryComparer)
+            {
+                this.primaryComparer = primaryComparer;
+            }
+
+            public override int Compare(IndexTaggedItem<T> x, IndexTaggedItem<T> y)
+            {
+                int cmp = this.primaryComparer.Compare(x.Item, y.Item);
+
+                // compare equal elements by their index.
+                return cmp == 0 ? x.Index.CompareTo(y.Index) : cmp;
+            }
+        }
+#endif
     }
 }

@@ -144,11 +144,7 @@ namespace NetTopologySuite.Operation.Buffer
         // <FIX> MD - use iteration & queue rather than recursion, for speed and robustness
         private static void ComputeDepths(DirectedEdge startEdge)
         {
-#if NET35
             HashSet<Node> nodesVisited = new HashSet<Node>();
-#else
-            Wintellect.PowerCollections.Set<Node> nodesVisited = new Wintellect.PowerCollections.Set<Node>();
-#endif
             Queue<Node> nodeQueue = new Queue<Node>();
             Node startNode = startEdge.Node;                 
             nodeQueue.Enqueue(startNode);   

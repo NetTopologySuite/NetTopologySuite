@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-#if !NET35
-using HS = Wintellect.PowerCollections.Set<int>;
-#else
+#if NET35
 using System.Linq;
-using HS = System.Collections.Generic.HashSet<int>;
 #endif
 using GeoAPI.Geometries;
 
@@ -445,10 +442,10 @@ namespace NetTopologySuite.IO.Handlers
         /// <param name="currentlyReadBytes">How many bytes are read from this record</param>
         /// <param name="buffer">The coordinate buffer</param>
         /// <param name="skippedList">A list of indices which have not been added to the buffer</param>     
-        protected void GetZMValues(BigEndianBinaryReader file, int totalRecordLength, ref int currentlyReadBytes, ICoordinateBuffer buffer, HS skippedList = null)
+        protected void GetZMValues(BigEndianBinaryReader file, int totalRecordLength, ref int currentlyReadBytes, ICoordinateBuffer buffer, HashSet<int> skippedList = null)
         {
             if (skippedList == null)
-                skippedList = new HS();
+                skippedList = new HashSet<int>();
 
             var numPoints = buffer.Capacity;
 
