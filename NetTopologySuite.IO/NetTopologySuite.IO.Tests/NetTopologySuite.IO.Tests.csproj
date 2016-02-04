@@ -16,7 +16,6 @@
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -84,6 +83,7 @@
     <Compile Include="GeoJSON\FeatureConverterTest.cs" />
     <Compile Include="GeoJSON\GeoJsonSerializerTest.cs" />
     <Compile Include="GeoJSON\GeoJsonWriterTest.cs" />
+    <Compile Include="GeoJSON\GitHubIssues.cs" />
     <Compile Include="GeoJSON\Issue148.cs" />
     <Compile Include="GeoJSON\Issue16Fixture.cs" />
     <Compile Include="GeoJSON\Issue32Fixture.cs" />

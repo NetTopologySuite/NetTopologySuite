@@ -29,6 +29,9 @@ namespace NetTopologySuite.IO.Converters
             string[] names = attributes.GetNames();
             foreach (string name in names)
             {
+                // skip id
+                if (name == "id") continue;
+
                 writer.WritePropertyName(name);
                 object val = attributes[name];
                 serializer.Serialize(writer, val);

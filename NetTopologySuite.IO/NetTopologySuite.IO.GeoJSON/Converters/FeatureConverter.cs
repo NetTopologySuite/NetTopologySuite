@@ -28,12 +28,28 @@ namespace NetTopologySuite.IO.Converters
                 return;
 
             writer.WriteStartObject();
+
+            // type
             writer.WritePropertyName("type");
             writer.WriteValue("Feature");
+            
+            // Add the id here if present in attributes.
+            // It will be skipped in serialization of properties
+            if (feature.Attributes.Exists("id"))
+            {
+                var id = feature.Attributes["id"];
+                writer.WritePropertyName("id");
+                serializer.Serialize(writer, id);
+            }
+
+            // geometry
             writer.WritePropertyName("geometry");
             serializer.Serialize(writer, feature.Geometry);
+
+            // properties
             writer.WritePropertyName("properties");
             serializer.Serialize(writer, feature.Attributes);
+
             writer.WriteEndObject();
         }
 

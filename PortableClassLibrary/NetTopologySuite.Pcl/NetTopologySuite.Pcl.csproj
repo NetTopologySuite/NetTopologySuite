@@ -85,6 +85,9 @@
     <Compile Include="..\..\NetTopologySuite\Features\FeatureCollection.cs">
       <Link>Features\FeatureCollection.cs</Link>
     </Compile>
+    <Compile Include="..\..\NetTopologySuite\Features\FeatureExtensions.cs">
+      <Link>Features\FeatureExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetTopologySuite\Features\IFeature.cs">
       <Link>Features\IFeature.cs</Link>
     </Compile>
