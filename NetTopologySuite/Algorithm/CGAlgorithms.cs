@@ -574,23 +574,14 @@ namespace NetTopologySuite.Algorithm
 
             double len = 0.0;
 
-            var p = new Coordinate();
-            pts.GetCoordinate(0, p);
-            double x0 = p.X;
-            double y0 = p.Y;
+            var p0 = pts.GetCoordinate(0);
 
             for (int i = 1; i < n; i++)
             {
-                pts.GetCoordinate(i, p);
-                double x1 = p.X;
-                double y1 = p.Y;
-                double dx = x1 - x0;
-                double dy = y1 - y0;
+                var p1 = pts.GetCoordinate(i);
+                len += p1.Distance(p0);
 
-                len += Math.Sqrt(dx * dx + dy * dy);
-
-                x0 = x1;
-                y0 = y1;
+                p0 = p1;
             }
             return len;
         }
