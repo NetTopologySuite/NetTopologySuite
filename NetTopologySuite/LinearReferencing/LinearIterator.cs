@@ -104,12 +104,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns><c>true</c> if there are more vertices to scan.</returns>
         public bool HasNext()
         {
-            if (_componentIndex >= _numLines)
-                return false;
-            if (_componentIndex == _numLines - 1 &&
-                _vertexIndex >= _currentLine.NumPoints)
-                return false;
-            return true;
+			return _componentIndex < _numLines && _vertexIndex < _currentLine.NumPoints;
         }
 
         /// <summary>
