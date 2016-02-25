@@ -105,7 +105,8 @@
         private static Coordinate ReadJsonCoordinate(JsonReader reader)
         {
             reader.Read();
-            if (reader.TokenType != JsonToken.StartArray) return null;
+            if (reader.TokenType != JsonToken.StartArray) 
+                return null;
 
             Coordinate c = new Coordinate();
 
