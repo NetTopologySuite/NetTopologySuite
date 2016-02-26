@@ -87,6 +87,8 @@ namespace NetTopologySuite.Operation.Polygonize
                 return;
 
             Coordinate[] linePts = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
+            if (linePts.Length < 2) return;
+
             Coordinate startPt = linePts[0];
             Coordinate endPt = linePts[linePts.Length - 1];
 

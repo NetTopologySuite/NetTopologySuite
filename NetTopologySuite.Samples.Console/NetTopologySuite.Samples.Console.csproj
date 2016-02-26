@@ -44,7 +44,6 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -122,6 +121,7 @@
     <Compile Include="Tests\Github\Issue58Fixture.cs" />
     <Compile Include="Tests\Github\Issue61Fixture.cs" />
     <Compile Include="Tests\Github\Issue62Fixture.cs" />
+    <Compile Include="Tests\Github\Issue87Fixture.cs" />
     <Compile Include="Tests\IO\GmlTest.cs" />
     <Compile Include="Tests\Github\Issue36Tests.cs" />
     <Compile Include="Tests\IO\PostGisTest.cs" />
