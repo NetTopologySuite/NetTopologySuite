@@ -68,7 +68,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
             kd.Insert(new Coordinate(19, 12), "J");
             kd.Insert(new Coordinate(10, 2), "K");
 
-
             var res = kd.NearestNeighbor(new Coordinate(13, 2));
 
             Assert.AreEqual("K", res.Data);
