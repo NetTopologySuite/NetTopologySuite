@@ -24,7 +24,7 @@ namespace NetTopologySuite.Features
         /// <param name="feature">The feature</param>
         /// <returns>The feature's ID if one has been assigned, otherwise <value>null</value></returns>
         /// <exception cref="ArgumentNullException">Thrown, if <paramref name="feature"/> is <valu>null</valu></exception>
-        public static object ID(this IFeature feature)
+        public static object ID(IFeature feature)
         {
             return HasID(feature)
                 ? feature.Attributes[IdAttributeName]
@@ -37,7 +37,7 @@ namespace NetTopologySuite.Features
         /// <param name="feature">The feature</param>
         /// <returns><value>true</value> if <paramref name="feature"/> has an identifier assigned, otherwise <value>false</value></returns>
         /// <exception cref="ArgumentNullException">Thrown, if <paramref name="feature"/> is <valu>null</valu></exception>
-        public static bool HasID(this IFeature feature)
+        public static bool HasID(IFeature feature)
         {
             if (feature == null)
                 throw new ArgumentNullException("feature");
