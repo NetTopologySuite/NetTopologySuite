@@ -53,6 +53,27 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
         }
 
         [Test]
+        public void TestNearestNeighbor()
+        {
+            var kd = new KdTree<string>();
+            kd.Insert(new Coordinate(12, 16), "A");
+            kd.Insert(new Coordinate(15, 8), "B");
+            kd.Insert(new Coordinate(5, 18), "C");
+            kd.Insert(new Coordinate(18, 5), "D");
+            kd.Insert(new Coordinate(16, 15), "E");
+            kd.Insert(new Coordinate(2, 5), "F");
+            kd.Insert(new Coordinate(7, 10), "G");
+            kd.Insert(new Coordinate(8, 7), "H");
+            kd.Insert(new Coordinate(5, 5), "I");
+            kd.Insert(new Coordinate(19, 12), "J");
+            kd.Insert(new Coordinate(10, 2), "K");
+
+            var res = kd.NearestNeighbor(new Coordinate(13, 2));
+
+            Assert.AreEqual("K", res.Data);
+        }
+
+        [Test]
         public void TestMultiplePoint()
         {
             TestQuery("MULTIPOINT ( (1 1), (2 2) )", 0,

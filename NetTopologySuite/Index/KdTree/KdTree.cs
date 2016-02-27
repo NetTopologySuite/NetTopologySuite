@@ -337,12 +337,10 @@ namespace NetTopologySuite.Index.KdTree
                 var searchLeft = false;
                 var searchRight = false;
                 if (currentNode.Left != null)
-                    searchLeft = (Math.Pow(currentNode.Left.X - queryCoordinate.X, 2) +
-                                  Math.Pow(currentNode.Left.Y - queryCoordinate.Y, 2)) < closestDistanceSq;
+                    searchLeft = NeedsToBeSearched(queryCoordinate, currentNode.Left, closestDistanceSq);
 
                 if (currentNode.Right != null)
-                    searchRight = (Math.Pow(currentNode.Right.X - queryCoordinate.X, 2) +
-                                   Math.Pow(currentNode.Right.Y - queryCoordinate.Y, 2)) < closestDistanceSq;
+                    searchRight = NeedsToBeSearched(queryCoordinate, currentNode.Right, closestDistanceSq);
 
                 if (searchLeft)
                 {
@@ -357,6 +355,12 @@ namespace NetTopologySuite.Index.KdTree
                 }
                 break;
             }
+        }
+
+        private static bool NeedsToBeSearched(Coordinate target, KdNode<T> node, double closestDistSq)
+        {
+            return node.X >= target.X - closestDistSq && node.X <= target.X + closestDistSq
+                || node.Y >= target.Y - closestDistSq && node.Y <= target.Y + closestDistSq;
         }
 
         /// <summary>
