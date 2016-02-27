@@ -29,8 +29,8 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
                 );
 
             Assert.IsNotNull(f, "f != null");
-            Assert.IsTrue(f.HasID(), "f.HasID()");
-            Assert.AreEqual(1, f.ID(), "f.ID != 1");
+            Assert.IsTrue(FeatureExtensions.HasID(f), "f.HasID()");
+            Assert.AreEqual(1, FeatureExtensions.ID(f), "f.ID != 1");
 
             var sb = new StringBuilder();
             var tw = new JsonTextWriter(new StringWriter(sb));
@@ -73,14 +73,14 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             });
 
             Assert.IsNotNull(feat);
-            Assert.IsTrue(feat.HasID());
-            Assert.AreEqual("00000000-0000-0000-0000-000000000000", feat.ID());
+            Assert.IsTrue(FeatureExtensions.HasID(feat));
+            Assert.AreEqual("00000000-0000-0000-0000-000000000000", FeatureExtensions.ID(feat));
             IGeometry geometry = feat.Geometry;
             Assert.IsNull(geometry);
             IAttributesTable attributes = feat.Attributes;
             Assert.IsNotNull(attributes);
             Assert.AreEqual(3, attributes.Count);
-            Assert.AreEqual(feat.ID(), attributes["id"]);
+            Assert.AreEqual(FeatureExtensions.ID(feat), attributes["id"]);
             Assert.AreEqual(false, attributes["yesNo 1"]);
             Assert.AreEqual(DateTime.Parse("2016-02-16T00:00:00", CultureInfo.InvariantCulture), attributes["date 1"]);
         }
