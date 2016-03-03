@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using NetTopologySuite.Features;
 using Newtonsoft.Json;
 
@@ -54,21 +55,67 @@ namespace NetTopologySuite.IO.Converters
             return InternalReadJson(reader, serializer);
         }
 
+        private static IList<object> InternalReadJsonArray(JsonReader reader, JsonSerializer serializer)
+        {
+            // We need to have a start array token!
+            Debug.Assert(reader.TokenType == JsonToken.StartArray);
+
+            // advance
+            reader.Read();
+
+            // create result object
+            var res = new List<object>();
+
+            while (reader.TokenType != JsonToken.EndArray)
+            {
+                switch (reader.TokenType)
+                {
+                    case JsonToken.StartObject:
+                        res.Add(InternalReadJson(reader, serializer));
+                        Debug.Assert(reader.TokenType == JsonToken.EndObject);
+                        // advance
+                        reader.Read();
+                        break;
+                    case JsonToken.StartArray:
+                        // add new array to result
+                        res.Add(InternalReadJsonArray(reader, serializer));
+                        break;
+                    case JsonToken.Comment:
+                        break;
+                    case JsonToken.EndConstructor:
+                    case JsonToken.EndObject:
+                    case JsonToken.PropertyName:
+                        throw new JsonException("Expected token ']' or '[' token, or a value");
+                    default:
+                        // add value to list
+                        res.Add(reader.Value);
+                        // advance
+                        reader.Read();
+                        break;
+                }
+            }
+            // Read past end array
+            reader.Read();
+
+            return res;
+        }
+
         private static object InternalReadJson(JsonReader reader, JsonSerializer serializer)
         {
-            // TODO: refactor to remove check when reading TopoJSON
-            if (reader.TokenType == JsonToken.StartArray)
-            {
-                reader.Read(); // move to first item
-                IList<object> array = new List<object>();
-                do
-                {
-                    object inner = InternalReadJson(reader, serializer);
-                    array.Add(inner);
-                    reader.Read(); // move to next item
-                } while (reader.TokenType != JsonToken.EndArray);
-                return array;
-            }
+            //// TODO: refactor to remove check when reading TopoJSON
+            //if (reader.TokenType == JsonToken.StartArray)
+            //{
+            //    reader.Read(); // move to first item
+            //    IList<object> array = new List<object>();
+            //    do
+            //    {
+            //        if (reader.TokenType == JsonToken.EndArray) break;
+            //        object inner = InternalReadJson(reader, serializer);
+            //        array.Add(inner);
+            //        reader.Read(); // move to next item
+            //    } while (true);
+            //    return array;
+            //}
 
             if (reader.TokenType != JsonToken.StartObject)
                 throw new ArgumentException("Expected token '{' not found.");
@@ -87,22 +134,23 @@ namespace NetTopologySuite.IO.Converters
                 }
                 else if (reader.TokenType == JsonToken.StartArray)
                 {
-                    reader.Read(); // move to first item
-                    IList<object> array = new List<object>();
-                    do
-                    {
-                        object inner = InternalReadJson(reader, serializer);
-                        array.Add(inner);
-                        reader.Read(); // move to next item
-                    } while (reader.TokenType != JsonToken.EndArray);
-                    attributeValue = array;
+                    attributeValue = InternalReadJsonArray(reader, serializer);
+                    //reader.Read(); // move to first item
+                    //IList<object> array = new List<object>();
+                    //do
+                    //{
+                    //    object inner = InternalReadJson(reader, serializer);
+                    //    array.Add(inner);
+                    //    reader.Read(); // move to next item
+                    //} while (reader.TokenType != JsonToken.EndArray);
+                    //attributeValue = array;
                 }
                 else
                 {
                     attributeValue = reader.Value;
+                    reader.Read();
                 }
                 attributesTable.AddAttribute(attributeName, attributeValue);
-                reader.Read();
             }
             // TODO: refactor to remove check when reading TopoJSON
             if (reader.TokenType != JsonToken.EndObject)

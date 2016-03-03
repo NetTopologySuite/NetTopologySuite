@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using GeoAPI.Geometries;
 using NetTopologySuite.Features;
+using NetTopologySuite.Geometries;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
@@ -149,6 +150,164 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
 
             Assert.IsNotNull(feat);
             Assert.IsNull(feat.Geometry);
+        }
+
+        private Feature _feature;
+        private GeoJsonReader _reader;
+        private GeoJsonWriter _writer;
+
+        [TestFixtureSetUp]
+        public void GivenAGeoJsonReaderAndWriter()
+        {
+            _reader = new GeoJsonReader();
+            _writer = new GeoJsonWriter();
+            var geometry = new Point(1, 2);
+            _feature = new Feature(geometry, new AttributesTable());
+        }
+
+        [Category("GitHub Issue")]
+        [Test(Description = "Testcase for GitHub Issue 92")]
+        public void WhenArrayOfJsonObjectArraysPropertyInGeoJsonThenReadable()
+        {
+            const string geojsonString = @"
+{
+  ""type"":""FeatureCollection"",
+  ""features"":[
+    {
+      ""type"":""Feature"",
+      ""geometry"":{
+        ""type"":""Point"",
+        ""coordinates"":[1.0,2.0]
+      },
+      ""properties"":{
+        ""foo"":[
+          {
+            ""xyz"":[
+                {""zee"":""xyz""},
+                {""hay"":""zus""}
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+";
+            var featureCollection = _reader.Read<FeatureCollection>(geojsonString);
+            Assert.AreEqual(1, featureCollection.Count);
+        }
+
+        [Category("GitHub Issue")]
+        [Test(Description = "Testcase for GitHub Issue 92")]
+        public void WhenArrayOfJsonObjectArraysPropertyInGeoJsonThenWriteable()
+        {
+            const string geojsonString = @"
+{
+  ""type"":""FeatureCollection"",
+  ""features"":[
+    {
+      ""type"":""Feature"",
+      ""geometry"":{
+        ""type"":""Point"",
+        ""coordinates"":[1.0,2.0]
+      },
+      ""properties"":{
+        ""foo"":[
+          {
+            ""xyz"":[
+                {""zee"":""xyz""},
+                {""hay"":""zus""}
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+";
+            var featureCollection = _reader.Read<FeatureCollection>(geojsonString);
+            var written = _writer.Write(featureCollection);
+            Assert.IsTrue(written.Contains("FeatureCollection"));
+        }
+
+        [Category("GitHub Issue")]
+        [Test(Description = "Testcase for GitHub Issue 92")]
+        public void WhenArrayOfIntArraysPropertyInFeatureThenWritable()
+        {
+            var arrayOfInts = new[] { 1, 2, 3 };
+            var anotherArrayOfInts = new[] { 4, 5, 6 };
+            var arrayOfArrays = new[] { arrayOfInts, anotherArrayOfInts };
+            _feature.Attributes.AddAttribute("foo", arrayOfArrays);
+            var written = _writer.Write(_feature);
+            Assert.IsTrue(written.Contains("Feature"));
+        }
+
+        [Category("GitHub Issue")]
+        [Test(Description = "Testcase for GitHub Issue 92")]
+        public void WhenArrayOfIntArraysPropertyInGeoJsonThenReadable()
+        {
+            const string geojsonString = @"
+{
+    ""type"":""Feature"",
+    ""geometry"":{
+        ""type"":""Point"",""coordinates"":[1.0,2.0]},
+        ""properties"":{
+            ""foo"":[[1,2,3],[4,5,6]]
+        }
+}
+";
+            var featureCollection = _reader.Read<Feature>(geojsonString);
+            CompareJson(geojsonString, _writer.Write(featureCollection));
+        }
+
+        [Category("GitHub Issue")]
+        [Test(Description = "Testcase for GitHub Issue 92")]
+        public void WhenPopulatedIntArrayPropertyInGeoJsonThenReadable()
+        {
+            const string geojsonString = @"
+{
+  ""type"": ""FeatureCollection"",
+  ""features"": [
+    {
+      ""type"": ""Feature"",
+      ""geometry"": {
+        ""type"": ""Point"",
+        ""coordinates"": [1.0,2.0]
+      },
+      ""properties"": {
+        ""foo"": [1, 2]
+      }
+    }
+  ]
+}
+";
+            var featureCollection = _reader.Read<FeatureCollection>(geojsonString);
+            Assert.AreEqual(1, featureCollection.Count);
+        }
+
+        [Category("GitHub Issue")]
+        [Test(Description = "Testcase for GitHub Issue 93")]
+        public void WhenEmptyArrayPropertyInGeoJsonThenReadable()
+        {
+            const string geojsonString = @"
+{
+  ""type"":""FeatureCollection"",
+  ""features"":[
+    {
+      ""type"":""Feature"",
+      ""geometry"":{
+        ""type"":""Point"",
+        ""coordinates"":[1.0,2.0]
+      },
+      ""properties"":{
+        ""foo"":[]
+      }
+    }
+  ]
+}
+";
+            var featureCollection = new GeoJsonReader().Read<FeatureCollection>(geojsonString);
+            Assert.AreEqual(1, featureCollection.Count);
         }
     }
 }
