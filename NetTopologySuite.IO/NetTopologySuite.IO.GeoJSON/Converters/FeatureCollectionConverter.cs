@@ -66,6 +66,18 @@ namespace NetTopologySuite.IO.Converters
                     reader.Read();
                     continue;
                 }
+                if (val == "bbox")
+                {
+                    reader.Read();
+                    if (reader.TokenType != JsonToken.StartArray)
+                        throw new ArgumentException("Expected token '{' not found.");
+                    // read the values but for now discard them
+                    var env = serializer.Deserialize<double[]>(reader);
+                    if (reader.TokenType != JsonToken.EndArray)
+                        throw new ArgumentException("Expected token '}' not found.");
+                    reader.Read();
+                    continue;
+                }
                 if (val == "crs")
                 {
                     reader.Read();

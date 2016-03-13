@@ -309,5 +309,14 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             var featureCollection = new GeoJsonReader().Read<FeatureCollection>(geojsonString);
             Assert.AreEqual(1, featureCollection.Count);
         }
+
+        [Category("GitHub Issue")]
+        [Test(Description = "Testcase for GitHub Issue 95, FeatureCollection having \"bbox\" property")]
+        public void Test()
+        {
+            const string geoJsonString = "{ \"type\":\"FeatureCollection\", \"features\":[ { \"geometry\":{ \"type\":\"Point\", \"coordinates\":[ -6.091861724853516, 4.991835117340088 ] }, \"type\":\"Feature\", \"properties\":{ \"prop1\":[ \"a\", \"b\" ] }, \"id\":1 } ], \"bbox\":[ -8.599302291870117, 4.357067108154297, -2.494896650314331, 10.736641883850098 ] }";
+            var featureCollection = new GeoJsonReader().Read<FeatureCollection>(geoJsonString);
+            Assert.AreEqual(1, featureCollection.Count);
+        }
     }
 }
