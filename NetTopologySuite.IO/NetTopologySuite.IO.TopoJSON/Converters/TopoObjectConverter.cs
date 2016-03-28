@@ -44,7 +44,9 @@ namespace NetTopologySuite.IO.Converters
                         type = ReadType(reader);
                         break;
                     case "properties":
+                        reader.Read();
                         properties = serializer.Deserialize<IAttributesTable>(reader);
+                        reader.Read();
                         break;
                     case "coordinates":
                         coordinates = ReadPoints(reader, serializer);

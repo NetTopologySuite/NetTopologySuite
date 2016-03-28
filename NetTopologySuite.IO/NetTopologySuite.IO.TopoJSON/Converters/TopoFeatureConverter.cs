@@ -67,7 +67,10 @@ namespace NetTopologySuite.IO.Converters
                     string err = String.Format("type unsupported: {0}", type);
                     throw new ArgumentOutOfRangeException(err);
             }
+            // properties
+            writer.WritePropertyName("properties");
             serializer.Serialize(writer, feature.Attributes);
+
             writer.WriteEndObject();
             return arcs;
         }
