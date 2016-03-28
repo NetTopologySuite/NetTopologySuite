@@ -48,13 +48,18 @@ namespace NetTopologySuite.IO.Converters
                 string val = (string)reader.Value;
                 if (val == "features")
                 {
+                    // move to begin of array
                     reader.Read();
                     if (reader.TokenType != JsonToken.StartArray)
                         throw new ArgumentException("Expected token '[' not found.");
 
+                    // move to first feature
                     reader.Read();
                     while (reader.TokenType != JsonToken.EndArray)
+                    {
                         fc.Add(serializer.Deserialize<Feature>(reader));
+                        reader.Read();
+                    }
                     reader.Read();
                     continue;
                 }
