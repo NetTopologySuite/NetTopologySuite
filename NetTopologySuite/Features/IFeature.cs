@@ -16,5 +16,10 @@ namespace NetTopologySuite.Features
         /// Gets or sets the feature's geometry
         /// </summary>
         IGeometry Geometry { get; set; }
+
+        /// <summary>
+        /// Gets or sets the feature's geometry
+        /// </summary>
+        Envelope BoundingBox { get; set; }
     }
 }

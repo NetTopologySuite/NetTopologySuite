@@ -1,4 +1,6 @@
-﻿namespace NetTopologySuite.IO.Converters
+﻿using System.Globalization;
+
+namespace NetTopologySuite.IO.Converters
 {
     using System;
     using System.Diagnostics;
@@ -17,10 +19,10 @@
 
             writer.WritePropertyName("bbox");
             writer.WriteStartArray();
-            writer.WriteValue(envelope.MinX);
-            writer.WriteValue(envelope.MinY);
-            writer.WriteValue(envelope.MaxX);
-            writer.WriteValue(envelope.MaxY);
+            writer.WriteValue(envelope.MinX.ToString(NumberFormatInfo.InvariantInfo));
+            writer.WriteValue(envelope.MinY.ToString(NumberFormatInfo.InvariantInfo));
+            writer.WriteValue(envelope.MaxX.ToString(NumberFormatInfo.InvariantInfo));
+            writer.WriteValue(envelope.MaxY.ToString(NumberFormatInfo.InvariantInfo));
             writer.WriteEndArray();
         }
 
@@ -33,16 +35,16 @@
             JArray envelope = serializer.Deserialize<JArray>(reader);
             Debug.Assert(envelope.Count == 4);
 
-            double minX = Double.Parse((string) envelope[0]);
-            double minY = Double.Parse((string) envelope[1]);
-            double maxX = Double.Parse((string) envelope[2]);
-            double maxY = Double.Parse((string) envelope[3]);
+            double minX = Double.Parse((string) envelope[0], NumberFormatInfo.InvariantInfo);
+            double minY = Double.Parse((string) envelope[1], NumberFormatInfo.InvariantInfo);
+            double maxX = Double.Parse((string) envelope[2], NumberFormatInfo.InvariantInfo);
+            double maxY = Double.Parse((string) envelope[3], NumberFormatInfo.InvariantInfo);
 
             Debug.Assert(minX <= maxX);
             Debug.Assert(minY <= maxY);
 
             reader.Read(); // move away from array end
-            return new Envelope(minX, minY, maxX, maxY);
+            return new Envelope(minX, maxX, minY, maxY);
         }
 
         public override bool CanConvert(Type objectType)

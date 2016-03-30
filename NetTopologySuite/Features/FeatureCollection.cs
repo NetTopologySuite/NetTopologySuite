@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using GeoAPI.Geometries;
 using NetTopologySuite.CoordinateSystems;
 
 namespace NetTopologySuite.Features
@@ -12,6 +13,11 @@ namespace NetTopologySuite.Features
 #endif
     public class FeatureCollection
     {
+        /// <summary>
+        /// The bounding box of this <see cref="FeatureCollection"/>
+        /// </summary>
+        private Envelope _boundingBox;
+
         /// <summary>
         ///     Gets the features.
         /// </summary>
@@ -94,6 +100,45 @@ namespace NetTopologySuite.Features
         public void RemoveAt(int index)
         {
             Features.RemoveAt(index);
+        }
+
+        /// <summary>
+        /// Gets or sets the (optional) <see href="http://geojson.org/geojson-spec.html#geojson-objects"> Bounding box (<c>bbox</c>) Object</see>.
+        /// </summary>
+        /// <value>
+        /// A <see cref="Envelope"/> describing the bounding box or <value>null</value>.
+        /// </value>        
+        public Envelope BoundingBox
+        {
+            get
+            {
+                if (_boundingBox == null)
+                    _boundingBox = ComputeBoundingBox();
+                if (_boundingBox != null)
+                    return new Envelope(_boundingBox);
+                return null;
+            }
+            set { _boundingBox = value; }
+        }
+
+        /// <summary>
+        /// Function to compute the bounding box (when it isn't set)
+        /// </summary>
+        /// <returns>A bounding box for this <see cref="FeatureCollection"/></returns>
+        private Envelope ComputeBoundingBox()
+        {
+            if (!Feature.ComputeBoundingBoxWhenItIsMissing)
+                return null;
+
+            var res = new Envelope();
+            foreach (var feature in Features)
+            {
+                if (feature.BoundingBox != null)
+                    res.ExpandToInclude(feature.BoundingBox);
+                else if (feature.Geometry !=  null)
+                    res.ExpandToInclude(feature.Geometry.EnvelopeInternal);
+            }
+            return res;
         }
     }
 }

@@ -18,10 +18,10 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         [Test(Description = "Testcase for Issue 83")]
         public void TestIssue83()
         {
-            var geoJson = "{ \"type\": \"Feature\", " +
-                            "\"geometry\": { \"type\": \"Point\", \"coordinates\": [10.0, 60.0] }, " +
-                            "\"id\": 1, " +
-                            "\"properties\": { \"Name\": \"test\" } }";
+            var geoJson = @"{ ""type"": ""Feature"", 
+                              ""geometry"": { ""type"": ""Point"", ""coordinates"": [10.0, 60.0] }, 
+                              ""id"": 1, 
+                             ""properties"": { ""Name"": ""test"" } }";
 
             var s = new GeoJsonSerializer();
             Feature f = null;
@@ -312,11 +312,29 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
 
         [Category("GitHub Issue")]
         [Test(Description = "Testcase for GitHub Issue 95, FeatureCollection having \"bbox\" property")]
-        public void Test()
+        public void TestWhenFeatureCollectionHasBBox()
         {
-            const string geoJsonString = "{ \"type\":\"FeatureCollection\", \"features\":[ { \"geometry\":{ \"type\":\"Point\", \"coordinates\":[ -6.091861724853516, 4.991835117340088 ] }, \"type\":\"Feature\", \"properties\":{ \"prop1\":[ \"a\", \"b\" ] }, \"id\":1 } ], \"bbox\":[ -8.599302291870117, 4.357067108154297, -2.494896650314331, 10.736641883850098 ] }";
+            const string geoJsonString = @"
+{
+  ""type"":""FeatureCollection"",
+  ""features"":[ 
+  { 
+      ""geometry"":{ 
+          ""type"":""Point"", 
+          ""coordinates"":[ -6.09, 4.99 ]
+      }, 
+      ""type"":""Feature"", 
+      ""properties"":{
+          ""prop1"":[ ""a"", ""b"" ] 
+      }, 
+      ""id"":1 
+  } ], 
+  ""bbox"":[ -8.59, 4.35, -2.49, 10.73 ] 
+}";
             var featureCollection = new GeoJsonReader().Read<FeatureCollection>(geoJsonString);
             Assert.AreEqual(1, featureCollection.Count);
+            var res = new GeoJsonWriter().Write(featureCollection);
+            CompareJson(geoJsonString, res);
         }
     }
 }

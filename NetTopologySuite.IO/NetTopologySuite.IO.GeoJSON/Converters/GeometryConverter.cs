@@ -117,7 +117,7 @@ namespace NetTopologySuite.IO.Converters
             return coords;
         }
 
-        private List<object> ParseGeomCollection(JsonReader reader)
+        private List<object> ParseGeomCollection(JsonReader reader, JsonSerializer serializer)
         {
             List<object> geometries = new List<object>();
             while (reader.Read())
@@ -128,7 +128,7 @@ namespace NetTopologySuite.IO.Converters
 
                 if (reader.TokenType == JsonToken.StartObject)
                 {
-                    geometries.Add(ParseGeometry(reader));
+                    geometries.Add(ParseGeometry(reader, serializer));
                 }
             }
             return geometries;
@@ -184,7 +184,7 @@ namespace NetTopologySuite.IO.Converters
             return geometries.ToArray();
         }
 
-        private IGeometry ParseGeometry(JsonReader reader)
+        private IGeometry ParseGeometry(JsonReader reader, JsonSerializer serializer)
         {
             GeoJsonObjectType? geometryType = null;
             List<object> coords = null;
@@ -209,12 +209,18 @@ namespace NetTopologySuite.IO.Converters
                     {
                         //only geom collection has "geometries"
                         reader.Read();  //read past start array tag                        
-                        coords = ParseGeomCollection(reader);
+                        coords = ParseGeomCollection(reader, serializer);
                     }
                     else if ((String)reader.Value == "coordinates")
                     {
                         reader.Read(); //read past start array tag
                         coords = ReadCoordinates(reader);
+                    }
+                    else if ((String) reader.Value == "bbox")
+                    {
+                        //Read but discard
+                        var bbox = serializer.Deserialize<Envelope>(reader);
+
                     }
                 }
             }
@@ -255,7 +261,7 @@ namespace NetTopologySuite.IO.Converters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            return ParseGeometry(reader);
+            return ParseGeometry(reader, serializer);
         }
 
         private static List<Coordinate[]> PolygonCoordinates(IPolygon polygon)

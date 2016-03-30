@@ -10,9 +10,34 @@ namespace NetTopologySuite.Features
     [Serializable]
 #endif
     public class Feature : IFeature
-    {        
-        private IGeometry _geometry;
+    {
+        /// <summary>
+        /// Gets or sets a value indicating how bounding box on <see cref="Feature"/> should be handled
+        /// </summary>
+        /// <remarks>Default is <value>false</value></remarks>
+        public static bool ComputeBoundingBoxWhenItIsMissing { get; set; }
 
+        private IGeometry _geometry;
+        private IAttributesTable _attributes;
+        private Envelope _boundingBox;
+
+        /// <summary>
+        /// Creates an instace of this class
+        /// </summary>
+        /// <param name="geometry">The geometry</param>
+        /// <param name="attributes">The attributes</param>
+        public Feature(IGeometry geometry, IAttributesTable attributes)
+            : this()
+        {
+            _geometry = geometry;
+            _attributes = attributes;
+        }
+
+        /// <summary>
+        /// Creates an instance of this class
+        /// </summary>
+        public Feature() { }
+        
         /// <summary>
         /// Geometry representation of the feature.
         /// </summary>
@@ -22,8 +47,6 @@ namespace NetTopologySuite.Features
             set { _geometry = value; }
         }
 
-        private IAttributesTable _attributes;
-
         /// <summary>
         /// Attributes table of the feature.
         /// </summary>
@@ -32,21 +55,27 @@ namespace NetTopologySuite.Features
             get { return _attributes; }
             set { _attributes = value; }
         }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geometry"></param>
-        /// <param name="attributes"></param>
-        public Feature(IGeometry geometry, IAttributesTable attributes) : this()
-        {
-            _geometry = geometry;
-            _attributes = attributes;
-        }
+
 
         /// <summary>
-        /// 
+        /// Gets or sets the (optional) <see href="http://geojson.org/geojson-spec.html#geojson-objects"> Bounding box (<c>bbox</c>) Object</see>.
         /// </summary>
-        public Feature() { }
+        /// <value>
+        /// A <see cref="Envelope"/> describing the bounding box or <value>null</value>.
+        /// </value>        
+        public Envelope BoundingBox
+        {
+            get
+            {
+                if (_boundingBox != null)
+                    return new Envelope(_boundingBox);
+
+                if (_geometry != null && ComputeBoundingBoxWhenItIsMissing)
+                    return _geometry.EnvelopeInternal;
+
+                return null;
+            }
+            set { _boundingBox = value; }
+        }
     }
 }

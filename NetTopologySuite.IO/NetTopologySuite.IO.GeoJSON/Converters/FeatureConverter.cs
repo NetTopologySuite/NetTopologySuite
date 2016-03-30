@@ -42,6 +42,13 @@ namespace NetTopologySuite.IO.Converters
                 serializer.Serialize(writer, id);
             }
 
+            // bbox (optional)
+            if (feature.BoundingBox != null)
+            {
+                writer.WritePropertyName("bbox");
+                serializer.Serialize(writer, feature.BoundingBox, typeof(Envelope));
+            }
+
             // geometry
             writer.WritePropertyName("geometry");
             serializer.Serialize(writer, feature.Geometry);
@@ -87,6 +94,7 @@ namespace NetTopologySuite.IO.Converters
                     case "bbox":
                         // Read, but can't do anything with it, assigning Envelopes is impossible without reflection
                         Envelope bbox = serializer.Deserialize<Envelope>(reader);
+                        feature.BoundingBox = bbox;
                         //Debug.WriteLine("BBOX: {0}", bbox.ToString());
                         break;
                     case "geometry":
