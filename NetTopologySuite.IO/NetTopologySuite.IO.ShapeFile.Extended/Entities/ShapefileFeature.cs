@@ -41,7 +41,13 @@ namespace NetTopologySuite.IO.ShapeFile.Extended.Entities
             }
 		}
 
-		public IAttributesTable Attributes
+	    public Envelope BoundingBox
+	    {
+	        get { return Geometry.EnvelopeInternal; }
+	        set { throw new InvalidOperationException("Setting BoundingBox not allowed for Shapefile feature"); }
+	    }
+
+	    public IAttributesTable Attributes
 		{
 			get
 			{
