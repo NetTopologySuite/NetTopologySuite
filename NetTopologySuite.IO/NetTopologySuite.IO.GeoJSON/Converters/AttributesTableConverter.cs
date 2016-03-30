@@ -131,6 +131,10 @@ namespace NetTopologySuite.IO.Converters
                 {
                     // inner object
                     attributeValue = InternalReadJson(reader, serializer);
+                    if (reader.TokenType != JsonToken.EndObject)
+                        throw new ArgumentException("Expected token '}' not found.");
+                    // read EndObject token
+                    reader.Read();
                 }
                 else if (reader.TokenType == JsonToken.StartArray)
                 {
@@ -155,6 +159,7 @@ namespace NetTopologySuite.IO.Converters
             // TODO: refactor to remove check when reading TopoJSON
             if (reader.TokenType != JsonToken.EndObject)
                 throw new ArgumentException("Expected token '}' not found.");
+
             return attributesTable;
         }
 

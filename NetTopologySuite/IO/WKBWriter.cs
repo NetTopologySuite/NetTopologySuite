@@ -107,11 +107,17 @@ namespace NetTopologySuite.IO
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="geom"></param>        
         private void WriteHeader(BinaryWriter writer, IGeometry geom)
         {
             //Byte Order
             WriteByteOrder(writer);
 
+            //TODO: use "is" check, like in "WKTWriter.AppendGeometryTaggedText"?
             WKBGeometryTypes geometryType;
             switch (geom.GeometryType)
             {
@@ -119,6 +125,7 @@ namespace NetTopologySuite.IO
                     geometryType = WKBGeometryTypes.WKBPoint;
                     break;
                 case "LineString":
+                case "LinearRing":
                     geometryType = WKBGeometryTypes.WKBLineString;
                     break;
                 case "Polygon":
@@ -182,7 +189,8 @@ namespace NetTopologySuite.IO
         /// Initializes writer with LittleIndian byte order.
         /// </summary>
         public WKBWriter() :
-            this(ByteOrder.LittleEndian, false) { }
+            this(ByteOrder.LittleEndian, false)
+        { }
 
         /// <summary>
         /// Initializes writer with the specified byte order.
@@ -224,9 +232,9 @@ namespace NetTopologySuite.IO
         public WKBWriter(ByteOrder encodingType, bool handleSRID, bool emitZ, bool emitM)
         {
             EncodingType = encodingType;
-            
+
             //Allow setting of HandleSRID
-            if (handleSRID)_strict = false;
+            if (handleSRID) _strict = false;
             HandleSRID = handleSRID;
 
             var handleOrdinates = Ordinates.XY;
