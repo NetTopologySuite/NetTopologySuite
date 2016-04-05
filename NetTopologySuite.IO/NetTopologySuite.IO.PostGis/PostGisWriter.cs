@@ -443,7 +443,7 @@ namespace NetTopologySuite.IO
 			var result = 4;
             result += GetByteStreamSize(geometry.ExteriorRing, coordinateSpace);
 			for (var i = 0; i < geometry.NumInteriorRings; i++)
-                result += GetByteStreamSize(geometry.InteriorRings, coordinateSpace);
+                result += GetByteStreamSize(geometry.InteriorRings[i], coordinateSpace);
 			return result;
         }
 
