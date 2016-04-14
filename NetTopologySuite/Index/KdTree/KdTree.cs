@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
@@ -47,7 +46,7 @@ namespace NetTopologySuite.Index.KdTree
         /// <param name="includeRepeated">true if repeated nodes should 
         /// be included multiple times</param>
         /// <returns>An array of the coordinates represented by the nodes</returns>
-        public static Coordinate[] ToCoordinates(ICollection<KdNode<T>>  kdnodes, bool includeRepeated)
+        public static Coordinate[] ToCoordinates(ICollection<KdNode<T>> kdnodes, bool includeRepeated)
         {
             var coord = new CoordinateList();
             foreach (var node in kdnodes)
@@ -97,8 +96,6 @@ namespace NetTopologySuite.Index.KdTree
                 return false;
             }
         }
-
-
 
         /// <summary>
         /// Inserts a new point in the kd-tree, with no data.
@@ -196,7 +193,7 @@ namespace NetTopologySuite.Index.KdTree
             while (currentNode != null)
             {
                 // test if point is already a node (not strictly necessary)
-                if (currentNode != null)
+                //if (currentNode != null) same check as in "while loop"
                 {
                     var isInTolerance = p.Distance(currentNode.Coordinate) <= _tolerance;
 
@@ -211,7 +208,7 @@ namespace NetTopologySuite.Index.KdTree
 
                 if (isOddLevel)
                 {
-// ReSharper disable once PossibleNullReferenceException
+                    // ReSharper disable once PossibleNullReferenceException
                     isLessThan = p.X < currentNode.X;
                 }
                 else
@@ -316,7 +313,8 @@ namespace NetTopologySuite.Index.KdTree
         }
 
         private static void NearestNeighbor(KdNode<T> currentNode,
-            Coordinate queryCoordinate, ref KdNode<T> closestNode, ref double closestDistanceSq)
+            Coordinate queryCoordinate, ref KdNode<T> closestNode, ref double closestDistanceSq,
+            bool isOddLevel)
         {
             while (true)
             {
@@ -333,34 +331,40 @@ namespace NetTopologySuite.Index.KdTree
                     closestDistanceSq = distSq;
                 }
 
-
-                var searchLeft = false;
-                var searchRight = false;
-                if (currentNode.Left != null)
-                    searchLeft = NeedsToBeSearched(queryCoordinate, currentNode.Left, closestDistanceSq);
-
-                if (currentNode.Right != null)
-                    searchRight = NeedsToBeSearched(queryCoordinate, currentNode.Right, closestDistanceSq);
-
-                if (searchLeft)
+                // Start with the branch that is more likely to produce the final result
+                var firstBranch = currentNode.Left;
+                var secondBranch = currentNode.Right;
+                if (currentNode.Left != null && (isOddLevel ? queryCoordinate.X >= currentNode.X : queryCoordinate.Y >= currentNode.Y))
                 {
-                    NearestNeighbor(currentNode.Left, queryCoordinate, ref closestNode,
-                        ref closestDistanceSq);
+                    firstBranch = currentNode.Right;
+                    secondBranch = currentNode.Left;
                 }
 
-                if (searchRight)
+                if (firstBranch != null
+                    && NeedsToBeSearched(queryCoordinate, currentNode, closestDistanceSq, firstBranch == currentNode.Left, isOddLevel))
                 {
-                    currentNode = currentNode.Right;
+                    NearestNeighbor(firstBranch, queryCoordinate, ref closestNode, ref closestDistanceSq, !isOddLevel);
+                }
+
+                if (secondBranch != null
+                    && NeedsToBeSearched(queryCoordinate, currentNode, closestDistanceSq, secondBranch == currentNode.Left, isOddLevel))
+                {
+                    currentNode = secondBranch;
+                    isOddLevel = !isOddLevel;
                     continue;
                 }
+
                 break;
             }
         }
 
-        private static bool NeedsToBeSearched(Coordinate target, KdNode<T> node, double closestDistSq)
+        private static bool NeedsToBeSearched(Coordinate target,
+            KdNode<T> node, double closestDistSq,
+            bool left, bool isOddLevel)
         {
-            return node.X >= target.X - closestDistSq && node.X <= target.X + closestDistSq
-                || node.Y >= target.Y - closestDistSq && node.Y <= target.Y + closestDistSq;
+            if (isOddLevel)
+                return (left ? target.X <= node.X : target.X >= node.X) || Math.Pow(target.X - node.X, 2) < closestDistSq;
+            return (left ? target.Y <= node.Y : target.Y >= node.Y) || Math.Pow(target.Y - node.Y, 2) < closestDistSq;
         }
 
         /// <summary>
@@ -371,11 +375,11 @@ namespace NetTopologySuite.Index.KdTree
         {
             KdNode<T> result = null;
             var closestDistSq = double.MaxValue;
-            NearestNeighbor(_root, coord, ref result, ref closestDistSq);
+            NearestNeighbor(_root, coord, ref result, ref closestDistSq, true);
             return result;
         }
 
-        private class KdNodeVisitor<T> : IKdNodeVisitor<T> where T:class
+        private class KdNodeVisitor<T> : IKdNodeVisitor<T> where T : class
         {
             private readonly IList<KdNode<T>> _result;
 
@@ -389,24 +393,23 @@ namespace NetTopologySuite.Index.KdTree
             }
         }
 
-        private class BestMatchVisitor<T> : IKdNodeVisitor<T> where T:class
+        private class BestMatchVisitor<T> : IKdNodeVisitor<T> where T : class
         {
-
             private readonly double tolerance;
-        private KdNode<T> matchNode = null;
-        private double matchDist = 0.0;
-        private Coordinate p;
+            private KdNode<T> matchNode = null;
+            private double matchDist = 0.0;
+            private Coordinate p;
 
-        public BestMatchVisitor(Coordinate p, double tolerance)
-        {
-            this.p = p;
-            this.tolerance = tolerance;
-        }
+            public BestMatchVisitor(Coordinate p, double tolerance)
+            {
+                this.p = p;
+                this.tolerance = tolerance;
+            }
 
-        public KdNode<T> Node
-        {
-            get { return matchNode; }
-        }
+            public KdNode<T> Node
+            {
+                get { return matchNode; }
+            }
 
             public Envelope QueryEnvelope()
             {
@@ -416,26 +419,22 @@ namespace NetTopologySuite.Index.KdTree
             }
 
             public void Visit(KdNode<T> node)
-        {
-            var dist = p.Distance(node.Coordinate);
-            var isInTolerance = dist <= tolerance;
-            if (!isInTolerance) return;
-            var update = false;
-            if (matchNode == null
-                || dist < matchDist
-                // if distances are the same, record the lesser coordinate
-                || (matchNode != null && dist == matchDist
-                    && node.Coordinate.CompareTo(matchNode.Coordinate) < 1))
             {
-                update = true;
-            }
+                var dist = p.Distance(node.Coordinate);
+                var isInTolerance = dist <= tolerance;
+                if (!isInTolerance) return;
+                bool update = matchNode == null
+                    || dist < matchDist
+                    // if distances are the same, record the lesser coordinate
+                    || (matchNode != null && dist == matchDist
+                        && node.Coordinate.CompareTo(matchNode.Coordinate) < 1);
 
-            if (update)
-            {
-                matchNode = node;
-                matchDist = dist;
+                if (update)
+                {
+                    matchNode = node;
+                    matchDist = dist;
+                }
             }
         }
     }
-}
 }

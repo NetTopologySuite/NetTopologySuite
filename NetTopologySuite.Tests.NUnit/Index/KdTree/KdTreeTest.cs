@@ -74,6 +74,25 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
         }
 
         [Test]
+        public void TestNearestNeighbor2()
+        {
+            var kd = new KdTree<string>();
+            const int Count = 8;
+
+            for (var row = 0; row < Count; ++row)
+            {
+                for (var column = 0; column < Count; ++column)
+                {
+                    kd.Insert(new Coordinate(column, row), (column * 100 + row).ToString());
+                }
+            }
+
+            var testCoordinate = new Coordinate(Count / 2, Count / 2);
+            var res = kd.NearestNeighbor(testCoordinate);
+            Assert.AreEqual(testCoordinate, res.Coordinate);
+        }
+
+        [Test]
         public void TestMultiplePoint()
         {
             TestQuery("MULTIPOINT ( (1 1), (2 2) )", 0,
@@ -154,15 +173,15 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
             Array.Sort(result);
             Array.Sort(expectedCoord);
 
-            Assert.IsTrue(result.Length == expectedCoord.Length, 
-                          "Result count = {0}, expected count = {1}", 
+            Assert.IsTrue(result.Length == expectedCoord.Length,
+                          "Result count = {0}, expected count = {1}",
                           result.Length, expectedCoord.Length);
 
             var isMatch = CoordinateArrays.Equals(result, expectedCoord);
             Assert.IsTrue(isMatch, "Expected result coordinates not found");
         }
 
-        private void TestQuery(KdTree<object> index, Envelope queryEnv, 
+        private void TestQuery(KdTree<object> index, Envelope queryEnv,
             bool includeRepeated, Coordinate[] expectedCoord)
         {
             var result = KdTree<object>.ToCoordinates(index.Query(queryEnv), includeRepeated);
