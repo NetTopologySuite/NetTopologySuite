@@ -23,7 +23,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;UseCoordinateBufferPublicly</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;UseCoordinateBufferPublicly;NET40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Geometries\CoordinateBuffer.cs" />
+    <Compile Include="IO\Streams\ByteStreamProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\..\SharedAssemblyVersion.cs">
       <Link>Properties\SharedAssemblyVersion.cs</Link>
