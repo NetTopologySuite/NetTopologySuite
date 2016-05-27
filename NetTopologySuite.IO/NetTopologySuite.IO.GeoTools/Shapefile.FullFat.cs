@@ -18,7 +18,7 @@ namespace NetTopologySuite.IO
         /// <param name="tableName">The name to give to the table.</param>
         /// <param name="geometryFactory">The geometry factory to use when creating the objects.</param>
         /// <returns>DataTable representing the data </returns>
-        public static DataTable CreateDataTable(string filename, string tableName, GeometryFactory geometryFactory)
+        public static DataTable CreateDataTable(string filename, string tableName, GeometryFactory geometryFactory, Encoding encoding = null)
         {
             if (filename == null)
                 throw new ArgumentNullException("filename");
@@ -27,7 +27,7 @@ namespace NetTopologySuite.IO
             if (geometryFactory == null)
                 throw new ArgumentNullException("geometryFactory");
 
-            ShapefileDataReader shpfileDataReader = new ShapefileDataReader(filename, geometryFactory);
+            ShapefileDataReader shpfileDataReader = new ShapefileDataReader(filename, geometryFactory, encoding);
             DataTable table = new DataTable(tableName);
 
             // use ICustomTypeDescriptor to get the properies/ fields. This way we can get the 

@@ -56,6 +56,7 @@
     <Compile Include="BigEndianBinaryReader.cs" />
     <Compile Include="BigEndianBinaryWriter.cs" />
     <Compile Include="Dbase\ColumnStructure.cs" />
+    <Compile Include="Dbase\DbaseEncodingUtility.cs" />
     <Compile Include="Dbase\DbaseFieldDescriptor.cs" />
     <Compile Include="Dbase\DbaseFileHeader.cs" />
     <Compile Include="Dbase\DbaseFileReader.cs" />

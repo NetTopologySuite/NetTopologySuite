@@ -26,9 +26,8 @@ namespace NetTopologySuite.IO
         /// Initializes a new instance of the DbaseFileWriter class with standard windows encoding (CP1252, LATIN1)
         /// </summary>
         /// <param name="filename">The path to the dbase file</param>
-        public DbaseFileWriter(string filename) : this(filename,
-            Encoding.GetEncoding(1252)
-            )
+        public DbaseFileWriter(string filename) 
+            : this(filename, DbaseEncodingUtility.DefaultEncoding)
         {
         }
 
@@ -47,7 +46,8 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="streamProviderRegistry">The stream provider registry</param>
         public DbaseFileWriter(IStreamProviderRegistry streamProviderRegistry)
-            : this(streamProviderRegistry, Encoding.GetEncoding(1252))
+            : this(streamProviderRegistry, 
+                  DbaseFileHeader.GetEncoding(streamProviderRegistry[StreamTypes.DataEncoding]))
         {
         }
 
@@ -93,6 +93,10 @@ namespace NetTopologySuite.IO
             //    throw new InvalidOperationException("Records have already been written. Header file needs to be written first.");
 
             _headerWritten = true;
+
+            // Set the encoding if not already done.
+            if (header.Encoding == null)
+                header.Encoding = _encoding;
 
             if (header.Encoding.WindowsCodePage != _encoding.WindowsCodePage)
             {
