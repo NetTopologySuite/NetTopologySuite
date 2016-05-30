@@ -154,6 +154,7 @@
     <Compile Include="Geometries\Utilities\GeometryMapper.cs" />
     <Compile Include="Index\Bintree\Interval.cs" />
     <Compile Include="Index\KdTree\IKdNodeVisitor.cs" />
+    <Compile Include="Index\KdTree\KdTreeExtensions.cs" />
     <Compile Include="Index\Strtree\Interval.cs" />
     <Compile Include="IO\KML\KMLWriter.cs" />
     <Compile Include="IO\WKBHexFileReader.cs" />
