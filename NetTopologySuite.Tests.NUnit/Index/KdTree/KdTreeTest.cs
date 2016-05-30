@@ -13,7 +13,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
         [Test]
         public void TestSinglePoint()
         {
-            var index = new KdTree<object>(.001);
+            var index = new KdTreeNTS<object>(.001);
 
             var node1 = index.Insert(new Coordinate(1, 1));
 
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
         [Test]
         public void TestEndlessLoop()
         {
-            var kd = new KdTree<string>();
+            var kd = new KdTreeNTS<string>();
             kd.Insert(new Coordinate(383, 381), "A");
             kd.Insert(new Coordinate(349, 168), "B");
             kd.Insert(new Coordinate(473, 223), "C");
@@ -55,7 +55,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
         [Test]
         public void TestNearestNeighbor()
         {
-            var kd = new KdTree<string>();
+            var kd = new KdTreeNTS<string>();
             kd.Insert(new Coordinate(12, 16), "A");
             kd.Insert(new Coordinate(15, 8), "B");
             kd.Insert(new Coordinate(5, 18), "C");
@@ -76,7 +76,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
         [Test]
         public void TestNearestNeighbor2()
         {
-            var kd = new KdTree<string>();
+            var kd = new KdTreeNTS<string>();
             const int Count = 8;
 
             for (var row = 0; row < Count; ++row)
@@ -199,7 +199,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
 
         private KdTree<object> Build(string wktInput, double tolerance)
         {
-            var index = new KdTree<object>(tolerance);
+            var index = new KdTreeNTS<object>(tolerance);
             var coords = IOUtil.Read(wktInput).Coordinates;
             for (var i = 0; i < coords.Length; i++)
                 index.Insert(coords[i]);

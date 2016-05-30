@@ -91,7 +91,8 @@ namespace NetTopologySuite.Triangulate
         {
             _initialVertices = new List<Vertex>(initialVertices);
             _tolerance = tolerance;
-            _kdt = new KdTree<Vertex>(tolerance);
+            // NOTE: use KdTreeJTS to a close-to-jts implementation. See #97 and #105
+            _kdt = new KdTreeNTS<Vertex>(tolerance); 
         }
 
         /// <summary>
