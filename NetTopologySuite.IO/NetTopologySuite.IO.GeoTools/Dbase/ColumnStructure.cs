@@ -13,8 +13,8 @@ namespace NetTopologySuite.IO
 	/// </remarks>
 	internal class ColumnStructure : PropertyDescriptor
 	{
-		private DbaseFieldDescriptor _dbaseField;
-		private int _index;
+		private readonly DbaseFieldDescriptor _dbaseField;
+		private readonly int _index;
 
 		/// <summary>
 		/// Initializes a new instance of the ColumnStructure class.

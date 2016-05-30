@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using NetTopologySuite.IO.Streams;
 
 namespace NetTopologySuite.IO
 {
@@ -15,9 +15,6 @@ namespace NetTopologySuite.IO
 
         // Constant for the size of a record
         private const int FileDescriptorSize = 32;
-
-        private static readonly IDictionary<byte, Encoding> LdidToEncoding;
-        private static readonly IDictionary<Encoding, byte> EncodingToLdid;
 
         // type of the file, must be 03h
         private int _fileType = 0x03;
@@ -37,103 +34,27 @@ namespace NetTopologySuite.IO
         // Number of fields in the record.
         private int _numFields;
 
+        /// <summary>
+        /// The encoding
+        /// </summary>
         private Encoding _encoding;
 
         // collection of header records.
         private DbaseFieldDescriptor[] _fieldDescriptions;
 
-        static DbaseFileHeader()
-        {
-            object[][] dbfCodePages =
-            {
-                new object[] {0x01 , 437}, // U.S. MSDOS
-                new object[] { 0x02 , 850﻿  }, // International MSDOS
-                new object[] { 0x08 , 865﻿  }, // Danish OEM
-                new object[] { 0x09 , 437﻿  }, // Dutch OEM
-                new object[] { 0x0A , 850﻿  }, // Dutch OEM*
-                new object[] { 0x0B , 437﻿  }, // Finnish OEM
-                new object[] { 0x0D , 437﻿  }, // French OEM
-                new object[] { 0x0E , 850﻿  }, // French OEM*
-                new object[] { 0x0F , 437﻿  }, // German OEM
-                new object[] { 0x10 , 850﻿  }, // German OEM*
-                new object[] { 0x11 , 437﻿  }, // Italian OEM
-                new object[] { 0x12 , 850﻿  }, // Italian OEM*
-                new object[] { 0x13 , 932﻿  }, // Japanese Shift-JIS
-                new object[] { 0x14 , 850﻿  }, // Spanish OEM*
-                new object[] { 0x15 , 437﻿  }, // Swedish OEM
-                new object[] { 0x16 , 850﻿  }, // Swedish OEM*
-                new object[] { 0x17 , 865﻿  }, // Norwegian OEM
-                new object[] { 0x18 , 437﻿  }, // Spanish OEM
-                new object[] { 0x19 , 437﻿  }, // English OEM (Britain)
-                new object[] { 0x1A , 850﻿  }, // English OEM (Britain)*
-                new object[] { 0x1B , 437﻿  }, // English OEM (U.S.)
-                new object[] { 0x1C , 863﻿  }, // French OEM (Canada)
-                new object[] { 0x1D , 850﻿  }, // French OEM*
-                new object[] { 0x1F , 852﻿  }, // Czech OEM
-                new object[] { 0x22 , 852﻿  }, // Hungarian OEM
-                new object[] { 0x23 , 852﻿  }, // Polish OEM
-                new object[] { 0x24 , 860﻿  }, // Portuguese OEM
-                new object[] { 0x25 , 850﻿  }, // Portuguese OEM*
-                new object[] { 0x26 , 866﻿  }, // Russian OEM
-                new object[] { 0x37 , 850﻿  }, // English OEM (U.S.)*
-                new object[] { 0x40 , 852﻿  }, // Romanian OEM
-                new object[] { 0x4D , 936﻿  }, // Chinese GBK (PRC)
-                new object[] { 0x4E , 949﻿  }, // Korean (ANSI/OEM)
-                new object[] { 0x4F , 950﻿  }, // Chinese Big5 (Taiwan)
-                new object[] { 0x50 , 874﻿  }, // Thai (ANSI/OEM)
-                new object[] { 0x58 , 1252﻿  }, // Western European ANSI
-                new object[] { 0x59 , 1252﻿  }, // Spanish ANSI
-                new object[] { 0x64 , 852﻿  }, // Eastern European MSDOS
-                new object[] { 0x65 , 866﻿  }, // Russian MSDOS
-                new object[] { 0x66 , 865﻿  }, // Nordic MSDOS
-                new object[] { 0x67 , 861﻿  }, // Icelandic MSDOS
-                new object[] { 0x6A , 737﻿  }, // Greek MSDOS (437G)
-                new object[] { 0x6B , 857﻿  }, // Turkish MSDOS
-                new object[] { 0x6C , 863﻿  }, // FrenchCanadian MSDOS
-                new object[] { 0x78 , 950﻿  }, // Taiwan Big 5
-                new object[] { 0x79 , 949﻿  }, // Hangul (Wansung)
-                new object[] { 0x7A , 936﻿  }, // PRC GBK
-                new object[] { 0x7B , 932﻿  }, // Japanese Shift-JIS
-                new object[] { 0x7C , 874﻿  }, // Thai Windows/MSDOS
-                new object[] { 0x86 , 737﻿  }, // Greek OEM
-                new object[] { 0x87 , 852﻿  }, // Slovenian OEM
-                new object[] { 0x88 , 857﻿  }, // Turkish OEM
-                new object[] { 0xC8 , 1250﻿  }, // Eastern European Windows
-                new object[] { 0xC9 , 1251﻿  }, // Russian Windows
-                new object[] { 0xCA , 1254﻿  }, // Turkish Windows
-                new object[] { 0xCB , 1253﻿  }, // Greek Windows
-                new object[] { 0xCC , 1257﻿  } // Baltic Windows
-            };
-
-            LdidToEncoding = new Dictionary<byte, Encoding>();
-            EncodingToLdid = new Dictionary<Encoding, byte>();
-
-            RegisterEncodings(dbfCodePages);
-            //foreach (object[] pair in dbfCodePages)
-            //{
-            //    AddLdidEncodingPair(Convert.ToByte(pair[0]), Convert.ToInt32(pair[1]));
-            //}
-
-            // Add ANSI values 3 and 0x57 as system's default encoding, and 0 which means no encoding.
-            AddLdidEncodingPair(0, Encoding.UTF8);
-            AddLdidEncodingPair(0x03, Encoding.Default);
-            AddLdidEncodingPair(0x57, Encoding.Default);
-        }
-
         /// <summary>
         /// Initializes a new instance of the DbaseFileHeader class.
         /// </summary>
         public DbaseFileHeader()
-            : this(Encoding.GetEncoding(1252)) { }
+            : this(null) { }
 
         /// <summary>
         /// Initializes a new instance of the DbaseFileHeader class.
         /// </summary>
-        public DbaseFileHeader(Encoding enc)
+        /// <param name="encoding">The encoding to use for strings</param>
+        public DbaseFileHeader(Encoding encoding)
         {
-            if (enc == null)
-                throw new ArgumentNullException("enc");
-            _encoding = enc;
+            _encoding = encoding;
             _fieldDescriptions = new DbaseFieldDescriptor[0];
         }
 
@@ -159,7 +80,12 @@ namespace NetTopologySuite.IO
         public Encoding Encoding
         {
             get { return _encoding; }
-            set { _encoding = value; }
+            set
+            {
+                if (_encoding != null)
+                    throw new InvalidOperationException("Setting the encoding is only allowed once, either by means of the constructor or this property setter.");
+                _encoding = value;
+            }
         }
 
         /// <summary>
@@ -199,6 +125,10 @@ namespace NetTopologySuite.IO
         /// <param name="decimalCount">The decimal count only applies to numbers(N), and floating point values (F), and refers to the number of characters to reserve after the decimal point.</param>
         public void AddColumn(string fieldName, char fieldType, int fieldLength, int decimalCount)
         {
+            if (Encoding == null)
+                //throw new InvalidOperationException("Must not add columns when the Encoding is not set");
+                Encoding = DefaultEncoding;
+
             if (fieldLength <= 0) 
                 fieldLength = 1;
             int tempLength = 1;  // the length is used for the offset, and there is a * for deleted as the first byte
@@ -328,6 +258,20 @@ namespace NetTopologySuite.IO
         /// <param name="filename">Filename </param>
         public void ReadHeader(BinaryReader reader, string filename)
         {
+            var tmpPath = Path.ChangeExtension(filename, "cpg");
+            IStreamProvider cpgStreamProvider = null;
+            if (File.Exists(tmpPath))
+                cpgStreamProvider = new FileStreamProvider(StreamTypes.DataEncoding, tmpPath);
+            ReadHeader(reader, cpgStreamProvider);
+        }
+
+        /// <summary>
+        /// Read the header data from the DBF file.
+        /// </summary>
+        /// <param name="reader">BinaryReader containing the header.</param>
+        /// <param name="cpgStreamProvider">A stream provider to read the contents of the CPG Encoding</param>
+        public void ReadHeader(BinaryReader reader, IStreamProvider cpgStreamProvider)
+        {
             // type of reader.
             _fileType = reader.ReadByte();
             if (_fileType != 0x03)
@@ -351,8 +295,9 @@ namespace NetTopologySuite.IO
             // skip the reserved bytes in the header.
             //in.skipBytes(20);
             byte[] data = reader.ReadBytes(20);
-            byte lcid = data[29 - 12]; //get the 29th byte in the file... we've first to read into arry was no 12
-            _encoding = DetectEncodingFromMark(lcid, filename);
+            byte ldid = data[29 - 12]; //get the 29th byte in the file... we've first to read into arry was no 12
+            var encoding = DetectEncoding(ldid, cpgStreamProvider);
+            if (_encoding == null) _encoding = encoding;
 
             //Replace reader with one with correct encoding..
             reader = new BinaryReader(reader.BaseStream, _encoding);
@@ -368,7 +313,7 @@ namespace NetTopologySuite.IO
                 // read the field name				
                 byte[] buffer = reader.ReadBytes(11);
                 // NOTE: only this _encoding.GetString method is available in Silverlight
-                String name = _encoding.GetString(buffer, 0, buffer.Length);
+                string name = DbaseEncodingUtility.Latin1.GetString(buffer, 0, buffer.Length);
                 int nullPoint = name.IndexOf((char)0);
                 if (nullPoint != -1)
                     name = name.Substring(0, nullPoint);
@@ -395,7 +340,7 @@ namespace NetTopologySuite.IO
 
             // Last byte is a marker for the end of the field definitions.
             // Trond Benum: This fails for some presumeably valid test shapefiles, so I have commented it out. 
-            byte lastByte = reader.ReadBytes(1)[0];
+            /*byte lastByte = */reader.ReadByte();//s(1)[0];
             // if (lastByte != 0x0d)
             //   throw new ShapefileException("DBase Header is not terminated");
 
@@ -405,38 +350,65 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// See if we have a dbf file and make a guess on its encoding, based on
-        /// code pages listed in the ArcGIS v9, ArcPad Reference Guide
+        /// Function to detect the encoding to use for the data of this shapefile.<br/>
+        /// This function checks the following:
+        /// <list type="number">
+        /// <item>
+        /// <description>Check for a codepage file (CPG) and read the encoding from its content.</description>
+        /// </item>
+        /// <item>
+        /// <description>Try to get an encoding based on the language driver id.<br/>
+        /// This is based on the code pages listed in the ArcGIS v11.5, ArcPad Reference Guide
         /// http://downloads.esri.com/support/documentation/pad_/ArcPad_RefGuide_1105.pdf
+        /// </description>
+        /// </item>
+        /// <item><description>Use the default encoding.</description></item>
+        /// </list>
         /// </summary>
-        /// <param name="lcid">Language driver id</param>
-        /// <param name="cpgFileName">Filename of code page file</param>
-        /// <returns></returns>
-        private static Encoding DetectEncodingFromMark(byte lcid, string cpgFileName)
+        /// <param name="ldid">Language driver id</param>
+        /// <param name="cpgFile">A stream provider for the cpg file</param>
+        /// <returns>An Encoding</returns>
+        private static Encoding DetectEncoding(byte ldid, IStreamProvider cpgFile)
         {
+            // Do we have a CPG stream provider?
+            if (cpgFile != null)
+                return GetEncoding(cpgFile);
+
+            // We don't, let's check the language driver id
             Encoding enc;
-            if (LdidToEncoding.TryGetValue(lcid, out enc))
+            if (DbaseEncodingUtility.LdidToEncoding.TryGetValue(ldid, out enc))
                 return enc;
-            enc = Encoding.UTF8;
-            if (String.IsNullOrEmpty(cpgFileName))
-                return enc;
-            cpgFileName = Path.ChangeExtension(cpgFileName, "cpg");
-            if (!File.Exists(cpgFileName))
-                cpgFileName = Path.ChangeExtension(cpgFileName, "cst");
-            if (!File.Exists(cpgFileName))
-                return enc;
-            string encodingText = File.ReadAllText(cpgFileName).Trim();
-            try { return Encoding.GetEncoding(encodingText); }
-            catch { }
-            return enc;
+
+            // return the default
+            return DefaultEncoding;
         }
 
-        private static byte GetLCIDFromEncoding(Encoding enc)
+        /// <summary>
+        /// Gets or sets a value indicating the default character encoding to use.
+        /// </summary>
+        public static Encoding DefaultEncoding
         {
-            byte cpId;
-            if (!EncodingToLdid.TryGetValue(enc, out cpId))
-                cpId = 0x03;
-            return cpId;
+            get { return DbaseEncodingUtility.DefaultEncoding; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException();
+
+                DbaseEncodingUtility.DefaultEncoding = value;
+            }
+        }
+
+        /// <summary>
+        /// Method to get the language driver id for an encoding
+        /// </summary>
+        /// <param name="encoding">The encoding</param>
+        /// <returns>A language driver id</returns>
+        private static byte GetLdidFromEncoding(Encoding encoding)
+        {
+            byte ldid;
+            if (!DbaseEncodingUtility.EncodingToLdid.TryGetValue(encoding, out ldid))
+                ldid = 0x03;
+            return ldid;
         }
 
         /// <summary>
@@ -454,6 +426,10 @@ namespace NetTopologySuite.IO
         /// <param name="writer"></param>
         public void WriteHeader(BinaryWriter writer)
         {
+            if (Encoding == null)
+                //throw new InvalidOperationException("Must not write header when Encoding has not been set");
+                Encoding = DefaultEncoding;
+
             // write the output file type.
             writer.Write((byte)_fileType);
 
@@ -474,11 +450,11 @@ namespace NetTopologySuite.IO
             byte[] data = new byte[20];
             for (int i = 0; i < 20; i++)
                 data[i] = 0;
-            data[29 - 12] = GetLCIDFromEncoding(_encoding);
+            data[29 - 12] = GetLdidFromEncoding(_encoding);
             writer.Write(data);
 
             // write all of the header records
-            int tempOffset = 0;
+            //int tempOffset = 0;
             for (int i = 0; i < _fieldDescriptions.Length; i++)
             {
                 // write the field name
@@ -498,7 +474,7 @@ namespace NetTopologySuite.IO
 
                 // write the field data address, offset from the start of the record.
                 writer.Write(0);
-                tempOffset += _fieldDescriptions[i].Length;
+                //tempOffset += _fieldDescriptions[i].Length;
 
                 // write the length of the field.
                 writer.Write((byte)_fieldDescriptions[i].Length);
@@ -522,63 +498,34 @@ namespace NetTopologySuite.IO
             get { return _fieldDescriptions; }
         }
 
-        private static void AddLdidEncodingPair(byte ldid, int codePage)
+        /// <summary>
+        /// Method to get the encoding from a stream provider
+        /// </summary>
+        /// <param name="provider">The stream provider</param>
+        /// <returns>
+        /// An encoding. If <paramref name="provider"/> is null, 
+        /// the default ANSI codepage for the system is returned.
+        /// </returns>
+        internal static Encoding GetEncoding(IStreamProvider provider = null)
         {
-            Encoding encToAdd;
-            if (!TryGetEncoding("windows-" + codePage, out encToAdd) &&
-                !TryGetEncoding(codePage, out encToAdd))
-                return;
-            AddLdidEncodingPair(ldid, encToAdd);
-        }
+            if (provider == null)
+                return DefaultEncoding;
 
-        private static void AddLdidEncodingPair(byte ldid, Encoding encToAdd)
-        {
-            LdidToEncoding.Add(ldid, encToAdd);
-            if (!EncodingToLdid.ContainsKey(encToAdd))
-                EncodingToLdid.Add(encToAdd, ldid);
-        }
+            if (provider.Kind != StreamTypes.DataEncoding)
+                throw new ArgumentException("provider");
 
-        private static bool TryGetEncoding(int codePage, out Encoding encToAdd)
-        {
-            encToAdd = null;
+            string cpgText;
+            using (var sr = new StreamReader(provider.OpenRead()))
+                cpgText = sr.ReadToEnd();
+
             try
             {
-                encToAdd = Encoding.GetEncoding(codePage);
-                return encToAdd != Encoding.ASCII;
+                return Encoding.GetEncoding(cpgText);
             }
-            catch { return false; }
-        }
-
-        private static bool TryGetEncoding(string codePageName, out Encoding encToAdd)
-        {
-            encToAdd = null;
-            try
+            catch
             {
-                encToAdd = Encoding.GetEncoding(codePageName);
-                return true;
-            }
-            catch { return false; }
-        }
-
-        private static void RegisterEncodings(object[][] ldidCodePagePairs)
-        {
-            var tmp = new Dictionary<int, EncodingInfo>();
-            foreach (EncodingInfo ei in Encoding.GetEncodings())
-                tmp.Add(ei.CodePage, ei);
-
-            foreach (var ldidCodePagePair in ldidCodePagePairs)
-            {
-                EncodingInfo ei;
-                if (tmp.TryGetValue((int) ldidCodePagePair[1], out ei))
-                {
-                    var enc = ei.GetEncoding();
-                    AddLdidEncodingPair(Convert.ToByte(ldidCodePagePair[0]), enc);
-                }
-                else
-                {
-                    var message = string.Format("Failed to get codepage for language driver {0}", ldidCodePagePair[0]);
-                    Debug.WriteLine(message);
-                }
+                //return Encoding.Default;
+                return DefaultEncoding;
             }
         }
     }

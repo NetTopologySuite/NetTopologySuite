@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using NetTopologySuite.IO.Streams;
 
 namespace NetTopologySuite.IO
@@ -12,7 +13,7 @@ namespace NetTopologySuite.IO
     public partial class DbaseFileReader : IEnumerable
     {
         private readonly IStreamProvider _streamProvider;
-
+        private readonly IStreamProvider _encodingProvider;
 
         private DbaseFileHeader _header;
 
@@ -36,7 +37,7 @@ namespace NetTopologySuite.IO
         private partial class DbaseFileEnumerator : IEnumerator, IDisposable
         {
             private ArrayList _arrayList;
-            private readonly BinaryReader _dbfStream;
+            private readonly BinaryReader _dbfReader;
             protected string[] _fieldNames = null;
             private DbaseFileHeader _header;
             private int _iCurrentRecord;
@@ -54,7 +55,7 @@ namespace NetTopologySuite.IO
             /// </exception>
             public void Reset()
             {
-                _dbfStream.BaseStream.Seek(_header.HeaderLength, SeekOrigin.Begin);
+                _dbfReader.BaseStream.Seek(_header.HeaderLength, SeekOrigin.Begin);
                 _iCurrentRecord = 0;
                 //throw new InvalidOperationException();
             }
@@ -98,10 +99,7 @@ namespace NetTopologySuite.IO
             {
                 _header = new DbaseFileHeader();
                 // read the header
-                _header.ReadHeader(_dbfStream,
-                    _parent._streamProvider is FileStreamProvider
-                        ? ((FileStreamProvider)_parent._streamProvider).Path
-                        : null);
+                _header.ReadHeader(_dbfReader, _parent._encodingProvider);
 
                 // how many records remain
                 _readPosition = _header.HeaderLength;
@@ -128,7 +126,7 @@ namespace NetTopologySuite.IO
                     attrs = new ArrayList(tempNumFields);
 
                     // read the deleted flag
-                    var tempDeleted = _dbfStream.ReadChar();
+                    var tempDeleted = _dbfReader.ReadChar();
 
                     // read the record length
                     var tempRecordLength = 1; // for the deleted character just read.
@@ -148,7 +146,7 @@ namespace NetTopologySuite.IO
                         switch (tempFieldType)
                         {
                             case 'L': // logical data type, one character (T,t,F,f,Y,y,N,n)
-                                var tempChar = (char) _dbfStream.ReadByte();
+                                var tempChar = (char)_dbfReader.ReadByte();
                                 if ((tempChar == 'T') || (tempChar == 't') || (tempChar == 'Y') || (tempChar == 'y'))
                                     tempObject = true;
                                 else tempObject = false;
@@ -158,20 +156,20 @@ namespace NetTopologySuite.IO
 
                                 if (_header.Encoding == null)
                                 {
-                                    var sbuffer = _dbfStream.ReadChars(tempFieldLength);
+                                    var sbuffer = _dbfReader.ReadChars(tempFieldLength);
                                     tempObject = new string(sbuffer).Trim().Replace("\0", string.Empty);
                                         //.ToCharArray();
                                 }
                                 else
                                 {
-                                    var buf = _dbfStream.ReadBytes(tempFieldLength);
+                                    var buf = _dbfReader.ReadBytes(tempFieldLength);
                                     tempObject = _header.Encoding.GetString(buf, 0, buf.Length).Trim();
                                 }
                                 break;
 
                             case 'D': // date data type.
                                 var ebuffer = new char[8];
-                                ebuffer = _dbfStream.ReadChars(8);
+                                ebuffer = _dbfReader.ReadChars(8);
                                 var tempString = new string(ebuffer, 0, 4);
 
                                 int year;
@@ -209,7 +207,7 @@ namespace NetTopologySuite.IO
                             case 'N': // number
                             case 'F': // floating point number
                                 var fbuffer = new char[tempFieldLength];
-                                fbuffer = _dbfStream.ReadChars(tempFieldLength);
+                                fbuffer = _dbfReader.ReadChars(tempFieldLength);
                                 tempString = new string(fbuffer);
                                 double val;
                                 if (double.TryParse(tempString.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture,
@@ -234,7 +232,7 @@ namespace NetTopologySuite.IO
                     if (tempRecordLength < _header.RecordLength)
                     {
                         var tempbuff = new byte[_header.RecordLength - tempRecordLength];
-                        tempbuff = _dbfStream.ReadBytes(_header.RecordLength - tempRecordLength);
+                        tempbuff = _dbfReader.ReadBytes(_header.RecordLength - tempRecordLength);
                     }
 
                     // add the row if it is not deleted.
@@ -254,7 +252,26 @@ namespace NetTopologySuite.IO
         #endregion
 
         #region Methods
+        #region Stream provider regsitry utility functions
+        static IStreamProviderRegistry CreateStreamProviderRegistry(string dbfPath)
+        {
+            var dbfStreamProvider = new FileStreamProvider(StreamTypes.Data, dbfPath, true);
+            var cpgPath = Path.ChangeExtension(dbfPath, "cpg");
+            IStreamProvider cpgStreamProvider = null;
+            if (File.Exists(cpgPath))
+                cpgStreamProvider = new FileStreamProvider(StreamTypes.DataEncoding, cpgPath, true);
 
+            return new ShapefileStreamProviderRegistry(null, dbfStreamProvider, null, dataEncodingStream: cpgStreamProvider);
+        }
+
+        static IStreamProviderRegistry CreateStreamProviderRegistry(string dbfPath, Encoding encoding)
+        {
+            var dbfStreamProvider = new FileStreamProvider(StreamTypes.Data, dbfPath, true);
+            var cpgStreamProvider = new ByteStreamProvider(StreamTypes.DataEncoding, encoding.EncodingName);
+
+            return new ShapefileStreamProviderRegistry(null, dbfStreamProvider, null, dataEncodingStream: cpgStreamProvider);
+        }
+        #endregion
         #endregion
     }
 }

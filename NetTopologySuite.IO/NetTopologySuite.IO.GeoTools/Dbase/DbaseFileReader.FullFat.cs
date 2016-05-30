@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using NetTopologySuite.IO.Streams;
 
 namespace NetTopologySuite.IO
@@ -16,7 +17,7 @@ namespace NetTopologySuite.IO
             {
                 _parent = parent;
                 Stream stream = parent._streamProvider.OpenRead();
-                _dbfStream = new BinaryReader(stream, parent._header.Encoding);
+                _dbfReader = new BinaryReader(stream, parent._header.Encoding);
                 ReadHeader();
             }
 
@@ -26,7 +27,7 @@ namespace NetTopologySuite.IO
             /// </summary>
             public void Dispose()
             {
-                _dbfStream.Close();
+                _dbfReader.Close();
             }
         }
 
@@ -35,7 +36,17 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="path">The path to the Dbase file</param>
         public DbaseFileReader(string path) 
-            : this(new FileStreamProvider(StreamTypes.Data, path, true))
+            : this(CreateStreamProviderRegistry(path))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the DbaseFileReader class.
+        /// </summary>
+        /// <param name="path">The path to the Dbase file</param>
+        /// <param name="encoding">The encoding to use</param>
+        public DbaseFileReader(string path, Encoding encoding)
+            : this(CreateStreamProviderRegistry(path, encoding))
         {
         }
 
@@ -52,9 +63,15 @@ namespace NetTopologySuite.IO
             if (_streamProvider == null)
                 throw new ArgumentException("Stream provider registry does not provide a data stream provider", "streamProviderRegistry");
 
-            if (_streamProvider == null)
+            if (_streamProvider.Kind != StreamTypes.Data)
                 throw new ArgumentException(string.Format(
                     "Misconfigured stream provider registry does provide a {0} stream provider when requested data stream provider", 
+                    _streamProvider.Kind), "streamProviderRegistry");
+
+            _encodingProvider = streamProviderRegistry[StreamTypes.DataEncoding];
+            if (_encodingProvider != null && _encodingProvider.Kind != StreamTypes.DataEncoding)
+                throw new ArgumentException(string.Format(
+                    "Misconfigured stream provider registry does provide a {0} stream provider when requested data encoding stream provider",
                     _streamProvider.Kind), "streamProviderRegistry");
         }
 
@@ -62,6 +79,7 @@ namespace NetTopologySuite.IO
         /// Initializes a new instance of the DbaseFileReader class.
         /// </summary>
         /// <param name="streamProvider">A stream provider</param>
+        [Obsolete("Do not use!")]
         public DbaseFileReader(IStreamProvider streamProvider)
         {
             if (streamProvider == null)
@@ -81,12 +99,11 @@ namespace NetTopologySuite.IO
         {
             if (_header == null)
             {
-                using (var stream = _streamProvider.OpenRead())
-                using (var dbfStream = new BinaryReader(stream))
+                using (var dbfReader = new BinaryReader(_streamProvider.OpenRead()))
                 {
-                    _header = new DbaseFileHeader();
                     // read the header
-                    _header.ReadHeader(dbfStream, _streamProvider is FileStreamProvider ? ((FileStreamProvider)_streamProvider).Path : null);
+                    _header = new DbaseFileHeader();
+                    _header.ReadHeader(dbfReader, _encodingProvider);
                 }
             }
             return _header;

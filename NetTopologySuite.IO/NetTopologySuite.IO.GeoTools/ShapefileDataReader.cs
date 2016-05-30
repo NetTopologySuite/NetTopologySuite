@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Text;
 using GeoAPI.Geometries;
 using NetTopologySuite.IO.Streams;
 
@@ -31,15 +32,30 @@ namespace NetTopologySuite.IO
         /// <param name="filename">The shapefile to read (minus the .shp extension)</param>
         ///<param name="geometryFactory">The GeometryFactory to use.</param>
         public ShapefileDataReader(string filename, IGeometryFactory geometryFactory)
+            :this(filename, geometryFactory, null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the ShapefileDataReader class.
+        /// </summary>
+        /// <param name="filename">The shapefile to read (minus the .shp extension)</param>
+        /// <param name="geometryFactory">The GeometryFactory to use.</param>
+        /// <param name="encoding">The encoding to use for reading the attribute data</param>
+        public ShapefileDataReader(string filename, IGeometryFactory geometryFactory, Encoding encoding)
         {
             if (String.IsNullOrEmpty(filename))
                 throw new ArgumentNullException("filename");
             if (geometryFactory == null)
                 throw new ArgumentNullException("geometryFactory");
+
             _open = true;
 
             string dbfFile = Path.ChangeExtension(filename, "dbf");
-            _dbfReader = new DbaseFileReader(dbfFile);
+            _dbfReader = encoding != null 
+                ? new DbaseFileReader(dbfFile, encoding) 
+                : new DbaseFileReader(dbfFile);
+
             string shpFile = Path.ChangeExtension(filename, "shp");
             _shpReader = new ShapefileReader(shpFile, geometryFactory);
 

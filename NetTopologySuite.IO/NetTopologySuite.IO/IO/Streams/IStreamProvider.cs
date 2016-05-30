@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿
+using System.IO;
 
 namespace NetTopologySuite.IO.Streams
 {
@@ -20,9 +21,9 @@ namespace NetTopologySuite.IO.Streams
 
         /// <summary>
         /// Function to open the underlying stream for writing purposes
-        /// 
         /// </summary>
-        /// <remarks>If <see cref="UnderlyingStreamIsReadonly"/> is not <value>true</value> this method shall fail</remarks>
+        /// <remarks>If <see cref="UnderlyingStreamIsReadonly"/> is <value>true</value>
+        /// this method shall fail</remarks>
         /// <returns>An opened stream</returns>
         Stream OpenWrite(bool truncate);
 

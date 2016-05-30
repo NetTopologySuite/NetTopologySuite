@@ -1,7 +1,7 @@
 namespace NetTopologySuite.IO.Streams
 {
     /// <summary>
-    /// Interface for a registry of stream providers
+    /// Interface for a registry of stream providers that -altogether- form a spatial dataset.
     /// </summary>
     public interface IStreamProviderRegistry
     {
@@ -10,25 +10,10 @@ namespace NetTopologySuite.IO.Streams
         /// </summary>
         /// <param name="streamType">The stream type</param>
         /// <returns>A stream provider</returns>
+        /// <remarks>
+        /// If no stream provider for the <paramref name="streamType"/> requested can be provided, <value>null</value> is to be returned.<br/>
+        /// Do not throw an exception!
+        /// </remarks>
         IStreamProvider this[string streamType] { get; }
-    }
-
-    /// <summary>
-    /// An enumeration of stream types
-    /// </summary>
-    public static class StreamTypes
-    {
-        /// <summary>
-        /// A shape stream
-        /// </summary>
-        public const string Shape = "SHAPESTREAM";
-        /// <summary>
-        /// A data stream (dbf)
-        /// </summary>
-        public const string Data = "DATASTREAM";
-        /// <summary>
-        /// An index stream
-        /// </summary>
-        public const string Index = "INDEXSTREAM";
     }
 }
