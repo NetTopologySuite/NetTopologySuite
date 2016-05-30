@@ -23,7 +23,7 @@ namespace NetTopologySuite.Index.KdTree
     /// <typeparam name="T">The type of the user data object</typeparam>
     /// <author>David Skea</author>
     /// <author>Martin Davis</author>
-    public abstract class KdTree<T>
+    public class KdTree<T>
         where T : class
     {
         ///<summary>
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Index.KdTree
         }
 
 
-        protected KdNode<T> _root;
+        private KdNode<T> _root;
         private long _numberOfNodes;
         private readonly double _tolerance;
 
@@ -316,7 +316,13 @@ namespace NetTopologySuite.Index.KdTree
         /// Performs a nearest neighbor search of the points in the index.
         /// </summary>
         /// <param name="coord">The point to search the nearset neighbor for</param>
-        public abstract KdNode<T> NearestNeighbor(Coordinate coord);
+        public KdNode<T> NearestNeighbor(Coordinate coord)
+        {
+            KdNode<T> result = null;
+            var closestDistSq = double.MaxValue;
+            KdTreeNTS.NearestNeighbor(_root, coord, ref result, ref closestDistSq, true);
+            return result;
+        }
 
         private class KdNodeVisitor<T> : IKdNodeVisitor<T> where T : class
         {

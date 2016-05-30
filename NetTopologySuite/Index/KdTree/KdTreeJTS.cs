@@ -4,26 +4,14 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Index.KdTree
 {
     /// <summary>
-    /// JTS <see cref="KdTree{T}"/> implementation.
+    /// standard JTS <see cref="KdTree{T}"/> code.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class KdTreeJTS<T> : KdTree<T>
-        where T : class
+    internal static class KdTreeJTS
     {
-        public KdTreeJTS() { }
-
-        public KdTreeJTS(double tolerance) : base(tolerance) { }
-
-        public override KdNode<T> NearestNeighbor(Coordinate coord)
-        {
-            KdNode<T> result = null;
-            var closestDistSq = double.MaxValue;
-            NearestNeighbor(_root, coord, ref result, ref closestDistSq);
-            return result;
-        }
-
-        private static void NearestNeighbor(KdNode<T> currentNode,
+        internal static void NearestNeighbor<T>(KdNode<T> currentNode,
             Coordinate queryCoordinate, ref KdNode<T> closestNode, ref double closestDistanceSq)
+            where T : class
         {
             while (true)
             {
@@ -64,7 +52,8 @@ namespace NetTopologySuite.Index.KdTree
             }
         }
 
-        private static bool NeedsToBeSearched(Coordinate target, KdNode<T> node, double closestDistSq)
+        private static bool NeedsToBeSearched<T>(Coordinate target, KdNode<T> node, double closestDistSq)
+            where T : class
         {
             return node.X >= target.X - closestDistSq && node.X <= target.X + closestDistSq
                    || node.Y >= target.Y - closestDistSq && node.Y <= target.Y + closestDistSq;

@@ -4,29 +4,17 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Index.KdTree
 {
     /// <summary>
-    /// NTS specific <see cref="KdTree{T}"/> implementation, that
+    /// NTS specific <see cref="KdTree{T}"/> code, that
     /// fixes NearestNeighbor behavior in some cases (see #97 and #105).
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso href="https://github.com/NetTopologySuite/NetTopologySuite/pull/105"/>
-    public class KdTreeNTS<T> : KdTree<T>
-        where T : class
+    internal static class KdTreeNTS
     {
-        public KdTreeNTS() { }
-
-        public KdTreeNTS(double tolerance) : base(tolerance) { }
-
-        public override KdNode<T> NearestNeighbor(Coordinate coord)
-        {
-            KdNode<T> result = null;
-            var closestDistSq = double.MaxValue;
-            NearestNeighbor(_root, coord, ref result, ref closestDistSq, true);
-            return result;
-        }
-
-        private static void NearestNeighbor(KdNode<T> currentNode,
+        internal static void NearestNeighbor<T>(KdNode<T> currentNode,
             Coordinate queryCoordinate, ref KdNode<T> closestNode, ref double closestDistanceSq,
             bool isOddLevel)
+            where T : class
         {
             while (true)
             {
@@ -70,9 +58,10 @@ namespace NetTopologySuite.Index.KdTree
             }
         }
 
-        private static bool NeedsToBeSearched(Coordinate target,
+        private static bool NeedsToBeSearched<T>(Coordinate target,
             KdNode<T> node, double closestDistSq,
             bool left, bool isOddLevel)
+            where T : class
         {
             if (isOddLevel)
                 return (left ? target.X <= node.X : target.X >= node.X) || Math.Pow(target.X - node.X, 2) < closestDistSq;
