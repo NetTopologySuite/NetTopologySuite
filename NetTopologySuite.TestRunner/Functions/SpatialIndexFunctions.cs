@@ -27,7 +27,7 @@ namespace Open.Topology.TestRunner.Functions
 
         private static KdTree<object> BuildKdTree(IGeometry geom, double tolerance)
         {
-            var index = new KdTree<object>(tolerance);
+            var index = new KdTreeNTS<object>(tolerance);
             var pt = geom.Coordinates;
             for (int i = 0; i < pt.Length; i++)
             {
