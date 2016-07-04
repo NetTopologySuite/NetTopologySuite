@@ -51,6 +51,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
         {
             TestWriteZMValuesShapeFile(false);
         }
+
         [Test]
         public void TestWriteZMValuesShapeFile()
         {
@@ -597,6 +598,29 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
                 Header = ShapefileDataWriter.GetHeader(features[0], features.Length)
             };
             shp_writer.Write(features);
+        }
+
+        [Test, ExpectedException(typeof(ArgumentException))]
+        // see: https://github.com/NetTopologySuite/NetTopologySuite/issues/111
+        public void issue_111_multilinehandler_with_invalid_values()
+        {
+            IGeometryFactory factory = GeometryFactory.Default;
+
+            Coordinate[] points = new Coordinate[3];
+            points[0] = new Coordinate(0, 0);
+            points[1] = new Coordinate(1, 0);
+            points[2] = new Coordinate(1, 1);
+            LineString ls = new LineString(points);
+            IMultiLineString mls = factory.CreateMultiLineString(new ILineString[] { ls });
+            IGeometry[] arr = new[] { mls, GeometryCollection.Empty };
+            IGeometryCollection geometries = factory.CreateGeometryCollection(arr);
+
+            ShapeGeometryType shapeType = Shapefile.GetShapeType(geometries);
+            Assert.AreEqual(ShapeGeometryType.LineStringZM, shapeType);
+
+            string tempPath = Path.GetTempFileName();
+            ShapefileWriter sfw = new ShapefileWriter(Path.GetFileNameWithoutExtension(tempPath), shapeType);
+            sfw.Write(geometries);
         }
     }
 }
