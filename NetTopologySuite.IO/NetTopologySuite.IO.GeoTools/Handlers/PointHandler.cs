@@ -1,4 +1,5 @@
  
+using System;
 using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
@@ -65,9 +66,17 @@ namespace NetTopologySuite.IO.Handlers
         /// <param name="factory">The geometry factory to use.</param>
         public override void Write(IGeometry geometry, BinaryWriter writer, IGeometryFactory factory)
         {
-            writer.Write((int)ShapeType);
+            if (geometry == null)
+                throw new ArgumentNullException("geometry");
 
-            IPoint point = (IPoint) geometry;
+            var point = geometry as IPoint;
+            if (point == null)
+            {
+                var err = String.Format("Expected geometry that implements 'IPoint', but was '{0}'",
+                    geometry.GetType().Name);
+                throw new ArgumentException(err, "geometry");
+            }
+            writer.Write((int)ShapeType);
             ICoordinateSequence seq = point.CoordinateSequence;
 
             writer.Write(seq.GetOrdinate(0, Ordinate.X));

@@ -168,18 +168,26 @@ namespace NetTopologySuite.IO.Handlers
         /// <param name="factory">The geometry factory to use.</param>
         public override void Write(IGeometry geometry, BinaryWriter writer, IGeometryFactory factory)
         {
+            if (geometry == null)
+                throw new ArgumentNullException("geometry");
+
             // This check seems to be not useful and slow the operations...
             // if (!geometry.IsValid)    
             // Trace.WriteLine("Invalid polygon being written.");
 
-            IGeometryCollection multi;
-            var collection = geometry as IGeometryCollection;
-            if (collection != null)
-                multi = collection;
-            else 
+            var multi = geometry as IMultiPolygon;
+            if (multi == null)
             {
-                var gf = geometry.Factory;				
-                multi = gf.CreateMultiPolygon(new[] { (IPolygon) geometry } );
+                var poly = geometry as IPolygon;
+                if (poly == null)
+                {
+                    var err = String.Format("Expected geometry that implements 'IMultiPolygon' or 'IPolygon', but was '{0}'",
+                        geometry.GetType().Name);
+                    throw new ArgumentException(err, "geometry");
+                }
+
+                var arr = new[] { poly };
+                multi = factory.CreateMultiPolygon(arr);                
             }
 
             // Write the shape type
@@ -263,19 +271,30 @@ namespace NetTopologySuite.IO.Handlers
         /// <returns>The number of geometry parts</returns>
         private static int GetNumParts(IGeometry geometry)
         {
-            int numParts = 0;
-            if (geometry is IMultiPolygon)
+            if (geometry == null)
+                throw new ArgumentNullException("geometry");
+
+            var mpoly = geometry as IMultiPolygon;
+            if (mpoly != null)
             {
-                var mpoly = geometry as IMultiPolygon;
-                foreach (IPolygon poly in mpoly.Geometries)
-                    numParts = numParts + poly.InteriorRings.Length + 1;
+                int numParts = 0;
+                foreach (var geom in mpoly.Geometries)
+                {
+                    var part = (IPolygon)geom;
+                    numParts = numParts + part.InteriorRings.Length + 1;
+                }
+                return numParts;
             }
-            else if (geometry is IPolygon)
-                numParts = ((IPolygon) geometry).InteriorRings.Length + 1;
-            else 
-                throw new InvalidOperationException("Should not get here.");
-            
-            return numParts;
+
+            var poly = geometry as IPolygon;
+            if (poly != null)
+            {
+                return poly.InteriorRings.Length + 1;
+            }
+
+            var err = String.Format("Expected geometry that implements 'IMultiPolygon' or 'IPolygon', but was '{0}'",
+                geometry.GetType().Name);
+            throw new ArgumentException(err, "geometry");
         }
 
         /// <summary>

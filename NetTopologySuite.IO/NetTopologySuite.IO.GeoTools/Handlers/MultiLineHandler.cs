@@ -129,7 +129,6 @@ namespace NetTopologySuite.IO.Handlers
             if (geometry == null)
                 throw new ArgumentNullException("geometry");
 
-            // Force to use a MultiGeometry
             var multi = geometry as IMultiLineString;
             if (multi == null)
             {
@@ -196,10 +195,20 @@ namespace NetTopologySuite.IO.Handlers
 
         private static int GetNumParts(IGeometry geometry)
         {
-            var numParts = 1;
-            if (geometry is IMultiLineString)
-                numParts = ((IMultiLineString)geometry).Geometries.Length;
-            return numParts;
+            if (geometry == null)
+                throw new ArgumentNullException("geometry");
+
+            var mls = geometry as IMultiLineString;
+            if (mls != null)
+                return mls.Geometries.Length;
+
+            var ls = geometry as ILineString;
+            if (ls != null)
+                return 1;
+
+            var err = String.Format("Expected geometry that implements 'IMultiLineString' or 'ILineString', but was '{0}'",
+                geometry.GetType().Name);
+            throw new ArgumentException(err, "geometry");
         }
     }
 }

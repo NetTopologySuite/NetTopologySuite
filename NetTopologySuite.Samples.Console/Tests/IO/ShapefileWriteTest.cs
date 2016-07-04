@@ -602,6 +602,43 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
 
         [Test, ExpectedException(typeof(ArgumentException))]
         // see: https://github.com/NetTopologySuite/NetTopologySuite/issues/111
+        public void issue_111_pointhandler_with_invalid_values()
+        {
+            IGeometryFactory factory = GeometryFactory.Default;
+
+            IPoint p = factory.CreatePoint(new Coordinate(0, 0));
+            IGeometry[] arr = { p, GeometryCollection.Empty };
+            IGeometryCollection geometries = factory.CreateGeometryCollection(arr);
+
+            ShapeGeometryType shapeType = Shapefile.GetShapeType(geometries);
+            Assert.AreEqual(ShapeGeometryType.PointZM, shapeType);
+
+            string tempPath = Path.GetTempFileName();
+            ShapefileWriter sfw = new ShapefileWriter(Path.GetFileNameWithoutExtension(tempPath), shapeType);
+            sfw.Write(geometries);
+        }
+
+        [Test, ExpectedException(typeof(ArgumentException))]
+        // see: https://github.com/NetTopologySuite/NetTopologySuite/issues/111
+        public void issue_111_multipointhandler_with_invalid_values()
+        {
+            IGeometryFactory factory = GeometryFactory.Default;
+            
+            IPoint p = factory.CreatePoint(new Coordinate(0, 0));
+            IMultiPoint mp = factory.CreateMultiPoint(new[] { p });
+            IGeometry[] arr = new[] { mp, GeometryCollection.Empty };
+            IGeometryCollection geometries = factory.CreateGeometryCollection(arr);
+
+            ShapeGeometryType shapeType = Shapefile.GetShapeType(geometries);
+            Assert.AreEqual(ShapeGeometryType.MultiPointZM, shapeType);
+
+            string tempPath = Path.GetTempFileName();
+            ShapefileWriter sfw = new ShapefileWriter(Path.GetFileNameWithoutExtension(tempPath), shapeType);
+            sfw.Write(geometries);
+        }
+
+        [Test, ExpectedException(typeof(ArgumentException))]
+        // see: https://github.com/NetTopologySuite/NetTopologySuite/issues/111
         public void issue_111_multilinehandler_with_invalid_values()
         {
             IGeometryFactory factory = GeometryFactory.Default;
@@ -610,13 +647,40 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
             points[0] = new Coordinate(0, 0);
             points[1] = new Coordinate(1, 0);
             points[2] = new Coordinate(1, 1);
-            LineString ls = new LineString(points);
-            IMultiLineString mls = factory.CreateMultiLineString(new ILineString[] { ls });
+            ILineString ls = factory.CreateLineString(points);
+
+            IMultiLineString mls = factory.CreateMultiLineString(new[] { ls });
             IGeometry[] arr = new[] { mls, GeometryCollection.Empty };
             IGeometryCollection geometries = factory.CreateGeometryCollection(arr);
 
             ShapeGeometryType shapeType = Shapefile.GetShapeType(geometries);
             Assert.AreEqual(ShapeGeometryType.LineStringZM, shapeType);
+
+            string tempPath = Path.GetTempFileName();
+            ShapefileWriter sfw = new ShapefileWriter(Path.GetFileNameWithoutExtension(tempPath), shapeType);
+            sfw.Write(geometries);
+        }
+
+        [Test, ExpectedException(typeof(ArgumentException))]
+        // see: https://github.com/NetTopologySuite/NetTopologySuite/issues/111
+        public void issue_111_polygonhandler_with_invalid_values()
+        {
+            IGeometryFactory factory = GeometryFactory.Default;
+
+            Coordinate[] points = new Coordinate[5];
+            points[0] = new Coordinate(0, 0);
+            points[1] = new Coordinate(1, 0);
+            points[2] = new Coordinate(1, 1);
+            points[3] = new Coordinate(0, 1);
+            points[4] = new Coordinate(0, 0);
+            IPolygon poly = factory.CreatePolygon(points);
+
+            IMultiPolygon mpoly = factory.CreateMultiPolygon(new[] { poly });
+            IGeometry[] arr = new[] { mpoly, GeometryCollection.Empty };
+            IGeometryCollection geometries = factory.CreateGeometryCollection(arr);
+
+            ShapeGeometryType shapeType = Shapefile.GetShapeType(geometries);
+            Assert.AreEqual(ShapeGeometryType.PolygonZM, shapeType);
 
             string tempPath = Path.GetTempFileName();
             ShapefileWriter sfw = new ShapefileWriter(Path.GetFileNameWithoutExtension(tempPath), shapeType);
