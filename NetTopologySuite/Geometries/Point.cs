@@ -379,10 +379,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /* END ADDED BY MPAUL42: monoGIS team */
-
-        /// <summary>
-        /// 
-        /// </summary>        
+        [Obsolete("use 'CoordinateSequence.Get/SetOrdinate(Ordinate.M)' instead", false)]
         public double M
         {
             get
