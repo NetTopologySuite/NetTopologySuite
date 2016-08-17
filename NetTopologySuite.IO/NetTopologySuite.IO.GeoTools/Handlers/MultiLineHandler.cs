@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
@@ -10,13 +11,9 @@ namespace NetTopologySuite.IO.Handlers
     /// </summary>
     public class MultiLineHandler : ShapeHandler
     {
-        public MultiLineHandler() : base(ShapeGeometryType.LineString)
-        {            
-        }
-        public MultiLineHandler(ShapeGeometryType type) : base(type)
-        {
-        }
+        public MultiLineHandler() : base(ShapeGeometryType.LineString) { }
 
+        public MultiLineHandler(ShapeGeometryType type) : base(type) { }
 
         /// <summary>
         /// Reads a stream and converts the shapefile record to an equilivent geometry object.
@@ -61,7 +58,7 @@ namespace NetTopologySuite.IO.Handlers
                                  ? numPoints
                                  : partOffsets[part + 1];
                 var length = finish - start;
-                
+
                 for (var i = 0; i < length; i++)
                 {
                     var x = pm.MakePrecise(ReadDouble(file, totalRecordLength, ref totalRead));
@@ -117,7 +114,7 @@ namespace NetTopologySuite.IO.Handlers
 
             geom = (lines.Count != 1)
                 ? (IGeometry)factory.CreateMultiLineString(lines.ToArray())
-                : lines[0];          
+                : lines[0];
             return geom;
         }
 
@@ -129,12 +126,23 @@ namespace NetTopologySuite.IO.Handlers
         /// <param name="factory">The geometry factory to use.</param>
         public override void Write(IGeometry geometry, BinaryWriter writer, IGeometryFactory factory)
         {
-            // Force to use a MultiGeometry
-            IMultiLineString multi;
-            if (geometry is IGeometryCollection)
-                multi = (IMultiLineString)geometry;
-            else
-                multi = factory.CreateMultiLineString(new[] { (ILineString)geometry });
+            if (geometry == null)
+                throw new ArgumentNullException("geometry");
+
+            var multi = geometry as IMultiLineString;
+            if (multi == null)
+            {
+                var ls = geometry as ILineString;
+                if (ls == null)
+                {
+                    var err = String.Format("Expected geometry that implements 'IMultiLineString' or 'ILineString', but was '{0}'",
+                        geometry.GetType().Name);
+                    throw new ArgumentException(err, "geometry");
+                }
+
+                var arr = new[] { ls };
+                multi = factory.CreateMultiLineString(arr);
+            }
 
             writer.Write((int)ShapeType);
 
@@ -187,10 +195,20 @@ namespace NetTopologySuite.IO.Handlers
 
         private static int GetNumParts(IGeometry geometry)
         {
-            var numParts = 1;
-            if (geometry is IMultiLineString)
-                numParts = ((IMultiLineString)geometry).Geometries.Length;
-            return numParts;
+            if (geometry == null)
+                throw new ArgumentNullException("geometry");
+
+            var mls = geometry as IMultiLineString;
+            if (mls != null)
+                return mls.Geometries.Length;
+
+            var ls = geometry as ILineString;
+            if (ls != null)
+                return 1;
+
+            var err = String.Format("Expected geometry that implements 'IMultiLineString' or 'ILineString', but was '{0}'",
+                geometry.GetType().Name);
+            throw new ArgumentException(err, "geometry");
         }
     }
 }

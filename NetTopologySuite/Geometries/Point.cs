@@ -379,23 +379,19 @@ namespace NetTopologySuite.Geometries
         }
 
         /* END ADDED BY MPAUL42: monoGIS team */
-
-        /// <summary>
-        /// 
-        /// </summary>        
+        
         public double M
         {
             get
             {
-                if (Coordinate == null)
+                if (CoordinateSequence == null)
                     throw new ArgumentOutOfRangeException("M called on empty Point");
-                return Coordinate.NullOrdinate;
+                return CoordinateSequence.GetOrdinate(0, Ordinate.M);
             }
             set
             {
-                //Coordinate.M = value;
+                CoordinateSequence.SetOrdinate(0, Ordinate.M, value);
             }
         }
-    
     }
 }

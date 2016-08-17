@@ -12,13 +12,9 @@ namespace NetTopologySuite.IO.Handlers
     /// </summary>
     public class MultiPointHandler : ShapeHandler
     {                       
-        public MultiPointHandler()
-            : base(ShapeGeometryType.MultiPoint)
-        {            
-        }
-        public MultiPointHandler(ShapeGeometryType type) : base(type)
-        {                    
-        }
+        public MultiPointHandler() : base(ShapeGeometryType.MultiPoint) { }
+
+        public MultiPointHandler(ShapeGeometryType type) : base(type) { }
 
         /// <summary>
         /// Reads a stream and converts the shapefile record to an equilivant geometry object.
@@ -82,9 +78,16 @@ namespace NetTopologySuite.IO.Handlers
         /// <param name="factory">The geometry factory to use.</param>
         public override void Write(IGeometry geometry, BinaryWriter writer, IGeometryFactory factory)
         {
+            if (geometry == null)
+                throw new ArgumentNullException("geometry");
+
             var mpoint = geometry as IMultiPoint;
             if (mpoint == null)
-                throw new ArgumentException("Geometry Type error: MultiPoint expected, but the type retrieved is " + geometry.GetType().Name);
+            {
+                var err = String.Format("Expected geometry that implements 'IMultiPoint', but was '{0}'",
+                    geometry.GetType().Name);
+                throw new ArgumentException(err, "geometry");
+            }
 
             // Slow and maybe not useful...
             // if (!geometry.IsValid)

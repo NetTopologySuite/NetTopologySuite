@@ -32,7 +32,7 @@ namespace NetTopologySuite.IO.Converters
             // type
             writer.WritePropertyName("type");
             writer.WriteValue("Feature");
-            
+
             // Add the id here if present in attributes.
             // It will be skipped in serialization of properties
             if (feature.Attributes.Exists("id"))
@@ -90,10 +90,10 @@ namespace NetTopologySuite.IO.Converters
                         read = reader.Read();
                         break;
                     case "id":
-                        read = reader.Read(); 
+                        read = reader.Read();
                         featureId = reader.Value;
-                        read = reader.Read(); 
-                        break;                        
+                        read = reader.Read();
+                        break;
                     case "bbox":
                         // Read, but can't do anything with it, assigning Envelopes is impossible without reflection
                         Envelope bbox = serializer.Deserialize<Envelope>(reader);
@@ -107,7 +107,7 @@ namespace NetTopologySuite.IO.Converters
                             read = reader.Read();
                             break;
                         }
-                            
+
                         if (reader.TokenType != JsonToken.StartObject)
                             throw new ArgumentException("Expected token '{' not found.");
                         IGeometry geometry = serializer.Deserialize<IGeometry>(reader);
@@ -126,20 +126,16 @@ namespace NetTopologySuite.IO.Converters
                         read = reader.Read();
                         break;
                     default:
-                    {
                         read = reader.Read(); // move next                        
                         // jump to next property
                         while (read && reader.TokenType != JsonToken.PropertyName)
                             read = reader.Read();
                         break;
-                        //string err = String.Format("token unhandled: {0}.", prop);
-                        //throw new ArgumentException(err);
-                    }
                 }
             }
 
             if (read && reader.TokenType != JsonToken.EndObject)
-                    throw new ArgumentException("Expected token '}' not found.");
+                throw new ArgumentException("Expected token '}' not found.");
 
             //read = reader.Read(); // move next
 

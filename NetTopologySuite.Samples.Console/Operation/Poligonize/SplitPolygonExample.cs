@@ -45,7 +45,7 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
                     output.Add(candpoly);
             }
 
-            // We know that there are some missing after 13.3.2
+            // We know that there may be some missing after 13.3.2
             // Hack: Build the difference and add the resulting polygons
             //       to the output.
             var diff = polygon.Difference(polygon.Factory.BuildGeometry(output));
