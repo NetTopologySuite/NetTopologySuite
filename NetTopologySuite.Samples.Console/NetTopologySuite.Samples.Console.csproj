@@ -88,6 +88,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -255,6 +256,10 @@
     <ProjectReference Include="..\NetTopologySuite.Tests.NUnit\NetTopologySuite.Tests.NUnit.csproj">
       <Project>{a1525c90-fa00-449d-b3c4-cba45d5e916c}</Project>
       <Name>NetTopologySuite.Tests.NUnit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.Windows.Forms\NetTopologySuite.Windows.Forms.csproj">
+      <Project>{db5efab5-f90a-4b64-ab99-7c3a750154f1}</Project>
+      <Name>NetTopologySuite.Windows.Forms</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
