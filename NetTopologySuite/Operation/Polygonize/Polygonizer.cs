@@ -32,7 +32,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// The default polygonizer output behavior
         /// </summary>
-        public const bool AllPolys = true;
+        public const bool AllPolys = false;
         
         /// <summary>
         /// Adds every linear element in a <see cref="IGeometry"/> into the polygonizer graph.
@@ -223,11 +223,11 @@ namespace NetTopologySuite.Operation.Polygonize
             _cutEdges = _graph.DeleteCutEdges();
             var edgeRingList = _graph.GetEdgeRings();
 
-            IList<EdgeRing> validEdgeRingList = new List<EdgeRing>();
+            var validEdgeRingList = new List<EdgeRing>();
             _invalidRingLines = new List<IGeometry>();
             if (IsCheckingRingsValid)
                  FindValidRings(edgeRingList, validEdgeRingList, _invalidRingLines);
-            else validEdgeRingList = edgeRingList;
+            else validEdgeRingList = (List<EdgeRing>)edgeRingList;
 
             FindShellsAndHoles(validEdgeRingList);
             AssignHolesToShells(_holeList, _shellList);

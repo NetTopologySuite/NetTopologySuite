@@ -44,21 +44,21 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
                 if (polygon.Contains(candpoly.InteriorPoint))
                     output.Add(candpoly);
             }
-
+            /*
             // We know that there may be some missing after 13.3.2
             // Hack: Build the difference and add the resulting polygons
             //       to the output.
             var diff = polygon.Difference(polygon.Factory.BuildGeometry(output));
             var diffPolygons = PolygonExtracter.GetPolygons(diff);
             output.AddRange(diffPolygons);
-
+            */
             return polygon.Factory.BuildGeometry(output);
         }
 
         internal static IGeometry Polygonize(IGeometry geometry)
         {
             var lines = LineStringExtracter.GetLines(geometry);
-            var polygonizer = new Polygonizer(true);
+            var polygonizer = new Polygonizer(false);
             polygonizer.Add(lines);
             var polys = new List<IGeometry>(polygonizer.GetPolygons());
 
@@ -301,14 +301,5 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
             return atb.GetTransformation();
         }
 
-        private static Matrix CreateTransform(Envelope env, int offsetX = 0)
-        {
-            var at = CreateAffineTransformation(env, offsetX).MatrixEntries;
-            var sx = at[0];
-            var sy = at[4];
-            var dx = at[2];
-            var dy = at[5];
-            return new Matrix((float)sx, 0, 0, -(float)sy, (float)dx, (float)dy);
-        }
     }
 }

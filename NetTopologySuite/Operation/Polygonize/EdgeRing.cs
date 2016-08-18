@@ -440,7 +440,7 @@ namespace NetTopologySuite.Operation.Polygonize
         public bool IsProcessed
         {
             get { return _isProcessed; }
-            set { _isProcessed = true; }
+            set { _isProcessed = value; }
         }
 
         /// <summary>
