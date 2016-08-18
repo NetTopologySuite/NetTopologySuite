@@ -86,6 +86,8 @@ namespace NetTopologySuite.IO
             private readonly ShapeHandler _handler;
             private readonly ShapefileReader _parent;
             private readonly BigEndianBinaryReader _shpBinaryReader;
+            private readonly BigEndianBinaryReader _idxBinaryReader;
+
             private IGeometry _geometry;
 
             #region IDisposable Members
@@ -106,6 +108,9 @@ namespace NetTopologySuite.IO
             public void Reset()
             {
                 _shpBinaryReader.BaseStream.Seek(100, SeekOrigin.Begin);
+                if (_idxBinaryReader != null)
+                    _idxBinaryReader.BaseStream.Seek(100, SeekOrigin.Begin);
+
                 //throw new InvalidOperationException();
             }
 
@@ -119,6 +124,16 @@ namespace NetTopologySuite.IO
             /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
             public bool MoveNext()
             {
+                if (_idxBinaryReader != null)
+                {
+                    if (_idxBinaryReader.BaseStream.Position >= _idxBinaryReader.BaseStream.Length)
+                        return false;
+
+                    var offset = 2L*_idxBinaryReader.ReadInt32BE();
+                    var contentLength = 2*_idxBinaryReader.ReadInt32BE();
+                    _shpBinaryReader.BaseStream.Position = offset;
+                }
+
                 if (_shpBinaryReader.BaseStream.Position < _shpBinaryReader.BaseStream.Length)
                 {
                     // Mark Jacquin: add a try catch when some shapefile have extra char at the end but no record

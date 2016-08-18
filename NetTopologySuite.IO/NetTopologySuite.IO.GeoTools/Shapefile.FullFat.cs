@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
+using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.IO
@@ -18,7 +19,7 @@ namespace NetTopologySuite.IO
         /// <param name="tableName">The name to give to the table.</param>
         /// <param name="geometryFactory">The geometry factory to use when creating the objects.</param>
         /// <returns>DataTable representing the data </returns>
-        public static DataTable CreateDataTable(string filename, string tableName, GeometryFactory geometryFactory, Encoding encoding = null)
+        public static DataTable CreateDataTable(string filename, string tableName, IGeometryFactory geometryFactory, Encoding encoding = null)
         {
             if (filename == null)
                 throw new ArgumentNullException("filename");

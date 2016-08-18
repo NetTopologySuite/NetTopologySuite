@@ -62,7 +62,8 @@ namespace NetTopologySuite.IO
             _dbfHeader = _dbfReader.GetHeader();
             _recordCount = _dbfHeader.NumRecords;
 
-            // copy dbase fields to our own array. Insert into the first position, the shape column
+            // copy dbase fields to our own array. 
+            //Insert into the first position, the shape column
             _dbaseFields = new DbaseFieldDescriptor[_dbfHeader.Fields.Length + 1];
             _dbaseFields[0] = DbaseFieldDescriptor.ShapeField();
             for (int i = 0; i < _dbfHeader.Fields.Length; i++)

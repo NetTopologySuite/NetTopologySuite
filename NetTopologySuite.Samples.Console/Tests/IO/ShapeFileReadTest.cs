@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -212,6 +213,30 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
                 Console.WriteLine("geom {0}: {1}", ++i, geom);
             }
             Assert.That(i, Is.EqualTo(201));
+        }
+
+        [Test()]
+        // see https://github.com/NetTopologySuite/NetTopologySuite/issues/112
+        public void Issue_GH_112_ReadingShapeFiles()
+        {
+            var i = 0;
+            var reader = new ShapefileReader("Volume2.shp", GeometryFactory.Default);
+            foreach (var geom in reader)
+            {
+                Assert.That(geom, Is.Not.Null, "geom null");
+                Console.WriteLine("geom {0}: {1}", ++i, geom);
+            }
+
+        }
+
+        [Test()]
+        // see https://github.com/NetTopologySuite/NetTopologySuite/issues/115
+        public void Issue_GH_115_CreateDataTable()
+        {
+            DataTable dt = null;
+            Assert.DoesNotThrow( () => dt = 
+            Shapefile.CreateDataTable("Volume2", "Matt", GeometryFactory.Default));
+
         }
     }
 }
