@@ -3,7 +3,6 @@ using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 using Brushes = System.Windows.Media.Brushes;
@@ -21,7 +20,7 @@ namespace NetTopologySuite.Windows.Media.Test
         public void TestFontGlypthReader()
         {
             var geom = FontGlyphReader.Read("NetTopologySuite", new WpfFontFamily("SansSerif"), WpfFontStyles.Normal,
-                                            36, new WpfPoint(0, 0), GeometryFactory.Default);
+                                            36, new WpfPoint(0, 0), Geometries.GeometryFactory.Default);
             Assert.IsNotNull(geom);
             Assert.IsFalse(geom.IsEmpty);
             Assert.IsInstanceOf(typeof(IMultiPolygon), geom);
@@ -39,8 +38,36 @@ namespace NetTopologySuite.Windows.Media.Test
 
             WpfGeometryToImage(res, "WPF-PolygonWithHoles.png");
 
-            var reverse = WpfGeometryReader.Read(res, 0d, GeometryFactory.Default);
+            var reverse = WpfGeometryReader.Read(res, 0d, Geometries.GeometryFactory.Default);
             Assert.AreEqual(geom, reverse);
+        }
+
+        [Test]
+        public void TestReadTopologicallyInvalid()
+        {
+            // Create a collection of points for a polygon
+            var pathSegments = new PathSegmentCollection();
+            
+            pathSegments.Add(new LineSegment(new WpfPoint(50, 100), true));
+            pathSegments.Add(new LineSegment(new WpfPoint(85, 0), true));
+            pathSegments.Add(new LineSegment(new WpfPoint(0, 65), true));
+            pathSegments.Add(new LineSegment(new WpfPoint(100, 65), true));
+            pathSegments.Add(new LineSegment(new WpfPoint(15, 0), true));
+
+            var pathGeometry = new PathGeometry(new [] {new PathFigure(new WpfPoint(15, 0), pathSegments, true)}, 
+                FillRule.EvenOdd, Transform.Identity);
+            
+            var geomEvenOdd = WpfGeometryReader.Read(pathGeometry, 0, Geometries.GeometryFactory.Default);
+            Assert.IsTrue(geomEvenOdd.IsValid);
+            Console.WriteLine("EvenOdd:\n{0}", geomEvenOdd.AsText());
+
+            pathGeometry = new PathGeometry(new[] { new PathFigure(new WpfPoint(15, 0), pathSegments, true) },
+                FillRule.Nonzero, Transform.Identity);
+            var geomNonzero = WpfGeometryReader.Read(pathGeometry, 0, Geometries.GeometryFactory.Default);
+            Console.WriteLine("NotNull:\n{0}", geomNonzero.AsText());
+            Assert.IsTrue(geomNonzero.IsValid);
+
+            Assert.IsFalse(geomEvenOdd.EqualsTopologically(geomNonzero));
         }
 
         [Test]
@@ -57,7 +84,7 @@ namespace NetTopologySuite.Windows.Media.Test
 
         static BasicTestMedia()
         {
-            var gf = GeometryFactory.Default;
+            var gf = Geometries.GeometryFactory.Default;
             _multiPoint = gf.CreateMultiPoint(
                 new[]
                     {
@@ -106,11 +133,18 @@ namespace NetTopologySuite.Windows.Media.Test
         public void TestFontGlypthReader()
         {
             var geom = FontGlyphReader.Read("NetTopologySuite", new WpfFontFamily("SansSerif"), WpfFontStyles.Normal,
-                                            36, new WpfPoint(0, 0), GeometryFactory.Default);
+                                            36, new WpfPoint(0, 0), Geometries.GeometryFactory.Default);
             Assert.IsNotNull(geom);
             Assert.IsFalse(geom.IsEmpty);
             Assert.IsInstanceOf(typeof(IMultiPolygon), geom);
             Console.WriteLine(geom.ToString());
+        }
+
+
+        [Test]
+        public void TopologicallyValidReader()
+        {
+            var path = new PolygonWpfPathGeometry();
         }
 
         [Test]
@@ -124,7 +158,7 @@ namespace NetTopologySuite.Windows.Media.Test
 
             WpfGeometryToImage(res, "WPF-Path-PolygonWithHoles.png");
 
-            var reverse = WpfGeometryReader.Read(res, 0d, GeometryFactory.Default);
+            var reverse = WpfGeometryReader.Read(res, 0d, Geometries.GeometryFactory.Default);
             Assert.AreEqual(geom, reverse);
         }
 
@@ -142,7 +176,7 @@ namespace NetTopologySuite.Windows.Media.Test
 
         static BasicTestMediaPath()
         {
-            var gf = GeometryFactory.Default;
+            var gf = Geometries.GeometryFactory.Default;
             _multiPoint = gf.CreateMultiPoint(
                 new[]
                     {
