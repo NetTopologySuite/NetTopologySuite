@@ -336,5 +336,29 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             var res = new GeoJsonWriter().Write(featureCollection);
             CompareJson(geoJsonString, res);
         }
+
+        [Category("GitHub Issue")]
+        [Test(Description = "Testcase for GitHub Issue 95, FeatureCollection having \"bbox\" property")]
+        public void TestRoundtripSerializingDeserializingFeature()
+        {
+            string jsonWithoutProps = "{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[-104.50348159865847,40.891762392617345]}}";            
+            DoCheck(jsonWithoutProps);
+            string jsonWithValidProps = "{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[-104.50348159865847,40.891762392617345]},\"properties\":{\"aaa\":1,\"bbb\":2}}";
+            DoCheck(jsonWithValidProps, false);
+            string jsonWithNullProps = "{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[-104.50348159865847,40.891762392617345]},\"properties\":null}";
+            DoCheck(jsonWithNullProps);
+        }
+
+        private static void DoCheck(string json, bool nullProps = true)
+        {
+            GeoJsonReader reader = new GeoJsonReader();
+            Feature feature = reader.Read<Feature>(json);
+            Assert.IsNotNull(feature);
+            IGeometry geometry = feature.Geometry;
+            Assert.IsNotNull(geometry);
+            Assert.IsInstanceOf<IPoint>(geometry);
+            Assert.AreEqual(nullProps, feature.Attributes == null);
+            Assert.IsNull(feature.BoundingBox);
+        }
     }
 }
