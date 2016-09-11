@@ -12,13 +12,13 @@ namespace NetTopologySuite.SnapRound
     /// Nodes a <see cref="IGeometry"/>s using Snap-Rounding
     /// to a given <see cref="IPrecisionModel"/>.
     /// <list type="Bullet">
-    /// <item>Point geometries are not handled.They are skipped if present in the input.
-    /// <item>Linestrings which collapse to a point due to snapping are removed.
-    /// <item>Polygonal output may not be valid.  
+    /// <item>Point geometries are not handled.They are skipped if present in the input.</item>
+    /// <item>Linestrings which collapse to a point due to snapping are removed.</item>
+    /// <item>Polygonal output may not be valid.</item>
     /// </list>
     /// Invalid output is due to the introduction of topology collapses.
     /// This should be straightforward to clean using standard heuristics(e.g.buffer(0) ).
-    /// The geometryinput coordinates are expected to be rounded
+    /// The geometry input coordinates are expected to be rounded
     /// to the given precision model.
     /// This class does not perform that function.
     /// <c>GeometryPrecisionReducer</c> may be used to do this.
@@ -51,8 +51,8 @@ namespace NetTopologySuite.SnapRound
         /// <summary>
         /// Snap-rounds the given geometry.
         /// </summary>
-        /// <param name="geom"></param>
-        /// <returns></returns>
+        /// <param name="geom">The geometry to snap-round.</param>
+        /// <returns>The snap-rounded geometry</returns>
         public IGeometry Execute(IGeometry geom)
         {
 
@@ -61,7 +61,7 @@ namespace NetTopologySuite.SnapRound
             // TODO: OR just do precision reduction with custom code here 
 
             var segStrings = ExtractTaggedSegmentStrings(geom, _pm);
-            snapRound(segStrings);
+            SnapRound(segStrings);
 
             if (_isLineworkOnly)
             {
@@ -99,7 +99,7 @@ namespace NetTopologySuite.SnapRound
             return snapped;
         }
 
-        private void snapRound(IList<ISegmentString> segStrings)
+        private void SnapRound(IList<ISegmentString> segStrings)
         {
             //Noder sr = new SimpleSnapRounder(pm);
             var sr = new MCIndexSnapRounder(_pm);
@@ -132,8 +132,8 @@ namespace NetTopologySuite.SnapRound
                     if (!(fgeom is ILineString)) return;
                     // skip empty lines
                     if (geom.NumPoints <= 0) return;
-                    var roundPts = Round(((ILineString)geom).CoordinateSequence, pm);
-                    segStrings.Add(new NodedSegmentString(roundPts, geom));
+                    var roundPts = Round(((ILineString)fgeom).CoordinateSequence, pm);
+                    segStrings.Add(new NodedSegmentString(roundPts, fgeom));
                 });
 
             geom.Apply(filter);
@@ -163,7 +163,7 @@ namespace NetTopologySuite.SnapRound
         private static IGeometry EnsureValid(IGeometry geom)
         {
             // TODO: need to ensure all polygonal components are valid
-            if (!(geom is IPolygonal)) return geom;
+            if (!(geom is IPolygonal)) { return geom;}
             if (geom.IsValid) return geom;
 
             return CleanPolygonal(geom);

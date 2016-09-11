@@ -21,7 +21,6 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,6 +54,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
@@ -95,6 +95,7 @@
     <Compile Include="Operation\Buffer\DepthSegmentTest.cs" />
     <Compile Include="Operation\Distance3D\Distance3DOpTest.cs" />
     <Compile Include="Operation\Distance3D\WithinDistance3DTest.cs" />
+    <Compile Include="Operation\Overlay\SnapRoundOverlayTest.cs" />
     <Compile Include="Operation\Relate\ContainsTest.cs" />
     <Compile Include="Operation\Relate\RelateTest.cs" />
     <Compile Include="Performance\Algorithm\DistanceLineLineStressTest.cs" />
@@ -252,6 +253,10 @@
     <ProjectReference Include="..\NetTopologySuite.Lab\NetTopologySuite.Lab.csproj">
       <Project>{d446fba3-b6ea-4feb-9615-d5fd5aeb3d23}</Project>
       <Name>NetTopologySuite.Lab</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.Windows.Forms\NetTopologySuite.Windows.Forms.csproj">
+      <Project>{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}</Project>
+      <Name>NetTopologySuite.Windows.Forms</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>

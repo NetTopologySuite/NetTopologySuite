@@ -1,9 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using GeoAPI.Geometries;
+﻿using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Utilities;
-using NetTopologySuite.Precision;
 
 namespace NetTopologySuite.SnapRound
 {

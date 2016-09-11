@@ -1,19 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using GeoAPI.Geometries;
+﻿using GeoAPI.Geometries;
 
 namespace NetTopologySuite.SnapRound
 {
-    public class SnapRoundOverlayFunctions
+    public static class SnapRoundOverlayFunctions
     {
-
+        public static IGeometry SnappedIntersection(this IGeometry geomA, IGeometry geomB, double scaleFactor)
+        {
+            return Intersection(geomA, geomB, scaleFactor);
+        }
 
         public static IGeometry Intersection(IGeometry geomA, IGeometry geomB, double scaleFactor)
         {
             IGeometry[] geom = SnapClean(geomA, geomB, scaleFactor);
             return geom[0].Intersection(geom[1]);
+        }
+
+        public static IGeometry SnappedDifference(this IGeometry geomA, IGeometry geomB, double scaleFactor)
+        {
+            return Difference(geomA, geomB, scaleFactor);
         }
 
         public static IGeometry Difference(IGeometry geomA, IGeometry geomB, double scaleFactor)
@@ -22,10 +26,20 @@ namespace NetTopologySuite.SnapRound
             return geom[0].Difference(geom[1]);
         }
 
+        public static IGeometry SnappedSymmetricDifference(this IGeometry geomA, IGeometry geomB, double scaleFactor)
+        {
+            return SymmetricDifference(geomA, geomB, scaleFactor);
+        }
+
         public static IGeometry SymmetricDifference(IGeometry geomA, IGeometry geomB, double scaleFactor)
         {
             IGeometry[] geom = SnapClean(geomA, geomB, scaleFactor);
             return geom[0].SymmetricDifference(geom[1]);
+        }
+
+        public static IGeometry SnappedUnion(this IGeometry geomA, IGeometry geomB, double scaleFactor)
+        {
+            return Union(geomA, geomB, scaleFactor);
         }
 
         public static IGeometry Union(IGeometry geomA, IGeometry geomB, double scaleFactor)
