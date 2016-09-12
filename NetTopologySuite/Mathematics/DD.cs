@@ -997,6 +997,10 @@ namespace NetTopologySuite.Mathematics
             return Double.IsNaN(value._hi);
         }
 
+        public static bool IsInfinity(DD value)
+        {
+            return Double.IsInfinity(value._hi);
+        }
         /**
          * Tests whether this value is equal to another <tt>DoubleDouble</tt> value.
          * 

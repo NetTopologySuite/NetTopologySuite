@@ -66,7 +66,7 @@ namespace NetTopologySuite.Precision
         }
 
         /// <summary>
-        /// /// Gets or sets whether the <see cref = "IPrecisionModel"/> of the new reduced Geometry
+        /// Gets or sets whether the <see cref = "IPrecisionModel"/> of the new reduced Geometry
         /// will be changed to be the <see cref="IPrecisionModel"/> supplied to
         /// specify the precision reduction.
         /// <para/>
