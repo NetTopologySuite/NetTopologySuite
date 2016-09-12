@@ -95,6 +95,7 @@
     <Compile Include="..\NetTopologySuite.Tests.NUnit\TestData\EmbeddedResourceManager.cs">
       <Link>Tests\Various\EmbeddedResourceManager.cs</Link>
     </Compile>
+    <Compile Include="Features\UseOfIndexAndPreparedGeometry.cs" />
     <Compile Include="Geometries\basicexample.cs" />
     <Compile Include="Geometries\constructionexample.cs" />
     <Compile Include="Geometries\CreateOrientationDistanceMesh.cs" />
@@ -237,6 +238,10 @@
     <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.PostGis\NetTopologySuite.IO.PostGis.csproj">
       <Project>{7505264F-7E3E-4F8D-A9D5-885B4F313C26}</Project>
       <Name>NetTopologySuite.IO.PostGis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile.Extended\NetTopologySuite.IO.ShapeFile.Extended.csproj">
+      <Project>{4f36dd38-3cce-4a19-93c2-a9f8b27ea430}</Project>
+      <Name>NetTopologySuite.IO.ShapeFile.Extended</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile\NetTopologySuite.IO.ShapeFile.csproj">
       <Project>{AB9096A7-89DD-4ABD-B535-A5258863F389}</Project>
