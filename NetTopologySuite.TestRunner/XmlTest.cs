@@ -339,7 +339,9 @@ namespace Open.Topology.TestRunner
 
 	    public virtual bool RunTest()
         {
-            if (_geometryOperation != null)
+            try
+            {
+                if (_geometryOperation != null)
             {
                 var arguments = ToArguments();
 
@@ -490,9 +492,15 @@ namespace Open.Topology.TestRunner
                     string format = String.Format("Test not implemented: {0}", this._enumTestType);
                     throw new NotImplementedException(format);
             }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine(ToString());
+                throw;
+            }
         }
 
-	    private IResultMatcher CreateEqualityResultMatcher(Type returnType)
+        private IResultMatcher CreateEqualityResultMatcher(Type returnType)
 	    {
             if (returnType == typeof(int))
                 return new EqualityResultMatcher<IntegerResult>();

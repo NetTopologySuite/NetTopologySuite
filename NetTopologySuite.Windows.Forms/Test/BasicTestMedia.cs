@@ -23,7 +23,7 @@ namespace NetTopologySuite.Windows.Media.Test
                                             36, new WpfPoint(0, 0), Geometries.GeometryFactory.Default);
             Assert.IsNotNull(geom);
             Assert.IsFalse(geom.IsEmpty);
-            Assert.IsInstanceOf(typeof(IMultiPolygon), geom);
+            Assert.IsInstanceOf(typeof(IGeometryCollection), geom);
             Console.WriteLine(geom.ToString());
         }
 
@@ -136,7 +136,7 @@ namespace NetTopologySuite.Windows.Media.Test
                                             36, new WpfPoint(0, 0), Geometries.GeometryFactory.Default);
             Assert.IsNotNull(geom);
             Assert.IsFalse(geom.IsEmpty);
-            Assert.IsInstanceOf(typeof(IMultiPolygon), geom);
+            Assert.IsInstanceOf(typeof(IGeometryCollection), geom);
             Console.WriteLine(geom.ToString());
         }
 
