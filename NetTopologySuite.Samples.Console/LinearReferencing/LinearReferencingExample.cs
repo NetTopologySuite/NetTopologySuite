@@ -103,7 +103,7 @@ IGeometry InsertPoint(IGeometry geom, Coordinate point)
     }
     else if (ll.SegmentIndex == oldSeq.Count - 1 && ll.SegmentFraction == 0)
     {
-        if (ll.GetSegment(element).P0.Distance(point) == 0) return geom;
+        if (ll.GetSegment(element).P1.Distance(point) == 0) return geom;
         CoordinateSequences.Copy(oldSeq, 0, newSeq, 0, oldSeq.Count);
         newSeq.SetCoordinate(oldSeq.Count, point);
     }

@@ -1,4 +1,5 @@
-﻿using GeoAPI.Geometries;
+﻿using System;
+using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO.Converters;
 using Newtonsoft.Json;
@@ -46,12 +47,14 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Initializes a new instance of the <see cref="GeoJsonSerializer"/> class.
         /// </summary>
+        [Obsolete("Use GeoJsonSerializer.Create...() function")]
         public GeoJsonSerializer() :this(GeometryFactory.Default) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GeoJsonSerializer"/> class.
         /// </summary>
         /// <param name="geometryFactory">The geometry factory.</param>
+        [Obsolete("Use GeoJsonSerializer.Create...() function")]
         public GeoJsonSerializer(IGeometryFactory geometryFactory)
         {
             base.Converters.Add(new ICRSObjectConverter());
