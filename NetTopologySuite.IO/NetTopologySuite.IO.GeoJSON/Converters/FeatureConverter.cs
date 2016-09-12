@@ -23,7 +23,7 @@ namespace NetTopologySuite.IO.Converters
             if (serializer == null)
                 throw new ArgumentNullException("serializer");
 
-            IFeature feature = value as Feature;
+            var feature = value as IFeature;
             if (feature == null)
                 return;
 
@@ -35,7 +35,7 @@ namespace NetTopologySuite.IO.Converters
 
             // Add the id here if present in attributes.
             // It will be skipped in serialization of properties
-            if (feature.Attributes.Exists("id"))
+            if (feature.Attributes != null && feature.Attributes.Exists("id"))
             {
                 var id = feature.Attributes["id"];
                 writer.WritePropertyName("id");
@@ -43,19 +43,25 @@ namespace NetTopologySuite.IO.Converters
             }
 
             // bbox (optional)
-            if (feature.BoundingBox != null)
+            if (serializer.NullValueHandling == NullValueHandling.Include || feature.BoundingBox != null)
             {
                 writer.WritePropertyName("bbox");
                 serializer.Serialize(writer, feature.BoundingBox, typeof(Envelope));
             }
 
             // geometry
-            writer.WritePropertyName("geometry");
-            serializer.Serialize(writer, feature.Geometry);
+            if (serializer.NullValueHandling == NullValueHandling.Include || feature.Geometry != null)
+            {
+                writer.WritePropertyName("geometry");
+                serializer.Serialize(writer, feature.Geometry, typeof(IGeometry));
+            }
 
             // properties
-            writer.WritePropertyName("properties");
-            serializer.Serialize(writer, feature.Attributes);
+            if (serializer.NullValueHandling == NullValueHandling.Include || feature.Attributes != null)
+            {
+                writer.WritePropertyName("properties");
+                serializer.Serialize(writer, feature.Attributes, typeof(IAttributesTable));
+            }
 
             writer.WriteEndObject();
         }
@@ -161,7 +167,7 @@ namespace NetTopologySuite.IO.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return typeof(Feature).IsAssignableFrom(objectType);
+            return typeof(IFeature).IsAssignableFrom(objectType);
         }
     }
 }

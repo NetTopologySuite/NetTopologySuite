@@ -23,7 +23,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         public void CanConvertTest()
         {
             FeatureConverter target = new FeatureConverter();
-            Type objectType = typeof(Feature);
+            Type objectType = typeof(IFeature);
             const bool expected = true;
             bool actual = target.CanConvert(objectType);
             Assert.AreEqual(expected, actual);
@@ -38,14 +38,17 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             FeatureConverter target = new FeatureConverter();
             StringBuilder sb = new StringBuilder();
             JsonTextWriter writer = new JsonTextWriter(new StringWriter(sb));
+            
             AttributesTable attributes = new AttributesTable();
             attributes.AddAttribute("test1", "value1");
             IFeature value = new Feature(new Point(23, 56), attributes);
-            JsonSerializer serializer = new GeoJsonSerializer();
+            JsonSerializer serializer = new GeoJsonSerializer {NullValueHandling = NullValueHandling.Ignore};
             target.WriteJson(writer, value, serializer);
             writer.Flush();
+            
             Assert.AreEqual("{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[23.0,56.0]},\"properties\":{\"test1\":\"value1\"}}", sb.ToString());
         }
+
 
         ///<summary>
         ///    A test for WriteJson
@@ -59,7 +62,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             AttributesTable attributes = new AttributesTable();
             attributes.AddAttribute("test1", new [] { "value1", "value2" });
             IFeature value = new Feature(new Point(23, 56), attributes);
-            JsonSerializer serializer = new GeoJsonSerializer();
+            JsonSerializer serializer = new GeoJsonSerializer {NullValueHandling = NullValueHandling.Ignore};
             target.WriteJson(writer, value, serializer);
             writer.Flush();
             Assert.AreEqual("{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[23.0,56.0]},\"properties\":{\"test1\":[\"value1\",\"value2\"]}}", sb.ToString());

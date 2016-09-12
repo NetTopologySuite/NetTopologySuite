@@ -19,7 +19,10 @@ namespace NetTopologySuite.IO.Converters
 
             ICRSObject crs = value as ICRSObject;
             if (crs == null)
+            {
+                writer.WriteToken(JsonToken.Null);
                 return;
+            }
                 
             writer.WriteStartObject();
             writer.WritePropertyName("type");

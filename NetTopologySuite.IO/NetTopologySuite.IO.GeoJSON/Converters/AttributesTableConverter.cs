@@ -24,7 +24,10 @@ namespace NetTopologySuite.IO.Converters
 
             IAttributesTable attributes = value as IAttributesTable;
             if (attributes == null)
+            {
+                writer.WriteNull();
                 return;
+            }
 
             writer.WriteStartObject();
             string[] names = attributes.GetNames();
@@ -120,41 +123,47 @@ namespace NetTopologySuite.IO.Converters
             if (reader.TokenType != JsonToken.StartObject)
                 throw new ArgumentException("Expected token '{' not found.");
 
+            // Advance reader
             reader.Read();
-            AttributesTable attributesTable = new AttributesTable();
-            while (reader.TokenType == JsonToken.PropertyName)
+
+            AttributesTable attributesTable = null;
+            if (reader.TokenType != JsonToken.Null)
             {
-                string attributeName = (string)reader.Value;
-                reader.Read();
-                object attributeValue;
-                if (reader.TokenType == JsonToken.StartObject)
+                attributesTable = new AttributesTable();
+                while (reader.TokenType == JsonToken.PropertyName)
                 {
-                    // inner object
-                    attributeValue = InternalReadJson(reader, serializer);
-                    if (reader.TokenType != JsonToken.EndObject)
-                        throw new ArgumentException("Expected token '}' not found.");
-                    // read EndObject token
+                    string attributeName = (string) reader.Value;
                     reader.Read();
+                    object attributeValue;
+                    if (reader.TokenType == JsonToken.StartObject)
+                    {
+                        // inner object
+                        attributeValue = InternalReadJson(reader, serializer);
+                        if (reader.TokenType != JsonToken.EndObject)
+                            throw new ArgumentException("Expected token '}' not found.");
+                        // read EndObject token
+                        reader.Read();
+                    }
+                    else if (reader.TokenType == JsonToken.StartArray)
+                    {
+                        attributeValue = InternalReadJsonArray(reader, serializer);
+                        //reader.Read(); // move to first item
+                        //IList<object> array = new List<object>();
+                        //do
+                        //{
+                        //    object inner = InternalReadJson(reader, serializer);
+                        //    array.Add(inner);
+                        //    reader.Read(); // move to next item
+                        //} while (reader.TokenType != JsonToken.EndArray);
+                        //attributeValue = array;
+                    }
+                    else
+                    {
+                        attributeValue = reader.Value;
+                        reader.Read();
+                    }
+                    attributesTable.AddAttribute(attributeName, attributeValue);
                 }
-                else if (reader.TokenType == JsonToken.StartArray)
-                {
-                    attributeValue = InternalReadJsonArray(reader, serializer);
-                    //reader.Read(); // move to first item
-                    //IList<object> array = new List<object>();
-                    //do
-                    //{
-                    //    object inner = InternalReadJson(reader, serializer);
-                    //    array.Add(inner);
-                    //    reader.Read(); // move to next item
-                    //} while (reader.TokenType != JsonToken.EndArray);
-                    //attributeValue = array;
-                }
-                else
-                {
-                    attributeValue = reader.Value;
-                    reader.Read();
-                }
-                attributesTable.AddAttribute(attributeName, attributeValue);
             }
             // TODO: refactor to remove check when reading TopoJSON
             if (reader.TokenType != JsonToken.EndObject)

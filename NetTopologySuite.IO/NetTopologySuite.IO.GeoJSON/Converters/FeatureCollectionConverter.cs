@@ -21,23 +21,29 @@ namespace NetTopologySuite.IO.Converters
 
             FeatureCollection coll = value as FeatureCollection;
             if (coll == null)
+            {
+                if (serializer.NullValueHandling == NullValueHandling.Ignore)
+                {
+                    writer.WriteToken(null);
+                }
                 return;
+            }
 
             writer.WriteStartObject();
             writer.WritePropertyName("type");
             writer.WriteValue(coll.Type);
             writer.WritePropertyName("features");
             serializer.Serialize(writer, coll.Features);
-            if (coll.CRS != null)
+            if (serializer.NullValueHandling == NullValueHandling.Include || coll.CRS != null)
             {
                 writer.WritePropertyName("crs");
                 serializer.Serialize(writer, coll.CRS);
             }
             var bbox = coll.BoundingBox;
-            if (bbox != null)
+            if (serializer.NullValueHandling == NullValueHandling.Include || bbox != null)
             {
                 writer.WritePropertyName("bbox");
-                serializer.Serialize(writer, new[] { bbox.MinX, bbox.MinY, bbox.MaxX, bbox.MaxY }, typeof(double[]));
+                serializer.Serialize(writer, bbox, typeof(Envelope));
             }
             writer.WriteEndObject();
         }
