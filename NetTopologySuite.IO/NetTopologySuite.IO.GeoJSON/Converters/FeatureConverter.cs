@@ -118,11 +118,15 @@ namespace NetTopologySuite.IO.Converters
                         break;
                     case "properties":
                         read = reader.Read();
-                        if (reader.TokenType != JsonToken.StartObject)
-                            throw new ArgumentException("Expected token '{' not found.");
-                        feature.Attributes = serializer.Deserialize<AttributesTable>(reader);
-                        if (reader.TokenType != JsonToken.EndObject)
-                            throw new ArgumentException("Expected token '}' not found.");
+                        if (reader.TokenType != JsonToken.Null)
+                        {
+                            // #120: ensure "properties" isn't "null"
+                            if (reader.TokenType != JsonToken.StartObject)
+                                throw new ArgumentException("Expected token '{' not found.");
+                            feature.Attributes = serializer.Deserialize<AttributesTable>(reader);
+                            if (reader.TokenType != JsonToken.EndObject)
+                                throw new ArgumentException("Expected token '}' not found.");
+                        }
                         read = reader.Read();
                         break;
                     default:
