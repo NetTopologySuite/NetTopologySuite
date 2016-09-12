@@ -17,7 +17,7 @@ namespace NetTopologySuite.Tests.IO
             h.AddColumn("id", 'n', 8, 0);
             h.AddColumn("Test", 'C', 15, 0);
             h.AddColumn("Ålder", 'N', 8, 0);
-            h.AddColumn("Ödestext", 'C', 255, 0);
+            h.AddColumn("Ödestext", 'C', 254, 0);
             h.NumRecords = 1;
             sfdr.Header = h;
 

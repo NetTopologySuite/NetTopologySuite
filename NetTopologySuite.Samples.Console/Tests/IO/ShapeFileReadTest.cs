@@ -233,6 +233,9 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
         // see https://github.com/NetTopologySuite/NetTopologySuite/issues/115
         public void Issue_GH_115_CreateDataTable()
         {
+            if (!File.Exists("Matt.shp"))
+                throw new IgnoreException("File not found");
+
             DataTable dt = null;
             Assert.DoesNotThrow( () => dt = 
             Shapefile.CreateDataTable("Volume2", "Matt", GeometryFactory.Default));

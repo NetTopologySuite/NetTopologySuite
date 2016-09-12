@@ -57,10 +57,13 @@ namespace NetTopologySuite.IO
             _geometryType = geomType;
 
             _shpBinaryWriter = new BigEndianBinaryWriter(_shpStream);
-            _shxBinaryWriter = new BigEndianBinaryWriter(_shxStream);
 
             WriteShpHeader(_shpBinaryWriter, 0, new Envelope(0, 0, 0, 0));
-            WriteShxHeader(_shxBinaryWriter, 0, new Envelope(0, 0, 0, 0));
+            if (_shxStream != null)
+            {
+                _shxBinaryWriter = new BigEndianBinaryWriter(_shxStream);
+                WriteShxHeader(_shxBinaryWriter, 0, new Envelope(0, 0, 0, 0));
+            }
 
             _shapeHandler = Shapefile.GetShapeHandler(geomType);
         }
@@ -81,16 +84,17 @@ namespace NetTopologySuite.IO
             {
                 /*Update header to reflect the data written*/
                 _shpStream.Seek(0, SeekOrigin.Begin);
-                _shxStream.Seek(0, SeekOrigin.Begin);
-
                 var shpLenWords = (int) _shpBinaryWriter.BaseStream.Length/2;
-                var shxLenWords = (int) _shxBinaryWriter.BaseStream.Length/2;
+                _shpStream.Seek(0, SeekOrigin.End);
 
                 WriteShpHeader(_shpBinaryWriter, shpLenWords, _totalEnvelope);
-                WriteShxHeader(_shxBinaryWriter, shxLenWords, _totalEnvelope);
-
-                _shpStream.Seek(0, SeekOrigin.End);
-                _shxStream.Seek(0, SeekOrigin.End);
+                if (_shxStream != null)
+                {
+                    _shxStream.Seek(0, SeekOrigin.Begin);
+                    var shxLenWords = (int)_shxBinaryWriter.BaseStream.Length / 2;
+                    WriteShxHeader(_shxBinaryWriter, shxLenWords, _totalEnvelope);
+                    _shxStream.Seek(0, SeekOrigin.End);
+                }
             }
 
             if (_shpBinaryWriter != null)
@@ -215,15 +219,19 @@ namespace NetTopologySuite.IO
         {
             const int recordLength = 12;
 
+            // Update shapefile index (position in words, 1 word = 2 bytes)
+            var posWords = shpBinaryWriter.BaseStream.Position / 2;
+            if (shxBinaryWriter != null)
+            {
+                shxBinaryWriter.WriteIntBE((int)posWords);
+                shxBinaryWriter.WriteIntBE(recordLength);
+            }
+
             // Add shape
             shpBinaryWriter.WriteIntBE(oid);
             shpBinaryWriter.WriteIntBE(recordLength);
             shpBinaryWriter.Write((int) ShapeGeometryType.NullShape);
 
-            // Update shapefile index (position in words, 1 word = 2 bytes)
-            var posWords = shpBinaryWriter.BaseStream.Position/2;
-            shxBinaryWriter.WriteIntBE((int) posWords);
-            shxBinaryWriter.WriteIntBE(recordLength);
 
         }
 
@@ -247,8 +255,11 @@ namespace NetTopologySuite.IO
 
             // update shapefile index (position in words, 1 word = 2 bytes)
             var posWords = pos/2;
-            shxBinaryWriter.WriteIntBE((int) posWords);
-            shxBinaryWriter.WriteIntBE(recordLength);
+            if (shxBinaryWriter != null)
+            {
+                shxBinaryWriter.WriteIntBE((int)posWords);
+                shxBinaryWriter.WriteIntBE(recordLength);
+            }
 
             handler.Write(body, shpBinaryWriter, body.Factory);
             /*return recordLength;*/
@@ -270,7 +281,8 @@ namespace NetTopologySuite.IO
             };
 
             // assumes Geometry type of the first item will the same for all other items in the collection.
-            shxHeader.Write(shxBinaryWriter);
+            if (shxBinaryWriter != null)
+                shxHeader.Write(shxBinaryWriter);
         }
 
         private void WriteShpHeader(BigEndianBinaryWriter shpBinaryWriter, int shpLength, Envelope bounds)

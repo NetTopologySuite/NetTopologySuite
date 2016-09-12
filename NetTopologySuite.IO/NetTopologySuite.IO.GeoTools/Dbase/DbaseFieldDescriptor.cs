@@ -193,5 +193,10 @@ namespace NetTopologySuite.IO
 				}
 			}	
 		}
+
+	    public override string ToString()
+	    {
+	        return string.Format("[ Field '{0}' ('{1}', {2}) ]", Name.TrimEnd(), DbaseType, Length);
+	    }
 	}
 }

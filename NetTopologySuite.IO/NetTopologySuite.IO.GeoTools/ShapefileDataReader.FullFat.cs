@@ -7,7 +7,7 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.IO
 {
-    public partial class ShapefileDataReader : IEnumerable, IDataReader, IDataRecord
+    public partial class ShapefileDataReader : IEnumerable, IDataReader //, IDataRecord
     {
         ArrayList _columnValues;
 
@@ -88,6 +88,7 @@ namespace NetTopologySuite.IO
             bool moreDbfRecords = _dbfEnumerator.MoveNext();
             bool moreShpRecords = _shpEnumerator.MoveNext();
 
+            /*
             if (!moreDbfRecords)
             {
                 int a = 0;
@@ -98,13 +99,18 @@ namespace NetTopologySuite.IO
                 int b = 0;
                 b++;
             }
+            */
             _moreRecords = moreDbfRecords && moreShpRecords;
 
             // get current shape 
             geometry = (IGeometry)_shpEnumerator.Current;
 
             // get current dbase record
-            _columnValues = (ArrayList)_dbfEnumerator.Current;
+            var columnValues = (ArrayList)_dbfEnumerator.Current;
+            _columnValues = new ArrayList(1 + columnValues.Count);
+            _columnValues.Add(geometry/*.AsBinary()*/);
+            _columnValues.AddRange(columnValues);
+            //_columnValues = (ArrayList)_dbfEnumerator.Current;
 
             return _moreRecords; // moreDbfRecords && moreShpRecords;
         }
@@ -248,8 +254,8 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         public int GetValues(object[] values)
         {
-            int i = 0;
-            for (i = 0; i < values.Length; i++)
+            int i;
+            for (i = 0; i < Math.Min(_columnValues.Count, values.Length); i++)
                 values[i] = _columnValues[i];
             return i;
         }
@@ -261,7 +267,7 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         public string GetName(int i)
         {
-            return this._dbaseFields[i].Name;
+            return _dbaseFields[i].Name;
         }
 
         /// <summary>
@@ -341,8 +347,8 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         public int GetOrdinal(string name)
         {
-            for (int i = 0; i < _dbfReader.GetHeader().NumFields; i++)
-                if (0 == CultureAwareCompare(_dbfReader.GetHeader().Fields[i].Name, name))
+            for (int i = 0; i < _dbaseFields.Length; i++)
+                if (0 == CultureAwareCompare(_dbaseFields[i].Name, name))
                     return i;
             // Throw an exception if the ordinal cannot be found.
             throw new IndexOutOfRangeException("Could not find specified column in results.");
@@ -397,6 +403,7 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         public long GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
         {
+            if (buffer == null) throw new ArgumentNullException("buffer");
             //HACK:
             string str = _columnValues[i].ToString();
             str.CopyTo((int)fieldoffset, buffer, 0, length);
@@ -445,7 +452,7 @@ namespace NetTopologySuite.IO
         {
             get
             {
-                int ordinal = this.GetOrdinal(name);
+                int ordinal = GetOrdinal(name);
                 return _columnValues[ordinal];
             }
         }
@@ -502,7 +509,7 @@ namespace NetTopologySuite.IO
         {
             get
             {
-                return this._dbfHeader;
+                return _dbfHeader;
             }
         }
 
@@ -514,7 +521,8 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         private int CultureAwareCompare(string strA, string strB)
         {
-            return CultureInfo.CurrentCulture.CompareInfo.Compare(strA, strB, CompareOptions.IgnoreKanaType | CompareOptions.IgnoreWidth | CompareOptions.IgnoreCase);
+            return CultureInfo.CurrentCulture.CompareInfo.Compare(strA, strB, 
+                CompareOptions.IgnoreKanaType | CompareOptions.IgnoreWidth | CompareOptions.IgnoreCase);
         }
     }
 }

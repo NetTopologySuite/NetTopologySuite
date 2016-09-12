@@ -52,6 +52,7 @@ namespace NetTopologySuite.IO.Streams
         /// <returns>An opened stream</returns>
         public Stream OpenRead()
         {
+            if (!File.Exists(Path)) return null;
             return File.Open(Path, FileMode.Open, FileAccess.Read, FileShare.Read);
         }
 

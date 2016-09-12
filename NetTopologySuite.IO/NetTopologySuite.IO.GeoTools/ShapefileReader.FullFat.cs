@@ -13,7 +13,7 @@ namespace NetTopologySuite.IO
         /// <param name="filename">The filename of the shape file to read (with .shp).</param>
         /// <param name="geometryFactory">The GeometryFactory to use when creating Geometry objects.</param>
         public ShapefileReader(string filename, IGeometryFactory geometryFactory)
-            : this(new ShapefileStreamProviderRegistry(filename), geometryFactory)
+            : this(new ShapefileStreamProviderRegistry(filename, true), geometryFactory)
         {
         }
 
@@ -58,7 +58,8 @@ namespace NetTopologySuite.IO
                 // to have one or more enumerator. If we used the parents stream - than only one IEnumerator 
                 // could be given out.
                 var stream = shapefile._shapeStreamProviderRegistry[StreamTypes.Shape].OpenRead();
-                var indexStream = shapefile._shapeStreamProviderRegistry[StreamTypes.Index].OpenRead();
+                var indexStreamProvider = shapefile._shapeStreamProviderRegistry[StreamTypes.Index];
+                var indexStream = indexStreamProvider != null ? indexStreamProvider.OpenRead() : null;
 
                 _shpBinaryReader = new BigEndianBinaryReader(stream);
                 if (indexStream != null) _idxBinaryReader = new BigEndianBinaryReader(indexStream);

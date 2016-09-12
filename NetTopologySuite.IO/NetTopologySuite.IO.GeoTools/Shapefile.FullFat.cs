@@ -18,6 +18,7 @@ namespace NetTopologySuite.IO
         /// <param name="filename">The filename (minus the . and extension) to read.</param>
         /// <param name="tableName">The name to give to the table.</param>
         /// <param name="geometryFactory">The geometry factory to use when creating the objects.</param>
+        /// <param name="encoding">The encoding to use when writing data</param>
         /// <returns>DataTable representing the data </returns>
         public static DataTable CreateDataTable(string filename, string tableName, IGeometryFactory geometryFactory, Encoding encoding = null)
         {
@@ -52,15 +53,18 @@ namespace NetTopologySuite.IO
 
             // add the rows - need a do-while loop because we read one row in order to determine the fields
             int iRecordCount = 0;
+            table.BeginLoadData();
             object[] values = new object[shpfileDataReader.FieldCount];
             do
             {
                 iRecordCount++;
                 shpfileDataReader.GetValues(values);
-                table.Rows.Add(values);
+                table.LoadDataRow(values, true);
                 moreRecords = enumerator.MoveNext();
             }
             while (moreRecords);
+            table.EndLoadData();
+
             return table;
         }
 

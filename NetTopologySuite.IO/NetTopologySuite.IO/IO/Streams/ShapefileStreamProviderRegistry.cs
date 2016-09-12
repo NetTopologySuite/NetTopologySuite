@@ -66,7 +66,12 @@ namespace NetTopologySuite.IO.Streams
             }
 
             ShapeStream = new FileStreamProvider(StreamTypes.Shape, Path.ChangeExtension(path, ".shp"), validateShapePath);
-            IndexStream = new FileStreamProvider(StreamTypes.Index, Path.ChangeExtension(path, ".shx"), validateIndexPath);
+            /*
+            IndexStream = File.Exists(Path.ChangeExtension(path, "shx")) 
+                ? (IStreamProvider)new FileStreamProvider(StreamTypes.Index, Path.ChangeExtension(path, ".shx"), validateIndexPath)
+                : new NullStreamProvider(StreamTypes.Index);
+            */
+            IndexStream = new FileStreamProvider(StreamTypes.Index, Path.ChangeExtension(path,".shx"), validateIndexPath);
             DataStream = new FileStreamProvider(StreamTypes.Data, Path.ChangeExtension(path, ".dbf"), validateDataPath);
 
             var tmpPath = Path.ChangeExtension(path, "prj");
@@ -183,6 +188,28 @@ namespace NetTopologySuite.IO.Streams
                 }
             }
         }
+
+        internal class NullStreamProvider : IStreamProvider
+        {
+            public NullStreamProvider(string kind)
+            {
+                Kind = kind;
+            }
+
+            public bool UnderlyingStreamIsReadonly { get { return false; } }
+            public Stream OpenRead()
+            {
+                return null;
+            }
+
+            public Stream OpenWrite(bool truncate)
+            {
+                return null;
+            }
+
+            public string Kind { get; private set; }
+        }
+
         /*
         #region IDisposable implementation
         public void Dispose()

@@ -114,7 +114,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
                 }
 
                 // Run a simple attribute test too
-                var v = reader.GetString(0);
+                var v = reader.GetString(1);
                 Assert.AreEqual(v, "Trond");
             }
         }
