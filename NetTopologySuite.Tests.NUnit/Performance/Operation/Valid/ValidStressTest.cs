@@ -20,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
 
         public static int SIZE = 10000;
 
-        [Test]
+        [Test,Ignore("Runs without end")]
         public void run()
         {
             var env = new Envelope(0, 100, 0, 100);
