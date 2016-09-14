@@ -12,7 +12,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.IO.Tests.GeoJSON
 {
-    [Category("GitHub")]
+    [Category("GitHub Issue")]
     [TestFixture]
     public class GitHubIssues
     {

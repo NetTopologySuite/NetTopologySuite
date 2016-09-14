@@ -4,19 +4,25 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
+using System.Text;
 using GeoAPI.Geometries;
+using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Index.KdTree;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Polygonize;
 using NetTopologySuite.Operation.Valid;
+using NetTopologySuite.Precision;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Tests.Github
 {
-    [NUnit.Framework.TestFixture]
+    [TestFixture, Category("GitHub Issue")]
     public class Issues
     {
         [Test(Description = "GitHub pull request #97")]
@@ -232,6 +238,80 @@ namespace NetTopologySuite.Samples.Tests.Github
             Debug.WriteLine(res.AsText());
         }
 
+        [Test(Description = "GitHub Issue #120")]
+        public void Roundtrip_serialization_of_a_feature_with_null_properties_fails()
+        {
+            // Arrange
+            var f = new Feature(new NetTopologySuite.Geometries.Point(1, 1), null);
+            var s = GeoJsonSerializer.Create(new GeometryFactory());
+
+            // Act
+            var f1 = SandD(s, f);
+            s.NullValueHandling = NullValueHandling.Include;
+            var f2 = SandD(s, f);
+
+            // Assert
+            Assert.That(f1, Is.Not.Null, "f1 != null");
+            Assert.That(f2, Is.Not.Null, "f2 != null");
+
+        }
+
+        private static IFeature SandD(JsonSerializer s , IFeature f)
+        {
+            var sb = new StringBuilder();
+            var jtw = new JsonTextWriter(new StringWriter(sb));
+            s.Serialize(jtw, f);
+            var jsonText = sb.ToString();
+
+            Debug.WriteLine(jsonText);
+
+            var jtr = new JsonTextReader(new StringReader(jsonText));
+            var res = s.Deserialize<IFeature>(jtr);
+            return res;
+        }
+
+        [Test(Description = "GitHub Issue #125")]
+        public void Fixing_invalid_polygon_with_Buffer_0_returns_empty_polygon()
+        {
+            //arrange
+            var rdr = new WKTReader();
+            rdr.RepairRings = true;
+            var poly = rdr.Read(
+@"POLYGON ((1.4749999999994841 -5.15, 30 -5.15, 48.9 -2,
+108.1997 -2, 130.25148787313435 0.75647348414179227, 
+130.25148787313435 0.75647348414179161, 130 0.75, 
+126.3 0.72, 122.9 0.7, 119.2 0.42, 115.2 0.45, 
+111 0.29, 106.9 0.23, 102.8 0.2, 98.8 0.12, 94.8 0.04, 
+90.7 -0.08, 86.5 -0.2, 82.4 -0.42, 78.3 -0.57, 74.1 -0.69,
+69.9 -0.78, 65.8 -0.87, 61.7 -1.07, 57.7 -1.09, 53.7 -1.229,
+49.5 -1.289, 45.3 -1.369, 41.2 -1.719, 37 -2.409, 32.8 -3.219,
+28.6 -3.769, 24.5 -4.089, 20.4 -4.429, 16.3 -4.599, 12.1 -4.759,
+8 -4.889, 4 -5.049, 1.4749999999994841 -5.15))");
+
+            //act
+            var gpr = new NetTopologySuite.Precision.GeometryPrecisionReducer(new PrecisionModel(1e10));
+            //gpr.ChangePrecisionModel = true;
+            //gpr.Pointwise = false;
+            var poly1 = gpr.Reduce(poly);
+            var poly2 = poly.Buffer(0);
+
+            ToImage(0, poly, poly1, poly2);
+            
+            var isValidOp = new IsValidOp(poly);
+            if (!isValidOp.IsValid)
+            {
+                Debug.WriteLine(isValidOp.ValidationError);
+
+            }
+            Debug.WriteLine(poly1.AsText());
+            // assert
+            //Assert.That(poly.IsValid, Is.True, "poly.IsValid");
+            Assert.That(poly1.IsValid, Is.True, "poly1.IsValid");
+            Assert.That(poly2, Is.Not.Null, "poly2 != null");
+
+            //Known to fail
+            //Assert.That(poly2.IsEmpty, Is.False, "poly2.IsEmpty");
+        }
 
         static void ToImage(int nr, IGeometry geom1, IGeometry geom2, IGeometry geom3)
         {
