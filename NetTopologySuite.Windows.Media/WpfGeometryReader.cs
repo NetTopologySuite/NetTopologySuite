@@ -97,7 +97,8 @@ namespace NetTopologySuite.Windows.Media
                         continue;
                     }
 
-                    var rings = new List<IGeometry>(new[] {_geometryFactory.CreateLinearRing(pts.Item3)});
+                    var ringPts = ClosedCoordinateRing(pts.Item3);
+                    var rings = new List<IGeometry>(new[] {_geometryFactory.CreateLinearRing(ringPts)});
                     seqIndex++;
 
                     Coordinate[] holePts;
@@ -124,7 +125,67 @@ namespace NetTopologySuite.Windows.Media
                 }
             }
 
-            return _geometryFactory.BuildGeometry(geoms);
+            return BuildGeometry(geoms);
+        }
+
+        private static Coordinate[] ClosedCoordinateRing(Coordinate[] ringPts)
+        {
+            if (!ringPts[0].Equals(ringPts[ringPts.Length - 1]))
+            {
+                var tmp = new List<Coordinate>(ringPts);
+                tmp.Add(ringPts[0].CoordinateValue);
+                ringPts = tmp.ToArray();
+            }
+            return ringPts;
+        }
+
+        private IGeometry BuildGeometry(ICollection<IGeometry> geoms)
+        {
+            var lst = new List<IGeometry>(geoms.Count);
+            IGeometry shell = null;
+            foreach (var geom in geoms)
+            {
+                if (geom is IPolygon)
+                {
+                    if (shell != null)
+                    {
+                        if (shell.Disjoint(geom)) {
+                            lst.Add(shell);
+                            shell = geom;
+                        } else if (shell.Touches(geom))
+                            shell = shell.Union(geom);
+                        else if (shell.Contains(geom))
+                            shell = shell.Difference(geom);
+                        else if (shell.Intersects(geom))
+                            shell = shell.SymmetricDifference(geom);
+                        else
+                        {
+                            lst.Add(shell);
+                            shell = geom;
+                        }
+                    }
+                    else
+                    {
+                        shell = geom;
+                    }
+                }
+                else
+                {
+                    if (shell != null)
+                    {
+                        lst.Add(shell);
+                        shell = null;
+                    }
+                    lst.Add(geom);
+                }
+            }
+
+            if (shell != null) {
+                lst.Add(shell);
+            }
+            if (lst.Count > 1)
+                return _geometryFactory.BuildGeometry(lst);
+            return lst[0];
         }
 
         private static bool IsHole(Coordinate[] pts)

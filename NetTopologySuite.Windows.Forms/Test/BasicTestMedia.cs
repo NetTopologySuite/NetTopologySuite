@@ -147,7 +147,9 @@ namespace NetTopologySuite.Windows.Media.Test
             var path = new PolygonWpfPathGeometry();
         }
 
-        [Test]
+        
+
+                [Test]
         public void TestPolygonWithHoles()
         {
             const string wkt = "POLYGON((2 2, 2 98, 98 98, 98 2, 2 2), (5 90, 10 90, 10 95, 5 95, 5 90))";
@@ -174,6 +176,100 @@ namespace NetTopologySuite.Windows.Media.Test
             PerformTest(new CrossPath(15));
         }
 
+        [Test]
+        public void ConvertingARectangleWithAHoleProducesInvalidMultipolygon()
+        {
+            var sg = new StreamGeometry();
+            using (var ctx = sg.Open())
+            {
+                ctx.BeginFigure(new WpfPoint(0, 0), true, true);
+                ctx.LineTo(new WpfPoint(0, 10), true, false);
+                ctx.LineTo(new WpfPoint(10, 10), true, false);
+                ctx.LineTo(new WpfPoint(10, 0), true, false);
+                ctx.LineTo(new WpfPoint(0, 0), true, false);
+                ctx.BeginFigure(new WpfPoint(4, 4), true, true);
+                ctx.LineTo(new WpfPoint(4, 6), true, false);
+                ctx.LineTo(new WpfPoint(6, 6), true, false);
+                ctx.LineTo(new WpfPoint(6, 4), true, false);
+                ctx.LineTo(new WpfPoint(4, 4), true, false);
+            }
+            sg.Freeze();
+            var area = sg.GetArea();
+
+            var geometry = WpfGeometryReader.Read(sg, Geometries.GeometryFactory.Default);
+
+            Assert.AreEqual(area, geometry.Area, 1e-4);  // Fails. Area is 104.
+        }
+
+        [Test]
+        public void ConvertingTwoOverlappingRectanglesProducesInvalidMultipolygon()
+        {
+            var sg = new StreamGeometry();
+            using (var ctx = sg.Open())
+            {
+                ctx.BeginFigure(new WpfPoint(0, 0), true, true);
+                ctx.LineTo(new WpfPoint(0, 10), true, false);
+                ctx.LineTo(new WpfPoint(10, 10), true, false);
+                ctx.LineTo(new WpfPoint(10, 0), true, false);
+                ctx.LineTo(new WpfPoint(0, 0), true, false);
+                ctx.BeginFigure(new WpfPoint(5, 5), true, true);
+                ctx.LineTo(new WpfPoint(5, 15), true, false);
+                ctx.LineTo(new WpfPoint(15, 15), true, false);
+                ctx.LineTo(new WpfPoint(15, 5), true, false);
+                ctx.LineTo(new WpfPoint(5, 5), true, false);
+            }
+            sg.Freeze();
+            var area = sg.GetArea();
+
+            var geometry = WpfGeometryReader.Read(sg, Geometries.GeometryFactory.Default);
+
+            Assert.AreEqual(area, geometry.Area, 1e-4);
+        }
+
+        [Test]
+        public void ConvertingTwoTouchingRectanglesProducesInvalidMultipolygon()
+        {
+            var sg = new StreamGeometry();
+            using (var ctx = sg.Open())
+            {
+                ctx.BeginFigure(new WpfPoint(0, 0), true, true);
+                ctx.LineTo(new WpfPoint(0, 10), true, false);
+                ctx.LineTo(new WpfPoint(10, 10), true, false);
+                ctx.LineTo(new WpfPoint(10, 0), true, false);
+                ctx.LineTo(new WpfPoint(0, 0), true, false);
+                ctx.BeginFigure(new WpfPoint(10, 5), true, true);
+                ctx.LineTo(new WpfPoint(10, 15), true, false);
+                ctx.LineTo(new WpfPoint(20, 15), true, false);
+                ctx.LineTo(new WpfPoint(20, 5), true, false);
+                ctx.LineTo(new WpfPoint(10, 5), true, false);
+            }
+            sg.Freeze();
+            var area = sg.GetArea();
+
+            var geometry = WpfGeometryReader.Read(sg, Geometries.GeometryFactory.Default);
+
+            Assert.AreEqual(area, geometry.Area, 1e-4);
+        }
+
+        [Test]
+        public void ConvertingAClosedRectangleCrashes()
+        {
+            // Arrage
+            var sg = new StreamGeometry();
+            using (var ctx = sg.Open())
+            {
+                ctx.BeginFigure(new WpfPoint(0, 0), true, true);
+                ctx.LineTo(new WpfPoint(0, 10), true, false);
+                ctx.LineTo(new WpfPoint(10, 10), true, false);
+                ctx.LineTo(new WpfPoint(10, 0), true, false);
+            }
+            sg.Freeze();
+
+            // Act & assert
+            IGeometry geometry = null;
+            Assert.DoesNotThrow(() => geometry = WpfGeometryReader.Read(sg, Geometries.GeometryFactory.Default));
+
+        }
         static BasicTestMediaPath()
         {
             var gf = Geometries.GeometryFactory.Default;
