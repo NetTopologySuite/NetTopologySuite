@@ -112,27 +112,35 @@ namespace NetTopologySuite.Windows.Media
                     var rings = new List<IGeometry>(new[] {_geometryFactory.CreateLinearRing(ringPts)});
                     seqIndex++;
 
-                    Coordinate[] holePts;
-                    // add holes as long as rings are CCW
-                    while (seqIndex < pathPtSeq.Count && IsHole(holePts = pathPtSeq[seqIndex].Item3))
-                    {
-                        rings.Add(_geometryFactory.CreateLinearRing(holePts));
-                        seqIndex++;
-                    }
+                    //if (seqIndex < pathPtSeq.Count)
+                    //{
+                    //    if (!(pathPtSeq[seqIndex].Item1 || pathPtSeq[seqIndex].Item2)) continue;
 
-                    var noder = new Noding.Snapround.GeometryNoder(new Geometries.PrecisionModel(100000000.0));
-                    var nodedLinework = noder.Node(rings);
+                        Coordinate[] holePts;
+                        // add holes as long as rings are CCW
+                        while (seqIndex < pathPtSeq.Count &&
+                               (pathPtSeq[seqIndex].Item1 || pathPtSeq[seqIndex].Item2) &&
+                               IsHole(holePts = pathPtSeq[seqIndex].Item3))
+                        {
+                            rings.Add(_geometryFactory.CreateLinearRing(holePts));
+                            seqIndex++;
+                        }
 
-                    // Use the polygonizer
-                    var p = new Polygonizer(pathGeometry.FillRule == FillRule.EvenOdd);
-                    p.Add(new List<IGeometry>(Caster.Upcast<ILineString, IGeometry>(nodedLinework)));
-                    var tmpPolygons = p.GetPolygons();
-                    if (pathGeometry.FillRule == FillRule.Nonzero)
-                    {
-                        var unionized = CascadedPolygonUnion.Union(Geometries.GeometryFactory.ToPolygonArray(tmpPolygons));
-                        tmpPolygons = new List<IGeometry>(new[] {unionized});
-                    }
-                    geoms.AddRange(tmpPolygons);
+                        var noder = new Noding.Snapround.GeometryNoder(new Geometries.PrecisionModel(100000000.0));
+                        var nodedLinework = noder.Node(rings);
+
+                        // Use the polygonizer
+                        var p = new Polygonizer(pathGeometry.FillRule == FillRule.EvenOdd);
+                        p.Add(new List<IGeometry>(Caster.Upcast<ILineString, IGeometry>(nodedLinework)));
+                        var tmpPolygons = p.GetPolygons();
+                        if (pathGeometry.FillRule == FillRule.Nonzero)
+                        {
+                            var unionized =
+                                CascadedPolygonUnion.Union(Geometries.GeometryFactory.ToPolygonArray(tmpPolygons));
+                            tmpPolygons = new List<IGeometry>(new[] {unionized});
+                        }
+                        geoms.AddRange(tmpPolygons);
+                    //}
                 }
             }
 
@@ -172,6 +180,7 @@ namespace NetTopologySuite.Windows.Media
                             shell = shell.SymmetricDifference(geom);
                         else
                         {
+                            throw new NotSupportedException();
                             lst.Add(shell);
                             shell = geom;
                         }
@@ -183,17 +192,19 @@ namespace NetTopologySuite.Windows.Media
                 }
                 else
                 {
+                    /*
                     if (shell != null)
                     {
                         lst.Add(shell);
                         shell = null;
                     }
+                    */
                     lst.Add(geom);
                 }
             }
 
             if (shell != null) {
-                lst.Add(shell);
+                lst.Insert(0, shell);
             }
             if (lst.Count > 1)
                 return _geometryFactory.BuildGeometry(lst);
@@ -224,7 +235,7 @@ namespace NetTopologySuite.Windows.Media
             foreach (PathFigure pathFigure in pathFigures)
             {
                 var coords = NextCoordinateArray(pathFigure);
-                coordArrays.Add(Tuple.Create(pathFigure.IsClosed, pathFigure.IsFilled, coords));
+                coordArrays.Add(Tuple.Create(pathFigure.IsClosed, pathFigure.IsFilled & coords.Length > 2, coords));
             }
             return coordArrays;
         }

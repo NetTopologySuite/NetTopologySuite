@@ -292,7 +292,7 @@ namespace NetTopologySuite.Windows.Media.Test
         [Test]
         public void OutOfMemoryPolygon()
         {
-            var wpfGeom = Geometry.Parse("M0,5 L0,15 10,15 10,5 0,5 M5,0 L5,10 15,10 15,0 5,0");
+            var wpfGeom = Geometry.Parse("M0,5 L0,15 10,15 10,5 0,5 M0,0 L15,15 M5,0 L5,10 15,10 15,0 5,0");
             WpfGeometryToImage(wpfGeom, "OutOfMemory.png");
             var reader = new WpfGeometryReader(Geometries.Geometry.DefaultFactory, true);
 
