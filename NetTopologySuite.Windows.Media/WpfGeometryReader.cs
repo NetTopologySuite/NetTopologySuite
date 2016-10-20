@@ -57,10 +57,15 @@ namespace NetTopologySuite.Windows.Media
         }
 
         private readonly IGeometryFactory _geometryFactory;
+        private readonly Matrix _transform;
 
-        public WpfGeometryReader(IGeometryFactory geometryFactory)
+        public WpfGeometryReader(IGeometryFactory geometryFactory, bool invertY = false)
+            :this(geometryFactory, invertY ? InvertY : Matrix.Identity) { }
+
+        public WpfGeometryReader(IGeometryFactory geometryFactory, Matrix transform)
         {
             _geometryFactory = geometryFactory;
+            _transform = transform;
         }
 
         /// <summary>
@@ -87,9 +92,15 @@ namespace NetTopologySuite.Windows.Media
                 // TODO: test this
                 var pts = pathPtSeq[seqIndex];
                 if (pts.Item3.Length == 1)
+                {
                     geoms.Add(_geometryFactory.CreatePoint(pts.Item3[0]));
-                else if (!pts.Item1) // Closed
+                    seqIndex++;
+                }
+                else if (!(pts.Item1 || pts.Item2)) // neither closed nor filled
+                {
                     geoms.Add(_geometryFactory.CreateLineString(pts.Item3));
+                    seqIndex++;
+                }
                 else
                 {
                     if (!pts.Item2) {
@@ -149,10 +160,11 @@ namespace NetTopologySuite.Windows.Media
                 {
                     if (shell != null)
                     {
-                        if (shell.Disjoint(geom)) {
-                            lst.Add(shell);
-                            shell = geom;
-                        } else if (shell.Touches(geom))
+                        if (shell.Disjoint(geom)) 
+                            shell = shell.Union(geom);
+                        else if (geom.Contains(shell))
+                            shell = geom.Difference(shell);
+                        else if (shell.Touches(geom))
                             shell = shell.Union(geom);
                         else if (shell.Contains(geom))
                             shell = shell.Difference(geom);
@@ -200,7 +212,7 @@ namespace NetTopologySuite.Windows.Media
         /// <param name="pathGeometry">A path figure collection</param>
         /// <returns>A list of coordinate arrays</returns>
         /// <exception cref="ArgumentException">If a non-linear segment type is encountered</exception>
-        private static List<Tuple<bool, bool, Coordinate[]>> ToCoordinates(PathGeometry pathGeometry)
+        private List<Tuple<bool, bool, Coordinate[]>> ToCoordinates(PathGeometry pathGeometry)
         {
             if (pathGeometry.MayHaveCurves())
                 throw new ArgumentException("WPF geometry must not have non-linear segments");
@@ -218,7 +230,7 @@ namespace NetTopologySuite.Windows.Media
         }
 
 
-        private static Coordinate[] NextCoordinateArray(PathFigure pathFigure)
+        private Coordinate[] NextCoordinateArray(PathFigure pathFigure)
         {
 
             var coordinateList = new List<Coordinate>(pathFigure.Segments.Count + 1);
@@ -242,9 +254,10 @@ namespace NetTopologySuite.Windows.Media
             return coordinateList.ToArray();
         }
 
-        private static Coordinate ToCoordinate(WpfPoint point)
+        private Coordinate ToCoordinate(WpfPoint point)
         {
-            return new Coordinate(point.X, point.Y);
+            var transformedPoint = _transform.Transform(point);
+            return new Coordinate(transformedPoint.X, transformedPoint.Y);
         }
     }
 }
