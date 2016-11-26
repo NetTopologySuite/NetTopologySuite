@@ -6,29 +6,17 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.LinearReferencing
 {
     /// <summary>
-    /// An iterator over the components and coordinates of a linear geometry
-    /// (<see cref="LineString" />s and <see cref="MultiLineString" />s.
+    ///     An iterator over the components and coordinates of a linear geometry
+    ///     (<see cref="LineString" />s and <see cref="MultiLineString" />s.
     /// </summary>
     public class LinearIterator //: IEnumerator<LinearIterator.LinearElement>,
-    //    IEnumerable<LinearIterator.LinearElement>
+        //    IEnumerable<LinearIterator.LinearElement>
     {
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="loc"></param>
-        /// <returns></returns>
-        public static int SegmentEndVertexIndex(LinearLocation loc)
-        {
-            if (loc.SegmentFraction > 0.0)
-                return loc.SegmentIndex + 1;
-            return loc.SegmentIndex;
-        }
-
         private readonly IGeometry _linearGeom;
         private readonly int _numLines;
 
         /// <summary>
-        /// Invariant: currentLine &lt;&gt; null if the iterator is pointing at a valid coordinate
+        ///     Invariant: currentLine &lt;&gt; null if the iterator is pointing at a valid coordinate
         /// </summary>
         private ILineString _currentLine;
 
@@ -43,29 +31,33 @@ namespace NetTopologySuite.LinearReferencing
         //private readonly int _startVertexIndex;
 
         /// <summary>
-        /// Creates an iterator initialized to the start of a linear <see cref="Geometry" />.
+        ///     Creates an iterator initialized to the start of a linear <see cref="Geometry" />.
         /// </summary>
         /// <param name="linearGeom">The linear geometry to iterate over.</param>
-        /// <exception cref="ArgumentException"> if <paramref name="linearGeom"/> is not <see cref="ILineal"/></exception>
-        public LinearIterator(IGeometry linearGeom) : this(linearGeom, 0, 0) { }
+        /// <exception cref="ArgumentException"> if <paramref name="linearGeom" /> is not <see cref="ILineal" /></exception>
+        public LinearIterator(IGeometry linearGeom) : this(linearGeom, 0, 0)
+        {
+        }
 
         /// <summary>
-        /// Creates an iterator starting at a <see cref="LinearLocation" /> on a linear <see cref="Geometry" />.
+        ///     Creates an iterator starting at a <see cref="LinearLocation" /> on a linear <see cref="Geometry" />.
         /// </summary>
         /// <param name="linearGeom">The linear geometry to iterate over.</param>
         /// <param name="start">The location to start at.</param>
-        /// <exception cref="ArgumentException"> if <paramref name="linearGeom"/> is not <see cref="ILineal"/></exception>
+        /// <exception cref="ArgumentException"> if <paramref name="linearGeom" /> is not <see cref="ILineal" /></exception>
         public LinearIterator(IGeometry linearGeom, LinearLocation start) :
-            this(linearGeom, start.ComponentIndex, SegmentEndVertexIndex(start)) { }
+            this(linearGeom, start.ComponentIndex, SegmentEndVertexIndex(start))
+        {
+        }
 
         /// <summary>
-        /// Creates an iterator starting at
-        /// a component and vertex in a linear <see cref="Geometry" />.
+        ///     Creates an iterator starting at
+        ///     a component and vertex in a linear <see cref="Geometry" />.
         /// </summary>
         /// <param name="linearGeom">The linear geometry to iterate over.</param>
         /// <param name="componentIndex">The component to start at.</param>
         /// <param name="vertexIndex">The vertex to start at.</param>
-        /// <exception cref="ArgumentException"> if <paramref name="linearGeom"/> is not <see cref="ILineal"/></exception>
+        /// <exception cref="ArgumentException"> if <paramref name="linearGeom" /> is not <see cref="ILineal" /></exception>
         public LinearIterator(IGeometry linearGeom, int componentIndex, int vertexIndex)
         {
             if (!(linearGeom is ILineal))
@@ -80,7 +72,69 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        ///
+        ///     Checks whether the iterator cursor is pointing to the
+        ///     endpoint of a component <see cref="ILineString" />.
+        /// </summary>
+        public bool IsEndOfLine
+        {
+            get
+            {
+                if (ComponentIndex >= _numLines)
+                    return false;
+                if (VertexIndex < _currentLine.NumPoints - 1)
+                    return false;
+                return true;
+            }
+        }
+
+        /// <summary>
+        ///     The component index of the vertex the iterator is currently at.
+        /// </summary>
+        public int ComponentIndex { get; private set; }
+
+        /// <summary>
+        ///     The vertex index of the vertex the iterator is currently at.
+        /// </summary>
+        public int VertexIndex { get; private set; }
+
+        /// <summary>
+        ///     Gets the <see cref="LineString" /> component the iterator is current at.
+        /// </summary>
+        public ILineString Line => _currentLine;
+
+        /// <summary>
+        ///     Gets the first <see cref="Coordinate" /> of the current segment
+        ///     (the coordinate of the current vertex).
+        /// </summary>
+        public Coordinate SegmentStart => _currentLine.GetCoordinateN(VertexIndex);
+
+        /// <summary>
+        ///     Gets the second <see cref="Coordinate" /> of the current segment
+        ///     (the coordinate of the next vertex).
+        ///     If the iterator is at the end of a line, <c>null</c> is returned.
+        /// </summary>
+        public Coordinate SegmentEnd
+        {
+            get
+            {
+                if (VertexIndex < Line.NumPoints - 1)
+                    return _currentLine.GetCoordinateN(VertexIndex + 1);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="loc"></param>
+        /// <returns></returns>
+        public static int SegmentEndVertexIndex(LinearLocation loc)
+        {
+            if (loc.SegmentFraction > 0.0)
+                return loc.SegmentIndex + 1;
+            return loc.SegmentIndex;
+        }
+
+        /// <summary>
         /// </summary>
         private void LoadCurrentLine()
         {
@@ -89,28 +143,28 @@ namespace NetTopologySuite.LinearReferencing
                 _currentLine = null;
                 return;
             }
-            _currentLine = (ILineString)_linearGeom.GetGeometryN(ComponentIndex);
+            _currentLine = (ILineString) _linearGeom.GetGeometryN(ComponentIndex);
         }
 
         /// <summary>
-        /// Tests whether there are any vertices left to iterator over.
-        /// Specifically, <c>HasNext()</c> returns <tt>true</tt> if the
-        /// current state of the iterator represents a valid location
-        /// on the linear geometry. 
+        ///     Tests whether there are any vertices left to iterator over.
+        ///     Specifically, <c>HasNext()</c> returns <tt>true</tt> if the
+        ///     current state of the iterator represents a valid location
+        ///     on the linear geometry.
         /// </summary>
         /// <returns><c>true</c> if there are more vertices to scan.</returns>
         public bool HasNext()
         {
             if (ComponentIndex >= _numLines)
                 return false;
-            if (ComponentIndex == _numLines - 1 &&
-                VertexIndex >= _currentLine.NumPoints)
+            if ((ComponentIndex == _numLines - 1) &&
+                (VertexIndex >= _currentLine.NumPoints))
                 return false;
             return true;
         }
 
         /// <summary>
-        /// Jump to the next element of the iteration.
+        ///     Jump to the next element of the iteration.
         /// </summary>
         public void Next()
         {
@@ -126,75 +180,24 @@ namespace NetTopologySuite.LinearReferencing
             }
         }
 
-        /// <summary>
-        /// Checks whether the iterator cursor is pointing to the
-        /// endpoint of a component <see cref="ILineString"/>.
-        /// </summary>
-        public bool IsEndOfLine
-        {
-            get
-            {
-                if (ComponentIndex >= _numLines)
-                    return false;
-                if (VertexIndex < _currentLine.NumPoints - 1)
-                    return false;
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// The component index of the vertex the iterator is currently at.
-        /// </summary>
-        public int ComponentIndex { get; private set; }
-
-        /// <summary>
-        /// The vertex index of the vertex the iterator is currently at.
-        /// </summary>
-        public int VertexIndex { get; private set; }
-
-        /// <summary>
-        /// Gets the <see cref="LineString" /> component the iterator is current at.
-        /// </summary>
-        public ILineString Line => _currentLine;
-
-        /// <summary>
-        /// Gets the first <see cref="Coordinate" /> of the current segment
-        /// (the coordinate of the current vertex).
-        /// </summary>
-        public Coordinate SegmentStart => _currentLine.GetCoordinateN(VertexIndex);
-
-        /// <summary>
-        /// Gets the second <see cref="Coordinate" /> of the current segment
-        /// (the coordinate of the next vertex).
-        /// If the iterator is at the end of a line, <c>null</c> is returned.
-        /// </summary>
-        public Coordinate SegmentEnd
-        {
-            get
-            {
-                if (VertexIndex < Line.NumPoints - 1)
-                    return _currentLine.GetCoordinateN(VertexIndex + 1);
-                return null;
-            }
-        }
-
-        //#region IEnumerator<LinearIterator.LinearElement> Members
+        //    }
+        //        return _current;
+        //    {
+        //    get
+        //{
+        //public LinearElement Current
+        ///// </returns>
+        ///// at the current position of the enumerator.
+        ///// The <see cref="LinearElement">element</see> in the collection
+        ///// <returns>
+        ///// <value></value>
+        ///// </summary>
+        ///// at the current position of the enumerator.
+        ///// Gets the <see cref="LinearElement">element</see> in the collection
 
         ///// <summary>
-        ///// Gets the <see cref="LinearElement">element</see> in the collection
-        ///// at the current position of the enumerator.
-        ///// </summary>
-        ///// <value></value>
-        ///// <returns>
-        ///// The <see cref="LinearElement">element</see> in the collection
-        ///// at the current position of the enumerator.
-        ///// </returns>
-        //public LinearElement Current
-        //{
-        //    get
-        //    {
-        //        return _current;
-        //    }
+
+        //#region IEnumerator<LinearIterator.LinearElement> Members
         //}
 
         //#region IEnumerator Members

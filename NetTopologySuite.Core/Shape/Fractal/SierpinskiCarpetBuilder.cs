@@ -10,7 +10,7 @@ namespace NetTopologySuite.Shape.Fractal
         //private CoordinateList coordList = new CoordinateList();
 
         public SierpinskiCarpetBuilder(IGeometryFactory geomFactory)
-            :base(geomFactory)
+            : base(geomFactory)
         {
         }
 
@@ -47,16 +47,16 @@ namespace NetTopologySuite.Shape.Fractal
             var widthThird = width/3.0;
             //var widthTwoThirds = width*2.0/3.0;
             //var widthNinth = width/9.0;
-            
-            AddHoles(n2, originX,                originY,                widthThird, holeList);
-            AddHoles(n2, originX + widthThird,   originY,                widthThird, holeList);
-            AddHoles(n2, originX + 2*widthThird, originY,                widthThird, holeList);
 
-            AddHoles(n2, originX,                originY + widthThird,   widthThird, holeList);
-            AddHoles(n2, originX + 2*widthThird, originY + widthThird,   widthThird, holeList);
+            AddHoles(n2, originX, originY, widthThird, holeList);
+            AddHoles(n2, originX + widthThird, originY, widthThird, holeList);
+            AddHoles(n2, originX + 2*widthThird, originY, widthThird, holeList);
 
-            AddHoles(n2, originX,                originY + 2*widthThird, widthThird, holeList);
-            AddHoles(n2, originX + widthThird,   originY + 2*widthThird, widthThird, holeList);
+            AddHoles(n2, originX, originY + widthThird, widthThird, holeList);
+            AddHoles(n2, originX + 2*widthThird, originY + widthThird, widthThird, holeList);
+
+            AddHoles(n2, originX, originY + 2*widthThird, widthThird, holeList);
+            AddHoles(n2, originX + widthThird, originY + 2*widthThird, widthThird, holeList);
             AddHoles(n2, originX + 2*widthThird, originY + 2*widthThird, widthThird, holeList);
 
             // add the centre hole
@@ -66,13 +66,13 @@ namespace NetTopologySuite.Shape.Fractal
         private ILinearRing CreateSquareHole(double x, double y, double width)
         {
             var pts = new[]
-                          {
-                              new Coordinate(x, y),
-                              new Coordinate(x + width, y),
-                              new Coordinate(x + width, y + width),
-                              new Coordinate(x, y + width),
-                              new Coordinate(x, y)
-                          };
+            {
+                new Coordinate(x, y),
+                new Coordinate(x + width, y),
+                new Coordinate(x + width, y + width),
+                new Coordinate(x, y + width),
+                new Coordinate(x, y)
+            };
             return GeomFactory.CreateLinearRing(pts);
         }
     }

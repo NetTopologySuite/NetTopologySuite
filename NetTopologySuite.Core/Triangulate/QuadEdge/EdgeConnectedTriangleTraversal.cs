@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
     /// <summary>
-    /// A framework to visit sets of edge-connected <see cref="QuadEdgeTriangle"/>s in breadth-first order
+    ///     A framework to visit sets of edge-connected <see cref="QuadEdgeTriangle" />s in breadth-first order
     /// </summary>
     /// <author>Martin Davis</author>
     /// <version>1.0</version>
@@ -17,13 +17,13 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /// <summary>
-        /// Called to initialize the traversal queue with a given set of <see cref="QuadEdgeTriangle"/>s
+        ///     Called to initialize the traversal queue with a given set of <see cref="QuadEdgeTriangle" />s
         /// </summary>
         /// <param name="tris">a collection of QuadEdgeTriangle</param>
         public void Init(IEnumerable<QuadEdgeTriangle> tris)
         {
-            foreach(var tri in tris)
-            _triQueue.AddLast(tri);
+            foreach (var tri in tris)
+                _triQueue.AddLast(tri);
         }
 
         /* <summary>
@@ -36,13 +36,13 @@ namespace NetTopologySuite.Triangulate.QuadEdge
          */
 
         /// <summary>
-        /// Subclasses call this method to perform the visiting process.
+        ///     Subclasses call this method to perform the visiting process.
         /// </summary>
         public void VisitAll(ITraversalVisitor visitor)
         {
             while (_triQueue.Count > 0)
             {
-                QuadEdgeTriangle tri = _triQueue.First.Value;
+                var tri = _triQueue.First.Value;
                 _triQueue.RemoveFirst();
                 Process(tri, visitor);
             }
@@ -51,15 +51,14 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         private void Process(QuadEdgeTriangle currTri, ITraversalVisitor visitor)
         {
             currTri.GetNeighbours();
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
-                QuadEdgeTriangle neighTri = (QuadEdgeTriangle)currTri.GetEdge(i).Sym.Data;
+                var neighTri = (QuadEdgeTriangle) currTri.GetEdge(i).Sym.Data;
                 if (neighTri == null)
                     continue;
                 if (visitor.Visit(currTri, i, neighTri))
                     _triQueue.AddLast(neighTri);
             }
         }
-
     }
 }

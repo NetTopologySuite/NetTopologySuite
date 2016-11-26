@@ -9,19 +9,18 @@ using NetTopologySuite.Noding;
 namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
-    /// Creates all the raw offset curves for a buffer of a <c>Geometry</c>.
-    /// Raw curves need to be noded together and polygonized to form the final buffer area.
+    ///     Creates all the raw offset curves for a buffer of a <c>Geometry</c>.
+    ///     Raw curves need to be noded together and polygonized to form the final buffer area.
     /// </summary>
     public class OffsetCurveSetBuilder
     {
-        private readonly IGeometry _inputGeom;
-        private readonly double _distance;
         private readonly OffsetCurveBuilder _curveBuilder;
 
         private readonly IList<ISegmentString> _curveList = new List<ISegmentString>();
+        private readonly double _distance;
+        private readonly IGeometry _inputGeom;
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="inputGeom"></param>
         /// <param name="distance"></param>
@@ -34,9 +33,9 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Computes the set of raw offset curves for the buffer.
-        /// Each offset curve has an attached {Label} indicating
-        /// its left and right location.
+        ///     Computes the set of raw offset curves for the buffer.
+        ///     Each offset curve has an attached {Label} indicating
+        ///     its left and right location.
         /// </summary>
         /// <returns>A Collection of SegmentStrings representing the raw buffer curves.</returns>
         public IList<ISegmentString> GetCurves()
@@ -46,18 +45,18 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Creates a {SegmentString} for a coordinate list which is a raw offset curve,
-        /// and adds it to the list of buffer curves.
-        /// The SegmentString is tagged with a Label giving the topology of the curve.
-        /// The curve may be oriented in either direction.
-        /// If the curve is oriented CW, the locations will be:
-        /// Left: Location.Exterior.
-        /// Right: Location.Interior.
+        ///     Creates a {SegmentString} for a coordinate list which is a raw offset curve,
+        ///     and adds it to the list of buffer curves.
+        ///     The SegmentString is tagged with a Label giving the topology of the curve.
+        ///     The curve may be oriented in either direction.
+        ///     If the curve is oriented CW, the locations will be:
+        ///     Left: Location.Exterior.
+        ///     Right: Location.Interior.
         /// </summary>
         private void AddCurve(Coordinate[] coord, Location leftLoc, Location rightLoc)
         {
             // don't add null or trivial curves!
-            if (coord == null || coord.Length < 2)
+            if ((coord == null) || (coord.Length < 2))
                 return;
             // add the edge for a coordinate list which is a raw offset curve
             var e = new NodedSegmentString(coord, new Label(0, Location.Boundary, leftLoc, rightLoc));
@@ -65,14 +64,13 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="g"></param>
         private void Add(IGeometry g)
         {
             if (g.IsEmpty) return;
             if (g is IPolygon)
-                AddPolygon((IPolygon)g);
+                AddPolygon((IPolygon) g);
             // LineString also handles LinearRings
             else if (g is ILineString)
                 AddLineString(g);
@@ -90,7 +88,6 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="gc"></param>
         private void AddCollection(IGeometry gc)
@@ -103,7 +100,7 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Add a Point to the graph.
+        ///     Add a Point to the graph.
         /// </summary>
         /// <param name="p"></param>
         private void AddPoint(IGeometry p)
@@ -117,13 +114,12 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="line"></param>
         private void AddLineString(IGeometry line)
         {
             // a zero or negative width buffer of a line/point is empty
-            if (_distance <= 0.0 && !_curveBuilder.BufferParameters.IsSingleSided)
+            if ((_distance <= 0.0) && !_curveBuilder.BufferParameters.IsSingleSided)
                 return;
             var coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
             var curve = _curveBuilder.GetLineCurve(coord, _distance);
@@ -131,7 +127,6 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="p"></param>
         private void AddPolygon(IPolygon p)
@@ -148,39 +143,39 @@ namespace NetTopologySuite.Operation.Buffer
             var shellCoord = CoordinateArrays.RemoveRepeatedPoints(shell.Coordinates);
             // optimization - don't bother computing buffer
             // if the polygon would be completely eroded
-            if (_distance < 0.0 && IsErodedCompletely(shellCoord, _distance))
+            if ((_distance < 0.0) && IsErodedCompletely(shellCoord, _distance))
                 return;
             // don't attemtp to buffer a polygon with too few distinct vertices
-            if (_distance <= 0.0 && shellCoord.Length < 3)
+            if ((_distance <= 0.0) && (shellCoord.Length < 3))
                 return;
 
             AddPolygonRing(shellCoord, offsetDistance, offsetSide,
-                           Location.Exterior, Location.Interior);
+                Location.Exterior, Location.Interior);
 
             for (var i = 0; i < p.NumInteriorRings; i++)
             {
-                var hole = (ILinearRing)p.GetInteriorRingN(i);
+                var hole = (ILinearRing) p.GetInteriorRingN(i);
                 var holeCoord = CoordinateArrays.RemoveRepeatedPoints(hole.Coordinates);
 
                 // optimization - don't bother computing buffer for this hole
                 // if the hole would be completely covered
-                if (_distance > 0.0 && IsErodedCompletely(holeCoord, -_distance))
+                if ((_distance > 0.0) && IsErodedCompletely(holeCoord, -_distance))
                     continue;
 
                 // Holes are topologically labelled opposite to the shell, since
                 // the interior of the polygon lies on their opposite side
                 // (on the left, if the hole is oriented CCW)
                 AddPolygonRing(holeCoord, offsetDistance, Position.Opposite(offsetSide),
-                               Location.Interior, Location.Exterior);
+                    Location.Interior, Location.Exterior);
             }
         }
 
         /// <summary>
-        /// Adds an offset curve for a polygon ring.
-        /// The side and left and right topological location arguments
-        /// assume that the ring is oriented CW.
-        /// If the ring is in the opposite orientation,
-        /// the left and right locations must be interchanged and the side flipped.
+        ///     Adds an offset curve for a polygon ring.
+        ///     The side and left and right topological location arguments
+        ///     assume that the ring is oriented CW.
+        ///     If the ring is in the opposite orientation,
+        ///     the left and right locations must be interchanged and the side flipped.
         /// </summary>
         /// <param name="coord">The coordinates of the ring (must not contain repeated points).</param>
         /// <param name="offsetDistance">The distance at which to create the buffer.</param>
@@ -191,12 +186,12 @@ namespace NetTopologySuite.Operation.Buffer
             Positions side, Location cwLeftLoc, Location cwRightLoc)
         {
             // don't bother adding ring if it is "flat" and will disappear in the output
-            if (offsetDistance == 0.0 && coord.Length < LinearRing.MinimumValidSize)
+            if ((offsetDistance == 0.0) && (coord.Length < LinearRing.MinimumValidSize))
                 return;
 
             var leftLoc = cwLeftLoc;
             var rightLoc = cwRightLoc;
-            if (coord.Length >= LinearRing.MinimumValidSize
+            if ((coord.Length >= LinearRing.MinimumValidSize)
                 && CGAlgorithms.IsCCW(coord))
             {
                 leftLoc = cwRightLoc;
@@ -208,9 +203,9 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// The ringCoord is assumed to contain no repeated points.
-        /// It may be degenerate (i.e. contain only 1, 2, or 3 points).
-        /// In this case it has no area, and hence has a minimum diameter of 0.
+        ///     The ringCoord is assumed to contain no repeated points.
+        ///     It may be degenerate (i.e. contain only 1, 2, or 3 points).
+        ///     In this case it has no area, and hence has a minimum diameter of 0.
         /// </summary>
         /// <param name="ringCoord"></param>
         /// <param name="bufferDistance"></param>
@@ -239,21 +234,21 @@ namespace NetTopologySuite.Operation.Buffer
              */
             var ring = _inputGeom.Factory.CreateLinearRing(ringCoord);
             var md = new MinimumDiameter(ring);
-            double minDiam = md.Length;
-            return minDiam < 2 * Math.Abs(bufferDistance);
+            var minDiam = md.Length;
+            return minDiam < 2*Math.Abs(bufferDistance);
         }
 
         /// <summary>
-        /// Tests whether a triangular ring would be eroded completely by the given
-        /// buffer distance.
-        /// This is a precise test.  It uses the fact that the inner buffer of a
-        /// triangle converges on the inCentre of the triangle (the point
-        /// equidistant from all sides).  If the buffer distance is greater than the
-        /// distance of the inCentre from a side, the triangle will be eroded completely.
-        /// This test is important, since it removes a problematic case where
-        /// the buffer distance is slightly larger than the inCentre distance.
-        /// In this case the triangle buffer curve "inverts" with incorrect topology,
-        /// producing an incorrect hole in the buffer.
+        ///     Tests whether a triangular ring would be eroded completely by the given
+        ///     buffer distance.
+        ///     This is a precise test.  It uses the fact that the inner buffer of a
+        ///     triangle converges on the inCentre of the triangle (the point
+        ///     equidistant from all sides).  If the buffer distance is greater than the
+        ///     distance of the inCentre from a side, the triangle will be eroded completely.
+        ///     This test is important, since it removes a problematic case where
+        ///     the buffer distance is slightly larger than the inCentre distance.
+        ///     In this case the triangle buffer curve "inverts" with incorrect topology,
+        ///     producing an incorrect hole in the buffer.
         /// </summary>
         /// <param name="triangleCoord"></param>
         /// <param name="bufferDistance"></param>

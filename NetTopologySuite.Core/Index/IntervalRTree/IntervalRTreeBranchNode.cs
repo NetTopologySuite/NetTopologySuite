@@ -23,14 +23,10 @@ namespace NetTopologySuite.Index.IntervalRTree
         public override void Query(double queryMin, double queryMax, IItemVisitor<T> visitor)
         {
             if (!Intersects(queryMin, queryMax))
-            {
-                //			System.out.println("Does NOT Overlap branch: " + this);
                 return;
-            }
             //		System.out.println("Overlaps branch: " + this);
             if (_node1 != null) _node1.Query(queryMin, queryMax, visitor);
             if (_node2 != null) _node2.Query(queryMin, queryMax, visitor);
         }
-
     }
 }

@@ -1,23 +1,27 @@
 using System;
 using GeoAPI.Geometries;
+
 #if PCL
 using Exception = System.Exception;
 #endif
+
 namespace NetTopologySuite.Precision
 {
     /// <summary>
-    /// Provides versions of Geometry spatial functions which use
-    /// enhanced precision techniques to reduce the likelihood of robustness problems.
+    ///     Provides versions of Geometry spatial functions which use
+    ///     enhanced precision techniques to reduce the likelihood of robustness problems.
     /// </summary>
     public class EnhancedPrecisionOp
     {
         /// <summary>
-        /// Only static methods!
+        ///     Only static methods!
         /// </summary>
-        private EnhancedPrecisionOp() { }
+        private EnhancedPrecisionOp()
+        {
+        }
 
         /// <summary>
-        /// Computes the set-theoretic intersection of two <c>Geometry</c>s, using enhanced precision.
+        ///     Computes the set-theoretic intersection of two <c>Geometry</c>s, using enhanced precision.
         /// </summary>
         /// <param name="geom0">The first Geometry.</param>
         /// <param name="geom1">The second Geometry.</param>
@@ -27,7 +31,7 @@ namespace NetTopologySuite.Precision
             Exception originalEx;
             try
             {
-                IGeometry result = geom0.Intersection(geom1);
+                var result = geom0.Intersection(geom1);
                 return result;
             }
             catch (Exception ex)
@@ -41,8 +45,8 @@ namespace NetTopologySuite.Precision
              */
             try
             {
-                CommonBitsOp cbo = new CommonBitsOp(true);
-                IGeometry resultEP = cbo.Intersection(geom0, geom1);
+                var cbo = new CommonBitsOp(true);
+                var resultEP = cbo.Intersection(geom0, geom1);
                 // check that result is a valid point after the reshift to orginal precision
                 if (!resultEP.IsValid)
                     throw originalEx;
@@ -55,7 +59,7 @@ namespace NetTopologySuite.Precision
         }
 
         /// <summary>
-        /// Computes the set-theoretic union of two <c>Geometry</c>s, using enhanced precision.
+        ///     Computes the set-theoretic union of two <c>Geometry</c>s, using enhanced precision.
         /// </summary>
         /// <param name="geom0">The first Geometry.</param>
         /// <param name="geom1">The second Geometry.</param>
@@ -65,7 +69,7 @@ namespace NetTopologySuite.Precision
             Exception originalEx;
             try
             {
-                IGeometry result = geom0.Union(geom1);
+                var result = geom0.Union(geom1);
                 return result;
             }
             catch (Exception ex)
@@ -79,8 +83,8 @@ namespace NetTopologySuite.Precision
              */
             try
             {
-                CommonBitsOp cbo = new CommonBitsOp(true);
-                IGeometry resultEP = cbo.Union(geom0, geom1);
+                var cbo = new CommonBitsOp(true);
+                var resultEP = cbo.Union(geom0, geom1);
                 // check that result is a valid point after the reshift to orginal precision
                 if (!resultEP.IsValid)
                     throw originalEx;
@@ -93,7 +97,7 @@ namespace NetTopologySuite.Precision
         }
 
         /// <summary>
-        /// Computes the set-theoretic difference of two <c>Geometry</c>s, using enhanced precision.
+        ///     Computes the set-theoretic difference of two <c>Geometry</c>s, using enhanced precision.
         /// </summary>
         /// <param name="geom0">The first Geometry.</param>
         /// <param name="geom1">The second Geometry.</param>
@@ -103,7 +107,7 @@ namespace NetTopologySuite.Precision
             Exception originalEx;
             try
             {
-                IGeometry result = geom0.Difference(geom1);
+                var result = geom0.Difference(geom1);
                 return result;
             }
             catch (Exception ex)
@@ -117,8 +121,8 @@ namespace NetTopologySuite.Precision
              */
             try
             {
-                CommonBitsOp cbo = new CommonBitsOp(true);
-                IGeometry resultEP = cbo.Difference(geom0, geom1);
+                var cbo = new CommonBitsOp(true);
+                var resultEP = cbo.Difference(geom0, geom1);
                 // check that result is a valid point after the reshift to orginal precision
                 if (!resultEP.IsValid)
                     throw originalEx;
@@ -131,7 +135,7 @@ namespace NetTopologySuite.Precision
         }
 
         /// <summary>
-        /// Computes the set-theoretic symmetric difference of two <c>Geometry</c>s, using enhanced precision.
+        ///     Computes the set-theoretic symmetric difference of two <c>Geometry</c>s, using enhanced precision.
         /// </summary>
         /// <param name="geom0">The first Geometry.</param>
         /// <param name="geom1">The second Geometry.</param>
@@ -141,7 +145,7 @@ namespace NetTopologySuite.Precision
             Exception originalEx;
             try
             {
-                IGeometry result = geom0.SymmetricDifference(geom1);
+                var result = geom0.SymmetricDifference(geom1);
                 return result;
             }
             catch (Exception ex)
@@ -155,8 +159,8 @@ namespace NetTopologySuite.Precision
              */
             try
             {
-                CommonBitsOp cbo = new CommonBitsOp(true);
-                IGeometry resultEP = cbo.SymDifference(geom0, geom1);
+                var cbo = new CommonBitsOp(true);
+                var resultEP = cbo.SymDifference(geom0, geom1);
                 // check that result is a valid point after the reshift to orginal precision
                 if (!resultEP.IsValid)
                     throw originalEx;
@@ -169,9 +173,9 @@ namespace NetTopologySuite.Precision
         }
 
         /// <summary>
-        /// Computes the buffer of a <c>Geometry</c>, using enhanced precision.
-        /// This method should no longer be necessary, since the buffer algorithm
-        /// now is highly robust.
+        ///     Computes the buffer of a <c>Geometry</c>, using enhanced precision.
+        ///     This method should no longer be necessary, since the buffer algorithm
+        ///     now is highly robust.
         /// </summary>
         /// <param name="geom">The first Geometry.</param>
         /// <param name="distance">The buffer distance.</param>
@@ -182,7 +186,7 @@ namespace NetTopologySuite.Precision
             Exception originalEx;
             try
             {
-                IGeometry result = geom.Buffer(distance);
+                var result = geom.Buffer(distance);
                 return result;
             }
             catch (Exception ex)
@@ -196,8 +200,8 @@ namespace NetTopologySuite.Precision
              */
             try
             {
-                CommonBitsOp cbo = new CommonBitsOp(true);
-                IGeometry resultEP = cbo.Buffer(geom, distance);
+                var cbo = new CommonBitsOp(true);
+                var resultEP = cbo.Buffer(geom, distance);
                 // check that result is a valid point after the reshift to orginal precision
                 if (!resultEP.IsValid)
                     throw originalEx;

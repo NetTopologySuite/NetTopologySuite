@@ -1,13 +1,12 @@
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 
 namespace NetTopologySuite.GeometriesGraph.Index
 {
     /// <summary>
-    /// Finds all intersections in one or two sets of edges,
-    /// using a simple x-axis sweepline algorithm.
-    /// While still O(n^2) in the worst case, this algorithm
-    /// drastically improves the average-case time.
+    ///     Finds all intersections in one or two sets of edges,
+    ///     using a simple x-axis sweepline algorithm.
+    ///     While still O(n^2) in the worst case, this algorithm
+    ///     drastically improves the average-case time.
     /// </summary>
     public class SimpleSweepLineIntersector : EdgeSetIntersector
     {
@@ -24,7 +23,6 @@ namespace NetTopologySuite.GeometriesGraph.Index
         */
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="edges"></param>
         /// <param name="si"></param>
@@ -38,7 +36,6 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="edges0"></param>
         /// <param name="edges1"></param>
@@ -51,67 +48,58 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="edges"></param>
         private void Add(IEnumerable<Edge> edges)
         {
-            foreach (Edge edge in edges)
-            {
-                // edge is its own group
+            foreach (var edge in edges)
                 Add(edge, edge);
-            }
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="edges"></param>
         /// <param name="edgeSet"></param>
         private void Add(IEnumerable<Edge> edges, object edgeSet)
         {
-            foreach (Edge edge in edges)
-            {
+            foreach (var edge in edges)
                 Add(edge, edgeSet);
-            }
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="edge"></param>
         /// <param name="edgeSet"></param>
         private void Add(Edge edge, object edgeSet)
         {
-            Coordinate[] pts = edge.Coordinates;
-            for (int i = 0; i < pts.Length - 1; i++)
+            var pts = edge.Coordinates;
+            for (var i = 0; i < pts.Length - 1; i++)
             {
-                SweepLineSegment ss = new SweepLineSegment(edge, i);
-                SweepLineEvent insertEvent = new SweepLineEvent(edgeSet, ss.MinX, null);
+                var ss = new SweepLineSegment(edge, i);
+                var insertEvent = new SweepLineEvent(edgeSet, ss.MinX, null);
                 _events.Add(insertEvent);
                 _events.Add(new SweepLineEvent(ss.MaxX, insertEvent));
             }
         }
 
-        /// <summary> 
-        /// Because DELETE events have a link to their corresponding INSERT event,
-        /// it is possible to compute exactly the range of events which must be
-        /// compared to a given INSERT event object.
+        /// <summary>
+        ///     Because DELETE events have a link to their corresponding INSERT event,
+        ///     it is possible to compute exactly the range of events which must be
+        ///     compared to a given INSERT event object.
         /// </summary>
         private void PrepareEvents()
         {
             _events.Sort();
             // set DELETE event indexes
-            for (int i = 0; i < _events.Count; i++)
+            for (var i = 0; i < _events.Count; i++)
             {
-                SweepLineEvent ev = _events[i];
+                var ev = _events[i];
                 if (ev.IsDelete)
                     ev.InsertEvent.DeleteEventIndex = i;
             }
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="si"></param>
         private void ComputeIntersections(SegmentIntersector si)
@@ -119,16 +107,15 @@ namespace NetTopologySuite.GeometriesGraph.Index
             _nOverlaps = 0;
             PrepareEvents();
 
-            for (int i = 0; i < _events.Count; i++)
+            for (var i = 0; i < _events.Count; i++)
             {
-                SweepLineEvent ev = _events[i];
+                var ev = _events[i];
                 if (ev.IsInsert)
                     ProcessOverlaps(i, ev.DeleteEventIndex, ev, si);
             }
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
@@ -136,25 +123,23 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="si"></param>
         private void ProcessOverlaps(int start, int end, SweepLineEvent ev0, SegmentIntersector si)
         {
-            SweepLineSegment ss0 = (SweepLineSegment)ev0.Object;
+            var ss0 = (SweepLineSegment) ev0.Object;
             /*
             * Since we might need to test for self-intersections,
             * include current INSERT event object in list of event objects to test.
             * Last index can be skipped, because it must be a Delete event.
             */
-            for (int i = start; i < end; i++)
+            for (var i = start; i < end; i++)
             {
-                SweepLineEvent ev1 = _events[i];
+                var ev1 = _events[i];
                 if (ev1.IsInsert)
                 {
-                    SweepLineSegment ss1 = (SweepLineSegment)ev1.Object;
+                    var ss1 = (SweepLineSegment) ev1.Object;
                     // don't compare edges in same group, if labels are present
                     if (!ev0.IsSameLabel(ev1))
                     {
-                        {
-                            ss0.ComputeIntersections(ss1, si);
-                            _nOverlaps++;
-                        }
+                        ss0.ComputeIntersections(ss1, si);
+                        _nOverlaps++;
                     }
                 }
             }

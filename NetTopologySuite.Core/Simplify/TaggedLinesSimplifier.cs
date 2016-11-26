@@ -3,10 +3,10 @@ using System.Collections.Generic;
 namespace NetTopologySuite.Simplify
 {
     /// <summary>
-    /// Simplifies a collection of <c>TaggedLineString</c>s, preserving topology
-    /// (in the sense that no new intersections are introduced).
-    /// This class is essentially just a container for the common
-    /// indexes used by <see cref="TaggedLineStringSimplifier"/>.
+    ///     Simplifies a collection of <c>TaggedLineString</c>s, preserving topology
+    ///     (in the sense that no new intersections are introduced).
+    ///     This class is essentially just a container for the common
+    ///     indexes used by <see cref="TaggedLineStringSimplifier" />.
     /// </summary>
     public class TaggedLinesSimplifier
     {
@@ -14,23 +14,23 @@ namespace NetTopologySuite.Simplify
         private readonly LineSegmentIndex _outputIndex = new LineSegmentIndex();
 
         /// <summary>
-        /// Gets or sets the distance tolerance for the simplification.<br/>
-        /// Points closer than this tolerance to a simplified segment may
-        /// be removed.
-        /// </summary>        
+        ///     Gets or sets the distance tolerance for the simplification.<br />
+        ///     Points closer than this tolerance to a simplified segment may
+        ///     be removed.
+        /// </summary>
         public double DistanceTolerance { get; set; }
 
         /// <summary>
-        /// Simplifies a collection of <c>TaggedLineString</c>s.
+        ///     Simplifies a collection of <c>TaggedLineString</c>s.
         /// </summary>
         /// <param name="taggedLines">The collection of lines to simplify.</param>
         public void Simplify(ICollection<TaggedLineString> taggedLines)
         {
-            foreach (TaggedLineString taggedLineString in taggedLines)
+            foreach (var taggedLineString in taggedLines)
                 _inputIndex.Add(taggedLineString);
-            foreach (TaggedLineString taggedLineString in taggedLines)
+            foreach (var taggedLineString in taggedLines)
             {
-                TaggedLineStringSimplifier tlss = new TaggedLineStringSimplifier(_inputIndex, _outputIndex);
+                var tlss = new TaggedLineStringSimplifier(_inputIndex, _outputIndex);
                 tlss.DistanceTolerance = DistanceTolerance;
                 tlss.Simplify(taggedLineString);
             }

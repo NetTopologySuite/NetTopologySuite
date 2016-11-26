@@ -2,23 +2,18 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Features
 {
-    ///<summary>
-    /// Feature class
-    ///</summary>
+    /// <summary>
+    ///     Feature class
+    /// </summary>
     public class Feature : IFeature
     {
-        /// <summary>
-        /// Gets or sets a value indicating how bounding box on <see cref="Feature"/> should be handled
-        /// </summary>
-        /// <remarks>Default is <value>false</value></remarks>
-        public static bool ComputeBoundingBoxWhenItIsMissing { get; set; }
-
-        private IGeometry _geometry;
         private IAttributesTable _attributes;
         private Envelope _boundingBox;
 
+        private IGeometry _geometry;
+
         /// <summary>
-        /// Creates an instace of this class
+        ///     Creates an instace of this class
         /// </summary>
         /// <param name="geometry">The geometry</param>
         /// <param name="attributes">The attributes</param>
@@ -30,12 +25,22 @@ namespace NetTopologySuite.Features
         }
 
         /// <summary>
-        /// Creates an instance of this class
+        ///     Creates an instance of this class
         /// </summary>
-        public Feature() { }
-        
+        public Feature()
+        {
+        }
+
         /// <summary>
-        /// Geometry representation of the feature.
+        ///     Gets or sets a value indicating how bounding box on <see cref="Feature" /> should be handled
+        /// </summary>
+        /// <remarks>Default is
+        ///     <value>false</value>
+        /// </remarks>
+        public static bool ComputeBoundingBoxWhenItIsMissing { get; set; }
+
+        /// <summary>
+        ///     Geometry representation of the feature.
         /// </summary>
         public virtual IGeometry Geometry
         {
@@ -44,7 +49,7 @@ namespace NetTopologySuite.Features
         }
 
         /// <summary>
-        /// Attributes table of the feature.
+        ///     Attributes table of the feature.
         /// </summary>
         public virtual IAttributesTable Attributes
         {
@@ -54,11 +59,14 @@ namespace NetTopologySuite.Features
 
 
         /// <summary>
-        /// Gets or sets the (optional) <see href="http://geojson.org/geojson-spec.html#geojson-objects"> Bounding box (<c>bbox</c>) Object</see>.
+        ///     Gets or sets the (optional)
+        ///     <see href="http://geojson.org/geojson-spec.html#geojson-objects"> Bounding box (<c>bbox</c>) Object</see>.
         /// </summary>
         /// <value>
-        /// A <see cref="Envelope"/> describing the bounding box or <value>null</value>.
-        /// </value>        
+        ///     A <see cref="Envelope" /> describing the bounding box or
+        ///     <value>null</value>
+        ///     .
+        /// </value>
         public Envelope BoundingBox
         {
             get
@@ -66,7 +74,7 @@ namespace NetTopologySuite.Features
                 if (_boundingBox != null)
                     return new Envelope(_boundingBox);
 
-                if (_geometry != null && ComputeBoundingBoxWhenItIsMissing)
+                if ((_geometry != null) && ComputeBoundingBoxWhenItIsMissing)
                     return _geometry.EnvelopeInternal;
 
                 return null;

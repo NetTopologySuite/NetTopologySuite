@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
-
 #if PCL
 using DoubleBitsConverter = NetTopologySuite.Utilities.BitConverter;
 #else
 using DoubleBitsConverter = System.BitConverter;
+
 #endif
 
 namespace NetTopologySuite.Utilities
@@ -15,7 +15,7 @@ namespace NetTopologySuite.Utilities
         {
             unchecked
             {
-                return (short)ReverseByteOrder((ushort)value);
+                return (short) ReverseByteOrder((ushort) value);
             }
         }
 
@@ -23,7 +23,7 @@ namespace NetTopologySuite.Utilities
         {
             unchecked
             {
-                return (int)ReverseByteOrder((uint)value);
+                return (int) ReverseByteOrder((uint) value);
             }
         }
 
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Utilities
         {
             unchecked
             {
-                return (long)ReverseByteOrder((ulong)value);
+                return (long) ReverseByteOrder((ulong) value);
             }
         }
 
@@ -39,11 +39,11 @@ namespace NetTopologySuite.Utilities
         {
             // TODO: BitConverter.SingleToInt32Bits will exist eventually
             // see https://github.com/dotnet/coreclr/pull/833
-            byte[] bytes = System.BitConverter.GetBytes(value);
+            var bytes = DoubleBitsConverter.GetBytes(value);
             Debug.Assert(bytes.Length == 4);
 
             Array.Reverse(bytes, 0, 4);
-            return System.BitConverter.ToSingle(bytes, 0);
+            return DoubleBitsConverter.ToSingle(bytes, 0);
         }
 
         internal static double ReverseByteOrder(double value)
@@ -55,29 +55,29 @@ namespace NetTopologySuite.Utilities
         {
             unchecked
             {
-                return (ushort)((value & 0x00FF) << 8 |
-                                (value & 0xFF00) >> 8);
+                return (ushort) (((value & 0x00FF) << 8) |
+                                 ((value & 0xFF00) >> 8));
             }
         }
 
         internal static uint ReverseByteOrder(uint value)
         {
-            return (value & 0x000000FF) << 24 |
-                   (value & 0x0000FF00) << 8 |
-                   (value & 0x00FF0000) >> 8 |
-                   (value & 0xFF000000) >> 24;
+            return ((value & 0x000000FF) << 24) |
+                   ((value & 0x0000FF00) << 8) |
+                   ((value & 0x00FF0000) >> 8) |
+                   ((value & 0xFF000000) >> 24);
         }
 
         internal static ulong ReverseByteOrder(ulong value)
         {
-            return (value & 0x00000000000000FF) << 56 |
-                   (value & 0x000000000000FF00) << 40 |
-                   (value & 0x0000000000FF0000) << 24 |
-                   (value & 0x00000000FF000000) << 8 |
-                   (value & 0x000000FF00000000) >> 8 |
-                   (value & 0x0000FF0000000000) >> 24 |
-                   (value & 0x00FF000000000000) >> 40 |
-                   (value & 0xFF00000000000000) >> 56;
+            return ((value & 0x00000000000000FF) << 56) |
+                   ((value & 0x000000000000FF00) << 40) |
+                   ((value & 0x0000000000FF0000) << 24) |
+                   ((value & 0x00000000FF000000) << 8) |
+                   ((value & 0x000000FF00000000) >> 8) |
+                   ((value & 0x0000FF0000000000) >> 24) |
+                   ((value & 0x00FF000000000000) >> 40) |
+                   ((value & 0xFF00000000000000) >> 56);
         }
     }
 }

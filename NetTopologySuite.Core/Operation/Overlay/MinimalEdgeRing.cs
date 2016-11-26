@@ -4,22 +4,22 @@ using NetTopologySuite.GeometriesGraph;
 namespace NetTopologySuite.Operation.Overlay
 {
     /// <summary>
-    /// A ring of edges with the property that no node
-    /// has degree greater than 2.  These are the form of rings required
-    /// to represent polygons under the OGC SFS spatial data model.
+    ///     A ring of edges with the property that no node
+    ///     has degree greater than 2.  These are the form of rings required
+    ///     to represent polygons under the OGC SFS spatial data model.
     /// </summary>
     public class MinimalEdgeRing : EdgeRing
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="start"></param>
         /// <param name="geometryFactory"></param>
-        public MinimalEdgeRing(DirectedEdge start, IGeometryFactory geometryFactory) 
-            : base(start, geometryFactory) { }
+        public MinimalEdgeRing(DirectedEdge start, IGeometryFactory geometryFactory)
+            : base(start, geometryFactory)
+        {
+        }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="de"></param>
         /// <returns></returns>
@@ -29,7 +29,6 @@ namespace NetTopologySuite.Operation.Overlay
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="de"></param>
         /// <param name="er"></param>

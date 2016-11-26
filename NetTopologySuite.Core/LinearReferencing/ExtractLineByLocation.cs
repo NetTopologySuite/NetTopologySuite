@@ -4,16 +4,27 @@ using NetTopologySuite.Utilities;
 namespace NetTopologySuite.LinearReferencing
 {
     /// <summary>
-    /// Extracts the subline of a linear <see cref="Geometry" /> between
-    /// two <see cref="LinearLocation" />s on the line.
+    ///     Extracts the subline of a linear <see cref="Geometry" /> between
+    ///     two <see cref="LinearLocation" />s on the line.
     /// </summary>
     public class ExtractLineByLocation
     {
+        private readonly IGeometry _line;
+
         /// <summary>
-        /// Computes the subline of a <see cref="ILineString" /> between
-        /// two <see cref="LinearLocation"/>s on the line.
-        /// If the start location is after the end location,
-        /// the computed linear geometry has reverse orientation to the input line.
+        ///     Initializes a new instance of the <see cref="ExtractLineByLocation" /> class.
+        /// </summary>
+        /// <param name="line"></param>
+        public ExtractLineByLocation(IGeometry line)
+        {
+            _line = line;
+        }
+
+        /// <summary>
+        ///     Computes the subline of a <see cref="ILineString" /> between
+        ///     two <see cref="LinearLocation" />s on the line.
+        ///     If the start location is after the end location,
+        ///     the computed linear geometry has reverse orientation to the input line.
         /// </summary>
         /// <param name="line">The line to use as the baseline.</param>
         /// <param name="start">The start location.</param>
@@ -25,21 +36,10 @@ namespace NetTopologySuite.LinearReferencing
             return ls.Extract(start, end);
         }
 
-        private readonly IGeometry _line;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExtractLineByLocation"/> class.
-        /// </summary>
-        /// <param name="line"></param>
-        public ExtractLineByLocation(IGeometry line)
-        {
-            _line = line;
-        }
-
-        /// <summary>
-        /// Extracts a subline of the input.
-        /// If <paramref name="end" /> is minor that <paramref name="start" />,
-        /// the linear geometry computed will be reversed.
+        ///     Extracts a subline of the input.
+        ///     If <paramref name="end" /> is minor that <paramref name="start" />,
+        ///     the linear geometry computed will be reversed.
         /// </summary>
         /// <param name="start">The start location.</param>
         /// <param name="end">The end location.</param>
@@ -52,7 +52,6 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="linear"></param>
         /// <returns></returns>
@@ -123,8 +122,8 @@ namespace NetTopologySuite.LinearReferencing
         //}
 
         /// <summary>
-        /// Assumes input is valid
-        /// (e.g. <paramref name="start" /> minor or equals to <paramref name="end" />).
+        ///     Assumes input is valid
+        ///     (e.g. <paramref name="start" /> minor or equals to <paramref name="end" />).
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>

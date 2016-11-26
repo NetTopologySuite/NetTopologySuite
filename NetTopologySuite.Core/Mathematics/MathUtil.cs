@@ -1,12 +1,17 @@
-﻿namespace NetTopologySuite.Mathematics
+﻿using System;
+
+namespace NetTopologySuite.Mathematics
 {
     /// <summary>
-    /// Various utility functions for mathematical and numerical operations.
+    ///     Various utility functions for mathematical and numerical operations.
     /// </summary>
     public class MathUtil
     {
+// ReSharper disable InconsistentNaming
+        private static readonly double LOG10 = Math.Log(10);
+// ReSharper restore InconsistentNaming
         /// <summary>
-        /// Clamps a <c>double</c> value to a given range.
+        ///     Clamps a <c>double</c> value to a given range.
         /// </summary>
         /// <param name="x">The value to clamp</param>
         /// <param name="min">The minimum value of the range</param>
@@ -20,7 +25,7 @@
         }
 
         /// <summary>
-        /// Clamps a <c>int</c> value to a given range.
+        ///     Clamps a <c>int</c> value to a given range.
         /// </summary>
         /// <param name="x">The value to clamp</param>
         /// <param name="min">The minimum value of the range</param>
@@ -33,34 +38,30 @@
             return x;
         }
 
-// ReSharper disable InconsistentNaming
-        private static readonly double LOG10 = System.Math.Log(10);
-// ReSharper restore InconsistentNaming
-
         /// <summary>
-        /// Computes the base-10 logarithm of a <c>double</c> value.
-        /// <para>
-        /// <list type="Bullet">
-        /// <item>If the argument is NaN or less than zero, then the result is NaN.</item>
-        /// <item>If the argument is positive infinity, then the result is positive infinity.</item>
-        /// <item>If the argument is positive zero or negative zero, then the result is negative infinity.</item>
-        /// </list>
-        /// </para>
+        ///     Computes the base-10 logarithm of a <c>double</c> value.
+        ///     <para>
+        ///         <list type="Bullet">
+        ///             <item>If the argument is NaN or less than zero, then the result is NaN.</item>
+        ///             <item>If the argument is positive infinity, then the result is positive infinity.</item>
+        ///             <item>If the argument is positive zero or negative zero, then the result is negative infinity.</item>
+        ///         </list>
+        ///     </para>
         /// </summary>
         /// <param name="x">A positive number</param>
         /// <returns>The value log a, the base-10 logarithm of the input value</returns>
         public static double Log10(double x)
         {
-            var ln = System.Math.Log(x);
+            var ln = Math.Log(x);
             if (double.IsInfinity(ln)) return ln;
             if (double.IsNaN(ln)) return ln;
-            return ln / LOG10;
+            return ln/LOG10;
         }
 
         /// <summary>
-        /// Computes an index which wraps around a given maximum value.
-        /// For values &ge 0, this is equals to <c>val % max</c>.
-        /// For values &lt; 0, this is equal to <c>max - (-val) % max</c> 
+        ///     Computes an index which wraps around a given maximum value.
+        ///     For values &ge 0, this is equals to <c>val % max</c>.
+        ///     For values &lt; 0, this is equal to <c>max - (-val) % max</c>
         /// </summary>
         /// <param name="index">The index to wrap</param>
         /// <param name="max">The maximum value (or modulus)</param>
@@ -68,30 +69,28 @@
         public static int Wrap(int index, int max)
         {
             if (index < 0)
-            {
-                return max - ((-index) % max);
-            }
-            return index % max;
+                return max - -index%max;
+            return index%max;
         }
 
         /// <summary>
-        /// Computes the average of two numbers.
+        ///     Computes the average of two numbers.
         /// </summary>
         /// <param name="x1">A number</param>
         /// <param name="x2">A number</param>
         /// <returns>The average of the inputs</returns>
         public static double Average(double x1, double x2)
         {
-            return (x1 + x2) / 2.0;
+            return (x1 + x2)/2.0;
         }
 
         /// <summary>
-        /// Computes the maximum fo three values
+        ///     Computes the maximum fo three values
         /// </summary>
         /// <param name="v1">A number</param>
         /// <param name="v2">A number</param>
         /// <param name="v3">A number</param>
-        /// <returns>The maximum value of <paramref name="v1"/>, <paramref name="v2"/> and <paramref name="v3"/></returns>
+        /// <returns>The maximum value of <paramref name="v1" />, <paramref name="v2" /> and <paramref name="v3" /></returns>
         public static double Max(double v1, double v2, double v3)
         {
             var max = v1;
@@ -101,13 +100,16 @@
         }
 
         /// <summary>
-        /// Computes the maximum of four values
+        ///     Computes the maximum of four values
         /// </summary>
         /// <param name="v1">A number</param>
         /// <param name="v2">A number</param>
         /// <param name="v3">A number</param>
         /// <param name="v4">A number</param>
-        /// <returns>The maximum value of <paramref name="v1"/>, <paramref name="v2"/>, <paramref name="v3"/> and <paramref name="v4"/></returns>
+        /// <returns>
+        ///     The maximum value of <paramref name="v1" />, <paramref name="v2" />, <paramref name="v3" /> and
+        ///     <paramref name="v4" />
+        /// </returns>
         public static double Max(double v1, double v2, double v3, double v4)
         {
             var max = v1;
@@ -118,12 +120,12 @@
         }
 
         /// <summary>
-        /// Computes the minimum of four values
+        ///     Computes the minimum of four values
         /// </summary>
         /// <param name="v1">A number</param>
         /// <param name="v2">A number</param>
         /// <param name="v3">A number</param>
-        /// <returns>The minimum value of <paramref name="v1"/>, <paramref name="v2"/> and <paramref name="v3"/></returns>
+        /// <returns>The minimum value of <paramref name="v1" />, <paramref name="v2" /> and <paramref name="v3" /></returns>
         public static double Min(double v1, double v2, double v3)
         {
             var min = v1;
@@ -133,13 +135,16 @@
         }
 
         /// <summary>
-        /// Computes the minimum of four values
+        ///     Computes the minimum of four values
         /// </summary>
         /// <param name="v1">A number</param>
         /// <param name="v2">A number</param>
         /// <param name="v3">A number</param>
         /// <param name="v4">A number</param>
-        /// <returns>The minimum value of <paramref name="v1"/>, <paramref name="v2"/>, <paramref name="v3"/> and <paramref name="v4"/></returns>
+        /// <returns>
+        ///     The minimum value of <paramref name="v1" />, <paramref name="v2" />, <paramref name="v3" /> and
+        ///     <paramref name="v4" />
+        /// </returns>
         public static double Min(double v1, double v2, double v3, double v4)
         {
             var min = v1;
@@ -148,6 +153,5 @@
             if (v4 < min) min = v4;
             return min;
         }
-
     }
 }

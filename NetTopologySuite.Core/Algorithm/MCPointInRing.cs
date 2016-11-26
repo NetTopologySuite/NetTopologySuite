@@ -1,61 +1,30 @@
-using System;
-//using System.Collections;
-using System.Collections.Generic;
-//using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-//using NetTopologySuite.Index.Bintree;
 using NetTopologySuite.Index.Bintree;
 using NetTopologySuite.Index.Chain;
+//using System.Collections;
+//using GeoAPI.DataStructures;
+//using NetTopologySuite.Index.Bintree;
+
 //using Interval = GeoAPI.DataStructures.Interval;
 
 namespace NetTopologySuite.Algorithm
 {
     /// <summary>
-    /// Implements <c>IPointInRing</c>
-    /// using a <c>MonotoneChain</c>s and a <c>BinTree</c> index to increase performance.
+    ///     Implements <c>IPointInRing</c>
+    ///     using a <c>MonotoneChain</c>s and a <c>BinTree</c> index to increase performance.
     /// </summary>
-    /// <see cref="IndexedPointInAreaLocator"/>
-    public class MCPointInRing : IPointInRing 
+    /// <see cref="IndexedPointInAreaLocator" />
+    public class MCPointInRing : IPointInRing
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        private class MCSelecter : MonotoneChainSelectAction
-        {
-            private readonly MCPointInRing _container;
-            private readonly Coordinate _p;
-
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="container"></param>
-            /// <param name="p"></param>
-            public MCSelecter(MCPointInRing container, Coordinate p)
-            {
-                _container = container;
-                _p = p;
-            }
-
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="ls"></param>
-            public override void Select(LineSegment ls)
-            {
-                _container.TestLineSegment(_p, ls);
-            }
-        }
+        private readonly Interval _interval = new Interval();
 
         private readonly ILinearRing _ring;
+        private int _crossings; // number of segment/ray crossings
         private Bintree<MonotoneChain> _tree;
-        private int _crossings;  // number of segment/ray crossings
-
-        private readonly Interval _interval = new Interval();
         //private Interval _interval = Interval.Create();
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="ring"></param>
         public MCPointInRing(ILinearRing ring)
@@ -65,16 +34,42 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// 
+        /// </summary>
+        /// <param name="pt"></param>
+        /// <returns></returns>
+        public bool IsInside(Coordinate pt)
+        {
+            _crossings = 0;
+
+            // test all segments intersected by ray from pt in positive x direction
+            var rayEnv = new Envelope(double.NegativeInfinity, double.PositiveInfinity, pt.Y, pt.Y);
+            _interval.Min = pt.Y;
+            _interval.Max = pt.Y;
+            //_interval = Interval.Create(pt.Y);
+            var segs = _tree.Query(_interval);
+
+            var mcSelecter = new MCSelecter(this, pt);
+            foreach (var mc in segs)
+                TestMonotoneChain(rayEnv, mcSelecter, mc);
+
+            /*
+             *  p is inside if number of crossings is odd.
+             */
+            if (_crossings%2 == 1)
+                return true;
+            return false;
+        }
+
+        /// <summary>
         /// </summary>
         private void BuildIndex()
         {
             _tree = new Bintree<MonotoneChain>();
 
-            Coordinate[] pts = CoordinateArrays.RemoveRepeatedPoints(_ring.Coordinates);
-            IList<MonotoneChain> mcList = MonotoneChainBuilder.GetChains(pts);
+            var pts = CoordinateArrays.RemoveRepeatedPoints(_ring.Coordinates);
+            var mcList = MonotoneChainBuilder.GetChains(pts);
 
-            foreach (MonotoneChain mc in mcList)
+            foreach (var mc in mcList)
             {
                 var mcEnv = mc.Envelope;
                 _interval.Min = mcEnv.MinY;
@@ -85,38 +80,9 @@ namespace NetTopologySuite.Algorithm
                  */
                 _tree.Insert(_interval, mc);
             }
-        }        
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pt"></param>
-        /// <returns></returns>
-        public bool IsInside(Coordinate pt)
-        {
-            _crossings = 0;
-
-            // test all segments intersected by ray from pt in positive x direction
-            var rayEnv = new Envelope(Double.NegativeInfinity, Double.PositiveInfinity, pt.Y, pt.Y);
-            _interval.Min = pt.Y;
-            _interval.Max = pt.Y;
-            //_interval = Interval.Create(pt.Y);
-            IList<MonotoneChain> segs = _tree.Query(_interval);
-
-            MCSelecter mcSelecter = new MCSelecter(this, pt);
-            foreach (MonotoneChain mc in segs)
-                TestMonotoneChain(rayEnv, mcSelecter, mc);
-
-           /*
-            *  p is inside if number of crossings is odd.
-            */
-            if ((_crossings % 2) == 1) 
-                return true;            
-            return false;
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="rayEnv"></param>
         /// <param name="mcSelecter"></param>
@@ -127,14 +93,13 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="p"></param>
         /// <param name="seg"></param>
-        private void TestLineSegment(Coordinate p, LineSegment seg) 
+        private void TestLineSegment(Coordinate p, LineSegment seg)
         {
-            double xInt;  // x intersection of segment with ray
-            double x1;    // translated coordinates
+            double xInt; // x intersection of segment with ray
+            double x1; // translated coordinates
             double y1;
             double x2;
             double y2;
@@ -142,25 +107,51 @@ namespace NetTopologySuite.Algorithm
             /*
             *  Test if segment crosses ray from test point in positive x direction.
             */
-            Coordinate p1 = seg.P0;
-            Coordinate p2 = seg.P1;
+            var p1 = seg.P0;
+            var p2 = seg.P1;
             x1 = p1.X - p.X;
             y1 = p1.Y - p.Y;
             x2 = p2.X - p.X;
             y2 = p2.Y - p.Y;
 
-            if (((y1 > 0) && (y2 <= 0)) || ((y2 > 0) && (y1 <= 0))) 
+            if (((y1 > 0) && (y2 <= 0)) || ((y2 > 0) && (y1 <= 0)))
             {
                 /*
                 *  segment straddles x axis, so compute intersection.
                 */
-                xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2) / (y2 - y1);
-                
+                xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2)/(y2 - y1);
+
                 /*
                 *  crosses ray if strictly positive intersection.
                 */
-                if(0.0 < xInt) 
-                    _crossings++;            
+                if (0.0 < xInt)
+                    _crossings++;
+            }
+        }
+
+        /// <summary>
+        /// </summary>
+        private class MCSelecter : MonotoneChainSelectAction
+        {
+            private readonly MCPointInRing _container;
+            private readonly Coordinate _p;
+
+            /// <summary>
+            /// </summary>
+            /// <param name="container"></param>
+            /// <param name="p"></param>
+            public MCSelecter(MCPointInRing container, Coordinate p)
+            {
+                _container = container;
+                _p = p;
+            }
+
+            /// <summary>
+            /// </summary>
+            /// <param name="ls"></param>
+            public override void Select(LineSegment ls)
+            {
+                _container.TestLineSegment(_p, ls);
             }
         }
     }

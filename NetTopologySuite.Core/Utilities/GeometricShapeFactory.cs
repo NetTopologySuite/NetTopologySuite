@@ -6,25 +6,27 @@ using NetTopologySuite.Geometries.Utilities;
 namespace NetTopologySuite.Utilities
 {
     /// <summary>
-    /// Computes various kinds of common geometric shapes.
-    /// Allows various ways of specifying the location and extent of the shapes,
-    /// as well as number of line segments used to form them.
+    ///     Computes various kinds of common geometric shapes.
+    ///     Allows various ways of specifying the location and extent of the shapes,
+    ///     as well as number of line segments used to form them.
     /// </summary>
     public class GeometricShapeFactory
     {
-        protected IGeometryFactory GeomFact;
-        protected IPrecisionModel PrecModel = null;
         private readonly Dimensions _dim = new Dimensions();
+        protected IGeometryFactory GeomFact;
+        protected IPrecisionModel PrecModel;
 
         // default is no rotation.
 
         /// <summary>
-        /// Create a shape factory which will create shapes using the default GeometryFactory.
+        ///     Create a shape factory which will create shapes using the default GeometryFactory.
         /// </summary>
-        public GeometricShapeFactory() : this(new GeometryFactory()) { }
+        public GeometricShapeFactory() : this(new GeometryFactory())
+        {
+        }
 
         /// <summary>
-        /// Create a shape factory which will create shapes using the given GeometryFactory.
+        ///     Create a shape factory which will create shapes using the given GeometryFactory.
         /// </summary>
         /// <param name="geomFact">The factory to use.</param>
         public GeometricShapeFactory(IGeometryFactory geomFact)
@@ -34,18 +36,18 @@ namespace NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Gets/Sets the location of the shape by specifying the base coordinate
-        /// (which in most cases is the
-        /// lower left point of the envelope containing the shape).
+        ///     Gets/Sets the location of the shape by specifying the base coordinate
+        ///     (which in most cases is the
+        ///     lower left point of the envelope containing the shape).
         /// </summary>
-        public Coordinate Base  
+        public Coordinate Base
         {
             set { _dim.Base = value; }
         }
 
         /// <summary>
-        /// Gets/Sets the location of the shape by specifying the centre of
-        /// the shape's bounding box.
+        ///     Gets/Sets the location of the shape by specifying the centre of
+        ///     the shape's bounding box.
         /// </summary>
         public Coordinate Centre
         {
@@ -53,7 +55,7 @@ namespace NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Gets or sets the envelope of the shape
+        ///     Gets or sets the envelope of the shape
         /// </summary>
         public Envelope Envelope
         {
@@ -62,20 +64,20 @@ namespace NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Gets/Sets the total number of points in the created Geometry.
+        ///     Gets/Sets the total number of points in the created Geometry.
         /// </summary>
         public int NumPoints { get; set; } = 100;
 
         /// <summary>
-        /// Gets/Sets the size of the extent of the shape in both x and y directions.        
-        /// </summary>                
+        ///     Gets/Sets the size of the extent of the shape in both x and y directions.
+        /// </summary>
         public double Size
         {
             set { _dim.Size = value; }
         }
 
         /// <summary>
-        /// Gets/Sets the width of the shape.
+        ///     Gets/Sets the width of the shape.
         /// </summary>
         public double Width
         {
@@ -84,7 +86,7 @@ namespace NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Gets/Sets the height of the shape.
+        ///     Gets/Sets the height of the shape.
         /// </summary>
         public double Height
         {
@@ -93,9 +95,9 @@ namespace NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Gets/Sets the rotation angle, in radians, to use for the shape.
-        /// The rotation is applied relative to the centre of the shape.
-        /// </summary>        
+        ///     Gets/Sets the rotation angle, in radians, to use for the shape.
+        ///     The rotation is applied relative to the centre of the shape.
+        /// </summary>
         public double Rotation { get; set; }
 
         protected IGeometry Rotate(IGeometry geom)
@@ -109,6 +111,7 @@ namespace NetTopologySuite.Utilities
             }
             return geom;
         }
+
         protected Coordinate CreateCoord(double x, double y)
         {
             var p = new Coordinate(x, y);
@@ -122,43 +125,43 @@ namespace NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Creates a rectangular <c>Polygon</c>.
+        ///     Creates a rectangular <c>Polygon</c>.
         /// </summary>
         /// <returns>A rectangular polygon.</returns>
         public IPolygon CreateRectangle()
         {
             int i;
             var ipt = 0;
-            var nSide = NumPoints / 4;
+            var nSide = NumPoints/4;
             if (nSide < 1) nSide = 1;
-            var xSegLen = _dim.Envelope.Width / nSide;
-            var ySegLen = _dim.Envelope.Height / nSide;
+            var xSegLen = _dim.Envelope.Width/nSide;
+            var ySegLen = _dim.Envelope.Height/nSide;
 
-            var pts = new Coordinate[4 * nSide + 1];
-            var env = _dim.Envelope;            
+            var pts = new Coordinate[4*nSide + 1];
+            var env = _dim.Envelope;
 
-            for (i = 0; i < nSide; i++) 
+            for (i = 0; i < nSide; i++)
             {
-                var x = env.MinX + i * xSegLen;
+                var x = env.MinX + i*xSegLen;
                 var y = env.MinY;
                 pts[ipt++] = CreateCoord(x, y);
             }
-            for (i = 0; i < nSide; i++) 
+            for (i = 0; i < nSide; i++)
             {
                 var x = env.MaxX;
-                var y = env.MinY + i * ySegLen;
+                var y = env.MinY + i*ySegLen;
                 pts[ipt++] = CreateCoord(x, y);
             }
-            for (i = 0; i < nSide; i++) 
+            for (i = 0; i < nSide; i++)
             {
-                var x = env.MaxX - i * xSegLen;
+                var x = env.MaxX - i*xSegLen;
                 var y = env.MaxY;
                 pts[ipt++] = CreateCoord(x, y);
             }
-            for (i = 0; i < nSide; i++) 
+            for (i = 0; i < nSide; i++)
             {
                 var x = env.MinX;
-                var y = env.MaxY - i * ySegLen;
+                var y = env.MaxY - i*ySegLen;
                 pts[ipt++] = CreateCoord(x, y);
             }
             pts[ipt] = new Coordinate(pts[0]);
@@ -169,25 +172,25 @@ namespace NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Creates a circular <c>Polygon</c>.
+        ///     Creates a circular <c>Polygon</c>.
         /// </summary>
         /// <returns>A circular polygon.</returns>
         public IPolygon CreateCircle()
         {
             var env = _dim.Envelope;
-            var xRadius = env.Width / 2.0;
-            var yRadius = env.Height / 2.0;
+            var xRadius = env.Width/2.0;
+            var yRadius = env.Height/2.0;
 
             var centreX = env.MinX + xRadius;
             var centreY = env.MinY + yRadius;
 
             var pts = new Coordinate[NumPoints + 1];
             var iPt = 0;
-            for (var i = 0; i < NumPoints; i++) 
+            for (var i = 0; i < NumPoints; i++)
             {
-                var ang = i * (2 * Math.PI / NumPoints);
-                var x = xRadius * Math.Cos(ang) + centreX;
-                var y = yRadius * Math.Sin(ang) + centreY;
+                var ang = i*(2*Math.PI/NumPoints);
+                var x = xRadius*Math.Cos(ang) + centreX;
+                var y = yRadius*Math.Sin(ang) + centreY;
                 var pt = CreateCoord(x, y);
                 pts[iPt++] = pt;
             }
@@ -199,27 +202,27 @@ namespace NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Creates an elliptical <c>Polygon</c>.
-        /// If the supplied envelope is square the 
-        /// result will be a circle. 
+        ///     Creates an elliptical <c>Polygon</c>.
+        ///     If the supplied envelope is square the
+        ///     result will be a circle.
         /// </summary>
         /// <returns>An an ellipse or circle.</returns>
         public IPolygon CeateEllipse()
         {
             var env = _dim.Envelope;
-            var xRadius = env.Width / 2.0;
-            var yRadius = env.Height / 2.0;
+            var xRadius = env.Width/2.0;
+            var yRadius = env.Height/2.0;
 
             var centreX = env.MinX + xRadius;
             var centreY = env.MinY + yRadius;
 
             var pts = new Coordinate[NumPoints + 1];
             var iPt = 0;
-            for (int i = 0; i < NumPoints; i++)
+            for (var i = 0; i < NumPoints; i++)
             {
-                var ang = i * (2 * Math.PI / NumPoints);
-                var x = xRadius * Math.Cos(ang) + centreX;
-                var y = yRadius * Math.Sin(ang) + centreY;
+                var ang = i*(2*Math.PI/NumPoints);
+                var x = xRadius*Math.Cos(ang) + centreX;
+                var y = yRadius*Math.Sin(ang) + centreY;
                 pts[iPt++] = CreateCoord(x, y);
             }
             pts[iPt] = new Coordinate(pts[0]);
@@ -230,7 +233,7 @@ namespace NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Creates a squircular <see cref="Polygon"/>.
+        ///     Creates a squircular <see cref="Polygon" />.
         /// </summary>
         /// <returns>a squircle</returns>
         public IPolygon CreateSquircle()
@@ -239,26 +242,26 @@ namespace NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Creates a supercircular <see cref="Polygon"/>
-        /// of a given positive power.
+        ///     Creates a supercircular <see cref="Polygon" />
+        ///     of a given positive power.
         /// </summary>
         /// <returns>a supercircle</returns>
         public IPolygon CreateSupercircle(double power)
         {
-            var recipPow = 1.0 / power;
+            var recipPow = 1.0/power;
 
-            var radius = _dim.MinSize / 2;
+            var radius = _dim.MinSize/2;
             var centre = _dim.Centre;
 
             var r4 = Math.Pow(radius, power);
             var y0 = radius;
 
-            var xyInt = Math.Pow(r4 / 2, recipPow);
+            var xyInt = Math.Pow(r4/2, recipPow);
 
-            var nSegsInOct = NumPoints / 8;
-            var totPts = nSegsInOct * 8 + 1;
+            var nSegsInOct = NumPoints/8;
+            var totPts = nSegsInOct*8 + 1;
             var pts = new Coordinate[totPts];
-            var xInc = xyInt / nSegsInOct;
+            var xInc = xyInt/nSegsInOct;
 
             for (var i = 0; i <= nSegsInOct; i++)
             {
@@ -266,21 +269,21 @@ namespace NetTopologySuite.Utilities
                 var y = y0;
                 if (i != 0)
                 {
-                    x = xInc * i;
+                    x = xInc*i;
                     var x4 = Math.Pow(x, power);
                     y = Math.Pow(r4 - x4, recipPow);
                 }
                 pts[i] = CreateCoordTrans(x, y, centre);
-                pts[2 * nSegsInOct - i] = CreateCoordTrans(y, x, centre);
+                pts[2*nSegsInOct - i] = CreateCoordTrans(y, x, centre);
 
-                pts[2 * nSegsInOct + i] = CreateCoordTrans(y, -x, centre);
-                pts[4 * nSegsInOct - i] = CreateCoordTrans(x, -y, centre);
+                pts[2*nSegsInOct + i] = CreateCoordTrans(y, -x, centre);
+                pts[4*nSegsInOct - i] = CreateCoordTrans(x, -y, centre);
 
-                pts[4 * nSegsInOct + i] = CreateCoordTrans(-x, -y, centre);
-                pts[6 * nSegsInOct - i] = CreateCoordTrans(-y, -x, centre);
+                pts[4*nSegsInOct + i] = CreateCoordTrans(-x, -y, centre);
+                pts[6*nSegsInOct - i] = CreateCoordTrans(-y, -x, centre);
 
-                pts[6 * nSegsInOct + i] = CreateCoordTrans(-y, x, centre);
-                pts[8 * nSegsInOct - i] = CreateCoordTrans(-x, y, centre);
+                pts[6*nSegsInOct + i] = CreateCoordTrans(-y, x, centre);
+                pts[8*nSegsInOct - i] = CreateCoordTrans(-x, y, centre);
             }
             pts[pts.Length - 1] = new Coordinate(pts[0]);
 
@@ -290,9 +293,10 @@ namespace NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Creates a elliptical arc, as a LineString.
-        /// </summary><remarks>
-        /// The arc is always created in a counter-clockwise direction.
+        ///     Creates a elliptical arc, as a LineString.
+        /// </summary>
+        /// <remarks>
+        ///     The arc is always created in a counter-clockwise direction.
         /// </remarks>
         /// <param name="startAng">Start angle in radians</param>
         /// <param name="angExtent">Size of angle in radians</param>
@@ -300,24 +304,24 @@ namespace NetTopologySuite.Utilities
         public ILineString CreateArc(double startAng, double angExtent)
         {
             var env = _dim.Envelope;
-            var xRadius = env.Width / 2.0;
-            var yRadius = env.Height / 2.0;
+            var xRadius = env.Width/2.0;
+            var yRadius = env.Height/2.0;
 
             var centreX = env.MinX + xRadius;
             var centreY = env.MinY + yRadius;
 
             var angSize = angExtent;
-            if (angSize <= 0.0 || angSize > 2 * Math.PI)
-                angSize = 2 * Math.PI;
-            var angInc = angSize / (NumPoints - 1);
+            if ((angSize <= 0.0) || (angSize > 2*Math.PI))
+                angSize = 2*Math.PI;
+            var angInc = angSize/(NumPoints - 1);
 
             var pts = new Coordinate[NumPoints];
             var iPt = 0;
-            for (var i = 0; i < NumPoints; i++) 
+            for (var i = 0; i < NumPoints; i++)
             {
-                var ang = startAng + i * angInc;
-                var x = xRadius * Math.Cos(ang) + centreX;
-                var y = yRadius * Math.Sin(ang) + centreY;
+                var ang = startAng + i*angInc;
+                var x = xRadius*Math.Cos(ang) + centreX;
+                var y = yRadius*Math.Sin(ang) + centreY;
                 var pt = CreateCoord(x, y);
                 pts[iPt++] = pt;
             }
@@ -325,12 +329,12 @@ namespace NetTopologySuite.Utilities
             return (ILineString) Rotate(line);
         }
 
-        ///<summary>
-        /// Creates an elliptical arc polygon.
-        ///</summary>
+        /// <summary>
+        ///     Creates an elliptical arc polygon.
+        /// </summary>
         /// <remarks>
-        /// The polygon is formed from the specified arc of an ellipse
-        /// and the two radii connecting the endpoints to the centre of the ellipse.
+        ///     The polygon is formed from the specified arc of an ellipse
+        ///     and the two radii connecting the endpoints to the centre of the ellipse.
         /// </remarks>
         /// <param name="startAng">Start angle in radians</param>
         /// <param name="angExtent">Size of angle in radians</param>
@@ -338,16 +342,16 @@ namespace NetTopologySuite.Utilities
         public IPolygon CreateArcPolygon(double startAng, double angExtent)
         {
             var env = _dim.Envelope;
-            var xRadius = env.Width / 2.0;
-            var yRadius = env.Height / 2.0;
+            var xRadius = env.Width/2.0;
+            var yRadius = env.Height/2.0;
 
             var centreX = env.MinX + xRadius;
             var centreY = env.MinY + yRadius;
 
             var angSize = angExtent;
-            if (angSize <= 0.0 || angSize > 2 * Math.PI)
-                angSize = 2 * Math.PI;
-            var angInc = angSize / (NumPoints - 1);
+            if ((angSize <= 0.0) || (angSize > 2*Math.PI))
+                angSize = 2*Math.PI;
+            var angInc = angSize/(NumPoints - 1);
             // var check = angInc * nPts;
             // var checkEndAng = startAng + check;
 
@@ -357,10 +361,10 @@ namespace NetTopologySuite.Utilities
             pts[iPt++] = CreateCoord(centreX, centreY);
             for (var i = 0; i < NumPoints; i++)
             {
-                var ang = startAng + angInc * i;
+                var ang = startAng + angInc*i;
 
-                var x = xRadius * Math.Cos(ang) + centreX;
-                var y = yRadius * Math.Sin(ang) + centreY;
+                var x = xRadius*Math.Cos(ang) + centreX;
+                var y = yRadius*Math.Sin(ang) + centreY;
                 pts[iPt++] = CreateCoord(x, y);
             }
             pts[iPt] = CreateCoord(centreX, centreY);
@@ -371,20 +375,17 @@ namespace NetTopologySuite.Utilities
 
         protected class Dimensions
         {
-            public Coordinate Base { get; set; }
-
             private Coordinate _centre;
+            public Coordinate Base { get; set; }
 
             public Coordinate Centre
             {
                 get
                 {
                     if (_centre == null)
-                    {
-                        _centre = (Base != null)
-                                      ? new Coordinate(Base.X + Width * 0.5d, Base.Y + Height * 0.5d)
-                                      : new Coordinate(0, 0);
-                    }
+                        _centre = Base != null
+                            ? new Coordinate(Base.X + Width*0.5d, Base.Y + Height*0.5d)
+                            : new Coordinate(0, 0);
                     return _centre;
                 }
                 set { _centre = value; }
@@ -410,15 +411,15 @@ namespace NetTopologySuite.Utilities
                 get
                 {
                     if (Base != null)
-                        return new Envelope(Base.X, Base.X + Width, Base.Y, Base.Y + Height);                    
+                        return new Envelope(Base.X, Base.X + Width, Base.Y, Base.Y + Height);
                     if (Centre != null)
-                        return new Envelope(Centre.X - Width / 2, Centre.X + Width / 2,
-                                            Centre.Y - Height / 2, Centre.Y + Height / 2);                    
+                        return new Envelope(Centre.X - Width/2, Centre.X + Width/2,
+                            Centre.Y - Height/2, Centre.Y + Height/2);
                     return new Envelope(0, Width, 0, Height);
                 }
                 set
                 {
-    	            Width = value.Width;
+                    Width = value.Width;
                     Height = value.Height;
                     Base = new Coordinate(value.MinX, value.MinY);
                     _centre = new Coordinate(value.Centre);

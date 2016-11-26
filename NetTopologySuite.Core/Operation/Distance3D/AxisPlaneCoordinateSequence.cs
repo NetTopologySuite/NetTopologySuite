@@ -4,59 +4,19 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Operation.Distance3D
 {
     /// <summary>
-    /// A <see cref="ICoordinateSequence"/> wrapper which 
-    /// projects 3D coordinates into one of the
-    /// three Cartesian axis planes,
-    /// using the standard orthonormal projection
-    /// (i.e. simply selecting the appropriate ordinates into the XY ordinates).
-    /// The projected data is represented as 2D coordinates.
+    ///     A <see cref="ICoordinateSequence" /> wrapper which
+    ///     projects 3D coordinates into one of the
+    ///     three Cartesian axis planes,
+    ///     using the standard orthonormal projection
+    ///     (i.e. simply selecting the appropriate ordinates into the XY ordinates).
+    ///     The projected data is represented as 2D coordinates.
     /// </summary>
     /// <author>Martin Davis</author>
     public class AxisPlaneCoordinateSequence : ICoordinateSequence
     {
-
-        // ReSharper disable InconsistentNaming
-        /// <summary>
-        /// Creates a wrapper projecting to the XY plane.
-        /// </summary>
-        /// <param name="seq">The sequence to be projected</param>
-        /// <returns>A sequence which projects coordinates</returns>
-        public static ICoordinateSequence ProjectToXY(ICoordinateSequence seq)
-        {
-            /**
-		 * This is just a no-op, but return a wrapper
-		 * to allow better testing
-		 */
-            return new AxisPlaneCoordinateSequence(seq, XYIndex);
-        }
-
-        /// <summary>
-        /// Creates a wrapper projecting to the XZ plane.
-        /// </summary>
-        /// <param name="seq">The sequence to be projected</param>
-        /// <returns>A sequence which projects coordinates</returns>
-        public static ICoordinateSequence ProjectToXZ(ICoordinateSequence seq)
-        {
-            return new AxisPlaneCoordinateSequence(seq, XZIndex);
-        }
-
-        /// <summary>
-        /// Creates a wrapper projecting to the YZ plane.
-        /// </summary>
-        /// <param name="seq">The sequence to be projected</param>
-        /// <returns>A sequence which projects coordinates</returns>
-        public static ICoordinateSequence ProjectToYZ(ICoordinateSequence seq)
-        {
-            return new AxisPlaneCoordinateSequence(seq, YZIndex);
-        }
-
-        private static readonly Ordinate[] XYIndex = new[] {Ordinate.X, Ordinate.Y};
-        private static readonly Ordinate[] XZIndex = new[] {Ordinate.X, Ordinate.Z};
-        private static readonly Ordinate[] YZIndex = new[] {Ordinate.Y, Ordinate.Z};
-        // ReSharper restore InconsistentNaming
+        private readonly Ordinate[] _indexMap;
 
         private readonly ICoordinateSequence _seq;
-        private readonly Ordinate[] _indexMap;
 
         private AxisPlaneCoordinateSequence(ICoordinateSequence seq, Ordinate[] indexMap)
         {
@@ -95,11 +55,6 @@ namespace NetTopologySuite.Operation.Distance3D
             return GetOrdinate(index, Ordinate.Y);
         }
 
-        public double GetZ(int index)
-        {
-            return GetOrdinate(index, Ordinate.Z);
-        }
-
         public double GetOrdinate(int index, Ordinate ordinateIndex)
         {
             // Z ord is always 0
@@ -124,7 +79,7 @@ namespace NetTopologySuite.Operation.Distance3D
             throw new NotSupportedException();
         }
 
-        public Object Clone()
+        public object Clone()
         {
             throw new NotSupportedException();
         }
@@ -134,5 +89,49 @@ namespace NetTopologySuite.Operation.Distance3D
             throw new NotSupportedException();
         }
 
+        public double GetZ(int index)
+        {
+            return GetOrdinate(index, Ordinate.Z);
+        }
+
+        // ReSharper disable InconsistentNaming
+        /// <summary>
+        ///     Creates a wrapper projecting to the XY plane.
+        /// </summary>
+        /// <param name="seq">The sequence to be projected</param>
+        /// <returns>A sequence which projects coordinates</returns>
+        public static ICoordinateSequence ProjectToXY(ICoordinateSequence seq)
+        {
+            /**
+		 * This is just a no-op, but return a wrapper
+		 * to allow better testing
+		 */
+            return new AxisPlaneCoordinateSequence(seq, XYIndex);
+        }
+
+        /// <summary>
+        ///     Creates a wrapper projecting to the XZ plane.
+        /// </summary>
+        /// <param name="seq">The sequence to be projected</param>
+        /// <returns>A sequence which projects coordinates</returns>
+        public static ICoordinateSequence ProjectToXZ(ICoordinateSequence seq)
+        {
+            return new AxisPlaneCoordinateSequence(seq, XZIndex);
+        }
+
+        /// <summary>
+        ///     Creates a wrapper projecting to the YZ plane.
+        /// </summary>
+        /// <param name="seq">The sequence to be projected</param>
+        /// <returns>A sequence which projects coordinates</returns>
+        public static ICoordinateSequence ProjectToYZ(ICoordinateSequence seq)
+        {
+            return new AxisPlaneCoordinateSequence(seq, YZIndex);
+        }
+
+        private static readonly Ordinate[] XYIndex = {Ordinate.X, Ordinate.Y};
+        private static readonly Ordinate[] XZIndex = {Ordinate.X, Ordinate.Z};
+        private static readonly Ordinate[] YZIndex = {Ordinate.Y, Ordinate.Z};
+        // ReSharper restore InconsistentNaming
     }
 }

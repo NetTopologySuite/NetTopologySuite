@@ -2,14 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using NetTopologySuite.Utilities;
 
 #if !NET35 && !PCL
 
 namespace GeoAPI
 {
     public delegate TResult Func<T1, TResult>(T1 t1);
+
     public delegate TResult Func<T1, T2, TResult>(T1 t1, T2 t2);
+
     public delegate TResult Func<T1, T2, T3, TResult>(T1 t1, T2 t2, T3 t3);
+
     public delegate TResult Func<T1, T2, T3, T4, TResult>(T1 t1, T2 t2, T3 t3, T4 t4);
 
     namespace Linq
@@ -26,17 +30,18 @@ namespace GeoAPI
             {
                 var res = new List<TOut>();
                 foreach (var @in in enumerable)
-                    res.Add((TOut)@in);
+                    res.Add((TOut) @in);
                 return res.ToArray();
             }
 
             public static IEnumerable<T> Cast<T>(IEnumerable inputs)
             {
-                return NetTopologySuite.Utilities.Caster.Cast<T>(inputs);
+                return Caster.Cast<T>(inputs);
             }
         }
     }
 }
+
 #endif
 
 namespace NetTopologySuite.Utilities
@@ -57,6 +62,7 @@ namespace NetTopologySuite.Utilities
         {
             return self;
         }
+
 #if !PCL
 
         [Obsolete("Not used anywhere within NTS")]

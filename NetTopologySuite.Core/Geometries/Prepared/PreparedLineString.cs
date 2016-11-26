@@ -3,10 +3,11 @@ using NetTopologySuite.Noding;
 
 namespace NetTopologySuite.Geometries.Prepared
 {
-    ///<summary>
-    /// A prepared version for <see cref="ILineal"/> geometries.
-    /// <para>Instances of this class are thread-safe</para>.
-    ///</summary>
+    /// <summary>
+    ///     A prepared version for <see cref="ILineal" /> geometries.
+    ///     <para>Instances of this class are thread-safe</para>
+    ///     .
+    /// </summary>
     /// <author>mbdavis</author>
     public class PreparedLineString : BasicPreparedGeometry
     {
@@ -14,7 +15,7 @@ namespace NetTopologySuite.Geometries.Prepared
         private volatile FastSegmentSetIntersectionFinder _segIntFinder;
 
         public PreparedLineString(ILineal line)
-            : base((IGeometry)line)
+            : base((IGeometry) line)
         {
         }
 
@@ -29,13 +30,12 @@ namespace NetTopologySuite.Geometries.Prepared
                  * to this approach.
                  */
                 if (_segIntFinder == null)
-                {
                     lock (_lock)
                     {
                         if (_segIntFinder == null)
-                            _segIntFinder = new FastSegmentSetIntersectionFinder(SegmentStringUtil.ExtractSegmentStrings(Geometry));
+                            _segIntFinder =
+                                new FastSegmentSetIntersectionFinder(SegmentStringUtil.ExtractSegmentStrings(Geometry));
                     }
-                }
 
                 return _segIntFinder;
             }

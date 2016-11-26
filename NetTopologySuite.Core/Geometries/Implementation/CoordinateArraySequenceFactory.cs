@@ -1,34 +1,36 @@
+using GeoAPI.Geometries;
+
 namespace NetTopologySuite.Geometries.Implementation
 {
-    using GeoAPI.Geometries;
-
     /// <summary>
-    /// Creates CoordinateSequences represented as an array of Coordinates.
+    ///     Creates CoordinateSequences represented as an array of Coordinates.
     /// </summary>
     public sealed class CoordinateArraySequenceFactory : ICoordinateSequenceFactory
     {
-        private CoordinateArraySequenceFactory() { }
+        private CoordinateArraySequenceFactory()
+        {
+        }
 
         /// <summary>
-        /// Returns the singleton instance of CoordinateArraySequenceFactory.
+        ///     Returns the singleton instance of CoordinateArraySequenceFactory.
         /// </summary>
         public static CoordinateArraySequenceFactory Instance { get; } = new CoordinateArraySequenceFactory();
 
         /// <summary>
-        ///  Returns a CoordinateArraySequence based on the given array (the array is not copied).
+        ///     Returns a CoordinateArraySequence based on the given array (the array is not copied).
         /// </summary>
         /// <param name="coordinates">the coordinates, which may not be null nor contain null elements.</param>
         /// <returns></returns>
-        public ICoordinateSequence Create(Coordinate[] coordinates) 
+        public ICoordinateSequence Create(Coordinate[] coordinates)
         {
             return new CoordinateArraySequence(coordinates);
         }
 
-        public ICoordinateSequence Create(ICoordinateSequence coordSeq) 
+        public ICoordinateSequence Create(ICoordinateSequence coordSeq)
         {
             return new CoordinateArraySequence(coordSeq);
         }
-        
+
         public ICoordinateSequence Create(int size, int dimension)
         {
             if (dimension > 3)

@@ -12,7 +12,7 @@ namespace System.Collections.Generic
         internal static T[] ToArray<T>(IEnumerable<T> source)
         {
             int count;
-            T[] results = ToArray(source, out count);
+            var results = ToArray(source, out count);
             Array.Resize(ref results, count);
             return results;
         }
@@ -21,15 +21,15 @@ namespace System.Collections.Generic
         /// <param name="source">The enumerable to convert.</param>
         /// <param name="length">The number of items stored in the resulting array, 0-indexed.</param>
         /// <returns>
-        /// The resulting array.  The length of the array may be greater than <paramref name="length"/>,
-        /// which is the actual number of elements in the array.
+        ///     The resulting array.  The length of the array may be greater than <paramref name="length" />,
+        ///     which is the actual number of elements in the array.
         /// </returns>
         internal static T[] ToArray<T>(IEnumerable<T> source, out int length)
         {
-            ICollection<T> ic = source as ICollection<T>;
+            var ic = source as ICollection<T>;
             if (ic != null)
             {
-                int count = ic.Count;
+                var count = ic.Count;
                 if (count != 0)
                 {
                     // Allocate an array of the desired size, then copy the elements into it. Note that this has the same 
@@ -38,7 +38,7 @@ namespace System.Collections.Generic
                     // exception from overrunning the array (if the size went up) or we could end up not filling as many 
                     // items as 'count' suggests (if the size went down).  This is only an issue for concurrent collections 
                     // that implement ICollection<T>, which as of .NET 4.6 is just ConcurrentDictionary<TKey, TValue>.
-                    T[] arr = new T[count];
+                    var arr = new T[count];
                     ic.CopyTo(arr, 0);
                     length = count;
                     return arr;
@@ -51,9 +51,9 @@ namespace System.Collections.Generic
                     if (en.MoveNext())
                     {
                         const int DefaultCapacity = 4;
-                        T[] arr = new T[DefaultCapacity];
+                        var arr = new T[DefaultCapacity];
                         arr[0] = en.Current;
-                        int count = 1;
+                        var count = 1;
 
                         while (en.MoveNext())
                         {
@@ -76,11 +76,9 @@ namespace System.Collections.Generic
                                 // larger than that.  For that case, we then ensure that the newLength is large enough to hold 
                                 // the desired capacity.  This does mean that in the very rare case where we've grown to such a 
                                 // large size, each new element added after MaxArrayLength will end up doing a resize.
-                                int newLength = count << 1;
-                                if ((uint)newLength > MaxArrayLength)
-                                {
+                                var newLength = count << 1;
+                                if ((uint) newLength > MaxArrayLength)
                                     newLength = MaxArrayLength <= count ? count + 1 : MaxArrayLength;
-                                }
 
                                 Array.Resize(ref arr, newLength);
                             }

@@ -6,8 +6,8 @@ using NetTopologySuite.Index.Strtree;
 namespace NetTopologySuite.Noding.Snapround
 {
     /// <summary>
-    /// "Snaps" all <see cref="ISegmentString" />s in a <see cref="ISpatialIndex" /> containing
-    /// <see cref="MonotoneChain" />s to a given <see cref="HotPixel" />.
+    ///     "Snaps" all <see cref="ISegmentString" />s in a <see cref="ISpatialIndex" /> containing
+    ///     <see cref="MonotoneChain" />s to a given <see cref="HotPixel" />.
     /// </summary>
     public class MCIndexPointSnapper
     {
@@ -15,25 +15,54 @@ namespace NetTopologySuite.Noding.Snapround
         private readonly STRtree<MonotoneChain> _index;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MCIndexPointSnapper"/> class.
+        ///     Initializes a new instance of the <see cref="MCIndexPointSnapper" /> class.
         /// </summary>
         /// <param name="index"></param>
         public MCIndexPointSnapper(ISpatialIndex<MonotoneChain> index)
         {
             //_monoChains = monoChains;
-            _index = (STRtree<MonotoneChain>)index;
+            _index = (STRtree<MonotoneChain>) index;
         }
 
         /// <summary>
-        /// 
+        ///     Snaps (nodes) all interacting segments to this hot pixel.
+        ///     The hot pixel may represent a vertex of an edge,
+        ///     in which case this routine uses the optimization
+        ///     of not noding the vertex itself
+        /// </summary>
+        /// <param name="hotPixel">The hot pixel to snap to.</param>
+        /// <param name="parentEdge">The edge containing the vertex, if applicable, or <c>null</c>.</param>
+        /// <param name="hotPixelVertexIndex"></param>
+        /// <returns><c>true</c> if a node was added for this pixel.</returns>
+        public bool Snap(HotPixel hotPixel, ISegmentString parentEdge, int hotPixelVertexIndex)
+        {
+            var pixelEnv = hotPixel.GetSafeEnvelope();
+            var hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, hotPixelVertexIndex);
+            _index.Query(pixelEnv, new QueryVisitor(pixelEnv, hotPixelSnapAction));
+            return hotPixelSnapAction.IsNodeAdded;
+        }
+
+        /// <summary>
+        ///     Snaps (nodes) all interacting segments to this hot pixel.
+        ///     The hot pixel may represent a vertex of an edge,
+        ///     in which case this routine uses the optimization
+        ///     of not noding the vertex itself
+        /// </summary>
+        /// <param name="hotPixel">The hot pixel to snap to.</param>
+        /// <returns><c>true</c> if a node was added for this pixel.</returns>
+        public bool Snap(HotPixel hotPixel)
+        {
+            return Snap(hotPixel, null, -1);
+        }
+
+        /// <summary>
         /// </summary>
         private class QueryVisitor : IItemVisitor<MonotoneChain>
         {
-            readonly Envelope _env;
-            readonly HotPixelSnapAction _action;
+            private readonly HotPixelSnapAction _action;
+            private readonly Envelope _env;
 
             /// <summary>
-            /// 
             /// </summary>
             /// <param name="env"></param>
             /// <param name="action"></param>
@@ -54,48 +83,16 @@ namespace NetTopologySuite.Noding.Snapround
         }
 
         /// <summary>
-        /// Snaps (nodes) all interacting segments to this hot pixel.
-        /// The hot pixel may represent a vertex of an edge,
-        /// in which case this routine uses the optimization
-        /// of not noding the vertex itself
-        /// </summary>
-        /// <param name="hotPixel">The hot pixel to snap to.</param>
-        /// <param name="parentEdge">The edge containing the vertex, if applicable, or <c>null</c>.</param>
-        /// <param name="hotPixelVertexIndex"></param>
-        /// <returns><c>true</c> if a node was added for this pixel.</returns>
-        public bool Snap(HotPixel hotPixel, ISegmentString parentEdge, int hotPixelVertexIndex)
-        {
-            var pixelEnv = hotPixel.GetSafeEnvelope();
-            var hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, hotPixelVertexIndex);
-            _index.Query(pixelEnv, new QueryVisitor(pixelEnv, hotPixelSnapAction));
-            return hotPixelSnapAction.IsNodeAdded;
-        }
-
-        /// <summary>
-        /// Snaps (nodes) all interacting segments to this hot pixel.
-        /// The hot pixel may represent a vertex of an edge,
-        /// in which case this routine uses the optimization
-        /// of not noding the vertex itself
-        /// </summary>
-        /// <param name="hotPixel">The hot pixel to snap to.</param>
-        /// <returns><c>true</c> if a node was added for this pixel.</returns>
-        public bool Snap(HotPixel hotPixel)
-        {
-            return Snap(hotPixel, null, -1);
-        }
-
-        /// <summary>
-        /// 
         /// </summary>
         public class HotPixelSnapAction : MonotoneChainSelectAction
         {
             private readonly HotPixel _hotPixel;
-            private readonly ISegmentString _parentEdge;
             // is -1 if hotPixel is not a vertex
             private readonly int _hotPixelVertexIndex;
+            private readonly ISegmentString _parentEdge;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="HotPixelSnapAction"/> class.
+            ///     Initializes a new instance of the <see cref="HotPixelSnapAction" /> class.
             /// </summary>
             /// <param name="hotPixel"></param>
             /// <param name="parentEdge"></param>
@@ -108,12 +105,10 @@ namespace NetTopologySuite.Noding.Snapround
             }
 
             /// <summary>
-            /// 
             /// </summary>
             public bool IsNodeAdded { get; private set; }
 
             /// <summary>
-            /// 
             /// </summary>
             /// <param name="mc"></param>
             /// <param name="startIndex"></param>
@@ -131,12 +126,10 @@ namespace NetTopologySuite.Noding.Snapround
                  * since otherwise the testCollapse1 test in SnapRoundingTest fails.
                  */
                 if (_parentEdge != null)
-                {
-                    if (ss == _parentEdge && 
+                    if ((ss == _parentEdge) &&
                         (startIndex == _hotPixelVertexIndex)
-                        )
+                    )
                         return;
-                }
                 IsNodeAdded = _hotPixel.AddSnappedNode(ss, startIndex);
             }
         }

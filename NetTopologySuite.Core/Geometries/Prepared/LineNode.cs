@@ -15,6 +15,11 @@ namespace NetTopologySuite.Geometries.Prepared
             Location[Backward] = locBackward;
         }
 
+        public Location[] Location { get; } = {GeoAPI.Geometries.Location.Exterior, GeoAPI.Geometries.Location.Exterior}
+            ;
+
+        public SegmentNode Node { get; }
+
         public void MergeLabel(Location locForward, Location locBackward)
         {
             Location[Forward] = MergeLocation(Location[Forward], locForward);
@@ -23,21 +28,15 @@ namespace NetTopologySuite.Geometries.Prepared
 
         private static Location MergeLocation(Location loc1, Location loc2)
         {
-            Location mergeLoc = loc1;
+            var mergeLoc = loc1;
             if (loc2 == GeoAPI.Geometries.Location.Interior)
-            {
                 mergeLoc = GeoAPI.Geometries.Location.Interior;
-            }
             return mergeLoc;
         }
-
-        public Location[] Location { get; } = new[] { GeoAPI.Geometries.Location.Exterior, GeoAPI.Geometries.Location.Exterior };
 
         public Location GetLocation(int position)
         {
             return Location[position];
         }
-
-        public SegmentNode Node { get; }
     }
 }

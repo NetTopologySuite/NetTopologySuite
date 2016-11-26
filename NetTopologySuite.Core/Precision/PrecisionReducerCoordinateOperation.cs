@@ -6,8 +6,8 @@ namespace NetTopologySuite.Precision
 {
     public class PrecisionReducerCoordinateOperation : GeometryEditor.CoordinateOperation
     {
-        private readonly IPrecisionModel _targetPrecModel;
         private readonly bool _removeCollapsed = true;
+        private readonly IPrecisionModel _targetPrecModel;
 
         public PrecisionReducerCoordinateOperation(IPrecisionModel targetPrecModel, bool removeCollapsed)
         {
@@ -22,7 +22,7 @@ namespace NetTopologySuite.Precision
 
             var reducedCoords = new Coordinate[coordinates.Length];
             // copy coordinates and reduce
-            for (int i = 0; i < coordinates.Length; i++)
+            for (var i = 0; i < coordinates.Length; i++)
             {
                 var coord = new Coordinate(coordinates[i]);
                 _targetPrecModel.MakePrecise(coord);
@@ -30,7 +30,7 @@ namespace NetTopologySuite.Precision
             }
             // remove repeated points, to simplify returned geometry as much as possible
             var noRepeatedCoordList = new CoordinateList(reducedCoords,
-                    false);
+                false);
             var noRepeatedCoords = noRepeatedCoordList.ToCoordinateArray();
 
             /**
@@ -42,21 +42,19 @@ namespace NetTopologySuite.Precision
              * being removed. (This may create an invalid geometry - the client must
              * handle this.)
              */
-            int minLength = 0;
+            var minLength = 0;
             if (geom is ILineString)
                 minLength = 2;
             if (geom is ILinearRing)
                 minLength = LinearRing.MinimumValidSize;
 
-            Coordinate[] collapsedCoords = reducedCoords;
+            var collapsedCoords = reducedCoords;
             if (_removeCollapsed)
                 collapsedCoords = null;
 
             // return null or orginal length coordinate array
             if (noRepeatedCoords.Length < minLength)
-            {
                 return collapsedCoords;
-            }
 
             // ok to return shorter coordinate array
             return noRepeatedCoords;

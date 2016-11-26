@@ -1,27 +1,42 @@
-using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Algorithm.Distance
 {
     /// <summary>
-    /// Contains a pair of points and the distance between them.
+    ///     Contains a pair of points and the distance between them.
     /// </summary>
     /// <remarks>
-    /// Provides methods to update with a new point pair with either maximum or minimum distance.
+    ///     Provides methods to update with a new point pair with either maximum or minimum distance.
     /// </remarks>
     public class PointPairDistance
     {
-        private Boolean _isNull = true;
+        private bool _isNull = true;
 
-        ///<summary>
-        /// Initializes to null.
-        ///</summary>
-        public void Initialize() { _isNull = true; }
+        /// <summary>
+        ///     The distance between the paired coordinates
+        /// </summary>
+        public double Distance { get; private set; } = double.NaN;
 
-        ///<summary>
-        /// Initializes the points.
-        ///</summary>
+        /// <summary>
+        ///     Returns an array containing the paired points
+        /// </summary>
+        public Coordinate[] Coordinates { get; } = {new Coordinate(), new Coordinate()};
+
+
+        public Coordinate this[int i] => Coordinates[i];
+
+        /// <summary>
+        ///     Initializes to null.
+        /// </summary>
+        public void Initialize()
+        {
+            _isNull = true;
+        }
+
+        /// <summary>
+        ///     Initializes the points.
+        /// </summary>
         /// <param name="p0">1st coordinate</param>
         /// <param name="p1">2nd coordinate</param>
         public void Initialize(Coordinate p0, Coordinate p1)
@@ -32,12 +47,12 @@ namespace NetTopologySuite.Algorithm.Distance
             _isNull = false;
         }
 
-        ///<summary>
-        /// Initializes the points, avoiding recomputing the distance.
-        ///</summary>
+        /// <summary>
+        ///     Initializes the points, avoiding recomputing the distance.
+        /// </summary>
         /// <param name="p0">1st coordinate</param>
         /// <param name="p1">2nd coordinate</param>
-        /// <param name="distance">the distance between <see paramref="p0"/> and <see paramref="p1"/></param>
+        /// <param name="distance">the distance between <see paramref="p0" /> and <see paramref="p1" /></param>
         private void Initialize(Coordinate p0, Coordinate p1, double distance)
         {
             Coordinates[0].CoordinateValue = p0;
@@ -45,19 +60,6 @@ namespace NetTopologySuite.Algorithm.Distance
             Distance = distance;
             _isNull = false;
         }
-
-        /// <summary>
-        /// The distance between the paired coordinates
-        /// </summary>
-        public double Distance { get; private set; } = Double.NaN;
-
-        /// <summary>
-        /// Returns an array containing the paired points
-        /// </summary>
-        public Coordinate[] Coordinates { get; } = { new Coordinate(), new Coordinate() };
-
-
-        public Coordinate this[int i] => Coordinates[i];
 
         public void SetMaximum(PointPairDistance ptDist)
         {
@@ -71,7 +73,7 @@ namespace NetTopologySuite.Algorithm.Distance
                 Initialize(p0, p1);
                 return;
             }
-            double dist = p0.Distance(p1);
+            var dist = p0.Distance(p1);
             if (dist > Distance)
                 Initialize(p0, p1, dist);
         }
@@ -88,14 +90,14 @@ namespace NetTopologySuite.Algorithm.Distance
                 Initialize(p0, p1);
                 return;
             }
-            double dist = p0.Distance(p1);
+            var dist = p0.Distance(p1);
             if (dist < Distance)
                 Initialize(p0, p1, dist);
         }
 
         public override string ToString()
         {
-  	        return WKTWriter.ToLineString(Coordinates[0], Coordinates[1]);
+            return WKTWriter.ToLineString(Coordinates[0], Coordinates[1]);
         }
     }
 }

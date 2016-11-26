@@ -3,13 +3,12 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
-    /// <summary> 
-    /// A robust version of <see cref="LineIntersector"/>.
+    /// <summary>
+    ///     A robust version of <see cref="LineIntersector" />.
     /// </summary>
     public class RobustLineIntersector : LineIntersector
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="p"></param>
         /// <param name="p1"></param>
@@ -19,7 +18,6 @@ namespace NetTopologySuite.Algorithm
             IsProper = false;
             // do between check first, since it is faster than the orientation test
             if (Envelope.Intersects(p1, p2, p))
-            {
                 if ((CGAlgorithms.OrientationIndex(p1, p2, p) == 0) &&
                     (CGAlgorithms.OrientationIndex(p2, p1, p) == 0))
                 {
@@ -29,7 +27,6 @@ namespace NetTopologySuite.Algorithm
                     Result = PointIntersection;
                     return;
                 }
-            }
             Result = NoIntersection;
         }
 
@@ -44,21 +41,21 @@ namespace NetTopologySuite.Algorithm
             // for each endpoint, compute which side of the other segment it lies
             // if both endpoints lie on the same side of the other segment,
             // the segments do not intersect
-            int Pq1 = CGAlgorithms.OrientationIndex(p1, p2, q1);
-            int Pq2 = CGAlgorithms.OrientationIndex(p1, p2, q2);
+            var Pq1 = CGAlgorithms.OrientationIndex(p1, p2, q1);
+            var Pq2 = CGAlgorithms.OrientationIndex(p1, p2, q2);
 
-            if ((Pq1 > 0 && Pq2 > 0) ||
-                (Pq1 < 0 && Pq2 < 0))
+            if (((Pq1 > 0) && (Pq2 > 0)) ||
+                ((Pq1 < 0) && (Pq2 < 0)))
                 return NoIntersection;
 
-            int Qp1 = CGAlgorithms.OrientationIndex(q1, q2, p1);
-            int Qp2 = CGAlgorithms.OrientationIndex(q1, q2, p2);
+            var Qp1 = CGAlgorithms.OrientationIndex(q1, q2, p1);
+            var Qp2 = CGAlgorithms.OrientationIndex(q1, q2, p2);
 
-            if ((Qp1 > 0 && Qp2 > 0) ||
-                (Qp1 < 0 && Qp2 < 0))
+            if (((Qp1 > 0) && (Qp2 > 0)) ||
+                ((Qp1 < 0) && (Qp2 < 0)))
                 return NoIntersection;
 
-            bool collinear = Pq1 == 0 && Pq2 == 0 && Qp1 == 0 && Qp2 == 0;
+            var collinear = (Pq1 == 0) && (Pq2 == 0) && (Qp1 == 0) && (Qp2 == 0);
             if (collinear)
                 return ComputeCollinearIntersection(p1, p2, q1, q2);
 
@@ -75,7 +72,7 @@ namespace NetTopologySuite.Algorithm
              *  the other line, since at this point we know that the inputLines must
              *  intersect.
              */
-            if (Pq1 == 0 || Pq2 == 0 || Qp1 == 0 || Qp2 == 0)
+            if ((Pq1 == 0) || (Pq2 == 0) || (Qp1 == 0) || (Qp2 == 0))
             {
                 IsProper = false;
 
@@ -117,7 +114,6 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
@@ -126,10 +122,10 @@ namespace NetTopologySuite.Algorithm
         /// <returns></returns>
         private int ComputeCollinearIntersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
-            bool p1q1p2 = Envelope.Intersects(p1, p2, q1);
-            bool p1q2p2 = Envelope.Intersects(p1, p2, q2);
-            bool q1p1q2 = Envelope.Intersects(q1, q2, p1);
-            bool q1p2q2 = Envelope.Intersects(q1, q2, p2);
+            var p1q1p2 = Envelope.Intersects(p1, p2, q1);
+            var p1q2p2 = Envelope.Intersects(p1, p2, q2);
+            var q1p1q2 = Envelope.Intersects(q1, q2, p1);
+            var q1p2q2 = Envelope.Intersects(q1, q2, p2);
 
             if (p1q1p2 && p1q2p2)
             {
@@ -159,7 +155,7 @@ namespace NetTopologySuite.Algorithm
             {
                 IntersectionPoint[0] = q2;
                 IntersectionPoint[1] = p1;
-                return q2.Equals(p1) /* && !p1q1p2 && !q1p2q2 */? PointIntersection : CollinearIntersection;
+                return q2.Equals(p1) /* && !p1q1p2 && !q1p2q2 */ ? PointIntersection : CollinearIntersection;
             }
             if (p1q2p2 && q1p2q2)
             {
@@ -170,13 +166,13 @@ namespace NetTopologySuite.Algorithm
             return NoIntersection;
         }
 
-        /// <summary> 
-        /// This method computes the actual value of the intersection point.
-        /// To obtain the maximum precision from the intersection calculation,
-        /// the coordinates are normalized by subtracting the minimum
-        /// ordinate values (in absolute value).  This has the effect of
-        /// removing common significant digits from the calculation to
-        /// maintain more bits of precision.
+        /// <summary>
+        ///     This method computes the actual value of the intersection point.
+        ///     To obtain the maximum precision from the intersection calculation,
+        ///     the coordinates are normalized by subtracting the minimum
+        ///     ordinate values (in absolute value).  This has the effect of
+        ///     removing common significant digits from the calculation to
+        ///     maintain more bits of precision.
         /// </summary>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
@@ -185,7 +181,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns></returns>
         private Coordinate Intersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
-            Coordinate intPt = IntersectionWithNormalization(p1, p2, q1, q2);
+            var intPt = IntersectionWithNormalization(p1, p2, q1, q2);
 
             /*
             // TESTING ONLY
@@ -210,13 +206,7 @@ namespace NetTopologySuite.Algorithm
              * MD - Dec 14 2006 - This does not seem to be a failure case any longer
              */
             if (!IsInSegmentEnvelopes(intPt))
-            {
-                // compute a safer result
-                // copy the coordinate, since it may be rounded later
                 intPt = new Coordinate(NearestEndpoint(p1, p2, q1, q2));
-                // intPt = CentralEndpointIntersector.GetIntersection(p1, p2, q1, q2);
-                // CheckDD(p1, p2, q1, q2, intPt);
-            }
 
             if (PrecisionModel != null)
                 PrecisionModel.MakePrecise(intPt);
@@ -226,12 +216,12 @@ namespace NetTopologySuite.Algorithm
         private void CheckDD(Coordinate p1, Coordinate p2, Coordinate q1,
             Coordinate q2, Coordinate intPt)
         {
-            Coordinate intPtDD = CGAlgorithmsDD.Intersection(p1, p2, q1, q2);
-            bool isIn = IsInSegmentEnvelopes(intPtDD);
+            var intPtDD = CGAlgorithmsDD.Intersection(p1, p2, q1, q2);
+            var isIn = IsInSegmentEnvelopes(intPtDD);
 #if !PCL
             Debug.WriteLine("DD in env = " + isIn + "  --------------------- " + intPtDD);
-            double distance = intPt.Distance(intPtDD);
-            if (distance > 0.0001)                
+            var distance = intPt.Distance(intPtDD);
+            if (distance > 0.0001)
                 Debug.WriteLine("Distance = " + distance);
 #endif
         }
@@ -239,24 +229,24 @@ namespace NetTopologySuite.Algorithm
 
         private Coordinate IntersectionWithNormalization(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
-            Coordinate n1 = new Coordinate(p1);
-            Coordinate n2 = new Coordinate(p2);
-            Coordinate n3 = new Coordinate(q1);
-            Coordinate n4 = new Coordinate(q2);
-            Coordinate normPt = new Coordinate();
+            var n1 = new Coordinate(p1);
+            var n2 = new Coordinate(p2);
+            var n3 = new Coordinate(q1);
+            var n4 = new Coordinate(q2);
+            var normPt = new Coordinate();
             NormalizeToEnvCentre(n1, n2, n3, n4, normPt);
 
-            Coordinate intPt = SafeHCoordinateIntersection(n1, n2, n3, n4);
+            var intPt = SafeHCoordinateIntersection(n1, n2, n3, n4);
             intPt.X += normPt.X;
             intPt.Y += normPt.Y;
             return intPt;
         }
 
-        /// <summary> 
-        /// Computes a segment intersection using homogeneous coordinates.
-        /// Round-off error can cause the raw computation to fail, 
-        /// (usually due to the segments being approximately parallel).
-        /// If this happens, a reasonable approximation is computed instead.
+        /// <summary>
+        ///     Computes a segment intersection using homogeneous coordinates.
+        ///     Round-off error can cause the raw computation to fail,
+        ///     (usually due to the segments being approximately parallel).
+        ///     If this happens, a reasonable approximation is computed instead.
         /// </summary>
         private static Coordinate SafeHCoordinateIntersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
@@ -275,67 +265,72 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Normalize the supplied coordinates to
-        /// so that the midpoint of their intersection envelope
-        /// lies at the origin.
+        ///     Normalize the supplied coordinates to
+        ///     so that the midpoint of their intersection envelope
+        ///     lies at the origin.
         /// </summary>
-        private void NormalizeToEnvCentre(Coordinate n00, Coordinate n01, Coordinate n10, Coordinate n11, Coordinate normPt)
+        private void NormalizeToEnvCentre(Coordinate n00, Coordinate n01, Coordinate n10, Coordinate n11,
+            Coordinate normPt)
         {
-            double minX0 = n00.X < n01.X ? n00.X : n01.X;
-            double minY0 = n00.Y < n01.Y ? n00.Y : n01.Y;
-            double maxX0 = n00.X > n01.X ? n00.X : n01.X;
-            double maxY0 = n00.Y > n01.Y ? n00.Y : n01.Y;
+            var minX0 = n00.X < n01.X ? n00.X : n01.X;
+            var minY0 = n00.Y < n01.Y ? n00.Y : n01.Y;
+            var maxX0 = n00.X > n01.X ? n00.X : n01.X;
+            var maxY0 = n00.Y > n01.Y ? n00.Y : n01.Y;
 
-            double minX1 = n10.X < n11.X ? n10.X : n11.X;
-            double minY1 = n10.Y < n11.Y ? n10.Y : n11.Y;
-            double maxX1 = n10.X > n11.X ? n10.X : n11.X;
-            double maxY1 = n10.Y > n11.Y ? n10.Y : n11.Y;
+            var minX1 = n10.X < n11.X ? n10.X : n11.X;
+            var minY1 = n10.Y < n11.Y ? n10.Y : n11.Y;
+            var maxX1 = n10.X > n11.X ? n10.X : n11.X;
+            var maxY1 = n10.Y > n11.Y ? n10.Y : n11.Y;
 
-            double intMinX = minX0 > minX1 ? minX0 : minX1;
-            double intMaxX = maxX0 < maxX1 ? maxX0 : maxX1;
-            double intMinY = minY0 > minY1 ? minY0 : minY1;
-            double intMaxY = maxY0 < maxY1 ? maxY0 : maxY1;
+            var intMinX = minX0 > minX1 ? minX0 : minX1;
+            var intMaxX = maxX0 < maxX1 ? maxX0 : maxX1;
+            var intMinY = minY0 > minY1 ? minY0 : minY1;
+            var intMaxY = maxY0 < maxY1 ? maxY0 : maxY1;
 
-            double intMidX = (intMinX + intMaxX) / 2.0;
-            double intMidY = (intMinY + intMaxY) / 2.0;
+            var intMidX = (intMinX + intMaxX)/2.0;
+            var intMidY = (intMinY + intMaxY)/2.0;
             normPt.X = intMidX;
             normPt.Y = intMidY;
 
-            n00.X -= normPt.X; n00.Y -= normPt.Y;
-            n01.X -= normPt.X; n01.Y -= normPt.Y;
-            n10.X -= normPt.X; n10.Y -= normPt.Y;
-            n11.X -= normPt.X; n11.Y -= normPt.Y;
+            n00.X -= normPt.X;
+            n00.Y -= normPt.Y;
+            n01.X -= normPt.X;
+            n01.Y -= normPt.Y;
+            n10.X -= normPt.X;
+            n10.Y -= normPt.Y;
+            n11.X -= normPt.X;
+            n11.Y -= normPt.Y;
         }
 
-        /// <summary> 
-        /// Tests whether a point lies in the envelopes of both input segments.
-        /// A correctly computed intersection point should return <c>true</c>
-        /// for this test.
-        /// Since this test is for debugging purposes only, no attempt is
-        /// made to optimize the envelope test.
+        /// <summary>
+        ///     Tests whether a point lies in the envelopes of both input segments.
+        ///     A correctly computed intersection point should return <c>true</c>
+        ///     for this test.
+        ///     Since this test is for debugging purposes only, no attempt is
+        ///     made to optimize the envelope test.
         /// </summary>
         /// <param name="intPoint"></param>
         /// <returns><c>true</c> if the input point lies within both input segment envelopes.</returns>
         private bool IsInSegmentEnvelopes(Coordinate intPoint)
         {
-            Envelope env0 = new Envelope(InputLines[0][0], InputLines[0][1]);
-            Envelope env1 = new Envelope(InputLines[1][0], InputLines[1][1]);
+            var env0 = new Envelope(InputLines[0][0], InputLines[0][1]);
+            var env1 = new Envelope(InputLines[1][0], InputLines[1][1]);
             return env0.Contains(intPoint) && env1.Contains(intPoint);
         }
 
         /// <summary>
-        /// Finds the endpoint of the segments P and Q which 
-        /// is closest to the other segment.
-        /// This is a reasonable surrogate for the true 
-        /// intersection points in ill-conditioned cases
-        /// (e.g. where two segments are nearly coincident,
-        /// or where the endpoint of one segment lies almost on the other segment).
+        ///     Finds the endpoint of the segments P and Q which
+        ///     is closest to the other segment.
+        ///     This is a reasonable surrogate for the true
+        ///     intersection points in ill-conditioned cases
+        ///     (e.g. where two segments are nearly coincident,
+        ///     or where the endpoint of one segment lies almost on the other segment).
         /// </summary>
         /// <remarks>
-        /// This replaces the older CentralEndpoint heuristic,
-        /// which chose the wrong endpoint in some cases
-        /// where the segments had very distinct slopes 
-        /// and one endpoint lay almost on the other segment.
+        ///     This replaces the older CentralEndpoint heuristic,
+        ///     which chose the wrong endpoint in some cases
+        ///     where the segments had very distinct slopes
+        ///     and one endpoint lay almost on the other segment.
         /// </remarks>
         /// <param name="p1">an endpoint of segment P</param>
         /// <param name="p2">an endpoint of segment P</param>
@@ -345,10 +340,10 @@ namespace NetTopologySuite.Algorithm
         private static Coordinate NearestEndpoint(Coordinate p1, Coordinate p2,
             Coordinate q1, Coordinate q2)
         {
-            Coordinate nearestPt = p1;
-            double minDist = CGAlgorithms.DistancePointLine(p1, q1, q2);
+            var nearestPt = p1;
+            var minDist = CGAlgorithms.DistancePointLine(p1, q1, q2);
 
-            double dist = CGAlgorithms.DistancePointLine(p2, q1, q2);
+            var dist = CGAlgorithms.DistancePointLine(p2, q1, q2);
             if (dist < minDist)
             {
                 minDist = dist;

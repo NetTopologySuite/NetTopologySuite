@@ -1,4 +1,5 @@
-﻿#if tuPrologStreamTokenizer
+﻿
+#if tuPrologStreamTokenizer
 using System;
 using System.IO;
 

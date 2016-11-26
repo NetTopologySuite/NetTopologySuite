@@ -4,42 +4,70 @@ using NetTopologySuite.Index.Strtree;
 namespace NetTopologySuite.Operation.Distance
 {
     /// <summary>
-    /// Computes the distance between the facets (segments and vertices) 
-    /// of two <see cref="IGeometry"/>s
-    /// using a Branch-and-Bound algorithm.
-    /// The Branch-and-Bound algorithm operates over a 
-    /// traversal of R-trees built
-    /// on the target and possibly also the query geometries.
-    /// <para>
-    /// This approach provides the following benefits:
-    /// <list type="Bullet">
-    /// <item>
-    /// Performance is improved due to the effects of the R-tree index
-    /// and the pruning due to the Branch-and-Bound approach
-    /// </item><item>
-    /// The spatial index on the target geometry can be cached
-    /// to allow reuse in an incremental query situation.</item>
-    /// </list>
-    /// Using this technique can be much more performant 
-    /// than using <see cref="IGeometry.Distance(IGeometry)"/>
-    /// when one or both input geometries are large, 
-    /// or when evaluating many distance computations against 
-    /// a single geometry.
-    /// </para>
+    ///     Computes the distance between the facets (segments and vertices)
+    ///     of two <see cref="IGeometry" />s
+    ///     using a Branch-and-Bound algorithm.
+    ///     The Branch-and-Bound algorithm operates over a
+    ///     traversal of R-trees built
+    ///     on the target and possibly also the query geometries.
+    ///     <para>
+    ///         This approach provides the following benefits:
+    ///         <list type="Bullet">
+    ///             <item>
+    ///                 Performance is improved due to the effects of the R-tree index
+    ///                 and the pruning due to the Branch-and-Bound approach
+    ///             </item>
+    ///             <item>
+    ///                 The spatial index on the target geometry can be cached
+    ///                 to allow reuse in an incremental query situation.
+    ///             </item>
+    ///         </list>
+    ///         Using this technique can be much more performant
+    ///         than using <see cref="IGeometry.Distance(IGeometry)" />
+    ///         when one or both input geometries are large,
+    ///         or when evaluating many distance computations against
+    ///         a single geometry.
+    ///     </para>
     /// </summary>
     /// <remarks>This class is not thread-safe.</remarks>
     /// <author>
-    /// Martin Davis
+    ///     Martin Davis
     /// </author>
     public class IndexedFacetDistance
     {
+        private readonly STRtree<FacetSequence> _cachedTree;
+
         /// <summary>
-        /// Computes the distance between two geometries using the indexed approach.
+        ///     Creates a new distance-finding instance for a given target <see cref="IGeometry" />.
         /// </summary>
         /// <remarks>
-        /// For geometries with many segments or points,
-        /// this can be faster than using a simple distance
-        /// algorithm.
+        ///     <para>
+        ///         Distances will be computed to all facets of the input geometry.
+        ///         The facets of the geometry are the discrete segments and points
+        ///         contained in its components.
+        ///     </para>
+        ///     <para>
+        ///         In the case of <see cref="ILineal" /> and <see cref="IPuntal" /> inputs,
+        ///         this is equivalent to computing the conventional distance.
+        ///     </para>
+        ///     <para>
+        ///         In the case of <see cref="IPolygonal" /> inputs, this is equivalent
+        ///         to computing the distance to the polygons boundaries.
+        ///     </para>
+        /// </remarks>
+        /// <param name="g1">A Geometry, which may be of any type.</param>
+        public IndexedFacetDistance(IGeometry g1)
+        {
+            _cachedTree = FacetSequenceTreeBuilder.BuildSTRtree(g1);
+        }
+
+        /// <summary>
+        ///     Computes the distance between two geometries using the indexed approach.
+        /// </summary>
+        /// <remarks>
+        ///     For geometries with many segments or points,
+        ///     this can be faster than using a simple distance
+        ///     algorithm.
         /// </remarks>
         /// <param name="g1">A geometry</param>
         /// <param name="g2">A geometry</param>
@@ -50,32 +78,8 @@ namespace NetTopologySuite.Operation.Distance
             return dist.GetDistance(g2);
         }
 
-        private readonly STRtree<FacetSequence> _cachedTree;
-
         /// <summary>
-        /// Creates a new distance-finding instance for a given target <see cref="IGeometry"/>.
-        /// </summary>
-        /// <remarks> 
-        /// <para>
-        /// Distances will be computed to all facets of the input geometry.
-        /// The facets of the geometry are the discrete segments and points 
-        /// contained in its components.  </para>
-        /// <para>
-        /// In the case of <see cref="ILineal"/> and <see cref="IPuntal"/> inputs,
-        /// this is equivalent to computing the conventional distance.
-        /// </para><para>
-        /// In the case of <see cref="IPolygonal"/> inputs, this is equivalent 
-        /// to computing the distance to the polygons boundaries. 
-        /// </para>
-        /// </remarks>
-        /// <param name="g1">A Geometry, which may be of any type.</param>
-        public IndexedFacetDistance(IGeometry g1)
-        {
-            _cachedTree = FacetSequenceTreeBuilder.BuildSTRtree(g1);
-        }
-
-        /// <summary>
-        /// Computes the distance from the base geometry to the given geometry.
+        ///     Computes the distance from the base geometry to the given geometry.
         /// </summary>
         /// <param name="g">The geometry to compute the distance to.</param>
         /// <returns>The computed distance</returns>

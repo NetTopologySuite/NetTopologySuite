@@ -1,87 +1,97 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
+using NetTopologySuite.Utilities;
 #if !NET35 && !PCL
 using GeoAPI;
 using Enumerable = GeoAPI.Linq.Enumerable;
+
 #else
 using System;
 using Enumerable = System.Linq.Enumerable;
 #endif
+
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
-    /// A class which supports creating new <see cref="IGeometry"/>s
-    /// which are modifications of existing ones,
-    /// maintaining the same type structure.
+    ///     A class which supports creating new <see cref="IGeometry" />s
+    ///     which are modifications of existing ones,
+    ///     maintaining the same type structure.
     /// </summary>
     /// <remarks>
-    /// Geometry objects are intended to be treated as immutable.
-    /// This class allows you to "modifies" a Geometrys
-    /// by traversing them, applying a user-defined
-    /// <see cref="IGeometryEditorOperation"/>, <see cref="CoordinateSequenceOperation"/> or <see cref="CoordinateOperation"/>
-    /// and creating a new Geometrys with the same structure but
-    /// (possibly) modified components.
-    /// <para>
-    /// Examples of the kinds of modifications which can be made are:
-    /// <list type="Bullet">
-    /// <item>
-    /// The values of the coordinates may be changed.
-    /// The editor does not check whether changing coordinate values makes the result Geometry invalid
-    /// </item>
-    /// <item>
-    /// The coordinate lists may be changed (e.g. by adding, deleting or modifying coordinates).
-    /// The modifed coordinate lists must be consistent with their original parent component
-    /// (e.g. a <tt>LinearRing</tt> must always have at least 4 coordinates, and the first and last
-    /// coordinate must be equal).
-    /// </item>
-    /// <item>
-    /// Components of the original point may be deleted
-    /// (e.g. holes may be removed from a Polygon, or LineStrings removed from a MultiLineString).
-    /// Deletions will be propagated up the component tree appropriately.
-    /// </item></list>
-    /// </para>
-    /// <para>
-    /// All changes must be consistent with the original Geometry's structure
-    /// (e.g. a <code>Polygon</code> cannot be collapsed into a <code>LineString</code>).
-    /// If changing the structure is required, use a <see cref="GeometryTransformer"/>.
-    /// </para>
-    /// <para>
-    /// This class supports creating an edited Geometry 
-    /// using a different <see cref="IGeometryFactory"/> via the <see cref="GeometryEditor(IGeometryFactory)"/>
-    /// constructor.
-    /// Examples of situations where this is required is if the geometry is
-    /// transformed to a new SRID and/or a new PrecisionModel.</para>
-    /// <para>
-    /// Usage notes
-    /// <list type="Bullet">
-    /// <item>The resulting Geometry is not checked for validity.
-    /// If validity needs to be enforced, the new Geometry's 
-    /// <see cref="IGeometry.IsValid"/> method should be called.</item>
-    /// <item>By default the UserData of the input geometry is not copied to the result. </item>
-    /// </list>
-    /// </para>
+    ///     Geometry objects are intended to be treated as immutable.
+    ///     This class allows you to "modifies" a Geometrys
+    ///     by traversing them, applying a user-defined
+    ///     <see cref="IGeometryEditorOperation" />, <see cref="CoordinateSequenceOperation" /> or
+    ///     <see cref="CoordinateOperation" />
+    ///     and creating a new Geometrys with the same structure but
+    ///     (possibly) modified components.
+    ///     <para>
+    ///         Examples of the kinds of modifications which can be made are:
+    ///         <list type="Bullet">
+    ///             <item>
+    ///                 The values of the coordinates may be changed.
+    ///                 The editor does not check whether changing coordinate values makes the result Geometry invalid
+    ///             </item>
+    ///             <item>
+    ///                 The coordinate lists may be changed (e.g. by adding, deleting or modifying coordinates).
+    ///                 The modifed coordinate lists must be consistent with their original parent component
+    ///                 (e.g. a <tt>LinearRing</tt> must always have at least 4 coordinates, and the first and last
+    ///                 coordinate must be equal).
+    ///             </item>
+    ///             <item>
+    ///                 Components of the original point may be deleted
+    ///                 (e.g. holes may be removed from a Polygon, or LineStrings removed from a MultiLineString).
+    ///                 Deletions will be propagated up the component tree appropriately.
+    ///             </item>
+    ///         </list>
+    ///     </para>
+    ///     <para>
+    ///         All changes must be consistent with the original Geometry's structure
+    ///         (e.g. a <code>Polygon</code> cannot be collapsed into a <code>LineString</code>).
+    ///         If changing the structure is required, use a <see cref="GeometryTransformer" />.
+    ///     </para>
+    ///     <para>
+    ///         This class supports creating an edited Geometry
+    ///         using a different <see cref="IGeometryFactory" /> via the <see cref="GeometryEditor(IGeometryFactory)" />
+    ///         constructor.
+    ///         Examples of situations where this is required is if the geometry is
+    ///         transformed to a new SRID and/or a new PrecisionModel.
+    ///     </para>
+    ///     <para>
+    ///         Usage notes
+    ///         <list type="Bullet">
+    ///             <item>
+    ///                 The resulting Geometry is not checked for validity.
+    ///                 If validity needs to be enforced, the new Geometry's
+    ///                 <see cref="IGeometry.IsValid" /> method should be called.
+    ///             </item>
+    ///             <item>By default the UserData of the input geometry is not copied to the result. </item>
+    ///         </list>
+    ///     </para>
     /// </remarks>
-    /// <seealso cref="GeometryTransformer"/>
-    /// <seealso cref="IGeometry.IsValid"/>
+    /// <seealso cref="GeometryTransformer" />
+    /// <seealso cref="IGeometry.IsValid" />
     public class GeometryEditor
     {
         /// <summary>
-        /// The factory used to create the modified Geometry.
+        ///     The factory used to create the modified Geometry.
         /// </summary>
         /// <remarks>
-        /// If <tt>null</tt> the GeometryFactory of the input is used.
+        ///     If <tt>null</tt> the GeometryFactory of the input is used.
         /// </remarks>
         private IGeometryFactory _factory;
 
         /// <summary>
-        /// Creates a new GeometryEditor object which will create
-        /// edited <see cref="IGeometry"/> with the same <see cref="IGeometryFactory"/> as the input Geometry.
+        ///     Creates a new GeometryEditor object which will create
+        ///     edited <see cref="IGeometry" /> with the same <see cref="IGeometryFactory" /> as the input Geometry.
         /// </summary>
-        public GeometryEditor() { }
+        public GeometryEditor()
+        {
+        }
 
         /// <summary>
-        /// Creates a new GeometryEditor object which will create
-        /// edited <see cref="IGeometry"/>s with the given <see cref="IGeometryFactory"/>.
+        ///     Creates a new GeometryEditor object which will create
+        ///     edited <see cref="IGeometry" />s with the given <see cref="IGeometryFactory" />.
         /// </summary>
         /// <param name="factory">The GeometryFactory to create the edited Geometry with.</param>
         public GeometryEditor(IGeometryFactory factory)
@@ -90,16 +100,16 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Gets or sets a value indicating if the User Data is copied to the edit result.
-        /// If so, only the object reference is copied.
+        ///     Gets or sets a value indicating if the User Data is copied to the edit result.
+        ///     If so, only the object reference is copied.
         /// </summary>
         public bool CopyUserData { get; set; }
 
 
         /// <summary>
-        /// Edit the input <c>Geometry</c> with the given edit operation.
-        /// Clients can create subclasses of GeometryEditorOperation or
-        /// CoordinateOperation to perform required modifications.
+        ///     Edit the input <c>Geometry</c> with the given edit operation.
+        ///     Clients can create subclasses of GeometryEditorOperation or
+        ///     CoordinateOperation to perform required modifications.
         /// </summary>
         /// <param name="geometry">The Geometry to edit.</param>
         /// <param name="operation">The edit operation to carry out.</param>
@@ -112,64 +122,63 @@ namespace NetTopologySuite.Geometries.Utilities
 
             var result = EditInternal(geometry, operation);
             if (CopyUserData)
-            {
                 result.UserData = geometry.UserData;
-            }
             return result;
         }
 
         private IGeometry EditInternal(IGeometry geometry, IGeometryEditorOperation operation)
         {
             if (geometry is IGeometryCollection)
-                return EditGeometryCollection((IGeometryCollection)geometry, operation);
+                return EditGeometryCollection((IGeometryCollection) geometry, operation);
             if (geometry is IPolygon)
-                return EditPolygon((IPolygon)geometry, operation);
+                return EditPolygon((IPolygon) geometry, operation);
             if (geometry is IPoint)
                 return operation.Edit(geometry, _factory);
             if (geometry is ILineString)
                 return operation.Edit(geometry, _factory);
-            NetTopologySuite.Utilities.Assert.ShouldNeverReachHere("Unsupported Geometry classes should be caught in the GeometryEditorOperation.");
+            Assert.ShouldNeverReachHere("Unsupported Geometry classes should be caught in the GeometryEditorOperation.");
             return null;
         }
 
         private IPolygon EditPolygon(IPolygon polygon, IGeometryEditorOperation operation)
         {
-            var newPolygon = (IPolygon)operation.Edit(polygon, _factory);
+            var newPolygon = (IPolygon) operation.Edit(polygon, _factory);
             // create one if needed
             if (newPolygon == null)
-                newPolygon = _factory.CreatePolygon((ICoordinateSequence)null);
+                newPolygon = _factory.CreatePolygon((ICoordinateSequence) null);
             if (newPolygon.IsEmpty)
                 //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
                 return newPolygon;
 
-            var shell = (ILinearRing)Edit(newPolygon.ExteriorRing, operation);
-            if (shell == null || shell.IsEmpty)
+            var shell = (ILinearRing) Edit(newPolygon.ExteriorRing, operation);
+            if ((shell == null) || shell.IsEmpty)
                 //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
                 return _factory.CreatePolygon(null, null);
 
             var holes = new List<ILinearRing>();
             for (var i = 0; i < newPolygon.NumInteriorRings; i++)
             {
-                var hole = (ILinearRing)Edit(newPolygon.GetInteriorRingN(i), operation);
-                if (hole == null || hole.IsEmpty) continue;
+                var hole = (ILinearRing) Edit(newPolygon.GetInteriorRingN(i), operation);
+                if ((hole == null) || hole.IsEmpty) continue;
                 holes.Add(hole);
             }
 
             return _factory.CreatePolygon(shell, holes.ToArray());
         }
 
-        private IGeometryCollection EditGeometryCollection(IGeometryCollection collection, IGeometryEditorOperation operation)
+        private IGeometryCollection EditGeometryCollection(IGeometryCollection collection,
+            IGeometryEditorOperation operation)
         {
             // first edit the entire collection
             // MD - not sure why this is done - could just check original collection?
-            var collectionForType = (IGeometryCollection)operation.Edit(collection, _factory);
+            var collectionForType = (IGeometryCollection) operation.Edit(collection, _factory);
 
             // edit the component geometries
             IList<IGeometry> geometries = new List<IGeometry>();
             for (var i = 0; i < collectionForType.NumGeometries; i++)
             {
                 var geometry = Edit(collectionForType.GetGeometryN(i), operation);
-                if (geometry == null || geometry.IsEmpty) continue;
+                if ((geometry == null) || geometry.IsEmpty) continue;
                 geometries.Add(geometry);
             }
 
@@ -186,30 +195,33 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// A interface which specifies an edit operation for Geometries.
+        ///     A interface which specifies an edit operation for Geometries.
         /// </summary>
         public interface IGeometryEditorOperation
         {
             /// <summary>
-            /// Edits a Geometry by returning a new Geometry with a modification.
-            /// The returned Geometry may be the input geometry itself.
-            /// It may be <code>null</code> if the geometry is to be deleted.
+            ///     Edits a Geometry by returning a new Geometry with a modification.
+            ///     The returned Geometry may be the input geometry itself.
+            ///     It may be <code>null</code> if the geometry is to be deleted.
             /// </summary>
             /// <param name="geometry">The Geometry to modify.</param>
             /// <param name="factory">
-            /// The factory with which to construct the modified Geometry
-            /// (may be different to the factory of the input point).
+            ///     The factory with which to construct the modified Geometry
+            ///     (may be different to the factory of the input point).
             /// </param>
             /// <returns>A new Geometry which is a modification of the input Geometry.</returns>
-            /// <returns><value>null</value> if the Geometry is to be deleted completely</returns>
+            /// <returns>
+            ///     <value>null</value>
+            ///     if the Geometry is to be deleted completely
+            /// </returns>
             IGeometry Edit(IGeometry geometry, IGeometryFactory factory);
         }
 
         /// <summary>
-        /// A GeometryEditorOperation which does not modify
-        /// the input geometry.
-        /// This can be used for simple changes of
-        /// <see cref="IGeometryFactory"/> (including PrecisionModel and SRID).
+        ///     A GeometryEditorOperation which does not modify
+        ///     the input geometry.
+        ///     This can be used for simple changes of
+        ///     <see cref="IGeometryFactory" /> (including PrecisionModel and SRID).
         /// </summary>
         /// <author>mbdavis</author>
         public class NoOpGeometryOperation : IGeometryEditorOperation
@@ -225,13 +237,12 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// A GeometryEditorOperation which edits the coordinate list of a <c>Geometry</c>.
-        /// Operates on Geometry subclasses which contains a single coordinate list.
+        ///     A GeometryEditorOperation which edits the coordinate list of a <c>Geometry</c>.
+        ///     Operates on Geometry subclasses which contains a single coordinate list.
         /// </summary>
         public abstract class CoordinateOperation : IGeometryEditorOperation
         {
             /// <summary>
-            ///
             /// </summary>
             /// <param name="geometry"></param>
             /// <param name="factory"></param>
@@ -246,15 +257,15 @@ namespace NetTopologySuite.Geometries.Utilities
 
                 if (geometry is Point)
                 {
-                    Coordinate[] newCoordinates = Edit(geometry.Coordinates, geometry);
-                    return factory.CreatePoint((newCoordinates.Length > 0) ? newCoordinates[0] : null);
+                    var newCoordinates = Edit(geometry.Coordinates, geometry);
+                    return factory.CreatePoint(newCoordinates.Length > 0 ? newCoordinates[0] : null);
                 }
 
                 return geometry;
             }
 
             /// <summary>
-            /// Edits the array of <c>Coordinate</c>s from a <c>Geometry</c>.
+            ///     Edits the array of <c>Coordinate</c>s from a <c>Geometry</c>.
             /// </summary>
             /// <param name="coordinates">The coordinate array to operate on.</param>
             /// <param name="geometry">The point containing the coordinate list.</param>
@@ -263,15 +274,15 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// A <see cref="IGeometryEditorOperation"/> which edits the <see cref="ICoordinateSequence"/> 
-        /// of a <see cref="IGeometry"/>.
-        /// <para/>
-        /// Operates on Geometry subclasses which contains a single coordinate list.
+        ///     A <see cref="IGeometryEditorOperation" /> which edits the <see cref="ICoordinateSequence" />
+        ///     of a <see cref="IGeometry" />.
+        ///     <para />
+        ///     Operates on Geometry subclasses which contains a single coordinate list.
         /// </summary>
         public class CoordinateSequenceOperation : IGeometryEditorOperation
         {
             public CoordinateSequenceOperation()
-                :this((s, g) => s)
+                : this((s, g) => s)
             {
             }
 
@@ -280,41 +291,34 @@ namespace NetTopologySuite.Geometries.Utilities
                 EditSequence = editSequence;
             }
 
+            ///// <param name="coordSeq">The coordinate array to operate on</param>
+            ///// <param name="geometry">The geometry containing the coordinate list</param>
+            /// <summary>
+            ///     Edits a <see cref="ICoordinateSequence" /> from a <see cref="IGeometry" />.
+            /// </summary>
+            /// <returns>An edited coordinate sequence (which may be the same as the input)</returns>
+            protected Func<ICoordinateSequence, IGeometry, ICoordinateSequence> EditSequence { get; set; }
+
             public IGeometry Edit(IGeometry geometry, IGeometryFactory factory)
             {
                 var linearRing = geometry as ILinearRing;
                 if (linearRing != null)
-                {
                     return factory.CreateLinearRing(EditSequence(
-                        (linearRing).CoordinateSequence, geometry));
-                }
+                        linearRing.CoordinateSequence, geometry));
 
                 var lineString = geometry as ILineString;
                 if (lineString != null)
-                {
                     return factory.CreateLineString(EditSequence(
-                        (lineString).CoordinateSequence,
+                        lineString.CoordinateSequence,
                         geometry));
-                }
 
                 var point = geometry as IPoint;
                 if (point != null)
-                {
                     return factory.CreatePoint(EditSequence(
-                        (point).CoordinateSequence, geometry));
-                }
+                        point.CoordinateSequence, geometry));
 
                 return geometry;
             }
-
-            /// <summary>
-            /// Edits a <see cref="ICoordinateSequence"/> from a <see cref="IGeometry"/>.
-            /// </summary>
-            ///// <param name="coordSeq">The coordinate array to operate on</param>
-            ///// <param name="geometry">The geometry containing the coordinate list</param>
-            /// <returns>An edited coordinate sequence (which may be the same as the input)</returns>
-            protected Func<ICoordinateSequence, IGeometry, ICoordinateSequence> EditSequence { get; set; }
         }
-
     }
 }

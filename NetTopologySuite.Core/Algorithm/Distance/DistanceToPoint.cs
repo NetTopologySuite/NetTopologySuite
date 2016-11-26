@@ -3,11 +3,11 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm.Distance
 {
-    ///<summary>
-    /// Computes the Euclidean distance (L2 metric) from a <see cref="Coordinate"/> to a <see cref="IGeometry"/>.
-    ///</summary>
+    /// <summary>
+    ///     Computes the Euclidean distance (L2 metric) from a <see cref="Coordinate" /> to a <see cref="IGeometry" />.
+    /// </summary>
     /// <remarks>
-    /// Also computes two points on the geometry which are separated by the distance found.
+    ///     Also computes two points on the geometry which are separated by the distance found.
     /// </remarks>
     public static class DistanceToPoint
     {
@@ -60,9 +60,7 @@ namespace NetTopologySuite.Algorithm.Distance
         {
             ComputeDistance(poly.ExteriorRing, pt, ptDist);
             for (var i = 0; i < poly.NumInteriorRings; i++)
-            {
                 ComputeDistance(poly.GetInteriorRingN(i), pt, ptDist);
-            }
         }
     }
 }

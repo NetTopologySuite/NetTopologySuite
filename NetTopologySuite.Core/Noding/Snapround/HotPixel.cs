@@ -1,32 +1,21 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+
 //using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Noding.Snapround
 {
     /// <summary>
-    /// Implements a "hot pixel" as used in the Snap Rounding algorithm.
-    /// A hot pixel contains the interior of the tolerance square and the boundary
-    /// minus the top and right segments.
-    /// The hot pixel operations are all computed in the integer domain
-    /// to avoid rounding problems.
+    ///     Implements a "hot pixel" as used in the Snap Rounding algorithm.
+    ///     A hot pixel contains the interior of the tolerance square and the boundary
+    ///     minus the top and right segments.
+    ///     The hot pixel operations are all computed in the integer domain
+    ///     to avoid rounding problems.
     /// </summary>
     public class HotPixel
     {
-        private readonly LineIntersector _li;
-
-        private readonly Coordinate _pt;
-
-        private readonly Coordinate _p0Scaled;
-        private readonly Coordinate _p1Scaled;
-
-        private readonly double _scaleFactor;
-
-        private double _minx;
-        private double _maxx;
-        private double _miny;
-        private double _maxy;
+        private const double SafeEnvelopeExpansionFactor = 0.75d;
 
         /*
          * The corners of the hot pixel, in the order:
@@ -34,11 +23,24 @@ namespace NetTopologySuite.Noding.Snapround
          *  23
          */
         private readonly Coordinate[] _corner = new Coordinate[4];
+        private readonly LineIntersector _li;
+
+        private readonly Coordinate _p0Scaled;
+        private readonly Coordinate _p1Scaled;
+
+        private readonly Coordinate _pt;
+
+        private readonly double _scaleFactor;
+        private double _maxx;
+        private double _maxy;
+
+        private double _minx;
+        private double _miny;
 
         private Envelope _safeEnv;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HotPixel"/> class.
+        ///     Initializes a new instance of the <see cref="HotPixel" /> class.
         /// </summary>
         /// <param name="pt">The coordinate at the center of the hot pixel</param>
         /// <param name="scaleFactor">The scale factor determining the pixel size</param>
@@ -63,30 +65,27 @@ namespace NetTopologySuite.Noding.Snapround
         }
 
         /// <summary>
-        /// Gets the coordinate this hot pixel is based at.
+        ///     Gets the coordinate this hot pixel is based at.
         /// </summary>
         public Coordinate Coordinate { get; }
 
-        private const double SafeEnvelopeExpansionFactor = 0.75d;
-
         /// <summary>
-        /// Returns a "safe" envelope that is guaranteed to contain the hot pixel.
-        /// The envelope returned will be larger than the exact envelope of the pixel.
+        ///     Returns a "safe" envelope that is guaranteed to contain the hot pixel.
+        ///     The envelope returned will be larger than the exact envelope of the pixel.
         /// </summary>
         /// <returns>An envelope which contains the pixel</returns>
         public Envelope GetSafeEnvelope()
         {
             if (_safeEnv == null)
             {
-                double safeTolerance = SafeEnvelopeExpansionFactor / _scaleFactor;
+                var safeTolerance = SafeEnvelopeExpansionFactor/_scaleFactor;
                 _safeEnv = new Envelope(Coordinate.X - safeTolerance, Coordinate.X + safeTolerance,
-                                       Coordinate.Y - safeTolerance, Coordinate.Y + safeTolerance);
+                    Coordinate.Y - safeTolerance, Coordinate.Y + safeTolerance);
             }
             return _safeEnv;
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="pt"></param>
         private void InitCorners(Coordinate pt)
@@ -104,18 +103,17 @@ namespace NetTopologySuite.Noding.Snapround
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="val"></param>
         /// <returns></returns>
         private double Scale(double val)
         {
-            return Math.Round(val * _scaleFactor);
+            return Math.Round(val*_scaleFactor);
         }
 
         /// <summary>
-        /// Tests whether the line segment (p0-p1)
-        /// intersects this hot pixel.
+        ///     Tests whether the line segment (p0-p1)
+        ///     intersects this hot pixel.
         /// </summary>
         /// <param name="p0">The first coordinate of the line segment to test</param>
         /// <param name="p1">The second coordinate of the line segment to test</param>
@@ -131,8 +129,8 @@ namespace NetTopologySuite.Noding.Snapround
         }
 
         /// <summary>
-        /// Tests whether the line segment (p0-p1)
-        /// intersects this hot pixel.
+        ///     Tests whether the line segment (p0-p1)
+        ///     intersects this hot pixel.
         /// </summary>
         /// <param name="p"></param>
         /// <param name="pScaled"></param>
@@ -143,7 +141,6 @@ namespace NetTopologySuite.Noding.Snapround
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="p0"></param>
         /// <param name="p1"></param>
@@ -151,12 +148,12 @@ namespace NetTopologySuite.Noding.Snapround
         public bool IntersectsScaled(Coordinate p0, Coordinate p1)
         {
             var segMinx = Math.Min(p0.X, p1.X);
-            double segMaxx = Math.Max(p0.X, p1.X);
-            double segMiny = Math.Min(p0.Y, p1.Y);
-            double segMaxy = Math.Max(p0.Y, p1.Y);
+            var segMaxx = Math.Max(p0.X, p1.X);
+            var segMiny = Math.Min(p0.Y, p1.Y);
+            var segMaxy = Math.Max(p0.Y, p1.Y);
 
-            var isOutsidePixelEnv = _maxx < segMinx || _minx > segMaxx ||
-                                     _maxy < segMiny || _miny > segMaxy;
+            var isOutsidePixelEnv = (_maxx < segMinx) || (_minx > segMaxx) ||
+                                    (_maxy < segMiny) || (_miny > segMaxy);
             if (isOutsidePixelEnv)
                 return false;
             var intersects = IntersectsToleranceSquare(p0, p1);
@@ -166,17 +163,17 @@ namespace NetTopologySuite.Noding.Snapround
         }
 
         /// <summary>
-        /// Tests whether the segment p0-p1 intersects the hot pixel tolerance square.
-        /// Because the tolerance square point set is partially open (along the
-        /// top and right) the test needs to be more sophisticated than
-        /// simply checking for any intersection.  
-        /// However, it can take advantage of the fact that the hot pixel edges
-        /// do not lie on the coordinate grid. 
-        /// It is sufficient to check if any of the following occur:
-        ///  - a proper intersection between the segment and any hot pixel edge.
-        ///  - an intersection between the segment and BOTH the left and bottom hot pixel edges
-        /// (which detects the case where the segment intersects the bottom left hot pixel corner).
-        ///  - an intersection between a segment endpoint and the hot pixel coordinate.
+        ///     Tests whether the segment p0-p1 intersects the hot pixel tolerance square.
+        ///     Because the tolerance square point set is partially open (along the
+        ///     top and right) the test needs to be more sophisticated than
+        ///     simply checking for any intersection.
+        ///     However, it can take advantage of the fact that the hot pixel edges
+        ///     do not lie on the coordinate grid.
+        ///     It is sufficient to check if any of the following occur:
+        ///     - a proper intersection between the segment and any hot pixel edge.
+        ///     - an intersection between the segment and BOTH the left and bottom hot pixel edges
+        ///     (which detects the case where the segment intersects the bottom left hot pixel corner).
+        ///     - an intersection between a segment endpoint and the hot pixel coordinate.
         /// </summary>
         /// <param name="p0"></param>
         /// <param name="p1"></param>
@@ -211,11 +208,11 @@ namespace NetTopologySuite.Noding.Snapround
         }
 
         /// <summary>
-        /// Test whether the given segment intersects
-        /// the closure of this hot pixel.
-        /// This is NOT the test used in the standard snap-rounding
-        /// algorithm, which uses the partially closed tolerance square instead.
-        /// This routine is provided for testing purposes only.
+        ///     Test whether the given segment intersects
+        ///     the closure of this hot pixel.
+        ///     This is NOT the test used in the standard snap-rounding
+        ///     algorithm, which uses the partially closed tolerance square instead.
+        ///     This routine is provided for testing purposes only.
         /// </summary>
         /// <param name="p0"></param>
         /// <param name="p1"></param>
@@ -233,10 +230,10 @@ namespace NetTopologySuite.Noding.Snapround
             return false;
         }
 
-        ///<summary>
-        /// Adds a new node (equal to the snap pt) to the specified segment
-        /// if the segment passes through the hot pixel
-        ///</summary>
+        /// <summary>
+        ///     Adds a new node (equal to the snap pt) to the specified segment
+        ///     if the segment passes through the hot pixel
+        /// </summary>
         /// <param name="segStr"></param>
         /// <param name="segIndex"></param>
         /// <returns><c>true</c> if a node was added to the segment</returns>

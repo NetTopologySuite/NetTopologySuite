@@ -2,6 +2,7 @@
 using GeoAPI.Geometries;
 #if !NET35 && !PCL
 using MapGeometryDelegate = GeoAPI.Func<GeoAPI.Geometries.IGeometry, GeoAPI.Geometries.IGeometry>;
+
 #else
 using MapGeometryDelegate = System.Func<GeoAPI.Geometries.IGeometry, GeoAPI.Geometries.IGeometry>;
 #endif
@@ -9,20 +10,20 @@ using MapGeometryDelegate = System.Func<GeoAPI.Geometries.IGeometry, GeoAPI.Geom
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
-    /// Methods to map various collections
-    /// of <see cref="IGeometry"/>s
-    /// via defined mapping functions.
+    ///     Methods to map various collections
+    ///     of <see cref="IGeometry" />s
+    ///     via defined mapping functions.
     /// </summary>
     /// <author>Martin Davis</author>
     public class GeometryMapper
     {
         /// <summary>
-        /// Maps the members of a <see cref="IGeometry"/>
-        /// (which may be atomic or composite)
-        /// into another <tt>Geometry</tt> of most specific type.
-        /// <tt>null</tt> results are skipped.
-        /// In the case of hierarchical <see cref="IGeometryCollection"/>s,
-        /// only the first level of members are mapped.
+        ///     Maps the members of a <see cref="IGeometry" />
+        ///     (which may be atomic or composite)
+        ///     into another <tt>Geometry</tt> of most specific type.
+        ///     <tt>null</tt> results are skipped.
+        ///     In the case of hierarchical <see cref="IGeometryCollection" />s,
+        ///     only the first level of members are mapped.
         /// </summary>
         /// <param name="geom">The input atomic or composite geometry</param>
         /// <param name="op">The mapping operation delegate</param>
@@ -40,12 +41,12 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Maps the members of a <see cref="IGeometry"/>
-        /// (which may be atomic or composite)
-        /// into another <tt>Geometry</tt> of most specific type.
-        /// <tt>null</tt> results are skipped.
-        /// In the case of hierarchical <see cref="IGeometryCollection"/>s,
-        /// only the first level of members are mapped.
+        ///     Maps the members of a <see cref="IGeometry" />
+        ///     (which may be atomic or composite)
+        ///     into another <tt>Geometry</tt> of most specific type.
+        ///     <tt>null</tt> results are skipped.
+        ///     In the case of hierarchical <see cref="IGeometryCollection" />s,
+        ///     only the first level of members are mapped.
         /// </summary>
         /// <param name="geom">The input atomic or composite geometry</param>
         /// <param name="op">The mapping operation</param>
@@ -75,13 +76,13 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// An interface for geometry functions used for mapping.
+        ///     An interface for geometry functions used for mapping.
         /// </summary>
         /// <author>Martin Davis</author>
         public interface IMapOp
         {
             /// <summary>
-            /// Computes a new geometry value.
+            ///     Computes a new geometry value.
             /// </summary>
             /// <param name="g">The input geometry</param>
             /// <returns>A result geometry</returns>

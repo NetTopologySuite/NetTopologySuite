@@ -3,30 +3,30 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Algorithm.Locate
 {
-    ///<summary>
-    /// An interface for classes which determine the <see cref="Location"/> of
-    /// points in areal geometries.
+    /// <summary>
+    ///     An interface for classes which determine the <see cref="Location" /> of
+    ///     points in areal geometries.
     /// </summary>
     /// <author>Martin Davis</author>
     public interface IPointOnGeometryLocator
     {
-        ///<summary>
-        /// Determines the <see cref="Location"/> of a point in an areal <see cref="IGeometry"/>.
-        ///</summary>
-        ///<param name="p">The point to test</param>
-        ///<returns>The location of the point in the geometry</returns>
+        /// <summary>
+        ///     Determines the <see cref="Location" /> of a point in an areal <see cref="IGeometry" />.
+        /// </summary>
+        /// <param name="p">The point to test</param>
+        /// <returns>The location of the point in the geometry</returns>
         Location Locate(Coordinate p);
     }
 
     /// <summary>
-    /// Static methods for <see cref="IPointOnGeometryLocator"/> classes
+    ///     Static methods for <see cref="IPointOnGeometryLocator" /> classes
     /// </summary>
     public static class PointOnGeometryLocatorExtensions
     {
-        /// <summary> 
-        /// Convenience method to test a point for intersection with a geometry
-        /// <para/>
-        /// The geometry is wrapped in a <see cref="IPointOnGeometryLocator"/> class.
+        /// <summary>
+        ///     Convenience method to test a point for intersection with a geometry
+        ///     <para />
+        ///     The geometry is wrapped in a <see cref="IPointOnGeometryLocator" /> class.
         /// </summary>
         /// <param name="locator">The locator to use.</param>
         /// <param name="coordinate">The coordinate to test.</param>
@@ -48,7 +48,8 @@ namespace NetTopologySuite.Algorithm.Locate
                     return false;
 
                 default:
-                    throw new InvalidOperationException("IPointOnGeometryLocator.Locate should never return anything other than Boundary, Interior, or Exterior.");
+                    throw new InvalidOperationException(
+                        "IPointOnGeometryLocator.Locate should never return anything other than Boundary, Interior, or Exterior.");
             }
         }
     }

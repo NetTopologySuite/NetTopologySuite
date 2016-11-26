@@ -6,20 +6,20 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Shape.Random
 {
     /// <summary>
-    /// Creates random point sets contained in a
-    /// region defined by either a rectangular or a polygonal extent.
+    ///     Creates random point sets contained in a
+    ///     region defined by either a rectangular or a polygonal extent.
     /// </summary>
     /// <author>mbdavis</author>
     public class RandomPointsBuilder : GeometricShapeBuilder
     {
         protected static readonly System.Random Rnd = new System.Random();
-
-        private IGeometry _maskPoly;
         private IPointOnGeometryLocator _extentLocator;
 
+        private IGeometry _maskPoly;
+
         /// <summary>
-        /// Create a shape factory which will create shapes using the default
-        /// <see cref="IGeometryFactory"/>.
+        ///     Create a shape factory which will create shapes using the default
+        ///     <see cref="IGeometryFactory" />.
         /// </summary>
         public RandomPointsBuilder()
             : this(new GeometryFactory())
@@ -27,8 +27,8 @@ namespace NetTopologySuite.Shape.Random
         }
 
         /// <summary>
-        /// Create a shape factory which will create shapes using the given
-        /// <see cref="IGeometryFactory"/>
+        ///     Create a shape factory which will create shapes using the given
+        ///     <see cref="IGeometryFactory" />
         /// </summary>
         /// <param name="geomFact">The factory to use</param>
         public RandomPointsBuilder(IGeometryFactory geomFact)
@@ -37,7 +37,7 @@ namespace NetTopologySuite.Shape.Random
         }
 
         /// <summary>
-        /// Sets a polygonal mask.
+        ///     Sets a polygonal mask.
         /// </summary>
         /// <exception cref="ArgumentException">if the mask is not polygonal</exception>
         public void SetExtent(IGeometry mask)
@@ -53,11 +53,11 @@ namespace NetTopologySuite.Shape.Random
         public override IGeometry GetGeometry()
         {
             var pts = new Coordinate[NumPoints];
-            int i = 0;
+            var i = 0;
             while (i < NumPoints)
             {
                 var p = CreateRandomCoord(Extent);
-                if (_extentLocator != null && !IsInExtent(p))
+                if ((_extentLocator != null) && !IsInExtent(p))
                     continue;
                 pts[i++] = p;
             }
@@ -84,8 +84,8 @@ namespace NetTopologySuite.Shape.Random
 
         protected Coordinate CreateRandomCoord(Envelope env)
         {
-            var x = env.MinX + env.Width * Rnd.NextDouble();
-            var y = env.MinY + env.Height * Rnd.NextDouble();
+            var x = env.MinX + env.Width*Rnd.NextDouble();
+            var y = env.MinY + env.Height*Rnd.NextDouble();
 
             return CreateCoord(x, y);
         }

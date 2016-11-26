@@ -6,13 +6,14 @@ using NetTopologySuite.Operation.Predicate;
 namespace NetTopologySuite.Geometries.Prepared
 {
     /// <summary>
-    /// A prepared version for <see cref="IPolygonal"/> geometries.
-    /// This class supports both <see cref="IPolygon"/>s and <see cref="IMultiPolygon"/>s.
-    /// <para>This class does <b>not</b> support MultiPolygons which are non-valid
-    /// (e.g. with overlapping elements).
-    /// </para>
-    /// <para/>
-    /// Instances of this class are thread-safe and immutable.
+    ///     A prepared version for <see cref="IPolygonal" /> geometries.
+    ///     This class supports both <see cref="IPolygon" />s and <see cref="IMultiPolygon" />s.
+    ///     <para>
+    ///         This class does <b>not</b> support MultiPolygons which are non-valid
+    ///         (e.g. with overlapping elements).
+    ///     </para>
+    ///     <para />
+    ///     Instances of this class are thread-safe and immutable.
     /// </summary>
     /// <author>mbdavis</author>
     public class PreparedPolygon : BasicPreparedGeometry
@@ -20,11 +21,11 @@ namespace NetTopologySuite.Geometries.Prepared
         private readonly bool _isRectangle;
         // create these lazily, since they are expensive
         private readonly object _lockSif = new object(), _lockPia = new object();
-        private volatile FastSegmentSetIntersectionFinder _segIntFinder;
         private volatile IPointOnGeometryLocator _pia;
+        private volatile FastSegmentSetIntersectionFinder _segIntFinder;
 
         public PreparedPolygon(IPolygonal poly)
-            : base((IGeometry)poly)
+            : base((IGeometry) poly)
         {
             _isRectangle = Geometry.IsRectangle;
         }
@@ -40,13 +41,12 @@ namespace NetTopologySuite.Geometries.Prepared
                  * to this approach.
                  */
                 if (_segIntFinder == null)
-                {
                     lock (_lockSif)
                     {
                         if (_segIntFinder == null)
-                            _segIntFinder = new FastSegmentSetIntersectionFinder(SegmentStringUtil.ExtractSegmentStrings(Geometry));
+                            _segIntFinder =
+                                new FastSegmentSetIntersectionFinder(SegmentStringUtil.ExtractSegmentStrings(Geometry));
                     }
-                }
 
                 return _segIntFinder;
             }
@@ -57,13 +57,11 @@ namespace NetTopologySuite.Geometries.Prepared
             get
             {
                 if (_pia == null)
-                {
                     lock (_lockPia)
                     {
                         if (_pia == null)
                             _pia = new IndexedPointInAreaLocator(Geometry);
                     }
-                }
 
                 return _pia;
             }
@@ -76,9 +74,7 @@ namespace NetTopologySuite.Geometries.Prepared
 
             // optimization for rectangles
             if (_isRectangle)
-            {
-                return RectangleIntersects.Intersects((IPolygon)Geometry, g);
-            }
+                return RectangleIntersects.Intersects((IPolygon) Geometry, g);
 
             return PreparedPolygonIntersects.Intersects(this, g);
         }
@@ -91,9 +87,7 @@ namespace NetTopologySuite.Geometries.Prepared
 
             // optimization for rectangles
             if (_isRectangle)
-            {
-                return RectangleContains.Contains((IPolygon)Geometry, g);
-            }
+                return RectangleContains.Contains((IPolygon) Geometry, g);
 
             return PreparedPolygonContains.Contains(this, g);
         }
@@ -113,9 +107,7 @@ namespace NetTopologySuite.Geometries.Prepared
                 return false;
             // optimization for rectangle arguments
             if (_isRectangle)
-            {
                 return true;
-            }
             return PreparedPolygonCovers.Covers(this, g);
         }
     }

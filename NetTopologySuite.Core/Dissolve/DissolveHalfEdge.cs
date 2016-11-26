@@ -4,23 +4,25 @@ using NetTopologySuite.EdgeGraph;
 namespace NetTopologySuite.Dissolve
 {
     /// <summary>
-    /// A HalfEdge which carries information
-    /// required to support <see cref="LineDissolver"/>.
+    ///     A HalfEdge which carries information
+    ///     required to support <see cref="LineDissolver" />.
     /// </summary>
     public class DissolveHalfEdge : MarkHalfEdge
     {
         public DissolveHalfEdge(Coordinate orig)
-            : base(orig) { }
+            : base(orig)
+        {
+        }
 
         /// <summary>
-        /// Tests whether this edge is the starting segment
-        /// in a LineString being dissolved.
+        ///     Tests whether this edge is the starting segment
+        ///     in a LineString being dissolved.
         /// </summary>
-        /// <returns><c>true</c> if this edge is a start segment</returns>        
+        /// <returns><c>true</c> if this edge is a start segment</returns>
         public bool IsStart { get; private set; }
 
         /// <summary>
-        /// Sets this edge to be the start segment of an input LineString.
+        ///     Sets this edge to be the start segment of an input LineString.
         /// </summary>
         public void SetStart()
         {

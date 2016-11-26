@@ -7,6 +7,15 @@ namespace NetTopologySuite.Shape.Fractal
 {
     public class KochSnowflakeBuilder : GeometricShapeBuilder
     {
+        private const double OneThird = 1.0/3.0;
+        private const double TwoThirds = 2.0/3.0;
+
+        /// <summary>
+        ///     The height of an equilateral triangle of side one
+        /// </summary>
+        private static readonly double HeightFactor = Math.Sin(Math.PI/3.0);
+
+        private static readonly double ThirdHeight = HeightFactor/3.0;
         private readonly CoordinateList _coordList = new CoordinateList();
 
         public KochSnowflakeBuilder(IGeometryFactory geomFactory)
@@ -16,9 +25,9 @@ namespace NetTopologySuite.Shape.Fractal
 
         private static int RecursionLevelForSize(int numPts)
         {
-            var pow4 = numPts / 3d;
-            var exp = Math.Log(pow4) / Math.Log(4);
-            return (int)exp;
+            var pow4 = numPts/3d;
+            var exp = Math.Log(pow4)/Math.Log(4);
+            return (int) exp;
         }
 
         public override IGeometry GetGeometry()
@@ -27,28 +36,18 @@ namespace NetTopologySuite.Shape.Fractal
             var baseLine = GetSquareBaseLine();
             var pts = GetBoundary(level, baseLine.GetCoordinate(0), baseLine.Length);
             return GeomFactory.CreatePolygon(
-                                GeomFactory.CreateLinearRing(pts), null);
+                GeomFactory.CreateLinearRing(pts), null);
         }
-
-        /// <summary>
-        /// The height of an equilateral triangle of side one
-        /// </summary>
-        private static readonly double HeightFactor = Math.Sin(Math.PI / 3.0);
-        private const double OneThird = 1.0 / 3.0;
-        private static readonly double ThirdHeight = HeightFactor / 3.0;
-        private const double TwoThirds = 2.0 / 3.0;
 
         private Coordinate[] GetBoundary(int level, Coordinate origin, double width)
         {
             var y = origin.Y;
             // for all levels beyond 0 need to vertically shift shape by height of one "arm" to centre it
             if (level > 0)
-            {
-                y += ThirdHeight * width;
-            }
+                y += ThirdHeight*width;
 
             var p0 = new Coordinate(origin.X, y);
-            var p1 = new Coordinate(origin.X + width / 2, y + width * HeightFactor);
+            var p1 = new Coordinate(origin.X + width/2, y + width*HeightFactor);
             var p2 = new Coordinate(origin.X + width, y);
             AddSide(level, p0, p1);
             AddSide(level, p1, p2);

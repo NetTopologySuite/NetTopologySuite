@@ -1,58 +1,34 @@
-using System;
 using System.Diagnostics;
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Operation.Buffer.Validate
 {
     /// <summary>
-    /// Validates that the result of a buffer operation
-    /// is geometrically correct, within a computed tolerance.
+    ///     Validates that the result of a buffer operation
+    ///     is geometrically correct, within a computed tolerance.
     /// </summary>
     /// <remarks>
-    /// <para>This is a heuristic test, and may return false positive results
-    /// (I.e. it may fail to detect an invalid result.)
-    /// It should never return a false negative result, however
-    /// (I.e. it should never report a valid result as invalid.)</para>
-    /// <para>This test may be (much) more expensive than the original buffer computation.</para>
+    ///     <para>
+    ///         This is a heuristic test, and may return false positive results
+    ///         (I.e. it may fail to detect an invalid result.)
+    ///         It should never return a false negative result, however
+    ///         (I.e. it should never report a valid result as invalid.)
+    ///     </para>
+    ///     <para>This test may be (much) more expensive than the original buffer computation.</para>
     /// </remarks>
     /// <author>Martin Davis</author>
     public class BufferResultValidator
     {
-        public static bool Verbose;
-
         /**
          * Maximum allowable fraction of buffer distance the
          * actual distance can differ by.
          * 1% sometimes causes an error - 1.2% should be safe.
          */
         private const double MaxEnvDiffFrac = .012;
-
-        public static bool IsValid(IGeometry g, double distance, IGeometry result)
-        {
-            BufferResultValidator validator = new BufferResultValidator(g, distance, result);
-            if (validator.IsValid())
-                return true;
-            return false;
-        }
-
-        ///<summary>Checks whether the geometry buffer is valid, and returns an error message if not.
-        ///</summary>
-        /// <param name="g"></param>
-        /// <param name="distance"></param>
-        /// <param name="result"></param>
-        /// <returns>An appropriate error message<br/>
-        /// or <c>null</c>if the buffer is valid</returns>
-        ///
-        public static String IsValidMessage(IGeometry g, double distance, IGeometry result)
-        {
-            var validator = new BufferResultValidator(g, distance, result);
-            if (!validator.IsValid())
-                return validator.ErrorMessage;
-            return null;
-        }
+        public static bool Verbose;
+        private readonly double _distance;
 
         private readonly IGeometry _input;
-        private readonly double _distance;
         private readonly IGeometry _result;
         private bool _isValid = true;
 
@@ -61,6 +37,58 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             _input = input;
             _distance = distance;
             _result = result;
+        }
+
+        /// <summary>
+        ///     Gets the error message
+        /// </summary>
+        public string ErrorMessage { get; private set; }
+
+        /// <summary>
+        ///     Gets the error location
+        /// </summary>
+        public Coordinate ErrorLocation { get; private set; }
+
+        /// <summary>
+        ///     Gets a geometry which indicates the location and nature of a validation failure.
+        ///     <para>
+        ///         If the failure is due to the buffer curve being too far or too close
+        ///         to the input, the indicator is a line segment showing the location and size
+        ///         of the discrepancy.
+        ///     </para>
+        /// </summary>
+        /// <returns>
+        ///     A geometric error indicator<br />
+        ///     or
+        ///     <value>null</value>
+        ///     , if no error was found
+        /// </returns>
+        public IGeometry ErrorIndicator { get; private set; }
+
+        public static bool IsValid(IGeometry g, double distance, IGeometry result)
+        {
+            var validator = new BufferResultValidator(g, distance, result);
+            if (validator.IsValid())
+                return true;
+            return false;
+        }
+
+        /// <summary>
+        ///     Checks whether the geometry buffer is valid, and returns an error message if not.
+        /// </summary>
+        /// <param name="g"></param>
+        /// <param name="distance"></param>
+        /// <param name="result"></param>
+        /// <returns>
+        ///     An appropriate error message<br />
+        ///     or <c>null</c>if the buffer is valid
+        /// </returns>
+        public static string IsValidMessage(IGeometry g, double distance, IGeometry result)
+        {
+            var validator = new BufferResultValidator(g, distance, result);
+            if (!validator.IsValid())
+                return validator.ErrorMessage;
+            return null;
         }
 
         public bool IsValid()
@@ -77,41 +105,19 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             return _isValid;
         }
 
-        /// <summary>
-        /// Gets the error message
-        /// </summary>
-        public String ErrorMessage { get; private set; }
-
-        /// <summary>
-        /// Gets the error location
-        /// </summary>
-        public Coordinate ErrorLocation { get; private set; }
-
-        /// <summary>
-        /// Gets a geometry which indicates the location and nature of a validation failure.
-        /// <para>
-        /// If the failure is due to the buffer curve being too far or too close
-        /// to the input, the indicator is a line segment showing the location and size
-        /// of the discrepancy.
-        /// </para>
-        /// </summary>
-        /// <returns>A geometric error indicator<br/>
-        /// or <value>null</value>, if no error was found</returns>
-        public IGeometry ErrorIndicator { get; private set; }
-
-        private void Report(String checkName)
+        private void Report(string checkName)
         {
             if (!Verbose) return;
 #if !PCL
             Debug.WriteLine("Check " + checkName + ": "
-                + (_isValid ? "passed" : "FAILED"));
+                            + (_isValid ? "passed" : "FAILED"));
 #endif
         }
 
         private void CheckPolygonal()
         {
             if (!(_result is IPolygon
-                    || _result is IMultiPolygon))
+                  || _result is IMultiPolygon))
                 _isValid = false;
             ErrorMessage = "Result is not polygonal";
             ErrorIndicator = _result;
@@ -139,7 +145,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         {
             if (_distance < 0.0) return;
 
-            double padding = _distance * MaxEnvDiffFrac;
+            var padding = _distance*MaxEnvDiffFrac;
             if (padding == 0.0) padding = 0.001;
 
             var expectedEnv = new Envelope(_input.EnvelopeInternal);
@@ -159,18 +165,18 @@ namespace NetTopologySuite.Operation.Buffer.Validate
 
         private void CheckArea()
         {
-            double inputArea = _input.Area;
-            double resultArea = _result.Area;
+            var inputArea = _input.Area;
+            var resultArea = _result.Area;
 
-            if (_distance > 0.0
-                    && inputArea > resultArea)
+            if ((_distance > 0.0)
+                && (inputArea > resultArea))
             {
                 _isValid = false;
                 ErrorMessage = "Area of positive buffer is smaller than input";
                 ErrorIndicator = _result;
             }
-            if (_distance < 0.0
-                    && inputArea < resultArea)
+            if ((_distance < 0.0)
+                && (inputArea < resultArea))
             {
                 _isValid = false;
                 ErrorMessage = "Area of negative buffer is larger than input";
@@ -181,7 +187,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
 
         private void CheckDistance()
         {
-            BufferDistanceValidator distValid = new BufferDistanceValidator(_input, _distance, _result);
+            var distValid = new BufferDistanceValidator(_input, _distance, _result);
             if (!distValid.IsValid())
             {
                 _isValid = false;

@@ -7,15 +7,30 @@ using NetTopologySuite.Triangulate.QuadEdge;
 namespace NetTopologySuite.Triangulate
 {
     /// <summary>
-    /// A utility class which creates Delaunay Trianglulations
-    /// from collections of points and extract the resulting 
-    /// triangulation edges or triangles as geometries. 
+    ///     A utility class which creates Delaunay Trianglulations
+    ///     from collections of points and extract the resulting
+    ///     triangulation edges or triangles as geometries.
     /// </summary>
     /// <author>Martin Davis</author>
     public class DelaunayTriangulationBuilder
     {
+        private ICollection<Coordinate> _siteCoords;
+        private QuadEdgeSubdivision _subdiv;
+        private double _tolerance;
+
         /// <summary>
-        /// Extracts the unique <see cref="Coordinate"/>s from the given <see cref="IGeometry"/>.
+        ///     Sets the snapping tolerance which will be used
+        ///     to improved the robustness of the triangulation computation.
+        ///     A tolerance of 0.0 specifies that no snapping will take place.
+        /// </summary>
+        ///// <param name="tolerance">the tolerance distance to use</param>
+        public double Tolerance
+        {
+            set { _tolerance = value; }
+        }
+
+        /// <summary>
+        ///     Extracts the unique <see cref="Coordinate" />s from the given <see cref="IGeometry" />.
         /// </summary>
         /// <param name="geom">the geometry to extract from</param>
         /// <returns>a List of the unique Coordinates</returns>
@@ -24,7 +39,7 @@ namespace NetTopologySuite.Triangulate
             if (geom == null)
                 return new CoordinateList();
 
-            Coordinate[] coords = geom.Coordinates;
+            var coords = geom.Coordinates;
             return Unique(coords);
         }
 
@@ -37,7 +52,7 @@ namespace NetTopologySuite.Triangulate
         }
 
         /// <summary>
-        /// Converts all <see cref="Coordinate"/>s in a collection to <see cref="Vertex"/>es.
+        ///     Converts all <see cref="Coordinate" />s in a collection to <see cref="Vertex" />es.
         /// </summary>
         /// <param name="coords">the coordinates to convert</param>
         /// <returns>a List of Vertex objects</returns>
@@ -45,34 +60,26 @@ namespace NetTopologySuite.Triangulate
         {
             var verts = new List<Vertex>();
             foreach (var coord in coords)
-            {
                 verts.Add(new Vertex(coord));
-            }
             return verts;
         }
 
         /// <summary>
-        /// Computes the <see cref="Envelope"/> of a collection of <see cref="Coordinate"/>s.
+        ///     Computes the <see cref="Envelope" /> of a collection of <see cref="Coordinate" />s.
         /// </summary>
         /// <param name="coords">a List of Coordinates</param>
         /// <returns>the envelope of the set of coordinates</returns>
         public static Envelope Envelope(ICollection<Coordinate> coords)
         {
-            Envelope env = new Envelope();
+            var env = new Envelope();
             foreach (var coord in coords)
-            {
                 env.ExpandToInclude(coord);
-            }
             return env;
         }
 
-        private ICollection<Coordinate> _siteCoords;
-        private double _tolerance;
-        private QuadEdgeSubdivision _subdiv;
-
         /// <summary>
-        /// Sets the sites (vertices) which will be triangulated.
-        /// All vertices of the given geometry will be used as sites.
+        ///     Sets the sites (vertices) which will be triangulated.
+        ///     All vertices of the given geometry will be used as sites.
         /// </summary>
         /// <param name="geom">the geometry from which the sites will be extracted.</param>
         public void SetSites(IGeometry geom)
@@ -82,25 +89,14 @@ namespace NetTopologySuite.Triangulate
         }
 
         /// <summary>
-        /// Sets the sites (vertices) which will be triangulated
-        /// from a collection of <see cref="Coordinate"/>s.
+        ///     Sets the sites (vertices) which will be triangulated
+        ///     from a collection of <see cref="Coordinate" />s.
         /// </summary>
         /// <param name="coords">a collection of Coordinates.</param>
         public void SetSites(ICollection<Coordinate> coords)
         {
             // remove any duplicate points (they will cause the triangulation to fail)
             _siteCoords = Unique(CoordinateArrays.ToCoordinateArray(coords));
-        }
-
-        /// <summary>
-        /// Sets the snapping tolerance which will be used
-        /// to improved the robustness of the triangulation computation.
-        /// A tolerance of 0.0 specifies that no snapping will take place.
-        /// </summary>
-        ///// <param name="tolerance">the tolerance distance to use</param>
-        public double Tolerance
-        {
-            set {  _tolerance = value; }
         }
 
         private void Create()
@@ -110,12 +106,12 @@ namespace NetTopologySuite.Triangulate
             var siteEnv = Envelope(_siteCoords);
             var vertices = ToVertices(_siteCoords);
             _subdiv = new QuadEdgeSubdivision(siteEnv, _tolerance);
-            IncrementalDelaunayTriangulator triangulator = new IncrementalDelaunayTriangulator(_subdiv);
+            var triangulator = new IncrementalDelaunayTriangulator(_subdiv);
             triangulator.InsertSites(vertices);
         }
 
         /// <summary>
-        /// Gets the <see cref="QuadEdgeSubdivision"/> which models the computed triangulation.
+        ///     Gets the <see cref="QuadEdgeSubdivision" /> which models the computed triangulation.
         /// </summary>
         /// <returns>the subdivision containing the triangulation</returns>
         public QuadEdgeSubdivision GetSubdivision()
@@ -125,7 +121,7 @@ namespace NetTopologySuite.Triangulate
         }
 
         /// <summary>
-        /// Gets the edges of the computed triangulation as a <see cref="IMultiLineString"/>.
+        ///     Gets the edges of the computed triangulation as a <see cref="IMultiLineString" />.
         /// </summary>
         /// <param name="geomFact">the geometry factory to use to create the output</param>
         /// <returns>the edges of the triangulation</returns>
@@ -136,8 +132,8 @@ namespace NetTopologySuite.Triangulate
         }
 
         /// <summary>
-        /// Gets the faces of the computed triangulation as a <see cref="IGeometryCollection"/> 
-        /// of <see cref="Polygon"/>.
+        ///     Gets the faces of the computed triangulation as a <see cref="IGeometryCollection" />
+        ///     of <see cref="Polygon" />.
         /// </summary>
         /// <param name="geomFact">the geometry factory to use to create the output</param>
         /// <returns>the faces of the triangulation</returns>

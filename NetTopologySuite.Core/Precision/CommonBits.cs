@@ -1,22 +1,30 @@
 using NetTopologySuite.Utilities;
-
 using BitConverter = System.BitConverter;
-
 
 namespace NetTopologySuite.Precision
 {
     /// <summary>
-    /// Determines the maximum number of common most-significant
-    /// bits in the mantissa of one or numbers.
-    /// Can be used to compute the double-precision number which
-    /// is represented by the common bits.
-    /// If there are no common bits, the number computed is 0.0.
+    ///     Determines the maximum number of common most-significant
+    ///     bits in the mantissa of one or numbers.
+    ///     Can be used to compute the double-precision number which
+    ///     is represented by the common bits.
+    ///     If there are no common bits, the number computed is 0.0.
     /// </summary>
     public class CommonBits
     {
+        private long _commonBits;
+        private int _commonMantissaBitsCount = 53;
+        private long _commonSignExp;
+
+        private bool _isFirst = true;
+
         /// <summary>
-        /// Computes the bit pattern for the sign and exponent of a
-        /// double-precision number.
+        /// </summary>
+        public double Common => BitConverter.Int64BitsToDouble(_commonBits);
+
+        /// <summary>
+        ///     Computes the bit pattern for the sign and exponent of a
+        ///     double-precision number.
         /// </summary>
         /// <param name="num"></param>
         /// <returns>The bit pattern for the sign and exponent.</returns>
@@ -26,19 +34,20 @@ namespace NetTopologySuite.Precision
         }
 
         /// <summary>
-        /// This computes the number of common most-significant bits in the mantissas
-        /// of two double-precision numbers.
-        /// It does not count the hidden bit, which is always 1.
-        /// It does not determine whether the numbers have the same exponent - if they do
-        /// not, the value computed by this function is meaningless.
+        ///     This computes the number of common most-significant bits in the mantissas
+        ///     of two double-precision numbers.
+        ///     It does not count the hidden bit, which is always 1.
+        ///     It does not determine whether the numbers have the same exponent - if they do
+        ///     not, the value computed by this function is meaningless.
         /// </summary>
         /// <param name="num1"></param>
-        /// /// <param name="num2"></param>
+        /// ///
+        /// <param name="num2"></param>
         /// <returns>The number of common most-significant mantissa bits.</returns>
         public static int NumCommonMostSigMantissaBits(long num1, long num2)
         {
-            int count = 0;
-            for (int i = 52; i >= 0; i--)
+            var count = 0;
+            for (var i = 52; i >= 0; i--)
             {
                 if (GetBit(num1, i) != GetBit(num2, i))
                     return count;
@@ -48,35 +57,30 @@ namespace NetTopologySuite.Precision
         }
 
         /// <summary>
-        /// Zeroes the lower n bits of a bitstring.
+        ///     Zeroes the lower n bits of a bitstring.
         /// </summary>
         /// <param name="bits">The bitstring to alter.</param>
         /// <param name="nBits">the number of bits to zero.</param>
         /// <returns>The zeroed bitstring.</returns>
         public static long ZeroLowerBits(long bits, int nBits)
         {
-            long invMask = (1L << nBits) - 1L;
-            long mask = ~invMask;
-            long zeroed = bits & mask;
+            var invMask = (1L << nBits) - 1L;
+            var mask = ~invMask;
+            var zeroed = bits & mask;
             return zeroed;
         }
 
         /// <summary>
-        /// Extracts the i'th bit of a bitstring.
+        ///     Extracts the i'th bit of a bitstring.
         /// </summary>
         /// <param name="bits">The bitstring to extract from.</param>
         /// <param name="i">The bit to extract.</param>
         /// <returns>The value of the extracted bit.</returns>
         public static int GetBit(long bits, int i)
         {
-            long mask = (1L << i);
+            var mask = 1L << i;
             return (bits & mask) != 0 ? 1 : 0;
         }
-
-        private bool _isFirst = true;
-        private int _commonMantissaBitsCount = 53;
-        private long _commonBits;
-        private long _commonSignExp;
 
         /*
         /// <summary>
@@ -86,12 +90,11 @@ namespace NetTopologySuite.Precision
         */
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="num"></param>
         public void Add(double num)
         {
-            long numBits = BitConverter.DoubleToInt64Bits(num);
+            var numBits = BitConverter.DoubleToInt64Bits(num);
             if (_isFirst)
             {
                 _commonBits = numBits;
@@ -100,7 +103,7 @@ namespace NetTopologySuite.Precision
                 return;
             }
 
-            long numSignExp = SignExpBits(numBits);
+            var numSignExp = SignExpBits(numBits);
             if (numSignExp != _commonSignExp)
             {
                 _commonBits = 0;
@@ -111,23 +114,18 @@ namespace NetTopologySuite.Precision
         }
 
         /// <summary>
-        ///
-        /// </summary>
-        public double Common => BitConverter.Int64BitsToDouble(_commonBits);
-
-        /// <summary>
-        /// A representation of the Double bits formatted for easy readability
+        ///     A representation of the Double bits formatted for easy readability
         /// </summary>
         /// <param name="bits"></param>
         /// <returns></returns>
         public string ToString(long bits)
         {
-            double x = BitConverter.Int64BitsToDouble(bits);
-            string numStr = HexConverter.ConvertAny2Any(bits.ToString(), 10, 2);
-            string padStr = "0000000000000000000000000000000000000000000000000000000000000000" + numStr;
-            string bitStr = padStr.Substring(padStr.Length - 64);
-            string str = bitStr.Substring(0, 1) + "  " + bitStr.Substring(1, 12) + "(exp) "
-                         + bitStr.Substring(12) + " [ " + x + " ]";
+            var x = BitConverter.Int64BitsToDouble(bits);
+            var numStr = HexConverter.ConvertAny2Any(bits.ToString(), 10, 2);
+            var padStr = "0000000000000000000000000000000000000000000000000000000000000000" + numStr;
+            var bitStr = padStr.Substring(padStr.Length - 64);
+            var str = bitStr.Substring(0, 1) + "  " + bitStr.Substring(1, 12) + "(exp) "
+                      + bitStr.Substring(12) + " [ " + x + " ]";
             return str;
         }
     }

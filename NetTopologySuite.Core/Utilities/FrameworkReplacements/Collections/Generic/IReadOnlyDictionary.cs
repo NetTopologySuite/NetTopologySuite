@@ -1,6 +1,7 @@
 ﻿namespace System.Collections.Generic
 {
-    public partial interface IReadOnlyDictionary<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>, IReadOnlyCollection<KeyValuePair<TKey, TValue>>, IEnumerable
+    public interface IReadOnlyDictionary<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>,
+        IReadOnlyCollection<KeyValuePair<TKey, TValue>>, IEnumerable
     {
         TValue this[TKey key] { get; }
         IEnumerable<TKey> Keys { get; }

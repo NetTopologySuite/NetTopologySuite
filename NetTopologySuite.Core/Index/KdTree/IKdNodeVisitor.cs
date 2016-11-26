@@ -34,13 +34,13 @@
 namespace NetTopologySuite.Index.KdTree
 {
     /// <summary>
-    /// A visitor for <see cref="KdNode{T}"/>s in a <see cref="KdTree{T}"/> index.
+    ///     A visitor for <see cref="KdNode{T}" />s in a <see cref="KdTree{T}" /> index.
     /// </summary>
     /// <version>1.7</version>
     public interface IKdNodeVisitor<T> where T : class
     {
         /// <summary>
-        /// Visits a node.
+        ///     Visits a node.
         /// </summary>
         /// <param name="node">The node to visit</param>
         void Visit(KdNode<T> node);

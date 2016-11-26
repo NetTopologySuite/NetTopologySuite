@@ -7,27 +7,26 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 
 [assembly: InternalsVisibleTo("NetTopologySuite.Tests.NUnit, PublicKey=" +
-    "0024000004800000940000000602000000240000525341310004000001000100e5a9697e3d378d"+
-    "e4bdd1607b9a6ea7884823d3909f8de55b573416d9adb0ae25eebc39007d71a7228c500d6e846d"+
-    "54dcc2cd839056c38c0a5e86b73096d90504f753ea67c9b5e61ecfdb8edf0f1dfaf0455e9a0f9e"+
-    "124e16777baefcda2af9a5a9e48f0c3502891c79444dc2d75aa50b75d148e16f1401dcb18bc163"+
-    "8cc764a9")]
+                              "0024000004800000940000000602000000240000525341310004000001000100e5a9697e3d378d" +
+                              "e4bdd1607b9a6ea7884823d3909f8de55b573416d9adb0ae25eebc39007d71a7228c500d6e846d" +
+                              "54dcc2cd839056c38c0a5e86b73096d90504f753ea67c9b5e61ecfdb8edf0f1dfaf0455e9a0f9e" +
+                              "124e16777baefcda2af9a5a9e48f0c3502891c79444dc2d75aa50b75d148e16f1401dcb18bc163" +
+                              "8cc764a9")]
 
 namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
-    /// Locates a subgraph inside a set of subgraphs,
-    /// in order to determine the outside depth of the subgraph.
-    /// The input subgraphs are assumed to have had depths
-    /// already calculated for their edges.
+    ///     Locates a subgraph inside a set of subgraphs,
+    ///     in order to determine the outside depth of the subgraph.
+    ///     The input subgraphs are assumed to have had depths
+    ///     already calculated for their edges.
     /// </summary>
     internal class SubgraphDepthLocater
     {
-        private readonly IList<BufferSubgraph> _subgraphs;
         private readonly LineSegment _seg = new LineSegment();
+        private readonly IList<BufferSubgraph> _subgraphs;
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="subgraphs"></param>
         public SubgraphDepthLocater(IList<BufferSubgraph> subgraphs)
@@ -36,7 +35,6 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
@@ -53,8 +51,8 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Finds all non-horizontal segments intersecting the stabbing line.
-        /// The stabbing line is the ray to the right of stabbingRayLeftPt.
+        ///     Finds all non-horizontal segments intersecting the stabbing line.
+        ///     The stabbing line is the ray to the right of stabbingRayLeftPt.
         /// </summary>
         /// <param name="stabbingRayLeftPt">The left-hand origin of the stabbing line.</param>
         /// <returns>A List of {DepthSegments} intersecting the stabbing line.</returns>
@@ -62,27 +60,26 @@ namespace NetTopologySuite.Operation.Buffer
         {
             IList<DepthSegment> stabbedSegments = new List<DepthSegment>();
             foreach (var bsg in _subgraphs)
-            {
                 FindStabbedSegments(stabbingRayLeftPt, bsg.DirectedEdges, stabbedSegments);
-            }
             return stabbedSegments;
         }
 
         /// <summary>
-        /// Finds all non-horizontal segments intersecting the stabbing line
-        /// in the list of dirEdges.
-        /// The stabbing line is the ray to the right of stabbingRayLeftPt.
+        ///     Finds all non-horizontal segments intersecting the stabbing line
+        ///     in the list of dirEdges.
+        ///     The stabbing line is the ray to the right of stabbingRayLeftPt.
         /// </summary>
         /// <param name="stabbingRayLeftPt">The left-hand origin of the stabbing line.</param>
         /// <param name="dirEdges"></param>
         /// <param name="stabbedSegments">The current list of DepthSegments intersecting the stabbing line.</param>
-        private void FindStabbedSegments(Coordinate stabbingRayLeftPt, IEnumerable<DirectedEdge> dirEdges, IList<DepthSegment> stabbedSegments)
+        private void FindStabbedSegments(Coordinate stabbingRayLeftPt, IEnumerable<DirectedEdge> dirEdges,
+            IList<DepthSegment> stabbedSegments)
         {
             /*
             * Check all forward DirectedEdges only.  This is still general,
             * because each Edge has a forward DirectedEdge.
             */
-            foreach (DirectedEdge de in dirEdges)
+            foreach (var de in dirEdges)
             {
                 if (!de.IsForward)
                     continue;
@@ -91,17 +88,18 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Finds all non-horizontal segments intersecting the stabbing line
-        /// in the input dirEdge.
-        /// The stabbing line is the ray to the right of stabbingRayLeftPt.
+        ///     Finds all non-horizontal segments intersecting the stabbing line
+        ///     in the input dirEdge.
+        ///     The stabbing line is the ray to the right of stabbingRayLeftPt.
         /// </summary>
         /// <param name="stabbingRayLeftPt">The left-hand origin of the stabbing line.</param>
         /// <param name="dirEdge"></param>
         /// <param name="stabbedSegments">The current list of DepthSegments intersecting the stabbing line.</param>
-        private void FindStabbedSegments(Coordinate stabbingRayLeftPt, DirectedEdge dirEdge, IList<DepthSegment> stabbedSegments)
+        private void FindStabbedSegments(Coordinate stabbingRayLeftPt, DirectedEdge dirEdge,
+            IList<DepthSegment> stabbedSegments)
         {
-            Coordinate[] pts = dirEdge.Edge.Coordinates;
-            for (int i = 0; i < pts.Length - 1; i++)
+            var pts = dirEdge.Edge.Coordinates;
+            for (var i = 0; i < pts.Length - 1; i++)
             {
                 _seg.P0 = pts[i];
                 _seg.P1 = pts[i + 1];
@@ -117,13 +115,14 @@ namespace NetTopologySuite.Operation.Buffer
                 if (_seg.IsHorizontal) continue;
 
                 // skip if segment is above or below stabbing line
-                if (stabbingRayLeftPt.Y < _seg.P0.Y || stabbingRayLeftPt.Y > _seg.P1.Y) continue;
+                if ((stabbingRayLeftPt.Y < _seg.P0.Y) || (stabbingRayLeftPt.Y > _seg.P1.Y)) continue;
 
                 // skip if stabbing ray is right of the segment
-                if (CGAlgorithms.ComputeOrientation(_seg.P0, _seg.P1, stabbingRayLeftPt) == CGAlgorithms.Right) continue;
+                if (CGAlgorithms.ComputeOrientation(_seg.P0, _seg.P1, stabbingRayLeftPt) == CGAlgorithms.Right)
+                    continue;
 
                 // stabbing line cuts this segment, so record it
-                int depth = dirEdge.GetDepth(Positions.Left);
+                var depth = dirEdge.GetDepth(Positions.Left);
                 // if segment direction was flipped, use RHS depth instead
                 if (!_seg.P0.Equals(pts[i]))
                     depth = dirEdge.GetDepth(Positions.Right);
@@ -133,20 +132,14 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// A segment from a directed edge which has been assigned a depth value
-        /// for its sides.
+        ///     A segment from a directed edge which has been assigned a depth value
+        ///     for its sides.
         /// </summary>
         internal class DepthSegment : IComparable<DepthSegment>
         {
             private readonly LineSegment _upwardSeg;
 
             /// <summary>
-            ///
-            /// </summary>
-            public int LeftDepth { get; set; }
-
-            /// <summary>
-            ///
             /// </summary>
             /// <param name="seg"></param>
             /// <param name="depth"></param>
@@ -158,24 +151,30 @@ namespace NetTopologySuite.Operation.Buffer
             }
 
             /// <summary>
-            /// Defines a comparison operation on DepthSegments
-            /// which orders them left to right.
-            /// Assumes the segments are normalized.
-            /// <para/>
-            /// The definition of ordering is:
-            /// <list type="Bullet">
-            /// <item>-1 : if DS1.seg is left of or below DS2.seg (DS1 &lt; DS2).</item>
-            /// <item>1 : if DS1.seg is right of or above DS2.seg (DS1 &gt; DS2).</item>
-            /// <item>0 : if the segments are identical</item>
-            /// </list>
+            /// </summary>
+            public int LeftDepth { get; set; }
+
+            /// <summary>
+            ///     Defines a comparison operation on DepthSegments
+            ///     which orders them left to right.
+            ///     Assumes the segments are normalized.
+            ///     <para />
+            ///     The definition of ordering is:
+            ///     <list type="Bullet">
+            ///         <item>-1 : if DS1.seg is left of or below DS2.seg (DS1 &lt; DS2).</item>
+            ///         <item>1 : if DS1.seg is right of or above DS2.seg (DS1 &gt; DS2).</item>
+            ///         <item>0 : if the segments are identical</item>
+            ///     </list>
             /// </summary>
             /// <remarks>
-            /// Known Bugs:
-            /// <list type="Bullet">
-            /// <item>The logic does not obey the <see cref="IComparable.CompareTo"/> contract. 
-            /// This is acceptable for the intended usage, but may cause problems if used with some
-            /// utilities in the .Net standard library (e.g. <see cref="T:System.Collections.List.Sort()"/>.</item>
-            /// </list>
+            ///     Known Bugs:
+            ///     <list type="Bullet">
+            ///         <item>
+            ///             The logic does not obey the <see cref="IComparable.CompareTo" /> contract.
+            ///             This is acceptable for the intended usage, but may cause problems if used with some
+            ///             utilities in the .Net standard library (e.g. <see cref="T:System.Collections.List.Sort()" />.
+            ///         </item>
+            ///     </list>
             /// </remarks>
             /// <param name="other">A DepthSegment</param>
             /// <returns>The comparison value</returns>
@@ -197,7 +196,7 @@ namespace NetTopologySuite.Operation.Buffer
                 * try the opposite call order.
                 * The sign of the result needs to be flipped
                 */
-                orientIndex = -1 * other._upwardSeg.OrientationIndex(_upwardSeg);
+                orientIndex = -1*other._upwardSeg.OrientationIndex(_upwardSeg);
                 if (orientIndex != 0) return orientIndex;
 
                 // otherwise, use standard lexicographic segment ordering
@@ -205,11 +204,11 @@ namespace NetTopologySuite.Operation.Buffer
             }
 
             /// <summary>
-            /// Compare two collinear segments for left-most ordering.
-            /// If segs are vertical, use vertical ordering for comparison.
-            /// If segs are equal, return 0.
-            /// Segments are assumed to be directed so that the second coordinate is >= to the first
-            /// (e.g. up and to the right).
+            ///     Compare two collinear segments for left-most ordering.
+            ///     If segs are vertical, use vertical ordering for comparison.
+            ///     If segs are equal, return 0.
+            ///     Segments are assumed to be directed so that the second coordinate is >= to the first
+            ///     (e.g. up and to the right).
             /// </summary>
             /// <param name="seg0">A segment to compare.</param>
             /// <param name="seg1">A segment to compare.</param>

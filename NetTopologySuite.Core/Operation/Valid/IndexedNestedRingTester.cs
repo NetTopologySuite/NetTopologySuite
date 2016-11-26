@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
@@ -15,9 +14,10 @@ namespace NetTopologySuite.Operation.Valid
      *
      * @version 1.7
      */
+
     public class IndexedNestedRingTester
     {
-        private readonly GeometryGraph _graph;  // used to find non-node vertices
+        private readonly GeometryGraph _graph; // used to find non-node vertices
         private readonly IList<ILineString> _rings = new List<ILineString>();
         private readonly Envelope _totalEnv = new Envelope();
         private ISpatialIndex<ILineString> _index;
@@ -39,15 +39,15 @@ namespace NetTopologySuite.Operation.Valid
         {
             BuildIndex();
 
-            for (int i = 0; i < _rings.Count; i++)
+            for (var i = 0; i < _rings.Count; i++)
             {
-                var innerRing = (ILinearRing)_rings[i];
-                Coordinate[] innerRingPts = innerRing.Coordinates;
+                var innerRing = (ILinearRing) _rings[i];
+                var innerRingPts = innerRing.Coordinates;
 
                 var results = _index.Query(innerRing.EnvelopeInternal);
-                for (int j = 0; j < results.Count; j++)
+                for (var j = 0; j < results.Count; j++)
                 {
-                    var searchRing = (ILinearRing)results[j];
+                    var searchRing = (ILinearRing) results[j];
                     var searchRingPts = searchRing.Coordinates;
 
                     if (innerRing == searchRing)
@@ -56,7 +56,7 @@ namespace NetTopologySuite.Operation.Valid
                     if (!innerRing.EnvelopeInternal.Intersects(searchRing.EnvelopeInternal))
                         continue;
 
-                    Coordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, _graph);
+                    var innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, _graph);
                     // Diego Guidi: removed => see Issue 121
                     //Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
                     /**
@@ -72,7 +72,7 @@ namespace NetTopologySuite.Operation.Valid
                     if (innerRingPt == null)
                         continue;
 
-                    Boolean isInside = CGAlgorithms.IsPointInRing(innerRingPt, searchRingPts);
+                    var isInside = CGAlgorithms.IsPointInRing(innerRingPt, searchRingPts);
                     if (isInside)
                     {
                         NestedPoint = innerRingPt;
@@ -87,9 +87,9 @@ namespace NetTopologySuite.Operation.Valid
         {
             _index = new STRtree<ILineString>();
 
-            for (int i = 0; i < _rings.Count; i++)
+            for (var i = 0; i < _rings.Count; i++)
             {
-                var ring = (ILinearRing)_rings[i];
+                var ring = (ILinearRing) _rings[i];
                 var env = ring.EnvelopeInternal;
                 _index.Insert(env, ring);
             }

@@ -1,33 +1,37 @@
-using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Noding;
 
 namespace NetTopologySuite.Geometries.Prepared
 {
-    ///<summary>
-    /// A base class containing the logic for computes the <i>contains</i>
-    /// and <i>covers</i> spatial relationship predicates
-    /// for a <see cref="PreparedPolygon"/> relative to all other <see cref="IGeometry"/> classes.
-    /// Uses short-circuit tests and indexing to improve performance.
-    ///</summary>
+    /// <summary>
+    ///     A base class containing the logic for computes the <i>contains</i>
+    ///     and <i>covers</i> spatial relationship predicates
+    ///     for a <see cref="PreparedPolygon" /> relative to all other <see cref="IGeometry" /> classes.
+    ///     Uses short-circuit tests and indexing to improve performance.
+    /// </summary>
     /// <remarks>
-    /// <para>
-    /// Contains and covers are very similar, and differ only in how certain
-    /// cases along the boundary are handled.  These cases require
-    /// full topological evaluation to handle, so all the code in
-    /// this class is common to both predicates.
-    /// </para>
-    /// <para>
-    /// It is not possible to short-circuit in all cases, in particular
-    /// in the case where line segments of the test geometry touches the polygon linework.
-    /// In this case full topology must be computed.
-    /// (However, if the test geometry consists of only points, this
-    /// <i>can</i> be evaluated in an optimized fashion.
-    /// </para>
+    ///     <para>
+    ///         Contains and covers are very similar, and differ only in how certain
+    ///         cases along the boundary are handled.  These cases require
+    ///         full topological evaluation to handle, so all the code in
+    ///         this class is common to both predicates.
+    ///     </para>
+    ///     <para>
+    ///         It is not possible to short-circuit in all cases, in particular
+    ///         in the case where line segments of the test geometry touches the polygon linework.
+    ///         In this case full topology must be computed.
+    ///         (However, if the test geometry consists of only points, this
+    ///         <i>can</i> be evaluated in an optimized fashion.
+    ///     </para>
     /// </remarks>
     /// <author>Martin Davis</author>
     internal abstract class AbstractPreparedPolygonContains : PreparedPolygonPredicate
     {
+        private bool _hasNonProperIntersection;
+        private bool _hasProperIntersection;
+
+        // information about geometric situation
+        private bool _hasSegmentIntersection;
         /**
          * This flag controls a difference between contains and covers.
          *
@@ -36,13 +40,8 @@ namespace NetTopologySuite.Geometries.Prepared
          */
         protected bool RequireSomePointInInterior = true;
 
-        // information about geometric situation
-        private bool _hasSegmentIntersection;
-        private bool _hasProperIntersection;
-        private bool _hasNonProperIntersection;
-
-        ///<summary>
-        /// Creates an instance of this operation.
+        /// <summary>
+        ///     Creates an instance of this operation.
         /// </summary>
         /// <param name="prepPoly">The PreparedPolygon to evaluate</param>
         protected AbstractPreparedPolygonContains(PreparedPolygon prepPoly)
@@ -50,10 +49,10 @@ namespace NetTopologySuite.Geometries.Prepared
         {
         }
 
-        ///<summary>
-        /// Evaluate the <i>contains</i> or <i>covers</i> relationship
-        /// for the given geometry.
-        ///</summary>
+        /// <summary>
+        ///     Evaluate the <i>contains</i> or <i>covers</i> relationship
+        ///     for the given geometry.
+        /// </summary>
         /// <param name="geom">the test geometry</param>
         /// <returns>true if the test geometry is contained</returns>
         protected bool Eval(IGeometry geom)
@@ -64,7 +63,7 @@ namespace NetTopologySuite.Geometries.Prepared
              *
              * If a point of any test components does not lie in target, result is false
              */
-            bool isAllInTargetArea = IsAllTestComponentsInTarget(geom);
+            var isAllInTargetArea = IsAllTestComponentsInTarget(geom);
             if (!isAllInTargetArea) return false;
 
             /*
@@ -76,9 +75,9 @@ namespace NetTopologySuite.Geometries.Prepared
              * which implies not contained.
              */
             if (RequireSomePointInInterior
-                    && geom.Dimension == 0)
+                && (geom.Dimension == 0))
             {
-                bool isAnyInTargetInterior = IsAnyTestComponentInTargetInterior(geom);
+                var isAnyInTargetInterior = IsAnyTestComponentInTargetInterior(geom);
                 return isAnyInTargetInterior;
             }
 
@@ -96,7 +95,7 @@ namespace NetTopologySuite.Geometries.Prepared
              * is some portion of the interior of the test geometry lying outside
              * the target, which means that the test is not contained.
              */
-            bool properIntersectionImpliesNotContained = IsProperIntersectionImpliesNotContainedSituation(geom);
+            var properIntersectionImpliesNotContained = IsProperIntersectionImpliesNotContainedSituation(geom);
             // MD - testing only
             //		properIntersectionImpliesNotContained = true;
 
@@ -130,10 +129,7 @@ namespace NetTopologySuite.Geometries.Prepared
              * to the situation along the boundary of the target.
              */
             if (_hasSegmentIntersection)
-            {
                 return FullTopologicalPredicate(geom);
-                //			System.out.println(geom);
-            }
 
             /*
              * This tests for the case where a ring of the target lies inside
@@ -143,7 +139,7 @@ namespace NetTopologySuite.Geometries.Prepared
             if (geom is IPolygonal)
             {
                 // TODO: generalize this to handle GeometryCollections
-                bool isTargetInTestArea = IsAnyTargetComponentInAreaTest(geom, prepPoly.RepresentativePoints);
+                var isTargetInTestArea = IsAnyTargetComponentInAreaTest(geom, prepPoly.RepresentativePoints);
                 if (isTargetInTestArea) return false;
             }
             return true;
@@ -171,7 +167,7 @@ namespace NetTopologySuite.Geometries.Prepared
         }
 
         /// <summary>
-        /// Tests whether a geometry consists of a single polygon with no holes.
+        ///     Tests whether a geometry consists of a single polygon with no holes.
         /// </summary>
         /// <returns>True if the geometry is a single polygon with no holes</returns>
         private static bool IsSingleShell(IGeometry geom)
@@ -179,15 +175,15 @@ namespace NetTopologySuite.Geometries.Prepared
             // handles single-element MultiPolygons, as well as Polygons
             if (geom.NumGeometries != 1) return false;
 
-            IPolygon poly = (IPolygon)geom.GetGeometryN(0);
-            int numHoles = poly.NumInteriorRings;
+            var poly = (IPolygon) geom.GetGeometryN(0);
+            var numHoles = poly.NumInteriorRings;
             if (numHoles == 0) return true;
             return false;
         }
 
         private void FindAndClassifyIntersections(IGeometry geom)
         {
-            IList<ISegmentString> lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
+            var lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
 
             var intDetector = new SegmentIntersectionDetector();
             intDetector.FindAllIntersectionTypes = true;
@@ -198,10 +194,10 @@ namespace NetTopologySuite.Geometries.Prepared
             _hasNonProperIntersection = intDetector.HasNonProperIntersection;
         }
 
-        ///<summary>
-        /// Computes the full topological predicate.
-        /// Used when short-circuit tests are not conclusive.
-        ///</summary>
+        /// <summary>
+        ///     Computes the full topological predicate.
+        ///     Used when short-circuit tests are not conclusive.
+        /// </summary>
         /// <param name="geom">The test geometry</param>
         /// <returns>true if this prepared polygon has the relationship with the test geometry</returns>
         protected abstract bool FullTopologicalPredicate(IGeometry geom);

@@ -18,18 +18,21 @@
 
 namespace RTools_NTS.Util
 {
-	/// <summary>
-	/// This enumerates verbosity levels.
-	/// </summary>
-	public enum VerbosityLevel
-	{
-		/// <summary>For error messages.</summary>
-		Error,
-		/// <summary>For warn messages.</summary>
-		Warn,
-		/// <summary>For info messages.</summary>
-		Info,
-		/// <summary>For debug messages.</summary>
-		Debug,
-	}
+    /// <summary>
+    ///     This enumerates verbosity levels.
+    /// </summary>
+    public enum VerbosityLevel
+    {
+        /// <summary>For error messages.</summary>
+        Error,
+
+        /// <summary>For warn messages.</summary>
+        Warn,
+
+        /// <summary>For info messages.</summary>
+        Info,
+
+        /// <summary>For debug messages.</summary>
+        Debug
+    }
 }

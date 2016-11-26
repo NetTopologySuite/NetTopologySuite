@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <doc>
   <assembly>
     <name>NetTopologySuite</name>
@@ -10,7 +11,8 @@
       </summary>
       <remarks>
         <para>
-          The .Net Topology Suite (NTS) is a .Net API that implements a core set of spatial data operations using an explicit precision model and robust geometric algorithms. NTS is intended to be used in the development of applications that support the validation, cleaning, integration and querying of spatial datasets.<br/>
+          The .Net Topology Suite (NTS) is a .Net API that implements a core set of spatial data operations using an explicit precision model and robust geometric algorithms. NTS is intended to be used in the development of applications that support the validation, cleaning, integration and querying of spatial datasets.
+          <br />
           It is a direct port of the popular Java Topology Suite (JTS).
         </para>
         <para>
@@ -27,4 +29,3 @@
     </member>
   </members>
 </doc>
-

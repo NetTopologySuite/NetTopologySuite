@@ -5,32 +5,32 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 {
     public class LocateFailureException : Exception
     {
-        private static String MsgWithSpatial(String msg, LineSegment seg)
-        {
-            if (seg != null)
-                return msg + " [ " + seg + " ]";
-            return msg;
-        }
-
-        public LocateFailureException(String msg)
-            :base(msg)
+        public LocateFailureException(string msg)
+            : base(msg)
         {
         }
 
-        public LocateFailureException(String msg, LineSegment seg)
-            :base(MsgWithSpatial(msg, seg))
+        public LocateFailureException(string msg, LineSegment seg)
+            : base(MsgWithSpatial(msg, seg))
         {
             Segment = new LineSegment(seg);
         }
 
         public LocateFailureException(LineSegment seg)
-            :base("Locate failed to converge (at edge: "
-                + seg
-                + ").  Possible causes include invalid Subdivision topology or very close sites")
+            : base("Locate failed to converge (at edge: "
+                   + seg
+                   + ").  Possible causes include invalid Subdivision topology or very close sites")
         {
             Segment = new LineSegment(seg);
         }
 
         public LineSegment Segment { get; private set; }
+
+        private static string MsgWithSpatial(string msg, LineSegment seg)
+        {
+            if (seg != null)
+                return msg + " [ " + seg + " ]";
+            return msg;
+        }
     }
 }

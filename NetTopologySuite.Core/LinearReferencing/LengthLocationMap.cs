@@ -3,20 +3,31 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.LinearReferencing
 {
     /// <summary>
-    /// Computes the <see cref="LinearLocation" /> for a given length
-    /// along a linear <see cref="Geometry" />
-    /// Negative lengths are measured in reverse from end of the linear geometry.
-    /// Out-of-range values are clamped.
+    ///     Computes the <see cref="LinearLocation" /> for a given length
+    ///     along a linear <see cref="Geometry" />
+    ///     Negative lengths are measured in reverse from end of the linear geometry.
+    ///     Out-of-range values are clamped.
     /// </summary>
     public class LengthLocationMap
     {
+        private readonly IGeometry _linearGeom;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="LengthLocationMap" /> class.
+        /// </summary>
+        /// <param name="linearGeom">A linear geometry.</param>
+        public LengthLocationMap(IGeometry linearGeom)
+        {
+            _linearGeom = linearGeom;
+        }
+
         // TODO: cache computed cumulative length for each vertex
         // TODO: support user-defined measures
         // TODO: support measure index for fast mapping to a location
 
         /// <summary>
-        /// Computes the <see cref="LinearLocation" /> for a
-        /// given length along a linear <see cref="Geometry" />.
+        ///     Computes the <see cref="LinearLocation" /> for a
+        ///     given length along a linear <see cref="Geometry" />.
         /// </summary>
         /// <param name="linearGeom">The linear geometry to use.</param>
         /// <param name="length">The length index of the location.</param>
@@ -28,10 +39,10 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Computes the <see cref="LinearLocation"/> for a
-        /// given length along a linear <see cref="IGeometry"/>,
-        /// with control over how the location
-        /// is resolved at component endpoints.
+        ///     Computes the <see cref="LinearLocation" /> for a
+        ///     given length along a linear <see cref="IGeometry" />,
+        ///     with control over how the location
+        ///     is resolved at component endpoints.
         /// </summary>
         /// <param name="linearGeom">The linear geometry to use</param>
         /// <param name="length">The length index of the location</param>
@@ -43,8 +54,8 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Computes the length for a given <see cref="LinearLocation" />
-        /// on a linear <see cref="Geometry" />.
+        ///     Computes the length for a given <see cref="LinearLocation" />
+        ///     on a linear <see cref="Geometry" />.
         /// </summary>
         /// <param name="linearGeom">The linear geometry to use.</param>
         /// <param name="loc">The <see cref="LinearLocation" /> index of the location.</param>
@@ -55,22 +66,11 @@ namespace NetTopologySuite.LinearReferencing
             return locater.GetLength(loc);
         }
 
-        private readonly IGeometry _linearGeom;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="LengthLocationMap"/> class.
-        /// </summary>
-        /// <param name="linearGeom">A linear geometry.</param>
-        public LengthLocationMap(IGeometry linearGeom)
-        {
-            _linearGeom = linearGeom;
-        }
-
-        /// <summary>
-        /// Compute the <see cref="LinearLocation" /> corresponding to a length.
-        /// Negative lengths are measured in reverse from end of the linear geometry.
-        /// Out-of-range values are clamped.
-        /// Ambiguous indexes are resolved to the lowest possible location value.
+        ///     Compute the <see cref="LinearLocation" /> corresponding to a length.
+        ///     Negative lengths are measured in reverse from end of the linear geometry.
+        ///     Out-of-range values are clamped.
+        ///     Ambiguous indexes are resolved to the lowest possible location value.
         /// </summary>
         /// <param name="length">The length index.</param>
         /// <returns>The corresponding <see cref="LinearLocation" />.</returns>
@@ -80,11 +80,11 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Compute the <see cref="LinearLocation"/> corresponding to a length.
-        /// Negative lengths are measured in reverse from end of the linear geometry.
-        /// Out-of-range values are clamped.
-        /// Ambiguous indexes are resolved to the lowest or highest possible location value,
-        /// depending on the value of <tt>resolveLower</tt>
+        ///     Compute the <see cref="LinearLocation" /> corresponding to a length.
+        ///     Negative lengths are measured in reverse from end of the linear geometry.
+        ///     Out-of-range values are clamped.
+        ///     Ambiguous indexes are resolved to the lowest or highest possible location value,
+        ///     depending on the value of <tt>resolveLower</tt>
         /// </summary>
         /// <param name="length">The length index</param>
         /// <param name="resolveLower"></param>
@@ -101,14 +101,11 @@ namespace NetTopologySuite.LinearReferencing
             }
             var loc = GetLocationForward(forwardLength);
             if (resolveLower)
-            {
                 return loc;
-            }
             return ResolveHigher(loc);
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="length"></param>
         /// <returns></returns>
@@ -134,8 +131,8 @@ namespace NetTopologySuite.LinearReferencing
                 {
                     if (totalLength == length)
                     {
-                        int compIndex = it.ComponentIndex;
-                        int segIndex = it.VertexIndex;
+                        var compIndex = it.ComponentIndex;
+                        var segIndex = it.VertexIndex;
                         return new LinearLocation(compIndex, segIndex, 0.0);
                     }
                 }
@@ -147,7 +144,7 @@ namespace NetTopologySuite.LinearReferencing
                     // length falls in this segment
                     if (totalLength + segLen > length)
                     {
-                        var frac = (length - totalLength) / segLen;
+                        var frac = (length - totalLength)/segLen;
                         var compIndex = it.ComponentIndex;
                         var segIndex = it.VertexIndex;
                         return new LinearLocation(compIndex, segIndex, frac);
@@ -165,21 +162,20 @@ namespace NetTopologySuite.LinearReferencing
         {
             if (!loc.IsEndpoint(_linearGeom))
                 return loc;
-            int compIndex = loc.ComponentIndex;
+            var compIndex = loc.ComponentIndex;
             // if last component can't resolve any higher
             if (compIndex >= _linearGeom.NumGeometries - 1) return loc;
 
             do
             {
                 compIndex++;
-            } while (compIndex < _linearGeom.NumGeometries - 1
-                && _linearGeom.GetGeometryN(compIndex).Length == 0);
+            } while ((compIndex < _linearGeom.NumGeometries - 1)
+                     && (_linearGeom.GetGeometryN(compIndex).Length == 0));
             // resolve to next higher location
             return new LinearLocation(compIndex, 0, 0.0);
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="loc"></param>
         /// <returns></returns>
@@ -196,11 +192,9 @@ namespace NetTopologySuite.LinearReferencing
                     var p1 = it.SegmentEnd;
                     var segLen = p1.Distance(p0);
                     // length falls in this segment
-                    if (loc.ComponentIndex == it.ComponentIndex
-                        && loc.SegmentIndex == it.VertexIndex)
-                    {
-                        return totalLength + segLen * loc.SegmentFraction;
-                    }
+                    if ((loc.ComponentIndex == it.ComponentIndex)
+                        && (loc.SegmentIndex == it.VertexIndex))
+                        return totalLength + segLen*loc.SegmentFraction;
                     totalLength += segLen;
                 }
                 it.Next();

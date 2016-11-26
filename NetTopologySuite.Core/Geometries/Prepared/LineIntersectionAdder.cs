@@ -6,25 +6,21 @@ using NetTopologySuite.Noding;
 namespace NetTopologySuite.Geometries.Prepared
 {
     /// <summary>
-    /// Computes the intersections between two line segments in <see cref="ISegmentString"/>s
-    /// and adds them to each string.
+    ///     Computes the intersections between two line segments in <see cref="ISegmentString" />s
+    ///     and adds them to each string.
     /// </summary>
     /// <remarks></remarks>
     /// <para>
-    /// The <see cref="ISegmentIntersector"/> is passed to a <see cref="INoder"/>.
+    ///     The <see cref="ISegmentIntersector" /> is passed to a <see cref="INoder" />.
     /// </para>
     /// <para>
-    /// The <see cref="NodedSegmentString.AddIntersections(LineIntersector, int, int)"/> method is called whenever the <see cref="INoder"/>
-    /// detects that two SegmentStrings <i>might</i> intersect.
+    ///     The <see cref="NodedSegmentString.AddIntersections(LineIntersector, int, int)" /> method is called whenever the
+    ///     <see cref="INoder" />
+    ///     detects that two SegmentStrings <i>might</i> intersect.
     /// </para>
     /// <para>This class is an example of the <i>Strategy</i> pattern.</para>
     public class LineIntersectionAdder : ISegmentIntersector
     {
-        public static bool IsAdjacentSegments(int i1, int i2)
-        {
-            return Math.Abs(i1 - i2) == 1;
-        }
-
         /**
          * These variables keep track of what types of intersections were
          * found during ALL edges that have been intersected.
@@ -33,9 +29,9 @@ namespace NetTopologySuite.Geometries.Prepared
         // the proper intersection point found
 
         private bool _isSelfIntersection;
+        public int NumInteriorIntersections;
         //private boolean intersectionFound;
         public int NumIntersections;
-        public int NumInteriorIntersections;
         public int NumProperIntersections;
 
         // testing only
@@ -48,88 +44,58 @@ namespace NetTopologySuite.Geometries.Prepared
 
         public LineIntersector LineIntersector { get; }
 
-        ///<summary>
-        /// Gets the proper intersection point, or <code>null</code> if none was found
-        ///</summary>
+        /// <summary>
+        ///     Gets the proper intersection point, or <code>null</code> if none was found
+        /// </summary>
         public ICoordinate ProperIntersectionPoint { get; }
 
-        public Boolean HasIntersection { get; private set; }
+        public bool HasIntersection { get; private set; }
 
-        ///<summary>
-        /// A proper intersection is an intersection which is interior to at least two
-        /// line segments.
-        ///</summary>
+        /// <summary>
+        ///     A proper intersection is an intersection which is interior to at least two
+        ///     line segments.
+        /// </summary>
         /// <remarks>
-        /// Note that a proper intersection is not necessarily
-        /// in the interior of the entire Geometry, since another edge may have
-        /// an endpoint equal to the intersection, which according to SFS semantics
-        /// can result in the point being on the Boundary of the Geometry.
+        ///     Note that a proper intersection is not necessarily
+        ///     in the interior of the entire Geometry, since another edge may have
+        ///     an endpoint equal to the intersection, which according to SFS semantics
+        ///     can result in the point being on the Boundary of the Geometry.
         /// </remarks>
         public bool HasProperIntersection { get; private set; }
 
-        ///<summary>
-        /// A proper interior intersection is a proper intersection which is <b>not</b>
-        /// contained in the set of boundary nodes set for this SegmentIntersector.
-        ///</summary>
+        /// <summary>
+        ///     A proper interior intersection is a proper intersection which is <b>not</b>
+        ///     contained in the set of boundary nodes set for this SegmentIntersector.
+        /// </summary>
         public bool HasProperInteriorIntersection { get; private set; }
 
-        ///<summary>
-        /// An interior intersection is an intersection which is in the interior of some segment.
-        ///</summary>
+        /// <summary>
+        ///     An interior intersection is an intersection which is in the interior of some segment.
+        /// </summary>
         public bool HasInteriorIntersection { get; private set; }
 
-        ///<summary>
-        /// A trivial intersection is an apparent self-intersection which in fact
-        /// is simply the point shared by adjacent line segments.
-        ///</summary>
+        /// <summary>
+        ///     This method is called by clients of the <see cref="ISegmentIntersector" /> class to process
+        ///     intersections for two segments of the <see cref="ISegmentString" />s being intersected.
+        /// </summary>
         /// <remarks>
-        /// Note that closed edges require a special check for the point shared by the beginning
-        /// and end segments.
-        /// </remarks>
-        private bool IsTrivialIntersection(ISegmentString e0, int segIndex0, ISegmentString e1, int segIndex1)
-        {
-            if (e0 == e1)
-            {
-                if (LineIntersector.IntersectionNum == 1)
-                {
-                    if (IsAdjacentSegments(segIndex0, segIndex1))
-                        return true;
-                    if (e0.IsClosed)
-                    {
-                        int maxSegIndex = e0.Count - 1;
-                        if ((segIndex0 == 0 && segIndex1 == maxSegIndex)
-                            || (segIndex1 == 0 && segIndex0 == maxSegIndex))
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
-            return false;
-        }
-
-        ///<summary>
-        /// This method is called by clients of the <see cref="ISegmentIntersector"/> class to process
-        /// intersections for two segments of the <see cref="ISegmentString"/>s being intersected.
-        ///</summary>
-        /// <remarks>
-        /// Note that some clients (such as <see cref="MonotoneChain"/>s) may optimize away
-        /// this call for segment pairs which they have determined do not intersect
-        /// (e.g. by an disjoint envelope test).
+        ///     Note that some clients (such as <see cref="MonotoneChain" />s) may optimize away
+        ///     this call for segment pairs which they have determined do not intersect
+        ///     (e.g. by an disjoint envelope test).
         /// </remarks>
         public void ProcessIntersections(
-          ISegmentString e0, int segIndex0,
-          ISegmentString e1, int segIndex1
-           )
+            ISegmentString e0, int segIndex0,
+            ISegmentString e1, int segIndex1
+        )
         {
             // don't intersect segment with itself
-            if (e0 == e1 && segIndex0 == segIndex1) return;
+            if ((e0 == e1) && (segIndex0 == segIndex1)) return;
             NumTests++;
 
-            Coordinate p00 = e0.Coordinates[segIndex0];
-            Coordinate p01 = e0.Coordinates[segIndex0 + 1];
-            Coordinate p10 = e1.Coordinates[segIndex1];
-            Coordinate p11 = e1.Coordinates[segIndex1 + 1];
+            var p00 = e0.Coordinates[segIndex0];
+            var p01 = e0.Coordinates[segIndex0 + 1];
+            var p10 = e1.Coordinates[segIndex1];
+            var p11 = e1.Coordinates[segIndex1 + 1];
 
             LineIntersector.ComputeIntersection(p00, p01, p10, p11);
             //if (li.hasIntersection() && li.isProper()) Debug.println(li);
@@ -151,7 +117,7 @@ namespace NetTopologySuite.Geometries.Prepared
                     HasIntersection = true;
 
                     // only add intersection to test geom (the line)
-                    ((NodedSegmentString)e1).AddIntersections(LineIntersector, segIndex1, 1);
+                    ((NodedSegmentString) e1).AddIntersections(LineIntersector, segIndex1, 1);
 
                     if (LineIntersector.IsProper)
                     {
@@ -165,10 +131,40 @@ namespace NetTopologySuite.Geometries.Prepared
             }
         }
 
-        ///<summary>
-        /// Always process all intersections
-        ///</summary>
-        public Boolean IsDone => false;
-    }
+        /// <summary>
+        ///     Always process all intersections
+        /// </summary>
+        public bool IsDone => false;
 
+        public static bool IsAdjacentSegments(int i1, int i2)
+        {
+            return Math.Abs(i1 - i2) == 1;
+        }
+
+        /// <summary>
+        ///     A trivial intersection is an apparent self-intersection which in fact
+        ///     is simply the point shared by adjacent line segments.
+        /// </summary>
+        /// <remarks>
+        ///     Note that closed edges require a special check for the point shared by the beginning
+        ///     and end segments.
+        /// </remarks>
+        private bool IsTrivialIntersection(ISegmentString e0, int segIndex0, ISegmentString e1, int segIndex1)
+        {
+            if (e0 == e1)
+                if (LineIntersector.IntersectionNum == 1)
+                {
+                    if (IsAdjacentSegments(segIndex0, segIndex1))
+                        return true;
+                    if (e0.IsClosed)
+                    {
+                        var maxSegIndex = e0.Count - 1;
+                        if (((segIndex0 == 0) && (segIndex1 == maxSegIndex))
+                            || ((segIndex1 == 0) && (segIndex0 == maxSegIndex)))
+                            return true;
+                    }
+                }
+            return false;
+        }
+    }
 }

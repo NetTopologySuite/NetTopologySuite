@@ -1,15 +1,13 @@
 namespace NetTopologySuite.GeometriesGraph.Index
 {
     /// <summary>
-    /// 
     /// </summary>
     public class MonotoneChain
     {
-        private readonly MonotoneChainEdge mce;
         private readonly int chainIndex;
+        private readonly MonotoneChainEdge mce;
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="mce"></param>
         /// <param name="chainIndex"></param>
@@ -20,7 +18,6 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="mc"></param>
         /// <param name="si"></param>

@@ -5,22 +5,22 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Overlay.Validate
 {
-    ///<summary>
-    /// Finds the most likely <see cref="Location"/> of a point relative to
-    /// the polygonal components of a geometry, using a tolerance value.
-    ///</summary> 
-    ///<remarks>
-    /// If a point is not clearly in the Interior or Exterior,
-    /// it is considered to be on the Boundary.
-    /// In other words, if the point is within the tolerance of the Boundary,
-    /// it is considered to be on the Boundary; otherwise,
-    /// whether it is Interior or Exterior is determined directly.
-    ///</remarks>
+    /// <summary>
+    ///     Finds the most likely <see cref="Location" /> of a point relative to
+    ///     the polygonal components of a geometry, using a tolerance value.
+    /// </summary>
+    /// <remarks>
+    ///     If a point is not clearly in the Interior or Exterior,
+    ///     it is considered to be on the Boundary.
+    ///     In other words, if the point is within the tolerance of the Boundary,
+    ///     it is considered to be on the Boundary; otherwise,
+    ///     whether it is Interior or Exterior is determined directly.
+    /// </remarks>
     /// <author>Martin Davis</author>
     public class FuzzyPointLocator
     {
-        private readonly IGeometry _g;
         private readonly double _boundaryDistanceTolerance;
+        private readonly IGeometry _g;
         private readonly IMultiLineString _linework;
         private readonly PointLocator _ptLocator = new PointLocator();
         private readonly LineSegment _seg = new LineSegment();
@@ -48,30 +48,30 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             return _ptLocator.Locate(pt, _g);
         }
 
-        ///<summary>
-        /// Extracts linework for polygonal components.
-        ///</summary>
-        ///<param name="g">The geometry from which to extract</param>
-        ///<returns>A lineal geometry containing the extracted linework</returns>
+        /// <summary>
+        ///     Extracts linework for polygonal components.
+        /// </summary>
+        /// <param name="g">The geometry from which to extract</param>
+        /// <returns>A lineal geometry containing the extracted linework</returns>
         private static IMultiLineString ExtractLinework(IGeometry g)
         {
-            PolygonalLineworkExtracter extracter = new PolygonalLineworkExtracter();
+            var extracter = new PolygonalLineworkExtracter();
             g.Apply(extracter);
-            List<ILineString> linework = extracter.Linework;
+            var linework = extracter.Linework;
             return g.Factory.CreateMultiLineString(linework.ToArray());
         }
 
         private bool IsWithinToleranceOfBoundary(Coordinate pt)
         {
-            for (int i = 0; i < _linework.NumGeometries; i++)
+            for (var i = 0; i < _linework.NumGeometries; i++)
             {
-                ILineString line = (ILineString)_linework.GetGeometryN(i);
-                ICoordinateSequence seq = line.CoordinateSequence;
-                for (int j = 0; j < seq.Count - 1; j++)
+                var line = (ILineString) _linework.GetGeometryN(i);
+                var seq = line.CoordinateSequence;
+                for (var j = 0; j < seq.Count - 1; j++)
                 {
                     seq.GetCoordinate(j, _seg.P0);
                     seq.GetCoordinate(j + 1, _seg.P1);
-                    double dist = _seg.Distance(pt);
+                    var dist = _seg.Distance(pt);
                     if (dist <= _boundaryDistanceTolerance)
                         return true;
                 }
@@ -80,36 +80,34 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         }
     }
 
-    ///<summary>
-    /// Extracts the LineStrings in the boundaries of all the polygonal elements in the target <see cref="IGeometry"/>.
-    ///</summary>
-    ///<author>Martin Davis</author>
-    class PolygonalLineworkExtracter : IGeometryFilter
+    /// <summary>
+    ///     Extracts the LineStrings in the boundaries of all the polygonal elements in the target <see cref="IGeometry" />.
+    /// </summary>
+    /// <author>Martin Davis</author>
+    internal class PolygonalLineworkExtracter : IGeometryFilter
     {
         public PolygonalLineworkExtracter()
         {
             Linework = new List<ILineString>();
         }
 
-        ///<summary>
-        /// Filters out all linework for polygonal elements
+        /// <summary>
+        ///     Gets the list of polygonal linework.
+        /// </summary>
+        public List<ILineString> Linework { get; }
+
+        /// <summary>
+        ///     Filters out all linework for polygonal elements
         /// </summary>
         public void Filter(IGeometry g)
         {
             if (g is IPolygon)
             {
-                IPolygon poly = (IPolygon)g;
+                var poly = (IPolygon) g;
                 Linework.Add(poly.ExteriorRing);
-                for (int i = 0; i < poly.NumInteriorRings; i++)
-                {
+                for (var i = 0; i < poly.NumInteriorRings; i++)
                     Linework.Add(poly.InteriorRings[i]);
-                }
             }
         }
-
-        ///<summary>
-        /// Gets the list of polygonal linework.
-        ///</summary>
-        public List<ILineString> Linework { get; }
     }
 }

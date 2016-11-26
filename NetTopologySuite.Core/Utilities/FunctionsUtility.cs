@@ -6,15 +6,14 @@ namespace NetTopologySuite.Utilities
 {
     public class FunctionsUtil
     {
-
         public static readonly Envelope DefaultEnvelope = new Envelope(0, 100, 0, 100);
+
+        private static readonly IGeometryFactory Factory = new GeometryFactory();
 
         public static Envelope GetEnvelopeOrDefault(IGeometry g)
         {
             return g == null ? DefaultEnvelope : g.EnvelopeInternal;
         }
-
-        private static readonly IGeometryFactory Factory = new GeometryFactory();
 
         public static IGeometryFactory GetFactoryOrDefault(IGeometry g)
         {
@@ -27,10 +26,8 @@ namespace NetTopologySuite.Utilities
             if (gs == null)
                 return Factory;
             foreach (var g in gs)
-            {
                 if (g != null)
                     return g.Factory ?? Factory;
-            }
             return Factory;
         }
 
@@ -41,7 +38,7 @@ namespace NetTopologySuite.Utilities
             if (geoms.Count == 1)
                 return geoms[0];
             // if parent was a GC, ensure returning a GC
-            if (parentGeom != null && parentGeom.OgcGeometryType == OgcGeometryType.GeometryCollection)
+            if ((parentGeom != null) && (parentGeom.OgcGeometryType == OgcGeometryType.GeometryCollection))
                 return parentGeom.Factory.CreateGeometryCollection(GeometryFactory.ToGeometryArray(geoms));
             // otherwise return MultiGeom
             return GetFactoryOrDefault(geoms).BuildGeometry(geoms);
@@ -58,7 +55,7 @@ namespace NetTopologySuite.Utilities
             var size = 0;
             if (a != null) size++;
             if (b != null) size++;
-            IGeometry[] geoms = new IGeometry[size];
+            var geoms = new IGeometry[size];
             size = 0;
             if (a != null) geoms[size++] = a;
             if (b != null) geoms[size] = b;

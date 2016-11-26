@@ -8,56 +8,114 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.IO.KML
 {
     /// <summary>
-    /// Writes a formatted string containing the KML representation 
-    /// of a JTS <see cref="IGeometry"/>. 
-    /// The output is KML fragments which can be substituted
-    /// wherever the KML <see cref="IGeometry"/> abstract 
-    /// element can be used.
+    ///     Writes a formatted string containing the KML representation
+    ///     of a JTS <see cref="IGeometry" />.
+    ///     The output is KML fragments which can be substituted
+    ///     wherever the KML <see cref="IGeometry" /> abstract
+    ///     element can be used.
     /// </summary>
     /// <remarks>
-    /// Output elements are indented to provide a
-    /// nicely-formatted representation. 
-    /// An output line prefix and maximum
-    /// number of coordinates per line can be specified.
+    ///     Output elements are indented to provide a
+    ///     nicely-formatted representation.
+    ///     An output line prefix and maximum
+    ///     number of coordinates per line can be specified.
     /// </remarks>
     /// <remarks>
-    /// The Z ordinate value output can be forced to be a specific value. 
-    /// The <see cref="Extrude"/> and <see cref="AltitudeMode"/> modes can be set. 
-    /// If set, the corresponding sub-elements will be output.
+    ///     The Z ordinate value output can be forced to be a specific value.
+    ///     The <see cref="Extrude" /> and <see cref="AltitudeMode" /> modes can be set.
+    ///     If set, the corresponding sub-elements will be output.
     /// </remarks>
     public class KMLWriter
     {
         /// <summary>
-        /// The KML standard value <c>clampToGround</c> for use in <see cref="AltitudeMode"/>.
+        ///     The KML standard value <c>clampToGround</c> for use in <see cref="AltitudeMode" />.
         /// </summary>
         public const string AltitudeModeClampToGround = "clampToGround ";
 
         /// <summary>
-        /// The KML standard value <c>relativeToGround</c> for use in <see cref="AltitudeMode"/>.
+        ///     The KML standard value <c>relativeToGround</c> for use in <see cref="AltitudeMode" />.
         /// </summary>
         public const string AltitudeModeRelativeToGround = "relativeToGround  ";
 
         /// <summary>
-        /// The KML standard value <c>absolute</c> for use in <see cref="AltitudeMode"/>.
+        ///     The KML standard value <c>absolute</c> for use in <see cref="AltitudeMode" />.
         /// </summary>
         public const string AltitudeModeAbsolute = "absolute";
 
+        private const int IndentSize = 2;
+        private const string CoordinateSeparator = ",";
+        private const string TupleSeparator = " ";
+        private string _format;
+        private NumberFormatInfo _formatter;
+
+        private int _maxCoordinatesPerLine = 5;
+
+        public KMLWriter()
+        {
+            CreateDefaultFormatter();
+        }
+
         /// <summary>
-        /// Writes a Geometry as KML to a string, using
-        /// a specified Z value.
+        ///     A tag string which is prefixed to every emitted text line.
+        ///     This can be used to indent the geometry text in a containing document.
+        /// </summary>
+        public string LinePrefix { get; set; }
+
+        /// <summary>
+        ///     The maximum number of coordinates to output per line.
+        /// </summary>
+        public int MaxCoordinatesPerLine
+        {
+            get { return _maxCoordinatesPerLine; }
+            set { _maxCoordinatesPerLine = Math.Max(1, value); }
+        }
+
+        /// <summary>
+        ///     The Z value to be output for all coordinates.
+        ///     This overrides any Z value present in the Geometry coordinates.
+        /// </summary>
+        public double Z { get; set; } = double.NaN;
+
+        /// <summary>
+        ///     The flag to be output in the <c>extrude</c> element.
+        /// </summary>
+        public bool Extrude { get; set; }
+
+        /// <summary>
+        ///     The flag to be output in the <c>tesselate</c> element.
+        /// </summary>
+        public bool Tesselate { get; set; }
+
+        /// <summary>
+        ///     The value output in the <c>altitudeMode</c> element.
+        /// </summary>
+        public string AltitudeMode { get; set; }
+
+        /// <summary>
+        ///     The maximum number of decimal places to output in ordinate values.
+        ///     Useful for limiting output size.
+        /// </summary>
+        /// <remarks>
+        ///     negative values set the precision to <see cref="PrecisionModels.Floating" />,
+        ///     like standard behavior.
+        /// </remarks>
+        public int Precision
+        {
+            get { return _formatter.NumberDecimalDigits; }
+            set { CreateFormatter(value); }
+        }
+
+        /// <summary>
+        ///     Writes a Geometry as KML to a string, using
+        ///     a specified Z value.
         /// </summary>
         /// <param name="geometry">the geometry to write</param>
         /// <param name="z">the Z value to use</param>
         /// <returns>a string containing the KML geometry representation</returns>
         public static string WriteGeometry(IGeometry geometry, double z)
         {
-            KMLWriter writer = new KMLWriter { Z = z };
+            var writer = new KMLWriter {Z = z};
             return writer.Write(geometry);
-        }
-
-        public KMLWriter()
-        {
-            CreateDefaultFormatter();
         }
 
         private void CreateDefaultFormatter()
@@ -66,9 +124,9 @@ namespace NetTopologySuite.IO.KML
         }
 
         /// <summary>
-        /// Writes a Geometry as KML to a string, using
-        /// a specified Z value, precision, extrude flag,
-        /// and altitude mode code.
+        ///     Writes a Geometry as KML to a string, using
+        ///     a specified Z value, precision, extrude flag,
+        ///     and altitude mode code.
         /// </summary>
         /// <param name="geometry">the geometry to write</param>
         /// <param name="z">the Z value to use</param>
@@ -79,7 +137,7 @@ namespace NetTopologySuite.IO.KML
         public static string WriteGeometry(IGeometry geometry, double z, int precision,
             bool extrude, string altitudeMode)
         {
-            KMLWriter writer = new KMLWriter
+            var writer = new KMLWriter
             {
                 Z = z,
                 Precision = precision,
@@ -89,99 +147,41 @@ namespace NetTopologySuite.IO.KML
             return writer.Write(geometry);
         }
 
-        private const int IndentSize = 2;
-        private const string CoordinateSeparator = ",";
-        private const string TupleSeparator = " ";
-
-        private int _maxCoordinatesPerLine = 5;
-        private NumberFormatInfo _formatter;
-        private string _format;
-
-        /// <summary>
-        /// A tag string which is prefixed to every emitted text line.
-        /// This can be used to indent the geometry text in a containing document.
-        /// </summary>
-        public string LinePrefix { get; set; }
-
-        /// <summary>
-        /// The maximum number of coordinates to output per line.
-        /// </summary>
-        public int MaxCoordinatesPerLine
-        {
-            get { return _maxCoordinatesPerLine; }
-            set { _maxCoordinatesPerLine = Math.Max(1, value); }
-        }
-
-        /// <summary>
-        /// The Z value to be output for all coordinates.
-        /// This overrides any Z value present in the Geometry coordinates.
-        /// </summary>
-        public double Z { get; set; } = Double.NaN;
-
-        /// <summary>
-        /// The flag to be output in the <c>extrude</c> element.
-        /// </summary>
-        public bool Extrude { get; set; }
-
-        /// <summary>
-        /// The flag to be output in the <c>tesselate</c> element.
-        /// </summary>
-        public bool Tesselate { get; set; }
-
-        /// <summary>
-        /// The value output in the <c>altitudeMode</c> element.
-        /// </summary>
-        public string AltitudeMode { get; set; }
-
-        /// <summary>
-        /// The maximum number of decimal places to output in ordinate values.
-        /// Useful for limiting output size.
-        /// </summary>
-        /// <remarks>
-        /// negative values set the precision to <see cref="PrecisionModels.Floating"/>,
-        /// like standard behavior.
-        /// </remarks>
-        public int Precision
-        {
-            get { return _formatter.NumberDecimalDigits; }
-            set { CreateFormatter(value); }
-        }
-
         private void CreateFormatter(int precision)
         {
             IPrecisionModel precisionModel = precision < 0
                 ? new PrecisionModel(PrecisionModels.Floating)
                 : new PrecisionModel(precision);
             _formatter = WKTWriter.CreateFormatter(precisionModel);
-            string digits = WKTWriter.StringOfChar('#', _formatter.NumberDecimalDigits);
-            _format = String.Format("0.{0}", digits);
+            var digits = WKTWriter.StringOfChar('#', _formatter.NumberDecimalDigits);
+            _format = string.Format("0.{0}", digits);
         }
 
         /// <summary>
-        /// Writes a <see cref="IGeometry"/> in KML format as a string.
+        ///     Writes a <see cref="IGeometry" /> in KML format as a string.
         /// </summary>
         /// <param name="geom">the geometry to write</param>
         /// <returns>a string containing the KML geometry representation</returns>
         public string Write(IGeometry geom)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             Write(geom, sb);
             return sb.ToString();
         }
 
         /// <summary>
-        /// Writes the KML representation of a <see cref="IGeometry"/> to a <see cref="TextWriter"/>.
+        ///     Writes the KML representation of a <see cref="IGeometry" /> to a <see cref="TextWriter" />.
         /// </summary>
         /// <param name="geom">the geometry to write</param>
         /// <param name="writer">the writer to write to</param>
         public void Write(IGeometry geom, TextWriter writer)
         {
-            string kml = Write(geom);
+            var kml = Write(geom);
             writer.Write(kml);
         }
 
         /// <summary>
-        /// Appends the KML representation of a <see cref="IGeometry"/> to a <see cref="StringBuilder"/>.
+        ///     Appends the KML representation of a <see cref="IGeometry" /> to a <see cref="StringBuilder" />.
         /// </summary>
         /// <param name="geom">the geometry to write</param>
         /// <param name="sb">the buffer to write into</param>
@@ -209,13 +209,13 @@ namespace NetTopologySuite.IO.KML
         {
             if (LinePrefix != null)
                 sb.Append(LinePrefix);
-            sb.Append(WKTWriter.StringOfChar(' ', IndentSize * level));
+            sb.Append(WKTWriter.StringOfChar(' ', IndentSize*level));
             sb.Append(text);
         }
 
         private string GeometryTag(string geometryName)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append("<");
             sb.Append(geometryName);
             sb.Append(">");
@@ -230,7 +230,7 @@ namespace NetTopologySuite.IO.KML
                 StartLine("<tesselate>1</tesselate>\n", level, sb);
             if (AltitudeMode != null)
             {
-                string s = String.Format("<altitudeMode>{0}</altitudeMode>\n", AltitudeMode);
+                var s = string.Format("<altitudeMode>{0}</altitudeMode>\n", AltitudeMode);
                 StartLine(s, level, sb);
             }
         }
@@ -241,7 +241,7 @@ namespace NetTopologySuite.IO.KML
             // <Point><coordinates>...</coordinates></Point>
             StartLine(GeometryTag("Point") + "\n", level, sb);
             WriteModifiers(level, sb);
-            Write(new[] { p.Coordinate }, level + 1, sb);
+            Write(new[] {p.Coordinate}, level + 1, sb);
             StartLine("</Point>\n", level, sb);
         }
 
@@ -273,13 +273,13 @@ namespace NetTopologySuite.IO.KML
             WriteModifiers(level, sb);
 
             StartLine("  <outerBoundaryIs>\n", level, sb);
-            WriteLinearRing((ILinearRing)p.ExteriorRing, level + 1, sb, false);
+            WriteLinearRing((ILinearRing) p.ExteriorRing, level + 1, sb, false);
             StartLine("  </outerBoundaryIs>\n", level, sb);
 
-            for (int t = 0; t < p.NumInteriorRings; t++)
+            for (var t = 0; t < p.NumInteriorRings; t++)
             {
                 StartLine("  <innerBoundaryIs>\n", level, sb);
-                WriteLinearRing((ILinearRing)p.GetInteriorRingN(t), level + 1, sb, false);
+                WriteLinearRing((ILinearRing) p.GetInteriorRingN(t), level + 1, sb, false);
                 StartLine("  </innerBoundaryIs>\n", level, sb);
             }
 
@@ -290,24 +290,24 @@ namespace NetTopologySuite.IO.KML
             StringBuilder sb)
         {
             StartLine("<MultiGeometry>\n", level, sb);
-            for (int t = 0; t < gc.NumGeometries; t++)
+            for (var t = 0; t < gc.NumGeometries; t++)
                 WriteGeometry(gc.GetGeometryN(t), level + 1, sb);
             StartLine("</MultiGeometry>\n", level, sb);
         }
 
         /// <summary>
-        /// Takes a list of coordinates and converts it to KML.
+        ///     Takes a list of coordinates and converts it to KML.
         /// </summary>
         /// <remarks>
-        /// 2D and 3D aware. Terminates the coordinate output with a newline.
+        ///     2D and 3D aware. Terminates the coordinate output with a newline.
         /// </remarks>
         private void Write(Coordinate[] coords, int level,
             StringBuilder sb)
         {
             StartLine("<coordinates>", level, sb);
 
-            bool isNewLine = false;
-            for (int i = 0; i < coords.Length; i++)
+            var isNewLine = false;
+            for (var i = 0; i < coords.Length; i++)
             {
                 if (i > 0)
                     sb.Append(TupleSeparator);
@@ -321,7 +321,7 @@ namespace NetTopologySuite.IO.KML
                 Write(coords[i], sb);
 
                 // break output lines to prevent them from getting too long
-                if ((i + 1) % MaxCoordinatesPerLine == 0 && i < coords.Length - 1)
+                if (((i + 1)%MaxCoordinatesPerLine == 0) && (i < coords.Length - 1))
                 {
                     sb.Append("\n");
                     isNewLine = true;
@@ -336,14 +336,14 @@ namespace NetTopologySuite.IO.KML
             sb.Append(CoordinateSeparator);
             Write(p.Y, sb);
 
-            double z = p.Z;
+            var z = p.Z;
             // if altitude was specified directly, use it
-            if (!Double.IsNaN(Z))
+            if (!double.IsNaN(Z))
                 z = Z;
 
             // only write if Z present
             // MD - is this right? Or should it always be written?
-            if (!Double.IsNaN(z))
+            if (!double.IsNaN(z))
             {
                 sb.Append(CoordinateSeparator);
                 Write(z, sb);
@@ -352,7 +352,7 @@ namespace NetTopologySuite.IO.KML
 
         private void Write(double d, StringBuilder sb)
         {
-            string tos = d.ToString(_format, _formatter);
+            var tos = d.ToString(_format, _formatter);
             sb.Append(tos);
         }
     }

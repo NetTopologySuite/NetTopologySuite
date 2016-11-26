@@ -19,7 +19,14 @@ namespace NetTopologySuite.Shape
 
         public double Diameter => Math.Min(Extent.Height, Extent.Width);
 
-        public double Radius => Diameter * 0.5;
+        public double Radius => Diameter*0.5;
+
+        /// <summary>
+        ///     Gets or sets the total number of points in the created <see cref="IGeometry" />.
+        ///     The created geometry will have no more than this number of points,
+        ///     unless more are needed to create a valid geometry.
+        /// </summary>
+        public int NumPoints { get; set; }
 
         public LineSegment GetSquareBaseLine()
         {
@@ -38,15 +45,8 @@ namespace NetTopologySuite.Shape
 
             var centre = Centre;
             return new Envelope(centre.X - radius, centre.X + radius,
-                    centre.Y - radius, centre.Y + radius);
+                centre.Y - radius, centre.Y + radius);
         }
-
-        /// <summary>
-        /// Gets or sets the total number of points in the created <see cref="IGeometry"/>.
-        /// The created geometry will have no more than this number of points,
-        /// unless more are needed to create a valid geometry.
-        /// </summary>
-        public int NumPoints { get; set; }
 
         public abstract IGeometry GetGeometry();
 

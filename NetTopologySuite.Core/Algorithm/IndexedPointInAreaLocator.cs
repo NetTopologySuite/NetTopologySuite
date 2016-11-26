@@ -8,13 +8,13 @@ using NetTopologySuite.Index.IntervalRTree;
 
 namespace NetTopologySuite.Algorithm
 {
-    ///<summary>
-    /// Determines the <see cref="Location"/> of <see cref="ICoordinate"/>s relative to
-    /// a <see cref="IPolygonal"/> geometry, using indexing for efficiency.
-    ///</summary>
+    /// <summary>
+    ///     Determines the <see cref="Location" /> of <see cref="ICoordinate" />s relative to
+    ///     a <see cref="IPolygonal" /> geometry, using indexing for efficiency.
+    /// </summary>
     /// <remarks>
-    /// This algorithm is suitable for use in cases where
-    /// many points will be tested against a given area.
+    ///     This algorithm is suitable for use in cases where
+    ///     many points will be tested against a given area.
     /// </remarks>
     /// <author>Martin Davis</author>
     public class IndexedPointInAreaLocator : IPointInAreaLocator
@@ -22,7 +22,7 @@ namespace NetTopologySuite.Algorithm
         private IntervalIndexedGeometry _index;
 
         /// <summary>
-        /// Creates a new locator for a given <see cref="IGeometry" />
+        ///     Creates a new locator for a given <see cref="IGeometry" />
         /// </summary>
         /// <param name="g"> the Geometry to locate in</param>
         public IndexedPointInAreaLocator(IGeometry g)
@@ -32,22 +32,17 @@ namespace NetTopologySuite.Algorithm
             BuildIndex(g);
         }
 
-        private void BuildIndex(IGeometry g)
-        {
-            _index = new IntervalIndexedGeometry(g);
-        }
-
         /// <summary>
-        /// Determines the <see cref="LocationUtility" /> of a point in an areal <see cref="IGeometry" />.
+        ///     Determines the <see cref="LocationUtility" /> of a point in an areal <see cref="IGeometry" />.
         /// </summary>
         /// <param name="p"> the point to test</param>
-        /// <returns> the location of the point in the geometry</returns>  
+        /// <returns> the location of the point in the geometry</returns>
         public Location Locate(Coordinate p)
         {
-            RayCrossingCounter rcc = new RayCrossingCounter(p);
+            var rcc = new RayCrossingCounter(p);
 
 
-            SegmentVisitor visitor = new SegmentVisitor(rcc);
+            var visitor = new SegmentVisitor(rcc);
             _index.Query(p.Y, p.Y, visitor);
 
             /*
@@ -57,6 +52,11 @@ namespace NetTopologySuite.Algorithm
             */
 
             return rcc.Location;
+        }
+
+        private void BuildIndex(IGeometry g)
+        {
+            _index = new IntervalIndexedGeometry(g);
         }
 
         /*
@@ -89,7 +89,8 @@ namespace NetTopologySuite.Algorithm
 
         private class IntervalIndexedGeometry
         {
-            private readonly SortedPackedIntervalRTree<LineSegment> _index = new SortedPackedIntervalRTree<LineSegment>();
+            private readonly SortedPackedIntervalRTree<LineSegment> _index =
+                new SortedPackedIntervalRTree<LineSegment>();
 
             public IntervalIndexedGeometry(IGeometry geom)
             {
@@ -98,21 +99,21 @@ namespace NetTopologySuite.Algorithm
 
             private void Init(IGeometry geom)
             {
-                IList<ILineString> lines = (IList<ILineString>) LinearComponentExtracter.GetLines(geom);
-                foreach (ILineString line in lines)
+                var lines = (IList<ILineString>) LinearComponentExtracter.GetLines(geom);
+                foreach (var line in lines)
                 {
-                    Coordinate[] pts = line.Coordinates;
+                    var pts = line.Coordinates;
                     AddLine(pts);
                 }
             }
 
             private void AddLine(Coordinate[] pts)
             {
-                for (int i = 1; i < pts.Length; i++)
+                for (var i = 1; i < pts.Length; i++)
                 {
-                    LineSegment seg = new LineSegment(pts[i - 1], pts[i]);
-                    double min = Math.Min(seg.P0.Y, seg.P1.Y);
-                    double max = Math.Max(seg.P0.Y, seg.P1.Y);
+                    var seg = new LineSegment(pts[i - 1], pts[i]);
+                    var min = Math.Min(seg.P0.Y, seg.P1.Y);
+                    var max = Math.Max(seg.P0.Y, seg.P1.Y);
                     _index.Insert(min, max, seg);
                 }
             }
@@ -125,11 +126,11 @@ namespace NetTopologySuite.Algorithm
                 return visitor.Items;
             }
             */
+
             public void Query(double min, double max, IItemVisitor<LineSegment> visitor)
             {
                 _index.Query(min, max, visitor);
             }
         }
-
     }
 }

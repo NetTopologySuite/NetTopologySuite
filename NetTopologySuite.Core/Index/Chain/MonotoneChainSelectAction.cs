@@ -4,24 +4,23 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Index.Chain
 {
     /// <summary>
-    /// The action for the internal iterator for performing
-    /// envelope select queries on a MonotoneChain.
+    ///     The action for the internal iterator for performing
+    ///     envelope select queries on a MonotoneChain.
     /// </summary>
     public class MonotoneChainSelectAction
     {
         /// <summary>
-        /// These envelopes are used during the MonotoneChain search process.
+        /// </summary>
+        public LineSegment SelectedSegment = new LineSegment();
+
+        /// <summary>
+        ///     These envelopes are used during the MonotoneChain search process.
         /// </summary>
         public Envelope TempEnv1 = new Envelope();
 
         /// <summary>
-        /// 
-        /// </summary>
-        public LineSegment SelectedSegment = new LineSegment();
-
-        /// <summary> 
-        /// This method is overridden to process a segment 
-        /// in the context of the parent chain.
+        ///     This method is overridden to process a segment
+        ///     in the context of the parent chain.
         /// </summary>
         /// <param name="mc">The parent chain</param>
         /// <param name="startIndex">The index of the start vertex of the segment being processed</param>
@@ -33,10 +32,12 @@ namespace NetTopologySuite.Index.Chain
         }
 
         /// <summary>
-        /// This is a convenience method which can be overridden to obtain the actual
-        /// line segment which is selected.
+        ///     This is a convenience method which can be overridden to obtain the actual
+        ///     line segment which is selected.
         /// </summary>
         /// <param name="seg"></param>
-        public virtual void Select(LineSegment seg) { }
+        public virtual void Select(LineSegment seg)
+        {
+        }
     }
 }

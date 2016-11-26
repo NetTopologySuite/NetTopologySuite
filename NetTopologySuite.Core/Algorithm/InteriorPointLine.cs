@@ -1,23 +1,21 @@
-using System;
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
     /// <summary>
-    /// Computes a point in the interior of an linear point.
-    /// Algorithm:
-    /// Find an interior vertex which is closest to
-    /// the centroid of the linestring.
-    /// If there is no interior vertex, find the endpoint which is
-    /// closest to the centroid.
+    ///     Computes a point in the interior of an linear point.
+    ///     Algorithm:
+    ///     Find an interior vertex which is closest to
+    ///     the centroid of the linestring.
+    ///     If there is no interior vertex, find the endpoint which is
+    ///     closest to the centroid.
     /// </summary>
     public class InteriorPointLine
     {
         private readonly Coordinate _centroid;
-        private double _minDistance = Double.MaxValue;
+        private double _minDistance = double.MaxValue;
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="g"></param>
         public InteriorPointLine(IGeometry g)
@@ -25,64 +23,60 @@ namespace NetTopologySuite.Algorithm
             _centroid = g.Centroid.Coordinate;
             AddInterior(g);
 
-            if (InteriorPoint == null)                
+            if (InteriorPoint == null)
                 AddEndpoints(g);
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public Coordinate InteriorPoint { get; private set; }
 
         /// <summary>
-        /// Tests the interior vertices (if any)
-        /// defined by a linear Geometry for the best inside point.
-        /// If a Geometry is not of dimension 1 it is not tested.
+        ///     Tests the interior vertices (if any)
+        ///     defined by a linear Geometry for the best inside point.
+        ///     If a Geometry is not of dimension 1 it is not tested.
         /// </summary>
         /// <param name="geom">The point to add.</param>
         private void AddInterior(IGeometry geom)
         {
-            if(geom is ILineString) 
-                AddInterior(geom.Coordinates);            
-            else if(geom is IGeometryCollection) 
+            if (geom is ILineString)
+                AddInterior(geom.Coordinates);
+            else if (geom is IGeometryCollection)
             {
-                IGeometryCollection gc = (IGeometryCollection) geom;
-                foreach (IGeometry geometry in gc.Geometries)
+                var gc = (IGeometryCollection) geom;
+                foreach (var geometry in gc.Geometries)
                     AddInterior(geometry);
             }
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="pts"></param>
         private void AddInterior(Coordinate[] pts)
         {
-            for (int i = 1; i < pts.Length - 1; i++)
+            for (var i = 1; i < pts.Length - 1; i++)
                 Add(pts[i]);
-            
         }
 
-        /// <summary> 
-        /// Tests the endpoint vertices
-        /// defined by a linear Geometry for the best inside point.
-        /// If a Geometry is not of dimension 1 it is not tested.
+        /// <summary>
+        ///     Tests the endpoint vertices
+        ///     defined by a linear Geometry for the best inside point.
+        ///     If a Geometry is not of dimension 1 it is not tested.
         /// </summary>
         /// <param name="geom">The point to add.</param>
         private void AddEndpoints(IGeometry geom)
         {
-            if(geom is ILineString)
-                AddEndpoints(geom.Coordinates);   
-            else if(geom is IGeometryCollection) 
+            if (geom is ILineString)
+                AddEndpoints(geom.Coordinates);
+            else if (geom is IGeometryCollection)
             {
-                IGeometryCollection gc = (IGeometryCollection) geom;
-                foreach (IGeometry geometry in gc.Geometries)
+                var gc = (IGeometryCollection) geom;
+                foreach (var geometry in gc.Geometries)
                     AddEndpoints(geometry);
             }
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="pts"></param>
         private void AddEndpoints(Coordinate[] pts)
@@ -92,12 +86,11 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="point"></param>
         private void Add(Coordinate point)
         {
-            double dist = point.Distance(_centroid);
+            var dist = point.Distance(_centroid);
             if (dist < _minDistance)
             {
                 InteriorPoint = new Coordinate(point);

@@ -8,36 +8,147 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.IO
 {
     /// <summary>
-    /// Converts a Well-Known Binary byte data to a <c>Geometry</c>.
+    ///     Converts a Well-Known Binary byte data to a <c>Geometry</c>.
     /// </summary>
     /// <remarks>
-    /// The reader repairs structurally-invalid input
-    /// (specifically, LineStrings and LinearRings which contain
-    /// too few points have vertices added,
-    /// and non-closed rings are closed).
-    /// s</remarks>
+    ///     The reader repairs structurally-invalid input
+    ///     (specifically, LineStrings and LinearRings which contain
+    ///     too few points have vertices added,
+    ///     and non-closed rings are closed).
+    ///     s
+    /// </remarks>
     public class WKBReader : IBinaryGeometryReader
     {
-        ///<summary>
-        /// Converts a hexadecimal string to a byte array.
-        /// The hexadecimal digit symbols are case-insensitive.
-        ///</summary>
+        [Obsolete] private readonly IGeometryFactory _factory;
+
+        private readonly IGeometryServices _geometryServices;
+        private readonly IPrecisionModel _precisionModel;
+        private readonly ICoordinateSequenceFactory _sequenceFactory;
+
+        /// <summary>
+        ///     Initialize reader with a standard <see cref="IGeometryFactory" />.
+        /// </summary>
+        public WKBReader() : this(GeometryServiceProvider.Instance)
+        {
+        }
+
+        /// <summary>
+        ///     Initialize reader with the given <c>GeometryFactory</c>.
+        /// </summary>
+        /// <param name="factory"></param>
+        [Obsolete]
+        public WKBReader(IGeometryFactory factory)
+        {
+            _geometryServices = GeometryServiceProvider.Instance;
+
+            _factory = factory;
+            _sequenceFactory = factory.CoordinateSequenceFactory;
+            _precisionModel = factory.PrecisionModel;
+
+            HandleSRID = true;
+            HandleOrdinates = AllowedOrdinates;
+        }
+
+        public WKBReader(IGeometryServices services)
+        {
+            services = services ?? GeometryServiceProvider.Instance;
+            _geometryServices = services;
+            _precisionModel = services.DefaultPrecisionModel;
+            _sequenceFactory = services.DefaultCoordinateSequenceFactory;
+
+            HandleSRID = true;
+            HandleOrdinates = AllowedOrdinates;
+        }
+
+        /**
+         * true if structurally invalid input should be reported rather than repaired.
+         * At some point this could be made client-controllable.
+         */
+
+        /// <summary>
+        ///     The <see cref="IGeometry" /> builder.
+        /// </summary>
+        [Obsolete]
+        protected IGeometryFactory Factory => _factory;
+
+        /// <summary>
+        ///     Reads a <see cref="IGeometry" /> in binary WKB format from an array of <see cref="byte" />s.
+        /// </summary>
+        /// <param name="data">The byte array to read from</param>
+        /// <returns>The geometry read</returns>
+        /// <exception cref="GeoAPI.IO.ParseException"> if the WKB data is ill-formed.</exception>
+        public IGeometry Read(byte[] data)
+        {
+            using (Stream stream = new MemoryStream(data))
+            {
+                return Read(stream);
+            }
+        }
+
+        /// <summary>
+        ///     Reads a <see cref="IGeometry" /> in binary WKB format from an <see cref="Stream" />.
+        /// </summary>
+        /// <param name="stream">The stream to read from</param>
+        /// <returns>The geometry read</returns>
+        /// <exception cref="GeoAPI.IO.ParseException"> if the WKB data is ill-formed.</exception>
+        public virtual IGeometry Read(Stream stream)
+        {
+            var byteOrder = (ByteOrder) stream.ReadByte();
+            BinaryReader reader;
+            if (byteOrder == ByteOrder.LittleEndian)
+            {
+                reader = new BinaryReader(stream);
+            }
+            else if (byteOrder == ByteOrder.BigEndian)
+            {
+                reader = new BEBinaryReader(stream);
+            }
+            else if (RepairRings)
+            {
+                var s = string.Format("Unknown geometry byte order (not LittleEndian or BigEndian): {0}", byteOrder);
+                throw new GeoAPI.IO.ParseException(s);
+            }
+            else
+            {
+                // if not strict and not LittleEndian or BigEndian, then we just use the default reader at the
+                // start of the geometry (if a multi-geometry).  This  allows WBKReader to work
+                // with Spatialite native BLOB WKB, as well as other WKB variants that might just
+                // specify endian-ness at the start of the multigeometry.
+                reader = new BinaryReader(stream);
+            }
+
+            using (reader)
+            {
+                var res = Read(reader);
+                return res;
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets whether invalid linear rings should be fixed
+        /// </summary>
+        public bool RepairRings { get; set; }
+
+        /// <summary>
+        ///     Converts a hexadecimal string to a byte array.
+        ///     The hexadecimal digit symbols are case-insensitive.
+        /// </summary>
         /// <param name="hex">A string containing hex digits</param>
         /// <returns>An array of bytes with the value of the hex string</returns>
-        public static byte[] HexToBytes(String hex)
+        public static byte[] HexToBytes(string hex)
         {
-            int byteLen = hex.Length / 2;
-            byte[] bytes = new byte[byteLen];
+            var byteLen = hex.Length/2;
+            var bytes = new byte[byteLen];
 
-            for (int i = 0; i < hex.Length / 2; i++)
+            for (var i = 0; i < hex.Length/2; i++)
             {
-                int i2 = 2 * i;
+                var i2 = 2*i;
                 if (i2 + 1 > hex.Length)
                     throw new ArgumentException("Hex string has odd length");
 
-                int nib1 = HexToInt(hex[i2]);
-                int nib0 = HexToInt(hex[i2 + 1]);
-                bytes[i] = (byte)((nib1 << 4) + (byte)nib0);
+                var nib1 = HexToInt(hex[i2]);
+                var nib0 = HexToInt(hex[i2 + 1]);
+                bytes[i] = (byte) ((nib1 << 4) + (byte) nib0);
             }
             return bytes;
         }
@@ -75,111 +186,7 @@ namespace NetTopologySuite.IO
             throw new ArgumentException("Invalid hex digit: " + hex);
         }
 
-        [Obsolete]
-        private readonly IGeometryFactory _factory;
-        private readonly ICoordinateSequenceFactory _sequenceFactory;
-        private readonly IPrecisionModel _precisionModel;
-
-        private readonly IGeometryServices _geometryServices;
-        /**
-         * true if structurally invalid input should be reported rather than repaired.
-         * At some point this could be made client-controllable.
-         */
-
         /// <summary>
-        /// The <see cref="IGeometry"/> builder.
-        /// </summary>
-        [Obsolete]
-        protected IGeometryFactory Factory => _factory;
-
-        /// <summary>
-        /// Initialize reader with a standard <see cref="IGeometryFactory"/>.
-        /// </summary>
-        public WKBReader() : this(GeometryServiceProvider.Instance) { }
-
-        /// <summary>
-        /// Initialize reader with the given <c>GeometryFactory</c>.
-        /// </summary>
-        /// <param name="factory"></param>
-        [Obsolete]
-        public WKBReader(IGeometryFactory factory)
-        {
-            _geometryServices = GeometryServiceProvider.Instance;
-
-            _factory = factory;
-            _sequenceFactory = factory.CoordinateSequenceFactory;
-            _precisionModel = factory.PrecisionModel;
-
-            HandleSRID = true;
-            HandleOrdinates = AllowedOrdinates;
-        }
-
-        public WKBReader(IGeometryServices services)
-        {
-            services = services ?? GeometryServiceProvider.Instance;
-            _geometryServices = services;
-            _precisionModel = services.DefaultPrecisionModel;
-            _sequenceFactory = services.DefaultCoordinateSequenceFactory;
-
-            HandleSRID = true;
-            HandleOrdinates = AllowedOrdinates;
-        }
-
-        /// <summary>
-        /// Reads a <see cref="IGeometry"/> in binary WKB format from an array of <see cref="byte"/>s.
-        /// </summary>
-        /// <param name="data">The byte array to read from</param>
-        /// <returns>The geometry read</returns>
-        /// <exception cref="GeoAPI.IO.ParseException"> if the WKB data is ill-formed.</exception>
-        public IGeometry Read(byte[] data)
-        {
-            using (Stream stream = new MemoryStream(data))
-                return Read(stream);
-        }
-
-        /// <summary>
-        /// Reads a <see cref="IGeometry"/> in binary WKB format from an <see cref="Stream"/>.
-        /// </summary>
-        /// <param name="stream">The stream to read from</param>
-        /// <returns>The geometry read</returns>
-        /// <exception cref="GeoAPI.IO.ParseException"> if the WKB data is ill-formed.</exception>
-        public virtual IGeometry Read(Stream stream)
-        {
-            ByteOrder byteOrder = (ByteOrder)stream.ReadByte();
-            BinaryReader reader;
-            if (byteOrder == ByteOrder.LittleEndian)
-            {
-                reader = new BinaryReader(stream);
-            }
-            else if (byteOrder == ByteOrder.BigEndian)
-            {
-                reader = new BEBinaryReader(stream);
-            }
-            else if (RepairRings)
-            {
-                string s = String.Format("Unknown geometry byte order (not LittleEndian or BigEndian): {0}", byteOrder);
-                throw new GeoAPI.IO.ParseException(s);
-            }
-            else
-            {
-                // if not strict and not LittleEndian or BigEndian, then we just use the default reader at the
-                // start of the geometry (if a multi-geometry).  This  allows WBKReader to work
-                // with Spatialite native BLOB WKB, as well as other WKB variants that might just
-                // specify endian-ness at the start of the multigeometry.
-                reader = new BinaryReader(stream);
-            }
-            
-            using (reader)
-            {
-                IGeometry res = Read(reader);
-                return res;
-            }
-        }
-
-        protected enum CoordinateSystem { XY = 1, XYZ = 2, XYM = 3, XYZM = 4 };
-
-        /// <summary>
-        ///
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
@@ -187,7 +194,7 @@ namespace NetTopologySuite.IO
         {
             CoordinateSystem cs;
             int srid;
-            WKBGeometryTypes geometryType = ReadGeometryType(reader, out cs, out srid);
+            var geometryType = ReadGeometryType(reader, out cs, out srid);
             switch (geometryType)
             {
                 //Point
@@ -238,7 +245,6 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="reader"></param>
         private void ReadByteOrder(BinaryReader reader)
@@ -246,9 +252,10 @@ namespace NetTopologySuite.IO
             reader.ReadByte();
         }
 
-        private WKBGeometryTypes ReadGeometryType(BinaryReader reader, out CoordinateSystem coordinateSystem, out int srid)
+        private WKBGeometryTypes ReadGeometryType(BinaryReader reader, out CoordinateSystem coordinateSystem,
+            out int srid)
         {
-            uint type = reader.ReadUInt32();
+            var type = reader.ReadUInt32();
             //Determine coordinate system
             if ((type & (0x80000000 | 0x40000000)) == (0x80000000 | 0x40000000))
                 coordinateSystem = CoordinateSystem.XYZM;
@@ -268,7 +275,7 @@ namespace NetTopologySuite.IO
             if (!HandleSRID) srid = -1;
 
             //Get cs from prefix
-            uint ordinate = (type & 0xffff) / 1000;
+            var ordinate = (type & 0xffff)/1000;
             switch (ordinate)
             {
                 case 1:
@@ -282,11 +289,11 @@ namespace NetTopologySuite.IO
                     break;
             }
 
-            return (WKBGeometryTypes)((type & 0xffff) % 1000);
+            return (WKBGeometryTypes) ((type & 0xffff)%1000);
         }
 
         /// <summary>
-        /// Function to read a coordinate sequence.
+        ///     Function to read a coordinate sequence.
         /// </summary>
         /// <param name="reader">The reader</param>
         /// <param name="size">The number of ordinates</param>
@@ -294,11 +301,11 @@ namespace NetTopologySuite.IO
         /// <returns>The read coordinate sequence.</returns>
         protected ICoordinateSequence ReadCoordinateSequence(BinaryReader reader, int size, CoordinateSystem cs)
         {
-            ICoordinateSequence sequence = _sequenceFactory.Create(size, ToOrdinates(cs));
-            for (int i = 0; i < size; i++)
+            var sequence = _sequenceFactory.Create(size, ToOrdinates(cs));
+            for (var i = 0; i < size; i++)
             {
-                double x = reader.ReadDouble();
-                double y = reader.ReadDouble();
+                var x = reader.ReadDouble();
+                var y = reader.ReadDouble();
 
                 if (_precisionModel != null) x = _precisionModel.MakePrecise(x);
                 if (_precisionModel != null) y = _precisionModel.MakePrecise(y);
@@ -311,12 +318,12 @@ namespace NetTopologySuite.IO
                     case CoordinateSystem.XY:
                         continue;
                     case CoordinateSystem.XYZ:
-                        double z = reader.ReadDouble();
+                        var z = reader.ReadDouble();
                         if (HandleOrdinate(Ordinate.Z))
                             sequence.SetOrdinate(i, Ordinate.Z, z);
                         break;
                     case CoordinateSystem.XYM:
-                        double m = reader.ReadDouble();
+                        var m = reader.ReadDouble();
                         if (HandleOrdinate(Ordinate.M))
                             sequence.SetOrdinate(i, Ordinate.M, m);
                         break;
@@ -329,14 +336,14 @@ namespace NetTopologySuite.IO
                             sequence.SetOrdinate(i, Ordinate.M, m);
                         break;
                     default:
-                        throw new ArgumentException(String.Format("Coordinate system not supported: {0}", cs));
+                        throw new ArgumentException(string.Format("Coordinate system not supported: {0}", cs));
                 }
             }
             return sequence;
         }
 
         /// <summary>
-        /// Function to read a coordinate sequence that is supposed to form a ring.
+        ///     Function to read a coordinate sequence that is supposed to form a ring.
         /// </summary>
         /// <param name="reader">The reader</param>
         /// <param name="size">The number of ordinates</param>
@@ -344,7 +351,7 @@ namespace NetTopologySuite.IO
         /// <returns>The read coordinate sequence.</returns>
         protected ICoordinateSequence ReadCoordinateSequenceRing(BinaryReader reader, int size, CoordinateSystem cs)
         {
-            ICoordinateSequence seqence = ReadCoordinateSequence(reader, size, cs);
+            var seqence = ReadCoordinateSequence(reader, size, cs);
             if (RepairRings)
                 return seqence;
             if (CoordinateSequences.IsRing(seqence))
@@ -353,121 +360,122 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Function to read a coordinate sequence that is supposed to serve a line string.
+        ///     Function to read a coordinate sequence that is supposed to serve a line string.
         /// </summary>
         /// <param name="reader">The reader</param>
         /// <param name="size">The number of ordinates</param>
         /// <param name="cs">The coordinate system</param>
         /// <returns>The read coordinate sequence.</returns>
-        protected ICoordinateSequence ReadCoordinateSequenceLineString(BinaryReader reader, int size, CoordinateSystem cs)
+        protected ICoordinateSequence ReadCoordinateSequenceLineString(BinaryReader reader, int size,
+            CoordinateSystem cs)
         {
-            ICoordinateSequence seq = ReadCoordinateSequence(reader, size, cs);
+            var seq = ReadCoordinateSequence(reader, size, cs);
             if (RepairRings) return seq;
-            if (seq.Count == 0 || seq.Count >= 2) return seq;
+            if ((seq.Count == 0) || (seq.Count >= 2)) return seq;
             return CoordinateSequences.Extend(_geometryServices.DefaultCoordinateSequenceFactory, seq, 2);
         }
 
         /// <summary>
-        /// Function to convert from <see cref="CoordinateSystem"/> to <see cref="Ordinates"/>
+        ///     Function to convert from <see cref="CoordinateSystem" /> to <see cref="Ordinates" />
         /// </summary>
         /// <param name="cs">The coordinate system</param>
-        /// <returns>The corresponding <see cref="Ordinates"/></returns>
+        /// <returns>The corresponding <see cref="Ordinates" /></returns>
         private static Ordinates ToOrdinates(CoordinateSystem cs)
         {
-            Ordinates res = Ordinates.XY;
+            var res = Ordinates.XY;
             if (cs == CoordinateSystem.XYM)
                 res |= Ordinates.M;
             if (cs == CoordinateSystem.XYZ)
                 res |= Ordinates.Z;
             if (cs == CoordinateSystem.XYZM)
-                res |= (Ordinates.M | Ordinates.Z);
+                res |= Ordinates.M | Ordinates.Z;
             return res;
         }
 
         /// <summary>
-        /// Reads a <see cref="ILinearRing"/> geometry.
+        ///     Reads a <see cref="ILinearRing" /> geometry.
         /// </summary>
         /// <param name="reader">The reader</param>
         /// <param name="cs">The coordinate system</param>
-        ///<param name="srid">The spatial reference id for the geometry.</param>
-        ///<returns>A <see cref="ILinearRing"/> geometry</returns>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="ILinearRing" /> geometry</returns>
         protected ILinearRing ReadLinearRing(BinaryReader reader, CoordinateSystem cs, int srid)
         {
-            IGeometryFactory factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
-            int numPoints = reader.ReadInt32();
-            ICoordinateSequence sequence = ReadCoordinateSequenceRing(reader, numPoints, cs);
+            var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
+            var numPoints = reader.ReadInt32();
+            var sequence = ReadCoordinateSequenceRing(reader, numPoints, cs);
             return factory.CreateLinearRing(sequence);
         }
 
         /// <summary>
-        /// Reads a <see cref="IPoint"/> geometry.
+        ///     Reads a <see cref="IPoint" /> geometry.
         /// </summary>
         /// <param name="reader">The reader</param>
         /// <param name="cs">The coordinate system</param>
-        ///<param name="srid">The spatial reference id for the geometry.</param>
-        ///<returns>A <see cref="IPoint"/> geometry</returns>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="IPoint" /> geometry</returns>
         protected IGeometry ReadPoint(BinaryReader reader, CoordinateSystem cs, int srid)
         {
-            IGeometryFactory factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
+            var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
             return factory.CreatePoint(ReadCoordinateSequence(reader, 1, cs));
         }
 
         /// <summary>
-        /// Reads a <see cref="ILineString"/> geometry.
+        ///     Reads a <see cref="ILineString" /> geometry.
         /// </summary>
         /// <param name="reader">The reader</param>
         /// <param name="cs">The coordinate system</param>
-        ///<param name="srid">The spatial reference id for the geometry.</param>
-        ///<returns>A <see cref="ILineString"/> geometry</returns>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="ILineString" /> geometry</returns>
         protected IGeometry ReadLineString(BinaryReader reader, CoordinateSystem cs, int srid)
         {
-            IGeometryFactory factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
-            int numPoints = reader.ReadInt32();
-            ICoordinateSequence sequence = ReadCoordinateSequenceLineString(reader, numPoints, cs);
+            var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
+            var numPoints = reader.ReadInt32();
+            var sequence = ReadCoordinateSequenceLineString(reader, numPoints, cs);
             return factory.CreateLineString(sequence);
         }
 
         /// <summary>
-        /// Reads a <see cref="IPolygon"/> geometry.
+        ///     Reads a <see cref="IPolygon" /> geometry.
         /// </summary>
         /// <param name="reader">The reader</param>
         /// <param name="cs">The coordinate system</param>
-        ///<param name="srid">The spatial reference id for the geometry.</param>
-        ///<returns>A <see cref="IPolygon"/> geometry</returns>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="IPolygon" /> geometry</returns>
         protected IGeometry ReadPolygon(BinaryReader reader, CoordinateSystem cs, int srid)
         {
-            IGeometryFactory factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
+            var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
             ILinearRing exteriorRing = null;
             ILinearRing[] interiorRings = null;
-            int numRings = reader.ReadInt32();
+            var numRings = reader.ReadInt32();
             if (numRings > 0)
             {
                 exteriorRing = ReadLinearRing(reader, cs, srid);
                 interiorRings = new ILinearRing[numRings - 1];
-                for (int i = 0; i < numRings - 1; i++)
+                for (var i = 0; i < numRings - 1; i++)
                     interiorRings[i] = ReadLinearRing(reader, cs, srid);
             }
             return factory.CreatePolygon(exteriorRing, interiorRings);
         }
 
         /// <summary>
-        /// Reads a <see cref="IMultiPoint"/> geometry.
+        ///     Reads a <see cref="IMultiPoint" /> geometry.
         /// </summary>
         /// <param name="reader">The reader</param>
         /// <param name="cs">The coordinate system</param>
-        ///<param name="srid">The spatial reference id for the geometry.</param>
-        ///<returns>A <see cref="IMultiPoint"/> geometry</returns>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="IMultiPoint" /> geometry</returns>
         protected IGeometry ReadMultiPoint(BinaryReader reader, CoordinateSystem cs, int srid)
         {
-            IGeometryFactory factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
-            int numGeometries = reader.ReadInt32();
-            IPoint[] points = new IPoint[numGeometries];
-            for (int i = 0; i < numGeometries; i++)
+            var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
+            var numGeometries = reader.ReadInt32();
+            var points = new IPoint[numGeometries];
+            for (var i = 0; i < numGeometries; i++)
             {
                 ReadByteOrder(reader);
                 CoordinateSystem cs2;
                 int srid2;
-                WKBGeometryTypes geometryType = ReadGeometryType(reader, out cs2, out srid2);//(WKBGeometryTypes)reader.ReadInt32();
+                var geometryType = ReadGeometryType(reader, out cs2, out srid2); //(WKBGeometryTypes)reader.ReadInt32();
                 if (geometryType != WKBGeometryTypes.WKBPoint)
                     throw new ArgumentException("IPoint feature expected");
                 points[i] = ReadPoint(reader, cs2, srid2) as IPoint;
@@ -476,23 +484,24 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Reads a <see cref="IMultiLineString"/> geometry.
+        ///     Reads a <see cref="IMultiLineString" /> geometry.
         /// </summary>
         /// <param name="reader">The reader</param>
         /// <param name="cs">The coordinate system</param>
-        ///<param name="srid">The spatial reference id for the geometry.</param>
-        ///<returns>A <see cref="IMultiLineString"/> geometry</returns>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="IMultiLineString" /> geometry</returns>
         protected IGeometry ReadMultiLineString(BinaryReader reader, CoordinateSystem cs, int srid)
         {
-            IGeometryFactory factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
-            int numGeometries = reader.ReadInt32();
-            ILineString[] strings = new ILineString[numGeometries];
-            for (int i = 0; i < numGeometries; i++)
+            var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
+            var numGeometries = reader.ReadInt32();
+            var strings = new ILineString[numGeometries];
+            for (var i = 0; i < numGeometries; i++)
             {
                 ReadByteOrder(reader);
                 CoordinateSystem cs2;
                 int srid2;
-                WKBGeometryTypes geometryType = ReadGeometryType(reader, out cs2, out srid2);//(WKBGeometryTypes) reader.ReadInt32();
+                var geometryType = ReadGeometryType(reader, out cs2, out srid2);
+                    //(WKBGeometryTypes) reader.ReadInt32();
                 if (geometryType != WKBGeometryTypes.WKBLineString)
                     throw new ArgumentException("ILineString feature expected");
                 strings[i] = ReadLineString(reader, cs2, srid2) as ILineString;
@@ -501,23 +510,24 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Reads a <see cref="IMultiPolygon"/> geometry.
+        ///     Reads a <see cref="IMultiPolygon" /> geometry.
         /// </summary>
         /// <param name="reader">The reader</param>
         /// <param name="cs">The coordinate system</param>
-        ///<param name="srid">The spatial reference id for the geometry.</param>
-        ///<returns>A <see cref="IMultiPolygon"/> geometry</returns>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="IMultiPolygon" /> geometry</returns>
         protected IGeometry ReadMultiPolygon(BinaryReader reader, CoordinateSystem cs, int srid)
         {
-            IGeometryFactory factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
-            int numGeometries = reader.ReadInt32();
-            IPolygon[] polygons = new IPolygon[numGeometries];
-            for (int i = 0; i < numGeometries; i++)
+            var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
+            var numGeometries = reader.ReadInt32();
+            var polygons = new IPolygon[numGeometries];
+            for (var i = 0; i < numGeometries; i++)
             {
                 ReadByteOrder(reader);
                 CoordinateSystem cs2;
                 int srid2;
-                WKBGeometryTypes geometryType = ReadGeometryType(reader, out cs2, out srid2);//(WKBGeometryTypes) reader.ReadInt32();
+                var geometryType = ReadGeometryType(reader, out cs2, out srid2);
+                    //(WKBGeometryTypes) reader.ReadInt32();
                 if (geometryType != WKBGeometryTypes.WKBPolygon)
                     throw new ArgumentException("IPolygon feature expected");
                 polygons[i] = ReadPolygon(reader, cs2, srid2) as IPolygon;
@@ -526,25 +536,25 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Reads a <see cref="IGeometryCollection"/> geometry.
+        ///     Reads a <see cref="IGeometryCollection" /> geometry.
         /// </summary>
         /// <param name="reader">The reader</param>
         /// <param name="cs">The coordinate system</param>
-        ///<param name="srid">The spatial reference id for the geometry.</param>
-        ///<returns>A <see cref="IGeometryCollection"/> geometry</returns>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="IGeometryCollection" /> geometry</returns>
         protected IGeometry ReadGeometryCollection(BinaryReader reader, CoordinateSystem cs, int srid)
         {
-            IGeometryFactory factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
+            var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
 
-            int numGeometries = reader.ReadInt32();
-            IGeometry[] geometries = new IGeometry[numGeometries];
+            var numGeometries = reader.ReadInt32();
+            var geometries = new IGeometry[numGeometries];
 
-            for (int i = 0; i < numGeometries; i++)
+            for (var i = 0; i < numGeometries; i++)
             {
                 ReadByteOrder(reader);
                 CoordinateSystem cs2;
                 int srid2;
-                WKBGeometryTypes geometryType = ReadGeometryType(reader, out cs2, out srid2);
+                var geometryType = ReadGeometryType(reader, out cs2, out srid2);
                 switch (geometryType)
                 {
                     //Point
@@ -607,6 +617,35 @@ namespace NetTopologySuite.IO
             return factory.CreateGeometryCollection(geometries);
         }
 
+        /// <summary>
+        ///     Function to determine whether an ordinate should be handled or not.
+        /// </summary>
+        /// <param name="ordinate"></param>
+        /// <returns></returns>
+        private bool HandleOrdinate(Ordinate ordinate)
+        {
+            switch (ordinate)
+            {
+                case Ordinate.X:
+                case Ordinate.Y:
+                    return true;
+                case Ordinate.M:
+                    return (HandleOrdinates & Ordinates.M) != Ordinates.None;
+                case Ordinate.Z:
+                    return (HandleOrdinates & Ordinates.Z) != Ordinates.None;
+                default:
+                    return false;
+            }
+        }
+
+        protected enum CoordinateSystem
+        {
+            XY = 1,
+            XYZ = 2,
+            XYM = 3,
+            XYZM = 4
+        }
+
         #region Implementation of IGeometryIOSettings
 
         public bool HandleSRID { get; set; }
@@ -626,31 +665,5 @@ namespace NetTopologySuite.IO
         }
 
         #endregion Implementation of IGeometryIOSettings
-
-        /// <summary>
-        /// Gets or sets whether invalid linear rings should be fixed
-        /// </summary>
-        public bool RepairRings { get; set; }
-
-        /// <summary>
-        /// Function to determine whether an ordinate should be handled or not.
-        /// </summary>
-        /// <param name="ordinate"></param>
-        /// <returns></returns>
-        private bool HandleOrdinate(Ordinate ordinate)
-        {
-            switch (ordinate)
-            {
-                case Ordinate.X:
-                case Ordinate.Y:
-                    return true;
-                case Ordinate.M:
-                    return (HandleOrdinates & Ordinates.M) != Ordinates.None;
-                case Ordinate.Z:
-                    return (HandleOrdinates & Ordinates.Z) != Ordinates.None;
-                default:
-                    return false;
-            }
-        }
     }
 }

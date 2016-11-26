@@ -7,76 +7,37 @@ using NetTopologySuite.Operation.Distance;
 namespace NetTopologySuite.Operation.Distance3D
 {
     /// <summary>
-    /// Find two points on two  3D <see cref="IGeometry"/>s which lie within a given distance,
-    /// or else are the nearest points on the geometries (in which case this also
-    /// provides the distance between the geometries).
-    /// <para/>
-    /// 3D geometries have vertex Z ordinates defined.
-    /// 3D <see cref="IPolygon"/>s are assumed to lie in a single plane (which is enforced if not actually the case).
-    /// 3D <see cref="ILineString"/>s and <see cref="IPoint"/>s may have any configuration.
-    /// <para/>
-    /// The distance computation also finds a pair of points in the input geometries
-    /// which have the minimum distance between them. If a point lies in the interior
-    /// of a line segment, the coordinate computed is a close approximation to the
-    /// exact point.
-    /// <para/>
-    /// The algorithms used are straightforward O(n^2) comparisons. This worst-case
-    /// performance could be improved on by using Voronoi techniques or spatial
-    /// indexes.
+    ///     Find two points on two  3D <see cref="IGeometry" />s which lie within a given distance,
+    ///     or else are the nearest points on the geometries (in which case this also
+    ///     provides the distance between the geometries).
+    ///     <para />
+    ///     3D geometries have vertex Z ordinates defined.
+    ///     3D <see cref="IPolygon" />s are assumed to lie in a single plane (which is enforced if not actually the case).
+    ///     3D <see cref="ILineString" />s and <see cref="IPoint" />s may have any configuration.
+    ///     <para />
+    ///     The distance computation also finds a pair of points in the input geometries
+    ///     which have the minimum distance between them. If a point lies in the interior
+    ///     of a line segment, the coordinate computed is a close approximation to the
+    ///     exact point.
+    ///     <para />
+    ///     The algorithms used are straightforward O(n^2) comparisons. This worst-case
+    ///     performance could be improved on by using Voronoi techniques or spatial
+    ///     indexes.
     /// </summary>
     /// <version>1.13</version>
     public class Distance3DOp
     {
-        /// <summary>
-        /// Compute the distance between the nearest points of two geometries.
-        /// </summary>
-        /// <param name="g0">A <see cref="IGeometry">geometry</see></param>
-        /// <param name="g1">A <see cref="IGeometry">geometry</see></param>
-        /// <returns>The distance between the geometries</returns>
-        public static double Distance(IGeometry g0, IGeometry g1)
-        {
-            var distOp = new Distance3DOp(g0, g1);
-            return distOp.Distance();
-        }
-
-        /// <summary>
-        /// Test whether two geometries lie within a given distance of each other.
-        /// </summary>
-        /// <param name="g0">A <see cref="IGeometry">geometry</see></param>
-        /// <param name="g1">A <see cref="IGeometry">geometry</see></param>
-        /// <param name="distance">The distance to test</param>
-        /// <returns><value>true</value> if <c>g0.distance(g1) &lt;= <paramref name="distance"/></c></returns>
-        public static bool IsWithinDistance(IGeometry g0, IGeometry g1,
-                                            double distance)
-        {
-            var distOp = new Distance3DOp(g0, g1, distance);
-            return distOp.Distance() <= distance;
-        }
-
-        /// <summary>
-        /// Compute the the nearest points of two geometries. The points are
-        /// presented in the same order as the input Geometries.
-        /// </summary>
-        /// <param name="g0">A <see cref="IGeometry">geometry</see></param>
-        /// <param name="g1">A <see cref="IGeometry">geometry</see></param>
-        /// <returns>The nearest points in the geometries</returns>
-        public static Coordinate[] NearestPoints(IGeometry g0, IGeometry g1)
-        {
-            var distOp = new Distance3DOp(g0, g1);
-            return distOp.NearestPoints();
-        }
-
         // input
         private readonly IGeometry[] _geom;
         private readonly double _terminateDistance;
+        private bool _isDone;
+        private double _minDistance = double.MaxValue;
         // working
         private GeometryLocation[] _minDistanceLocation;
-        private double _minDistance = Double.MaxValue;
-        private bool _isDone;
 
         /// <summary>
-        /// Constructs a DistanceOp that computes the distance and nearest points
-        /// between the two specified geometries.
+        ///     Constructs a DistanceOp that computes the distance and nearest points
+        ///     between the two specified geometries.
         /// </summary>
         /// <param name="g0">A geometry</param>
         /// <param name="g1">A geometry</param>
@@ -86,8 +47,8 @@ namespace NetTopologySuite.Operation.Distance3D
         }
 
         /// <summary>
-        /// Constructs a DistanceOp that computes the distance and nearest points
-        /// between the two specified geometries.
+        ///     Constructs a DistanceOp that computes the distance and nearest points
+        ///     between the two specified geometries.
         /// </summary>
         /// <param name="g0">A geometry</param>
         /// <param name="g1">A geometry</param>
@@ -101,14 +62,60 @@ namespace NetTopologySuite.Operation.Distance3D
         }
 
         /// <summary>
-        /// Report the distance between the nearest points on the input geometries.
+        ///     Compute the distance between the nearest points of two geometries.
         /// </summary>
-        /// <returns>The distance between the geometries<br/>
-        /// or <value>0</value> if either input geometry is empty</returns>
+        /// <param name="g0">A <see cref="IGeometry">geometry</see></param>
+        /// <param name="g1">A <see cref="IGeometry">geometry</see></param>
+        /// <returns>The distance between the geometries</returns>
+        public static double Distance(IGeometry g0, IGeometry g1)
+        {
+            var distOp = new Distance3DOp(g0, g1);
+            return distOp.Distance();
+        }
+
+        /// <summary>
+        ///     Test whether two geometries lie within a given distance of each other.
+        /// </summary>
+        /// <param name="g0">A <see cref="IGeometry">geometry</see></param>
+        /// <param name="g1">A <see cref="IGeometry">geometry</see></param>
+        /// <param name="distance">The distance to test</param>
+        /// <returns>
+        ///     <value>true</value>
+        ///     if <c>g0.distance(g1) &lt;= <paramref name="distance" /></c>
+        /// </returns>
+        public static bool IsWithinDistance(IGeometry g0, IGeometry g1,
+            double distance)
+        {
+            var distOp = new Distance3DOp(g0, g1, distance);
+            return distOp.Distance() <= distance;
+        }
+
+        /// <summary>
+        ///     Compute the the nearest points of two geometries. The points are
+        ///     presented in the same order as the input Geometries.
+        /// </summary>
+        /// <param name="g0">A <see cref="IGeometry">geometry</see></param>
+        /// <param name="g1">A <see cref="IGeometry">geometry</see></param>
+        /// <returns>The nearest points in the geometries</returns>
+        public static Coordinate[] NearestPoints(IGeometry g0, IGeometry g1)
+        {
+            var distOp = new Distance3DOp(g0, g1);
+            return distOp.NearestPoints();
+        }
+
+        /// <summary>
+        ///     Report the distance between the nearest points on the input geometries.
+        /// </summary>
+        /// <returns>
+        ///     The distance between the geometries<br />
+        ///     or
+        ///     <value>0</value>
+        ///     if either input geometry is empty
+        /// </returns>
         /// <exception cref="ArgumentException">Thrown if either input geometry is null.</exception>
         public double Distance()
         {
-            if (_geom[0] == null || _geom[1] == null)
+            if ((_geom[0] == null) || (_geom[1] == null))
                 throw new ArgumentException(
                     "null geometries are not supported");
             if (_geom[0].IsEmpty || _geom[1].IsEmpty)
@@ -119,26 +126,26 @@ namespace NetTopologySuite.Operation.Distance3D
         }
 
         /// <summary>
-        /// Report the coordinates of the nearest points in the input geometries. The
-        /// points are presented in the same order as the input Geometries.
+        ///     Report the coordinates of the nearest points in the input geometries. The
+        ///     points are presented in the same order as the input Geometries.
         /// </summary>
-        /// <returns>A pair of <see cref="Coordinate"/>s of the nearest points</returns>
+        /// <returns>A pair of <see cref="Coordinate" />s of the nearest points</returns>
         public Coordinate[] NearestPoints()
         {
             ComputeMinDistance();
             var nearestPts = new[]
-                {
-                    _minDistanceLocation[0].Coordinate,
-                    _minDistanceLocation[1].Coordinate
-                };
+            {
+                _minDistanceLocation[0].Coordinate,
+                _minDistanceLocation[1].Coordinate
+            };
             return nearestPts;
         }
 
         /// <summary>
-        /// Gets the locations of the nearest points in the input geometries. The
-        /// locations are presented in the same order as the input Geometries.
+        ///     Gets the locations of the nearest points in the input geometries. The
+        ///     locations are presented in the same order as the input Geometries.
         /// </summary>
-        /// <returns>A pair of <see cref="GeometryLocation"/>s for the nearest points</returns>
+        /// <returns>A pair of <see cref="GeometryLocation" />s for the nearest points</returns>
         public GeometryLocation[] NearestLocations()
         {
             ComputeMinDistance();
@@ -146,8 +153,8 @@ namespace NetTopologySuite.Operation.Distance3D
         }
 
         private void UpdateDistance(double dist,
-                                    GeometryLocation loc0, GeometryLocation loc1,
-                                    bool flip)
+            GeometryLocation loc0, GeometryLocation loc1,
+            bool flip)
         {
             _minDistance = dist;
             var index = flip ? 1 : 0;
@@ -170,16 +177,16 @@ namespace NetTopologySuite.Operation.Distance3D
         }
 
         /// <summary>
-        /// Finds the index of the "most polygonal" input geometry.
-        /// This optimizes the computation of the best-fit plane, 
-        /// since it is cached only for the left-hand geometry.
+        ///     Finds the index of the "most polygonal" input geometry.
+        ///     This optimizes the computation of the best-fit plane,
+        ///     since it is cached only for the left-hand geometry.
         /// </summary>
         /// <returns>The index of the most polygonal geometry</returns>
         private int MostPolygonalIndex()
         {
             var dim0 = _geom[0].Dimension;
             var dim1 = _geom[1].Dimension;
-            if (dim0 >= Dimension.Surface && dim1 >= Dimension.Surface)
+            if ((dim0 >= Dimension.Surface) && (dim1 >= Dimension.Surface))
             {
                 if (_geom[0].NumPoints > _geom[1].NumPoints)
                     return 0;
@@ -196,8 +203,8 @@ namespace NetTopologySuite.Operation.Distance3D
         {
             if (g0 is IGeometryCollection)
             {
-                int n = g0.NumGeometries;
-                for (int i = 0; i < n; i++)
+                var n = g0.NumGeometries;
+                for (var i = 0; i < n; i++)
                 {
                     var g = g0.GetGeometryN(i);
                     ComputeMinDistanceMultiMulti(g, g1, flip);
@@ -212,9 +219,7 @@ namespace NetTopologySuite.Operation.Distance3D
 
                 // compute planar polygon only once for efficiency
                 if (g0 is IPolygon)
-                {
                     ComputeMinDistanceOneMulti(PolyPlane(g0), g1, flip);
-                }
                 else
                     ComputeMinDistanceOneMulti(g0, g1, flip);
             }
@@ -242,8 +247,8 @@ namespace NetTopologySuite.Operation.Distance3D
         {
             if (geom is IGeometryCollection)
             {
-                int n = geom.NumGeometries;
-                for (int i = 0; i < n; i++)
+                var n = geom.NumGeometries;
+                for (var i = 0; i < n; i++)
                 {
                     var g = geom.GetGeometryN(i);
                     ComputeMinDistanceOneMulti(poly, g, flip);
@@ -254,28 +259,25 @@ namespace NetTopologySuite.Operation.Distance3D
             {
                 if (geom is IPoint)
                 {
-                    ComputeMinDistancePolygonPoint(poly, (IPoint)geom, flip);
+                    ComputeMinDistancePolygonPoint(poly, (IPoint) geom, flip);
                     return;
                 }
                 if (geom is ILineString)
                 {
-                    ComputeMinDistancePolygonLine(poly, (ILineString)geom, flip);
+                    ComputeMinDistancePolygonLine(poly, (ILineString) geom, flip);
                     return;
                 }
                 if (geom is IPolygon)
-                {
-                    ComputeMinDistancePolygonPolygon(poly, (IPolygon)geom, flip);
-                    //return;
-                }
+                    ComputeMinDistancePolygonPolygon(poly, (IPolygon) geom, flip);
             }
         }
 
         /// <summary>
-        /// Convenience method to create a Plane3DPolygon
+        ///     Convenience method to create a Plane3DPolygon
         /// </summary>
         private static PlanarPolygon3D PolyPlane(IGeometry poly)
         {
-            return new PlanarPolygon3D((IPolygon)poly);
+            return new PlanarPolygon3D((IPolygon) poly);
         }
 
         private void ComputeMinDistance(IGeometry g0, IGeometry g1, bool flip)
@@ -284,17 +286,17 @@ namespace NetTopologySuite.Operation.Distance3D
             {
                 if (g1 is IPoint)
                 {
-                    ComputeMinDistancePointPoint((IPoint)g0, (IPoint)g1, flip);
+                    ComputeMinDistancePointPoint((IPoint) g0, (IPoint) g1, flip);
                     return;
                 }
                 if (g1 is ILineString)
                 {
-                    ComputeMinDistanceLinePoint((ILineString)g1, (IPoint)g0, !flip);
+                    ComputeMinDistanceLinePoint((ILineString) g1, (IPoint) g0, !flip);
                     return;
                 }
                 if (g1 is IPolygon)
                 {
-                    ComputeMinDistancePolygonPoint(PolyPlane(g1), (IPoint)g0, !flip);
+                    ComputeMinDistancePolygonPoint(PolyPlane(g1), (IPoint) g0, !flip);
                     return;
                 }
             }
@@ -302,17 +304,17 @@ namespace NetTopologySuite.Operation.Distance3D
             {
                 if (g1 is IPoint)
                 {
-                    ComputeMinDistanceLinePoint((ILineString)g0, (IPoint)g1, flip);
+                    ComputeMinDistanceLinePoint((ILineString) g0, (IPoint) g1, flip);
                     return;
                 }
                 if (g1 is ILineString)
                 {
-                    ComputeMinDistanceLineLine((ILineString)g0, (ILineString)g1, flip);
+                    ComputeMinDistanceLineLine((ILineString) g0, (ILineString) g1, flip);
                     return;
                 }
                 if (g1 is IPolygon)
                 {
-                    ComputeMinDistancePolygonLine(PolyPlane(g1), (ILineString)g0, !flip);
+                    ComputeMinDistancePolygonLine(PolyPlane(g1), (ILineString) g0, !flip);
                     return;
                 }
             }
@@ -320,39 +322,37 @@ namespace NetTopologySuite.Operation.Distance3D
             {
                 if (g1 is IPoint)
                 {
-                    ComputeMinDistancePolygonPoint(PolyPlane(g0), (IPoint)g1, flip);
+                    ComputeMinDistancePolygonPoint(PolyPlane(g0), (IPoint) g1, flip);
                     return;
                 }
                 if (g1 is ILineString)
                 {
-                    ComputeMinDistancePolygonLine(PolyPlane(g0), (ILineString)g1, flip);
+                    ComputeMinDistancePolygonLine(PolyPlane(g0), (ILineString) g1, flip);
                     return;
                 }
                 if (g1 is IPolygon)
-                {
-                    ComputeMinDistancePolygonPolygon(PolyPlane(g0), (IPolygon)g1, flip);
-                    //return;
-                }
+                    ComputeMinDistancePolygonPolygon(PolyPlane(g0), (IPolygon) g1, flip);
             }
         }
 
         /// <summary>
-        /// Computes distance between two polygons.
+        ///     Computes distance between two polygons.
         /// </summary>
         /// <remarks>
-        /// To compute the distance, compute the distance
-        /// between the rings of one polygon and the other polygon,
-        /// and vice-versa.
-        /// If the polygons intersect, then at least one ring must
-        /// intersect the other polygon.
-        /// Note that it is NOT sufficient to test only the shell rings. 
-        /// A counter-example is a "figure-8" polygon A 
-        /// and a simple polygon B at right angles to A, with the ring of B
-        /// passing through the holes of A.
-        /// The polygons intersect,
-        /// but A's shell does not intersect B, and B's shell does not intersect A.</remarks>
+        ///     To compute the distance, compute the distance
+        ///     between the rings of one polygon and the other polygon,
+        ///     and vice-versa.
+        ///     If the polygons intersect, then at least one ring must
+        ///     intersect the other polygon.
+        ///     Note that it is NOT sufficient to test only the shell rings.
+        ///     A counter-example is a "figure-8" polygon A
+        ///     and a simple polygon B at right angles to A, with the ring of B
+        ///     passing through the holes of A.
+        ///     The polygons intersect,
+        ///     but A's shell does not intersect B, and B's shell does not intersect A.
+        /// </remarks>
         private void ComputeMinDistancePolygonPolygon(PlanarPolygon3D poly0, IPolygon poly1,
-                                                      bool flip)
+            bool flip)
         {
             ComputeMinDistancePolygonRings(poly0, poly1, flip);
             if (_isDone) return;
@@ -362,14 +362,14 @@ namespace NetTopologySuite.Operation.Distance3D
 
         /// <summary>Compute distance between a polygon and the rings of another.</summary>
         private void ComputeMinDistancePolygonRings(PlanarPolygon3D poly, IPolygon ringPoly,
-                                                    bool flip)
+            bool flip)
         {
             // compute shell ring
             ComputeMinDistancePolygonLine(poly, ringPoly.ExteriorRing, flip);
             if (_isDone) return;
             // compute hole rings
-            int nHole = ringPoly.NumInteriorRings;
-            for (int i = 0; i < nHole; i++)
+            var nHole = ringPoly.NumInteriorRings;
+            for (var i = 0; i < nHole; i++)
             {
                 ComputeMinDistancePolygonLine(poly, ringPoly.GetInteriorRingN(i), flip);
                 if (_isDone) return;
@@ -377,26 +377,25 @@ namespace NetTopologySuite.Operation.Distance3D
         }
 
         private void ComputeMinDistancePolygonLine(PlanarPolygon3D poly, ILineString line,
-                                                   bool flip)
+            bool flip)
         {
-
             // first test if line intersects polygon
             var intPt = Intersection(poly, line);
             if (intPt != null)
             {
                 UpdateDistance(0,
-                               new GeometryLocation(poly.Polygon, 0, intPt),
-                               new GeometryLocation(line, 0, intPt),
-                               flip
-                    );
+                    new GeometryLocation(poly.Polygon, 0, intPt),
+                    new GeometryLocation(line, 0, intPt),
+                    flip
+                );
                 return;
             }
 
             // if no intersection, then compute line distance to polygon rings
             ComputeMinDistanceLineLine(poly.Polygon.ExteriorRing, line, flip);
             if (_isDone) return;
-            int nHole = poly.Polygon.NumInteriorRings;
-            for (int i = 0; i < nHole; i++)
+            var nHole = poly.Polygon.NumInteriorRings;
+            for (var i = 0; i < nHole; i++)
             {
                 ComputeMinDistanceLineLine(poly.Polygon.GetInteriorRingN(i), line, flip);
                 if (_isDone) return;
@@ -426,7 +425,7 @@ namespace NetTopologySuite.Operation.Distance3D
                  * If the oriented distances of the segment endpoints have the same sign, 
                  * the segment does not cross the plane, and is skipped.
                  */
-                if (d0 * d1 > 0)
+                if (d0*d1 > 0)
                     continue;
 
                 /**
@@ -439,9 +438,7 @@ namespace NetTopologySuite.Operation.Distance3D
                 var intPt = SegmentPoint(p0, p1, d0, d1);
                 // Coordinate intPt = polyPlane.intersection(p0, p1, s0, s1);
                 if (poly.Intersects(intPt))
-                {
                     return intPt;
-                }
 
                 // shift to next segment
                 d0 = d1;
@@ -450,7 +447,7 @@ namespace NetTopologySuite.Operation.Distance3D
         }
 
         private void ComputeMinDistancePolygonPoint(PlanarPolygon3D polyPlane, IPoint point,
-                                                    bool flip)
+            bool flip)
         {
             var pt = point.Coordinate;
 
@@ -460,7 +457,7 @@ namespace NetTopologySuite.Operation.Distance3D
                 // point is either inside or in a hole
 
                 var nHole = polyPlane.Polygon.NumInteriorRings;
-                for (int i = 0; i < nHole; i++)
+                for (var i = 0; i < nHole; i++)
                 {
                     var hole = polyPlane.Polygon.GetInteriorRingN(i);
                     if (polyPlane.Intersects(pt, hole))
@@ -473,27 +470,26 @@ namespace NetTopologySuite.Operation.Distance3D
                 // distance is distance to polygon plane
                 var dist = Math.Abs(polyPlane.Plane.OrientedDistance(pt));
                 UpdateDistance(dist,
-                               new GeometryLocation(polyPlane.Polygon, 0, pt),
-                               new GeometryLocation(point, 0, pt),
-                               flip
-                    );
+                    new GeometryLocation(polyPlane.Polygon, 0, pt),
+                    new GeometryLocation(point, 0, pt),
+                    flip
+                );
             }
             // point is outside polygon, so compute distance to shell linework
             ComputeMinDistanceLinePoint(shell, point, flip);
         }
 
         private void ComputeMinDistanceLineLine(ILineString line0, ILineString line1,
-                                                bool flip)
+            bool flip)
         {
             var coord0 = line0.Coordinates;
             var coord1 = line1.Coordinates;
             // brute force approach!
             for (var i = 0; i < coord0.Length - 1; i++)
-            {
-                for (int j = 0; j < coord1.Length - 1; j++)
+                for (var j = 0; j < coord1.Length - 1; j++)
                 {
                     var dist = CGAlgorithms3D.DistanceSegmentSegment(coord0[i],
-                                                                     coord0[i + 1], coord1[j], coord1[j + 1]);
+                        coord0[i + 1], coord1[j], coord1[j + 1]);
                     if (dist < _minDistance)
                     {
                         _minDistance = dist;
@@ -502,34 +498,33 @@ namespace NetTopologySuite.Operation.Distance3D
                         var seg1 = new LineSegment(coord1[j], coord1[j + 1]);
                         var closestPt = seg0.ClosestPoints(seg1);
                         UpdateDistance(dist,
-                                       new GeometryLocation(line0, i, closestPt[0]),
-                                       new GeometryLocation(line1, j, closestPt[1]),
-                                       flip
-                            );
+                            new GeometryLocation(line0, i, closestPt[0]),
+                            new GeometryLocation(line1, j, closestPt[1]),
+                            flip
+                        );
                     }
                     if (_isDone) return;
                 }
-            }
         }
 
         private void ComputeMinDistanceLinePoint(ILineString line, IPoint point,
-                                                 bool flip)
+            bool flip)
         {
             var lineCoord = line.Coordinates;
             var coord = point.Coordinate;
             // brute force approach!
-            for (int i = 0; i < lineCoord.Length - 1; i++)
+            for (var i = 0; i < lineCoord.Length - 1; i++)
             {
                 var dist = CGAlgorithms3D.DistancePointSegment(coord, lineCoord[i],
-                                                               lineCoord[i + 1]);
+                    lineCoord[i + 1]);
                 if (dist < _minDistance)
                 {
                     var seg = new LineSegment(lineCoord[i], lineCoord[i + 1]);
                     var segClosestPoint = seg.ClosestPoint(coord);
                     UpdateDistance(dist,
-                                   new GeometryLocation(line, i, segClosestPoint),
-                                   new GeometryLocation(point, 0, coord),
-                                   flip);
+                        new GeometryLocation(line, i, segClosestPoint),
+                        new GeometryLocation(point, 0, coord),
+                        flip);
                 }
                 if (_isDone) return;
             }
@@ -541,12 +536,10 @@ namespace NetTopologySuite.Operation.Distance3D
                 point0.Coordinate,
                 point1.Coordinate);
             if (dist < _minDistance)
-            {
                 UpdateDistance(dist,
-                               new GeometryLocation(point0, 0, point0.Coordinate),
-                               new GeometryLocation(point1, 0, point1.Coordinate),
-                               flip);
-            }
+                    new GeometryLocation(point0, 0, point0.Coordinate),
+                    new GeometryLocation(point1, 0, point1.Coordinate),
+                    flip);
         }
 
         /**
@@ -566,15 +559,15 @@ namespace NetTopologySuite.Operation.Distance3D
          */
 
         private static Coordinate SegmentPoint(Coordinate p0, Coordinate p1, double d0,
-                                               double d1)
+            double d1)
         {
             if (d0 <= 0) return new Coordinate(p0);
             if (d1 <= 0) return new Coordinate(p1);
 
-            var f = Math.Abs(d0) / (Math.Abs(d0) + Math.Abs(d1));
-            var intx = p0.X + f * (p1.X - p0.X);
-            var inty = p0.Y + f * (p1.Y - p0.Y);
-            var intz = p0.Z + f * (p1.Z - p0.Z);
+            var f = Math.Abs(d0)/(Math.Abs(d0) + Math.Abs(d1));
+            var intx = p0.X + f*(p1.X - p0.X);
+            var inty = p0.Y + f*(p1.Y - p0.Y);
+            var intz = p0.Z + f*(p1.Z - p0.Z);
             return new Coordinate(intx, inty, intz);
         }
     }

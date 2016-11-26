@@ -13,7 +13,7 @@ namespace NetTopologySuite.Utilities
 #endif
         }
 
-        public static string Format(Type type,object value, string formatString)
+        public static string Format(Type type, object value, string formatString)
         {
 #if PCL
             throw new NotImplementedException();

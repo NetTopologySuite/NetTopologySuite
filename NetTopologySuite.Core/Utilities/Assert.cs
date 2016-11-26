@@ -1,9 +1,7 @@
-using System;
-
 namespace NetTopologySuite.Utilities
 {
     /// <summary>
-    /// A utility for making programming assertions.
+    ///     A utility for making programming assertions.
     /// </summary>
     public static class Assert
     {
@@ -20,17 +18,17 @@ namespace NetTopologySuite.Utilities
             throw new AssertionFailedException(message);
         }
 
-        public static void IsEquals(Object expectedValue, Object actualValue)
+        public static void IsEquals(object expectedValue, object actualValue)
         {
             IsEquals(expectedValue, actualValue, null);
         }
 
-        public static void IsEquals(Object expectedValue, Object actualValue, string message)
+        public static void IsEquals(object expectedValue, object actualValue, string message)
         {
             if (actualValue.Equals(expectedValue))
                 return;
-            string s = message != null ? ": " + message : String.Empty;
-            string format = String.Format("Expected {0} but encountered {1}{2}", expectedValue, actualValue, s);
+            var s = message != null ? ": " + message : string.Empty;
+            var format = string.Format("Expected {0} but encountered {1}{2}", expectedValue, actualValue, s);
             throw new AssertionFailedException(format);
         }
 
@@ -41,8 +39,8 @@ namespace NetTopologySuite.Utilities
 
         public static void ShouldNeverReachHere(string message)
         {
-            string s = (message != null ? ": " + message : String.Empty);
-            string format = String.Format("Should never reach here{0}", s);
+            var s = message != null ? ": " + message : string.Empty;
+            var format = string.Format("Should never reach here{0}", s);
             throw new AssertionFailedException(format);
         }
     }

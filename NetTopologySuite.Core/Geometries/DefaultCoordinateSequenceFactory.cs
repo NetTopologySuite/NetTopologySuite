@@ -4,8 +4,8 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
-    /// Creates CoordinateSequences internally represented
-    /// as an array of x's and an array of y's.
+    ///     Creates CoordinateSequences internally represented
+    ///     as an array of x's and an array of y's.
     /// </summary>
     [Obsolete("No longer used")]
     public class DefaultCoordinateSequenceFactory : ICoordinateSequenceFactory
@@ -14,28 +14,25 @@ namespace NetTopologySuite.Geometries
         // Readonly added
 
         /// <summary>
-        /// 
         /// </summary>
-        private DefaultCoordinateSequenceFactory() { }
-
-        // see http://www.javaworld.com/javaworld/javatips/jw-javatip122.html
-        private object ReadResolve()
+        private DefaultCoordinateSequenceFactory()
         {
-            return Instance;
         }
 
         /// <summary>
-        /// Returns the singleton instance of DefaultCoordinateSequenceFactory.
+        ///     Returns the singleton instance of DefaultCoordinateSequenceFactory.
         /// </summary>
         /// <returns>Singleton instance of DefaultCoordinateSequenceFactory.</returns>
         public static DefaultCoordinateSequenceFactory Instance { get; } = new DefaultCoordinateSequenceFactory();
 
         /// <summary>
-        /// Returns a DefaultCoordinateSequence based on the given array
-        /// (the array is not copied).
+        ///     Returns a DefaultCoordinateSequence based on the given array
+        ///     (the array is not copied).
         /// </summary>
-        /// <param name="coordinates">Coordinates array, which may not be null
-        /// nor contain null elements</param>
+        /// <param name="coordinates">
+        ///     Coordinates array, which may not be null
+        ///     nor contain null elements
+        /// </param>
         /// <returns>Singleton instance of DefaultCoordinateSequenceFactory.</returns>
         public ICoordinateSequence Create(Coordinate[] coordinates)
         {
@@ -58,5 +55,11 @@ namespace NetTopologySuite.Geometries
         }
 
         public Ordinates Ordinates => Ordinates.XYZ;
+
+        // see http://www.javaworld.com/javaworld/javatips/jw-javatip122.html
+        private object ReadResolve()
+        {
+            return Instance;
+        }
     }
 }

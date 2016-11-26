@@ -14,19 +14,18 @@ namespace NetTopologySuite.Geometries.Prepared
             _geomFact = geomFact;
         }
 
-        public void AddIntersection(Coordinate intPt, int segmentIndex)
-        {
-            _segStr.AddIntersection(intPt, segmentIndex);
-        }
-
         public IGeometry Result
         {
             get
             {
-                Coordinate[] resultPts = new Coordinate[0];
+                var resultPts = new Coordinate[0];
                 return _geomFact.CreateLineString(resultPts);
             }
         }
 
+        public void AddIntersection(Coordinate intPt, int segmentIndex)
+        {
+            _segStr.AddIntersection(intPt, segmentIndex);
+        }
     }
 }

@@ -8,11 +8,11 @@ using RTools_NTS.Util;
 namespace NetTopologySuite.IO
 {
     /// <summary>
-    /// Reads a sequence of {@link Geometry}s in WKBHex format 
-    /// from a text file.
-    /// Each WKBHex geometry must be on a single line
-    /// The geometries in the file may be separated by any amount
-    /// of whitespace and newlines.
+    ///     Reads a sequence of {@link Geometry}s in WKBHex format
+    ///     from a text file.
+    ///     Each WKBHex geometry must be on a single line
+    ///     The geometries in the file may be separated by any amount
+    ///     of whitespace and newlines.
     /// </summary>
     /// <author>Martin Davis</author>
     public class WKBHexFileReader
@@ -20,8 +20,8 @@ namespace NetTopologySuite.IO
         private readonly IBinaryGeometryReader _wkbReader;
 
         /// <summary>
-        /// Creates a new <see cref="WKBHexFileReader"/> given the
-        /// <see cref="WKBReader"/> to use to parse the geometries.
+        ///     Creates a new <see cref="WKBHexFileReader" /> given the
+        ///     <see cref="WKBReader" /> to use to parse the geometries.
         /// </summary>
         /// <param name="wkbReader">The geometry reader to use</param>
         public WKBHexFileReader(IBinaryGeometryReader wkbReader)
@@ -34,19 +34,19 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Gets or sets a value indicating the maximum number of geometries to read
+        ///     Gets or sets a value indicating the maximum number of geometries to read
         /// </summary>
         public int Limit { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of geometries to skip before storing.
+        ///     Gets or sets the number of geometries to skip before storing.
         /// </summary>
         public int Offset { get; set; }
 
         /// <summary>
-        /// Reads a sequence of geometries.<br/>
-        /// If an <see cref="Offset"/> is specified, geometries read up to the offset count are skipped.
-        /// If a <see cref="Limit"/> is specified, no more than <see cref="Limit"/> geometries are read.
+        ///     Reads a sequence of geometries.<br />
+        ///     If an <see cref="Offset" /> is specified, geometries read up to the offset count are skipped.
+        ///     If a <see cref="Limit" /> is specified, no more than <see cref="Limit" /> geometries are read.
         /// </summary>
         /// <param name="file">The path to the file</param>
         /// <exception cref="ArgumentNullException">Thrown if no filename was specified</exception>
@@ -66,9 +66,9 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Reads a sequence of geometries.<br/>
-        /// If an <see cref="Offset"/> is specified, geometries read up to the offset count are skipped.
-        /// If a <see cref="Limit"/> is specified, no more than <see cref="Limit"/> geometries are read.
+        ///     Reads a sequence of geometries.<br />
+        ///     If an <see cref="Offset" /> is specified, geometries read up to the offset count are skipped.
+        ///     If a <see cref="Limit" /> is specified, no more than <see cref="Limit" /> geometries are read.
         /// </summary>
         /// <param name="stream">The path to the file</param>
         /// <exception cref="ArgumentNullException">Thrown if no stream was passed</exception>
@@ -89,13 +89,12 @@ namespace NetTopologySuite.IO
             {
                 return Read(sr);
             }
-
         }
 
         /// <summary>
-        /// Reads a sequence of geometries.<br/>
-        /// If an <see cref="Offset"/> is specified, geometries read up to the offset count are skipped.
-        /// If a <see cref="Limit"/> is specified, no more than <see cref="Limit"/> geometries are read.
+        ///     Reads a sequence of geometries.<br />
+        ///     If an <see cref="Offset" /> is specified, geometries read up to the offset count are skipped.
+        ///     If a <see cref="Limit" /> is specified, no more than <see cref="Limit" /> geometries are read.
         /// </summary>
         /// <param name="streamReader">The stream reader to use.</param>
         /// <exception cref="IOException">Thrown if an I/O exception was encountered</exception>
@@ -118,19 +117,22 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Tests if reader has reached limit
+        ///     Tests if reader has reached limit
         /// </summary>
         /// <param name="geoms">A collection of already read geometries</param>
-        /// <returns><value>true</value> if <see cref="Limit"/> number of geometries has been read.</returns>
+        /// <returns>
+        ///     <value>true</value>
+        ///     if <see cref="Limit" /> number of geometries has been read.
+        /// </returns>
         private bool IsAtLimit(ICollection<IGeometry> geoms)
         {
-            if (Limit < 0) 
+            if (Limit < 0)
                 return false;
             return geoms.Count >= Limit;
         }
 
         /// <summary>
-        /// Tests if reader is at EOF.
+        ///     Tests if reader is at EOF.
         /// </summary>
         private static bool IsAtEndOfFile(StreamReader bufferedReader)
         {

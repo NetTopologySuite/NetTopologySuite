@@ -2,36 +2,35 @@
 
 namespace NetTopologySuite.Algorithm
 {
-
     /// <summary>
-    /// Computes whether a rectangle intersects line segments.
+    ///     Computes whether a rectangle intersects line segments.
     /// </summary>
     /// <remarks>
-    /// Rectangles contain a large amount of inherent symmetry
-    /// (or to put it another way, although they contain four
-    /// coordinates they only actually contain 4 ordinates
-    /// worth of information).
-    /// The algorithm used takes advantage of the symmetry of 
-    /// the geometric situation 
-    /// to optimize performance by minimizing the number
-    /// of line intersection tests.
+    ///     Rectangles contain a large amount of inherent symmetry
+    ///     (or to put it another way, although they contain four
+    ///     coordinates they only actually contain 4 ordinates
+    ///     worth of information).
+    ///     The algorithm used takes advantage of the symmetry of
+    ///     the geometric situation
+    ///     to optimize performance by minimizing the number
+    ///     of line intersection tests.
     /// </remarks>
     /// <author>Martin Davis</author>
     public class RectangleLineIntersector
     {
+        private readonly Coordinate _diagDown0;
+        private readonly Coordinate _diagDown1;
+
+        private readonly Coordinate _diagUp0;
+        private readonly Coordinate _diagUp1;
         // for intersection testing, don't need to set precision model
         private readonly LineIntersector _li = new RobustLineIntersector();
 
         private readonly Envelope _rectEnv;
 
-        private readonly Coordinate _diagUp0;
-        private readonly Coordinate _diagUp1;
-        private readonly Coordinate _diagDown0;
-        private readonly Coordinate _diagDown1;
-
         /// <summary>
-        /// Creates a new intersector for the given query rectangle,
-        /// specified as an <see cref="Envelope"/>.
+        ///     Creates a new intersector for the given query rectangle,
+        ///     specified as an <see cref="Envelope" />.
         /// </summary>
         /// <param name="rectEnv">The query rectangle, specified as an Envelope</param>
         public RectangleLineIntersector(Envelope rectEnv)
@@ -49,7 +48,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Tests whether the query rectangle intersects a given line segment.
+        ///     Tests whether the query rectangle intersects a given line segment.
         /// </summary>
         /// <param name="p0">The first endpoint of the segment</param>
         /// <param name="p1">The second endpoint of the segment</param>
@@ -113,18 +112,12 @@ namespace NetTopologySuite.Algorithm
              * still sufficient.)  
              */
             if (isSegUpwards)
-            {
                 _li.ComputeIntersection(p0, p1, _diagDown0, _diagDown1);
-            }
             else
-            {
                 _li.ComputeIntersection(p0, p1, _diagUp0, _diagUp1);
-            }
             if (_li.HasIntersection)
                 return true;
             return false;
-
-
         }
     }
 }

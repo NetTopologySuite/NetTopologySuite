@@ -5,16 +5,16 @@ using NetTopologySuite.Algorithm.Distance;
 namespace NetTopologySuite.Algorithm.Match
 {
     /// <summary>
-    /// Measures the degree of similarity between two <see cref="IGeometry"/>s using the Hausdorff distance metric.
+    ///     Measures the degree of similarity between two <see cref="IGeometry" />s using the Hausdorff distance metric.
     /// </summary>
     /// <remarks>
-    /// <para>
-    /// The measure is normalized to lie in the range [0, 1]. Higher measures indicate a great degree of similarity.
-    /// </para>
-    /// <para>
-    /// The measure is computed by computing the Hausdorff distance between the input geometries, and then normalizing
-    /// this by dividing it by the diagonal distance across the envelope of the combined geometries.
-    /// </para>
+    ///     <para>
+    ///         The measure is normalized to lie in the range [0, 1]. Higher measures indicate a great degree of similarity.
+    ///     </para>
+    ///     <para>
+    ///         The measure is computed by computing the Hausdorff distance between the input geometries, and then normalizing
+    ///         this by dividing it by the diagonal distance across the envelope of the combined geometries.
+    ///     </para>
     /// </remarks>
     /// <author>mbdavis</author>
     public class HausdorffSimilarityMeasure : ISimilarityMeasure
@@ -34,20 +34,19 @@ namespace NetTopologySuite.Algorithm.Match
 
         public double Measure(IGeometry g1, IGeometry g2)
         {
-            double distance = DiscreteHausdorffDistance.Distance(g1, g2, DensifyFraction);
+            var distance = DiscreteHausdorffDistance.Distance(g1, g2, DensifyFraction);
 
-            Envelope env = new Envelope(g1.EnvelopeInternal);
+            var env = new Envelope(g1.EnvelopeInternal);
             env.ExpandToInclude(g2.EnvelopeInternal);
-            double envSize = DiagonalSize(env);
+            var envSize = DiagonalSize(env);
             // normalize so that more similarity produces a measure closer to 1
-            double measure = 1 - distance/envSize;
+            var measure = 1 - distance/envSize;
 
             //System.out.println("Hausdorff distance = " + distance + ", measure = " + measure);
             return measure;
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="env"></param>
         /// <returns></returns>
@@ -55,8 +54,8 @@ namespace NetTopologySuite.Algorithm.Match
         {
             if (env.IsNull) return 0.0;
 
-            double width = env.Width;
-            double hgt = env.Height;
+            var width = env.Width;
+            var hgt = env.Height;
             return Math.Sqrt(width*width + hgt*hgt);
         }
     }

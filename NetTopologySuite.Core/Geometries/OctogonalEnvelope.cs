@@ -4,53 +4,32 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
-    /// A bounding container for a <see cref="IGeometry"/> which is in the shape of a general octagon.
+    ///     A bounding container for a <see cref="IGeometry" /> which is in the shape of a general octagon.
     /// </summary>
     /// <remarks>
-    /// The OctagonalEnvelope of a geometric object
-    /// is a geometry which is tight bound along the (up to) four extremal rectilineal parallels
-    /// and along the (up to) four extremal diagonal parallels.
-    /// Depending on the shape of the contained
-    /// geometry, the octagon may be degenerate to any extreme
-    /// (e.g. it may be a rectangle, a line, or a point).
+    ///     The OctagonalEnvelope of a geometric object
+    ///     is a geometry which is tight bound along the (up to) four extremal rectilineal parallels
+    ///     and along the (up to) four extremal diagonal parallels.
+    ///     Depending on the shape of the contained
+    ///     geometry, the octagon may be degenerate to any extreme
+    ///     (e.g. it may be a rectangle, a line, or a point).
     /// </remarks>
     public class OctagonalEnvelope
     {
-        /// <summary>
-        /// Gets the octagonal envelope of a geometry
-        /// </summary>
-        /// <param name="geom">The geometry</param>
-        /// <returns>The octagonal envelope of the geometry</returns>
-        public static IGeometry GetOctagonalEnvelope(IGeometry geom)
-        {
-            return (new OctagonalEnvelope(geom)).ToGeometry(geom.Factory);
-        }
-
-        
-        private static double ComputeA(double x, double y)
-        {
-            return x + y;
-        }
-
-        private static double ComputeB(double x, double y)
-        {
-            return x - y;
-        }
-
         private static readonly double SQRT2 = Math.Sqrt(2.0);
-  
+
 
         // initialize in the null state
 
         /// <summary>
-        /// Creates a new null bounding octagon
+        ///     Creates a new null bounding octagon
         /// </summary>
         public OctagonalEnvelope()
         {
         }
 
         /// <summary>
-        /// Creates a new null bounding octagon bounding a <see cref="Coordinate" />
+        ///     Creates a new null bounding octagon bounding a <see cref="Coordinate" />
         /// </summary>
         /// <param name="p">The coordinate to bound</param>
         public OctagonalEnvelope(Coordinate p)
@@ -59,7 +38,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Creates a new null bounding octagon bounding a pair of <see cref="Coordinate" />s
+        ///     Creates a new null bounding octagon bounding a pair of <see cref="Coordinate" />s
         /// </summary>
         /// <param name="p0">A coordinate to bound</param>
         /// <param name="p1">A coordinate to bound</param>
@@ -70,7 +49,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Creates a new null bounding octagon bounding an <see cref="Envelope" />
+        ///     Creates a new null bounding octagon bounding an <see cref="Envelope" />
         /// </summary>
         public OctagonalEnvelope(Envelope env)
         {
@@ -78,8 +57,8 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Creates a new null bounding octagon bounding an <see cref="OctagonalEnvelope" />
-        /// (the copy constructor).
+        ///     Creates a new null bounding octagon bounding an <see cref="OctagonalEnvelope" />
+        ///     (the copy constructor).
         /// </summary>
         public OctagonalEnvelope(OctagonalEnvelope oct)
         {
@@ -87,7 +66,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Creates a new null bounding octagon bounding a <see cref="IGeometry" />
+        ///     Creates a new null bounding octagon bounding a <see cref="IGeometry" />
         /// </summary>
         public OctagonalEnvelope(IGeometry geom)
         {
@@ -95,7 +74,7 @@ namespace NetTopologySuite.Geometries
         }
 
 
-        public double MinX { get; private set; } = Double.NaN;
+        public double MinX { get; private set; } = double.NaN;
         public double MaxX { get; private set; }
         public double MinY { get; private set; }
         public double MaxY { get; private set; }
@@ -104,17 +83,53 @@ namespace NetTopologySuite.Geometries
         public double MinB { get; private set; }
         public double MaxB { get; private set; }
 
-        ///
-        ///  Sets the value of this object to the null value
-        ///
-        public Boolean IsNull
+        /// Sets the value of this object to the null value
+        public bool IsNull
         {
-            get { return Double.IsNaN(MinX); }
+            get { return double.IsNaN(MinX); }
             private set
             {
                 if (value)
-                    MinX = Double.NaN;
+                    MinX = double.NaN;
             }
+        }
+
+        /// Tests if the extremal values for this octagon are valid.
+        /// 
+        /// @return
+        /// <code>true</code>
+        /// if this object has valid values
+        private bool IsValid
+        {
+            get
+            {
+                if (IsNull) return true;
+                return (MinX <= MaxX)
+                       && (MinY <= MaxY)
+                       && (MinA <= MaxA)
+                       && (MinB <= MaxB);
+            }
+        }
+
+        /// <summary>
+        ///     Gets the octagonal envelope of a geometry
+        /// </summary>
+        /// <param name="geom">The geometry</param>
+        /// <returns>The octagonal envelope of the geometry</returns>
+        public static IGeometry GetOctagonalEnvelope(IGeometry geom)
+        {
+            return new OctagonalEnvelope(geom).ToGeometry(geom.Factory);
+        }
+
+
+        private static double ComputeA(double x, double y)
+        {
+            return x + y;
+        }
+
+        private static double ComputeB(double x, double y)
+        {
+            return x - y;
         }
 
         public void ExpandToInclude(IGeometry g)
@@ -124,10 +139,10 @@ namespace NetTopologySuite.Geometries
 
         public OctagonalEnvelope ExpandToInclude(ICoordinateSequence seq)
         {
-            for (int i = 0; i < seq.Count; i++)
+            for (var i = 0; i < seq.Count; i++)
             {
-                double x = seq.GetX(i);
-                double y = seq.GetY(i);
+                var x = seq.GetX(i);
+                var y = seq.GetY(i);
                 ExpandToInclude(x, y);
             }
             return this;
@@ -177,8 +192,8 @@ namespace NetTopologySuite.Geometries
 
         public OctagonalEnvelope ExpandToInclude(double x, double y)
         {
-            double A = ComputeA(x, y);
-            double B = ComputeB(x, y);
+            var A = ComputeA(x, y);
+            var B = ComputeB(x, y);
 
             if (IsNull)
             {
@@ -209,7 +224,7 @@ namespace NetTopologySuite.Geometries
         {
             if (IsNull) return;
 
-            double diagonalDistance = SQRT2 * distance;
+            var diagonalDistance = SQRT2*distance;
 
             MinX -= distance;
             MaxX += distance;
@@ -224,26 +239,9 @@ namespace NetTopologySuite.Geometries
                 IsNull = true;
         }
 
-        ///
-        /// Tests if the extremal values for this octagon are valid.
-        ///
-        /// @return <code>true</code> if this object has valid values
-        ///
-        private Boolean IsValid
+        public bool Intersects(OctagonalEnvelope other)
         {
-            get
-            {
-                if (IsNull) return true;
-                return MinX <= MaxX
-                       && MinY <= MaxY
-                       && MinA <= MaxA
-                       && MinB <= MaxB;
-            }
-        }
-
-        public Boolean Intersects(OctagonalEnvelope other)
-        {
-            if (IsNull || other.IsNull) { return false; }
+            if (IsNull || other.IsNull) return false;
 
             if (MinX > other.MaxX) return false;
             if (MaxX < other.MinX) return false;
@@ -256,15 +254,15 @@ namespace NetTopologySuite.Geometries
             return true;
         }
 
-        public Boolean Intersects(Coordinate p)
+        public bool Intersects(Coordinate p)
         {
             if (MinX > p.X) return false;
             if (MaxX < p.X) return false;
             if (MinY > p.Y) return false;
             if (MaxY < p.Y) return false;
 
-            double A = ComputeA(p.X, p.Y);
-            double B = ComputeB(p.X, p.Y);
+            var A = ComputeA(p.X, p.Y);
+            var B = ComputeB(p.X, p.Y);
             if (MinA > A) return false;
             if (MaxA < A) return false;
             if (MinB > B) return false;
@@ -272,40 +270,38 @@ namespace NetTopologySuite.Geometries
             return true;
         }
 
-        public Boolean Contains(OctagonalEnvelope other)
+        public bool Contains(OctagonalEnvelope other)
         {
-            if (IsNull || other.IsNull) { return false; }
+            if (IsNull || other.IsNull) return false;
 
-            return other.MinX >= MinX
-                && other.MaxX <= MaxX
-                && other.MinY >= MinY
-                && other.MaxY <= MaxY
-                && other.MinA >= MinA
-                && other.MaxA <= MaxA
-                && other.MinB >= MinB
-                && other.MaxB <= MaxB;
+            return (other.MinX >= MinX)
+                   && (other.MaxX <= MaxX)
+                   && (other.MinY >= MinY)
+                   && (other.MaxY <= MaxY)
+                   && (other.MinA >= MinA)
+                   && (other.MaxA <= MaxA)
+                   && (other.MinB >= MinB)
+                   && (other.MaxB <= MaxB);
         }
 
         public IGeometry ToGeometry(IGeometryFactory geomFactory)
         {
             if (IsNull)
-            {
-                return geomFactory.CreatePoint((ICoordinateSequence)null);
-            }
+                return geomFactory.CreatePoint((ICoordinateSequence) null);
 
-            Coordinate px00 = new Coordinate(MinX, MinA - MinX);
-            Coordinate px01 = new Coordinate(MinX, MinX - MinB);
+            var px00 = new Coordinate(MinX, MinA - MinX);
+            var px01 = new Coordinate(MinX, MinX - MinB);
 
-            Coordinate px10 = new Coordinate(MaxX, MaxX - MaxB);
-            Coordinate px11 = new Coordinate(MaxX, MaxA - MaxX);
+            var px10 = new Coordinate(MaxX, MaxX - MaxB);
+            var px11 = new Coordinate(MaxX, MaxA - MaxX);
 
-            Coordinate py00 = new Coordinate(MinA - MinY, MinY);
-            Coordinate py01 = new Coordinate(MinY + MaxB, MinY);
+            var py00 = new Coordinate(MinA - MinY, MinY);
+            var py01 = new Coordinate(MinY + MaxB, MinY);
 
-            Coordinate py10 = new Coordinate(MaxY + MinB, MaxY);
-            Coordinate py11 = new Coordinate(MaxA - MaxY, MaxY);
+            var py10 = new Coordinate(MaxY + MinB, MaxY);
+            var py11 = new Coordinate(MaxA - MaxY, MaxY);
 
-            IPrecisionModel pm = geomFactory.PrecisionModel;
+            var pm = geomFactory.PrecisionModel;
             pm.MakePrecise(px00);
             pm.MakePrecise(px01);
             pm.MakePrecise(px10);
@@ -315,7 +311,7 @@ namespace NetTopologySuite.Geometries
             pm.MakePrecise(py10);
             pm.MakePrecise(py11);
 
-            CoordinateList coordList = new CoordinateList();
+            var coordList = new CoordinateList();
             coordList.Add(px00, false);
             coordList.Add(px01, false);
             coordList.Add(py10, false);
@@ -326,9 +322,7 @@ namespace NetTopologySuite.Geometries
             coordList.Add(py00, false);
 
             if (coordList.Count == 1)
-            {
                 return geomFactory.CreatePoint(px00);
-            }
             Coordinate[] pts;
             if (coordList.Count == 2)
             {
@@ -353,13 +347,9 @@ namespace NetTopologySuite.Geometries
             public void Filter(IGeometry geom)
             {
                 if (geom is ILineString)
-                {
-                    _octogonalEnvelope.ExpandToInclude(((ILineString)geom).CoordinateSequence);
-                }
+                    _octogonalEnvelope.ExpandToInclude(((ILineString) geom).CoordinateSequence);
                 else if (geom is IPoint)
-                {
-                    _octogonalEnvelope.ExpandToInclude(((IPoint)geom).CoordinateSequence);
-                }
+                    _octogonalEnvelope.ExpandToInclude(((IPoint) geom).CoordinateSequence);
             }
         }
     }

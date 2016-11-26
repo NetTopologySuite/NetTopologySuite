@@ -4,7 +4,7 @@ using NetTopologySuite.EdgeGraph;
 namespace NetTopologySuite.Dissolve
 {
     /// <summary>
-    /// A graph containing <see cref="DissolveHalfEdge"/>s.
+    ///     A graph containing <see cref="DissolveHalfEdge" />s.
     /// </summary>
     public class DissolveEdgeGraph : EdgeGraph.EdgeGraph
     {
