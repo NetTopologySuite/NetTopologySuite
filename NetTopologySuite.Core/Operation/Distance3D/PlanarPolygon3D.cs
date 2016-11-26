@@ -16,16 +16,13 @@ namespace NetTopologySuite.Operation.Distance3D
     /// <author>Martin Davis</author>
     public class PlanarPolygon3D
     {
-
-        private readonly Plane3D _plane;
-        private readonly IPolygon _poly;
         private readonly Plane _facingPlane = Mathematics.Plane.Undefined;
 
         public PlanarPolygon3D(IPolygon poly)
         {
-            _poly = poly;
-            _plane = FindBestFitPlane(poly);
-            _facingPlane = _plane.ClosestAxisPlane();
+            Polygon = poly;
+            Plane = FindBestFitPlane(poly);
+            _facingPlane = Plane.ClosestAxisPlane();
         }
 
         /**
@@ -104,24 +101,18 @@ namespace NetTopologySuite.Operation.Distance3D
             return a;
         }
 
-        public Plane3D Plane
-        {
-            get { return _plane; }
-        }
+        public Plane3D Plane { get; }
 
-        public IPolygon Polygon
-        {
-            get { return _poly; }
-        }
+        public IPolygon Polygon { get; }
 
         public bool Intersects(Coordinate intPt)
         {
-            if (Location.Exterior == Locate(intPt, _poly.ExteriorRing))
+            if (Location.Exterior == Locate(intPt, Polygon.ExteriorRing))
                 return false;
 
-            for (int i = 0; i < _poly.NumInteriorRings; i++)
+            for (int i = 0; i < Polygon.NumInteriorRings; i++)
             {
-                if (Location.Interior == Locate(intPt, _poly.GetInteriorRingN(i)))
+                if (Location.Interior == Locate(intPt, Polygon.GetInteriorRingN(i)))
                     return false;
             }
             return true;

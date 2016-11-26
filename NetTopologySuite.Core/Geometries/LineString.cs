@@ -42,13 +42,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public override Coordinate[] Coordinates
-        {
-            get
-            {
-                return _points.ToCoordinateArray();
-            }
-        }
+        public override Coordinate[] Coordinates => _points.ToCoordinateArray();
 
         public override double[] GetOrdinates(Ordinate ordinate)
         {
@@ -65,13 +59,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public ICoordinateSequence CoordinateSequence
-        {
-            get
-            {
-                return _points;
-            }
-        }
+        public ICoordinateSequence CoordinateSequence => _points;
 
         /// <summary>
         ///
@@ -86,25 +74,12 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public override Coordinate Coordinate
-        {
-            get
-            {
-                if (IsEmpty) return null;
-                return _points.GetCoordinate(0);
-            }
-        }
+        public override Coordinate Coordinate => IsEmpty ? null : _points.GetCoordinate(0);
 
         /// <summary>
         ///
         /// </summary>
-        public override Dimension Dimension
-        {
-            get
-            {
-                return Dimension.Curve;
-            }
-        }
+        public override Dimension Dimension => Dimension.Curve;
 
         /// <summary>
         ///
@@ -124,24 +99,12 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public override bool IsEmpty
-        {
-            get
-            {
-                return _points.Count == 0;
-            }
-        }
+        public override bool IsEmpty => _points.Count == 0;
 
         /// <summary>
         ///
         /// </summary>
-        public override int NumPoints
-        {
-            get
-            {
-                return _points.Count;
-            }
-        }
+        public override int NumPoints => _points.Count;
 
         /// <summary>
         ///
@@ -156,81 +119,36 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public IPoint StartPoint
-        {
-            get
-            {
-                if (IsEmpty)
-                    return null;
-                return GetPointN(0);
-            }
-        }
+        public IPoint StartPoint => IsEmpty ? null : GetPointN(0);
 
         /// <summary>
         ///
         /// </summary>
-        public IPoint EndPoint
-        {
-            get
-            {
-                if (IsEmpty)
-                    return null;
-                return GetPointN(NumPoints - 1);
-            }
-        }
+        public IPoint EndPoint => IsEmpty ? null : GetPointN(NumPoints - 1);
 
         /// <summary>
         ///
         /// </summary>
-        public virtual bool IsClosed
-        {
-            get
-            {
-                if (IsEmpty)
-                    return false;
-                return GetCoordinateN(0).Equals2D(GetCoordinateN(NumPoints - 1));
-            }
-        }
+        public virtual bool IsClosed => !IsEmpty && GetCoordinateN(0).Equals2D(GetCoordinateN(NumPoints - 1));
 
         /// <summary>
         ///
         /// </summary>
-        public bool IsRing
-        {
-            get
-            {
-                return IsClosed && IsSimple;
-            }
-        }
+        public bool IsRing => IsClosed && IsSimple;
 
         /// <summary>
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"LineString"</returns>
-        public override string GeometryType
-        {
-            get
-            {
-                return "LineString";
-            }
-        }
+        public override string GeometryType => "LineString";
 
-        public override OgcGeometryType OgcGeometryType
-        {
-            get { return OgcGeometryType.LineString; }
-        }
+        public override OgcGeometryType OgcGeometryType => OgcGeometryType.LineString;
 
         /// <summary>
         /// Returns the length of this <c>LineString</c>
         /// </summary>
         /// <returns>The length of the polygon.</returns>
-        public override double Length
-        {
-            get
-            {
-                return CGAlgorithms.Length(_points);
-            }
-        }
+        public override double Length => CGAlgorithms.Length(_points);
 
         ///// <summary>
         /////
@@ -243,13 +161,7 @@ namespace NetTopologySuite.Geometries
         //    }
         //}
 
-        public override IGeometry Boundary
-        {
-            get
-            {
-                return (new BoundaryOp(this)).GetBoundary();
-            }
-        }
+        public override IGeometry Boundary => (new BoundaryOp(this)).GetBoundary();
 
         /// <summary>
         /// Creates a <see cref="LineString" /> whose coordinates are in the reverse order of this objects.
@@ -510,13 +422,7 @@ namespace NetTopologySuite.Geometries
         ///
         /// </summary>
         /// <value></value>
-        public int Count
-        {
-            get
-            {
-                return _points.Count;
-            }
-        }
+        public int Count => _points.Count;
 
         /// <summary>
         /// Returns the value of the angle between the <see cref="StartPoint" />

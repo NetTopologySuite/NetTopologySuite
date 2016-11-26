@@ -17,7 +17,6 @@ namespace NetTopologySuite.Noding.Snapround
         private readonly LineIntersector _li;
 
         private readonly Coordinate _pt;
-        private readonly Coordinate _originalPt;
 
         private readonly Coordinate _p0Scaled;
         private readonly Coordinate _p1Scaled;
@@ -46,7 +45,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="li">THe intersector to use for testing intersection with line segments</param>
         public HotPixel(Coordinate pt, double scaleFactor, LineIntersector li)
         {
-            _originalPt = pt;
+            Coordinate = pt;
             _pt = pt;
             _scaleFactor = scaleFactor;
             _li = li;
@@ -66,13 +65,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <summary>
         /// Gets the coordinate this hot pixel is based at.
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get
-            {
-                return _originalPt;
-            }
-        }
+        public Coordinate Coordinate { get; }
 
         private const double SafeEnvelopeExpansionFactor = 0.75d;
 
@@ -86,8 +79,8 @@ namespace NetTopologySuite.Noding.Snapround
             if (_safeEnv == null)
             {
                 double safeTolerance = SafeEnvelopeExpansionFactor / _scaleFactor;
-                _safeEnv = new Envelope(_originalPt.X - safeTolerance, _originalPt.X + safeTolerance,
-                                       _originalPt.Y - safeTolerance, _originalPt.Y + safeTolerance);
+                _safeEnv = new Envelope(Coordinate.X - safeTolerance, Coordinate.X + safeTolerance,
+                                       Coordinate.Y - safeTolerance, Coordinate.Y + safeTolerance);
             }
             return _safeEnv;
         }

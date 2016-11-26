@@ -183,7 +183,7 @@ namespace NetTopologySuite.IO
         ///     4 bytes for WKBType.
         ///     4 bytes for SRID value
         /// </summary>
-        protected int InitCount { get { return 5 + (HandleSRID ? 4 : 0); } }
+        protected int InitCount => 5 + (HandleSRID ? 4 : 0);
 
         /// <summary>
         /// Initializes writer with LittleIndian byte order.
@@ -678,15 +678,12 @@ namespace NetTopologySuite.IO
             set
             {
                 if (_strict && value)
-                    throw new ArgumentException("Cannot set HandleSRID to true if Strict is set", "value");
+                    throw new ArgumentException("Cannot set HandleSRID to true if Strict is set", nameof(value));
                 _handleSRID = value;
             }
         }
 
-        public Ordinates AllowedOrdinates
-        {
-            get { return Ordinates.XYZM; }
-        }
+        public Ordinates AllowedOrdinates => Ordinates.XYZM;
 
         private Ordinates _handleOrdinates;
         private bool _handleSRID;

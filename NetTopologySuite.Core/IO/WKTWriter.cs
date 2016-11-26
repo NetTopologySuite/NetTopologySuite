@@ -6,7 +6,6 @@ using System.IO;
 using System.Text;
 using GeoAPI.Geometries;
 using GeoAPI.IO;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO
@@ -160,10 +159,8 @@ namespace NetTopologySuite.IO
         private const string MaxPrecisionFormat = "{0:R}";
         private NumberFormatInfo _formatter;
         private string _format;
-        private bool _isFormatted;
         private bool _useFormating;
         private bool _useMaxPrecision;
-        private int _coordsPerLine = -1;
         private String _indentTabStr = "  ";
 
         public WKTWriter() { }
@@ -171,28 +168,20 @@ namespace NetTopologySuite.IO
         public WKTWriter(int outputDimension)
         {
             if (outputDimension < 2 || outputDimension > 3)
-                throw new ArgumentException("Output dimension must be in the range [2, 3]", "outputDimension");
+                throw new ArgumentException("Output dimension must be in the range [2, 3]", nameof(outputDimension));
             _outputDimension = outputDimension;
         }
 
         ///<summary>
         /// Gets/sets whther the output woll be formatted
         ///</summary>
-        public bool Formatted
-        {
-            get { return _isFormatted; }
-            set { _isFormatted = value; }
-        }
+        public bool Formatted { get; set; }
 
         ///<summary>
         /// Gets/sets the maximum number of coordinates per line written in formatted output.
         ///</summary>
         /// <remarks>If the provided coordinate number is &lt; 0, coordinates will be written all on one line.</remarks>
-        public int MaxCoordinatesPerLine
-        {
-            get { return _coordsPerLine; }
-            set { _coordsPerLine = value; }
-        }
+        public int MaxCoordinatesPerLine { get; set; } = -1;
 
         ///<summary>Gets/sets the tab size to use for indenting.</summary>
         /// <exception cref="ArgumentException">If the size is non-positive</exception>
@@ -202,7 +191,7 @@ namespace NetTopologySuite.IO
             set
             {
                 if (value <= 0)
-                    throw new ArgumentException("Tab count must be positive", "value");
+                    throw new ArgumentException("Tab count must be positive", nameof(value));
                 _indentTabStr = StringOfChar(' ', value);
             }
         }
@@ -241,7 +230,7 @@ namespace NetTopologySuite.IO
         {
             try
             {
-                WriteFormatted(geometry, _isFormatted, sw);
+                WriteFormatted(geometry, Formatted, sw);
             }
             catch (IOException)
             {
@@ -257,7 +246,7 @@ namespace NetTopologySuite.IO
         /// <returns>A "Geometry Tagged Text" string (see the OpenGIS Simple Features Specification)</returns>
         public virtual void Write(IGeometry geometry, TextWriter writer)
         {
-            WriteFormatted(geometry, _isFormatted, writer);
+            WriteFormatted(geometry, Formatted, writer);
         }
 
         /// <summary>
@@ -311,7 +300,7 @@ namespace NetTopologySuite.IO
         private void WriteFormatted(IGeometry geometry, bool useFormatting, TextWriter writer)
         {
             if (geometry == null)
-                throw new ArgumentNullException("geometry");
+                throw new ArgumentNullException(nameof(geometry));
 
             _useFormating = useFormatting;
             // Enable maxPrecision (via {0:R} formatter) in WriteNumber method
@@ -573,8 +562,8 @@ namespace NetTopologySuite.IO
                     if (i > 0)
                     {
                         writer.Write(", ");
-                        if (_coordsPerLine > 0
-                            && i%_coordsPerLine == 0)
+                        if (MaxCoordinatesPerLine > 0
+                            && i%MaxCoordinatesPerLine == 0)
                         {
                             Indent(level + 1, writer);
                         }
@@ -607,8 +596,8 @@ namespace NetTopologySuite.IO
                     if (i > 0) 
                     {
                         writer.Write(", ");
-                        if (_coordsPerLine > 0
-                            && i % _coordsPerLine == 0)
+                        if (MaxCoordinatesPerLine > 0
+                            && i % MaxCoordinatesPerLine == 0)
                         {
                             Indent(level + 1, writer);
                         }
@@ -772,7 +761,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="IOException"></exception>
         private void IndentCoords(int coordIndex,  int level, TextWriter writer)
         {
-            if (_coordsPerLine <= 0 || coordIndex % _coordsPerLine != 0)
+            if (MaxCoordinatesPerLine <= 0 || coordIndex % MaxCoordinatesPerLine != 0)
                 return;
             Indent(level, writer);
     }
@@ -798,10 +787,7 @@ namespace NetTopologySuite.IO
             set { EmitSRID = value; }
         }
 
-        public Ordinates AllowedOrdinates
-        {
-            get { return Ordinates.XYZM; }
-        }
+        public Ordinates AllowedOrdinates => Ordinates.XYZM;
 
         public Ordinates HandleOrdinates
         {

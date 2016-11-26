@@ -45,9 +45,6 @@ namespace NetTopologySuite.Noding
             }
         }
 
-        private readonly SegmentNodeList _nodeList;
-        private readonly Coordinate[] _pts;
-
         /// <summary>
         /// Creates a new segment string from a list of vertices.
         /// </summary>
@@ -55,9 +52,9 @@ namespace NetTopologySuite.Noding
         /// <param name="data">The user-defined data of this segment string (may be null).</param>
         public NodedSegmentString(Coordinate[] pts, Object data)
         {
-            _nodeList = new SegmentNodeList(this);
+            NodeList = new SegmentNodeList(this);
 
-            _pts = pts;
+            Coordinates = pts;
             Context = data;
         }
 
@@ -69,19 +66,13 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// 
         /// </summary>
-        public SegmentNodeList NodeList
-        {
-            get { return _nodeList; }
-        }
+        public SegmentNodeList NodeList { get; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
-        public int Count
-        {
-            get { return _pts.Length; }
-        }
+        public int Count => Coordinates.Length;
 
         /// <summary>
         /// 
@@ -90,24 +81,18 @@ namespace NetTopologySuite.Noding
         /// <returns></returns>
         public Coordinate GetCoordinate(int i) 
         { 
-            return _pts[i]; 
+            return Coordinates[i]; 
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate[] Coordinates
-        {
-            get { return _pts; }
-        }
+        public Coordinate[] Coordinates { get; }
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsClosed
-        {
-            get { return _pts[0].Equals2D(_pts[_pts.Length - 1]); }
-        }
+        public bool IsClosed => Coordinates[0].Equals2D(Coordinates[Coordinates.Length - 1]);
 
         /// <summary>
         ///  Gets the octant of the segment starting at vertex <c>index</c>.
@@ -119,7 +104,7 @@ namespace NetTopologySuite.Noding
         /// <returns>The octant of the segment at the vertex</returns>
         public Octants GetSegmentOctant(int index)
         {
-            return index == _pts.Length - 1 ? 
+            return index == Coordinates.Length - 1 ? 
                 Octants.Null :
                 SafeOctant(GetCoordinate(index), GetCoordinate(index+1));
         }
@@ -171,9 +156,9 @@ namespace NetTopologySuite.Noding
             var normalizedSegmentIndex = segmentIndex;
             // normalize the intersection point location
             var nextSegIndex = normalizedSegmentIndex + 1;
-            if(nextSegIndex < _pts.Length)
+            if(nextSegIndex < Coordinates.Length)
             {
-                var nextPt = _pts[nextSegIndex];
+                var nextPt = Coordinates[nextSegIndex];
               
                 // Normalize segment index if intPt falls on vertex
                 // The check for point equality is 2D only - Z values are ignored
@@ -182,7 +167,7 @@ namespace NetTopologySuite.Noding
             }
 
             // Add the intersection point to edge intersection list.
-            /*var ei = */_nodeList.Add(intPt, normalizedSegmentIndex);
+            /*var ei = */NodeList.Add(intPt, normalizedSegmentIndex);
         }
 
         public LineSegment this[Int32 index]
@@ -194,12 +179,12 @@ namespace NetTopologySuite.Noding
 #if PCL
                     throw new ArgumentOutOfRangeException("index", "Parameter must be greater than or equal to 0 and less than TotalItemCount.");
 #else
-                    throw new ArgumentOutOfRangeException("index", index,
+                    throw new ArgumentOutOfRangeException(nameof(index), index,
                                                           "Parameter must be greater than or equal to 0 and less than TotalItemCount.");
 #endif
                 }
 
-                return new LineSegment(_pts[index], _pts[index + 1]);
+                return new LineSegment(Coordinates[index], Coordinates[index + 1]);
             }
             set
             {
@@ -209,7 +194,7 @@ namespace NetTopologySuite.Noding
         }
         public override String ToString()
         {
-            return WKTWriter.ToLineString(new CoordinateArraySequence(_pts));
+            return WKTWriter.ToLineString(new CoordinateArraySequence(Coordinates));
         }
 
     }

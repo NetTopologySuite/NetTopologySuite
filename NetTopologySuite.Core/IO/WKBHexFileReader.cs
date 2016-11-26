@@ -27,7 +27,7 @@ namespace NetTopologySuite.IO
         public WKBHexFileReader(IBinaryGeometryReader wkbReader)
         {
             if (wkbReader == null)
-                throw new ArgumentNullException("wkbReader");
+                throw new ArgumentNullException(nameof(wkbReader));
 
             Limit = -1;
             _wkbReader = wkbReader;
@@ -56,7 +56,7 @@ namespace NetTopologySuite.IO
         public ICollection<IGeometry> Read(string file)
         {
             if (string.IsNullOrEmpty(file))
-                throw new ArgumentNullException("file");
+                throw new ArgumentNullException(nameof(file));
 
             // do this here so that constructors don't throw exceptions
             using (var stream = new FileStream(file, FileMode.Open, FileAccess.Read))
@@ -78,7 +78,7 @@ namespace NetTopologySuite.IO
         public ICollection<IGeometry> Read(Stream stream)
         {
             if (stream == null)
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
 
             if (!stream.CanRead)
                 throw new Exception("Stream must be readable");

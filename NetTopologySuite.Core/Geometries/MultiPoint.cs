@@ -1,4 +1,3 @@
-using System;
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries
@@ -41,53 +40,27 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override GeoAPI.Geometries.Dimension Dimension 
-        {
-            get
-            {
-                return Dimension.Point;
-            }
-        }
+        public override Dimension Dimension => Dimension.Point;
 
         /// <summary>
         /// 
         /// </summary>
-        public override Dimension BoundaryDimension
-        {
-            get
-            {
-                return Dimension.False;
-            }
-        }
+        public override Dimension BoundaryDimension => Dimension.False;
 
         /// <summary>  
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"MultiPoint"</returns>
-        public override string GeometryType
-        {
-            get
-            {
-                return "MultiPoint";
-            }
-        }
+        public override string GeometryType => "MultiPoint";
 
-        public override OgcGeometryType OgcGeometryType
-        {
-            get { return OgcGeometryType.MultiPoint; }
-        }
-       ///<summary>
+        public override OgcGeometryType OgcGeometryType => OgcGeometryType.MultiPoint;
+
+        ///<summary>
        /// Gets the boundary of this geometry.
        /// Zero-dimensional geometries have no boundary by definition,
        /// so an empty GeometryCollection is returned.
        /// </summary> 
-       public override IGeometry Boundary
-        {
-            get
-            {
-                return Factory.CreateGeometryCollection(null);
-            }
-        }
+       public override IGeometry Boundary => Factory.CreateGeometryCollection(null);
 
         ///// <summary>
         ///// 
@@ -103,13 +76,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override bool IsValid
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool IsValid => true;
 
         /// <summary>
         /// 

@@ -25,9 +25,6 @@ namespace NetTopologySuite.Index.Sweepline
     {
         private readonly double xValue;
         private readonly SweepLineEvents eventType;
-        private readonly SweepLineEvent insertEvent; // null if this is an Insert event
-
-        private readonly SweepLineInterval sweepInt;
 
         /// <summary>
         /// 
@@ -38,45 +35,27 @@ namespace NetTopologySuite.Index.Sweepline
         public SweepLineEvent(double x, SweepLineEvent insertEvent, SweepLineInterval sweepInt)
         {
             xValue = x;
-            this.insertEvent = insertEvent;            
+            InsertEvent = insertEvent;            
             if (insertEvent != null)
                  eventType = SweepLineEvents.Delete;
             else eventType = SweepLineEvents.Insert;
-            this.sweepInt = sweepInt;
+            Interval = sweepInt;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsInsert
-        {
-            get
-            {
-                return insertEvent == null;
-            }
-        }
+        public bool IsInsert => InsertEvent == null;
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsDelete
-        {
-            get
-            {
-                return insertEvent != null;
-            }
-        }
+        public bool IsDelete => InsertEvent != null;
 
         /// <summary>
         /// 
         /// </summary>
-        public SweepLineEvent InsertEvent
-        {
-            get
-            {
-                return insertEvent;
-            }
-        }
+        public SweepLineEvent InsertEvent { get; }
 
         /// <summary>
         /// 
@@ -86,13 +65,7 @@ namespace NetTopologySuite.Index.Sweepline
         /// <summary>
         /// 
         /// </summary>
-        public SweepLineInterval Interval
-        {
-            get
-            {
-                return sweepInt;
-            }
-        }
+        public SweepLineInterval Interval { get; }
 
         /// <summary>
         /// ProjectionEvents are ordered first by their x-value, and then by their eventType.

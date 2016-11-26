@@ -1,5 +1,4 @@
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.LinearReferencing
 {
@@ -179,24 +178,12 @@ namespace NetTopologySuite.LinearReferencing
         /// <summary>
         /// Returns the index of the start of the line.
         /// </summary>
-        public double StartIndex
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public double StartIndex => 0;
 
         /// <summary>
         /// Returns the index of the end of the line.
         /// </summary>
-        public double EndIndex
-        {
-            get
-            {
-                return _linearGeom.Length;
-            }
-        }
+        public double EndIndex => _linearGeom.Length;
 
         /// <summary>
         /// Tests whether an index is in the valid index range for the line.

@@ -43,36 +43,21 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public static readonly IGeometryFactory Fixed = new GeometryFactory(new PrecisionModel(PrecisionModels.Fixed));
 
-        private readonly IPrecisionModel _precisionModel;
-
         /// <summary>
         /// Returns the PrecisionModel that Geometries created by this factory
         /// will be associated with.
         /// </summary>
-        public IPrecisionModel PrecisionModel
-        {
-            get { return _precisionModel; }
-        }
-
-        private readonly ICoordinateSequenceFactory _coordinateSequenceFactory;
+        public IPrecisionModel PrecisionModel { get; }
 
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinateSequenceFactory CoordinateSequenceFactory
-        {
-            get { return _coordinateSequenceFactory; }
-        }
-
-        private readonly int _srid;
+        public ICoordinateSequenceFactory CoordinateSequenceFactory { get; }
 
         /// <summary>
         /// The SRID value defined for this factory.
         /// </summary>
-        public int SRID
-        {
-            get { return _srid; }
-        }
+        public int SRID { get; }
 
         /// <summary>
         /// 
@@ -92,9 +77,9 @@ namespace NetTopologySuite.Geometries
         /// </summary>        
         public GeometryFactory(IPrecisionModel precisionModel, int srid, ICoordinateSequenceFactory coordinateSequenceFactory)
         {
-            _precisionModel = precisionModel;
-            _coordinateSequenceFactory = coordinateSequenceFactory;
-            _srid = srid;
+            PrecisionModel = precisionModel;
+            CoordinateSequenceFactory = coordinateSequenceFactory;
+            SRID = srid;
         }
 
         /// <summary>
@@ -602,7 +587,7 @@ namespace NetTopologySuite.Geometries
         {
             // NOTE: don't move lambda to a separate variable!
             //       make a variable and you've broke WinPhone build.       
-            var operation = new GeometryEditor.CoordinateSequenceOperation((x, y) => _coordinateSequenceFactory.Create(x));
+            var operation = new GeometryEditor.CoordinateSequenceOperation((x, y) => CoordinateSequenceFactory.Create(x));
             GeometryEditor editor = new GeometryEditor(this);
             return editor.Edit(g, operation);
         }

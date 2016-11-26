@@ -89,10 +89,7 @@ namespace NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the Nodes in this PlanarGraph.
         /// </summary>
-        public ICollection<Node> Nodes
-        {
-            get { return nodeMap.Values; }
-        }
+        public ICollection<Node> Nodes => nodeMap.Values;
 
         /// <summary> 
         /// Returns an Iterator over the DirectedEdges in this PlanarGraph, in the order in which they

@@ -20,10 +20,7 @@ namespace NetTopologySuite.Features
         /// <summary>
         /// 
         /// </summary>
-        public int Count
-        {
-            get { return _attributes.Count; }
-        }
+        public int Count => _attributes.Count;
 
         /// <summary>
         /// Returns a <c>string</c> array containing 

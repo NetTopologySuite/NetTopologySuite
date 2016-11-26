@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace NetTopologySuite.Index.Bintree
@@ -150,10 +149,7 @@ namespace NetTopologySuite.Index.Bintree
         /// <summary>
         /// Gets whether this node is prunable
         /// </summary>
-        public bool IsPrunable
-        {
-            get { return !(HasChildren || HasItems); }
-        }
+        public bool IsPrunable => !(HasChildren || HasItems);
 
         /// <summary>
         /// Gets whether this node has any children
@@ -174,8 +170,7 @@ namespace NetTopologySuite.Index.Bintree
         /// <summary>
         /// 
         /// </summary>
-        public bool HasItems { get { return _items.Count != 0; }
-        }
+        public bool HasItems => _items.Count != 0;
 
         /// <summary>
         /// Gets whether this node has any subnodes

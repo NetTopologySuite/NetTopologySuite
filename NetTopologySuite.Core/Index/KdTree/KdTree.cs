@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
@@ -61,7 +60,6 @@ namespace NetTopologySuite.Index.KdTree
         }
 
 
-        private KdNode<T> _root;
         private long _numberOfNodes;
         private readonly double _tolerance;
 
@@ -92,7 +90,7 @@ namespace NetTopologySuite.Index.KdTree
         {
             get
             {
-                if (_root == null) return true;
+                if (Root == null) return true;
                 return false;
             }
         }
@@ -100,7 +98,7 @@ namespace NetTopologySuite.Index.KdTree
         /// <summary>
         /// Gets a value indicating the root node of the tree
         /// </summary>
-        internal KdNode<T> Root { get { return _root; } }
+        internal KdNode<T> Root { get; private set; }
 
         /// <summary>
         /// Inserts a new point in the kd-tree, with no data.
@@ -124,10 +122,10 @@ namespace NetTopologySuite.Index.KdTree
         /// </returns>
         public KdNode<T> Insert(Coordinate p, T data)
         {
-            if (_root == null)
+            if (Root == null)
             {
-                _root = new KdNode<T>(p, data);
-                return _root;
+                Root = new KdNode<T>(p, data);
+                return Root;
             }
 
             /**
@@ -186,8 +184,8 @@ namespace NetTopologySuite.Index.KdTree
         /// </returns>
         public KdNode<T> InsertExact(Coordinate p, T data)
         {
-            var currentNode = _root;
-            var leafNode = _root;
+            var currentNode = Root;
+            var leafNode = Root;
             var isOddLevel = true;
             var isLessThan = true;
 
@@ -292,7 +290,7 @@ namespace NetTopologySuite.Index.KdTree
         /// <param name="visitor"></param>
         public void Query(Envelope queryEnv, IKdNodeVisitor<T> visitor)
         {
-            QueryNode(_root, queryEnv, true, visitor);
+            QueryNode(Root, queryEnv, true, visitor);
         }
 
         /// <summary>
@@ -303,7 +301,7 @@ namespace NetTopologySuite.Index.KdTree
         public IList<KdNode<T>> Query(Envelope queryEnv)
         {
             var result = new List<KdNode<T>>();
-            QueryNode(_root, queryEnv, true, new KdNodeVisitor<T>(result));
+            QueryNode(Root, queryEnv, true, new KdNodeVisitor<T>(result));
             return result;
         }
 
@@ -314,7 +312,7 @@ namespace NetTopologySuite.Index.KdTree
         /// <param name="result">A collection to accumulate the result nodes into</param>
         public void Query(Envelope queryEnv, IList<KdNode<T>> result)
         {
-            QueryNode(_root, queryEnv, true, new KdNodeVisitor<T>(result));
+            QueryNode(Root, queryEnv, true, new KdNodeVisitor<T>(result));
         }
 
 
@@ -338,7 +336,6 @@ namespace NetTopologySuite.Index.KdTree
         {
 
             private readonly double tolerance;
-            private KdNode<T> matchNode = null;
             private double matchDist = 0.0;
             private Coordinate p;
 
@@ -348,10 +345,7 @@ namespace NetTopologySuite.Index.KdTree
                 this.tolerance = tolerance;
             }
 
-            public KdNode<T> Node
-            {
-                get { return matchNode; }
-            }
+            public KdNode<T> Node { get; private set; } = null;
 
             public Envelope QueryEnvelope()
             {
@@ -366,18 +360,18 @@ namespace NetTopologySuite.Index.KdTree
                 var isInTolerance = dist <= tolerance;
                 if (!isInTolerance) return;
                 var update = false;
-                if (matchNode == null
+                if (Node == null
                     || dist < matchDist
                     // if distances are the same, record the lesser coordinate
-                    || (matchNode != null && dist == matchDist
-                        && node.Coordinate.CompareTo(matchNode.Coordinate) < 1))
+                    || (Node != null && dist == matchDist
+                        && node.Coordinate.CompareTo(Node.Coordinate) < 1))
                 {
                     update = true;
                 }
 
                 if (update)
                 {
-                    matchNode = node;
+                    Node = node;
                     matchDist = dist;
                 }
             }

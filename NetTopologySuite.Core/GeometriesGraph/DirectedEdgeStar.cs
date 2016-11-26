@@ -18,7 +18,6 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         private IList<DirectedEdge> _resultAreaEdgeList;
 
-        private Label _label;
         /*
         /// <summary>
         /// 
@@ -39,13 +38,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public Label Label
-        {
-            get
-            {
-                return _label; 
-            }
-        }
+        public Label Label { get; private set; }
 
         /// <summary>
         /// 
@@ -118,7 +111,7 @@ namespace NetTopologySuite.GeometriesGraph
 
             // determine the overall labelling for this DirectedEdgeStar
             // (i.e. for the node it is based at)
-            _label = new Label(Location.Null);
+            Label = new Label(Location.Null);
             IEnumerator<EdgeEnd> it = GetEnumerator();
             while(it.MoveNext()) 
             {
@@ -129,7 +122,7 @@ namespace NetTopologySuite.GeometriesGraph
                 {
                     Location eLoc = eLabel.GetLocation(i);
                     if (eLoc == Location.Interior || eLoc == Location.Boundary)
-                        _label.SetLocation(i, Location.Interior);
+                        Label.SetLocation(i, Location.Interior);
                 }
             }        
         }
@@ -254,7 +247,7 @@ namespace NetTopologySuite.GeometriesGraph
             // link edges in CW order
             for (int i = _resultAreaEdgeList.Count - 1; i >= 0; i--) 
             {
-                DirectedEdge nextOut = this._resultAreaEdgeList[i];
+                DirectedEdge nextOut = _resultAreaEdgeList[i];
                 DirectedEdge nextIn = nextOut.Sym;
 
                 // record first outgoing edge, in order to link the last incoming edge

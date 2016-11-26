@@ -1,5 +1,4 @@
 using System;
-using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Utilities;
@@ -220,10 +219,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <summary>
         /// 
         /// </summary>
-        protected override IIntersectsOp IntersectsOp
-        {
-            get { return IntersectsOperation; }
-        }
+        protected override IIntersectsOp IntersectsOp => IntersectsOperation;
 
         /// <summary>
         /// Inserts an item having the given bounds into the tree.

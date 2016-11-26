@@ -26,7 +26,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="si"></param>
         public void ComputeIntersections(MonotoneChain mc, SegmentIntersector si)
         {
-            this.mce.ComputeIntersectsForChain(chainIndex, mc.mce, mc.chainIndex, si);
+            mce.ComputeIntersectsForChain(chainIndex, mc.mce, mc.chainIndex, si);
         }
     }
 }

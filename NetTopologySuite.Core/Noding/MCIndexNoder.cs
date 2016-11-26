@@ -16,7 +16,6 @@ namespace NetTopologySuite.Noding
     public class MCIndexNoder : SinglePassNoder
     {
         private readonly List<MonotoneChain> _monoChains = new List<MonotoneChain>();
-        private readonly ISpatialIndex<MonotoneChain> _index = new STRtree<MonotoneChain>();
         private int _idCounter;
         private IList<ISegmentString> _nodedSegStrings;
         private int _nOverlaps; // statistics
@@ -36,18 +35,12 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// 
         /// </summary>
-        public IList<MonotoneChain> MonotoneChains
-        {
-            get { return _monoChains; }
-        }
+        public IList<MonotoneChain> MonotoneChains => _monoChains;
 
         /// <summary>
         /// 
         /// </summary>
-        public ISpatialIndex<MonotoneChain> Index
-        {
-            get { return _index; }
-        }
+        public ISpatialIndex<MonotoneChain> Index { get; } = new STRtree<MonotoneChain>();
 
         /// <summary>
         /// Returns a <see cref="IList{ISegmentString}"/> of fully noded <see cref="ISegmentString"/>s.
@@ -82,7 +75,7 @@ namespace NetTopologySuite.Noding
             foreach(var obj in _monoChains) 
             {
                 var queryChain = obj;
-                var overlapChains = _index.Query(queryChain.Envelope);
+                var overlapChains = Index.Query(queryChain.Envelope);
                 foreach(var testChain in overlapChains)
                 {
                     /*
@@ -112,7 +105,7 @@ namespace NetTopologySuite.Noding
             foreach (var mc in segChains) 
             {
                 mc.Id = _idCounter++;
-                _index.Insert(mc.Envelope, mc);
+                Index.Insert(mc.Envelope, mc);
                 _monoChains.Add(mc);
             }
         }

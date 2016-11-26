@@ -1,5 +1,4 @@
 ﻿using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Index.KdTree
 {
@@ -11,11 +10,6 @@ namespace NetTopologySuite.Index.KdTree
     public class KdNode<T>
         where T : class
     {
-
-        private readonly Coordinate _p;
-        private readonly T _data;
-        private int _count;
-
         /// <summary>
         /// Creates a new KdNode.
         /// </summary>
@@ -24,11 +18,11 @@ namespace NetTopologySuite.Index.KdTree
         /// <param name="data">A data objects to associate with this node</param>
         public KdNode(double x, double y, T data)
         {
-            _p = new Coordinate(x, y);
-            this.Left = null;
-            this.Right = null;
-            _count = 1;
-            _data = data;
+            Coordinate = new Coordinate(x, y);
+            Left = null;
+            Right = null;
+            Count = 1;
+            Data = data;
         }
 
         /// <summary>
@@ -38,44 +32,32 @@ namespace NetTopologySuite.Index.KdTree
         /// <param name="data">A data objects to associate with this node</param>
         public KdNode(Coordinate p, T data)
         {
-            _p = new Coordinate(p);
-            this.Left = null;
-            this.Right = null;
-            _count = 1;
-            _data = data;
+            Coordinate = new Coordinate(p);
+            Left = null;
+            Right = null;
+            Count = 1;
+            Data = data;
         }
 
         /// <summary>
         /// Gets x-ordinate of this node
         /// </summary>
-        public double X
-        {
-            get { return _p.X; }
-        }
+        public double X => Coordinate.X;
 
         /// <summary>
         /// Gets y-ordinate of this node
         /// </summary>
-        public double Y
-        {
-            get { return _p.Y; }
-        }
+        public double Y => Coordinate.Y;
 
         /// <summary>
         /// Gets the location of this node
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get { return _p; }
-        }
+        public Coordinate Coordinate { get; }
 
         /// <summary>
         /// Gets the user data object associated with this node.
         /// </summary>
-        public T Data 
-        { 
-            get { return _data; }
-        }
+        public T Data { get; }
 
         /// <summary>
         /// Gets or sets the left node of the tree
@@ -90,24 +72,18 @@ namespace NetTopologySuite.Index.KdTree
         // Increments counts of points at this location
         internal void Increment()
         {
-            _count = _count + 1;
+            Count = Count + 1;
         }
 
         /// <summary>
         /// Gets the number of inserted points that are coincident at this location.
         /// </summary>
-        public int Count
-        {
-            get{return _count;}
-        }
+        public int Count { get; private set; }
 
         /// <summary>
         /// Gets whether more than one point with this value have been inserted (up to the tolerance)
         /// </summary>
         /// <returns></returns>
-        public bool IsRepeated
-        {
-            get {return _count > 1;}
-        }
+        public bool IsRepeated => Count > 1;
     }
 }

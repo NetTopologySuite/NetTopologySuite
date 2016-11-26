@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Valid
 {
@@ -112,9 +111,6 @@ namespace NetTopologySuite.Operation.Valid
             "Invalid Coordinate"
         };
 
-        private readonly TopologyValidationErrors errorType;
-        private readonly Coordinate pt;
-
         /// <summary>
         /// 
         /// </summary>
@@ -122,9 +118,9 @@ namespace NetTopologySuite.Operation.Valid
         /// <param name="pt"></param>
         public TopologyValidationError(TopologyValidationErrors errorType, Coordinate pt)
         {
-            this.errorType = errorType;
+            ErrorType = errorType;
             if(pt != null)
-                this.pt = (Coordinate) pt.Clone();
+                Coordinate = (Coordinate) pt.Clone();
         }
 
         /// <summary>
@@ -136,35 +132,17 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get
-            {
-                return pt;
-            }
-        }
+        public Coordinate Coordinate { get; }
 
         /// <summary>
         /// 
         /// </summary>
-        public TopologyValidationErrors ErrorType
-        {
-            get
-            {
-                return errorType;
-            }
-        }
+        public TopologyValidationErrors ErrorType { get; }
 
         /// <summary>
         /// 
         /// </summary>
-        public String Message
-        {
-            get
-            {
-                return errMsg[(int) errorType];
-            }
-        }
+        public String Message => errMsg[(int) ErrorType];
 
         /// <summary>
         /// 
@@ -172,7 +150,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <returns></returns>
         public override string ToString()
         {
-            return Message + " at or near point " + pt;
+            return Message + " at or near point " + Coordinate;
         }
     }
 }

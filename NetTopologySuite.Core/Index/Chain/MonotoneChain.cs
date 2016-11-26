@@ -51,10 +51,7 @@ namespace NetTopologySuite.Index.Chain
     public class MonotoneChain
     {
         private readonly Coordinate[] _pts;
-        private readonly int _start;
-        private readonly int _end;
         private Envelope _env;
-        private readonly object _context;  // user-defined information
 
         /// <summary>
         /// 
@@ -66,9 +63,9 @@ namespace NetTopologySuite.Index.Chain
         public MonotoneChain(Coordinate[] pts, int start, int end, object context)
         {
             _pts = pts;
-            _start = start;
-            _end = end;
-            _context = context;
+            StartIndex = start;
+            EndIndex = end;
+            Context = context;
         }
 
         /// <summary>
@@ -79,13 +76,7 @@ namespace NetTopologySuite.Index.Chain
         /// <summary>
         /// Gets the chain's context
         /// </summary>
-        public object Context
-        {
-            get
-            {
-                return _context;
-            }
-        }
+        public object Context { get; }
 
         /// <summary>
         /// Gets the chain's envelope
@@ -96,8 +87,8 @@ namespace NetTopologySuite.Index.Chain
             {
                 if (_env == null)
                 {
-                    Coordinate p0 = _pts[_start];
-                    Coordinate p1 = _pts[_end];
+                    Coordinate p0 = _pts[StartIndex];
+                    Coordinate p1 = _pts[EndIndex];
                     _env = new Envelope(p0, p1);
                 }
                 return _env;
@@ -107,24 +98,12 @@ namespace NetTopologySuite.Index.Chain
         /// <summary>
         /// Gets the start index
         /// </summary>
-        public int StartIndex
-        {
-            get
-            {
-                return _start;
-            }
-        }
+        public int StartIndex { get; }
 
         /// <summary>
         /// Gets the end index of the underlying linestring
         /// </summary>
-        public int EndIndex
-        {
-            get
-            {
-                return _end;
-            }
-        }
+        public int EndIndex { get; }
 
         /// <summary>
         /// Gets the line segment starting at <paramref name="index"/>
@@ -145,9 +124,9 @@ namespace NetTopologySuite.Index.Chain
         {
             get
             {
-                Coordinate[] coord = new Coordinate[_end - _start + 1];
+                Coordinate[] coord = new Coordinate[EndIndex - StartIndex + 1];
                 int index = 0;
-                for (int i = _start; i <= _end; i++) 
+                for (int i = StartIndex; i <= EndIndex; i++) 
                     coord[index++] = _pts[i];                
                 return coord;
             }
@@ -170,7 +149,7 @@ namespace NetTopologySuite.Index.Chain
         /// <param name="mcs">The select action to execute on selected segments</param>
         public void Select(Envelope searchEnv, MonotoneChainSelectAction mcs)
         {
-            ComputeSelect(searchEnv, _start, _end, mcs);
+            ComputeSelect(searchEnv, StartIndex, EndIndex, mcs);
         }
 
         /// <summary>
@@ -231,7 +210,7 @@ namespace NetTopologySuite.Index.Chain
         /// <param name="mco">The overlap action to execute on selected segments</param>
         public  void ComputeOverlaps(MonotoneChain mc, MonotoneChainOverlapAction mco)
         {
-            ComputeOverlaps(_start, _end, mc, mc._start, mc._end, mco);
+            ComputeOverlaps(StartIndex, EndIndex, mc, mc.StartIndex, mc.EndIndex, mco);
         }
 
         /// <summary>

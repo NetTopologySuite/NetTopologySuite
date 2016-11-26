@@ -9,8 +9,6 @@ namespace NetTopologySuite.Dissolve
     /// </summary>
     public class DissolveHalfEdge : MarkHalfEdge
     {
-        private bool _isStart;
-
         public DissolveHalfEdge(Coordinate orig)
             : base(orig) { }
 
@@ -19,17 +17,14 @@ namespace NetTopologySuite.Dissolve
         /// in a LineString being dissolved.
         /// </summary>
         /// <returns><c>true</c> if this edge is a start segment</returns>        
-        public bool IsStart
-        {
-            get { return _isStart; }
-        }
+        public bool IsStart { get; private set; }
 
         /// <summary>
         /// Sets this edge to be the start segment of an input LineString.
         /// </summary>
         public void SetStart()
         {
-            _isStart = true;
+            IsStart = true;
         }
     }
 }

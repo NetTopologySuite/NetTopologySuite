@@ -20,7 +20,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public LocateFailureException(String msg, LineSegment seg)
             :base(MsgWithSpatial(msg, seg))
         {
-            this.Segment = new LineSegment(seg);
+            Segment = new LineSegment(seg);
         }
 
         public LocateFailureException(LineSegment seg)
@@ -28,7 +28,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 + seg
                 + ").  Possible causes include invalid Subdivision topology or very close sites")
         {
-            this.Segment = new LineSegment(seg);
+            Segment = new LineSegment(seg);
         }
 
         public LineSegment Segment { get; private set; }

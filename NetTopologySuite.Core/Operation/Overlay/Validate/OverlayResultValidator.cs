@@ -43,8 +43,6 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         private readonly double _boundaryDistanceTolerance = Tolerance;
         private readonly List<Coordinate> _testCoords = new List<Coordinate>();
 
-        private Coordinate _invalidLocation;
-
 
         public OverlayResultValidator(IGeometry a, IGeometry b, IGeometry result)
         {
@@ -81,10 +79,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             return isValid;
         }
 
-        public Coordinate InvalidLocation
-        {
-            get { return _invalidLocation; }
-        }
+        public Coordinate InvalidLocation { get; private set; }
 
         private void AddTestPts(IGeometry g)
         {
@@ -99,7 +94,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
                 Coordinate pt = _testCoords[i];
                 if (!CheckValid(overlayOp, pt))
                 {
-                    _invalidLocation = pt;
+                    InvalidLocation = pt;
                     return false;
                 }
             }

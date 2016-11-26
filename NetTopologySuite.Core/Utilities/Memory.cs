@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace NetTopologySuite.Utilities
 {
@@ -10,18 +9,9 @@ namespace NetTopologySuite.Utilities
     public class Memory
     {
 
-        public static long Total
-        {
-            get
-            {
-                return GC.GetTotalMemory(true);
-            }
-        }
+        public static long Total => GC.GetTotalMemory(true);
 
-        public static String TotalString
-        {
-            get { return Format(Total); }
-        }
+        public static String TotalString => Format(Total);
 
 
         public const double KB = 1024;

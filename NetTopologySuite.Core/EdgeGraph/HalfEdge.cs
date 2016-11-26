@@ -66,17 +66,13 @@ namespace NetTopologySuite.EdgeGraph
             return e0;
         }
 
-        private readonly Coordinate _orig;
-        private HalfEdge _sym;
-        private HalfEdge _next;
-
         /// <summary>
         /// Creates an edge originating from a given coordinate.
         /// </summary>
         /// <param name="orig">the origin coordinate</param>
         public HalfEdge(Coordinate orig)
         {
-            _orig = orig;
+            Orig = orig;
         }
 
         protected virtual void Init(HalfEdge e)
@@ -91,52 +87,32 @@ namespace NetTopologySuite.EdgeGraph
         /// <summary>
         /// Gets the origin coordinate of this edge.
         /// </summary>
-        public Coordinate Orig
-        {
-            get { return _orig; }
-        }
+        public Coordinate Orig { get; }
 
         /// <summary>
         /// Gets the destination coordinate of this edge.
         /// </summary>
-        public Coordinate Dest
-        {
-            get { return Sym.Orig; }
-        }
+        public Coordinate Dest => Sym.Orig;
 
         /// <summary>
         /// Gets the symmetric pair edge of this edge.
         /// </summary>
-        public HalfEdge Sym
-        {
-            get { return _sym; }
-            private set { _sym = value; }
-        }
+        public HalfEdge Sym { get; private set; }
 
         /// <summary>
         /// Gets the next edge CCW around the 
         /// destination vertex of this edge.
         /// If the vertex has degree 1 then this is the <b>sym</b> edge.
         /// </summary>
-        public HalfEdge Next
-        {
-            get { return _next; }
-            private set { _next = value; }
-        }
+        public HalfEdge Next { get; private set; }
 
         /// <summary>
         /// Returns the edge previous to this one
         /// (with dest being the same as this orig).
         /// </summary>
-        public HalfEdge Prev
-        {
-            get { return Sym.Next.Sym; }
-        }
+        public HalfEdge Prev => Sym.Next.Sym;
 
-        public HalfEdge ONext
-        {
-            get { return Sym.Next; }
-        }
+        public HalfEdge ONext => Sym.Next;
 
         /// <summary>
         /// Finds the edge starting at the origin of this edge
@@ -277,18 +253,12 @@ namespace NetTopologySuite.EdgeGraph
         /// <summary>
         /// The X component of the distance between the orig and dest vertices.
         /// </summary>
-        public double DeltaX
-        {
-            get { return Sym.Orig.X - Orig.X; }
-        }
+        public double DeltaX => Sym.Orig.X - Orig.X;
 
         /// <summary>
         /// The Y component of the distance between the orig and dest vertices.
         /// </summary>
-        public double DeltaY
-        {
-            get { return Sym.Orig.Y - Orig.Y; }
-        }
+        public double DeltaY => Sym.Orig.Y - Orig.Y;
 
         /// <summary>
         /// Computes a string representation of a HalfEdge.

@@ -18,8 +18,6 @@ namespace NetTopologySuite.GeometriesGraph
         // isInResult indicates if this component has already been included in the result
 
         private bool _isCovered;
-        private bool _isCoveredSet;
-        private bool _isVisited;
 
         /// <summary>
         /// 
@@ -58,13 +56,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary> 
         /// IsInResult indicates if this component has already been included in the result.
         /// </summary>
-        public bool IsInResult
-        {
-            get
-            {
-                return InResult;
-            }
-        }
+        public bool IsInResult => InResult;
 
         /// <summary>
         /// 
@@ -78,58 +70,30 @@ namespace NetTopologySuite.GeometriesGraph
             set
             {
                 _isCovered = value;
-                _isCoveredSet = true;                
+                IsCoveredSet = true;                
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsCovered
-        {
-            get
-            {
-                return Covered;
-            }
-        }
+        public bool IsCovered => Covered;
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsCoveredSet 
-        {
-            get
-            {
-                return _isCoveredSet;
-            }
-        }
+        public bool IsCoveredSet { get; private set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public bool Visited
-        {
-            get
-            {
-                return _isVisited;
-            }
-            set
-            {
-                _isVisited = value;
-            }
-        }
+        public bool Visited { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsVisited
-        {
-            get
-            {
-                return _isVisited;
-            }
-        }
-    
+        public bool IsVisited => Visited;
+
         /// <summary>
         /// 
         /// </summary>

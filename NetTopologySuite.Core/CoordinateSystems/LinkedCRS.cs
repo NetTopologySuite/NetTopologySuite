@@ -23,14 +23,14 @@
         public LinkedCRS(Uri href, string type = "")            
         {
             if (href == null)
-                throw new ArgumentNullException("href");
+                throw new ArgumentNullException(nameof(href));
 
-            this.Properties = new Dictionary<string, object> { { "href", href.ToString() } };
+            Properties = new Dictionary<string, object> { { "href", href.ToString() } };
 
             if (!string.IsNullOrEmpty(type))
-                this.Properties.Add("type", type);
+                Properties.Add("type", type);
 
-            this.Type = CRSTypes.Link;
+            Type = CRSTypes.Link;
         }        
     }
 }

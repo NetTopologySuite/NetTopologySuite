@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.GeometriesGraph
 {
@@ -26,13 +25,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public int Count
-        {
-            get
-            {
-                return nodeMap.Count;
-            }
-        }
+        public int Count => nodeMap.Count;
 
         /// <summary> 
         /// Adds an intersection into the list, if it isn't already there.

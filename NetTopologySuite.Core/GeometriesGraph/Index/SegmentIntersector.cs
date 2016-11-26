@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
@@ -26,12 +25,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
          * These variables keep track of what types of intersections were
          * found during ALL edges that have been intersected.
          */
-        private bool _hasIntersection;
-        private bool _hasProper;
-        private bool _hasProperInterior;
 
         // the proper intersection point found
-        private Coordinate _properIntersectionPoint;
 
         private readonly LineIntersector _li;
         private readonly bool _includeProper;
@@ -73,24 +68,12 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <returns> 
         /// The proper intersection point, or <c>null</c> if none was found.
         /// </returns>
-        public Coordinate ProperIntersectionPoint
-        {
-            get
-            {
-                return _properIntersectionPoint;
-            }
-        }
+        public Coordinate ProperIntersectionPoint { get; private set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public bool HasIntersection
-        {
-            get
-            {
-                return _hasIntersection;
-            }
-        }
+        public bool HasIntersection { get; private set; }
 
         /// <summary>
         /// A proper intersection is an intersection which is interior to at least two
@@ -99,25 +82,13 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// an endpoint equal to the intersection, which according to SFS semantics
         /// can result in the point being on the Boundary of the Geometry.
         /// </summary>
-        public bool HasProperIntersection
-        {
-            get
-            {
-                return _hasProper; 
-            }
-        }
+        public bool HasProperIntersection { get; private set; }
 
         /// <summary> 
         /// A proper interior intersection is a proper intersection which is not
         /// contained in the set of boundary nodes set for this SegmentIntersector.
         /// </summary>
-        public bool HasProperInteriorIntersection
-        {
-            get
-            {
-                return _hasProperInterior;
-            }
-        }
+        public bool HasProperInteriorIntersection { get; private set; }
 
         /// <summary>
         /// A trivial intersection is an apparent self-intersection which in fact
@@ -188,7 +159,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
                 // only intersection.
                 if (!IsTrivialIntersection(e0, segIndex0, e1, segIndex1))
                 {
-                    _hasIntersection = true;
+                    HasIntersection = true;
                     if (_includeProper || !_li.IsProper)
                     {                     
                         e0.AddIntersections(_li, segIndex0, 0);
@@ -196,10 +167,10 @@ namespace NetTopologySuite.GeometriesGraph.Index
                     }
                     if (_li.IsProper)
                     {
-                        _properIntersectionPoint = (Coordinate) _li.GetIntersection(0).Clone();
-                        _hasProper = true;
+                        ProperIntersectionPoint = (Coordinate) _li.GetIntersection(0).Clone();
+                        HasProperIntersection = true;
                         if (!IsBoundaryPoint(_li, _bdyNodes))
-                            _hasProperInterior = true;                        
+                            HasProperInteriorIntersection = true;                        
                     }                    
                 }
             }

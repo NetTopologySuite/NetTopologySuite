@@ -85,16 +85,12 @@ namespace NetTopologySuite.IO
          * true if structurally invalid input should be reported rather than repaired.
          * At some point this could be made client-controllable.
          */
-        private bool _isStrict;
 
         /// <summary>
         /// The <see cref="IGeometry"/> builder.
         /// </summary>
         [Obsolete]
-        protected IGeometryFactory Factory
-        {
-            get { return _factory; }
-        }
+        protected IGeometryFactory Factory => _factory;
 
         /// <summary>
         /// Initialize reader with a standard <see cref="IGeometryFactory"/>.
@@ -159,7 +155,7 @@ namespace NetTopologySuite.IO
             {
                 reader = new BEBinaryReader(stream);
             }
-            else if (_isStrict)
+            else if (RepairRings)
             {
                 string s = String.Format("Unknown geometry byte order (not LittleEndian or BigEndian): {0}", byteOrder);
                 throw new GeoAPI.IO.ParseException(s);
@@ -349,7 +345,7 @@ namespace NetTopologySuite.IO
         protected ICoordinateSequence ReadCoordinateSequenceRing(BinaryReader reader, int size, CoordinateSystem cs)
         {
             ICoordinateSequence seqence = ReadCoordinateSequence(reader, size, cs);
-            if (_isStrict)
+            if (RepairRings)
                 return seqence;
             if (CoordinateSequences.IsRing(seqence))
                 return seqence;
@@ -366,7 +362,7 @@ namespace NetTopologySuite.IO
         protected ICoordinateSequence ReadCoordinateSequenceLineString(BinaryReader reader, int size, CoordinateSystem cs)
         {
             ICoordinateSequence seq = ReadCoordinateSequence(reader, size, cs);
-            if (_isStrict) return seq;
+            if (RepairRings) return seq;
             if (seq.Count == 0 || seq.Count >= 2) return seq;
             return CoordinateSequences.Extend(_geometryServices.DefaultCoordinateSequenceFactory, seq, 2);
         }
@@ -615,10 +611,7 @@ namespace NetTopologySuite.IO
 
         public bool HandleSRID { get; set; }
 
-        public Ordinates AllowedOrdinates
-        {
-            get { return Ordinates.XYZM & _sequenceFactory.Ordinates; }
-        }
+        public Ordinates AllowedOrdinates => Ordinates.XYZM & _sequenceFactory.Ordinates;
 
         private Ordinates _handleOrdinates;
 
@@ -637,7 +630,7 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Gets or sets whether invalid linear rings should be fixed
         /// </summary>
-        public bool RepairRings { get { return _isStrict; } set { _isStrict = value; } }
+        public bool RepairRings { get; set; }
 
         /// <summary>
         /// Function to determine whether an ordinate should be handled or not.

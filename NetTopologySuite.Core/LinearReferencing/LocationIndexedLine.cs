@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.LinearReferencing
 {
@@ -20,7 +19,7 @@ namespace NetTopologySuite.LinearReferencing
         public LocationIndexedLine(IGeometry linearGeom)
         {
             if (!CheckGeometryType(linearGeom))
-                throw new ArgumentException("Input geometry must be linear", "linearGeom");
+                throw new ArgumentException("Input geometry must be linear", nameof(linearGeom));
             _linearGeom = linearGeom;
         }
 
@@ -169,24 +168,12 @@ namespace NetTopologySuite.LinearReferencing
         /// <summary>
         /// Returns the index of the start of the line.
         /// </summary>
-        public LinearLocation StartIndex
-        {
-            get
-            {
-                return new LinearLocation();
-            }
-        }
+        public LinearLocation StartIndex => new LinearLocation();
 
         /// <summary>
         /// Returns the index of the end of the line.
         /// </summary>
-        public LinearLocation EndIndex
-        {
-            get
-            {
-                return LinearLocation.GetEndLocation(_linearGeom);
-            }
-        }
+        public LinearLocation EndIndex => LinearLocation.GetEndLocation(_linearGeom);
 
         /// <summary>
         /// Tests whether an index is in the valid index range for the line.

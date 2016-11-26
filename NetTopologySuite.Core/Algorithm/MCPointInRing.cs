@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 //using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 //using NetTopologySuite.Index.Bintree;
 using NetTopologySuite.Index.Bintree;

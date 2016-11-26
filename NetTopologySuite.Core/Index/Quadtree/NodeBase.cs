@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 
@@ -127,13 +126,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public bool IsPrunable
-        {
-            get
-            {
-                return !(HasChildren || HasItems);
-            }
-        }
+        public bool IsPrunable => !(HasChildren || HasItems);
 
         /// <summary>
         /// 

@@ -18,7 +18,6 @@ namespace NetTopologySuite.Operation.Valid
     {        
         private readonly GeometryGraph graph;  // used to find non-node vertices
         private readonly IList rings = new ArrayList();
-        private Coordinate nestedPt;
 
         /// <summary>
         /// 
@@ -41,13 +40,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate NestedPoint
-        {
-            get
-            {
-                return nestedPt;
-            }
-        }
+        public Coordinate NestedPoint { get; private set; }
 
         /// <summary>
         /// 
@@ -75,7 +68,7 @@ namespace NetTopologySuite.Operation.Valid
                     bool isInside = CGAlgorithms.IsPointInRing(innerRingPt, searchRingPts);
                     if (isInside)
                     {
-                        nestedPt = innerRingPt;
+                        NestedPoint = innerRingPt;
                         return false;
                     }
                 }

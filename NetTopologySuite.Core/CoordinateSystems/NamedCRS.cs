@@ -19,13 +19,13 @@
         public NamedCRS(string name)
         {
             if (name == null)
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
 
             if (string.IsNullOrEmpty(name))
-                throw new ArgumentOutOfRangeException("name", "May not be empty");
+                throw new ArgumentOutOfRangeException(nameof(name), "May not be empty");
 
-            this.Properties = new Dictionary<string, object> { { "name", name } };
-            this.Type = CRSTypes.Name;
+            Properties = new Dictionary<string, object> { { "name", name } };
+            Type = CRSTypes.Name;
         }
     }
 }

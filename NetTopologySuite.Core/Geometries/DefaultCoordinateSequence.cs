@@ -57,18 +57,9 @@ namespace NetTopologySuite.Geometries
         /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
         /// </summary>
         /// <value></value>
-        public int Dimension
-        {
-            get
-            {
-                return 3;
-            }
-        }
+        public int Dimension => 3;
 
-        public Ordinates Ordinates
-        {
-            get { return Ordinates.XYZ; }
-        }
+        public Ordinates Ordinates => Ordinates.XYZ;
 
         /// <summary>
         /// Returns the coordinate at specified index.
@@ -175,13 +166,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="i">Coordinate index.</param>
         /// <return>Coordinate specified.</return>
-        public object this[int i]
-        {
-            get
-            {
-                return _coordinates[i];
-            }
-        }
+        public object this[int i] => _coordinates[i];
 
         /// <summary>
         /// Expands the given Envelope to include the coordinates in the sequence.
@@ -226,25 +211,13 @@ namespace NetTopologySuite.Geometries
         /// Returns the elements number of the coordinate sequence.
         /// </summary>
         /// <value></value>
-        public int Count
-        {
-            get
-            {
-                return _coordinates.Length;
-            }
-        }
+        public int Count => _coordinates.Length;
 
         /// <summary>
         /// Returns the elements number of the coordinate sequence.
         /// </summary>
         /// <value>The length.</value>
-        public int Length
-        {
-            get
-            {
-                return _coordinates.Length;
-            }
-        }
+        public int Length => _coordinates.Length;
 
         /// <summary>
         /// This method exposes the internal Array of Coordinate Objects.

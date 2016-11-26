@@ -1,5 +1,4 @@
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.Triangulate.QuadEdge;
 
 namespace NetTopologySuite.Triangulate
@@ -13,7 +12,6 @@ namespace NetTopologySuite.Triangulate
     /// <author>Martin Davis</author>
     public class ConstraintVertex : Vertex
     {
-        private bool isOnConstraint;
         private object constraint;
 
         /// <summary>
@@ -29,17 +27,7 @@ namespace NetTopologySuite.Triangulate
         /// Gets or sets whether this vertex lies on a constraint.
         /// </summary>
         /// <remarks>true if the vertex lies on a constraint</remarks>
-        public bool IsOnConstraint
-        {
-            get
-            {
-                return isOnConstraint;
-            }
-            set
-            {
-                this.isOnConstraint = value;
-            }
-        }
+        public bool IsOnConstraint { get; set; }
 
         /// <summary>
         /// Gets or sets the external constraint object
@@ -53,8 +41,8 @@ namespace NetTopologySuite.Triangulate
             }
             set
             {
-                isOnConstraint = true;
-                this.constraint = value;
+                IsOnConstraint = true;
+                constraint = value;
             }
         }
 
@@ -66,8 +54,8 @@ namespace NetTopologySuite.Triangulate
         /// <param name="other">the constraint vertex to merge</param>
         protected internal void Merge(ConstraintVertex other)
         {
-            if (other.isOnConstraint) {
-                isOnConstraint = true;
+            if (other.IsOnConstraint) {
+                IsOnConstraint = true;
                 constraint = other.constraint;
             }
         }

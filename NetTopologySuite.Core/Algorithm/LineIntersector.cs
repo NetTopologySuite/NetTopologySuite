@@ -133,12 +133,12 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// Alias the <see cref="IntersectionPoint"/>[0] for ease of reference
         /// </summary>
-        protected Coordinate Pa { get { return IntersectionPoint[0]; }}
+        protected Coordinate Pa => IntersectionPoint[0];
 
         /// <summary>
         /// Alias the <see cref="IntersectionPoint"/>[1] for ease of reference
         /// </summary>
-        protected Coordinate Pb { get { return IntersectionPoint[1]; } }
+        protected Coordinate Pb => IntersectionPoint[1];
 
         /// <summary> 
         /// If MakePrecise is true, computed intersection coordinates will be made precise
@@ -199,10 +199,7 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         public abstract void ComputeIntersection(Coordinate p, Coordinate p1, Coordinate p2);
         
-        protected bool IsCollinear 
-        {
-            get { return Result == CollinearIntersection; }
-        }
+        protected bool IsCollinear => Result == CollinearIntersection;
 
         /// <summary>
         /// Computes the intersection of the lines p1-p2 and p3-p4.
@@ -237,28 +234,19 @@ namespace NetTopologySuite.Algorithm
             return sb.ToString();                        
         }
         
-        protected bool IsEndPoint 
-        {
-            get { return HasIntersection && !_isProper; }
-        }
+        protected bool IsEndPoint => HasIntersection && !_isProper;
 
         /// <summary> 
         /// Tests whether the input geometries intersect.
         /// </summary>
         /// <returns><c>true</c> if the input geometries intersect.</returns>
-        public bool HasIntersection
-        {
-            get { return Result != NoIntersection; }
-        }
+        public bool HasIntersection => Result != NoIntersection;
 
         /// <summary>
         /// Returns the number of intersection points found.  This will be either 0, 1 or 2.
         /// </summary>
         /// <returns>The number of intersection points found (0, 1, or 2)</returns>
-        public int IntersectionNum
-        {
-            get { return Result; }
-        }
+        public int IntersectionNum => Result;
 
         /// <summary> 
         /// Returns the intIndex'th intersection point.

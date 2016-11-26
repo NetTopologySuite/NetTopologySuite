@@ -83,12 +83,6 @@ namespace NetTopologySuite.Operation.Relate
         /// Gets the IntersectionMatrix for the spatial relationship
         /// between the input geometries.
         /// </summary>
-        public IntersectionMatrix IntersectionMatrix
-        {
-            get
-            {
-                return _relate.ComputeIM();
-            }
-        }
+        public IntersectionMatrix IntersectionMatrix => _relate.ComputeIM();
     }
 }

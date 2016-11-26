@@ -1,6 +1,5 @@
 ﻿namespace NetTopologySuite.Geometries.Implementation
 {
-    using System;
     using GeoAPI.Geometries;
 
     /// <summary>
@@ -82,10 +81,6 @@
         /// <summary>
         /// Gets the Ordinate flags that sequences created by this factory can cope with.
         /// </summary>
-        public Ordinates Ordinates
-        {
-            get { return Ordinates.XYZM; }
-        }
-
+        public Ordinates Ordinates => Ordinates.XYZM;
     }
 }

@@ -19,7 +19,6 @@ namespace NetTopologySuite.Operation.Valid
         private readonly IList<ILinearRing> _rings = new List<ILinearRing>();
         private readonly Envelope _totalEnv = new Envelope();
         private ISpatialIndex<ILinearRing> _quadtree;
-        private Coordinate _nestedPt;
 
         /// <summary>
         /// 
@@ -33,13 +32,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate NestedPoint
-        {
-            get
-            {
-                return _nestedPt;
-            }
-        }
+        public Coordinate NestedPoint { get; private set; }
 
         /// <summary>
         /// 
@@ -80,7 +73,7 @@ namespace NetTopologySuite.Operation.Valid
                     bool isInside = CGAlgorithms.IsPointInRing(innerRingPt, searchRingPts);
                     if (isInside)
                     {
-                        _nestedPt = innerRingPt;
+                        NestedPoint = innerRingPt;
                         return false;
                     }
                 }

@@ -2,7 +2,6 @@
 
 using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.LinearReferencing
 {
@@ -32,8 +31,6 @@ namespace NetTopologySuite.LinearReferencing
         /// Invariant: currentLine &lt;&gt; null if the iterator is pointing at a valid coordinate
         /// </summary>
         private ILineString _currentLine;
-        private int _componentIndex;
-        private int _vertexIndex;
 
         //// Used for avoid the first call to Next() in MoveNext()
         //private bool _atStart;
@@ -76,8 +73,8 @@ namespace NetTopologySuite.LinearReferencing
             _linearGeom = linearGeom;
             _numLines = linearGeom.NumGeometries;
 
-            _componentIndex = componentIndex;
-            _vertexIndex = vertexIndex;
+            ComponentIndex = componentIndex;
+            VertexIndex = vertexIndex;
 
             LoadCurrentLine();
         }
@@ -87,12 +84,12 @@ namespace NetTopologySuite.LinearReferencing
         /// </summary>
         private void LoadCurrentLine()
         {
-            if (_componentIndex >= _numLines)
+            if (ComponentIndex >= _numLines)
             {
                 _currentLine = null;
                 return;
             }
-            _currentLine = (ILineString)_linearGeom.GetGeometryN(_componentIndex);
+            _currentLine = (ILineString)_linearGeom.GetGeometryN(ComponentIndex);
         }
 
         /// <summary>
@@ -104,10 +101,10 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns><c>true</c> if there are more vertices to scan.</returns>
         public bool HasNext()
         {
-            if (_componentIndex >= _numLines)
+            if (ComponentIndex >= _numLines)
                 return false;
-            if (_componentIndex == _numLines - 1 &&
-                _vertexIndex >= _currentLine.NumPoints)
+            if (ComponentIndex == _numLines - 1 &&
+                VertexIndex >= _currentLine.NumPoints)
                 return false;
             return true;
         }
@@ -120,12 +117,12 @@ namespace NetTopologySuite.LinearReferencing
             if (!HasNext())
                 return;
 
-            _vertexIndex++;
-            if (_vertexIndex >= _currentLine.NumPoints)
+            VertexIndex++;
+            if (VertexIndex >= _currentLine.NumPoints)
             {
-                _componentIndex++;
+                ComponentIndex++;
                 LoadCurrentLine();
-                _vertexIndex = 0;
+                VertexIndex = 0;
             }
         }
 
@@ -137,9 +134,9 @@ namespace NetTopologySuite.LinearReferencing
         {
             get
             {
-                if (_componentIndex >= _numLines)
+                if (ComponentIndex >= _numLines)
                     return false;
-                if (_vertexIndex < _currentLine.NumPoints - 1)
+                if (VertexIndex < _currentLine.NumPoints - 1)
                     return false;
                 return true;
             }
@@ -148,47 +145,23 @@ namespace NetTopologySuite.LinearReferencing
         /// <summary>
         /// The component index of the vertex the iterator is currently at.
         /// </summary>
-        public int ComponentIndex
-        {
-            get
-            {
-                return _componentIndex;
-            }
-        }
+        public int ComponentIndex { get; private set; }
 
         /// <summary>
         /// The vertex index of the vertex the iterator is currently at.
         /// </summary>
-        public int VertexIndex
-        {
-            get
-            {
-                return _vertexIndex;
-            }
-        }
+        public int VertexIndex { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="LineString" /> component the iterator is current at.
         /// </summary>
-        public ILineString Line
-        {
-            get
-            {
-                return _currentLine;
-            }
-        }
+        public ILineString Line => _currentLine;
 
         /// <summary>
         /// Gets the first <see cref="Coordinate" /> of the current segment
         /// (the coordinate of the current vertex).
         /// </summary>
-        public Coordinate SegmentStart
-        {
-            get
-            {
-                return _currentLine.GetCoordinateN(_vertexIndex);
-            }
-        }
+        public Coordinate SegmentStart => _currentLine.GetCoordinateN(VertexIndex);
 
         /// <summary>
         /// Gets the second <see cref="Coordinate" /> of the current segment
@@ -199,8 +172,8 @@ namespace NetTopologySuite.LinearReferencing
         {
             get
             {
-                if (_vertexIndex < Line.NumPoints - 1)
-                    return _currentLine.GetCoordinateN(_vertexIndex + 1);
+                if (VertexIndex < Line.NumPoints - 1)
+                    return _currentLine.GetCoordinateN(VertexIndex + 1);
                 return null;
             }
         }

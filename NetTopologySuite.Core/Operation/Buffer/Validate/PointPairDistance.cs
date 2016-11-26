@@ -10,17 +10,15 @@ namespace NetTopologySuite.Operation.Buffer.Validate
     /// </summary>
     public class PointPairDistance
     {
-        private readonly Coordinate[] _pt = { new Coordinate(), new Coordinate() };
-        private double _distance = Double.NaN;
         private bool _isNull = true;
 
         public void Initialize() { _isNull = true; }
 
         public void Initialize(Coordinate p0, Coordinate p1)
         {
-            _pt[0].CoordinateValue = p0;
-            _pt[1].CoordinateValue = p1;
-            _distance = p0.Distance(p1);
+            Coordinates[0].CoordinateValue = p0;
+            Coordinates[1].CoordinateValue = p1;
+            Distance = p0.Distance(p1);
             _isNull = false;
         }
 
@@ -32,21 +30,21 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// <param name="distance">The distance between <paramref name="p0"/> and <paramref name="p1"/></param>
         private void Initialize(Coordinate p0, Coordinate p1, double distance)
         {
-            _pt[0].CoordinateValue = p0;
-            _pt[1].CoordinateValue = p1;
-            _distance = distance;
+            Coordinates[0].CoordinateValue = p0;
+            Coordinates[1].CoordinateValue = p1;
+            Distance = distance;
             _isNull = false;
         }
 
-        public double Distance { get { return _distance; } }
+        public double Distance { get; private set; } = Double.NaN;
 
-        public Coordinate[] Coordinates { get { return _pt; } }
+        public Coordinate[] Coordinates { get; } = { new Coordinate(), new Coordinate() };
 
-        public Coordinate GetCoordinate(int i) { return _pt[i]; }
+        public Coordinate GetCoordinate(int i) { return Coordinates[i]; }
 
         public void SetMaximum(PointPairDistance ptDist)
         {
-            SetMaximum(ptDist._pt[0], ptDist._pt[1]);
+            SetMaximum(ptDist.Coordinates[0], ptDist.Coordinates[1]);
         }
 
         public void SetMaximum(Coordinate p0, Coordinate p1)
@@ -57,13 +55,13 @@ namespace NetTopologySuite.Operation.Buffer.Validate
                 return;
             }
             double dist = p0.Distance(p1);
-            if (dist > _distance)
+            if (dist > Distance)
                 Initialize(p0, p1, dist);
         }
 
         public void SetMinimum(PointPairDistance ptDist)
         {
-            SetMinimum(ptDist._pt[0], ptDist._pt[1]);
+            SetMinimum(ptDist.Coordinates[0], ptDist.Coordinates[1]);
         }
 
         public void SetMinimum(Coordinate p0, Coordinate p1)
@@ -74,7 +72,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
                 return;
             }
             double dist = p0.Distance(p1);
-            if (dist < _distance)
+            if (dist < Distance)
                 Initialize(p0, p1, dist);
         }
     }

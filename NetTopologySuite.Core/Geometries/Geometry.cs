@@ -10,7 +10,6 @@ using NetTopologySuite.IO.GML2;
 using NetTopologySuite.Operation;
 using NetTopologySuite.Operation.Buffer;
 using NetTopologySuite.Operation.Distance;
-using NetTopologySuite.Operation.Linemerge;
 using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Operation.Overlay.Snap;
 using NetTopologySuite.Operation.Predicate;
@@ -18,7 +17,6 @@ using NetTopologySuite.Operation.Relate;
 using NetTopologySuite.Operation.Union;
 using NetTopologySuite.Operation.Valid;
 using NetTopologySuite.Utilities;
-using Newtonsoft.Json;
 
 namespace NetTopologySuite.Geometries
 {
@@ -140,25 +138,17 @@ namespace NetTopologySuite.Geometries
                                  };
 
         //FObermaier: not *readonly* due to SRID property in geometryfactory
-        private /*readonly*/ IGeometryFactory _factory;
 
         /// <summary> 
         /// Gets the factory which contains the context in which this point was created.
         /// </summary>
         /// <returns>The factory for this point.</returns>
-        public IGeometryFactory Factory
-        {
-            get
-            {
-                return _factory;
-            }
-        }
+        public IGeometryFactory Factory { get; private set; }
 
         /**
          * An object reference which can be used to carry ancillary data defined
          * by the client.
          */
-        private object _userData;
 
         /// <summary> 
         /// Gets/Sets the user data object for this point, if any.
@@ -169,17 +159,7 @@ namespace NetTopologySuite.Geometries
         /// Note that user data objects are not present in geometries created by
         /// construction methods.
         /// </remarks>
-        public object UserData
-        {
-            get
-            {
-                return _userData;
-            }
-            set
-            {
-                _userData = value;
-            }
-        }
+        public object UserData { get; set; }
 
         /// <summary>
         /// The bounding box of this <c>Geometry</c>.
@@ -219,8 +199,8 @@ namespace NetTopologySuite.Geometries
                 _srid = value;
 
                 // Adjust the geometry factory
-                _factory = GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(
-                    _factory.PrecisionModel, value, _factory.CoordinateSequenceFactory);
+                Factory = GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(
+                    Factory.PrecisionModel, value, Factory.CoordinateSequenceFactory);
 
                 var collection = this as IGeometryCollection;
                 if (collection == null) return;
@@ -238,7 +218,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="factory">The factory</param>
         protected Geometry(IGeometryFactory factory)
         {
-            _factory = factory;
+            Factory = factory;
             _srid = factory.SRID;
         }
 
@@ -289,13 +269,7 @@ namespace NetTopologySuite.Geometries
         /// the specification of the grid of allowable points, for this
         /// <c>Geometry</c> and all other <c>Geometry</c>s.
         /// </returns>
-        public IPrecisionModel PrecisionModel
-        {
-            get
-            {
-                return Factory.PrecisionModel;
-            }
-        }
+        public IPrecisionModel PrecisionModel => Factory.PrecisionModel;
 
         /// <summary>  
         /// Returns a vertex of this <c>Geometry</c>
@@ -350,13 +324,7 @@ namespace NetTopologySuite.Geometries
         /// Returns the number of Geometryes in a GeometryCollection,
         /// or 1, if the geometry is not a collection.
         /// </summary>
-        public virtual int NumGeometries
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public virtual int NumGeometries => 1;
 
         /// <summary>
         /// Returns an element Geometry from a GeometryCollection,
@@ -407,13 +375,7 @@ namespace NetTopologySuite.Geometries
         /// For validity rules see the documentation for the specific geometry subclass.
         /// </summary>
         /// <returns><c>true</c> if this <c>Geometry</c> is valid.</returns>
-        public virtual bool IsValid
-        {
-            get
-            {
-                return new IsValidOp(this).IsValid;
-            }
-        }
+        public virtual bool IsValid => new IsValidOp(this).IsValid;
 
         /// <summary> 
         /// Tests whether the set of points covered in this <c>Geometry</c> is empty.
@@ -456,13 +418,7 @@ namespace NetTopologySuite.Geometries
         /// Others return 0.0
         /// </summary>
         /// <returns>The area of the Geometry.</returns>
-        public virtual double Area
-        {
-            get
-            {
-                return 0.0;
-            }
-        }
+        public virtual double Area => 0.0;
 
         /// <summary> 
         /// Returns the length of this <c>Geometry</c>.
@@ -472,13 +428,7 @@ namespace NetTopologySuite.Geometries
         /// Others return 0.0
         /// </summary>
         /// <returns>The length of the Geometry.</returns>
-        public virtual double Length
-        {
-            get
-            {
-                return 0.0;
-            }
-        }
+        public virtual double Length => 0.0;
 
         /// <summary> 
         /// Computes the centroid of this <c>Geometry</c>.
@@ -546,15 +496,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// <see cref="InteriorPoint" />
         /// </summary>
-        public IPoint PointOnSurface
-        {
-            get
-            {
-                return InteriorPoint;
-            }
-        }
-
-        private Dimension _dimension;
+        public IPoint PointOnSurface => InteriorPoint;
 
         /// <summary> 
         /// Returns the dimension of this geometry.
@@ -574,11 +516,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>  
         /// The topological dimensions of this geometry
         /// </returns>
-        public virtual Dimension Dimension
-        {
-            get { return _dimension; }
-            set { _dimension = value; }
-        }
+        public virtual Dimension Dimension { get; set; }
 
 
         /*private IGeometry boundary;*/
@@ -624,13 +562,7 @@ namespace NetTopologySuite.Geometries
         /// A Geometry representing the envelope of this Geometry
         /// </returns>
         /// <seealso cref="IGeometryFactory.ToGeometry(GeoAPI.Geometries.Envelope)"/>
-        public IGeometry Envelope
-        {
-            get
-            {
-                return Factory.ToGeometry(EnvelopeInternal);
-            }
-        }
+        public IGeometry Envelope => Factory.ToGeometry(EnvelopeInternal);
 
         /// <summary>
         /// Gets an <see cref="GeoAPI.Geometries.Envelope"/> containing 
@@ -1595,7 +1527,7 @@ namespace NetTopologySuite.Geometries
         {
             // Special case: if one input is empty ==> empty
             if (IsEmpty || other.IsEmpty)
-                return OverlayOp.CreateEmptyResult(SpatialFunction.Intersection, this, other, _factory);
+                return OverlayOp.CreateEmptyResult(SpatialFunction.Intersection, this, other, Factory);
 
             // compute for GCs
             if (IsGeometryCollection)
@@ -1650,7 +1582,7 @@ namespace NetTopologySuite.Geometries
             if (IsEmpty || (other == null || other.IsEmpty))
             {
                 if (IsEmpty && (other == null || other.IsEmpty))
-                    return OverlayOp.CreateEmptyResult(SpatialFunction.Union, this, other, _factory);
+                    return OverlayOp.CreateEmptyResult(SpatialFunction.Union, this, other, Factory);
 
                 // Special case: if either input is empty ==> other input
                 if (other == null || other.IsEmpty) return (IGeometry)Clone();
@@ -1677,7 +1609,7 @@ namespace NetTopologySuite.Geometries
         {
             // special case: if A.isEmpty ==> empty; if B.isEmpty ==> A
             if (IsEmpty)
-                return OverlayOp.CreateEmptyResult(SpatialFunction.Difference, this, other, _factory);
+                return OverlayOp.CreateEmptyResult(SpatialFunction.Difference, this, other, Factory);
             if (other == null || other.IsEmpty)
                 return (IGeometry)Clone();
 
@@ -1706,7 +1638,7 @@ namespace NetTopologySuite.Geometries
             {
                 // both empty - check dimensions
                 if (IsEmpty && (other == null || other.IsEmpty))
-                    return OverlayOp.CreateEmptyResult(SpatialFunction.SymDifference, this, other, _factory);
+                    return OverlayOp.CreateEmptyResult(SpatialFunction.SymDifference, this, other, Factory);
 
                 // special case: if either input is empty ==> result = other arg
                 if (other == null || other.IsEmpty) return (IGeometry)Clone();
@@ -2089,10 +2021,7 @@ namespace NetTopologySuite.Geometries
         }
 
 
-        protected bool IsGeometryCollection
-        {
-            get { return OgcGeometryType == OgcGeometryType.GeometryCollection; }
-        }
+        protected bool IsGeometryCollection => OgcGeometryType == OgcGeometryType.GeometryCollection;
 
 
         /// <summary>
@@ -2215,14 +2144,7 @@ namespace NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual bool IsRectangle
-        {
-            get
-            {
-                // Polygon overrides to check for actual rectangle
-                return false;
-            }
-        }
+        public virtual bool IsRectangle => false;
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 

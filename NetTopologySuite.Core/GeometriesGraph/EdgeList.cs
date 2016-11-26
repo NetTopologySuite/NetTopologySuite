@@ -57,10 +57,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public IList<Edge> Edges
-        {
-            get { return _edges; }
-        }
+        public IList<Edge> Edges => _edges;
 
         /// <summary>
         /// If there is an edge equal to e already in the list, return it.
@@ -94,13 +91,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public Edge this[int index]
-        {
-            get
-            {
-                return Get(index);
-            }            
-        }
+        public Edge this[int index] => Get(index);
 
         /// <summary>
         /// 

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Utilities;
 
@@ -121,7 +120,6 @@ namespace NetTopologySuite.Operation.Overlay
         private readonly IGeometryFactory _geomFact;
         private IGeometry _resultGeom;
 
-        private readonly PlanarGraph _graph;
         private readonly EdgeList _edgeList      = new EdgeList();
 
         private IList<IGeometry> _resultPolyList = new List<IGeometry>();
@@ -137,7 +135,7 @@ namespace NetTopologySuite.Operation.Overlay
         public OverlayOp(IGeometry g0, IGeometry g1)
             : base(g0, g1)
         {            
-            _graph = new PlanarGraph(new OverlayNodeFactory());
+            Graph = new PlanarGraph(new OverlayNodeFactory());
 
             /*
             * Use factory of primary point.
@@ -164,10 +162,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <summary>
         /// Gets the graph constructed to compute the overlay.
         /// </summary>
-        public PlanarGraph Graph
-        {
-            get { return _graph; }
-        }
+        public PlanarGraph Graph { get; }
 
         private void ComputeOverlay(SpatialFunction opCode)
         {
@@ -209,7 +204,7 @@ namespace NetTopologySuite.Operation.Overlay
                 nv.CheckValid();
             }
             
-            _graph.AddEdges(_edgeList.Edges);
+            Graph.AddEdges(_edgeList.Edges);
             ComputeLabelling();
             LabelIncompleteNodes();
 
@@ -222,7 +217,7 @@ namespace NetTopologySuite.Operation.Overlay
             FindResultAreaEdges(opCode);
             CancelDuplicateResultEdges();
             var polyBuilder = new PolygonBuilder(_geomFact);
-            polyBuilder.Add(_graph);
+            polyBuilder.Add(Graph);
             _resultPolyList = polyBuilder.Polygons;
 
             var lineBuilder = new LineBuilder(this, _geomFact, _ptLocator);
@@ -382,7 +377,7 @@ namespace NetTopologySuite.Operation.Overlay
             while (i.MoveNext()) 
             {
                 var graphNode = i.Current;
-                var newNode = _graph.AddNode(graphNode.Coordinate);
+                var newNode = Graph.AddNode(graphNode.Coordinate);
                 newNode.SetLabel(argIndex, graphNode.Label.GetLocation(argIndex));
             }
         }
@@ -396,7 +391,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// </summary>
         private void ComputeLabelling()
         {
-            var nodeit = _graph.Nodes.GetEnumerator();
+            var nodeit = Graph.Nodes.GetEnumerator();
             while (nodeit.MoveNext()) 
             {
                 var node = nodeit.Current;
@@ -414,7 +409,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// </summary>
         private void MergeSymLabels()
         {
-            var nodeit = _graph.Nodes.GetEnumerator();
+            var nodeit = Graph.Nodes.GetEnumerator();
             while (nodeit.MoveNext()) 
             {
                 var node = nodeit.Current;
@@ -428,7 +423,7 @@ namespace NetTopologySuite.Operation.Overlay
             // The label for a node is updated from the edges incident on it
             // (Note that a node may have already been labelled
             // because it is a point in one of the input geometries)
-            var nodeit = _graph.Nodes.GetEnumerator();
+            var nodeit = Graph.Nodes.GetEnumerator();
             while (nodeit.MoveNext()) 
             {
                 var node = nodeit.Current;
@@ -453,7 +448,7 @@ namespace NetTopologySuite.Operation.Overlay
         private void LabelIncompleteNodes()
         {
             //int nodeCount = 0;
-            var ni = _graph.Nodes.GetEnumerator();
+            var ni = Graph.Nodes.GetEnumerator();
             while (ni.MoveNext()) 
             {
                 var n = ni.Current;
@@ -499,7 +494,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// </summary>
         private void FindResultAreaEdges(SpatialFunction opCode)
         {
-            var it = _graph.EdgeEnds.GetEnumerator();
+            var it = Graph.EdgeEnds.GetEnumerator();
             while (it.MoveNext()) 
             {
                 var de = (DirectedEdge) it.Current;
@@ -519,7 +514,7 @@ namespace NetTopologySuite.Operation.Overlay
         {
             // remove any dirEdges whose sym is also included
             // (they "cancel each other out")
-            var it = _graph.EdgeEnds.GetEnumerator();
+            var it = Graph.EdgeEnds.GetEnumerator();
             while (it.MoveNext()) 
             {
                 var de = (DirectedEdge) it.Current;

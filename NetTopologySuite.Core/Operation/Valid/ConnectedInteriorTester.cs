@@ -39,7 +39,6 @@ namespace NetTopologySuite.Operation.Valid
 
         // save a coordinate for any disconnected interior found
         // the coordinate will be somewhere on the ring surrounding the disconnected interior
-        private Coordinate _disconnectedRingcoord;
 
         /// <summary>
         /// 
@@ -53,13 +52,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get
-            {
-                return _disconnectedRingcoord;
-            }
-        }
+        public Coordinate Coordinate { get; private set; }
 
         /// <summary>
         /// 
@@ -81,7 +74,7 @@ namespace NetTopologySuite.Operation.Valid
              * Mark all the edges for the edgeRings corresponding to the shells
              * of the input polygons.  Note only ONE ring gets marked for each shell.
              */
-            VisitShellInteriors(this._geomGraph.Geometry, graph);
+            VisitShellInteriors(_geomGraph.Geometry, graph);
 
             /*
              * If there are any unvisited shell edges
@@ -222,7 +215,7 @@ namespace NetTopologySuite.Operation.Valid
                     de = edges[j];
                     if (!de.IsVisited)
                     {
-                        _disconnectedRingcoord = de.Coordinate;
+                        Coordinate = de.Coordinate;
                         return true;
                     }
                 }

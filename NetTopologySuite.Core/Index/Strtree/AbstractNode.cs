@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Utilities;
@@ -18,7 +17,6 @@ namespace NetTopologySuite.Index.Strtree
     {
         private readonly List<IBoundable<T, TItem>> _childBoundables = new List<IBoundable<T, TItem>>();
         private T _bounds;
-        private readonly int _level;
 
         /// <summary> 
         /// Constructs an AbstractNode at the given level in the tree
@@ -29,20 +27,14 @@ namespace NetTopologySuite.Index.Strtree
         /// </param>
         protected AbstractNode(int level) 
         {
-            _level = level;
+            Level = level;
         }
 
         /// <summary> 
         /// Returns either child <see cref="AbstractNode{T, TItem}"/>s, or if this is a leaf node, real data (wrapped
         /// in <see cref="ItemBoundable{T, TItem}"/>s).
         /// </summary>
-        public IList<IBoundable<T, TItem>> ChildBoundables
-        {
-            get
-            {
-                return _childBoundables;
-            }
-        }
+        public IList<IBoundable<T, TItem>> ChildBoundables => _childBoundables;
 
         /// <summary>
         /// Returns a representation of space that encloses this Boundable,
@@ -71,36 +63,24 @@ namespace NetTopologySuite.Index.Strtree
             }
         }
 
-        public TItem Item { get { return default(TItem); } }
+        public TItem Item => default(TItem);
 
         /// <summary>
         /// Returns 0 if this node is a leaf, 1 if a parent of a leaf, and so on; the
         /// root node will have the highest level.
         /// </summary>
-        public int Level
-        {
-            get
-            {
-                return _level;
-            }
-        }
+        public int Level { get; }
 
         /// <summary>
         /// Gets the count of the <see cref="IBoundable{T, TItem}"/>s at this node.
         /// </summary>
-        public int Count
-        {
-            get {return _childBoundables.Count;}
-        }
+        public int Count => _childBoundables.Count;
 
         /// <summary>
         /// Tests whether there are any <see cref="IBoundable{T, TItem}"/>s at this node.
         /// </summary>
-        public bool IsEmpty
-        {
-            get { return _childBoundables.Count == 0; }
-    }
-  
+        public bool IsEmpty => _childBoundables.Count == 0;
+
 
         /// <summary>
         /// Adds either an AbstractNode, or if this is a leaf node, a data object

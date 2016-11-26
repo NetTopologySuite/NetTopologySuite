@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Strtree;
-using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Operation.Valid
 {
@@ -23,14 +21,13 @@ namespace NetTopologySuite.Operation.Valid
         private readonly IList<ILineString> _rings = new List<ILineString>();
         private readonly Envelope _totalEnv = new Envelope();
         private ISpatialIndex<ILineString> _index;
-        private Coordinate _nestedPt;
 
         public IndexedNestedRingTester(GeometryGraph graph)
         {
             _graph = graph;
         }
 
-        public Coordinate NestedPoint { get {return _nestedPt; }}
+        public Coordinate NestedPoint { get; private set; }
 
         public void Add(ILinearRing ring)
         {
@@ -78,7 +75,7 @@ namespace NetTopologySuite.Operation.Valid
                     Boolean isInside = CGAlgorithms.IsPointInRing(innerRingPt, searchRingPts);
                     if (isInside)
                     {
-                        _nestedPt = innerRingPt;
+                        NestedPoint = innerRingPt;
                         return false;
                     }
                 }

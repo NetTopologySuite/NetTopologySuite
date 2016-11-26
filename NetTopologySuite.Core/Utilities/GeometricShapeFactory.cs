@@ -15,10 +15,8 @@ namespace NetTopologySuite.Utilities
         protected IGeometryFactory GeomFact;
         protected IPrecisionModel PrecModel = null;
         private readonly Dimensions _dim = new Dimensions();
-        private int _nPts = 100;
 
         // default is no rotation.
-        private double _rotationAngle;
 
         /// <summary>
         /// Create a shape factory which will create shapes using the default GeometryFactory.
@@ -66,11 +64,7 @@ namespace NetTopologySuite.Utilities
         /// <summary>
         /// Gets/Sets the total number of points in the created Geometry.
         /// </summary>
-        public int NumPoints
-        {
-            get { return _nPts; }
-            set { _nPts = value; }
-        }
+        public int NumPoints { get; set; } = 100;
 
         /// <summary>
         /// Gets/Sets the size of the extent of the shape in both x and y directions.        
@@ -102,18 +96,14 @@ namespace NetTopologySuite.Utilities
         /// Gets/Sets the rotation angle, in radians, to use for the shape.
         /// The rotation is applied relative to the centre of the shape.
         /// </summary>        
-        public double Rotation
-        {
-            get { return _rotationAngle; }
-            set { _rotationAngle = value; }
-        }
+        public double Rotation { get; set; }
 
         protected IGeometry Rotate(IGeometry geom)
         {
-            if (_rotationAngle != 0.0)
+            if (Rotation != 0.0)
             {
                 var centre = _dim.Centre;
-                var trans = AffineTransformation.RotationInstance(_rotationAngle,
+                var trans = AffineTransformation.RotationInstance(Rotation,
                     centre.X, centre.Y);
                 geom.Apply(trans);
             }
@@ -139,7 +129,7 @@ namespace NetTopologySuite.Utilities
         {
             int i;
             var ipt = 0;
-            var nSide = _nPts / 4;
+            var nSide = NumPoints / 4;
             if (nSide < 1) nSide = 1;
             var xSegLen = _dim.Envelope.Width / nSide;
             var ySegLen = _dim.Envelope.Height / nSide;
@@ -191,11 +181,11 @@ namespace NetTopologySuite.Utilities
             var centreX = env.MinX + xRadius;
             var centreY = env.MinY + yRadius;
 
-            var pts = new Coordinate[_nPts + 1];
+            var pts = new Coordinate[NumPoints + 1];
             var iPt = 0;
-            for (var i = 0; i < _nPts; i++) 
+            for (var i = 0; i < NumPoints; i++) 
             {
-                var ang = i * (2 * Math.PI / _nPts);
+                var ang = i * (2 * Math.PI / NumPoints);
                 var x = xRadius * Math.Cos(ang) + centreX;
                 var y = yRadius * Math.Sin(ang) + centreY;
                 var pt = CreateCoord(x, y);
@@ -223,11 +213,11 @@ namespace NetTopologySuite.Utilities
             var centreX = env.MinX + xRadius;
             var centreY = env.MinY + yRadius;
 
-            var pts = new Coordinate[_nPts + 1];
+            var pts = new Coordinate[NumPoints + 1];
             var iPt = 0;
-            for (int i = 0; i < _nPts; i++)
+            for (int i = 0; i < NumPoints; i++)
             {
-                var ang = i * (2 * Math.PI / _nPts);
+                var ang = i * (2 * Math.PI / NumPoints);
                 var x = xRadius * Math.Cos(ang) + centreX;
                 var y = yRadius * Math.Sin(ang) + centreY;
                 pts[iPt++] = CreateCoord(x, y);
@@ -265,7 +255,7 @@ namespace NetTopologySuite.Utilities
 
             var xyInt = Math.Pow(r4 / 2, recipPow);
 
-            var nSegsInOct = _nPts / 8;
+            var nSegsInOct = NumPoints / 8;
             var totPts = nSegsInOct * 8 + 1;
             var pts = new Coordinate[totPts];
             var xInc = xyInt / nSegsInOct;
@@ -319,11 +309,11 @@ namespace NetTopologySuite.Utilities
             var angSize = angExtent;
             if (angSize <= 0.0 || angSize > 2 * Math.PI)
                 angSize = 2 * Math.PI;
-            var angInc = angSize / (_nPts - 1);
+            var angInc = angSize / (NumPoints - 1);
 
-            var pts = new Coordinate[_nPts];
+            var pts = new Coordinate[NumPoints];
             var iPt = 0;
-            for (var i = 0; i < _nPts; i++) 
+            for (var i = 0; i < NumPoints; i++) 
             {
                 var ang = startAng + i * angInc;
                 var x = xRadius * Math.Cos(ang) + centreX;
@@ -357,15 +347,15 @@ namespace NetTopologySuite.Utilities
             var angSize = angExtent;
             if (angSize <= 0.0 || angSize > 2 * Math.PI)
                 angSize = 2 * Math.PI;
-            var angInc = angSize / (_nPts - 1);
+            var angInc = angSize / (NumPoints - 1);
             // var check = angInc * nPts;
             // var checkEndAng = startAng + check;
 
-            var pts = new Coordinate[_nPts + 2];
+            var pts = new Coordinate[NumPoints + 2];
 
             var iPt = 0;
             pts[iPt++] = CreateCoord(centreX, centreY);
-            for (var i = 0; i < _nPts; i++)
+            for (var i = 0; i < NumPoints; i++)
             {
                 var ang = startAng + angInc * i;
 
@@ -381,13 +371,7 @@ namespace NetTopologySuite.Utilities
 
         protected class Dimensions
         {
-            private Coordinate _base;
-
-            public Coordinate Base
-            {
-                get { return _base; }
-                set { _base = value; }
-            }
+            public Coordinate Base { get; set; }
 
             private Coordinate _centre;
 
@@ -406,21 +390,9 @@ namespace NetTopologySuite.Utilities
                 set { _centre = value; }
             }
 
-            private double _width;
+            public double Width { get; set; }
 
-           public double Width
-            {
-                get { return _width; }
-                set { _width = value; }
-            }
-
-            private double _height;
-
-           public double Height
-            {
-                get { return _height; }
-                set { _height = value; }
-            }                                  
+            public double Height { get; set; }
 
             public double Size
             {
@@ -431,13 +403,7 @@ namespace NetTopologySuite.Utilities
                 }
             }
 
-            public double MinSize
-            {
-                get
-                {
-                    return Math.Min(Width, Height);
-                }                
-            }
+            public double MinSize => Math.Min(Width, Height);
 
             public Envelope Envelope
             {
@@ -452,9 +418,9 @@ namespace NetTopologySuite.Utilities
                 }
                 set
                 {
-    	            _width = value.Width;
-                    _height = value.Height;
-                    _base = new Coordinate(value.MinX, value.MinY);
+    	            Width = value.Width;
+                    Height = value.Height;
+                    Base = new Coordinate(value.MinX, value.MinY);
                     _centre = new Coordinate(value.Centre);
                 }
             }

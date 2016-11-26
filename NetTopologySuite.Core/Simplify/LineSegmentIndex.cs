@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
@@ -76,7 +75,6 @@ namespace NetTopologySuite.Simplify
     {
         // MD - only seems to make about a 10% difference in overall time.
         private readonly LineSegment _querySeg;
-        private readonly IList<LineSegment> _items = new List<LineSegment>();
 
         /// <summary>
         /// 
@@ -95,18 +93,12 @@ namespace NetTopologySuite.Simplify
         {
             LineSegment seg = item;
             if (Envelope.Intersects(seg.P0, seg.P1, _querySeg.P0, _querySeg.P1))
-                _items.Add(seg);
+                Items.Add(seg);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public IList<LineSegment> Items 
-        {
-            get
-            {
-                return _items;
-            }
-        }
+        public IList<LineSegment> Items { get; } = new List<LineSegment>();
     }
 }

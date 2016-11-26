@@ -388,13 +388,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </pre>
         /// </remarks>
         /// <returns> an array of length 6</returns>
-        public double[] MatrixEntries
-        {
-            get
-            {
-                return new[] { _m00, _m01, _m02, _m10, _m11, _m12 };
-            }
-        }
+        public double[] MatrixEntries => new[] { _m00, _m01, _m02, _m10, _m11, _m12 };
 
         /// <summary>
         /// Computes the determinant of the transformation matrix.
@@ -420,10 +414,7 @@ namespace NetTopologySuite.Geometries.Utilities
         ///
         /// <returns>The determinant of the transformation</returns>
         /// <see cref="GetInverse"/>
-        public double Determinant
-        {
-            get { return _m00 * _m11 - _m01 * _m10; }
-        }
+        public double Determinant => _m00 * _m11 - _m01 * _m10;
 
         /// <summary>
         /// Computes the inverse of this transformation, if one
@@ -500,7 +491,7 @@ namespace NetTopologySuite.Geometries.Utilities
             }
             double dx = x1 - x0;
             double dy = y1 - y0;
-            double d = System.Math.Sqrt(dx * dx + dy * dy);
+            double d = Math.Sqrt(dx * dx + dy * dy);
             double sin = dy / d;
             double cos = dx / d;
             double cs2 = 2 * sin * cos;
@@ -530,7 +521,7 @@ namespace NetTopologySuite.Geometries.Utilities
             // rotate vector to positive x axis direction
             double dx = x1 - x0;
             double dy = y1 - y0;
-            double d = System.Math.Sqrt(dx * dx + dy * dy);
+            double d = Math.Sqrt(dx * dx + dy * dy);
             double sin = dy / d;
             double cos = dx / d;
             Rotate(-sin, cos);
@@ -583,7 +574,7 @@ namespace NetTopologySuite.Geometries.Utilities
             }
 
             // rotate vector to positive x axis direction
-            double d = System.Math.Sqrt(x * x + y * y);
+            double d = Math.Sqrt(x * x + y * y);
             double sin = y / d;
             double cos = x / d;
             Rotate(-sin, cos);
@@ -613,7 +604,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation SetToRotation(double theta)
         {
-            SetToRotation(System.Math.Sin(theta), System.Math.Cos(theta));
+            SetToRotation(Math.Sin(theta), Math.Cos(theta));
             return this;
         }
 
@@ -662,7 +653,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation SetToRotation(double theta, double x, double y)
         {
-            SetToRotation(System.Math.Sin(theta), System.Math.Cos(theta), x, y);
+            SetToRotation(Math.Sin(theta), Math.Cos(theta), x, y);
             return this;
         }
 
@@ -1020,30 +1011,18 @@ namespace NetTopologySuite.Geometries.Utilities
             Transform(seq, i);
         }
 
-        public Boolean GeometryChanged
-        {
-            get { return true; }
-        }
+        public Boolean GeometryChanged => true;
 
         /// <summary>
         /// Reports that this filter should continue to be executed until
         /// all coordinates have been transformed.
         /// </summary>
         /// <returns> false</returns>
-        public Boolean Done
-        {
-            get { return false; }
-        }
+        public Boolean Done => false;
 
         ///<summary>Tests if this transformation is the identity transformation.</summary>
-        public Boolean IsIdentity
-        {
-            get
-            {
-                return (_m00 == 1 && _m01 == 0 && _m02 == 0
-                        && _m10 == 0 && _m11 == 1 && _m12 == 0);
-            }
-        }
+        public Boolean IsIdentity => (_m00 == 1 && _m01 == 0 && _m02 == 0
+                                      && _m10 == 0 && _m11 == 1 && _m12 == 0);
 
         ///<summary>
         /// Tests if an object is an <c>AffineTransformation</c> and has the same matrix as this transformation.

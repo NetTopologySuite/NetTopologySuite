@@ -18,7 +18,6 @@ namespace NetTopologySuite.Operation.Buffer
         private readonly RightmostEdgeFinder _finder;
         private readonly List<DirectedEdge> _dirEdgeList  = new List<DirectedEdge>();
         private readonly List<Node> _nodes        = new List<Node>();
-        private Coordinate _rightMostCoord;
 
         /// <summary>
         /// 
@@ -31,35 +30,17 @@ namespace NetTopologySuite.Operation.Buffer
         /// <summary>
         /// 
         /// </summary>
-        public IList<DirectedEdge> DirectedEdges
-        {
-            get
-            {
-                return _dirEdgeList;
-            }
-        }
+        public IList<DirectedEdge> DirectedEdges => _dirEdgeList;
 
         /// <summary>
         /// 
         /// </summary>
-        public IList<Node> Nodes
-        {
-            get
-            {
-                return _nodes;
-            }
-        }
+        public IList<Node> Nodes => _nodes;
 
         /// <summary>
         /// Gets the rightmost coordinate in the edges of the subgraph.
         /// </summary>
-        public Coordinate RightMostCoordinate
-        {
-            get
-            {
-                return _rightMostCoord;
-            }
-        }
+        public Coordinate RightMostCoordinate { get; private set; }
 
         /// <summary>
         /// Creates the subgraph consisting of all edges reachable from this node.
@@ -70,7 +51,7 @@ namespace NetTopologySuite.Operation.Buffer
         {
             AddReachable(node);
             _finder.FindEdge(_dirEdgeList);
-            _rightMostCoord = _finder.Coordinate;
+            RightMostCoordinate = _finder.Coordinate;
         }
 
         /// <summary>

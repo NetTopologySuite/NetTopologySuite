@@ -1,11 +1,8 @@
 using GeoAPI.Geometries;
-using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Operation;
 
 namespace NetTopologySuite.Geometries
 {
-    using System;
-
     /// <summary>
     /// Basic implementation of <c>MultiLineString</c>.
     /// </summary>    
@@ -47,48 +44,26 @@ namespace NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <value></value>
-        public override Dimension Dimension
-        {
-            get
-            {
-                return Dimension.Curve;
-            }
-        }
+        public override Dimension Dimension => Dimension.Curve;
 
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
-        public override Dimension BoundaryDimension
-        {
-            get
-            {
-                if (IsClosed)
-                    return Dimension.False;                
-                return Dimension.Point;
-            }
-        }
+        public override Dimension BoundaryDimension => IsClosed ? Dimension.False : Dimension.Point;
 
 
         /// <summary>  
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"MultiLineString"</returns>
-        public override string GeometryType
-        {
-            get
-            {
-                return "MultiLineString";
-            }
-        }
+        public override string GeometryType => "MultiLineString";
 
         /// <summary>
         /// Gets the OGC geometry type
         /// </summary>
-        public override OgcGeometryType OgcGeometryType
-        {
-            get { return OgcGeometryType.MultiLineString; }
-        }
+        public override OgcGeometryType OgcGeometryType => OgcGeometryType.MultiLineString;
+
         /// <summary>
         /// Gets a value indicating whether this instance is closed.
         /// </summary>
@@ -118,18 +93,7 @@ namespace NetTopologySuite.Geometries
         //    }
         //}
 
-       public override IGeometry Boundary
-        {
-            get
-            {
-                return (new BoundaryOp(this)).GetBoundary();
-                //if(IsEmpty)
-                //    return Factory.CreateGeometryCollection(null);
-                //GeometryGraph g = new GeometryGraph(0, this);
-                //Coordinate[] pts = g.GetBoundaryPoints();
-                //return Factory.CreateMultiPoint(pts);
-            }
-        }
+       public override IGeometry Boundary => (new BoundaryOp(this)).GetBoundary();
 
         /// <summary>
         /// Creates a <see cref="MultiLineString" /> in the reverse order to this object.
@@ -157,11 +121,9 @@ namespace NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance) 
+        public override bool EqualsExact(IGeometry other, double tolerance)
         {
-            if (!IsEquivalentClass(other)) 
-                return false;            
-            return base.EqualsExact(other, tolerance);
+            return IsEquivalentClass(other) && base.EqualsExact(other, tolerance);
         }
     }
 }

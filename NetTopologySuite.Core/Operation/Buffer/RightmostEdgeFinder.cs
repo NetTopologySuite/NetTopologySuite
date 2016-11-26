@@ -13,31 +13,17 @@ namespace NetTopologySuite.Operation.Buffer
     internal class RightmostEdgeFinder
     {        
         private int minIndex = -1;
-        private Coordinate minCoord;
         private DirectedEdge minDe;
-        private DirectedEdge orientedDe;
 
         /// <summary>
         /// 
         /// </summary>
-        public DirectedEdge Edge
-        {
-            get
-            {
-                return orientedDe;
-            }
-        }
+        public DirectedEdge Edge { get; private set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get
-            {
-                return minCoord;
-            }
-        }
+        public Coordinate Coordinate { get; private set; }
 
         /// <summary>
         /// 
@@ -60,7 +46,7 @@ namespace NetTopologySuite.Operation.Buffer
              * If the rightmost point is a node, we need to identify which of
              * the incident edges is rightmost.
              */
-            Assert.IsTrue(minIndex != 0 || minCoord.Equals(minDe.Coordinate), "inconsistency in rightmost processing");
+            Assert.IsTrue(minIndex != 0 || Coordinate.Equals(minDe.Coordinate), "inconsistency in rightmost processing");
             if (minIndex == 0)            
                  FindRightmostEdgeAtNode();            
             else FindRightmostEdgeAtVertex();            
@@ -69,10 +55,10 @@ namespace NetTopologySuite.Operation.Buffer
              * now check that the extreme side is the R side.
              * If not, use the sym instead.
              */
-            orientedDe = minDe;
+            Edge = minDe;
             Positions rightmostSide = GetRightmostSide(minDe, minIndex);
             if (rightmostSide == Positions.Left)            
-                orientedDe = minDe.Sym;
+                Edge = minDe.Sym;
         }
 
         /// <summary>
@@ -106,12 +92,12 @@ namespace NetTopologySuite.Operation.Buffer
             Assert.IsTrue(minIndex > 0 && minIndex < pts.Length, "rightmost point expected to be interior vertex of edge");
             Coordinate pPrev = pts[minIndex - 1];
             Coordinate pNext = pts[minIndex + 1];
-            int orientation = CGAlgorithms.ComputeOrientation(minCoord, pNext, pPrev);
+            int orientation = CGAlgorithms.ComputeOrientation(Coordinate, pNext, pPrev);
             bool usePrev = false;
             // both segments are below min point
-            if (pPrev.Y < minCoord.Y && pNext.Y < minCoord.Y && orientation == CGAlgorithms.CounterClockwise)            
+            if (pPrev.Y < Coordinate.Y && pNext.Y < Coordinate.Y && orientation == CGAlgorithms.CounterClockwise)            
                 usePrev = true;            
-            else if (pPrev.Y > minCoord.Y && pNext.Y > minCoord.Y && orientation == CGAlgorithms.Clockwise)            
+            else if (pPrev.Y > Coordinate.Y && pNext.Y > Coordinate.Y && orientation == CGAlgorithms.Clockwise)            
                 usePrev = true;            
             // if both segments are on the same side, do nothing - either is safe
             // to select as a rightmost segment
@@ -129,11 +115,11 @@ namespace NetTopologySuite.Operation.Buffer
             {
                 // only check vertices which are the start or end point of a non-horizontal segment
                 // <FIX> MD 19 Sep 03 - NO!  we can test all vertices, since the rightmost must have a non-horiz segment adjacent to it
-                if (minCoord == null || coord[i].X > minCoord.X)
+                if (Coordinate == null || coord[i].X > Coordinate.X)
                 {
                     minDe = de;
                     minIndex = i;
-                    minCoord = coord[i];
+                    Coordinate = coord[i];
                 }
             }
         }
@@ -152,7 +138,7 @@ namespace NetTopologySuite.Operation.Buffer
             if (side < 0)
             {
                 // reaching here can indicate that segment is horizontal                
-                minCoord = null;
+                Coordinate = null;
                 CheckForRightmostCoordinate(de);
             }
             return side;

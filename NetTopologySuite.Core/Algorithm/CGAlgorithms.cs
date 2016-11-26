@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.Mathematics;
 
 namespace NetTopologySuite.Algorithm
@@ -390,7 +389,7 @@ namespace NetTopologySuite.Algorithm
             double minDistance = p.Distance(line[0]);
             for (int i = 0; i < line.Length - 1; i++)
             {
-                double dist = CGAlgorithms.DistancePointLine(p, line[i], line[i + 1]);
+                double dist = DistancePointLine(p, line[i], line[i + 1]);
                 if (dist < minDistance)
                 {
                     minDistance = dist;

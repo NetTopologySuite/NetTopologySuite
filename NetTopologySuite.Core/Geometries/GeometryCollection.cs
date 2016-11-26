@@ -156,13 +156,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override int NumGeometries
-        {
-            get
-            {
-                return _geometries.Length;
-            }
-        }
+        public override int NumGeometries => _geometries.Length;
 
         /// <summary>
         /// 
@@ -204,21 +198,12 @@ namespace NetTopologySuite.Geometries
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"GeometryCollection"</returns>
-        public override string GeometryType
-        {
-            get
-            {                
-                return "GeometryCollection";
-            }
-        }
+        public override string GeometryType => "GeometryCollection";
 
         /// <summary>
         /// Gets the OGC geometry type
         /// </summary>
-        public override OgcGeometryType OgcGeometryType
-        {
-            get { return OgcGeometryType.GeometryCollection; }
-        }
+        public override OgcGeometryType OgcGeometryType => OgcGeometryType.GeometryCollection;
 
         ///// <summary>
         ///// 
@@ -480,13 +465,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public IGeometry this[int i]
-        {
-            get
-            {
-                return _geometries[i];
-            }
-        }
+        public IGeometry this[int i] => _geometries[i];
 
         ///<summary>
         /// Creates a <see cref="IGeometryCollection"/> with
@@ -510,14 +489,8 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Returns the number of geometries contained by this <see cref="GeometryCollection" />.
         /// </summary>
-        public int Count
-        {
-            get
-            {
-                return _geometries.Length;
-            }
-        }
-        
+        public int Count => _geometries.Length;
+
         /* END ADDED BY MPAUL42: monoGIS team */
     }
 }

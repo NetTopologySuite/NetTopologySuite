@@ -1,8 +1,4 @@
-#if !PCL
 using System;
-#else
-using Exception = System.Exception;
-#endif
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries
@@ -25,8 +21,6 @@ namespace NetTopologySuite.Geometries
             return msg;
         }
 
-        private readonly Coordinate pt;
-
         /// <summary>
         /// 
         /// </summary>
@@ -41,18 +35,12 @@ namespace NetTopologySuite.Geometries
         public TopologyException(string msg, Coordinate pt) 
             : base (MsgWithCoord(msg, pt))
         {            
-            this.pt = new Coordinate(pt);
+            Coordinate = new Coordinate(pt);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get
-            {
-                return pt;
-            }
-        }
+        public Coordinate Coordinate { get; }
     }
 }

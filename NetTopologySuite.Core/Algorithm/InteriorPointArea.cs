@@ -38,7 +38,6 @@ namespace NetTopologySuite.Algorithm
         }
 
         private readonly IGeometryFactory _factory;
-        private Coordinate _interiorPoint;
         private double _maxWidth;
 
         /// <summary>
@@ -55,10 +54,7 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// Gets the computed interior point.
         /// </summary>
-        public Coordinate InteriorPoint
-        {
-            get { return _interiorPoint; }
-        }
+        public Coordinate InteriorPoint { get; private set; }
 
         /// <summary> 
         /// Tests the interior vertices (if any)
@@ -103,9 +99,9 @@ namespace NetTopologySuite.Algorithm
                 width = widestIntersection.EnvelopeInternal.Width;
                 intPt = Centre(widestIntersection.EnvelopeInternal);
             }
-            if (_interiorPoint == null || width > _maxWidth)
+            if (InteriorPoint == null || width > _maxWidth)
             {
-                _interiorPoint = intPt;
+                InteriorPoint = intPt;
                 _maxWidth = width;
             }
         }

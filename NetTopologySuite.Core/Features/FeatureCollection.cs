@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using GeoAPI.Geometries;
 using NetTopologySuite.CoordinateSystems;
 
@@ -42,18 +41,12 @@ namespace NetTopologySuite.Features
         /// </summary>
         /// <returns></returns>
         //[JsonIgnore]
-        public IFeature this[int index]
-        {
-            get { return Features[index]; }
-        }
+        public IFeature this[int index] => Features[index];
 
         /// <summary>
         /// Returns the number of features contained by this <see cref="FeatureCollection" />.
         /// </summary>
-        public int Count
-        {
-            get { return Features.Count; }
-        }
+        public int Count => Features.Count;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref = "FeatureCollection" /> class.

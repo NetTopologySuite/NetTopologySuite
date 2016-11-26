@@ -81,10 +81,7 @@ namespace NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <remarks> The parent GeometryCollection is the first object returned!</remarks>
-        object System.Collections.IEnumerator.Current
-        {
-            get { return Current; }
-        }
+        object System.Collections.IEnumerator.Current => Current;
 
         /// <summary>
         /// 
@@ -134,8 +131,7 @@ namespace NetTopologySuite.Geometries
 
         public void Dispose()
         {
-            if (_subcollectionEnumerator != null)
-                _subcollectionEnumerator.Dispose();
+            _subcollectionEnumerator?.Dispose();
         }
 
         #region Implementation of IEnumerable

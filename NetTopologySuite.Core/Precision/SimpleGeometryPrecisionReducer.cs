@@ -34,8 +34,6 @@ namespace NetTopologySuite.Precision
         }
 
         private readonly PrecisionModel _newPrecisionModel;
-        private bool _removeCollapsed = true;
-        private bool _changePrecisionModel;
 
         /// <summary>
         ///
@@ -51,17 +49,7 @@ namespace NetTopologySuite.Precision
         /// being removed completely, or simply being collapsed to an (invalid)
         /// Geometry of the same type.
         /// </summary>
-        public bool RemoveCollapsedComponents
-        {
-            get
-            {
-                return _removeCollapsed;
-            }
-            set
-            {
-                _removeCollapsed = value;
-            }
-        }
+        public bool RemoveCollapsedComponents { get; set; } = true;
 
         /// <summary>
         /// Gets/Sets whether the PrecisionModel of the new reduced Geometry
@@ -69,17 +57,7 @@ namespace NetTopologySuite.Precision
         /// specify the precision reduction.  <para/>
         /// The default is to not change the precision model.
         /// </summary>
-        public bool ChangePrecisionModel
-        {
-            get
-            {
-                return _changePrecisionModel;
-            }
-            set
-            {
-                _changePrecisionModel = value;
-            }
-        }
+        public bool ChangePrecisionModel { get; set; }
 
         /// <summary>
         ///
@@ -89,7 +67,7 @@ namespace NetTopologySuite.Precision
         public IGeometry Reduce(IGeometry geom)
         {
             GeometryEditor geomEdit;
-            if (_changePrecisionModel)
+            if (ChangePrecisionModel)
             {
                 GeometryFactory newFactory = new GeometryFactory(_newPrecisionModel);
                 geomEdit = new GeometryEditor(newFactory);
@@ -157,7 +135,7 @@ namespace NetTopologySuite.Precision
                     minLength = 4;
 
                 Coordinate[] collapsedCoords = reducedCoords;
-                if (_container._removeCollapsed)
+                if (_container.RemoveCollapsedComponents)
                     collapsedCoords = null;
 
                 // return null or orginal length coordinate array

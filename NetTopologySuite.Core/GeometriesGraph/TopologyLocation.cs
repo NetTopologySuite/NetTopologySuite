@@ -74,7 +74,7 @@ namespace NetTopologySuite.GeometriesGraph
         public TopologyLocation(TopologyLocation gl) 
         {
             if (gl == null)
-                throw new ArgumentNullException("gl", "null topology location specified");
+                throw new ArgumentNullException(nameof(gl), "null topology location specified");
 
             Init(gl._location.Length);
             for (int i = 0; i < _location.Length; i++) 
@@ -164,24 +164,12 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public  bool IsArea
-        {
-            get
-            {
-                return _location.Length > 1;
-            }
-        }
+        public  bool IsArea => _location.Length > 1;
 
         /// <summary>
         /// 
         /// </summary>
-        public  bool IsLine
-        {
-            get
-            {
-                return _location.Length == 1;
-            }
-        }
+        public  bool IsLine => _location.Length == 1;
 
         /// <summary>
         /// 

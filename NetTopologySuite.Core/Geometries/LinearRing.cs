@@ -56,13 +56,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Returns <c>Dimensions.False</c>, since by definition LinearRings do not have a boundary.
         /// </summary>
-        public override Dimension BoundaryDimension
-        {
-            get
-            {
-                return Dimension.False;
-            }
-        }
+        public override Dimension BoundaryDimension => Dimension.False;
 
         public override bool IsClosed
         {
@@ -81,10 +75,7 @@ namespace NetTopologySuite.Geometries
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"LinearRing"</returns>
-        public override string GeometryType
-        {
-            get { return "LinearRing"; }
-        }
+        public override string GeometryType => "LinearRing";
 
         public override IGeometry Reverse()
         {
@@ -92,8 +83,8 @@ namespace NetTopologySuite.Geometries
             return Factory.CreateLinearRing(sequence);
         }
 
-        public bool IsCCW { get { return Algorithm.CGAlgorithms.IsCCW(CoordinateSequence); } }
-        
+        public bool IsCCW => Algorithm.CGAlgorithms.IsCCW(CoordinateSequence);
+
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>

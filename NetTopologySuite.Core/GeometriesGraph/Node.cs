@@ -75,13 +75,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public override bool IsIsolated
-        {
-            get
-            {
-                return (Label.GeometryCount == 1);
-            }
-        }
+        public override bool IsIsolated => (Label.GeometryCount == 1);
 
         /// <summary>
         /// Basic nodes do not compute IMs.

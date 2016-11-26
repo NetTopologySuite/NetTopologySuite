@@ -3,7 +3,6 @@ using System.IO;
 using System.Text;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 using SimplePointInAreaLocator = NetTopologySuite.Algorithm.SimplePointInAreaLocator;
@@ -74,13 +73,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public int Degree
-        {
-            get
-            {
-                return edgeMap.Count;
-            }
-        }
+        public int Degree => edgeMap.Count;
 
         /// <summary>
         /// Iterator access to the ordered list of edges is optimized by

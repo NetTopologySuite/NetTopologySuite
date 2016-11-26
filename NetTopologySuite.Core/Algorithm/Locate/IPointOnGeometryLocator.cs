@@ -34,9 +34,9 @@ namespace NetTopologySuite.Algorithm.Locate
         public static bool Intersects(IPointOnGeometryLocator locator, Coordinate coordinate)
         {
             if (locator == null)
-                throw new ArgumentNullException("locator");
+                throw new ArgumentNullException(nameof(locator));
             if (coordinate == null)
-                throw new ArgumentNullException("coordinate");
+                throw new ArgumentNullException(nameof(coordinate));
 
             switch (locator.Locate(coordinate))
             {

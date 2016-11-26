@@ -8,20 +8,17 @@ namespace NetTopologySuite.Geometries.Prepared
         public const int Forward = 0;
         public const int Backward = 1;
 
-        private readonly SegmentNode _node;
-        private readonly Location[] _location = new[] { GeoAPI.Geometries.Location.Exterior, GeoAPI.Geometries.Location.Exterior };
-
         public LineNode(SegmentNode node, Location locForward, Location locBackward)
         {
-            _node = node;
-            _location[Forward] = locForward;
-            _location[Backward] = locBackward;
+            Node = node;
+            Location[Forward] = locForward;
+            Location[Backward] = locBackward;
         }
 
         public void MergeLabel(Location locForward, Location locBackward)
         {
-            _location[Forward] = MergeLocation(_location[Forward], locForward);
-            _location[Backward] = MergeLocation(_location[Backward], locForward);
+            Location[Forward] = MergeLocation(Location[Forward], locForward);
+            Location[Backward] = MergeLocation(Location[Backward], locForward);
         }
 
         private static Location MergeLocation(Location loc1, Location loc2)
@@ -34,20 +31,13 @@ namespace NetTopologySuite.Geometries.Prepared
             return mergeLoc;
         }
 
-        public Location[] Location
-        {
-            get { return _location; }
-        }
+        public Location[] Location { get; } = new[] { GeoAPI.Geometries.Location.Exterior, GeoAPI.Geometries.Location.Exterior };
 
         public Location GetLocation(int position)
         {
-            return _location[position];
+            return Location[position];
         }
 
-        public SegmentNode Node
-        {
-            get { return _node; }
-        }
-
+        public SegmentNode Node { get; }
     }
 }

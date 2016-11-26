@@ -1,7 +1,3 @@
-using GeoAPI.Geometries;
-using NetTopologySuite.Operation;
-using NetTopologySuite.Operation.Relate;
-
 namespace NetTopologySuite.Algorithm
 {
     ///<summary>

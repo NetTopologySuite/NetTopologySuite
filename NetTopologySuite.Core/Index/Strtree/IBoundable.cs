@@ -1,5 +1,4 @@
 using System;
-using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Index.Strtree
 {

@@ -80,7 +80,6 @@ namespace NetTopologySuite.Operation.Buffer
         private readonly LineSegment _offset0 = new LineSegment();
         private readonly LineSegment _offset1 = new LineSegment();
         private Positions _side = Positions.On;
-        private bool _hasNarrowConcaveAngle;
 
         public OffsetSegmentGenerator(IPrecisionModel precisionModel,
             IBufferParameters bufParams, double distance)
@@ -114,10 +113,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// the output needs to be further treated
         /// before it can be used.
         /// </summary>
-        public bool HasNarrowConcaveAngle
-        {
-            get { return _hasNarrowConcaveAngle; }
-        }
+        public bool HasNarrowConcaveAngle { get; private set; }
 
         private void Init(double distance)
         {
@@ -322,7 +318,7 @@ namespace NetTopologySuite.Operation.Buffer
                 * close, don't add closing segments but simply use one of the offset
                 * points
                 */
-                _hasNarrowConcaveAngle = true;
+                HasNarrowConcaveAngle = true;
                 //System.out.println("NARROW ANGLE - distance = " + distance);
                 if (_offset0.P1.Distance(_offset1.P0) < _distance
                     * InsideTurnVertexSnapDistanceFactor)

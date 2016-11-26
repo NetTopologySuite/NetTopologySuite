@@ -1,7 +1,6 @@
 
 using System;
 using GeoAPI.Geometries;
-using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
 
 namespace NetTopologySuite.Index.Strtree
@@ -125,13 +124,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <summary>
         /// 
         /// </summary>
-        protected override IIntersectsOp IntersectsOp
-        {
-            get
-            {
-                return IntersectsOperation;
-            }
-        }
+        protected override IIntersectsOp IntersectsOp => IntersectsOperation;
 
         /// <summary>
         /// 

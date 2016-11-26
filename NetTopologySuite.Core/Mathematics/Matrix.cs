@@ -51,7 +51,7 @@ namespace NetTopologySuite.Mathematics
                 // Find the largest pivot in the rows below the current one.
                 int maxElementRow = i;
                 for (int j = i + 1; j < n; j++)
-                    if (System.Math.Abs(a[j][i]) > System.Math.Abs(a[maxElementRow][i]))
+                    if (Math.Abs(a[j][i]) > Math.Abs(a[maxElementRow][i]))
                         maxElementRow = j;
 
                 if (a[maxElementRow][i] == 0.0)

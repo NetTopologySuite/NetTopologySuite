@@ -288,8 +288,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public  bool IsEqualOnSide(Label lbl, int side)
         {
-            return  this.elt[0].IsEqualOnSide(lbl.elt[0], side)
-                &&  this.elt[1].IsEqualOnSide(lbl.elt[1], side);
+            return  elt[0].IsEqualOnSide(lbl.elt[0], side)
+                &&  elt[1].IsEqualOnSide(lbl.elt[1], side);
         }
 
         /// <summary>
@@ -323,12 +323,12 @@ namespace NetTopologySuite.GeometriesGraph
             if (elt[0] != null) 
             {
                 sb.Append("A:");
-                sb.Append(this.elt[0]);
+                sb.Append(elt[0]);
             }
             if (elt[1] != null) 
             {
                 sb.Append(" B:");
-                sb.Append(this.elt[1]);
+                sb.Append(elt[1]);
             }
             return sb.ToString();
         }

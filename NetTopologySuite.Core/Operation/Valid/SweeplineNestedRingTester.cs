@@ -1,7 +1,6 @@
 using System.Collections;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Index.Sweepline;
 using NetTopologySuite.Utilities;
@@ -22,7 +21,6 @@ namespace NetTopologySuite.Operation.Valid
         private readonly IList rings = new ArrayList();
         private Envelope totalEnv = new Envelope();
         private SweepLineIndex sweepLine;
-        private Coordinate nestedPt;
 
         /// <summary>
         /// 
@@ -36,13 +34,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate NestedPoint 
-        {
-            get
-            {
-                return nestedPt; 
-            }
-        }
+        public Coordinate NestedPoint { get; private set; }
 
         /// <summary>
         /// 
@@ -97,7 +89,7 @@ namespace NetTopologySuite.Operation.Valid
             bool isInside = CGAlgorithms.IsPointInRing(innerRingPt, searchRingPts);
             if (isInside) 
             {
-                nestedPt = innerRingPt;
+                NestedPoint = innerRingPt;
                 return true;
             }
             return false;
@@ -109,18 +101,11 @@ namespace NetTopologySuite.Operation.Valid
         public class OverlapAction : ISweepLineOverlapAction
         {
             private readonly SweeplineNestedRingTester container;
-            bool isNonNested = true;
 
             /// <summary>
             /// 
             /// </summary>
-            public bool IsNonNested
-            {
-                get 
-                { 
-                    return isNonNested; 
-                }
-            }
+            public bool IsNonNested { get; private set; } = true;
 
             /// <summary>
             /// 
@@ -143,7 +128,7 @@ namespace NetTopologySuite.Operation.Valid
                 if (innerRing == searchRing) 
                     return;
                 if (container.IsInside(innerRing, searchRing))
-                    isNonNested = false;
+                    IsNonNested = false;
             }
         }
     }

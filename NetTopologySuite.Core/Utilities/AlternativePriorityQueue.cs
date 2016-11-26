@@ -114,16 +114,16 @@ namespace NetTopologySuite.Utilities
         {
             if (capacity < 1)
             {
-                throw new ArgumentOutOfRangeException("capacity", "Capacity must be greater than zero.");
+                throw new ArgumentOutOfRangeException(nameof(capacity), "Capacity must be greater than zero.");
             }
 
-            this.nodes = new List<PriorityQueueNode<TPriority, TData>>(capacity + 1);
+            nodes = new List<PriorityQueueNode<TPriority, TData>>(capacity + 1);
             for (int i = 0; i <= capacity; i++)
             {
-                this.nodes.Add(null);
+                nodes.Add(null);
             }
 
-            this.Count = 0;
+            Count = 0;
             this.priorityComparer = priorityComparer ?? Comparer<TPriority>.Default;
         }
 
@@ -142,11 +142,11 @@ namespace NetTopologySuite.Utilities
         {
             if (copyFrom == null)
             {
-                throw new ArgumentNullException("copyFrom");
+                throw new ArgumentNullException(nameof(copyFrom));
             }
 
-            this.nodes = new List<PriorityQueueNode<TPriority, TData>>(copyFrom.nodes.Count);
-            this.priorityComparer = copyFrom.priorityComparer;
+            nodes = new List<PriorityQueueNode<TPriority, TData>>(copyFrom.nodes.Count);
+            priorityComparer = copyFrom.priorityComparer;
 
             // We need to copy the nodes, because they store queue state that
             // will change in one queue but not in the other.
@@ -156,7 +156,7 @@ namespace NetTopologySuite.Utilities
                 var copiedNode = nodeToCopy == null
                     ? null
                     : new PriorityQueueNode<TPriority, TData>(nodeToCopy);
-                this.nodes.Add(copiedNode);
+                nodes.Add(copiedNode);
             }
         }
 
@@ -170,21 +170,21 @@ namespace NetTopologySuite.Utilities
         /// This is the node whose <typeparamref name="TPriority"/> compares
         /// less than or equal to the priority of all other nodes in the queue.
         /// </summary>
-        public PriorityQueueNode<TPriority, TData> Head { get { return this.nodes[1]; } }
+        public PriorityQueueNode<TPriority, TData> Head => nodes[1];
 
         /// <summary>
         /// Removes all nodes from this queue.
         /// </summary>
         public void Clear()
         {
-            this.nodes.Clear();
+            nodes.Clear();
 
             // There must always be a slot for the sentinel at the top, plus a
             // slot for the head (even if the head is null).
-            this.nodes.Add(null);
-            this.nodes.Add(null);
+            nodes.Add(null);
+            nodes.Add(null);
 
-            this.Count = 0;
+            Count = 0;
         }
 
         /// <summary>
@@ -200,8 +200,8 @@ namespace NetTopologySuite.Utilities
         public bool Contains(PriorityQueueNode<TPriority, TData> node)
         {
             return node != null &&
-                   node.QueueIndex < this.nodes.Count &&
-                   this.nodes[node.QueueIndex] == node;
+                   node.QueueIndex < nodes.Count &&
+                   nodes[node.QueueIndex] == node;
         }
 
         /// <summary>
@@ -220,19 +220,19 @@ namespace NetTopologySuite.Utilities
         {
             if (node == null)
             {
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
             }
 
             node.Priority = priority;
-            node.QueueIndex = ++this.Count;
+            node.QueueIndex = ++Count;
 
-            if (this.nodes.Count <= this.Count)
+            if (nodes.Count <= Count)
             {
-                this.nodes.Add(null);
+                nodes.Add(null);
             }
 
-            this.nodes[this.Count] = node;
-            this.HeapifyUp(this.nodes[this.Count]);
+            nodes[Count] = node;
+            HeapifyUp(nodes[Count]);
         }
 
         /// <summary>
@@ -243,8 +243,8 @@ namespace NetTopologySuite.Utilities
         /// </returns>
         public PriorityQueueNode<TPriority, TData> Dequeue()
         {
-            var result = this.Head;
-            this.Remove(result);
+            var result = Head;
+            Remove(result);
             return result;
         }
 
@@ -264,11 +264,11 @@ namespace NetTopologySuite.Utilities
         {
             if (node == null)
             {
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
             }
 
             node.Priority = priority;
-            this.OnNodeUpdated(node);
+            OnNodeUpdated(node);
         }
 
         /// <summary>
@@ -282,32 +282,32 @@ namespace NetTopologySuite.Utilities
         /// </returns>
         public bool Remove(PriorityQueueNode<TPriority, TData> node)
         {
-            if (!this.Contains(node))
+            if (!Contains(node))
             {
                 return false;
             }
 
-            if (this.Count <= 1)
+            if (Count <= 1)
             {
-                this.nodes[1] = null;
-                this.Count = 0;
+                nodes[1] = null;
+                Count = 0;
                 return true;
             }
 
             bool wasSwapped = false;
-            var formerLastNode = this.nodes[this.Count];
-            if (node.QueueIndex != this.Count)
+            var formerLastNode = nodes[Count];
+            if (node.QueueIndex != Count)
             {
-                this.Swap(node, formerLastNode);
+                Swap(node, formerLastNode);
                 wasSwapped = true;
             }
 
-            --this.Count;
-            this.nodes[node.QueueIndex] = null;
+            --Count;
+            nodes[node.QueueIndex] = null;
 
             if (wasSwapped)
             {
-                this.OnNodeUpdated(formerLastNode);
+                OnNodeUpdated(formerLastNode);
             }
 
             return true;
@@ -322,15 +322,15 @@ namespace NetTopologySuite.Utilities
                        .Take(this.Count)
                        .GetEnumerator();
 #else
-            for(int i = 1; i <= this.Count; i++)
-                yield return this.nodes[i];
+            for(int i = 1; i <= Count; i++)
+                yield return nodes[i];
 #endif
         }
 
         /// <inheritdoc />
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         private void HeapifyUp(PriorityQueueNode<TPriority, TData> node)
@@ -338,13 +338,13 @@ namespace NetTopologySuite.Utilities
             int parent = node.QueueIndex / 2;
             while (parent >= 1)
             {
-                var parentNode = this.nodes[parent];
-                if (this.HasHigherPriority(parentNode, node))
+                var parentNode = nodes[parent];
+                if (HasHigherPriority(parentNode, node))
                 {
                     break;
                 }
 
-                this.Swap(node, parentNode);
+                Swap(node, parentNode);
 
                 parent = node.QueueIndex / 2;
             }
@@ -358,24 +358,24 @@ namespace NetTopologySuite.Utilities
                 var newParent = node;
                 int childLeftIndex = 2 * finalQueueIndex;
 
-                if (childLeftIndex > this.Count)
+                if (childLeftIndex > Count)
                 {
                     node.QueueIndex = finalQueueIndex;
-                    this.nodes[finalQueueIndex] = node;
+                    nodes[finalQueueIndex] = node;
                     break;
                 }
 
-                var childLeft = this.nodes[childLeftIndex];
-                if (this.HasHigherPriority(childLeft, newParent))
+                var childLeft = nodes[childLeftIndex];
+                if (HasHigherPriority(childLeft, newParent))
                 {
                     newParent = childLeft;
                 }
 
                 int childRightIndex = childLeftIndex + 1;
-                if (childRightIndex <= this.Count)
+                if (childRightIndex <= Count)
                 {
-                    var childRight = this.nodes[childRightIndex];
-                    if (this.HasHigherPriority(childRight, newParent))
+                    var childRight = nodes[childRightIndex];
+                    if (HasHigherPriority(childRight, newParent))
                     {
                         newParent = childRight;
                     }
@@ -383,7 +383,7 @@ namespace NetTopologySuite.Utilities
 
                 if (newParent != node)
                 {
-                    this.nodes[finalQueueIndex] = newParent;
+                    nodes[finalQueueIndex] = newParent;
 
                     int temp = newParent.QueueIndex;
                     newParent.QueueIndex = finalQueueIndex;
@@ -392,7 +392,7 @@ namespace NetTopologySuite.Utilities
                 else
                 {
                     node.QueueIndex = finalQueueIndex;
-                    this.nodes[finalQueueIndex] = node;
+                    nodes[finalQueueIndex] = node;
                     break;
                 }
             }
@@ -401,22 +401,22 @@ namespace NetTopologySuite.Utilities
         private void OnNodeUpdated(PriorityQueueNode<TPriority, TData> node)
         {
             int parentIndex = node.QueueIndex / 2;
-            var parentNode = this.nodes[parentIndex];
+            var parentNode = nodes[parentIndex];
 
-            if (parentIndex > 0 && this.HasHigherPriority(node, parentNode))
+            if (parentIndex > 0 && HasHigherPriority(node, parentNode))
             {
-                this.HeapifyUp(node);
+                HeapifyUp(node);
             }
             else
             {
-                this.HeapifyDown(node);
+                HeapifyDown(node);
             }
         }
 
         private void Swap(PriorityQueueNode<TPriority, TData> node1, PriorityQueueNode<TPriority, TData> node2)
         {
-            this.nodes[node1.QueueIndex] = node2;
-            this.nodes[node2.QueueIndex] = node1;
+            nodes[node1.QueueIndex] = node2;
+            nodes[node2.QueueIndex] = node1;
 
             int temp = node1.QueueIndex;
             node1.QueueIndex = node2.QueueIndex;
@@ -427,7 +427,7 @@ namespace NetTopologySuite.Utilities
         {
             // The "higher-priority" item is actually the item whose priority
             // compares *lower*, because this is a min-heap.
-            return this.priorityComparer.Compare(higher.Priority, lower.Priority) < 0;
+            return priorityComparer.Compare(higher.Priority, lower.Priority) < 0;
         }
     }
 }

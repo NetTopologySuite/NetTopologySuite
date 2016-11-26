@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using GeoAPI.Geometries;
 #if !NET35 && !PCL
 using GeoAPI;
@@ -74,8 +73,6 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </remarks>
         private IGeometryFactory _factory;
 
-        private bool _isUserDataCopied;
-
         /// <summary>
         /// Creates a new GeometryEditor object which will create
         /// edited <see cref="IGeometry"/> with the same <see cref="IGeometryFactory"/> as the input Geometry.
@@ -96,11 +93,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// Gets or sets a value indicating if the User Data is copied to the edit result.
         /// If so, only the object reference is copied.
         /// </summary>
-        public bool CopyUserData
-        {
-            get { return _isUserDataCopied; }
-            set { _isUserDataCopied = value; }
-        }
+        public bool CopyUserData { get; set; }
 
 
         /// <summary>
@@ -118,7 +111,7 @@ namespace NetTopologySuite.Geometries.Utilities
                 _factory = geometry.Factory;
 
             var result = EditInternal(geometry, operation);
-            if (_isUserDataCopied)
+            if (CopyUserData)
             {
                 result.UserData = geometry.UserData;
             }

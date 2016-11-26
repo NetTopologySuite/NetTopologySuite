@@ -1,6 +1,5 @@
 namespace NetTopologySuite.Geometries.Implementation
 {
-    using System;
     using GeoAPI.Geometries;
 
     /// <summary>
@@ -8,17 +7,12 @@ namespace NetTopologySuite.Geometries.Implementation
     /// </summary>
     public sealed class CoordinateArraySequenceFactory : ICoordinateSequenceFactory
     {
-        private static readonly CoordinateArraySequenceFactory instance = new CoordinateArraySequenceFactory();
-        
         private CoordinateArraySequenceFactory() { }
 
         /// <summary>
         /// Returns the singleton instance of CoordinateArraySequenceFactory.
         /// </summary>
-        public static CoordinateArraySequenceFactory Instance
-        {
-            get { return instance; }
-        }
+        public static CoordinateArraySequenceFactory Instance { get; } = new CoordinateArraySequenceFactory();
 
         /// <summary>
         ///  Returns a CoordinateArraySequence based on the given array (the array is not copied).
@@ -52,9 +46,6 @@ namespace NetTopologySuite.Geometries.Implementation
             return new CoordinateArraySequence(size, OrdinatesUtility.OrdinatesToDimension(ordinates));
         }
 
-        public Ordinates Ordinates
-        {
-            get { return Ordinates.XYZ; }
-        }
+        public Ordinates Ordinates => Ordinates.XYZ;
     }
 }

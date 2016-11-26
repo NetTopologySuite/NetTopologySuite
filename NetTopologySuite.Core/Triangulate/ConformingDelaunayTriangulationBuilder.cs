@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Triangulate.QuadEdge;
 
@@ -16,7 +15,6 @@ namespace NetTopologySuite.Triangulate
     {
         private ICollection<Coordinate> _siteCoords;
         private IGeometry _constraintLines;
-        private double _tolerance;
         private QuadEdgeSubdivision _subdiv;
 
         private readonly IDictionary<Coordinate, Vertex> _constraintVertexMap = new SortedDictionary<Coordinate, Vertex>();
@@ -52,11 +50,7 @@ namespace NetTopologySuite.Triangulate
         /// to improved the robustness of the triangulation computation.
         /// A tolerance of 0.0 specifies that no snapping will take place.
         /// </summary>
-        public double Tolerance
-        {
-            get { return _tolerance; }
-            set { _tolerance = value; }
-        }
+        public double Tolerance { get; set; }
 
         private void Create()
         {
@@ -74,7 +68,7 @@ namespace NetTopologySuite.Triangulate
 
             IEnumerable<Vertex> sites = CreateSiteVertices(_siteCoords);
 
-            ConformingDelaunayTriangulator cdt = new ConformingDelaunayTriangulator(sites, _tolerance);
+            ConformingDelaunayTriangulator cdt = new ConformingDelaunayTriangulator(sites, Tolerance);
             cdt.SetConstraints(segments, new List<Vertex>(_constraintVertexMap.Values));
             cdt.FormInitialDelaunay();
             cdt.EnforceConstraints();

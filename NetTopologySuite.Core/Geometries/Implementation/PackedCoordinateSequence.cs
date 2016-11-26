@@ -57,10 +57,7 @@ namespace NetTopologySuite.Geometries.Implementation
             }
         }
 
-        public Ordinates Ordinates
-        {
-            get { return _ordinates; }
-        }
+        public Ordinates Ordinates => _ordinates;
 
         /// <summary>
         /// Returns the number of coordinates in this sequence.
@@ -366,10 +363,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Returns the number of coordinates in this sequence.
         /// </summary>
         /// <value></value>
-        public override int Count 
-        {
-            get { return _coords.Length / Dimension; }
-        }
+        public override int Count => _coords.Length / Dimension;
 
         /// <summary>
         /// Creates a new object that is a copy of the current instance.
@@ -543,10 +537,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Returns the number of coordinates in this sequence.
         /// </summary>
         /// <value></value>
-        public override int Count
-        {
-            get { return _coords.Length / Dimension; }
-        }
+        public override int Count => _coords.Length / Dimension;
 
         /// <summary>
         /// Creates a new object that is a copy of the current instance.

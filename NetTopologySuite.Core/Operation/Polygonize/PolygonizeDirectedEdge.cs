@@ -10,8 +10,6 @@ namespace NetTopologySuite.Operation.Polygonize
     /// </summary>
     public class PolygonizeDirectedEdge : DirectedEdge
     {
-        private long label = -1;
-
         /// <summary>
         /// Constructs a directed edge connecting the <c>from</c> node to the
         /// <c>to</c> node.
@@ -33,17 +31,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// Returns the identifier attached to this directed edge.
         /// Attaches an identifier to this directed edge.
         /// </summary>
-        public long Label
-        {
-            get
-            {
-                return label;
-            }
-            set
-            {
-                label = value;
-            }
-        }
+        public long Label { get; set; } = -1;
 
         /// <summary>
         /// Returns the next directed edge in the EdgeRing that this directed edge is a member of.
@@ -55,13 +43,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// Returns the ring of directed edges that this directed edge is
         /// a member of, or null if the ring has not been set.
         /// </summary>
-        public bool IsInRing
-        {
-            get
-            {
-                return Ring != null;
-            }
-        }
+        public bool IsInRing => Ring != null;
 
         /// <summary> 
         /// Gets/Sets the ring of directed edges that this directed edge is

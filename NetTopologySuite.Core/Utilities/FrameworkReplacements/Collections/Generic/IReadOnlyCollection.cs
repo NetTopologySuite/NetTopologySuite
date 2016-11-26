@@ -1,11 +1,11 @@
 ﻿namespace System.Collections.Generic
 {
-    public partial interface IReadOnlyCollection<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable
+    public partial interface IReadOnlyCollection<T> : IEnumerable<T>, IEnumerable
     {
         int Count { get; }
     }
 
-    public partial interface IReadOnlyList<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.IEnumerable
+    public partial interface IReadOnlyList<T> : IEnumerable<T>, IReadOnlyCollection<T>, IEnumerable
     {
         T this[int index] { get; }
     }

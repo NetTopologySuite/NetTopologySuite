@@ -13,9 +13,6 @@ namespace NetTopologySuite.Operation.Buffer
     public class OffsetCurveVertexList
     {
         private readonly List<Coordinate> _ptList;
-        private IPrecisionModel _precisionModel;
-
-        private double _minimimVertexDistance;
 
         public OffsetCurveVertexList()
         {
@@ -25,13 +22,13 @@ namespace NetTopologySuite.Operation.Buffer
         /// <summary>
         /// Gets/Sets the precision model to use when adding new points.
         /// </summary>
-        public IPrecisionModel PrecisionModel { get { return _precisionModel; } set { _precisionModel = value; } }
+        public IPrecisionModel PrecisionModel { get; set; }
 
         /// <summary>
         /// The distance below which two adjacent points on the curve are considered to be coincident.
         /// </summary>
         /// <remarks>This is chosen to be a small fraction of the offset distance.</remarks>
-        public double MinimumVertexDistance { get { return _minimimVertexDistance; } set { _minimimVertexDistance = value; } }
+        public double MinimumVertexDistance { get; set; }
 
         /// <summary>
         /// Function to add a point
@@ -43,7 +40,7 @@ namespace NetTopologySuite.Operation.Buffer
         public void AddPt(Coordinate pt)
         {
             var bufPt = new Coordinate(pt);
-            _precisionModel.MakePrecise(bufPt);
+            PrecisionModel.MakePrecise(bufPt);
             // don't add duplicate (or near-duplicate) points
             if (IsDuplicate(bufPt))
                 return;
@@ -62,7 +59,7 @@ namespace NetTopologySuite.Operation.Buffer
                 return false;
             var lastPt = _ptList[_ptList.Count - 1];
             var ptDist = pt.Distance(lastPt);
-            if (ptDist < _minimimVertexDistance)
+            if (ptDist < MinimumVertexDistance)
                 return true;
             return false;
         }

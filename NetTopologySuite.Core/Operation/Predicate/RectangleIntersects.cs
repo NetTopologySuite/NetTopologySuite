@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries.Utilities;
 
 namespace NetTopologySuite.Operation.Predicate
@@ -214,7 +213,7 @@ namespace NetTopologySuite.Operation.Predicate
                     continue;
                 
                 // check rect point in poly (rect is known not to touch polygon at this point)
-                if (Algorithm.SimplePointInAreaLocator.ContainsPointInPolygon(rectPt, (IPolygon) geom))
+                if (SimplePointInAreaLocator.ContainsPointInPolygon(rectPt, (IPolygon) geom))
                 {
                     ContainsPoint = true;
                     return;

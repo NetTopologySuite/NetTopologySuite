@@ -47,44 +47,20 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override Dimension Dimension
-        {
-            get
-            {
-                return Dimension.Surface;
-            }
-        }
+        public override Dimension Dimension => Dimension.Surface;
 
         /// <summary>
         /// 
         /// </summary>
-        public override Dimension BoundaryDimension
-        {
-            get
-            {
-                return Dimension.Curve;
-            }
-        }
+        public override Dimension BoundaryDimension => Dimension.Curve;
 
         /// <summary>  
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"MultiPolygon"</returns>
-        public override string GeometryType
-        {
-            get
-            {
-                return "MultiPolygon";
-            }
-        }
+        public override string GeometryType => "MultiPolygon";
 
-        public override OgcGeometryType OgcGeometryType
-        {
-            get
-            {
-                return OgcGeometryType.MultiPolygon;
-            }
-        }
+        public override OgcGeometryType OgcGeometryType => OgcGeometryType.MultiPolygon;
 
         ///// <summary>
         ///// 
@@ -125,11 +101,9 @@ namespace NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance) 
+        public override bool EqualsExact(IGeometry other, double tolerance)
         {
-            if (!IsEquivalentClass(other)) 
-                return false;
-            return base.EqualsExact(other, tolerance);
+            return IsEquivalentClass(other) && base.EqualsExact(other, tolerance);
         }
 
         ///<summary>Creates a {@link MultiPolygon} with every component reversed.

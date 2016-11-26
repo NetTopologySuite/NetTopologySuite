@@ -1,6 +1,4 @@
 using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm.Distance;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Buffer.Validate
 {
@@ -20,7 +18,6 @@ namespace NetTopologySuite.Operation.Buffer.Validate
     public class BufferCurveMaximumDistanceFinder
     {
         private readonly IGeometry _inputGeom;
-        private readonly PointPairDistance _maxPtDist = new PointPairDistance();
 
         public BufferCurveMaximumDistanceFinder(IGeometry inputGeom)
         {
@@ -31,30 +28,27 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         {
             ComputeMaxVertexDistance(bufferCurve);
             computeMaxMidpointDistance(bufferCurve);
-            return _maxPtDist.Distance;
+            return DistancePoints.Distance;
         }
 
-        public PointPairDistance DistancePoints
-        {
-            get { return _maxPtDist; }
-        }
+        public PointPairDistance DistancePoints { get; } = new PointPairDistance();
+
         private void ComputeMaxVertexDistance(IGeometry curve)
         {
             MaxPointDistanceFilter distFilter = new MaxPointDistanceFilter(_inputGeom);
             curve.Apply(distFilter);
-            _maxPtDist.SetMaximum(distFilter.MaxPointDistance);
+            DistancePoints.SetMaximum(distFilter.MaxPointDistance);
         }
 
         private void computeMaxMidpointDistance(IGeometry curve)
         {
             MaxMidpointDistanceFilter distFilter = new MaxMidpointDistanceFilter(_inputGeom);
             curve.Apply(distFilter);
-            _maxPtDist.SetMaximum(distFilter.MaxPointDistance);
+            DistancePoints.SetMaximum(distFilter.MaxPointDistance);
         }
 
         public class MaxPointDistanceFilter : ICoordinateFilter
         {
-            private readonly PointPairDistance maxPtDist = new PointPairDistance();
             private readonly PointPairDistance minPtDist = new PointPairDistance();
             private readonly IGeometry geom;
 
@@ -67,19 +61,15 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             {
                 minPtDist.Initialize();
                 DistanceToPointFinder.ComputeDistance(geom, pt, minPtDist);
-                maxPtDist.SetMaximum(minPtDist);
+                MaxPointDistance.SetMaximum(minPtDist);
             }
 
-            public PointPairDistance MaxPointDistance
-            {
-                get { return maxPtDist; }
-            }
+            public PointPairDistance MaxPointDistance { get; } = new PointPairDistance();
         }
 
         public class MaxMidpointDistanceFilter
           : ICoordinateSequenceFilter
         {
-            private readonly PointPairDistance maxPtDist = new PointPairDistance();
             private readonly PointPairDistance minPtDist = new PointPairDistance();
             private readonly IGeometry geom;
 
@@ -101,23 +91,14 @@ namespace NetTopologySuite.Operation.Buffer.Validate
 
                 minPtDist.Initialize();
                 DistanceToPointFinder.ComputeDistance(geom, midPt, minPtDist);
-                maxPtDist.SetMaximum(minPtDist);
+                MaxPointDistance.SetMaximum(minPtDist);
             }
 
-            public bool GeometryChanged
-            {
-                get { return false; }
-            }
+            public bool GeometryChanged => false;
 
-            public bool Done
-            {
-                get { return false; }
-            }
+            public bool Done => false;
 
-            public PointPairDistance MaxPointDistance
-            {
-                get { return maxPtDist; }
-            }
+            public PointPairDistance MaxPointDistance { get; } = new PointPairDistance();
         }
 
     }

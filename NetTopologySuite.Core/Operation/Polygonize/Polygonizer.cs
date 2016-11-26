@@ -73,7 +73,6 @@ namespace NetTopologySuite.Operation.Polygonize
         private List<EdgeRing> _shellList;
         private ICollection<IGeometry> _polyList;
 
-        private bool _isCheckingRingsValid = true;
         private readonly bool _extractOnlyPolygonal;
 
         private IGeometryFactory _geomFactory;
@@ -83,11 +82,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// to optimize situations where invalid rings are not expected.
         /// </summary>
         /// <remarks>The default is <c>true</c></remarks>
-        public bool IsCheckingRingsValid
-        {          
-            get { return _isCheckingRingsValid;  }
-            set { _isCheckingRingsValid = value; }
-        }
+        public bool IsCheckingRingsValid { get; set; } = true;
 
         /// <summary>
         /// Creates a polygonizer with the same <see cref="IGeometryFactory"/>

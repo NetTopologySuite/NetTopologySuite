@@ -135,25 +135,24 @@ namespace NetTopologySuite.Simplify
         private struct IndexWithArea : IComparable<IndexWithArea>
         {
             private int index;
-            private double area;
 
             public IndexWithArea(int index, double area)
             {
                 this.index = index;
-                this.area = area;
+                Area = area;
             }
 
             ////public int Index { get { return this.index; } }
-            public double Area { get { return this.area; } }
+            public double Area { get; }
 
             public int CompareTo(IndexWithArea other)
             {
-                int areaComparison = this.area.CompareTo(other.area);
+                int areaComparison = Area.CompareTo(other.Area);
 
                 // Do the index comparison if areas are equal, to ensure
                 // equivalence with JTS / old NTS.
                 return areaComparison == 0
-                           ? this.index.CompareTo(other.index)
+                           ? index.CompareTo(other.index)
                            : areaComparison;
             }
         }

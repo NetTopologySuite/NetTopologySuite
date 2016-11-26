@@ -43,7 +43,6 @@ namespace NetTopologySuite.Simplify
 
         private readonly IGeometry _inputGeom;
         private double _distanceTolerance;
-        private bool _isEnsureValidTopology = true;
 
         /// <summary>
         /// Creates a simplifier for a given geometry.
@@ -68,7 +67,7 @@ namespace NetTopologySuite.Simplify
             set
             {
                 if (value < 0)
-                    throw new ArgumentOutOfRangeException("value", "value must be non-negative");
+                    throw new ArgumentOutOfRangeException(nameof(value), "value must be non-negative");
                 _distanceTolerance = value;
             }
         }
@@ -86,11 +85,7 @@ namespace NetTopologySuite.Simplify
         /// </list>
         /// The default is to fix polygon topology.
         /// </remarks>
-        public bool EnsureValidTopology
-        {
-            get { return _isEnsureValidTopology; }
-            set { _isEnsureValidTopology = value; }
-        }
+        public bool EnsureValidTopology { get; set; } = true;
 
         /// <summary>
         /// Gets the simplified geometry.

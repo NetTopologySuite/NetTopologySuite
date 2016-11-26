@@ -226,8 +226,8 @@ namespace NetTopologySuite.Utilities
 
             internal IndexTaggedItem(T item, int index)
             {
-                this.Item = item;
-                this.Index = index;
+                Item = item;
+                Index = index;
             }
         }
 
@@ -242,7 +242,7 @@ namespace NetTopologySuite.Utilities
 
             public override int Compare(IndexTaggedItem<T> x, IndexTaggedItem<T> y)
             {
-                int cmp = this.primaryComparer.Compare(x.Item, y.Item);
+                int cmp = primaryComparer.Compare(x.Item, y.Item);
 
                 // compare equal elements by their index.
                 return cmp == 0 ? x.Index.CompareTo(y.Index) : cmp;

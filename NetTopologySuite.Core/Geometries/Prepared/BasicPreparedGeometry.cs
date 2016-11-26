@@ -17,16 +17,15 @@ namespace NetTopologySuite.Geometries.Prepared
     /// <author>Martin Davis</author>
     public class BasicPreparedGeometry : IPreparedGeometry
     {
-        private readonly IGeometry _baseGeom;
         private readonly List<Coordinate> _representativePts;  // List<Coordinate>
 
         public BasicPreparedGeometry(IGeometry geom)
         {
-            _baseGeom = geom;
+            Geometry = geom;
             _representativePts = ComponentCoordinateExtracter.GetCoordinates(geom);
         }
 
-        public IGeometry Geometry { get { return _baseGeom; } }
+        public IGeometry Geometry { get; }
 
         ///<summary>
         /// Gets the list of representative points for this geometry. 
@@ -35,13 +34,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <para/>
         /// Do not modify the returned list!
         /// </summary>
-        public IList<Coordinate> RepresentativePoints
-        {
-            get
-            {
-                return new ReadOnlyCollection<Coordinate>(_representativePts);
-            }
-        }
+        public IList<Coordinate> RepresentativePoints => new ReadOnlyCollection<Coordinate>(_representativePts);
 
         ///<summary>
         /// Tests whether any representative of the target geometry intersects the test geometry.
@@ -67,7 +60,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if the envelopes intersect</returns>
         protected bool EnvelopesIntersect(IGeometry g)
         {
-            if (!_baseGeom.EnvelopeInternal.Intersects(g.EnvelopeInternal))
+            if (!Geometry.EnvelopeInternal.Intersects(g.EnvelopeInternal))
                 return false;
             return true;
         }
@@ -79,7 +72,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if g is contained in this envelope</returns>
         protected bool EnvelopeCovers(IGeometry g)
         {
-            if (!_baseGeom.EnvelopeInternal.Covers(g.EnvelopeInternal))
+            if (!Geometry.EnvelopeInternal.Covers(g.EnvelopeInternal))
                 return false;
             return true;
         }
@@ -93,7 +86,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <remarks>Default implementation.</remarks>
         public virtual bool Contains(IGeometry g)
         {
-            return _baseGeom.Contains(g);
+            return Geometry.Contains(g);
         }
 
         /// <summary>
@@ -134,11 +127,11 @@ namespace NetTopologySuite.Geometries.Prepared
             // since raw relate is used, provide some optimizations
 
             // short-circuit test
-            if (!_baseGeom.EnvelopeInternal.Contains(g.EnvelopeInternal))
+            if (!Geometry.EnvelopeInternal.Contains(g.EnvelopeInternal))
                 return false;
 
             // otherwise, compute using relate mask
-            return _baseGeom.Relate(g, "T**FF*FF*");
+            return Geometry.Relate(g, "T**FF*FF*");
         }
 
         ///<summary>
@@ -150,7 +143,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <remarks>Default implementation.</remarks>
         public bool CoveredBy(IGeometry g)
         {
-            return _baseGeom.CoveredBy(g);
+            return Geometry.CoveredBy(g);
         }
 
         ///<summary>
@@ -162,7 +155,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <remarks>Default implementation.</remarks>
         public virtual bool Covers(IGeometry g)
         {
-            return _baseGeom.Covers(g);
+            return Geometry.Covers(g);
         }
 
         ///<summary>
@@ -174,7 +167,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <remarks>Default implementation.</remarks>
         public bool Crosses(IGeometry g)
         {
-            return _baseGeom.Crosses(g);
+            return Geometry.Crosses(g);
         }
 
         ///<summary>
@@ -198,7 +191,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <remarks>Default implementation.</remarks>
         public virtual bool Intersects(IGeometry g)
         {
-            return _baseGeom.Intersects(g);
+            return Geometry.Intersects(g);
         }
 
         ///<summary>
@@ -210,7 +203,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <remarks>Default implementation.</remarks>
         public bool Overlaps(IGeometry g)
         {
-            return _baseGeom.Overlaps(g);
+            return Geometry.Overlaps(g);
         }
 
         ///<summary>
@@ -222,7 +215,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <remarks>Default implementation.</remarks>
         public bool Touches(IGeometry g)
         {
-            return _baseGeom.Touches(g);
+            return Geometry.Touches(g);
         }
 
         ///<summary>
@@ -234,12 +227,12 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <remarks>Default implementation.</remarks>
         public bool Within(IGeometry g)
         {
-            return _baseGeom.Within(g);
+            return Geometry.Within(g);
         }
 
         public override string ToString()
         {
-            return _baseGeom.ToString();
+            return Geometry.ToString();
         }
     }
 }

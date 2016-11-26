@@ -172,13 +172,7 @@ namespace NetTopologySuite.Geometries
         /// Tests whether the precision model supports floating point.
         /// </summary>
         /// <returns><c>true</c> if the precision model supports floating point.</returns>
-        public bool IsFloating
-        {
-            get
-            {
-                return _modelType == PrecisionModels.Floating || _modelType == PrecisionModels.FloatingSingle;
-            }
-        }
+        public bool IsFloating => _modelType == PrecisionModels.Floating || _modelType == PrecisionModels.FloatingSingle;
 
         /// <summary>
         /// Returns the maximum number of significant digits provided by this
@@ -238,10 +232,7 @@ namespace NetTopologySuite.Geometries
         /// Gets the type of this PrecisionModel.
         /// </summary>
         /// <returns></returns>
-        public PrecisionModels PrecisionModelType
-        {
-            get { return _modelType; }
-        }
+        public PrecisionModels PrecisionModelType => _modelType;
 
         /// <summary>
         /// Returns the x-offset used to obtain a precise coordinate.
@@ -251,10 +242,7 @@ namespace NetTopologySuite.Geometries
         /// multiplying by the scale.
         /// </returns>
         [Obsolete("Offsets are no longer used")]
-        public double OffsetX
-        {
-            get { return 0; }
-        }
+        public double OffsetX => 0;
 
         /// <summary>
         /// Returns the y-offset used to obtain a precise coordinate.
@@ -264,10 +252,7 @@ namespace NetTopologySuite.Geometries
         /// multiplying by the scale
         /// </returns>
         [Obsolete("Offsets are no longer used")]
-        public double OffsetY
-        {
-            get { return 0; }
-        }
+        public double OffsetY => 0;
 
         /// <summary>
         /// Sets <c>internal</c> to the precise representation of <c>external</c>.
@@ -411,9 +396,6 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         public override bool Equals(object other)
         {
-            if (other == null)
-                return false;
-
             if (!(other is IPrecisionModel))
                 return false;
 

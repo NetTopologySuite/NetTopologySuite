@@ -47,7 +47,7 @@ namespace NetTopologySuite.Triangulate
         /// Delaunay triangulation.
         /// </summary>
         /// <returns>a quadedge containing the inserted vertex</returns>
-        public NetTopologySuite.Triangulate.QuadEdge.QuadEdge InsertSite(Vertex v)
+        public QuadEdge.QuadEdge InsertSite(Vertex v)
         {
             /*
              * This code is based on Guibas and Stolfi (1985), with minor modifications
@@ -75,7 +75,7 @@ namespace NetTopologySuite.Triangulate
              * (or quadrilateral, if the new point fell on an existing edge.)
              */
             var baseQuadEdge = _subdiv.MakeEdge(e.Orig, v);
-            NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Splice(baseQuadEdge, e);
+            QuadEdge.QuadEdge.Splice(baseQuadEdge, e);
             var startEdge = baseQuadEdge;
             do {
                 baseQuadEdge = _subdiv.Connect(e, baseQuadEdge.Sym);
@@ -87,7 +87,7 @@ namespace NetTopologySuite.Triangulate
             do {
                 var t = e.OPrev;
                 if (t.Dest.RightOf(e) && v.IsInCircle(e.Orig, t.Dest, e.Dest)) {
-                    NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Swap(e);
+                    QuadEdge.QuadEdge.Swap(e);
                     e = e.OPrev;
                 } else if (e.ONext == startEdge) {
                     return baseQuadEdge; // no more suspect edges.

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace NetTopologySuite.Utilities
 {
@@ -19,7 +18,7 @@ namespace NetTopologySuite.Utilities
         public void Add(T x)
         {
             var node = new PriorityQueueNode<T, T>(x);
-            this.queue.Enqueue(node, x);
+            queue.Enqueue(node, x);
         }
 
         ///<summary>
@@ -28,23 +27,20 @@ namespace NetTopologySuite.Utilities
         /// <returns><c>true</c> if empty, <c>false</c> otherwise.</returns>
         public bool IsEmpty()
         {
-            return this.queue.Count == 0;
+            return queue.Count == 0;
         }
 
         ///<summary>
         /// Returns size.
         ///</summary>
-        public int Size
-        {
-            get { return this.queue.Count; }
-        }
+        public int Size => queue.Count;
 
         ///<summary>
         /// Make the priority queue logically empty.
         ///</summary>
         public void Clear()
         {
-            this.queue.Clear();
+            queue.Clear();
         }
 
         ///<summary>
@@ -53,7 +49,7 @@ namespace NetTopologySuite.Utilities
         /// <remarks>The smallest item, or <value>default(T)</value> if empty.</remarks>
         public T Poll()
         {
-            var node = this.queue.Dequeue();
+            var node = queue.Dequeue();
             return node == null
                 ? default(T)
                 : node.Data;

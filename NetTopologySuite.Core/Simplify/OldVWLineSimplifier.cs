@@ -93,27 +93,16 @@ namespace NetTopologySuite.Simplify
             private const double MaxArea = Double.MaxValue;
 
             private readonly Coordinate _pt;
-            private VWVertex _prev;
-            private VWVertex _next;
             private double _area = MaxArea;
-            private bool _isLive = true;
 
             public VWVertex(Coordinate pt)
             {
-                this._pt = pt;
+                _pt = pt;
             }
 
-            public VWVertex Prev
-            {
-                get { return _prev; }
-                set { _prev = value; }
-            }
+            public VWVertex Prev { get; set; }
 
-            public VWVertex Next
-            {
-                get { return _next; }
-                set { _next = value; }
-            }
+            public VWVertex Next { get; set; }
 
             public void UpdateArea()
             {
@@ -131,10 +120,7 @@ namespace NetTopologySuite.Simplify
                 return _area;
             }
 
-            public bool IsLive
-            {
-                get { return _isLive; }
-            }
+            public bool IsLive { get; private set; } = true;
 
             public VWVertex Remove()
             {
@@ -154,7 +140,7 @@ namespace NetTopologySuite.Simplify
                     if (result == null)
                         result = Next;
                 }
-                _isLive = false;
+                IsLive = false;
                 return result;
             }
 

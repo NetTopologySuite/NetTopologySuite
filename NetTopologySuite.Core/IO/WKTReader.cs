@@ -272,7 +272,7 @@ namespace NetTopologySuite.IO
                 throw new InvalidOperationException("premature end of enumerator");
 
             if (token == null)
-                throw new ArgumentNullException("tokens", "Token list contains a null value");
+                throw new ArgumentNullException(nameof(tokens), "Token list contains a null value");
             if (token is EofToken)
                 throw new GeoAPI.IO.ParseException("Expected number but encountered end of stream");
             if (token is EolToken)
@@ -714,10 +714,7 @@ namespace NetTopologySuite.IO
             set { }
         }
 
-        public Ordinates AllowedOrdinates
-        {
-            get { return Ordinates.XYZ; }
-        }
+        public Ordinates AllowedOrdinates => Ordinates.XYZ;
 
         public Ordinates HandleOrdinates
         {

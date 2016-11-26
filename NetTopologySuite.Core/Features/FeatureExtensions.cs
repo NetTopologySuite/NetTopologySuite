@@ -40,7 +40,7 @@ namespace NetTopologySuite.Features
         public static bool HasID(IFeature feature)
         {
             if (feature == null)
-                throw new ArgumentNullException("feature");
+                throw new ArgumentNullException(nameof(feature));
 
             return feature.Attributes.Exists(IdAttributeName);
         }

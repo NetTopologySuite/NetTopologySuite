@@ -154,7 +154,7 @@ namespace NetTopologySuite.Operation.Buffer
             {
                 // input seg is assumed to be normalized
                 _upwardSeg = new LineSegment(seg);
-                this.LeftDepth = depth;
+                LeftDepth = depth;
             }
 
             /// <summary>

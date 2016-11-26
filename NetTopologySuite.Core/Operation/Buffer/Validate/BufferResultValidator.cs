@@ -55,9 +55,6 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         private readonly double _distance;
         private readonly IGeometry _result;
         private bool _isValid = true;
-        private String _errorMsg;
-        private Coordinate _errorLocation;
-        private IGeometry _errorIndicator;
 
         public BufferResultValidator(IGeometry input, double distance, IGeometry result)
         {
@@ -83,18 +80,12 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// <summary>
         /// Gets the error message
         /// </summary>
-        public String ErrorMessage
-        {
-            get { return _errorMsg; }
-        }
+        public String ErrorMessage { get; private set; }
 
         /// <summary>
         /// Gets the error location
         /// </summary>
-        public Coordinate ErrorLocation
-        {
-            get { return _errorLocation; }
-        }
+        public Coordinate ErrorLocation { get; private set; }
 
         /// <summary>
         /// Gets a geometry which indicates the location and nature of a validation failure.
@@ -106,10 +97,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// </summary>
         /// <returns>A geometric error indicator<br/>
         /// or <value>null</value>, if no error was found</returns>
-        public IGeometry ErrorIndicator
-        {
-            get { return _errorIndicator; }
-        }
+        public IGeometry ErrorIndicator { get; private set; }
 
         private void Report(String checkName)
         {
@@ -125,8 +113,8 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             if (!(_result is IPolygon
                     || _result is IMultiPolygon))
                 _isValid = false;
-            _errorMsg = "Result is not polygonal";
-            _errorIndicator = _result;
+            ErrorMessage = "Result is not polygonal";
+            ErrorIndicator = _result;
             Report("Polygonal");
         }
 
@@ -141,8 +129,8 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             if (!_result.IsEmpty)
             {
                 _isValid = false;
-                _errorMsg = "Result is non-empty";
-                _errorIndicator = _result;
+                ErrorMessage = "Result is non-empty";
+                ErrorIndicator = _result;
             }
             Report("ExpectedEmpty");
         }
@@ -163,8 +151,8 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             if (!bufEnv.Contains(expectedEnv))
             {
                 _isValid = false;
-                _errorMsg = "Buffer envelope is incorrect";
-                _errorIndicator = _result;
+                ErrorMessage = "Buffer envelope is incorrect";
+                ErrorIndicator = _result;
             }
             Report("Envelope");
         }
@@ -178,15 +166,15 @@ namespace NetTopologySuite.Operation.Buffer.Validate
                     && inputArea > resultArea)
             {
                 _isValid = false;
-                _errorMsg = "Area of positive buffer is smaller than input";
-                _errorIndicator = _result;
+                ErrorMessage = "Area of positive buffer is smaller than input";
+                ErrorIndicator = _result;
             }
             if (_distance < 0.0
                     && inputArea < resultArea)
             {
                 _isValid = false;
-                _errorMsg = "Area of negative buffer is larger than input";
-                _errorIndicator = _result;
+                ErrorMessage = "Area of negative buffer is larger than input";
+                ErrorIndicator = _result;
             }
             Report("Area");
         }
@@ -197,9 +185,9 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             if (!distValid.IsValid())
             {
                 _isValid = false;
-                _errorMsg = distValid.ErrorMessage;
-                _errorLocation = distValid.ErrorLocation;
-                _errorIndicator = _result;
+                ErrorMessage = distValid.ErrorMessage;
+                ErrorLocation = distValid.ErrorLocation;
+                ErrorIndicator = _result;
             }
             Report("Distance");
         }

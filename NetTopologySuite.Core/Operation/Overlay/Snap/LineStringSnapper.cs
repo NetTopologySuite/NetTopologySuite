@@ -16,7 +16,6 @@ namespace NetTopologySuite.Operation.Overlay.Snap
 
         private readonly Coordinate[] _srcPts;
         private readonly LineSegment _seg = new LineSegment(); // for reuse during snapping
-        private bool _allowSnappingToSourceVertices;
         private readonly bool _isClosed;
 
         /// <summary>
@@ -41,11 +40,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             _snapTolerance = snapTolerance;
         }
 
-        public bool AllowSnappingToSourceVertices
-        {
-            get { return _allowSnappingToSourceVertices; }
-            set { _allowSnappingToSourceVertices = value; }
-        }
+        public bool AllowSnappingToSourceVertices { get; set; }
 
         private static bool IsClosed(Coordinate[] pts)
         {
@@ -183,7 +178,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
                  */
                 if (_seg.P0.Equals2D(snapPt) || _seg.P1.Equals2D(snapPt))
                 {
-                    if (_allowSnappingToSourceVertices)
+                    if (AllowSnappingToSourceVertices)
                         continue;
                     return -1;
                 }

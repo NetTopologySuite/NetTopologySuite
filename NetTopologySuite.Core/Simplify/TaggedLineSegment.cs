@@ -10,9 +10,6 @@ namespace NetTopologySuite.Simplify
     /// </summary>
     public class TaggedLineSegment : LineSegment
     {
-        private readonly IGeometry _parent;
-        private readonly int _index;
-
         /// <summary>
         /// 
         /// </summary>
@@ -23,8 +20,8 @@ namespace NetTopologySuite.Simplify
         public TaggedLineSegment(Coordinate p0, Coordinate p1, IGeometry parent, int index)
             : base(p0, p1)
         {            
-            _parent = parent;
-            _index = index;
+            Parent = parent;
+            Index = index;
         }
 
         /// <summary>
@@ -38,23 +35,11 @@ namespace NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public IGeometry Parent
-        {
-            get
-            {
-                return _parent;
-            }
-        }
+        public IGeometry Parent { get; }
 
         /// <summary>
         /// 
         /// </summary>
-        public int Index
-        {
-            get
-            {
-                return _index;
-            }
-        }
+        public int Index { get; }
     }
 }

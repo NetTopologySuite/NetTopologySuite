@@ -31,15 +31,9 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinateSequence CoordinateSequence
-        {
-            get
-            {
-                return _coordinates;
-            }
-        }             
+        public ICoordinateSequence CoordinateSequence => _coordinates;
 
-         /// <summary>
+        /// <summary>
         /// Initializes a new instance of the <see cref="Point"/> class.
         /// </summary>
         /// <param name="coordinate">The coordinate used for create this <see cref="Point" />.</param>
@@ -64,19 +58,13 @@ namespace NetTopologySuite.Geometries
             if (coordinates == null) 
                 coordinates = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
             NetTopologySuite.Utilities.Assert.IsTrue(coordinates.Count <= 1);
-            this._coordinates = coordinates;
+            _coordinates = coordinates;
         }        
 
         /// <summary>
         /// 
         /// </summary>
-        public override Coordinate[] Coordinates 
-        {
-            get
-            {
-                return IsEmpty ? new Coordinate[] { } : new Coordinate[] { this.Coordinate };
-            }
-        }
+        public override Coordinate[] Coordinates => IsEmpty ? new Coordinate[] { } : new Coordinate[] { Coordinate };
 
         public override double[] GetOrdinates(Ordinate ordinate)
         {
@@ -94,46 +82,22 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override int NumPoints
-        {
-            get
-            {
-                return IsEmpty ? 0 : 1;
-            }
-        }
+        public override int NumPoints => IsEmpty ? 0 : 1;
 
         /// <summary>
         /// 
         /// </summary>
-        public override bool IsEmpty 
-        {
-            get
-            {
-                return _coordinates.Count == 0;
-            }
-        }
+        public override bool IsEmpty => _coordinates.Count == 0;
 
         /// <summary>
         /// 
         /// </summary>
-        public override Dimension Dimension
-        {
-            get
-            {
-                return Dimension.Point;
-            }
-        }
+        public override Dimension Dimension => Dimension.Point;
 
         /// <summary>
         /// 
         /// </summary>
-        public override Dimension BoundaryDimension 
-        {
-            get
-            {
-                return Dimension.False;
-            }
-        }
+        public override Dimension BoundaryDimension => Dimension.False;
 
         /// <summary>
         /// 
@@ -172,46 +136,25 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override Coordinate Coordinate
-        {
-            get
-            {
-                return _coordinates.Count != 0 ? _coordinates.GetCoordinate(0) : null;
-            }
-        }
+        public override Coordinate Coordinate => _coordinates.Count != 0 ? _coordinates.GetCoordinate(0) : null;
 
         /// <summary>  
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"Point"</returns>
-        public override string GeometryType 
-        {
-            get
-            {
-                return "Point";
-            }
-        }
+        public override string GeometryType => "Point";
 
         /// <summary>
         /// Gets the OGC geometry type
         /// </summary>
-        public override OgcGeometryType OgcGeometryType
-        {
-            get { return OgcGeometryType.Point; }
-        }
+        public override OgcGeometryType OgcGeometryType => OgcGeometryType.Point;
 
         /// <summary>
         ///Gets the boundary of this geometry.
         ///Zero-dimensional geometries have no boundary by definition,
         ///so an empty GeometryCollection is returned.
         /// </summary>
-        public override IGeometry Boundary
-        {
-            get
-            {
-                return Factory.CreateGeometryCollection(null);
-            }
-        }
+        public override IGeometry Boundary => Factory.CreateGeometryCollection(null);
 
         /// <summary>
         /// 
