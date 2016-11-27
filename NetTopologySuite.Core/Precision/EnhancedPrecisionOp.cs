@@ -1,10 +1,6 @@
 using System;
 using GeoAPI.Geometries;
 
-#if PCL
-using Exception = System.Exception;
-#endif
-
 namespace NetTopologySuite.Precision
 {
     /// <summary>

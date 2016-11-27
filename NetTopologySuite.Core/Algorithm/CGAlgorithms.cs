@@ -340,13 +340,13 @@ namespace NetTopologySuite.Algorithm
                         r =   ---------
                               ||AB||^2
              
-		                r has the following meaning:
-		                r=0 Point = A
-		                r=1 Point = B
-		                r<0 Point is on the backward extension of AB
-		                r>1 Point is on the forward extension of AB
-		                0<r<1 Point is interior to AB
-	        */
+                        r has the following meaning:
+                        r=0 Point = A
+                        r=1 Point = B
+                        r<0 Point is on the backward extension of AB
+                        r>1 Point is on the forward extension of AB
+                        0<r<1 Point is interior to AB
+            */
 
             var len2 = (B.X - A.X)*(B.X - A.X) + (B.Y - A.Y)*(B.Y - A.Y);
             var r = ((p.X - A.X)*(B.X - A.X) + (p.Y - A.Y)*(B.Y - A.Y))/len2;
@@ -358,15 +358,15 @@ namespace NetTopologySuite.Algorithm
 
 
             /*(2)
-		                    (Ay-Cy)(Bx-Ax)-(Ax-Cx)(By-Ay)
-		                s = -----------------------------
-		             	                Curve^2
+                            (Ay-Cy)(Bx-Ax)-(Ax-Cx)(By-Ay)
+                        s = -----------------------------
+                                        Curve^2
 
-		                Then the distance from C to Point = |s|*Curve.
+                        Then the distance from C to Point = |s|*Curve.
       
                         This is the same calculation as {@link #distancePointLinePerpendicular}.
                         Unrolled here for performance.
-	        */
+            */
 
             var s = ((A.Y - p.Y)*(B.X - A.X) - (A.X - p.X)*(B.Y - A.Y))/len2;
 
@@ -442,7 +442,7 @@ namespace NetTopologySuite.Algorithm
             // AB and CD are line segments
             /* from comp.graphics.algo
              *
-	         *  Solving the above for r and s yields
+             *  Solving the above for r and s yields
              * 
              *     (Ay-Cy)(Dx-Cx)-(Ax-Cx)(Dy-Cy) 
              * r = ----------------------------- (eqn 1) 
@@ -463,7 +463,7 @@ namespace NetTopologySuite.Algorithm
              *      r<0 or r>1 or s<0 or s>1 line segments do not intersect 
              *   If the denominator in eqn 1 is zero, AB & CD are parallel 
              *   If the numerator in eqn 1 is also zero, AB & CD are collinear.
-	         */
+             */
             var noIntersection = false;
             if (!Envelope.Intersects(A, B, C, D))
             {

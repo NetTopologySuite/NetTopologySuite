@@ -3,10 +3,6 @@ using GeoAPI;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
-#if PCL
-using ICloneable = GeoAPI.ICloneable;
-#endif
-
 namespace NetTopologySuite.LinearReferencing
 {
     /// <summary>

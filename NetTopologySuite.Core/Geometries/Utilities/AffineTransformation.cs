@@ -2,10 +2,6 @@ using System;
 using GeoAPI;
 using GeoAPI.Geometries;
 
-#if PCL
-using ICloneable = GeoAPI.ICloneable;
-#endif
-
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>

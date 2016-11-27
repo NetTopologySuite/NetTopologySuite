@@ -14,10 +14,9 @@ namespace NetTopologySuite.IO
     /// </author>
     public class WKTFileReader
     {
-#if !PCL
+
         private const int MaxLookahead = 2048;
         private readonly FileInfo _file;
-#endif
 
         private TextReader _reader;
         private readonly WKTReader _wktReader;
@@ -29,7 +28,6 @@ namespace NetTopologySuite.IO
             Limit = -1;
         }
 
-#if !PCL
         /// <summary>
         ///     Creates a new <see cref="WKTFileReader" /> given the <paramref name="file" /> to read from and a
         ///     <see cref="WKTReader" /> to use to parse the geometries.
@@ -51,19 +49,6 @@ namespace NetTopologySuite.IO
             : this(new FileInfo(filename), wktReader)
         {
         }
-#endif
-
-#if PCL
-///<summary>
-/// Creates a new <see cref="WKTFileReader" />, given a <see cref="Stream"/> to read from.
-///</summary>
-/// <param name="stream">The stream to read from</param>
-/// <param name="wktReader">The geometry reader to use</param>
-        public WKTFileReader(Stream stream, WKTReader wktReader)
-            : this(new StreamReader(stream), wktReader)
-        {
-        }
-#endif
 
         /// <summary>
         ///     Creates a new <see cref="WKTFileReader" />, given a <see cref="TextReader" /> to read with.

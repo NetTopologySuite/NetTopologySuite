@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
+using GeoAPI.IO;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO

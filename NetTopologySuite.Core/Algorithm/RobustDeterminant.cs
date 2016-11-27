@@ -217,8 +217,8 @@ namespace NetTopologySuite.Algorithm
             if (0.0 < x1)
             {
                 if (0.0 < x2)
-                    if (x1 <= x2)
-                    ;
+                    if (x1 <= x2);
+
                     else
                         return sign;
                 else

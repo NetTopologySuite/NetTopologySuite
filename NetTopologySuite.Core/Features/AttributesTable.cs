@@ -1,10 +1,5 @@
 using System;
-#if PCL
-using Hashtable = System.Collections.Generic.Dictionary<object, object>;
-#else
 using System.Collections;
-
-#endif
 
 namespace NetTopologySuite.Features
 {

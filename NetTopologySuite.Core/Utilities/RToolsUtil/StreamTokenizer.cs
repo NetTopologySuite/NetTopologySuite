@@ -4,10 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-#if PCL
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
-
 namespace RTools_NTS.Util
 {
     // ---------------------------------------------------------------------

@@ -2,13 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-#if NET35
-using System.Linq;
-#endif
-#if PCL
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
-
 namespace NetTopologySuite.Utilities
 {
     /// <summary>

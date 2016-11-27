@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-#if PCL
-using DoubleBitsConverter = NetTopologySuite.Utilities.BitConverter;
-#else
 using DoubleBitsConverter = System.BitConverter;
-
-#endif
 
 namespace NetTopologySuite.Utilities
 {

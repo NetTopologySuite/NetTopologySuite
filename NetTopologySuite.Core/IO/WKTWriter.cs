@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using GeoAPI.Geometries;
 using GeoAPI.IO;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO
@@ -113,7 +114,7 @@ namespace NetTopologySuite.IO
             return string.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", p0.X, p0.Y);
 #else
             if (double.IsNaN(p0.Z))
-				return String.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", p0.X, p0.Y);
+                return String.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", p0.X, p0.Y);
             return String.Format(CultureInfo.InvariantCulture, "POINT({0} {1} {2})", p0.X, p0.Y, p0.Z);
 #endif
         }
@@ -185,7 +186,7 @@ namespace NetTopologySuite.IO
                 p1.Y);
 #else
             if (double.IsNaN(p0.Z))
-				return String.Format(CultureInfo.InvariantCulture, "LINESTRING({0} {1}, {2} {3})", p0.X, p0.Y, p1.X, p1.Y);
+                return String.Format(CultureInfo.InvariantCulture, "LINESTRING({0} {1}, {2} {3})", p0.X, p0.Y, p1.X, p1.Y);
             return String.Format(CultureInfo.InvariantCulture, "LINESTRING({0} {1} {2}, {3} {4} {5})", p0.X, p0.Y, p0.Z, p1.X, p1.Y, p1.Z);
 #endif
         }

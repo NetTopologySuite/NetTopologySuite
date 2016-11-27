@@ -4,10 +4,6 @@ using System.Text;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 
-#if PCL
-using Exception = System.Exception;
-#endif
-
 namespace NetTopologySuite.Geometries
 {
     /// <summary>

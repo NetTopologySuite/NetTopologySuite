@@ -5,10 +5,6 @@ using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Index.Sweepline;
 using NetTopologySuite.Utilities;
 
-#if PCL
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
-
 namespace NetTopologySuite.Operation.Valid
 {
     /// <summary>

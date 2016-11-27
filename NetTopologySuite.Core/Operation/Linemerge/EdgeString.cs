@@ -2,10 +2,6 @@ using System.Collections;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
-#if PCL
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
-
 namespace NetTopologySuite.Operation.Linemerge
 {
     /// <summary>
