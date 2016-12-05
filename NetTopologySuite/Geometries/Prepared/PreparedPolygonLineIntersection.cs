@@ -7,16 +7,16 @@ namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
     /// Computes the <see cref="SpatialFunction.Intersection"/> spatial overlay function for a 
-    /// target <see cref="PreparedLineString"/> relative to other <see cref="IGeometry"/> classes.
+    /// target <see cref="PreparedPolygon"/> relative to other <see cref="IGeometry"/> classes.
     ///</summary>
     /// <remarks>Uses indexing to improve performance.</remarks>
     /// <author>Martin Davis</author>
     public class PreparedPolygonLineIntersection
     {
         ///<summary>
-        /// Computes the intersection between a <see cref="PreparedLineString"/> and a <see cref="IGeometry"/>.
+        /// Computes the intersection between a <see cref="PreparedPolygon"/> and a <see cref="IGeometry"/>.
         ///</summary>
-        /// <param name="prep">The prepared linestring</param>
+        /// <param name="prep">The prepared polygon</param>
         /// <param name="geom">A geometry</param>
         /// <returns>The intersection geometry</returns>
         public static IGeometry Intersection(PreparedPolygon prep, IGeometry geom)
