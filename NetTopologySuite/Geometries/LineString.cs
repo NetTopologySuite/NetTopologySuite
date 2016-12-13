@@ -522,6 +522,10 @@ namespace NetTopologySuite.Geometries
         /// Returns the value of the angle between the <see cref="StartPoint" />
         /// and the <see cref="EndPoint" />.
         /// </summary>
+        /// <remarks>
+        /// Use <see cref="AngleUtility"/> for a more precise computation.
+        /// </remarks>
+        [Obsolete("Use AngleUtility")]
         public double Angle
         {
             get

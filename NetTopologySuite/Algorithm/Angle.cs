@@ -26,7 +26,7 @@ namespace NetTopologySuite.Algorithm
         ///<summary>Constant representing right orientation</summary>
         Right = Clockwise
     }
-    
+
     ///<summary>
     /// Utility functions for working with angles.
     /// Unless otherwise noted, methods in this class express angles in radians.
@@ -155,19 +155,19 @@ namespace NetTopologySuite.Algorithm
         /// <param name="tail">The tail of each vector</param>
         /// <param name="tip2">The tip of v2</param>
         /// <returns>The angle between v1 and v2, relative to v1</returns>
-  public static double AngleBetweenOriented(Coordinate tip1, Coordinate tail, Coordinate tip2) 
-  {
-		double a1 = Angle(tail, tip1);
-		double a2 = Angle(tail, tip2);
-		double angDel = a2 - a1;
-		
-		// normalize, maintaining orientation
-        if (angDel <= -System.Math.PI)
-			return angDel + PiTimes2;
-        if (angDel > System.Math.PI)
-            return angDel - PiTimes2;
-		return angDel;
-  }
+        public static double AngleBetweenOriented(Coordinate tip1, Coordinate tail, Coordinate tip2)
+        {
+            double a1 = Angle(tail, tip1);
+            double a2 = Angle(tail, tip2);
+            double angDel = a2 - a1;
+
+            // normalize, maintaining orientation
+            if (angDel <= -System.Math.PI)
+                return angDel + PiTimes2;
+            if (angDel > System.Math.PI)
+                return angDel - PiTimes2;
+            return angDel;
+        }
 
         ///<summary>
         /// Computes the interior angle between two segments of a ring.
