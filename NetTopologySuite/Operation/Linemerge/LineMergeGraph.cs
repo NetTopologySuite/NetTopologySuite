@@ -20,9 +20,13 @@ namespace NetTopologySuite.Operation.Linemerge
         {
             if (lineString.IsEmpty)
                 return;
+
             Coordinate[] coordinates = CoordinateArrays.RemoveRepeatedPoints(lineString.Coordinates);
+            if (coordinates.Length < 2)
+                return; // same check already added in PolygonizeGraph (see #87 and #146)
+
             Coordinate startCoordinate = coordinates[0];
-            Coordinate endCoordinate = coordinates[coordinates.Length - 1];
+            Coordinate endCoordinate = coordinates[coordinates.Length - 1]; 
             Node startNode = GetNode(startCoordinate);
             Node endNode = GetNode(endCoordinate);
             DirectedEdge directedEdge0 = new LineMergeDirectedEdge(startNode, endNode, 
