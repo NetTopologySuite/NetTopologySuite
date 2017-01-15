@@ -84,7 +84,8 @@
     <Compile Include="GeoJSON\GeoJsonSerializerTest.cs" />
     <Compile Include="GeoJSON\GeoJsonWriterTest.cs" />
     <Compile Include="GeoJSON\GitHubIssues.cs" />
-    <Compile Include="GeoJSON\Issue148.cs" />
+    <Compile Include="GeoJSON\Issue145Fixture.cs" />
+    <Compile Include="GeoJSON\Issue148Fixture.cs" />
     <Compile Include="GeoJSON\Issue16Fixture.cs" />
     <Compile Include="GeoJSON\Issue32Fixture.cs" />
     <Compile Include="GeoJSON\LinkedCRSTest.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="TopoJSON\TopoWriterData.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="GeoJSON\World_AL6.GeoJson" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
