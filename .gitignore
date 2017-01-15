@@ -198,3 +198,6 @@ NetTopologySuite.Samples.Shapefiles/__empty.shx
 /NetTopologySuite/Algorithm/HCoordinate_DD.cs
 /NetTopologySuite/Algorithm/CGAlgorithmsAP.cs
 /NetTopologySuite.IO/NetTopologySuite.IO.GeoTools/NetTopologySuite.IO.GeoTools.csproj.DotSettings
+NetTopologySuite.Samples.Shapefiles/tmp*.shp
+NetTopologySuite.Samples.Shapefiles/tmp*.shx
+NetTopologySuite.Samples.Shapefiles/tmp*.dbf
