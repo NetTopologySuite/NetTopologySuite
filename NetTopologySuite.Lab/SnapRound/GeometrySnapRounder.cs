@@ -163,17 +163,13 @@ namespace NetTopologySuite.SnapRound
 
         private static IGeometry EnsureValid(IGeometry geom)
         {
-            // TODO: need to ensure all polygonal components are valid
             if (geom.IsValid)
                 return geom;
-
             return CleanPolygonal(geom);
         }
 
         private static IGeometry CleanPolygonal(IGeometry geom)
         {
-            // TODO: use a better method of removing collapsed topology 
-            //return geom.buffer(0);
             return PolygonCleaner.Clean(geom);
         }
     }
