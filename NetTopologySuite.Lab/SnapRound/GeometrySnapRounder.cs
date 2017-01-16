@@ -164,8 +164,6 @@ namespace NetTopologySuite.SnapRound
         private static IGeometry EnsureValid(IGeometry geom)
         {
             // TODO: need to ensure all polygonal components are valid
-            if (!(geom is IPolygonal))
-                return geom;
             if (geom.IsValid)
                 return geom;
 
