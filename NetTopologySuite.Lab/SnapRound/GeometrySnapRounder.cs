@@ -4,7 +4,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Noding;
 using NetTopologySuite.Noding.Snapround;
-using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.SnapRound
 {
@@ -26,7 +25,7 @@ namespace NetTopologySuite.SnapRound
     public class GeometrySnapRounder
     {
         private readonly IPrecisionModel _pm;
-        private bool _isLineworkOnly = false;
+        private bool _isLineworkOnly;
 
         /// <summary>
         /// Creates a new snap-rounder which snap-rounds to a grid specified
@@ -94,8 +93,8 @@ namespace NetTopologySuite.SnapRound
         {
             var nodedLinesMap = NodedLinesMap(segStrings);
             var lineReplacer = new GeometryCoordinateReplacer(nodedLinesMap);
-            var geomEditor = new GeometryEditor();
-            var snapped = geomEditor.Edit(geom, lineReplacer);
+            var geomEditor = new GeometryEditorEx(lineReplacer);
+            var snapped = geomEditor.Edit(geom);
             return snapped;
         }
 
@@ -122,16 +121,18 @@ namespace NetTopologySuite.SnapRound
             return ptsMap;
         }
 
-        static IList<ISegmentString> ExtractTaggedSegmentStrings(IGeometry geom, IPrecisionModel pm)
+        private static IList<ISegmentString> ExtractTaggedSegmentStrings(IGeometry geom, IPrecisionModel pm)
         {
             var segStrings = new List<ISegmentString>();
             var filter = new GeometryComponentFilter(
                 delegate (IGeometry fgeom)
                 {
                     // Extract linework for lineal components only
-                    if (!(fgeom is ILineString)) return;
+                    if (!(fgeom is ILineString))
+                        return;
                     // skip empty lines
-                    if (geom.NumPoints <= 0) return;
+                    if (geom.NumPoints <= 0)
+                        return;
                     var roundPts = Round(((ILineString)fgeom).CoordinateSequence, pm);
                     segStrings.Add(new NodedSegmentString(roundPts, fgeom));
                 });
@@ -140,7 +141,7 @@ namespace NetTopologySuite.SnapRound
             return segStrings;
         }
 
-        static Coordinate[] Round(ICoordinateSequence seq, IPrecisionModel pm)
+        private static Coordinate[] Round(ICoordinateSequence seq, IPrecisionModel pm)
         {
             if (seq.Count == 0) return new Coordinate[0];
 
@@ -163,8 +164,10 @@ namespace NetTopologySuite.SnapRound
         private static IGeometry EnsureValid(IGeometry geom)
         {
             // TODO: need to ensure all polygonal components are valid
-            if (!(geom is IPolygonal)) { return geom;}
-            if (geom.IsValid) return geom;
+            if (!(geom is IPolygonal))
+                return geom;
+            if (geom.IsValid)
+                return geom;
 
             return CleanPolygonal(geom);
         }
@@ -172,73 +175,24 @@ namespace NetTopologySuite.SnapRound
         private static IGeometry CleanPolygonal(IGeometry geom)
         {
             // TODO: use a better method of removing collapsed topology 
-            return geom.Buffer(0);
+            //return geom.buffer(0);
+            return PolygonCleaner.Clean(geom);
         }
-
     }
 
-    internal class GeometryCoordinateReplacer : GeometryEditor.CoordinateSequenceOperation
+    internal class PolygonCleaner : GeometryEditor.IGeometryEditorOperation
     {
-        private readonly IDictionary<IGeometry, Coordinate[]> _geometryPtsMap;
-
-        public GeometryCoordinateReplacer(IDictionary<IGeometry, Coordinate[]> geometryPtsMap)
+        public static IGeometry Clean(IGeometry geom)
         {
-            _geometryPtsMap = geometryPtsMap;
-            EditSequence = DoEditSequence;
+            GeometryEditorEx editor = new GeometryEditorEx(new PolygonCleaner());
+            return editor.Edit(geom);
         }
 
-        /// <summary>
-        /// Gets the snapped coordinate array for an atomic geometry,
-        /// or null if it has collapsed.
-        /// </summary>
-        /// <param name="coordSeq">The sequence to edit</param>
-        /// <param name="geometry">The geometry, the sequence belongs to.</param>
-        /// <returns>The snapped coordinate array for this geometry</returns>
-        /// <returns><value>null</value> if the snapped coordinates have collapsed, or are missing</returns>
-        private ICoordinateSequence DoEditSequence(ICoordinateSequence coordSeq, IGeometry geometry)
+        public IGeometry Edit(IGeometry geometry, IGeometryFactory factory)
         {
-            Coordinate[] pts;
-
-            if (_geometryPtsMap.TryGetValue(geometry, out pts))
-            {
-                // Assert: pts should always have length > 0
-                var isValidPts = IsValidSize(pts, geometry);
-                if (!isValidPts) return null;
-
-                return geometry.Factory.CoordinateSequenceFactory.Create(pts);
-            }
-
-            // TODO: should this return null if no matching snapped line is found
-            // probably should never reach here?
-            return coordSeq;
+            if (geometry is IPolygonal)
+                return geometry.Buffer(0);
+            return geometry;
         }
-
-        /// <summary>
-        /// Tests if a coordinate array has a size which is 
-        /// valid for the containing geometry.
-        /// </summary>
-        /// <param name="pts">The point list to validate</param>
-        /// <param name="geom">The atomic geometry containing the point list</param>
-        /// <returns><value>true</value> if the coordinate array is a valid size</returns>
-        private static bool IsValidSize(Coordinate[] pts, IGeometry geom)
-        {
-            if (pts.Length == 0) return true;
-            int minSize = MinimumNonEmptyCoordinatesSize(geom);
-            if (pts.Length < minSize)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        private static int MinimumNonEmptyCoordinatesSize(IGeometry geom)
-        {
-            if (geom is ILinearRing)
-                return 4;
-            if (geom is ILineString)
-                return 2;
-            return 0;
-        }
-
     }
 }

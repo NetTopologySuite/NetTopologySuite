@@ -115,6 +115,7 @@
     <Compile Include="Operation\Polygonize\SplitPolygonExample.cs" />
     <Compile Include="Technique\ExtractLinestringByMeasure.cs" />
     <Compile Include="Technique\RemoveSpikes.cs" />
+    <Compile Include="Tests\Geometries\OctagonalEnvelopeTest.cs" />
     <Compile Include="Tests\GeometryServicesTest.cs" />
     <Compile Include="Tests\Github\Issue136Fixture.cs" />
     <Compile Include="Tests\Github\Issue12Fixture.cs" />
