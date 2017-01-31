@@ -284,7 +284,7 @@ namespace NetTopologySuite.Geometries.Implementation
             {
                 coordinates[Count - i - 1] = new Coordinate(Coordinates[i]);
             }
-            return new CoordinateArraySequence(coordinates);
+            return new CoordinateArraySequence(coordinates, Dimension);
         }
 
         /// <summary>

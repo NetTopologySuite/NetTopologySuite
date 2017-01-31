@@ -1,8 +1,7 @@
-﻿namespace NetTopologySuite.Geometries.Implementation
+﻿using System;
+using GeoAPI.Geometries;
+namespace NetTopologySuite.Geometries.Implementation
 {
-    using System;
-    using GeoAPI.Geometries;
-
     /// <summary>
     /// A coordinate sequence factory class that creates DotSpatial's Shape/ShapeRange like coordinate sequences.
     /// </summary>
@@ -13,8 +12,17 @@
     {
         private static DotSpatialAffineCoordinateSequenceFactory _instance;
         private static readonly object InstanceLock = new object();
+        private readonly Ordinates _ordinates;
 
-        private DotSpatialAffineCoordinateSequenceFactory() { }
+        private DotSpatialAffineCoordinateSequenceFactory()
+            :this(Ordinates.XYZM)
+        {
+        }
+
+        public DotSpatialAffineCoordinateSequenceFactory(Ordinates ordinates)
+        {
+            _ordinates = Ordinates.XY | ordinates;
+        }
 
         /// <summary>
         /// Returns the singleton instance of DotSpatialAffineCoordinateSequenceFactory.
@@ -26,9 +34,10 @@
             {
                 lock(InstanceLock)
                 {
-                    return (_instance ?? (_instance = new DotSpatialAffineCoordinateSequenceFactory()));
+                    return _instance ?? (_instance = new DotSpatialAffineCoordinateSequenceFactory());
                 }
             }
+            set { _instance = value; }
         }
 
         /// <summary>
@@ -38,7 +47,7 @@
         /// <returns></returns>
         public ICoordinateSequence Create(Coordinate[] coordinates)
         {
-            return new DotSpatialAffineCoordinateSequence(coordinates);
+            return new DotSpatialAffineCoordinateSequence(coordinates, Ordinates);
         }
 
         /// <summary>
@@ -50,7 +59,7 @@
         /// <returns>A coordinate sequence</returns>
         public ICoordinateSequence Create(ICoordinateSequence coordSeq)
         {
-            return new DotSpatialAffineCoordinateSequence(coordSeq);
+            return new DotSpatialAffineCoordinateSequence(coordSeq, Ordinates);
         }
 
         /// <summary>
@@ -64,7 +73,7 @@
         public ICoordinateSequence Create(int size, int dimension)
         {
 
-            return new DotSpatialAffineCoordinateSequence(size, OrdinatesUtility.DimensionToOrdinates(dimension));
+            return new DotSpatialAffineCoordinateSequence(size, Ordinates & OrdinatesUtility.DimensionToOrdinates(dimension));
         }
 
         /// <summary>
@@ -83,11 +92,51 @@
         }
 
         /// <summary>
+        /// Creates an instance of this class using the provided <paramref name="xy"/> array for x- and y ordinates
+        /// </summary>
+        /// <param name="xy">The x- and y-ordinates</param>
+        /// <returns>A coordinate sequence</returns>
+        public ICoordinateSequence Create(double[] xy)
+        {
+            return new DotSpatialAffineCoordinateSequence(xy, null);
+        }
+
+        /// <summary>
+        /// Creates an instance of this class using the provided <paramref name="xy"/> array for x- and y ordinates,
+        /// the <paramref name="zm"/> array for either z-ordinates or measure values. This is indicated by <paramref name="isMeasure"/>.
+        /// </summary>
+        /// <param name="xy">The x- and y-ordinates</param>
+        /// <param name="zm">An array of z- or measure values</param>
+        /// <param name="isMeasure">A value indicating if <paramref name="zm"/> contains z-ordinates or measure values.</param>
+        /// <returns>A coordinate sequence</returns>
+        public ICoordinateSequence Create(double[] xy, double[] zm, bool isMeasure = false)
+        {
+            if (isMeasure)
+                return new DotSpatialAffineCoordinateSequence(xy, null, zm);
+            return new DotSpatialAffineCoordinateSequence(xy, zm);
+        }
+
+        /// <summary>
+        /// Creates an instance of this class using the provided <paramref name="xy"/> array for x- and y ordinates, 
+        /// the <paramref name="z"/> array for z ordinates and <paramref name="m"/> for measure values.
+        /// </summary>
+        /// <param name="xy">The x- and y-ordinates</param>
+        /// <param name="z">An array of z- or measure values</param>
+        /// <param name="m">An array of measure values.</param>
+        /// <returns>A coordinate sequence</returns>
+
+        public ICoordinateSequence Create(double[] xy, double[] z, double[] m)
+        {
+            return new DotSpatialAffineCoordinateSequence(xy, z, m);
+        }
+
+
+        /// <summary>
         /// Gets the Ordinate flags that sequences created by this factory can cope with.
         /// </summary>
         public Ordinates Ordinates
         {
-            get { return Ordinates.XYZM; }
+            get { return _ordinates; }
         }
 
     }
