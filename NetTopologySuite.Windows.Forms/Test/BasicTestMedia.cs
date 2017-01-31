@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GeoAPI.Geometries;
@@ -331,15 +332,34 @@ namespace NetTopologySuite.Windows.Media.Test
             WpfGeometryToImage(res, string.Format("WPF-Path-MultiPoint-{0}.png", factory.GetType().Name));
         }
 
+        private static readonly Size BitmapSize = new Size(300, 300);
+
         private static void WpfGeometryToImage(WpfGeometry geom, string fileName)
         {
-            GeometryDrawing gd = new GeometryDrawing(Brushes.Red, new Pen(Brushes.Brown, 2), geom);
+            var tmp = geom;
+
+            var pen = new Pen(Brushes.Brown, 2);
+            var bounds = tmp.GetRenderBounds(pen);
+            var scaleX = (BitmapSize.Width - 4)/bounds.Width;
+            var scaleY = (BitmapSize.Height - 4)/bounds.Height;
+
+            var scale = Math.Min(scaleX, scaleY);
+            var tmpMat = new MatrixTransform(scale, 0, 0, scale, -bounds.Left*scale, -bounds.Top*scale);
+
+            //tmp.Transform = tmpMat;
+            
+            GeometryDrawing gd = new GeometryDrawing(Brushes.Red, new Pen(Brushes.Brown, 2d/scale), geom);
             DrawingVisual dv = new DrawingVisual();
+            //dv.Transform = tmpMat;
             using (var dc = dv.RenderOpen())
             {
+                //dc.PushTransform(MatrixTransform);
+                dc.DrawRectangle(Brushes.White, null, new Rect(new Point(0, 0), BitmapSize));
+                dv.Transform = tmpMat;
                 dc.DrawDrawing(gd);
             }
-            RenderTargetBitmap rtb = new RenderTargetBitmap(100, 100, 96, 96, PixelFormats.Pbgra32);
+            RenderTargetBitmap rtb = new RenderTargetBitmap((int)BitmapSize.Width, (int)BitmapSize.Height, 96, 96, PixelFormats.Pbgra32);
+            
             rtb.Render(dv);
 
             PngBitmapEncoder png = new PngBitmapEncoder();
