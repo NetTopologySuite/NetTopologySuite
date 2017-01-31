@@ -60,7 +60,7 @@ namespace NetTopologySuite.Precision
     /// <see cref="GetDistance()"/> and <see cref="GetLine()"/>.
     /// <para/>
     /// The computation of Minimum Clearance utilizes
-    /// the <see cref="STRtree.NearestNeighbour(NetTopologySuite.Index.Strtree.IItemDistance)"/>
+    /// the <see cref="STRtree{TItem}.NearestNeighbour(IItemDistance{GeoAPI.Geometries.Envelope,TItem})"/>
     /// method to provide good performance even for
     /// large inputs.
     /// <para/>

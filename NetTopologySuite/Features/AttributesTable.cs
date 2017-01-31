@@ -15,13 +15,13 @@ namespace NetTopologySuite.Features
 #endif
     public class AttributesTable : IAttributesTable
     {        
-        private const string IndexField = "_NTS_ID_";
-        private const int IndexValue = 0;
+        //private const string IndexField = "_NTS_ID_";
+        //private const int IndexValue = 0;
         
         private readonly Hashtable _attributes = new Hashtable();
 
         /// <summary>
-        /// 
+        /// Gets a value indicating the number of attributes
         /// </summary>
         public int Count
         {
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Features
         {
             int index = 0;
             object[] values = new object[_attributes.Count];
-            foreach (object val in _attributes.Values)
+            foreach (var val in _attributes.Values)
                 values[index++] = val;
             return values;
         }
@@ -59,8 +59,8 @@ namespace NetTopologySuite.Features
         /// <summary>
         /// Verifies if attribute specified already exists.
         /// </summary>
-        /// <param name="attributeName"></param>
-        /// <returns></returns>
+        /// <param name="attributeName">The name of the attribute</param>
+        /// <returns><value>true</value> if the attribute exists, otherwise false.</returns>
         public bool Exists(string attributeName)
         {
             return _attributes.ContainsKey(attributeName);
@@ -100,6 +100,11 @@ namespace NetTopologySuite.Features
         {
             if (!Exists(attributeName))
                 throw new ArgumentException("Attribute " + attributeName + " not exists!");
+
+            // if we have null, we can't determine the objects type, thus return typeof(object)
+            if (_attributes[attributeName] == null)
+                return typeof(object);
+
             return _attributes[attributeName].GetType();
         }
 
