@@ -113,6 +113,7 @@
     <Compile Include="Lab\Functions\RemoverFunctions.cs" />
     <Compile Include="LinearReferencing\LinearReferencingExample.cs" />
     <Compile Include="Operation\Polygonize\SplitPolygonExample.cs" />
+    <Compile Include="Voronoi\VoronoiExample.cs" />
     <Compile Include="Technique\ExtractLinestringByMeasure.cs" />
     <Compile Include="Technique\RemoveSpikes.cs" />
     <Compile Include="Tests\Geometries\OctagonalEnvelopeTest.cs" />
