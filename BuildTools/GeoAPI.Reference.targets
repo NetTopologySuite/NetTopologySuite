@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 <PropertyGroup>
-<fwVersion Condition=" '$(fwVersion)' == '' ">net40-client</fwVersion>
+<fwVersion Condition=" '$(fwVersion)' == '' ">net45</fwVersion>
 </PropertyGroup>
 <ItemGroup>
 <Reference Include="GeoAPI">
-<HintPath>$(SolutionDir)packages\GeoAPI.1.7.4\lib\$(fwVersion)\GeoAPI.dll</HintPath>
+<HintPath>$(SolutionDir)packages\GeoAPI.1.7.5-pre1\lib\$(fwVersion)\GeoAPI.dll</HintPath>
 </Reference>
 </ItemGroup>
 </Project>

@@ -1,3 +1,4 @@
+#if NET35
 using System;
 using GeoAPI.Geometries;
 
@@ -82,3 +83,5 @@ namespace NetTopologySuite.Index.KdTree
         }
     }
 }
+
+#endif

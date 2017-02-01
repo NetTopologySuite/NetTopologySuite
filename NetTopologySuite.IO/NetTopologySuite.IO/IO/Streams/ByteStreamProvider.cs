@@ -91,12 +91,27 @@ namespace NetTopologySuite.IO.Streams
 
             using (var ms = new MemoryStream())
             {
+#if NET40
                 input.CopyTo(ms);
+#else
+                CopyTo(input, ms);
+#endif
                 return ms.ToArray();
             }
         }
 
+#if !NET40
+        public static void CopyTo(Stream input, Stream output)
+        {
+            byte[] buffer = new byte[16 * 1024]; // Fairly arbitrary size
+            int bytesRead;
 
+            while ((bytesRead = input.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                output.Write(buffer, 0, bytesRead);
+            }
+        }
+#endif
         /// <summary>
         /// Array of bytes 
         /// </summary>
@@ -143,7 +158,7 @@ namespace NetTopologySuite.IO.Streams
         public string Kind { get; private set; }
 
 #if Disposable
-        #region IDisposable Support
+#region IDisposable Support
         private bool _isDisposed; // To detect redundant calls
 
         // This code added to correctly implement the disposable pattern.
@@ -166,7 +181,7 @@ namespace NetTopologySuite.IO.Streams
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        #endregion
+#endregion
 #endif
         private class ByteStream : MemoryStream
         {

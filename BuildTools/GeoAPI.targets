@@ -4,11 +4,11 @@
   You Need to install Community Tasks for MSBuild to run any of this build script:
   https://github.com/loresoft/msbuildtasks/releases
   -->
-	<Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
+	<Import Project="$(SolutionDir)\MSBuildTasks.1.5.0.235\tools\MSBuild.Community.Tasks.Targets"/>
 
 	<PropertyGroup>
-		<fwVersionNet>net40-client</fwVersionNet>
-		<fwVersionPcl>portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10</fwVersionPcl>
+		<fwVersionNet>net45</fwVersionNet>
+		<fwVersionPcl>portable-net45+wp80+win8+wpa81</fwVersionPcl>
 		<fwVersion/>
 		<geoAPIRefFileNet>GeoAPI.Reference.targets</geoAPIRefFileNet>
 		<geoAPIRefFilePcl>GeoAPI.Pcl.Reference.targets</geoAPIRefFilePcl>
@@ -95,7 +95,7 @@ Version: $(currentVersion)"/>
 		<WriteLinesToFile File="$(MSBuildProjectDirectory)\$(geoAPIRefFile)" Lines="@(gr)" Overwrite="true" />
 
 	</Target>
-	
+
 	<!--Task to iterate over all packages.config files in this solution-->
 	<Target Name="FindPC">
 		<ItemGroup>
@@ -113,7 +113,7 @@ Version: $(currentVersion)"/>
 			<newver>$(geoAPIVersion)</newver>
 		</PropertyGroup>
 		<Message Text="Trying to install GeoAPI v$(newver)"/>
-		<Exec Command="$(MSBuildProjectDirectory)\..\.nuget\nuget install GeoAPI -version $(newver) -prerelease -o $(MSBuildProjectDirectory)\..\packages"/>
+		<Exec Command="$(MSBuildProjectDirectory)\NuGet install GeoAPI -version $(newver) -prerelease -o $(MSBuildProjectDirectory)\..\packages"/>
 	</Target>
 
 	<Target Name="UpdatePC" DependsOnTargets="ReadVersion;Nuget">

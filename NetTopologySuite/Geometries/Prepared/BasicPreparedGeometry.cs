@@ -100,8 +100,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// Tests whether the base <see cref="IGeometry"/> properly contains a given geometry.
         /// </summary>
         /// <remarks>
-        /// <para>
-        /// The <c>ContainsProperly</c> predicate has the following equivalent definitions:
+        /// SThe <c>ContainsProperly</c> predicate has the following equivalent definitions:
         /// <list>
         /// <item>Every point of the other geometry is a point of this geometry's interior.</item>
         /// <item>The DE-9IM Intersection Matrix for the two geometries matches <c>>[T**FF*FF*]</c></item>

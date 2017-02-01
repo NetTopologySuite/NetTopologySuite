@@ -9,10 +9,11 @@ using NetTopologySuite.Utilities;
 #if PCL
 using XmlTextWriter = System.Xml.XmlWriter;
 using XmlTextReader = System.Xml.XmlReader;
-using System.Xml.Linq;
 using ApplicationException = System.Exception;
 #endif
-
+#if PCL && !PCL40
+using System.Xml.Linq;
+#endif
 namespace NetTopologySuite.IO.GML2
 {
     /// <summary>
@@ -50,14 +51,15 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="document"></param>
         /// <returns></returns>
 #if !PCL
-        public IGeometry Read(XmlDocument document)
+        public IGeometry Read(System.Xml.XmlDocument document)
         {
             return Read(document.InnerXml);
         }
-#else
+#elif !PCL40
+          
         public IGeometry Read(XDocument document)
         {
-            XmlReader reader = document.CreateReader();
+            var reader = document.CreateReader();
             return Read(reader);
         }
 #endif
