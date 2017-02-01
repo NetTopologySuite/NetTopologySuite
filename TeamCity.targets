@@ -11,6 +11,10 @@
     <NuGetCommand Condition=" '$(OS)' == 'Windows_NT'">&quot;$(NuGetExePath)&quot;</NuGetCommand>
     <NuGetCommand Condition=" '$(OS)' != 'Windows_NT' ">mono --runtime=v4.0.30319 &quot;$(NuGetExePath)&quot;</NuGetCommand>
 		<geoAPIVersion Condition=" '$(geoAPIVersion)' == '' ">1.7.5-pre1</geoAPIVersion>
+    <Configuration>Release</Configuration>
+    <Platform>AnyCPU</Platform>
+    <OutputPath>$(MSBuildProjectDirectory)\$(Configuration)\$(Platform)</OutputPath>
+    <FilesToMove/>
 	</PropertyGroup>
 
 	<Target Name="InstallGeoAPI" Condition=" !Exists('$(SolutionDir)packages\GeoAPI.$(geoAPIVersion)') ">
@@ -129,11 +133,28 @@
 		<RemoveDir Directories="$(MSBuildProjectDirectory)\obj\PCL40" ContinueOnError="true"/>
 		<MSBuild Projects="$(SolutionFile)"
              Targets="PCL\NetTopologySuite_PCL;PCL\GeoAPI_Bootstrapper_NetTopologySuite;PCL\NetTopologySuite_IO_SpatiaLite_Pcl;PCL\NetTopologySuite_IO_GeoJSON_Pcl"
-             Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Profile328;DefineConstants=TRACE,PCL,PCL40;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\PCL40\"
+             Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Profile328;DefineConstants=TRACE,PCL,PCL40;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\PCL40\;OutputSubDir=PCL40;"
              RunEachTargetSeparately="true"
              ContinueOnError="true"
              />
-	</Target>
+  </Target>
+
+  <ItemGroup>
+    <FilesToMove Include="$(MSBuildProjectDirectory)\$(Configuration)\PCL\$(Platform)\*.*" />
+  </ItemGroup>
+
+<!--
+  <Target Name="SavePCL40">
+
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\$(Configuration)\PCL40" ContinueOnError="true"/>
+    <MakeDir Directories="$(MSBuildProjectDirectory)\$(Configuration)\PCL40\" ContinueOnError="true"/>
+    <MakeDir Directories="$(MSBuildProjectDirectory)\$(Configuration)\PCL40\$(Platform)\" ContinueOnError="true"/>
+    <Move SourceFiles="$(FilesToMove)" DestinationFolder="$(MSBuildProjectDirectory)\$(Configuration)\PCL40\$(Platform)\" />
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\$(Configuration)\PCL" ContinueOnError="true"/>
+
+  </Target>
+-->
+
 	<Target Name="BuildReleasePCL" DependsOnTargets="RestorePackages">
     <PropertyGroup>
       <fwVersion>portable-net45+wp80+win8+wpa81</fwVersion>

@@ -181,8 +181,7 @@ namespace NetTopologySuite.IO.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            //return typeof(IAttributesTable).IsAssignableFrom(objectType);
-            return objectType.
+            return typeof(IAttributesTable).IsAssignableFrom(objectType);
         }
     }
 }

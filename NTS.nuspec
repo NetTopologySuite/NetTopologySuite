@@ -23,7 +23,7 @@
 			<frameworkAssembly assemblyName="System.Xml" targetFramework="sl5" />
 		</frameworkAssemblies>
 		<dependencies>
-			<dependency id="GeoAPI" version="[1.7.4,1.8)" />
+			<dependency id="GeoAPI" version="[1.7.5-pre1,1.7.6)" />
 		</dependencies>
 	</metadata>
 	<files>
@@ -47,11 +47,19 @@
 		<file src="Release\v4.5\AnyCPU\NetTopologySuite.pdb" target="lib\net45" />
 		<file src="Release\v4.5\AnyCPU\NetTopologySuite.xml" target="lib\net45" />
 
-		<file src="Release\PCL\AnyCPU\NetTopologySuite.dll" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\NetTopologySuite.pdb" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\NetTopologySuite.xml" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.dll" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.pdb" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.xml" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
-	</files>
+		<file src="Release\PCL40\AnyCPU\NetTopologySuite.dll" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+		<file src="Release\PCL40\AnyCPU\NetTopologySuite.pdb" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+		<file src="Release\PCL40\AnyCPU\NetTopologySuite.xml" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+    <file src="Release\PCL40\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.dll" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+		<file src="Release\PCL40\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.pdb" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+		<file src="Release\PCL40\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.xml" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+
+    <file src="Release\PCL\AnyCPU\NetTopologySuite.dll" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+    <file src="Release\PCL\AnyCPU\NetTopologySuite.pdb" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+    <file src="Release\PCL\AnyCPU\NetTopologySuite.xml" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+    <file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.dll" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+    <file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.pdb" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+    <file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.xml" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+
+  </files>
 </package>

@@ -18,6 +18,7 @@
     <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputSubDir Condition=" '$(OutputSubDir)' == '' ">PCL</OutputSubDir>
 
   </PropertyGroup>
   <PropertyGroup>
@@ -30,7 +31,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(SolutionDir)Release\PCL\AnyCPU\</OutputPath>
+    <OutputPath>$(SolutionDir)Release\$(OutputSubDir)\AnyCPU\</OutputPath>
     <DefineConstants>TRACE;DEBUG;PCL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -38,11 +39,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>$(SolutionDir)Release\PCL\AnyCPU\</OutputPath>
+    <OutputPath>$(SolutionDir)Release\$(OutputSubDir)\AnyCPU\</OutputPath>
     <DefineConstants>TRACE;PCL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Release\PCL\AnyCPU\NetTopologySuite.IO.SpatiaLite.xml</DocumentationFile>
+    <DocumentationFile>..\..\Release\$(OutputSubDir)\AnyCPU\NetTopologySuite.IO.SpatiaLite.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->

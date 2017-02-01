@@ -17,13 +17,13 @@
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <fwVersion Condition=" '$(fwVersion)' == '' ">portable-net45+wp80+win8+wpa81</fwVersion>
-
+    <OutputSubDir Condition=" '$(OutputSubDir)' == '' ">PCL</OutputSubDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Debug\PCL\AnyCPU\</OutputPath>
+    <OutputPath>..\..\Debug\$(OutputSubDir)\AnyCPU\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -31,11 +31,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Release\PCL\AnyCPU\</OutputPath>
+    <OutputPath>..\..\Release\$(OutputSubDir)\AnyCPU\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.xml</DocumentationFile>
+    <DocumentationFile>..\..\Release\$(OutputSubDir)\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
