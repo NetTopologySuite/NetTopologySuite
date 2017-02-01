@@ -1,3 +1,4 @@
+#if false
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Noding;
@@ -67,3 +68,4 @@ namespace NetTopologySuite.Geometries.Prepared
 
     }
 }
+#endif

@@ -1,0 +1,28 @@
+{
+  "version": "1.15.0-*",
+  "name": "NetTopologySuite",
+  "dependencies": {
+    "NETStandard.Library": "1.6.1",
+    "GeoAPI": "[1.7.5-pre1]"
+  },
+  "frameworks": {
+    "netstandard1.0": {
+      "imports": "dnxcore50",
+      "buildOptions": {
+        "defines": [ "PCL" ]
+      }
+    },
+    "netstandard1.1": {
+      "imports": "dnxcore50",
+      "buildOptions": {
+        "defines": [ "PCL" ]
+      }
+    }
+  },
+  "buildOptions": {
+    "define": [ "PCL" ]
+  },
+  "configurations": {
+    "CIBuild": {}
+  }
+}

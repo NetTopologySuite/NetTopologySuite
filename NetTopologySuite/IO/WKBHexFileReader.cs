@@ -43,6 +43,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         public int Offset { get; set; }
 
+#if !(NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_2)
         /// <summary>
         /// Reads a sequence of geometries.<br/>
         /// If an <see cref="Offset"/> is specified, geometries read up to the offset count are skipped.
@@ -64,6 +65,7 @@ namespace NetTopologySuite.IO
                 return Read(stream);
             }
         }
+#endif
 
         /// <summary>
         /// Reads a sequence of geometries.<br/>
@@ -74,7 +76,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="ArgumentNullException">Thrown if no stream was passed</exception>
         /// <exception cref="ArgumentException">Thrown if passed stream is not readable or seekable</exception>
         /// <exception cref="IOException">Thrown if an I/O exception was encountered</exception>
-        /// <exception cref="ParseException">Thrown if an error occured reading a geometry</exception>
+        /// <exception cref="GeoAPI.IO.ParseException">Thrown if an error occured reading a geometry</exception>
         public ICollection<IGeometry> Read(Stream stream)
         {
             if (stream == null)
@@ -99,7 +101,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="streamReader">The stream reader to use.</param>
         /// <exception cref="IOException">Thrown if an I/O exception was encountered</exception>
-        /// <exception cref="ParseException">Thrown if an error occured reading a geometry</exception>
+        /// <exception cref="GeoAPI.IO.ParseException">Thrown if an error occured reading a geometry</exception>
         private ICollection<IGeometry> Read(StreamReader streamReader)
         {
             var geoms = new List<IGeometry>();

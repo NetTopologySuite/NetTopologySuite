@@ -1,3 +1,4 @@
+#if false
 using System;
 
 using IList = System.Collections.Generic.IList<object>;
@@ -135,3 +136,4 @@ namespace NetTopologySuite.Algorithm
 
     }
 }
+#endif

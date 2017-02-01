@@ -1,3 +1,4 @@
+#if false
 using System;
 using System.IO;
 using System.Text;
@@ -240,3 +241,4 @@ namespace NetTopologySuite.Utilities
 		}
 	}
 }
+#endif
