@@ -1,28 +1,106 @@
 {
   "version": "1.15.0-*",
   "name": "NetTopologySuite",
+  "title": "NetTopologySuite",
+  "language": "en-US",
   "dependencies": {
-    "NETStandard.Library": "1.6.1",
-    "GeoAPI": "[1.7.5-pre1]"
+    "GeoAPI": "1.7.5-pre1"
   },
   "frameworks": {
+    "net45": {
+      "frameworkAssemblies": {
+        "System.Numerics": "",
+        "System.Runtime.Serialization": "",
+        "System.Xml": "",
+        "System.Xml.Linq": ""
+      },
+      "buildOptions": {
+        "defines": [ "NET20;NET35;NET40" ],
+        "compile" : {
+          "exclude": [ "Utilities/FrameworkReplacements" ],
+        }
+      }
+    },
+    "net40": {
+      "frameworkAssemblies": {
+        "System.Numerics": "",
+        "System.Runtime.Serialization": "",
+        "System.Xml": "",
+        "System.Xml.Linq": ""
+      },
+      "buildOptions": {
+        "defines": [ "NET20;NET35" ],
+        "compile" : {
+          "exclude": [ "Utilities/FrameworkReplacements" ],
+        }
+      }
+    },
+    "net403": {
+      "frameworkAssemblies": {
+        "System.Numerics": "",
+        "System.Runtime.Serialization": "",
+        "System.Xml": "",
+        "System.Xml.Linq": ""
+      },
+      "buildOptions": {
+        "defines": [ "NET20;NET35" ],
+        "compile" : {
+          "exclude": [ "Utilities/FrameworkReplacements" ],
+        }
+      }
+    },
+    "net35": {
+      "frameworkAssemblies": {
+        "System.Core": "",
+        "System.Runtime.Serialization": "",
+        "System.Xml": "",
+        "System.Xml.Linq": ""
+      },
+      "buildOptions": {
+        "defines": [ "NET20" ],
+        "compile" : {
+          "exclude": [ "Utilities/FrameworkReplacements" ],
+        }
+      }
+    },
+    "net20": {
+      "frameworkAssemblies": {
+        "System.Xml": ""
+      },
+      "buildOptions": {
+        "allowUnsafe": true,
+      }
+    },
     "netstandard1.0": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.1"
+      },
       "imports": "dnxcore50",
       "buildOptions": {
-        "defines": [ "PCL" ]
+        "allowUnsafe": true,
+        "define": [ "PCL" ],
+        "nowarn": ["CS0168", "CS0219", "CS3001", "CS3002", "CS3003", "CS3024"],
+        "compile" : {
+          "exclude": [ "Utilities/FrameworkReplacements" ],
+        }
       }
     },
     "netstandard1.1": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.1"
+      },
       "imports": "dnxcore50",
       "buildOptions": {
-        "defines": [ "PCL" ]
+        "allowUnsafe": true,
+        "define": [ "PCL" ],
+        "nowarn": ["CS0168", "CS0219", "CS3001", "CS3002", "CS3003", "CS3024"],
+        "compile" : {
+          "exclude": [ "Utilities/FrameworkReplacements" ],
+        }
       }
-    }
+    },
   },
-  "buildOptions": {
+  "_buildOptions": {
     "define": [ "PCL" ]
   },
-  "configurations": {
-    "CIBuild": {}
-  }
 }

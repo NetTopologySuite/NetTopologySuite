@@ -166,7 +166,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.ObjectDisposedException">The stream is closed. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
-        [Obsolete("Not implemented")]
+        //[Obsolete("Not implemented")]
         public override string ReadString()
         {
             throw new NotImplementedException();
@@ -182,7 +182,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.ObjectDisposedException">The stream is closed. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
-        [Obsolete("Not implemented")]
+        //[Obsolete("Not implemented")]
         public override decimal ReadDecimal()
         {
             throw new NotImplementedException();

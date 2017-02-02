@@ -294,7 +294,7 @@ namespace NetTopologySuite.Noding
                 npts--;
             }
 
-            var ipt = 0;
+            //var ipt = 0;
             coordList.Add(new Coordinate(ei0.Coord), false);
             for (var i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
             {

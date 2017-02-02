@@ -76,10 +76,6 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         private bool _preserveType;
 
-        ///// <summary>
-        /////
-        ///// </summary>
-        /*public GeometryTransformer() { }*/
 
         /// <summary>
         /// Makes the input geometry available
@@ -89,6 +85,22 @@ namespace NetTopologySuite.Geometries.Utilities
             get
             {
                 return _inputGeom;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the geometry type should be preserved.
+        /// </summary>
+        public bool PreserveType
+        {
+            get
+            {
+                return _preserveType;
+            }
+
+            set
+            {
+                _preserveType = value;
             }
         }
 
@@ -201,7 +213,7 @@ namespace NetTopologySuite.Geometries.Utilities
             
             var seqSize = seq.Count;
             // ensure a valid LinearRing
-            if (seqSize > 0 && seqSize < 4 && !_preserveType)
+            if (seqSize > 0 && seqSize < 4 && !PreserveType)
                 return Factory.CreateLineString(seq);
             return Factory.CreateLinearRing(seq);
         }

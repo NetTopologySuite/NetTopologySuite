@@ -228,7 +228,7 @@ namespace NetTopologySuite.Operation.Overlay
             var lineBuilder = new LineBuilder(this, _geomFact, _ptLocator);
             _resultLineList = lineBuilder.Build(opCode);
 
-            var pointBuilder = new PointBuilder(this, _geomFact, _ptLocator);
+            var pointBuilder = new PointBuilder(this, _geomFact);//, _ptLocator);
             _resultPointList = pointBuilder.Build(opCode);
 
             // gather the results from all calculations into a single Geometry for the result set

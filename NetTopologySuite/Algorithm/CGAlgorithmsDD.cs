@@ -55,7 +55,8 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         public static int SignOfDet2x2(DD x1, DD y1, DD x2, DD y2)
         {
-            DD det = x1.Multiply(y2).Subtract(y1.Multiply(x2));
+            //DD det = x1.Multiply(y2).Subtract(y1.Multiply(x2));
+            DD det = x1 * y2 - y1 * x2;
             if (det.IsZero)
                 return 0;
             if (det.IsNegative)

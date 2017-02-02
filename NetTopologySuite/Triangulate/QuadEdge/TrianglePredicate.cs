@@ -148,16 +148,23 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             DD cx = DD.ValueOf(c.X);
             DD cy = DD.ValueOf(c.Y);
 
-            DD aTerm = (ax.Multiply(ax).Add(ay.Multiply(ay)))
-                .Multiply(TriAreaDDSlow(bx, by, cx, cy, px, py));
-            DD bTerm = (bx.Multiply(bx).Add(by.Multiply(by)))
-                .Multiply(TriAreaDDSlow(ax, ay, cx, cy, px, py));
-            DD cTerm = (cx.Multiply(cx).Add(cy.Multiply(cy)))
-                .Multiply(TriAreaDDSlow(ax, ay, bx, by, px, py));
-            DD pTerm = (px.Multiply(px).Add(py.Multiply(py)))
-                .Multiply(TriAreaDDSlow(ax, ay, bx, by, cx, cy));
+            //DD aTerm = (ax.Multiply(ax).Add(ay.Multiply(ay)))
+            //    .Multiply(TriAreaDDSlow(bx, by, cx, cy, px, py));
+            //DD bTerm = (bx.Multiply(bx).Add(by.Multiply(by)))
+            //    .Multiply(TriAreaDDSlow(ax, ay, cx, cy, px, py));
+            //DD cTerm = (cx.Multiply(cx).Add(cy.Multiply(cy)))
+            //    .Multiply(TriAreaDDSlow(ax, ay, bx, by, px, py));
+            //DD pTerm = (px.Multiply(px).Add(py.Multiply(py)))
+            //    .Multiply(TriAreaDDSlow(ax, ay, bx, by, cx, cy));
+            //
+            //DD sum = aTerm.Subtract(bTerm).Add(cTerm).Subtract(pTerm);
+            DD aTerm = (ax * ax + ay * ay) * TriAreaDDSlow(bx, by, cx, cy, px, py);
+            DD bTerm = (bx * bx + by * by) * TriAreaDDSlow(ax, ay, cx, cy, px, py);
+            DD cTerm = (cx * cx + cy * cy) * TriAreaDDSlow(ax, ay, cx, cy, px, py);
+            DD pTerm = (px * px + py * py) * TriAreaDDSlow(ax, ay, cx, cy, px, py);
 
-            DD sum = aTerm.Subtract(bTerm).Add(cTerm).Subtract(pTerm);
+            DD sum = aTerm - bTerm + cTerm - pTerm;
+
             bool isInCircle = sum.ToDoubleValue() > 0;
 
             return isInCircle;
@@ -181,8 +188,9 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         private static DD TriAreaDDSlow(DD ax, DD ay,
                                        DD bx, DD by, DD cx, DD cy)
         {
-            return (bx.Subtract(ax).Multiply(cy.Subtract(ay)).Subtract(by.Subtract(ay)
-                                                                           .Multiply(cx.Subtract(ax))));
+            //return (bx.Subtract(ax).Multiply(cy.Subtract(ay)).Subtract(by.Subtract(ay)
+            //                                                               .Multiply(cx.Subtract(ax))));
+            return (bx - ax) * (cy - ay) - (by - ay) * (cx - ax);
         }
 
         /// <summary>

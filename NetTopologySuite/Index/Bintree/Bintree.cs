@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 //using GeoAPI.DataStructures;
 
 namespace NetTopologySuite.Index.Bintree
 {
-    public class BinTree : Bintree<object>
+    public class Bintree : Bintree<object>
     {}
 
     /// <summary>

@@ -154,7 +154,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.ObjectDisposedException">The stream is closed. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         /// <exception cref="T:System.ArgumentNullException">value is null. </exception>
-        [Obsolete("Not implemented")]
+        //[Obsolete("Not implemented")]
         public override void Write(string value)
         {
             throw new NotImplementedException();
@@ -166,7 +166,7 @@ namespace NetTopologySuite.IO
         /// <param name="value">The decimal value to write.</param>
         /// <exception cref="T:System.ObjectDisposedException">The stream is closed. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
-        [Obsolete("Not implemented")]
+        //[Obsolete("Not implemented")]
         public override void Write(decimal value)
         {
             throw new NotImplementedException();

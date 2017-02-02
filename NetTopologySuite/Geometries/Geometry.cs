@@ -1379,7 +1379,8 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
         public IGeometry Buffer(double distance, EndCapStyle endCapStyle)
         {
-            return BufferOp.Buffer(this, distance, BufferParameters.DefaultQuadrantSegments, (BufferStyle)endCapStyle);
+            var bufpar = new BufferParameters(BufferParameters.DefaultQuadrantSegments, endCapStyle);
+            return BufferOp.Buffer(this, distance, bufpar);
         }
 
         /// <summary>
@@ -1415,7 +1416,8 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
         public IGeometry Buffer(double distance, int quadrantSegments)
         {
-            return BufferOp.Buffer(this, distance, quadrantSegments);
+            var bufpar = new BufferParameters(quadrantSegments);
+            return BufferOp.Buffer(this, distance, bufpar);
         }
 
         /// <summary>
@@ -1462,7 +1464,8 @@ namespace NetTopologySuite.Geometries
         [Obsolete]
         public IGeometry Buffer(double distance, int quadrantSegments, BufferStyle endCapStyle)
         {
-            return BufferOp.Buffer(this, distance, quadrantSegments, endCapStyle);
+            var bufpar = new BufferParameters(quadrantSegments, (EndCapStyle)endCapStyle);
+            return BufferOp.Buffer(this, distance, bufpar);
         }
 
         /// <summary>
@@ -1506,7 +1509,8 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="Buffer(double, int)"/>
         public IGeometry Buffer(double distance, int quadrantSegments, EndCapStyle endCapStyle)
         {
-            return BufferOp.Buffer(this, distance, quadrantSegments, (BufferStyle)endCapStyle);
+            var bufpar = new BufferParameters(quadrantSegments, endCapStyle);
+            return BufferOp.Buffer(this, distance, bufpar);
         }
 
         /// <summary>

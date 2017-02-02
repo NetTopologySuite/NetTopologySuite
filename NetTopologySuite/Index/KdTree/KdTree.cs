@@ -165,7 +165,7 @@ namespace NetTopologySuite.Index.KdTree
         /// </returns>
         private KdNode<T> FindBestMatchNode(Coordinate p)
         {
-            var visitor = new BestMatchVisitor<T>(p, _tolerance);
+            var visitor = new BestMatchVisitor(p, _tolerance);
 
             Query(visitor.QueryEnvelope(), visitor);
             return visitor.Node;
@@ -303,7 +303,7 @@ namespace NetTopologySuite.Index.KdTree
         public IList<KdNode<T>> Query(Envelope queryEnv)
         {
             var result = new List<KdNode<T>>();
-            QueryNode(_root, queryEnv, true, new KdNodeVisitor<T>(result));
+            QueryNode(_root, queryEnv, true, new KdNodeVisitor(result));
             return result;
         }
 
@@ -314,12 +314,12 @@ namespace NetTopologySuite.Index.KdTree
         /// <param name="result">A collection to accumulate the result nodes into</param>
         public void Query(Envelope queryEnv, IList<KdNode<T>> result)
         {
-            QueryNode(_root, queryEnv, true, new KdNodeVisitor<T>(result));
+            QueryNode(_root, queryEnv, true, new KdNodeVisitor(result));
         }
 
 
 
-        private class KdNodeVisitor<T> : IKdNodeVisitor<T> where T : class
+        private class KdNodeVisitor : IKdNodeVisitor<T> 
         {
             private readonly IList<KdNode<T>> _result;
 
@@ -334,7 +334,7 @@ namespace NetTopologySuite.Index.KdTree
             }
         }
 
-        private class BestMatchVisitor<T> : IKdNodeVisitor<T> where T : class
+        private class BestMatchVisitor : IKdNodeVisitor<T> 
         {
 
             private readonly double tolerance;
