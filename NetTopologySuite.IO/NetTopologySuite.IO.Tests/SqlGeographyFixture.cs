@@ -120,19 +120,19 @@ namespace NetTopologySuite.IO.Tests
             return b2;
         }
 
-        [Test, Ignore]
+        [Test, Ignore("Ignore")]
         public override void TestGeometryCollection()
         {
             base.TestGeometryCollection();
         }
 
-        [Test, Ignore]
+        [Test, Ignore("Ignore")]
         public override void TestMultiPolygon()
         {
             base.TestMultiPolygon();
         }
 
-        [Test, Ignore]
+        [Test, Ignore("Ignore")]
         public override void TestPolygon()
         {
             base.TestPolygon();

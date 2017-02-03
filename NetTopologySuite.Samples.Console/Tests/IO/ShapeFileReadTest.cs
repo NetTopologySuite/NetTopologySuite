@@ -64,10 +64,11 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
             }
         }
 
-        [Test, ExpectedException(typeof(FileNotFoundException))]
-        [Ignore("File aaa.shp not exists")]
+        [Test]
         public void TestReadingAaaShapeFile()
         {
+            if (!File.Exists("aaa.shp"))
+                throw new IgnoreException("File aaa.shp doesn't exists");
             using (ShapefileDataReader reader = new ShapefileDataReader("aaa", Factory))
             {
                 int length = reader.DbaseHeader.NumFields;
@@ -76,7 +77,6 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
                     Debug.WriteLine(reader.GetValue(length - 1));
                 }
             }
-            Assert.Fail();
         }
 
         [Test]

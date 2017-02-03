@@ -5,7 +5,7 @@ namespace NetTopologySuite.Tests.NUnit
     [SetUpFixture]
     public class PclSetup
     {
-        [SetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             GeoAPI.NetTopologySuiteBootstrapper.Bootstrap();

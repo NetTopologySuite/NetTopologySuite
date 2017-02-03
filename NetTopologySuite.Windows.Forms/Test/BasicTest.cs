@@ -24,7 +24,7 @@ namespace NetTopologySuite.Windows.Forms.Test
         }
 
         [Test]
-        [Ignore]
+        [Ignore("Ignore")]
         public void TestPolygonWithHoles()
         {
             const string wkt = "POLYGON((2 2, 2 98, 98 98, 98 2, 2 2), (5 90, 10 90, 10 95, 5 95, 5 90))";

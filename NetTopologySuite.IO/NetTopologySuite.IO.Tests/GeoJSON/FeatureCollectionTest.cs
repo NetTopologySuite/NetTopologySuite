@@ -18,7 +18,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         public void FeatureCollectionConstructorTest()
         {
             FeatureCollection target = new FeatureCollection();
-            Assert.IsInstanceOfType(typeof(FeatureCollection), target);
+            Assert.IsInstanceOf<FeatureCollection>(target);
         }
 
         ///<summary>
@@ -29,7 +29,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         {
             Collection<IFeature> features = new Collection<IFeature> {new Feature()};
             FeatureCollection target = new FeatureCollection(features);
-            Assert.IsInstanceOfType(typeof(FeatureCollection), target);
+            Assert.IsInstanceOf<FeatureCollection>(target);
             Assert.AreEqual(features, target.Features);
         }
 

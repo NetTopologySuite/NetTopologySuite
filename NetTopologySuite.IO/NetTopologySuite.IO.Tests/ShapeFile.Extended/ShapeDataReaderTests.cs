@@ -20,39 +20,34 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         private ShapeDataReader m_shapeDataReader;
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_SendNullPath_ShouldThrowException()
         {
             // Act.
-            m_shapeDataReader = new ShapeDataReader((string)null);
+            Assert.Throws<ArgumentNullException>( () => m_shapeDataReader = new ShapeDataReader((string)null));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_SendEmptyPath_ShouldThrowException()
         {
             // Act.
-            m_shapeDataReader = new ShapeDataReader(string.Empty);
+            Assert.Throws<ArgumentNullException>(() => m_shapeDataReader = new ShapeDataReader(string.Empty));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_SendWhitespacePath_ShouldThrowException()
         {
             // Act.
-            m_shapeDataReader = new ShapeDataReader("   \t   ");
+            Assert.Throws<ArgumentNullException>(() => m_shapeDataReader = new ShapeDataReader("   \t   "));
         }
 
         [Test]
-        [ExpectedException(typeof(FileNotFoundException))]
         public void Ctor_SendNonExistantFilePath_ShouldThrowException()
         {
             // Act.
-            m_shapeDataReader = new ShapeDataReader(@"C:\this\is\sheker\path\should\never\exist\on\ur\pc");
+            Assert.Throws<FileNotFoundException>(() => m_shapeDataReader = new ShapeDataReader(@"C:\this\is\sheker\path\should\never\exist\on\ur\pc"));
         }
 
         [Test]
-        [ExpectedException(typeof(FileNotFoundException))]
         public void Ctor_SendShpWithNoDbf_ShouldThrowException()
         {
             // Arrange.
@@ -62,11 +57,10 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
 			};
 
             // Act.
-            m_shapeDataReader = new ShapeDataReader(m_TempFiles[0].Path);
+            Assert.Throws<FileNotFoundException>(() => m_shapeDataReader = new ShapeDataReader(m_TempFiles[0].Path));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_SendNullSpatialIndex_ShouldThrowException()
         {
             // Arrange.
@@ -77,11 +71,10 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
 			};
 
             // Act.
-            m_shapeDataReader = new ShapeDataReader(m_TempFiles[0].Path, null);
+            Assert.Throws<ArgumentNullException>(() => m_shapeDataReader = new ShapeDataReader(m_TempFiles[0].Path, null));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_SendNullGeometryFactory_ShouldThrowException()
         {
             // Arrange.
@@ -92,7 +85,7 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
 			};
 
             // Act.
-            m_shapeDataReader = new ShapeDataReader(m_TempFiles[0].Path, new STRtree<ShapeLocationInFileInfo>(), null);
+            Assert.Throws<ArgumentNullException>(() => m_shapeDataReader = new ShapeDataReader(m_TempFiles[0].Path, new STRtree<ShapeLocationInFileInfo>(), null));
         }
 
         [Test]
@@ -566,7 +559,6 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void ReadByGeoFilter_ReadDbfDataAfterReaderObjectDisposed_ShouldThrowException()
         {
             Envelope boundsWithWholeTriangle = new Envelope(-1.17459, -1.00231, -1.09803, -0.80861);
@@ -591,11 +583,11 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_shapeDataReader.Dispose();
 
             // Try reading dbf data.
-            IAttributesTable table = result.Attributes;
+            IAttributesTable table = null;
+            Assert.Throws<InvalidOperationException>(() => table = result.Attributes);
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void ReadByGeoFilter_ReadShapeDataAfterReaderObjectDisposed_ShouldThrowException()
         {
             Envelope boundsWithWholeTriangle = new Envelope(-1.17459, -1.00231, -1.09803, -0.80861);
@@ -620,7 +612,8 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_shapeDataReader.Dispose();
 
             // Try reading dbf data.
-            IGeometry table = result.Geometry;
+            IGeometry resultG = null;
+            Assert.Throws<InvalidOperationException>(() => resultG = result.Geometry);
         }
 
         [TearDown]

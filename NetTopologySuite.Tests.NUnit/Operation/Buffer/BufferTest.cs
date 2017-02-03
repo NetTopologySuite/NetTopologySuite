@@ -8,7 +8,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
     public class BufferTest
     {
         [TestAttribute]
-        [Ignore]
+        [Ignore("Ignore")]
         public void Test0()
         {
             TestMultiLineStringSeparateBuffersFloatingSingle();

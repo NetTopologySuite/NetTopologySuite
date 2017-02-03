@@ -16,35 +16,31 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         private TempFileWriter m_TmpFile;
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_SendNullPath_ShouldThrowException()
         {
             // Act.
-            new IO.ShapeFile.Extended.ShapeReader((string)null);
+            Assert.Throws<ArgumentNullException>(() => new IO.ShapeFile.Extended.ShapeReader((string)null));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_SendEmptyPath_ShouldThrowException()
         {
             // Act.
-            new IO.ShapeFile.Extended.ShapeReader(string.Empty);
+            Assert.Throws<ArgumentNullException>(() => new IO.ShapeFile.Extended.ShapeReader(string.Empty));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_SendWhitespacePath_ShouldThrowException()
         {
             // Act.
-            new IO.ShapeFile.Extended.ShapeReader("   \t   ");
+            Assert.Throws<ArgumentNullException>(() => new IO.ShapeFile.Extended.ShapeReader("   \t   "));
         }
 
         [Test]
-        [ExpectedException(typeof(FileNotFoundException))]
         public void Ctor_SendNonExistantFilePath_ShouldThrowException()
         {
             // Act.
-            new IO.ShapeFile.Extended.ShapeReader(@"C:\this\is\sheker\path\should\never\exist\on\ur\pc");
+            Assert.Throws<FileNotFoundException>(() => new IO.ShapeFile.Extended.ShapeReader(@"C:\this\is\sheker\path\should\never\exist\on\ur\pc"));
         }
 
         [Test]
@@ -322,7 +318,6 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         }
 
         [Test]
-        [ExpectedException(typeof(IndexOutOfRangeException))]
         public void ReadShapeAtOffset_SendNegativeOffset_shouldThrowException()
         {
             // Arrange.
@@ -331,11 +326,10 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
 
             // Act.
-            m_Reader.ReadShapeAtOffset(-1, factory);
+            Assert.Throws<IndexOutOfRangeException>(() => m_Reader.ReadShapeAtOffset(-1, factory));
         }
 
         [Test]
-        [ExpectedException(typeof(IndexOutOfRangeException))]
         public void ReadShapeAtOffset_SendOffsetAtEndOfFile_shouldThrowException()
         {
             // Arrange.
@@ -344,7 +338,7 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
 
             // Act.
-            m_Reader.ReadShapeAtOffset(ShpFiles.Read("polygon intersecting line").Length, factory);
+            Assert.Throws<IndexOutOfRangeException>(() => m_Reader.ReadShapeAtOffset(ShpFiles.Read("polygon intersecting line").Length, factory));
         }
 
         [Test]
@@ -672,7 +666,6 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void ReadShapeAtOffset_TryReadAfterDisposed_shouldThrowException()
         {
             // Arrange.
@@ -681,11 +674,10 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
 
             m_Reader.Dispose();
-            m_Reader.ReadShapeAtOffset(108, factory);
+            Assert.Throws<InvalidOperationException>(() => m_Reader.ReadShapeAtOffset(108, factory));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ReadAllShapes_SendNullFactory_ShouldThrowException()
         {
             // Arrange.
@@ -693,7 +685,7 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
 
             // Act.
-            m_Reader.ReadAllShapes(null);
+            Assert.Throws<ArgumentNullException>(() => m_Reader.ReadAllShapes(null));
         }
 
         [Test]
@@ -969,7 +961,6 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void ReadAllShapes_TryReadAfterDisposed_ShouldThrowException()
         {
             // Arrange.
@@ -979,11 +970,10 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
 
             // Act.
             m_Reader.Dispose();
-            m_Reader.ReadAllShapes(factory);
+            Assert.Throws<InvalidOperationException>(() => m_Reader.ReadAllShapes(factory));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ReadShapeAtIndex_SendNullFactory_ShouldThrowException()
         {
             // Arrange.
@@ -991,11 +981,10 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_Reader = new IO.ShapeFile.Extended.ShapeReader(m_TmpFile.Path);
 
             // Act.
-            m_Reader.ReadShapeAtIndex(0, null);
+            Assert.Throws<ArgumentNullException>(() => m_Reader.ReadShapeAtIndex(0, null));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void ReadShapeAtIndex_SendNegativeIndex_ShouldThrowException()
         {
             // Arrange.
@@ -1004,11 +993,10 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             IGeometryFactory factory = new GeometryFactory();
 
             // Act.
-            m_Reader.ReadShapeAtIndex(-1, factory);
+            Assert.Throws<ArgumentOutOfRangeException>(() => m_Reader.ReadShapeAtIndex(-1, factory));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void ReadShapeAtIndex_SendOutOfBoundIndex_ShouldThrowException()
         {
             // Arrange.
@@ -1017,7 +1005,7 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             IGeometryFactory factory = new GeometryFactory();
 
             // Act.
-            m_Reader.ReadShapeAtIndex(2, factory);
+            Assert.Throws<ArgumentOutOfRangeException>(() => m_Reader.ReadShapeAtIndex(2, factory));
         }
 
         [Test]
@@ -1187,7 +1175,6 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void ReadShapeAtIndex_TryReadAfterDisposed_ShouldThrowException()
         {
             // Arrange.
@@ -1197,7 +1184,7 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
 
             // Act.
             m_Reader.Dispose();
-            m_Reader.ReadShapeAtIndex(0, factory);
+            Assert.Throws<InvalidOperationException>(() => m_Reader.ReadShapeAtIndex(0, factory));
         }
 
         [TearDown]

@@ -10,11 +10,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NetTopologySuite.IO.Streams.CloudStorage.Test</RootNamespace>
     <AssemblyName>NetTopologySuite.IO.Streams.CloudStorage.Test</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\NetTopologySuite\nts.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,12 +55,13 @@
       <HintPath>..\..\packages\WindowsAzure.Storage.5.0.2\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.3.6.0\lib\net40\nunit.framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -90,18 +91,6 @@
     <ProjectReference Include="..\NetTopologySuite.IO.Streams.CloudStorage\NetTopologySuite.IO.Streams.CloudStorage.csproj">
       <Project>{ce217a88-7f50-4de6-bc79-4ac863347a10}</Project>
       <Name>NetTopologySuite.IO.Streams.CloudStorage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO.ShapeFile.Extended\NetTopologySuite.IO.ShapeFile.Extended.csproj">
-      <Project>{4F36DD38-3CCE-4A19-93C2-A9F8B27EA430}</Project>
-      <Name>NetTopologySuite.IO.ShapeFile.Extended</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO.GeoTools\NetTopologySuite.IO.GeoTools.csproj">
-      <Project>{21805958-869e-49f5-a4ed-0ac8599d62f0}</Project>
-      <Name>NetTopologySuite.IO.GeoTools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO.ShapeFile\NetTopologySuite.IO.ShapeFile.csproj">
-      <Project>{AB9096A7-89DD-4ABD-B535-A5258863F389}</Project>
-      <Name>NetTopologySuite.IO.ShapeFile</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.IO.Tests\NetTopologySuite.IO.Tests.csproj">
       <Project>{B9C93F98-1667-40A2-B02F-90D5CE14121F}</Project>

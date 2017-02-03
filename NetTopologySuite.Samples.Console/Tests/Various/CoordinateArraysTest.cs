@@ -1,3 +1,4 @@
+using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Samples.SimpleTests;
@@ -45,10 +46,11 @@ namespace NetTopologySuite.Samples.Tests.Various
         /// 
         /// </summary>
         [Test]
-        [ExpectedException("System.ArgumentException")]
+        //[ExpectedException("System.ArgumentException")]
         public void ExtractTest2()
-        {            
-            Coordinate[] result = CoordinateArrays.Extract(array, 1, 10);
+        {
+            Coordinate[] result = null;
+            Assert.Throws<ArgumentException>(() => CoordinateArrays.Extract(array, 1, 10));
             Assert.IsNull(result);
         }
 

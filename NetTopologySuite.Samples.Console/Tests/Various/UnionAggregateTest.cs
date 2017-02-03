@@ -31,11 +31,13 @@ namespace  NetTopologySuite.Samples.Tests.Various
         /// <summary>
         /// 
         /// </summary>
-        [Test(), ExpectedException(typeof(FileNotFoundException))]
+        [Test, /*ExpectedException(typeof(FileNotFoundException))*/]
         [Ignore("sa_region.shp not present")]
         public void PerformUnionAggregateTest1()
         {
-            Assert.IsNotNull(CheckShapefile("sa_region"));
+            IGeometry result = null;
+            Assert.Throws<FileNotFoundException>(() => result = CheckShapefile("sa_region"));
+            Assert.IsNotNull(result);
         }
 
         /// <summary>

@@ -46,35 +46,31 @@ namespace NetTopologySuite.IO.Streams.CloudStorage.Test
 
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_SendNullPath_ShouldThrowException()
         {
             // Act.
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(null), null));
+            Assert.Throws<ArgumentNullException>(() => m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(null), null)));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void Ctor_SendEmptyPath_ShouldThrowException()
         {
             // Act.
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(string.Empty), null));
+            Assert.Throws<ArgumentException>(() => m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(string.Empty), null)));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void Ctor_SendWhitespacePath_ShouldThrowException()
         {
             // Act.
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider("   \t   "), null));
+            Assert.Throws<ArgumentException>(() => m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider("   \t   "), null)));
         }
 
         [Test]
-        [ExpectedException(typeof(FileNotFoundException))]
         public void Ctor_SendNonExistantFilePath_ShouldThrowException()
         {
             // Act.
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(@"/this/is/sheker/path/should/never/exist/on/ur/pc"),null));
+            Assert.Throws<FileNotFoundException>(() => m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(@"/this/is/sheker/path/should/never/exist/on/ur/pc"),null)));
         }
 
         //[Test]
@@ -92,7 +88,6 @@ namespace NetTopologySuite.IO.Streams.CloudStorage.Test
         //}
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_SendNullSpatialIndex_ShouldThrowException()
         {
             // Arrange.
@@ -103,11 +98,10 @@ namespace NetTopologySuite.IO.Streams.CloudStorage.Test
             };
 
             // Act.
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)), null);
+            Assert.Throws<ArgumentNullException>(() => m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)), null));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_SendNullGeometryFactory_ShouldThrowException()
         {
             // Arrange.
@@ -118,7 +112,7 @@ namespace NetTopologySuite.IO.Streams.CloudStorage.Test
             };
 
             // Act.
-            m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)), new STRtree<ShapeLocationInFileInfo>(), null);
+            Assert.Throws<ArgumentNullException>(() => m_shapeDataReader = new ShapeDataReader(new ShapefileStreamProviderRegistry(GetProvider(m_TempFiles[0].Path), GetProvider(m_TempFiles[1].Path)), new STRtree<ShapeLocationInFileInfo>(), null));
         }
 
         [Test]
@@ -592,7 +586,6 @@ namespace NetTopologySuite.IO.Streams.CloudStorage.Test
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void ReadByGeoFilter_ReadDbfDataAfterReaderObjectDisposed_ShouldThrowException()
         {
             Envelope boundsWithWholeTriangle = new Envelope(-1.17459, -1.00231, -1.09803, -0.80861);
@@ -617,11 +610,11 @@ namespace NetTopologySuite.IO.Streams.CloudStorage.Test
             m_shapeDataReader.Dispose();
 
             // Try reading dbf data.
-            IAttributesTable table = result.Attributes;
+            IAttributesTable table = null;
+            Assert.Throws<InvalidOperationException>(() => table = result.Attributes);
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void ReadByGeoFilter_ReadShapeDataAfterReaderObjectDisposed_ShouldThrowException()
         {
             Envelope boundsWithWholeTriangle = new Envelope(-1.17459, -1.00231, -1.09803, -0.80861);
@@ -646,7 +639,8 @@ namespace NetTopologySuite.IO.Streams.CloudStorage.Test
             m_shapeDataReader.Dispose();
 
             // Try reading dbf data.
-            IGeometry table = result.Geometry;
+            IGeometry table = null;
+            Assert.Throws<InvalidOperationException>(() =>  table = result.Geometry);
         }
 
         [TearDown]

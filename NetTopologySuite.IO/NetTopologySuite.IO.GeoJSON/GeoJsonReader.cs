@@ -18,7 +18,7 @@ namespace NetTopologySuite.IO
         public TObject Read<TObject>(string json)
             where TObject : class
         {
-            JsonSerializer g = new GeoJsonSerializer();
+            JsonSerializer g = GeoJsonSerializer.CreateDefault();
             using (StringReader sr = new StringReader(json))
             {
                 return g.Deserialize<TObject>(new JsonTextReader(sr));

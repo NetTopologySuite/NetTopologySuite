@@ -275,7 +275,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         private static void TestParse(string envString, Envelope env)
         {
             var envFromString = Envelope.Parse(envString);
-            Assert.IsTrue(env.Equals(envFromString));
+            Assert.IsTrue(env.Equals(envFromString),"{0} != {1}", env, envFromString);
         }
     }
 }

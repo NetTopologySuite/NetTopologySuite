@@ -3,6 +3,7 @@ using System.IO;
 
 namespace NetTopologySuite.Tests.XUnit
 {
+    [NUnit.Framework.Ignore("Don't know why")]
     public class GeneralXUnitRunner : XUnitRunner
     {
         //protected GeneralXUnitRunner(string testFile) : base(testFile) { }
@@ -15,49 +16,49 @@ namespace NetTopologySuite.Tests.XUnit
 
         protected override string TestLocation { get { return testLocation; } }
 
-        [NUnit.Framework.Ignore]
+        //[NUnit.Framework.Ignore]
         public override void Test00() { }
-        [NUnit.Framework.Ignore]
+//        [NUnit.Framework.Ignore]
         public override void Test01() { }
-        [NUnit.Framework.Ignore]
+//        [NUnit.Framework.Ignore]
         public override void Test02() { }
-        [NUnit.Framework.Ignore]
+//        [NUnit.Framework.Ignore]
         public override void Test03() { }
-        [NUnit.Framework.Ignore]
+//        [NUnit.Framework.Ignore]
         public override void Test04() { }
-        [NUnit.Framework.Ignore]
+//        [NUnit.Framework.Ignore]
         public override void Test05() { }
-        [NUnit.Framework.Ignore]
+//        [NUnit.Framework.Ignore]
         public override void Test06() { }
-        [NUnit.Framework.Ignore]
+//        [NUnit.Framework.Ignore]
         public override void Test07() { }
-        [NUnit.Framework.Ignore]
+//        [NUnit.Framework.Ignore]
         public override void Test08() { }
-        [NUnit.Framework.Ignore]
+//        [NUnit.Framework.Ignore]
         public override void Test09() { }
-        [NUnit.Framework.Ignore]
+//        [NUnit.Framework.Ignore]
         public override void Test10() { }
-        [NUnit.Framework.Ignore]
+//        [NUnit.Framework.Ignore]
         public override void Test11() { }
-        [NUnit.Framework.Ignore]
+//        [NUnit.Framework.Ignore]
         public override void Test12() { }
-        [NUnit.Framework.Ignore]
+//        [NUnit.Framework.Ignore]
         public override void Test13() { }
-        [NUnit.Framework.Ignore]
+//        [NUnit.Framework.Ignore]
         public override void Test14() { }
-        [NUnit.Framework.Ignore]
+//        [NUnit.Framework.Ignore]
         public override void Test15() { }
-        [NUnit.Framework.Ignore]
+//        [NUnit.Framework.Ignore]
         public override void Test16() { }
-        [NUnit.Framework.Ignore]
+//        [NUnit.Framework.Ignore]
         public override void Test17() { }
-        [NUnit.Framework.Ignore]
+//        [NUnit.Framework.Ignore]
         public override void Test18() { }
-        [NUnit.Framework.Ignore]
+//        [NUnit.Framework.Ignore]
         public override void Test19() { }
-        [NUnit.Framework.Ignore]
+//        [NUnit.Framework.Ignore]
         public override void Test20() { }
-        [NUnit.Framework.Ignore]
+//        [NUnit.Framework.Ignore]
         public override void TestCountOk() { }
 
         [NUnit.Framework.Test]

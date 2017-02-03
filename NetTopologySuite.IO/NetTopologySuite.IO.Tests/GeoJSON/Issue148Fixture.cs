@@ -37,7 +37,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         {
             StringBuilder sb = new StringBuilder();
             JsonTextWriter writer = new JsonTextWriter(new StringWriter(sb));
-            JsonSerializer serializer = new GeoJsonSerializer(factory);
+            JsonSerializer serializer = GeoJsonSerializer.Create(factory);
             serializer.Serialize(writer, geometries);
             string actual = sb.ToString();
             Console.WriteLine(actual);
@@ -49,19 +49,19 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         {
             StringBuilder sb = new StringBuilder();
             JsonTextWriter writer = new JsonTextWriter(new StringWriter(sb));
-            JsonSerializer serializer = new GeoJsonSerializer(factory);
+            JsonSerializer serializer = GeoJsonSerializer.Create(factory);
             serializer.Serialize(writer, collection);
             string actual = sb.ToString();
             Console.WriteLine(actual);
             Assert.That(actual, Is.EqualTo(serializedCollection));
         }
 
-        [Test, ExpectedException(typeof(JsonReaderException))]
         public void deserialize_a_json_fragment_should_throws_an_error()
         {
             JsonTextReader reader = new JsonTextReader(new StringReader(serializedGeometries));
-            JsonSerializer serializer = new GeoJsonSerializer(factory);
-            IGeometry[] actual = serializer.Deserialize<IGeometry[]>(reader);
+            JsonSerializer serializer = GeoJsonSerializer.Create(factory);
+            IGeometry[] actual = null;
+            Assert.Throws<JsonReaderException>(() => actual = serializer.Deserialize<IGeometry[]>(reader));
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual, Is.EqualTo(geometries));
         }
@@ -70,7 +70,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         public void deserialize_a_valid_json_should_return_a_geometrycollection()
         {
             JsonTextReader reader = new JsonTextReader(new StringReader(serializedCollection));
-            JsonSerializer serializer = new GeoJsonSerializer(factory);
+            JsonSerializer serializer = GeoJsonSerializer.Create(factory);
             IGeometryCollection actual = serializer.Deserialize<GeometryCollection>(reader);
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual.EqualsExact(collection), Is.True);

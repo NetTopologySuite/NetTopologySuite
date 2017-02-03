@@ -2,7 +2,7 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <Import Project="$(SolutionDir)BuildTools\GeoAPI.Reference.targets" Condition="Exists('$(SolutionDir)BuildTools\GeoAPI.Reference.targets')" />
   <PropertyGroup>
-    <fwVersion Condition=" '$(fwVersion)' == '' ">net40-client</fwVersion>
+    <fwVersion Condition=" '$(fwVersion)' == '' ">net45</fwVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
@@ -41,8 +41,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -64,16 +63,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotSpatial.Projections, Version=1.7.0.0, Culture=neutral, PublicKeyToken=272632bddd08a38b, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SolutionDir)packages\DotSpatial.Projections.1.7\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
+    <Reference Include="DotSpatial.Projections, Version=1.9.0.0, Culture=neutral, PublicKeyToken=272632bddd08a38b, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotSpatial.Projections.1.9\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.6.0\lib\net40\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ProjNet, Version=1.3.0.3, Culture=neutral, PublicKeyToken=a1f5bdcd9c6f5740, processorArchitecture=MSIL">
@@ -222,37 +221,9 @@
       <Project>{08759323-B999-405B-8688-80008A4190B0}</Project>
       <Name>DotSpatial.Projections.Wrapper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GDB\NetTopologySuite.IO.GDB.csproj">
-      <Project>{548166D9-DF64-46FB-9EEC-212C7B7E7D85}</Project>
-      <Name>NetTopologySuite.IO.GDB</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoJSON\NetTopologySuite.IO.GeoJSON.csproj">
       <Project>{1583f1f7-7e7d-42ee-99f9-e072453bce34}</Project>
       <Name>NetTopologySuite.IO.GeoJSON</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\NetTopologySuite.IO.GeoTools.csproj">
-      <Project>{21805958-869E-49F5-A4ED-0AC8599D62F0}</Project>
-      <Name>NetTopologySuite.IO.GeoTools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.MsSqlSpatial\NetTopologySuite.IO.MsSqlSpatial.csproj">
-      <Project>{75BDB70A-AEB9-4592-9B5E-677D3D346A54}</Project>
-      <Name>NetTopologySuite.IO.MsSqlSpatial</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.PostGis\NetTopologySuite.IO.PostGis.csproj">
-      <Project>{7505264F-7E3E-4F8D-A9D5-885B4F313C26}</Project>
-      <Name>NetTopologySuite.IO.PostGis</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile.Extended\NetTopologySuite.IO.ShapeFile.Extended.csproj">
-      <Project>{4f36dd38-3cce-4a19-93c2-a9f8b27ea430}</Project>
-      <Name>NetTopologySuite.IO.ShapeFile.Extended</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile\NetTopologySuite.IO.ShapeFile.csproj">
-      <Project>{AB9096A7-89DD-4ABD-B535-A5258863F389}</Project>
-      <Name>NetTopologySuite.IO.ShapeFile</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.SpatiaLite\NetTopologySuite.IO.SpatiaLite.csproj">
-      <Project>{AD33B357-E789-4102-8DC3-F18EEE507583}</Project>
-      <Name>NetTopologySuite.IO.SpatiaLite</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.SqlServer2008\NetTopologySuite.IO.SqlServer2008.csproj">
       <Project>{8e6a486b-5418-4fe1-a14f-cf2f3b74d4e0}</Project>

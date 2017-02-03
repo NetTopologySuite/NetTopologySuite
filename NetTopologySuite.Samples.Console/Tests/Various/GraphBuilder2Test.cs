@@ -150,14 +150,15 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsTrue(File.Exists(shapepath + dbf));
         }
 
-        [Test, ExpectedException(typeof(FileNotFoundException))]
-        [Ignore("graph.shp not present")]
+        [Test]
         public void BuildGraphFromCompleteGraphShapefile()
         {
             const string shapepath = "graph.shp";
             const int count = 1179;
 
-            Assert.IsTrue(File.Exists(shapepath));
+            if (!File.Exists(shapepath))
+                throw new IgnoreException("graph.shp not present");
+
             var reader = new ShapefileReader(shapepath);
             var edges = reader.ReadAll();
             Assert.IsNotNull(edges);
@@ -284,7 +285,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.AreEqual(path, reverse.Reverse());
         }
 
-        [Ignore]
+        [Ignore("Ignore")]
         [Test]
         public void BuildStradeFixed()
         {
@@ -331,29 +332,24 @@ namespace NetTopologySuite.Tests.Various
         }
 
         [Test]
-        [ExpectedException(typeof (TopologyException))]
         public void CheckGraphBuilder2ExceptionUsingARepeatedGeometry()
         {
             var builder = new GraphBuilder2();
             Assert.IsTrue(builder.Add(a));
             Assert.IsFalse(builder.Add(a));
             Assert.IsFalse(builder.Add(a, a));
-            builder.Initialize();
+            Assert.Throws<TopologyException>(() => builder.Initialize());
         }
 
         [Test]
-        [ExpectedException(typeof (TopologyException))]
         public void CheckGraphBuilder2ExceptionUsingDifferentFactories()
         {
             var builder = new GraphBuilder2();
             Assert.IsTrue(builder.Add(a));
             Assert.IsTrue(builder.Add(b, c));
             Assert.IsTrue(builder.Add(d));
-            builder.Add(GeometryFactory.Default.CreateLineString(new Coordinate[]
-                                                                     {
-                                                                         new Coordinate(0, 0),
-                                                                         new Coordinate(50, 50),
-                                                                     }));
+            Assert.Throws<TopologyException>(() => builder.Add(
+                GeometryFactory.Default.CreateLineString(new []{ new Coordinate(0, 0), new Coordinate(50, 50), })));
         }
 
         [Test]
@@ -370,20 +366,18 @@ namespace NetTopologySuite.Tests.Various
         }
 
         [Test]
-        [ExpectedException(typeof (TopologyException))]
         public void CheckGraphBuilder2ExceptionUsingNoGeometries()
         {
             var builder = new GraphBuilder2();
-            builder.Initialize();
+            Assert.Throws<TopologyException>(() => builder.Initialize());
         }
 
         [Test]
-        [ExpectedException(typeof (TopologyException))]
         public void CheckGraphBuilder2ExceptionUsingOneGeometry()
         {
             var builder = new GraphBuilder2();
             Assert.IsTrue(builder.Add(a));
-            builder.Initialize();
+            Assert.Throws<TopologyException>(() => builder.Initialize());
         }
 
         [Test]

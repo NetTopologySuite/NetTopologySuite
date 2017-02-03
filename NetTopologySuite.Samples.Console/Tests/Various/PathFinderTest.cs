@@ -29,7 +29,7 @@ namespace NetTopologySuite.Tests.Various
             factory = GeometryFactory.Fixed;       
         }
 
-        [Ignore]
+        [Ignore("Ignore")]
         [Test]
         public void BuildStradeFixed()
         {

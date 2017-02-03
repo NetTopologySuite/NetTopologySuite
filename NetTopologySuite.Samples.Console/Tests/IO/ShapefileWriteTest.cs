@@ -578,7 +578,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
             }
         }
 
-        [Test, ExpectedException(typeof(ArgumentException))]
+        [Test /*, ExpectedException(typeof(ArgumentException))*/]
         // see https://code.google.com/p/nettopologysuite/issues/detail?id=146
         public void Issue146_ShapeCreationWithInvalidAttributeName()
         {
@@ -597,10 +597,11 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
             {
                 Header = ShapefileDataWriter.GetHeader(features[0], features.Length)
             };
-            shp_writer.Write(features);
+
+            Assert.Throws<ArgumentException>(() => shp_writer.Write(features));
         }
 
-        [Test, ExpectedException(typeof(ArgumentException))]
+        [Test/*, ExpectedException(typeof(ArgumentException))*/]
         // see: https://github.com/NetTopologySuite/NetTopologySuite/issues/111
         public void issue_111_pointhandler_with_invalid_values()
         {
@@ -615,10 +616,10 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
 
             string tempPath = Path.GetTempFileName();
             ShapefileWriter sfw = new ShapefileWriter(Path.GetFileNameWithoutExtension(tempPath), shapeType);
-            sfw.Write(geometries);
+            Assert.Throws<ArgumentException>(() => sfw.Write(geometries));
         }
 
-        [Test, ExpectedException(typeof(ArgumentException))]
+        [Test/*, ExpectedException(typeof(ArgumentException))*/]
         // see: https://github.com/NetTopologySuite/NetTopologySuite/issues/111
         public void issue_111_multipointhandler_with_invalid_values()
         {
@@ -634,10 +635,11 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
 
             string tempPath = Path.GetTempFileName();
             ShapefileWriter sfw = new ShapefileWriter(Path.GetFileNameWithoutExtension(tempPath), shapeType);
-            sfw.Write(geometries);
+            Assert.Throws<ArgumentException>(() => sfw.Write(geometries));
+
         }
 
-        [Test, ExpectedException(typeof(ArgumentException))]
+        [Test/*, ExpectedException(typeof(ArgumentException))*/]
         // see: https://github.com/NetTopologySuite/NetTopologySuite/issues/111
         public void issue_111_multilinehandler_with_invalid_values()
         {
@@ -658,10 +660,10 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
 
             string tempPath = Path.GetTempFileName();
             ShapefileWriter sfw = new ShapefileWriter(Path.GetFileNameWithoutExtension(tempPath), shapeType);
-            sfw.Write(geometries);
+            Assert.Throws<ArgumentException>(() => sfw.Write(geometries));
         }
 
-        [Test, ExpectedException(typeof(ArgumentException))]
+        [Test/*, ExpectedException(typeof(ArgumentException))*/]
         // see: https://github.com/NetTopologySuite/NetTopologySuite/issues/111
         public void issue_111_polygonhandler_with_invalid_values()
         {
@@ -684,7 +686,8 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
 
             string tempPath = Path.GetTempFileName();
             ShapefileWriter sfw = new ShapefileWriter(Path.GetFileNameWithoutExtension(tempPath), shapeType);
-            sfw.Write(geometries);
+
+            Assert.Throws<ArgumentException>(() => sfw.Write(geometries));
         }
     }
 }

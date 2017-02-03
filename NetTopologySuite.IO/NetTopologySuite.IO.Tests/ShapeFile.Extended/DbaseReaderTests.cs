@@ -19,35 +19,31 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         private TempFileWriter m_TmpFile;
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_SendNullPath_ShouldThrowException()
         {
             // Act.
-            m_Reader = new DbaseReader((string)null);
+            Assert.Throws<ArgumentNullException>(() => m_Reader = new DbaseReader((string)null));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void Ctor_SendEmptyString_ShouldThrowException()
         {
             // Act.
-            m_Reader = new DbaseReader(string.Empty);
+            Assert.Throws<ArgumentException>(() => m_Reader = new DbaseReader(string.Empty));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void Ctor_SendWhitespaceString_ShouldThrowException()
         {
             // Act.
-            m_Reader = new DbaseReader("    \t  ");
+            Assert.Throws<ArgumentException>(() => m_Reader = new DbaseReader("    \t  "));
         }
 
         [Test]
-        [ExpectedException(typeof(FileNotFoundException))]
         public void Ctor_SendNonExistantPath_ShouldThrowException()
         {
             // Act.
-            m_Reader = new DbaseReader(@"C:\this\is\sheker\path\should\never\exist\on\ur\pc");
+            Assert.Throws<FileNotFoundException>(() => m_Reader = new DbaseReader(@"C:\this\is\sheker\path\should\never\exist\on\ur\pc"));
         }
 
         [Test]
@@ -64,7 +60,6 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ReadEntry_SendNegativeIndex_ShouldThrowException()
         {
             // Arrange
@@ -72,11 +67,10 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_Reader = new DbaseReader(m_TmpFile.Path);
 
             // Act.
-            m_Reader.ReadEntry(-1);
+            Assert.Throws<ArgumentException>(() => m_Reader.ReadEntry(-1));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void ReadEntry_SendOutOfBoundIndex_ShouldThrowException()
         {
             // Arrange
@@ -84,11 +78,10 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_Reader = new DbaseReader(m_TmpFile.Path);
 
             // Act.
-            m_Reader.ReadEntry(3);
+            Assert.Throws<ArgumentOutOfRangeException>(() => m_Reader.ReadEntry(3));
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void ReadEntry_TryReadAfterDisposed_ShouldThrowException()
         {
             // Arrange
@@ -98,7 +91,7 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_Reader.Dispose();
 
             // Act.
-            m_Reader.ReadEntry(1);
+            Assert.Throws<InvalidOperationException>(() => m_Reader.ReadEntry(1));
         }
 
         [Test]
@@ -169,7 +162,6 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ReadEntry_ReadNonExistantKeyFromEntry_ShoudReturnCorrectValues()
         {
             // Arrange
@@ -177,9 +169,9 @@ namespace NetTopologySuite.IO.Tests.ShapeFile.Extended
             m_Reader = new DbaseReader(m_TmpFile.Path);
 
             IAttributesTable results = m_Reader.ReadEntry(0);
-
+            object a;
             // Act.
-            object a = results["a"];
+            Assert.Throws<ArgumentException>(() => a = results["a"]);
         }
 
         [Test]
