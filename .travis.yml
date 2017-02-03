@@ -2,7 +2,7 @@ language: csharp
 solution: NetTopologySuite.sln
 install:
 - nuget restore NetTopologySuite.sln
-- nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+- nuget install NUnit.Runners -Version 3.6 -OutputDirectory testrunner
 script:
 - xbuild /p:Configuration=ReleaseLinux NetTopologySuite.sln
-- mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./Release/v4.0/AnyCPU/NetTopologySuite.Tests.NUnit.dll
+- mono ./testrunner/NUnit.ConsoleRunner.3.6.0/tools/nunit3-console.exe ./Release/v4.5/AnyCPU/NetTopologySuite.Tests.NUnit.dll
