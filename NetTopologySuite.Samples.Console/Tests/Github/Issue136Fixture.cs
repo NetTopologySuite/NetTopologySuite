@@ -19,7 +19,6 @@ namespace NetTopologySuite.Samples.Tests.Github
             Assert.AreEqual(angle1, angle2);
             Assert.IsTrue(Math.Abs(angle1 - 45d) < 0.001);
             Assert.IsTrue(Math.Abs(angle2 - 45d) < 0.001);
-
         }
 
         [Test]
