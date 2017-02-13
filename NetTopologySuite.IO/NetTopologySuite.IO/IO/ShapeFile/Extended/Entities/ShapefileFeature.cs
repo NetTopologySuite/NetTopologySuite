@@ -6,7 +6,9 @@ using NetTopologySuite.IO.Handlers;
 
 namespace NetTopologySuite.IO.ShapeFile.Extended.Entities
 {
-	[Serializable]
+#if !PCL
+    [Serializable]
+#endif
 	internal class ShapefileFeature : IShapefileFeature
 	{
 	    private readonly Lazy<IGeometry> m_LazyGeometry;

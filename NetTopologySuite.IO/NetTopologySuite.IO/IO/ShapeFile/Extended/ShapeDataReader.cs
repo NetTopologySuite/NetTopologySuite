@@ -26,10 +26,24 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 		private readonly IGeometryFactory m_GeoFactory;
 		private readonly ShapeReader m_ShapeReader;
 
-	    public ShapeDataReader(string shapeFilePath, ISpatialIndex<ShapeLocationInFileInfo> index, IGeometryFactory geoFactory, bool buildIndexAsync)
+#if !PCL
+        public ShapeDataReader(string shapeFilePath, ISpatialIndex<ShapeLocationInFileInfo> index, IGeometryFactory geoFactory, bool buildIndexAsync)
             :this(new ShapefileStreamProviderRegistry(shapeFilePath, true, true), index, geoFactory, buildIndexAsync)
 		{	
 		}
+
+        public ShapeDataReader(string shapeFilePath, ISpatialIndex<ShapeLocationInFileInfo> index, IGeometryFactory geoFactory)
+			: this(shapeFilePath, index, geoFactory, true)
+		{ }
+
+		public ShapeDataReader(string shapeFilePath, ISpatialIndex<ShapeLocationInFileInfo> index)
+			: this(shapeFilePath, index, new GeometryFactory())
+		{ }
+
+		public ShapeDataReader(string shapeFilePath)
+			: this(shapeFilePath, new STRtree<ShapeLocationInFileInfo>())
+		{ }
+#endif
 
         public ShapeDataReader(IStreamProviderRegistry streamProviderRegistry , ISpatialIndex<ShapeLocationInFileInfo> index, IGeometryFactory geoFactory, bool buildIndexAsync)
         {
@@ -55,19 +69,6 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 
             m_DbfReader = new DbaseReader(streamProviderRegistry[StreamTypes.Data]);
         }
-
-        public ShapeDataReader(string shapeFilePath, ISpatialIndex<ShapeLocationInFileInfo> index, IGeometryFactory geoFactory)
-			: this(shapeFilePath, index, geoFactory, true)
-		{ }
-
-		public ShapeDataReader(string shapeFilePath, ISpatialIndex<ShapeLocationInFileInfo> index)
-			: this(shapeFilePath, index, new GeometryFactory())
-		{ }
-
-		public ShapeDataReader(string shapeFilePath)
-			: this(shapeFilePath, new STRtree<ShapeLocationInFileInfo>())
-		{ }
-
 
         public ShapeDataReader(IStreamProviderRegistry streamProviderRegistry, ISpatialIndex<ShapeLocationInFileInfo> index, IGeometryFactory geoFactory)
     : this(streamProviderRegistry, index, geoFactory, true)

@@ -56,16 +56,14 @@
     <Compile Include="Converters\EnvelopeConverter.cs" />
     <Compile Include="Converters\FeatureCollectionConverter.cs" />
     <Compile Include="Converters\FeatureConverter.cs" />
-      <Compile Include="Converters\GeometryArrayConverter.cs" />
+    <Compile Include="Converters\GeometryArrayConverter.cs" />
     <Compile Include="Converters\GeometryConverter.cs" />
     <Compile Include="Converters\ICRSObjectConverter.cs" />
     <Compile Include="GeoJsonObjectType.cs" />
     <Compile Include="GeoJsonReader.cs" />
     <Compile Include="GeoJsonSerializer.cs" />
     <Compile Include="GeoJsonWriter.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs /">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PortableClassLibrary\NetTopologySuite.Pcl\NetTopologySuite.Pcl.csproj">
@@ -77,7 +75,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

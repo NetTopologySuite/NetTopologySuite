@@ -19,15 +19,21 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
         private BinaryReader m_FileReader;
         private bool m_IsDisposed;
 
+#if !PCL
         /// <summary>
         /// Initializes a new instance of the DbaseFileReader class.
         /// </summary>
-        /// <param name="filename"></param>
+        /// <param name="filename">The filename</param>
         public DbaseReader(string filename) 
             : this(new FileStreamProvider(StreamTypes.Data, filename, true))
         {
         }
+#endif
 
+        /// <summary>
+        /// Initializes a new instance of the DbaseFileReader class.
+        /// </summary>
+        /// <param name="streamProvider">The stream provider</param>
         public DbaseReader(IStreamProvider streamProvider)
         {
             m_StreamProvider = streamProvider;
@@ -113,7 +119,11 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
                 m_Header = new DbaseFileHeader();
 
                 // read the header
+#if !PCL
                 m_Header.ReadHeader(m_FileReader, m_StreamProvider is FileStreamProvider ? ((FileStreamProvider)m_StreamProvider).Path : null);
+#else
+                m_Header.ReadHeader(m_FileReader, (IStreamProvider)null);
+#endif
             }
 
             return m_Header;
@@ -239,7 +249,11 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
             {
                 if (m_FileReader != null)
                 {
+#if (NET40 || PCL)
+                    m_FileReader.Dispose();
+#else
                     m_FileReader.Close();
+#endif
                 }
 
                 m_IsDisposed = true;

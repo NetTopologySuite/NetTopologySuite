@@ -21,10 +21,12 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
         private readonly Lazy<long[]> m_ShapeOffsetCache;
         private bool m_IsDisposed;
 
+#if !PCL
         public ShapeReader(string shapeFilePath) : this(new ShapefileStreamProviderRegistry(shapeFilePath, true))
         {
 
         }
+#endif
 
         public ShapeReader(IStreamProviderRegistry streamProviderRegistry)
         {
@@ -167,7 +169,11 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
         {
             if (m_ShapeFileReader != null)
             {
+#if NET40 || PCL
+                m_ShapeFileReader.Dispose();
+#else
                 m_ShapeFileReader.Close();
+#endif
                 m_ShapeFileReader = null;
             }
         }

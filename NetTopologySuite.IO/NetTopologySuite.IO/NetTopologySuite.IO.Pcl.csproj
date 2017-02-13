@@ -33,7 +33,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>$(SolutionDir)$(Configuration)\$(OutputSubDir)\AnyCPU\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;PCL;UseCoordinateBufferPublicly</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>$(SolutionDir)$(Configuration)\$(OutputSubDir)\AnyCPU\NetTopologySuite.IO.xml</DocumentationFile>
@@ -91,6 +91,12 @@
     <Compile Include="IO\PostGis\PostGisGeometryType.cs" />
     <Compile Include="IO\PostGis\PostGisReader.cs" />
     <Compile Include="IO\PostGis\PostGisWriter.cs" />
+    <Compile Include="IO\ShapeFile\Extended\DbaseEnumerator.cs" />
+    <Compile Include="IO\ShapeFile\Extended\DbaseReader.cs" />
+    <Compile Include="IO\ShapeFile\Extended\Entities\IShapefileFeature.cs" />
+    <Compile Include="IO\ShapeFile\Extended\Entities\ShapefileFeature.cs" />
+    <Compile Include="IO\ShapeFile\Extended\ShapeDataReader.cs" />
+    <Compile Include="IO\ShapeFile\Extended\ShapeReader.cs" />
     <Compile Include="IO\ShapeFile\ShapeFileConstants.cs" />
     <Compile Include="IO\ShapeFile\ShapeGeometryType.cs" />
     <Compile Include="IO\ShapeFile\ShapeReader.cs" />
@@ -109,14 +115,6 @@
       <Link>Properties\SharedAssemblyVersion.cs</Link>
     </Compile>
   </ItemGroup>
-  <ItemGroup Condition=" '$(AtLeast40)' == 'true' ">
-    <Compile Include="IO\ShapeFile\Extended\DbaseEnumerator.cs" />
-    <Compile Include="IO\ShapeFile\Extended\DbaseReader.cs" />
-    <Compile Include="IO\ShapeFile\Extended\Entities\IShapefileFeature.cs" />
-    <Compile Include="IO\ShapeFile\Extended\Entities\ShapefileFeature.cs" />
-    <Compile Include="IO\ShapeFile\Extended\ShapeDataReader.cs" />
-    <Compile Include="IO\ShapeFile\Extended\ShapeReader.cs" />
-  </ItemGroup>
   <ItemGroup>
     <None Include="IO\Gpx\GpxTypes.xsd">
       <SubType>Designer</SubType>
@@ -125,7 +123,7 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

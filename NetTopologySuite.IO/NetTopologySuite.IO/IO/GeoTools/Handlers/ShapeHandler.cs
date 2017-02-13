@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-#if NET35
+#if NET35 || PCL
 using System.Linq;
 #endif
 using GeoAPI.Geometries;
@@ -541,7 +541,7 @@ namespace NetTopologySuite.IO.Handlers
             return new ShapeMBREnumerator(reader);
         }
     }
-#if !NET35
+#if !(NET35 || PCL)
         internal static class Enumerable
         {
         internal static bool Any(IEnumerable<double> self)
