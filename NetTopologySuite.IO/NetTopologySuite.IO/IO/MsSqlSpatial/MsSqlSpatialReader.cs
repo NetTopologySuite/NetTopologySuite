@@ -30,7 +30,11 @@ namespace NetTopologySuite.IO
             finally
             {
                 if (reader != null)
+#if (NET40 || PCL)
+                    reader.Dispose();
+#else
                     reader.Close();
+#endif
             }
         }
     }

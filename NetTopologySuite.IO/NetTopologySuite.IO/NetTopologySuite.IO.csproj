@@ -14,15 +14,16 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NetTopologySuite</RootNamespace>
     <AssemblyName>NetTopologySuite.IO</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion Condition=" '$(TargetFrameworkVersion)' == '' ">v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AtLeast40>true</AtLeast40>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;UseCoordinateBufferPublicly;NET20;NET35;NET40</DefineConstants>
+    <DefineConstants Condition=" '$(DefineConstants)' == '' ">TRACE;DEBUG;UseCoordinateBufferPublicly;NET20;NET35;NET40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -30,7 +31,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
-    <DefineConstants>TRACE;UseCoordinateBufferPublicly,NET20,NET35,NET40</DefineConstants>
+    <DefineConstants Condition=" '$(DefineConstants)' == '' ">TRACE;UseCoordinateBufferPublicly,NET20,NET35,NET40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\NetTopologySuite.IO.xml</DocumentationFile>
@@ -41,67 +42,69 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.XML" />
   </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFrameworkVersion)' != 'v2.0' ">
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="Geometries\CoordinateBuffer.cs" />
-    <Compile Include="IO\BigEndianBinaryReader.cs" />
-    <Compile Include="IO\BigEndianBinaryWriter.cs" />
-    <Compile Include="IO\Dbase\ColumnStructure.cs" />
-    <Compile Include="IO\Dbase\DbaseEncodingUtility.cs" />
-    <Compile Include="IO\Dbase\DbaseFieldDescriptor.cs" />
-    <Compile Include="IO\Dbase\DbaseFileHeader.cs" />
-    <Compile Include="IO\Dbase\DbaseFileReader.cs" />
-    <Compile Include="IO\Dbase\DbaseFileReader.FullFat.cs" />
-    <Compile Include="IO\Dbase\DbaseFileWriter.cs" />
-    <Compile Include="IO\Dbase\RowStructure.cs" />
     <Compile Include="IO\GDB\GDBReader.cs" />
     <Compile Include="IO\GDB\GDBWriter.cs" />
+    <Compile Include="IO\GeoTools\BigEndianBinaryReader.cs" />
+    <Compile Include="IO\GeoTools\BigEndianBinaryWriter.cs" />
+    <Compile Include="IO\GeoTools\Dbase\ColumnStructure.cs" />
+    <Compile Include="IO\GeoTools\Dbase\DbaseEncodingUtility.cs" />
+    <Compile Include="IO\GeoTools\Dbase\DbaseFieldDescriptor.cs" />
+    <Compile Include="IO\GeoTools\Dbase\DbaseFileHeader.cs" />
+    <Compile Include="IO\GeoTools\Dbase\DbaseFileReader.cs" />
+    <Compile Include="IO\GeoTools\Dbase\DbaseFileReader.FullFat.cs" />
+    <Compile Include="IO\GeoTools\Dbase\DbaseFileWriter.cs" />
+    <Compile Include="IO\GeoTools\Dbase\RowStructure.cs" />
+    <Compile Include="IO\GeoTools\Handlers\GeometryInstantiationErrorHandling.cs" />
+    <Compile Include="IO\GeoTools\Handlers\MBRInfo.cs" />
+    <Compile Include="IO\GeoTools\Handlers\MultiLineHandler.cs" />
+    <Compile Include="IO\GeoTools\Handlers\MultiPointHandler.cs" />
+    <Compile Include="IO\GeoTools\Handlers\NullShapeHandler.cs" />
+    <Compile Include="IO\GeoTools\Handlers\PointHandler.cs" />
+    <Compile Include="IO\GeoTools\Handlers\PointMBREnumerator.cs" />
+    <Compile Include="IO\GeoTools\Handlers\PointMBRIterator.cs" />
+    <Compile Include="IO\GeoTools\Handlers\PolygonHandler.cs" />
+    <Compile Include="IO\GeoTools\Handlers\ProbeLinearRing.cs" />
+    <Compile Include="IO\GeoTools\Handlers\ShapeHandler.cs" />
+    <Compile Include="IO\GeoTools\Handlers\ShapeLocationInFileInfo.cs" />
+    <Compile Include="IO\GeoTools\Handlers\ShapeMBREnumerator.cs" />
+    <Compile Include="IO\GeoTools\Handlers\ShapeMBREnumeratorBase.cs" />
+    <Compile Include="IO\GeoTools\Handlers\ShapeMBRIterator.cs" />
+    <Compile Include="IO\GeoTools\Shapefile.cs" />
+    <Compile Include="IO\GeoTools\Shapefile.FullFat.cs" />
+    <Compile Include="IO\GeoTools\ShapefileDataReader.cs" />
+    <Compile Include="IO\GeoTools\ShapefileDataReader.FullFat.cs" />
+    <Compile Include="IO\GeoTools\ShapefileDataWriter.cs" />
+    <Compile Include="IO\GeoTools\ShapefileException.cs" />
+    <Compile Include="IO\GeoTools\ShapefileHeader.cs" />
+    <Compile Include="IO\GeoTools\ShapefileReader.cs" />
+    <Compile Include="IO\GeoTools\ShapefileReader.FullFat.cs" />
+    <Compile Include="IO\GeoTools\ShapefileWriter.cs" />
     <Compile Include="IO\Gpx\GpxSerializationExtensions.cs" />
     <Compile Include="IO\Gpx\GpxTypes.cs" />
-    <Compile Include="IO\Handlers\GeometryInstantiationErrorHandling.cs" />
-    <Compile Include="IO\Handlers\MBRInfo.cs" />
-    <Compile Include="IO\Handlers\MultiLineHandler.cs" />
-    <Compile Include="IO\Handlers\MultiPointHandler.cs" />
-    <Compile Include="IO\Handlers\NullShapeHandler.cs" />
-    <Compile Include="IO\Handlers\PointHandler.cs" />
-    <Compile Include="IO\Handlers\PointMBREnumerator.cs" />
-    <Compile Include="IO\Handlers\PointMBRIterator.cs" />
-    <Compile Include="IO\Handlers\PolygonHandler.cs" />
-    <Compile Include="IO\Handlers\ProbeLinearRing.cs" />
-    <Compile Include="IO\Handlers\ShapeHandler.cs" />
-    <Compile Include="IO\Handlers\ShapeLocationInFileInfo.cs" />
-    <Compile Include="IO\Handlers\ShapeMBREnumerator.cs" />
-    <Compile Include="IO\Handlers\ShapeMBREnumeratorBase.cs" />
-    <Compile Include="IO\Handlers\ShapeMBRIterator.cs" />
     <Compile Include="IO\MsSqlSpatial\MsSqlSpatialReader.cs" />
     <Compile Include="IO\MsSqlSpatial\MsSqlSpatialWriter.cs" />
-    <Compile Include="IO\Shapefile.cs" />
-    <Compile Include="IO\Shapefile.FullFat.cs" />
-    <Compile Include="IO\ShapefileDataReader.cs" />
-    <Compile Include="IO\ShapefileDataReader.FullFat.cs" />
-    <Compile Include="IO\ShapefileDataWriter.cs" />
-    <Compile Include="IO\ShapefileException.cs" />
-    <Compile Include="IO\ShapefileHeader.cs" />
-    <Compile Include="IO\ShapefileReader.cs" />
-    <Compile Include="IO\ShapefileReader.FullFat.cs" />
-    <Compile Include="IO\ShapefileWriter.cs" />
-    <Compile Include="IO\ShapeFile\Extended\DbaseEnumerator.cs" />
-    <Compile Include="IO\ShapeFile\Extended\DbaseReader.cs" />
-    <Compile Include="IO\ShapeFile\Extended\Entities\IShapefileFeature.cs" />
-    <Compile Include="IO\ShapeFile\Extended\Entities\ShapefileFeature.cs" />
-    <Compile Include="IO\ShapeFile\Extended\ShapeDataReader.cs" />
-    <Compile Include="IO\ShapeFile\Extended\ShapeReader.cs" />
+    <Compile Include="IO\PostGis\PostGisGeometryType.cs" />
+    <Compile Include="IO\PostGis\PostGisReader.cs" />
+    <Compile Include="IO\PostGis\PostGisWriter.cs" />
     <Compile Include="IO\ShapeFile\ShapeFileConstants.cs" />
     <Compile Include="IO\ShapeFile\ShapeGeometryType.cs" />
     <Compile Include="IO\ShapeFile\ShapeReader.cs" />
     <Compile Include="IO\ShapeFile\ShapeWriter.cs" />
+    <Compile Include="IO\SpatiaLite\GaiaGeoEnums.cs" />
+    <Compile Include="IO\SpatiaLite\GaiaGeoIO.cs" />
+    <Compile Include="IO\SpatiaLite\GaiaGeoReader.cs" />
+    <Compile Include="IO\SpatiaLite\GaiaGeoWriter.cs" />
     <Compile Include="IO\Streams\ByteStreamProvider.cs" />
-    <Compile Include="PostGis\PostGisGeometryType.cs" />
-    <Compile Include="PostGis\PostGisReader.cs" />
-    <Compile Include="PostGis\PostGisWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\..\SharedAssemblyVersion.cs">
       <Link>Properties\SharedAssemblyVersion.cs</Link>
@@ -110,10 +113,14 @@
     <Compile Include="IO\Streams\IStreamProvider.cs" />
     <Compile Include="IO\Streams\IStreamProviderRegistry.cs" />
     <Compile Include="IO\Streams\ShapefileStreamProviderRegistry.cs" />
-    <Compile Include="SpatiaLite\GaiaGeoEnums.cs" />
-    <Compile Include="SpatiaLite\GaiaGeoIO.cs" />
-    <Compile Include="SpatiaLite\GaiaGeoReader.cs" />
-    <Compile Include="SpatiaLite\GaiaGeoWriter.cs" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(AtLeast40)' == 'true' ">
+    <Compile Include="IO\ShapeFile\Extended\DbaseEnumerator.cs" />
+    <Compile Include="IO\ShapeFile\Extended\DbaseReader.cs" />
+    <Compile Include="IO\ShapeFile\Extended\Entities\IShapefileFeature.cs" />
+    <Compile Include="IO\ShapeFile\Extended\Entities\ShapefileFeature.cs" />
+    <Compile Include="IO\ShapeFile\Extended\ShapeDataReader.cs" />
+    <Compile Include="IO\ShapeFile\Extended\ShapeReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NetTopologySuite\NetTopologySuite.csproj">
@@ -127,11 +134,9 @@
     </None>
     <None Include="IO\packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="IO\GeoTools\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

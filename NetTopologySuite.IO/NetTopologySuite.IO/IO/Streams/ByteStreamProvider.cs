@@ -25,7 +25,11 @@ namespace NetTopologySuite.IO.Streams
         /// <param name="encoding">An encoding to get the bytes.
         ///  If <value>null</value>, <see cref="Encoding.Default"/> is used</param>
         public ByteStreamProvider(string kind, string text, Encoding encoding = null)
+#if !PCL
             :this(kind, (encoding ?? Encoding.Default).GetBytes(text), -1, true)
+#else
+            : this(kind, (encoding ?? Encoding.UTF8).GetBytes(text), -1, true)
+#endif
         {
         }
 
@@ -186,7 +190,11 @@ namespace NetTopologySuite.IO.Streams
         private class ByteStream : MemoryStream
         {
             public ByteStream(ByteStreamProvider provider, bool writable)
+#if !PCL
                 :base(provider.Buffer, 0, writable?provider.MaxLength:provider.Length, writable, true)
+#else
+                :base(provider.Buffer, 0, writable? provider.MaxLength:provider.Length, writable)
+#endif
             {
                 if (writable)
                     base.SetLength(provider.Length);

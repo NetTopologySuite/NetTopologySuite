@@ -1,3 +1,4 @@
+#if !PCL
 using System;
 using System.Collections;
 using System.ComponentModel;
@@ -168,3 +169,4 @@ namespace NetTopologySuite.IO
 		}
 	}
 }
+#endif

@@ -14,10 +14,14 @@
     <Configuration>Release</Configuration>
     <Platform>AnyCPU</Platform>
     <OutputPath>$(MSBuildProjectDirectory)\$(Configuration)\$(Platform)</OutputPath>
-    <FilesToMove/>
-	</PropertyGroup>
+  </PropertyGroup>
 
-	<Target Name="InstallGeoAPI" Condition=" !Exists('$(SolutionDir)packages\GeoAPI.$(geoAPIVersion)') ">
+  <!--<ItemGroup>
+    <JsonToRemove Include="$(MSBuildProjectDirectory)\NetTopologySuite\*.json" />
+    <JsonToRestore Include="$(MSBuildProjectDirectory)\_pj_tmp_\*.json" />
+  </ItemGroup>-->
+
+  <Target Name="InstallGeoAPI" Condition=" !Exists('$(SolutionDir)packages\GeoAPI.$(geoAPIVersion)') ">
 		<Message Text ="Installing correct GeoAPI $(geoApiVersion)!"/>
 		<Message Text ="$(SolutionDir)"/>
 		<Exec Command="$(NuGetCommand) install GeoAPI -version $(geoApiVersion) -o $(SolutionDir)packages"/>
@@ -73,8 +77,8 @@
 		</PropertyGroup>
 		<RemoveDir Directories="$(MSBuildProjectDirectory)\obj\v2.0" ContinueOnError="true"/>
 		<MSBuild Projects="$(SolutionFile)"
-             Targets="NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008"
-             Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v2.0;TargetFrameworkProfile=;DefineConstants=TRACE,NET20;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v2.0\;"
+             Targets="NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008"
+             Properties="AtLeast40=false;fwVersion=$(fwVersion);AllowUnsafeBlocks=true;Configuration=Release;TargetFrameworkVersion=v2.0;TargetFrameworkProfile=;DefineConstants=TRACE,NET20;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v2.0\;"
              RunEachTargetSeparately="true"
 			 ContinueOnError="true"
              />
@@ -85,8 +89,8 @@
 		</PropertyGroup>
 		<RemoveDir Directories="$(MSBuildProjectDirectory)\obj\v3.5" ContinueOnError="true"/>
 		<MSBuild Projects="$(SolutionFile)"
-             Targets="NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008"
-             Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v3.5;TargetFrameworkProfile=Client;DefineConstants=TRACE,NET20,NET35;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v3.5\;"
+             Targets="NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008"
+             Properties="AtLeast40=false;fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v3.5;TargetFrameworkProfile=Client;DefineConstants=TRACE,NET20,NET35;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v3.5\;"
              RunEachTargetSeparately="true"
              ContinueOnError="true" />
 	</Target>
@@ -96,7 +100,7 @@
 		</PropertyGroup>
 		<RemoveDir Directories="$(MSBuildProjectDirectory)\obj\v4.0" ContinueOnError="true"/>
 		<MSBuild Projects="$(SolutionFile)"
-             Targets="NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile_Extended;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008"
+             Targets="NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008"
              Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Client;DefineConstants=TRACE,NET20,NET35,NET40;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v4.0\;"
              RunEachTargetSeparately="true"
              ContinueOnError="true"
@@ -108,7 +112,7 @@
 		</PropertyGroup>
 		<RemoveDir Directories="$(MSBuildProjectDirectory)\obj\v4.0.3" ContinueOnError="true"/>
 		<MSBuild Projects="$(SolutionFile)"
-             Targets="NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile_Extended;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008"
+             Targets="NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008"
              Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v4.0.3;TargetFrameworkProfile=Client;DefineConstants=TRACE,NET20,NET35,NET40;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v4.0.3\;"
              RunEachTargetSeparately="true"
              ContinueOnError="true"
@@ -120,30 +124,38 @@
 		</PropertyGroup>
 		<RemoveDir Directories="$(MSBuildProjectDirectory)\obj\v4.5" ContinueOnError="true"/>
 		<MSBuild Projects="$(SolutionFile)"
-             Targets="NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile;NetTopologySuite_IO\NetTopologySuite_IO_ShapeFile_Extended;NetTopologySuite_IO\NetTopologySuite_IO_GDB;NetTopologySuite_IO\NetTopologySuite_IO_GeoTools;NetTopologySuite_IO\NetTopologySuite_IO_MsSqlSpatial;NetTopologySuite_IO\NetTopologySuite_IO_PostGis;NetTopologySuite_IO\NetTopologySuite_IO_SpatiaLite;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008"
+             Targets="NetTopologySuite;NetTopologySuite_IO\NetTopologySuite_IO_GeoJSON;NetTopologySuite_IO\NetTopologySuite_IO;NetTopologySuite_IO\NetTopologySuite_IO_SqlServer2008"
              Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v4.5;TargetFrameworkProfile=;DefineConstants=TRACE,NET20,NET35,NET40;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\v4.5\;"
              RunEachTargetSeparately="true"
              ContinueOnError="true"
              />
 	</Target>
-	<Target Name="BuildReleasePCL40" DependsOnTargets="RestorePackages">
-    <PropertyGroup>
-      <fwVersion>portable-net40+sl5+wp80+win8+wpa81</fwVersion>
-    </PropertyGroup>
-		<RemoveDir Directories="$(MSBuildProjectDirectory)\obj\PCL40" ContinueOnError="true"/>
-		<MSBuild Projects="$(SolutionFile)"
-             Targets="PCL\NetTopologySuite_PCL;PCL\GeoAPI_Bootstrapper_NetTopologySuite;PCL\NetTopologySuite_IO_SpatiaLite_Pcl;PCL\NetTopologySuite_IO_GeoJSON_Pcl"
-             Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Profile328;DefineConstants=TRACE,PCL,PCL40;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\PCL40\;OutputSubDir=PCL40;"
-             RunEachTargetSeparately="true"
-             ContinueOnError="true"
-             />
+
+	<Target Name="RemoveProjectJson" Condition="!Exists('.\_pj_tmp_')">
+    <ItemGroup>
+			<JsonToRemove Include="NetTopologySuite\*.json" />
+		</ItemGroup>
+    <Message Text="Dateien zum Verschieben:
+@(JsonToRemove, ', ')" />
+    <MakeDir Directories=".\_pj_tmp_" />
+		<Move SourceFiles="@(JsonToRemove)" DestinationFolder=".\_pj_tmp_" />
   </Target>
 
+	<Target Name="RestoreProjectJson" Condition="Exists('.\_pj_tmp_')">
+		<ItemGroup>
+			<JsonToRestore Include="_pj_tmp_\*.json" />
+		</ItemGroup>
+    <Message Text="Dateien zum Verschieben:
+@(JsonToRestore, ', ')" />
+		<Move SourceFiles="@(JsonToRestore)" DestinationFolder=".\NetTopologySuite" />
+		<RemoveDir Directories=".\_pj_tmp_" />
+  </Target>
+
+  <!--
   <ItemGroup>
     <FilesToMove Include="$(MSBuildProjectDirectory)\$(Configuration)\PCL\$(Platform)\*.*" />
   </ItemGroup>
 
-<!--
   <Target Name="SavePCL40">
 
     <RemoveDir Directories="$(MSBuildProjectDirectory)\$(Configuration)\PCL40" ContinueOnError="true"/>
@@ -161,12 +173,26 @@
     </PropertyGroup>
 		<RemoveDir Directories="$(MSBuildProjectDirectory)\obj\PCL" ContinueOnError="true"/>
 		<MSBuild Projects="$(SolutionFile)"
-             Targets="PCL\NetTopologySuite_PCL;PCL\GeoAPI_Bootstrapper_NetTopologySuite;PCL\NetTopologySuite_IO_SpatiaLite_Pcl;PCL\NetTopologySuite_IO_GeoJSON_Pcl"
+             Targets="PCL\NetTopologySuite_PCL;PCL\GeoAPI_Bootstrapper_NetTopologySuite;PCL\NetTopologySuite_IO_Pcl;PCL\NetTopologySuite_IO_GeoJSON_Pcl"
              Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v4.5;TargetFrameworkProfile=Profile259;DefineConstants=TRACE,PCL;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\PCL\"
              RunEachTargetSeparately="true"
              ContinueOnError="true"
              />
 	</Target>
+
+	<Target Name="BuildReleasePCL40" DependsOnTargets="RestorePackages">
+    <PropertyGroup>
+      <fwVersion>portable-net40+sl5+wp80+win8+wpa81</fwVersion>
+    </PropertyGroup>
+		<RemoveDir Directories="$(MSBuildProjectDirectory)\obj\PCL40" ContinueOnError="true"/>
+		<MSBuild Projects="$(SolutionFile)"
+             Targets="PCL\NetTopologySuite_PCL;PCL\GeoAPI_Bootstrapper_NetTopologySuite;PCL\NetTopologySuite_IO_Pcl;PCL\NetTopologySuite_IO_GeoJSON_Pcl"
+             Properties="fwVersion=$(fwVersion);Configuration=Release;TargetFrameworkVersion=v4.0;TargetFrameworkProfile=Profile328;DefineConstants=TRACE,PCL,PCL40;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\obj\PCL40\;OutputSubDir=PCL40;"
+             RunEachTargetSeparately="true"
+             ContinueOnError="true"
+             />
+  </Target>
+
 	<Target Name="BuildSolution" DependsOnTargets="CleanRelease;Information">
 		<MSBuild Projects="$(SolutionFile)"
              Properties="Configuration=Release;"
@@ -190,11 +216,20 @@
              />
 	</Target>
 
-	<Target Name="NuGetPack" DependsOnTargets="RebuildRelease;BuildReleasePCL40;BuildReleasePCL">
+	<Target Name="CallDotnet" DependsOnTargets="RestoreProjectJson">
+		<Exec Command="dotnet --version" />
+    <Exec Command="dotnet restore" />
+    <Exec Command="dotnet build NetTopologySuite --framework netStandard1.0 -o $(SolutionDir)Release\netStandard1.0 -c Release --no-incremental" />
+    <Exec Command="dotnet build NetTopologySuite --framework netStandard1.1 -o $(SolutionDir)Release\netStandard1.1 -c Release --no-incremental" />
+  </Target>
+
+	<Target Name="NuGetPack" DependsOnTargets="RemoveProjectJson;RebuildRelease;BuildReleasePCL40;BuildReleasePCL;CallDotnet">
 		<Exec Command="$(NuGetCommand) update -self"/>
 		<Exec Command="$(NuGetCommand) pack NTS.nuspec -Version $(NuGetVersion) -outputdirectory $(NuGetOutDir) -symbols"/>
 		<Exec Command="$(NuGetCommand) pack NTS.IO.nuspec -Version $(NuGetVersion) -outputdirectory $(NuGetOutDir) -symbols"/>
-		<Exec Command="$(NuGetCommand) pack NTS.IO.SpatiaLite.nuspec -Version $(NuGetVersion) -outputdirectory $(NuGetOutDir) -symbols"/>
+		<!--
+    <Exec Command="$(NuGetCommand) pack NTS.IO.SpatiaLite.nuspec -Version $(NuGetVersion) -outputdirectory $(NuGetOutDir) -symbols"/>
+    -->
 		<Exec Command="$(NuGetCommand) pack NTS.IO.SqlServer.nuspec -Version $(NuGetVersion) -outputdirectory $(NuGetOutDir) -symbols"/>
 		<Exec Command="$(NuGetCommand) pack NTS.IO.GeoJSON.nuspec -Version $(NuGetVersion) -outputdirectory $(NuGetOutDir) -symbols"/>
 	</Target>

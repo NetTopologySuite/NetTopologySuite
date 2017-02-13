@@ -22,6 +22,7 @@ namespace NetTopologySuite.IO
         private DbaseFileHeader _header;
         private bool _headerWritten;
 
+#if !PCL
         /// <summary>
         /// Initializes a new instance of the DbaseFileWriter class with standard windows encoding (CP1252, LATIN1)
         /// </summary>
@@ -40,7 +41,7 @@ namespace NetTopologySuite.IO
             : this(new ShapefileStreamProviderRegistry(filename), encoding)
         {
         }
-
+#endif
         /// <summary>
         /// Initializes a new instance of the DbaseFileWriter class using the provided <paramref name="streamProviderRegistry"/> and the default encoding
         /// </summary>
@@ -97,11 +98,12 @@ namespace NetTopologySuite.IO
             // Set the encoding if not already done.
             if (header.Encoding == null)
                 header.Encoding = _encoding;
-
+#if !PCL
             if (header.Encoding.WindowsCodePage != _encoding.WindowsCodePage)
             {
                 header.Encoding = _encoding;
             }
+#endif
 
             // Get the current position
             var currentPosition = (int)_writer.BaseStream.Position;
@@ -151,7 +153,11 @@ namespace NetTopologySuite.IO
             {
                 var headerField = _header.Fields[i];
 
+#if !PCL
                 if (columnValue == null || columnValue == DBNull.Value)
+#else
+                if (columnValue == null)
+#endif
                 {
                     // Don't corrupt the file by not writing if the value is null.
                     // Instead, treat it like an empty string.
@@ -395,7 +401,11 @@ namespace NetTopologySuite.IO
         /// </summary>
         public void Close()
         {
+#if (NET40 || PCL)
+            _writer.Dispose();
+#else
             _writer.Close();
+#endif
         }
 
         /// <summary>

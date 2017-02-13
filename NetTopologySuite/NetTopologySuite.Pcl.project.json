@@ -1,6 +1,6 @@
 {
   "frameworks": {
-    "net40-client": {}
+    ".NETPortable,Version=v4.5,Profile=Profile259": {}
   },
   "runtimes": {
     "win": {}

@@ -3,7 +3,7 @@
 namespace NetTopologySuite.Mathematics
 {
     /// <summary>
-    /// Implements some 2D matrix operations 
+    /// Implements some 2D matrix operations
     /// (in particular, solving systems of linear equations).
     /// </summary>
     /// <author>Martin Davis</author>
@@ -30,10 +30,10 @@ namespace NetTopologySuite.Mathematics
 
         /// <summary>
         /// Solves a system of equations using Gaussian Elimination.
-        /// In order to avoid overhead the algorithm runs in-place 
+        /// In order to avoid overhead the algorithm runs in-place
         /// on <see paramref="a"/> - if <see paramref="a"/> should not be modified the client must supply a copy.
         /// </summary>
-        /// <param name="a">An nxn matrix in row/column order )modified by this method)</param>
+        /// <param name="a">An nxn matrix in row/column order (modified by this method)</param>
         /// <param name="b">A vector of length n</param>
         /// <returns>A vector containing the solution (if any)<br/>or <value>null</value> if the system has no or no unique solution
         /// </returns>

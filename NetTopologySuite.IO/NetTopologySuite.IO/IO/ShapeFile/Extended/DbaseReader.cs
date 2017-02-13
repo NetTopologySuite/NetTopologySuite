@@ -5,6 +5,9 @@ using System.Globalization;
 using System.IO;
 using NetTopologySuite.Features;
 using NetTopologySuite.IO.Streams;
+#if PCL
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace NetTopologySuite.IO.ShapeFile.Extended
 {

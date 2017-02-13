@@ -11,6 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NetTopologySuite</RootNamespace>
     <AssemblyName>NetTopologySuite</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>

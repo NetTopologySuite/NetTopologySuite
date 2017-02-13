@@ -1,3 +1,4 @@
+#if !PCL
 using System;
 using System.ComponentModel;
 
@@ -21,7 +22,8 @@ namespace NetTopologySuite.IO
 		/// </summary>
         /// <param name="dbaseField"></param>
         /// <param name="index"></param>
-		public ColumnStructure(DbaseFieldDescriptor dbaseField, int index) : base(dbaseField.Name, null)
+		public ColumnStructure(DbaseFieldDescriptor dbaseField, int index) 
+            : base(dbaseField.Name, null)
 		{
 			_dbaseField = dbaseField;
 			_index=index;	
@@ -121,3 +123,4 @@ namespace NetTopologySuite.IO
 		}
 	}
 }
+#endif

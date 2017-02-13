@@ -1,6 +1,6 @@
 {
   "frameworks": {
-    "net35": {}
+    "net35-client": {}
   },
   "runtimes": {
     "win": {}

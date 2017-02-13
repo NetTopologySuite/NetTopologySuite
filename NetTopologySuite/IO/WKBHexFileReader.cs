@@ -43,7 +43,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         public int Offset { get; set; }
 
-#if !(NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_2)
+#if !(PCL || NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_2)
         /// <summary>
         /// Reads a sequence of geometries.<br/>
         /// If an <see cref="Offset"/> is specified, geometries read up to the offset count are skipped.

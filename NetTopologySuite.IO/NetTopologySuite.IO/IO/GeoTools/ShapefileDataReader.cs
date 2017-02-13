@@ -25,7 +25,7 @@ namespace NetTopologySuite.IO
         readonly DbaseFileHeader _dbfHeader;
         readonly int _recordCount = 0;
 
-
+#if !PCL
         /// <summary>
         /// Initializes a new instance of the ShapefileDataReader class.
         /// </summary>
@@ -74,6 +74,7 @@ namespace NetTopologySuite.IO
             _shpEnumerator = _shpReader.GetEnumerator();
             _moreRecords = true;
         }
+#endif
 
         public ShapefileDataReader(IStreamProviderRegistry streamProviderRegistry, IGeometryFactory geometryFactory)
         {

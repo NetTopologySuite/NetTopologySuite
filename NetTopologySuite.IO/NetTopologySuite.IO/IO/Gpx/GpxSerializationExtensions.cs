@@ -1,6 +1,9 @@
-﻿using System.IO;
+﻿#if NET35
+
+using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
+
 #if JSON
 using NetTopologySuite.Features;
 using Newtonsoft.Json;
@@ -91,3 +94,4 @@ namespace NetTopologySuite.IO
         }
     }
 }
+#endif

@@ -15,7 +15,11 @@ namespace NetTopologySuite.IO.Handlers
 
         ~ShapeMBREnumeratorBase()
         {
+#if (NET40 || PCL)
+            Reader.Dispose();
+#else
             Reader.Close();
+#endif
         }
 
         protected BigEndianBinaryReader Reader { get; private set; }
@@ -28,8 +32,13 @@ namespace NetTopologySuite.IO.Handlers
 
         public void Dispose()
         {
+#if (NET40 || PCL)
+            Reader.Dispose();
+#else
             Reader.Close();
+#endif
             GC.SuppressFinalize(this);
+
         }
 
         object System.Collections.IEnumerator.Current

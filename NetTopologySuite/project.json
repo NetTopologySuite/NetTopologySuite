@@ -4,9 +4,38 @@
   "title": "NetTopologySuite",
   "language": "en-US",
   "dependencies": {
-    "GeoAPI": "1.7.5-pre1"
+    "GeoAPI": "1.7.5-pre2"
   },
   "frameworks": {
+    "netstandard1.0": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.1",
+      },
+      "imports": "dnxcore50",
+      "buildOptions": {
+        "allowUnsafe": true,
+        "define": [ "PCL" ],
+        "nowarn": ["CS0168", "CS0219", "CS3001", "CS3002", "CS3003", "CS3024"],
+        "compile" : {
+          "exclude": [ "Utilities/FrameworkReplacements" ],
+        }
+
+      }
+    },
+    "netstandard1.1": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.1",
+      },
+      "imports": "dnxcore50",
+      "buildOptions": {
+        "allowUnsafe": true,
+        "define": [ "PCL" ],
+        "nowarn": ["CS0168", "CS0219", "CS3001", "CS3002", "CS3003", "CS3024"],
+        "compile" : {
+          "exclude": [ "Utilities/FrameworkReplacements" ],
+        }
+      }
+    },
     "net45": {
       "frameworkAssemblies": {
         "System.Numerics": "",
@@ -29,7 +58,7 @@
         "System.Xml.Linq": ""
       },
       "buildOptions": {
-        "defines": [ "NET20;NET35" ],
+        "defines": [ "NET20;NET35;NET40" ],
         "compile" : {
           "exclude": [ "Utilities/FrameworkReplacements" ],
         }
@@ -43,7 +72,7 @@
         "System.Xml.Linq": ""
       },
       "buildOptions": {
-        "defines": [ "NET20;NET35" ],
+        "defines": [ "NET20;NET35;NET40" ],
         "compile" : {
           "exclude": [ "Utilities/FrameworkReplacements" ],
         }
@@ -57,7 +86,7 @@
         "System.Xml.Linq": ""
       },
       "buildOptions": {
-        "defines": [ "NET20" ],
+        "defines": [ "NET20;NET35" ],
         "compile" : {
           "exclude": [ "Utilities/FrameworkReplacements" ],
         }
@@ -69,38 +98,47 @@
       },
       "buildOptions": {
         "allowUnsafe": true,
-      }
-    },
-    "netstandard1.0": {
-      "dependencies": {
-        "NETStandard.Library": "1.6.1"
-      },
-      "imports": "dnxcore50",
-      "buildOptions": {
-        "allowUnsafe": true,
-        "define": [ "PCL" ],
-        "nowarn": ["CS0168", "CS0219", "CS3001", "CS3002", "CS3003", "CS3024"],
+        "defines": [ "NET20" ],
         "compile" : {
-          "exclude": [ "Utilities/FrameworkReplacements" ],
+          "exclude": [ "Extension" ],
         }
       }
     },
-    "netstandard1.1": {
-      "dependencies": {
-        "NETStandard.Library": "1.6.1"
+    ".NETPortable,Version=v4.0,Profile=Profile328": {
+      "frameworkAssemblies": {
+        "System" : "",
+        "System.Core":"",
+        "System.Runtime.Serialization": "",
+        "System.Xml": "",
       },
-      "imports": "dnxcore50",
       "buildOptions": {
         "allowUnsafe": true,
-        "define": [ "PCL" ],
-        "nowarn": ["CS0168", "CS0219", "CS3001", "CS3002", "CS3003", "CS3024"],
+        "define":["PCL;PCL40"],
+        "compile" : {
+      }}
+    },
+    ".NETPortable,Version=v4.5,Profile=Profile259": {
+      "frameworkAssemblies": {
+        "System" : "",
+        "System.Core":"",
+        "System.Diagnostics.Debug": "",
+        "System.Linq":"",
+        "System.Resources.ResourceManager": "",
+        "System.Runtime.Serialization": "",
+        "System.Text.Encoding": "",
+        "System.Text.RegularExpressions": "",
+        "System.Xml": "",
+        "System.Xml.ReaderWriter": "",
+        "System.Xml.Linq": "",
+        "System.Xml.XDocument": ""
+      },
+      "buildOptions": {
+        "allowUnsafe": true,
+        "define":["PCL"],
         "compile" : {
           "exclude": [ "Utilities/FrameworkReplacements" ],
-        }
       }
     },
   },
-  "_buildOptions": {
-    "define": [ "PCL" ]
-  },
+  }
 }

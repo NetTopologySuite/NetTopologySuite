@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !PCL
+using System;
 using System.IO;
 
 namespace NetTopologySuite.IO.Streams
@@ -76,3 +77,4 @@ namespace NetTopologySuite.IO.Streams
         public string Kind { get; private set; }
     }
 }
+#endif

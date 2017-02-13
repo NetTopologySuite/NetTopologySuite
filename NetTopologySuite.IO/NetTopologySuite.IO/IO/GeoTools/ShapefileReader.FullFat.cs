@@ -7,6 +7,7 @@ namespace NetTopologySuite.IO
 {
     public partial class ShapefileReader
     {
+#if !PCL
         /// <summary>
         ///     Initializes a new instance of the Shapefile class with the given parameters.
         /// </summary>
@@ -16,7 +17,7 @@ namespace NetTopologySuite.IO
             : this(new ShapefileStreamProviderRegistry(filename, true), geometryFactory)
         {
         }
-
+#endif
         public ShapefileReader(IStreamProviderRegistry shapeStreamProviderRegistry, IGeometryFactory geometryFactory)
         {
             if (shapeStreamProviderRegistry == null)
@@ -39,7 +40,7 @@ namespace NetTopologySuite.IO
             }
         }
 
-        #region Nested type: ShapefileEnumerator
+#region Nested type: ShapefileEnumerator
 
         /// <summary>
         ///     Summary description for ShapefileEnumerator.
@@ -81,11 +82,16 @@ namespace NetTopologySuite.IO
             /// </summary>
             public void Dispose()
             {
+#if (NET40 || PCL)
+                _shpBinaryReader.Dispose();
+                if (_idxBinaryReader != null) _idxBinaryReader.Dispose();
+#else
                 _shpBinaryReader.Close();
                 if (_idxBinaryReader != null) _idxBinaryReader.Close();
+#endif
             }
         }
 
-        #endregion
+#endregion
     }
 }

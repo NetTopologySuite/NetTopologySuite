@@ -7,7 +7,9 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO.Handlers;
 using NetTopologySuite.IO.Streams;
-
+#if PCL
+using Trace=System.Diagnostics.Debug;
+#endif
 namespace NetTopologySuite.IO
 {
     /// <summary>
@@ -19,7 +21,7 @@ namespace NetTopologySuite.IO
         private readonly IGeometryFactory _geometryFactory;
         private readonly ShapefileHeader _mainHeader;
 
-
+#if !PCL
         /// <summary>
         /// Initializes a new instance of the Shapefile class with the given parameter 
         /// and a standard GeometryFactory.
@@ -27,7 +29,7 @@ namespace NetTopologySuite.IO
         /// <param name="filename">The filename of the shape file to read (with .shp).</param>        
         public ShapefileReader(string filename) :
             this(filename, new GeometryFactory()) { }
-
+#endif
 
         /// <summary>
         /// Gets the bounds of the shape file.
@@ -37,7 +39,7 @@ namespace NetTopologySuite.IO
             get { return _mainHeader; }
         }
 
-        #region IEnumerable Members
+#region IEnumerable Members
 
         /// <summary>
         /// Returns an enumerator that iterates through a collection.
@@ -51,7 +53,7 @@ namespace NetTopologySuite.IO
             return new ShapefileEnumerator(this);
         }
 
-        #endregion
+#endregion
 
         /// <summary>
         /// Reads the shapefile and returns a GeometryCollection representing all the records in the shapefile.
@@ -76,7 +78,7 @@ namespace NetTopologySuite.IO
             return _geometryFactory.CreateGeometryCollection(geomArray);
         }
 
-        #region Nested type: ShapefileEnumerator
+#region Nested type: ShapefileEnumerator
 
         /// <summary>
         /// Summary description for ShapefileEnumerator.
@@ -90,13 +92,13 @@ namespace NetTopologySuite.IO
 
             private IGeometry _geometry;
 
-            #region IDisposable Members
+#region IDisposable Members
 
 
 
-            #endregion
+#endregion
 
-            #region IEnumerator Members
+#region IEnumerator Members
 
             /// <summary>
             /// Sets the enumerator to its initial position, which is 
@@ -171,9 +173,9 @@ namespace NetTopologySuite.IO
                 get { return _geometry; }
             }
 
-            #endregion
+#endregion
         }
 
-        #endregion
+#endregion
     }
 }

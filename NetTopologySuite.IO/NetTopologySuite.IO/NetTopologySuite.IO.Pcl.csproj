@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="$(SolutionDir)BuildTools\GeoAPI.Pcl.Reference.targets" Condition="Exists('$(SolutionDir)BuildTools\GeoAPI.Pcl.Reference.targets')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{35B2C615-63D6-48EC-B553-15ACF121880B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NetTopologySuite</RootNamespace>
+    <AssemblyName>NetTopologySuite.IO</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <fwVersion Condition=" '$(fwVersion)' == '' ">portable-net45+wp80+win8+wpa81</fwVersion>
+    <OutputSubDir Condition=" '$(OutputSubDir)' == '' ">PCL</OutputSubDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>$(SolutionDir)$(Configuration)\$(OutputSubDir)\AnyCPU\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;PCL;UseCoordinateBufferPublicly</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(SolutionDir)$(Configuration)\$(OutputSubDir)\AnyCPU\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>$(SolutionDir)$(Configuration)\$(OutputSubDir)\AnyCPU\NetTopologySuite.IO.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\..\PortableClassLibrary\NetTopologySuite.Pcl\NetTopologySuite.Pcl.csproj">
+      <Project>{c6f14605-0da6-420a-8de7-18b57e9a9c99}</Project>
+      <Name>NetTopologySuite.Pcl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Geometries\CoordinateBuffer.cs" />
+    <Compile Include="IO\GDB\GDBReader.cs" />
+    <Compile Include="IO\GDB\GDBWriter.cs" />
+    <Compile Include="IO\GeoTools\BigEndianBinaryReader.cs" />
+    <Compile Include="IO\GeoTools\BigEndianBinaryWriter.cs" />
+    <Compile Include="IO\GeoTools\Dbase\ColumnStructure.cs" />
+    <Compile Include="IO\GeoTools\Dbase\DbaseEncodingUtility.cs" />
+    <Compile Include="IO\GeoTools\Dbase\DbaseFieldDescriptor.cs" />
+    <Compile Include="IO\GeoTools\Dbase\DbaseFileHeader.cs" />
+    <Compile Include="IO\GeoTools\Dbase\DbaseFileReader.cs" />
+    <Compile Include="IO\GeoTools\Dbase\DbaseFileReader.FullFat.cs" />
+    <Compile Include="IO\GeoTools\Dbase\DbaseFileWriter.cs" />
+    <Compile Include="IO\GeoTools\Dbase\RowStructure.cs" />
+    <Compile Include="IO\GeoTools\Handlers\GeometryInstantiationErrorHandling.cs" />
+    <Compile Include="IO\GeoTools\Handlers\MBRInfo.cs" />
+    <Compile Include="IO\GeoTools\Handlers\MultiLineHandler.cs" />
+    <Compile Include="IO\GeoTools\Handlers\MultiPointHandler.cs" />
+    <Compile Include="IO\GeoTools\Handlers\NullShapeHandler.cs" />
+    <Compile Include="IO\GeoTools\Handlers\PointHandler.cs" />
+    <Compile Include="IO\GeoTools\Handlers\PointMBREnumerator.cs" />
+    <Compile Include="IO\GeoTools\Handlers\PointMBRIterator.cs" />
+    <Compile Include="IO\GeoTools\Handlers\PolygonHandler.cs" />
+    <Compile Include="IO\GeoTools\Handlers\ProbeLinearRing.cs" />
+    <Compile Include="IO\GeoTools\Handlers\ShapeHandler.cs" />
+    <Compile Include="IO\GeoTools\Handlers\ShapeLocationInFileInfo.cs" />
+    <Compile Include="IO\GeoTools\Handlers\ShapeMBREnumerator.cs" />
+    <Compile Include="IO\GeoTools\Handlers\ShapeMBREnumeratorBase.cs" />
+    <Compile Include="IO\GeoTools\Handlers\ShapeMBRIterator.cs" />
+    <Compile Include="IO\GeoTools\Shapefile.cs" />
+    <Compile Include="IO\GeoTools\Shapefile.FullFat.cs" />
+    <Compile Include="IO\GeoTools\ShapefileDataReader.cs" />
+    <Compile Include="IO\GeoTools\ShapefileDataReader.FullFat.cs" />
+    <Compile Include="IO\GeoTools\ShapefileDataWriter.cs" />
+    <Compile Include="IO\GeoTools\ShapefileException.cs" />
+    <Compile Include="IO\GeoTools\ShapefileHeader.cs" />
+    <Compile Include="IO\GeoTools\ShapefileReader.cs" />
+    <Compile Include="IO\GeoTools\ShapefileReader.FullFat.cs" />
+    <Compile Include="IO\GeoTools\ShapefileWriter.cs" />
+    <Compile Include="IO\Gpx\GpxSerializationExtensions.cs" />
+    <Compile Include="IO\Gpx\GpxTypes.cs" />
+    <Compile Include="IO\MsSqlSpatial\MsSqlSpatialReader.cs" />
+    <Compile Include="IO\MsSqlSpatial\MsSqlSpatialWriter.cs" />
+    <Compile Include="IO\PostGis\PostGisGeometryType.cs" />
+    <Compile Include="IO\PostGis\PostGisReader.cs" />
+    <Compile Include="IO\PostGis\PostGisWriter.cs" />
+    <Compile Include="IO\ShapeFile\ShapeFileConstants.cs" />
+    <Compile Include="IO\ShapeFile\ShapeGeometryType.cs" />
+    <Compile Include="IO\ShapeFile\ShapeReader.cs" />
+    <Compile Include="IO\ShapeFile\ShapeWriter.cs" />
+    <Compile Include="IO\SpatiaLite\GaiaGeoEnums.cs" />
+    <Compile Include="IO\SpatiaLite\GaiaGeoIO.cs" />
+    <Compile Include="IO\SpatiaLite\GaiaGeoReader.cs" />
+    <Compile Include="IO\SpatiaLite\GaiaGeoWriter.cs" />
+    <Compile Include="IO\Streams\ByteStreamProvider.cs" />
+    <Compile Include="IO\Streams\FileStreamProvider.cs" />
+    <Compile Include="IO\Streams\IStreamProvider.cs" />
+    <Compile Include="IO\Streams\IStreamProviderRegistry.cs" />
+    <Compile Include="IO\Streams\ShapefileStreamProviderRegistry.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\SharedAssemblyVersion.cs">
+      <Link>Properties\SharedAssemblyVersion.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(AtLeast40)' == 'true' ">
+    <Compile Include="IO\ShapeFile\Extended\DbaseEnumerator.cs" />
+    <Compile Include="IO\ShapeFile\Extended\DbaseReader.cs" />
+    <Compile Include="IO\ShapeFile\Extended\Entities\IShapefileFeature.cs" />
+    <Compile Include="IO\ShapeFile\Extended\Entities\ShapefileFeature.cs" />
+    <Compile Include="IO\ShapeFile\Extended\ShapeDataReader.cs" />
+    <Compile Include="IO\ShapeFile\Extended\ShapeReader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="IO\Gpx\GpxTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="IO\packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -171,7 +171,7 @@ namespace NetTopologySuite.IO
                     return null;
             }
         }
-
+#if !PCL
         /// <summary>
         ///     Returns an ShapefileDataReader representing the data in a shapefile.
         /// </summary>
@@ -188,6 +188,7 @@ namespace NetTopologySuite.IO
                     new ShapefileStreamProviderRegistry(new FileStreamProvider(StreamTypes.Shape, filename + ".shp", true),
                         new FileStreamProvider(StreamTypes.Data, filename + ".dbf", true), true, true), geometryFactory);
         }
+#endif
 
         public static ShapefileDataReader CreateDataReader(IStreamProviderRegistry streamProviderRegistry,
             GeometryFactory geometryFactory)

@@ -15,8 +15,11 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// The default Encoding
         /// </summary>
+#if !PCL
         public static Encoding DefaultEncoding { get; set; } = Encoding.Default;
-
+#else
+        public static Encoding DefaultEncoding { get; set; } = Encoding.GetEncoding(string.Empty);
+#endif
         /// <summary>
         /// Association of language driver id (ldid) to encoding
         /// </summary>
@@ -98,8 +101,13 @@ namespace NetTopologySuite.IO
 
             // Add ANSI values 3 and 0x57 as system's default encoding, and 0 which means no encoding.
             AddLdidEncodingPair(0, Encoding.UTF8);
+#if !PCL
             AddLdidEncodingPair(0x03, Encoding.Default);
             AddLdidEncodingPair(0x57, Encoding.Default);
+#else
+            AddLdidEncodingPair(0x03, Encoding.GetEncoding(string.Empty));
+            AddLdidEncodingPair(0x57, Encoding.GetEncoding(string.Empty));
+#endif
         }
         /*
         private static void AddLdidEncodingPair(byte ldid, int codePage)
@@ -154,7 +162,7 @@ namespace NetTopologySuite.IO
             catch { return false; }
         }
         */
-
+#if !PCL
         private static void RegisterEncodings(object[][] ldidCodePagePairs)
         {
             var tmp = new Dictionary<int, EncodingInfo>();
@@ -176,6 +184,11 @@ namespace NetTopologySuite.IO
                 }
             }
         }
-
+#else
+        private static void RegisterEncodings(object[][] ldidCodePagePairs)
+        {
+            // ToDo: For PCL
+        }
+#endif
     }
 }

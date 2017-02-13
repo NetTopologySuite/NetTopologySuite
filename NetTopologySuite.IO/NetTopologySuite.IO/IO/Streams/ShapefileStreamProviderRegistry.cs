@@ -47,6 +47,7 @@ namespace NetTopologySuite.IO.Streams
     {
         private IStreamProvider _dataEncodingStream;
 
+#if !PCL
         /// <summary>
         /// Creates an instance of this class
         /// </summary>
@@ -87,6 +88,7 @@ namespace NetTopologySuite.IO.Streams
             if (File.Exists(tmpPath))
                 SpatialIndexIndexStream = new FileStreamProvider(StreamTypes.SpatialIndexIndex, tmpPath);
         }
+#endif
 
         /// <summary>
         /// Creates an instance of this class
@@ -211,7 +213,7 @@ namespace NetTopologySuite.IO.Streams
         }
 
         /*
-        #region IDisposable implementation
+#region IDisposable implementation
         public void Dispose()
         {
             Dispose(true);
@@ -242,7 +244,7 @@ namespace NetTopologySuite.IO.Streams
             if (provider is IDisposable)
                 ((IDisposable)provider).Dispose();
         }
-        #endregion
+#endregion
         */
     }
 }

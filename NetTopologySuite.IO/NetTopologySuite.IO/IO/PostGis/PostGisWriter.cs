@@ -95,7 +95,11 @@ namespace NetTopologySuite.IO
             finally
             {
                 if (writer != null)
+#if (NET40 || PCL)
+                    writer.Dispose();
+#else
                     writer.Close();
+#endif
             }
         }
 

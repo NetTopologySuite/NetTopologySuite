@@ -83,7 +83,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.SpatiaL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI.BootStrapper.NetTopologySuite", "PortableClassLibrary\GeoAPI.Bootstrapper.NetTopologySuite\GeoAPI.BootStrapper.NetTopologySuite.csproj", "{8353362C-192B-4EDF-A50D-C36B21470D76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.GeoJSON.Pcl", "NetTopologySuite.IO\NetTopologySuite.IO.GeoJSON.Pcl\NetTopologySuite.IO.GeoJSON.Pcl.csproj", "{EDCD0BD3-164D-4D8F-935B-CE2ECB7DAE4F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.GeoJSON.Pcl", "NetTopologySuite.IO\NetTopologySuite.IO.GeoJSON\NetTopologySuite.IO.GeoJSON.Pcl.csproj", "{EDCD0BD3-164D-4D8F-935B-CE2ECB7DAE4F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GeoAPI", "GeoAPI", "{47BCD40A-C4CF-4E5D-BC90-0491DAC12778}"
 	ProjectSection(SolutionItems) = preProject
@@ -98,6 +98,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.Streams.CloudStorage", "NetTopologySuite.IO\NetTopologySuite.IO.Streams.CloudStorage\NetTopologySuite.IO.Streams.CloudStorage.csproj", "{CE217A88-7F50-4DE6-BC79-4AC863347A10}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.Streams.CloudStorage.Test", "NetTopologySuite.IO\NetTopologySuite.IO.Streams.CloudStorage.Test\NetTopologySuite.IO.Streams.CloudStorage.Test.csproj", "{A9CE2741-A5B9-4D43-91CF-ECA6BC344A1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.IO.Pcl", "NetTopologySuite.IO\NetTopologySuite.IO\NetTopologySuite.IO.Pcl.csproj", "{35B2C615-63D6-48EC-B553-15ACF121880B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -257,6 +259,12 @@ Global
 		{A9CE2741-A5B9-4D43-91CF-ECA6BC344A1B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A9CE2741-A5B9-4D43-91CF-ECA6BC344A1B}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
 		{A9CE2741-A5B9-4D43-91CF-ECA6BC344A1B}.ReleaseLinux|Any CPU.Build.0 = Release|Any CPU
+		{35B2C615-63D6-48EC-B553-15ACF121880B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35B2C615-63D6-48EC-B553-15ACF121880B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35B2C615-63D6-48EC-B553-15ACF121880B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35B2C615-63D6-48EC-B553-15ACF121880B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35B2C615-63D6-48EC-B553-15ACF121880B}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
+		{35B2C615-63D6-48EC-B553-15ACF121880B}.ReleaseLinux|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -287,5 +295,6 @@ Global
 		{47BCD40A-C4CF-4E5D-BC90-0491DAC12778} = {A11130E8-4942-432A-97B7-ADEEFB34A977}
 		{CE217A88-7F50-4DE6-BC79-4AC863347A10} = {54E50C1C-BB10-4DDC-86BD-CA29FB91A89E}
 		{A9CE2741-A5B9-4D43-91CF-ECA6BC344A1B} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
+		{35B2C615-63D6-48EC-B553-15ACF121880B} = {3BFAD56F-221B-432B-B921-6AFDAE9C9CC2}
 	EndGlobalSection
 EndGlobal

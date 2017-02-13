@@ -278,7 +278,7 @@ namespace NetTopologySuite.IO.Handlers
         }
 
         /// <summary>
-        // Function to determine whether this handler might supply an m-ordinate value
+        /// Function to determine whether this handler might supply an m-ordinate value
         /// </summary>
         /// <returns><value>true</value> if <see cref="ShapeType"/> is one of 
         /// <list type="Bullet">

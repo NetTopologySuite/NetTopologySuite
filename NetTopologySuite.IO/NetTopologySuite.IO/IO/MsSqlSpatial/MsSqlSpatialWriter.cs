@@ -31,9 +31,13 @@ namespace NetTopologySuite.IO
 			}
 			finally
 			{
-				if (writer != null)
-					writer.Close();
-			}
-		}
+			    if (writer != null)
+#if (NET40 || PCL)
+                    writer.Dispose();
+#else
+                    writer.Close();
+#endif
+            }
+        }
 	}
 }

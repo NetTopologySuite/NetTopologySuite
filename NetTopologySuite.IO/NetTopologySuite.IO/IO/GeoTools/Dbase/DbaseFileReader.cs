@@ -4,7 +4,9 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using NetTopologySuite.IO.Streams;
-
+#if PCL
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 namespace NetTopologySuite.IO
 {
     /// <summary>
@@ -16,6 +18,49 @@ namespace NetTopologySuite.IO
         private readonly IStreamProvider _encodingProvider;
 
         private DbaseFileHeader _header;
+
+        /// <summary>
+        /// Initializes a new instance of the DbaseFileReader class.
+        /// </summary>
+        /// <param name="streamProviderRegistry">A stream provider registry</param>
+        public DbaseFileReader(IStreamProviderRegistry streamProviderRegistry)
+        {
+            if (streamProviderRegistry == null)
+                throw new ArgumentNullException("streamProviderRegistry");
+
+            _streamProvider = streamProviderRegistry[StreamTypes.Data];
+            if (_streamProvider == null)
+                throw new ArgumentException("Stream provider registry does not provide a data stream provider", "streamProviderRegistry");
+
+            if (_streamProvider.Kind != StreamTypes.Data)
+                throw new ArgumentException(string.Format(
+                    "Misconfigured stream provider registry does provide a {0} stream provider when requested data stream provider",
+                    _streamProvider.Kind), "streamProviderRegistry");
+
+            _encodingProvider = streamProviderRegistry[StreamTypes.DataEncoding];
+            if (_encodingProvider != null && _encodingProvider.Kind != StreamTypes.DataEncoding)
+                throw new ArgumentException(string.Format(
+                    "Misconfigured stream provider registry does provide a {0} stream provider when requested data encoding stream provider",
+                    _streamProvider.Kind), "streamProviderRegistry");
+        }
+
+        /// <summary>
+        /// Gets the header information for the dbase file.
+        /// </summary>
+        /// <returns>DbaseFileHeader contain header and field information.</returns>
+        public DbaseFileHeader GetHeader()
+        {
+            if (_header == null)
+            {
+                using (var dbfReader = new BinaryReader(_streamProvider.OpenRead()))
+                {
+                    // read the header
+                    _header = new DbaseFileHeader();
+                    _header.ReadHeader(dbfReader, _encodingProvider);
+                }
+            }
+            return _header;
+        }
 
         #region Implementation of IEnumerable
 
@@ -44,6 +89,17 @@ namespace NetTopologySuite.IO
             private readonly DbaseFileReader _parent;
             private int _readPosition;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="DbaseFileEnumerator"/> class.
+            /// </summary>
+            /// <param name="parent"></param>
+            public DbaseFileEnumerator(DbaseFileReader parent)
+            {
+                _parent = parent;
+                Stream stream = parent._streamProvider.OpenRead();
+                _dbfReader = new BinaryReader(stream, parent._header.Encoding);
+                ReadHeader();
+            }
             #region Implementation of IEnumerator
 
             /// <summary>
@@ -244,6 +300,18 @@ namespace NetTopologySuite.IO
                 return attrs;
             }
 
+            /// <summary>
+            /// Performs application-defined tasks associated with freeing, releasing, 
+            /// or resetting unmanaged resources.
+            /// </summary>
+            public void Dispose()
+            {
+#if (NET40 || PCL)
+                _dbfReader.Dispose();
+#else
+                _dbfReader.Close();
+#endif
+            }
             #endregion
         }
 
@@ -252,26 +320,7 @@ namespace NetTopologySuite.IO
         #endregion
 
         #region Methods
-        #region Stream provider regsitry utility functions
-        static IStreamProviderRegistry CreateStreamProviderRegistry(string dbfPath)
-        {
-            var dbfStreamProvider = new FileStreamProvider(StreamTypes.Data, dbfPath, true);
-            var cpgPath = Path.ChangeExtension(dbfPath, "cpg");
-            IStreamProvider cpgStreamProvider = null;
-            if (File.Exists(cpgPath))
-                cpgStreamProvider = new FileStreamProvider(StreamTypes.DataEncoding, cpgPath, true);
 
-            return new ShapefileStreamProviderRegistry(null, dbfStreamProvider, null, dataEncodingStream: cpgStreamProvider);
-        }
-
-        static IStreamProviderRegistry CreateStreamProviderRegistry(string dbfPath, Encoding encoding)
-        {
-            var dbfStreamProvider = new FileStreamProvider(StreamTypes.Data, dbfPath, true);
-            var cpgStreamProvider = new ByteStreamProvider(StreamTypes.DataEncoding, encoding.EncodingName);
-
-            return new ShapefileStreamProviderRegistry(null, dbfStreamProvider, null, dataEncodingStream: cpgStreamProvider);
-        }
-        #endregion
-        #endregion
+#endregion
     }
 }

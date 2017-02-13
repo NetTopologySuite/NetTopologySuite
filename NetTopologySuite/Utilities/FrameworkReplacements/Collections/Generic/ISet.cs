@@ -1,4 +1,5 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
+﻿#if (NET20 && !NET35)
+// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Runtime.CompilerServices;
@@ -46,3 +47,4 @@ namespace System.Collections.Generic
         bool SetEquals(IEnumerable<T> other);
     }
 }
+#endif

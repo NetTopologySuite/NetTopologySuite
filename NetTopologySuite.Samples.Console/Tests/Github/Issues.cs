@@ -8621,6 +8621,51 @@ namespace NetTopologySuite.Samples.Tests.Github
             Assert.That(fc, Is.Not.Null);
         }
 
+        [Test, Category("GitHub Issue"), Description("Polygon / rectangle intersection returns empty polygon"), Ignore("Claim not valid")]
+        public void TestIssue149()
+        {
+            var wktreader = new WKTReader();
+            var polygon = wktreader.Read(@"POLYGON ((-62.327500000000008 77.777166176470587,
+ -62.327500000000008 191.08,
+ -39.425176714633878 191.08,
+ 30.449401394787785 111.06902734290135,
+ 34.240621449176217 85.17199763498823,
+ 32.474968591813237 66.628747810197453,
+ 29.724407935551895 56.755281980420541,
+ 10.963366463822565 52.502595315049426,
+ -62.327500000000008 77.777166176470587))");
+
+            Assert.IsTrue(polygon.IsValid);
+            Assert.IsFalse(polygon.IsEmpty);
+
+            var boundingbox = wktreader.Read(@"POLYGON ((-52.5 -34, -52.5 34, 52.5 34, 52.5 -34, -52.5 -34))");
+            Assert.IsTrue(boundingbox.IsValid);
+            Assert.IsFalse(boundingbox.IsEmpty);
+
+            //ToImage(1, polygon, boundingbox, boundingbox.Intersection(polygon));
+            //Assert.IsTrue(polygon.Intersects(boundingbox));
+
+
+            var result = boundingbox.Intersection(polygon); // =>{ POLYGON EMPTY }
+            //Assert.IsFalse(result.IsEmpty, "result.IsEmpty");
+            var resultInverted = polygon.Intersection(boundingbox); // => { POLYGON EMPTY }
+            //Assert.IsFalse(resultInverted.IsEmpty, "result.IsEmpty");
+        }
+
+        [Test, Description("TopologyException when generating a VoronoiDiagram")]
+        public void TestIssue151()
+        {
+            var wktreader = new WKTReader();
+            var polygon = wktreader.Read("POLYGON((14.7119 201.6703, 74.2154 201.6703, 74.2154 166.6391, 14.7119 166.6391, 14.7119 201.6703))");
+
+            Assert.IsTrue(polygon.IsValid);
+            var vdb = new NetTopologySuite.Triangulate.VoronoiDiagramBuilder();
+            vdb.SetSites(polygon);
+            IGeometry result = null;
+            Assert.DoesNotThrow(() => result= vdb.GetDiagram(polygon.Factory));
+            Assert.IsNotNull(result);
+        }
+
         static void ToImage(int nr, IGeometry geom1, IGeometry geom2, IGeometry geom3)
         {
 

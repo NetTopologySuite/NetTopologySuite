@@ -41,7 +41,9 @@ namespace NetTopologySuite.IO
 			_fileLength = shpBinaryReader.ReadInt32BE();
 
 			_version = shpBinaryReader.ReadInt32();
-			Debug.Assert(_version == 1000, "Shapefile version", String.Format("Expecting only one version (1000), but got {0}",_version));
+            if (_version != 1000)
+                throw new ShapefileException(String.Format("Invalid Shapefile version. Expecting only one version (1000), but got {0}", _version));
+            //Debug.Assert(_version == 1000, "Shapefile version", String.Format("Expecting only one version (1000), but got {0}",_version));
 			int shapeType = shpBinaryReader.ReadInt32();
             _shapeType = (ShapeGeometryType) EnumUtility.Parse(typeof(ShapeGeometryType), shapeType.ToString());
 

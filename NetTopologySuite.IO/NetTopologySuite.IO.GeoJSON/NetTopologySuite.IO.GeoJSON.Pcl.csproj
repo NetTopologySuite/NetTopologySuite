@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="$(SolutionDir)BuildTools\GeoAPI.Pcl.Reference.targets" Condition="Exists('$(SolutionDir)BuildTools\GeoAPI.Pcl.Reference.targets')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <!-- Define SolutionDir if not already set -->
+    <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\..\</SolutionDir>
+    <fwVersion Condition=" '$(fwVersion)' == '' ">portable-net45+wp80+win8+wpa81</fwVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EDCD0BD3-164D-4D8F-935B-CE2ECB7DAE4F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NetTopologySuite.IO.GeoJSON</RootNamespace>
+    <AssemblyName>NetTopologySuite.IO.GeoJSON</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <OutputSubDir Condition=" '$(OutputSubDir)' == '' ">PCL</OutputSubDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>$(SolutionDir)Debug\$(OutputSubDir)\AnyCPU\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;PCL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(SolutionDir)Release\$(OutputSubDir)\AnyCPU\</OutputPath>
+    <DefineConstants>TRACE;PCL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Release\$(OutputSubDir)\AnyCPU\NetTopologySuite.IO.GeoJSON.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\$(fwVersion)\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <Compile Include="..\..\SharedAssemblyVersion.cs">
+      <Link>Properties\SharedAssemblyVersion.cs</Link>
+    </Compile>
+    <Compile Include="Converters\TypeExtensions.cs" />
+    <Compile Include="Converters\AttributesTableConverter.cs" />
+    <Compile Include="Converters\CoordinateConverters.cs" />
+    <Compile Include="Converters\EnvelopeConverter.cs" />
+    <Compile Include="Converters\FeatureCollectionConverter.cs" />
+    <Compile Include="Converters\FeatureConverter.cs" />
+      <Compile Include="Converters\GeometryArrayConverter.cs" />
+    <Compile Include="Converters\GeometryConverter.cs" />
+    <Compile Include="Converters\ICRSObjectConverter.cs" />
+    <Compile Include="GeoJsonObjectType.cs" />
+    <Compile Include="GeoJsonReader.cs" />
+    <Compile Include="GeoJsonSerializer.cs" />
+    <Compile Include="GeoJsonWriter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs /">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\PortableClassLibrary\NetTopologySuite.Pcl\NetTopologySuite.Pcl.csproj">
+      <Project>{c6f14605-0da6-420a-8de7-18b57e9a9c99}</Project>
+      <Name>NetTopologySuite.Pcl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

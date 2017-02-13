@@ -1,6 +1,6 @@
 {
   "frameworks": {
-    "net403": {}
+    "net403-client": {}
   },
   "runtimes": {
     "win": {}

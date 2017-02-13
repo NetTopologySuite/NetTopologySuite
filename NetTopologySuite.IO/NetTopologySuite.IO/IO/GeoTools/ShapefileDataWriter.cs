@@ -2,12 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using GeoAPI.Geometries;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO.Streams;
-
+#if PCL
+using ApplicationException=System.Exception;
+#endif
 namespace NetTopologySuite.IO
 {
     /// <summary>
@@ -50,7 +53,7 @@ namespace NetTopologySuite.IO
             }
             return header;
         }
-
+#if !PCL
         /// <summary>
         /// Gets the header from a dbf file.
         /// </summary>
@@ -60,7 +63,7 @@ namespace NetTopologySuite.IO
         {
             return GetHeader(new ShapefileStreamProviderRegistry(dbfFile, false, true, false));
         }
-
+#endif
         public static DbaseFileHeader GetHeader(IStreamProviderRegistry streamProviderRegistry)
         {
 
@@ -68,7 +71,11 @@ namespace NetTopologySuite.IO
 
             using (var stream = streamProviderRegistry[StreamTypes.Data].OpenRead())
             using (var reader = new BinaryReader(stream))
-                header.ReadHeader(reader, streamProviderRegistry[StreamTypes.Data] is FileStreamProvider ? ((FileStreamProvider)streamProviderRegistry[StreamTypes.Data]).Path : null);
+/*
+                header.ReadHeader(reader, streamProviderRegistry[StreamTypes.Data] is FileStreamProvider 
+                    ? ((FileStreamProvider)streamProviderRegistry[StreamTypes.Data]).Path
+                    : null);
+                    */
             return header;
         }
 
@@ -83,7 +90,7 @@ namespace NetTopologySuite.IO
             return header;
         }
 
-        #endregion
+#endregion
 
         private const int DoubleLength = 18;
         private const int DoubleDecimals = 8;
@@ -128,6 +135,7 @@ namespace NetTopologySuite.IO
             set { _geometryFactory = value; }
         }
 
+#if !PCL
         /// <summary>
         /// Initializes a new instance of the <see cref="ShapefileDataWriter"/> class.
         /// </summary>
@@ -150,6 +158,7 @@ namespace NetTopologySuite.IO
         {
 
         }
+#endif
 
         public ShapefileDataWriter(IStreamProviderRegistry streamProviderRegistry, IGeometryFactory geometryFactory, Encoding encoding)
         {
@@ -174,11 +183,16 @@ namespace NetTopologySuite.IO
 #if DEBUG
             // Test if all elements of the collections are features
             foreach (object obj in featureCollection)
+#if PCL && !PCL40
+                if (obj.GetType().GetTypeInfo().IsAssignableFrom(typeof(IFeature).GetTypeInfo()))
+#else
                 if (obj.GetType().IsAssignableFrom(typeof(IFeature)))
-                    throw new ArgumentException("All the elements in the given collection must be " + typeof(IFeature).Name);
 #endif
 
-            try
+                throw new ArgumentException("All the elements in the given collection must be " + typeof(IFeature).Name);
+#endif
+
+                    try
             {
                 // Write shp and shx  
                 var geometries = new IGeometry[featureCollection.Count];
@@ -192,7 +206,7 @@ namespace NetTopologySuite.IO
                 foreach (IFeature feature in featureCollection)
                 {
                     var attribs = feature.Attributes;
-                    ArrayList values = new ArrayList();
+                    var values = new List<object>();
                     for (int i = 0; i < Header.NumFields; i++)
                         values.Add(attribs[Header.Fields[i].Name]);
                     _dbaseWriter.Write(values);

@@ -3,7 +3,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using NetTopologySuite.IO.Streams;
-
+#if !PCL
+using Trace = System.Diagnostics.Trace;
+#else
+using Trace = System.Diagnostics.Debug;
+#endif
 namespace NetTopologySuite.IO
 {
     /// <summary>
@@ -258,10 +262,12 @@ namespace NetTopologySuite.IO
         /// <param name="filename">Filename </param>
         public void ReadHeader(BinaryReader reader, string filename)
         {
-            var tmpPath = Path.ChangeExtension(filename, "cpg");
             IStreamProvider cpgStreamProvider = null;
+#if !PCL
+            var tmpPath = Path.ChangeExtension(filename, "cpg");
             if (File.Exists(tmpPath))
                 cpgStreamProvider = new FileStreamProvider(StreamTypes.DataEncoding, tmpPath);
+#endif
             ReadHeader(reader, cpgStreamProvider);
         }
 

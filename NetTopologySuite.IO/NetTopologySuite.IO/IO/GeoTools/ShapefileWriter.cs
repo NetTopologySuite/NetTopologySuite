@@ -29,6 +29,7 @@ namespace NetTopologySuite.IO
 
         private int _numFeaturesWritten;
 
+#if !PCL
         /// <summary>
         /// Initializes a buffered writer where you can write shapes individually to the file.
         /// </summary>
@@ -39,12 +40,21 @@ namespace NetTopologySuite.IO
         {
         }
 
+        /// Initializes a buffered writer where you can write shapes individually to the file.
+        /// </summary>
+        /// <param name="filename">The filename</param>
+        /// <param name="geomType">The geometry type</param>
         public ShapefileWriter(IGeometryFactory geometryFactory, string filename, ShapeGeometryType geomType)
             : this(geometryFactory, new ShapefileStreamProviderRegistry(filename, false, false, false), geomType)
         {
 
         }
-
+#endif
+        /// <summary>
+        /// Initializes a buffered writer where you can write shapes individually to the file.
+        /// </summary>
+        /// <param name="geometryFactory">The filename</param>
+        /// <param name="geomType">The geometry type</param>
         public ShapefileWriter(IGeometryFactory geometryFactory, IStreamProviderRegistry streamProviderRegistry,
             ShapeGeometryType geomType)
             : this(geometryFactory)
@@ -97,6 +107,29 @@ namespace NetTopologySuite.IO
                 }
             }
 
+#if (NET40 || PCL)
+            if (_shpBinaryWriter != null)
+            {
+                _shpBinaryWriter.Dispose();//Close();
+                _shpBinaryWriter = null;
+            }
+            if (_shxBinaryWriter != null)
+            {
+                _shxBinaryWriter.Dispose();
+                _shxBinaryWriter = null;
+            }
+            if (_shpStream != null)
+            {
+                _shpStream.Dispose();
+                _shpStream = null;
+            }
+
+            if (_shxStream != null)
+            {
+                _shxStream.Dispose();
+                _shxStream = null;
+            }
+#else
             if (_shpBinaryWriter != null)
             {
                 _shpBinaryWriter.Close();
@@ -118,6 +151,7 @@ namespace NetTopologySuite.IO
                 _shxStream.Close();
                 _shxStream = null;
             }
+#endif
         }
 
         /// <summary>
@@ -143,7 +177,7 @@ namespace NetTopologySuite.IO
                 _totalEnvelope.ExpandToInclude(bounds);
             }
         }
-
+#if !PCL
         /// <summary>
         /// Method to write a collection of <see cref="IGeometry"/>s to a file named <paramref name="filename"/>
         /// </summary>
@@ -184,6 +218,7 @@ namespace NetTopologySuite.IO
                 geometryCollection, writeDummyDbf);
 
         }
+#endif
 
         public static void WriteGeometryCollection(IStreamProviderRegistry streamProviderRegistry,
             IGeometryCollection geometryCollection, bool createDummyDbf = true)
@@ -298,7 +333,7 @@ namespace NetTopologySuite.IO
             // in the collection.
             shpHeader.Write(shpBinaryWriter);
         }
-
+#if !PCL
         /// <summary>
         /// Method to write a dummy dbf file
         /// </summary>
@@ -314,7 +349,7 @@ namespace NetTopologySuite.IO
                 WriteDummyDbf(dbfWriter, recordCount);
             }
         }
-
+#endif
         /// <summary>
         /// Method to write a dummy dbase file
         /// </summary>
@@ -361,6 +396,7 @@ namespace NetTopologySuite.IO
             Close();
         }
 
+#if !PCL
         /// <summary>
         /// Write the enumeration of features to shapefile (shp, shx and dbf)
         /// </summary>
@@ -413,5 +449,6 @@ namespace NetTopologySuite.IO
                 }
             }
         }
+#endif
     }
 }

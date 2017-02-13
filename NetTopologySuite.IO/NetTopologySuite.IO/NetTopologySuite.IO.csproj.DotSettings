@@ -3,7 +3,9 @@
 	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=io_005Cgeotools/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=io_005Cgpx/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=io_005Cmssqlspatial/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=io_005Cpostgis/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=io_005Cshapefile/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=io_005Cshapefile_005Cextended/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=io_005Cspatialite/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=postgis/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=spatialite/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

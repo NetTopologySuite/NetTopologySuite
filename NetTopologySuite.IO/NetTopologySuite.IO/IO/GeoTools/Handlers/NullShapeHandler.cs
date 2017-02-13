@@ -27,7 +27,11 @@ namespace NetTopologySuite.IO.Handlers
 
         public override IEnumerable<MBRInfo> ReadMBRs(BigEndianBinaryReader reader)
         {
+#if (NET40 || PCL)
+            reader.Dispose();
+#else
             reader.Close();
+#endif
             return new MBRInfo[0];
         }
     }

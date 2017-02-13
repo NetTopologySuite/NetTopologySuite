@@ -109,7 +109,11 @@ namespace NetTopologySuite.IO
             finally
             {
                 if (reader != null)
+#if (NET40 || PCL)
+                    reader.Dispose();
+#else
                     reader.Close();
+#endif
             }
         }
 
@@ -373,7 +377,7 @@ namespace NetTopologySuite.IO
             return factory.CreateGeometryCollection(geometries);
         }
 
-        #region Implementation of IGeometryIOSettings
+#region Implementation of IGeometryIOSettings
 
         public bool HandleSRID
         {
@@ -398,6 +402,6 @@ namespace NetTopologySuite.IO
             }
         }
 
-        #endregion Implementation of IGeometryIOSettings
+#endregion Implementation of IGeometryIOSettings
     }
 }
