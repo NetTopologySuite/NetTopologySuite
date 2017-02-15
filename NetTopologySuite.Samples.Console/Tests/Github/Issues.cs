@@ -8666,6 +8666,66 @@ namespace NetTopologySuite.Samples.Tests.Github
             Assert.IsNotNull(result);
         }
 
+
+        [Test]
+        public void CrossAndIntersectionTest()
+        {
+            // Arrange
+            var gf = new GeometryFactory(new PrecisionModel(100000000));
+
+            var closestCoordinate = new Coordinate(152608, 594957);
+            var closestLine = gf.CreateLineString(new[]
+            {
+                new Coordinate(152348, 595130),
+                new Coordinate(152421, 595061),
+                new Coordinate(152455, 595033),
+                new Coordinate(152524, 595001),
+                new Coordinate(152593, 594973),
+                new Coordinate(152622, 594946),
+                new Coordinate(152634, 594930),
+                new Coordinate(152641, 594921),
+                new Coordinate(152649, 594910),
+                new Coordinate(152863, 594623),
+                new Coordinate(152873, 594607)
+            });
+            var indexedLine = new NetTopologySuite.LinearReferencing.LengthIndexedLine(closestLine);
+            var projectedIndex = indexedLine.Project(closestCoordinate);
+            var coordinateToAdd = indexedLine.ExtractPoint(projectedIndex);
+            gf.PrecisionModel.MakePrecise(coordinateToAdd);
+
+            var line = gf.CreateLineString(new[] { new Coordinate(152503, 594904), coordinateToAdd });
+
+            ToImage(0, closestLine, line, GeometryFactory.Default.CreatePoint(coordinateToAdd));
+
+            // act
+            var intersectionPt = line.Intersection(closestLine).Coordinate;
+            gf.PrecisionModel.MakePrecise(intersectionPt);
+
+            // assert intersection point is equal to coordinate to add
+            Assert.AreEqual(coordinateToAdd, intersectionPt);
+
+            // act insertion of coordinate to add
+            var lip = new NetTopologySuite.LinearReferencing.LocationIndexOfPoint(closestLine);
+            var ll = lip.IndexOf(coordinateToAdd);
+            if (!ll.IsVertex)
+            {
+                var cl = (ILineString) closestLine;
+                var cls = cl.Factory.CoordinateSequenceFactory.Create(cl.CoordinateSequence.Count + 1, cl.CoordinateSequence.Ordinates);
+                CoordinateSequences.Copy(cl.CoordinateSequence, 0, cls, 0, ll.SegmentIndex+1);
+                cls.SetOrdinate(ll.SegmentIndex+1, Ordinate.X, coordinateToAdd.X);
+                cls.SetOrdinate(ll.SegmentIndex+1, Ordinate.Y, coordinateToAdd.Y);
+                CoordinateSequences.Copy(cl.CoordinateSequence, ll.SegmentIndex+1, cls, ll.SegmentIndex + 2, cl.CoordinateSequence.Count-ll.SegmentIndex-1);
+                closestLine = gf.CreateLineString(cls);
+            }
+
+            ToImage(1, closestLine, line, GeometryFactory.Default.CreatePoint(coordinateToAdd));
+
+            Assert.IsTrue(line.Touches(closestLine));
+            Assert.IsFalse(line.Crosses(closestLine));
+        }
+        #region utility
+
+
         static void ToImage(int nr, IGeometry geom1, IGeometry geom2, IGeometry geom3)
         {
 
@@ -8738,6 +8798,6 @@ namespace NetTopologySuite.Samples.Tests.Github
             var atb = new AffineTransformationBuilder(s1, s2, s3, t1, t2, t3);
             return atb.GetTransformation();
         }
-
+#endregion
     }
 }
