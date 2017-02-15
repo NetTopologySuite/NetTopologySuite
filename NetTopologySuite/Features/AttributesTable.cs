@@ -4,6 +4,7 @@ using Hashtable = System.Collections.Hashtable;
 #else
 using Hashtable = System.Collections.Generic.Dictionary<string, object>;
 #endif
+using System.Collections.Generic;
 
 namespace NetTopologySuite.Features
 {
@@ -14,11 +15,46 @@ namespace NetTopologySuite.Features
     [Serializable]
 #endif
     public class AttributesTable : IAttributesTable
-    {        
+    {
         //private const string IndexField = "_NTS_ID_";
         //private const int IndexValue = 0;
 
-        private readonly Hashtable _attributes = new Hashtable();
+        /// <summary>
+        /// Gets or sets a value indicating if setting <see cref="this[string]"/> with a 
+        /// nonexistant index will throw an exception or if the attribute/value pair will 
+        /// silently be added.
+        /// </summary>
+        public static bool AddAttributeWithIndexer { get; set; }
+
+        private readonly Hashtable _attributes;
+
+        /// <summary>
+        /// Creates an instance of this class
+        /// </summary>
+        public AttributesTable()
+        {
+            _attributes = new Hashtable(); 
+        }
+
+        /// <summary>
+        /// Creates an instance of this class using the provided enumeration of key/value pairs
+        /// </summary>
+        /// <exception cref="ArgumentException">If the enumeration contains objects</exception>
+        public AttributesTable(IEnumerable<object[]> objects) : this()
+        {
+            foreach (var obj in objects)
+            {
+                if (obj == null)
+                    continue;
+                if (obj.Length != 2)
+                    throw new ArgumentException("objects");
+
+                if (!(obj[0] is string))
+                    throw new ArgumentException("objects");
+
+                AddAttribute((string)obj[0], obj[1]);
+            }
+        }
 
         /// <summary>
         /// Gets a value indicating the number of attributes
@@ -49,8 +85,8 @@ namespace NetTopologySuite.Features
         /// <returns></returns>
         public object[] GetValues()
         {
-            int index = 0;
-            object[] values = new object[_attributes.Count];
+            var index = 0;
+            var values = new object[_attributes.Count];
             foreach (var val in _attributes.Values)
                 values[index++] = val;
             return values;
@@ -128,7 +164,12 @@ namespace NetTopologySuite.Features
         protected void SetValue(string attributeName, object attributeValue)
         {
             if (!Exists(attributeName))
-                throw new ArgumentException("Attribute " + attributeName + " not exists!");
+            {
+                if (!AddAttributeWithIndexer)
+                    throw new ArgumentException("Attribute " + attributeName + " not exists!");
+                AddAttribute(attributeName, attributeValue);
+                return;
+            }
             _attributes[attributeName] = attributeValue;
         }
 
@@ -142,5 +183,27 @@ namespace NetTopologySuite.Features
             get { return GetValue(attributeName); }
             set { SetValue(attributeName, value); }
         }
+
+        /// <summary>
+        /// Method to merge this attribute table with another attribute table
+        /// </summary>
+        /// <param name="other">The other attribute table</param>
+        /// <param name="preferThis">A value indicating if values in this attribute table are preferable 
+        /// over those in <paramref name="other"/>.  The default is <value>true</value>.
+        /// </param>
+        public void MergeWith(IAttributesTable other, bool preferThis = true)
+        {
+            foreach (var name in other.GetNames())
+            {
+                if (!Exists(name))
+                    AddAttribute(name, other[name]);
+                else
+                {
+                    if (!preferThis)
+                        this[name] = other[name];
+                }
+            }
+        }
+
     }
 }

@@ -6,6 +6,7 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.SimpleTests.Attributes
 {
@@ -45,6 +46,19 @@ namespace NetTopologySuite.Samples.SimpleTests.Attributes
                 Header = ShapefileDataWriter.GetHeader(features[0], features.Length)
             };
             shp_writer.Write(features);             
+        }
+
+        [Test]
+        public void TestConstructor2()
+        {
+            IAttributesTable at = null;
+            Assert.DoesNotThrow(() => at = new AttributesTable(new [] { new[] { "key1", new object() }, new[] { "key2", new object() } }));
+            Assert.That(at, Is.Not.Null);
+            Assert.That(at.Count, Is.EqualTo(2));
+            Assert.That(at.Exists("key1"), Is.True);
+            Assert.That(at.Exists("key2"), Is.True);
+            Assert.Throws<ArgumentException>(() => at = new AttributesTable(new[] { new[] { "key1", new object() }, new[] { (object)"key2", } }));
+            Assert.Throws<ArgumentException>(() => at = new AttributesTable(new[] { new[] { "key1", new object() }, new[] { new object(), "item2", } }));
         }
 
         private void TestSharcDbf()
