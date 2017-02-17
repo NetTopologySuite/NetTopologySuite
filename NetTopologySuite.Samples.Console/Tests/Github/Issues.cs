@@ -8624,6 +8624,113 @@ features: [{
             Assert.That(fc, Is.Not.Null);
         }
 
+
+        [Test, Category("GitHub Issue"), Description("Polygon / rectangle intersection returns empty polygon"), Ignore("Claim not valid")]
+        public void TestIssue149()
+        {
+            var wktreader = new WKTReader();
+            var polygon = wktreader.Read(@"POLYGON ((-62.327500000000008 77.777166176470587,
+ -62.327500000000008 191.08,
+ -39.425176714633878 191.08,
+ 30.449401394787785 111.06902734290135,
+ 34.240621449176217 85.17199763498823,
+ 32.474968591813237 66.628747810197453,
+ 29.724407935551895 56.755281980420541,
+ 10.963366463822565 52.502595315049426,
+ -62.327500000000008 77.777166176470587))");
+
+            Assert.IsTrue(polygon.IsValid);
+            Assert.IsFalse(polygon.IsEmpty);
+
+            var boundingbox = wktreader.Read(@"POLYGON ((-52.5 -34, -52.5 34, 52.5 34, 52.5 -34, -52.5 -34))");
+            Assert.IsTrue(boundingbox.IsValid);
+            Assert.IsFalse(boundingbox.IsEmpty);
+
+            //ToImage(1, polygon, boundingbox, boundingbox.Intersection(polygon));
+            //Assert.IsTrue(polygon.Intersects(boundingbox));
+
+
+            var result = boundingbox.Intersection(polygon); // =>{ POLYGON EMPTY }
+            //Assert.IsFalse(result.IsEmpty, "result.IsEmpty");
+            var resultInverted = polygon.Intersection(boundingbox); // => { POLYGON EMPTY }
+            //Assert.IsFalse(resultInverted.IsEmpty, "result.IsEmpty");
+        }
+
+        [Test, Description("TopologyException when generating a VoronoiDiagram"), Ignore("Known to fail, waiting for fix from JTS.")]
+        public void TestIssue151()
+        {
+            var wktreader = new WKTReader();
+            var polygon = wktreader.Read("POLYGON((14.7119 201.6703, 74.2154 201.6703, 74.2154 166.6391, 14.7119 166.6391, 14.7119 201.6703))");
+
+            Assert.IsTrue(polygon.IsValid);
+            var vdb = new NetTopologySuite.Triangulate.VoronoiDiagramBuilder();
+            vdb.SetSites(polygon);
+            IGeometry result = null;
+            Assert.DoesNotThrow(() => result= vdb.GetDiagram(polygon.Factory));
+            Assert.IsNotNull(result);
+        }
+
+
+        [Test]
+        public void CrossAndIntersectionTest()
+        {
+            // Arrange
+            var gf = new GeometryFactory(new PrecisionModel(100000000));
+
+            var closestCoordinate = new Coordinate(152608, 594957);
+            var closestLine = gf.CreateLineString(new[]
+            {
+                new Coordinate(152348, 595130),
+                new Coordinate(152421, 595061),
+                new Coordinate(152455, 595033),
+                new Coordinate(152524, 595001),
+                new Coordinate(152593, 594973),
+                new Coordinate(152622, 594946),
+                new Coordinate(152634, 594930),
+                new Coordinate(152641, 594921),
+                new Coordinate(152649, 594910),
+                new Coordinate(152863, 594623),
+                new Coordinate(152873, 594607)
+            });
+            var indexedLine = new NetTopologySuite.LinearReferencing.LengthIndexedLine(closestLine);
+            var projectedIndex = indexedLine.Project(closestCoordinate);
+            var coordinateToAdd = indexedLine.ExtractPoint(projectedIndex);
+            gf.PrecisionModel.MakePrecise(coordinateToAdd);
+
+            var line = gf.CreateLineString(new[] { new Coordinate(152503, 594904), coordinateToAdd });
+
+            ToImage(0, closestLine, line, GeometryFactory.Default.CreatePoint(coordinateToAdd));
+
+            // act
+            var intersectionPt = line.Intersection(closestLine).Coordinate;
+            gf.PrecisionModel.MakePrecise(intersectionPt);
+
+            // assert intersection point is equal to coordinate to add
+            Assert.AreEqual(coordinateToAdd, intersectionPt);
+
+            // act insertion of coordinate to add
+            var lip = new NetTopologySuite.LinearReferencing.LocationIndexOfPoint(closestLine);
+            var ll = lip.IndexOf(coordinateToAdd);
+            if (!ll.IsVertex)
+            {
+                var cl = (ILineString) closestLine;
+                var cls = cl.Factory.CoordinateSequenceFactory.Create(cl.CoordinateSequence.Count + 1, cl.CoordinateSequence.Ordinates);
+                CoordinateSequences.Copy(cl.CoordinateSequence, 0, cls, 0, ll.SegmentIndex+1);
+                cls.SetOrdinate(ll.SegmentIndex+1, Ordinate.X, coordinateToAdd.X);
+                cls.SetOrdinate(ll.SegmentIndex+1, Ordinate.Y, coordinateToAdd.Y);
+                CoordinateSequences.Copy(cl.CoordinateSequence, ll.SegmentIndex+1, cls, ll.SegmentIndex + 2, cl.CoordinateSequence.Count-ll.SegmentIndex-1);
+                closestLine = gf.CreateLineString(cls);
+            }
+
+            ToImage(1, closestLine, line, GeometryFactory.Default.CreatePoint(coordinateToAdd));
+
+            Assert.IsTrue(line.Touches(closestLine));
+            Assert.IsFalse(line.Crosses(closestLine));
+        }
+
+        #region utility
+
+
         static void ToImage(int nr, IGeometry geom1, IGeometry geom2, IGeometry geom3)
         {
 
@@ -8653,7 +8760,6 @@ features: [{
                         gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.OrangeRed)), gp2);
                     gr.DrawPath(Pens.OrangeRed, gp2);
 
-                    //at = CreateAffineTransformation(extent,  ImageWidth);
 
                     var gp3 = gpw.ToShape(at.Transform(geom3));
                     if (geom3 is IPolygonal)
@@ -8697,5 +8803,6 @@ features: [{
             return atb.GetTransformation();
         }
 
+        #endregion
     }
 }

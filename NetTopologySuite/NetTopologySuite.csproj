@@ -18,6 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\AttributesTable.cs.BASE.cs" />
+    <Compile Remove="Features\AttributesTable.cs.LOCAL.cs" />
+    <Compile Remove="Features\AttributesTable.cs.REMOTE.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="$(SolutionDir)SharedAssemblyVersion.cs" Link="Properties\SharedAssemblyVersion.cs" />
   </ItemGroup>
 

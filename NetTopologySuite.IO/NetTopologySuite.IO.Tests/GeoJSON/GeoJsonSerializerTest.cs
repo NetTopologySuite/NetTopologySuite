@@ -27,7 +27,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             StringBuilder sb = new StringBuilder();
             StringWriter writer = new StringWriter(sb);
             AttributesTable attributes = new AttributesTable();
-            attributes.AddAttribute("test1", "value1");
+            attributes.Add("test1", "value1");
             IFeature feature = new Feature(new Point(23, 56), attributes);
             FeatureCollection featureCollection = new FeatureCollection(new Collection<IFeature> { feature })
             { CRS = new NamedCRS("name1") };
@@ -47,7 +47,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             StringBuilder sb = new StringBuilder();
             StringWriter writer = new StringWriter(sb);
             AttributesTable attributes = new AttributesTable();
-            attributes.AddAttribute("test1", "value1");
+            attributes.Add("test1", "value1");
             IFeature feature = new Feature(new Point(23, 56), attributes);
             JsonSerializer serializer = GeoJsonSerializer.CreateDefault();
             serializer.NullValueHandling = NullValueHandling.Ignore;
@@ -79,7 +79,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             StringBuilder sb = new StringBuilder();
             StringWriter writer = new StringWriter(sb);
             AttributesTable attributes = new AttributesTable();
-            attributes.AddAttribute("test1", "value1");
+            attributes.Add("test1", "value1");
             JsonSerializer serializer = GeoJsonSerializer.CreateDefault();
             serializer.Serialize(writer, attributes);
             writer.Flush();

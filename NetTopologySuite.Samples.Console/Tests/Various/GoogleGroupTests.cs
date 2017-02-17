@@ -413,7 +413,8 @@ namespace NetTopologySuite.Tests.Various
 
             #endregion Init ICoordinateTransformation
 
-            using (var shapeDataReader = new ShapefileDataReader(@"..\..\..\NetTopologySuite.Samples.Shapefiles\DEPARTEMENT.SHP", GeometryFactory.Default))
+            using (var shapeDataReader = new ShapefileDataReader(TestContext.CurrentContext.TestDirectory +
+                @"\..\..\..\NetTopologySuite.Samples.Shapefiles\DEPARTEMENT.SHP", GeometryFactory.Default))
             {
                 while (shapeDataReader.Read())
                 {

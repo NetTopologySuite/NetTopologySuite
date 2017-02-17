@@ -23,10 +23,10 @@ namespace NetTopologySuite.Tests.IO
 
             List<IFeature> feats = new List<IFeature>();
             AttributesTable at = new AttributesTable();
-            at.AddAttribute("id", "0");
-            at.AddAttribute("Test", "Testar");
-            at.AddAttribute("Ålder", 10);
-            at.AddAttribute("Ödestext", "Lång text med åäö etc");
+            at.Add("id", "0");
+            at.Add("Test", "Testar");
+            at.Add("Ålder", 10);
+            at.Add("Ödestext", "Lång text med åäö etc");
             feats.Add(new Feature(new Point(0, 0), at));
             sfdr.Write(feats);      
         }
