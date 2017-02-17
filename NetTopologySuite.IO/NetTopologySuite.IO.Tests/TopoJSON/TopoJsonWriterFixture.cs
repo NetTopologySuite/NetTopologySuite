@@ -16,8 +16,8 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
         {
             IPoint geometry = Factory.CreatePoint(new Coordinate(23.4, 56.7));
             AttributesTable attributes = new AttributesTable();
-            attributes.AddAttribute("prop0", "value0");
-            attributes.AddAttribute("prop1", "value1");
+            attributes.Add("prop0", "value0");
+            attributes.Add("prop1", "value1");
             IFeature feature = new Feature(geometry, attributes);
 
             TopoJsonWriter writer = new TopoJsonWriter();
@@ -36,8 +36,8 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             Coordinate c2 = new Coordinate(30.3, 30);
             ILineString geometry = Factory.CreateLineString(new[] { c0, c1, c2 });
             AttributesTable attributes = new AttributesTable();
-            attributes.AddAttribute("prop0", "value0");
-            attributes.AddAttribute("prop1", "value1");
+            attributes.Add("prop0", "value0");
+            attributes.Add("prop1", "value1");
             IFeature feature = new Feature(geometry, attributes);
 
             TopoJsonWriter writer = new TopoJsonWriter();
@@ -56,8 +56,8 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             Coordinate c2 = new Coordinate(30.3, 30);
             IPolygon geometry = Factory.CreatePolygon(new[] { c0, c1, c2, c0 });
             AttributesTable attributes = new AttributesTable();
-            attributes.AddAttribute("prop0", "value0");
-            attributes.AddAttribute("prop1", "value1");
+            attributes.Add("prop0", "value0");
+            attributes.Add("prop1", "value1");
             IFeature feature = new Feature(geometry, attributes);
 
             TopoJsonWriter writer = new TopoJsonWriter();
@@ -81,8 +81,8 @@ namespace NetTopologySuite.IO.TopoJSON.Fixtures
             ILinearRing hole = Factory.CreateLinearRing(new[] { h0, h1, h2, h0 });
             IGeometry geometry = Factory.CreatePolygon(shell, new[] { hole });
             AttributesTable attributes = new AttributesTable();
-            attributes.AddAttribute("prop0", "value0");
-            attributes.AddAttribute("prop1", "value1");
+            attributes.Add("prop0", "value0");
+            attributes.Add("prop1", "value1");
             IFeature feature = new Feature(geometry, attributes);
 
             TopoJsonWriter writer = new TopoJsonWriter();

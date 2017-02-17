@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using NetTopologySuite.Features;
 using NetTopologySuite.IO.Converters;
@@ -40,8 +39,8 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             StringBuilder sb = new StringBuilder();
             JsonTextWriter writer = new JsonTextWriter(new StringWriter(sb));
             AttributesTable value = new AttributesTable();
-            value.AddAttribute("test1", "value1");
-            value.AddAttribute("test2", "value2");
+            value.Add("test1", "value1");
+            value.Add("test2", "value2");
             JsonSerializer serializer = new JsonSerializer();
             target.WriteJson(writer, value, serializer);
             writer.Flush();

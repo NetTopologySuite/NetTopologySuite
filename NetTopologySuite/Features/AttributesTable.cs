@@ -1,13 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using Hashtable = System.Collections.Generic.Dictionary<string, object>;
-//#if PCL
-//using Hashtable = System.Collections.Generic.Dictionary<object, object>;
-//#else
-//using System.Collections;
-//#endif
 
 namespace NetTopologySuite.Features
 {
@@ -17,7 +10,7 @@ namespace NetTopologySuite.Features
 #if !PCL
     [Serializable]
 #endif
-    public class AttributesTable : IAttributesTable
+    public class AttributesTable : IAttributesTable, IEnumerable
     {
         //private const string IndexField = "_NTS_ID_";
         //private const int IndexValue = 0;
@@ -29,34 +22,60 @@ namespace NetTopologySuite.Features
         /// </summary>
         public static bool AddAttributeWithIndexer { get; set; }
 
-        private readonly Hashtable _attributes;
+        private readonly IDictionary<string, object> _attributes;
 
         /// <summary>
         /// Creates an instance of this class
         /// </summary>
         public AttributesTable()
         {
-            _attributes = new Hashtable(); 
+            _attributes = new Dictionary<string, object>();
+        }
+
+        /*
+        /// <summary>
+        /// Creates an instance of this class using the provided enumeration of key/value pairs
+        /// </summary>
+        /// <param name="attributes">An enumeration of key/value pairs</param>
+        /// <exception cref="ArgumentException">If the enumeration contains invalid objects</exception>
+        public AttributesTable(IEnumerable<object[]> attributes) : this()
+        {
+            foreach (var obj in attributes)
+            {
+                if (obj == null)
+                    continue;
+
+                if (obj.Length != 2)
+                    throw new ArgumentException("Each entry in attributes has to have exactly two elements", "attributes");
+
+                if (!(obj[0] is string))
+                    throw new ArgumentException("The first element of each entry in attributes has to be a string.", "attributes");
+
+                Add((string)obj[0], obj[1]);
+            }
+        }
+        */
+
+        /// <summary>
+        /// Creates an instance of this class using the provided enumeration of key/value pairs
+        /// </summary>
+        /// <param name="attributes">An enumeration of key/value pairs</param>
+        public AttributesTable(IEnumerable<KeyValuePair<string, object>> attributes) : this()
+        {
+            foreach (var obj in attributes)
+                Add(obj.Key, obj.Value);
         }
 
         /// <summary>
         /// Creates an instance of this class using the provided enumeration of key/value pairs
         /// </summary>
-        /// <exception cref="ArgumentException">If the enumeration contains objects</exception>
-        public AttributesTable(IEnumerable<object[]> objects) : this()
+        /// <param name="attributes">An attributes dictionary</param>
+        /// <exception cref="ArgumentNullException">If the attributes are null</exception>
+        public AttributesTable(IDictionary<string, object> attributes)
         {
-            foreach (var obj in objects)
-            {
-                if (obj == null)
-                    continue;
-                if (obj.Length != 2)
-                    throw new ArgumentException("objects");
-
-                if (!(obj[0] is string))
-                    throw new ArgumentException("objects");
-
-                AddAttribute((string)obj[0], obj[1]);
-            }
+            if (attributes == null)
+                throw new ArgumentNullException("attributes");
+            _attributes = attributes;
         }
 
         /// <summary>
@@ -111,11 +130,10 @@ namespace NetTopologySuite.Features
         /// <param name="attributeName">Name of the new attribute.</param>        
         /// <param name="attributeValue">Value for attribute (can be null).</param>
         /// <exception cref="ArgumentException">If attribute already exists.</exception>
+        [Obsolete("Use Add method. This method is here to serve IAttributesTable interface")]
         public void AddAttribute(string attributeName, object attributeValue)
         {
-            if (Exists(attributeName))
-                throw new ArgumentException("Attribute " + attributeName + " already exists!");
-            _attributes.Add(attributeName, attributeValue);
+            Add(attributeName, attributeValue);
         }        
 
         /// <summary>
@@ -138,7 +156,7 @@ namespace NetTopologySuite.Features
         public Type GetType(string attributeName)
         {
             if (!Exists(attributeName))
-                throw new ArgumentException("Attribute " + attributeName + " not exists!");
+                throw new ArgumentOutOfRangeException("Attribute " + attributeName + " not exists!");
 
             // if we have null, we can't determine the objects type, thus return typeof(object)
             if (_attributes[attributeName] == null)
@@ -170,7 +188,7 @@ namespace NetTopologySuite.Features
             {
                 if (!AddAttributeWithIndexer)
                     throw new ArgumentException("Attribute " + attributeName + " not exists!");
-                AddAttribute(attributeName, attributeValue);
+                Add(attributeName, attributeValue);
                 return;
             }
             _attributes[attributeName] = attributeValue;
@@ -199,7 +217,7 @@ namespace NetTopologySuite.Features
             foreach (var name in other.GetNames())
             {
                 if (!Exists(name))
-                    AddAttribute(name, other[name]);
+                    Add(name, other[name]);
                 else
                 {
                     if (!preferThis)
@@ -208,5 +226,22 @@ namespace NetTopologySuite.Features
             }
         }
 
+        /// <summary>
+        /// Add a field with the given value and add it to attributes table.        
+        /// </summary>
+        /// <param name="attributeName">Name of the new attribute.</param>        
+        /// <param name="attributeValue">Value for attribute (can be null).</param>
+        /// <exception cref="ArgumentException">If attribute already exists.</exception>
+        public void Add(string attributeName, object attributeValue)
+        {
+            if (Exists(attributeName))
+                throw new ArgumentException("Attribute " + attributeName + " already exists!");
+            _attributes.Add(attributeName, attributeValue);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable) _attributes).GetEnumerator();
+        }
     }
 }

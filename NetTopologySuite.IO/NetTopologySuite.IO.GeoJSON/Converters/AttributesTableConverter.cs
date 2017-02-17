@@ -162,7 +162,7 @@ namespace NetTopologySuite.IO.Converters
                         attributeValue = reader.Value;
                         reader.Read();
                     }
-                    attributesTable.AddAttribute(attributeName, attributeValue);
+                    attributesTable.Add(attributeName, attributeValue);
                 }
             }
             // TODO: refactor to remove check when reading TopoJSON

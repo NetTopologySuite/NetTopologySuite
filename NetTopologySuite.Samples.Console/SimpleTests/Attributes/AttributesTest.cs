@@ -35,7 +35,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Attributes
             var line_string = new LineString(points);
 
             var attributes = new AttributesTable();
-            attributes.AddAttribute("FOO", "FOO");
+            attributes.Add("FOO", "FOO");
 
             var feature = new Feature(Factory.CreateMultiLineString(new ILineString[] { line_string }), attributes);
             var features = new Feature[1];
@@ -52,13 +52,23 @@ namespace NetTopologySuite.Samples.SimpleTests.Attributes
         public void TestConstructor2()
         {
             IAttributesTable at = null;
-            Assert.DoesNotThrow(() => at = new AttributesTable(new [] { new[] { "key1", new object() }, new[] { "key2", new object() } }));
+            /*
+            Assert.DoesNotThrow(
+                () => at = new AttributesTable(new[] {new[] {"key1", new object()}, new[] {"key2", new object()}}));
             Assert.That(at, Is.Not.Null);
             Assert.That(at.Count, Is.EqualTo(2));
             Assert.That(at.Exists("key1"), Is.True);
             Assert.That(at.Exists("key2"), Is.True);
-            Assert.Throws<ArgumentException>(() => at = new AttributesTable(new[] { new[] { "key1", new object() }, new[] { (object)"key2", } }));
-            Assert.Throws<ArgumentException>(() => at = new AttributesTable(new[] { new[] { "key1", new object() }, new[] { new object(), "item2", } }));
+            Assert.Throws<ArgumentException>(
+                () => at = new AttributesTable(new[] {new[] {"key1", new object()}, new[] {(object) "key2",}}));
+            Assert.Throws<ArgumentException>(
+                () => at = new AttributesTable(new[] {new[] {"key1", new object()}, new[] {new object(), "item2",}}));
+             */
+            Assert.DoesNotThrow(() => at = new AttributesTable {{"key1", new object()}, {"key2", new object()}} ) ;
+            Assert.That(at, Is.Not.Null);
+            Assert.That(at.Count, Is.EqualTo(2));
+            Assert.That(at.Exists("key1"), Is.True);
+            Assert.That(at.Exists("key2"), Is.True);
         }
 
         private void TestSharcDbf()

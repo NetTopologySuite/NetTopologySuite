@@ -8652,7 +8652,7 @@ namespace NetTopologySuite.Samples.Tests.Github
             //Assert.IsFalse(resultInverted.IsEmpty, "result.IsEmpty");
         }
 
-        [Test, Description("TopologyException when generating a VoronoiDiagram")]
+        [Test, Description("TopologyException when generating a VoronoiDiagram"), Ignore("Known to fail, waiting for fix from JTS.")]
         public void TestIssue151()
         {
             var wktreader = new WKTReader();

@@ -24,7 +24,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         public void GeoJsonWriterWriteFeatureCollectionTest()
         {
             AttributesTable attributes = new AttributesTable();
-            attributes.AddAttribute("test1", "value1");
+            attributes.Add("test1", "value1");
             IFeature feature = new Feature(new Point(23, 56), attributes);
             FeatureCollection featureCollection = new FeatureCollection(new Collection<IFeature> { feature }) { CRS = new NamedCRS("name1") };
             var gjw = new GeoJsonWriter();
@@ -40,7 +40,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         public void GeoJsonWriterWriteFeatureTest()
         {
             AttributesTable attributes = new AttributesTable();
-            attributes.AddAttribute("test1", "value1");
+            attributes.Add("test1", "value1");
             IFeature feature = new Feature(new Point(23, 56), attributes);
             string actual = new GeoJsonWriter().Write(feature);
             Assert.AreEqual("{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[23.0,56.0]},\"properties\":{\"test1\":\"value1\"}}", actual);
@@ -63,7 +63,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         public void GeoJsonWriterWriteAttributesTest()
         {
             AttributesTable attributes = new AttributesTable();
-            attributes.AddAttribute("test1", "value1");
+            attributes.Add("test1", "value1");
             string actual = new GeoJsonWriter().Write(attributes);
             Assert.AreEqual("{\"test1\":\"value1\"}", actual);
         }
@@ -84,7 +84,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             string expectedDateString = sb.ToString();
 
             string expectedResult = "{\"featureCollection\":{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[23.0,56.0]},\"properties\":{\"test1\":\"value1\"}}],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"name1\"}}},\"Date\":" + expectedDateString + "}";
-            attributes.AddAttribute("test1", "value1");
+            attributes.Add("test1", "value1");
             IFeature feature = new Feature(new Point(23, 56), attributes);
 
             FeatureCollection featureCollection = new FeatureCollection(new Collection<IFeature> { feature }) { CRS = new NamedCRS("name1") };

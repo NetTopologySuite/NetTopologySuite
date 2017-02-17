@@ -49,7 +49,7 @@ namespace NetTopologySuite.Tests.Various
         [Test, Category("Issue123")]
         public void CascadedUnionError2()
         {
-            var sf = new ShapefileReader(@"..\..\..\NetTopologySuite.Samples.Shapefiles\error_union.shp");
+            var sf = new ShapefileReader(TestContext.CurrentContext.TestDirectory + @"\..\..\..\NetTopologySuite.Samples.Shapefiles\error_union.shp");
             var geoms = sf.ReadAll();
             //var i = 0;
             //using (var f = new StreamWriter(new FileStream(@"..\..\..\NetTopologySuite.Samples.Shapefiles\error_union.txt", FileMode.Create)))

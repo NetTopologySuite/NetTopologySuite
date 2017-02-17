@@ -78,7 +78,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
             var lineString = Factory.CreateLineString(sequence);
 
             var attributes = new AttributesTable();
-            attributes.AddAttribute("FOO", "Trond");
+            attributes.Add("FOO", "Trond");
 
             var feature = new Feature(Factory.CreateMultiLineString(new[] { lineString }), attributes);
             var features = new Feature[1];
@@ -590,15 +590,17 @@ namespace NetTopologySuite.Samples.Tests.Operation.IO
             IMultiLineString mls = GeometryFactory.Default.CreateMultiLineString(new ILineString[] { ls });
 
             AttributesTable attrs = new AttributesTable();
-            attrs.AddAttribute("Simulation name", "FOO");
+            attrs.Add("Simulation name", "FOO");
 
             Feature[] features = new[] { new Feature(mls, attrs) };
-            ShapefileDataWriter shp_writer = new ShapefileDataWriter("invalid_line_string")
-            {
-                Header = ShapefileDataWriter.GetHeader(features[0], features.Length)
-            };
+            ShapefileDataWriter shp_writer = null;
+            Assert.Throws<ArgumentException>(() => shp_writer =
+                new ShapefileDataWriter("invalid_line_string")
+                {
+                    Header = ShapefileDataWriter.GetHeader(features[0], features.Length)
+                });
 
-            Assert.Throws<ArgumentException>(() => shp_writer.Write(features));
+            //Assert.Throws<ArgumentException>(() => shp_writer.Write(features));
         }
 
         [Test/*, ExpectedException(typeof(ArgumentException))*/]

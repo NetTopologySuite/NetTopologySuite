@@ -19,8 +19,8 @@ namespace NetTopologySuite.Samples.Tests.Various
             seq.SetOrdinate(0, Ordinate.Y, 32.5907);
             var pt = new GeometryFactory(DotSpatialAffineCoordinateSequenceFactory.Instance).CreatePoint(seq);
             var attr = new Features.AttributesTable();
-            attr.AddAttribute("FirstName", "John");
-            attr.AddAttribute("LastName", "Doe");
+            attr.Add("FirstName", "John");
+            attr.Add("LastName", "Doe");
             features.Add(new Features.Feature(pt, attr));
 
             var fileName = Path.GetTempFileName();

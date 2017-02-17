@@ -153,7 +153,7 @@ namespace NetTopologySuite.IO
             if (tempFieldName == null) tempFieldName = "NoName";
             if (tempFieldName.Length > FieldNameMaxLength)
             {
-                string s = String.Format("FieldName {0} is longer than {1} characters", fieldName, FieldNameMaxLength);
+                string s = String.Format("FieldName '{0}' is longer than {1} characters", fieldName, FieldNameMaxLength);
                 throw new ArgumentException(s);
             }
             tempFieldDescriptors[_fieldDescriptions.Length].Name = tempFieldName;
