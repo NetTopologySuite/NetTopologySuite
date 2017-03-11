@@ -59,12 +59,13 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Return the date this file was last updated.
+        /// Sets or returns the date this file was last updated.
         /// </summary>
         /// <returns></returns>
         public DateTime LastUpdateDate
         {
             get { return _updateDate; }
+            set { _updateDate = value; }
         }
 
         /// <summary>
