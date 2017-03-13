@@ -85,9 +85,11 @@ namespace NetTopologySuite.IO
                 /*Update header to reflect the data written*/
                 _shpStream.Seek(0, SeekOrigin.Begin);
                 var shpLenWords = (int) _shpBinaryWriter.BaseStream.Length/2;
+                
+                // Write the SHP header at the beginning of the file to update the dummy/stale header
+                WriteShpHeader(_shpBinaryWriter, shpLenWords, _totalEnvelope);
                 _shpStream.Seek(0, SeekOrigin.End);
 
-                WriteShpHeader(_shpBinaryWriter, shpLenWords, _totalEnvelope);
                 if (_shxStream != null)
                 {
                     _shxStream.Seek(0, SeekOrigin.Begin);
