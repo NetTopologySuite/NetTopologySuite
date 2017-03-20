@@ -20,8 +20,8 @@
 			<frameworkAssembly assemblyName="System.Core" targetFramework="" />
 		</frameworkAssemblies>
 		<dependencies>
-			<dependency id="NetTopologySuite" version="[$version$]" />
-			<dependency id="Newtonsoft.Json" />
+			<dependency id="NetTopologySuite" version="$version$" />
+			<dependency id="Newtonsoft.Json" version="[9.0.1]" />
 		</dependencies>
 	</metadata>
 	<files>
