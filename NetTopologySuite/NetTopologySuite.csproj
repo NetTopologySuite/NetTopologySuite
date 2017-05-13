@@ -89,6 +89,7 @@
     <Compile Include="Utilities\FrameworkReplacements\Collections\Generic\SortedDictionary.cs" />
     <Compile Include="Utilities\FrameworkReplacements\Collections\Generic\SortedSet.cs" />
     <Compile Include="Utilities\FrameworkReplacements\Collections\HashHelpers.cs" />
+    <Compile Include="Utilities\FrameworkReplacements\Runtime\CompilerServices\ExtensionAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyVersion.cs">
