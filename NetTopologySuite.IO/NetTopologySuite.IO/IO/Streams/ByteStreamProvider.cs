@@ -91,7 +91,15 @@ namespace NetTopologySuite.IO.Streams
 
             using (var ms = new MemoryStream())
             {
-                input.CopyTo(ms);
+                // 81920: largest multiple of 4096 that doesn't go on the LOH.
+                // 4096 is a common internal buffer size.
+                byte[] array = new byte[81920];
+                int count;
+                while ((count = input.Read(array, 0, array.Length)) != 0)
+                {
+                    ms.Write(array, 0, count);
+                }
+
                 return ms.ToArray();
             }
         }
