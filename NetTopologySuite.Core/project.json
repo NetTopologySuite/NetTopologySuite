@@ -1,0 +1,18 @@
+{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "GeoAPI": "1.7.5",
+    "NETStandard.Library": "1.6.1",
+    "Newtonsoft.Json": "9.0.2-beta1",
+    "System.Collections.NonGeneric": "4.3.0",
+    "System.Xml.ReaderWriter": "4.3.0",
+    "System.Xml.XDocument": "4.3.0"
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    }
+  }
+}

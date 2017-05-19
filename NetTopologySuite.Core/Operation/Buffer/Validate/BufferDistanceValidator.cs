@@ -1,0 +1,219 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm.Distance;
+using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.IO;
+using NetTopologySuite.Operation.Distance;
+
+namespace NetTopologySuite.Operation.Buffer.Validate
+{
+    /// <summary>
+    ///     Validates that a given buffer curve lies an appropriate distance
+    ///     from the input generating it.
+    /// </summary>
+    /// <remarks>
+    ///     Useful only for round buffers (cap and join).
+    ///     Can be used for either positive or negative distances.
+    ///     <para></para>
+    ///     <para>
+    ///         This is a heuristic test, and may return false positive results
+    ///         (I.e. it may fail to detect an invalid result.)
+    ///         It should never return a false negative result, however
+    ///         (I.e. it should never report a valid result as invalid.)
+    ///     </para>
+    /// </remarks>
+    /// <author>mbdavis</author>
+    public class BufferDistanceValidator
+    {
+        /**
+         * Maximum allowable fraction of buffer distance the
+         * actual distance can differ by.
+         * 1% sometimes causes an error - 1.2% should be safe.
+         */
+        private const double MaxDistanceDiffFrac = .012;
+        public static bool Verbose;
+        private readonly double _bufDistance;
+
+        private readonly IGeometry _input;
+        private readonly IGeometry _result;
+
+        private bool _isValid = true;
+        private double _maxDistanceFound;
+        private double _maxValidDistance;
+
+        private double _minDistanceFound;
+
+        private double _minValidDistance;
+
+        public BufferDistanceValidator(IGeometry input, double bufDistance, IGeometry result)
+        {
+            _input = input;
+            _bufDistance = bufDistance;
+            _result = result;
+        }
+
+        public string ErrorMessage { get; private set; }
+
+        public Coordinate ErrorLocation { get; private set; }
+
+        /// <summary>
+        ///     Gets a geometry which indicates the location and nature of a validation failure.
+        ///     <para>
+        ///         The indicator is a line segment showing the location and size
+        ///         of the distance discrepancy.
+        ///     </para>
+        /// </summary>
+        /// <returns>
+        ///     A geometric error indicator
+        ///     or
+        ///     <value>null</value>
+        ///     , if no error was found
+        /// </returns>
+        public IGeometry ErrorIndicator { get; private set; }
+
+        public bool IsValid()
+        {
+            var posDistance = Math.Abs(_bufDistance);
+            var distDelta = MaxDistanceDiffFrac*posDistance;
+            _minValidDistance = posDistance - distDelta;
+            _maxValidDistance = posDistance + distDelta;
+
+            // can't use this test if either is empty
+            if (_input.IsEmpty || _result.IsEmpty)
+                return true;
+
+            if (_bufDistance > 0.0)
+                CheckPositiveValid();
+            else
+                CheckNegativeValid();
+            if (Verbose)
+            {
+#if !PCL
+// ReSharper disable once RedundantStringFormatCall
+                // String.Format needed to build 2.0 release!
+                Debug.WriteLine(string.Format("Min Dist= {0}  err= {1}  Max Dist= {2}  err= {3}",
+                        _minDistanceFound,
+                        1.0 - _minDistanceFound/_bufDistance,
+                        _maxDistanceFound,
+                        _maxDistanceFound/_bufDistance - 1.0)
+                );
+#endif
+            }
+            return _isValid;
+        }
+
+        private void CheckPositiveValid()
+        {
+            var bufCurve = _result.Boundary;
+            CheckMinimumDistance(_input, bufCurve, _minValidDistance);
+            if (!_isValid) return;
+
+            CheckMaximumDistance(_input, bufCurve, _maxValidDistance);
+        }
+
+        private void CheckNegativeValid()
+        {
+            // Assert: only polygonal inputs can be checked for negative buffers
+
+            // MD - could generalize this to handle GCs too
+            if (!(_input is IPolygon
+                  || _input is IMultiPolygon
+                  || _input is IGeometryCollection
+            ))
+                return;
+            var inputCurve = GetPolygonLines(_input);
+            CheckMinimumDistance(inputCurve, _result, _minValidDistance);
+            if (!_isValid) return;
+
+            CheckMaximumDistance(inputCurve, _result, _maxValidDistance);
+        }
+
+        private static IGeometry GetPolygonLines(IGeometry g)
+        {
+            var lines = new List<IGeometry>();
+            var lineExtracter = new LinearComponentExtracter(lines);
+            var polys = PolygonExtracter.GetPolygons(g);
+            foreach (var poly in polys)
+                poly.Apply(lineExtracter);
+            return g.Factory.BuildGeometry(polys);
+            /*
+            return g.Factory.BuildGeometry(new List<IGeometry>(
+                GeoAPI.DataStructures.Caster.Cast<IGeometry>(polys)));
+             */
+        }
+
+        /// <summary>
+        ///     Checks that two geometries are at least a minumum distance apart.
+        /// </summary>
+        /// <param name="g1">A geometry</param>
+        /// <param name="g2">A geometry</param>
+        /// <param name="minDist">The minimum distance the geometries should be separated by</param>
+        private void CheckMinimumDistance(IGeometry g1, IGeometry g2, double minDist)
+        {
+            var distOp = new DistanceOp(g1, g2, minDist);
+            _minDistanceFound = distOp.Distance();
+
+            if (_minDistanceFound < minDist)
+            {
+                _isValid = false;
+                var pts = distOp.NearestPoints();
+                ErrorLocation = pts[1];
+                ErrorIndicator = g1.Factory.CreateLineString(pts);
+                ErrorMessage = "Distance between buffer curve and input is too small "
+                               + "(" + _minDistanceFound
+                               + " at " + WKTWriter.ToLineString(pts[0], pts[1]) + " )";
+            }
+        }
+
+        /// <summary>
+        ///     Checks that the furthest distance from the buffer curve to the input
+        ///     is less than the given maximum distance.
+        /// </summary>
+        /// <remarks>
+        ///     This uses the Oriented Hausdorff distance metric. It corresponds to finding
+        ///     the point on the buffer curve which is furthest from <i>some</i> point on the input.
+        /// </remarks>
+        /// <param name="input">A geometry</param>
+        /// <param name="bufCurve">A geometry</param>
+        /// <param name="maxDist">The maximum distance that a buffer result can be from the input</param>
+        private void CheckMaximumDistance(IGeometry input, IGeometry bufCurve, double maxDist)
+        {
+            //    BufferCurveMaximumDistanceFinder maxDistFinder = new BufferCurveMaximumDistanceFinder(input);
+            //    maxDistanceFound = maxDistFinder.findDistance(bufCurve);
+
+            var haus = new DiscreteHausdorffDistance(bufCurve, input);
+            haus.DensifyFraction = 0.25;
+            _maxDistanceFound = haus.OrientedDistance();
+
+            if (_maxDistanceFound > maxDist)
+            {
+                _isValid = false;
+                var pts = haus.Coordinates;
+                ErrorLocation = pts[1];
+                ErrorIndicator = input.Factory.CreateLineString(pts);
+                ErrorMessage = "Distance between buffer curve and input is too large "
+                               + "(" + _maxDistanceFound
+                               + " at " + WKTWriter.ToLineString(pts[0], pts[1]) + ")";
+            }
+        }
+
+        /*
+        private void OLDcheckMaximumDistance(Geometry input, Geometry bufCurve, double maxDist)
+        {
+          BufferCurveMaximumDistanceFinder maxDistFinder = new BufferCurveMaximumDistanceFinder(input);
+          maxDistanceFound = maxDistFinder.findDistance(bufCurve);
+
+          if (maxDistanceFound > maxDist) {
+            isValid = false;
+            PointPairDistance ptPairDist = maxDistFinder.getDistancePoints();
+            errorLocation = ptPairDist.getCoordinate(1);
+            errMsg = "Distance between buffer curve and input is too large "
+              + "(" + ptPairDist.getDistance()
+              + " at " + ptPairDist.toString() +")";
+          }
+        }
+        */
+    }
+}
