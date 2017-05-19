@@ -57,7 +57,6 @@ namespace NetTopologySuite.Samples.Lab.Clean
                 "GEOMETRYCOLLECTION (POLYGON ((1 9, 9 9, 9 1, 1 1, 1 9)), LINESTRING (15 9, 19 5))");
         }
 
-        [Test]
         private void CheckHolesRemoved(string inputWKT, string expectedWKT)
         {
             IGeometry input = read(inputWKT);
