@@ -6,7 +6,7 @@ We welcome contributions and these guidelines are there to help you do just that
 
 ## What's this NTS?
 
-NTS intends to ba a direct port of the [JTS Topology Suite](https://www.locationtech.org/projects/technology.jts) for .NET. While porting we _.Net-ify_ by using e.g. properties or indexers instead of Java `get_` and `set_(_)` methods and so on.
+NTS intends to be a direct port of the [JTS Topology Suite](https://www.locationtech.org/projects/technology.jts) for .NET. While porting we _.Net-ify_ by using e.g. properties or indexers instead of Java `get_` and `set_(_)` methods and so on.
 
 ### So what does this mean for contributing to NTS? 
 
