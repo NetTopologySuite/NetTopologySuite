@@ -13,13 +13,13 @@ NTS intends to ba a direct port of the [JTS Topology Suite](https://www.location
 These projects are directly in sync with NTS:
 
 - NetTopologySuite
-- NetTopologySuite.IO.GeoJson
 
 We can't accept changes in behaviour of the core project(s) because we want to keep in sync with JTS, that being said, if you find a bug please fix it and submit a pull-request! We can also accept extra non-breaking functionalty.
 
 All other projects are maintained by us and anything is possible there, these are some examples:
 
 - NetTopologySuite.IO.TopoJson
+- NetTopologySuite.IO.GeoJson
 - (more here)
 
 ## How to contribute?
