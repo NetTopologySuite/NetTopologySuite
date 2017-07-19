@@ -68,7 +68,7 @@ namespace NetTopologySuite.IO.Converters
 
                         // move to first feature
                         read = reader.Read();
-                        while (reader.TokenType != JsonToken.EndArray)
+                        while (read && reader.TokenType != JsonToken.EndArray)
                         {
                             fc.Add(serializer.Deserialize<Feature>(reader));
                             read = reader.Read();
