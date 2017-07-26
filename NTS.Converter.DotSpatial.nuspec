@@ -18,8 +18,8 @@
 		<language>en-US</language>
 		<dependencies>
 			<dependency id="NetTopologySuite" version="$version$" />
-			<dependency id="DotSpatial.Topology" />
-			<dependency id="DotSpatial.Data" />
+			<dependency id="DotSpatial.Topology" version="1.7" />
+			<dependency id="DotSpatial.Data" version="1.7" />
 		</dependencies>
 	</metadata>
 	<files>
