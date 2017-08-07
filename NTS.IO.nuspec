@@ -17,8 +17,8 @@
 		<tags>NTS PostGis Shapefile</tags>
 		<language>en-US</language>
 		<frameworkAssemblies>
-			<frameworkAssembly assemblyName="System" targetFramework="net20,net35-client,net40-client,net403-client,net45,portable40-net40+sl5+win8+wp8+wpa81,portable40-net403+sl5+win8+wp8+wpa81" />
-			<frameworkAssembly assemblyName="System.Core" targetFramework="net35-client,net40-client,net403-client,net45,portable40-net40+sl5+win8+wp8+wpa81,portable40-net403+sl5+win8+wp8+wpa81" />
+			<frameworkAssembly assemblyName="System" targetFramework="net35-client,net40-client,net403-client,net45" />
+			<frameworkAssembly assemblyName="System.Core" targetFramework="net35-client,net40-client,net403-client,net45" />
 		</frameworkAssemblies>
 		<dependencies>
 			<dependency id="NetTopologySuite" version="$version$" />
@@ -32,27 +32,6 @@
 		<file src="NetTopologySuite.IO\NetTopologySuite.IO.PostGis\**" exclude="NetTopologySuite.IO\NetTopologySuite.IO.PostGis\obj\**" target="src\NetTopologySuite.IO\NetTopologySuite.IO.PostGis" />
 		<file src="NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile\**" exclude="NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile\obj\**" target="src\NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile" />
 		<file src="NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile.Extended\**" exclude="NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile.Extended\obj\**" target="src\NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile.Extended" />
-
-		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.dll" target="lib\net20" />
-		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.pdb" target="lib\net20" />
-		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.xml" target="lib\net20" />
-		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.GeoTools.dll" target="lib\net20" />
-		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.GeoTools.pdb" target="lib\net20" />
-		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.GeoTools.xml" target="lib\net20" />
-		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.MsSqlSpatial.dll" target="lib\net20" />
-		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.MsSqlSpatial.pdb" target="lib\net20" />
-		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.MsSqlSpatial.xml" target="lib\net20" />
-		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.PostGis.dll" target="lib\net20" />
-		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.PostGis.pdb" target="lib\net20" />
-		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.PostGis.xml" target="lib\net20" />
-		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.ShapeFile.dll" target="lib\net20" />
-		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.ShapeFile.pdb" target="lib\net20" />
-		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.ShapeFile.xml" target="lib\net20" />
-		<!--
-		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.ShapeFile.Extended.dll" target="lib\net20" />
-		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.ShapeFile.Extended.pdb" target="lib\net20" />
-		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.ShapeFile.Extended.xml" target="lib\net20" />
-		-->
 
 		<file src="Release\AnyCPU\net35-client\NetTopologySuite.IO.dll" target="lib\net35-client" />
 		<file src="Release\AnyCPU\net35-client\NetTopologySuite.IO.pdb" target="lib\net35-client" />
@@ -176,52 +155,6 @@
 		<file src="Release\AnyCPU\netstandard1.3\NetTopologySuite.IO.ShapeFile.Extended.dll" target="lib\netstandard1.3" />
 		<file src="Release\AnyCPU\netstandard1.3\NetTopologySuite.IO.ShapeFile.Extended.pdb" target="lib\netstandard1.3" />
 		<file src="Release\AnyCPU\netstandard1.3\NetTopologySuite.IO.ShapeFile.Extended.xml" target="lib\netstandard1.3" />
-		-->
-
-		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.IO.dll" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.IO.pdb" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.IO.xml" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
-		<!--
-		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.IO.GeoTools.dll" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.IO.GeoTools.pdb" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.IO.GeoTools.xml" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
-		-->
-		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.IO.MsSqlSpatial.dll" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.IO.MsSqlSpatial.pdb" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.IO.MsSqlSpatial.xml" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.IO.PostGis.dll" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.IO.PostGis.pdb" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.IO.PostGis.xml" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.IO.ShapeFile.dll" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.IO.ShapeFile.pdb" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.IO.ShapeFile.xml" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
-		<!--
-		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.IO.ShapeFile.Extended.dll" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.IO.ShapeFile.Extended.pdb" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.IO.ShapeFile.Extended.xml" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
-		-->
-
-		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.IO.dll" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.IO.pdb" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.IO.xml" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
-		<!--
-		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.IO.GeoTools.dll" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.IO.GeoTools.pdb" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.IO.GeoTools.xml" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
-		-->
-		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.IO.MsSqlSpatial.dll" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.IO.MsSqlSpatial.pdb" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.IO.MsSqlSpatial.xml" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.IO.PostGis.dll" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.IO.PostGis.pdb" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.IO.PostGis.xml" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.IO.ShapeFile.dll" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.IO.ShapeFile.pdb" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.IO.ShapeFile.xml" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
-		<!--
-		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.IO.ShapeFile.Extended.dll" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.IO.ShapeFile.Extended.pdb" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
-		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.IO.ShapeFile.Extended.xml" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
 		-->
 	</files>
 </package>
