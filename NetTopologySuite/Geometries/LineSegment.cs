@@ -4,7 +4,7 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using BitConverter = System.BitConverter;
 
-#if PCL
+#if !HAS_SYSTEM_APPLICATIONEXCEPTION
 using ApplicationException = System.Exception;
 #endif
 
@@ -20,7 +20,7 @@ namespace NetTopologySuite.Geometries
     /// object as a way of computing segment properties on the
     /// segments defined by arrays or lists of <c>Coordinate</c>s.
     /// </summary>
-#if !PCL
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public class LineSegment : IComparable

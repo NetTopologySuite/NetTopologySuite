@@ -1,11 +1,8 @@
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Utilities;
-#if PCL
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace NetTopologySuite.Operation.Valid
 {
@@ -17,7 +14,7 @@ namespace NetTopologySuite.Operation.Valid
     public class SimpleNestedRingTester
     {        
         private readonly GeometryGraph graph;  // used to find non-node vertices
-        private readonly IList rings = new ArrayList();
+        private readonly List<ILinearRing> rings = new List<ILinearRing>();
         private Coordinate nestedPt;
 
         /// <summary>
@@ -55,14 +52,12 @@ namespace NetTopologySuite.Operation.Valid
         /// <returns></returns>
         public bool IsNonNested()
         {
-            for (int i = 0; i < rings.Count; i++) 
+            foreach (ILinearRing innerRing in rings)
             {
-                ILinearRing innerRing = (ILinearRing) rings[i];
                 Coordinate[] innerRingPts = innerRing.Coordinates;
 
-                for (int j = 0; j < rings.Count; j++) 
+                foreach (ILinearRing searchRing in rings)
                 {
-                    ILinearRing searchRing = (ILinearRing) rings[j];
                     Coordinate[] searchRingPts = searchRing.Coordinates;
 
                     if (innerRing == searchRing) continue;

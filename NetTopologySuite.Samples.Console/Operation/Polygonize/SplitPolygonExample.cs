@@ -11,7 +11,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Polygonize;
-using NetTopologySuite.Tests.NUnit.Operation.Distance3d;
 using Matrix = System.Drawing.Drawing2D.Matrix;
 
 namespace NetTopologySuite.Samples.Operation.Poligonize
@@ -115,7 +114,7 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
 
 
         [STAThread]
-        public static void Main(string[] args)
+        public static void main(string[] args)
         {
             var test = new SplitPolygonExample();
             try

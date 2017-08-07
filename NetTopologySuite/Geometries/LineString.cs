@@ -23,7 +23,7 @@ namespace NetTopologySuite.Geometries
     /// If these conditions are not met, the constructors throw an <see cref="ArgumentException"/>.
     /// </para>
     /// </remarks>
-#if !PCL
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public class LineString : Geometry, ILineString

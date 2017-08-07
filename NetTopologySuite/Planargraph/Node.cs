@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Planargraph
@@ -21,9 +22,9 @@ namespace NetTopologySuite.Planargraph
         public static IList<DirectedEdge> GetEdgesBetween(Node node0, Node node1)
         {
             IList<Edge> edges0 = DirectedEdge.ToEdges(node0.OutEdges.Edges);
-            var commonEdges = new HashSet<DirectedEdge>(Utilities.Caster.Cast<DirectedEdge>(edges0));
+            var commonEdges = new HashSet<DirectedEdge>(edges0.Cast<DirectedEdge>());
             IList<Edge> edges1 = DirectedEdge.ToEdges(node1.OutEdges.Edges);
-            commonEdges.ExceptWith(Utilities.Caster.Cast<DirectedEdge>(edges1));
+            commonEdges.ExceptWith(edges1.Cast<DirectedEdge>());
             return new List<DirectedEdge>(commonEdges);
         }
 

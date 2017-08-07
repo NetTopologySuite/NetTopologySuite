@@ -2,14 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using System.Xml.Linq;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 
-#if PCL
-using XmlTextWriter = System.Xml.XmlWriter;
-using XmlTextReader = System.Xml.XmlReader;
-using System.Xml.Linq;
+#if !HAS_SYSTEM_APPLICATIONEXCEPTION
 using ApplicationException = System.Exception;
 #endif
 
@@ -44,23 +42,28 @@ namespace NetTopologySuite.IO.GML2
             _factory = factory;
         }
 
+#if HAS_SYSTEM_XML_XMLDOCUMENT
         /// <summary>
         /// Read a GML document and returns relative <see cref="IGeometry"/>.
         /// </summary>
         /// <param name="document"></param>
         /// <returns></returns>
-#if !PCL
         public IGeometry Read(XmlDocument document)
         {
             return Read(document.InnerXml);
         }
-#else
+#endif
+
+        /// <summary>
+        /// Read a GML document and returns relative <see cref="IGeometry"/>.
+        /// </summary>
+        /// <param name="document"></param>
+        /// <returns></returns>
         public IGeometry Read(XDocument document)
         {
             XmlReader reader = document.CreateReader();
             return Read(reader);
         }
-#endif
 
         public IGeometry Read(string xmlText)
         {

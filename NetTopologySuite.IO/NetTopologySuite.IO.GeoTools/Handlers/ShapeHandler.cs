@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-#if NET35
 using System.Linq;
-#endif
+
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.IO.Handlers
@@ -494,20 +493,19 @@ namespace NetTopologySuite.IO.Handlers
             // If we have Z, write it
             if ((HasZValue()))
             {
-                //Do not change this as it breaks NET20 Build
-                file.Write(Enumerable.Min(zValues));
-                file.Write(Enumerable.Max(zValues));
+                file.Write(zValues.Min());
+                file.Write(zValues.Max());
                 for (var i = 0; i < count; i++)
                     file.Write(zValues[i]);
             }
 
             // If we have Z, we might also optionally have M
-            if (HasMValue() || (HasZValue() && mValues!=null && Enumerable.Any(mValues)))
+            if (HasMValue() || (HasZValue() && mValues!=null && mValues.Any()))
             {
-                if (mValues!=null && Enumerable.Any(mValues))
+                if (mValues!=null && mValues.Any())
                 {
-                    file.Write(Enumerable.Min(mValues));
-                    file.Write(Enumerable.Max(mValues));
+                    file.Write(mValues.Min());
+                    file.Write(mValues.Max());
                     for (var i = 0; i < count; i++)
                         file.Write(mValues[i]);
                 }
@@ -541,31 +539,4 @@ namespace NetTopologySuite.IO.Handlers
             return new ShapeMBREnumerator(reader);
         }
     }
-#if !NET35
-        internal static class Enumerable
-        {
-        internal static bool Any(IEnumerable<double> self)
-        {
-            foreach(var d in self)
-                return true;
-            return false;
-        }
-        internal static double Min(IEnumerable<double> self)
-        {
-            var res = Double.MaxValue;
-            foreach(var d in self)
-                res = d < res ? d : res;
-            
-            return (res == double.MaxValue) ? 0d : res;
-        }
-        internal static double Max(IEnumerable<double> self)
-        {
-            var res = double.MinValue;
-            foreach(var d in self)
-                res = d > res ? d : res;
-
-            return (res == double.MinValue) ? 0d : res;
-        }
-        }
-#endif
 }

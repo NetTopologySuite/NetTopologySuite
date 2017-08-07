@@ -16,33 +16,52 @@
 		<tags>NTS GeoJSON</tags>
 		<language>en-US</language>
 		<frameworkAssemblies>
-			<frameworkAssembly assemblyName="System" targetFramework="" />
-			<frameworkAssembly assemblyName="System.Core" targetFramework="" />
+			<frameworkAssembly assemblyName="System" targetFramework="net20,net35-client,net40-client,net403-client,net45,portable40-net40+sl5+win8+wp8+wpa81,portable40-net403+sl5+win8+wp8+wpa81" />
+			<frameworkAssembly assemblyName="System.Core" targetFramework="net35-client,net40-client,net403-client,net45,portable40-net40+sl5+win8+wp8+wpa81,portable40-net403+sl5+win8+wp8+wpa81" />
 		</frameworkAssemblies>
 		<dependencies>
-			<dependency id="NetTopologySuite" version="$version$" />
+			<dependency id="NetTopologySuite" version="[$version$]" />
 			<dependency id="Newtonsoft.Json" version="[9.0.1]" />
 		</dependencies>
 	</metadata>
 	<files>
-		<file src="Release\v2.0\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net20" />
-		<file src="Release\v2.0\AnyCPU\NetTopologySuite.IO.GeoJSON.pdb" target="lib\net20" />
-		<file src="Release\v2.0\AnyCPU\NetTopologySuite.IO.GeoJSON.xml" target="lib\net20" />
+		<file src="NetTopologySuite.Common.props" target="src" />
+		<file src="NetTopologySuite.IO\NetTopologySuite.IO.GeoJSON\**" exclude="NetTopologySuite.IO\NetTopologySuite.IO.GeoJSON\obj\**" target="src\NetTopologySuite.IO\NetTopologySuite.IO.GeoJSON" />
 
-		<file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net35-client" />
-		<file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.GeoJSON.pdb" target="lib\net35-client" />
-		<file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.GeoJSON.xml" target="lib\net35-client" />
+		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.GeoJSON.dll" target="lib\net20" />
+		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.GeoJSON.pdb" target="lib\net20" />
+		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.GeoJSON.xml" target="lib\net20" />
 
-		<file src="Release\v4.0\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net40-client" />
-		<file src="Release\v4.0\AnyCPU\NetTopologySuite.IO.GeoJSON.pdb" target="lib\net40-client" />
-		<file src="Release\v4.0\AnyCPU\NetTopologySuite.IO.GeoJSON.xml" target="lib\net40-client" />
+		<file src="Release\AnyCPU\net35-client\NetTopologySuite.IO.GeoJSON.dll" target="lib\net35-client" />
+		<file src="Release\AnyCPU\net35-client\NetTopologySuite.IO.GeoJSON.pdb" target="lib\net35-client" />
+		<file src="Release\AnyCPU\net35-client\NetTopologySuite.IO.GeoJSON.xml" target="lib\net35-client" />
 
-		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\net45" />
-		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.GeoJSON.pdb" target="lib\net45" />
-		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.GeoJSON.xml" target="lib\net45" />
+		<file src="Release\AnyCPU\net40-client\NetTopologySuite.IO.GeoJSON.dll" target="lib\net40-client" />
+		<file src="Release\AnyCPU\net40-client\NetTopologySuite.IO.GeoJSON.pdb" target="lib\net40-client" />
+		<file src="Release\AnyCPU\net40-client\NetTopologySuite.IO.GeoJSON.xml" target="lib\net40-client" />
 
-		<file src="Release\PCL\AnyCPU\NetTopologySuite.IO.GeoJSON.dll" target="lib\portable-net403+sl5+netcore45+wpa81+wp8" />
-		<file src="Release\PCL\AnyCPU\NetTopologySuite.IO.GeoJSON.pdb" target="lib\portable-net403+sl5+netcore45+wpa81+wp8" />
-		<file src="Release\PCL\AnyCPU\NetTopologySuite.IO.GeoJSON.xml" target="lib\portable-net403+sl5+netcore45+wpa81+wp8" />
+		<file src="Release\AnyCPU\net403-client\NetTopologySuite.IO.GeoJSON.dll" target="lib\net403-client" />
+		<file src="Release\AnyCPU\net403-client\NetTopologySuite.IO.GeoJSON.pdb" target="lib\net403-client" />
+		<file src="Release\AnyCPU\net403-client\NetTopologySuite.IO.GeoJSON.xml" target="lib\net403-client" />
+
+		<file src="Release\AnyCPU\net45\NetTopologySuite.IO.GeoJSON.dll" target="lib\net45" />
+		<file src="Release\AnyCPU\net45\NetTopologySuite.IO.GeoJSON.pdb" target="lib\net45" />
+		<file src="Release\AnyCPU\net45\NetTopologySuite.IO.GeoJSON.xml" target="lib\net45" />
+
+		<file src="Release\AnyCPU\netstandard1.0\NetTopologySuite.IO.GeoJSON.dll" target="lib\netstandard1.0" />
+		<file src="Release\AnyCPU\netstandard1.0\NetTopologySuite.IO.GeoJSON.pdb" target="lib\netstandard1.0" />
+		<file src="Release\AnyCPU\netstandard1.0\NetTopologySuite.IO.GeoJSON.xml" target="lib\netstandard1.0" />
+
+		<file src="Release\AnyCPU\netstandard1.3\NetTopologySuite.IO.GeoJSON.dll" target="lib\netstandard1.3" />
+		<file src="Release\AnyCPU\netstandard1.3\NetTopologySuite.IO.GeoJSON.pdb" target="lib\netstandard1.3" />
+		<file src="Release\AnyCPU\netstandard1.3\NetTopologySuite.IO.GeoJSON.xml" target="lib\netstandard1.3" />
+
+		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.IO.GeoJSON.dll" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
+		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.IO.GeoJSON.pdb" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
+		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.IO.GeoJSON.xml" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
+
+		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.IO.GeoJSON.dll" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
+		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.IO.GeoJSON.pdb" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
+		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.IO.GeoJSON.xml" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
 	</files>
 </package>

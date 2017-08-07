@@ -16,8 +16,8 @@
 		<tags>NTS SqlServer2008</tags>
 		<language>en-US</language>
 		<frameworkAssemblies>
-			<frameworkAssembly assemblyName="System" targetFramework="" />
-			<frameworkAssembly assemblyName="System.Core" targetFramework="" />
+			<frameworkAssembly assemblyName="System" />
+			<frameworkAssembly assemblyName="System.Core" targetFramework="net35-client,net40-client,net403-client,net45" />
 		</frameworkAssemblies>
 		<dependencies>
 			<dependency id="NetTopologySuite" version="$version$" />
@@ -25,24 +25,27 @@
 		</dependencies>
 	</metadata>
 	<files>
-		<file src="Release\v2.0\AnyCPU\NetTopologySuite.IO.SqlServer2008.dll" target="lib\net20" />
-		<file src="Release\v2.0\AnyCPU\NetTopologySuite.IO.SqlServer2008.pdb" target="lib\net20" />
-		<file src="Release\v2.0\AnyCPU\NetTopologySuite.IO.SqlServer2008.xml" target="lib\net20" />
+		<file src="NetTopologySuite.Common.props" target="src" />
+		<file src="NetTopologySuite.IO\NetTopologySuite.IO.SqlServer2008\**" exclude="NetTopologySuite.IO\NetTopologySuite.IO.SqlServer2008\obj\**" target="src\NetTopologySuite.IO\NetTopologySuite.IO.SqlServer2008" />
 
-		<file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.SqlServer2008.dll" target="lib\net35-client" />
-		<file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.SqlServer2008.pdb" target="lib\net35-client" />
-		<file src="Release\v3.5\AnyCPU\NetTopologySuite.IO.SqlServer2008.xml" target="lib\net35-client" />
+		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.SqlServer2008.dll" target="lib\net20" />
+		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.SqlServer2008.pdb" target="lib\net20" />
+		<file src="Release\AnyCPU\net20\NetTopologySuite.IO.SqlServer2008.xml" target="lib\net20" />
 
-		<file src="Release\v4.0\AnyCPU\NetTopologySuite.IO.SqlServer2008.dll" target="lib\net40-client" />
-		<file src="Release\v4.0\AnyCPU\NetTopologySuite.IO.SqlServer2008.pdb" target="lib\net40-client" />
-		<file src="Release\v4.0\AnyCPU\NetTopologySuite.IO.SqlServer2008.xml" target="lib\net40-client" />
+		<file src="Release\AnyCPU\net35-client\NetTopologySuite.IO.SqlServer2008.dll" target="lib\net35-client" />
+		<file src="Release\AnyCPU\net35-client\NetTopologySuite.IO.SqlServer2008.pdb" target="lib\net35-client" />
+		<file src="Release\AnyCPU\net35-client\NetTopologySuite.IO.SqlServer2008.xml" target="lib\net35-client" />
 
-		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.IO.SqlServer2008.dll" target="lib\net403-client" />
-		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.IO.SqlServer2008.pdb" target="lib\net403-client" />
-		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.IO.SqlServer2008.xml" target="lib\net403-client" />
+		<file src="Release\AnyCPU\net40-client\NetTopologySuite.IO.SqlServer2008.dll" target="lib\net40-client" />
+		<file src="Release\AnyCPU\net40-client\NetTopologySuite.IO.SqlServer2008.pdb" target="lib\net40-client" />
+		<file src="Release\AnyCPU\net40-client\NetTopologySuite.IO.SqlServer2008.xml" target="lib\net40-client" />
 
-		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.SqlServer2008.dll" target="lib\net45" />
-		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.SqlServer2008.pdb" target="lib\net45" />
-		<file src="Release\v4.5\AnyCPU\NetTopologySuite.IO.SqlServer2008.xml" target="lib\net45" />
+		<file src="Release\AnyCPU\net403-client\NetTopologySuite.IO.SqlServer2008.dll" target="lib\net403-client" />
+		<file src="Release\AnyCPU\net403-client\NetTopologySuite.IO.SqlServer2008.pdb" target="lib\net403-client" />
+		<file src="Release\AnyCPU\net403-client\NetTopologySuite.IO.SqlServer2008.xml" target="lib\net403-client" />
+
+		<file src="Release\AnyCPU\net45\NetTopologySuite.IO.SqlServer2008.dll" target="lib\net45" />
+		<file src="Release\AnyCPU\net45\NetTopologySuite.IO.SqlServer2008.pdb" target="lib\net45" />
+		<file src="Release\AnyCPU\net45\NetTopologySuite.IO.SqlServer2008.xml" target="lib\net45" />
 	</files>
 </package>

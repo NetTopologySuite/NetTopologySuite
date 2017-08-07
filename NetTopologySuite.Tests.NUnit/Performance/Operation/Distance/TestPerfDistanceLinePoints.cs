@@ -68,6 +68,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
             Test(pts, target);
         }
 
+        /*
         private void xtest(int num)
         {
             var target = LoadData("C:\\proj\\JTS\\test\\g2e\\ffmwdec08.wkt");
@@ -76,6 +77,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
 
             Test(pts, target);
         }
+        */
 
         private void Test(IGeometry[] pts, IGeometry target)
         {
@@ -185,6 +187,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
             return pts;
         }
 
+        /*
         private static IGeometry LoadData(String file)
         {
             var geoms = LoadWKT(file);
@@ -197,6 +200,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
             var fileRdr = new WKTFileReader(filename, rdr);
             return fileRdr.Read();
         }
-
+        */
     }
 }

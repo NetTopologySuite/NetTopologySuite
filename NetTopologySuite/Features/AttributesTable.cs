@@ -1,8 +1,8 @@
 using System;
-#if PCL
-using Hashtable = System.Collections.Generic.Dictionary<object, object>;
+#if SERIALIZATION_COMPAT_NETTOPOLOGYSUITE_FEATURES_ATTRIBUTESTABLE
+using Hashtable = System.Collections.Hashtable;
 #else
-using System.Collections;
+using Hashtable = System.Collections.Generic.Dictionary<string, object>;
 #endif
 
 namespace NetTopologySuite.Features
@@ -10,14 +10,14 @@ namespace NetTopologySuite.Features
     /// <summary>
     /// Stores all attributes associated with a single <c>Geometry</c> feature.
     /// </summary>
-#if !PCL
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public class AttributesTable : IAttributesTable
     {        
         //private const string IndexField = "_NTS_ID_";
         //private const int IndexValue = 0;
-        
+
         private readonly Hashtable _attributes = new Hashtable();
 
         /// <summary>

@@ -15,7 +15,7 @@ namespace NetTopologySuite.IO
     /// </author>
     public class WKTFileReader
     {
-#if !PCL
+#if FEATURE_FILE_IO
         private const int MaxLookahead = 2048;
         private readonly FileInfo _file;
 #endif
@@ -30,7 +30,7 @@ namespace NetTopologySuite.IO
             Limit = -1;
         }
 
-#if !PCL
+#if FEATURE_FILE_IO
         ///<summary>
         /// Creates a new <see cref="WKTFileReader" /> given the <paramref name="file" /> to read from and a <see cref="WKTReader" /> to use to parse the geometries.
         ///</summary>
@@ -52,8 +52,6 @@ namespace NetTopologySuite.IO
         {
         }
 #endif
-
-#if PCL
         ///<summary>
         /// Creates a new <see cref="WKTFileReader" />, given a <see cref="Stream"/> to read from.
         ///</summary>
@@ -63,7 +61,6 @@ namespace NetTopologySuite.IO
             : this(new StreamReader(stream), wktReader)
         {
         }
-#endif
 
         ///<summary>
         /// Creates a new <see cref="WKTFileReader" />, given a <see cref="TextReader"/> to read with.
@@ -99,9 +96,9 @@ namespace NetTopologySuite.IO
         {
             _count = 0;
 
-#if !PCL
+#if FEATURE_FILE_IO
             if (_file != null)
-                _reader =  new StreamReader(new BufferedStream(_file.OpenRead(), MaxLookahead)); 
+                _reader =  new StreamReader(new FileStream(_file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read, MaxLookahead)); 
 #endif
             try
             {
@@ -109,8 +106,8 @@ namespace NetTopologySuite.IO
             }
             finally
             {
-#if !PCL
-                _reader.Close();
+#if FEATURE_FILE_IO
+                _reader.Dispose();
 #endif
             }
         }

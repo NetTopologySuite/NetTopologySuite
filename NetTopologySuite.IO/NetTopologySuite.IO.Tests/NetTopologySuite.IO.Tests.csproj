@@ -1,178 +1,52 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(SolutionDir)BuildTools\GeoAPI.Reference.targets" Condition="Exists('$(SolutionDir)BuildTools\GeoAPI.Reference.targets')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <fwVersion Condition=" '$(fwVersion)' == '' ">net40-client</fwVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B9C93F98-1667-40A2-B02F-90D5CE14121F}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetTopologySuite.IO.Tests</RootNamespace>
-    <AssemblyName>NetTopologySuite.IO.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\..\</SolutionDir>
+    <TargetFramework>net40-client</TargetFramework>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.SqlServer.Types, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>$(SolutionDir)packages\Microsoft.SqlServer.Types.10.50.1600.1\lib\Net20\Microsoft.SqlServer.Types.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Security, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\Npgsql.2.0.12.1\lib\net40\Mono.Security.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Npgsql, Version=2.0.12.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SolutionDir)packages\Npgsql.2.0.12.1\lib\net40\Npgsql.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="policy.2.0.Npgsql">
-      <HintPath>$(SolutionDir)packages\Npgsql.2.0.12.1\lib\net40\policy.2.0.Npgsql.dll</HintPath>
-    </Reference>
+
+  <Import Project="$(SolutionDir)NetTopologySuite.Common.props" />
+
+  <ItemGroup Condition=" '$(RequiresFrameworkAssemblyReferences)' == 'true' ">
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.SQLite, Version=1.0.76.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
-      <HintPath>$(SolutionDir)packages\System.Data.SQLite.x86.1.0.76.0\lib\net20\System.Data.SQLite.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data.SQLite.Linq, Version=1.0.76.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\System.Data.SQLite.x86.1.0.76.0\lib\net20\System.Data.SQLite.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AbstractIOFixture.cs" />
-    <Compile Include="GeoJSON\GeoJsonFixture.cs" />
-    <Compile Include="GeoJSON\GeoJsonReaderTest.cs" />
-    <Compile Include="GeoJSON\GeoJsonTests.cs" />
-    <Compile Include="GeoJSON\AttributesTableConverterTest.cs" />
-    <Compile Include="GeoJSON\FeatureCollectionTest.cs" />
-    <Compile Include="GeoJSON\FeatureConverterTest.cs" />
-    <Compile Include="GeoJSON\GeoJsonSerializerTest.cs" />
-    <Compile Include="GeoJSON\GeoJsonWriterTest.cs" />
-    <Compile Include="GeoJSON\GitHubIssues.cs" />
-    <Compile Include="GeoJSON\Issue145Fixture.cs" />
-    <Compile Include="GeoJSON\Issue148Fixture.cs" />
-    <Compile Include="GeoJSON\Issue16Fixture.cs" />
-    <Compile Include="GeoJSON\Issue32Fixture.cs" />
-    <Compile Include="GeoJSON\LinkedCRSTest.cs" />
-    <Compile Include="GeoJSON\NamedCRSTest.cs" />
-    <Compile Include="Issues.cs" />
-    <Compile Include="PostgisFixture.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RandomGeometryHelper.cs" />
-    <Compile Include="ShapeFile.Extended\ShapeDataReaderTests.cs" />
-    <Compile Include="ShapeFile.Extended\DbaseReaderTests.cs" />
-    <Compile Include="ShapeFile.Extended\HelperMethods.cs" />
-    <Compile Include="ShapeFile.Extended\ShapefileDataWriterTests.cs" />
-    <Compile Include="ShapeFile.Extended\ShapeReaderTests.cs" />
-    <Compile Include="ShapeFile.Extended\TempFileWriter.cs" />
-    <Compile Include="SpatiaLiteFixture.cs" />
-    <Compile Include="SqlGeographyFixture.cs" />
-    <Compile Include="SqlGeometryFixture.cs" />
-    <Compile Include="Streams\ByteStreamProviderFixture.cs" />
-    <Compile Include="TopoJSON\TopoReaderData.cs" />
-    <Compile Include="TopoJSON\TopoJsonReaderFixture.cs" />
-    <Compile Include="TopoJSON\TopoJsonWriterFixture.cs" />
-    <Compile Include="TopoJSON\TopoWriterData.cs" />
-  </ItemGroup>
+
   <ItemGroup>
     <EmbeddedResource Include="GeoJSON\World_AL6.GeoJson" />
-    <None Include="packages.config" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\NetTopologySuite.IO.ShapeFile.Extended\NetTopologySuite.IO.ShapeFile.Extended.csproj">
-      <Project>{4f36dd38-3cce-4a19-93c2-a9f8b27ea430}</Project>
-      <Name>NetTopologySuite.IO.ShapeFile.Extended</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\NetTopologySuite\NetTopologySuite.csproj">
-      <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
-      <Name>NetTopologySuite</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO.GDB\NetTopologySuite.IO.GDB.csproj">
-      <Project>{548166D9-DF64-46FB-9EEC-212C7B7E7D85}</Project>
-      <Name>NetTopologySuite.IO.GDB</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO.GeoJSON\NetTopologySuite.IO.GeoJSON.csproj">
-      <Project>{1583F1F7-7E7D-42EE-99F9-E072453BCE34}</Project>
-      <Name>NetTopologySuite.IO.GeoJSON</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO.GeoTools\NetTopologySuite.IO.GeoTools.csproj">
-      <Project>{21805958-869e-49f5-a4ed-0ac8599d62f0}</Project>
-      <Name>NetTopologySuite.IO.GeoTools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO.MsSqlSpatial\NetTopologySuite.IO.MsSqlSpatial.csproj">
-      <Project>{75BDB70A-AEB9-4592-9B5E-677D3D346A54}</Project>
-      <Name>NetTopologySuite.IO.MsSqlSpatial</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO.PostGis\NetTopologySuite.IO.PostGis.csproj">
-      <Project>{7505264F-7E3E-4F8D-A9D5-885B4F313C26}</Project>
-      <Name>NetTopologySuite.IO.PostGis</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO.ShapeFile\NetTopologySuite.IO.ShapeFile.csproj">
-      <Project>{ab9096a7-89dd-4abd-b535-a5258863f389}</Project>
-      <Name>NetTopologySuite.IO.ShapeFile</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO.SpatiaLite\NetTopologySuite.IO.SpatiaLite.csproj">
-      <Project>{AD33B357-E789-4102-8DC3-F18EEE507583}</Project>
-      <Name>NetTopologySuite.IO.SpatiaLite</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO.SqlServer2008\NetTopologySuite.IO.SqlServer2008.csproj">
-      <Project>{8E6A486B-5418-4FE1-A14F-CF2F3B74D4E0}</Project>
-      <Name>NetTopologySuite.IO.SqlServer2008</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO.TopoJSON\NetTopologySuite.IO.TopoJSON.csproj">
-      <Project>{0e4430fb-e15b-447b-a21c-6481bc708dde}</Project>
-      <Name>NetTopologySuite.IO.TopoJSON</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.csproj">
-      <Project>{e377580e-61c9-4943-b98b-085d51b32578}</Project>
-      <Name>NetTopologySuite.IO</Name>
-    </ProjectReference>
+    <PackageReference Include="GeoAPI" Version="$(GeoAPIVersion)" />
+    <PackageReference Include="Microsoft.SqlServer.Types" Version="10.50.1600.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="Npgsql" Version="2.0.12.1" />
+    <PackageReference Include="NUnit" Version="2.6.4" />
+    <PackageReference Include="System.Data.SQLite.x86" Version="1.0.76.0" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile.Extended\NetTopologySuite.IO.ShapeFile.Extended.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite\NetTopologySuite.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.GDB\NetTopologySuite.IO.GDB.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.GeoJSON\NetTopologySuite.IO.GeoJSON.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\NetTopologySuite.IO.GeoTools.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.MsSqlSpatial\NetTopologySuite.IO.MsSqlSpatial.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.PostGis\NetTopologySuite.IO.PostGis.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile\NetTopologySuite.IO.ShapeFile.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.SpatiaLite\NetTopologySuite.IO.SpatiaLite.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.SqlServer2008\NetTopologySuite.IO.SqlServer2008.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.TopoJSON\NetTopologySuite.IO.TopoJSON.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO\NetTopologySuite.IO.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
 </Project>

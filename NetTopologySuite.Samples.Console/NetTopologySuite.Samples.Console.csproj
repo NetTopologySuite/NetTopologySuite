@@ -1,330 +1,63 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
-  <Import Project="$(SolutionDir)BuildTools\GeoAPI.Reference.targets" Condition="Exists('$(SolutionDir)BuildTools\GeoAPI.Reference.targets')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <fwVersion Condition=" '$(fwVersion)' == '' ">net40-client</fwVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{39E8A390-5304-4447-99E2-3810941824AD}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
+    <TargetFramework>net40-client</TargetFramework>
     <RootNamespace>NetTopologySuite.Samples</RootNamespace>
-    <AssemblyName>NetTopologySuite.Samples.Console</AssemblyName>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
+    <OutputType>Exe</OutputType>
     <StartupObject>NetTopologySuite.Samples.SimpleTests.Program</StartupObject>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NET20;NET35;NET40</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
-    <DefineConstants>TRACE;NET20;NET35;NET40</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="DotSpatial.Projections, Version=1.7.0.0, Culture=neutral, PublicKeyToken=272632bddd08a38b, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SolutionDir)packages\DotSpatial.Projections.1.7\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ProjNet, Version=1.3.0.3, Culture=neutral, PublicKeyToken=a1f5bdcd9c6f5740, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SolutionDir)packages\ProjNET4GeoAPI.1.3.2\lib\net40-client\ProjNet.dll</HintPath>
-    </Reference>
-    <Reference Include="QuickGraph">
-      <HintPath>$(SolutionDir)packages\QuickGraph.3.6.61119.7\lib\net4\QuickGraph.dll</HintPath>
-    </Reference>
+
+  <Import Project="$(SolutionDir)NetTopologySuite.Common.props" />
+
+  <ItemGroup Condition=" '$(RequiresFrameworkAssemblyReferences)' == 'true' ">
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="..\NetTopologySuite.Tests.NUnit\TestData\EmbeddedResourceManager.cs">
-      <Link>Tests\Various\EmbeddedResourceManager.cs</Link>
-    </Compile>
-    <Compile Include="Features\UseOfIndexAndPreparedGeometry.cs" />
-    <Compile Include="Geometries\basicexample.cs" />
-    <Compile Include="Geometries\constructionexample.cs" />
-    <Compile Include="Geometries\CreateOrientationDistanceMesh.cs" />
-    <Compile Include="Geometries\extendedcoordinate.cs" />
-    <Compile Include="Geometries\extendedcoordinateexample.cs" />
-    <Compile Include="Geometries\extendedcoordinatesequence.cs" />
-    <Compile Include="Geometries\extendedcoordinatesequencefactory.cs" />
-    <Compile Include="Geometries\precisionmodelexample.cs" />
-    <Compile Include="Geometries\simplemethodsexample.cs" />
-    <Compile Include="Lab\Clean\HoleRemover.cs" />
-    <Compile Include="Lab\Clean\InvalidHoleRemover.cs" />
-    <Compile Include="Lab\Clean\InvalidHoleRemoverTest.cs" />
-    <Compile Include="Lab\Clean\SmallHoleRemover.cs" />
-    <Compile Include="Lab\Clean\SmallHoleRemoverTest.cs" />
-    <Compile Include="Lab\Functions\RemoverFunctions.cs" />
-    <Compile Include="LinearReferencing\LinearReferencingExample.cs" />
-    <Compile Include="Operation\Polygonize\SplitPolygonExample.cs" />
-    <Compile Include="Tests\Github\Issue150Fixture.cs" />
-    <Compile Include="Voronoi\VoronoiExample.cs" />
-    <Compile Include="Technique\ExtractLinestringByMeasure.cs" />
-    <Compile Include="Technique\RemoveSpikes.cs" />
-    <Compile Include="Tests\Geometries\OctagonalEnvelopeTest.cs" />
-    <Compile Include="Tests\GeometryServicesTest.cs" />
-    <Compile Include="Tests\Github\Issue136Fixture.cs" />
-    <Compile Include="Tests\Github\Issue12Fixture.cs" />
-    <Compile Include="Tests\Github\Issue27Fixture.cs" />
-    <Compile Include="Tests\Github\Issue28Fixture.cs" />
-    <Compile Include="Tests\Github\Issue31Fixture.cs" />
-    <Compile Include="Tests\Github\Issue4Fixture.cs" />
-    <Compile Include="Tests\Github\Issue58Fixture.cs" />
-    <Compile Include="Tests\Github\Issue61Fixture.cs" />
-    <Compile Include="Tests\Github\Issue62Fixture.cs" />
-    <Compile Include="Tests\Github\Issue87Fixture.cs" />
-    <Compile Include="Tests\Github\Issue96Fixture.cs" />
-    <Compile Include="Tests\Github\Issues.cs" />
-    <Compile Include="Tests\IO\GmlTest.cs" />
-    <Compile Include="Tests\Github\Issue36Tests.cs" />
-    <Compile Include="Tests\IO\PostGisTest.cs" />
-    <Compile Include="Tests\IO\ShapeFileEncodingTest.cs" />
-    <Compile Include="Tests\IO\ShapeFileInvalidHeaderTest.cs" />
-    <Compile Include="Tests\IO\ShapeFileReadTest.cs" />
-    <Compile Include="Tests\IO\ShapefileWriteTest.cs" />
-    <Compile Include="Tests\IO\WKTReaderTests.cs" />
-    <Compile Include="Tests\Operation\Linemerge\LineSequencerFileTest.cs" />
-    <Compile Include="Tests\Performances\NodingValidatorFixture.cs" />
-    <Compile Include="Tests\Performances\PreparedGeometryFixture.cs" />
-    <Compile Include="Tests\Performances\SortedListsFixture.cs" />
-    <Compile Include="Tests\Various\AffineTransformBuilderUsage.cs" />
-    <Compile Include="Tests\Various\BufferTest.cs" />
-    <Compile Include="Tests\Various\CoordinateArraysTest.cs" />
-    <Compile Include="Tests\Various\CascadedPolygonUnionFixture.cs" />
-    <Compile Include="Tests\Various\GeometriesFixture.cs" />
-    <Compile Include="Tests\Various\GoogleIssueTrackerTests.cs" />
-    <Compile Include="Tests\Various\Issue102Test.cs" />
-    <Compile Include="Tests\Various\Issue103Tests.cs" />
-    <Compile Include="Tests\Various\Issue117Tests.cs" />
-    <Compile Include="Tests\Various\Issue123Tests.cs" />
-    <Compile Include="Tests\Various\Issue131Test.cs" />
-    <Compile Include="Tests\Various\Issue152Tests.cs" />
-    <Compile Include="Tests\Various\Issue156Tests.cs" />
-    <Compile Include="Tests\Various\Issue171TestFixture.cs" />
-    <Compile Include="Tests\Various\Issue172TestFixture.cs" />
-    <Compile Include="Tests\Various\Issue173Fixture.cs" />
-    <Compile Include="Tests\Various\Issue174TestFixture.cs" />
-    <Compile Include="Tests\Various\Issue178Fixture.cs" />
-    <Compile Include="Tests\Various\Issue179Fixture.cs" />
-    <Compile Include="Tests\Various\Issue186TestFixture.cs" />
-    <Compile Include="Tests\Github\Issue47Tests.cs" />
-    <Compile Include="Tests\Various\Issue68Tests.cs" />
-    <Compile Include="Tests\Various\CoversTest.cs" />
-    <Compile Include="Tests\Various\DbfDateTest.cs" />
-    <Compile Include="Tests\Various\FormattingTest.cs" />
-    <Compile Include="Tests\Various\GeomBinOpTest_Issue14_Simplified.cs" />
-    <Compile Include="Tests\Various\GoogleGroupTests.cs" />
-    <Compile Include="Tests\Various\GraphBuilder2.cs" />
-    <Compile Include="Tests\Various\GraphBuilder2Test.cs" />
-    <Compile Include="Tests\Various\IntesectIterationTest.cs" />
-    <Compile Include="Tests\Various\Issue26Tests.cs" />
-    <Compile Include="Tests\Various\Issue35Tests.cs" />
-    <Compile Include="Tests\Various\Issue36Tests.cs" />
-    <Compile Include="Tests\Various\Issue37Test.cs" />
-    <Compile Include="Tests\Various\Issue56Test.cs" />
-    <Compile Include="Tests\Various\Issue58Tests.cs" />
-    <Compile Include="Tests\Various\Issue75Tests.cs" />
-    <Compile Include="Tests\Various\Issue86Test.cs" />
-    <Compile Include="Tests\Various\Issue94Test.cs" />
-    <Compile Include="Tests\Various\IsValidTest.cs" />
-    <Compile Include="Tests\Operation\Linemerge\LineSequencerTest.cs" />
-    <Compile Include="Tests\Various\MiscUtil\DoubleConverter.cs" />
-    <Compile Include="Tests\Various\NormalizeTest.cs" />
-    <Compile Include="Tests\Various\OracleWKBTest.cs" />
-    <Compile Include="Tests\Various\PathFinder.cs" />
-    <Compile Include="Tests\Various\PathFinderTest.cs" />
-    <Compile Include="Tests\Various\PrecisionTest.cs" />
-    <Compile Include="Tests\Various\QuadTreeTest.cs" />
-    <Compile Include="Tests\Various\ReverseTest.cs" />
-    <Compile Include="Tests\Various\RobustLineIntersectorTest.cs" />
-    <Compile Include="Tests\Various\OGCTests.cs" />
-    <Compile Include="Tests\Various\SlowIntersectionTest.cs" />
-    <Compile Include="Tests\Various\SRSConversionTest.cs" />
-    <Compile Include="Tests\Various\StackExchangeFixtures.cs" />
-    <Compile Include="Tests\Various\UnionAggregateTest.cs" />
-    <Compile Include="Tests\Various\WKTTest.cs" />
-    <Compile Include="SimpleTests\Attributes\AttributesTest.cs" />
-    <Compile Include="Operation\Distance\ClosestPointExample.cs" />
-    <Compile Include="Operation\Linemerge\LineMergeExample.cs" />
-    <Compile Include="Operation\Polygonize\PolygonizeExample.cs" />
-    <Compile Include="Precision\EnhancedPrecisionOpExample.cs" />
-    <Compile Include="ShapeTests\GMLTesting.cs" />
-    <Compile Include="ShapeTests\ShapeRead.cs" />
-    <Compile Include="SimpleTests\BaseSamples.cs" />
-    <Compile Include="SimpleTests\Geometries\LineStringSamples.cs" />
-    <Compile Include="SimpleTests\Geometries\MultiPointSamples.cs" />
-    <Compile Include="SimpleTests\Geometries\PointSamples.cs" />
-    <Compile Include="SimpleTests\Geometries\PolygonSamples.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimpleTests\Geometries\SerializationSamples.cs" />
-    <Compile Include="SimpleTests\Geometries\ValidationSuite.cs" />
-    <Compile Include="Technique\LineStringSelfIntersections.cs" />
-    <Compile Include="Technique\UnionUsingBuffer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NetTopologySuite.CoordinateSystems.Transfromation\DotSpatial.Projections.Wrapper\DotSpatial.Projections.Wrapper.csproj">
-      <Project>{08759323-B999-405B-8688-80008A4190B0}</Project>
-      <Name>DotSpatial.Projections.Wrapper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GDB\NetTopologySuite.IO.GDB.csproj">
-      <Project>{548166D9-DF64-46FB-9EEC-212C7B7E7D85}</Project>
-      <Name>NetTopologySuite.IO.GDB</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoJSON\NetTopologySuite.IO.GeoJSON.csproj">
-      <Project>{1583f1f7-7e7d-42ee-99f9-e072453bce34}</Project>
-      <Name>NetTopologySuite.IO.GeoJSON</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\NetTopologySuite.IO.GeoTools.csproj">
-      <Project>{21805958-869E-49F5-A4ED-0AC8599D62F0}</Project>
-      <Name>NetTopologySuite.IO.GeoTools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.MsSqlSpatial\NetTopologySuite.IO.MsSqlSpatial.csproj">
-      <Project>{75BDB70A-AEB9-4592-9B5E-677D3D346A54}</Project>
-      <Name>NetTopologySuite.IO.MsSqlSpatial</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.PostGis\NetTopologySuite.IO.PostGis.csproj">
-      <Project>{7505264F-7E3E-4F8D-A9D5-885B4F313C26}</Project>
-      <Name>NetTopologySuite.IO.PostGis</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile.Extended\NetTopologySuite.IO.ShapeFile.Extended.csproj">
-      <Project>{4f36dd38-3cce-4a19-93c2-a9f8b27ea430}</Project>
-      <Name>NetTopologySuite.IO.ShapeFile.Extended</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile\NetTopologySuite.IO.ShapeFile.csproj">
-      <Project>{AB9096A7-89DD-4ABD-B535-A5258863F389}</Project>
-      <Name>NetTopologySuite.IO.ShapeFile</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.SpatiaLite\NetTopologySuite.IO.SpatiaLite.csproj">
-      <Project>{AD33B357-E789-4102-8DC3-F18EEE507583}</Project>
-      <Name>NetTopologySuite.IO.SpatiaLite</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO.SqlServer2008\NetTopologySuite.IO.SqlServer2008.csproj">
-      <Project>{8e6a486b-5418-4fe1-a14f-cf2f3b74d4e0}</Project>
-      <Name>NetTopologySuite.IO.SqlServer2008</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.IO\NetTopologySuite.IO\NetTopologySuite.IO.csproj">
-      <Project>{e377580e-61c9-4943-b98b-085d51b32578}</Project>
-      <Name>NetTopologySuite.IO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.Tests.NUnit\NetTopologySuite.Tests.NUnit.csproj">
-      <Project>{a1525c90-fa00-449d-b3c4-cba45d5e916c}</Project>
-      <Name>NetTopologySuite.Tests.NUnit</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite.Windows.Forms\NetTopologySuite.Windows.Forms.csproj">
-      <Project>{db5efab5-f90a-4b64-ab99-7c3a750154f1}</Project>
-      <Name>NetTopologySuite.Windows.Forms</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
-      <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
-      <Name>NetTopologySuite</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Tests\Readme.txt" />
-    <Content Include="ReadMe.txt" />
-    <Content Include="Tests\Various\MiscUtil\licence.txt" />
-    <Content Include="Tests\Various\MiscUtil\readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="$(SolutionDir)SharedAssemblyVersion.cs" Link="Properties\SharedAssemblyVersion.cs" />
+
+    <Compile Include="$(SolutionDir)NetTopologySuite.Tests.NUnit\TestData\EmbeddedResourceManager.cs" Link="Tests\Various\EmbeddedResourceManager.cs" />
+    <Compile Include="$(SolutionDir)NetTopologySuite.Tests.NUnit\GeometryTestCase.cs" Link="Tests\GeometryTestCase.cs" />
+
     <EmbeddedResource Include="Tests\Various\cant-read-file1.gml" />
-    <EmbeddedResource Include="Tests\Various\cant-read-file2.gml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Tests\Various\cant-read-file3.gml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Tests\Various\cant-read-file2.gml" />
+    <EmbeddedResource Include="Tests\Various\cant-read-file3.gml" />
     <EmbeddedResource Include="Tests\Various\cant-read-file4.gml" />
     <EmbeddedResource Include="Tests\Various\read-ok-file.gml" />
-    <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotSpatial.Projections" Version="1.7" />
+    <PackageReference Include="GeoAPI" Version="$(GeoAPIVersion)" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="NUnit" Version="2.6.4" />
+    <PackageReference Include="ProjNET4GeoAPI" Version="1.3.2" />
+    <PackageReference Include="QuickGraph" Version="3.6.61119.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.CoordinateSystems.Transfromation\DotSpatial.Projections.Wrapper\DotSpatial.Projections.Wrapper.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.GDB\NetTopologySuite.IO.GDB.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.GeoJSON\NetTopologySuite.IO.GeoJSON.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\NetTopologySuite.IO.GeoTools.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.MsSqlSpatial\NetTopologySuite.IO.MsSqlSpatial.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.PostGis\NetTopologySuite.IO.PostGis.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile.Extended\NetTopologySuite.IO.ShapeFile.Extended.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile\NetTopologySuite.IO.ShapeFile.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.SpatiaLite\NetTopologySuite.IO.SpatiaLite.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.SqlServer2008\NetTopologySuite.IO.SqlServer2008.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO\NetTopologySuite.IO.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.Windows.Forms\NetTopologySuite.Windows.Forms.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite\NetTopologySuite.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
 </Project>

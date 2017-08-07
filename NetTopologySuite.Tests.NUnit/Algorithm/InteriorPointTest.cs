@@ -11,31 +11,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     public class InteriorPointTest
     {
-#if !PCL
-        [TestAttribute]
-        public void TestAll()
-        {
-            var filePath = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile("NetTopologySuite.Tests.NUnit.TestData.europe.wkt");
-            CheckInteriorPointFile(filePath);
-            filePath = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile("NetTopologySuite.Tests.NUnit.TestData.africa.wkt");
-            CheckInteriorPointFile(filePath);
-            //checkInteriorPointFile("../../../../../data/africa.wkt");
-        }
-
-
-        private static void CheckInteriorPointFile(String file)
-        {
-            var fileRdr = new WKTFileReader(file, new WKTReader());
-            CheckInteriorPointFile(Path.GetFileName(file), fileRdr);
-        }
-
-        private static void CheckInteriorPointFile(string name, WKTFileReader fileRdr)
-        {
-            var polys = fileRdr.Read();
-            CheckInteriorPoint(name, polys);
-        }
-
-#else
         [TestAttribute]
         public void TestAll()
         {
@@ -50,7 +25,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         private static void CheckInteriorPointFile(Stream stream, string name)
         {
-            var fileRdr = new WKTFileReader(stream, new WKTReader());
+            var fileRdr = new WKTFileReader(new StreamReader(stream), new WKTReader());
             CheckInteriorPointFile(fileRdr, name);
         }
 
@@ -59,8 +34,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             var polys = fileRdr.Read();
             CheckInteriorPoint(name, polys);
         }
-
-#endif
 
         private static void CheckInteriorPoint(string name, IEnumerable<IGeometry> geoms)
         {

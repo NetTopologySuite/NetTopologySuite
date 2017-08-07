@@ -94,22 +94,13 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         public IGeometry Read(Stream stream)
         {
-            BinaryReader reader = null;
             var byteOrder = (ByteOrder)stream.ReadByte();
             // "Rewind" to let Read(BinaryReader) skip this byte
             // in collection and non-collection geometries.
             stream.Position = 0;
-            try
+            using (BinaryReader reader = byteOrder == ByteOrder.BigEndian ? new BEBinaryReader(stream) : new BinaryReader(stream))
             {
-                reader = byteOrder == ByteOrder.BigEndian
-                    ? new BEBinaryReader(stream)
-                    : new BinaryReader(stream);
                 return Read(reader);
-            }
-            finally
-            {
-                if (reader != null)
-                    reader.Close();
             }
         }
 

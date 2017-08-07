@@ -8,13 +8,9 @@ namespace NetTopologySuite.IO
     {
         public override IGeometry Read(Stream stream)
         {
-            BinaryReader reader = null;
             var byteOrder = (ByteOrder)stream.ReadByte();
-            try
+            using (BinaryReader reader = byteOrder == ByteOrder.BigEndian ? new BEBinaryReader(stream) : new BinaryReader(stream))
             {
-                if (byteOrder == ByteOrder.BigEndian)
-                    reader = new BEBinaryReader(stream);
-                else reader = new BinaryReader(stream);
                 IGeometry geometry = Read(reader);
                 int srid = -1;
                 try
@@ -26,11 +22,6 @@ namespace NetTopologySuite.IO
                     srid = -1;
                 geometry.SRID = srid;
                 return geometry;
-            }
-            finally
-            {
-                if (reader != null)
-                    reader.Close();
             }
         }
     }

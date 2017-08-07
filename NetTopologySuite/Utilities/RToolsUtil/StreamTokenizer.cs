@@ -3,9 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-#if PCL
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace RTools_NTS.Util
 {
@@ -84,7 +81,7 @@ namespace RTools_NTS.Util
 	/// This is separated from the StreamTokenizer so that common settings
 	/// are easy to package and keep together.
 	/// </summary>
-#if !PCL
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public class StreamTokenizerSettings
@@ -1414,7 +1411,7 @@ namespace RTools_NTS.Util
 			return(Tokenize(tokens));
 		}
 
-#if !PCL
+#if FEATURE_FILE_IO
 		/// <summary>
 		/// Parse all tokens from the specified file, put
 		/// them into the input ArrayList.
@@ -1438,20 +1435,20 @@ namespace RTools_NTS.Util
 			{
 				if (!Tokenize(tokens))
 				{
-					textReader.Close();
-					if (fr != null) fr.Close();
+					textReader.Dispose();
+					if (fr != null) fr.Dispose();
 					return(false);
 				}
 			}
 			catch(StreamTokenizerUntermException e)
 			{
-				textReader.Close();
-				if (fr != null) fr.Close();
+				textReader.Dispose();
+				if (fr != null) fr.Dispose();
 				throw e;
 			}
 
-			if (textReader != null) textReader.Close();
-			if (fr != null) fr.Close();
+			if (textReader != null) textReader.Dispose();
+			if (fr != null) fr.Dispose();
 			return(true);
 		}
 

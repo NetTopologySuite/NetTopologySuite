@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using GeoAPI.Geometries;
 using GeoAPI.Operation.Buffer;
 using NetTopologySuite.Algorithm;
@@ -252,8 +253,7 @@ namespace NetTopologySuite.Operation.Buffer
                 //      }
                 subgraph.FindResultEdges();
                 processedGraphs.Add(subgraph);
-                polyBuilder.Add(new List<EdgeEnd>(
-                    Utilities.Caster.Upcast<DirectedEdge, EdgeEnd>(subgraph.DirectedEdges)), subgraph.Nodes);
+                polyBuilder.Add(((IEnumerable<EdgeEnd>)subgraph.DirectedEdges).ToList(), subgraph.Nodes);
             }
         }
 

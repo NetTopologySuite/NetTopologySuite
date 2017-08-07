@@ -11,7 +11,7 @@ namespace NetTopologySuite.Geometries
     /// parties that change them are actually changing the
     /// DefaultCoordinateSequence's underlying data.
     /// </summary>
-#if !PCL
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     [Obsolete("No longer used.")]

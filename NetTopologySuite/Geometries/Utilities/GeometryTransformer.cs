@@ -263,16 +263,11 @@ namespace NetTopologySuite.Geometries.Utilities
 
             if (isAllValidLinearRings)
             {
-#if !PCL
-                var holesAsLinearRing = holes.ConvertAll<ILinearRing>(ls => (ILinearRing)ls).ToArray();
-#else
+                ILinearRing[] holesAsLinearRing = new ILinearRing[holes.Count];
 
-                var tmp = new List<ILinearRing>();
-                foreach (var lineString in holes)
-                    tmp.Add((ILinearRing)lineString);
-                var holesAsLinearRing = tmp.ToArray();
-#endif
-
+                // in case your IDE whines about array covariance on this line,
+                // don't worry, it's safe -- we proved above that it will work.
+                holes.CopyTo(holesAsLinearRing);
                 return Factory.CreatePolygon((ILinearRing)shell, holesAsLinearRing);
             }
             else

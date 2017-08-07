@@ -1,11 +1,6 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-#if NET35
 using System.Linq;
-#endif
-#if PCL
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace NetTopologySuite.Utilities
 {
@@ -34,35 +29,6 @@ namespace NetTopologySuite.Utilities
         public delegate TResult FunctionDelegate< T,  TResult>(T obj);
 
         /// <summary>
-        /// Executes a function on each item in a <see cref="ICollection" />
-        /// and returns the results in a new <see cref="IList" />.
-        /// </summary>
-        /// <param name="coll"></param>
-        /// <param name="func"></param>
-        /// <returns></returns>
-        public static IList Transform(ICollection coll, FunctionDelegate<object> func)
-        {
-            IList result = new ArrayList();
-            foreach(object obj in coll)
-                result.Add(func(obj));
-            return result;
-        }
-
-        /// <summary>
-        /// Executes a function on each item in a <see cref="ICollection" />
-        /// and returns the results in a new <see cref="IList" />.
-        /// </summary>
-        /// <param name="coll"></param>
-        /// <returns></returns>
-        public static IList<T> Cast<T>(ICollection coll)
-        {
-            IList<T> result = new List<T>(coll.Count);
-            foreach (var obj in coll)
-                result.Add((T)obj);
-            return result;
-        }
-
-        /// <summary>
         /// Executes a function on each item in a <see cref="ICollection{TIn}" />
         /// and returns the results in a new <see cref="IList{TOut}" />.
         /// </summary>
@@ -77,7 +43,6 @@ namespace NetTopologySuite.Utilities
                 result.Add(obj as TOut);
             return result;
         }
-
 
         /// <summary>
         /// Executes a function on each item in a <see cref="IList{T}" />
@@ -110,18 +75,6 @@ namespace NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Executes a function on each item in a <see cref="ICollection" /> 
-        /// but does not accumulate the result.
-        /// </summary>
-        /// <param name="coll"></param>
-        /// <param name="func"></param>
-        public static void Apply(ICollection coll, FunctionDelegate<object> func)
-        {
-            foreach (object obj in coll)
-                func(obj);
-        }
-
-        /// <summary>
         /// Executes a function on each item in a <see cref="IEnumerable{T}" /> 
         /// but does not accumulate the result.
         /// </summary>
@@ -134,24 +87,7 @@ namespace NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Executes a function on each item in a <see cref="ICollection" />
-        /// and collects all the entries for which the result
-        /// of the function is equal to <c>true</c>.
-        /// </summary>
-        /// <param name="coll"></param>
-        /// <param name="func"></param>
-        /// <returns></returns>
-        public static IList Select(ICollection coll, FunctionDelegate<object, bool> func)
-        {
-            IList result = new ArrayList();
-            foreach (object obj in coll)
-                if (func(obj))
-                    result.Add(obj);
-            return result;
-        }
-
-        /// <summary>
-        /// Executes a function on each item in a <see cref="ICollection" />
+        /// Executes a function on each item in a <see cref="IEnumerable{T}" />
         /// and collects all the entries for which the result
         /// of the function is equal to <c>true</c>.
         /// </summary>
@@ -176,7 +112,7 @@ namespace NetTopologySuite.Utilities
         public static TOut[] Cast<TIn,TOut>(TIn[] array)
         {
             var res = new TOut[array.Length];
-            System.Array.Copy(array, res, array.Length);
+            Array.Copy(array, res, array.Length);
             return res;
         }
 
@@ -187,67 +123,74 @@ namespace NetTopologySuite.Utilities
 
         internal static IEnumerable<T> StableSort<T>(IEnumerable<T> items, IComparer<T> comparer)
         {
-#if NET35
             // LINQ's OrderBy is guaranteed to be a stable sort.
             return items.OrderBy(x => x, comparer);
-#else
-
-            // otherwise, tag each item with the index and sort the wrappers.
-            // if we're given a collection (and we always are), use its count
-            // to prevent unnecessary array copies.
-            var itemCollection = items as ICollection<T>;
-            var taggedItems = itemCollection == null
-                ? new List<IndexTaggedItem<T>>()
-                : new List<IndexTaggedItem<T>>(itemCollection.Count);
-
-            int index = 0;
-            foreach (var item in items)
-            {
-                taggedItems.Add(new IndexTaggedItem<T>(item, index++));
-            }
-
-            taggedItems.Sort(new IndexAwareComparer<T>(comparer));
-
-            var sorted = new List<T>(taggedItems.Count);
-            foreach (var taggedItem in taggedItems)
-            {
-                sorted.Add(taggedItem.Item);
-            }
-
-            return sorted;
-#endif
         }
 
-#if !NET35
-        private sealed class IndexTaggedItem<T>
+        #region Obsolete Utilities for Non-Generic Collections (Obsolete)
+
+        /// <summary>
+        /// Executes a function on each item in a <see cref="System.Collections.ICollection" />
+        /// and returns the results in a new <see cref="System.Collections.IList" />.
+        /// </summary>
+        /// <param name="coll"></param>
+        /// <returns></returns>
+        [Obsolete("Not used anywhere in NTS; use LINQ or a generic overload instead.", error: true)]
+        public static IList<T> Cast<T>(System.Collections.ICollection coll)
         {
-            internal readonly T Item;
-            internal readonly int Index;
-
-            internal IndexTaggedItem(T item, int index)
-            {
-                this.Item = item;
-                this.Index = index;
-            }
+            IList<T> result = new List<T>(coll.Count);
+            foreach (var obj in coll)
+                result.Add((T)obj);
+            return result;
         }
 
-        private sealed class IndexAwareComparer<T> : Comparer<IndexTaggedItem<T>>
+        /// <summary>
+        /// Executes a function on each item in a <see cref="System.Collections.ICollection" />
+        /// and returns the results in a new <see cref="System.Collections.IList" />.
+        /// </summary>
+        /// <param name="coll"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        [Obsolete("Not used anywhere in NTS; use LINQ or a generic overload instead.", error: true)]
+        public static System.Collections.IList Transform(System.Collections.ICollection coll, FunctionDelegate<object> func)
         {
-            private readonly IComparer<T> primaryComparer;
-
-            internal IndexAwareComparer(IComparer<T> primaryComparer)
-            {
-                this.primaryComparer = primaryComparer;
-            }
-
-            public override int Compare(IndexTaggedItem<T> x, IndexTaggedItem<T> y)
-            {
-                int cmp = this.primaryComparer.Compare(x.Item, y.Item);
-
-                // compare equal elements by their index.
-                return cmp == 0 ? x.Index.CompareTo(y.Index) : cmp;
-            }
+            List<object> result = new List<object>();
+            foreach(object obj in coll)
+                result.Add(func(obj));
+            return result;
         }
-#endif
+
+        /// <summary>
+        /// Executes a function on each item in a <see cref="System.Collections.ICollection" /> 
+        /// but does not accumulate the result.
+        /// </summary>
+        /// <param name="coll"></param>
+        /// <param name="func"></param>
+        [Obsolete("Not used anywhere in NTS; use LINQ or a generic overload instead.", error: true)]
+        public static void Apply(System.Collections.ICollection coll, FunctionDelegate<object> func)
+        {
+            foreach (object obj in coll)
+                func(obj);
+        }
+
+        /// <summary>
+        /// Executes a function on each item in a <see cref="System.Collections.ICollection" />
+        /// and collects all the entries for which the result
+        /// of the function is equal to <c>true</c>.
+        /// </summary>
+        /// <param name="coll"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        [Obsolete("Not used anywhere in NTS; use LINQ or a generic overload instead.", error: true)]
+        public static System.Collections.IList Select(System.Collections.ICollection coll, FunctionDelegate<object, bool> func)
+        {
+            List<object> result = new List<object>();
+            foreach (object obj in coll)
+                if (func(obj))
+                    result.Add(obj);
+            return result;
+        }
+
+        #endregion
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reflection;
 using Open.Topology.TestRunner;
 
 namespace ConsoleTestRunner
@@ -8,7 +9,7 @@ namespace ConsoleTestRunner
 	/// Summary description for ConsoleTest.
 	/// </summary>
     class ConsoleTest
-    {        
+    {
         static void PrintMenu()
         {
             Console.WriteLine("\n\n**\n**\n** Interactive Test Instructions \n**\n**\n**\n");
@@ -146,6 +147,7 @@ namespace ConsoleTestRunner
         [STAThread]
         static void Main(string[] args)
         {
+            Environment.CurrentDirectory = new FileInfo(Assembly.GetEntryAssembly().Location).Directory.FullName;
             if (args == null || args.Length == 0)
             {
                 XmlTestExceptionManager.ErrorEvent += new XmlTestErrorEventHandler(OnErrorEvent);

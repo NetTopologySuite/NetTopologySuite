@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
-#if !NET35 && !PCL
-using MapGeometryDelegate = GeoAPI.Func<GeoAPI.Geometries.IGeometry, GeoAPI.Geometries.IGeometry>;
-#else
-using MapGeometryDelegate = System.Func<GeoAPI.Geometries.IGeometry, GeoAPI.Geometries.IGeometry>;
-#endif
 
 namespace NetTopologySuite.Geometries.Utilities
 {
@@ -27,7 +23,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="geom">The input atomic or composite geometry</param>
         /// <param name="op">The mapping operation delegate</param>
         /// <returns>A result collection or geometry of most specific type</returns>
-        public static IGeometry Map(IGeometry geom, MapGeometryDelegate op)
+        public static IGeometry Map(IGeometry geom, Func<IGeometry, IGeometry> op)
         {
             var mapped = new List<IGeometry>();
             for (var i = 0; i < geom.NumGeometries; i++)

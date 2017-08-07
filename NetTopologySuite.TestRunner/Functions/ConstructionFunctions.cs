@@ -44,7 +44,7 @@ namespace Open.Topology.TestRunner.Functions
         public static IGeometry ExtractLines(IGeometry g)
         {
             var lines = LinearComponentExtracter.GetLines(g);
-            return g.Factory.BuildGeometry(NetTopologySuite.Utilities.CollectionUtil.Cast<IGeometry>((ICollection)lines));
+            return g.Factory.BuildGeometry(lines);
         }
     }
 }

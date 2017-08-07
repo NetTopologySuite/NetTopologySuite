@@ -18,40 +18,103 @@
 		<copyright>Copyright 2007-2015</copyright>
 		<language>en-US</language>
 		<frameworkAssemblies>
-			<frameworkAssembly assemblyName="System" targetFramework="" />
-			<frameworkAssembly assemblyName="System.Core" targetFramework="net35-client,net40-client,net403-client" />
-			<frameworkAssembly assemblyName="System.Xml" targetFramework="sl5" />
+			<frameworkAssembly assemblyName="System" targetFramework="net20,net35-client,net40-client,net403-client,net45,portable40-net40+sl5+win8+wp8+wpa81,portable40-net403+sl5+win8+wp8+wpa81" />
+			<frameworkAssembly assemblyName="System.Xml" targetFramework="net20,net35-client,net40-client,net403-client,net45,portable40-net40+sl5+win8+wp8+wpa81,portable40-net403+sl5+win8+wp8+wpa81" />
+
+			<frameworkAssembly assemblyName="System.Core" targetFramework="net35-client,net40-client,net403-client,net45,portable40-net40+sl5+win8+wp8+wpa81,portable40-net403+sl5+win8+wp8+wpa81" />
+
+			<frameworkAssembly assemblyName="System.Xml.Linq" targetFramework="net35-client,net40-client,net403-client,net45,portable40-net403+sl5+win8+wp8+wpa81" />
 		</frameworkAssemblies>
 		<dependencies>
-			<dependency id="GeoAPI" version="[1.7.4,1.8)" />
+			<!-- traditional .NET framework targets -->
+			<group targetFramework=".NETFramework2.0">
+				<dependency id="GeoAPI" version="[1.7.5, )" />
+			</group>
+
+			<group targetFramework=".NETFramework3.5-Client">
+				<dependency id="GeoAPI" version="[1.7.5, )" />
+			</group>
+
+			<group targetFramework=".NETFramework4.0-Client">
+				<dependency id="GeoAPI" version="[1.7.5, )" />
+			</group>
+
+			<group targetFramework=".NETFramework4.0.3-Client">
+				<dependency id="GeoAPI" version="[1.7.5, )" />
+			</group>
+
+			<group targetFramework=".NETFramework4.5">
+				<dependency id="GeoAPI" version="[1.7.5, )" />
+			</group>
+
+			<!-- PCL frameworks -->
+			<group targetFramework=".NETPortable4.0-Profile328">
+				<dependency id="GeoAPI" version="[1.7.5, )" />
+			</group>
+
+			<group targetFramework=".NETPortable4.0-Profile336">
+				<dependency id="GeoAPI" version="[1.7.5, )" />
+			</group>
+
+			<!-- .NET Standard targets -->
+			<group targetFramework=".NETStandard1.0">
+				<dependency id="GeoAPI" version="[1.7.5, )" />
+				<dependency id="System.Diagnostics.Debug" version="[4.3.0, )" />
+				<dependency id="System.Linq" version="[4.3.0, )" />
+				<dependency id="System.Text.RegularExpressions" version="[4.3.0, )" />
+				<dependency id="System.Xml.ReaderWriter" version="[4.3.0, )" />
+				<dependency id="System.Xml.XDocument" version="[4.3.0, )" />
+			</group>
+
+			<group targetFramework=".NETStandard1.3">
+				<dependency id="GeoAPI" version="[1.7.5, )" />
+				<dependency id="System.Diagnostics.Debug" version="[4.3.0, )" />
+				<dependency id="System.IO.FileSystem" version="[4.3.0, )" />
+				<dependency id="System.Linq" version="[4.3.0, )" />
+				<dependency id="System.Text.RegularExpressions" version="[4.3.0, )" />
+				<dependency id="System.Xml.ReaderWriter" version="[4.3.0, )" />
+				<dependency id="System.Xml.XDocument" version="[4.3.0, )" />
+			</group>
 		</dependencies>
 	</metadata>
 	<files>
-		<file src="Release\v2.0\AnyCPU\NetTopologySuite.dll" target="lib\net20" />
-		<file src="Release\v2.0\AnyCPU\NetTopologySuite.pdb" target="lib\net20" />
-		<file src="Release\v2.0\AnyCPU\NetTopologySuite.xml" target="lib\net20" />
+		<file src="NetTopologySuite.Common.props" target="src" />
+		<file src="NetTopologySuite\**" exclude="NetTopologySuite\obj\**" target="src\NetTopologySuite" />
 
-		<file src="Release\v3.5\AnyCPU\NetTopologySuite.dll" target="lib\net35-client" />
-		<file src="Release\v3.5\AnyCPU\NetTopologySuite.pdb" target="lib\net35-client" />
-		<file src="Release\v3.5\AnyCPU\NetTopologySuite.xml" target="lib\net35-client" />
+		<file src="Release\AnyCPU\net20\NetTopologySuite.dll" target="lib\net20" />
+		<file src="Release\AnyCPU\net20\NetTopologySuite.pdb" target="lib\net20" />
+		<file src="Release\AnyCPU\net20\NetTopologySuite.xml" target="lib\net20" />
 
-		<file src="Release\v4.0\AnyCPU\NetTopologySuite.dll" target="lib\net40-client" />
-		<file src="Release\v4.0\AnyCPU\NetTopologySuite.pdb" target="lib\net40-client" />
-		<file src="Release\v4.0\AnyCPU\NetTopologySuite.xml" target="lib\net40-client" />
+		<file src="Release\AnyCPU\net35-client\NetTopologySuite.dll" target="lib\net35-client" />
+		<file src="Release\AnyCPU\net35-client\NetTopologySuite.pdb" target="lib\net35-client" />
+		<file src="Release\AnyCPU\net35-client\NetTopologySuite.xml" target="lib\net35-client" />
 
-		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.dll" target="lib\net403-client" />
-		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.pdb" target="lib\net403-client" />
-		<file src="Release\v4.0.3\AnyCPU\NetTopologySuite.xml" target="lib\net403-client" />
+		<file src="Release\AnyCPU\net40-client\NetTopologySuite.dll" target="lib\net40-client" />
+		<file src="Release\AnyCPU\net40-client\NetTopologySuite.pdb" target="lib\net40-client" />
+		<file src="Release\AnyCPU\net40-client\NetTopologySuite.xml" target="lib\net40-client" />
 
-		<file src="Release\v4.5\AnyCPU\NetTopologySuite.dll" target="lib\net45" />
-		<file src="Release\v4.5\AnyCPU\NetTopologySuite.pdb" target="lib\net45" />
-		<file src="Release\v4.5\AnyCPU\NetTopologySuite.xml" target="lib\net45" />
+		<file src="Release\AnyCPU\net403-client\NetTopologySuite.dll" target="lib\net403-client" />
+		<file src="Release\AnyCPU\net403-client\NetTopologySuite.pdb" target="lib\net403-client" />
+		<file src="Release\AnyCPU\net403-client\NetTopologySuite.xml" target="lib\net403-client" />
 
-		<file src="Release\PCL\AnyCPU\NetTopologySuite.dll" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\NetTopologySuite.pdb" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\NetTopologySuite.xml" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.dll" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.pdb" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
-		<file src="Release\PCL\AnyCPU\GeoAPI.Bootstrapper.NetTopologySuite.xml" target="lib\portable-net403+sl5+netcore45+wpa81+wp8+MonoAndroid10+XamariniOS10+MonoTouch10" />
+		<file src="Release\AnyCPU\net45\NetTopologySuite.dll" target="lib\net45" />
+		<file src="Release\AnyCPU\net45\NetTopologySuite.pdb" target="lib\net45" />
+		<file src="Release\AnyCPU\net45\NetTopologySuite.xml" target="lib\net45" />
+
+		<file src="Release\AnyCPU\netstandard1.0\NetTopologySuite.dll" target="lib\netstandard1.0" />
+		<file src="Release\AnyCPU\netstandard1.0\NetTopologySuite.pdb" target="lib\netstandard1.0" />
+		<file src="Release\AnyCPU\netstandard1.0\NetTopologySuite.xml" target="lib\netstandard1.0" />
+
+		<file src="Release\AnyCPU\netstandard1.3\NetTopologySuite.dll" target="lib\netstandard1.3" />
+		<file src="Release\AnyCPU\netstandard1.3\NetTopologySuite.pdb" target="lib\netstandard1.3" />
+		<file src="Release\AnyCPU\netstandard1.3\NetTopologySuite.xml" target="lib\netstandard1.3" />
+
+		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.dll" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
+		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.pdb" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
+		<file src="Release\AnyCPU\portable40-net40+sl5+win8+wp8+wpa81\NetTopologySuite.xml" target="lib\portable40-net40+sl5+win8+wp8+wpa81" />
+
+		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.dll" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
+		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.pdb" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
+		<file src="Release\AnyCPU\portable40-net403+sl5+win8+wp8+wpa81\NetTopologySuite.xml" target="lib\portable40-net403+sl5+win8+wp8+wpa81" />
 	</files>
 </package>

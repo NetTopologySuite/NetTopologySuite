@@ -8,7 +8,7 @@ namespace NetTopologySuite.Features
     ///<summary>
     /// Represents a feature collection.
     ///</summary>
-#if !PCL
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public class FeatureCollection

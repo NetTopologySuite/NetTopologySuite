@@ -1,5 +1,4 @@
-﻿#if !PCL
-using System;
+﻿using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.IO.KML;
@@ -146,7 +145,7 @@ namespace NetTopologySuite.Tests.NUnit.IO.KML
             string actual = writer.Write(geom);
             string actualNorm = normalizeKML(actual);
             string expectedNorm = normalizeKML(expected);
-            bool isEqual = String.Equals(actualNorm, expectedNorm, StringComparison.InvariantCultureIgnoreCase);
+            bool isEqual = String.Equals(actualNorm, expectedNorm, StringComparison.OrdinalIgnoreCase);
             Assert.IsTrue(isEqual, String.Format("\nGenerated KML:  {0}\n  Expected KML: {1}", actualNorm, expectedNorm));
         }
 
@@ -167,4 +166,3 @@ namespace NetTopologySuite.Tests.NUnit.IO.KML
         }
     }
 }
-#endif

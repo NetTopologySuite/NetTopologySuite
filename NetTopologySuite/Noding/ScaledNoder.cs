@@ -147,14 +147,13 @@ namespace NetTopologySuite.Noding
                 pts[i].Y = pts[i].Y / _scaleFactor + _offsetY;
             }
 
+#if DEBUG
             if (pts.Length == 2 && pts[0].Equals2D(pts[1]))
             {
-#if !PCL
                 Debug.WriteLine(pts[0]);
                 Debug.WriteLine(pts[1]);
-#endif
             }
-
+#endif
         }
     }
 }

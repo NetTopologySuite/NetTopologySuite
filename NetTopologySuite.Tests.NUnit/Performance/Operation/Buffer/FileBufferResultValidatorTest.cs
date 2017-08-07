@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Buffer.Validate;
@@ -18,28 +19,26 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
         [TestAttribute]
         public void TestAfrica()
         {
-            var filePath = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile("NetTopologySuite.Tests.NUnit.TestData.africa.wkt");
-
-            //    runTest(TestFiles.DATA_DIR + "world.wkt");
-            RunTest(filePath);
-
-            EmbeddedResourceManager.CleanUpTempFile(filePath);
+            using (var file = EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.africa.wkt"))
+            {
+                //    runTest(TestFiles.DATA_DIR + "world.wkt");
+                RunTest(file);
+            }
         }
 
         [TestAttribute]
         public void TestPerformanceAfrica()
         {
-            var filePath = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile("NetTopologySuite.Tests.NUnit.TestData.africa.wkt");
-
-            //    runTest(TestFiles.DATA_DIR + "world.wkt");
-            PerformanceTest(filePath);
-
-            EmbeddedResourceManager.CleanUpTempFile(filePath);
+            using (var file = EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.africa.wkt"))
+            {
+                //    runTest(TestFiles.DATA_DIR + "world.wkt");
+                PerformanceTest(file);
+            }
         }
 
-        void RunTest(String filename)
+        void RunTest(Stream file)
         {
-            WKTFileReader fileRdr = new WKTFileReader(filename, rdr);
+            WKTFileReader fileRdr = new WKTFileReader(new StreamReader(file), rdr);
             var polys = fileRdr.Read();
 
             RunAll(polys, 0.01);
@@ -50,9 +49,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             RunAll(polys, 1000.0);
         }
 
-        void PerformanceTest(String filename)
+        void PerformanceTest(Stream file)
         {
-            WKTFileReader fileRdr = new WKTFileReader(filename, rdr);
+            WKTFileReader fileRdr = new WKTFileReader(new StreamReader(file), rdr);
             IList<IGeometry> polys = fileRdr.Read();
 
             //RunAll(polys, 0.01);

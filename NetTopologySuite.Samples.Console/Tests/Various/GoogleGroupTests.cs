@@ -4,7 +4,6 @@ using System.Data.SqlTypes;
 using System.Diagnostics;
 using DotSpatial.Projections;
 using GeoAPI.CoordinateSystems.Transformations;
-using NetTopologySuite.Tests.NUnit.Operation.Valid;
 using NetTopologySuite.Triangulate;
 using NetTopologySuite.Triangulate.QuadEdge;
 using NUnit.Framework;

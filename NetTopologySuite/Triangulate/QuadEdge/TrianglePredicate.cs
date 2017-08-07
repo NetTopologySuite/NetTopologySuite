@@ -311,7 +311,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             bool isInCircleCC = IsInCircleCC(a, b, c, p);
 
             Coordinate circumCentre = Triangle.Circumcentre(a, b, c);
-#if !PCL
 // ReSharper disable RedundantStringFormatCall
             // String.Format needed to build 2.0 release!
             Debug.WriteLine(String.Format("p radius diff a = {0}", Math.Abs(p.Distance(circumCentre) - a.Distance(circumCentre))/a.Distance(circumCentre)));
@@ -326,7 +325,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 Debug.WriteLine("");
             }
 // ReSharper restore RedundantStringFormatCall
-#endif
         }
 
 

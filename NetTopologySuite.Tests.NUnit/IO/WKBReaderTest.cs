@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using GeoAPI.Geometries;
 using NetTopologySuite.IO;
+using NetTopologySuite.Tests.NUnit.TestData;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.IO
@@ -101,34 +102,24 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [TestAttribute]
         public void TestBase64TextFiles()
         {
-            TestBase64TextFile(@"D:\Development\Codeplex.TFS\SharpMap\Branches\1.0\UnitTests\TestData\Base 64.txt");
+            // taken from: https://raw.githubusercontent.com/SharpMap/SharpMap/5289522c26e77584eaa95428c1bd2202ff18a340/UnitTests/TestData/Base%2064.txt
+            TestBase64TextFile(EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.Base 64.txt"));
         }
 
-        private static void TestBase64TextFile(string file)
+        private static void TestBase64TextFile(Stream file)
         {
-            if (!File.Exists(file))
-            {
-                Assert.Ignore("File not present ({0})", file);
-                return;
-            }
-
             byte[] wkb = ConvertBase64(file);
             WKBReader wkbReader = new WKBReader();
             IGeometry geom = null;
             Assert.DoesNotThrow(() => geom = wkbReader.Read(wkb));
         }
 
-        private static byte[] ConvertBase64(string file)
+        private static byte[] ConvertBase64(Stream file)
         {
-            byte[] res = null;
             using (StreamReader sr = new StreamReader(file))
             {
-                StringBuilder sb = new StringBuilder(sr.ReadLine());
-                while (!sr.EndOfStream)
-                    sb.AppendLine(sr.ReadLine());
-                res = System.Convert.FromBase64String(sb.ToString());
+                return System.Convert.FromBase64String(sr.ReadToEnd());
             }
-            return res;
         }
     }
 }
