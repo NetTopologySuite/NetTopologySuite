@@ -6,6 +6,9 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GeoAPIVersion>1.7.5</GeoAPIVersion>
     <NETStandardPackageVersion>4.3.0</NETStandardPackageVersion>
+
+    <!-- The NUnit 2 test adapter doesn't support portable PDBs. -->
+    <DebugType>full</DebugType>
   </PropertyGroup>
 
   <!-- Client Profile frameworks don't have built-in shortcuts, so we need to specify these. -->
