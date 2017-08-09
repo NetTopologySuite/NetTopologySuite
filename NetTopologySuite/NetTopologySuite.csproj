@@ -26,19 +26,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GeoAPI" Version="$(GeoAPIVersion)" />
+    <PackageReference Include="GeoAPI" Version="$(GeoAPIPackageReferenceVersion)" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' Or '$(TargetFramework)' == 'netstandard1.3' ">
-    <PackageReference Include="System.Diagnostics.Debug" Version="$(NETStandardPackageVersion)" />
-    <PackageReference Include="System.Linq" Version="$(NETStandardPackageVersion)" />
-    <PackageReference Include="System.Text.RegularExpressions" Version="$(NETStandardPackageVersion)" />
-    <PackageReference Include="System.Xml.ReaderWriter" Version="$(NETStandardPackageVersion)" />
-    <PackageReference Include="System.Xml.XDocument" Version="$(NETStandardPackageVersion)" />
+    <PackageReference Include="System.Diagnostics.Debug" Version="$(NETStandardPackageReferenceVersion)" />
+    <PackageReference Include="System.Linq" Version="$(NETStandardPackageReferenceVersion)" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="$(NETStandardPackageReferenceVersion)" />
+    <PackageReference Include="System.Xml.ReaderWriter" Version="$(NETStandardPackageReferenceVersion)" />
+    <PackageReference Include="System.Xml.XDocument" Version="$(NETStandardPackageReferenceVersion)" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
-    <PackageReference Include="System.IO.FileSystem" Version="$(NETStandardPackageVersion)" />
-    <PackageReference Include="System.Xml.XmlDocument" Version="$(NETStandardPackageVersion)" />
+    <PackageReference Include="System.IO.FileSystem" Version="$(NETStandardPackageReferenceVersion)" />
+    <PackageReference Include="System.Xml.XmlDocument" Version="$(NETStandardPackageReferenceVersion)" />
   </ItemGroup>
 </Project>

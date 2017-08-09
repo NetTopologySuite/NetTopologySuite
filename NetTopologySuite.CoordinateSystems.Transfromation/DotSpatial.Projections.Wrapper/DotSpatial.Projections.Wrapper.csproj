@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="DotSpatial.Projections" Version="1.7" />
-    <PackageReference Include="GeoAPI" Version="$(GeoAPIVersion)" />
+    <PackageReference Include="GeoAPI" Version="$(GeoAPIPackageReferenceVersion)" />
   </ItemGroup>
 
   <ItemGroup>

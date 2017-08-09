@@ -147,6 +147,10 @@ namespace ConsoleTestRunner
         [STAThread]
         static void Main(string[] args)
         {
+            // paths *to* the XML files, as well as paths *in* the XML files,
+            // assume that we're running from the app's directory; apparently,
+            // the VS2017 / new-style SDK changes did something to make that
+            // no longer guaranteed to be the case at startup.
             Environment.CurrentDirectory = new FileInfo(Assembly.GetEntryAssembly().Location).Directory.FullName;
             if (args == null || args.Length == 0)
             {

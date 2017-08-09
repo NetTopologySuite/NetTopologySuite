@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GeoAPI" Version="$(GeoAPIVersion)" />
+    <PackageReference Include="GeoAPI" Version="$(GeoAPIPackageReferenceVersion)" />
   </ItemGroup>
 
   <ItemGroup>

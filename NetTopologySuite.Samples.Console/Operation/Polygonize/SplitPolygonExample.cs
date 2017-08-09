@@ -114,7 +114,7 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
 
 
         [STAThread]
-        public static void main(string[] args)
+        public static void Main(string[] args)
         {
             var test = new SplitPolygonExample();
             try

@@ -129,7 +129,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
                 var count2 = TestPrepGeomCached(g, lines);
                 sw.Stop();
                 time2 += sw.ElapsedMilliseconds;
-                
+
                 sw.Restart();
                 var count3 = TestOriginal(g, lines);
                 sw.Stop();

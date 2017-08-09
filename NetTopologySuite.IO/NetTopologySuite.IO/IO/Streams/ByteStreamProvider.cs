@@ -192,9 +192,9 @@ namespace NetTopologySuite.IO.Streams
         {
             public ByteStream(ByteStreamProvider provider, bool writable)
 #if HAS_SYSTEM_IO_MEMORYSTREAM_CTOR_PUBLICLYVISIBLE
-                :base(provider.Buffer, 0, writable?provider.MaxLength:provider.Length, writable, true)
+                : base(provider.Buffer, 0, writable ? provider.MaxLength : provider.Length, writable, true)
 #else
-                :base(provider.Buffer, 0, writable? provider.MaxLength:provider.Length, writable)
+                : base(provider.Buffer, 0, writable ? provider.MaxLength : provider.Length, writable)
 #endif
             {
                 if (writable)

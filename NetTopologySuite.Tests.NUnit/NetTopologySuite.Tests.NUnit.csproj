@@ -50,10 +50,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GeoAPI" Version="$(GeoAPIVersion)" />
+    <PackageReference Include="GeoAPI" Version="$(GeoAPIPackageReferenceVersion)" />
     <PackageReference Include="NUnit" Version="2.6.4" />
-    <PackageReference Include="System.IO.FileSystem" Version="$(NETStandardPackageVersion)" />
-    <PackageReference Include="System.Xml.ReaderWriter" Version="$(NETStandardPackageVersion)" />
+    <PackageReference Include="System.IO.FileSystem" Version="$(NETStandardPackageReferenceVersion)" />
+    <PackageReference Include="System.Xml.ReaderWriter" Version="$(NETStandardPackageReferenceVersion)" />
   </ItemGroup>
 
   <ItemGroup>

@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GeoAPI" Version="$(GeoAPIVersion)" />
+    <PackageReference Include="GeoAPI" Version="$(GeoAPIPackageReferenceVersion)" />
     <PackageReference Include="DotSpatial.Data" Version="1.7" />
     <PackageReference Include="DotSpatial.Mono" Version="1.7" />
     <PackageReference Include="DotSpatial.Projections" Version="1.7" />

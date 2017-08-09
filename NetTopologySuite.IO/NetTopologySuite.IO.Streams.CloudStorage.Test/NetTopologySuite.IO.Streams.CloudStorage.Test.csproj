@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GeoAPI" Version="$(GeoAPIVersion)" />
+    <PackageReference Include="GeoAPI" Version="$(GeoAPIPackageReferenceVersion)" />
     <PackageReference Include="Microsoft.Azure.KeyVault.Core" Version="1.0.0" />
     <PackageReference Include="Microsoft.Data.Edm" Version="5.6.4" />
     <PackageReference Include="Microsoft.Data.OData" Version="5.6.4" />
