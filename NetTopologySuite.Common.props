@@ -30,7 +30,7 @@
     <TargetFrameworkVersion>v4.0.3</TargetFrameworkVersion>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net35' Or '$(TargetFramework)' == 'net35-client' Or '$(TargetFramework)' == 'net40' Or '$(TargetFramework)' == 'net40-client' Or '$(TargetFramework)' == 'net403' Or '$(TargetFramework)' == 'net403-client' Or '$(TargetFramework)' == 'net45' ">
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net35-client' Or '$(TargetFramework)' == 'net40-client' Or '$(TargetFramework)' == 'net403-client' Or '$(TargetFramework)' == 'net45' ">
     <RequiresFrameworkAssemblyReferences>true</RequiresFrameworkAssemblyReferences>
 
     <DefineConstants>$(DefineConstants);FEATURE_FILE_IO</DefineConstants>
