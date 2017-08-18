@@ -11,12 +11,17 @@ namespace NetTopologySuite.IO
     /// </summary>
     public class GeoJsonSerializer : JsonSerializer
     {
+        public new static JsonSerializer Create()
+        {
+            return CreateDefault();
+        }
+
         public new static JsonSerializer CreateDefault()
         {
             var s = JsonSerializer.CreateDefault();
             AddGeoJsonConverters(s, GeometryFactory.Default);
             return s;
-        }
+        }        
 
         public static JsonSerializer Create(IGeometryFactory factory)
         {
@@ -47,7 +52,7 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Initializes a new instance of the <see cref="GeoJsonSerializer"/> class.
         /// </summary>
-        [Obsolete("Use GeoJsonSerializer.Create...() function")]
+        [Obsolete("Use GeoJsonSerializer.Create...() functions")]
         public GeoJsonSerializer() :this(GeometryFactory.Default) { }
 
         /// <summary>
