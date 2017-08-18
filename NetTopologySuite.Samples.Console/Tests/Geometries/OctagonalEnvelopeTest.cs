@@ -15,7 +15,7 @@ namespace NetTopologySuite.Samples.Tests.Geometries
                 "POLYGON ((90 96, 90 104, 96 110, 104 110, 110 104, 110 96, 104 90, 96 90, 90 96))");
         }
 
-        [Test]
+        [Test, Category("FailureCase")]
         public void TestRobust()
         {
             CheckOctagonalEnvelope(
