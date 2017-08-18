@@ -59,7 +59,7 @@ namespace NetTopologySuite.IO
         /// Initializes a new instance of the <see cref="GeoJsonSerializer"/> class.
         /// </summary>
         /// <param name="geometryFactory">The geometry factory.</param>
-        [Obsolete("Use GeoJsonSerializer.Create...() function")]
+        [Obsolete("Use GeoJsonSerializer.Create...() functions")]
         public GeoJsonSerializer(IGeometryFactory geometryFactory)
         {
             base.Converters.Add(new ICRSObjectConverter());

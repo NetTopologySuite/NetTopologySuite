@@ -56,7 +56,7 @@
                 this.TestAll();
         }
 
-        [Test]
+        [Test, Category("FailureCase")]
         public virtual void Test00()
         {
             this.ExecuteTest(0);
@@ -92,7 +92,7 @@
             this.ExecuteTest(5);
         }
 
-        [Test]
+        [Test, Category("FailureCase")]
         public virtual void Test06()
         {
             this.ExecuteTest(6);

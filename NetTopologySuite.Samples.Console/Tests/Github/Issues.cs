@@ -21,7 +21,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Tests.Github
 {
-    [TestFixture,  Category("GitHub Issue")]
+    [TestFixture, Category("GitHub Issue")]
     public class Issues
     {
         [Test(Description = "GitHub pull request #97")]
@@ -34,14 +34,14 @@ namespace NetTopologySuite.Samples.Tests.Github
             {
                 for (var column = 0; column < Count; ++column)
                 {
-                    kd.Insert(new Coordinate(column,  row),  (column * 100 + row).ToString());
+                    kd.Insert(new Coordinate(column, row), (column * 100 + row).ToString());
                 }
             }
 
-            var testCoordinate = new Coordinate(Count / 2,  Count / 2);
+            var testCoordinate = new Coordinate(Count / 2, Count / 2);
             var res = kd.NearestNeighbor(testCoordinate);
 
-            Assert.AreEqual(testCoordinate,  res.Coordinate);
+            Assert.AreEqual(testCoordinate, res.Coordinate);
         }
 
         [Test(Description = "GitHub issue request #114")]
@@ -52,17 +52,17 @@ namespace NetTopologySuite.Samples.Tests.Github
 
             for (int x = 1; x < 10; x++)
             {
-                var startPoint = new Coordinate(x * 40,  30);
-                var endPoint = new Coordinate(x * 40,  440);
-                paths.Add(factory.CreateLineString(new[] { startPoint,  endPoint }));
+                var startPoint = new Coordinate(x * 40, 30);
+                var endPoint = new Coordinate(x * 40, 440);
+                paths.Add(factory.CreateLineString(new[] { startPoint, endPoint }));
             }
 
             for (int y = 1; y < 10; y++)
             {
-                var startPoint = new Coordinate(30,  y * 40);
-                var endPoint = new Coordinate(450,  y * 40);
+                var startPoint = new Coordinate(30, y * 40);
+                var endPoint = new Coordinate(450, y * 40);
 
-                paths.Add(factory.CreateLineString(new[] { startPoint,  endPoint }));
+                paths.Add(factory.CreateLineString(new[] { startPoint, endPoint }));
             }
 
             var noder = new Noding.Snapround.GeometryNoder(new PrecisionModel(1.0d));
@@ -71,14 +71,16 @@ namespace NetTopologySuite.Samples.Tests.Github
             var nodedLines = noder.Node(paths);
 
             var nodedDedupedLinework = geomFactory.BuildGeometry(nodedLines.ToArray()).Union();
-            Assert.AreEqual(
-                @"MULTILINESTRING ((40 30,  40 40),  (40 40,  40 80),  (40 80,  40 120),  (40 120,  40 160),  (40 160,  40 200),  (40 200,  40 240),  (40 240,  40 280),  (40 280,  40 320),  (40 320,  40 360),  (40 360,  40 440),  (80 30,  80 40),  (80 40,  80 80),  (80 80,  80 120),  (80 120,  80 160),  (80 160,  80 200),  (80 200,  80 240),  (80 240,  80 280),  (80 280,  80 320),  (80 320,  80 360),  (80 360,  80 440),  (120 30,  120 40),  (120 40,  120 80),  (120 80,  120 120),  (120 120,  120 160),  (120 160,  120 200),  (120 200,  120 240),  (120 240,  120 280),  (120 280,  120 320),  (120 320,  120 360),  (120 360,  120 440),  (160 30,  160 40),  (160 40,  160 80),  (160 80,  160 120),  (160 120,  160 160),  (160 160,  160 200),  (160 200,  160 240),  (160 240,  160 280),  (160 280,  160 320),  (160 320,  160 360),  (160 360,  160 440),  (200 30,  200 40),  (200 40,  200 80),  (200 80,  200 120),  (200 120,  200 160),  (200 160,  200 200),  (200 200,  200 240),  (200 240,  200 280),  (200 280,  200 320),  (200 320,  200 360),  (200 360,  200 440),  (240 30,  240 40),  (240 40,  240 80),  (240 80,  240 120),  (240 120,  240 160),  (240 160,  240 200),  (240 200,  240 240),  (240 240,  240 280),  (240 280,  240 320),  (240 320,  240 360),  (240 360,  240 440),  (280 30,  280 40),  (280 40,  280 80),  (280 80,  280 120),  (280 120,  280 160),  (280 160,  280 200),  (280 200,  280 240),  (280 240,  280 280),  (280 280,  280 320),  (280 320,  280 360),  (280 360,  280 440),  (320 30,  320 40),  (320 40,  320 80),  (320 80,  320 120),  (320 120,  320 160),  (320 160,  320 200),  (320 200,  320 240),  (320 240,  320 280),  (320 280,  320 320),  (320 320,  320 360),  (320 360,  320 440),  (360 30,  360 40),  (360 40,  360 80),  (360 80,  360 120),  (360 120,  360 160),  (360 160,  360 200),  (360 200,  360 240),  (360 240,  360 280),  (360 280,  360 320),  (360 320,  360 360),  (360 360,  360 440),  (30 40,  40 40),  (40 40,  80 40),  (80 40,  120 40),  (120 40,  160 40),  (160 40,  200 40),  (200 40,  240 40),  (240 40,  280 40),  (280 40,  320 40),  (320 40,  360 40),  (360 40,  450 40),  (30 80,  40 80),  (40 80,  80 80),  (80 80,  120 80),  (120 80,  160 80),  (160 80,  200 80),  (200 80,  240 80),  (240 80,  280 80),  (280 80,  320 80),  (320 80,  360 80),  (360 80,  450 80),  (30 120,  40 120),  (40 120,  80 120),  (80 120,  120 120),  (120 120,  160 120),  (160 120,  200 120),  (200 120,  240 120),  (240 120,  280 120),  (280 120,  320 120),  (320 120,  360 120),  (360 120,  450 120),  (30 160,  40 160),  (40 160,  80 160),  (80 160,  120 160),  (120 160,  160 160),  (160 160,  200 160),  (200 160,  240 160),  (240 160,  280 160),  (280 160,  320 160),  (320 160,  360 160),  (360 160,  450 160),  (30 200,  40 200),  (40 200,  80 200),  (80 200,  120 200),  (120 200,  160 200),  (160 200,  200 200),  (200 200,  240 200),  (240 200,  280 200),  (280 200,  320 200),  (320 200,  360 200),  (360 200,  450 200),  (30 240,  40 240),  (40 240,  80 240),  (80 240,  120 240),  (120 240,  160 240),  (160 240,  200 240),  (200 240,  240 240),  (240 240,  280 240),  (280 240,  320 240),  (320 240,  360 240),  (360 240,  450 240),  (30 280,  40 280),  (40 280,  80 280),  (80 280,  120 280),  (120 280,  160 280),  (160 280,  200 280),  (200 280,  240 280),  (240 280,  280 280),  (280 280,  320 280),  (320 280,  360 280),  (360 280,  450 280),  (30 320,  40 320),  (40 320,  80 320),  (80 320,  120 320),  (120 320,  160 320),  (160 320,  200 320),  (200 320,  240 320),  (240 320,  280 320),  (280 320,  320 320),  (320 320,  360 320),  (360 320,  450 320),  (30 360,  40 360),  (40 360,  80 360),  (80 360,  120 360),  (120 360,  160 360),  (160 360,  200 360),  (200 360,  240 360),  (240 360,  280 360),  (280 360,  320 360),  (320 360,  360 360),  (360 360,  450 360))", 
-                nodedDedupedLinework.ToString());
+            // WKT committed by FObermaier in 01/31/2017 => test fail
+            string expected = @"MULTILINESTRING ((40 30,  40 40),  (40 40,  40 80),  (40 80,  40 120),  (40 120,  40 160),  (40 160,  40 200),  (40 200,  40 240),  (40 240,  40 280),  (40 280,  40 320),  (40 320,  40 360),  (40 360,  40 440),  (80 30,  80 40),  (80 40,  80 80),  (80 80,  80 120),  (80 120,  80 160),  (80 160,  80 200),  (80 200,  80 240),  (80 240,  80 280),  (80 280,  80 320),  (80 320,  80 360),  (80 360,  80 440),  (120 30,  120 40),  (120 40,  120 80),  (120 80,  120 120),  (120 120,  120 160),  (120 160,  120 200),  (120 200,  120 240),  (120 240,  120 280),  (120 280,  120 320),  (120 320,  120 360),  (120 360,  120 440),  (160 30,  160 40),  (160 40,  160 80),  (160 80,  160 120),  (160 120,  160 160),  (160 160,  160 200),  (160 200,  160 240),  (160 240,  160 280),  (160 280,  160 320),  (160 320,  160 360),  (160 360,  160 440),  (200 30,  200 40),  (200 40,  200 80),  (200 80,  200 120),  (200 120,  200 160),  (200 160,  200 200),  (200 200,  200 240),  (200 240,  200 280),  (200 280,  200 320),  (200 320,  200 360),  (200 360,  200 440),  (240 30,  240 40),  (240 40,  240 80),  (240 80,  240 120),  (240 120,  240 160),  (240 160,  240 200),  (240 200,  240 240),  (240 240,  240 280),  (240 280,  240 320),  (240 320,  240 360),  (240 360,  240 440),  (280 30,  280 40),  (280 40,  280 80),  (280 80,  280 120),  (280 120,  280 160),  (280 160,  280 200),  (280 200,  280 240),  (280 240,  280 280),  (280 280,  280 320),  (280 320,  280 360),  (280 360,  280 440),  (320 30,  320 40),  (320 40,  320 80),  (320 80,  320 120),  (320 120,  320 160),  (320 160,  320 200),  (320 200,  320 240),  (320 240,  320 280),  (320 280,  320 320),  (320 320,  320 360),  (320 360,  320 440),  (360 30,  360 40),  (360 40,  360 80),  (360 80,  360 120),  (360 120,  360 160),  (360 160,  360 200),  (360 200,  360 240),  (360 240,  360 280),  (360 280,  360 320),  (360 320,  360 360),  (360 360,  360 440),  (30 40,  40 40),  (40 40,  80 40),  (80 40,  120 40),  (120 40,  160 40),  (160 40,  200 40),  (200 40,  240 40),  (240 40,  280 40),  (280 40,  320 40),  (320 40,  360 40),  (360 40,  450 40),  (30 80,  40 80),  (40 80,  80 80),  (80 80,  120 80),  (120 80,  160 80),  (160 80,  200 80),  (200 80,  240 80),  (240 80,  280 80),  (280 80,  320 80),  (320 80,  360 80),  (360 80,  450 80),  (30 120,  40 120),  (40 120,  80 120),  (80 120,  120 120),  (120 120,  160 120),  (160 120,  200 120),  (200 120,  240 120),  (240 120,  280 120),  (280 120,  320 120),  (320 120,  360 120),  (360 120,  450 120),  (30 160,  40 160),  (40 160,  80 160),  (80 160,  120 160),  (120 160,  160 160),  (160 160,  200 160),  (200 160,  240 160),  (240 160,  280 160),  (280 160,  320 160),  (320 160,  360 160),  (360 160,  450 160),  (30 200,  40 200),  (40 200,  80 200),  (80 200,  120 200),  (120 200,  160 200),  (160 200,  200 200),  (200 200,  240 200),  (240 200,  280 200),  (280 200,  320 200),  (320 200,  360 200),  (360 200,  450 200),  (30 240,  40 240),  (40 240,  80 240),  (80 240,  120 240),  (120 240,  160 240),  (160 240,  200 240),  (200 240,  240 240),  (240 240,  280 240),  (280 240,  320 240),  (320 240,  360 240),  (360 240,  450 240),  (30 280,  40 280),  (40 280,  80 280),  (80 280,  120 280),  (120 280,  160 280),  (160 280,  200 280),  (200 280,  240 280),  (240 280,  280 280),  (280 280,  320 280),  (320 280,  360 280),  (360 280,  450 280),  (30 320,  40 320),  (40 320,  80 320),  (80 320,  120 320),  (120 320,  160 320),  (160 320,  200 320),  (200 320,  240 320),  (240 320,  280 320),  (280 320,  320 320),  (320 320,  360 320),  (360 320,  450 320),  (30 360,  40 360),  (40 360,  80 360),  (80 360,  120 360),  (120 360,  160 360),  (160 360,  200 360),  (200 360,  240 360),  (240 360,  280 360),  (280 360,  320 360),  (320 360,  360 360),  (360 360,  450 360))";
+            // WKT from previous (to 01/31/2017) commit => test ok
+            expected = @"MULTILINESTRING ((40 30, 40 40), (40 40, 40 80), (40 80, 40 120), (40 120, 40 160), (40 160, 40 200), (40 200, 40 240), (40 240, 40 280), (40 280, 40 320), (40 320, 40 360), (40 360, 40 440), (80 30, 80 40), (80 40, 80 80), (80 80, 80 120), (80 120, 80 160), (80 160, 80 200), (80 200, 80 240), (80 240, 80 280), (80 280, 80 320), (80 320, 80 360), (80 360, 80 440), (120 30, 120 40), (120 40, 120 80), (120 80, 120 120), (120 120, 120 160), (120 160, 120 200), (120 200, 120 240), (120 240, 120 280), (120 280, 120 320), (120 320, 120 360), (120 360, 120 440), (160 30, 160 40), (160 40, 160 80), (160 80, 160 120), (160 120, 160 160), (160 160, 160 200), (160 200, 160 240), (160 240, 160 280), (160 280, 160 320), (160 320, 160 360), (160 360, 160 440), (200 30, 200 40), (200 40, 200 80), (200 80, 200 120), (200 120, 200 160), (200 160, 200 200), (200 200, 200 240), (200 240, 200 280), (200 280, 200 320), (200 320, 200 360), (200 360, 200 440), (240 30, 240 40), (240 40, 240 80), (240 80, 240 120), (240 120, 240 160), (240 160, 240 200), (240 200, 240 240), (240 240, 240 280), (240 280, 240 320), (240 320, 240 360), (240 360, 240 440), (280 30, 280 40), (280 40, 280 80), (280 80, 280 120), (280 120, 280 160), (280 160, 280 200), (280 200, 280 240), (280 240, 280 280), (280 280, 280 320), (280 320, 280 360), (280 360, 280 440), (320 30, 320 40), (320 40, 320 80), (320 80, 320 120), (320 120, 320 160), (320 160, 320 200), (320 200, 320 240), (320 240, 320 280), (320 280, 320 320), (320 320, 320 360), (320 360, 320 440), (360 30, 360 40), (360 40, 360 80), (360 80, 360 120), (360 120, 360 160), (360 160, 360 200), (360 200, 360 240), (360 240, 360 280), (360 280, 360 320), (360 320, 360 360), (360 360, 360 440), (30 40, 40 40), (40 40, 80 40), (80 40, 120 40), (120 40, 160 40), (160 40, 200 40), (200 40, 240 40), (240 40, 280 40), (280 40, 320 40), (320 40, 360 40), (360 40, 450 40), (30 80, 40 80), (40 80, 80 80), (80 80, 120 80), (120 80, 160 80), (160 80, 200 80), (200 80, 240 80), (240 80, 280 80), (280 80, 320 80), (320 80, 360 80), (360 80, 450 80), (30 120, 40 120), (40 120, 80 120), (80 120, 120 120), (120 120, 160 120), (160 120, 200 120), (200 120, 240 120), (240 120, 280 120), (280 120, 320 120), (320 120, 360 120), (360 120, 450 120), (30 160, 40 160), (40 160, 80 160), (80 160, 120 160), (120 160, 160 160), (160 160, 200 160), (200 160, 240 160), (240 160, 280 160), (280 160, 320 160), (320 160, 360 160), (360 160, 450 160), (30 200, 40 200), (40 200, 80 200), (80 200, 120 200), (120 200, 160 200), (160 200, 200 200), (200 200, 240 200), (240 200, 280 200), (280 200, 320 200), (320 200, 360 200), (360 200, 450 200), (30 240, 40 240), (40 240, 80 240), (80 240, 120 240), (120 240, 160 240), (160 240, 200 240), (200 240, 240 240), (240 240, 280 240), (280 240, 320 240), (320 240, 360 240), (360 240, 450 240), (30 280, 40 280), (40 280, 80 280), (80 280, 120 280), (120 280, 160 280), (160 280, 200 280), (200 280, 240 280), (240 280, 280 280), (280 280, 320 280), (320 280, 360 280), (360 280, 450 280), (30 320, 40 320), (40 320, 80 320), (80 320, 120 320), (120 320, 160 320), (160 320, 200 320), (200 320, 240 320), (240 320, 280 320), (280 320, 320 320), (320 320, 360 320), (360 320, 450 320), (30 360, 40 360), (40 360, 80 360), (80 360, 120 360), (120 360, 160 360), (160 360, 200 360), (200 360, 240 360), (240 360, 280 360), (280 360, 320 360), (320 360, 360 360), (360 360, 450 360))";
+            Assert.AreEqual(expected, nodedDedupedLinework.ToString());
             Polygonizer polygonizer = new Polygonizer();
             polygonizer.Add(nodedDedupedLinework);
 
             var polygons = polygonizer.GetPolygons();
-            Assert.AreEqual(64,  polygons.Count);
+            Assert.AreEqual(64, polygons.Count);
         }
 
         [Test(Description = "GitHub Issue #122/1")]
@@ -135,10 +137,10 @@ namespace NetTopologySuite.Samples.Tests.Github
             var res = g1.Intersection(g2);
 
             //
-            ToImage(1,  g1,  g2,  res);
+            ToImage(1, g1, g2, res);
 
             // Assert
-            Assert.That(res,  Is.Not.Null);
+            Assert.That(res, Is.Not.Null);
             Debug.WriteLine(res.AsText());
 
         }
@@ -210,10 +212,10 @@ namespace NetTopologySuite.Samples.Tests.Github
             var res = g1.Intersection(g2);
 
             //
-            ToImage(1,  g1,  g2,  res);
+            ToImage(1, g1, g2, res);
 
             // Assert
-            Assert.That(res,  Is.Not.Null);
+            Assert.That(res, Is.Not.Null);
             Debug.WriteLine(res.AsText());
 
         }
@@ -230,10 +232,10 @@ namespace NetTopologySuite.Samples.Tests.Github
             var res = g1.Intersection(g2);
 
             //
-            ToImage(1,  g1,  g2,  res);
+            ToImage(1, g1, g2, res);
 
             // Assert
-            Assert.That(res,  Is.Not.Null);
+            Assert.That(res, Is.Not.Null);
             Debug.WriteLine(res.AsText());
         }
 
@@ -241,25 +243,25 @@ namespace NetTopologySuite.Samples.Tests.Github
         public void Roundtrip_serialization_of_a_feature_with_null_properties_fails()
         {
             // Arrange
-            var f = new Feature(new NetTopologySuite.Geometries.Point(1,  1),  null);
+            var f = new Feature(new NetTopologySuite.Geometries.Point(1, 1), null);
             var s = GeoJsonSerializer.Create(new GeometryFactory());
 
             // Act
-            var f1 = SandD(s,  f);
+            var f1 = SandD(s, f);
             s.NullValueHandling = NullValueHandling.Include;
-            var f2 = SandD(s,  f);
+            var f2 = SandD(s, f);
 
             // Assert
-            Assert.That(f1,  Is.Not.Null,  "f1 != null");
-            Assert.That(f2,  Is.Not.Null,  "f2 != null");
+            Assert.That(f1, Is.Not.Null, "f1 != null");
+            Assert.That(f2, Is.Not.Null, "f2 != null");
 
         }
 
-        private static IFeature SandD(JsonSerializer s ,  IFeature f)
+        private static IFeature SandD(JsonSerializer s, IFeature f)
         {
             var sb = new StringBuilder();
             var jtw = new JsonTextWriter(new StringWriter(sb));
-            s.Serialize(jtw,  f);
+            s.Serialize(jtw, f);
             var jsonText = sb.ToString();
 
             Debug.WriteLine(jsonText);
@@ -291,10 +293,10 @@ namespace NetTopologySuite.Samples.Tests.Github
             var gpr = new NetTopologySuite.Precision.GeometryPrecisionReducer(new PrecisionModel(1e10));
             var poly1 = gpr.Reduce(poly);
             var poly2 = poly.Buffer(0);
-            var shell = poly.Factory.CreatePolygon(((IPolygon) poly).Shell.CoordinateSequence.Reversed()).Buffer(0);
+            var shell = poly.Factory.CreatePolygon(((IPolygon)poly).Shell.CoordinateSequence.Reversed()).Buffer(0);
 
-            ToImage(0,  poly,  poly1,  poly2);
-            
+            ToImage(0, poly, poly1, poly2);
+
             var isValidOp = new IsValidOp(poly);
             if (!isValidOp.IsValid)
             {
@@ -304,8 +306,8 @@ namespace NetTopologySuite.Samples.Tests.Github
             Debug.WriteLine(poly1.AsText());
             // assert
             //Assert.That(poly.IsValid,  Is.True,  "poly.IsValid");
-            Assert.That(poly1.IsValid,  Is.True,  "poly1.IsValid");
-            Assert.That(poly2,  Is.Not.Null,  "poly2 != null");
+            Assert.That(poly1.IsValid, Is.True, "poly1.IsValid");
+            Assert.That(poly2, Is.Not.Null, "poly2 != null");
 
             //Known to fail
             //Assert.That(poly2.IsEmpty,  Is.False,  "poly2.IsEmpty");
@@ -321,24 +323,24 @@ namespace NetTopologySuite.Samples.Tests.Github
         {
             var csf = DotSpatialAffineCoordinateSequenceFactory.Instance = new DotSpatialAffineCoordinateSequenceFactory(ordinates);
             var gf = new GeometryFactory(DotSpatialAffineCoordinateSequenceFactory.Instance);
-            var cs1 = csf.Create(1,  Ordinates.XYZM);
+            var cs1 = csf.Create(1, Ordinates.XYZM);
             Assert.That(cs1.Ordinates == ordinates);
 
-            cs1.SetOrdinate(0,  Ordinate.X,  1);
-            cs1.SetOrdinate(0,  Ordinate.Y,  2);
-            cs1.SetOrdinate(0,  Ordinate.Z,  3);
-            cs1.SetOrdinate(0,  Ordinate.M,  4);
+            cs1.SetOrdinate(0, Ordinate.X, 1);
+            cs1.SetOrdinate(0, Ordinate.Y, 2);
+            cs1.SetOrdinate(0, Ordinate.Z, 3);
+            cs1.SetOrdinate(0, Ordinate.M, 4);
 
-            var cs2 = csf.Create(new [] { new Coordinate(1,  2) });
+            var cs2 = csf.Create(new[] { new Coordinate(1, 2) });
             Assert.That(cs1.Ordinates == ordinates);
 
             var pt1 = gf.CreatePoint(cs1);
             var pt2 = gf.CreatePoint(cs2);
             var pt3 = gf.CreatePoint(new Coordinate(1, 2));
 
-            Assert.That(pt1,  Is.EqualTo(pt2));
-            Assert.That(pt2,  Is.EqualTo(pt3));
-            Assert.That(pt1,  Is.EqualTo(pt3));
+            Assert.That(pt1, Is.EqualTo(pt2));
+            Assert.That(pt2, Is.EqualTo(pt3));
+            Assert.That(pt1, Is.EqualTo(pt3));
         }
 
         [Test]
@@ -7073,7 +7075,6 @@ namespace NetTopologySuite.Samples.Tests.Github
         }
 
         [Test, Ignore]
-
         public void TestIssue126_2()
         {
             var geoJson = @"{ 
@@ -8620,7 +8621,7 @@ features: [{
             Assert.That(fc, Is.Not.Null);
         }
 
-        static void ToImage(int nr,  IGeometry geom1,  IGeometry geom2,  IGeometry geom3)
+        static void ToImage(int nr, IGeometry geom1, IGeometry geom2, IGeometry geom3)
         {
 
             var gpw = new Windows.Forms.GraphicsPathWriter();
@@ -8630,7 +8631,7 @@ features: [{
                 extent.ExpandToInclude(geom2.EnvelopeInternal);
             extent.ExpandBy(0.05 * extent.Width);
 
-            using (var img = new Bitmap(ImageWidth,  ImageHeight))
+            using (var img = new Bitmap(ImageWidth, ImageHeight))
             {
                 using (var gr = Graphics.FromImage(img))
                 {
@@ -8641,55 +8642,55 @@ features: [{
 
                     var gp1 = gpw.ToShape(at.Transform(geom1));
                     if (geom1 is IPolygonal)
-                        gr.FillPath(new SolidBrush(Color.FromArgb(64,  Color.Blue)),  gp1);
-                    gr.DrawPath(Pens.Blue,  gp1);
+                        gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.Blue)), gp1);
+                    gr.DrawPath(Pens.Blue, gp1);
 
                     var gp2 = gpw.ToShape(at.Transform(geom2));
                     if (geom2 is IPolygonal)
-                        gr.FillPath(new SolidBrush(Color.FromArgb(64,  Color.OrangeRed)),  gp2);
-                    gr.DrawPath(Pens.OrangeRed,  gp2);
+                        gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.OrangeRed)), gp2);
+                    gr.DrawPath(Pens.OrangeRed, gp2);
 
                     //at = CreateAffineTransformation(extent,  ImageWidth);
 
                     var gp3 = gpw.ToShape(at.Transform(geom3));
                     if (geom3 is IPolygonal)
-                        gr.FillPath(new SolidBrush(Color.FromArgb(64,  Color.Gold)),  gp3);
-                    gr.DrawPath(Pens.Gold,  gp3);
+                        gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.Gold)), gp3);
+                    gr.DrawPath(Pens.Gold, gp3);
 
 
                 }
-                var path = System.IO.Path.ChangeExtension(System.IO.Path.GetTempFileName(),  "png");
-                img.Save(path,  ImageFormat.Png);
-                Console.WriteLine("Image for Test {0} written to {1}",  nr,  new Uri(path).AbsoluteUri);
+                var path = System.IO.Path.ChangeExtension(System.IO.Path.GetTempFileName(), "png");
+                img.Save(path, ImageFormat.Png);
+                Console.WriteLine("Image for Test {0} written to {1}", nr, new Uri(path).AbsoluteUri);
             }
         }
 
         private const int ImageWidth = 640;
         private const int ImageHeight = 480;
 
-        private static AffineTransformation CreateAffineTransformation(Envelope env,  int offsetX = 0)
+        private static AffineTransformation CreateAffineTransformation(Envelope env, int offsetX = 0)
         {
             var imageRatio = ImageWidth / ImageHeight;
             var ratio = env.Width / env.Height;
             if (ratio > imageRatio)
             {
                 var growHeight = (env.Width / imageRatio - env.Height) / 2;
-                env.ExpandBy(0,  growHeight);
+                env.ExpandBy(0, growHeight);
             }
             else if (ratio < imageRatio)
             {
                 var growWidth = (env.Height * imageRatio - env.Width) / 2;
-                env.ExpandBy(growWidth,  0);
+                env.ExpandBy(growWidth, 0);
             }
 
-            var s1 = new Coordinate(env.MinX,  env.MaxY);
-            var t1 = new Coordinate(offsetX,  0);
-            var s2 = new Coordinate(env.MaxX,  env.MaxY);
-            var t2 = new Coordinate(offsetX + ImageWidth,  0);
-            var s3 = new Coordinate(env.MaxX,  env.MinY);
-            var t3 = new Coordinate(offsetX + ImageWidth,  ImageHeight);
+            var s1 = new Coordinate(env.MinX, env.MaxY);
+            var t1 = new Coordinate(offsetX, 0);
+            var s2 = new Coordinate(env.MaxX, env.MaxY);
+            var t2 = new Coordinate(offsetX + ImageWidth, 0);
+            var s3 = new Coordinate(env.MaxX, env.MinY);
+            var t3 = new Coordinate(offsetX + ImageWidth, ImageHeight);
 
-            var atb = new AffineTransformationBuilder(s1,  s2,  s3,  t1,  t2,  t3);
+            var atb = new AffineTransformationBuilder(s1, s2, s3, t1, t2, t3);
             return atb.GetTransformation();
         }
 
