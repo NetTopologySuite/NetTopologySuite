@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Media;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Operation.Polygonize;
 using NetTopologySuite.Operation.Union;
-using NetTopologySuite.Utilities;
 using WpfGeometry = System.Windows.Media.Geometry;
 using WpfLineSegment = System.Windows.Media.LineSegment;
 using WpfPoint = System.Windows.Point;
@@ -131,7 +131,7 @@ namespace NetTopologySuite.Windows.Media
 
                         // Use the polygonizer
                         var p = new Polygonizer(pathGeometry.FillRule == FillRule.EvenOdd);
-                        p.Add(new List<IGeometry>(Caster.Upcast<ILineString, IGeometry>(nodedLinework)));
+                        p.Add(nodedLinework.ToList<IGeometry>());
                         var tmpPolygons = p.GetPolygons();
                         if (pathGeometry.FillRule == FillRule.Nonzero)
                         {

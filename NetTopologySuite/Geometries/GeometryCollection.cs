@@ -8,7 +8,7 @@ namespace NetTopologySuite.Geometries
     /// <summary>
     /// Basic implementation of <c>GeometryCollection</c>.
     /// </summary>
-#if !PCL
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public class GeometryCollection : Geometry, IGeometryCollection

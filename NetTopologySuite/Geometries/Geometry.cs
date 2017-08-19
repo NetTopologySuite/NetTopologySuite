@@ -121,7 +121,7 @@ namespace NetTopologySuite.Geometries
     /// Geometries can be used effectively in .Net collections.
     /// </para>
     /// </remarks>
-#if !PCL
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public abstract class Geometry : IGeometry
@@ -2255,7 +2255,6 @@ namespace NetTopologySuite.Geometries
 
     }
 
-#if NET35
     /// <summary>
     /// Extension Methods for geometries
     /// </summary>
@@ -2274,5 +2273,4 @@ namespace NetTopologySuite.Geometries
                 : writer.Write(self);
         }
     }
-#endif
 }

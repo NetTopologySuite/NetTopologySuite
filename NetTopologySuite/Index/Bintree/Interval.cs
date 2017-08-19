@@ -5,7 +5,7 @@ namespace NetTopologySuite.Index.Bintree
     /// <summary> 
     /// Represents an (1-dimensional) closed interval on the Real number line.
     /// </summary>
-#if !PCL   
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public class Interval

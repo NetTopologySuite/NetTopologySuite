@@ -1,7 +1,4 @@
 using System.Collections.Generic;
-#if NET35
-using System.Linq;
-#endif
 using GeoAPI.Geometries;
 using NetTopologySuite.Utilities;
 

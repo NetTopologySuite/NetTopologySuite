@@ -66,12 +66,8 @@ namespace NetTopologySuite.Noding
             {
                 if (index < 0 || index >= Count)
                 {
-#if PCL
-                    throw new ArgumentOutOfRangeException("index", "Parameter must be greater than or equal to 0 and less than TotalItemCount.");
-#else
                     throw new ArgumentOutOfRangeException("index", index,
                                                           "Parameter must be greater than or equal to 0 and less than TotalItemCount.");
-#endif
                 }
 
                 return new LineSegment(_pts[index], _pts[index + 1]);

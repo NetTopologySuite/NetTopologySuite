@@ -6,7 +6,7 @@ namespace NetTopologySuite.Index.Bintree
     /// <summary> 
     /// The base class for nodes in a <c>Bintree</c>.
     /// </summary>
-#if !PCL    
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public abstract class NodeBase<T>

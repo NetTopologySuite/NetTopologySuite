@@ -169,10 +169,8 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <param name="g"></param>
         private void CheckValid(IGeometry g)
         {
-#if !PCL
             if (!g.IsValid)
                 Debug.WriteLine("Snapped geometry is invalid");
-#endif
         }
     }
 }

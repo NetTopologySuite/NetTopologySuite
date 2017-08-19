@@ -54,8 +54,11 @@ namespace NetTopologySuite.Samples.Tests.Various
         private static void ReadAndTest(string file)
         {
             Console.WriteLine(file);
-            var path = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile("NetTopologySuite.Samples.Tests.Various." + file);
-            var gml = File.ReadAllText(path);
+            string gml;
+            using (var fl = EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Samples.Tests.Various." + file))
+            {
+                gml = new StreamReader(fl).ReadToEnd();
+            }
 
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(gml);
@@ -70,8 +73,6 @@ namespace NetTopologySuite.Samples.Tests.Various
 
             Console.WriteLine(geom.ToString());
             Console.WriteLine(new string('=', 60));
-
-            EmbeddedResourceManager.CleanUpTempFile(path);
         }
     }
 }

@@ -2,9 +2,6 @@ using System;
 using GeoAPI.Geometries;
 using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
-#if NET35
-using System.Linq;
-#endif
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Index.Strtree
@@ -19,7 +16,7 @@ namespace NetTopologySuite.Index.Strtree
     /// data, both of which are treated as <see cref="IBoundable{T, TItem}"/>s.
     /// </para>
     /// </summary>
-#if !PCL
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public abstract class AbstractSTRtree<T, TItem>

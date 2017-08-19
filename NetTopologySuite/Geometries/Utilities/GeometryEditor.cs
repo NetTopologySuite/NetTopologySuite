@@ -1,13 +1,9 @@
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using GeoAPI.Geometries;
-#if !NET35 && !PCL
-using GeoAPI;
-using Enumerable = GeoAPI.Linq.Enumerable;
-#else
 using System;
-using Enumerable = System.Linq.Enumerable;
-#endif
+using System.Collections.Generic;
+using System.Linq;
+
+using GeoAPI.Geometries;
+
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
@@ -181,15 +177,15 @@ namespace NetTopologySuite.Geometries.Utilities
             }
 
             if (collectionForType is IMultiPoint)
-                return _factory.CreateMultiPoint(Enumerable.ToArray(Enumerable.Cast<IPoint>(geometries)));
+                return _factory.CreateMultiPoint(geometries.Cast<IPoint>().ToArray());
 
             if (collectionForType is IMultiLineString)
-                return _factory.CreateMultiLineString(Enumerable.ToArray(Enumerable.Cast<ILineString>(geometries)));
+                return _factory.CreateMultiLineString(geometries.Cast<ILineString>().ToArray());
 
             if (collectionForType is IMultiPolygon)
-                return _factory.CreateMultiPolygon(Enumerable.ToArray(Enumerable.Cast<IPolygon>(geometries)));
+                return _factory.CreateMultiPolygon(geometries.Cast<IPolygon>().ToArray());
 
-            return _factory.CreateGeometryCollection(Enumerable.ToArray(geometries));
+            return _factory.CreateGeometryCollection(geometries.ToArray());
         }
 
         /// <summary>

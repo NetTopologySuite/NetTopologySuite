@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Xml;
-#if PCL
 using System.Xml.Linq;
-#endif
 using GeoAPI.Geometries;
 using NetTopologySuite.IO.GML2;
 using NetTopologySuite.Tests.NUnit.TestData;
@@ -54,25 +55,51 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML2
             string name = expectedType.Name;
             string file = String.Format("{0}s", name.ToLowerInvariant().Substring(1));
             string resname = String.Format("NetTopologySuite.Tests.NUnit.TestData.{0}.xml", file);
-            string path = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile(resname);
-
-            var doc = 
-#if !PCL
-                new XmlDocument();
-            doc.Load(path);
-#else
-            XDocument.Load(path);
-#endif
+            string xml = new StreamReader(EmbeddedResourceManager.GetResourceStream(resname)).ReadToEnd();
 
             GMLReader gr = new GMLReader();
-            IGeometryCollection gc = (IGeometryCollection) gr.Read(doc);
-            Assert.IsTrue(gc.NumGeometries == 25);
-            for (int i = 0; i < 25; i++)
+
+            // different target frameworks have different overload sets...
+            foreach (var readMethod in GetReadMethods())
             {
-                IGeometry g = gc.GetGeometryN(i);
-                Assert.IsNotNull(g);
-                Assert.IsInstanceOf(expectedType, g);
+                IGeometryCollection gc = (IGeometryCollection)readMethod(gr, xml);
+                Assert.IsTrue(gc.NumGeometries == 25);
+                for (int i = 0; i < 25; i++)
+                {
+                    IGeometry g = gc.GetGeometryN(i);
+                    Assert.IsNotNull(g);
+                    Assert.IsInstanceOf(expectedType, g);
+                }
             }
+        }
+
+        private static List<Func<GMLReader, string, IGeometry>> GetReadMethods()
+        {
+            var result = new List<Func<GMLReader, string, IGeometry>>(5)
+            {
+                (reader, xml) => reader.Read(xml),
+                (reader, xml) => reader.Read(new StringReader(xml)),
+                (reader, xml) => reader.Read(XmlReader.Create(new StringReader(xml)))
+            };
+
+            MethodInfo xmlDocMethod = typeof(GMLReader).GetMethod("Read", new Type[] { typeof(XmlDocument) });
+            if (xmlDocMethod != null)
+            {
+                result.Add((reader, xml) =>
+                {
+                    XmlDocument doc = new XmlDocument();
+                    doc.LoadXml(xml);
+                    return (IGeometry)xmlDocMethod.Invoke(reader, new object[] { doc });
+                });
+            }
+
+            MethodInfo xDocMethod = typeof(GMLReader).GetMethod("Read", new Type[] { typeof(XDocument) });
+            if (xDocMethod != null)
+            {
+                result.Add((reader, xml) => (IGeometry)xDocMethod.Invoke(reader, new object[] { XDocument.Parse(xml) }));
+            }
+
+            return result;
         }
     }
 }

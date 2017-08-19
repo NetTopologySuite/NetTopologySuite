@@ -14,7 +14,7 @@ namespace NetTopologySuite.Geometries
     /// </list>
     /// </summary>
     /// 
-#if !PCL
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 
 #endif

@@ -1,9 +1,6 @@
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-#if PCL
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace NetTopologySuite.Operation.Linemerge
 {
@@ -14,7 +11,7 @@ namespace NetTopologySuite.Operation.Linemerge
     public class EdgeString
     {
         private readonly IGeometryFactory factory;
-        private readonly IList directedEdges = new ArrayList();
+        private readonly List<LineMergeDirectedEdge> directedEdges = new List<LineMergeDirectedEdge>();
         private Coordinate[] coordinates;
 
         /// <summary>
@@ -48,10 +45,8 @@ namespace NetTopologySuite.Operation.Linemerge
                     int forwardDirectedEdges = 0;
                     int reverseDirectedEdges = 0;
                     CoordinateList coordinateList = new CoordinateList();
-                    IEnumerator i = directedEdges.GetEnumerator();
-                    while (i.MoveNext()) 
+                    foreach (LineMergeDirectedEdge directedEdge in directedEdges)
                     {
-                        LineMergeDirectedEdge directedEdge = (LineMergeDirectedEdge) i.Current;
                         if (directedEdge.EdgeDirection)                        
                              forwardDirectedEdges++;                        
                         else reverseDirectedEdges++;

@@ -76,8 +76,6 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             }
             if (Verbose)
             {
-
-#if !PCL
 // ReSharper disable once RedundantStringFormatCall
                 // String.Format needed to build 2.0 release!
                 Debug.WriteLine(String.Format("Min Dist= {0}  err= {1}  Max Dist= {2}  err= {3}", 
@@ -86,7 +84,6 @@ namespace NetTopologySuite.Operation.Buffer.Validate
                     _maxDistanceFound,
                     _maxDistanceFound / _bufDistance - 1.0)
                   );
-#endif
             }
             return _isValid;
         }

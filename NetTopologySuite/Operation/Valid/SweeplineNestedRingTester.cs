@@ -1,13 +1,10 @@
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Index.Sweepline;
 using NetTopologySuite.Utilities;
-#if PCL
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace NetTopologySuite.Operation.Valid
 {
@@ -19,7 +16,7 @@ namespace NetTopologySuite.Operation.Valid
     public class SweeplineNestedRingTester
     {
         private readonly GeometryGraph graph;  // used to find non-node vertices
-        private readonly IList rings = new ArrayList();
+        private readonly List<ILinearRing> rings = new List<ILinearRing>();
         private Envelope totalEnv = new Envelope();
         private SweepLineIndex sweepLine;
         private Coordinate nestedPt;
@@ -71,9 +68,8 @@ namespace NetTopologySuite.Operation.Valid
         private void BuildIndex()
         {
             sweepLine = new SweepLineIndex();
-            for (int i = 0; i < rings.Count; i++) 
+            foreach (ILinearRing ring in rings)
             {
-                ILinearRing ring = (ILinearRing) rings[i];
                 Envelope env = ring.EnvelopeInternal;
                 SweepLineInterval sweepInt = new SweepLineInterval(env.MinX, env.MaxX, ring);
                 sweepLine.Add(sweepInt);

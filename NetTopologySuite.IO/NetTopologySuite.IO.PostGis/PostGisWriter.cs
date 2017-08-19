@@ -84,18 +84,9 @@ namespace NetTopologySuite.IO
         /// <param name="stream">The stream to write to</param>
         private void Write(IGeometry geometry, Ordinates ordinates, Stream stream)
         {
-            BinaryWriter writer = null;
-            try
+            using (BinaryWriter writer = EncodingType == ByteOrder.LittleEndian ? new BinaryWriter(stream) : new BEBinaryWriter(stream))
             {
-                writer = EncodingType == ByteOrder.LittleEndian
-                    ? new BinaryWriter(stream) 
-                    : new BEBinaryWriter(stream);
                 Write(geometry, ordinates, EncodingType, writer);
-            }
-            finally
-            {
-                if (writer != null)
-                    writer.Close();
             }
         }
 

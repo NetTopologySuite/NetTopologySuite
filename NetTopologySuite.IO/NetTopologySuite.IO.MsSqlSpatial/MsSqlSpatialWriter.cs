@@ -20,19 +20,10 @@ namespace NetTopologySuite.IO
 
 		public override void Write(IGeometry geometry, Stream stream)
 		{
-			BinaryWriter writer = null;
-			try
+			using (BinaryWriter writer = EncodingType == ByteOrder.LittleEndian ? new BinaryWriter(stream) : new BEBinaryWriter(stream))
 			{
-				if (EncodingType == ByteOrder.LittleEndian)
-					writer = new BinaryWriter(stream);
-				else writer = new BEBinaryWriter(stream);
 				Write(geometry, writer);
 				writer.Write(geometry.SRID);
-			}
-			finally
-			{
-				if (writer != null)
-					writer.Close();
 			}
 		}
 	}

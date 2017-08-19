@@ -114,10 +114,8 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         private void Report(String checkName)
         {
             if (!Verbose) return;
-#if !PCL
             Debug.WriteLine("Check " + checkName + ": "
                 + (_isValid ? "passed" : "FAILED"));
-#endif
         }
 
         private void CheckPolygonal()

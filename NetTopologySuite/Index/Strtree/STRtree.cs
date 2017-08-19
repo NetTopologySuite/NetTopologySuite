@@ -17,7 +17,7 @@ namespace NetTopologySuite.Index.Strtree
     /// Described in: P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
     /// </summary>
-#if !PCL
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public class STRtree<TItem> : AbstractSTRtree<Envelope, TItem>, ISpatialIndex<TItem>
@@ -43,7 +43,7 @@ namespace NetTopologySuite.Index.Strtree
             }
         }
 
-#if !PCL
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
         [Serializable]
 #endif
         private class AnonymousAbstractNodeImpl : AbstractNode<Envelope, TItem>

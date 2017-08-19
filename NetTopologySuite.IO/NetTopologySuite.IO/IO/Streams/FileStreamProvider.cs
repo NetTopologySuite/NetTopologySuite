@@ -1,5 +1,7 @@
-﻿using System;
+﻿#if FEATURE_FILE_IO
+using System;
 using System.IO;
+using System.Linq;
 
 namespace NetTopologySuite.IO.Streams
 {
@@ -19,10 +21,10 @@ namespace NetTopologySuite.IO.Streams
             if (path == null)
                 throw new ArgumentNullException("path");
 
-#if NET40
+#if HAS_SYSTEM_STRING_ISNULLORWHITESPACE
             if (string.IsNullOrWhiteSpace(path))
 #else
-            if (string.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path) || path.All(Char.IsWhiteSpace))
 #endif
                 throw new ArgumentException("Invalid Path", "path");
 
@@ -76,3 +78,4 @@ namespace NetTopologySuite.IO.Streams
         public string Kind { get; private set; }
     }
 }
+#endif

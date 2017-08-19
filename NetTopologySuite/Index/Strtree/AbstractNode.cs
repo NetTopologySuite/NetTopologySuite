@@ -14,7 +14,7 @@ namespace NetTopologySuite.Index.Strtree
     /// </list>
     /// A node stores the bounds of its children, and its level within the index tree.
     /// </summary>
-#if !PCL
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public abstract class AbstractNode<T, TItem> : IBoundable<T, TItem> where T : IIntersectable<T>, IExpandable<T>

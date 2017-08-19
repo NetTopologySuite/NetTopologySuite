@@ -146,7 +146,6 @@ namespace NetTopologySuite.Operation.Overlay.Validate
 
         private static void ReportResult(SpatialFunction overlayOp, Location[] location, bool expectedInterior)
         {
-#if !PCL
 // ReSharper disable RedundantStringFormatCall
             // String.Format needed to build 2.0 release!
             Debug.WriteLine(String.Format("{0}:" + " A:{1} B:{2} expected:{3} actual:{4}", 
@@ -155,7 +154,6 @@ namespace NetTopologySuite.Operation.Overlay.Validate
                 LocationUtility.ToLocationSymbol(location[1]), expectedInterior ? 'i' : 'e', 
                 LocationUtility.ToLocationSymbol(location[2])));
 // ReSharper restore RedundantStringFormatCall
-#endif
         }
     }
 }

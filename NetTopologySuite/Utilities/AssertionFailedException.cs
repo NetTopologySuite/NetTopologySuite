@@ -1,4 +1,4 @@
-#if !PCL
+#if HAS_SYSTEM_APPLICATIONEXCEPTION
 using System;
 #else
 using ApplicationException = System.Exception;

@@ -159,7 +159,7 @@ namespace NetTopologySuite.IO
         {
             throw new NotImplementedException();
         }
-#if !PCL
+
         /// <summary>
         /// Writes a decimal value to the current stream and advances the stream position by sixteen bytes.
         /// </summary>
@@ -171,6 +171,5 @@ namespace NetTopologySuite.IO
         {
             throw new NotImplementedException();
         }
-#endif
     }
 }

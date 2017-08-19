@@ -946,9 +946,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
             if (coordList.Count < 4)
             {
-#if !PCL
                 Debug.WriteLine(coordList);
-#endif
                 coordList.Add(coordList[coordList.Count - 1], true);
             }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GeoAPI;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Utilities;
@@ -30,7 +31,7 @@ namespace NetTopologySuite.Geometries
     /// (i.e. effectively split the polygon into two pieces).</item>
     /// </list>
     /// </summary>
-#if !PCL
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public class Polygon : Geometry, IPolygon
@@ -475,11 +476,7 @@ namespace NetTopologySuite.Geometries
         {
             var poly = (Polygon) base.Clone();
             poly._shell = (LinearRing) _shell.Clone();
-#if !PCL
             poly._holes = new ILinearRing[_holes.Length];
-#else
-            poly._holes = new LinearRing[_holes.Length];
-#endif
             for (var i = 0; i < _holes.Length; i++) 
                 poly._holes[i] = (LinearRing) _holes[i].Clone();            
             return poly; 
@@ -693,7 +690,6 @@ namespace NetTopologySuite.Geometries
 
     }
 
-#if NET35
     public static class CoordinateSequenceEx
     {
         public static int GetHashCode(this ICoordinateSequence sequence, int baseValue, Func<int, int> operation)
@@ -707,5 +703,4 @@ namespace NetTopologySuite.Geometries
         }
         
     }
-#endif
 }

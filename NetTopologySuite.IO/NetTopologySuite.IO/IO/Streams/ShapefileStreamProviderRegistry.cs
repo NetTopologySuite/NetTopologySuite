@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace NetTopologySuite.IO.Streams
 {
@@ -47,6 +49,7 @@ namespace NetTopologySuite.IO.Streams
     {
         private IStreamProvider _dataEncodingStream;
 
+#if FEATURE_FILE_IO
         /// <summary>
         /// Creates an instance of this class
         /// </summary>
@@ -56,10 +59,10 @@ namespace NetTopologySuite.IO.Streams
         /// <param name="validateIndexPath">A value indicating that the shape index modified <paramref name="path"/> must be validated</param>
         public ShapefileStreamProviderRegistry(string path, bool validateShapePath = false, bool validateDataPath = false, bool validateIndexPath = false)
         {
-#if NET40
+#if HAS_SYSTEM_STRING_ISNULLORWHITESPACE
             if (string.IsNullOrWhiteSpace(path))
 #else
-            if (string.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path) || path.All(Char.IsWhiteSpace))
 #endif
             {
                 throw new ArgumentNullException("path", "Path to shapefile can't be null, empty or whitespace");
@@ -87,6 +90,7 @@ namespace NetTopologySuite.IO.Streams
             if (File.Exists(tmpPath))
                 SpatialIndexIndexStream = new FileStreamProvider(StreamTypes.SpatialIndexIndex, tmpPath);
         }
+#endif
 
         /// <summary>
         /// Creates an instance of this class
@@ -147,7 +151,7 @@ namespace NetTopologySuite.IO.Streams
         private IStreamProvider DataEncodingStream
         {
             get { return _dataEncodingStream ?? 
-                    new ByteStreamProvider(StreamTypes.DataEncoding, "windows-1252"); }
+                    new ByteStreamProvider(StreamTypes.DataEncoding, "windows-1252", Encoding.UTF8); }
             set { _dataEncodingStream = value; }
         }
 

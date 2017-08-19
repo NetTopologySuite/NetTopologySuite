@@ -27,25 +27,12 @@ namespace NetTopologySuite.Tests.NUnit
             return reader.Read(inputWKT);
         }
 
-        public static IList<IGeometry> ReadWKTFile(String filename) 
-        {
-#if !PCL
-            var fileRdr = new WKTFileReader(filename, reader);
-#else
-            var fileRdr = new WKTFileReader(new BufferedStream(new FileStream(filename, FileMode.Open),2048) , reader);
-#endif
-            var geoms = fileRdr.Read();
-            return geoms;
-        }
-
-#if PCL
         public static IList<IGeometry> ReadWKTFile(Stream stream)
         {
-            var fileRdr = new WKTFileReader(stream, new WKTReader());
+            var fileRdr = new WKTFileReader(new StreamReader(stream), new WKTReader());
             var geoms = fileRdr.Read();
             return geoms;
         }
-#endif
   
         public static bool IsEqual(IGeometry a, IGeometry b)
         {

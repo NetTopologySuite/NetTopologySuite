@@ -264,9 +264,7 @@ namespace NetTopologySuite.Triangulate
         /// <param name="vertices">a collection of ConstraintVertex</param>
         private void InsertSites(ICollection<Vertex> vertices)
         {
-#if !PCL
             Debug.WriteLine("Adding sites: " + vertices.Count);
-#endif
             foreach (Vertex v in vertices)
             {
                 InsertSite((ConstraintVertex)v);
@@ -348,10 +346,8 @@ namespace NetTopologySuite.Triangulate
 
             if (count == MaxSplitIteration)
             {
-#if !PCL
                 Debug.WriteLine("ABORTED! Too many iterations while enforcing constraints");
                 if (!Debugger.IsAttached)
-#endif
                     throw new ConstraintEnforcementException(
                         "Too many splitting iterations while enforcing constraints.  Last split point was at: ",
                         _splitPt);

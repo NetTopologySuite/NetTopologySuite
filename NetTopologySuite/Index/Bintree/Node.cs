@@ -6,7 +6,7 @@ namespace NetTopologySuite.Index.Bintree
     /// <summary>
     /// A node of a <c>Bintree</c>.
     /// </summary>
-#if !PCL    
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public class Node<T> : NodeBase<T>

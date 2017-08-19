@@ -6,7 +6,7 @@ namespace NetTopologySuite.Features
     ///<summary>
     /// Feature class
     ///</summary>
-#if !PCL    
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public class Feature : IFeature

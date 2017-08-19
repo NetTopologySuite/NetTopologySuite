@@ -6,7 +6,6 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Tests.NUnit.Performance
 {
-#if !PCL
     public class AreaPrecisionPerfTest
     {
         [TestAttribute]
@@ -105,5 +104,4 @@ namespace NetTopologySuite.Tests.NUnit.Performance
             return sum/2.0;
         }
     }
-#endif
 }

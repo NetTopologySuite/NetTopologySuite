@@ -5,7 +5,7 @@ namespace NetTopologySuite.Geometries.Implementation
     /// <summary>
     /// A coordinate sequence factory class that creates DotSpatial's Shape/ShapeRange like coordinate sequences.
     /// </summary>
-#if !PCL   
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public class DotSpatialAffineCoordinateSequenceFactory : ICoordinateSequenceFactory

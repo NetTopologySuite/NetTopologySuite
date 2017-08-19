@@ -1,87 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(SolutionDir)BuildTools\GeoAPI.Reference.targets" Condition="Exists('$(SolutionDir)BuildTools\GeoAPI.Reference.targets')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <fwVersion Condition=" '$(fwVersion)' == '' ">net40-client</fwVersion>
-    <!-- Define SolutionDir if not already set -->
     <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D446FBA3-B6EA-4FEB-9615-D5FD5AEB3D23}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFrameworks>net35-client;net40-client;net403-client;net45;netstandard1.0;netstandard1.3</TargetFrameworks>
     <RootNamespace>NetTopologySuite</RootNamespace>
-    <AssemblyName>NetTopologySuite.Lab</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NET20;NET35</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>$(SolutionDir)$(Configuration)\$(TargetFrameworkIdentifier)$(TargetFrameworkVersion)\$(Platform)\</OutputPath>
-    <DefineConstants>TRACE;NET20;NET35</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
     <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(SolutionDir)nts.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>nts.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <ItemGroup Condition=" '$(TargetFrameworkVersion)' != 'v2.0' ">
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-  </ItemGroup>
+
+  <Import Project="$(SolutionDir)NetTopologySuite.Common.props" />
+
   <ItemGroup>
-    <Reference Include="System" />
+    <Compile Include="$(SolutionDir)SharedAssemblyVersion.cs" Link="Properties\SharedAssemblyVersion.cs" />
+
+    <None Include="$(SolutionDir)nts.snk" Link="nts.snk" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(RequiresFrameworkAssemblyReferences)' == 'true' ">
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="..\SharedAssemblyVersion.cs">
-      <Link>Properties\SharedAssemblyVersion.cs</Link>
-    </Compile>
-    <Compile Include="Hull\ConcaveHull.cs" />
-    <Compile Include="Operation\Buffer\VariableWidthBuffer.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SnapRound\GeometrySnapRounder.cs" />
-    <Compile Include="SnapRound\SnapRoundFunctions.cs" />
-    <Compile Include="SnapRound\SnapRoundOverlayFunctions.cs" />
+    <PackageReference Include="GeoAPI" Version="$(GeoAPIPackageReferenceVersion)" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
-      <Project>{5770daa9-84e5-4770-af43-f6b815894368}</Project>
-      <Name>NetTopologySuite</Name>
-    </ProjectReference>
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite\NetTopologySuite.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="nts.snk" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Geometries\Utilities\GeometryEditorEx.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="SnapRound\GeometryCoordinateReplacer.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

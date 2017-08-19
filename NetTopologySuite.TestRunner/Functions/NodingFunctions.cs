@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
@@ -25,7 +26,7 @@ namespace Open.Topology.TestRunner.Functions
             var noder = new GeometryNoder(pm);
             var lines = noder.Node(geomList);
 
-            return FunctionsUtil.GetFactoryOrDefault(geom).BuildGeometry(CollectionUtil.Cast<IGeometry>((ICollection)lines));
+            return FunctionsUtil.GetFactoryOrDefault(geom).BuildGeometry(lines.Cast<IGeometry>().ToArray());
         }
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace Open.Topology.TestRunner.Functions
             var noder = new GeometryNoder(pm);
             var lines = noder.Node(geomList);
 
-            return FunctionsUtil.GetFactoryOrDefault(geom).BuildGeometry(CollectionUtil.Cast<IGeometry>((ICollection)lines));
+            return FunctionsUtil.GetFactoryOrDefault(geom).BuildGeometry(lines.Cast<IGeometry>().ToArray());
         }
 
         public static bool IsNodingValid(IGeometry geom)

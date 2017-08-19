@@ -16,7 +16,6 @@ namespace NetTopologySuite.Tests.NUnit.Index
             Assert.IsTrue(tester.IsSuccess);
         }
 
-#if !PCL
         [TestAttribute]
         public void TestSerialization()
         {
@@ -34,6 +33,5 @@ namespace NetTopologySuite.Tests.NUnit.Index
             tester.Run();
             Assert.IsTrue(tester.IsSuccess);
         }
-#endif
     }
 }

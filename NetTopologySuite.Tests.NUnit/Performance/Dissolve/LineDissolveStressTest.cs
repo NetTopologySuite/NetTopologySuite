@@ -18,9 +18,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Dissolve
         public void Test()
         {
             Trace.WriteLine("Loading data...");
-            string filePath = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile(
-                "NetTopologySuite.Tests.NUnit.TestData.world.wkt");
-            IList<IGeometry> data = GeometryUtils.ReadWKTFile(filePath);
+            IList<IGeometry> data = GeometryUtils.ReadWKTFile(EmbeddedResourceManager.GetResourceStream(
+                "NetTopologySuite.Tests.NUnit.TestData.world.wkt"));
 
             const int maxTimes = 5;
             for (int i = 1; i <= maxTimes; i++)
@@ -32,7 +31,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Dissolve
                 Trace.WriteLine(Environment.NewLine);
             }
 
-            EmbeddedResourceManager.CleanUpTempFile(filePath);
             Trace.WriteLine("Test terminated");
         }
 

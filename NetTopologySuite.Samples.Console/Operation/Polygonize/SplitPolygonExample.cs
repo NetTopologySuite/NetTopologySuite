@@ -11,7 +11,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Polygonize;
-using NetTopologySuite.Tests.NUnit.Operation.Distance3d;
 using Matrix = System.Drawing.Drawing2D.Matrix;
 
 namespace NetTopologySuite.Samples.Operation.Poligonize

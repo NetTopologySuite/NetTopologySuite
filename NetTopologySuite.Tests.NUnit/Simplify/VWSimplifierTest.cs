@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 using GeoAPI.Geometries;
@@ -179,27 +180,29 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
             long oldTicks = 0;
             long newTicks = 0;
 
-            string filePath = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile("NetTopologySuite.Tests.NUnit.TestData.world.wkt");
-            foreach (ILineString line in GeometryUtils.ReadWKTFile(filePath).SelectMany(LinearComponentExtracter.GetLines))
+            using (Stream file = EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.world.wkt"))
             {
-                Coordinate[] coordinates = line.Coordinates;
+                foreach (ILineString line in GeometryUtils.ReadWKTFile(file).SelectMany(LinearComponentExtracter.GetLines))
+                {
+                    Coordinate[] coordinates = line.Coordinates;
 
-                Stopwatch sw = Stopwatch.StartNew();
-                Coordinate[] oldResults = OldVWLineSimplifier.Simplify(coordinates, DistanceTolerance);
-                sw.Stop();
+                    Stopwatch sw = Stopwatch.StartNew();
+                    Coordinate[] oldResults = OldVWLineSimplifier.Simplify(coordinates, DistanceTolerance);
+                    sw.Stop();
 
-                oldTicks += sw.ElapsedTicks;
+                    oldTicks += sw.ElapsedTicks;
 
-                sw.Restart();
-                Coordinate[] newResults = VWLineSimplifier.Simplify(coordinates, DistanceTolerance);
-                sw.Stop();
+                    sw.Restart();
+                    Coordinate[] newResults = VWLineSimplifier.Simplify(coordinates, DistanceTolerance);
+                    sw.Stop();
 
-                newTicks += sw.ElapsedTicks;
+                    newTicks += sw.ElapsedTicks;
 
-                CollectionAssert.AreEqual(oldResults, newResults);
+                    CollectionAssert.AreEqual(oldResults, newResults);
 
-                pointsRemoved += coordinates.Length - newResults.Length;
-                totalPointCount += coordinates.Length;
+                    pointsRemoved += coordinates.Length - newResults.Length;
+                    totalPointCount += coordinates.Length;
+                }
             }
 
             Console.WriteLine("Total: Removed {0} of {1} points (reduction: {2:P0}).", pointsRemoved, totalPointCount, pointsRemoved / (double)totalPointCount);

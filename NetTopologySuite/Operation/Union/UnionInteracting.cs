@@ -44,10 +44,10 @@ namespace NetTopologySuite.Operation.Union
             // check for all interacting or none interacting!
             IGeometry int0 = ExtractElements(_g0, _interacts0, true);
             IGeometry int1 = ExtractElements(_g1, _interacts1, true);
-#if !PCL
+
             if (int0.IsEmpty || int1.IsEmpty)
                 Debug.WriteLine("found empty!");
-#endif
+
             IGeometry union = int0.Union(int1);
             IGeometry disjoint0 = ExtractElements(_g0, _interacts0, false);
             IGeometry disjoint1 = ExtractElements(_g1, _interacts1, false);

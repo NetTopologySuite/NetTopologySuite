@@ -6,7 +6,7 @@ namespace NetTopologySuite.Geometries
     /// <summary>  
     /// Models a collection of <c>Point</c>s.
     /// </summary>
-#if !PCL
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public class MultiPoint : GeometryCollection, IMultiPoint
