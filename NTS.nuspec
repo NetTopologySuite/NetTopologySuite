@@ -68,28 +68,9 @@
 		<file src="NetTopologySuite.Common.props" target="src" />
 		<file src="NetTopologySuite\**" exclude="NetTopologySuite\obj\**" target="src\NetTopologySuite" />
 
-		<file src="Release\AnyCPU\net35-client\NetTopologySuite.dll" target="lib\net35-client" />
-		<file src="Release\AnyCPU\net35-client\NetTopologySuite.pdb" target="lib\net35-client" />
-		<file src="Release\AnyCPU\net35-client\NetTopologySuite.xml" target="lib\net35-client" />
-
-		<file src="Release\AnyCPU\net40-client\NetTopologySuite.dll" target="lib\net40-client" />
-		<file src="Release\AnyCPU\net40-client\NetTopologySuite.pdb" target="lib\net40-client" />
-		<file src="Release\AnyCPU\net40-client\NetTopologySuite.xml" target="lib\net40-client" />
-
-		<file src="Release\AnyCPU\net403-client\NetTopologySuite.dll" target="lib\net403-client" />
-		<file src="Release\AnyCPU\net403-client\NetTopologySuite.pdb" target="lib\net403-client" />
-		<file src="Release\AnyCPU\net403-client\NetTopologySuite.xml" target="lib\net403-client" />
-
-		<file src="Release\AnyCPU\net45\NetTopologySuite.dll" target="lib\net45" />
-		<file src="Release\AnyCPU\net45\NetTopologySuite.pdb" target="lib\net45" />
-		<file src="Release\AnyCPU\net45\NetTopologySuite.xml" target="lib\net45" />
-
-		<file src="Release\AnyCPU\netstandard1.0\NetTopologySuite.dll" target="lib\netstandard1.0" />
-		<file src="Release\AnyCPU\netstandard1.0\NetTopologySuite.pdb" target="lib\netstandard1.0" />
-		<file src="Release\AnyCPU\netstandard1.0\NetTopologySuite.xml" target="lib\netstandard1.0" />
-
-		<file src="Release\AnyCPU\netstandard1.3\NetTopologySuite.dll" target="lib\netstandard1.3" />
-		<file src="Release\AnyCPU\netstandard1.3\NetTopologySuite.pdb" target="lib\netstandard1.3" />
-		<file src="Release\AnyCPU\netstandard1.3\NetTopologySuite.xml" target="lib\netstandard1.3" />
+		<file src="Release\AnyCPU\**\NetTopologySuite.deps.json" target="lib" />
+		<file src="Release\AnyCPU\**\NetTopologySuite.dll" target="lib" />
+		<file src="Release\AnyCPU\**\NetTopologySuite.pdb" target="lib" />
+		<file src="Release\AnyCPU\**\NetTopologySuite.xml" target="lib" />
 	</files>
 </package>

@@ -27,28 +27,9 @@
 		<file src="NetTopologySuite.Common.props" target="src" />
 		<file src="NetTopologySuite.IO\NetTopologySuite.IO.SpatiaLite\**" exclude="NetTopologySuite.IO\NetTopologySuite.IO.SpatiaLite\obj\**" target="src\NetTopologySuite.IO\NetTopologySuite.IO.SpatiaLite" />
 
-		<file src="Release\AnyCPU\net35-client\NetTopologySuite.IO.SpatiaLite.dll" target="lib\net35-client" />
-		<file src="Release\AnyCPU\net35-client\NetTopologySuite.IO.SpatiaLite.pdb" target="lib\net35-client" />
-		<file src="Release\AnyCPU\net35-client\NetTopologySuite.IO.SpatiaLite.xml" target="lib\net35-client" />
-
-		<file src="Release\AnyCPU\net40-client\NetTopologySuite.IO.SpatiaLite.dll" target="lib\net40-client" />
-		<file src="Release\AnyCPU\net40-client\NetTopologySuite.IO.SpatiaLite.pdb" target="lib\net40-client" />
-		<file src="Release\AnyCPU\net40-client\NetTopologySuite.IO.SpatiaLite.xml" target="lib\net40-client" />
-
-		<file src="Release\AnyCPU\net403-client\NetTopologySuite.IO.SpatiaLite.dll" target="lib\net403-client" />
-		<file src="Release\AnyCPU\net403-client\NetTopologySuite.IO.SpatiaLite.pdb" target="lib\net403-client" />
-		<file src="Release\AnyCPU\net403-client\NetTopologySuite.IO.SpatiaLite.xml" target="lib\net403-client" />
-
-		<file src="Release\AnyCPU\net45\NetTopologySuite.IO.SpatiaLite.dll" target="lib\net45" />
-		<file src="Release\AnyCPU\net45\NetTopologySuite.IO.SpatiaLite.pdb" target="lib\net45" />
-		<file src="Release\AnyCPU\net45\NetTopologySuite.IO.SpatiaLite.xml" target="lib\net45" />
-
-		<file src="Release\AnyCPU\netstandard1.0\NetTopologySuite.IO.SpatiaLite.dll" target="lib\netstandard1.0" />
-		<file src="Release\AnyCPU\netstandard1.0\NetTopologySuite.IO.SpatiaLite.pdb" target="lib\netstandard1.0" />
-		<file src="Release\AnyCPU\netstandard1.0\NetTopologySuite.IO.SpatiaLite.xml" target="lib\netstandard1.0" />
-
-		<file src="Release\AnyCPU\netstandard1.3\NetTopologySuite.IO.SpatiaLite.dll" target="lib\netstandard1.3" />
-		<file src="Release\AnyCPU\netstandard1.3\NetTopologySuite.IO.SpatiaLite.pdb" target="lib\netstandard1.3" />
-		<file src="Release\AnyCPU\netstandard1.3\NetTopologySuite.IO.SpatiaLite.xml" target="lib\netstandard1.3" />
+		<file src="Release\AnyCPU\**\NetTopologySuite.IO.SpatiaLite.deps.json" target="lib" />
+		<file src="Release\AnyCPU\**\NetTopologySuite.IO.SpatiaLite.dll" target="lib" />
+		<file src="Release\AnyCPU\**\NetTopologySuite.IO.SpatiaLite.pdb" target="lib" />
+		<file src="Release\AnyCPU\**\NetTopologySuite.IO.SpatiaLite.xml" target="lib" />
 	</files>
 </package>
