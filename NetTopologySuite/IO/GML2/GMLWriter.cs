@@ -36,9 +36,13 @@ namespace NetTopologySuite.IO.GML2
         /// <returns></returns>
         public XmlReader Write(IGeometry geometry)
         {
-            byte[] data = GetBytes(geometry);
-            using (Stream stream = new MemoryStream(data))
+            byte[] data;
+            using (MemoryStream stream = new MemoryStream(SetByteStreamLength(geometry)))
+            {
                 Write(geometry, stream);
+                data = stream.ToArray();
+            }
+
             Stream outStream = new MemoryStream(data);
             return XmlReader.Create(outStream);
         }
@@ -55,7 +59,8 @@ namespace NetTopologySuite.IO.GML2
 #if HAS_SYSTEM_XML_NAMESPACEHANDLING
                 NamespaceHandling = NamespaceHandling.OmitDuplicates,
 #endif
-                Indent = true
+                Indent = true,
+                OmitXmlDeclaration = true,
             };
             XmlWriter writer = XmlWriter.Create(stream, settings);
 
@@ -252,31 +257,6 @@ namespace NetTopologySuite.IO.GML2
                 writer.WriteEndElement();
             }
             writer.WriteEndElement();
-        }
-
-
-        /// <summary>
-        /// Sets corrent length for Byte Stream.
-        /// </summary>
-        /// <param name="geometry"></param>
-        /// <returns></returns>
-        protected byte[] GetBytes(IGeometry geometry)
-        {
-            if (geometry is IPoint)
-                return new byte[SetByteStreamLength(geometry as IPoint)];
-            if (geometry is ILineString)
-                return new byte[SetByteStreamLength(geometry as ILineString)];
-            if (geometry is IPolygon)
-                return new byte[SetByteStreamLength(geometry as IPolygon)];
-            if (geometry is IMultiPoint)
-                return new byte[SetByteStreamLength(geometry as IMultiPoint)];
-            if (geometry is IMultiLineString)
-                return new byte[SetByteStreamLength(geometry as IMultiLineString)];
-            if (geometry is IMultiPolygon)
-                return new byte[SetByteStreamLength(geometry as IMultiPolygon)];
-            if (geometry is IGeometryCollection)
-                return new byte[SetByteStreamLength(geometry as IGeometryCollection)];
-            throw new ArgumentException("ShouldNeverReachHere");
         }
 
         /// <summary>
