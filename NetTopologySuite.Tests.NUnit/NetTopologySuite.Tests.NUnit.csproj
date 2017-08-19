@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
-    <TargetFramework>net46</TargetFramework>
+    <TargetFramework>net45</TargetFramework>
     <TargetFrameworkToTest>net45</TargetFrameworkToTest>
     <BaseIntermediateOutputPath>obj\$(TargetFrameworkToTest)\</BaseIntermediateOutputPath>
     <OutDir>bin\$(Configuration)\$(TargetFrameworkToTest)</OutDir>
@@ -52,8 +52,6 @@
   <ItemGroup>
     <PackageReference Include="GeoAPI" Version="$(GeoAPIPackageReferenceVersion)" />
     <PackageReference Include="NUnit" Version="2.6.4" />
-    <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
-    <PackageReference Include="System.Xml.ReaderWriter" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>

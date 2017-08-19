@@ -4,7 +4,7 @@
     <OutputPath>$(SolutionDir)$(Configuration)\$(Platform)</OutputPath>
     <DocumentationFile>$(OutputPath)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <GeoAPIPackageReferenceVersion>1.7.5-pre2</GeoAPIPackageReferenceVersion>
+    <GeoAPIPackageReferenceVersion>1.7.5-pre4</GeoAPIPackageReferenceVersion>
   </PropertyGroup>
 
   <!-- Client Profile frameworks don't have built-in shortcuts, so we need to specify these. -->
