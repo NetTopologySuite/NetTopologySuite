@@ -30,15 +30,15 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' Or '$(TargetFramework)' == 'netstandard1.3' ">
-    <PackageReference Include="System.Diagnostics.Debug" Version="$(NETStandardPackageReferenceVersion)" />
-    <PackageReference Include="System.Linq" Version="$(NETStandardPackageReferenceVersion)" />
-    <PackageReference Include="System.Text.RegularExpressions" Version="$(NETStandardPackageReferenceVersion)" />
-    <PackageReference Include="System.Xml.ReaderWriter" Version="$(NETStandardPackageReferenceVersion)" />
-    <PackageReference Include="System.Xml.XDocument" Version="$(NETStandardPackageReferenceVersion)" />
+    <PackageReference Include="System.Diagnostics.Debug" Version="4.3.0" />
+    <PackageReference Include="System.Linq" Version="4.3.0" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.0" />
+    <PackageReference Include="System.Xml.ReaderWriter" Version="4.3.0" />
+    <PackageReference Include="System.Xml.XDocument" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
-    <PackageReference Include="System.IO.FileSystem" Version="$(NETStandardPackageReferenceVersion)" />
-    <PackageReference Include="System.Xml.XmlDocument" Version="$(NETStandardPackageReferenceVersion)" />
+    <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
+    <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
   </ItemGroup>
 </Project>

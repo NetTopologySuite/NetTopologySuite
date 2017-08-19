@@ -52,8 +52,8 @@
   <ItemGroup>
     <PackageReference Include="GeoAPI" Version="$(GeoAPIPackageReferenceVersion)" />
     <PackageReference Include="NUnit" Version="2.6.4" />
-    <PackageReference Include="System.IO.FileSystem" Version="$(NETStandardPackageReferenceVersion)" />
-    <PackageReference Include="System.Xml.ReaderWriter" Version="$(NETStandardPackageReferenceVersion)" />
+    <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
+    <PackageReference Include="System.Xml.ReaderWriter" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
