@@ -1,8 +1,9 @@
 language: csharp
+mono: latest
 solution: NetTopologySuite.sln
+dist: trusty
 install:
-- nuget restore NetTopologySuite.sln
 - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 script:
-- xbuild /p:Configuration=ReleaseLinux NetTopologySuite.sln
-- mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./Release/v4.0/AnyCPU/NetTopologySuite.Tests.NUnit.dll
+- msbuild NetTopologySuite.sln "/t:Restore;Build" /p:Configuration=ReleaseLinux "/p:FrameworkPathOverride=$(dirname $(which mono))/../lib/mono/4.5/" /v:minimal /p:WarningLevel=3
+- mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./NetTopologySuite.Tests.NUnit/bin/Release/net45/NetTopologySuite.Tests.NUnit.dll
