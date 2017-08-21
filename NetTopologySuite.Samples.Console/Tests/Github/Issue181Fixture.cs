@@ -11,7 +11,7 @@ namespace NetTopologySuite.Samples.Tests.Github
         /// <summary>
         /// Same results with JTS, see: https://github.com/NetTopologySuite/NetTopologySuite/issues/181
         /// </summary>
-        [Test]
+        [Test, Category("ErrorThrown")]
         public void expected_exception_using_difference()
         {
             IGeometryFactory factory = GeometryFactory.Default;
