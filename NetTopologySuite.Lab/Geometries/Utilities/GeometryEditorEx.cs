@@ -266,28 +266,26 @@ namespace NetTopologySuite.Geometries.Utilities
             }
 
             // edit the component geometries
-            IList<IGeometry> geometries = new List<IGeometry>(collectionForType.NumGeometries);
+            var geometries = new List<IGeometry>(collectionForType.NumGeometries);
             for (var i = 0; i < collectionForType.NumGeometries; i++)
             {
                 var geometry = Edit(collectionForType.GetGeometryN(i));
                 if (geometry == null || geometry.IsEmpty)
-                {
                     continue;
-                }
                 geometries.Add(geometry);
             }
 
             if (collectionForType is IMultiPoint)
             {
-                return _targetFactory.CreateMultiPoint((IPoint[])geometries.ToArray());
+                return _targetFactory.CreateMultiPoint(geometries.Cast<IPoint>().ToArray());
             }
             if (collectionForType is IMultiLineString)
             {
-                return _targetFactory.CreateMultiLineString((ILineString[])geometries.ToArray());
+                return _targetFactory.CreateMultiLineString(geometries.Cast<ILineString>().ToArray());
             }
             if (collectionForType is IMultiPolygon)
             {
-                return _targetFactory.CreateMultiPolygon((IPolygon[])geometries.ToArray());
+                return _targetFactory.CreateMultiPolygon(geometries.Cast<IPolygon>().ToArray());
             }
             return _targetFactory.CreateGeometryCollection(geometries.ToArray());
         }

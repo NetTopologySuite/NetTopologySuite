@@ -16,6 +16,8 @@ using NetTopologySuite.Index.KdTree;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Polygonize;
 using NetTopologySuite.Operation.Valid;
+using NetTopologySuite.Precision;
+using NetTopologySuite.SnapRound;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -8670,6 +8672,28 @@ features: [{
             Assert.IsNotNull(result);
         }
 
+        [Test, Description("SnapRoundOverlayFunctions, Casting error in GeometryEditorEx.EditGeometryCollection")]
+        public void TestIssue177()
+        {
+            var reader = new WKTReader();
+            var g1 = reader.Read("MULTIPOLYGON (((30 20, 45 40, 10 40, 30 20)),((15 5, 40 10, 10 20, 5 10, 15 5)))");
+            var g2 = reader.Read("MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)),((20 35, 10 30, 10 10, 30 5, 45 20, 20 35),(30 20, 20 15, 20 25, 30 20)))");
+
+
+            IGeometry res = null;
+            //                                                                                     |
+            //                                                             Some cruel scale factor V
+            Assert.DoesNotThrow(() => res = SnapRoundOverlayFunctions.SnappedIntersection(g1, g2, 0.1));
+            Assert.That(res, Is.Not.Null);
+            Assert.That(res.IsValid, Is.True);
+
+            ToImage(0, g1, g2, res);
+
+            // To show that the result is correct:
+            var r1 = new GeometryPrecisionReducer(new PrecisionModel(0.1)).Reduce(g1);
+            var r2 = new GeometryPrecisionReducer(new PrecisionModel(0.1)).Reduce(g2);
+            ToImage(0, r1, r2, res);
+        }
 
         [Test]
         public void CrossAndIntersectionTest()
