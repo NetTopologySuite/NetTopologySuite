@@ -55,6 +55,7 @@
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO\NetTopologySuite.IO.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.Windows.Forms\NetTopologySuite.Windows.Forms.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite\NetTopologySuite.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.Lab\NetTopologySuite.Lab.csproj" />
   </ItemGroup>
 
   <ItemGroup>
