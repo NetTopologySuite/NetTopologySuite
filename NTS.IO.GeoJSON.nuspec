@@ -21,7 +21,7 @@
 		</frameworkAssemblies>
 		<dependencies>
 			<dependency id="NetTopologySuite" version="[$version$]" />
-			<dependency id="Newtonsoft.Json" version="[9.0.1]" />
+			<dependency id="Newtonsoft.Json" version="9.0.1" />
 		</dependencies>
 	</metadata>
 	<files>
