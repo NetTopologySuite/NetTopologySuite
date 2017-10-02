@@ -144,12 +144,13 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns></returns>
         private Coordinate[] GetCachedCoords()
         {
-            if (CoordRef != null) 
+            var localCoordRef = CoordRef;
+            if (localCoordRef != null)
             {
-                var arr = (Coordinate[]) CoordRef.Target;
-                if (arr != null) 
+                var arr = (Coordinate[]) localCoordRef.Target;
+                if (arr != null)
                     return arr;
-                
+
                 CoordRef = null;
                 return null;
             }
