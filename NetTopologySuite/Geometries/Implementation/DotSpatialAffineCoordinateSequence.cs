@@ -274,9 +274,10 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns></returns>
         private Coordinate[] GetCachedCoords()
         {
-            if (_coordinateArrayRef != null && _coordinateArrayRef.IsAlive)
+            var localCoordinateArrayRef = _coordinateArrayRef;
+            if (localCoordinateArrayRef != null && localCoordinateArrayRef.IsAlive)
             {
-                var arr = (Coordinate[])_coordinateArrayRef.Target;
+                var arr = (Coordinate[])localCoordinateArrayRef.Target;
                 if (arr != null)
                     return arr;
 
