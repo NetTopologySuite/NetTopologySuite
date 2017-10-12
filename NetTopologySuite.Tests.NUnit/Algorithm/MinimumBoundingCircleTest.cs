@@ -81,7 +81,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             IGeometry actual = geometryFactory.CreateMultiPoint(exPts);
             double actualRadius = mbc.GetRadius();
             Coordinate actualCentre = mbc.GetCentre();
-            Console.WriteLine("   Centre = " + actualCentre + "   Radius = " + actualRadius);
+            //Console.WriteLine("   Centre = " + actualCentre + "   Radius = " + actualRadius);
 
             IGeometry expected = reader.Read(expectedWKT);
             bool isEqual = actual.Equals(expected);

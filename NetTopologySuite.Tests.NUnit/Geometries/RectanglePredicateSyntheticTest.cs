@@ -37,7 +37,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestLines()
         {
-            Console.WriteLine(rect);
+            //Console.WriteLine(rect);
 
             List<IGeometry> testGeoms = getTestGeometries();
             foreach (var testGeom in testGeoms)
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestDenseLines()
         {
-            Console.WriteLine(rect);
+            //Console.WriteLine(rect);
 
             var testGeoms = getTestGeometries();
             foreach (var testGeom in testGeoms)

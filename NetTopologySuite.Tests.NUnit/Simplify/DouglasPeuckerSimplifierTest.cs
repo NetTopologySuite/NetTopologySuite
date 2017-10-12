@@ -196,7 +196,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
             IGeometry[] ioGeom = new IGeometry[2];
             ioGeom[0] = Rdr.Read(wkt);
             ioGeom[1] = DouglasPeuckerSimplifier.Simplify(ioGeom[0], tolerance);
-            Console.WriteLine(ioGeom[1]);
+            //System.Console.WriteLine(ioGeom[1]);
             return ioGeom;
         }
     }

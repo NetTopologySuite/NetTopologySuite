@@ -66,15 +66,15 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
-            Console.WriteLine("Geom count = " + geoms.Count + "   distance = " + dist);
+            //System.Console.WriteLine("Geom count = " + geoms.Count + "   distance = " + dist);
             foreach (var g in geoms)
             {
                 RunBuffer(g, dist);
                 //RunBuffer(g.reverse(), dist);
-                Console.Write(".");
+                //System.Console.WriteLine(".");
             }
             sw.Stop();
-            Console.WriteLine("  " + sw.Elapsed.TotalMilliseconds + " milliseconds");
+            //System.Console.WriteLine("  " + sw.Elapsed.TotalMilliseconds + " milliseconds");
         }
 
         static void RunBuffer(IGeometry g, double dist)

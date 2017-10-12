@@ -46,7 +46,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             IGeometry g = reader.Read(wkt);
             double len = g.Length;
-            //System.out.println(len);
+            //System.Console.WriteLine(len);
             Assert.AreEqual(expectedValue, len, TOLERANCE);
         }
 

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
-using NetTopologySuite.Operation.Valid;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
@@ -41,7 +39,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
             var env = new Envelope(0, 100, 0, 100);
             var poly = StarCross.Star(env, size, geomFact);
             var geom = poly.Boundary;
-            //System.out.println(geom);
+            //System.Console.WriteLine(geom);
             checkValid("StarCross " + geom.GeometryType + "   (size = " + size + ")", geom);
         }
 
@@ -57,12 +55,12 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
 
         private void checkValid(string name, IGeometry g)
         {
-            Console.WriteLine("Running " + name);
+            System.Console.WriteLine("Running " + name);
             var sw = new Stopwatch();
             sw.Start();
             var isValid = g.IsValid;
             sw.Stop();
-            Console.WriteLine("Is Valid = {0}, Ticks: {1:N0}", isValid, sw.ElapsedTicks);
+            System.Console.WriteLine("Is Valid = {0}, Ticks: {1:N0}", isValid, sw.ElapsedTicks);
         }
     }
 
@@ -72,14 +70,14 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
         {
             Coordinate[] pts = new Coordinate[nSeg + 1];
             Coordinate centre = env.Centre;
-            double len = 0.5 * Math.Min(env.Height, env.Width);
-            double angInc = Math.PI + 2 * Math.PI / nSeg;
+            double len = 0.5 * System.Math.Min(env.Height, env.Width);
+            double angInc = System.Math.PI + 2 * System.Math.PI / nSeg;
 
             double ang = 0;
             for (int i = 0; i < nSeg; i++)
             {
-                double x = centre.X + len * Math.Cos(ang);
-                double y = centre.X + len * Math.Sin(ang);
+                double x = centre.X + len * System.Math.Cos(ang);
+                double y = centre.X + len * System.Math.Sin(ang);
                 pts[i] = new Coordinate(x, y);
                 ang += angInc;
             }
@@ -101,7 +99,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
         {
             var comb1 = CreateComb(env, size, geomFact);
             var centre = env.Centre;
-            var trans = AffineTransformation.RotationInstance(0.5 * Math.PI, centre.X, centre.Y);
+            var trans = AffineTransformation.RotationInstance(0.5 * System.Math.PI, centre.X, centre.Y);
             var comb2 = (IPolygon)trans.Transform(comb1);
             var mp = geomFact.CreateMultiPolygon(new [] { comb1, comb2 });
             return mp;

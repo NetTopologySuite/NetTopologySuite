@@ -30,13 +30,13 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 
         public void Run(int nIter)
         {
-            Console.WriteLine("Running " + nIter + " tests");
+            //System.Console.WriteLine("Running " + nIter + " tests");
             //  	Geometry poly = createCircle(new Coordinate(0, 0), 100, nPts);
             IGeometry poly = CreateSineStar(new Coordinate(0, 0), 100, _numTargetPts);
             Console.WriteLine(poly);
 
-            Console.WriteLine();
-            //System.out.println("Running with " + nPts + " points");
+            //System.Console.WriteLine();
+            //System.out.Console.WriteLine("Running with " + nPts + " points");
             Run(nIter, poly);
         }
 

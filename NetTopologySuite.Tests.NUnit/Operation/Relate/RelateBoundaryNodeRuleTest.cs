@@ -91,7 +91,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             IGeometry g2 = rdr.Read(wkt2);
             IntersectionMatrix im = RelateOp.Relate(g1, g2, bnRule);
             String imStr = im.ToString();
-            Console.WriteLine(imStr);
+            //System.Console.WriteLine(imStr);
             Assert.IsTrue(im.Matches(expectedIM));
         }
     }

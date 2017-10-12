@@ -94,7 +94,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             if (_rand == null)
             {
-                Console.WriteLine("Seed = " + _seed);
+                //Console.WriteLine("Seed = " + _seed);
                 _rand = new Random(_seed);
             }
             return _rand.NextDouble();

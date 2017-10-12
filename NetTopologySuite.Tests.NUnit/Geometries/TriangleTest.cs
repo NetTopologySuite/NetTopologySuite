@@ -30,7 +30,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
             var t = new Triangle(pt[0], pt[1], pt[2]);
             var z = t.InterpolateZ(p);
-            //Console.WriteLine("Z = " + z);
+            //System.Console.WriteLine("Z = " + z);
             Assert.AreEqual(expectedValue, z, Tolerance);
         }
 
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var pt = g.Coordinates;
             var t = new Triangle(pt[0], pt[1], pt[2]);
             var area3D = t.Area3D();
-            // Console.WriteLine("area3D = " + area3D);
+            //System.Console.WriteLine("area3D = " + area3D);
             Assert.AreEqual(expectedValue, area3D, Tolerance);
         }
 
@@ -73,7 +73,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
             var t = new Triangle(pt[0], pt[1], pt[2]);
             var signedArea = t.SignedArea();
-            //Console.WriteLine("signed area = " + signedArea);
+            //System.Console.WriteLine("signed area = " + signedArea);
             Assert.AreEqual(expectedValue, signedArea, Tolerance);
 
             var area = t.Area();
@@ -99,7 +99,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
             var t = new Triangle(pt[0], pt[1], pt[2]);
             var isAcute = t.IsAcute();
-            //Console.WriteLine("isAcute = " + isAcute);
+            //System.Console.WriteLine("isAcute = " + isAcute);
             Assert.AreEqual(expectedValue, isAcute);
         }
     }

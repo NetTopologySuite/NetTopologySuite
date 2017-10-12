@@ -46,7 +46,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 Console.Write(".");
             }
             sw.Stop();
-            Console.WriteLine("\n {0}ms\n", sw.ElapsedMilliseconds);
+            //Console.WriteLine("\n {0}ms\n", sw.ElapsedMilliseconds);
         }
 
         private static void CheckInteriorPoint(IGeometry g)

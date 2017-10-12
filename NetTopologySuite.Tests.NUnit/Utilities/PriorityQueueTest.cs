@@ -50,7 +50,7 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
             while (!q.IsEmpty())
             {
                 T next = q.Poll();
-                Console.WriteLine(next);
+                //System.Console.WriteLine(next);
                 if (!first)
                 {
                     Assert.IsTrue(next.CompareTo(curr) >= 0);

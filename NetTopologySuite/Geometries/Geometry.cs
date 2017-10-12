@@ -2071,10 +2071,12 @@ namespace NetTopologySuite.Geometries
         /// </exception>
         protected void CheckNotGeometryCollection(IGeometry g)
         {
-            if (IsNonHomogenousGeometryCollection(g))
+            //if (IsNonHomogenousGeometryCollection(g))
+            if (IsGeometryCollection)
                 throw new ArgumentException("This method does not support GeometryCollection arguments");
         }
 
+        /*
         /// <summary>
         /// Returns <c>true</c> if <c>g</c>'s class is <c>GeometryCollection</c>. 
         /// (its subclasses do not trigger an exception).
@@ -2085,12 +2087,15 @@ namespace NetTopologySuite.Geometries
         /// </exception>        
         private static bool IsNonHomogenousGeometryCollection(IGeometry g)
         {
-            return
+            return 
                 g is IGeometryCollection &&
-                g.GeometryType == "GeometryCollection"; ; /*g.GetType().Name == "GeometryCollection" && g.GetType().Namespace == GetType().Namespace;*/
+                g.GeometryType == "GeometryCollection";  //g.GetType().Name == "GeometryCollection" && g.GetType().Namespace == GetType().Namespace;
         }
+         */
 
-
+        /// <summary>
+        /// Gets a value indicating if this geometry is a geometry collection
+        /// </summary>
         protected bool IsGeometryCollection
         {
             get { return OgcGeometryType == OgcGeometryType.GeometryCollection; }

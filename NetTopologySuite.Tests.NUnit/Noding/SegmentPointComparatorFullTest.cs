@@ -102,7 +102,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding
         {
             Octants octant = Octant.GetOctant(seg.P0, seg.P1);
             int posValue = SegmentPointComparator.Compare(octant, p0, p1);
-            Console.WriteLine(octant + " " + p0 + " " + p1 + " " + posValue);
+            //System.Console.WriteLine(octant + " " + p0 + " " + p1 + " " + posValue);
             Assert.IsTrue(posValue == expectedPositionValue);
         }
     }

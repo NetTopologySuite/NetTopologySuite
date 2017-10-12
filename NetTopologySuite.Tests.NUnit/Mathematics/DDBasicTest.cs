@@ -180,10 +180,10 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
 
             var delta = diff.Subtract(sum);
 
-            Console.WriteLine("\nA = " + a + ", B = " + b);
-            Console.WriteLine("[DD]     2ab+b^2 = " + sum
-                              + "   (a+b)^2 - a^2 = " + diff
-                              + "   delta = " + delta);
+            //System.Console.WriteLine("\nA = " + a + ", B = " + b);
+            //System.Console.WriteLine("[DD]     2ab+b^2 = " + sum
+                              //+ "   (a+b)^2 - a^2 = " + diff
+                              //+ "   delta = " + delta);
             PrintBinomialSquareDouble(a, b);
 
             var isSame = diff.Equals(sum);
@@ -196,9 +196,9 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         {
             var sum = 2*a*b + b*b;
             var diff = (a + b)*(a + b) - a*a;
-            Console.WriteLine("[double] 2ab+b^2= " + sum
-                              + "   (a+b)^2-a^2= " + diff
-                              + "   delta= " + (sum - diff));
+            //Console.WriteLine("[double] 2ab+b^2= " + sum
+            //                  + "   (a+b)^2-a^2= " + diff
+            //                  + "   delta= " + (sum - diff));
         }
 
         [TestAttribute]
@@ -241,10 +241,10 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
 
             var delta = diff.Subtract(b2DD);
 
-            Console.WriteLine("\nA = " + a + ", B = " + b);
-            Console.WriteLine("[DD] (a+b)(a-b) = " + abProd
-                              + "   -((a^2 - b^2) - a^2) = " + diff
-                              + "   delta = " + delta);
+            //System.Console.WriteLine("\nA = " + a + ", B = " + b);
+            //System.Console.WriteLine("[DD] (a+b)(a-b) = " + abProd
+            //                +"   -((a^2 - b^2) - a^2) = " + diff
+            //                + "   delta = " + delta);
             //  	printBinomialSquareDouble(a,b);
 
             var isSame = diff.Equals(b2DD);
@@ -261,9 +261,9 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
 
             var err = xdd.Subtract(rr).ToDoubleValue();
 
-            Console.WriteLine("DD Recip = " + xdd
-                              + " DD delta= " + err
-                              + " double recip delta= " + (x - 1.0/(1.0/x)));
+            //System.Console.WriteLine("DD Recip = " + xdd
+            //                  +" DD delta= " + err
+            //                  + " double recip delta= " + (x - 1.0/(1.0/x)));
 
             Assert.IsTrue(err <= errBound);
         }
@@ -272,7 +272,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         {
             var xdd = new DD(x);
             var pow = xdd.Pow(exp);
-            Console.WriteLine("Pow(" + x + ", " + exp + ") = " + pow);
+            //System.Console.WriteLine("Pow(" + x + ", " + exp + ") = " + pow);
             var pow2 = SlowPow(xdd, exp);
 
             double err = pow.Subtract(pow2).ToDoubleValue();
