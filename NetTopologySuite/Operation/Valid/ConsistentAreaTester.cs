@@ -56,7 +56,7 @@ namespace NetTopologySuite.Operation.Valid
                 * To fully check validity, it is necessary to
                 * compute ALL intersections, including self-intersections within a single edge.
                 */
-                SegmentIntersector intersector = geomGraph.ComputeSelfNodes(li, true);
+                SegmentIntersector intersector = geomGraph.ComputeSelfNodes(li, true, true);
                 if (intersector.HasProperIntersection)
                 {
                     invalidPoint = intersector.ProperIntersectionPoint;

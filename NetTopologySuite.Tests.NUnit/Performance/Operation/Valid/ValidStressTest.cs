@@ -27,7 +27,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
         [Test]
         public void runComb()
         {
-            const int size = 100;
+            const int size = 400;
             var env = new Envelope(0, 100, 0, 100);
             var geom = Comb.CrossedComb(env, size, geomFact);
             //System.Console.WriteLine(geom);
@@ -35,12 +35,22 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
         }
 
         [Test]
-        public void runStarCross()
+        public void runStarCrossRing()
         {
             const int size = 1000;
             var env = new Envelope(0, 100, 0, 100);
             var poly = StarCross.Star(env, size, geomFact);
             var geom = poly.Boundary;
+            //System.out.println(geom);
+            checkValid("StarCross " + geom.GeometryType + "   (size = " + size + ")", geom);
+        }
+
+        [Test]
+        public void runStarCrossPoly()
+        {
+            const int size = 1000;
+            var env = new Envelope(0, 100, 0, 100);
+            var geom = StarCross.Star(env, size, geomFact);
             //System.out.println(geom);
             checkValid("StarCross " + geom.GeometryType + "   (size = " + size + ")", geom);
         }

@@ -205,7 +205,7 @@ namespace NetTopologySuite.Operation.Valid
             CheckTooFewPoints(graph);
             if (validErr != null) return;
             LineIntersector li = new RobustLineIntersector();
-            graph.ComputeSelfNodes(li, true);
+            graph.ComputeSelfNodes(li, true, true);
             CheckNoSelfIntersectingRings(graph);
         }
 

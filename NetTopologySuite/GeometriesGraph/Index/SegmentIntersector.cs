@@ -44,7 +44,9 @@ namespace NetTopologySuite.GeometriesGraph.Index
         public int NumTests;
 
         private IList<Node>[] _bdyNodes;
-        
+        private bool _isDone = false;
+        private bool _isDoneWhenProperInt = false;
+
         /// <summary>
         /// 
         /// </summary>
@@ -68,6 +70,16 @@ namespace NetTopologySuite.GeometriesGraph.Index
             _bdyNodes = new IList<Node>[2];
             _bdyNodes[0] = bdyNodes0;
             _bdyNodes[1] = bdyNodes1;
+        }
+
+        public bool IsDoneIfProperInt
+        {
+            set { _isDoneWhenProperInt = value; }
+        }
+
+        public bool IsDone
+        {
+            get { return _isDone; }
         }
 
         /// <returns> 
@@ -198,6 +210,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
                     {
                         _properIntersectionPoint = (Coordinate) _li.GetIntersection(0).Clone();
                         _hasProper = true;
+                        if (_isDoneWhenProperInt) _isDone = true;
                         if (!IsBoundaryPoint(_li, _bdyNodes))
                             _hasProperInterior = true;                        
                     }                    

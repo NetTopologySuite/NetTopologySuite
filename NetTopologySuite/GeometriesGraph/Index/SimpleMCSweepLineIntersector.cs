@@ -123,6 +123,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
                     // Console.WriteLine("Processing event " + i);
                     ProcessOverlaps(i, ev.DeleteEventIndex, ev, si);
                 }
+                if (si.IsDone)
+                    break;
             }
         }
 

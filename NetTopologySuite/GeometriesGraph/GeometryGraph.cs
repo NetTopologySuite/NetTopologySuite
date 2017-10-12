@@ -361,16 +361,35 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="li">The <c>LineIntersector</c> to use.</param>
         /// <param name="computeRingSelfNodes">If <c>false</c>, intersection checks are optimized to not test rings for self-intersection.</param>
-        /// <returns>The SegmentIntersector used, containing information about the intersections found.</returns>
+        /// <returns>The computed SegmentIntersector, containing information about the intersections found.</returns>
         public SegmentIntersector ComputeSelfNodes(LineIntersector li, bool computeRingSelfNodes)
         {
+            return ComputeSelfNodes(li, computeRingSelfNodes, false);
+        }
+
+/**
+ * Compute self-nodes, taking advantage of the Geometry type to
+ * minimize the number of intersection tests.  (E.g. rings are
+ * not tested for self-intersection, since they are assumed to be valid).
+ * 
+ * @param li the LineIntersector to use
+ * @param computeRingSelfNodes if <false>, intersection checks are optimized to not test rings for self-intersection
+ * @param isDoneIfProperInt short-circuit the intersection computation if a proper intersection is found
+ * @return the computed SegmentIntersector containing information about the intersections found
+ */
+        public SegmentIntersector ComputeSelfNodes(LineIntersector li, bool computeRingSelfNodes, bool isDoneIfProperInt)
+        {
             SegmentIntersector si = new SegmentIntersector(li, true, false);
+            si.IsDoneIfProperInt = isDoneIfProperInt;
             EdgeSetIntersector esi = CreateEdgeSetIntersector();
-            // optimized test for Polygons and Rings
-            if (!computeRingSelfNodes &&
-               (_parentGeom is ILinearRing || _parentGeom is IPolygon || _parentGeom is IMultiPolygon))
-                esi.ComputeIntersections(Edges, si, false);
-            else esi.ComputeIntersections(Edges, si, true);
+            // optimize intersection search for valid Polygons and LinearRings
+            var isRings = _parentGeom is ILinearRing
+                          || _parentGeom is IPolygon
+                          || _parentGeom is IMultiPolygon;
+            var computeAllSegments = computeRingSelfNodes || !isRings;
+            esi.ComputeIntersections(Edges, si, computeAllSegments);
+            
+            //System.out.println("SegmentIntersector # tests = " + si.numTests);
             AddSelfIntersectionNodes(_argIndex);
             return si;
         }
