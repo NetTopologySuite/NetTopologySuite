@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 
 #if !HAS_SYSTEM_APPLICATIONEXCEPTION
 using ApplicationException = System.Exception;
@@ -14,6 +15,8 @@ namespace NetTopologySuite.Noding
     /// </summary>
     public class NodingValidator
     {
+        private static readonly IGeometryFactory Factory = new GeometryFactory();
+
         private readonly LineIntersector _li = new RobustLineIntersector();
         private readonly IList<ISegmentString> _segStrings;
         
@@ -58,7 +61,7 @@ namespace NetTopologySuite.Noding
         {
             if (p0.Equals(p2))
                 throw new ApplicationException(String.Format(
-                    "found non-noded collapse at: {0}, {1} {2}", p0, p1, p2));
+                    "found non-noded collapse at: {0}", Factory.CreateLineString(new [] { p0, p1, p2 })));
         }
 
         /// <summary>
