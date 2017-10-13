@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A11130E8-4942-432A-97B7-ADEEFB34A977}"
 	ProjectSection(SolutionItems) = preProject
@@ -88,8 +88,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.IO.PostGis", "NetTopologySuite.IO\NetTopologySuite.IO.PostGis\NetTopologySuite.IO.PostGis.csproj", "{7505264F-7E3E-4F8D-A9D5-885B4F313C26}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.IO.SpatiaLite", "NetTopologySuite.IO\NetTopologySuite.IO.SpatiaLite\NetTopologySuite.IO.SpatiaLite.csproj", "{AD33B357-E789-4102-8DC3-F18EEE507583}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Converter.Npgsql", "NetTopologySuite.Converter\NetTopologySuite.Converter.Npgsql\NetTopologySuite.Converter.Npgsql.csproj", "{BC5C82DD-CFC4-4D3E-B416-09A29A8F0D25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -261,12 +259,6 @@ Global
 		{AD33B357-E789-4102-8DC3-F18EEE507583}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AD33B357-E789-4102-8DC3-F18EEE507583}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
 		{AD33B357-E789-4102-8DC3-F18EEE507583}.ReleaseLinux|Any CPU.Build.0 = Release|Any CPU
-		{BC5C82DD-CFC4-4D3E-B416-09A29A8F0D25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BC5C82DD-CFC4-4D3E-B416-09A29A8F0D25}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BC5C82DD-CFC4-4D3E-B416-09A29A8F0D25}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BC5C82DD-CFC4-4D3E-B416-09A29A8F0D25}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BC5C82DD-CFC4-4D3E-B416-09A29A8F0D25}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
-		{BC5C82DD-CFC4-4D3E-B416-09A29A8F0D25}.ReleaseLinux|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -297,9 +289,5 @@ Global
 		{75BDB70A-AEB9-4592-9B5E-677D3D346A54} = {54E50C1C-BB10-4DDC-86BD-CA29FB91A89E}
 		{7505264F-7E3E-4F8D-A9D5-885B4F313C26} = {54E50C1C-BB10-4DDC-86BD-CA29FB91A89E}
 		{AD33B357-E789-4102-8DC3-F18EEE507583} = {54E50C1C-BB10-4DDC-86BD-CA29FB91A89E}
-		{BC5C82DD-CFC4-4D3E-B416-09A29A8F0D25} = {7C3204B9-50E4-4322-B0DF-DCB241875FF4}
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {C3C02F9B-15C4-47D1-82BC-7080D400E060}
 	EndGlobalSection
 EndGlobal

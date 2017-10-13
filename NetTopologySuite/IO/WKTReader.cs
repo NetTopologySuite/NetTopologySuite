@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using GeoAPI.Geometries;
 using GeoAPI.IO;
@@ -38,8 +37,6 @@ namespace NetTopologySuite.IO
     /// </summary>
     public class WKTReader : ITextGeometryReader
     {
-        private delegate void ReadCoordinateHandler(IEnumerator<Token> tokens, IPrecisionModel pm, CoordinateBuffer coordBuffer);
-
         private ICoordinateSequenceFactory _coordinateSequencefactory;
         private IPrecisionModel _precisionModel;
 
@@ -63,11 +60,6 @@ namespace NetTopologySuite.IO
             _precisionModel = geometryFactory.PrecisionModel;
             DefaultSRID = geometryFactory.SRID;
         }
-
-        /// <summary>
-        /// Gets or sets a value indicating if the old approach of reading coordinates should be used or not.
-        /// </summary>
-        public bool UseOldJts { get; set; }
 
         /// <summary>
         /// Gets or sets the factory to create geometries
@@ -193,7 +185,6 @@ namespace NetTopologySuite.IO
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
                 return new Coordinate[]{};
-
             var coordinates = new List<Coordinate>();
             coordinates.Add(GetPreciseCoordinate(tokens, skipExtraParenthesis, ref hasZ));
             nextToken = GetNextCloserOrComma(tokens);
@@ -204,37 +195,6 @@ namespace NetTopologySuite.IO
             }
             return coordinates.ToArray();
         }
-        /// <summary>
-        /// Returns the next array of <c>Coordinate</c>s in the stream.
-        /// </summary>
-        /// <param name="tokens">
-        /// Tokenizer over a stream of text in Well-known Text
-        /// format. The next element returned by the stream should be "(" (the
-        /// beginning of "(x1 y1, x2 y2, ..., xn yn)") or "EMPTY".
-        /// </param>
-        /// <param name="readCoordinate">A delegate to the coordinate reading function</param>
-        /// <param name="precisionModel">An object to enforce a specific precision model to x- and y-ordinates</param>
-        /// <returns>
-        /// The next <c>CoordinateBuffer</c> in the  stream, or an empty array if "EMPTY" is the next element returned by
-        /// the stream.
-        /// </returns>
-        private static CoordinateBuffer GetCoordinates(IEnumerator<Token> tokens, 
-            ReadCoordinateHandler readCoordinate, IPrecisionModel precisionModel)
-        {
-            var res = new CoordinateBuffer();
-
-            var nextToken = GetNextEmptyOrOpener(tokens);
-            if (nextToken.Equals("EMPTY")) return res;
-
-            readCoordinate(tokens, precisionModel, res);
-            nextToken = GetNextCloserOrComma(tokens);
-            while (nextToken.Equals(","))
-            {
-                readCoordinate(tokens, precisionModel, res);
-                nextToken = GetNextCloserOrComma(tokens);
-            }
-            return res;
-        }
 
         /// <summary>
         /// 
@@ -242,7 +202,6 @@ namespace NetTopologySuite.IO
         /// <param name="tokens"></param>
         /// <param name="skipExtraParenthesis"></param>
         /// <returns></returns>
-        [Obsolete]
         private Coordinate GetPreciseCoordinate(IEnumerator<Token> tokens, Boolean skipExtraParenthesis, ref Boolean hasZ)
         {
             var coord = new Coordinate();
@@ -428,66 +387,6 @@ namespace NetTopologySuite.IO
             //return null;
         }
 
-        private Action<IEnumerator<Token>, bool, IPrecisionModel, CoordinateBuffer> ReadCoordinateFunction;
-
-        private static void ReadCoordinateOld(IEnumerator<Token> tokens, 
-            IPrecisionModel precisionModel, CoordinateBuffer buffer)
-        {
-            var x = precisionModel.MakePrecise(GetNextNumber(tokens));
-            var y = precisionModel.MakePrecise(GetNextNumber(tokens));
-            var z = IsNumberNext(tokens) ? GetNextNumber(tokens) : Coordinate.NullOrdinate;
-            buffer.AddCoordinate(x, y, z);
-        }
-
-        private static void ReadCoordinateOldSkipExtraParens(IEnumerator<Token> tokens,
-            IPrecisionModel precisionModel, CoordinateBuffer buffer)
-        {
-            //var coord = new Coordinate();
-            var extraParenthesisFound = IsStringValueNext(tokens, "(");
-            if (extraParenthesisFound) tokens.MoveNext();
-
-            var x = precisionModel.MakePrecise(GetNextNumber(tokens));
-            var y = precisionModel.MakePrecise(GetNextNumber(tokens));
-            var z = IsNumberNext(tokens) ? GetNextNumber(tokens) : Coordinate.NullOrdinate;
-            buffer.AddCoordinate(x, y, z);
-
-            if (extraParenthesisFound && IsStringValueNext(tokens, ")"))
-                tokens.MoveNext();
-        }
-
-        private static void Read2DCoordinate(IEnumerator<Token> tokens,
-            IPrecisionModel precisionModel, CoordinateBuffer buffer)
-        {
-            var x = precisionModel.MakePrecise(GetNextNumber(tokens));
-            var y = precisionModel.MakePrecise(GetNextNumber(tokens));
-            buffer.AddCoordinate(x, y);
-        }
-        private static void Read2DMCoordinate(IEnumerator<Token> tokens,
-            IPrecisionModel precisionModel, CoordinateBuffer buffer)
-        {
-            var x = precisionModel.MakePrecise(GetNextNumber(tokens));
-            var y = precisionModel.MakePrecise(GetNextNumber(tokens));
-            var m = GetNextNumber(tokens);
-            buffer.AddCoordinate(x, y, m: m);
-        }
-        private static void Read3DCoordinate(IEnumerator<Token> tokens,
-            IPrecisionModel precisionModel, CoordinateBuffer buffer)
-        {
-            var x = precisionModel.MakePrecise(GetNextNumber(tokens));
-            var y = precisionModel.MakePrecise(GetNextNumber(tokens));
-            var z = GetNextNumber(tokens);
-            buffer.AddCoordinate(x, y, z);
-        }
-        private static void Read3DMCoordinate(IEnumerator<Token> tokens,
-            IPrecisionModel precisionModel, CoordinateBuffer buffer)
-        {
-            var x = precisionModel.MakePrecise(GetNextNumber(tokens));
-            var y = precisionModel.MakePrecise(GetNextNumber(tokens));
-            var z = GetNextNumber(tokens);
-            var m = GetNextNumber(tokens);
-            buffer.AddCoordinate(x, y, z, m);
-        }
-
         /// <summary>
         /// Creates a <c>Geometry</c> using the next token in the stream.
         /// </summary>
@@ -526,27 +425,42 @@ namespace NetTopologySuite.IO
 
             /*Test of Z, M or ZM suffix*/
             var suffix = tokens.Current;
-            var readCoordinate = GetReadCoordinateFunction(suffix?.StringValue);
+
+            if (suffix is WordToken)
+            {
+                if (suffix == "Z")
+                {
+                    tokens.MoveNext();
+                }
+                else if (suffix == "ZM")
+                {
+                    tokens.MoveNext();                    
+                }
+                else if (suffix == "M")
+                {
+                    tokens.MoveNext();                    
+                }
+            }
 
             var factory = GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(_precisionModel, srid,
                 _coordinateSequencefactory);
 
             if (type.Equals("POINT"))
-                returned = ReadPointText(tokens, readCoordinate, factory);
+                returned = ReadPointText(tokens, factory);
             else if (type.Equals("LINESTRING"))
-                returned = ReadLineStringText(tokens, readCoordinate, factory);
+                returned = ReadLineStringText(tokens, factory);
             else if (type.Equals("LINEARRING"))
-                returned = ReadLinearRingText(tokens, readCoordinate, factory);
+                returned = ReadLinearRingText(tokens, factory);
             else if (type.Equals("POLYGON"))
-                returned = ReadPolygonText(tokens, readCoordinate, factory);
+                returned = ReadPolygonText(tokens, factory);
             else if (type.Equals("MULTIPOINT"))
-                returned = ReadMultiPointText(tokens, readCoordinate, factory);
+                returned = ReadMultiPointText(tokens, factory);
             else if (type.Equals("MULTILINESTRING"))
-                returned = ReadMultiLineStringText(tokens, readCoordinate, factory);
+                returned = ReadMultiLineStringText(tokens, factory);
             else if (type.Equals("MULTIPOLYGON"))
-                returned = ReadMultiPolygonText(tokens, readCoordinate, factory);
+                returned = ReadMultiPolygonText(tokens, factory);
             else if (type.Equals("GEOMETRYCOLLECTION"))
-                returned = ReadGeometryCollectionText(tokens, readCoordinate, factory);
+                returned = ReadGeometryCollectionText(tokens, factory);
             else throw new GeoAPI.IO.ParseException("Unknown type: " + type);
 
             if (returned == null)
@@ -555,43 +469,26 @@ namespace NetTopologySuite.IO
             return returned;
         }
 
-        private ReadCoordinateHandler GetReadCoordinateFunction(string dimInfo)
-        {
-            if (UseOldJts)
-                return ReadCoordinateOld;
-
-            if (string.IsNullOrEmpty(dimInfo))
-                return Read2DCoordinate;
-
-            if (dimInfo == "Z")
-                return Read3DCoordinate;
-
-            if (dimInfo == "M")
-                return Read3DCoordinate;
-
-            if (dimInfo == "ZM")
-                return Read3DMCoordinate;
-
-            return ReadCoordinateOld;
-        }
-
         /// <summary>
         /// Creates a <c>Point</c> using the next token in the stream.
         /// </summary>
         /// <param name="tokens">
-        ///     Tokenizer over a stream of text in Well-known Text
-        ///     format. The next tokens must form a &lt;Point Text.
+        ///   Tokenizer over a stream of text in Well-known Text
+        ///   format. The next tokens must form a &lt;Point Text.
         /// </param>
-        /// <param name="readCoordinate"></param>
         /// <param name="factory"> </param>
         /// <returns>A <c>Point</c> specified by the next token in
         /// the stream.</returns>
-        private IPoint ReadPointText(IEnumerator<Token> tokens, ReadCoordinateHandler readCoordinate, IGeometryFactory factory)
+        private IPoint ReadPointText(IEnumerator<Token> tokens, IGeometryFactory factory) 
         {
-            var cb = GetCoordinates(tokens, readCoordinate, factory.PrecisionModel);
-            Debug.Assert(cb.Count < 2);
-
-            return factory.CreatePoint(cb.ToSequence(factory.CoordinateSequenceFactory));
+            var nextToken = GetNextEmptyOrOpener(tokens);
+            if (nextToken.Equals("EMPTY")) 
+                return factory.CreatePoint((Coordinate) null);
+            var hasZ = false;
+            var coord = GetPreciseCoordinate(tokens, false, ref hasZ);
+            var point = factory.CreatePoint(ToSequence(hasZ, coord));
+            /*var closer = */GetNextCloser(tokens);
+            return point;
         }
 
         private ICoordinateSequence ToSequence(bool hasZ, params Coordinate[] coords)
@@ -615,19 +512,18 @@ namespace NetTopologySuite.IO
         /// Creates a <c>LineString</c> using the next token in the stream.
         /// </summary>
         /// <param name="tokens">
-        ///     Tokenizer over a stream of text in Well-known Text
-        ///     format. The next tokens must form a &lt;LineString Text.
+        ///   Tokenizer over a stream of text in Well-known Text
+        ///   format. The next tokens must form a &lt;LineString Text.
         /// </param>
-        /// <param name="readCoordinate">A delegate to the coordinate reading method</param>
-        /// <param name="factory">The factory to create the <c>LINESTRING</c></param>
+        /// <param name="factory"> </param>
         /// <returns>
         /// A <c>LineString</c> specified by the next
         /// token in the stream.</returns>
-        private ILineString ReadLineStringText(IEnumerator<Token> tokens, 
-            ReadCoordinateHandler readCoordinate, IGeometryFactory factory)
+        private ILineString ReadLineStringText(IEnumerator<Token> tokens, IGeometryFactory factory)
         {
-            var cb = GetCoordinates(tokens, readCoordinate, factory.PrecisionModel);
-            return factory.CreateLineString(cb.ToSequence(factory.CoordinateSequenceFactory));
+            var hasZ = false;
+            var coords = GetCoordinates(tokens, false, ref hasZ);
+            return factory.CreateLineString(ToSequence(hasZ, coords));
         }
 
         /// <summary>
@@ -637,15 +533,14 @@ namespace NetTopologySuite.IO
         ///   Tokenizer over a stream of text in Well-known Text
         ///   format. The next tokens must form a &lt;LineString Text.
         /// </param>
-        /// <param name="readCoordinate">A delegate to the coordinate reading method</param>
-        /// <param name="factory">The factory to create the <c>LINESTRING</c></param>
+        /// <param name="factory"> </param>
         /// <returns>A <c>LinearRing</c> specified by the next
         /// token in the stream.</returns>
-        private ILinearRing ReadLinearRingText(IEnumerator<Token> tokens,
-            ReadCoordinateHandler readCoordinate, IGeometryFactory factory)
+        private ILinearRing ReadLinearRingText(IEnumerator<Token> tokens, IGeometryFactory factory)
         {
-            var cb = GetCoordinates(tokens, readCoordinate, factory.PrecisionModel);
-            return factory.CreateLinearRing(cb.ToSequence(factory.CoordinateSequenceFactory));
+            var hasZ = false;
+            var coords = GetCoordinates(tokens, false, ref hasZ);
+            return factory.CreateLinearRing(ToSequence(hasZ, coords));
         }
 
         /// <summary>
@@ -659,30 +554,11 @@ namespace NetTopologySuite.IO
         /// <returns>
         /// A <c>MultiPoint</c> specified by the next
         /// token in the stream.</returns>
-        private IMultiPoint ReadMultiPointText(IEnumerator<Token> tokens, ReadCoordinateHandler readCoordinate, IGeometryFactory factory) 
+        private IMultiPoint ReadMultiPointText(IEnumerator<Token> tokens, IGeometryFactory factory) 
         {
-            var nextToken = GetNextEmptyOrOpener(tokens);
-            ICoordinateSequence seq;
-            if (nextToken.Equals("EMPTY"))
-            {
-                seq = factory.CoordinateSequenceFactory.Create(0, HandleOrdinates);
-                return factory.CreateMultiPoint(seq);
-            }
-
-            var cb = new CoordinateBuffer();
-            if (readCoordinate == ReadCoordinateOld)
-                readCoordinate = ReadCoordinateOldSkipExtraParens;
-
-            readCoordinate(tokens, factory.PrecisionModel, cb);
-            nextToken = GetNextCloserOrComma(tokens);
-            while (nextToken.Equals(","))
-            {
-                readCoordinate(tokens, factory.PrecisionModel, cb);
-                nextToken = GetNextCloserOrComma(tokens);
-            }
-
-            seq = cb.ToSequence(factory.CoordinateSequenceFactory);
-            return factory.CreateMultiPoint(ToPoints(seq, factory));
+            var hasZ = false;
+            var coords = GetCoordinates(tokens, true, ref hasZ);
+            return factory.CreateMultiPoint(ToPoints(ToSequence(hasZ, coords), factory));
         }
 
         /// <summary> 
@@ -712,31 +588,27 @@ namespace NetTopologySuite.IO
         /// Creates a <c>Polygon</c> using the next token in the stream.
         /// </summary>
         /// <param name="tokens">
-        ///     Tokenizer over a stream of text in Well-known Text
-        ///     format. The next tokens must form a Polygon Text.
+        ///   Tokenizer over a stream of text in Well-known Text
+        ///   format. The next tokens must form a Polygon Text.
         /// </param>
-        /// <param name="readCoordinate"></param>
         /// <param name="factory"> </param>
         /// <returns>
         /// A <c>Polygon</c> specified by the next token
         /// in the stream.        
         /// </returns>
-        private IPolygon ReadPolygonText(IEnumerator<Token> tokens, ReadCoordinateHandler readCoordinate, IGeometryFactory factory) 
+        private IPolygon ReadPolygonText(IEnumerator<Token> tokens, IGeometryFactory factory) 
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
-            if (nextToken.Equals("EMPTY"))
-            {
-                var exteriorRing =
-                    factory.CreateLinearRing(factory.CoordinateSequenceFactory.Create(0, HandleOrdinates));
-                return factory.CreatePolygon(exteriorRing, new ILinearRing[] { });
-            }
+            if (nextToken.Equals("EMPTY")) 
+                return factory.CreatePolygon(
+                    factory.CreateLinearRing(new Coordinate[] { } ), new ILinearRing[] { } );
 
             var holes = new List<ILinearRing>();
-            var shell = ReadLinearRingText(tokens, readCoordinate, factory);
+            var shell = ReadLinearRingText(tokens, factory);
             nextToken = GetNextCloserOrComma(tokens);
             while (nextToken.Equals(",")) 
             {
-                ILinearRing hole = ReadLinearRingText(tokens, readCoordinate, factory);
+                ILinearRing hole = ReadLinearRingText(tokens, factory);
                 holes.Add(hole);
                 nextToken = GetNextCloserOrComma(tokens);
             }
@@ -747,27 +619,26 @@ namespace NetTopologySuite.IO
         /// Creates a <c>MultiLineString</c> using the next token in the stream.
         /// </summary>
         /// <param name="tokens">
-        ///     Tokenizer over a stream of text in Well-known Text
-        ///     format. The next tokens must form a MultiLineString Text.
+        ///   Tokenizer over a stream of text in Well-known Text
+        ///   format. The next tokens must form a MultiLineString Text.
         /// </param>
-        /// <param name="readCoordinate"></param>
         /// <param name="factory"> </param>
         /// <returns>
         /// A <c>MultiLineString</c> specified by the
         /// next token in the stream.</returns>
-        private IMultiLineString ReadMultiLineStringText(IEnumerator<Token> tokens, ReadCoordinateHandler readCoordinate, IGeometryFactory factory) 
+        private IMultiLineString ReadMultiLineStringText(IEnumerator<Token> tokens, IGeometryFactory factory) 
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
                 return factory.CreateMultiLineString( new ILineString[] { } );
 
             var lineStrings = new List<ILineString>();
-            var lineString = ReadLineStringText(tokens, readCoordinate, factory);
+            var lineString = ReadLineStringText(tokens, factory);
             lineStrings.Add(lineString);
             nextToken = GetNextCloserOrComma(tokens);
             while (nextToken.Equals(",")) {
             
-                lineString = ReadLineStringText(tokens, readCoordinate, factory);
+                lineString = ReadLineStringText(tokens, factory);
                 lineStrings.Add(lineString);
                 nextToken = GetNextCloserOrComma(tokens);
             }            
@@ -778,27 +649,26 @@ namespace NetTopologySuite.IO
         /// Creates a <c>MultiPolygon</c> using the next token in the stream.
         /// </summary>
         /// <param name="tokens">Tokenizer over a stream of text in Well-known Text
-        ///     format. The next tokens must form a MultiPolygon Text.
+        ///   format. The next tokens must form a MultiPolygon Text.
         /// </param>
-        /// <param name="readCoordinate"></param>
         /// <param name="factory"> </param>
         /// <returns>
         /// A <c>MultiPolygon</c> specified by the next
         /// token in the stream, or if if the coordinates used to create the
         /// <c>Polygon</c> shells and holes do not form closed linestrings.</returns>
-        private IMultiPolygon ReadMultiPolygonText(IEnumerator<Token> tokens, ReadCoordinateHandler readCoordinate, IGeometryFactory factory) 
+        private IMultiPolygon ReadMultiPolygonText(IEnumerator<Token> tokens, IGeometryFactory factory) 
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
                 return factory.CreateMultiPolygon(new IPolygon[]{});
 
             var polygons = new List<IPolygon>();
-            var polygon = ReadPolygonText(tokens, readCoordinate, factory);
+            var polygon = ReadPolygonText(tokens, factory);
             polygons.Add(polygon);
             nextToken = GetNextCloserOrComma(tokens);
             while (nextToken.Equals(",")) 
             {
-                polygon = ReadPolygonText(tokens, readCoordinate, factory);
+                polygon = ReadPolygonText(tokens, factory);
                 polygons.Add(polygon);
                 nextToken = GetNextCloserOrComma(tokens);
             }            
@@ -810,15 +680,14 @@ namespace NetTopologySuite.IO
         /// stream.
         /// </summary>
         /// <param name="tokens">
-        ///     Tokenizer over a stream of text in Well-known Text
-        ///     format. The next tokens must form a &lt;GeometryCollection Text.
+        ///   Tokenizer over a stream of text in Well-known Text
+        ///   format. The next tokens must form a &lt;GeometryCollection Text.
         /// </param>
-        /// <param name="readCoordinate"></param>
         /// <param name="factory"> </param>
         /// <returns>
         /// A <c>GeometryCollection</c> specified by the
         /// next token in the stream.</returns>
-        private IGeometryCollection ReadGeometryCollectionText(IEnumerator<Token> tokens, ReadCoordinateHandler readCoordinate, IGeometryFactory factory) 
+        private IGeometryCollection ReadGeometryCollectionText(IEnumerator<Token> tokens, IGeometryFactory factory) 
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
@@ -863,11 +732,5 @@ namespace NetTopologySuite.IO
 
 
         #endregion
-
-
-        public abstract class ReadCoordinateBase
-        {
-            
-        }
     }    
 }
