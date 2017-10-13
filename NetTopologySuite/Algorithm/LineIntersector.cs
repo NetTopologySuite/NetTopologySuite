@@ -50,17 +50,17 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// Indicates that line segments do not intersect
         /// </summary>
-        public readonly static int NoIntersection = 0;
+        public static readonly int NoIntersection = 0;
   
         /// <summary>
         /// Indicates that line segments intersect in a single point
         /// </summary>
-        public readonly static int PointIntersection = 1;
+        public static readonly int PointIntersection = 1;
   
         /// <summary>
         /// Indicates that line segments intersect in a line segment
         /// </summary>
-        public readonly static int CollinearIntersection = 2;
+        public static readonly int CollinearIntersection = 2;
 
         /// <summary> 
         /// Computes the "edge distance" of an intersection point p along a segment.

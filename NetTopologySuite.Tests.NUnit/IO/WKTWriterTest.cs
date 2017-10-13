@@ -183,7 +183,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             IGeometryFactory geometryFactory = new GeometryFactory();
             IPoint point = geometryFactory.CreatePoint(new Coordinate(1, 1, 1));
             String wkt = _writer3D.Write(point);
-            Assert.AreEqual("POINT Z(1 1 1)", wkt);
+            Assert.AreEqual("POINT (1 1 1)", wkt);
         }
         [TestAttribute]
         public void testWrite3D_withNaN()
@@ -193,7 +193,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                                  new Coordinate(2, 2, 2) };
             ILineString line = geometryFactory.CreateLineString(coordinates);
             String wkt = _writer3D.Write(line);
-            Assert.AreEqual("LINESTRING Z(1 1, 2 2 2)", wkt);
+            Assert.AreEqual("LINESTRING (1 1, 2 2 2)", wkt);
         }
     }
 }
