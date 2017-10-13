@@ -155,7 +155,7 @@ namespace NetTopologySuite.IO
             return buf.ToString();
         }
 
-        private readonly int _outputDimension = 2;
+        private int _outputDimension;
 
         private const string MaxPrecisionFormat = "{0:R}";
         private NumberFormatInfo _formatter;
@@ -165,14 +165,38 @@ namespace NetTopologySuite.IO
         private bool _useMaxPrecision;
         private int _coordsPerLine = -1;
         private String _indentTabStr = "  ";
+        private bool _emitM;
+        private bool _emitZ;
 
-        public WKTWriter() { }
+        /// <summary>
+        /// Creates an instance of this class
+        /// </summary>
+        public WKTWriter() :this(2) { }
 
+        /// <summary>
+        /// Creates an instance of this class
+        /// </summary>
+        /// <param name="outputDimension">The number of ordinates that are to be written</param>
         public WKTWriter(int outputDimension)
         {
-            if (outputDimension < 2 || outputDimension > 3)
-                throw new ArgumentException("Output dimension must be in the range [2, 3]", "outputDimension");
+            if (outputDimension < 2 || outputDimension > 4)
+                throw new ArgumentException("Output dimension must be in the range [2, 4]", "outputDimension");
             _outputDimension = outputDimension;
+            AdjustEmitZM();
+        }
+
+        /// <summary>
+        /// Creates an instance of this class
+        /// </summary>
+        /// <param name="emitZ">Flag to indicate if z-ordinates should be emitted</param>
+        /// <param name="emitM">Flag to indicate if m-ordinates should be emitted</param>
+        /// <param name="emitSRID">Flag to indicate if the spatial reference id should be emitted</param>
+        public WKTWriter(bool emitZ = false, bool emitM = false, bool emitSRID = false)
+        {
+            _emitZ = emitZ;
+            _emitM = emitM;
+            EmitSRID = emitSRID;
+            _outputDimension = GetNumDimensions();
         }
 
         ///<summary>
@@ -207,11 +231,42 @@ namespace NetTopologySuite.IO
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="IGeometry.SRID"/> 
+        /// should be written in front of the actual geometry definition.
+        /// (<code>SRID=&lt;Some spatial reference id&gt;:WKT</code>)
+        /// </summary>
         public bool EmitSRID { get; set; }
 
-        public bool EmitZ{ get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating that the z-ordinate value should be written.
+        /// </summary>
+        public bool EmitZ
+        {
+            get { return _emitZ; }
+            set
+            {
+                _emitZ = value;
+                _outputDimension = GetNumDimensions();
+            }
+        }
 
-        public bool EmitM{ get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating that the measure-ordinate value should be written.
+        /// </summary>
+        /// <remarks>If the geometries coordinate sequence has no means of storing the
+        /// measure ordinate value, the z-ordinate value is written if <see cref="EmitZ"/> 
+        /// is set to <value>false</value>
+        /// </remarks>
+        public bool EmitM
+        {
+            get { return _emitM; }
+            set
+            {
+                _emitM = value;
+                _outputDimension = GetNumDimensions();
+            }
+        }
 
         /// <summary>
         /// Converts a <c>Geometry</c> to its Well-known Text representation.
@@ -313,10 +368,14 @@ namespace NetTopologySuite.IO
             if (geometry == null)
                 throw new ArgumentNullException("geometry");
 
+            // Write the srid information if requested
+            if (EmitSRID && geometry.SRID > 0)
+                writer.Write("SRID={0}:", geometry.SRID);
+
             _useFormating = useFormatting;
             // Enable maxPrecision (via {0:R} formatter) in WriteNumber method
             IPrecisionModel precisionModel = geometry.Factory.PrecisionModel;
-            _useMaxPrecision = precisionModel.PrecisionModelType == PrecisionModels.Floating;
+            _useMaxPrecision = precisionModel.PrecisionModelType != PrecisionModels.Fixed;
 
             _formatter = CreateFormatter(geometry.PrecisionModel);           
             _format = "0." + StringOfChar('#', _formatter.NumberDecimalDigits);
@@ -340,7 +399,7 @@ namespace NetTopologySuite.IO
             if (geometry is IPoint) 
             {
                 var point = (IPoint)geometry;
-                AppendPointTaggedText(point.Coordinate, level, writer, point.PrecisionModel);
+                AppendPointTaggedText(point.CoordinateSequence, level, writer /*, point.PrecisionModel*/);
             }
             else if (geometry is ILinearRing)
                 AppendLinearRingTaggedText((ILinearRing) geometry, level, writer);            
@@ -366,14 +425,52 @@ namespace NetTopologySuite.IO
         /// <param name="coordinate">The <c>Coordinate</c> to process.</param>
         /// <param name="level"></param>
         /// <param name="writer">The output writer to append to.</param>
-        /// <param name="precisionModel"> 
-        /// The <c>PrecisionModel</c> to use to convert
-        /// from a precise coordinate to an external coordinate.
-        /// </param>
-        private void AppendPointTaggedText(Coordinate coordinate, int level, TextWriter writer, IPrecisionModel precisionModel)
+        ///// <param name="precisionModel"> 
+        ///// The <c>PrecisionModel</c> to use to convert
+        ///// from a precise coordinate to an external coordinate.
+        ///// </param>
+        private void AppendPointTaggedText(ICoordinateSequence coordinate, int level, TextWriter writer/*, IPrecisionModel precisionModel*/)
         {
             writer.Write("POINT ");
-            AppendPointText(coordinate, level, writer, precisionModel);
+            if (IsEmpty(coordinate))
+                writer.Write("EMPTY");
+            else
+            {
+                bool emitZ, emitM;
+                AppendDimensionText(coordinate, writer, out emitZ, out emitM);
+                AppendPointText(coordinate, level, emitZ, emitM, writer);
+            }
+        }
+
+        private static bool IsEmpty(ICoordinateSequence sequence)
+        {
+            return sequence == null || sequence.Count == 0;
+        }
+
+        private void AppendDimensionText(ICoordinateSequence sequence, TextWriter writer, out bool emitZ, out bool emitM)
+        {
+            emitZ = emitM = false;
+            if (EmitZ && (sequence.Ordinates & Ordinates.Z) == Ordinates.Z)
+            {
+                if (!double.IsNaN(sequence.GetOrdinate(0, Ordinate.Z))) {
+                    writer.Write("Z");
+                    emitZ = true;
+                }
+            }
+            else if (EmitM && (sequence.Ordinates & Ordinates.Z) == Ordinates.Z)
+            {
+                if (!double.IsNaN(sequence.GetOrdinate(0, Ordinate.Z))) {
+                    writer.Write("M");
+                    emitZ = true;
+                }
+            }
+            if (EmitM && (sequence.Ordinates & Ordinates.M) == Ordinates.M)
+            {
+                if (!double.IsNaN(sequence.GetOrdinate(0, Ordinate.M))) {
+                    writer.Write("M");
+                    emitM = true;
+                }
+            }
         }
 
         /// <summary>
@@ -386,7 +483,14 @@ namespace NetTopologySuite.IO
         private void AppendLineStringTaggedText(ILineString lineString, int level, TextWriter writer)
         {
             writer.Write("LINESTRING ");
-            AppendLineStringText(lineString, level, false, writer);
+            if (IsEmpty(lineString.CoordinateSequence))
+                writer.Write("EMPTY");
+            else
+            {
+                bool emitZ, emitM;
+                AppendDimensionText(lineString.CoordinateSequence, writer, out emitZ, out emitM);
+                AppendLineStringText(lineString, level, false, emitZ, emitM, writer);
+            }
         }
 
         /// <summary>
@@ -399,7 +503,14 @@ namespace NetTopologySuite.IO
         private void AppendLinearRingTaggedText(ILinearRing linearRing, int level, TextWriter writer)
         {
             writer.Write("LINEARRING ");
-            AppendLineStringText(linearRing, level, false, writer);
+            if (IsEmpty(linearRing.CoordinateSequence))
+                writer.Write("EMPTY");
+            else
+            {
+                bool emitZ, emitM;
+                AppendDimensionText(linearRing.CoordinateSequence, writer, out emitZ, out emitM);
+                AppendLineStringText(linearRing, level, false, emitZ, emitM, writer);
+            }
         }
 
         /// <summary>
@@ -412,7 +523,14 @@ namespace NetTopologySuite.IO
         private void AppendPolygonTaggedText(IPolygon polygon, int level, TextWriter writer)
         {
             writer.Write("POLYGON ");
-            AppendPolygonText(polygon, level, false, writer);
+            if (polygon.IsEmpty)
+                writer.Write("EMPTY");
+            else
+            {
+                bool emitZ, emitM;
+                AppendDimensionText(polygon.ExteriorRing.CoordinateSequence, writer, out emitZ, out emitM);
+                AppendPolygonText(polygon, level, false, emitZ, emitM, writer);
+            }
         }
 
         /// <summary>
@@ -425,7 +543,14 @@ namespace NetTopologySuite.IO
         private void AppendMultiPointTaggedText(IMultiPoint multipoint, int level, TextWriter writer)
         {
             writer.Write("MULTIPOINT ");
-            AppendMultiPointText(multipoint, level, writer);
+            if (multipoint.IsEmpty)
+                writer.Write("EMPTY");
+            else
+            {
+                bool emitZ, emitM;
+                AppendDimensionText(((IPoint)multipoint.GetGeometryN(0)).CoordinateSequence, writer, out emitZ, out emitM);
+                AppendMultiPointText(multipoint, level, emitZ, emitM, writer);
+            }
         }
 
         /// <summary>
@@ -438,7 +563,14 @@ namespace NetTopologySuite.IO
         private void AppendMultiLineStringTaggedText(IMultiLineString multiLineString, int level, TextWriter writer)
         {
             writer.Write("MULTILINESTRING ");
-            AppendMultiLineStringText(multiLineString, level, false, writer);
+            if (multiLineString.IsEmpty)
+                writer.Write("EMPTY");
+            else
+            {
+                bool emitZ, emitM;
+                AppendDimensionText(((ILineString)multiLineString.GetGeometryN(0)).CoordinateSequence, writer, out emitZ, out emitM);
+                AppendMultiLineStringText(multiLineString, level, false, emitZ, emitM, writer);
+            }
         }
 
         /// <summary>
@@ -451,7 +583,16 @@ namespace NetTopologySuite.IO
         private void AppendMultiPolygonTaggedText(IMultiPolygon multiPolygon, int level, TextWriter writer)
         {
             writer.Write("MULTIPOLYGON ");
-            AppendMultiPolygonText(multiPolygon, level, writer);
+            if (multiPolygon.IsEmpty)
+                writer.Write("EMPTY");
+            else
+            {
+                bool emitZ, emitM;
+                var polygon = (IPolygon) multiPolygon.GetGeometryN(0);
+                AppendDimensionText(polygon.ExteriorRing.CoordinateSequence, writer,
+                    out emitZ, out emitM);
+                AppendMultiPolygonText(multiPolygon, level, emitZ, emitM, writer);
+            }
         }
 
         /// <summary>
@@ -464,7 +605,10 @@ namespace NetTopologySuite.IO
         private void AppendGeometryCollectionTaggedText(IGeometryCollection geometryCollection, int level, TextWriter writer)
         {
             writer.Write("GEOMETRYCOLLECTION ");
-            AppendGeometryCollectionText(geometryCollection, level, writer);
+            if (geometryCollection.IsEmpty)
+                writer.Write("EMPTY");
+            else
+                AppendGeometryCollectionText(geometryCollection, level, writer);
         }
 
         /// <summary>
@@ -473,19 +617,23 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="coordinate">The <c>Coordinate</c> to process.</param>
         /// <param name="level"></param>
+        /// <param name="emitZ">Flag to emit z-ordinate value</param>
+        /// <param name="emitM">Flag to emit m-ordinate value</param>
         /// <param name="writer">The output writer to append to.</param>
-        /// <param name="precisionModel">
-        /// The <c>PrecisionModel</c> to use to convert
-        /// from a precise coordinate to an external coordinate.
-        /// </param>
-        private void AppendPointText(Coordinate coordinate, int level, TextWriter writer, IPrecisionModel precisionModel)
+        ///// <param name="precisionModel">
+        ///// The <c>PrecisionModel</c> to use to convert
+        ///// from a precise coordinate to an external coordinate.
+        ///// </param>
+        private void AppendPointText(ICoordinateSequence coordinate, int level, 
+            bool emitZ, bool emitM,
+            TextWriter writer/*, IPrecisionModel precisionModel*/)
         {
-            if (coordinate == null) 
+            if (coordinate == null || coordinate.Count == 0) 
                 writer.Write("EMPTY");
             else 
             {
                 writer.Write("(");
-                AppendCoordinate(coordinate, writer, precisionModel);
+                AppendCoordinate(coordinate, 0, emitZ, emitM, writer/*, precisionModel*/);
                 writer.Write(")");
             }
         }
@@ -493,40 +641,56 @@ namespace NetTopologySuite.IO
         ///<summary>Appends the i'th coordinate from the sequence to the writer</summary>
         /// <param name="seq">the <see cref="ICoordinateSequence"/> to process</param>
         /// <param name="i">the index of the coordinate to write</param>
+        /// <param name="emitZ">Flag to emit z-ordinate value</param>
+        /// <param name="emitM">Flag to emit m-ordinate value</param>
         /// <param name="writer">writer the output writer to append to</param>
         ///<exception cref="IOException"></exception>
-        private void AppendCoordinate(ICoordinateSequence seq, int i, TextWriter writer)
+        private void AppendCoordinate(ICoordinateSequence seq, int i, bool emitZ, bool emitM, TextWriter writer)
         {
-            writer.Write(WriteNumber(seq.GetX(i)) + " " + WriteNumber(seq.GetY(i)));
-            if (_outputDimension >= 3 && seq.Dimension >= 3)
+            writer.Write("{0} {1}", WriteNumber(seq.GetX(i)), WriteNumber(seq.GetY(i)));
+            if (emitZ)
             {
-                double z = seq.GetOrdinate(i, Ordinate.Z);
-                if (!Double.IsNaN(z))
-                {
-                    writer.Write(" ");
-                    writer.Write(WriteNumber(z));
-                }
+                var ordinate = seq.GetOrdinate(i, Ordinate.Z);
+                if (!double.IsNaN(ordinate))
+                    writer.Write(" {0}", WriteNumber(ordinate));
             }
+            if (emitM)
+            {
+                var ordinate = seq.GetOrdinate(i, Ordinate.M);
+                if (!double.IsNaN(ordinate))
+                    writer.Write(" {0}", WriteNumber(ordinate));
+            }
+
+            //if (_outputDimension >= 3 && seq.Dimension >= 3)
+            //{
+            //    double z = seq.GetOrdinate(i, Ordinate.Z);
+            //    if (!Double.IsNaN(z))
+            //    {
+            //        writer.Write(" ");
+            //        writer.Write(WriteNumber(z));
+            //    }
+            //}
         }
 
-        /// <summary>
-        /// Converts a <c>Coordinate</c> to Point format, then appends
-        /// it to the writer.
-        /// </summary>
-        /// <param name="coordinate">The <c>Coordinate</c> to process.</param>
-        /// <param name="writer">The output writer to append to.</param>
-        /// <param name="precisionModel">
-        /// The <c>PrecisionModel</c> to use to convert
-        /// from a precise coordinate to an external coordinate.
-        /// </param>
-        private void AppendCoordinate(Coordinate coordinate, TextWriter writer, IPrecisionModel precisionModel)
-        {
-			writer.Write(WriteNumber(coordinate.X) + " " + WriteNumber(coordinate.Y));
-            if (_outputDimension >= 3 && !double.IsNaN(coordinate.Z))
-			{
-				writer.Write(" " + WriteNumber(coordinate.Z));
-			}
-        }
+   //     /// <summary>
+   //     /// Converts a <c>Coordinate</c> to Point format, then appends
+   //     /// it to the writer.
+   //     /// </summary>
+   //     /// <param name="coordinate">The <c>Coordinate</c> to process.</param>
+   //     /// <param name="writer">The output writer to append to.</param>
+   //     /// <param name="precisionModel">
+   //     /// The <c>PrecisionModel</c> to use to convert
+   //     /// from a precise coordinate to an external coordinate.
+   //     /// </param>
+   //     [Obsolete("Need to rely on CoordinateSequence")]
+   //     private void AppendCoordinate(Coordinate coordinate, TextWriter writer, IPrecisionModel precisionModel)
+   //     {
+			//writer.Write(WriteNumber(coordinate.X) + " " + WriteNumber(coordinate.Y));
+   //         if (_outputDimension >= 3 && !double.IsNaN(coordinate.Z))
+			//{
+			//	writer.Write(" " + WriteNumber(coordinate.Z));
+			//}
+   //     }
 
         /// <summary>
         /// Converts a <see cref="double" /> to a <see cref="string" />.
@@ -556,36 +720,6 @@ namespace NetTopologySuite.IO
             }
         }
 
-        ///<summary>Converts a <see cref="ICoordinateSequence"/> to &lt;LineString Text&gt; format, then appends it to the writer</summary>
-        ///<exception cref="IOException"></exception>
-        private void AppendSequenceText(ICoordinateSequence seq, int level, bool doIndent, TextWriter writer)
-        {
-            if (seq.Count == 0)
-            {
-                writer.Write("EMPTY");
-            }
-            else
-            {
-                if (doIndent) Indent(level, writer);
-                writer.Write("(");
-                for (int i = 0; i < seq.Count; i++)
-                {
-                    if (i > 0)
-                    {
-                        writer.Write(", ");
-                        if (_coordsPerLine > 0
-                            && i%_coordsPerLine == 0)
-                        {
-                            Indent(level + 1, writer);
-                        }
-                    }
-                    AppendCoordinate(seq, i, writer);
-                }
-                writer.Write(")");
-            }
-        }
-
-
         /// <summary>
         /// Converts a <c>LineString</c> to &lt;LineString Text format, then
         /// appends it to the writer.
@@ -593,13 +727,16 @@ namespace NetTopologySuite.IO
         /// <param name="lineString">The <c>LineString</c> to process.</param>
         /// <param name="level"></param>
         /// <param name="doIndent"></param>
+        /// <param name="emitZ">Flag to emit z-ordinate value</param>
+        /// <param name="emitM">Flag to emit m-ordinate value</param>
         /// <param name="writer">The output writer to append to.</param>
-        private void AppendLineStringText(ILineString lineString, int level, bool doIndent, TextWriter writer)
+        private void AppendLineStringText(ILineString lineString, int level, bool doIndent,
+            bool emitZ, bool emitM, TextWriter writer)
         {
-            if (lineString.IsEmpty)
-                writer.Write("EMPTY");            
-            else 
-            {
+            //if (lineString.IsEmpty)
+            //    writer.Write("EMPTY");            
+            //else 
+            //{
                 if (doIndent) Indent(level, writer);
                 writer.Write("(");
                 for (var i = 0; i < lineString.NumPoints; i++) 
@@ -613,10 +750,10 @@ namespace NetTopologySuite.IO
                             Indent(level + 1, writer);
                         }
                     }
-                    AppendCoordinate(lineString.GetCoordinateN(i), writer, lineString.PrecisionModel);
+                    AppendCoordinate(lineString.CoordinateSequence,i, emitZ, emitM, writer/*, lineString.PrecisionModel*/);
                 }
                 writer.Write(")");
-            }
+            //}
         }
 
         /// <summary>
@@ -626,8 +763,10 @@ namespace NetTopologySuite.IO
         /// <param name="polygon">The <c>Polygon</c> to process.</param>
         /// <param name="level"></param>
         /// <param name="indentFirst"></param>
+        /// <param name="emitZ">Flag to emit z-ordinate value</param>
+        /// <param name="emitM">Flag to emit m-ordinate value</param>
         /// <param name="writer">The output writer to append to.</param>
-        private void AppendPolygonText(IPolygon polygon, int level, bool indentFirst, TextWriter writer)
+        private void AppendPolygonText(IPolygon polygon, int level, bool indentFirst, bool emitZ, bool emitM, TextWriter writer)
         {
             if (polygon.IsEmpty) 
                 writer.Write("EMPTY");            
@@ -635,11 +774,11 @@ namespace NetTopologySuite.IO
             {
                 if (indentFirst) Indent(level, writer);
                 writer.Write("(");
-                AppendLineStringText(polygon.ExteriorRing, level, false, writer);
+                AppendLineStringText(polygon.ExteriorRing, level, false, emitZ, emitM, writer);
                 for (var i = 0; i < polygon.NumInteriorRings; i++) 
                 {
                     writer.Write(", ");
-                    AppendLineStringText(polygon.GetInteriorRingN(i), level + 1, true, writer);
+                    AppendLineStringText(polygon.GetInteriorRingN(i), level + 1, true, emitZ, emitM, writer);
                 }
                 writer.Write(")");
             }
@@ -651,13 +790,15 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="multiPoint">The <c>MultiPoint</c> to process.</param>
         /// <param name="level"></param>
+        /// <param name="emitZ">Flag to emit z-ordinate value</param>
+        /// <param name="emitM">Flag to emit m-ordinate value</param>
         /// <param name="writer">The output writer to append to.</param>
-        private void AppendMultiPointText(IMultiPoint multiPoint, int level, TextWriter writer)
+        private void AppendMultiPointText(IMultiPoint multiPoint, int level, bool emitZ, bool emitM, TextWriter writer)
         {
-            if (multiPoint.IsEmpty) 
-                writer.Write("EMPTY");
-            else 
-            {
+            //if (multiPoint.IsEmpty) 
+            //    writer.Write("EMPTY");
+            //else 
+            //{
                 writer.Write("(");
                 for (var i = 0; i < multiPoint.NumGeometries; i++) 
                 {
@@ -666,12 +807,18 @@ namespace NetTopologySuite.IO
                         writer.Write(", ");
                         IndentCoords(i, level + 1, writer);
                     }
-                    writer.Write("(");
-                    AppendCoordinate((multiPoint.GetGeometryN(i)).Coordinate, writer, multiPoint.PrecisionModel);
-                    writer.Write(")");
+                    var currentPt = (IPoint) multiPoint.GetGeometryN(i);
+                    if (currentPt.IsEmpty)
+                        writer.Write("EMPTY");
+                    else
+                    {
+                        writer.Write("(");
+                        AppendCoordinate(currentPt.CoordinateSequence, 0, emitZ, emitM, writer);
+                        writer.Write(")");
+                    }
                 }
                 writer.Write(")");
-            }
+            //}
         }
 
         /// <summary>
@@ -681,13 +828,16 @@ namespace NetTopologySuite.IO
         /// <param name="multiLineString">The <c>MultiLineString</c> to process.</param>
         /// <param name="level"></param>
         /// <param name="indentFirst"></param>
+        /// <param name="emitZ">Flag to emit z-ordinate value</param>
+        /// <param name="emitM">Flag to emit m-ordinate value</param>
         /// <param name="writer">The output writer to append to.</param>
-        private void AppendMultiLineStringText(IMultiLineString multiLineString, int level, bool indentFirst, TextWriter writer)
+        private void AppendMultiLineStringText(IMultiLineString multiLineString, int level, bool indentFirst, 
+            bool emitZ, bool emitM, TextWriter writer)
         {
-            if (multiLineString.IsEmpty) 
-                writer.Write("EMPTY");            
-            else 
-            {
+            //if (multiLineString.IsEmpty) 
+            //    writer.Write("EMPTY");            
+            //else 
+            //{
                 var level2 = level;
                 var doIndent = indentFirst;
                 writer.Write("(");
@@ -699,10 +849,10 @@ namespace NetTopologySuite.IO
                         level2 = level + 1;
                         doIndent = true;
                     }
-                    AppendLineStringText((ILineString) multiLineString.GetGeometryN(i), level2, doIndent, writer);
+                    AppendLineStringText((ILineString) multiLineString.GetGeometryN(i), level2, doIndent, emitZ, emitM, writer);
                 }
                 writer.Write(")");
-            }
+            //}
         }
 
         /// <summary>
@@ -711,13 +861,15 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="multiPolygon">The <c>MultiPolygon</c> to process.</param>
         /// <param name="level"></param>
+        /// <param name="emitZ">Flag to emit z-ordinate value</param>
+        /// <param name="emitM">Flag to emit m-ordinate value</param>
         /// <param name="writer">The output writer to append to.</param>
-        private void AppendMultiPolygonText(IMultiPolygon multiPolygon, int level, TextWriter writer)            
+        private void AppendMultiPolygonText(IMultiPolygon multiPolygon, int level, bool emitZ, bool emitM, TextWriter writer)            
         {
-            if (multiPolygon.IsEmpty) 
-                writer.Write("EMPTY");            
-            else 
-            {
+            //if (multiPolygon.IsEmpty) 
+            //    writer.Write("EMPTY");            
+            //else 
+            //{
                 var level2 = level;
                 var doIndent = false;
                 writer.Write("(");
@@ -729,10 +881,10 @@ namespace NetTopologySuite.IO
                         level2 = level + 1;
                         doIndent = true;
                     }
-                    AppendPolygonText((IPolygon) multiPolygon.GetGeometryN(i), level2, doIndent, writer);
+                    AppendPolygonText((IPolygon) multiPolygon.GetGeometryN(i), level2, doIndent, emitZ, emitM, writer);
                 }
                 writer.Write(")");
-            }
+            //}
         }
 
         /// <summary>
@@ -744,10 +896,10 @@ namespace NetTopologySuite.IO
         /// <param name="writer">The output writer to append to.</param>
         private void AppendGeometryCollectionText(IGeometryCollection geometryCollection, int level, TextWriter writer)            
         {
-            if (geometryCollection.IsEmpty)
-                writer.Write("EMPTY");            
-            else 
-            {
+            //if (geometryCollection.IsEmpty)
+            //    writer.Write("EMPTY");            
+            //else 
+            //{
                 var level2 = level;
                 writer.Write("(");
                 for (var i = 0; i < geometryCollection.NumGeometries; i++) 
@@ -760,7 +912,7 @@ namespace NetTopologySuite.IO
                     AppendGeometryTaggedText(geometryCollection.GetGeometryN(i), level2, writer);
                 }
                 writer.Write(")");
-            }
+            //}
         }
 
         /// <summary>
@@ -820,6 +972,33 @@ namespace NetTopologySuite.IO
             }
         }
 
+        #endregion
+
+        #region utility
+        private int GetNumDimensions()
+        {
+            var res = 2;
+            if (_emitZ) res++;
+            if (_emitM) res++;
+            return res;
+        }
+
+        private void AdjustEmitZM()
+        {
+            switch (_outputDimension)
+            {
+                case 2:
+                    _emitZ = _emitM = false;
+                    break;
+                case 3:
+                    if (_emitZ) _emitM = false;
+                    if (!_emitM) _emitZ = true;
+                    break;
+                case 4:
+                    _emitZ = _emitM = true;
+                    break;
+            }
+        }
         #endregion
     }
 }

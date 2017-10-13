@@ -267,9 +267,9 @@ namespace NetTopologySuite.IO
             if ((type & 0x20000000) != 0)
                 srid = reader.ReadInt32();
             else
-                srid = -1;
+                srid = _geometryServices.DefaultSRID /*-1*/;
 
-            if (!HandleSRID) srid = -1;
+            if (!HandleSRID) srid = _geometryServices.DefaultSRID /*-1*/;
 
             //Get cs from prefix
             uint ordinate = (type & 0xffff) / 1000;

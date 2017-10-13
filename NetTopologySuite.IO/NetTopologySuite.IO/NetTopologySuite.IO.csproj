@@ -26,4 +26,8 @@
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)NetTopologySuite\NetTopologySuite.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Geometries\" />
+  </ItemGroup>
 </Project>

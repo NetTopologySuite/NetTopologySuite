@@ -8695,6 +8695,37 @@ features: [{
             ToImage(0, r1, r2, res);
         }
 
+        [Test, Description("IGeometryCollection.Union() method always throw \"found non - noded intersection between LineA and LineB\"")]
+        public void TestIssue195()
+        {
+            var reader = new WKTReader();
+            var g1 = reader.Read(
+                "LINESTRING (1906.5777217955911 3761.4006028729491 0, 1820.1198459579609 3839.2176014268771 0, 1724.1829042970785 3732.6277258992195 0, 1836.47005638876 3633.8642786028795 0, 1909.5549402346369 3727.4293504389934 0, 1906.5777217955911 3761.4006028729491 0, 1906.5777217955911 3761.4006028729491 0)");
+            Assert.That(g1.IsValid);
+            var g2 = reader.Read(
+                "LINESTRING (1772.4700756329694 3551.9299238938838 0, 1909.5549402347533 3727.4293504399247 0)");
+            Assert.That(g2.IsValid);
+            var g3 = reader.Read(
+                "LINESTRING (1836.47005638876 3633.8642786028795 0, 1909.5549402346369 3727.4293504389934 0)");
+            Assert.That(g3.IsValid);
+            var g4 = reader.Read(
+                "LINESTRING (1909.5549402347533 3727.4293504399247 0, 1906.5777217960572 3761.4006028729491 0, 1906.5777217960567 3761.4006028729491 0, 1759.2550748434733 3893.9993521915749 0, 1736.1762532913126 3908.717300510034 0, 1716.5827331371838 3926.352581448853 0, 1674.1569754525553 3924.0594879835844 0, 1674.1569754525553 3924.0594879835844 0, 1644.2142616524936 3889.674056951887 0, 1644.2142616524943 3889.6740569518879 0, 1614.9895297663172 3862.202278373763 0, 1564.1978788769925 3796.101987561211 0, 1564.197878876992 3796.101987561211 0, 1528.8682874125661 3747.0869175335392 0, 1534.7378848842927 3705.9028060180135 0, 1534.7378848842927 3705.9028060180135 0, 1737.3787323110737 3547.6174276559614 0, 1772.4700756353559 3551.9299238980748 0, 1772.4700756353559 3551.9299238980748 0, 1909.5549402347533 3727.4293504399247 0)");
+            Assert.That(g4.IsValid);
+            var g5 = reader.Read(
+                "LINESTRING (1772.4700756329694 3551.9299238938838 0, 1909.5549402347533 3727.4293504399247 0)");
+            Assert.That(g5.IsValid);
+            var geos = new List<IGeometry>();
+            geos.Add(g1);
+            geos.Add(g2);
+            geos.Add(g3);
+            geos.Add(g4);
+            geos.Add(g5);
+            var fact = new GeometryFactory();
+            var cols = fact.CreateGeometryCollection(geos.ToArray());
+            var res = cols.Union(); //throw error
+            ToImage(0, null, null, res);
+        }
+
         [Test]
         public void CrossAndIntersectionTest()
         {
@@ -8760,9 +8791,10 @@ features: [{
 
             var gpw = new Windows.Forms.GraphicsPathWriter();
 
-            var extent = geom1.EnvelopeInternal;
-            if (geom2 != null)
-                extent.ExpandToInclude(geom2.EnvelopeInternal);
+            var extent = new Envelope();
+            if (geom1 != null) extent.ExpandToInclude(geom1.EnvelopeInternal);
+            if (geom2 != null) extent.ExpandToInclude(geom2.EnvelopeInternal);
+            if (geom3 != null) extent.ExpandToInclude(geom3.EnvelopeInternal);
             extent.ExpandBy(0.05 * extent.Width);
 
             using (var img = new Bitmap(ImageWidth, ImageHeight))
@@ -8773,23 +8805,29 @@ features: [{
                     gr.Clear(Color.WhiteSmoke);
                     gr.SmoothingMode = SmoothingMode.AntiAlias;
                     //gr.Transform = CreateTransform(extent);
+                    if (geom1 != null)
+                    {
+                        var gp1 = gpw.ToShape(at.Transform(geom1));
+                        if (geom1 is IPolygonal)
+                            gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.Blue)), gp1);
+                        gr.DrawPath(Pens.Blue, gp1);
+                    }
 
-                    var gp1 = gpw.ToShape(at.Transform(geom1));
-                    if (geom1 is IPolygonal)
-                        gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.Blue)), gp1);
-                    gr.DrawPath(Pens.Blue, gp1);
+                    if (geom2 != null)
+                    {
+                        var gp2 = gpw.ToShape(at.Transform(geom2));
+                        if (geom2 is IPolygonal)
+                            gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.OrangeRed)), gp2);
+                        gr.DrawPath(Pens.OrangeRed, gp2);
+                    }
 
-                    var gp2 = gpw.ToShape(at.Transform(geom2));
-                    if (geom2 is IPolygonal)
-                        gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.OrangeRed)), gp2);
-                    gr.DrawPath(Pens.OrangeRed, gp2);
-
-
-                    var gp3 = gpw.ToShape(at.Transform(geom3));
-                    if (geom3 is IPolygonal)
-                        gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.Gold)), gp3);
-                    gr.DrawPath(Pens.Gold, gp3);
-
+                    if (geom3 != null)
+                    {
+                        var gp3 = gpw.ToShape(at.Transform(geom3));
+                        if (geom3 is IPolygonal)
+                            gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.Gold)), gp3);
+                        gr.DrawPath(Pens.Gold, gp3);
+                    }
 
                 }
                 var path = System.IO.Path.ChangeExtension(System.IO.Path.GetTempFileName(), "png");

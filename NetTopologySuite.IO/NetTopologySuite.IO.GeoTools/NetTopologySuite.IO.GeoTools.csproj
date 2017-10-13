@@ -18,8 +18,6 @@
 
   <ItemGroup>
     <Compile Include="$(SolutionDir)SharedAssemblyVersion.cs" Link="Properties\SharedAssemblyVersion.cs" />
-
-    <Compile Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO\Geometries\CoordinateBuffer.cs" Link="CoordinateBuffer.cs" />
   </ItemGroup>
 
   <ItemGroup>
