@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
@@ -152,7 +153,48 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             //                                                                 + "LINESTRING(50 50, 50 0 ), "
             //                                                                 + "LINESTRING(50 0 , 0  0 ) )");
             //    Assert.IsTrue(lineString.equals(geometryCollection));
-        }        
+        }
+
+        [Test]
+        public void TestEqualsInHashBasedCollection()
+        {
+            var p0 = new Coordinate(0, 0);
+            var p1 = new Coordinate(0, 1);
+            var p2 = new Coordinate(1, 0);
+
+            Coordinate[] exactEqualRing1 = { p0, p1, p2, p0 };
+            Coordinate[] exactEqualRing2 = CoordinateArrays.CopyDeep(exactEqualRing1);
+            Coordinate[] rotatedRing1 = { p1, p2, p0, p1 };
+            Coordinate[] rotatedRing2 = { p2, p0, p1, p2 };
+
+            var exactEqualRing1Poly = geometryFactory.CreatePolygon(exactEqualRing1);
+            var exactEqualRing2Poly = geometryFactory.CreatePolygon(exactEqualRing2);
+            var rotatedRing1Poly = geometryFactory.CreatePolygon(rotatedRing1);
+            var rotatedRing2Poly = geometryFactory.CreatePolygon(rotatedRing2);
+
+            // IGeometry equality in hash-based collections should be based on
+            // EqualsExact semantics, as it is in JTS.
+            var hashSet1 = new HashSet<IGeometry>
+            {
+                exactEqualRing1Poly,
+                exactEqualRing2Poly,
+                rotatedRing1Poly,
+                rotatedRing2Poly,
+            };
+
+            Assert.AreEqual(3, hashSet1.Count);
+
+            // same as IPolygon equality.
+            var hashSet2 = new HashSet<IPolygon>
+            {
+                exactEqualRing1Poly,
+                exactEqualRing2Poly,
+                rotatedRing1Poly,
+                rotatedRing2Poly,
+            };
+
+            Assert.AreEqual(3, hashSet2.Count);
+        }
 
         [TestAttribute]
         public void TestEqualsExactForLinearRings()
