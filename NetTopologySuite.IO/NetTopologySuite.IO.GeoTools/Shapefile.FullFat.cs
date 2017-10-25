@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
 using System.Data;
+#if COMPAT_SHAPEFILE_IMPORT_TO_SQL_SERVER
 using System.Data.SqlClient;
+#endif
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
@@ -68,6 +70,7 @@ namespace NetTopologySuite.IO
             return table;
         }
 
+#if COMPAT_SHAPEFILE_IMPORT_TO_SQL_SERVER
         /// <summary>
         /// Imports a shapefile into a database table.
         /// </summary>
@@ -191,5 +194,6 @@ namespace NetTopologySuite.IO
                 return String.Format("nvarchar({0}) ", length);
             throw new NotSupportedException("Need to add the SQL type for " + type.Name);
         }
+#endif
     }
 }

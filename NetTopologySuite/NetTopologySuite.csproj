@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
-    <TargetFrameworks>net35-client;net40-client;net403-client;net45;netstandard1.0;netstandard1.3</TargetFrameworks>
+    <TargetFrameworks>net35-client;net40-client;net403-client;net45;netstandard1.0;netstandard1.3;netstandard2.0</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(SolutionDir)nts.snk</AssemblyOriginatorKeyFile>
     <NoWarn>659,168</NoWarn>
