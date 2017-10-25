@@ -81,6 +81,5 @@
     <DefineConstants>$(DefineConstants);HAS_SYSTEM_SERIALIZABLEATTRIBUTE</DefineConstants>
     <DefineConstants>$(DefineConstants);HAS_SYSTEM_TEXT_ENCODING_DEFAULT</DefineConstants>
     <DefineConstants>$(DefineConstants);HAS_SYSTEM_TYPE_ISASSIGNABLEFROM</DefineConstants>
-    <DefineConstants>$(DefineConstants);HAS_SYSTEM_XML_XMLDOCUMENT</DefineConstants>
   </PropertyGroup>
 </Project>
