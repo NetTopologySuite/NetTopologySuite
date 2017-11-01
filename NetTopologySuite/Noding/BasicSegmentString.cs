@@ -40,7 +40,7 @@ namespace NetTopologySuite.Noding
 
         public Boolean IsClosed
         {
-            get { return _pts[0].Equals2D(_pts[_pts.Length]); }
+            get { return _pts[0].Equals2D(_pts[_pts.Length - 1]); }
         }
 
         public Int32 Count
