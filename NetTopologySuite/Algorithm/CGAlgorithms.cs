@@ -250,7 +250,7 @@ namespace NetTopologySuite.Algorithm
              *  (2) will never happen if the ring is valid, so don't check for it
              *  (Might want to assert this)
              */
-            bool isCCW = false;
+            bool isCCW;
             if (disc == 0)            
                 // poly is CCW if prev x is right of next x
                 isCCW = (prev.X > next.X);            

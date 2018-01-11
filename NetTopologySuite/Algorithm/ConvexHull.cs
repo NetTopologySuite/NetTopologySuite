@@ -192,11 +192,12 @@ namespace NetTopologySuite.Algorithm
             var ps = new Stack<Coordinate>(c.Length);
             ps.Push(c[0]);
             ps.Push(c[1]);
-            if(c.Length > 2)
             ps.Push(c[2]);
             for (int i = 3; i < c.Length; i++)
             {
                 var p = ps.Pop();
+
+                // check for empty stack to guard against robustness problems
                 while (
                     ps.Count > 0 /*(IsEmpty Hack)*/ &&
                     CGAlgorithms.ComputeOrientation(ps.Peek(), p, c[i]) > 0)
