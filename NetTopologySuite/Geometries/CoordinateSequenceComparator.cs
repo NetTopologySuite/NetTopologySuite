@@ -41,25 +41,22 @@ namespace NetTopologySuite.Geometries
             return 0;
         }
 
-        /**
-         * The number of dimensions to test
-         */
+        /// <summary>
+        /// The number of dimensions to test
+        /// </summary>
         protected int DimensionLimit;
 
-        /**
-         * Creates a comparator which will test all dimensions.
-         */
+        /// <summary>
+        /// Creates a comparator which will test all dimensions.
+        /// </summary>
         public CoordinateSequenceComparator()
         {
             DimensionLimit = int.MaxValue;
         }
 
-        /**
-         * 
-         *
-         * @param dimensionLimit 
-         */
-        ///<summary>Creates a comparator which will test only the specified number of dimensions.</summary>
+        /// <summary>
+        /// Creates a comparator which will test only the specified number of dimensions.
+        /// </summary>
         /// <param name="dimensionLimit">The number of dimensions to test</param>
         public CoordinateSequenceComparator(int dimensionLimit)
         {
@@ -85,7 +82,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="s1">A coordinate sequence</param>
         /// <param name="s2">A coordinate sequence</param>
         /// <param name="i">The index of the coordinate to test</param>
-        /// <param name="dimension">the number of dimensiosn to test</param>
+        /// <param name="dimension">the number of dimensions to test</param>
         protected int CompareCoordinate(ICoordinateSequence s1, ICoordinateSequence s2, int i, int dimension)
         {
             for (int d = 0; d < dimension; d++)

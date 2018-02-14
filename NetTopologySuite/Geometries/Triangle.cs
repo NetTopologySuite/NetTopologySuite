@@ -87,7 +87,7 @@ namespace NetTopologySuite.Geometries
         /// vertices of the triangle.
         /// <para>
         /// The circumcentre does not necessarily lie within the triangle. For example,
-        /// the circumcentre of an obtuse isoceles triangle lies outside the triangle.
+        /// the circumcentre of an obtuse isosceles triangle lies outside the triangle.
         /// </para>
         /// <para>This method uses an algorithm due to J.R.Shewchuk which uses normalization
         /// to the origin to improve the accuracy of computation. (See <i>Lecture Notes
@@ -266,14 +266,14 @@ namespace NetTopologySuite.Geometries
              * where
              * 	u,v are the side vectors of the triangle
              *  x is the vector cross-product
-             * For 2D vectors, this formual simplifies to the expression below
+             * For 2D vectors, this formula simplifies to the expression below
              */
             return ((c.X - a.X) * (b.Y - a.Y) - (b.X - a.X) * (c.Y - a.Y)) / 2;
         }
 
         ///<summary>
         /// Computes the 3D area of a triangle. 
-        /// The value computed is alway non-negative.
+        /// The value computed is always non-negative.
         ///</summary>
         /// <param name="a">A vertex of the triangle</param>
         /// <param name="b">A vertex of the triangle</param>
@@ -457,7 +457,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Computes the 3D area of this triangle. The value computed is alway
+        /// Computes the 3D area of this triangle. The value computed is always
         /// non-negative.
         /// </summary>
         /// <returns>The 3D area of this triangle</returns>

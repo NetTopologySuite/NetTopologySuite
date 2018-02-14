@@ -212,7 +212,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="xShear"> the value to shear by in the x direction</param>
         /// <param name="yShear"> the value to shear by in the y direction</param>
-        /// <returns> a tranformation for the shear</returns>
+        /// <returns> a transformation for the shear</returns>
         public static AffineTransformation ShearInstance(double xShear, double yShear)
         {
             var trans = new AffineTransformation();
@@ -225,7 +225,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="x"> the value to translate by in the x direction</param>
         /// <param name="y"> the value to translate by in the y direction</param>
-        /// <returns> a tranformation for the translation</returns>
+        /// <returns> a transformation for the translation</returns>
         public static AffineTransformation TranslationInstance(double x, double y)
         {
             var trans = new AffineTransformation();
@@ -984,7 +984,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Cretaes a new <see cref="IGeometry"/> which is the result of this transformation applied to the input Geometry.
+        /// Creates a new <see cref="IGeometry"/> which is the result of this transformation applied to the input Geometry.
         /// </summary>
         /// <param name="g">A <c>Geometry</c></param>
         /// <returns>The transformed Geometry</returns>

@@ -23,7 +23,7 @@ namespace NetTopologySuite.Index.Bintree
     /// </para>
     /// <para>
     /// This implementation does not require specifying the extent of the inserted
-    /// items beforehand.  It will automatically expand to accomodate any extent
+    /// items beforehand.  It will automatically expand to accommodate any extent
     /// of dataset.</para>
     /// <para>This index is different to the Interval Tree of Edelsbrunner
     /// or the Segment Tree of Bentley.</para>
@@ -164,7 +164,7 @@ namespace NetTopologySuite.Index.Bintree
         /// If the query interval is <tt>null</tt>, all items in the tree are found.
         /// <c>min</c> and <c>max</c> may be the same value.
         /// </summary>
-        /// <param name="interval"></param>
+        /// <param name="interval">The interval to query for or <c>null</c></param>
         public IList<T> Query(Interval interval)
         {
             /*

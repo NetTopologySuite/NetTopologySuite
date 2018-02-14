@@ -116,7 +116,7 @@ namespace NetTopologySuite.LinearReferencing
         /// Computes the indices for a subline of the line.
         /// (The subline must conform to the line; that is,
         /// all vertices in the subline (except possibly the first and last)
-        /// must be vertices of the line and occcur in the same order).
+        /// must be vertices of the line and occur in the same order).
         /// </summary>
         /// <param name="subLine">A subLine of the line.</param>
         /// <returns>A pair of indices for the start and end of the subline.</returns>

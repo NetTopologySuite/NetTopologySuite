@@ -1580,7 +1580,7 @@ namespace NetTopologySuite.Geometries
         /// The intersection of two geometries of different dimension produces a result
         /// geometry of dimension less than or equal to the minimum dimension of the input
         /// geometries. 
-        /// The result geometry may be a heterogenous <see cref="IGeometryCollection"/>.
+        /// The result geometry may be a heterogeneous <see cref="IGeometryCollection"/>.
         /// If the result is empty, it is an atomic geometry
         /// with the dimension of the lowest input dimension.
         /// <para/>
@@ -1592,7 +1592,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="other">The <c>Geometry</c> with which to compute the intersection.</param>
         /// <returns>A geometry representing the point-set common to the two <c>Geometry</c>s.</returns>
         /// <exception cref="TopologyException">if a robustness error occurs.</exception>
-        /// <exception cref="ArgumentException">if the argument is a non-empty heterogenous <c>GeometryCollection</c></exception>
+        /// <exception cref="ArgumentException">if the argument is a non-empty heterogeneous <c>GeometryCollection</c></exception>
         public IGeometry Intersection(IGeometry other)
         {
             // Special case: if one input is empty ==> empty
@@ -1625,7 +1625,7 @@ namespace NetTopologySuite.Geometries
         /// The union of two geometries of different dimension produces a result
         /// geometry of dimension equal to the maximum dimension of the input
         /// geometries. 
-        /// The result geometry may be a heterogenous
+        /// The result geometry may be a heterogeneous
         /// <see cref="IGeometryCollection"/>.  
         /// If the result is empty, it is an atomic geometry
         /// with the dimension of the highest input dimension.

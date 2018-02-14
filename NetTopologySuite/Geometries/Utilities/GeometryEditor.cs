@@ -27,7 +27,7 @@ namespace NetTopologySuite.Geometries.Utilities
     /// </item>
     /// <item>
     /// The coordinate lists may be changed (e.g. by adding, deleting or modifying coordinates).
-    /// The modifed coordinate lists must be consistent with their original parent component
+    /// The modified coordinate lists must be consistent with their original parent component
     /// (e.g. a <tt>LinearRing</tt> must always have at least 4 coordinates, and the first and last
     /// coordinate must be equal).
     /// </item>

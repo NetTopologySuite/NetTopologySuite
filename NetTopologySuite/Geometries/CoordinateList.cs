@@ -10,7 +10,7 @@ namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// A list of Coordinates, which may
-    /// be set to prevent repeated coordinates from occuring in the list.
+    /// be set to prevent repeated coordinates from occurring in the list.
     /// </summary>
     public class CoordinateList : List<Coordinate>, ICloneable
     {

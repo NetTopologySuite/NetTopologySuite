@@ -147,7 +147,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             }
 
             /**
-             * Defines a comparision operation on DepthSegments
+             * Defines a comparison operation on DepthSegments
              * which orders them left to right
              *
              * <pre>

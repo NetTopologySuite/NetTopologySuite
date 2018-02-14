@@ -51,7 +51,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
 
         ///<summary>
         ///Tests an overlapping hole condition, where one of the holes is created by a shell self-touch.
-        ///This is never vallid.
+        ///This is never valid.
         ///</summary>
         [TestAttribute]
         public void TestShellSelfTouchHoleOverlappingHole()

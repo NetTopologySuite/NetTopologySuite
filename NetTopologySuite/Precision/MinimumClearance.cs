@@ -15,7 +15,7 @@ namespace NetTopologySuite.Precision
     /// the vertices of a geometry can be tolerated
     /// before the geometry becomes topologically invalid.
     /// The smaller the Minimum Clearance distance,
-    /// the less vertex pertubation the geometry can tolerate
+    /// the less vertex perturbation the geometry can tolerate
     /// before becoming invalid.
     /// </summary>
     /// <remarks>

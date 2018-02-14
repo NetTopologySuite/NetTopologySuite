@@ -583,7 +583,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Creates a LineString with the same coordinates as this segment
         /// </summary>
-        /// <param name="geomFactory">the geometery factory to use</param>
+        /// <param name="geomFactory">the geometry factory to use</param>
         /// <returns>A LineString with the same geometry as this segment</returns>
         public ILineString ToGeometry(IGeometryFactory geomFactory)
         {

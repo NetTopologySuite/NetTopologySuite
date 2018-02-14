@@ -119,7 +119,7 @@ namespace NetTopologySuite.Operation.Distance
          * Tests whether the base geometry lies within
          * a specified distance of the given geometry.
          * 
-         //* @param g the geomtry to test
+         //* @param g the geometry to test
          //* @param maximumDistance the maximum distance to test
          //* @return true if the geometry lies with the specified distance
          */

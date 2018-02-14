@@ -92,7 +92,7 @@ namespace NetTopologySuite.Precision
         }
 
         /// <summary>
-        /// If required, returning the result to the orginal precision if required.
+        /// If required, returning the result to the original precision if required.
         /// In this current implementation, no rounding is performed on the
         /// reshifted result point, which means that it is possible
         /// that the returned Geometry is invalid.

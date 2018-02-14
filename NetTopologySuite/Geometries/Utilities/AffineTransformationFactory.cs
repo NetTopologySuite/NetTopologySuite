@@ -11,7 +11,7 @@ namespace NetTopologySuite.Geometries.Utilities
     public static class AffineTransformationFactory
     {
         /// <summary>
-        /// Creates a tranformation from a set of three control vectors. A control
+        /// Creates a transformation from a set of three control vectors. A control
         /// vector consists of a source point and a destination point, which is the
         /// image of the source point under the desired transformation. Three control
         /// vectors allows defining a fully general affine transformation.
@@ -115,7 +115,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Creates an AffineTransformation defined by a maping between two baselines.
+        /// Creates an AffineTransformation defined by a mapping between two baselines.
         /// The computed transformation consists of:
         /// <list type="Bullet">
         /// <item>a translation from the start point of the source baseline to the start point of the destination baseline,</item>
