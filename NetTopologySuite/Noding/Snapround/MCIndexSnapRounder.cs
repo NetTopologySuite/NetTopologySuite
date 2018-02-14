@@ -79,7 +79,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <summary>
         /// Computes all interior intersections in the collection of <see cref="ISegmentString" />s,
         /// and returns their <see cref="Coordinate" />s.
-        ///
+        /// <para/>
         /// Does NOT node the segStrings.
         /// </summary>
         /// <param name="segStrings"></param>

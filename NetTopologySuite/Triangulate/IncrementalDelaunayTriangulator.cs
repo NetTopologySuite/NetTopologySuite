@@ -4,8 +4,8 @@ using NetTopologySuite.Triangulate.QuadEdge;
 namespace NetTopologySuite.Triangulate
 {
     /// <summary>
-    /// Computes a Delauanay Triangulation of a set of <see cref="Vertex"/>es, using an
-    /// incrementatal insertion algorithm.
+    /// Computes a Delaunay Triangulation of a set of <see cref="Vertex"/>es, using an
+    /// incremental insertion algorithm.
     /// </summary>
     /// <author>Martin Davis</author>
     /// <version>1.0</version>

@@ -31,7 +31,7 @@ namespace NetTopologySuite.Operation.Relate
         /// </summary>
         /// <param name="a">A geometry to test</param>
         /// <param name="b">A geometry to test</param>
-        /// <returns>The IntersectonMatrix for the spatial relationship between the geometries</returns>
+        /// <returns>The <c>IntersectionMatrix</c> for the spatial relationship between the geometries</returns>
         public static IntersectionMatrix Relate(IGeometry a, IGeometry b)
         {
             RelateOp relOp = new RelateOp(a, b);
@@ -46,7 +46,7 @@ namespace NetTopologySuite.Operation.Relate
         /// <param name="a">A geometry to test</param>
         /// <param name="b">A geometry to test</param>
         /// <param name="boundaryNodeRule">The Boundary Node Rule to use</param>
-        /// <returns>The IntersectonMatrix for the spatial relationship between the geometries</returns>
+        /// <returns>The <c>IntersectionMatrix</c> for the spatial relationship between the geometries</returns>
         public static IntersectionMatrix Relate(IGeometry a, IGeometry b, IBoundaryNodeRule boundaryNodeRule)
         {
             RelateOp relOp = new RelateOp(a, b, boundaryNodeRule);

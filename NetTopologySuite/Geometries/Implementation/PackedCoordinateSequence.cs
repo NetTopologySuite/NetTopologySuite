@@ -391,6 +391,11 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Ordinate indices greater than 1 have user-defined semantics
         /// (for instance, they may contain other dimensions or measure values).
         /// </summary>
+        /// <remarks>
+        /// Beware, for performance reasons the ordinate index is not checked, if
+        /// it's over dimensions you may not get an exception but a meaningless
+        /// value.
+        /// </remarks>
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <returns></returns>
@@ -568,6 +573,11 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Ordinate indices greater than 1 have user-defined semantics
         /// (for instance, they may contain other dimensions or measure values).
         /// </summary>
+        /// <remarks>
+        /// Beware, for performance reasons the ordinate index is not checked, if
+        /// it's over dimensions you may not get an exception but a meaningless
+        /// value.
+        /// </remarks>
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <returns></returns>

@@ -143,7 +143,7 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Comutes the buffer for a geometry for a given buffer distance
+        /// Computes the buffer for a geometry for a given buffer distance
         /// and accuracy of approximation.
         /// </summary>
         /// <param name="g"> the geometry to buffer</param>
@@ -158,7 +158,7 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Comutes the buffer for a geometry for a given buffer distance
+        /// Computes the buffer for a geometry for a given buffer distance
         /// and accuracy of approximation.
         /// </summary>
         /// <param name="g"> the geometry to buffer</param>
@@ -174,7 +174,7 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Comutes the buffer for a geometry for a given buffer distance
+        /// Computes the buffer for a geometry for a given buffer distance
         /// and accuracy of approximation.
         /// </summary>
         /// <param name="g"> the geometry to buffer</param>

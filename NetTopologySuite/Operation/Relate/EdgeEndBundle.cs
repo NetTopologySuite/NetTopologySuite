@@ -100,14 +100,14 @@ namespace NetTopologySuite.Operation.Relate
         /// <summary>
         /// Compute the overall ON location for the list of EdgeStubs.
         /// (This is essentially equivalent to computing the self-overlay of a single Geometry)
-        /// edgeStubs can be either on the boundary (eg Polygon edge)
+        /// edgeStubs can be either on the boundary (e.g. Polygon edge)
         /// OR in the interior (e.g. segment of a LineString)
         /// of their parent Geometry.
         /// In addition, GeometryCollections use the <see cref="IBoundaryNodeRule"/> to determine
         /// whether a segment is on the boundary or not.
         /// Finally, in GeometryCollections it can occur that an edge is both
         /// on the boundary and in the interior (e.g. a LineString segment lying on
-        /// top of a Polygon edge.) In this case the Boundary is given precendence.
+        /// top of a Polygon edge.) In this case the Boundary is given precedence.
         /// These observations result in the following rules for computing the ON location:
         ///  if there are an odd number of Bdy edges, the attribute is Bdy
         ///  if there are an even number >= 2 of Bdy edges, the attribute is Int

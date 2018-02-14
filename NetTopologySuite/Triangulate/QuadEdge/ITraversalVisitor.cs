@@ -1,7 +1,7 @@
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
     /// <summary>
-    /// Interface for classes which process triangles visited during travesals of a
+    /// Interface for classes which process triangles visited during traversals of a
     /// <see cref="QuadEdgeSubdivision"/>
     /// </summary>
     /// <author>Martin Davis</author>

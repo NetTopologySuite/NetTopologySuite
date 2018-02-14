@@ -78,7 +78,7 @@ namespace NetTopologySuite.Densify
 
         /// <summary>
         /// Gets or sets the distance tolerance for the densification. All line segments
-        /// in the densified geometry will be no longer than the distance tolereance.
+        /// in the densified geometry will be no longer than the distance tolerance.
         /// Simplified geometry will be within this distance of the original geometry.
         /// The distance tolerance must be positive.
         /// </summary>

@@ -6,8 +6,8 @@ namespace NetTopologySuite.Operation.Linemerge
 {
     /// <summary>
     /// A planar graph of edges that is analyzed to sew the edges together. The 
-    /// <c>marked</c> flag on <c>com.vividsolutions.planargraph.Edge</c>s 
-    /// and <c>com.vividsolutions.planargraph.Node</c>s indicates whether they have been
+    /// <c>marked</c> flag on <see cref="T:NetTopologySuite.Planargraph.Edge"/>s 
+    /// and <see cref="T:NetTopologySuite.Planargraph.Node"/>s indicates whether they have been
     /// logically deleted from the graph.
     /// </summary>
     public class LineMergeGraph : PlanarGraph 

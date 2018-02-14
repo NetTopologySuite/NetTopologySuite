@@ -72,7 +72,7 @@ namespace NetTopologySuite.Algorithm
         /// the horizontal or vertical direction.
         /// NOTE: This function may produce incorrect distances
         /// for inputs where p is not precisely on p1-p2
-        /// (E.g. p = (139,9) p1 = (139,10), p2 = (280,1) produces distanct 0.0, which is incorrect.
+        /// (E.g. p = (139,9) p1 = (139,10), p2 = (280,1) produces distance 0.0, which is incorrect.
         /// My hypothesis is that the function is safe to use for points which are the
         /// result of rounding points which lie on the line, but not safe to use for truncated points.
         /// </summary>

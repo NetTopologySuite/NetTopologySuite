@@ -200,7 +200,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         /// <summary>
         /// Checks for shallowness over a sample of points in the given section.
-        /// This helps to prevent the siplification from incrementally
+        /// This helps to prevent the simplification from incrementally
         /// "skipping" over points which are in fact non-shallow.
         /// </summary>
         /// <param name="p0">A coordinate of section</param>

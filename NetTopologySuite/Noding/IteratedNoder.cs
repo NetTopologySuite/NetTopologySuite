@@ -66,7 +66,7 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// Fully nodes a list of <see cref="ISegmentString" />s, i.e. peforms noding iteratively
+        /// Fully nodes a list of <see cref="ISegmentString" />s, i.e. performs noding iteratively
         /// until no intersections are found between segments.
         /// Maintains labelling of edges correctly through the noding.
         /// </summary>
