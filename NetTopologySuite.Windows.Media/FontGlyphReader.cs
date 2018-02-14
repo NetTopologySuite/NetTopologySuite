@@ -18,7 +18,7 @@ namespace NetTopologySuite.Windows.Media
     /// <para>The geometry can be further transformed as necessary using <see cref="AffineTransformation"/>s</para>
     /// </remarks>
     /// <author>Martin Davis</author>
-    public class FontGlyphReader
+    public static class FontGlyphReader
     {
         public const string FontSerif = "Serif";
         [System.Obsolete("Use SansSerif")]

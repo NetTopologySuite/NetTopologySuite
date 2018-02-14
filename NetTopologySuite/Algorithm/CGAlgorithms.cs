@@ -10,12 +10,12 @@ namespace NetTopologySuite.Algorithm
     /// The algorithms supplied in this class are robust for double-precision floating point.
     /// </summary>
     public static class CGAlgorithms
-    {        
-        /// <summary> 
+    {
+        /// <summary>
         /// A value that indicates an orientation of clockwise, or a right turn.
         /// </summary>
         public const int Clockwise          = -1;
-        /// <summary> 
+        /// <summary>
         /// A value that indicates an orientation of clockwise, or a right turn.
         /// </summary>
         public const int Right              = Clockwise;
@@ -38,14 +38,14 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         public const int Straight           = Collinear;
 
-        /// <summary> 
+        /// <summary>
         /// Returns the index of the direction of the point <c>q</c>
         /// relative to a vector specified by <c>p1-p2</c>.
         /// </summary>
         /// <param name="p1">The origin point of the vector.</param>
         /// <param name="p2">The final point of the vector.</param>
         /// <param name="q">The point to compute the direction to.</param>
-        /// <returns> 
+        /// <returns>
         /// 1 if q is counter-clockwise (left) from p1-p2,
         /// -1 if q is clockwise (right) from p1-p2,
         /// 0 if q is collinear with p1-p2.
@@ -57,13 +57,13 @@ namespace NetTopologySuite.Algorithm
              * It seems that the basic algorithm is slightly orientation dependent,
              * when computing the orientation of a point very close to a line.
              * This is possibly due to the arithmetic in the translation to the origin.
-             * 
-             * For instance, the following situation produces identical results 
+             *
+             * For instance, the following situation produces identical results
              * in spite of the inverse orientation of the line segment:
-             * 
+             *
              * Coordinate p0 = new Coordinate(219.3649559090992, 140.84159161824724);
              * Coordinate p1 = new Coordinate(168.9018919682399, -5.713787599646864);
-             * 
+             *
              * Coordinate p = new Coordinate(186.80814046338352, 46.28973405831556);
              * int orient = orientationIndex(p0, p1, p);
              * int orientInv = orientationIndex(p1, p0, p);
@@ -71,9 +71,9 @@ namespace NetTopologySuite.Algorithm
              * A way to force consistent results is to normalize the orientation of the vector
              * using the following code.
              * However, this may make the results of orientationIndex inconsistent
-             * through the triangle of points, so it's not clear this is 
+             * through the triangle of points, so it's not clear this is
              * an appropriate patch.
-             * 
+             *
              */
             return CGAlgorithmsDD.OrientationIndex(p1, p2, q);
 
@@ -88,7 +88,7 @@ namespace NetTopologySuite.Algorithm
              */
         }
 
-        /// <summary> 
+        /// <summary>
         /// Tests whether a point lies inside or on a ring.
         /// </summary>
         /// <remarks>
@@ -101,12 +101,12 @@ namespace NetTopologySuite.Algorithm
         /// <param name="ring">An array of <see cref="Coordinate"/>s representing the ring (which must have first point identical to last point)</param>
         /// <returns>true if p is inside ring.</returns>
         /// <see cref="IPointInRing"/>
-        public static bool IsPointInRing(Coordinate p, Coordinate[] ring) 
+        public static bool IsPointInRing(Coordinate p, Coordinate[] ring)
         {
             return LocatePointInRing(p, ring) != Location.Exterior;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Tests whether a point lies inside or on a ring.
         /// </summary>
         /// <remarks>
@@ -154,7 +154,7 @@ namespace NetTopologySuite.Algorithm
             return RayCrossingCounter.LocatePointInRing(p, ring);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Tests whether a point lies on the line segments defined by a
         /// list of coordinates.
         /// </summary>
@@ -163,20 +163,20 @@ namespace NetTopologySuite.Algorithm
         /// <returns>true if the point is a vertex of the line
         /// or lies in the interior of a line segment in the linestring
         /// </returns>
-        public static bool IsOnLine(Coordinate p, Coordinate[] pt) 
+        public static bool IsOnLine(Coordinate p, Coordinate[] pt)
         {
             LineIntersector lineIntersector = new RobustLineIntersector();
-            for (int i = 1; i < pt.Length; i++) 
+            for (int i = 1; i < pt.Length; i++)
             {
                 Coordinate p0 = pt[i - 1];
                 Coordinate p1 = pt[i];
                 lineIntersector.ComputeIntersection(p, p0, p1);
-                if (lineIntersector.HasIntersection) 
-                    return true;                
+                if (lineIntersector.HasIntersection)
+                    return true;
             }
             return false;
         }
- 
+
 		/// <summary>
         /// Computes whether a ring defined by an array of <see cref="Coordinate" />s is oriented counter-clockwise.
         /// </summary>>
@@ -190,11 +190,11 @@ namespace NetTopologySuite.Algorithm
         /// <param name="ring">An array of <see cref="Coordinate"/>s froming a ring</param>
         /// <returns>true if the ring is oriented <see cref="Orientation.CounterClockwise"/></returns>
         /// <exception cref="ArgumentException">If there are too few points to determine orientation (&lt;4)</exception>
-        public static bool IsCCW(Coordinate[] ring) 
+        public static bool IsCCW(Coordinate[] ring)
         {
             // # of points without closing endpoint
             int nPts = ring.Length - 1;
-            
+
             // sanity check
             if (nPts < 3)
                 throw new ArgumentException("Ring has fewer than 4 points, so orientation cannot be determined");
@@ -218,7 +218,7 @@ namespace NetTopologySuite.Algorithm
             {
                 iPrev = iPrev - 1;
                 if (iPrev < 0) iPrev = nPts;
-            } 
+            }
             while (ring[iPrev].Equals2D(hiPt) && iPrev != hiIndex);
 
             // find distinct point after highest point
@@ -251,9 +251,9 @@ namespace NetTopologySuite.Algorithm
              *  (Might want to assert this)
              */
             bool isCCW;
-            if (disc == 0)            
+            if (disc == 0)
                 // poly is CCW if prev x is right of next x
-                isCCW = (prev.X > next.X);            
+                isCCW = (prev.X > next.X);
             else
                 // if area is positive, points are ordered CCW
                 isCCW = (disc > 0);
@@ -287,17 +287,17 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p1">The first vertex of the line segment</param>
         /// <param name="p2">The second vertex of the line segment</param>
         /// <param name="q">The point to compute the relative orientation of</param>
-        /// <returns> 
+        /// <returns>
         /// 1 if q is counter-clockwise from p1-p2,
         /// or -1 if q is clockwise from p1-p2,
         /// or 0 if q is collinear with p1-p2
         /// </returns>
-        public static int ComputeOrientation(Coordinate p1, Coordinate p2, Coordinate q) 
+        public static int ComputeOrientation(Coordinate p1, Coordinate p2, Coordinate q)
         {
             return OrientationIndex(p1, p2, q);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Computes the distance from a point p to a line segment AB.
         /// Note: NON-ROBUST!
         /// </summary>
@@ -308,14 +308,14 @@ namespace NetTopologySuite.Algorithm
         public static double DistancePointLine(Coordinate p, Coordinate A, Coordinate B)
         {
             // if start = end, then just compute distance to one of the endpoints
-            if (A.X == B.X && A.Y == B.Y) 
+            if (A.X == B.X && A.Y == B.Y)
                 return p.Distance(A);
 
             // otherwise use comp.graphics.algorithms Frequently Asked Questions method
             /*(1)     	      AC dot AB
                         r =   ---------
                               ||AB||^2
-             
+
 		                r has the following meaning:
 		                r=0 Point = A
 		                r=1 Point = B
@@ -327,9 +327,9 @@ namespace NetTopologySuite.Algorithm
             var len2 = ((B.X - A.X)*(B.X - A.X) + (B.Y - A.Y)*(B.Y - A.Y));
             var r = ((p.X - A.X)*(B.X - A.X) + (p.Y - A.Y)*(B.Y - A.Y))/len2;
 
-            if (r <= 0.0) 
+            if (r <= 0.0)
                 return p.Distance(A);
-            if (r >= 1.0) 
+            if (r >= 1.0)
                 return p.Distance(B);
 
 
@@ -339,7 +339,7 @@ namespace NetTopologySuite.Algorithm
 		             	                Curve^2
 
 		                Then the distance from C to Point = |s|*Curve.
-      
+
                         This is the same calculation as {@link #distancePointLinePerpendicular}.
                         Unrolled here for performance.
 	        */
@@ -349,7 +349,7 @@ namespace NetTopologySuite.Algorithm
             return Math.Abs(s) * Math.Sqrt(len2);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Computes the perpendicular distance from a point p
         /// to the (infinite) line containing the points AB
         /// </summary>
@@ -400,7 +400,7 @@ namespace NetTopologySuite.Algorithm
         }
 
 
-        /// <summary> 
+        /// <summary>
         /// Computes the distance from a line segment AB to a line segment CD.
         /// Note: NON-ROBUST!
         /// </summary>
@@ -412,34 +412,34 @@ namespace NetTopologySuite.Algorithm
         public static double DistanceLineLine(Coordinate A, Coordinate B, Coordinate C, Coordinate D)
         {
             // check for zero-length segments
-            if (A.Equals(B))    
+            if (A.Equals(B))
                 return DistancePointLine(A,C,D);
-            if (C.Equals(D))    
+            if (C.Equals(D))
                 return DistancePointLine(D,A,B);
 
             // AB and CD are line segments
             /* from comp.graphics.algo
              *
 	         *  Solving the above for r and s yields
-             * 
-             *     (Ay-Cy)(Dx-Cx)-(Ax-Cx)(Dy-Cy) 
-             * r = ----------------------------- (eqn 1) 
+             *
+             *     (Ay-Cy)(Dx-Cx)-(Ax-Cx)(Dy-Cy)
+             * r = ----------------------------- (eqn 1)
              *     (Bx-Ax)(Dy-Cy)-(By-Ay)(Dx-Cx)
-             * 
-             *     (Ay-Cy)(Bx-Ax)-(Ax-Cx)(By-Ay)  
+             *
+             *     (Ay-Cy)(Bx-Ax)-(Ax-Cx)(By-Ay)
              * s = ----------------------------- (eqn 2)
-             *     (Bx-Ax)(Dy-Cy)-(By-Ay)(Dx-Cx) 
-             *     
+             *     (Bx-Ax)(Dy-Cy)-(By-Ay)(Dx-Cx)
+             *
              * Let P be the position vector of the
-             * intersection point, then 
-             *   P=A+r(B-A) or 
-             *   Px=Ax+r(Bx-Ax) 
-             *   Py=Ay+r(By-Ay) 
+             * intersection point, then
+             *   P=A+r(B-A) or
+             *   Px=Ax+r(Bx-Ax)
+             *   Py=Ay+r(By-Ay)
              * By examining the values of r & s, you can also determine some other limiting
-             * conditions: 
-             *   If 0<=r<=1 & 0<=s<=1, intersection exists 
-             *      r<0 or r>1 or s<0 or s>1 line segments do not intersect 
-             *   If the denominator in eqn 1 is zero, AB & CD are parallel 
+             * conditions:
+             *   If 0<=r<=1 & 0<=s<=1, intersection exists
+             *      r<0 or r>1 or s<0 or s>1 line segments do not intersect
+             *   If the denominator in eqn 1 is zero, AB & CD are parallel
              *   If the numerator in eqn 1 is also zero, AB & CD are collinear.
 	         */
             var noIntersection = false;
@@ -486,7 +486,7 @@ namespace NetTopologySuite.Algorithm
         /// <remarks>
         /// <para>
         /// The signed area is
-        /// </para>  
+        /// </para>
         /// <list type="Table">
         /// <item>positive</item><description>if the ring is oriented CW</description>
         /// <item>negative</item><description>if the ring is oriented CCW</description>
@@ -498,7 +498,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The signed area of the ring</returns>
         public static double SignedArea(Coordinate[] ring)
         {
-            if (ring.Length < 3) 
+            if (ring.Length < 3)
                 return 0.0;
 
             var sum = 0.0;
@@ -522,7 +522,7 @@ namespace NetTopologySuite.Algorithm
         /// <remarks>
         /// <para>
         /// The signed area is
-        /// </para>  
+        /// </para>
         /// <list type="Table">
         /// <item>positive</item><description>if the ring is oriented CW</description>
         /// <item>negative</item><description>if the ring is oriented CCW</description>

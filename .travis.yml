@@ -6,4 +6,4 @@ install:
 - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 script:
 - msbuild NetTopologySuite.sln "/t:Restore;Build" /p:Configuration=ReleaseLinux "/p:FrameworkPathOverride=$(dirname $(which mono))/../lib/mono/4.5/" /v:minimal /p:WarningLevel=3
-- mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./NetTopologySuite.Tests.NUnit/bin/Release/net45/NetTopologySuite.Tests.NUnit.dll
+- travis_wait mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./NetTopologySuite.Tests.NUnit/bin/Release/net45/NetTopologySuite.Tests.NUnit.dll
