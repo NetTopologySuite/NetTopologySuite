@@ -101,6 +101,15 @@ namespace NetTopologySuite.Geometries
             _holes = holes;
         }
 
+        /// <summary>
+        /// Gets a value to sort the geometry
+        /// </summary>
+        protected override SortIndexValue SortIndex
+        {
+            get { return SortIndexValue.Polygon; }
+        }
+
+
         /// <summary>  
         /// Returns a vertex of this <c>Geometry</c>
         /// (usually, but not necessarily, the first one).

@@ -24,6 +24,48 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             readerFloat = new WKTReader();
         }
 
+
+        [TestAttribute]
+        public void TestComparable()
+        {
+            var point = reader.Read("POINT EMPTY");
+            var lineString = reader.Read("LINESTRING EMPTY");
+            var linearRing = reader.Read("LINEARRING EMPTY");
+            var polygon = reader.Read("POLYGON EMPTY");
+            var mpoint = reader.Read("MULTIPOINT EMPTY");
+            var mlineString = reader.Read("MULTILINESTRING EMPTY");
+            var mpolygon = reader.Read("MULTIPOLYGON EMPTY");
+            var gc = reader.Read("GEOMETRYCOLLECTION EMPTY");
+
+            var geometries = new []
+            {
+                gc,
+                mpolygon,
+                mlineString,
+                mpoint,
+                polygon,
+                linearRing,
+                lineString,
+                point
+            };
+
+            var geometriesExpectedOrder = new []
+            {
+                point,
+                mpoint,
+                lineString,
+                linearRing,
+                mlineString,
+                polygon,
+                mpolygon,
+                gc
+            };
+
+            Array.Sort(geometries);
+            for (var i = 0; i < geometries.Length; i++)
+                Assert.That(ReferenceEquals(geometries[i], geometriesExpectedOrder[i]), Is.True);
+        }
+
         [TestAttribute]
         public void TestPolygonRelate()
         {

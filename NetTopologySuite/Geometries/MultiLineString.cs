@@ -49,6 +49,14 @@ namespace NetTopologySuite.Geometries
         public MultiLineString(ILineString[] lineStrings) : this(lineStrings, DefaultFactory) { }
 
         /// <summary>
+        /// Gets a value to sort the geometry
+        /// </summary>
+        protected override SortIndexValue SortIndex
+        {
+            get { return SortIndexValue.MultiLineString; }
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <value></value>

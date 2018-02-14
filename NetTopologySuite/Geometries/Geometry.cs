@@ -127,19 +127,20 @@ namespace NetTopologySuite.Geometries
     public abstract class Geometry : IGeometry
     {
         /// <summary>
-        /// 
+        /// An enumeration of sort values for geometries
         /// </summary>
-        private static readonly Type[] _sortedClasses = new[]
-                                 {
-                                     typeof (Point),
-                                     typeof (MultiPoint),
-                                     typeof (LineString),
-                                     typeof (LinearRing),
-                                     typeof (MultiLineString),
-                                     typeof (Polygon),
-                                     typeof (MultiPolygon),
-                                     typeof (GeometryCollection),
-                                 };
+        protected enum SortIndexValue
+        {
+            Point = 0,
+            MultiPoint = 1,
+            LineString = 2,
+            LinearRing = 3,
+            MultiLineString = 4,
+            Polygon = 5,
+            MultiPolygon = 6,
+            GeometryCollection = 7
+        }
+
 
         //FObermaier: not *readonly* due to SRID property in geometryfactory
         private /*readonly*/ IGeometryFactory _factory;
@@ -1983,8 +1984,8 @@ namespace NetTopologySuite.Geometries
             if (other == null)
                 return -1;
 
-            if (ClassSortIndex != other.ClassSortIndex)
-                return ClassSortIndex - other.ClassSortIndex;
+            if (SortIndex != other.SortIndex)
+                return (int)SortIndex - (int)other.SortIndex;
             if (IsEmpty && other.IsEmpty)
                 return 0;
             if (IsEmpty)
@@ -2024,23 +2025,19 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public int CompareTo(Object o, IComparer<ICoordinateSequence> comp)
         {
-            Geometry other = (Geometry)o;
-            if (ClassSortIndex != other.ClassSortIndex)
-            {
-                return ClassSortIndex - other.ClassSortIndex;
-            }
-            if (IsEmpty && other.IsEmpty)
-            {
-                return 0;
-            }
-            if (IsEmpty)
-            {
+            Geometry other = o as Geometry;
+            if (other == null)
                 return -1;
-            }
+
+            if (SortIndex != other.SortIndex)
+                return (int)SortIndex - (int)other.SortIndex;
+            if (IsEmpty && other.IsEmpty)
+                return 0;
+            if (IsEmpty)
+                return -1;
             if (other.IsEmpty)
-            {
                 return 1;
-            }
+
             return CompareToSameClass(o, comp);
         }
 
@@ -2192,19 +2189,9 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        /// Gets a value to sort the geometry
         /// </summary>
-        private int ClassSortIndex
-        {
-            get
-            {
-                for (var i = 0; i < _sortedClasses.Length; i++)
-                    if (GetType() == _sortedClasses[i])
-                        return i;
-                Assert.ShouldNeverReachHere(String.Format("Class not supported: {0}", GetType().FullName));
-                return -1;
-            }
-        }
+        protected abstract SortIndexValue SortIndex { get; }
 
         /// <summary>
         /// 

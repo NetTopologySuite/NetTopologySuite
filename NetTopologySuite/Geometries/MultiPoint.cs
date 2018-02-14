@@ -1,5 +1,4 @@
 using System;
-using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries
 {
@@ -9,12 +8,12 @@ namespace NetTopologySuite.Geometries
 #if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
-    public class MultiPoint : GeometryCollection, IMultiPoint
+    public class MultiPoint : GeometryCollection, GeoAPI.Geometries.IMultiPoint
     {
         /// <summary>
         /// Represents an empty <c>MultiPoint</c>.
         /// </summary>
-        public static new readonly IMultiPoint Empty = new GeometryFactory().CreateMultiPoint(new IPoint[] { });
+        public new static readonly GeoAPI.Geometries.IMultiPoint Empty = new GeometryFactory().CreateMultiPoint(new GeoAPI.Geometries.IPoint[] { });
         
         /// <summary>
         /// Constructs a <c>MultiPoint</c>.
@@ -25,7 +24,7 @@ namespace NetTopologySuite.Geometries
         /// Elements may be empty <c>Point</c>s, but not <c>null</c>s.
         /// </param>
         /// <param name="factory"></param>
-        public MultiPoint(IPoint[] points, IGeometryFactory factory) : base(points, factory) { }
+        public MultiPoint(GeoAPI.Geometries.IPoint[] points, GeoAPI.Geometries.IGeometryFactory factory) : base(points, factory) { }
 
         /// <summary>
         /// Constructs a <c>MultiPoint</c>.
@@ -37,9 +36,17 @@ namespace NetTopologySuite.Geometries
         /// </param>
         /// <remarks>
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
-        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
+        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="GeoAPI.Geometries.PrecisionModels.Floating"/>.
         /// </remarks>
-        public MultiPoint(IPoint[] points) : this(points, DefaultFactory) { }  
+        public MultiPoint(GeoAPI.Geometries.IPoint[] points) : this(points, DefaultFactory) { }
+
+        /// <summary>
+        /// Gets a value to sort the geometry
+        /// </summary>
+        protected override SortIndexValue SortIndex
+        {
+            get { return SortIndexValue.MultiPoint; }
+        }
 
         /// <summary>
         /// 
@@ -48,18 +55,18 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                return Dimension.Point;
+                return GeoAPI.Geometries.Dimension.Point;
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public override Dimension BoundaryDimension
+        public override GeoAPI.Geometries.Dimension BoundaryDimension
         {
             get
             {
-                return Dimension.False;
+                return GeoAPI.Geometries.Dimension.False;
             }
         }
 
@@ -75,16 +82,16 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        public override OgcGeometryType OgcGeometryType
+        public override GeoAPI.Geometries.OgcGeometryType OgcGeometryType
         {
-            get { return OgcGeometryType.MultiPoint; }
+            get { return GeoAPI.Geometries.OgcGeometryType.MultiPoint; }
         }
        ///<summary>
        /// Gets the boundary of this geometry.
        /// Zero-dimensional geometries have no boundary by definition,
        /// so an empty GeometryCollection is returned.
        /// </summary> 
-       public override IGeometry Boundary
+       public override GeoAPI.Geometries.IGeometry Boundary
         {
             get
             {
@@ -120,7 +127,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance) 
+        public override bool EqualsExact(GeoAPI.Geometries.IGeometry other, double tolerance) 
         {
             if (!IsEquivalentClass(other)) 
                 return false;            
@@ -133,7 +140,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="n">The index of the <c>Coordinate</c> to retrieve, beginning at 0.
         /// </param>
         /// <returns>The <c>n</c>th <c>Coordinate</c>.</returns>
-        protected Coordinate GetCoordinate(int n) 
+        protected GeoAPI.Geometries.Coordinate GetCoordinate(int n) 
         {
             return Geometries[n].Coordinate;
         }

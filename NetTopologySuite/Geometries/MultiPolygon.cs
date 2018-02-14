@@ -46,7 +46,16 @@ namespace NetTopologySuite.Geometries
         /// Specification for SQL.        
         /// </param>
         /// <param name="factory"></param>
-        public MultiPolygon(IPolygon[] polygons, IGeometryFactory factory) : base(polygons, factory) { }  
+        public MultiPolygon(IPolygon[] polygons, IGeometryFactory factory) : base(polygons, factory) { }
+
+        /// <summary>
+        /// Gets a value to sort the geometry
+        /// </summary>
+        protected override SortIndexValue SortIndex
+        {
+            get { return SortIndexValue.MultiPolygon; }
+        }
+
 
         /// <summary>
         /// 

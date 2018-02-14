@@ -30,7 +30,15 @@ namespace NetTopologySuite.Geometries
         /// <summary>  
         /// The <c>Coordinate</c> wrapped by this <c>Point</c>.
         /// </summary>
-        private ICoordinateSequence _coordinates;        
+        private ICoordinateSequence _coordinates;
+
+        /// <summary>
+        /// Gets a value to sort the geometry
+        /// </summary>
+        protected override SortIndexValue SortIndex
+        {
+            get { return SortIndexValue.Point; }
+        }
 
         /// <summary>
         /// 

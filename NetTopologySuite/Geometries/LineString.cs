@@ -39,6 +39,51 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         private ICoordinateSequence _points;
 
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LineString"/> class.
+        /// </summary>
+        /// <remarks>
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
+        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
+        /// </remarks>
+        /// <param name="points">The coordinates used for create this <see cref="LineString" />.</param>
+        /// <exception cref="ArgumentException">If too few points are provided</exception>
+        //[Obsolete("Use GeometryFactory instead")]
+        public LineString(Coordinate[] points) :
+            this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LineString"/> class.
+        /// </summary>
+        /// <param name="points">
+        /// The points of the linestring, or <c>null</c>
+        /// to create the empty point. Consecutive points may not be equal.
+        /// </param>
+        /// <param name="factory"></param>
+        /// <exception cref="ArgumentException">If too few points are provided</exception>
+        public LineString(ICoordinateSequence points, IGeometryFactory factory)
+            : base(factory)
+        {
+            if (points == null)
+                points = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
+            if (points.Count == 1)
+                throw new ArgumentException("Invalid number of points in LineString (found "
+                                            + points.Count + " - must be 0 or >= 2)");
+            _points = points;
+        }
+
+        /// <summary>
+        /// Gets a value to sort the geometry
+        /// </summary>
+        protected override SortIndexValue SortIndex
+        {
+            get { return SortIndexValue.LineString; }
+        }
+
+
+
         /// <summary>
         ///
         /// </summary>
@@ -453,40 +498,6 @@ namespace NetTopologySuite.Geometries
         }
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LineString"/> class.
-        /// </summary>
-        /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
-        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
-        /// </remarks>
-        /// <param name="points">The coordinates used for create this <see cref="LineString" />.</param>
-        /// <exception cref="ArgumentException">If too few points are provided</exception>
-        //[Obsolete("Use GeometryFactory instead")]
-        public LineString(Coordinate[] points) :
-            this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LineString"/> class.
-        /// </summary>
-        /// <param name="points">
-        /// The points of the linestring, or <c>null</c>
-        /// to create the empty point. Consecutive points may not be equal.
-        /// </param>
-        /// <param name="factory"></param>
-        /// <exception cref="ArgumentException">If too few points are provided</exception>
-        public LineString(ICoordinateSequence points, IGeometryFactory factory)
-            : base(factory)
-        {
-            if (points == null)
-                points = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
-            if (points.Count == 1)
-                throw new ArgumentException("Invalid number of points in LineString (found "
-                      + points.Count + " - must be 0 or >= 2)");
-            _points = points;
-        }
-
         /// <summary>
         ///
         /// </summary>
