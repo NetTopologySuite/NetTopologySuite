@@ -1,16 +1,16 @@
 using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Tests.NUnit.Algorithm;
 using NUnit.Framework;
 
-namespace NetTopologySuite.Tests.NUnit.Algorithm
+namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class IndexedPointInAreaStressTest
     {
-        [TestAttribute]
-        [CategoryAttribute("Stress")]
+        [Test]
+        [Category("Stress")]
         public void TestGrid()
         {
             // Use fixed PM to try and get at least some points hitting the boundary
