@@ -17,8 +17,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
     /// determining the orientation of the point relative to the side.
     /// The test fails if these are not consistent.
     /// <para/>
-    /// The stress test reveals that the original RayCrossingCounter
-    /// has inconsistencies with the DD orientation index computation
+    /// The stress test reveals that the original <see cref="RayCrossingCounter"/>
+    /// has inconsistencies with the <see cref="CGAlgorithmsDD.OrientationIndex"/> orientation index computation
     /// (which is now the standard in JTS, due to improved robustness).
     /// The {@link RayCrossingCounterDD} implementation is consistent,
     /// as expected.
@@ -26,12 +26,12 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
     /// Note that the inconsistency does not indicate which algorithm is 
     /// "more correct" - just that they produce different results.
     /// However, it is highly likely that the original RCC algorithm
-    /// is not robust, since it involves significant arithmetic calcuation.
+    /// is <b>not</b> as robust as RCCDD, since it involves a series 
+    /// of double-precision arithmetic operations.
     /// </summary>
     /// <author>Martin Davis</author>
     public class RayCrossingCounterStressTest
     {
-        private readonly PrecisionModel pmFixed_1 = new PrecisionModel(1.0);
         private bool _isAllConsistent = true;
         private int _testCount;
         private int _failureCount;
@@ -80,17 +80,18 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         bool CheckTriangleConsistent(Coordinate[] triPts, Coordinate pt)
         {
             _testCount++;
-            //boolean isPointInRing = CGAlgorithms.isPointInRing(pt, triPts);
+            //var isPointInRing = CGAlgorithms.isPointInRing(pt, triPts);
+            //var isPointInRing = PointInRingWindingNumber(pt, triPts);
             var isPointInRing = Location.Interior == RayCrossingCounter.LocatePointInRing(pt, triPts);
-            //boolean isPointInRing = Location.INTERIOR == RayCrossingCounterDD.locatePointInRing(pt, triPts);
+            //var isPointInRing = Location.Interior == RayCrossingCounterDD.LocatePointInRing(pt, triPts);
 
             int orientation = CGAlgorithms.OrientationIndex(triPts[1], triPts[2], pt);
 
             // if collinear can't determine a failure
             if (orientation == CGAlgorithms.Collinear) return true;
 
-            var bothOutside = !isPointInRing && orientation == CGAlgorithms.CounterClockwise;
-            var bothInside = isPointInRing && orientation == CGAlgorithms.Clockwise;
+            var bothOutside = !isPointInRing && orientation == CGAlgorithms.Left;
+            var bothInside = isPointInRing && orientation == CGAlgorithms.Right;
             var isConsistent = bothOutside || bothInside;
 
             if (!isConsistent)
@@ -130,5 +131,43 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             return buf.ToString();
         }
 
+        /// <summary>
+        /// Winding Number algorithm included for comparison purposes.
+        /// This is almost equivalent to the RayCrossing algorithm,
+        /// except that it checks all crossing segments
+        /// instead of just the ones to the right of the point.
+        /// <para/>
+        /// This produces the same results as CGAlgorithmsDD
+        /// </summary>
+        /// <param name="p">point to test</param>
+        /// <param name="ring">coordinates of ring (with same first and last point)</param>
+        /// <returns>true if the point lies inside the ring</returns>
+        private static bool PointInRingWindingNumber(Coordinate p, Coordinate[] ring)
+        {
+            var winding = 0; // the winding number counter
+
+            var n = ring.Length;
+
+            for (var i = 0; i < n - 1; i++)
+            {
+                if (ring[i].Y <= p.Y)
+                {
+                    // detect an upward crossing
+                    if (ring[i + 1].Y > p.Y)
+                    {
+                        if (CGAlgorithms.Left == CGAlgorithms.OrientationIndex(ring[i], ring[i + 1], p))
+                            winding++;
+                    }
+                }
+                else
+                {
+                    // detect a downward crossing
+                    if (ring[i + 1].Y <= p.Y)
+                        if (CGAlgorithms.Right == CGAlgorithms.OrientationIndex(ring[i], ring[i + 1], p))
+                            winding--;
+                }
+            }
+            return winding != 0;
+        }
     }
 }
