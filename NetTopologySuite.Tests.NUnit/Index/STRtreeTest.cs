@@ -163,6 +163,70 @@ namespace NetTopologySuite.Tests.NUnit.Index
             Assert.AreEqual(3, tree.Count);
         }
 
+        [Test]
+        public void TestKNearestNeighbors()
+        {
+            var topK = 1000;
+            var totalRecords = 10000;
+            var geometryFactory = new GeometryFactory();
+            var coordinate = new Coordinate(10.1, -10.1);
+            var queryCenter = geometryFactory.CreatePoint(coordinate);
+            var valueRange = 1000;
+            var testDataset = new List<IGeometry>();
+            var correctData = new List<IGeometry>();
+            var random = new Random();
+            var distanceComparator = new GeometryDistanceComparer(queryCenter, true);
+            /*
+             * Generate the random test data set
+             */
+            for (int i = 0; i < totalRecords; i++)
+            {
+                coordinate = new Coordinate(-100 + random.Next(valueRange) * 1.1, random.Next(valueRange) * (-5.1));
+                var spatialObject = geometryFactory.CreatePoint(coordinate);
+                testDataset.Add(spatialObject);
+            }
+            /*
+             * Sort the original data set and make sure the elements are sorted in an ascending order
+             */
+            testDataset.Sort(distanceComparator);
+            /*
+             * Get the correct top K
+             */
+            for (int i = 0; i < topK; i++)
+            {
+                correctData.Add(testDataset[i]);
+            }
+
+            var strtree = new STRtree<IGeometry>();
+            for (int i = 0; i < totalRecords; i++)
+            {
+                strtree.Insert(testDataset[i].EnvelopeInternal, testDataset[i]);
+            }
+            /*
+             * Shoot a random query to make sure the STR-Tree is built.
+             */
+            strtree.Query(new Envelope(1 + 0.1, 1 + 0.1, 2 + 0.1, 2 + 0.1));
+            /*
+             * Issue the KNN query.
+             */
+            var testTopK = strtree.NearestNeighbour(queryCenter.EnvelopeInternal, queryCenter, new GeometryItemDistance(), topK);
+            var topKList = new List<IGeometry>(testTopK);
+            topKList.Sort(distanceComparator);
+            /*
+             * Check the difference between correct result and test result. The difference should be 0.
+             */
+            var difference = 0;
+            for (int i = 0; i < topK; i++)
+            {
+                if (distanceComparator.Compare(correctData[i], topKList[i]) != 0)
+                {
+                    difference++;
+                }
+            }
+            Assert.That(difference, Is.EqualTo(0));
+        }
+
+
         private static void DoTestCreateParentsFromVerticalSlice(int childCount,
                                                           int nodeCapacity, int expectedChildrenPerParentBoundable,
                                                           int expectedChildrenOfLastParent)
