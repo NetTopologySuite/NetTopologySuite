@@ -24,6 +24,11 @@ namespace NetTopologySuite.Algorithm
     /// The implication of the above rule is that segments which can be a priori determined to <i>not</i> touch the ray
     /// (i.e. by a test of their bounding box or Y-extent) do not need to be counted.  This allows for optimization by indexing.
     /// </para>
+    /// <para>
+    /// This implementation uses the extended-precision orientation test,
+    /// to provide maximum robustness and consistency within
+    /// other algorithms.
+    /// </para>
     /// </remarks>
     /// <author>Martin Davis</author>
     public class RayCrossingCounter
@@ -139,32 +144,19 @@ namespace NetTopologySuite.Algorithm
             if (((p1.Y > _p.Y) && (p2.Y <= _p.Y))
                     || ((p2.Y > _p.Y) && (p1.Y <= _p.Y)))
             {
-                // translate the segment so that the test point lies on the origin
-                double x1 = p1.X - _p.X;
-                double y1 = p1.Y - _p.Y;
-                double x2 = p2.X - _p.X;
-                double y2 = p2.Y - _p.Y;
-
-                /*
-                 * The translated segment straddles the x-axis. Compute the sign of the
-                 * ordinate of intersection with the x-axis. (y2 != y1, so denominator
-                 * will never be 0.0)
-                 */
-                // double xIntSign = RobustDeterminant.signOfDet2x2(x1, y1, x2, y2) / (y2
-                // - y1);
-                // MD - faster & more robust computation?
-                double xIntSign = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2);
-                if (xIntSign == 0.0)
+                var orient = CGAlgorithms.OrientationIndex(p1, p2, _p);
+                if (orient == CGAlgorithms.Collinear)
                 {
                     _isPointOnSegment = true;
                     return;
                 }
-                if (y2 < y1)
-                    xIntSign = -xIntSign;
-                // xsave = xInt;
-
-                // The segment crosses the ray if the sign is strictly positive.
-                if (xIntSign > 0.0)
+                // Re-orient the result if needed to ensure effective segment direction is upwards
+                if (p2.Y < p1.Y)
+                {
+                    orient = -orient;
+                }
+                // The upward segment crosses the ray if the test point lies to the left (CCW) of the segment.
+                if (orient == CGAlgorithms.Left)
                 {
                     _crossingCount++;
                 }

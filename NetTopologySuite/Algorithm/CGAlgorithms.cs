@@ -136,7 +136,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The <see cref="Location"/> of p relative to the ring</returns>
         public static Location LocatePointInRing(Coordinate p, Coordinate[] ring)
         {
-            return RayCrossingCounterDD.LocatePointInRing(p, ring);
+            return RayCrossingCounter.LocatePointInRing(p, ring);
         }
 
         ///<summary>
@@ -151,7 +151,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The <see cref="Location"/> of p relative to the ring</returns>
         public static Location LocatePointInRing(Coordinate p, ICoordinateSequence ring)
         {
-            return RayCrossingCounterDD.LocatePointInRing(p, ring);
+            return RayCrossingCounter.LocatePointInRing(p, ring);
         }
 
         /// <summary>

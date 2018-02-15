@@ -17,9 +17,12 @@ namespace NetTopologySuite.Algorithm
     /// which can be a priori determined to<i> not</i> touch the ray
     /// (i.e. by a test of their bounding box or Y-extent)
     /// do not need to be counted.This allows for optimization by indexing.
+    /// <para/>
+    /// This version is non-robust, since it uses relies on double-precision arithmetic.
     /// </remarks>
     /// <author>Martin Davis</author>
-    public class RayCrossingCounterDD
+    /// <seealso cref="RayCrossingCounter"/>
+    public class NonRobustRayCrossingCounter
     {
         /// <summary>
         /// Determines the <see cref="GeoAPI.Geometries.Location"/> of a point in a ring.
@@ -30,7 +33,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The location of the point in the ring</returns>
         public static Location LocatePointInRing(Coordinate p, Coordinate[] ring)
         {
-            var counter = new RayCrossingCounterDD(p);
+            var counter = new NonRobustRayCrossingCounter(p);
 
             for (var i = 1; i < ring.Length; i++)
             {
@@ -52,7 +55,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The location of the point in the ring</returns>
         public static Location LocatePointInRing(Coordinate p, ICoordinateSequence ring)
         {
-            var counter = new RayCrossingCounterDD(p);
+            var counter = new NonRobustRayCrossingCounter(p);
 
             var p1 = new Coordinate();
             var p2 = new Coordinate();
@@ -73,9 +76,9 @@ namespace NetTopologySuite.Algorithm
         // true if the test point lies on an input segment
         private bool _isPointOnSegment;
 
-        public RayCrossingCounterDD(Coordinate p)
+        public NonRobustRayCrossingCounter(Coordinate p)
         {
-            this._p = p;
+            _p = p;
         }
 
         /// <summary>

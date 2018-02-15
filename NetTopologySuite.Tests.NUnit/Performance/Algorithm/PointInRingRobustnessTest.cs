@@ -36,22 +36,75 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         private int _testCount;
         private int _failureCount;
 
+        private void Init()
+        {
+            _testCount = 0;
+            _failureCount = 0;
+            _isAllConsistent = true;
+        }
 
         [Test, Category("Stress")]
-        public void TestTriangles()
+        public void TestRightTriangles()
         {
-            CheckTriangles(500, 100, 1000);
+            Init();
+            CheckRightTriangles(200, 100, 1000);
             Console.WriteLine("Tests: " + _testCount + "   Failures: " + _failureCount);
             Assert.IsTrue(_isAllConsistent);
         }
 
-        private void CheckTriangles(double maxHeight, double width, int numPts)
+        [Test, Category("Stress"), Ignore]
+        public void TestRandomTriangles()
         {
-            for (int i = 0; i < maxHeight; i++)
+            CheckRandomTriangles(1000, 100, 100);
+            Console.WriteLine("Tests: " + _testCount + "   Failures: " + _failureCount);
+            Assert.IsTrue(_isAllConsistent);
+        }
+
+        private void CheckRandomTriangles(int sideLen, int numTris, int numEdgePts)
+        {
+            for (var i = 0; i < numTris; i++)
             {
-                CheckTriangleEdge(i, width, numPts);
+                var start = new Coordinate(RandomInt(sideLen), RandomInt(sideLen));
+                var triPts = new Coordinate[] {
+                    start,
+                    new Coordinate(RandomInt(sideLen), RandomInt(sideLen)),
+                    new Coordinate(RandomInt(sideLen), RandomInt(sideLen)),
+                    new Coordinate(start)
+                };
+                CheckTriangleEdgePoints(triPts, numEdgePts);
             }
         }
+
+        private static readonly Random Rnd = new Random();
+
+        private static int RandomInt(int max)
+        {
+            return Rnd.Next(max);
+        }
+
+        private void CheckRightTriangles(double maxHeight, double width, int numEdgePts)
+        {
+            for (int height = 0; height < maxHeight; height++)
+            {
+                Coordinate[] triPts = new Coordinate[] {
+                    new Coordinate(0,0),
+                    new Coordinate(0, height),
+                    new Coordinate(width, 0),
+                    new Coordinate(0,0)
+                };
+                CheckTriangleEdgePoints(triPts, numEdgePts);
+            }
+        }
+
+        public void CheckTriangleEdgePoints(Coordinate[] triPts, int numEdgePts)
+        {
+            for (int i = 0; i < numEdgePts; i++)
+            {
+                var lenFrac = i / (double)(numEdgePts + 1);
+                CheckTriangleConsistent(triPts, lenFrac);
+            }
+        }
+
 
         public void CheckTriangleEdge(double height, double width, int numPts)
         {
@@ -74,18 +127,24 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             LineSegment seg = new LineSegment(0, height, width, 0);
             Coordinate pt = seg.PointAlong(lenFraction);
 
-            return CheckTriangleConsistent(triPts, pt);
+            return CheckTriangleConsistent(triPts, lenFraction);
         }
 
-        bool CheckTriangleConsistent(Coordinate[] triPts, Coordinate pt)
+        bool CheckTriangleConsistent(Coordinate[] triPts, double lenFraction)
         {
             _testCount++;
+
+            var seg = new LineSegment(triPts[1], triPts[2]);
+            var pt = seg.PointAlong(lenFraction);
+
             //var isPointInRing = CGAlgorithms.isPointInRing(pt, triPts);
             //var isPointInRing = PointInRingWindingNumber(pt, triPts);
-            var isPointInRing = Location.Interior == RayCrossingCounter.LocatePointInRing(pt, triPts);
-            //var isPointInRing = Location.Interior == RayCrossingCounterDD.LocatePointInRing(pt, triPts);
+            //var isPointInRing = Location.Interior == RayCrossingCounter.LocatePointInRing(pt, triPts);
+            var isPointInRing = Location.Interior == NonRobustRayCrossingCounter.LocatePointInRing(pt, triPts);
 
-            int orientation = CGAlgorithms.OrientationIndex(triPts[1], triPts[2], pt);
+            var orientation = CGAlgorithms.OrientationIndex(triPts[1], triPts[2], pt);
+            if (CGAlgorithms.IsCCW(triPts))
+                orientation = -orientation;
 
             // if collinear can't determine a failure
             if (orientation == CGAlgorithms.Collinear) return true;
