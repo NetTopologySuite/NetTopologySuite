@@ -6,7 +6,7 @@
   <members>
     <member name="N:NetTopologySuite.Distance">
       <summary>
-        Classes to compute distance metrics between geonetries.
+        Classes to compute distance metrics between geometries.
       </summary>
     </member>
   </members>
