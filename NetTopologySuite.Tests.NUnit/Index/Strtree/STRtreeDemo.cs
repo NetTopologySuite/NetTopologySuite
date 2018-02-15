@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Index;
 using NetTopologySuite.Index.Strtree;
-using NetTopologySuite.IO;
-using NUnit.Framework;
 
-namespace NetTopologySuite.Tests.NUnit.Index
+namespace NetTopologySuite.Tests.NUnit.Index.Strtree
 {
     public class STRtreeDemo
     {

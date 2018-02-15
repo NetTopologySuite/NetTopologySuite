@@ -1,16 +1,12 @@
-using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
-//using NetTopologySuite.IO;
-using NetTopologySuite.Index.Strtree;
 using NUnit.Framework;
+//using NetTopologySuite.IO;
 using SIRtree = NetTopologySuite.Index.Strtree.SIRtree<object>;
 using AbstractNode = NetTopologySuite.Index.Strtree.AbstractNode<NetTopologySuite.Index.Strtree.Interval, object>;
-namespace NetTopologySuite.Tests.NUnit.Index
+namespace NetTopologySuite.Tests.NUnit.Index.Strtree
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class SIRtreeTest
     {
         private class TestTree : SIRtree
@@ -31,7 +27,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             }
         }
 
-        [TestAttribute]
+        [Test]
         public void Test()
         {
             TestTree t = new TestTree(2);
@@ -52,7 +48,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             Assert.AreEqual(2, t.Query(4.5, 5.5).Count);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestEmptyTree()
         {
             TestTree t = new TestTree(2);

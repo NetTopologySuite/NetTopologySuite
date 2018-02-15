@@ -13,7 +13,7 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 
-namespace NetTopologySuite.Tests.NUnit.Index
+namespace NetTopologySuite.Tests.NUnit.Index.Strtree
 {
 
     /// <summary>
