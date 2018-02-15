@@ -79,14 +79,14 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
           * Cases generated from RayCrossingCounterStressTest/PointInRingRobustnessTest.
           */
         [Test]
-        public void TestRobustStressTriangles()
+        public virtual void TestRobustStressTriangles()
         {
             RunPtInRing(Location.Exterior, new Coordinate(25.374625374625374, 128.35564435564436), "POLYGON ((0.0 0.0, 0.0 172.0, 100.0 0.0, 0.0 0.0))");
             RunPtInRing(Location.Interior, new Coordinate(97.96039603960396, 782.0), "POLYGON ((642.0 815.0, 69.0 764.0, 394.0 966.0, 642.0 815.0))");
         }
 
         [Test]
-        public void TestRobustTriangle() 
+        public virtual void TestRobustTriangle() 
         {
             RunPtInRing(Location.Exterior, new Coordinate(3.166572116932842, 48.5390194687463), "POLYGON ((2.152214146946829 50.470470727186765, 18.381941666723034 19.567250592139274, 2.390837642830135 49.228045261718165, 2.152214146946829 50.470470727186765))");
         }

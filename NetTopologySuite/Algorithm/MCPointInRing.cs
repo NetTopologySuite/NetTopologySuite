@@ -16,7 +16,8 @@ namespace NetTopologySuite.Algorithm
     /// Implements <c>IPointInRing</c>
     /// using a <c>MonotoneChain</c>s and a <c>BinTree</c> index to increase performance.
     /// </summary>
-    /// <see cref="IndexedPointInAreaLocator"/>
+    /// <see cref="IndexedPointInAreaLocator"/> for a more general and robust equivalent
+    [Obsolete("Non robust implementation; use IndexedPointInAreaLocator")]
     public class MCPointInRing : IPointInRing 
     {
         /// <summary>
