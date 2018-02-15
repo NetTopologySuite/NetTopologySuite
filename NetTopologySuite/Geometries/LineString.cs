@@ -451,7 +451,11 @@ namespace NetTopologySuite.Geometries
                 if (!_points.GetCoordinate(i).Equals(_points.GetCoordinate(j)))
                 {
                     if (_points.GetCoordinate(i).CompareTo(_points.GetCoordinate(j)) > 0)
-                        CoordinateSequences.Reverse(_points);
+                    {
+                        var copy = (ICoordinateSequence) _points.Clone();
+                        CoordinateSequences.Reverse(copy);
+                        _points = copy;
+                    }
                     return;
                 }
             }

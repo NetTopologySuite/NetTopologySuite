@@ -123,6 +123,17 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, l);
         }
 
+        [Test]
+        public void TestNormalizeStringNoSideEffect()
+        {
+            var l = (ILineString) reader.Read("LINESTRING (200 240, 140 160, 80 160, 160 80, 80 80)");
+            var refL = (ILineString) reader.Read("LINESTRING (200 240, 140 160)");
+            var seg = l.Factory.CreateLineString(new Coordinate[] { l.GetCoordinateN(0), l.GetCoordinateN(1) });
+            Assert.That(refL.EqualsExact(seg), Is.True);
+            l.Normalize();
+            Assert.That(refL.EqualsExact(seg), Is.True);
+        }
+
         [TestAttribute]
         public void TestNormalizeEmptyLineString()
         {
