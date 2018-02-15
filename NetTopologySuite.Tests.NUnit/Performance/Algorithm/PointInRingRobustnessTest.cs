@@ -30,7 +30,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
     /// of double-precision arithmetic operations.
     /// </summary>
     /// <author>Martin Davis</author>
-    public class RayCrossingCounterStressTest
+    public class PointInRingRobustnessTest
     {
         private bool _isAllConsistent = true;
         private int _testCount;
