@@ -360,6 +360,53 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 anotherSameClassButEmpty, collectionFactory);
         }
 
+        [Test]
+        public void TestGeometryCollectionIntersects1() 
+        {
+            var gc0 = reader.Read("GEOMETRYCOLLECTION ( POINT(0 0) )");
+            var gc1 = reader.Read("GEOMETRYCOLLECTION ( LINESTRING(0 0, 1 1) )");
+            var gc2 = reader.Read("GEOMETRYCOLLECTION ( LINESTRING(1 0, 0 1) )");
+
+            Assert.IsTrue(gc0.Intersects(gc1));
+            Assert.IsTrue(gc1.Intersects(gc2));
+            Assert.IsTrue(!gc0.Intersects(gc2));
+            // symmetric
+            Assert.IsTrue(gc1.Intersects(gc0));
+            Assert.IsTrue(gc2.Intersects(gc1));
+            Assert.IsTrue(!gc2.Intersects(gc0));
+    }
+
+        [Test]
+        public void TestGeometryCollectionIntersects2()
+        {
+            var gc0 = reader.Read("POINT(0 0)");
+            var gc1 = reader.Read("GEOMETRYCOLLECTION ( LINESTRING(0 0, 1 1) )");
+            var gc2 = reader.Read("LINESTRING(1 0, 0 1)");
+
+            Assert.IsTrue(gc0.Intersects(gc1));
+            Assert.IsTrue(gc1.Intersects(gc2));
+            // symmetric
+            Assert.IsTrue(gc1.Intersects(gc0));
+            Assert.IsTrue(gc2.Intersects(gc1));
+        }
+
+        [Test]
+        public void TestGeometryCollectionIntersects3()
+        {
+            var gc0 = reader.Read("GEOMETRYCOLLECTION ( POINT(0 0), LINESTRING(1 1, 2 2) )");
+            var gc1 = reader.Read("GEOMETRYCOLLECTION ( POINT(15 15) )");
+            var gc2 = reader.Read("GEOMETRYCOLLECTION ( LINESTRING(0 0, 2 0), POLYGON((10 10, 20 10, 20 20, 10 20, 10 10)))");
+
+            Assert.IsTrue(gc0.Intersects(gc2));
+            Assert.IsTrue(!gc0.Intersects(gc1));
+            Assert.IsTrue(gc1.Intersects(gc2));
+
+            // symmetric
+            Assert.IsTrue(gc2.Intersects(gc0));
+            Assert.IsTrue(!gc1.Intersects(gc0));
+            Assert.IsTrue(gc2.Intersects(gc1));
+        }
+
         private void DoTestEqualsExact(IGeometry x, 
             IGeometry somethingExactlyEqual,
             IGeometry somethingNotEqualButSameClass,

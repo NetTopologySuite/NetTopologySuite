@@ -788,6 +788,20 @@ namespace NetTopologySuite.Geometries
                 return RectangleIntersects.Intersects((IPolygon)this, g);
             if (g.IsRectangle)
                 return RectangleIntersects.Intersects((IPolygon)g, this);
+
+            if (IsGeometryCollection || ((Geometry) g).IsGeometryCollection)
+            {
+                for (var i = 0; i < NumGeometries; i++)
+                {
+                    for (var j = 0; j < g.NumGeometries; j++)
+                    {
+                        if (GetGeometryN(i).Intersects(g.GetGeometryN(j)))
+                            return true;
+                    }
+                }
+                return false;
+            }
+
             return Relate(g).IsIntersects();
         }
 
