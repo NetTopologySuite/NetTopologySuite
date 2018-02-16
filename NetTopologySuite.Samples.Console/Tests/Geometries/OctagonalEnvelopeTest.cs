@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Algorithm.Match;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Tests.NUnit;
 using NUnit.Framework;
 
@@ -26,10 +27,20 @@ namespace NetTopologySuite.Samples.Tests.Geometries
         private void CheckOctagonalEnvelope(string wkt, string wktExpected)
         {
             var input = Read(wkt);
+            if (!input.IsValid) throw new IgnoreException("input geometry not valid");
             var expected = Read(wktExpected);
+            if (!expected.IsValid) throw new IgnoreException("expected geometry not valid");
+
             var octEnv = OctagonalEnvelope.GetOctagonalEnvelope(input);
             var isEqual = octEnv.EqualsNormalized(expected);
-            Assert.IsTrue(isEqual);
+
+            var hsmDiff = 1d;
+            if (!isEqual)
+            {
+                var hsm = new HausdorffSimilarityMeasure();
+                hsmDiff = hsm.Measure(octEnv, expected);
+            }
+            Assert.IsTrue(isEqual, $"Failed, Hausdorff Similarity Measure value = {hsmDiff:R}.");
         }
     }
 }

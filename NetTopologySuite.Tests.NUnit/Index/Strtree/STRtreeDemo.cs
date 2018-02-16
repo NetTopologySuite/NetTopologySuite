@@ -31,19 +31,19 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             {
             }
 
-            public IList<IBoundable<Envelope, object>> BoundablesAtLevel(int level) { return base.BoundablesAtLevel(level); }
+            public new IList<IBoundable<Envelope, object>> BoundablesAtLevel(int level) { return base.BoundablesAtLevel(level); }
 
-            public AbstractNode<Envelope, object> Root { get { return base.Root; } }
+            public new AbstractNode<Envelope, object> Root { get { return base.Root; } }
 
-            public IList<IBoundable<Envelope, object>> CreateParentBoundables(IList<IBoundable<Envelope, object>> verticalSlice, int newLevel)
+            public new IList<IBoundable<Envelope, object>> CreateParentBoundables(IList<IBoundable<Envelope, object>> verticalSlice, int newLevel)
             {
                 return base.CreateParentBoundables(verticalSlice, newLevel);
             }
-            public IList<IBoundable<Envelope, object>>[] VerticalSlices(IList<IBoundable<Envelope, object>> childBoundables, int size)
+            public new IList<IBoundable<Envelope, object>>[] VerticalSlices(IList<IBoundable<Envelope, object>> childBoundables, int size)
             {
                 return base.VerticalSlices(childBoundables, size);
             }
-            public IList<IBoundable<Envelope, object>> CreateParentBoundablesFromVerticalSlice(IList<IBoundable<Envelope, object>> childBoundables, int newLevel)
+            public new IList<IBoundable<Envelope, object>> CreateParentBoundablesFromVerticalSlice(IList<IBoundable<Envelope, object>> childBoundables, int newLevel)
             {
                 return base.CreateParentBoundablesFromVerticalSlice(childBoundables, newLevel);
             }

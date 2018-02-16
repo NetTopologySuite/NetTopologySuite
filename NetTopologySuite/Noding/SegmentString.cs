@@ -203,6 +203,7 @@ namespace NetTopologySuite.Noding
                     "Setting line segments in a ISegmentString not supported.");
             }
         }
+        /// <inheritdoc cref="object.ToString()"/>
         public override String ToString()
         {
             return WKTWriter.ToLineString(new CoordinateArraySequence(_pts));

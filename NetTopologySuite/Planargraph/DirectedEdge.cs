@@ -227,6 +227,7 @@ namespace NetTopologySuite.Planargraph
             parentEdge = null;
         }
 
+        /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
         {            
             return "DirectedEdge: " + p0 + " - " + p1 + " " + _quadrant + ":" + _angle;

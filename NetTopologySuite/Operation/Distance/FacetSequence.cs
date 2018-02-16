@@ -178,6 +178,7 @@ namespace NetTopologySuite.Operation.Distance
             return minDistance;
         }
 
+        /// <inheritdoc cref="object.ToString()"/>
         public override String ToString()
         {
             var buf = new StringBuilder();

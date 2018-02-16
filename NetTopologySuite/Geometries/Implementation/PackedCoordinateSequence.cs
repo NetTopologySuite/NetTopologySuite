@@ -228,6 +228,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </remarks> 
         public abstract void SetOrdinate(int index, Ordinate ordinate, double value);
 
+        /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
         {
             return CoordinateSequences.ToString(this);

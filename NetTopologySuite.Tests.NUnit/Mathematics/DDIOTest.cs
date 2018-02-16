@@ -136,7 +136,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         }
 
         /// <summary>
-        /// This routine simply tests for robustness of the toString function.
+        /// This routine simply tests for robustness of the ToString function.
         /// </summary>
         private static void WriteRepeatedSqrt(DD xdd) 
         {

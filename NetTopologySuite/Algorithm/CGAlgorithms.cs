@@ -100,7 +100,6 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p">Point to check for ring inclusion.</param>
         /// <param name="ring">An array of <see cref="Coordinate"/>s representing the ring (which must have first point identical to last point)</param>
         /// <returns>true if p is inside ring.</returns>
-        /// <see cref="IPointInRing"/>
         public static bool IsPointInRing(Coordinate p, Coordinate[] ring)
         {
             return LocatePointInRing(p, ring) != Location.Exterior;
@@ -118,7 +117,6 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p">Point to check for ring inclusion.</param>
         /// <param name="ring">A sequence of <see cref="Coordinate"/>s representing the ring (which must have first point identical to last point)</param>
         /// <returns>true if p is inside ring.</returns>
-        /// <see cref="IPointInRing"/>
         public static bool IsPointInRing(Coordinate p, ICoordinateSequence ring)
         {
             return LocatePointInRing(p, ring) != Location.Exterior;

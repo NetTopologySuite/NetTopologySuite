@@ -349,6 +349,7 @@ namespace NetTopologySuite.GeometriesGraph
                 e.Write(outstream);
         }
 
+        /// <inheritdoc cref="object.ToString()"/>>
         public override string ToString()
         {
             var buf = new StringBuilder();

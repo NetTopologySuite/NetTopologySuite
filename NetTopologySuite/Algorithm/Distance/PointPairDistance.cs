@@ -65,7 +65,11 @@ namespace NetTopologySuite.Algorithm.Distance
             get { return _pt; }
         }
 
-
+        /// <summary>
+        /// Gets the value of
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns></returns>
         public Coordinate this[int i] { get { return _pt[i]; } }
 
         public void SetMaximum(PointPairDistance ptDist)
@@ -102,6 +106,7 @@ namespace NetTopologySuite.Algorithm.Distance
                 Initialize(p0, p1, dist);
         }
 
+        /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
         {
   	        return WKTWriter.ToLineString(_pt[0], _pt[1]);

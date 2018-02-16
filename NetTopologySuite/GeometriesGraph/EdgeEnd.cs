@@ -211,6 +211,7 @@ namespace NetTopologySuite.GeometriesGraph
             outstream.Write("  " + name + ": " + _p0 + " - " + _p1 + " " + _quadrant + ":" + angle + "   " + _label);
         }
 
+        /// <inheritdoc cref="object.ToString()"/>
         public override String ToString()
         {
             var angle = Math.Atan2(_dy, _dx);

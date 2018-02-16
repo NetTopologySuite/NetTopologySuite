@@ -36,31 +36,42 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public abstract class LineIntersector 
     {
+        #region obsolete
         /**
           * These are deprecated, due to ambiguous naming
           */
 
+        /// <summary>
+        /// Indicates that line segments do not intersect
+        /// </summary>
         [Obsolete("Ambiguous naming, use NoIntersection")]
         public const int DontIntersect = 0;
+        /// <summary>
+        /// Indicates that line segments intersect in a single point
+        /// </summary>
         [Obsolete("Ambiguous naming, use PointIntersection")]
         public const int DoIntersect = 1;
+        /// <summary>
+        /// Indicates that line segments intersect in a line segment
+        /// </summary>
         [Obsolete("Ambiguous naming, use CollinearIntersection")]
         public const int Collinear = 2;
+        #endregion
 
         /// <summary>
         /// Indicates that line segments do not intersect
         /// </summary>
-        public static readonly int NoIntersection = 0;
+        public const int NoIntersection = 0;
   
         /// <summary>
         /// Indicates that line segments intersect in a single point
         /// </summary>
-        public static readonly int PointIntersection = 1;
+        public const int PointIntersection = 1;
   
         /// <summary>
         /// Indicates that line segments intersect in a line segment
         /// </summary>
-        public static readonly int CollinearIntersection = 2;
+        public const int CollinearIntersection = 2;
 
         /// <summary> 
         /// Computes the "edge distance" of an intersection point p along a segment.
@@ -221,7 +232,8 @@ namespace NetTopologySuite.Algorithm
         }
 
         public abstract int ComputeIntersect(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2);
-        
+
+        /// <inheritdoc cref="object.ToString()"/>
         public override string ToString() 
         {
             var sb = new StringBuilder();

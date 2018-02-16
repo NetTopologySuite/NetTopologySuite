@@ -38,6 +38,7 @@ namespace NetTopologySuite.IO.Helpers
             get { return _translate; }
         }
 
+        /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
         {
             return string.Format("Scale: {0}, Translate: {1}", Scale, Translate);

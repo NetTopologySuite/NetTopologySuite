@@ -889,7 +889,6 @@ namespace NetTopologySuite.Geometries
         /// (As a concrete example, take A to be a LineString which lies in the boundary of a Polygon B.)
         /// For a predicate with similar behaviour but avoiding 
         /// this subtle limitation, see <see cref="Covers"/>.
-
         /// </para>
         /// </remarks>
         /// <param name="g">the <c>Geometry</c> with which to compare this <c>Geometry</c></param>

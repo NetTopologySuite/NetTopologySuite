@@ -16,12 +16,12 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         {
             public TestTree(int nodeCapacity) : base(nodeCapacity) { }
 
-            public AbstractNode Root()
+            public new AbstractNode Root()
             {
                 return base.Root;
             }
 
-            public IList<IBoundable<Envelope, object>> BoundablesAtLevel(int level)
+            public new IList<IBoundable<Envelope, object>> BoundablesAtLevel(int level)
             {
                 return base.BoundablesAtLevel(level);
             }

@@ -77,8 +77,6 @@ namespace NetTopologySuite.Index.KdTree
             if (isOddLevel)
                 return (left ? target.X <= node.X : target.X >= node.X) || Math.Pow(target.X - node.X, 2) < closestDistSq;
             return (left ? target.Y <= node.Y : target.Y >= node.Y) || Math.Pow(target.Y - node.Y, 2) < closestDistSq;
-            return node.X >= target.X - closestDistSq && node.X <= target.X + closestDistSq
-                   || node.Y >= target.Y - closestDistSq && node.Y <= target.Y + closestDistSq;
         }
     }
 }

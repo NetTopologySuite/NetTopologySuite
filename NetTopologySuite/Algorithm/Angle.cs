@@ -33,8 +33,17 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public static class AngleUtility
     {
+        /// <summary>
+        /// Value of 2 * Pi
+        /// </summary>
         public const double PiTimes2 = 2.0 * System.Math.PI;
+        /// <summary>
+        /// Value of Pi / 2
+        /// </summary>
         public const double PiOver2 = System.Math.PI / 2.0;
+        /// <summary>
+        /// Value of Pi / 4
+        /// </summary>
         public const double PiOver4 = System.Math.PI / 4.0;
 
         ///<summary>

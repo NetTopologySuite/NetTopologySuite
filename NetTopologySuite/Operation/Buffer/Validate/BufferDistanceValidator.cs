@@ -223,7 +223,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             errorLocation = ptPairDist.getCoordinate(1);
             errMsg = "Distance between buffer curve and input is too large "
               + "(" + ptPairDist.getDistance()
-              + " at " + ptPairDist.toString() +")";
+              + " at " + ptPairDist.ToString() +")";
           }
         }
         */

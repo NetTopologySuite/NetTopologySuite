@@ -96,6 +96,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             get { return _p; }
         }
 
+        /// <inheritdoc cref="object.ToString()"/>
         public override String ToString()
         {
             return "POINT (" + _p.X + " " + _p.Y + ")";

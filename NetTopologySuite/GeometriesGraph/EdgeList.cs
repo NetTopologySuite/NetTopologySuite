@@ -6,7 +6,7 @@ namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>
     /// A EdgeList is a list of Edges.  It supports locating edges
-    /// that are pointwise equals to a target edge.
+    /// that are point-wise equals to a target edge.
     /// </summary>
     public class EdgeList
     {
@@ -14,12 +14,7 @@ namespace NetTopologySuite.GeometriesGraph
 
         /// <summary>
         /// An index of the edges, for fast lookup.
-        ///// a Quadtree is used, because this index needs to be dynamic
-        ///// (e.g. allow insertions after queries).
-        ///// An alternative would be to use an ordered set based on the values
-        ///// of the edge coordinates.
         /// </summary>
-        ////private readonly ISpatialIndex<Edge> _index = new Quadtree<Edge>();
         private readonly IDictionary<OrientedCoordinateArray, Edge> _ocaMap = new SortedDictionary<OrientedCoordinateArray, Edge>();
 
 

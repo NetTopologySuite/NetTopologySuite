@@ -416,10 +416,10 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             // MD debugging
             QuadEdge[] leftTri = new QuadEdge[3];
             GetTriangleEdges(e, leftTri);
-            // System.out.println(new QuadEdgeTriangle(leftTri).toString());
+            // System.out.println(new QuadEdgeTriangle(leftTri).ToString());
             QuadEdge[] rightTri = new QuadEdge[3];
             GetTriangleEdges(e.Sym, rightTri);
-            // System.out.println(new QuadEdgeTriangle(rightTri).toString());
+            // System.out.println(new QuadEdgeTriangle(rightTri).ToString());
 
             // check other vertex of triangle to left of edge
             Vertex vLeftTriOther = e.LNext.Dest;

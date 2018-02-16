@@ -33,6 +33,7 @@ namespace NetTopologySuite.Index.IntervalRTree
             return true;
         }
 
+        /// <inheritdoc cref="object.ToString()"/>
         public override String ToString()
         {
             return WKTWriter.ToLineString(new Coordinate(Min, 0), new Coordinate(Max, 0));

@@ -196,7 +196,7 @@ namespace NetTopologySuite.Algorithm
 
         ///<summary>
         /// Constructs a homogeneous coordinate which is the intersection of the lines <see cref="Coordinate"/>s.
-        /// define by the homogenous coordinates represented by two
+        /// define by the homogeneous coordinates represented by two
         ///</summary>
         /// <param name="p1">A coordinate</param>
         /// <param name="p2">A coordinate</param>
@@ -208,6 +208,13 @@ namespace NetTopologySuite.Algorithm
             _w = p1.X * p2.Y - p2.X * p1.Y;
         }
 
+        /// <summary>
+        /// Creates an instance of this 
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <param name="q1"></param>
+        /// <param name="q2"></param>
         public HCoordinate(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
             // unrolled computation
