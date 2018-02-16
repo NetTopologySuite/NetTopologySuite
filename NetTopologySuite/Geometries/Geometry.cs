@@ -898,8 +898,14 @@ namespace NetTopologySuite.Geometries
         /// <see cref="Covers"/>
         public bool Contains(IGeometry g)
         {
-            // optimization - lines cannot contain polygons
-            if (Dimension == Dimension.Curve && g.Dimension == Dimension.Surface)
+            // optimization - lower dimension cannot contain areas
+            if (g.Dimension == Dimension.Surface && Dimension < Dimension.Surface)
+                return false;
+
+            // optimization - P cannot contain a non-zero-length L
+            // Note that a point can contain a zero-length lineal geometry, 
+            // since the line has no boundary due to Mod-2 Boundary Rule
+            if (g.Dimension == Dimension.Curve && Dimension < Dimension.Curve && g.Length > 0.0)
                 return false;
 
             // optimization - envelope test
@@ -984,8 +990,13 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="CoveredBy" />
         public bool Covers(IGeometry g)
         {
-            // optimization - lines cannot cover polygons
-            if (Dimension == Dimension.Curve && g.Dimension == Dimension.Surface)
+            // optimization - lower dimension cannot cover areas
+            if (g.Dimension == Dimension.Surface && Dimension < Dimension.Surface)
+                return false;
+
+            // optimization - P cannot cover a non-zero-length L
+            // Note that a point can cover a zero-length lineal geometry
+            if (g.Dimension == Dimension.Curve && Dimension < Dimension.Curve && g.Length > 0.0)
                 return false;
 
             // optimization - envelope test
