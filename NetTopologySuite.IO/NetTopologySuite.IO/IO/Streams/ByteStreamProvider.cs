@@ -5,11 +5,18 @@ using System.Text;
 
 namespace NetTopologySuite.IO.Streams
 {
+    /// <summary>
+    /// A stream provider that provides <see cref="ByteStream"/>s.
+    /// </summary>
     public class ByteStreamProvider : IStreamProvider
 #if Disposable
         , IDisposable
 #endif
     {
+        /// <summary>
+        /// Creates an instance of this class
+        /// </summary>
+        /// <param name="kind">The kind of stream</param>
         public ByteStreamProvider(string kind)
         {
             Kind = kind;

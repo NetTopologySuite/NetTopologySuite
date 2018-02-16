@@ -50,12 +50,12 @@ namespace NetTopologySuite.Geometries
             private readonly double _noDataCheckValue;
             private readonly double _noDataValue;
             private readonly IsNoDataCheck _isNoDataCheck;
-            
+
             /// <summary>
             /// Initializes this stucture with a <paramref name="noDataValue"/>
             /// </summary>
             /// <param name="noDataValue">The value that is to be treated as <c>null</c></param>
-            /// <param name="lessThan">This optional parameter controls whether a value has to be less than <see cref="noDataValue"/> to be considered <c>null</c></param>
+            /// <param name="lessThan">This optional parameter controls whether a value has to be less than <paramref name="noDataValue"/> to be considered <c>null</c></param>
             public DoubleNoDataChecker(double noDataValue, bool lessThan = false)
             {
                 _noDataValue = _noDataCheckValue = noDataValue;
@@ -176,7 +176,7 @@ namespace NetTopologySuite.Geometries
         /// Creates an instance of this class with <paramref name="nullValue"/> defining the values that should be treated as null.
         /// </summary>
         /// <param name="nullValue">The value that should be treated as null.</param>
-        /// <param name="lessThan">This optional parameter controls whether a value has to be less than <see cref="nullValue"/> to be considered <c>null</c></param>
+        /// <param name="lessThan">This optional parameter controls whether a value has to be less than <paramref name="nullValue"/> to be considered <c>null</c></param>
         public CoordinateBuffer(double nullValue, bool lessThan = false)
         {
             _coordinates = new List<double[]>();
@@ -198,7 +198,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="capacity">The inital capacity of the buffer.</param>
         /// <param name="nullValue">The value that should be treated as null.</param>
-        /// <param name="lessThan">This optional parameter controls whether a value has to be less than <see cref="nullValue"/> to be considered <c>null</c></param>
+        /// <param name="lessThan">This optional parameter controls whether a value has to be less than <paramref name="nullValue"/> to be considered <c>null</c></param>
         public CoordinateBuffer(int capacity, double nullValue, bool lessThan = false)
         {
             _coordinates = new List<double[]>(capacity);
@@ -745,16 +745,20 @@ namespace NetTopologySuite.Geometries
             return true;
         }
 
+        /// <inheritdoc cref="object.GetHashCode"/>
         public override int GetHashCode()
         {
             return 685146 ^ _coordinates.Count ^ _extents.GetHashCode();
         }
 
+        /// <inheritdoc cref="object.ToString"/>
         public override string ToString()
         {
             return string.Format("CoordinateBuffer: {0} coordinates, Extent {1}, Z-{2}, M-{3}",
                 _coordinates.Count, _extents, _zInterval, _mInterval);
         }
+
+        /// <inheritdoc cref="object.Equals(object)"/>
         public override bool Equals(object obj)
         {
             if (!(obj is CoordinateBuffer))
