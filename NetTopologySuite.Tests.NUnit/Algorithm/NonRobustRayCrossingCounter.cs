@@ -1,6 +1,7 @@
 ﻿using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm;
 
-namespace NetTopologySuite.Algorithm
+namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     /// <remarks>
     /// This class handles polygonal geometries with any number of shells and holes.

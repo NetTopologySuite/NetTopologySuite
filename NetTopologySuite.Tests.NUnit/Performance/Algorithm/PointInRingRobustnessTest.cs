@@ -4,6 +4,7 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
+using NetTopologySuite.Tests.NUnit.Algorithm;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
