@@ -898,12 +898,18 @@ namespace NetTopologySuite.Geometries
         /// <see cref="Covers"/>
         public bool Contains(IGeometry g)
         {
-            // short-circuit test
+            // optimization - lines cannot contain polygons
+            if (Dimension == Dimension.Curve && g.Dimension == Dimension.Surface)
+                return false;
+
+            // optimization - envelope test
             if (!EnvelopeInternal.Contains(g.EnvelopeInternal))
                 return false;
+
             // optimizations for rectangle arguments
             if (IsRectangle)
                 return RectangleContains.Contains((IPolygon)this, g);
+
             // general case
             return Relate(g).IsContains();
         }
@@ -978,7 +984,11 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="CoveredBy" />
         public bool Covers(IGeometry g)
         {
-            // short-circuit test
+            // optimization - lines cannot cover polygons
+            if (Dimension == Dimension.Curve && g.Dimension == Dimension.Surface)
+                return false;
+
+            // optimization - envelope test
             if (!EnvelopeInternal.Covers(g.EnvelopeInternal))
                 return false;
 
