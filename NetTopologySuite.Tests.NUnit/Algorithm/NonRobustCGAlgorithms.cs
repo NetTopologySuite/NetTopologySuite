@@ -108,7 +108,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             double next2x = next.X - hip.X;
             double next2y = next.Y - hip.Y;
 
-            // compute cross-product of vectors hip->next and hip->prev
+            // compute cross-product of vectors hip->next and hip->previous
             // (e.g. area of parallelogram they enclose)
             double disc = next2x*prev2y - next2y*prev2x;
 
@@ -119,24 +119,11 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                     (2) should never happen, so we're going to ignore it!
                         (Might want to assert this)
             
-                    (1) is handled by checking if next is left of prev ==> CCW
+                    (1) is handled by checking if next is left of previous ==> CCW
             */
             if (disc == 0.0)
-                return (prev.X > next.X); // poly is CCW if prev x is right of next x
+                return (prev.X > next.X); // polygon is CCW if previous x is right of next x
             else return (disc > 0.0); // if area is positive, points are ordered CCW                 
-        }
-
-        /// <summary>
-        /// Computes the orientation of a point q to the directed line segment p1-p2.
-        /// The orientation of a point relative to a directed line segment indicates
-        /// which way you turn to get to q after travelling from p1 to p2.
-        /// </summary>
-        /// <returns>1 if q is counter-clockwise from p1-p2</returns>
-        /// <returns>-1 if q is clockwise from p1-p2</returns>
-        /// <returns>0 if q is collinear with p1-p2</returns>
-        public static int ComputeOrientation(Coordinate p1, Coordinate p2, Coordinate q)
-        {
-            return OrientationIndex(p1, p2, q);
         }
 
         /// <summary>
