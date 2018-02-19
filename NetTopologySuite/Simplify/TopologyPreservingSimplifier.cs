@@ -28,7 +28,7 @@ namespace NetTopologySuite.Simplify
     /// For all geometry types, the result will contain 
     /// enough vertices to ensure validity.  For polygons
     /// and closed linear geometries, the result will have at
-    /// least 4 vertices; for open linestrings the result
+    /// least 4 vertices; for open LineStrings the result
     /// will have at least 2 vertices.
     /// <para/>
     /// All geometry types are handled. 
@@ -73,17 +73,19 @@ namespace NetTopologySuite.Simplify
         private Dictionary<ILineString, TaggedLineString> _lineStringMap;
 
         /// <summary>
-        ///
+        /// Creates an instance of this class for the provided <paramref name="inputGeom"/> geometry
         /// </summary>
-        /// <param name="inputGeom"></param>
+        /// <param name="inputGeom">The geometry to simplify</param>
         public TopologyPreservingSimplifier(IGeometry inputGeom)
         {
             _inputGeom = inputGeom;
         }
 
         /// <summary>
-        ///
-        /// </summary>
+        /// Gets or sets the distance tolerance for the simplification.<br/>
+        /// Points closer than this tolerance to a simplified segment may
+        /// be removed.
+        /// </summary>  
         public double DistanceTolerance
         {
             get { return _lineSimplifier.DistanceTolerance; }
@@ -110,7 +112,7 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        ///
+        /// A LineString transformer
         /// </summary>
         private class LineStringTransformer : GeometryTransformer
         {
@@ -121,19 +123,14 @@ namespace NetTopologySuite.Simplify
                 _container = container;
             }
 
-            /// <summary>
-            ///
-            /// </summary>
-            /// <param name="coords"></param>
-            /// <param name="parent"></param>
-            /// <returns></returns>
+            /// <inheritdoc cref="GeometryTransformer.TransformCoordinates(ICoordinateSequence, IGeometry)"/>>
             protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
             {
                 // for empty coordinate sequences return null
                 if (coords.Count == 0)
                     return null;
 
-                // for linear components (including rings), simplify the linestring
+                // for linear components (including rings), simplify the LineString
                 ILineString s = parent as ILineString;
                 if (s != null)
                 {
@@ -146,12 +143,12 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        /// A filter to add linear geometries to the linestring map 
+        /// A filter to add linear geometries to the LineString map 
         /// with the appropriate minimum size constraint.
         /// Closed <see cref="ILineString"/>s (including <see cref="ILinearRing"/>s
         /// have a minimum output size constraint of 4, 
         /// to ensure the output is valid.
-        /// For all other linestrings, the minimum size is 2 points.
+        /// For all other LineStrings, the minimum size is 2 points.
         /// </summary>
         /// <author>Martin Davis</author>
         private class LineStringMapBuilderFilter : IGeometryComponentFilter

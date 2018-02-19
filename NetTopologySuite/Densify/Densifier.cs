@@ -118,7 +118,7 @@ namespace NetTopologySuite.Densify
                 var inputPts = coords.ToCoordinateArray();
                 var newPts = Densifier
                     .DensifyPoints(inputPts, _distanceTolerance, parent.PrecisionModel);
-                // prevent creation of invalid linestrings
+                // prevent creation of invalid LineStrings
                 if (parent is ILineString && newPts.Length == 1)
                 {
                     newPts = new Coordinate[0];

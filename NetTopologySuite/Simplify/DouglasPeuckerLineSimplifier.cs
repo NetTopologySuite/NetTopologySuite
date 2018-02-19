@@ -26,16 +26,16 @@ namespace NetTopologySuite.Simplify
         private bool[] _usePt;
 
         /// <summary>
-        /// 
+        /// Creates an instance of this class using the provided <paramref name="pts"/> array of coordinates
         /// </summary>
-        /// <param name="pts"></param>
+        /// <param name="pts">An array of coordinates</param>
         public DouglasPeuckerLineSimplifier(Coordinate[] pts)
         {
             _pts = pts;
         }
 
         /// <summary>
-        /// 
+        /// The distance tolerance for the simplification.
         /// </summary>
         public double DistanceTolerance { get; set; }
 
@@ -59,11 +59,6 @@ namespace NetTopologySuite.Simplify
 
         private readonly LineSegment _seg = new LineSegment();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="i"></param>
-        /// <param name="j"></param>
         private void SimplifySection(int i, int j)
         {
             if ((i + 1) == j)

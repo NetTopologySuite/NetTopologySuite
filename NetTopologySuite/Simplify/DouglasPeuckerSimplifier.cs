@@ -107,30 +107,21 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        /// 
+        /// The transformer class
         /// </summary>
         private class DPTransformer : GeometryTransformer
         {
             private readonly DouglasPeuckerSimplifier _container;
             private readonly bool _ensureValidTopology;
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="container"></param>
-            /// <param name="ensureValidTopology"></param>
             public DPTransformer(DouglasPeuckerSimplifier container, bool ensureValidTopology)
             {
                 _container = container;
                 _ensureValidTopology = ensureValidTopology;
             }
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="coords"></param>
-            /// <param name="parent"></param>
-            /// <returns></returns>
+
+            /// <inheritdoc cref="GeometryTransformer.TransformCoordinates(ICoordinateSequence, IGeometry)"/>
             protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
             {
                 Coordinate[] inputPts = coords.ToCoordinateArray();
@@ -144,8 +135,8 @@ namespace NetTopologySuite.Simplify
             /// <summary>
             /// Simplifies a polygon, fixing it if required.
             /// </summary>
-            /// <param name="geom"></param>
-            /// <param name="parent"></param>
+            /// <param name="geom">The geometry to transform</param>
+            /// <param name="parent">The parent geometry</param>
             /// <returns></returns>
             protected override IGeometry TransformPolygon(IPolygon geom, IGeometry parent)
             {
@@ -174,12 +165,7 @@ namespace NetTopologySuite.Simplify
                 return simpResult;
             }
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="geom"></param>
-            /// <param name="parent"></param>
-            /// <returns></returns>
+            /// <inheritdoc cref="GeometryTransformer.TransformMultiPolygon(IMultiPolygon, IGeometry)"/>
             protected override IGeometry TransformMultiPolygon(IMultiPolygon geom, IGeometry parent)
             {
                 IGeometry roughGeom = base.TransformMultiPolygon(geom, parent);
