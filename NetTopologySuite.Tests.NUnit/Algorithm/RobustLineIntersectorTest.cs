@@ -136,10 +136,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             new Coordinate(10, 10),
             new Coordinate(20, 20),
             new Coordinate(0, 0)));
-            Assert.AreEqual(0, NonRobustCGAlgorithms.ComputeOrientation(
-            new Coordinate(10, 10),
-            new Coordinate(20, 20),
-            new Coordinate(0, 0)));
         }
 
         [TestAttribute]

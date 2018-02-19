@@ -17,9 +17,9 @@ namespace NetTopologySuite.Geometries
     /// pair of consecutive vertices.
     /// Consecutive vertices may be equal.
     /// The line segments in the line may intersect each other (in other words,
-    /// the linestring may "curl back" in itself and self-intersect.
-    /// Linestrings with exactly two identical points are invalid.
-    /// <para>A linestring must have either 0 or 2 or more points.
+    /// the <c>LineString</c> may "curl back" in itself and self-intersect.
+    /// <c>LineString</c>s with exactly two identical points are invalid.
+    /// <para>A <c>LineString</c> must have either 0 or 2 or more points.
     /// If these conditions are not met, the constructors throw an <see cref="ArgumentException"/>.
     /// </para>
     /// </remarks>
@@ -58,7 +58,7 @@ namespace NetTopologySuite.Geometries
         /// Initializes a new instance of the <see cref="LineString"/> class.
         /// </summary>
         /// <param name="points">
-        /// The points of the linestring, or <c>null</c>
+        /// The points of the <c>LineString</c>, or <c>null</c>
         /// to create the empty point. Consecutive points may not be equal.
         /// </param>
         /// <param name="factory"></param>
@@ -273,7 +273,7 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                return CGAlgorithms.Length(_points);
+                return Algorithm.Length.OfLine(_points);
             }
         }
 
@@ -438,7 +438,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Normalizes a <c>LineString</c>.  A normalized linestring
+        /// Normalizes a <c>LineString</c>.  A normalized <c>LineString</c>
         /// has the first point which is not equal to it's reflected point
         /// less than the reflected point.
         /// </summary>

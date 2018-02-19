@@ -562,14 +562,15 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Computes the length of a linestring specified by a sequence of points.
+        /// Computes the length of a <c>LineString</c> specified by a sequence of points.
         /// </summary>
-        /// <param name="pts">The points specifying the linestring</param>
-        /// <returns>The length of the linestring</returns>
+        /// <param name="pts">The points specifying the <c>LineString</c></param>
+        /// <returns>The length of the <c>LineString</c></returns>
+        [Obsolete("Use Length.OfLine")]
         public static double Length(ICoordinateSequence pts)
         {
             // optimized for processing CoordinateSequences
-            int n = pts.Count;
+            var n = pts.Count;
             if (n <= 1) return 0.0;
 
             double len = 0.0;
