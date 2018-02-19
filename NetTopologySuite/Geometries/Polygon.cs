@@ -353,9 +353,9 @@ namespace NetTopologySuite.Geometries
             get
             {
                 var area = 0.0;
-                area += Math.Abs(CGAlgorithms.SignedArea(_shell.CoordinateSequence));
+                area += Algorithm.Area.OfRing(_shell.CoordinateSequence);
                 for (int i = 0; i < _holes.Length; i++)
-                    area -= Math.Abs(CGAlgorithms.SignedArea(_holes[i].CoordinateSequence));                
+                    area -= Algorithm.Area.OfRing(_holes[i].CoordinateSequence);
                 return area;
             }
         }

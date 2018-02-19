@@ -494,6 +494,7 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="ring">The coordinates of the ring</param>
         /// <returns>The signed area of the ring</returns>
+        [Obsolete("Use Area.OfRingSigned")]
         public static double SignedArea(Coordinate[] ring)
         {
             if (ring.Length < 3)
@@ -530,6 +531,7 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="ring">The coordinates forming the ring</param>
         /// <returns>The signed area of the ring</returns>
+        [Obsolete("Use Area.OfRingSigned")]
         public static double SignedArea(ICoordinateSequence ring)
         {
             var n = ring.Count;

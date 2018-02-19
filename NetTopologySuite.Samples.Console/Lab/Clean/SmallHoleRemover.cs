@@ -17,7 +17,7 @@ namespace NetTopologySuite.Samples.Lab.Clean
 
             public bool Value(IGeometry geom)
             {
-                double holeArea = Math.Abs(CGAlgorithms.SignedArea(geom.Coordinates));
+                double holeArea = Math.Abs(Area.OfRingSigned(geom.Coordinates));
                 return holeArea <= _area;
             }
         }
