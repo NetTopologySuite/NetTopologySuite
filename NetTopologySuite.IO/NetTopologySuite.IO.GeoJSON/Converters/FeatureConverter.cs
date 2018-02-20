@@ -101,7 +101,6 @@ namespace NetTopologySuite.IO.Converters
                         read = reader.Read();
                         break;
                     case "bbox":
-                        // Read, but can't do anything with it, assigning Envelopes is impossible without reflection
                         Envelope bbox = serializer.Deserialize<Envelope>(reader);
                         feature.BoundingBox = bbox;
                         //Debug.WriteLine("BBOX: {0}", bbox.ToString());

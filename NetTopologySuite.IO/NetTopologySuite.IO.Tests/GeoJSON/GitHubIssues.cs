@@ -559,7 +559,32 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
             }
         }
 
-        
+        [Test(Description = "Parsing GeoJSON issue related to Bounding Box #178"), Category( "GitHub Issue")]
+        public void ParsingCollectionWithBoundingBox()
+        {
+            /*
+             *Parsing GeoJSON issue related to Bounding Box #178
+             */
+
+            var json = "{ \"type\": \"FeatureCollection\", " +
+                       "\"features\": [{\"type\": \"Feature\",\"properties\": {},\"geometry\": {\"type\": \"Polygon\"," +
+                       "\"bbox\": [-105.46875,38.788345355085625,-102.98583984374999,40.27952566881291]," +
+                       "\"coordinates\": [[[-105.46875,38.788345355085625],[-102.98583984374999,38.788345355085625]," +
+                       "[-102.98583984374999,40.27952566881291],[-105.46875,40.27952566881291]," +
+                       "[-105.46875,38.788345355085625]]] }} ]}";
+
+            var rdr = new GeoJsonReader();
+            FeatureCollection fc = null;
+            var cbb = Feature.ComputeBoundingBoxWhenItIsMissing;
+            Feature.ComputeBoundingBoxWhenItIsMissing = true;
+            Assert.DoesNotThrow(() => fc = rdr.Read<FeatureCollection>(json));
+            Assert.That(fc != null);
+            Assert.That(fc.Count, Is.EqualTo(1));
+            Assert.That(fc.BoundingBox, Is.EqualTo(new Envelope(new Coordinate(-105.46875, 38.788345355085625), new Coordinate(-102.98583984374999, 40.27952566881291))));
+            Feature.ComputeBoundingBoxWhenItIsMissing = cbb;
+
+
+        }
     }
 
    

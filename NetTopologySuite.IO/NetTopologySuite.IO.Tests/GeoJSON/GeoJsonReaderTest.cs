@@ -309,7 +309,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
         [Test]
         public void GeoJsonReaderReadGeometryCollectionTest()
         {
-            const string json ="{\"type\": \"GeometryCollection\", \"geometries\": [{\"type\": \"Point\", \"coordinates\": [99.0, 89.0]}, { \"type\": \"LineString\", \"coordinates\": [ [101.0, 0.0], [102.0, 1.0]]}]";
+            const string json ="{\"type\": \"GeometryCollection\", \"geometries\": [{\"type\": \"Point\", \"coordinates\": [99.0, 89.0]}, { \"type\": \"LineString\", \"coordinates\": [ [101.0, 0.0], [102.0, 1.0]]}] }";
             Geometry result = new GeoJsonReader().Read<Geometry>(json);
 
             Assert.IsNotNull(result);

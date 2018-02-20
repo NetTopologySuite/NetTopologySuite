@@ -5,6 +5,7 @@ using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace NetTopologySuite.IO.Converters
 {
@@ -117,28 +118,36 @@ namespace NetTopologySuite.IO.Converters
 
         private static GeoJsonObjectType GetType(JsonReader reader)
         {
-
-            return (GeoJsonObjectType)Enum.Parse(typeof(GeoJsonObjectType), (string)reader.Value, true);
+            var res = (GeoJsonObjectType)Enum.Parse(typeof(GeoJsonObjectType), (string)reader.Value, true);
+            reader.Read();
+            return res;
         }
 
         private static List<object> ReadCoordinates(JsonReader reader)
         {
             List<object> coords = new List<object>();
-            while (reader.Read())
+            var startArray = reader.TokenType == JsonToken.StartArray;
+            reader.Read();
+
+            while (reader.TokenType != JsonToken.EndArray)
             {
                 if (reader.TokenType == JsonToken.StartArray)
                 {
                     coords.Add(ReadCoordinates(reader));
                 }
-                else if (reader.TokenType == JsonToken.EndArray)
-                {
-                    break;
-                }
-                if (reader.Value != null)
+                else if (reader.Value != null)
                 {
                     coords.Add(reader.Value);
+                    reader.Read();
                 }
             }
+
+            if (startArray)
+            {
+                Debug.Assert(reader.TokenType == JsonToken.EndArray);
+                reader.Read();
+            }
+
             return coords;
         }
 
@@ -149,7 +158,10 @@ namespace NetTopologySuite.IO.Converters
             {
                 // Exit if we are at the end
                 if (reader.TokenType == JsonToken.EndArray)
+                {
+                    reader.Read();
                     break;
+                }
 
                 if (reader.TokenType == JsonToken.StartObject)
                 {
@@ -211,44 +223,56 @@ namespace NetTopologySuite.IO.Converters
 
         private IGeometry ParseGeometry(JsonReader reader, JsonSerializer serializer)
         {
+            if (reader.TokenType != JsonToken.StartObject)
+                throw new JsonReaderException("Expected Start object '{' Token");
+
+            // advance
+            var read = reader.Read();
+
             GeoJsonObjectType? geometryType = null;
             List<object> coords = null;
-            while (reader.Read())
+            while (reader.TokenType == JsonToken.PropertyName)
             {
-                if (reader.TokenType == JsonToken.EndObject)
-                {
-                    //we are at the end of the geometry block, do not read further
-                    break;
-                }
-
                 //read the tokens, type may come before coordinates or geometries as pr spec
                 if (reader.TokenType == JsonToken.PropertyName)
                 {
-                    if ((String)reader.Value == "type" && geometryType == null)
+                    var prop = (string)reader.Value;
+                    switch (prop)
                     {
-                        //get the type name
-                        reader.Read();
-                        geometryType = GetType(reader);
-                    }
-                    else if ((String)reader.Value == "geometries")
-                    {
-                        //only geom collection has "geometries"
-                        reader.Read();  //read past start array tag                        
-                        coords = ParseGeomCollection(reader, serializer);
-                    }
-                    else if ((String)reader.Value == "coordinates")
-                    {
-                        reader.Read(); //read past start array tag
-                        coords = ReadCoordinates(reader);
-                    }
-                    else if ((String) reader.Value == "bbox")
-                    {
-                        //Read but discard
-                        var bbox = serializer.Deserialize<Envelope>(reader);
+                        case "type":
+                            if (geometryType == null)
+                            {
+                                reader.Read();
+                                geometryType = GetType(reader);
+                            }
+                            break;
+                        case "geometries":
+                            //only geom collection has "geometries"
+                            reader.Read();  //read past start array tag                        
+                            coords = ParseGeomCollection(reader, serializer);
+                            break;
+                        case "coordinates":
+                            reader.Read(); //read past start array tag
+                            coords = ReadCoordinates(reader);
+                            break;
+                        case "bbox":
+                            // Read, but can't do anything with it, assigning Envelopes is impossible without reflection
+                            var bbox = serializer.Deserialize<Envelope>(reader);
+                            break;
+
+                        default:
+                            reader.Read();
+                            var item = serializer.Deserialize(reader);
+                            reader.Read();
+                            break;
 
                     }
                 }
             }
+
+            if (read && reader.TokenType != JsonToken.EndObject)
+                throw new ArgumentException("Expected token '}' not found.");
+
             if (coords == null || geometryType == null)
             {
                 return null;
