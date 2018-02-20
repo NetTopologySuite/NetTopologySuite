@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
@@ -8695,6 +8696,113 @@ features: [{
             ToImage(0, r1, r2, res);
         }
 
+        [Test(Description = "Bug in difference method #141"), Category("GitHub Issue")]
+        public void TestDifference()
+        {
+            var buffer1 = WKBReader.HexToBytes(
+               //         1         2         3         4         5         6         7         8      
+                "010300000001000000050000000793adf1033458c0a8a08e06b1b34740f6df183c0b3458c0b9d84f"+
+                "27e2b247403559f264963458c0f0eeec1ee5b24740fd9c0635913458c067f1cffdb6b347400793ad"+
+                "f1033458c0a8a08e06b1b34740");
+            var buffer2= WKBReader.HexToBytes(
+                "010300000001000000b5000000f5a3caf8a33458c0f66779fd4db34740e8b86ed8a33458c09207fc"+
+                "c351b3474086533f9fa33458c0f5565f8855b347407dda504da33458c04fb0764959b347401eedba"+
+                "e2a23458c0929317065db3474080e79f5fa23458c0ec5a15bd60b34740208427c4a13458c011ac47"+
+                "6d64b347405f278310a13458c07452881568b34740e4a6ea44a03458c00d65b5b46bb347409a499c"+
+                "619f3458c011d5aa496fb347403313e1669e3458c0fb044bd372b34740064005559d3458c0c6a27c"+
+                "5076b347402dc95f2c9c3458c0338228c079b3474049f34bed9a3458c081c23b217db34740fd992d"+
+                "98993458c038f4a97280b34740161d702d983458c0dda766b383b34740e02783ad963458c0417674"+
+                "e286b34740cde9dd18953458c0ef86cffe89b34740383c0170933458c0fce380078db34740590b6f"+
+                "b3913458c001e395fb8fb3474053edb2e38f3458c09a7024da92b34740a8d65d018e3458c0e9c446"+
+                "a295b34740431a060d8c3458c014af1f5398b347406d6947078a3458c00424d4eb9ab34740b9e6c3"+
+                "f0873458c0ac469a6b9db34740390022ca853458c04014a6d19fb34740836f0c94833458c03c923a"+
+                "1da2b347405372354f813458c0a0119f4da4b34740266c51fc7e3458c034a02562a6b34740fc0b19"+
+                "9c7c3458c0c5e2285aa8b3474019724b2f7a3458c064ef0935aab3474084e4a9b6773458c0ec9834"+
+                "f2abb34740e5e1f832753458c0fe6e1f91adb34740474702a5723458c03e984911afb34740781792"+
+                "0d703458c09aac3872b0b34740077b766d6d3458c084267fb3b1b3474005e681c56a3458c0393dba"+
+                "d4b2b3474066df8716683458c0fabe8fd5b3b34740bd265f61653458c00f11aeb5b4b34740828edf"+
+                "a6623458c0477bd074b5b34740ea0ee3e75f3458c079dcba12b6b347400db344255d3458c043d03b"+
+                "8fb6b34740c6abe15f5a3458c049892aeab6b347400c179698573458c03a686f23b7b347407a4b41"+
+                "d0543458c087f3f43ab7b34740e979c007523458c0aedfb630b7b34740f5f8f23f4f3458c0ae2cb5"+
+                "04b7b3474077f9b5794c3458c011bdfcb6b6b3474047ace6b5493458c0a97ba947b6b347403f4262"+
+                "f5463458c08ec4ddb6b5b3474059d90439443458c0df8ac404b5b34740aa7ca981413458c042a495"+
+                "31b4b34740caeb26d03e3458c024a3933db3b347400c0c56253c3458c0fbb00929b2b34740278a0c"+
+                "82393458c085ff51f4b0b347406ab41ae7363458c07fc0c69fafb3474006ec5155343458c0399fd7"+
+                "2baeb347408a5980cd313458c0fe46f498acb3474041b46d502f3458c029919de7aab3474056c6e2"+
+                "de2c3458c056c85a18a9b34740afe8a1792a3458c069a8b92ba7b34740913b6a21283458c0cccf54"+
+                "22a5b34740bd93f6d6253458c0b399d1fca2b3474034a0ff9a233458c01087d7bba0b34740ef7835"+
+                "6e213458c023211d609eb34740e93548511f3458c0ad3c5dea9bb347403445de441d3458c0376b5d"+
+                "5b99b3474004029d491b3458c08fafe9b396b3474085302160193458c088a3d6f493b34740415c04"+
+                "89173458c0772cfd1e91b347409f8cd8c4153458c03d1243338eb347405f902c14143458c07a4290"+
+                "328bb34740608c8577123458c0141cd31d88b34740db6c65ef103458c0f59402f684b34740048745"+
+                "7c0f3458c08bee19bc81b34740abd1991e0e3458c04b011d717eb347405dd2cfd60c3458c06bcb11"+
+                "167bb347409f774ca50b3458c0a29602ac77b347405577718a0a3458c0b043023474b34740bbb794"+
+                "86093458c052b323af70b3474089d3079a083458c04e5d821e6db3474033f415c5073458c0a69337"+
+                "8369b347406686ff07073458c0256567de65b347406b98ff62063458c01295313162b3474046c74a"+
+                "d6053458c0f957bc7c5eb34740f6180d62053458c0e92d32c25ab3474092e96806053458c06e4bb9"+
+                "0257b34740b0497cc3043458c058567e3f53b34740deb25c99043458c0b7ceab794fb34740e4e114"+
+                "88043458c0dca572b24bb34740e75aac8f043458c09a81ffea47b3474064d21eb0043458c0bf077f"+
+                "2444b3474036c464e9043458c01ede1d6040b34740aec9693b053458c046d00a9f3cb34740bc1d14"+
+                "a6053458c087386ee238b34740e89c4429063458c071e2762b35b34740f766d1c4063458c052284d"+
+                "7b31b34740662a8a78073458c033f312d32db34740ceeb3444083458c0619df0332ab34740247794"+
+                "27093458c025ea059f26b3474096db60220a3458c041516e1523b347400eb74b340b3458c0ff9549"+
+                "981fb347403136005d0c3458c01b99aa281cb347409eee209c0d3458c09415a2c718b3474092174b"+
+                "f10e3458c028ec427615b347402164145c103458c04af5903512b347405ef009dc113458c0f25494"+
+                "060fb3474095b2b670133458c08f4c48ea0bb347406fd19919153458c00ad2a3e108b34740d14d30"+
+                "d6163458c050db9ded05b347409991eea5183458c001561e0f03b3474004ce45881a3458c0fd090b"+
+                "4700b3474089779c7c1c3458c0de4d4396fdb247407e155a821e3458c038e19dfdfab24740905fda"+
+                "98203458c0dac6e67df8b24740ade776bf223458c09101ea17f6b247401e0786f5243458c0e08b64"+
+                "ccf3b247402980553a273458c004ef0c9cf1b247406fdc2f8d293458c0fa429387efb24740d27f5d"+
+                "ed2b3458c0b3089f8fedb247402b371e5a2e3458c09cdecab4ebb2474037e2b2d2303458c0dcf1aa"+
+                "f7e9b24740acc95356333458c054fecc58e8b247401e493ae4353458c0da91add8e6b24740c25d9a"+
+                "7b383458c0463ac977e5b2474047b9a31b3b3458c062578b36e4b247407bfa84c33d3458c0f1b156"+
+                "15e3b247404dad6b72403458c036c78914e2b2474047ff7f27433458c066e67134e1b24740f41dea"+
+                "e1453458c0b1c75375e0b24740fd23d1a0483458c0c3d76fd7dfb247406af358634b3458c0ba09f1"+
+                "5adfb24740426ea5284e3458c0b5500200dfb24740ab63d9ef503458c08597bfc6deb24740cea217"+
+                "b8533458c0380c3aafdeb24740efe78180563458c0112078b9deb2474073dc3848593458c04fad77"+
+                "e5deb24740824f5f0e5c3458c06ad12b33dfb24740232319d25e3458c04fc77aa2dfb24740bb0087"+
+                "92613458c0e7324233e0b2474013f0ce4e643458c051fb54e5e0b24740f3f81606673458c0aa707d"+
+                "b8e1b24740262385b7693458c0c2da76ace2b2474016af42626c3458c02310f6c0e3b24740d0157c"+
+                "056f3458c0942aa5f5e4b2474081bd5ca0713458c0d2ac254ae6b24740ba6a1532743458c051110a"+
+                "bee7b24740cc07d9b9763458c00387e050e9b24740acb7dd36793458c04f5a2a02ebb24740efd55c"+
+                "a87b3458c0994060d1ecb24740af09940d7e3458c0fd7df4bdeeb24740e60cc265803458c04f4e4a"+
+                "c7f0b24740b41d2db0823458c01f7cbeecf2b24740dab21eec843458c07786a92df5b247409c8ee4"+
+                "18873458c019e45489f7b247400099ce35893458c045c005fff9b24740d47637428b3458c07089f6"+
+                "8dfcb24740e4cc793d8d3458c00c175935ffb2474044b1f6268f3458c08b405ff401b347402abe16"+
+                "fe903458c08f8927ca04b3474050d946c2923458c07f9bd2b507b34740b459fa72943458c0b98878"+
+                "b60ab34740d8e1a80f963458c0d5a626cb0db3474025bed397973458c06b4beaf210b34740c460fe"+
+                "0a993458c08be9c32c14b34740c4e5b5689a3458c041f4b37717b347407cda8db09b3458c05a6db4"+
+                "d21ab34740a42a1fe29c3458c09abfb63c1eb3474019460afd9d3458c0877baeb421b34740bf33f8"+
+                "009f3458c01d4f823925b34740de5897ed9f3458c01b0e1bca28b34740018c9cc2a03458c0bd405d"+
+                "652cb347407c60c77fa13458c0f9fd260a30b3474045a2da24a23458c0063754b733b34740f9eca4"+
+                "b1a23458c09c28c56b37b34740b827f925a33458c029074b263bb34740abd0b281a33458c0e3c3c1"+
+                "e53eb34740fdfcb5c4a33458c03793faa842b347401f33edeea33458c017f5ca6e46b34740a87d4a"+
+                "00a43458c0f21d04364ab34740f5a3caf8a33458c0f66779fd4db34740");
+
+            NtsGeometryServices.Instance = new NtsGeometryServices();
+            var reader = new WKBReader();
+            var geom1 = reader.Read(buffer1);
+            var geom2 = reader.Read(buffer2);
+
+            var gu = geom1.Difference(geom2);
+            Assert.IsNotNull(gu);
+            Assert.IsTrue(gu is IPolygonal);
+
+            ToImage(141, geom1, geom2, gu);
+            ToImage(141, geom1, geom2, null);
+            ToImage(141, null, null, gu);
+            ToImage(141, null, null, geom2.Difference(geom1));
+
+            bool isCCW = Orientation.IsCCW(((IPolygon) gu.GetGeometryN(0)).ExteriorRing.CoordinateSequence);
+            for (var i = 1; i < gu.NumGeometries; i++)
+            {
+                var p = (IPolygon) gu.GetGeometryN(1);
+                Assert.That(Orientation.IsCCW(p.ExteriorRing.CoordinateSequence), Is.EqualTo(isCCW));
+            }
+            Console.WriteLine("Orientation CCW = {0}", isCCW);
+        }
+
+
         [Test]
         public void CrossAndIntersectionTest()
         {
@@ -8760,9 +8868,14 @@ features: [{
 
             var gpw = new Windows.Forms.GraphicsPathWriter();
 
-            var extent = geom1.EnvelopeInternal;
+            var extent = new Envelope();
+            if (geom1 != null)
+                extent.ExpandToInclude(geom1.EnvelopeInternal);
             if (geom2 != null)
                 extent.ExpandToInclude(geom2.EnvelopeInternal);
+            if (geom3 != null)
+                extent.ExpandToInclude(geom3.EnvelopeInternal);
+
             extent.ExpandBy(0.05 * extent.Width);
 
             using (var img = new Bitmap(ImageWidth, ImageHeight))
@@ -8774,22 +8887,29 @@ features: [{
                     gr.SmoothingMode = SmoothingMode.AntiAlias;
                     //gr.Transform = CreateTransform(extent);
 
-                    var gp1 = gpw.ToShape(at.Transform(geom1));
-                    if (geom1 is IPolygonal)
-                        gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.Blue)), gp1);
-                    gr.DrawPath(Pens.Blue, gp1);
+                    if (geom1 != null)
+                    {
+                        var gp1 = gpw.ToShape(at.Transform(geom1));
+                        if (geom1 is IPolygonal)
+                            gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.Blue)), gp1);
+                        gr.DrawPath(Pens.Blue, gp1);
+                    }
 
-                    var gp2 = gpw.ToShape(at.Transform(geom2));
-                    if (geom2 is IPolygonal)
-                        gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.OrangeRed)), gp2);
-                    gr.DrawPath(Pens.OrangeRed, gp2);
+                    if (geom2 != null)
+                    {
+                        var gp2 = gpw.ToShape(at.Transform(geom2));
+                        if (geom2 is IPolygonal)
+                            gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.OrangeRed)), gp2);
+                        gr.DrawPath(Pens.OrangeRed, gp2);
+                    }
 
-
-                    var gp3 = gpw.ToShape(at.Transform(geom3));
-                    if (geom3 is IPolygonal)
-                        gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.Gold)), gp3);
-                    gr.DrawPath(Pens.Gold, gp3);
-
+                    if (geom3 != null)
+                    {
+                        var gp3 = gpw.ToShape(at.Transform(geom3));
+                        if (geom3 is IPolygonal)
+                            gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.Gold)), gp3);
+                        gr.DrawPath(Pens.Gold, gp3);
+                    }
 
                 }
                 var path = System.IO.Path.ChangeExtension(System.IO.Path.GetTempFileName(), "png");
