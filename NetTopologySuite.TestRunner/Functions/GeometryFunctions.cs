@@ -23,7 +23,7 @@ namespace Open.Topology.TestRunner.Functions
                 pts = ((ILineString)g).CoordinateSequence;
             if (pts == null)
                 return false;
-            return OrientationFunctions.IsCCW(pts);
+            return Orientation.IsCCW(pts);
         }
 
         public static bool IsSimple(IGeometry g) { return g.IsSimple; }

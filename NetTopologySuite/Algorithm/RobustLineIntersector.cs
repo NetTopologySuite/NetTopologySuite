@@ -20,8 +20,8 @@ namespace NetTopologySuite.Algorithm
             // do between check first, since it is faster than the orientation test
             if (Envelope.Intersects(p1, p2, p))
             {
-                if ((OrientationFunctions.Index(p1, p2, p) == Orientation.Collinear) &&
-                    (OrientationFunctions.Index(p2, p1, p) == Orientation.Collinear))
+                if ((Orientation.Index(p1, p2, p) == OrientationIndex.Collinear) &&
+                    (Orientation.Index(p2, p1, p) == OrientationIndex.Collinear))
                 {
                     IsProper = true;
                     if (p.Equals(p1) || p.Equals(p2))
@@ -44,15 +44,15 @@ namespace NetTopologySuite.Algorithm
             // for each endpoint, compute which side of the other segment it lies
             // if both endpoints lie on the same side of the other segment,
             // the segments do not intersect
-            var Pq1 = OrientationFunctions.Index(p1, p2, q1);
-            var Pq2 = OrientationFunctions.Index(p1, p2, q2);
+            var Pq1 = Orientation.Index(p1, p2, q1);
+            var Pq2 = Orientation.Index(p1, p2, q2);
 
             if ((Pq1 > 0 && Pq2 > 0) ||
                 (Pq1 < 0 && Pq2 < 0))
                 return NoIntersection;
 
-            var Qp1 = OrientationFunctions.Index(q1, q2, p1);
-            var Qp2 = OrientationFunctions.Index(q1, q2, p2);
+            var Qp1 = Orientation.Index(q1, q2, p1);
+            var Qp2 = Orientation.Index(q1, q2, p2);
 
             if ((Qp1 > 0 && Qp2 > 0) ||
                 (Qp1 < 0 && Qp2 < 0))

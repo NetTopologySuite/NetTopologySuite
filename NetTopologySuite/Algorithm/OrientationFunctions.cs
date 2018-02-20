@@ -1,16 +1,23 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
     /// <summary>
-    /// Functions to compute the orientation of points, lines and rings.
+    /// Functions to compute the orientation of basic geometric structures
+    /// including point triplets(triangles) and rings.
+    /// Orientation is a fundamental property of planar geometries 
+    /// (and more generally geometry on two-dimensional manifolds).
+    /// <para/>
+    /// Orientation is notoriously subject to numerical precision errors
+    /// in the case of collinear or nearly collinear points.
+    /// NTS uses extended-precision arithmetic to increase
+    /// the robustness of the computation.
     /// </summary>
     /// <author>
     /// Martin Davis
     /// </author>
-    public static class OrientationFunctions
+    public static class Orientation
     {
         ///**
         // * A value that indicates an orientation of clockwise, or a right turn.
@@ -37,46 +44,40 @@ namespace NetTopologySuite.Algorithm
         // */
         //public const int STRAIGHT = COLLINEAR;
 
-        /**
-         * Returns the index of the direction of the point <code>q</code> relative to
-         * a vector specified by <code>p1-p2</code>.
-         * 
-         * @param p1 
-         * @param p2 
-         * @param q the point to compute the direction to
-         * 
-         * @return 1 if q is counter-clockwise (left) from p1-p2
-         * @return -1 if q is clockwise (right) from p1-p2
-         * @return 0 if q is collinear with p1-p2
-         */
+
         /// <summary>
-        /// Returns the index of the direction of the point <paramref name="q"/> relative to
-        /// a vector specified by <c>p1-p2</c>.
+        /// Returns the orientation index of the direction of the point <paramref name="q"/> relative to
+        /// a directed infinite line specified by <c>p1-&gt;p2</c>.
+        /// The index indicates whether the point lies to the <see cref="OrientationIndex.Left"/>
+        /// or <see cref="OrientationIndex.Right"/> of the line, or lies on it <see cref="OrientationIndex.Collinear"/>.
+        /// The index also indicates the orientation of the triangle formed by the three points
+        /// (<see cref="OrientationIndex.CounterClockwise"/>, <see cref="OrientationIndex.Clockwise"/>, or 
+        /// <see cref="OrientationIndex.Straight"/> )
         /// </summary>
-        /// <param name="p1">The origin point of the vector</param>
-        /// <param name="p2">The final point of the vector</param>
+        /// <param name="p1">The origin point of the line vector</param>
+        /// <param name="p2">The final point of the line vector</param>
         /// <param name="q">The point to compute the direction to</param>
         /// <returns>
-        /// The <see cref="Orientation"/> of q in regard to the vector <c>p1-&gt;p2</c>
+        /// The <see cref="OrientationIndex"/> of q in regard to the vector <c>p1-&gt;p2</c>
         /// <list type="Table">
         /// <listheader>
         /// <term>Value</term><description>Description</description>
         /// </listheader>
         /// <item>
-        /// <term><see cref="Orientation.Collinear"/>, <see cref="Orientation.Straight"/></term>
-        /// <description></description>
+        /// <term><see cref="OrientationIndex.Collinear"/>, <see cref="OrientationIndex.Straight"/></term>
+        /// <description><paramref name="q"/> is collinear with <c>p1-&gt;p2</c></description>
         /// </item>
         /// <item>
-        /// <term><see cref="Orientation.Clockwise"/>, <see cref="Orientation.Right"/></term>
-        /// <description></description>
+        /// <term><see cref="OrientationIndex.Clockwise"/>, <see cref="OrientationIndex.Right"/></term>
+        /// <description><paramref name="q"/> is clockwise (right) from <c>p1-&gt;p2</c></description>
         /// </item>
         /// <item>
-        /// <term><see cref="Orientation.CounterClockwise"/>, <see cref="Orientation.Left"/></term>
-        /// <description></description>
+        /// <term><see cref="OrientationIndex.CounterClockwise"/>, <see cref="OrientationIndex.Left"/></term>
+        /// <description><paramref name="q"/> is counter-clockwise (left) from <c>p1-&gt;p2</c></description>
         /// </item>
         /// </list>
         /// </returns>
-        public static Orientation Index(Coordinate p1, Coordinate p2, Coordinate q)
+        public static OrientationIndex Index(Coordinate p1, Coordinate p2, Coordinate q)
         {
             /**
              * MD - 9 Aug 2010 It seems that the basic algorithm is slightly orientation
@@ -100,7 +101,7 @@ namespace NetTopologySuite.Algorithm
              * clear this is an appropriate patch.
              * 
              */
-            var res = (Orientation)CGAlgorithmsDD.OrientationIndex(p1, p2, q);
+            var res = (OrientationIndex)CGAlgorithmsDD.OrientationIndex(p1, p2, q);
             return res; //(Orientation)CGAlgorithmsDD.OrientationIndex(p1, p2, q);
             // testing only
             //return ShewchuksDeterminant.orientationIndex(p1, p2, q);
@@ -185,7 +186,7 @@ namespace NetTopologySuite.Algorithm
              * this)
              */
             bool isCCW;
-            if (disc == Orientation.Collinear)
+            if (disc == OrientationIndex.Collinear)
             {
                 // poly is CCW if prev x is right of next x
                 isCCW = (prev.X > next.X);
@@ -276,7 +277,7 @@ namespace NetTopologySuite.Algorithm
              * this)
              */
             bool isCCW;
-            if (disc == Orientation.Collinear)
+            if (disc == OrientationIndex.Collinear)
             {
                 // polygon is CCW if previous x is right of next x
                 isCCW = (prev.X > next.X);
@@ -294,9 +295,9 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="orientation">The orientation</param>
         /// <returns></returns>
-        public static Orientation ReOrient(Orientation orientation)
+        public static OrientationIndex ReOrient(OrientationIndex orientation)
         {
-            return (Orientation)(-(int) orientation);
+            return (OrientationIndex)(-(int) orientation);
         }
 
     }

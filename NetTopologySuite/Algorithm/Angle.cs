@@ -132,8 +132,8 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// Returns the oriented smallest angle between two vectors.
         /// The computed angle will be in the range (-Pi, Pi].
-        /// A positive result corresponds to a <see cref="Orientation.CounterClockwise"/> rotation (CCW) from v1 to v2;
-        /// a negative result corresponds to a <see cref="Orientation.Clockwise"/> (CW) rotation;
+        /// A positive result corresponds to a <see cref="OrientationIndex.CounterClockwise"/> rotation (CCW) from v1 to v2;
+        /// a negative result corresponds to a <see cref="OrientationIndex.Clockwise"/> (CW) rotation;
         /// a zero result corresponds to no rotation.
         /// </summary>
         /// <param name="tip1">The tip of v1</param>
@@ -175,22 +175,22 @@ namespace NetTopologySuite.Algorithm
         ///</summary>
         /// <param name="ang1">An angle (in radians)</param>
         /// <param name="ang2">An angle (in radians)</param>
-        /// <returns>Whether a1 must turn <see cref="Orientation.Clockwise"/>, <see cref="Orientation.CounterClockwise"/> or <see cref="Orientation.None"/> to overlap a2.</returns>
-        public static Orientation GetTurn(double ang1, double ang2)
+        /// <returns>Whether a1 must turn <see cref="OrientationIndex.Clockwise"/>, <see cref="OrientationIndex.CounterClockwise"/> or <see cref="OrientationIndex.None"/> to overlap a2.</returns>
+        public static OrientationIndex GetTurn(double ang1, double ang2)
         {
             double crossproduct = System.Math.Sin(ang2 - ang1);
 
             if (crossproduct > 0)
             {
-                return Orientation.CounterClockwise;
+                return OrientationIndex.CounterClockwise;
             }
 
             if (crossproduct < 0)
             {
-                return Orientation.Clockwise;
+                return OrientationIndex.Clockwise;
             }
 
-            return Orientation.None;
+            return OrientationIndex.None;
         }
 
         ///<summary>

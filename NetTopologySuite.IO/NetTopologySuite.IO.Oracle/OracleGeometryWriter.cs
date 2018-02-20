@@ -203,7 +203,7 @@ namespace NetTopologySuite.IO
                 
                 // check outer ring's direction
                 var ring = polygon.ExteriorRing.CoordinateSequence;
-                if (!Algorithm.OrientationFunctions.IsCCW(ring)) {
+                if (!Algorithm.Orientation.IsCCW(ring)) {
                     ring = ring.Reversed(); //reverse(polygon.Factory.CoordinateSequenceFactory, ring); 
                 }
                 AddCoordinates(list,ring);
@@ -211,7 +211,7 @@ namespace NetTopologySuite.IO
                 for (int i = 0; i < holes; i++) {
                 	// check inner ring's direction
                 	ring = polygon.InteriorRings[i].CoordinateSequence;
-                	if (Algorithm.OrientationFunctions.IsCCW(ring)) {
+                	if (Algorithm.Orientation.IsCCW(ring)) {
                         ring = ring.Reversed(); //reverse(polygon.Factory.CoordinateSequenceFactory, ring); 
                     }
                     

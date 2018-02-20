@@ -44,9 +44,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
   public static bool IsAllOrientationsEqual(Coordinate[] pts)
   {
     int[] orient = new int[3];
-    orient[0] = (int)OrientationFunctions.Index(pts[0], pts[1], pts[2]);
-    orient[1] = (int)OrientationFunctions.Index(pts[1], pts[2], pts[0]);
-    orient[2] = (int)OrientationFunctions.Index(pts[2], pts[0], pts[1]);
+    orient[0] = (int)Orientation.Index(pts[0], pts[1], pts[2]);
+    orient[1] = (int)Orientation.Index(pts[1], pts[2], pts[0]);
+    orient[2] = (int)Orientation.Index(pts[2], pts[0], pts[1]);
     return orient[0] == orient[1] && orient[0] == orient[2];
   }
   

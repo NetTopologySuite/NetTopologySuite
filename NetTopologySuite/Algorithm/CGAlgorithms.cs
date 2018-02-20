@@ -75,7 +75,7 @@ namespace NetTopologySuite.Algorithm
              * an appropriate patch.
              *
              */
-            return (int)OrientationFunctions.Index(p1, p2, q);
+            return (int)Orientation.Index(p1, p2, q);
 
             /*
             //Testing only
@@ -186,12 +186,12 @@ namespace NetTopologySuite.Algorithm
         /// <para>This algorithm is only guaranteed to work with valid rings. If the ring is invalid (e.g. self-crosses or touches), the computed result may not be correct.</para>
         /// </remarks>
         /// <param name="ring">An array of <see cref="Coordinate"/>s forming a ring</param>
-        /// <returns>true if the ring is oriented <see cref="Orientation.CounterClockwise"/></returns>
+        /// <returns>true if the ring is oriented <see cref="Algorithm.OrientationIndex.CounterClockwise"/></returns>
         /// <exception cref="ArgumentException">If there are too few points to determine orientation (&lt;4)</exception>
         [Obsolete("Use OrientationFunctions.IsCCW")]
         public static bool IsCCW(Coordinate[] ring)
         {
-            return OrientationFunctions.IsCCW(ring);
+            return Orientation.IsCCW(ring);
         }
 
         /// <summary>
@@ -205,12 +205,12 @@ namespace NetTopologySuite.Algorithm
         /// <para>This algorithm is only guaranteed to work with valid rings. If the ring is invalid (e.g. self-crosses or touches), the computed result may not be correct.</para>
         /// </remarks>
         /// <param name="ring">A coordinate sequence forming a ring</param>
-        /// <returns>true if the ring is oriented <see cref="Orientation.CounterClockwise"/></returns>
+        /// <returns>true if the ring is oriented <see cref="Algorithm.OrientationIndex.CounterClockwise"/></returns>
         /// <exception cref="ArgumentException">If there are too few points to determine orientation (&lt;4)</exception>
         [Obsolete("Use OrientationFunctions.IsCCW")]
         public static bool IsCCW(ICoordinateSequence ring)
         {
-            return OrientationFunctions.IsCCW(ring);
+            return Orientation.IsCCW(ring);
         }
 
 
@@ -229,7 +229,7 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         public static int ComputeOrientation(Coordinate p1, Coordinate p2, Coordinate q)
         {
-            return (int)OrientationFunctions.Index(p1, p2, q);
+            return (int)Orientation.Index(p1, p2, q);
         }
 
         /// <summary>

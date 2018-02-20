@@ -15,7 +15,7 @@ namespace Open.Topology.TestRunner.Functions
             Coordinate[] segPt = segment.Coordinates;
 
             Coordinate p = ptGeom.Coordinate;
-            int index = (int)OrientationFunctions.Index(segPt[0], segPt[1], p);
+            int index = (int)Orientation.Index(segPt[0], segPt[1], p);
             return index;
         }
 

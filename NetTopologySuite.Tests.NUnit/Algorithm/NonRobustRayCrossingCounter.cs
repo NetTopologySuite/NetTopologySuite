@@ -142,7 +142,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 || ((p2.Y > _p.Y) && (p1.Y <= _p.Y)))
             {
 
-                var orient = (int)OrientationFunctions.Index(p1, p2, _p);
+                var orient = (int)Orientation.Index(p1, p2, _p);
 
                 if (orient == 0)
                 {

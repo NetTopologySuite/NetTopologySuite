@@ -16,24 +16,24 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         public void TestCCW()
         {
             Coordinate[] pts = GetCoordinates("POLYGON ((60 180, 140 240, 140 240, 140 240, 200 180, 120 120, 60 180))");
-            Assert.IsFalse(OrientationFunctions.IsCCW(pts));
+            Assert.IsFalse(Orientation.IsCCW(pts));
             ICoordinateSequence seq =
                 GetCoordinateSequence("POLYGON ((60 180, 140 240, 140 240, 140 240, 200 180, 120 120, 60 180))");
-            Assert.IsFalse(OrientationFunctions.IsCCW(seq));
+            Assert.IsFalse(Orientation.IsCCW(seq));
 
 
             Coordinate[] pts2 = GetCoordinates("POLYGON ((60 180, 140 120, 100 180, 140 240, 60 180))");
-            Assert.IsTrue(OrientationFunctions.IsCCW(pts2));
+            Assert.IsTrue(Orientation.IsCCW(pts2));
             ICoordinateSequence seq2 =
                 GetCoordinateSequence("POLYGON ((60 180, 140 120, 100 180, 140 240, 60 180))");
-            Assert.IsTrue(OrientationFunctions.IsCCW(seq2));
+            Assert.IsTrue(Orientation.IsCCW(seq2));
 
             // same pts list with duplicate top point - check that isCCW still works
             Coordinate[] pts2x = GetCoordinates("POLYGON ((60 180, 140 120, 100 180, 140 240, 140 240, 60 180))");
-            Assert.IsTrue(OrientationFunctions.IsCCW(pts2x));
+            Assert.IsTrue(Orientation.IsCCW(pts2x));
             ICoordinateSequence seq2x =
                 GetCoordinateSequence("POLYGON ((60 180, 140 120, 100 180, 140 240, 140 240, 60 180))");
-            Assert.IsTrue(OrientationFunctions.IsCCW(seq2x));
+            Assert.IsTrue(Orientation.IsCCW(seq2x));
         }
 
         private Coordinate[] GetCoordinates(String wkt)

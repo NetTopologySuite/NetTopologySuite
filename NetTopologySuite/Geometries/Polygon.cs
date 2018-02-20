@@ -581,7 +581,7 @@ namespace NetTopologySuite.Geometries
             CoordinateArrays.Scroll(uniqueCoordinates, minCoordinate);
             Array.Copy(uniqueCoordinates, 0, ring.Coordinates, 0, uniqueCoordinates.Length);
             ring.Coordinates[uniqueCoordinates.Length] = uniqueCoordinates[0];
-            if (OrientationFunctions.IsCCW(ring.Coordinates) == clockwise) 
+            if (Orientation.IsCCW(ring.Coordinates) == clockwise) 
                 CoordinateArrays.Reverse(ring.Coordinates);            
         }
 

@@ -474,7 +474,7 @@ namespace DotSpatial.Topology
                 }
                 else
                 {
-                    if (NetTopologySuite.Algorithm.OrientationFunctions.IsCCW(ring.CoordinateSequence))
+                    if (NetTopologySuite.Algorithm.Orientation.IsCCW(ring.CoordinateSequence))
                     {
                         holes.Add(ring);
                     }

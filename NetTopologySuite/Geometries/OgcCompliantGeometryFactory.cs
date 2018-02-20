@@ -52,14 +52,14 @@ namespace NetTopologySuite.Geometries
 
         private ILinearRing CreateLinearRing(Coordinate[] coordinates, bool ccw)
         {
-            if (coordinates != null && OrientationFunctions.IsCCW(coordinates) != ccw) 
+            if (coordinates != null && Orientation.IsCCW(coordinates) != ccw) 
                 Array.Reverse(coordinates);
             return CreateLinearRing(coordinates);
         }
 
         private ILinearRing CreateLinearRing(ICoordinateSequence coordinates, bool ccw)
         {
-            if (coordinates != null && OrientationFunctions.IsCCW(coordinates) != ccw)
+            if (coordinates != null && Orientation.IsCCW(coordinates) != ccw)
             {
                 //CoordinateSequences.Reverse(coordinates);
                 coordinates = coordinates.Reversed();

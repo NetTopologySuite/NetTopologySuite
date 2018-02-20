@@ -3,7 +3,7 @@ namespace NetTopologySuite.Algorithm
     /// <summary>
     /// Angle orientation
     /// </summary>
-    public enum Orientation
+    public enum OrientationIndex
     {
         ///<summary>A value that indicates an orientation of collinear, or no turn (straight)</summary>
         Collinear = 0,
@@ -26,4 +26,6 @@ namespace NetTopologySuite.Algorithm
         ///<summary>A value that indicates an orientation of clockwise or a right turn.</summary>
         Right = Clockwise
     }
+
+
 }

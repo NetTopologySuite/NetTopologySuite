@@ -102,7 +102,7 @@ namespace NetTopologySuite.Geometries
             return Factory.CreateLinearRing(sequence);
         }
 
-        public bool IsCCW { get { return OrientationFunctions.IsCCW(CoordinateSequence); } }
+        public bool IsCCW { get { return Orientation.IsCCW(CoordinateSequence); } }
         
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
