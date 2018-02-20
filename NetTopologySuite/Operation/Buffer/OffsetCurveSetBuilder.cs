@@ -197,7 +197,7 @@ namespace NetTopologySuite.Operation.Buffer
             var leftLoc = cwLeftLoc;
             var rightLoc = cwRightLoc;
             if (coord.Length >= LinearRing.MinimumValidSize
-                && CGAlgorithms.IsCCW(coord))
+                && OrientationFunctions.IsCCW(coord))
             {
                 leftLoc = cwRightLoc;
                 rightLoc = cwLeftLoc;

@@ -381,7 +381,7 @@ namespace NetTopologySuite.Mathematics
         /// <returns></returns>
         public bool IsParallel(Vector2D v)
         {
-            return 0d == CGAlgorithmsDD.SignOfDet2x2(_x, _y, v._x, v._y);
+            return 0 == CGAlgorithmsDD.SignOfDet2x2(_x, _y, v._x, v._y);
         }
 
         /// <summary>

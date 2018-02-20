@@ -20,8 +20,8 @@ namespace NetTopologySuite.Algorithm
             // do between check first, since it is faster than the orientation test
             if (Envelope.Intersects(p1, p2, p))
             {
-                if ((CGAlgorithms.OrientationIndex(p1, p2, p) == 0) &&
-                    (CGAlgorithms.OrientationIndex(p2, p1, p) == 0))
+                if ((OrientationFunctions.Index(p1, p2, p) == Orientation.Collinear) &&
+                    (OrientationFunctions.Index(p2, p1, p) == Orientation.Collinear))
                 {
                     IsProper = true;
                     if (p.Equals(p1) || p.Equals(p2))
@@ -44,21 +44,21 @@ namespace NetTopologySuite.Algorithm
             // for each endpoint, compute which side of the other segment it lies
             // if both endpoints lie on the same side of the other segment,
             // the segments do not intersect
-            int Pq1 = CGAlgorithms.OrientationIndex(p1, p2, q1);
-            int Pq2 = CGAlgorithms.OrientationIndex(p1, p2, q2);
+            var Pq1 = OrientationFunctions.Index(p1, p2, q1);
+            var Pq2 = OrientationFunctions.Index(p1, p2, q2);
 
             if ((Pq1 > 0 && Pq2 > 0) ||
                 (Pq1 < 0 && Pq2 < 0))
                 return NoIntersection;
 
-            int Qp1 = CGAlgorithms.OrientationIndex(q1, q2, p1);
-            int Qp2 = CGAlgorithms.OrientationIndex(q1, q2, p2);
+            var Qp1 = OrientationFunctions.Index(q1, q2, p1);
+            var Qp2 = OrientationFunctions.Index(q1, q2, p2);
 
             if ((Qp1 > 0 && Qp2 > 0) ||
                 (Qp1 < 0 && Qp2 < 0))
                 return NoIntersection;
 
-            bool collinear = Pq1 == 0 && Pq2 == 0 && Qp1 == 0 && Qp2 == 0;
+            var collinear = Pq1 == 0 && Pq2 == 0 && Qp1 == 0 && Qp2 == 0;
             if (collinear)
                 return ComputeCollinearIntersection(p1, p2, q1, q2);
 

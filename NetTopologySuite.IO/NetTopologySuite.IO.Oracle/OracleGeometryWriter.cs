@@ -203,16 +203,16 @@ namespace NetTopologySuite.IO
                 
                 // check outer ring's direction
                 var ring = polygon.ExteriorRing.CoordinateSequence;
-                if (!Algorithm.CGAlgorithms.IsCCW(ring.ToCoordinateArray())) {
-                    ring = reverse(polygon.Factory.CoordinateSequenceFactory, ring); 
+                if (!Algorithm.OrientationFunctions.IsCCW(ring)) {
+                    ring = ring.Reversed(); //reverse(polygon.Factory.CoordinateSequenceFactory, ring); 
                 }
                 AddCoordinates(list,ring);
 
                 for (int i = 0; i < holes; i++) {
                 	// check inner ring's direction
                 	ring = polygon.InteriorRings[i].CoordinateSequence;
-                	if (Algorithm.CGAlgorithms.IsCCW(ring.ToCoordinateArray())) {
-                        ring = reverse(polygon.Factory.CoordinateSequenceFactory, ring); 
+                	if (Algorithm.OrientationFunctions.IsCCW(ring)) {
+                        ring = ring.Reversed(); //reverse(polygon.Factory.CoordinateSequenceFactory, ring); 
                     }
                     
                     AddCoordinates(list,ring);
@@ -763,20 +763,20 @@ namespace NetTopologySuite.IO
     //    return new NUMBER( number );
     //}
 
-    /**
-     * reverses the coordinate order
-     *
-     * @param factory
-     * @param sequence
-     *
-     * @return CoordinateSequence reversed sequence
-     */
-    private ICoordinateSequence reverse(ICoordinateSequenceFactory factory, ICoordinateSequence sequence) 
-    {
-    	var list = new CoordinateList(sequence.ToCoordinateArray());
-        list.Reverse();
-        return factory.Create(list.ToCoordinateArray());
-    }
+    ///**
+    // * reverses the coordinate order
+    // *
+    // * @param factory
+    // * @param sequence
+    // *
+    // * @return CoordinateSequence reversed sequence
+    // */
+    //private ICoordinateSequence reverse(ICoordinateSequenceFactory factory, ICoordinateSequence sequence) 
+    //{
+    //	var list = new CoordinateList(sequence.ToCoordinateArray());
+    //    list.Reverse();
+    //    return factory.Create(list.ToCoordinateArray());
+    //}
 
 	/**
 	 * @param dimension The dimension to set.

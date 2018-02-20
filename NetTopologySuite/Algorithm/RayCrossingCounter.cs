@@ -144,8 +144,8 @@ namespace NetTopologySuite.Algorithm
             if (((p1.Y > _p.Y) && (p2.Y <= _p.Y))
                     || ((p2.Y > _p.Y) && (p1.Y <= _p.Y)))
             {
-                var orient = CGAlgorithms.OrientationIndex(p1, p2, _p);
-                if (orient == CGAlgorithms.Collinear)
+                var orient = OrientationFunctions.Index(p1, p2, _p);
+                if (orient == Orientation.Collinear)
                 {
                     _isPointOnSegment = true;
                     return;
@@ -153,10 +153,10 @@ namespace NetTopologySuite.Algorithm
                 // Re-orient the result if needed to ensure effective segment direction is upwards
                 if (p2.Y < p1.Y)
                 {
-                    orient = -orient;
+                    orient = OrientationFunctions.ReOrient(orient);
                 }
                 // The upward segment crosses the ray if the test point lies to the left (CCW) of the segment.
-                if (orient == CGAlgorithms.Left)
+                if (orient == Orientation.Left)
                 {
                     _crossingCount++;
                 }

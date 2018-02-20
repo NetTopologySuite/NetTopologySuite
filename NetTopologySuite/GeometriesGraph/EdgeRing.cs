@@ -164,7 +164,7 @@ namespace NetTopologySuite.GeometriesGraph
                 coord[i] = (Coordinate) _pts[i];
              */
             _ring = _geometryFactory.CreateLinearRing(coord);
-            _isHole = CGAlgorithms.IsCCW(_ring.Coordinates);
+            _isHole = OrientationFunctions.IsCCW(_ring.Coordinates);
         }
 
         /// <summary>

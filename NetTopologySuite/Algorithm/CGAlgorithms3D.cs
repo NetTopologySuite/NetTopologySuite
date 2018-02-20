@@ -8,7 +8,7 @@ namespace NetTopologySuite.Algorithm
     /// Basic computational geometry algorithms 
     /// for geometry and coordinates defined in 3-dimensional Cartesian space.
     /// </summary>
-    /// <author>mdavis</author>
+    /// <author>Martin Davis</author>
     public static class CGAlgorithms3D
     {
         /// <summary>

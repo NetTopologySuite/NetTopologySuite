@@ -126,7 +126,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="pts"></param>
         private void AddShell(Coordinate[] pts)
         {
-            bool isPositiveArea = !CGAlgorithms.IsCCW(pts);
+            bool isPositiveArea = !OrientationFunctions.IsCCW(pts);
             for (int i = 0; i < pts.Length - 1; i++)
                 AddTriangle(_basePt, pts[i], pts[i + 1], isPositiveArea);
             AddLinearSegments(pts);
@@ -138,7 +138,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="pts"></param>
         private void AddHole(Coordinate[] pts)
         {
-            bool isPositiveArea = CGAlgorithms.IsCCW(pts);
+            bool isPositiveArea = OrientationFunctions.IsCCW(pts);
             for (int i = 0; i < pts.Length - 1; i++)
                 AddTriangle(_basePt, pts[i], pts[i + 1], isPositiveArea);
             AddLinearSegments(pts);

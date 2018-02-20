@@ -177,8 +177,8 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public int OrientationIndex(LineSegment seg)
         {
-            var orient0 = CGAlgorithms.OrientationIndex(_p0, _p1, seg._p0);
-            var orient1 = CGAlgorithms.OrientationIndex(_p0, _p1, seg._p1);
+            var orient0 = (int)OrientationFunctions.Index(_p0, _p1, seg._p0);
+            var orient1 = (int)OrientationFunctions.Index(_p0, _p1, seg._p1);
             // this handles the case where the points are Curve or collinear
             if (orient0 >= 0 && orient1 >= 0)
                 return Math.Max(orient0, orient1);
@@ -189,22 +189,10 @@ namespace NetTopologySuite.Geometries
             return 0;
         }
 
-        /**
-         *
-         *
-         *
-         * @param seg the LineSegment to compare
-         *
-         * @return
-         * @return
-         * @return
-         *
-         * @see CGAlgorithms#computeOrientation(Coordinate, Coordinate, Coordinate)
-         */
 
         ///<summary>
         /// Determines the orientation index of a <see cref="Coordinate"/> relative to this segment.
-        /// The orientation index is as defined in <see cref="CGAlgorithms.ComputeOrientation"/>.
+        /// The orientation index is as defined in <see cref="OrientationFunctions.Index"/>.
         ///</summary>
         ///
         /// <returns>
@@ -217,7 +205,7 @@ namespace NetTopologySuite.Geometries
         ///
         public int OrientationIndex(Coordinate p)
         {
-            return CGAlgorithms.OrientationIndex(_p0, _p1, p);
+            return (int)OrientationFunctions.Index(_p0, _p1, p);
         }
 
         /// <summary>

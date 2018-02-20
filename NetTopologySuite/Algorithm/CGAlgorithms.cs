@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.Mathematics;
 
 namespace NetTopologySuite.Algorithm
@@ -50,6 +49,7 @@ namespace NetTopologySuite.Algorithm
         /// -1 if q is clockwise (right) from p1-p2,
         /// 0 if q is collinear with p1-p2.
         /// </returns>
+        [Obsolete("Use OrientationFunctions.Index")]
         public static int OrientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
         {
             /**
@@ -75,7 +75,7 @@ namespace NetTopologySuite.Algorithm
              * an appropriate patch.
              *
              */
-            return CGAlgorithmsDD.OrientationIndex(p1, p2, q);
+            return (int)OrientationFunctions.Index(p1, p2, q);
 
             /*
             //Testing only
@@ -159,7 +159,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p"></param>
         /// <param name="pt"></param>
         /// <returns>true if the point is a vertex of the line
-        /// or lies in the interior of a line segment in the linestring
+        /// or lies in the interior of a line segment in the <c>LineString</c>
         /// </returns>
         public static bool IsOnLine(Coordinate p, Coordinate[] pt)
         {
@@ -175,7 +175,7 @@ namespace NetTopologySuite.Algorithm
             return false;
         }
 
-		/// <summary>
+        /// <summary>
         /// Computes whether a ring defined by an array of <see cref="Coordinate" />s is oriented counter-clockwise.
         /// </summary>>
         /// <remarks>
@@ -185,77 +185,13 @@ namespace NetTopologySuite.Algorithm
         /// </list>
         /// <para>This algorithm is only guaranteed to work with valid rings. If the ring is invalid (e.g. self-crosses or touches), the computed result may not be correct.</para>
         /// </remarks>
-        /// <param name="ring">An array of <see cref="Coordinate"/>s froming a ring</param>
+        /// <param name="ring">An array of <see cref="Coordinate"/>s forming a ring</param>
         /// <returns>true if the ring is oriented <see cref="Orientation.CounterClockwise"/></returns>
         /// <exception cref="ArgumentException">If there are too few points to determine orientation (&lt;4)</exception>
+        [Obsolete("Use OrientationFunctions.IsCCW")]
         public static bool IsCCW(Coordinate[] ring)
         {
-            // # of points without closing endpoint
-            int nPts = ring.Length - 1;
-
-            // sanity check
-            if (nPts < 3)
-                throw new ArgumentException("Ring has fewer than 4 points, so orientation cannot be determined");
-
-            // find highest point
-            Coordinate hiPt = ring[0];
-            int hiIndex = 0;
-            for (int i = 1; i <= nPts; i++)
-            {
-                Coordinate p = ring[i];
-                if (p.Y > hiPt.Y)
-                {
-                    hiPt = p;
-                    hiIndex = i;
-                }
-            }
-
-            // find distinct point before highest point
-            int iPrev = hiIndex;
-            do
-            {
-                iPrev = iPrev - 1;
-                if (iPrev < 0) iPrev = nPts;
-            }
-            while (ring[iPrev].Equals2D(hiPt) && iPrev != hiIndex);
-
-            // find distinct point after highest point
-            int iNext = hiIndex;
-            do
-                iNext = (iNext + 1) % nPts;
-            while (ring[iNext].Equals2D(hiPt) && iNext != hiIndex);
-
-            Coordinate prev = ring[iPrev];
-            Coordinate next = ring[iNext];
-
-            /*
-             * This check catches cases where the ring contains an A-B-A configuration of points.
-             * This can happen if the ring does not contain 3 distinct points
-             * (including the case where the input array has fewer than 4 elements),
-             * or it contains coincident line segments.
-             */
-            if (prev.Equals2D(hiPt) || next.Equals2D(hiPt) || prev.Equals2D(next))
-                return false;
-
-            int disc = ComputeOrientation(prev, hiPt, next);
-
-            /*
-             *  If disc is exactly 0, lines are collinear.  There are two possible cases:
-             *  (1) the lines lie along the x axis in opposite directions
-             *  (2) the lines lie on top of one another
-             *
-             *  (1) is handled by checking if next is left of prev ==> CCW
-             *  (2) will never happen if the ring is valid, so don't check for it
-             *  (Might want to assert this)
-             */
-            bool isCCW;
-            if (disc == 0)
-                // poly is CCW if prev x is right of next x
-                isCCW = (prev.X > next.X);
-            else
-                // if area is positive, points are ordered CCW
-                isCCW = (disc > 0);
-            return isCCW;
+            return OrientationFunctions.IsCCW(ring);
         }
 
         /// <summary>
@@ -268,19 +204,20 @@ namespace NetTopologySuite.Algorithm
         /// </list>
         /// <para>This algorithm is only guaranteed to work with valid rings. If the ring is invalid (e.g. self-crosses or touches), the computed result may not be correct.</para>
         /// </remarks>
-        /// <param name="ring">A coordinate sequence froming a ring</param>
+        /// <param name="ring">A coordinate sequence forming a ring</param>
         /// <returns>true if the ring is oriented <see cref="Orientation.CounterClockwise"/></returns>
         /// <exception cref="ArgumentException">If there are too few points to determine orientation (&lt;4)</exception>
+        [Obsolete("Use OrientationFunctions.IsCCW")]
         public static bool IsCCW(ICoordinateSequence ring)
         {
-            return IsCCW(ring.ToCoordinateArray());
+            return OrientationFunctions.IsCCW(ring);
         }
 
 
         /// <summary>
         /// Computes the orientation of a point q to the directed line segment p1-p2.
         /// The orientation of a point relative to a directed line segment indicates
-        /// which way you turn to get to q after travelling from p1 to p2.
+        /// which way you turn to get to q after traveling from p1 to p2.
         /// </summary>
         /// <param name="p1">The first vertex of the line segment</param>
         /// <param name="p2">The second vertex of the line segment</param>
@@ -292,7 +229,7 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         public static int ComputeOrientation(Coordinate p1, Coordinate p2, Coordinate q)
         {
-            return OrientationIndex(p1, p2, q);
+            return (int)OrientationFunctions.Index(p1, p2, q);
         }
 
         /// <summary>

@@ -6,6 +6,7 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
 using NetTopologySuite.Planargraph;
+using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Operation.Polygonize
 {
@@ -188,7 +189,8 @@ namespace NetTopologySuite.Operation.Polygonize
         public void ComputeHole()
         {
             var ring = Ring;
-            _isHole = CGAlgorithms.IsCCW(ring.Coordinates);
+            _isHole = OrientationFunctions.IsCCW(ring.CoordinateSequence);
+            Assert.IsTrue(OrientationFunctions.IsCCW(ring.CoordinateSequence) == OrientationFunctions.IsCCW(ring.Coordinates));
         }
 
         /// <summary>

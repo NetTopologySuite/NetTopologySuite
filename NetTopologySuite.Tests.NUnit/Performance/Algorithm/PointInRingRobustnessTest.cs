@@ -143,15 +143,15 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             //var isPointInRing = Location.Interior == RayCrossingCounter.LocatePointInRing(pt, triPts);
             var isPointInRing = Location.Interior == NonRobustRayCrossingCounter.LocatePointInRing(pt, triPts);
 
-            var orientation = CGAlgorithms.OrientationIndex(triPts[1], triPts[2], pt);
-            if (CGAlgorithms.IsCCW(triPts))
-                orientation = -orientation;
+            var orientation = OrientationFunctions.Index(triPts[1], triPts[2], pt);
+            if (OrientationFunctions.IsCCW(triPts))
+                orientation = OrientationFunctions.ReOrient(orientation);
 
             // if collinear can't determine a failure
-            if (orientation == CGAlgorithms.Collinear) return true;
+            if (orientation == Orientation.Collinear) return true;
 
-            var bothOutside = !isPointInRing && orientation == CGAlgorithms.Left;
-            var bothInside = isPointInRing && orientation == CGAlgorithms.Right;
+            var bothOutside = !isPointInRing && orientation == Orientation.Left;
+            var bothInside = isPointInRing && orientation == Orientation.Right;
             var isConsistent = bothOutside || bothInside;
 
             if (!isConsistent)
@@ -215,7 +215,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
                     // detect an upward crossing
                     if (ring[i + 1].Y > p.Y)
                     {
-                        if (CGAlgorithms.Left == CGAlgorithms.OrientationIndex(ring[i], ring[i + 1], p))
+                        if (Orientation.Left == OrientationFunctions.Index(ring[i], ring[i + 1], p))
                             winding++;
                     }
                 }
@@ -223,7 +223,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
                 {
                     // detect a downward crossing
                     if (ring[i + 1].Y <= p.Y)
-                        if (CGAlgorithms.Right == CGAlgorithms.OrientationIndex(ring[i], ring[i + 1], p))
+                        if (Orientation.Right == OrientationFunctions.Index(ring[i], ring[i + 1], p))
                             winding--;
                 }
             }

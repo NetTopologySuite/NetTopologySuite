@@ -1,5 +1,6 @@
 using System;
 using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm;
 
 namespace NetTopologySuite.Geometries
 {
@@ -101,7 +102,7 @@ namespace NetTopologySuite.Geometries
             return Factory.CreateLinearRing(sequence);
         }
 
-        public bool IsCCW { get { return Algorithm.CGAlgorithms.IsCCW(CoordinateSequence); } }
+        public bool IsCCW { get { return OrientationFunctions.IsCCW(CoordinateSequence); } }
         
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 

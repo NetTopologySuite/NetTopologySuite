@@ -170,7 +170,7 @@ namespace NetTopologySuite.Algorithm
         {
             if (pts.Length > 0)
                 SetAreaBasePoint(pts[0]);
-            bool isPositiveArea = !CGAlgorithms.IsCCW(pts);
+            bool isPositiveArea = !OrientationFunctions.IsCCW(pts);
             for (int i = 0; i < pts.Length - 1; i++)
             {
                 AddTriangle(_areaBasePt, pts[i], pts[i + 1], isPositiveArea);
@@ -180,7 +180,7 @@ namespace NetTopologySuite.Algorithm
 
         private void AddHole(Coordinate[] pts)
         {
-            bool isPositiveArea = CGAlgorithms.IsCCW(pts);
+            bool isPositiveArea = OrientationFunctions.IsCCW(pts);
             for (int i = 0; i < pts.Length - 1; i++)
             {
                 AddTriangle(_areaBasePt, pts[i], pts[i + 1], isPositiveArea);

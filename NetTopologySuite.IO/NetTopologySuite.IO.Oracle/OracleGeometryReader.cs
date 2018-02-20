@@ -439,7 +439,7 @@ namespace NetTopologySuite.IO
 
                     var ring = CreateLinearRing(dim, lrs, elemInfo, i, coords);
 
-                    if (Algorithm.CGAlgorithms.IsCCW(ring.Coordinates))
+                    if (Algorithm.OrientationFunctions.IsCCW(ring.CoordinateSequence))
                     {
                         // it is an Interior Hole
                         rings.Add(ring);

@@ -3,30 +3,6 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
-    /// <summary>
-    /// Angle orientation
-    /// </summary>
-    public enum Orientation
-    {
-        ///<summary>Constant representing no orientation</summary>
-        None = CGAlgorithms.Collinear,
-
-        ///<summary>Constant representing straight orientation</summary>
-        Straight = None,
-
-        ///<summary>Constant representing counterclockwise orientation</summary>
-        CounterClockwise = CGAlgorithms.CounterClockwise,
-
-        ///<summary>Constant representing left orientation</summary>
-        Left = CounterClockwise,
-
-        ///<summary>Constant representing clockwise orientation</summary>
-        Clockwise = CGAlgorithms.Clockwise,
-
-        ///<summary>Constant representing right orientation</summary>
-        Right = Clockwise
-    }
-
     ///<summary>
     /// Utility functions for working with angles.
     /// Unless otherwise noted, methods in this class express angles in radians.

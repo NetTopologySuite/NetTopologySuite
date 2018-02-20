@@ -210,7 +210,7 @@ namespace NetTopologySuite.Mathematics
         /// <summary>
         /// Creates and returns a copy of this value.
         /// </summary>
-        /// <returns>Acopy of this value</returns>
+        /// <returns>A copy of this value</returns>
         public Object Clone()
         {
             return new DD(_hi, _lo);

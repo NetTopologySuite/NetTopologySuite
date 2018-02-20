@@ -270,7 +270,7 @@ namespace NetTopologySuite.GeometriesGraph
             }
             Location left = cwLeft;
             Location right = cwRight;
-            if (CGAlgorithms.IsCCW(coord))
+            if (OrientationFunctions.IsCCW(coord))
             {
                 left = cwRight;
                 right = cwLeft;

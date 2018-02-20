@@ -213,7 +213,7 @@ namespace NetTopologySuite.Windows.Media
 
         private static bool IsHole(Coordinate[] pts)
         {
-            return CGAlgorithms.IsCCW(pts);
+            return OrientationFunctions.IsCCW(pts);
         }
 
         ///<summary>
