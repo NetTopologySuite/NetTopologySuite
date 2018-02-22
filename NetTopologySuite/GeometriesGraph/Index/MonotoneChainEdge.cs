@@ -24,9 +24,6 @@ namespace NetTopologySuite.GeometriesGraph.Index
         // the lists of start/end indexes of the monotone chains.
         // Includes the end point of the edge as a sentinel
         private readonly int[] startIndex;
-        // these envelopes are created once and reused
-        private readonly Envelope env1 = new Envelope();
-        private readonly Envelope env2 = new Envelope();
 
         /// <summary>
         /// 
@@ -135,9 +132,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
             }
 
             // nothing to do if the envelopes of these chains don't overlap
-            env1.Init(p00, p01);
-            env2.Init(p10, p11);
-            if (!env1.Intersects(env2)) 
+            if (!Envelope.Intersects(p00, p01, p10, p11)) 
                 return;
 
             // the chains overlap, so split each in half and iterate  (binary search)
