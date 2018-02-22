@@ -184,7 +184,7 @@ namespace NetTopologySuite.Index.Chain
         {
             Coordinate p0 = _pts[start0];
             Coordinate p1 = _pts[end0];
-            mcs.TempEnv1.Init(p0, p1);
+            //mcs.TempEnv1.Init(p0, p1);
             
             // terminating condition for the recursion
             if (end0 - start0 == 1)
@@ -193,7 +193,7 @@ namespace NetTopologySuite.Index.Chain
                 return;
             }
             // nothing to do if the envelopes don't overlap
-            if (!searchEnv.Intersects(mcs.TempEnv1))
+            if (!searchEnv.Intersects(p0, p1))
                 return;
 
             // the chains overlap, so split each in half and iterate  (binary search)
