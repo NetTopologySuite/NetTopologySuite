@@ -194,7 +194,7 @@ namespace NetTopologySuite.Planargraph
                 return -1;
             // vectors are in the same quadrant - check relative orientation of direction vectors
             // this is > e if it is CCW of e
-            return CGAlgorithms.ComputeOrientation(e.p0, e.p1, p1);            
+            return (int)Orientation.Index(e.p0, e.p1, p1);            
         }
 
         /// <summary>

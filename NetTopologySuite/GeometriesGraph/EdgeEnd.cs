@@ -189,7 +189,7 @@ namespace NetTopologySuite.GeometriesGraph
                 return -1;
             // vectors are in the same quadrant - check relative orientation of direction vectors
             // this is > e if it is CCW of e
-            return CGAlgorithms.ComputeOrientation(e._p0, e._p1, _p1);
+            return (int)Orientation.Index(e._p0, e._p1, _p1);
         }
 
         /// <summary>

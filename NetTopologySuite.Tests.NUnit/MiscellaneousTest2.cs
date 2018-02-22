@@ -81,9 +81,9 @@ namespace NetTopologySuite.Tests.NUnit
         }
         [TestAttribute]
         public void test1()  {
-            Assert.IsTrue(CGAlgorithms.IsOnLine(new Coordinate(10, 10),
+            Assert.IsTrue(PointLocation.IsOnLine(new Coordinate(10, 10),
                                                 new Coordinate[] {new Coordinate(0,10), new Coordinate(20,10)}));
-            Assert.IsTrue(!CGAlgorithms.IsOnLine(new Coordinate(30, 10),
+            Assert.IsTrue(!PointLocation.IsOnLine(new Coordinate(30, 10),
                                                  new Coordinate[] {new Coordinate(0,10), new Coordinate(20,10)}));
         }
 

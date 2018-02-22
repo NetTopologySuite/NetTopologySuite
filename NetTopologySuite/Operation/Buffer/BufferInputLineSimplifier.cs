@@ -66,7 +66,7 @@ namespace NetTopologySuite.Operation.Buffer
         private readonly Coordinate[] _inputLine;
         private double _distanceTol;
         private byte[] _isDeleted;
-        private int _angleOrientation = CGAlgorithms.CounterClockwise;
+        private OrientationIndex _angleOrientation = OrientationIndex.CounterClockwise;
 
         public BufferInputLineSimplifier(Coordinate[] inputLine)
         {
@@ -88,7 +88,7 @@ namespace NetTopologySuite.Operation.Buffer
         {
             _distanceTol = System.Math.Abs(distanceTol);
             if (distanceTol < 0)
-                _angleOrientation = CGAlgorithms.Clockwise;
+                _angleOrientation = OrientationIndex.Clockwise;
 
             // rely on fact that boolean array is filled with false value
             _isDeleted = new byte[_inputLine.Length];
@@ -229,8 +229,8 @@ namespace NetTopologySuite.Operation.Buffer
 
         private bool IsConcave(Coordinate p0, Coordinate p1, Coordinate p2)
         {
-            var orientation = DistanceComputer.PointToSegment(p0, p1, p2);
-            bool isConcave = (orientation == _angleOrientation);
+            var orientation = Orientation.Index(p0, p1, p2);
+            var isConcave = (orientation == _angleOrientation);
             return isConcave;
         }
     }

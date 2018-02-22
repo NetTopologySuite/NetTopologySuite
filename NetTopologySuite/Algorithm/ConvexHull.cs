@@ -200,7 +200,7 @@ namespace NetTopologySuite.Algorithm
                 // check for empty stack to guard against robustness problems
                 while (
                     ps.Count > 0 /*(IsEmpty Hack)*/ &&
-                    CGAlgorithms.ComputeOrientation(ps.Peek(), p, c[i]) > 0)
+                    Orientation.Index(ps.Peek(), p, c[i]) > 0)
                     p = ps.Pop();
                 ps.Push(p);
                 ps.Push(c[i]);
@@ -241,7 +241,7 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         private static bool IsBetween(Coordinate c1, Coordinate c2, Coordinate c3)
         {
-            if (CGAlgorithms.ComputeOrientation(c1, c2, c3) != 0)
+            if (Orientation.Index(c1, c2, c3) != 0)
                 return false;
             if (c1.X != c3.X)
             {
@@ -403,11 +403,11 @@ namespace NetTopologySuite.Algorithm
                 double dxq = q.X - o.X;
                 double dyq = q.Y - o.Y;
 
-                int orient = CGAlgorithms.ComputeOrientation(o, p, q);
+                var orient = Orientation.Index(o, p, q);
 
-                if(orient == CGAlgorithms.CounterClockwise)
+                if(orient == OrientationIndex.CounterClockwise)
                     return 1;
-                if(orient == CGAlgorithms.Clockwise)
+                if(orient == OrientationIndex.Clockwise)
                     return -1;
 
                 // points are collinear - check distance

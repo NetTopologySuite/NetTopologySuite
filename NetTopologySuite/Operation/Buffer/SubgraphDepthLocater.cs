@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
@@ -113,7 +112,7 @@ namespace NetTopologySuite.Operation.Buffer
                 if (stabbingRayLeftPt.Y < _seg.P0.Y || stabbingRayLeftPt.Y > _seg.P1.Y) continue;
 
                 // skip if stabbing ray is right of the segment
-                if (CGAlgorithms.ComputeOrientation(_seg.P0, _seg.P1, stabbingRayLeftPt) == CGAlgorithms.Right) continue;
+                if (Orientation.Index(_seg.P0, _seg.P1, stabbingRayLeftPt) == OrientationIndex.Right) continue;
 
                 // stabbing line cuts this segment, so record it
                 int depth = dirEdge.GetDepth(Positions.Left);

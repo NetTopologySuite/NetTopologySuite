@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Mathematics;
 
 namespace NetTopologySuite.Algorithm
 {

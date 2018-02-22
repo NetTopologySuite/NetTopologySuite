@@ -106,12 +106,12 @@ namespace NetTopologySuite.Operation.Buffer
             Assert.IsTrue(minIndex > 0 && minIndex < pts.Length, "rightmost point expected to be interior vertex of edge");
             Coordinate pPrev = pts[minIndex - 1];
             Coordinate pNext = pts[minIndex + 1];
-            int orientation = CGAlgorithms.ComputeOrientation(minCoord, pNext, pPrev);
+            var orientation = Orientation.Index(minCoord, pNext, pPrev);
             bool usePrev = false;
             // both segments are below min point
-            if (pPrev.Y < minCoord.Y && pNext.Y < minCoord.Y && orientation == CGAlgorithms.CounterClockwise)            
+            if (pPrev.Y < minCoord.Y && pNext.Y < minCoord.Y && orientation == OrientationIndex.CounterClockwise)            
                 usePrev = true;            
-            else if (pPrev.Y > minCoord.Y && pNext.Y > minCoord.Y && orientation == CGAlgorithms.Clockwise)            
+            else if (pPrev.Y > minCoord.Y && pNext.Y > minCoord.Y && orientation == OrientationIndex.Clockwise)            
                 usePrev = true;            
             // if both segments are on the same side, do nothing - either is safe
             // to select as a rightmost segment
