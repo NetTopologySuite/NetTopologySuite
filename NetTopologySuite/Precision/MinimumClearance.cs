@@ -262,7 +262,7 @@ namespace NetTopologySuite.Precision
 
                         if (!(p.Equals2D(seg0) || p.Equals2D(seg1)))
                         {
-                            var d = CGAlgorithms.DistancePointLine(p, seg0, seg1);
+                            var d = DistanceComputer.PointToSegment(p, seg0, seg1);
                             if (d < _minDist)
                             {
                                 _minDist = d;

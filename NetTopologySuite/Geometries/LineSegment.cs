@@ -254,7 +254,7 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         public double Distance(LineSegment ls)
         {
-            return CGAlgorithms.DistanceLineLine(_p0, _p1, ls._p0, ls._p1);
+            return DistanceComputer.SegmentToSegment(_p0, _p1, ls._p0, ls._p1);
         }
 
         /// <summary>
@@ -262,7 +262,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public double Distance(Coordinate p)
         {
-            return CGAlgorithms.DistancePointLine(p, _p0, _p1);
+            return DistanceComputer.PointToSegment(p, _p0, _p1);
         }
 
         /// <summary>
@@ -273,7 +273,7 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         public double DistancePerpendicular(Coordinate p)
         {
-            return CGAlgorithms.DistancePointLinePerpendicular(p, _p0, _p1);
+            return DistanceComputer.PointToLinePerpendicular(p, _p0, _p1);
         }
 
         /// <summary>

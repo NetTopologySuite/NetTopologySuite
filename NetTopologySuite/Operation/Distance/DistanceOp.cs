@@ -456,7 +456,7 @@ namespace NetTopologySuite.Operation.Distance
             {
                 for (var j = 0; j < coord1.Length - 1; j++)
                 {
-                    var dist = CGAlgorithms.DistanceLineLine(
+                    var dist = DistanceComputer.SegmentToSegment(
                                                     coord0[i], coord0[i + 1],
                                                     coord1[j], coord1[j + 1]);
                     if (dist < _minDistance)
@@ -487,7 +487,7 @@ namespace NetTopologySuite.Operation.Distance
             // brute force approach!
             for (int i = 0; i < coord0.Length - 1; i++)
             {
-                double dist = CGAlgorithms.DistancePointLine(coord, coord0[i], coord0[i + 1]);
+                double dist = DistanceComputer.PointToSegment(coord, coord0[i], coord0[i + 1]);
                 if (dist < _minDistance)
                 {
                     _minDistance = dist;

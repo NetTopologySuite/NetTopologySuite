@@ -146,7 +146,7 @@ namespace NetTopologySuite.Operation.Distance
                     facetSeq._pts.GetCoordinate(j, q0);
                     facetSeq._pts.GetCoordinate(j + 1, q1);
 
-                    double dist = CGAlgorithms.DistanceLineLine(p0, p1, q0, q1);
+                    double dist = DistanceComputer.SegmentToSegment(p0, p1, q0, q1);
                     if (dist == 0.0)
                         return 0.0;
                     if (dist < minDistance)
@@ -168,7 +168,7 @@ namespace NetTopologySuite.Operation.Distance
             {
                 facetSeq._pts.GetCoordinate(i, q0);
                 facetSeq._pts.GetCoordinate(i + 1, q1);
-                var dist = CGAlgorithms.DistancePointLine(pt, q0, q1);
+                var dist = DistanceComputer.PointToSegment(pt, q0, q1);
                 if (dist == 0.0) return 0.0;
                 if (dist < minDistance)
                 {

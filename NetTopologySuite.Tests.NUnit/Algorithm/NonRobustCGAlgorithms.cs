@@ -163,9 +163,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             // check for zero-length segments
             if (A.Equals(B))
-                return CGAlgorithms.DistancePointLine(A, C, D);
+                return DistanceComputer.PointToSegment(A, C, D);
             if (C.Equals(D))
-                return CGAlgorithms.DistancePointLine(D, A, B);
+                return DistanceComputer.PointToSegment(D, A, B);
 
             // AB and CD are line segments
             /*
@@ -203,11 +203,11 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             {
                 return Math
                     .Min(
-                        CGAlgorithms.DistancePointLine(A, C, D),
+                        DistanceComputer.PointToSegment(A, C, D),
                         Math.Min(
-                            CGAlgorithms.DistancePointLine(B, C, D),
-                            Math.Min(CGAlgorithms.DistancePointLine(C, A, B),
-                                     CGAlgorithms.DistancePointLine(D, A, B))));
+                            DistanceComputer.PointToSegment(B, C, D),
+                            Math.Min(DistanceComputer.PointToSegment(C, A, B),
+                                DistanceComputer.PointToSegment(D, A, B))));
 
             }
             double s = s_top/s_bot;
@@ -218,11 +218,11 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 // no intersection
                 return Math
                     .Min(
-                        CGAlgorithms.DistancePointLine(A, C, D),
+                        DistanceComputer.PointToSegment(A, C, D),
                         Math.Min(
-                            CGAlgorithms.DistancePointLine(B, C, D),
-                            Math.Min(CGAlgorithms.DistancePointLine(C, A, B),
-                                     CGAlgorithms.DistancePointLine(D, A, B))));
+                            DistanceComputer.PointToSegment(B, C, D),
+                            Math.Min(DistanceComputer.PointToSegment(C, A, B),
+                                DistanceComputer.PointToSegment(D, A, B))));
             }
             return 0.0; // intersection exists
         }

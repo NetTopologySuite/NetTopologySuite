@@ -344,21 +344,21 @@ namespace NetTopologySuite.Algorithm
             Coordinate q1, Coordinate q2)
         {
             Coordinate nearestPt = p1;
-            double minDist = CGAlgorithms.DistancePointLine(p1, q1, q2);
+            double minDist = DistanceComputer.PointToSegment(p1, q1, q2);
 
-            double dist = CGAlgorithms.DistancePointLine(p2, q1, q2);
+            double dist = DistanceComputer.PointToSegment(p2, q1, q2);
             if (dist < minDist)
             {
                 minDist = dist;
                 nearestPt = p2;
             }
-            dist = CGAlgorithms.DistancePointLine(q1, p1, p2);
+            dist = DistanceComputer.PointToSegment(q1, p1, p2);
             if (dist < minDist)
             {
                 minDist = dist;
                 nearestPt = q1;
             }
-            dist = CGAlgorithms.DistancePointLine(q2, p1, p2);
+            dist = DistanceComputer.PointToSegment(q2, p1, p2);
             if (dist < minDist)
             {
                 minDist = dist;

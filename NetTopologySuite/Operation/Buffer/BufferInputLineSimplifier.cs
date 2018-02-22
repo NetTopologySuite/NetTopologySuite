@@ -223,13 +223,13 @@ namespace NetTopologySuite.Operation.Buffer
 
         private static bool IsShallow(Coordinate p0, Coordinate p1, Coordinate p2, double distanceTol)
         {
-            double dist = CGAlgorithms.DistancePointLine(p1, p0, p2);
+            double dist = DistanceComputer.PointToSegment(p1, p0, p2);
             return dist < distanceTol;
         }
 
         private bool IsConcave(Coordinate p0, Coordinate p1, Coordinate p2)
         {
-            var orientation = CGAlgorithms.ComputeOrientation(p0, p1, p2);
+            var orientation = DistanceComputer.PointToSegment(p0, p1, p2);
             bool isConcave = (orientation == _angleOrientation);
             return isConcave;
         }
