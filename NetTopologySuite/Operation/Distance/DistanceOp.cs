@@ -255,8 +255,12 @@ namespace NetTopologySuite.Operation.Distance
 
         private void ComputeContainmentDistance(int polyGeomIndex, GeometryLocation[] locPtPoly)
         {
-            int locationsIndex = 1 - polyGeomIndex;
-            var polys = PolygonExtracter.GetPolygons(_geom[polyGeomIndex]);
+            var polyGeom = _geom[polyGeomIndex];
+            // if no polygon then nothing to do
+            if (polyGeom.Dimension < Dimension.Surface) return;
+
+            var locationsIndex = 1 - polyGeomIndex;
+            var polys = PolygonExtracter.GetPolygons(polyGeom);
             if (polys.Count > 0)
             {
                 var insideLocs = ConnectedElementLocationFilter.GetLocations(_geom[locationsIndex]);
