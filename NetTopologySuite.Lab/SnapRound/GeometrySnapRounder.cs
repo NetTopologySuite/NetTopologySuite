@@ -173,26 +173,4 @@ namespace NetTopologySuite.SnapRound
             return PolygonCleaner.Clean(geom);
         }
     }
-
-    internal class PolygonCleaner : GeometryEditor.IGeometryEditorOperation
-    {
-        public static IGeometry Clean(IGeometry geom)
-        {
-            GeometryEditorEx editor = new GeometryEditorEx(new PolygonCleaner());
-            return editor.Edit(geom);
-        }
-
-        public IGeometry Edit(IGeometry geometry, IGeometryFactory factory)
-        {
-            if (geometry is IPolygonal)
-            {
-                var inputMulti = geometry is IGeometryCollection;
-                var res = geometry.Buffer(0);
-                if (inputMulti && !(res is IGeometryCollection))
-                    return res.Factory.CreateMultiPolygon(new[] {(IPolygon) res});
-                return res;
-            }
-            return geometry;
-        }
-    }
 }
