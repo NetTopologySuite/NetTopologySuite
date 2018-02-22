@@ -526,7 +526,7 @@ namespace NetTopologySuite.Operation.Valid
             Coordinate shellPt = FindPointNotNode(shellPts, polyShell, graph);
             // if no point could be found, we can assume that the shell is outside the polygon
             if (shellPt == null) return;
-            bool insidePolyShell = CGAlgorithms.IsPointInRing(shellPt, polyPts);
+            bool insidePolyShell = PointLocation.IsInRing(shellPt, polyPts);
             if (!insidePolyShell) return;
             // if no holes, this is an error!
             if (p.NumInteriorRings <= 0)
@@ -572,14 +572,14 @@ namespace NetTopologySuite.Operation.Valid
             // if point is on shell but not hole, check that the shell is inside the hole
             if (shellPt != null)
             {
-                bool insideHole = CGAlgorithms.IsPointInRing(shellPt, holePts);
+                bool insideHole = PointLocation.IsInRing(shellPt, holePts);
                 if (!insideHole) return shellPt;                
             }
             Coordinate holePt = FindPointNotNode(holePts, shell, graph);
             // if point is on hole but not shell, check that the hole is outside the shell
             if (holePt != null)
             {
-                bool insideShell = CGAlgorithms.IsPointInRing(holePt, shellPts);
+                bool insideShell = PointLocation.IsInRing(holePt, shellPts);
                 if (insideShell) 
                     return holePt;
                 return null;

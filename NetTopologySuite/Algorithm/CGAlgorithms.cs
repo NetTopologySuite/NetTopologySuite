@@ -100,9 +100,10 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p">Point to check for ring inclusion.</param>
         /// <param name="ring">An array of <see cref="Coordinate"/>s representing the ring (which must have first point identical to last point)</param>
         /// <returns>true if p is inside ring.</returns>
+        [Obsolete("Use PointLocation.IsInRing")]
         public static bool IsPointInRing(Coordinate p, Coordinate[] ring)
         {
-            return LocatePointInRing(p, ring) != Location.Exterior;
+            return PointLocation.IsInRing(p, ring);
         }
 
         /// <summary>
@@ -117,9 +118,10 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p">Point to check for ring inclusion.</param>
         /// <param name="ring">A sequence of <see cref="Coordinate"/>s representing the ring (which must have first point identical to last point)</param>
         /// <returns>true if p is inside ring.</returns>
+        [Obsolete("Use PointLocation.IsInRing")]
         public static bool IsPointInRing(Coordinate p, ICoordinateSequence ring)
         {
-            return LocatePointInRing(p, ring) != Location.Exterior;
+            return PointLocation.IsInRing(p, ring);
         }
 
         ///<summary>
@@ -132,9 +134,10 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p">Point to check for ring inclusion</param>
         /// <param name="ring">An array of coordinates representing the ring (which must have first point identical to last point)</param>
         /// <returns>The <see cref="Location"/> of p relative to the ring</returns>
+        [Obsolete("Use PointLocation.LocateInRing")]
         public static Location LocatePointInRing(Coordinate p, Coordinate[] ring)
         {
-            return RayCrossingCounter.LocatePointInRing(p, ring);
+            return PointLocation.LocateInRing(p, ring);
         }
 
         ///<summary>
@@ -147,9 +150,10 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p">Point to check for ring inclusion</param>
         /// <param name="ring">A sequence of coordinates representing the ring (which must have first point identical to last point)</param>
         /// <returns>The <see cref="Location"/> of p relative to the ring</returns>
+        [Obsolete("Use PointLocation.LocateInRing")]
         public static Location LocatePointInRing(Coordinate p, ICoordinateSequence ring)
         {
-            return RayCrossingCounter.LocatePointInRing(p, ring);
+            return PointLocation.LocateInRing(p, ring);
         }
 
         /// <summary>
@@ -161,18 +165,10 @@ namespace NetTopologySuite.Algorithm
         /// <returns>true if the point is a vertex of the line
         /// or lies in the interior of a line segment in the <c>LineString</c>
         /// </returns>
+        [Obsolete("Use PointLocation.IsOnLine")]
         public static bool IsOnLine(Coordinate p, Coordinate[] pt)
         {
-            LineIntersector lineIntersector = new RobustLineIntersector();
-            for (int i = 1; i < pt.Length; i++)
-            {
-                Coordinate p0 = pt[i - 1];
-                Coordinate p1 = pt[i];
-                lineIntersector.ComputeIntersection(p, p0, p1);
-                if (lineIntersector.HasIntersection)
-                    return true;
-            }
-            return false;
+            return PointLocation.IsOnLine(p, pt);
         }
 
         /// <summary>
@@ -188,7 +184,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="ring">An array of <see cref="Coordinate"/>s forming a ring</param>
         /// <returns>true if the ring is oriented <see cref="Algorithm.OrientationIndex.CounterClockwise"/></returns>
         /// <exception cref="ArgumentException">If there are too few points to determine orientation (&lt;4)</exception>
-        [Obsolete("Use OrientationFunctions.IsCCW")]
+        [Obsolete("Use Orientation.IsCCW")]
         public static bool IsCCW(Coordinate[] ring)
         {
             return Orientation.IsCCW(ring);
@@ -207,7 +203,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="ring">A coordinate sequence forming a ring</param>
         /// <returns>true if the ring is oriented <see cref="Algorithm.OrientationIndex.CounterClockwise"/></returns>
         /// <exception cref="ArgumentException">If there are too few points to determine orientation (&lt;4)</exception>
-        [Obsolete("Use OrientationFunctions.IsCCW")]
+        [Obsolete("Use Orientation.IsCCW")]
         public static bool IsCCW(ICoordinateSequence ring)
         {
             return Orientation.IsCCW(ring);
@@ -227,6 +223,7 @@ namespace NetTopologySuite.Algorithm
         /// or -1 if q is clockwise from p1-p2,
         /// or 0 if q is collinear with p1-p2
         /// </returns>
+        [Obsolete("Use Orientation.Index")]
         public static int ComputeOrientation(Coordinate p1, Coordinate p2, Coordinate q)
         {
             return (int)Orientation.Index(p1, p2, q);

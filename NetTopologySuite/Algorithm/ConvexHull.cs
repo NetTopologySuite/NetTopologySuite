@@ -122,12 +122,12 @@ namespace NetTopologySuite.Algorithm
 
             /*
              * Add all unique points not in the interior poly.
-             * CGAlgorithms.IsPointInRing is not defined for points actually on the ring,
+             * PointLocation.IsInRing is not defined for points actually on the ring,
              * but this doesn't matter since the points of the interior polygon
              * are forced to be in the reduced set.
              */
             for (var i = 0; i < pts.Length; i++)
-                if (!CGAlgorithms.IsPointInRing(pts[i], polyPts))
+                if (!PointLocation.IsInRing(pts[i], polyPts))
                     reducedSet.Add(pts[i]);
 
             var reducedPts = CoordinateArrays.ToCoordinateArray((ICollection<Coordinate>)reducedSet);// new Coordinate[reducedSet.Count];

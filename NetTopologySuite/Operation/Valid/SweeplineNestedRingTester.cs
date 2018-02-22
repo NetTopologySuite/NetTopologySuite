@@ -90,7 +90,7 @@ namespace NetTopologySuite.Operation.Valid
                 return false;
             Coordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, graph);
             Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
-            bool isInside = CGAlgorithms.IsPointInRing(innerRingPt, searchRingPts);
+            bool isInside = PointLocation.IsInRing(innerRingPt, searchRingPts);
             if (isInside) 
             {
                 nestedPt = innerRingPt;

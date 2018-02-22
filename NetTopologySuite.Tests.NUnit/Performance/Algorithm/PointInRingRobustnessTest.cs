@@ -138,7 +138,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             var seg = new LineSegment(triPts[1], triPts[2]);
             var pt = seg.PointAlong(lenFraction);
 
-            //var isPointInRing = CGAlgorithms.isPointInRing(pt, triPts);
+            //var isPointInRing = PointLocation.IsInRing(pt, triPts);
             //var isPointInRing = PointInRingWindingNumber(pt, triPts);
             //var isPointInRing = Location.Interior == RayCrossingCounter.LocatePointInRing(pt, triPts);
             var isPointInRing = Location.Interior == NonRobustRayCrossingCounter.LocatePointInRing(pt, triPts);

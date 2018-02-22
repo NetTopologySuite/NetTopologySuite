@@ -505,7 +505,7 @@ namespace DotSpatial.Topology
                     if (minShell != null)
                         minEnv = minShell.EnvelopeInternal;
                     var isContained = tryEnv.Contains(testEnv)
-                                      && (NetTopologySuite.Algorithm.CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates)
+                                      && (NetTopologySuite.Algorithm.PointLocation.IsInRing(testPt, tryRing.Coordinates)
                                            || (PointInList(testPt, tryRing.Coordinates)));
 
                     // Check if this new containing ring is smaller than the current minimum ring

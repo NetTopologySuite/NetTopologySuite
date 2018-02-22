@@ -98,7 +98,7 @@ namespace NetTopologySuite.Algorithm.Locate
             // short-circuit if point is not in ring envelope
             if (!ring.EnvelopeInternal.Intersects(p))
                 return Location.Exterior;
-            return CGAlgorithms.LocatePointInRing(p, ring.CoordinateSequence);
+            return PointLocation.LocateInRing(p, ring.CoordinateSequence);
         }
 
         private readonly IGeometry _geom;

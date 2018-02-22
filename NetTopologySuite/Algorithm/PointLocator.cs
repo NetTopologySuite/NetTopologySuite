@@ -169,7 +169,7 @@ namespace NetTopologySuite.Algorithm
   	        // bounding-box check
   	        if (! ring.EnvelopeInternal.Intersects(p)) return Location.Exterior;
 
-  	        return CGAlgorithms.LocatePointInRing(p, ring.CoordinateSequence);
+  	        return PointLocation.LocateInRing(p, ring.CoordinateSequence);
         }
 
         /// <summary>

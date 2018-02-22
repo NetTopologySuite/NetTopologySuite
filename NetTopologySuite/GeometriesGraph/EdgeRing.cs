@@ -338,7 +338,7 @@ namespace NetTopologySuite.GeometriesGraph
             Envelope env = shell.EnvelopeInternal;
             if (!env.Contains(p)) 
                 return false;
-            if (!CGAlgorithms.IsPointInRing(p, shell.Coordinates)) 
+            if (!PointLocation.IsInRing(p, shell.Coordinates)) 
                 return false;
             foreach (EdgeRing hole in _holes)
             {

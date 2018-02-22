@@ -51,7 +51,7 @@ namespace NetTopologySuite.Operation.Polygonize
                 if (!tryShellEnv.Contains(testEnv)) continue;
 
                 var testPt = CoordinateArrays.PointNotInList(testRing.Coordinates, tryShellRing.Coordinates);
-                var isContained = CGAlgorithms.IsPointInRing(testPt, tryShellRing.Coordinates);
+                var isContained = PointLocation.IsInRing(testPt, tryShellRing.Coordinates);
 
                 // check if this new containing ring is smaller than the current minimum ring
                 if (isContained)

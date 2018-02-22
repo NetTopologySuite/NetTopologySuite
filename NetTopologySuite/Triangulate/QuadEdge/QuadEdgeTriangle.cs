@@ -55,7 +55,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                                tri[2].Coordinate,
                                tri[0].Coordinate
                            };
-            return CGAlgorithms.IsPointInRing(pt, ring);
+            return PointLocation.IsInRing(pt, ring);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                                tri[2].Orig.Coordinate,
                                tri[0].Orig.Coordinate
                            };
-            return CGAlgorithms.IsPointInRing(pt, ring);
+            return PointLocation.IsInRing(pt, ring);
         }
 
         public static IGeometry ToPolygon(Vertex[] v)
@@ -237,7 +237,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public bool Contains(Coordinate pt)
         {
             var ring = GetCoordinates();
-            return CGAlgorithms.IsPointInRing(pt, ring);
+            return PointLocation.IsInRing(pt, ring);
         }
 
         public IGeometry GetGeometry(GeometryFactory fact)
