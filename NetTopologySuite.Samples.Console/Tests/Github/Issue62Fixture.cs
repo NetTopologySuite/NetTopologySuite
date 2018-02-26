@@ -13,23 +13,21 @@ namespace NetTopologySuite.Samples.Tests.Github
         {
             const string json = @"
 {
-    ""geometry"": {
-        ""type"": ""GeometryCollection"",
-        ""geometries"": [ 
-            {
-                ""type"":""Polygon"",
-                ""coordinates"":[[[1.0,1.0],[1.0,2.0],[2.0,2.0],[1.0,1.0]]]
-            },
-            {
-                ""type"":""Point"",
-                ""coordinates"":[100.0,100.0]
-            },
-            {
-                ""type"":""Polygon"",
-                ""coordinates"":[[[201.0,201.0],[201.0,202.0],[202.0,202.0],[201.0,201.0]]]
-            }
-        ]
-    }
+    ""type"": ""GeometryCollection"",
+    ""geometries"": [ 
+        {
+            ""type"":""Polygon"",
+            ""coordinates"":[[[1.0,1.0],[1.0,2.0],[2.0,2.0],[1.0,1.0]]]
+        },
+        {
+            ""type"":""Point"",
+            ""coordinates"":[100.0,100.0]
+        },
+        {
+            ""type"":""Polygon"",
+            ""coordinates"":[[[201.0,201.0],[201.0,202.0],[202.0,202.0],[201.0,201.0]]]
+        }
+    ]
 }
 ";
             GeoJsonReader reader = new GeoJsonReader();

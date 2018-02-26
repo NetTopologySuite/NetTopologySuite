@@ -78,7 +78,7 @@ namespace NetTopologySuite.Densify
 
         /// <summary>
         /// Gets or sets the distance tolerance for the densification. All line segments
-        /// in the densified geometry will be no longer than the distance tolereance.
+        /// in the densified geometry will be no longer than the distance tolerance.
         /// Simplified geometry will be within this distance of the original geometry.
         /// The distance tolerance must be positive.
         /// </summary>
@@ -118,7 +118,7 @@ namespace NetTopologySuite.Densify
                 var inputPts = coords.ToCoordinateArray();
                 var newPts = Densifier
                     .DensifyPoints(inputPts, _distanceTolerance, parent.PrecisionModel);
-                // prevent creation of invalid linestrings
+                // prevent creation of invalid LineStrings
                 if (parent is ILineString && newPts.Length == 1)
                 {
                     newPts = new Coordinate[0];

@@ -34,6 +34,7 @@ namespace NetTopologySuite.Utilities
         /// </summary>
         /// <param name="coll"></param>
         /// <returns></returns>
+        [Obsolete]
         public static IList<TOut> Cast<TIn, TOut>(ICollection<TIn> coll)
             where TIn: class
             where TOut : class
@@ -51,6 +52,7 @@ namespace NetTopologySuite.Utilities
         /// <param name="list"></param>
         /// <param name="function"></param>
         /// <returns></returns>
+        [Obsolete]
         public static IList<T> Transform<T>(IList<T> list, FunctionDelegate<T> function)
         {
             IList<T> result = new List<T>(list.Count);
@@ -66,6 +68,7 @@ namespace NetTopologySuite.Utilities
         /// <param name="list"></param>
         /// <param name="function"></param>
         /// <returns></returns>
+        [Obsolete]
         public static IList<TResult> Transform<T, TResult>(IList<T> list, FunctionDelegate<T, TResult> function)
         {
             IList<TResult> result = new List<TResult>(list.Count);
@@ -80,6 +83,7 @@ namespace NetTopologySuite.Utilities
         /// </summary>
         /// <param name="coll"></param>
         /// <param name="func"></param>
+        [Obsolete]
         public static void Apply<T>(IEnumerable<T> coll, FunctionDelegate<T> func)
         {
             foreach (var obj in coll)
@@ -94,6 +98,7 @@ namespace NetTopologySuite.Utilities
         /// <param name="items"></param>
         /// <param name="func"></param>
         /// <returns></returns>
+        [Obsolete]
         public static IList<T> Select<T>(IEnumerable<T> items, FunctionDelegate<T, bool> func)
         {
             IList<T> result = new List<T>();
@@ -103,7 +108,7 @@ namespace NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Copies <typeparamref name="T"/>s in an array to an object array
+        /// Copies <typeparamref name="TIn"/>s in an array to an <typeparamref name="TOut"/> array
         /// </summary>
         /// <typeparam name="TIn"></typeparam>
         /// <typeparam name="TOut"></typeparam>

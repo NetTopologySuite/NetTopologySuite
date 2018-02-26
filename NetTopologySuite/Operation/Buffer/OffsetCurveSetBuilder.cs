@@ -197,7 +197,7 @@ namespace NetTopologySuite.Operation.Buffer
             var leftLoc = cwLeftLoc;
             var rightLoc = cwRightLoc;
             if (coord.Length >= LinearRing.MinimumValidSize
-                && CGAlgorithms.IsCCW(coord))
+                && Orientation.IsCCW(coord))
             {
                 leftLoc = cwRightLoc;
                 rightLoc = cwLeftLoc;
@@ -262,7 +262,7 @@ namespace NetTopologySuite.Operation.Buffer
         {
             var tri = new Triangle(triangleCoord[0], triangleCoord[1], triangleCoord[2]);
             var inCentre = tri.InCentre();
-            var distToCentre = CGAlgorithms.DistancePointLine(inCentre, tri.P0, tri.P1);
+            var distToCentre = DistanceComputer.PointToSegment(inCentre, tri.P0, tri.P1);
             return distToCentre < Math.Abs(bufferDistance);
         }
     }

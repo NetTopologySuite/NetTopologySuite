@@ -4,11 +4,11 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Strtree;
-using NUnit.Framework;
 using NetTopologySuite.Tests.NUnit.Utilities;
+using NUnit.Framework;
 using STRtree = NetTopologySuite.Index.Strtree.STRtree<object>;
 using AbstractNode = NetTopologySuite.Index.Strtree.AbstractNode<GeoAPI.Geometries.Envelope, object>;
-namespace NetTopologySuite.Tests.NUnit.Index
+namespace NetTopologySuite.Tests.NUnit.Index.Strtree
 {
     public class STRtreeTest
     {
@@ -16,12 +16,12 @@ namespace NetTopologySuite.Tests.NUnit.Index
         {
             public TestTree(int nodeCapacity) : base(nodeCapacity) { }
 
-            public AbstractNode Root()
+            public new AbstractNode Root()
             {
                 return base.Root;
             }
 
-            public IList<IBoundable<Envelope, object>> BoundablesAtLevel(int level)
+            public new IList<IBoundable<Envelope, object>> BoundablesAtLevel(int level)
             {
                 return base.BoundablesAtLevel(level);
             }
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
 
         private readonly GeometryFactory _factory = new GeometryFactory();
 
-        [TestAttribute]
+        [Test]
         public void TestSpatialIndex()
         {
             var tester = new SpatialIndexTester { SpatialIndex = new STRtree(4) };
@@ -38,7 +38,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             Assert.IsTrue(tester.IsSuccess);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestSerialization()
         {
             var tester = new SpatialIndexTester { SpatialIndex = new STRtree(4) };
@@ -59,7 +59,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             Assert.IsTrue(tester.IsSuccess);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestEmptyTreeUsingListQuery()
         {
             var tree = new STRtree();
@@ -72,7 +72,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             public void VisitItem(object item) { Assert.IsTrue(true, "Should never reach here"); }
         }
 
-        [TestAttribute]
+        [Test]
         public void TestEmptyTreeUsingItemVisitorQuery()
         {
             var tree = new STRtree();
@@ -80,7 +80,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
         }
 
 
-        [TestAttribute]
+        [Test]
         public void TestCreateParentsFromVerticalSlice()
         {
             DoTestCreateParentsFromVerticalSlice(3, 2, 2, 1);
@@ -88,7 +88,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             DoTestCreateParentsFromVerticalSlice(5, 2, 2, 1);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestDisallowedInserts()
         {
             STRtree t = new STRtree(5);
@@ -106,7 +106,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             }
         }
 
-        [TestAttribute]
+        [Test]
         public void TestQuery()
         {
             var geometries = new List<IGeometry>();
@@ -143,7 +143,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
         }
 
 
-        [TestAttribute]
+        [Test]
         public void TestVerticalSlices()
         {
             DoTestVerticalSlices(3, 2, 2, 1);
@@ -151,7 +151,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             DoTestVerticalSlices(5, 3, 2, 1);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestRemove()
         {
             var tree = new STRtree();
@@ -162,6 +162,70 @@ namespace NetTopologySuite.Tests.NUnit.Index
             tree.Remove(new Envelope(10, 20, 10, 20), "4");
             Assert.AreEqual(3, tree.Count);
         }
+
+        [Test]
+        public void TestKNearestNeighbors()
+        {
+            var topK = 1000;
+            var totalRecords = 10000;
+            var geometryFactory = new GeometryFactory();
+            var coordinate = new Coordinate(10.1, -10.1);
+            var queryCenter = geometryFactory.CreatePoint(coordinate);
+            var valueRange = 1000;
+            var testDataset = new List<IGeometry>();
+            var correctData = new List<IGeometry>();
+            var random = new Random();
+            var distanceComparator = new GeometryDistanceComparer(queryCenter, true);
+            /*
+             * Generate the random test data set
+             */
+            for (int i = 0; i < totalRecords; i++)
+            {
+                coordinate = new Coordinate(-100 + random.Next(valueRange) * 1.1, random.Next(valueRange) * (-5.1));
+                var spatialObject = geometryFactory.CreatePoint(coordinate);
+                testDataset.Add(spatialObject);
+            }
+            /*
+             * Sort the original data set and make sure the elements are sorted in an ascending order
+             */
+            testDataset.Sort(distanceComparator);
+            /*
+             * Get the correct top K
+             */
+            for (int i = 0; i < topK; i++)
+            {
+                correctData.Add(testDataset[i]);
+            }
+
+            var strtree = new STRtree<IGeometry>();
+            for (int i = 0; i < totalRecords; i++)
+            {
+                strtree.Insert(testDataset[i].EnvelopeInternal, testDataset[i]);
+            }
+            /*
+             * Shoot a random query to make sure the STR-Tree is built.
+             */
+            strtree.Query(new Envelope(1 + 0.1, 1 + 0.1, 2 + 0.1, 2 + 0.1));
+            /*
+             * Issue the KNN query.
+             */
+            var testTopK = strtree.NearestNeighbour(queryCenter.EnvelopeInternal, queryCenter, new GeometryItemDistance(), topK);
+            var topKList = new List<IGeometry>(testTopK);
+            topKList.Sort(distanceComparator);
+            /*
+             * Check the difference between correct result and test result. The difference should be 0.
+             */
+            var difference = 0;
+            for (int i = 0; i < topK; i++)
+            {
+                if (distanceComparator.Compare(correctData[i], topKList[i]) != 0)
+                {
+                    difference++;
+                }
+            }
+            Assert.That(difference, Is.EqualTo(0));
+        }
+
 
         private static void DoTestCreateParentsFromVerticalSlice(int childCount,
                                                           int nodeCapacity, int expectedChildrenPerParentBoundable,

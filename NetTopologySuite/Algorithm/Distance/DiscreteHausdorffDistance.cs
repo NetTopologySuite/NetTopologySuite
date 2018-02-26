@@ -87,6 +87,11 @@ namespace NetTopologySuite.Algorithm.Distance
          */
         private double _densifyFrac;
 
+        /// <summary>
+        /// Creates an instance of this class using the provided geometries
+        /// </summary>
+        /// <param name="g0">A geometry</param>
+        /// <param name="g1">Another geometry</param>
         public DiscreteHausdorffDistance(IGeometry g0, IGeometry g1)
         {
             _g0 = g0;

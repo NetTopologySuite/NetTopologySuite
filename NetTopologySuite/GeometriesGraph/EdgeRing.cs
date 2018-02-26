@@ -164,7 +164,7 @@ namespace NetTopologySuite.GeometriesGraph
                 coord[i] = (Coordinate) _pts[i];
              */
             _ring = _geometryFactory.CreateLinearRing(coord);
-            _isHole = CGAlgorithms.IsCCW(_ring.Coordinates);
+            _isHole = Orientation.IsCCW(_ring.Coordinates);
         }
 
         /// <summary>
@@ -338,7 +338,7 @@ namespace NetTopologySuite.GeometriesGraph
             Envelope env = shell.EnvelopeInternal;
             if (!env.Contains(p)) 
                 return false;
-            if (!CGAlgorithms.IsPointInRing(p, shell.Coordinates)) 
+            if (!PointLocation.IsInRing(p, shell.Coordinates)) 
                 return false;
             foreach (EdgeRing hole in _holes)
             {

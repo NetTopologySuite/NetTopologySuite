@@ -91,6 +91,8 @@ namespace NetTopologySuite.IO
         /// If an offset is specified, geometries read up to the offset count are skipped.</para>
         /// <para>If a limit is specified, no more than <see cref="Limit" /> geometries are read.</para>
         /// </remarks>
+        /// <exception cref="IOException">Thrown if an I/O exception was encountered</exception>
+        /// <exception cref="GeoAPI.IO.ParseException">Thrown if an error occurred reading a geometry</exception>
         /// <returns>The list of geometries read</returns>
         public IList<IGeometry> Read()
         {

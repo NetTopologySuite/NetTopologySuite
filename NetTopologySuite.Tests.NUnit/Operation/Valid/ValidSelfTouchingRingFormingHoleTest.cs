@@ -25,7 +25,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         private static WKTReader rdr = new WKTReader();
 
         ///<summary>
-        ///Tests a geometry with both a shell self-touch and a hole self=touch.
+        ///Tests a geometry with both a shell self-touch and a hole self-touch.
         ///This is valid if STR is allowed, but invalid in OGC
         ///</summary>
         [TestAttribute]
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
 
         ///<summary>
         ///Tests an overlapping hole condition, where one of the holes is created by a shell self-touch.
-        ///This is never vallid.
+        ///This is never valid.
         ///</summary>
         [TestAttribute]
         public void TestShellSelfTouchHoleOverlappingHole()

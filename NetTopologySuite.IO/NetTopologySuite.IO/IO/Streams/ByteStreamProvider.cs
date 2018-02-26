@@ -5,11 +5,18 @@ using System.Text;
 
 namespace NetTopologySuite.IO.Streams
 {
+    /// <summary>
+    /// A stream provider that provides <see cref="ByteStream"/>s.
+    /// </summary>
     public class ByteStreamProvider : IStreamProvider
 #if Disposable
         , IDisposable
 #endif
     {
+        /// <summary>
+        /// Creates an instance of this class
+        /// </summary>
+        /// <param name="kind">The kind of stream</param>
         public ByteStreamProvider(string kind)
         {
             Kind = kind;
@@ -47,7 +54,7 @@ namespace NetTopologySuite.IO.Streams
         /// </summary>
         /// <param name="kind">The kind of stream</param>
         /// <param name="stream">The stream</param>
-        /// <param name="isReadonly">A value indicating whether the contents are readonly</param>
+        /// <param name="isReadonly">A value indicating whether the contents are read-only</param>
         public ByteStreamProvider(string kind, Stream stream, bool isReadonly = false)
             :this(kind, ReadFully(stream), -1, isReadonly)
         {
@@ -59,7 +66,7 @@ namespace NetTopologySuite.IO.Streams
         /// <param name="kind">The kind of stream</param>
         /// <param name="bytes">The array of bytes</param>
         /// <param name="maxLength">The maximum length of the</param>
-        /// <param name="isReadonly">A value indicating whether the contents are readonly</param>
+        /// <param name="isReadonly">A value indicating whether the contents are read-only</param>
         public ByteStreamProvider(string kind, byte[] bytes, int maxLength = -1, bool isReadonly = false)
         {
             Kind = kind;

@@ -48,23 +48,30 @@ namespace NetTopologySuite.SnapRound
             return geom[0].Union(geom[1]);
         }
 
+        public static IGeometry UnaryUnion(IGeometry geomA, double scaleFactor)
+        {
+            var geom = SnapClean(geomA, null, scaleFactor);
+            return geom[0].Union();
+        }
         private static IGeometry[] SnapClean(
             IGeometry geomA, IGeometry geomB,
             double scaleFactor)
         {
-            IGeometry snapped = SnapRoundFunctions.SnapRound(geomA, geomB, scaleFactor);
-            // TODO: don't need to clean once GeometrySnapRounder ensures all components are valid
-            IGeometry aSnap = Clean(snapped.GetGeometryN(0));
-            IGeometry bSnap = Clean(snapped.GetGeometryN(1));
-            return new IGeometry[] { aSnap, bSnap };
+            var snapped = SnapRoundFunctions.SnapRound(geomA, geomB, scaleFactor);
+            //// TODO: don't need to clean once GeometrySnapRounder ensures all components are valid
+            //var aSnap = Clean(snapped.GetGeometryN(0));
+            //var bSnap = Clean(snapped.GetGeometryN(1));
+            if (geomB == null)
+                return new [] { snapped, null };
+            return new [] { snapped.GetGeometryN(0), snapped.GetGeometryN(1) };
         }
 
-        private static IGeometry Clean(IGeometry geom)
-        {
-            // TODO: only buffer if it is a polygonal IGeometry
-            if (!(geom is IPolygonal) ) return geom;
-            return geom.Buffer(0);
-        }
+        //private static IGeometry Clean(IGeometry geom)
+        //{
+        //    // TODO: only buffer if it is a polygonal IGeometry
+        //    if (!(geom is IPolygonal) ) return geom;
+        //    return geom.Buffer(0);
+        //}
 
 
     }

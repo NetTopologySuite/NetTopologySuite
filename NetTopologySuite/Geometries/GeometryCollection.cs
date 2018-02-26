@@ -57,6 +57,15 @@ namespace NetTopologySuite.Geometries
             _geometries = geometries;
         }
 
+
+        /// <summary>
+        /// Gets a value to sort the geometry
+        /// </summary>
+        protected override SortIndexValue SortIndex
+        {
+            get { return SortIndexValue.GeometryCollection; }
+        }
+
         /// <summary>
         /// 
         /// </summary>

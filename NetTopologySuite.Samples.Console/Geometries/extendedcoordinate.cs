@@ -41,7 +41,8 @@ namespace NetTopologySuite.Samples.Geometries
             get { return _m; }
             set { _m = value; }
         }
-		
+
+	    /// <inheritdoc cref="object.ToString()"/>
 		public override string ToString()
 		{
 			string stringRep = X + " " + Y + " m=" + M;

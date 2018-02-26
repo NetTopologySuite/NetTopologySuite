@@ -63,7 +63,7 @@ namespace NetTopologySuite.Planargraph
         }
 
         /// <summary>
-        /// Returns the coordinate for the node at wich this star is based.
+        /// Returns the coordinate for the node at which this star is based.
         /// </summary>
         public Coordinate Coordinate
         {

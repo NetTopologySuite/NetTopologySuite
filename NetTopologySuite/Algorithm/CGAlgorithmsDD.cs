@@ -35,7 +35,8 @@ namespace NetTopologySuite.Algorithm
             var dx2 = DD.ValueOf(q.X) - p2.X;
             var dy2 = DD.ValueOf(q.Y) - p2.Y;
 
-            return SignOfDet2x2(dx1, dy1, dx2, dy2);
+            return ((dx1 * dy2) - (dy1 * dx2)).Signum();
+            //return SignOfDet2x2(dx1, dy1, dx2, dy2);
         }
 
         /// <summary>
@@ -55,13 +56,7 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         public static int SignOfDet2x2(DD x1, DD y1, DD x2, DD y2)
         {
-            DD det = x1.Multiply(y2).Subtract(y1.Multiply(x2));
-            if (det.IsZero)
-                return 0;
-            if (det.IsNegative)
-                return -1;
-            return 1;
-
+            return (x1 * y2 - y1 * x2).Signum();
         }
 
         /// <summary>

@@ -103,7 +103,7 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// Creates a polygonizer and allow specifyng if only polygons which form a valid polygonal geometry are to be extracted.
+        /// Creates a polygonizer and allow specifying if only polygons which form a valid polygonal geometry are to be extracted.
         /// </summary>
         /// <param name="extractOnlyPolygonal"><value>true</value> if only polygons which form a valid polygonal geometry are to be extracted</param>
         public Polygonizer(bool extractOnlyPolygonal)
@@ -313,7 +313,7 @@ namespace NetTopologySuite.Operation.Polygonize
 
         /// <summary>
         /// For each outer hole finds and includes a single outer shell.
-        /// This seeds the travesal algorithm for finding only polygonal shells.
+        /// This seeds the traversal algorithm for finding only polygonal shells.
         /// </summary>
         /// <param name="shellList">The list of shell EdgeRings</param>
         private static void FindOuterShells(List<EdgeRing> shellList)

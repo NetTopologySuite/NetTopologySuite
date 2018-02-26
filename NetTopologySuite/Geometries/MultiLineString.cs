@@ -7,7 +7,9 @@ namespace NetTopologySuite.Geometries
     using System;
 
     /// <summary>
-    /// Basic implementation of <c>MultiLineString</c>.
+    /// Models a collection of <see cref="LineString"/>s.
+    /// <para/>
+    /// Any collection of <c>LineString</c>s is a valid <c>MultiLineString</c>.
     /// </summary>    
 #if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
@@ -17,7 +19,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Represents an empty <c>MultiLineString</c>.
         /// </summary>
-        public static new readonly IMultiLineString Empty = new GeometryFactory().CreateMultiLineString(null);
+        public new static readonly IMultiLineString Empty = new GeometryFactory().CreateMultiLineString(null);
 
         /// <summary>
         /// Constructs a <c>MultiLineString</c>.
@@ -45,6 +47,14 @@ namespace NetTopologySuite.Geometries
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public MultiLineString(ILineString[] lineStrings) : this(lineStrings, DefaultFactory) { }
+
+        /// <summary>
+        /// Gets a value to sort the geometry
+        /// </summary>
+        protected override SortIndexValue SortIndex
+        {
+            get { return SortIndexValue.MultiLineString; }
+        }
 
         /// <summary>
         /// 

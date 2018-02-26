@@ -17,7 +17,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             {
                 //System.out.println(i);
                 Coordinate[] seg = RandomDisjointCollinearSegments();
-                if (0 == CGAlgorithms.DistanceLineLine(seg[0], seg[1], seg[2], seg[3]))
+                if (0 == DistanceComputer.SegmentToSegment(seg[0], seg[1], seg[2], seg[3]))
                 {
                     /*
             System.out.println("FAILED! - "

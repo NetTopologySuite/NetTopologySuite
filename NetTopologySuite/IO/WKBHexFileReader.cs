@@ -53,7 +53,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="ArgumentNullException">Thrown if no filename was specified</exception>
         /// <exception cref="FileNotFoundException">Thrown if the filename specified does not exist</exception>
         /// <exception cref="IOException">Thrown if an I/O exception was encountered</exception>
-        /// <exception cref="ParseException">Thrown if an error occured reading a geometry</exception>
+        /// <exception cref="ParseException">Thrown if an error occurred reading a geometry</exception>
         public ICollection<IGeometry> Read(string file)
         {
             if (string.IsNullOrEmpty(file))

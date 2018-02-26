@@ -153,7 +153,7 @@ namespace NetTopologySuite.Algorithm
             if(!l.IsClosed)
                 if(p.Equals(pt[0]) || p.Equals(pt[pt.Length - 1]))
                     return Location.Boundary;                            
-            if (CGAlgorithms.IsOnLine(p, pt))
+            if (PointLocation.IsOnLine(p, pt))
                 return Location.Interior;
             return Location.Exterior;
         }
@@ -169,7 +169,7 @@ namespace NetTopologySuite.Algorithm
   	        // bounding-box check
   	        if (! ring.EnvelopeInternal.Intersects(p)) return Location.Exterior;
 
-  	        return CGAlgorithms.LocatePointInRing(p, ring.CoordinateSequence);
+  	        return PointLocation.LocateInRing(p, ring.CoordinateSequence);
         }
 
         /// <summary>

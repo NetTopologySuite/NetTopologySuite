@@ -20,12 +20,12 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
   	 
             IGeometry geom = reader.Read(wkt);
             bool expected = expectedLoc == Location.Interior;
-            Assert.AreEqual(expected, CGAlgorithms.IsPointInRing(pt, geom.Coordinates));
+            Assert.AreEqual(expected, PointLocation.IsInRing(pt, geom.Coordinates));
             IPolygon poly = geom as IPolygon;
             if (poly == null)
                 return;
 
-            Assert.AreEqual(expected, CGAlgorithms.IsPointInRing(pt, poly.ExteriorRing.CoordinateSequence));
+            Assert.AreEqual(expected, PointLocation.IsInRing(pt, poly.ExteriorRing.CoordinateSequence));
         }
 
     }

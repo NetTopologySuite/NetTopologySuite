@@ -14,6 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
     [CategoryAttribute("Stress")]
     public class FileBufferResultValidatorTest
     {
+        private const int MAX_FEATURE = 1;
         WKTReader rdr = new WKTReader();
 
         [TestAttribute]
@@ -64,16 +65,19 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 
         void RunAll(ICollection<IGeometry> geoms, double dist)
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
+            //var sw = new Stopwatch();
+            //sw.Start();
+            var count = 0;
             //System.Console.WriteLine("Geom count = " + geoms.Count + "   distance = " + dist);
             foreach (var g in geoms)
             {
                 RunBuffer(g, dist);
-                //RunBuffer(g.reverse(), dist);
+                RunBuffer(g.Reverse(), dist);
                 //System.Console.WriteLine(".");
+                count++;
+                if (count > MAX_FEATURE) break;
             }
-            sw.Stop();
+            //sw.Stop();
             //System.Console.WriteLine("  " + sw.Elapsed.TotalMilliseconds + " milliseconds");
         }
 

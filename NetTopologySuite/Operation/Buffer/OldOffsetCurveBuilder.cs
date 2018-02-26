@@ -323,10 +323,10 @@ namespace NetTopologySuite.Operation.Buffer
             // do nothing if points are equal
             if (_s1.Equals(_s2)) return;
 
-            int orientation = CGAlgorithms.ComputeOrientation(_s0, _s1, _s2);
+            var orientation = Orientation.Index(_s0, _s1, _s2);
             bool outsideTurn =
-                  (orientation == CGAlgorithms.Clockwise && _side == Positions.Left)
-              || (orientation == CGAlgorithms.CounterClockwise && _side == Positions.Right);
+                  (orientation == OrientationIndex.Clockwise && _side == Positions.Left)
+              || (orientation == OrientationIndex.CounterClockwise && _side == Positions.Right);
 
             if (orientation == 0)
             { // lines are collinear
@@ -374,7 +374,7 @@ namespace NetTopologySuite.Operation.Buffer
                 }
                 else
                 {
-                    AddFillet(_s1, _offset0.P1, _offset1.P0, CGAlgorithms.Clockwise, _distance);
+                    AddFillet(_s1, _offset0.P1, _offset1.P0, OrientationIndex.Clockwise, _distance);
                 }
             }
         }
@@ -385,7 +385,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="orientation">
         /// </param>
         /// <param name="addStartPoint"></param>
-        private void AddOutsideTurn(int orientation, bool addStartPoint)
+        private void AddOutsideTurn(OrientationIndex orientation, bool addStartPoint)
         {
             /**
   	         * Heuristic: If offset endpoints are very close together,
@@ -423,7 +423,7 @@ namespace NetTopologySuite.Operation.Buffer
         ///</summary>
         /// <param name="orientation"></param>
         /// <param name="addStartPoint"></param>
-        private void AddInsideTurn(int orientation, bool addStartPoint)
+        private void AddInsideTurn(OrientationIndex orientation, bool addStartPoint)
         {
             /*
              * add intersection point of offset segments (if any)
@@ -548,7 +548,7 @@ namespace NetTopologySuite.Operation.Buffer
                 case EndCapStyle.Round:
                     // add offset seg points with a fillet between them
                     _vertexList.AddPt(offsetL.P1);
-                    AddFillet(p1, angle + Math.PI / 2, angle - Math.PI / 2, CGAlgorithms.Clockwise, _distance);
+                    AddFillet(p1, angle + Math.PI / 2, angle - Math.PI / 2, OrientationIndex.Clockwise, _distance);
                     _vertexList.AddPt(offsetR.P1);
                     break;
                 case EndCapStyle.Flat:
@@ -708,7 +708,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="p1">Endpoint of fillet curve</param>
         /// <param name="direction">The orientation of the fillet</param>
         /// <param name="radius">The radius of the fillet</param>
-        private void AddFillet(Coordinate p, Coordinate p0, Coordinate p1, int direction, double radius)
+        private void AddFillet(Coordinate p, Coordinate p0, Coordinate p1, OrientationIndex direction, double radius)
         {
             double dx0 = p0.X - p.X;
             double dy0 = p0.Y - p.Y;
@@ -717,7 +717,7 @@ namespace NetTopologySuite.Operation.Buffer
             double dy1 = p1.Y - p.Y;
             double endAngle = Math.Atan2(dy1, dx1);
 
-            if (direction == CGAlgorithms.Clockwise)
+            if (direction == OrientationIndex.Clockwise)
             {
                 if (startAngle <= endAngle) startAngle += 2.0 * Math.PI;
             }
@@ -741,9 +741,9 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="endAngle">The end angle (in radians)</param>
         /// <param name="direction">Is -1 for a CW angle, 1 for a CCW angle</param>
         /// <param name="radius">The radius of the fillet</param>
-        private void AddFillet(Coordinate p, double startAngle, double endAngle, int direction, double radius)
+        private void AddFillet(Coordinate p, double startAngle, double endAngle, OrientationIndex direction, double radius)
         {
-            int directionFactor = direction == CGAlgorithms.Clockwise ? -1 : 1;
+            int directionFactor = direction == OrientationIndex.Clockwise ? -1 : 1;
 
             double totalAngle = Math.Abs(startAngle - endAngle);
             int nSegs = (int)(totalAngle / _filletAngleQuantum + 0.5);
@@ -776,7 +776,7 @@ namespace NetTopologySuite.Operation.Buffer
             // add start point
             Coordinate pt = new Coordinate(p.X + distance, p.Y);
             _vertexList.AddPt(pt);
-            AddFillet(p, 0.0, 2.0 * Math.PI, -1, distance);
+            AddFillet(p, 0.0, 2.0 * Math.PI, OrientationIndex.Clockwise, distance);
         }
 
         ///<summary>

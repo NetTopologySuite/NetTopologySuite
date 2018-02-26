@@ -50,12 +50,12 @@ namespace NetTopologySuite.Geometries
             private readonly double _noDataCheckValue;
             private readonly double _noDataValue;
             private readonly IsNoDataCheck _isNoDataCheck;
-            
+
             /// <summary>
-            /// Initializes this stucture with a <paramref name="noDataValue"/>
+            /// Initializes this structure with a <paramref name="noDataValue"/>
             /// </summary>
             /// <param name="noDataValue">The value that is to be treated as <c>null</c></param>
-            /// <param name="lessThan">This optional parameter controls whether a value has to be less than <see cref="noDataValue"/> to be considered <c>null</c></param>
+            /// <param name="lessThan">This optional parameter controls whether a value has to be less than <paramref name="noDataValue"/> to be considered <c>null</c></param>
             public DoubleNoDataChecker(double noDataValue, bool lessThan = false)
             {
                 _noDataValue = _noDataCheckValue = noDataValue;
@@ -176,7 +176,7 @@ namespace NetTopologySuite.Geometries
         /// Creates an instance of this class with <paramref name="nullValue"/> defining the values that should be treated as null.
         /// </summary>
         /// <param name="nullValue">The value that should be treated as null.</param>
-        /// <param name="lessThan">This optional parameter controls whether a value has to be less than <see cref="nullValue"/> to be considered <c>null</c></param>
+        /// <param name="lessThan">This optional parameter controls whether a value has to be less than <paramref name="nullValue"/> to be considered <c>null</c></param>
         public CoordinateBuffer(double nullValue, bool lessThan = false)
         {
             _coordinates = new List<double[]>();
@@ -184,9 +184,9 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Creates an instance of this class with an inital <paramref name="capacity"/>
+        /// Creates an instance of this class with an initial <paramref name="capacity"/>
         /// </summary>
-        /// <param name="capacity">The inital capacity of the buffer.</param>
+        /// <param name="capacity">The initial capacity of the buffer.</param>
         public CoordinateBuffer(int capacity)
         {
             _coordinates = new List<double[]>(capacity);
@@ -194,11 +194,11 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Creates an instance of this class with an inital <paramref name="capacity"/>
+        /// Creates an instance of this class with an initial <paramref name="capacity"/>
         /// </summary>
-        /// <param name="capacity">The inital capacity of the buffer.</param>
+        /// <param name="capacity">The initial capacity of the buffer.</param>
         /// <param name="nullValue">The value that should be treated as null.</param>
-        /// <param name="lessThan">This optional parameter controls whether a value has to be less than <see cref="nullValue"/> to be considered <c>null</c></param>
+        /// <param name="lessThan">This optional parameter controls whether a value has to be less than <paramref name="nullValue"/> to be considered <c>null</c></param>
         public CoordinateBuffer(int capacity, double nullValue, bool lessThan = false)
         {
             _coordinates = new List<double[]>(capacity);
@@ -304,7 +304,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="y">The y-Ordinate</param>
         /// <param name="z">The (optional) z-Ordinate</param>
         /// <param name="m">The (optional) m-Ordinate</param>
-        /// <param name="allowRepeated">Allows repated coordinates to be added</param>
+        /// <param name="allowRepeated">Allows repeated coordinates to be added</param>
         /// <returns><value>true</value> if the coordinate was successfully added.</returns>
         public bool AddCoordinate(double x, double y, double? z = null, double? m = null, bool allowRepeated = true)
         {
@@ -354,7 +354,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="y">The y-Ordinate</param>
         /// <param name="z">The (optional) z-Ordinate</param>
         /// <param name="m">The (optional) m-Ordinate</param>
-        /// <param name="allowRepeated">Allows repated coordinates to be added</param>
+        /// <param name="allowRepeated">Allows repeated coordinates to be added</param>
         /// <returns><value>true</value> if the coordinate was successfully inserted.</returns>
         public bool InsertCoordinate(int index, double x, double y, double? z = null, double? m = null, bool allowRepeated = true)
         {
@@ -406,7 +406,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Convertes the contents of the buffer to an array of <see cref="Coordinate"/>s
+        /// Converts the contents of the buffer to an array of <see cref="Coordinate"/>s
         /// </summary>
         /// <returns>An array of <see cref="Coordinate"/>s</returns>
         public Coordinate[] ToCoordinateArray()
@@ -475,7 +475,7 @@ namespace NetTopologySuite.Geometries
             if (factory == null)
                 factory = _factory ?? (_factory = GeometryServiceProvider.Instance.DefaultCoordinateSequenceFactory);
 
-            // Copy the markers, append if neccessary
+            // Copy the markers, append if necessary
             var markers = new List<int>(_markers);
             if (markers.Count == 0 || markers[markers.Count-1] < _coordinates.Count) 
                 markers.Add(_coordinates.Count);
@@ -492,7 +492,7 @@ namespace NetTopologySuite.Geometries
                 // compute the length of the current sequence
                 var length = markers[s] - offset;
                 
-                // create a sequence of the apropriate size
+                // create a sequence of the appropriate size
                 var sequence = res[s] = factory.Create(length, useOrdinates);
                 var i = 0;
 
@@ -745,16 +745,20 @@ namespace NetTopologySuite.Geometries
             return true;
         }
 
+        /// <inheritdoc cref="object.GetHashCode"/>
         public override int GetHashCode()
         {
             return 685146 ^ _coordinates.Count ^ _extents.GetHashCode();
         }
 
+        /// <inheritdoc cref="object.ToString"/>
         public override string ToString()
         {
             return string.Format("CoordinateBuffer: {0} coordinates, Extent {1}, Z-{2}, M-{3}",
                 _coordinates.Count, _extents, _zInterval, _mInterval);
         }
+
+        /// <inheritdoc cref="object.Equals(object)"/>
         public override bool Equals(object obj)
         {
             if (!(obj is CoordinateBuffer))

@@ -24,9 +24,6 @@ namespace NetTopologySuite.GeometriesGraph.Index
         // the lists of start/end indexes of the monotone chains.
         // Includes the end point of the edge as a sentinel
         private readonly int[] startIndex;
-        // these envelopes are created once and reused
-        private readonly Envelope env1 = new Envelope();
-        private readonly Envelope env2 = new Envelope();
 
         /// <summary>
         /// 
@@ -122,11 +119,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="ei"></param>
         private void ComputeIntersectsForChain( int start0, int end0, MonotoneChainEdge mce, int start1, int end1, SegmentIntersector ei)
         {
-            Coordinate p00 = pts[start0];
-            Coordinate p01 = pts[end0];
-            Coordinate p10 = mce.pts[start1];
-            Coordinate p11 = mce.pts[end1];
-            
+   
             // terminating condition for the recursion
             if (end0 - start0 == 1 && end1 - start1 == 1)
             {
@@ -135,9 +128,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
             }
 
             // nothing to do if the envelopes of these chains don't overlap
-            env1.Init(p00, p01);
-            env2.Init(p10, p11);
-            if (!env1.Intersects(env2)) 
+            if (!Overlaps(start0, end0, mce, start1, end1)) 
                 return;
 
             // the chains overlap, so split each in half and iterate  (binary search)
@@ -159,6 +150,19 @@ namespace NetTopologySuite.GeometriesGraph.Index
                 if (mid1 < end1)
                     ComputeIntersectsForChain(mid0, end0, mce, mid1, end1, ei);
             }
+        }
+
+
+        /// <summary>
+        /// Tests whether the envelopes of two chain sections overlap (intersect).
+        /// </summary>
+        /// <returns><c>true</c> if the section envelopes overlap</returns>
+        private bool Overlaps(
+            int start0, int end0,
+            MonotoneChainEdge mce,
+            int start1, int end1)
+        {
+            return Envelope.Intersects(pts[start0], pts[end0], mce.pts[start1], mce.pts[end1]);
         }
     }
 }

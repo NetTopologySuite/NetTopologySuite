@@ -54,7 +54,7 @@ namespace NetTopologySuite.Geometries.Utilities
         private IGeometry _inputGeom;
 
         /// <summary>
-        ///
+        /// The geometry factory
         /// </summary>
         protected IGeometryFactory Factory;
 
@@ -86,10 +86,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         public IGeometry InputGeometry
         {
-            get
-            {
-                return _inputGeom;
-            }
+            get { return _inputGeom; }
         }
 
         /// <summary>
@@ -132,7 +129,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Convenience method which provides statndard way of copying {CoordinateSequence}s
+        /// Convenience method which provides a standard way of copying <see cref="ICoordinateSequence"/>s.
         /// </summary>
         /// <param name="seq">The sequence to copy.</param>
         /// <returns>A deep copy of the sequence.</returns>
@@ -158,22 +155,22 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        ///
+        /// Transforms a <see cref="IPoint"/> geometry.
         /// </summary>
-        /// <param name="geom"></param>
-        /// <param name="parent"></param>
-        /// <returns></returns>
+        /// <param name="geom">The <c>Point</c> to transform</param>
+        /// <param name="parent">The parent geometry</param>
+        /// <returns>A <c>Point</c></returns>
         protected virtual IGeometry TransformPoint(IPoint geom, IGeometry parent)
         {
             return Factory.CreatePoint(TransformCoordinates(geom.CoordinateSequence, geom));
         }
 
         /// <summary>
-        ///
+        /// Transforms a <see cref="IMultiPoint"/> geometry.
         /// </summary>
-        /// <param name="geom"></param>
-        /// <param name="parent"></param>
-        /// <returns></returns>
+        /// <param name="geom">The <c>MultiPoint</c> to transform</param>
+        /// <param name="parent">The parent geometry</param>
+        /// <returns>A <c>MultiPoint</c></returns>
         protected virtual IGeometry TransformMultiPoint(IMultiPoint geom, IGeometry parent)
         {
             var transGeomList = new List<IGeometry>();
@@ -188,11 +185,20 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        ///
+        /// Transforms a <see cref="ILinearRing"/>.
+        /// <para/>
+        /// The transformation of a <c>LinearRing</c> may result in a coordinate sequence
+        /// which does not form a structurally valid ring (i.e. a degenerate ring of 3 or fewer points).
+        /// In this case a <c>LineString</c> is returned.
+        /// Subclasses may wish to override this method and check for this situation
+        /// (e.g.a subclass may choose to eliminate degenerate linear rings)
         /// </summary>
-        /// <param name="geom"></param>
-        /// <param name="parent"></param>
-        /// <returns></returns>
+        /// <param name="geom">The <c>LinearRing</c> to transform</param>
+        /// <param name="parent">The parent geometry</param>
+        /// <returns>
+        /// A <c>LinearRing</c> if the transformation resulted in a structurally valid ring, otherwise, 
+        /// if the transformation caused the LinearRing to collapse to 3 or fewer points, a <c>LineString</c>
+        /// </returns>
         protected virtual IGeometry TransformLinearRing(ILinearRing geom, IGeometry parent)
         {
             var seq = TransformCoordinates(geom.CoordinateSequence, geom);
@@ -207,11 +213,11 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        ///
+        /// Transforms a <see cref="ILineString"/> geometry.
         /// </summary>
-        /// <param name="geom"></param>
-        /// <param name="parent"></param>
-        /// <returns></returns>
+        /// <param name="geom">The <c>LineString</c> to transform</param>
+        /// <param name="parent">The parent geometry</param>
+        /// <returns>A <c>LineString</c></returns>
         protected virtual IGeometry TransformLineString(ILineString geom, IGeometry parent)
         {
             // should check for 1-point sequences and downgrade them to points
@@ -219,11 +225,11 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        ///
+        /// Transforms a <see cref="IMultiLineString"/> geometry.
         /// </summary>
-        /// <param name="geom"></param>
-        /// <param name="parent"></param>
-        /// <returns></returns>
+        /// <param name="geom">The <c>MultiLineString</c> to transform</param>
+        /// <param name="parent">The parent geometry</param>
+        /// <returns>A <c>MultiLineString</c></returns>
         protected virtual IGeometry TransformMultiLineString(IMultiLineString geom, IGeometry parent)
         {
             var transGeomList = new List<IGeometry>();
@@ -238,11 +244,11 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        ///
+        /// Transforms a <see cref="IPolygon"/> geometry.
         /// </summary>
-        /// <param name="geom"></param>
-        /// <param name="parent"></param>
-        /// <returns></returns>
+        /// <param name="geom">The <c>Polygon</c> to transform</param>
+        /// <param name="parent">The parent geometry</param>
+        /// <returns>A <c>Polygon</c></returns>
         protected virtual IGeometry TransformPolygon(IPolygon geom, IGeometry parent)
         {
             bool isAllValidLinearRings = true;
@@ -282,11 +288,11 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        ///
+        /// Transforms a <see cref="IMultiPolygon"/> geometry.
         /// </summary>
-        /// <param name="geom"></param>
-        /// <param name="parent"></param>
-        /// <returns></returns>
+        /// <param name="geom">The <c>MultiPolygon</c> to transform</param>
+        /// <param name="parent">The parent geometry</param>
+        /// <returns>A <c>MultiPolygon</c></returns>
         protected virtual IGeometry TransformMultiPolygon(IMultiPolygon geom, IGeometry parent)
         {
             var transGeomList = new List<IGeometry>();
@@ -301,11 +307,11 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        ///
+        /// Transforms a <see cref="IGeometryCollection"/> geometry.
         /// </summary>
-        /// <param name="geom"></param>
-        /// <param name="parent"></param>
-        /// <returns></returns>
+        /// <param name="geom">The <c>GeometryCollection</c> to transform</param>
+        /// <param name="parent">The parent geometry</param>
+        /// <returns>A <c>GeometryCollection</c></returns>
         protected virtual IGeometry TransformGeometryCollection(IGeometryCollection geom, IGeometry parent)
         {
             var transGeomList = new List<IGeometry>();

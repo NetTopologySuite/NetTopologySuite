@@ -10,7 +10,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
 {
 
     /// <summary>
-    /// Tests for race conditons in the PreparedGeometry classes.
+    /// Tests for race conditions in the PreparedGeometry classes.
     /// </summary>
     /// <author>Martin Davis</author>
     public class PreparedGeometryThreadSafeTest : ThreadTestCase

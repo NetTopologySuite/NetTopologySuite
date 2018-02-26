@@ -6,6 +6,7 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
 using NetTopologySuite.Planargraph;
+using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Operation.Polygonize
 {
@@ -50,7 +51,7 @@ namespace NetTopologySuite.Operation.Polygonize
                 if (!tryShellEnv.Contains(testEnv)) continue;
 
                 var testPt = CoordinateArrays.PointNotInList(testRing.Coordinates, tryShellRing.Coordinates);
-                var isContained = CGAlgorithms.IsPointInRing(testPt, tryShellRing.Coordinates);
+                var isContained = PointLocation.IsInRing(testPt, tryShellRing.Coordinates);
 
                 // check if this new containing ring is smaller than the current minimum ring
                 if (isContained)
@@ -171,7 +172,7 @@ namespace NetTopologySuite.Operation.Polygonize
 
         /// <summary>
         /// Tests whether this ring is a hole.
-        /// Due to the way the edges in the polyongization graph are linked,
+        /// Due to the way the edges in the polygonization graph are linked,
         /// a ring is a hole if it is oriented counter-clockwise.
         /// </summary>
         /// <returns><c>true</c> if this ring is a hole.</returns>
@@ -182,13 +183,14 @@ namespace NetTopologySuite.Operation.Polygonize
 
         ///<summary>
         /// Computes whether this ring is a hole.
-        /// Due to the way the edges in the polyongization graph are linked,
+        /// Due to the way the edges in the polygonization graph are linked,
         /// a ring is a hole if it is oriented counter-clockwise.
         /// </summary>
         public void ComputeHole()
         {
             var ring = Ring;
-            _isHole = CGAlgorithms.IsCCW(ring.Coordinates);
+            _isHole = Orientation.IsCCW(ring.CoordinateSequence);
+            Assert.IsTrue(Orientation.IsCCW(ring.CoordinateSequence) == Orientation.IsCCW(ring.Coordinates));
         }
 
         /// <summary>
@@ -269,7 +271,7 @@ namespace NetTopologySuite.Operation.Polygonize
 
         /// <summary>
         /// Computes and returns the list of coordinates which are contained in this ring.
-        /// The coordinatea are computed once only and cached.
+        /// The coordinates are computed once only and cached.
         /// </summary>
         private Coordinate[] Coordinates
         {

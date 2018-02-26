@@ -21,7 +21,8 @@ namespace NetTopologySuite.Tests.NUnit
             var actualNorm = actual.Normalized();       
             var expectedNorm = expected.Normalized();                 
             var equal = actualNorm.EqualsExact(expectedNorm);
-            Assert.That(equal, Is.True, String.Format("Expected = {0}\nactual   = {1}", expected, actual));
+            //var writer = new WKTWriter {MaxCoordinatesPerLine };
+            Assert.That(equal, Is.True, String.Format("\nExpected = {0}\nactual   = {1}", expected, actual));
         }
 
         protected void CheckEqual(ICollection<IGeometry> expected, ICollection<IGeometry> actual)

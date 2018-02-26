@@ -7,7 +7,7 @@ using NetTopologySuite.Triangulate.QuadEdge;
 namespace NetTopologySuite.Triangulate
 {
     /// <summary>
-    /// A utility class which creates Conforming Delaunay Trianglulations
+    /// A utility class which creates Conforming Delaunay Triangulations
     /// from collections of points and linear constraints, and extract the resulting 
     /// triangulation edges or triangles as geometries. 
     /// </summary>

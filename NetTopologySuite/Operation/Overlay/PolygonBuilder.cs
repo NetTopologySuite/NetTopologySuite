@@ -248,7 +248,7 @@ namespace NetTopologySuite.Operation.Overlay
                 if (minShell != null)
                     minEnv = minShell.LinearRing.EnvelopeInternal;
                 bool isContained = false;
-                if (tryEnv.Contains(testEnv) && CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates))
+                if (tryEnv.Contains(testEnv) && PointLocation.IsInRing(testPt, tryRing.Coordinates))
                         isContained = true;
                 // check if this new containing ring is smaller than the current minimum ring
                 if (isContained)

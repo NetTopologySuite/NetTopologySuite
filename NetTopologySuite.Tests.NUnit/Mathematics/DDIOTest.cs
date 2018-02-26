@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using NetTopologySuite.Mathematics;
 using NUnit.Framework;
 
@@ -71,6 +72,16 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
 
         [Test]
         public void TestParse() {
+            CheckParse("0", 0, 1e-32);
+            CheckParse("1", 1, 1e-32);
+            CheckParse("100", 100, 1e-32);
+            CheckParse("-1", -1, 1e-32);
+            CheckParse("-100", -100, 1e-32);
+            CheckParse("-123", -123, 1e-32);
+
+            CheckParse(".1", 0.1, 1e-32);
+            CheckParse("0", 0, 1e-32);
+            CheckParse("1", 1, 1e-32);
             CheckParse("1.05e10", 1.05E10, 1e-32);
             CheckParse("-1.05e10", -1.05E10, 1e-32);
             CheckParse("1.05e-10", DD.ValueOf(105d).Divide(
@@ -102,12 +113,15 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         private static void CheckParse(String str, DD expectedVal,
             double relErrBound) {
             DD xdd = DD.Parse(str);
-            double err = xdd.Subtract(expectedVal).ToDoubleValue();
-            double relErr = err / xdd.ToDoubleValue();
+            var err = (xdd - expectedVal).ToDoubleValue();
+            var relErr = err / xdd.ToDoubleValue();
 
             //System.Console.WriteLine(("Parsed= " + xdd + " rel err= " + relErr);
 
-            Assert.IsTrue(err <= relErrBound);
+            Assert.IsTrue(err <= relErrBound,
+                string.Format(NumberFormatInfo.InvariantInfo, 
+                    "Parsing '" + str + "' results in " + xdd.ToString() + " ( "
+                              + xdd.Dump() + ") != " + expectedVal + "\n  err =" + err + ", relerr =" + relErr));
         }
 
         [Test]
@@ -136,7 +150,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         }
 
         /// <summary>
-        /// This routine simply tests for robustness of the toString function.
+        /// This routine simply tests for robustness of the ToString function.
         /// </summary>
         private static void WriteRepeatedSqrt(DD xdd) 
         {

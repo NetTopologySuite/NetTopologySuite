@@ -130,7 +130,7 @@ namespace NetTopologySuite.IO.Handlers
                 {
                     var tryShell = shells[j];
                     var tryEnv = tryShell.EnvelopeInternal;
-                    var isContained = tryEnv.Contains(testEnv) && CGAlgorithms.IsPointInRing(testPt, tryShell.Coordinates);
+                    var isContained = tryEnv.Contains(testEnv) && PointLocation.IsInRing(testPt, tryShell.Coordinates);
 
                     // Check if this new containing ring is smaller than the current minimum ring
                     if (isContained)

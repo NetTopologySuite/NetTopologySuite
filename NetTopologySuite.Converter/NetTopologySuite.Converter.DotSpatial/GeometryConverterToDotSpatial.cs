@@ -470,9 +470,9 @@ namespace GeoAPI.Geometries
 
         private static ILinearRing OrientationEnsured(ILinearRing ring, bool ccw)
         {
-            Console.WriteLine(NetTopologySuite.Algorithm.CGAlgorithms.IsCCW(ring.Coordinates) == ccw);
+            Console.WriteLine(NetTopologySuite.Algorithm.Orientation.IsCCW(ring.CoordinateSequence) == ccw);
 
-            if (NetTopologySuite.Algorithm.CGAlgorithms.IsCCW(ring.Coordinates) == ccw)
+            if (NetTopologySuite.Algorithm.Orientation.IsCCW(ring.CoordinateSequence) == ccw)
                 return ring;
 
             var coordinates = new Coordinate[ring.NumPoints];

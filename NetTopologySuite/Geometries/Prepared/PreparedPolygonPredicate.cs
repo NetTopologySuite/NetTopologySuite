@@ -30,7 +30,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <remarks>Handles both linear and point components.</remarks>
         /// <param name="testGeom">A geometry to test</param>
         /// <returns>
-        /// true if all componenta of the argument are contained in the target geometry
+        /// true if all components of the argument are contained in the target geometry
         /// </returns>
         protected bool IsAllTestComponentsInTarget(IGeometry testGeom)
         {
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Geometries.Prepared
         ///</summary>
         /// <remarks>Handles both linear and point components.</remarks>
         /// <param name="testGeom">A geometry to test</param>
-        /// <returns>true if all componenta of the argument are contained in the target geometry interior</returns>
+        /// <returns>true if all components of the argument are contained in the target geometry interior</returns>
         protected bool IsAllTestComponentsInTargetInterior(IGeometry testGeom)
         {
             IList<Coordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);

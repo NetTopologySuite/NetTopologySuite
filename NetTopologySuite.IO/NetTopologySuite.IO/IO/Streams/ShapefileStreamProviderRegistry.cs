@@ -159,6 +159,11 @@ namespace NetTopologySuite.IO.Streams
 
         private IStreamProvider IndexStream { get; set; }
 
+        /// <summary>
+        /// Indexer for a stream provider
+        /// </summary>
+        /// <param name="streamType">The stream type</param>
+        /// <returns>A stream provider</returns>
         public IStreamProvider this[string streamType]
         {
             get

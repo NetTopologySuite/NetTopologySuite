@@ -60,7 +60,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// This test can be used to determine if the node is in the result,
         /// since if any incident edge is in the result, the node must be in the result as well.
         /// </summary>
-        /// <returns><value>true</value> if any indicident edge in the in the result
+        /// <returns><value>true</value> if any incident edge in the in the result
         /// </returns>
         public bool IsIncidentEdgeInResult()
         {

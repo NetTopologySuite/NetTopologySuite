@@ -124,7 +124,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         [TestAttribute]
         public void TestIsCCW() {
-            Assert.AreEqual(1, CGAlgorithms.ComputeOrientation(
+            Assert.AreEqual(OrientationIndex.CounterClockwise, Orientation.Index(
             new Coordinate(-123456789, -40),
             new Coordinate(0, 0),
             new Coordinate(381039468754763d, 123456789)));
@@ -132,11 +132,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         [TestAttribute]
         public void TestIsCCW2() {
-            Assert.AreEqual(0, CGAlgorithms.ComputeOrientation(
-            new Coordinate(10, 10),
-            new Coordinate(20, 20),
-            new Coordinate(0, 0)));
-            Assert.AreEqual(0, NonRobustCGAlgorithms.ComputeOrientation(
+            Assert.AreEqual(OrientationIndex.Collinear, Orientation.Index(
             new Coordinate(10, 10),
             new Coordinate(20, 20),
             new Coordinate(0, 0)));
@@ -150,8 +146,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             ILineString l = new GeometryFactory().CreateLineString(new Coordinate[] {p1, p2});
             IPoint p = new GeometryFactory().CreatePoint(q);
             Assert.AreEqual(false, l.Intersects(p));
-            Assert.AreEqual(false, CGAlgorithms.IsOnLine(q, new Coordinate[] { p1, p2 }));
-            Assert.AreEqual(-1, CGAlgorithms.ComputeOrientation(p1, p2, q));
+            Assert.AreEqual(false, PointLocation.IsOnLine(q, new Coordinate[] { p1, p2 }));
+            Assert.AreEqual(OrientationIndex.Clockwise, Orientation.Index(p1, p2, q));
         }
 
     }

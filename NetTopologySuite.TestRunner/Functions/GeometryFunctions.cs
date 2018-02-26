@@ -16,14 +16,14 @@ namespace Open.Topology.TestRunner.Functions
 
         public static bool IsCCW(IGeometry g)
         {
-            Coordinate[] pts = null;
+            ICoordinateSequence pts = null;
             if (g is IPolygon)
-                pts = ((IPolygon)g).ExteriorRing.Coordinates;
+                pts = ((IPolygon)g).ExteriorRing.CoordinateSequence;
             else if (g is ILineString && ((ILineString)g).IsClosed)
-                pts = g.Coordinates;
+                pts = ((ILineString)g).CoordinateSequence;
             if (pts == null)
                 return false;
-            return CGAlgorithms.IsCCW(pts);
+            return Orientation.IsCCW(pts);
         }
 
         public static bool IsSimple(IGeometry g) { return g.IsSimple; }

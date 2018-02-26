@@ -1,5 +1,6 @@
 using System;
 using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm;
 
 namespace NetTopologySuite.Geometries
 {
@@ -30,14 +31,12 @@ namespace NetTopologySuite.Geometries
         public const int MinimumValidSize = 4;
 
         /// <summary>
-        /// Constructs a <c>LinearRing</c> with the given points.
+        /// Constructs a <c>LinearRing</c> with the vertices specified 
+        /// by the given <see cref="ICoordinateSequence"/>.
         /// </summary>
-        /// <param name="points">
-        /// Points forming a closed and simple linestring, or
-        /// <c>null</c> or an empty array to create the empty point.
-        /// This array must not contain <c>null</c> elements.
-        /// </param>
-        /// <param name="factory"></param>
+        /// <param name="points">A sequence points forming a closed and simple linestring, 
+        /// or <c>null</c> to create the empty geometry.</param>
+        /// <param name="factory">The factory that creates this <c>LinearRing</c></param>
         /// <exception cref="ArgumentException">If the ring is not closed, or has too few points</exception>
         public LinearRing(ICoordinateSequence points, IGeometryFactory factory)
             : base(points, factory)
@@ -54,6 +53,14 @@ namespace NetTopologySuite.Geometries
                 throw new ArgumentException("points must form a closed linestring");
             if (CoordinateSequence.Count >= 1 && CoordinateSequence.Count < MinimumValidSize)
                 throw new ArgumentException("Number of points must be 0 or >3");
+        }
+
+        /// <summary>
+        /// Gets a value to sort the geometry
+        /// </summary>
+        protected override SortIndexValue SortIndex
+        {
+            get { return SortIndexValue.LinearRing; }
         }
 
         /// <summary>
@@ -95,7 +102,7 @@ namespace NetTopologySuite.Geometries
             return Factory.CreateLinearRing(sequence);
         }
 
-        public bool IsCCW { get { return Algorithm.CGAlgorithms.IsCCW(CoordinateSequence); } }
+        public bool IsCCW { get { return Orientation.IsCCW(CoordinateSequence); } }
         
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 

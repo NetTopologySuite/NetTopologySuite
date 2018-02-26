@@ -79,6 +79,7 @@ namespace NetTopologySuite.Noding
             }
         }
 
+        /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
         {
             return WKTWriter.ToLineString(new CoordinateArraySequence(_pts));

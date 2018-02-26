@@ -1,4 +1,7 @@
 using System;
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
+using System.Runtime.Serialization;
+#endif
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries.Implementation
@@ -7,12 +10,18 @@ namespace NetTopologySuite.Geometries.Implementation
     /// A <c>CoordinateSequence</c> implementation based on a packed arrays.
     /// A <c>CoordinateSequence</c> implementation based on a packed arrays.
     /// </summary>
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
+    [Serializable]
+#endif
     public abstract class PackedCoordinateSequence : ICoordinateSequence
     {        
         /// <summary>
         /// A soft reference to the Coordinate[] representation of this sequence.
         /// Makes repeated coordinate array accesses more efficient.
         /// </summary>
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
+        [NonSerialized]
+#endif
         protected WeakReference CoordRef;
 
         /// <summary>
@@ -228,6 +237,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </remarks> 
         public abstract void SetOrdinate(int index, Ordinate ordinate, double value);
 
+        /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
         {
             return CoordinateSequences.ToString(this);
@@ -258,11 +268,22 @@ namespace NetTopologySuite.Geometries.Implementation
         public abstract Envelope ExpandEnvelope(Envelope env);
 
         public abstract ICoordinateSequence Reversed();
+
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
+        [OnDeserialized]
+        private void OnDeserialization(StreamingContext context)
+        {
+            CoordRef = null;
+        }
+#endif
     }
 
     /// <summary>
     /// Packed coordinate sequence implementation based on doubles.
     /// </summary>
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
+    [Serializable]
+#endif
     public class PackedDoubleCoordinateSequence : PackedCoordinateSequence 
     {
         /// <summary>
@@ -391,6 +412,11 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Ordinate indices greater than 1 have user-defined semantics
         /// (for instance, they may contain other dimensions or measure values).
         /// </summary>
+        /// <remarks>
+        /// Beware, for performance reasons the ordinate index is not checked, if
+        /// it's over dimensions you may not get an exception but a meaningless
+        /// value.
+        /// </remarks>
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <returns></returns>
@@ -446,6 +472,9 @@ namespace NetTopologySuite.Geometries.Implementation
     /// <summary>
     /// Packed coordinate sequence implementation based on floats.
     /// </summary>
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
+    [Serializable]
+#endif
     public class PackedFloatCoordinateSequence : PackedCoordinateSequence 
     {
         /// <summary>
@@ -568,6 +597,11 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Ordinate indices greater than 1 have user-defined semantics
         /// (for instance, they may contain other dimensions or measure values).
         /// </summary>
+        /// <remarks>
+        /// Beware, for performance reasons the ordinate index is not checked, if
+        /// it's over dimensions you may not get an exception but a meaningless
+        /// value.
+        /// </remarks>
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <returns></returns>

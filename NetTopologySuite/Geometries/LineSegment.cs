@@ -177,8 +177,8 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public int OrientationIndex(LineSegment seg)
         {
-            var orient0 = CGAlgorithms.OrientationIndex(_p0, _p1, seg._p0);
-            var orient1 = CGAlgorithms.OrientationIndex(_p0, _p1, seg._p1);
+            var orient0 = (int)Orientation.Index(_p0, _p1, seg._p0);
+            var orient1 = (int)Orientation.Index(_p0, _p1, seg._p1);
             // this handles the case where the points are Curve or collinear
             if (orient0 >= 0 && orient1 >= 0)
                 return Math.Max(orient0, orient1);
@@ -189,22 +189,10 @@ namespace NetTopologySuite.Geometries
             return 0;
         }
 
-        /**
-         *
-         *
-         *
-         * @param seg the LineSegment to compare
-         *
-         * @return
-         * @return
-         * @return
-         *
-         * @see CGAlgorithms#computeOrientation(Coordinate, Coordinate, Coordinate)
-         */
 
         ///<summary>
         /// Determines the orientation index of a <see cref="Coordinate"/> relative to this segment.
-        /// The orientation index is as defined in <see cref="CGAlgorithms.ComputeOrientation"/>.
+        /// The orientation index is as defined in <see cref="Orientation.Index"/>.
         ///</summary>
         ///
         /// <returns>
@@ -217,7 +205,7 @@ namespace NetTopologySuite.Geometries
         ///
         public int OrientationIndex(Coordinate p)
         {
-            return CGAlgorithms.OrientationIndex(_p0, _p1, p);
+            return (int)Orientation.Index(_p0, _p1, p);
         }
 
         /// <summary>
@@ -266,7 +254,7 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         public double Distance(LineSegment ls)
         {
-            return CGAlgorithms.DistanceLineLine(_p0, _p1, ls._p0, ls._p1);
+            return DistanceComputer.SegmentToSegment(_p0, _p1, ls._p0, ls._p1);
         }
 
         /// <summary>
@@ -274,7 +262,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public double Distance(Coordinate p)
         {
-            return CGAlgorithms.DistancePointLine(p, _p0, _p1);
+            return DistanceComputer.PointToSegment(p, _p0, _p1);
         }
 
         /// <summary>
@@ -285,7 +273,7 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         public double DistancePerpendicular(Coordinate p)
         {
-            return CGAlgorithms.DistancePointLinePerpendicular(p, _p0, _p1);
+            return DistanceComputer.PointToLinePerpendicular(p, _p0, _p1);
         }
 
         /// <summary>
@@ -583,7 +571,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Creates a LineString with the same coordinates as this segment
         /// </summary>
-        /// <param name="geomFactory">the geometery factory to use</param>
+        /// <param name="geomFactory">the geometry factory to use</param>
         /// <returns>A LineString with the same geometry as this segment</returns>
         public ILineString ToGeometry(IGeometryFactory geomFactory)
         {

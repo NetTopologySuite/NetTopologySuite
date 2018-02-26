@@ -121,7 +121,7 @@ namespace NetTopologySuite.Triangulate
         /// This allows using a <see cref="IDictionary{TKey,TValue}"/> to link faces to data associated with sites.
         /// </summary>
         /// <param name="geomFact">the geometry factory to use to create the output</param>
-        /// <returns>a <see cref="IGeometryCollection"/> containg the face <see cref="IPolygon"/>s of the diagram</returns>
+        /// <returns>a <see cref="IGeometryCollection"/> containing the face <see cref="IPolygon"/>s of the diagram</returns>
         public IGeometryCollection GetDiagram(IGeometryFactory geomFact)
         {
             Create();

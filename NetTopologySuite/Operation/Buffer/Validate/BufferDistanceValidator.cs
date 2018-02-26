@@ -157,7 +157,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         }
 
         ///<summary>
-        /// Checks that two geometries are at least a minumum distance apart.
+        /// Checks that two geometries are at least a minimum distance apart.
         /// </summary>
         /// <param name="g1">A geometry</param>
         /// <param name="g2">A geometry</param>
@@ -223,7 +223,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             errorLocation = ptPairDist.getCoordinate(1);
             errMsg = "Distance between buffer curve and input is too large "
               + "(" + ptPairDist.getDistance()
-              + " at " + ptPairDist.toString() +")";
+              + " at " + ptPairDist.ToString() +")";
           }
         }
         */

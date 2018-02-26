@@ -298,6 +298,33 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
+        /// Finds k items in this tree which are the top k nearest neighbors to the given <c>item</c>, 
+        /// using <c>itemDist</c> as the distance metric.
+        /// A Branch-and-Bound tree traversal algorithm is used
+        /// to provide an efficient search.
+        /// This method implements the KNN algorithm described in the following paper:
+        /// <para/>
+        /// Roussopoulos, Nick, Stephen Kelley, and Frédéric Vincent. "Nearest neighbor queries."
+        /// ACM sigmod record. Vol. 24. No. 2. ACM, 1995.
+        /// <para/>
+        /// The query <c>item</c> does <b>not</b> have to be 
+        /// contained in the tree, but it does 
+        /// have to be compatible with the <c>itemDist</c> 
+        /// distance metric.
+        /// </summary>
+        /// <param name="env">The envelope of the query item</param>
+        /// <param name="item">The item to find the nearest neighbour of</param>
+        /// <param name="itemDist">A distance metric applicable to the items in this tree and the query item</param>
+        /// <param name="k">The K nearest items in kNearestNeighbour</param>
+        ///<returns>K nearest items in this tree</returns>
+        public TItem[] NearestNeighbour(Envelope env, TItem item, IItemDistance<Envelope, TItem> itemDist, int k)
+        {
+            var bnd = new ItemBoundable<Envelope, TItem> (env, item);
+            var bp = new BoundablePair<TItem>(Root, bnd, itemDist);
+            return NearestNeighbour(bp, k);
+        }
+
+        /// <summary>
         /// Finds the item in this tree which is nearest to the given <paramref name="item"/>, 
         /// using <see cref="IItemDistance{Envelope,TItem}"/> as the distance metric.
         /// A Branch-and-Bound tree traversal algorithm is used
@@ -342,6 +369,11 @@ namespace NetTopologySuite.Index.Strtree
         private static TItem[] NearestNeighbour(BoundablePair<TItem> initBndPair)
         {
             return NearestNeighbour(initBndPair, Double.PositiveInfinity);
+        }
+
+        private TItem[] NearestNeighbour(BoundablePair<TItem> initBndPair, int k)
+        {
+            return NearestNeighbour(initBndPair, double.PositiveInfinity, k);
         }
 
         private static TItem[] NearestNeighbour(BoundablePair<TItem> initBndPair, double maxDistance)
@@ -410,6 +442,108 @@ namespace NetTopologySuite.Index.Strtree
                            ((ItemBoundable<Envelope, TItem>) minPair.GetBoundable(1)).Item
                        };
             return null;
+        }
+
+        private TItem[] NearestNeighbour(BoundablePair<TItem> initBndPair, double maxDistance, int k)
+        {
+            var distanceLowerBound = maxDistance;
+
+            // initialize internal structures
+            var priQ = new PriorityQueue<BoundablePair<TItem>>();
+
+            // initialize queue
+            priQ.Add(initBndPair);
+
+            var kNearestNeighbors = new PriorityQueue<BoundablePair<TItem>>(k, new BoundablePairDistanceComparer<TItem>(false));
+
+            while (!priQ.IsEmpty() && distanceLowerBound >= 0.0)
+            {
+                // pop head of queue and expand one side of pair
+                var bndPair = priQ.Poll();
+                var currentDistance = bndPair.Distance;
+
+
+                /**
+                 * If the distance for the first node in the queue
+                 * is >= the current maximum distance in the k queue , all other nodes
+                 * in the queue must also have a greater distance.
+                 * So the current minDistance must be the true minimum,
+                 * and we are done.
+                 */
+
+
+                if (currentDistance >= distanceLowerBound)
+                {
+                    break;
+                }
+                /**
+                 * If the pair members are leaves
+                 * then their distance is the exact lower bound.
+                 * Update the distanceLowerBound to reflect this
+                 * (which must be smaller, due to the test 
+                 * immediately prior to this). 
+                 */
+                if (bndPair.IsLeaves)
+                {
+                    // assert: currentDistance < minimumDistanceFound
+
+                    if (kNearestNeighbors.Size < k)
+                    {
+                        kNearestNeighbors.Add(bndPair);
+                    }
+                    else
+                    {
+
+                        if (kNearestNeighbors.Peek().Distance > currentDistance)
+                        {
+                            kNearestNeighbors.Poll();
+                            kNearestNeighbors.Add(bndPair);
+                        }
+                        /*
+                         * minDistance should be the farthest point in the K nearest neighbor queue.
+                         */
+                        distanceLowerBound = kNearestNeighbors.Peek().Distance;
+
+                    }
+                }
+                else
+                {
+                    // testing - does allowing a tolerance improve speed?
+                    // Ans: by only about 10% - not enough to matter
+                    /*
+                    double maxDist = bndPair.getMaximumDistance();
+                    if (maxDist * .99 < lastComputedDistance) 
+                      return;
+                    //*/
+
+                    /**
+                     * Otherwise, expand one side of the pair,
+                     * (the choice of which side to expand is heuristically determined) 
+                     * and insert the new expanded pairs into the queue
+                     */
+                    bndPair.ExpandToQueue(priQ, distanceLowerBound);
+                }
+            }
+            // done - return items with min distance
+
+            return GetItems(kNearestNeighbors);
+        }
+
+        private static TItem[] GetItems(PriorityQueue<BoundablePair<TItem>> kNearestNeighbors)
+        {
+            /** 
+             * Iterate the K Nearest Neighbour Queue and retrieve the item from each BoundablePair
+             * in this queue
+             */
+            TItem[] items = new TItem[kNearestNeighbors.Size];
+            var resultIterator = kNearestNeighbors.GetEnumerator();
+            int count = 0;
+            while (resultIterator.MoveNext())
+            {
+                items[count] = ((ItemBoundable<Envelope, TItem>)resultIterator.Current.GetBoundable(0)).Item;
+                count++;
+            }
+            return items;
         }
 
     }

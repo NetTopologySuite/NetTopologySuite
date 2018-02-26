@@ -101,6 +101,7 @@ namespace NetTopologySuite.Operation.Buffer
             }
         }
 
+        /// <inheritdoc cref="object.ToString()"/>
         public override String ToString()
         {
             var fact = new GeometryFactory();

@@ -18,7 +18,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
     /// of the subdivision. 
     /// </para>
     /// <para>
-    /// The edge class does not contain separate information for vertice or faces; a vertex is implicitly
+    /// The edge class does not contain separate information for vertices or faces; a vertex is implicitly
     /// defined as a ring of edges (created using the <tt>Next</tt> field).
     /// </para>
     /// </summary>
@@ -377,7 +377,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// Tests if this quadedge and another have the same line segment geometry, 
         /// regardless of orientation.
         /// </summary>
-        /// <param name="qe">a quadege</param>
+        /// <param name="qe">a quadedge</param>
         /// <returns>true if the quadedges are based on the same line segment regardless of orientation</returns>
         public bool EqualsNonOriented(QuadEdge qe)
         {
@@ -392,7 +392,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// Tests if this quadedge and another have the same line segment geometry
         /// with the same orientation.
         /// </summary>
-        /// <param name="qe">a quadege</param>
+        /// <param name="qe">a quadedge</param>
         /// <returns>true if the quadedges are based on the same line segment</returns>
         public bool EqualsOriented(QuadEdge qe)
         {

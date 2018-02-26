@@ -27,7 +27,7 @@ namespace NetTopologySuite.Mathematics
     /// This is the Java standard arithmetic model, but for performance reasons 
     /// Java implementations are not
     /// constrained to using this standard by default.  
-    /// Some processors (notably the Intel Pentium architecure) perform
+    /// Some processors (notably the Intel Pentium architecture) perform
     /// floating point operations in (non-IEEE-754-standard) extended-precision.
     /// A JVM implementation may choose to use the non-standard extended-precision
     /// as its default arithmetic mode.
@@ -210,7 +210,7 @@ namespace NetTopologySuite.Mathematics
         /// <summary>
         /// Creates and returns a copy of this value.
         /// </summary>
-        /// <returns>Acopy of this value</returns>
+        /// <returns>A copy of this value</returns>
         public Object Clone()
         {
             return new DD(_hi, _lo);
@@ -1386,6 +1386,7 @@ namespace NetTopologySuite.Mathematics
             int numDigits = 0;
             int numBeforeDec = 0;
             int exp = 0;
+            var hasDecimalChar = false;
             while (true)
             {
                 if (i >= strlen)
@@ -1404,6 +1405,7 @@ namespace NetTopologySuite.Mathematics
                 if (ch == '.')
                 {
                     numBeforeDec = numDigits;
+                    hasDecimalChar = true;
                     continue;
                 }
                 if (ch == 'e' || ch == 'E')
@@ -1426,8 +1428,11 @@ namespace NetTopologySuite.Mathematics
             }
             DD val2 = val;
 
+            // correct number of digits before decimal sign if we don't have a decimal sign in the string
+            if (!hasDecimalChar) numBeforeDec = numDigits;
+
             // scale the number correctly
-            int numDecPlaces = numDigits - numBeforeDec - exp;
+            var numDecPlaces = numDigits - numBeforeDec - exp;
             if (numDecPlaces == 0)
             {
                 val2 = val;

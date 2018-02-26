@@ -15,6 +15,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
     /// issues (bad noding causing topology failures).
     /// However by ver 1.13 (at least) this test should pass perfectly.
     /// This is due to the many heuristics introduced to improve buffer
+    /// robustness.
     /// </summary>
     public class PolygonBufferStressTest
     {

@@ -2,13 +2,13 @@ using System;
 using System.IO;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.Utilities;
+//using NetTopologySuite.Geometries;
+//using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO
 {
     /// <summary>
-    /// Contains methods for writing a single <c>Geometry</c> in binary ESRI shapefile format.
+    /// Contains methods for writing a single <c>Geometry</c> in binary ESRI Shapefile format.
     /// </summary>
     public class ShapeWriter
     {
@@ -16,7 +16,7 @@ namespace NetTopologySuite.IO
         /// Standard byte size for each complex point.
         /// Each complex point (LineString, Polygon, ...) contains
         ///     4 bytes for ShapeTypes and
-        ///     32 bytes for Boundingbox.      
+        ///     32 bytes for bounding box.      
         /// </summary>
         protected const int InitCount = 36;
 
@@ -30,7 +30,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="coordinate">The coordinate to write</param>
         /// <param name="writer">The writer to use</param>
-        [Obsolete]
+        [Obsolete("Use WriteCoordinates(ICoordinateSequence, BinaryWriter, Ordinates)")]
         public void Write(Coordinate coordinate, BinaryWriter writer)
         {
             writer.Write((double) coordinate.X);
@@ -42,7 +42,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="coordinates">The array of <see cref="Coordinate"/>s to write</param>
         /// <param name="writer">The writer to use</param>
-        [Obsolete]
+        [Obsolete("Use WriteCoordinates(ICoordinateSequence, BinaryWriter, Ordinates)")]
         public void Write(Coordinate[] coordinates, BinaryWriter writer)
         {
             foreach (var coordinate in coordinates)
@@ -52,6 +52,12 @@ namespace NetTopologySuite.IO
             }
         }
 
+        /// <summary>
+        /// Write the <paramref name="ordinates"/> of the <paramref name="sequence"/> using the provided <paramref name="writer"/>
+        /// </summary>
+        /// <param name="sequence">The sequence</param>
+        /// <param name="writer">The writer</param>
+        /// <param name="ordinates">The ordinates, <see cref="Ordinates.X"/> and <see cref="Ordinates.Y"/> are written in any case.</param>
         protected void WriteCoordinates(ICoordinateSequence sequence, BinaryWriter writer, Ordinates ordinates)
         {
             for (var i = 0; i < sequence.Count; i++)
@@ -75,6 +81,13 @@ namespace NetTopologySuite.IO
             }
         }
 
+        /// <summary>
+        /// Evaluates the <see cref="Interval"/> of the <paramref name="ordinate"/>-values in 
+        /// <paramref name="sequence"/> and writes it using the provided <paramref name="writer"/>
+        /// </summary>
+        /// <param name="sequence">The sequence</param>
+        /// <param name="ordinate">The ordinate</param>
+        /// <param name="writer">The writer</param>
         protected void WriteInterval(ICoordinateSequence sequence, Ordinate ordinate, BinaryWriter writer)
         {
             var val = GetOrdinate(sequence, ordinate, 0);
@@ -107,7 +120,7 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Writes <paramref name="lineString"/> to a stream using <paramref name="writer"/>
         /// </summary>
-        /// <param name="lineString">The linestring to write</param>
+        /// <param name="lineString">The <c>LineString</c> to write</param>
         /// <param name="writer">The writer to use</param>
         public void Write(ILineString lineString, BinaryWriter writer)
         {
@@ -151,7 +164,7 @@ namespace NetTopologySuite.IO
             
             // Gather coordinate information
             var ring = polygon.ExteriorRing.CoordinateSequence;
-            CoordinateSequences.Copy(ring, 0, seq, count, ring.Count);
+            Copy(ring, 0, seq, count, ring.Count);
 
             // If we have interior rings write the index parts and gather coordinate information
             if (polygon.NumInteriorRings > 0)
@@ -165,7 +178,7 @@ namespace NetTopologySuite.IO
                 {
                     // Write internal holes index
                     ring = polygon.GetInteriorRingN(i).CoordinateSequence;
-                    CoordinateSequences.Copy(ring, 0, seq, count, ring.Count);
+                    Copy(ring, 0, seq, count, ring.Count);
                     if (i < polygon.NumInteriorRings - 1)
                     {
                         count += ring.Count;
@@ -193,10 +206,25 @@ namespace NetTopologySuite.IO
             // Write NumPoints            
             writer.Write((int) multiPoint.NumPoints);
 
+            // Merge sequences of points into one
+            var seq = multiPoint.Factory.CoordinateSequenceFactory.Create(
+                multiPoint.NumGeometries, ((IPoint) multiPoint.GetGeometryN(0)).CoordinateSequence.Ordinates);
+            for (var i = 0; i < seq.Count; i++)
+            {
+                var pt = (IPoint) multiPoint.GetGeometryN(i);
+                seq.SetOrdinate(i, Ordinate.X, pt.CoordinateSequence.GetOrdinate(i, Ordinate.X));
+                seq.SetOrdinate(i, Ordinate.Y, pt.CoordinateSequence.GetOrdinate(i, Ordinate.Y));
+                if ((seq.Ordinates & Ordinates.Z) == Ordinates.Z)
+                    seq.SetOrdinate(i, Ordinate.Z, pt.CoordinateSequence.GetOrdinate(i, Ordinate.Z));
+                if ((seq.Ordinates & Ordinates.M) == Ordinates.M)
+                    seq.SetOrdinate(i, Ordinate.M, pt.CoordinateSequence.GetOrdinate(i, Ordinate.M));
+            }
+
             // Write Coordinates
-            Write(multiPoint.Coordinates,writer);
+            WriteCoordinates(seq, writer, seq.Ordinates);
         }
 
+        /*
         /// <summary>
         /// 
         /// </summary>
@@ -250,7 +278,9 @@ namespace NetTopologySuite.IO
             }
             return seq;
         }
+        */
 
+        /*
         /// <summary>
         /// Function to determine the shape geometry type for the <paramref name="geometry"/>
         /// </summary>
@@ -303,6 +333,7 @@ namespace NetTopologySuite.IO
                     throw new ArgumentException("Invalid geometry type", "geometry");
             }
         }
+        */
 
         /// <summary>
         /// Function to determine which ordinates are set in the <paramref name="geometry"/>.
@@ -320,18 +351,23 @@ namespace NetTopologySuite.IO
             if (geometry is IPolygon)
                 return ((IPolygon)geometry).ExteriorRing.CoordinateSequence.Ordinates;
 
+            if (geometry.NumGeometries > 0)
+                return DetectOrdinates(geometry.GetGeometryN(0));
+            /*
             for (var i = 0; i < geometry.NumGeometries; i++)
             {
                 return DetectOrdinates(geometry.GetGeometryN(i));
             }
-            Assert.ShouldNeverReachHere("No geometry found to detect ordinates");
-            return Ordinates.None;
+            */
+            throw new ArgumentException("Invalid or empty geometry");
+            //Assert.ShouldNeverReachHere("No geometry found to detect ordinates");
+            //return Ordinates.None;
         }
 
         /// <summary>
         /// Writes <paramref name="multiLineString"/> to a stream using <paramref name="writer"/>
         /// </summary>
-        /// <param name="multiLineString">The multi linestring to write</param>
+        /// <param name="multiLineString">The <c>MultiLineString</c> to write</param>
         /// <param name="writer">The writer to use</param>
         public void Write(IMultiLineString multiLineString, BinaryWriter writer)
         {
@@ -350,12 +386,12 @@ namespace NetTopologySuite.IO
 
             var seq = multiLineString.Factory.CoordinateSequenceFactory.Create(multiLineString.NumPoints,
                                                 ((ILineString) multiLineString[0]).CoordinateSequence.Ordinates);
-            // Write linestrings index                                
+            // Write LineString's index                                
             for (int i = 0; i < multiLineString.NumGeometries; i++)
             {
                 // Write internal holes index
                 var ls = ((ILineString) multiLineString.GetGeometryN(i)).CoordinateSequence;
-                CoordinateSequences.Copy(ls, 0, seq, count, ls.Count);
+                Copy(ls, 0, seq, count, ls.Count);
                 count += ls.Count;
                 if (count == multiLineString.NumPoints)
                     break;
@@ -363,7 +399,7 @@ namespace NetTopologySuite.IO
             }
 
             // Write Coordinates
-            Write(multiLineString.Coordinates, writer);
+            WriteCoordinates(seq, writer, seq.Ordinates);
         }
 
         /// <summary>
@@ -386,6 +422,10 @@ namespace NetTopologySuite.IO
             writer.Write((int) numParts);
             writer.Write((int) multiPolygon.NumPoints);
 
+            // Create a sequence for all coordinates
+            var seq = multiPolygon.Factory.CoordinateSequenceFactory.Create(
+                multiPolygon.NumPoints, DetectOrdinates(multiPolygon));
+
             // Write IndexParts
             int count = 0;
             writer.Write((int) count);
@@ -394,6 +434,7 @@ namespace NetTopologySuite.IO
             {
                 IPolygon polygon = (IPolygon) multiPolygon.GetGeometryN(i);
                 ILineString shell = polygon.ExteriorRing;
+                Copy(shell.CoordinateSequence, 0, seq, count, shell.NumPoints);
                 count += shell.NumPoints;
                 if (count == multiPolygon.NumPoints)
                     break;
@@ -401,6 +442,7 @@ namespace NetTopologySuite.IO
                 for (int j = 0; j < polygon.NumInteriorRings; j++)
                 {
                     ILineString hole = (ILineString) polygon.GetInteriorRingN(j);
+                    Copy(hole.CoordinateSequence, 0, seq, count, shell.NumPoints);
                     count += hole.NumPoints;
                     if (count == multiPolygon.NumPoints)
                         break;
@@ -409,7 +451,7 @@ namespace NetTopologySuite.IO
             }
 
             // Write Coordinates
-            Write(multiPolygon.Coordinates, writer);
+            WriteCoordinates(seq, writer, seq.Ordinates);
         }
 
         /// <summary>
@@ -556,5 +598,41 @@ namespace NetTopologySuite.IO
             count += 8 * 2 * numPoints;
             return count;
         }
+
+
+        ///<summary>
+        /// Copies a section of a <see cref="ICoordinateSequence"/> to another <see cref="ICoordinateSequence"/>.
+        /// The sequences may have different dimensions;
+        /// in this case only the common dimensions are copied.
+        ///</summary>
+        /// <param name="src">The sequence to copy coordinates from</param>
+        /// <param name="srcPos">The starting index of the coordinates to copy</param>
+        /// <param name="dest">The sequence to which the coordinates should be copied to</param>
+        /// <param name="destPos">The starting index of the coordinates in <see paramref="dest"/></param>
+        /// <param name="length">The number of coordinates to copy</param>
+        protected static void Copy(ICoordinateSequence src, int srcPos, ICoordinateSequence dest, int destPos, int length)
+        {
+            for (var i = 0; i < length; i++)
+                CopyCoord(src, srcPos + i, dest, destPos + i);
+        }
+
+        ///<summary>
+        /// Copies a coordinate of a <see cref="ICoordinateSequence"/> to another <see cref="ICoordinateSequence"/>.
+        /// The sequences may contain different <see cref="Ordinates"/>; in this case only the common ordinates are copied.
+        ///</summary>
+        /// <param name="src">The sequence to copy coordinate from</param>
+        /// <param name="srcPos">The index of the coordinate to copy</param>
+        /// <param name="dest">The sequence to which the coordinate should be copied to</param>
+        /// <param name="destPos">The index of the coordinate in <see paramref="dest"/></param>
+        protected static void CopyCoord(ICoordinateSequence src, int srcPos, ICoordinateSequence dest, int destPos)
+        {
+            dest.SetOrdinate(destPos, Ordinate.X, src.GetOrdinate(srcPos, Ordinate.X));
+            dest.SetOrdinate(destPos, Ordinate.Y, src.GetOrdinate(srcPos, Ordinate.Y));
+            if ((src.Ordinates & dest.Ordinates & Ordinates.Z) == Ordinates.Z)
+                dest.SetOrdinate(destPos, Ordinate.Z, src.GetOrdinate(srcPos, Ordinate.Z));
+            if ((src.Ordinates & dest.Ordinates & Ordinates.M) == Ordinates.M)
+                dest.SetOrdinate(destPos, Ordinate.M, src.GetOrdinate(srcPos, Ordinate.M));
+        }
+
     }
 }

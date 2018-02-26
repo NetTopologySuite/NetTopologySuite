@@ -246,7 +246,7 @@ namespace NetTopologySuite.EdgeGraph
         /// If the quadrants are different, 
         /// it is trivial to determine which edge has a greater angle.
         /// 2. If the vectors lie in the same quadrant, the 
-        /// <see cref="CGAlgorithms.ComputeOrientation"/> function        
+        /// <see cref="Orientation.Index"/> function        
         /// can be used to determine the relative orientation of the vectors.
         /// </remarks>
         public int CompareAngularDirection(HalfEdge e)
@@ -271,7 +271,7 @@ namespace NetTopologySuite.EdgeGraph
             // vectors are in the same quadrant
             // Check relative orientation of direction vectors
             // this is > e if it is CCW of e
-            return CGAlgorithms.ComputeOrientation(e.Orig, e.Dest, Dest);
+            return (int)Orientation.Index(e.Orig, e.Dest, Dest);
         }
 
         /// <summary>
@@ -319,7 +319,7 @@ namespace NetTopologySuite.EdgeGraph
 
         /// <summary>
         /// Finds the first node previous to this edge, if any.
-        /// If no such node exists (i.e the edge is part of a ring)
+        /// If no such node exists (i.e. the edge is part of a ring)
         /// then null is returned.
         /// </summary>
         /// <returns>

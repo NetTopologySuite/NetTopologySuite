@@ -19,7 +19,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         //MD suggests we ignore this issue for now.
         //    li.computeIntersection(new Coordinate(220, 260), new Coordinate(220, 0),
         //        new Coordinate(220, 0), new Coordinate(100, 0));
-        //    assertEquals((new Coordinate(220, 0)).toString(), li.getIntersection(0).toString());
+        //    assertEquals((new Coordinate(220, 0)).ToString(), li.getIntersection(0).ToString());
         }
         [TestAttribute]
         [IgnoreAttribute("The JTS testGetIntersectionNum test was being ignored")]

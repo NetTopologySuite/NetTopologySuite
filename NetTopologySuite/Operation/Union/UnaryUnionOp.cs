@@ -164,7 +164,7 @@ namespace NetTopologySuite.Operation.Union
 
             /**
              * For points and lines, only a single union operation is 
-             * required, since the OGC model allowings self-intersecting 
+             * required, since the OGC model allows self-intersecting 
              * MultiPoint and MultiLineStrings.
              * This is not the case for polygons, so Cascaded Union is required.
              */

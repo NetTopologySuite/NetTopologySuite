@@ -96,8 +96,14 @@ namespace NetTopologySuite.Noding
         /// <returns></returns>
         private IList<ISegmentString> Scale(IList<ISegmentString> segStrings)
         {
-            return CollectionUtil.Transform<ISegmentString, ISegmentString>(segStrings, 
-                ss => ((ISegmentString)new NodedSegmentString(Scale(ss.Coordinates), ss.Context)));
+            var nodedSegmentStrings = new List<ISegmentString>(segStrings.Count);
+            for (var i = 0; i < segStrings.Count; i++)
+            {
+                var ss = segStrings[i];
+                nodedSegmentStrings.Add(new NodedSegmentString(Scale(ss.Coordinates), ss.Context));
+            }
+
+            return nodedSegmentStrings;
         }
         
         /// <summary>
@@ -116,20 +122,12 @@ namespace NetTopologySuite.Noding
             return roundPtsNoDup;
         }      
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="segStrings"></param>
         private void Rescale(IList<ISegmentString> segStrings)
         {
-            CollectionUtil.Apply(segStrings,
-                ss => { Rescale(ss.Coordinates); return null; } );                                           
+            for (var i = 0; i < segStrings.Count; i++)
+                Rescale(segStrings[i].Coordinates);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pts"></param>
         private void Rescale(Coordinate[] pts)
         {
             Coordinate p0 = null;

@@ -87,7 +87,7 @@ namespace NetTopologySuite.Geometries
         /// vertices of the triangle.
         /// <para>
         /// The circumcentre does not necessarily lie within the triangle. For example,
-        /// the circumcentre of an obtuse isoceles triangle lies outside the triangle.
+        /// the circumcentre of an obtuse isosceles triangle lies outside the triangle.
         /// </para>
         /// <para>This method uses an algorithm due to J.R.Shewchuk which uses normalization
         /// to the origin to improve the accuracy of computation. (See <i>Lecture Notes
@@ -248,7 +248,7 @@ namespace NetTopologySuite.Geometries
         /// <para>
         /// The signed area value can be used to determine point orientation, but 
         /// the implementation in this method is susceptible to round-off errors.  
-        /// Use <see cref="CGAlgorithms.OrientationIndex"/> for robust orientation
+        /// Use <see cref="Orientation.Index"/> for robust orientation
         /// calculation.
         /// </para>
         /// </remarks>
@@ -256,8 +256,8 @@ namespace NetTopologySuite.Geometries
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <returns>The area of the triangle</returns>
-        /// <seealso cref="Area"/>
-        /// <seealso cref="CGAlgorithms.OrientationIndex"/>
+        /// <seealso cref="Area(Coordinate, Coordinate, Coordinate)"/>
+        /// <seealso cref="Orientation.Index"/>
 
         public static double SignedArea(Coordinate a, Coordinate b, Coordinate c)
         {
@@ -266,14 +266,14 @@ namespace NetTopologySuite.Geometries
              * where
              * 	u,v are the side vectors of the triangle
              *  x is the vector cross-product
-             * For 2D vectors, this formual simplifies to the expression below
+             * For 2D vectors, this formula simplifies to the expression below
              */
             return ((c.X - a.X) * (b.Y - a.Y) - (b.X - a.X) * (c.Y - a.Y)) / 2;
         }
 
         ///<summary>
         /// Computes the 3D area of a triangle. 
-        /// The value computed is alway non-negative.
+        /// The value computed is always non-negative.
         ///</summary>
         /// <param name="a">A vertex of the triangle</param>
         /// <param name="b">A vertex of the triangle</param>
@@ -446,18 +446,18 @@ namespace NetTopologySuite.Geometries
         /// <para/>
         /// The signed area value can be used to determine point orientation, but the
         /// implementation in this method is susceptible to round-off errors. Use
-        /// <see cref="CGAlgorithms.OrientationIndex(Coordinate, Coordinate, Coordinate)"/>
+        /// <see cref="Orientation.Index(Coordinate, Coordinate, Coordinate)"/>
         /// for robust orientation calculation.
         /// </summary>
         /// <returns>The signed 2D area of this triangle</returns>
-        /// <seealso cref="CGAlgorithms.OrientationIndex(Coordinate, Coordinate, Coordinate)"/>
+        /// <seealso cref="Orientation.Index(Coordinate, Coordinate, Coordinate)"/>
         public double SignedArea()
         {
             return SignedArea(_p0, _p1, _p2);
         }
 
         /// <summary>
-        /// Computes the 3D area of this triangle. The value computed is alway
+        /// Computes the 3D area of this triangle. The value computed is always
         /// non-negative.
         /// </summary>
         /// <returns>The 3D area of this triangle</returns>

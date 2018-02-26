@@ -184,7 +184,6 @@ namespace NetTopologySuite.Index.Chain
         {
             Coordinate p0 = _pts[start0];
             Coordinate p1 = _pts[end0];
-            mcs.TempEnv1.Init(p0, p1);
             
             // terminating condition for the recursion
             if (end0 - start0 == 1)
@@ -193,7 +192,7 @@ namespace NetTopologySuite.Index.Chain
                 return;
             }
             // nothing to do if the envelopes don't overlap
-            if (!searchEnv.Intersects(mcs.TempEnv1))
+            if (!searchEnv.Intersects(p0, p1))
                 return;
 
             // the chains overlap, so split each in half and iterate  (binary search)
@@ -206,14 +205,6 @@ namespace NetTopologySuite.Index.Chain
             if (mid < end0)
                 ComputeSelect(searchEnv, mid, end0, mcs);            
         }
-
-        /**
- * 
- * <p>
- * 
- * @param searchEnv the search envelope
- * @param mco t
- */
 
         /// <summary>
         /// Determine all the line segments in two chains which may overlap, and process them.
@@ -234,33 +225,16 @@ namespace NetTopologySuite.Index.Chain
             ComputeOverlaps(_start, _end, mc, mc._start, mc._end, mco);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="start0"></param>
-        /// <param name="end0"></param>
-        /// <param name="mc"></param>
-        /// <param name="start1"></param>
-        /// <param name="end1"></param>
-        /// <param name="mco"></param>
         private void ComputeOverlaps(int start0, int end0, MonotoneChain mc, int start1, int end1, MonotoneChainOverlapAction mco)
         {
-            Coordinate p00 = _pts[start0];
-            Coordinate p01 = _pts[end0];
-            Coordinate p10 = mc._pts[start1];
-            Coordinate p11 = mc._pts[end1];
-            
             // terminating condition for the recursion
             if (end0 - start0 == 1 && end1 - start1 == 1)
             {
                 mco.Overlap(this, start0, mc, start1);
                 return;
             }
-            // nothing to do if the envelopes of these chains don't overlap
-            mco.TempEnv1.Init(p00, p01);
-            mco.TempEnv2.Init(p10, p11);
-            if (! mco.TempEnv1.Intersects(mco.TempEnv2)) 
-                return;
+            // nothing to do if the envelopes of these sub-chains don't overlap
+            if (!Overlaps(start0, end0, mc, start1, end1)) return;
 
             // the chains overlap, so split each in half and iterate  (binary search)
             int mid0 = (start0 + end0) / 2;
@@ -282,6 +256,17 @@ namespace NetTopologySuite.Index.Chain
                 if (mid1 < end1) 
                     ComputeOverlaps(mid0, end0, mc, mid1, end1, mco);
             }
+        }
+        /// <summary>
+        /// Tests whether the envelopes of two chain sections overlap (intersect).
+        /// </summary>
+        /// <returns><c>true</c> if the section envelopes overlap</returns>
+        private bool Overlaps(
+            int start0, int end0,
+            MonotoneChain mc,
+            int start1, int end1)
+        {
+            return Envelope.Intersects(_pts[start0], _pts[end0], mc._pts[start1], mc._pts[end1]);
         }
     }
 }

@@ -152,12 +152,9 @@ namespace NetTopologySuite.Algorithm
             return cent;
         }
 
-        private void SetBasePoint(Coordinate basePt)
+        private void SetAreaBasePoint(Coordinate basePt)
         {
-            if (_areaBasePt == null)
-            {
-                _areaBasePt = basePt;
-            }
+            _areaBasePt = basePt;
         }
 
         private void Add(IPolygon poly)
@@ -172,8 +169,8 @@ namespace NetTopologySuite.Algorithm
         private void AddShell(Coordinate[] pts)
         {
             if (pts.Length > 0)
-                SetBasePoint(pts[0]);
-            bool isPositiveArea = !CGAlgorithms.IsCCW(pts);
+                SetAreaBasePoint(pts[0]);
+            bool isPositiveArea = !Orientation.IsCCW(pts);
             for (int i = 0; i < pts.Length - 1; i++)
             {
                 AddTriangle(_areaBasePt, pts[i], pts[i + 1], isPositiveArea);
@@ -183,7 +180,7 @@ namespace NetTopologySuite.Algorithm
 
         private void AddHole(Coordinate[] pts)
         {
-            bool isPositiveArea = CGAlgorithms.IsCCW(pts);
+            bool isPositiveArea = Orientation.IsCCW(pts);
             for (int i = 0; i < pts.Length - 1; i++)
             {
                 AddTriangle(_areaBasePt, pts[i], pts[i + 1], isPositiveArea);

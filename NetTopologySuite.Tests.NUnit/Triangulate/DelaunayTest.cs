@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Triangulate
 {
     /// <summary>
-    /// Tests Delaunay Triangulatin classes
+    /// Tests Delaunay Triangulation classes
     /// </summary>
     [TestFixtureAttribute]
     public class DelaunayTest

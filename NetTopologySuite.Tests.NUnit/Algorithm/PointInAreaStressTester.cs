@@ -102,7 +102,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// TestPointInArea
         /// </summary>
         /// <param name="p"></param>
-        /// <returns>true if the point location is determined to be the same by both PIA locaters</returns>
+        /// <returns>true if the point location is determined to be the same by both PIA locators</returns>
         private Boolean TestPointInArea(Coordinate p)
         {
             //Console.WriteLine(WKTWriter.toPoint(p));

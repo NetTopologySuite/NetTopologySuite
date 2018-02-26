@@ -127,7 +127,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
 
         /// <summary>
         /// Same test as <see cref="GeoJsonDeserializeIssue176"/>, but fails
-        /// using <see cref=JsonSerializer.Create()"/>
+        /// using <see cref="JsonSerializer.Create()"/>
         /// </summary>
         [Test]
         public void GeoJsonDeserializeBrokenUsingJsonSerializerCreate()

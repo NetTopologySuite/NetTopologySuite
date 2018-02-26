@@ -3,7 +3,7 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
-    /// A visitor to <see cref="IGeometry"/> elements which  componets, which 
+    /// A visitor to <see cref="IGeometry"/> elements which  components, which 
     /// allows short-circuiting when a defined condition holds.
     /// </summary>
     public abstract class ShortCircuitedGeometryVisitor

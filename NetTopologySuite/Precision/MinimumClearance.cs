@@ -15,7 +15,7 @@ namespace NetTopologySuite.Precision
     /// the vertices of a geometry can be tolerated
     /// before the geometry becomes topologically invalid.
     /// The smaller the Minimum Clearance distance,
-    /// the less vertex pertubation the geometry can tolerate
+    /// the less vertex perturbation the geometry can tolerate
     /// before becoming invalid.
     /// </summary>
     /// <remarks>
@@ -262,7 +262,7 @@ namespace NetTopologySuite.Precision
 
                         if (!(p.Equals2D(seg0) || p.Equals2D(seg1)))
                         {
-                            var d = CGAlgorithms.DistancePointLine(p, seg0, seg1);
+                            var d = DistanceComputer.PointToSegment(p, seg0, seg1);
                             if (d < _minDist)
                             {
                                 _minDist = d;

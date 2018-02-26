@@ -80,6 +80,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <returns></returns>
         protected override bool IsSearchMatch(Envelope searchEnv)
         {
+            if (searchEnv == null) return false;
             return _env.Intersects(searchEnv);
         }
 

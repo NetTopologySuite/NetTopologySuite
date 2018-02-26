@@ -1,5 +1,6 @@
 using System;
 using GeoAPI.Geometries;
+using NetTopologySuite.Tests.NUnit.Utilities;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
@@ -79,6 +80,17 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.IsTrue(IsEqual(seq2, coords));
         }
 
+        [Test]
+        public void testSerializable() {
+            var coords = CreateArray(Size);
+            var seq = CsFactory.Create(coords);
+            // throws exception if not serializable
+            var data = SerializationUtility.Serialize(seq);
+            // check round-trip gives same data
+            var seq2 = SerializationUtility.Deserialize<ICoordinateSequence>(data);
+            Assert.IsTrue(IsEqual(seq2, coords));
+        }
+  
         // TODO: This private method was marked as protected to allow PackedCoordinateSequenceTest to override Test2DZOrdinate
         // The method should not be marked as protected, and should be altered when the correct PackedCoordinateSequence.GetCoordinate result is migrated to NTS
         protected Coordinate[] CreateArray(int size)

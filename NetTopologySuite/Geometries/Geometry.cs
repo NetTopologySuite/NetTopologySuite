@@ -127,19 +127,20 @@ namespace NetTopologySuite.Geometries
     public abstract class Geometry : IGeometry
     {
         /// <summary>
-        /// 
+        /// An enumeration of sort values for geometries
         /// </summary>
-        private static readonly Type[] _sortedClasses = new[]
-                                 {
-                                     typeof (Point),
-                                     typeof (MultiPoint),
-                                     typeof (LineString),
-                                     typeof (LinearRing),
-                                     typeof (MultiLineString),
-                                     typeof (Polygon),
-                                     typeof (MultiPolygon),
-                                     typeof (GeometryCollection),
-                                 };
+        protected enum SortIndexValue
+        {
+            Point = 0,
+            MultiPoint = 1,
+            LineString = 2,
+            LinearRing = 3,
+            MultiLineString = 4,
+            Polygon = 5,
+            MultiPolygon = 6,
+            GeometryCollection = 7
+        }
+
 
         //FObermaier: not *readonly* due to SRID property in geometryfactory
         private /*readonly*/ IGeometryFactory _factory;
@@ -787,6 +788,20 @@ namespace NetTopologySuite.Geometries
                 return RectangleIntersects.Intersects((IPolygon)this, g);
             if (g.IsRectangle)
                 return RectangleIntersects.Intersects((IPolygon)g, this);
+
+            if (IsGeometryCollection || ((Geometry) g).IsGeometryCollection)
+            {
+                for (var i = 0; i < NumGeometries; i++)
+                {
+                    for (var j = 0; j < g.NumGeometries; j++)
+                    {
+                        if (GetGeometryN(i).Intersects(g.GetGeometryN(j)))
+                            return true;
+                    }
+                }
+                return false;
+            }
+
             return Relate(g).IsIntersects();
         }
 
@@ -874,7 +889,6 @@ namespace NetTopologySuite.Geometries
         /// (As a concrete example, take A to be a LineString which lies in the boundary of a Polygon B.)
         /// For a predicate with similar behaviour but avoiding 
         /// this subtle limitation, see <see cref="Covers"/>.
-
         /// </para>
         /// </remarks>
         /// <param name="g">the <c>Geometry</c> with which to compare this <c>Geometry</c></param>
@@ -883,12 +897,24 @@ namespace NetTopologySuite.Geometries
         /// <see cref="Covers"/>
         public bool Contains(IGeometry g)
         {
-            // short-circuit test
+            // optimization - lower dimension cannot contain areas
+            if (g.Dimension == Dimension.Surface && Dimension < Dimension.Surface)
+                return false;
+
+            // optimization - P cannot contain a non-zero-length L
+            // Note that a point can contain a zero-length lineal geometry, 
+            // since the line has no boundary due to Mod-2 Boundary Rule
+            if (g.Dimension == Dimension.Curve && Dimension < Dimension.Curve && g.Length > 0.0)
+                return false;
+
+            // optimization - envelope test
             if (!EnvelopeInternal.Contains(g.EnvelopeInternal))
                 return false;
+
             // optimizations for rectangle arguments
             if (IsRectangle)
                 return RectangleContains.Contains((IPolygon)this, g);
+
             // general case
             return Relate(g).IsContains();
         }
@@ -963,7 +989,16 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="CoveredBy" />
         public bool Covers(IGeometry g)
         {
-            // short-circuit test
+            // optimization - lower dimension cannot cover areas
+            if (g.Dimension == Dimension.Surface && Dimension < Dimension.Surface)
+                return false;
+
+            // optimization - P cannot cover a non-zero-length L
+            // Note that a point can cover a zero-length lineal geometry
+            if (g.Dimension == Dimension.Curve && Dimension < Dimension.Curve && g.Length > 0.0)
+                return false;
+
+            // optimization - envelope test
             if (!EnvelopeInternal.Covers(g.EnvelopeInternal))
                 return false;
 
@@ -1580,7 +1615,7 @@ namespace NetTopologySuite.Geometries
         /// The intersection of two geometries of different dimension produces a result
         /// geometry of dimension less than or equal to the minimum dimension of the input
         /// geometries. 
-        /// The result geometry may be a heterogenous <see cref="IGeometryCollection"/>.
+        /// The result geometry may be a heterogeneous <see cref="IGeometryCollection"/>.
         /// If the result is empty, it is an atomic geometry
         /// with the dimension of the lowest input dimension.
         /// <para/>
@@ -1592,7 +1627,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="other">The <c>Geometry</c> with which to compute the intersection.</param>
         /// <returns>A geometry representing the point-set common to the two <c>Geometry</c>s.</returns>
         /// <exception cref="TopologyException">if a robustness error occurs.</exception>
-        /// <exception cref="ArgumentException">if the argument is a non-empty heterogenous <c>GeometryCollection</c></exception>
+        /// <exception cref="ArgumentException">if the argument is a non-empty heterogeneous <c>GeometryCollection</c></exception>
         public IGeometry Intersection(IGeometry other)
         {
             // Special case: if one input is empty ==> empty
@@ -1625,7 +1660,7 @@ namespace NetTopologySuite.Geometries
         /// The union of two geometries of different dimension produces a result
         /// geometry of dimension equal to the maximum dimension of the input
         /// geometries. 
-        /// The result geometry may be a heterogenous
+        /// The result geometry may be a heterogeneous
         /// <see cref="IGeometryCollection"/>.  
         /// If the result is empty, it is an atomic geometry
         /// with the dimension of the highest input dimension.
@@ -1983,8 +2018,8 @@ namespace NetTopologySuite.Geometries
             if (other == null)
                 return -1;
 
-            if (ClassSortIndex != other.ClassSortIndex)
-                return ClassSortIndex - other.ClassSortIndex;
+            if (SortIndex != other.SortIndex)
+                return (int)SortIndex - (int)other.SortIndex;
             if (IsEmpty && other.IsEmpty)
                 return 0;
             if (IsEmpty)
@@ -2024,23 +2059,19 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public int CompareTo(Object o, IComparer<ICoordinateSequence> comp)
         {
-            Geometry other = (Geometry)o;
-            if (ClassSortIndex != other.ClassSortIndex)
-            {
-                return ClassSortIndex - other.ClassSortIndex;
-            }
-            if (IsEmpty && other.IsEmpty)
-            {
-                return 0;
-            }
-            if (IsEmpty)
-            {
+            Geometry other = o as Geometry;
+            if (other == null)
                 return -1;
-            }
+
+            if (SortIndex != other.SortIndex)
+                return (int)SortIndex - (int)other.SortIndex;
+            if (IsEmpty && other.IsEmpty)
+                return 0;
+            if (IsEmpty)
+                return -1;
             if (other.IsEmpty)
-            {
                 return 1;
-            }
+
             return CompareToSameClass(o, comp);
         }
 
@@ -2192,19 +2223,9 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        /// Gets a value to sort the geometry
         /// </summary>
-        private int ClassSortIndex
-        {
-            get
-            {
-                for (var i = 0; i < _sortedClasses.Length; i++)
-                    if (GetType() == _sortedClasses[i])
-                        return i;
-                Assert.ShouldNeverReachHere(String.Format("Class not supported: {0}", GetType().FullName));
-                return -1;
-            }
-        }
+        protected abstract SortIndexValue SortIndex { get; }
 
         /// <summary>
         /// 
