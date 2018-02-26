@@ -52,7 +52,6 @@
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile\NetTopologySuite.IO.ShapeFile.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.SpatiaLite\NetTopologySuite.IO.SpatiaLite.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.SqlServer2008\NetTopologySuite.IO.SqlServer2008.csproj" />
-    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO\NetTopologySuite.IO.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.Windows.Forms\NetTopologySuite.Windows.Forms.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite\NetTopologySuite.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.Lab\NetTopologySuite.Lab.csproj" />
