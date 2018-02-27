@@ -7,7 +7,6 @@ using GeoAPI.CoordinateSystems.Transformations;
 using NetTopologySuite.Triangulate;
 using NetTopologySuite.Triangulate.QuadEdge;
 using NUnit.Framework;
-using NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projections;
 using NetTopologySuite.Densify;
 using NetTopologySuite.LinearReferencing;
 using NetTopologySuite.Precision;

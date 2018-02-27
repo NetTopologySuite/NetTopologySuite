@@ -21,8 +21,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite", "NetTopologySuite\NetTopologySuite.csproj", "{5770DAA9-84E5-4770-AF43-F6B815894368}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DotSpatial", "DotSpatial", "{489ED983-F8DE-4879-B118-F94C55DA335F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5AF10590-5E1C-4052-83C6-95C94B747195}"
 	ProjectSection(SolutionItems) = preProject
 		NetTopologySuite.TestRunner.Tests\Default.xml = NetTopologySuite.TestRunner.Tests\Default.xml
@@ -30,8 +28,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5AF10590
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetTopologySuite.Tests", "NetTopologySuite.Tests", "{AAD516A6-0F6D-4FFE-881C-37D15A4702C5}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetTopologySuite.Converter", "NetTopologySuite.Converter", "{7C3204B9-50E4-4322-B0DF-DCB241875FF4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.Samples.Console", "NetTopologySuite.Samples.Console\NetTopologySuite.Samples.Console.csproj", "{39E8A390-5304-4447-99E2-3810941824AD}"
 EndProject
@@ -42,12 +38,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.Tests.Vivid.XUnit", "NetTopologySuite.Tests.Vivid.XUnit\NetTopologySuite.Tests.Vivid.XUnit.csproj", "{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.Tests.NUnit", "NetTopologySuite.Tests.NUnit\NetTopologySuite.Tests.NUnit.csproj", "{92BB4BF0-DB6E-462E-B806-DB1FE90051B0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotSpatial.Projections.Wrapper", "NetTopologySuite.CoordinateSystems.Transfromation\DotSpatial.Projections.Wrapper\DotSpatial.Projections.Wrapper.csproj", "{08759323-B999-405B-8688-80008A4190B0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.Converter.DotSpatial", "NetTopologySuite.Converter\NetTopologySuite.Converter.DotSpatial\NetTopologySuite.Converter.DotSpatial.csproj", "{3792E197-F5CD-46F9-811D-6EB6C3B10DEE}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.Converter.Test", "NetTopologySuite.Converter\NetTopologySuite.Converter.Test\NetTopologySuite.Converter.Test.csproj", "{4F3B0BD4-9527-404A-AFF9-1E7356DC5FBF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.Lab", "NetTopologySuite.Lab\NetTopologySuite.Lab.csproj", "{D446FBA3-B6EA-4FEB-9615-D5FD5AEB3D23}"
 EndProject
@@ -94,24 +84,6 @@ Global
 		{92BB4BF0-DB6E-462E-B806-DB1FE90051B0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{92BB4BF0-DB6E-462E-B806-DB1FE90051B0}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
 		{92BB4BF0-DB6E-462E-B806-DB1FE90051B0}.ReleaseLinux|Any CPU.Build.0 = Release|Any CPU
-		{08759323-B999-405B-8688-80008A4190B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{08759323-B999-405B-8688-80008A4190B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{08759323-B999-405B-8688-80008A4190B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{08759323-B999-405B-8688-80008A4190B0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{08759323-B999-405B-8688-80008A4190B0}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
-		{08759323-B999-405B-8688-80008A4190B0}.ReleaseLinux|Any CPU.Build.0 = Release|Any CPU
-		{3792E197-F5CD-46F9-811D-6EB6C3B10DEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3792E197-F5CD-46F9-811D-6EB6C3B10DEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3792E197-F5CD-46F9-811D-6EB6C3B10DEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3792E197-F5CD-46F9-811D-6EB6C3B10DEE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3792E197-F5CD-46F9-811D-6EB6C3B10DEE}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
-		{3792E197-F5CD-46F9-811D-6EB6C3B10DEE}.ReleaseLinux|Any CPU.Build.0 = Release|Any CPU
-		{4F3B0BD4-9527-404A-AFF9-1E7356DC5FBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4F3B0BD4-9527-404A-AFF9-1E7356DC5FBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4F3B0BD4-9527-404A-AFF9-1E7356DC5FBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4F3B0BD4-9527-404A-AFF9-1E7356DC5FBF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4F3B0BD4-9527-404A-AFF9-1E7356DC5FBF}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
-		{4F3B0BD4-9527-404A-AFF9-1E7356DC5FBF}.ReleaseLinux|Any CPU.Build.0 = Release|Any CPU
 		{D446FBA3-B6EA-4FEB-9615-D5FD5AEB3D23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D446FBA3-B6EA-4FEB-9615-D5FD5AEB3D23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D446FBA3-B6EA-4FEB-9615-D5FD5AEB3D23}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -124,14 +96,10 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5AF10590-5E1C-4052-83C6-95C94B747195} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
-		{7C3204B9-50E4-4322-B0DF-DCB241875FF4} = {489ED983-F8DE-4879-B118-F94C55DA335F}
 		{39E8A390-5304-4447-99E2-3810941824AD} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
 		{13669184-2446-404F-8894-5E20B6C3FCC6} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
 		{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
 		{92BB4BF0-DB6E-462E-B806-DB1FE90051B0} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
-		{08759323-B999-405B-8688-80008A4190B0} = {489ED983-F8DE-4879-B118-F94C55DA335F}
-		{3792E197-F5CD-46F9-811D-6EB6C3B10DEE} = {7C3204B9-50E4-4322-B0DF-DCB241875FF4}
-		{4F3B0BD4-9527-404A-AFF9-1E7356DC5FBF} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3F26DAA4-E047-4A9E-828A-D49CA02F80E0}
