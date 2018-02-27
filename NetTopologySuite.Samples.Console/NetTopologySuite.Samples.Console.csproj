@@ -43,15 +43,6 @@
 
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.CoordinateSystems.Transfromation\DotSpatial.Projections.Wrapper\DotSpatial.Projections.Wrapper.csproj" />
-    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.GDB\NetTopologySuite.IO.GDB.csproj" />
-    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.GeoJSON\NetTopologySuite.IO.GeoJSON.csproj" />
-    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\NetTopologySuite.IO.GeoTools.csproj" />
-    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.MsSqlSpatial\NetTopologySuite.IO.MsSqlSpatial.csproj" />
-    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.PostGis\NetTopologySuite.IO.PostGis.csproj" />
-    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile.Extended\NetTopologySuite.IO.ShapeFile.Extended.csproj" />
-    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile\NetTopologySuite.IO.ShapeFile.csproj" />
-    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.SpatiaLite\NetTopologySuite.IO.SpatiaLite.csproj" />
-    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.SqlServer2008\NetTopologySuite.IO.SqlServer2008.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.Windows.Forms\NetTopologySuite.Windows.Forms.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite\NetTopologySuite.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.Lab\NetTopologySuite.Lab.csproj" />

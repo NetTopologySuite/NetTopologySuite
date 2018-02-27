@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\NetTopologySuite.IO.GeoTools.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.Windows.Forms\NetTopologySuite.Windows.Forms.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite\NetTopologySuite.csproj" />
   </ItemGroup>

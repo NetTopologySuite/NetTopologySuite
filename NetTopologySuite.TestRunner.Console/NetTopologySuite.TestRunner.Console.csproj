@@ -24,6 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)NetTopologySuite.TestRunner\NetTopologySuite.TestRunner.csproj" />
+    <ProjectReference Include="..\NetTopologySuite.TestRunner\NetTopologySuite.TestRunner.csproj" />
   </ItemGroup>
 </Project>

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Diagnostics;
-using System.Text;
 using DotSpatial.Projections;
 using GeoAPI.CoordinateSystems.Transformations;
 using NetTopologySuite.Triangulate;
@@ -386,65 +385,7 @@ namespace NetTopologySuite.Tests.Various
             var union = coll.Buffer(0.0);
             Assert.IsNotNull(union);
         }
-
-        /// <summary>
-        /// Xavier Fischer 16-04-2012
-        /// https://groups.google.com/forum/#!msg/nettopologysuite/6ymt34Ycfk8/dF5wTsEAsaIJ
-        /// </summary>
-        [Test]
-        public void GeometryTransformTest()
-        {
-
-            #region Init ICoordinateTransformation
-
-            // RGF93_Lambert_93
-            const string coordSysRGF93_Lambert_93 = "PROJCS[\"RGF93_Lambert_93\",GEOGCS[\"GCS_RGF_1993\",DATUM[\"D_RGF_1993\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Lambert_Conformal_Conic\"],PARAMETER[\"False_Easting\",700000.0],PARAMETER[\"False_Northing\",6600000.0],PARAMETER[\"Central_Meridian\",3.0],PARAMETER[\"Standard_Parallel_1\",44.0],PARAMETER[\"Standard_Parallel_2\",49.0],PARAMETER[\"Latitude_Of_Origin\",46.5],UNIT[\"Meter\",1.0]]";
-
-            // SRID 4326
-            const string coordSys4326 = "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]]";
-
-            var csSource = ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.Parse(coordSysRGF93_Lambert_93, Encoding.UTF8) as GeoAPI.CoordinateSystems.ICoordinateSystem;
-            var csTarget = ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.Parse(coordSys4326, Encoding.UTF8) as GeoAPI.CoordinateSystems.ICoordinateSystem;
-
-            var transform = new ProjNet.CoordinateSystems.Transformations.CoordinateTransformationFactory().CreateFromCoordinateSystems(csSource, csTarget);
-
-            var piSource = ProjectionInfo.FromEsriString(coordSysRGF93_Lambert_93);
-            var piTarget = ProjectionInfo.FromEsriString(coordSys4326);
-            var dsTransform = new DotSpatialMathTransform(piSource, piTarget);
-
-            #endregion Init ICoordinateTransformation
-
-            using (var shapeDataReader = new ShapefileDataReader(TestContext.CurrentContext.TestDirectory +
-                @"\..\..\..\NetTopologySuite.Samples.Shapefiles\DEPARTEMENT.SHP", GeometryFactory.Default))
-            {
-                while (shapeDataReader.Read())
-                {
-                    var outGeomDotSpatial =
-                        CoordinateSystems.Transformations.GeometryTransform.TransformGeometry(GeometryFactory.Default,
-                                                                                              shapeDataReader.Geometry,
-                                                                                              dsTransform);
-                    Assert.IsFalse(outGeomDotSpatial.IsEmpty);
-                    Console.WriteLine(outGeomDotSpatial.AsText());
-                    var outGeomProjNet =
-                        CoordinateSystems.Transformations.GeometryTransform.TransformGeometry(GeometryFactory.Default,
-                                                                                              shapeDataReader.Geometry,
-                                                                                              transform.MathTransform);
-                    Assert.IsFalse(outGeomProjNet.IsEmpty);
-                    Console.WriteLine(outGeomProjNet.AsText());
-
-                    var hd = Algorithm.Distance.DiscreteHausdorffDistance.Distance(outGeomProjNet, outGeomDotSpatial);
-                    Console.WriteLine(string.Format("\nHaussdorffDistance: {0}", hd));
-                    Console.WriteLine();
-                }
-            }
-
-        }
-
-        public override void Start()
-        {
-            this.GeometryTransformTest();
-        }
-
+        
         /// <summary>
         /// Asher 16-04-2012
         /// https://groups.google.com/forum/#!msg/nettopologysuite/6ymt34Ycfk8/dF5wTsEAsaIJ
