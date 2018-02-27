@@ -1,1 +1,0 @@
-﻿Test project to aid debugging of v2 functionality comparing against v1.7.x
