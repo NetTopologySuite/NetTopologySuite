@@ -35,7 +35,6 @@
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile.Extended\NetTopologySuite.IO.ShapeFile.Extended.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.GeoTools\NetTopologySuite.IO.GeoTools.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.ShapeFile\NetTopologySuite.IO.ShapeFile.csproj" />
-    <ProjectReference Include="$(SolutionDir)NetTopologySuite.IO\NetTopologySuite.IO.Tests\NetTopologySuite.IO.Tests.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite\NetTopologySuite.csproj" />
   </ItemGroup>
 
