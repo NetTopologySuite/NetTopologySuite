@@ -41,15 +41,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.TestRunner
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.Tests.Vivid.XUnit", "NetTopologySuite.Tests.Vivid.XUnit\NetTopologySuite.Tests.Vivid.XUnit.csproj", "{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.Windows.Forms", "NetTopologySuite.Windows.Forms\NetTopologySuite.Windows.Forms.csproj", "{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.NetTopologySuite.Windows.Forms", "NetTopologySuite.Windows.Forms.Test\Test.NetTopologySuite.Windows.Forms.csproj", "{AF47B26F-5EB8-4514-AEBF-FDD22244F5B1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.Tests.NUnit", "NetTopologySuite.Tests.NUnit\NetTopologySuite.Tests.NUnit.csproj", "{92BB4BF0-DB6E-462E-B806-DB1FE90051B0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotSpatial.Projections.Wrapper", "NetTopologySuite.CoordinateSystems.Transfromation\DotSpatial.Projections.Wrapper\DotSpatial.Projections.Wrapper.csproj", "{08759323-B999-405B-8688-80008A4190B0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.Windows.Media", "NetTopologySuite.Windows.Media\NetTopologySuite.Windows.Media.csproj", "{AB09858E-BD48-498C-BB65-B90A5E5F9F26}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.Converter.DotSpatial", "NetTopologySuite.Converter\NetTopologySuite.Converter.DotSpatial\NetTopologySuite.Converter.DotSpatial.csproj", "{3792E197-F5CD-46F9-811D-6EB6C3B10DEE}"
 EndProject
@@ -94,17 +88,6 @@ Global
 		{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
 		{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8}.ReleaseLinux|Any CPU.Build.0 = Release|Any CPU
-		{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
-		{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}.ReleaseLinux|Any CPU.Build.0 = Release|Any CPU
-		{AF47B26F-5EB8-4514-AEBF-FDD22244F5B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AF47B26F-5EB8-4514-AEBF-FDD22244F5B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AF47B26F-5EB8-4514-AEBF-FDD22244F5B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AF47B26F-5EB8-4514-AEBF-FDD22244F5B1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AF47B26F-5EB8-4514-AEBF-FDD22244F5B1}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
 		{92BB4BF0-DB6E-462E-B806-DB1FE90051B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{92BB4BF0-DB6E-462E-B806-DB1FE90051B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92BB4BF0-DB6E-462E-B806-DB1FE90051B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -117,11 +100,6 @@ Global
 		{08759323-B999-405B-8688-80008A4190B0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{08759323-B999-405B-8688-80008A4190B0}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
 		{08759323-B999-405B-8688-80008A4190B0}.ReleaseLinux|Any CPU.Build.0 = Release|Any CPU
-		{AB09858E-BD48-498C-BB65-B90A5E5F9F26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB09858E-BD48-498C-BB65-B90A5E5F9F26}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB09858E-BD48-498C-BB65-B90A5E5F9F26}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB09858E-BD48-498C-BB65-B90A5E5F9F26}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AB09858E-BD48-498C-BB65-B90A5E5F9F26}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
 		{3792E197-F5CD-46F9-811D-6EB6C3B10DEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3792E197-F5CD-46F9-811D-6EB6C3B10DEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3792E197-F5CD-46F9-811D-6EB6C3B10DEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -150,7 +128,6 @@ Global
 		{39E8A390-5304-4447-99E2-3810941824AD} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
 		{13669184-2446-404F-8894-5E20B6C3FCC6} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
 		{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
-		{AF47B26F-5EB8-4514-AEBF-FDD22244F5B1} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
 		{92BB4BF0-DB6E-462E-B806-DB1FE90051B0} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
 		{08759323-B999-405B-8688-80008A4190B0} = {489ED983-F8DE-4879-B118-F94C55DA335F}
 		{3792E197-F5CD-46F9-811D-6EB6C3B10DEE} = {7C3204B9-50E4-4322-B0DF-DCB241875FF4}

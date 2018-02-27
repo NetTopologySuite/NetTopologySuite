@@ -230,45 +230,45 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
         }
         private static void ToImage(IGeometry geom1, IGeometry geom2, IGeometry geom3)
         {
-            var gpw = new Windows.Forms.GraphicsPathWriter();
+            //var gpw = new Windows.Forms.GraphicsPathWriter();
 
-            var extent = geom1.EnvelopeInternal;
-            if (geom2 != null)
-                extent.ExpandToInclude(geom2.EnvelopeInternal);
-            extent.ExpandBy(0.05 * extent.Width);
+            //var extent = geom1.EnvelopeInternal;
+            //if (geom2 != null)
+            //    extent.ExpandToInclude(geom2.EnvelopeInternal);
+            //extent.ExpandBy(0.05 * extent.Width);
 
-            using (var img = new Bitmap(2 * ImageWidth, ImageHeight))
-            {
-                using (var gr = Graphics.FromImage(img))
-                {
-                    var at = CreateAffineTransformation(extent);
-                    gr.Clear(Color.WhiteSmoke);
-                    gr.SmoothingMode = SmoothingMode.AntiAlias;
-                    //gr.Transform = CreateTransform(extent);
+            //using (var img = new Bitmap(2 * ImageWidth, ImageHeight))
+            //{
+            //    using (var gr = Graphics.FromImage(img))
+            //    {
+            //        var at = CreateAffineTransformation(extent);
+            //        gr.Clear(Color.WhiteSmoke);
+            //        gr.SmoothingMode = SmoothingMode.AntiAlias;
+            //        //gr.Transform = CreateTransform(extent);
 
-                    var gp1 = gpw.ToShape(at.Transform(geom1));
-                    if (geom1 is IPolygonal)
-                        gr.FillPath(Brushes.CornflowerBlue, gp1);
-                    gr.DrawPath(Pens.Blue, gp1);
+            //        var gp1 = gpw.ToShape(at.Transform(geom1));
+            //        if (geom1 is IPolygonal)
+            //            gr.FillPath(Brushes.CornflowerBlue, gp1);
+            //        gr.DrawPath(Pens.Blue, gp1);
 
-                    var gp2 = gpw.ToShape(at.Transform(geom2));
-                    if (geom2 is IPolygonal)
-                        gr.FillPath(Brushes.OrangeRed, gp2);
-                    gr.DrawPath(Pens.IndianRed, gp2);
+            //        var gp2 = gpw.ToShape(at.Transform(geom2));
+            //        if (geom2 is IPolygonal)
+            //            gr.FillPath(Brushes.OrangeRed, gp2);
+            //        gr.DrawPath(Pens.IndianRed, gp2);
 
-                    at = CreateAffineTransformation(extent, ImageWidth);
+            //        at = CreateAffineTransformation(extent, ImageWidth);
 
-                    var gp3 = gpw.ToShape(at.Transform(geom3));
-                    if (geom3 is IPolygonal)
-                        gr.FillPath(Brushes.Orange, gp3);
-                    gr.DrawPath(Pens.Peru, gp3);
+            //        var gp3 = gpw.ToShape(at.Transform(geom3));
+            //        if (geom3 is IPolygonal)
+            //            gr.FillPath(Brushes.Orange, gp3);
+            //        gr.DrawPath(Pens.Peru, gp3);
 
 
-                }
-                var path = System.IO.Path.ChangeExtension(System.IO.Path.GetTempFileName(), "png");
-                img.Save(path, ImageFormat.Png);
-                Console.WriteLine("Image written to {0}", new Uri(path).AbsoluteUri);
-            }
+            //    }
+            //    var path = System.IO.Path.ChangeExtension(System.IO.Path.GetTempFileName(), "png");
+            //    img.Save(path, ImageFormat.Png);
+            //    Console.WriteLine("Image written to {0}", new Uri(path).AbsoluteUri);
+            //}
         }
 
         private const int ImageHeight = 320;

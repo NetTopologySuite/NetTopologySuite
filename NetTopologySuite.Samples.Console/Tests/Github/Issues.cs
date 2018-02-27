@@ -553,56 +553,56 @@ namespace NetTopologySuite.Samples.Tests.Github
         static void ToImage(int nr, IGeometry geom1, IGeometry geom2, IGeometry geom3)
         {
 
-            var gpw = new Windows.Forms.GraphicsPathWriter();
+            //var gpw = new Windows.Forms.GraphicsPathWriter();
 
-            var extent = new Envelope();
-            if (geom1 != null)
-                extent.ExpandToInclude(geom1.EnvelopeInternal);
-            if (geom2 != null)
-                extent.ExpandToInclude(geom2.EnvelopeInternal);
-            if (geom3 != null)
-                extent.ExpandToInclude(geom3.EnvelopeInternal);
+            //var extent = new Envelope();
+            //if (geom1 != null)
+            //    extent.ExpandToInclude(geom1.EnvelopeInternal);
+            //if (geom2 != null)
+            //    extent.ExpandToInclude(geom2.EnvelopeInternal);
+            //if (geom3 != null)
+            //    extent.ExpandToInclude(geom3.EnvelopeInternal);
 
-            extent.ExpandBy(0.05 * extent.Width);
+            //extent.ExpandBy(0.05 * extent.Width);
 
-            using (var img = new Bitmap(ImageWidth, ImageHeight))
-            {
-                using (var gr = Graphics.FromImage(img))
-                {
-                    var at = CreateAffineTransformation(extent);
-                    gr.Clear(Color.WhiteSmoke);
-                    gr.SmoothingMode = SmoothingMode.AntiAlias;
-                    //gr.Transform = CreateTransform(extent);
+            //using (var img = new Bitmap(ImageWidth, ImageHeight))
+            //{
+            //    using (var gr = Graphics.FromImage(img))
+            //    {
+            //        var at = CreateAffineTransformation(extent);
+            //        gr.Clear(Color.WhiteSmoke);
+            //        gr.SmoothingMode = SmoothingMode.AntiAlias;
+            //        //gr.Transform = CreateTransform(extent);
 
-                    if (geom1 != null)
-                    {
-                        var gp1 = gpw.ToShape(at.Transform(geom1));
-                        if (geom1 is IPolygonal)
-                            gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.Blue)), gp1);
-                        gr.DrawPath(Pens.Blue, gp1);
-                    }
+            //        if (geom1 != null)
+            //        {
+            //            var gp1 = gpw.ToShape(at.Transform(geom1));
+            //            if (geom1 is IPolygonal)
+            //                gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.Blue)), gp1);
+            //            gr.DrawPath(Pens.Blue, gp1);
+            //        }
 
-                    if (geom2 != null)
-                    {
-                        var gp2 = gpw.ToShape(at.Transform(geom2));
-                        if (geom2 is IPolygonal)
-                            gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.OrangeRed)), gp2);
-                        gr.DrawPath(Pens.OrangeRed, gp2);
-                    }
+            //        if (geom2 != null)
+            //        {
+            //            var gp2 = gpw.ToShape(at.Transform(geom2));
+            //            if (geom2 is IPolygonal)
+            //                gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.OrangeRed)), gp2);
+            //            gr.DrawPath(Pens.OrangeRed, gp2);
+            //        }
 
-                    if (geom3 != null)
-                    {
-                        var gp3 = gpw.ToShape(at.Transform(geom3));
-                        if (geom3 is IPolygonal)
-                            gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.Gold)), gp3);
-                        gr.DrawPath(Pens.Gold, gp3);
-                    }
+            //        if (geom3 != null)
+            //        {
+            //            var gp3 = gpw.ToShape(at.Transform(geom3));
+            //            if (geom3 is IPolygonal)
+            //                gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.Gold)), gp3);
+            //            gr.DrawPath(Pens.Gold, gp3);
+            //        }
 
-                }
-                var path = System.IO.Path.ChangeExtension(System.IO.Path.GetTempFileName(), "png");
-                img.Save(path, ImageFormat.Png);
-                Console.WriteLine("Image for Test {0} written to {1}", nr, new Uri(path).AbsoluteUri);
-            }
+            //    }
+            //    var path = System.IO.Path.ChangeExtension(System.IO.Path.GetTempFileName(), "png");
+            //    img.Save(path, ImageFormat.Png);
+            //    Console.WriteLine("Image for Test {0} written to {1}", nr, new Uri(path).AbsoluteUri);
+            //}
         }
 
         private const int ImageWidth = 640;

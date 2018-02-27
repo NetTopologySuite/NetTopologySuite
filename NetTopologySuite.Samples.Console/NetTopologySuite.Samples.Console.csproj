@@ -43,7 +43,6 @@
 
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.CoordinateSystems.Transfromation\DotSpatial.Projections.Wrapper\DotSpatial.Projections.Wrapper.csproj" />
-    <ProjectReference Include="$(SolutionDir)NetTopologySuite.Windows.Forms\NetTopologySuite.Windows.Forms.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite\NetTopologySuite.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.Lab\NetTopologySuite.Lab.csproj" />
   </ItemGroup>
