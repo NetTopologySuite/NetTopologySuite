@@ -1135,6 +1135,9 @@ namespace NetTopologySuite.Geometries
             if (!EnvelopeInternal.Equals(g.EnvelopeInternal))
                 return false;
 
+            if (IsNonHomogenousGeometryCollection(this) || IsNonHomogenousGeometryCollection(g))
+                return CompareGeometryCollections(this, g);
+
             return Relate(g).IsEquals(Dimension, g.Dimension);
         }
 
