@@ -59,7 +59,7 @@
 
         /// <summary>
         /// Computes an index which wraps around a given maximum value.
-        /// For values &ge 0, this is equals to <c>val % max</c>.
+        /// For values &gt;= 0, this is equals to <c>val % max</c>.
         /// For values &lt; 0, this is equal to <c>max - (-val) % max</c> 
         /// </summary>
         /// <param name="index">The index to wrap</param>

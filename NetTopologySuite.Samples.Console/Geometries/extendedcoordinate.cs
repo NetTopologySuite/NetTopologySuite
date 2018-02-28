@@ -25,16 +25,23 @@ namespace NetTopologySuite.Samples.Geometries
 			_m = 0.0;
 		}
 		
-		public ExtendedCoordinate(ExtendedCoordinate coord) : base(coord)
+		public ExtendedCoordinate(ExtendedCoordinate coord) 
+		    : base(coord)
 		{
 			_m = coord._m;
 		}
+
+        /// <inheritdoc cref="Coordinate.Copy"/>
+	    public override Coordinate Copy()
+	    {
+	        return new ExtendedCoordinate(X, Y, Z, _m);
+	    }
 		
-		/// <summary> 
+	    /// <summary> 
         /// An example of extended data.
-		/// The m variable holds a measure value for linear referencing
-		/// </summary>		
-		private double _m;
+        /// The m variable holds a measure value for linear referencing
+        /// </summary>		
+        private double _m;
         
         public double M
         {

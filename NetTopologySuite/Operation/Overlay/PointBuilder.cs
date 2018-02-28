@@ -34,7 +34,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="op">The operation</param>
         /// <param name="geometryFactory">The geometry factory</param>
         /// <param name="ptLocator">The point locator</param>
-        [Obsolete("point locateor no longer used!")]
+        [Obsolete("point locator no longer used!")]
         public PointBuilder(OverlayOp op, IGeometryFactory geometryFactory, PointLocator ptLocator = null)
             :this(op,geometryFactory)
         { }

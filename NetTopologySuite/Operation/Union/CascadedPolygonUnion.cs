@@ -148,7 +148,7 @@ namespace NetTopologySuite.Operation.Union
             foreach (IGeometry g in geoms)
             {
                 if (union == null)
-                    union = (IGeometry)g.Clone();
+                    union = (IGeometry)g.Copy();
                 else union = union.Union(g);
             }
             return union;
@@ -309,9 +309,9 @@ namespace NetTopologySuite.Operation.Union
             if (g0 == null && g1 == null)
                 return null;
             if (g0 == null)
-                return (IGeometry)g1.Clone();
+                return (IGeometry)g1.Copy();
             if (g1 == null)
-                return (IGeometry)g0.Clone();
+                return (IGeometry)g0.Copy();
             return UnionOptimized(g0, g1);
         }
 

@@ -9,10 +9,10 @@ namespace NetTopologySuite.Triangulate
     /// Models a constraint segment in a triangulation.
     /// A constraint segment is an oriented straight line segment between a start point
     /// and an end point.
+    /// </summary>
+    /// <author>David Skea</author>
+    /// <author>Martin Davis</author>
     /// 
-    /// @author David Skea
-    /// @author Martin Davis
-    ///
     public class Segment
     {
         private readonly LineSegment _ls;

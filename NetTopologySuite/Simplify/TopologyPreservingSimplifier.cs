@@ -100,7 +100,7 @@ namespace NetTopologySuite.Simplify
         {
             // empty input produces an empty result
             if (_inputGeom.IsEmpty)
-                return (IGeometry)_inputGeom.Clone();
+                return (IGeometry)_inputGeom.Copy();
 
             _lineStringMap = new Dictionary<ILineString, TaggedLineString>();
             LineStringMapBuilderFilter filter = new LineStringMapBuilderFilter(this);

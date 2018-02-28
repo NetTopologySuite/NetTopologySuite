@@ -135,7 +135,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>A deep copy of the sequence.</returns>
         protected virtual ICoordinateSequence Copy(ICoordinateSequence seq)
         {
-            return (ICoordinateSequence)seq.Clone();
+            return seq.Copy();
         }
 
         /// <summary>

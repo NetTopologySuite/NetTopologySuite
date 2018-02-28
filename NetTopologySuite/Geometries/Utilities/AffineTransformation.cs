@@ -990,7 +990,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>The transformed Geometry</returns>
         public IGeometry Transform(IGeometry g)
         {
-            IGeometry g2 = (IGeometry)g.Clone();
+            IGeometry g2 = g.Copy();
             g2.Apply(this);
             return g2;
         }

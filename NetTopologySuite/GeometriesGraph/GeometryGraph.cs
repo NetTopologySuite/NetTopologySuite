@@ -163,7 +163,7 @@ namespace NetTopologySuite.GeometriesGraph
             int i = 0;
             foreach (Node node in coll)
             {
-                pts[i++] = (Coordinate)node.Coordinate.Clone();
+                pts[i++] = (Coordinate)node.Coordinate.Copy();
             }
             return pts;
         }

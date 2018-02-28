@@ -187,7 +187,7 @@ namespace NetTopologySuite.Precision
         ///     p1 == p2 : Double.MAX
         ///
         /// dist(p, seg) =
-        ///     p != seq.p1 && p != seg.p2
+        ///     p != seq.p1 &amp;&amp; p != seg.p2
         ///         ? seg.distance(p)
         ///         : Double.MaxValue
         /// </code>

@@ -1,4 +1,5 @@
 using System;
+using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries
 {
@@ -39,6 +40,20 @@ namespace NetTopologySuite.Geometries
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="GeoAPI.Geometries.PrecisionModels.Floating"/>.
         /// </remarks>
         public MultiPoint(GeoAPI.Geometries.IPoint[] points) : this(points, DefaultFactory) { }
+
+        /// <summary>
+        /// Creates and returns a full copy of this <see cref="IMultiPoint"/> object.
+        /// (including all coordinates contained by it).
+        /// </summary>
+        /// <returns>A copy of this instance</returns>
+        public override IGeometry Copy()
+        {
+            var points = new IPoint[NumGeometries];
+            for (var i = 0; i < points.Length; i++)
+                points[i] = (IPoint)GetGeometryN(i).Copy();
+
+            return new MultiPoint(points, Factory);
+        }
 
         /// <summary>
         /// Gets a value to sort the geometry

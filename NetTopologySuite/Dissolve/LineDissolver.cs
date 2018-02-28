@@ -214,7 +214,7 @@ namespace NetTopologySuite.Dissolve
 
             MarkHalfEdge.MarkBoth(e);
             Coordinate orig = e.Orig;
-            line.Add(orig.Clone(), false);
+            line.Add(orig.Copy(), false);
             // scan along the path until a node is found (if one exists)
             while (e.Sym.Degree() == 2)
             {
@@ -228,13 +228,13 @@ namespace NetTopologySuite.Dissolve
                 }
                 // add point to line, and move to next edge
                 orig = eNext.Orig;
-                line.Add(orig.Clone(), false);
+                line.Add(orig.Copy(), false);
                 e = eNext;
                 MarkHalfEdge.MarkBoth(e);
             }
             // add final node
             Coordinate dest = e.Dest;
-            line.Add(dest.Clone(), false);
+            line.Add(dest.Copy(), false);
 
             // queue up the final node edges
             StackEdges(e.Sym);
@@ -248,7 +248,7 @@ namespace NetTopologySuite.Dissolve
             HalfEdge e = eStartRing;
 
             Coordinate orig = e.Orig;
-            line.Add(orig.Clone(), false);
+            line.Add(orig.Copy(), false);
             // scan along the path until a node is found (if one exists)
             while (e.Sym.Degree() == 2)
             {
@@ -259,12 +259,12 @@ namespace NetTopologySuite.Dissolve
 
                 // add point to line, and move to next edge
                 orig = eNext.Orig;
-                line.Add(orig.Clone(), false);
+                line.Add(orig.Copy(), false);
                 e = eNext;
             }
             // add final node
             Coordinate dest = e.Dest;
-            line.Add(dest.Clone(), false);
+            line.Add(dest.Copy(), false);
 
             // store the scanned line
             AddLine(line);

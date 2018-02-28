@@ -31,10 +31,15 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// Initializes a new instance of the <see cref="ScaledNoder"/> class.
         /// </summary>
-        /// <param name="noder"></param>
-        /// <param name="scaleFactor"></param>
-        public ScaledNoder(INoder noder, double scaleFactor) 
-            : this(noder, scaleFactor, 0, 0) { }      
+        /// <param name="noder">The noder to use</param>
+        /// <param name="scaleFactor">The scale factor to use</param>
+        public ScaledNoder(INoder noder, double scaleFactor)
+        {
+            _noder = noder;
+            _scaleFactor = scaleFactor;
+            // no need to scale if input precision is already integral
+            _isScaled = !IsIntegerPrecision;
+        }      
 
         /// <summary>
         /// 

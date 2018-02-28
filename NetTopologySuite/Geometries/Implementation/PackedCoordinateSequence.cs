@@ -257,7 +257,10 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
+        [Obsolete("Use Copy()")]
         public abstract Object Clone();
+
+        public abstract ICoordinateSequence Copy();
 
         /// <summary>
         /// Expands the given Envelope to include the coordinates in the sequence.
@@ -399,7 +402,15 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-        public override Object Clone() 
+        [Obsolete]
+        public override Object Clone()
+        {
+            return Copy();
+
+        }
+
+        /// <inheritdoc cref="ICoordinateSequence.Copy"/>
+        public override ICoordinateSequence Copy()
         {
             double[] clone = new double[_coords.Length];
             Array.Copy(_coords, clone, _coords.Length);
@@ -584,7 +595,15 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-        public override Object Clone() 
+        [Obsolete]
+        public override Object Clone()
+        {
+            return Copy();
+
+        }
+
+        /// <inheritdoc cref="ICoordinateSequence.Copy"/>
+        public override ICoordinateSequence Copy()
         {
             float[] clone = new float[_coords.Length];
             Array.Copy(_coords, clone, _coords.Length);

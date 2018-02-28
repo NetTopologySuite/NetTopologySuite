@@ -227,7 +227,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projectio
 
         private ICoordinateSequence TransformDotSpatialAffine(DotSpatialAffineCoordinateSequence sequence)
         {
-            var seq = (DotSpatialAffineCoordinateSequence)sequence.Clone();
+            var seq = (DotSpatialAffineCoordinateSequence)sequence.Copy();
             Reproject.ReprojectPoints(seq.XY, seq.Z, Source, Target, 0, seq.Count);
             return seq;
         }

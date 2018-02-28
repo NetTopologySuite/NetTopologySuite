@@ -17,7 +17,6 @@ using NetTopologySuite.Operation.Predicate;
 using NetTopologySuite.Operation.Relate;
 using NetTopologySuite.Operation.Union;
 using NetTopologySuite.Operation.Valid;
-using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Geometries
 {
@@ -1195,7 +1194,7 @@ namespace NetTopologySuite.Geometries
             {
                 IGeometry geom1 = coll1[i];
                 IGeometry geom2 = coll2[i];
-                if (!geom1.Equals(geom2))
+                if (!geom1.EqualsExact(geom2))
                     return false;
             }
 
@@ -1414,7 +1413,8 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
         public IGeometry Buffer(double distance, EndCapStyle endCapStyle)
         {
-            return BufferOp.Buffer(this, distance, BufferParameters.DefaultQuadrantSegments, (BufferStyle)endCapStyle);
+            var para = new BufferParameters { EndCapStyle = endCapStyle };
+            return BufferOp.Buffer(this, distance, para);//BufferParameters.DefaultQuadrantSegments, (BufferStyle)endCapStyle);
         }
 
         /// <summary>
@@ -1541,7 +1541,8 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="Buffer(double, int)"/>
         public IGeometry Buffer(double distance, int quadrantSegments, EndCapStyle endCapStyle)
         {
-            return BufferOp.Buffer(this, distance, quadrantSegments, (BufferStyle)endCapStyle);
+            var para = new BufferParameters {EndCapStyle = endCapStyle, QuadrantSegments = quadrantSegments };
+            return BufferOp.Buffer(this, distance, para);
         }
 
         /// <summary>
@@ -1690,8 +1691,8 @@ namespace NetTopologySuite.Geometries
                     return OverlayOp.CreateEmptyResult(SpatialFunction.Union, this, other, _factory);
 
                 // Special case: if either input is empty ==> other input
-                if (other == null || other.IsEmpty) return (IGeometry)Clone();
-                if (IsEmpty) return (IGeometry)other.Clone();
+                if (other == null || other.IsEmpty) return Copy();
+                if (IsEmpty) return other.Copy();
             }
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
@@ -1716,7 +1717,7 @@ namespace NetTopologySuite.Geometries
             if (IsEmpty)
                 return OverlayOp.CreateEmptyResult(SpatialFunction.Difference, this, other, _factory);
             if (other == null || other.IsEmpty)
-                return (IGeometry)Clone();
+                return (IGeometry)Copy();
 
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
@@ -1746,8 +1747,8 @@ namespace NetTopologySuite.Geometries
                     return OverlayOp.CreateEmptyResult(SpatialFunction.SymDifference, this, other, _factory);
 
                 // special case: if either input is empty ==> result = other arg
-                if (other == null || other.IsEmpty) return (IGeometry)Clone();
-                if (IsEmpty) return (IGeometry)other.Clone();
+                if (other == null || other.IsEmpty) return (IGeometry)Copy();
+                if (IsEmpty) return (IGeometry)other.Copy();
             }
 
             CheckNotGeometryCollection(this);
@@ -1905,9 +1906,13 @@ namespace NetTopologySuite.Geometries
         public abstract void Apply(IGeometryComponentFilter filter);
 
         /// <summary>
-        /// 
+        /// Creates and returns a full copy of this <see cref="IGeometry"/> object
+        /// (including all coordinates contained by it).
+        /// Subclasses are responsible for implementing this method and copying
+        /// their internal data.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A clone of this instance</returns>
+        [Obsolete("Use Copy()")]
         public virtual object Clone()
         {
             Geometry clone = (Geometry)MemberwiseClone();
@@ -1915,6 +1920,16 @@ namespace NetTopologySuite.Geometries
                 clone._envelope = new Envelope(clone._envelope);
             return clone;
         }
+        
+        /// <summary>
+        /// Creates and returns a full copy of this <see cref="IGeometry"/> object
+        /// (including all coordinates contained by it).
+        /// Subclasses are responsible for implementing this method and copying
+        /// their internal data.
+        /// </summary>
+        /// <returns>A deep copy of this geometry</returns>
+        public abstract IGeometry Copy();
+
 
         /// <summary>
         /// Converts this <c>Geometry</c> to normal form (or canonical form ).
@@ -1948,7 +1963,7 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="Normalize"/>
         public IGeometry Normalized()
         {
-            var copy = (IGeometry)Clone();
+            var copy = (IGeometry)Copy();
             copy.Normalize();
             return copy;
         }

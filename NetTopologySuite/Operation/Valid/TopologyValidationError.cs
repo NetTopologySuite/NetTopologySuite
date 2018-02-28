@@ -124,7 +124,7 @@ namespace NetTopologySuite.Operation.Valid
         {
             this.errorType = errorType;
             if(pt != null)
-                this.pt = (Coordinate) pt.Clone();
+                this.pt = (Coordinate) pt.Copy();
         }
 
         /// <summary>

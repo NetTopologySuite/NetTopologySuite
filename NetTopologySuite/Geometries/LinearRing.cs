@@ -96,6 +96,16 @@ namespace NetTopologySuite.Geometries
             get { return "LinearRing"; }
         }
 
+        /// <summary>
+        /// Creates and returns a full copy of this <see cref="ILinearRing"/> object.
+        /// (including all coordinates contained by it).
+        /// </summary>
+        /// <returns>A copy of this instance</returns>
+        public override IGeometry Copy()
+        {
+            return new LinearRing(CoordinateSequence.Copy(), Factory);
+        }
+
         public override IGeometry Reverse()
         {
             var sequence = CoordinateSequence.Reversed();

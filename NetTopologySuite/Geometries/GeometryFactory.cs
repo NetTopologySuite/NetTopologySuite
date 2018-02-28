@@ -595,12 +595,12 @@ namespace NetTopologySuite.Geometries
         /// used to represent a geometry, or to change the 
         /// factory used for a geometry.
         /// <para/>
-        /// <see cref="IGeometry.Clone()"/> can also be used to make a deep copy,
+        /// <see cref="IGeometry.Copy()"/> can also be used to make a deep copy,
         /// but it does not allow changing the CoordinateSequence type.
         /// </summary>
         /// <param name="g">The geometry</param>
         /// <returns>A deep copy of the input geometry, using the CoordinateSequence type of this factory</returns>
-        /// <seealso cref="IGeometry.Clone"/>
+        /// <seealso cref="IGeometry.Copy"/>
         public IGeometry CreateGeometry(IGeometry g)
         {
             // NOTE: don't move lambda to a separate variable!

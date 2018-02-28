@@ -80,7 +80,7 @@ namespace NetTopologySuite.Operation.Valid
                     RelateNode node = (RelateNode) nodeIt.Current;
                     if (!node.Edges.IsAreaLabelsConsistent(geomGraph))
                     {
-                        invalidPoint = (Coordinate) node.Coordinate.Clone();
+                        invalidPoint = (Coordinate) node.Coordinate.Copy();
                         return false;
                     }
                 }

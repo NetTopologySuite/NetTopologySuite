@@ -21,7 +21,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Coordinate q2 = new Coordinate(10, 20);
             Coordinate x = new Coordinate(15, 15);
             i.ComputeIntersection(p1, p2, q1, q2);
-            Assert.AreEqual(RobustLineIntersector.DoIntersect, i.IntersectionNum);
+            Assert.AreEqual(RobustLineIntersector.PointIntersection, i.IntersectionNum);
             Assert.AreEqual(1, i.IntersectionNum);
             Assert.AreEqual(x, i.GetIntersection(0));
             Assert.IsTrue(i.IsProper);
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Coordinate q1 = new Coordinate(22, 10);
             Coordinate q2 = new Coordinate(30, 10);
             i.ComputeIntersection(p1, p2, q1, q2);
-            Assert.AreEqual(RobustLineIntersector.DontIntersect, i.IntersectionNum);
+            Assert.AreEqual(RobustLineIntersector.NoIntersection, i.IntersectionNum);
             Assert.IsTrue(!i.IsProper);
             Assert.IsTrue(!i.HasIntersection);
         }
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Coordinate q1 = new Coordinate(20, 10);
             Coordinate q2 = new Coordinate(30, 10);
             i.ComputeIntersection(p1, p2, q1, q2);
-            Assert.AreEqual(RobustLineIntersector.DoIntersect, i.IntersectionNum);
+            Assert.AreEqual(RobustLineIntersector.PointIntersection, i.IntersectionNum);
             Assert.IsTrue(!i.IsProper);
             Assert.IsTrue(i.HasIntersection);
         }
@@ -62,7 +62,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Coordinate q1 = new Coordinate(15, 10);
             Coordinate q2 = new Coordinate(30, 10);
             i.ComputeIntersection(p1, p2, q1, q2);
-            Assert.AreEqual(RobustLineIntersector.Collinear, i.IntersectionNum);
+            Assert.AreEqual(RobustLineIntersector.CollinearIntersection, i.IntersectionNum);
             Assert.IsTrue(!i.IsProper);
             Assert.IsTrue(i.HasIntersection);
         }
@@ -75,7 +75,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Coordinate q1 = new Coordinate(10, 10);
             Coordinate q2 = new Coordinate(30, 10);
             i.ComputeIntersection(p1, p2, q1, q2);
-            Assert.AreEqual(RobustLineIntersector.Collinear, i.IntersectionNum);
+            Assert.AreEqual(RobustLineIntersector.CollinearIntersection, i.IntersectionNum);
             Assert.IsTrue(i.HasIntersection);
         }
 

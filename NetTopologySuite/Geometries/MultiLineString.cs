@@ -31,7 +31,8 @@ namespace NetTopologySuite.Geometries
         /// but not <c>null</c>s.
         /// </param>
         /// <param name="factory"></param>
-        public MultiLineString(ILineString[] lineStrings, IGeometryFactory factory) : base(lineStrings, factory) { }        
+        public MultiLineString(ILineString[] lineStrings, IGeometryFactory factory) 
+            : base(lineStrings, factory) { }        
 
         /// <summary>
         /// Constructs a <c>MultiLineString</c>.
@@ -164,6 +165,21 @@ namespace NetTopologySuite.Geometries
             return (IMultiLineString) Reverse();
 
         }
+
+        /// <summary>
+        /// Creates and returns a full copy of this <see cref="IMultiLineString"/> object.
+        /// (including all coordinates contained by it).
+        /// </summary>
+        /// <returns>A copy of this instance</returns>
+        public override IGeometry Copy()
+        {
+            var lineStrings = new ILineString[NumGeometries];
+            for (var i = 0; i < lineStrings.Length; i++)
+                lineStrings[i] = (ILineString)GetGeometryN(i).Copy();
+
+            return new MultiLineString(lineStrings, Factory);
+        }
+
         /// <summary>
         /// 
         /// </summary>

@@ -707,20 +707,19 @@ namespace NetTopologySuite.Mathematics
 
         #endregion
 
-        /**
-         * Returns the largest (closest to positive infinity) 
-         * value that is not greater than the argument 
-         * and is equal to a mathematical integer.
-         * Special cases:
-         * <ul>
-         * <li>If this value is NaN, returns NaN.
-         * </ul>
-         * 
-         * @return the largest (closest to positive infinity) 
-         * value that is not greater than the argument 
-         * and is equal to a mathematical integer.
-         */
-
+        /// <summary>
+        /// Returns the largest (closest to positive infinity) 
+        /// value that is not greater than the argument
+        /// and is equal to a mathematical integer.
+        /// Special cases:
+        /// <list type="Bullet">
+        /// <item>If this value is NaN, returns NaN.</item>
+        /// </list>
+        /// </summary>
+        /// <returns>The largest (closest to positive infinity) 
+        /// value that is not greater than the argument
+        ///  and is equal to a mathematical integer.
+        /// </returns>
         public DD Floor()
         {
             if (IsNaN(this)) return NaN;
@@ -735,18 +734,18 @@ namespace NetTopologySuite.Mathematics
             return new DD(fhi, flo);
         }
 
-        /**
-         * Returns the smallest (closest to negative infinity) value 
-         * that is not less than the argument and is equal to a mathematical integer. 
-         * Special cases:
-         * <ul>
-         * <li>If this value is NaN, returns NaN.
-         * </ul>
-         * 
-         * @return the smallest (closest to negative infinity) value 
-         * that is not less than the argument and is equal to a mathematical integer. 
-         */
-
+        /// <summary>
+        /// Returns the smallest (closest to negative infinity) value 
+        /// that is not less than the argument and is equal to a mathematical integer.
+        /// Special cases:
+        /// <list type="Bullet">
+        ///  <item>If this value is NaN, returns NaN.</item>
+        /// </list>
+        /// </summary>
+        /// <returns>
+        /// The smallest (closest to negative infinity) value 
+        /// that is not less than the argument and is equal to a mathematical integer.
+        /// </returns>
         public DD Ceiling()
         {
             if (IsNaN(this)) return NaN;
@@ -1055,24 +1054,23 @@ namespace NetTopologySuite.Mathematics
             return (_hi < y._hi) || (_hi == y._hi && _lo < y._lo);
         }
 
-        /**
-         * Tests whether this value is less than or equal to another <tt>DoubleDouble</tt> value.
-         * @param y a DoubleDouble value
-         * @return true if this value <= y
-         */
-
+        /// <summary>
+        /// Tests whether this value is less than or equal to another <tt>DoubleDouble</tt> value.
+        /// </summary>
+        /// <param name="y">A <tt>DoubleDouble</tt></param>
+        /// <returns><c>true</c> if this value is &lt;= <paramref name="y"/></returns>
         public bool LessOrEqualThan(DD y)
         {
             return (_hi < y._hi) || (_hi == y._hi && _lo <= y._lo);
         }
 
-        /**
-         * Compares two DoubleDouble objects numerically.
-         * 
-         * @return -1,0 or 1 depending on whether this value is less than, equal to
-         * or greater than the value of <tt>o</tt>
-         */
-
+        /// <summary>
+        /// Compares two <tt>DoubleDouble</tt> objects numerically.
+        /// </summary>
+        /// <param name="other">An other <tt>DoubleDouble</tt> value</param>
+        /// <returns>
+        /// <c>-1,0</c> or <c>1</c> depending on whether this value is less than, equal to
+        /// or greater than the value of <paramref name="other"/></returns>
         public int CompareTo(DD other)
         {
             if (_hi < other._hi) return -1;
@@ -1445,7 +1443,7 @@ namespace NetTopologySuite.Mathematics
             else if (numDecPlaces < 0)
             {
                 DD scale = Ten.Pow(-numDecPlaces);
-                val2 = val.Multiply(scale);
+                val2 = val * scale;
             }
             // apply leading sign, if any
             if (isNegative)

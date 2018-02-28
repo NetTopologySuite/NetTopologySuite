@@ -729,7 +729,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
             public void Visit(QuadEdge[] triEdges)
             {
-                _triList.Add((QuadEdge[])triEdges.Clone());
+                _triList.Add(triEdges);
             }
 
             public IList<QuadEdge[]> GetTriangleEdges()

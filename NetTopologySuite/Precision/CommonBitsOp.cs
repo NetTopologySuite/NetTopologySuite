@@ -116,7 +116,7 @@ namespace NetTopologySuite.Precision
         {
             _cbr = new CommonBitsRemover();
             _cbr.Add(geom0);
-            IGeometry geom = _cbr.RemoveCommonBits((IGeometry) geom0.Clone());
+            IGeometry geom = _cbr.RemoveCommonBits((IGeometry) geom0.Copy());
             return geom;
         }
 
@@ -136,8 +136,8 @@ namespace NetTopologySuite.Precision
             _cbr.Add(geom0);
             _cbr.Add(geom1);
             IGeometry[] geom = new IGeometry[2];
-            geom[0] = _cbr.RemoveCommonBits((IGeometry) geom0.Clone());
-            geom[1] = _cbr.RemoveCommonBits((IGeometry) geom1.Clone());
+            geom[0] = _cbr.RemoveCommonBits((IGeometry) geom0.Copy());
+            geom[1] = _cbr.RemoveCommonBits((IGeometry) geom1.Copy());
             return geom;
         }
     }

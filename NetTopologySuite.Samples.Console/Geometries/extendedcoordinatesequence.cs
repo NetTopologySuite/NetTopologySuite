@@ -71,12 +71,23 @@ namespace NetTopologySuite.Samples.Geometries
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-		public object Clone()
+        [Obsolete("Use Copy()")]
+        public object Clone()
+	    {
+	        return Copy();
+        }
+	    /// <summary>
+	    /// Creates a new object that is a copy of the current instance.
+	    /// </summary>
+	    /// <returns>
+	    /// A new object that is a copy of this instance.
+	    /// </returns>
+	    public ICoordinateSequence Copy()
 		{
 			var cloneCoordinates = new ExtendedCoordinate[Count];
 			for (var i = 0; i < _coordinates.Length; i++)
 			{
-				cloneCoordinates[i] = (ExtendedCoordinate) _coordinates[i].Clone();
+				cloneCoordinates[i] = (ExtendedCoordinate) _coordinates[i].Copy();
 			}
 			
 			return new ExtendedCoordinateSequence(cloneCoordinates);

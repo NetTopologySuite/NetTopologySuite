@@ -303,7 +303,7 @@ namespace NetTopologySuite.Geometries
         public override IGeometry Reverse()
         {
             /*
-            var seq = (ICoordinateSequence)_points.Clone();
+            var seq = (ICoordinateSequence)_points.Copy();
             CoordinateSequences.Reverse(seq);
              */
             var seq = _points.Reversed();
@@ -427,14 +427,25 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        ///
+        /// Creates and returns a full copy of this object.
+        /// (including all coordinates contained by it).
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A copy of this instance</returns>
+        [Obsolete("Use Copy()")]
         public override object Clone()
         {
-            LineString ls = (LineString)base.Clone();
-            ls._points = (ICoordinateSequence)_points.Clone();
-            return ls;
+            return Copy();
+        }
+
+        /// <summary>
+        /// Creates and returns a full copy of this <see cref="ILineString"/> object.
+        /// (including all coordinates contained by it).
+        /// </summary>
+        /// <returns>A copy of this instance</returns>
+        public override IGeometry Copy()
+        { 
+            var points = _points.Copy();
+            return new LineString(points, Factory);
         }
 
         /// <summary>
@@ -452,7 +463,7 @@ namespace NetTopologySuite.Geometries
                 {
                     if (_points.GetCoordinate(i).CompareTo(_points.GetCoordinate(j)) > 0)
                     {
-                        var copy = (ICoordinateSequence) _points.Clone();
+                        var copy = _points.Copy();
                         CoordinateSequences.Reverse(copy);
                         _points = copy;
                     }

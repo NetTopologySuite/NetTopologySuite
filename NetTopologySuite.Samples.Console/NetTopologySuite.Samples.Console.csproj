@@ -37,7 +37,7 @@
     <PackageReference Include="GeoAPI" Version="$(GeoAPIPackageReferenceVersion)" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="NUnit" Version="2.6.4" />
-    <PackageReference Include="ProjNET4GeoAPI" Version="1.3.2" />
+    <PackageReference Include="ProjNET4GeoAPI" Version="1.4.0-pre001" />
     <PackageReference Include="QuickGraph" Version="3.6.61119.7" />
   </ItemGroup>
 

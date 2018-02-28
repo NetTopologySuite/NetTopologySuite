@@ -300,19 +300,30 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        /// Creates and returns a full copy of this object.
+        /// (including all coordinates contained by it).
         /// </summary>
-        /// <returns></returns>
-        public override object Clone() 
+        /// <returns>A copy of this instance</returns>
+        [Obsolete("Use Copy()")]
+        public override object Clone()
         {
-            Point p = (Point) base.Clone();
-            p._coordinates = (ICoordinateSequence) _coordinates.Clone();
-            return p; 
+            return Copy();
+        }
+
+        /// <summary>
+        /// Creates and returns a full copy of this <see cref="IPoint"/> object.
+        /// (including all coordinates contained by it).
+        /// </summary>
+        /// <returns>A copy of this instance</returns>
+        public override IGeometry Copy() 
+        {
+            var coordinates = _coordinates.Copy();
+            return new Point(coordinates, Factory); 
         }
 
         public override IGeometry Reverse()
         {
-            return (IGeometry)Clone();
+            return (IGeometry)Copy();
         }
 
         /// <summary>

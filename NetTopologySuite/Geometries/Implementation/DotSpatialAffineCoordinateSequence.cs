@@ -194,7 +194,15 @@ namespace NetTopologySuite.Geometries.Implementation
             _ordinates = Ordinates.XYZM;
         }
 
-        public object Clone()
+        [Obsolete]
+        public Object Clone()
+        {
+            return Copy();
+
+        }
+
+        /// <inheritdoc cref="ICoordinateSequence.Copy"/>
+        public ICoordinateSequence Copy()
         {
             return new DotSpatialAffineCoordinateSequence(this, Ordinates);
         }

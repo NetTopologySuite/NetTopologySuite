@@ -125,12 +125,20 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="edge">An array of the edges of the triangle in CCW order</param>
         public QuadEdgeTriangle(QuadEdge[] edge)
         {
-            _edge = (QuadEdge[]) edge.Clone();
+            _edge = CopyOf(edge);
             // link the quadedges back to this triangle
             for (int i = 0; i < 3; i++)
             {
                 edge[i].Data = this;
             }
+        }
+
+        private static QuadEdge[] CopyOf(QuadEdge[] edge)
+        {
+            var res = new QuadEdge[edge.Length];
+            for (var i = 0; i < edge.Length; i++)
+                res[i] = edge[i];
+            return res;
         }
 
         /// <summary>

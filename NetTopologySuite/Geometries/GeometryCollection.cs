@@ -387,16 +387,27 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        /// Creates and returns a full copy of this <see cref="IGeometryCollection"/> object.
+        /// (including all coordinates contained by it).
         /// </summary>
-        /// <returns></returns>
-        public override object Clone() 
+        /// <returns>A copy of this instance</returns>
+        [Obsolete("Use Copy()")]
+        public override object Clone()
         {
-            GeometryCollection gc = (GeometryCollection) base.Clone();
-            gc._geometries = new IGeometry[_geometries.Length];
+            return Copy();
+        }
+
+        /// <summary>
+        /// Creates and returns a full copy of this <see cref="IGeometryCollection"/> object.
+        /// (including all coordinates contained by it).
+        /// </summary>
+        /// <returns>A copy of this instance</returns>
+        public override IGeometry Copy()
+        { 
+            var geometries = new IGeometry[_geometries.Length];
             for (int i = 0; i < _geometries.Length; i++) 
-                gc._geometries[i] = (IGeometry) _geometries[i].Clone();
-            return gc; 
+                geometries[i] = _geometries[i].Copy();
+            return new GeometryCollection(geometries, Factory); 
         }
 
         /// <summary>

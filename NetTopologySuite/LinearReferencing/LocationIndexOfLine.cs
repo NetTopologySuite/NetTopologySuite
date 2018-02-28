@@ -58,7 +58,7 @@ namespace NetTopologySuite.LinearReferencing
 
             // check for case where subline is zero length
             if (subLine.Length == 0)
-                 subLineLoc[1] = (LinearLocation) subLineLoc[0].Clone();            
+                 subLineLoc[1] = (LinearLocation) subLineLoc[0].Copy();            
             else subLineLoc[1] = locPt.IndexOfAfter(endPt, subLineLoc[0]);
             return subLineLoc;
         }

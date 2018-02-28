@@ -135,6 +135,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="c">A vertex of the triangle</param>
         /// <param name="p">The point to test</param>
         /// <returns>true if this point is inside the circle defined by the points a, b, c</returns>
+        [Obsolete]
         public static bool IsInCircleDDSlow(
             Coordinate a, Coordinate b, Coordinate c,
             Coordinate p)
@@ -178,6 +179,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="cx">x ordinate of a vertex of the triangle</param>
         /// <param name="cy">y ordinate of a vertex of the triangle</param>
         /// <returns>The area of a triangle defined by the points a, b and c</returns>
+        [Obsolete]
         private static DD TriAreaDDSlow(DD ax, DD ay,
                                        DD bx, DD by, DD cx, DD cy)
         {
@@ -303,6 +305,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <param name="p">The point to test</param>
+        [Obsolete]
         private static void CheckRobustInCircle(Coordinate a, Coordinate b, Coordinate c,
                                                 Coordinate p)
         {

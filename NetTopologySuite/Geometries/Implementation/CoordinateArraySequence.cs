@@ -202,9 +202,19 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Creates a deep copy of the object.
         /// </summary>
         /// <returns>The deep copy.</returns>
+        [Obsolete]
         public virtual object Clone()
         {
-            Coordinate[] cloneCoordinates = GetClonedCoordinates();
+            return Copy();
+
+        }
+        /// <summary>
+        /// Creates a deep copy of the <c>CoordinateArraySequence</c>.
+        /// </summary>
+        /// <returns>The deep copy.</returns>
+        public virtual ICoordinateSequence Copy()
+        {
+            var cloneCoordinates = GetClonedCoordinates();
             return new CoordinateArraySequence(cloneCoordinates, Dimension);
         }
 
@@ -216,7 +226,7 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             Coordinate[] cloneCoordinates = new Coordinate[Count];
             for (int i = 0; i < Coordinates.Length; i++) 
-                cloneCoordinates[i] = (Coordinate) Coordinates[i].Clone();
+                cloneCoordinates[i] = Coordinates[i].Copy();
             return cloneCoordinates;
         }
 

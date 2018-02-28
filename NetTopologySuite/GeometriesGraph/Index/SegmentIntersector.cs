@@ -208,7 +208,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
                     }
                     if (_li.IsProper)
                     {
-                        _properIntersectionPoint = (Coordinate) _li.GetIntersection(0).Clone();
+                        _properIntersectionPoint = (Coordinate) _li.GetIntersection(0).Copy();
                         _hasProper = true;
                         if (_isDoneWhenProperInt) _isDone = true;
                         if (!IsBoundaryPoint(_li, _bdyNodes))

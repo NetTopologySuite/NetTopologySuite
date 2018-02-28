@@ -141,7 +141,7 @@ namespace NetTopologySuite.Mathematics
         /// Gets the ordinate values by index
         /// </summary>
         /// <param name="index">The index</param>
-        /// <exception cref="T:System.ArgumentOutOfRangeException">Thrown if index &lt; 0 or &gt 1</exception>
+        /// <exception cref="T:System.ArgumentOutOfRangeException">Thrown if index &lt; 0 or &gt; 1</exception>
         public double this[int index]
         {
             get

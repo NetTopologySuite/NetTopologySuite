@@ -478,17 +478,28 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        /// Creates and returns a full copy of this object.
+        /// (including all coordinates contained by it).
         /// </summary>
-        /// <returns></returns>
-        public override object Clone() 
+        /// <returns>A copy of this instance</returns>
+        [Obsolete("Use Copy()")]
+        public override object Clone()
         {
-            var poly = (Polygon) base.Clone();
-            poly._shell = (LinearRing) _shell.Clone();
-            poly._holes = new ILinearRing[_holes.Length];
+            return Copy();
+        }
+
+        /// <summary>
+        /// Creates and returns a full copy of this <see cref="IPolygon"/> object.
+        /// (including all coordinates contained by it).
+        /// </summary>
+        /// <returns>A copy of this instance</returns>
+        public override IGeometry Copy() 
+        {
+            var shell = (LinearRing) _shell.Copy();
+            var holes = new ILinearRing[_holes.Length];
             for (var i = 0; i < _holes.Length; i++) 
-                poly._holes[i] = (LinearRing) _holes[i].Clone();            
-            return poly; 
+                holes[i] = (LinearRing) _holes[i].Copy();            
+            return new Polygon(shell, holes, Factory); 
         }
 
         //[Obsolete]
@@ -634,14 +645,11 @@ namespace NetTopologySuite.Geometries
 
         public override IGeometry Reverse()
         {
-            var poly = (Polygon)Clone();
-            poly.Shell = (LinearRing)((LinearRing)_shell.Clone()).Reverse();
-            poly.Holes = CollectionUtil.Cast<LinearRing, ILinearRing>(new LinearRing[_holes.Length]);
-            for (int i = 0; i < _holes.Length; i++)
-            {
-                poly.Holes[i] = (LinearRing)((LinearRing)_holes[i].Clone()).Reverse();
-            }
-            return poly;// return the clone
+            var shell = (ILinearRing)_shell.Reverse();
+            var holes = new ILinearRing[_holes.Length];
+            for (var i = 0; i < _holes.Length; i++)
+                holes[i] = (ILinearRing)_holes[i].Reverse();
+            return new Polygon(shell, holes, Factory);
         }
 
 

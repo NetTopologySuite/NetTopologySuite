@@ -7,7 +7,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
     /// <version>1.0</version>
     public interface ITriangleVisitor
     {
-        /// <summary
+        /// <summary>
         /// Visits the <see cref="QuadEdge"/>s of a triangle.
         /// </summary>
         /// <param name="triEdges">an array of the 3 quad edges in a triangle (in CCW order)</param>

@@ -86,14 +86,14 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        /// Gets the semplified <see cref="IGeometry"/>.
+        /// Gets the simplified <see cref="IGeometry"/>.
         /// </summary>
-        /// <returns>The semplified <see cref="IGeometry"/>.</returns>
+        /// <returns>The simplified <see cref="IGeometry"/>.</returns>
         public IGeometry GetResultGeometry()
         {
             // empty input produces an empty result
             if (_inputGeom.IsEmpty)
-                return (IGeometry)_inputGeom.Clone();
+                return (IGeometry)_inputGeom.Copy();
 
             VWTransformer transformer = new VWTransformer(IsEnsureValidTopology, DistanceTolerance);
             return transformer.Transform(_inputGeom);

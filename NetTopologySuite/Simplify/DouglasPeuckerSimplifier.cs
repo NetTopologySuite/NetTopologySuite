@@ -100,7 +100,7 @@ namespace NetTopologySuite.Simplify
         {
             // empty input produces an empty result
             if (_inputGeom.IsEmpty) 
-                return (IGeometry)_inputGeom.Clone();
+                return (IGeometry)_inputGeom.Copy();
 
             DPTransformer transformer = new DPTransformer(this, EnsureValidTopology);
             return transformer.Transform(_inputGeom);

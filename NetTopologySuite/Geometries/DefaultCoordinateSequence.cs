@@ -211,14 +211,24 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns a deep copy of the object passed.
+        /// Creates a deep copy of this object.
         /// </summary>
         /// <returns>The copied object.</returns>
+        [Obsolete("Use Copy()")]
         public object Clone()
+        {
+            return Copy();
+        }
+
+        /// <summary>
+        /// Creates a deep copy of this <see cref="DefaultCoordinateSequence"/>.
+        /// </summary>
+        /// <returns>The copied coordinate sequence.</returns>
+        public ICoordinateSequence Copy()
         {
             var cloneCoordinates = new Coordinate[_coordinates.Length];
             for (int i = 0; i < _coordinates.Length; i++)
-                cloneCoordinates[i] = (Coordinate) _coordinates[i].Clone();            
+                cloneCoordinates[i] = (Coordinate) _coordinates[i].Copy();            
             return new DefaultCoordinateSequence(cloneCoordinates);
         }
 

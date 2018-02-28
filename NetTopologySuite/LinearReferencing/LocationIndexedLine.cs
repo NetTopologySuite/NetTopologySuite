@@ -206,7 +206,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>A valid index value.</returns>
         public LinearLocation ClampIndex(LinearLocation index)
         {
-            LinearLocation loc = (LinearLocation)index.Clone();
+            LinearLocation loc = (LinearLocation)index.Copy();
             loc.Clamp(_linearGeom);
             return loc;
         }

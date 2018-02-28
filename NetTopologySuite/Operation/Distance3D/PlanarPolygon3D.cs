@@ -28,18 +28,18 @@ namespace NetTopologySuite.Operation.Distance3D
             _facingPlane = _plane.ClosestAxisPlane();
         }
 
-        /**
-         * Finds a best-fit plane for the polygon, 
-         * by sampling a few points from the exterior ring.
-         * <p>
-         * The algorithm used is Newell's algorithm:
-         * - a base point for the plane is determined from the average of all vertices
-         * - the normal vector is determined by
-         *   computing the area of the projections on each of the axis planes
-         * 
-         * @param poly the polygon to determine the plane for
-         * @return the best-fit plane
-         */
+        /// <summary>
+        /// Finds a best-fit plane for the polygon, 
+        /// by sampling a few points from the exterior ring.
+        /// <para/>
+        /// The algorithm used is Newell's algorithm:
+        /// <list type="Bullet">
+        /// <item>a base point for the plane is determined from the average of all vertices</item>
+        /// <item>the normal vector is determined by computing the area of the projections on each of the axis planes</item>
+        /// </list>
+        /// </summary>
+        /// <param name="poly">The polygon to determine the plane for</param>
+        /// <returns>The best-fit plane</returns>
         private static Plane3D FindBestFitPlane(IPolygon poly)
         {
             var seq = poly.ExteriorRing.CoordinateSequence;

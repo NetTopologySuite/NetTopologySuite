@@ -158,8 +158,8 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             cbr.Add(geom[0]);
             cbr.Add(geom[1]);
             IGeometry[] remGeom = new IGeometry[2];
-            remGeom[0] = cbr.RemoveCommonBits((IGeometry)geom[0].Clone());
-            remGeom[1] = cbr.RemoveCommonBits((IGeometry)geom[1].Clone());
+            remGeom[0] = cbr.RemoveCommonBits((IGeometry)geom[0].Copy());
+            remGeom[1] = cbr.RemoveCommonBits((IGeometry)geom[1].Copy());
             return remGeom;
         }
 

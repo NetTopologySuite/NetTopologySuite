@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Diagnostics;
+using System.Text;
 using DotSpatial.Projections;
 using GeoAPI.CoordinateSystems.Transformations;
 using NetTopologySuite.Triangulate;
@@ -402,8 +403,8 @@ namespace NetTopologySuite.Tests.Various
             // SRID 4326
             const string coordSys4326 = "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]]";
 
-            var csSource = ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.Parse(coordSysRGF93_Lambert_93) as GeoAPI.CoordinateSystems.ICoordinateSystem;
-            var csTarget = ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.Parse(coordSys4326) as GeoAPI.CoordinateSystems.ICoordinateSystem;
+            var csSource = ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.Parse(coordSysRGF93_Lambert_93, Encoding.UTF8) as GeoAPI.CoordinateSystems.ICoordinateSystem;
+            var csTarget = ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.Parse(coordSys4326, Encoding.UTF8) as GeoAPI.CoordinateSystems.ICoordinateSystem;
 
             var transform = new ProjNet.CoordinateSystems.Transformations.CoordinateTransformationFactory().CreateFromCoordinateSystems(csSource, csTarget);
 

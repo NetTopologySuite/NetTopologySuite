@@ -40,7 +40,7 @@ namespace NetTopologySuite.Triangulate
     ///   cdt.SplitPointFinder = splitPointFinder;
     ///   cdt.VertexFactory = vertexFactory;
     ///   
-    ///	 cdt.SetConstraints(segments,  new List<Vertex>(vertexMap.Values));
+    ///	 cdt.SetConstraints(segments,  new List&lt;Vertex&gt;(vertexMap.Values));
     ///	 cdt.FormInitialDelaunay();
     ///	 cdt.EnforceConstraints();
     ///	 subdiv = cdt.Subdivision;

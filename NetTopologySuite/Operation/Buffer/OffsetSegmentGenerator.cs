@@ -206,20 +206,20 @@ namespace NetTopologySuite.Operation.Buffer
 
         private void AddCollinear(bool addStartPoint)
         {
-            /**
+            /*
              * This test could probably be done more efficiently,
              * but the situation of exact collinearity should be fairly rare.
              */
             _li.ComputeIntersection(_s0, _s1, _s1, _s2);
             int numInt = _li.IntersectionNum;
-            /**
+            /*
              * if numInt is < 2, the lines are parallel and in the same direction. In
              * this case the point can be ignored, since the offset lines will also be
              * parallel.
              */
             if (numInt >= 2)
             {
-                /**
+                /*
                  * segments are collinear but reversing.
                  * Add an "end-cap" fillet
                  * all the way around to other direction This case should ONLY happen

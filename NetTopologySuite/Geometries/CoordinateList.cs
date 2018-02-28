@@ -217,7 +217,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Returns the Coordinates in this collection.
         /// </summary>
-        /// <returns>Coordinater as <c>Coordinate[]</c> array.</returns>
+        /// <returns>Coordinates as <c>Coordinate[]</c> array.</returns>
         public Coordinate[] ToCoordinateArray()
         {
             return ToArray();
@@ -230,8 +230,8 @@ namespace NetTopologySuite.Geometries
         public object Clone()
         {
             CoordinateList copy = new CoordinateList();
-            foreach (Coordinate c in this)
-                copy.Add((Coordinate)c.Clone());
+            foreach (var c in this)
+                copy.Add(c.Copy());
             return copy;
         }
     }

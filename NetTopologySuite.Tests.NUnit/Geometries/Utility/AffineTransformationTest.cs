@@ -225,7 +225,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             AffineTransformation trans = AffineTransformation
                 .RotationInstance(Math.PI / 2);
             AffineTransformation inv = trans.GetInverse();
-            Geometry transGeom = (Geometry)geom.Clone();
+            Geometry transGeom = (Geometry)geom.Copy();
             transGeom.Apply(trans);
             // System.out.println(transGeom);
             transGeom.Apply(inv);

@@ -507,7 +507,13 @@ namespace NetTopologySuite.LinearReferencing
         /// Copies this location.
         /// </summary>
         /// <returns>A copy of this location.</returns>
+        [Obsolete("Use Copy()")]
         public object Clone()
+        {
+            return Copy();
+        }
+
+        public LinearLocation Copy()
         {
             return new LinearLocation(_segmentIndex, _segmentFraction);
         }

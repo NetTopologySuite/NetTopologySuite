@@ -1851,8 +1851,8 @@ namespace Open.Topology.TestRunner
         {
             if (a != null && b != null && a.GetType().Name == b.GetType().Name)
             {
-                Geometry aClone = (Geometry)a.Clone();
-                Geometry bClone = (Geometry)b.Clone();
+                Geometry aClone = (Geometry)a.Copy();
+                Geometry bClone = (Geometry)b.Copy();
 
                 aClone.Normalize();
                 bClone.Normalize();
