@@ -95,7 +95,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
 
                 if (unionAll == null)
                 {
-                    unionAll = (IGeometry) geom.Clone();
+                    unionAll = (IGeometry) geom.Copy();
                 }
                 else
                 {

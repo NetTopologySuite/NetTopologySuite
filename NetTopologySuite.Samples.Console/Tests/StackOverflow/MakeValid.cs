@@ -156,7 +156,7 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
                     return polygons.First(); // single polygon - no need to wrap
                 default:
                     //polygons may still overlap! Need to sym difference them
-                    IGeometry ret = (IPolygon)polygons.First().Clone();
+                    IGeometry ret = (IPolygon)polygons.First().Copy();
                     foreach (var polygon in polygons.Skip(1))
                         ret = ret.SymmetricDifference(polygon);
                     return ret;

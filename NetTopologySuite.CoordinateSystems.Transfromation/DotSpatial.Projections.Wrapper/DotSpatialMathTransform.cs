@@ -162,7 +162,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projectio
 
             Reproject.ReprojectPoints(xy, z, Source, Target, 0, 1);
 
-            var ret = (ICoordinate)coordinate.Clone();
+            var ret = (ICoordinate)coordinate.Copy();
             ret.X = xy[0];
             ret.Y = xy[1];
             ret.Z = z[0];
@@ -179,7 +179,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projectio
 
             Reproject.ReprojectPoints(xy, z, Source, Target, 0, 1);
 
-            var ret = (Coordinate)coordinate.Clone();
+            var ret = (Coordinate)coordinate.Copy();
             ret.X = xy[0];
             ret.Y = xy[1];
             if (z != null)
@@ -210,7 +210,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projectio
 
             Reproject.ReprojectPoints(xy, z, Source, Target, 0, coordinateSequence.Count);
 
-            var ret = (ICoordinateSequence) coordinateSequence.Clone();
+            var ret = (ICoordinateSequence) coordinateSequence.Copy();
             j = 0;
             for (var i = 0; i < coordinateSequence.Count; i++)
             {

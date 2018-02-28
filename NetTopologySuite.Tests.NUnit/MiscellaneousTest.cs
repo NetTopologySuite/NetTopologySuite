@@ -21,7 +21,7 @@ namespace NetTopologySuite.Tests.NUnit
             var a = reader.Read("LINESTRING(0 0, 10 10)");
             //Envelope is lazily initialized [Jon Aquino]
             var aenv = a.EnvelopeInternal;
-            var b = (IGeometry) a.Clone();
+            var b = (IGeometry) a.Copy();
             Assert.IsTrue(!ReferenceEquals(a.EnvelopeInternal, b.EnvelopeInternal));
         }
 

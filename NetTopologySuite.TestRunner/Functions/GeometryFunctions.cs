@@ -43,7 +43,7 @@ namespace Open.Topology.TestRunner.Functions
         public static IGeometry Reverse(IGeometry g) { return g.Reverse(); }
         public static IGeometry Normalize(IGeometry g)
         {
-            IGeometry gNorm = (IGeometry)g.Clone();
+            IGeometry gNorm = (IGeometry)g.Copy();
             gNorm.Normalize();
             return gNorm;
         }

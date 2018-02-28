@@ -79,8 +79,8 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(line.Disjoint(pointOutLine));
                 Write(line.Distance(pointInLine));
                 Write(line.Distance(pointOutLine));
-                Write(line.Equals(line.Clone() as LineString));
-                Write(line.EqualsExact(line.Clone() as LineString));
+                Write(line.Equals(line.Copy()));
+                Write(line.EqualsExact(line.Copy()));
                 Write(line.ConvexHull());  
                 Write(line.Intersection(pointInLine));
                 Write(line.Intersection(pointOutLine));                

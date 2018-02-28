@@ -43,7 +43,7 @@ namespace NetTopologySuite.Tests.NUnit
   
         public static IGeometry Normalize(IGeometry g)
         {
-            Geometry g2 = (Geometry) g.Clone();
+            Geometry g2 = (Geometry) g.Copy();
             g2.Normalize();
             return g2;
         }

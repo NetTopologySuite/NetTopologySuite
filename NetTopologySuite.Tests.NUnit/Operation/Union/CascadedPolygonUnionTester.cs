@@ -64,7 +64,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
             {
                 if (unionAll == null)
                 {
-                    unionAll = (Geometry)geom.Clone();
+                    unionAll = (Geometry)geom.Copy();
                 }
                 else
                 {

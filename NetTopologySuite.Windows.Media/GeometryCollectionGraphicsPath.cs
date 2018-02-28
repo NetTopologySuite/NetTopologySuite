@@ -135,7 +135,7 @@ namespace NetTopologySuite.Windows.Media
 
     //    public WpfGeometry GetPathIterator(WpfTransform at)
     //    {
-    //        var p = (GraphicsPath) Path.Clone();
+    //        var p = (GraphicsPath) Path.Copy();
     //        p.Flatten(at);
     //        return new GraphicsPathIterator(p);
     //    }

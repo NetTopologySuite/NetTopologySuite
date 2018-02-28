@@ -252,7 +252,7 @@ namespace NetTopologySuite.Tests.NUnit.CoordinateSystems.Transformations
             /// <returns>The transformed coordinate sequence.</returns>
             public ICoordinateSequence Transform(ICoordinateSequence coordinateSequence)
             {
-                var c = (ICoordinateSequence)coordinateSequence.Clone();
+                var c = (ICoordinateSequence)coordinateSequence.Copy();
                 for (var i = 0; i < c.Count; i++)
                     _affineTransformation.Transform(c, i);
                 return c;

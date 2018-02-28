@@ -12,7 +12,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         {
             ICoordinateSequence s1 = CoordinateArraySequenceFactory.Instance.Create(
                 new[] { new Coordinate(1, 2), new Coordinate(3, 4) });
-            ICoordinateSequence s2 = (ICoordinateSequence)s1.Clone();
+            ICoordinateSequence s2 = (ICoordinateSequence)s1.Copy();
             Assert.IsTrue(s1.GetCoordinate(0).Equals(s2.GetCoordinate(0)));
             Assert.IsTrue(s1.GetCoordinate(0) != s2.GetCoordinate(0));
         }
@@ -26,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             s1.SetOrdinate(1, Ordinate.X, 3);
             s1.SetOrdinate(1, Ordinate.Y, 4);
 
-            ICoordinateSequence s2 = (ICoordinateSequence)s1.Clone();
+            ICoordinateSequence s2 = (ICoordinateSequence)s1.Copy();
             Assert.IsTrue(s1.Dimension == s2.Dimension);
             Assert.IsTrue(s1.GetCoordinate(0).Equals(s2.GetCoordinate(0)));
             Assert.IsTrue(s1.GetCoordinate(0) != s2.GetCoordinate(0));
@@ -43,7 +43,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             s1.SetOrdinate(1, Ordinate.Y, 4);
             s1.SetOrdinate(1, Ordinate.Z, 20);
 
-            ICoordinateSequence s2 = (ICoordinateSequence)s1.Clone();
+            ICoordinateSequence s2 = (ICoordinateSequence)s1.Copy();
             Assert.IsTrue(s1.Dimension == s2.Dimension);
             Assert.IsTrue(s1.GetCoordinate(0).Equals(s2.GetCoordinate(0)));
             Assert.IsTrue(s1.GetCoordinate(0) != s2.GetCoordinate(0));
@@ -62,7 +62,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             s1.SetOrdinate(1, Ordinate.Z, 20);
             s1.SetOrdinate(1, Ordinate.M, 200);
 
-            ICoordinateSequence s2 = (ICoordinateSequence)s1.Clone();
+            ICoordinateSequence s2 = (ICoordinateSequence)s1.Copy();
             Assert.IsTrue(s1.Dimension == s2.Dimension);
             Assert.IsTrue(s1.GetCoordinate(0).Equals(s2.GetCoordinate(0)));
             Assert.IsTrue(s1.GetCoordinate(0) != s2.GetCoordinate(0));

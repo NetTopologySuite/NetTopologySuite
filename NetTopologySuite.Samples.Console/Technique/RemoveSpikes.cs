@@ -160,7 +160,7 @@ namespace NetTopologySuite.Samples.Technique
             public static IGeometry RemoveSpikes(IGeometry geom, double spikeThreshold)
             {
                 var filter = new SpikeFixFilter(spikeThreshold);
-                var res = (IGeometry) geom.Clone();
+                var res = (IGeometry) geom.Copy();
                 res.Apply(filter);
                 return res;
             }

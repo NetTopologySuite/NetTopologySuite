@@ -153,7 +153,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         public void TestClone()
         {
             Coordinate c = new Coordinate(100.0, 200.0, 50.0);
-            Coordinate clone = (Coordinate)c.Clone();
+            Coordinate clone = (Coordinate)c.Copy();
             Assert.IsTrue(c.Equals3D(clone));
         }
 

@@ -209,7 +209,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var geom = pcsReader.Read("LINESTRING (100 100, 0 0)");
             geom.Normalize();
             // force PackedCoordinateSequence to be copied with empty coordinate cache
-            var clone = (IGeometry) geom.Clone();
+            var clone = (IGeometry) geom.Copy();
             AssertAreEqualExact(geom, clone);
         }
 

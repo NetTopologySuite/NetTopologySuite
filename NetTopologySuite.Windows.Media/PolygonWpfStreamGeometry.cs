@@ -116,7 +116,7 @@ namespace NetTopologySuite.Windows.Media
 
         //public GraphicsPathIterator GetPathIterator(Matrix at, double flatness)
         //{
-        //    var p = (GraphicsPath) Path.Clone();
+        //    var p = (GraphicsPath) Path.Copy();
         //    p.Flatten(at, (float)flatness);
         //    return new GraphicsPathIterator(p);
         //}

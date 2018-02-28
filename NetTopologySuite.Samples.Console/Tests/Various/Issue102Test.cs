@@ -68,7 +68,7 @@ namespace NetTopologySuite.Tests.Various
             try
             {
                 Console.WriteLine("Job {0} started", index);
-                IGeometry geometry = TopologyPreservingSimplifier.Simplify((ILineString)line.Clone(), tolerance);
+                IGeometry geometry = TopologyPreservingSimplifier.Simplify((ILineString)line.Copy(), tolerance);
                 Assert.IsTrue(geometry.Equals(supposedResult));
                 Console.WriteLine("Job {0} terminated", index);
             }

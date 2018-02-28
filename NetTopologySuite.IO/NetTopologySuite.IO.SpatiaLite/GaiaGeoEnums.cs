@@ -51,7 +51,7 @@ internal static class GaiaGeoEmptyHelper
 
     internal static byte[] EmptyGeometryCollectionWithSrid(int srid)
     {
-        var ret = (byte[])GeometryCollectionEmpty.Clone();
+        var ret = (byte[])GeometryCollectionEmpty.Copy();
         var sridbytes = BitConverter.GetBytes(srid);
         Buffer.BlockCopy(sridbytes, 0, ret, 2, 4);
         return ret;
