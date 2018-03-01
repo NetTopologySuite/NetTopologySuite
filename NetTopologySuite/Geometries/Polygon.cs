@@ -39,7 +39,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Represents an empty <c>Polygon</c>.
         /// </summary>
-        public static readonly IPolygon Empty = new GeometryFactory().CreatePolygon;
+        public static readonly IPolygon Empty = new GeometryFactory().CreatePolygon();
 
         /// <summary>
         /// The exterior boundary, or <c>null</c> if this <c>Polygon</c>
@@ -89,7 +89,7 @@ namespace NetTopologySuite.Geometries
         public Polygon(ILinearRing shell, ILinearRing[] holes, IGeometryFactory factory) : base(factory)
         {        
             if (shell == null) 
-                shell = Factory.CreateLinearRing((ICoordinateSequence) null);            
+                shell = Factory.CreateLinearRing();            
             if (holes == null) 
                 holes = new ILinearRing[] { };
             if (HasNullElements(CollectionUtil.Cast<ILinearRing, object>(holes)))
