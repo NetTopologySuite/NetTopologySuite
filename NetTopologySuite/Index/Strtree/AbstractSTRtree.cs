@@ -260,7 +260,7 @@ namespace NetTopologySuite.Index.Strtree
             //}
 
             if (IntersectsOp.Intersects(_root.Bounds, searchBounds))
-                Query(searchBounds, _root, matches);
+                QueryInternal(searchBounds, _root, matches);
             return matches;
         }
 
@@ -279,10 +279,10 @@ namespace NetTopologySuite.Index.Strtree
             //}
 
             if (IntersectsOp.Intersects(_root.Bounds, searchBounds))
-                Query(searchBounds, _root, visitor);
+                QueryInternal(searchBounds, _root, visitor);
         }
 
-        private void Query(T searchBounds, AbstractNode<T, TItem> node, IList<TItem> matches)
+        private void QueryInternal(T searchBounds, AbstractNode<T, TItem> node, IList<TItem> matches)
         {
             foreach (var childBoundable in node.ChildBoundables)
             {
@@ -290,21 +290,21 @@ namespace NetTopologySuite.Index.Strtree
                     continue;
 
                 if (childBoundable is AbstractNode<T, TItem>)
-                    Query(searchBounds, (AbstractNode<T, TItem>)childBoundable, matches);
+                    QueryInternal(searchBounds, (AbstractNode<T, TItem>)childBoundable, matches);
                 else if (childBoundable is ItemBoundable<T, TItem>)
                     matches.Add(((ItemBoundable<T, TItem>)childBoundable).Item);
                 else Assert.ShouldNeverReachHere();
             }
         }
 
-        private void Query(T searchBounds, AbstractNode<T, TItem> node, IItemVisitor<TItem> visitor)
+        private void QueryInternal(T searchBounds, AbstractNode<T, TItem> node, IItemVisitor<TItem> visitor)
         {
             foreach (var childBoundable in node.ChildBoundables)
             {
                 if (!IntersectsOp.Intersects(childBoundable.Bounds, searchBounds))
                     continue;
                 if (childBoundable is AbstractNode<T, TItem>)
-                    Query(searchBounds, (AbstractNode<T, TItem>)childBoundable, visitor);
+                    QueryInternal(searchBounds, (AbstractNode<T, TItem>)childBoundable, visitor);
                 else if (childBoundable is ItemBoundable<T, TItem>)
                     visitor.VisitItem(((ItemBoundable<T, TItem>)childBoundable).Item);
                 else Assert.ShouldNeverReachHere();
