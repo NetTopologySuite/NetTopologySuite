@@ -39,7 +39,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Represents an empty <c>Polygon</c>.
         /// </summary>
-        public static readonly IPolygon Empty = new GeometryFactory().CreatePolygon(null, null);
+        public static readonly IPolygon Empty = new GeometryFactory().CreatePolygon;
 
         /// <summary>
         /// The exterior boundary, or <c>null</c> if this <c>Polygon</c>
@@ -384,7 +384,8 @@ namespace NetTopologySuite.Geometries
             get
             {
                 if (IsEmpty)
-                    return Factory.CreateMultiLineString(null);
+                    return Factory.CreateMultiLineString();
+
                 var rings = new ILinearRing[_holes.Length + 1];
                 rings[0] = _shell;
                 for (var i = 0; i < _holes.Length; i++)

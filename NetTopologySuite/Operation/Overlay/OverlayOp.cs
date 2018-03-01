@@ -612,16 +612,16 @@ namespace NetTopologySuite.Operation.Overlay
             switch (ResultDimension(overlayOpCode, a, b))
             {
                 case Dimension.False:
-                    result = geomFact.CreateGeometryCollection(new IGeometry[0]);
+                    result = geomFact.CreateGeometryCollection();
                     break;
                 case Dimension.Point:
-                    result = geomFact.CreatePoint((Coordinate)null);
+                    result = geomFact.CreatePoint();
                     break;
                 case Dimension.Curve:
-                    result = geomFact.CreateLineString((Coordinate[])null);
+                    result = geomFact.CreateLineString();
                     break;
                 case Dimension.Surface:
-                    result = geomFact.CreatePolygon(null, null);
+                    result = geomFact.CreatePolygon();
                     break;
             }
             return result;

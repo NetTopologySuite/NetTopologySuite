@@ -251,7 +251,7 @@ namespace NetTopologySuite.Geometries
         /// <remarks>
         /// <para>
         /// The Geometry returned is guaranteed to be valid. 
-        /// To provide this behaviour, the following cases occur:
+        /// To provide this behavior, the following cases occur:
         /// </para>
         /// <para>
         /// If the <c>Envelope</c> is:
@@ -301,6 +301,17 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Creates an empty Point
+        /// </summary>
+        /// <returns>
+        /// An empty Point
+        /// </returns>
+        public IPoint CreatePoint()
+        {
+            return CreatePoint(CoordinateSequenceFactory.Create(0, CoordinateSequenceFactory.Ordinates));
+        }
+
+        /// <summary>
         /// Creates a Point using the given Coordinate.
         /// A <c>null</c> coordinate creates an empty Geometry.
         /// </summary>
@@ -320,6 +331,13 @@ namespace NetTopologySuite.Geometries
         public IPoint CreatePoint(ICoordinateSequence coordinates)
         {
             return new Point(coordinates, this);
+        }
+
+        /// <summary>Creates an empty LineString</summary>
+        /// <returns>An empty LineString</returns>
+        public ILineString CreateLineString()
+        {
+            return CreateLineString(CoordinateSequenceFactory.Create(0, CoordinateSequenceFactory.Ordinates));
         }
 
         /// <summary> 
@@ -344,6 +362,12 @@ namespace NetTopologySuite.Geometries
             return new LineString(coordinates, this);
         }
 
+        /// <summary>Creates an empty LinearRing</summary>
+        /// <returns>An empty LinearRing</returns>
+        public ILinearRing CreateLinearRing()
+        {
+            return CreateLinearRing(CoordinateSequenceFactory.Create(0, CoordinateSequenceFactory.Ordinates));
+        }
         /// <summary>
         /// Creates a <c>LinearRing</c> using the given <c>Coordinates</c>; a null or empty array 
         /// creates an empty LinearRing. The points must form a closed and simple
@@ -368,6 +392,13 @@ namespace NetTopologySuite.Geometries
         public ILinearRing CreateLinearRing(ICoordinateSequence coordinates)
         {
             return new LinearRing(coordinates, this);
+        }
+
+        /// <summary>Creates an empty Polygon</summary>
+        /// <returns>An empty Polygon</returns>
+        public IPolygon CreatePolygon()
+        {
+            return CreatePolygon(CoordinateSequenceFactory.Create(0, CoordinateSequenceFactory.Ordinates));
         }
 
         /// <summary> 
@@ -429,6 +460,13 @@ namespace NetTopologySuite.Geometries
             return CreatePolygon(shell, null);
         }
 
+        /// <summary>Creates an empty MultiPoint</summary>
+        /// <returns>An empty MultiPoint</returns>
+        public IMultiPoint CreateMultiPoint()
+        {
+            return new MultiPoint(null, this);
+        }
+
         /// <summary> 
         /// Creates a <see cref="IMultiPoint"/> using the given Points.
         /// A null or empty array will  create an empty MultiPoint.
@@ -472,6 +510,13 @@ namespace NetTopologySuite.Geometries
             return CreateMultiPoint(points.ToArray());
         }
 
+        /// <summary>Creates an empty MultiLineString</summary>
+        /// <returns>An empty MultiLineString</returns>
+        public IMultiLineString CreateMultiLineString()
+        {
+            return new MultiLineString(null, this);
+        }
+
         /// <summary>
         /// Creates a <c>MultiLineString</c> using the given <c>LineStrings</c>; a null or empty
         /// array will create an empty MultiLineString.
@@ -481,6 +526,13 @@ namespace NetTopologySuite.Geometries
         public IMultiLineString CreateMultiLineString(ILineString[] lineStrings)
         {
             return new MultiLineString(lineStrings, this);
+        }
+
+        /// <summary>Creates an empty MultiPolygon</summary>
+        /// <returns>An empty MultiPolygon</returns>
+        public IMultiPolygon CreateMultiPolygon()
+        {
+            return new MultiPolygon(null, this);
         }
 
         /// <summary>
@@ -494,6 +546,13 @@ namespace NetTopologySuite.Geometries
         public IMultiPolygon CreateMultiPolygon(IPolygon[] polygons)
         {
             return new MultiPolygon(polygons, this);
+        }
+
+        /// <summary>Creates an empty GeometryCollection</summary>
+        /// <returns>An empty GeometryCollection</returns>
+        public IGeometryCollection CreateGeometryCollection()
+        {
+            return new GeometryCollection(null, this);
         }
 
         /// <summary>

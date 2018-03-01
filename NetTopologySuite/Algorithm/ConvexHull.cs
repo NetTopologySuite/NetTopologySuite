@@ -63,7 +63,7 @@ namespace NetTopologySuite.Algorithm
         public IGeometry GetConvexHull()
         {
             if (_inputPts.Length == 0)
-                return _geomFactory.CreateGeometryCollection(null);
+                return _geomFactory.CreateGeometryCollection();
 
             if (_inputPts.Length == 1)
                 return _geomFactory.CreatePoint(_inputPts[0]);
@@ -332,7 +332,7 @@ namespace NetTopologySuite.Algorithm
             if (coordinates.Length == 3)
                 return _geomFactory.CreateLineString(new[] { coordinates[0], coordinates[1] });
             var linearRing = _geomFactory.CreateLinearRing(coordinates);
-            return _geomFactory.CreatePolygon(linearRing, null);
+            return _geomFactory.CreatePolygon(linearRing);
         }
 
         /// <summary>

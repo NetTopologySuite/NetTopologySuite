@@ -150,7 +150,7 @@ namespace NetTopologySuite.Precision
             Compute();
             // return empty line string if no min pts where found
             if (_minClearancePts == null || _minClearancePts[0] == null)
-                return _inputGeom.Factory.CreateLineString((Coordinate[])null);
+                return _inputGeom.Factory.CreateLineString();
             return _inputGeom.Factory.CreateLineString(_minClearancePts);
         }
 

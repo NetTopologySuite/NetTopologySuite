@@ -138,7 +138,7 @@ namespace NetTopologySuite.Algorithm
                 if (_minWidthPt == null)
                 {
                     //Coordinate[] nullCoords = null;
-                    return _inputGeom.Factory.CreateLineString((Coordinate[])null);
+                    return _inputGeom.Factory.CreateLineString();
                 }
 
                 Coordinate basePt = _minBaseSeg.Project(_minWidthPt);
@@ -334,7 +334,7 @@ namespace NetTopologySuite.Algorithm
 
             ILinearRing shell = _inputGeom.Factory.CreateLinearRing(
                 new[] { p0, p1, p2, p3, p0 });
-            return _inputGeom.Factory.CreatePolygon(shell, null);
+            return _inputGeom.Factory.CreatePolygon(shell);
 
         }
 

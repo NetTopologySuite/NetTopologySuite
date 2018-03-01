@@ -497,9 +497,7 @@ namespace NetTopologySuite.Geometries
             get
             {
                 if (IsEmpty)
-                {
-                    return Factory.CreatePoint((Coordinate)null);
-                }
+                    return Factory.CreatePoint();
 
                 var centPt = Algorithm.Centroid.GetCentroid(this);
                 return CreatePointFromInternalCoord(centPt, this);
@@ -522,7 +520,7 @@ namespace NetTopologySuite.Geometries
             get
             {
                 if (IsEmpty)
-                    return Factory.CreatePoint((Coordinate)null);
+                    return Factory.CreatePoint();
 
                 Coordinate interiorPt = null;
                 Dimension dim = Dimension;

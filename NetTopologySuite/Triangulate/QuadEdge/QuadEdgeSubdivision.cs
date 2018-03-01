@@ -860,7 +860,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             foreach (var triPt in triPtsList)
             {
                 tris[i++] = geomFact
-                            .CreatePolygon(geomFact.CreateLinearRing(triPt), null);
+                            .CreatePolygon(geomFact.CreateLinearRing(triPt));
             }
             return geomFact.CreateGeometryCollection(tris);
         }
@@ -951,7 +951,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             }
 
             Coordinate[] pts = coordList.ToCoordinateArray();
-            IPolygon cellPoly = geomFact.CreatePolygon(geomFact.CreateLinearRing(pts), null);
+            IPolygon cellPoly = geomFact.CreatePolygon(geomFact.CreateLinearRing(pts));
 
             Vertex v = startQE.Orig;
             cellPoly.UserData = v.Coordinate;

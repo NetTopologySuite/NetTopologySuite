@@ -277,7 +277,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <returns>The empty result geometry</returns>
         private IGeometry CreateEmptyResultGeometry()
         {
-            IGeometry emptyGeom = _geomFact.CreatePolygon(null, null);
+            IGeometry emptyGeom = _geomFact.CreatePolygon();
             return emptyGeom;
         }
     }

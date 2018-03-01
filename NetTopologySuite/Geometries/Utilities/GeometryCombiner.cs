@@ -119,7 +119,7 @@ namespace NetTopologySuite.Geometries.Utilities
                 ExtractElements(geom, elems);
 
             if (elems.Count == 0)
-                return _geomFactory != null ? _geomFactory.CreateGeometryCollection(null) : null;
+                return _geomFactory != null ? _geomFactory.CreateGeometryCollection() : null;
             return _geomFactory.BuildGeometry(elems);
         }
 

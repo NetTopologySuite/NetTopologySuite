@@ -221,7 +221,7 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                return Factory.CreateGeometryCollection(null);
+                return Factory.CreateGeometryCollection();
             }
         }
 

@@ -174,7 +174,7 @@ namespace NetTopologySuite.Utilities
             pts[ipt] = new Coordinate(pts[0]);
 
             var ring = GeomFact.CreateLinearRing(pts);
-            var poly = GeomFact.CreatePolygon(ring, null);
+            var poly = GeomFact.CreatePolygon(ring);
             return (IPolygon) Rotate(poly);
         }
 
@@ -204,7 +204,7 @@ namespace NetTopologySuite.Utilities
             pts[iPt] = pts[0];
 
             var ring = GeomFact.CreateLinearRing(pts);
-            var poly = GeomFact.CreatePolygon(ring, null);
+            var poly = GeomFact.CreatePolygon(ring);
             return (IPolygon) Rotate(poly);
         }
 
@@ -235,7 +235,7 @@ namespace NetTopologySuite.Utilities
             pts[iPt] = new Coordinate(pts[0]);
 
             var ring = GeomFact.CreateLinearRing(pts);
-            var poly = GeomFact.CreatePolygon(ring, null);
+            var poly = GeomFact.CreatePolygon(ring);
             return (IPolygon) Rotate(poly);
         }
 
@@ -295,7 +295,7 @@ namespace NetTopologySuite.Utilities
             pts[pts.Length - 1] = new Coordinate(pts[0]);
 
             var ring = GeomFact.CreateLinearRing(pts);
-            var poly = GeomFact.CreatePolygon(ring, null);
+            var poly = GeomFact.CreatePolygon(ring);
             return (IPolygon) Rotate(poly);
         }
 
@@ -375,7 +375,7 @@ namespace NetTopologySuite.Utilities
             }
             pts[iPt] = CreateCoord(centreX, centreY);
             var ring = GeomFact.CreateLinearRing(pts);
-            var geom = GeomFact.CreatePolygon(ring, null);
+            var geom = GeomFact.CreatePolygon(ring);
             return (IPolygon) Rotate(geom);
         }
 

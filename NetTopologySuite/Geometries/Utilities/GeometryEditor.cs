@@ -140,7 +140,7 @@ namespace NetTopologySuite.Geometries.Utilities
             var newPolygon = (IPolygon)operation.Edit(polygon, _factory);
             // create one if needed
             if (newPolygon == null)
-                newPolygon = _factory.CreatePolygon((ICoordinateSequence)null);
+                newPolygon = _factory.CreatePolygon();
             if (newPolygon.IsEmpty)
                 //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
                 return newPolygon;
@@ -148,7 +148,7 @@ namespace NetTopologySuite.Geometries.Utilities
             var shell = (ILinearRing)Edit(newPolygon.ExteriorRing, operation);
             if (shell == null || shell.IsEmpty)
                 //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
-                return _factory.CreatePolygon(null, null);
+                return _factory.CreatePolygon();
 
             var holes = new List<ILinearRing>();
             for (var i = 0; i < newPolygon.NumInteriorRings; i++)

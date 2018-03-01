@@ -131,7 +131,7 @@ namespace NetTopologySuite.Geometries
             get
             {
                 if (IsEmpty)    
-                    return Factory.CreateMultiLineString(null);
+                    return Factory.CreateMultiLineString();
 
                 var allRings = new List<ILineString>();
                 for (var i = 0; i < Geometries.Length; i++)

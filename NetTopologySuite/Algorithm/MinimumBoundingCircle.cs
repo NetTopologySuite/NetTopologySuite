@@ -23,7 +23,7 @@ namespace NetTopologySuite.Algorithm
     /// and their relative positions, this
     /// will be specified by anywhere from 0 to 3 points. 
     /// <list type="Bullet">
-    /// <item>0 or 1 points indicate an empty or trivial input point arrangment.</item>
+    /// <item>0 or 1 points indicate an empty or trivial input point arrangement.</item>
     /// <item>2 or 3 points define a circle which contains 
     /// all the input points.</item>
     /// </list>
@@ -71,12 +71,12 @@ namespace NetTopologySuite.Algorithm
         /// <returns>A Geometry representing the Minimum Bounding Circle.</returns>
         public IGeometry GetCircle()
         {
-            //TODO: ensure the output circle contains the extermal points.
+            //TODO: ensure the output circle contains the external points.
             //TODO: or maybe even ensure that the returned geometry contains ALL the input points?
 
             Compute();
             if (_centre == null)
-                return _input.Factory.CreatePolygon(null, null);
+                return _input.Factory.CreatePolygon();
             IPoint centrePoint = _input.Factory.CreatePoint(_centre);
             if (_radius == 0.0)
                 return centrePoint;
@@ -98,7 +98,7 @@ namespace NetTopologySuite.Algorithm
             switch (_extremalPts.Length)
             {
                 case 0:
-                    return _input.Factory.CreateLineString((ICoordinateSequence)null);
+                    return _input.Factory.CreateLineString();
                 case 1:
                     return _input.Factory.CreatePoint(_centre);
             }
@@ -122,7 +122,7 @@ namespace NetTopologySuite.Algorithm
             switch (_extremalPts.Length)
             {
                 case 0:
-                    return _input.Factory.CreateLineString((ICoordinateSequence)null);
+                    return _input.Factory.CreateLineString();
                 case 1:
                     return _input.Factory.CreatePoint(_centre);
             }

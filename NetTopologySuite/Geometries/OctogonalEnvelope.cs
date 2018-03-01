@@ -374,7 +374,7 @@ namespace NetTopologySuite.Geometries
 
             if (IsNull)
             {
-                return geomFactory.CreatePoint((ICoordinateSequence)null);
+                return geomFactory.CreatePoint();
             }
 
             var px00 = new Coordinate(_minX, _minA - _minX);
@@ -422,7 +422,7 @@ namespace NetTopologySuite.Geometries
             // must be a polygon, so add closing point
             coordList.Add(px00, false);
             pts = coordList.ToCoordinateArray();
-            return geomFactory.CreatePolygon(geomFactory.CreateLinearRing(pts), null);
+            return geomFactory.CreatePolygon(geomFactory.CreateLinearRing(pts));
         }
 
         private class BoundingOctagonComponentFilter : IGeometryComponentFilter

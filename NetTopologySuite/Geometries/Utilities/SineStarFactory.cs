@@ -89,7 +89,7 @@ namespace NetTopologySuite.Geometries.Utilities
             pts[iPt] = new Coordinate(pts[0]);
 
             ILinearRing ring = GeomFact.CreateLinearRing(pts);
-            IPolygon poly = GeomFact.CreatePolygon(ring, null);
+            IPolygon poly = GeomFact.CreatePolygon(ring);
             return poly;
         }
     }

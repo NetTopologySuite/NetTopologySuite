@@ -224,7 +224,7 @@ namespace NetTopologySuite.Geometries.Utilities
             // create one if needed
             if (newPolygon == null)
             {
-                newPolygon = _targetFactory.CreatePolygon((ICoordinateSequence)null);
+                newPolygon = _targetFactory.CreatePolygon();
                 return newPolygon;
             }
             /**
@@ -238,7 +238,7 @@ namespace NetTopologySuite.Geometries.Utilities
             var shell = (ILinearRing)Edit(newPolygon.ExteriorRing);
             if (shell == null || shell.IsEmpty)
             {
-                return _targetFactory.CreatePolygon(null, null);
+                return _targetFactory.CreatePolygon();
             }
 
             IList<ILinearRing> holes = new List<ILinearRing>(newPolygon.NumInteriorRings);

@@ -483,7 +483,7 @@ namespace NetTopologySuite.IO
         {
             var nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
-                return factory.CreatePoint((Coordinate) null);
+                return factory.CreatePoint();
             var hasZ = false;
             var coord = GetPreciseCoordinate(tokens, false, ref hasZ);
             var point = factory.CreatePoint(ToSequence(hasZ, coord));
@@ -599,9 +599,8 @@ namespace NetTopologySuite.IO
         private IPolygon ReadPolygonText(IEnumerator<Token> tokens, IGeometryFactory factory) 
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
-            if (nextToken.Equals("EMPTY")) 
-                return factory.CreatePolygon(
-                    factory.CreateLinearRing(new Coordinate[] { } ), new ILinearRing[] { } );
+            if (nextToken.Equals("EMPTY"))
+                return factory.CreatePolygon();
 
             var holes = new List<ILinearRing>();
             var shell = ReadLinearRingText(tokens, factory);
@@ -630,7 +629,7 @@ namespace NetTopologySuite.IO
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
-                return factory.CreateMultiLineString( new ILineString[] { } );
+                return factory.CreateMultiLineString();
 
             var lineStrings = new List<ILineString>();
             var lineString = ReadLineStringText(tokens, factory);
@@ -660,7 +659,7 @@ namespace NetTopologySuite.IO
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
-                return factory.CreateMultiPolygon(new IPolygon[]{});
+                return factory.CreateMultiPolygon();
 
             var polygons = new List<IPolygon>();
             var polygon = ReadPolygonText(tokens, factory);
@@ -691,7 +690,7 @@ namespace NetTopologySuite.IO
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
-                return factory.CreateGeometryCollection(new IGeometry[] { } );
+                return factory.CreateGeometryCollection();
 
             var geometries = new List<IGeometry>();
             var geometry = ReadGeometryTaggedText(tokens);

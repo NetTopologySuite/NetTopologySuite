@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NetTopologySuite.Index.Bintree
 {
-    public class BinTree : Bintree<object>
+    public class Bintree : Bintree<object>
     {}
 
     /// <summary>
