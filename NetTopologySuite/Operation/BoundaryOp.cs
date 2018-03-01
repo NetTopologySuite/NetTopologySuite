@@ -54,7 +54,7 @@ namespace NetTopologySuite.Operation
 
         private IMultiPoint GetEmptyMultiPoint()
         {
-            return _geomFact.CreateMultiPoint((ICoordinateSequence)null);
+            return _geomFact.CreateMultiPoint();
         }
 
         private IGeometry BoundaryMultiLineString(IMultiLineString mLine)
