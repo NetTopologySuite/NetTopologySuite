@@ -228,9 +228,9 @@ namespace NetTopologySuite.GeometriesGraph.Index
         {
             if (bdyNodes == null) 
                 return false;
-            if (IsBoundaryPoint(li, bdyNodes[0]))
+            if (IsBoundaryPointInternal(li, bdyNodes[0]))
                 return true;
-            if (IsBoundaryPoint(li, bdyNodes[1])) 
+            if (IsBoundaryPointInternal(li, bdyNodes[1])) 
                 return true;
             return false;
         }
@@ -241,7 +241,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="li"></param>
         /// <param name="bdyNodes"></param>
         /// <returns></returns>
-        private static bool IsBoundaryPoint(LineIntersector li, IEnumerable<Node> bdyNodes)
+        private static bool IsBoundaryPointInternal(LineIntersector li, IEnumerable<Node> bdyNodes)
         {
             foreach (Node node in bdyNodes)
             {

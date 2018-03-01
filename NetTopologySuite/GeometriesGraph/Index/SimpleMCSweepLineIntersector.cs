@@ -27,8 +27,9 @@ namespace NetTopologySuite.GeometriesGraph.Index
         public override void ComputeIntersections(IList<Edge> edges, SegmentIntersector si, bool testAllSegments)
         {
             if (testAllSegments)
-                 Add(edges, null);
-            else Add(edges);
+                AddEdges(edges, null);
+            else
+                AddEdges(edges);
             ComputeIntersections(si);
         }
 
@@ -40,8 +41,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="si"></param>
         public override void ComputeIntersections(IList<Edge> edges0, IList<Edge> edges1, SegmentIntersector si)
         {
-            Add(edges0, edges0);
-            Add(edges1, edges1);
+            AddEdges(edges0, edges0);
+            AddEdges(edges1, edges1);
             ComputeIntersections(si);
         }
 
@@ -49,12 +50,12 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// 
         /// </summary>
         /// <param name="edges"></param>
-        private void Add(IEnumerable<Edge> edges)
+        private void AddEdges(IEnumerable<Edge> edges)
         {
             foreach (Edge edge in edges)
             {
                 // edge is its own group
-                Add(edge, edge);
+                AddEdge(edge, edge);
             }
         }
 
@@ -63,11 +64,11 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         /// <param name="edges"></param>
         /// <param name="edgeSet"></param>
-        private void Add(IEnumerable<Edge> edges, object edgeSet)
+        private void AddEdges(IEnumerable<Edge> edges, object edgeSet)
         {
             foreach (Edge edge in edges)
             {
-                Add(edge, edgeSet);
+                AddEdge(edge, edgeSet);
             }
         }
 
@@ -76,7 +77,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         /// <param name="edge"></param>
         /// <param name="edgeSet"></param>
-        private void Add(Edge edge, object edgeSet)
+        private void AddEdge(Edge edge, object edgeSet)
         {
             MonotoneChainEdge mce = edge.MonotoneChainEdge;
             int[] startIndex = mce.StartIndexes;
