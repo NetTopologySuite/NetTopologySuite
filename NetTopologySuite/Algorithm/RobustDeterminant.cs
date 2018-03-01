@@ -1,7 +1,7 @@
 using System;
 using GeoAPI.Geometries;
 
-namespace NetTopologySuite.Tests.NUnit.Algorithm
+namespace NetTopologySuite.Algorithm
 {
     /// <summary> 
     /// Implements an algorithm to compute the
