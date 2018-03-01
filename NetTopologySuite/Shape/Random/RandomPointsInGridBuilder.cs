@@ -92,7 +92,7 @@ namespace NetTopologySuite.Shape.Random
                     pts[index++] = RandomPointInCell(orgX, orgY, cellDX, cellDY);
                 }
             }
-            return GeomFactory.CreateMultiPoint(pts);
+            return GeomFactory.CreateMultiPointFromCoords(pts);
         }
 
         private Coordinate RandomPointInCell(double orgX, double orgY, double xLen, double yLen)

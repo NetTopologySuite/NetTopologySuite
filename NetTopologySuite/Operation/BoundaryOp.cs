@@ -72,7 +72,7 @@ namespace NetTopologySuite.Operation
                 return _geomFact.CreatePoint(bdyPts[0]);
             }
             // this handles 0 points case as well
-            return _geomFact.CreateMultiPoint(bdyPts);
+            return _geomFact.CreateMultiPointFromCoords(bdyPts);
         }
 
         /*

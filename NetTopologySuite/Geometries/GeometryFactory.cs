@@ -484,7 +484,19 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">An array (without null elements), or an empty array, or <c>null</c></param>
         /// <returns>A <see cref="IMultiPoint"/> object</returns>
+        [Obsolete("Use CreateMultiPointFromCoords")]
         public IMultiPoint CreateMultiPoint(Coordinate[] coordinates)
+        {
+            return CreateMultiPointFromCoords(coordinates);
+        }
+
+        /// <summary> 
+        /// Creates a <see cref="IMultiPoint"/> using the given Coordinates.
+        /// A null or empty array will create an empty MultiPoint.
+        /// </summary>
+        /// <param name="coordinates">An array (without null elements), or an empty array, or <c>null</c></param>
+        /// <returns>A <see cref="IMultiPoint"/> object</returns>
+        public IMultiPoint CreateMultiPointFromCoords(Coordinate[] coordinates)
         {
             return CreateMultiPoint(coordinates != null ? CoordinateSequenceFactory.Create(coordinates) : null);
         }

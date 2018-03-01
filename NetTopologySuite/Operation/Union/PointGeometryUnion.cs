@@ -61,7 +61,9 @@ namespace NetTopologySuite.Operation.Union
             exteriorCoords.CopyTo(exteriorCoordsArray, 0);
             Array.Sort(exteriorCoordsArray);
             ICoordinateSequence coords = _geomFact.CoordinateSequenceFactory.Create(exteriorCoordsArray);
-            IGeometry ptComp = coords.Count == 1 ? (IGeometry)_geomFact.CreatePoint(coords.GetCoordinate(0)) : _geomFact.CreateMultiPoint(coords);
+            IGeometry ptComp = coords.Count == 1 
+                ? (IGeometry)_geomFact.CreatePoint(coords) 
+                : _geomFact.CreateMultiPoint(coords);
 
             // add point component to the other geometry
             return GeometryCombiner.Combine(ptComp, _otherGeom);

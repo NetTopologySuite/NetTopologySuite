@@ -61,7 +61,7 @@ namespace NetTopologySuite.Shape.Random
                     continue;
                 pts[i++] = p;
             }
-            return GeomFactory.CreateMultiPoint(pts);
+            return GeomFactory.CreateMultiPointFromCoords(pts);
         }
 
         protected bool IsInExtent(Coordinate p)
