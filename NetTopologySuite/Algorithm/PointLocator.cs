@@ -10,7 +10,7 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     /// <remarks>
     /// A <see cref="IBoundaryNodeRule"/> may be specified to control the evaluation of whether the point lies on the boundary or not
-    /// The default rule is to use the the <i>SFS Boundary Determination Rule</i>
+    /// The default rule is to use the <i>SFS Boundary Determination Rule</i>
     /// <para>
     /// Notes:
     /// <list Type="Bullet">
@@ -28,10 +28,16 @@ namespace NetTopologySuite.Algorithm
         private int _numBoundaries;    // the number of sub-elements whose boundaries the point lies in
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PointLocator"/> class.
+        /// Initializes a new instance of the <see cref="PointLocator"/> class.<para/>
+        /// The default boundary rule is <see cref="BoundaryNodeRules.EndpointBoundaryRule"/>.
         /// </summary>
         public PointLocator() { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PointLocator"/> class using the provided 
+        /// <paramref name="boundaryRule">boundary rule</paramref>.
+        /// </summary>
+        /// <param name="boundaryRule">The boundary rule to use.</param>
         public PointLocator(IBoundaryNodeRule boundaryRule)
         {
             if (boundaryRule == null)
@@ -61,9 +67,9 @@ namespace NetTopologySuite.Algorithm
             if (geom.IsEmpty)
                 return Location.Exterior;
             if (geom is ILineString) 
-                return Locate(p, (ILineString) geom);
+                return LocateOnLineString(p, (ILineString) geom);
             if (geom is IPolygon) 
-                return Locate(p, (IPolygon) geom);
+                return LocateInPolygon(p, (IPolygon) geom);
 
             _isIn = false;
             _numBoundaries = 0;
@@ -76,30 +82,25 @@ namespace NetTopologySuite.Algorithm
             return Location.Exterior;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="p"></param>
-        /// <param name="geom"></param>
         private void ComputeLocation(Coordinate p, IGeometry geom)
         {
             if (geom is IPoint)
-                UpdateLocationInfo(Locate(p, (IPoint) geom));
+                UpdateLocationInfo(LocateOnPoint(p, (IPoint) geom));
             if (geom is ILineString) 
-                UpdateLocationInfo(Locate(p, (ILineString) geom));                                  
-            else if(geom is Polygon) 
-                UpdateLocationInfo(Locate(p, (IPolygon) geom));            
+                UpdateLocationInfo(LocateOnLineString(p, (ILineString) geom));                                  
+            else if(geom is IPolygon) 
+                UpdateLocationInfo(LocateInPolygon(p, (IPolygon) geom));            
             else if(geom is IMultiLineString) 
             {
                 IMultiLineString ml = (IMultiLineString) geom;
                 foreach (ILineString l in ml.Geometries)                     
-                    UpdateLocationInfo(Locate(p, l));                
+                    UpdateLocationInfo(LocateOnLineString(p, l));                
             }
             else if(geom is IMultiPolygon)
             {
                 IMultiPolygon mpoly = (IMultiPolygon) geom;
                 foreach (IPolygon poly in mpoly.Geometries) 
-                    UpdateLocationInfo(Locate(p, poly));
+                    UpdateLocationInfo(LocateInPolygon(p, poly));
             }
             else if (geom is IGeometryCollection) 
             {
@@ -113,10 +114,6 @@ namespace NetTopologySuite.Algorithm
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="loc"></param>
         private void UpdateLocationInfo(Location loc)
         {
             if(loc == Location.Interior) 
@@ -125,7 +122,7 @@ namespace NetTopologySuite.Algorithm
                 _numBoundaries++;
         }
 
-        private static Location Locate(Coordinate p, IPoint pt)
+        private static Location LocateOnPoint(Coordinate p, IPoint pt)
         {
             // no point in doing envelope test, since equality test is just as fast
 
@@ -135,14 +132,7 @@ namespace NetTopologySuite.Algorithm
             return Location.Exterior;
         }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="p"></param>
-        /// <param name="l"></param>
-        /// <returns></returns>
-        private static Location Locate(Coordinate p, ILineString l)
+        private static Location LocateOnLineString(Coordinate p, ILineString l)
         {
             // bounding-box check
             if (!l.EnvelopeInternal.Intersects(p)) 
@@ -158,12 +148,6 @@ namespace NetTopologySuite.Algorithm
             return Location.Exterior;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="p"></param>
-        /// <param name="ring"></param>
-        /// <returns></returns>
         private static Location LocateInPolygonRing(Coordinate p, ILinearRing ring)
         {
   	        // bounding-box check
@@ -172,13 +156,7 @@ namespace NetTopologySuite.Algorithm
   	        return PointLocation.LocateInRing(p, ring.CoordinateSequence);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="p"></param>
-        /// <param name="poly"></param>
-        /// <returns></returns>
-        private Location Locate(Coordinate p, IPolygon poly)
+        private Location LocateInPolygon(Coordinate p, IPolygon poly)
         {
             if (poly.IsEmpty) 
                 return Location.Exterior;
