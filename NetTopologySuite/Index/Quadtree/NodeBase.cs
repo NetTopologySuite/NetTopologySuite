@@ -155,19 +155,23 @@ namespace NetTopologySuite.Index.Quadtree
         }
 
         /// <summary>
-        /// 
+        /// Gets a value indicating that this node is empty, i.e. it does not contain an items or sub-nodes.
         /// </summary>
         public bool IsEmpty
         {
             get
             {
-                bool isEmpty = true;
+                var isEmpty = true;
                 if(_items.Count != 0)
                     isEmpty = false;
-                for (int i = 0; i < 4; i++)
-                    if (Subnode[i] != null)
-                        if (!Subnode[i].IsEmpty)
-                            isEmpty = false;
+                else
+                {
+                    for (int i = 0; i < 4; i++)
+                        if (Subnode[i] != null)
+                            if (!Subnode[i].IsEmpty)
+                                isEmpty = false;
+                }
+
                 return isEmpty;
             }
         }

@@ -111,7 +111,7 @@ namespace NetTopologySuite.Index.Quadtree
             get
             {
                 if (_root == null) return true;
-                return false;
+                return _root.IsEmpty;
             }
         }
 
