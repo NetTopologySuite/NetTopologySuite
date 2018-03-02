@@ -236,7 +236,7 @@ namespace NetTopologySuite.Operation.Buffer
                 }
                 else
                 {
-                    AddFillet(_s1, _offset0.P1, _offset1.P0, OrientationIndex.Clockwise, _distance);
+                    AddCornerFillet(_s1, _offset0.P1, _offset1.P0, OrientationIndex.Clockwise, _distance);
                 }
             }
         }
@@ -272,7 +272,7 @@ namespace NetTopologySuite.Operation.Buffer
                 // add a circular fillet connecting the endpoints of the offset segments
                 if (addStartPoint) _segList.AddPt(_offset0.P1);
                 // TESTING - comment out to produce beveled joins
-                AddFillet(_s1, _offset0.P1, _offset1.P0, orientation, _distance);
+                AddCornerFillet(_s1, _offset0.P1, _offset1.P0, orientation, _distance);
                 _segList.AddPt(_offset1.P0);
             }
         }
@@ -294,7 +294,7 @@ namespace NetTopologySuite.Operation.Buffer
             }
             else
             {
-                /**
+                /*
                  * If no intersection is detected,
                  * it means the angle is so small and/or the offset so
                  * large that the offsets segments don't intersect.
@@ -314,14 +314,14 @@ namespace NetTopologySuite.Operation.Buffer
                  * This is the purpose of the closingSegFactor heuristic value.
                  */
 
-                /**
-                * The intersection test above is vulnerable to robustness errors; i.e. it
-                * may be that the offsets should intersect very close to their endpoints,
-                * but aren't reported as such due to rounding. To handle this situation
-                * appropriately, we use the following test: If the offset points are very
-                * close, don't add closing segments but simply use one of the offset
-                * points
-                */
+                /*
+                 * The intersection test above is vulnerable to robustness errors; i.e. it
+                 * may be that the offsets should intersect very close to their endpoints,
+                 * but aren't reported as such due to rounding. To handle this situation
+                 * appropriately, we use the following test: If the offset points are very
+                 * close, don't add closing segments but simply use one of the offset
+                 * points
+                 */
                 _hasNarrowConcaveAngle = true;
                 //System.out.println("NARROW ANGLE - distance = " + distance);
                 if (_offset0.P1.Distance(_offset1.P0) < _distance
@@ -409,7 +409,7 @@ namespace NetTopologySuite.Operation.Buffer
                 case EndCapStyle.Round:
                     // add offset seg points with a fillet between them
                     _segList.AddPt(offsetL.P1);
-                    AddFillet(p1, angle + Math.PI / 2, angle - Math.PI / 2, OrientationIndex.Clockwise, _distance);
+                    AddDirectedFillet(p1, angle + Math.PI / 2, angle - Math.PI / 2, OrientationIndex.Clockwise, _distance);
                     _segList.AddPt(offsetR.P1);
                     break;
                 case EndCapStyle.Flat:
@@ -526,11 +526,11 @@ namespace NetTopologySuite.Operation.Buffer
             var bevelMidY = basePt.Y + mitreDist * Math.Sin(mitreMidAng);
             var bevelMidPt = new Coordinate(bevelMidX, bevelMidY);
 
-            // compute the mitre midline segment from the corner point to the bevel segment midpoint
+            // compute the mitre mid-line segment from the corner point to the bevel segment midpoint
             var mitreMidLine = new LineSegment(basePt, bevelMidPt);
 
             // finally the bevel segment endpoints are computed as offsets from
-            // the mitre midline
+            // the mitre mid-line
             var bevelEndLeft = mitreMidLine.PointAlongOffset(1.0, bevelHalfLen);
             var bevelEndRight = mitreMidLine.PointAlongOffset(1.0, -bevelHalfLen);
 
@@ -576,7 +576,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="p1">Endpoint of fillet curve</param>
         /// <param name="direction">The orientation of the fillet</param>
         /// <param name="radius">The radius of the fillet</param>
-        private void AddFillet(Coordinate p, Coordinate p0, Coordinate p1, OrientationIndex direction, double radius)
+        private void AddCornerFillet(Coordinate p, Coordinate p0, Coordinate p1, OrientationIndex direction, double radius)
         {
             double dx0 = p0.X - p.X;
             double dy0 = p0.Y - p.Y;
@@ -594,7 +594,7 @@ namespace NetTopologySuite.Operation.Buffer
                 if (startAngle >= endAngle) startAngle -= 2.0 * Math.PI;
             }
             _segList.AddPt(p0);
-            AddFillet(p, startAngle, endAngle, direction, radius);
+            AddDirectedFillet(p, startAngle, endAngle, direction, radius);
             _segList.AddPt(p1);
         }
 
@@ -604,9 +604,12 @@ namespace NetTopologySuite.Operation.Buffer
         /// The start and end point for the fillet are not added -
         /// the caller must add them if required.
         /// </summary>
+        /// <param name="p">The center point</param>
         /// <param name="direction">Is -1 for a <see cref="OrientationIndex.Clockwise"/> angle, 1 for a <see cref="OrientationIndex.CounterClockwise"/> angle</param>
+        /// <param name="startAngle">The start angle of the fillet</param>
+        /// <param name="endAngle">The end angle of the fillet</param>
         /// <param name="radius">The radius of the fillet</param>
-        private void AddFillet(Coordinate p, double startAngle, double endAngle, OrientationIndex direction, double radius)
+        private void AddDirectedFillet(Coordinate p, double startAngle, double endAngle, OrientationIndex direction, double radius)
         {
             var directionFactor = direction == OrientationIndex.Clockwise ? -1 : 1;
 
@@ -639,7 +642,7 @@ namespace NetTopologySuite.Operation.Buffer
             // add start point
             var pt = new Coordinate(p.X + _distance, p.Y);
             _segList.AddPt(pt);
-            AddFillet(p, 0.0, 2.0 * Math.PI, OrientationIndex.Clockwise, _distance);
+            AddDirectedFillet(p, 0.0, 2.0 * Math.PI, OrientationIndex.Clockwise, _distance);
             _segList.CloseRing();
         }
 
