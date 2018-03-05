@@ -43,6 +43,8 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         private GeometryCollectionEnumerator _subcollectionEnumerator;
 
+        private IGeometry _current = null;
+
         /// <summary>
         /// Constructs an iterator over the given <c>GeometryCollection</c>.
         /// </summary>
@@ -58,73 +60,88 @@ namespace NetTopologySuite.Geometries
             _max = parent.NumGeometries;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public bool MoveNext() 
+
+        private Boolean HasNext()
         {
-            if (_atStart) 
+            if (_atStart)
                 return true;
-            if (_subcollectionEnumerator != null) 
+            if (_subcollectionEnumerator != null)
             {
-                if (_subcollectionEnumerator.MoveNext())  
+                if (_subcollectionEnumerator.HasNext())
                     return true;
                 _subcollectionEnumerator = null;
             }
-            if (_index >= _max) 
+            if (_index >= _max)
                 return false;
             return true;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+
+        /// <inheritdoc cref="System.Collections.IEnumerator.MoveNext"/>>
+        public bool MoveNext()
+        {
+            if (!HasNext())
+            {
+                _current = null;
+                return false;
+            }
+
+            // the parent GeometryCollection is the first object returned
+            if (_atStart)
+            {
+                _atStart = false;
+                if (IsAtomic(_parent))
+                    _index++;
+                _current = _parent;
+                return true;
+            }
+            if (_subcollectionEnumerator != null)
+            {
+                if (_subcollectionEnumerator.MoveNext())
+                {
+                    _current = _subcollectionEnumerator.Current;
+                    return true;
+                } 
+                _subcollectionEnumerator = null;
+            }
+            if (_index >= _max)
+                throw new ArgumentOutOfRangeException();
+
+            var obj = _parent.GetGeometryN(_index++);
+            if (obj is IGeometryCollection gc)
+            {
+                _subcollectionEnumerator = new GeometryCollectionEnumerator(gc);
+                // there will always be at least one element in the sub-collection
+                _subcollectionEnumerator.MoveNext();
+                _current = _subcollectionEnumerator.Current;
+            }
+            else
+                _current = obj;
+
+            return true;
+
+        }
+
+        /// <inheritdoc cref="System.Collections.IEnumerator.Current"/>>
         /// <remarks> The parent GeometryCollection is the first object returned!</remarks>
         object System.Collections.IEnumerator.Current
         {
             get { return Current; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <inheritdoc cref="System.Collections.IEnumerator.Reset"/>
         public void Reset()
         {
             _atStart = true;
-            _index = 0;            
+            _index = 0;
+            _subcollectionEnumerator = null;
+            _current = null;
         }
 
+        /// <inheritdoc cref="IEnumerator{T}.Current"/>
         public IGeometry Current
         {
-            get
-            {
-                // the parent GeometryCollection is the first object returned
-                if (_atStart)
-                {
-                    _atStart = false;
-                    if (IsAtomic(_parent))
-                        _index++;
-                    return _parent;
-                }
-                if (_subcollectionEnumerator != null)
-                {
-                    if (_subcollectionEnumerator.MoveNext())
-                        return _subcollectionEnumerator.Current;
-                    _subcollectionEnumerator = null;
-                }
-                if (_index >= _max)
-                    throw new ArgumentOutOfRangeException();
-
-                IGeometry obj = _parent.GetGeometryN(_index++);
-                if (obj is IGeometryCollection)
-                {
-                    _subcollectionEnumerator = new GeometryCollectionEnumerator((IGeometryCollection)obj);
-                    // there will always be at least one element in the sub-collection
-                    return _subcollectionEnumerator.Current;
-                }
-                return obj;
-            }
+            get { return _current; }
         }
 
         private static bool IsAtomic(IGeometry geom)
@@ -132,6 +149,7 @@ namespace NetTopologySuite.Geometries
             return !(geom is GeometryCollection);
         }
 
+        /// <inheritdoc cref="IDisposable.Dispose"/>
         public void Dispose()
         {
             if (_subcollectionEnumerator != null)
@@ -140,25 +158,14 @@ namespace NetTopologySuite.Geometries
 
         #region Implementation of IEnumerable
 
-        /// <summary>
-        /// Gibt einen Enumerator zurück, der die Auflistung durchläuft.
-        /// </summary>
-        /// <returns>
-        /// Ein <see cref="T:System.Collections.Generic.IEnumerator`1"/>, der zum Durchlaufen der Auflistung verwendet werden kann.
-        /// </returns>
-        /// <filterpriority>1</filterpriority>
+
+        /// <inheritdoc cref="IEnumerable{T}.GetEnumerator"/>
         public IEnumerator<IGeometry> GetEnumerator()
         {
             return this;
         }
 
-        /// <summary>
-        /// Gibt einen Enumerator zurück, der eine Auflistung durchläuft.
-        /// </summary>
-        /// <returns>
-        /// Ein <see cref="T:System.Collections.IEnumerator"/>-Objekt, das zum Durchlaufen der Auflistung verwendet werden kann.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
+        /// <inheritdoc cref="System.Collections.IEnumerable.GetEnumerator"/>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
