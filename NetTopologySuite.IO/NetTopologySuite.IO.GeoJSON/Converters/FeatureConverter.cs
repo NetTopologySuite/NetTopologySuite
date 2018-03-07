@@ -148,12 +148,17 @@ namespace NetTopologySuite.IO.Converters
 
             //read = reader.Read(); // move next
 
-            IAttributesTable attributes = feature.Attributes;
-            if (attributes != null)
+            if (featureId != null)
             {
-                if (featureId != null && !attributes.Exists("id"))
+                IAttributesTable attributes = feature.Attributes;
+
+                if (attributes == null)
+                    attributes = feature.Attributes = new AttributesTable();
+
+                if (!attributes.Exists("id"))
                     attributes.AddAttribute("id", featureId);
             }
+
             return feature;
         }
 
