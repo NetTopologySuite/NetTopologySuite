@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
@@ -67,8 +68,19 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestEquals()
         {
-            MultiPoint m1 = (MultiPoint)reader.Read("MULTIPOINT(5 6, 7 8)");
-            MultiPoint m2 = (MultiPoint)reader.Read("MULTIPOINT(5 6, 7 8)");
+            MultiPoint m1 = (MultiPoint)reader.Read("MULTIPOINT(5 6, 7 8, 9 10)");
+            MultiPoint m2 = (MultiPoint)reader.Read("MULTIPOINT(5 6, 7 8, 9 10)");
+            Assert.That(m1, Is.EqualTo(m2).Using(GeometryTestCase.EqualityComparer));
+            Assert.IsTrue(m1.Equals((object)m2));
+        }
+
+        [TestAttribute]
+        public void TestEquals2()
+        {
+            MultiPoint m1 = (MultiPoint)reader.Read("MULTIPOINT (20.564 46.3493254, 45 32, 23 54)");
+            MultiPoint m2 = (MultiPoint)reader.Read("MULTIPOINT (20.564 46.3493254, 45 32, 23 54)");
+
+            Assert.That(m1, Is.EqualTo(m2).Using(GeometryTestCase.EqualityComparer));
             Assert.IsTrue(m1.Equals(m2));
         }
     }

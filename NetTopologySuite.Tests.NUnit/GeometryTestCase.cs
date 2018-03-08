@@ -76,5 +76,23 @@ namespace NetTopologySuite.Tests.NUnit
             return geometries;
         }
 
+        protected internal static IEqualityComparer<IGeometry> EqualityComparer => new GeometryEqualityComparer();
+
+        private class GeometryEqualityComparer : IEqualityComparer<IGeometry>
+        {
+            public bool Equals(IGeometry x, IGeometry y)
+            {
+                if (x == null && y != null)
+                    return false;
+                if (x != null && y == null)
+                    return false;
+                return x.EqualsExact(y);
+            }
+
+            public int GetHashCode(IGeometry obj)
+            {
+                return obj.GetHashCode();
+            }
+        }
     }
 }
