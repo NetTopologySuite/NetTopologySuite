@@ -94,14 +94,8 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         public IGeometry Read(Stream stream)
         {
-            var byteOrder = (ByteOrder)stream.ReadByte();
-            // "Rewind" to let Read(BinaryReader) skip this byte
-            // in collection and non-collection geometries.
-            stream.Position = 0;
-            using (BinaryReader reader = byteOrder == ByteOrder.BigEndian ? new BEBinaryReader(stream) : new BinaryReader(stream))
-            {
+            using (var reader = new ConfigurableBinaryReader(stream))
                 return Read(reader);
-            }
         }
 
         /// <summary>
@@ -114,11 +108,9 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected IGeometry Read(BinaryReader reader)
+        protected IGeometry Read(ConfigurableBinaryReader reader)
         {
-            // Dummy read, just for bytes compatibility.
-            // The byte order is determined only once.
-            reader.ReadByte();
+            reader.EncodingType = (ByteOrder)reader.ReadByte();
 
             var typeword = reader.ReadInt32();
 
@@ -301,7 +293,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="reader">The binary reader.</param>
         /// <param name="container">The container for the geometries</param>
-        protected void ReadGeometryArray<TGeometry>(BinaryReader reader, TGeometry[] container)
+        protected void ReadGeometryArray<TGeometry>(ConfigurableBinaryReader reader, TGeometry[] container)
             where TGeometry : IGeometry
         {
             for (var i = 0; i < container.Length; i++)
@@ -314,7 +306,7 @@ namespace NetTopologySuite.IO
         /// <param name="reader">The binary reader.</param>
         /// <param name="factory">The geometry factory to use for geometry creation.</param>
         /// <returns>The MultiPoint</returns>
-        protected IMultiPoint ReadMultiPoint(BinaryReader reader, IGeometryFactory factory)
+        protected IMultiPoint ReadMultiPoint(ConfigurableBinaryReader reader, IGeometryFactory factory)
         {
             int numGeometries = reader.ReadInt32();
             var points = new IPoint[numGeometries];
@@ -328,7 +320,7 @@ namespace NetTopologySuite.IO
         /// <param name="reader">The binary reader.</param>
         /// <param name="factory">The geometry factory to use for geometry creation.</param>
         /// <returns>The MultiLineString</returns>
-        protected IMultiLineString ReadMultiLineString(BinaryReader reader, IGeometryFactory factory)
+        protected IMultiLineString ReadMultiLineString(ConfigurableBinaryReader reader, IGeometryFactory factory)
         {
             int numGeometries = reader.ReadInt32();
             var strings = new ILineString[numGeometries];
@@ -342,7 +334,7 @@ namespace NetTopologySuite.IO
         /// <param name="reader">The binary reader.</param>
         /// <param name="factory">The geometry factory to use for geometry creation.</param>
         /// <returns>The MultiPolygon</returns>
-        protected IMultiPolygon ReadMultiPolygon(BinaryReader reader, IGeometryFactory factory)
+        protected IMultiPolygon ReadMultiPolygon(ConfigurableBinaryReader reader, IGeometryFactory factory)
         {
             int numGeometries = reader.ReadInt32();
             var polygons = new IPolygon[numGeometries];
@@ -356,7 +348,7 @@ namespace NetTopologySuite.IO
         /// <param name="reader">The binary reader.</param>
         /// <param name="factory">The geometry factory to use for geometry creation.</param>
         /// <returns>The GeometryCollection</returns>
-        protected IGeometryCollection ReadGeometryCollection(BinaryReader reader, IGeometryFactory factory)
+        protected IGeometryCollection ReadGeometryCollection(ConfigurableBinaryReader reader, IGeometryFactory factory)
         {
             int numGeometries = reader.ReadInt32();
             var geometries = new IGeometry[numGeometries];
