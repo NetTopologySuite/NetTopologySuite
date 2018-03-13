@@ -15,7 +15,7 @@ namespace NetTopologySuite.IO
     /// and double values (<see cref="ConfigurableBinaryReader.ReadDouble" />) in the specified format, 
     /// this implementation overrides methods, such <see cref="BinaryReader.ReadInt32" /> 
     /// and <see cref="BinaryReader.ReadDouble" /> and more, 
-    /// for reading <see cref="ByteOrder.BigEndian" /> values in the specified format.
+    /// for reading values in the specified format.
     /// </remarks>
     public class ConfigurableBinaryReader : BinaryReader
     {
