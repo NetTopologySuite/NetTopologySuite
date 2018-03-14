@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using GeoAPI.IO;
 using NetTopologySuite.Utilities;
 
@@ -15,7 +14,7 @@ namespace NetTopologySuite.IO
     /// and double values (<see cref="ConfigurableBinaryReader.ReadDouble" />) in the specified format, 
     /// this implementation overrides methods, such <see cref="BinaryReader.ReadInt32" /> 
     /// and <see cref="BinaryReader.ReadDouble" /> and more, 
-    /// for reading values in the specified format.
+    /// for reading values in the specified by <see cref="ConfigurableBinaryReader.EncodingType"/> format.
     /// </remarks>
     public class ConfigurableBinaryReader : BinaryReader
     {
@@ -29,10 +28,10 @@ namespace NetTopologySuite.IO
         /// Initializes a new instance of the <see cref="ConfigurableBinaryReader"/> class.
         /// </summary>
         /// <param name="input">The supplied stream.</param>
-        /// <param name="encoding">The character encoding.</param>
-        /// <exception cref="T:System.ArgumentNullException">encoding is null. </exception>
+        /// <param name="encodingType">The byte order.</param>
         /// <exception cref="T:System.ArgumentException">The stream does not support reading, the stream is null, or the stream is already closed. </exception>
-        public ConfigurableBinaryReader(Stream input, Encoding encoding) : base(input, encoding) { }
+        public ConfigurableBinaryReader(Stream input, ByteOrder encodingType) : base(input)
+            => EncodingType = encodingType;
 
         /// <summary>
         /// Encoding type
@@ -195,7 +194,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.ObjectDisposedException">The stream is closed. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
-        [Obsolete("Not implemented")]
+        [Obsolete("Not implemented", true)]
         public override string ReadString()
         {
             throw new NotImplementedException();
@@ -211,7 +210,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.ObjectDisposedException">The stream is closed. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
-        [Obsolete("Not implemented")]
+        [Obsolete("Not implemented", true)]
         public override decimal ReadDecimal()
         {
             throw new NotImplementedException();

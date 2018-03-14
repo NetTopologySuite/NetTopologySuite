@@ -17,6 +17,7 @@ namespace NetTopologySuite.IO
     /// and <see cref="BinaryReader.ReadDouble" /> and more, 
     /// for reading <see cref="ByteOrder.BigEndian" /> values in the BigEndian format.
     /// </remarks>
+    [Obsolete("Use " + nameof(ConfigurableBinaryReader))]
     public class BEBinaryReader : BinaryReader
     {
         /// <summary>

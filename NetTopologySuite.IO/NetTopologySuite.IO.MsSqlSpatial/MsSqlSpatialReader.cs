@@ -9,7 +9,7 @@ namespace NetTopologySuite.IO
         public override IGeometry Read(Stream stream)
         {
             var byteOrder = (ByteOrder)stream.ReadByte();
-            using (BinaryReader reader = byteOrder == ByteOrder.BigEndian ? new BEBinaryReader(stream) : new BinaryReader(stream))
+            using (var reader = new ConfigurableBinaryReader(stream, byteOrder))
             {
                 IGeometry geometry = Read(reader);
                 int srid = -1;
