@@ -9,34 +9,34 @@ namespace NetTopologySuite.IO
     /// Extends the <see cref="BinaryReader" /> class to allow reading values in the specified format.    
     /// </summary>
     /// <remarks>
-    /// While <see cref="ConfigurableBinaryReader" /> extends <see cref="BinaryReader" /> 
-    /// adding methods for reading integer values (<see cref="ConfigurableBinaryReader.ReadInt32" />)
-    /// and double values (<see cref="ConfigurableBinaryReader.ReadDouble" />) in the specified format, 
+    /// While <see cref="BiEndianBinaryReader" /> extends <see cref="BinaryReader" /> 
+    /// adding methods for reading integer values (<see cref="BiEndianBinaryReader.ReadInt32" />)
+    /// and double values (<see cref="BiEndianBinaryReader.ReadDouble" />) in the specified format, 
     /// this implementation overrides methods, such <see cref="BinaryReader.ReadInt32" /> 
     /// and <see cref="BinaryReader.ReadDouble" /> and more, 
-    /// for reading values in the specified by <see cref="ConfigurableBinaryReader.EncodingType"/> format.
+    /// for reading values in the specified by <see cref="BiEndianBinaryReader.Endianess"/> format.
     /// </remarks>
-    public class ConfigurableBinaryReader : BinaryReader
+    public class BiEndianBinaryReader : BinaryReader
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigurableBinaryReader"/> class.
+        /// Initializes a new instance of the <see cref="BiEndianBinaryReader"/> class.
         /// </summary>
         /// <param name="stream">The stream.</param>
-        public ConfigurableBinaryReader(Stream stream) : base(stream) { }
+        public BiEndianBinaryReader(Stream stream) : base(stream) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigurableBinaryReader"/> class.
+        /// Initializes a new instance of the <see cref="BiEndianBinaryReader"/> class.
         /// </summary>
         /// <param name="input">The supplied stream.</param>
-        /// <param name="encodingType">The byte order.</param>
+        /// <param name="endianess">The byte order.</param>
         /// <exception cref="T:System.ArgumentException">The stream does not support reading, the stream is null, or the stream is already closed. </exception>
-        public ConfigurableBinaryReader(Stream input, ByteOrder encodingType) : base(input)
-            => EncodingType = encodingType;
+        public BiEndianBinaryReader(Stream input, ByteOrder endianess) : base(input)
+            => Endianess = endianess;
 
         /// <summary>
         /// Encoding type
         /// </summary>
-        public ByteOrder EncodingType { get; set; }
+        public ByteOrder Endianess { get; set; }
 
         /// <summary>
         /// Reads a 2-byte signed integer from the current stream using the specified encoding
@@ -51,7 +51,7 @@ namespace NetTopologySuite.IO
         public override short ReadInt16()
         {
             var result = base.ReadInt16();
-            return (EncodingType == ByteOrder.BigEndian)
+            return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
         }
@@ -70,7 +70,7 @@ namespace NetTopologySuite.IO
         public override ushort ReadUInt16()
         {
             var result = base.ReadUInt16();
-            return (EncodingType == ByteOrder.BigEndian)
+            return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
         }
@@ -88,7 +88,7 @@ namespace NetTopologySuite.IO
         public override int ReadInt32()
         {
             var result = base.ReadInt32();
-            return (EncodingType == ByteOrder.BigEndian)
+            return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
         }
@@ -107,7 +107,7 @@ namespace NetTopologySuite.IO
         public override uint ReadUInt32()
         {
             var result = base.ReadUInt32();
-            return (EncodingType == ByteOrder.BigEndian)
+            return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
         }
@@ -125,7 +125,7 @@ namespace NetTopologySuite.IO
         public override long ReadInt64()
         {
             var result = base.ReadInt64();
-            return (EncodingType == ByteOrder.BigEndian)
+            return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
         }
@@ -145,7 +145,7 @@ namespace NetTopologySuite.IO
         public override ulong ReadUInt64()
         {
             var result = base.ReadUInt64();
-            return (EncodingType == ByteOrder.BigEndian)
+            return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
         }
@@ -163,7 +163,7 @@ namespace NetTopologySuite.IO
         public override float ReadSingle()
         {
             var result = base.ReadSingle();
-            return (EncodingType == ByteOrder.BigEndian)
+            return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
         }
@@ -181,7 +181,7 @@ namespace NetTopologySuite.IO
         public override double ReadDouble()
         {
             var result = base.ReadDouble();
-            return (EncodingType == ByteOrder.BigEndian)
+            return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
         }
@@ -194,10 +194,11 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.ObjectDisposedException">The stream is closed. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
-        [Obsolete("Not implemented", true)]
         public override string ReadString()
         {
-            throw new NotImplementedException();
+            if (Endianess == ByteOrder.BigEndian)
+                throw new NotSupportedException();
+            return base.ReadString();
         }
 
         /// <summary>
@@ -210,10 +211,11 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.ObjectDisposedException">The stream is closed. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
-        [Obsolete("Not implemented", true)]
         public override decimal ReadDecimal()
         {
-            throw new NotImplementedException();
+            if (Endianess == ByteOrder.BigEndian)
+                throw new NotSupportedException();
+            return base.ReadDecimal();
         }
     }
 }
