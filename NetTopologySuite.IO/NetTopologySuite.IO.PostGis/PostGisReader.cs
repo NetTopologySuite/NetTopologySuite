@@ -94,7 +94,7 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         public IGeometry Read(Stream stream)
         {
-            using (var reader = new BinaryReader(stream))
+            using (var reader = new BiEndianBinaryReader(stream))
                 return Read(reader);
         }
 
