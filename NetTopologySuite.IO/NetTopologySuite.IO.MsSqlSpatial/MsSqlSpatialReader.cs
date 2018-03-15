@@ -8,7 +8,7 @@ namespace NetTopologySuite.IO
     {
         public override IGeometry Read(Stream stream)
         {
-            using (var reader = new BiEndianBinaryReader(stream, byteOrder))
+            using (var reader = new BiEndianBinaryReader(stream))
             {
                 IGeometry geometry = Read(reader);
                 int srid = -1;
