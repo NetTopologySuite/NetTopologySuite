@@ -16,5 +16,10 @@ namespace GeoAPI
         {
             GeometryServiceProvider.Instance = NetTopologySuite.NtsGeometryServices.Instance;
         }
+
+        internal static class ModuleInitializer
+        {
+            public static void Initialize() => Bootstrap();
+        }
     }
 }
