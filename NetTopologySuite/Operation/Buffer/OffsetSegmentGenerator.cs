@@ -114,10 +114,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// the output needs to be further treated
         /// before it can be used.
         /// </summary>
-        public bool HasNarrowConcaveAngle
-        {
-            get { return _hasNarrowConcaveAngle; }
-        }
+        public bool HasNarrowConcaveAngle => _hasNarrowConcaveAngle;
 
         private void Init(double distance)
         {

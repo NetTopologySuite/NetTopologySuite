@@ -23,20 +23,11 @@ namespace NetTopologySuite.IO.Helpers
             _translate = translate;
         }
 
-        public bool Quantized
-        {
-            get { return Scale != NoScale && Translate != NoTranslate; }
-        }
+        public bool Quantized => Scale != NoScale && Translate != NoTranslate;
 
-        public double[] Scale
-        {
-            get { return _scale; }
-        }
+        public double[] Scale => _scale;
 
-        public double[] Translate
-        {
-            get { return _translate; }
-        }
+        public double[] Translate => _translate;
 
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()

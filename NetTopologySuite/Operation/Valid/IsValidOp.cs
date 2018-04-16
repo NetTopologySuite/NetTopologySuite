@@ -101,8 +101,8 @@ namespace NetTopologySuite.Operation.Valid
         /// <value>States whether geometry with this condition is valid.</value>
         public bool IsSelfTouchingRingFormingHoleValid
         {
-            get { return _isSelfTouchingRingFormingHoleValid;}
-            set { _isSelfTouchingRingFormingHoleValid = value; }
+            get => _isSelfTouchingRingFormingHoleValid;
+            set => _isSelfTouchingRingFormingHoleValid = value;
         }
 
         /// <summary>

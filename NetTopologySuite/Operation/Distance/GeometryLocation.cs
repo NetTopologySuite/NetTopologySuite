@@ -48,46 +48,22 @@ namespace NetTopologySuite.Operation.Distance
         /// <summary>
         /// Returns the geometry component on (or in) which this location occurs.
         /// </summary>
-        public IGeometry GeometryComponent
-        {
-            get
-            {
-                return _component;
-            }
-        }
+        public IGeometry GeometryComponent => _component;
 
         /// <summary>
         /// Returns the segment index for this location. If the location is inside an
         /// area, the index will have the value <see cref="InsideArea"/>.
         /// </summary>
-        public int SegmentIndex
-        {
-            get
-            {
-                return _segIndex;
-            }
-        }
+        public int SegmentIndex => _segIndex;
 
         /// <summary>
         /// Returns the <see cref="Coordinate"/> of this location.
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get
-            {
-                return _pt;
-            }
-        }
+        public Coordinate Coordinate => _pt;
 
         /// <summary>
         /// Tests whether this location represents a point inside an area geometry.
         /// </summary>
-        public bool IsInsideArea
-        {
-            get
-            {
-                return _segIndex == InsideArea;
-            }
-        }
+        public bool IsInsideArea => _segIndex == InsideArea;
     }
 }

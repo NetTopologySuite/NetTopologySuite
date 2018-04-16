@@ -40,24 +40,12 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate[] Coordinates
-        {
-            get
-            {
-                return pts;
-            }
-        }
+        public Coordinate[] Coordinates => pts;
 
         /// <summary>
         /// 
         /// </summary>
-        public int[] StartIndexes
-        {
-            get
-            {
-                return startIndex;
-            }
-        }
+        public int[] StartIndexes => startIndex;
 
         /// <summary>
         /// 

@@ -363,42 +363,27 @@ namespace NetTopologySuite.Geometries.Implementation
             }
         }
 
-        public Ordinates Ordinates
-        {
-            get { return _ordinates; }
-        }
+        public Ordinates Ordinates => _ordinates;
 
-        public int Count
-        {
-            get { return XY.Length / 2; }
-        }
+        public int Count => XY.Length / 2;
 
         /// <summary>
         /// Gets the vector with x- and y-ordinate values;
         /// </summary>
         /// <remarks>If you modify the values of this vector externally, you need to call <see cref="ReleaseCoordinateArray"/>!</remarks>
-        public double[] XY
-        {
-            get { return _xy; }
-        }
+        public double[] XY => _xy;
 
         /// <summary>
         /// Gets the vector with z-ordinate values
         /// </summary>
         /// <remarks>If you modify the values of this vector externally, you need to call <see cref="ReleaseCoordinateArray"/>!</remarks>
-        public double[] Z
-        {
-            get { return _z; }
-        }
+        public double[] Z => _z;
 
         /// <summary>
         /// Gets the vector with measure values
         /// </summary>
         /// <remarks>If you modify the values of this vector externally, you need to call <see cref="ReleaseCoordinateArray"/>!</remarks>
-        public double[] M
-        {
-            get { return _m; }
-        }
+        public double[] M => _m;
 
         /// <summary>
         /// Releases the weak reference to the weak referenced coordinate array

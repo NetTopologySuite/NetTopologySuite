@@ -20,8 +20,8 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public Coordinate P0
         {
-            get { return _p0; }
-            set { _p0 = value; }
+            get => _p0;
+            set => _p0 = value;
         }
 
         /// <summary>
@@ -29,8 +29,8 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public Coordinate P1
         {
-            get { return _p1; }
-            set { _p1 = value; }
+            get => _p1;
+            set => _p1 = value;
         }
 
         /// <summary>
@@ -38,8 +38,8 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public Coordinate P2
         {
-            get { return _p2; }
-            set { _p2 = value; }
+            get => _p2;
+            set => _p2 = value;
         }
 
         /// <summary>

@@ -169,24 +169,12 @@ namespace NetTopologySuite.LinearReferencing
         /// <summary>
         /// Returns the index of the start of the line.
         /// </summary>
-        public LinearLocation StartIndex
-        {
-            get
-            {
-                return new LinearLocation();
-            }
-        }
+        public LinearLocation StartIndex => new LinearLocation();
 
         /// <summary>
         /// Returns the index of the end of the line.
         /// </summary>
-        public LinearLocation EndIndex
-        {
-            get
-            {
-                return LinearLocation.GetEndLocation(_linearGeom);
-            }
-        }
+        public LinearLocation EndIndex => LinearLocation.GetEndLocation(_linearGeom);
 
         /// <summary>
         /// Tests whether an index is in the valid index range for the line.

@@ -66,14 +66,8 @@ namespace NetTopologySuite.IO
 		/// </summary>
 		public Envelope Bounds
 		{
-			get
-			{
-				return _bounds;
-			}
-			set
-			{
-				_bounds = value;
-			}
+			get => _bounds;
+			set => _bounds = value;
 		}
 
 		/// <summary>
@@ -81,14 +75,8 @@ namespace NetTopologySuite.IO
 		/// </summary>
         public ShapeGeometryType ShapeType
 		{
-			get
-			{
-				return _shapeType;
-			}
-			set
-			{
-				_shapeType = value;
-			}
+			get => _shapeType;
+			set => _shapeType = value;
 		}
 
 		/// <summary>
@@ -96,14 +84,8 @@ namespace NetTopologySuite.IO
 		/// </summary>
 		public int Version
 		{
-			get
-			{
-				return _version;
-			}
-			set
-			{
-				_version = value;
-			}
+			get => _version;
+			set => _version = value;
 		}
 
 		/// <summary>
@@ -111,14 +93,8 @@ namespace NetTopologySuite.IO
 		/// </summary>
 		public int FileLength
 		{
-			get
-			{
-				return _fileLength;
-			}
-			set
-			{
-				_fileLength = value;
-			}
+			get => _fileLength;
+			set => _fileLength = value;
 		}
 
 		/// <summary>

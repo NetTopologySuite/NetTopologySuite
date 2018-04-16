@@ -69,19 +69,13 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// 
         /// </summary>
-        public SegmentNodeList NodeList
-        {
-            get { return _nodeList; }
-        }
+        public SegmentNodeList NodeList => _nodeList;
 
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
-        public int Count
-        {
-            get { return _pts.Length; }
-        }
+        public int Count => _pts.Length;
 
         /// <summary>
         /// 
@@ -96,18 +90,12 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate[] Coordinates
-        {
-            get { return _pts; }
-        }
+        public Coordinate[] Coordinates => _pts;
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsClosed
-        {
-            get { return _pts[0].Equals2D(_pts[_pts.Length - 1]); }
-        }
+        public bool IsClosed => _pts[0].Equals2D(_pts[_pts.Length - 1]);
 
         /// <summary>
         ///  Gets the octant of the segment starting at vertex <c>index</c>.
@@ -197,11 +185,8 @@ namespace NetTopologySuite.Noding
 
                 return new LineSegment(_pts[index], _pts[index + 1]);
             }
-            set
-            {
-                throw new NotSupportedException(
-                    "Setting line segments in a ISegmentString not supported.");
-            }
+            set => throw new NotSupportedException(
+                "Setting line segments in a ISegmentString not supported.");
         }
         /// <inheritdoc cref="object.ToString()"/>
         public override String ToString()

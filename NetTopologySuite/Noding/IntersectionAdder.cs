@@ -69,35 +69,17 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// 
         /// </summary>
-        public LineIntersector LineIntersector
-        {
-            get
-            {
-                return _li;
-            }
-        }
+        public LineIntersector LineIntersector => _li;
 
         /// <summary>
         /// Returns the proper intersection point, or <c>null</c> if none was found.
         /// </summary>
-        public Coordinate ProperIntersectionPoint
-        {
-            get
-            {
-                return _properIntersectionPoint;
-            }
-        }
+        public Coordinate ProperIntersectionPoint => _properIntersectionPoint;
 
         /// <summary>
         /// 
         /// </summary>
-        public bool HasIntersection
-        {
-            get
-            {
-                return _hasIntersection;
-            }
-        }
+        public bool HasIntersection => _hasIntersection;
 
         /// <summary>
         /// A proper intersection is an intersection which is interior to at least two
@@ -106,37 +88,19 @@ namespace NetTopologySuite.Noding
         /// an endpoint equal to the intersection, which according to SFS semantics
         /// can result in the point being on the Boundary of the <see cref="Geometry" />.
         /// </summary>
-        public bool HasProperIntersection
-        {
-            get
-            {
-                return _hasProper;
-            }
-        }
+        public bool HasProperIntersection => _hasProper;
 
         /// <summary>
         /// A proper interior intersection is a proper intersection which is not
         /// contained in the set of boundary nodes set for this <see cref="ISegmentIntersector" />.
         /// </summary>
-        public bool HasProperInteriorIntersection
-        {
-            get
-            {
-                return _hasProperInterior;
-            }
-        }
-        
+        public bool HasProperInteriorIntersection => _hasProperInterior;
+
         /// <summary>
         /// An interior intersection is an intersection which is
         /// in the interior of some segment.
         /// </summary>
-        public bool HasInteriorIntersection
-        {
-            get
-            {
-                return _hasInterior;
-            }
-        }
+        public bool HasInteriorIntersection => _hasInterior;
 
         /// <summary>
         /// A trivial intersection is an apparent self-intersection which in fact
@@ -223,6 +187,6 @@ namespace NetTopologySuite.Noding
         ///<summary>
         /// Always process all intersections
         ///</summary>
-        public Boolean IsDone { get { return false; } }
+        public Boolean IsDone => false;
     }
 }

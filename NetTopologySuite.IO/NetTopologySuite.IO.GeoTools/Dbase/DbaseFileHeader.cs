@@ -64,8 +64,8 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         public DateTime LastUpdateDate
         {
-            get { return _updateDate; }
-            set { _updateDate = value; }
+            get => _updateDate;
+            set => _updateDate = value;
         }
 
         /// <summary>
@@ -74,13 +74,13 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         public int NumFields
         {
-            get { return _numFields; }
-            set { _numFields = value; }
+            get => _numFields;
+            set => _numFields = value;
         }
 
         public Encoding Encoding
         {
-            get { return _encoding; }
+            get => _encoding;
             set
             {
                 if (_encoding != null)
@@ -95,27 +95,21 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         public int NumRecords
         {
-            get { return _numRecords; }
-            set { _numRecords = value; }
+            get => _numRecords;
+            set => _numRecords = value;
         }
 
         /// <summary>
         /// Return the length of the records in bytes.
         /// </summary>
         /// <returns></returns>
-        public int RecordLength
-        {
-            get { return _recordLength; }
-        }
+        public int RecordLength => _recordLength;
 
         /// <summary>
         /// Return the length of the header.
         /// </summary>
         /// <returns></returns>
-        public int HeaderLength
-        {
-            get { return _headerLength; }
-        }
+        public int HeaderLength => _headerLength;
 
         /// <summary>
         ///  Add a column to this DbaseFileHeader.
@@ -389,7 +383,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         public static Encoding DefaultEncoding
         {
-            get { return DbaseEncodingUtility.DefaultEncoding; }
+            get => DbaseEncodingUtility.DefaultEncoding;
             set
             {
                 if (value == null)
@@ -494,10 +488,7 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Returns the fields in the dbase file.
         /// </summary>
-        public DbaseFieldDescriptor[] Fields
-        {
-            get { return _fieldDescriptions; }
-        }
+        public DbaseFieldDescriptor[] Fields => _fieldDescriptions;
 
         /// <summary>
         /// Method to get the encoding from a stream provider

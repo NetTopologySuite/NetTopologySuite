@@ -106,10 +106,7 @@ namespace NetTopologySuite.Index.Strtree
         /// the distances between the items in the members.
         /// </summary>
         /// <returns>The exact or lower bound distance for this pair</returns>
-        public double Distance
-        {
-            get { return _distance; }
-        }
+        public double Distance => _distance;
 
         /// <summary>
         /// Compares two pairs based on their minimum distances
@@ -124,10 +121,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <summary>
         /// Tests if both elements of the pair are leaf nodes
         /// </summary>
-        public bool IsLeaves
-        {
-            get { return !(IsComposite(_boundable1) || IsComposite(_boundable2)); }
-        }
+        public bool IsLeaves => !(IsComposite(_boundable1) || IsComposite(_boundable2));
 
         public static bool IsComposite(IBoundable<Envelope, TItem> item)
         {

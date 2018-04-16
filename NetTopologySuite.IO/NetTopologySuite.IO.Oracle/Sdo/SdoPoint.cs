@@ -12,19 +12,19 @@ namespace NetTopologySuite.IO.Sdo
         [OracleObjectMappingAttribute("X")]
         public decimal? X
         {
-            get { return _x; }
+            get => _x;
             set { _x = value; }
         }
         [OracleObjectMappingAttribute("Y")]
         public decimal? Y
         {
-            get { return _y; }
+            get => _y;
             set { _y = value; }
         }
         [OracleObjectMapping("Z")]
         public decimal? Z
         {
-            get { return _z; }
+            get => _z;
             set { _z = value; }
         }
         public override void MapFromCustomObject()

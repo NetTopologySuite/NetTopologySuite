@@ -45,13 +45,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
             Dispose(false);
         }
 
-        public ShapefileHeader ShapefileHeader
-        {
-            get
-            {
-                return m_ShapeFileHeader;
-            }
-        }
+        public ShapefileHeader ShapefileHeader => m_ShapeFileHeader;
 
         private BigEndianBinaryReader ShapeReaderStream
         {

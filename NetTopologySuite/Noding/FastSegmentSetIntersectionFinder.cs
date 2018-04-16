@@ -31,10 +31,7 @@ namespace NetTopologySuite.Noding
 
         ///<summary>Gets the segment set intersector used by this class.</summary>
         /// <remarks>This allows other uses of the same underlying indexed structure.</remarks>
-        public ISegmentSetMutualIntersector SegmentSetIntersector
-        {
-            get { return _segSetMutInt; }
-        }
+        public ISegmentSetMutualIntersector SegmentSetIntersector => _segSetMutInt;
 
         /// <summary>
         /// Tests for intersections with a given set of target {@link SegmentString}s.

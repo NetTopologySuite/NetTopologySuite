@@ -443,7 +443,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
 
             public IAttributesTable Attributes
             {
-                get { return _mapper; }
+                get => _mapper;
                 set { throw new NotSupportedException(); }
             }
 
@@ -451,7 +451,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
 
             public Envelope BoundingBox
             {
-                get { return Geometry != null ? Geometry.EnvelopeInternal : null; }
+                get => Geometry != null ? Geometry.EnvelopeInternal : null;
                 set { throw new NotSupportedException();}
             }
 
@@ -529,7 +529,7 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
                                 throw new ArgumentException("attributeName");
                         }
                     }
-                    set { AddAttribute(attributeName, value); }
+                    set => AddAttribute(attributeName, value);
                 }
 
                 public bool Exists(string attributeName)
@@ -545,7 +545,8 @@ namespace NetTopologySuite.IO.Tests.GeoJSON
                     return false;
                 }
 
-                public int Count { get { return 4; } }
+                public int Count => 4;
+
                 public string[] GetNames()
                 {
                     return new[] {"Item1", "Item2", "Item3", "Item4"};

@@ -104,15 +104,9 @@ namespace NetTopologySuite.Operation.Distance3D
             return a;
         }
 
-        public Plane3D Plane
-        {
-            get { return _plane; }
-        }
+        public Plane3D Plane => _plane;
 
-        public IPolygon Polygon
-        {
-            get { return _poly; }
-        }
+        public IPolygon Polygon => _poly;
 
         public bool Intersects(Coordinate intPt)
         {

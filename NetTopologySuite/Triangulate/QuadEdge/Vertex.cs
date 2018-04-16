@@ -66,35 +66,26 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <summary>
         /// Gets the x-ordinate value
         /// </summary>
-        public double X
-        {
-            get { return _p.X; }
-        }
+        public double X => _p.X;
 
         /// <summary>
         /// Gets the y-ordinate value
         /// </summary>
-        public double Y
-        {
-            get { return _p.Y; }
-        }
+        public double Y => _p.Y;
 
         /// <summary>
         /// Gets the z-ordinate value
         /// </summary>
         public double Z
         {
-            get { return _p.Z; }
-            set { _p.Z = value; }
+            get => _p.Z;
+            set => _p.Z = value;
         }
 
         /// <summary>
         /// Gets the coordinate
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get { return _p; }
-        }
+        public Coordinate Coordinate => _p;
 
         /// <inheritdoc cref="object.ToString()"/>
         public override String ToString()

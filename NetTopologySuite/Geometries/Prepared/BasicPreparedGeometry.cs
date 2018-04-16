@@ -26,7 +26,7 @@ namespace NetTopologySuite.Geometries.Prepared
             _representativePts = ComponentCoordinateExtracter.GetCoordinates(geom);
         }
 
-        public IGeometry Geometry { get { return _baseGeom; } }
+        public IGeometry Geometry => _baseGeom;
 
         ///<summary>
         /// Gets the list of representative points for this geometry. 
@@ -35,13 +35,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <para/>
         /// Do not modify the returned list!
         /// </summary>
-        public IList<Coordinate> RepresentativePoints
-        {
-            get
-            {
-                return new ReadOnlyCollection<Coordinate>(_representativePts);
-            }
-        }
+        public IList<Coordinate> RepresentativePoints => new ReadOnlyCollection<Coordinate>(_representativePts);
 
         ///<summary>
         /// Tests whether any representative of the target geometry intersects the test geometry.

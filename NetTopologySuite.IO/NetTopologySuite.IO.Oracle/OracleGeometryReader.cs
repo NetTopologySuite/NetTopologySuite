@@ -28,7 +28,7 @@ namespace NetTopologySuite.IO
 
         public int Dimension
         {
-            get { return _dimension; }
+            get => _dimension;
             set { _dimension = value; }
         }
 

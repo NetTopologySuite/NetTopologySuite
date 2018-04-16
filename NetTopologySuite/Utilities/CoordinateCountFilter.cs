@@ -19,13 +19,7 @@ namespace NetTopologySuite.Utilities
         /// <summary>
         /// Returns the result of the filtering.
         /// </summary>
-        public int Count 
-        {
-            get
-            {
-                return _n;
-            }
-        }
+        public int Count => _n;
 
         /// <summary>
         /// 

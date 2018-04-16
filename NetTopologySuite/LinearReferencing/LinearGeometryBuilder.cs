@@ -63,13 +63,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate LastCoordinate
-        {
-            get
-            {
-                return _lastPt;
-            }
-        }
+        public Coordinate LastCoordinate => _lastPt;
 
         /// <summary>
         /// Terminate the current <see cref="LineString" />.

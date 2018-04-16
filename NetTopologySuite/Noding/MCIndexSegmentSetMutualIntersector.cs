@@ -33,10 +33,7 @@ namespace NetTopologySuite.Noding
         /// Gets the index constructed over the base segment strings
         /// </summary>
         /// <remarks>NOTE: To retain thread-safety, treat returned value as immutable</remarks>
-        public ISpatialIndex<MonotoneChain> Index
-        {
-            get { return _index; }
-        }
+        public ISpatialIndex<MonotoneChain> Index => _index;
 
         private void InitBaseSegments(IEnumerable<ISegmentString> segStrings)
         {

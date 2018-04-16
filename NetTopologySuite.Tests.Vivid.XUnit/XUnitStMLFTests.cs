@@ -8,7 +8,7 @@ namespace NetTopologySuite.Tests.XUnit
 
         private const String testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\stmlf";
 
-        protected override string TestLocation { get { return testLocation; } }
+        protected override string TestLocation => testLocation;
     }
 
     public class TestStMLF20061020 : StMLFXUnitRunner

@@ -15,7 +15,7 @@ namespace Open.Topology.TestRunner.Operations
 
         public double Tolerance
         {
-            get { return _tolerance; }
+            get => _tolerance;
             set { _tolerance = value; }
         }
 

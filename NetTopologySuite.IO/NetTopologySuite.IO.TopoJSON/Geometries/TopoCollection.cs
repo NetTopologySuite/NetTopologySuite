@@ -14,9 +14,6 @@ namespace NetTopologySuite.IO.Geometries
             _geometries = geometries;
         }
 
-        public TopoObject[] Geometries
-        {
-            get { return _geometries; }
-        }
+        public TopoObject[] Geometries => _geometries;
     }
 }

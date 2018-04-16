@@ -64,13 +64,7 @@ namespace NetTopologySuite.Index.Bintree
         /// <summary>
         /// Gets the node's <see cref="Interval"/>
         /// </summary>
-        public  Interval Interval
-        {
-            get
-            {
-                return _interval;
-            }
-        }
+        public  Interval Interval => _interval;
 
         /// <summary>
         /// 

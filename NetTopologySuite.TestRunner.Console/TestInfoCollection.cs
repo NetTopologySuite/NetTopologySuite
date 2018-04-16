@@ -20,10 +20,7 @@ namespace ConsoleTestRunner
         
         public TestInfo this[int index]  
         {
-            get  
-            {
-                return ((TestInfo)List[index]);
-            }
+            get => ((TestInfo)List[index]);
             set  
             {
                 List[index] = value;

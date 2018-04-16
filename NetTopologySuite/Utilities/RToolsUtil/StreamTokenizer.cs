@@ -96,13 +96,15 @@ namespace RTools_NTS.Util
 		/// with the character attributes, such as whether that character is
 		/// word or whitespace.
 		/// </summary>
-		public byte[] CharTypes { get { return(charTypes); } }
+		public byte[] CharTypes => (charTypes);
 
 		bool grabWhitespace;
 		/// <summary>
 		/// Whether or not to return whitespace tokens.  If not, they're ignored.
 		/// </summary>
-		public bool GrabWhitespace { get { return(grabWhitespace); } set { grabWhitespace = value; } }
+		public bool GrabWhitespace { get => (grabWhitespace);
+			set => grabWhitespace = value;
+		}
 
 		bool grabEol;
 		/// <summary>
@@ -111,32 +113,42 @@ namespace RTools_NTS.Util
 		/// and quotes will not be broken by Eol tokens.  Therefore the number of
 		/// Eol tokens does not give you the line count of a stream.
 		/// </summary>
-		public bool GrabEol { get { return(grabEol); } set { grabEol = value; } }
+		public bool GrabEol { get => (grabEol);
+			set => grabEol = value;
+		}
 
 		bool slashSlashComments;
 		/// <summary>
 		/// Whether or not to look for // comments
 		/// </summary>
-		public bool SlashSlashComments { get { return(slashSlashComments); } set { slashSlashComments = value; } }
+		public bool SlashSlashComments { get => (slashSlashComments);
+			set => slashSlashComments = value;
+		}
 
 		bool slashStarComments;
 		/// <summary>
 		/// Whether or not to look for /* */ block comments.
 		/// </summary>
-		public bool SlashStarComments { get { return(slashStarComments); } set { slashStarComments = value; } }
+		public bool SlashStarComments { get => (slashStarComments);
+			set => slashStarComments = value;
+		}
 
 		bool grabComments;
 		/// <summary>
 		/// Whether or not to return comments.
 		/// </summary>
-		public bool GrabComments { get { return(grabComments); } set { grabComments = value; } }
+		public bool GrabComments { get => (grabComments);
+			set => grabComments = value;
+		}
 
 		bool doUntermCheck;
 		/// <summary>
 		/// Whether or not to check for unterminated quotes and block comments.
 		/// If true, and one is encoutered, an exception is thrown of the appropriate type.
 		/// </summary>
-		public bool DoUntermCheck { get { return(doUntermCheck); } set { doUntermCheck = value; } }
+		public bool DoUntermCheck { get => (doUntermCheck);
+			set => doUntermCheck = value;
+		}
 
 		bool parseNumbers;
 		/// <summary>
@@ -149,7 +161,7 @@ namespace RTools_NTS.Util
 		/// </summary>
 		public bool ParseNumbers
 		{
-			get { return(parseNumbers); }
+			get => (parseNumbers);
 /* dropped for speed, this means this property isn't accurate if
  * character types table is modified directly.
  * 			{ 
@@ -193,27 +205,7 @@ namespace RTools_NTS.Util
 		/// </summary>
 		public bool ParseHexNumbers
 		{
-			get 
-			{ 
-				return(parseHexNumbers);
-//				for (int i = 'A'; i <= 'F'; i++)
-//				{
-//					if (!IsCharType((char)i, CharTypeBits.Digit)) 
-//					{
-//						return(false);
-//					}
-//				}
-//				for (int i = 'a'; i <= 'f'; i++)
-//				{
-//					if (!IsCharType((char)i, CharTypeBits.Digit)) 
-//					{
-//						return(false);
-//					}
-//				}
-//				if (!IsCharType('x', CharTypeBits.Digit)) return(false);
-//
-//				return(true); 
-			}
+			get => (parseHexNumbers);
 			set 
 			{
 				parseHexNumbers = value;
@@ -662,15 +654,15 @@ namespace RTools_NTS.Util
 		/// </summary>
 		public TextReader TextReader
 		{
-			get { return(textReader); }
-			set { textReader = value; }
+			get => (textReader);
+			set => textReader = value;
 		}
 
 		private StreamTokenizerSettings settings;
 		/// <summary>
 		/// The settings which govern the behavior of the tokenization.
 		/// </summary>
-		public StreamTokenizerSettings Settings { get { return(settings); } }
+		public StreamTokenizerSettings Settings => (settings);
 
 		#endregion
 
@@ -1503,7 +1495,7 @@ namespace RTools_NTS.Util
 	    #region Implementation of IEnumerable
 
 	    /// <summary>
-	    /// Gibt einen Enumerator zurück, der die Auflistung durchläuft.
+	    /// Gibt einen Enumerator zurï¿½ck, der die Auflistung durchlï¿½uft.
 	    /// </summary>
 	    /// <returns>
 	    /// Ein <see cref="T:System.Collections.Generic.IEnumerator`1"/>, der zum Durchlaufen der Auflistung verwendet werden kann.
@@ -1526,7 +1518,7 @@ namespace RTools_NTS.Util
         }
 
 	    /// <summary>
-	    /// Gibt einen Enumerator zurück, der eine Auflistung durchläuft.
+	    /// Gibt einen Enumerator zurï¿½ck, der eine Auflistung durchlï¿½uft.
 	    /// </summary>
 	    /// <returns>
 	    /// Ein <see cref="T:System.Collections.IEnumerator"/>-Objekt, das zum Durchlaufen der Auflistung verwendet werden kann.

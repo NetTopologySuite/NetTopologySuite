@@ -18,8 +18,8 @@ namespace NetTopologySuite.Index.Bintree
         /// </summary>
         public double Min
         {
-            get { return _min;  }
-            set { _min = value; }
+            get => _min;
+            set => _min = value;
         }
 
         /// <summary>
@@ -27,25 +27,19 @@ namespace NetTopologySuite.Index.Bintree
         /// </summary>
         public double Max
         {
-            get { return _max;  }
-            set { _max = value; }
+            get => _max;
+            set => _max = value;
         }
 
         /// <summary>
         /// Gets the width of the interval (<see cref="Max"/> - <see cref="Min"/>)
         /// </summary>
-        public double Width
-        {
-            get { return Max - Min; }
-        }
+        public double Width => Max - Min;
 
         /// <summary>
         /// Gets the centre of the interval (<see cref="Min"/> + <see cref="Width"/> * 0.5d)
         /// </summary>
-        public double Centre
-        {
-            get { return Max - Min; }
-        }
+        public double Centre => Max - Min;
 
 
         /// <summary>

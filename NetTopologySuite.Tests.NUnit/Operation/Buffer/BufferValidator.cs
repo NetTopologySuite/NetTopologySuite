@@ -28,15 +28,9 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                 _priority = priority;
             }
 
-            public string Name
-            {
-                get { return _name; }
-            }
+            public string Name => _name;
 
-            public int Priority
-            {
-                get { return _priority; }
-            }
+            public int Priority => _priority;
 
             public TestMethod TestMethod { get; set; }
 

@@ -176,10 +176,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// a ring is a hole if it is oriented counter-clockwise.
         /// </summary>
         /// <returns><c>true</c> if this ring is a hole.</returns>
-        public bool IsHole
-        {
-            get { return _isHole; }
-        }
+        public bool IsHole => _isHole;
 
         ///<summary>
         /// Computes whether this ring is a hole.
@@ -254,14 +251,11 @@ namespace NetTopologySuite.Operation.Polygonize
             }
         }
 
-        public bool IsIncludedSet
-        {
-            get { return _isIncludedSet; }
-        }
+        public bool IsIncludedSet => _isIncludedSet;
 
         public bool IsIncluded
         {
-            get { return _isIncluded; }
+            get => _isIncluded;
             set
             {
                 _isIncluded = value;
@@ -355,17 +349,14 @@ namespace NetTopologySuite.Operation.Polygonize
         /// </summary>
         public EdgeRing Shell
         {
-            get { return IsHole ? _shell : this; }
-            private set { _shell = value; }
+            get => IsHole ? _shell : this;
+            private set => _shell = value;
         }
 
         /// <summary>
         /// Gets a value indicating whether this ring has a shell assigned to it.
         /// </summary>
-        public bool HasShell
-        {
-            get { return _shell != null; }
-        }
+        public bool HasShell => _shell != null;
 
         /// <summary>
         /// Tests whether this ring is an outer hole.
@@ -383,10 +374,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Tests whether this ring is an outer shell.
         /// </summary>
-        public bool IsOuterShell
-        {
-            get { return OuterHole != null; }
-        }
+        public bool IsOuterShell => OuterHole != null;
 
         public EdgeRing OuterHole
         {
@@ -441,8 +429,8 @@ namespace NetTopologySuite.Operation.Polygonize
         /// </summary>
         public bool IsProcessed
         {
-            get { return _isProcessed; }
-            set { _isProcessed = value; }
+            get => _isProcessed;
+            set => _isProcessed = value;
         }
 
         /// <summary>

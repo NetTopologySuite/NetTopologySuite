@@ -55,10 +55,7 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// Gets the computed interior point.
         /// </summary>
-        public Coordinate InteriorPoint
-        {
-            get { return _interiorPoint; }
-        }
+        public Coordinate InteriorPoint => _interiorPoint;
 
         /// <summary> 
         /// Tests the interior vertices (if any)

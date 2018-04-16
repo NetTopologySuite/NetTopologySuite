@@ -36,10 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             return poly;
         }
 
-        public override object Argument
-        {
-            get { return _preparedGeometry; }
-        }
+        public override object Argument => _preparedGeometry;
 
         private static readonly Random Rnd = new Random();
         public override ParameterizedThreadStart GetRunnable(int threadIndex)

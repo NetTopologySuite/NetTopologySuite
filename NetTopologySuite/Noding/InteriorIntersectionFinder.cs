@@ -86,8 +86,8 @@ namespace NetTopologySuite.Noding
         /// </summary>
         public bool KeepIntersections
         {
-            get { return _keepIntersections; }
-            set { _keepIntersections = value; }
+            get => _keepIntersections;
+            set => _keepIntersections = value;
         }
 
         ///<summary>
@@ -102,51 +102,30 @@ namespace NetTopologySuite.Noding
         ///<summary>
         /// Tests whether an intersection was found.
         ///</summary>
-        public Boolean HasIntersection
-        {
-            get
-            {
-                return _interiorIntersection != null;
-            }
-        }
+        public Boolean HasIntersection => _interiorIntersection != null;
 
         /// <summary>
         /// Gets the intersections found.
         /// </summary>
         /// <returns>A list of <see cref="Coordinate"/>.</returns>
-        public IList<Coordinate> Intersections
-        {
-            get
-            {
-                return new ReadOnlyCollection<Coordinate>(_intersections);
-            }
-        }
+        public IList<Coordinate> Intersections => new ReadOnlyCollection<Coordinate>(_intersections);
 
         /// <summary>
         /// Gets the count of intersections found.
         /// </summary>
         /// <returns>The intersection count.</returns>
-        public int Count
-        {
-            get { return intersectionCount; }
-        }
+        public int Count => intersectionCount;
 
         ///<summary>
         /// Gets the computed location of the intersection.
         /// Due to round-off, the location may not be exact.
         ///</summary>
-        public Coordinate InteriorIntersection
-        {
-            get { return _interiorIntersection; }
-        }
+        public Coordinate InteriorIntersection => _interiorIntersection;
 
         ///<summary>
         /// Gets the endpoints of the intersecting segments.
         ///</summary>
-        public Coordinate[] IntersectionSegments
-        {
-            get { return _intSegments; }
-        }
+        public Coordinate[] IntersectionSegments => _intSegments;
 
         ///<summary>
         /// This method is called by clients of the <see cref="ISegmentIntersector"/> class to process

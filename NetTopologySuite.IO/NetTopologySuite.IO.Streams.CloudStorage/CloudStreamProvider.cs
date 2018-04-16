@@ -35,10 +35,7 @@ namespace NetTopologySuite.IO.Streams
         private CloudBlobContainer Container { get; set; }
 
 
-        public bool UnderlyingStreamIsReadonly
-        {
-            get { return true; }
-        }
+        public bool UnderlyingStreamIsReadonly => true;
 
         public Stream OpenRead()
         {

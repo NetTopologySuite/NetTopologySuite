@@ -14,9 +14,6 @@ namespace NetTopologySuite.IO.Geometries
             _coordinates = coordinates;
         }
 
-        public double[][] Coordinates
-        {
-            get { return _coordinates; }
-        }
+        public double[][] Coordinates => _coordinates;
     }
 }

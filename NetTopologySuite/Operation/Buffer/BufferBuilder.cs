@@ -59,8 +59,8 @@ namespace NetTopologySuite.Operation.Buffer
         ///</remarks>
         public IPrecisionModel WorkingPrecisionModel
         {
-            get { return _workingPrecisionModel; }
-            set { _workingPrecisionModel = value; }
+            get => _workingPrecisionModel;
+            set => _workingPrecisionModel = value;
         }
 
         ///<summary>
@@ -70,8 +70,8 @@ namespace NetTopologySuite.Operation.Buffer
         ///</summary>
         public INoder Noder
         {
-            get { return _workingNoder; }
-            set { _workingNoder = value; }
+            get => _workingNoder;
+            set => _workingNoder = value;
         }
 
         public IGeometry Buffer(IGeometry g, double distance)

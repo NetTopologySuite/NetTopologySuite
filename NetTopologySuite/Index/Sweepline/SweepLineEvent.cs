@@ -48,35 +48,17 @@ namespace NetTopologySuite.Index.Sweepline
         /// <summary>
         /// 
         /// </summary>
-        public bool IsInsert
-        {
-            get
-            {
-                return insertEvent == null;
-            }
-        }
+        public bool IsInsert => insertEvent == null;
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsDelete
-        {
-            get
-            {
-                return insertEvent != null;
-            }
-        }
+        public bool IsDelete => insertEvent != null;
 
         /// <summary>
         /// 
         /// </summary>
-        public SweepLineEvent InsertEvent
-        {
-            get
-            {
-                return insertEvent;
-            }
-        }
+        public SweepLineEvent InsertEvent => insertEvent;
 
         /// <summary>
         /// 
@@ -86,13 +68,7 @@ namespace NetTopologySuite.Index.Sweepline
         /// <summary>
         /// 
         /// </summary>
-        public SweepLineInterval Interval
-        {
-            get
-            {
-                return sweepInt;
-            }
-        }
+        public SweepLineInterval Interval => sweepInt;
 
         /// <summary>
         /// ProjectionEvents are ordered first by their x-value, and then by their eventType.

@@ -200,19 +200,16 @@ namespace NetTopologySuite.IO
 
         public bool HandleSRID
         {
-            get { return true; }
+            get => true;
             set { }
         }
 
-        public Ordinates AllowedOrdinates
-        {
-            get { return Ordinates.XYZM; }
-        }
+        public Ordinates AllowedOrdinates => Ordinates.XYZM;
 
         private Ordinates _handleOrdinates;
         public Ordinates HandleOrdinates
         {
-            get { return _handleOrdinates; }
+            get => _handleOrdinates;
             set
             {
                 value = Ordinates.XY | (AllowedOrdinates & value);
@@ -226,7 +223,7 @@ namespace NetTopologySuite.IO
 
         public ByteOrder ByteOrder
         {
-            get { return ByteOrder.LittleEndian; }
+            get => ByteOrder.LittleEndian;
             set {  }
         }
 

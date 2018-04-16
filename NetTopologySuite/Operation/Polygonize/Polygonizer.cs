@@ -85,8 +85,8 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <remarks>The default is <c>true</c></remarks>
         public bool IsCheckingRingsValid
         {          
-            get { return _isCheckingRingsValid;  }
-            set { _isCheckingRingsValid = value; }
+            get => _isCheckingRingsValid;
+            set => _isCheckingRingsValid = value;
         }
 
         /// <summary>

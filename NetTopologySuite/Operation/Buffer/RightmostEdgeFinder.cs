@@ -20,24 +20,12 @@ namespace NetTopologySuite.Operation.Buffer
         /// <summary>
         /// 
         /// </summary>
-        public DirectedEdge Edge
-        {
-            get
-            {
-                return orientedDe;
-            }
-        }
+        public DirectedEdge Edge => orientedDe;
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get
-            {
-                return minCoord;
-            }
-        }
+        public Coordinate Coordinate => minCoord;
 
         /// <summary>
         /// 

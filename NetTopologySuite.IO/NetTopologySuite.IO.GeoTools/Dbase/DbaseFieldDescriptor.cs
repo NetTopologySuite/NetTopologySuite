@@ -9,21 +9,21 @@ namespace NetTopologySuite.IO
 	{
 		// Field Name
 		private string _name;
-        
+
 		// Field Type (C N L D or M)
 		private char _type;
-        
+
 		// Field Data Address offset from the start of the record.
 		private int _dataAddress;
-        
+
 		// Length of the data in bytes
 		private int _length;
-        
+
 		// Field decimal count in Binary, indicating where the decimal is
 		private int _decimalCount;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
@@ -60,7 +60,7 @@ namespace NetTopologySuite.IO
 		}
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
 		public static DbaseFieldDescriptor ShapeField()
@@ -72,7 +72,7 @@ namespace NetTopologySuite.IO
 		}
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
 		public static DbaseFieldDescriptor IdField()
@@ -88,75 +88,45 @@ namespace NetTopologySuite.IO
         /// </summary>
 		public string Name
 		{
-			get
-			{
-				return _name;
-			}
-			set
-			{
-				_name = value;
-			}
-		}
-        		
+	        get => _name;
+	        set => _name = value;
+        }
+
         /// <summary>
         /// Field Type (C N L D or M).
         /// </summary>
 		public char DbaseType
 		{
-			get
-			{
-				return _type;
-			}
-			set
-			{
-				_type = value;
-			}
-		}
-        
+	        get => _type;
+	        set => _type = value;
+        }
+
         /// <summary>
         /// Field Data Address offset from the start of the record.
         /// </summary>
 		public int DataAddress
 		{
-			get
-			{
-				return _dataAddress;
-			}
-			set
-			{
-				_dataAddress = value;
-			}
-		}
-        
+	        get => _dataAddress;
+	        set => _dataAddress = value;
+        }
+
         /// <summary>
         /// Length of the data in bytes.
         /// </summary>
 		public int Length
 		{
-			get
-			{
-				return _length;
-			}
-			set
-			{
-				_length = value;
-			}
-		}
-        
+	        get => _length;
+	        set => _length = value;
+        }
+
         /// <summary>
         /// Field decimal count in Binary, indicating where the decimal is.
         /// </summary>
 		public int DecimalCount
 		{
-			get
-			{
-				return _decimalCount;
-			}
-			set
-			{
-				_decimalCount = value;
-			}
-		}
+	        get => _decimalCount;
+	        set => _decimalCount = value;
+        }
 
 		/// <summary>
 		/// Returns the equivalent CLR type for this field.
@@ -191,7 +161,7 @@ namespace NetTopologySuite.IO
 					default:
 						throw new NotSupportedException("Do not know how to parse Field type "+_type);
 				}
-			}	
+			}
 		}
 
 	    public override string ToString()

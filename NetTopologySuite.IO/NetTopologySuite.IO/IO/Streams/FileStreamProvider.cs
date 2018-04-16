@@ -43,10 +43,7 @@ namespace NetTopologySuite.IO.Streams
         /// <summary>
         /// Gets a value indicating that the underlying stream is read-only
         /// </summary>
-        public bool UnderlyingStreamIsReadonly
-        {
-            get { return false; }
-        }
+        public bool UnderlyingStreamIsReadonly => false;
 
         /// <summary>
         /// Function to open the underlying stream for reading purposes

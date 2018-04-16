@@ -57,10 +57,7 @@ namespace NetTopologySuite.Precision
         /// <summary>
         /// The common bits of the Coordinates in the supplied Geometries.
         /// </summary>
-        public Coordinate CommonCoordinate
-        {
-            get { return _commonCoord; }
-        }
+        public Coordinate CommonCoordinate => _commonCoord;
 
         /// <summary>
         /// Removes the common coordinate bits from a Geometry.
@@ -114,13 +111,7 @@ namespace NetTopologySuite.Precision
             /// <summary>
             ///
             /// </summary>
-            public Coordinate CommonCoordinate
-            {
-                get
-                {
-                    return new Coordinate(_commonBitsX.Common, _commonBitsY.Common);
-                }
-            }
+            public Coordinate CommonCoordinate => new Coordinate(_commonBitsX.Common, _commonBitsY.Common);
         }
 
         /// <summary>
@@ -151,9 +142,9 @@ namespace NetTopologySuite.Precision
                 seq.SetOrdinate(i, Ordinate.Y, yp);
             }
 
-            public bool Done {  get { return false; } }
+            public bool Done => false;
 
-            public bool GeometryChanged {  get { return true; } }
+            public bool GeometryChanged => true;
         }
     }
 }

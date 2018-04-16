@@ -124,7 +124,7 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Gets a value indicating if the header has been written or not
         /// </summary>
-        public bool HeaderWritten { get { return _headerWritten; } }
+        public bool HeaderWritten => _headerWritten;
 
         /// <summary>
         /// Method to write the column values for a dbase record

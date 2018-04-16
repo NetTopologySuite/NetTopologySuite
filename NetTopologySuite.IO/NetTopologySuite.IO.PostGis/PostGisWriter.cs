@@ -17,10 +17,10 @@ namespace NetTopologySuite.IO
     {
         protected ByteOrder EncodingType;
         private Ordinates _outputOrdinates;
-        
+
         public  Ordinates HandleOrdinates
         {
-            get { return _outputOrdinates; }
+            get => _outputOrdinates;
             set
             {
                 value |= Ordinates.XY;
@@ -31,7 +31,7 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Initializes writer with LittleIndian byte order.
         /// </summary>
-        public PostGisWriter() : 
+        public PostGisWriter() :
             this(ByteOrder.LittleEndian) { }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace NetTopologySuite.IO
             var coordinateSpace = 8*OrdinatesUtility.OrdinatesToDimension(ordinates);
             var bytes = GetBytes(geometry, coordinateSpace);
             Write(geometry, ordinates, new MemoryStream(bytes));
-            
+
             return bytes;
         }
 
@@ -111,7 +111,7 @@ namespace NetTopologySuite.IO
         {
             if (ordinates == Ordinates.None)
                 ordinates = CheckOrdinates(geometry);
-            
+
             if (geometry is IPoint)
                 Write(geometry as IPoint, ordinates, byteOrder, writer);
 			else if (geometry is ILinearRing)
@@ -157,7 +157,7 @@ namespace NetTopologySuite.IO
 			writer.Write(typeword);
 
             if (srid != -1)
-                writer.Write(srid);			
+                writer.Write(srid);
 		}
 
         private static void Write(ICoordinateSequence sequence, Ordinates ordinates, BinaryWriter writer, bool justOne)
@@ -166,10 +166,10 @@ namespace NetTopologySuite.IO
                 return;
 
             var length = (justOne ? 1 : sequence.Count);
-            
-            if (!justOne) 
+
+            if (!justOne)
                 writer.Write(length);
-            
+
             for (var i = 0; i < length; i++)
             {
                 writer.Write(sequence.GetOrdinate(i, Ordinate.X));
@@ -190,7 +190,7 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="byteOrder"></param>
         /// <param name="point"></param>
@@ -218,7 +218,7 @@ namespace NetTopologySuite.IO
 		}
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="lineString"></param>
         /// <param name="ordinates"></param>
@@ -231,7 +231,7 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="linearRing"></param>
         /// <param name="ordinates"></param>
@@ -250,8 +250,8 @@ namespace NetTopologySuite.IO
         /// <param name="writer">The writer to use.</param>
         private void Write(IPolygon polygon, Ordinates ordinates, ByteOrder byteOrder, BinaryWriter writer)
         {
-            WriteHeader(PostGisGeometryType.Polygon, 
-                HandleSRID ? polygon.SRID : -1, 
+            WriteHeader(PostGisGeometryType.Polygon,
+                HandleSRID ? polygon.SRID : -1,
                 ordinates, byteOrder, writer);
             writer.Write(polygon.NumInteriorRings + 1);
             Write(polygon.ExteriorRing as ILinearRing, ordinates, writer);
@@ -268,8 +268,8 @@ namespace NetTopologySuite.IO
         /// <param name="writer">The writer to use.</param>
         private void Write(IMultiPoint multiPoint, Ordinates ordinates, ByteOrder byteOrder, BinaryWriter writer)
         {
-            WriteHeader(PostGisGeometryType.MultiPoint, 
-                HandleSRID ? multiPoint.SRID : -1, 
+            WriteHeader(PostGisGeometryType.MultiPoint,
+                HandleSRID ? multiPoint.SRID : -1,
                 ordinates, byteOrder, writer);
 			writer.Write(multiPoint.NumGeometries);
             Write(multiPoint.Geometries, ordinates, byteOrder, writer);
@@ -347,7 +347,7 @@ namespace NetTopologySuite.IO
 
 			if (HandleSRID & (geometry.SRID != -1))
 				result += 4;
-			
+
 			if (geometry is IPoint)
                 result += GetByteStreamSize(geometry as IPoint, coordinateSpace);
             else if (geometry is ILineString)
@@ -362,14 +362,14 @@ namespace NetTopologySuite.IO
                 result += GetByteStreamSize(geometry as IMultiPolygon, coordinateSpace);
             else if (geometry is IGeometryCollection)
                 result += GetByteStreamSize(geometry as IGeometryCollection, coordinateSpace);
-            else 
+            else
                 throw new ArgumentException("ShouldNeverReachHere");
 
 			return result;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="coordinateSpace">The size needed for each coordinate</param>
@@ -381,7 +381,7 @@ namespace NetTopologySuite.IO
 		}
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="coordinateSpace">The size needed for each coordinate</param>
@@ -393,7 +393,7 @@ namespace NetTopologySuite.IO
 		}
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="coordinateSpace">The size needed for each coordinate</param>
@@ -405,7 +405,7 @@ namespace NetTopologySuite.IO
 		}
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="coordinateSpace">The size needed for each coordinate</param>
@@ -423,7 +423,7 @@ namespace NetTopologySuite.IO
 		}
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="coordinateSpace">The size needed for each coordinate</param>
@@ -474,7 +474,7 @@ namespace NetTopologySuite.IO
 		}
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="coordinateSpace">The size needed for each coordinate</param>
@@ -485,7 +485,7 @@ namespace NetTopologySuite.IO
         }
 
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		/// <param name="geometry"></param>
         /// <param name="coordinateSpace">The size needed for each coordinate</param>
@@ -496,7 +496,7 @@ namespace NetTopologySuite.IO
 		}
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="coordinateSpace">The size needed for each coordinate</param>
@@ -597,12 +597,12 @@ namespace NetTopologySuite.IO
 
         #region Implementation of IGeometryIOBase
 
-        public bool HandleSRID { get { return true; } set { } }
-
-        public Ordinates AllowedOrdinates
-        {
-            get { return Ordinates.XYZM; }
+        public bool HandleSRID {
+            get => true;
+            set { }
         }
+
+        public Ordinates AllowedOrdinates => Ordinates.XYZM;
 
         #endregion
 
@@ -610,8 +610,8 @@ namespace NetTopologySuite.IO
 
         public ByteOrder ByteOrder
         {
-            get { return EncodingType; }
-            set { throw new InvalidOperationException(); }
+            get => EncodingType;
+            set => throw new InvalidOperationException();
         }
 
         #endregion

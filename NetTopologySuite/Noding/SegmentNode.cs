@@ -44,21 +44,14 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// Gets the <see cref="GeoAPI.Geometries.Coordinate"/> giving the location of this node.
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get { return Coord; }
-        }
-  
+        public Coordinate Coordinate => Coord;
+
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public bool IsInterior
-        { 
-            get { return _isInterior;  }
-
-        }
+        public bool IsInterior => _isInterior;
 
         /// <summary>
         /// 

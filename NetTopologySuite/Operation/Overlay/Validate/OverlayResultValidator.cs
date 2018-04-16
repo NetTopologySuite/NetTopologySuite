@@ -81,10 +81,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             return isValid;
         }
 
-        public Coordinate InvalidLocation
-        {
-            get { return _invalidLocation; }
-        }
+        public Coordinate InvalidLocation => _invalidLocation;
 
         private void AddTestPts(IGeometry g)
         {

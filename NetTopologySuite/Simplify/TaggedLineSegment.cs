@@ -38,23 +38,11 @@ namespace NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public IGeometry Parent
-        {
-            get
-            {
-                return _parent;
-            }
-        }
+        public IGeometry Parent => _parent;
 
         /// <summary>
         /// 
         /// </summary>
-        public int Index
-        {
-            get
-            {
-                return _index;
-            }
-        }
+        public int Index => _index;
     }
 }

@@ -112,9 +112,6 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         ///<summary>
         /// Gets the list of polygonal linework.
         ///</summary>
-        public List<ILineString> Linework
-        {
-            get { return _linework; }
-        }
+        public List<ILineString> Linework => _linework;
     }
 }

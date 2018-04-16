@@ -112,8 +112,8 @@ namespace NetTopologySuite.IO
         /// <value>The header.</value>
         public DbaseFileHeader Header
         {
-            get { return _header; }
-            set { _header = value; }
+            get => _header;
+            set => _header = value;
         }
 
         private IGeometryFactory _geometryFactory;
@@ -124,8 +124,8 @@ namespace NetTopologySuite.IO
         /// <value>The geometry factory.</value>
         protected IGeometryFactory GeometryFactory
         {
-            get { return _geometryFactory; }
-            set { _geometryFactory = value; }
+            get => _geometryFactory;
+            set => _geometryFactory = value;
         }
 
         /// <summary>

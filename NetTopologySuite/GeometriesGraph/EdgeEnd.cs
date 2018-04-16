@@ -88,67 +88,34 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         public Label Label
         {
-            get
-            {
-                return _label;
-            }
-            protected set { _label = value; }
+            get => _label;
+            protected set => _label = value;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get
-            {
-                return _p0;
-            }
-        }
+        public Coordinate Coordinate => _p0;
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate DirectedCoordinate
-        {
-            get
-            {
-                return _p1;
-            }
-        }
+        public Coordinate DirectedCoordinate => _p1;
 
         /// <summary>
         /// 
         /// </summary>
-        public int Quadrant
-        {
-            get
-            {
-                return _quadrant;
-            }
-        }
+        public int Quadrant => _quadrant;
 
         /// <summary>
         /// 
         /// </summary>
-        public double Dx
-        {
-            get
-            {
-                return _dx;
-            }
-        }
+        public double Dx => _dx;
 
         /// <summary>
         /// 
         /// </summary>
-        public double Dy
-        {
-            get
-            {
-                return _dy;
-            }
-        }
+        public double Dy => _dy;
 
         /// <summary>
         /// 

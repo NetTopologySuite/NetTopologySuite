@@ -28,10 +28,7 @@ namespace NetTopologySuite.Noding
         /// 
         /// </summary>
         /// <value></value>
-        public NodedSegmentString Edge 
-        {
-            get { return _edge; }
-        }
+        public NodedSegmentString Edge => _edge;
 
         /// <summary>
         /// Adds an intersection into the list, if it isn't already there.
@@ -372,10 +369,7 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// 
         /// </summary>
-        public object Current
-        {
-            get  { return _currNode; }
-        }
+        public object Current => _currNode;
 
         /// <summary>
         /// 

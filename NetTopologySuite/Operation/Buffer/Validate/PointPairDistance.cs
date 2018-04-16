@@ -38,9 +38,9 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             _isNull = false;
         }
 
-        public double Distance { get { return _distance; } }
+        public double Distance => _distance;
 
-        public Coordinate[] Coordinates { get { return _pt; } }
+        public Coordinate[] Coordinates => _pt;
 
         public Coordinate GetCoordinate(int i) { return _pt[i]; }
 

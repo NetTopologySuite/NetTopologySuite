@@ -108,8 +108,8 @@ namespace NetTopologySuite.IO.KML
         /// </summary>
         public string LinePrefix
         {
-            get { return _linePrefix; }
-            set { _linePrefix = value; }
+            get => _linePrefix;
+            set => _linePrefix = value;
         }
 
         /// <summary>
@@ -117,8 +117,8 @@ namespace NetTopologySuite.IO.KML
         /// </summary>
         public int MaxCoordinatesPerLine
         {
-            get { return _maxCoordinatesPerLine; }
-            set { _maxCoordinatesPerLine = Math.Max(1, value); }
+            get => _maxCoordinatesPerLine;
+            set => _maxCoordinatesPerLine = Math.Max(1, value);
         }
 
         /// <summary>
@@ -127,8 +127,8 @@ namespace NetTopologySuite.IO.KML
         /// </summary>
         public double Z
         {
-            get { return _z; }
-            set { _z = value; }
+            get => _z;
+            set => _z = value;
         }
 
         /// <summary>
@@ -136,8 +136,8 @@ namespace NetTopologySuite.IO.KML
         /// </summary>
         public bool Extrude
         {
-            get { return _extrude; }
-            set { _extrude = value; }
+            get => _extrude;
+            set => _extrude = value;
         }
 
         /// <summary>
@@ -145,8 +145,8 @@ namespace NetTopologySuite.IO.KML
         /// </summary>
         public bool Tesselate
         {
-            get { return _tesselate; }
-            set { _tesselate = value; }
+            get => _tesselate;
+            set => _tesselate = value;
         }
 
         /// <summary>
@@ -154,8 +154,8 @@ namespace NetTopologySuite.IO.KML
         /// </summary>
         public string AltitudeMode
         {
-            get { return _altitudeMode; }
-            set { _altitudeMode = value; }
+            get => _altitudeMode;
+            set => _altitudeMode = value;
         }
 
         /// <summary>
@@ -168,8 +168,8 @@ namespace NetTopologySuite.IO.KML
         /// </remarks>
         public int Precision
         {
-            get { return _formatter.NumberDecimalDigits; }
-            set { CreateFormatter(value); }
+            get => _formatter.NumberDecimalDigits;
+            set => CreateFormatter(value);
         }
 
         private void CreateFormatter(int precision)

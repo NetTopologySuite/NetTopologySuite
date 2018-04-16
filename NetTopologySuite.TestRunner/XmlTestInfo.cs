@@ -18,15 +18,9 @@ namespace Open.Topology.TestRunner
                 Reset();
 		}
 
-        public StringDictionary Parameters
-        {
-            get
-            {
-                return _listParameters;
-            }
-        }
+        public StringDictionary Parameters => _listParameters;
 
-        public void Reset()
+	    public void Reset()
         {
             if (_listParameters != null)
             {

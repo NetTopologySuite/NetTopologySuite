@@ -74,35 +74,20 @@ namespace NetTopologySuite.GeometriesGraph.Index
 
         public bool IsDoneIfProperInt
         {
-            set { _isDoneWhenProperInt = value; }
+            set => _isDoneWhenProperInt = value;
         }
 
-        public bool IsDone
-        {
-            get { return _isDone; }
-        }
+        public bool IsDone => _isDone;
 
         /// <returns> 
         /// The proper intersection point, or <c>null</c> if none was found.
         /// </returns>
-        public Coordinate ProperIntersectionPoint
-        {
-            get
-            {
-                return _properIntersectionPoint;
-            }
-        }
+        public Coordinate ProperIntersectionPoint => _properIntersectionPoint;
 
         /// <summary>
         /// 
         /// </summary>
-        public bool HasIntersection
-        {
-            get
-            {
-                return _hasIntersection;
-            }
-        }
+        public bool HasIntersection => _hasIntersection;
 
         /// <summary>
         /// A proper intersection is an intersection which is interior to at least two
@@ -111,25 +96,13 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// an endpoint equal to the intersection, which according to SFS semantics
         /// can result in the point being on the Boundary of the Geometry.
         /// </summary>
-        public bool HasProperIntersection
-        {
-            get
-            {
-                return _hasProper; 
-            }
-        }
+        public bool HasProperIntersection => _hasProper;
 
         /// <summary> 
         /// A proper interior intersection is a proper intersection which is not
         /// contained in the set of boundary nodes set for this SegmentIntersector.
         /// </summary>
-        public bool HasProperInteriorIntersection
-        {
-            get
-            {
-                return _hasProperInterior;
-            }
-        }
+        public bool HasProperInteriorIntersection => _hasProperInterior;
 
         /// <summary>
         /// A trivial intersection is an apparent self-intersection which in fact

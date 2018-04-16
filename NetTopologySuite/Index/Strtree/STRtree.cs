@@ -223,10 +223,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <summary>
         /// 
         /// </summary>
-        protected override IIntersectsOp IntersectsOp
-        {
-            get { return IntersectsOperation; }
-        }
+        protected override IIntersectsOp IntersectsOp => IntersectsOperation;
 
         /// <summary>
         /// Inserts an item having the given bounds into the tree.
@@ -304,7 +301,7 @@ namespace NetTopologySuite.Index.Strtree
         /// to provide an efficient search.
         /// This method implements the KNN algorithm described in the following paper:
         /// <para/>
-        /// Roussopoulos, Nick, Stephen Kelley, and Frédéric Vincent. "Nearest neighbor queries."
+        /// Roussopoulos, Nick, Stephen Kelley, and Frï¿½dï¿½ric Vincent. "Nearest neighbor queries."
         /// ACM sigmod record. Vol. 24. No. 2. ACM, 1995.
         /// <para/>
         /// The query <c>item</c> does <b>not</b> have to be 

@@ -106,13 +106,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <summary>
         ///
         /// </summary>
-        public double Double
-        {
-            get
-            {
-                return BitConverter.Int64BitsToDouble(_xBits);
-            }
-        }
+        public double Double => BitConverter.Int64BitsToDouble(_xBits);
 
         /// <summary>
         /// Determines the exponent for the number.
@@ -130,13 +124,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <summary>
         /// Determines the exponent for the number.
         /// </summary>
-        public int Exponent
-        {
-            get
-            {
-                return BiasedExponent - ExponentBias;
-            }
-        }
+        public int Exponent => BiasedExponent - ExponentBias;
 
         /// <summary>
         ///

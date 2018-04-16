@@ -105,12 +105,6 @@ namespace NetTopologySuite.Planargraph
         /// Tests whether this component has been removed from its containing graph.
         /// </summary>
         /// <value></value>
-        public override bool IsRemoved
-        {
-            get
-            {
-                return dirEdge == null;
-            }
-        }        
+        public override bool IsRemoved => dirEdge == null;
     }
 }

@@ -59,19 +59,13 @@ namespace NetTopologySuite.Triangulate
         /// Gets the start coordinate of the segment
         /// </summary>
         /// <remarks>a Coordinate</remarks>
-        public Coordinate Start
-        {
-            get {return _ls.GetCoordinate(0);}
-        }
+        public Coordinate Start => _ls.GetCoordinate(0);
 
         /// <summary>
         /// Gets the end coordinate of the segment
         /// </summary>
         /// <remarks>a Coordinate</remarks>
-        public Coordinate End
-        {
-            get {return _ls.GetCoordinate(1);}
-        }
+        public Coordinate End => _ls.GetCoordinate(1);
 
         /// <summary>
         /// Gets the start X ordinate of the segment
@@ -155,10 +149,7 @@ namespace NetTopologySuite.Triangulate
         /// Gets a <tt>LineSegment</tt> modelling this segment.
         /// </summary>
         /// <remarks>a LineSegment</remarks>
-        public LineSegment LineSegment
-        {
-           get {return _ls;}
-        }
+        public LineSegment LineSegment => _ls;
 
         /// <summary>
         /// Gets or sets the external data associated with this segment

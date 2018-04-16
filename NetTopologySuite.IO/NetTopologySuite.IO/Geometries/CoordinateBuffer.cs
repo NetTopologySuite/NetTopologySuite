@@ -132,7 +132,7 @@ namespace NetTopologySuite.Geometries
             /// <summary>
             /// Gets the defined <c>null</c> value
             /// </summary>
-            public double NoDataValue { get { return _noDataValue; } }
+            public double NoDataValue => _noDataValue;
 
             public override string ToString()
             {
@@ -255,15 +255,12 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets the number of coordinates added to the buffer
         /// </summary>
-        public int Count
-        {
-            get { return _coordinates.Count; }
-        }
+        public int Count => _coordinates.Count;
 
         /// <summary>
         /// Gets the defined ordinates in this buffer
         /// </summary>
-        public Ordinates DefinedOrdinates { get { return _definedOrdinates; } }
+        public Ordinates DefinedOrdinates => _definedOrdinates;
 
         /// <summary>
         /// Gets the number of dimension a coordinate sequence must provide
@@ -282,20 +279,17 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating if this buffer contains any z-ordinate values
         /// </summary>
-        public bool HasZ { get { return (_definedOrdinates & Ordinates.Z) == Ordinates.Z; } }
+        public bool HasZ => (_definedOrdinates & Ordinates.Z) == Ordinates.Z;
 
         /// <summary>
         /// Gets a value indicating if this buffer contains any m-ordinate values
         /// </summary>
-        public bool HasM { get { return (_definedOrdinates & Ordinates.M) == Ordinates.M; } }
+        public bool HasM => (_definedOrdinates & Ordinates.M) == Ordinates.M;
 
         /// <summary>
         /// Gets the (current) capacity of the buffer
         /// </summary>
-        public int Capacity
-        {
-            get { return _coordinates.Capacity; }
-        }
+        public int Capacity => _coordinates.Capacity;
 
         /// <summary>
         /// Adds a coordinate made up of the ordinates (x, y, z, m) to the buffer.

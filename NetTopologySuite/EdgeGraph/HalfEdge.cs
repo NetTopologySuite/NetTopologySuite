@@ -91,26 +91,20 @@ namespace NetTopologySuite.EdgeGraph
         /// <summary>
         /// Gets the origin coordinate of this edge.
         /// </summary>
-        public Coordinate Orig
-        {
-            get { return _orig; }
-        }
+        public Coordinate Orig => _orig;
 
         /// <summary>
         /// Gets the destination coordinate of this edge.
         /// </summary>
-        public Coordinate Dest
-        {
-            get { return Sym.Orig; }
-        }
+        public Coordinate Dest => Sym.Orig;
 
         /// <summary>
         /// Gets the symmetric pair edge of this edge.
         /// </summary>
         public HalfEdge Sym
         {
-            get { return _sym; }
-            private set { _sym = value; }
+            get => _sym;
+            private set => _sym = value;
         }
 
         /// <summary>
@@ -120,23 +114,17 @@ namespace NetTopologySuite.EdgeGraph
         /// </summary>
         public HalfEdge Next
         {
-            get { return _next; }
-            private set { _next = value; }
+            get => _next;
+            private set => _next = value;
         }
 
         /// <summary>
         /// Returns the edge previous to this one
         /// (with dest being the same as this orig).
         /// </summary>
-        public HalfEdge Prev
-        {
-            get { return Sym.Next.Sym; }
-        }
+        public HalfEdge Prev => Sym.Next.Sym;
 
-        public HalfEdge ONext
-        {
-            get { return Sym.Next; }
-        }
+        public HalfEdge ONext => Sym.Next;
 
         /// <summary>
         /// Finds the edge starting at the origin of this edge
@@ -277,18 +265,12 @@ namespace NetTopologySuite.EdgeGraph
         /// <summary>
         /// The X component of the distance between the orig and dest vertices.
         /// </summary>
-        public double DeltaX
-        {
-            get { return Sym.Orig.X - Orig.X; }
-        }
+        public double DeltaX => Sym.Orig.X - Orig.X;
 
         /// <summary>
         /// The Y component of the distance between the orig and dest vertices.
         /// </summary>
-        public double DeltaY
-        {
-            get { return Sym.Orig.Y - Orig.Y; }
-        }
+        public double DeltaY => Sym.Orig.Y - Orig.Y;
 
         /// <summary>
         /// Computes a string representation of a HalfEdge.

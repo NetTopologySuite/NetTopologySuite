@@ -11,10 +11,7 @@ namespace NetTopologySuite.IO.Geometries
             _type = type;
         }
 
-        public string Type
-        {
-            get { return _type; }
-        }
+        public string Type => _type;
 
         public long Id { get; set; }
 

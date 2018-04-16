@@ -180,8 +180,8 @@ namespace NetTopologySuite.IO
         ///</summary>
         public bool Formatted
         {
-            get { return _isFormatted; }
-            set { _isFormatted = value; }
+            get => _isFormatted;
+            set => _isFormatted = value;
         }
 
         ///<summary>
@@ -190,15 +190,15 @@ namespace NetTopologySuite.IO
         /// <remarks>If the provided coordinate number is &lt; 0, coordinates will be written all on one line.</remarks>
         public int MaxCoordinatesPerLine
         {
-            get { return _coordsPerLine; }
-            set { _coordsPerLine = value; }
+            get => _coordsPerLine;
+            set => _coordsPerLine = value;
         }
 
         ///<summary>Gets/sets the tab size to use for indenting.</summary>
         /// <exception cref="ArgumentException">If the size is non-positive</exception>
         public int Tab
         {
-            get { return _indentTabStr.Length; }
+            get => _indentTabStr.Length;
             set
             {
                 if (value <= 0)
@@ -794,14 +794,11 @@ namespace NetTopologySuite.IO
 
         public bool HandleSRID
         {
-            get { return EmitSRID; }
-            set { EmitSRID = value; }
+            get => EmitSRID;
+            set => EmitSRID = value;
         }
 
-        public Ordinates AllowedOrdinates
-        {
-            get { return Ordinates.XYZM; }
-        }
+        public Ordinates AllowedOrdinates => Ordinates.XYZM;
 
         public Ordinates HandleOrdinates
         {

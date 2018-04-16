@@ -64,53 +64,26 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value to sort the geometry
         /// </summary>
-        protected override SortIndexValue SortIndex
-        {
-            get { return SortIndexValue.MultiPolygon; }
-        }
+        protected override SortIndexValue SortIndex => SortIndexValue.MultiPolygon;
 
 
         /// <summary>
         /// 
         /// </summary>
-        public override Dimension Dimension
-        {
-            get
-            {
-                return Dimension.Surface;
-            }
-        }
+        public override Dimension Dimension => Dimension.Surface;
 
         /// <summary>
         /// 
         /// </summary>
-        public override Dimension BoundaryDimension
-        {
-            get
-            {
-                return Dimension.Curve;
-            }
-        }
+        public override Dimension BoundaryDimension => Dimension.Curve;
 
         /// <summary>  
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"MultiPolygon"</returns>
-        public override string GeometryType
-        {
-            get
-            {
-                return "MultiPolygon";
-            }
-        }
+        public override string GeometryType => "MultiPolygon";
 
-        public override OgcGeometryType OgcGeometryType
-        {
-            get
-            {
-                return OgcGeometryType.MultiPolygon;
-            }
-        }
+        public override OgcGeometryType OgcGeometryType => OgcGeometryType.MultiPolygon;
 
         ///// <summary>
         ///// 

@@ -34,10 +34,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <summary>
         /// Gets the buffer parameters being used to generate the curve.
         /// </summary>
-        public IBufferParameters BufferParameters
-        {
-            get { return _bufParams; }
-        }
+        public IBufferParameters BufferParameters => _bufParams;
 
         /// <summary>
         /// This method handles single points as well as LineStrings.

@@ -17,15 +17,8 @@ namespace NetTopologySuite.Operation
         /// </summary>
         protected LineIntersector lineIntersector
         {
-            get
-            {
-                return _li;
-            }
-            set
-            {
-                _li = value;
-            }
-
+            get => _li;
+            set => _li = value;
         }
         
         /// <summary>
@@ -86,10 +79,7 @@ namespace NetTopologySuite.Operation
         /// </summary>
         protected IPrecisionModel ComputationPrecision
         {
-            get
-            {
-                return resultPrecisionModel;
-            }
+            get => resultPrecisionModel;
             set
             {
                 resultPrecisionModel = value;

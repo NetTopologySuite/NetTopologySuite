@@ -30,10 +30,7 @@ namespace Open.Topology.TestRunner.Functions
             Add(clz);
         }
 
-        public List<IGeometryFunction> Functions
-        {
-            get { return _functions; }
-        }
+        public List<IGeometryFunction> Functions => _functions;
 
         public IList<IGeometryFunction> GetGeometryFunctions()
         {
@@ -110,15 +107,9 @@ namespace Open.Topology.TestRunner.Functions
                 _categorizedGeometryFunctions.Put(func.Category, func.Name, func);
         }
 
-        public DoubleKeyMap<string, string, IGeometryFunction> CategorizedGeometryFunctions
-        {
-            get { return _categorizedGeometryFunctions; }
-        }
+        public DoubleKeyMap<string, string, IGeometryFunction> CategorizedGeometryFunctions => _categorizedGeometryFunctions;
 
-        public ICollection<string> Categories
-        {
-            get { return _categorizedFunctions.KeySet(); }
-        }
+        public ICollection<string> Categories => _categorizedFunctions.KeySet();
 
         public ICollection<IGeometryFunction> GetFunctions(String category)
         {

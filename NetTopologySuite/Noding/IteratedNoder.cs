@@ -45,14 +45,8 @@ namespace NetTopologySuite.Noding
         /// </summary>
         public int MaximumIterations
         {
-            get
-            {
-                return _maxIter;
-            }
-            set
-            {
-                _maxIter = value;
-            }
+            get => _maxIter;
+            set => _maxIter = value;
         }
 
         /// <summary>

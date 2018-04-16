@@ -66,13 +66,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <summary>
         /// Gets the coordinate this hot pixel is based at.
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get
-            {
-                return _originalPt;
-            }
-        }
+        public Coordinate Coordinate => _originalPt;
 
         private const double SafeEnvelopeExpansionFactor = 0.75d;
 

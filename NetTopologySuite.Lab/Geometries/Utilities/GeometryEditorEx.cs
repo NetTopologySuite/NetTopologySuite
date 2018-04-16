@@ -109,8 +109,8 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <value><c>true</c> if the input user data should be copied.</value>
         public bool CopyUserData
         {
-            get { return _isUserDataCopied; }
-            set { _isUserDataCopied = value; }
+            get => _isUserDataCopied;
+            set => _isUserDataCopied = value;
         }
 
         /// <summary>

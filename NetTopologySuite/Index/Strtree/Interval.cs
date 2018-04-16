@@ -32,13 +32,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <summary>
         /// 
         /// </summary>
-        public double Centre
-        {
-            get
-            {
-                return (_min + _max) / 2;
-            }
-        }
+        public double Centre => (_min + _max) / 2;
 
         /// <summary>
         /// 

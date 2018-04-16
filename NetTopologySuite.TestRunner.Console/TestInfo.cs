@@ -31,10 +31,7 @@ namespace ConsoleTestRunner
 
         public string FileName
         {
-            get
-            {
-                return m_strFileName;
-            }
+            get => m_strFileName;
 
             set
             {
@@ -44,10 +41,7 @@ namespace ConsoleTestRunner
 
         public string Directory 
         {
-            get
-            {
-                return m_strDirectory;
-            }
+            get => m_strDirectory;
 
             set
             {
@@ -57,10 +51,7 @@ namespace ConsoleTestRunner
 
         public XmlTestType Filter
         {
-            get
-            {
-                return m_enumFilter;
-            }
+            get => m_enumFilter;
 
             set
             {
@@ -70,10 +61,7 @@ namespace ConsoleTestRunner
 
         public bool Verbose
         {
-            get
-            {
-                return m_bVerbose;
-            }
+            get => m_bVerbose;
 
             set
             {
@@ -83,10 +71,7 @@ namespace ConsoleTestRunner
 
         public bool Exception
         {
-            get
-            {
-                return m_bException;
-            }
+            get => m_bException;
 
             set
             {
@@ -96,10 +81,7 @@ namespace ConsoleTestRunner
 
         public bool Interactive
         {
-            get
-            {
-                return m_bInteractive;
-            }
+            get => m_bInteractive;
 
             set
             {

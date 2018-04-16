@@ -67,10 +67,7 @@ namespace NetTopologySuite.Noding
         /// List is empty if none were found.
         /// </remarks>
         /// </summary>
-        public IList<Coordinate> Intersections
-        {
-            get { return _segInt.Intersections; }
-        }
+        public IList<Coordinate> Intersections => _segInt.Intersections;
 
         ///<summary>
         /// Checks for an intersection and reports if one is found.

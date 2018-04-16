@@ -140,15 +140,9 @@ namespace NetTopologySuite.Precision
                     _smc.UpdateClearance(segDist, _queryPt, seg1, seg0);
             }
 
-            public Boolean Done
-            {
-                get { return false; }
-            }
+            public Boolean Done => false;
 
-            public bool GeometryChanged
-            {
-                get { return false; }
-            }
+            public bool GeometryChanged => false;
         }
     }
 }

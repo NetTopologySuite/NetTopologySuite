@@ -35,11 +35,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         public override Coordinate Coordinate
         {
-            get
-            {
-                return _coord; 
-            }
-            protected set { _coord = value; }
+            get => _coord;
+            protected set => _coord = value;
         }
 
         /// <summary>
@@ -47,11 +44,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         public EdgeEndStar Edges
         {
-            get
-            {
-                return _edges; 
-            }
-            protected set { _edges = value; }
+            get => _edges;
+            protected set => _edges = value;
         }
 
         /// <summary>
@@ -75,13 +69,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public override bool IsIsolated
-        {
-            get
-            {
-                return (Label.GeometryCount == 1);
-            }
-        }
+        public override bool IsIsolated => (Label.GeometryCount == 1);
 
         /// <summary>
         /// Basic nodes do not compute IMs.

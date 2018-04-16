@@ -234,35 +234,23 @@ namespace NetTopologySuite.LinearReferencing
         /// <summary>
         /// Gets the component index for this location.
         /// </summary>
-        public int ComponentIndex
-        {
-            get { return _componentIndex; }
-        }
+        public int ComponentIndex => _componentIndex;
 
         /// <summary>
         /// Gets the segment index for this location.
         /// </summary>
-        public int SegmentIndex
-        {
-            get { return _segmentIndex; }
-        }
+        public int SegmentIndex => _segmentIndex;
 
         /// <summary>
         /// Gets the segment fraction for this location.
         /// </summary>
-        public double SegmentFraction
-        {
-            get { return _segmentFraction; }
-        }
+        public double SegmentFraction => _segmentFraction;
 
         /// <summary>
         /// Tests whether this location refers to a vertex:
         /// returns <c>true</c> if the location is a vertex.
         /// </summary>
-        public bool IsVertex
-        {
-            get { return _segmentFraction <= 0.0 || _segmentFraction >= 1.0; }
-        }
+        public bool IsVertex => _segmentFraction <= 0.0 || _segmentFraction >= 1.0;
 
         /// <summary>
         /// Gets the <see cref="Coordinate" /> along the

@@ -33,10 +33,7 @@ namespace Open.Topology.TestRunner
         
         public XmlTest this[int index]  
         {
-            get  
-            {
-                return (XmlTest)List[index];
-            }
+            get => (XmlTest)List[index];
 
             set  
             {
@@ -46,10 +43,7 @@ namespace Open.Topology.TestRunner
 
         public string Name
         {
-            get
-            {
-                return m_strCollectionName;
-            }
+            get => m_strCollectionName;
 
             set
             {

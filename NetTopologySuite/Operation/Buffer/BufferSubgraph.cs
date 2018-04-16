@@ -31,35 +31,17 @@ namespace NetTopologySuite.Operation.Buffer
         /// <summary>
         /// 
         /// </summary>
-        public IList<DirectedEdge> DirectedEdges
-        {
-            get
-            {
-                return _dirEdgeList;
-            }
-        }
+        public IList<DirectedEdge> DirectedEdges => _dirEdgeList;
 
         /// <summary>
         /// 
         /// </summary>
-        public IList<Node> Nodes
-        {
-            get
-            {
-                return _nodes;
-            }
-        }
+        public IList<Node> Nodes => _nodes;
 
         /// <summary>
         /// Gets the rightmost coordinate in the edges of the subgraph.
         /// </summary>
-        public Coordinate RightMostCoordinate
-        {
-            get
-            {
-                return _rightMostCoord;
-            }
-        }
+        public Coordinate RightMostCoordinate => _rightMostCoord;
 
         /// <summary>
         /// Creates the subgraph consisting of all edges reachable from this node.

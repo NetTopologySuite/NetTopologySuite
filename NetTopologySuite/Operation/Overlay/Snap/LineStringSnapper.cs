@@ -43,8 +43,8 @@ namespace NetTopologySuite.Operation.Overlay.Snap
 
         public bool AllowSnappingToSourceVertices
         {
-            get { return _allowSnappingToSourceVertices; }
-            set { _allowSnappingToSourceVertices = value; }
+            get => _allowSnappingToSourceVertices;
+            set => _allowSnappingToSourceVertices = value;
         }
 
         private static bool IsClosed(Coordinate[] pts)

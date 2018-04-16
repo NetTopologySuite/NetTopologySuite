@@ -33,7 +33,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
 
             public new IList<IBoundable<Envelope, object>> BoundablesAtLevel(int level) { return base.BoundablesAtLevel(level); }
 
-            public new AbstractNode<Envelope, object> Root { get { return base.Root; } }
+            public new AbstractNode<Envelope, object> Root => base.Root;
 
             public new IList<IBoundable<Envelope, object>> CreateParentBoundables(IList<IBoundable<Envelope, object>> verticalSlice, int newLevel)
             {

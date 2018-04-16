@@ -31,10 +31,7 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// 
         /// </summary>
-        public IList<Coordinate> InteriorIntersections
-        {
-            get { return _interiorIntersections; }
-        }
+        public IList<Coordinate> InteriorIntersections => _interiorIntersections;
 
         /// <summary>
         /// This method is called by clients
@@ -76,9 +73,6 @@ namespace NetTopologySuite.Noding
         ///<summary>
         /// Always process all intersections
         ///</summary>
-        public bool IsDone
-        {
-            get { return false; }
-        }
+        public bool IsDone => false;
     }
 }

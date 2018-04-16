@@ -19,7 +19,7 @@ namespace NetTopologySuite.IO.Sdo
         [OracleObjectMappingAttribute(0)]
         public decimal? SdoGtype
         {
-            get { return _sdoGtype; }
+            get => _sdoGtype;
             set { _sdoGtype = value; }
         }
 
@@ -28,7 +28,7 @@ namespace NetTopologySuite.IO.Sdo
         [OracleObjectMappingAttribute(1)]
         public decimal? Sdo_Srid
         {
-            get { return _sdoSrid; }
+            get => _sdoSrid;
             set { _sdoSrid = value; }
         }
 
@@ -37,7 +37,7 @@ namespace NetTopologySuite.IO.Sdo
         [OracleObjectMappingAttribute(2)]
         public SdoPoint Point
         {
-            get { return _point; }
+            get => _point;
             set { _point = value; }
         }
 
@@ -46,7 +46,7 @@ namespace NetTopologySuite.IO.Sdo
         [OracleObjectMappingAttribute(3)]
         public decimal[] ElemArray
         {
-            get { return _elemArray; }
+            get => _elemArray;
             set { _elemArray = value; }
         }
 
@@ -55,7 +55,7 @@ namespace NetTopologySuite.IO.Sdo
         [OracleObjectMappingAttribute(4)]
         public decimal[] OrdinatesArray
         {
-            get { return _ordinatesArray; }
+            get => _ordinatesArray;
             set { _ordinatesArray = value; }
         }
 

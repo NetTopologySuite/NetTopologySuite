@@ -27,10 +27,7 @@ namespace NetTopologySuite.Utilities
         /// <summary>
         /// Returns the gathered <see cref="Coordinate"/>s.
         /// </summary>
-        public Coordinate[] Coordinates
-        {
-            get { return _list.ToArray(); }
-        }
+        public Coordinate[] Coordinates => _list.ToArray();
 
         /// <summary>
         /// 

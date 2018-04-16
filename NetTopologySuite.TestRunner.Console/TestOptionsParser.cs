@@ -17,15 +17,9 @@ namespace ConsoleTestRunner
             m_bIsDefault = false;
 		}
 
-        public bool IsDefault
-        {
-            get
-            {
-                return m_bIsDefault;
-            }
-        }
+        public bool IsDefault => m_bIsDefault;
 
-        public TestInfoCollection ParseProject(string projectFile)
+	    public TestInfoCollection ParseProject(string projectFile)
         {
             if (!File.Exists(projectFile))
             {

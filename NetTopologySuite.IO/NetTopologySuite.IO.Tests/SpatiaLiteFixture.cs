@@ -20,19 +20,13 @@ namespace NetTopologySuite.IO.Tests
             Compressed = false;
         }
 
-        public bool HasZ
-        {
-            get { return (this.Ordinates & Ordinates.Z) == Ordinates.Z; }
-        }
+        public bool HasZ => (this.Ordinates & Ordinates.Z) == Ordinates.Z;
 
-        public bool HasM
-        {
-            get { return (this.Ordinates & Ordinates.M) == Ordinates.M; }
-        }
+        public bool HasM => (this.Ordinates & Ordinates.M) == Ordinates.M;
 
         public bool Compressed { get; set; }
 
-        protected virtual string Name { get { return "SpatiaLite.sqlite"; } }
+        protected virtual string Name => "SpatiaLite.sqlite";
 
         protected override void AddAppConfigSpecificItems(KeyValueConfigurationCollection kvcc)
         {
@@ -116,7 +110,7 @@ namespace NetTopologySuite.IO.Tests
     [NUnit.Framework.Category("Database.IO")]
     public class SpatiaLiteFixtureCompressed : SpatiaLiteFixture
     {
-        protected override string Name { get { return "SpatiaLiteCompressed.sqlite"; } }
+        protected override string Name => "SpatiaLiteCompressed.sqlite";
 
         public override void OnFixtureSetUp()
         {
@@ -129,7 +123,7 @@ namespace NetTopologySuite.IO.Tests
     [NUnit.Framework.Category("Database.IO")]
     public class SpatiaLiteFixture3D : SpatiaLiteFixture
     {
-        protected override string Name { get { return "SpatiaLite3D.sqlite"; } }
+        protected override string Name => "SpatiaLite3D.sqlite";
 
         public override void OnFixtureSetUp()
         {
@@ -142,7 +136,7 @@ namespace NetTopologySuite.IO.Tests
     [NUnit.Framework.Category("Database.IO")]
     public class SpatiaLiteFixture3DCompressed : SpatiaLiteFixture3D
     {
-        protected override string Name { get { return "SpatiaLite3DCompressed.sqlite"; } }
+        protected override string Name => "SpatiaLite3DCompressed.sqlite";
 
         public override void OnFixtureSetUp()
         {

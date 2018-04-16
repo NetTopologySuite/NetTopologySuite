@@ -34,19 +34,19 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         public int Seed
         {
-            get { return _seed; }
+            get => _seed;
             set { _seed = value; }
         }
 
         public int NumLines
         {
-            get { return _numLines; }
+            get => _numLines;
             set {_numLines = value;}
         }
 
         public double LineWidth
         {
-            get { return _lineWidth; }
+            get => _lineWidth;
             set { _lineWidth = value; }
         }
 

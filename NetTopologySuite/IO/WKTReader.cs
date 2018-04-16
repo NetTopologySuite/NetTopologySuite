@@ -66,7 +66,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         public IGeometryFactory Factory
         {
-            get { return GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(_precisionModel, DefaultSRID, _coordinateSequencefactory); }
+            get => GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(_precisionModel, DefaultSRID, _coordinateSequencefactory);
             set
             {
                 if (value != null)
@@ -709,18 +709,15 @@ namespace NetTopologySuite.IO
 
         public bool HandleSRID
         {
-            get { return true; }
+            get => true;
             set { }
         }
 
-        public Ordinates AllowedOrdinates
-        {
-            get { return Ordinates.XYZ; }
-        }
+        public Ordinates AllowedOrdinates => Ordinates.XYZ;
 
         public Ordinates HandleOrdinates
         {
-            get { return AllowedOrdinates; }
+            get => AllowedOrdinates;
             set { }
         }
 

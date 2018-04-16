@@ -387,13 +387,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </pre>
         /// </remarks>
         /// <returns> an array of length 6</returns>
-        public double[] MatrixEntries
-        {
-            get
-            {
-                return new[] { _m00, _m01, _m02, _m10, _m11, _m12 };
-            }
-        }
+        public double[] MatrixEntries => new[] { _m00, _m01, _m02, _m10, _m11, _m12 };
 
         /// <summary>
         /// Computes the determinant of the transformation matrix.
@@ -419,10 +413,7 @@ namespace NetTopologySuite.Geometries.Utilities
         ///
         /// <returns>The determinant of the transformation</returns>
         /// <see cref="GetInverse"/>
-        public double Determinant
-        {
-            get { return _m00 * _m11 - _m01 * _m10; }
-        }
+        public double Determinant => _m00 * _m11 - _m01 * _m10;
 
         /// <summary>
         /// Computes the inverse of this transformation, if one
@@ -1019,30 +1010,18 @@ namespace NetTopologySuite.Geometries.Utilities
             Transform(seq, i);
         }
 
-        public Boolean GeometryChanged
-        {
-            get { return true; }
-        }
+        public Boolean GeometryChanged => true;
 
         /// <summary>
         /// Reports that this filter should continue to be executed until
         /// all coordinates have been transformed.
         /// </summary>
         /// <returns> false</returns>
-        public Boolean Done
-        {
-            get { return false; }
-        }
+        public Boolean Done => false;
 
         ///<summary>Tests if this transformation is the identity transformation.</summary>
-        public Boolean IsIdentity
-        {
-            get
-            {
-                return (_m00 == 1 && _m01 == 0 && _m02 == 0
-                        && _m10 == 0 && _m11 == 1 && _m12 == 0);
-            }
-        }
+        public Boolean IsIdentity => (_m00 == 1 && _m01 == 0 && _m02 == 0
+                                      && _m10 == 0 && _m11 == 1 && _m12 == 0);
 
         ///<summary>
         /// Tests if an object is an <c>AffineTransformation</c> and has the same matrix as this transformation.

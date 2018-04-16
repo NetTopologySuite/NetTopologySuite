@@ -43,12 +43,6 @@ namespace NetTopologySuite.Triangulate
         /// Gets the approximate location of this error.
         /// </summary>
         /// <remarks>a location</remarks>
-        public Coordinate Coordinate
-        {
-            get
-            {
-                return _pt;
-            }
-        }
+        public Coordinate Coordinate => _pt;
     }
 }

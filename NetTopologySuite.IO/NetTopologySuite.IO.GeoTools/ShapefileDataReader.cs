@@ -127,13 +127,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <value>true if the data reader is closed; otherwise, false.</value>
         /// <remarks>IsClosed and RecordsAffected are the only properties that you can call after the IDataReader is closed.</remarks>
-        public bool IsClosed
-        {
-            get
-            {
-                return !_open;
-            }
-        }
+        public bool IsClosed => !_open;
 
         /// <summary>
         /// Closes the IDataReader 0bject.

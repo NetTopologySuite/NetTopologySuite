@@ -148,47 +148,23 @@ namespace NetTopologySuite.LinearReferencing
         /// <summary>
         /// The component index of the vertex the iterator is currently at.
         /// </summary>
-        public int ComponentIndex
-        {
-            get
-            {
-                return _componentIndex;
-            }
-        }
+        public int ComponentIndex => _componentIndex;
 
         /// <summary>
         /// The vertex index of the vertex the iterator is currently at.
         /// </summary>
-        public int VertexIndex
-        {
-            get
-            {
-                return _vertexIndex;
-            }
-        }
+        public int VertexIndex => _vertexIndex;
 
         /// <summary>
         /// Gets the <see cref="LineString" /> component the iterator is current at.
         /// </summary>
-        public ILineString Line
-        {
-            get
-            {
-                return _currentLine;
-            }
-        }
+        public ILineString Line => _currentLine;
 
         /// <summary>
         /// Gets the first <see cref="Coordinate" /> of the current segment
         /// (the coordinate of the current vertex).
         /// </summary>
-        public Coordinate SegmentStart
-        {
-            get
-            {
-                return _currentLine.GetCoordinateN(_vertexIndex);
-            }
-        }
+        public Coordinate SegmentStart => _currentLine.GetCoordinateN(_vertexIndex);
 
         /// <summary>
         /// Gets the second <see cref="Coordinate" /> of the current segment

@@ -154,16 +154,13 @@ namespace NetTopologySuite.Index.Strtree
                 Build();
                 return _root;
             }
-            set { _root = value; }
+            set => _root = value;
         }
 
         /// <summary> 
         /// Returns the maximum number of child nodes that a node may have.
         /// </summary>
-        public int NodeCapacity
-        {
-            get { return _nodeCapacity; }
-        }
+        public int NodeCapacity => _nodeCapacity;
 
         /// <summary>
         /// Tests whether the index contains any items.

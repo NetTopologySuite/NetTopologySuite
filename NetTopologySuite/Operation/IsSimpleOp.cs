@@ -111,10 +111,7 @@ namespace NetTopologySuite.Operation
         ///</summary>
         /// <returns> a coordinate for the location of the non-boundary self-intersection
         /// or <value>null</value> if the geometry is simple</returns>
-        public Coordinate NonSimpleLocation
-        {
-            get { return _nonSimpleLocation; }
-        }
+        public Coordinate NonSimpleLocation => _nonSimpleLocation;
 
         /// <summary>
         /// Reports whether a <see cref="ILineString"/> is simple.

@@ -33,13 +33,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate NestedPoint 
-        {
-            get
-            {
-                return nestedPt; 
-            }
-        }
+        public Coordinate NestedPoint => nestedPt;
 
         /// <summary>
         /// 
@@ -110,13 +104,7 @@ namespace NetTopologySuite.Operation.Valid
             /// <summary>
             /// 
             /// </summary>
-            public bool IsNonNested
-            {
-                get 
-                { 
-                    return isNonNested; 
-                }
-            }
+            public bool IsNonNested => isNonNested;
 
             /// <summary>
             /// 

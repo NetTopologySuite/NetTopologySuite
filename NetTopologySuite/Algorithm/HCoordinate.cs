@@ -88,8 +88,8 @@ namespace NetTopologySuite.Algorithm
         [Obsolete("This is a simple access to x private field: use GetX() instead.")]
         protected double X
         {
-            get { return _x; }
-            set { _x = value; }
+            get => _x;
+            set => _x = value;
         }
 
         /// <summary>
@@ -98,8 +98,8 @@ namespace NetTopologySuite.Algorithm
         [Obsolete("This is a simple access to y private field: use GetY() instead.")]
         protected double Y
         {
-            get { return _y; }
-            set { _y = value; }
+            get => _y;
+            set => _y = value;
         }
 
         /// <summary>
@@ -108,8 +108,8 @@ namespace NetTopologySuite.Algorithm
         [Obsolete("This is a simple access to w private field: how do you use this field for?...")]
         protected double W
         {
-            get { return _w; }
-            set { _w = value; }
+            get => _w;
+            set => _w = value;
         }
 
         /// <summary>
@@ -186,13 +186,7 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get 
-            { 
-                return new Coordinate(GetX(), GetY()); 
-            }
-        }
+        public Coordinate Coordinate => new Coordinate(GetX(), GetY());
 
         ///<summary>
         /// Constructs a homogeneous coordinate which is the intersection of the lines <see cref="Coordinate"/>s.

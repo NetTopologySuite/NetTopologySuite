@@ -19,10 +19,7 @@ namespace NetTopologySuite.Dissolve
         /// in a LineString being dissolved.
         /// </summary>
         /// <returns><c>true</c> if this edge is a start segment</returns>        
-        public bool IsStart
-        {
-            get { return _isStart; }
-        }
+        public bool IsStart => _isStart;
 
         /// <summary>
         /// Sets this edge to be the start segment of an input LineString.

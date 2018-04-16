@@ -53,12 +53,9 @@ namespace NetTopologySuite.IO
             _geometryServices = geometryServices;
         }
 
-        public IGeometry ConstructedGeometry
-        {
-            get { return _geometry; }
-        }
+        public IGeometry ConstructedGeometry => _geometry;
 
-        private void AddCoordinate(double x, double y, double? z, double? m)
+	    private void AddCoordinate(double x, double y, double? z, double? m)
         {
             _coordinateBuffer.AddCoordinate(x, y, z, m);
             /*

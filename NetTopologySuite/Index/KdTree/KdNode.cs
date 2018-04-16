@@ -48,34 +48,22 @@ namespace NetTopologySuite.Index.KdTree
         /// <summary>
         /// Gets x-ordinate of this node
         /// </summary>
-        public double X
-        {
-            get { return _p.X; }
-        }
+        public double X => _p.X;
 
         /// <summary>
         /// Gets y-ordinate of this node
         /// </summary>
-        public double Y
-        {
-            get { return _p.Y; }
-        }
+        public double Y => _p.Y;
 
         /// <summary>
         /// Gets the location of this node
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get { return _p; }
-        }
+        public Coordinate Coordinate => _p;
 
         /// <summary>
         /// Gets the user data object associated with this node.
         /// </summary>
-        public T Data 
-        { 
-            get { return _data; }
-        }
+        public T Data => _data;
 
         /// <summary>
         /// Gets or sets the left node of the tree
@@ -96,18 +84,12 @@ namespace NetTopologySuite.Index.KdTree
         /// <summary>
         /// Gets the number of inserted points that are coincident at this location.
         /// </summary>
-        public int Count
-        {
-            get{return _count;}
-        }
+        public int Count => _count;
 
         /// <summary>
         /// Gets whether more than one point with this value have been inserted (up to the tolerance)
         /// </summary>
         /// <returns></returns>
-        public bool IsRepeated
-        {
-            get {return _count > 1;}
-        }
+        public bool IsRepeated => _count > 1;
     }
 }

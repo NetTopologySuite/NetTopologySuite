@@ -105,42 +105,49 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating the minimal x-ordinate value
         /// </summary>
-        public double MinX { get { return _minX; } }
+        public double MinX => _minX;
+
         /// <summary>
         /// Gets a value indicating the maximal x-ordinate value
         /// </summary>
-        public double MaxX { get { return _maxX; } }
+        public double MaxX => _maxX;
+
         /// <summary>
         /// Gets a value indicating the minimal y-ordinate value
         /// </summary>
-        public double MinY { get { return _minY; } }
+        public double MinY => _minY;
+
         /// <summary>
         /// Gets a value indicating the maximal y-ordinate value
         /// </summary>
-        public double MaxY { get { return _maxY; } }
+        public double MaxY => _maxY;
+
         /// <summary>
         /// Gets a value indicating the minimal <c>a</c> value
         /// </summary>
-        public double MinA { get { return _minA; } }
+        public double MinA => _minA;
+
         /// <summary>
         /// Gets a value indicating the maximal <c>a</c> value
         /// </summary>
-        public double MaxA { get { return _maxA; } }
+        public double MaxA => _maxA;
+
         /// <summary>
         /// Gets a value indicating the minimal <c>b</c> value
         /// </summary>
-        public double MinB { get { return _minB; } }
+        public double MinB => _minB;
+
         /// <summary>
         /// Gets a value indicating the maximal <c>b</c> value
         /// </summary>
-        public double MaxB { get { return _maxB; } }
+        public double MaxB => _maxB;
 
         /// <summary>
         /// Gets a value indicating that this object is null
         /// </summary>
         public Boolean IsNull
         {
-            get { return Double.IsNaN(_minX); }
+            get => Double.IsNaN(_minX);
             private set
             {
                 if (value)

@@ -32,25 +32,16 @@ namespace NetTopologySuite.Index.Sweepline
         /// <summary>
         /// 
         /// </summary>
-        public double Min 
-        { 
-            get { return min; } 
-        }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        public double Max 
-        { 
-            get { return max; } 
-        }
+        public double Min => min;
 
         /// <summary>
         /// 
         /// </summary>
-        public object Item 
-        { 
-            get { return item; } 
-        }
+        public double Max => max;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public object Item => item;
     }
 }

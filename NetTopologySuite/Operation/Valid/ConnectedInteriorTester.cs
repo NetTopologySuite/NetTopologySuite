@@ -53,13 +53,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get
-            {
-                return _disconnectedRingcoord;
-            }
-        }
+        public Coordinate Coordinate => _disconnectedRingcoord;
 
         /// <summary>
         /// 

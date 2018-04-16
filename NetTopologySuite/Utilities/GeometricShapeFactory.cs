@@ -42,7 +42,7 @@ namespace NetTopologySuite.Utilities
         /// </summary>
         public Coordinate Base  
         {
-            set { _dim.Base = value; }
+            set => _dim.Base = value;
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Utilities
         /// </summary>
         public Coordinate Centre
         {
-            set { _dim.Centre = value; }
+            set => _dim.Centre = value;
         }
 
         /// <summary>
@@ -59,8 +59,8 @@ namespace NetTopologySuite.Utilities
         /// </summary>
         public Envelope Envelope
         {
-            get { return _dim.Envelope; }
-            set { _dim.Envelope = value; }
+            get => _dim.Envelope;
+            set => _dim.Envelope = value;
         }
 
         /// <summary>
@@ -68,8 +68,8 @@ namespace NetTopologySuite.Utilities
         /// </summary>
         public int NumPoints
         {
-            get { return _nPts; }
-            set { _nPts = value; }
+            get => _nPts;
+            set => _nPts = value;
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Utilities
         /// </summary>                
         public double Size
         {
-            set { _dim.Size = value; }
+            set => _dim.Size = value;
         }
 
         /// <summary>
@@ -85,8 +85,8 @@ namespace NetTopologySuite.Utilities
         /// </summary>
         public double Width
         {
-            get { return _dim.Width; }
-            set { _dim.Width = value; }
+            get => _dim.Width;
+            set => _dim.Width = value;
         }
 
         /// <summary>
@@ -94,8 +94,8 @@ namespace NetTopologySuite.Utilities
         /// </summary>
         public double Height
         {
-            get { return _dim.Height; }
-            set { _dim.Height = value; }
+            get => _dim.Height;
+            set => _dim.Height = value;
         }
 
         /// <summary>
@@ -104,8 +104,8 @@ namespace NetTopologySuite.Utilities
         /// </summary>        
         public double Rotation
         {
-            get { return _rotationAngle; }
-            set { _rotationAngle = value; }
+            get => _rotationAngle;
+            set => _rotationAngle = value;
         }
 
         protected IGeometry Rotate(IGeometry geom)
@@ -385,8 +385,8 @@ namespace NetTopologySuite.Utilities
 
             public Coordinate Base
             {
-                get { return _base; }
-                set { _base = value; }
+                get => _base;
+                set => _base = value;
             }
 
             private Coordinate _centre;
@@ -403,24 +403,24 @@ namespace NetTopologySuite.Utilities
                     }
                     return _centre;
                 }
-                set { _centre = value; }
+                set => _centre = value;
             }
 
             private double _width;
 
            public double Width
             {
-                get { return _width; }
-                set { _width = value; }
-            }
+                get => _width;
+               set => _width = value;
+           }
 
             private double _height;
 
            public double Height
             {
-                get { return _height; }
-                set { _height = value; }
-            }                                  
+                get => _height;
+               set => _height = value;
+           }                                  
 
             public double Size
             {
@@ -431,13 +431,7 @@ namespace NetTopologySuite.Utilities
                 }
             }
 
-            public double MinSize
-            {
-                get
-                {
-                    return Math.Min(Width, Height);
-                }                
-            }
+            public double MinSize => Math.Min(Width, Height);
 
             public Envelope Envelope
             {

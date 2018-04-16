@@ -26,25 +26,25 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         public int NumPoints
         {
-            get { return _numPts; }
+            get => _numPts;
             set { _numPts = value;}
         }
 
         public IPointOnGeometryLocator TestPointInAreaLocator
         {
-            get { return _pia1; }
+            get => _pia1;
             set { _pia1 = value; }
         }
 
         public IPointOnGeometryLocator ExpectedPointInAreaLocator
         {
-            get { return _pia2; }
+            get => _pia2;
             set { _pia2 = value; }
         }
 
         public Boolean IgnoreBoundaryResults
         {
-            get { return _ignoreBoundaryResults; }
+            get => _ignoreBoundaryResults;
             set { _ignoreBoundaryResults = value; }
         }
 

@@ -8,12 +8,12 @@ using Oracle.DataAccess.Client;
 namespace NetTopologySuite.IO
 {
 /**
- * 
- * Translates a JTS Geometry into an Oracle STRUCT representing an MDSYS.GEOMETRY object. 
- * 
- * A connection to an oracle instance with access to the definition of the MDSYS.GEOMETRY 
+ *
+ * Translates a JTS Geometry into an Oracle STRUCT representing an MDSYS.GEOMETRY object.
+ *
+ * A connection to an oracle instance with access to the definition of the MDSYS.GEOMETRY
  * object is required by the oracle driver.
- * 
+ *
  * @version 9i
  * @author David Zwiers, Vivid Solutions.
  */
@@ -27,84 +27,84 @@ namespace NetTopologySuite.IO
         private const String Datatype = "MDSYS.SDO_GEOMETRY";
 
         /**
-	 * Initialize the Oracle MDSYS.GEOMETRY Encoder with a valid oracle connection. 
-	 * 
+	 * Initialize the Oracle MDSYS.GEOMETRY Encoder with a valid oracle connection.
+	 *
 	 * The connection should have sufficient priveledges to view the description of the MDSYS.GEOMETRY type.
-	 * 
+	 *
 	 * The dimension is set to 2
-	 * 
+	 *
 	 * @param con
 	 */
 	public OracleGeometryWriter(OracleConnection con)
         :this(con, 2)
     {
 	}
-	
+
 	/**
-	 * Initialize the Oracle MDSYS.GEOMETRY Encoder with a valid oracle connection. 
-	 * 
+	 * Initialize the Oracle MDSYS.GEOMETRY Encoder with a valid oracle connection.
+	 *
 	 * The connection should have sufficient priveledges to view the description of the MDSYS.GEOMETRY type.
-	 * 
+	 *
 	 * @param con
-	 * @param dimension 
+	 * @param dimension
 	 */
 	public OracleGeometryWriter(OracleConnection con, int dimension){
 		_connection = con;
 		_dimension = dimension;
 	}
-	
+
 	/**
-	 * Provides the oppotunity to force all geometries written using this writter to be written using the 
-	 * specified srid. This is useful in two cases: 1) when you do not want the geometry's srid to be 
+	 * Provides the oppotunity to force all geometries written using this writter to be written using the
+	 * specified srid. This is useful in two cases: 1) when you do not want the geometry's srid to be
 	 * over-written or 2) when you want to ensure an entire layer is always written using a constant srid.
-	 * 
+	 *
 	 * @param srid
 	 */
 	public int SRID
     {
-        get { return _srid; }
-        set { _srid = value; }
+	    get => _srid;
+	    set { _srid = value; }
     }
 
 	/**
 	 * This routine will translate the JTS Geometry into an Oracle MDSYS.GEOMETRY STRUCT.
-	 * 
-	 * Although invalid geometries may be encoded, and inserted into an Oracle DB, this is 
-	 * not recomended. It is the responsibility of the user to ensure the geometry is valid 
-	 * prior to calling this method. The user should also ensure the the geometry's SRID 
-	 * field contains the correct value, if an SRID is desired. An incorrect SRID value may 
-	 * cause index exceptions during an insert or update. 
-	 * 
-	 * When a null Geometry is passed in, a non-null, empty STRUCT is returned. Therefore, 
-	 * inserting the the result of calling this method directly into a table will never result 
-	 * in null insertions. 
+	 *
+	 * Although invalid geometries may be encoded, and inserted into an Oracle DB, this is
+	 * not recomended. It is the responsibility of the user to ensure the geometry is valid
+	 * prior to calling this method. The user should also ensure the the geometry's SRID
+	 * field contains the correct value, if an SRID is desired. An incorrect SRID value may
+	 * cause index exceptions during an insert or update.
+	 *
+	 * When a null Geometry is passed in, a non-null, empty STRUCT is returned. Therefore,
+	 * inserting the the result of calling this method directly into a table will never result
+	 * in null insertions.
 	 * (March 2006)
-	 * 
-	 * To pass a NULL Geometry into an oracle geometry parameter using jdbc, use 
+	 *
+	 * To pass a NULL Geometry into an oracle geometry parameter using jdbc, use
 	 * java.sql.CallableStatement.setNull(index,java.sql.Types.STRUCT,"MDSYS.SDO_GEOMETRY")
 	 * (April 2006)
-	 * 
+	 *
 	 * @param geom JTS Geometry to encode
 	 * @return Oracle MDSYS.GEOMETRY STRUCT
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	public SdoGeometry Write(IGeometry geom)
     {
-		
-//        // this line may be problematic ... for v9i and later 
+
+//        // this line may be problematic ... for v9i and later
 //        // need to revisit.
-		
+
 //        // was this ... does not work for 9i
 ////		if( geom == null) return toSTRUCT( null, DATATYPE );
-		
+
 //        //works fro 9i
 //        if( geom == null) return new SdoGeometry();
-		
+
 //        // does not work for 9i
 ////		if( geom == null) return null;
-		
+
 //        //empty geom
-//        if( geom.IsEmpty || geom.Coordinate == null) 
+//        if( geom.IsEmpty || geom.Coordinate == null)
 //            return new SdoGeometry();
 
 //        var ret = new SdoGeometry();
@@ -112,30 +112,30 @@ namespace NetTopologySuite.IO
 //        var gtypeint = (int) gtype;
 //        ret.Sdo_Gtype = gtypeint;
 //        ret.Sdo_Srid = geom.SRID == -1 ? _srid : geom.SRID;
-//        ret.Point = 
-            
+//        ret.Point =
+
 //            //int srid = geom.getFactory().getSRID();
 //        int _srid = this._srid == Constants.SRID_NULL? geom.getSRID() : this._srid;
 //        NUMBER SDO_SRID = _srid == Constants.SRID_NULL ? null : new NUMBER( _srid );
-        
+
 //        double[] point = Point( geom );
-        
+
 //        SdoPoint SDO_POINT;
-        
+
 //        ret.OrdinatesArray SDO_ELEM_INFO;
 //        ARRAY SDO_ORDINATES;
-        
+
 //        if( point == null ){
 //            int elemInfo[] = ElemInfo( geom , gtype);
-            
+
 //            var list = new List<double[]>();
 //            coordinates(list, geom);
-                        
+
 //            int dim = gtypeint / 1000;
 //            int lrs = (gtypeint - dim*1000)/100;
 //            int len = dim+lrs; // size per coordinate
 //            var ordinates = new double[list.Count*len];
-            
+
 //            int k=0;
 //            for(int i=0;i<list.Count && k<ordinates.Length;i++){
 //                int j=0;
@@ -147,10 +147,10 @@ namespace NetTopologySuite.IO
 //                    ordinates[k++] = Double.NaN;
 //                }
 //            }
-            
+
 //            SDO_POINT = null;
 //            SDO_ELEM_INFO = toARRAY( elemInfo, "MDSYS.SDO_ELEM_INFO_ARRAY" );
-//            SDO_ORDINATES = toARRAY( ordinates, "MDSYS.SDO_ORDINATE_ARRAY" );                        
+//            SDO_ORDINATES = toARRAY( ordinates, "MDSYS.SDO_ORDINATE_ARRAY" );
 //        }
 //        else { // Point Optimization
 //            Datum data[] = new Datum[]{
@@ -161,7 +161,7 @@ namespace NetTopologySuite.IO
 //            SDO_POINT = toSTRUCT( data, "MDSYS.SDO_POINT_TYPE"  );
 //            SDO_ELEM_INFO = null;
 //            SDO_ORDINATES = null;
-//        }                
+//        }
 //        Datum attributes[] = new Datum[]{
 //            SDO_GTYPE,
 //            SDO_SRID,
@@ -169,15 +169,15 @@ namespace NetTopologySuite.IO
 //            SDO_ELEM_INFO,
 //            SDO_ORDINATES
 //        };
-//        return toSTRUCT( attributes, Datatype );   
+//        return toSTRUCT( attributes, Datatype );
 	    return null;
     }
 
 	/**
      * Encode Geometry as described by GTYPE and ELEM_INFO
-     * 
+     *
      * @param list Flat list of Double
-     * @param geom Geometry 
+     * @param geom Geometry
      *
      * @throws IllegalArgumentException If geometry cannot be encoded
      */
@@ -200,11 +200,11 @@ namespace NetTopologySuite.IO
             case 1:
             	var polygon = (IPolygon) geom;
                 int holes = polygon.NumInteriorRings;
-                
+
                 // check outer ring's direction
                 var ring = polygon.ExteriorRing.CoordinateSequence;
                 if (!Algorithm.Orientation.IsCCW(ring)) {
-                    ring = ring.Reversed(); //reverse(polygon.Factory.CoordinateSequenceFactory, ring); 
+                    ring = ring.Reversed(); //reverse(polygon.Factory.CoordinateSequenceFactory, ring);
                 }
                 AddCoordinates(list,ring);
 
@@ -212,9 +212,9 @@ namespace NetTopologySuite.IO
                 	// check inner ring's direction
                 	ring = polygon.InteriorRings[i].CoordinateSequence;
                 	if (Algorithm.Orientation.IsCCW(ring)) {
-                        ring = ring.Reversed(); //reverse(polygon.Factory.CoordinateSequenceFactory, ring); 
+                        ring = ring.Reversed(); //reverse(polygon.Factory.CoordinateSequenceFactory, ring);
                     }
-                    
+
                     AddCoordinates(list,ring);
                 }
                 return;
@@ -238,7 +238,7 @@ namespace NetTopologySuite.IO
 
     /**
      * Adds a double array to list.
-     * 
+     *
      * <p>
      * The double array will contain all the ordinates in the Coordiante
      * sequence.
@@ -252,26 +252,26 @@ namespace NetTopologySuite.IO
         for (int i = 0; i < sequence.Count; i++)
         {
             Coordinate coord = sequence.GetCoordinate(i);
-            list.Add(Double.IsNaN(coord.Z) 
-                ? new[] {coord.X, coord.Y} 
+            list.Add(Double.IsNaN(coord.Z)
+                ? new[] {coord.X, coord.Y}
                 : new[] {coord.X, coord.Y, coord.Z});
         }
     }
 
     /**
      * Return SDO_ELEM_INFO array for geometry
-     * 
+     *
      * <pre><code><b>
      * # Name                Meaning</b>
      * 0 SDO_STARTING_OFFSET Offsets start at one
      * 1 SDO_ETYPE           Describes how ordinates are ordered
      * 2 SDO_INTERPRETATION  SDO_ETYPE: 4, 1005, or 2005
      *                       Number of triplets involved in compound geometry
-     *                       
+     *
      *                       SDO_ETYPE: 1, 2, 1003, or 2003
-     *                       Describes ordering of ordinates in geometry  
+     *                       Describes ordering of ordinates in geometry
      * </code></pre>
-     * 
+     *
      * <p>
      * For compound elements (SDO_ETYPE values 4 and 5) the last element of one
      * is the first element of the next.
@@ -285,7 +285,7 @@ namespace NetTopologySuite.IO
 		var list = new LinkedList<int>();
 
         ElemInfo(list, geom, 1, gtype);
-        
+
         int[] array = new int[list.Count];
         int offset = 0;
 
@@ -296,7 +296,7 @@ namespace NetTopologySuite.IO
 
         return array;
     }
-	
+
     /**
      * Add to SDO_ELEM_INFO list for geometry and GTYPE.
      *
@@ -328,7 +328,7 @@ namespace NetTopologySuite.IO
         case SdoGTemplate.Line:
             addInt(elemInfoList, sOffSet);
             addInt(elemInfoList, (int)SdoEType.Line);
-            addInt(elemInfoList, 1); // INTERPRETATION straight edges    
+            addInt(elemInfoList, 1); // INTERPRETATION straight edges
 
             return;
 
@@ -343,7 +343,7 @@ namespace NetTopologySuite.IO
                 line = (ILineString) lines.GetGeometryN(i);
                 addInt(elemInfoList, offset);
                 addInt(elemInfoList, (int)SdoEType.Line);
-                addInt(elemInfoList, 1); // INTERPRETATION straight edges  
+                addInt(elemInfoList, 1); // INTERPRETATION straight edges
                 offset += (line.NumPoints * len);
             }
 
@@ -393,11 +393,11 @@ namespace NetTopologySuite.IO
                 poly = (IPolygon) polys.GetGeometryN(i);
                 ElemInfo(elemInfoList, poly, offset, GType(poly));
                 if( IsRectangle( poly )){
-                    offset += (2 * len);                
+                    offset += (2 * len);
                 }
                 else {
-                    offset += (poly.NumPoints * len);                
-                }            
+                    offset += (poly.NumPoints * len);
+                }
             }
 
             return;
@@ -413,11 +413,11 @@ namespace NetTopologySuite.IO
                 // MD  20/3/07 modified to provide gType of component geometry
                 ElemInfo(elemInfoList, geom, offset, GType(geom));
                 if( geom is IPolygon && IsRectangle( (IPolygon) geom )){
-                    offset += (2 * len);                
+                    offset += (2 * len);
                 }
                 else {
-                    offset += (geom.NumPoints * len);                
-                }                        
+                    offset += (geom.NumPoints * len);
+                }
             }
 
             return;
@@ -436,7 +436,7 @@ namespace NetTopologySuite.IO
     /**
      * We need to check if a <code>polygon</code> a rectangle so we can produce
      * the correct encoding.
-     * 
+     *
      * Rectangles are only supported without a SRID!
      *
      * @param polygon
@@ -499,13 +499,13 @@ namespace NetTopologySuite.IO
     /**
      * Produce <code>SDO_ETYPE</code> for geometry description as stored in the
      * <code>SDO_ELEM_INFO</code>.
-     * 
+     *
      * <p>
      * Describes how Ordinates are ordered:
      * </p>
      * <pre><code><b>
      * Value Elements Meaning</b>
-     *    0           Custom Geometry (like spline) 
+     *    0           Custom Geometry (like spline)
      *    1  simple   Point (or Points)
      *    2  simple   Line (or Lines)
      *    3           polygon ring of unknown order (discouraged update to 1003 or 2003)
@@ -516,7 +516,7 @@ namespace NetTopologySuite.IO
      * 1005  compound series defines exterior polygon ring (counterclockwise order)
      * 2005  compound series defines interior polygon ring (clockwise order)
      * </code></pre>
-     * 
+     *
      * @param geom Geometry being represented
      *
      * @return Descriptionof Ordinates representation
@@ -542,11 +542,11 @@ namespace NetTopologySuite.IO
             throw new ArgumentException("Unknown encoding of SDO_GTEMPLATE");
         }
     }
-    
+
     /**
      * Allows specification of <code>INTERPRETATION</code> used to interpret
      * <code>geom</code>.
-     * 
+     *
      * @param geom Geometry to encode
      * @param etype ETYPE value requiring an INTERPREATION
      *
@@ -593,10 +593,10 @@ namespace NetTopologySuite.IO
             + "SDO_INTERPRETATION (Limitied to Point, Line, Polygon, "
             + "GeometryCollection, MultiPoint, MultiLineString and MultiPolygon)");
     }
-	
+
     /**
      * Return SDO_POINT_TYPE for geometry
-     * 
+     *
      * Will return non null for Point objects. <code>null</code> is returned
      * for all non point objects.
 
@@ -622,15 +622,15 @@ namespace NetTopologySuite.IO
 
     /**
      * Produce SDO_GTEMPLATE representing provided Geometry.
-     * 
+     *
      * <p>
      * Encoding of Geometry type and dimension.
      * </p>
-     * 
+     *
      * <p>
      * SDO_GTEMPLATE defined as for digits <code>[d][l][tt]</code>:
      * </p>
-     * 
+     *
      * @param geom
      *
      * @return SDO_GTEMPLATE
@@ -645,7 +645,7 @@ namespace NetTopologySuite.IO
 
     /**
      * Return dimensions as defined by SDO_GTEMPLATE (either 2,3 or 4).
-     * 
+     *
      *
      * @param geom
      *
@@ -658,20 +658,20 @@ namespace NetTopologySuite.IO
 
     /**
      * Return LRS as defined by SDO_GTEMPLATE (either 3,4 or 0).
-     * 
+     *
      * @param geom
      *
      * @return <code>0</code>
      */
     private static int Lrs(IGeometry geom) {
         // when measures are supported this may change
-    	// until then ... 
+    	// until then ...
     	return 0;
     }
-    
+
     /**
      * Return TT as defined by SDO_GTEMPLATE (represents geometry type).
-     * 
+     *
      * @see Constants.SDO_GTEMPLATE
      *
      * @param geom
@@ -709,7 +709,7 @@ namespace NetTopologySuite.IO
             + "(Limitied to Point, Line, Polygon, GeometryCollection, MultiPoint,"
             + " MultiLineString and MultiPolygon)");
     }
-	
+
     ///** Convience method for STRUCT construction. */
     //private STRUCT toSTRUCT( Datum attributes[], String dataType )
     //        throws SQLException
@@ -719,11 +719,11 @@ namespace NetTopologySuite.IO
     //    }
     //    StructDescriptor descriptor =
     //        StructDescriptor.createDescriptor( dataType, connection );
-    
+
     //     return new STRUCT( descriptor, connection, attributes );
     //}
-    
-    ///** 
+
+    ///**
     // * Convience method for ARRAY construction.
     // * <p>
     // * Compare and contrast with toORDINATE - which treats <code>Double.NaN</code>
@@ -734,11 +734,11 @@ namespace NetTopologySuite.IO
     //{
     //    ArrayDescriptor descriptor =
     //        ArrayDescriptor.createDescriptor( dataType, connection );
-        
+
     //     return new ARRAY( descriptor, connection, doubles );
     //}
-    
-    ///** 
+
+    ///**
     // * Convience method for ARRAY construction.
     // */
     //private ARRAY toARRAY( int ints[], String dataType )
@@ -746,11 +746,11 @@ namespace NetTopologySuite.IO
     //{
     //    ArrayDescriptor descriptor =
     //        ArrayDescriptor.createDescriptor( dataType, connection );
-            
+
     //     return new ARRAY( descriptor, connection, ints );
     //}
 
-    ///** 
+    ///**
     // * Convience method for NUMBER construction.
     // * <p>
     // * Double.NaN is represented as <code>NULL</code> to agree
@@ -771,7 +771,7 @@ namespace NetTopologySuite.IO
     // *
     // * @return CoordinateSequence reversed sequence
     // */
-    //private ICoordinateSequence reverse(ICoordinateSequenceFactory factory, ICoordinateSequence sequence) 
+    //private ICoordinateSequence reverse(ICoordinateSequenceFactory factory, ICoordinateSequence sequence)
     //{
     //	var list = new CoordinateList(sequence.ToCoordinateArray());
     //    list.Reverse();
@@ -786,5 +786,5 @@ namespace NetTopologySuite.IO
 		_dimension = dimension;}
 	}
 }
-        
-    
+
+

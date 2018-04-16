@@ -11,13 +11,7 @@ namespace Open.Topology.TestRunner
             m_objException = ex;
         }
 
-        public Exception Thrown
-        {
-            get
-            {
-                return m_objException;
-            }
-        }
+        public Exception Thrown => m_objException;
     }
 
     public delegate void XmlTestErrorEventHandler(object sender, XmlTestErrorEventArgs args);

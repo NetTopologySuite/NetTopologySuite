@@ -44,7 +44,7 @@ namespace NetTopologySuite.Triangulate
         /// </summary>        
         public IGeometry Constraints
         {
-            set { _constraintLines = value; }
+            set => _constraintLines = value;
         }
 
         /// <summary>
@@ -54,8 +54,8 @@ namespace NetTopologySuite.Triangulate
         /// </summary>
         public double Tolerance
         {
-            get { return _tolerance; }
-            set { _tolerance = value; }
+            get => _tolerance;
+            set => _tolerance = value;
         }
 
         private void Create()

@@ -39,17 +39,11 @@ namespace NetTopologySuite.Triangulate
 
         public double MinimumLength
         {
-            get
-            {
-                return _minimumLen;
-            }
-            set {_minimumLen = value;}
+            get => _minimumLen;
+            set => _minimumLen = value;
         }
 
-        public Coordinate SplitPoint
-        {
-            get { return _splitPt; }
-        }
+        public Coordinate SplitPoint => _splitPt;
 
         public void SplitAt(double length, Coordinate endPt)
         {

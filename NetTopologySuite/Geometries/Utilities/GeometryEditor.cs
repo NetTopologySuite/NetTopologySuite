@@ -94,8 +94,8 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         public bool CopyUserData
         {
-            get { return _isUserDataCopied; }
-            set { _isUserDataCopied = value; }
+            get => _isUserDataCopied;
+            set => _isUserDataCopied = value;
         }
 
 

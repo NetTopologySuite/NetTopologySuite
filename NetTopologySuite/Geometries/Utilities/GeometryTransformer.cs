@@ -84,10 +84,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <summary>
         /// Makes the input geometry available
         /// </summary>
-        public IGeometry InputGeometry
-        {
-            get { return _inputGeom; }
-        }
+        public IGeometry InputGeometry => _inputGeom;
 
         /// <summary>
         ///

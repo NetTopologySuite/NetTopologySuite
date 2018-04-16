@@ -32,8 +32,8 @@ namespace NetTopologySuite.Simplify
         /// </summary>
         public double DistanceTolerance
         {
-            get { return _distanceTolerance; }
-            set { _distanceTolerance = value; }
+            get => _distanceTolerance;
+            set => _distanceTolerance = value;
         }
 
         /// <summary>

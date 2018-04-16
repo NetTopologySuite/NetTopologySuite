@@ -23,9 +23,6 @@ namespace NetTopologySuite.IO.Geometries
             _arcs = arc[0];
         }
 
-        public int[] Arcs
-        {
-            get { return _arcs; }
-        }
+        public int[] Arcs => _arcs;
     }
 }

@@ -52,25 +52,19 @@ namespace NetTopologySuite.Algorithm.Distance
         /// <summary>
         /// The distance between the paired coordinates
         /// </summary>
-        public double Distance
-        {
-            get { return _distance; }
-        }
+        public double Distance => _distance;
 
         /// <summary>
         /// Returns an array containing the paired points
         /// </summary>
-        public Coordinate[] Coordinates
-        {
-            get { return _pt; }
-        }
+        public Coordinate[] Coordinates => _pt;
 
         /// <summary>
         /// Gets the value of
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public Coordinate this[int i] { get { return _pt[i]; } }
+        public Coordinate this[int i] => _pt[i];
 
         public void SetMaximum(PointPairDistance ptDist)
         {
