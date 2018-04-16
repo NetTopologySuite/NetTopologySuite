@@ -9,15 +9,11 @@ namespace NetTopologySuite.Algorithm.Match
     public static class SimilarityMeasureCombiner
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="measure1"></param>
         /// <param name="measure2"></param>
         /// <returns></returns>
-        public static double Combine(double measure1, double measure2)
-        {
-            return Math.Min(measure1, measure2);
-        }
-
+        public static double Combine(double measure1, double measure2) => Math.Min(measure1, measure2);
     }
 }

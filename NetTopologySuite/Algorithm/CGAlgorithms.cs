@@ -101,10 +101,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="ring">An array of <see cref="Coordinate"/>s representing the ring (which must have first point identical to last point)</param>
         /// <returns>true if p is inside ring.</returns>
         [Obsolete("Use PointLocation.IsInRing")]
-        public static bool IsPointInRing(Coordinate p, Coordinate[] ring)
-        {
-            return PointLocation.IsInRing(p, ring);
-        }
+        public static bool IsPointInRing(Coordinate p, Coordinate[] ring) => PointLocation.IsInRing(p, ring);
 
         /// <summary>
         /// Tests whether a point lies inside or on a ring.
@@ -119,10 +116,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="ring">A sequence of <see cref="Coordinate"/>s representing the ring (which must have first point identical to last point)</param>
         /// <returns>true if p is inside ring.</returns>
         [Obsolete("Use PointLocation.IsInRing")]
-        public static bool IsPointInRing(Coordinate p, ICoordinateSequence ring)
-        {
-            return PointLocation.IsInRing(p, ring);
-        }
+        public static bool IsPointInRing(Coordinate p, ICoordinateSequence ring) => PointLocation.IsInRing(p, ring);
 
         ///<summary>
         /// Determines whether a point lies in the interior, on the boundary, or in the exterior of a ring.
@@ -135,10 +129,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="ring">An array of coordinates representing the ring (which must have first point identical to last point)</param>
         /// <returns>The <see cref="Location"/> of p relative to the ring</returns>
         [Obsolete("Use PointLocation.LocateInRing")]
-        public static Location LocatePointInRing(Coordinate p, Coordinate[] ring)
-        {
-            return PointLocation.LocateInRing(p, ring);
-        }
+        public static Location LocatePointInRing(Coordinate p, Coordinate[] ring) => PointLocation.LocateInRing(p, ring);
 
         ///<summary>
         /// Determines whether a point lies in the interior, on the boundary, or in the exterior of a ring.
@@ -151,10 +142,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="ring">A sequence of coordinates representing the ring (which must have first point identical to last point)</param>
         /// <returns>The <see cref="Location"/> of p relative to the ring</returns>
         [Obsolete("Use PointLocation.LocateInRing")]
-        public static Location LocatePointInRing(Coordinate p, ICoordinateSequence ring)
-        {
-            return PointLocation.LocateInRing(p, ring);
-        }
+        public static Location LocatePointInRing(Coordinate p, ICoordinateSequence ring) => PointLocation.LocateInRing(p, ring);
 
         /// <summary>
         /// Tests whether a point lies on the line segments defined by a
@@ -166,10 +154,7 @@ namespace NetTopologySuite.Algorithm
         /// or lies in the interior of a line segment in the <c>LineString</c>
         /// </returns>
         [Obsolete("Use PointLocation.IsOnLine")]
-        public static bool IsOnLine(Coordinate p, Coordinate[] pt)
-        {
-            return PointLocation.IsOnLine(p, pt);
-        }
+        public static bool IsOnLine(Coordinate p, Coordinate[] pt) => PointLocation.IsOnLine(p, pt);
 
         /// <summary>
         /// Computes whether a ring defined by an array of <see cref="Coordinate" />s is oriented counter-clockwise.
@@ -185,10 +170,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>true if the ring is oriented <see cref="Algorithm.OrientationIndex.CounterClockwise"/></returns>
         /// <exception cref="ArgumentException">If there are too few points to determine orientation (&lt;4)</exception>
         [Obsolete("Use Orientation.IsCCW")]
-        public static bool IsCCW(Coordinate[] ring)
-        {
-            return Orientation.IsCCW(ring);
-        }
+        public static bool IsCCW(Coordinate[] ring) => Orientation.IsCCW(ring);
 
         /// <summary>
         /// Computes whether a ring defined by a coordinate sequence is oriented counter-clockwise.
@@ -204,10 +186,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>true if the ring is oriented <see cref="Algorithm.OrientationIndex.CounterClockwise"/></returns>
         /// <exception cref="ArgumentException">If there are too few points to determine orientation (&lt;4)</exception>
         [Obsolete("Use Orientation.IsCCW")]
-        public static bool IsCCW(ICoordinateSequence ring)
-        {
-            return Orientation.IsCCW(ring);
-        }
+        public static bool IsCCW(ICoordinateSequence ring) => Orientation.IsCCW(ring);
 
 
         /// <summary>
@@ -224,10 +203,7 @@ namespace NetTopologySuite.Algorithm
         /// or 0 if q is collinear with p1-p2
         /// </returns>
         [Obsolete("Use Orientation.Index")]
-        public static int ComputeOrientation(Coordinate p1, Coordinate p2, Coordinate q)
-        {
-            return (int)Orientation.Index(p1, p2, q);
-        }
+        public static int ComputeOrientation(Coordinate p1, Coordinate p2, Coordinate q) => (int)Orientation.Index(p1, p2, q);
 
         /// <summary>
         /// Computes the distance from a point p to a line segment AB.
@@ -239,9 +215,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns> The distance from p to line segment AB.</returns>
         [Obsolete("Use DistanceComputer.PointToSegment")]
         public static double DistancePointLine(Coordinate p, Coordinate A, Coordinate B)
-        {
-            return DistanceComputer.PointToSegment(p, A, B);
-        }
+            => DistanceComputer.PointToSegment(p, A, B);
 
         /// <summary>
         /// Computes the perpendicular distance from a point p
@@ -253,9 +227,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The perpendicular distance from p to line AB.</returns>
         [Obsolete("Use DistanceComputer.PointToLinePerpendicular")]
         public static double DistancePointLinePerpendicular(Coordinate p, Coordinate A, Coordinate B)
-        {
-            return DistanceComputer.PointToLinePerpendicular(p, A, B);
-        }
+            => DistanceComputer.PointToLinePerpendicular(p, A, B);
 
         /// <summary>
         /// Computes the distance from a point to a sequence of line segments.
@@ -266,10 +238,7 @@ namespace NetTopologySuite.Algorithm
         /// <exception cref="ArgumentException">If there are too few points to make up a line (at least one?)</exception>
         [Obsolete("Use DistanceComputer.PointToSegmentString")]
         public static double DistancePointLine(Coordinate p, Coordinate[] line)
-        {
-            return DistanceComputer.PointToSegmentString(p, line);
-        }
-
+            => DistanceComputer.PointToSegmentString(p, line);
 
         /// <summary>
         /// Computes the distance from a line segment AB to a line segment CD.
@@ -282,9 +251,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The distance from line segment AB to line segment CD.</returns>
         [Obsolete("Use DistanceComputer.SegmentToSegment")]
         public static double DistanceLineLine(Coordinate A, Coordinate B, Coordinate C, Coordinate D)
-        {
-            return DistanceComputer.SegmentToSegment(A, B, C, D);
-        }
+            => DistanceComputer.SegmentToSegment(A, B, C, D);
 
         /// <summary>
         /// Computes the signed area for a ring.
@@ -302,10 +269,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="ring">The coordinates of the ring</param>
         /// <returns>The signed area of the ring</returns>
         [Obsolete("Use Area.OfRingSigned")]
-        public static double SignedArea(Coordinate[] ring)
-        {
-            return Area.OfRingSigned(ring);
-        }
+        public static double SignedArea(Coordinate[] ring) => Area.OfRingSigned(ring);
 
         /// <summary>
         /// Computes the signed area for a ring.
@@ -323,10 +287,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="ring">The coordinates forming the ring</param>
         /// <returns>The signed area of the ring</returns>
         [Obsolete("Use Area.OfRingSigned")]
-        public static double SignedArea(ICoordinateSequence ring)
-        {
-            return Area.OfRingSigned(ring);
-        }
+        public static double SignedArea(ICoordinateSequence ring) => Area.OfRingSigned(ring);
 
         /// <summary>
         /// Computes the length of a <c>LineString</c> specified by a sequence of points.
@@ -334,9 +295,6 @@ namespace NetTopologySuite.Algorithm
         /// <param name="pts">The points specifying the <c>LineString</c></param>
         /// <returns>The length of the <c>LineString</c></returns>
         [Obsolete("Use Length.OfLine")]
-        public static double Length(ICoordinateSequence pts)
-        {
-            return Algorithm.Length.OfLine(pts);
-        }
+        public static double Length(ICoordinateSequence pts) => Algorithm.Length.OfLine(pts);
     }
 }

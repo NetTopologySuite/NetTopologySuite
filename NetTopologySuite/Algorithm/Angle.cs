@@ -27,20 +27,14 @@ namespace NetTopologySuite.Algorithm
         ///</summary>
         /// <param name="radians">An angle in radians</param>
         /// <returns>The angle in degrees</returns>
-        public static double ToDegrees(double radians)
-        {
-            return (radians * 180) / (System.Math.PI);
-        }
+        public static double ToDegrees(double radians) => (radians * 180) / (System.Math.PI);
 
         ///<summary>
         /// Converts from degrees to radians.
         ///</summary>
         /// <param name="angleDegrees">An angle in degrees</param>
         /// <returns>The angle in radians</returns>
-        public static double ToRadians(double angleDegrees)
-        {
-            return (angleDegrees * System.Math.PI) / 180.0;
-        }
+        public static double ToRadians(double angleDegrees) => (angleDegrees * System.Math.PI) / 180.0;
 
 
         ///<summary>
@@ -65,17 +59,14 @@ namespace NetTopologySuite.Algorithm
         /// </remarks>
         /// <param name="p">The point</param>
         /// <returns>The normalized angle (in radians) that (0,0)-p makes with the positive X-axis.</returns>
-        public static double Angle(Coordinate p)
-        {
-            return System.Math.Atan2(p.Y, p.X);
-        }
+        public static double Angle(Coordinate p) => System.Math.Atan2(p.Y, p.X);
 
         ///<summary>
         /// Tests whether the angle between p0-p1-p2 is acute.
         ///</summary>
         /// <remarks>
         /// <para>An angle is acute if it is less than 90 degrees.</para>
-        /// <para>Note: this implementation is not precise (deterministic) for angles very close to 90 degrees.</para>    
+        /// <para>Note: this implementation is not precise (deterministic) for angles very close to 90 degrees.</para>
         /// </remarks>
         /// <param name="p0">An endpoint of the angle</param>
         /// <param name="p1">The base of the angle</param>
@@ -96,7 +87,7 @@ namespace NetTopologySuite.Algorithm
         ///</summary>
         /// <remarks>
         /// <para>An angle is obtuse if it is greater than 90 degrees.</para>
-        /// <para>Note: this implementation is not precise (deterministic) for angles very close to 90 degrees.</para>    
+        /// <para>Note: this implementation is not precise (deterministic) for angles very close to 90 degrees.</para>
         /// </remarks>
         /// <param name="p0">An endpoint of the angle</param>
         /// <param name="p1">The base of the angle</param>
@@ -234,7 +225,7 @@ namespace NetTopologySuite.Algorithm
             {
                 while (angle < 0.0)
                     angle += PiTimes2;
-                // in case round-off error bumps the value over 
+                // in case round-off error bumps the value over
                 if (angle >= PiTimes2)
                     angle = 0.0;
             }
@@ -242,7 +233,7 @@ namespace NetTopologySuite.Algorithm
             {
                 while (angle >= PiTimes2)
                     angle -= PiTimes2;
-                // in case round-off error bumps the value under 
+                // in case round-off error bumps the value under
                 if (angle < 0.0)
                     angle = 0.0;
             }

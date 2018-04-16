@@ -76,10 +76,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="ring">An array of coordinates representing the ring (which must have
         /// first point identical to last point)</param>
         /// <returns><c>true</c> if p is inside ring</returns>
-        public static bool IsInRing(Coordinate p, Coordinate[] ring)
-        {
-            return LocateInRing(p, ring) != Location.Exterior;
-        }
+        public static bool IsInRing(Coordinate p, Coordinate[] ring) => LocateInRing(p, ring) != Location.Exterior;
 
         /// <summary>
         /// Tests whether a point lies inside or on a ring. The ring may be oriented in
@@ -94,9 +91,7 @@ namespace NetTopologySuite.Algorithm
         /// first point identical to last point)</param>
         /// <returns><c>true</c> if p is inside ring</returns>
         public static bool IsInRing(Coordinate p, ICoordinateSequence ring)
-        {
-            return LocateInRing(p, ring) != Location.Exterior;
-        }
+            => LocateInRing(p, ring) != Location.Exterior;
 
         /// <summary>
         /// Determines whether a point lies in the interior, on the boundary, or in the
@@ -110,9 +105,7 @@ namespace NetTopologySuite.Algorithm
         /// first point identical to last point)</param>
         /// <returns>the <see cref="Location"/> of p relative to the ring</returns>
         public static Location LocateInRing(Coordinate p, Coordinate[] ring)
-        {
-            return RayCrossingCounter.LocatePointInRing(p, ring);
-        }
+            => RayCrossingCounter.LocatePointInRing(p, ring);
 
         /// <summary>
         /// Determines whether a point lies in the interior, on the boundary, or in the
@@ -125,8 +118,6 @@ namespace NetTopologySuite.Algorithm
         /// <param name="ring">A <c>CoordinateSequence</c> representing the ring (which must have
         /// first point identical to last point)</param>
         public static Location LocateInRing(Coordinate p, ICoordinateSequence ring)
-        {
-            return RayCrossingCounter.LocatePointInRing(p, ring);
-        }
+            => RayCrossingCounter.LocatePointInRing(p, ring);
     }
 }

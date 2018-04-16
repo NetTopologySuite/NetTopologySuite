@@ -64,10 +64,7 @@ namespace NetTopologySuite.Algorithm.Distance
         /// <returns></returns>
         public Coordinate this[int i] => Coordinates[i];
 
-        public void SetMaximum(PointPairDistance ptDist)
-        {
-            SetMaximum(ptDist.Coordinates[0], ptDist.Coordinates[1]);
-        }
+        public void SetMaximum(PointPairDistance ptDist) => SetMaximum(ptDist.Coordinates[0], ptDist.Coordinates[1]);
 
         public void SetMaximum(Coordinate p0, Coordinate p1)
         {
@@ -81,10 +78,7 @@ namespace NetTopologySuite.Algorithm.Distance
                 Initialize(p0, p1, dist);
         }
 
-        public void SetMinimum(PointPairDistance ptDist)
-        {
-            SetMinimum(ptDist.Coordinates[0], ptDist.Coordinates[1]);
-        }
+        public void SetMinimum(PointPairDistance ptDist) => SetMinimum(ptDist.Coordinates[0], ptDist.Coordinates[1]);
 
         public void SetMinimum(Coordinate p0, Coordinate p1)
         {
@@ -99,9 +93,6 @@ namespace NetTopologySuite.Algorithm.Distance
         }
 
         /// <inheritdoc cref="object.ToString()"/>
-        public override string ToString()
-        {
-  	        return WKTWriter.ToLineString(Coordinates[0], Coordinates[1]);
-        }
+        public override string ToString() => WKTWriter.ToLineString(Coordinates[0], Coordinates[1]);
     }
 }
