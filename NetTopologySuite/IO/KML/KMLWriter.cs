@@ -93,12 +93,7 @@ namespace NetTopologySuite.IO.KML
         private const string CoordinateSeparator = ",";
         private const string TupleSeparator = " ";
 
-        private string _linePrefix;
         private int _maxCoordinatesPerLine = 5;
-        private double _z = Double.NaN;
-        private bool _extrude;
-        private bool _tesselate;
-        private string _altitudeMode;
         private NumberFormatInfo _formatter;
         private string _format;
 
@@ -106,11 +101,7 @@ namespace NetTopologySuite.IO.KML
         /// A tag string which is prefixed to every emitted text line.
         /// This can be used to indent the geometry text in a containing document.
         /// </summary>
-        public string LinePrefix
-        {
-            get => _linePrefix;
-            set => _linePrefix = value;
-        }
+        public string LinePrefix { get; set; }
 
         /// <summary>
         /// The maximum number of coordinates to output per line.
@@ -125,38 +116,22 @@ namespace NetTopologySuite.IO.KML
         /// The Z value to be output for all coordinates.
         /// This overrides any Z value present in the Geometry coordinates.
         /// </summary>
-        public double Z
-        {
-            get => _z;
-            set => _z = value;
-        }
+        public double Z { get; set; } = Double.NaN;
 
         /// <summary>
         /// The flag to be output in the <c>extrude</c> element.
         /// </summary>
-        public bool Extrude
-        {
-            get => _extrude;
-            set => _extrude = value;
-        }
+        public bool Extrude { get; set; }
 
         /// <summary>
         /// The flag to be output in the <c>tesselate</c> element.
         /// </summary>
-        public bool Tesselate
-        {
-            get => _tesselate;
-            set => _tesselate = value;
-        }
+        public bool Tesselate { get; set; }
 
         /// <summary>
         /// The value output in the <c>altitudeMode</c> element.
         /// </summary>
-        public string AltitudeMode
-        {
-            get => _altitudeMode;
-            set => _altitudeMode = value;
-        }
+        public string AltitudeMode { get; set; }
 
         /// <summary>
         /// The maximum number of decimal places to output in ordinate values.

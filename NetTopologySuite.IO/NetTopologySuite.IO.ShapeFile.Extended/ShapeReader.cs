@@ -14,7 +14,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
         const long HEADER_LENGTH = 100;
 
         private BigEndianBinaryReader m_ShapeFileReader;
-        private readonly ShapefileHeader m_ShapeFileHeader;
+
         //private readonly string m_ShapeFilePath;
         private readonly IStreamProviderRegistry m_StreamProviderRegistry;
         private readonly ShapeHandler m_ShapeHandler;
@@ -33,7 +33,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 
             m_StreamProviderRegistry = streamProviderRegistry;
 
-            m_ShapeFileHeader = new ShapefileHeader(ShapeReaderStream);
+            ShapefileHeader = new ShapefileHeader(ShapeReaderStream);
             m_ShapeHandler = Shapefile.GetShapeHandler(ShapefileHeader.ShapeType);
 
             m_ShapeOffsetCache = new Lazy<long[]>(BuildOffsetCache, LazyThreadSafetyMode.ExecutionAndPublication);
@@ -45,7 +45,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
             Dispose(false);
         }
 
-        public ShapefileHeader ShapefileHeader => m_ShapeFileHeader;
+        public ShapefileHeader ShapefileHeader { get; }
 
         private BigEndianBinaryReader ShapeReaderStream
         {

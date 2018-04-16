@@ -24,13 +24,7 @@ namespace NetTopologySuite.IO
 
         private readonly IGeometryFactory _factory;
 
-        private int _dimension = -1;
-
-        public int Dimension
-        {
-            get => _dimension;
-            set { _dimension = value; }
-        }
+        public int Dimension { get; set; } = -1;
 
 
         public IGeometry Read(SdoGeometry geom)
@@ -60,9 +54,9 @@ namespace NetTopologySuite.IO
 
             // find the dimension: represented by the smaller of the two dimensions
             int dim;
-            if (_dimension != NullDimension)
+            if (Dimension != NullDimension)
             {
-                dim = _dimension;
+                dim = Dimension;
             }
             else
             {

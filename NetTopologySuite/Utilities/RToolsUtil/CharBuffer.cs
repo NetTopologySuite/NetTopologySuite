@@ -19,8 +19,7 @@ namespace RTools_NTS.Util
 	{
 		#region Fields
 
-		int capacity = 128;
-		char[] buffer;
+	    char[] buffer;
 		int headIndex;  // index of first char
 		int tailIndex;  // index 1 past last char
 
@@ -38,7 +37,7 @@ namespace RTools_NTS.Util
 			set 
 			{ 
 				tailIndex = headIndex + value;
-				if (tailIndex >= capacity) throw new 
+				if (tailIndex >= Capacity) throw new 
 					IndexOutOfRangeException("Tail index greater than capacity");
 			}
 		}
@@ -46,9 +45,9 @@ namespace RTools_NTS.Util
 		/// <summary>
 		/// Returns the capacity of this character buffer.
 		/// </summary>
-		public int Capacity => (capacity);
+		public int Capacity { get; private set; } = 128;
 
-		#endregion
+	    #endregion
 
 		#region Constructors
 
@@ -57,7 +56,7 @@ namespace RTools_NTS.Util
 		/// </summary>
 		public CharBuffer()
 		{
-			buffer = new char[capacity];
+			buffer = new char[Capacity];
 		}
 
 		/// <summary>
@@ -66,7 +65,7 @@ namespace RTools_NTS.Util
 		/// <param name="capacity"></param>
 		public CharBuffer(int capacity)
 		{
-			this.capacity = capacity;
+			this.Capacity = capacity;
 			buffer = new char[capacity];
 		}
 
@@ -84,12 +83,12 @@ namespace RTools_NTS.Util
 		/// <param name="requestedLen">The new requested length.</param>
 		protected void Grow(int requestedLen)
 		{
-			int newLen = Math.Max(capacity*2, requestedLen);
+			int newLen = Math.Max(Capacity*2, requestedLen);
 			newLen = Math.Max(newLen, 16);
 			char[] newBuffer = new char[newLen];
-			Array.Copy(buffer, 0, newBuffer, 0, capacity);
+			Array.Copy(buffer, 0, newBuffer, 0, Capacity);
 			buffer = newBuffer;
-			capacity = newLen;
+			Capacity = newLen;
 		}
 
 		/// <summary>
@@ -99,11 +98,11 @@ namespace RTools_NTS.Util
 		/// <param name="requestedLength"></param>
 		protected void CheckCapacity(int requestedLength)
 		{
-			if (requestedLength + headIndex >= capacity)
+			if (requestedLength + headIndex >= Capacity)
 			{
 				// have to do something
-				if ((requestedLength + headIndex > (capacity >> 1))
-					&& (requestedLength < capacity - 1))
+				if ((requestedLength + headIndex > (Capacity >> 1))
+					&& (requestedLength < Capacity - 1))
 				{
 					// we're more than half-way through the buffer, and shifting is enough
 					// so just shift
@@ -144,7 +143,7 @@ namespace RTools_NTS.Util
 		/// in the input buffer.</param>
 		public void SetBuffer(char[] b, int len)
 		{
-			capacity = b.Length;
+			Capacity = b.Length;
 			buffer = b;
 			headIndex = 0;
 			tailIndex = len;
@@ -156,7 +155,7 @@ namespace RTools_NTS.Util
 		/// <param name="c"></param>
 		public void Append(char c)
 		{
-			if (tailIndex >= capacity) CheckCapacity(Length + 1);
+			if (tailIndex >= Capacity) CheckCapacity(Length + 1);
 			buffer[tailIndex++] = c;
 		}
 
@@ -166,7 +165,7 @@ namespace RTools_NTS.Util
 		/// <param name="s">The string to append.</param>
 		public void Append(string s)
 		{
-			if (s.Length + tailIndex >= capacity) CheckCapacity(Length + s.Length);
+			if (s.Length + tailIndex >= Capacity) CheckCapacity(Length + s.Length);
 			for(int i = 0; i < s.Length; i++)
 				buffer[tailIndex++] = s[i];
 		}
@@ -177,7 +176,7 @@ namespace RTools_NTS.Util
 		/// <param name="s">The string to append.</param>
 		public void Append(CharBuffer s)
 		{
-			if (s.Length + tailIndex >= capacity) CheckCapacity(Length + s.Length);
+			if (s.Length + tailIndex >= Capacity) CheckCapacity(Length + s.Length);
 			for(int i = 0; i < s.Length; i++)
 				buffer[tailIndex++] = s[i];
 		}

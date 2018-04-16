@@ -25,9 +25,8 @@ namespace NetTopologySuite.IO
 	internal struct RowStructure : ICustomTypeDescriptor
 	{
 		private DbaseFieldDescriptor[] _dbaseFields;
-		private ArrayList _columnValues;
 
-        /// <summary>
+	    /// <summary>
         ///
         /// </summary>
         /// <param name="dbaseFields"></param>
@@ -35,15 +34,15 @@ namespace NetTopologySuite.IO
 		public RowStructure(DbaseFieldDescriptor[] dbaseFields, ArrayList columnValues)
 		{
 			_dbaseFields = dbaseFields;
-			_columnValues  = columnValues;
+			ColumnValues  = columnValues;
 		}
 
         /// <summary>
         ///
         /// </summary>
-        public ArrayList ColumnValues => _columnValues;
+        public ArrayList ColumnValues { get; }
 
-		/// <summary>
+	    /// <summary>
         ///
         /// </summary>
         /// <returns></returns>

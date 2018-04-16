@@ -8,21 +8,16 @@ namespace NetTopologySuite.IO
 	public class DbaseFieldDescriptor
 	{
 		// Field Name
-		private string _name;
 
-		// Field Type (C N L D or M)
-		private char _type;
+	    // Field Type (C N L D or M)
 
-		// Field Data Address offset from the start of the record.
-		private int _dataAddress;
+	    // Field Data Address offset from the start of the record.
 
-		// Length of the data in bytes
-		private int _length;
+	    // Length of the data in bytes
 
-		// Field decimal count in Binary, indicating where the decimal is
-		private int _decimalCount;
+	    // Field decimal count in Binary, indicating where the decimal is
 
-        /// <summary>
+	    /// <summary>
         ///
         /// </summary>
         /// <param name="type"></param>
@@ -67,7 +62,7 @@ namespace NetTopologySuite.IO
 		{
 			DbaseFieldDescriptor shpfield = new DbaseFieldDescriptor();
 			shpfield.Name="Geometry";
-			shpfield._type='B';
+			shpfield.DbaseType='B';
 			return shpfield;
 		}
 
@@ -79,63 +74,43 @@ namespace NetTopologySuite.IO
 		{
 			DbaseFieldDescriptor shpfield = new DbaseFieldDescriptor();
 			shpfield.Name="Row";
-			shpfield._type='I';
+			shpfield.DbaseType='I';
 			return shpfield;
 		}
 
         /// <summary>
         /// Field Name.
         /// </summary>
-		public string Name
-		{
-	        get => _name;
-	        set => _name = value;
-        }
+		public string Name { get; set; }
 
-        /// <summary>
+	    /// <summary>
         /// Field Type (C N L D or M).
         /// </summary>
-		public char DbaseType
-		{
-	        get => _type;
-	        set => _type = value;
-        }
+		public char DbaseType { get; set; }
 
-        /// <summary>
+	    /// <summary>
         /// Field Data Address offset from the start of the record.
         /// </summary>
-		public int DataAddress
-		{
-	        get => _dataAddress;
-	        set => _dataAddress = value;
-        }
+		public int DataAddress { get; set; }
 
-        /// <summary>
+	    /// <summary>
         /// Length of the data in bytes.
         /// </summary>
-		public int Length
-		{
-	        get => _length;
-	        set => _length = value;
-        }
+		public int Length { get; set; }
 
-        /// <summary>
+	    /// <summary>
         /// Field decimal count in Binary, indicating where the decimal is.
         /// </summary>
-		public int DecimalCount
-		{
-	        get => _decimalCount;
-	        set => _decimalCount = value;
-        }
+		public int DecimalCount { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Returns the equivalent CLR type for this field.
 		/// </summary>
 		public Type Type
 		{
 			get
 			{
-				switch (_type)
+				switch (DbaseType)
 				{
 					case 'L': // logical data type, one character (T,t,F,f,Y,y,N,n)
 						return typeof(bool);
@@ -159,7 +134,7 @@ namespace NetTopologySuite.IO
 					case 'B': // BLOB - not a dbase but this will hold the WKB for a geometry object.
 						return typeof(byte[]);
 					default:
-						throw new NotSupportedException("Do not know how to parse Field type "+_type);
+						throw new NotSupportedException("Do not know how to parse Field type "+DbaseType);
 				}
 			}
 		}

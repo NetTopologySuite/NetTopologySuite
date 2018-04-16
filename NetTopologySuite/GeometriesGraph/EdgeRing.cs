@@ -17,11 +17,7 @@ namespace NetTopologySuite.GeometriesGraph
         protected DirectedEdge startDe;         
         
         private int _maxNodeDegree = -1;
-        private readonly List<DirectedEdge> _edges = new List<DirectedEdge>();  // the DirectedEdges making up this EdgeRing
         private readonly List<Coordinate> _pts = new List<Coordinate>();
-        private readonly Label _label = new Label(Location.Null); // label stores the locations of each point on the face surrounded by this ring
-        private ILinearRing _ring;  // the ring created for this EdgeRing
-        private bool _isHole;
         private EdgeRing _shell;   // if non-null, the ring is a hole and this EdgeRing is its containing shell
         private readonly List<EdgeRing> _holes = new List<EdgeRing>(); // a list of EdgeRings which are holes in this EdgeRing
 
@@ -47,12 +43,12 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public bool IsIsolated => _label.GeometryCount == 1;
+        public bool IsIsolated => Label.GeometryCount == 1;
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsHole => _isHole;
+        public bool IsHole { get; private set; }
 
         /// <summary>
         /// 
@@ -67,12 +63,12 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public ILinearRing LinearRing => _ring;
+        public ILinearRing LinearRing { get; private set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public Label Label => _label;
+        public Label Label { get; } = new Label(Location.Null);
 
         /// <summary>
         /// 
@@ -123,15 +119,15 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         public void ComputeRing()
         {
-            if (_ring != null) 
+            if (LinearRing != null) 
                 return;   // don't compute more than once
             Coordinate[] coord = _pts.ToArray();
             /* new Coordinate[_pts.Count];
             for (int i = 0; i < _pts.Count; i++)            
                 coord[i] = (Coordinate) _pts[i];
              */
-            _ring = _geometryFactory.CreateLinearRing(coord);
-            _isHole = Orientation.IsCCW(_ring.Coordinates);
+            LinearRing = _geometryFactory.CreateLinearRing(coord);
+            IsHole = Orientation.IsCCW(LinearRing.Coordinates);
         }
 
         /// <summary>
@@ -151,7 +147,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary> 
         /// Returns the list of DirectedEdges that make up this EdgeRing.
         /// </summary>
-        public IList<DirectedEdge> Edges => _edges;
+        public IList<DirectedEdge> Edges { get; } = new List<DirectedEdge>();
 
         /// <summary> 
         /// Collect all the points from the DirectedEdges of this ring into a contiguous list.
@@ -169,7 +165,7 @@ namespace NetTopologySuite.GeometriesGraph
                 if (de.EdgeRing == this)
                     throw new TopologyException("Directed Edge visited twice during ring-building at " + de.Coordinate);
 
-                _edges.Add(de);                
+                Edges.Add(de);                
                 Label label = de.Label;
                 Assert.IsTrue(label.IsArea());
                 MergeLabel(label);
@@ -253,9 +249,9 @@ namespace NetTopologySuite.GeometriesGraph
             if (loc == Location.Null) 
                 return;
             // if there is no current RHS value, set it
-            if (_label.GetLocation(geomIndex) == Location.Null)
+            if (Label.GetLocation(geomIndex) == Location.Null)
             {
-                _label.SetLocation(geomIndex, loc);
+                Label.SetLocation(geomIndex, loc);
                 return;
             }
         }

@@ -22,7 +22,6 @@ namespace NetTopologySuite.IO
         private const int SridNull = -1;
 	    private OracleConnection _connection;
 	    private int _dimension = 2;
-	    private int _srid = SridNull;
 
         private const String Datatype = "MDSYS.SDO_GEOMETRY";
 
@@ -60,13 +59,9 @@ namespace NetTopologySuite.IO
 	 *
 	 * @param srid
 	 */
-	public int SRID
-    {
-	    get => _srid;
-	    set { _srid = value; }
-    }
+	public int SRID { get; set; } = SridNull;
 
-	/**
+        /**
 	 * This routine will translate the JTS Geometry into an Oracle MDSYS.GEOMETRY STRUCT.
 	 *
 	 * Although invalid geometries may be encoded, and inserted into an Oracle DB, this is

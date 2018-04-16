@@ -27,10 +27,6 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         private Label _label;
 
-        private Coordinate _p0, _p1;  // points of initial line segment
-        private double _dx, _dy;      // the direction vector for this edge from its starting point
-        private int _quadrant;
-
         /// <summary>
         /// 
         /// </summary>
@@ -70,12 +66,12 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="p1"></param>
         protected void Init(Coordinate p0, Coordinate p1)
         {
-            _p0 = p0;
-            _p1 = p1;
-            _dx = p1.X - p0.X;
-            _dy = p1.Y - p0.Y;
-            _quadrant = QuadrantOp.Quadrant(_dx, _dy);
-            Assert.IsTrue(! (_dx == 0 && _dy == 0), "EdgeEnd with identical endpoints found");
+            Coordinate = p0;
+            DirectedCoordinate = p1;
+            Dx = p1.X - p0.X;
+            Dy = p1.Y - p0.Y;
+            Quadrant = QuadrantOp.Quadrant(Dx, Dy);
+            Assert.IsTrue(! (Dx == 0 && Dy == 0), "EdgeEnd with identical endpoints found");
         }
 
         /// <summary>
@@ -95,27 +91,27 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate => _p0;
+        public Coordinate Coordinate { get; private set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate DirectedCoordinate => _p1;
+        public Coordinate DirectedCoordinate { get; private set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public int Quadrant => _quadrant;
+        public int Quadrant { get; private set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public double Dx => _dx;
+        public double Dx { get; private set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public double Dy => _dy;
+        public double Dy { get; private set; }
 
         /// <summary>
         /// 
@@ -147,16 +143,16 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="e"></param>
         public int CompareDirection(EdgeEnd e)
         {
-            if (_dx == e._dx && _dy == e._dy)
+            if (Dx == e.Dx && Dy == e.Dy)
                 return 0;
             // if the rays are in different quadrants, determining the ordering is trivial
-            if (_quadrant > e._quadrant)
+            if (Quadrant > e.Quadrant)
                 return 1;
-            if (_quadrant < e._quadrant)
+            if (Quadrant < e.Quadrant)
                 return -1;
             // vectors are in the same quadrant - check relative orientation of direction vectors
             // this is > e if it is CCW of e
-            return (int)Orientation.Index(e._p0, e._p1, _p1);
+            return (int)Orientation.Index(e.Coordinate, e.DirectedCoordinate, DirectedCoordinate);
         }
 
         /// <summary>
@@ -171,21 +167,21 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="outstream"></param>
         public virtual void Write(StreamWriter outstream)
         {            
-            double angle = Math.Atan2(_dy, _dx);
+            double angle = Math.Atan2(Dy, Dx);
             string fullname = GetType().FullName;
             int lastDotPos = fullname.LastIndexOf('.');
             string name = fullname.Substring(lastDotPos + 1);
-            outstream.Write("  " + name + ": " + _p0 + " - " + _p1 + " " + _quadrant + ":" + angle + "   " + _label);
+            outstream.Write("  " + name + ": " + Coordinate + " - " + DirectedCoordinate + " " + Quadrant + ":" + angle + "   " + _label);
         }
 
         /// <inheritdoc cref="object.ToString()"/>
         public override String ToString()
         {
-            var angle = Math.Atan2(_dy, _dx);
+            var angle = Math.Atan2(Dy, Dx);
             var className = GetType().Name;
             //var lastDotPos = className.LastIndexOf('.');
             //var name = className.Substring(lastDotPos + 1);
-            return "  " + className + ": " + _p0 + " - " + _p1 + " " + _quadrant + ":" + angle + "   " + _label;
+            return "  " + className + ": " + Coordinate + " - " + DirectedCoordinate + " " + Quadrant + ":" + angle + "   " + _label;
         }
     }
 }

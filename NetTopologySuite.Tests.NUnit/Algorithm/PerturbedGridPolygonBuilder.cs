@@ -15,10 +15,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         private readonly IGeometryFactory _geomFactory;
         private readonly IPrecisionModel _precisionModel;
         private const double GridWidth = 1000;
-        private int _numLines = 10;
-        private double _lineWidth = 20;
 
-        private Int32 _seed;
         private Random _rand;
 
         private IGeometry _grid;
@@ -29,26 +26,14 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             _geomFactory = geomFactory;
             _precisionModel = geomFactory.PrecisionModel;
-            _seed = DateTime.Now.Millisecond;
+            Seed = DateTime.Now.Millisecond;
         }
 
-        public int Seed
-        {
-            get => _seed;
-            set { _seed = value; }
-        }
+        public int Seed { get; set; }
 
-        public int NumLines
-        {
-            get => _numLines;
-            set {_numLines = value;}
-        }
+        public int NumLines { get; set; } = 10;
 
-        public double LineWidth
-        {
-            get => _lineWidth;
-            set { _lineWidth = value; }
-        }
+        public double LineWidth { get; set; } = 20;
 
         public IGeometry Geometry
         {
@@ -62,10 +47,10 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         private IGeometry BuildGrid()
         {
-            var lines = new ILineString[_numLines * 2];
+            var lines = new ILineString[NumLines * 2];
             int index = 0;
 
-            for (int i = 0; i < _numLines; i++)
+            for (int i = 0; i < NumLines; i++)
             {
                 Coordinate p0 = new Coordinate(GetRandOrdinate(), 0);
                 Coordinate p1 = new Coordinate(GetRandOrdinate(), GridWidth);
@@ -73,7 +58,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 lines[index++] = line;
             }
 
-            for (int i = 0; i < _numLines; i++)
+            for (int i = 0; i < NumLines; i++)
             {
                 Coordinate p0 = new Coordinate(0, GetRandOrdinate());
                 Coordinate p1 = new Coordinate(GridWidth, GetRandOrdinate());
@@ -82,7 +67,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             }
 
             IMultiLineString ml = _geomFactory.CreateMultiLineString(lines);
-            _grid = ml.Buffer(_lineWidth);
+            _grid = ml.Buffer(LineWidth);
             var wktWriter = new WKTWriter(2) {Formatted = true, MaxCoordinatesPerLine = 6};
             if (Verbose)
                 Console.WriteLine(wktWriter.Write(_grid));
@@ -95,7 +80,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             if (_rand == null)
             {
                 //Console.WriteLine("Seed = " + _seed);
-                _rand = new Random(_seed);
+                _rand = new Random(Seed);
             }
             return _rand.NextDouble();
         }

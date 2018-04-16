@@ -39,7 +39,6 @@ namespace NetTopologySuite.Operation.Valid
 
         // save a coordinate for any disconnected interior found
         // the coordinate will be somewhere on the ring surrounding the disconnected interior
-        private Coordinate _disconnectedRingcoord;
 
         /// <summary>
         /// 
@@ -53,7 +52,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate => _disconnectedRingcoord;
+        public Coordinate Coordinate { get; private set; }
 
         /// <summary>
         /// 
@@ -216,7 +215,7 @@ namespace NetTopologySuite.Operation.Valid
                     de = edges[j];
                     if (!de.IsVisited)
                     {
-                        _disconnectedRingcoord = de.Coordinate;
+                        Coordinate = de.Coordinate;
                         return true;
                     }
                 }

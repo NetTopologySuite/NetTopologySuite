@@ -104,29 +104,17 @@ namespace NetTopologySuite.IO
 
         private readonly DbaseFileWriter _dbaseWriter;
 
-        private DbaseFileHeader _header;
-
         /// <summary>
         /// Gets or sets the header of the shapefile.
         /// </summary>
         /// <value>The header.</value>
-        public DbaseFileHeader Header
-        {
-            get => _header;
-            set => _header = value;
-        }
-
-        private IGeometryFactory _geometryFactory;
+        public DbaseFileHeader Header { get; set; }
 
         /// <summary>
         /// Gets or sets the geometry factory.
         /// </summary>
         /// <value>The geometry factory.</value>
-        protected IGeometryFactory GeometryFactory
-        {
-            get => _geometryFactory;
-            set => _geometryFactory = value;
-        }
+        protected IGeometryFactory GeometryFactory { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShapefileDataWriter"/> class.
@@ -153,7 +141,7 @@ namespace NetTopologySuite.IO
 
         public ShapefileDataWriter(IStreamProviderRegistry streamProviderRegistry, IGeometryFactory geometryFactory, Encoding encoding)
         {
-            _geometryFactory = geometryFactory;
+            GeometryFactory = geometryFactory;
 
             _streamProviderRegistry = streamProviderRegistry;
 
@@ -185,7 +173,7 @@ namespace NetTopologySuite.IO
                 var index = 0;
                 foreach (IFeature feature in featureCollection)
                     geometries[index++] = feature.Geometry;
-                ShapefileWriter.WriteGeometryCollection(_streamProviderRegistry, new GeometryCollection(geometries, _geometryFactory));
+                ShapefileWriter.WriteGeometryCollection(_streamProviderRegistry, new GeometryCollection(geometries, GeometryFactory));
 
                 // Write dbf
                 _dbaseWriter.Write(Header);

@@ -4,8 +4,6 @@ namespace NetTopologySuite.IO.Geometries
 {
     internal abstract class TopoCurve : TopoObject
     {
-        private readonly int[][] _arcs;
-
         public TopoCurve(string type, int[][][] arcs)
             : base(type)
         {
@@ -15,9 +13,9 @@ namespace NetTopologySuite.IO.Geometries
                 throw new ArgumentException("arcs empty");
             if (arcs.Length > 1)
                 throw new ArgumentException("arcs too long");
-            _arcs = arcs[0];
+            Arcs = arcs[0];
         }
 
-        public int[][] Arcs => _arcs;
+        public int[][] Arcs { get; }
     }
 }

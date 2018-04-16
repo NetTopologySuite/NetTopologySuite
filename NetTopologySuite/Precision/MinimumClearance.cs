@@ -197,9 +197,8 @@ namespace NetTopologySuite.Precision
         private class MinClearanceDistance : IItemDistance<Envelope, FacetSequence>
         {
             private double _minDist = Double.MaxValue;
-            private readonly Coordinate[] _minPts = new Coordinate[2];
 
-            public Coordinate[] Coordinates => _minPts;
+            public Coordinate[] Coordinates { get; } = new Coordinate[2];
 
             public double Distance(IBoundable<Envelope, FacetSequence> b1, IBoundable<Envelope, FacetSequence> b2)
             {
@@ -235,8 +234,8 @@ namespace NetTopologySuite.Precision
                             if (d < _minDist)
                             {
                                 _minDist = d;
-                                _minPts[0] = p1;
-                                _minPts[1] = p2;
+                                Coordinates[0] = p1;
+                                Coordinates[1] = p2;
                                 if (d == 0.0)
                                     return d;
                             }
@@ -275,9 +274,9 @@ namespace NetTopologySuite.Precision
 
             private void UpdatePts(Coordinate p, Coordinate seg0, Coordinate seg1)
             {
-                _minPts[0] = p;
+                Coordinates[0] = p;
                 var seg = new LineSegment(seg0, seg1);
-                _minPts[1] = new Coordinate(seg.ClosestPoint(p));
+                Coordinates[1] = new Coordinate(seg.ClosestPoint(p));
             }
         }
     }

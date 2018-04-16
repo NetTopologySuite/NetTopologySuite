@@ -27,8 +27,7 @@ namespace NetTopologySuite.Geometries.Implementation
          * The actual dimension of the coordinates in the sequence.
          * Allowable values are 2 or 3.
          */
-        private readonly int _dimension = 3;
-  
+
         /// <summary>
         /// Constructs a sequence based on the given array of <see cref="Coordinate"/>s.
         /// The coordinate dimension is 3
@@ -50,7 +49,7 @@ namespace NetTopologySuite.Geometries.Implementation
         public CoordinateArraySequence(Coordinate[] coordinates, int dimension)
         {
             Coordinates = coordinates;
-            _dimension = dimension;
+            Dimension = dimension;
             if (coordinates == null)
                 Coordinates = new Coordinate[0];
         }
@@ -71,7 +70,7 @@ namespace NetTopologySuite.Geometries.Implementation
         public CoordinateArraySequence(int size, int dimension)
         {
             Coordinates = new Coordinate[size];
-            _dimension = dimension;
+            Dimension = dimension;
             for (var i = 0; i < size; i++)
                 Coordinates[i] = new Coordinate();
         }
@@ -89,7 +88,7 @@ namespace NetTopologySuite.Geometries.Implementation
                 return;
             }
 
-            _dimension = coordSeq.Dimension;
+            Dimension = coordSeq.Dimension;
             Coordinates = new Coordinate[coordSeq.Count];
 
             for (var i = 0; i < Coordinates.Length; i++) 
@@ -100,9 +99,9 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
         /// </summary>
         /// <value></value>
-        public int Dimension => _dimension;
+        public int Dimension { get; } = 3;
 
-        public Ordinates Ordinates => _dimension == 3 
+        public Ordinates Ordinates => Dimension == 3 
             ? Ordinates.XYZ 
             : Ordinates.XY;
 

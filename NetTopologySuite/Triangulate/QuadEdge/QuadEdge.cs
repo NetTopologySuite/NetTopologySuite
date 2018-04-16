@@ -114,8 +114,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         // the dual of this edge, directed from right to left
-        private Vertex _vertex; // The vertex that this edge represents
-        private QuadEdge _next; // A reference to a connected edge
 //    private int      visitedKey = 0;
 
         /// <summary>
@@ -173,7 +171,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="next">edge</param>
         public void SetNext(QuadEdge next)
         {
-            _next = next;
+            ONext = next;
         }
 
         /***************************************************************************
@@ -203,13 +201,13 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// Gets the next CCW edge around the origin of this edge.
         /// </summary>
         /// <remarks>Gets the next linked edge.</remarks>
-        internal QuadEdge ONext => _next;
+        internal QuadEdge ONext { get; private set; }
 
         /// <summary>
         /// Gets the next CW edge around (from) the origin of this edge.
         /// </summary>
         /// <remarks>Gets the previous edge.</remarks>
-        internal QuadEdge OPrev => Rot._next.Rot;
+        internal QuadEdge OPrev => Rot.ONext.Rot;
 
         /// <summary>
         /// Gets the next CCW edge around (into) the destination of this edge.
@@ -233,13 +231,13 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// Gets the CCW edge around the left face before this edge.
         /// </summary>
         /// <remarks>Get the previous left face edge.</remarks>
-        internal QuadEdge LPrev => _next.Sym;
+        internal QuadEdge LPrev => ONext.Sym;
 
         /// <summary>
         /// Gets the edge around the right face ccw following this edge.
         /// </summary>
         /// <remarks>Gets the next right face edge.</remarks>
-        internal QuadEdge RNext => Rot._next.InvRot;
+        internal QuadEdge RNext => Rot.ONext.InvRot;
 
         /// <summary>
         /// Gets the edge around the right face ccw before this edge.
@@ -276,11 +274,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// Gets or sets the vertex for the edge's origin
         /// </summary>
         /// <remarks>Gets the origin vertex</remarks>
-        public Vertex Orig
-        {
-            get => _vertex;
-            internal set => _vertex = value;
-        }
+        public Vertex Orig { get; internal set; }
 
         /// <summary>
         /// Gets or sets the vertex for the edge's destination
@@ -334,7 +328,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>a LineSegment</returns>
         public LineSegment ToLineSegment()
         {
-            return new LineSegment(_vertex.Coordinate, Dest.Coordinate);
+            return new LineSegment(Orig.Coordinate, Dest.Coordinate);
         }
 
         /// <summary>
@@ -344,7 +338,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>a String representing this edge's geometry</returns>
         public override String ToString()
         {
-            var p0 = _vertex.Coordinate;
+            var p0 = Orig.Coordinate;
             var p1 = Dest.Coordinate;
             return WKTWriter.ToLineString(p0, p1);
         }

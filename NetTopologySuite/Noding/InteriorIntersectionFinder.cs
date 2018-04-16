@@ -50,12 +50,7 @@ namespace NetTopologySuite.Noding
         }
 
         private readonly LineIntersector _li;
-        private Coordinate _interiorIntersection;
-        private Coordinate[] _intSegments;
         private readonly List<Coordinate> _intersections = new List<Coordinate>();
-
-        private int intersectionCount = 0;
-        private bool _keepIntersections = true;
 
         ///<summary>
         /// Creates an intersection finder which finds an interior intersection if one exists
@@ -64,7 +59,7 @@ namespace NetTopologySuite.Noding
         public InteriorIntersectionFinder(LineIntersector li)
         {
             _li = li;
-            _interiorIntersection = null;
+            InteriorIntersection = null;
         }
 
         /// <summary>
@@ -84,11 +79,7 @@ namespace NetTopologySuite.Noding
         /// Default is <c>true</c>.
         /// </remarks>
         /// </summary>
-        public bool KeepIntersections
-        {
-            get => _keepIntersections;
-            set => _keepIntersections = value;
-        }
+        public bool KeepIntersections { get; set; } = true;
 
         ///<summary>
         /// Gets/Sets whether only end segments should be tested for interior intersection.
@@ -102,7 +93,7 @@ namespace NetTopologySuite.Noding
         ///<summary>
         /// Tests whether an intersection was found.
         ///</summary>
-        public Boolean HasIntersection => _interiorIntersection != null;
+        public Boolean HasIntersection => InteriorIntersection != null;
 
         /// <summary>
         /// Gets the intersections found.
@@ -114,18 +105,18 @@ namespace NetTopologySuite.Noding
         /// Gets the count of intersections found.
         /// </summary>
         /// <returns>The intersection count.</returns>
-        public int Count => intersectionCount;
+        public int Count { get; private set; } = 0;
 
         ///<summary>
         /// Gets the computed location of the intersection.
         /// Due to round-off, the location may not be exact.
         ///</summary>
-        public Coordinate InteriorIntersection => _interiorIntersection;
+        public Coordinate InteriorIntersection { get; private set; }
 
         ///<summary>
         /// Gets the endpoints of the intersecting segments.
         ///</summary>
-        public Coordinate[] IntersectionSegments => _intSegments;
+        public Coordinate[] IntersectionSegments { get; private set; }
 
         ///<summary>
         /// This method is called by clients of the <see cref="ISegmentIntersector"/> class to process
@@ -171,16 +162,16 @@ namespace NetTopologySuite.Noding
             {
                 if (_li.IsInteriorIntersection())
                 {
-                    _intSegments = new Coordinate[4];
-                    _intSegments[0] = p00;
-                    _intSegments[1] = p01;
-                    _intSegments[2] = p10;
-                    _intSegments[3] = p11;
+                    IntersectionSegments = new Coordinate[4];
+                    IntersectionSegments[0] = p00;
+                    IntersectionSegments[1] = p01;
+                    IntersectionSegments[2] = p10;
+                    IntersectionSegments[3] = p11;
 
-                    _interiorIntersection = _li.GetIntersection(0);
+                    InteriorIntersection = _li.GetIntersection(0);
                     if (KeepIntersections)
-                        _intersections.Add(_interiorIntersection);
-                    intersectionCount++;
+                        _intersections.Add(InteriorIntersection);
+                    Count++;
                 }
             }
         }
@@ -204,7 +195,7 @@ namespace NetTopologySuite.Noding
             get
             {
                 if (FindAllIntersections) return false;
-                return _interiorIntersection != null;
+                return InteriorIntersection != null;
             }
         }
     }

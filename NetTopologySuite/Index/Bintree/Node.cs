@@ -33,7 +33,7 @@ namespace NetTopologySuite.Index.Bintree
         public static Node<T> CreateExpanded(Node<T> node, Interval addInterval)
         {
             var expandInt = new Interval(addInterval);
-            if (node != null) expandInt.ExpandToInclude(node._interval);
+            if (node != null) expandInt.ExpandToInclude(node.Interval);
             /*
             var expandInt = node != null
                             ? addInterval.ExpandedByInterval(node._interval)
@@ -45,7 +45,6 @@ namespace NetTopologySuite.Index.Bintree
             return largerNode;
         }
 
-        private readonly Interval _interval; //= Interval.Create();
         private readonly double _centre;
         private readonly int _level;
 
@@ -56,7 +55,7 @@ namespace NetTopologySuite.Index.Bintree
         /// <param name="level">The node's level</param>
         public Node(Interval interval, int level)
         {
-            _interval = interval;
+            Interval = interval;
             _level = level;
             _centre = (interval.Min + interval.Max) / 2;
         }
@@ -64,7 +63,7 @@ namespace NetTopologySuite.Index.Bintree
         /// <summary>
         /// Gets the node's <see cref="Interval"/>
         /// </summary>
-        public  Interval Interval => _interval;
+        public  Interval Interval { get; }
 
         /// <summary>
         /// 
@@ -73,7 +72,7 @@ namespace NetTopologySuite.Index.Bintree
         /// <returns></returns>
         protected override bool IsSearchMatch(Interval itemInterval)
         {
-            return itemInterval.Overlaps(_interval);
+            return itemInterval.Overlaps(Interval);
         }
 
         /// <summary>
@@ -122,8 +121,8 @@ namespace NetTopologySuite.Index.Bintree
         /// <param name="node"></param>
         public  void Insert(Node<T> node)
         {
-            Assert.IsTrue(_interval == null || _interval.Contains(node.Interval));
-            int index = GetSubnodeIndex(node._interval, _centre);
+            Assert.IsTrue(Interval == null || Interval.Contains(node.Interval));
+            int index = GetSubnodeIndex(node.Interval, _centre);
             if (node._level == _level - 1) 
                 Subnode[index] = node;            
             else 
@@ -161,12 +160,12 @@ namespace NetTopologySuite.Index.Bintree
             switch (index) 
             {
                 case 0:
-                    min = _interval.Min;
+                    min = Interval.Min;
                     max = _centre;
                     break;
                 case 1:
                     min = _centre;
-                    max = _interval.Max;
+                    max = Interval.Max;
                     break;
                     /*
                 default:

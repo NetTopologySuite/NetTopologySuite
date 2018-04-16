@@ -142,19 +142,17 @@ namespace NetTopologySuite.Geometries
 
 
         //FObermaier: not *readonly* due to SRID property in geometryfactory
-        private /*readonly*/ IGeometryFactory _factory;
 
         /// <summary> 
         /// Gets the factory which contains the context in which this point was created.
         /// </summary>
         /// <returns>The factory for this point.</returns>
-        public IGeometryFactory Factory => _factory;
+        public IGeometryFactory Factory { get; private set; }
 
         /**
          * An object reference which can be used to carry ancillary data defined
          * by the client.
          */
-        private object _userData;
 
         /// <summary> 
         /// Gets/Sets the user data object for this point, if any.
@@ -165,11 +163,7 @@ namespace NetTopologySuite.Geometries
         /// Note that user data objects are not present in geometries created by
         /// construction methods.
         /// </remarks>
-        public object UserData
-        {
-            get => _userData;
-            set => _userData = value;
-        }
+        public object UserData { get; set; }
 
         /// <summary>
         /// The bounding box of this <c>Geometry</c>.
@@ -206,8 +200,8 @@ namespace NetTopologySuite.Geometries
                 _srid = value;
 
                 // Adjust the geometry factory
-                _factory = GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(
-                    _factory.PrecisionModel, value, _factory.CoordinateSequenceFactory);
+                Factory = GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(
+                    Factory.PrecisionModel, value, Factory.CoordinateSequenceFactory);
 
                 var collection = this as IGeometryCollection;
                 if (collection == null) return;
@@ -225,7 +219,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="factory">The factory</param>
         protected Geometry(IGeometryFactory factory)
         {
-            _factory = factory;
+            Factory = factory;
             _srid = factory.SRID;
         }
 
@@ -503,8 +497,6 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public IPoint PointOnSurface => InteriorPoint;
 
-        private Dimension _dimension;
-
         /// <summary> 
         /// Returns the dimension of this geometry.
         /// </summary>
@@ -523,11 +515,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>  
         /// The topological dimensions of this geometry
         /// </returns>
-        public virtual Dimension Dimension
-        {
-            get => _dimension;
-            set => _dimension = value;
-        }
+        public virtual Dimension Dimension { get; set; }
 
 
         /*private IGeometry boundary;*/
@@ -1574,7 +1562,7 @@ namespace NetTopologySuite.Geometries
         {
             // Special case: if one input is empty ==> empty
             if (IsEmpty || other.IsEmpty)
-                return OverlayOp.CreateEmptyResult(SpatialFunction.Intersection, this, other, _factory);
+                return OverlayOp.CreateEmptyResult(SpatialFunction.Intersection, this, other, Factory);
 
             // compute for GCs
             if (IsGeometryCollection)
@@ -1629,7 +1617,7 @@ namespace NetTopologySuite.Geometries
             if (IsEmpty || (other == null || other.IsEmpty))
             {
                 if (IsEmpty && (other == null || other.IsEmpty))
-                    return OverlayOp.CreateEmptyResult(SpatialFunction.Union, this, other, _factory);
+                    return OverlayOp.CreateEmptyResult(SpatialFunction.Union, this, other, Factory);
 
                 // Special case: if either input is empty ==> other input
                 if (other == null || other.IsEmpty) return Copy();
@@ -1656,7 +1644,7 @@ namespace NetTopologySuite.Geometries
         {
             // special case: if A.isEmpty ==> empty; if B.isEmpty ==> A
             if (IsEmpty)
-                return OverlayOp.CreateEmptyResult(SpatialFunction.Difference, this, other, _factory);
+                return OverlayOp.CreateEmptyResult(SpatialFunction.Difference, this, other, Factory);
             if (other == null || other.IsEmpty)
                 return (IGeometry)Copy();
 
@@ -1685,7 +1673,7 @@ namespace NetTopologySuite.Geometries
             {
                 // both empty - check dimensions
                 if (IsEmpty && (other == null || other.IsEmpty))
-                    return OverlayOp.CreateEmptyResult(SpatialFunction.SymDifference, this, other, _factory);
+                    return OverlayOp.CreateEmptyResult(SpatialFunction.SymDifference, this, other, Factory);
 
                 // special case: if either input is empty ==> result = other arg
                 if (other == null || other.IsEmpty) return (IGeometry)Copy();

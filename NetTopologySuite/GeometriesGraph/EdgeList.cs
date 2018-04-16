@@ -10,8 +10,6 @@ namespace NetTopologySuite.GeometriesGraph
     /// </summary>
     public class EdgeList
     {
-        private readonly List<Edge> _edges = new List<Edge>();
-
         /// <summary>
         /// An index of the edges, for fast lookup.
         /// </summary>
@@ -24,7 +22,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="e">Edge element to remove from list</param>
         public void Remove(Edge e)
         {
-            _edges.Remove(e);
+            Edges.Remove(e);
         }
 
         /// <summary> 
@@ -33,7 +31,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="e"></param>
         public void Add(Edge e)
         {
-            _edges.Add(e);
+            Edges.Add(e);
             var oca = new OrientedCoordinateArray(e.Coordinates);
             _ocaMap.Add(oca, e);
             //_index.Insert(e.Envelope, e);
@@ -52,7 +50,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public IList<Edge> Edges => _edges;
+        public IList<Edge> Edges { get; } = new List<Edge>();
 
         /// <summary>
         /// If there is an edge equal to e already in the list, return it.
@@ -78,7 +76,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public IEnumerator<Edge> GetEnumerator() 
         { 
-            return _edges.GetEnumerator(); 
+            return Edges.GetEnumerator(); 
         }
 
         /// <summary>
@@ -95,7 +93,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public Edge Get(int i) 
         {
-            return _edges[i]; 
+            return Edges[i]; 
         }
 
         /// <summary>
@@ -108,8 +106,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// </returns>
         public int FindEdgeIndex(Edge e)
         {
-            for (var i = 0; i < _edges.Count; i++)
-                if ((_edges[i]).Equals(e))
+            for (var i = 0; i < Edges.Count; i++)
+                if ((Edges[i]).Equals(e))
                     return i;            
             return -1;
         }
@@ -122,9 +120,9 @@ namespace NetTopologySuite.GeometriesGraph
         public void Write(StreamWriter outstream)
         {
             outstream.Write("MULTILINESTRING ( ");
-            for (var j = 0; j < _edges.Count; j++) 
+            for (var j = 0; j < Edges.Count; j++) 
             {
-                var e = _edges[j];
+                var e = Edges[j];
                 if (j > 0) 
                     outstream.Write(",");
                 outstream.Write("(");

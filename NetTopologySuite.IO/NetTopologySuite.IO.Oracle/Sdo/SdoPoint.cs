@@ -6,32 +6,20 @@ namespace NetTopologySuite.IO.Sdo
     [OracleCustomTypeMappingAttribute("MDSYS.SDO_POINT_TYPE")]
     public class SdoPoint : OracleCustomTypeBase<SdoPoint>
     {
-        private decimal? _x;
-        private decimal? _y;
-        private decimal? _z;
         [OracleObjectMappingAttribute("X")]
-        public decimal? X
-        {
-            get => _x;
-            set { _x = value; }
-        }
+        public decimal? X { get; set; }
+
         [OracleObjectMappingAttribute("Y")]
-        public decimal? Y
-        {
-            get => _y;
-            set { _y = value; }
-        }
+        public decimal? Y { get; set; }
+
         [OracleObjectMapping("Z")]
-        public decimal? Z
-        {
-            get => _z;
-            set { _z = value; }
-        }
+        public decimal? Z { get; set; }
+
         public override void MapFromCustomObject()
         {
-            SetValue("X", _x);
-            SetValue("Y", _y);
-            SetValue("Z", _z);
+            SetValue("X", X);
+            SetValue("Y", Y);
+            SetValue("Z", Z);
         }
         public override void MapToCustomObject()
         {

@@ -27,7 +27,6 @@ namespace NetTopologySuite.Noding
 
         private readonly LineIntersector _li;
         private IList<ISegmentString> _nodedSegStrings;
-        private int _maxIter = MaxIterations;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IteratedNoder"/> class.
@@ -43,11 +42,7 @@ namespace NetTopologySuite.Noding
         /// the noding is aborted. Experience suggests that this should rarely need to be changed
         /// from the default. The default is <see cref="MaxIterations" />.
         /// </summary>
-        public int MaximumIterations
-        {
-            get => _maxIter;
-            set => _maxIter = value;
-        }
+        public int MaximumIterations { get; set; } = MaxIterations;
 
         /// <summary>
         /// Returns a <see cref="IList"/> of fully noded <see cref="ISegmentString"/>s.
@@ -84,7 +79,7 @@ namespace NetTopologySuite.Noding
                */       
               if (lastNodesCreated > 0
                   && nodesCreated >= lastNodesCreated
-                  && nodingIterationCount > _maxIter) 
+                  && nodingIterationCount > MaximumIterations) 
                 throw new TopologyException("Iterated noding failed to converge after "
                                             + nodingIterationCount + " iterations");              
               lastNodesCreated = nodesCreated;

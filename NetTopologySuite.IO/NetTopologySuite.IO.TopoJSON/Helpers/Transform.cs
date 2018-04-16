@@ -7,9 +7,6 @@ namespace NetTopologySuite.IO.Helpers
         private static readonly double[] NoScale = { 1, 1 };
         private static readonly double[] NoTranslate = { 0, 0 };
 
-        private readonly double[] _scale;
-        private readonly double[] _translate;
-
         public Transform() : this(NoScale, NoTranslate) { }
 
         public Transform(double[] scale, double[] translate)
@@ -19,15 +16,15 @@ namespace NetTopologySuite.IO.Helpers
             if (translate == null)
                 throw new ArgumentNullException("translate");
 
-            _scale = scale;
-            _translate = translate;
+            Scale = scale;
+            Translate = translate;
         }
 
         public bool Quantized => Scale != NoScale && Translate != NoTranslate;
 
-        public double[] Scale => _scale;
+        public double[] Scale { get; }
 
-        public double[] Translate => _translate;
+        public double[] Translate { get; }
 
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()

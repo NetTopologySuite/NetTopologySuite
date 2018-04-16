@@ -12,12 +12,8 @@ namespace NetTopologySuite.IO
 	public class ShapefileHeader
 	{
 		private int _fileCode = Shapefile.ShapefileId;
-		private int _fileLength = -1;
-		private int _version = 1000;
-        private ShapeGeometryType _shapeType = ShapeGeometryType.NullShape;
-		private Envelope _bounds;
-	
-		/// <summary>
+
+	    /// <summary>
 		/// Initializes a new instance of the ShapefileHeader class with values read in from the stream.
 		/// </summary>
 		/// <remarks>Reads the header information from the stream.</remarks>
@@ -38,18 +34,18 @@ namespace NetTopologySuite.IO
 			shpBinaryReader.ReadInt32BE();
 			shpBinaryReader.ReadInt32BE();
 
-			_fileLength = shpBinaryReader.ReadInt32BE();
+			FileLength = shpBinaryReader.ReadInt32BE();
 
-			_version = shpBinaryReader.ReadInt32();
-			Debug.Assert(_version == 1000, "Shapefile version", String.Format("Expecting only one version (1000), but got {0}",_version));
+			Version = shpBinaryReader.ReadInt32();
+			Debug.Assert(Version == 1000, "Shapefile version", String.Format("Expecting only one version (1000), but got {0}",Version));
 			int shapeType = shpBinaryReader.ReadInt32();
-            _shapeType = (ShapeGeometryType) EnumUtility.Parse(typeof(ShapeGeometryType), shapeType.ToString());
+            ShapeType = (ShapeGeometryType) EnumUtility.Parse(typeof(ShapeGeometryType), shapeType.ToString());
 
 			//read in and store the bounding box
 			double[] coords = new double[4];
 			for (int i = 0; i < 4; i++)
 				coords[i] = shpBinaryReader.ReadDouble();
-			_bounds = new Envelope(coords[0], coords[2], coords[1], coords[3]);
+			Bounds = new Envelope(coords[0], coords[2], coords[1], coords[3]);
 			
 			// skip z and m bounding boxes.
 			for (int i = 0; i < 4; i++)
@@ -64,40 +60,24 @@ namespace NetTopologySuite.IO
 		/// <summary>
 		/// Gets and sets the bounds of the shape file.
 		/// </summary>
-		public Envelope Bounds
-		{
-			get => _bounds;
-			set => _bounds = value;
-		}
+		public Envelope Bounds { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets and sets the shape file type i.e. polygon, point etc...
 		/// </summary>
-        public ShapeGeometryType ShapeType
-		{
-			get => _shapeType;
-			set => _shapeType = value;
-		}
+        public ShapeGeometryType ShapeType { get; set; } = ShapeGeometryType.NullShape;
 
-		/// <summary>
+	    /// <summary>
 		/// Gets and sets the shapefile version.
 		/// </summary>
-		public int Version
-		{
-			get => _version;
-			set => _version = value;
-		}
+		public int Version { get; set; } = 1000;
 
-		/// <summary>
+	    /// <summary>
 		/// Gets and sets the length of the shape file in words.
 		/// </summary>
-		public int FileLength
-		{
-			get => _fileLength;
-			set => _fileLength = value;
-		}
+		public int FileLength { get; set; } = -1;
 
-		/// <summary>
+	    /// <summary>
 		/// Writes a shapefile header to the given stream;
 		/// </summary>
 		/// <param name="file">The binary writer to use.</param>
@@ -105,7 +85,7 @@ namespace NetTopologySuite.IO
 		{
 			if (file == null)
 				throw new ArgumentNullException("file");
-			if (_fileLength==-1)
+			if (FileLength==-1)
 				throw new InvalidOperationException("The header properties need to be set before writing the header record.");
 			var pos = 0;
 			file.WriteIntBE(_fileCode);
@@ -115,20 +95,20 @@ namespace NetTopologySuite.IO
 				file.WriteIntBE(0);//Skip unused part of header
 				pos += 4;
 			}
-			file.WriteIntBE(_fileLength);
+			file.WriteIntBE(FileLength);
 			pos += 4;
-			file.Write(_version);
+			file.Write(Version);
 			pos += 4;
 
-		    var format = EnumUtility.Format(typeof(ShapeGeometryType), _shapeType, "d");
+		    var format = EnumUtility.Format(typeof(ShapeGeometryType), ShapeType, "d");
 		    file.Write(int.Parse(format));
 			
             pos += 4;
 			// Write the bounding box
-			file.Write(_bounds.MinX);
-			file.Write(_bounds.MinY);
-			file.Write(_bounds.MaxX);
-			file.Write(_bounds.MaxY);
+			file.Write(Bounds.MinX);
+			file.Write(Bounds.MinY);
+			file.Write(Bounds.MaxX);
+			file.Write(Bounds.MaxY);
 			pos += 8 * 4;        
 
 			// Skip remaining unused bytes

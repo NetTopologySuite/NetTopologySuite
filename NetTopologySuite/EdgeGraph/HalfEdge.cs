@@ -66,17 +66,13 @@ namespace NetTopologySuite.EdgeGraph
             return e0;
         }
 
-        private readonly Coordinate _orig;
-        private HalfEdge _sym;
-        private HalfEdge _next;
-
         /// <summary>
         /// Creates an edge originating from a given coordinate.
         /// </summary>
         /// <param name="orig">the origin coordinate</param>
         public HalfEdge(Coordinate orig)
         {
-            _orig = orig;
+            Orig = orig;
         }
 
         protected virtual void Init(HalfEdge e)
@@ -91,7 +87,7 @@ namespace NetTopologySuite.EdgeGraph
         /// <summary>
         /// Gets the origin coordinate of this edge.
         /// </summary>
-        public Coordinate Orig => _orig;
+        public Coordinate Orig { get; }
 
         /// <summary>
         /// Gets the destination coordinate of this edge.
@@ -101,22 +97,14 @@ namespace NetTopologySuite.EdgeGraph
         /// <summary>
         /// Gets the symmetric pair edge of this edge.
         /// </summary>
-        public HalfEdge Sym
-        {
-            get => _sym;
-            private set => _sym = value;
-        }
+        public HalfEdge Sym { get; private set; }
 
         /// <summary>
         /// Gets the next edge CCW around the 
         /// destination vertex of this edge.
         /// If the vertex has degree 1 then this is the <b>sym</b> edge.
         /// </summary>
-        public HalfEdge Next
-        {
-            get => _next;
-            private set => _next = value;
-        }
+        public HalfEdge Next { get; private set; }
 
         /// <summary>
         /// Returns the edge previous to this one

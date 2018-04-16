@@ -42,9 +42,6 @@ namespace NetTopologySuite.Operation.Buffer
         public const double DefaultSimplifyFactor = 0.01;
 
         private int _quadrantSegments = DefaultQuadrantSegments;
-        private EndCapStyle _endCapStyle = EndCapStyle.Round;
-        private JoinStyle _joinStyle = JoinStyle.Round;
-        private double _mitreLimit = DefaultMitreLimit;
         private double _simplifyFactor = DefaultSimplifyFactor;
 
         ///<summary>
@@ -130,11 +127,11 @@ namespace NetTopologySuite.Operation.Buffer
                  * mitreLimit = |qs|
                  */
                 if (_quadrantSegments == 0)
-                    _joinStyle = JoinStyle.Bevel;
+                    JoinStyle = JoinStyle.Bevel;
                 if (_quadrantSegments < 0)
                 {
-                    _joinStyle = JoinStyle.Mitre;
-                    _mitreLimit = Math.Abs(_quadrantSegments);
+                    JoinStyle = JoinStyle.Mitre;
+                    MitreLimit = Math.Abs(_quadrantSegments);
                 }
 
                 if (value <= 0)
@@ -146,7 +143,7 @@ namespace NetTopologySuite.Operation.Buffer
                  * If join style was set by the value,
                  * use the default for the actual quadrantSegments value.
                  */
-                if (_joinStyle != JoinStyle.Round)
+                if (JoinStyle != JoinStyle.Round)
                 {
                     _quadrantSegments = DefaultQuadrantSegments;
                 }
@@ -175,11 +172,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// </para>
         /// <para>The default is <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Round"/>.</para>
         /// </remarks>
-        public EndCapStyle EndCapStyle
-        {
-            get => _endCapStyle;
-            set => _endCapStyle = value;
-        }
+        public EndCapStyle EndCapStyle { get; set; } = EndCapStyle.Round;
 
         ///<summary>
         /// Gets/Sets the join style for outside (reflex) corners between line segments.
@@ -188,11 +181,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <para>Allowable values are <see cref="GeoAPI.Operations.Buffer.JoinStyle.Round"/> (which is the default), 
         /// <see cref="GeoAPI.Operations.Buffer.JoinStyle.Mitre"/> and <see cref="GeoAPI.Operations.Buffer.JoinStyle.Bevel"/></para>
         /// </remarks>
-        public JoinStyle JoinStyle
-        {
-            get => _joinStyle;
-            set => _joinStyle = value;
-        }
+        public JoinStyle JoinStyle { get; set; } = JoinStyle.Round;
 
         ///<summary>
         /// Sets the limit on the mitre ratio used for very sharp corners.
@@ -209,11 +198,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// Corners with a ratio which exceed the limit will be beveled.
         /// </para>
         /// </remarks>
-        public double MitreLimit
-        {
-            get => _mitreLimit;
-            set => _mitreLimit = value;
-        }
+        public double MitreLimit { get; set; } = DefaultMitreLimit;
 
         /// <summary>
         /// Gets or sets whether the computed buffer should be single-sided.

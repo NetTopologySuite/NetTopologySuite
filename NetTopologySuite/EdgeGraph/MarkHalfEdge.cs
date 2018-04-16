@@ -47,8 +47,6 @@ namespace NetTopologySuite.EdgeGraph
             ((MarkHalfEdge)e.Sym).Mark();
         }
 
-        private bool _marked;
-
         /// <summary>
         /// Creates a new marked edge.
         /// </summary>
@@ -64,10 +62,6 @@ namespace NetTopologySuite.EdgeGraph
             Marked = true;
         }
 
-        public bool Marked
-        {
-            get => _marked;
-            set => _marked = value;
-        }
+        public bool Marked { get; set; }
     }
 }

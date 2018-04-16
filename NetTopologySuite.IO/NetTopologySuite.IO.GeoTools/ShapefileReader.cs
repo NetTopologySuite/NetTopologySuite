@@ -17,7 +17,6 @@ namespace NetTopologySuite.IO
     {
         private IStreamProviderRegistry _shapeStreamProviderRegistry;
         private readonly IGeometryFactory _geometryFactory;
-        private readonly ShapefileHeader _mainHeader;
 
 
         /// <summary>
@@ -32,7 +31,7 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Gets the bounds of the shape file.
         /// </summary>
-        public ShapefileHeader Header => _mainHeader;
+        public ShapefileHeader Header { get; }
 
         #region IEnumerable Members
 
@@ -57,7 +56,7 @@ namespace NetTopologySuite.IO
         public IGeometryCollection ReadAll()
         {
             var list = new List<IGeometry>();
-            ShapeGeometryType type = _mainHeader.ShapeType;
+            ShapeGeometryType type = Header.ShapeType;
             ShapeHandler handler = Shapefile.GetShapeHandler(type);
             if (handler == null)
                 throw new NotSupportedException("Unsupported shape type:" + type);

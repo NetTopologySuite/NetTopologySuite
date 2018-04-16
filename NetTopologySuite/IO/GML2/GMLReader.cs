@@ -19,12 +19,10 @@ namespace NetTopologySuite.IO.GML2
     /// </summary>
     public class GMLReader
     {
-        private readonly IGeometryFactory _factory;
-
         /// <summary>
         /// <see cref="IGeometry"/> builder.
         /// </summary>
-        protected IGeometryFactory Factory => _factory;
+        protected IGeometryFactory Factory { get; }
 
         /// <summary>
         /// Initialize reader with a standard <see cref="IGeometryFactory"/>.
@@ -36,7 +34,7 @@ namespace NetTopologySuite.IO.GML2
         /// </summary>        
         public GMLReader(IGeometryFactory factory)
         {
-            _factory = factory;
+            Factory = factory;
         }
 
 #if HAS_SYSTEM_XML_XMLDOCUMENT

@@ -25,7 +25,7 @@ namespace NetTopologySuite.IO.Handlers
 
         protected int boundingBoxIndex = 0;
         protected double[] boundingBox;
-        private readonly ShapeGeometryType _type;
+
         protected IGeometry geom;
         //protected CoordinateBuffer Buffer;
 
@@ -36,13 +36,13 @@ namespace NetTopologySuite.IO.Handlers
 
         protected ShapeHandler(ShapeGeometryType type)
         {
-            _type = type;
+            ShapeType = type;
         }
 
         /// <summary>
         /// Returns the ShapeType the handler handles.
         /// </summary>
-        public ShapeGeometryType ShapeType => _type;
+        public ShapeGeometryType ShapeType { get; }
 
         /// <summary>
         /// Reads a stream and converts the shapefile record to an equilivent geometry object.
@@ -253,7 +253,7 @@ namespace NetTopologySuite.IO.Handlers
         /// </returns>
         protected bool HasZValue()
         {
-            return HasZValue(_type);
+            return HasZValue(ShapeType);
         }
 
         /// <summary>
@@ -289,7 +289,7 @@ namespace NetTopologySuite.IO.Handlers
         /// </returns>
         protected bool HasMValue()
         {
-            return HasMValue(_type);
+            return HasMValue(ShapeType);
         }
 
         /// <summary>
@@ -322,7 +322,7 @@ namespace NetTopologySuite.IO.Handlers
         /// <returns></returns>
         protected bool IsPoint()
         {
-            return IsPoint(_type);
+            return IsPoint(ShapeType);
         }
 
         /// <summary>
@@ -344,7 +344,7 @@ namespace NetTopologySuite.IO.Handlers
         /// <returns></returns>
         protected bool IsMultiPoint()
         {
-            return IsMultiPoint(_type);
+            return IsMultiPoint(ShapeType);
         }
 
         /// <summary>
@@ -366,7 +366,7 @@ namespace NetTopologySuite.IO.Handlers
         /// <returns></returns>
         protected bool IsLineString()
         {
-            return IsLineString(_type);
+            return IsLineString(ShapeType);
         }
 
         /// <summary>
@@ -388,7 +388,7 @@ namespace NetTopologySuite.IO.Handlers
         /// <returns></returns>
         protected bool IsPolygon()
         {
-            return IsPolygon(_type);
+            return IsPolygon(ShapeType);
         }
 
         /// <summary>

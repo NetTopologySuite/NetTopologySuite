@@ -11,14 +11,12 @@ namespace NetTopologySuite.Geometries.Implementation
 #endif
     public sealed class CoordinateArraySequenceFactory : ICoordinateSequenceFactory
     {
-        private static readonly CoordinateArraySequenceFactory instance = new CoordinateArraySequenceFactory();
-
         private CoordinateArraySequenceFactory() { }
 
         /// <summary>
         /// Returns the singleton instance of CoordinateArraySequenceFactory.
         /// </summary>
-        public static CoordinateArraySequenceFactory Instance => instance;
+        public static CoordinateArraySequenceFactory Instance { get; } = new CoordinateArraySequenceFactory();
 
         /// <summary>
         ///  Returns a CoordinateArraySequence based on the given array (the array is not copied).

@@ -10,26 +10,15 @@ namespace NetTopologySuite.Index.Bintree
 #endif
     public class Interval
     {
-        private double _min;
-        private double _max;
-
         /// <summary>
         /// Gets or sets a value indicating the minimum value of the closed interval.
         /// </summary>
-        public double Min
-        {
-            get => _min;
-            set => _min = value;
-        }
+        public double Min { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating the maximum value of the closed interval.
         /// </summary>
-        public double Max
-        {
-            get => _max;
-            set => _max = value;
-        }
+        public double Max { get; set; }
 
         /// <summary>
         /// Gets the width of the interval (<see cref="Max"/> - <see cref="Min"/>)
@@ -47,8 +36,8 @@ namespace NetTopologySuite.Index.Bintree
         /// </summary>
         public Interval()
         {
-            _min = 0.0;
-            _max = 0.0;
+            Min = 0.0;
+            Max = 0.0;
         }
 
         /// <summary>

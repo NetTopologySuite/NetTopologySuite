@@ -13,7 +13,6 @@ public class TestDataBuilder
 
 	private Coordinate _origin = new Coordinate(0, 0);
 	private double _size = 100.0;
-	private int _testDim = 1;
 
 	public TestDataBuilder(IGeometryFactory geomFact)
 	{
@@ -27,10 +26,7 @@ public class TestDataBuilder
 		_size = size;
 	}
 
-	public int TestDimension {
-		get => _testDim;
-		set { _testDim = value; }
-	}
+	public int TestDimension { get; set; } = 1;
 
 	public IGeometry CreateCircle(int nPts) {
 		var gsf = new GeometricShapeFactory(_geomFact);

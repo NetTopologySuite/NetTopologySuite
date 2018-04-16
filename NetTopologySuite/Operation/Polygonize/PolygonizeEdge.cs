@@ -8,20 +8,18 @@ namespace NetTopologySuite.Operation.Polygonize
     /// </summary>
     public class PolygonizeEdge : Edge
     {
-        private readonly ILineString line;
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="line"></param>
         public PolygonizeEdge(ILineString line)
         {
-            this.line = line;
+            this.Line = line;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public ILineString Line => line;
+        public ILineString Line { get; }
     }
 }

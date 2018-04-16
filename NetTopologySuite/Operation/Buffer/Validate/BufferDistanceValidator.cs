@@ -44,9 +44,6 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         private double _maxDistanceFound;
 
         private bool _isValid = true;
-        private String _errMsg;
-        private Coordinate _errorLocation;
-        private IGeometry _errorIndicator;
 
         public BufferDistanceValidator(IGeometry input, double bufDistance, IGeometry result)
         {
@@ -88,9 +85,9 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             return _isValid;
         }
 
-        public String ErrorMessage => _errMsg;
+        public String ErrorMessage { get; private set; }
 
-        public Coordinate ErrorLocation => _errorLocation;
+        public Coordinate ErrorLocation { get; private set; }
 
         /// <summary>
         /// Gets a geometry which indicates the location and nature of a validation failure.
@@ -101,7 +98,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// </summary>
         /// <returns>A geometric error indicator 
         /// or <value>null</value>, if no error was found</returns>
-        public IGeometry ErrorIndicator => _errorIndicator;
+        public IGeometry ErrorIndicator { get; private set; }
 
         private void CheckPositiveValid()
         {
@@ -162,9 +159,9 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             {
                 _isValid = false;
                 var pts = distOp.NearestPoints();
-                _errorLocation = pts[1];
-                _errorIndicator = g1.Factory.CreateLineString(pts);
-                _errMsg = "Distance between buffer curve and input is too small "
+                ErrorLocation = pts[1];
+                ErrorIndicator = g1.Factory.CreateLineString(pts);
+                ErrorMessage = "Distance between buffer curve and input is too small "
                     + "(" + _minDistanceFound
                     + " at " + WKTWriter.ToLineString(pts[0], pts[1]) + " )";
             }
@@ -194,9 +191,9 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             {
                 _isValid = false;
                 var pts = haus.Coordinates;
-                _errorLocation = pts[1];
-                _errorIndicator = input.Factory.CreateLineString(pts);
-                _errMsg = "Distance between buffer curve and input is too large "
+                ErrorLocation = pts[1];
+                ErrorIndicator = input.Factory.CreateLineString(pts);
+                ErrorMessage = "Distance between buffer curve and input is too large "
                   + "(" + _maxDistanceFound
                   + " at " + WKTWriter.ToLineString(pts[0], pts[1]) + ")";
             }

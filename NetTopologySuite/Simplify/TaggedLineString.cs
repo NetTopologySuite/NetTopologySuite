@@ -11,10 +11,7 @@ namespace NetTopologySuite.Simplify
     /// </summary>
     public class TaggedLineString
     {
-        private readonly ILineString _parentLine;
-        private TaggedLineSegment[] _segs;
         private readonly IList<LineSegment> _resultSegs = new List<LineSegment>();
-        private readonly int _minimumSize;
 
         /// <summary>
         /// 
@@ -29,25 +26,25 @@ namespace NetTopologySuite.Simplify
         /// <param name="minimumSize"></param>
         public TaggedLineString(ILineString parentLine, int minimumSize)
         {
-            _parentLine = parentLine;
-            _minimumSize = minimumSize;
+            Parent = parentLine;
+            MinimumSize = minimumSize;
             Init();
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public int MinimumSize => _minimumSize;
+        public int MinimumSize { get; }
 
         /// <summary>
         /// 
         /// </summary>
-        public ILineString Parent => _parentLine;
+        public ILineString Parent { get; }
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate[] ParentCoordinates => _parentLine.Coordinates;
+        public Coordinate[] ParentCoordinates => Parent.Coordinates;
 
         /// <summary>
         /// 
@@ -73,7 +70,7 @@ namespace NetTopologySuite.Simplify
         /// <returns></returns>
         public TaggedLineSegment GetSegment(int i)
         {
-            return _segs[i];
+            return Segments[i];
         }
 
         /// <summary>
@@ -81,19 +78,19 @@ namespace NetTopologySuite.Simplify
         /// </summary>
         private void Init()
         {
-            Coordinate[] pts = _parentLine.Coordinates;
-            _segs = new TaggedLineSegment[pts.Length - 1];
+            Coordinate[] pts = Parent.Coordinates;
+            Segments = new TaggedLineSegment[pts.Length - 1];
             for (int i = 0; i < pts.Length - 1; i++)
             {
-                TaggedLineSegment seg = new TaggedLineSegment(pts[i], pts[i + 1], _parentLine, i);
-                _segs[i] = seg;
+                TaggedLineSegment seg = new TaggedLineSegment(pts[i], pts[i + 1], Parent, i);
+                Segments[i] = seg;
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public TaggedLineSegment[] Segments => _segs;
+        public TaggedLineSegment[] Segments { get; private set; }
 
         /// <summary>
         /// 
@@ -111,7 +108,7 @@ namespace NetTopologySuite.Simplify
         public ILineString AsLineString()
         {
             Coordinate[] coordinates = ExtractCoordinates(_resultSegs);
-            return _parentLine.Factory.CreateLineString(coordinates);
+            return Parent.Factory.CreateLineString(coordinates);
         }
 
         /// <summary>
@@ -121,7 +118,7 @@ namespace NetTopologySuite.Simplify
         public ILinearRing AsLinearRing()
         {
             Coordinate[] coordinates = ExtractCoordinates(_resultSegs);
-            return _parentLine.Factory.CreateLinearRing(coordinates);
+            return Parent.Factory.CreateLinearRing(coordinates);
         }
 
         /// <summary>

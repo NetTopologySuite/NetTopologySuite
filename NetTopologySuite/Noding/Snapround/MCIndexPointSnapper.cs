@@ -93,7 +93,6 @@ namespace NetTopologySuite.Noding.Snapround
             private readonly ISegmentString _parentEdge;
             // is -1 if hotPixel is not a vertex
             private readonly int _hotPixelVertexIndex;
-            private bool _isNodeAdded;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="HotPixelSnapAction"/> class.
@@ -111,7 +110,7 @@ namespace NetTopologySuite.Noding.Snapround
             /// <summary>
             /// 
             /// </summary>
-            public bool IsNodeAdded => _isNodeAdded;
+            public bool IsNodeAdded { get; private set; }
 
             /// <summary>
             /// 
@@ -138,7 +137,7 @@ namespace NetTopologySuite.Noding.Snapround
                         )
                         return;
                 }
-                _isNodeAdded = _hotPixel.AddSnappedNode(ss, startIndex);
+                IsNodeAdded = _hotPixel.AddSnappedNode(ss, startIndex);
             }
         }
     }

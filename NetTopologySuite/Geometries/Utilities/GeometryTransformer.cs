@@ -51,8 +51,6 @@ namespace NetTopologySuite.Geometries.Utilities
         * GetParent() method to return immediate parent e.g. of LinearRings in Polygons
         */
 
-        private IGeometry _inputGeom;
-
         /// <summary>
         /// The geometry factory
         /// </summary>
@@ -84,7 +82,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <summary>
         /// Makes the input geometry available
         /// </summary>
-        public IGeometry InputGeometry => _inputGeom;
+        public IGeometry InputGeometry { get; private set; }
 
         /// <summary>
         ///
@@ -93,7 +91,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns></returns>
         public IGeometry Transform(IGeometry inputGeom)
         {
-            _inputGeom = inputGeom;
+            InputGeometry = inputGeom;
             Factory = inputGeom.Factory;
             if (inputGeom is IPoint)
                 return TransformPoint((IPoint)inputGeom, null);

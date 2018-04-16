@@ -38,8 +38,6 @@ namespace NetTopologySuite.Utilities
     /// </typeparam>
     public sealed class PriorityQueueNode<TPriority, TData>
     {
-        private readonly TData data;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PriorityQueueNode{TPriority, TData}"/> class.
         /// </summary>
@@ -48,12 +46,12 @@ namespace NetTopologySuite.Utilities
         /// </param>
         public PriorityQueueNode(TData data)
         {
-            this.data = data;
+            this.Data = data;
         }
 
         internal PriorityQueueNode(PriorityQueueNode<TPriority, TData> copyFrom)
         {
-            this.data = copyFrom.data;
+            this.Data = copyFrom.Data;
             this.Priority = copyFrom.Priority;
             this.QueueIndex = copyFrom.QueueIndex;
         }
@@ -61,7 +59,7 @@ namespace NetTopologySuite.Utilities
         /// <summary>
         /// Gets the <typeparamref name="TData"/> that is stored in this node.
         /// </summary>
-        public TData Data => this.data;
+        public TData Data { get; }
 
         /// <summary>
         /// Gets the <typeparamref name="TPriority"/> of this node in the queue.
