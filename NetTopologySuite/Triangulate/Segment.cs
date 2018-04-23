@@ -15,8 +15,6 @@ namespace NetTopologySuite.Triangulate
     /// 
     public class Segment
     {
-        private readonly LineSegment _ls;
-
         /// <summary> 
         /// Creates a new instance for the given ordinates.
         /// </summary>
@@ -41,7 +39,7 @@ namespace NetTopologySuite.Triangulate
         /// <param name="data">an external data object</param>
         public Segment(Coordinate p0, Coordinate p1, Object data)
         {
-            _ls = new LineSegment(p0, p1);
+            LineSegment = new LineSegment(p0, p1);
             this.Data = data;
         }
 
@@ -52,26 +50,20 @@ namespace NetTopologySuite.Triangulate
         /// <param name="p1">the end point</param>
         public Segment(Coordinate p0, Coordinate p1)
         {
-            _ls = new LineSegment(p0, p1);
+            LineSegment = new LineSegment(p0, p1);
         }
 
         /// <summary>
         /// Gets the start coordinate of the segment
         /// </summary>
         /// <remarks>a Coordinate</remarks>
-        public Coordinate Start
-        {
-            get {return _ls.GetCoordinate(0);}
-        }
+        public Coordinate Start => LineSegment.GetCoordinate(0);
 
         /// <summary>
         /// Gets the end coordinate of the segment
         /// </summary>
         /// <remarks>a Coordinate</remarks>
-        public Coordinate End
-        {
-            get {return _ls.GetCoordinate(1);}
-        }
+        public Coordinate End => LineSegment.GetCoordinate(1);
 
         /// <summary>
         /// Gets the start X ordinate of the segment
@@ -81,7 +73,7 @@ namespace NetTopologySuite.Triangulate
         {
             get
             {
-                var p = _ls.GetCoordinate(0);
+                var p = LineSegment.GetCoordinate(0);
                 return p.X;
             }
         }
@@ -94,7 +86,7 @@ namespace NetTopologySuite.Triangulate
         {
             get
             {
-                var p = _ls.GetCoordinate(0);
+                var p = LineSegment.GetCoordinate(0);
                 return p.Y;
             }
         }
@@ -107,7 +99,7 @@ namespace NetTopologySuite.Triangulate
         {
             get
             {
-                var p = _ls.GetCoordinate(0);
+                var p = LineSegment.GetCoordinate(0);
                 return p.Z;
             }
         }
@@ -120,7 +112,7 @@ namespace NetTopologySuite.Triangulate
         {
             get
             {
-                var p = _ls.GetCoordinate(1);
+                var p = LineSegment.GetCoordinate(1);
                 return p.X;
             }
         }
@@ -133,7 +125,7 @@ namespace NetTopologySuite.Triangulate
         {
             get
             {
-                var p = _ls.GetCoordinate(1);
+                var p = LineSegment.GetCoordinate(1);
                 return p.Y;
             }
         }
@@ -146,7 +138,7 @@ namespace NetTopologySuite.Triangulate
         {
             get
             {
-                var p = _ls.GetCoordinate(1);
+                var p = LineSegment.GetCoordinate(1);
                 return p.Z;
             }
         }
@@ -155,10 +147,7 @@ namespace NetTopologySuite.Triangulate
         /// Gets a <tt>LineSegment</tt> modelling this segment.
         /// </summary>
         /// <remarks>a LineSegment</remarks>
-        public LineSegment LineSegment
-        {
-           get {return _ls;}
-        }
+        public LineSegment LineSegment { get; }
 
         /// <summary>
         /// Gets or sets the external data associated with this segment
@@ -174,7 +163,7 @@ namespace NetTopologySuite.Triangulate
         /// <returns>true if the segments are topologically equal</returns>
         public bool EqualsTopologically(Segment s)
         {
-            return _ls.EqualsTopologically(s.LineSegment);
+            return LineSegment.EqualsTopologically(s.LineSegment);
         }
 
         /// <summary>
@@ -184,7 +173,7 @@ namespace NetTopologySuite.Triangulate
         /// <returns>the intersection point, or <code>null</code> if there is none</returns>
         public Coordinate Intersection(Segment s)
         {
-            return _ls.Intersection(s.LineSegment);
+            return LineSegment.Intersection(s.LineSegment);
         }
 
         /// <summary>
@@ -193,7 +182,7 @@ namespace NetTopologySuite.Triangulate
         /// <returns>a string</returns>
         public override String ToString()
         {
-            return _ls.ToString();
+            return LineSegment.ToString();
         }
     }
 }

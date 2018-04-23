@@ -76,18 +76,9 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public IList<EdgeEnd> EdgeEnds
-        {
-            get
-            {
-                return edgeEndList;
-            }
-        }
+        public IList<EdgeEnd> EdgeEnds => edgeEndList;
 
-        protected internal IList<Edge> Edges
-        {
-            get { return _edges; }
-        }
+        protected internal IList<Edge> Edges => _edges;
 
         /// <summary>
         /// 
@@ -137,19 +128,9 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public IList<Node> Nodes
-        {
-            get
-            {
-                return new List<Node>(_nodes.Values);
-            }
-            //protected set { nodes = value; }
-        }
+        public IList<Node> Nodes => new List<Node>(_nodes.Values);
 
-        protected NodeMap NodeMap
-        {
-            get { return _nodes; }
-        }
+        protected NodeMap NodeMap => _nodes;
 
         /// <summary>
         /// 

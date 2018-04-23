@@ -14,9 +14,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 
         private class TestCase : IComparable<TestCase>
         {
-            private readonly string _name;
-            private readonly int _priority;
-
             public TestCase(string name)
                 : this(name, 2)
             {
@@ -24,19 +21,13 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 
             public TestCase(string name, int priority)
             {
-                _name = name;
-                _priority = priority;
+                Name = name;
+                Priority = priority;
             }
 
-            public string Name
-            {
-                get { return _name; }
-            }
+            public string Name { get; }
 
-            public int Priority
-            {
-                get { return _priority; }
-            }
+            public int Priority { get; }
 
             public TestMethod TestMethod { get; set; }
 
@@ -47,7 +38,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 
             public int CompareTo(TestCase other)
             {
-                return _priority - other.Priority;
+                return Priority - other.Priority;
             }
         }
 

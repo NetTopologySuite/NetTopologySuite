@@ -55,13 +55,7 @@ namespace NetTopologySuite.Triangulate
             }
         }
 
-        public IList<Coordinate> Coordinates
-        {
-            get
-            {
-                return new List<Coordinate>(_coordDataMap.Keys);
-            }
-        }
+        public IList<Coordinate> Coordinates => new List<Coordinate>(_coordDataMap.Keys);
 
         /// <summary>
         /// Input is assumed to be a multiGeometry

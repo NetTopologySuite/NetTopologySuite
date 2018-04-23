@@ -49,7 +49,6 @@ namespace NetTopologySuite.Samples.Technique
             {
                 private readonly double _spikeThreshold = 1e-7;
 
-                private bool _changed;
                 private LineSegment _lastSegment;
 
                 public SpikeFixSequenceFilter(double spikeThreshold)
@@ -83,7 +82,7 @@ namespace NetTopologySuite.Samples.Technique
                                 index = spikeFix == SpikeFix.First ? seq.Count - 2 : 1;
                                 FixSpike(seq, seq.Count-1, index);
                                 FixSpike(seq, 0, index);
-                                _changed = true;
+                                GeometryChanged = true;
                             }
                         }
                         _lastSegment = currentSegment;
@@ -99,7 +98,7 @@ namespace NetTopologySuite.Samples.Technique
                         index = i + (int) spikeFix;
                         FixSpike(seq, i, index);
 
-                        _changed = true;
+                        GeometryChanged = true;
                     }
                     _lastSegment = new LineSegment(seq.GetCoordinate(i), seq.GetCoordinate(i+1));
                 }
@@ -142,15 +141,9 @@ namespace NetTopologySuite.Samples.Technique
                     return SpikeFix.NoSpike;
                 }
 
-                public bool Done
-                {
-                    get { return false; }
-                }
+                public bool Done => false;
 
-                public bool GeometryChanged
-                {
-                    get { return _changed; }
-                }
+                public bool GeometryChanged { get; private set; }
             }
         }
 

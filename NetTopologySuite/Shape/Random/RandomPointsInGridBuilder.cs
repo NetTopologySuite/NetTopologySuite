@@ -15,8 +15,6 @@ namespace NetTopologySuite.Shape.Random
     {
         protected static readonly System.Random Rnd = new System.Random();
 
-        private bool _isConstrainedToCircle;
-
         /// <summary>
         /// Create a builder which will create shapes using the default
         /// <see cref="IGeometryFactory"/>.
@@ -44,11 +42,7 @@ namespace NetTopologySuite.Shape.Random
         /// <para/>
         /// The default is to not be constrained to a circle.
         /// </summary>
-        public bool ConstrainedToCircle
-        {
-            get { return _isConstrainedToCircle; }
-            set { _isConstrainedToCircle = value; }
-        }
+        public bool ConstrainedToCircle { get; set; }
 
         /// <summary>
         /// Gets or sets the fraction of the grid cell side which will be treated as
@@ -97,7 +91,7 @@ namespace NetTopologySuite.Shape.Random
 
         private Coordinate RandomPointInCell(double orgX, double orgY, double xLen, double yLen)
         {
-            return _isConstrainedToCircle 
+            return ConstrainedToCircle 
                 ? RandomPointInCircle(orgX, orgY, xLen, yLen)
                 : RandomPointInGridCell(orgX, orgY, xLen, yLen);
         }

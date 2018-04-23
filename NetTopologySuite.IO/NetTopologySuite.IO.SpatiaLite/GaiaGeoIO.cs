@@ -80,7 +80,7 @@ namespace NetTopologySuite.IO
 
         public int CoordinateFlag { get; private set; }
 
-        public int CoordinateFlagUncompressed { get { return CoordinateFlag > 1000000 ? CoordinateFlag - 1000000 : CoordinateFlag; } }
+        public int CoordinateFlagUncompressed => CoordinateFlag > 1000000 ? CoordinateFlag - 1000000 : CoordinateFlag;
 
         public GaiaDimensionModels Dimension { get; private set; }
 
@@ -90,10 +90,7 @@ namespace NetTopologySuite.IO
 
         public bool Compressed { get; private set; }
 
-        public bool Uncompressed
-        {
-            get { return !Compressed; }
-        }
+        public bool Uncompressed => !Compressed;
 
         protected GaiaGeoIO()
         {

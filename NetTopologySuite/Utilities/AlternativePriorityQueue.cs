@@ -168,7 +168,7 @@ namespace NetTopologySuite.Utilities
         /// This is the node whose <typeparamref name="TPriority"/> compares
         /// less than or equal to the priority of all other nodes in the queue.
         /// </summary>
-        public PriorityQueueNode<TPriority, TData> Head { get { return this.nodes[1]; } }
+        public PriorityQueueNode<TPriority, TData> Head => this.nodes[1];
 
         /// <summary>
         /// Removes all nodes from this queue.

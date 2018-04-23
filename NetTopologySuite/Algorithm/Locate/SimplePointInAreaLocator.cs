@@ -12,7 +12,7 @@ namespace NetTopologySuite.Algorithm.Locate
     public class SimplePointInAreaLocator : IPointOnGeometryLocator
     {
         /// <summary>
-        /// Determines the <see cref="Location"/> of a point in an areal <see cref="IGeometry"/>. 
+        /// Determines the <see cref="Location"/> of a point in an areal <see cref="IGeometry"/>.
         /// Computes <see cref="Location.Boundary"/> if the point lies exactly on a geometry line segment.
         /// </summary>
         /// <param name="p">The point to test</param>
@@ -76,16 +76,14 @@ namespace NetTopologySuite.Algorithm.Locate
 
         /// <summary>
         /// Determines whether a point lies in a <see cref="IPolygon"/>.
-        /// If the point lies on the polygon boundary it is 
+        /// If the point lies on the polygon boundary it is
         /// considered to be inside.
         /// </summary>
         /// <param name="p">The point to test</param>
         /// <param name="poly">The areal geometry to test</param>
         /// <returns><c>true</c> if the point lies in the polygon</returns>
         public static bool ContainsPointInPolygon(Coordinate p, IPolygon poly)
-        {
-            return Location.Exterior != LocatePointInPolygon(p, poly);
-        }
+            => Location.Exterior != LocatePointInPolygon(p, poly);
 
         ///<summary>
         /// Determines whether a point lies in a LinearRing, using the ring envelope to short-circuit if possible.
@@ -94,12 +92,9 @@ namespace NetTopologySuite.Algorithm.Locate
         /// <param name="ring">A linear ring</param>
         /// <returns><c>true</c> if the point lies inside the ring</returns>
         private static Location LocatePointInRing(Coordinate p, ILinearRing ring)
-        {
-            // short-circuit if point is not in ring envelope
-            if (!ring.EnvelopeInternal.Intersects(p))
-                return Location.Exterior;
-            return PointLocation.LocateInRing(p, ring.CoordinateSequence);
-        }
+            => ring.EnvelopeInternal.Intersects(p)  // short-circuit if point is not in ring envelope
+                ? PointLocation.LocateInRing(p, ring.CoordinateSequence)
+                : Location.Exterior;
 
         private readonly IGeometry _geom;
 
@@ -108,10 +103,6 @@ namespace NetTopologySuite.Algorithm.Locate
             _geom = geom;
         }
 
-        public Location Locate(Coordinate p)
-        {
-            return Locate(p, _geom);
-        }
-
+        public Location Locate(Coordinate p) => Locate(p, _geom);
     }
 }

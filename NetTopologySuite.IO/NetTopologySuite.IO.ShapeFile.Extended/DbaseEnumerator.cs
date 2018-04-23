@@ -27,10 +27,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 			m_Reader.Dispose();
 		}
 
-		object IEnumerator.Current
-		{
-			get { return ((IEnumerator<IAttributesTable>)this).Current; }
-		}
+		object IEnumerator.Current => ((IEnumerator<IAttributesTable>)this).Current;
 
 		public bool MoveNext()
 		{

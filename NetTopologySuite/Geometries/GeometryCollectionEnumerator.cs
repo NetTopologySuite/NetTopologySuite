@@ -43,8 +43,6 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         private GeometryCollectionEnumerator _subcollectionEnumerator;
 
-        private IGeometry _current = null;
-
         /// <summary>
         /// Constructs an iterator over the given <c>GeometryCollection</c>.
         /// </summary>
@@ -82,7 +80,7 @@ namespace NetTopologySuite.Geometries
         {
             if (!HasNext())
             {
-                _current = null;
+                Current = null;
                 return false;
             }
 
@@ -92,14 +90,14 @@ namespace NetTopologySuite.Geometries
                 _atStart = false;
                 if (IsAtomic(_parent))
                     _index++;
-                _current = _parent;
+                Current = _parent;
                 return true;
             }
             if (_subcollectionEnumerator != null)
             {
                 if (_subcollectionEnumerator.MoveNext())
                 {
-                    _current = _subcollectionEnumerator.Current;
+                    Current = _subcollectionEnumerator.Current;
                     return true;
                 } 
                 _subcollectionEnumerator = null;
@@ -113,10 +111,10 @@ namespace NetTopologySuite.Geometries
                 _subcollectionEnumerator = new GeometryCollectionEnumerator(gc);
                 // there will always be at least one element in the sub-collection
                 _subcollectionEnumerator.MoveNext();
-                _current = _subcollectionEnumerator.Current;
+                Current = _subcollectionEnumerator.Current;
             }
             else
-                _current = obj;
+                Current = obj;
 
             return true;
 
@@ -124,10 +122,7 @@ namespace NetTopologySuite.Geometries
 
         /// <inheritdoc cref="System.Collections.IEnumerator.Current"/>>
         /// <remarks> The parent GeometryCollection is the first object returned!</remarks>
-        object System.Collections.IEnumerator.Current
-        {
-            get { return Current; }
-        }
+        object System.Collections.IEnumerator.Current => Current;
 
         /// <inheritdoc cref="System.Collections.IEnumerator.Reset"/>
         public void Reset()
@@ -135,14 +130,11 @@ namespace NetTopologySuite.Geometries
             _atStart = true;
             _index = 0;
             _subcollectionEnumerator = null;
-            _current = null;
+            Current = null;
         }
 
         /// <inheritdoc cref="IEnumerator{T}.Current"/>
-        public IGeometry Current
-        {
-            get { return _current; }
-        }
+        public IGeometry Current { get; private set; } = null;
 
         private static bool IsAtomic(IGeometry geom)
         {

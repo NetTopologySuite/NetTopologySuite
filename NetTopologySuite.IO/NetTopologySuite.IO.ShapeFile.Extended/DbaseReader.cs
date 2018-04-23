@@ -36,13 +36,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
             Dispose(false);
         }
 
-        internal int NumOfRecords
-        {
-            get
-            {
-                return m_Header.NumRecords;
-            }
-        }
+        internal int NumOfRecords => m_Header.NumRecords;
 
         public void Dispose()
         {

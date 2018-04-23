@@ -108,7 +108,7 @@ namespace NetTopologySuite.Algorithm.Distance
         /// </remarks>
         public double DensifyFraction
         {
-            get { return _densifyFrac; }
+            get => _densifyFrac;
             set
             {
                 if (value > 1.0
@@ -131,7 +131,7 @@ namespace NetTopologySuite.Algorithm.Distance
             return _ptDist.Distance;
         }
 
-        public Coordinate[] Coordinates { get { return _ptDist.Coordinates; } }
+        public Coordinate[] Coordinates => _ptDist.Coordinates;
 
         private void Compute(IGeometry g0, IGeometry g1)
         {
@@ -157,7 +157,6 @@ namespace NetTopologySuite.Algorithm.Distance
         public class MaxPointDistanceFilter
             : ICoordinateFilter
         {
-            private readonly PointPairDistance _maxPtDist = new PointPairDistance();
             private readonly PointPairDistance _minPtDist = new PointPairDistance();
             //private EuclideanDistanceToPoint euclideanDist = new EuclideanDistanceToPoint();
             private readonly IGeometry _geom;
@@ -171,16 +170,15 @@ namespace NetTopologySuite.Algorithm.Distance
             {
                 _minPtDist.Initialize();
                 DistanceToPoint.ComputeDistance(_geom, pt, _minPtDist);
-                _maxPtDist.SetMaximum(_minPtDist);
+                MaxPointDistance.SetMaximum(_minPtDist);
             }
 
-            public PointPairDistance MaxPointDistance { get { return _maxPtDist; }}
+            public PointPairDistance MaxPointDistance { get; } = new PointPairDistance();
         }
 
         public class MaxDensifiedByFractionDistanceFilter
         : ICoordinateSequenceFilter
         {
-            private readonly PointPairDistance _maxPtDist = new PointPairDistance();
             private readonly PointPairDistance _minPtDist = new PointPairDistance();
             private readonly IGeometry _geom;
             private readonly int _numSubSegs;
@@ -212,20 +210,17 @@ namespace NetTopologySuite.Algorithm.Distance
                     var pt = new Coordinate(x, y);
                     _minPtDist.Initialize();
                     DistanceToPoint.ComputeDistance(_geom, pt, _minPtDist);
-                    _maxPtDist.SetMaximum(_minPtDist);
+                    MaxPointDistance.SetMaximum(_minPtDist);
                 }
 
 
             }
 
-            public Boolean GeometryChanged { get { return false; } }
+            public Boolean GeometryChanged => false;
 
-            public Boolean Done { get { return false; } }
+            public Boolean Done => false;
 
-            public PointPairDistance MaxPointDistance
-            {
-                get { return _maxPtDist; }
-            }
+            public PointPairDistance MaxPointDistance { get; } = new PointPairDistance();
         }
 
     }

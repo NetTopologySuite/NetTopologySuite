@@ -13,34 +13,21 @@ namespace NetTopologySuite.Geometries
         /**
          * The coordinates of the vertices of the triangle
          */
-        private Coordinate _p0, _p1, _p2;
 
         /// <summary>
         /// A corner point of the triangle
         /// </summary>
-        public Coordinate P0
-        {
-            get { return _p0; }
-            set { _p0 = value; }
-        }
+        public Coordinate P0 { get; set; }
 
         /// <summary>
         /// A corner point of the triangle
         /// </summary>
-        public Coordinate P1
-        {
-            get { return _p1; }
-            set { _p1 = value; }
-        }
+        public Coordinate P1 { get; set; }
 
         /// <summary>
         /// A corner point of the triangle
         /// </summary>
-        public Coordinate P2
-        {
-            get { return _p2; }
-            set { _p2 = value; }
-        }
+        public Coordinate P2 { get; set; }
 
         /// <summary>
         /// Tests whether a triangle is acute. A triangle is acute iff all interior
@@ -351,9 +338,9 @@ namespace NetTopologySuite.Geometries
         /// <param name="p2">A vertex</param>
         public Triangle(Coordinate p0, Coordinate p1, Coordinate p2)
         {
-            _p0 = p0;
-            _p1 = p1;
-            _p2 = p2;
+            P0 = p0;
+            P1 = p1;
+            P2 = p2;
         }
 
         /// <summary>
@@ -384,7 +371,7 @@ namespace NetTopologySuite.Geometries
         /// <returns><c>true</c> if this triangle is acute</returns>
         public bool IsAcute()
         {
-            return IsAcute(_p0, _p1, _p2);
+            return IsAcute(P0, P1, P2);
         }
 
         /// <summary>
@@ -403,7 +390,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The circumcentre of this triangle</returns>
         public Coordinate Circumcentre()
         {
-            return Circumcentre(_p0, _p1, _p2);
+            return Circumcentre(P0, P1, P2);
         }
 
         /// <summary>
@@ -417,7 +404,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The centroid of this triangle</returns>
         public Coordinate Centroid()
         {
-            return Centroid(_p0, _p1, _p2);
+            return Centroid(P0, P1, P2);
         }
 
         /// <summary>
@@ -426,7 +413,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The length of the longest side of this triangle</returns>
         public double LongestSideLength()
         {
-            return LongestSideLength(_p0, _p1, _p2);
+            return LongestSideLength(P0, P1, P2);
         }
 
         /// <summary>
@@ -437,7 +424,7 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="SignedArea()"/>
         public double Area()
         {
-            return Area(_p0, _p1, _p2);
+            return Area(P0, P1, P2);
         }
 
         /// <summary>
@@ -453,7 +440,7 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="Orientation.Index(Coordinate, Coordinate, Coordinate)"/>
         public double SignedArea()
         {
-            return SignedArea(_p0, _p1, _p2);
+            return SignedArea(P0, P1, P2);
         }
 
         /// <summary>
@@ -463,7 +450,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The 3D area of this triangle</returns>
         public double Area3D()
         {
-            return Area3D(_p0, _p1, _p2);
+            return Area3D(P0, P1, P2);
         }
 
         /// <summary>
@@ -481,7 +468,7 @@ namespace NetTopologySuite.Geometries
         {
             if (p == null)
                 throw new ArgumentNullException("p", "Supplied point is null.");
-            return InterpolateZ(p, _p0, _p1, _p2);
+            return InterpolateZ(p, P0, P1, P2);
         }
 
 

@@ -58,7 +58,6 @@ namespace NetTopologySuite.Geometries.Utilities
          * If <tt>null</tt> the GeometryFactory of the input is used.
          */
         private IGeometryFactory _targetFactory;
-        private bool _isUserDataCopied;
         private readonly GeometryEditor.IGeometryEditorOperation _operation;
 
         /// <summary>
@@ -107,11 +106,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <remarks>Only the object reference is copied.</remarks>
         /// <value><c>true</c> if the input user data should be copied.</value>
-        public bool CopyUserData
-        {
-            get { return _isUserDataCopied; }
-            set { _isUserDataCopied = value; }
-        }
+        public bool CopyUserData { get; set; }
 
         /// <summary>
         /// Edit a <see cref="IGeometry"/>.
@@ -133,7 +128,7 @@ namespace NetTopologySuite.Geometries.Utilities
                 return null;
 
             var result = EditInternal(geometry);
-            if (_isUserDataCopied)
+            if (CopyUserData)
                 result.UserData = geometry.UserData;
             return result;
         }

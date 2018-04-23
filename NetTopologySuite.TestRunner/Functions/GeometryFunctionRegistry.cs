@@ -12,15 +12,10 @@ namespace Open.Topology.TestRunner.Functions
     /// <author>Martin Davis</author>
     public class GeometryFunctionRegistry
     {
-        private readonly List<IGeometryFunction> _functions = new List<IGeometryFunction>();
-
         private readonly SortedDictionary<string, IGeometryFunction> _sortedFunctions =
             new SortedDictionary<string, IGeometryFunction>();
 
         private readonly DoubleKeyMap<string, string, IGeometryFunction> _categorizedFunctions =
-            new DoubleKeyMap<string, string, IGeometryFunction>();
-
-        private readonly DoubleKeyMap<string, string, IGeometryFunction> _categorizedGeometryFunctions =
             new DoubleKeyMap<string, string, IGeometryFunction>();
 
         public GeometryFunctionRegistry() { }
@@ -30,10 +25,7 @@ namespace Open.Topology.TestRunner.Functions
             Add(clz);
         }
 
-        public List<IGeometryFunction> Functions
-        {
-            get { return _functions; }
-        }
+        public List<IGeometryFunction> Functions { get; } = new List<IGeometryFunction>();
 
         public IList<IGeometryFunction> GetGeometryFunctions()
         {
@@ -103,22 +95,16 @@ namespace Open.Topology.TestRunner.Functions
         /// <param name="func">A function</param>
         public void Add(IGeometryFunction func)
         {
-            _functions.Add(func);
+            Functions.Add(func);
             _sortedFunctions.Add(func.Name, func);
             _categorizedFunctions.Put(func.Category, func.Name, func);
             if (HasGeometryResult(func))
-                _categorizedGeometryFunctions.Put(func.Category, func.Name, func);
+                CategorizedGeometryFunctions.Put(func.Category, func.Name, func);
         }
 
-        public DoubleKeyMap<string, string, IGeometryFunction> CategorizedGeometryFunctions
-        {
-            get { return _categorizedGeometryFunctions; }
-        }
+        public DoubleKeyMap<string, string, IGeometryFunction> CategorizedGeometryFunctions { get; } = new DoubleKeyMap<string, string, IGeometryFunction>();
 
-        public ICollection<string> Categories
-        {
-            get { return _categorizedFunctions.KeySet(); }
-        }
+        public ICollection<string> Categories => _categorizedFunctions.KeySet();
 
         public ICollection<IGeometryFunction> GetFunctions(String category)
         {
@@ -144,7 +130,7 @@ namespace Open.Topology.TestRunner.Functions
         /// <returns>A matching function<br/>or <value>null</value> if no matching function was found</returns>
         public IGeometryFunction Find(String name, int argCount)
         {
-            foreach (IGeometryFunction func in _functions)
+            foreach (IGeometryFunction func in Functions)
             {
                 String funcName = func.Name;
                 if (funcName.Equals(name, StringComparison.InvariantCultureIgnoreCase)
@@ -161,7 +147,7 @@ namespace Open.Topology.TestRunner.Functions
         /// <returns>A matching function<br/>or <value>null</value> if no matching function was found</returns>
         public IGeometryFunction Find(String name)
         {
-            foreach (IGeometryFunction func in _functions)
+            foreach (IGeometryFunction func in Functions)
             {
                 string funcName = func.Name;
                 if (funcName.Equals(name, StringComparison.InvariantCultureIgnoreCase))

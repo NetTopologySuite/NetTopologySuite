@@ -21,9 +21,6 @@ namespace NetTopologySuite.IO
         readonly ShapefileReader _shpReader;
         readonly IEnumerator _dbfEnumerator;
         readonly IEnumerator _shpEnumerator;
-        readonly ShapefileHeader _shpHeader;
-        readonly DbaseFileHeader _dbfHeader;
-        readonly int _recordCount = 0;
 
 
         /// <summary>
@@ -59,17 +56,17 @@ namespace NetTopologySuite.IO
             string shpFile = Path.ChangeExtension(filename, "shp");
             _shpReader = new ShapefileReader(shpFile, geometryFactory);
 
-            _dbfHeader = _dbfReader.GetHeader();
-            _recordCount = _dbfHeader.NumRecords;
+            DbaseHeader = _dbfReader.GetHeader();
+            RecordCount = DbaseHeader.NumRecords;
 
             // copy dbase fields to our own array. 
             //Insert into the first position, the shape column
-            _dbaseFields = new DbaseFieldDescriptor[_dbfHeader.Fields.Length + 1];
+            _dbaseFields = new DbaseFieldDescriptor[DbaseHeader.Fields.Length + 1];
             _dbaseFields[0] = DbaseFieldDescriptor.ShapeField();
-            for (int i = 0; i < _dbfHeader.Fields.Length; i++)
-                _dbaseFields[i + 1] = _dbfHeader.Fields[i];
+            for (int i = 0; i < DbaseHeader.Fields.Length; i++)
+                _dbaseFields[i + 1] = DbaseHeader.Fields[i];
 
-            _shpHeader = _shpReader.Header;
+            ShapeHeader = _shpReader.Header;
             _dbfEnumerator = _dbfReader.GetEnumerator();
             _shpEnumerator = _shpReader.GetEnumerator();
             _moreRecords = true;
@@ -86,24 +83,22 @@ namespace NetTopologySuite.IO
             _dbfReader = new DbaseFileReader(streamProviderRegistry);
             _shpReader = new ShapefileReader(streamProviderRegistry, geometryFactory);
 
-            _dbfHeader = _dbfReader.GetHeader();
-            _recordCount = _dbfHeader.NumRecords;
+            DbaseHeader = _dbfReader.GetHeader();
+            RecordCount = DbaseHeader.NumRecords;
 
             // copy dbase fields to our own array. Insert into the first position, the shape column
-            _dbaseFields = new DbaseFieldDescriptor[_dbfHeader.Fields.Length + 1];
+            _dbaseFields = new DbaseFieldDescriptor[DbaseHeader.Fields.Length + 1];
             _dbaseFields[0] = DbaseFieldDescriptor.ShapeField();
-            for (int i = 0; i < _dbfHeader.Fields.Length; i++)
-                _dbaseFields[i + 1] = _dbfHeader.Fields[i];
+            for (int i = 0; i < DbaseHeader.Fields.Length; i++)
+                _dbaseFields[i + 1] = DbaseHeader.Fields[i];
 
-            _shpHeader = _shpReader.Header;
+            ShapeHeader = _shpReader.Header;
             _dbfEnumerator = _dbfReader.GetEnumerator();
             _shpEnumerator = _shpReader.GetEnumerator();
             _moreRecords = true;
         }
 
         bool _moreRecords = false;
-
-        IGeometry geometry = null;
 
         public void Reset()
         {
@@ -127,13 +122,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <value>true if the data reader is closed; otherwise, false.</value>
         /// <remarks>IsClosed and RecordsAffected are the only properties that you can call after the IDataReader is closed.</remarks>
-        public bool IsClosed
-        {
-            get
-            {
-                return !_open;
-            }
-        }
+        public bool IsClosed => !_open;
 
         /// <summary>
         /// Closes the IDataReader 0bject.

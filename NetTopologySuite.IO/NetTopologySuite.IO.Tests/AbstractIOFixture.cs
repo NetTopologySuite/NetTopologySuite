@@ -26,7 +26,7 @@ namespace NetTopologySuite.IO.Tests
 
         private int _counter;
 
-        public int Counter { get { return ++_counter; } }
+        public int Counter => ++_counter;
 
         [TestFixtureSetUp]
         public virtual void OnFixtureSetUp()
@@ -110,10 +110,7 @@ namespace NetTopologySuite.IO.Tests
 
         public int SRID
         {
-            get
-            {
-                return RandomGeometryHelper.Factory.SRID;
-            }
+            get => RandomGeometryHelper.Factory.SRID;
             protected set
             {
                 PrecisionModel oldPM = new PrecisionModel();
@@ -129,10 +126,7 @@ namespace NetTopologySuite.IO.Tests
 
         public PrecisionModel PrecisionModel
         {
-            get
-            {
-                return (PrecisionModel)RandomGeometryHelper.Factory.PrecisionModel;
-            }
+            get => (PrecisionModel)RandomGeometryHelper.Factory.PrecisionModel;
             protected set
             {
                 if (value == null)
@@ -156,31 +150,31 @@ namespace NetTopologySuite.IO.Tests
 
         public double MinX
         {
-            get { return RandomGeometryHelper.MinX; }
+            get => RandomGeometryHelper.MinX;
             protected set { RandomGeometryHelper.MinX = value; }
         }
 
         public double MaxX
         {
-            get { return RandomGeometryHelper.MaxX; }
+            get => RandomGeometryHelper.MaxX;
             protected set { RandomGeometryHelper.MaxX = value; }
         }
 
         public double MinY
         {
-            get { return RandomGeometryHelper.MinY; }
+            get => RandomGeometryHelper.MinY;
             protected set { RandomGeometryHelper.MinY = value; }
         }
 
         public double MaxY
         {
-            get { return RandomGeometryHelper.MaxY; }
+            get => RandomGeometryHelper.MaxY;
             protected set { RandomGeometryHelper.MaxY = value; }
         }
 
         public Ordinates Ordinates
         {
-            get { return RandomGeometryHelper.Ordinates; }
+            get => RandomGeometryHelper.Ordinates;
             set
             {
                 Debug.Assert((value & Ordinates.XY) == Ordinates.XY);

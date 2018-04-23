@@ -15,8 +15,6 @@ namespace NetTopologySuite.LinearReferencing
         private readonly List<IGeometry> _lines = new List<IGeometry>();
         private CoordinateList _coordList;
 
-        private Coordinate _lastPt;
-
         /// <summary>
         /// Creates an instance of this class.
         /// </summary>
@@ -57,19 +55,13 @@ namespace NetTopologySuite.LinearReferencing
             if (_coordList == null)
                 _coordList = new CoordinateList();
             _coordList.Add(pt, allowRepeatedPoints);
-            _lastPt = pt;
+            LastCoordinate = pt;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate LastCoordinate
-        {
-            get
-            {
-                return _lastPt;
-            }
-        }
+        public Coordinate LastCoordinate { get; private set; }
 
         /// <summary>
         /// Terminate the current <see cref="LineString" />.

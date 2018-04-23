@@ -45,9 +45,6 @@ namespace NetTopologySuite.Precision
         }
 
         private readonly IPrecisionModel _targetPrecModel;
-        private bool _removeCollapsed = true;
-        private bool _changePrecisionModel;
-        private bool _isPointwise;
 
         public GeometryPrecisionReducer(IPrecisionModel pm)
         {
@@ -59,11 +56,7 @@ namespace NetTopologySuite.Precision
         /// Geometry of the same type.
         /// The default is to remove collapsed components.
         /// </summary>
-        public bool RemoveCollapsedComponents
-        {
-            get { return _removeCollapsed; }
-            set { _removeCollapsed = value; }
-        }
+        public bool RemoveCollapsedComponents { get; set; } = true;
 
         /// <summary>
         /// Gets or sets whether the <see cref = "IPrecisionModel"/> of the new reduced Geometry
@@ -72,11 +65,7 @@ namespace NetTopologySuite.Precision
         /// <para/>
         /// The default is to <b>not</b> change the precision model
         /// </summary>
-        public bool ChangePrecisionModel
-        {
-            get { return _changePrecisionModel; }
-            set { _changePrecisionModel = value; }
-        }
+        public bool ChangePrecisionModel { get; set; }
 
         /// <summary>
         /// Gets or sets whether the precision reduction will be done
@@ -86,16 +75,12 @@ namespace NetTopologySuite.Precision
         /// not attempt to recreate valid topology.
         /// This is only relevant for geometries containing polygonal components.
         /// </summary>
-        public bool Pointwise
-        {
-            get { return _isPointwise; }
-            set { _isPointwise = value; }
-        }
+        public bool Pointwise { get; set; }
 
         public IGeometry Reduce(IGeometry geom)
         {
             var reducePointwise = ReducePointwise(geom);
-            if (_isPointwise)
+            if (Pointwise)
                 return reducePointwise;
 
             //TODO: handle GeometryCollections containing polys
@@ -113,7 +98,7 @@ namespace NetTopologySuite.Precision
         private IGeometry ReducePointwise(IGeometry geom)
         {
             GeometryEditor geomEdit;
-            if (_changePrecisionModel)
+            if (ChangePrecisionModel)
             {
                 var newFactory = CreateFactory(geom.Factory, _targetPrecModel);
                 geomEdit = new GeometryEditor(newFactory);
@@ -126,7 +111,7 @@ namespace NetTopologySuite.Precision
              * For polygonal geometries, collapses are always removed, in order
              * to produce correct topology
              */
-            bool finalRemoveCollapsed = _removeCollapsed;
+            bool finalRemoveCollapsed = RemoveCollapsedComponents;
             if (geom.Dimension >= Dimension.Surface)
                 finalRemoveCollapsed = true;
 
@@ -143,7 +128,7 @@ namespace NetTopologySuite.Precision
              * geometry to targetPM, buffer in that model, then flip back
              */
             var geomToBuffer = geom;
-            if (!_changePrecisionModel)
+            if (!ChangePrecisionModel)
             {
                 geomToBuffer = ChangePrecModel(geom, _targetPrecModel);
             }
@@ -151,7 +136,7 @@ namespace NetTopologySuite.Precision
             var bufGeom = geomToBuffer.Buffer(0);
 
             var finalGeom = bufGeom;
-            if (!_changePrecisionModel)
+            if (!ChangePrecisionModel)
             {
                 // a slick way to copy the geometry with the original precision factory
                 finalGeom = geom.Factory.CreateGeometry(bufGeom);

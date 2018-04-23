@@ -13,7 +13,6 @@ namespace NetTopologySuite.Algorithm
     {
         private readonly Coordinate _centroid;
         private double _minDistance = Double.MaxValue;
-        private Coordinate _interiorPoint;
 
         /// <summary>
         /// 
@@ -51,7 +50,7 @@ namespace NetTopologySuite.Algorithm
             double dist = point.Distance(_centroid);
             if (dist < _minDistance)
             {
-                _interiorPoint = new Coordinate(point);
+                InteriorPoint = new Coordinate(point);
                 _minDistance = dist;
             }
         }
@@ -59,12 +58,6 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate InteriorPoint
-        {
-            get
-            {
-                return _interiorPoint;
-            }
-        }
+        public Coordinate InteriorPoint { get; private set; }
     }   
 }

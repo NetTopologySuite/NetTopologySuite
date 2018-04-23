@@ -112,14 +112,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public  Location this[Positions posIndex]
         {
-            get
-            {
-                return Get(posIndex);
-            }
-            set
-            {
-                SetLocation(posIndex, value);
-            }
+            get => Get(posIndex);
+            set => SetLocation(posIndex, value);
         }
 
         /// <returns>
@@ -164,24 +158,12 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public  bool IsArea
-        {
-            get
-            {
-                return _location.Length > 1;
-            }
-        }
+        public  bool IsArea => _location.Length > 1;
 
         /// <summary>
         /// 
         /// </summary>
-        public  bool IsLine
-        {
-            get
-            {
-                return _location.Length == 1;
-            }
-        }
+        public  bool IsLine => _location.Length == 1;
 
         /// <summary>
         /// 

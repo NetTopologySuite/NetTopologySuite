@@ -8,54 +8,46 @@ namespace Open.Topology.TestRunner
 	/// </summary>
 	public struct XmlTestInfo
 	{
-        private readonly StringDictionary _listParameters;
-
-		public XmlTestInfo(bool bReset)
+	    public XmlTestInfo(bool bReset)
 		{
-            _listParameters = new StringDictionary();
+            Parameters = new StringDictionary();
 
             if (bReset)
                 Reset();
 		}
 
-        public StringDictionary Parameters
-        {
-            get
-            {
-                return _listParameters;
-            }
-        }
+        public StringDictionary Parameters { get; }
 
-        public void Reset()
+	    public void Reset()
         {
-            if (_listParameters != null)
+            if (Parameters != null)
             {
-                _listParameters.Clear();
+                Parameters.Clear();
 
-                _listParameters.Add("desc",   String.Empty);
-                _listParameters.Add("a",      String.Empty);
-                _listParameters.Add("b",      String.Empty);
-                _listParameters.Add("name",   String.Empty);
-                _listParameters.Add("result", String.Empty);
-                _listParameters.Add("arg1",   String.Empty);
-                _listParameters.Add("arg2",   String.Empty);
-                _listParameters.Add("arg3",   String.Empty);
+                Parameters.Add("desc",   String.Empty);
+                Parameters.Add("a",      String.Empty);
+                Parameters.Add("b",      String.Empty);
+                Parameters.Add("name",   String.Empty);
+                Parameters.Add("result", String.Empty);
+                Parameters.Add("arg1",   String.Empty);
+                Parameters.Add("arg2",   String.Empty);
+                Parameters.Add("arg3",   String.Empty);
             }
         }
 
         public void SetValue(string key, string value)
         {
-            if (_listParameters != null)
+            if (Parameters != null)
             {
-                _listParameters[key] = value;
+                Parameters[key] = value;
             }
         }
 
         public string GetValue(string key)
         {
-            if (_listParameters != null)
+            if (Parameters != null)
             {
-                return _listParameters[key];
+                return Parameters[key];
             }
 
             return String.Empty;
@@ -63,9 +55,9 @@ namespace Open.Topology.TestRunner
 
         public void Clear()
         {
-            if (_listParameters != null)
+            if (Parameters != null)
             {
-                _listParameters.Clear();
+                Parameters.Clear();
             }
         }
 

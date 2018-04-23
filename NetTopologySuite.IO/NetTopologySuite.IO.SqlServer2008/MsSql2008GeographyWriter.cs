@@ -6,7 +6,7 @@
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
-// 
+//
 // NetTopologySuite.IO.SqlServer2008 is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -14,7 +14,7 @@
 
 // You should have received a copy of the GNU Lesser General Public License
 // along with NetTopologySuite.IO.SqlServer2008 if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 using System;
 
@@ -33,12 +33,12 @@ namespace NetTopologySuite.IO
 	    public SqlGeography WriteGeography(IGeometry geometry)
 	    {
 	        var builder = new SqlGeographyBuilder();
-            
+
             builder.SetSrid(geometry.SRID);
             AddGeometry(builder, geometry);
             return builder.ConstructedGeography;
         }
-        
+
         SqlGeography IGeometryWriter<SqlGeography>.Write(IGeometry geometry)
         {
             return WriteGeography(geometry);
@@ -184,7 +184,7 @@ namespace NetTopologySuite.IO
         /*
         private void AddCoordinates(Coordinate[] coordinates)
         {
-            
+
             int points = 0;
 
 			Array.ForEach(coordinates, delegate(Coordinate coordinate)
@@ -222,21 +222,18 @@ namespace NetTopologySuite.IO
 
         public bool HandleSRID
         {
-            get { return true; }
-            set { }
+            get => true;
+	        set { }
         }
 
-        public Ordinates AllowedOrdinates
-        {
-            get { return Ordinates.XYZM; }
-        }
+        public Ordinates AllowedOrdinates => Ordinates.XYZM;
 
-        private Ordinates _handleOrdinates;
+		private Ordinates _handleOrdinates;
 
         public Ordinates HandleOrdinates
         {
-            get { return _handleOrdinates; }
-            set
+	        get => _handleOrdinates;
+	        set
             {
                 value = Ordinates.XY | (value & AllowedOrdinates);
                 _handleOrdinates = value;
@@ -249,8 +246,8 @@ namespace NetTopologySuite.IO
 
         public ByteOrder ByteOrder
         {
-            get { return ByteOrder.LittleEndian; }
-            set { }
+	        get => ByteOrder.LittleEndian;
+	        set { }
         }
 
         #endregion

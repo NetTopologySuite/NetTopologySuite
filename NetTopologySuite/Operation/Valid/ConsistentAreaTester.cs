@@ -23,7 +23,6 @@ namespace NetTopologySuite.Operation.Valid
         private readonly RelateNodeGraph nodeGraph = new RelateNodeGraph();
 
         // the intersection point found (if any)
-        private Coordinate invalidPoint;
 
         /// <summary>
         /// 
@@ -37,13 +36,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// Returns the intersection point, or <c>null</c> if none was found.
         /// </summary>        
-        public Coordinate InvalidPoint
-        {
-            get
-            {
-                return invalidPoint;
-            }
-        }
+        public Coordinate InvalidPoint { get; private set; }
 
         /// <summary>
         /// 
@@ -59,7 +52,7 @@ namespace NetTopologySuite.Operation.Valid
                 SegmentIntersector intersector = geomGraph.ComputeSelfNodes(li, true, true);
                 if (intersector.HasProperIntersection)
                 {
-                    invalidPoint = intersector.ProperIntersectionPoint;
+                    InvalidPoint = intersector.ProperIntersectionPoint;
                     return false;
                 }
                 nodeGraph.Build(geomGraph);
@@ -80,7 +73,7 @@ namespace NetTopologySuite.Operation.Valid
                     RelateNode node = (RelateNode) nodeIt.Current;
                     if (!node.Edges.IsAreaLabelsConsistent(geomGraph))
                     {
-                        invalidPoint = (Coordinate) node.Coordinate.Copy();
+                        InvalidPoint = (Coordinate) node.Coordinate.Copy();
                         return false;
                     }
                 }
@@ -112,7 +105,7 @@ namespace NetTopologySuite.Operation.Valid
                         EdgeEndBundle eeb = (EdgeEndBundle) i.Current;
                         if (eeb.EdgeEnds.Count > 1)
                         {
-                            invalidPoint = eeb.Edge.GetCoordinate(0);
+                            InvalidPoint = eeb.Edge.GetCoordinate(0);
                             return true;
                         }
                     }

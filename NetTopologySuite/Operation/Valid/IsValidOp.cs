@@ -63,7 +63,6 @@ namespace NetTopologySuite.Operation.Valid
         /**
          * If the following condition is TRUE JTS will validate inverted shells and exverted holes (the ESRI SDE model).
          */
-        private bool _isSelfTouchingRingFormingHoleValid;
         private TopologyValidationError _validErr;
 
         /// <summary>
@@ -99,11 +98,7 @@ namespace NetTopologySuite.Operation.Valid
         /// </para>
         /// </summary>
         /// <value>States whether geometry with this condition is valid.</value>
-        public bool IsSelfTouchingRingFormingHoleValid
-        {
-            get { return _isSelfTouchingRingFormingHoleValid;}
-            set { _isSelfTouchingRingFormingHoleValid = value; }
-        }
+        public bool IsSelfTouchingRingFormingHoleValid { get; set; }
 
         /// <summary>
         /// Computes the validity of the geometry,

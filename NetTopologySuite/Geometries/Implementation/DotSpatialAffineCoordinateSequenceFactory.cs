@@ -12,7 +12,6 @@ namespace NetTopologySuite.Geometries.Implementation
     {
         private static DotSpatialAffineCoordinateSequenceFactory _instance;
         private static readonly object InstanceLock = new object();
-        private readonly Ordinates _ordinates;
 
         private DotSpatialAffineCoordinateSequenceFactory()
             :this(Ordinates.XYZM)
@@ -21,7 +20,7 @@ namespace NetTopologySuite.Geometries.Implementation
 
         public DotSpatialAffineCoordinateSequenceFactory(Ordinates ordinates)
         {
-            _ordinates = Ordinates.XY | ordinates;
+            Ordinates = Ordinates.XY | ordinates;
         }
 
         /// <summary>
@@ -37,7 +36,7 @@ namespace NetTopologySuite.Geometries.Implementation
                     return _instance ?? (_instance = new DotSpatialAffineCoordinateSequenceFactory());
                 }
             }
-            set { _instance = value; }
+            set => _instance = value;
         }
 
         /// <summary>
@@ -134,10 +133,6 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <summary>
         /// Gets the Ordinate flags that sequences created by this factory can cope with.
         /// </summary>
-        public Ordinates Ordinates
-        {
-            get { return _ordinates; }
-        }
-
+        public Ordinates Ordinates { get; }
     }
 }

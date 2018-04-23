@@ -100,7 +100,7 @@ namespace NetTopologySuite.Triangulate
         ///// <param name="tolerance">the tolerance distance to use</param>
         public double Tolerance
         {
-            set {  _tolerance = value; }
+            set => _tolerance = value;
         }
 
         private void Create()

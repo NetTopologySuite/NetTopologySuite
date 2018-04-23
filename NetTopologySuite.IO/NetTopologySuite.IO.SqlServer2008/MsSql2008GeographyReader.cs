@@ -63,20 +63,17 @@ namespace NetTopologySuite.IO
 
 	    public bool HandleSRID
 	    {
-            get { return true; }
-	        set { }
+            get => true;
+		    set { }
 	    }
 
-	    public Ordinates AllowedOrdinates
-	    {
-            get { return Factory.CoordinateSequenceFactory.Ordinates & Ordinates.XYZM; }
-	    }
+	    public Ordinates AllowedOrdinates => Factory.CoordinateSequenceFactory.Ordinates & Ordinates.XYZM;
 
-	    private Ordinates _handleOrdinates;
+		private Ordinates _handleOrdinates;
 	    public Ordinates HandleOrdinates
 	    {
-	        get { return _handleOrdinates; }
-	        set 
+	        get => _handleOrdinates;
+		    set 
             { 
                 value |= AllowedOrdinates;
                 _handleOrdinates = value;

@@ -13,20 +13,20 @@ namespace NetTopologySuite.Algorithm
     /// However, other kinds of Boundary Node Rules are appropriate
     /// in specific situations (for instance, linear network topology
     /// usually follows the <see cref="BoundaryNodeRules.EndPointBoundaryNodeRule"/>.)
-    /// Some JTS operations  
+    /// Some JTS operations
     /// (such as <see cref="RelateOp"/>, <see cref="BoundaryOp"/> and <see cref="IsSimpleOp"/>)
     /// allow the BoundaryNodeRule to be specified,
     /// and respect the supplied rule when computing the results of the operation.
     /// <para/>
     /// An example use case for a non-SFS-standard Boundary Node Rule is
-    /// that of checking that a set of <see cref="ILineString"/>s have 
+    /// that of checking that a set of <see cref="ILineString"/>s have
     /// valid linear network topology, when turn-arounds are represented
     /// as closed rings.  In this situation, the entry road to the
     /// turn-around is only valid when it touches the turn-around ring
-    /// at the single (common) endpoint.  This is equivalent 
-    /// to requiring the set of <tt>LineString</tt>s to be 
+    /// at the single (common) endpoint.  This is equivalent
+    /// to requiring the set of <tt>LineString</tt>s to be
     /// <b>simple</b> under the <see cref="BoundaryNodeRules.EndPointBoundaryNodeRule"/>.
-    /// The SFS-standard <see cref="BoundaryNodeRules.Mod2BoundaryNodeRule"/> is not 
+    /// The SFS-standard <see cref="BoundaryNodeRules.Mod2BoundaryNodeRule"/> is not
     /// sufficient to perform this test, since it
     /// states that closed rings have <b>no</b> boundary points.
     /// <para/>
@@ -94,11 +94,8 @@ namespace NetTopologySuite.Algorithm
         /// <author>Martin Davis</author>
         private class Mod2BoundaryNodeRule : IBoundaryNodeRule
         {
-            public bool IsInBoundary(int boundaryCount)
-            {
-                // the "Mod-2 Rule"
-                return boundaryCount % 2 == 1;
-            }
+            // the "Mod-2 Rule"
+            public bool IsInBoundary(int boundaryCount) => boundaryCount % 2 == 1;
         }
 
         /// <summary>
@@ -124,10 +121,7 @@ namespace NetTopologySuite.Algorithm
         /// <author>Martin Davis</author>
         private class EndPointBoundaryNodeRule : IBoundaryNodeRule
         {
-            public bool IsInBoundary(int boundaryCount)
-            {
-                return boundaryCount > 0;
-            }
+            public bool IsInBoundary(int boundaryCount) => boundaryCount > 0;
         }
 
         ///<summary>
@@ -140,10 +134,7 @@ namespace NetTopologySuite.Algorithm
         /// <author>Martin Davis</author>
         private class MultiValentEndPointBoundaryNodeRule : IBoundaryNodeRule
         {
-            public bool IsInBoundary(int boundaryCount)
-            {
-                return boundaryCount > 1;
-            }
+            public bool IsInBoundary(int boundaryCount) => boundaryCount > 1;
         }
 
         ///<summary>
@@ -155,10 +146,7 @@ namespace NetTopologySuite.Algorithm
         /// <author>Martin Davis</author>
         private class MonoValentEndPointBoundaryNodeRule : IBoundaryNodeRule
         {
-            public bool IsInBoundary(int boundaryCount)
-            {
-                return boundaryCount == 1;
-            }
+            public bool IsInBoundary(int boundaryCount) => boundaryCount == 1;
         }
 
 

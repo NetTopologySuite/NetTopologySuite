@@ -28,30 +28,18 @@ namespace NetTopologySuite.CoordinateSystems.Transformation.DotSpatial.Projectio
             Target = target;
         }
 
-        public int DimSource
-        {
-            get { return Source.IsGeocentric ? 3 : 2; }
-        }
+        public int DimSource => Source.IsGeocentric ? 3 : 2;
 
-        public int DimTarget
-        {
-            get { return Target.IsGeocentric ? 3 : 2; }
-        }
+        public int DimTarget => Target.IsGeocentric ? 3 : 2;
 
         public bool Identity()
         {
             return Source.Equals(Target);
         }
 
-        public string WKT
-        {
-            get { return string.Empty; }
-        }
+        public string WKT => string.Empty;
 
-        public string XML
-        {
-            get { throw new NotSupportedException();}
-        }
+        public string XML => throw new NotSupportedException();
 
         public double[,] Derivative(double[] point)
         {

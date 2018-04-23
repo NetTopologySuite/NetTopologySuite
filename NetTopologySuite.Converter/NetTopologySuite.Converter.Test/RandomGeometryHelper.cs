@@ -67,7 +67,7 @@ namespace NetTopologySuite.IO.Tests
 
         public int SRID
         {
-            get { return Factory.SRID; }
+            get => Factory.SRID;
             set
             {
                 var pm = Factory.PrecisionModel;
@@ -80,7 +80,7 @@ namespace NetTopologySuite.IO.Tests
         /// </summary>
         public IGeometryFactory Factory
         {
-            get { return _factory; }
+            get => _factory;
             set
             {
                 if (value != null)
@@ -94,23 +94,14 @@ namespace NetTopologySuite.IO.Tests
         /// <summary>
         /// Gets a point with random ordinates
         /// </summary>
-        public IPoint Point { get { return Factory.CreatePoint(RandomCoordinate); } }
+        public IPoint Point => Factory.CreatePoint(RandomCoordinate);
 
         /// <summary>
         /// Gets a multipoint of a random number of points with random ordinates
         /// </summary>
-        public IMultiPoint MultiPoint
-        {
-            get
-            {
-                return Factory.CreateMultiPoint(RandomCoordinates);
-            }
-        }
+        public IMultiPoint MultiPoint => Factory.CreateMultiPoint(RandomCoordinates);
 
-        public ILineString LineString
-        {
-            get { return Factory.CreateLineString(RandomCoordinates); }
-        }
+        public ILineString LineString => Factory.CreateLineString(RandomCoordinates);
 
         public IMultiLineString MultiLineString
         {

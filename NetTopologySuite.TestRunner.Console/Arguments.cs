@@ -94,12 +94,6 @@ namespace ConsoleTestRunner
         }
 
         // Retrieve a parameter value if it exists
-        public string this [string Param]
-        {
-            get
-            {
-                return (Parameters[Param]);
-            }
-        }
+        public string this [string Param] => (Parameters[Param]);
     }
 }

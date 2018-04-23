@@ -567,14 +567,11 @@ namespace NetTopologySuite.IO
 
         public bool HandleSRID { get; set; }
 
-        public Ordinates AllowedOrdinates
-        {
-            get { return Ordinates.XYZM; }
-        }
+        public Ordinates AllowedOrdinates => Ordinates.XYZM;
 
         public Ordinates HandleOrdinates
         {
-            get { return _handleOrdinates; }
+            get => _handleOrdinates;
             set
             {
                 value = AllowedOrdinates & value;

@@ -86,13 +86,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended
 			Dispose(false);
 		}
 
-	    public Envelope ShapefileBounds
-		{
-			get
-			{
-				return m_ShapeReader.ShapefileHeader.Bounds;
-			}
-		}
+	    public Envelope ShapefileBounds => m_ShapeReader.ShapefileHeader.Bounds;
 
 	    public void Dispose()
 		{

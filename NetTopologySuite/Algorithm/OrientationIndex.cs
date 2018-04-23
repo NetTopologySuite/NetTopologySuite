@@ -26,6 +26,4 @@ namespace NetTopologySuite.Algorithm
         ///<summary>A value that indicates an orientation of clockwise or a right turn.</summary>
         Right = Clockwise
     }
-
-
 }

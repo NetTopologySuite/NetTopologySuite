@@ -25,7 +25,6 @@ namespace NetTopologySuite.SnapRound
     public class GeometrySnapRounder
     {
         private readonly IPrecisionModel _pm;
-        private bool _isLineworkOnly;
 
         /// <summary>
         /// Creates a new snap-rounder which snap-rounds to a grid specified
@@ -40,11 +39,7 @@ namespace NetTopologySuite.SnapRound
         /// <summary>
         /// Gets or sets a value indicating if only the linework should be treated.
         /// </summary>
-        public bool LineworkOnly
-        {
-            get { return _isLineworkOnly; }
-            set { _isLineworkOnly = value; }
-        }
+        public bool LineworkOnly { get; set; }
 
 
         /// <summary>
@@ -62,7 +57,7 @@ namespace NetTopologySuite.SnapRound
             var segStrings = ExtractTaggedSegmentStrings(geom, _pm);
             SnapRound(segStrings);
 
-            if (_isLineworkOnly)
+            if (LineworkOnly)
             {
                 return ToNodedLines(segStrings, geom.Factory);
             }

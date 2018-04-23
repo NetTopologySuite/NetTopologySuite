@@ -28,12 +28,8 @@ namespace Open.Topology.TestRunner
         }
 
         #region Private Members
-        
-        private ArrayList m_listarrTests         = null;
 
-        private XmlTestCollection m_listCurTests = null;
-
-        private XmlTestFactory    m_objFactory   = null;
+	    private XmlTestFactory    m_objFactory   = null;
 
         private string m_strTestWorkspace        = null;
 
@@ -43,45 +39,33 @@ namespace Open.Topology.TestRunner
         
         public XmlTestDocument()
 		{
-            m_listarrTests = new ArrayList();
+            Tests = new ArrayList();
         }
 
         #endregion
 
         public void ResetTests()
         {
-            if (m_listarrTests != null)
+            if (Tests != null)
             {
-                m_listarrTests.Clear();
+                Tests.Clear();
             }
 
-            if (m_listCurTests != null)
+            if (CurrentTests != null)
             {
-                m_listCurTests.Clear();
-                m_listCurTests = null;
+                CurrentTests.Clear();
+                CurrentTests = null;
             }
 
             m_strTestWorkspace   = null;
             m_objFactory         = null;
         }
 
-        public XmlTestCollection CurrentTests
-        {
-            get
-            {
-                return m_listCurTests;
-            }
-        }
+        public XmlTestCollection CurrentTests { get; private set; } = null;
 
-        public ArrayList Tests
-        {
-            get
-            {
-                return m_listarrTests;
-            }
-        }
+	    public ArrayList Tests { get; } = null;
 
-        public bool LoadFile(string fileName)
+	    public bool LoadFile(string fileName)
         {
             if (!File.Exists(fileName))
             {
@@ -235,9 +219,9 @@ namespace Open.Topology.TestRunner
                 }
 
                 m_objFactory   = new XmlTestFactory(pm, geometryOperation, resultMatcher);
-                m_listCurTests = new XmlTestCollection();
+                CurrentTests = new XmlTestCollection();
 
-                m_listCurTests.Name = strTestDescription;
+                CurrentTests.Name = strTestDescription;
 
                 // Now, handle the "case" nodes
                 XmlNodeList elemList = xmldoc.GetElementsByTagName("case");
@@ -246,7 +230,7 @@ namespace Open.Topology.TestRunner
                     ParseCaseNode(elemList[i], dTolerance);
                 }
 
-                m_listarrTests.Add(m_listCurTests);
+                Tests.Add(CurrentTests);
 
                 return true;
             }
@@ -327,9 +311,9 @@ namespace Open.Topology.TestRunner
                     }
 
                     XmlTest xmlTest = m_objFactory.Create(testInfo, tolerance);
-                    if (xmlTest != null && m_listCurTests != null)
+                    if (xmlTest != null && CurrentTests != null)
                     {
-                        m_listCurTests.Add(xmlTest);
+                        CurrentTests.Add(xmlTest);
                     }
                 }
                 else
@@ -366,9 +350,9 @@ namespace Open.Topology.TestRunner
                         }
 
                         XmlTest xmlTest = m_objFactory.Create(testInfo, tolerance);
-                        if (xmlTest != null && m_listCurTests != null)
+                        if (xmlTest != null && CurrentTests != null)
                         {
-                            m_listCurTests.Add(xmlTest);
+                            CurrentTests.Add(xmlTest);
                         }
                     }
                 }

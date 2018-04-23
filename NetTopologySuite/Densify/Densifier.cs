@@ -84,7 +84,7 @@ namespace NetTopologySuite.Densify
         /// </summary>
         public double DistanceTolerance
         {
-            get { return _distanceTolerance; }
+            get => _distanceTolerance;
 
             set
             {

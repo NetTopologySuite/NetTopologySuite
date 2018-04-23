@@ -37,16 +37,12 @@ namespace NetTopologySuite.GeometriesGraph
                 ? Location.Boundary : Location.Interior;
         }
 
-        private readonly IGeometry _parentGeom;
-
         /// <summary>
         /// The lineEdgeMap is a map of the linestring components of the
         /// parentGeometry to the edges which are derived from them.
         /// This is used to efficiently perform findEdge queries
         /// </summary>
         private readonly IDictionary<ILineString, Edge> _lineEdgeMap = new Dictionary<ILineString, Edge>();
-
-        private readonly IBoundaryNodeRule _boundaryNodeRule;
 
         /// <summary>
         /// If this flag is true, the Boundary Determination Rule will used when deciding
@@ -56,8 +52,6 @@ namespace NetTopologySuite.GeometriesGraph
 
         private readonly int _argIndex;  // the index of this point as an argument to a spatial function (used for labelling)
         private IList<Node> _boundaryNodes;
-        private bool _hasTooFewPoints;
-        private Coordinate _invalidPoint;
 
         private IPointOnGeometryLocator _areaPtLocator;
         // for use if geometry is not Polygonal
@@ -92,8 +86,8 @@ namespace NetTopologySuite.GeometriesGraph
         public GeometryGraph(int argIndex, IGeometry parentGeom, IBoundaryNodeRule boundaryNodeRule)
         {
             _argIndex = argIndex;
-            _boundaryNodeRule = boundaryNodeRule;
-            _parentGeom = parentGeom;
+            BoundaryNodeRule = boundaryNodeRule;
+            Geometry = parentGeom;
             if (parentGeom != null)
                 Add(parentGeom);
         }
@@ -101,43 +95,22 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public bool HasTooFewPoints
-        {
-            get
-            {
-                return _hasTooFewPoints;
-            }
-        }
+        public bool HasTooFewPoints { get; private set; }
 
         /// <summary>
         ///
         /// </summary>
-        public Coordinate InvalidPoint
-        {
-            get
-            {
-                return _invalidPoint;
-            }
-        }
+        public Coordinate InvalidPoint { get; private set; }
 
         /// <summary>
         ///
         /// </summary>
-        public IGeometry Geometry
-        {
-            get
-            {
-                return _parentGeom;
-            }
-        }
+        public IGeometry Geometry { get; }
 
         /// <summary>
         /// Gets the <see cref="IBoundaryNodeRule"/> used with this geometry graph.
         /// </summary>
-        public IBoundaryNodeRule BoundaryNodeRule
-        {
-            get { return _boundaryNodeRule; }
-        }
+        public IBoundaryNodeRule BoundaryNodeRule { get; }
 
         /// <summary>
         ///
@@ -264,8 +237,8 @@ namespace NetTopologySuite.GeometriesGraph
             Coordinate[] coord = CoordinateArrays.RemoveRepeatedPoints(lr.Coordinates);
             if (coord.Length < 4)
             {
-                _hasTooFewPoints = true;
-                _invalidPoint = coord[0];
+                HasTooFewPoints = true;
+                InvalidPoint = coord[0];
                 return;
             }
             Location left = cwLeft;
@@ -309,8 +282,8 @@ namespace NetTopologySuite.GeometriesGraph
             Coordinate[] coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
             if (coord.Length < 2)
             {
-                _hasTooFewPoints = true;
-                _invalidPoint = coord[0];
+                HasTooFewPoints = true;
+                InvalidPoint = coord[0];
                 return;
             }
 
@@ -381,9 +354,9 @@ namespace NetTopologySuite.GeometriesGraph
             si.IsDoneIfProperInt = isDoneIfProperInt;
             EdgeSetIntersector esi = CreateEdgeSetIntersector();
             // optimize intersection search for valid Polygons and LinearRings
-            var isRings = _parentGeom is ILinearRing
-                          || _parentGeom is IPolygon
-                          || _parentGeom is IMultiPolygon;
+            var isRings = Geometry is ILinearRing
+                          || Geometry is IPolygon
+                          || Geometry is IMultiPolygon;
             var computeAllSegments = computeRingSelfNodes || !isRings;
             esi.ComputeIntersections(Edges, si, computeAllSegments);
             
@@ -445,7 +418,7 @@ namespace NetTopologySuite.GeometriesGraph
                 boundaryCount++;
 
             // determine the boundary status of the point according to the Boundary Determination Rule
-            Location newLoc = DetermineBoundary(_boundaryNodeRule, boundaryCount);
+            Location newLoc = DetermineBoundary(BoundaryNodeRule, boundaryCount);
             lbl.SetLocation(argIndex, newLoc);
         }
 
@@ -494,16 +467,16 @@ namespace NetTopologySuite.GeometriesGraph
         /// </returns>
         public Location Locate(Coordinate pt)
         {
-            if (_parentGeom is IPolygonal && _parentGeom.NumGeometries > 50)
+            if (Geometry is IPolygonal && Geometry.NumGeometries > 50)
             {
                 // lazily init point locator
                 if (_areaPtLocator == null)
                 {
-                    _areaPtLocator = new NetTopologySuite.Algorithm.Locate.IndexedPointInAreaLocator(_parentGeom);
+                    _areaPtLocator = new NetTopologySuite.Algorithm.Locate.IndexedPointInAreaLocator(Geometry);
                 }
                 return _areaPtLocator.Locate(pt);
             }
-            return _ptLocator.Locate(pt, _parentGeom);
+            return _ptLocator.Locate(pt, Geometry);
         }
     }
 }

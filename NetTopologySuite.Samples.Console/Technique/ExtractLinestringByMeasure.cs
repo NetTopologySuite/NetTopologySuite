@@ -206,7 +206,7 @@ namespace NetTopologySuite.Samples.Technique
 
         }
 
-        public IList<IGeometry> Filtered { get { return _geoms.AsReadOnly(); }}
+        public IList<IGeometry> Filtered => _geoms.AsReadOnly();
     }
 
     internal enum IntervalRelation

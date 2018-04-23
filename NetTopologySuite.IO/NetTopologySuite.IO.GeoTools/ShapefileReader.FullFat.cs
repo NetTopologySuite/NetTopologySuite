@@ -34,7 +34,7 @@ namespace NetTopologySuite.IO
             {
                 using (var shpBinaryReader = new BigEndianBinaryReader(stream))
                 {
-                    _mainHeader = new ShapefileHeader(shpBinaryReader);
+                    Header = new ShapefileHeader(shpBinaryReader);
                 }
             }
         }
@@ -68,7 +68,7 @@ namespace NetTopologySuite.IO
                 _shpBinaryReader.ReadBytes(100);
                 if (_idxBinaryReader != null) _idxBinaryReader.ReadBytes(100);
 
-                var type = _parent._mainHeader.ShapeType;
+                var type = _parent.Header.ShapeType;
                 _handler = Shapefile.GetShapeHandler(type);
                 if (_handler == null)
                     throw new NotSupportedException("Unsuported shape type:" + type);

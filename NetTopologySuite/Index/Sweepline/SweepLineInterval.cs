@@ -5,10 +5,6 @@ namespace NetTopologySuite.Index.Sweepline
     /// </summary>
     public class SweepLineInterval
     {
-        private readonly double min;
-        private readonly double max;
-        private readonly object item;
-
         /// <summary>
         /// 
         /// </summary>
@@ -24,33 +20,24 @@ namespace NetTopologySuite.Index.Sweepline
         /// <param name="item"></param>
         public SweepLineInterval(double min, double max, object item)
         {
-            this.min = min < max ? min : max;
-            this.max = max > min ? max : min;
-            this.item = item;
+            this.Min = min < max ? min : max;
+            this.Max = max > min ? max : min;
+            this.Item = item;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public double Min 
-        { 
-            get { return min; } 
-        }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        public double Max 
-        { 
-            get { return max; } 
-        }
+        public double Min { get; }
 
         /// <summary>
         /// 
         /// </summary>
-        public object Item 
-        { 
-            get { return item; } 
-        }
+        public double Max { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public object Item { get; }
     }
 }

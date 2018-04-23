@@ -88,10 +88,7 @@ namespace NetTopologySuite.IO
             ///     The enumerator is positioned before the first element of the collection
             ///     or after the last element.
             /// </exception>
-            public object Current
-            {
-                get { return _arrayList; }
-            }
+            public object Current => _arrayList;
 
             /// <summary>
             /// </summary>

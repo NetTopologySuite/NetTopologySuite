@@ -13,17 +13,17 @@ namespace NetTopologySuite.Geometries.Implementation
     public class PackedCoordinateSequenceFactory : ICoordinateSequenceFactory
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public enum PackedType
         {
             /// <summary>
-            /// 
+            ///
             /// </summary>
             Double = 0,
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             Float = 1,
         }
@@ -35,10 +35,9 @@ namespace NetTopologySuite.Geometries.Implementation
             new PackedCoordinateSequenceFactory(PackedType.Float);
 
         private PackedType type = PackedType.Double;
-        private int dimension = 3;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PackedCoordinateSequenceFactory"/> class, 
+        /// Initializes a new instance of the <see cref="PackedCoordinateSequenceFactory"/> class,
         /// using double values.
         /// </summary>
         public PackedCoordinateSequenceFactory() : this(PackedType.Double) { }
@@ -61,11 +60,11 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public PackedType Type
         {
-            get { return type; }
+            get => type;
             set
             {
                 if (value != PackedType.Double && value != PackedType.Float)
@@ -75,13 +74,9 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public int Dimension
-        {
-            get { return dimension; }
-            set { this.dimension = value; }
-        }
+        public int Dimension { get; set; } = 3;
 
         /// <summary>
         /// Returns a CoordinateSequence based on the given array; whether or not the
@@ -92,8 +87,8 @@ namespace NetTopologySuite.Geometries.Implementation
         public ICoordinateSequence Create(Coordinate[] coordinates)
         {
             if (type == PackedType.Double)
-                 return new PackedDoubleCoordinateSequence(coordinates, dimension);
-            return new PackedFloatCoordinateSequence(coordinates, dimension);
+                 return new PackedDoubleCoordinateSequence(coordinates, Dimension);
+            return new PackedFloatCoordinateSequence(coordinates, Dimension);
         }
 
         /// <summary>
@@ -105,8 +100,8 @@ namespace NetTopologySuite.Geometries.Implementation
         public ICoordinateSequence Create(ICoordinateSequence coordSeq)
         {
             if (type == PackedType.Double)
-                 return new PackedDoubleCoordinateSequence(coordSeq.ToCoordinateArray(), dimension);
-            return new PackedFloatCoordinateSequence(coordSeq.ToCoordinateArray(), dimension);
+                 return new PackedDoubleCoordinateSequence(coordSeq.ToCoordinateArray(), Dimension);
+            return new PackedFloatCoordinateSequence(coordSeq.ToCoordinateArray(), Dimension);
         }
 
         /// <summary>
@@ -123,13 +118,10 @@ namespace NetTopologySuite.Geometries.Implementation
             return Create(size, OrdinatesUtility.OrdinatesToDimension(ordinates));
         }
 
-        public Ordinates Ordinates
-        {
-            get { return Ordinates.XYZ; }
-        }
+        public Ordinates Ordinates => Ordinates.XYZ;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="packedCoordinates"></param>
         /// <param name="dimension"></param>
@@ -142,7 +134,7 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="packedCoordinates"></param>
         /// <param name="dimension"></param>
@@ -155,7 +147,7 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="size"></param>
         /// <param name="dimension"></param>

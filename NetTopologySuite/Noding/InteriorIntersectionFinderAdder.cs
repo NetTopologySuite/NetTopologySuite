@@ -16,7 +16,6 @@ namespace NetTopologySuite.Noding
     public class InteriorIntersectionFinderAdder : ISegmentIntersector
     {
         private readonly LineIntersector _li;
-        private readonly IList<Coordinate> _interiorIntersections;
 
         /// <summary>
         /// Creates an intersection finder which finds all proper intersections.
@@ -25,16 +24,13 @@ namespace NetTopologySuite.Noding
         public InteriorIntersectionFinderAdder(LineIntersector li)
         {
             _li = li;
-            _interiorIntersections = new List<Coordinate>();
+            InteriorIntersections = new List<Coordinate>();
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public IList<Coordinate> InteriorIntersections
-        {
-            get { return _interiorIntersections; }
-        }
+        public IList<Coordinate> InteriorIntersections { get; }
 
         /// <summary>
         /// This method is called by clients
@@ -65,7 +61,7 @@ namespace NetTopologySuite.Noding
             if (!_li.HasIntersection) return;
             if (!_li.IsInteriorIntersection()) return;
             for (int intIndex = 0; intIndex < _li.IntersectionNum; intIndex++)
-                _interiorIntersections.Add(_li.GetIntersection(intIndex));
+                InteriorIntersections.Add(_li.GetIntersection(intIndex));
 
             NodedSegmentString nss0 = (NodedSegmentString)e0;
             nss0.AddIntersections(_li, segIndex0, 0);
@@ -76,9 +72,6 @@ namespace NetTopologySuite.Noding
         ///<summary>
         /// Always process all intersections
         ///</summary>
-        public bool IsDone
-        {
-            get { return false; }
-        }
+        public bool IsDone => false;
     }
 }

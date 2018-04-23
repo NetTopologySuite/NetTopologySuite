@@ -14,50 +14,20 @@ namespace NetTopologySuite.IO.Sdo
 
         private decimal? _minX, _maxX, _minY, _maxY, _minZ, _maxZ;
 
-        private decimal? _sdoGtype;
-
         [OracleObjectMappingAttribute(0)]
-        public decimal? SdoGtype
-        {
-            get { return _sdoGtype; }
-            set { _sdoGtype = value; }
-        }
-
-        private decimal? _sdoSrid;
+        public decimal? SdoGtype { get; set; }
 
         [OracleObjectMappingAttribute(1)]
-        public decimal? Sdo_Srid
-        {
-            get { return _sdoSrid; }
-            set { _sdoSrid = value; }
-        }
-
-        private SdoPoint _point;
+        public decimal? Sdo_Srid { get; set; }
 
         [OracleObjectMappingAttribute(2)]
-        public SdoPoint Point
-        {
-            get { return _point; }
-            set { _point = value; }
-        }
-
-        private decimal[] _elemArray;
+        public SdoPoint Point { get; set; }
 
         [OracleObjectMappingAttribute(3)]
-        public decimal[] ElemArray
-        {
-            get { return _elemArray; }
-            set { _elemArray = value; }
-        }
-
-        private decimal[] _ordinatesArray;
+        public decimal[] ElemArray { get; set; }
 
         [OracleObjectMappingAttribute(4)]
-        public decimal[] OrdinatesArray
-        {
-            get { return _ordinatesArray; }
-            set { _ordinatesArray = value; }
-        }
+        public decimal[] OrdinatesArray { get; set; }
 
         [OracleCustomTypeMappingAttribute("MDSYS.SDO_ELEM_INFO_ARRAY")]
         public class ElemArrayFactory : OracleArrayTypeFactoryBase<decimal> { }
@@ -88,23 +58,23 @@ namespace NetTopologySuite.IO.Sdo
             _minX = _minY = _minZ = null;
             _maxX = _maxY = _maxZ = null;
             Int32 dim = Math.Min(((Int32)SdoGtype.Value)/1000, 3);
-            if (_point != null)
+            if (Point != null)
             {
-                _minX = _maxX = _point.X;
-                _minY = _maxY = _point.Y;
-                if (dim > 2)_minZ = _maxZ = _point.Z;
+                _minX = _maxX = Point.X;
+                _minY = _maxY = Point.Y;
+                if (dim > 2)_minZ = _maxZ = Point.Z;
             }
 
-            if ( _ordinatesArray != null )
+            if ( OrdinatesArray != null )
             {
-                for (int i = 0; i < _ordinatesArray.Length; i+=dim )
+                for (int i = 0; i < OrdinatesArray.Length; i+=dim )
                 {
-                    _minX = _minX.HasValue ? Math.Min(_minX.Value, _ordinatesArray[i]) : _ordinatesArray[i]; 
-                    _minY = _minY.HasValue ? Math.Min(_minY.Value, _ordinatesArray[i+1]) : _ordinatesArray[i+1];
-                    if ( dim > 2 ) _minZ = _minZ.HasValue ? Math.Min(_minZ.Value, _ordinatesArray[i+2]) : _ordinatesArray[i+2];
-                    _maxX = _maxX.HasValue ? Math.Max(_maxX.Value, _ordinatesArray[i]) : _ordinatesArray[i];
-                    _maxY = _maxY.HasValue ? Math.Max(_maxY.Value, _ordinatesArray[i+1]) : _ordinatesArray[i+1];
-                    if ( dim > 2 )_maxZ = _maxZ.HasValue ? Math.Max(_maxZ.Value, _ordinatesArray[i+2]) : _ordinatesArray[i+2];
+                    _minX = _minX.HasValue ? Math.Min(_minX.Value, OrdinatesArray[i]) : OrdinatesArray[i]; 
+                    _minY = _minY.HasValue ? Math.Min(_minY.Value, OrdinatesArray[i+1]) : OrdinatesArray[i+1];
+                    if ( dim > 2 ) _minZ = _minZ.HasValue ? Math.Min(_minZ.Value, OrdinatesArray[i+2]) : OrdinatesArray[i+2];
+                    _maxX = _maxX.HasValue ? Math.Max(_maxX.Value, OrdinatesArray[i]) : OrdinatesArray[i];
+                    _maxY = _maxY.HasValue ? Math.Max(_maxY.Value, OrdinatesArray[i+1]) : OrdinatesArray[i+1];
+                    if ( dim > 2 )_maxZ = _maxZ.HasValue ? Math.Max(_maxZ.Value, OrdinatesArray[i+2]) : OrdinatesArray[i+2];
                 }
             }
         }

@@ -73,10 +73,7 @@ namespace NetTopologySuite.Planargraph
         /// <summary>
         /// Tests if a component has been visited during the course of a graph algorithm.
         /// </summary>              
-        public bool IsVisited
-        {
-            get { return Visited; }
-        }
+        public bool IsVisited => Visited;
 
         /// <summary> 
         /// Gets/Sets the visited flag for this component.
@@ -87,10 +84,7 @@ namespace NetTopologySuite.Planargraph
         /// Tests if a component has been marked at some point during the processing
         /// involving this graph.
         /// </summary>
-        public bool IsMarked
-        {
-            get { return Marked; }
-        }
+        public bool IsMarked => Marked;
 
         /// <summary>
         /// Gets/Sets the marked flag for this component.

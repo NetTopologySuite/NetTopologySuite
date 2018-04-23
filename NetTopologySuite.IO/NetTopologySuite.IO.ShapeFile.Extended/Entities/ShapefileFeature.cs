@@ -18,7 +18,7 @@ namespace NetTopologySuite.IO.ShapeFile.Extended.Entities
 
 		private readonly IGeometryFactory m_GeoFactory;
 
-	    public ShapefileFeature(ShapeReader shapeReader, DbaseReader dbfReader, ShapeLocationInFileInfo shapeLocation, IGeometryFactory geoFactory)            
+	    public ShapefileFeature(ShapeReader shapeReader, DbaseReader dbfReader, ShapeLocationInFileInfo shapeLocation, IGeometryFactory geoFactory)
 		{
 			m_ShapeReader = shapeReader;
 			m_GeoFactory = geoFactory;
@@ -31,40 +31,22 @@ namespace NetTopologySuite.IO.ShapeFile.Extended.Entities
 
 	    public IGeometry Geometry
 		{
-			get
-			{
-				return m_LazyGeometry.Value;
-			}
-            set
-            {
-                throw new NotSupportedException("Setting geometry on a shapefile reader is not supported!");
-            }
-		}
+		    get => m_LazyGeometry.Value;
+		    set => throw new NotSupportedException("Setting geometry on a shapefile reader is not supported!");
+	    }
 
 	    public Envelope BoundingBox
 	    {
-	        get { return Geometry.EnvelopeInternal; }
-	        set { throw new InvalidOperationException("Setting BoundingBox not allowed for Shapefile feature"); }
+		    get => Geometry.EnvelopeInternal;
+		    set => throw new InvalidOperationException("Setting BoundingBox not allowed for Shapefile feature");
 	    }
 
 	    public IAttributesTable Attributes
 		{
-			get
-			{
-				return m_LazyAttributeTable.Value;
-			}
-            set
-            {
-                throw new NotSupportedException("Setting attributes on a shapefile reader is not supported!");
-            }
-		}
+		    get => m_LazyAttributeTable.Value;
+		    set => throw new NotSupportedException("Setting attributes on a shapefile reader is not supported!");
+	    }
 
-		public long FeatureId
-		{
-			get
-			{
-				return m_ShapeLocationInfo.ShapeIndex;
-			}
-		}
+		public long FeatureId => m_ShapeLocationInfo.ShapeIndex;
 	}
 }

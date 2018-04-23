@@ -48,7 +48,6 @@ namespace NetTopologySuite.Geometries
             }
 
             private readonly double _noDataCheckValue;
-            private readonly double _noDataValue;
             private readonly IsNoDataCheck _isNoDataCheck;
 
             /// <summary>
@@ -58,7 +57,7 @@ namespace NetTopologySuite.Geometries
             /// <param name="lessThan">This optional parameter controls whether a value has to be less than <paramref name="noDataValue"/> to be considered <c>null</c></param>
             public DoubleNoDataChecker(double noDataValue, bool lessThan = false)
             {
-                _noDataValue = _noDataCheckValue = noDataValue;
+                NoDataValue = _noDataCheckValue = noDataValue;
                 if (double.IsNaN(noDataValue))
                     _isNoDataCheck = IsNoDataCheck.NaN;
                 else if (double.IsPositiveInfinity(noDataValue))
@@ -72,7 +71,7 @@ namespace NetTopologySuite.Geometries
                     if (lessThan)
                     {
                         _isNoDataCheck = IsNoDataCheck.LessThan;
-                        _noDataValue = _noDataCheckValue * 1.01d;
+                        NoDataValue = _noDataCheckValue * 1.01d;
                     }
                     else
                     {
@@ -132,7 +131,7 @@ namespace NetTopologySuite.Geometries
             /// <summary>
             /// Gets the defined <c>null</c> value
             /// </summary>
-            public double NoDataValue { get { return _noDataValue; } }
+            public double NoDataValue { get; }
 
             public override string ToString()
             {
@@ -157,7 +156,6 @@ namespace NetTopologySuite.Geometries
         private Interval _zInterval = Interval.Create();
         private Interval _mInterval = Interval.Create();
 
-        private Ordinates _definedOrdinates = Ordinates.XY;
         private readonly DoubleNoDataChecker _doubleNoDataChecker;
 
         private readonly List<double[]> _coordinates;
@@ -206,20 +204,20 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Updates the <see cref="_definedOrdinates"/> flags
+        /// Updates the <see cref="DefinedOrdinates"/> flags
         /// </summary>
         /// <param name="z">The z-Ordinate</param>
         /// <param name="m">The m-Ordinate</param>
         private void CheckDefinedOrdinates(ref double z, ref double m)
         {
             if (_doubleNoDataChecker.IsNotNoDataValue(z))
-                _definedOrdinates |= Ordinates.Z;
+                DefinedOrdinates |= Ordinates.Z;
                 
             else
                 z = Coordinate.NullOrdinate;
             
             if (_doubleNoDataChecker.IsNotNoDataValue(m))
-                _definedOrdinates |= Ordinates.M;
+                DefinedOrdinates |= Ordinates.M;
             else
                 m = Coordinate.NullOrdinate;
         }
@@ -255,15 +253,12 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets the number of coordinates added to the buffer
         /// </summary>
-        public int Count
-        {
-            get { return _coordinates.Count; }
-        }
+        public int Count => _coordinates.Count;
 
         /// <summary>
         /// Gets the defined ordinates in this buffer
         /// </summary>
-        public Ordinates DefinedOrdinates { get { return _definedOrdinates; } }
+        public Ordinates DefinedOrdinates { get; private set; } = Ordinates.XY;
 
         /// <summary>
         /// Gets the number of dimension a coordinate sequence must provide
@@ -282,20 +277,17 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating if this buffer contains any z-ordinate values
         /// </summary>
-        public bool HasZ { get { return (_definedOrdinates & Ordinates.Z) == Ordinates.Z; } }
+        public bool HasZ => (DefinedOrdinates & Ordinates.Z) == Ordinates.Z;
 
         /// <summary>
         /// Gets a value indicating if this buffer contains any m-ordinate values
         /// </summary>
-        public bool HasM { get { return (_definedOrdinates & Ordinates.M) == Ordinates.M; } }
+        public bool HasM => (DefinedOrdinates & Ordinates.M) == Ordinates.M;
 
         /// <summary>
         /// Gets the (current) capacity of the buffer
         /// </summary>
-        public int Capacity
-        {
-            get { return _coordinates.Capacity; }
-        }
+        public int Capacity => _coordinates.Capacity;
 
         /// <summary>
         /// Adds a coordinate made up of the ordinates (x, y, z, m) to the buffer.
@@ -402,7 +394,7 @@ namespace NetTopologySuite.Geometries
         public void Clear()
         {
             _coordinates.Clear();
-            _definedOrdinates = Ordinates.XY;
+            DefinedOrdinates = Ordinates.XY;
         }
 
         /// <summary>
@@ -447,7 +439,7 @@ namespace NetTopologySuite.Geometries
                 factory = _factory ?? (_factory = GeometryServiceProvider.Instance.DefaultCoordinateSequenceFactory);
 
             // determine ordinates to apply
-            var useOrdinates = _definedOrdinates & factory.Ordinates;
+            var useOrdinates = DefinedOrdinates & factory.Ordinates;
             
             // create the sequence
             var sequence = factory.Create(_coordinates.Count, useOrdinates);
@@ -481,7 +473,7 @@ namespace NetTopologySuite.Geometries
                 markers.Add(_coordinates.Count);
             
             // determine ordinates to apply
-            var useOrdinates = _definedOrdinates & factory.Ordinates;
+            var useOrdinates = DefinedOrdinates & factory.Ordinates;
 
             var res = new ICoordinateSequence[markers.Count];
             var offset = 0;
@@ -524,7 +516,7 @@ namespace NetTopologySuite.Geometries
                 z = Coordinate.NullOrdinate;
             else
             {
-                _definedOrdinates |= Ordinates.Z;
+                DefinedOrdinates |= Ordinates.Z;
                 _zInterval = _zInterval.ExpandedByValue(z);
             }
             _coordinates[index][2] = z;
@@ -541,7 +533,7 @@ namespace NetTopologySuite.Geometries
                 m = Coordinate.NullOrdinate;
             else
             {
-                _definedOrdinates |= Ordinates.M;
+                DefinedOrdinates |= Ordinates.M;
                 _mInterval = _mInterval.ExpandedByValue(m);
             }
             _coordinates[index][3] = m;

@@ -9,66 +9,58 @@ namespace Open.Topology.TestRunner
 	/// </summary>
 	public class XmlTestController
 	{
-        private StringCollection m_listFileNames = null;
-
-        private XmlTestDocument  m_objCurrentDoc = null;
+	    private XmlTestDocument  m_objCurrentDoc = null;
 
 		public XmlTestController()
 		{
-            m_listFileNames = new StringCollection();
+            FileNames = new StringCollection();
             m_objCurrentDoc = new XmlTestDocument();
 		}
 
-        public StringCollection FileNames
-        {
-            get
-            {
-                return m_listFileNames;
-            }
-        }
+        public StringCollection FileNames { get; private set; } = null;
 
-        public void ResetFiles()
-        {
-            if (m_listFileNames != null)
-                m_listFileNames.Clear();            
-       }
+	    public void ResetFiles()
+	    {
+	        if (FileNames != null)
+	            FileNames.Clear();
+	    }
 
-        public void Reset()
+	    public void Reset()
         {
             if (m_objCurrentDoc != null)
                 m_objCurrentDoc.ResetTests();
-            
+
             ResetFiles();
         }
 
         public bool RunFile(int index)
         {
-            if (m_listFileNames != null && m_listFileNames.Count > 0)
+            if (FileNames != null && FileNames.Count > 0)
             {
-                if (index >= 0 && index < m_listFileNames.Count)
+                if (index >= 0 && index < FileNames.Count)
                 {
-                    string fileName = m_listFileNames[index];
+                    string fileName = FileNames[index];
                     if (m_objCurrentDoc != null && m_objCurrentDoc.LoadFile(fileName))
                     {
                         XmlTestCollection listTests = m_objCurrentDoc.CurrentTests;
                         if (listTests != null && listTests.Count > 0)
-                            return listTests.RunTests();                        
+                            return listTests.RunTests();
                     }
                 }
-            }    
+            }
             return false;
         }
 
         public bool GetFiles(string directory)
         {
-            if (m_listFileNames == null)
-                m_listFileNames = new StringCollection();
-            
+            if (FileNames == null)
+                FileNames = new StringCollection();
+
             try
             {
                 string[] dirs = Directory.GetFiles(directory, "*.xml");
-                foreach (string dir in dirs) 
-                    m_listFileNames.Add(dir);                
+                foreach (string dir in dirs)
+                    FileNames.Add(dir);
                 return true;
             }
             catch (Exception ex)

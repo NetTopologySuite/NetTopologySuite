@@ -17,56 +17,20 @@ namespace NetTopologySuite.GeometriesGraph
     /// </summary>
     public class EdgeIntersection : IComparable
     {
-        private readonly Coordinate _coordinate;   
-
         /// <summary>
         /// The point of intersection.
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get
-            {
-                return _coordinate; 
-            }
-            //set
-            //{
-            //    _coordinate = value; 
-            //}
-        }
-
-        private readonly int _segmentIndex;  
+        public Coordinate Coordinate { get; }
 
         /// <summary>
         /// The index of the containing line segment in the parent edge.
         /// </summary>
-        public int SegmentIndex
-        {
-            get 
-            {
-                return _segmentIndex; 
-            }
-            //set
-            //{
-            //    segmentIndex = value; 
-            //}
-        }
-
-        private readonly double _distance;       
+        public int SegmentIndex { get; }
 
         /// <summary>
         /// The edge distance of this point along the containing line segment.
         /// </summary>
-        public double Distance
-        {
-            get
-            {
-                return _distance; 
-            }
-            //set
-            //{
-            //    dist = value; 
-            //}
-        }
+        public double Distance { get; }
 
         /// <summary>
         /// 
@@ -76,9 +40,9 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="dist"></param>
         public EdgeIntersection(Coordinate coord, int segmentIndex, double dist) 
         {
-            _coordinate = new Coordinate(coord);
-            _segmentIndex = segmentIndex;
-            _distance = dist;
+            Coordinate = new Coordinate(coord);
+            SegmentIndex = segmentIndex;
+            Distance = dist;
         }
 
         /// <summary>
@@ -104,13 +68,13 @@ namespace NetTopologySuite.GeometriesGraph
         /// </returns>
         public int Compare(int segmentIndex, double dist)
         {
-            if (_segmentIndex < segmentIndex) 
+            if (SegmentIndex < segmentIndex) 
                 return -1;
-            if (_segmentIndex > segmentIndex) 
+            if (SegmentIndex > segmentIndex) 
                 return 1;
-            if (_distance < dist) 
+            if (Distance < dist) 
                 return -1;
-            if (_distance > dist) 
+            if (Distance > dist) 
                 return 1;
             return 0;
         }
@@ -143,7 +107,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <inheritdoc cref="object.ToString()"/>
         public override String ToString()
         {
-            return _coordinate + " seg # = " + _segmentIndex + " dist = " + _distance;
+            return Coordinate + " seg # = " + SegmentIndex + " dist = " + Distance;
         }
 
     }

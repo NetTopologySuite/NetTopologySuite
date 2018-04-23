@@ -384,10 +384,7 @@ namespace NetTopologySuite.Algorithm
             /// <param name="p1"></param>
             /// <param name="p2"></param>
             /// <returns></returns>
-            public int Compare(Coordinate p1, Coordinate p2)
-            {
-                return PolarCompare(_origin, p1, p2);
-            }
+            public int Compare(Coordinate p1, Coordinate p2) => PolarCompare(_origin, p1, p2);
 
             /// <summary>
             ///

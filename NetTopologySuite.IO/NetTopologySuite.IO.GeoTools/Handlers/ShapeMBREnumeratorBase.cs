@@ -32,10 +32,7 @@ namespace NetTopologySuite.IO.Handlers
             GC.SuppressFinalize(this);
         }
 
-        object System.Collections.IEnumerator.Current
-        {
-            get { return ((IEnumerator<MBRInfo>)this).Current; }
-        }
+        object System.Collections.IEnumerator.Current => ((IEnumerator<MBRInfo>)this).Current;
 
         public bool MoveNext()
         {

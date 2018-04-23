@@ -28,16 +28,9 @@ namespace NetTopologySuite.GeometriesGraph
             }
         }
 
-        private Coordinate[] _pts;
-        
         private Envelope _env;
-        private readonly EdgeIntersectionList _eiList;
-      
-        private string _name;
+
         private MonotoneChainEdge _mce;
-        private bool _isIsolated = true;
-        private readonly Depth _depth = new Depth();
-        private int _depthDelta;   // the change in area depth from the R to Curve side of this edge
 
         /// <summary>
         /// 
@@ -46,9 +39,9 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="label"></param>
         public Edge(Coordinate[] pts, Label label)
         {
-            _eiList = new EdgeIntersectionList(this);
+            EdgeIntersectionList = new EdgeIntersectionList(this);
 
-            _pts = pts;
+            Points = pts;
             Label = label;
         }
 
@@ -61,54 +54,22 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate[] Points
-        {
-            get
-            {
-                return _pts;
-            }
-            set
-            {
-                _pts = value;
-            }
-        }
+        public Coordinate[] Points { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public int NumPoints
-        {
-            get
-            {
-                return Points.Length; 
-            }
-        }
+        public int NumPoints => Points.Length;
 
         /// <summary>
         /// 
         /// </summary>
-        public string Name
-        {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                _name = value; 
-            }
-        }
+        public string Name { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate[] Coordinates
-        {
-            get
-            {
-                return Points;  
-            }
-        }
+        public Coordinate[] Coordinates => Points;
 
         /// <summary>
         /// 
@@ -132,14 +93,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         public override Coordinate Coordinate
         {
-            get
-            {
-                return Points.Length > 0 ? Points[0] : null;
-            }
-            protected set
-            {
-                throw new NotSupportedException();
-            }
+            get => Points.Length > 0 ? Points[0] : null;
+            protected set => throw new NotSupportedException();
         }
 
         /// <summary>
@@ -163,51 +118,23 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public Depth Depth
-        {
-            get
-            {
-                return _depth; 
-            }
-        }
+        public Depth Depth { get; } = new Depth();
 
         /// <summary>
         /// The depthDelta is the change in depth as an edge is crossed from R to L.
         /// </summary>
         /// <returns>The change in depth as the edge is crossed from R to L.</returns>
-        public int DepthDelta
-        {
-            get
-            {
-                return _depthDelta;  
-            }
-            set
-            {
-                _depthDelta = value;
-            }
-        }        
+        public int DepthDelta { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public int MaximumSegmentIndex
-        {
-            get
-            {
-                return Points.Length - 1;
-            }
-        }
+        public int MaximumSegmentIndex => Points.Length - 1;
 
         /// <summary>
         /// 
         /// </summary>
-        public EdgeIntersectionList EdgeIntersectionList
-        {
-            get
-            {
-                return _eiList; 
-            }
-        }
+        public EdgeIntersectionList EdgeIntersectionList { get; }
 
         /// <summary>
         /// 
@@ -225,13 +152,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public bool IsClosed
-        {
-            get
-            {
-                return Points[0].Equals(Points[Points.Length - 1]);
-            }
-        }
+        public bool IsClosed => Points[0].Equals(Points[Points.Length - 1]);
 
         /// <summary> 
         /// An Edge is collapsed if it is an Area edge and it consists of
@@ -269,28 +190,12 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public bool Isolated
-        {
-            get
-            {
-                return _isIsolated;
-            }
-            set
-            {
-                _isIsolated = value;
-            }
-        }
+        public bool Isolated { get; set; } = true;
 
         /// <summary>
         /// 
         /// </summary>
-        public override bool IsIsolated
-        {
-            get
-            {
-                return _isIsolated;
-            }
-        }
+        public override bool IsIsolated => Isolated;
 
         /// <summary>
         /// Adds EdgeIntersections for one or both
@@ -440,14 +345,14 @@ namespace NetTopologySuite.GeometriesGraph
         public override String ToString()
         {
             var buf = new StringBuilder();
-            buf.Append("edge " + _name + ": ");
+            buf.Append("edge " + Name + ": ");
             buf.Append("LINESTRING (");
-            for (int i = 0; i < _pts.Length; i++)
+            for (int i = 0; i < Points.Length; i++)
             {
                 if (i > 0) buf.Append(",");
-                buf.Append(_pts[i].X + " " + _pts[i].Y);
+                buf.Append(Points[i].X + " " + Points[i].Y);
             }
-            buf.Append(")  " + Label + " " + _depthDelta);
+            buf.Append(")  " + Label + " " + DepthDelta);
             return buf.ToString();
         }
 
@@ -457,14 +362,14 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="outstream"></param>
         public void Write(TextWriter outstream)
         {
-            outstream.Write("edge " + _name + ": ");
+            outstream.Write("edge " + Name + ": ");
             outstream.Write("LINESTRING (");
             for (var i = 0; i < Points.Length; i++)
             {
                 if (i > 0)  outstream.Write(",");
                 outstream.Write(Points[i].X + " " + Points[i].Y);
             }
-            outstream.Write(")  " + Label + " " + _depthDelta);
+            outstream.Write(")  " + Label + " " + DepthDelta);
         }
 
         /// <summary>
@@ -473,7 +378,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="outstream"></param>
         public void WriteReverse(TextWriter outstream)
         {
-            outstream.Write("edge " + _name + ": ");
+            outstream.Write("edge " + Name + ": ");
             for (var i = Points.Length - 1; i >= 0; i--) 
                 outstream.Write(Points[i] + " ");            
             outstream.WriteLine(String.Empty);

@@ -23,14 +23,13 @@ namespace NetTopologySuite.Operation.Valid
         private readonly IList<ILineString> _rings = new List<ILineString>();
         private readonly Envelope _totalEnv = new Envelope();
         private ISpatialIndex<ILineString> _index;
-        private Coordinate _nestedPt;
 
         public IndexedNestedRingTester(GeometryGraph graph)
         {
             _graph = graph;
         }
 
-        public Coordinate NestedPoint { get {return _nestedPt; }}
+        public Coordinate NestedPoint { get; private set; }
 
         public void Add(ILinearRing ring)
         {
@@ -78,7 +77,7 @@ namespace NetTopologySuite.Operation.Valid
                     Boolean isInside = PointLocation.IsInRing(innerRingPt, searchRingPts);
                     if (isInside)
                     {
-                        _nestedPt = innerRingPt;
+                        NestedPoint = innerRingPt;
                         return false;
                     }
                 }

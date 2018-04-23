@@ -119,13 +119,6 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// Gets the collection of dissolved (i.e. unique) <see cref="ISegmentString" />s
         /// </summary>
-        public ICollection<ISegmentString> Dissolved
-        {
-            get
-            {
-                return _ocaMap.Values;
-            }
-        }
-
+        public ICollection<ISegmentString> Dissolved => _ocaMap.Values;
     }
 }

@@ -52,22 +52,13 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value to sort the geometry
         /// </summary>
-        protected override SortIndexValue SortIndex
-        {
-            get { return SortIndexValue.MultiLineString; }
-        }
+        protected override SortIndexValue SortIndex => SortIndexValue.MultiLineString;
 
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
-        public override Dimension Dimension
-        {
-            get
-            {
-                return Dimension.Curve;
-            }
-        }
+        public override Dimension Dimension => Dimension.Curve;
 
         /// <summary>
         /// 
@@ -88,21 +79,13 @@ namespace NetTopologySuite.Geometries
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"MultiLineString"</returns>
-        public override string GeometryType
-        {
-            get
-            {
-                return "MultiLineString";
-            }
-        }
+        public override string GeometryType => "MultiLineString";
 
         /// <summary>
         /// Gets the OGC geometry type
         /// </summary>
-        public override OgcGeometryType OgcGeometryType
-        {
-            get { return OgcGeometryType.MultiLineString; }
-        }
+        public override OgcGeometryType OgcGeometryType => OgcGeometryType.MultiLineString;
+
         /// <summary>
         /// Gets a value indicating whether this instance is closed.
         /// </summary>
@@ -132,18 +115,7 @@ namespace NetTopologySuite.Geometries
         //    }
         //}
 
-       public override IGeometry Boundary
-        {
-            get
-            {
-                return (new BoundaryOp(this)).GetBoundary();
-                //if(IsEmpty)
-                //    return Factory.CreateGeometryCollection(null);
-                //GeometryGraph g = new GeometryGraph(0, this);
-                //Coordinate[] pts = g.GetBoundaryPoints();
-                //return Factory.CreateMultiPoint(pts);
-            }
-        }
+       public override IGeometry Boundary => (new BoundaryOp(this)).GetBoundary();
 
         /// <summary>
         /// Creates a <see cref="MultiLineString" /> in the reverse order to this object.

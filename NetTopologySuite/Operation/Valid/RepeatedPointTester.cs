@@ -12,18 +12,11 @@ namespace NetTopologySuite.Operation.Valid
     {
 
         // save the repeated coord found (if any)
-        private Coordinate repeatedCoord;
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get
-            {
-                return repeatedCoord;
-            }
-        }
+        public Coordinate Coordinate { get; private set; }
 
         /// <summary>
         /// 
@@ -56,7 +49,7 @@ namespace NetTopologySuite.Operation.Valid
             {
                 if (coord[i - 1].Equals(coord[i]))
                 {
-                    repeatedCoord = coord[i];
+                    Coordinate = coord[i];
                     return true;
                 }
             }

@@ -4,8 +4,6 @@ namespace NetTopologySuite.IO.Geometries
 {
     internal class TopoLineString : TopoObject
     {
-        private readonly int[] _arcs;
-
         public TopoLineString(string type, int[][][] arcs)
             : base(type)
         {
@@ -20,12 +18,9 @@ namespace NetTopologySuite.IO.Geometries
                 throw new ArgumentException("arc empty");
             if (arc.Length > 1)
                 throw new ArgumentException("arc too long");
-            _arcs = arc[0];
+            Arcs = arc[0];
         }
 
-        public int[] Arcs
-        {
-            get { return _arcs; }
-        }
+        public int[] Arcs { get; }
     }
 }

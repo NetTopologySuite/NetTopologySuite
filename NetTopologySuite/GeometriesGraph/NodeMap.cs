@@ -90,10 +90,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public IList<Node> Values
-        {
-            get { return new List<Node>(_nodeMap.Values); }
-        }
+        public IList<Node> Values => new List<Node>(_nodeMap.Values);
 
         /// <summary>
         /// 

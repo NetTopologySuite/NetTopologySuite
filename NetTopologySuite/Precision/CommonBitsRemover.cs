@@ -31,7 +31,6 @@ namespace NetTopologySuite.Precision
     /// </summary>
     public class CommonBitsRemover
     {
-        private Coordinate _commonCoord;
         private readonly CommonCoordinateFilter _ccFilter = new CommonCoordinateFilter();
 
         /*
@@ -51,16 +50,13 @@ namespace NetTopologySuite.Precision
         public void Add(IGeometry geom)
         {
             geom.Apply(_ccFilter);
-            _commonCoord = _ccFilter.CommonCoordinate;
+            CommonCoordinate = _ccFilter.CommonCoordinate;
         }
 
         /// <summary>
         /// The common bits of the Coordinates in the supplied Geometries.
         /// </summary>
-        public Coordinate CommonCoordinate
-        {
-            get { return _commonCoord; }
-        }
+        public Coordinate CommonCoordinate { get; private set; }
 
         /// <summary>
         /// Removes the common coordinate bits from a Geometry.
@@ -70,9 +66,9 @@ namespace NetTopologySuite.Precision
         /// <returns>The shifted Geometry.</returns>
         public IGeometry RemoveCommonBits(IGeometry geom)
         {
-            if (_commonCoord.X == 0.0 && _commonCoord.Y == 0.0)
+            if (CommonCoordinate.X == 0.0 && CommonCoordinate.Y == 0.0)
                 return geom;
-            Coordinate invCoord = new Coordinate(_commonCoord);
+            Coordinate invCoord = new Coordinate(CommonCoordinate);
             invCoord.X = -invCoord.X;
             invCoord.Y = -invCoord.Y;
             Translater trans = new Translater(invCoord);
@@ -88,7 +84,7 @@ namespace NetTopologySuite.Precision
         /// <param name="geom">The Geometry to which to add the common coordinate bits.</param>
         public void AddCommonBits(IGeometry geom)
         {
-            var trans = new Translater(_commonCoord);
+            var trans = new Translater(CommonCoordinate);
             geom.Apply(trans);
             geom.GeometryChanged();
         }
@@ -114,13 +110,7 @@ namespace NetTopologySuite.Precision
             /// <summary>
             ///
             /// </summary>
-            public Coordinate CommonCoordinate
-            {
-                get
-                {
-                    return new Coordinate(_commonBitsX.Common, _commonBitsY.Common);
-                }
-            }
+            public Coordinate CommonCoordinate => new Coordinate(_commonBitsX.Common, _commonBitsY.Common);
         }
 
         /// <summary>
@@ -151,9 +141,9 @@ namespace NetTopologySuite.Precision
                 seq.SetOrdinate(i, Ordinate.Y, yp);
             }
 
-            public bool Done {  get { return false; } }
+            public bool Done => false;
 
-            public bool GeometryChanged {  get { return true; } }
+            public bool GeometryChanged => true;
         }
     }
 }

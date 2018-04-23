@@ -133,9 +133,6 @@ namespace NetTopologySuite.Operation.Polygonize
         private Coordinate[] _ringPts;
         private List<ILinearRing> _holes;
         private EdgeRing _shell;
-        private bool _isHole;
-        private bool _isProcessed;
-        private bool _isIncludedSet;
         private bool _isIncluded = false;
 
         /// <summary>
@@ -176,10 +173,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// a ring is a hole if it is oriented counter-clockwise.
         /// </summary>
         /// <returns><c>true</c> if this ring is a hole.</returns>
-        public bool IsHole
-        {
-            get { return _isHole; }
-        }
+        public bool IsHole { get; private set; }
 
         ///<summary>
         /// Computes whether this ring is a hole.
@@ -189,7 +183,7 @@ namespace NetTopologySuite.Operation.Polygonize
         public void ComputeHole()
         {
             var ring = Ring;
-            _isHole = Orientation.IsCCW(ring.CoordinateSequence);
+            IsHole = Orientation.IsCCW(ring.CoordinateSequence);
             Assert.IsTrue(Orientation.IsCCW(ring.CoordinateSequence) == Orientation.IsCCW(ring.Coordinates));
         }
 
@@ -254,18 +248,15 @@ namespace NetTopologySuite.Operation.Polygonize
             }
         }
 
-        public bool IsIncludedSet
-        {
-            get { return _isIncludedSet; }
-        }
+        public bool IsIncludedSet { get; private set; }
 
         public bool IsIncluded
         {
-            get { return _isIncluded; }
+            get => _isIncluded;
             set
             {
                 _isIncluded = value;
-                _isIncludedSet = true;
+                IsIncludedSet = true;
             }
         }
 
@@ -355,17 +346,14 @@ namespace NetTopologySuite.Operation.Polygonize
         /// </summary>
         public EdgeRing Shell
         {
-            get { return IsHole ? _shell : this; }
-            private set { _shell = value; }
+            get => IsHole ? _shell : this;
+            private set => _shell = value;
         }
 
         /// <summary>
         /// Gets a value indicating whether this ring has a shell assigned to it.
         /// </summary>
-        public bool HasShell
-        {
-            get { return _shell != null; }
-        }
+        public bool HasShell => _shell != null;
 
         /// <summary>
         /// Tests whether this ring is an outer hole.
@@ -375,7 +363,7 @@ namespace NetTopologySuite.Operation.Polygonize
         {
             get
             {
-                if (!_isHole) return false;
+                if (!IsHole) return false;
                 return !HasShell;
             }
         }
@@ -383,10 +371,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Tests whether this ring is an outer shell.
         /// </summary>
-        public bool IsOuterShell
-        {
-            get { return OuterHole != null; }
-        }
+        public bool IsOuterShell => OuterHole != null;
 
         public EdgeRing OuterHole
         {
@@ -439,11 +424,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Gets or sets a value indicating whether this ring has been processed.
         /// </summary>
-        public bool IsProcessed
-        {
-            get { return _isProcessed; }
-            set { _isProcessed = value; }
-        }
+        public bool IsProcessed { get; set; }
 
         /// <summary>
         /// Compares EdgeRings based on their envelope,

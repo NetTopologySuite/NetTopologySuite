@@ -20,7 +20,6 @@ namespace NetTopologySuite.Operation.Buffer
     {
         private double _distance;
         private readonly IPrecisionModel _precisionModel;
-        private readonly IBufferParameters _bufParams;
 
         public OffsetCurveBuilder(
             IPrecisionModel precisionModel,
@@ -28,16 +27,13 @@ namespace NetTopologySuite.Operation.Buffer
             )
         {
             _precisionModel = precisionModel;
-            _bufParams = bufParams;
+            BufferParameters = bufParams;
         }
 
         /// <summary>
         /// Gets the buffer parameters being used to generate the curve.
         /// </summary>
-        public IBufferParameters BufferParameters
-        {
-            get { return _bufParams; }
-        }
+        public IBufferParameters BufferParameters { get; }
 
         /// <summary>
         /// This method handles single points as well as LineStrings.
@@ -54,7 +50,7 @@ namespace NetTopologySuite.Operation.Buffer
             _distance = distance;
 
             // a zero or negative width buffer of a line/point is empty
-            if (distance < 0.0 && !_bufParams.IsSingleSided) return null;
+            if (distance < 0.0 && !BufferParameters.IsSingleSided) return null;
             if (distance == 0.0) return null;
 
             var posDistance = Math.Abs(distance);
@@ -65,7 +61,7 @@ namespace NetTopologySuite.Operation.Buffer
             }
             else
             {
-                if (_bufParams.IsSingleSided)
+                if (BufferParameters.IsSingleSided)
                 {
                     var isRightSide = distance < 0.0;
                     ComputeSingleSidedBufferCurve(inputPts, isRightSide, segGen);
@@ -137,7 +133,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         private OffsetSegmentGenerator GetSegmentGenerator(double distance)
         {
-            return new OffsetSegmentGenerator(_precisionModel, _bufParams, distance);
+            return new OffsetSegmentGenerator(_precisionModel, BufferParameters, distance);
         }
 
         /// <summary>
@@ -148,12 +144,12 @@ namespace NetTopologySuite.Operation.Buffer
         /// <returns>The simplification tolerance</returns>
         private double SimplifyTolerance(double bufDistance)
         {
-            return bufDistance * _bufParams.SimplifyFactor;
+            return bufDistance * BufferParameters.SimplifyFactor;
         }
 
         private void ComputePointCurve(Coordinate pt, OffsetSegmentGenerator segGen)
         {
-            switch (_bufParams.EndCapStyle)
+            switch (BufferParameters.EndCapStyle)
             {
                 case EndCapStyle.Round:
                     segGen.CreateCircle(pt);

@@ -360,20 +360,17 @@ namespace NetTopologySuite.IO
 
         public bool HandleSRID
         {
-            get { return true; }
+            get => true;
             set { }
         }
 
-        public Ordinates AllowedOrdinates
-        {
-            get { return _coordinateSequenceFactory.Ordinates & Ordinates.XYZM; }
-        }
+        public Ordinates AllowedOrdinates => _coordinateSequenceFactory.Ordinates & Ordinates.XYZM;
 
         private Ordinates _handleOrdinates;
 
         public Ordinates HandleOrdinates
         {
-            get { return _handleOrdinates; }
+            get => _handleOrdinates;
             set
             {
                 value &= AllowedOrdinates;

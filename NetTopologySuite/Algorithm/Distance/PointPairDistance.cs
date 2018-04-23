@@ -13,8 +13,6 @@ namespace NetTopologySuite.Algorithm.Distance
     /// </remarks>
     public class PointPairDistance
     {
-        private readonly Coordinate[] _pt = { new Coordinate(), new Coordinate() };
-        private double _distance = Double.NaN;
         private Boolean _isNull = true;
 
         ///<summary>
@@ -29,9 +27,9 @@ namespace NetTopologySuite.Algorithm.Distance
         /// <param name="p1">2nd coordinate</param>
         public void Initialize(Coordinate p0, Coordinate p1)
         {
-            _pt[0].CoordinateValue = p0;
-            _pt[1].CoordinateValue = p1;
-            _distance = p0.Distance(p1);
+            Coordinates[0].CoordinateValue = p0;
+            Coordinates[1].CoordinateValue = p1;
+            Distance = p0.Distance(p1);
             _isNull = false;
         }
 
@@ -43,39 +41,30 @@ namespace NetTopologySuite.Algorithm.Distance
         /// <param name="distance">the distance between <see paramref="p0"/> and <see paramref="p1"/></param>
         private void Initialize(Coordinate p0, Coordinate p1, double distance)
         {
-            _pt[0].CoordinateValue = p0;
-            _pt[1].CoordinateValue = p1;
-            _distance = distance;
+            Coordinates[0].CoordinateValue = p0;
+            Coordinates[1].CoordinateValue = p1;
+            Distance = distance;
             _isNull = false;
         }
 
         /// <summary>
         /// The distance between the paired coordinates
         /// </summary>
-        public double Distance
-        {
-            get { return _distance; }
-        }
+        public double Distance { get; private set; } = Double.NaN;
 
         /// <summary>
         /// Returns an array containing the paired points
         /// </summary>
-        public Coordinate[] Coordinates
-        {
-            get { return _pt; }
-        }
+        public Coordinate[] Coordinates { get; } = { new Coordinate(), new Coordinate() };
 
         /// <summary>
         /// Gets the value of
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public Coordinate this[int i] { get { return _pt[i]; } }
+        public Coordinate this[int i] => Coordinates[i];
 
-        public void SetMaximum(PointPairDistance ptDist)
-        {
-            SetMaximum(ptDist._pt[0], ptDist._pt[1]);
-        }
+        public void SetMaximum(PointPairDistance ptDist) => SetMaximum(ptDist.Coordinates[0], ptDist.Coordinates[1]);
 
         public void SetMaximum(Coordinate p0, Coordinate p1)
         {
@@ -85,14 +74,11 @@ namespace NetTopologySuite.Algorithm.Distance
                 return;
             }
             double dist = p0.Distance(p1);
-            if (dist > _distance)
+            if (dist > Distance)
                 Initialize(p0, p1, dist);
         }
 
-        public void SetMinimum(PointPairDistance ptDist)
-        {
-            SetMinimum(ptDist._pt[0], ptDist._pt[1]);
-        }
+        public void SetMinimum(PointPairDistance ptDist) => SetMinimum(ptDist.Coordinates[0], ptDist.Coordinates[1]);
 
         public void SetMinimum(Coordinate p0, Coordinate p1)
         {
@@ -102,14 +88,11 @@ namespace NetTopologySuite.Algorithm.Distance
                 return;
             }
             double dist = p0.Distance(p1);
-            if (dist < _distance)
+            if (dist < Distance)
                 Initialize(p0, p1, dist);
         }
 
         /// <inheritdoc cref="object.ToString()"/>
-        public override string ToString()
-        {
-  	        return WKTWriter.ToLineString(_pt[0], _pt[1]);
-        }
+        public override string ToString() => WKTWriter.ToLineString(Coordinates[0], Coordinates[1]);
     }
 }

@@ -26,8 +26,6 @@ namespace NetTopologySuite.Index.Quadtree
         }
 
         // the fields which make up the key
-        private readonly Coordinate _pt = new Coordinate();
-        private int _level;
 
         // auxiliary data which is derived from the key for use in computation
         private Envelope _env;
@@ -44,46 +42,22 @@ namespace NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Point
-        {
-            get
-            {
-                return _pt;
-            }
-        }
+        public Coordinate Point { get; } = new Coordinate();
 
         /// <summary>
         /// 
         /// </summary>
-        public int Level
-        {
-            get
-            {
-                return _level;
-            }
-        }
+        public int Level { get; private set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public Envelope Envelope
-        {
-            get
-            {
-                return _env;
-            }
-        }
+        public Envelope Envelope => _env;
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Centre
-        {
-            get
-            {
-                return new Coordinate((_env.MinX + _env.MaxX) / 2, (_env.MinY + _env.MaxY) / 2);
-            }
-        }
+        public Coordinate Centre => new Coordinate((_env.MinX + _env.MaxX) / 2, (_env.MinY + _env.MaxY) / 2);
 
         /// <summary>
         /// Return a square envelope containing the argument envelope,
@@ -92,14 +66,14 @@ namespace NetTopologySuite.Index.Quadtree
         /// <param name="itemEnv"></param>
         public void ComputeKey(Envelope itemEnv)
         {
-            _level = ComputeQuadLevel(itemEnv);
+            Level = ComputeQuadLevel(itemEnv);
             _env = new Envelope();
-            ComputeKey(_level, itemEnv);
+            ComputeKey(Level, itemEnv);
             // MD - would be nice to have a non-iterative form of this algorithm
             while (!_env.Contains(itemEnv))
             {
-                _level += 1;
-                ComputeKey(_level, itemEnv);
+                Level += 1;
+                ComputeKey(Level, itemEnv);
             }
         }
 
@@ -111,9 +85,9 @@ namespace NetTopologySuite.Index.Quadtree
         private void ComputeKey(int level, Envelope itemEnv)
         {
             double quadSize = DoubleBits.PowerOf2(level);            
-            _pt.X = Math.Floor(itemEnv.MinX / quadSize) * quadSize;
-            _pt.Y = Math.Floor(itemEnv.MinY / quadSize) * quadSize;
-            _env.Init(_pt.X, _pt.X + quadSize, _pt.Y, _pt.Y + quadSize);
+            Point.X = Math.Floor(itemEnv.MinX / quadSize) * quadSize;
+            Point.Y = Math.Floor(itemEnv.MinY / quadSize) * quadSize;
+            _env.Init(Point.X, Point.X + quadSize, Point.Y, Point.Y + quadSize);
         }
     }
 }

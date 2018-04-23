@@ -86,11 +86,9 @@ namespace NetTopologySuite.Operation.Overlay.Validate
     ///<author>Martin Davis</author>
     class PolygonalLineworkExtracter : IGeometryFilter
     {
-        private readonly List<ILineString> _linework;
-
         public PolygonalLineworkExtracter()
         {
-            _linework = new List<ILineString>();
+            Linework = new List<ILineString>();
         }
 
         ///<summary>
@@ -101,10 +99,10 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             if (g is IPolygon)
             {
                 IPolygon poly = (IPolygon)g;
-                _linework.Add(poly.ExteriorRing);
+                Linework.Add(poly.ExteriorRing);
                 for (int i = 0; i < poly.NumInteriorRings; i++)
                 {
-                    _linework.Add(poly.InteriorRings[i]);
+                    Linework.Add(poly.InteriorRings[i]);
                 }
             }
         }
@@ -112,9 +110,6 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         ///<summary>
         /// Gets the list of polygonal linework.
         ///</summary>
-        public List<ILineString> Linework
-        {
-            get { return _linework; }
-        }
+        public List<ILineString> Linework { get; }
     }
 }

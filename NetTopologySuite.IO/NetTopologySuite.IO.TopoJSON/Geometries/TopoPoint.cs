@@ -4,8 +4,6 @@ namespace NetTopologySuite.IO.Geometries
 {
     internal class TopoPoint : TopoObject
     {
-        private readonly double[] _coordinates;
-
         public TopoPoint(string type, double[][] coordinates)
             : base(type)
         {
@@ -15,12 +13,9 @@ namespace NetTopologySuite.IO.Geometries
                 throw new ArgumentException("coordinates empty");
             if (coordinates.Length > 1)
                 throw new ArgumentException("coordinates too long");
-            _coordinates = coordinates[0];
+            Coordinates = coordinates[0];
         }
 
-        public double[] Coordinates
-        {
-            get { return _coordinates; }
-        }
+        public double[] Coordinates { get; }
     }
 }

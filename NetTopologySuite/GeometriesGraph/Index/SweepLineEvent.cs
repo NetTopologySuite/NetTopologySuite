@@ -13,9 +13,6 @@ namespace NetTopologySuite.GeometriesGraph.Index
         private readonly object _label; // used for red-blue intersection detection
         private readonly double _xValue;
         private readonly int _eventType;
-        private readonly SweepLineEvent _insertEvent; // null if this is an Insert event
-        private int _deleteEventIndex;
-        private readonly object _obj;
 
         /// <summary>
         /// Creates an INSERT event.
@@ -28,7 +25,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
             _eventType = Insert;
             _label = label;
             _xValue = x;
-            _obj = obj;
+            Object = obj;
         }
 
         /// <summary>
@@ -40,49 +37,33 @@ namespace NetTopologySuite.GeometriesGraph.Index
         {
             _eventType = Delete;
             _xValue = x;
-            _insertEvent = insertEvent;
+            InsertEvent = insertEvent;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsInsert
-        {
-            get { return _eventType == Insert; }
-        }
+        public bool IsInsert => _eventType == Insert;
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsDelete
-        {
-            get { return _eventType == Delete; }
-        }
+        public bool IsDelete => _eventType == Delete;
 
         /// <summary>
         /// 
         /// </summary>
-        public SweepLineEvent InsertEvent
-        {
-            get { return _insertEvent; }
-        }
+        public SweepLineEvent InsertEvent { get; }
 
         /// <summary>
         /// 
         /// </summary>
-        public int DeleteEventIndex
-        {
-            get { return _deleteEventIndex; }
-            set { _deleteEventIndex = value; }
-        }
+        public int DeleteEventIndex { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public object Object
-        {
-            get { return _obj; }
-        }
+        public object Object { get; }
 
         public bool IsSameLabel(SweepLineEvent ev)
         {

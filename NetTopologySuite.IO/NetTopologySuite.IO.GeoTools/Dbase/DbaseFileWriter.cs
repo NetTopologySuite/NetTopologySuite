@@ -20,7 +20,6 @@ namespace NetTopologySuite.IO
         private readonly BinaryWriter _writer;
         //private bool _recordsWritten;
         private DbaseFileHeader _header;
-        private bool _headerWritten;
 
         /// <summary>
         /// Initializes a new instance of the DbaseFileWriter class with standard windows encoding (CP1252, LATIN1)
@@ -92,7 +91,7 @@ namespace NetTopologySuite.IO
             //if (_recordsWritten)
             //    throw new InvalidOperationException("Records have already been written. Header file needs to be written first.");
 
-            _headerWritten = true;
+            HeaderWritten = true;
 
             // Set the encoding if not already done.
             if (header.Encoding == null)
@@ -124,7 +123,7 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Gets a value indicating if the header has been written or not
         /// </summary>
-        public bool HeaderWritten { get { return _headerWritten; } }
+        public bool HeaderWritten { get; private set; }
 
         /// <summary>
         /// Method to write the column values for a dbase record
@@ -134,7 +133,7 @@ namespace NetTopologySuite.IO
         {
             if (columnValues == null)
                 throw new ArgumentNullException("columnValues");
-            if (!_headerWritten)
+            if (!HeaderWritten)
                 throw new InvalidOperationException("Header records need to be written first.");
             var i = 0;
 

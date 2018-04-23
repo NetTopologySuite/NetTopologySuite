@@ -58,61 +58,32 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value to sort the geometry
         /// </summary>
-        protected override SortIndexValue SortIndex
-        {
-            get { return SortIndexValue.MultiPoint; }
-        }
+        protected override SortIndexValue SortIndex => SortIndexValue.MultiPoint;
 
         /// <summary>
         /// 
         /// </summary>
-        public override GeoAPI.Geometries.Dimension Dimension 
-        {
-            get
-            {
-                return GeoAPI.Geometries.Dimension.Point;
-            }
-        }
+        public override GeoAPI.Geometries.Dimension Dimension => GeoAPI.Geometries.Dimension.Point;
 
         /// <summary>
         /// 
         /// </summary>
-        public override GeoAPI.Geometries.Dimension BoundaryDimension
-        {
-            get
-            {
-                return GeoAPI.Geometries.Dimension.False;
-            }
-        }
+        public override GeoAPI.Geometries.Dimension BoundaryDimension => GeoAPI.Geometries.Dimension.False;
 
         /// <summary>  
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"MultiPoint"</returns>
-        public override string GeometryType
-        {
-            get
-            {
-                return "MultiPoint";
-            }
-        }
+        public override string GeometryType => "MultiPoint";
 
-        public override GeoAPI.Geometries.OgcGeometryType OgcGeometryType
-        {
-            get { return GeoAPI.Geometries.OgcGeometryType.MultiPoint; }
-        }
-       ///<summary>
+        public override GeoAPI.Geometries.OgcGeometryType OgcGeometryType => GeoAPI.Geometries.OgcGeometryType.MultiPoint;
+
+        ///<summary>
        /// Gets the boundary of this geometry.
        /// Zero-dimensional geometries have no boundary by definition,
        /// so an empty GeometryCollection is returned.
        /// </summary> 
-       public override GeoAPI.Geometries.IGeometry Boundary
-        {
-            get
-            {
-                return Factory.CreateGeometryCollection();
-            }
-        }
+       public override GeoAPI.Geometries.IGeometry Boundary => Factory.CreateGeometryCollection();
 
         ///// <summary>
         ///// 
@@ -128,13 +99,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override bool IsValid
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool IsValid => true;
 
         /// <summary>
         /// 

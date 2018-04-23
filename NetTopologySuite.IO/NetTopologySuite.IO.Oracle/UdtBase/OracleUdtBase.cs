@@ -16,10 +16,7 @@ namespace NetTopologySuite.IO.UdtBase
 
         private bool _isNull;
 
-        public virtual bool IsNull
-        {
-            get { return _isNull; }
-        }
+        public virtual bool IsNull => _isNull;
 
         public static T Null
         {

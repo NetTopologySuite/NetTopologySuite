@@ -4,17 +4,12 @@ namespace NetTopologySuite.IO.Geometries
 {
     public abstract class TopoObject
     {
-        private readonly string _type;
-
         protected TopoObject(string type)
         {
-            _type = type;
+            Type = type;
         }
 
-        public string Type
-        {
-            get { return _type; }
-        }
+        public string Type { get; }
 
         public long Id { get; set; }
 

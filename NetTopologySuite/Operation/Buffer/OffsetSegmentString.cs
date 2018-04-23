@@ -21,7 +21,6 @@ namespace NetTopologySuite.Operation.Buffer
          * are considered to be coincident.
          * This is chosen to be a small fraction of the offset distance.
          */
-        private double _minimimVertexDistance;
 
         public OffsetSegmentString()
         {
@@ -30,15 +29,11 @@ namespace NetTopologySuite.Operation.Buffer
 
         public IPrecisionModel PrecisionModel
         {
-            get { return _precisionModel; }
-            set { _precisionModel = value; }
+            get => _precisionModel;
+            set => _precisionModel = value;
         }
 
-        public double MinimumVertexDistance
-        {
-            get { return _minimimVertexDistance; }
-            set { _minimimVertexDistance = value; }
-        }
+        public double MinimumVertexDistance { get; set; }
 
         public void AddPt(Coordinate pt)
         {
@@ -82,7 +77,7 @@ namespace NetTopologySuite.Operation.Buffer
                 return false;
             var lastPt = _ptList[_ptList.Count - 1];
             double ptDist = pt.Distance(lastPt);
-            if (ptDist < _minimimVertexDistance)
+            if (ptDist < MinimumVertexDistance)
                 return true;
             return false;
         }

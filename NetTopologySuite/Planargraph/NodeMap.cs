@@ -67,17 +67,11 @@ namespace NetTopologySuite.Planargraph
         /// Returns the Nodes in this NodeMap, sorted in ascending order
         /// by angle with the positive x-axis.
         /// </summary>
-        public ICollection<Node> Values
-        {
-            get { return _nodeMap.Values; }
-        }
+        public ICollection<Node> Values => _nodeMap.Values;
 
         /// <summary>
         /// Returns the number of Nodes in this NodeMap.
         /// </summary>
-        public int Count
-        {
-            get { return _nodeMap.Count; }
-        }
+        public int Count => _nodeMap.Count;
     }
 }

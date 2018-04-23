@@ -15,29 +15,16 @@ namespace NetTopologySuite.Operation.Buffer
         private int minIndex = -1;
         private Coordinate minCoord;
         private DirectedEdge minDe;
-        private DirectedEdge orientedDe;
 
         /// <summary>
         /// 
         /// </summary>
-        public DirectedEdge Edge
-        {
-            get
-            {
-                return orientedDe;
-            }
-        }
+        public DirectedEdge Edge { get; private set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get
-            {
-                return minCoord;
-            }
-        }
+        public Coordinate Coordinate => minCoord;
 
         /// <summary>
         /// 
@@ -69,10 +56,10 @@ namespace NetTopologySuite.Operation.Buffer
              * now check that the extreme side is the R side.
              * If not, use the sym instead.
              */
-            orientedDe = minDe;
+            Edge = minDe;
             Positions rightmostSide = GetRightmostSide(minDe, minIndex);
             if (rightmostSide == Positions.Left)            
-                orientedDe = minDe.Sym;
+                Edge = minDe.Sym;
         }
 
         /// <summary>
