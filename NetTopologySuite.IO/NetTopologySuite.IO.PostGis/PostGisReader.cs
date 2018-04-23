@@ -94,14 +94,8 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         public IGeometry Read(Stream stream)
         {
-            var byteOrder = (ByteOrder)stream.ReadByte();
-            // "Rewind" to let Read(BinaryReader) skip this byte
-            // in collection and non-collection geometries.
-            stream.Position = 0;
-            using (BinaryReader reader = byteOrder == ByteOrder.BigEndian ? new BEBinaryReader(stream) : new BinaryReader(stream))
-            {
+            using (var reader = new BiEndianBinaryReader(stream))
                 return Read(reader);
-            }
         }
 
         /// <summary>
@@ -116,9 +110,7 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         protected IGeometry Read(BinaryReader reader)
         {
-            // Dummy read, just for bytes compatibility.
-            // The byte order is determined only once.
-            reader.ReadByte();
+            ((BiEndianBinaryReader)reader).Endianess = (ByteOrder)reader.ReadByte();
 
             var typeword = reader.ReadInt32();
 
