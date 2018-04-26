@@ -4,62 +4,13 @@ using System.Drawing;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Utilities;
-using NetTopologySuite.Windows.Forms;
-using Open.Topology.TestRunner.Utility;
 
 namespace Open.Topology.TestRunner.Functions
 {
     public static class CreateShapeFunctions
     {
         private static readonly int DEFAULT_POINTSIZE = 100;
-
-        public static IGeometry FontGlyphSerif(IGeometry g, String text)
-        {
-            return FontGlyph(g, text, new Font(FontGlyphReader.FontSerif, DEFAULT_POINTSIZE, FontStyle.Regular));
-        }
-
-        public static IGeometry FontGlyphSerifPointSize(IGeometry g, String text, int pointSize)
-        {
-            return FontGlyph(g, text, new Font(FontGlyphReader.FontSerif, pointSize, FontStyle.Regular));
-        }
-
-        public static IGeometry FontGlyph(IGeometry g, String text, String fontName)
-        {
-            return FontGlyph(g, text, new Font(fontName, DEFAULT_POINTSIZE, FontStyle.Regular));
-        }
-
-        public static IGeometry FontGlyphSansSerif(IGeometry g, String text)
-        {
-            return FontGlyph(g, text, new Font(FontGlyphReader.FontSansSerif, DEFAULT_POINTSIZE, FontStyle.Regular));
-        }
-
-        public static IGeometry FontGlyphMonospaced(IGeometry g, String text)
-        {
-            return FontGlyph(g, text, new Font(FontGlyphReader.FontMonospaced, DEFAULT_POINTSIZE, FontStyle.Regular));
-        }
-
-        private static IGeometry FontGlyph(IGeometry g, String text, Font font)
-        {
-            var env = FunctionsUtil.GetEnvelopeOrDefault(g);
-            var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
-
-            var textGeom = FontGlyphReader.Read(text, font, geomFact);
-            var envText = textGeom.EnvelopeInternal;
-
-            if (g != null)
-            {
-                // transform to baseline
-                var baseText0 = new Coordinate(envText.MinX, envText.MinY);
-                var baseText1 = new Coordinate(envText.MaxX, envText.MinY);
-                var baseGeom0 = new Coordinate(env.MinX, env.MinY);
-                var baseGeom1 = new Coordinate(env.MaxX, env.MinY);
-                AffineTransformation trans = AffineTransformationFactory.CreateFromBaseLines(baseText0, baseText1,
-                                                                                             baseGeom0, baseGeom1);
-                return trans.Transform(textGeom);
-            }
-            return textGeom;
-        }
-
+        
         public static IGeometry Grid(IGeometry g, int nCells)
         {
             var geoms = new List<IGeometry>();

@@ -9,22 +9,22 @@ namespace Open.Topology.TestRunner.Utility
 {
     public class IOUtility
     {
-        public static IGeometry ReadGeometriesFromFile(String filename, IGeometryFactory geomFact)
-        {
-            var ext = Path.GetExtension(filename);
-            if (string.Equals(ext, ".shp", StringComparison.CurrentCultureIgnoreCase))
-                return ReadGeometriesFromShapefile(filename, geomFact);
-            if (string.Equals(ext, ".wkb", StringComparison.CurrentCultureIgnoreCase))
-                return ReadGeometryFromWKBHexFile(filename, geomFact);
-            return ReadGeometriesFromWktFile(filename, geomFact);
-        }
+        //public static IGeometry ReadGeometriesFromFile(String filename, IGeometryFactory geomFact)
+        //{
+        //    var ext = Path.GetExtension(filename);
+        //    if (string.Equals(ext, ".shp", StringComparison.CurrentCultureIgnoreCase))
+        //        return ReadGeometriesFromShapefile(filename, geomFact);
+        //    if (string.Equals(ext, ".wkb", StringComparison.CurrentCultureIgnoreCase))
+        //        return ReadGeometryFromWKBHexFile(filename, geomFact);
+        //    return ReadGeometriesFromWktFile(filename, geomFact);
+        //}
 
-        private static IGeometry ReadGeometriesFromShapefile(String filename, IGeometryFactory geomFact)
-        {
-            var shpfile = new ShapefileReader(filename, geomFact);
-            var result = shpfile.ReadAll();
-            return result;
-        }
+        //private static IGeometry ReadGeometriesFromShapefile(String filename, IGeometryFactory geomFact)
+        //{
+        //    var shpfile = new ShapefileReader(filename, geomFact);
+        //    var result = shpfile.ReadAll();
+        //    return result;
+        //}
 
         private static IGeometry ReadGeometryFromWKBHexFile(String filename, IGeometryFactory geomFact)
         {
