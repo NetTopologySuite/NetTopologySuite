@@ -57,6 +57,7 @@
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)NetTopologySuite\NetTopologySuite.csproj" Properties="TargetFramework=$(TargetFrameworkToTest)" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.Lab\NetTopologySuite.Lab.csproj" Properties="TargetFramework=$(TargetFrameworkToTest)" />
+    <ProjectReference Include="..\NetTopologySuite.CoordinateSystems\NetTopologySuite.CoordinateSystems.csproj" />
   </ItemGroup>
 
   <ItemGroup>

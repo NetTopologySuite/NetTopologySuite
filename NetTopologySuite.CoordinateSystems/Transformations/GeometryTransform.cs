@@ -2,12 +2,11 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.CoordinateSystems.Transformations;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.CoordinateSystems.Transformations
 {
 	/// <summary>
-	/// Helper class for transforming <see cref="Geometry" /> objects.
+	/// Helper class for transforming <see cref="IGeometry" /> objects.
 	/// </summary>
 	public class GeometryTransform
 	{	    
