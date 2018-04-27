@@ -3,7 +3,8 @@ mono: latest
 dotnet: 2.0.0
 dist: trusty
 install:
+- nuget restore NetTopologySuite.sln -source "https://api.nuget.org/v3/index.json;https://www.myget.org/F/nettopologysuite/api/v3/index.json"
 - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 script:
-- msbuild NetTopologySuite.sln "/t:Restore;Build" /p:Configuration=ReleaseLinux "/p:FrameworkPathOverride=$(dirname $(which mono))/../lib/mono/4.5/" /v:minimal /p:WarningLevel=3
+- msbuild NetTopologySuite.sln "/t:Build" /p:Configuration=ReleaseLinux "/p:FrameworkPathOverride=$(dirname $(which mono))/../lib/mono/4.5/" /v:minimal /p:WarningLevel=3
 - travis_wait mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./NetTopologySuite.Tests.NUnit/bin/Release/net45/NetTopologySuite.Tests.NUnit.dll -exclude:"LongRunning|Stress|FailureCase"
