@@ -51,7 +51,6 @@ namespace NetTopologySuite.Operation
     {
         private readonly IGeometry _inputGeom;
         private readonly bool _isClosedEndpointsInInterior = true;
-        private Coordinate _nonSimpleLocation;
 
         /// <summary>
         /// Creates a simplicity checker using the default SFS Mod-2 Boundary Node Rule
@@ -87,13 +86,13 @@ namespace NetTopologySuite.Operation
         /// <returns>true if the geometry is simple</returns>
         public bool IsSimple()
         {
-            _nonSimpleLocation = null;
+            NonSimpleLocation = null;
             return ComputeSimple(_inputGeom);
         }
 
         private bool ComputeSimple(IGeometry geom)
         {
-            _nonSimpleLocation = null;
+            NonSimpleLocation = null;
             if (geom.IsEmpty) return true;
             if (geom is ILineString) return IsSimpleLinearGeometry(geom);
             if (geom is IMultiLineString) return IsSimpleLinearGeometry(geom);
@@ -111,7 +110,7 @@ namespace NetTopologySuite.Operation
         ///</summary>
         /// <returns> a coordinate for the location of the non-boundary self-intersection
         /// or <value>null</value> if the geometry is simple</returns>
-        public Coordinate NonSimpleLocation => _nonSimpleLocation;
+        public Coordinate NonSimpleLocation { get; private set; }
 
         /// <summary>
         /// Reports whether a <see cref="ILineString"/> is simple.
@@ -156,7 +155,7 @@ namespace NetTopologySuite.Operation
                 Coordinate p = pt.Coordinate;
                 if (points.Contains(p))
                 {
-                    _nonSimpleLocation = p;
+                    NonSimpleLocation = p;
                     return false;
                 }
                 points.Add(p);
@@ -209,7 +208,7 @@ namespace NetTopologySuite.Operation
             if (!si.HasIntersection) return true;
             if (si.HasProperIntersection)
             {
-                _nonSimpleLocation = si.ProperIntersectionPoint;
+                NonSimpleLocation = si.ProperIntersectionPoint;
                 return false;
             }
             if (HasNonEndpointIntersection(graph)) return false;
@@ -234,7 +233,7 @@ namespace NetTopologySuite.Operation
                 {
                     if (!ei.IsEndPoint(maxSegmentIndex))
                     {
-                        _nonSimpleLocation = ei.Coordinate;
+                        NonSimpleLocation = ei.Coordinate;
                         return true;
                     }
                 }
@@ -294,7 +293,7 @@ namespace NetTopologySuite.Operation
             {
                 if (eiInfo.IsClosed && eiInfo.Degree != 2)
                 {
-                    _nonSimpleLocation = eiInfo.Point;
+                    NonSimpleLocation = eiInfo.Point;
                     return true;
                 }
             }

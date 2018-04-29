@@ -50,8 +50,6 @@ namespace NetTopologySuite.Index.Strtree
          */
         private List<IBoundable<T, TItem>> _itemBoundables = new List<IBoundable<T,TItem>>();
 
-        private readonly int _nodeCapacity;
-
         /// <summary> 
         /// Constructs an AbstractSTRtree with the specified maximum number of child
         /// nodes that a node may have.
@@ -60,7 +58,7 @@ namespace NetTopologySuite.Index.Strtree
         protected AbstractSTRtree(int nodeCapacity)
         {
             Assert.IsTrue(nodeCapacity > 1, "Node capacity must be greater than 1");
-            _nodeCapacity = nodeCapacity;
+            NodeCapacity = nodeCapacity;
         }
 
         /// <summary> 
@@ -160,7 +158,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <summary> 
         /// Returns the maximum number of child nodes that a node may have.
         /// </summary>
-        public int NodeCapacity => _nodeCapacity;
+        public int NodeCapacity { get; }
 
         /// <summary>
         /// Tests whether the index contains any items.

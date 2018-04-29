@@ -15,8 +15,6 @@ namespace NetTopologySuite.Geometries
     {
         // NOTE: modified for "safe" assembly in Sql 2005
         // Readonly added
-        private static readonly DefaultCoordinateSequenceFactory instance = 
-            new DefaultCoordinateSequenceFactory();
 
         /// <summary>
         /// 
@@ -33,7 +31,7 @@ namespace NetTopologySuite.Geometries
         /// Returns the singleton instance of DefaultCoordinateSequenceFactory.
         /// </summary>
         /// <returns>Singleton instance of DefaultCoordinateSequenceFactory.</returns>
-        public static DefaultCoordinateSequenceFactory Instance => instance;
+        public static DefaultCoordinateSequenceFactory Instance { get; } = new DefaultCoordinateSequenceFactory();
 
         /// <summary>
         /// Returns a DefaultCoordinateSequence based on the given array

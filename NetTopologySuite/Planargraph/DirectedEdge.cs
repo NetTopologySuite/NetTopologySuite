@@ -38,11 +38,6 @@ namespace NetTopologySuite.Planargraph
         protected Coordinate p0;
         protected Coordinate p1;
 
-        private DirectedEdge _sym;  // optional
-
-        private readonly int _quadrant;
-        private readonly double _angle;
-
         /// <summary>
         /// Constructs a DirectedEdge connecting the <c>from</c> node to the
         /// <c>to</c> node.
@@ -66,8 +61,8 @@ namespace NetTopologySuite.Planargraph
             p1 = directionPt;
             double dx = p1.X - p0.X;
             double dy = p1.Y - p0.Y;
-            _quadrant = QuadrantOp.Quadrant(dx, dy);
-            _angle = Math.Atan2(dy, dx);
+            Quadrant = QuadrantOp.Quadrant(dx, dy);
+            Angle = Math.Atan2(dy, dx);
         }
 
         /// <summary>
@@ -85,7 +80,7 @@ namespace NetTopologySuite.Planargraph
         /// Returns 0, 1, 2, or 3, indicating the quadrant in which this DirectedEdge's
         /// orientation lies.
         /// </summary>
-        public int Quadrant => _quadrant;
+        public int Quadrant { get; }
 
         /// <summary>
         /// Returns a point to which an imaginary line is drawn from the from-node to
@@ -118,7 +113,7 @@ namespace NetTopologySuite.Planargraph
         /// Returns the angle that the start of this DirectedEdge makes with the
         /// positive x-axis, in radians.
         /// </summary>
-        public double Angle => _angle;
+        public double Angle { get; }
 
         /// <summary>
         /// Returns the symmetric DirectedEdge -- the other DirectedEdge associated with
@@ -126,11 +121,7 @@ namespace NetTopologySuite.Planargraph
         /// Sets this DirectedEdge's symmetric DirectedEdge, which runs in the opposite
         /// direction.
         /// </summary>
-        public DirectedEdge Sym
-        {
-            get => _sym;
-            set => _sym = value;
-        }
+        public DirectedEdge Sym { get; set; }
 
         /// <summary>
         /// Returns 1 if this DirectedEdge has a greater angle with the
@@ -169,9 +160,9 @@ namespace NetTopologySuite.Planargraph
         public int CompareDirection(DirectedEdge e)
         {
             // if the rays are in different quadrants, determining the ordering is trivial
-            if (_quadrant > e.Quadrant)
+            if (Quadrant > e.Quadrant)
                 return 1;
-            if (_quadrant < e.Quadrant) 
+            if (Quadrant < e.Quadrant) 
                 return -1;
             // vectors are in the same quadrant - check relative orientation of direction vectors
             // this is > e if it is CCW of e
@@ -187,7 +178,7 @@ namespace NetTopologySuite.Planargraph
             string className = GetType().FullName;
             int lastDotPos = className.LastIndexOf('.');
             string name = className.Substring(lastDotPos + 1);
-            outstream.Write("  " + name + ": " + p0 + " - " + p1 + " " + _quadrant + ":" + _angle);
+            outstream.Write("  " + name + ": " + p0 + " - " + p1 + " " + Quadrant + ":" + Angle);
         }
 
         /// <summary>
@@ -201,14 +192,14 @@ namespace NetTopologySuite.Planargraph
         /// </summary>
         internal void Remove()
         {
-            _sym = null;
+            Sym = null;
             parentEdge = null;
         }
 
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
         {            
-            return "DirectedEdge: " + p0 + " - " + p1 + " " + _quadrant + ":" + _angle;
+            return "DirectedEdge: " + p0 + " - " + p1 + " " + Quadrant + ":" + Angle;
         }
     }
 }

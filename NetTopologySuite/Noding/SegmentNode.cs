@@ -21,7 +21,6 @@ namespace NetTopologySuite.Noding
 
         private readonly INodableSegmentString _segString;
         private readonly Octants _segmentOctant = Octants.Null;
-        private readonly bool _isInterior;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SegmentNode"/> class.
@@ -37,7 +36,7 @@ namespace NetTopologySuite.Noding
             Coord = new Coordinate(coord.X, coord.Y, coord.Z);
             SegmentIndex = segmentIndex;
             _segmentOctant = segmentOctant;
-            _isInterior = !coord.Equals2D(segString.Coordinates[segmentIndex]);
+            IsInterior = !coord.Equals2D(segString.Coordinates[segmentIndex]);
         }
 
 
@@ -51,7 +50,7 @@ namespace NetTopologySuite.Noding
         /// 
         /// </summary>
         /// <returns></returns>
-        public bool IsInterior => _isInterior;
+        public bool IsInterior { get; }
 
         /// <summary>
         /// 
@@ -60,7 +59,7 @@ namespace NetTopologySuite.Noding
         /// <returns></returns>
         public bool IsEndPoint(int maxSegmentIndex)
         {
-            if (SegmentIndex == 0 && ! _isInterior) 
+            if (SegmentIndex == 0 && ! IsInterior) 
                 return true;
             return SegmentIndex == maxSegmentIndex;
         } 

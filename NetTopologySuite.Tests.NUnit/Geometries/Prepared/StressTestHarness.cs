@@ -16,23 +16,17 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
         static WKTReader _wktRdr = new WKTReader(fact);
         static WKTWriter _wktWriter = new WKTWriter();
 
-        private int _numTargetPts = 1000;
-
         protected StressTestHarness()
         {
         }
 
-        public int TargetSize
-        {
-            get => _numTargetPts;
-            set => _numTargetPts = value;
-        }
+        public int TargetSize { get; set; } = 1000;
 
         public void Run(int nIter)
         {
             //System.Console.WriteLine("Running " + nIter + " tests");
             //  	Geometry poly = createCircle(new Coordinate(0, 0), 100, nPts);
-            IGeometry poly = CreateSineStar(new Coordinate(0, 0), 100, _numTargetPts);
+            IGeometry poly = CreateSineStar(new Coordinate(0, 0), 100, TargetSize);
             Console.WriteLine(poly);
 
             //System.Console.WriteLine();

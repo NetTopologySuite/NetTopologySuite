@@ -8,8 +8,6 @@ namespace NetTopologySuite.Utilities
     /// </summary>
     public class CoordinateCountFilter : ICoordinateFilter 
     {
-        private int _n;
-
         /*
         /// <summary>
         /// 
@@ -19,7 +17,7 @@ namespace NetTopologySuite.Utilities
         /// <summary>
         /// Returns the result of the filtering.
         /// </summary>
-        public int Count => _n;
+        public int Count { get; private set; }
 
         /// <summary>
         /// 
@@ -27,7 +25,7 @@ namespace NetTopologySuite.Utilities
         /// <param name="coord"></param>
         public void Filter(Coordinate coord) 
         {
-            _n++;
+            Count++;
         }
     }
 }

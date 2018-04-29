@@ -75,7 +75,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         private readonly Coordinate _p;
         private int _crossingCount;
         // true if the test point lies on an input segment
-        private bool _isPointOnSegment;
 
         public NonRobustRayCrossingCounter(Coordinate p)
         {
@@ -101,7 +100,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             // check if the point is equal to the current ring vertex
             if (_p.Y == p2.Y && _p.Y == p2.Y)
             {
-                _isPointOnSegment = true;
+                IsOnSegment = true;
                 return;
             }
 
@@ -121,7 +120,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
                 if (_p.X >= minx && _p.X <= maxx)
                 {
-                    _isPointOnSegment = true;
+                    IsOnSegment = true;
                 }
 
                 return;
@@ -146,7 +145,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
                 if (orient == 0)
                 {
-                    _isPointOnSegment = true;
+                    IsOnSegment = true;
                     return;
                 }
 
@@ -173,7 +172,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// no further segments need be supplied, since the result
         /// will never change again.
         /// </remarks>
-        public bool IsOnSegment => _isPointOnSegment;
+        public bool IsOnSegment { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="GeoAPI.Geometries.Location"/> of the point relative to 
@@ -188,7 +187,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             get
             {
-                if (_isPointOnSegment)
+                if (IsOnSegment)
                     return Location.Boundary;
 
                 // The point is in the interior of the ring if the number of X-crossings is

@@ -21,7 +21,6 @@ namespace NetTopologySuite.Index.Strtree
     {
         private readonly List<IBoundable<T, TItem>> _childBoundables = new List<IBoundable<T, TItem>>();
         private T _bounds;
-        private readonly int _level;
 
         /// <summary> 
         /// Constructs an AbstractNode at the given level in the tree
@@ -32,7 +31,7 @@ namespace NetTopologySuite.Index.Strtree
         /// </param>
         protected AbstractNode(int level) 
         {
-            _level = level;
+            Level = level;
         }
 
         /// <summary> 
@@ -74,7 +73,7 @@ namespace NetTopologySuite.Index.Strtree
         /// Returns 0 if this node is a leaf, 1 if a parent of a leaf, and so on; the
         /// root node will have the highest level.
         /// </summary>
-        public int Level => _level;
+        public int Level { get; }
 
         /// <summary>
         /// Gets the count of the <see cref="IBoundable{T, TItem}"/>s at this node.

@@ -56,9 +56,9 @@ namespace NetTopologySuite.Mathematics
 
         public Vector3D(Coordinate v)
         {
-            _x = v.X;
-            _y = v.Y;
-            _z = v.Z;
+            X = v.X;
+            Y = v.Y;
+            Z = v.Z;
         }
 
         /// <summary>
@@ -72,10 +72,6 @@ namespace NetTopologySuite.Mathematics
             return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
         }
 
-        private readonly double _x;
-        private readonly double _y;
-        private readonly double _z;
-
         /// <summary>
         /// Creates a vector, that is the difference of <paramref name="to"/> and <paramref name="from"/>
         /// </summary>
@@ -83,9 +79,9 @@ namespace NetTopologySuite.Mathematics
         /// <param name="to">The destination coordinate</param>
         public Vector3D(Coordinate from, Coordinate to)
         {
-            _x = to.X - from.X;
-            _y = to.Y - from.Y;
-            _z = to.Z - from.Z;
+            X = to.X - from.X;
+            Y = to.Y - from.Y;
+            Z = to.Z - from.Z;
         }
 
         /// <summary>
@@ -96,25 +92,25 @@ namespace NetTopologySuite.Mathematics
         /// <param name="z">The z-ordinate</param>
         public Vector3D(double x, double y, double z)
         {
-            _x = x;
-            _y = y;
-            _z = z;
+            X = x;
+            Y = y;
+            Z = z;
         }
 
         /// <summary>
         /// Gets a value indicating the x-ordinate
         /// </summary>
-        public double X => _x;
+        public double X { get; }
 
         /// <summary>
         /// Gets a value indicating the y-ordinate
         /// </summary>
-        public double Y => _y;
+        public double Y { get; }
 
         /// <summary>
         /// Gets a value indicating the z-ordinate
         /// </summary>
-        public double Z => _z;
+        public double Z { get; }
 
         /// <summary>
         /// Computes the dot-product of this <see cref="Vector3D"/> and <paramref name="v"/>
@@ -123,7 +119,7 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The dot product of the vectors</returns>
         public double Dot(Vector3D v)
         {
-            return _x * v._x + _y * v._y + _z * v._z;
+            return X * v.X + Y * v.Y + Z * v.Z;
         }
 
         /// <summary>
@@ -132,7 +128,7 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The length of this vector</returns>
         public double Length()
         {
-            return Math.Sqrt(_x * _x + _y * _y + _z * _z);
+            return Math.Sqrt(X * X + Y * Y + Z * Z);
         }
 
         /// <summary>
@@ -164,7 +160,7 @@ namespace NetTopologySuite.Mathematics
         /// <returns>A new (divided) vector</returns>
         private Vector3D Divide(double d)
         {
-            return Create(_x / d, _y / d, _z / d);
+            return Create(X / d, Y / d, Z / d);
         }
 
         /// <summary>
@@ -181,7 +177,7 @@ namespace NetTopologySuite.Mathematics
         /// <inheritdoc cref="object.ToString()"/>
         public override String ToString()
         {
-            return string.Format(NumberFormatInfo.InvariantInfo, "[{0}, {1}, {2}]", _x, _y, _z);
+            return string.Format(NumberFormatInfo.InvariantInfo, "[{0}, {1}, {2}]", X, Y, Z);
         }
 
 

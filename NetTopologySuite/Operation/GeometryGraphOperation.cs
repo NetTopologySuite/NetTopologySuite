@@ -8,19 +8,12 @@ namespace NetTopologySuite.Operation
     /// The base class for operations that require <see cref="GeometryGraph"/>s.
     /// </summary>
     public class GeometryGraphOperation
-    {        
-  
-        private LineIntersector _li = new RobustLineIntersector();
-
+    {
         /// <summary>
         /// 
         /// </summary>
-        protected LineIntersector lineIntersector
-        {
-            get => _li;
-            set => _li = value;
-        }
-        
+        protected LineIntersector lineIntersector { get; set; } = new RobustLineIntersector();
+
         /// <summary>
         /// 
         /// </summary>

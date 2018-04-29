@@ -10,14 +10,12 @@ namespace ConsoleTestRunner
 	/// </summary>
 	public class TestOptionsParser
 	{
-        private bool m_bIsDefault;
-
-		public TestOptionsParser()
+	    public TestOptionsParser()
 		{
-            m_bIsDefault = false;
+            IsDefault = false;
 		}
 
-        public bool IsDefault => m_bIsDefault;
+        public bool IsDefault { get; private set; }
 
 	    public TestInfoCollection ParseProject(string projectFile)
         {
@@ -135,10 +133,10 @@ namespace ConsoleTestRunner
             Arguments commandLine = new Arguments(args);
 
             // Check if default total test is requested...
-            m_bIsDefault = false;
+            IsDefault = false;
             if (commandLine["default"] != null)
             {
-                m_bIsDefault = true;
+                IsDefault = true;
             }
 
             // 1. Handle the "proj" option

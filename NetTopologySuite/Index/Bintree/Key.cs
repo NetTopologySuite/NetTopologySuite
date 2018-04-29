@@ -24,11 +24,8 @@ namespace NetTopologySuite.Index.Bintree
         }
 
         // the fields which make up the key
-        private double _pt;
-        private int _level;
 
         // auxiliary data which is derived from the key for use in computation
-        private Interval _interval;
 
         /// <summary>
         /// 
@@ -42,17 +39,17 @@ namespace NetTopologySuite.Index.Bintree
         /// <summary>
         /// 
         /// </summary>
-        public  double Point => _pt;
+        public  double Point { get; private set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public  int Level => _level;
+        public  int Level { get; private set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public  Interval Interval => _interval;
+        public  Interval Interval { get; private set; }
 
         /// <summary>
         /// Return a square envelope containing the argument envelope,
@@ -61,15 +58,15 @@ namespace NetTopologySuite.Index.Bintree
         /// <param name="itemInterval"></param>
         public void ComputeKey(Interval itemInterval)
         {
-            _level = ComputeLevel(itemInterval);
-            _interval = new Interval();
+            Level = ComputeLevel(itemInterval);
+            Interval = new Interval();
             //_interval = Interval.Create();
-            ComputeInterval(_level, itemInterval);
+            ComputeInterval(Level, itemInterval);
             // MD - would be nice to have a non-iterative form of this algorithm
-            while (!_interval.Contains(itemInterval))
+            while (!Interval.Contains(itemInterval))
             {
-                _level += 1;
-                ComputeInterval(_level, itemInterval);
+                Level += 1;
+                ComputeInterval(Level, itemInterval);
             }
         }
 
@@ -81,8 +78,8 @@ namespace NetTopologySuite.Index.Bintree
         private void ComputeInterval(int level, Interval itemInterval)
         {
             var size = DoubleBits.PowerOf2(level);            
-            _pt = Math.Floor(itemInterval.Min / size) * size;
-            _interval.Init(_pt, _pt + size);
+            Point = Math.Floor(itemInterval.Min / size) * size;
+            Interval.Init(Point, Point + size);
             //_interval = Interval.Create(_pt, _pt + size);
         }
     }

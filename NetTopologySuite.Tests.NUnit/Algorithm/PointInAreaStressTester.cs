@@ -10,11 +10,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     {
         private readonly IGeometryFactory _geomFactory;
         private readonly IGeometry _area;
-        private Boolean _ignoreBoundaryResults = true;
 
-        private int _numPts = 10000;
-        private IPointOnGeometryLocator _pia1;
-        private IPointOnGeometryLocator _pia2;
         private readonly int[] _locationCount = new int[3];
 
         public PointInAreaStressTester(IGeometryFactory geomFactory, IGeometry area)
@@ -24,29 +20,13 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         }
 
-        public int NumPoints
-        {
-            get => _numPts;
-            set => _numPts = value;
-        }
+        public int NumPoints { get; set; } = 10000;
 
-        public IPointOnGeometryLocator TestPointInAreaLocator
-        {
-            get => _pia1;
-            set => _pia1 = value;
-        }
+        public IPointOnGeometryLocator TestPointInAreaLocator { get; set; }
 
-        public IPointOnGeometryLocator ExpectedPointInAreaLocator
-        {
-            get => _pia2;
-            set => _pia2 = value;
-        }
+        public IPointOnGeometryLocator ExpectedPointInAreaLocator { get; set; }
 
-        public Boolean IgnoreBoundaryResults
-        {
-            get => _ignoreBoundaryResults;
-            set => _ignoreBoundaryResults = value;
-        }
+        public Boolean IgnoreBoundaryResults { get; set; } = true;
 
         /// <summary>
         /// Run
@@ -57,11 +37,11 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             var sw = new Stopwatch();
             sw.Start();
             // default is to use the simple, non-indexed tester
-            if (_pia2 == null)
-                _pia2 = new SimplePointInAreaLocator(_area);
+            if (ExpectedPointInAreaLocator == null)
+                ExpectedPointInAreaLocator = new SimplePointInAreaLocator(_area);
 
 
-            int ptGridWidth = (int)Math.Sqrt(_numPts);
+            int ptGridWidth = (int)Math.Sqrt(NumPoints);
 
             Envelope areaEnv = _area.EnvelopeInternal;
             double xStep = areaEnv.Width / (ptGridWidth - 1);
@@ -107,8 +87,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             //Console.WriteLine(WKTWriter.toPoint(p));
 
-            Location loc1 = _pia1.Locate(p);
-            Location loc2 = _pia2.Locate(p);
+            Location loc1 = TestPointInAreaLocator.Locate(p);
+            Location loc2 = ExpectedPointInAreaLocator.Locate(p);
 
             _locationCount[(Int32)loc1]++;
 

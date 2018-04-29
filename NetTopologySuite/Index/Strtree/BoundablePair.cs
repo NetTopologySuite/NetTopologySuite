@@ -19,7 +19,7 @@ namespace NetTopologySuite.Index.Strtree
     {
         private readonly IBoundable<Envelope, TItem> _boundable1;
         private readonly IBoundable<Envelope, TItem> _boundable2;
-        private readonly double _distance;
+
         private readonly IItemDistance<Envelope, TItem> _itemDistance;
         //private double _maxDistance = -1.0;
 
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Index.Strtree
             _boundable1 = boundable1;
             _boundable2 = boundable2;
             _itemDistance = itemDistance;
-            _distance = GetDistance();
+            Distance = GetDistance();
         }
 
         /// <summary>
@@ -106,15 +106,15 @@ namespace NetTopologySuite.Index.Strtree
         /// the distances between the items in the members.
         /// </summary>
         /// <returns>The exact or lower bound distance for this pair</returns>
-        public double Distance => _distance;
+        public double Distance { get; }
 
         /// <summary>
         /// Compares two pairs based on their minimum distances
         /// </summary>
         public int CompareTo(BoundablePair<TItem> o)
         {
-            if (_distance < o._distance) return -1;
-            if (_distance > o._distance) return 1;
+            if (Distance < o.Distance) return -1;
+            if (Distance > o.Distance) return 1;
             return 0;
         }
 

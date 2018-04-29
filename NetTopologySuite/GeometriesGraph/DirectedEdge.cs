@@ -28,11 +28,6 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         private bool _isForward;
 
-        private bool _isInResult;
-        private bool _isVisited;
-
-        private DirectedEdge _sym; // the symmetric edge
-
         /// <summary> 
         /// The depth of each side (position) of this edge.
         /// The 0 element of the array is never used.
@@ -60,30 +55,22 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public bool InResult
-        {
-            get => _isInResult;
-            set => _isInResult = value;
-        }
+        public bool InResult { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsInResult => _isInResult;
+        public bool IsInResult => InResult;
 
         /// <summary>
         /// 
         /// </summary>
-        public bool Visited
-        {
-            get => _isVisited;
-            set => _isVisited = value;
-        }
+        public bool Visited { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsVisited => _isVisited;
+        public bool IsVisited => Visited;
 
         /// <summary>
         /// 
@@ -141,11 +128,11 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         public bool VisitedEdge
         {
-            get => Visited && _sym.Visited;
+            get => Visited && Sym.Visited;
             set
             {
                 Visited = value;
-                _sym.Visited = value;
+                Sym.Visited = value;
             }
         }
         
@@ -161,11 +148,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public DirectedEdge Sym
-        {
-            get => _sym;
-            set => _sym = value;
-        }
+        public DirectedEdge Sym { get; set; }
 
         /// <summary>
         /// 
@@ -284,7 +267,7 @@ namespace NetTopologySuite.GeometriesGraph
             base.Write(outstream);
             outstream.Write(" " + _depth[(int)Positions.Left] + "/" + _depth[(int)Positions.Right]);
             outstream.Write(" (" + DepthDelta + ")");            
-            if (_isInResult)
+            if (InResult)
                 outstream.Write(" inResult");
         }
 

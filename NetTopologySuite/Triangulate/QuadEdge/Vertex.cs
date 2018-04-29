@@ -30,7 +30,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         private const int ORIGIN = 5;
         private const int DESTINATION = 6;
 
-        private readonly Coordinate _p;
         // private int edgeNumber = -1;
 
         /// <summary>
@@ -40,7 +39,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="y">y-ordinate value</param>
         public Vertex(double x, double y)
         {
-            _p = new Coordinate(x, y);
+            Coordinate = new Coordinate(x, y);
         }
 
         /// <summary>
@@ -51,7 +50,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="z">z-ordinate value</param>
         public Vertex(double x, double y, double z)
         {
-            _p = new Coordinate(x, y, z);
+            Coordinate = new Coordinate(x, y, z);
         }
 
         /// <summary>
@@ -60,42 +59,42 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="p">The coordinate</param>
         public Vertex(Coordinate p)
         {
-            _p = new Coordinate(p);
+            Coordinate = new Coordinate(p);
         }
 
         /// <summary>
         /// Gets the x-ordinate value
         /// </summary>
-        public double X => _p.X;
+        public double X => Coordinate.X;
 
         /// <summary>
         /// Gets the y-ordinate value
         /// </summary>
-        public double Y => _p.Y;
+        public double Y => Coordinate.Y;
 
         /// <summary>
         /// Gets the z-ordinate value
         /// </summary>
         public double Z
         {
-            get => _p.Z;
-            set => _p.Z = value;
+            get => Coordinate.Z;
+            set => Coordinate.Z = value;
         }
 
         /// <summary>
         /// Gets the coordinate
         /// </summary>
-        public Coordinate Coordinate => _p;
+        public Coordinate Coordinate { get; }
 
         /// <inheritdoc cref="object.ToString()"/>
         public override String ToString()
         {
-            return "POINT (" + _p.X + " " + _p.Y + ")";
+            return "POINT (" + Coordinate.X + " " + Coordinate.Y + ")";
         }
 
         public bool Equals(Vertex x)
         {
-            if (_p.X == x.X && _p.Y == x.Y)
+            if (Coordinate.X == x.X && Coordinate.Y == x.Y)
             {
                 return true;
             }
@@ -104,7 +103,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
         public bool Equals(Vertex x, double tolerance)
         {
-            if (_p.Distance(x.Coordinate) < tolerance)
+            if (Coordinate.Distance(x.Coordinate) < tolerance)
             {
                 return true;
             }
@@ -140,7 +139,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>returns the magnitude of u X v</returns>
         private double CrossProduct(Vertex v)
         {
-            return (_p.X*v.Y - _p.Y*v.X);
+            return (Coordinate.X*v.Y - Coordinate.Y*v.X);
         }
 
         /// <summary>
@@ -150,7 +149,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>The dot product u.v</returns>
         private double Dot(Vertex v)
         {
-            return (_p.X*v.X + _p.Y*v.Y);
+            return (Coordinate.X*v.X + Coordinate.Y*v.Y);
         }
 
         /// <summary>
@@ -160,35 +159,35 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>The scaled vector</returns>
         private Vertex Times(double c)
         {
-            return (new Vertex(c*_p.X, c*_p.Y));
+            return (new Vertex(c*Coordinate.X, c*Coordinate.Y));
         }
 
         /* Vector addition */
 
         private Vertex Sum(Vertex v)
         {
-            return (new Vertex(_p.X + v.X, _p.Y + v.Y));
+            return (new Vertex(Coordinate.X + v.X, Coordinate.Y + v.Y));
         }
 
         /* and subtraction */
 
         private Vertex Sub(Vertex v)
         {
-            return (new Vertex(_p.X - v.X, _p.Y - v.Y));
+            return (new Vertex(Coordinate.X - v.X, Coordinate.Y - v.Y));
         }
 
         /* magnitude of vector */
 
         private double Magnitude()
         {
-            return (Math.Sqrt(_p.X*_p.X + _p.Y*_p.Y));
+            return (Math.Sqrt(Coordinate.X*Coordinate.X + Coordinate.Y*Coordinate.Y));
         }
 
         /* returns k X v (cross product). this is a vector perpendicular to v */
 
         private Vertex Cross()
         {
-            return (new Vertex(_p.Y, -_p.X));
+            return (new Vertex(Coordinate.Y, -Coordinate.X));
         }
 
         /** ************************************************************* */
@@ -206,7 +205,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>true if this vertex is inside the circumcircle (a, b, c)</returns>
         public Boolean IsInCircle(Vertex a, Vertex b, Vertex c) 
         {
-            return TrianglePredicate.IsInCircleRobust(a._p, b._p, c._p, _p);
+            return TrianglePredicate.IsInCircleRobust(a.Coordinate, b.Coordinate, c.Coordinate, Coordinate);
             // non-robust - best to not use
             //return TrianglePredicate.isInCircle(a.p, b.p, c.p, this.p);
         }
@@ -232,8 +231,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
              */
 
             // is equal to the signed area of the triangle
-            return (b._p.X - _p.X) * (c._p.Y - _p.Y)
-                 - (b._p.Y - _p.Y) * (c._p.X - _p.X) > 0;
+            return (b.Coordinate.X - Coordinate.X) * (c.Coordinate.Y - Coordinate.Y)
+                 - (b.Coordinate.Y - Coordinate.Y) * (c.Coordinate.X - Coordinate.X) > 0;
 
             // original rolled code
             //boolean isCCW = triArea(this, b, c) > 0;
@@ -301,9 +300,9 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>the point mid-way between this and that.</returns>
         public Vertex MidPoint(Vertex a)
         {
-            double xm = (_p.X + a.X)/2.0;
-            double ym = (_p.Y + a.Y)/2.0;
-            double zm = (_p.Z + a.Z)/2.0;
+            double xm = (Coordinate.X + a.X)/2.0;
+            double ym = (Coordinate.Y + a.Y)/2.0;
+            double zm = (Coordinate.Z + a.Z)/2.0;
             return new Vertex(xm, ym, zm);
         }
 

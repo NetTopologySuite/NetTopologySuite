@@ -17,7 +17,6 @@ namespace NetTopologySuite.Simplify
         private readonly LineSegmentIndex _outputIndex = new LineSegmentIndex();
         private TaggedLineString _line;
         private Coordinate[] _linePts;
-        private double _distanceTolerance;
 
         public TaggedLineStringSimplifier(LineSegmentIndex inputIndex, LineSegmentIndex outputIndex)
         {
@@ -30,11 +29,7 @@ namespace NetTopologySuite.Simplify
         /// All vertices in the simplified geometry will be within this
         /// distance of the original geometry.
         /// </summary>
-        public double DistanceTolerance
-        {
-            get => _distanceTolerance;
-            set => _distanceTolerance = value;
-        }
+        public double DistanceTolerance { get; set; }
 
         /// <summary>
         /// Simplifies the given <see cref="TaggedLineString"/>
@@ -78,7 +73,7 @@ namespace NetTopologySuite.Simplify
             double[] distance = new double[1];
             int furthestPtIndex = FindFurthestPoint(_linePts, i, j, distance);
             // flattening must be less than distanceTolerance
-            if (distance[0] > _distanceTolerance)
+            if (distance[0] > DistanceTolerance)
                 isValidToSimplify = false;
             // test if flattened section would cause intersection
             LineSegment candidateSeg = new LineSegment();

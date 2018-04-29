@@ -37,8 +37,6 @@ namespace NetTopologySuite.Operation.Buffer
         }
         private readonly IBufferParameters _bufParams;
 
-        private IPrecisionModel _workingPrecisionModel;
-        private INoder _workingNoder;
         private IGeometryFactory _geomFact;
         private PlanarGraph _graph;
         private readonly EdgeList _edgeList = new EdgeList();
@@ -57,26 +55,18 @@ namespace NetTopologySuite.Operation.Buffer
         /// If the precision model is less than the precision of the Geometry precision model,
         /// the Geometry must have previously been rounded to that precision.
         ///</remarks>
-        public IPrecisionModel WorkingPrecisionModel
-        {
-            get => _workingPrecisionModel;
-            set => _workingPrecisionModel = value;
-        }
+        public IPrecisionModel WorkingPrecisionModel { get; set; }
 
         ///<summary>
         /// Sets the <see cref="INoder"/> to use during noding.
         /// This allows choosing fast but non-robust noding, or slower
         /// but robust noding.
         ///</summary>
-        public INoder Noder
-        {
-            get => _workingNoder;
-            set => _workingNoder = value;
-        }
+        public INoder Noder { get; set; }
 
         public IGeometry Buffer(IGeometry g, double distance)
         {
-            IPrecisionModel precisionModel = _workingPrecisionModel;
+            IPrecisionModel precisionModel = WorkingPrecisionModel;
             if (precisionModel == null)
                 precisionModel = g.PrecisionModel;
 
@@ -116,7 +106,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         private INoder GetNoder(IPrecisionModel precisionModel)
         {
-            if (_workingNoder != null) return _workingNoder;
+            if (Noder != null) return Noder;
 
             // otherwise use a fast (but non-robust) noder
             var noder = new MCIndexNoder(new IntersectionAdder(new RobustLineIntersector { PrecisionModel = precisionModel}));

@@ -17,8 +17,6 @@ namespace NetTopologySuite.Triangulate
             return msg;
         }
 
-        private readonly Coordinate _pt;
-
         /// <summary>
         /// Creates a new instance with a given message.
         /// </summary>
@@ -36,13 +34,13 @@ namespace NetTopologySuite.Triangulate
         public ConstraintEnforcementException(String msg, Coordinate pt)
             : base(MsgWithCoord(msg, pt))
         {
-            _pt = new Coordinate(pt);
+            Coordinate = new Coordinate(pt);
         }
 
         /// <summary>
         /// Gets the approximate location of this error.
         /// </summary>
         /// <remarks>a location</remarks>
-        public Coordinate Coordinate => _pt;
+        public Coordinate Coordinate { get; }
     }
 }

@@ -20,10 +20,9 @@ namespace NetTopologySuite.GeometriesGraph.Index
     public class MonotoneChainEdge
     {
         private readonly Edge e;
-        private readonly Coordinate[] pts; // cache a reference to the coord array, for efficiency
+
         // the lists of start/end indexes of the monotone chains.
         // Includes the end point of the edge as a sentinel
-        private readonly int[] startIndex;
 
         /// <summary>
         /// 
@@ -32,20 +31,20 @@ namespace NetTopologySuite.GeometriesGraph.Index
         public MonotoneChainEdge(Edge e)
         {
             this.e = e;
-            pts = e.Coordinates;
+            Coordinates = e.Coordinates;
             MonotoneChainIndexer mcb = new MonotoneChainIndexer();
-            startIndex = mcb.GetChainStartIndices(pts);
+            StartIndexes = mcb.GetChainStartIndices(Coordinates);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate[] Coordinates => pts;
+        public Coordinate[] Coordinates { get; }
 
         /// <summary>
         /// 
         /// </summary>
-        public int[] StartIndexes => startIndex;
+        public int[] StartIndexes { get; }
 
         /// <summary>
         /// 
@@ -54,8 +53,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <returns></returns>
         public double GetMinX(int chainIndex)
         {
-            double x1 = pts[startIndex[chainIndex]].X;
-            double x2 = pts[startIndex[chainIndex + 1]].X;
+            double x1 = Coordinates[StartIndexes[chainIndex]].X;
+            double x2 = Coordinates[StartIndexes[chainIndex + 1]].X;
             return x1 < x2 ? x1 : x2;
         }
 
@@ -66,8 +65,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <returns></returns>
         public double GetMaxX(int chainIndex)
         {
-            double x1 = pts[startIndex[chainIndex]].X;
-            double x2 = pts[startIndex[chainIndex + 1]].X;
+            double x1 = Coordinates[StartIndexes[chainIndex]].X;
+            double x2 = Coordinates[StartIndexes[chainIndex + 1]].X;
             return x1 > x2 ? x1 : x2;
         }
 
@@ -78,8 +77,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="si"></param>
         public void ComputeIntersects(MonotoneChainEdge mce, SegmentIntersector si)
         {
-            for (int i = 0; i < startIndex.Length - 1; i++)
-                for (int j = 0; j < mce.startIndex.Length - 1; j++)
+            for (int i = 0; i < StartIndexes.Length - 1; i++)
+                for (int j = 0; j < mce.StartIndexes.Length - 1; j++)
                     ComputeIntersectsForChain(i, mce, j, si);           
         }
 
@@ -92,8 +91,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="si"></param>
         public void ComputeIntersectsForChain(int chainIndex0, MonotoneChainEdge mce, int chainIndex1, SegmentIntersector si)
         {
-            ComputeIntersectsForChain(startIndex[chainIndex0], startIndex[chainIndex0 + 1], mce,
-                                      mce.startIndex[chainIndex1], mce.startIndex[chainIndex1 + 1], si);
+            ComputeIntersectsForChain(StartIndexes[chainIndex0], StartIndexes[chainIndex0 + 1], mce,
+                                      mce.StartIndexes[chainIndex1], mce.StartIndexes[chainIndex1 + 1], si);
         }
 
         /// <summary>
@@ -150,7 +149,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
             MonotoneChainEdge mce,
             int start1, int end1)
         {
-            return Envelope.Intersects(pts[start0], pts[end0], mce.pts[start1], mce.pts[end1]);
+            return Envelope.Intersects(Coordinates[start0], Coordinates[end0], mce.Coordinates[start1], mce.Coordinates[end1]);
         }
     }
 }

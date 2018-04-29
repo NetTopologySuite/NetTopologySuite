@@ -61,7 +61,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         //private Set quadEdges = new HashSet();
         private readonly List<QuadEdge> _quadEdges = new List<QuadEdge>();
         private readonly QuadEdge _startingEdge;
-        private readonly double _tolerance;
         private readonly double _edgeCoincidenceTolerance;
         private readonly Vertex[] _frameVertex = new Vertex[3];
         private Envelope _frameEnv;
@@ -77,7 +76,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public QuadEdgeSubdivision(Envelope env, double tolerance)
         {
             // currentSubdiv = this;
-            _tolerance = tolerance;
+            Tolerance = tolerance;
             _edgeCoincidenceTolerance = tolerance / EdgeCoincidenceToleranceFactor;
 
             CreateFrame(env);
@@ -125,7 +124,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// used in this subdivision
         /// </summary>
         /// <remarks>Gets the tolerance value</remarks>
-        public double Tolerance => _tolerance;
+        public double Tolerance { get; }
 
         /// <summary>
         /// Gets the envelope of the Subdivision (including the frame).
@@ -360,7 +359,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             QuadEdge e = Locate(v);
 
-            if ((v.Equals(e.Orig, _tolerance)) || (v.Equals(e.Dest, _tolerance)))
+            if ((v.Equals(e.Orig, Tolerance)) || (v.Equals(e.Dest, Tolerance)))
             {
                 return e; // point already in subdivision.
             }
@@ -463,7 +462,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>true if the vertex is a endpoint of the edge</returns>
         public bool IsVertexOfEdge(QuadEdge e, Vertex v)
         {
-            if ((v.Equals(e.Orig, _tolerance)) || (v.Equals(e.Dest, _tolerance)))
+            if ((v.Equals(e.Orig, Tolerance)) || (v.Equals(e.Dest, Tolerance)))
             {
                 return true;
             }

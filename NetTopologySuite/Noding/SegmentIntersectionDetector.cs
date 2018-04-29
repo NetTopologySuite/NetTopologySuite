@@ -17,13 +17,6 @@ namespace NetTopologySuite.Noding
     {
         private readonly LineIntersector _li;
 
-        private bool _hasIntersection;
-        private bool _hasProperIntersection;
-        private bool _hasNonProperIntersection;
-
-        private Coordinate _intPt;
-        private Coordinate[] _intSegments;
-
         ///<summary>
         /// Creates an intersection finder using a <see cref="RobustLineIntersector"/>
         ///</summary>
@@ -54,27 +47,27 @@ namespace NetTopologySuite.Noding
         ///<summary>
         /// Tests whether an intersection was found.
         ///</summary>
-        public bool HasIntersection => _hasIntersection;
+        public bool HasIntersection { get; private set; }
 
         ///<summary>
         /// Tests whether a proper intersection was found.
         ///</summary>
-        public bool HasProperIntersection => _hasProperIntersection;
+        public bool HasProperIntersection { get; private set; }
 
         ///<summary>
         /// Tests whether a non-proper intersection was found.
         ///</summary>
-        public bool HasNonProperIntersection => _hasNonProperIntersection;
+        public bool HasNonProperIntersection { get; private set; }
 
         ///<summary>
         /// Gets the computed location of the intersection. Due to round-off, the location may not be exact.
         ///</summary>
-        public Coordinate Intersection => _intPt;
+        public Coordinate Intersection { get; private set; }
 
         ///<summary>Gets the endpoints of the intersecting segments.
         ///</summary>
         /// <remarks>An array of the segment endpoints (p00, p01, p10, p11)</remarks>
-        public Coordinate[] IntersectionSegments => _intSegments;
+        public Coordinate[] IntersectionSegments { get; private set; }
 
         ///<summary>
         /// This method is called by clients of the <see cref="ISegmentIntersector"/> class to process
@@ -105,13 +98,13 @@ namespace NetTopologySuite.Noding
             if (_li.HasIntersection)
             {
                 // record intersection info
-                _hasIntersection = true;
+                HasIntersection = true;
 
                 var isProper = _li.IsProper;
                 if (isProper)
-                    _hasProperIntersection = true;
+                    HasProperIntersection = true;
                 if (!isProper)
-                    _hasNonProperIntersection = true;
+                    HasNonProperIntersection = true;
 
                 /*
                  * If this is the kind of intersection we are searching for
@@ -124,18 +117,18 @@ namespace NetTopologySuite.Noding
                 if (_findProper && !isProper) saveLocation = false;
                  */
 
-                if (_intPt == null || saveLocation)
+                if (Intersection == null || saveLocation)
                 {
 
                     // record intersection location (approximate)
-                    _intPt = _li.GetIntersection(0);
+                    Intersection = _li.GetIntersection(0);
 
                     // record intersecting segments
-                    _intSegments = new Coordinate[4];
-                    _intSegments[0] = p00;
-                    _intSegments[1] = p01;
-                    _intSegments[2] = p10;
-                    _intSegments[3] = p11;
+                    IntersectionSegments = new Coordinate[4];
+                    IntersectionSegments[0] = p00;
+                    IntersectionSegments[1] = p01;
+                    IntersectionSegments[2] = p10;
+                    IntersectionSegments[3] = p11;
                 }
             }
         }
@@ -155,7 +148,7 @@ namespace NetTopologySuite.Noding
                */
                 if (FindAllIntersectionTypes)
                 {
-                    return _hasProperIntersection && _hasNonProperIntersection;
+                    return HasProperIntersection && HasNonProperIntersection;
                 }
 
                 /*
@@ -163,9 +156,9 @@ namespace NetTopologySuite.Noding
                  */
                 if (FindProper)
                 {
-                    return _hasProperIntersection;
+                    return HasProperIntersection;
                 }
-                return _hasIntersection;
+                return HasIntersection;
             }
         }
     }

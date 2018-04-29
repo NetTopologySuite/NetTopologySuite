@@ -82,7 +82,6 @@ namespace NetTopologySuite.Algorithm
         private readonly Coordinate _p;
         private int _crossingCount;
         // true if the test point lies on an input segment
-        private bool _isPointOnSegment;
 
         public RayCrossingCounter(Coordinate p)
         {
@@ -108,7 +107,7 @@ namespace NetTopologySuite.Algorithm
             // check if the point is equal to the current ring vertex
             if (_p.X == p2.X && _p.Y == p2.Y)
             {
-                _isPointOnSegment = true;
+                IsOnSegment = true;
                 return;
             }
             /*
@@ -126,7 +125,7 @@ namespace NetTopologySuite.Algorithm
                 }
                 if (_p.X >= minx && _p.X <= maxx)
                 {
-                    _isPointOnSegment = true;
+                    IsOnSegment = true;
                 }
                 return;
             }
@@ -147,7 +146,7 @@ namespace NetTopologySuite.Algorithm
                 var orient = Orientation.Index(p1, p2, _p);
                 if (orient == OrientationIndex.Collinear)
                 {
-                    _isPointOnSegment = true;
+                    IsOnSegment = true;
                     return;
                 }
                 // Re-orient the result if needed to ensure effective segment direction is upwards
@@ -170,7 +169,7 @@ namespace NetTopologySuite.Algorithm
         /// This method may be called at any time as segments are processed. If the result of this method is <c>true</c>, 
         /// no further segments need be supplied, since the result will never change again.
         /// </remarks>
-        public bool IsOnSegment => _isPointOnSegment;
+        public bool IsOnSegment { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="GeoAPI.Geometries.Location"/> of the point relative to  the ring, polygon
@@ -184,7 +183,7 @@ namespace NetTopologySuite.Algorithm
         {
             get
             {
-                if (_isPointOnSegment)
+                if (IsOnSegment)
                     return Location.Boundary;
 
                 // The point is in the interior of the ring if the number of X-crossings is

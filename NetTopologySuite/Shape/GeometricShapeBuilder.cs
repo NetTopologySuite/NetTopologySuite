@@ -6,7 +6,6 @@ namespace NetTopologySuite.Shape
 {
     public abstract class GeometricShapeBuilder
     {
-        private Envelope _extent = new Envelope(0, 1, 0, 1);
         protected IGeometryFactory GeomFactory;
 
         protected GeometricShapeBuilder(IGeometryFactory geomFactory)
@@ -14,15 +13,11 @@ namespace NetTopologySuite.Shape
             GeomFactory = geomFactory;
         }
 
-        public Envelope Extent
-        {
-            get => _extent;
-            set => _extent = value;
-        }
+        public Envelope Extent { get; set; } = new Envelope(0, 1, 0, 1);
 
-        public Coordinate Centre => _extent.Centre;
+        public Coordinate Centre => Extent.Centre;
 
-        public double Diameter => Math.Min(_extent.Height, _extent.Width);
+        public double Diameter => Math.Min(Extent.Height, Extent.Width);
 
         public double Radius => Diameter * 0.5;
 

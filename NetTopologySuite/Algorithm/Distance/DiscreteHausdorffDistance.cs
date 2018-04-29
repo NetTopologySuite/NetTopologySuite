@@ -157,7 +157,6 @@ namespace NetTopologySuite.Algorithm.Distance
         public class MaxPointDistanceFilter
             : ICoordinateFilter
         {
-            private readonly PointPairDistance _maxPtDist = new PointPairDistance();
             private readonly PointPairDistance _minPtDist = new PointPairDistance();
             //private EuclideanDistanceToPoint euclideanDist = new EuclideanDistanceToPoint();
             private readonly IGeometry _geom;
@@ -171,16 +170,15 @@ namespace NetTopologySuite.Algorithm.Distance
             {
                 _minPtDist.Initialize();
                 DistanceToPoint.ComputeDistance(_geom, pt, _minPtDist);
-                _maxPtDist.SetMaximum(_minPtDist);
+                MaxPointDistance.SetMaximum(_minPtDist);
             }
 
-            public PointPairDistance MaxPointDistance => _maxPtDist;
+            public PointPairDistance MaxPointDistance { get; } = new PointPairDistance();
         }
 
         public class MaxDensifiedByFractionDistanceFilter
         : ICoordinateSequenceFilter
         {
-            private readonly PointPairDistance _maxPtDist = new PointPairDistance();
             private readonly PointPairDistance _minPtDist = new PointPairDistance();
             private readonly IGeometry _geom;
             private readonly int _numSubSegs;
@@ -212,7 +210,7 @@ namespace NetTopologySuite.Algorithm.Distance
                     var pt = new Coordinate(x, y);
                     _minPtDist.Initialize();
                     DistanceToPoint.ComputeDistance(_geom, pt, _minPtDist);
-                    _maxPtDist.SetMaximum(_minPtDist);
+                    MaxPointDistance.SetMaximum(_minPtDist);
                 }
 
 
@@ -222,7 +220,7 @@ namespace NetTopologySuite.Algorithm.Distance
 
             public Boolean Done => false;
 
-            public PointPairDistance MaxPointDistance => _maxPtDist;
+            public PointPairDistance MaxPointDistance { get; } = new PointPairDistance();
         }
 
     }
