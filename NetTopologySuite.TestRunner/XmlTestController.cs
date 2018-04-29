@@ -19,15 +19,9 @@ namespace Open.Topology.TestRunner
             m_objCurrentDoc = new XmlTestDocument();
 		}
 
-        public StringCollection FileNames
-        {
-            get
-            {
-                return m_listFileNames;
-            }
-        }
+        public StringCollection FileNames => m_listFileNames;
 
-        public void ResetFiles()
+	    public void ResetFiles()
         {
             if (m_listFileNames != null)
                 m_listFileNames.Clear();            

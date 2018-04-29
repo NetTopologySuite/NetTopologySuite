@@ -35,14 +35,8 @@ namespace NetTopologySuite.Operation.Polygonize
         /// </summary>
         public long Label
         {
-            get
-            {
-                return label;
-            }
-            set
-            {
-                label = value;
-            }
+            get => label;
+            set => label = value;
         }
 
         /// <summary>
@@ -55,13 +49,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// Returns the ring of directed edges that this directed edge is
         /// a member of, or null if the ring has not been set.
         /// </summary>
-        public bool IsInRing
-        {
-            get
-            {
-                return Ring != null;
-            }
-        }
+        public bool IsInRing => Ring != null;
 
         /// <summary> 
         /// Gets/Sets the ring of directed edges that this directed edge is

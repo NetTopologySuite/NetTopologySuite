@@ -91,10 +91,7 @@ namespace NetTopologySuite.IO
         /// The <see cref="IGeometry"/> builder.
         /// </summary>
         [Obsolete]
-        protected IGeometryFactory Factory
-        {
-            get { return _factory; }
-        }
+        protected IGeometryFactory Factory => _factory;
 
         /// <summary>
         /// Initialize reader with a standard <see cref="IGeometryFactory"/>.
@@ -591,16 +588,13 @@ namespace NetTopologySuite.IO
 
         public bool HandleSRID { get; set; }
 
-        public Ordinates AllowedOrdinates
-        {
-            get { return Ordinates.XYZM & _sequenceFactory.Ordinates; }
-        }
+        public Ordinates AllowedOrdinates => Ordinates.XYZM & _sequenceFactory.Ordinates;
 
         private Ordinates _handleOrdinates;
 
         public Ordinates HandleOrdinates
         {
-            get { return _handleOrdinates; }
+            get => _handleOrdinates;
             set
             {
                 value = Ordinates.XY | (AllowedOrdinates & value);
@@ -613,7 +607,9 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Gets or sets whether invalid linear rings should be fixed
         /// </summary>
-        public bool RepairRings { get { return _isStrict; } set { _isStrict = value; } }
+        public bool RepairRings { get => _isStrict;
+            set => _isStrict = value;
+        }
 
         /// <summary>
         /// Function to determine whether an ordinate should be handled or not.

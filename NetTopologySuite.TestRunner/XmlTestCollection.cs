@@ -33,28 +33,16 @@ namespace Open.Topology.TestRunner
         
         public XmlTest this[int index]  
         {
-            get  
-            {
-                return (XmlTest)List[index];
-            }
+            get => (XmlTest)List[index];
 
-            set  
-            {
-                List[index] = value;
-            }
+            set => List[index] = value;
         }
 
         public string Name
         {
-            get
-            {
-                return m_strCollectionName;
-            }
+            get => m_strCollectionName;
 
-            set
-            {
-                m_strCollectionName = value;
-            }
+            set => m_strCollectionName = value;
         }
 
         #endregion

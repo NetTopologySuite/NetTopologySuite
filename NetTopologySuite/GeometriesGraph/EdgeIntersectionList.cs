@@ -26,13 +26,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public int Count
-        {
-            get
-            {
-                return nodeMap.Count;
-            }
-        }
+        public int Count => nodeMap.Count;
 
         /// <summary> 
         /// Adds an intersection into the list, if it isn't already there.

@@ -65,13 +65,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public Envelope Envelope
-        {
-            get
-            {
-                return _env;
-            }
-        }
+        public Envelope Envelope => _env;
 
         /// <summary>
         /// 

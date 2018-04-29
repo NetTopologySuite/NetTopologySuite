@@ -144,7 +144,7 @@ namespace NetTopologySuite.Simplify
             }
 
             ////public int Index { get { return this.index; } }
-            public double Area { get { return this.area; } }
+            public double Area => this.area;
 
             public int CompareTo(IndexWithArea other)
             {

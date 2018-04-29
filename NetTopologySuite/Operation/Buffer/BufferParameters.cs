@@ -115,7 +115,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// </remarks>
         public int QuadrantSegments
         {
-            get { return _quadrantSegments; }
+            get => _quadrantSegments;
             set
             {
                 _quadrantSegments = value;
@@ -177,8 +177,8 @@ namespace NetTopologySuite.Operation.Buffer
         /// </remarks>
         public EndCapStyle EndCapStyle
         {
-            get { return _endCapStyle; }
-            set { _endCapStyle = value; }
+            get => _endCapStyle;
+            set => _endCapStyle = value;
         }
 
         ///<summary>
@@ -190,8 +190,8 @@ namespace NetTopologySuite.Operation.Buffer
         /// </remarks>
         public JoinStyle JoinStyle
         {
-            get { return _joinStyle; }
-            set { _joinStyle = value; }
+            get => _joinStyle;
+            set => _joinStyle = value;
         }
 
         ///<summary>
@@ -211,8 +211,8 @@ namespace NetTopologySuite.Operation.Buffer
         /// </remarks>
         public double MitreLimit
         {
-            get { return _mitreLimit; }
-            set { _mitreLimit = value; }
+            get => _mitreLimit;
+            set => _mitreLimit = value;
         }
 
         /// <summary>
@@ -242,8 +242,8 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         public double SimplifyFactor
         {
-            get { return _simplifyFactor; }
-            set { _simplifyFactor = value < 0 ? 0 : value; }
+            get => _simplifyFactor;
+            set => _simplifyFactor = value < 0 ? 0 : value;
         }
     }
 }

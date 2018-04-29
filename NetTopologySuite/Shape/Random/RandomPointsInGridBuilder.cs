@@ -46,8 +46,8 @@ namespace NetTopologySuite.Shape.Random
         /// </summary>
         public bool ConstrainedToCircle
         {
-            get { return _isConstrainedToCircle; }
-            set { _isConstrainedToCircle = value; }
+            get => _isConstrainedToCircle;
+            set => _isConstrainedToCircle = value;
         }
 
         /// <summary>

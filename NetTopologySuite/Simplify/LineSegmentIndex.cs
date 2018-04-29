@@ -101,12 +101,6 @@ namespace NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public IList<LineSegment> Items 
-        {
-            get
-            {
-                return _items;
-            }
-        }
+        public IList<LineSegment> Items => _items;
     }
 }

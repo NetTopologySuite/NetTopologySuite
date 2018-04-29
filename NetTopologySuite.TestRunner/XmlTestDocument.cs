@@ -65,23 +65,11 @@ namespace Open.Topology.TestRunner
             m_objFactory         = null;
         }
 
-        public XmlTestCollection CurrentTests
-        {
-            get
-            {
-                return m_listCurTests;
-            }
-        }
+        public XmlTestCollection CurrentTests => m_listCurTests;
 
-        public ArrayList Tests
-        {
-            get
-            {
-                return m_listarrTests;
-            }
-        }
+	    public ArrayList Tests => m_listarrTests;
 
-        public bool LoadFile(string fileName)
+	    public bool LoadFile(string fileName)
         {
             if (!File.Exists(fileName))
             {

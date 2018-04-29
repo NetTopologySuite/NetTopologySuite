@@ -8,7 +8,7 @@
 
         private const String testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\robust";
 
-        protected override string TestLocation { get { return testLocation; } }
+        protected override string TestLocation => testLocation;
     }
 
     // 1 expected exception thrown

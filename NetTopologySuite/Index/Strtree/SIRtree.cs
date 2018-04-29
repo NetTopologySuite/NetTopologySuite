@@ -125,13 +125,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <summary>
         /// 
         /// </summary>
-        protected override IIntersectsOp IntersectsOp
-        {
-            get
-            {
-                return IntersectsOperation;
-            }
-        }
+        protected override IIntersectsOp IntersectsOp => IntersectsOperation;
 
         /// <summary>
         /// 

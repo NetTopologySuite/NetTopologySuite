@@ -967,18 +967,12 @@ namespace NetTopologySuite.Mathematics
         /// <summary>
         /// Gets a value indicating whether this object is zero (0) or not
         /// </summary>
-        public bool IsZero
-        {
-            get{ return _hi == 0.0 && _lo == 0.0; }
-        }
+        public bool IsZero => _hi == 0.0 && _lo == 0.0;
 
         /// <summary>
         /// Gets a value indicating whether this object is negative or not
         /// </summary>
-        public bool IsNegative
-        {
-            get { return _hi < 0.0 || (_hi == 0.0 && _lo < 0.0); }
-        }
+        public bool IsNegative => _hi < 0.0 || (_hi == 0.0 && _lo < 0.0);
 
         /// <summary>
         /// Gets a value indicating whether this object is positive or not

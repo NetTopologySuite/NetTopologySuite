@@ -100,23 +100,11 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
         /// </summary>
         /// <value></value>
-        public int Dimension
-        {
-            get
-            {
-                return _dimension;
-            }
-        }
+        public int Dimension => _dimension;
 
-        public Ordinates Ordinates
-        {
-            get
-            {
-                return _dimension == 3 
-                    ? Ordinates.XYZ 
-                    : Ordinates.XY;
-            }
-        }
+        public Ordinates Ordinates => _dimension == 3 
+            ? Ordinates.XYZ 
+            : Ordinates.XY;
 
         /// <summary>
         /// Get the Coordinate with index i.
@@ -233,13 +221,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <summary>
         /// Returns the length of the coordinate sequence.
         /// </summary>
-        public int Count 
-        {
-            get
-            {
-                return Coordinates.Length;
-            }
-        }
+        public int Count => Coordinates.Length;
 
         /// <summary>
         /// Sets the value for a given ordinate of a coordinate in this sequence.

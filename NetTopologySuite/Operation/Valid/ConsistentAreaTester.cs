@@ -37,13 +37,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// Returns the intersection point, or <c>null</c> if none was found.
         /// </summary>        
-        public Coordinate InvalidPoint
-        {
-            get
-            {
-                return invalidPoint;
-            }
-        }
+        public Coordinate InvalidPoint => invalidPoint;
 
         /// <summary>
         /// 

@@ -71,15 +71,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
                     rcc.CountSegment(p0, p1);
                 }
 
-                public bool Done
-                {
-                    get { return rcc.IsOnSegment; }
-                }
+                public bool Done => rcc.IsOnSegment;
 
-                public bool GeometryChanged
-                {
-                    get { return false; }
-                }
+                public bool GeometryChanged => false;
             }
         }
     }

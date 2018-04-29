@@ -34,8 +34,8 @@ namespace RTools_NTS.Util
 		/// </summary>
 		public int Length
 		{
-			get { return(tailIndex - headIndex); }
-			set 
+			get => (tailIndex - headIndex);
+		    set 
 			{ 
 				tailIndex = headIndex + value;
 				if (tailIndex >= capacity) throw new 
@@ -46,12 +46,9 @@ namespace RTools_NTS.Util
 		/// <summary>
 		/// Returns the capacity of this character buffer.
 		/// </summary>
-		public int Capacity
-		{
-			get { return(capacity); }
-		}
+		public int Capacity => (capacity);
 
-		#endregion
+	    #endregion
 
 		#region Constructors
 
@@ -245,8 +242,8 @@ namespace RTools_NTS.Util
 		/// </summary>
 		public char this [int index]
 		{
-			get { return(buffer[index + headIndex]); }
-			set { buffer[index + headIndex] = value; }
+			get => (buffer[index + headIndex]);
+		    set => buffer[index + headIndex] = value;
 		}
 
 		/// <summary>

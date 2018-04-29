@@ -13,7 +13,7 @@ namespace NetTopologySuite.Tests.XUnit
         {
         }
 
-        protected override string TestLocation { get { return testLocation; } }
+        protected override string TestLocation => testLocation;
 
         [NUnit.Framework.Ignore]
         public override void Test00() { }

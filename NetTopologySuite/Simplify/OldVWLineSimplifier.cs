@@ -105,14 +105,14 @@ namespace NetTopologySuite.Simplify
 
             public VWVertex Prev
             {
-                get { return _prev; }
-                set { _prev = value; }
+                get => _prev;
+                set => _prev = value;
             }
 
             public VWVertex Next
             {
-                get { return _next; }
-                set { _next = value; }
+                get => _next;
+                set => _next = value;
             }
 
             public void UpdateArea()
@@ -131,10 +131,7 @@ namespace NetTopologySuite.Simplify
                 return _area;
             }
 
-            public bool IsLive
-            {
-                get { return _isLive; }
-            }
+            public bool IsLive => _isLive;
 
             public VWVertex Remove()
             {

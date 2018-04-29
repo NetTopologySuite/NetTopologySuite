@@ -91,10 +91,7 @@ namespace NetTopologySuite.Features
         /// <summary>
         /// Gets a value indicating the number of attributes
         /// </summary>
-        public int Count
-        {
-            get { return _attributes.Count; }
-        }
+        public int Count => _attributes.Count;
 
         /// <summary>
         /// Returns a <c>string</c> array containing 
@@ -211,8 +208,8 @@ namespace NetTopologySuite.Features
         /// <returns></returns>
         public object this[string attributeName]
         {
-            get { return GetValue(attributeName); }
-            set { SetValue(attributeName, value); }
+            get => GetValue(attributeName);
+            set => SetValue(attributeName, value);
         }
 
         /// <summary>

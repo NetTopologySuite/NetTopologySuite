@@ -24,10 +24,7 @@ namespace NetTopologySuite.IO.GML2
         /// <summary>
         /// <see cref="IGeometry"/> builder.
         /// </summary>
-        protected IGeometryFactory Factory
-        {
-            get { return _factory; }
-        }
+        protected IGeometryFactory Factory => _factory;
 
         /// <summary>
         /// Initialize reader with a standard <see cref="IGeometryFactory"/>.

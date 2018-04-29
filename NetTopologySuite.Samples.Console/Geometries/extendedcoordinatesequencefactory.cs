@@ -46,10 +46,7 @@ namespace NetTopologySuite.Samples.Geometries
 	        throw new NotImplementedException();
 	    }
 
-	    public Ordinates Ordinates
-	    {
-            get { return Ordinates.XYZM; }
-	    }
+	    public Ordinates Ordinates => Ordinates.XYZM;
 
 	    static ExtendedCoordinateSequenceFactory()
 		{

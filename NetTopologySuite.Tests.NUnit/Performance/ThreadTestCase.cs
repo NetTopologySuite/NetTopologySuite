@@ -9,14 +9,11 @@ namespace NetTopologySuite.Tests.NUnit.Performance
     /// <author>Martin Davis</author>
     public abstract class ThreadTestCase
     {
-        public int ThreadCount
-        {
-            get { return ThreadTestRunner.DefaultThreadCount; }
-        }
+        public int ThreadCount => ThreadTestRunner.DefaultThreadCount;
 
         public abstract void Setup();
         public WaitHandle[] WaitHandles { get; protected set; } 
         public abstract ParameterizedThreadStart GetRunnable(int threadIndex);
-        public virtual object Argument { get { return null; } }
+        public virtual object Argument => null;
     }
 }

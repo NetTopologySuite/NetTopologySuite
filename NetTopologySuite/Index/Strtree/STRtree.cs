@@ -223,10 +223,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <summary>
         /// 
         /// </summary>
-        protected override IIntersectsOp IntersectsOp
-        {
-            get { return IntersectsOperation; }
-        }
+        protected override IIntersectsOp IntersectsOp => IntersectsOperation;
 
         /// <summary>
         /// Inserts an item having the given bounds into the tree.

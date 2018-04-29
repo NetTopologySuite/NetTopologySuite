@@ -104,26 +104,17 @@ namespace NetTopologySuite.Mathematics
         /// <summary>
         /// Gets a value indicating the x-ordinate
         /// </summary>
-        public double X 
-        {
-            get { return _x; }
-        }
+        public double X => _x;
 
         /// <summary>
         /// Gets a value indicating the y-ordinate
         /// </summary>
-        public double Y
-        {
-            get { return _y; }
-        }
+        public double Y => _y;
 
         /// <summary>
         /// Gets a value indicating the z-ordinate
         /// </summary>
-        public double Z
-        {
-            get { return _z; }
-        }
+        public double Z => _z;
 
         /// <summary>
         /// Computes the dot-product of this <see cref="Vector3D"/> and <paramref name="v"/>

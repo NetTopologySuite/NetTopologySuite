@@ -37,7 +37,7 @@ namespace NetTopologySuite.Geometries.Implementation
                     return _instance ?? (_instance = new DotSpatialAffineCoordinateSequenceFactory());
                 }
             }
-            set { _instance = value; }
+            set => _instance = value;
         }
 
         /// <summary>
@@ -134,10 +134,6 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <summary>
         /// Gets the Ordinate flags that sequences created by this factory can cope with.
         /// </summary>
-        public Ordinates Ordinates
-        {
-            get { return _ordinates; }
-        }
-
+        public Ordinates Ordinates => _ordinates;
     }
 }

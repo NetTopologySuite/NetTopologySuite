@@ -170,7 +170,7 @@ namespace NetTopologySuite.Algorithm
         /// This method may be called at any time as segments are processed. If the result of this method is <c>true</c>, 
         /// no further segments need be supplied, since the result will never change again.
         /// </remarks>
-        public bool IsOnSegment { get { return _isPointOnSegment; } }
+        public bool IsOnSegment => _isPointOnSegment;
 
         /// <summary>
         /// Gets the <see cref="GeoAPI.Geometries.Location"/> of the point relative to  the ring, polygon
@@ -206,9 +206,6 @@ namespace NetTopologySuite.Algorithm
         /// This property only determines the correct location 
         /// if <b>all</b> relevant segments have been processed
         /// </remarks>
-        public bool IsPointInPolygon
-        {
-            get { return Location != Location.Exterior; } 
-        }
+        public bool IsPointInPolygon => Location != Location.Exterior;
     }
 }

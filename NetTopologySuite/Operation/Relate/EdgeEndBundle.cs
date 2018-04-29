@@ -47,13 +47,7 @@ namespace NetTopologySuite.Operation.Relate
         /// <summary>
         /// 
         /// </summary>
-        public IList<EdgeEnd> EdgeEnds
-        {
-            get
-            {
-                return _edgeEnds; 
-            }
-        }
+        public IList<EdgeEnd> EdgeEnds => _edgeEnds;
 
         /// <summary>
         /// 

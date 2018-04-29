@@ -54,42 +54,27 @@ namespace NetTopologySuite.Noding
         ///<summary>
         /// Tests whether an intersection was found.
         ///</summary>
-        public bool HasIntersection
-        {
-            get { return _hasIntersection; }
-        }
+        public bool HasIntersection => _hasIntersection;
 
         ///<summary>
         /// Tests whether a proper intersection was found.
         ///</summary>
-        public bool HasProperIntersection
-        {
-            get { return _hasProperIntersection; }
-        }
+        public bool HasProperIntersection => _hasProperIntersection;
 
         ///<summary>
         /// Tests whether a non-proper intersection was found.
         ///</summary>
-        public bool HasNonProperIntersection
-        {
-            get { return _hasNonProperIntersection; }
-        }
+        public bool HasNonProperIntersection => _hasNonProperIntersection;
 
         ///<summary>
         /// Gets the computed location of the intersection. Due to round-off, the location may not be exact.
         ///</summary>
-        public Coordinate Intersection
-        {
-            get { return _intPt; }
-        }
+        public Coordinate Intersection => _intPt;
 
         ///<summary>Gets the endpoints of the intersecting segments.
         ///</summary>
         /// <remarks>An array of the segment endpoints (p00, p01, p10, p11)</remarks>
-        public Coordinate[] IntersectionSegments
-        {
-            get { return _intSegments; }
-        }
+        public Coordinate[] IntersectionSegments => _intSegments;
 
         ///<summary>
         /// This method is called by clients of the <see cref="ISegmentIntersector"/> class to process

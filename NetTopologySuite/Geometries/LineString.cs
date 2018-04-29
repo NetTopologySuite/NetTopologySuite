@@ -77,23 +77,13 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value to sort the geometry
         /// </summary>
-        protected override SortIndexValue SortIndex
-        {
-            get { return SortIndexValue.LineString; }
-        }
-
+        protected override SortIndexValue SortIndex => SortIndexValue.LineString;
 
 
         /// <summary>
         ///
         /// </summary>
-        public override Coordinate[] Coordinates
-        {
-            get
-            {
-                return _points.ToCoordinateArray();
-            }
-        }
+        public override Coordinate[] Coordinates => _points.ToCoordinateArray();
 
         public override double[] GetOrdinates(Ordinate ordinate)
         {
@@ -110,13 +100,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public ICoordinateSequence CoordinateSequence
-        {
-            get
-            {
-                return _points;
-            }
-        }
+        public ICoordinateSequence CoordinateSequence => _points;
 
         /// <summary>
         ///
@@ -143,13 +127,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public override Dimension Dimension
-        {
-            get
-            {
-                return Dimension.Curve;
-            }
-        }
+        public override Dimension Dimension => Dimension.Curve;
 
         /// <summary>
         ///
@@ -169,24 +147,12 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public override bool IsEmpty
-        {
-            get
-            {
-                return _points.Count == 0;
-            }
-        }
+        public override bool IsEmpty => _points.Count == 0;
 
         /// <summary>
         ///
         /// </summary>
-        public override int NumPoints
-        {
-            get
-            {
-                return _points.Count;
-            }
-        }
+        public override int NumPoints => _points.Count;
 
         /// <summary>
         ///
@@ -240,42 +206,21 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public bool IsRing
-        {
-            get
-            {
-                return IsClosed && IsSimple;
-            }
-        }
+        public bool IsRing => IsClosed && IsSimple;
 
         /// <summary>
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"LineString"</returns>
-        public override string GeometryType
-        {
-            get
-            {
-                return "LineString";
-            }
-        }
+        public override string GeometryType => "LineString";
 
-        public override OgcGeometryType OgcGeometryType
-        {
-            get { return OgcGeometryType.LineString; }
-        }
+        public override OgcGeometryType OgcGeometryType => OgcGeometryType.LineString;
 
         /// <summary>
         /// Returns the length of this <c>LineString</c>
         /// </summary>
         /// <returns>The length of the polygon.</returns>
-        public override double Length
-        {
-            get
-            {
-                return Algorithm.Length.OfLine(_points);
-            }
-        }
+        public override double Length => Algorithm.Length.OfLine(_points);
 
         ///// <summary>
         /////
@@ -288,13 +233,7 @@ namespace NetTopologySuite.Geometries
         //    }
         //}
 
-        public override IGeometry Boundary
-        {
-            get
-            {
-                return (new BoundaryOp(this)).GetBoundary();
-            }
-        }
+        public override IGeometry Boundary => (new BoundaryOp(this)).GetBoundary();
 
         /// <summary>
         /// Creates a <see cref="LineString" /> whose coordinates are in the reverse order of this objects.
@@ -520,10 +459,7 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         public Coordinate this[int n]
         {
-            get
-            {
-                return _points.GetCoordinate(n);
-            }
+            get => _points.GetCoordinate(n);
             set
             {
                 _points.SetOrdinate(n, Ordinate.X, value.X);
@@ -536,13 +472,7 @@ namespace NetTopologySuite.Geometries
         ///
         /// </summary>
         /// <value></value>
-        public int Count
-        {
-            get
-            {
-                return _points.Count;
-            }
-        }
+        public int Count => _points.Count;
 
         /// <summary>
         /// Returns the value of the angle between the <see cref="StartPoint" />

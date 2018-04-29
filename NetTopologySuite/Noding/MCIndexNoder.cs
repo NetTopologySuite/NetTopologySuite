@@ -36,18 +36,12 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// 
         /// </summary>
-        public IList<MonotoneChain> MonotoneChains
-        {
-            get { return _monoChains; }
-        }
+        public IList<MonotoneChain> MonotoneChains => _monoChains;
 
         /// <summary>
         /// 
         /// </summary>
-        public ISpatialIndex<MonotoneChain> Index
-        {
-            get { return _index; }
-        }
+        public ISpatialIndex<MonotoneChain> Index => _index;
 
         /// <summary>
         /// Returns a <see cref="IList{ISegmentString}"/> of fully noded <see cref="ISegmentString"/>s.

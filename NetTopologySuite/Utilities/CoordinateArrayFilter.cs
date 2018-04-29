@@ -22,13 +22,7 @@ namespace NetTopologySuite.Utilities
         /// <summary>
         /// Returns the <c>Coordinate</c>s collected by this <c>CoordinateArrayFilter</c>.
         /// </summary>
-        public Coordinate[] Coordinates
-        {
-            get
-            {
-                return _pts;
-            }
-        }
+        public Coordinate[] Coordinates => _pts;
 
         /// <summary>
         /// 

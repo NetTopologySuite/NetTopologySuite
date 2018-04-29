@@ -32,8 +32,8 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public Coordinate P1
         {
-            get { return _p1; }
-            set { _p1 = value; }
+            get => _p1;
+            set => _p1 = value;
         }
 
         /// <summary>
@@ -41,8 +41,8 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public Coordinate P0
         {
-            get { return _p0; }
-            set { _p0 = value; }
+            get => _p0;
+            set => _p0 = value;
         }
 
         /// <summary>
@@ -114,49 +114,40 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets the minimum X ordinate
         /// </summary>
-        public double MinX { get { return Math.Min(P0.X, P1.X); } }
+        public double MinX => Math.Min(P0.X, P1.X);
 
         /// <summary>
         /// Gets the maximum X ordinate
         /// </summary>
-        public double MaxX { get { return Math.Max(P0.X, P1.X); } }
+        public double MaxX => Math.Max(P0.X, P1.X);
 
         /// <summary>
         /// Gets the minimum Y ordinate
         /// </summary>
-        public double MinY { get { return Math.Min(P0.Y, P1.Y); } }
+        public double MinY => Math.Min(P0.Y, P1.Y);
 
         /// <summary>
         /// Gets the maximum Y ordinate
         /// </summary>
-        public double MaxY { get { return Math.Max(P0.Y, P1.Y); } }
+        public double MaxY => Math.Max(P0.Y, P1.Y);
 
         /// <summary>
         /// Computes the length of the line segment.
         /// </summary>
         /// <returns>The length of the line segment.</returns>
-        public double Length
-        {
-            get { return _p0.Distance(_p1); }
-        }
+        public double Length => _p0.Distance(_p1);
 
         /// <summary>
         /// Tests whether the segment is horizontal.
         /// </summary>
         /// <returns><c>true</c> if the segment is horizontal.</returns>
-        public bool IsHorizontal
-        {
-            get { return _p0.Y == _p1.Y; }
-        }
+        public bool IsHorizontal => _p0.Y == _p1.Y;
 
         /// <summary>
         /// Tests whether the segment is vertical.
         /// </summary>
         /// <returns><c>true</c> if the segment is vertical.</returns>
-        public bool IsVertical
-        {
-            get { return _p0.X == _p1.X; }
-        }
+        public bool IsVertical => _p0.X == _p1.X;
 
         /// <summary>
         /// Determines the orientation of a LineSegment relative to this segment.
@@ -232,20 +223,11 @@ namespace NetTopologySuite.Geometries
         /// <returns>
         /// The angle this segment makes with the x-axis (in radians).
         /// </returns>
-        public double Angle
-        {
-            get { return Math.Atan2(_p1.Y - _p0.Y, _p1.X - _p0.X); }
-        }
+        public double Angle => Math.Atan2(_p1.Y - _p0.Y, _p1.X - _p0.X);
 
         ///<summary>The midpoint of the segment</summary>
-        public Coordinate MidPoint
-        {
-            get
-            {
-                return new Coordinate((_p0.X + _p1.X) / 2,
-                                      (_p0.Y + _p1.Y) / 2);
-            }
-        }
+        public Coordinate MidPoint => new Coordinate((_p0.X + _p1.X) / 2,
+            (_p0.Y + _p1.Y) / 2);
 
         /// <summary>
         /// Computes the distance between this line segment and another one.

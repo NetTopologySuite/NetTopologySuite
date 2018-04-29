@@ -173,10 +173,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// no further segments need be supplied, since the result
         /// will never change again.
         /// </remarks>
-        public bool IsOnSegment
-        {
-            get { return _isPointOnSegment; }
-        }
+        public bool IsOnSegment => _isPointOnSegment;
 
         /// <summary>
         /// Gets the <see cref="GeoAPI.Geometries.Location"/> of the point relative to 
@@ -214,9 +211,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// This method only determines the correct location 
         /// if <b>all</b> relevant segments must have been processed.
         /// </remarks>
-        public bool IsPointInPolygon
-        {
-            get { return Location != Location.Exterior; }
-        }
+        public bool IsPointInPolygon => Location != Location.Exterior;
     }
 }

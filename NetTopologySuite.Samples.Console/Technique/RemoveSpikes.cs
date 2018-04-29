@@ -142,15 +142,9 @@ namespace NetTopologySuite.Samples.Technique
                     return SpikeFix.NoSpike;
                 }
 
-                public bool Done
-                {
-                    get { return false; }
-                }
+                public bool Done => false;
 
-                public bool GeometryChanged
-                {
-                    get { return _changed; }
-                }
+                public bool GeometryChanged => _changed;
             }
         }
 

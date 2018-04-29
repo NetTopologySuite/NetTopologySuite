@@ -17,13 +17,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get
-            {
-                return repeatedCoord;
-            }
-        }
+        public Coordinate Coordinate => repeatedCoord;
 
         /// <summary>
         /// 

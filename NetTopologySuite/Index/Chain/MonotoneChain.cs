@@ -79,13 +79,7 @@ namespace NetTopologySuite.Index.Chain
         /// <summary>
         /// Gets the chain's context
         /// </summary>
-        public object Context
-        {
-            get
-            {
-                return _context;
-            }
-        }
+        public object Context => _context;
 
         /// <summary>
         /// Gets the chain's envelope
@@ -107,24 +101,12 @@ namespace NetTopologySuite.Index.Chain
         /// <summary>
         /// Gets the start index
         /// </summary>
-        public int StartIndex
-        {
-            get
-            {
-                return _start;
-            }
-        }
+        public int StartIndex => _start;
 
         /// <summary>
         /// Gets the end index of the underlying linestring
         /// </summary>
-        public int EndIndex
-        {
-            get
-            {
-                return _end;
-            }
-        }
+        public int EndIndex => _end;
 
         /// <summary>
         /// Gets the line segment starting at <paramref name="index"/>

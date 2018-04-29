@@ -39,10 +39,7 @@
             }
         }
 
-        public Int32 Count
-        {
-            get { return this.Tests.Count; }
-        }
+        public Int32 Count => this.Tests.Count;
 
         protected XmlTestCollection LoadTests()
         {

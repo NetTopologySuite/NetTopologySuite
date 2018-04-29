@@ -104,10 +104,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value to sort the geometry
         /// </summary>
-        protected override SortIndexValue SortIndex
-        {
-            get { return SortIndexValue.Polygon; }
-        }
+        protected override SortIndexValue SortIndex => SortIndexValue.Polygon;
 
 
         /// <summary>  
@@ -120,13 +117,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>a Coordinate which is a vertex of this <c>Geometry</c>.</returns>
         /// <returns><c>null</c> if this Geometry is empty.
         /// </returns>
-        public override Coordinate Coordinate
-        {
-            get
-            {
-                return _shell.Coordinate;
-            }
-        }
+        public override Coordinate Coordinate => _shell.Coordinate;
 
         /// <summary>
         /// Returns an array containing the values of all the vertices for 
@@ -238,13 +229,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>  
         /// The topological dimensions of this geometry
         /// </returns>
-        public override Dimension Dimension
-        {
-            get
-            {
-                return Dimension.Surface;
-            }
-        }
+        public override Dimension Dimension => Dimension.Surface;
 
         /// <summary> 
         /// Returns the dimension of this <c>Geometry</c>s inherent boundary.
@@ -255,24 +240,12 @@ namespace NetTopologySuite.Geometries
         /// <c>Dimension.False</c> if the boundary is the empty point.
         /// </returns>
         /// NOTE: make abstract, remove setter and change geoapi
-        public override Dimension BoundaryDimension
-        {
-            get
-            {
-                return Dimension.Curve;
-            }
-        }
+        public override Dimension BoundaryDimension => Dimension.Curve;
 
         /// <summary>
         /// 
         /// </summary>
-        public override bool IsEmpty
-        {
-            get
-            {
-                return _shell.IsEmpty;
-            }
-        }
+        public override bool IsEmpty => _shell.IsEmpty;
 
         ///// <summary>
         ///// 
@@ -288,35 +261,17 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public ILineString ExteriorRing
-        {
-            get
-            {
-                return _shell;
-            }
-        }
+        public ILineString ExteriorRing => _shell;
 
         /// <summary>
         /// 
         /// </summary>
-        public int NumInteriorRings
-        {
-            get
-            {
-                return _holes.Length;
-            }
-        }
+        public int NumInteriorRings => _holes.Length;
 
         /// <summary>
         /// 
         /// </summary>
-        public ILineString[] InteriorRings
-        {
-            get
-            {
-                return CollectionUtil.Cast<ILinearRing, ILineString>(_holes);
-            }
-        }
+        public ILineString[] InteriorRings => CollectionUtil.Cast<ILinearRing, ILineString>(_holes);
 
         /// <summary>
         /// 
@@ -332,18 +287,10 @@ namespace NetTopologySuite.Geometries
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"Polygon"</returns>
-        public override string GeometryType
-        {
-            get
-            {
-                return "Polygon";
-            }
-        }
+        public override string GeometryType => "Polygon";
 
-        public override OgcGeometryType OgcGeometryType
-        {
-            get { return OgcGeometryType.Polygon; }
-        }
+        public override OgcGeometryType OgcGeometryType => OgcGeometryType.Polygon;
+
         /// <summary> 
         /// Returns the area of this <c>Polygon</c>
 		/// </summary>
@@ -682,11 +629,8 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public ILinearRing Shell
         {
-            get
-            {
-                return _shell;
-            }
-            private set { _shell = value; }
+            get => _shell;
+            private set => _shell = value;
         }
 
         /// <summary>
@@ -694,14 +638,8 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public ILinearRing[] Holes
         {
-            get
-            {
-                return _holes;
-            }
-            private set
-            {
-                _holes = value;
-            }
+            get => _holes;
+            private set => _holes = value;
         }
 
         /*END ADDED BY MPAUL42 */

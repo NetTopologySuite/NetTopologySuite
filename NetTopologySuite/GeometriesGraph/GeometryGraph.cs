@@ -101,43 +101,22 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public bool HasTooFewPoints
-        {
-            get
-            {
-                return _hasTooFewPoints;
-            }
-        }
+        public bool HasTooFewPoints => _hasTooFewPoints;
 
         /// <summary>
         ///
         /// </summary>
-        public Coordinate InvalidPoint
-        {
-            get
-            {
-                return _invalidPoint;
-            }
-        }
+        public Coordinate InvalidPoint => _invalidPoint;
 
         /// <summary>
         ///
         /// </summary>
-        public IGeometry Geometry
-        {
-            get
-            {
-                return _parentGeom;
-            }
-        }
+        public IGeometry Geometry => _parentGeom;
 
         /// <summary>
         /// Gets the <see cref="IBoundaryNodeRule"/> used with this geometry graph.
         /// </summary>
-        public IBoundaryNodeRule BoundaryNodeRule
-        {
-            get { return _boundaryNodeRule; }
-        }
+        public IBoundaryNodeRule BoundaryNodeRule => _boundaryNodeRule;
 
         /// <summary>
         ///

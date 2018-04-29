@@ -36,17 +36,11 @@ namespace NetTopologySuite.Noding
         ///</summary>
         public Object Context { get; set; }
 
-        public Coordinate[] Coordinates { get { return _pts; } }
+        public Coordinate[] Coordinates => _pts;
 
-        public Boolean IsClosed
-        {
-            get { return _pts[0].Equals2D(_pts[_pts.Length - 1]); }
-        }
+        public Boolean IsClosed => _pts[0].Equals2D(_pts[_pts.Length - 1]);
 
-        public Int32 Count
-        {
-            get { return _pts.Length; }
-        }
+        public Int32 Count => _pts.Length;
 
         ///<summary>
         /// Gets the octant of the segment starting at vertex <code>index</code>
@@ -72,11 +66,8 @@ namespace NetTopologySuite.Noding
 
                 return new LineSegment(_pts[index], _pts[index + 1]);
             }
-            set
-            {
-                throw new NotSupportedException(
-                    "Setting line segments in a ISegmentString not supported.");
-            }
+            set => throw new NotSupportedException(
+                "Setting line segments in a ISegmentString not supported.");
         }
 
         /// <inheritdoc cref="object.ToString()"/>

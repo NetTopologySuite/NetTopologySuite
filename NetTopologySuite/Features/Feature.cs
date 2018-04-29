@@ -43,8 +43,8 @@ namespace NetTopologySuite.Features
         /// </summary>
         public virtual IGeometry Geometry
         {
-            get { return _geometry; }
-            set { _geometry = value; }
+            get => _geometry;
+            set => _geometry = value;
         }
 
         /// <summary>
@@ -52,8 +52,8 @@ namespace NetTopologySuite.Features
         /// </summary>
         public virtual IAttributesTable Attributes
         {
-            get { return _attributes; }
-            set { _attributes = value; }
+            get => _attributes;
+            set => _attributes = value;
         }
 
 
@@ -75,7 +75,7 @@ namespace NetTopologySuite.Features
 
                 return null;
             }
-            set { _boundingBox = value; }
+            set => _boundingBox = value;
         }
     }
 }

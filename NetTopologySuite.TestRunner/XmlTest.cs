@@ -27,29 +27,11 @@ namespace Open.Topology.TestRunner
             _objTest  = testItem;
         }
 
-        public int Index 
-        {
-            get
-            {
-                return _nIndex;
-            }
-        }
+        public int Index => _nIndex;
 
-        public bool Success
-        {
-            get
-            {
-                return _bSuccess;
-            }
-        }
+        public bool Success => _bSuccess;
 
-        public XmlTest Test
-        {
-            get
-            {
-                return _objTest;
-            }
-        }
+        public XmlTest Test => _objTest;
     }
 
     public delegate void XmlTextEventHandler(object sender, XmlTestEventArgs args);
@@ -175,127 +157,67 @@ namespace Open.Topology.TestRunner
 
         public string Description
         {
-            get
-            {
-                return _strDescription;
-            }
+            get => _strDescription;
 
-            set
-            {
-                _strDescription = value;
-            }
+            set => _strDescription = value;
         }
 
         public Exception Thrown
         {
-            get
-            {
-                return _objException;
-            }
+            get => _objException;
 
-            set
-            {
-                _objException = value;
-            }
+            set => _objException = value;
         }
 
-        public bool Success
+        public bool Success => _bSuccess;
+
+	    public IGeometry A
         {
-            get
-            {
-                return _bSuccess;
-            }
-        }
+            get => _objGeometryA;
 
-        public IGeometry A
-        {
-            get
-            {
-                return _objGeometryA;
-            }
-
-            set 
-            {
-                _objGeometryA = value;
-            }
-        }
+	        set => _objGeometryA = value;
+	    }
 
         public IGeometry B
         {
-            get
-            {
-                return _objGeometryB;
-            }
+            get => _objGeometryB;
 
-            set 
-            {
-                _objGeometryB = value;
-            }
+            set => _objGeometryB = value;
         }
 
         public XmlTestType TestType
         {
-            get
-            {
-                return _enumTestType;
-            }
+            get => _enumTestType;
 
-            set
-            {
-                _enumTestType = value;
-            }
+            set => _enumTestType = value;
         }
 
         public object Result
         {
-            get
-            {
-                return _objResult;
-            }
+            get => _objResult;
 
-            set
-            {
-                _objResult = value;
-            }
+            set => _objResult = value;
         }
 
         public object Argument1
         {
-            get
-            {
-                return _objArgument1;
-            }
+            get => _objArgument1;
 
-            set
-            {
-                _objArgument1 = value;
-            }
+            set => _objArgument1 = value;
         }
 
         public object Argument2
         {
-            get
-            {
-                return _objArgument2;
-            }
+            get => _objArgument2;
 
-            set
-            {
-                _objArgument2 = value;
-            }
+            set => _objArgument2 = value;
         }
 
 		public bool IsDefaultTarget
 		{
-            get
-            {
-                return _bIsDefaultTarget;
-            }
+            get => _bIsDefaultTarget;
 
-            set
-            {
-				_bIsDefaultTarget = value;
-            }
+		    set => _bIsDefaultTarget = value;
 		}
 
         #endregion

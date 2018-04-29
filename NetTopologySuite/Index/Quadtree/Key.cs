@@ -44,46 +44,22 @@ namespace NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Point
-        {
-            get
-            {
-                return _pt;
-            }
-        }
+        public Coordinate Point => _pt;
 
         /// <summary>
         /// 
         /// </summary>
-        public int Level
-        {
-            get
-            {
-                return _level;
-            }
-        }
+        public int Level => _level;
 
         /// <summary>
         /// 
         /// </summary>
-        public Envelope Envelope
-        {
-            get
-            {
-                return _env;
-            }
-        }
+        public Envelope Envelope => _env;
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Centre
-        {
-            get
-            {
-                return new Coordinate((_env.MinX + _env.MaxX) / 2, (_env.MinY + _env.MaxY) / 2);
-            }
-        }
+        public Coordinate Centre => new Coordinate((_env.MinX + _env.MaxX) / 2, (_env.MinY + _env.MaxY) / 2);
 
         /// <summary>
         /// Return a square envelope containing the argument envelope,

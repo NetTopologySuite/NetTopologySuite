@@ -64,10 +64,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <summary>
         /// Gets the number of coordinates in this facet sequence
         /// </summary>
-        public int Count
-        {
-            get { return _end - _start; }
-        }
+        public int Count => _end - _start;
 
         /// <summary>
         /// Gets the coordinate at the given index
@@ -82,10 +79,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <summary>
         /// Tests if this facet sequence consists of only one point
         /// </summary>
-        public bool IsPoint
-        {
-            get { return _end - _start == 1; }
-        }
+        public bool IsPoint => _end - _start == 1;
 
 
         /// <summary>

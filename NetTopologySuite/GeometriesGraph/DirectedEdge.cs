@@ -62,52 +62,28 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         public bool InResult
         {
-            get
-            {
-                return _isInResult;
-            }
-            set
-            {
-                _isInResult = value;
-            }
+            get => _isInResult;
+            set => _isInResult = value;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsInResult
-        {
-            get
-            {
-                return _isInResult;
-            }
-        }
+        public bool IsInResult => _isInResult;
 
         /// <summary>
         /// 
         /// </summary>
         public bool Visited
         {
-            get
-            {
-                return _isVisited;
-            }
-            set
-            {
-                _isVisited = value;
-            }
+            get => _isVisited;
+            set => _isVisited = value;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsVisited
-        {
-            get
-            {
-                return _isVisited;
-            }
-        }
+        public bool IsVisited => _isVisited;
 
         /// <summary>
         /// 
@@ -165,10 +141,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         public bool VisitedEdge
         {
-            get
-            {
-                return Visited && _sym.Visited;
-            }
+            get => Visited && _sym.Visited;
             set
             {
                 Visited = value;
@@ -181,11 +154,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         public bool IsForward
         {
-            get
-            {
-                return _isForward;
-            }
-            protected set { _isForward = value; }
+            get => _isForward;
+            protected set => _isForward = value;
         }
 
         /// <summary>
@@ -193,14 +163,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         public DirectedEdge Sym
         {
-            get
-            {
-                return _sym; 
-            }
-            set
-            {
-                _sym = value;
-            }
+            get => _sym;
+            set => _sym = value;
         }
 
         /// <summary>

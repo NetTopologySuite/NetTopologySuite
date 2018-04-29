@@ -37,17 +37,14 @@ namespace NetTopologySuite.Tests.NUnit.Performance
 
         public abstract void TestInternal();
 
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name => _name;
 
         /// <summary>
         /// Gets or sets the size(s) for the runs or the test
         /// </summary>
         public int[] RunSize    
         {
-            get { return _runSize; }
+            get => _runSize;
             set
             {
                 if (value == null) throw new ArgumentNullException("value");
@@ -57,7 +54,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
             }
         }
 
-        public long[] RunTime {  get { return _runTime;  } }
+        public long[] RunTime => _runTime;
 
         /// <summary>
         /// Gets or sets the number of iterations to execute te test methods in each run

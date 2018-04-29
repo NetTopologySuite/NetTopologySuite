@@ -111,13 +111,7 @@ namespace NetTopologySuite.Noding.Snapround
             /// <summary>
             /// 
             /// </summary>
-            public bool IsNodeAdded
-            {
-                get
-                {
-                    return _isNodeAdded;
-                }
-            }
+            public bool IsNodeAdded => _isNodeAdded;
 
             /// <summary>
             /// 

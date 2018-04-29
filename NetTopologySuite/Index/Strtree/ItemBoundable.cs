@@ -29,23 +29,11 @@ namespace NetTopologySuite.Index.Strtree
         /// <summary>
         /// The bounds
         /// </summary>
-        public T Bounds 
-        {
-            get
-            {
-                return _bounds;
-            }
-        }
+        public T Bounds => _bounds;
 
         /// <summary>
         /// The item
         /// </summary>
-        public TItem Item
-        {
-            get
-            {
-                return _item;
-            }
-        }
+        public TItem Item => _item;
     }
 }

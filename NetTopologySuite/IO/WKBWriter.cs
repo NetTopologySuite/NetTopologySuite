@@ -54,8 +54,8 @@ namespace NetTopologySuite.IO
         [Obsolete("Use HandleSRID instead")]
         public bool EmitSRID
         {
-            get { return HandleSRID; }
-            set { HandleSRID = value; }
+            get => HandleSRID;
+            set => HandleSRID = value;
         }
 
         private bool _emitZ;
@@ -66,7 +66,7 @@ namespace NetTopologySuite.IO
         [Obsolete("Use HandleOrdinates instead")]
         public bool EmitZ
         {
-            get { return _emitZ; }
+            get => _emitZ;
             set
             {
                 if (value == _emitZ)
@@ -90,7 +90,7 @@ namespace NetTopologySuite.IO
         [Obsolete("Use HandleOrdintes instead.")]
         public bool EmitM
         {
-            get { return _emitM; }
+            get => _emitM;
             set
             {
                 if (value == _emitM)
@@ -183,7 +183,7 @@ namespace NetTopologySuite.IO
         ///     4 bytes for WKBType.
         ///     4 bytes for SRID value
         /// </summary>
-        protected int InitCount { get { return 5 + (HandleSRID ? 4 : 0); } }
+        protected int InitCount => 5 + (HandleSRID ? 4 : 0);
 
         /// <summary>
         /// Initializes writer with LittleIndian byte order.
@@ -661,7 +661,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         public bool Strict
         {
-            get { return _strict; }
+            get => _strict;
             set
             {
                 _strict = value;
@@ -674,7 +674,7 @@ namespace NetTopologySuite.IO
 
         public bool HandleSRID
         {
-            get { return _handleSRID; }
+            get => _handleSRID;
             set
             {
                 if (_strict && value)
@@ -683,10 +683,7 @@ namespace NetTopologySuite.IO
             }
         }
 
-        public Ordinates AllowedOrdinates
-        {
-            get { return Ordinates.XYZM; }
-        }
+        public Ordinates AllowedOrdinates => Ordinates.XYZM;
 
         private Ordinates _handleOrdinates;
         private bool _handleSRID;
@@ -694,7 +691,7 @@ namespace NetTopologySuite.IO
 
         public Ordinates HandleOrdinates
         {
-            get { return _handleOrdinates; }
+            get => _handleOrdinates;
             set
             {
                 value = Ordinates.XY | AllowedOrdinates & value;
@@ -714,7 +711,7 @@ namespace NetTopologySuite.IO
 
         public ByteOrder ByteOrder
         {
-            get { return EncodingType; }
+            get => EncodingType;
             set { }
         }
 

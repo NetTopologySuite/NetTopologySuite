@@ -199,10 +199,7 @@ namespace NetTopologySuite.Precision
             private double _minDist = Double.MaxValue;
             private readonly Coordinate[] _minPts = new Coordinate[2];
 
-            public Coordinate[] Coordinates
-            {
-                get { return _minPts; }
-            }
+            public Coordinate[] Coordinates => _minPts;
 
             public double Distance(IBoundable<Envelope, FacetSequence> b1, IBoundable<Envelope, FacetSequence> b2)
             {

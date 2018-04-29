@@ -9,10 +9,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
     //Tests are exposed by CoordinateSequenceTestBase type
     public class PackedCoordinateSequenceTest : CoordinateSequenceTestBase
     {
-        protected override ICoordinateSequenceFactory CsFactory
-        {
-            get { return new PackedCoordinateSequenceFactory(); }
-        }
+        protected override ICoordinateSequenceFactory CsFactory => new PackedCoordinateSequenceFactory();
 
         [TestAttribute]
         public void TestMultiPointDim4()

@@ -27,7 +27,9 @@ public class TestDataBuilder
 		_size = size;
 	}
 	
-	public int TestDimension { get { return _testDim; } set { _testDim = value; }}
+	public int TestDimension { get => _testDim;
+	    set => _testDim = value;
+	}
 	
 	public IGeometry CreateCircle(int nPts) {
 		var gsf = new GeometricShapeFactory(_geomFact);

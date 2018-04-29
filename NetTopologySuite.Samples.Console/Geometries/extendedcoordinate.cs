@@ -45,8 +45,8 @@ namespace NetTopologySuite.Samples.Geometries
         
         public double M
         {
-            get { return _m; }
-            set { _m = value; }
+            get => _m;
+            set => _m = value;
         }
 
 	    /// <inheritdoc cref="object.ToString()"/>

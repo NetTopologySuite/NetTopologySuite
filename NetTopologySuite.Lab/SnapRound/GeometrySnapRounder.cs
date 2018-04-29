@@ -42,8 +42,8 @@ namespace NetTopologySuite.SnapRound
         /// </summary>
         public bool LineworkOnly
         {
-            get { return _isLineworkOnly; }
-            set { _isLineworkOnly = value; }
+            get => _isLineworkOnly;
+            set => _isLineworkOnly = value;
         }
 
 

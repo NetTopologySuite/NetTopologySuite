@@ -37,34 +37,22 @@ namespace NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public int MinimumSize
-        {
-            get { return _minimumSize; }
-        }
+        public int MinimumSize => _minimumSize;
 
         /// <summary>
         /// 
         /// </summary>
-        public ILineString Parent
-        {
-            get { return _parentLine; }
-        }
+        public ILineString Parent => _parentLine;
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate[] ParentCoordinates
-        {
-            get { return _parentLine.Coordinates; }
-        }
+        public Coordinate[] ParentCoordinates => _parentLine.Coordinates;
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate[] ResultCoordinates
-        {
-            get { return ExtractCoordinates(_resultSegs); }
-        }
+        public Coordinate[] ResultCoordinates => ExtractCoordinates(_resultSegs);
 
         /// <summary>
         /// 
@@ -105,10 +93,7 @@ namespace NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public TaggedLineSegment[] Segments
-        {
-            get { return _segs; }
-        }
+        public TaggedLineSegment[] Segments => _segs;
 
         /// <summary>
         /// 

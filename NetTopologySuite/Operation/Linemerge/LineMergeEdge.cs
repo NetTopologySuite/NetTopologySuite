@@ -23,12 +23,6 @@ namespace NetTopologySuite.Operation.Linemerge
         /// <summary>
         /// Returns the LineString specifying the vertices of this edge.
         /// </summary>
-        public ILineString Line
-        {
-            get
-            {
-                return line;
-            }
-        }
+        public ILineString Line => line;
     }
 }

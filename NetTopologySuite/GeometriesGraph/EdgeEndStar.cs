@@ -73,13 +73,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public int Degree
-        {
-            get
-            {
-                return edgeMap.Count;
-            }
-        }
+        public int Degree => edgeMap.Count;
 
         /// <summary>
         /// Iterator access to the ordered list of edges is optimized by
